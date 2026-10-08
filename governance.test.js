@@ -3223,6 +3223,32 @@ bundle licence and notice review.
       "./util/owlapi-reference/universal-ontology-july-2026.json",
     );
     const java = readJson("./docs/provenance/provenance.json").referenceOwlapi;
+    const currentJava = readJson("./util/owlapi-reference/pinned-version.json");
+    const nativeRules = manifest.rules.filter(
+      ({ artifactType }) => artifactType !== "OWL structural snapshot",
+    );
+    const historicalRules = nativeRules.filter(
+      ({ referenceRevision }) => referenceRevision === java.revision,
+    );
+    const currentRules = nativeRules.filter(
+      ({ referenceRevision }) =>
+        referenceRevision === currentJava.sourceRevision,
+    );
+    expect(historicalRules).toHaveLength(7);
+    expect(currentRules).toHaveLength(7);
+    // This pin refresh reproduced the same exact values and cardinality; retain
+    // both independent revision bindings rather than broadening an exception.
+    for (const historical of historicalRules) {
+      const current = currentRules.find(
+        ({ id }) => id === `${historical.id}-B61EBE2`,
+      );
+      expect(current).toEqual({
+        ...historical,
+        id: `${historical.id}-B61EBE2`,
+        referenceRevision: currentJava.sourceRevision,
+        rationale: expect.any(String),
+      });
+    }
     const julyFixtures = new Set(
       [...july.roots, ...july.mappings].map(
         ({ path }) => `universal-ontology@${july.revision}:${path}`,
@@ -3257,7 +3283,9 @@ bundle licence and notice review.
         expect(rule.fixture).toMatch(/^util\/owlapi-reference\/fixtures\//u);
       } else {
         expect(julyFixtures.has(rule.fixture)).toBe(true);
-        expect(rule.referenceRevision).toBe(java.revision);
+        expect([java.revision, currentJava.sourceRevision]).toContain(
+          rule.referenceRevision,
+        );
         expect(rule.cardinality).toEqual({ form: "exact", value: 1 });
         if (rule.artifactType === "OWL native structural differences")
           expect(nativeSelectors.has(rule.selector)).toBe(true);

@@ -126,6 +126,39 @@ test("family qualification requires parsing, native propagation, zero loss and b
   expect((await reconcileFamilyEvidence(evidence, context)).status).toBe(
     "PASS",
   );
+  const historicalRule = {
+    id: "HISTORICAL-DIAGNOSTIC",
+    artifactType: "RDF parsing diagnostics",
+    fixture: "fixture",
+    referenceRevision: "historical-pin",
+    differenceCategory: "SPECIFICATION_GROUNDED_RECOVERY",
+    differenceType: "EXTRA",
+    side: "Java",
+    selector: "$['unparsedNQuads']",
+    javaValue: "<urn:s> <urn:p> <urn:o> .\n",
+    jsValue: null,
+    cardinality: { form: "exact", value: 1 },
+    rationale: "An exact diagnostic at a different native source pin.",
+    authority: "https://www.w3.org/TR/owl2-rdf-based-semantics/",
+  };
+  const historicalContext = { ...context, rules: [historicalRule] };
+  expect(
+    (await reconcileFamilyEvidence(evidence, historicalContext)).status,
+  ).toBe("PASS");
+  const unexpected = structuredClone(evidence);
+  unexpected.documents[0].oracle.sourceDiagnostics[0].unparsedNQuads =
+    historicalRule.javaValue;
+  expect(
+    (await reconcileFamilyEvidence(unexpected, historicalContext)).status,
+  ).toBe("FAIL");
+  expect(
+    (
+      await reconcileFamilyEvidence(evidence, {
+        ...context,
+        rules: [{ ...historicalRule, referenceRevision: "java-pin" }],
+      })
+    ).status,
+  ).toBe("FAIL");
   for (const mutate of [
     (value) => {
       value.source.sourceLosslessness = "FAIL";
