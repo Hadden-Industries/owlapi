@@ -32,12 +32,15 @@ The implementation plan emits more than the default 1,000 findings per document.
 Both policy and trusted profile therefore allow a finite 10,000 per-document diagnostics while retaining the producer's 10,000 aggregate findings and 4 MiB diagnostic-byte defaults.
 No unlimited corpus-harness override is carried into the consumer.
 Four selected documents required formatting under the new defaults; their changes use the canonical formatter.
-The unrelated performance-plan working edit remains outside this change.
+The owner discarded the unrelated performance-plan edit before final qualification.
 
 ## One trusted profile and shared workflow
 
 `.markdown-quality-execution.json` owns six samples, 30,000 ms checker latency, a 180,000 ms window and 512 MiB observed memory.
 It also bounds Node old space, framing, staging and analyzer limits.
+Node old space is capped at 128 MiB and each analyzer worker at 64 MiB to preserve the 512 MiB observed process budget.
+The initial 256/128 MiB caps failed the shared local memory window; a read-only staged diagnostic with the tighter caps completed without errors or writes.
+That diagnostic is not a qualification receipt; the frozen profile still requires its own complete observation window.
 `.node-version` declares 24.21.0; the existing `.python-version` declares 3.14.7.
 The isolated core/native archives and lock are explicit trusted inputs.
 Changing a runtime, policy, profile, lock or archive invalidates its qualification identity.

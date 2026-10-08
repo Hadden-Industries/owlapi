@@ -4,12 +4,12 @@
   "checkerMs": 30000,
   "windowMs": 180000,
   "memoryBytes": 536870912,
-  "nodeOldSpaceMb": 256,
+  "nodeOldSpaceMb": 128,
   "requestBytes": 8388608,
   "reportBytes": 8388608,
   "stagingBytes": 134217728,
   "stagingEntries": 100000,
-  "limits": { "documentDiagnostics": 10000 },
+  "limits": { "documentDiagnostics": 10000, "workerHeapMb": 64 },
   "runtimes": {
     "node": { "file": ".node-version" },
     "python": { "file": ".python-version" }
