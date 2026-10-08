@@ -2,6 +2,7 @@ import { DOMParser } from "@xmldom/xmldom";
 import { OWLOntologyLoaderConfiguration } from "../../../model/index.js";
 import {
   OWLOntologyStorageError,
+  ResourceLimitError,
   StringDocumentSource,
 } from "../../../io/index.js";
 import { datasetsAreIsomorphic } from "../../../util/rdf-dataset-isomorphism.mjs";
@@ -33,6 +34,105 @@ const roundTrip = async (quads) => {
 };
 
 describe("RDF/XML default-graph writer", () => {
+  it("uses one prioritized typed node while retaining additional explicit types", async () => {
+    const owl = "http://www.w3.org/2002/07/owl#";
+    const text = await roundTrip([
+      quad(subject, named(`${RDF_NAMESPACE}type`), named(`${owl}Class`)),
+      quad(
+        subject,
+        named(`${RDF_NAMESPACE}type`),
+        named(`${owl}NamedIndividual`),
+      ),
+      quad(subject, predicate, literal("content")),
+    ]);
+    expect(text).toContain("<owl:Class ");
+    expect(text).toContain(`rdf:resource="${owl}NamedIndividual"`);
+    expect(text).not.toContain(`rdf:resource="${owl}Class"`);
+  });
+
+  const pureList = () => [
+    quad(subject, predicate, blank("head")),
+    quad(blank("head"), named(`${RDF_NAMESPACE}first`), named("urn:member:A")),
+    quad(blank("head"), named(`${RDF_NAMESPACE}rest`), blank("tail")),
+    quad(blank("tail"), named(`${RDF_NAMESPACE}first`), blank("member")),
+    quad(
+      blank("tail"),
+      named(`${RDF_NAMESPACE}rest`),
+      named(`${RDF_NAMESPACE}nil`),
+    ),
+    quad(blank("member"), predicate, literal("member content")),
+  ];
+  it("abbreviates only exclusive pure resource lists and preserves member statements", async () => {
+    const quads = pureList();
+    const text = await roundTrip(quads);
+    expect(text).toContain('rdf:parseType="Collection"');
+    expect(text).toContain("member content");
+    expect(writeRdfXmlGraph(dataset(quads.toReversed()))).toBe(text);
+  });
+  it.each([
+    [
+      "shared tail",
+      (quads) => quads.push(quad(named("urn:other"), predicate, blank("tail"))),
+    ],
+    [
+      "annotated cell",
+      (quads) =>
+        quads.push(quad(blank("head"), predicate, literal("annotation"))),
+    ],
+    [
+      "typed cell",
+      (quads) =>
+        quads.push(
+          quad(blank("head"), named(`${RDF_NAMESPACE}type`), named("urn:Cell")),
+        ),
+    ],
+    [
+      "cycle",
+      (quads) => {
+        quads[4] = quad(
+          blank("tail"),
+          named(`${RDF_NAMESPACE}rest`),
+          blank("head"),
+        );
+      },
+    ],
+    [
+      "literal member",
+      (quads) => {
+        quads[1] = quad(
+          blank("head"),
+          named(`${RDF_NAMESPACE}first`),
+          literal("literal"),
+        );
+      },
+    ],
+    [
+      "self member",
+      (quads) => {
+        quads[1] = quad(
+          blank("head"),
+          named(`${RDF_NAMESPACE}first`),
+          blank("head"),
+        );
+      },
+    ],
+  ])("retains the graph for a %s list", async (_name, mutate) => {
+    const quads = pureList();
+    mutate(quads);
+    // A safe suffix may still abbreviate; the unsafe head must stay explicit.
+    const text = await roundTrip(quads);
+    const document = new DOMParser().parseFromString(text, "application/xml");
+    expect(
+      document.getElementsByTagNameNS(RDF_NAMESPACE, "first").length,
+    ).toBeGreaterThan(0);
+    expect(writeRdfXmlGraph(dataset(quads.toReversed()))).toBe(text);
+  });
+  it("rejects excessive nesting with a resource error before native serialization", () => {
+    const quads = [quad(subject, predicate, blank("n0"))];
+    for (let index = 0; index < 130; index++)
+      quads.push(quad(blank(`n${index}`), predicate, blank(`n${index + 1}`)));
+    expect(() => writeRdfXmlGraph(dataset(quads))).toThrow(ResourceLimitError);
+  });
   it("round-trips all RDF 1.1 term forms, shared blanks, and ordinary list triples", async () => {
     const shared = blank("not an XML name <shared>");
     const tail = blank("different scope:shared");
@@ -78,15 +178,15 @@ describe("RDF/XML default-graph writer", () => {
     expect([...(await parse(text))][0].object.value).toBe(value);
   });
 
-  it("chooses the longest legal namespace and assigns prefixes in lexical order", async () => {
+  it("prefers semantic namespace boundaries and readable prefixes", async () => {
     const text = await roundTrip([
       quad(subject, named("urn:z:longLocal"), literal("z")),
       quad(subject, named("urn:a:abc1"), literal("a")),
       quad(subject, named(`${RDF_NAMESPACE}type`), named("urn:test:Class")),
     ]);
-    expect(text).toContain('xmlns:ns0="urn:a:ab"');
-    expect(text).toContain('xmlns:ns1="urn:z:longLoca"');
-    expect(text).toContain("<ns0:c1 ");
+    expect(text).toContain('xmlns:a="urn:a:"');
+    expect(text).toContain('xmlns:z="urn:z:"');
+    expect(text).toContain("<a:abc1 ");
     expect(text).toContain("<rdf:type ");
     expect(text).not.toContain(`xmlns:ns2="${RDF_NAMESPACE}`);
   });

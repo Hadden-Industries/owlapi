@@ -295,6 +295,9 @@ N3.js supports the four listed RDF syntaxes; support for the broader N3 language
 The [capability matrix](./docs/compatibility/capabilities.json), [Java API gap view](./docs/compatibility/java-api-surface.md), and [recorded expected differences](https://github.com/Hadden-Industries/owlapi/blob/main/docs/compatibility/expected-differences.json) are the authorities for the exact boundary.
 
 The selected RC includes the [ontology-lifecycle capability plan](https://github.com/Hadden-Industries/owlapi/blob/main/docs/ontology-lifecycle-capability-implementation-plan.md): closure queries, atomic changes, the merger, and manager-selected Functional Syntax and RDF/XML storage through `saveOntology` and `StringDocumentTarget.toString()`.
+
+The current source also provides [immutable RDF/XML writer configuration](docs/compatibility/rdfxml-writer-configuration.md) through `owlapi/model`, with manager-local indentation and banner settings.
+Its first immutable package release is not yet selected.
 The [parity migration guide](https://github.com/Hadden-Industries/owlapi/blob/main/docs/migration/0.1.0-java-api-parity.md) gives the exact imports, target/error changes and consumer-owned closure composition.
 These remain subject to the plan's fresh parity, losslessness, installed-package and consumer acceptance gates.
 UO owns catalog/network resolution, retries, redirects and materialization policy; downloading the npm dependency does not itself enable remote ontology loading.

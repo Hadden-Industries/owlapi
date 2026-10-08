@@ -7,13 +7,13 @@
     "repository": "https://github.com/Hadden-Industries/owlapi",
     "scopeAuthority": {
       "method": "npm pack --dry-run --json plus local source-byte hashing",
-      "fileCount": 110,
-      "sourceManifestSha256": "1d25cb2aca12a0acdfdbbec7fbb16cfc6c08a9ab802fc77a1d6117fe9cc275da"
+      "fileCount": 112,
+      "sourceManifestSha256": "d7ec9a9b0891aac023e1f47c7efe464527eaae1c9f4d9f5f5b043e6cc2abad6c"
     }
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "b5efc5360148e1292537d6e0b870f9cce17d6d4f27631c27b5562306e33686a3",
+    "factsSha256": "5285422b646096ea9c83c84338fe00c34ab4f7861d45b9f4e20d680255a1b153",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -54,7 +54,8 @@
         "NOTICE",
         "docs/compatibility/canonical-vowl-prerequisites.md",
         "docs/compatibility/rdf-parser-metadata.md",
-        "docs/compatibility/capabilities.json"
+        "docs/compatibility/capabilities.json",
+        "docs/compatibility/rdfxml-writer-configuration.md"
       ],
       "packageTarball": true,
       "rightsHolder": "Maksym Shostak for his contributions",
@@ -66,7 +67,9 @@
     {
       "id": "gnu-agpl-3.0-only-licence-text",
       "relationship": "EMBEDDED_OR_COPIED",
-      "paths": ["LICENSE"],
+      "paths": [
+        "LICENSE"
+      ],
       "packageTarball": true,
       "rightsHolder": "Free Software Foundation, Inc. and contributors to the licence text",
       "licenceBasis": "Unmodified GNU Affero General Public License version 3 text, redistributed as the package licence notice",
@@ -77,7 +80,9 @@
     {
       "id": "apache-2.0-licence-text",
       "relationship": "EMBEDDED_OR_COPIED",
-      "paths": ["LICENSES/Apache-2.0.txt"],
+      "paths": [
+        "LICENSES/Apache-2.0.txt"
+      ],
       "packageTarball": true,
       "rightsHolder": "Apache Software Foundation and contributors to the Apache License text",
       "licenceBasis": "Complete Apache License version 2.0 wording accompanying the elected Apache-2.0 distribution basis for Java OWLAPI compatibility facts",
@@ -96,7 +101,7 @@
       "packageTarball": true,
       "rightsHolder": "Maksym Shostak for project-authored compatibility analysis; Java OWLAPI public API identifiers are attributed to the owlcs/owlapi project and its contributors",
       "licenceBasis": "Project-authored analysis is AGPL-3.0-only. Public API identity and declaration facts are distributed under the Apache-2.0 alternative elected from the pinned Java source's Apache-2.0 OR LGPL-3.0 declaration; the complete elected licence text is packed at LICENSES/Apache-2.0.txt.",
-      "source": "https://github.com/owlcs/owlapi/tree/d7e997a53b470e32700de89cc610d9daf01ea769",
+      "source": "https://github.com/owlcs/owlapi/tree/b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
       "distributionAuthority": "The generated output records public package/type/declaration facts under the elected Apache-2.0 basis and independently authored mappings under AGPL-3.0-only; it contains no Java implementation bodies or copied Java documentation.",
       "rationale": "The classification acknowledges the exact third-party source consulted without implying source transliteration, organizational continuity, affiliation, endorsement, or Java implementation-code incorporation."
     }
@@ -104,7 +109,7 @@
   "externalDependencies": {
     "bundled": false,
     "authority": "docs/provenance/third-party-material.json",
-    "inventoryFactsSha256": "380850650d99424588b362923e5f76ce796153cbb853a33dd85516d648da84c2",
+    "inventoryFactsSha256": "9570dd3f96370c596f4de5d6785401c58b443480f2628866ccfbae628bedaf46",
     "noticeRule": "Ordinary npm dependencies are installed separately and remain under their own licences. Their licence texts are not copied into the owlapi tarball merely because they appear in the installed dependency graph."
   },
   "unresolvedExternalContributions": [],

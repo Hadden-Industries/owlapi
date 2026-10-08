@@ -10,6 +10,13 @@
   "progressStates": ["NOT_STARTED", "IN_PROGRESS", "COMPLETE"],
   "capabilities": [
     {
+      "id": "writer.rdfxml-configuration",
+      "category": "public-api",
+      "status": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "phase": 23
+    },
+    {
       "id": "profiles.owl2-dl-source-assessment",
       "category": "public-api",
       "status": "REQUIRED_V1",

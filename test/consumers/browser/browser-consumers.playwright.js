@@ -76,6 +76,13 @@ const runConsumer = async (page, mode) => {
     expect(document.mergedImportCount).toBe(0);
   }
   expect(result.publicModelFields).toBe(60);
+  expect(result.writerConfiguration).toEqual({
+    modelOnly: true,
+    indentSize: 2,
+    banners: false,
+    defaultEquivalent: true,
+    axiomCount: 2,
+  });
   expect(result.acquisitionContracts).toEqual({ formats: 12, errorKinds: 4 });
   expect(result.importClosure).toEqual({
     closureCount: 4,

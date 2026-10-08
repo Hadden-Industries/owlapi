@@ -14,7 +14,7 @@ import * as profiles from "../profiles/index.js";
 import * as util from "./index.js";
 
 const PACKAGE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const EXPECTED_JAVA_REVISION = "d7e997a53b470e32700de89cc610d9daf01ea769";
+const EXPECTED_JAVA_REVISION = "b61ebe2da83daceebb3e7ba7afbd2582c9240c33";
 const JAVA_PACKAGE_SOURCE_SUFFIX = join(
   "src",
   "main",
@@ -46,6 +46,35 @@ const LIFECYCLE_STORER_CAPABILITY_BY_JAVA_TYPE = Object.freeze({
 // These approved adaptations must not inherit the OWL-name heuristic: a native
 // Error suffix, private atomic target state, and io ownership differ from Java.
 const PARITY_BINDING_METADATA = Object.freeze({
+  OWLOntologyWriterConfiguration: {
+    javaType: "org.semanticweb.owlapi.model.OWLOntologyWriterConfiguration",
+    sourceModule: "model/owlOntologyWriterConfiguration.js",
+    capabilityIds: ["writer.rdfxml-configuration"],
+    relationship: "JS_ADAPTATION",
+    callShapes: ["new OWLOntologyWriterConfiguration()"],
+    summary:
+      "An immutable partial Java adaptation controlling RDF/XML indentation and banners on an output manager.",
+    firstPublicRelease: null,
+    omittedMembers: [
+      "shouldSaveIdsForAllAnonymousIndividuals / withSaveIdsForAllAnonymousIndividuals",
+      "shouldRemapAllAnonymousIndividualsIds / withRemapAllAnonymousIndividualsIds",
+      "isUseNamespaceEntities / withUseNamespaceEntities",
+      "shouldOutputNamedGraphIRI / withNamedGraphIRIEnabled",
+    ],
+    semanticQualifications: [
+      "Defaults: isIndenting true, getIndentSize 4, shouldUseBanners true, isLabelsAsBanner false. Every with method returns an immutable configuration and preserves unrelated fields, unlike the pinned Java copy-reset behavior.",
+      "withIndentSize accepts numeric integers 0 through 2147483647; nonnumbers throw TypeError and out-of-range/noninteger numbers throw RangeError. Java admits negative int values; JavaScript deliberately rejects them.",
+      "The four controls affect RDF/XML only. Functional Syntax retains its output, matching the public-save Java probe. Disabling indentation retains structural newlines and literal whitespace.",
+      "Labels use lexical ordering of language, label text, then datatype, with IRI fallback. XML comment sanitization affects presentation only; labels remain unchanged RDF literals. No-language labels sort first.",
+      "Rendering is bounded to 32 MiB UTF-8 output and 128 nested resource levels. Legal excessive indentation can produce a typed atomic storage failure; disabling indentation admits any legal stored size.",
+      "Attach to the actual output manager using setOntologyWriterConfiguration, which returns undefined. Each save captures private immutable state before suspension; no live getter or global preferences are read.",
+    ],
+    verification: [
+      "model/owlOntologyWriterConfiguration.test.js",
+      "internal/storage/rdfxml/rdfXmlGraphWriter.test.js",
+      "test/package-boundary.test.mjs",
+    ],
+  },
   OWL2DLProfile: {
     javaType: "org.semanticweb.owlapi.profiles.OWL2DLProfile",
     sourceModule: "profiles/owl2DLProfile.js",
@@ -180,7 +209,7 @@ const MODULES = Object.freeze([
       ...util,
     },
     rationale:
-      "Convenience aggregate that re-exports every approved binding without creating a second implementation identity.",
+      "Convenience aggregate of established bindings. New writer configuration is owned only by ./model; no second implementation identity is created.",
   },
   {
     id: "apibinding",
@@ -427,6 +456,7 @@ const SEMANTIC_QUALIFICATIONS_BY_EXPORT = Object.freeze({
     "applyChange/applyChanges accept only SetOntologyID and AddOntologyAnnotation records, materialize one JavaScript iterable form, atomically publish the complete list, and return boolean instead of Java's ChangeApplied or ChangeDetails.",
     "LIFECYCLE-ASYNC-SAVE-OVERLOAD: saveOntology(ontology, format, target) returns Promise<void>, validates ownership and genuine format/target identities, and selects only the exact format key.",
     "LIFECYCLE-LOSSLESS-STORAGE: saveOntology renders one committed snapshot and atomically replaces target text only after success; unexpected renderer failures are wrapped with cause and typed storage errors retain identity.",
+    "getOntologyWriterConfiguration/setOntologyWriterConfiguration attach genuine immutable values to this manager; saveOntology captures native private settings before its first await, independently of later manager changes.",
   ],
   OWLOntologyImportsClosureSetProvider: [
     "ontologies returns a fresh defensive JavaScript Set instead of Java's Stream<OWLOntology>.",
@@ -859,7 +889,9 @@ const buildBindings = (capabilityById) => {
         exposure: "PUBLIC",
         stability: "PRERELEASE",
         firstPublicRelease: parityMetadata
-          ? "0.1.0-rc.1"
+          ? Object.hasOwn(parityMetadata, "firstPublicRelease")
+            ? parityMetadata.firstPublicRelease
+            : "0.1.0-rc.1"
           : (FIRST_PUBLIC_RELEASE_BY_EXPORT[exportName] ?? "0.1.0-alpha.0"),
         publicSpecifier: namespace.npmSpecifier,
         sourceModule:
@@ -943,6 +975,33 @@ const classifyJavaType = (type, bindingByJavaType) => {
       omittedMembers: publicBinding.omittedMembers,
       verification: publicBinding.verification,
       guidance: publicBinding.guidance,
+    };
+  }
+
+  if (type.simpleName === "HasOntologyWriterConfiguration") {
+    return {
+      ...type,
+      capabilityIds: ["writer.rdfxml-configuration"],
+      progress: "COMPLETE",
+      exposure: "INTERNAL_ONLY",
+      stability: null,
+      jsExport: null,
+      publicSpecifier: null,
+      sourceModule: "model/owlOntologyManager.js",
+      relationship: "JS_ADAPTATION",
+      compatibility: "ADAPTED",
+      disposition: "STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT",
+      supportedMembers: [
+        "OWLOntologyManager.getOntologyWriterConfiguration()",
+        "OWLOntologyManager.setOntologyWriterConfiguration(config)",
+      ],
+      omittedMembers: ["Standalone interface constructor/export"],
+      verification: [
+        "model/owlOntologyWriterConfiguration.test.js",
+        "test/package-boundary.test.mjs",
+      ],
+      guidance:
+        "Use the manager's native accessors; this Java interface is implemented structurally and has no JavaScript runtime constructor.",
     };
   }
 
@@ -1112,7 +1171,9 @@ const buildRegistry = async (javaRoot) => {
     rationale: namespace.rationale,
     ownedBindingIds:
       namespace.id === "root"
-        ? allBindingIds
+        ? allBindingIds.filter(
+            (id) => id !== "model.OWLOntologyWriterConfiguration",
+          )
         : bindings
             .filter(
               ({ publicSpecifier }) =>
@@ -1200,7 +1261,7 @@ const renderApiView = (registry, digest) => {
       `- Kind: ${binding.kind}`,
       `- Java authority: ${javaAuthority}`,
       `- Relationship: ${binding.relationship}; compatibility: ${binding.compatibility}`,
-      `- Release status: ${binding.stability} from ${binding.firstPublicRelease}`,
+      `- Release status: ${binding.stability}; ${binding.firstPublicRelease === null ? "first public release not selected" : `from ${binding.firstPublicRelease}`}`,
       `- Call shape: ${binding.callShapes.join("; ")}`,
       `- Supported members: ${binding.supportedMembers.join("; ")}`,
       `- Omitted Java members: ${binding.omittedMembers.join("; ") || "none recorded"}`,

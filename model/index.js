@@ -28,3 +28,4 @@ export { OWLOntology } from "./owlOntology.js";
 export { OWLOntologyLoaderConfiguration } from "./owlOntologyLoaderConfiguration.js";
 export { OWLOntologyManager } from "./owlOntologyManager.js";
 export { SetOntologyID } from "./setOntologyID.js";
+export { OWLOntologyWriterConfiguration } from "./owlOntologyWriterConfiguration.js";

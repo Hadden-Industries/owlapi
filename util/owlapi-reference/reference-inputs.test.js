@@ -12,8 +12,8 @@ const entry = (path, hash = "a".repeat(128)) =>
   Buffer.from(`${hash}  ${path}\n`);
 const artifact = "org/example/library/1.0/library-1.0.jar";
 const inputs = () => ({
-  sourceCommit: "d7e997a53b470e32700de89cc610d9daf01ea769",
-  sourceTree: "8f871bacef5ab767afda979e60b1a1e0c98d6323",
+  sourceCommit: "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+  sourceTree: "b8dad5241dae6ff3bd3b755b9a1c605623eeb2c2",
   externalSha256: "1".repeat(64),
   runtimeGraphSha256: "2".repeat(64),
   mavenDistributionSha256: "3".repeat(64),
@@ -124,7 +124,7 @@ describe("native reference preparation boundary", () => {
       summaryDirectory: "/private/prepared",
     });
     expect(REFERENCE_RECIPE.sourceCommit).toBe(
-      "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
     );
     expect(REFERENCE_RECIPE.maven).toBe("3.10.0");
     for (const goal of [...recipe.preparation, recipe.build]) {

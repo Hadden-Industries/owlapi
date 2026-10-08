@@ -45,6 +45,7 @@ const EXPECTED_EXPORTS = Object.freeze({
     "OWLOntology",
     "OWLOntologyLoaderConfiguration",
     "OWLOntologyManager",
+    "OWLOntologyWriterConfiguration",
     "OWLStructuralObject",
     "OWL_OBJECT_KINDS",
     "SetOntologyID",
@@ -82,7 +83,7 @@ test("each approved Java-backed namespace exposes exactly its owned bindings", a
   assert.deepEqual(sortedKeys(profiles), EXPECTED_EXPORTS.profiles);
 });
 
-test("the bare aggregate re-exports every public binding with identical identity", async () => {
+test("the bare aggregate preserves its owned bindings while writer configuration belongs to model", async () => {
   const [root, apibinding, model, io, formats, util, profiles] =
     await Promise.all([
       import("@hadden-industries/owlapi"),
@@ -95,6 +96,8 @@ test("the bare aggregate re-exports every public binding with identical identity
     ]);
   const ownedModules = [apibinding, model, io, formats, util, profiles];
   const ownedBindings = Object.assign({}, ...ownedModules);
+  delete ownedBindings.OWLOntologyWriterConfiguration;
+  assert.equal(Object.hasOwn(root, "OWLOntologyWriterConfiguration"), false);
 
   assert.deepEqual(sortedKeys(root), Object.keys(ownedBindings).sort());
   for (const [name, binding] of Object.entries(ownedBindings)) {

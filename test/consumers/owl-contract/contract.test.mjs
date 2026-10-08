@@ -4,6 +4,7 @@ import test from "node:test";
 import { readFileSync, realpathSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { OWL_CONTRACT_ASSERTIONS } from "./public-model-cases.js";
+import { exerciseWriterConfiguration } from "./writer-configuration.js";
 import {
   exerciseFormatConfiguration,
   exercisePublicErrors,
@@ -220,3 +221,18 @@ for (const { kind, value, fields } of probes)
       assert.deepEqual(value[field], expected, `${kind}.${field}`);
     if (kind.endsWith("Axiom")) assert.deepEqual(value.annotations, []);
   });
+
+test(OWL_CONTRACT_ASSERTIONS.at(-1), async () => {
+  assert.equal(Object.hasOwn(owl, "OWLOntologyWriterConfiguration"), false);
+  assert.deepEqual(
+    await exerciseWriterConfiguration(binding, model, io, formats),
+    {
+      modelOnly: true,
+      indentSize: 2,
+      banners: false,
+      defaultEquivalent: true,
+      axiomCount: 2,
+    },
+  );
+  assertNoNetworkOperations();
+});

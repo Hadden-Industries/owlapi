@@ -8,6 +8,10 @@ Prerelease identifiers do not create a stability promise.
 
 ## Unreleased
 
+- Add immutable `OWLOntologyWriterConfiguration` from `owlapi/model` and manager get/set accessors; each save captures its own settings.
+- Render readable RDF/XML defaults with typed nodes, useful prefixes, four-space indentation, banners, safe nesting and pure resource collections; preserve graph identity and atomic storage failures.
+- Pin qualification to npm 12.2.0 and Java OWLAPI upstream revision `b61ebe2da83daceebb3e7ba7afbd2582c9240c33`; disable shared Java bundles tied to the earlier source-notice catalogue.
+
 - Expose immutable Java-style `RDFParserMetaData`, `RDFOntologyHeaderStatus`, format loader metadata and manager `getOntologyFormat`; retain exact unparsed terms independently of optional warnings.
 - Load compatible RDF imports from secondary headers through the ordinary bounded manager closure; keep existing header selection and strict/preserve distinctions.
 - Reconstruct supported inverse, functional, domain and range axioms for indirectly typed compatible properties before statement accounting.

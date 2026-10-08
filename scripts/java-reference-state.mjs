@@ -5,7 +5,7 @@ import { evidenceFingerprint } from "./ci-check-coverage.mjs";
  * enable-and-verify rollout. Hosted operating results remain separate evidence. */
 export const JAVA_REFERENCE_POLICY = Object.freeze({
   version: 1,
-  enabled: true,
+  enabled: false,
   rights: "OWNER_ACCEPTED_SOURCE_NOTICE_CLOSURE",
   rightsSha256:
     "c31f01628662182ec041c4c30d9fc253a892d672fe8b4d883ff672d31b42a5d4",

@@ -20,7 +20,7 @@ describe("workflow runtime bootstrap", () => {
         "--node",
         process.version.slice(1),
         "--npm",
-        "12.1.0",
+        "12.2.0",
       ],
       { encoding: "utf8", shell: false },
     );
@@ -30,7 +30,7 @@ describe("workflow runtime bootstrap", () => {
     expect(command.stderr).toBe("");
     expect(JSON.parse(command.stdout)).toEqual({
       node: process.version,
-      npm: "12.1.0",
+      npm: "12.2.0",
     });
   });
 
@@ -38,11 +38,11 @@ describe("workflow runtime bootstrap", () => {
     expect(
       assertWorkflowRuntime({
         expectedNode: "24.21.0",
-        expectedNpm: "12.1.0",
+        expectedNpm: "12.2.0",
         observedNode: "v24.21.0",
-        observedNpm: "12.1.0",
+        observedNpm: "12.2.0",
       }),
-    ).toEqual({ node: "v24.21.0", npm: "12.1.0" });
+    ).toEqual({ node: "v24.21.0", npm: "12.2.0" });
   });
 
   test("finds a Windows global npm CLI beside its PATH shim before the bundled CLI", () => {
@@ -79,18 +79,18 @@ describe("workflow runtime bootstrap", () => {
 
     expect(
       selectNpmCliForVersion({
-        expectedNpm: "12.1.0",
+        expectedNpm: "12.2.0",
         candidates: [bundledCli, globalCli],
         observeVersion: (candidate) =>
-          candidate === bundledCli ? "11.17.0" : "12.1.0",
+          candidate === bundledCli ? "11.17.0" : "12.2.0",
       }),
-    ).toEqual({ npmCli: globalCli, version: "12.1.0" });
+    ).toEqual({ npmCli: globalCli, version: "12.2.0" });
   });
 
   test("rejects every candidate when none reports the exact npm version", () => {
     expect(() =>
       selectNpmCliForVersion({
-        expectedNpm: "12.1.0",
+        expectedNpm: "12.2.0",
         candidates: ["bundled-npm", "global-npm"],
         observeVersion: (candidate) =>
           candidate === "bundled-npm" ? "11.17.0" : "12.0.1",
@@ -102,9 +102,9 @@ describe("workflow runtime bootstrap", () => {
     expect(() =>
       assertWorkflowRuntime({
         expectedNode: "24.21.0",
-        expectedNpm: "12.1.0",
+        expectedNpm: "12.2.0",
         observedNode: "v24.19.1",
-        observedNpm: "12.1.0",
+        observedNpm: "12.2.0",
       }),
     ).toThrow(/Node v24\.19\.1/u);
   });

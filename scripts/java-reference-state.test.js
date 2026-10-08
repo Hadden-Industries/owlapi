@@ -48,8 +48,8 @@ const producer = () => ({
   qualificationDigest: `sha256:${"d".repeat(64)}`,
 });
 
-test("binds activation to the accepted owner rollout without allowing missing materialization evidence", () => {
-  expect(JAVA_REFERENCE_POLICY.enabled).toBe(true);
+test("keeps the old source-notice acceptance historical while the new pin uses fresh native qualification", () => {
+  expect(JAVA_REFERENCE_POLICY.enabled).toBe(false);
   expect(JAVA_REFERENCE_POLICY.operator).toBe("MaksymShostak");
   expect(JAVA_REFERENCE_POLICY.operatingAcceptanceSha256).toBe(
     "2533c701115341a51dd8e48c3b990011a14e93092f6ce8e2f2bc3e3ce432f788",
@@ -57,12 +57,14 @@ test("binds activation to the accepted owner rollout without allowing missing ma
   expect(JAVA_REFERENCE_POLICY.rights).toBe(
     "OWNER_ACCEPTED_SOURCE_NOTICE_CLOSURE",
   );
-  expect(() => assertJavaReferenceState(null, identity)).toThrow(/evidence/u);
+  expect(assertJavaReferenceState(null, identity)).toBeNull();
   const actual = {
     ...fixture(),
     policySha256: evidenceFingerprint(JAVA_REFERENCE_POLICY),
   };
-  expect(assertJavaReferenceState(actual, identity)).toEqual(actual);
+  expect(() => assertJavaReferenceState(actual, identity)).toThrow(
+    /activation/u,
+  );
   expect(() => assertJavaReferenceState(fixture(), identity)).toThrow();
 });
 
