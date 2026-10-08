@@ -31,6 +31,7 @@ await manager.saveOntology(ontology, OWLDocumentFormats.RDF_XML, target);
 All builders return fresh frozen values and retain every unrelated setting, including no-op calls.
 Boolean arguments must be actual booleans.
 Indentation must be a finite integer from zero through `2147483647`: other numeric values raise `RangeError` and other types raise `TypeError`.
+Negative zero is normalized to ordinary zero.
 The constructor takes no arguments.
 The manager setter returns `undefined` and accepts genuine configurations, rejecting null, lookalikes and proxies.
 The getter returns the current immutable value.
@@ -53,10 +54,11 @@ Arbitrary format parameters remain unsupported.
 Namespace entities, authored prefix-map mutation, anonymous-individual remapping and named-graph writing remain outside this subset.
 
 Rendering admits at most 32 MiB of UTF-8 output and 128 nested resource levels, aligned with the existing storer's reparse budget.
+Owned chains and literal lists exceeding the abbreviation depth retain flat `rdf:nodeID` references; graph depth alone does not cause rejection.
 Terms and DOM construction are checked before unbounded serialization, and indentation is charged before allocating padding.
 Native QName candidate validation admits at most 32 MiB of total UTF-16 candidate characters per render, including namespace and local-name work, and repeated predicates reuse their validated names.
 Construction accounting is conservative because independently serialized elements can repeat namespace declarations.
-Excessive output, QName work or nesting raises a storage error caused by `ResourceLimitError`; the target retains its previous complete text.
+Excessive output or QName work raises a storage error caused by `ResourceLimitError`; the target retains its previous complete text.
 A legal integer setting is not a promise that any ontology can be rendered within the budget.
 
 ## Compatibility decisions and observations
@@ -82,6 +84,7 @@ Shared Java bundle reuse and publication are disabled because their approved cat
 This is a supported partial JavaScript adaptation.
 The generated Java inventory lists implemented and omitted members separately.
 The first immutable package release is not selected by this change; source delivery does not assert npm publication or Universal Ontology adoption.
+Publication preflight rejects public bindings with an unassigned first release; source-only qualification remains available.
 The companion default-output plan's producer renderer prerequisite is implemented here; its consumer upgrade and deployment retain their own qualification.
 
 ## Resource observations
@@ -100,4 +103,4 @@ The compact baseline was OwlAPI commit `ffbb3f3910ce945e315ed624e46c961ef332eea4
 Readability adds roughly 20% output size and measured renderer work.
 Default heap deltas after rendering were 92–157 MiB, versus 66–72 MiB for the compact baseline; these deltas are not peak-memory measurements.
 The finite byte, nesting and pre-allocation guards bound publication, while full save validation retains its existing independent reparse and OWL structural comparison.
-Excessive indentation and nesting fixtures verify typed failure, and public-save tests verify unchanged targets after failed rendering.
+Excessive indentation fixtures verify typed failure, long-chain and literal-enumeration fixtures verify bounded flat fallback, and public-save tests verify unchanged targets after failed rendering.

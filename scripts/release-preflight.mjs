@@ -14,6 +14,18 @@ import { parseSshVerification } from "./verify-release-tag.mjs";
 
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
 
+/** Source qualification may precede immutable version selection; publication may not. */
+export const assertSelectedPublicReleases = (registry) => {
+  const pending = registry.bindings.filter(
+    (binding) =>
+      binding.exposure === "PUBLIC" && binding.firstPublicRelease === null,
+  );
+  if (pending.length)
+    throw new Error(
+      `Public bindings require an immutable first release selection: ${pending.map(({ id }) => id).join(", ")}`,
+    );
+};
+
 const runGit = (
   arguments_,
   { allowMissing = false, cwd = repositoryRoot } = {},
@@ -193,6 +205,7 @@ const main = () => {
   const ledger = readJson("docs/compatibility/java-api-parity-decisions.json");
   assertReconciledLifecycle(ledger);
   const registryPath = "docs/compatibility/java-api-surface.json";
+  if (!qualificationOnly) assertSelectedPublicReleases(readJson(registryPath));
   const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
   if (
     digest(

@@ -62,6 +62,6 @@ export class OWLOntologyWriterConfiguration {
         "indentSize must be an integer from 0 through 2147483647",
       );
     }
-    return this.#with("indentSize", value);
+    return this.#with("indentSize", value + 0);
   }
 }

@@ -163,11 +163,22 @@ describe("RDF/XML default-graph writer", () => {
     ).toBeGreaterThan(0);
     expect(writeRdfXmlGraph(dataset(quads.toReversed()))).toBe(text);
   });
-  it("rejects excessive nesting with a resource error before native serialization", () => {
+  it("retains long owned chains through flat references at the nesting bound", async () => {
     const quads = [quad(subject, predicate, blank("n0"))];
     for (let index = 0; index < 130; index++)
       quads.push(quad(blank(`n${index}`), predicate, blank(`n${index + 1}`)));
-    expect(() => writeRdfXmlGraph(dataset(quads))).toThrow(ResourceLimitError);
+    const text = await roundTrip(quads);
+    const document = new DOMParser().parseFromString(text, "application/xml");
+    const pending = [[document.documentElement, 1]];
+    let maximumDepth = 0;
+    while (pending.length) {
+      const [node, depth] = pending.pop();
+      maximumDepth = Math.max(maximumDepth, depth);
+      for (const child of node.childNodes)
+        if (child.nodeType === 1) pending.push([child, depth + 1]);
+    }
+    expect(maximumDepth).toBeLessThanOrEqual(257);
+    expect(writeRdfXmlGraph(dataset(quads.toReversed()))).toBe(text);
   });
   it("round-trips all RDF 1.1 term forms, shared blanks, and ordinary list triples", async () => {
     const shared = blank("not an XML name <shared>");

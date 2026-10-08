@@ -64,8 +64,33 @@ describe("immutable manager-owned ontology writer configuration", () => {
     expect(defaults.withIndentSize(2147483647).getIndentSize()).toBe(
       2147483647,
     );
+    expect(Object.is(defaults.withIndentSize(-0).getIndentSize(), 0)).toBe(
+      true,
+    );
     expect(() => new OWLOntologyWriterConfiguration({})).toThrow(TypeError);
   });
+
+  it.each([true, false])(
+    "publicly saves a long literal enumeration with indentation %s",
+    async (indenting) => {
+      const manager = OWLManager.createOWLOntologyManager();
+      manager.setOntologyWriterConfiguration(
+        new OWLOntologyWriterConfiguration().withIndenting(indenting),
+      );
+      const ontology = await manager.loadOntologyFromOntologyDocument(
+        new StringDocumentSource(`Ontology(<urn:long:ontology>
+        Declaration(DataProperty(<urn:long:property>))
+        DataPropertyRange(<urn:long:property> DataOneOf(${Array.from({ length: 200 }, (_, index) => `"${index}"`).join(" ")}))
+      )`),
+      );
+      const text = await save(manager, ontology);
+      const reloaded =
+        await OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(
+          new StringDocumentSource(text),
+        );
+      expect(compareOntologies(ontology, reloaded).equal).toBe(true);
+    },
+  );
 
   it("rejects forged and proxied configurations without replacing previous manager state", () => {
     const manager = OWLManager.createOWLOntologyManager();

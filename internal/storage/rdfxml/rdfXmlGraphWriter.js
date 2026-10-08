@@ -464,7 +464,8 @@ const serializeGraph = (dataset, policy) => {
             limit: MAX_OUTPUT_BYTES,
           });
       } else {
-        const list = collection(quad.object, path);
+        const list =
+          depth < MAX_NODE_DEPTH ? collection(quad.object, path) : null;
         if (list) {
           attribute(property, RDF_NAMESPACE, "rdf:parseType", "Collection");
           admitNode(property);
@@ -476,6 +477,7 @@ const serializeGraph = (dataset, policy) => {
             property.appendChild(renderNode(member, path, depth + 1, true));
         } else if (
           quad.object.termType === "BlankNode" &&
+          depth < MAX_NODE_DEPTH &&
           incoming.get(keys[2]) === 1 &&
           subjects.has(keys[2]) &&
           !path.has(keys[2]) &&
