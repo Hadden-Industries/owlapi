@@ -199,7 +199,10 @@
       "exposure": "PUBLIC",
       "firstPublicRelease": "0.1.0-alpha.0",
       "rationale": "Mirrors the Java OWLAPI formats namespace while exposing stable format identities rather than parser internals.",
-      "ownedBindingIds": ["formats.OWLDocumentFormats"]
+      "ownedBindingIds": [
+        "formats.OWLDocumentFormats",
+        "formats.RDFXMLDocumentFormat"
+      ]
     },
     {
       "id": "util",
@@ -1056,7 +1059,7 @@
       "id": "model.OWLOntologyWriterConfiguration",
       "jsExport": "OWLOntologyWriterConfiguration",
       "kind": "CLASS",
-      "summary": "An immutable partial Java adaptation controlling RDF/XML indentation and banners on an output manager.",
+      "summary": "An immutable partial Java adaptation controlling RDF/XML indentation, banners and anonymous-individual ID persistence on an output manager.",
       "capabilityIds": ["writer.rdfxml-configuration"],
       "capabilityStatus": "REQUIRED_V1",
       "progress": "COMPLETE",
@@ -1075,14 +1078,15 @@
         "prototype.getIndentSize",
         "prototype.isIndenting",
         "prototype.isLabelsAsBanner",
+        "prototype.shouldSaveIdsForAllAnonymousIndividuals",
         "prototype.shouldUseBanners",
         "prototype.withBannersEnabled",
         "prototype.withIndentSize",
         "prototype.withIndenting",
-        "prototype.withLabelsAsBanner"
+        "prototype.withLabelsAsBanner",
+        "prototype.withSaveIdsForAllAnonymousIndividuals"
       ],
       "omittedMembers": [
-        "shouldSaveIdsForAllAnonymousIndividuals / withSaveIdsForAllAnonymousIndividuals",
         "shouldRemapAllAnonymousIndividualsIds / withRemapAllAnonymousIndividualsIds",
         "isUseNamespaceEntities / withUseNamespaceEntities",
         "shouldOutputNamedGraphIRI / withNamedGraphIRIEnabled"
@@ -1091,7 +1095,7 @@
       "semanticQualifications": [
         "Defaults: isIndenting true, getIndentSize 4, shouldUseBanners true, isLabelsAsBanner false. Every with method returns an immutable configuration and preserves unrelated fields, unlike the pinned Java copy-reset behavior.",
         "withIndentSize accepts numeric integers 0 through 2147483647; nonnumbers throw TypeError and out-of-range/noninteger numbers throw RangeError. Java admits negative int values; JavaScript deliberately rejects them.",
-        "The four controls affect RDF/XML only. Functional Syntax retains its output, matching the public-save Java probe. Disabling indentation retains structural newlines and literal whitespace.",
+        "The controls affect RDF/XML only. Functional Syntax retains its output, matching the public-save Java probe. Disabling indentation retains structural newlines and literal whitespace. shouldSaveIdsForAllAnonymousIndividuals defaults to false; its builder persists anonymous individual and axiom IDs while necessary shared/cyclic/depth-limited references always retain IDs.",
         "Labels use lexical ordering of language, label text, then datatype, with IRI fallback. XML comment sanitization affects presentation only; labels remain unchanged RDF literals. No-language labels sort first.",
         "Rendering is bounded to 32 MiB UTF-8 output, 128 nested resource levels and finite QName work. Long owned chains retain flat references at the nesting bound. Disabling indentation removes padding cost and admits any legal configured indentSize, subject to other conservative render budgets.",
         "Attach to the actual output manager using setOntologyWriterConfiguration, which returns undefined. Each save captures private immutable state before suspension; no live getter or global preferences are read."
@@ -2273,6 +2277,58 @@
       ],
       "verification": ["model/model.test.js", "test/package-boundary.test.mjs"],
       "guidance": "Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace."
+    },
+    {
+      "id": "formats.RDFXMLDocumentFormat",
+      "jsExport": "RDFXMLDocumentFormat",
+      "kind": "CLASS",
+      "summary": "Java-backed RDF/XML format with bounded inherited prefix operations and captured save-time preferences.",
+      "capabilityIds": ["writer.rdfxml-configuration"],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicRelease": null,
+      "publicSpecifier": "@hadden-industries/owlapi/formats",
+      "sourceModule": "formats/rdfXMLDocumentFormat.js",
+      "javaPackage": "org.semanticweb.owlapi.formats",
+      "javaType": "org.semanticweb.owlapi.formats.RDFXMLDocumentFormat",
+      "closestJavaAuthority": "org.semanticweb.owlapi.formats.RDFXMLDocumentFormat",
+      "relationship": "JAVA_ANALOGUE",
+      "compatibility": "ADAPTED",
+      "callShapes": ["new RDFXMLDocumentFormat()"],
+      "supportedMembers": [
+        "prototype.asPrefixOWLDocumentFormat",
+        "prototype.clear",
+        "prototype.containsPrefixMapping",
+        "prototype.copyPrefixesFrom",
+        "prototype.getDefaultPrefix",
+        "prototype.getPrefix",
+        "prototype.getPrefixName2PrefixMap",
+        "prototype.getPrefixNames",
+        "prototype.isPrefixOWLDocumentFormat",
+        "prototype.setDefaultPrefix",
+        "prototype.setPrefix",
+        "prototype.unregisterNamespace",
+        "prototype.withOntologyLoaderMetaData",
+        "prototype.withParameter"
+      ],
+      "omittedMembers": [
+        "Prefix comparator, prefix IRI conversion and Stream overloads",
+        "setPrefixManager and standalone PrefixManager/PrefixDocumentFormat exports"
+      ],
+      "publicErrors": [],
+      "semanticQualifications": [
+        "Prefix methods use Java names. getPrefixName2PrefixMap and getPrefixNames return defensive Map/Set copies. copyPrefixesFrom accepts a native RDFXMLDocumentFormat or Map and validates the complete copy before mutation. Missing prefixes return null.",
+        "Instances have frozen public identity and mutable private prefixes. Shared OWLDocumentFormats constants remain immutable. Loaded RDF/XML prefixes are retained in immutable source metadata; getOntologyFormat returns a cached independently mutable format without altering historical parse evidence.",
+        "Existing withParameter and withOntologyLoaderMetaData adaptations preserve concrete format type and copy prefixes. RDF/XML honors only the Java parameter force xsd:string on literals, accepting booleans with false default. Each save captures private prefix/parameter values before suspension.",
+        "Default namespaces determine xml:base following Java's trailing-hash rule. Explicit unused mappings are retained; declarations sort by prefix length then lexical order. No Java runtime renderer class or custom formatting profile is exported."
+      ],
+      "verification": [
+        "formats/rdfXMLDocumentFormat.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "id": "util.OWLOntologyImportsClosureSetProvider",
@@ -4310,20 +4366,25 @@
       "javaPackage": "org.semanticweb.owlapi.formats",
       "simpleName": "PrefixDocumentFormat",
       "kind": "INTERFACE",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
+      "capabilityIds": ["writer.rdfxml-configuration"],
+      "progress": "COMPLETE",
+      "exposure": "INTERNAL_ONLY",
       "stability": null,
       "jsExport": null,
       "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "sourceModule": "formats/rdfXMLDocumentFormat.js",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "disposition": "STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT",
+      "supportedMembers": [
+        "RDFXMLDocumentFormat inherited bounded prefix operations"
+      ],
+      "omittedMembers": [
+        "Standalone interface export",
+        "Prefix comparator, prefix IRI conversion, Stream and setPrefixManager operations"
+      ],
+      "verification": ["formats/rdfXMLDocumentFormat.test.js"],
+      "guidance": "Use the documented RDFXMLDocumentFormat subset; unlisted Java members remain unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.formats.PrefixDocumentFormatImpl",
@@ -4490,22 +4551,41 @@
       "javaPackage": "org.semanticweb.owlapi.formats",
       "simpleName": "RDFXMLDocumentFormat",
       "kind": "CLASS",
-      "capabilityIds": ["parser.rdfxml", "compatibility.owlapi-5.5.1"],
+      "capabilityIds": ["writer.rdfxml-configuration"],
       "progress": "COMPLETE",
-      "exposure": "INTERNAL_ONLY",
-      "stability": null,
-      "jsExport": null,
-      "publicSpecifier": null,
-      "sourceModule": "formats/owlDocumentFormats.js",
-      "relationship": "JS_ADAPTATION",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "jsExport": "RDFXMLDocumentFormat",
+      "publicSpecifier": "@hadden-industries/owlapi/formats",
+      "sourceModule": "formats/rdfXMLDocumentFormat.js",
+      "relationship": "JAVA_ANALOGUE",
       "compatibility": "ADAPTED",
-      "disposition": "FORMAT_IDENTITY_SUPPORTED_NOT_NAMED_EXPORT",
+      "disposition": "PUBLIC_MAPPED",
       "supportedMembers": [
-        "Format identity metadata through OWLDocumentFormats"
+        "prototype.asPrefixOWLDocumentFormat",
+        "prototype.clear",
+        "prototype.containsPrefixMapping",
+        "prototype.copyPrefixesFrom",
+        "prototype.getDefaultPrefix",
+        "prototype.getPrefix",
+        "prototype.getPrefixName2PrefixMap",
+        "prototype.getPrefixNames",
+        "prototype.isPrefixOWLDocumentFormat",
+        "prototype.setDefaultPrefix",
+        "prototype.setPrefix",
+        "prototype.unregisterNamespace",
+        "prototype.withOntologyLoaderMetaData",
+        "prototype.withParameter"
       ],
-      "omittedMembers": ["Named Java-style document-format class export"],
-      "verification": ["model/model.test.js", "test/package-boundary.test.mjs"],
-      "guidance": "Select the corresponding OWLDocumentFormats value; concrete Java document-format classes are not public JavaScript constructors."
+      "omittedMembers": [
+        "Prefix comparator, prefix IRI conversion and Stream overloads",
+        "setPrefixManager and standalone PrefixManager/PrefixDocumentFormat exports"
+      ],
+      "verification": [
+        "formats/rdfXMLDocumentFormat.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.formats.RDFXMLDocumentFormatFactory",
@@ -13606,14 +13686,15 @@
         "prototype.getIndentSize",
         "prototype.isIndenting",
         "prototype.isLabelsAsBanner",
+        "prototype.shouldSaveIdsForAllAnonymousIndividuals",
         "prototype.shouldUseBanners",
         "prototype.withBannersEnabled",
         "prototype.withIndentSize",
         "prototype.withIndenting",
-        "prototype.withLabelsAsBanner"
+        "prototype.withLabelsAsBanner",
+        "prototype.withSaveIdsForAllAnonymousIndividuals"
       ],
       "omittedMembers": [
-        "shouldSaveIdsForAllAnonymousIndividuals / withSaveIdsForAllAnonymousIndividuals",
         "shouldRemapAllAnonymousIndividualsIds / withRemapAllAnonymousIndividualsIds",
         "isUseNamespaceEntities / withUseNamespaceEntities",
         "shouldOutputNamedGraphIRI / withNamedGraphIRIEnabled"
@@ -14624,20 +14705,25 @@
       "javaPackage": "org.semanticweb.owlapi.model",
       "simpleName": "PrefixManager",
       "kind": "INTERFACE",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
+      "capabilityIds": ["writer.rdfxml-configuration"],
+      "progress": "COMPLETE",
+      "exposure": "INTERNAL_ONLY",
       "stability": null,
       "jsExport": null,
       "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "sourceModule": "formats/rdfXMLDocumentFormat.js",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "disposition": "STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT",
+      "supportedMembers": [
+        "RDFXMLDocumentFormat inherited bounded prefix operations"
+      ],
+      "omittedMembers": [
+        "Standalone interface export",
+        "Prefix comparator, prefix IRI conversion, Stream and setPrefixManager operations"
+      ],
+      "verification": ["formats/rdfXMLDocumentFormat.test.js"],
+      "guidance": "Use the documented RDFXMLDocumentFormat subset; unlisted Java members remain unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.model.PrimitiveType",
@@ -23255,14 +23341,14 @@
   ],
   "summary": {
     "namespaceCount": 7,
-    "publicBindingCount": 57,
+    "publicBindingCount": 58,
     "javaTypeCount": 1013,
     "javaDispositionCounts": {
-      "PUBLIC_MAPPED": 26,
-      "STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT": 74,
-      "FORMAT_IDENTITY_SUPPORTED_NOT_NAMED_EXPORT": 8,
+      "PUBLIC_MAPPED": 27,
+      "STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT": 76,
+      "FORMAT_IDENTITY_SUPPORTED_NOT_NAMED_EXPORT": 7,
       "INTERNAL_IMPLEMENTATION_ONLY": 2,
-      "DEFERRED_NOT_EXPOSED": 859,
+      "DEFERRED_NOT_EXPOSED": 857,
       "UNSUPPORTED_BY_DESIGN": 44,
       "UNCLASSIFIED": 0
     },

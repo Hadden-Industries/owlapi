@@ -3,7 +3,7 @@ import { test } from "node:test";
 
 const EXPECTED_EXPORTS = Object.freeze({
   apibinding: ["OWLManager"],
-  formats: ["OWLDocumentFormats"],
+  formats: ["OWLDocumentFormats", "RDFXMLDocumentFormat"],
   io: [
     "AmbiguousRdfDatasetError",
     "DocumentLoadError",
@@ -97,7 +97,9 @@ test("the bare aggregate preserves its owned bindings while writer configuration
   const ownedModules = [apibinding, model, io, formats, util, profiles];
   const ownedBindings = Object.assign({}, ...ownedModules);
   delete ownedBindings.OWLOntologyWriterConfiguration;
+  delete ownedBindings.RDFXMLDocumentFormat;
   assert.equal(Object.hasOwn(root, "OWLOntologyWriterConfiguration"), false);
+  assert.equal(Object.hasOwn(root, "RDFXMLDocumentFormat"), false);
 
   assert.deepEqual(sortedKeys(root), Object.keys(ownedBindings).sort());
   for (const [name, binding] of Object.entries(ownedBindings)) {

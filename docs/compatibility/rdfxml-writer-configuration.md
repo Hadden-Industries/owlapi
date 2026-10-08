@@ -104,3 +104,36 @@ Readability adds roughly 20% output size and measured renderer work.
 Default heap deltas after rendering were 92–157 MiB, versus 66–72 MiB for the compact baseline; these deltas are not peak-memory measurements.
 The finite byte, nesting and pre-allocation guards bound publication, while full save validation retains its existing independent reparse and OWL structural comparison.
 Excessive indentation fixtures verify typed failure, long-chain and literal-enumeration fixtures verify bounded flat fallback, and public-save tests verify unchanged targets after failed rendering.
+
+## October RDF/XML refinement amendment
+
+It takes precedence over the historical four-setting and unsupported-prefix statements above; retain those statements as historical evidence.
+
+The supported writer subset now has five settings.
+Java's `shouldSaveIdsForAllAnonymousIndividuals()` and `withSaveIdsForAllAnonymousIndividuals(boolean)` use a false default and retain the same immutable-value and preserving-builder rules.
+Unnecessary anonymous IDs are omitted by default; shared, cyclic, collection-reference and depth-limited nodes retain the IDs needed to preserve their graph.
+Enabling this setting retains IDs for anonymous individuals and axiom nodes, without forcing IDs on every restriction.
+
+`RDFXMLDocumentFormat`, exported from `owlapi/formats`, supports the bounded Java prefix subset recorded in the generated API inventory.
+`PrefixDocumentFormat` and `PrefixManager` are structurally supported through this class, without standalone JavaScript exports.
+Its prefix map is mutable through the supported Java setters; map and set getters return defensive copies.
+The existing immutable `withParameter` adaptation preserves the concrete RDF/XML format and its prefixes. Loaded RDF/XML root declarations are preserved as format preferences without making the ontology's immutable loader metadata mutable.
+A save captures these preferences before its first asynchronous operation.
+
+Only the exact Java format parameter `force xsd:string on literals` is supported, with a boolean value.
+Ordinary xsd:string literals omit the datatype attribute by default.
+Other output parameters remain unsupported.
+Root attributes wrap using the existing indentation setting; namespace declarations, sections, predicates, comments and adjacent annotated axioms use the refined deterministic renderer.
+Label-banner mode falls back to the IRI's short name when there is no label; the existing accepted deterministic choice among multiple labels is unchanged.
+
+The footer identifies the JavaScript producer truthfully and is independent of entity/group banners. Absolute resource IRIs, the explicit UTF-8 declaration, typed `owl:AllDifferent` and W3C `owl:members` remain deliberate representation choices. Disabling banners suppresses all entity/group banners, including Java 5.5.1's observed residual General axioms banner.
+
+The existing `RunWriterConfigurationContract.java` now also accepts an input fixture and output directory, preserving its original one-argument characterization.
+`run-writer-configuration-contract.mjs` reuses the pinned reference-environment resolver, classpath launcher, compilation controls and native structural comparator.
+Both implementations read identical fixture bytes for defaults, disabled banners, two-space indentation, disabled indentation, label banners, retained anonymous IDs and forced string datatypes.
+The comparison checks the remaining serialized layout byte for byte after only the listed bounded distinctions and anonymous-ID renaming; native Java independently verifies complete ontology structure.
+Unknown formatting differences fail.
+Fresh outputs and reports remain external evidence, rather than committed expectations.
+
+With `OWLAPI_REFERENCE_CHECKOUT` set to the exact built pin, run `node util/owlapi-reference/run-writer-configuration-contract.mjs <new-external-output-directory>`.
+The ordinary Jest suite runs the same comparison when the reference environment is configured and reports a skip otherwise; a skipped run is not Java qualification.

@@ -233,7 +233,7 @@ describe("RDF/XML default-graph writer", () => {
     ]);
     expect(text).toContain('xmlns:a="urn:a:"');
     expect(text).toContain('xmlns:z="urn:z:"');
-    expect(text).toContain("<a:abc1 ");
+    expect(text).toContain("<a:abc1>");
     expect(text).toContain("<rdf:type ");
     expect(text).not.toContain(`xmlns:ns2="${RDF_NAMESPACE}`);
   });

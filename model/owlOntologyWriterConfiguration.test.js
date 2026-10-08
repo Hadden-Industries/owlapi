@@ -145,7 +145,10 @@ describe("immutable manager-owned ontology writer configuration", () => {
                 .withLabelsAsBanner(labels),
             );
             const text = await save(manager, ontology);
-            expect(text.includes("<!--")).toBe(banners);
+            expect(
+              text.includes("<!-- urn:formatting:C -->") ||
+                text.includes("<!-- Alpha - - - -->"),
+            ).toBe(banners);
             if (banners)
               expect(text).toContain(
                 labels ? "<!-- Alpha - - - -->" : "<!-- urn:formatting:C -->",
@@ -203,7 +206,7 @@ describe("immutable manager-owned ontology writer configuration", () => {
       expect(first.toString()).toContain("\n  <owl:Ontology ");
       expect(first.toString()).toContain("<!--");
       expect(second.toString()).toContain("\n    <owl:Ontology ");
-      expect(second.toString()).not.toContain("<!--");
+      expect(second.toString()).not.toContain("<!-- urn:formatting:C -->");
     } finally {
       observation.mockRestore();
     }

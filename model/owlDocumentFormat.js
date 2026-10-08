@@ -77,6 +77,7 @@ const snapshotParameters = (parameters) => {
 // Package-private friend: storers must reject unrecognized output parameters
 // without adding an enumeration method to the agreed public format surface.
 export let readDocumentFormatParameters;
+export let copyDocumentFormatState;
 
 export class OWLDocumentFormat {
   #parameters;
@@ -84,6 +85,11 @@ export class OWLDocumentFormat {
 
   static {
     readDocumentFormatParameters = (format) => format.#parameters;
+    copyDocumentFormatState = (source, target) => {
+      target.#parameters = source.#parameters;
+      target.#ontologyLoaderMetaData = source.#ontologyLoaderMetaData;
+      return target;
+    };
   }
 
   constructor({

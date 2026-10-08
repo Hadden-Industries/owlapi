@@ -1,13 +1,14 @@
 // Package-private native reader; the public namespace exports only the type.
 export let readOntologyWriterConfiguration;
 
-/** Immutable four-setting Java OWLAPI adaptation for RDF/XML presentation. */
+/** Immutable bounded Java OWLAPI adaptation for RDF/XML presentation. */
 export class OWLOntologyWriterConfiguration {
   #values = Object.freeze({
     indenting: true,
     indentSize: 4,
     banners: true,
     labelsAsBanner: false,
+    saveIds: false,
   });
 
   static {
@@ -31,6 +32,12 @@ export class OWLOntologyWriterConfiguration {
   }
   isLabelsAsBanner() {
     return this.#values.labelsAsBanner;
+  }
+  shouldSaveIdsForAllAnonymousIndividuals() {
+    return this.#values.saveIds;
+  }
+  withSaveIdsForAllAnonymousIndividuals(value) {
+    return this.#withBoolean("saveIds", value);
   }
 
   #with(name, value) {

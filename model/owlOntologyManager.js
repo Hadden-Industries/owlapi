@@ -1,3 +1,5 @@
+import { RDFXMLDocumentFormat } from "../formats/rdfXMLDocumentFormat.js";
+import { copyDocumentFormatState } from "./owlDocumentFormat.js";
 import {
   MissingImportError,
   ParserMismatchError,
@@ -368,6 +370,7 @@ export class OWLOntologyManager {
   #registry;
   #storerRegistry = createDefaultStorerRegistry();
   #writerConfiguration = new OWLOntologyWriterConfiguration();
+  #rdfXmlFormats = new WeakMap();
 
   constructor({ dataFactory, documentLoader, iriMappers = [], registry } = {}) {
     if (!iriMappers || typeof iriMappers[Symbol.iterator] !== "function") {
@@ -449,10 +452,27 @@ export class OWLOntologyManager {
 
   /** Java-compatible access to this manager's loaded format; authored ontologies have none. */
   getOntologyFormat(ontology) {
-    return this.#requireManagedOntologyState(
+    const metadata = this.#requireManagedOntologyState(
       ontology,
       "getOntologyFormat",
-    ).createSnapshot().documentMetadata?.format;
+    ).createSnapshot().documentMetadata;
+    const format = metadata?.format;
+    if (format?.key !== "rdfxml") return format;
+    if (!this.#rdfXmlFormats.has(format)) {
+      const outputFormat = copyDocumentFormatState(
+        format,
+        new RDFXMLDocumentFormat(),
+      );
+      outputFormat.copyPrefixesFrom(
+        new Map(
+          Object.entries(metadata.prefixes ?? {}).filter(
+            ([name, namespace]) => name !== ":" || namespace !== "",
+          ),
+        ),
+      );
+      this.#rdfXmlFormats.set(format, outputFormat);
+    }
+    return this.#rdfXmlFormats.get(format);
   }
 
   addAxiom(ontology, axiom) {
