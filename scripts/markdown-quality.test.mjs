@@ -44,6 +44,66 @@ function check(root, extra = []) {
   return { exitCode: child.status, report };
 }
 
+test("root npm commands preserve explicit-file scope without reconciling a full inventory", () => {
+  const root = mkdtempSync(join(tmpdir(), "owlapi-markdown-npm-"));
+  const initialized = spawnSync("git", ["init", "--quiet", root], {
+    encoding: "utf8",
+  });
+  assert.equal(initialized.status, 0, initialized.stderr);
+  writeFileSync(
+    join(root, ".markdown-quality.json"),
+    JSON.stringify({
+      schemaVersion: 2,
+      preset: "authored-gfm@1",
+      include: ["**/*.md"],
+      exclude: [],
+    }),
+  );
+  const content = "# Consumer\n";
+  writeFileSync(join(root, "README.md"), content);
+  assert.ok(
+    process.env.npm_execpath,
+    "Run the maintained npm run test:markdown entry point with the repository's required npm version",
+  );
+  for (const [command, operation] of [
+    ["lint:md", "check"],
+    ["format:md", "format"],
+    ["inspect:md", "inspect"],
+  ]) {
+    const child = spawnSync(
+      process.execPath,
+      [
+        process.env.npm_execpath,
+        "run",
+        command,
+        "--",
+        "--root",
+        root,
+        "--json",
+        "--",
+        "README.md",
+      ],
+      {
+        cwd: repository,
+        encoding: "utf8",
+        timeout: 60000,
+        maxBuffer: 8 * 1024 * 1024,
+      },
+    );
+    assert.ifError(child.error);
+    const report = JSON.parse(child.stdout);
+    assert.equal(child.status, 0, JSON.stringify(report.errors));
+    validateQualityResult(report, {
+      operation,
+      exitCode: 0,
+      selectionMode: "explicit",
+    });
+    assert.deepEqual(report.selection.files, ["README.md"]);
+    assert.deepEqual(report.written, []);
+    assert.equal(readFileSync(join(root, "README.md"), "utf8"), content);
+  }
+});
+
 test("full installed contract detects a missing non-Markdown link target without writes", () => {
   const root = mkdtempSync(join(tmpdir(), "owlapi-markdown-contract-"));
   writeFileSync(

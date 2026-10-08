@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "check": "cd ../.. && \"tooling/markdown/node_modules/.bin/markdown-quality\" check --inventory git",
-    "format": "cd ../.. && \"tooling/markdown/node_modules/.bin/markdown-quality\" format --inventory git",
-    "inspect": "cd ../.. && \"tooling/markdown/node_modules/.bin/markdown-quality\" inspect --inventory git",
+    "check": "cd ../.. && \"tooling/markdown/node_modules/.bin/markdown-quality\" check",
+    "format": "cd ../.. && \"tooling/markdown/node_modules/.bin/markdown-quality\" format",
+    "inspect": "cd ../.. && \"tooling/markdown/node_modules/.bin/markdown-quality\" inspect",
     "qualify": "cd ../.. && \"tooling/markdown/node_modules/.bin/markdown-quality-qualify\""
   },
   "overrides": {
