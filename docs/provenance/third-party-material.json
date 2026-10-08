@@ -24,7 +24,7 @@
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "17f7cc0f7f1fe3266275fab8a693305f965a9f4ffd72e1dd555ebfc3f214b022",
+    "factsSha256": "0153ae8c5310ebaa17f5304926965c06ffaad8ba4d6dab1f3b80fa6497cfc6c5",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -39557,7 +39557,7 @@
       "id": "shared-markdown-quality-development-tool",
       "relationship": "DEVELOPMENT_ONLY",
       "name": "Shared Markdown quality development capability",
-      "versionOrRevision": "1.0.3",
+      "versionOrRevision": "47febbe1b6f3282814e77db7ea13eac72b4928ed",
       "licenseAssessments": [
         {
           "scope": "Development tooling or adapted test/configuration source",
@@ -39575,20 +39575,40 @@
         },
         {
           "path": ".markdown-quality.json",
-          "sha256": "08a3eadf116744078fc2066f03f726cd1b4e1c4a11c50a39f1af2ab4b5884750"
+          "sha256": "4983314e19fed8f73e4fd481d4e5543470be4296dd2b5756d975125ac04bc356"
+        },
+        {
+          "path": ".markdown-quality-execution.json",
+          "sha256": "e0d57b695bfabff0e2563d3721cc1ab1b1ce25cf8e0b5a7c7ab2b340e2e310e2"
+        },
+        {
+          "path": ".node-version",
+          "sha256": "73fb1b615e2043a933be1c0895cde4358036acc28d785692509b822aa53c761f"
         },
         {
           "path": "tooling/markdown/package.json",
-          "sha256": "af84b10f2c32e4090a97d1cdee8aa869272a89a4edac655f219a66d794a46e71"
+          "sha256": "46a06927f9afb061084a7291d87981d9dc2f20404853509e3b2b33410427c441"
         },
         {
           "path": "tooling/markdown/package-lock.json",
-          "sha256": "85985f92556a46e990142ae8465fbd2815e48435d98170077e921be3e2ffcf53"
+          "sha256": "fb2299b5bc2bf8584313c321958144f975cebe63e9070145401ae9d6dda48718"
+        },
+        {
+          "path": "tooling/markdown/archives/hadden-industries-markdown-quality-1.0.3.tgz",
+          "sha256": "ad51a2ccb721a2b14a05e8c1a61d9a1b7b3276d55a90beadb4c9f33d49702127"
+        },
+        {
+          "path": "tooling/markdown/archives/hadden-industries-markdown-quality-win32-x64-1.0.3.tgz",
+          "sha256": "1207f1c49b0f73d8d7bf5c6a74dfdc928daffd132a5adf7d2dbc488f0d2d617d"
+        },
+        {
+          "path": "tooling/markdown/archives/hadden-industries-markdown-quality-linux-x64-1.0.3.tgz",
+          "sha256": "8735357f776ecb520e40008e14f0fc3bc98715d02d60e847ae52847b8d8c6575"
         }
       ],
       "treeEvidence": null,
       "attributionText": [
-        "Copyright (c) 2026 Hadden Industries Ltd. The isolated AGPL-3.0-only capability is pinned through its native npm lock. Its independent distribution retains native Snapper/Rust source and component notices; no tool binary or dependency graph is packed into the OwlAPI application. Former WebVOWL-derived prose examples are retired with their duplicate tests."
+        "Copyright (c) 2026 Hadden Industries Ltd. The isolated AGPL-3.0-only capability is bound to the exact clean producer source commit through retained core/native archives, their npm lock integrities and the same reusable-workflow revision. Manifest version 1.0.3 alone does not identify these development bytes. Its distribution retains native Snapper/Rust source and component notices; no tool binary or dependency graph is packed into the OwlAPI application. Former WebVOWL-derived prose examples and copied qualification mechanics are retired."
       ],
       "packageTarballScope": false,
       "deployedApplicationScope": "NOT_APPLICABLE",

@@ -278,6 +278,7 @@ const validateJobs = (fileName, workflow, violations) => {
       `${fileName}: forbidden workflow construct ${forbidden}`,
     );
   for (const [id, job] of entries(workflow.jobs)) {
+    if (fileName === "markdown-quality.yml" && id === "markdown") continue;
     const runner = job?.["runs-on"];
     const isEvidenceMatrix =
       fileName === "extended-tests.yml" && id === "third_party_evidence_shard";
@@ -1813,16 +1814,13 @@ const validateQualityTooling = (workflows, violations) => {
     for (const [id, job] of entries(workflow.jobs)) {
       const context = `${file}:${id} quality tooling`;
       const consumer = QUALITY_CONSUMERS[file]?.includes(id);
-      const markdownObserver =
-        file === "markdown-quality.yml" &&
-        ["markdown_linux", "markdown_windows"].includes(id);
       const evidence =
         ["release.yml", "extended-tests.yml"].includes(file) &&
         id === "third_party_evidence_shard";
       const python = actionSteps(job, "actions/setup-python");
       add(
         violations,
-        python.length === (consumer || evidence || markdownObserver ? 1 : 0),
+        python.length === (consumer || evidence ? 1 : 0),
         `${context} has an unexpected Python setup inventory`,
       );
       if (!consumer) continue;
@@ -2119,152 +2117,71 @@ const validateJsonRecord = (schemaName, recordName, violations) => {
   );
 };
 
-/** Constrain the owner-dispatched checker without changing existing required CI floors. */
+/** Accept only the reviewed producer caller; the producer owns runners and observation. */
 const validateTrustedMarkdownWorkflow = (workflow, violations) => {
   const label = "markdown-quality.yml: trusted data checker";
   add(
     violations,
-    workflow?.name === "Trusted Markdown qualification" &&
-      sameInventory(Object.keys(workflow?.on ?? {}), ["workflow_dispatch"]),
-    `${label}: only owner dispatch is accepted`,
+    sameInventory(Object.keys(workflow ?? {}), [
+      "name",
+      "on",
+      "permissions",
+      "jobs",
+    ]) &&
+      workflow.name === "Trusted Markdown qualification" &&
+      sameInventory(Object.keys(workflow.on ?? {}), ["workflow_dispatch"]) &&
+      sameInventory(Object.keys(workflow.on?.workflow_dispatch ?? {}), [
+        "inputs",
+      ]),
+    `${label}: only closed owner dispatch is accepted`,
   );
+  const inputs = workflow.on?.workflow_dispatch?.inputs;
   add(
     violations,
-    sameInventory(Object.keys(workflow?.jobs ?? {}), [
-      "markdown_linux",
-      "markdown_windows",
+    sameInventory(Object.keys(inputs ?? {}), [
+      "trusted_sha",
+      "candidate_repository",
+      "candidate_sha",
     ]),
-    `${label}: both qualified platforms are required`,
+    `${label}: exact trusted and candidate inputs required`,
   );
-  for (const [id, job] of entries(workflow?.jobs)) {
-    const jobSteps = steps(job);
+  for (const id of ["trusted_sha", "candidate_repository", "candidate_sha"])
     add(
       violations,
-      jobSteps.length === 8 &&
-        isDeepStrictEqual(job.permissions, { contents: "read" }) &&
-        !job.env,
-      `${label}:${id}: least privilege and closed steps required`,
+      sameInventory(
+        Object.keys(inputs?.[id] ?? {}),
+        id === "candidate_repository"
+          ? ["description", "required", "type", "default"]
+          : ["description", "required", "type"],
+      ) &&
+        typeof inputs?.[id]?.description === "string" &&
+        inputs[id].required === true &&
+        inputs[id].type === "string" &&
+        (id !== "candidate_repository" ||
+          inputs[id].default === "Hadden-Industries/owlapi"),
+      `${label}: closed required string input ${id}`,
     );
-    requireFields(
-      jobSteps[2],
-      {
-        id: "markdown_python",
-        uses: "actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
-        with: {
-          "python-version": "3.14.7",
-          architecture: "x64",
-          "check-latest": false,
-          "update-environment": false,
-          cache: "",
-        },
-      },
-      `${label}: pinned resource observer`,
-      violations,
-    );
-    add(
-      violations,
-      !jobSteps[2]?.if &&
-        !jobSteps[2]?.["continue-on-error"] &&
-        !jobSteps[6]?.if &&
-        !jobSteps[6]?.["continue-on-error"],
-      `${label}: window and resource setup must run unconditionally`,
-    );
-    requireFields(
-      jobSteps[0]?.with,
-      {
-        ref: "${{ github.workflow_sha }}",
-        path: "trusted",
-        "fetch-depth": 1,
-        "persist-credentials": false,
-      },
-      `${label}: exact trusted checkout`,
-      violations,
-    );
-    requireFields(
-      jobSteps[4]?.with,
-      {
-        repository: "${{ inputs.candidate_repository }}",
-        ref: "${{ inputs.candidate_sha }}",
-        path: "candidate",
-        "fetch-depth": 1,
-        "persist-credentials": false,
-      },
-      `${label}: separate candidate data checkout`,
-      violations,
-    );
-    for (const checkout of [jobSteps[0], jobSteps[4]])
-      add(
-        violations,
-        checkout?.uses ===
-          "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1" &&
-          lacksKeys(checkout.with, [
-            "token",
-            "ssh-key",
-            "submodules",
-            "lfs",
-            "allow-unsafe-pr-checkout",
-          ]),
-        `${label}: checkout broadens execution or credentials`,
-      );
-    add(
-      violations,
-      jobSteps[3]?.["working-directory"] === "trusted/tooling/markdown" &&
-        /npm ci --ignore-scripts --no-audit --no-fund --registry=https:\/\/registry\.npmjs\.org\//u.test(
-          jobSteps[3]?.run ?? "",
-        ) &&
-        !/(?:candidate|npm install|npm exec|npx )/u.test(
-          jobSteps[3]?.run ?? "",
-        ),
-      `${label}: acquire only the trusted locked graph`,
-    );
-    add(
-      violations,
-      isDeepStrictEqual(jobSteps[3]?.env, {
-        NODE_AUTH_TOKEN: "",
-        NPM_TOKEN: "",
-        GH_TOKEN: "",
-        GITHUB_TOKEN: "",
-        NODE_OPTIONS: "",
-        NODE_PATH: "",
+  add(
+    violations,
+    sameInventory(Object.keys(workflow.jobs ?? {}), ["markdown"]),
+    `${label}: one shared qualification caller required`,
+  );
+  const job = workflow.jobs?.markdown;
+  add(
+    violations,
+    sameInventory(Object.keys(job ?? {}), ["permissions", "uses", "with"]) &&
+      isDeepStrictEqual(job?.permissions, { contents: "read" }) &&
+      job?.uses ===
+        "Hadden-Industries/markdown-quality/.github/workflows/markdown-quality.yml@47febbe1b6f3282814e77db7ea13eac72b4928ed" &&
+      isDeepStrictEqual(job?.with, {
+        "trusted-repository": "Hadden-Industries/owlapi",
+        "trusted-sha": "${{ inputs.trusted_sha }}",
+        "candidate-repository": "${{ inputs.candidate_repository }}",
+        "candidate-sha": "${{ inputs.candidate_sha }}",
+        profile: ".markdown-quality-execution.json",
       }),
-      `${label}: neutral acquisition environment`,
-    );
-    add(
-      violations,
-      jobSteps[5]?.run ===
-        "node --test trusted/scripts/check-markdown-candidate.probes.mjs" &&
-        jobSteps[6]?.run === "node trusted/scripts/run-markdown-window.mjs",
-      `${label}: execute trusted probes and checker only`,
-    );
-    add(
-      violations,
-      isDeepStrictEqual(jobSteps[5]?.env, {
-        MARKDOWN_TEST_CLI:
-          "${{ github.workspace }}/trusted/tooling/markdown/node_modules/@hadden-industries/markdown-quality/src/cli.js",
-      }),
-      `${label}: probes must use only the trusted installed CLI`,
-    );
-    add(
-      violations,
-      isDeepStrictEqual(jobSteps[6]?.env, {
-        MARKDOWN_OBSERVER_PYTHON:
-          "${{ steps.markdown_python.outputs.python-path }}",
-        MARKDOWN_CANDIDATE_REPOSITORY: "${{ inputs.candidate_repository }}",
-        MARKDOWN_CANDIDATE_SHA: "${{ inputs.candidate_sha }}",
-        MARKDOWN_TRUSTED_SHA: "${{ github.workflow_sha }}",
-      }),
-      `${label}: bind exact candidate and trusted identities`,
-    );
-    requireFields(
-      jobSteps[7],
-      {
-        if: "${{ !cancelled() }}",
-        uses: "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
-      },
-      `${label}: retain failing evidence`,
-      violations,
-    );
-  }
+    `${label}: closed pinned read-only caller and separate identities required`,
+  );
 };
 
 /** Report repository policy violations; overrides are source strings for mutation tests. */

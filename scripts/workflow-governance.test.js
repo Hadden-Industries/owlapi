@@ -762,46 +762,46 @@ describe("repository workflow governance", () => {
 
 describe("trusted Markdown dispatch", () => {
   test.each([
-    "candidate execution",
-    "candidate probe override",
+    "floating producer",
+    "wrong producer revision",
     "write token",
     "candidate trust",
-    "lifecycle scripts",
-    "lost failure evidence",
-    "untrusted observer Python",
-    "skipped observation window",
+    "inherited secrets",
+    "candidate execution",
+    "skipped qualification",
+    "profile override",
+    "privileged trigger",
+    "optional trusted input",
+    "extra input",
   ])("rejects %s", (mutation) => {
     const violations = mutateWorkflow("markdown-quality.yml", (document) => {
-      const job = document.getIn(["jobs", "markdown_linux"]);
-      const jobSteps = job.get("steps").items;
-      if (mutation === "candidate execution")
-        jobSteps[6].set(
-          "run",
-          "node candidate/scripts/check-markdown-candidate.mjs",
+      const job = document.getIn(["jobs", "markdown"]);
+      if (mutation === "floating producer")
+        job.set("uses", job.get("uses").replace(/@[a-f0-9]{40}$/u, "@main"));
+      if (mutation === "wrong producer revision")
+        job.set(
+          "uses",
+          job.get("uses").replace(/@[a-f0-9]{40}$/u, "@" + "0".repeat(40)),
         );
-      if (mutation === "candidate probe override")
-        jobSteps[5].setIn(
-          ["env", "MARKDOWN_TEST_CLI"],
-          "${{ github.workspace }}/candidate/evil-package/src/cli.js",
-        );
-      if (mutation === "untrusted observer Python")
-        jobSteps[6].setIn(
-          ["env", "MARKDOWN_OBSERVER_PYTHON"],
-          "candidate/evil.exe",
-        );
-      if (mutation === "skipped observation window")
-        jobSteps[6].set("if", "false");
       if (mutation === "write token")
         job.setIn(["permissions", "contents"], "write");
       if (mutation === "candidate trust")
-        jobSteps[0].setIn(["with", "ref"], "${{ inputs.candidate_sha }}");
-      if (mutation === "lifecycle scripts")
-        jobSteps[3].set(
-          "run",
-          jobSteps[3].get("run").replace(" --ignore-scripts", ""),
+        job.setIn(["with", "trusted-sha"], "${{ inputs.candidate_sha }}");
+      if (mutation === "inherited secrets") job.set("secrets", "inherit");
+      if (mutation === "candidate execution")
+        job.set("steps", [{ run: "node candidate/evil.js" }]);
+      if (mutation === "skipped qualification") job.set("if", "false");
+      if (mutation === "profile override")
+        job.setIn(["with", "profile"], "candidate/evil.json");
+      if (mutation === "privileged trigger")
+        document.setIn(["on", "pull_request_target"], {});
+      if (mutation === "optional trusted input")
+        document.setIn(
+          ["on", "workflow_dispatch", "inputs", "trusted_sha", "required"],
+          false,
         );
-      if (mutation === "lost failure evidence")
-        jobSteps[7].set("if", "${{ success() }}");
+      if (mutation === "extra input")
+        job.setIn(["with", "memoryBytes"], 9999999999);
     });
     expect(violations.join("\n")).toMatch(/trusted data checker/u);
   });

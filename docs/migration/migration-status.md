@@ -129,7 +129,7 @@ Where they do, every difference in that document is uninterpretable: the two sid
 
 Twelve documents are excluded from the corpus differential for this reason, listed in `src/owl2vowl/test/productionDifferential.test.js`.
 Seven were identified during Phase 8; Phase 9 added five Turtle/import-closure cases covering missing version mappings, absent modular imports, and a historical reference run that fetched a different version of the same namespace.
-Exclusion is the honest treatment, because a governed difference records a difference in _conversion_ and this is a difference in _input_ — but it costs real coverage.
+Exclusion is the honest treatment, because a governed difference records a difference in *conversion* and this is a difference in *input* — but it costs real coverage.
 
 The fix is to regenerate the fixtures with the same pinned 0.3.7 jar over the same local documents this harness serves, so both sides see identical inputs by construction.
 The oracle version does not change; only its inputs align.
@@ -146,7 +146,7 @@ It was diagnosed by reading the document rather than by the criterion, and its d
 
 **One fixture was regenerated, and it is not an exception to this deferral.**
 `skos.rdf.java.json` was regenerated against the same pinned 0.3.7 jar after the repository owner replaced the corpus's `skos.rdf` with the canonical document it advertises.
-The deferral above concerns aligning _import closures_ across all 46 fixtures, which changes what the oracle converted; this concerns one document whose own bytes changed, where leaving the fixture alone would have described a file the corpus no longer contains.
+The deferral above concerns aligning *import closures* across all 46 fixtures, which changes what the oracle converted; this concerns one document whose own bytes changed, where leaving the fixture alone would have described a file the corpus no longer contains.
 `skos.rdf` declares no imports, so its conversion is a pure function of a local file and a pinned jar and needed no catalog.
 `ontology_v3.3.rdf` was deliberately left alone for the opposite reason, and a scratch regeneration confirmed it differs from its committed fixture in nothing.
 Finding `M8-010` records the episode.

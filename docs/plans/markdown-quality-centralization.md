@@ -1,91 +1,70 @@
 # OwlAPI Markdown centralization
 
-This document describes the supported OwlAPI portion of the shared Markdown centralization plan on 7 October 2026.
-The complete migration requires a qualified producer release with public selection reconciliation, candidate qualification, resource observation and a reusable hosted workflow.
-Installed `@hadden-industries/markdown-quality@1.0.3` supplies the existing public bin and result schema used here.
+OwlAPI adopts the producer's current public contracts from source commit `47febbe1b6f3282814e77db7ea13eac72b4928ed` and its exact transported core and native archives.
+The manifest version remains 1.0.3; the published registry package does not contain these contracts.
+Release status is not the adoption gate.
+The isolated lock records the retained archive integrities and installs with lifecycle scripts disabled.
+Application dependencies and the OwlAPI tarball do not include this development graph.
 
-## Implemented preparation
+## Consumer commands and policy
 
-The root `lint:md`, `format:md` and `format:md:check` commands invoke the installed `markdown-quality` bin through the isolated tooling project's npm scripts.
-Npm supplies that project's installed bins on `PATH`; the scripts return to the repository root before invoking the bin, preserving relative `--root` arguments as well as default selection.
-Existing command names, repository-root policy resolution and argument forwarding remain supported.
-Checking does not acquire missing packages.
-The existing formatter remains the only formatter.
+`npm run install:markdown` acquires the reviewed isolated graph.
+`lint:md`, `format:md:check`, `format:md` and `inspect:md` invoke its installed public bins from the repository root.
+They do not acquire missing packages or use a global fallback.
+Full requests reconcile the Git-tracked Markdown inventory; explicit requests retain their declared scope.
+`npm run qualify:md -- profile --root .` reads the producer-owned execution profile.
+Candidate qualification uses that same bin's `candidate` operation with explicit trusted inputs and an external fresh output directory.
+See the installed [producer contracts](https://github.com/Hadden-Industries/markdown-quality/blob/47febbe1b6f3282814e77db7ea13eac72b4928ed/docs/centralized-contracts.md) for its supported arguments.
 
-The trusted candidate checker resolves `@hadden-industries/markdown-quality/result-schema` through the installed package's export rather than assuming the schema's internal filename.
-Its independent schema, process-exit, package identity, policy digest and staged-byte checks remain in place.
+Schema 2 `.markdown-quality.json` is the sole Markdown policy authority.
+The translation preserves the independently captured 68 selected and 11 excluded tracked documents at the cutover baseline.
+The consumer test reconciles native Git paths against actual package selection and a reviewed literal exclusion list, rather than trusting counts.
+Ignore files retain their Git and non-Markdown formatter roles; changing them cannot suppress Markdown findings.
 
-The observer declares its existing targets once: six consecutive samples, 30,000 ms checker latency and 512 MiB observed memory.
-Iteration, acceptance comparisons and receipt values use those declarations.
-Windows Job completion and cumulative committed-memory observation, Linux process-group RSS sampling and failure cleanup retain their existing semantics.
-The receipt's descriptive wording uses `6` in place of `six`; machine fields and numerical targets retain their meaning.
-These targets are observation criteria, not enforced OS memory limits or a statistical latency guarantee.
+Exclusions cover dependency/virtual-environment/cache/report directories, generated conformance output, pinned upstream conformance documents, provenance reconstruction, generated API documents and Java reference fixtures.
+The two dated Phase 19/20 review filenames use picomatch literal bracket classes `[[]` and `[]]`.
+Backslash escapes are not accepted by the new relative-pattern contract.
+Their exact exclusions are independently exercised through tracked inventory and supplied-document processing.
 
-The dependency-security probes and application qualification remain independent obligations.
-No package, native-tool, runtime, policy or workflow version change accompanies this preparation.
+The new defaults emit informational long-prose-line and heading-punctuation advisories.
+These remain in complete JSON; successful advisory results are accepted only after the public semantic validator passes.
+The implementation plan emits more than the default 1,000 findings per document.
+Both policy and trusted profile therefore allow a finite 10,000 per-document diagnostics while retaining the producer's 10,000 aggregate findings and 4 MiB diagnostic-byte defaults.
+No unlimited corpus-harness override is carried into the consumer.
+Four selected documents required formatting under the new defaults; their changes use the canonical formatter.
+The unrelated performance-plan working edit remains outside this change.
 
-## Current policy inventory
+## One trusted profile and shared workflow
 
-Before this document was added, package-native full inspection selected 67 documents and reported 11 existing documents as ignored.
-All 78 tracked Markdown paths were accounted for in that inspection.
-The new document adds one selected path.
-This is a characterization of this checkout, not a package-owned Git inventory reconciliation guarantee.
+`.markdown-quality-execution.json` owns six samples, 30,000 ms checker latency, a 180,000 ms window and 512 MiB observed memory.
+It also bounds Node old space, framing, staging and analyzer limits.
+`.node-version` declares 24.21.0; the existing `.python-version` declares 3.14.7.
+The isolated core/native archives and lock are explicit trusted inputs.
+Changing a runtime, policy, profile, lock or archive invalidates its qualification identity.
 
-`.markdown-quality.json` includes `**/*.md` and explicitly excludes `.development-tools/**`, `.release/**`, `coverage/**`, `playwright-report/**` and `test-results/**`.
-It also delegates selection to `.gitignore` and `.prettierignore`, so Markdown policy still has multiple inputs until the producer-dependent migration.
+The owner-dispatched workflow calls the producer workflow at the same full source SHA.
+It takes separate exact trusted bootstrap and candidate commits, grants only contents-read, and forwards no secrets.
+OwlAPI governance accepts only that closed caller and rejects floating/wrong revisions, candidate trust, write permissions, inherited secrets, executable steps, skipped qualification and extra inputs.
+Producer-owned Windows/Linux jobs perform acquisition, staging, process observation and receipt retention.
+The five former copied checker/observer/probe/runner files are retired together, without aliases or fallbacks.
 
-| Existing policy source | Markdown decisions to adjudicate at cutover                                                                                                                                                                                                        |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `.gitignore`           | Dependency, virtual-environment, development-tool, cache, coverage, browser-report and test-result directories. Its archive and environment-file patterns must also be assessed against future inventories rather than translated blindly.         |
-| `.prettierignore`      | Generated conformance output; pinned conformance upstream documents; provenance history reconstruction; generated `API.md` and `docs/compatibility/java-api-surface.md`; Java reference fixtures; the two dated Phase 19/20 deep-review documents. |
+Windows reports cumulative Job peak committed bytes including the Python driver and requires descendant completion.
+Linux samples process-group RSS every 50 ms plus scan overhead, excludes Python and counts shared pages per process.
+The metrics differ and Linux can miss short peaks; six samples do not establish a population tail or an enforced OS memory limit.
+Hidden staged inputs are not promised by artifact upload defaults; retain immutable Git identities and trusted overlay inputs for reconstruction.
 
-The 11 current ignored tracked documents are:
+## Independent acceptance and delivery
 
-- `API.md` and `docs/compatibility/java-api-surface.md`.
-- The two `docs/Deep Review of Phase 19 and Phase 20 of the owlapi Implementation Plan` documents dated `2026-08-24T1130` and `2026-08-25T0020`.
-- `docs/conformance/upstream/w3c-json-ld-api/tests/LICENSE.md`.
-- `docs/conformance/upstream/w3c-owl2/README.md`.
-- `docs/conformance/upstream/w3c-rdf-tests/LICENSE.md` and its `rdf/rdf11/rdf-xml/README.md`.
-- `docs/provenance/history-reconstruction/README.md` and its `review/partition-proposal-g3-summary.md`.
-- `util/owlapi-reference/fixtures/profiles/README.md`.
+Consumer tests use the installed exported API/result validator and metadata-resolved bins.
+They preserve independent Git/scope, non-Markdown local-link, excluded-byte and no-write oracles.
+KaTeX dependency-security probes, application tests, release/provenance checks and existing CI floors remain independent.
+OwlAPI has no generated-policy helper to migrate; Java API freshness remains its existing generator's obligation.
 
-The two dated review filenames use literal brackets escaped in `.prettierignore`.
-Do not guess their replacement glob syntax.
-Use independent expected path sets and the package's actual full, explicit and inventory decisions when accepting the root-policy translation.
-Package 1.0.3 also skips operational directories during full traversal; a current complete tracked inventory does not prove future hidden Markdown cannot disappear.
-Do not implement another local matcher or interpret an omitted document as clean.
+The UO preparation established useful public-bin/schema and logical-path techniques.
+Its later adoption demonstrates the shared contracts, but its trusted inputs, 1,024 MiB budget, governance exceptions and receipts do not accept OwlAPI.
+OwlAPI retains its own 512 MiB target and required completion checks.
 
-## Lessons from Universal Ontology
-
-The referenced UO implementation completed bounded existing-contract corrections while keeping the missing producer work explicit.
-It resolved bins from package metadata in existing callers, consumed the exported result schema and deduplicated its existing observer targets.
-Its generated-policy correction preserved the document's canonical logical path during staging, with a positive control showing that the same content changes at an included path.
-Generator freshness remained a separate domain obligation.
-OwlAPI has no corresponding generated-policy helper requiring that repair.
-
-UO retained its inventory guards and documented that full Markdown checking still rejected 35 approved exclusions.
-It separately obtained exact approval for its distribution fingerprints.
-Those receipts, configuration approvals and 1024 MiB targets do not qualify OwlAPI or change this repository's 512 MiB target.
-UO qualified metadata-resolved bin callers on Windows; it did not qualify OwlAPI's npm entry points or those callers on Linux.
-OwlAPI therefore requires its own command, process and hosted evidence.
-
-## Deferred cutover
-
-Keep the current candidate checker, staging probes, observer, observer probes and window runner until the producer ships and qualifies complete replacements.
-Their private CLI/native-asset paths, and the workflow's `MARKDOWN_TEST_CLI` paths, remain known dependencies.
-The result-schema export alone does not replace staging or process observation.
-
-The remaining coordinated work is:
-
-1. Qualify and accept one producer release and immutable reusable-workflow revision, including public exports, bundled qualification assets and rights evidence.
-2. Adjudicate every selected-path difference and move the approved Markdown decisions into `.markdown-quality.json`.
-   Remove external-ignore influence using the accepted new contract.
-3. Adopt the producer-owned execution profile only after its schema and enforcement exist.
-4. Replace copied candidate, digest, process, observer and generic probe mechanics through the supported package/workflow contracts.
-   Delete their obsolete callers together; add no forwarding shim or version-detection fallback.
-5. Retain independent dependency-security, product, generated-document and integration assertions.
-   Qualify the exact proposed controls before promoting them to the trusted baseline.
-6. Obtain attributable Windows and Linux hosted positive/negative qualification for the frozen final candidate and preserve the existing required completion gates.
-
-This preparation does not satisfy the complete R2 migration, establish `.markdown-quality.json` as the sole policy source or qualify the future shared workflow.
-Local checks, review, source publication, protected-main integration and hosted acceptance must be reported against their own actual identities.
+Cutover acceptance requires review of this exact policy/bootstrap, owner acceptance of the immutable trusted inputs, local full HISEW qualification, both hosted OS positive windows, and a real missing-link negative whose candidate policy/profile/scripts cannot suppress the finding or execute code.
+Bootstrap/operational failure is not that negative proof.
+Review, local qualification, source publication, hosted qualification and protected-main delivery are separate evidence identities.
+No passing or delivered state is implied by this implementation document.

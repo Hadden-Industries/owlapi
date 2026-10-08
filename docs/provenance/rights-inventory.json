@@ -8,12 +8,12 @@
     "scopeAuthority": {
       "method": "npm pack --dry-run --json plus local source-byte hashing",
       "fileCount": 110,
-      "sourceManifestSha256": "c0c6286e0741b95ca4a0e0b8c604ac97927e7a2195edb357e6e4d8d05610122c"
+      "sourceManifestSha256": "c2fbab2fd269b35efd604c9a4c8f20c58ec7b637b4e2a5ff5d8942e85a32a877"
     }
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "037c1e9a5b541f9e83ee894eced5aa533601ea3b9fcceb9e994b5d4fd16ce214",
+    "factsSha256": "efd881748c8ffa9c1b08faf0916f1c2c27166e5ce4c27e1277070d5f05ef7a7c",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -66,7 +66,9 @@
     {
       "id": "gnu-agpl-3.0-only-licence-text",
       "relationship": "EMBEDDED_OR_COPIED",
-      "paths": ["LICENSE"],
+      "paths": [
+        "LICENSE"
+      ],
       "packageTarball": true,
       "rightsHolder": "Free Software Foundation, Inc. and contributors to the licence text",
       "licenceBasis": "Unmodified GNU Affero General Public License version 3 text, redistributed as the package licence notice",
@@ -77,7 +79,9 @@
     {
       "id": "apache-2.0-licence-text",
       "relationship": "EMBEDDED_OR_COPIED",
-      "paths": ["LICENSES/Apache-2.0.txt"],
+      "paths": [
+        "LICENSES/Apache-2.0.txt"
+      ],
       "packageTarball": true,
       "rightsHolder": "Apache Software Foundation and contributors to the Apache License text",
       "licenceBasis": "Complete Apache License version 2.0 wording accompanying the elected Apache-2.0 distribution basis for Java OWLAPI compatibility facts",
@@ -104,7 +108,7 @@
   "externalDependencies": {
     "bundled": false,
     "authority": "docs/provenance/third-party-material.json",
-    "inventoryFactsSha256": "17f7cc0f7f1fe3266275fab8a693305f965a9f4ffd72e1dd555ebfc3f214b022",
+    "inventoryFactsSha256": "0153ae8c5310ebaa17f5304926965c06ffaad8ba4d6dab1f3b80fa6497cfc6c5",
     "noticeRule": "Ordinary npm dependencies are installed separately and remain under their own licences. Their licence texts are not copied into the owlapi tarball merely because they appear in the installed dependency graph."
   },
   "unresolvedExternalContributions": [],
