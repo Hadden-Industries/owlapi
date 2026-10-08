@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "check": "cd ../.. && markdown-quality check",
-    "format": "cd ../.. && markdown-quality format"
+    "check": "cd ../.. && \"tooling/markdown/node_modules/.bin/markdown-quality\" check",
+    "format": "cd ../.. && \"tooling/markdown/node_modules/.bin/markdown-quality\" format",
+    "inspect": "cd ../.. && \"tooling/markdown/node_modules/.bin/markdown-quality\" inspect",
+    "qualify": "cd ../.. && \"tooling/markdown/node_modules/.bin/markdown-quality-qualify\""
   },
   "overrides": {
     "micromark-extension-math": {
@@ -12,6 +14,10 @@
     }
   },
   "devDependencies": {
-    "@hadden-industries/markdown-quality": "1.0.3"
+    "@hadden-industries/markdown-quality": "file:archives/hadden-industries-markdown-quality-1.0.3.tgz"
+  },
+  "optionalDependencies": {
+    "@hadden-industries/markdown-quality-win32-x64": "file:archives/hadden-industries-markdown-quality-win32-x64-1.0.3.tgz",
+    "@hadden-industries/markdown-quality-linux-x64": "file:archives/hadden-industries-markdown-quality-linux-x64-1.0.3.tgz"
   }
 }

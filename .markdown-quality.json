@@ -1,16 +1,28 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "preset": "authored-gfm@1",
   "include": ["**/*.md"],
   "exclude": [
-    ".development-tools/**",
-    ".release/**",
-    "coverage/**",
-    "playwright-report/**",
-    "test-results/**"
+    "**/node_modules/**",
+    "**/.venv/**",
+    "**/.development-tools/**",
+    "**/__pycache__/**",
+    "**/.env.*",
+    "**/.release/**",
+    "**/coverage/**",
+    "**/playwright-report/**",
+    "**/test-results/**",
+    "docs/conformance/generated/**",
+    "docs/conformance/upstream/**",
+    "docs/provenance/history-reconstruction/**",
+    "API.md",
+    "docs/compatibility/java-api-surface.md",
+    "util/owlapi-reference/fixtures/**",
+    "docs/Deep Review of Phase 19 and Phase 20 of the owlapi Implementation Plan [[]2026-08-24T1130[]].md",
+    "docs/Deep Review of Phase 19 and Phase 20 of the owlapi Implementation Plan [[]2026-08-25T0020[]].md"
   ],
-  "ignoreFiles": [".gitignore", ".prettierignore"],
   "lint": {},
+  "limits": { "documentDiagnostics": 10000 },
   "links": { "localFiles": true, "rootRelative": "reject" },
   "layout": { "endOfLine": "lf", "tabWidth": 2 }
 }

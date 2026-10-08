@@ -40,7 +40,7 @@ Include this document at the first commit point, before delivering the lean depe
 
 ## Review synthesis
 
-This revision incorporates the supplied _Deep Review of the Input-Aware CI Qualification Implementation Plan.md_, read in full on 3 October 2026.
+This revision incorporates the supplied *Deep Review of the Input-Aware CI Qualification Implementation Plan.md*, read in full on 3 October 2026.
 The supplied file's SHA-256 is `4685e1f2f596c494f92de50b9481dd5cca34b7ce9a6689b95b6f68f710197212`.
 Its approval language is a review recommendation, not owner acceptance or implementation authority.
 Source-specific citation tokens in that review are not reusable evidence; the consequential native contracts and repository controls below were checked directly.

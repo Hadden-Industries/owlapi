@@ -3456,7 +3456,7 @@ The important discovery was that the current implementation is doing three jobs 
 2. interpreting OWL structural constructs;
 3. manually rendering the corresponding RDF/XML.
 
-That makes it very easy for a construct to be _recognized syntactically_ but then be represented incorrectly, incompletely, or not at all during RDF/XML emission.
+That makes it very easy for a construct to be *recognized syntactically* but then be represented incorrectly, incompletely, or not at all during RDF/XML emission.
 The refactor must therefore **not port this control flow unchanged**.
 It must re-derive the supported semantics from the normative OWL 2 structural model and use the existing implementation only to recover practical parser behaviour that has already been proven useful.
 
@@ -3563,7 +3563,7 @@ The coverage matrix should record at least:
 
 This matrix becomes a migration artefact, not a one-off review note.
 
-**3. Verify operand _types and cardinalities_, not just construct names.**
+**3. Verify operand *types and cardinalities*, not just construct names.**
 
 This is how the `ObjectHasValue` defect was found.
 The implementation grouped it with some/all-values restrictions because their RDF shape looks similar, but the OWL/XML schema says its second operand is an `Individual`, whereas some/all-values use a `ClassExpression`.
@@ -3606,7 +3606,7 @@ fallback default values
 unknown-token recovery
 ```
 
-Then ask: _Can valid source syntax reach this path?_
+Then ask: *Can valid source syntax reach this path?*
 The union/intersection/complement gap was found because caller code deliberately admitted those node names, while the renderer had no corresponding case and ended in `return null`.
 
 This audit is particularly important because the existing differential testing history has already shown that the most damaging parser bugs often produce **valid-looking but smaller output**, not exceptions.
@@ -8752,7 +8752,7 @@ Three things differ, and each changes the calculus:
 1. **Licence.**
    OWL2VOWL is MIT (© 2014–2020 Link, Lohmann, Marbach, Wiens).
    Section 22.1's concern — that avoidable source derivation could force the project's own licence direction — does not arise.
-   Reuse would be _legally_ available subject to carrying the copyright and permission notice.
+   Reuse would be *legally* available subject to carrying the copyright and permission notice.
 2. **Consumer.** `VOWLBuilder` is WebVOWL-side and is not part of the package intended for standalone extraction, so its provenance does not constrain the extractable core.
 3. **Specification coverage.**
    VOWL 2.0 specifies the visual notation but not the VOWL-JSON serialisation.
@@ -8791,7 +8791,7 @@ Before treating a corpus difference as a conversion difference, confirm that bot
 
 Nothing learned from OWL2VOWL may influence `owlapi-js`.
 The library follows the W3C OWL 2 specifications and must remain unaware of VOWL and of every downstream consumer; `src/owlapi-js/coreIsolation.architecture.test.js` enforces the vocabulary half of this automatically.
-The half no test can enforce is motivation: a rule added to the parser or the RDF-to-OWL translator _because a VOWL diagram looked wrong_ belongs in `owlapi-js` only if it stands on OWL or RDF grounds by itself, such that a consumer with no interest in VOWL would want the same behaviour.
+The half no test can enforce is motivation: a rule added to the parser or the RDF-to-OWL translator *because a VOWL diagram looked wrong* belongs in `owlapi-js` only if it stands on OWL or RDF grounds by itself, such that a consumer with no interest in VOWL would want the same behaviour.
 If the justification needs VOWL to make sense, the logic belongs in `VOWLBuilder`.
 State plainly, in the change that introduces it, when a VOWL difference is what prompted the investigation.
 
