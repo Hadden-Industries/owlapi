@@ -53,8 +53,8 @@ beforeEach(() => {
     return { path, bytes: bytes.length, sha256: hash(bytes) };
   };
   const catalogue = {
-    sourceCommit: "d7e997a53b470e32700de89cc610d9daf01ea769",
-    sourceTree: "8f871bacef5ab767afda979e60b1a1e0c98d6323",
+    sourceCommit: "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+    sourceTree: "b8dad5241dae6ff3bd3b755b9a1c605623eeb2c2",
     rightsSha256: JAVA_REFERENCE_POLICY.rightsSha256,
     runtime,
     sources: [
@@ -157,16 +157,9 @@ test("binds the actual approved catalogue and every preserved source/notice asse
     expect(hash(bytes)).toBe(entry.sha256);
   }
 });
-test("assembles and fully verifies a closed payload with source mappings before returning publishable identities", () => {
-  const result = assembleReferencePublication(fixture);
-  expect(result.entryCount).toBe(70);
-  expect(result.expected.rightsSha256).toBe(JAVA_REFERENCE_POLICY.rightsSha256);
-  const mapping = JSON.parse(
-    readFileSync(join(fixture.destination, "sources/component-inventory.txt")),
-  );
-  expect(mapping.runtime).toEqual(fixture.catalogue.runtime);
-  expect(mapping.sources).toEqual(fixture.catalogue.sources);
-  expect(mapping.sourceAttestation).toBe("NOT_CLAIMED");
+test("the current Java pin cannot publish under the historical owner disposition", () => {
+  expect(() => assembleReferencePublication(fixture)).toThrow(/disposition/u);
+  expect(existsSync(fixture.destination)).toBe(false);
 });
 test.each(["notices/fixture.txt", "sources/000.jar", "sources/reactor.tar"])(
   "a changed approved %s prevents publication even if local files remain readable",

@@ -34,6 +34,42 @@ const roundTrip = async (quads) => {
 };
 
 describe("RDF/XML default-graph writer", () => {
+  it("round-trips a delimiter-heavy predicate without quadratic split selection", async () => {
+    await roundTrip([
+      quad(subject, named(`urn:p:${"/".repeat(100000)}x`), literal("value")),
+    ]);
+  });
+
+  it("bounds native QName fallback work before excessive candidate copying", () => {
+    expect(() =>
+      writeRdfXmlGraph(
+        dataset([
+          quad(subject, named(`urn:p:${"/".repeat(10000)}.`), literal("value")),
+        ]),
+      ),
+    ).toThrow(ResourceLimitError);
+  });
+
+  it.each([true, false])(
+    "round-trips wide roots with indentation %s",
+    async (indenting) => {
+      const input = dataset(
+        Array.from({ length: 10000 }, (_, index) =>
+          quad(named(`urn:wide:${index}`), predicate, literal(String(index))),
+        ),
+      );
+      const text = writeRdfXmlGraph(input, {
+        indenting,
+        indentSize: 4,
+        banners: true,
+        labelsAsBanner: false,
+      });
+      const parsed = await parse(text);
+      expect(parsed.size).toBe(input.size);
+      for (const statement of input) expect(parsed.has(statement)).toBe(true);
+    },
+  );
+
   it("uses one prioritized typed node while retaining additional explicit types", async () => {
     const owl = "http://www.w3.org/2002/07/owl#";
     const text = await roundTrip([

@@ -8,12 +8,12 @@
     "scopeAuthority": {
       "method": "npm pack --dry-run --json plus local source-byte hashing",
       "fileCount": 112,
-      "sourceManifestSha256": "d7ec9a9b0891aac023e1f47c7efe464527eaae1c9f4d9f5f5b043e6cc2abad6c"
+      "sourceManifestSha256": "f9b48d23f1907d47f21e46a6b4fc43b4f71202aaca670af7d23fc1ca283e69b5"
     }
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "5285422b646096ea9c83c84338fe00c34ab4f7861d45b9f4e20d680255a1b153",
+    "factsSha256": "4c5677b71517052f2e27b8ef3ad69977bba5ed590ed20b724b0f901f15257402",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -67,9 +67,7 @@
     {
       "id": "gnu-agpl-3.0-only-licence-text",
       "relationship": "EMBEDDED_OR_COPIED",
-      "paths": [
-        "LICENSE"
-      ],
+      "paths": ["LICENSE"],
       "packageTarball": true,
       "rightsHolder": "Free Software Foundation, Inc. and contributors to the licence text",
       "licenceBasis": "Unmodified GNU Affero General Public License version 3 text, redistributed as the package licence notice",
@@ -80,9 +78,7 @@
     {
       "id": "apache-2.0-licence-text",
       "relationship": "EMBEDDED_OR_COPIED",
-      "paths": [
-        "LICENSES/Apache-2.0.txt"
-      ],
+      "paths": ["LICENSES/Apache-2.0.txt"],
       "packageTarball": true,
       "rightsHolder": "Apache Software Foundation and contributors to the Apache License text",
       "licenceBasis": "Complete Apache License version 2.0 wording accompanying the elected Apache-2.0 distribution basis for Java OWLAPI compatibility facts",

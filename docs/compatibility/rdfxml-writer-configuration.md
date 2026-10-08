@@ -54,8 +54,9 @@ Namespace entities, authored prefix-map mutation, anonymous-individual remapping
 
 Rendering admits at most 32 MiB of UTF-8 output and 128 nested resource levels, aligned with the existing storer's reparse budget.
 Terms and DOM construction are checked before unbounded serialization, and indentation is charged before allocating padding.
+Native QName candidate validation admits at most 32 MiB of total UTF-16 candidate characters per render, including namespace and local-name work, and repeated predicates reuse their validated names.
 Construction accounting is conservative because independently serialized elements can repeat namespace declarations.
-Excessive output or nesting raises a storage error caused by `ResourceLimitError`; the target retains its previous complete text.
+Excessive output, QName work or nesting raises a storage error caused by `ResourceLimitError`; the target retains its previous complete text.
 A legal integer setting is not a promise that any ontology can be rendered within the budget.
 
 ## Compatibility decisions and observations
@@ -92,11 +93,11 @@ The compact baseline was OwlAPI commit `ffbb3f3910ce945e315ed624e46c961ef332eea4
 
 | Family         | Triples | Compact bytes / median ms | Readable bytes / median ms |
 | -------------- | ------- | ------------------------- | -------------------------- |
-| Core           | 19647   | 1918822 / 151             | 2305579 / 682              |
-| Extended       | 25996   | 2509825 / 212             | 3033505 / 937              |
-| Reference data | 14926   | 1467207 / 114             | 1765527 / 477              |
+| Core           | 19647   | 1918822 / 122             | 2305579 / 385              |
+| Extended       | 25996   | 2509825 / 184             | 3033505 / 507              |
+| Reference data | 14926   | 1467207 / 80              | 1765527 / 324              |
 
 Readability adds roughly 20% output size and measured renderer work.
-Default heap deltas after rendering were 60–121 MiB, versus 66–71 MiB for the compact baseline; these deltas are not peak-memory measurements.
+Default heap deltas after rendering were 92–157 MiB, versus 66–72 MiB for the compact baseline; these deltas are not peak-memory measurements.
 The finite byte, nesting and pre-allocation guards bound publication, while full save validation retains its existing independent reparse and OWL structural comparison.
 Excessive indentation and nesting fixtures verify typed failure, and public-save tests verify unchanged targets after failed rendering.

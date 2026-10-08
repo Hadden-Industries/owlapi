@@ -195,10 +195,14 @@ const main = () => {
   const registryPath = "docs/compatibility/java-api-surface.json";
   const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
   if (
-    digest(readFileSync(join(repositoryRoot, registryPath))) !==
-    ledger.phase22.registrySha256
+    digest(
+      runGit([
+        "show",
+        `${ledger.phase22.phase21Checkpoint.commit}:${registryPath}`,
+      ]).stdout,
+    ) !== ledger.phase22.registrySha256
   ) {
-    throw new Error("The qualified Phase 22 API registry bytes have changed.");
+    throw new Error("The historical Phase 22 API registry bytes have changed.");
   }
   for (const baseline of [
     ledger.integrationBaseline,

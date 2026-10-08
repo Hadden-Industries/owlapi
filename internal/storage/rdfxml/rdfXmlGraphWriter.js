@@ -205,6 +205,7 @@ const serializeGraph = (dataset, policy) => {
   };
 
   const predicateNames = new Map();
+  let qnameWork = 0;
   const predicateName = (iri) => {
     if (predicateNames.has(iri)) return predicateNames.get(iri);
     if (RESERVED_PREDICATES.has(iri)) {
@@ -219,10 +220,18 @@ const serializeGraph = (dataset, policy) => {
     const boundaries = splits.filter((split) =>
       ["#", "/", ":"].includes(characters[split - 1]),
     );
+    const boundarySet = new Set(boundaries);
     for (const split of [
       ...boundaries,
-      ...splits.filter((split) => !boundaries.includes(split)),
+      ...splits.filter((split) => !boundarySet.has(split)),
     ]) {
+      // Charge candidate character work before copying or validating suffixes.
+      // Native QName grammar remains authoritative, including fallback splits.
+      qnameWork += iri.length;
+      if (qnameWork > MAX_OUTPUT_BYTES)
+        throw new ResourceLimitError("RDF/XML QName work budget exceeded", {
+          limit: MAX_OUTPUT_BYTES,
+        });
       const namespace = characters.slice(0, split).join("");
       // RDF/XML section 5.1 forbids extending the RDF namespace name.
       if (
@@ -564,10 +573,11 @@ const serializeGraph = (dataset, policy) => {
     // A literal leaf is indivisible: never inject or normalize its whitespace.
     if (children.some((child) => child.nodeType === TEXT_NODE)) {
       charge(serialize(element));
-      return;
+      return element.cloneNode(true);
     }
-    charge(serialize(element.cloneNode(false)));
-    if (!children.length) return;
+    const formatted = element.cloneNode(false);
+    charge(serialize(formatted));
+    if (!children.length) return formatted;
     const indentation = policy.indenting ? depth * policy.indentSize : 0;
     if (
       !Number.isSafeInteger(indentation) ||
@@ -591,17 +601,23 @@ const serializeGraph = (dataset, policy) => {
     predictedBytes += whitespaceBytes;
     const padding = " ".repeat(indentation);
     for (const child of children) {
-      element.insertBefore(document.createTextNode(`\n${padding}`), child);
-      if (child.nodeType === 1) formatElement(child, depth + 1);
-      else charge(serialize(child));
+      formatted.appendChild(document.createTextNode(`\n${padding}`));
+      if (child.nodeType === 1)
+        formatted.appendChild(formatElement(child, depth + 1));
+      else {
+        charge(serialize(child));
+        formatted.appendChild(child.cloneNode(true));
+      }
     }
-    element.appendChild(
+    formatted.appendChild(
       document.createTextNode(
         `\n${" ".repeat(policy.indenting ? (depth - 1) * policy.indentSize : 0)}`,
       ),
     );
+    return formatted;
   };
-  formatElement(root, 1);
+  // Append-only construction avoids xmldom's full sibling reindex on insertion.
+  document.replaceChild(formatElement(root, 1), root);
   const text = serializer.serializeToString(document, {
     requireWellFormed: true,
     nodeFilter(node) {

@@ -30,7 +30,10 @@ import {
 } from "./owl-contract-evidence.mjs";
 import { contractReport } from "./fixtures/owl-contract-report.mjs";
 import { CI_JOB_NAMES } from "./ci-qualification.mjs";
-import { JAVA_REFERENCE_POLICY_SHA256 } from "./java-reference-state.mjs";
+import {
+  JAVA_REFERENCE_POLICY,
+  JAVA_REFERENCE_POLICY_SHA256,
+} from "./java-reference-state.mjs";
 
 const hash = (letter) => letter.repeat(40);
 const jsonClone = (value) => JSON.parse(JSON.stringify(value));
@@ -66,16 +69,20 @@ const successfulNeeds = (
             : job === "source_node_24"
               ? {
                   coverage: JSON.stringify(java),
-                  reference: JSON.stringify({
-                    schemaVersion: 1,
-                    policySha256: JAVA_REFERENCE_POLICY_SHA256,
-                    materialization: "FRESH",
-                    inputs: null,
-                    execution: identity,
-                    producer: null,
-                    seedRequested: false,
-                    publication: null,
-                  }),
+                  reference: JSON.stringify(
+                    JAVA_REFERENCE_POLICY.enabled
+                      ? {
+                          schemaVersion: 1,
+                          policySha256: JAVA_REFERENCE_POLICY_SHA256,
+                          materialization: "FRESH",
+                          inputs: null,
+                          execution: identity,
+                          producer: null,
+                          seedRequested: false,
+                          publication: null,
+                        }
+                      : null,
+                  ),
                 }
               : job === "owl_contract"
                 ? { coverage: JSON.stringify(owl_contract) }
@@ -546,16 +553,32 @@ describe("exact landed-main qualification and direct original execution", () => 
 
 describe("reuse of complete PR integration", () => {
   test.each(["missing", "old policy", "another execution"])(
-    "successful jobs cannot qualify enabled reuse with %s materialization evidence",
+    "materialization admission follows activation policy for %s evidence",
     (fault) => {
       const f = fixture();
       const needs = successfulNeeds();
-      const state = JSON.parse(needs.source_node_24.outputs.reference);
+      const state = {
+        schemaVersion: 1,
+        policySha256: JAVA_REFERENCE_POLICY_SHA256,
+        materialization: "FRESH",
+        inputs: null,
+        execution: { runId: 100, runAttempt: 2, commit: hash("c") },
+        producer: null,
+        seedRequested: false,
+        publication: null,
+      };
       if (fault === "missing") delete needs.source_node_24.outputs.reference;
       else {
         if (fault === "old policy") state.policySha256 = "0".repeat(64);
         if (fault === "another execution") state.execution.runId++;
         needs.source_node_24.outputs.reference = JSON.stringify(state);
+      }
+      if (fault === "missing" && !JAVA_REFERENCE_POLICY.enabled) {
+        expect(
+          createVerificationReceipt({ context: f.prContext, needs, now })
+            .javaReference,
+        ).toBeNull();
+        return;
       }
       expect(() =>
         createVerificationReceipt({ context: f.prContext, needs, now }),
@@ -566,7 +589,16 @@ describe("reuse of complete PR integration", () => {
   test("warm Java materialization still requires current comparisons and preserves its producer across normal merge", async () => {
     const f = fixture();
     const needs = successfulNeeds();
-    const state = JSON.parse(needs.source_node_24.outputs.reference);
+    const state = {
+      schemaVersion: 1,
+      policySha256: JAVA_REFERENCE_POLICY_SHA256,
+      materialization: "FRESH",
+      inputs: null,
+      execution: { runId: 100, runAttempt: 2, commit: hash("c") },
+      producer: null,
+      seedRequested: false,
+      publication: null,
+    };
     Object.assign(state, {
       materialization: "REUSED",
       inputs: {
@@ -587,6 +619,12 @@ describe("reuse of complete PR integration", () => {
       },
     });
     needs.source_node_24.outputs.reference = JSON.stringify(state);
+    if (!JAVA_REFERENCE_POLICY.enabled) {
+      expect(() =>
+        createVerificationReceipt({ context: f.prContext, needs, now }),
+      ).toThrow(/activation/u);
+      return;
+    }
     f.receipt = createVerificationReceipt({ context: f.prContext, needs, now });
     expect(f.receipt.checks.java.execution).toBe("SUCCESS");
     const incomplete = jsonClone(needs);

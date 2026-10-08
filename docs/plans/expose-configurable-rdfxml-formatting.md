@@ -316,7 +316,8 @@ Any UO dependency change needs exact manifest/lock approval and its own current 
 Producer acceptance uses its own representative ontology fixtures and installed-package assertions; actual UO adoption remains separate.
 
 Verification entry points include targeted configuration/manager/storage Jest tests, `npm run test:boundary`, `npm run test:owl-contract` and `npm run test:browser`.
-Use the repository-selected toolchain, currently npm 12.1.0, and refresh it at admission rather than importing UO's toolchain policy.
+Use the repository-selected toolchain, updated to npm 12.2.0 by the owner's execution instruction, and refresh it at admission rather than importing UO's toolchain policy.
+The owner also selected upstream default-branch tip `b61ebe2da83daceebb3e7ba7afbd2582c9240c33` as the execution Java pin; the earlier links above identify the plan's original source observations.
 Run the selected full relevant HISEW profile and existing release gates against a frozen integrated candidate; record which criteria each check actually covers.
 Regenerate API views using their owning generator and compare the actual packed package exports with the registry.
 Do not hand-edit generated Markdown/JSON or invent passing Java/browser results when a tool is unavailable.
