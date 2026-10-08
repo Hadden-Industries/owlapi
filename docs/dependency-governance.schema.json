@@ -139,7 +139,7 @@
       "additionalProperties": false,
       "required": ["npmVersion", "mode", "projectConfig", "decisions"],
       "properties": {
-        "npmVersion": { "const": "12.1.0" },
+        "npmVersion": { "const": "12.2.0" },
         "mode": { "const": "STRICT_EXPLICIT_DECISIONS" },
         "projectConfig": { "const": ".npmrc" },
         "decisions": {

@@ -116,7 +116,11 @@ describe("public import-closure storage composition", () => {
     const owl = "http://www.w3.org/2002/07/owl#";
     const original = result.documents.rdfxml;
     const descriptions = (document) =>
-      Array.from(document.getElementsByTagNameNS(rdf, "Description"));
+      Array.from(document.getElementsByTagNameNS("*", "*")).filter(
+        (element) =>
+          element.hasAttributeNS(rdf, "about") ||
+          element.hasAttributeNS(rdf, "nodeID"),
+      );
     const description = (document, iri) =>
       descriptions(document).find(
         (element) => element.getAttributeNS(rdf, "about") === iri,

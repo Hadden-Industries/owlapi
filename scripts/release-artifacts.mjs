@@ -40,6 +40,7 @@ const REQUIRED_PACKED_PATHS = Object.freeze([
   "docs/compatibility/capabilities.json",
   "docs/compatibility/canonical-vowl-prerequisites.md",
   "docs/compatibility/rdf-parser-metadata.md",
+  "docs/compatibility/rdfxml-writer-configuration.md",
   "docs/compatibility/java-api-surface.json",
   "docs/compatibility/java-api-surface.md",
   "formats/index.js",

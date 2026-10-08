@@ -37,7 +37,7 @@ export const createRdfXmlStorer = ({
 } = {}) =>
   Object.freeze({
     formatKey: OWLDocumentFormats.RDF_XML.key,
-    async render(snapshot, format) {
+    async render(snapshot, format, writerContext) {
       if (Object.keys(readDocumentFormatParameters(format)).length !== 0) {
         throw new OWLOntologyStorageError(
           "RDF/XML storage does not support output parameters",
@@ -52,7 +52,7 @@ export const createRdfXmlStorer = ({
           axioms: sortedStructuralValues(snapshot.directAxioms),
           imports: sortedStructuralValues(snapshot.authoredImportDeclarations),
         });
-        const text = writeRdfXmlGraph(map(original));
+        const text = writeRdfXmlGraph(map(original), writerContext);
         // Work only with the complete generated document. This context contains
         // neither a manager, IRI mapper, nor document loader, so imports remain
         // authored declarations rather than triggering external retrieval.

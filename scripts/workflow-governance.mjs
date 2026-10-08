@@ -713,8 +713,8 @@ const validateCiVerification = (workflow, violations) => {
     violations,
     JSON.stringify(dependencyCommands) ===
       JSON.stringify([
-        "npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund",
-        "node scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.1.0",
+        "npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund",
+        "node scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.2.0",
         "npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash",
         "npm run workflow:dependency-review-applicability",
       ]),
@@ -882,7 +882,7 @@ const validateCiVerification = (workflow, violations) => {
       "continue-on-error": true,
       "timeout-minutes": 2,
       env: { npm_config_fetch_retries: "0", npm_config_fetch_timeout: "30000" },
-      run: "npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund\nnode scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.1.0\nnpm ci --ignore-scripts --no-audit --no-fund\n",
+      run: "npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund\nnode scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.2.0\nnpm ci --ignore-scripts --no-audit --no-fund\n",
     },
     `${label}: conditional locked seed verifier`,
     violations,

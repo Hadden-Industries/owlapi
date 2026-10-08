@@ -40,6 +40,10 @@ import { OWLObjectKind } from "./kinds.js";
 import { readAddOntologyAnnotationChange } from "./addOntologyAnnotation.js";
 import { createManagerOwnedOWLOntology } from "./owlOntology.js";
 import { OWLOntologyLoaderConfiguration } from "./owlOntologyLoaderConfiguration.js";
+import {
+  OWLOntologyWriterConfiguration,
+  readOntologyWriterConfiguration,
+} from "./owlOntologyWriterConfiguration.js";
 import { readSetOntologyIDChange } from "./setOntologyID.js";
 import { IRI, StructuralSet } from "./structural.js";
 
@@ -363,6 +367,7 @@ export class OWLOntologyManager {
   #managedOntologyStates = new WeakMap();
   #registry;
   #storerRegistry = createDefaultStorerRegistry();
+  #writerConfiguration = new OWLOntologyWriterConfiguration();
 
   constructor({ dataFactory, documentLoader, iriMappers = [], registry } = {}) {
     if (!iriMappers || typeof iriMappers[Symbol.iterator] !== "function") {
@@ -415,6 +420,15 @@ export class OWLOntologyManager {
     return this.#dataFactory;
   }
 
+  getOntologyWriterConfiguration() {
+    return this.#writerConfiguration;
+  }
+
+  setOntologyWriterConfiguration(configuration) {
+    readOntologyWriterConfiguration(configuration);
+    this.#writerConfiguration = configuration;
+  }
+
   createOntology(ontologyID = this.#dataFactory.getOWLOntologyID()) {
     const { ontology, ontologyState } = createManagerOwnedOWLOntology({
       ontologyID,
@@ -465,7 +479,15 @@ export class OWLOntologyManager {
    */
   async saveOntology(ontology, format, target) {
     const state = this.#requireManagedOntologyState(ontology, "saveOntology");
-    await this.#storerRegistry.store(state.createSnapshot(), format, target);
+    const writerContext = readOntologyWriterConfiguration(
+      this.#writerConfiguration,
+    );
+    await this.#storerRegistry.store(
+      state.createSnapshot(),
+      format,
+      target,
+      writerContext,
+    );
   }
 
   importsClosure(ontology) {

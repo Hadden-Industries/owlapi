@@ -66,7 +66,7 @@ export class StorerRegistry {
    * Publish complete string text only after success; every failure retains the
    * previous target value. Invalid public arguments remain TypeErrors.
    */
-  async store(ontologySnapshot, format, target) {
+  async store(ontologySnapshot, format, target, writerContext) {
     requireDocumentFormat(format);
     StringDocumentTarget.prototype.toString.call(target);
     const storer = this.select(format);
@@ -109,7 +109,11 @@ export class StorerRegistry {
             },
           );
       }
-      const completeText = await storer.render(ontologySnapshot, format);
+      const completeText = await storer.render(
+        ontologySnapshot,
+        format,
+        writerContext,
+      );
       replaceStringDocumentTargetText(target, completeText);
     } catch (cause) {
       if (cause instanceof OWLOntologyStorageError) throw cause;

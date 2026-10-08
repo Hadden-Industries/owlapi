@@ -122,9 +122,7 @@
         "javaPackage": { "$ref": "#/$defs/nullableString" },
         "npmSpecifier": { "$ref": "#/$defs/nonEmptyString" },
         "exposure": { "const": "PUBLIC" },
-        "firstPublicRelease": {
-          "$ref": "#/$defs/publicReleaseVersion"
-        },
+        "firstPublicRelease": { "$ref": "#/$defs/publicReleaseVersion" },
         "rationale": { "$ref": "#/$defs/nonEmptyString" },
         "ownedBindingIds": { "$ref": "#/$defs/stringArray" }
       }
@@ -176,7 +174,10 @@
         "exposure": { "const": "PUBLIC" },
         "stability": { "const": "PRERELEASE" },
         "firstPublicRelease": {
-          "$ref": "#/$defs/publicReleaseVersion"
+          "anyOf": [
+            { "$ref": "#/$defs/publicReleaseVersion" },
+            { "type": "null" }
+          ]
         },
         "publicSpecifier": { "$ref": "#/$defs/nonEmptyString" },
         "sourceModule": { "$ref": "#/$defs/nonEmptyString" },

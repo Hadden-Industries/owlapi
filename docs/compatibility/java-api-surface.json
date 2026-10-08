@@ -5,8 +5,8 @@
   "packageVersion": "0.1.0-rc.1",
   "javaReference": {
     "version": "5.5.1",
-    "revision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-    "source": "https://github.com/owlcs/owlapi/tree/d7e997a53b470e32700de89cc610d9daf01ea769",
+    "revision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+    "source": "https://github.com/owlcs/owlapi/tree/b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
     "inventoryRule": "Every top-level public class, interface, enum, annotation, or record declared below any production src/main/java/org/semanticweb/owlapi source root at the pinned multi-module revision."
   },
   "vocabularies": {
@@ -52,7 +52,7 @@
       "npmSpecifier": "@hadden-industries/owlapi",
       "exposure": "PUBLIC",
       "firstPublicRelease": "0.1.0-alpha.0",
-      "rationale": "Convenience aggregate that re-exports every approved binding without creating a second implementation identity.",
+      "rationale": "Convenience aggregate of established bindings. New writer configuration is owned only by ./model; no second implementation identity is created.",
       "ownedBindingIds": [
         "apibinding.OWLManager",
         "model.ANNOTATION_VALUE_KINDS",
@@ -145,6 +145,7 @@
         "model.OWLOntology",
         "model.OWLOntologyLoaderConfiguration",
         "model.OWLOntologyManager",
+        "model.OWLOntologyWriterConfiguration",
         "model.OWLStructuralObject",
         "model.OWL_OBJECT_KINDS",
         "model.SetOntologyID",
@@ -1002,10 +1003,12 @@
         "prototype.getOWLDataFactory",
         "prototype.getOntology",
         "prototype.getOntologyFormat",
+        "prototype.getOntologyWriterConfiguration",
         "prototype.importsClosure",
         "prototype.loadOntologyFromOntologyDocument",
         "prototype.loadOntologyGraphFromOntologyDocument",
-        "prototype.saveOntology"
+        "prototype.saveOntology",
+        "prototype.setOntologyWriterConfiguration"
       ],
       "omittedMembers": [
         "Change and progress listeners",
@@ -1032,7 +1035,8 @@
         "addAxiom/addAxioms accept one JavaScript iterable form and return boolean instead of Java's ChangeApplied; each complete call is validated and committed atomically.",
         "applyChange/applyChanges accept only SetOntologyID and AddOntologyAnnotation records, materialize one JavaScript iterable form, atomically publish the complete list, and return boolean instead of Java's ChangeApplied or ChangeDetails.",
         "LIFECYCLE-ASYNC-SAVE-OVERLOAD: saveOntology(ontology, format, target) returns Promise<void>, validates ownership and genuine format/target identities, and selects only the exact format key.",
-        "LIFECYCLE-LOSSLESS-STORAGE: saveOntology renders one committed snapshot and atomically replaces target text only after success; unexpected renderer failures are wrapped with cause and typed storage errors retain identity."
+        "LIFECYCLE-LOSSLESS-STORAGE: saveOntology renders one committed snapshot and atomically replaces target text only after success; unexpected renderer failures are wrapped with cause and typed storage errors retain identity.",
+        "getOntologyWriterConfiguration/setOntologyWriterConfiguration attach genuine immutable values to this manager; saveOntology captures native private settings before its first await, independently of later manager changes."
       ],
       "verification": [
         "internal/loading/managedOntologyIndex.test.js",
@@ -1045,6 +1049,57 @@
         "test/package-boundary.test.mjs",
         "internal/storage/storerRegistry.test.js",
         "model/owlOntologyManager.storage.test.js"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
+    },
+    {
+      "id": "model.OWLOntologyWriterConfiguration",
+      "jsExport": "OWLOntologyWriterConfiguration",
+      "kind": "CLASS",
+      "summary": "An immutable partial Java adaptation controlling RDF/XML indentation and banners on an output manager.",
+      "capabilityIds": ["writer.rdfxml-configuration"],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicRelease": null,
+      "publicSpecifier": "@hadden-industries/owlapi/model",
+      "sourceModule": "model/owlOntologyWriterConfiguration.js",
+      "javaPackage": "org.semanticweb.owlapi.model",
+      "javaType": "org.semanticweb.owlapi.model.OWLOntologyWriterConfiguration",
+      "closestJavaAuthority": "org.semanticweb.owlapi.model.OWLOntologyWriterConfiguration",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "callShapes": ["new OWLOntologyWriterConfiguration()"],
+      "supportedMembers": [
+        "prototype.getIndentSize",
+        "prototype.isIndenting",
+        "prototype.isLabelsAsBanner",
+        "prototype.shouldUseBanners",
+        "prototype.withBannersEnabled",
+        "prototype.withIndentSize",
+        "prototype.withIndenting",
+        "prototype.withLabelsAsBanner"
+      ],
+      "omittedMembers": [
+        "shouldSaveIdsForAllAnonymousIndividuals / withSaveIdsForAllAnonymousIndividuals",
+        "shouldRemapAllAnonymousIndividualsIds / withRemapAllAnonymousIndividualsIds",
+        "isUseNamespaceEntities / withUseNamespaceEntities",
+        "shouldOutputNamedGraphIRI / withNamedGraphIRIEnabled"
+      ],
+      "publicErrors": [],
+      "semanticQualifications": [
+        "Defaults: isIndenting true, getIndentSize 4, shouldUseBanners true, isLabelsAsBanner false. Every with method returns an immutable configuration and preserves unrelated fields, unlike the pinned Java copy-reset behavior.",
+        "withIndentSize accepts numeric integers 0 through 2147483647; nonnumbers throw TypeError and out-of-range/noninteger numbers throw RangeError. Java admits negative int values; JavaScript deliberately rejects them.",
+        "The four controls affect RDF/XML only. Functional Syntax retains its output, matching the public-save Java probe. Disabling indentation retains structural newlines and literal whitespace.",
+        "Labels use lexical ordering of language, label text, then datatype, with IRI fallback. XML comment sanitization affects presentation only; labels remain unchanged RDF literals. No-language labels sort first.",
+        "Rendering is bounded to 32 MiB UTF-8 output, 128 nested resource levels and finite QName work. Long owned chains retain flat references at the nesting bound. Disabling indentation removes padding cost and admits any legal configured indentSize, subject to other conservative render budgets.",
+        "Attach to the actual output manager using setOntologyWriterConfiguration, which returns undefined. Each save captures private immutable state before suspension; no live getter or global preferences are read."
+      ],
+      "verification": [
+        "model/owlOntologyWriterConfiguration.test.js",
+        "internal/storage/rdfxml/rdfXmlGraphWriter.test.js",
+        "test/package-boundary.test.mjs"
       ],
       "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
@@ -9062,20 +9117,26 @@
       "javaPackage": "org.semanticweb.owlapi.model",
       "simpleName": "HasOntologyWriterConfiguration",
       "kind": "INTERFACE",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
+      "capabilityIds": ["writer.rdfxml-configuration"],
+      "progress": "COMPLETE",
+      "exposure": "INTERNAL_ONLY",
       "stability": null,
       "jsExport": null,
       "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "sourceModule": "model/owlOntologyManager.js",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "disposition": "STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT",
+      "supportedMembers": [
+        "OWLOntologyManager.getOntologyWriterConfiguration()",
+        "OWLOntologyManager.setOntologyWriterConfiguration(config)"
+      ],
+      "omittedMembers": ["Standalone interface constructor/export"],
+      "verification": [
+        "model/owlOntologyWriterConfiguration.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the manager's native accessors; this Java interface is implemented structurally and has no JavaScript runtime constructor."
     },
     {
       "javaName": "org.semanticweb.owlapi.model.HasOperands",
@@ -13390,10 +13451,12 @@
         "prototype.getOWLDataFactory",
         "prototype.getOntology",
         "prototype.getOntologyFormat",
+        "prototype.getOntologyWriterConfiguration",
         "prototype.importsClosure",
         "prototype.loadOntologyFromOntologyDocument",
         "prototype.loadOntologyGraphFromOntologyDocument",
-        "prototype.saveOntology"
+        "prototype.saveOntology",
+        "prototype.setOntologyWriterConfiguration"
       ],
       "omittedMembers": [
         "Change and progress listeners",
@@ -13529,20 +13592,38 @@
       "javaPackage": "org.semanticweb.owlapi.model",
       "simpleName": "OWLOntologyWriterConfiguration",
       "kind": "CLASS",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
-      "stability": null,
-      "jsExport": null,
-      "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "capabilityIds": ["writer.rdfxml-configuration"],
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "jsExport": "OWLOntologyWriterConfiguration",
+      "publicSpecifier": "@hadden-industries/owlapi/model",
+      "sourceModule": "model/owlOntologyWriterConfiguration.js",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "disposition": "PUBLIC_MAPPED",
+      "supportedMembers": [
+        "prototype.getIndentSize",
+        "prototype.isIndenting",
+        "prototype.isLabelsAsBanner",
+        "prototype.shouldUseBanners",
+        "prototype.withBannersEnabled",
+        "prototype.withIndentSize",
+        "prototype.withIndenting",
+        "prototype.withLabelsAsBanner"
+      ],
+      "omittedMembers": [
+        "shouldSaveIdsForAllAnonymousIndividuals / withSaveIdsForAllAnonymousIndividuals",
+        "shouldRemapAllAnonymousIndividualsIds / withRemapAllAnonymousIndividualsIds",
+        "isUseNamespaceEntities / withUseNamespaceEntities",
+        "shouldOutputNamedGraphIRI / withNamedGraphIRIEnabled"
+      ],
+      "verification": [
+        "model/owlOntologyWriterConfiguration.test.js",
+        "internal/storage/rdfxml/rdfXmlGraphWriter.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.model.OWLPairwiseBooleanVisitor",
@@ -23174,14 +23255,14 @@
   ],
   "summary": {
     "namespaceCount": 7,
-    "publicBindingCount": 56,
+    "publicBindingCount": 57,
     "javaTypeCount": 1013,
     "javaDispositionCounts": {
-      "PUBLIC_MAPPED": 25,
-      "STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT": 73,
+      "PUBLIC_MAPPED": 26,
+      "STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT": 74,
       "FORMAT_IDENTITY_SUPPORTED_NOT_NAMED_EXPORT": 8,
       "INTERNAL_IMPLEMENTATION_ONLY": 2,
-      "DEFERRED_NOT_EXPOSED": 861,
+      "DEFERRED_NOT_EXPOSED": 859,
       "UNSUPPORTED_BY_DESIGN": 44,
       "UNCLASSIFIED": 0
     },

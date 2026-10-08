@@ -38,7 +38,8 @@
     "PHASE21-PREBUILD-2026-09-25": "Repository-owner approval to pre-build canonical Phase 21 target, storage-error, and parity-ledger foundations before the accepted 0.1.0 baseline, retaining final release and consumer reconciliation, on 25 September 2026",
     "PROVENANCE-2026-08-11": "Repository-owner approval of commit-bounded reuse for the named legacy RDF, Turtle, and ontology-converter modules and tests on 11 August 2026",
     "SECURITY-DEPENDENCIES-2026-09-29": "Repository-owner acceptance of docs/plans/2026-09-29-security-and-dependency-consolidation.md and instruction to proceed with implementation on local main on 29 September 2026; independent review is deferred to the final commit stage.",
-    "CANONICAL-VOWL-PREREQUISITES": "Owner authorization in the Canonical VOWL implementation session to implement, validate, commit and deliver the required owlapi prerequisites; owning contract and qualifications are recorded in docs/compatibility/canonical-vowl-prerequisites.md. This scope preserves the Phase 21 and 22 decisions."
+    "CANONICAL-VOWL-PREREQUISITES": "Owner authorization in the Canonical VOWL implementation session to implement, validate, commit and deliver the required owlapi prerequisites; owning contract and qualifications are recorded in docs/compatibility/canonical-vowl-prerequisites.md. This scope preserves the Phase 21 and 22 decisions.",
+    "RDFXML-FORMATTING-2026-10-08": "Owner instruction to implement docs/plans/expose-configurable-rdfxml-formatting.md, including its proposed preserving-builder, numeric and deterministic label adaptations; subsequent owner decisions select npm 12.2.0 and upstream Java tip b61ebe2da83daceebb3e7ba7afbd2582c9240c33."
   },
   "provenanceCategories": {
     "A_PROJECT_ORIGINAL": "Project-authored implementation with no identified upstream-derived semantic implementation",
@@ -3254,6 +3255,31 @@
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
       "recordedOn": "2026-09-30"
+    },
+    {
+      "id": "RDFXML-WRITER-CONFIGURATION",
+      "path": "model/owlOntologyWriterConfiguration.js",
+      "phase": 23,
+      "scope": "Project-original immutable four-setting value object, genuine private brand and manager-local configuration capture; public API identity only is compared with Java.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/expose-configurable-rdfxml-formatting.md",
+        "docs/compatibility/rdfxml-writer-configuration.md"
+      ],
+      "compatibilityReferences": [
+        "Java OWLAPI 5.5.1 public configuration API initially researched at the recorded historical reference; new b61ebe2da black-box observations are separately recorded in the writer contract. No Java implementation source is reused."
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "model/owlOntologyWriterConfiguration.test.js",
+        "util/owlapi-reference/RunWriterConfigurationContract.java",
+        "test/consumers/owl-contract/writer-configuration.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RDFXML-FORMATTING-2026-10-08",
+      "recordedOn": "2026-10-08"
     }
   ],
   "compatibilityResearch": [

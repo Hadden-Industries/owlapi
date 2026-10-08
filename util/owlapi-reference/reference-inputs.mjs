@@ -41,8 +41,8 @@ const validateInputs = new Ajv({ strict: true }).compile({
     "host",
   ],
   properties: {
-    sourceCommit: { const: "d7e997a53b470e32700de89cc610d9daf01ea769" },
-    sourceTree: { const: "8f871bacef5ab767afda979e60b1a1e0c98d6323" },
+    sourceCommit: { const: "b61ebe2da83daceebb3e7ba7afbd2582c9240c33" },
+    sourceTree: { const: "b8dad5241dae6ff3bd3b755b9a1c605623eeb2c2" },
     externalSha256: digestSchema,
     runtimeGraphSha256: digestSchema,
     mavenDistributionSha256: digestSchema,
@@ -79,7 +79,7 @@ const validateInputs = new Ajv({ strict: true }).compile({
 export const REFERENCE_RECIPE = Object.freeze({
   version: 1,
   sourceCommit: pin.sourceRevision,
-  sourceTree: "8f871bacef5ab767afda979e60b1a1e0c98d6323",
+  sourceTree: "b8dad5241dae6ff3bd3b755b9a1c605623eeb2c2",
   maven: "3.10.0",
   mavenZipSha512:
     "22d31676d5b92ed53308c19ecded3245d0efd0cddfec51ec7bab62f4f13ad70ddddceff8e62940e0e8e2421f3cde8106737f4becec0aa034ffeff2a754e88337",

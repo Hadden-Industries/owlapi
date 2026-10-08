@@ -121,6 +121,7 @@ const installFixture = (mode) => {
     "public-model-cases.js",
     "public-model-probes.js",
     "acquisition-contracts.js",
+    "writer-configuration.js",
   ])
     copyFileSync(
       join(REPOSITORY_ROOT, "test", "consumers", "owl-contract", name),
@@ -237,6 +238,7 @@ try {
     "public-model-cases.js",
     "public-model-probes.js",
     "acquisition-contracts.js",
+    "writer-configuration.js",
   ]) {
     copyFileSync(
       join(importMapDirectory, fileName),

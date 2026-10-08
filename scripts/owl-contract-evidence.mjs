@@ -21,6 +21,7 @@ export const OWL_CONTRACT_FIXTURES = Object.freeze([
   "test/consumers/owl-contract/native-reporter.mjs",
   "test/consumers/owl-contract/public-model-probes.js",
   "test/consumers/owl-contract/acquisition-contracts.js",
+  "test/consumers/owl-contract/writer-configuration.js",
   "test/import-closure/public-contract.js",
   "test/installed-package-no-network.mjs",
   ...["root", "left", "right", "leaf"].map(

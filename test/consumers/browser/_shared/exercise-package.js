@@ -6,6 +6,7 @@ import * as model from "owlapi/model";
 import * as profiles from "owlapi/profiles";
 import * as util from "owlapi/util";
 import { createPublicContract } from "./public-contract.js";
+import { exerciseWriterConfiguration } from "./writer-configuration.js";
 import { exercisePublicModelFields } from "./public-model-probes.js";
 import {
   exerciseFormatConfiguration,
@@ -187,7 +188,9 @@ export const exerciseInstalledPackage = async () => {
       root.StringDocumentSource === io.StringDocumentSource &&
       root.RDFParserMetaData === io.RDFParserMetaData &&
       root.RDFOntologyHeaderStatus === io.RDFOntologyHeaderStatus,
-    model: root.OWLOntologyManager === model.OWLOntologyManager,
+    model:
+      root.OWLOntologyManager === model.OWLOntologyManager &&
+      !Object.hasOwn(root, "OWLOntologyWriterConfiguration"),
     profiles:
       root.OWL2DLProfile === profiles.OWL2DLProfile &&
       root.OWLProfileReport === profiles.OWLProfileReport,
@@ -242,6 +245,12 @@ export const exerciseInstalledPackage = async () => {
   return {
     bindingIdentity,
     documents,
+    writerConfiguration: await exerciseWriterConfiguration(
+      apibinding,
+      model,
+      io,
+      formats,
+    ),
     importClosure,
     publicModelFields: exercisePublicModelFields(root),
     acquisitionContracts: {

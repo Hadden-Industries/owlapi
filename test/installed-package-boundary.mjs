@@ -22,6 +22,10 @@ assert.deepEqual(Object.keys(profiles).sort(), [
 ]);
 for (const namespace of [apibinding, model, io, formats, util, profiles]) {
   for (const [name, binding] of Object.entries(namespace)) {
+    if (name === "OWLOntologyWriterConfiguration") {
+      assert.equal(Object.hasOwn(root, name), false);
+      continue;
+    }
     assert.strictEqual(
       root[name],
       binding,

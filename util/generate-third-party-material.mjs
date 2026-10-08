@@ -624,7 +624,7 @@ const createMaterialFacts = () => [
     relationship: "GENERATED_FROM_THIRD_PARTY",
     name: "Java OWLAPI public API identity inventory",
     versionOrRevision:
-      "OWLAPI 5.5.1 at d7e997a53b470e32700de89cc610d9daf01ea769",
+      "OWLAPI 5.5.1 development tip at b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
     licenseAssessments: [
       licenseAssessment({
         scope: "Java OWLAPI public API identity and declaration facts",
@@ -643,7 +643,7 @@ const createMaterialFacts = () => [
       }),
     ],
     sourceUrl:
-      "https://github.com/owlcs/owlapi/tree/d7e997a53b470e32700de89cc610d9daf01ea769",
+      "https://github.com/owlcs/owlapi/tree/b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
     evidenceFiles: [
       evidenceFile("API.md"),
       evidenceFile("docs/compatibility/java-api-surface.json"),

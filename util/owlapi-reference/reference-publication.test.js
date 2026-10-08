@@ -54,8 +54,8 @@ beforeEach(() => {
   );
   const graph = Buffer.from('{"fixture":"native runtime graph bytes"}\n');
   input = createReferenceInputRecord({
-    sourceCommit: "d7e997a53b470e32700de89cc610d9daf01ea769",
-    sourceTree: "8f871bacef5ab767afda979e60b1a1e0c98d6323",
+    sourceCommit: "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+    sourceTree: "b8dad5241dae6ff3bd3b755b9a1c605623eeb2c2",
     externalSha256: hash(native),
     runtimeGraphSha256: hash(graph),
     mavenDistributionSha256: "1".repeat(64),

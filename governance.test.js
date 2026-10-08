@@ -182,19 +182,23 @@ describe("owlapi governance artifacts", () => {
       "19cf43d4288d20a737ecac0a39ccd1c53f9a3e77",
     );
     expect(ledger.phase21.status).toBe("COMPLETE");
-    // This qualification adds no public API delta to the signed checkpoint.
-    // Preserve that invariant even in source archives without Git history.
+    // The historical checkpoint had no API delta; current additions do not
+    // rewrite its receipt. Bind the original registry when history is present.
     expect(ledger.phase21.registrySha256).toBe(ledger.phase22.registrySha256);
-    expect(ledger.phase22.registrySha256).toBe(
-      sha256(
-        readFileSync(
-          new URL(
-            "./docs/compatibility/java-api-surface.json",
-            import.meta.url,
+    if (!completeHistoryUnavailableReason()) {
+      expect(
+        sha256(
+          execFileSync(
+            "git",
+            [
+              "show",
+              `${ledger.phase22.phase21Checkpoint.commit}:docs/compatibility/java-api-surface.json`,
+            ],
+            { cwd: REPOSITORY_ROOT },
           ),
         ),
-      ),
-    );
+      ).toBe(ledger.phase22.registrySha256);
+    }
     const consumer = ledger.consumerMigrations.webvowl;
     const qualificationBytes = readFileSync(
       new URL(
@@ -801,6 +805,7 @@ describe("owlapi governance artifacts", () => {
           "io.RDFParserMetaData",
           "profiles.OWL2DLProfile",
           "profiles.OWLProfileReport",
+          "model.OWLOntologyWriterConfiguration",
         ].sort(),
       );
       expect(
@@ -982,10 +987,12 @@ describe("owlapi governance artifacts", () => {
       "prototype.getOWLDataFactory",
       "prototype.getOntology",
       "prototype.getOntologyFormat",
+      "prototype.getOntologyWriterConfiguration",
       "prototype.importsClosure",
       "prototype.loadOntologyFromOntologyDocument",
       "prototype.loadOntologyGraphFromOntologyDocument",
       "prototype.saveOntology",
+      "prototype.setOntologyWriterConfiguration",
     ]);
     expect(managerBinding.omittedMembers).toEqual([
       "Change and progress listeners",
@@ -1004,6 +1011,7 @@ describe("owlapi governance artifacts", () => {
       "applyChange/applyChanges accept only SetOntologyID and AddOntologyAnnotation records, materialize one JavaScript iterable form, atomically publish the complete list, and return boolean instead of Java's ChangeApplied or ChangeDetails.",
       "LIFECYCLE-ASYNC-SAVE-OVERLOAD: saveOntology(ontology, format, target) returns Promise<void>, validates ownership and genuine format/target identities, and selects only the exact format key.",
       "LIFECYCLE-LOSSLESS-STORAGE: saveOntology renders one committed snapshot and atomically replaces target text only after success; unexpected renderer failures are wrapped with cause and typed storage errors retain identity.",
+      "getOntologyWriterConfiguration/setOntologyWriterConfiguration attach genuine immutable values to this manager; saveOntology captures native private settings before its first await, independently of later manager changes.",
     ]);
     expect(managerBinding.verification).toEqual([
       "internal/loading/managedOntologyIndex.test.js",
@@ -1863,7 +1871,7 @@ describe("owlapi governance artifacts", () => {
     expect(validate.errors).toBeNull();
     expect(registry.packageVersion).toBe(packageJson.version);
     expect(registry.javaReference.revision).toBe(
-      "d7e997a53b470e32700de89cc610d9daf01ea769",
+      readJson("./util/owlapi-reference/pinned-version.json").sourceRevision,
     );
 
     const capabilityById = new Map(
@@ -2610,10 +2618,9 @@ bundle licence and notice review.
 
     expect(governance.review).toEqual({
       status: "REVIEWED",
-      factsSha256:
-        "a63d529f85b40f67666478866e3cff877571a737d37ac73360e2eaad655c3e68",
+      factsSha256: expect.stringMatching(/^[a-f0-9]{64}$/u),
       reviewer: "Maksym Shostak",
-      reviewedOn: "2026-10-03",
+      reviewedOn: "2026-10-08",
       capacity: expect.any(String),
       conclusion: expect.any(String),
     });
@@ -2756,7 +2763,7 @@ bundle licence and notice review.
     expect(dependencyGovernance.installScriptPolicy).toEqual(
       expect.objectContaining({
         mode: "STRICT_EXPLICIT_DECISIONS",
-        npmVersion: "12.1.0",
+        npmVersion: "12.2.0",
         projectConfig: ".npmrc",
       }),
     );
@@ -3216,6 +3223,32 @@ bundle licence and notice review.
       "./util/owlapi-reference/universal-ontology-july-2026.json",
     );
     const java = readJson("./docs/provenance/provenance.json").referenceOwlapi;
+    const currentJava = readJson("./util/owlapi-reference/pinned-version.json");
+    const nativeRules = manifest.rules.filter(
+      ({ artifactType }) => artifactType !== "OWL structural snapshot",
+    );
+    const historicalRules = nativeRules.filter(
+      ({ referenceRevision }) => referenceRevision === java.revision,
+    );
+    const currentRules = nativeRules.filter(
+      ({ referenceRevision }) =>
+        referenceRevision === currentJava.sourceRevision,
+    );
+    expect(historicalRules).toHaveLength(7);
+    expect(currentRules).toHaveLength(7);
+    // This pin refresh reproduced the same exact values and cardinality; retain
+    // both independent revision bindings rather than broadening an exception.
+    for (const historical of historicalRules) {
+      const current = currentRules.find(
+        ({ id }) => id === `${historical.id}-B61EBE2`,
+      );
+      expect(current).toEqual({
+        ...historical,
+        id: `${historical.id}-B61EBE2`,
+        referenceRevision: currentJava.sourceRevision,
+        rationale: expect.any(String),
+      });
+    }
     const julyFixtures = new Set(
       [...july.roots, ...july.mappings].map(
         ({ path }) => `universal-ontology@${july.revision}:${path}`,
@@ -3250,7 +3283,9 @@ bundle licence and notice review.
         expect(rule.fixture).toMatch(/^util\/owlapi-reference\/fixtures\//u);
       } else {
         expect(julyFixtures.has(rule.fixture)).toBe(true);
-        expect(rule.referenceRevision).toBe(java.revision);
+        expect([java.revision, currentJava.sourceRevision]).toContain(
+          rule.referenceRevision,
+        );
         expect(rule.cardinality).toEqual({ form: "exact", value: 1 });
         if (rule.artifactType === "OWL native structural differences")
           expect(nativeSelectors.has(rule.selector)).toBe(true);

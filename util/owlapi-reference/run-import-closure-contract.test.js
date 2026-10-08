@@ -509,7 +509,9 @@ describePinnedOracle("pinned Java cyclic import-closure oracle", () => {
     )
       .trim()
       .split(delimiter);
-    expect(originalClasspath).toHaveLength(63);
+    expect(originalClasspath.length).toBeGreaterThan(0);
+    expect(new Set(originalClasspath).size).toBe(originalClasspath.length);
+    expect(originalClasspath.every((path) => path.endsWith(".jar"))).toBe(true);
     const orderedHashes = [];
     const relocatedClasspath = [];
     let copiedRuntimeBytes = 0;

@@ -59,10 +59,10 @@ jobs:
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 20
       - name: Verify the exact runtime pair
-        run: node scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.1.0
+        run: node scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.2.0
         timeout-minutes: 5
       - name: Install the reviewed dependency graph
         run: npm ci

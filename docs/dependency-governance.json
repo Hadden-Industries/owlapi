@@ -8,11 +8,11 @@
   "recordedOn": "2026-09-30",
   "review": {
     "status": "REVIEWED",
-    "factsSha256": "a63d529f85b40f67666478866e3cff877571a737d37ac73360e2eaad655c3e68",
+    "factsSha256": "da2c00099918802adf2193d3e47fbae2c328cd5395fa1c85a5015889d0cd0bec",
     "reviewer": "Maksym Shostak",
-    "reviewedOn": "2026-10-03",
+    "reviewedOn": "2026-10-08",
     "capacity": "Project maintainer and release owner",
-    "conclusion": "Approved the exact recorded dependency governance, production audit, denied install-script decisions, dependency boundaries and upgrade gates for @hadden-industries/owlapi@0.1.0-rc.1 as part of explicit approval of all manual npm publication controls. Historical measurement and audit dates remain their original observations; this attestation does not claim a new audit or change dependency or script permissions."
+    "conclusion": "Retains the maintainer-approved 2026-10-03 dependency and denied-install-script facts, with the owner-authorized npm toolchain update to 12.2.0 on 2026-10-08. The original production audit date and npm 12.1.0 observation are preserved; no new audit or changed dependency or script permission is claimed."
   },
   "productionAudit": {
     "performedOn": "2026-09-30",
@@ -29,7 +29,7 @@
     }
   },
   "installScriptPolicy": {
-    "npmVersion": "12.1.0",
+    "npmVersion": "12.2.0",
     "mode": "STRICT_EXPLICIT_DECISIONS",
     "projectConfig": ".npmrc",
     "decisions": [

@@ -24,8 +24,8 @@
       "additionalProperties": false,
       "required": ["commit", "tree"],
       "properties": {
-        "commit": { "const": "d7e997a53b470e32700de89cc610d9daf01ea769" },
-        "tree": { "const": "8f871bacef5ab767afda979e60b1a1e0c98d6323" }
+        "commit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+        "tree": { "type": "string", "pattern": "^[a-f0-9]{40}$" }
       }
     },
     "inputRecordSha256": { "$ref": "#/definitions/digest" },

@@ -500,6 +500,14 @@ export const reconcileFamilyEvidence = async (
   { source, documents, closures },
   context,
 ) => {
+  // Historical approvals stay revision-bound; they cannot waive differences
+  // in the currently selected native reference or impose obsolete cardinality.
+  const referenceContext = {
+    ...context,
+    rules: context.rules.filter(
+      (rule) => rule.referenceRevision === context.referenceRevision,
+    ),
+  };
   const documentsById = new Map(
     documents.map((document) => [identityKey(document.ontologyID), document]),
   );
@@ -516,7 +524,7 @@ export const reconcileFamilyEvidence = async (
       sourceDiagnostics.push({
         ontologyID: diagnostic.ontologyID,
         ...(await reconcileUnparsedRdf(diagnostic.unparsedNQuads, {
-          ...context,
+          ...referenceContext,
           fixture: context.fixtureFor(document.sourceDocumentPath),
         })),
       });
@@ -548,7 +556,7 @@ export const reconcileFamilyEvidence = async (
     const structural = reconcileStructuralDifferences(
       document.oracle.structuralDifferences,
       {
-        ...context,
+        ...referenceContext,
         fixture: context.fixtureFor(document.sourceDocumentPath),
       },
     );
@@ -578,7 +586,7 @@ export const reconcileFamilyEvidence = async (
     const exactPropagation =
       propagation?.comparisonOutcome === "MATCH" &&
       reconcileStructuralDifferences(propagation.structuralDifferences, {
-        ...context,
+        ...referenceContext,
         rules: [],
       }).status === "PASS";
     closureResults.push({

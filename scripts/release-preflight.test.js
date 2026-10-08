@@ -8,6 +8,7 @@ import {
   assertReleasePreflight,
   assertReconciledLifecycle,
   verifyParityCheckpointSignature,
+  assertSelectedPublicReleases,
 } from "./release-preflight.mjs";
 
 const manifest = {
@@ -40,6 +41,35 @@ const accepted = {
 };
 
 describe("release preflight", () => {
+  test("source qualification does not grant publication for an unassigned public release", () => {
+    expect(() =>
+      assertSelectedPublicReleases({
+        bindings: [
+          {
+            id: "model.Configuration",
+            exposure: "PUBLIC",
+            firstPublicRelease: null,
+          },
+        ],
+      }),
+    ).toThrow(/immutable first release/u);
+    expect(() =>
+      assertSelectedPublicReleases({
+        bindings: [
+          {
+            id: "model.Configuration",
+            exposure: "PUBLIC",
+            firstPublicRelease: "0.1.0-rc.2",
+          },
+          {
+            id: "internal.Helper",
+            exposure: "INTERNAL",
+            firstPublicRelease: null,
+          },
+        ],
+      }),
+    ).not.toThrow();
+  });
   test("native qualification-only entry point excludes publication human-review admission", () => {
     const repository = fileURLToPath(new URL("../", import.meta.url));
     const head = execFileSync("git", ["rev-parse", "HEAD"], {
@@ -76,7 +106,7 @@ describe("release preflight", () => {
       expect(publication.error).toBeUndefined();
       expect(publication.status).not.toBe(0);
       expect(publication.stderr).toMatch(
-        /human fact review|must target refs\/heads\/main/u,
+        /human fact review|must target refs\/heads\/main|immutable first release/u,
       );
     }
   });

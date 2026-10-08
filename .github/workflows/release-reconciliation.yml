@@ -48,10 +48,10 @@ jobs:
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 10
       - name: Verify the exact runtime pair
-        run: node scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.1.0
+        run: node scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.2.0
         timeout-minutes: 5
       - name: Install the reviewed reconciliation tools
         run: npm ci
@@ -201,7 +201,7 @@ jobs:
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 10
       - name: Install the reviewed GitHub-release tools
         run: npm ci
@@ -261,7 +261,7 @@ jobs:
           package-manager-cache: false
           registry-url: https://registry.npmjs.org/
       - name: Establish the exact publication npm
-        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 10
       - name: Download the exact same-run promotion candidate by artifact ID
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
@@ -319,7 +319,7 @@ jobs:
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 10
       - name: Install the reviewed public-verification tools
         run: npm ci
@@ -381,7 +381,7 @@ jobs:
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 10
       - name: Install the reviewed evidence tools
         run: npm ci
@@ -474,7 +474,7 @@ jobs:
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 10
       - name: Install the reviewed finalization tools
         run: npm ci
@@ -522,7 +522,7 @@ jobs:
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 10
       - name: Install the reviewed immutable-verification tools
         run: npm ci
