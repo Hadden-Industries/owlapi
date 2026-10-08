@@ -20,6 +20,10 @@ const fact = (condition, message) => {
   if (!condition) throw new Error(`Reference cost observation: ${message}`);
 };
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
+// Native git archive at the selected b61ebe2d source pin. This cost screen
+// does not grant source-notice publication rights or application acceptance.
+const PINNED_SOURCE_ARCHIVE_SHA256 =
+  "7708bf1f7dcdde68fc94087a04ee09069d13ad9710b9364db1f167145c00ce61";
 const watched = [
   ".github/workflows/ci.yml",
   "scripts/java-reference-",
@@ -157,9 +161,8 @@ export function observeFreshReferenceCost(env = process.env) {
     10_000,
   );
   fact(
-    sha256(readFileSync(archive)) ===
-      "0e068cba5f5cd1a37b2b7cc4a0d7c26476bb0b19cd13375f6af4440a68bb5d7e",
-    "approved exact archive differs",
+    sha256(readFileSync(archive)) === PINNED_SOURCE_ARCHIVE_SHA256,
+    "pinned exact archive differs",
   );
   run(
     "/usr/bin/tar",
@@ -186,8 +189,8 @@ export function observeFreshReferenceCost(env = process.env) {
     role: "FRESH_BASELINE",
     initialRepository: "EMPTY",
     initialReactorTargets: "ABSENT",
-    sourceArchiveSha256:
-      "0e068cba5f5cd1a37b2b7cc4a0d7c26476bb0b19cd13375f6af4440a68bb5d7e",
+    sourceCommit: REFERENCE_RECIPE.sourceCommit,
+    sourceArchiveSha256: PINNED_SOURCE_ARCHIVE_SHA256,
     elapsedMs,
     order: "BASELINE_BEFORE_KEY_PREPARATION",
     limits:
