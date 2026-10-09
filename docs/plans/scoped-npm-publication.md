@@ -188,6 +188,10 @@ The target/error migration audit may legitimately report `NO_OBSOLETE_USAGE`; th
 1. Complete the scoped implementation, Phase 21 ancestry/parity reconciliation and Phase 22 candidate qualification at one accepted source revision.
 2. Build and retain one complete scoped RC artifact through the approved release workflow; record its digest, manifest, seven exports, SBOM and fresh qualification evidence.
 3. Resolve the actual publication mode outside a credential-bearing run.
+   For rc.2, the scoped package already exists: use native `DIRECT_OIDC` publishing from `Hadden-Industries/owlapi`, `release.yml`, and the protected `npm-release` environment, with publish and dist-tag permissions.
+   The owner's 10 October approval binds the retained tarball SHA-256 `4f04d1456519fb75f23da51fce5174af0d4909ec7ea647cae2f4c9f4dc77b441`; the sole first-attempt publisher must verify that digest before writing.
+   Do not inject a persistent npm token or silently fall back to the historical bootstrap route.
+   The following bootstrap constraints remain applicable only to first publication of a new package.
    npm now supports staged publishing for a new package, but its documented first-stage operation publishes a public `0.0.0-stage` placeholder.
    The accepted no-placeholder requirement therefore keeps the existing bounded direct bootstrap as the applicable route for this real RC; do not probe staging by creating that placeholder.
    A dry run or organization membership does not prove write authority.
@@ -197,7 +201,7 @@ The target/error migration audit may legitimately report `NO_OBSOLETE_USAGE`; th
    Establish and verify `latest` through the native npm tag operation when publication under `next` does not do so; this channel update is covered by the same release authorization.
    The initial rc.1 record retains its actual observed tag state and original verification history.
    Retain the existing ambiguous-write reconciliation and bootstrap credential removal controls.
-   In the direct-bootstrap workflow, only attempt 1 may execute the credential-bearing npm write.
+   In the direct publication workflow, only attempt 1 may execute the authenticated npm write.
    If that write has an ambiguous response, or later verification fails, rerun failed jobs to perform read-only registry verification of the retained bytes; do not rerun the entire workflow.
    Verification binds the original signed publication run/attempt and authenticated publisher-job result, separately from the current verification attempt.
    Absent, conflicting or unprovable registry state remains a failure and cannot authorize another write.

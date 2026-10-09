@@ -58,7 +58,7 @@ jobs:
       - name: Install the reviewed preflight tools
         run: npm ci
         timeout-minutes: 15
-      - name: Verify the protected-main, tag-absence, and reviewed direct-bootstrap boundary
+      - name: Verify the protected-main, tag-absence, and reviewed OIDC publication boundary
         env:
           OWLAPI_QUALIFICATION_ONLY: ${{ inputs.qualification_only }}
         run: npm run release:preflight
@@ -1577,7 +1577,7 @@ jobs:
 
   npm_release:
     if: ${{ !inputs.qualification_only }}
-    name: Release / npm direct bootstrap
+    name: Release / npm trusted publisher
     needs:
       - candidate
       - draft_release
@@ -1624,16 +1624,14 @@ jobs:
         # An absent or mismatching publication fails there; it never authorizes another write.
         if: ${{ github.run_attempt == 1 }}
         working-directory: .release/download
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_BOOTSTRAP_TOKEN }}
-        # GitHub resolves an absent secret to an empty string. Keep the guard
-        # inside the sole credential-bearing step so missing authority fails
-        # before npm receives the single authorized registry-write request.
+        # npm exchanges the protected job's GitHub OIDC identity. No persistent
+        # npm credential or authentication fallback belongs in this job.
         run: |
-          if [[ -z "$NODE_AUTH_TOKEN" ]]; then
-            echo "::error::The npm-release environment is missing its bootstrap credential."
+          if [[ -z "${ACTIONS_ID_TOKEN_REQUEST_URL:-}" || -z "${ACTIONS_ID_TOKEN_REQUEST_TOKEN:-}" ]]; then
+            echo "::error::The protected npm-release job has no GitHub OIDC identity."
             exit 1
           fi
+          echo "4f04d1456519fb75f23da51fce5174af0d4909ec7ea647cae2f4c9f4dc77b441  hadden-industries-owlapi-0.1.0-rc.2.tgz" | sha256sum --check --strict
           npm publish hadden-industries-owlapi-0.1.0-rc.2.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/
           npm dist-tag add @hadden-industries/owlapi@0.1.0-rc.2 latest --registry=https://registry.npmjs.org/
         timeout-minutes: 5

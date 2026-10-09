@@ -694,7 +694,7 @@ describe("repository workflow governance", () => {
     expect(auditReleaseMutationBoundary(broadened)).toEqual(
       expect.arrayContaining([
         expect.stringMatching(/exactly one id-token writer/u),
-        expect.stringMatching(/exactly one bootstrap-token reference/u),
+        expect.stringMatching(/no bootstrap-token reference/u),
       ]),
     );
   });
@@ -731,6 +731,42 @@ describe("repository workflow governance", () => {
       ).toMatch(/latest write/u);
     },
   );
+
+  test.each([
+    "missing OIDC",
+    "inverted OIDC",
+    "wrong artifact",
+    "token fallback",
+  ])("rejects an unsafe trusted publisher: %s", (mutation) => {
+    const document = parseDocument(workflowSource("release.yml"));
+    const publish = document
+      .getIn(["jobs", "npm_release", "steps"])
+      .items.find((step) => step.get("run")?.includes("npm publish "));
+    const source = publish.get("run");
+    if (mutation === "missing OIDC")
+      publish.set("run", source.replace(/if \[\[.*?\n.*?\n.*?\n.*?fi\n/u, ""));
+    if (mutation === "inverted OIDC")
+      publish.set(
+        "run",
+        source.replace(
+          'if [[ -z "${ACTIONS_ID_TOKEN_REQUEST_URL:-}"',
+          'if [[ -n "${ACTIONS_ID_TOKEN_REQUEST_URL:-}"',
+        ),
+      );
+    if (mutation === "wrong artifact")
+      publish.set(
+        "run",
+        source.replace(
+          "4f04d1456519fb75f23da51fce5174af0d4909ec7ea647cae2f4c9f4dc77b441",
+          "a".repeat(64),
+        ),
+      );
+    if (mutation === "token fallback")
+      publish.set("env", { NODE_AUTH_TOKEN: "${{ secrets.NPM_TOKEN }}" });
+    expect(auditReleaseMutationBoundary(document.toString())).toContain(
+      "release.yml:npm_release must require OIDC and the exact owner-approved artifact without token fallback",
+    );
+  });
 
   test("rejects a scoped publisher that can write again during a failed-job rerun", () => {
     const document = parseDocument(
@@ -772,7 +808,6 @@ describe("repository workflow governance", () => {
   });
 
   test.each([
-    ["release", ".github/workflows/release.yml", auditReleaseMutationBoundary],
     [
       "reconciliation",
       ".github/workflows/release-reconciliation.yml",

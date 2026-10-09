@@ -1251,7 +1251,7 @@ const validateReleaseMutationBoundary = (
   requireFields(
     publication,
     {
-      name: `${prefix} / npm direct bootstrap`,
+      name: `${prefix} / npm ${reconciliation ? "direct bootstrap" : "trusted publisher"}`,
       environment: { name: "npm-release" },
       permissions: { contents: "read", "id-token": "write" },
     },
@@ -1312,15 +1312,39 @@ const validateReleaseMutationBoundary = (
     violations,
     actionSteps(publication, "actions/checkout").length === 0 &&
       publication?.permissions?.contents !== "write" &&
-      occurrences(publication, "NPM_BOOTSTRAP_TOKEN") === 1 &&
+      occurrences(publication, "NPM_BOOTSTRAP_TOKEN") ===
+        (reconciliation ? 1 : 0) &&
       occurrences(publication, "npm publish ") === 1,
     `${fileName}:npm_release must have no checkout/write expansion or duplicate token/publish authority`,
   );
-  add(
-    violations,
-    hasBootstrapCredentialGuard(publication, publishCommand),
-    `${fileName}:npm_release is missing bootstrap credential fail-closed behavior`,
-  );
+  if (reconciliation)
+    add(
+      violations,
+      hasBootstrapCredentialGuard(publication, publishCommand),
+      `${fileName}:npm_release is missing bootstrap credential fail-closed behavior`,
+    );
+  else {
+    const publish = steps(publication).find((step) =>
+      step.run?.includes(publishCommand),
+    );
+    const guard =
+      'if [[ -z "${ACTIONS_ID_TOKEN_REQUEST_URL:-}" || -z "${ACTIONS_ID_TOKEN_REQUEST_TOKEN:-}" ]]; then';
+    const approvedDigest =
+      'echo "4f04d1456519fb75f23da51fce5174af0d4909ec7ea647cae2f4c9f4dc77b441  hadden-industries-owlapi-0.1.0-rc.2.tgz" | sha256sum --check --strict';
+    add(
+      violations,
+      publish?.run?.includes(guard) &&
+        publish.run
+          .slice(
+            publish.run.indexOf(guard),
+            publish.run.indexOf(publishCommand),
+          )
+          .includes("exit 1") &&
+        publish.run.includes(`${approvedDigest}\n${publishCommand}`) &&
+        !JSON.stringify(workflow).includes("NODE_AUTH_TOKEN"),
+      `${fileName}:npm_release must require OIDC and the exact owner-approved artifact without token fallback`,
+    );
+  }
 
   const finalize = workflowJobs.finalize_release;
   add(
@@ -1367,8 +1391,8 @@ const validateReleaseMutationBoundary = (
   );
   add(
     violations,
-    occurrences(workflow, "NPM_BOOTSTRAP_TOKEN") === 1,
-    `${fileName} must contain exactly one bootstrap-token reference`,
+    occurrences(workflow, "NPM_BOOTSTRAP_TOKEN") === (reconciliation ? 1 : 0),
+    `${fileName} must contain ${reconciliation ? "exactly one bootstrap-token reference" : "no bootstrap-token reference"}`,
   );
   add(
     violations,
