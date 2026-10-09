@@ -22,7 +22,7 @@ UO changed development/documentation commands; WebVOWL changed development depen
 The OwlAPI dependency declarations and all inventoried OWL interface code remain unchanged.
 This refresh changes source identities and their derived inventory digest; it preserves the 68 producer assertions and the strict rejection of future unreviewed source changes.
 
-The inventory consists of 68 native named assertions: eight boundary groups and 60 explicit public model shape cases.
+The inventory consists of 69 native named assertions: nine boundary groups and 60 explicit public model shape cases.
 The reviewed names live in `test/consumers/owl-contract/public-model-cases.js`; cases spell out supplied operands and expected public fields.
 Each owning probe must fail when its promised public value changes.
 Neither candidate output nor consumer output is used to generate an expected semantic result.
@@ -37,6 +37,7 @@ Neither candidate output nor consumer output is used to generate an expected sem
 | UO collapse/writer/standalone verifier                                                              | Imports closure/provider/merger, identity and annotation changes, source/target getters, deterministic storage and unchanged-target failure; four authored closure documents and expected counts/axioms | imports closure, merger, ontology changes and storage failure contracts                                 |
 | WebVOWL `canonicalVowlSourceAcquisition.js`, `canonicalInputSelection.js`, `webMcpToolContracts.js` | Public format key/media/extension metadata, positive bounded safe defaults and immutable caller configuration; independently authored registry and explicit custom limits                               | public format metadata and acquisition-independent loader configuration                                 |
 | UO document loader; WebVOWL `importResolver.js`                                                     | Public missing/unloadable/resource/security error constructors, codes, native causes and supplied detail fields                                                                                         | public import, resource and security error identity and details; graph loading failure                  |
+| UO materializer prefix preservation; public writer configuration                                    | Manager-local immutable settings, copied RDF/XML prefixes, reserved-prefix rejection, configured save and reload; authored configuration and OWL fixtures                                               | manager-local immutable writer configuration and configured RDF/XML save                                |
 
 The reused `test/import-closure/public-contract.js` specifies independent OWL structures and failure expectations and already runs in producer browser modes.
 Its closure fixture includes shared/cyclic relationships, annotation changes, identity changes, deterministic serialization and non-representable storage.
@@ -128,6 +129,11 @@ WebVOWL's only captured change is its root manifest's documentation tooling comm
 The existing shared writer-configuration probe now also loads an authored RDF/XML prefix, copies it through `RDFXMLDocumentFormat.copyPrefixesFrom`, rejects a reserved XML prefix, saves through the public manager, and reloads the authored class axiom.
 The same probe runs against installed Node, browser document and dedicated worker consumers, retaining the existing named assertion inventory.
 Source bindings, candidate/fixture digests and browser import maps remain independently verified; future unreviewed source edits still fail admission.
+
+The subsequent 9 October 2026 source review advances WebVOWL from `b7ee72199d75674578c6657d90964c039959b390` to `a468e17701d495fd9e1a801aef169894b2045186`; UO remains at `9a3b5bff5aeaff4540f14bdf65baeffc1c0d188d`.
+The only changed captured blobs are WebVOWL's root and VOWL package manifests, which replace the published rc.1 dependency with the exact OwlAPI Git commit `ccace6afe201c6e2cc6a49e53b2d50bd6617916f`.
+Every inventoried OWL interface module is byte-identical to the previously reviewed snapshot, so the existing producer obligations and native assertions cover this source refresh.
+The reviewed source bindings and their derived inventory digest are refreshed under the existing admission policy.
 
 First principles place assertions with the party that owns the public guarantee: OwlAPI owns parsing/model/loading/storage/profile data; consumers own their composition and UI.
 Modern practice favors small independent contract fixtures at that seam, native package resolution and explicit artifact provenance.
