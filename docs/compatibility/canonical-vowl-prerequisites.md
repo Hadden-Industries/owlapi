@@ -119,7 +119,11 @@ The interpretation above states the published 2012 text; it does not assert an e
 
 ## Resources and verification
 
-Default limits are `maxWork: 1000000`, `maxDepth: 256`, `maxNumericDigits: 4096`, `maxLiteralLength: 1048576` and `timeoutMs: 30000`.
+Default limits are `maxWork: 1000000`, `maxDepth: 256`, `maxNumericDigits: 4096`, `maxLiteralLength: 1048576` and `timeoutMs: null`.
+Omitted or explicit `null` disables only the profile elapsed deadline; cancellation and other limits remain enforced.
+An explicit nonnegative safe integer retains its elapsed deadline, including `0`; zero is not an unlimited sentinel.
+Pass `{ timeoutMs: 30000 }` to retain the previous profile deadline.
+The loader's separate 30,000 ms default remains unchanged; see the [default-policy inventory](default-behavior-inventory.md).
 The depth ceiling is 512 and numeric-digit ceiling is 65536.
 XML traversal consumes the same work/depth budget; literal input size bounds the parser allocation.
 The XML parser fallback remains a lazy, bundler-visible import for workers without a native `DOMParser`.

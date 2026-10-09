@@ -117,6 +117,8 @@ const runConsumer = async (page, mode) => {
     singletonOperands: 1,
     invalidXml: true,
     bounded: "unverified",
+    noDeadline: "invalid",
+    cooperativeAbortName: "AbortError",
     abortName: "AbortError",
     stale: true,
   });

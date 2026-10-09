@@ -69,6 +69,16 @@ const ontology = await manager.loadOntologyFromOntologyDocument(
 
 assert.equal(ontology.getAxioms().size, 0);
 assert.equal(ontology.getImportsDeclarations().size, 0);
+const profile = new root.OWL2DLProfile();
+assert.equal((await profile.checkOntology(ontology)).status, "valid");
+assert.equal(
+  (await profile.checkOntology(ontology, { timeoutMs: null })).status,
+  "valid",
+);
+await assert.rejects(
+  profile.checkOntology(ontology, { timeoutMs: undefined }),
+  TypeError,
+);
 const parserMetadata = manager
   .getOntologyFormat(ontology)
   .getOntologyLoaderMetaData();

@@ -1,11 +1,13 @@
 import { ResourceLimitError } from "../../io/errors.js";
 
+const COOPERATIVE_YIELD_INTERVAL_MS = 50;
+
 const defaults = Object.freeze({
   maxWork: 1000000,
   maxDepth: 256,
   maxNumericDigits: 4096,
   maxLiteralLength: 1048576,
-  timeoutMs: 30000,
+  timeoutMs: null,
   sourceAssessment: false,
   signal: undefined,
 });
@@ -31,6 +33,7 @@ export const createProfileBudget = (options = {}) => {
     "maxLiteralLength",
     "timeoutMs",
   ]) {
+    if (key === "timeoutMs" && configuration[key] === null) continue;
     if (!Number.isSafeInteger(configuration[key]) || configuration[key] < 0)
       throw new TypeError(`${key} must be a nonnegative safe integer`);
   }
@@ -50,6 +53,7 @@ export const createProfileBudget = (options = {}) => {
   }
   Object.freeze(configuration);
   const started = performance.now();
+  let lastYieldAt = started;
   let work = 0;
   const check = (amount = 1) => {
     work += amount;
@@ -63,7 +67,10 @@ export const createProfileBudget = (options = {}) => {
         resource: "profileWork",
         limit: configuration.maxWork,
       });
-    if (performance.now() - started > configuration.timeoutMs)
+    if (
+      configuration.timeoutMs !== null &&
+      performance.now() - started > configuration.timeoutMs
+    )
       throw new ResourceLimitError("OWL profile deadline exceeded", {
         resource: "profileTimeoutMs",
         limit: configuration.timeoutMs,
@@ -71,8 +78,13 @@ export const createProfileBudget = (options = {}) => {
   };
   const checkpoint = async () => {
     check();
-    if (work % 256 === 0) {
+    // Yield for elapsed work, not every small batch: timer clamping otherwise
+    // dominates large assessments. Keep all work/depth and deadline checks.
+    if (performance.now() - lastYieldAt >= COOPERATIVE_YIELD_INTERVAL_MS) {
+      // scheduler.yield continuations can outrun an already queued timer in
+      // Chromium. A timer turn also admits caller-scheduled cancellation.
       await new Promise((resolve) => setTimeout(resolve, 0));
+      lastYieldAt = performance.now();
       check(0);
     }
   };

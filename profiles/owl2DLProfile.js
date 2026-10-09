@@ -10,6 +10,11 @@ export class OWL2DLProfile {
   getIRI() {
     return IRI.create("http://www.w3.org/ns/owl-profile/DL");
   }
+  /**
+   * Assess the ontology asynchronously. Omitted or null timeoutMs disables
+   * only the elapsed deadline; nonnegative safe integers (including zero)
+   * retain an explicit deadline. Other resource limits and aborts still apply.
+   */
   async checkOntology(ontology, options) {
     return new OWLProfileReport(
       ontology,

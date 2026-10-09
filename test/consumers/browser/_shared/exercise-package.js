@@ -125,6 +125,33 @@ const exerciseProfile = async () => {
     });
   }
   const bounded = await profile.checkOntology(loaded.ontology, { maxWork: 1 });
+  const noDeadline = await profile.checkOntology(xml, { timeoutMs: null });
+  // A timer can run only if real profile work gives the event loop a turn.
+  // This exercises native scheduling in both window and worker consumers.
+  const busyFactory = manager.getOWLDataFactory();
+  const busy = new model.OWLOntology({
+    axioms: Array.from({ length: 100000 }, (_, index) =>
+      busyFactory.getOWLDeclarationAxiom(
+        busyFactory.getOWLClass(model.IRI.create(`urn:browser:busy:${index}`)),
+      ),
+    ),
+  });
+  const timedController = new AbortController();
+  const cancellationTimer = globalThis.setTimeout(
+    () => timedController.abort(),
+    0,
+  );
+  let cooperativeAbortName;
+  try {
+    await profile.checkOntology(busy, {
+      signal: timedController.signal,
+      maxWork: 10000000,
+    });
+  } catch (error) {
+    cooperativeAbortName = error.name;
+  } finally {
+    globalThis.clearTimeout(cancellationTimer);
+  }
   const controller = new AbortController();
   controller.abort();
   let abortName;
@@ -167,6 +194,8 @@ const exerciseProfile = async () => {
     ),
     xmlControls,
     bounded: bounded.status,
+    noDeadline: noDeadline.status,
+    cooperativeAbortName,
     abortName,
     stale: mutated.sourceAssessment.unverifiedChecks.some(
       ({ code }) => code === "SOURCE_EVIDENCE_STALE",
