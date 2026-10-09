@@ -13,16 +13,16 @@ describe("GitHub release state", () => {
         {
           id: 42,
           draft: true,
-          tag_name: "v0.1.0-rc.1",
+          tag_name: "v0.1.0-rc.2",
           target_commitish: "a".repeat(40),
           html_url:
-            "https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.1",
+            "https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.2",
         },
-        { tag: "v0.1.0-rc.1", commit: "a".repeat(40) },
+        { tag: "v0.1.0-rc.2", commit: "a".repeat(40) },
       ),
     ).toEqual({
       id: 42,
-      url: "https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.1",
+      url: "https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.2",
     });
   });
 
@@ -32,12 +32,12 @@ describe("GitHub release state", () => {
         {
           id: 42,
           draft: true,
-          tag_name: "v0.1.0-rc.1",
+          tag_name: "v0.1.0-rc.2",
           target_commitish: "main",
           html_url:
-            "https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.1",
+            "https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.2",
         },
-        { tag: "v0.1.0-rc.1", commit: "a".repeat(40) },
+        { tag: "v0.1.0-rc.2", commit: "a".repeat(40) },
       ).id,
     ).toBe(42);
   });
@@ -48,10 +48,10 @@ describe("GitHub release state", () => {
         {
           id: 42,
           draft: false,
-          tag_name: "v0.1.0-rc.1",
+          tag_name: "v0.1.0-rc.2",
           target_commitish: "a".repeat(40),
         },
-        { tag: "v0.1.0-rc.1", commit: "a".repeat(40) },
+        { tag: "v0.1.0-rc.2", commit: "a".repeat(40) },
       ),
     ).toThrow(/draft/u);
   });
@@ -64,14 +64,14 @@ describe("GitHub release state", () => {
           draft: false,
           prerelease: true,
           immutable: true,
-          tag_name: "v0.1.0-rc.1",
+          tag_name: "v0.1.0-rc.2",
           target_commitish: "a".repeat(40),
           published_at: "2026-08-28T12:30:00Z",
           html_url:
-            "https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.1",
+            "https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.2",
         },
         {
-          tag: "v0.1.0-rc.1",
+          tag: "v0.1.0-rc.2",
           commit: "a".repeat(40),
           requireImmutable: true,
         },
@@ -80,7 +80,7 @@ describe("GitHub release state", () => {
       id: 42,
       immutable: true,
       publishedAt: "2026-08-28T12:30:00Z",
-      url: "https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.1",
+      url: "https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.2",
     });
   });
 
@@ -90,12 +90,12 @@ describe("GitHub release state", () => {
         assets: [
           { name: "SHA256SUMS", size: 190, digest: `sha256:${"a".repeat(64)}` },
           {
-            name: "hadden-industries-owlapi-0.1.0-rc.1.cdx.json",
+            name: "hadden-industries-owlapi-0.1.0-rc.2.cdx.json",
             size: 700,
             digest: `sha256:${"b".repeat(64)}`,
           },
           {
-            name: "hadden-industries-owlapi-0.1.0-rc.1.tgz",
+            name: "hadden-industries-owlapi-0.1.0-rc.2.tgz",
             size: 900,
             digest: `sha256:${"c".repeat(64)}`,
           },
@@ -103,12 +103,12 @@ describe("GitHub release state", () => {
         expected: [
           { name: "SHA256SUMS", bytes: 190, sha256: "a".repeat(64) },
           {
-            name: "hadden-industries-owlapi-0.1.0-rc.1.cdx.json",
+            name: "hadden-industries-owlapi-0.1.0-rc.2.cdx.json",
             bytes: 700,
             sha256: "b".repeat(64),
           },
           {
-            name: "hadden-industries-owlapi-0.1.0-rc.1.tgz",
+            name: "hadden-industries-owlapi-0.1.0-rc.2.tgz",
             bytes: 900,
             sha256: "c".repeat(64),
           },

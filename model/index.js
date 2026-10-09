@@ -22,6 +22,11 @@ export {
 } from "./dispatch.js";
 export { IRI, OWLStructuralObject, StructuralSet } from "./structural.js";
 export { AddOntologyAnnotation } from "./addOntologyAnnotation.js";
+export { AddAxiom } from "./addAxiom.js";
+export { RemoveAxiom } from "./removeAxiom.js";
+export { AddImport } from "./addImport.js";
+export { RemoveImport } from "./removeImport.js";
+export { RemoveOntologyAnnotation } from "./removeOntologyAnnotation.js";
 export { OWLDataFactory } from "./owlDataFactory.js";
 export { OWLDocumentFormat } from "./owlDocumentFormat.js";
 export { OWLOntology } from "./owlOntology.js";

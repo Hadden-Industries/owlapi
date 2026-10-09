@@ -699,6 +699,39 @@ describe("repository workflow governance", () => {
     );
   });
 
+  test.each(["missing", "stale version", "before publish", "duplicate"])(
+    "rejects an invalid rc.2 latest mutation: %s",
+    (mutation) => {
+      const document = parseDocument(workflowSource("release.yml"));
+      const step = document
+        .getIn(["jobs", "npm_release", "steps"])
+        .items.find((candidate) =>
+          candidate.get("run")?.includes("npm publish "),
+        );
+      const source = step.get("run");
+      const lines = source.trimEnd().split("\n");
+      const latest = lines.find((line) => line.startsWith("npm dist-tag add "));
+      expect(latest).toBeDefined();
+      let changed;
+      if (mutation === "missing") changed = source.replace(`${latest}\n`, "");
+      if (mutation === "stale version")
+        changed = source.replace(latest, latest.replace("rc.2", "rc.1"));
+      if (mutation === "before publish") {
+        const publish = lines.findIndex((line) =>
+          line.startsWith("npm publish "),
+        );
+        lines.splice(lines.indexOf(latest), 1);
+        lines.splice(publish, 0, latest);
+        changed = lines.join("\n") + "\n";
+      }
+      if (mutation === "duplicate") changed = source + latest + "\n";
+      step.set("run", changed);
+      expect(
+        auditReleaseMutationBoundary(document.toString()).join("\n"),
+      ).toMatch(/latest write/u);
+    },
+  );
+
   test("rejects a scoped publisher that can write again during a failed-job rerun", () => {
     const document = parseDocument(
       readFileSync(".github/workflows/release.yml", "utf8"),

@@ -23,7 +23,7 @@ export const validateReleaseEvidence = (record) => {
       `Release evidence violates its strict schema: ${ajv.errorsText(validate.errors)}`,
     );
   }
-  if (record.schemaVersion === 4) {
+  if ([4, 5].includes(record.schemaVersion)) {
     assertArchivedOwlContractReport(record.producerContract, {
       package: { name: record.package.name, version: record.package.version },
       candidateSha256: record.candidate.tarball.sha256,

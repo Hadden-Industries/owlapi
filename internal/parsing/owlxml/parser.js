@@ -1,3 +1,8 @@
+import {
+  isXmlNameStartCodePoint,
+  isXmlNameCodePoint,
+  isNcName,
+} from "../xml/xmlNames.js";
 import { OWLDocumentFormats } from "../../../formats/owlDocumentFormats.js";
 import {
   OWLSyntaxError,
@@ -61,43 +66,8 @@ const hasForbiddenIriCharacter = (value) => {
 const isAbsoluteIri = (value) =>
   /^[A-Za-z][A-Za-z0-9+.-]*:/u.test(value) && !hasForbiddenIriCharacter(value);
 
-const isXmlNameStartCodePoint = (codePoint) =>
-  codePoint === 0x5f ||
-  (codePoint >= 0x41 && codePoint <= 0x5a) ||
-  (codePoint >= 0x61 && codePoint <= 0x7a) ||
-  (codePoint >= 0xc0 && codePoint <= 0xd6) ||
-  (codePoint >= 0xd8 && codePoint <= 0xf6) ||
-  (codePoint >= 0xf8 && codePoint <= 0x2ff) ||
-  (codePoint >= 0x370 && codePoint <= 0x37d) ||
-  (codePoint >= 0x37f && codePoint <= 0x1fff) ||
-  (codePoint >= 0x200c && codePoint <= 0x200d) ||
-  (codePoint >= 0x2070 && codePoint <= 0x218f) ||
-  (codePoint >= 0x2c00 && codePoint <= 0x2fef) ||
-  (codePoint >= 0x3001 && codePoint <= 0xd7ff) ||
-  (codePoint >= 0xf900 && codePoint <= 0xfdcf) ||
-  (codePoint >= 0xfdf0 && codePoint <= 0xfffd) ||
-  (codePoint >= 0x10000 && codePoint <= 0xeffff);
-
-const isXmlNameCodePoint = (codePoint) =>
-  isXmlNameStartCodePoint(codePoint) ||
-  codePoint === 0x2d ||
-  codePoint === 0x2e ||
-  codePoint === 0xb7 ||
-  (codePoint >= 0x30 && codePoint <= 0x39) ||
-  (codePoint >= 0x300 && codePoint <= 0x36f) ||
-  (codePoint >= 0x203f && codePoint <= 0x2040);
-
 const codePoints = (value) =>
   [...value].map((character) => character.codePointAt(0));
-
-const isNcName = (value) => {
-  const points = codePoints(value);
-  return (
-    points.length > 0 &&
-    isXmlNameStartCodePoint(points[0]) &&
-    points.slice(1).every(isXmlNameCodePoint)
-  );
-};
 
 const isPnCharsBaseCodePoint = (codePoint) =>
   codePoint !== 0x5f && isXmlNameStartCodePoint(codePoint);

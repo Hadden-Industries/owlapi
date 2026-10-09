@@ -25,6 +25,13 @@ const argumentValue = (name) => {
 
 const readJson = (path) => JSON.parse(readFileSync(path, "utf8"));
 
+export const matchesScopedCandidateArtifactName = (name, runId, runAttempt) => {
+  const prefix = `${PACKAGE_FILE_STEM}-${PACKAGE_VERSION}-candidate-${runId}-`;
+  if (typeof name !== "string" || !name.startsWith(prefix)) return false;
+  const attempt = name.slice(prefix.length);
+  return /^[1-9][0-9]*$/u.test(attempt) && Number(attempt) <= runAttempt;
+};
+
 const candidateAsset = (directory, name) => {
   const path = join(directory, name);
   return { name, bytes: statSync(path).size, sha256: sha256File(path) };
@@ -253,11 +260,7 @@ const generateScopedEvidence = async () => {
     artifact.workflow_run?.head_sha !== commit ||
     artifact.digest !== digest ||
     artifact.expired ||
-    !new RegExp(
-      `^${PACKAGE_FILE_STEM}-0\\.1\\.0-rc\\.1-candidate-${runId}-[1-9][0-9]*$`,
-      "u",
-    ).test(artifact.name ?? "") ||
-    Number(artifact.name.split("-").at(-1)) > runAttempt
+    !matchesScopedCandidateArtifactName(artifact.name, runId, runAttempt)
   )
     throw new Error(
       "Scoped artifact or workflow server identity differs from the current run.",
@@ -290,6 +293,8 @@ const generateScopedEvidence = async () => {
     tag.sourceCommit !== commit ||
     tag.tag !== `v${PACKAGE_VERSION}` ||
     registry.coordinate !== coordinate ||
+    registry.next !== PACKAGE_VERSION ||
+    registry.latest !== PACKAGE_VERSION ||
     registry.tarballSha256 !== candidate.tarball.sha256 ||
     ["alias", "scoped"].some(
       (mode) =>
@@ -343,7 +348,8 @@ const generateScopedEvidence = async () => {
       tarballUrl: registry.tarballUrl,
       verifiedAt: registry.verifiedAt,
       next: PACKAGE_VERSION,
-      latestPresent: false,
+      latest: registry.latest,
+      latestPresent: true,
       signatureAuditResult: "PASS",
       provenance: registry.provenance,
       publisherJob,

@@ -2,7 +2,7 @@
   "$schema": "./java-api-surface.schema.json",
   "schemaVersion": 1,
   "packageName": "@hadden-industries/owlapi",
-  "packageVersion": "0.1.0-rc.1",
+  "packageVersion": "0.1.0-rc.2",
   "javaReference": {
     "version": "5.5.1",
     "revision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
@@ -57,6 +57,8 @@
         "apibinding.OWLManager",
         "model.ANNOTATION_VALUE_KINDS",
         "model.AXIOM_KINDS",
+        "model.AddAxiom",
+        "model.AddImport",
         "model.AddOntologyAnnotation",
         "model.CLASS_EXPRESSION_KINDS",
         "model.DATA_PROPERTY_EXPRESSION_KINDS",
@@ -73,6 +75,9 @@
         "model.OWLOntologyManager",
         "model.OWLStructuralObject",
         "model.OWL_OBJECT_KINDS",
+        "model.RemoveAxiom",
+        "model.RemoveImport",
+        "model.RemoveOntologyAnnotation",
         "model.SetOntologyID",
         "model.StructuralSet",
         "model.dispatchAnnotationValue",
@@ -106,10 +111,24 @@
         "io.UnsupportedConstructError",
         "io.XmlParseError",
         "formats.OWLDocumentFormats",
+        "util.AnnotationValueShortFormProvider",
+        "util.OWLEntityRemover",
+        "util.OWLEntityRenamer",
+        "util.OWLObjectDuplicator",
         "util.OWLOntologyImportsClosureSetProvider",
         "util.OWLOntologyMerger",
+        "util.SimpleShortFormProvider",
         "profiles.OWL2DLProfile",
-        "profiles.OWLProfileReport"
+        "profiles.OWL2ELProfile",
+        "profiles.OWL2QLProfile",
+        "profiles.OWL2RLProfile",
+        "profiles.OWLProfileReport",
+        "model/parameters.AxiomAnnotations",
+        "model/parameters.Imports",
+        "search.EntitySearcher",
+        "manchestersyntax/renderer.ManchesterOWLSyntaxOWLObjectRendererImpl",
+        "modularity/locality.LocalityClass",
+        "modularity/locality.SyntacticLocalityModuleExtractor"
       ]
     },
     {
@@ -131,6 +150,8 @@
       "ownedBindingIds": [
         "model.ANNOTATION_VALUE_KINDS",
         "model.AXIOM_KINDS",
+        "model.AddAxiom",
+        "model.AddImport",
         "model.AddOntologyAnnotation",
         "model.CLASS_EXPRESSION_KINDS",
         "model.DATA_PROPERTY_EXPRESSION_KINDS",
@@ -148,6 +169,9 @@
         "model.OWLOntologyWriterConfiguration",
         "model.OWLStructuralObject",
         "model.OWL_OBJECT_KINDS",
+        "model.RemoveAxiom",
+        "model.RemoveImport",
+        "model.RemoveOntologyAnnotation",
         "model.SetOntologyID",
         "model.StructuralSet",
         "model.dispatchAnnotationValue",
@@ -210,10 +234,15 @@
       "npmSpecifier": "@hadden-industries/owlapi/util",
       "exposure": "PUBLIC",
       "firstPublicRelease": "0.1.0-rc.1",
-      "rationale": "Mirrors the Java OWLAPI util namespace for the exact approved closure provider and ontology merger entry points.",
+      "rationale": "Mirrors the Java OWLAPI util namespace for the exact approved closure, merger, transform, and short-form provider entry points.",
       "ownedBindingIds": [
+        "util.AnnotationValueShortFormProvider",
+        "util.OWLEntityRemover",
+        "util.OWLEntityRenamer",
+        "util.OWLObjectDuplicator",
         "util.OWLOntologyImportsClosureSetProvider",
-        "util.OWLOntologyMerger"
+        "util.OWLOntologyMerger",
+        "util.SimpleShortFormProvider"
       ]
     },
     {
@@ -223,7 +252,57 @@
       "exposure": "PUBLIC",
       "firstPublicRelease": "0.1.0-rc.1",
       "rationale": "Owns the approved asynchronous OWL 2 DL checker and immutable report; source-qualified evidence is separate from the formal Java-shaped verdict.",
-      "ownedBindingIds": ["profiles.OWL2DLProfile", "profiles.OWLProfileReport"]
+      "ownedBindingIds": [
+        "profiles.OWL2DLProfile",
+        "profiles.OWL2ELProfile",
+        "profiles.OWL2QLProfile",
+        "profiles.OWL2RLProfile",
+        "profiles.OWLProfileReport"
+      ]
+    },
+    {
+      "id": "model/parameters",
+      "javaPackage": "org.semanticweb.owlapi.model.parameters",
+      "npmSpecifier": "@hadden-industries/owlapi/model/parameters",
+      "exposure": "PUBLIC",
+      "firstPublicRelease": "0.1.0-rc.2",
+      "rationale": "Owns the approved explicit query enums.",
+      "ownedBindingIds": [
+        "model/parameters.AxiomAnnotations",
+        "model/parameters.Imports"
+      ]
+    },
+    {
+      "id": "search",
+      "javaPackage": "org.semanticweb.owlapi.search",
+      "npmSpecifier": "@hadden-industries/owlapi/search",
+      "exposure": "PUBLIC",
+      "firstPublicRelease": "0.1.0-rc.2",
+      "rationale": "Owns the selected asserted EntitySearcher operations.",
+      "ownedBindingIds": ["search.EntitySearcher"]
+    },
+    {
+      "id": "manchestersyntax/renderer",
+      "javaPackage": "org.semanticweb.owlapi.manchestersyntax.renderer",
+      "npmSpecifier": "@hadden-industries/owlapi/manchestersyntax/renderer",
+      "exposure": "PUBLIC",
+      "firstPublicRelease": "0.1.0-rc.2",
+      "rationale": "Owns the selected plain-text Manchester object renderer.",
+      "ownedBindingIds": [
+        "manchestersyntax/renderer.ManchesterOWLSyntaxOWLObjectRendererImpl"
+      ]
+    },
+    {
+      "id": "modularity/locality",
+      "javaPackage": "org.semanticweb.owlapi.modularity.locality",
+      "npmSpecifier": "@hadden-industries/owlapi/modularity/locality",
+      "exposure": "PUBLIC",
+      "firstPublicRelease": "0.1.0-rc.2",
+      "rationale": "Owns the selected syntactic-locality modes and module extractor.",
+      "ownedBindingIds": [
+        "modularity/locality.LocalityClass",
+        "modularity/locality.SyntacticLocalityModuleExtractor"
+      ]
     }
   ],
   "bindings": [
@@ -362,6 +441,77 @@
       ],
       "verification": ["model/model.test.js", "test/package-boundary.test.mjs"],
       "guidance": "Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace."
+    },
+    {
+      "id": "model.AddAxiom",
+      "jsExport": "AddAxiom",
+      "kind": "CLASS",
+      "summary": "An immutable nominal change record consumed by the manager's atomic batch transaction.",
+      "capabilityIds": ["manager.atomic-changes"],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicRelease": "0.1.0-rc.2",
+      "publicSpecifier": "@hadden-industries/owlapi/model",
+      "sourceModule": "model/addAxiom.js",
+      "javaPackage": "org.semanticweb.owlapi.model",
+      "javaType": "org.semanticweb.owlapi.model.AddAxiom",
+      "closestJavaAuthority": "org.semanticweb.owlapi.model.AddAxiom",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "callShapes": ["new AddAxiom(ontology, axiom)"],
+      "supportedMembers": ["prototype.getAxiom", "prototype.getOntology"],
+      "omittedMembers": [
+        "ChangeApplied, change-data serialization, visitors and inverse-change protocols"
+      ],
+      "publicErrors": [],
+      "semanticQualifications": [
+        "Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable.",
+        "Records retain canonical ontology identity and validated immutable structural values. Manager application preserves the established boolean adaptation and validates the complete batch before publication. Import changes reconcile only loaded manager state and never acquire documents."
+      ],
+      "verification": [
+        "model/rc2Changes.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
+    },
+    {
+      "id": "model.AddImport",
+      "jsExport": "AddImport",
+      "kind": "CLASS",
+      "summary": "An immutable nominal change record consumed by the manager's atomic batch transaction.",
+      "capabilityIds": ["manager.atomic-changes"],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicRelease": "0.1.0-rc.2",
+      "publicSpecifier": "@hadden-industries/owlapi/model",
+      "sourceModule": "model/addImport.js",
+      "javaPackage": "org.semanticweb.owlapi.model",
+      "javaType": "org.semanticweb.owlapi.model.AddImport",
+      "closestJavaAuthority": "org.semanticweb.owlapi.model.AddImport",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "callShapes": ["new AddImport(ontology, importsDeclaration)"],
+      "supportedMembers": [
+        "prototype.getImportDeclaration",
+        "prototype.getOntology"
+      ],
+      "omittedMembers": [
+        "ChangeApplied, change-data serialization, visitors and inverse-change protocols"
+      ],
+      "publicErrors": [],
+      "semanticQualifications": [
+        "Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable.",
+        "Records retain canonical ontology identity and validated immutable structural values. Manager application preserves the established boolean adaptation and validates the complete batch before publication. Import changes reconcile only loaded manager state and never acquire documents."
+      ],
+      "verification": [
+        "model/rc2Changes.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "id": "model.AddOntologyAnnotation",
@@ -909,18 +1059,62 @@
       "compatibility": "ADAPTED",
       "callShapes": ["new OWLOntology(...arguments)"],
       "supportedMembers": [
+        "prototype.containsAxiom",
+        "prototype.containsAxiomIgnoreAnnotations",
+        "prototype.containsEntityInSignature",
+        "prototype.getAnnotationAssertionAxioms",
         "prototype.getAnnotationPropertiesInSignature",
+        "prototype.getAnnotationPropertyDomainAxioms",
+        "prototype.getAnnotationPropertyRangeAxioms",
         "prototype.getAnnotations",
+        "prototype.getAsymmetricObjectPropertyAxioms",
+        "prototype.getAxiomCount",
         "prototype.getAxioms",
         "prototype.getAxiomsByType",
+        "prototype.getAxiomsIgnoreAnnotations",
+        "prototype.getClassAssertionAxioms",
         "prototype.getClassesInSignature",
         "prototype.getDataPropertiesInSignature",
+        "prototype.getDataPropertyAssertionAxioms",
+        "prototype.getDataPropertyDomainAxioms",
+        "prototype.getDataPropertyRangeAxioms",
+        "prototype.getDataSubPropertyAxiomsForSubProperty",
+        "prototype.getDataSubPropertyAxiomsForSuperProperty",
         "prototype.getDatatypesInSignature",
+        "prototype.getDeclarationAxioms",
+        "prototype.getDifferentIndividualAxioms",
+        "prototype.getDisjointClassesAxioms",
+        "prototype.getEntitiesInSignature",
+        "prototype.getEquivalentClassesAxioms",
+        "prototype.getFunctionalDataPropertyAxioms",
+        "prototype.getFunctionalObjectPropertyAxioms",
         "prototype.getImportsDeclarations",
         "prototype.getIndividualsInSignature",
+        "prototype.getInverseFunctionalObjectPropertyAxioms",
+        "prototype.getInverseObjectPropertyAxioms",
+        "prototype.getIrreflexiveObjectPropertyAxioms",
+        "prototype.getLogicalAxiomCount",
+        "prototype.getLogicalAxioms",
+        "prototype.getNegativeDataPropertyAssertionAxioms",
+        "prototype.getNegativeObjectPropertyAssertionAxioms",
         "prototype.getObjectPropertiesInSignature",
+        "prototype.getObjectPropertyAssertionAxioms",
+        "prototype.getObjectPropertyDomainAxioms",
+        "prototype.getObjectPropertyRangeAxioms",
+        "prototype.getObjectSubPropertyAxiomsForSubProperty",
+        "prototype.getObjectSubPropertyAxiomsForSuperProperty",
         "prototype.getOntologyID",
-        "prototype.getReferencingAxioms"
+        "prototype.getPunnedIRIs",
+        "prototype.getReferencedAnonymousIndividuals",
+        "prototype.getReferencingAxioms",
+        "prototype.getReflexiveObjectPropertyAxioms",
+        "prototype.getSameIndividualAxioms",
+        "prototype.getSignature",
+        "prototype.getSubAnnotationPropertyOfAxioms",
+        "prototype.getSubClassAxiomsForSubClass",
+        "prototype.getSubClassAxiomsForSuperClass",
+        "prototype.getSymmetricObjectPropertyAxioms",
+        "prototype.getTransitiveObjectPropertyAxioms"
       ],
       "omittedMembers": [
         "Java stream-returning query overloads",
@@ -1010,6 +1204,8 @@
         "prototype.importsClosure",
         "prototype.loadOntologyFromOntologyDocument",
         "prototype.loadOntologyGraphFromOntologyDocument",
+        "prototype.removeAxiom",
+        "prototype.removeAxioms",
         "prototype.saveOntology",
         "prototype.setOntologyWriterConfiguration"
       ],
@@ -1065,7 +1261,7 @@
       "progress": "COMPLETE",
       "exposure": "PUBLIC",
       "stability": "PRERELEASE",
-      "firstPublicRelease": null,
+      "firstPublicRelease": "0.1.0-rc.2",
       "publicSpecifier": "@hadden-industries/owlapi/model",
       "sourceModule": "model/owlOntologyWriterConfiguration.js",
       "javaPackage": "org.semanticweb.owlapi.model",
@@ -1129,6 +1325,8 @@
       "supportedMembers": [
         "prototype.equals",
         "prototype.equalsIgnoreAnnotations",
+        "prototype.getAnnotatedAxiom",
+        "prototype.getAxiomWithoutAnnotations",
         "prototype.structuralKey",
         "prototype.structuralKeyWithoutAnnotations",
         "prototype.toStructuralTuple"
@@ -1248,6 +1446,111 @@
       ],
       "verification": ["model/model.test.js", "test/package-boundary.test.mjs"],
       "guidance": "Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace."
+    },
+    {
+      "id": "model.RemoveAxiom",
+      "jsExport": "RemoveAxiom",
+      "kind": "CLASS",
+      "summary": "An immutable nominal change record consumed by the manager's atomic batch transaction.",
+      "capabilityIds": ["manager.atomic-changes"],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicRelease": "0.1.0-rc.2",
+      "publicSpecifier": "@hadden-industries/owlapi/model",
+      "sourceModule": "model/removeAxiom.js",
+      "javaPackage": "org.semanticweb.owlapi.model",
+      "javaType": "org.semanticweb.owlapi.model.RemoveAxiom",
+      "closestJavaAuthority": "org.semanticweb.owlapi.model.RemoveAxiom",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "callShapes": ["new RemoveAxiom(ontology, axiom)"],
+      "supportedMembers": ["prototype.getAxiom", "prototype.getOntology"],
+      "omittedMembers": [
+        "ChangeApplied, change-data serialization, visitors and inverse-change protocols"
+      ],
+      "publicErrors": [],
+      "semanticQualifications": [
+        "Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable.",
+        "Records retain canonical ontology identity and validated immutable structural values. Manager application preserves the established boolean adaptation and validates the complete batch before publication. Import changes reconcile only loaded manager state and never acquire documents."
+      ],
+      "verification": [
+        "model/rc2Changes.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
+    },
+    {
+      "id": "model.RemoveImport",
+      "jsExport": "RemoveImport",
+      "kind": "CLASS",
+      "summary": "An immutable nominal change record consumed by the manager's atomic batch transaction.",
+      "capabilityIds": ["manager.atomic-changes"],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicRelease": "0.1.0-rc.2",
+      "publicSpecifier": "@hadden-industries/owlapi/model",
+      "sourceModule": "model/removeImport.js",
+      "javaPackage": "org.semanticweb.owlapi.model",
+      "javaType": "org.semanticweb.owlapi.model.RemoveImport",
+      "closestJavaAuthority": "org.semanticweb.owlapi.model.RemoveImport",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "callShapes": ["new RemoveImport(ontology, importsDeclaration)"],
+      "supportedMembers": [
+        "prototype.getImportDeclaration",
+        "prototype.getOntology"
+      ],
+      "omittedMembers": [
+        "ChangeApplied, change-data serialization, visitors and inverse-change protocols"
+      ],
+      "publicErrors": [],
+      "semanticQualifications": [
+        "Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable.",
+        "Records retain canonical ontology identity and validated immutable structural values. Manager application preserves the established boolean adaptation and validates the complete batch before publication. Import changes reconcile only loaded manager state and never acquire documents."
+      ],
+      "verification": [
+        "model/rc2Changes.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
+    },
+    {
+      "id": "model.RemoveOntologyAnnotation",
+      "jsExport": "RemoveOntologyAnnotation",
+      "kind": "CLASS",
+      "summary": "An immutable nominal change record consumed by the manager's atomic batch transaction.",
+      "capabilityIds": ["manager.atomic-changes"],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicRelease": "0.1.0-rc.2",
+      "publicSpecifier": "@hadden-industries/owlapi/model",
+      "sourceModule": "model/removeOntologyAnnotation.js",
+      "javaPackage": "org.semanticweb.owlapi.model",
+      "javaType": "org.semanticweb.owlapi.model.RemoveOntologyAnnotation",
+      "closestJavaAuthority": "org.semanticweb.owlapi.model.RemoveOntologyAnnotation",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "callShapes": ["new RemoveOntologyAnnotation(ontology, annotation)"],
+      "supportedMembers": ["prototype.getAnnotation", "prototype.getOntology"],
+      "omittedMembers": [
+        "ChangeApplied, change-data serialization, visitors and inverse-change protocols"
+      ],
+      "publicErrors": [],
+      "semanticQualifications": [
+        "Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable.",
+        "Records retain canonical ontology identity and validated immutable structural values. Manager application preserves the established boolean adaptation and validates the complete batch before publication. Import changes reconcile only loaded manager state and never acquire documents."
+      ],
+      "verification": [
+        "model/rc2Changes.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "id": "model.SetOntologyID",
@@ -2288,7 +2591,7 @@
       "progress": "COMPLETE",
       "exposure": "PUBLIC",
       "stability": "PRERELEASE",
-      "firstPublicRelease": null,
+      "firstPublicRelease": "0.1.0-rc.2",
       "publicSpecifier": "@hadden-industries/owlapi/formats",
       "sourceModule": "formats/rdfXMLDocumentFormat.js",
       "javaPackage": "org.semanticweb.owlapi.formats",
@@ -2326,6 +2629,171 @@
       ],
       "verification": [
         "formats/rdfXMLDocumentFormat.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
+    },
+    {
+      "id": "util.AnnotationValueShortFormProvider",
+      "jsExport": "AnnotationValueShortFormProvider",
+      "kind": "CLASS",
+      "summary": "Uses captured annotation and language preferences with explicitly supplied live ontology snapshots.",
+      "capabilityIds": ["util.short-form-providers"],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicRelease": "0.1.0-rc.2",
+      "publicSpecifier": "@hadden-industries/owlapi/util",
+      "sourceModule": "util/annotationValueShortFormProvider.js",
+      "javaPackage": "org.semanticweb.owlapi.util",
+      "javaType": "org.semanticweb.owlapi.util.AnnotationValueShortFormProvider",
+      "closestJavaAuthority": "org.semanticweb.owlapi.util.AnnotationValueShortFormProvider",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "callShapes": [
+        "new AnnotationValueShortFormProvider(properties, preferredLanguageMap, ontologySetProvider, alternateProvider?)",
+        "provider.getShortForm(entity)"
+      ],
+      "supportedMembers": [
+        "prototype.dispose",
+        "prototype.getAnnotationProperties",
+        "prototype.getPreferredLanguageMap",
+        "prototype.getShortForm"
+      ],
+      "omittedMembers": [
+        "Custom IRIShortFormProvider constructor",
+        "setLiteralRenderer(StringAnnotationVisitor)"
+      ],
+      "publicErrors": [],
+      "semanticQualifications": [
+        "Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable.",
+        "The ontology-set provider and short-form callbacks are synchronous. Property and language preferences are copied; getters return defensive copies. Label selection observes the approved native preference order and fallback."
+      ],
+      "verification": [
+        "util/shortFormProviders.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
+    },
+    {
+      "id": "util.OWLEntityRemover",
+      "jsExport": "OWLEntityRemover",
+      "kind": "CLASS",
+      "summary": "Collects direct removal proposals for the six named entity kinds.",
+      "capabilityIds": ["util.object-transforms"],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicRelease": "0.1.0-rc.2",
+      "publicSpecifier": "@hadden-industries/owlapi/util",
+      "sourceModule": "util/owlEntityRemover.js",
+      "javaPackage": "org.semanticweb.owlapi.util",
+      "javaType": "org.semanticweb.owlapi.util.OWLEntityRemover",
+      "closestJavaAuthority": "org.semanticweb.owlapi.util.OWLEntityRemover",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "callShapes": [
+        "new OWLEntityRemover(ontologyOrIterable)",
+        "remover.visit(entity)",
+        "remover.getChanges()",
+        "remover.reset()"
+      ],
+      "supportedMembers": [
+        "prototype.getChanges",
+        "prototype.reset",
+        "prototype.visit"
+      ],
+      "omittedMembers": [
+        "Structural accept(visitor) protocol",
+        "Implicit application and recursive deletion"
+      ],
+      "publicErrors": [],
+      "semanticQualifications": [
+        "Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable.",
+        "Direct visit is the approved visitor adaptation. Selected ontology identities are captured; repeated visits append proposals and getChanges returns a fresh array. reset clears collected proposals."
+      ],
+      "verification": [
+        "util/rc2Transforms.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
+    },
+    {
+      "id": "util.OWLEntityRenamer",
+      "jsExport": "OWLEntityRenamer",
+      "kind": "CLASS",
+      "summary": "Proposes changes from captured ontologies and current committed snapshots without applying them.",
+      "capabilityIds": ["util.object-transforms"],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicRelease": "0.1.0-rc.2",
+      "publicSpecifier": "@hadden-industries/owlapi/util",
+      "sourceModule": "util/owlEntityRenamer.js",
+      "javaPackage": "org.semanticweb.owlapi.util",
+      "javaType": "org.semanticweb.owlapi.util.OWLEntityRenamer",
+      "closestJavaAuthority": "org.semanticweb.owlapi.util.OWLEntityRenamer",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "callShapes": [
+        "new OWLEntityRenamer(manager, ontologyIterable)",
+        "renamer.changeIRI(entityOrIRI, iri)",
+        "renamer.changeIRI(entityIRIMap)"
+      ],
+      "supportedMembers": ["prototype.changeIRI"],
+      "omittedMembers": ["Unselected visitor and Stream overloads"],
+      "publicErrors": [],
+      "semanticQualifications": [
+        "Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable.",
+        "Returns defensive eager arrays. Typed entities preserve punning distinctions; IRI-wide replacement includes all selected typed references and relevant annotation positions. Reconstruction preserves anonymous identity."
+      ],
+      "verification": [
+        "util/rc2Transforms.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
+    },
+    {
+      "id": "util.OWLObjectDuplicator",
+      "jsExport": "OWLObjectDuplicator",
+      "kind": "CLASS",
+      "summary": "Canonical factory reconstruction with captured structural maps and instance-owned anonymous remapping.",
+      "capabilityIds": ["util.object-transforms"],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicRelease": "0.1.0-rc.2",
+      "publicSpecifier": "@hadden-industries/owlapi/util",
+      "sourceModule": "util/owlObjectDuplicator.js",
+      "javaPackage": "org.semanticweb.owlapi.util",
+      "javaType": "org.semanticweb.owlapi.util.OWLObjectDuplicator",
+      "closestJavaAuthority": "org.semanticweb.owlapi.util.OWLObjectDuplicator",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "callShapes": [
+        "new OWLObjectDuplicator(manager)",
+        "new OWLObjectDuplicator(entityIRIMap, manager)",
+        "new OWLObjectDuplicator(entityIRIMap, literalMap, manager)",
+        "new OWLObjectDuplicator(manager, iriMap)",
+        "duplicator.duplicateObject(object)"
+      ],
+      "supportedMembers": ["prototype.duplicateObject"],
+      "omittedMembers": [
+        "Explicit RemappingIndividualProvider constructors",
+        "Public visitor methods",
+        "Ontology, ID, import-declaration and SWRL duplication"
+      ],
+      "publicErrors": [],
+      "semanticQualifications": [
+        "Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable.",
+        "Map entries are copied and structural values validated before capture. Typed entity replacement differs from IRI-wide replacement. Repeated anonymous inputs share one new identity within a duplicator; different instances have distinct anonymous scopes. Structural limits reject incomplete reconstruction."
+      ],
+      "verification": [
+        "util/rc2Transforms.test.js",
         "test/package-boundary.test.mjs"
       ],
       "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
@@ -2409,6 +2877,42 @@
       "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
+      "id": "util.SimpleShortFormProvider",
+      "jsExport": "SimpleShortFormProvider",
+      "kind": "CLASS",
+      "summary": "A synchronous Java-shaped entity short form provider.",
+      "capabilityIds": ["util.short-form-providers"],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicRelease": "0.1.0-rc.2",
+      "publicSpecifier": "@hadden-industries/owlapi/util",
+      "sourceModule": "util/simpleShortFormProvider.js",
+      "javaPackage": "org.semanticweb.owlapi.util",
+      "javaType": "org.semanticweb.owlapi.util.SimpleShortFormProvider",
+      "closestJavaAuthority": "org.semanticweb.owlapi.util.SimpleShortFormProvider",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "callShapes": [
+        "new SimpleShortFormProvider()",
+        "provider.getShortForm(entity)",
+        "provider.dispose()"
+      ],
+      "supportedMembers": ["prototype.dispose", "prototype.getShortForm"],
+      "omittedMembers": ["Java serialization"],
+      "publicErrors": [],
+      "semanticQualifications": [
+        "Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable.",
+        "Uses the observed NCName suffix, with angle-bracketed full IRI fallback. dispose is a no-op."
+      ],
+      "verification": [
+        "util/shortFormProviders.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
+    },
+    {
       "id": "profiles.OWL2DLProfile",
       "jsExport": "OWL2DLProfile",
       "kind": "CLASS",
@@ -2457,6 +2961,135 @@
       "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
+      "id": "profiles.OWL2ELProfile",
+      "jsExport": "OWL2ELProfile",
+      "kind": "CLASS",
+      "summary": "An asynchronous bounded OWL 2 EL structural checker over the managed import closure.",
+      "capabilityIds": ["profiles.owl2-el"],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicRelease": "0.1.0-rc.2",
+      "publicSpecifier": "@hadden-industries/owlapi/profiles",
+      "sourceModule": "profiles/owl2ELProfile.js",
+      "javaPackage": "org.semanticweb.owlapi.profiles",
+      "javaType": "org.semanticweb.owlapi.profiles.OWL2ELProfile",
+      "closestJavaAuthority": "org.semanticweb.owlapi.profiles.OWL2ELProfile",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "callShapes": [
+        "new OWL2ELProfile()",
+        "await profile.checkOntology(ontology, options?)"
+      ],
+      "supportedMembers": [
+        "prototype.checkOntology",
+        "prototype.getIRI",
+        "prototype.getName"
+      ],
+      "omittedMembers": [
+        "Java visitor classes",
+        "getDatatypeIRIs()",
+        "Stream and Collection overloads"
+      ],
+      "publicErrors": [],
+      "semanticQualifications": [
+        "Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable.",
+        "Reuses the formal report and separate source-assessment protocol. Complete structural validation, global constraints and profile-specific grammar share one work budget; incomplete validation is unverified. Native discrepancies require separately accepted bounded decisions."
+      ],
+      "verification": [
+        "profiles/rc2Profiles.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
+    },
+    {
+      "id": "profiles.OWL2QLProfile",
+      "jsExport": "OWL2QLProfile",
+      "kind": "CLASS",
+      "summary": "An asynchronous bounded OWL 2 QL structural checker over the managed import closure.",
+      "capabilityIds": ["profiles.owl2-ql"],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicRelease": "0.1.0-rc.2",
+      "publicSpecifier": "@hadden-industries/owlapi/profiles",
+      "sourceModule": "profiles/owl2QLProfile.js",
+      "javaPackage": "org.semanticweb.owlapi.profiles",
+      "javaType": "org.semanticweb.owlapi.profiles.OWL2QLProfile",
+      "closestJavaAuthority": "org.semanticweb.owlapi.profiles.OWL2QLProfile",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "callShapes": [
+        "new OWL2QLProfile()",
+        "await profile.checkOntology(ontology, options?)"
+      ],
+      "supportedMembers": [
+        "prototype.checkOntology",
+        "prototype.getIRI",
+        "prototype.getName"
+      ],
+      "omittedMembers": [
+        "Java visitor classes",
+        "getDatatypeIRIs()",
+        "Stream and Collection overloads"
+      ],
+      "publicErrors": [],
+      "semanticQualifications": [
+        "Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable.",
+        "Reuses the formal report and separate source-assessment protocol. Complete structural validation, global constraints and profile-specific grammar share one work budget; incomplete validation is unverified. Native discrepancies require separately accepted bounded decisions."
+      ],
+      "verification": [
+        "profiles/rc2Profiles.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
+    },
+    {
+      "id": "profiles.OWL2RLProfile",
+      "jsExport": "OWL2RLProfile",
+      "kind": "CLASS",
+      "summary": "An asynchronous bounded OWL 2 RL structural checker over the managed import closure.",
+      "capabilityIds": ["profiles.owl2-rl"],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicRelease": "0.1.0-rc.2",
+      "publicSpecifier": "@hadden-industries/owlapi/profiles",
+      "sourceModule": "profiles/owl2RLProfile.js",
+      "javaPackage": "org.semanticweb.owlapi.profiles",
+      "javaType": "org.semanticweb.owlapi.profiles.OWL2RLProfile",
+      "closestJavaAuthority": "org.semanticweb.owlapi.profiles.OWL2RLProfile",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "callShapes": [
+        "new OWL2RLProfile()",
+        "await profile.checkOntology(ontology, options?)"
+      ],
+      "supportedMembers": [
+        "prototype.checkOntology",
+        "prototype.getIRI",
+        "prototype.getName"
+      ],
+      "omittedMembers": [
+        "Java visitor classes",
+        "getDatatypeIRIs()",
+        "Stream and Collection overloads"
+      ],
+      "publicErrors": [],
+      "semanticQualifications": [
+        "Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable.",
+        "Reuses the formal report and separate source-assessment protocol. Complete structural validation, global constraints and profile-specific grammar share one work budget; incomplete validation is unverified. Native discrepancies require separately accepted bounded decisions."
+      ],
+      "verification": [
+        "profiles/rc2Profiles.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
+    },
+    {
       "id": "profiles.OWLProfileReport",
       "jsExport": "OWLProfileReport",
       "kind": "CLASS",
@@ -2497,6 +3130,259 @@
       ],
       "verification": [
         "profiles/owl2DLProfile.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
+    },
+    {
+      "id": "model/parameters.AxiomAnnotations",
+      "jsExport": "AxiomAnnotations",
+      "kind": "CONSTANT",
+      "summary": "Frozen explicit query policy values with Java-shaped names.",
+      "capabilityIds": ["ontology.java-parity-queries"],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicRelease": "0.1.0-rc.2",
+      "publicSpecifier": "@hadden-industries/owlapi/model/parameters",
+      "sourceModule": "model/parameters/index.js",
+      "javaPackage": "org.semanticweb.owlapi.model.parameters",
+      "javaType": "org.semanticweb.owlapi.model.parameters.AxiomAnnotations",
+      "closestJavaAuthority": "org.semanticweb.owlapi.model.parameters.AxiomAnnotations",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "callShapes": [
+        "AxiomAnnotations.CONSIDER_AXIOM_ANNOTATIONS / AxiomAnnotations.IGNORE_AXIOM_ANNOTATIONS"
+      ],
+      "supportedMembers": [
+        "CONSIDER_AXIOM_ANNOTATIONS",
+        "IGNORE_AXIOM_ANNOTATIONS"
+      ],
+      "omittedMembers": ["Java enum instance methods"],
+      "publicErrors": [],
+      "semanticQualifications": [
+        "Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable.",
+        "Omitted imports scope retains direct-only behavior. Only selected scope-bearing overloads accept these values; named axiom index accessors stay direct-only."
+      ],
+      "verification": [
+        "model/rc2Queries.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
+    },
+    {
+      "id": "model/parameters.Imports",
+      "jsExport": "Imports",
+      "kind": "CONSTANT",
+      "summary": "Frozen explicit query policy values with Java-shaped names.",
+      "capabilityIds": ["ontology.java-parity-queries"],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicRelease": "0.1.0-rc.2",
+      "publicSpecifier": "@hadden-industries/owlapi/model/parameters",
+      "sourceModule": "model/parameters/index.js",
+      "javaPackage": "org.semanticweb.owlapi.model.parameters",
+      "javaType": "org.semanticweb.owlapi.model.parameters.Imports",
+      "closestJavaAuthority": "org.semanticweb.owlapi.model.parameters.Imports",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "callShapes": ["Imports.EXCLUDED / Imports.INCLUDED"],
+      "supportedMembers": ["EXCLUDED", "INCLUDED"],
+      "omittedMembers": ["Java enum instance methods"],
+      "publicErrors": [],
+      "semanticQualifications": [
+        "Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable.",
+        "Omitted imports scope retains direct-only behavior. Only selected scope-bearing overloads accept these values; named axiom index accessors stay direct-only."
+      ],
+      "verification": [
+        "model/rc2Queries.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
+    },
+    {
+      "id": "search.EntitySearcher",
+      "jsExport": "EntitySearcher",
+      "kind": "CLASS",
+      "summary": "Asserted entity and annotation searches over explicitly supplied ontologies.",
+      "capabilityIds": ["search.entity-searcher"],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicRelease": "0.1.0-rc.2",
+      "publicSpecifier": "@hadden-industries/owlapi/search",
+      "sourceModule": "search/entitySearcher.js",
+      "javaPackage": "org.semanticweb.owlapi.search",
+      "javaType": "org.semanticweb.owlapi.search.EntitySearcher",
+      "closestJavaAuthority": "org.semanticweb.owlapi.search.EntitySearcher",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "callShapes": [
+        "EntitySearcher.getSuperClasses(entity, ontologyOrIterable)",
+        "EntitySearcher.getAnnotations(subject, ontology, property?)",
+        "Selected static methods documented in the baseline"
+      ],
+      "supportedMembers": [
+        "static getAnnotationAssertionAxioms",
+        "static getAnnotationObjects",
+        "static getAnnotations",
+        "static getDisjointClasses",
+        "static getDomains",
+        "static getEquivalentClasses",
+        "static getInverses",
+        "static getRanges",
+        "static getSubClasses",
+        "static getSubProperties",
+        "static getSuperClasses",
+        "static getSuperProperties",
+        "static isAsymmetric",
+        "static isFunctional",
+        "static isInverseFunctional",
+        "static isIrreflexive",
+        "static isReflexive",
+        "static isSymmetric",
+        "static isTransitive"
+      ],
+      "omittedMembers": [
+        "All unselected search methods and Java Stream protocols"
+      ],
+      "publicErrors": [],
+      "semanticQualifications": [
+        "Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable.",
+        "Java Stream results are fresh eager arrays preserving multiplicity, including repeated ontology inputs and annotated variants. Search never expands imports implicitly. Selected ontology iterable overloads retain their own Java property-filter requirements. Native getDisjointClasses retains the queried operand; getEquivalentClasses excludes it."
+      ],
+      "verification": [
+        "search/entitySearcher.test.js",
+        "search/nativeSearch.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
+    },
+    {
+      "id": "manchestersyntax/renderer.ManchesterOWLSyntaxOWLObjectRendererImpl",
+      "jsExport": "ManchesterOWLSyntaxOWLObjectRendererImpl",
+      "kind": "CLASS",
+      "summary": "Plain Manchester text for the selected complete structural-kind inventory.",
+      "capabilityIds": ["renderer.manchester"],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicRelease": "0.1.0-rc.2",
+      "publicSpecifier": "@hadden-industries/owlapi/manchestersyntax/renderer",
+      "sourceModule": "manchestersyntax/renderer/manchesterOWLSyntaxOWLObjectRendererImpl.js",
+      "javaPackage": "org.semanticweb.owlapi.manchestersyntax.renderer",
+      "javaType": "org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxOWLObjectRendererImpl",
+      "closestJavaAuthority": "org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxOWLObjectRendererImpl",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "callShapes": [
+        "new ManchesterOWLSyntaxOWLObjectRendererImpl()",
+        "renderer.render(object)",
+        "renderer.setShortFormProvider(provider)"
+      ],
+      "supportedMembers": [
+        "prototype.render",
+        "prototype.setShortFormProvider"
+      ],
+      "omittedMembers": [
+        "Short aliases",
+        "Ontology storage",
+        "HTML and DOM rendering"
+      ],
+      "publicErrors": [],
+      "semanticQualifications": [
+        "Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable.",
+        "Validates canonical input before invoking a captured synchronous provider. Preserves observed Java precedence, whitespace and annotation behavior; anonymous names are compared through one consistent bijection. Output and structural depth remain bounded."
+      ],
+      "verification": [
+        "manchestersyntax/renderer/renderer.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
+    },
+    {
+      "id": "modularity/locality.LocalityClass",
+      "jsExport": "LocalityClass",
+      "kind": "CONSTANT",
+      "summary": "Frozen selected syntactic-locality modes.",
+      "capabilityIds": ["modularity.syntactic-locality"],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicRelease": "0.1.0-rc.2",
+      "publicSpecifier": "@hadden-industries/owlapi/modularity/locality",
+      "sourceModule": "modularity/locality/localityClass.js",
+      "javaPackage": "org.semanticweb.owlapi.modularity.locality",
+      "javaType": "org.semanticweb.owlapi.modularity.locality.LocalityClass",
+      "closestJavaAuthority": "org.semanticweb.owlapi.modularity.locality.LocalityClass",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "callShapes": [
+        "LocalityClass.BOTTOM / LocalityClass.TOP / LocalityClass.STAR"
+      ],
+      "supportedMembers": ["BOTTOM", "STAR", "TOP"],
+      "omittedMembers": ["Java enum reflection helpers"],
+      "publicErrors": [],
+      "semanticQualifications": [
+        "Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable.",
+        "BOTTOM and TOP retain the pinned public Java evaluator semantics. STAR alternates shrinking modules to a fixed point."
+      ],
+      "verification": [
+        "modularity/locality/locality.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
+    },
+    {
+      "id": "modularity/locality.SyntacticLocalityModuleExtractor",
+      "jsExport": "SyntacticLocalityModuleExtractor",
+      "kind": "CLASS",
+      "summary": "Captured structural axiom base and asynchronous eager syntactic-locality modules.",
+      "capabilityIds": ["modularity.syntactic-locality"],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicRelease": "0.1.0-rc.2",
+      "publicSpecifier": "@hadden-industries/owlapi/modularity/locality",
+      "sourceModule": "modularity/locality/syntacticLocalityModuleExtractor.js",
+      "javaPackage": "org.semanticweb.owlapi.modularity.locality",
+      "javaType": "org.semanticweb.owlapi.modularity.locality.SyntacticLocalityModuleExtractor",
+      "closestJavaAuthority": "org.semanticweb.owlapi.modularity.locality.SyntacticLocalityModuleExtractor",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "callShapes": [
+        "new SyntacticLocalityModuleExtractor(localityClass, axiomIterable)",
+        "extractor.axiomBase()",
+        "extractor.containsAxiom(axiom)",
+        "extractor.getLocalityClass()",
+        "await extractor.extract(seedIterable, filter?, options?)"
+      ],
+      "supportedMembers": [
+        "prototype.axiomBase",
+        "prototype.containsAxiom",
+        "prototype.extract",
+        "prototype.getLocalityClass"
+      ],
+      "omittedMembers": [
+        "extractAsOntology",
+        "globals / tautologies / everyModuleContains / noModuleContains",
+        "Reasoner-backed and legacy extractors"
+      ],
+      "publicErrors": [],
+      "semanticQualifications": [
+        "Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable.",
+        "Constructor captures immutable axioms; returned arrays are defensive. Filter executes synchronously before propagation. Absent original-base seeds reject with TypeError. STAR retains the original entity index.",
+        "Owner decision of 2026-10-09 follows Java's lack of numerical caps. maxWork, maxAxioms, maxDepth, maxAnnotationDepth and timeoutMs default to null and accept optional caller limits; one shared work/deadline budget spans all extraction phases and STAR passes. signal cancellation and limit exhaustion reject without partial output."
+      ],
+      "verification": [
+        "modularity/locality/locality.test.js",
         "test/package-boundary.test.mjs"
       ],
       "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
@@ -7053,20 +7939,30 @@
       "javaPackage": "org.semanticweb.owlapi.manchestersyntax.renderer",
       "simpleName": "ManchesterOWLSyntaxOWLObjectRendererImpl",
       "kind": "CLASS",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
-      "stability": null,
-      "jsExport": null,
-      "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "capabilityIds": ["renderer.manchester"],
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "jsExport": "ManchesterOWLSyntaxOWLObjectRendererImpl",
+      "publicSpecifier": "@hadden-industries/owlapi/manchestersyntax/renderer",
+      "sourceModule": "manchestersyntax/renderer/manchesterOWLSyntaxOWLObjectRendererImpl.js",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "disposition": "PUBLIC_MAPPED",
+      "supportedMembers": [
+        "prototype.render",
+        "prototype.setShortFormProvider"
+      ],
+      "omittedMembers": [
+        "Short aliases",
+        "Ontology storage",
+        "HTML and DOM rendering"
+      ],
+      "verification": [
+        "manchestersyntax/renderer/renderer.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxPrefixNameShortFormProvider",
@@ -7713,40 +8609,53 @@
       "javaPackage": "org.semanticweb.owlapi.model",
       "simpleName": "AddAxiom",
       "kind": "CLASS",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
-      "stability": null,
-      "jsExport": null,
-      "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "capabilityIds": ["manager.atomic-changes"],
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "jsExport": "AddAxiom",
+      "publicSpecifier": "@hadden-industries/owlapi/model",
+      "sourceModule": "model/addAxiom.js",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "disposition": "PUBLIC_MAPPED",
+      "supportedMembers": ["prototype.getAxiom", "prototype.getOntology"],
+      "omittedMembers": [
+        "ChangeApplied, change-data serialization, visitors and inverse-change protocols"
+      ],
+      "verification": [
+        "model/rc2Changes.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.model.AddImport",
       "javaPackage": "org.semanticweb.owlapi.model",
       "simpleName": "AddImport",
       "kind": "CLASS",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
-      "stability": null,
-      "jsExport": null,
-      "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "capabilityIds": ["manager.atomic-changes"],
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "jsExport": "AddImport",
+      "publicSpecifier": "@hadden-industries/owlapi/model",
+      "sourceModule": "model/addImport.js",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "disposition": "PUBLIC_MAPPED",
+      "supportedMembers": [
+        "prototype.getImportDeclaration",
+        "prototype.getOntology"
+      ],
+      "omittedMembers": [
+        "ChangeApplied, change-data serialization, visitors and inverse-change protocols"
+      ],
+      "verification": [
+        "model/rc2Changes.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.model.AddOntologyAnnotation",
@@ -12487,6 +13396,8 @@
       "supportedMembers": [
         "prototype.equals",
         "prototype.equalsIgnoreAnnotations",
+        "prototype.getAnnotatedAxiom",
+        "prototype.getAxiomWithoutAnnotations",
         "prototype.structuralKey",
         "prototype.structuralKeyWithoutAnnotations",
         "prototype.toStructuralTuple"
@@ -13045,18 +13956,62 @@
       "compatibility": "ADAPTED",
       "disposition": "PUBLIC_MAPPED",
       "supportedMembers": [
+        "prototype.containsAxiom",
+        "prototype.containsAxiomIgnoreAnnotations",
+        "prototype.containsEntityInSignature",
+        "prototype.getAnnotationAssertionAxioms",
         "prototype.getAnnotationPropertiesInSignature",
+        "prototype.getAnnotationPropertyDomainAxioms",
+        "prototype.getAnnotationPropertyRangeAxioms",
         "prototype.getAnnotations",
+        "prototype.getAsymmetricObjectPropertyAxioms",
+        "prototype.getAxiomCount",
         "prototype.getAxioms",
         "prototype.getAxiomsByType",
+        "prototype.getAxiomsIgnoreAnnotations",
+        "prototype.getClassAssertionAxioms",
         "prototype.getClassesInSignature",
         "prototype.getDataPropertiesInSignature",
+        "prototype.getDataPropertyAssertionAxioms",
+        "prototype.getDataPropertyDomainAxioms",
+        "prototype.getDataPropertyRangeAxioms",
+        "prototype.getDataSubPropertyAxiomsForSubProperty",
+        "prototype.getDataSubPropertyAxiomsForSuperProperty",
         "prototype.getDatatypesInSignature",
+        "prototype.getDeclarationAxioms",
+        "prototype.getDifferentIndividualAxioms",
+        "prototype.getDisjointClassesAxioms",
+        "prototype.getEntitiesInSignature",
+        "prototype.getEquivalentClassesAxioms",
+        "prototype.getFunctionalDataPropertyAxioms",
+        "prototype.getFunctionalObjectPropertyAxioms",
         "prototype.getImportsDeclarations",
         "prototype.getIndividualsInSignature",
+        "prototype.getInverseFunctionalObjectPropertyAxioms",
+        "prototype.getInverseObjectPropertyAxioms",
+        "prototype.getIrreflexiveObjectPropertyAxioms",
+        "prototype.getLogicalAxiomCount",
+        "prototype.getLogicalAxioms",
+        "prototype.getNegativeDataPropertyAssertionAxioms",
+        "prototype.getNegativeObjectPropertyAssertionAxioms",
         "prototype.getObjectPropertiesInSignature",
+        "prototype.getObjectPropertyAssertionAxioms",
+        "prototype.getObjectPropertyDomainAxioms",
+        "prototype.getObjectPropertyRangeAxioms",
+        "prototype.getObjectSubPropertyAxiomsForSubProperty",
+        "prototype.getObjectSubPropertyAxiomsForSuperProperty",
         "prototype.getOntologyID",
-        "prototype.getReferencingAxioms"
+        "prototype.getPunnedIRIs",
+        "prototype.getReferencedAnonymousIndividuals",
+        "prototype.getReferencingAxioms",
+        "prototype.getReflexiveObjectPropertyAxioms",
+        "prototype.getSameIndividualAxioms",
+        "prototype.getSignature",
+        "prototype.getSubAnnotationPropertyOfAxioms",
+        "prototype.getSubClassAxiomsForSubClass",
+        "prototype.getSubClassAxiomsForSuperClass",
+        "prototype.getSymmetricObjectPropertyAxioms",
+        "prototype.getTransitiveObjectPropertyAxioms"
       ],
       "omittedMembers": [
         "Java stream-returning query overloads",
@@ -13535,6 +14490,8 @@
         "prototype.importsClosure",
         "prototype.loadOntologyFromOntologyDocument",
         "prototype.loadOntologyGraphFromOntologyDocument",
+        "prototype.removeAxiom",
+        "prototype.removeAxioms",
         "prototype.saveOntology",
         "prototype.setOntologyWriterConfiguration"
       ],
@@ -14585,20 +15542,26 @@
       "javaPackage": "org.semanticweb.owlapi.model.parameters",
       "simpleName": "AxiomAnnotations",
       "kind": "ENUM",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
-      "stability": null,
-      "jsExport": null,
-      "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "capabilityIds": ["ontology.java-parity-queries"],
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "jsExport": "AxiomAnnotations",
+      "publicSpecifier": "@hadden-industries/owlapi/model/parameters",
+      "sourceModule": "model/parameters/index.js",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "disposition": "PUBLIC_MAPPED",
+      "supportedMembers": [
+        "CONSIDER_AXIOM_ANNOTATIONS",
+        "IGNORE_AXIOM_ANNOTATIONS"
+      ],
+      "omittedMembers": ["Java enum instance methods"],
+      "verification": [
+        "model/rc2Queries.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.model.parameters.ChangeApplied",
@@ -14645,20 +15608,23 @@
       "javaPackage": "org.semanticweb.owlapi.model.parameters",
       "simpleName": "Imports",
       "kind": "ENUM",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
-      "stability": null,
-      "jsExport": null,
-      "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "capabilityIds": ["ontology.java-parity-queries"],
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "jsExport": "Imports",
+      "publicSpecifier": "@hadden-industries/owlapi/model/parameters",
+      "sourceModule": "model/parameters/index.js",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "disposition": "PUBLIC_MAPPED",
+      "supportedMembers": ["EXCLUDED", "INCLUDED"],
+      "omittedMembers": ["Java enum instance methods"],
+      "verification": [
+        "model/rc2Queries.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.model.parameters.Navigation",
@@ -15370,60 +16336,78 @@
       "javaPackage": "org.semanticweb.owlapi.model",
       "simpleName": "RemoveAxiom",
       "kind": "CLASS",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
-      "stability": null,
-      "jsExport": null,
-      "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "capabilityIds": ["manager.atomic-changes"],
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "jsExport": "RemoveAxiom",
+      "publicSpecifier": "@hadden-industries/owlapi/model",
+      "sourceModule": "model/removeAxiom.js",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "disposition": "PUBLIC_MAPPED",
+      "supportedMembers": ["prototype.getAxiom", "prototype.getOntology"],
+      "omittedMembers": [
+        "ChangeApplied, change-data serialization, visitors and inverse-change protocols"
+      ],
+      "verification": [
+        "model/rc2Changes.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.model.RemoveImport",
       "javaPackage": "org.semanticweb.owlapi.model",
       "simpleName": "RemoveImport",
       "kind": "CLASS",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
-      "stability": null,
-      "jsExport": null,
-      "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "capabilityIds": ["manager.atomic-changes"],
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "jsExport": "RemoveImport",
+      "publicSpecifier": "@hadden-industries/owlapi/model",
+      "sourceModule": "model/removeImport.js",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "disposition": "PUBLIC_MAPPED",
+      "supportedMembers": [
+        "prototype.getImportDeclaration",
+        "prototype.getOntology"
+      ],
+      "omittedMembers": [
+        "ChangeApplied, change-data serialization, visitors and inverse-change protocols"
+      ],
+      "verification": [
+        "model/rc2Changes.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.model.RemoveOntologyAnnotation",
       "javaPackage": "org.semanticweb.owlapi.model",
       "simpleName": "RemoveOntologyAnnotation",
       "kind": "CLASS",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
-      "stability": null,
-      "jsExport": null,
-      "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "capabilityIds": ["manager.atomic-changes"],
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "jsExport": "RemoveOntologyAnnotation",
+      "publicSpecifier": "@hadden-industries/owlapi/model",
+      "sourceModule": "model/removeOntologyAnnotation.js",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "disposition": "PUBLIC_MAPPED",
+      "supportedMembers": ["prototype.getAnnotation", "prototype.getOntology"],
+      "omittedMembers": [
+        "ChangeApplied, change-data serialization, visitors and inverse-change protocols"
+      ],
+      "verification": [
+        "model/rc2Changes.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.model.SetOntologyID",
@@ -16044,20 +17028,23 @@
       "javaPackage": "org.semanticweb.owlapi.modularity.locality",
       "simpleName": "LocalityClass",
       "kind": "ENUM",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
-      "stability": null,
-      "jsExport": null,
-      "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "capabilityIds": ["modularity.syntactic-locality"],
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "jsExport": "LocalityClass",
+      "publicSpecifier": "@hadden-industries/owlapi/modularity/locality",
+      "sourceModule": "modularity/locality/localityClass.js",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "disposition": "PUBLIC_MAPPED",
+      "supportedMembers": ["BOTTOM", "STAR", "TOP"],
+      "omittedMembers": ["Java enum reflection helpers"],
+      "verification": [
+        "modularity/locality/locality.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.modularity.locality.LocalityEvaluator",
@@ -16164,20 +17151,32 @@
       "javaPackage": "org.semanticweb.owlapi.modularity.locality",
       "simpleName": "SyntacticLocalityModuleExtractor",
       "kind": "CLASS",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
-      "stability": null,
-      "jsExport": null,
-      "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "capabilityIds": ["modularity.syntactic-locality"],
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "jsExport": "SyntacticLocalityModuleExtractor",
+      "publicSpecifier": "@hadden-industries/owlapi/modularity/locality",
+      "sourceModule": "modularity/locality/syntacticLocalityModuleExtractor.js",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "disposition": "PUBLIC_MAPPED",
+      "supportedMembers": [
+        "prototype.axiomBase",
+        "prototype.containsAxiom",
+        "prototype.extract",
+        "prototype.getLocalityClass"
+      ],
+      "omittedMembers": [
+        "extractAsOntology",
+        "globals / tautologies / everyModuleContains / noModuleContains",
+        "Reasoner-backed and legacy extractors"
+      ],
+      "verification": [
+        "modularity/locality/locality.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.modularity.ModuleExtractor",
@@ -16484,7 +17483,7 @@
       "javaPackage": "org.semanticweb.owlapi.owlxml.renderer",
       "simpleName": "OWLXMLStorer",
       "kind": "CLASS",
-      "capabilityIds": ["compatibility.java-api-gaps"],
+      "capabilityIds": ["storer.owlxml"],
       "progress": "NOT_STARTED",
       "exposure": "NOT_EXPOSED",
       "stability": null,
@@ -16578,20 +17577,31 @@
       "javaPackage": "org.semanticweb.owlapi.profiles",
       "simpleName": "OWL2ELProfile",
       "kind": "CLASS",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
-      "stability": null,
-      "jsExport": null,
-      "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "capabilityIds": ["profiles.owl2-el"],
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "jsExport": "OWL2ELProfile",
+      "publicSpecifier": "@hadden-industries/owlapi/profiles",
+      "sourceModule": "profiles/owl2ELProfile.js",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "disposition": "PUBLIC_MAPPED",
+      "supportedMembers": [
+        "prototype.checkOntology",
+        "prototype.getIRI",
+        "prototype.getName"
+      ],
+      "omittedMembers": [
+        "Java visitor classes",
+        "getDatatypeIRIs()",
+        "Stream and Collection overloads"
+      ],
+      "verification": [
+        "profiles/rc2Profiles.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.profiles.OWL2Profile",
@@ -16638,40 +17648,62 @@
       "javaPackage": "org.semanticweb.owlapi.profiles",
       "simpleName": "OWL2QLProfile",
       "kind": "CLASS",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
-      "stability": null,
-      "jsExport": null,
-      "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "capabilityIds": ["profiles.owl2-ql"],
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "jsExport": "OWL2QLProfile",
+      "publicSpecifier": "@hadden-industries/owlapi/profiles",
+      "sourceModule": "profiles/owl2QLProfile.js",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "disposition": "PUBLIC_MAPPED",
+      "supportedMembers": [
+        "prototype.checkOntology",
+        "prototype.getIRI",
+        "prototype.getName"
+      ],
+      "omittedMembers": [
+        "Java visitor classes",
+        "getDatatypeIRIs()",
+        "Stream and Collection overloads"
+      ],
+      "verification": [
+        "profiles/rc2Profiles.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.profiles.OWL2RLProfile",
       "javaPackage": "org.semanticweb.owlapi.profiles",
       "simpleName": "OWL2RLProfile",
       "kind": "CLASS",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
-      "stability": null,
-      "jsExport": null,
-      "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "capabilityIds": ["profiles.owl2-rl"],
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "jsExport": "OWL2RLProfile",
+      "publicSpecifier": "@hadden-industries/owlapi/profiles",
+      "sourceModule": "profiles/owl2RLProfile.js",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "disposition": "PUBLIC_MAPPED",
+      "supportedMembers": [
+        "prototype.checkOntology",
+        "prototype.getIRI",
+        "prototype.getName"
+      ],
+      "omittedMembers": [
+        "Java visitor classes",
+        "getDatatypeIRIs()",
+        "Stream and Collection overloads"
+      ],
+      "verification": [
+        "profiles/rc2Profiles.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.profiles.OWLOntologyProfileWalker",
@@ -18691,7 +19723,7 @@
       "javaPackage": "org.semanticweb.owlapi.rdf.turtle.renderer",
       "simpleName": "TurtleStorer",
       "kind": "CLASS",
-      "capabilityIds": ["compatibility.java-api-gaps"],
+      "capabilityIds": ["storer.turtle"],
       "progress": "NOT_STARTED",
       "exposure": "NOT_EXPOSED",
       "stability": null,
@@ -20371,20 +21403,46 @@
       "javaPackage": "org.semanticweb.owlapi.search",
       "simpleName": "EntitySearcher",
       "kind": "CLASS",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
-      "stability": null,
-      "jsExport": null,
-      "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "capabilityIds": ["search.entity-searcher"],
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "jsExport": "EntitySearcher",
+      "publicSpecifier": "@hadden-industries/owlapi/search",
+      "sourceModule": "search/entitySearcher.js",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "disposition": "PUBLIC_MAPPED",
+      "supportedMembers": [
+        "static getAnnotationAssertionAxioms",
+        "static getAnnotationObjects",
+        "static getAnnotations",
+        "static getDisjointClasses",
+        "static getDomains",
+        "static getEquivalentClasses",
+        "static getInverses",
+        "static getRanges",
+        "static getSubClasses",
+        "static getSubProperties",
+        "static getSuperClasses",
+        "static getSuperProperties",
+        "static isAsymmetric",
+        "static isFunctional",
+        "static isInverseFunctional",
+        "static isIrreflexive",
+        "static isReflexive",
+        "static isSymmetric",
+        "static isTransitive"
+      ],
+      "omittedMembers": [
+        "All unselected search methods and Java Stream protocols"
+      ],
+      "verification": [
+        "search/entitySearcher.test.js",
+        "search/nativeSearch.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.search.Filters",
@@ -20511,20 +21569,31 @@
       "javaPackage": "org.semanticweb.owlapi.util",
       "simpleName": "AnnotationValueShortFormProvider",
       "kind": "CLASS",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
-      "stability": null,
-      "jsExport": null,
-      "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "capabilityIds": ["util.short-form-providers"],
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "jsExport": "AnnotationValueShortFormProvider",
+      "publicSpecifier": "@hadden-industries/owlapi/util",
+      "sourceModule": "util/annotationValueShortFormProvider.js",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "disposition": "PUBLIC_MAPPED",
+      "supportedMembers": [
+        "prototype.dispose",
+        "prototype.getAnnotationProperties",
+        "prototype.getPreferredLanguageMap",
+        "prototype.getShortForm"
+      ],
+      "omittedMembers": [
+        "Custom IRIShortFormProvider constructor",
+        "setLiteralRenderer(StringAnnotationVisitor)"
+      ],
+      "verification": [
+        "util/shortFormProviders.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.util.AnnotationWalkingControl",
@@ -21911,40 +22980,53 @@
       "javaPackage": "org.semanticweb.owlapi.util",
       "simpleName": "OWLEntityRemover",
       "kind": "CLASS",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
-      "stability": null,
-      "jsExport": null,
-      "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "capabilityIds": ["util.object-transforms"],
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "jsExport": "OWLEntityRemover",
+      "publicSpecifier": "@hadden-industries/owlapi/util",
+      "sourceModule": "util/owlEntityRemover.js",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "disposition": "PUBLIC_MAPPED",
+      "supportedMembers": [
+        "prototype.getChanges",
+        "prototype.reset",
+        "prototype.visit"
+      ],
+      "omittedMembers": [
+        "Structural accept(visitor) protocol",
+        "Implicit application and recursive deletion"
+      ],
+      "verification": [
+        "util/rc2Transforms.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.util.OWLEntityRenamer",
       "javaPackage": "org.semanticweb.owlapi.util",
       "simpleName": "OWLEntityRenamer",
       "kind": "CLASS",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
-      "stability": null,
-      "jsExport": null,
-      "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "capabilityIds": ["util.object-transforms"],
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "jsExport": "OWLEntityRenamer",
+      "publicSpecifier": "@hadden-industries/owlapi/util",
+      "sourceModule": "util/owlEntityRenamer.js",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "disposition": "PUBLIC_MAPPED",
+      "supportedMembers": ["prototype.changeIRI"],
+      "omittedMembers": ["Unselected visitor and Stream overloads"],
+      "verification": [
+        "util/rc2Transforms.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.util.OWLEntitySetProvider",
@@ -22131,20 +23213,27 @@
       "javaPackage": "org.semanticweb.owlapi.util",
       "simpleName": "OWLObjectDuplicator",
       "kind": "CLASS",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
-      "stability": null,
-      "jsExport": null,
-      "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "capabilityIds": ["util.object-transforms"],
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "jsExport": "OWLObjectDuplicator",
+      "publicSpecifier": "@hadden-industries/owlapi/util",
+      "sourceModule": "util/owlObjectDuplicator.js",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "disposition": "PUBLIC_MAPPED",
+      "supportedMembers": ["prototype.duplicateObject"],
+      "omittedMembers": [
+        "Explicit RemappingIndividualProvider constructors",
+        "Public visitor methods",
+        "Ontology, ID, import-declaration and SWRL duplication"
+      ],
+      "verification": [
+        "util/rc2Transforms.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.util.OWLObjectPropertyManager",
@@ -22723,20 +23812,23 @@
       "javaPackage": "org.semanticweb.owlapi.util",
       "simpleName": "SimpleShortFormProvider",
       "kind": "CLASS",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
-      "stability": null,
-      "jsExport": null,
-      "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "capabilityIds": ["util.short-form-providers"],
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "jsExport": "SimpleShortFormProvider",
+      "publicSpecifier": "@hadden-industries/owlapi/util",
+      "sourceModule": "util/simpleShortFormProvider.js",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "disposition": "PUBLIC_MAPPED",
+      "supportedMembers": ["prototype.dispose", "prototype.getShortForm"],
+      "omittedMembers": ["Java serialization"],
+      "verification": [
+        "util/shortFormProviders.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.util.SLF4JSilencer",
@@ -23340,15 +24432,15 @@
     }
   ],
   "summary": {
-    "namespaceCount": 7,
-    "publicBindingCount": 58,
+    "namespaceCount": 11,
+    "publicBindingCount": 77,
     "javaTypeCount": 1013,
     "javaDispositionCounts": {
-      "PUBLIC_MAPPED": 27,
+      "PUBLIC_MAPPED": 46,
       "STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT": 76,
       "FORMAT_IDENTITY_SUPPORTED_NOT_NAMED_EXPORT": 7,
       "INTERNAL_IMPLEMENTATION_ONLY": 2,
-      "DEFERRED_NOT_EXPOSED": 857,
+      "DEFERRED_NOT_EXPOSED": 838,
       "UNSUPPORTED_BY_DESIGN": 44,
       "UNCLASSIFIED": 0
     },

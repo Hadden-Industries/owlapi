@@ -1,6 +1,6 @@
 {
   "name": "@hadden-industries/owlapi",
-  "version": "0.1.0-rc.1",
+  "version": "0.1.0-rc.2",
   "description": "OWL 2 ontology parsing and structural APIs for Node.js and browsers, designed for practical compatibility with Java OWLAPI concepts.",
   "keywords": [
     "owl",
@@ -24,7 +24,11 @@
     "./io": "./io/index.js",
     "./formats": "./formats/index.js",
     "./profiles": "./profiles/index.js",
-    "./util": "./util/index.js"
+    "./util": "./util/index.js",
+    "./model/parameters": "./model/parameters/index.js",
+    "./search": "./search/index.js",
+    "./manchestersyntax/renderer": "./manchestersyntax/renderer/index.js",
+    "./modularity/locality": "./modularity/locality/index.js"
   },
   "files": [
     "index.js",
@@ -33,9 +37,17 @@
     "io/",
     "formats/",
     "profiles/",
+    "search/",
+    "manchestersyntax/",
+    "modularity/locality/",
     "util/index.js",
     "util/owlOntologyImportsClosureSetProvider.js",
     "util/owlOntologyMerger.js",
+    "util/owlObjectDuplicator.js",
+    "util/owlEntityRenamer.js",
+    "util/owlEntityRemover.js",
+    "util/simpleShortFormProvider.js",
+    "util/annotationValueShortFormProvider.js",
     "internal/",
     "README.md",
     "API.md",

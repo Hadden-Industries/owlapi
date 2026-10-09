@@ -40,7 +40,8 @@
     "SECURITY-DEPENDENCIES-2026-09-29": "Repository-owner acceptance of docs/plans/2026-09-29-security-and-dependency-consolidation.md and instruction to proceed with implementation on local main on 29 September 2026; independent review is deferred to the final commit stage.",
     "CANONICAL-VOWL-PREREQUISITES": "Owner authorization in the Canonical VOWL implementation session to implement, validate, commit and deliver the required owlapi prerequisites; owning contract and qualifications are recorded in docs/compatibility/canonical-vowl-prerequisites.md. This scope preserves the Phase 21 and 22 decisions.",
     "RDFXML-FORMATTING-2026-10-08": "Owner instruction to implement docs/plans/expose-configurable-rdfxml-formatting.md, including its proposed preserving-builder, numeric and deterministic label adaptations; subsequent owner decisions select npm 12.2.0 and upstream Java tip b61ebe2da83daceebb3e7ba7afbd2582c9240c33.",
-    "RDFXML-REFINEMENTS-2026-10-08": "Owner instruction to implement the amended RDF/XML ownership/API table using HISEW; subsequent approval of bounded compatibility/provenance records and same-input Java qualification in session 01a11b94-bded-79e1-87b1-c5a7c3ac1ad9."
+    "RDFXML-REFINEMENTS-2026-10-08": "Owner instruction to implement the amended RDF/XML ownership/API table using HISEW; subsequent approval of bounded compatibility/provenance records and same-input Java qualification in session 01a11b94-bded-79e1-87b1-c5a7c3ac1ad9.",
+    "RC2-JAVA-PARITY-2026-10-09": "Owner-approved docs/plans/0.1.0-rc.2-java-parity-baseline.md, all nine implementation slices, and exact profile/storage/locality decisions. Native Java is a black-box behavioral authority and source research input; no implementation text is copied."
   },
   "provenanceCategories": {
     "A_PROJECT_ORIGINAL": "Project-authored implementation with no identified upstream-derived semantic implementation",
@@ -3134,9 +3135,9 @@
     },
     {
       "id": "CANONICAL-VOWL-INTERNAL-PROFILES-STRUCTURE-JS",
-      "path": "internal/profiles/structure.js",
+      "path": "internal/model/structuralValidation.js",
       "phase": 23,
-      "scope": "Owning-library source preservation, exact-value handling and complete-closure OWL 2 DL/source validation for the authorized Canonical VOWL prerequisite contract",
+      "scope": "Owning-library source preservation, exact-value handling and complete-closure OWL 2 DL/source validation for the authorized Canonical VOWL prerequisite contract Shared validation moved to the private model seam for profiles, transforms, rendering and locality; genuine immutable data-only graph checks remain project authored.",
       "legacyWebVowlSources": [],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
@@ -3305,6 +3306,678 @@
       "thirdPartyDependencies": ["@hyperjump/uri", "@xmldom/xmldom"],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "RDFXML-REFINEMENTS-2026-10-08",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-INTERNAL-MODEL-OBJECTTRANSFORM",
+      "path": "internal/model/objectTransform.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-INTERNAL-MODEL-ONTOLOGYCHANGERECORD",
+      "path": "internal/model/ontologyChangeRecord.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-INTERNAL-MODEL-STRUCTURALDISPLAYORDER",
+      "path": "internal/model/structuralDisplayOrder.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-INTERNAL-MODEL-STRUCTURALFIELDS",
+      "path": "internal/model/structuralFields.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-INTERNAL-MODULARITY-LOCALITYBUDGET",
+      "path": "internal/modularity/localityBudget.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-INTERNAL-MODULARITY-SYNTACTICLOCALITY",
+      "path": "internal/modularity/syntacticLocality.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-INTERNAL-PARSING-XML-XMLNAMES",
+      "path": "internal/parsing/xml/xmlNames.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-INTERNAL-PROFILES-PROFILERULES",
+      "path": "internal/profiles/profileRules.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-INTERNAL-STORAGE-OWLXML-OWLXMLSTORER",
+      "path": "internal/storage/owlxml/owlXmlStorer.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": ["@hyperjump/uri", "@xmldom/xmldom"],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-INTERNAL-STORAGE-RDFSTORAGE",
+      "path": "internal/storage/rdfStorage.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": ["@rdfjs/data-model/Factory.js"],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-INTERNAL-STORAGE-TURTLE-TURTLESTORER",
+      "path": "internal/storage/turtle/turtleStorer.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": ["n3"],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-MANCHESTERSYNTAX-RENDERER-MANCHESTEROWLSYNTAXOWLOBJECTRENDERERIMPL",
+      "path": "manchestersyntax/renderer/manchesterOWLSyntaxOWLObjectRendererImpl.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-MODEL-ADDAXIOM",
+      "path": "model/addAxiom.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-MODEL-ADDIMPORT",
+      "path": "model/addImport.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-MODEL-REMOVEAXIOM",
+      "path": "model/removeAxiom.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-MODEL-REMOVEIMPORT",
+      "path": "model/removeImport.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-MODEL-REMOVEONTOLOGYANNOTATION",
+      "path": "model/removeOntologyAnnotation.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-MODULARITY-LOCALITY-LOCALITYCLASS",
+      "path": "modularity/locality/localityClass.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-MODULARITY-LOCALITY-SYNTACTICLOCALITYMODULEEXTRACTOR",
+      "path": "modularity/locality/syntacticLocalityModuleExtractor.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-PROFILES-OWL2ELPROFILE",
+      "path": "profiles/owl2ELProfile.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-PROFILES-OWL2QLPROFILE",
+      "path": "profiles/owl2QLProfile.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-PROFILES-OWL2RLPROFILE",
+      "path": "profiles/owl2RLProfile.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-SEARCH-ENTITYSEARCHER",
+      "path": "search/entitySearcher.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-UTIL-ANNOTATIONVALUESHORTFORMPROVIDER",
+      "path": "util/annotationValueShortFormProvider.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-UTIL-OWLENTITYREMOVER",
+      "path": "util/owlEntityRemover.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-UTIL-OWLENTITYRENAMER",
+      "path": "util/owlEntityRenamer.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-UTIL-OWLOBJECTDUPLICATOR",
+      "path": "util/owlObjectDuplicator.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
+      "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "RC2-UTIL-SIMPLESHORTFORMPROVIDER",
+      "path": "util/simpleShortFormProvider.js",
+      "phase": 24,
+      "scope": "Project-authored implementation of the accepted rc.2 member inventory. Selected native behavioral probes and independent structural comparisons define the finite supported contract; Java implementation text and documentation are not incorporated.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/0.1.0-rc.2-java-parity-baseline.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+      ],
+      "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "focusedEvidence": [
+        "test/import-closure/rc2-public-contract.js",
+        "util/owlapi-reference/fixtures/rc2/"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
       "recordedOn": "2026-10-09"
     }
   ],

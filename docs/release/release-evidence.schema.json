@@ -1564,6 +1564,598 @@
           }
         }
       }
+    },
+    {
+      "title": "rc.2 producer release evidence with exact next and latest channels",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "$schema",
+        "schemaVersion",
+        "package",
+        "generatedAt",
+        "source",
+        "workflow",
+        "qualificationWorkflow",
+        "candidate",
+        "publication",
+        "reconciliation",
+        "signing",
+        "githubRelease",
+        "approvals",
+        "requiredJobs",
+        "extendedTests",
+        "inputEvidence",
+        "producerContract"
+      ],
+      "properties": {
+        "$schema": {
+          "type": "string",
+          "pattern": "^https://raw\\.githubusercontent\\.com/Hadden-Industries/owlapi/[0-9a-f]{40}/docs/release/release-evidence\\.schema\\.json$"
+        },
+        "schemaVersion": {
+          "const": 5
+        },
+        "package": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "version", "coordinate", "channel", "registry"],
+          "properties": {
+            "name": {
+              "const": "@hadden-industries/owlapi"
+            },
+            "version": {
+              "const": "0.1.0-rc.2"
+            },
+            "coordinate": {
+              "const": "@hadden-industries/owlapi@0.1.0-rc.2"
+            },
+            "channel": {
+              "const": "next"
+            },
+            "registry": {
+              "const": "https://registry.npmjs.org/"
+            }
+          }
+        },
+        "generatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["repository", "ref", "commit", "tag"],
+          "properties": {
+            "repository": {
+              "const": "Hadden-Industries/owlapi"
+            },
+            "ref": {
+              "const": "refs/tags/v0.1.0-rc.2"
+            },
+            "commit": {
+              "$ref": "#/$defs/commit"
+            },
+            "tag": {
+              "const": "v0.1.0-rc.2"
+            }
+          }
+        },
+        "workflow": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "commit", "runId", "runAttempt", "url", "actor"],
+          "properties": {
+            "name": {
+              "const": "Release"
+            },
+            "commit": {
+              "$ref": "#/$defs/commit"
+            },
+            "runId": {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$"
+            },
+            "runAttempt": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "url": {
+              "type": "string",
+              "format": "uri"
+            },
+            "actor": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "qualificationWorkflow": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "commit", "runId", "runAttempt", "url", "actor"],
+          "properties": {
+            "name": {
+              "const": "Release"
+            },
+            "commit": {
+              "$ref": "#/$defs/commit"
+            },
+            "runId": {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$"
+            },
+            "runAttempt": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "url": {
+              "type": "string",
+              "format": "uri"
+            },
+            "actor": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "candidate": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "artifactId",
+            "artifactDigest",
+            "tarball",
+            "sbom",
+            "checksums"
+          ],
+          "properties": {
+            "artifactId": {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$"
+            },
+            "artifactDigest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            },
+            "tarball": {
+              "$ref": "#/$defs/asset",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "const": "hadden-industries-owlapi-0.1.0-rc.2.tgz"
+                }
+              }
+            },
+            "sbom": {
+              "$ref": "#/$defs/asset",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "const": "hadden-industries-owlapi-0.1.0-rc.2.cdx.json"
+                }
+              }
+            },
+            "checksums": {
+              "$ref": "#/$defs/asset",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "const": "SHA256SUMS"
+                }
+              }
+            }
+          }
+        },
+        "publication": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "registry",
+            "coordinate",
+            "channel",
+            "integrity",
+            "tarballUrl",
+            "verifiedAt",
+            "next",
+            "latestPresent",
+            "signatureAuditResult",
+            "provenance",
+            "publisherJob",
+            "latest"
+          ],
+          "properties": {
+            "mode": {
+              "const": "DIRECT_BOOTSTRAP"
+            },
+            "registry": {
+              "const": "https://registry.npmjs.org/"
+            },
+            "coordinate": {
+              "const": "@hadden-industries/owlapi@0.1.0-rc.2"
+            },
+            "channel": {
+              "const": "next"
+            },
+            "integrity": {
+              "type": "string",
+              "pattern": "^sha512-[A-Za-z0-9+/]+={0,2}$"
+            },
+            "tarballUrl": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://registry\\.npmjs\\.org/@hadden-industries/owlapi/-/owlapi-0\\.1\\.0-rc\\.2\\.tgz$"
+            },
+            "verifiedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "next": {
+              "const": "0.1.0-rc.2"
+            },
+            "latestPresent": {
+              "const": true
+            },
+            "signatureAuditResult": {
+              "const": "PASS"
+            },
+            "provenance": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "sourceCommit",
+                "sourceRef",
+                "workflow",
+                "subjectSha256",
+                "runId",
+                "runAttempt"
+              ],
+              "properties": {
+                "sourceCommit": {
+                  "$ref": "#/$defs/commit"
+                },
+                "sourceRef": {
+                  "const": "refs/heads/main"
+                },
+                "workflow": {
+                  "const": ".github/workflows/release.yml"
+                },
+                "subjectSha256": {
+                  "$ref": "#/$defs/sha256"
+                },
+                "runId": {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                "runAttempt": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              }
+            },
+            "publisherJob": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["url", "runAttempt", "conclusion"],
+              "properties": {
+                "url": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "runAttempt": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "conclusion": {
+                  "enum": ["success", "failure"]
+                }
+              }
+            },
+            "latest": {
+              "const": "0.1.0-rc.2"
+            }
+          }
+        },
+        "reconciliation": {
+          "type": "null"
+        },
+        "signing": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "signerId",
+            "signerPrincipal",
+            "fingerprint",
+            "githubVerifiedAt"
+          ],
+          "properties": {
+            "signerId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "signerPrincipal": {
+              "type": "string",
+              "minLength": 1
+            },
+            "fingerprint": {
+              "type": "string",
+              "pattern": "^SHA256:[A-Za-z0-9+/]{43}$"
+            },
+            "githubVerifiedAt": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "githubRelease": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "url", "draft", "assets"],
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "url": {
+              "type": "string",
+              "format": "uri"
+            },
+            "draft": {
+              "const": true
+            },
+            "assets": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 3,
+              "uniqueItems": true,
+              "items": {
+                "$ref": "#/$defs/asset"
+              },
+              "allOf": [
+                {
+                  "contains": {
+                    "$ref": "#/oneOf/3/properties/candidate/properties/tarball"
+                  }
+                },
+                {
+                  "contains": {
+                    "$ref": "#/oneOf/3/properties/candidate/properties/sbom"
+                  }
+                },
+                {
+                  "contains": {
+                    "$ref": "#/oneOf/3/properties/candidate/properties/checksums"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "approvals": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/approval"
+          }
+        },
+        "requiredJobs": {
+          "type": "array",
+          "minItems": 8,
+          "maxItems": 8,
+          "prefixItems": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/job"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "const": "Release / GitHub draft"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/job"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "const": "Release / fresh public registry"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/job"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "const": "Release / installed OWL contract"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/job"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "const": "Release / npm direct bootstrap"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/job"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "const": "Release / protected-main preflight"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/job"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "const": "Release / publication preflight"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/job"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "const": "Release / qualified"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/job"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "const": "Release / tag accepted"
+                    }
+                  }
+                }
+              ]
+            }
+          ],
+          "items": false
+        },
+        "extendedTests": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/extendedTest"
+          }
+        },
+        "inputEvidence": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/inputEvidence"
+          }
+        },
+        "producerContract": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schemaVersion",
+            "check",
+            "result",
+            "identity",
+            "candidate",
+            "consumerSources",
+            "inventorySha256",
+            "fixtureSha256",
+            "nativeReportSha256",
+            "assertions"
+          ],
+          "properties": {
+            "schemaVersion": {
+              "const": 1
+            },
+            "check": {
+              "const": "owl_contract"
+            },
+            "result": {
+              "const": "PASS"
+            },
+            "identity": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["workflow", "runId", "runAttempt", "commit"],
+              "properties": {
+                "workflow": {
+                  "const": "Release"
+                },
+                "runId": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "runAttempt": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "commit": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{40}$"
+                }
+              }
+            },
+            "candidate": {
+              "type": "object"
+            },
+            "consumerSources": {
+              "type": "object"
+            },
+            "assertions": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 400
+            },
+            "inventorySha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "fixtureSha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "nativeReportSha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        }
+      }
     }
   ],
   "$defs": {

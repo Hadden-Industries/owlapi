@@ -11,6 +11,7 @@ import {
 } from "./acquisition-contracts.js";
 import { createPublicModelProbes } from "./public-model-probes.js";
 import { createPublicContract } from "../../import-closure/public-contract.js";
+import { exerciseRC2PublicContract } from "../../import-closure/rc2-public-contract.js";
 
 // Guards run before package loading and remain installed throughout the semantic suite.
 const { assertNoNetworkOperations } =
@@ -222,7 +223,7 @@ for (const { kind, value, fields } of probes)
     if (kind.endsWith("Axiom")) assert.deepEqual(value.annotations, []);
   });
 
-test(OWL_CONTRACT_ASSERTIONS.at(-1), async () => {
+test(OWL_CONTRACT_ASSERTIONS.at(-2), async () => {
   assert.equal(Object.hasOwn(owl, "OWLOntologyWriterConfiguration"), false);
   assert.deepEqual(
     await exerciseWriterConfiguration(binding, model, io, formats),
@@ -235,4 +236,8 @@ test(OWL_CONTRACT_ASSERTIONS.at(-1), async () => {
     },
   );
   assertNoNetworkOperations();
+});
+
+test(OWL_CONTRACT_ASSERTIONS.at(-1), async () => {
+  await exerciseRC2PublicContract(owl);
 });

@@ -119,7 +119,12 @@ test("supplies imported generic roles without fabricating local declarations", a
   expect(structureOf(result).statements).toHaveLength(1);
   expect((await check(result.root)).sourceAssessment.status).toBe("valid");
 });
-test.each([OWLDocumentFormats.FUNCTIONAL, OWLDocumentFormats.RDF_XML])(
+test.each([
+  OWLDocumentFormats.FUNCTIONAL,
+  OWLDocumentFormats.RDF_XML,
+  OWLDocumentFormats.TURTLE,
+  OWLDocumentFormats.OWL_XML,
+])(
   "fails atomically when %s cannot represent retained RDFS",
   async (format) => {
     const result = await load(":A a rdfs:Class .");
@@ -237,6 +242,8 @@ test.each([
     for (const format of [
       OWLDocumentFormats.FUNCTIONAL,
       OWLDocumentFormats.RDF_XML,
+      OWLDocumentFormats.TURTLE,
+      OWLDocumentFormats.OWL_XML,
     ]) {
       const target = new StringDocumentTarget();
       await result.manager.saveOntology(

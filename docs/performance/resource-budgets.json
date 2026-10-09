@@ -1,6 +1,20 @@
 {
   "schemaVersion": 1,
   "units": "bytes unless otherwise stated",
+  "locality": {
+    "authority": "docs/plans/0.1.0-rc.2-locality-work-bound.md; owner decision 2026-10-09",
+    "defaultNumericalLimits": null,
+    "optionalCallerLimits": [
+      "maxWork",
+      "maxAxioms",
+      "maxDepth",
+      "maxAnnotationDepth",
+      "timeoutMs"
+    ],
+    "failure": "RESOURCE_LIMIT_EXCEEDED",
+    "partialModules": false,
+    "scope": "Locality only. Existing loader, storer, transform and profile ceilings remain applicable to those operations."
+  },
   "evidence": {
     "webvowlCommit": "5301d6c0b9e69c048f6ab079ea1103790bc70b85",
     "measuredCorpusPath": "../universal-ontology/src/external",

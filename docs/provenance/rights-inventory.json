@@ -3,17 +3,17 @@
   "schemaVersion": 1,
   "package": {
     "name": "@hadden-industries/owlapi",
-    "version": "0.1.0-rc.1",
+    "version": "0.1.0-rc.2",
     "repository": "https://github.com/Hadden-Industries/owlapi",
     "scopeAuthority": {
       "method": "npm pack --dry-run --json plus local source-byte hashing",
-      "fileCount": 114,
-      "sourceManifestSha256": "d87cb94edf9875163ba3f00c44ee176ba8697afab5d6b65ecec70e2dd1bf1222"
+      "fileCount": 146,
+      "sourceManifestSha256": "75b28348f71ab83c576d3415db0a041ff12a2166aa885da4fe297a0d210fc798"
     }
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "3036cde1bbc407e6e9275578c22701d69b3e0f6dcd5fa5b5ad50d286a6cbd83f",
+    "factsSha256": "77fc30459e02e548d2d17c39a8e0033c44c25064f59d3c05318cfbf56015564e",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -56,7 +56,15 @@
         "docs/compatibility/default-behavior-inventory.md",
         "docs/compatibility/rdf-parser-metadata.md",
         "docs/compatibility/capabilities.json",
-        "docs/compatibility/rdfxml-writer-configuration.md"
+        "docs/compatibility/rdfxml-writer-configuration.md",
+        "search/",
+        "manchestersyntax/",
+        "modularity/locality/",
+        "util/owlObjectDuplicator.js",
+        "util/owlEntityRenamer.js",
+        "util/owlEntityRemover.js",
+        "util/simpleShortFormProvider.js",
+        "util/annotationValueShortFormProvider.js"
       ],
       "packageTarball": true,
       "rightsHolder": "Maksym Shostak for his contributions",
@@ -106,9 +114,9 @@
   "externalDependencies": {
     "bundled": false,
     "authority": "docs/provenance/third-party-material.json",
-    "inventoryFactsSha256": "1db077f4124400d2c8ad7417a0a2ff35c63975ee01667957707f0b075e6909fb",
+    "inventoryFactsSha256": "5dee319142e0a6bfdf37ca0325dfaa15b1365c371aa92af1ec3eaf1ad78cf0b2",
     "noticeRule": "Ordinary npm dependencies are installed separately and remain under their own licences. Their licence texts are not copied into the owlapi tarball merely because they appear in the installed dependency graph."
   },
   "unresolvedExternalContributions": [],
-  "conclusion": "Every material class in the machine-defined 0.1.0-rc.1 tarball scope has an identified distribution basis, the bound third-party-material inventory records no unresolved production licence conclusion, and no unresolved external copyrightable contribution is recorded."
+  "conclusion": "Every material class in the machine-defined 0.1.0-rc.2 tarball scope has an identified distribution basis, the bound third-party-material inventory records no unresolved production licence conclusion, and no unresolved external copyrightable contribution is recorded."
 }

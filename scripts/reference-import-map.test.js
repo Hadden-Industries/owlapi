@@ -14,6 +14,12 @@ describe("reference import-map evidence", () => {
     expect(
       excludeNodeXmlParserFallback(
         "@xmldom/xmldom",
+        "file:///package/internal/storage/owlxml/owlXmlStorer.js",
+      ),
+    ).toBe(false);
+    expect(
+      excludeNodeXmlParserFallback(
+        "@xmldom/xmldom",
         "file:///package/internal/storage/rdfxml/rdfXmlGraphWriter.js",
       ),
     ).toBe(false);
@@ -52,8 +58,12 @@ describe("reference import-map evidence", () => {
       "owlapi/apibinding",
       "owlapi/formats",
       "owlapi/io",
+      "owlapi/manchestersyntax/renderer",
       "owlapi/model",
+      "owlapi/model/parameters",
+      "owlapi/modularity/locality",
       "owlapi/profiles",
+      "owlapi/search",
       "owlapi/util",
     ]);
   });

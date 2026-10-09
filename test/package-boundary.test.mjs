@@ -31,6 +31,8 @@ const EXPECTED_EXPORTS = Object.freeze({
   model: [
     "ANNOTATION_VALUE_KINDS",
     "AXIOM_KINDS",
+    "AddAxiom",
+    "AddImport",
     "AddOntologyAnnotation",
     "CLASS_EXPRESSION_KINDS",
     "DATA_PROPERTY_EXPRESSION_KINDS",
@@ -48,6 +50,9 @@ const EXPECTED_EXPORTS = Object.freeze({
     "OWLOntologyWriterConfiguration",
     "OWLStructuralObject",
     "OWL_OBJECT_KINDS",
+    "RemoveAxiom",
+    "RemoveImport",
+    "RemoveOntologyAnnotation",
     "SetOntologyID",
     "StructuralSet",
     "dispatchAnnotationValue",
@@ -59,28 +64,35 @@ const EXPECTED_EXPORTS = Object.freeze({
     "dispatchObjectPropertyExpression",
     "dispatchOwlObject",
   ],
-  util: ["OWLOntologyImportsClosureSetProvider", "OWLOntologyMerger"],
-  profiles: ["OWL2DLProfile", "OWLProfileReport"],
+  util: [
+    "AnnotationValueShortFormProvider",
+    "OWLEntityRemover",
+    "OWLEntityRenamer",
+    "OWLObjectDuplicator",
+    "OWLOntologyImportsClosureSetProvider",
+    "OWLOntologyMerger",
+    "SimpleShortFormProvider",
+  ],
+  profiles: [
+    "OWL2DLProfile",
+    "OWL2ELProfile",
+    "OWL2QLProfile",
+    "OWL2RLProfile",
+    "OWLProfileReport",
+  ],
+  "model/parameters": ["AxiomAnnotations", "Imports"],
+  search: ["EntitySearcher"],
+  "manchestersyntax/renderer": ["ManchesterOWLSyntaxOWLObjectRendererImpl"],
+  "modularity/locality": ["LocalityClass", "SyntacticLocalityModuleExtractor"],
 });
 
 const sortedKeys = (moduleNamespace) => Object.keys(moduleNamespace).sort();
 
 test("each approved Java-backed namespace exposes exactly its owned bindings", async () => {
-  const [apibinding, model, io, formats, util, profiles] = await Promise.all([
-    import("@hadden-industries/owlapi/apibinding"),
-    import("@hadden-industries/owlapi/model"),
-    import("@hadden-industries/owlapi/io"),
-    import("@hadden-industries/owlapi/formats"),
-    import("@hadden-industries/owlapi/util"),
-    import("@hadden-industries/owlapi/profiles"),
-  ]);
-
-  assert.deepEqual(sortedKeys(apibinding), EXPECTED_EXPORTS.apibinding);
-  assert.deepEqual(sortedKeys(formats), EXPECTED_EXPORTS.formats);
-  assert.deepEqual(sortedKeys(io), EXPECTED_EXPORTS.io);
-  assert.deepEqual(sortedKeys(model), EXPECTED_EXPORTS.model);
-  assert.deepEqual(sortedKeys(util), EXPECTED_EXPORTS.util);
-  assert.deepEqual(sortedKeys(profiles), EXPECTED_EXPORTS.profiles);
+  for (const [path, names] of Object.entries(EXPECTED_EXPORTS)) {
+    const namespace = await import(`@hadden-industries/owlapi/${path}`);
+    assert.deepEqual(sortedKeys(namespace), names, path);
+  }
 });
 
 test("the bare aggregate preserves its owned bindings while writer configuration belongs to model", async () => {
@@ -94,7 +106,18 @@ test("the bare aggregate preserves its owned bindings while writer configuration
       import("@hadden-industries/owlapi/util"),
       import("@hadden-industries/owlapi/profiles"),
     ]);
-  const ownedModules = [apibinding, model, io, formats, util, profiles];
+  const ownedModules = [
+    apibinding,
+    model,
+    io,
+    formats,
+    util,
+    profiles,
+    await import("@hadden-industries/owlapi/model/parameters"),
+    await import("@hadden-industries/owlapi/search"),
+    await import("@hadden-industries/owlapi/manchestersyntax/renderer"),
+    await import("@hadden-industries/owlapi/modularity/locality"),
+  ];
   const ownedBindings = Object.assign({}, ...ownedModules);
   delete ownedBindings.OWLOntologyWriterConfiguration;
   delete ownedBindings.RDFXMLDocumentFormat;

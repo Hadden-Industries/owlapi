@@ -30,6 +30,10 @@ const finalReleaseBody = (evidence) => {
         `- ${environment}: ${result} (${reason})`,
     )
     .join("\n");
+  const channels =
+    evidence.package.version === PACKAGE_VERSION
+      ? `Both \`next\` and \`latest\` identify \`${version}\`.`
+      : "The historical publication remained exclusively on the `next` channel.";
   return `# owlapi ${version}
 
 Initial-development prerelease of the native-ESM \`${evidence.package.name}\` package. It implements a documented subset of Java OWLAPI concepts; \`API.md\` and the compatibility registry enumerate the exact surface and gaps.
@@ -38,7 +42,7 @@ Initial-development prerelease of the native-ESM \`${evidence.package.name}\` pa
 
 ${required}
 
-The public npm tarball was re-downloaded from a fresh cache, matched byte-for-byte to the retained candidate, passed the public export smoke suite, and remained exclusively on the \`next\` channel. The machine-readable release-evidence asset records the source, workflow, signer, approvals, package integrity, npm signature/provenance audit, and exact asset digests.
+The public npm tarball was re-downloaded from a fresh cache, matched byte-for-byte to the retained candidate, and passed the public export smoke suite. ${channels} The machine-readable release-evidence asset records the source, workflow, signer, approvals, package integrity, npm signature/provenance audit, and exact asset digests.
 
 ## Extended observations
 

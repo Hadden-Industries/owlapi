@@ -19,7 +19,7 @@ const tarEntry = (name, content) => {
 };
 
 const fixture = () => {
-  const version = "0.1.0-rc.1";
+  const version = "0.1.0-rc.2";
   const tarballFileName = `hadden-industries-owlapi-${version}.tgz`;
   const sbomFileName = `hadden-industries-owlapi-${version}.cdx.json`;
   const tarball = gzipSync(
@@ -67,11 +67,11 @@ describe("downloaded release-candidate bundle", () => {
     );
     input.checksumText = formatSha256Sums([
       {
-        fileName: "hadden-industries-owlapi-0.1.0-rc.1.tgz",
+        fileName: "hadden-industries-owlapi-0.1.0-rc.2.tgz",
         sha256: sha256Buffer(input.tarball),
       },
       {
-        fileName: "hadden-industries-owlapi-0.1.0-rc.1.cdx.json",
+        fileName: "hadden-industries-owlapi-0.1.0-rc.2.cdx.json",
         sha256: sha256Buffer(Buffer.from(input.sbomText)),
       },
     ]);
@@ -84,7 +84,7 @@ describe("downloaded release-candidate bundle", () => {
 
     expect(result.package).toEqual({
       name: "@hadden-industries/owlapi",
-      version: "0.1.0-rc.1",
+      version: "0.1.0-rc.2",
     });
     expect(result.sbom.specVersion).toBe("1.6");
     expect(result.tarball.sha256).toHaveLength(64);

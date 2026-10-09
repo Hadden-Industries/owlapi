@@ -1,0 +1,385 @@
+{
+  "schemaVersion": 1,
+  "sourceRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+  "runtimeQualification": "FRESH_LOCAL_WINDOWS_NATIVE_BUILD_NOT_LINUX_IMAGE_EQUIVALENCE",
+  "harness": "util/owlapi-reference/RunRC2Renderer.java",
+  "input": "util/owlapi-reference/fixtures/storage/functional-all-kinds.ofn",
+  "observations": {
+    "cases": {
+      "class": "A",
+      "iri": "<urn:render:A>",
+      "inverse": " inverse (p)",
+      "someUnion": "p some \n    (B or A)",
+      "complementIntersection": "not (B\n and A)",
+      "nestedIntersection": "A\n and (B or A)",
+      "min": "p min 2 A",
+      "self": "p Self ",
+      "oneOf": "{i}",
+      "lang": "\"line\nquote\\\"slash\\\\tab\t\"@en",
+      "string": "\"text\"",
+      "integer": "01",
+      "dataSome": "d some string",
+      "annotation": "label \"label\"",
+      "nestedAnnotation": "\nAnnotations: comment \"nested\"\n            \n            label \"label\"",
+      "allUnion": "p only \n    (B or A)",
+      "maxUnion": "p max 2 (B or A)",
+      "topDataIntersection": "(integer and string)",
+      "topDataUnion": "(integer or string)",
+      "topDataComplement": " not integer",
+      "dataOneOf": "{\"b\"@fr , \"a\"}",
+      "boolean": "true",
+      "decimal": "01.0",
+      "double": "\"10.0\"^^double"
+    },
+    "shortForms": {
+      "urn:render:A": "A",
+      "https://example.test/path/B": "B",
+      "https://example.test/path/": "<https://example.test/path/>",
+      "https://example.test/#space%20name": "name",
+      "urn:render:two words": "words",
+      "urn:render:": "<urn:render:>"
+    },
+    "preferredLabel": "Zulu",
+    "fallbackLabel": "B",
+    "labelRendering": "Zulu",
+    "preferredLabelTie": "A label with spaces",
+    "iriLabel": "iriValue",
+    "emptyLanguagePreferences": "A label with spaces",
+    "unlistedPlain": "English",
+    "unlistedOnly": "unmatched",
+    "customSpaceQuote": "two words' quote",
+    "axioms": [
+      {
+        "functional": "AnnotationAssertion(Annotation(<urn:owlapi-js:phase2:note> \"axiom metadata\"^^xsd:string) <urn:owlapi-js:phase2:note> _:genid2147483648 <urn:owlapi-js:phase2:value>)",
+        "type": "AnnotationAssertion",
+        "rendered": "_:genid2147483648 note <urn:owlapi-js:phase2:value>"
+      },
+      {
+        "functional": "AnnotationPropertyDomain(<urn:owlapi-js:phase2:note> <urn:owlapi-js:phase2:domain>)",
+        "type": "AnnotationPropertyDomain",
+        "rendered": "note Domain <urn:owlapi-js:phase2:domain>"
+      },
+      {
+        "functional": "AnnotationPropertyRange(<urn:owlapi-js:phase2:note> <urn:owlapi-js:phase2:range>)",
+        "type": "AnnotationPropertyRangeOf",
+        "rendered": "note Range <urn:owlapi-js:phase2:range>"
+      },
+      {
+        "functional": "AsymmetricObjectProperty(<urn:owlapi-js:phase2:q>)",
+        "type": "AsymmetricObjectProperty",
+        "rendered": " Asymmetric: q"
+      },
+      {
+        "functional": "ClassAssertion(DataAllValuesFrom(<urn:owlapi-js:phase2:d> DataIntersectionOf(xsd:string DataComplementOf(xsd:integer))) <urn:owlapi-js:phase2:j>)",
+        "type": "ClassAssertion",
+        "rendered": "j Type d only (string and  not integer)"
+      },
+      {
+        "functional": "ClassAssertion(DataExactCardinality(1 <urn:owlapi-js:phase2:d> xsd:string) <urn:owlapi-js:phase2:j>)",
+        "type": "ClassAssertion",
+        "rendered": "j Type d exactly 1 string"
+      },
+      {
+        "functional": "ClassAssertion(DataHasValue(<urn:owlapi-js:phase2:d> \"Δ 😀\"^^xsd:string) <urn:owlapi-js:phase2:j>)",
+        "type": "ClassAssertion",
+        "rendered": "j Type d value \"Δ 😀\""
+      },
+      {
+        "functional": "ClassAssertion(DataMaxCardinality(2 <urn:owlapi-js:phase2:d> xsd:string) <urn:owlapi-js:phase2:j>)",
+        "type": "ClassAssertion",
+        "rendered": "j Type d max 2 string"
+      },
+      {
+        "functional": "ClassAssertion(DataMinCardinality(0 <urn:owlapi-js:phase2:d> xsd:string) <urn:owlapi-js:phase2:j>)",
+        "type": "ClassAssertion",
+        "rendered": "j Type d min 0 string"
+      },
+      {
+        "functional": "ClassAssertion(ObjectExactCardinality(1 <urn:owlapi-js:phase2:q> <urn:owlapi-js:phase2:C>) <urn:owlapi-js:phase2:j>)",
+        "type": "ClassAssertion",
+        "rendered": "j Type q exactly 1 C"
+      },
+      {
+        "functional": "ClassAssertion(ObjectHasSelf(<urn:owlapi-js:phase2:p>) <urn:owlapi-js:phase2:j>)",
+        "type": "ClassAssertion",
+        "rendered": "j Type p Self "
+      },
+      {
+        "functional": "ClassAssertion(ObjectMaxCardinality(2 <urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:B>) <urn:owlapi-js:phase2:j>)",
+        "type": "ClassAssertion",
+        "rendered": "j Type p max 2 B"
+      },
+      {
+        "functional": "ClassAssertion(ObjectMinCardinality(1 <urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:B>) _:genid2147483648)",
+        "type": "ClassAssertion",
+        "rendered": "_:genid2147483648 Type p min 1 B"
+      },
+      {
+        "functional": "DataPropertyAssertion(<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:i> \"01\"^^xsd:integer)",
+        "type": "DataPropertyAssertion",
+        "rendered": "i d 01"
+      },
+      {
+        "functional": "DataPropertyDomain(<urn:owlapi-js:phase2:d> DataSomeValuesFrom(<urn:owlapi-js:phase2:e> DataUnionOf(xsd:integer xsd:string)))",
+        "type": "DataPropertyDomain",
+        "rendered": "d Domain e some (integer or string)"
+      },
+      {
+        "functional": "DataPropertyRange(<urn:owlapi-js:phase2:d> DatatypeRestriction(xsd:integer facetRestriction(minInclusive \"0\"^^xsd:integer)))",
+        "type": "DataPropertyRange",
+        "rendered": "d Range: integer[>= 0]"
+      },
+      {
+        "functional": "DatatypeDefinition(<urn:owlapi-js:phase2:Code> DataOneOf(\"beta\"@en \"alpha\"^^xsd:string))",
+        "type": "DatatypeDefinition",
+        "rendered": ""
+      },
+      {
+        "functional": "Declaration(Annotation(rdfs:comment \"declared class\"^^xsd:string) Class(<urn:owlapi-js:phase2:A>))",
+        "type": "Declaration",
+        "rendered": "Class: A"
+      },
+      {
+        "functional": "Declaration(AnnotationProperty(<urn:owlapi-js:phase2:note>))",
+        "type": "Declaration",
+        "rendered": "AnnotationProperty: note"
+      },
+      {
+        "functional": "Declaration(DataProperty(<urn:owlapi-js:phase2:d>))",
+        "type": "Declaration",
+        "rendered": "DataProperty: d"
+      },
+      {
+        "functional": "Declaration(Datatype(<urn:owlapi-js:phase2:Code>))",
+        "type": "Declaration",
+        "rendered": "Code"
+      },
+      {
+        "functional": "Declaration(NamedIndividual(<urn:owlapi-js:phase2:i>))",
+        "type": "Declaration",
+        "rendered": "Individual: i"
+      },
+      {
+        "functional": "Declaration(ObjectProperty(<urn:owlapi-js:phase2:p>))",
+        "type": "Declaration",
+        "rendered": "ObjectProperty: p"
+      },
+      {
+        "functional": "DifferentIndividuals(<urn:owlapi-js:phase2:i> <urn:owlapi-js:phase2:j>)",
+        "type": "DifferentIndividuals",
+        "rendered": "i DifferentFrom j"
+      },
+      {
+        "functional": "DisjointClasses(<urn:owlapi-js:phase2:A> <urn:owlapi-js:phase2:B> <urn:owlapi-js:phase2:C>)",
+        "type": "DisjointClasses",
+        "rendered": " DisjointClasses: A, B, C"
+      },
+      {
+        "functional": "DisjointDataProperties(<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>)",
+        "type": "DisjointDataProperties",
+        "rendered": "d DisjointWith e"
+      },
+      {
+        "functional": "DisjointObjectProperties(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>)",
+        "type": "DisjointObjectProperties",
+        "rendered": "p DisjointWith q"
+      },
+      {
+        "functional": "DisjointUnion(<urn:owlapi-js:phase2:A> <urn:owlapi-js:phase2:B> ObjectOneOf(<urn:owlapi-js:phase2:i> _:genid2147483648))",
+        "type": "DisjointUnion",
+        "rendered": "A DisjointUnionOf B, {i , _:genid2147483648}"
+      },
+      {
+        "functional": "EquivalentClasses(<urn:owlapi-js:phase2:A> ObjectUnionOf(<urn:owlapi-js:phase2:B> ObjectComplementOf(<urn:owlapi-js:phase2:C>)))",
+        "type": "EquivalentClasses",
+        "rendered": "A EquivalentTo B or (not (C))"
+      },
+      {
+        "functional": "EquivalentDataProperties(<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>)",
+        "type": "EquivalentDataProperties",
+        "rendered": "EquivalentProperties: d, e"
+      },
+      {
+        "functional": "EquivalentObjectProperties(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>)",
+        "type": "EquivalentObjectProperties",
+        "rendered": "p EquivalentTo q"
+      },
+      {
+        "functional": "FunctionalDataProperty(<urn:owlapi-js:phase2:d>)",
+        "type": "FunctionalDataProperty",
+        "rendered": " Functional: d"
+      },
+      {
+        "functional": "FunctionalObjectProperty(<urn:owlapi-js:phase2:p>)",
+        "type": "FunctionalObjectProperty",
+        "rendered": " Functional: p"
+      },
+      {
+        "functional": "HasKey(<urn:owlapi-js:phase2:A> (<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) (<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>))",
+        "type": "HasKey",
+        "rendered": "A HasKey p , qd , e"
+      },
+      {
+        "functional": "InverseFunctionalObjectProperty(<urn:owlapi-js:phase2:p>)",
+        "type": "InverseFunctionalObjectProperty",
+        "rendered": " InverseFunctional: p"
+      },
+      {
+        "functional": "InverseObjectProperties(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>)",
+        "type": "InverseObjectProperties",
+        "rendered": "p InverseOf q"
+      },
+      {
+        "functional": "IrreflexiveObjectProperty(<urn:owlapi-js:phase2:q>)",
+        "type": "IrrefexiveObjectProperty",
+        "rendered": " Irreflexive: q"
+      },
+      {
+        "functional": "NegativeDataPropertyAssertion(<urn:owlapi-js:phase2:e> _:genid2147483648 \"plain\"^^xsd:string)",
+        "type": "NegativeDataPropertyAssertion",
+        "rendered": " not (_:genid2147483648 e \"plain\")"
+      },
+      {
+        "functional": "NegativeObjectPropertyAssertion(<urn:owlapi-js:phase2:q> _:genid2147483648 <urn:owlapi-js:phase2:j>)",
+        "type": "NegativeObjectPropertyAssertion",
+        "rendered": " not (_:genid2147483648 q j)"
+      },
+      {
+        "functional": "ObjectPropertyAssertion(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:i> _:genid2147483648)",
+        "type": "ObjectPropertyAssertion",
+        "rendered": "i p _:genid2147483648"
+      },
+      {
+        "functional": "ObjectPropertyDomain(<urn:owlapi-js:phase2:p> ObjectAllValuesFrom(<urn:owlapi-js:phase2:q> <urn:owlapi-js:phase2:B>))",
+        "type": "ObjectPropertyDomain",
+        "rendered": "p Domain q only B"
+      },
+      {
+        "functional": "ObjectPropertyRange(<urn:owlapi-js:phase2:p> ObjectHasValue(<urn:owlapi-js:phase2:q> <urn:owlapi-js:phase2:i>))",
+        "type": "ObjectPropertyRange",
+        "rendered": "p Range q value i"
+      },
+      {
+        "functional": "ReflexiveObjectProperty(<urn:owlapi-js:phase2:p>)",
+        "type": "ReflexiveObjectProperty",
+        "rendered": " Reflexive: p"
+      },
+      {
+        "functional": "SameIndividual(<urn:owlapi-js:phase2:i> _:genid2147483648)",
+        "type": "SameIndividual",
+        "rendered": "i SameAs _:genid2147483648"
+      },
+      {
+        "functional": "SubAnnotationPropertyOf(<urn:owlapi-js:phase2:note> rdfs:label)",
+        "type": "SubAnnotationPropertyOf",
+        "rendered": "note SubPropertyOf: label"
+      },
+      {
+        "functional": "SubClassOf(Annotation(<urn:owlapi-js:phase2:note> \"annotated axiom\"^^xsd:string) <urn:owlapi-js:phase2:A> ObjectIntersectionOf(<urn:owlapi-js:phase2:B> ObjectSomeValuesFrom(ObjectInverseOf(<urn:owlapi-js:phase2:p>) <urn:owlapi-js:phase2:C>)))",
+        "type": "SubClassOf",
+        "rendered": "A SubClassOf B and ( inverse (p) some C)"
+      },
+      {
+        "functional": "SubDataPropertyOf(<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>)",
+        "type": "SubDataPropertyOf",
+        "rendered": "d SubPropertyOf: e"
+      },
+      {
+        "functional": "SubObjectPropertyOf(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>)",
+        "type": "SubObjectPropertyOf",
+        "rendered": "p SubPropertyOf: q"
+      },
+      {
+        "functional": "SubObjectPropertyOf(ObjectPropertyChain(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) <urn:owlapi-js:phase2:r>)",
+        "type": "SubPropertyChainOf",
+        "rendered": "p o q SubPropertyOf: r"
+      },
+      {
+        "functional": "SymmetricObjectProperty(<urn:owlapi-js:phase2:p>)",
+        "type": "SymmetricObjectProperty",
+        "rendered": " Symmetric: p"
+      },
+      {
+        "functional": "TransitiveObjectProperty(<urn:owlapi-js:phase2:r>)",
+        "type": "TransitiveObjectProperty",
+        "rendered": " Transitive: r"
+      }
+    ],
+    "typeIndices": {
+      "IRI": 0,
+      "OWL2Datatype": 4001,
+      "OWLAnnotation": 5001,
+      "OWLAnnotationAssertionAxiom": 2034,
+      "OWLAnnotationProperty": 1006,
+      "OWLAnnotationPropertyDomainAxiom": 2037,
+      "OWLAnnotationPropertyRangeAxiom": 2036,
+      "OWLAnonymousIndividual": 1007,
+      "OWLAsymmetricObjectPropertyAxiom": 2018,
+      "OWLClass": 1001,
+      "OWLClassAssertionAxiom": 2005,
+      "OWLDataAllValuesFrom": 3013,
+      "OWLDataComplementOf": 4002,
+      "OWLDataExactCardinality": 3016,
+      "OWLDataHasValue": 3014,
+      "OWLDataIntersectionOf": 4004,
+      "OWLDataMaxCardinality": 3017,
+      "OWLDataMinCardinality": 3015,
+      "OWLDataOneOf": 4003,
+      "OWLDataProperty": 1004,
+      "OWLDataPropertyAssertionAxiom": 2010,
+      "OWLDataPropertyDomainAxiom": 2029,
+      "OWLDataPropertyRangeAxiom": 2030,
+      "OWLDataSomeValuesFrom": 3012,
+      "OWLDataUnionOf": 4005,
+      "OWLDatatype": 4001,
+      "OWLDatatypeDefinitionAxiom": 2038,
+      "OWLDatatypeRestriction": 4006,
+      "OWLDeclarationAxiom": 2000,
+      "OWLDifferentIndividualsAxiom": 2007,
+      "OWLDisjointClassesAxiom": 2003,
+      "OWLDisjointDataPropertiesAxiom": 2031,
+      "OWLDisjointObjectPropertiesAxiom": 2024,
+      "OWLDisjointUnionAxiom": 2004,
+      "OWLEquivalentClassesAxiom": 2001,
+      "OWLEquivalentDataPropertiesAxiom": 2026,
+      "OWLEquivalentObjectPropertiesAxiom": 2012,
+      "OWLFacetRestriction": 4007,
+      "OWLFunctionalDataPropertyAxiom": 2028,
+      "OWLFunctionalObjectPropertyAxiom": 2015,
+      "OWLHasKeyAxiom": 2032,
+      "OWLInverseFunctionalObjectPropertyAxiom": 2016,
+      "OWLInverseObjectPropertiesAxiom": 2014,
+      "OWLIrreflexiveObjectPropertyAxiom": 2021,
+      "OWLLiteral": 4008,
+      "OWLNamedIndividual": 1005,
+      "OWLNegativeDataPropertyAssertionAxiom": 2011,
+      "OWLNegativeObjectPropertyAssertionAxiom": 2009,
+      "OWLObjectAllValuesFrom": 3006,
+      "OWLObjectComplementOf": 3003,
+      "OWLObjectExactCardinality": 3009,
+      "OWLObjectHasSelf": 3011,
+      "OWLObjectHasValue": 3007,
+      "OWLObjectIntersectionOf": 3001,
+      "OWLObjectInverseOf": 1003,
+      "OWLObjectMaxCardinality": 3010,
+      "OWLObjectMinCardinality": 3008,
+      "OWLObjectOneOf": 3004,
+      "OWLObjectProperty": 1002,
+      "OWLObjectPropertyAssertionAxiom": 2008,
+      "OWLObjectPropertyDomainAxiom": 2022,
+      "OWLObjectPropertyRangeAxiom": 2023,
+      "OWLObjectSomeValuesFrom": 3005,
+      "OWLObjectUnionOf": 3002,
+      "OWLReflexiveObjectPropertyAxiom": 2020,
+      "OWLSameIndividualAxiom": 2006,
+      "OWLSubAnnotationPropertyOfAxiom": 2035,
+      "OWLSubClassOfAxiom": 2002,
+      "OWLSubDataPropertyOfAxiom": 2027,
+      "OWLSubObjectPropertyOfAxiom": 2013,
+      "OWLSubPropertyChainAxiom": 2025,
+      "OWLSymmetricObjectPropertyAxiom": 2017,
+      "OWLTransitiveObjectPropertyAxiom": 2019
+    }
+  },
+  "freshNativeBindingSha256": "556ffa28d5b95dd31b3f144ff2de2759e55f71703b51ad84dae22d8ce829bff3"
+}

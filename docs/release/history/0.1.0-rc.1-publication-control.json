@@ -1,0 +1,11 @@
+{
+  "$schema": "./publication-control.schema.json",
+  "schemaVersion": 2,
+  "enabled": true,
+  "mode": "DIRECT_BOOTSTRAP",
+  "coordinate": "@hadden-industries/owlapi@0.1.0-rc.1",
+  "channel": "next",
+  "reconciliation": null,
+  "reason": "Maksym Shostak approved all manual npm publication controls on 2026-10-03 for the qualified @hadden-industries/owlapi@0.1.0-rc.1 tarball, SHA-256 4e18d8a1d2f41af0f31f0426a24d57ddfa25316fba6be550adf2edd6202cabf8. Authorize the protected DIRECT_BOOTSTRAP workflow with public access and next only, preserving exact consumer qualification, the late signed tag, environment controls, single-write recovery and fresh registry verification. UO and WebVOWL may each accept this RC for production without waiting for 0.1.0. Historical unscoped alpha reconciliation supplies no authority for this release.",
+  "reviewedOn": "2026-10-03"
+}

@@ -38,6 +38,7 @@ const iriKey = (iri, name) => {
 const createEmptyState = () => ({
   deterministicImportOrderKeyByOntology: new Map(),
   directImportsByOntology: new Map(),
+  resolvedImportIRIsByOntology: new Map(),
   documentIRIByOntology: new Map(),
   ontologies: new Set(),
   ontologiesByOntologyIRI: new Map(),
@@ -55,6 +56,9 @@ const cloneManagedOntologyState = (state) => ({
     state.deterministicImportOrderKeyByOntology,
   ),
   directImportsByOntology: cloneSetIndex(state.directImportsByOntology),
+  resolvedImportIRIsByOntology: cloneSetIndex(
+    state.resolvedImportIRIsByOntology,
+  ),
   documentIRIByOntology: new Map(state.documentIRIByOntology),
   ontologies: new Set(state.ontologies),
   ontologiesByOntologyIRI: cloneSetIndex(state.ontologiesByOntologyIRI),
@@ -219,6 +223,7 @@ const applyDirectImportToState = (
   state,
   importingOntology,
   importedOntology,
+  importIRI,
 ) => {
   let directImports = state.directImportsByOntology.get(importingOntology);
   if (!directImports) {
@@ -226,6 +231,12 @@ const applyDirectImportToState = (
     state.directImportsByOntology.set(importingOntology, directImports);
   }
   directImports.add(importedOntology);
+  if (importIRI !== undefined)
+    addToSetIndex(
+      state.resolvedImportIRIsByOntology,
+      importingOntology,
+      iriKey(importIRI, "importIRI"),
+    );
 };
 
 const getOntologyByIRIFromStates = (states, iri) => {
@@ -302,6 +313,7 @@ const compareOntologyImportOrder = (state, left, right, operation) => {
 };
 
 class ManagedOntologyLoadSession {
+  #baseRevision;
   #closed = false;
   #commitStagedChanges;
   #getCommittedState;
@@ -310,6 +322,7 @@ class ManagedOntologyLoadSession {
 
   constructor(getCommittedState, commitStagedChanges) {
     this.#getCommittedState = getCommittedState;
+    this.#baseRevision = getCommittedState().revision;
     this.#commitStagedChanges = commitStagedChanges;
   }
 
@@ -319,6 +332,14 @@ class ManagedOntologyLoadSession {
         "The managed ontology load session is already closed",
       );
     }
+  }
+
+  assertCurrentRevision() {
+    this.#requireOpen();
+    if (this.#getCommittedState().revision !== this.#baseRevision)
+      throw new OWLOntologyStateError(
+        "The managed ontology load session is stale",
+      );
   }
 
   hasOntology(ontology) {
@@ -366,7 +387,7 @@ class ManagedOntologyLoadSession {
     this.#stagedOntologyRegistrations.push(registration);
   }
 
-  stageDirectImport(importingOntology, importedOntology) {
+  stageDirectImport(importingOntology, importedOntology, importIRI) {
     this.#requireOpen();
     const visibleStates = [this.#stagedState, this.#getCommittedState()];
     requireManagedOntologyInStates(visibleStates, importingOntology);
@@ -375,6 +396,7 @@ class ManagedOntologyLoadSession {
       this.#stagedState,
       importingOntology,
       importedOntology,
+      importIRI,
     );
   }
 
@@ -400,6 +422,8 @@ class ManagedOntologyLoadSession {
     this.#closed = true;
     this.#commitStagedChanges({
       directImportsByOntology: this.#stagedState.directImportsByOntology,
+      resolvedImportIRIsByOntology:
+        this.#stagedState.resolvedImportIRIsByOntology,
       ontologyRegistrations: this.#stagedOntologyRegistrations,
       stagedState: this.#stagedState,
     });
@@ -411,12 +435,14 @@ class ManagedOntologyLoadSession {
   }
 }
 
-class ManagedOntologyIdentityMutation {
+class ManagedOntologyMutation {
   #baseRevision;
   #changesState = false;
   #closed = false;
   #currentRevision;
   #originalIdentityStateByOntology = new Map();
+  #originalImportsByOntology = new Map();
+  #originalResolvedImportIRIsByOntology = new Map();
   #publishPreparedState;
   #stagedState;
 
@@ -430,7 +456,7 @@ class ManagedOntologyIdentityMutation {
   #requireOpen() {
     if (this.#closed) {
       throw new OWLOntologyStateError(
-        "The managed ontology identity mutation is already closed",
+        "The managed ontology mutation is already closed",
       );
     }
   }
@@ -439,7 +465,7 @@ class ManagedOntologyIdentityMutation {
     const currentRevision = this.#currentRevision();
     if (currentRevision !== this.#baseRevision) {
       throw new OWLOntologyStateError(
-        `The managed ontology identity mutation revision ${this.#baseRevision} does not match current revision ${currentRevision}`,
+        `The managed ontology mutation revision ${this.#baseRevision} does not match current revision ${currentRevision}`,
         {
           baseRevision: this.#baseRevision,
           currentRevision,
@@ -569,8 +595,64 @@ class ManagedOntologyIdentityMutation {
       }
       this.#originalIdentityStateByOntology.delete(ontology);
     }
-    this.#changesState = this.#originalIdentityStateByOntology.size > 0;
+    this.#refreshChangeStatus();
     return true;
+  }
+
+  /** Replace one loaded adjacency bucket after all aliases have been staged. */
+  stageImportsReplacement(ontology, declarations) {
+    this.#requireOpen();
+    requireManagedOntology(this.#stagedState, ontology);
+    if (!this.#originalImportsByOntology.has(ontology))
+      this.#originalImportsByOntology.set(
+        ontology,
+        new Set(this.#stagedState.directImportsByOntology.get(ontology) ?? []),
+      );
+    if (!this.#originalResolvedImportIRIsByOntology.has(ontology))
+      this.#originalResolvedImportIRIsByOntology.set(
+        ontology,
+        new Set(
+          this.#stagedState.resolvedImportIRIsByOntology.get(ontology) ?? [],
+        ),
+      );
+    const imports = new Set();
+    const resolvedIRIs = new Set();
+    for (const { iri, documentIRI } of declarations) {
+      const imported =
+        getOntologyByIRIFromStates([this.#stagedState], iri) ??
+        getOntologyByDocumentIRIFromStates([this.#stagedState], documentIRI);
+      if (imported) {
+        imports.add(imported);
+        resolvedIRIs.add(iri.value);
+      }
+    }
+    this.#stagedState.directImportsByOntology.set(ontology, imports);
+    this.#stagedState.resolvedImportIRIsByOntology.set(ontology, resolvedIRIs);
+    this.#refreshChangeStatus();
+  }
+
+  #refreshChangeStatus() {
+    this.#changesState =
+      this.#originalIdentityStateByOntology.size > 0 ||
+      [...this.#originalImportsByOntology].some(([ontology, original]) => {
+        const current =
+          this.#stagedState.directImportsByOntology.get(ontology) ?? new Set();
+        return (
+          original.size !== current.size ||
+          [...original].some((member) => !current.has(member))
+        );
+      }) ||
+      [...this.#originalResolvedImportIRIsByOntology].some(
+        ([ontology, original]) => {
+          const current =
+            this.#stagedState.resolvedImportIRIsByOntology.get(ontology) ??
+            new Set();
+          return (
+            original.size !== current.size ||
+            [...original].some((iri) => !current.has(iri))
+          );
+        },
+      );
   }
 
   preflight() {
@@ -610,6 +692,10 @@ export class ManagedOntologyIndex {
     return this.#state.ontologies.has(ontology);
   }
 
+  ontologies() {
+    return Object.freeze([...this.#state.ontologies]);
+  }
+
   getOntologyByID(ontologyID) {
     return this.#state.ontologyByID.get(ontologyIDKey(ontologyID));
   }
@@ -624,6 +710,14 @@ export class ManagedOntologyIndex {
 
   getDirectImports(ontology) {
     return new Set(this.#state.directImportsByOntology.get(ontology) || []);
+  }
+
+  /** Whether this declaration has a retained, manager-owned loaded resolution. */
+  hasResolvedImport(ontology, iri) {
+    return (
+      this.#state.resolvedImportIRIsByOntology.get(ontology)?.has(iri.value) ??
+      false
+    );
   }
 
   createImportsClosureSnapshot(ontology, { operation } = {}) {
@@ -657,8 +751,8 @@ export class ManagedOntologyIndex {
     this.#state.revision += 1;
   }
 
-  beginOntologyIdentityMutation() {
-    return new ManagedOntologyIdentityMutation(
+  beginOntologyMutation() {
+    return new ManagedOntologyMutation(
       this.#state,
       () => this.#state.revision,
       (preparedState) => {
@@ -702,6 +796,17 @@ export class ManagedOntologyIndex {
               importedOntology,
             );
           });
+        }
+        for (const [
+          ontology,
+          iris,
+        ] of stagedChanges.resolvedImportIRIsByOntology) {
+          for (const iri of iris)
+            addToSetIndex(
+              this.#state.resolvedImportIRIsByOntology,
+              ontology,
+              iri,
+            );
         }
         this.#state.revision += 1;
       },

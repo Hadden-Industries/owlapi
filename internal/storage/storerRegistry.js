@@ -12,6 +12,8 @@ import {
 } from "../../model/owlDocumentFormat.js";
 import { functionalSyntaxStorer } from "./functional/functionalSyntaxStorer.js";
 import { rdfXmlStorer } from "./rdfxml/rdfXmlStorer.js";
+import { turtleStorer } from "./turtle/turtleStorer.js";
+import { owlXmlStorer } from "./owlxml/owlXmlStorer.js";
 import { visitStructuralValues } from "../model/sourceEvidence.js";
 
 const requireDocumentFormat = (format) => {
@@ -126,4 +128,9 @@ export class StorerRegistry {
 
 /** Each manager owns its registry; public construction accepts no storer hook. */
 export const createDefaultStorerRegistry = () =>
-  new StorerRegistry([functionalSyntaxStorer, rdfXmlStorer]);
+  new StorerRegistry([
+    functionalSyntaxStorer,
+    rdfXmlStorer,
+    turtleStorer,
+    owlXmlStorer,
+  ]);

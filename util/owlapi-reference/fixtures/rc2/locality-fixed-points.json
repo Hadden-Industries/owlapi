@@ -1,0 +1,2450 @@
+{
+  "sourceRevision" : "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+  "schemaVersion" : 1,
+  "runtimeQualification" : "FRESH_LOCAL_WINDOWS_NATIVE_BUILD_NOT_LINUX_IMAGE_EQUIVALENCE",
+  "observations" : [ {
+    "id" : "forwardChain-0",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:B :C) SubClassOf(:C :D))",
+    "seed" : [ ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "forwardChain-1",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:B :C) SubClassOf(:C :D))",
+    "seed" : [ {
+      "iri" : "urn:fixed:A",
+      "kind" : "Class"
+    }, {
+      "iri" : "urn:fixed:B",
+      "kind" : "Class"
+    }, {
+      "iri" : "urn:fixed:C",
+      "kind" : "Class"
+    }, {
+      "iri" : "urn:fixed:D",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:D>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:D>)" ]
+      },
+      "TOP" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:D>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:D>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:D>)" ],
+        "mode" : "TOP"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:D>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:D>)" ],
+        "mode" : "BOTTOM"
+      } ]
+    }
+  }, {
+    "id" : "forwardChain-2",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:B :C) SubClassOf(:C :D))",
+    "seed" : [ {
+      "iri" : "urn:fixed:absent",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "error" : "NullPointerException"
+      },
+      "STAR" : {
+        "error" : "NullPointerException"
+      },
+      "TOP" : {
+        "error" : "NullPointerException"
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "forwardChain-3",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:B :C) SubClassOf(:C :D))",
+    "seed" : [ {
+      "iri" : "urn:fixed:A",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:D>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:D>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ]
+    }
+  }, {
+    "id" : "forwardChain-4",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:B :C) SubClassOf(:C :D))",
+    "seed" : [ {
+      "iri" : "urn:fixed:B",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:D>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:D>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "forwardChain-5",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:B :C) SubClassOf(:C :D))",
+    "seed" : [ {
+      "iri" : "urn:fixed:C",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:C> <urn:fixed:D>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:C> <urn:fixed:D>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "forwardChain-6",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:B :C) SubClassOf(:C :D))",
+    "seed" : [ {
+      "iri" : "urn:fixed:D",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:D>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:D>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "classCycle-0",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:B :C) SubClassOf(:C :A) SubClassOf(:D :E))",
+    "seed" : [ ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "classCycle-1",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:B :C) SubClassOf(:C :A) SubClassOf(:D :E))",
+    "seed" : [ {
+      "iri" : "urn:fixed:A",
+      "kind" : "Class"
+    }, {
+      "iri" : "urn:fixed:B",
+      "kind" : "Class"
+    }, {
+      "iri" : "urn:fixed:C",
+      "kind" : "Class"
+    }, {
+      "iri" : "urn:fixed:D",
+      "kind" : "Class"
+    }, {
+      "iri" : "urn:fixed:E",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)", "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)", "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ]
+      },
+      "TOP" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)", "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)", "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)", "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ],
+        "mode" : "TOP"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)", "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)", "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ],
+        "mode" : "BOTTOM"
+      } ]
+    }
+  }, {
+    "id" : "classCycle-2",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:B :C) SubClassOf(:C :A) SubClassOf(:D :E))",
+    "seed" : [ {
+      "iri" : "urn:fixed:absent",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "error" : "NullPointerException"
+      },
+      "STAR" : {
+        "error" : "NullPointerException"
+      },
+      "TOP" : {
+        "error" : "NullPointerException"
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "classCycle-3",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:B :C) SubClassOf(:C :A) SubClassOf(:D :E))",
+    "seed" : [ {
+      "iri" : "urn:fixed:A",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)" ]
+      },
+      "TOP" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)" ],
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)" ],
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "classCycle-4",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:B :C) SubClassOf(:C :A) SubClassOf(:D :E))",
+    "seed" : [ {
+      "iri" : "urn:fixed:B",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)" ]
+      },
+      "TOP" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)" ],
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)" ],
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "classCycle-5",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:B :C) SubClassOf(:C :A) SubClassOf(:D :E))",
+    "seed" : [ {
+      "iri" : "urn:fixed:C",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)" ]
+      },
+      "TOP" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)" ],
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(<urn:fixed:C> <urn:fixed:A>)" ],
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "classCycle-6",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:B :C) SubClassOf(:C :A) SubClassOf(:D :E))",
+    "seed" : [ {
+      "iri" : "urn:fixed:D",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ]
+    }
+  }, {
+    "id" : "classCycle-7",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:B :C) SubClassOf(:C :A) SubClassOf(:D :E))",
+    "seed" : [ {
+      "iri" : "urn:fixed:E",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "diamond-0",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:A :C) SubClassOf(:B :D) SubClassOf(:C :D) SubClassOf(:D :E))",
+    "seed" : [ ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "diamond-1",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:A :C) SubClassOf(:B :D) SubClassOf(:C :D) SubClassOf(:D :E))",
+    "seed" : [ {
+      "iri" : "urn:fixed:A",
+      "kind" : "Class"
+    }, {
+      "iri" : "urn:fixed:B",
+      "kind" : "Class"
+    }, {
+      "iri" : "urn:fixed:C",
+      "kind" : "Class"
+    }, {
+      "iri" : "urn:fixed:D",
+      "kind" : "Class"
+    }, {
+      "iri" : "urn:fixed:E",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:A> <urn:fixed:C>)", "SubClassOf(<urn:fixed:B> <urn:fixed:D>)", "SubClassOf(<urn:fixed:C> <urn:fixed:D>)", "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:A> <urn:fixed:C>)", "SubClassOf(<urn:fixed:B> <urn:fixed:D>)", "SubClassOf(<urn:fixed:C> <urn:fixed:D>)", "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ]
+      },
+      "TOP" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:A> <urn:fixed:C>)", "SubClassOf(<urn:fixed:B> <urn:fixed:D>)", "SubClassOf(<urn:fixed:C> <urn:fixed:D>)", "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:A> <urn:fixed:C>)", "SubClassOf(<urn:fixed:B> <urn:fixed:D>)", "SubClassOf(<urn:fixed:C> <urn:fixed:D>)", "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:A> <urn:fixed:C>)", "SubClassOf(<urn:fixed:B> <urn:fixed:D>)", "SubClassOf(<urn:fixed:C> <urn:fixed:D>)", "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ],
+        "mode" : "TOP"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:A> <urn:fixed:C>)", "SubClassOf(<urn:fixed:B> <urn:fixed:D>)", "SubClassOf(<urn:fixed:C> <urn:fixed:D>)", "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:A> <urn:fixed:C>)", "SubClassOf(<urn:fixed:B> <urn:fixed:D>)", "SubClassOf(<urn:fixed:C> <urn:fixed:D>)", "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ],
+        "mode" : "BOTTOM"
+      } ]
+    }
+  }, {
+    "id" : "diamond-2",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:A :C) SubClassOf(:B :D) SubClassOf(:C :D) SubClassOf(:D :E))",
+    "seed" : [ {
+      "iri" : "urn:fixed:absent",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "error" : "NullPointerException"
+      },
+      "STAR" : {
+        "error" : "NullPointerException"
+      },
+      "TOP" : {
+        "error" : "NullPointerException"
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "diamond-3",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:A :C) SubClassOf(:B :D) SubClassOf(:C :D) SubClassOf(:D :E))",
+    "seed" : [ {
+      "iri" : "urn:fixed:A",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:A> <urn:fixed:C>)", "SubClassOf(<urn:fixed:B> <urn:fixed:D>)", "SubClassOf(<urn:fixed:C> <urn:fixed:D>)", "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:A> <urn:fixed:C>)", "SubClassOf(<urn:fixed:B> <urn:fixed:D>)", "SubClassOf(<urn:fixed:C> <urn:fixed:D>)", "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ]
+    }
+  }, {
+    "id" : "diamond-4",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:A :C) SubClassOf(:B :D) SubClassOf(:C :D) SubClassOf(:D :E))",
+    "seed" : [ {
+      "iri" : "urn:fixed:B",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:B> <urn:fixed:D>)", "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:B> <urn:fixed:D>)", "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "diamond-5",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:A :C) SubClassOf(:B :D) SubClassOf(:C :D) SubClassOf(:D :E))",
+    "seed" : [ {
+      "iri" : "urn:fixed:C",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:C> <urn:fixed:D>)", "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:C>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:C> <urn:fixed:D>)", "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:C>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "diamond-6",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:A :C) SubClassOf(:B :D) SubClassOf(:C :D) SubClassOf(:D :E))",
+    "seed" : [ {
+      "iri" : "urn:fixed:D",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:A> <urn:fixed:C>)", "SubClassOf(<urn:fixed:B> <urn:fixed:D>)", "SubClassOf(<urn:fixed:C> <urn:fixed:D>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:A> <urn:fixed:C>)", "SubClassOf(<urn:fixed:B> <urn:fixed:D>)", "SubClassOf(<urn:fixed:C> <urn:fixed:D>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "diamond-7",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:A :C) SubClassOf(:B :D) SubClassOf(:C :D) SubClassOf(:D :E))",
+    "seed" : [ {
+      "iri" : "urn:fixed:E",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:A> <urn:fixed:C>)", "SubClassOf(<urn:fixed:B> <urn:fixed:D>)", "SubClassOf(<urn:fixed:C> <urn:fixed:D>)", "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:A> <urn:fixed:C>)", "SubClassOf(<urn:fixed:B> <urn:fixed:D>)", "SubClassOf(<urn:fixed:C> <urn:fixed:D>)", "SubClassOf(<urn:fixed:D> <urn:fixed:E>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "mixedPropertyCycle-0",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubObjectPropertyOf(:p :q) SubObjectPropertyOf(:q :p) ObjectPropertyDomain(:p :A) ObjectPropertyRange(:q :B) SubClassOf(:A :B))",
+    "seed" : [ ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "mixedPropertyCycle-1",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubObjectPropertyOf(:p :q) SubObjectPropertyOf(:q :p) ObjectPropertyDomain(:p :A) ObjectPropertyRange(:q :B) SubClassOf(:A :B))",
+    "seed" : [ {
+      "iri" : "urn:fixed:A",
+      "kind" : "Class"
+    }, {
+      "iri" : "urn:fixed:B",
+      "kind" : "Class"
+    }, {
+      "iri" : "urn:fixed:p",
+      "kind" : "ObjectProperty"
+    }, {
+      "iri" : "urn:fixed:q",
+      "kind" : "ObjectProperty"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "ObjectPropertyDomain(<urn:fixed:p> <urn:fixed:A>)", "ObjectPropertyRange(<urn:fixed:q> <urn:fixed:B>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ "ObjectPropertyDomain(<urn:fixed:p> <urn:fixed:A>)", "ObjectPropertyRange(<urn:fixed:q> <urn:fixed:B>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ]
+      },
+      "TOP" : {
+        "axioms" : [ "ObjectPropertyDomain(<urn:fixed:p> <urn:fixed:A>)", "ObjectPropertyRange(<urn:fixed:q> <urn:fixed:B>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "ObjectPropertyDomain(<urn:fixed:p> <urn:fixed:A>)", "ObjectPropertyRange(<urn:fixed:q> <urn:fixed:B>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "ObjectPropertyDomain(<urn:fixed:p> <urn:fixed:A>)", "ObjectPropertyRange(<urn:fixed:q> <urn:fixed:B>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ],
+        "mode" : "TOP"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "ObjectPropertyDomain(<urn:fixed:p> <urn:fixed:A>)", "ObjectPropertyRange(<urn:fixed:q> <urn:fixed:B>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "ObjectPropertyDomain(<urn:fixed:p> <urn:fixed:A>)", "ObjectPropertyRange(<urn:fixed:q> <urn:fixed:B>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ],
+        "mode" : "BOTTOM"
+      } ]
+    }
+  }, {
+    "id" : "mixedPropertyCycle-2",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubObjectPropertyOf(:p :q) SubObjectPropertyOf(:q :p) ObjectPropertyDomain(:p :A) ObjectPropertyRange(:q :B) SubClassOf(:A :B))",
+    "seed" : [ {
+      "iri" : "urn:fixed:absent",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "error" : "NullPointerException"
+      },
+      "STAR" : {
+        "error" : "NullPointerException"
+      },
+      "TOP" : {
+        "error" : "NullPointerException"
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "mixedPropertyCycle-3",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubObjectPropertyOf(:p :q) SubObjectPropertyOf(:q :p) ObjectPropertyDomain(:p :A) ObjectPropertyRange(:q :B) SubClassOf(:A :B))",
+    "seed" : [ {
+      "iri" : "urn:fixed:A",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ "ObjectPropertyDomain(<urn:fixed:p> <urn:fixed:A>)", "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> <urn:fixed:B>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "ObjectPropertyDomain(<urn:fixed:p> <urn:fixed:A>)", "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "mixedPropertyCycle-4",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubObjectPropertyOf(:p :q) SubObjectPropertyOf(:q :p) ObjectPropertyDomain(:p :A) ObjectPropertyRange(:q :B) SubClassOf(:A :B))",
+    "seed" : [ {
+      "iri" : "urn:fixed:B",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ "ObjectPropertyDomain(<urn:fixed:p> <urn:fixed:A>)", "ObjectPropertyRange(<urn:fixed:q> <urn:fixed:B>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "ObjectPropertyDomain(<urn:fixed:p> <urn:fixed:A>)", "ObjectPropertyRange(<urn:fixed:q> <urn:fixed:B>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "mixedPropertyCycle-5",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubObjectPropertyOf(:p :q) SubObjectPropertyOf(:q :p) ObjectPropertyDomain(:p :A) ObjectPropertyRange(:q :B) SubClassOf(:A :B))",
+    "seed" : [ {
+      "iri" : "urn:fixed:p",
+      "kind" : "ObjectProperty"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "ObjectPropertyDomain(<urn:fixed:p> <urn:fixed:A>)", "ObjectPropertyRange(<urn:fixed:q> <urn:fixed:B>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ]
+      },
+      "TOP" : {
+        "axioms" : [ "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "ObjectPropertyDomain(<urn:fixed:p> <urn:fixed:A>)", "ObjectPropertyRange(<urn:fixed:q> <urn:fixed:B>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ],
+        "mode" : "TOP"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ],
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "mixedPropertyCycle-6",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubObjectPropertyOf(:p :q) SubObjectPropertyOf(:q :p) ObjectPropertyDomain(:p :A) ObjectPropertyRange(:q :B) SubClassOf(:A :B))",
+    "seed" : [ {
+      "iri" : "urn:fixed:q",
+      "kind" : "ObjectProperty"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "ObjectPropertyDomain(<urn:fixed:p> <urn:fixed:A>)", "ObjectPropertyRange(<urn:fixed:q> <urn:fixed:B>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ]
+      },
+      "TOP" : {
+        "axioms" : [ "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "ObjectPropertyDomain(<urn:fixed:p> <urn:fixed:A>)", "ObjectPropertyRange(<urn:fixed:q> <urn:fixed:B>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ],
+        "mode" : "TOP"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "SubObjectPropertyOf(<urn:fixed:p> <urn:fixed:q>)", "SubObjectPropertyOf(<urn:fixed:q> <urn:fixed:p>)" ],
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "globals-0",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(<http://www.w3.org/2002/07/owl#Thing> :A) ClassAssertion(:B :i) ReflexiveObjectProperty(:p) SubClassOf(:C <http://www.w3.org/2002/07/owl#Nothing>))",
+    "seed" : [ ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "globals-1",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(<http://www.w3.org/2002/07/owl#Thing> :A) ClassAssertion(:B :i) ReflexiveObjectProperty(:p) SubClassOf(:C <http://www.w3.org/2002/07/owl#Nothing>))",
+    "seed" : [ {
+      "iri" : "http://www.w3.org/2002/07/owl#Nothing",
+      "kind" : "Class"
+    }, {
+      "iri" : "http://www.w3.org/2002/07/owl#Thing",
+      "kind" : "Class"
+    }, {
+      "iri" : "urn:fixed:A",
+      "kind" : "Class"
+    }, {
+      "iri" : "urn:fixed:B",
+      "kind" : "Class"
+    }, {
+      "iri" : "urn:fixed:C",
+      "kind" : "Class"
+    }, {
+      "iri" : "urn:fixed:p",
+      "kind" : "ObjectProperty"
+    }, {
+      "iri" : "urn:fixed:i",
+      "kind" : "NamedIndividual"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "ClassAssertion(<urn:fixed:B> <urn:fixed:i>)", "ReflexiveObjectProperty(<urn:fixed:p>)", "SubClassOf(<http://www.w3.org/2002/07/owl#Thing> <urn:fixed:A>)", "SubClassOf(<urn:fixed:C> <http://www.w3.org/2002/07/owl#Nothing>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ "ClassAssertion(<urn:fixed:B> <urn:fixed:i>)", "ReflexiveObjectProperty(<urn:fixed:p>)", "SubClassOf(<http://www.w3.org/2002/07/owl#Thing> <urn:fixed:A>)", "SubClassOf(<urn:fixed:C> <http://www.w3.org/2002/07/owl#Nothing>)" ]
+      },
+      "TOP" : {
+        "axioms" : [ "ClassAssertion(<urn:fixed:B> <urn:fixed:i>)", "ReflexiveObjectProperty(<urn:fixed:p>)", "SubClassOf(<http://www.w3.org/2002/07/owl#Thing> <urn:fixed:A>)", "SubClassOf(<urn:fixed:C> <http://www.w3.org/2002/07/owl#Nothing>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "ClassAssertion(<urn:fixed:B> <urn:fixed:i>)", "ReflexiveObjectProperty(<urn:fixed:p>)", "SubClassOf(<http://www.w3.org/2002/07/owl#Thing> <urn:fixed:A>)", "SubClassOf(<urn:fixed:C> <http://www.w3.org/2002/07/owl#Nothing>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "ClassAssertion(<urn:fixed:B> <urn:fixed:i>)", "ReflexiveObjectProperty(<urn:fixed:p>)", "SubClassOf(<http://www.w3.org/2002/07/owl#Thing> <urn:fixed:A>)", "SubClassOf(<urn:fixed:C> <http://www.w3.org/2002/07/owl#Nothing>)" ],
+        "mode" : "TOP"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "ClassAssertion(<urn:fixed:B> <urn:fixed:i>)", "ReflexiveObjectProperty(<urn:fixed:p>)", "SubClassOf(<http://www.w3.org/2002/07/owl#Thing> <urn:fixed:A>)", "SubClassOf(<urn:fixed:C> <http://www.w3.org/2002/07/owl#Nothing>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "ClassAssertion(<urn:fixed:B> <urn:fixed:i>)", "ReflexiveObjectProperty(<urn:fixed:p>)", "SubClassOf(<http://www.w3.org/2002/07/owl#Thing> <urn:fixed:A>)", "SubClassOf(<urn:fixed:C> <http://www.w3.org/2002/07/owl#Nothing>)" ],
+        "mode" : "BOTTOM"
+      } ]
+    }
+  }, {
+    "id" : "globals-2",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(<http://www.w3.org/2002/07/owl#Thing> :A) ClassAssertion(:B :i) ReflexiveObjectProperty(:p) SubClassOf(:C <http://www.w3.org/2002/07/owl#Nothing>))",
+    "seed" : [ {
+      "iri" : "urn:fixed:absent",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "error" : "NullPointerException"
+      },
+      "STAR" : {
+        "error" : "NullPointerException"
+      },
+      "TOP" : {
+        "error" : "NullPointerException"
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "globals-3",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(<http://www.w3.org/2002/07/owl#Thing> :A) ClassAssertion(:B :i) ReflexiveObjectProperty(:p) SubClassOf(:C <http://www.w3.org/2002/07/owl#Nothing>))",
+    "seed" : [ {
+      "iri" : "http://www.w3.org/2002/07/owl#Nothing",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:C> <http://www.w3.org/2002/07/owl#Nothing>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:C> <http://www.w3.org/2002/07/owl#Nothing>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "globals-4",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(<http://www.w3.org/2002/07/owl#Thing> :A) ClassAssertion(:B :i) ReflexiveObjectProperty(:p) SubClassOf(:C <http://www.w3.org/2002/07/owl#Nothing>))",
+    "seed" : [ {
+      "iri" : "http://www.w3.org/2002/07/owl#Thing",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "SubClassOf(<http://www.w3.org/2002/07/owl#Thing> <urn:fixed:A>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "SubClassOf(<http://www.w3.org/2002/07/owl#Thing> <urn:fixed:A>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ]
+    }
+  }, {
+    "id" : "globals-5",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(<http://www.w3.org/2002/07/owl#Thing> :A) ClassAssertion(:B :i) ReflexiveObjectProperty(:p) SubClassOf(:C <http://www.w3.org/2002/07/owl#Nothing>))",
+    "seed" : [ {
+      "iri" : "urn:fixed:A",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "SubClassOf(<http://www.w3.org/2002/07/owl#Thing> <urn:fixed:A>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ "SubClassOf(<http://www.w3.org/2002/07/owl#Thing> <urn:fixed:A>)" ]
+      },
+      "TOP" : {
+        "axioms" : [ "SubClassOf(<http://www.w3.org/2002/07/owl#Thing> <urn:fixed:A>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "SubClassOf(<http://www.w3.org/2002/07/owl#Thing> <urn:fixed:A>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "SubClassOf(<http://www.w3.org/2002/07/owl#Thing> <urn:fixed:A>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "SubClassOf(<http://www.w3.org/2002/07/owl#Thing> <urn:fixed:A>)" ],
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "SubClassOf(<http://www.w3.org/2002/07/owl#Thing> <urn:fixed:A>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "SubClassOf(<http://www.w3.org/2002/07/owl#Thing> <urn:fixed:A>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "SubClassOf(<http://www.w3.org/2002/07/owl#Thing> <urn:fixed:A>)" ],
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "globals-6",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(<http://www.w3.org/2002/07/owl#Thing> :A) ClassAssertion(:B :i) ReflexiveObjectProperty(:p) SubClassOf(:C <http://www.w3.org/2002/07/owl#Nothing>))",
+    "seed" : [ {
+      "iri" : "urn:fixed:B",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "ClassAssertion(<urn:fixed:B> <urn:fixed:i>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ "ClassAssertion(<urn:fixed:B> <urn:fixed:i>)" ]
+      },
+      "TOP" : {
+        "axioms" : [ "ClassAssertion(<urn:fixed:B> <urn:fixed:i>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "ClassAssertion(<urn:fixed:B> <urn:fixed:i>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "ClassAssertion(<urn:fixed:B> <urn:fixed:i>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "ClassAssertion(<urn:fixed:B> <urn:fixed:i>)" ],
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "ClassAssertion(<urn:fixed:B> <urn:fixed:i>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "ClassAssertion(<urn:fixed:B> <urn:fixed:i>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "ClassAssertion(<urn:fixed:B> <urn:fixed:i>)" ],
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "globals-7",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(<http://www.w3.org/2002/07/owl#Thing> :A) ClassAssertion(:B :i) ReflexiveObjectProperty(:p) SubClassOf(:C <http://www.w3.org/2002/07/owl#Nothing>))",
+    "seed" : [ {
+      "iri" : "urn:fixed:C",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:C> <http://www.w3.org/2002/07/owl#Nothing>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:C> <http://www.w3.org/2002/07/owl#Nothing>)" ]
+      },
+      "TOP" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:C> <http://www.w3.org/2002/07/owl#Nothing>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:C> <http://www.w3.org/2002/07/owl#Nothing>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "SubClassOf(<urn:fixed:C> <http://www.w3.org/2002/07/owl#Nothing>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "SubClassOf(<urn:fixed:C> <http://www.w3.org/2002/07/owl#Nothing>)" ],
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:C> <http://www.w3.org/2002/07/owl#Nothing>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "SubClassOf(<urn:fixed:C> <http://www.w3.org/2002/07/owl#Nothing>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "SubClassOf(<urn:fixed:C> <http://www.w3.org/2002/07/owl#Nothing>)" ],
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "globals-8",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(<http://www.w3.org/2002/07/owl#Thing> :A) ClassAssertion(:B :i) ReflexiveObjectProperty(:p) SubClassOf(:C <http://www.w3.org/2002/07/owl#Nothing>))",
+    "seed" : [ {
+      "iri" : "urn:fixed:p",
+      "kind" : "ObjectProperty"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "ReflexiveObjectProperty(<urn:fixed:p>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ "ReflexiveObjectProperty(<urn:fixed:p>)" ]
+      },
+      "TOP" : {
+        "axioms" : [ "ReflexiveObjectProperty(<urn:fixed:p>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "ReflexiveObjectProperty(<urn:fixed:p>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "ReflexiveObjectProperty(<urn:fixed:p>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "ReflexiveObjectProperty(<urn:fixed:p>)" ],
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "ReflexiveObjectProperty(<urn:fixed:p>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "ReflexiveObjectProperty(<urn:fixed:p>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "ReflexiveObjectProperty(<urn:fixed:p>)" ],
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "globals-9",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(<http://www.w3.org/2002/07/owl#Thing> :A) ClassAssertion(:B :i) ReflexiveObjectProperty(:p) SubClassOf(:C <http://www.w3.org/2002/07/owl#Nothing>))",
+    "seed" : [ {
+      "iri" : "urn:fixed:i",
+      "kind" : "NamedIndividual"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "ClassAssertion(<urn:fixed:B> <urn:fixed:i>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "ClassAssertion(<urn:fixed:B> <urn:fixed:i>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ]
+    }
+  }, {
+    "id" : "inverseRestrictions-0",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A ObjectSomeValuesFrom(ObjectInverseOf(:p) :B)) SubClassOf(:B ObjectAllValuesFrom(ObjectInverseOf(:q) :C)) ObjectPropertyDomain(ObjectInverseOf(:p) :C))",
+    "seed" : [ ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "inverseRestrictions-1",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A ObjectSomeValuesFrom(ObjectInverseOf(:p) :B)) SubClassOf(:B ObjectAllValuesFrom(ObjectInverseOf(:q) :C)) ObjectPropertyDomain(ObjectInverseOf(:p) :C))",
+    "seed" : [ {
+      "iri" : "urn:fixed:A",
+      "kind" : "Class"
+    }, {
+      "iri" : "urn:fixed:B",
+      "kind" : "Class"
+    }, {
+      "iri" : "urn:fixed:C",
+      "kind" : "Class"
+    }, {
+      "iri" : "urn:fixed:p",
+      "kind" : "ObjectProperty"
+    }, {
+      "iri" : "urn:fixed:q",
+      "kind" : "ObjectProperty"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "ObjectPropertyDomain(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:C>)", "SubClassOf(<urn:fixed:A> ObjectSomeValuesFrom(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:B>))", "SubClassOf(<urn:fixed:B> ObjectAllValuesFrom(ObjectInverseOf(<urn:fixed:q>) <urn:fixed:C>))" ]
+      },
+      "STAR" : {
+        "axioms" : [ "ObjectPropertyDomain(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:C>)", "SubClassOf(<urn:fixed:A> ObjectSomeValuesFrom(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:B>))", "SubClassOf(<urn:fixed:B> ObjectAllValuesFrom(ObjectInverseOf(<urn:fixed:q>) <urn:fixed:C>))" ]
+      },
+      "TOP" : {
+        "axioms" : [ "ObjectPropertyDomain(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:C>)", "SubClassOf(<urn:fixed:A> ObjectSomeValuesFrom(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:B>))", "SubClassOf(<urn:fixed:B> ObjectAllValuesFrom(ObjectInverseOf(<urn:fixed:q>) <urn:fixed:C>))" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "ObjectPropertyDomain(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:C>)", "SubClassOf(<urn:fixed:A> ObjectSomeValuesFrom(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:B>))", "SubClassOf(<urn:fixed:B> ObjectAllValuesFrom(ObjectInverseOf(<urn:fixed:q>) <urn:fixed:C>))" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "ObjectPropertyDomain(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:C>)", "SubClassOf(<urn:fixed:A> ObjectSomeValuesFrom(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:B>))", "SubClassOf(<urn:fixed:B> ObjectAllValuesFrom(ObjectInverseOf(<urn:fixed:q>) <urn:fixed:C>))" ],
+        "mode" : "TOP"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "ObjectPropertyDomain(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:C>)", "SubClassOf(<urn:fixed:A> ObjectSomeValuesFrom(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:B>))", "SubClassOf(<urn:fixed:B> ObjectAllValuesFrom(ObjectInverseOf(<urn:fixed:q>) <urn:fixed:C>))" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "ObjectPropertyDomain(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:C>)", "SubClassOf(<urn:fixed:A> ObjectSomeValuesFrom(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:B>))", "SubClassOf(<urn:fixed:B> ObjectAllValuesFrom(ObjectInverseOf(<urn:fixed:q>) <urn:fixed:C>))" ],
+        "mode" : "BOTTOM"
+      } ]
+    }
+  }, {
+    "id" : "inverseRestrictions-2",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A ObjectSomeValuesFrom(ObjectInverseOf(:p) :B)) SubClassOf(:B ObjectAllValuesFrom(ObjectInverseOf(:q) :C)) ObjectPropertyDomain(ObjectInverseOf(:p) :C))",
+    "seed" : [ {
+      "iri" : "urn:fixed:absent",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "error" : "NullPointerException"
+      },
+      "STAR" : {
+        "error" : "NullPointerException"
+      },
+      "TOP" : {
+        "error" : "NullPointerException"
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "inverseRestrictions-3",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A ObjectSomeValuesFrom(ObjectInverseOf(:p) :B)) SubClassOf(:B ObjectAllValuesFrom(ObjectInverseOf(:q) :C)) ObjectPropertyDomain(ObjectInverseOf(:p) :C))",
+    "seed" : [ {
+      "iri" : "urn:fixed:A",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "ObjectPropertyDomain(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:C>)", "SubClassOf(<urn:fixed:A> ObjectSomeValuesFrom(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:B>))" ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "ObjectPropertyDomain(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:C>)", "SubClassOf(<urn:fixed:A> ObjectSomeValuesFrom(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:B>))" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ]
+    }
+  }, {
+    "id" : "inverseRestrictions-4",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A ObjectSomeValuesFrom(ObjectInverseOf(:p) :B)) SubClassOf(:B ObjectAllValuesFrom(ObjectInverseOf(:q) :C)) ObjectPropertyDomain(ObjectInverseOf(:p) :C))",
+    "seed" : [ {
+      "iri" : "urn:fixed:B",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> ObjectSomeValuesFrom(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:B>))" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> ObjectSomeValuesFrom(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:B>))" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "inverseRestrictions-5",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A ObjectSomeValuesFrom(ObjectInverseOf(:p) :B)) SubClassOf(:B ObjectAllValuesFrom(ObjectInverseOf(:q) :C)) ObjectPropertyDomain(ObjectInverseOf(:p) :C))",
+    "seed" : [ {
+      "iri" : "urn:fixed:C",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ "ObjectPropertyDomain(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:C>)", "SubClassOf(<urn:fixed:A> ObjectSomeValuesFrom(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:B>))", "SubClassOf(<urn:fixed:B> ObjectAllValuesFrom(ObjectInverseOf(<urn:fixed:q>) <urn:fixed:C>))" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "ObjectPropertyDomain(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:C>)", "SubClassOf(<urn:fixed:A> ObjectSomeValuesFrom(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:B>))", "SubClassOf(<urn:fixed:B> ObjectAllValuesFrom(ObjectInverseOf(<urn:fixed:q>) <urn:fixed:C>))" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "inverseRestrictions-6",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A ObjectSomeValuesFrom(ObjectInverseOf(:p) :B)) SubClassOf(:B ObjectAllValuesFrom(ObjectInverseOf(:q) :C)) ObjectPropertyDomain(ObjectInverseOf(:p) :C))",
+    "seed" : [ {
+      "iri" : "urn:fixed:p",
+      "kind" : "ObjectProperty"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "ObjectPropertyDomain(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:C>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> ObjectSomeValuesFrom(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:B>))" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "ObjectPropertyDomain(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:C>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:A> ObjectSomeValuesFrom(ObjectInverseOf(<urn:fixed:p>) <urn:fixed:B>))" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "inverseRestrictions-7",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A ObjectSomeValuesFrom(ObjectInverseOf(:p) :B)) SubClassOf(:B ObjectAllValuesFrom(ObjectInverseOf(:q) :C)) ObjectPropertyDomain(ObjectInverseOf(:p) :C))",
+    "seed" : [ {
+      "iri" : "urn:fixed:q",
+      "kind" : "ObjectProperty"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ]
+    }
+  }, {
+    "id" : "starShrink-0",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:B :C) SubClassOf(ObjectIntersectionOf(:A :D) :E) EquivalentClasses(:D :E) DisjointClasses(:B :D))",
+    "seed" : [ ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "starShrink-1",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:B :C) SubClassOf(ObjectIntersectionOf(:A :D) :E) EquivalentClasses(:D :E) DisjointClasses(:B :D))",
+    "seed" : [ {
+      "iri" : "urn:fixed:A",
+      "kind" : "Class"
+    }, {
+      "iri" : "urn:fixed:B",
+      "kind" : "Class"
+    }, {
+      "iri" : "urn:fixed:C",
+      "kind" : "Class"
+    }, {
+      "iri" : "urn:fixed:D",
+      "kind" : "Class"
+    }, {
+      "iri" : "urn:fixed:E",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "DisjointClasses(<urn:fixed:B> <urn:fixed:D>)", "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ "DisjointClasses(<urn:fixed:B> <urn:fixed:D>)", "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)" ]
+      },
+      "TOP" : {
+        "axioms" : [ "DisjointClasses(<urn:fixed:B> <urn:fixed:D>)", "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "DisjointClasses(<urn:fixed:B> <urn:fixed:D>)", "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "DisjointClasses(<urn:fixed:B> <urn:fixed:D>)", "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "DisjointClasses(<urn:fixed:B> <urn:fixed:D>)", "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)" ],
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "DisjointClasses(<urn:fixed:B> <urn:fixed:D>)", "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "DisjointClasses(<urn:fixed:B> <urn:fixed:D>)", "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "DisjointClasses(<urn:fixed:B> <urn:fixed:D>)", "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)" ],
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "starShrink-2",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:B :C) SubClassOf(ObjectIntersectionOf(:A :D) :E) EquivalentClasses(:D :E) DisjointClasses(:B :D))",
+    "seed" : [ {
+      "iri" : "urn:fixed:absent",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "error" : "NullPointerException"
+      },
+      "STAR" : {
+        "error" : "NullPointerException"
+      },
+      "TOP" : {
+        "error" : "NullPointerException"
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "starShrink-3",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:B :C) SubClassOf(ObjectIntersectionOf(:A :D) :E) EquivalentClasses(:D :E) DisjointClasses(:B :D))",
+    "seed" : [ {
+      "iri" : "urn:fixed:A",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "DisjointClasses(<urn:fixed:B> <urn:fixed:D>)", "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(ObjectIntersectionOf(<urn:fixed:A> <urn:fixed:D>) <urn:fixed:E>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "DisjointClasses(<urn:fixed:B> <urn:fixed:D>)", "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(ObjectIntersectionOf(<urn:fixed:A> <urn:fixed:D>) <urn:fixed:E>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ]
+    }
+  }, {
+    "id" : "starShrink-4",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:B :C) SubClassOf(ObjectIntersectionOf(:A :D) :E) EquivalentClasses(:D :E) DisjointClasses(:B :D))",
+    "seed" : [ {
+      "iri" : "urn:fixed:B",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "SubClassOf(<urn:fixed:B> <urn:fixed:C>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ "DisjointClasses(<urn:fixed:B> <urn:fixed:D>)", "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "SubClassOf(<urn:fixed:B> <urn:fixed:C>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "DisjointClasses(<urn:fixed:B> <urn:fixed:D>)", "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "starShrink-5",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:B :C) SubClassOf(ObjectIntersectionOf(:A :D) :E) EquivalentClasses(:D :E) DisjointClasses(:B :D))",
+    "seed" : [ {
+      "iri" : "urn:fixed:C",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ "DisjointClasses(<urn:fixed:B> <urn:fixed:D>)", "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "DisjointClasses(<urn:fixed:B> <urn:fixed:D>)", "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "starShrink-6",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:B :C) SubClassOf(ObjectIntersectionOf(:A :D) :E) EquivalentClasses(:D :E) DisjointClasses(:B :D))",
+    "seed" : [ {
+      "iri" : "urn:fixed:D",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "DisjointClasses(<urn:fixed:B> <urn:fixed:D>)", "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(ObjectIntersectionOf(<urn:fixed:A> <urn:fixed:D>) <urn:fixed:E>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)" ]
+      },
+      "TOP" : {
+        "axioms" : [ "DisjointClasses(<urn:fixed:B> <urn:fixed:D>)", "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "DisjointClasses(<urn:fixed:B> <urn:fixed:D>)", "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(ObjectIntersectionOf(<urn:fixed:A> <urn:fixed:D>) <urn:fixed:E>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "DisjointClasses(<urn:fixed:B> <urn:fixed:D>)", "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)" ],
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "DisjointClasses(<urn:fixed:B> <urn:fixed:D>)", "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)" ],
+        "mode" : "BOTTOM"
+      } ]
+    }
+  }, {
+    "id" : "starShrink-7",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(SubClassOf(:A :B) SubClassOf(:B :C) SubClassOf(ObjectIntersectionOf(:A :D) :E) EquivalentClasses(:D :E) DisjointClasses(:B :D))",
+    "seed" : [ {
+      "iri" : "urn:fixed:E",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "DisjointClasses(<urn:fixed:B> <urn:fixed:D>)", "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(ObjectIntersectionOf(<urn:fixed:A> <urn:fixed:D>) <urn:fixed:E>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)" ]
+      },
+      "TOP" : {
+        "axioms" : [ "DisjointClasses(<urn:fixed:B> <urn:fixed:D>)", "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "DisjointClasses(<urn:fixed:B> <urn:fixed:D>)", "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)", "SubClassOf(<urn:fixed:B> <urn:fixed:C>)", "SubClassOf(ObjectIntersectionOf(<urn:fixed:A> <urn:fixed:D>) <urn:fixed:E>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "DisjointClasses(<urn:fixed:B> <urn:fixed:D>)", "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)" ],
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "DisjointClasses(<urn:fixed:B> <urn:fixed:D>)", "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)", "SubClassOf(<urn:fixed:A> <urn:fixed:B>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ "EquivalentClasses(<urn:fixed:D> <urn:fixed:E>)" ],
+        "mode" : "BOTTOM"
+      } ]
+    }
+  }, {
+    "id" : "annotationsAndDeclarations-0",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(Declaration(Class(:A)) Declaration(Class(:B)) SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"one\") :A :B) SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"two\") :A :B) AnnotationAssertion(<http://www.w3.org/2000/01/rdf-schema#label> :A \"A\"))",
+    "seed" : [ ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "annotationsAndDeclarations-1",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(Declaration(Class(:A)) Declaration(Class(:B)) SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"one\") :A :B) SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"two\") :A :B) AnnotationAssertion(<http://www.w3.org/2000/01/rdf-schema#label> :A \"A\"))",
+    "seed" : [ {
+      "iri" : "urn:fixed:A",
+      "kind" : "Class"
+    }, {
+      "iri" : "urn:fixed:B",
+      "kind" : "Class"
+    }, {
+      "iri" : "http://www.w3.org/2000/01/rdf-schema#comment",
+      "kind" : "AnnotationProperty"
+    }, {
+      "iri" : "http://www.w3.org/2000/01/rdf-schema#label",
+      "kind" : "AnnotationProperty"
+    }, {
+      "iri" : "http://www.w3.org/2001/XMLSchema#string",
+      "kind" : "Datatype"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"one\") <urn:fixed:A> <urn:fixed:B>)", "SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"two\") <urn:fixed:A> <urn:fixed:B>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ "SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"one\") <urn:fixed:A> <urn:fixed:B>)", "SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"two\") <urn:fixed:A> <urn:fixed:B>)" ]
+      },
+      "TOP" : {
+        "axioms" : [ "SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"one\") <urn:fixed:A> <urn:fixed:B>)", "SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"two\") <urn:fixed:A> <urn:fixed:B>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"one\") <urn:fixed:A> <urn:fixed:B>)", "SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"two\") <urn:fixed:A> <urn:fixed:B>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"one\") <urn:fixed:A> <urn:fixed:B>)", "SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"two\") <urn:fixed:A> <urn:fixed:B>)" ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ]
+    }
+  }, {
+    "id" : "annotationsAndDeclarations-2",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(Declaration(Class(:A)) Declaration(Class(:B)) SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"one\") :A :B) SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"two\") :A :B) AnnotationAssertion(<http://www.w3.org/2000/01/rdf-schema#label> :A \"A\"))",
+    "seed" : [ {
+      "iri" : "urn:fixed:absent",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "error" : "NullPointerException"
+      },
+      "STAR" : {
+        "error" : "NullPointerException"
+      },
+      "TOP" : {
+        "error" : "NullPointerException"
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "annotationsAndDeclarations-3",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(Declaration(Class(:A)) Declaration(Class(:B)) SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"one\") :A :B) SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"two\") :A :B) AnnotationAssertion(<http://www.w3.org/2000/01/rdf-schema#label> :A \"A\"))",
+    "seed" : [ {
+      "iri" : "urn:fixed:A",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ "SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"one\") <urn:fixed:A> <urn:fixed:B>)", "SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"two\") <urn:fixed:A> <urn:fixed:B>)" ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ "SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"one\") <urn:fixed:A> <urn:fixed:B>)", "SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"two\") <urn:fixed:A> <urn:fixed:B>)" ],
+        "mode" : "BOTTOM"
+      }, {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ]
+    }
+  }, {
+    "id" : "annotationsAndDeclarations-4",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(Declaration(Class(:A)) Declaration(Class(:B)) SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"one\") :A :B) SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"two\") :A :B) AnnotationAssertion(<http://www.w3.org/2000/01/rdf-schema#label> :A \"A\"))",
+    "seed" : [ {
+      "iri" : "urn:fixed:B",
+      "kind" : "Class"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ "SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"one\") <urn:fixed:A> <urn:fixed:B>)", "SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"two\") <urn:fixed:A> <urn:fixed:B>)" ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ "SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"one\") <urn:fixed:A> <urn:fixed:B>)", "SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"two\") <urn:fixed:A> <urn:fixed:B>)" ],
+        "mode" : "TOP"
+      }, {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ]
+    }
+  }, {
+    "id" : "annotationsAndDeclarations-5",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(Declaration(Class(:A)) Declaration(Class(:B)) SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"one\") :A :B) SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"two\") :A :B) AnnotationAssertion(<http://www.w3.org/2000/01/rdf-schema#label> :A \"A\"))",
+    "seed" : [ {
+      "iri" : "http://www.w3.org/2000/01/rdf-schema#comment",
+      "kind" : "AnnotationProperty"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ]
+    }
+  }, {
+    "id" : "annotationsAndDeclarations-6",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(Declaration(Class(:A)) Declaration(Class(:B)) SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"one\") :A :B) SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"two\") :A :B) AnnotationAssertion(<http://www.w3.org/2000/01/rdf-schema#label> :A \"A\"))",
+    "seed" : [ {
+      "iri" : "http://www.w3.org/2000/01/rdf-schema#label",
+      "kind" : "AnnotationProperty"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ]
+    }
+  }, {
+    "id" : "annotationsAndDeclarations-7",
+    "input" : "Prefix(:=<urn:fixed:>) Ontology(Declaration(Class(:A)) Declaration(Class(:B)) SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"one\") :A :B) SubClassOf(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"two\") :A :B) AnnotationAssertion(<http://www.w3.org/2000/01/rdf-schema#label> :A \"A\"))",
+    "seed" : [ {
+      "iri" : "http://www.w3.org/2001/XMLSchema#string",
+      "kind" : "Datatype"
+    } ],
+    "modules" : {
+      "BOTTOM" : {
+        "axioms" : [ ]
+      },
+      "STAR" : {
+        "axioms" : [ ]
+      },
+      "TOP" : {
+        "axioms" : [ ]
+      }
+    },
+    "alternations" : {
+      "BOTTOM" : [ {
+        "axioms" : [ ],
+        "mode" : "BOTTOM"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "TOP"
+      } ],
+      "TOP" : [ {
+        "axioms" : [ ],
+        "mode" : "TOP"
+      }, {
+        "error" : "NullPointerException",
+        "mode" : "BOTTOM"
+      } ]
+    }
+  } ],
+  "harness" : "util/owlapi-reference/RunRC2LocalityFixedPoints.java"
+}

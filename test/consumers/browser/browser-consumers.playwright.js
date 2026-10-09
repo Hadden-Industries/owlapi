@@ -62,6 +62,16 @@ const runConsumer = async (page, mode) => {
     model: true,
     profiles: true,
     util: true,
+    parameters: true,
+    search: true,
+    locality: true,
+    renderer: true,
+  });
+  expect(result.rc2).toMatchObject({
+    profileStatuses: ["valid", "valid", "valid"],
+    localityModules: { BOTTOM: 2, TOP: 0, STAR: 0 },
+    stored: { OWL_XML: 4, TURTLE: 4 },
+    acquisitions: 0,
   });
   expect(Object.keys(result.documents).sort()).toEqual([
     "functional",

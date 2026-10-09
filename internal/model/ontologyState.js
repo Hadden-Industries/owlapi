@@ -270,11 +270,29 @@ export const createImmutableDocumentMetadataSnapshot = (documentMetadata) => {
 
 const mutationDraftRecords = new WeakMap();
 
+const equalStructuralSets = (left, right) =>
+  left.size === right.size && [...left].every((value) => right.has(value));
+
 const refreshMutationDraftChangeStatus = (record) => {
+  // Compare full sets once at preflight, rather than after every bulk edit.
+  record.changesState = true;
+  record.preparedSnapshot = undefined;
+};
+
+const calculateMutationDraftChangeStatus = (record) => {
+  // An untouched draft is already known to match its base. Only actual staged
+  // edits need the full comparison that detects remove/add cancellation.
+  if (!record.changesState) return;
   record.changesState =
-    record.directAxioms.size !== record.baseDirectAxiomCount ||
-    record.directOntologyAnnotations.size !==
-      record.baseDirectOntologyAnnotationCount ||
+    !equalStructuralSets(record.directAxioms, record.baseDirectAxioms) ||
+    !equalStructuralSets(
+      record.directOntologyAnnotations,
+      record.baseDirectOntologyAnnotations,
+    ) ||
+    !equalStructuralSets(
+      record.authoredImportDeclarations,
+      record.baseAuthoredImportDeclarations,
+    ) ||
     record.documentMetadata !== record.baseDocumentMetadata ||
     record.ontologyID.structuralKey() !== record.baseOntologyID.structuralKey();
 };
@@ -296,6 +314,69 @@ class OntologyStateMutationDraft {
       record.preparedSnapshot = undefined;
     }
     return changed;
+  }
+
+  /** Stage exact structural removal, preserving differently annotated axioms. */
+  stageAxiomRemoval(axiom) {
+    const record = mutationDraftRecords.get(this);
+    if (!record.open)
+      throw new Error("The ontology state mutation draft is closed");
+    const changed = record.directAxioms.delete(axiom);
+    if (changed) {
+      refreshMutationDraftChangeStatus(record);
+      record.preparedSnapshot = undefined;
+    }
+    return changed;
+  }
+
+  stageOntologyAnnotationRemoval(annotation) {
+    return this.#stageStructuralSetEdit(
+      "directOntologyAnnotations",
+      annotation,
+      ONTOLOGY_ANNOTATION_KINDS,
+      false,
+    );
+  }
+
+  stageImportAddition(declaration) {
+    return this.#stageStructuralSetEdit(
+      "authoredImportDeclarations",
+      declaration,
+      IMPORT_DECLARATION_KINDS,
+      true,
+    );
+  }
+
+  stageImportRemoval(declaration) {
+    return this.#stageStructuralSetEdit(
+      "authoredImportDeclarations",
+      declaration,
+      IMPORT_DECLARATION_KINDS,
+      false,
+    );
+  }
+
+  getStagedImportsDeclarations() {
+    const record = mutationDraftRecords.get(this);
+    if (!record.open)
+      throw new Error("The ontology state mutation draft is closed");
+    return Object.freeze([...record.authoredImportDeclarations]);
+  }
+
+  #stageStructuralSetEdit(field, value, kinds, addition) {
+    const record = mutationDraftRecords.get(this);
+    if (!record.open)
+      throw new Error("The ontology state mutation draft is closed");
+    requireStructuralKind(value, kinds, "change value");
+    if (record[field].has(value) === addition) return false;
+    record[field] = addition
+      ? new StructuralSet([...record[field], value])
+      : new StructuralSet(
+          [...record[field]].filter((member) => !member.equals(value)),
+        );
+    refreshMutationDraftChangeStatus(record);
+    record.preparedSnapshot = undefined;
+    return true;
   }
 
   getStagedOntologyID() {
@@ -410,8 +491,9 @@ export class OntologyState {
         this.#authoredImportDeclarations,
       ),
       authorityIdentity: this.#mutationAuthorityIdentity,
-      baseDirectAxiomCount: this.#directAxioms.size,
-      baseDirectOntologyAnnotationCount: this.#directOntologyAnnotations.size,
+      baseDirectAxioms: this.#directAxioms,
+      baseDirectOntologyAnnotations: this.#directOntologyAnnotations,
+      baseAuthoredImportDeclarations: this.#authoredImportDeclarations,
       baseDocumentMetadata: this.#documentMetadata,
       baseOntologyID: this.#ontologyID,
       baseRevision: this.#revision,
@@ -429,6 +511,7 @@ export class OntologyState {
 
   preflightMutation(mutationDraft) {
     const record = this.#requireCurrentDraft(mutationDraft);
+    calculateMutationDraftChangeStatus(record);
     const preparedSnapshot = record.changesState
       ? this.#createMutationSnapshot(record)
       : this.#snapshot;
@@ -451,6 +534,8 @@ export class OntologyState {
 
   commitMutation(mutationDraft) {
     const record = this.#requireCurrentDraft(mutationDraft);
+    if (record.preparedSnapshot === undefined)
+      calculateMutationDraftChangeStatus(record);
     record.open = false;
     if (!record.changesState) {
       return false;

@@ -117,6 +117,10 @@ const installFixture = (mode) => {
     join(REPOSITORY_ROOT, "test", "import-closure", "public-contract.js"),
     join(fixtureDirectory, "public-contract.js"),
   );
+  copyFileSync(
+    join(REPOSITORY_ROOT, "test", "import-closure", "rc2-public-contract.js"),
+    join(fixtureDirectory, "rc2-public-contract.js"),
+  );
   for (const name of [
     "public-model-cases.js",
     "public-model-probes.js",
@@ -215,7 +219,7 @@ try {
     writeFileSync(REVIEWED_MAP_PATH, generatedMapText, "utf8");
   } else if (
     !existsSync(REVIEWED_MAP_PATH) ||
-    readFileSync(REVIEWED_MAP_PATH, "utf8") !== generatedMapText
+    stableJson(readJson(REVIEWED_MAP_PATH)) !== generatedMapText
   ) {
     throw new Error(
       "Generated reference import map differs from the committed reviewed map",
@@ -234,6 +238,7 @@ try {
   );
   for (const fileName of [
     "public-contract.js",
+    "rc2-public-contract.js",
     "import-closure-documents.js",
     "public-model-cases.js",
     "public-model-probes.js",

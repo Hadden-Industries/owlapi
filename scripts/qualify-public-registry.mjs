@@ -44,9 +44,12 @@ export const assertPublicRegistryFacts = ({
       "Public registry metadata has the wrong package coordinate.",
     );
   }
-  if (distTags?.next !== expectedVersion || Object.hasOwn(distTags, "latest")) {
+  if (
+    distTags?.next !== expectedVersion ||
+    distTags?.latest !== expectedVersion
+  ) {
     throw new Error(
-      "The public prerelease must be the sole next target and must not establish latest.",
+      "Both next and latest must identify the exact qualified rc.2 version.",
     );
   }
   if (registryTarballSha256 !== retainedSha256) {
@@ -63,6 +66,8 @@ export const assertPublicRegistryFacts = ({
   return {
     coordinate: `${PACKAGE_NAME}@${expectedVersion}`,
     channel: "next",
+    next: expectedVersion,
+    latest: expectedVersion,
     integrity: metadata.dist.integrity,
     tarballSha256: registryTarballSha256,
   };

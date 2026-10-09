@@ -215,4 +215,5 @@ export const OWL_CONTRACT_ASSERTIONS = Object.freeze([
   "public import, resource and security error identity and details",
   ...PUBLIC_MODEL_CASES.map(([kind]) => `public model fields: ${kind}`),
   "manager-local immutable writer configuration and configured RDF/XML save",
+  "installed rc.2 queries, changes, transforms, renderer, storage and profile contracts",
 ]);

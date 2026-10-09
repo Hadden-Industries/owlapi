@@ -112,7 +112,7 @@ const fixture = () => {
     repositoryId: repository.id,
     runId: 100,
     runAttempt: 2,
-    version: "0.1.0-rc.1",
+    version: "0.1.0-rc.2",
     host: {
       os: "Linux",
       architecture: "X64",
@@ -175,7 +175,7 @@ const fixture = () => {
   const candidate = {
     ...artifact,
     id: 702,
-    name: "hadden-industries-owlapi-0.1.0-rc.1-candidate-100-1",
+    name: "hadden-industries-owlapi-0.1.0-rc.2-candidate-100-1",
     digest: `sha256:${"f".repeat(64)}`,
   };
   const receipt = jsonClone(
@@ -367,7 +367,7 @@ const mainFixture = async (reused, partialOrigin = false) => {
   if (!reused)
     f.responses["/actions/artifacts/702"] = {
       ...f.candidate,
-      name: "hadden-industries-owlapi-0.1.0-rc.1-candidate-200-1",
+      name: "hadden-industries-owlapi-0.1.0-rc.2-candidate-200-1",
       workflow_run: {
         ...f.candidate.workflow_run,
         id: 200,

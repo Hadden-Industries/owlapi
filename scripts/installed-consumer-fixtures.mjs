@@ -30,6 +30,10 @@ export const writeInstalledConsumerFixtures = (
     join(testRoot, "import-closure", "public-contract.js"),
     join(directory, "import-closure", "public-contract.js"),
   );
+  copyFileSync(
+    join(testRoot, "import-closure", "rc2-public-contract.js"),
+    join(directory, "import-closure", "rc2-public-contract.js"),
+  );
   cpSync(
     join(testRoot, "import-closure", "fixtures"),
     join(directory, "import-closure", "fixtures"),

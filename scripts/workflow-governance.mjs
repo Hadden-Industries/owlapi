@@ -66,7 +66,9 @@ const RECONCILIATION_JOB_IDS = [
   "immutable_verification",
 ];
 const PUBLISH_COMMAND =
-  "npm publish hadden-industries-owlapi-0.1.0-rc.1.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/";
+  "npm publish hadden-industries-owlapi-0.1.0-rc.2.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/";
+const LATEST_COMMAND =
+  "npm dist-tag add @hadden-industries/owlapi@0.1.0-rc.2 latest --registry=https://registry.npmjs.org/";
 const ALPHA_RECONCILIATION_PUBLISH_COMMAND =
   "npm publish owlapi-0.1.0-alpha.0.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/";
 const REGISTRY_KEYS_COMMAND =
@@ -1289,6 +1291,23 @@ const validateReleaseMutationBoundary = (
     `${fileName}:npm_release`,
     violations,
   );
+  if (!reconciliation) {
+    const step = steps(publication).find((item) =>
+      item.run?.includes(publishCommand),
+    );
+    add(
+      violations,
+      step?.if === "${{ github.run_attempt == 1 }}" &&
+        step.run.includes(`${publishCommand}\n${LATEST_COMMAND}`) &&
+        occurrences(workflow, "npm dist-tag add ") === 1,
+      `${fileName}: the exact latest write must follow publication once in the first-attempt credential step`,
+    );
+  } else
+    add(
+      violations,
+      occurrences(workflow, "npm dist-tag add ") === 0,
+      `${fileName}: historical alpha reconciliation cannot mutate latest`,
+    );
   add(
     violations,
     actionSteps(publication, "actions/checkout").length === 0 &&

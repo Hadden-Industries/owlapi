@@ -148,12 +148,14 @@ const facts = {
 
 const scopedFacts = () => {
   const candidate = structuredClone(facts);
-  const rc = "0.1.0-rc.1";
+  const rc = "0.1.0-rc.2";
   candidate.source.ref = `refs/tags/v${rc}`;
   candidate.source.tag = `v${rc}`;
   candidate.workflow = { ...candidate.qualificationWorkflow };
   candidate.publication.coordinate = `@hadden-industries/owlapi@${rc}`;
   candidate.publication.next = rc;
+  candidate.publication.latest = rc;
+  candidate.publication.latestPresent = true;
   candidate.publication.tarballUrl = `https://registry.npmjs.org/@hadden-industries/owlapi/-/owlapi-${rc}.tgz`;
   candidate.publication.provenance.sourceCommit = candidate.source.commit;
   candidate.publication.provenance.workflow = ".github/workflows/release.yml";
@@ -208,13 +210,13 @@ test("fresh scoped RC evidence binds one source and run without borrowing alpha 
   const evidence = buildReleaseEvidence(scopedFacts());
   expect(evidence.package).toEqual({
     name: "@hadden-industries/owlapi",
-    version: "0.1.0-rc.1",
-    coordinate: "@hadden-industries/owlapi@0.1.0-rc.1",
+    version: "0.1.0-rc.2",
+    coordinate: "@hadden-industries/owlapi@0.1.0-rc.2",
     channel: "next",
     registry: "https://registry.npmjs.org/",
   });
   expect(evidence.reconciliation).toBeNull();
-  expect(evidence.schemaVersion).toBe(4);
+  expect(evidence.schemaVersion).toBe(5);
   const ajv = new Ajv2020({ allErrors: true, strict: true });
   addFormats(ajv);
   const validate = ajv.compile(
@@ -250,7 +252,25 @@ test("historical schema-4 evidence remains readable after oracle changes but can
   const evidence = JSON.parse(
     JSON.stringify(buildReleaseEvidence(scopedFacts())),
   );
+  evidence.schemaVersion = 4;
+  evidence.package.version = "0.1.0-rc.1";
+  evidence.package.coordinate = "@hadden-industries/owlapi@0.1.0-rc.1";
+  evidence.source.ref = "refs/tags/v0.1.0-rc.1";
+  evidence.source.tag = "v0.1.0-rc.1";
+  evidence.publication.next = "0.1.0-rc.1";
+  evidence.publication.coordinate = "@hadden-industries/owlapi@0.1.0-rc.1";
+  evidence.publication.latestPresent = false;
+  delete evidence.publication.latest;
+  evidence.publication.tarballUrl =
+    "https://registry.npmjs.org/@hadden-industries/owlapi/-/owlapi-0.1.0-rc.1.tgz";
+  for (const asset of [
+    evidence.candidate.tarball,
+    evidence.candidate.sbom,
+    ...evidence.githubRelease.assets,
+  ])
+    asset.name = asset.name.replace("0.1.0-rc.2", "0.1.0-rc.1");
   const report = evidence.producerContract;
+  report.candidate.package.version = "0.1.0-rc.1";
   report.fixtureSha256 = "0".repeat(64);
   report.assertions[0].name = "previous interface assertion";
   report.consumerSources.snapshots[0].sources[0].blob = "9".repeat(40);
@@ -271,7 +291,7 @@ test("historical schema-4 evidence remains readable after oracle changes but can
       sourceCommit: evidence.source.commit,
       tag: evidence.source.tag,
     }),
-  ).toThrow(/proof/u);
+  ).toThrow(/schema-5/u);
   report.assertions[0].skipped = true;
   expect(() => validateReleaseEvidence(evidence)).toThrow(/inconsistent/u);
 });
@@ -281,12 +301,12 @@ test.each(["coordinate", "run", "reconciliation", "asset"])(
   (field) => {
     const candidate = scopedFacts();
     if (field === "coordinate")
-      candidate.publication.coordinate = "owlapi@0.1.0-rc.1";
+      candidate.publication.coordinate = "owlapi@0.1.0-rc.2";
     if (field === "run") candidate.qualificationWorkflow.runId = "98765";
     if (field === "reconciliation")
       candidate.reconciliation = facts.reconciliation;
     if (field === "asset")
-      candidate.candidate.tarball.name = "owlapi-0.1.0-rc.1.tgz";
+      candidate.candidate.tarball.name = "owlapi-0.1.0-rc.2.tgz";
     expect(() => buildReleaseEvidence(candidate)).toThrow();
   },
 );
@@ -303,9 +323,9 @@ test.each([
   );
   if (field === "tarball URL")
     evidence.publication.tarballUrl =
-      "https://registry.npmjs.org/owlapi/-/owlapi-0.1.0-rc.1.tgz";
+      "https://registry.npmjs.org/owlapi/-/owlapi-0.1.0-rc.2.tgz";
   else if (field === "asset name")
-    evidence.candidate.tarball.name = "owlapi-0.1.0-rc.1.tgz";
+    evidence.candidate.tarball.name = "owlapi-0.1.0-rc.2.tgz";
   else if (field === "GitHub asset name")
     evidence.githubRelease.assets[0].name = "unrelated.tgz";
   else

@@ -1,4 +1,4 @@
-/** Protocol fixtures from an actual retained-package native run on 2026-10-08.
+/** Protocol fixtures from an actual retained rc.2-package native run on 2026-10-09.
  * Execution identity is supplied by each admission test; this is not a CI receipt. */
 import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
