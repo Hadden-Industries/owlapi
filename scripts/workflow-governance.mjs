@@ -1344,7 +1344,7 @@ const validateReleaseMutationBoundary = (
           .includes("exit 1") &&
         publish.run.includes(`${approvedDigest}\n${publishCommand}`) &&
         !JSON.stringify(workflow).includes("NODE_AUTH_TOKEN") &&
-        !/\bsecrets\b/u.test(JSON.stringify([workflow.env, publication])) &&
+        !/\bsecrets\b/iu.test(JSON.stringify([workflow.env, publication])) &&
         !/authToken|npmrc|npm[_-]config[_-]*(?:auth|userconfig)|npm\s+config[^"\\]*(?:auth|token)/iu.test(
           JSON.stringify([workflow.env, publication]),
         ),

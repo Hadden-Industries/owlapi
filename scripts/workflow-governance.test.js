@@ -746,6 +746,7 @@ describe("repository workflow governance", () => {
     "serialized secret fallback",
     "npm basic auth configuration",
     "npm auth command",
+    "mixed-case secret fallback",
   ])("rejects an unsafe trusted publisher: %s", (mutation) => {
     const document = parseDocument(workflowSource("release.yml"));
     const publish = document
@@ -780,6 +781,8 @@ describe("repository workflow governance", () => {
       publish.set("run", source + 'echo "token configuration" > .npmrc\n');
     if (mutation === "inherited secret fallback")
       document.setIn(["env", "NPM_TOKEN"], "${{ secrets.NPM_TOKEN }}");
+    if (mutation === "mixed-case secret fallback")
+      document.setIn(["env", "NPM_TOKEN"], "${{ SECRETS.NPM_TOKEN }}");
     if (mutation === "inherited auth configuration")
       document.setIn(["env", "npm_config__authToken"], "persistent-token");
     if (mutation === "bracket secret fallback")
