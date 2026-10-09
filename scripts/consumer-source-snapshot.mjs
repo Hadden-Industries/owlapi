@@ -9,7 +9,8 @@ export const CONSUMER_SOURCE_SCOPES = Object.freeze([
     files: [
       "package.json",
       "scripts/materializeImportClosure.js",
-      "scripts/qualifyImportClosure.js",
+      // Historical qualifier lineage, not current Git-source acceptance.
+      "scripts/qualifyHistoricalRcImportClosure.js",
       "scripts/build/fullOntologyAssets.js",
     ],
   },
