@@ -5,7 +5,10 @@ import {
 } from "../model/kinds.js";
 import { OWLDataFactory } from "../model/owlDataFactory.js";
 import { readOntologySnapshot } from "../model/owlOntology.js";
-import { isCanonicalStructuralObject } from "../model/structural.js";
+import {
+  isCanonicalStructuralObject,
+  StructuralSet,
+} from "../model/structural.js";
 
 const requireKind = (entity, kinds) => {
   if (!isCanonicalStructuralObject(entity) || !kinds.includes(entity.kind))
@@ -55,20 +58,22 @@ const annotationValues = (
     requireKind(property, [K.ANNOTATION_PROPERTY]);
   const ontologies = readOntologies(input);
   const factory = new OWLDataFactory();
-  return ontologies.flatMap((ontology) =>
-    [...ontology.getAnnotationAssertionAxioms(subject)].flatMap((axiom) => {
-      const annotations = [
-        factory.getOWLAnnotation(axiom.property, axiom.value),
-      ];
-      if (includeAssertionAnnotations) annotations.push(...axiom.annotations);
-      return annotations.filter(
-        (annotation) =>
-          property === undefined ||
-          property === null ||
-          annotation.property.equals(property),
-      );
-    }),
-  );
+  return ontologies.flatMap((ontology) => [
+    ...new StructuralSet(
+      [...ontology.getAnnotationAssertionAxioms(subject)].flatMap((axiom) => {
+        const annotations = [
+          factory.getOWLAnnotation(axiom.property, axiom.value),
+        ];
+        if (includeAssertionAnnotations) annotations.push(...axiom.annotations);
+        return annotations.filter(
+          (annotation) =>
+            property === undefined ||
+            property === null ||
+            annotation.property.equals(property),
+        );
+      }),
+    ),
+  ]);
 };
 
 const propertyFamily = (property) => {
@@ -195,8 +200,9 @@ export class EntitySearcher {
   static getInverses(property, ontologies) {
     requireKind(property, OBJECT_PROPERTY_EXPRESSION_KINDS);
     return readOntologies(ontologies).flatMap((ontology) =>
-      [...ontology.getInverseObjectPropertyAxioms(property)].flatMap((axiom) =>
-        axiom.properties.filter((value) => !value.equals(property)),
+      [...ontology.getInverseObjectPropertyAxioms(property)].map(
+        (axiom) =>
+          axiom.properties[axiom.properties[0].equals(property) ? 1 : 0],
       ),
     );
   }

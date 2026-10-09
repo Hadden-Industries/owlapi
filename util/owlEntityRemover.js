@@ -1,7 +1,6 @@
 import { ENTITY_KINDS } from "../model/kinds.js";
 import { OWLOntology } from "../model/owlOntology.js";
 import { RemoveAxiom } from "../model/removeAxiom.js";
-import { StructuralSet } from "../model/structural.js";
 import {
   captureOntologies,
   requireTransformKind,
@@ -21,13 +20,13 @@ export class OWLEntityRemover {
     requireTransformKind(entity, ENTITY_KINDS);
     const changes = [];
     for (const ontology of this.#ontologies) {
-      const axioms = new StructuralSet([
+      const axioms = [
         ...OWLOntology.prototype.getReferencingAxioms.call(ontology, entity),
         ...OWLOntology.prototype.getAnnotationAssertionAxioms.call(
           ontology,
           entity.iri,
         ),
-      ]);
+      ];
       for (const axiom of axioms)
         changes.push(new RemoveAxiom(ontology, axiom));
     }

@@ -75,6 +75,10 @@ const cases = {
     "01.0",
     IRI.create("http://www.w3.org/2001/XMLSchema#decimal"),
   ),
+  double: f.getOWLLiteral(
+    "10.0",
+    IRI.create("http://www.w3.org/2001/XMLSchema#double"),
+  ),
 };
 
 test.each(Object.keys(cases))(

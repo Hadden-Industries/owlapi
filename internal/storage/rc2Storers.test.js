@@ -23,6 +23,47 @@ const source = readFileSync(
   "utf8",
 );
 
+test.each([129, 509])(
+  "OWL/XML round-trips expression nesting %i within its 512-node budget",
+  async (depth) => {
+    const manager = new OWLOntologyManager();
+    const f = manager.getOWLDataFactory();
+    const a = f.getOWLClass(IRI.create("urn:depth:A"));
+    let expression = a;
+    for (let i = 0; i < depth; i++)
+      expression = f.getOWLObjectComplementOf(expression);
+    const ontology = manager.createOntology();
+    manager.addAxiom(ontology, f.getOWLSubClassOfAxiom(a, expression));
+    const target = new StringDocumentTarget();
+    await manager.saveOntology(ontology, OWLDocumentFormats.OWL_XML, target);
+    const loaded =
+      await new OWLOntologyManager().loadOntologyFromOntologyDocument(
+        new StringDocumentSource(target.toString()),
+      );
+    expect(compareOntologies(ontology, loaded).equal).toBe(true);
+  },
+);
+
+test("OWL/XML rejects XML 1.0 control characters with its representability reason before publication", async () => {
+  const manager = new OWLOntologyManager();
+  const f = manager.getOWLDataFactory();
+  const ontology = manager.createOntology();
+  manager.addAxiom(
+    ontology,
+    f.getOWLAnnotationAssertionAxiom(
+      f.getRDFSLabel(),
+      IRI.create("urn:xml:subject"),
+      f.getOWLLiteral("a\u0001b"),
+    ),
+  );
+  const target = new StringDocumentTarget();
+  replaceStringDocumentTargetText(target, "prior text");
+  await expect(
+    manager.saveOntology(ontology, OWLDocumentFormats.OWL_XML, target),
+  ).rejects.toMatchObject({ reason: "ONTOLOGY_NOT_REPRESENTABLE" });
+  expect(target.toString()).toBe("prior text");
+});
+
 test.each(["OWL_XML", "TURTLE"])(
   "%s enforces the admitted annotation-depth ceiling before target publication",
   async (format) => {

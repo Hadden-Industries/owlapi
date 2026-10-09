@@ -50,14 +50,14 @@ describe("accepted rc.2 direct queries and axiom copies", () => {
     const last = factory.getOWLSubClassOfAxiom(b, c);
     manager.addAxiom(members[3], last);
     const before = members[0].getSignature(Imports.INCLUDED);
-    expect(members[0].getAxiomCount(Imports.INCLUDED)).toBe(2);
+    expect(members[0].getAxiomCount(Imports.INCLUDED)).toBe(3);
     expect(members[0].getClassesInSignature(Imports.INCLUDED)).toEqual(
       new Set([a, b, c]),
     );
     expect(members[0].getReferencingAxioms(b, Imports.INCLUDED).size).toBe(2);
     expect(members[0].getSubClassAxiomsForSubClass(a).size).toBe(0);
     manager.removeAxiom(members[3], last);
-    expect(members[0].getAxiomCount(Imports.INCLUDED)).toBe(1);
+    expect(members[0].getAxiomCount(Imports.INCLUDED)).toBe(2);
     expect(members[0].getSignature(Imports.INCLUDED)).toEqual(new Set([a, b]));
     expect(before.has(c)).toBe(true);
   });

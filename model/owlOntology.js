@@ -148,9 +148,16 @@ export class OWLOntology {
       throw new TypeError("type must be an axiom kind or Imports value");
     if (typeOrImports === Imports.EXCLUDED)
       return this.#readStateSnapshot().directAxioms.length;
-    return typeOrImports === Imports.INCLUDED
-      ? this.getAxioms(typeOrImports).size
-      : this.getAxiomsByType(typeOrImports, imports).size;
+    const scope = typeOrImports === Imports.INCLUDED ? typeOrImports : imports;
+    return this.#scope(scope).reduce(
+      (count, ontology) =>
+        count +
+        readOntologySnapshot(ontology).directAxioms.filter(
+          (axiom) =>
+            typeOrImports === Imports.INCLUDED || axiom.kind === typeOrImports,
+        ).length,
+      0,
+    );
   }
 
   getLogicalAxioms(imports = Imports.EXCLUDED) {
@@ -158,7 +165,13 @@ export class OWLOntology {
   }
 
   getLogicalAxiomCount(imports = Imports.EXCLUDED) {
-    return this.getLogicalAxioms(imports).size;
+    return this.#scope(imports).reduce(
+      (count, ontology) =>
+        count +
+        readOntologySnapshot(ontology).directAxioms.filter(isLogicalAxiom)
+          .length,
+      0,
+    );
   }
 
   containsAxiom(
@@ -636,7 +649,19 @@ export class OWLOntology {
     const key = entity.structuralKey();
     for (const ontology of this.#scope(imports))
       for (const axiom of readOntologySnapshot(ontology).directAxioms)
-        if (references(axiom, key)) result.add(axiom);
+        if (
+          references(axiom, key) ||
+          (entity.kind === OWLObjectKind.IRI &&
+            [
+              OWLObjectKind.DATA_PROPERTY_ASSERTION_AXIOM,
+              OWLObjectKind.ANNOTATION_ASSERTION_AXIOM,
+            ].includes(axiom.kind) &&
+            axiom.value?.kind === OWLObjectKind.LITERAL &&
+            axiom.value.datatype.iri.value ===
+              "http://www.w3.org/2001/XMLSchema#anyURI" &&
+            axiom.value.lexicalForm === entity.value)
+        )
+          result.add(axiom);
     return result.toSet();
   }
 }

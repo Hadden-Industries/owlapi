@@ -4,7 +4,6 @@ import { AddAxiom } from "../model/addAxiom.js";
 import { RemoveAxiom } from "../model/removeAxiom.js";
 import { AddOntologyAnnotation } from "../model/addOntologyAnnotation.js";
 import { RemoveOntologyAnnotation } from "../model/removeOntologyAnnotation.js";
-import { StructuralSet } from "../model/structural.js";
 import {
   captureOntologies,
   captureReplacements,
@@ -55,37 +54,44 @@ export class OWLEntityRenamer {
     const changes = [];
     for (const ontology of this.#ontologies) {
       const snapshot = readOntologySnapshot(ontology);
-      const candidates = new StructuralSet();
-      if (iriChange)
-        for (const axiom of snapshot.directAxioms) candidates.add(axiom);
-      else
-        for (const { key } of entities.values()) {
-          for (const axiom of OWLOntology.prototype.getReferencingAxioms.call(
-            ontology,
-            key,
-          ))
-            candidates.add(axiom);
-          for (const axiom of OWLOntology.prototype.getAnnotationAssertionAxioms.call(
-            ontology,
-            key.iri,
-          ))
-            candidates.add(axiom);
+      const batches = iriChange
+        ? [
+            [
+              ...OWLOntology.prototype.getReferencingAxioms.call(
+                ontology,
+                first,
+              ),
+            ],
+          ]
+        : [...entities.values()].map(({ key }) => [
+            ...OWLOntology.prototype.getReferencingAxioms.call(ontology, key),
+            ...OWLOntology.prototype.getDeclarationAxioms.call(ontology, key),
+            ...OWLOntology.prototype.getAnnotationAssertionAxioms.call(
+              ontology,
+              key.iri,
+            ),
+          ]);
+      for (const candidates of batches) {
+        for (const axiom of candidates) {
+          const replacement = transformObject(axiom, this.#factory, resolve);
+          if (!replacement.equals(axiom))
+            changes.push(
+              new RemoveAxiom(ontology, axiom),
+              new AddAxiom(ontology, replacement),
+            );
         }
-      for (const axiom of candidates) {
-        const replacement = transformObject(axiom, this.#factory, resolve);
-        if (!replacement.equals(axiom))
-          changes.push(
-            new RemoveAxiom(ontology, axiom),
-            new AddAxiom(ontology, replacement),
+        for (const annotation of snapshot.directOntologyAnnotations) {
+          const replacement = transformObject(
+            annotation,
+            this.#factory,
+            resolve,
           );
-      }
-      for (const annotation of snapshot.directOntologyAnnotations) {
-        const replacement = transformObject(annotation, this.#factory, resolve);
-        if (!replacement.equals(annotation))
-          changes.push(
-            new RemoveOntologyAnnotation(ontology, annotation),
-            new AddOntologyAnnotation(ontology, replacement),
-          );
+          if (!replacement.equals(annotation))
+            changes.push(
+              new RemoveOntologyAnnotation(ontology, annotation),
+              new AddOntologyAnnotation(ontology, replacement),
+            );
+        }
       }
     }
     return changes;

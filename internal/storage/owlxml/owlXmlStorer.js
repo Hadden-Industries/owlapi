@@ -25,7 +25,7 @@ import { OWLXML_GRAMMAR } from "../../parsing/owlxml/grammar.js";
 const OWL = "http://www.w3.org/2002/07/owl#";
 const XML = "http://www.w3.org/XML/1998/namespace";
 const MAX_OUTPUT_BYTES = 33554432;
-const MAX_NODE_DEPTH = 128;
+const MAX_NODE_DEPTH = 512;
 const MAX_ANNOTATION_DEPTH = 64;
 const tags = new Set([
   ...OWLXML_GRAMMAR.axioms,
@@ -70,13 +70,19 @@ export const owlXmlStorer = Object.freeze({
     const admit = (value) => {
       if (typeof value !== "string" || !value.isWellFormed())
         fail("OWL/XML requires well-formed Unicode");
+      if (/[\u0000-\u0008\u000B\u000C\u000E-\u001F\uFFFE\uFFFF]/u.test(value))
+        fail("OWL/XML requires XML 1.0-compatible characters");
       constructionBytes += encoder.encode(value).byteLength;
       if (constructionBytes > MAX_OUTPUT_BYTES)
         throw new ResourceLimitError("OWL/XML output byte limit exceeded", {
           resource: "outputBytes",
           limit: MAX_OUTPUT_BYTES,
         });
-      serializer.serializeToString(document.createTextNode(value));
+      try {
+        serializer.serializeToString(document.createTextNode(value));
+      } catch {
+        fail("OWL/XML requires XML-compatible characters");
+      }
       return value;
     };
     const iri = (value) => {

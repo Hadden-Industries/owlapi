@@ -1,5 +1,6 @@
 import { ENTITY_KINDS, OWLObjectKind as K } from "../model/kinds.js";
 import { readOntologySnapshot } from "../model/owlOntology.js";
+import { readLoadedImportsClosure } from "../internal/model/sourceEvidence.js";
 import {
   iriShortForm,
   SimpleShortFormProvider,
@@ -73,12 +74,16 @@ export class AnnotationValueShortFormProvider {
     const provided = this.#ontologies.ontologies();
     if (!provided || typeof provided[Symbol.iterator] !== "function")
       throw new TypeError("ontologies() must return an iterable");
-    const snapshots = [...provided].map(readOntologySnapshot);
+    const snapshots = [...provided].map((ontology) =>
+      readLoadedImportsClosure(ontology).flatMap(
+        (member) => readOntologySnapshot(member).directAxioms,
+      ),
+    );
     for (const property of this.#properties) {
       const preferences =
         this.#languages.get(property.structuralKey())?.languages ?? [];
-      const candidates = snapshots.flatMap((snapshot) =>
-        snapshot.directAxioms
+      const candidates = snapshots.flatMap((axioms) =>
+        axioms
           .filter(
             (axiom) =>
               axiom.kind === K.ANNOTATION_ASSERTION_AXIOM &&

@@ -68,6 +68,7 @@ const renderers = Object.freeze({
     if (value.language) return `${quoted(value.lexicalForm)}@${value.language}`;
     const datatype = value.datatype.iri.value;
     if (datatype === XSD + "string") return quoted(value.lexicalForm);
+    if (datatype === XSD + "float") return `${value.lexicalForm}f`;
     if (
       ["integer", "decimal", "boolean"].some((name) => datatype === XSD + name)
     )

@@ -34,7 +34,7 @@ export const captureOntologies = (input) => {
   }
   if (!input || typeof input[Symbol.iterator] !== "function")
     throw new TypeError("ontologies must be iterable");
-  const result = [...new Set(input)];
+  const result = [...input];
   result.forEach(readOntologySnapshot);
   return Object.freeze(result);
 };
