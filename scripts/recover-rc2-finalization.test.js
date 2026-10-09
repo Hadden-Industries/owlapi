@@ -35,30 +35,32 @@ const originalControl = JSON.parse(
 );
 const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
 
-test("archive operations consume the authenticated buffer without reopening a pathname", () => {
-  const bytes = Buffer.from("authenticated archive fixture");
+test("archive decoding consumes the authenticated buffer without reopening a pathname", () => {
+  const bytes = Buffer.from(
+    "UEsDBBQAAAAAACIUSl0v9yCHEQAAABEAAAALAAAAcmVwb3J0Lmpzb257InJlc3VsdCI6IlBBU1MifVBLAQIUABQAAAAAACIUSl0v9yCHEQAAABEAAAALAAAAAAAAAAAAAACAAQAAAAByZXBvcnQuanNvblBLBQYAAAAAAQABADkAAAA6AAAAAAA=",
+    "base64",
+  );
   const artifact = {
     digest: `sha256:${digest(bytes)}`,
     files: ["report.json"],
   };
-  const calls = [];
-  const run = (executable, args, options) => {
-    calls.push({ executable, args, options });
-    expect(options.input).toBe(bytes);
-    expect(args[1]).toBe("-");
-    return args[0] === "-tf"
-      ? "report.json\n"
-      : Buffer.from('{"result":"PASS"}');
-  };
-  expect(
-    readVerifiedArchive(bytes, artifact, run)["report.json"].toString(),
-  ).toContain("PASS");
-  expect(calls).toHaveLength(2);
-  const rejectRun = jest.fn();
+  expect(readVerifiedArchive(bytes, artifact)["report.json"].toString()).toBe(
+    '{"result":"PASS"}',
+  );
   expect(() =>
-    readVerifiedArchive(Buffer.from("substitute"), artifact, rejectRun),
+    readVerifiedArchive(Buffer.from("substitute"), artifact),
   ).toThrow("archive changed");
-  expect(rejectRun).not.toHaveBeenCalled();
+  const corrupt = Buffer.from(bytes);
+  corrupt.writeUInt16LE(8, 68); // Unsupported compression in the central directory.
+  expect(() =>
+    readVerifiedArchive(corrupt, {
+      ...artifact,
+      digest: `sha256:${digest(corrupt)}`,
+    }),
+  ).toThrow("Unsupported");
+  expect(() =>
+    readVerifiedArchive(bytes, { ...artifact, files: ["other.json"] }),
+  ).toThrow("unsafe entry");
 });
 
 test("canonicalizes output ancestry and rejects junction aliases into the checkout", () => {
@@ -407,6 +409,15 @@ test("binds actual operator and Windows CLI identity to child report bytes", () 
         JSON.stringify({
           result: "PASS",
           promotionCommit: originalControl.sourceCommit,
+          sourceCommit: originalControl.sourceCommit,
+          releaseId: originalControl.releaseId,
+          release: { id: originalControl.releaseId, immutable: true },
+          assets: [
+            {
+              name: "hadden-industries-owlapi-0.1.0-rc.2.release-evidence.json",
+              sha256: "e".repeat(64),
+            },
+          ],
         }),
       );
     const receipt = recoveryReceipt({
@@ -432,6 +443,23 @@ test("binds actual operator and Windows CLI identity to child report bytes", () 
         ({ name, sha256 }) => sha256 === digest(readFileSync(join(root, name))),
       ),
     ).toBe(true);
+    const verifyPath = join(root, "immutable-verification.json");
+    const verification = JSON.parse(readFileSync(verifyPath, "utf8"));
+    for (const fault of ["release ID", "evidence hash"]) {
+      const changed = structuredClone(verification);
+      if (fault === "release ID") changed.release.id++;
+      else changed.assets[0].sha256 = "a".repeat(64);
+      writeFileSync(verifyPath, JSON.stringify(changed));
+      expect(() =>
+        recoveryReceipt({
+          root,
+          commit: "f".repeat(40),
+          control: originalControl,
+          controlBytes: Buffer.from("control"),
+          evidenceSha256: "e".repeat(64),
+        }),
+      ).toThrow("approved release and evidence bytes");
+    }
   } finally {
     rmSync(root, { recursive: true, force: true });
   }

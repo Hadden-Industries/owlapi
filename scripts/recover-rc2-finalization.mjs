@@ -47,10 +47,10 @@ export const canonicalExternalOutput = (path, checkout = repositoryRoot) => {
     ancestor = parent;
   }
   const canonical = resolve(
-    realpathSync(ancestor),
+    realpathSync.native(ancestor),
     relative(ancestor, requested),
   );
-  const source = realpathSync(checkout).toLowerCase();
+  const source = realpathSync.native(checkout).toLowerCase();
   requireFact(
     canonical.toLowerCase() !== source &&
       !canonical.toLowerCase().startsWith(`${source}${sep}`),
@@ -305,28 +305,85 @@ const downloadArtifact = async (client, artifact, control, root) => {
   );
   const zip = join(root, `${artifact.key}.zip`);
   writeFileSync(zip, archive, { flag: "wx" });
-  assertArchiveEntries(
-    command("tar", ["-tf", "-"], { input: archive }),
-    artifact.files,
-  );
   return { archiveSha256: hash(archive) };
 };
 
-export const readVerifiedArchive = (bytes, artifact, run = command) => {
+/** Decode only the stored, single-disk ZIP shape of these five pinned artifacts. */
+export const readVerifiedArchive = (bytes, artifact) => {
   requireFact(
     `sha256:${hash(bytes)}` === artifact.digest,
     "Retained recovery archive changed after preparation.",
   );
+  const end = bytes.length - 22;
+  requireFact(
+    end >= 0 &&
+      bytes.readUInt32LE(end) === 0x06054b50 &&
+      bytes.readUInt16LE(end + 4) === 0 &&
+      bytes.readUInt16LE(end + 6) === 0 &&
+      bytes.readUInt16LE(end + 20) === 0,
+    "Unsupported artifact ZIP directory.",
+  );
+  const count = bytes.readUInt16LE(end + 10);
+  let cursor = bytes.readUInt32LE(end + 16);
+  requireFact(
+    count === artifact.files.length &&
+      bytes.readUInt16LE(end + 8) === count &&
+      cursor + bytes.readUInt32LE(end + 12) === end,
+    "Artifact ZIP inventory differs.",
+  );
+  const directoryStart = cursor;
+  const entries = [];
+  for (let index = 0; index < count; index++) {
+    requireFact(
+      cursor + 46 <= end && bytes.readUInt32LE(cursor) === 0x02014b50,
+      "Invalid artifact ZIP entry.",
+    );
+    const flags = bytes.readUInt16LE(cursor + 8);
+    const method = bytes.readUInt16LE(cursor + 10);
+    const size = bytes.readUInt32LE(cursor + 20);
+    const nameLength = bytes.readUInt16LE(cursor + 28);
+    const next =
+      cursor +
+      46 +
+      nameLength +
+      bytes.readUInt16LE(cursor + 30) +
+      bytes.readUInt16LE(cursor + 32);
+    const local = bytes.readUInt32LE(cursor + 42);
+    requireFact(
+      flags % 2 === 0 &&
+        method === 0 &&
+        size === bytes.readUInt32LE(cursor + 24) &&
+        bytes.readUInt16LE(cursor + 34) === 0 &&
+        next <= end &&
+        local + 30 <= directoryStart &&
+        bytes.readUInt32LE(local) === 0x04034b50,
+      "Unsupported artifact ZIP entry.",
+    );
+    const nameBytes = bytes.subarray(cursor + 46, cursor + 46 + nameLength);
+    const localNameLength = bytes.readUInt16LE(local + 26);
+    const start = local + 30 + localNameLength + bytes.readUInt16LE(local + 28);
+    requireFact(
+      bytes.readUInt16LE(local + 6) === flags &&
+        bytes.readUInt16LE(local + 8) === method &&
+        localNameLength === nameLength &&
+        bytes
+          .subarray(local + 30, local + 30 + localNameLength)
+          .equals(nameBytes) &&
+        start + size <= directoryStart,
+      "Artifact ZIP local entry differs.",
+    );
+    entries.push([
+      nameBytes.toString("utf8"),
+      bytes.subarray(start, start + size),
+    ]);
+    cursor = next;
+  }
+  requireFact(cursor === end, "Artifact ZIP directory has trailing entries.");
   assertArchiveEntries(
-    run("tar", ["-tf", "-"], { input: bytes }),
+    entries.map(([name]) => name).join("\n"),
     artifact.files,
   );
-  return Object.fromEntries(
-    artifact.files.map((name) => [
-      name,
-      run("tar", ["-xOf", "-", name], { input: bytes, encoding: null }),
-    ]),
-  );
+  return Object.fromEntries(entries);
 };
 
 export const buildRecoveryEvidence = ({
@@ -570,24 +627,42 @@ export const recoveryReceipt = ({
   controlBytes,
   evidenceSha256,
   githubCliObservation,
-}) => ({
-  schemaVersion: 1,
-  result: "PASS",
-  mode: "OPERATOR_FINALIZATION_RECOVERY",
-  controlCommit: commit,
-  controlSha256: hash(controlBytes),
-  sourceCommit: control.sourceCommit,
-  githubCli: control.githubCli,
-  githubCliObservation,
-  evidenceSha256,
-  childIdentityInterpretation:
-    "Child promotionCommit binds the original release source; githubCli archive identity in the legacy verifier is its workflow policy constant. This receipt records the operator revision and observed Windows executable digests before and after verification.",
-  reports: ["finalization.json", "immutable-verification.json"].map((name) => ({
-    name,
-    sha256: hash(readFileSync(join(root, name))),
-  })),
-  verifiedAt: new Date().toISOString(),
-});
+}) => {
+  const reports = ["finalization.json", "immutable-verification.json"].map(
+    (name) => {
+      const bytes = readFileSync(join(root, name));
+      return { name, bytes, value: JSON.parse(bytes.toString("utf8")) };
+    },
+  );
+  const [finalization, verification] = reports.map(({ value }) => value);
+  requireFact(
+    finalization.result === "PASS" &&
+      finalization.releaseId === control.releaseId &&
+      finalization.sourceCommit === control.sourceCommit &&
+      verification.result === "PASS" &&
+      verification.sourceCommit === control.sourceCommit &&
+      verification.release?.id === control.releaseId &&
+      verification.release.immutable === true &&
+      verification.assets?.find(({ name }) => name === evidenceName)?.sha256 ===
+        evidenceSha256,
+    "Child verification does not bind the approved release and evidence bytes.",
+  );
+  return {
+    schemaVersion: 1,
+    result: "PASS",
+    mode: "OPERATOR_FINALIZATION_RECOVERY",
+    controlCommit: commit,
+    controlSha256: hash(controlBytes),
+    sourceCommit: control.sourceCommit,
+    githubCli: control.githubCli,
+    githubCliObservation,
+    evidenceSha256,
+    childIdentityInterpretation:
+      "Child promotionCommit binds the original release source; githubCli archive identity in the legacy verifier is its workflow policy constant. This receipt records the operator revision and observed Windows executable digests before and after verification.",
+    reports: reports.map(({ name, bytes }) => ({ name, sha256: hash(bytes) })),
+    verifiedAt: new Date().toISOString(),
+  };
+};
 
 export const completeRecovery = async ({ root, intent, finalize, verify }) => {
   writeJson(join(root, "github-write-intent.json"), intent);
