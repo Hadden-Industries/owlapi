@@ -1956,16 +1956,16 @@ describe("owlapi governance artifacts", () => {
       ),
     ).toBe(registry.javaTypes.length);
 
-    const modules = new Map(
-      await Promise.all(
-        Object.entries(packageJson.exports)
-          .filter(([specifier]) => specifier !== ".")
-          .map(async ([specifier, target]) => [
-            `${packageJson.name}${specifier.slice(1)}`,
-            await import(target),
-          ]),
-      ),
-    );
+    const modules = new Map();
+    // Jest's VM-module linker cannot reliably link shared dependencies concurrently.
+    for (const [specifier, target] of Object.entries(packageJson.exports)) {
+      if (specifier !== ".") {
+        modules.set(
+          `${packageJson.name}${specifier.slice(1)}`,
+          await import(target),
+        );
+      }
+    }
     const registeredSpecifiers = registry.namespaces
       .filter(({ npmSpecifier }) => npmSpecifier !== packageJson.name)
       .map(({ npmSpecifier }) => npmSpecifier)
