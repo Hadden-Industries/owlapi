@@ -1,4 +1,5 @@
-import { readFileSync, statSync, writeFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { readFileSync, writeFileSync } from "node:fs";
 import { basename, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
@@ -8,7 +9,6 @@ import {
   assertReleaseAssets,
   GitHubReleaseClient,
 } from "./github-release.mjs";
-import { sha256File } from "./release-artifacts.mjs";
 import { assertReleaseExecutionIdentity } from "./release-evidence.mjs";
 import { validateReleaseEvidence } from "./validate-release-evidence.mjs";
 
@@ -17,6 +17,19 @@ import { PACKAGE_VERSION } from "./package-identity.mjs";
 const argumentValue = (name) => {
   const index = process.argv.indexOf(name);
   return index === -1 ? undefined : process.argv[index + 1];
+};
+
+export const readFinalizationEvidence = (path, expectedSha256) => {
+  const bytes = readFileSync(path);
+  const sha256 = createHash("sha256").update(bytes).digest("hex");
+  if (
+    expectedSha256 !== undefined &&
+    (!/^[0-9a-f]{64}$/u.test(expectedSha256) || expectedSha256 !== sha256)
+  )
+    throw new Error(
+      "Finalization evidence differs from the approved byte digest.",
+    );
+  return { bytes, sha256 };
 };
 
 const finalReleaseBody = (evidence) => {
@@ -75,8 +88,12 @@ const main = async () => {
       "GitHub finalization received an invalid workflow identity.",
     );
   }
+  const evidenceInput = readFinalizationEvidence(
+    evidencePath,
+    argumentValue("--evidence-sha256"),
+  );
   const evidence = validateReleaseEvidence(
-    JSON.parse(readFileSync(evidencePath, "utf8")),
+    JSON.parse(evidenceInput.bytes.toString("utf8")),
   );
   assertReleaseExecutionIdentity({
     evidence,
@@ -97,8 +114,8 @@ const main = async () => {
 
   const evidenceAsset = {
     name: basename(evidencePath),
-    bytes: statSync(evidencePath).size,
-    sha256: sha256File(evidencePath),
+    bytes: evidenceInput.bytes.length,
+    sha256: evidenceInput.sha256,
   };
   const upload = await client.write(
     `/releases/${acceptedDraft.id}/assets?name=${encodeURIComponent(evidenceAsset.name)}`,
@@ -109,7 +126,7 @@ const main = async () => {
         "Content-Type": "application/json",
         "Content-Length": String(evidenceAsset.bytes),
       },
-      body: readFileSync(evidencePath),
+      body: evidenceInput.bytes,
     },
   );
   if (upload.state === "CONFIRMED") {

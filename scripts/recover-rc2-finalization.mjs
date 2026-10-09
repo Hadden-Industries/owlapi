@@ -482,12 +482,48 @@ const evidenceFromArchives = ({
   });
 };
 
-export const assertPreparedEvidence = (evidence, reconstructed) => {
+export const assertPreparedEvidence = (bytes, reconstructed) => {
   requireFact(
-    JSON.stringify(evidence) === JSON.stringify(reconstructed),
+    Buffer.from(bytes).equals(
+      Buffer.from(`${JSON.stringify(reconstructed, null, 2)}\n`),
+    ),
     "Prepared evidence differs from authenticated recovery inputs.",
   );
 };
+
+export const pinnedGitHubToken = (gh, expectedSha256, run = command) => {
+  requireFact(
+    hash(readFileSync(gh)) === expectedSha256,
+    "GitHub CLI changed before authentication.",
+  );
+  return run(gh, ["auth", "token"], {
+    env: { ...process.env, GH_PROMPT_DISABLED: "1" },
+  }).trim();
+};
+
+export const recoveryReceipt = ({
+  root,
+  commit,
+  control,
+  controlBytes,
+  evidenceSha256,
+}) => ({
+  schemaVersion: 1,
+  result: "PASS",
+  mode: "OPERATOR_FINALIZATION_RECOVERY",
+  controlCommit: commit,
+  controlSha256: hash(controlBytes),
+  sourceCommit: control.sourceCommit,
+  githubCli: control.githubCli,
+  evidenceSha256,
+  childIdentityInterpretation:
+    "Child promotionCommit binds the original release source; githubCli archive identity in the legacy verifier is its workflow policy constant. This receipt records the actual operator revision and Windows executable used.",
+  reports: ["finalization.json", "immutable-verification.json"].map((name) => ({
+    name,
+    sha256: hash(readFileSync(join(root, name))),
+  })),
+  verifiedAt: new Date().toISOString(),
+});
 
 export const completeRecovery = async ({ root, intent, finalize, verify }) => {
   writeJson(join(root, "github-write-intent.json"), intent);
@@ -529,7 +565,7 @@ const main = async () => {
     hash(readFileSync(gh)) === control.githubCli.executableSha256,
     "GitHub CLI does not match the reviewed Windows 2.101.0 executable.",
   );
-  const token = command("gh", ["auth", "token"]).trim();
+  const token = pinnedGitHubToken(gh, control.githubCli.executableSha256);
   const client = new GitHubReleaseClient({
     repository: control.repository,
     token,
@@ -591,23 +627,24 @@ const main = async () => {
     return;
   }
   const prepared = readJson(join(root, "prepared.json"));
-  const evidence = validateReleaseEvidence(readJson(join(root, evidenceName)));
-  assertPreparedEvidence(
-    evidence,
-    evidenceFromArchives({
-      root,
-      control,
-      controlBytes,
-      state,
-      commit,
-      generatedAt: evidence.generatedAt,
-    }),
+  const preparedBytes = readFileSync(join(root, evidenceName));
+  const evidence = validateReleaseEvidence(
+    JSON.parse(preparedBytes.toString("utf8")),
   );
+  const reconstructed = evidenceFromArchives({
+    root,
+    control,
+    controlBytes,
+    state,
+    commit,
+    generatedAt: evidence.generatedAt,
+  });
+  assertPreparedEvidence(preparedBytes, reconstructed);
   requireFact(
     prepared.result === "PASS" &&
       prepared.controlCommit === commit &&
       prepared.controlSha256 === hash(controlBytes) &&
-      prepared.evidenceSha256 === hash(readFileSync(join(root, evidenceName))),
+      prepared.evidenceSha256 === hash(preparedBytes),
     "Prepared evidence or control revision changed.",
   );
   assertReleaseAssets({
@@ -642,11 +679,20 @@ const main = async () => {
     expected: evidence.githubRelease.assets,
   });
   const finalReadback = await publicReadback(control);
+  const publicationRoot = join(root, "publication-evidence");
+  mkdirSync(publicationRoot);
+  const publicationEvidence = join(publicationRoot, evidenceName);
+  writeJson(publicationEvidence, reconstructed);
+  const publicationSha256 = hash(readFileSync(publicationEvidence));
+  requireFact(
+    publicationSha256 === prepared.evidenceSha256,
+    "Canonical publication evidence changed.",
+  );
   const intent = {
     controlCommit: commit,
     sourceCommit: control.sourceCommit,
     releaseId: control.releaseId,
-    evidenceSha256: prepared.evidenceSha256,
+    evidenceSha256: publicationSha256,
     checkedAt: new Date().toISOString(),
     readback: finalReadback,
   };
@@ -659,7 +705,9 @@ const main = async () => {
         [
           "scripts/finalize-github-release.mjs",
           "--evidence",
-          join(root, evidenceName),
+          publicationEvidence,
+          "--evidence-sha256",
+          publicationSha256,
           "--source-commit",
           control.sourceCommit,
           "--output",
@@ -684,7 +732,17 @@ const main = async () => {
         { env: childEnv },
       ),
   });
-  process.stdout.write(`${join(root, "immutable-verification.json")}\n`);
+  writeJson(
+    join(root, "operator-recovery-receipt.json"),
+    recoveryReceipt({
+      root,
+      commit,
+      control,
+      controlBytes,
+      evidenceSha256: publicationSha256,
+    }),
+  );
+  process.stdout.write(`${join(root, "operator-recovery-receipt.json")}\n`);
 };
 
 if (process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url)

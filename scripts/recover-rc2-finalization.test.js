@@ -1,7 +1,8 @@
 import { createHash } from "node:crypto";
-import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { jest } from "@jest/globals";
 import {
   assertApprovalObservations,
   assertArchiveEntries,
@@ -9,6 +10,8 @@ import {
   assertPreparedEvidence,
   completeRecovery,
   buildRecoveryEvidence,
+  pinnedGitHubToken,
+  recoveryReceipt,
 } from "./recover-rc2-finalization.mjs";
 import { SCOPED_RELEASE_JOB_NAMES } from "./release-evidence.mjs";
 import { contractReport } from "./fixtures/owl-contract-report.mjs";
@@ -256,12 +259,87 @@ test("rejects jointly altered preparation hashes and evidence facts", () => {
   const expected = buildRecoveryEvidence(f);
   const changed = structuredClone(expected);
   changed.approvals[0].observedAt = "2026-10-09T22:48:59Z";
-  expect(() => assertPreparedEvidence(changed, expected)).toThrow(
-    "authenticated recovery inputs",
-  );
   expect(() =>
-    assertPreparedEvidence(expected, structuredClone(expected)),
+    assertPreparedEvidence(
+      Buffer.from(`${JSON.stringify(changed, null, 2)}\n`),
+      expected,
+    ),
+  ).toThrow("authenticated recovery inputs");
+  expect(() =>
+    assertPreparedEvidence(
+      Buffer.from(`${JSON.stringify(expected, null, 2)}\n`),
+      structuredClone(expected),
+    ),
   ).not.toThrow();
+});
+
+test("rejects hidden duplicate keys and noncanonical prepared bytes", () => {
+  const expected = { approvals: [{ state: "approved" }], result: "PASS" };
+  const duplicate =
+    '{"approvals":[{"state":"FORGED"}],"approvals":[{"state":"approved"}],"result":"PASS"}';
+  expect(JSON.parse(duplicate)).toEqual(expected);
+  for (const bytes of [
+    duplicate,
+    JSON.stringify(expected),
+    `${JSON.stringify(expected, null, 2)}\n `,
+  ])
+    expect(() => assertPreparedEvidence(Buffer.from(bytes), expected)).toThrow(
+      "authenticated recovery inputs",
+    );
+});
+
+test("authenticates through the checked executable and refuses a changed binary", () => {
+  const root = mkdtempSync(join(tmpdir(), "owlapi-pinned-cli-"));
+  try {
+    const path = join(root, "gh.exe");
+    writeFileSync(path, "pinned executable fixture");
+    const expected = digest(readFileSync(path));
+    const run = jest.fn(() => "secret-fixture\n");
+    expect(pinnedGitHubToken(path, expected, run)).toBe("secret-fixture");
+    expect(run.mock.calls[0][0]).toBe(path);
+    expect(run.mock.calls[0][1]).toEqual(["auth", "token"]);
+    expect(run.mock.calls[0][2].env.GH_PROMPT_DISABLED).toBe("1");
+    writeFileSync(path, "substitute");
+    expect(() => pinnedGitHubToken(path, expected, run)).toThrow(
+      "changed before authentication",
+    );
+    expect(run).toHaveBeenCalledTimes(1);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("binds actual operator and Windows CLI identity to child report bytes", () => {
+  const root = mkdtempSync(join(tmpdir(), "owlapi-recovery-receipt-"));
+  try {
+    for (const name of ["finalization.json", "immutable-verification.json"])
+      writeFileSync(
+        join(root, name),
+        JSON.stringify({
+          result: "PASS",
+          promotionCommit: originalControl.sourceCommit,
+        }),
+      );
+    const receipt = recoveryReceipt({
+      root,
+      commit: "f".repeat(40),
+      control: originalControl,
+      controlBytes: Buffer.from("control"),
+      evidenceSha256: "e".repeat(64),
+    });
+    expect(receipt.controlCommit).toBe("f".repeat(40));
+    expect(receipt.sourceCommit).toBe(originalControl.sourceCommit);
+    expect(receipt.githubCli.executableSha256).toBe(
+      originalControl.githubCli.executableSha256,
+    );
+    expect(
+      receipt.reports.every(
+        ({ name, sha256 }) => sha256 === digest(readFileSync(join(root, name))),
+      ),
+    ).toBe(true);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 });
 
 test("rejects a missing original approval observation", () => {
