@@ -44,6 +44,25 @@ test.each([129, 509])(
   },
 );
 
+test("OWL/XML counts the Ontology root and rejects depth 513 before target publication", async () => {
+  const manager = new OWLOntologyManager();
+  const f = manager.getOWLDataFactory();
+  const a = f.getOWLClass(IRI.create("urn:depth:A"));
+  let expression = a;
+  for (let i = 0; i < 510; i++)
+    expression = f.getOWLObjectComplementOf(expression);
+  const ontology = manager.createOntology();
+  manager.addAxiom(ontology, f.getOWLSubClassOfAxiom(a, expression));
+  const target = new StringDocumentTarget();
+  replaceStringDocumentTargetText(target, "prior text");
+  await expect(
+    manager.saveOntology(ontology, OWLDocumentFormats.OWL_XML, target),
+  ).rejects.toMatchObject({
+    cause: { code: "RESOURCE_LIMIT_EXCEEDED", limit: 512 },
+  });
+  expect(target.toString()).toBe("prior text");
+});
+
 test("OWL/XML rejects XML 1.0 control characters with its representability reason before publication", async () => {
   const manager = new OWLOntologyManager();
   const f = manager.getOWLDataFactory();

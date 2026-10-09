@@ -9,6 +9,14 @@ import org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxOWLOb
 
 /** Public API probes for independent review regressions; no implementation code. */
 public final class RunRC2ParityEdges {
+  private static String payload(OWLAxiom ax) {
+    if (ax instanceof OWLDeclarationAxiom d) return "Declaration|"+d.getEntity().getIRI();
+    if (ax instanceof OWLSubClassOfAxiom s) return "SubClassOf|"+s.getSubClass().asOWLClass().getIRI()+"|"+s.getSuperClass().asOWLClass().getIRI();
+    throw new IllegalArgumentException("Probe payload outside selected named-class fixture");
+  }
+  private static List<String> changes(List<? extends OWLOntologyChange> values) {
+    return values.stream().map(c -> c.getClass().getSimpleName()+"|"+(c instanceof OWLAxiomChange a ? payload(a.getAxiom()) : c instanceof AddOntologyAnnotation a ? a.getAnnotation().getValue().toString() : ((RemoveOntologyAnnotation)c).getAnnotation().getValue().toString())).toList();
+  }
   public static void main(String[] args) throws Exception {
     var m = OWLManager.createOWLOntologyManager();
     var f = m.getOWLDataFactory();
@@ -48,6 +56,28 @@ public final class RunRC2ParityEdges {
     out.put("renameIRI", renamer.changeIRI(a.getIRI(), IRI.create("urn:edge:next")).stream().map(x -> x.getClass().getSimpleName()).toList());
     var remover = new OWLEntityRemover(List.of(transform,transform)); remover.visit(a);
     out.put("remove", remover.getChanges().stream().map(x -> x.getClass().getSimpleName()).toList());
+    out.put("renameEntityPayloads", changes(renamer.changeIRI(a, IRI.create("urn:edge:next"))));
+    out.put("renameMapPayloads", changes(renamer.changeIRI(map)));
+    out.put("renameIRIPayloads", changes(renamer.changeIRI(a.getIRI(), IRI.create("urn:edge:next"))));
+    out.put("removePayloads", changes(remover.getChanges()));
+    List<Map<String,Object>> matrix = new ArrayList<>();
+    for (String mode : List.of("self", "chain", "collision")) {
+      var owned = m.createOntology(); var unselected = m.createOntology(IRI.create("urn:edge:unselected:"+mode));
+      m.addAxiom(owned, f.getOWLDeclarationAxiom(a)); m.addAxiom(owned, f.getOWLDeclarationAxiom(b)); m.addAxiom(owned, shared);
+      m.addAxiom(unselected, shared);
+      m.applyChange(new AddImport(owned, f.getOWLImportsDeclaration(unselected.getOntologyID().getOntologyIRI().get())));
+      var replacements = new LinkedHashMap<OWLEntity,IRI>();
+      replacements.put(a, mode.equals("self") ? a.getIRI() : b.getIRI());
+      if (mode.equals("chain")) replacements.put(b, IRI.create("urn:edge:nextB"));
+      var proposed = new OWLEntityRenamer(m,List.of(owned)).changeIRI(replacements);
+      var row = new LinkedHashMap<String,Object>(); row.put("mode",mode); row.put("changes",changes(proposed));
+      row.put("before", owned.axioms().map(RunRC2ParityEdges::payload).sorted().toList());
+      m.applyChanges(proposed);
+      row.put("after", owned.axioms().map(RunRC2ParityEdges::payload).sorted().toList());
+      row.put("unselected", unselected.axioms().map(RunRC2ParityEdges::payload).sorted().toList());
+      matrix.add(row);
+    }
+    out.put("renameMatrix",matrix);
     var renderer = new ManchesterOWLSyntaxOWLObjectRendererImpl();
     Map<String,Object> literals = new LinkedHashMap<>();
     for (String type : List.of("float", "double")) for (String lexical : List.of("1.5", "1.0E1", "-0.0", "INF", "NaN", "bad")) {

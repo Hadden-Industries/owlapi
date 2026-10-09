@@ -23,6 +23,10 @@ const native = JSON.parse(
     "utf8",
   ),
 );
+const axiomPayload = (axiom) =>
+  axiom.kind === "OWLDeclarationAxiom"
+    ? `Declaration|${axiom.entity.iri.value}`
+    : `SubClassOf|${axiom.subClass.iri.value}|${axiom.superClass.iri.value}`;
 const setup = () => {
   const m = new OWLOntologyManager();
   const f = m.getOWLDataFactory();
@@ -133,8 +137,29 @@ test("native transformation lists preserve duplicate declarations, map batches a
   );
   const renamer = new OWLEntityRenamer(m, [ontology, ontology]);
   const names = (changes) => changes.map((change) => change.constructor.name);
+  const payloads = (changes) =>
+    changes.map(
+      (change) =>
+        `${change.constructor.name}|${change.getAxiom ? axiomPayload(change.getAxiom()) : change.getAnnotation().value.value}`,
+    );
   const next = IRI.create("urn:edge:next");
   expect(names(renamer.changeIRI(a, next))).toEqual(native.renameEntity);
+  expect(payloads(renamer.changeIRI(a, next))).toEqual(
+    native.renameEntityPayloads,
+  );
+  expect(
+    payloads(
+      renamer.changeIRI(
+        new Map([
+          [a, next],
+          [b, IRI.create("urn:edge:nextB")],
+        ]),
+      ),
+    ),
+  ).toEqual(native.renameMapPayloads);
+  expect(payloads(renamer.changeIRI(a.iri, next))).toEqual(
+    native.renameIRIPayloads,
+  );
   expect(
     names(
       renamer.changeIRI(
@@ -149,8 +174,51 @@ test("native transformation lists preserve duplicate declarations, map batches a
   const remover = new OWLEntityRemover([ontology, ontology]);
   remover.visit(a);
   expect(names(remover.getChanges())).toEqual(native.remove);
+  expect(payloads(remover.getChanges())).toEqual(native.removePayloads);
   expect(ontology.getAxiomCount()).toBe(2);
 });
+
+test.each(native.renameMatrix)(
+  "native rename $mode keeps payloads, applies once and leaves unselected imports unchanged",
+  (row) => {
+    const { m, f, a, b } = setup();
+    const owned = m.createOntology();
+    const unselected = m.createOntology(
+      f.getOWLOntologyID(IRI.create(`urn:edge:unselected:${row.mode}`)),
+    );
+    m.addAxioms(owned, [
+      f.getOWLDeclarationAxiom(a),
+      f.getOWLDeclarationAxiom(b),
+      f.getOWLSubClassOfAxiom(a, b),
+    ]);
+    m.addAxiom(unselected, f.getOWLSubClassOfAxiom(a, b));
+    m.applyChange(
+      new AddImport(
+        owned,
+        f.getOWLImportsDeclaration(unselected.getOntologyID().ontologyIRI),
+      ),
+    );
+    const replacements = new Map([[a, row.mode === "self" ? a.iri : b.iri]]);
+    if (row.mode === "chain") replacements.set(b, IRI.create("urn:edge:nextB"));
+    const proposed = new OWLEntityRenamer(m, [owned]).changeIRI(replacements);
+    // Java has no ordering guarantee across the ontology's axiom stream. Retain
+    // every complete payload and compare its multiset, including duplicates.
+    expect(
+      proposed
+        .map(
+          (change) =>
+            `${change.constructor.name}|${axiomPayload(change.getAxiom())}`,
+        )
+        .sort(),
+    ).toEqual([...row.changes].sort());
+    expect([...owned.getAxioms()].map(axiomPayload).sort()).toEqual(row.before);
+    m.applyChanges(proposed);
+    expect([...owned.getAxioms()].map(axiomPayload).sort()).toEqual(row.after);
+    expect([...unselected.getAxioms()].map(axiomPayload).sort()).toEqual(
+      row.unselected,
+    );
+  },
+);
 
 test.each(Object.entries(native.literals))(
   "renderer matches native literal object %s",

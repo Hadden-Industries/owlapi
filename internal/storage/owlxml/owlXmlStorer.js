@@ -70,6 +70,8 @@ export const owlXmlStorer = Object.freeze({
     const admit = (value) => {
       if (typeof value !== "string" || !value.isWellFormed())
         fail("OWL/XML requires well-formed Unicode");
+      // XML 1.0 explicitly excludes these controls; this is validation, not matching document content.
+      // eslint-disable-next-line no-control-regex
       if (/[\u0000-\u0008\u000B\u000C\u000E-\u001F\uFFFE\uFFFF]/u.test(value))
         fail("OWL/XML requires XML 1.0-compatible characters");
       constructionBytes += encoder.encode(value).byteLength;
@@ -127,7 +129,7 @@ export const owlXmlStorer = Object.freeze({
     const pending = values.reverse().map((value) => ({
       value,
       parent: root,
-      depth: 1,
+      depth: 2,
       annotationDepth: value.kind === K.ANNOTATION ? 1 : 0,
       exiting: false,
     }));

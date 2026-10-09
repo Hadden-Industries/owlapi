@@ -9,6 +9,29 @@
   "renameMap" : [ "RemoveAxiom", "AddAxiom", "RemoveAxiom", "AddAxiom", "RemoveAxiom", "AddAxiom", "RemoveOntologyAnnotation", "AddOntologyAnnotation", "RemoveAxiom", "AddAxiom", "RemoveOntologyAnnotation", "AddOntologyAnnotation", "RemoveAxiom", "AddAxiom", "RemoveAxiom", "AddAxiom", "RemoveAxiom", "AddAxiom", "RemoveOntologyAnnotation", "AddOntologyAnnotation", "RemoveAxiom", "AddAxiom", "RemoveOntologyAnnotation", "AddOntologyAnnotation" ],
   "renameIRI" : [ "RemoveAxiom", "AddAxiom", "RemoveAxiom", "AddAxiom", "RemoveOntologyAnnotation", "AddOntologyAnnotation", "RemoveAxiom", "AddAxiom", "RemoveAxiom", "AddAxiom", "RemoveOntologyAnnotation", "AddOntologyAnnotation" ],
   "remove" : [ "RemoveAxiom", "RemoveAxiom", "RemoveAxiom", "RemoveAxiom" ],
+  "renameEntityPayloads" : [ "RemoveAxiom|Declaration|urn:edge:A", "AddAxiom|Declaration|urn:edge:next", "RemoveAxiom|SubClassOf|urn:edge:A|urn:edge:B", "AddAxiom|SubClassOf|urn:edge:next|urn:edge:B", "RemoveAxiom|Declaration|urn:edge:A", "AddAxiom|Declaration|urn:edge:next", "RemoveOntologyAnnotation|urn:edge:A", "AddOntologyAnnotation|urn:edge:next", "RemoveAxiom|Declaration|urn:edge:A", "AddAxiom|Declaration|urn:edge:next", "RemoveAxiom|SubClassOf|urn:edge:A|urn:edge:B", "AddAxiom|SubClassOf|urn:edge:next|urn:edge:B", "RemoveAxiom|Declaration|urn:edge:A", "AddAxiom|Declaration|urn:edge:next", "RemoveOntologyAnnotation|urn:edge:A", "AddOntologyAnnotation|urn:edge:next" ],
+  "renameMapPayloads" : [ "RemoveAxiom|Declaration|urn:edge:A", "AddAxiom|Declaration|urn:edge:next", "RemoveAxiom|SubClassOf|urn:edge:A|urn:edge:B", "AddAxiom|SubClassOf|urn:edge:next|urn:edge:nextB", "RemoveAxiom|Declaration|urn:edge:A", "AddAxiom|Declaration|urn:edge:next", "RemoveOntologyAnnotation|urn:edge:A", "AddOntologyAnnotation|urn:edge:next", "RemoveAxiom|SubClassOf|urn:edge:A|urn:edge:B", "AddAxiom|SubClassOf|urn:edge:next|urn:edge:nextB", "RemoveOntologyAnnotation|urn:edge:A", "AddOntologyAnnotation|urn:edge:next", "RemoveAxiom|Declaration|urn:edge:A", "AddAxiom|Declaration|urn:edge:next", "RemoveAxiom|SubClassOf|urn:edge:A|urn:edge:B", "AddAxiom|SubClassOf|urn:edge:next|urn:edge:nextB", "RemoveAxiom|Declaration|urn:edge:A", "AddAxiom|Declaration|urn:edge:next", "RemoveOntologyAnnotation|urn:edge:A", "AddOntologyAnnotation|urn:edge:next", "RemoveAxiom|SubClassOf|urn:edge:A|urn:edge:B", "AddAxiom|SubClassOf|urn:edge:next|urn:edge:nextB", "RemoveOntologyAnnotation|urn:edge:A", "AddOntologyAnnotation|urn:edge:next" ],
+  "renameIRIPayloads" : [ "RemoveAxiom|Declaration|urn:edge:A", "AddAxiom|Declaration|urn:edge:next", "RemoveAxiom|SubClassOf|urn:edge:A|urn:edge:B", "AddAxiom|SubClassOf|urn:edge:next|urn:edge:B", "RemoveOntologyAnnotation|urn:edge:A", "AddOntologyAnnotation|urn:edge:next", "RemoveAxiom|Declaration|urn:edge:A", "AddAxiom|Declaration|urn:edge:next", "RemoveAxiom|SubClassOf|urn:edge:A|urn:edge:B", "AddAxiom|SubClassOf|urn:edge:next|urn:edge:B", "RemoveOntologyAnnotation|urn:edge:A", "AddOntologyAnnotation|urn:edge:next" ],
+  "removePayloads" : [ "RemoveAxiom|Declaration|urn:edge:A", "RemoveAxiom|SubClassOf|urn:edge:A|urn:edge:B", "RemoveAxiom|Declaration|urn:edge:A", "RemoveAxiom|SubClassOf|urn:edge:A|urn:edge:B" ],
+  "renameMatrix" : [ {
+    "mode" : "self",
+    "changes" : [ ],
+    "before" : [ "Declaration|urn:edge:A", "Declaration|urn:edge:B", "SubClassOf|urn:edge:A|urn:edge:B" ],
+    "after" : [ "Declaration|urn:edge:A", "Declaration|urn:edge:B", "SubClassOf|urn:edge:A|urn:edge:B" ],
+    "unselected" : [ "SubClassOf|urn:edge:A|urn:edge:B" ]
+  }, {
+    "mode" : "chain",
+    "changes" : [ "RemoveAxiom|Declaration|urn:edge:A", "AddAxiom|Declaration|urn:edge:B", "RemoveAxiom|SubClassOf|urn:edge:A|urn:edge:B", "AddAxiom|SubClassOf|urn:edge:B|urn:edge:nextB", "RemoveAxiom|Declaration|urn:edge:A", "AddAxiom|Declaration|urn:edge:B", "RemoveAxiom|Declaration|urn:edge:B", "AddAxiom|Declaration|urn:edge:nextB", "RemoveAxiom|SubClassOf|urn:edge:A|urn:edge:B", "AddAxiom|SubClassOf|urn:edge:B|urn:edge:nextB", "RemoveAxiom|Declaration|urn:edge:B", "AddAxiom|Declaration|urn:edge:nextB" ],
+    "before" : [ "Declaration|urn:edge:A", "Declaration|urn:edge:B", "SubClassOf|urn:edge:A|urn:edge:B" ],
+    "after" : [ "Declaration|urn:edge:nextB", "SubClassOf|urn:edge:B|urn:edge:nextB" ],
+    "unselected" : [ "SubClassOf|urn:edge:A|urn:edge:B" ]
+  }, {
+    "mode" : "collision",
+    "changes" : [ "RemoveAxiom|Declaration|urn:edge:A", "AddAxiom|Declaration|urn:edge:B", "RemoveAxiom|SubClassOf|urn:edge:A|urn:edge:B", "AddAxiom|SubClassOf|urn:edge:B|urn:edge:B", "RemoveAxiom|Declaration|urn:edge:A", "AddAxiom|Declaration|urn:edge:B" ],
+    "before" : [ "Declaration|urn:edge:A", "Declaration|urn:edge:B", "SubClassOf|urn:edge:A|urn:edge:B" ],
+    "after" : [ "Declaration|urn:edge:B", "SubClassOf|urn:edge:B|urn:edge:B" ],
+    "unselected" : [ "SubClassOf|urn:edge:A|urn:edge:B" ]
+  } ],
   "literals" : {
     "float|1.5" : [ "1.5", "1.5f" ],
     "float|1.0E1" : [ "10.0", "10.0f" ],
