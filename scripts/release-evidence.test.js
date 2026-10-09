@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
+import { parse } from "yaml";
 
 import * as evidenceGenerator from "./generate-release-evidence.mjs";
 import * as releaseEvidence from "./release-evidence.mjs";
@@ -182,6 +183,7 @@ const scopedFacts = () => {
       },
     },
   );
+  candidate.publication.mode = "DIRECT_OIDC";
   candidate.requiredJobs = [
     "Release / installed OWL contract",
     "Release / protected-main preflight",
@@ -189,7 +191,7 @@ const scopedFacts = () => {
     "Release / publication preflight",
     "Release / tag accepted",
     "Release / GitHub draft",
-    "Release / npm direct bootstrap",
+    "Release / npm trusted publisher",
     "Release / fresh public registry",
   ].map((name, index) => ({
     name,
@@ -253,6 +255,10 @@ test("historical schema-4 evidence remains readable after oracle changes but can
     JSON.stringify(buildReleaseEvidence(scopedFacts())),
   );
   evidence.schemaVersion = 4;
+  evidence.publication.mode = "DIRECT_BOOTSTRAP";
+  evidence.requiredJobs.find(
+    (job) => job.name === "Release / npm trusted publisher",
+  ).name = "Release / npm direct bootstrap";
   evidence.package.version = "0.1.0-rc.1";
   evidence.package.coordinate = "@hadden-industries/owlapi@0.1.0-rc.1";
   evidence.source.ref = "refs/tags/v0.1.0-rc.1";
@@ -347,12 +353,19 @@ test("partial reruns retain successful prerequisites and the original publicatio
     steps: [],
   }));
   const publisher = jobs.find(
-    (job) => job.name === "Release / npm direct bootstrap",
+    (job) => job.name === "Release / npm trusted publisher",
   );
   publisher.conclusion = "failure";
   publisher.steps = [
     {
-      name: "Perform the single authorized direct-bootstrap write",
+      name: parse(
+        readFileSync(
+          join(repositoryRoot, ".github/workflows/release.yml"),
+          "utf8",
+        ),
+      ).jobs.npm_release.steps.find((step) =>
+        step.run?.includes("npm publish "),
+      ).name,
       status: "completed",
       conclusion: "failure",
     },

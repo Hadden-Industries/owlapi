@@ -26,7 +26,7 @@
       "type": "boolean"
     },
     "mode": {
-      "enum": ["UNRESOLVED", "OIDC_STAGED", "DIRECT_BOOTSTRAP"]
+      "enum": ["UNRESOLVED", "OIDC_STAGED", "DIRECT_BOOTSTRAP", "DIRECT_OIDC"]
     },
     "coordinate": {
       "enum": [
@@ -278,7 +278,7 @@
                 "const": true
               },
               "mode": {
-                "const": "DIRECT_BOOTSTRAP"
+                "const": "DIRECT_OIDC"
               },
               "reviewedOn": {
                 "type": "string",

@@ -694,7 +694,7 @@ describe("repository workflow governance", () => {
     expect(auditReleaseMutationBoundary(broadened)).toEqual(
       expect.arrayContaining([
         expect.stringMatching(/exactly one id-token writer/u),
-        expect.stringMatching(/exactly one bootstrap-token reference/u),
+        expect.stringMatching(/no bootstrap-token reference/u),
       ]),
     );
   });
@@ -729,6 +729,97 @@ describe("repository workflow governance", () => {
       expect(
         auditReleaseMutationBoundary(document.toString()).join("\n"),
       ).toMatch(/latest write/u);
+    },
+  );
+
+  test.each([
+    "missing OIDC",
+    "inverted OIDC",
+    "wrong artifact",
+    "token fallback",
+    "secret fallback",
+    "npm auth configuration",
+    "npmrc write",
+    "inherited secret fallback",
+    "inherited auth configuration",
+    "bracket secret fallback",
+    "serialized secret fallback",
+    "npm basic auth configuration",
+    "npm auth command",
+    "mixed-case secret fallback",
+  ])("rejects an unsafe trusted publisher: %s", (mutation) => {
+    const document = parseDocument(workflowSource("release.yml"));
+    const publish = document
+      .getIn(["jobs", "npm_release", "steps"])
+      .items.find((step) => step.get("run")?.includes("npm publish "));
+    const source = publish.get("run");
+    if (mutation === "missing OIDC")
+      publish.set("run", source.replace(/if \[\[.*?\n.*?\n.*?\n.*?fi\n/u, ""));
+    if (mutation === "inverted OIDC")
+      publish.set(
+        "run",
+        source.replace(
+          'if [[ -z "${ACTIONS_ID_TOKEN_REQUEST_URL:-}"',
+          'if [[ -n "${ACTIONS_ID_TOKEN_REQUEST_URL:-}"',
+        ),
+      );
+    if (mutation === "wrong artifact")
+      publish.set(
+        "run",
+        source.replace(
+          "4f04d1456519fb75f23da51fce5174af0d4909ec7ea647cae2f4c9f4dc77b441",
+          "a".repeat(64),
+        ),
+      );
+    if (mutation === "token fallback")
+      publish.set("env", { NODE_AUTH_TOKEN: "${{ secrets.NPM_TOKEN }}" });
+    if (mutation === "secret fallback")
+      publish.set("env", { NPM_TOKEN: "${{ secrets.NPM_TOKEN }}" });
+    if (mutation === "npm auth configuration")
+      publish.set("env", { NPM_CONFIG_AUTHTOKEN: "persistent-token" });
+    if (mutation === "npmrc write")
+      publish.set("run", source + 'echo "token configuration" > .npmrc\n');
+    if (mutation === "inherited secret fallback")
+      document.setIn(["env", "NPM_TOKEN"], "${{ secrets.NPM_TOKEN }}");
+    if (mutation === "mixed-case secret fallback")
+      document.setIn(["env", "NPM_TOKEN"], "${{ SECRETS.NPM_TOKEN }}");
+    if (mutation === "inherited auth configuration")
+      document.setIn(["env", "npm_config__authToken"], "persistent-token");
+    if (mutation === "bracket secret fallback")
+      publish.set("env", { NPM_TOKEN: "${{ secrets['NPM_TOKEN'] }}" });
+    if (mutation === "serialized secret fallback")
+      publish.set("env", { NPM_TOKEN: "${{ toJSON(secrets) }}" });
+    if (mutation === "npm basic auth configuration")
+      publish.set("env", { NPM_CONFIG__AUTH: "persistent-token" });
+    if (mutation === "npm auth command")
+      publish.set(
+        "run",
+        source +
+          "npm config set //registry.npmjs.org/:_auth persistent-token\n",
+      );
+    expect(auditReleaseMutationBoundary(document.toString())).toContain(
+      "release.yml:npm_release must require OIDC and the exact owner-approved artifact without token fallback",
+    );
+  });
+
+  test.each(["registry-url", "scope"])(
+    "rejects setup-node generated OIDC auth configuration: %s",
+    (field) => {
+      const document = parseDocument(workflowSource("release.yml"));
+      const setup = document
+        .getIn(["jobs", "npm_release", "steps"])
+        .items.find((step) =>
+          step.get("uses")?.startsWith("actions/setup-node@"),
+        );
+      setup.setIn(
+        ["with", field],
+        field === "scope"
+          ? "@hadden-industries"
+          : "https://registry.npmjs.org/",
+      );
+      expect(auditReleaseMutationBoundary(document.toString())).toContain(
+        "release.yml:npm_release must omit setup-node npm authentication configuration",
+      );
     },
   );
 
@@ -772,7 +863,6 @@ describe("repository workflow governance", () => {
   });
 
   test.each([
-    ["release", ".github/workflows/release.yml", auditReleaseMutationBoundary],
     [
       "reconciliation",
       ".github/workflows/release-reconciliation.yml",

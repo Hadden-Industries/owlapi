@@ -182,6 +182,24 @@ describe("release preflight", () => {
     });
   });
 
+  test("rc.2 requires OIDC and rejects the obsolete bootstrap route", () => {
+    const current = {
+      ...accepted,
+      manifest: { ...manifest, version: "0.1.0-rc.2" },
+      publication: {
+        ...publication,
+        mode: "DIRECT_OIDC",
+        coordinate: "@hadden-industries/owlapi@0.1.0-rc.2",
+      },
+    };
+    expect(assertReleasePreflight(current)).toMatchObject({
+      publicationMode: "DIRECT_OIDC",
+      canonicalTagAbsent: "v0.1.0-rc.2",
+    });
+    current.publication.mode = "DIRECT_BOOTSTRAP";
+    expect(() => assertReleasePreflight(current)).toThrow(/version-specific/u);
+  });
+
   test.each([
     [
       "a disabled publication boundary",

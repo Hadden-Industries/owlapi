@@ -34,7 +34,7 @@ export const SCOPED_RELEASE_JOB_NAMES = Object.freeze(
     "Release / publication preflight",
     "Release / tag accepted",
     "Release / GitHub draft",
-    "Release / npm direct bootstrap",
+    "Release / npm trusted publisher",
     "Release / fresh public registry",
   ].sort(compareCodeUnits),
 );
@@ -118,7 +118,7 @@ export const buildReleaseEvidence = (facts) => {
       "The scoped RC must use one canonical source and qualification run.",
     );
   if (
-    facts.publication?.mode !== "DIRECT_BOOTSTRAP" ||
+    facts.publication?.mode !== (scoped ? "DIRECT_OIDC" : "DIRECT_BOOTSTRAP") ||
     facts.publication.coordinate !== `${packageName}@${version}` ||
     facts.publication.channel !== "next" ||
     facts.publication.next !== version ||

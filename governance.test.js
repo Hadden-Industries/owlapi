@@ -2693,12 +2693,14 @@ bundle licence and notice review.
     const governance = readJson("./docs/dependency-governance.json");
 
     expect(governance.review).toEqual({
-      status: "PENDING_HUMAN_REVIEW",
+      status: "REVIEWED",
       factsSha256: expect.stringMatching(/^[a-f0-9]{64}$/u),
-      reviewer: null,
-      reviewedOn: null,
-      capacity: null,
-      conclusion: null,
+      reviewer: "Maksym Shostak",
+      reviewedOn: "2026-10-10",
+      capacity: expect.any(String),
+      conclusion: expect.stringContaining(
+        "4f04d1456519fb75f23da51fce5174af0d4909ec7ea647cae2f4c9f4dc77b441",
+      ),
     });
     expect(governance.review.factsSha256).not.toBe(
       "60ccbac9295657fcdd69120ba77e2fc1838c022ceeab9bb60256d772d75708eb",

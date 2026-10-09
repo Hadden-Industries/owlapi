@@ -210,8 +210,7 @@ const validateActionUses = (fileName, workflow, document, violations) => {
           violations,
         );
         const isBootstrap =
-          ["release.yml", "release-reconciliation.yml"].includes(fileName) &&
-          jobId === "npm_release";
+          fileName === "release-reconciliation.yml" && jobId === "npm_release";
         if (isBootstrap)
           requireFields(
             inputs,
@@ -225,7 +224,7 @@ const validateActionUses = (fileName, workflow, document, violations) => {
             inputs,
             isBootstrap
               ? ["always-auth", "mirror", "token"]
-              : ["registry-url", "always-auth", "mirror", "token"],
+              : ["registry-url", "scope", "always-auth", "mirror", "token"],
           ),
           `${fileName}: setup-node broadens registry authority`,
         );
@@ -1251,7 +1250,7 @@ const validateReleaseMutationBoundary = (
   requireFields(
     publication,
     {
-      name: `${prefix} / npm direct bootstrap`,
+      name: `${prefix} / npm ${reconciliation ? "direct bootstrap" : "trusted publisher"}`,
       environment: { name: "npm-release" },
       permissions: { contents: "read", "id-token": "write" },
     },
@@ -1270,10 +1269,13 @@ const validateReleaseMutationBoundary = (
   );
   add(
     violations,
-    actionSteps(publication, "actions/setup-node").some(
-      (step) => step.with?.["registry-url"] === "https://registry.npmjs.org/",
+    actionSteps(publication, "actions/setup-node").some((step) =>
+      reconciliation
+        ? step.with?.["registry-url"] === "https://registry.npmjs.org/"
+        : step.with?.["registry-url"] === undefined &&
+          step.with?.scope === undefined,
     ),
-    `${fileName}:npm_release must use the public npm registry`,
+    `${fileName}:npm_release must ${reconciliation ? "use the public npm registry" : "omit setup-node npm authentication configuration"}`,
   );
   const publishCommand = reconciliation
     ? ALPHA_RECONCILIATION_PUBLISH_COMMAND
@@ -1312,15 +1314,43 @@ const validateReleaseMutationBoundary = (
     violations,
     actionSteps(publication, "actions/checkout").length === 0 &&
       publication?.permissions?.contents !== "write" &&
-      occurrences(publication, "NPM_BOOTSTRAP_TOKEN") === 1 &&
+      occurrences(publication, "NPM_BOOTSTRAP_TOKEN") ===
+        (reconciliation ? 1 : 0) &&
       occurrences(publication, "npm publish ") === 1,
     `${fileName}:npm_release must have no checkout/write expansion or duplicate token/publish authority`,
   );
-  add(
-    violations,
-    hasBootstrapCredentialGuard(publication, publishCommand),
-    `${fileName}:npm_release is missing bootstrap credential fail-closed behavior`,
-  );
+  if (reconciliation)
+    add(
+      violations,
+      hasBootstrapCredentialGuard(publication, publishCommand),
+      `${fileName}:npm_release is missing bootstrap credential fail-closed behavior`,
+    );
+  else {
+    const publish = steps(publication).find((step) =>
+      step.run?.includes(publishCommand),
+    );
+    const guard =
+      'if [[ -z "${ACTIONS_ID_TOKEN_REQUEST_URL:-}" || -z "${ACTIONS_ID_TOKEN_REQUEST_TOKEN:-}" ]]; then';
+    const approvedDigest =
+      'echo "4f04d1456519fb75f23da51fce5174af0d4909ec7ea647cae2f4c9f4dc77b441  hadden-industries-owlapi-0.1.0-rc.2.tgz" | sha256sum --check --strict';
+    add(
+      violations,
+      publish?.run?.includes(guard) &&
+        publish.run
+          .slice(
+            publish.run.indexOf(guard),
+            publish.run.indexOf(publishCommand),
+          )
+          .includes("exit 1") &&
+        publish.run.includes(`${approvedDigest}\n${publishCommand}`) &&
+        !JSON.stringify(workflow).includes("NODE_AUTH_TOKEN") &&
+        !/\bsecrets\b/iu.test(JSON.stringify([workflow.env, publication])) &&
+        !/authToken|npmrc|npm[_-]config[_-]*(?:auth|userconfig)|npm\s+config[^"\\]*(?:auth|token)/iu.test(
+          JSON.stringify([workflow.env, publication]),
+        ),
+      `${fileName}:npm_release must require OIDC and the exact owner-approved artifact without token fallback`,
+    );
+  }
 
   const finalize = workflowJobs.finalize_release;
   add(
@@ -1367,8 +1397,8 @@ const validateReleaseMutationBoundary = (
   );
   add(
     violations,
-    occurrences(workflow, "NPM_BOOTSTRAP_TOKEN") === 1,
-    `${fileName} must contain exactly one bootstrap-token reference`,
+    occurrences(workflow, "NPM_BOOTSTRAP_TOKEN") === (reconciliation ? 1 : 0),
+    `${fileName} must contain ${reconciliation ? "exactly one bootstrap-token reference" : "no bootstrap-token reference"}`,
   );
   add(
     violations,

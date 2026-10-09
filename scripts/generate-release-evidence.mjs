@@ -156,14 +156,15 @@ export const scopedWorkflowJobs = ({
   });
   const publishers = jobs.filter(
     (job) =>
-      job.name === "Release / npm direct bootstrap" &&
+      job.name === "Release / npm trusted publisher" &&
       matchesRun(job) &&
       job.run_attempt === provenance.runAttempt,
   );
   const publisher = publishers[0];
   const write = publisher?.steps?.find(
     (step) =>
-      step.name === "Perform the single authorized direct-bootstrap write",
+      step.name ===
+      "Perform the authorized publication and exact-version channel writes",
   );
   if (
     provenance.runId !== runId ||
@@ -340,7 +341,7 @@ const generateScopedEvidence = async () => {
     },
     candidate: { artifactId, artifactDigest: digest, ...candidate },
     publication: {
-      mode: "DIRECT_BOOTSTRAP",
+      mode: "DIRECT_OIDC",
       registry: "https://registry.npmjs.org/",
       coordinate,
       channel: "next",

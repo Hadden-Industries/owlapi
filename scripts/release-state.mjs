@@ -97,7 +97,7 @@ export const badReleaseActions = ({ channel, production }) => {
 };
 
 export const requiredManualHandoffs = (mode) => {
-  if (mode === "DIRECT_BOOTSTRAP") {
+  if (mode === "DIRECT_BOOTSTRAP" || mode === "DIRECT_OIDC") {
     return ["TAG_ACCEPTED"];
   }
   if (mode === "OIDC_STAGED") {

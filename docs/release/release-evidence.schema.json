@@ -1767,7 +1767,7 @@
           ],
           "properties": {
             "mode": {
-              "const": "DIRECT_BOOTSTRAP"
+              "const": "DIRECT_OIDC"
             },
             "registry": {
               "const": "https://registry.npmjs.org/"
@@ -1999,7 +1999,7 @@
                   "type": "object",
                   "properties": {
                     "name": {
-                      "const": "Release / npm direct bootstrap"
+                      "const": "Release / npm trusted publisher"
                     }
                   }
                 }
