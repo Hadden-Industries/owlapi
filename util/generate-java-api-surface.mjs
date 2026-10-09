@@ -12,6 +12,10 @@ import * as io from "../io/index.js";
 import * as model from "../model/index.js";
 import * as profiles from "../profiles/index.js";
 import * as util from "./index.js";
+import * as parameters from "../model/parameters/index.js";
+import * as search from "../search/index.js";
+import * as renderer from "../manchestersyntax/renderer/index.js";
+import * as locality from "../modularity/locality/index.js";
 
 const PACKAGE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const EXPECTED_JAVA_REVISION = "b61ebe2da83daceebb3e7ba7afbd2582c9240c33";
@@ -41,11 +45,280 @@ const LIFECYCLE_STORER_CAPABILITY_BY_JAVA_TYPE = Object.freeze({
   "org.semanticweb.owlapi.functional.renderer.FunctionalSyntaxStorer":
     "storer.functional",
   "org.semanticweb.owlapi.rdf.rdfxml.renderer.RDFXMLStorer": "storer.rdfxml",
+  "org.semanticweb.owlapi.rdf.turtle.renderer.TurtleStorer": "storer.turtle",
+  "org.semanticweb.owlapi.owlxml.renderer.OWLXMLStorer": "storer.owlxml",
+});
+
+// The accepted member inventory owns these additions; no name heuristic may
+// imply unsupported visitors, streams, reasoners or constructor overloads.
+const rc2Binding = (
+  javaType,
+  sourceModule,
+  capabilityId,
+  callShapes,
+  summary,
+  omittedMembers,
+  semanticQualifications,
+  verification,
+) => ({
+  javaType,
+  sourceModule,
+  capabilityIds: [capabilityId],
+  relationship: "JS_ADAPTATION",
+  firstPublicRelease: "0.1.0-rc.2",
+  callShapes,
+  summary,
+  omittedMembers,
+  semanticQualifications: [
+    "Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable.",
+    ...semanticQualifications,
+  ],
+  verification: [...verification, "test/package-boundary.test.mjs"],
+});
+const RC2_BINDING_METADATA = Object.freeze({
+  LocalityClass: rc2Binding(
+    "org.semanticweb.owlapi.modularity.locality.LocalityClass",
+    "modularity/locality/localityClass.js",
+    "modularity.syntactic-locality",
+    ["LocalityClass.BOTTOM / LocalityClass.TOP / LocalityClass.STAR"],
+    "Frozen selected syntactic-locality modes.",
+    ["Java enum reflection helpers"],
+    [
+      "BOTTOM and TOP retain the pinned public Java evaluator semantics. STAR alternates shrinking modules to a fixed point.",
+    ],
+    ["modularity/locality/locality.test.js"],
+  ),
+  SyntacticLocalityModuleExtractor: rc2Binding(
+    "org.semanticweb.owlapi.modularity.locality.SyntacticLocalityModuleExtractor",
+    "modularity/locality/syntacticLocalityModuleExtractor.js",
+    "modularity.syntactic-locality",
+    [
+      "new SyntacticLocalityModuleExtractor(localityClass, axiomIterable)",
+      "extractor.axiomBase()",
+      "extractor.containsAxiom(axiom)",
+      "extractor.getLocalityClass()",
+      "await extractor.extract(seedIterable, filter?, options?)",
+    ],
+    "Captured structural axiom base and asynchronous eager syntactic-locality modules.",
+    [
+      "extractAsOntology",
+      "globals / tautologies / everyModuleContains / noModuleContains",
+      "Reasoner-backed and legacy extractors",
+    ],
+    [
+      "Constructor captures immutable axioms; returned arrays are defensive. Filter executes synchronously before propagation. Absent original-base seeds reject with TypeError. STAR retains the original entity index.",
+      "Owner decision of 2026-10-09 follows Java's lack of numerical caps. maxWork, maxAxioms, maxDepth, maxAnnotationDepth and timeoutMs default to null and accept optional caller limits; one shared work/deadline budget spans all extraction phases and STAR passes. signal cancellation and limit exhaustion reject without partial output.",
+    ],
+    ["modularity/locality/locality.test.js"],
+  ),
+  ...Object.fromEntries(
+    [
+      "AddAxiom",
+      "RemoveAxiom",
+      "AddImport",
+      "RemoveImport",
+      "RemoveOntologyAnnotation",
+    ].map((name) => {
+      const argument = name.endsWith("Axiom")
+        ? "axiom"
+        : name.endsWith("Import")
+          ? "importsDeclaration"
+          : "annotation";
+      const file = name[0].toLowerCase() + name.slice(1);
+      return [
+        name,
+        rc2Binding(
+          `org.semanticweb.owlapi.model.${name}`,
+          `model/${file}.js`,
+          "manager.atomic-changes",
+          [`new ${name}(ontology, ${argument})`],
+          "An immutable nominal change record consumed by the manager's atomic batch transaction.",
+          [
+            "ChangeApplied, change-data serialization, visitors and inverse-change protocols",
+          ],
+          [
+            "Records retain canonical ontology identity and validated immutable structural values. Manager application preserves the established boolean adaptation and validates the complete batch before publication. Import changes reconcile only loaded manager state and never acquire documents.",
+          ],
+          ["model/rc2Changes.test.js"],
+        ),
+      ];
+    }),
+  ),
+  ...Object.fromEntries(
+    ["Imports", "AxiomAnnotations"].map((name) => [
+      name,
+      rc2Binding(
+        `org.semanticweb.owlapi.model.parameters.${name}`,
+        "model/parameters/index.js",
+        "ontology.java-parity-queries",
+        [
+          name === "Imports"
+            ? "Imports.EXCLUDED / Imports.INCLUDED"
+            : "AxiomAnnotations.CONSIDER_AXIOM_ANNOTATIONS / AxiomAnnotations.IGNORE_AXIOM_ANNOTATIONS",
+        ],
+        "Frozen explicit query policy values with Java-shaped names.",
+        ["Java enum instance methods"],
+        [
+          "Omitted imports scope retains direct-only behavior. Only selected scope-bearing overloads accept these values; named axiom index accessors stay direct-only.",
+        ],
+        ["model/rc2Queries.test.js"],
+      ),
+    ]),
+  ),
+  EntitySearcher: rc2Binding(
+    "org.semanticweb.owlapi.search.EntitySearcher",
+    "search/entitySearcher.js",
+    "search.entity-searcher",
+    [
+      "EntitySearcher.getSuperClasses(entity, ontologyOrIterable)",
+      "EntitySearcher.getAnnotations(subject, ontology, property?)",
+      "Selected static methods documented in the baseline",
+    ],
+    "Asserted entity and annotation searches over explicitly supplied ontologies.",
+    ["All unselected search methods and Java Stream protocols"],
+    [
+      "Java Stream results are fresh eager arrays preserving multiplicity, including repeated ontology inputs and annotated variants. Search never expands imports implicitly. Selected ontology iterable overloads retain their own Java property-filter requirements. Native getDisjointClasses retains the queried operand; getEquivalentClasses excludes it.",
+    ],
+    ["search/entitySearcher.test.js", "search/nativeSearch.test.js"],
+  ),
+  OWLObjectDuplicator: rc2Binding(
+    "org.semanticweb.owlapi.util.OWLObjectDuplicator",
+    "util/owlObjectDuplicator.js",
+    "util.object-transforms",
+    [
+      "new OWLObjectDuplicator(manager)",
+      "new OWLObjectDuplicator(entityIRIMap, manager)",
+      "new OWLObjectDuplicator(entityIRIMap, literalMap, manager)",
+      "new OWLObjectDuplicator(manager, iriMap)",
+      "duplicator.duplicateObject(object)",
+    ],
+    "Canonical factory reconstruction with captured structural maps and instance-owned anonymous remapping.",
+    [
+      "Explicit RemappingIndividualProvider constructors",
+      "Public visitor methods",
+      "Ontology, ID, import-declaration and SWRL duplication",
+    ],
+    [
+      "Map entries are copied and structural values validated before capture. Typed entity replacement differs from IRI-wide replacement. Repeated anonymous inputs share one new identity within a duplicator; different instances have distinct anonymous scopes. Structural limits reject incomplete reconstruction.",
+    ],
+    ["util/rc2Transforms.test.js"],
+  ),
+  OWLEntityRenamer: rc2Binding(
+    "org.semanticweb.owlapi.util.OWLEntityRenamer",
+    "util/owlEntityRenamer.js",
+    "util.object-transforms",
+    [
+      "new OWLEntityRenamer(manager, ontologyIterable)",
+      "renamer.changeIRI(entityOrIRI, iri)",
+      "renamer.changeIRI(entityIRIMap)",
+    ],
+    "Proposes changes from captured ontologies and current committed snapshots without applying them.",
+    ["Unselected visitor and Stream overloads"],
+    [
+      "Returns defensive eager arrays. Typed entities preserve punning distinctions; IRI-wide replacement includes all selected typed references and relevant annotation positions. Reconstruction preserves anonymous identity.",
+    ],
+    ["util/rc2Transforms.test.js"],
+  ),
+  OWLEntityRemover: rc2Binding(
+    "org.semanticweb.owlapi.util.OWLEntityRemover",
+    "util/owlEntityRemover.js",
+    "util.object-transforms",
+    [
+      "new OWLEntityRemover(ontologyOrIterable)",
+      "remover.visit(entity)",
+      "remover.getChanges()",
+      "remover.reset()",
+    ],
+    "Collects direct removal proposals for the six named entity kinds.",
+    [
+      "Structural accept(visitor) protocol",
+      "Implicit application and recursive deletion",
+    ],
+    [
+      "Direct visit is the approved visitor adaptation. Selected ontology identities are captured; repeated visits append proposals and getChanges returns a fresh array. reset clears collected proposals.",
+    ],
+    ["util/rc2Transforms.test.js"],
+  ),
+  SimpleShortFormProvider: rc2Binding(
+    "org.semanticweb.owlapi.util.SimpleShortFormProvider",
+    "util/simpleShortFormProvider.js",
+    "util.short-form-providers",
+    [
+      "new SimpleShortFormProvider()",
+      "provider.getShortForm(entity)",
+      "provider.dispose()",
+    ],
+    "A synchronous Java-shaped entity short form provider.",
+    ["Java serialization"],
+    [
+      "Uses the observed NCName suffix, with angle-bracketed full IRI fallback. dispose is a no-op.",
+    ],
+    ["util/shortFormProviders.test.js"],
+  ),
+  AnnotationValueShortFormProvider: rc2Binding(
+    "org.semanticweb.owlapi.util.AnnotationValueShortFormProvider",
+    "util/annotationValueShortFormProvider.js",
+    "util.short-form-providers",
+    [
+      "new AnnotationValueShortFormProvider(properties, preferredLanguageMap, ontologySetProvider, alternateProvider?)",
+      "provider.getShortForm(entity)",
+    ],
+    "Uses captured annotation and language preferences with explicitly supplied live ontology snapshots.",
+    [
+      "Custom IRIShortFormProvider constructor",
+      "setLiteralRenderer(StringAnnotationVisitor)",
+    ],
+    [
+      "The ontology-set provider and short-form callbacks are synchronous. Property and language preferences are copied; getters return defensive copies. Label selection observes the approved native preference order and fallback.",
+    ],
+    ["util/shortFormProviders.test.js"],
+  ),
+  ManchesterOWLSyntaxOWLObjectRendererImpl: rc2Binding(
+    "org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxOWLObjectRendererImpl",
+    "manchestersyntax/renderer/manchesterOWLSyntaxOWLObjectRendererImpl.js",
+    "renderer.manchester",
+    [
+      "new ManchesterOWLSyntaxOWLObjectRendererImpl()",
+      "renderer.render(object)",
+      "renderer.setShortFormProvider(provider)",
+    ],
+    "Plain Manchester text for the selected complete structural-kind inventory.",
+    ["Short aliases", "Ontology storage", "HTML and DOM rendering"],
+    [
+      "Validates canonical input before invoking a captured synchronous provider. Preserves observed Java precedence, whitespace and annotation behavior; anonymous names are compared through one consistent bijection. Output and structural depth remain bounded.",
+    ],
+    ["manchestersyntax/renderer/renderer.test.js"],
+  ),
+  ...Object.fromEntries(
+    ["EL", "QL", "RL"].map((profile) => [
+      `OWL2${profile}Profile`,
+      rc2Binding(
+        `org.semanticweb.owlapi.profiles.OWL2${profile}Profile`,
+        `profiles/owl2${profile}Profile.js`,
+        `profiles.owl2-${profile.toLowerCase()}`,
+        [
+          `new OWL2${profile}Profile()`,
+          "await profile.checkOntology(ontology, options?)",
+        ],
+        `An asynchronous bounded OWL 2 ${profile} structural checker over the managed import closure.`,
+        [
+          "Java visitor classes",
+          "getDatatypeIRIs()",
+          "Stream and Collection overloads",
+        ],
+        [
+          "Reuses the formal report and separate source-assessment protocol. Complete structural validation, global constraints and profile-specific grammar share one work budget; incomplete validation is unverified. Native discrepancies require separately accepted bounded decisions.",
+        ],
+        ["profiles/rc2Profiles.test.js"],
+      ),
+    ]),
+  ),
 });
 
 // These approved adaptations must not inherit the OWL-name heuristic: a native
 // Error suffix, private atomic target state, and io ownership differ from Java.
 const PARITY_BINDING_METADATA = Object.freeze({
+  ...RC2_BINDING_METADATA,
   RDFXMLDocumentFormat: {
     javaType: "org.semanticweb.owlapi.formats.RDFXMLDocumentFormat",
     sourceModule: "formats/rdfXMLDocumentFormat.js",
@@ -54,7 +327,7 @@ const PARITY_BINDING_METADATA = Object.freeze({
     callShapes: ["new RDFXMLDocumentFormat()"],
     summary:
       "Java-backed RDF/XML format with bounded inherited prefix operations and captured save-time preferences.",
-    firstPublicRelease: null,
+    firstPublicRelease: "0.1.0-rc.2",
     omittedMembers: [
       "Prefix comparator, prefix IRI conversion and Stream overloads",
       "setPrefixManager and standalone PrefixManager/PrefixDocumentFormat exports",
@@ -78,7 +351,7 @@ const PARITY_BINDING_METADATA = Object.freeze({
     callShapes: ["new OWLOntologyWriterConfiguration()"],
     summary:
       "An immutable partial Java adaptation controlling RDF/XML indentation, banners and anonymous-individual ID persistence on an output manager.",
-    firstPublicRelease: null,
+    firstPublicRelease: "0.1.0-rc.2",
     omittedMembers: [
       "shouldRemapAllAnonymousIndividualsIds / withRemapAllAnonymousIndividualsIds",
       "isUseNamespaceEntities / withUseNamespaceEntities",
@@ -230,6 +503,9 @@ const MODULES = Object.freeze([
       ...model,
       ...profiles,
       ...util,
+      ...parameters,
+      ...search,
+      ...renderer,
     },
     rationale:
       "Convenience aggregate of established bindings. New writer configuration is owned only by ./model; no second implementation identity is created.",
@@ -273,7 +549,7 @@ const MODULES = Object.freeze([
     module: util,
     firstPublicRelease: "0.1.0-rc.1",
     rationale:
-      "Mirrors the Java OWLAPI util namespace for the exact approved closure provider and ontology merger entry points.",
+      "Mirrors the Java OWLAPI util namespace for the exact approved closure, merger, transform, and short-form provider entry points.",
   },
   {
     id: "profiles",
@@ -283,6 +559,39 @@ const MODULES = Object.freeze([
     firstPublicRelease: "0.1.0-rc.1",
     rationale:
       "Owns the approved asynchronous OWL 2 DL checker and immutable report; source-qualified evidence is separate from the formal Java-shaped verdict.",
+  },
+  {
+    id: "model/parameters",
+    javaPackage: "org.semanticweb.owlapi.model.parameters",
+    npmSpecifier: "@hadden-industries/owlapi/model/parameters",
+    module: parameters,
+    firstPublicRelease: "0.1.0-rc.2",
+    rationale: "Owns the approved explicit query enums.",
+  },
+  {
+    id: "search",
+    javaPackage: "org.semanticweb.owlapi.search",
+    npmSpecifier: "@hadden-industries/owlapi/search",
+    module: search,
+    firstPublicRelease: "0.1.0-rc.2",
+    rationale: "Owns the selected asserted EntitySearcher operations.",
+  },
+  {
+    id: "manchestersyntax/renderer",
+    javaPackage: "org.semanticweb.owlapi.manchestersyntax.renderer",
+    npmSpecifier: "@hadden-industries/owlapi/manchestersyntax/renderer",
+    module: renderer,
+    firstPublicRelease: "0.1.0-rc.2",
+    rationale: "Owns the selected plain-text Manchester object renderer.",
+  },
+  {
+    id: "modularity/locality",
+    javaPackage: "org.semanticweb.owlapi.modularity.locality",
+    npmSpecifier: "@hadden-industries/owlapi/modularity/locality",
+    module: locality,
+    firstPublicRelease: "0.1.0-rc.2",
+    rationale:
+      "Owns the selected syntactic-locality modes and module extractor.",
   },
 ]);
 
@@ -1215,7 +1524,9 @@ const buildRegistry = async (javaRoot) => {
     javaPackage: namespace.javaPackage,
     npmSpecifier: namespace.npmSpecifier,
     exposure: "PUBLIC",
-    firstPublicRelease: namespace.firstPublicRelease ?? "0.1.0-alpha.0",
+    firstPublicRelease: Object.hasOwn(namespace, "firstPublicRelease")
+      ? namespace.firstPublicRelease
+      : "0.1.0-alpha.0",
     rationale: namespace.rationale,
     ownedBindingIds:
       namespace.id === "root"

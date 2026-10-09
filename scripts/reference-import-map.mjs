@@ -37,6 +37,7 @@ const XML_ADAPTER_URL_SUFFIX = "/internal/parsing/xml/xmlParserAdapter.js";
 const RDF_XML_WRITER_URL_SUFFIX =
   "/internal/storage/rdfxml/rdfXmlGraphWriter.js";
 const RDF_XML_FORMAT_URL_SUFFIX = "/formats/rdfXMLDocumentFormat.js";
+const OWL_XML_WRITER_URL_SUFFIX = "/internal/storage/owlxml/owlXmlStorer.js";
 const JSON_LD_SPECIFIER = "jsonld";
 const JSPM_PROVIDER_BASE_URL = "https://ga.jspm.io/";
 const jsonLdVersion = repositoryManifest.dependencies?.[JSON_LD_SPECIFIER];
@@ -57,7 +58,8 @@ export const excludeNodeXmlParserFallback = (specifier, parentUrl) => {
   if (parentUrl.endsWith(XML_ADAPTER_URL_SUFFIX)) return true;
   if (
     parentUrl.endsWith(RDF_XML_WRITER_URL_SUFFIX) ||
-    parentUrl.endsWith(RDF_XML_FORMAT_URL_SUFFIX)
+    parentUrl.endsWith(RDF_XML_FORMAT_URL_SUFFIX) ||
+    parentUrl.endsWith(OWL_XML_WRITER_URL_SUFFIX)
   )
     return false;
   throw new Error(

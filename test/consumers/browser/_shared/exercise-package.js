@@ -5,6 +5,11 @@ import * as io from "owlapi/io";
 import * as model from "owlapi/model";
 import * as profiles from "owlapi/profiles";
 import * as util from "owlapi/util";
+import * as parameters from "owlapi/model/parameters";
+import * as search from "owlapi/search";
+import * as renderer from "owlapi/manchestersyntax/renderer";
+import * as locality from "owlapi/modularity/locality";
+import { exerciseRC2PublicContract } from "./rc2-public-contract.js";
 import { createPublicContract } from "./public-contract.js";
 import { exerciseWriterConfiguration } from "./writer-configuration.js";
 import { exercisePublicModelFields } from "./public-model-probes.js";
@@ -227,6 +232,16 @@ export const exerciseInstalledPackage = async () => {
       root.OWLOntologyMerger === util.OWLOntologyMerger &&
       root.OWLOntologyImportsClosureSetProvider ===
         util.OWLOntologyImportsClosureSetProvider,
+    parameters:
+      root.Imports === parameters.Imports &&
+      root.AxiomAnnotations === parameters.AxiomAnnotations,
+    search: root.EntitySearcher === search.EntitySearcher,
+    locality:
+      root.SyntacticLocalityModuleExtractor ===
+      locality.SyntacticLocalityModuleExtractor,
+    renderer:
+      root.ManchesterOWLSyntaxOWLObjectRendererImpl ===
+      renderer.ManchesterOWLSyntaxOWLObjectRendererImpl,
   };
 
   if (Object.values(bindingIdentity).includes(false)) {
@@ -273,6 +288,7 @@ export const exerciseInstalledPackage = async () => {
     await exerciseImportClosureStorage(closureDocuments);
   return {
     bindingIdentity,
+    rc2: await exerciseRC2PublicContract(root),
     documents,
     writerConfiguration: await exerciseWriterConfiguration(
       apibinding,

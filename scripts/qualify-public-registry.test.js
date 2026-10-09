@@ -1,10 +1,10 @@
 import { assertPublicRegistryFacts } from "./qualify-public-registry.mjs";
 
-const version = "0.1.0-rc.1";
+const version = "0.1.0-rc.2";
 const retainedSha256 = "a".repeat(64);
 
 describe("fresh public-registry qualification", () => {
-  test("accepts the exact prerelease under next without latest", () => {
+  test("accepts the exact prerelease under both next and latest", () => {
     expect(
       assertPublicRegistryFacts({
         expectedVersion: version,
@@ -17,12 +17,14 @@ describe("fresh public-registry qualification", () => {
             tarball: `https://registry.npmjs.org/@hadden-industries/owlapi/-/owlapi-${version}.tgz`,
           },
         },
-        distTags: { next: version },
+        distTags: { next: version, latest: version },
         registryTarballSha256: retainedSha256,
       }),
     ).toEqual({
       coordinate: `@hadden-industries/owlapi@${version}`,
       channel: "next",
+      next: version,
+      latest: version,
       integrity: "sha512-example",
       tarballSha256: retainedSha256,
     });
@@ -31,8 +33,8 @@ describe("fresh public-registry qualification", () => {
   test.each([
     ["a stale next tag", { distTags: { next: "0.1.0-alpha.1" } }],
     [
-      "an unexpected latest tag",
-      { distTags: { next: version, latest: version } },
+      "a stale latest tag",
+      { distTags: { next: version, latest: "0.1.0-rc.1" } },
     ],
     ["different registry bytes", { registryTarballSha256: "b".repeat(64) }],
   ])("rejects %s", (_label, override) => {

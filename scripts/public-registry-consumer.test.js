@@ -79,7 +79,7 @@ afterEach(() => {
 });
 
 test.each(["owlapi", PACKAGE_NAME])(
-  "verifies seven native installed roots through %s",
+  "verifies eleven native installed roots through %s",
   (dependencyName) => {
     const input = fixture(dependencyName);
     expect(verifyRegistryInstallation(input)).toMatchObject({
@@ -172,11 +172,11 @@ test("rejects a floating alias even if the current installation happens to match
 });
 
 test.each([
-  "https://registry.npmjs.org/owlapi/-/owlapi-0.1.0-rc.1.tgz",
-  "https://registry.npmjs.org/@someone/owlapi/-/owlapi-0.1.0-rc.1.tgz",
-  "https://example.com/@hadden-industries/owlapi/-/owlapi-0.1.0-rc.1.tgz",
-  "https://user@registry.npmjs.org/@hadden-industries/owlapi/-/owlapi-0.1.0-rc.1.tgz",
-  "https://registry.npmjs.org/@hadden-industries/owlapi/-/owlapi-0.1.0-rc.1.tgz?redirect=x",
+  "https://registry.npmjs.org/owlapi/-/owlapi-0.1.0-rc.2.tgz",
+  "https://registry.npmjs.org/@someone/owlapi/-/owlapi-0.1.0-rc.2.tgz",
+  "https://example.com/@hadden-industries/owlapi/-/owlapi-0.1.0-rc.2.tgz",
+  "https://user@registry.npmjs.org/@hadden-industries/owlapi/-/owlapi-0.1.0-rc.2.tgz",
+  "https://registry.npmjs.org/@hadden-industries/owlapi/-/owlapi-0.1.0-rc.2.tgz?redirect=x",
 ])("rejects registry location %s", (url) => {
   expect(() => assertRegistryTarballUrl(url)).toThrow();
 });

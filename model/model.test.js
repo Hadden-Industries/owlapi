@@ -225,7 +225,7 @@ describe("OWL structural model", () => {
     );
     expect(() => new OWLOntology({ imports: [cls] })).toThrow(TypeError);
     expect(() => new OWLOntology({ ontologyID: cls })).toThrow(TypeError);
-    expect(() => new OWLOntology().getReferencingAxioms(cls.iri)).toThrow(
+    expect(() => new OWLOntology().getReferencingAxioms(cls.iri.value)).toThrow(
       TypeError,
     );
   });

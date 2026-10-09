@@ -45,9 +45,9 @@ export const assertReleaseExecutionIdentity = ({
   sourceCommit,
   tag,
 }) => {
-  if (evidence?.reconciliation === null && evidence.schemaVersion !== 4)
+  if (evidence?.reconciliation === null && evidence.schemaVersion !== 5)
     throw new Error(
-      "Current producer release finalization requires schema-4 OWL contract proof.",
+      "Current producer release finalization requires schema-5 OWL contract proof.",
     );
   if (evidence?.reconciliation === null) {
     // Archive readability never grants authority to finalize a new release.
@@ -122,7 +122,8 @@ export const buildReleaseEvidence = (facts) => {
     facts.publication.coordinate !== `${packageName}@${version}` ||
     facts.publication.channel !== "next" ||
     facts.publication.next !== version ||
-    facts.publication.latestPresent !== false ||
+    facts.publication.latestPresent !== scoped ||
+    (scoped && facts.publication.latest !== version) ||
     facts.publication.provenance?.sourceCommit !== facts.workflow.commit ||
     facts.publication.provenance.sourceRef !== "refs/heads/main" ||
     facts.publication.provenance.workflow !== workflowPath ||
@@ -234,7 +235,7 @@ export const buildReleaseEvidence = (facts) => {
   }
   return {
     $schema: `https://raw.githubusercontent.com/Hadden-Industries/owlapi/${facts.workflow.commit}/docs/release/release-evidence.schema.json`,
-    schemaVersion: scoped ? 4 : 2,
+    schemaVersion: scoped ? 5 : 2,
     ...(scoped ? { producerContract: facts.producerContract } : {}),
     package: {
       name: packageName,

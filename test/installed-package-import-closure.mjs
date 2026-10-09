@@ -20,6 +20,9 @@ const documents = Object.fromEntries(
   ]),
 );
 const { summary } = await exerciseImportClosureStorage(documents);
+const { exerciseRC2PublicContract } =
+  await import("./import-closure/rc2-public-contract.js");
+await exerciseRC2PublicContract(await import("owlapi"));
 assertNoNetworkOperations();
 assert.deepEqual(summary, {
   closureCount: 4,

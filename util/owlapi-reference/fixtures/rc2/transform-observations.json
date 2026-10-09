@@ -1,0 +1,637 @@
+{
+  "schemaVersion" : 1,
+  "sourceRevision" : "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+  "entityKinds" : [ "Class", "ObjectProperty", "DataProperty", "AnnotationProperty", "NamedIndividual", "Datatype" ],
+  "observations" : [ {
+    "subset" : 1,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 1,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 2,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 2,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 3,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 3,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 4,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:2"
+  }, {
+    "subset" : 4,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:2"
+  }, {
+    "subset" : 5,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 5,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 6,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 6,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 7,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 7,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 8,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:3"
+  }, {
+    "subset" : 8,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:3"
+  }, {
+    "subset" : 9,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 9,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 10,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 10,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 11,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 11,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 12,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:2"
+  }, {
+    "subset" : 12,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:2"
+  }, {
+    "subset" : 13,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 13,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 14,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 14,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 15,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 15,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 16,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:4"
+  }, {
+    "subset" : 16,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:4"
+  }, {
+    "subset" : 17,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 17,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 18,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 18,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 19,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 19,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 20,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:2"
+  }, {
+    "subset" : 20,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:2"
+  }, {
+    "subset" : 21,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 21,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 22,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 22,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 23,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 23,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 24,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:3"
+  }, {
+    "subset" : 24,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:3"
+  }, {
+    "subset" : 25,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 25,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 26,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 26,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 27,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 27,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 28,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:2"
+  }, {
+    "subset" : 28,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:2"
+  }, {
+    "subset" : 29,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 29,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 30,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 30,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 31,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 31,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:shared" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 32,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:5"
+  }, {
+    "subset" : 32,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:5"
+  }, {
+    "subset" : 33,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 33,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 34,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 34,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 35,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 35,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 36,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:2"
+  }, {
+    "subset" : 36,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:2"
+  }, {
+    "subset" : 37,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 37,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 38,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 38,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 39,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 39,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 40,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:3"
+  }, {
+    "subset" : 40,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:3"
+  }, {
+    "subset" : 41,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 41,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 42,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 42,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 43,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 43,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 44,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:2"
+  }, {
+    "subset" : 44,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:2"
+  }, {
+    "subset" : 45,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 45,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 46,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 46,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 47,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 47,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:shared", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 48,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:4"
+  }, {
+    "subset" : 48,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:4"
+  }, {
+    "subset" : 49,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 49,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 50,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 50,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 51,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 51,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 52,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:2"
+  }, {
+    "subset" : 52,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:2"
+  }, {
+    "subset" : 53,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 53,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 54,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 54,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 55,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 55,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:shared", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 56,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:3"
+  }, {
+    "subset" : 56,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:3"
+  }, {
+    "subset" : 57,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 57,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 58,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 58,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 59,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 59,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:shared", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 60,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:2"
+  }, {
+    "subset" : 60,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:2"
+  }, {
+    "subset" : 61,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 61,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:shared", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 62,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 62,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:shared", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:1"
+  }, {
+    "subset" : 63,
+    "reverse" : false,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  }, {
+    "subset" : 63,
+    "reverse" : true,
+    "typedIRIs" : [ "urn:transform:replacement:0", "urn:transform:replacement:1", "urn:transform:replacement:2", "urn:transform:replacement:3", "urn:transform:replacement:4", "urn:transform:replacement:5" ],
+    "rawIRI" : "urn:transform:replacement:0"
+  } ],
+  "runtimeQualification" : "FRESH_LOCAL_WINDOWS_NATIVE_BUILD_NOT_LINUX_IMAGE_EQUIVALENCE"
+}

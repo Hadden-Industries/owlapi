@@ -1,6 +1,6 @@
 /** Closed identity of the accepted scoped candidate; consumer aliases are not identities. */
 export const PACKAGE_NAME = "@hadden-industries/owlapi";
-export const PACKAGE_VERSION = "0.1.0-rc.1";
+export const PACKAGE_VERSION = "0.1.0-rc.2";
 export const PACKAGE_PURL = `pkg:npm/%40hadden-industries/owlapi@${PACKAGE_VERSION}`;
 // The pinned CycloneDX generator retains the canonical package repository qualifier.
 export const PACKAGE_SBOM_PURL = `${PACKAGE_PURL}?vcs_url=${encodeURIComponent("git+https://github.com/Hadden-Industries/owlapi.git")}`;
@@ -14,6 +14,10 @@ export const PUBLIC_SUBPATHS = Object.freeze([
   "/formats",
   "/profiles",
   "/util",
+  "/model/parameters",
+  "/search",
+  "/manchestersyntax/renderer",
+  "/modularity/locality",
 ]);
 
 /** Refuse a different package/version before using any candidate-supplied location. */

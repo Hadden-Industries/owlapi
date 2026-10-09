@@ -18,6 +18,32 @@ const sortedSignatures = (dataset) =>
     .sort((left, right) => left.localeCompare(right));
 
 describe("OwlToRdfTranslator internal mapping contract", () => {
+  it("bounds RDF graph construction before a serializer receives it", () => {
+    const factory = new OWLDataFactory();
+    const ontology = new OWLOntology({
+      ontologyID: factory.getOWLOntologyID(
+        IRI.create("urn:quad-bound:ontology"),
+      ),
+      axioms: [
+        factory.getOWLDeclarationAxiom(
+          factory.getOWLClass(IRI.create("urn:quad-bound:A")),
+        ),
+      ],
+    });
+    expect(() =>
+      new OwlToRdfTranslator().translate(ontology, { maxQuads: 1 }),
+    ).toThrow(
+      expect.objectContaining({
+        code: "RESOURCE_LIMIT_EXCEEDED",
+        resource: "maxQuads",
+        limit: 1,
+      }),
+    );
+    expect(
+      new OwlToRdfTranslator().translate(ontology, { maxQuads: 2 }).size,
+    ).toBe(2);
+    expect(ontology.getAxiomCount()).toBe(1);
+  });
   it("keeps the completed structural OWL-to-RDF mapper constructible internally", () => {
     // The initial package intentionally has no public RDF subpath. Future
     // Java-compatible storers may delegate to this private semantic bridge.

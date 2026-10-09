@@ -1,6 +1,5 @@
 import {
   copyFileSync,
-  cpSync,
   existsSync,
   mkdirSync,
   mkdtempSync,
@@ -44,13 +43,7 @@ const DEFAULT_OUTPUT_DIRECTORY = join(
   "candidate",
   VERSION,
 );
-const TEST_SCRIPTS = Object.freeze([
-  "installed-package-smoke.mjs",
-  "installed-package-boundary.mjs",
-  "installed-package-import-purity.mjs",
-  "installed-package-no-network.mjs",
-  "installed-package-import-closure.mjs",
-]);
+const TEST_SCRIPTS = INSTALLED_TEST_SCRIPTS;
 
 const stableJson = (value) => `${JSON.stringify(value, null, 2)}\n`;
 const compareCodeUnits = (left, right) =>
@@ -160,21 +153,8 @@ const writeConsumerManifest = (
   );
 
 const runInstalledConsumerScripts = (directory) => {
-  mkdirSync(join(directory, "import-closure"));
-  copyFileSync(
-    join(REPOSITORY_ROOT, "test", "import-closure", "public-contract.js"),
-    join(directory, "import-closure", "public-contract.js"),
-  );
-  cpSync(
-    join(REPOSITORY_ROOT, "test", "import-closure", "fixtures"),
-    join(directory, "import-closure", "fixtures"),
-    { recursive: true },
-  );
+  writeInstalledConsumerFixtures(directory);
   for (const scriptName of TEST_SCRIPTS) {
-    copyFileSync(
-      join(REPOSITORY_ROOT, "test", scriptName),
-      join(directory, scriptName),
-    );
     run(process.execPath, [scriptName], {
       cwd: directory,
       label: `installed consumer ${scriptName}`,

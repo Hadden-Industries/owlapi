@@ -15,6 +15,7 @@ import {
   XSD_NAMESPACE as XSD,
 } from "../rdfjs/vocabulary.js";
 import { createProfileBudget } from "./budget.js";
+import { inspectProfileRules } from "./profileRules.js";
 import { inspectLiteral, isBuiltinDatatype } from "./datatypes.js";
 import { inspectFacet } from "./facets.js";
 import {
@@ -27,8 +28,8 @@ import { inspectSourceStructure } from "./sourceStructure.js";
 import {
   createStructuralValidator,
   validateStructuralShape,
-  ProfileStructureError,
-} from "./structure.js";
+  StructuralValidationError,
+} from "../model/structuralValidation.js";
 
 const entityKinds = new Set(ENTITY_KINDS);
 const propertyKinds = [
@@ -98,6 +99,7 @@ const checkModel = async (
   closure,
   members,
   includeSource,
+  profile,
 ) => {
   const violations = [],
     unverified = [],
@@ -173,6 +175,11 @@ const checkModel = async (
             value: child,
             parent: value,
             field,
+            annotationContext:
+              entry.annotationContext ||
+              value.kind === K.ANNOTATION ||
+              (value.kind === K.ANNOTATION_ASSERTION_AXIOM &&
+                field === "value"),
             depth: entry.depth + 1,
             anonymousForbidden:
               entry.anonymousForbidden ??
@@ -191,6 +198,8 @@ const checkModel = async (
       await budget.checkpoint();
       validateStructure(nodes[index].value);
     }
+    if (profile !== "DL")
+      await inspectProfileRules(profile, axioms, nodes, budget, violate);
     for (const { value: axiom } of axioms) {
       await budget.checkpoint();
       if (axiom.kind === K.DECLARATION_AXIOM)
@@ -370,7 +379,7 @@ const checkModel = async (
     }
     await inspectAnonymousGraph(axioms, anonymous, budget, violate);
   } catch (error) {
-    if (error instanceof ProfileStructureError)
+    if (error instanceof StructuralValidationError)
       violate("STRUCTURAL_OBJECT_INVALID");
     else if (error instanceof ResourceLimitError)
       unresolved("RESOURCE_LIMIT_EXCEEDED", {
@@ -428,7 +437,7 @@ const checkModel = async (
 };
 
 /** Read and inspect one complete, root-inclusive closure before any consumer filter. */
-export const checkOWL2DL = async (ontology, options) => {
+export const checkOWL2Profile = async (ontology, options, profile = "DL") => {
   const budget = createProfileBudget(options);
   const closure = readProfileClosure(ontology);
   const members = closure.ontologies.map((member, scope) => ({
@@ -436,7 +445,14 @@ export const checkOWL2DL = async (ontology, options) => {
     scope,
     ...readSourceEvidence(member),
   }));
-  const formal = await checkModel(ontology, budget, closure, members, false);
+  const formal = await checkModel(
+    ontology,
+    budget,
+    closure,
+    members,
+    false,
+    profile,
+  );
   if (
     !budget.configuration.sourceAssessment ||
     !members.some(
@@ -447,9 +463,32 @@ export const checkOWL2DL = async (ontology, options) => {
     )
   )
     return formal;
-  const source = await checkModel(ontology, budget, closure, members, true);
+  const source = await checkModel(
+    ontology,
+    budget,
+    closure,
+    members,
+    true,
+    profile,
+  );
+  // Both passes assess the same captured revision. A source-only unsupported
+  // construct leaves formal validity separate, but mutation invalidates that
+  // shared snapshot and therefore cannot leave the formal verdict certified.
+  const changed = source.unverifiedChecks.find(
+    ({ code }) => code === "ONTOLOGY_CHANGED_DURING_CHECK",
+  );
+  const unverifiedChecks =
+    changed &&
+    !formal.unverifiedChecks.some(({ code }) => code === changed.code)
+      ? frozen([...formal.unverifiedChecks, changed])
+      : formal.unverifiedChecks;
   return Object.freeze({
     ...formal,
+    status: statusOf(formal.violations, unverifiedChecks),
+    unverifiedChecks,
     sourceAssessment: source.sourceAssessment,
   });
 };
+
+export const checkOWL2DL = (ontology, options) =>
+  checkOWL2Profile(ontology, options);

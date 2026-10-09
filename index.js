@@ -25,6 +25,11 @@ export {
   XmlParseError,
 } from "./io/index.js";
 export {
+  AddAxiom,
+  RemoveAxiom,
+  AddImport,
+  RemoveImport,
+  RemoveOntologyAnnotation,
   AddOntologyAnnotation,
   ANNOTATION_VALUE_KINDS,
   AXIOM_KINDS,
@@ -55,10 +60,28 @@ export {
   dispatchOwlObject,
 } from "./model/index.js";
 export {
+  OWLObjectDuplicator,
+  OWLEntityRenamer,
+  OWLEntityRemover,
+  SimpleShortFormProvider,
+  AnnotationValueShortFormProvider,
   OWLOntologyImportsClosureSetProvider,
   OWLOntologyMerger,
 } from "./util/index.js";
-export { OWL2DLProfile, OWLProfileReport } from "./profiles/index.js";
+export {
+  OWL2DLProfile,
+  OWL2ELProfile,
+  OWL2QLProfile,
+  OWL2RLProfile,
+  OWLProfileReport,
+} from "./profiles/index.js";
+export { Imports, AxiomAnnotations } from "./model/parameters/index.js";
+export { EntitySearcher } from "./search/index.js";
+export { ManchesterOWLSyntaxOWLObjectRendererImpl } from "./manchestersyntax/renderer/index.js";
+export {
+  LocalityClass,
+  SyntacticLocalityModuleExtractor,
+} from "./modularity/locality/index.js";
 
 // UNSUPPORTED(OWLAPI parity): Java OWLAPI exposes reasoner interfaces, but
 // The initial 0.1 package provides no reasoner types, factories, or inferred-query
@@ -67,7 +90,7 @@ export { OWL2DLProfile, OWLProfileReport } from "./profiles/index.js";
 // Verification: capability `reasoner` (UNSUPPORTED_BY_DESIGN).
 
 // Java-compatible storage is selected through manager.saveOntology with an
-// explicit Functional Syntax or RDF/XML format and StringDocumentTarget.
+// explicit Functional Syntax, RDF/XML, Turtle or OWL/XML format and StringDocumentTarget.
 // Concrete storers and the shared RDF mapping engine remain package-private.
 // Other serializer families and public storer registration remain deferred.
 // Verification: capabilities `storer.functional`, `storer.rdfxml`, and

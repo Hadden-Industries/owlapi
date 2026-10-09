@@ -48,10 +48,16 @@ describe("workflow metadata", () => {
     }
   });
 
-  test("authorizes only the reviewed scoped bootstrap and rejects contradictory controls", () => {
-    const currentManifest = JSON.parse(readFileSync("package.json", "utf8"));
+  test("preserves the historical rc.1 bootstrap decision and rejects contradictory controls", () => {
+    const currentManifest = {
+      ...JSON.parse(readFileSync("package.json", "utf8")),
+      version: "0.1.0-rc.1",
+    };
     const publication = JSON.parse(
-      readFileSync("docs/release/publication-control.json", "utf8"),
+      readFileSync(
+        "docs/release/history/0.1.0-rc.1-publication-control.json",
+        "utf8",
+      ),
     );
     const schema = JSON.parse(
       readFileSync("docs/release/publication-control.schema.json", "utf8"),

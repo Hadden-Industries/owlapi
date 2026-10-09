@@ -1,4 +1,4 @@
-import { OWLObjectKind } from "./kinds.js";
+import { AXIOM_KINDS, OWLObjectKind } from "./kinds.js";
 
 let nextAnonymousOntologyID = 0;
 
@@ -128,6 +128,18 @@ export class OWLStructuralObject {
     Object.freeze(this);
   }
 
+  // Keep the exact data-field shape used by storage/source/profile validation.
+  // Non-axiom structural values do not expose callable axiom-copy operations.
+  get getAxiomWithoutAnnotations() {
+    return AXIOM_KINDS.includes(this.kind)
+      ? getAxiomWithoutAnnotations
+      : undefined;
+  }
+
+  get getAnnotatedAxiom() {
+    return AXIOM_KINDS.includes(this.kind) ? getAnnotatedAxiom : undefined;
+  }
+
   structuralKey() {
     return this.#key;
   }
@@ -155,6 +167,56 @@ export class OWLStructuralObject {
       this.#keyWithoutAnnotations === other.structuralKeyWithoutAnnotations()
     );
   }
+}
+
+// The canonical axiom tuple ends with its own annotations. Reuse the already
+// validated body verbatim, retaining nested annotation objects and lexical data.
+const copyAxiomAnnotations = (axiom, annotations) => {
+  if (
+    !AXIOM_KINDS.includes(axiom?.kind) ||
+    !(axiom instanceof OWLStructuralObject)
+  ) {
+    throw new TypeError("receiver must be a package OWL axiom");
+  }
+  const normalized = normalizeStructuralSet(annotations, "annotations");
+  if (
+    normalized.some(
+      (annotation) => annotation.kind !== OWLObjectKind.ANNOTATION,
+    )
+  ) {
+    throw new TypeError("annotations must contain OWL annotations");
+  }
+  const components = axiom.toStructuralTuple().slice(1, -1);
+  const fields = Object.fromEntries(
+    Object.entries(axiom).filter(
+      ([key]) => key !== "kind" && key !== "annotations",
+    ),
+  );
+  return new OWLStructuralObject(
+    axiom.kind,
+    { ...fields, annotations: normalized },
+    [...components, normalized],
+    { componentsWithoutAnnotations: components },
+  );
+};
+
+/** Return the same structural body without this axiom's annotations. */
+function getAxiomWithoutAnnotations() {
+  OWLStructuralObject.prototype.structuralKey.call(this);
+  if (!AXIOM_KINDS.includes(this.kind))
+    throw new TypeError("receiver must be an OWL axiom");
+  return this.annotations.length === 0 ? this : copyAxiomAnnotations(this, []);
+}
+
+/** Merge supplied annotations with the existing structural annotation set. */
+function getAnnotatedAxiom(annotations) {
+  OWLStructuralObject.prototype.structuralKey.call(this);
+  if (!AXIOM_KINDS.includes(this.kind))
+    throw new TypeError("receiver must be an OWL axiom");
+  if (!annotations || typeof annotations[Symbol.iterator] !== "function") {
+    throw new TypeError("annotations must be iterable");
+  }
+  return copyAxiomAnnotations(this, [...this.annotations, ...annotations]);
 }
 
 export const createOntologyID = (ontologyIRI, versionIRI) => {

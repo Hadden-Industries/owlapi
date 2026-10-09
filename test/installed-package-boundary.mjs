@@ -1,30 +1,65 @@
 import assert from "node:assert/strict";
+import { exerciseRC2PublicContract } from "./import-closure/rc2-public-contract.js";
 
-const [root, apibinding, model, io, formats, util, profiles] =
-  await Promise.all([
-    import("owlapi"),
-    import("owlapi/apibinding"),
-    import("owlapi/model"),
-    import("owlapi/io"),
-    import("owlapi/formats"),
-    import("owlapi/util"),
-    import("owlapi/profiles"),
-  ]);
+const [
+  root,
+  apibinding,
+  model,
+  io,
+  formats,
+  util,
+  profiles,
+  parameters,
+  search,
+  renderer,
+  locality,
+] = await Promise.all([
+  import("owlapi"),
+  import("owlapi/apibinding"),
+  import("owlapi/model"),
+  import("owlapi/io"),
+  import("owlapi/formats"),
+  import("owlapi/util"),
+  import("owlapi/profiles"),
+  import("owlapi/model/parameters"),
+  import("owlapi/search"),
+  import("owlapi/manchestersyntax/renderer"),
+  import("owlapi/modularity/locality"),
+]);
 
 assert.deepEqual(Object.keys(util).sort(), [
+  "AnnotationValueShortFormProvider",
+  "OWLEntityRemover",
+  "OWLEntityRenamer",
+  "OWLObjectDuplicator",
   "OWLOntologyImportsClosureSetProvider",
   "OWLOntologyMerger",
+  "SimpleShortFormProvider",
 ]);
 
 assert.deepEqual(Object.keys(profiles).sort(), [
   "OWL2DLProfile",
+  "OWL2ELProfile",
+  "OWL2QLProfile",
+  "OWL2RLProfile",
   "OWLProfileReport",
 ]);
 assert.deepEqual(Object.keys(formats).sort(), [
   "OWLDocumentFormats",
   "RDFXMLDocumentFormat",
 ]);
-for (const namespace of [apibinding, model, io, formats, util, profiles]) {
+for (const namespace of [
+  apibinding,
+  model,
+  io,
+  formats,
+  util,
+  profiles,
+  parameters,
+  search,
+  renderer,
+  locality,
+]) {
   for (const [name, binding] of Object.entries(namespace)) {
     if (
       name === "OWLOntologyWriterConfiguration" ||
@@ -101,4 +136,7 @@ const invalid = await manager.loadOntologyFromOntologyDocument(
 );
 assert.equal((await profile.checkOntology(invalid)).status, "invalid");
 
-process.stdout.write("Installed owlapi export boundary passed\n");
+await exerciseRC2PublicContract(root);
+process.stdout.write(
+  "Installed owlapi export boundary and rc.2 contract passed\n",
+);

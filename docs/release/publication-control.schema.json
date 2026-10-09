@@ -29,7 +29,11 @@
       "enum": ["UNRESOLVED", "OIDC_STAGED", "DIRECT_BOOTSTRAP"]
     },
     "coordinate": {
-      "enum": ["owlapi@0.1.0-alpha.0", "@hadden-industries/owlapi@0.1.0-rc.1"]
+      "enum": [
+        "owlapi@0.1.0-alpha.0",
+        "@hadden-industries/owlapi@0.1.0-rc.1",
+        "@hadden-industries/owlapi@0.1.0-rc.2"
+      ]
     },
     "channel": {
       "const": "next"
@@ -216,15 +220,70 @@
         "oneOf": [
           {
             "properties": {
-              "enabled": { "const": false },
-              "mode": { "const": "UNRESOLVED" }
+              "enabled": {
+                "const": false
+              },
+              "mode": {
+                "const": "UNRESOLVED"
+              }
             }
           },
           {
             "properties": {
-              "enabled": { "const": true },
-              "mode": { "const": "DIRECT_BOOTSTRAP" },
-              "reviewedOn": { "type": "string", "format": "date" }
+              "enabled": {
+                "const": true
+              },
+              "mode": {
+                "const": "DIRECT_BOOTSTRAP"
+              },
+              "reviewedOn": {
+                "type": "string",
+                "format": "date"
+              }
+            }
+          }
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "coordinate": {
+            "const": "@hadden-industries/owlapi@0.1.0-rc.2"
+          }
+        },
+        "type": "object"
+      },
+      "then": {
+        "properties": {
+          "reconciliation": {
+            "type": "null"
+          }
+        },
+        "oneOf": [
+          {
+            "properties": {
+              "enabled": {
+                "const": false
+              },
+              "mode": {
+                "const": "UNRESOLVED"
+              }
+            }
+          },
+          {
+            "properties": {
+              "enabled": {
+                "const": true
+              },
+              "mode": {
+                "const": "DIRECT_BOOTSTRAP"
+              },
+              "reviewedOn": {
+                "type": "string",
+                "format": "date"
+              }
             }
           }
         ],

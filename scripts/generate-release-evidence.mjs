@@ -290,6 +290,8 @@ const generateScopedEvidence = async () => {
     tag.sourceCommit !== commit ||
     tag.tag !== `v${PACKAGE_VERSION}` ||
     registry.coordinate !== coordinate ||
+    registry.next !== PACKAGE_VERSION ||
+    registry.latest !== PACKAGE_VERSION ||
     registry.tarballSha256 !== candidate.tarball.sha256 ||
     ["alias", "scoped"].some(
       (mode) =>
@@ -343,7 +345,8 @@ const generateScopedEvidence = async () => {
       tarballUrl: registry.tarballUrl,
       verifiedAt: registry.verifiedAt,
       next: PACKAGE_VERSION,
-      latestPresent: false,
+      latest: registry.latest,
+      latestPresent: true,
       signatureAuditResult: "PASS",
       provenance: registry.provenance,
       publisherJob,

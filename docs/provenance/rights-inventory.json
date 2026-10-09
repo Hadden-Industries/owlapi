@@ -3,17 +3,17 @@
   "schemaVersion": 1,
   "package": {
     "name": "@hadden-industries/owlapi",
-    "version": "0.1.0-rc.1",
+    "version": "0.1.0-rc.2",
     "repository": "https://github.com/Hadden-Industries/owlapi",
     "scopeAuthority": {
       "method": "npm pack --dry-run --json plus local source-byte hashing",
-      "fileCount": 114,
-      "sourceManifestSha256": "d87cb94edf9875163ba3f00c44ee176ba8697afab5d6b65ecec70e2dd1bf1222"
+      "fileCount": 146,
+      "sourceManifestSha256": "4997f4cd9a012c44fd20a5759a981dc6e9768d10d90ce27a65e079d66d962d58"
     }
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "3036cde1bbc407e6e9275578c22701d69b3e0f6dcd5fa5b5ad50d286a6cbd83f",
+    "factsSha256": "52032370b631250321a326c3a64b54e937a2bca976e029338f2a0108432e6a96",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -56,7 +56,15 @@
         "docs/compatibility/default-behavior-inventory.md",
         "docs/compatibility/rdf-parser-metadata.md",
         "docs/compatibility/capabilities.json",
-        "docs/compatibility/rdfxml-writer-configuration.md"
+        "docs/compatibility/rdfxml-writer-configuration.md",
+        "search/",
+        "manchestersyntax/",
+        "modularity/locality/",
+        "util/owlObjectDuplicator.js",
+        "util/owlEntityRenamer.js",
+        "util/owlEntityRemover.js",
+        "util/simpleShortFormProvider.js",
+        "util/annotationValueShortFormProvider.js"
       ],
       "packageTarball": true,
       "rightsHolder": "Maksym Shostak for his contributions",
@@ -68,7 +76,9 @@
     {
       "id": "gnu-agpl-3.0-only-licence-text",
       "relationship": "EMBEDDED_OR_COPIED",
-      "paths": ["LICENSE"],
+      "paths": [
+        "LICENSE"
+      ],
       "packageTarball": true,
       "rightsHolder": "Free Software Foundation, Inc. and contributors to the licence text",
       "licenceBasis": "Unmodified GNU Affero General Public License version 3 text, redistributed as the package licence notice",
@@ -79,7 +89,9 @@
     {
       "id": "apache-2.0-licence-text",
       "relationship": "EMBEDDED_OR_COPIED",
-      "paths": ["LICENSES/Apache-2.0.txt"],
+      "paths": [
+        "LICENSES/Apache-2.0.txt"
+      ],
       "packageTarball": true,
       "rightsHolder": "Apache Software Foundation and contributors to the Apache License text",
       "licenceBasis": "Complete Apache License version 2.0 wording accompanying the elected Apache-2.0 distribution basis for Java OWLAPI compatibility facts",
@@ -106,9 +118,9 @@
   "externalDependencies": {
     "bundled": false,
     "authority": "docs/provenance/third-party-material.json",
-    "inventoryFactsSha256": "1db077f4124400d2c8ad7417a0a2ff35c63975ee01667957707f0b075e6909fb",
+    "inventoryFactsSha256": "8a54e2f62b5c867df020c675adae6ec509dfd7462e4a7834d25ec6e674896709",
     "noticeRule": "Ordinary npm dependencies are installed separately and remain under their own licences. Their licence texts are not copied into the owlapi tarball merely because they appear in the installed dependency graph."
   },
   "unresolvedExternalContributions": [],
-  "conclusion": "Every material class in the machine-defined 0.1.0-rc.1 tarball scope has an identified distribution basis, the bound third-party-material inventory records no unresolved production licence conclusion, and no unresolved external copyrightable contribution is recorded."
+  "conclusion": "Every material class in the machine-defined 0.1.0-rc.2 tarball scope has an identified distribution basis, the bound third-party-material inventory records no unresolved production licence conclusion, and no unresolved external copyrightable contribution is recorded."
 }

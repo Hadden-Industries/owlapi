@@ -9,7 +9,18 @@ Prerelease identifiers do not create a stability promise.
 ## Unreleased
 
 Delivered source changes after `0.1.0-rc.1`, reconciled through `ccace6afe201c6e2cc6a49e53b2d50bd6617916f` on 9 October 2026.
-The next selected candidate is `0.1.0-rc.2`; its wider [Java-parity programme](docs/plans/0.1.0-rc.2-java-parity.md) and exact release qualification remain outstanding.
+The next selected candidate is `0.1.0-rc.2`; its [Java-parity programme](docs/plans/0.1.0-rc.2-java-parity.md) adds the selected source APIs below.
+Publication still requires separate exact-artifact qualification and approval.
+
+- Add direct ontology axiom indexes, explicit imports/annotation query enums and asserted `EntitySearcher` queries with fresh structural sets or multiplicity-preserving eager arrays.
+- Add five immutable change records and atomic manager batches spanning axioms, imports and ontology annotations; reconcile only loaded import state.
+- Add Java-shaped duplicator, renamer, remover, short-form providers and plain-text Manchester rendering.
+- Add lossless Turtle and OWL/XML storage with atomic target publication and bounded failures; retain the two accepted native parser limitations as precise comparison differences.
+- Add EL, QL and RL profile checking over captured import closures, retaining common DL checks and separate source assessment; apply the four accepted W3C profile differences.
+- Add asynchronous BOTTOM, TOP and STAR syntactic-locality extraction over a captured axiom base.
+  Numerical limits default to unlimited, matching Java; callers may set work, axiom, depth, annotation-depth or elapsed-time limits, with cancellation and no partial modules.
+- Expose the four approved new package paths and require both `next` and `latest` to identify the same exact rc.2 version during future registry qualification.
+  Preserve historical release evidence and disable publication until rc.2 receives its own approval.
 
 - Yield profile assessment after elapsed work rather than every 256 checkpoints, reducing timer overhead while admitting queued cancellation.
 - Default profile `timeoutMs` to `null`; omission and explicit null disable only its elapsed deadline.

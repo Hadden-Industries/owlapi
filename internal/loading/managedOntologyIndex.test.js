@@ -304,7 +304,7 @@ describe("ManagedOntologyIndex", () => {
     loadSession.stageDirectImport(ontology, imported);
     loadSession.commit();
     const ontologyMutation = ontologyState.createMutationDraft();
-    const identityMutation = index.beginOntologyIdentityMutation();
+    const identityMutation = index.beginOntologyMutation();
 
     ontologyMutation.stageOntologyIDReplacement(replacementOntologyID);
     expect(
@@ -372,7 +372,7 @@ describe("ManagedOntologyIndex", () => {
     index.registerOntology(firstManaged.ontology);
     index.registerOntology(second);
     const ontologyMutation = firstManaged.ontologyState.createMutationDraft();
-    const identityMutation = index.beginOntologyIdentityMutation();
+    const identityMutation = index.beginOntologyMutation();
 
     ontologyMutation.stageOntologyIDReplacement(replacementOntologyID);
     identityMutation.stageOntologyIDReplacement(
@@ -410,7 +410,7 @@ describe("ManagedOntologyIndex", () => {
     const index = new ManagedOntologyIndex();
     index.registerOntology(first);
     index.registerOntology(second);
-    const identityMutation = index.beginOntologyIdentityMutation();
+    const identityMutation = index.beginOntologyMutation();
 
     identityMutation.stageOntologyIDReplacement(first, firstID, intermediateID);
     expect(() =>
@@ -435,7 +435,7 @@ describe("ManagedOntologyIndex", () => {
     const ontology = createOntology(dataFactory, ontologyID.ontologyIRI);
     const index = new ManagedOntologyIndex();
     index.registerOntology(ontology);
-    const identityMutation = index.beginOntologyIdentityMutation();
+    const identityMutation = index.beginOntologyMutation();
 
     expect(() =>
       identityMutation.stageOntologyIDReplacement(
@@ -486,7 +486,7 @@ describe("ManagedOntologyIndex", () => {
         );
     expect(importedOntologyOrder()).toEqual(["root", "first", "second"]);
     const ontologyMutation = firstImported.ontologyState.createMutationDraft();
-    const identityMutation = index.beginOntologyIdentityMutation();
+    const identityMutation = index.beginOntologyMutation();
     ontologyMutation.stageOntologyIDReplacement(anonymousImportedID);
     identityMutation.stageOntologyIDReplacement(
       firstImported.ontology,
@@ -539,7 +539,7 @@ describe("ManagedOntologyIndex", () => {
       firstImported.ontologyState.createMutationDraft();
     const siblingOntologyMutation =
       siblingImported.ontologyState.createMutationDraft();
-    const identityMutation = index.beginOntologyIdentityMutation();
+    const identityMutation = index.beginOntologyMutation();
 
     firstOntologyMutation.stageOntologyIDReplacement(temporaryImportedID);
     identityMutation.stageOntologyIDReplacement(
@@ -589,7 +589,7 @@ describe("ManagedOntologyIndex", () => {
     );
     const index = new ManagedOntologyIndex();
     index.registerOntology(retained);
-    const identityMutation = index.beginOntologyIdentityMutation();
+    const identityMutation = index.beginOntologyMutation();
     identityMutation.stageOntologyIDReplacement(
       retained,
       originalID,
@@ -617,7 +617,7 @@ describe("ManagedOntologyIndex", () => {
     const index = new ManagedOntologyIndex();
     index.registerOntology(managed.ontology);
     const loadSession = index.beginLoadSession();
-    const identityMutation = index.beginOntologyIdentityMutation();
+    const identityMutation = index.beginOntologyMutation();
     const ontologyMutation = managed.ontologyState.createMutationDraft();
     ontologyMutation.stageOntologyIDReplacement(replacementID);
     identityMutation.stageOntologyIDReplacement(

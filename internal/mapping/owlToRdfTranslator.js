@@ -1,4 +1,5 @@
 import { repeatSingleton } from "../model/setConstructs.js";
+import { ResourceLimitError } from "../../io/errors.js";
 import {
   ANNOTATION_VALUE_KINDS,
   AXIOM_KINDS,
@@ -96,6 +97,8 @@ export const readAnonymousIndividualRdfNodes = (dataset) =>
   new Set(anonymousIndividualNodes.get(dataset) ?? []);
 
 class TranslationSession {
+  #maxQuads;
+  #emittedQuads = 0;
   #anonymousIndividuals = new Map();
   #axiomHandlers;
   #classExpressionHandlers;
@@ -107,7 +110,8 @@ class TranslationSession {
   #individualHandlers;
   #objectPropertyExpressionHandlers;
 
-  constructor({ dataFactory, dataset, graph }) {
+  constructor({ dataFactory, dataset, graph, maxQuads }) {
+    this.#maxQuads = maxQuads;
     this.#dataFactory = dataFactory;
     this.#dataset = dataset;
     this.#graph = graph;
@@ -1037,6 +1041,12 @@ class TranslationSession {
   }
 
   #add(subject, predicate, object) {
+    this.#emittedQuads++;
+    if (this.#maxQuads !== undefined && this.#emittedQuads > this.#maxQuads)
+      throw new ResourceLimitError("OWL-to-RDF quad limit exceeded", {
+        resource: "maxQuads",
+        limit: this.#maxQuads,
+      });
     const predicateNode =
       typeof predicate === "string" ? this.#namedNode(predicate) : predicate;
     const quad = this.#dataFactory.quad(
@@ -1089,7 +1099,15 @@ export class OwlToRdfTranslator {
     this.#datasetFactory = datasetFactory;
   }
 
-  translate(ontology, { graph = this.#dataFactory.defaultGraph() } = {}) {
+  translate(
+    ontology,
+    { graph = this.#dataFactory.defaultGraph(), maxQuads } = {},
+  ) {
+    if (
+      maxQuads !== undefined &&
+      (!Number.isSafeInteger(maxQuads) || maxQuads < 0)
+    )
+      throw new TypeError("maxQuads must be a nonnegative safe integer");
     requireMethod(ontology, "getAnnotations", "ontology");
     requireMethod(ontology, "getAxioms", "ontology");
     requireMethod(ontology, "getImportsDeclarations", "ontology");
@@ -1105,6 +1123,7 @@ export class OwlToRdfTranslator {
       dataFactory: this.#dataFactory,
       dataset,
       graph,
+      maxQuads,
     }).translateOntology(ontology);
   }
 }

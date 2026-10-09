@@ -1,4 +1,9 @@
-import RdfDataFactory from "@rdfjs/data-model/Factory.js";
+import {
+  createRdfStorageOntology,
+  mapStorageOntologyToRdf,
+  rdfStorageConfiguration,
+  verifyRdfStorage,
+} from "../rdfStorage.js";
 import { OWLDocumentFormats } from "../../../formats/index.js";
 import {
   RDFXMLDocumentFormat,
@@ -10,37 +15,16 @@ import {
 } from "../../../io/errors.js";
 import { StringDocumentSource } from "../../../io/stringDocumentSource.js";
 import { readDocumentFormatParameters } from "../../../model/owlDocumentFormat.js";
-import { OWLOntology } from "../../../model/owlOntology.js";
-import { OWLOntologyLoaderConfiguration } from "../../../model/owlOntologyLoaderConfiguration.js";
-import {
-  OwlToRdfTranslator,
-  readAnonymousIndividualRdfNodes,
-} from "../../mapping/owlToRdfTranslator.js";
-import { RdfToOwlTranslator } from "../../mapping/rdfToOwlTranslator.js";
-import { hasNormalizedSingleton } from "../../model/setConstructs.js";
-import {
-  compareOntologies,
-  OntologyStructuralComparisonLimitError,
-} from "../../model/ontologyStructuralIsomorphism.js";
+
+import { readAnonymousIndividualRdfNodes } from "../../mapping/owlToRdfTranslator.js";
+
+import { OntologyStructuralComparisonLimitError } from "../../model/ontologyStructuralIsomorphism.js";
 import { RdfXmlSyntaxAdapter } from "../../parsing/rdfxml/rdfXmlSyntaxAdapter.js";
 import { writeRdfXmlGraph } from "./rdfXmlGraphWriter.js";
 
-const sortedStructuralValues = (values) =>
-  [...values].sort((left, right) => {
-    const a = left.structuralKey();
-    const b = right.structuralKey();
-    return a < b ? -1 : a > b ? 1 : 0;
-  });
-const mapOntologyToRdf = (ontology) =>
-  new OwlToRdfTranslator({
-    // Each serialization owns its native allocator: unrelated parsing or saving
-    // must not change generated blank-node labels or deterministic output order.
-    dataFactory: new RdfDataFactory(),
-  }).translate(ontology);
-
 /** Private composition seam for testing mapping defects, never a manager option. */
 export const createRdfXmlStorer = ({
-  mapOntologyToRdf: map = mapOntologyToRdf,
+  mapOntologyToRdf: map = mapStorageOntologyToRdf,
 } = {}) =>
   Object.freeze({
     formatKey: OWLDocumentFormats.RDF_XML.key,
@@ -58,14 +42,7 @@ export const createRdfXmlStorer = ({
         );
       }
       try {
-        const original = new OWLOntology({
-          ontologyID: snapshot.ontologyID,
-          annotations: sortedStructuralValues(
-            snapshot.directOntologyAnnotations,
-          ),
-          axioms: sortedStructuralValues(snapshot.directAxioms),
-          imports: sortedStructuralValues(snapshot.authoredImportDeclarations),
-        });
+        const original = createRdfStorageOntology(snapshot);
         const mappedDataset = map(original);
         const ontologyIRI = snapshot.ontologyID.ontologyIRI?.value;
         const text = writeRdfXmlGraph(mappedDataset, writerContext, {
@@ -84,46 +61,12 @@ export const createRdfXmlStorer = ({
         // Work only with the complete generated document. This context contains
         // neither a manager, IRI mapper, nor document loader, so imports remain
         // authored declarations rather than triggering external retrieval.
-        const configuration = new OWLOntologyLoaderConfiguration({
-          parsingMode: hasNormalizedSingleton(snapshot.directAxioms)
-            ? "preserve"
-            : "strict",
-          loadAnnotationAxioms: true,
-          rdfDatasetGraphPolicy: "requireSingleGraph",
-          collectWarnings: true,
-          remoteImports: false,
-          remoteJsonLdContexts: false,
-        });
+        const configuration = rdfStorageConfiguration(snapshot);
         const dataset = await new RdfXmlSyntaxAdapter().parse(
           new StringDocumentSource(text),
           configuration,
         );
-        const { ontology, context } = await new RdfToOwlTranslator().translate(
-          dataset,
-          { configuration },
-        );
-        if (
-          context.diagnostics.length ||
-          context.merged ||
-          context.selectedGraph?.termType !== "DefaultGraph"
-        ) {
-          throw new OWLOntologyStorageError(
-            "RDF/XML reconstruction must be a diagnostic-free default graph",
-            {
-              reason: "ONTOLOGY_NOT_REPRESENTABLE",
-            },
-          );
-        }
-        const comparison = compareOntologies(original, ontology);
-        if (!comparison.equal) {
-          throw new OWLOntologyStorageError(
-            "RDF/XML does not preserve the ontology's direct OWL structure",
-            {
-              reason: "ONTOLOGY_NOT_REPRESENTABLE",
-              mismatch: comparison.mismatch,
-            },
-          );
-        }
+        await verifyRdfStorage(original, dataset, configuration, "RDF/XML");
         return text;
       } catch (cause) {
         if (cause instanceof OWLOntologyStorageError) throw cause;

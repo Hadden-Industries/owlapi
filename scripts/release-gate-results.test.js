@@ -70,7 +70,7 @@ describe("release-gate result schema", () => {
       const result = validResult();
       result.package = {
         name: "@hadden-industries/owlapi",
-        version: "0.1.0-rc.1",
+        version: "0.1.0-rc.2",
       };
       result.phase = phase;
       result.accepted = false;

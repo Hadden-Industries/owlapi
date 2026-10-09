@@ -12,6 +12,8 @@ import {
 import { StringDocumentSource } from "../io/stringDocumentSource.js";
 import { ManagedOntologyIndex } from "../internal/loading/managedOntologyIndex.js";
 import { materializeAxiomIterable } from "../internal/model/axiomSemantics.js";
+import { readOntologyChange } from "../internal/model/ontologyChangeRecord.js";
+import { RemoveAxiom } from "./removeAxiom.js";
 import { createImmutableDocumentMetadataSnapshot } from "../internal/model/ontologyState.js";
 import {
   bindManagedOntology,
@@ -40,7 +42,10 @@ import {
 } from "./owlDataFactory.js";
 import { OWLObjectKind } from "./kinds.js";
 import { readAddOntologyAnnotationChange } from "./addOntologyAnnotation.js";
-import { createManagerOwnedOWLOntology } from "./owlOntology.js";
+import {
+  createManagerOwnedOWLOntology,
+  readOntologySnapshot,
+} from "./owlOntology.js";
 import { OWLOntologyLoaderConfiguration } from "./owlOntologyLoaderConfiguration.js";
 import {
   OWLOntologyWriterConfiguration,
@@ -86,6 +91,14 @@ const materializeOntologyChanges = (changes, operation) => {
   const materializedChanges = [];
   let index = 0;
   for (const change of changes) {
+    const structuralChange = readOntologyChange(change);
+    if (structuralChange) {
+      materializedChanges.push(
+        Object.freeze({ change, index, ...structuralChange }),
+      );
+      index += 1;
+      continue;
+    }
     const setOntologyID = readSetOntologyIDChange(change);
     if (setOntologyID) {
       materializedChanges.push(
@@ -436,12 +449,53 @@ export class OWLOntologyManager {
     const { ontology, ontologyState } = createManagerOwnedOWLOntology({
       ontologyID,
     });
-    this.#managedOntologyIndex.registerOntology(ontology);
+    const registration = this.#managedOntologyIndex.beginLoadSession();
+    try {
+      registration.stageOntology(ontology);
+      const participants = this.#managedOntologyIndex
+        .ontologies()
+        .map((member) => [member, readOntologySnapshot(member)]);
+      for (const [member, snapshot] of participants)
+        for (const declaration of snapshot.authoredImportDeclarations) {
+          if (
+            this.#managedOntologyIndex.hasResolvedImport(
+              member,
+              declaration.iri,
+            )
+          )
+            continue;
+          const imported =
+            registration.getOntologyByIRI(declaration.iri) ??
+            registration.getOntologyByDocumentIRI(
+              this.#mapDocumentIRI(declaration.iri),
+            );
+          if (imported)
+            registration.stageDirectImport(member, imported, declaration.iri);
+        }
+      registration.assertCurrentRevision();
+      if (
+        participants.some(
+          ([member, snapshot]) =>
+            readOntologySnapshot(member).revision !== snapshot.revision,
+        )
+      )
+        throw new OWLOntologyStateError(
+          "Ontology registration encountered a stale import participant",
+        );
+      registration.commit();
+    } catch (error) {
+      registration.discard();
+      throw error;
+    }
     this.#managedOntologyStates.set(ontology, ontologyState);
-    bindManagedOntology(ontology, () =>
-      this.#managedOntologyIndex.createImportsClosureSnapshot(ontology, {
-        operation: "OWL2DLProfile.checkOntology",
-      }),
+    bindManagedOntology(
+      ontology,
+      () =>
+        this.#managedOntologyIndex.createImportsClosureSnapshot(ontology, {
+          operation: "loadedImportsClosure",
+        }),
+      (member, iri) =>
+        this.#managedOntologyIndex.hasResolvedImport(member, iri),
     );
     return ontology;
   }
@@ -483,10 +537,35 @@ export class OWLOntologyManager {
     return this.#addAxiomIterable(ontology, axioms, "addAxioms");
   }
 
+  /** Atomically remove exact annotated axioms; return whether the final state differs. */
+  removeAxiom(ontology, axiom) {
+    return this.#applyChangeIterable(
+      [new RemoveAxiom(ontology, axiom)],
+      "removeAxiom",
+    );
+  }
+
+  /** Materialize and validate all removals before publishing any participant. */
+  removeAxioms(ontology, axioms) {
+    const materialized = materializeAxiomIterable(axioms, {
+      operation: "removeAxioms",
+    });
+    this.#requireManagedOntologyState(ontology, "removeAxioms");
+    return this.#applyChangeIterable(
+      materialized.map((axiom) => new RemoveAxiom(ontology, axiom)),
+      "removeAxioms",
+    );
+  }
+
+  /** Apply one nominal change through the same atomic batch boundary. */
   applyChange(change) {
     return this.#applyChangeIterable([change], "applyChange");
   }
 
+  /** Apply the complete iterable atomically; true means the final state differs.
+   * Invalid records, foreign targets and failed/stale preflight publish nothing.
+   * Import changes resolve only local manager-owned documents, without loading.
+   */
   applyChanges(changes) {
     return this.#applyChangeIterable(changes, "applyChanges");
   }
@@ -773,10 +852,14 @@ export class OWLOntologyManager {
     for (const publication of documentPublications) {
       publication.ontologyState.commitMutation(publication.mutationDraft);
       const { ontology } = publication.entry;
-      bindManagedOntology(ontology, () =>
-        this.#managedOntologyIndex.createImportsClosureSnapshot(ontology, {
-          operation: "OWL2DLProfile.checkOntology",
-        }),
+      bindManagedOntology(
+        ontology,
+        () =>
+          this.#managedOntologyIndex.createImportsClosureSnapshot(ontology, {
+            operation: "loadedImportsClosure",
+          }),
+        (member, iri) =>
+          this.#managedOntologyIndex.hasResolvedImport(member, iri),
       );
       publishSourceEvidence(
         ontology,
@@ -849,6 +932,7 @@ export class OWLOntologyManager {
       session.managedOntologyIndexSession.stageDirectImport(
         importingEntry.ontology,
         importedOntology,
+        importIRI,
       );
       return importedOntology;
     }
@@ -860,6 +944,7 @@ export class OWLOntologyManager {
       session.managedOntologyIndexSession.stageDirectImport(
         importingEntry.ontology,
         importedOntology,
+        importIRI,
       );
       return importedOntology;
     }
@@ -971,6 +1056,7 @@ export class OWLOntologyManager {
     session.managedOntologyIndexSession.stageDirectImport(
       importingEntry.ontology,
       importedOntology,
+      importIRI,
     );
     return importedOntology;
   }
@@ -1032,10 +1118,10 @@ export class OWLOntologyManager {
       }
     }
 
-    const identityMutation = materializedChanges.some(
-      ({ kind }) => kind === "SET_ONTOLOGY_ID",
+    const identityMutation = materializedChanges.some(({ kind }) =>
+      ["SET_ONTOLOGY_ID", "ADD_IMPORT", "REMOVE_IMPORT"].includes(kind),
     )
-      ? this.#managedOntologyIndex.beginOntologyIdentityMutation()
+      ? this.#managedOntologyIndex.beginOntologyMutation()
       : undefined;
     const ontologyMutations = new Map(
       [...ontologyStates].map(([ontology, ontologyState]) => [
@@ -1048,11 +1134,30 @@ export class OWLOntologyManager {
     );
 
     let changesState = false;
+    const importParticipants = new Set();
     try {
       for (const descriptor of materializedChanges) {
         const { mutationDraft } = ontologyMutations.get(descriptor.ontology);
         if (descriptor.kind === "ADD_ONTOLOGY_ANNOTATION") {
           mutationDraft.stageOntologyAnnotationAddition(descriptor.annotation);
+          continue;
+        }
+
+        const structuralEdits = {
+          ADD_AXIOM: "stageAxiomAddition",
+          REMOVE_AXIOM: "stageAxiomRemoval",
+          ADD_IMPORT: "stageImportAddition",
+          REMOVE_IMPORT: "stageImportRemoval",
+          REMOVE_ONTOLOGY_ANNOTATION: "stageOntologyAnnotationRemoval",
+        };
+        const edit = structuralEdits[descriptor.kind];
+        if (edit) {
+          mutationDraft[edit](descriptor.value);
+          if (
+            descriptor.kind === "ADD_IMPORT" ||
+            descriptor.kind === "REMOVE_IMPORT"
+          )
+            importParticipants.add(descriptor.ontology);
           continue;
         }
 
@@ -1067,6 +1172,29 @@ export class OWLOntologyManager {
             index: descriptor.index,
             operation,
           },
+        );
+      }
+
+      // Resolve declarations only against final staged aliases and loaded documents.
+      // Mapping may invoke caller code, so it precedes every final revision check.
+      for (const ontology of importParticipants) {
+        const declarations = ontologyMutations
+          .get(ontology)
+          .mutationDraft.getStagedImportsDeclarations();
+        const original = new StructuralSet(
+          readOntologySnapshot(ontology).authoredImportDeclarations,
+        );
+        if (
+          original.size === declarations.length &&
+          declarations.every((declaration) => original.has(declaration))
+        )
+          continue;
+        identityMutation.stageImportsReplacement(
+          ontology,
+          declarations.map((declaration) => ({
+            iri: declaration.iri,
+            documentIRI: this.#mapDocumentIRI(declaration.iri),
+          })),
         );
       }
 

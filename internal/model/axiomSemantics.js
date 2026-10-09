@@ -135,6 +135,12 @@ export class StructuralAxiomSet {
     );
   }
 
+  delete(axiom) {
+    return this.#axiomsByStructuralKey.delete(
+      requireAxiom(axiom).structuralKey(),
+    );
+  }
+
   clone() {
     return new StructuralAxiomSet(this);
   }

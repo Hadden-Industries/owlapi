@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "release": "0.1.0-rc.1",
+  "release": "0.1.0-rc.2",
   "normativeStatuses": [
     "REQUIRED_V1",
     "DEFERRED",
@@ -9,6 +9,90 @@
   ],
   "progressStates": ["NOT_STARTED", "IN_PROGRESS", "COMPLETE"],
   "capabilities": [
+    {
+      "id": "modularity.syntactic-locality",
+      "category": "public-api",
+      "status": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "phase": null
+    },
+    {
+      "id": "ontology.java-parity-queries",
+      "category": "public-api",
+      "status": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "phase": null
+    },
+    {
+      "id": "search.entity-searcher",
+      "category": "public-api",
+      "status": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "phase": null
+    },
+    {
+      "id": "manager.atomic-changes",
+      "category": "public-api",
+      "status": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "phase": null
+    },
+    {
+      "id": "util.object-transforms",
+      "category": "public-api",
+      "status": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "phase": null
+    },
+    {
+      "id": "util.short-form-providers",
+      "category": "public-api",
+      "status": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "phase": null
+    },
+    {
+      "id": "renderer.manchester",
+      "category": "public-api",
+      "status": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "phase": null
+    },
+    {
+      "id": "storer.turtle",
+      "category": "storage",
+      "status": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "phase": null
+    },
+    {
+      "id": "storer.owlxml",
+      "category": "storage",
+      "status": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "phase": null
+    },
+    {
+      "id": "profiles.owl2-el",
+      "category": "public-api",
+      "status": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "phase": null
+    },
+    {
+      "id": "profiles.owl2-ql",
+      "category": "public-api",
+      "status": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "phase": null
+    },
+    {
+      "id": "profiles.owl2-rl",
+      "category": "public-api",
+      "status": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "phase": null
+    },
     {
       "id": "writer.rdfxml-configuration",
       "category": "public-api",
@@ -460,6 +544,42 @@
       "capability": "parser.n3-language",
       "description": "N3.js is used for four RDF syntaxes; the broader N3 language is not claimed.",
       "authority": "docs/implementation-plan.md sections 2.2 and 6.7"
+    },
+    {
+      "description": "OWL 2 RL admits xsd:unsignedInt and xsd:unsignedShort under its W3C datatype inventory; pinned Java rejects these two types.",
+      "capability": "profiles.owl2-rl",
+      "id": "RC2-PRF-DIFF-001",
+      "authority": "docs/plans/0.1.0-rc.2-profile-expected-differences.md"
+    },
+    {
+      "description": "The common formal-model checks reject logical uses of all four top/bottom object/data properties under the accepted W3C restriction; annotation values remain outside that restriction.",
+      "capability": "profiles.owl2-dl-source-assessment",
+      "id": "RC2-PRF-DIFF-002",
+      "authority": "docs/plans/0.1.0-rc.2-profile-expected-differences.md"
+    },
+    {
+      "description": "EL imposed-range validation includes transitive subproperty inheritance and equivalent-property closure under the accepted W3C rule.",
+      "capability": "profiles.owl2-el",
+      "id": "RC2-PRF-DIFF-003",
+      "authority": "docs/plans/0.1.0-rc.2-profile-expected-differences.md"
+    },
+    {
+      "description": "RL DisjointClasses uses its complete accepted W3C subclass-expression grammar rather than the pinned Java atomic-only visitor.",
+      "capability": "profiles.owl2-rl",
+      "id": "RC2-PRF-DIFF-004",
+      "authority": "docs/plans/0.1.0-rc.2-profile-expected-differences.md"
+    },
+    {
+      "description": "Java OWL/XML loses an anonymous ObjectOneOf operand even on its own output. JavaScript retains exact representable structure; native reload comparisons use the precisely recorded common domain.",
+      "capability": "storer.owlxml",
+      "id": "RC2-STO-DIFF-001",
+      "authority": "docs/plans/0.1.0-rc.2-storage-expected-differences.md"
+    },
+    {
+      "description": "Java Turtle reconstructs the nested ontology annotation but reports three reification triples unparsed. Exact JavaScript structure and the native common domain remain mandatory.",
+      "capability": "storer.turtle",
+      "id": "RC2-STO-DIFF-002",
+      "authority": "docs/plans/0.1.0-rc.2-storage-expected-differences.md"
     }
   ]
 }

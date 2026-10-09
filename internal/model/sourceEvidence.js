@@ -80,8 +80,8 @@ export const createSourceStructure = (ontology, retained = {}) => {
 // Closure authority and original-source qualifications never come from public
 // metadata supplied to an OWLOntology constructor. Mutating a parsed ontology
 // changes its revision and makes all its original-source qualifications stale.
-export const bindManagedOntology = (ontology, readClosure) =>
-  managers.set(ontology, readClosure);
+export const bindManagedOntology = (ontology, readClosure, hasResolvedImport) =>
+  managers.set(ontology, { readClosure, hasResolvedImport });
 
 export const publishSourceEvidence = (ontology, structure, trusted) => {
   sources.set(
@@ -104,20 +104,25 @@ export const readSourceEvidence = (ontology) => {
   return { status: "verified", snapshot, structure: evidence.structure };
 };
 
+/** Read loaded membership only; completeness remains the caller's policy. */
+export const readLoadedImportsClosure = (ontology) => {
+  readOntologySnapshot(ontology);
+  return managers.get(ontology)?.readClosure() ?? [ontology];
+};
+
 export const readProfileClosure = (ontology) => {
   const snapshot = readOntologySnapshot(ontology);
-  const readClosure = managers.get(ontology);
-  if (!readClosure)
+  const manager = managers.get(ontology);
+  if (!manager)
     return {
       ontologies: [ontology],
       complete: snapshot.authoredImportDeclarations.length === 0,
     };
-  const ontologies = readClosure();
-  const complete = ontologies.every(
-    (member) =>
-      !readOntologySnapshot(member).documentMetadata?.diagnostics?.some(
-        (diagnostic) => diagnostic.code === "MISSING_IMPORT",
-      ),
+  const ontologies = readLoadedImportsClosure(ontology);
+  const complete = ontologies.every((member) =>
+    readOntologySnapshot(member).authoredImportDeclarations.every(
+      (declaration) => manager.hasResolvedImport(member, declaration.iri),
+    ),
   );
   return { ontologies, complete };
 };

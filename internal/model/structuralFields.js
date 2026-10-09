@@ -3,19 +3,9 @@ import {
   AXIOM_KINDS,
   ENTITY_KINDS,
 } from "../../model/kinds.js";
-import { IRI, OWLStructuralObject } from "../../model/structural.js";
-import {
-  OWLDataFactory,
-  createSourcePreservingDataFactory,
-} from "../../model/owlDataFactory.js";
-import {
-  minimumTwoSetFields,
-  repeatSingleton,
-} from "../model/setConstructs.js";
-
-const fields = new Map();
+export const structuralFields = new Map();
 const register = (kinds, names) => {
-  for (const kind of kinds) fields.set(kind, names);
+  for (const kind of kinds) structuralFields.set(kind, names);
 };
 register(ENTITY_KINDS, ["iri"]);
 register([K.IRI], ["value"]);
@@ -136,102 +126,4 @@ register(
   ["property", "subject", "value"],
 );
 for (const kind of AXIOM_KINDS)
-  fields.set(kind, [...fields.get(kind), "annotations"]);
-
-export class ProfileStructureError extends Error {}
-const fail = () => {
-  throw new ProfileStructureError("Not an immutable package structural model");
-};
-const key = (object) =>
-  OWLStructuralObject.prototype.structuralKey.call(object);
-
-export const validateStructuralShape = (value) => {
-  if (!Object.isFrozen(value)) return fail();
-  if (Array.isArray(value)) {
-    if (Object.getPrototypeOf(value) !== Array.prototype) return fail();
-    if (Reflect.ownKeys(value).length !== value.length + 1) return fail();
-    for (let index = 0; index < value.length; index += 1)
-      if (
-        !Object.hasOwn(
-          Object.getOwnPropertyDescriptor(value, index) ?? {},
-          "value",
-        )
-      )
-        return fail();
-    return;
-  }
-  const prototype = Object.getPrototypeOf(value);
-  if (
-    prototype !== IRI.prototype &&
-    prototype !== OWLStructuralObject.prototype
-  )
-    return fail();
-  const kind = Object.getOwnPropertyDescriptor(value, "kind");
-  if (!kind || !Object.hasOwn(kind, "value")) return fail();
-  const names = fields.get(kind.value);
-  if (!names || Reflect.ownKeys(value).length !== names.length + 1)
-    return fail();
-  for (const name of ["kind", ...names])
-    if (
-      !Object.hasOwn(
-        Object.getOwnPropertyDescriptor(value, name) ?? {},
-        "value",
-      )
-    )
-      return fail();
-  try {
-    key(value);
-  } catch {
-    return fail();
-  }
-};
-
-/** Recheck factory invariants and stored-key/field agreement after every child
- * has passed the data-only shape check. Public OWLStructuralObject constructors
- * cannot manufacture a false-valid report by supplying different key tuples.
- */
-export const createStructuralValidator = () => {
-  const factory = createSourcePreservingDataFactory(new OWLDataFactory());
-  return (value) => {
-    let rebuilt;
-    try {
-      if (value.kind === K.IRI) rebuilt = IRI.create(value.value);
-      else if (value.kind === K.LITERAL)
-        rebuilt = factory.getOWLLiteral(
-          value.lexicalForm,
-          value.language || value.datatype,
-        );
-      else if (value.kind === K.INVERSE_OBJECT_PROPERTIES_AXIOM) {
-        if (value.properties.length !== 2) return fail();
-        rebuilt = factory.getOWLInverseObjectPropertiesAxiom(
-          value.properties[0],
-          value.properties[1],
-          value.annotations,
-        );
-      } else if (
-        value.kind === K.ONTOLOGY_ID &&
-        value.ontologyIRI === undefined
-      ) {
-        if (value.versionIRI !== undefined) return fail();
-        return;
-      } else {
-        const setField = minimumTwoSetFields.get(value.kind);
-        const args = fields
-          .get(value.kind)
-          .map((field) =>
-            field === setField ? repeatSingleton(value[field]) : value[field],
-          );
-        rebuilt = factory[`get${value.kind}`](...args);
-      }
-      if (key(rebuilt) !== key(value)) return fail();
-    } catch (error) {
-      if (
-        error instanceof TypeError ||
-        error instanceof RangeError ||
-        error instanceof ProfileStructureError
-      )
-        return fail();
-      throw error;
-    }
-  };
-};
+  structuralFields.set(kind, [...structuralFields.get(kind), "annotations"]);

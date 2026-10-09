@@ -14,6 +14,14 @@ Its public concepts deliberately resemble the Java OWLAPI where that makes the A
 This project is an independently maintained JavaScript implementation.
 It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project.
 
+The current source candidate is `0.1.0-rc.2`, adding the selected ontology queries, changes, transforms, short-form providers, Manchester rendering, Turtle and OWL/XML storage, EL/QL/RL profiles, and syntactic locality extraction described in the [rc.2 plan](./docs/plans/0.1.0-rc.2-java-parity.md).
+Its integrated qualification and publication are separate from the published rc.1 release.
+To test a retained rc.2 candidate, substitute its actual absolute tarball path:
+
+```shell
+npm install --save-exact "owlapi@file:/absolute/path/hadden-industries-owlapi-0.1.0-rc.2.tgz"
+```
+
 RDF loads expose Java-style `RDFParserMetaData` through `manager.getOntologyFormat(ontology).getOntologyLoaderMetaData()`.
 See the [RDF parser metadata contract](./docs/compatibility/rdf-parser-metadata.md) for exact return types, lifetime and Java differences.
 It retains unparsed triples, inferred entity roles and observed header state, including when warnings are disabled; it describes the original parse rather than proving lossless source accounting after edits.

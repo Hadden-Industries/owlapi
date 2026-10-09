@@ -1,0 +1,1887 @@
+{
+  "sourceRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+  "observations": [
+    {
+      "method": "getDeclarationAxioms",
+      "count": 1,
+      "resultInput": "Ontology(Declaration(DataProperty(<urn:owlapi-js:phase2:d>)))",
+      "argument": {
+        "kind": "DataProperty",
+        "iri": "urn:owlapi-js:phase2:d"
+      }
+    },
+    {
+      "method": "getDeclarationAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "DataProperty",
+        "iri": "urn:owlapi-js:phase2:e"
+      }
+    },
+    {
+      "method": "getDeclarationAxioms",
+      "count": 1,
+      "resultInput": "Ontology(Declaration(ObjectProperty(<urn:owlapi-js:phase2:p>)))",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getDeclarationAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getDeclarationAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getDeclarationAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "Class",
+        "iri": "urn:owlapi-js:phase2:B"
+      }
+    },
+    {
+      "method": "getDeclarationAxioms",
+      "count": 1,
+      "resultInput": "Ontology(Declaration(AnnotationProperty(<urn:owlapi-js:phase2:note>)))",
+      "argument": {
+        "kind": "AnnotationProperty",
+        "iri": "urn:owlapi-js:phase2:note"
+      }
+    },
+    {
+      "method": "getDeclarationAxioms",
+      "count": 1,
+      "resultInput": "Ontology(Declaration(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"declared class\") Class(<urn:owlapi-js:phase2:A>)))",
+      "argument": {
+        "kind": "Class",
+        "iri": "urn:owlapi-js:phase2:A"
+      }
+    },
+    {
+      "method": "getDeclarationAxioms",
+      "count": 1,
+      "resultInput": "Ontology(Declaration(NamedIndividual(<urn:owlapi-js:phase2:i>)))",
+      "argument": {
+        "kind": "NamedIndividual",
+        "iri": "urn:owlapi-js:phase2:i"
+      }
+    },
+    {
+      "method": "getDeclarationAxioms",
+      "count": 1,
+      "resultInput": "Ontology(Declaration(Datatype(<urn:owlapi-js:phase2:Code>)))",
+      "argument": {
+        "kind": "Datatype",
+        "iri": "urn:owlapi-js:phase2:Code"
+      }
+    },
+    {
+      "method": "getDeclarationAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "Datatype",
+        "iri": "http://www.w3.org/2001/XMLSchema#string"
+      }
+    },
+    {
+      "method": "getDeclarationAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "AnnotationProperty",
+        "iri": "http://www.w3.org/2000/01/rdf-schema#comment"
+      }
+    },
+    {
+      "method": "getDeclarationAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "Datatype",
+        "iri": "http://www.w3.org/2001/XMLSchema#integer"
+      }
+    },
+    {
+      "method": "getDeclarationAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "AnnotationProperty",
+        "iri": "http://www.w3.org/2000/01/rdf-schema#label"
+      }
+    },
+    {
+      "method": "getDeclarationAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "Class",
+        "iri": "urn:owlapi-js:phase2:C"
+      }
+    },
+    {
+      "method": "getDeclarationAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "NamedIndividual",
+        "iri": "urn:owlapi-js:phase2:j"
+      }
+    },
+    {
+      "method": "getDeclarationAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "Datatype",
+        "iri": "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+      }
+    },
+    {
+      "method": "getAnnotationAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:d"
+      }
+    },
+    {
+      "method": "getAnnotationAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:e"
+      }
+    },
+    {
+      "method": "getAnnotationAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getAnnotationAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getAnnotationAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getAnnotationAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:B"
+      }
+    },
+    {
+      "method": "getAnnotationAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:note"
+      }
+    },
+    {
+      "method": "getAnnotationAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:range"
+      }
+    },
+    {
+      "method": "getAnnotationAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:A"
+      }
+    },
+    {
+      "method": "getAnnotationAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:i"
+      }
+    },
+    {
+      "method": "getAnnotationAssertionAxioms",
+      "count": 1,
+      "resultInput": "Ontology(AnnotationAssertion(Annotation(<urn:owlapi-js:phase2:note> \"axiom metadata\") <urn:owlapi-js:phase2:note> _:genid2147483648 <urn:owlapi-js:phase2:value>))",
+      "argument": {
+        "kind": "AnonymousIndividual"
+      }
+    },
+    {
+      "method": "getAnnotationAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:Code"
+      }
+    },
+    {
+      "method": "getAnnotationAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:domain"
+      }
+    },
+    {
+      "method": "getAnnotationAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:value"
+      }
+    },
+    {
+      "method": "getAnnotationAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "IRI",
+        "iri": "http://www.w3.org/2001/XMLSchema#string"
+      }
+    },
+    {
+      "method": "getAnnotationAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "IRI",
+        "iri": "http://www.w3.org/2000/01/rdf-schema#comment"
+      }
+    },
+    {
+      "method": "getAnnotationAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "IRI",
+        "iri": "http://www.w3.org/2001/XMLSchema#integer"
+      }
+    },
+    {
+      "method": "getAnnotationAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "IRI",
+        "iri": "http://www.w3.org/2000/01/rdf-schema#label"
+      }
+    },
+    {
+      "method": "getAnnotationAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:C"
+      }
+    },
+    {
+      "method": "getAnnotationAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:j"
+      }
+    },
+    {
+      "method": "getSubClassAxiomsForSubClass",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "Class",
+        "iri": "urn:owlapi-js:phase2:B"
+      }
+    },
+    {
+      "method": "getSubClassAxiomsForSubClass",
+      "count": 1,
+      "resultInput": "Ontology(SubClassOf(Annotation(<urn:owlapi-js:phase2:note> \"annotated axiom\") <urn:owlapi-js:phase2:A> ObjectIntersectionOf(<urn:owlapi-js:phase2:B> ObjectSomeValuesFrom(ObjectInverseOf(<urn:owlapi-js:phase2:p>) <urn:owlapi-js:phase2:C>))))",
+      "argument": {
+        "kind": "Class",
+        "iri": "urn:owlapi-js:phase2:A"
+      }
+    },
+    {
+      "method": "getSubClassAxiomsForSubClass",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "Class",
+        "iri": "urn:owlapi-js:phase2:C"
+      }
+    },
+    {
+      "method": "getSubClassAxiomsForSuperClass",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "Class",
+        "iri": "urn:owlapi-js:phase2:B"
+      }
+    },
+    {
+      "method": "getSubClassAxiomsForSuperClass",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "Class",
+        "iri": "urn:owlapi-js:phase2:A"
+      }
+    },
+    {
+      "method": "getSubClassAxiomsForSuperClass",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "Class",
+        "iri": "urn:owlapi-js:phase2:C"
+      }
+    },
+    {
+      "method": "getEquivalentClassesAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "Class",
+        "iri": "urn:owlapi-js:phase2:B"
+      }
+    },
+    {
+      "method": "getEquivalentClassesAxioms",
+      "count": 1,
+      "resultInput": "Ontology(EquivalentClasses(<urn:owlapi-js:phase2:A> ObjectUnionOf(<urn:owlapi-js:phase2:B> ObjectComplementOf(<urn:owlapi-js:phase2:C>))))",
+      "argument": {
+        "kind": "Class",
+        "iri": "urn:owlapi-js:phase2:A"
+      }
+    },
+    {
+      "method": "getEquivalentClassesAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "Class",
+        "iri": "urn:owlapi-js:phase2:C"
+      }
+    },
+    {
+      "method": "getDisjointClassesAxioms",
+      "count": 1,
+      "resultInput": "Ontology(DisjointClasses(<urn:owlapi-js:phase2:A> <urn:owlapi-js:phase2:B> <urn:owlapi-js:phase2:C>))",
+      "argument": {
+        "kind": "Class",
+        "iri": "urn:owlapi-js:phase2:B"
+      }
+    },
+    {
+      "method": "getDisjointClassesAxioms",
+      "count": 1,
+      "resultInput": "Ontology(DisjointClasses(<urn:owlapi-js:phase2:A> <urn:owlapi-js:phase2:B> <urn:owlapi-js:phase2:C>))",
+      "argument": {
+        "kind": "Class",
+        "iri": "urn:owlapi-js:phase2:A"
+      }
+    },
+    {
+      "method": "getDisjointClassesAxioms",
+      "count": 1,
+      "resultInput": "Ontology(DisjointClasses(<urn:owlapi-js:phase2:A> <urn:owlapi-js:phase2:B> <urn:owlapi-js:phase2:C>))",
+      "argument": {
+        "kind": "Class",
+        "iri": "urn:owlapi-js:phase2:C"
+      }
+    },
+    {
+      "method": "getObjectSubPropertyAxiomsForSubProperty",
+      "count": 1,
+      "resultInput": "Ontology(SubObjectPropertyOf(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>))",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getObjectSubPropertyAxiomsForSubProperty",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getObjectSubPropertyAxiomsForSubProperty",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getObjectSubPropertyAxiomsForSubProperty",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getObjectSubPropertyAxiomsForSubProperty",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getObjectSubPropertyAxiomsForSubProperty",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getObjectSubPropertyAxiomsForSuperProperty",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getObjectSubPropertyAxiomsForSuperProperty",
+      "count": 1,
+      "resultInput": "Ontology(SubObjectPropertyOf(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>))",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getObjectSubPropertyAxiomsForSuperProperty",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getObjectSubPropertyAxiomsForSuperProperty",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getObjectSubPropertyAxiomsForSuperProperty",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getObjectSubPropertyAxiomsForSuperProperty",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getObjectPropertyDomainAxioms",
+      "count": 1,
+      "resultInput": "Ontology(ObjectPropertyDomain(<urn:owlapi-js:phase2:p> ObjectAllValuesFrom(<urn:owlapi-js:phase2:q> <urn:owlapi-js:phase2:B>)))",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getObjectPropertyDomainAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getObjectPropertyDomainAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getObjectPropertyDomainAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getObjectPropertyDomainAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getObjectPropertyDomainAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getObjectPropertyRangeAxioms",
+      "count": 1,
+      "resultInput": "Ontology(ObjectPropertyRange(<urn:owlapi-js:phase2:p> ObjectHasValue(<urn:owlapi-js:phase2:q> <urn:owlapi-js:phase2:i>)))",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getObjectPropertyRangeAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getObjectPropertyRangeAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getObjectPropertyRangeAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getObjectPropertyRangeAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getObjectPropertyRangeAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getInverseObjectPropertyAxioms",
+      "count": 1,
+      "resultInput": "Ontology(InverseObjectProperties(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>))",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getInverseObjectPropertyAxioms",
+      "count": 1,
+      "resultInput": "Ontology(InverseObjectProperties(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>))",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getInverseObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getInverseObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getInverseObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getInverseObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getDataSubPropertyAxiomsForSubProperty",
+      "count": 1,
+      "resultInput": "Ontology(SubDataPropertyOf(<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>))",
+      "argument": {
+        "kind": "DataProperty",
+        "iri": "urn:owlapi-js:phase2:d"
+      }
+    },
+    {
+      "method": "getDataSubPropertyAxiomsForSubProperty",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "DataProperty",
+        "iri": "urn:owlapi-js:phase2:e"
+      }
+    },
+    {
+      "method": "getDataSubPropertyAxiomsForSuperProperty",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "DataProperty",
+        "iri": "urn:owlapi-js:phase2:d"
+      }
+    },
+    {
+      "method": "getDataSubPropertyAxiomsForSuperProperty",
+      "count": 1,
+      "resultInput": "Ontology(SubDataPropertyOf(<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>))",
+      "argument": {
+        "kind": "DataProperty",
+        "iri": "urn:owlapi-js:phase2:e"
+      }
+    },
+    {
+      "method": "getDataPropertyDomainAxioms",
+      "count": 1,
+      "resultInput": "Ontology(DataPropertyDomain(<urn:owlapi-js:phase2:d> DataSomeValuesFrom(<urn:owlapi-js:phase2:e> DataUnionOf(<http://www.w3.org/2001/XMLSchema#integer> <http://www.w3.org/2001/XMLSchema#string>))))",
+      "argument": {
+        "kind": "DataProperty",
+        "iri": "urn:owlapi-js:phase2:d"
+      }
+    },
+    {
+      "method": "getDataPropertyDomainAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "DataProperty",
+        "iri": "urn:owlapi-js:phase2:e"
+      }
+    },
+    {
+      "method": "getDataPropertyRangeAxioms",
+      "count": 1,
+      "resultInput": "Ontology(DataPropertyRange(<urn:owlapi-js:phase2:d> DatatypeRestriction(<http://www.w3.org/2001/XMLSchema#integer> <http://www.w3.org/2001/XMLSchema#minInclusive> \"0\"^^<http://www.w3.org/2001/XMLSchema#integer>)))",
+      "argument": {
+        "kind": "DataProperty",
+        "iri": "urn:owlapi-js:phase2:d"
+      }
+    },
+    {
+      "method": "getDataPropertyRangeAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "DataProperty",
+        "iri": "urn:owlapi-js:phase2:e"
+      }
+    },
+    {
+      "method": "getSubAnnotationPropertyOfAxioms",
+      "count": 1,
+      "resultInput": "Ontology(SubAnnotationPropertyOf(<urn:owlapi-js:phase2:note> <http://www.w3.org/2000/01/rdf-schema#label>))",
+      "argument": {
+        "kind": "AnnotationProperty",
+        "iri": "urn:owlapi-js:phase2:note"
+      }
+    },
+    {
+      "method": "getSubAnnotationPropertyOfAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "AnnotationProperty",
+        "iri": "http://www.w3.org/2000/01/rdf-schema#comment"
+      }
+    },
+    {
+      "method": "getSubAnnotationPropertyOfAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "AnnotationProperty",
+        "iri": "http://www.w3.org/2000/01/rdf-schema#label"
+      }
+    },
+    {
+      "method": "getAnnotationPropertyDomainAxioms",
+      "count": 1,
+      "resultInput": "Ontology(AnnotationPropertyDomain(<urn:owlapi-js:phase2:note> <urn:owlapi-js:phase2:domain>))",
+      "argument": {
+        "kind": "AnnotationProperty",
+        "iri": "urn:owlapi-js:phase2:note"
+      }
+    },
+    {
+      "method": "getAnnotationPropertyDomainAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "AnnotationProperty",
+        "iri": "http://www.w3.org/2000/01/rdf-schema#comment"
+      }
+    },
+    {
+      "method": "getAnnotationPropertyDomainAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "AnnotationProperty",
+        "iri": "http://www.w3.org/2000/01/rdf-schema#label"
+      }
+    },
+    {
+      "method": "getAnnotationPropertyRangeAxioms",
+      "count": 1,
+      "resultInput": "Ontology(AnnotationPropertyRange(<urn:owlapi-js:phase2:note> <urn:owlapi-js:phase2:range>))",
+      "argument": {
+        "kind": "AnnotationProperty",
+        "iri": "urn:owlapi-js:phase2:note"
+      }
+    },
+    {
+      "method": "getAnnotationPropertyRangeAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "AnnotationProperty",
+        "iri": "http://www.w3.org/2000/01/rdf-schema#comment"
+      }
+    },
+    {
+      "method": "getAnnotationPropertyRangeAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "AnnotationProperty",
+        "iri": "http://www.w3.org/2000/01/rdf-schema#label"
+      }
+    },
+    {
+      "method": "getFunctionalObjectPropertyAxioms",
+      "count": 1,
+      "resultInput": "Ontology(FunctionalObjectProperty(<urn:owlapi-js:phase2:p>))",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getFunctionalObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getFunctionalObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getFunctionalObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getFunctionalObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getFunctionalObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getInverseFunctionalObjectPropertyAxioms",
+      "count": 1,
+      "resultInput": "Ontology(InverseFunctionalObjectProperty(<urn:owlapi-js:phase2:p>))",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getInverseFunctionalObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getInverseFunctionalObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getInverseFunctionalObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getInverseFunctionalObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getInverseFunctionalObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getSymmetricObjectPropertyAxioms",
+      "count": 1,
+      "resultInput": "Ontology(SymmetricObjectProperty(<urn:owlapi-js:phase2:p>))",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getSymmetricObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getSymmetricObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getSymmetricObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getSymmetricObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getSymmetricObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getAsymmetricObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getAsymmetricObjectPropertyAxioms",
+      "count": 1,
+      "resultInput": "Ontology(AsymmetricObjectProperty(<urn:owlapi-js:phase2:q>))",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getAsymmetricObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getAsymmetricObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getAsymmetricObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getAsymmetricObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getReflexiveObjectPropertyAxioms",
+      "count": 1,
+      "resultInput": "Ontology(ReflexiveObjectProperty(<urn:owlapi-js:phase2:p>))",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getReflexiveObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getReflexiveObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getReflexiveObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getReflexiveObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getReflexiveObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getIrreflexiveObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getIrreflexiveObjectPropertyAxioms",
+      "count": 1,
+      "resultInput": "Ontology(IrreflexiveObjectProperty(<urn:owlapi-js:phase2:q>))",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getIrreflexiveObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getIrreflexiveObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getIrreflexiveObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getIrreflexiveObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getTransitiveObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getTransitiveObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getTransitiveObjectPropertyAxioms",
+      "count": 1,
+      "resultInput": "Ontology(TransitiveObjectProperty(<urn:owlapi-js:phase2:r>))",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getTransitiveObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getTransitiveObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getTransitiveObjectPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "ObjectInverseOf",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getFunctionalDataPropertyAxioms",
+      "count": 1,
+      "resultInput": "Ontology(FunctionalDataProperty(<urn:owlapi-js:phase2:d>))",
+      "argument": {
+        "kind": "DataProperty",
+        "iri": "urn:owlapi-js:phase2:d"
+      }
+    },
+    {
+      "method": "getFunctionalDataPropertyAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "DataProperty",
+        "iri": "urn:owlapi-js:phase2:e"
+      }
+    },
+    {
+      "method": "getClassAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "Class",
+        "iri": "urn:owlapi-js:phase2:B"
+      }
+    },
+    {
+      "method": "getClassAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "Class",
+        "iri": "urn:owlapi-js:phase2:A"
+      }
+    },
+    {
+      "method": "getClassAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "NamedIndividual",
+        "iri": "urn:owlapi-js:phase2:i"
+      }
+    },
+    {
+      "method": "getClassAssertionAxioms",
+      "count": 1,
+      "resultInput": "Ontology(ClassAssertion(ObjectMinCardinality(1 <urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:B>) _:genid2147483648))",
+      "argument": {
+        "kind": "AnonymousIndividual"
+      }
+    },
+    {
+      "method": "getClassAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "Class",
+        "iri": "urn:owlapi-js:phase2:C"
+      }
+    },
+    {
+      "method": "getClassAssertionAxioms",
+      "count": 8,
+      "resultInput": "Ontology(ClassAssertion(DataExactCardinality(1 <urn:owlapi-js:phase2:d> <http://www.w3.org/2001/XMLSchema#string>) <urn:owlapi-js:phase2:j>) ClassAssertion(DataHasValue(<urn:owlapi-js:phase2:d> \"Δ 😀\") <urn:owlapi-js:phase2:j>) ClassAssertion(DataMaxCardinality(2 <urn:owlapi-js:phase2:d> <http://www.w3.org/2001/XMLSchema#string>) <urn:owlapi-js:phase2:j>) ClassAssertion(DataAllValuesFrom(<urn:owlapi-js:phase2:d> DataIntersectionOf(<http://www.w3.org/2001/XMLSchema#string> DataComplementOf(<http://www.w3.org/2001/XMLSchema#integer>))) <urn:owlapi-js:phase2:j>) ClassAssertion(ObjectHasSelf(<urn:owlapi-js:phase2:p>) <urn:owlapi-js:phase2:j>) ClassAssertion(ObjectMaxCardinality(2 <urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:B>) <urn:owlapi-js:phase2:j>) ClassAssertion(ObjectExactCardinality(1 <urn:owlapi-js:phase2:q> <urn:owlapi-js:phase2:C>) <urn:owlapi-js:phase2:j>) ClassAssertion(DataMinCardinality(0 <urn:owlapi-js:phase2:d> <http://www.w3.org/2001/XMLSchema#string>) <urn:owlapi-js:phase2:j>))",
+      "argument": {
+        "kind": "NamedIndividual",
+        "iri": "urn:owlapi-js:phase2:j"
+      }
+    },
+    {
+      "method": "getDataPropertyAssertionAxioms",
+      "count": 1,
+      "resultInput": "Ontology(DataPropertyAssertion(<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:i> \"01\"^^<http://www.w3.org/2001/XMLSchema#integer>))",
+      "argument": {
+        "kind": "NamedIndividual",
+        "iri": "urn:owlapi-js:phase2:i"
+      }
+    },
+    {
+      "method": "getDataPropertyAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "AnonymousIndividual"
+      }
+    },
+    {
+      "method": "getDataPropertyAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "NamedIndividual",
+        "iri": "urn:owlapi-js:phase2:j"
+      }
+    },
+    {
+      "method": "getObjectPropertyAssertionAxioms",
+      "count": 1,
+      "resultInput": "Ontology(ObjectPropertyAssertion(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:i> _:genid2147483648))",
+      "argument": {
+        "kind": "NamedIndividual",
+        "iri": "urn:owlapi-js:phase2:i"
+      }
+    },
+    {
+      "method": "getObjectPropertyAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "AnonymousIndividual"
+      }
+    },
+    {
+      "method": "getObjectPropertyAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "NamedIndividual",
+        "iri": "urn:owlapi-js:phase2:j"
+      }
+    },
+    {
+      "method": "getNegativeDataPropertyAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "NamedIndividual",
+        "iri": "urn:owlapi-js:phase2:i"
+      }
+    },
+    {
+      "method": "getNegativeDataPropertyAssertionAxioms",
+      "count": 1,
+      "resultInput": "Ontology(NegativeDataPropertyAssertion(<urn:owlapi-js:phase2:e> _:genid2147483648 \"plain\"))",
+      "argument": {
+        "kind": "AnonymousIndividual"
+      }
+    },
+    {
+      "method": "getNegativeDataPropertyAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "NamedIndividual",
+        "iri": "urn:owlapi-js:phase2:j"
+      }
+    },
+    {
+      "method": "getNegativeObjectPropertyAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "NamedIndividual",
+        "iri": "urn:owlapi-js:phase2:i"
+      }
+    },
+    {
+      "method": "getNegativeObjectPropertyAssertionAxioms",
+      "count": 1,
+      "resultInput": "Ontology(NegativeObjectPropertyAssertion(<urn:owlapi-js:phase2:q> _:genid2147483648 <urn:owlapi-js:phase2:j>))",
+      "argument": {
+        "kind": "AnonymousIndividual"
+      }
+    },
+    {
+      "method": "getNegativeObjectPropertyAssertionAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "NamedIndividual",
+        "iri": "urn:owlapi-js:phase2:j"
+      }
+    },
+    {
+      "method": "getSameIndividualAxioms",
+      "count": 1,
+      "resultInput": "Ontology(SameIndividual(<urn:owlapi-js:phase2:i> _:genid2147483648))",
+      "argument": {
+        "kind": "NamedIndividual",
+        "iri": "urn:owlapi-js:phase2:i"
+      }
+    },
+    {
+      "method": "getSameIndividualAxioms",
+      "count": 1,
+      "resultInput": "Ontology(SameIndividual(<urn:owlapi-js:phase2:i> _:genid2147483648))",
+      "argument": {
+        "kind": "AnonymousIndividual"
+      }
+    },
+    {
+      "method": "getSameIndividualAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "NamedIndividual",
+        "iri": "urn:owlapi-js:phase2:j"
+      }
+    },
+    {
+      "method": "getDifferentIndividualAxioms",
+      "count": 1,
+      "resultInput": "Ontology(DifferentIndividuals(<urn:owlapi-js:phase2:i> <urn:owlapi-js:phase2:j>))",
+      "argument": {
+        "kind": "NamedIndividual",
+        "iri": "urn:owlapi-js:phase2:i"
+      }
+    },
+    {
+      "method": "getDifferentIndividualAxioms",
+      "count": 0,
+      "resultInput": "Ontology()",
+      "argument": {
+        "kind": "AnonymousIndividual"
+      }
+    },
+    {
+      "method": "getDifferentIndividualAxioms",
+      "count": 1,
+      "resultInput": "Ontology(DifferentIndividuals(<urn:owlapi-js:phase2:i> <urn:owlapi-js:phase2:j>))",
+      "argument": {
+        "kind": "NamedIndividual",
+        "iri": "urn:owlapi-js:phase2:j"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 14,
+      "resultInput": "Ontology(ClassAssertion(DataHasValue(<urn:owlapi-js:phase2:d> \"Δ 😀\") <urn:owlapi-js:phase2:j>) DataPropertyRange(<urn:owlapi-js:phase2:d> DatatypeRestriction(<http://www.w3.org/2001/XMLSchema#integer> <http://www.w3.org/2001/XMLSchema#minInclusive> \"0\"^^<http://www.w3.org/2001/XMLSchema#integer>)) DisjointDataProperties(<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>) FunctionalDataProperty(<urn:owlapi-js:phase2:d>) ClassAssertion(DataExactCardinality(1 <urn:owlapi-js:phase2:d> <http://www.w3.org/2001/XMLSchema#string>) <urn:owlapi-js:phase2:j>) ClassAssertion(DataMaxCardinality(2 <urn:owlapi-js:phase2:d> <http://www.w3.org/2001/XMLSchema#string>) <urn:owlapi-js:phase2:j>) DataPropertyAssertion(<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:i> \"01\"^^<http://www.w3.org/2001/XMLSchema#integer>) HasKey(<urn:owlapi-js:phase2:A> (<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) (<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>)) DataPropertyDomain(<urn:owlapi-js:phase2:d> DataSomeValuesFrom(<urn:owlapi-js:phase2:e> DataUnionOf(<http://www.w3.org/2001/XMLSchema#integer> <http://www.w3.org/2001/XMLSchema#string>))) EquivalentDataProperties(<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>) ClassAssertion(DataAllValuesFrom(<urn:owlapi-js:phase2:d> DataIntersectionOf(<http://www.w3.org/2001/XMLSchema#string> DataComplementOf(<http://www.w3.org/2001/XMLSchema#integer>))) <urn:owlapi-js:phase2:j>) SubDataPropertyOf(<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>) Declaration(DataProperty(<urn:owlapi-js:phase2:d>)) ClassAssertion(DataMinCardinality(0 <urn:owlapi-js:phase2:d> <http://www.w3.org/2001/XMLSchema#string>) <urn:owlapi-js:phase2:j>))",
+      "argument": {
+        "kind": "DataProperty",
+        "iri": "urn:owlapi-js:phase2:d"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 14,
+      "resultInput": "Ontology(DataPropertyAssertion(<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:i> \"01\"^^<http://www.w3.org/2001/XMLSchema#integer>) DataPropertyRange(<urn:owlapi-js:phase2:d> DatatypeRestriction(<http://www.w3.org/2001/XMLSchema#integer> <http://www.w3.org/2001/XMLSchema#minInclusive> \"0\"^^<http://www.w3.org/2001/XMLSchema#integer>)) ClassAssertion(DataExactCardinality(1 <urn:owlapi-js:phase2:d> <http://www.w3.org/2001/XMLSchema#string>) <urn:owlapi-js:phase2:j>) FunctionalDataProperty(<urn:owlapi-js:phase2:d>) ClassAssertion(DataAllValuesFrom(<urn:owlapi-js:phase2:d> DataIntersectionOf(<http://www.w3.org/2001/XMLSchema#string> DataComplementOf(<http://www.w3.org/2001/XMLSchema#integer>))) <urn:owlapi-js:phase2:j>) ClassAssertion(DataMinCardinality(0 <urn:owlapi-js:phase2:d> <http://www.w3.org/2001/XMLSchema#string>) <urn:owlapi-js:phase2:j>) DisjointDataProperties(<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>) DataPropertyDomain(<urn:owlapi-js:phase2:d> DataSomeValuesFrom(<urn:owlapi-js:phase2:e> DataUnionOf(<http://www.w3.org/2001/XMLSchema#integer> <http://www.w3.org/2001/XMLSchema#string>))) ClassAssertion(DataHasValue(<urn:owlapi-js:phase2:d> \"Δ 😀\") <urn:owlapi-js:phase2:j>) Declaration(DataProperty(<urn:owlapi-js:phase2:d>)) SubDataPropertyOf(<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>) ClassAssertion(DataMaxCardinality(2 <urn:owlapi-js:phase2:d> <http://www.w3.org/2001/XMLSchema#string>) <urn:owlapi-js:phase2:j>) HasKey(<urn:owlapi-js:phase2:A> (<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) (<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>)) EquivalentDataProperties(<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>))",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:d"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 6,
+      "resultInput": "Ontology(DataPropertyDomain(<urn:owlapi-js:phase2:d> DataSomeValuesFrom(<urn:owlapi-js:phase2:e> DataUnionOf(<http://www.w3.org/2001/XMLSchema#integer> <http://www.w3.org/2001/XMLSchema#string>))) DisjointDataProperties(<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>) EquivalentDataProperties(<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>) NegativeDataPropertyAssertion(<urn:owlapi-js:phase2:e> _:genid2147483648 \"plain\") SubDataPropertyOf(<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>) HasKey(<urn:owlapi-js:phase2:A> (<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) (<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>)))",
+      "argument": {
+        "kind": "DataProperty",
+        "iri": "urn:owlapi-js:phase2:e"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 6,
+      "resultInput": "Ontology(NegativeDataPropertyAssertion(<urn:owlapi-js:phase2:e> _:genid2147483648 \"plain\") SubDataPropertyOf(<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>) DisjointDataProperties(<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>) DataPropertyDomain(<urn:owlapi-js:phase2:d> DataSomeValuesFrom(<urn:owlapi-js:phase2:e> DataUnionOf(<http://www.w3.org/2001/XMLSchema#integer> <http://www.w3.org/2001/XMLSchema#string>))) HasKey(<urn:owlapi-js:phase2:A> (<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) (<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>)) EquivalentDataProperties(<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>))",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:e"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 18,
+      "resultInput": "Ontology(ObjectPropertyRange(<urn:owlapi-js:phase2:p> ObjectHasValue(<urn:owlapi-js:phase2:q> <urn:owlapi-js:phase2:i>)) SymmetricObjectProperty(<urn:owlapi-js:phase2:p>) Declaration(ObjectProperty(<urn:owlapi-js:phase2:p>)) SubObjectPropertyOf(ObjectPropertyChain(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) <urn:owlapi-js:phase2:r>) ClassAssertion(ObjectMaxCardinality(2 <urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:B>) <urn:owlapi-js:phase2:j>) ObjectPropertyAssertion(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:i> _:genid2147483648) FunctionalObjectProperty(<urn:owlapi-js:phase2:p>) InverseObjectProperties(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) ClassAssertion(ObjectMinCardinality(1 <urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:B>) _:genid2147483648) ClassAssertion(ObjectHasSelf(<urn:owlapi-js:phase2:p>) <urn:owlapi-js:phase2:j>) DisjointObjectProperties(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) EquivalentObjectProperties(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) HasKey(<urn:owlapi-js:phase2:A> (<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) (<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>)) InverseFunctionalObjectProperty(<urn:owlapi-js:phase2:p>) ReflexiveObjectProperty(<urn:owlapi-js:phase2:p>) SubObjectPropertyOf(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) ObjectPropertyDomain(<urn:owlapi-js:phase2:p> ObjectAllValuesFrom(<urn:owlapi-js:phase2:q> <urn:owlapi-js:phase2:B>)) SubClassOf(Annotation(<urn:owlapi-js:phase2:note> \"annotated axiom\") <urn:owlapi-js:phase2:A> ObjectIntersectionOf(<urn:owlapi-js:phase2:B> ObjectSomeValuesFrom(ObjectInverseOf(<urn:owlapi-js:phase2:p>) <urn:owlapi-js:phase2:C>))))",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 18,
+      "resultInput": "Ontology(ClassAssertion(ObjectMaxCardinality(2 <urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:B>) <urn:owlapi-js:phase2:j>) SubClassOf(Annotation(<urn:owlapi-js:phase2:note> \"annotated axiom\") <urn:owlapi-js:phase2:A> ObjectIntersectionOf(<urn:owlapi-js:phase2:B> ObjectSomeValuesFrom(ObjectInverseOf(<urn:owlapi-js:phase2:p>) <urn:owlapi-js:phase2:C>))) SubObjectPropertyOf(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) Declaration(ObjectProperty(<urn:owlapi-js:phase2:p>)) ObjectPropertyRange(<urn:owlapi-js:phase2:p> ObjectHasValue(<urn:owlapi-js:phase2:q> <urn:owlapi-js:phase2:i>)) ObjectPropertyDomain(<urn:owlapi-js:phase2:p> ObjectAllValuesFrom(<urn:owlapi-js:phase2:q> <urn:owlapi-js:phase2:B>)) InverseFunctionalObjectProperty(<urn:owlapi-js:phase2:p>) SubObjectPropertyOf(ObjectPropertyChain(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) <urn:owlapi-js:phase2:r>) ReflexiveObjectProperty(<urn:owlapi-js:phase2:p>) InverseObjectProperties(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) SymmetricObjectProperty(<urn:owlapi-js:phase2:p>) FunctionalObjectProperty(<urn:owlapi-js:phase2:p>) EquivalentObjectProperties(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) ClassAssertion(ObjectHasSelf(<urn:owlapi-js:phase2:p>) <urn:owlapi-js:phase2:j>) DisjointObjectProperties(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) ObjectPropertyAssertion(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:i> _:genid2147483648) ClassAssertion(ObjectMinCardinality(1 <urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:B>) _:genid2147483648) HasKey(<urn:owlapi-js:phase2:A> (<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) (<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>)))",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:p"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 12,
+      "resultInput": "Ontology(AsymmetricObjectProperty(<urn:owlapi-js:phase2:q>) ObjectPropertyRange(<urn:owlapi-js:phase2:p> ObjectHasValue(<urn:owlapi-js:phase2:q> <urn:owlapi-js:phase2:i>)) SubObjectPropertyOf(ObjectPropertyChain(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) <urn:owlapi-js:phase2:r>) InverseObjectProperties(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) HasKey(<urn:owlapi-js:phase2:A> (<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) (<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>)) IrreflexiveObjectProperty(<urn:owlapi-js:phase2:q>) DisjointObjectProperties(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) ObjectPropertyDomain(<urn:owlapi-js:phase2:p> ObjectAllValuesFrom(<urn:owlapi-js:phase2:q> <urn:owlapi-js:phase2:B>)) NegativeObjectPropertyAssertion(<urn:owlapi-js:phase2:q> _:genid2147483648 <urn:owlapi-js:phase2:j>) EquivalentObjectProperties(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) ClassAssertion(ObjectExactCardinality(1 <urn:owlapi-js:phase2:q> <urn:owlapi-js:phase2:C>) <urn:owlapi-js:phase2:j>) SubObjectPropertyOf(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>))",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 12,
+      "resultInput": "Ontology(InverseObjectProperties(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) ClassAssertion(ObjectExactCardinality(1 <urn:owlapi-js:phase2:q> <urn:owlapi-js:phase2:C>) <urn:owlapi-js:phase2:j>) EquivalentObjectProperties(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) AsymmetricObjectProperty(<urn:owlapi-js:phase2:q>) SubObjectPropertyOf(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) ObjectPropertyRange(<urn:owlapi-js:phase2:p> ObjectHasValue(<urn:owlapi-js:phase2:q> <urn:owlapi-js:phase2:i>)) DisjointObjectProperties(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) ObjectPropertyDomain(<urn:owlapi-js:phase2:p> ObjectAllValuesFrom(<urn:owlapi-js:phase2:q> <urn:owlapi-js:phase2:B>)) NegativeObjectPropertyAssertion(<urn:owlapi-js:phase2:q> _:genid2147483648 <urn:owlapi-js:phase2:j>) IrreflexiveObjectProperty(<urn:owlapi-js:phase2:q>) HasKey(<urn:owlapi-js:phase2:A> (<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) (<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>)) SubObjectPropertyOf(ObjectPropertyChain(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) <urn:owlapi-js:phase2:r>))",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:q"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 2,
+      "resultInput": "Ontology(SubObjectPropertyOf(ObjectPropertyChain(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) <urn:owlapi-js:phase2:r>) TransitiveObjectProperty(<urn:owlapi-js:phase2:r>))",
+      "argument": {
+        "kind": "ObjectProperty",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 2,
+      "resultInput": "Ontology(SubObjectPropertyOf(ObjectPropertyChain(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) <urn:owlapi-js:phase2:r>) TransitiveObjectProperty(<urn:owlapi-js:phase2:r>))",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:r"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 7,
+      "resultInput": "Ontology(SubClassOf(Annotation(<urn:owlapi-js:phase2:note> \"annotated axiom\") <urn:owlapi-js:phase2:A> ObjectIntersectionOf(<urn:owlapi-js:phase2:B> ObjectSomeValuesFrom(ObjectInverseOf(<urn:owlapi-js:phase2:p>) <urn:owlapi-js:phase2:C>))) ClassAssertion(ObjectMaxCardinality(2 <urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:B>) <urn:owlapi-js:phase2:j>) DisjointUnion(<urn:owlapi-js:phase2:A> <urn:owlapi-js:phase2:B> ObjectOneOf(<urn:owlapi-js:phase2:i> _:genid2147483648)) ClassAssertion(ObjectMinCardinality(1 <urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:B>) _:genid2147483648) DisjointClasses(<urn:owlapi-js:phase2:A> <urn:owlapi-js:phase2:B> <urn:owlapi-js:phase2:C>) ObjectPropertyDomain(<urn:owlapi-js:phase2:p> ObjectAllValuesFrom(<urn:owlapi-js:phase2:q> <urn:owlapi-js:phase2:B>)) EquivalentClasses(<urn:owlapi-js:phase2:A> ObjectUnionOf(<urn:owlapi-js:phase2:B> ObjectComplementOf(<urn:owlapi-js:phase2:C>))))",
+      "argument": {
+        "kind": "Class",
+        "iri": "urn:owlapi-js:phase2:B"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 7,
+      "resultInput": "Ontology(EquivalentClasses(<urn:owlapi-js:phase2:A> ObjectUnionOf(<urn:owlapi-js:phase2:B> ObjectComplementOf(<urn:owlapi-js:phase2:C>))) DisjointClasses(<urn:owlapi-js:phase2:A> <urn:owlapi-js:phase2:B> <urn:owlapi-js:phase2:C>) ClassAssertion(ObjectMaxCardinality(2 <urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:B>) <urn:owlapi-js:phase2:j>) DisjointUnion(<urn:owlapi-js:phase2:A> <urn:owlapi-js:phase2:B> ObjectOneOf(<urn:owlapi-js:phase2:i> _:genid2147483648)) SubClassOf(Annotation(<urn:owlapi-js:phase2:note> \"annotated axiom\") <urn:owlapi-js:phase2:A> ObjectIntersectionOf(<urn:owlapi-js:phase2:B> ObjectSomeValuesFrom(ObjectInverseOf(<urn:owlapi-js:phase2:p>) <urn:owlapi-js:phase2:C>))) ObjectPropertyDomain(<urn:owlapi-js:phase2:p> ObjectAllValuesFrom(<urn:owlapi-js:phase2:q> <urn:owlapi-js:phase2:B>)) ClassAssertion(ObjectMinCardinality(1 <urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:B>) _:genid2147483648))",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:B"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 6,
+      "resultInput": "Ontology(AnnotationPropertyDomain(<urn:owlapi-js:phase2:note> <urn:owlapi-js:phase2:domain>) Declaration(AnnotationProperty(<urn:owlapi-js:phase2:note>)) AnnotationAssertion(Annotation(<urn:owlapi-js:phase2:note> \"axiom metadata\") <urn:owlapi-js:phase2:note> _:genid2147483648 <urn:owlapi-js:phase2:value>) AnnotationPropertyRange(<urn:owlapi-js:phase2:note> <urn:owlapi-js:phase2:range>) SubAnnotationPropertyOf(<urn:owlapi-js:phase2:note> <http://www.w3.org/2000/01/rdf-schema#label>) SubClassOf(Annotation(<urn:owlapi-js:phase2:note> \"annotated axiom\") <urn:owlapi-js:phase2:A> ObjectIntersectionOf(<urn:owlapi-js:phase2:B> ObjectSomeValuesFrom(ObjectInverseOf(<urn:owlapi-js:phase2:p>) <urn:owlapi-js:phase2:C>))))",
+      "argument": {
+        "kind": "AnnotationProperty",
+        "iri": "urn:owlapi-js:phase2:note"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 6,
+      "resultInput": "Ontology(Declaration(AnnotationProperty(<urn:owlapi-js:phase2:note>)) AnnotationPropertyRange(<urn:owlapi-js:phase2:note> <urn:owlapi-js:phase2:range>) SubClassOf(Annotation(<urn:owlapi-js:phase2:note> \"annotated axiom\") <urn:owlapi-js:phase2:A> ObjectIntersectionOf(<urn:owlapi-js:phase2:B> ObjectSomeValuesFrom(ObjectInverseOf(<urn:owlapi-js:phase2:p>) <urn:owlapi-js:phase2:C>))) AnnotationAssertion(Annotation(<urn:owlapi-js:phase2:note> \"axiom metadata\") <urn:owlapi-js:phase2:note> _:genid2147483648 <urn:owlapi-js:phase2:value>) AnnotationPropertyDomain(<urn:owlapi-js:phase2:note> <urn:owlapi-js:phase2:domain>) SubAnnotationPropertyOf(<urn:owlapi-js:phase2:note> <http://www.w3.org/2000/01/rdf-schema#label>))",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:note"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 1,
+      "resultInput": "Ontology(AnnotationPropertyRange(<urn:owlapi-js:phase2:note> <urn:owlapi-js:phase2:range>))",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:range"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 6,
+      "resultInput": "Ontology(DisjointUnion(<urn:owlapi-js:phase2:A> <urn:owlapi-js:phase2:B> ObjectOneOf(<urn:owlapi-js:phase2:i> _:genid2147483648)) HasKey(<urn:owlapi-js:phase2:A> (<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) (<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>)) SubClassOf(Annotation(<urn:owlapi-js:phase2:note> \"annotated axiom\") <urn:owlapi-js:phase2:A> ObjectIntersectionOf(<urn:owlapi-js:phase2:B> ObjectSomeValuesFrom(ObjectInverseOf(<urn:owlapi-js:phase2:p>) <urn:owlapi-js:phase2:C>))) EquivalentClasses(<urn:owlapi-js:phase2:A> ObjectUnionOf(<urn:owlapi-js:phase2:B> ObjectComplementOf(<urn:owlapi-js:phase2:C>))) Declaration(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"declared class\") Class(<urn:owlapi-js:phase2:A>)) DisjointClasses(<urn:owlapi-js:phase2:A> <urn:owlapi-js:phase2:B> <urn:owlapi-js:phase2:C>))",
+      "argument": {
+        "kind": "Class",
+        "iri": "urn:owlapi-js:phase2:A"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 6,
+      "resultInput": "Ontology(EquivalentClasses(<urn:owlapi-js:phase2:A> ObjectUnionOf(<urn:owlapi-js:phase2:B> ObjectComplementOf(<urn:owlapi-js:phase2:C>))) DisjointClasses(<urn:owlapi-js:phase2:A> <urn:owlapi-js:phase2:B> <urn:owlapi-js:phase2:C>) DisjointUnion(<urn:owlapi-js:phase2:A> <urn:owlapi-js:phase2:B> ObjectOneOf(<urn:owlapi-js:phase2:i> _:genid2147483648)) Declaration(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"declared class\") Class(<urn:owlapi-js:phase2:A>)) SubClassOf(Annotation(<urn:owlapi-js:phase2:note> \"annotated axiom\") <urn:owlapi-js:phase2:A> ObjectIntersectionOf(<urn:owlapi-js:phase2:B> ObjectSomeValuesFrom(ObjectInverseOf(<urn:owlapi-js:phase2:p>) <urn:owlapi-js:phase2:C>))) HasKey(<urn:owlapi-js:phase2:A> (<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:q>) (<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:e>)))",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:A"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 7,
+      "resultInput": "Ontology(DifferentIndividuals(<urn:owlapi-js:phase2:i> <urn:owlapi-js:phase2:j>) DataPropertyAssertion(<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:i> \"01\"^^<http://www.w3.org/2001/XMLSchema#integer>) ObjectPropertyRange(<urn:owlapi-js:phase2:p> ObjectHasValue(<urn:owlapi-js:phase2:q> <urn:owlapi-js:phase2:i>)) Declaration(NamedIndividual(<urn:owlapi-js:phase2:i>)) ObjectPropertyAssertion(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:i> _:genid2147483648) SameIndividual(<urn:owlapi-js:phase2:i> _:genid2147483648) DisjointUnion(<urn:owlapi-js:phase2:A> <urn:owlapi-js:phase2:B> ObjectOneOf(<urn:owlapi-js:phase2:i> _:genid2147483648)))",
+      "argument": {
+        "kind": "NamedIndividual",
+        "iri": "urn:owlapi-js:phase2:i"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 7,
+      "resultInput": "Ontology(DifferentIndividuals(<urn:owlapi-js:phase2:i> <urn:owlapi-js:phase2:j>) DataPropertyAssertion(<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:i> \"01\"^^<http://www.w3.org/2001/XMLSchema#integer>) DisjointUnion(<urn:owlapi-js:phase2:A> <urn:owlapi-js:phase2:B> ObjectOneOf(<urn:owlapi-js:phase2:i> _:genid2147483648)) ObjectPropertyRange(<urn:owlapi-js:phase2:p> ObjectHasValue(<urn:owlapi-js:phase2:q> <urn:owlapi-js:phase2:i>)) Declaration(NamedIndividual(<urn:owlapi-js:phase2:i>)) ObjectPropertyAssertion(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:i> _:genid2147483648) SameIndividual(<urn:owlapi-js:phase2:i> _:genid2147483648))",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:i"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 7,
+      "resultInput": "Ontology(SameIndividual(<urn:owlapi-js:phase2:i> _:genid2147483648) ClassAssertion(ObjectMinCardinality(1 <urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:B>) _:genid2147483648) AnnotationAssertion(Annotation(<urn:owlapi-js:phase2:note> \"axiom metadata\") <urn:owlapi-js:phase2:note> _:genid2147483648 <urn:owlapi-js:phase2:value>) ObjectPropertyAssertion(<urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:i> _:genid2147483648) NegativeDataPropertyAssertion(<urn:owlapi-js:phase2:e> _:genid2147483648 \"plain\") NegativeObjectPropertyAssertion(<urn:owlapi-js:phase2:q> _:genid2147483648 <urn:owlapi-js:phase2:j>) DisjointUnion(<urn:owlapi-js:phase2:A> <urn:owlapi-js:phase2:B> ObjectOneOf(<urn:owlapi-js:phase2:i> _:genid2147483648)))",
+      "argument": {
+        "kind": "AnonymousIndividual"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 2,
+      "resultInput": "Ontology(Declaration(Datatype(<urn:owlapi-js:phase2:Code>)) DatatypeDefinition(<urn:owlapi-js:phase2:Code> DataOneOf(\"beta\"@en \"alpha\")))",
+      "argument": {
+        "kind": "Datatype",
+        "iri": "urn:owlapi-js:phase2:Code"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 2,
+      "resultInput": "Ontology(DatatypeDefinition(<urn:owlapi-js:phase2:Code> DataOneOf(\"beta\"@en \"alpha\")) Declaration(Datatype(<urn:owlapi-js:phase2:Code>)))",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:Code"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 1,
+      "resultInput": "Ontology(AnnotationPropertyDomain(<urn:owlapi-js:phase2:note> <urn:owlapi-js:phase2:domain>))",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:domain"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 1,
+      "resultInput": "Ontology(AnnotationAssertion(Annotation(<urn:owlapi-js:phase2:note> \"axiom metadata\") <urn:owlapi-js:phase2:note> _:genid2147483648 <urn:owlapi-js:phase2:value>))",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:value"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 1,
+      "resultInput": "Ontology(AnnotationAssertion(Annotation(<urn:owlapi-js:phase2:note> \"axiom metadata\") <urn:owlapi-js:phase2:note> _:genid2147483648 <urn:owlapi-js:phase2:value>))",
+      "argument": {
+        "kind": "Literal",
+        "lexicalForm": "axiom metadata",
+        "language": "",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 11,
+      "resultInput": "Ontology(Declaration(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"declared class\") Class(<urn:owlapi-js:phase2:A>)) ClassAssertion(DataMinCardinality(0 <urn:owlapi-js:phase2:d> <http://www.w3.org/2001/XMLSchema#string>) <urn:owlapi-js:phase2:j>) AnnotationAssertion(Annotation(<urn:owlapi-js:phase2:note> \"axiom metadata\") <urn:owlapi-js:phase2:note> _:genid2147483648 <urn:owlapi-js:phase2:value>) ClassAssertion(DataMaxCardinality(2 <urn:owlapi-js:phase2:d> <http://www.w3.org/2001/XMLSchema#string>) <urn:owlapi-js:phase2:j>) ClassAssertion(DataExactCardinality(1 <urn:owlapi-js:phase2:d> <http://www.w3.org/2001/XMLSchema#string>) <urn:owlapi-js:phase2:j>) NegativeDataPropertyAssertion(<urn:owlapi-js:phase2:e> _:genid2147483648 \"plain\") ClassAssertion(DataAllValuesFrom(<urn:owlapi-js:phase2:d> DataIntersectionOf(<http://www.w3.org/2001/XMLSchema#string> DataComplementOf(<http://www.w3.org/2001/XMLSchema#integer>))) <urn:owlapi-js:phase2:j>) SubClassOf(Annotation(<urn:owlapi-js:phase2:note> \"annotated axiom\") <urn:owlapi-js:phase2:A> ObjectIntersectionOf(<urn:owlapi-js:phase2:B> ObjectSomeValuesFrom(ObjectInverseOf(<urn:owlapi-js:phase2:p>) <urn:owlapi-js:phase2:C>))) DatatypeDefinition(<urn:owlapi-js:phase2:Code> DataOneOf(\"beta\"@en \"alpha\")) DataPropertyDomain(<urn:owlapi-js:phase2:d> DataSomeValuesFrom(<urn:owlapi-js:phase2:e> DataUnionOf(<http://www.w3.org/2001/XMLSchema#integer> <http://www.w3.org/2001/XMLSchema#string>))) ClassAssertion(DataHasValue(<urn:owlapi-js:phase2:d> \"Δ 😀\") <urn:owlapi-js:phase2:j>))",
+      "argument": {
+        "kind": "Datatype",
+        "iri": "http://www.w3.org/2001/XMLSchema#string"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 11,
+      "resultInput": "Ontology(NegativeDataPropertyAssertion(<urn:owlapi-js:phase2:e> _:genid2147483648 \"plain\") DatatypeDefinition(<urn:owlapi-js:phase2:Code> DataOneOf(\"beta\"@en \"alpha\")) ClassAssertion(DataExactCardinality(1 <urn:owlapi-js:phase2:d> <http://www.w3.org/2001/XMLSchema#string>) <urn:owlapi-js:phase2:j>) Declaration(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"declared class\") Class(<urn:owlapi-js:phase2:A>)) ClassAssertion(DataMinCardinality(0 <urn:owlapi-js:phase2:d> <http://www.w3.org/2001/XMLSchema#string>) <urn:owlapi-js:phase2:j>) SubClassOf(Annotation(<urn:owlapi-js:phase2:note> \"annotated axiom\") <urn:owlapi-js:phase2:A> ObjectIntersectionOf(<urn:owlapi-js:phase2:B> ObjectSomeValuesFrom(ObjectInverseOf(<urn:owlapi-js:phase2:p>) <urn:owlapi-js:phase2:C>))) ClassAssertion(DataMaxCardinality(2 <urn:owlapi-js:phase2:d> <http://www.w3.org/2001/XMLSchema#string>) <urn:owlapi-js:phase2:j>) ClassAssertion(DataAllValuesFrom(<urn:owlapi-js:phase2:d> DataIntersectionOf(<http://www.w3.org/2001/XMLSchema#string> DataComplementOf(<http://www.w3.org/2001/XMLSchema#integer>))) <urn:owlapi-js:phase2:j>) AnnotationAssertion(Annotation(<urn:owlapi-js:phase2:note> \"axiom metadata\") <urn:owlapi-js:phase2:note> _:genid2147483648 <urn:owlapi-js:phase2:value>) DataPropertyDomain(<urn:owlapi-js:phase2:d> DataSomeValuesFrom(<urn:owlapi-js:phase2:e> DataUnionOf(<http://www.w3.org/2001/XMLSchema#integer> <http://www.w3.org/2001/XMLSchema#string>))) ClassAssertion(DataHasValue(<urn:owlapi-js:phase2:d> \"Δ 😀\") <urn:owlapi-js:phase2:j>))",
+      "argument": {
+        "kind": "IRI",
+        "iri": "http://www.w3.org/2001/XMLSchema#string"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 1,
+      "resultInput": "Ontology(Declaration(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"declared class\") Class(<urn:owlapi-js:phase2:A>)))",
+      "argument": {
+        "kind": "AnnotationProperty",
+        "iri": "http://www.w3.org/2000/01/rdf-schema#comment"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 1,
+      "resultInput": "Ontology(Declaration(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"declared class\") Class(<urn:owlapi-js:phase2:A>)))",
+      "argument": {
+        "kind": "IRI",
+        "iri": "http://www.w3.org/2000/01/rdf-schema#comment"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 1,
+      "resultInput": "Ontology(Declaration(Annotation(<http://www.w3.org/2000/01/rdf-schema#comment> \"declared class\") Class(<urn:owlapi-js:phase2:A>)))",
+      "argument": {
+        "kind": "Literal",
+        "lexicalForm": "declared class",
+        "language": "",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 4,
+      "resultInput": "Ontology(DataPropertyAssertion(<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:i> \"01\"^^<http://www.w3.org/2001/XMLSchema#integer>) DataPropertyRange(<urn:owlapi-js:phase2:d> DatatypeRestriction(<http://www.w3.org/2001/XMLSchema#integer> <http://www.w3.org/2001/XMLSchema#minInclusive> \"0\"^^<http://www.w3.org/2001/XMLSchema#integer>)) ClassAssertion(DataAllValuesFrom(<urn:owlapi-js:phase2:d> DataIntersectionOf(<http://www.w3.org/2001/XMLSchema#string> DataComplementOf(<http://www.w3.org/2001/XMLSchema#integer>))) <urn:owlapi-js:phase2:j>) DataPropertyDomain(<urn:owlapi-js:phase2:d> DataSomeValuesFrom(<urn:owlapi-js:phase2:e> DataUnionOf(<http://www.w3.org/2001/XMLSchema#integer> <http://www.w3.org/2001/XMLSchema#string>))))",
+      "argument": {
+        "kind": "Datatype",
+        "iri": "http://www.w3.org/2001/XMLSchema#integer"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 4,
+      "resultInput": "Ontology(DataPropertyRange(<urn:owlapi-js:phase2:d> DatatypeRestriction(<http://www.w3.org/2001/XMLSchema#integer> <http://www.w3.org/2001/XMLSchema#minInclusive> \"0\"^^<http://www.w3.org/2001/XMLSchema#integer>)) DataPropertyAssertion(<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:i> \"01\"^^<http://www.w3.org/2001/XMLSchema#integer>) ClassAssertion(DataAllValuesFrom(<urn:owlapi-js:phase2:d> DataIntersectionOf(<http://www.w3.org/2001/XMLSchema#string> DataComplementOf(<http://www.w3.org/2001/XMLSchema#integer>))) <urn:owlapi-js:phase2:j>) DataPropertyDomain(<urn:owlapi-js:phase2:d> DataSomeValuesFrom(<urn:owlapi-js:phase2:e> DataUnionOf(<http://www.w3.org/2001/XMLSchema#integer> <http://www.w3.org/2001/XMLSchema#string>))))",
+      "argument": {
+        "kind": "IRI",
+        "iri": "http://www.w3.org/2001/XMLSchema#integer"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 1,
+      "resultInput": "Ontology(DataPropertyRange(<urn:owlapi-js:phase2:d> DatatypeRestriction(<http://www.w3.org/2001/XMLSchema#integer> <http://www.w3.org/2001/XMLSchema#minInclusive> \"0\"^^<http://www.w3.org/2001/XMLSchema#integer>)))",
+      "argument": {
+        "kind": "Literal",
+        "lexicalForm": "0",
+        "language": "",
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 1,
+      "resultInput": "Ontology(DataPropertyAssertion(<urn:owlapi-js:phase2:d> <urn:owlapi-js:phase2:i> \"01\"^^<http://www.w3.org/2001/XMLSchema#integer>))",
+      "argument": {
+        "kind": "Literal",
+        "lexicalForm": "01",
+        "language": "",
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 1,
+      "resultInput": "Ontology(SubAnnotationPropertyOf(<urn:owlapi-js:phase2:note> <http://www.w3.org/2000/01/rdf-schema#label>))",
+      "argument": {
+        "kind": "AnnotationProperty",
+        "iri": "http://www.w3.org/2000/01/rdf-schema#label"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 1,
+      "resultInput": "Ontology(SubAnnotationPropertyOf(<urn:owlapi-js:phase2:note> <http://www.w3.org/2000/01/rdf-schema#label>))",
+      "argument": {
+        "kind": "IRI",
+        "iri": "http://www.w3.org/2000/01/rdf-schema#label"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 1,
+      "resultInput": "Ontology(NegativeDataPropertyAssertion(<urn:owlapi-js:phase2:e> _:genid2147483648 \"plain\"))",
+      "argument": {
+        "kind": "Literal",
+        "lexicalForm": "plain",
+        "language": "",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 4,
+      "resultInput": "Ontology(DisjointClasses(<urn:owlapi-js:phase2:A> <urn:owlapi-js:phase2:B> <urn:owlapi-js:phase2:C>) ClassAssertion(ObjectExactCardinality(1 <urn:owlapi-js:phase2:q> <urn:owlapi-js:phase2:C>) <urn:owlapi-js:phase2:j>) EquivalentClasses(<urn:owlapi-js:phase2:A> ObjectUnionOf(<urn:owlapi-js:phase2:B> ObjectComplementOf(<urn:owlapi-js:phase2:C>))) SubClassOf(Annotation(<urn:owlapi-js:phase2:note> \"annotated axiom\") <urn:owlapi-js:phase2:A> ObjectIntersectionOf(<urn:owlapi-js:phase2:B> ObjectSomeValuesFrom(ObjectInverseOf(<urn:owlapi-js:phase2:p>) <urn:owlapi-js:phase2:C>))))",
+      "argument": {
+        "kind": "Class",
+        "iri": "urn:owlapi-js:phase2:C"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 4,
+      "resultInput": "Ontology(ClassAssertion(ObjectExactCardinality(1 <urn:owlapi-js:phase2:q> <urn:owlapi-js:phase2:C>) <urn:owlapi-js:phase2:j>) EquivalentClasses(<urn:owlapi-js:phase2:A> ObjectUnionOf(<urn:owlapi-js:phase2:B> ObjectComplementOf(<urn:owlapi-js:phase2:C>))) DisjointClasses(<urn:owlapi-js:phase2:A> <urn:owlapi-js:phase2:B> <urn:owlapi-js:phase2:C>) SubClassOf(Annotation(<urn:owlapi-js:phase2:note> \"annotated axiom\") <urn:owlapi-js:phase2:A> ObjectIntersectionOf(<urn:owlapi-js:phase2:B> ObjectSomeValuesFrom(ObjectInverseOf(<urn:owlapi-js:phase2:p>) <urn:owlapi-js:phase2:C>))))",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:C"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 1,
+      "resultInput": "Ontology(SubClassOf(Annotation(<urn:owlapi-js:phase2:note> \"annotated axiom\") <urn:owlapi-js:phase2:A> ObjectIntersectionOf(<urn:owlapi-js:phase2:B> ObjectSomeValuesFrom(ObjectInverseOf(<urn:owlapi-js:phase2:p>) <urn:owlapi-js:phase2:C>))))",
+      "argument": {
+        "kind": "Literal",
+        "lexicalForm": "annotated axiom",
+        "language": "",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 10,
+      "resultInput": "Ontology(ClassAssertion(DataAllValuesFrom(<urn:owlapi-js:phase2:d> DataIntersectionOf(<http://www.w3.org/2001/XMLSchema#string> DataComplementOf(<http://www.w3.org/2001/XMLSchema#integer>))) <urn:owlapi-js:phase2:j>) ClassAssertion(DataHasValue(<urn:owlapi-js:phase2:d> \"Δ 😀\") <urn:owlapi-js:phase2:j>) ClassAssertion(DataExactCardinality(1 <urn:owlapi-js:phase2:d> <http://www.w3.org/2001/XMLSchema#string>) <urn:owlapi-js:phase2:j>) DifferentIndividuals(<urn:owlapi-js:phase2:i> <urn:owlapi-js:phase2:j>) ClassAssertion(ObjectHasSelf(<urn:owlapi-js:phase2:p>) <urn:owlapi-js:phase2:j>) ClassAssertion(DataMinCardinality(0 <urn:owlapi-js:phase2:d> <http://www.w3.org/2001/XMLSchema#string>) <urn:owlapi-js:phase2:j>) ClassAssertion(ObjectMaxCardinality(2 <urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:B>) <urn:owlapi-js:phase2:j>) ClassAssertion(DataMaxCardinality(2 <urn:owlapi-js:phase2:d> <http://www.w3.org/2001/XMLSchema#string>) <urn:owlapi-js:phase2:j>) NegativeObjectPropertyAssertion(<urn:owlapi-js:phase2:q> _:genid2147483648 <urn:owlapi-js:phase2:j>) ClassAssertion(ObjectExactCardinality(1 <urn:owlapi-js:phase2:q> <urn:owlapi-js:phase2:C>) <urn:owlapi-js:phase2:j>))",
+      "argument": {
+        "kind": "NamedIndividual",
+        "iri": "urn:owlapi-js:phase2:j"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 10,
+      "resultInput": "Ontology(ClassAssertion(DataExactCardinality(1 <urn:owlapi-js:phase2:d> <http://www.w3.org/2001/XMLSchema#string>) <urn:owlapi-js:phase2:j>) DifferentIndividuals(<urn:owlapi-js:phase2:i> <urn:owlapi-js:phase2:j>) ClassAssertion(ObjectExactCardinality(1 <urn:owlapi-js:phase2:q> <urn:owlapi-js:phase2:C>) <urn:owlapi-js:phase2:j>) ClassAssertion(ObjectMaxCardinality(2 <urn:owlapi-js:phase2:p> <urn:owlapi-js:phase2:B>) <urn:owlapi-js:phase2:j>) ClassAssertion(DataAllValuesFrom(<urn:owlapi-js:phase2:d> DataIntersectionOf(<http://www.w3.org/2001/XMLSchema#string> DataComplementOf(<http://www.w3.org/2001/XMLSchema#integer>))) <urn:owlapi-js:phase2:j>) ClassAssertion(DataMaxCardinality(2 <urn:owlapi-js:phase2:d> <http://www.w3.org/2001/XMLSchema#string>) <urn:owlapi-js:phase2:j>) ClassAssertion(DataMinCardinality(0 <urn:owlapi-js:phase2:d> <http://www.w3.org/2001/XMLSchema#string>) <urn:owlapi-js:phase2:j>) ClassAssertion(ObjectHasSelf(<urn:owlapi-js:phase2:p>) <urn:owlapi-js:phase2:j>) NegativeObjectPropertyAssertion(<urn:owlapi-js:phase2:q> _:genid2147483648 <urn:owlapi-js:phase2:j>) ClassAssertion(DataHasValue(<urn:owlapi-js:phase2:d> \"Δ 😀\") <urn:owlapi-js:phase2:j>))",
+      "argument": {
+        "kind": "IRI",
+        "iri": "urn:owlapi-js:phase2:j"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 1,
+      "resultInput": "Ontology(ClassAssertion(DataHasValue(<urn:owlapi-js:phase2:d> \"Δ 😀\") <urn:owlapi-js:phase2:j>))",
+      "argument": {
+        "kind": "Literal",
+        "lexicalForm": "Δ 😀",
+        "language": "",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      }
+    },
+    {
+      "method": "getReferencingAxioms",
+      "count": 1,
+      "resultInput": "Ontology(DatatypeDefinition(<urn:owlapi-js:phase2:Code> DataOneOf(\"beta\"@en \"alpha\")))",
+      "argument": {
+        "kind": "Datatype",
+        "iri": "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+      }
+    }
+  ],
+  "runtimeQualification": "FRESH_LOCAL_WINDOWS_NATIVE_BUILD_NOT_LINUX_IMAGE_EQUIVALENCE",
+  "harness": "util/owlapi-reference/RunRC2QueryMatrix.java",
+  "input": "Prefix(:=<urn:owlapi-js:phase2:>)\nOntology(<urn:owlapi-js:phase2> <urn:owlapi-js:phase2:v1>\n  Annotation(Annotation(rdfs:comment \"nested\"@en) rdfs:label \"Phase 2\"@en)\n\n  Declaration(Annotation(rdfs:comment \"declared class\") Class(:A))\n  Declaration(Datatype(:Code))\n  Declaration(ObjectProperty(:p))\n  Declaration(DataProperty(:d))\n  Declaration(AnnotationProperty(:note))\n  Declaration(NamedIndividual(:i))\n\n  SubClassOf(Annotation(:note \"annotated axiom\") :A ObjectIntersectionOf(:B ObjectSomeValuesFrom(ObjectInverseOf(:p) :C)))\n  EquivalentClasses(:A ObjectUnionOf(:B ObjectComplementOf(:C)))\n  DisjointClasses(:A :B :C)\n  DisjointUnion(:A :B ObjectOneOf(:i _:anon))\n\n  SubObjectPropertyOf(:p :q)\n  SubObjectPropertyOf(ObjectPropertyChain(:p :q) :r)\n  EquivalentObjectProperties(:p :q)\n  DisjointObjectProperties(:p :q)\n  InverseObjectProperties(:p :q)\n  ObjectPropertyDomain(:p ObjectAllValuesFrom(:q :B))\n  ObjectPropertyRange(:p ObjectHasValue(:q :i))\n  FunctionalObjectProperty(:p)\n  InverseFunctionalObjectProperty(:p)\n  ReflexiveObjectProperty(:p)\n  IrreflexiveObjectProperty(:q)\n  SymmetricObjectProperty(:p)\n  AsymmetricObjectProperty(:q)\n  TransitiveObjectProperty(:r)\n\n  SubDataPropertyOf(:d :e)\n  EquivalentDataProperties(:d :e)\n  DisjointDataProperties(:d :e)\n  DataPropertyDomain(:d DataSomeValuesFrom(:e DataUnionOf(xsd:string xsd:integer)))\n  DataPropertyRange(:d DatatypeRestriction(xsd:integer xsd:minInclusive \"0\"^^xsd:integer))\n  FunctionalDataProperty(:d)\n  DatatypeDefinition(:Code DataOneOf(\"alpha\" \"beta\"@en))\n  HasKey(:A (:p :q) (:d :e))\n\n  SameIndividual(:i _:anon)\n  DifferentIndividuals(:i :j)\n  ClassAssertion(ObjectMinCardinality(1 :p :B) _:anon)\n  ObjectPropertyAssertion(:p :i _:anon)\n  NegativeObjectPropertyAssertion(:q _:anon :j)\n  DataPropertyAssertion(:d :i \"01\"^^xsd:integer)\n  NegativeDataPropertyAssertion(:e _:anon \"plain\")\n\n  AnnotationAssertion(Annotation(:note \"axiom metadata\") :note _:anon <urn:owlapi-js:phase2:value>)\n  SubAnnotationPropertyOf(:note rdfs:label)\n  AnnotationPropertyDomain(:note <urn:owlapi-js:phase2:domain>)\n  AnnotationPropertyRange(:note <urn:owlapi-js:phase2:range>)\n  ClassAssertion(ObjectHasSelf(:p) :j)\n  ClassAssertion(ObjectMaxCardinality(2 :p :B) :j)\n  ClassAssertion(ObjectExactCardinality(1 :q :C) :j)\n  ClassAssertion(DataAllValuesFrom(:d DataIntersectionOf(xsd:string DataComplementOf(xsd:integer))) :j)\n  ClassAssertion(DataHasValue(:d \"Δ 😀\") :j)\n  ClassAssertion(DataMinCardinality(0 :d xsd:string) :j)\n  ClassAssertion(DataMaxCardinality(2 :d xsd:string) :j)\n  ClassAssertion(DataExactCardinality(1 :d xsd:string) :j)\n)\n",
+  "schemaVersion": 1,
+  "freshNativeBindingSha256": "556ffa28d5b95dd31b3f144ff2de2759e55f71703b51ad84dae22d8ce829bff3"
+}
