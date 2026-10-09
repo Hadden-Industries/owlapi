@@ -2156,7 +2156,7 @@ Every clean install runs `npm install-scripts ls` and the governance test derive
 Local `devEngines.packageManager.version` is `>=12.2.0`; the development Node runtime remains deliberately versionless, and no top-level `packageManager` or Corepack authority is introduced.
 CI, release construction, runtime assertions, and governed qualification retain exact npm 12.2.0 bootstrap before any project command or cache probe.
 The isolated Markdown `file:` archive graph and lock are preserved.
-This amendment supersedes earlier exact-development-declaration wording in §§2.45–2.54, including JSPM, schema, SBOM, package-lint, browser, and fixture-bundler tools; their actual executions still use exact locked artifacts.
+This amendment supersedes earlier exact-development-declaration wording in §§2.45–2.54 and §21.2, including JSPM, schema, SBOM, package-lint, browser, fixture-bundler tools, and the illustrative exact local npm declaration; their actual executions still use exact locked artifacts.
 Changing the source/release npm reference or a blocking Node patch is a dedicated reviewed configuration change: update exact workflow authority, inspect the lockfile/packlist diff and rerun affected package/release gates.
 No workflow follows `latest` or silently updates the release CLI.
 

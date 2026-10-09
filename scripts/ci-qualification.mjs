@@ -116,7 +116,7 @@ export const createQualificationChecks = ({
   return result;
 };
 
-/** Strict v4 FULL/reused envelope. Unsupported versions/modes require fresh CI. */
+/** Strict v5 FULL/reused envelope. Unsupported versions/modes require fresh CI. */
 export const assertQualificationRecord = (record) => {
   fact(
     closed(record, [
