@@ -1,0 +1,533 @@
+{
+  "artifactId": "d300e6859a71a1103dc83afb71653394d1584244a7e0e3917ee6414e0cf450aa",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 203136,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734",
+        "size": 1302,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "3d65150aadb440393668579bd47674f9c6d51f32d1f352510e0c1d6ddf549005",
+        "size": 665,
+        "type": "FILE"
+      },
+      {
+        "path": "package/THIRD-PARTY-LICENSE",
+        "sha256": "a877291d800ed43692f3f9ae09d8e01cc6f7293ad39d43896059c188ffbb8b7c",
+        "size": 2209,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/cli.mjs",
+        "sha256": "98d6df62aa3c84284db17944a2a8017f911640e9c4d3de907a9f93b467ee47c8",
+        "size": 244,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/cli.d.mts",
+        "sha256": "f4c5cf9bb78e85f15dc27180260637cf24b2a24bc39e0788783a3accc4dde614",
+        "size": 9,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/cli.mjs",
+        "sha256": "9af64c5e39be18d14a59356278d4589475a0e2088fe203ed771bdf18941aa7aa",
+        "size": 39804,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/config.d.mts",
+        "sha256": "9729ab715be2bed805f92a1e4582d84f11e63dc105978162cec1bee56215a100",
+        "size": 1075,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/config.mjs",
+        "sha256": "82be69b80067515fffbe80221bfc640e0d37149acb19c01db9431a9ea9e1cecd",
+        "size": 267,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/experimental-index.d.mts",
+        "sha256": "6e94ce4be67f134d156d3b96e33fcbe16ef5de3ba0e3fa4edbdf5047b711479b",
+        "size": 14637,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/experimental-index.mjs",
+        "sha256": "f3d3beb6370a261bb1aa92177a5ac8764ef791c05b9890fa5e649a389ff6f9d4",
+        "size": 15056,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/experimental-runtime-types.d.ts",
+        "sha256": "2924de7b123d797f79f4134a2ecd219760a2d262c4cb0b4ddbebfeea415085f6",
+        "size": 7659,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/experimental-runtime.d.ts",
+        "sha256": "2924de7b123d797f79f4134a2ecd219760a2d262c4cb0b4ddbebfeea415085f6",
+        "size": 7659,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/experimental-runtime.mjs",
+        "sha256": "d3098c6b2680735a84ff7d9248def2382f3701b91214c3e4abcf670701aac179",
+        "size": 9790,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/filter-index.d.mts",
+        "sha256": "494a21bd40663d9aa17608ccb95c8bd8d155b89a6e84785b46d72841b98afccc",
+        "size": 6817,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/filter-index.mjs",
+        "sha256": "4333b350b4735690998afb8a6cb15683793b8af26e01082a9468ae4469e7fa08",
+        "size": 11176,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/get-log-filter.d.mts",
+        "sha256": "e119e5023581deb35fe500cf979ce3e53e3e87a865f744a892535e1f856c46cb",
+        "size": 257,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/get-log-filter.mjs",
+        "sha256": "8d267b4293c32da393c1b189264ecce44a9f0ca767293de300904b006ad221f0",
+        "size": 2037,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.mts",
+        "sha256": "cd01cf592aa4bded5e55d11a6eb93a0ae9c2b2d89ad7dc56edd0c28d93a1daca",
+        "size": 5390,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.mjs",
+        "sha256": "f6c313ae7224e45254c4a2394f6fe09da6ace288d50e54d21f789cca42ed34fa",
+        "size": 1642,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/parallel-plugin-worker.d.mts",
+        "sha256": "f4c5cf9bb78e85f15dc27180260637cf24b2a24bc39e0788783a3accc4dde614",
+        "size": 9,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/parallel-plugin-worker.mjs",
+        "sha256": "788954c2d9420b74914fb2f75d5b974c7a13f53439c687e714ee9a16fb460147",
+        "size": 1113,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/parallel-plugin.d.mts",
+        "sha256": "c3f450eec7c2f401144be224f951c219bbbfeef1e7a2474ad6051e6bcb1d965f",
+        "size": 575,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/parallel-plugin.mjs",
+        "sha256": "0fff1fcfb26076a52caf31772881e55e8dbd7f039f268124e438638e8d84e0c2",
+        "size": 187,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/parse-ast-index.d.mts",
+        "sha256": "f052de6716ff536fdfad7a768797306ac397fb29895898e8132b710dae88d573",
+        "size": 1070,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/parse-ast-index.mjs",
+        "sha256": "3f5733dcfddde000f02b5077efc313355f14d2ce86758b11ddc3ad66ec9186aa",
+        "size": 2148,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/plugins-index.d.mts",
+        "sha256": "92d9338b93d02182b1d35f8cd632eb6d9ec0952126c49ccdf176c79f46469b2d",
+        "size": 992,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/plugins-index.mjs",
+        "sha256": "ceb62c82ec72d478916ba7f0754d60de1c185a6a064a9a88f96f96567c7ab111",
+        "size": 1082,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/shared/binding-DlR5d34p.mjs",
+        "sha256": "680ca7e2a5b7f3d2251e2f74d15eb4cdf6daab750a9565cb51a8b66c2ae32565",
+        "size": 35039,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/shared/binding-tzp6Hc_3.d.mts",
+        "sha256": "ac524e3a45aa716a18154c9f65cb4e0e45cb3862c752d71b3b13b6c0d86a69d8",
+        "size": 69006,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/shared/bindingify-input-options-C0gEvtnB.mjs",
+        "sha256": "b32d86f8367bf94bfec54e44b0f95b6db806196b408eb418b00a3389500834cc",
+        "size": 104965,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/shared/constructors-B2hkJoIA.mjs",
+        "sha256": "d6c783ebdb1198baf60d6674f99c81ca4aaddcd85f3f77b1caf9ed4d9e17a4b3",
+        "size": 2910,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/shared/constructors-Dw9H1IvX.d.mts",
+        "sha256": "8edf431e93cde1d8c9feb8a9bdccc4afb319f6797a55abbfe6469faa8c8db2c0",
+        "size": 2921,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/shared/create-bundler-option-2b9QJDoZ.mjs",
+        "sha256": "4cc6f6bd2417b9c8002d40215cb10d18a220bf4350170d95591c078d842bce08",
+        "size": 159438,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/shared/define-config-CGhm2DU-.d.mts",
+        "sha256": "5b0afa14f7b0cb311c2b77b6a4279a4357f0c4c4602c0ddfca23f397706604a0",
+        "size": 159410,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/shared/define-config-Demdg3_4.mjs",
+        "sha256": "e887326cc80caa4248166a9ce863134fc4f7e1314ad9a3d7e380bd1a43f746ab",
+        "size": 130,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/shared/dist-DKbukT1H.mjs",
+        "sha256": "f7fdbc4f6653f54996d0044435488bbec4adb6420f796f76b3af68a1264bda18",
+        "size": 7739,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/shared/error-Dsqzw0Oa.mjs",
+        "sha256": "baacad8b3076a3f5d077761e67fadb05ec77c383d19a0e83ca81562f36ba6eb0",
+        "size": 2956,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/shared/get-log-filter-AjBknEEO.d.mts",
+        "sha256": "a57f53caa3e1283f2234c38f3614eb66549f83d0b21bddfcbb2dca1a023c2383",
+        "size": 886,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/shared/load-config-CfSHrASH.mjs",
+        "sha256": "20b9ded74c5ad75425fe563f58f309515aa20ed53d1621deee35e3809e56d8b8",
+        "size": 5241,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/shared/logging-xuHO4mAy.d.mts",
+        "sha256": "fc5ad2ec8b130a59612c5cfcc2cdca9bcdd80851adb8acdb004aaeff00cc978d",
+        "size": 1455,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/shared/logs-D6uA606S.mjs",
+        "sha256": "7edfdf44f30af715dbac404c6a6b9909510e82bc9ca6762c127e2ef474dac3da",
+        "size": 6414,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/shared/misc-DOSKtd97.mjs",
+        "sha256": "a6b94bac1329695387fcaf0d0dbd583165e962a2de13c719e819fc68e4bcb04a",
+        "size": 1108,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/shared/normalize-string-or-regex-B7Gsiuz7.mjs",
+        "sha256": "4f8a2ecd09655ec60a25e1cc3416ab772c4562f1982d8d033c971ef7e3c5657d",
+        "size": 2131,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/shared/parse-CbPMgY6t.mjs",
+        "sha256": "089fad2621262068d39bcb478baabd2d6fc5a781e8086d787afb888746699cdf",
+        "size": 2628,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/shared/prompt-CH6TK0bC.mjs",
+        "sha256": "f29111163870f5b1f7b184b65454ad6fc31869579b9c88c120ff0c01a7e1fa29",
+        "size": 49939,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/shared/resolve-tsconfig-DyR2RUTm.mjs",
+        "sha256": "f39bc658c23380e5b65e5b03f8e38a9848567b1d7c400f43c37b9e64b12250a3",
+        "size": 5024,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/shared/rolldown-D_vNlorD.mjs",
+        "sha256": "cc166198dead4fe1193d1b5799ba4dd7b8b2144f5b4d984dcddeb45aee0764fe",
+        "size": 5393,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/shared/transform-D4RDjIPI.d.mts",
+        "sha256": "fe496a9c77ac30b9a9904332f1431bf2a8dab7e0e090edf2da59c9ed9e23f7ca",
+        "size": 6338,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/shared/watch-D9MpODOf.mjs",
+        "sha256": "75d6d64b4f931b8cb2f42422c9722a19e13b238fea966e3ae02c5dc3f0e5e703",
+        "size": 12019,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/utils-index.d.mts",
+        "sha256": "0b50093464e506a648b9d59b330c9d40379a736f0c3a19f351ae39e17aec7cba",
+        "size": 24322,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/utils-index.mjs",
+        "sha256": "9809baa5d164b2b58c3e548fc367a07e806e128672587fd4965276fd85c912f2",
+        "size": 70392,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "2b7a7eb200cef2191475439e441690ac69aaf85e6677c699e7916efa2af7e8a7",
+        "size": 6101,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1302,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/23/23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734",
+          "sha256": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734",
+        "size": 1302
+      },
+      {
+        "blob": {
+          "bytes": 2209,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a8/a877291d800ed43692f3f9ae09d8e01cc6f7293ad39d43896059c188ffbb8b7c",
+          "sha256": "a877291d800ed43692f3f9ae09d8e01cc6f7293ad39d43896059c188ffbb8b7c"
+        },
+        "kind": "THIRD_PARTY_LICENCE",
+        "path": "package/THIRD-PARTY-LICENSE",
+        "sha256": "a877291d800ed43692f3f9ae09d8e01cc6f7293ad39d43896059c188ffbb8b7c",
+        "size": 2209
+      }
+    ],
+    "expandedBytes": 878776,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://rolldown.rs/",
+      "license": "MIT",
+      "name": "rolldown",
+      "repository": {
+        "directory": "packages/rolldown",
+        "type": "git",
+        "url": "git+https://github.com/rolldown/rolldown.git"
+      },
+      "version": "1.2.13"
+    },
+    "packageMetadata": {
+      "bin": {
+        "rolldown": "./bin/cli.mjs"
+      },
+      "bugs": {
+        "url": "https://github.com/rolldown/rolldown/issues"
+      },
+      "dependencies": {
+        "@oxc-project/types": "=0.153.0",
+        "@rolldown/pluginutils": "^1.0.0"
+      },
+      "description": "Fast JavaScript/TypeScript bundler in Rust with Rollup-compatible API.",
+      "devDependencies": {
+        "@emnapi/core": "2.0.0-alpha.5",
+        "@emnapi/runtime": "2.0.0-alpha.5",
+        "@napi-rs/cli": "^3.10.0",
+        "@napi-rs/wasm-runtime": "~1.2.5",
+        "@oxc-node/cli": "^0.1.0",
+        "cac": "^7.0.0",
+        "consola": "^3.4.2",
+        "emnapi": "2.0.0-alpha.5",
+        "execa": "^9.2.0",
+        "fresh-import": "^0.2.1",
+        "glob": "^13.0.0",
+        "oxc-parser": "=0.153.0",
+        "pathe": "^2.0.3",
+        "remeda": "^2.50.0",
+        "rolldown": "1.2.13",
+        "rolldown-plugin-dts": "^0.28.0",
+        "rollup": "^4.63.0",
+        "signal-exit": "4.1.0",
+        "source-map": "0.8.0",
+        "typescript": "^6.0.0",
+        "valibot": "1.5.0"
+      },
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "exports": {
+        ".": "./dist/index.mjs",
+        "./config": "./dist/config.mjs",
+        "./experimental": "./dist/experimental-index.mjs",
+        "./experimental/runtime": {
+          "default": "./dist/experimental-runtime.mjs",
+          "types": "./dist/experimental-runtime.d.ts"
+        },
+        "./experimental/runtime-types": {
+          "types": "./dist/experimental-runtime-types.d.ts"
+        },
+        "./filter": "./dist/filter-index.mjs",
+        "./getLogFilter": "./dist/get-log-filter.mjs",
+        "./package.json": "./package.json",
+        "./parallelPlugin": "./dist/parallel-plugin.mjs",
+        "./parseAst": "./dist/parse-ast-index.mjs",
+        "./plugins": "./dist/plugins-index.mjs",
+        "./utils": "./dist/utils-index.mjs"
+      },
+      "files": [
+        "bin",
+        "cli",
+        "dist",
+        "LICENSE",
+        "THIRD-PARTY-LICENSE",
+        "!dist/*.node"
+      ],
+      "homepage": "https://rolldown.rs/",
+      "imports": {
+        "#parallel-plugin-worker": "./dist/parallel-plugin-worker.mjs"
+      },
+      "keywords": [
+        "bundler",
+        "esbuild",
+        "parcel",
+        "rolldown",
+        "rollup",
+        "webpack"
+      ],
+      "license": "MIT",
+      "main": "./dist/index.mjs",
+      "module": "./dist/index.mjs",
+      "name": "rolldown",
+      "napi": {
+        "binaryName": "rolldown-binding",
+        "dtsHeader": "type MaybePromise<T> = T | Promise<T>\ntype Nullable<T> = T | null | undefined\ntype VoidNullable<T = void> = T | null | undefined | void\nexport type BindingStringOrRegex = string | RegExp\nexport type BindingResult<T> = { errors: BindingError[], isBindingErrors: boolean } | T\n\n",
+        "packageName": "@rolldown/binding",
+        "targets": [
+          "aarch64-apple-darwin",
+          "aarch64-linux-android",
+          "aarch64-pc-windows-msvc",
+          "aarch64-unknown-linux-gnu",
+          "aarch64-unknown-linux-musl",
+          "aarch64-unknown-linux-ohos",
+          "armv7-linux-androideabi",
+          "armv7-unknown-linux-gnueabihf",
+          "powerpc64le-unknown-linux-gnu",
+          "s390x-unknown-linux-gnu",
+          "wasm32-wasip1-threads",
+          "x86_64-apple-darwin",
+          "x86_64-pc-windows-msvc",
+          "x86_64-unknown-freebsd",
+          "x86_64-unknown-linux-gnu",
+          "x86_64-unknown-linux-musl"
+        ],
+        "wasm": {
+          "browser": {
+            "asyncInit": true,
+            "errorEvent": true,
+            "fs": true
+          },
+          "initialMemory": 16384
+        }
+      },
+      "optionalDependencies": {
+        "@rolldown/binding-android-arm-eabi": "1.2.13",
+        "@rolldown/binding-android-arm64": "1.2.13",
+        "@rolldown/binding-darwin-arm64": "1.2.13",
+        "@rolldown/binding-darwin-x64": "1.2.13",
+        "@rolldown/binding-freebsd-x64": "1.2.13",
+        "@rolldown/binding-linux-arm-gnueabihf": "1.2.13",
+        "@rolldown/binding-linux-arm64-gnu": "1.2.13",
+        "@rolldown/binding-linux-arm64-musl": "1.2.13",
+        "@rolldown/binding-linux-ppc64-gnu": "1.2.13",
+        "@rolldown/binding-linux-s390x-gnu": "1.2.13",
+        "@rolldown/binding-linux-x64-gnu": "1.2.13",
+        "@rolldown/binding-linux-x64-musl": "1.2.13",
+        "@rolldown/binding-openharmony-arm64": "1.2.13",
+        "@rolldown/binding-win32-arm64-msvc": "1.2.13",
+        "@rolldown/binding-win32-x64-msvc": "1.2.13"
+      },
+      "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+      },
+      "repository": {
+        "directory": "packages/rolldown",
+        "type": "git",
+        "url": "git+https://github.com/rolldown/rolldown.git"
+      },
+      "scripts": {
+        "# Scrips for binding #": "_",
+        "# Scrips for docs #": "_",
+        "# Scrips for node #": "_",
+        "artifacts": "napi artifacts --cwd ./src --package-json-path ../package.json -o=../artifacts --npm-dir ../npm",
+        "build-binding": "oxnode ./build-binding.ts",
+        "build-binding:profile": "pnpm build-binding --profile profile --features chrome-tracing",
+        "build-binding:release": "pnpm build-binding --release",
+        "build-binding:wasi": "pnpm build-binding --target wasm32-wasip1-threads",
+        "build-binding:wasi:release": "pnpm build-binding --profile release-wasi --target wasm32-wasip1-threads",
+        "build-browser-pkg:debug": "TARGET='browser' pnpm run --sequential '/^build-(binding:wasi|node)$/'",
+        "build-browser-pkg:release": "TARGET='browser' pnpm run --sequential '/^build-(binding:wasi:release|node)$/'",
+        "build-js-glue": "pnpm run --sequential '/^build-(node|types-check)$/'",
+        "build-native:debug": "pnpm run --sequential '/^build-(binding|js-glue)$/'",
+        "build-native:memory-profile": "pnpm run build-binding:profile --features default_global_allocator && pnpm run build-js-glue",
+        "build-native:profile": "pnpm run build-binding:profile && pnpm run build-js-glue",
+        "build-native:release": "pnpm run --sequential '/^build-(binding:release|js-glue)$/'",
+        "build-node": "node --enable-source-maps --import @oxc-node/core/register -C dev ./build.ts",
+        "build-types-check": "tsc -p ./tsconfig.check.json",
+        "build-wasi:debug": "TARGET='rolldown-wasi' pnpm run --sequential '/^build-(binding|binding:wasi|node)$/'",
+        "build-wasi:release": "TARGET='rolldown-wasi' pnpm run --sequential '/^build-(binding|binding:wasi:release|node)$/'",
+        "publint": "publint ."
+      },
+      "type": "module",
+      "types": "./dist/index.d.mts",
+      "version": "1.2.13"
+    },
+    "physicalEntryCount": 52,
+    "tarball": {
+      "bytes": 203136,
+      "sha256": "6609ae17a89a69e6e97acc3a1c5d5473b20b8c93ec2a3ed4d6f6bf71f691d6bf"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

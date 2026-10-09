@@ -16,34 +16,34 @@
     "version": "0.1.0-rc.1",
     "lockfile": "package-lock.json",
     "lockfileVersion": 3,
-    "lockfileSha256": "02ce4308ff30b7053c57f8ba8da3e61d18ebf0fb4aa918b59a98fc6a246fa04f",
+    "lockfileSha256": "65a580e77d1a074eb897f80269e84a1285bb3a63250fec4cae7d028ad6e04459",
     "evidenceManifest": "docs/provenance/npm-package-evidence.json",
-    "evidenceManifestSha256": "3965c7dbdf34df359a4f73c39d65fff8acf535c16c85dbfb0e4078bea9c909cb",
-    "evidenceCorpusRoot": "c946fad11baff05444ba7a20756de225142409b7e22854a48bc4c9442b155b3d",
+    "evidenceManifestSha256": "1570ec4a9edc8842f73441a57be7ec8032c8d324b8857dde9f87f3a3c848c4d9",
+    "evidenceCorpusRoot": "f7db4b4634868cb84ea8715292c97f60d64b693dc0fe7885d7cdc133d02622d4",
     "tarballDependenciesBundled": false
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "8ead461d56ecb49a22215accde4fd59d8e63bb5e79ece84c97ea68d1b456d69e",
+    "factsSha256": "1db077f4124400d2c8ad7417a0a2ff35c63975ee01667957707f0b075e6909fb",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
     "conclusion": null
   },
   "summary": {
-    "componentCount": 709,
-    "artifactCount": 650,
+    "componentCount": 710,
+    "artifactCount": 651,
     "productionComponentCount": 38,
-    "developmentComponentCount": 671,
-    "authenticatedTarballArtifactCount": 650,
-    "registrySignatureVerifiedArtifactCount": 650,
+    "developmentComponentCount": 672,
+    "authenticatedTarballArtifactCount": 651,
+    "registrySignatureVerifiedArtifactCount": 651,
     "provenanceVerifiedArtifactCount": 197,
-    "provenanceNotPublishedArtifactCount": 453,
-    "scanVerifiedArtifactCount": 650,
-    "evidenceBlobCount": 3163,
-    "evidenceRetainedBytes": 66158207,
-    "inspectedLicenceFileCount": 617,
-    "inspectedNoticeFileCount": 292,
+    "provenanceNotPublishedArtifactCount": 454,
+    "scanVerifiedArtifactCount": 651,
+    "evidenceBlobCount": 3168,
+    "evidenceRetainedBytes": 66243523,
+    "inspectedLicenceFileCount": 618,
+    "inspectedNoticeFileCount": 293,
     "productionInspectedLicenceFileCount": 38,
     "productionInspectedNoticeFileCount": 17,
     "productionComponentsWithoutInspectedLicence": [
@@ -66,7 +66,7 @@
       "CC-BY-4.0": 1,
       "CC0-1.0": 4,
       "ISC": 114,
-      "MIT": 478,
+      "MIT": 479,
       "MPL-2.0": 12,
       "Python-2.0": 1
     },
@@ -90,7 +90,7 @@
       "CC-BY-4.0": 1,
       "CC0-1.0": 4,
       "ISC": 111,
-      "MIT": 448,
+      "MIT": 449,
       "MPL-2.0": 12,
       "Python-2.0": 1
     },
@@ -6324,9 +6324,9 @@
     },
     {
       "dependencyPath": "node_modules/@jspm/generator",
-      "artifactId": "328a9d4fff2f626a1deaf6f262340216217a7db0c503be4359f4b1473af402aa",
+      "artifactId": "776ec993b3572249653f5a3127a14eb7a7daa6f1d18c5812d7ad5d3611b25522",
       "name": "@jspm/generator",
-      "version": "2.16.3",
+      "version": "2.17.0",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["Apache-2.0"],
       "tarballDeclaredLicenseExpression": "Apache-2.0",
@@ -6342,16 +6342,16 @@
         {
           "path": "package/LICENSE",
           "kind": "LICENCE",
-          "sha256": "49bbe9114e49214df2ccc324cb3ac8d1d1aa1c3a0947f94c286765e86647b32e",
-          "blobSha256": "49bbe9114e49214df2ccc324cb3ac8d1d1aa1c3a0947f94c286765e86647b32e",
-          "blobPath": "blobs/sha256/49/49bbe9114e49214df2ccc324cb3ac8d1d1aa1c3a0947f94c286765e86647b32e"
+          "sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd",
+          "blobSha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd",
+          "blobPath": "blobs/sha256/58/58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd"
         },
         {
           "path": "package/README.md",
           "kind": "README_ATTRIBUTION",
-          "sha256": "a1206898a04efee4c9e78782e94cb68ffdc3ab2ef49cd68dfba06b095b6980f7",
-          "blobSha256": "a1206898a04efee4c9e78782e94cb68ffdc3ab2ef49cd68dfba06b095b6980f7",
-          "blobPath": "blobs/sha256/a1/a1206898a04efee4c9e78782e94cb68ffdc3ab2ef49cd68dfba06b095b6980f7"
+          "sha256": "30ffe356c94f4c67bbe1c7aceacf60e32af3dd81fbdd3523ddf12fc887aaf5d6",
+          "blobSha256": "30ffe356c94f4c67bbe1c7aceacf60e32af3dd81fbdd3523ddf12fc887aaf5d6",
+          "blobPath": "blobs/sha256/30/30ffe356c94f4c67bbe1c7aceacf60e32af3dd81fbdd3523ddf12fc887aaf5d6"
         }
       ],
       "externalLicenseEvidence": [],
@@ -6362,14 +6362,73 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "4bfcd6ae590bbb4efdf68d29d6a72bc92327328efc3b5d2b93d70fb82d59536f",
-        "provenanceSha256": "6d8fbe1956381f4dfac9d854f90b77fbe582608ad579a003c54f456544f710d7",
-        "registrySignatureSha256": "51ba0605021435b7c805f335d01ae9c179732ffef4eee37038927ab6edbbf81c",
-        "scanSha256": "ab5731bd921a300c3ecd9127f11e58b56b5a94e274fbd2802fac54c6d11405d3"
+        "archiveSha256": "f6f29ab92702f0f1a07bb509a1d1cf784e1576301c1f7e7fc36b92c66914f15f",
+        "provenanceSha256": "79ac6d1bac09261109a48473211af9c4d05d04fee01b1a6fd1904ba766b17c30",
+        "registrySignatureSha256": "fb4c98a05af91ca6a1ff6ea5d41c18e1e85326ba44edc87d80f894b9090d5983",
+        "scanSha256": "d8b063046f1e1d884c57fe11385dde826427abf55806bcba1980c2700a7209b7"
       },
-      "registryUrl": "https://registry.npmjs.org/@jspm/generator/-/generator-2.16.3.tgz",
+      "registryUrl": "https://registry.npmjs.org/@jspm/generator/-/generator-2.17.0.tgz",
       "sourceReference": "git+https://github.com/jspm/jspm.git",
       "sourceUrl": "https://github.com/jspm/jspm",
+      "packageAuthor": "Guy Bedford",
+      "packageTarballScope": false,
+      "noticeDisposition": "DEVELOPMENT_ONLY_RECORDED_NOT_PACKED",
+      "rationale": "This authenticated component belongs to the repository test, evidence, documentation, or release toolchain and is excluded from the owlapi tarball.",
+      "optional": false,
+      "platformSelectors": {
+        "cpu": [],
+        "libc": [],
+        "os": []
+      }
+    },
+    {
+      "dependencyPath": "node_modules/@jspm/generator/node_modules/es-module-lexer",
+      "artifactId": "9d35d6287a8a1235b00ff58f9fc4e1aaf5f222d44c9fee2f204bec735d949d43",
+      "name": "es-module-lexer",
+      "version": "3.0.3",
+      "relationship": "DEVELOPMENT_ONLY",
+      "lockfileDeclaredLicenseExpressions": ["MIT"],
+      "tarballDeclaredLicenseExpression": "MIT",
+      "scanObservedLicenseExpressions": ["MIT"],
+      "declaredLicenseExpression": "MIT",
+      "concludedLicenseExpression": "MIT",
+      "licenseQualification": "LOCKFILE_TARBALL_DECLARATIONS_CONSISTENT",
+      "licenseConclusionRationale": "The concluded SPDX expression preserves an equivalent prior recorded conclusion when present; otherwise it selects the first SPDX-valid lockfile declaration, then authenticated package.json declaration, and only then ScanCode evidence. The distribution disposition likewise preserves an equivalent prior decision when present; otherwise it follows development/runtime scope and the concluded-licence policy. The lockfile and authenticated package.json declarations are consistent where present. ScanCode's additional file-level observations remain separately recorded and do not silently redefine the package declaration.",
+      "distributionDisposition": "DEVELOPMENT_ONLY_NOT_DISTRIBUTED",
+      "inspectionBasis": "LOCKED_REGISTRY_TARBALL",
+      "licenseFilePresence": "PRESENT",
+      "inspectedFiles": [
+        {
+          "path": "package/LICENSE",
+          "kind": "LICENCE",
+          "sha256": "8a4b6c44eebfb026d23719a348145a661a555568dbfdc11618ff2d0dd9306b00",
+          "blobSha256": "8a4b6c44eebfb026d23719a348145a661a555568dbfdc11618ff2d0dd9306b00",
+          "blobPath": "blobs/sha256/8a/8a4b6c44eebfb026d23719a348145a661a555568dbfdc11618ff2d0dd9306b00"
+        },
+        {
+          "path": "package/README.md",
+          "kind": "README_ATTRIBUTION",
+          "sha256": "e49a08534a18bd4fe84faf7dc74705fb652905757cf834cafb3509d0d86d8af0",
+          "blobSha256": "e49a08534a18bd4fe84faf7dc74705fb652905757cf834cafb3509d0d86d8af0",
+          "blobPath": "blobs/sha256/e4/e49a08534a18bd4fe84faf7dc74705fb652905757cf834cafb3509d0d86d8af0"
+        }
+      ],
+      "externalLicenseEvidence": [],
+      "authentication": {
+        "registrySignature": "VERIFIED",
+        "provenance": "NOT_PUBLISHED",
+        "archive": "VERIFIED",
+        "scan": "VERIFIED"
+      },
+      "artifactEvidence": {
+        "archiveSha256": "dd96fd9a8fd6b57444e83efb61a53ea7e94d32e532f5a06be6476209148cc920",
+        "provenanceSha256": "5d7cc92e8c2ce53146120548488e29e0b032324dbf49fdfb74d4178564da65b3",
+        "registrySignatureSha256": "3909a0a38b93f3c7aa7a2045952e175c4b7fd8144f382fc06d48c7ce39da66ed",
+        "scanSha256": "9418f19b199f962da6ebe766dd6b81a93606fa82c83b287431fb521ddbc64076"
+      },
+      "registryUrl": "https://registry.npmjs.org/es-module-lexer/-/es-module-lexer-3.0.3.tgz",
+      "sourceReference": "git+https://github.com/guybedford/es-module-lexer.git",
+      "sourceUrl": "https://github.com/guybedford/es-module-lexer",
       "packageAuthor": "Guy Bedford",
       "packageTarballScope": false,
       "noticeDisposition": "DEVELOPMENT_ONLY_RECORDED_NOT_PACKED",
@@ -8421,9 +8480,9 @@
     },
     {
       "dependencyPath": "node_modules/@oxc-project/types",
-      "artifactId": "d97cd513e4fdf6cf0700fa4fc3bb8b2a499010250b70da3b0b8ecf9ee18e2c47",
+      "artifactId": "48cf3c8a25d965b5d78e6e4a2020193201d26c7a40d7797d17b816085b19eb62",
       "name": "@oxc-project/types",
-      "version": "0.151.0",
+      "version": "0.153.0",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["MIT"],
       "tarballDeclaredLicenseExpression": "MIT",
@@ -8452,12 +8511,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "b65f81452d17267163f23c8bfeb5613b9f9d481c392e99825fa8cbeef1362cae",
-        "provenanceSha256": "d9b29772316f7cf2a4cb161589739ffb49532035150a2944ce2f5930befad090",
-        "registrySignatureSha256": "2bedf0dbc94b4a2545ca16232efa3eccd91ba7666a81e7bf76c6d15672f72687",
-        "scanSha256": "4d65d4ac30b4691fc22b23d57a355a575d30d10da616fbfa0f1a7775655f37c1"
+        "archiveSha256": "63e2a3a3a173ed8d75e9050a3f8dba2986c5888bb75e25846027e83346d19819",
+        "provenanceSha256": "3c6055103844b0250f5cec5626e8f6a0d691387cba0f6c1d5239f3207c4204b4",
+        "registrySignatureSha256": "d03e4d801fb4f885f1928f00b2a296854bdfddf809a40dc2a9021db6d91a745c",
+        "scanSha256": "0bd5aae9cd8aceafa9e8451d7cd5a2585749f50111e8b00007d3213cbcfababe"
       },
-      "registryUrl": "https://registry.npmjs.org/@oxc-project/types/-/types-0.151.0.tgz",
+      "registryUrl": "https://registry.npmjs.org/@oxc-project/types/-/types-0.153.0.tgz",
       "sourceReference": "git+https://github.com/oxc-project/oxc.git",
       "sourceUrl": "https://github.com/oxc-project/oxc",
       "packageAuthor": "Boshen and oxc contributors",
@@ -9252,9 +9311,9 @@
     },
     {
       "dependencyPath": "node_modules/@playwright/test",
-      "artifactId": "30b0e795a94da4c000511c54240c75ad4b1db00460b50a7dc68b1cb0642972dc",
+      "artifactId": "92114ffd7851fb10b2bad1c60b8c134c63df6bb6771932ec3365cdc8643f4ff2",
       "name": "@playwright/test",
-      "version": "1.63.0",
+      "version": "1.64.0",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["Apache-2.0"],
       "tarballDeclaredLicenseExpression": "Apache-2.0",
@@ -9290,12 +9349,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "4066f6cdb6bf0d501a721847d58e536a79b671c80b5fd107ec0a5ae2abd1d78d",
-        "provenanceSha256": "bdc8470efc489a24639dd5020f558adcdbf72074d1363953777fb1ca9489123b",
-        "registrySignatureSha256": "a983c97da641bf59037299052d4a763e42ea0ac55c5bc5ebd50155a34c797d54",
-        "scanSha256": "6ffa9779c01a67a0e4573dc1cdf2ff3ebb642f78a339d20e2c4a40813df0d754"
+        "archiveSha256": "ad2eec6e05d6433dfd42c227c908e7238462a90db884173543acb57e97de79ff",
+        "provenanceSha256": "6fc4f1a5a4a91ec1f5b92954a71564c97ab284301caa11ba64ced413c60f4e16",
+        "registrySignatureSha256": "ad54ca3037cf30045cd599065a737385eb1b0bc55939b1dcb0e405736ad1f214",
+        "scanSha256": "77b7a55ccf08ddb891e56665c0a18a29d4222c76d475bcdb2724cc69ca5c42db"
       },
-      "registryUrl": "https://registry.npmjs.org/@playwright/test/-/test-1.63.0.tgz",
+      "registryUrl": "https://registry.npmjs.org/@playwright/test/-/test-1.64.0.tgz",
       "sourceReference": "git+https://github.com/microsoft/playwright.git",
       "sourceUrl": "https://github.com/microsoft/playwright",
       "packageAuthor": "Microsoft Corporation",
@@ -9526,9 +9585,9 @@
     },
     {
       "dependencyPath": "node_modules/@rolldown/binding-android-arm-eabi",
-      "artifactId": "28b7bea21fe8a189207b7629c5477f0fce2c64557a6de6c09d226bd3f595002f",
+      "artifactId": "fd558d2a9f139ae60cd79e51ce7d245276f9096461347d949e68d67dd47e8f3a",
       "name": "@rolldown/binding-android-arm-eabi",
-      "version": "1.2.11",
+      "version": "1.2.13",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["MIT"],
       "tarballDeclaredLicenseExpression": "MIT",
@@ -9549,12 +9608,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "52895d25165e725a1759c362035c10daa316172e0230fa8f83869b2cbc9bc15a",
-        "provenanceSha256": "2efbe733aa1ac314d91723fa9140efc6832d9e99d277ff2358ef10641fa1b3cb",
-        "registrySignatureSha256": "03c45f427be3e76f3dfba4c02b26a8bc5d7ffcdb6124b85903be976d28968c04",
-        "scanSha256": "cdfb78dbda9669b37727a6376ccb42c33ee0abc6c2ab0d14e2ff8a856fae6baf"
+        "archiveSha256": "a24bb4bf2d48521d87c9517cd9823d93b78b17446c76f28c678f3d3a5c0eed12",
+        "provenanceSha256": "1b2c4741e85abc4f7ca564f5d35ccf8fa8b6226c0b60dc462fece71660c0cada",
+        "registrySignatureSha256": "79207cf9a35a2db43b4b0b4e60e32fcbc994ab40a390f07ef3331e2647f4f4f6",
+        "scanSha256": "69c2c1ec3fec113377eaa3ac88b1639de03b747fc61e42514ba139984ac3eb72"
       },
-      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-android-arm-eabi/-/binding-android-arm-eabi-1.2.11.tgz",
+      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-android-arm-eabi/-/binding-android-arm-eabi-1.2.13.tgz",
       "sourceReference": "git+https://github.com/rolldown/rolldown.git",
       "sourceUrl": "https://github.com/rolldown/rolldown",
       "packageAuthor": null,
@@ -9570,9 +9629,9 @@
     },
     {
       "dependencyPath": "node_modules/@rolldown/binding-android-arm64",
-      "artifactId": "330ef269d65e1d5ede64c81503c9f327067ce051038f593560028d64dcbd4c70",
+      "artifactId": "f4b9170995962497dc5207efd862f51b9bf5f815673befe5b4d3881007c86b73",
       "name": "@rolldown/binding-android-arm64",
-      "version": "1.2.11",
+      "version": "1.2.13",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["MIT"],
       "tarballDeclaredLicenseExpression": "MIT",
@@ -9593,12 +9652,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "a939a0eb44e632545550cea85cecf57922e0721c4c8f25f5100209c5f44ae4bc",
-        "provenanceSha256": "900978ccd50ab69193f3ba3a72525af5a877cdd2ec13f3d5f3c09eabf00d54fb",
-        "registrySignatureSha256": "6fc2acca4b5ac7b5ea4519aa8411eb14588996f0020e2881331ae36fd7f067d7",
-        "scanSha256": "5746dc5fc48ad6d2225077f3228ace981d0de184ec71d2f56daf92226d96c1ee"
+        "archiveSha256": "0263b0cb7ed88db8747379a8926737737c923bf937110f73c02973166da7c399",
+        "provenanceSha256": "f92ce6c322338ab463bc33dc68d9aabb8978bb08054d5cdc964271ec7050820c",
+        "registrySignatureSha256": "00479743ed9fe63c2a940ab5d1537062e329037134444ad3b5a091a3f3037de1",
+        "scanSha256": "2edd15539f710a31241194ac224a5cd9c067aa679bdd41168a7f3832e8a974b5"
       },
-      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-android-arm64/-/binding-android-arm64-1.2.11.tgz",
+      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-android-arm64/-/binding-android-arm64-1.2.13.tgz",
       "sourceReference": "git+https://github.com/rolldown/rolldown.git",
       "sourceUrl": "https://github.com/rolldown/rolldown",
       "packageAuthor": null,
@@ -9614,9 +9673,9 @@
     },
     {
       "dependencyPath": "node_modules/@rolldown/binding-darwin-arm64",
-      "artifactId": "3bcf1d7be3b123f01969638e23c153326f7025a4fb321bcb39885fe15690f035",
+      "artifactId": "c63bb2418b6d9ab49a80b11e4080a9e28a03c8bed2a4ec06b5491599bb204d02",
       "name": "@rolldown/binding-darwin-arm64",
-      "version": "1.2.11",
+      "version": "1.2.13",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["MIT"],
       "tarballDeclaredLicenseExpression": "MIT",
@@ -9637,12 +9696,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "7217b45291f18727f0d5589b8483dbfc00c8826ab3218aeb59bb799666229cda",
-        "provenanceSha256": "f5265bc4745211ef483afbc0e22027912075b82117a66a8cfc6478be0c2077f3",
-        "registrySignatureSha256": "e9729895de45447e34f9c4e82fc6d79245eeb5b9dcc23fe1384b43548cdbfd5f",
-        "scanSha256": "405c31c67582efa74782a16cdbb6b70592c39e26e6b1eb5fbb4963c2dfa6f7b1"
+        "archiveSha256": "f692a3110cef6ae24b79f35b851fc4565f38cfa5bd93194bfb488c5d188b589a",
+        "provenanceSha256": "68f60ee7ba87805dbad556fe4481d264e31e116fd8b31d7e10f016260051e9b5",
+        "registrySignatureSha256": "46d48c622cda7cb58b1d20069a2ce96de9c9437406d5120fdea2cb4aae485600",
+        "scanSha256": "eb33131d9bee03535eaf629f7f3bd4fb654442b5f35d46762502083c72b8d8fd"
       },
-      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-darwin-arm64/-/binding-darwin-arm64-1.2.11.tgz",
+      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-darwin-arm64/-/binding-darwin-arm64-1.2.13.tgz",
       "sourceReference": "git+https://github.com/rolldown/rolldown.git",
       "sourceUrl": "https://github.com/rolldown/rolldown",
       "packageAuthor": null,
@@ -9658,9 +9717,9 @@
     },
     {
       "dependencyPath": "node_modules/@rolldown/binding-darwin-x64",
-      "artifactId": "3b36dea40b2ca87507e1a233289ab930ec68e632bb8e5390b1431ce853c0ef53",
+      "artifactId": "84dc4bd7a55f80d1bb35392a7544676bbdae91adc5e6636053989cfc699bc506",
       "name": "@rolldown/binding-darwin-x64",
-      "version": "1.2.11",
+      "version": "1.2.13",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["MIT"],
       "tarballDeclaredLicenseExpression": "MIT",
@@ -9681,12 +9740,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "82b6679cf3d7748c8a30c992dcd8ff5d4b4df94e147ca02583651242f03afa0b",
-        "provenanceSha256": "66308195594412d5ef75480ec668961b304af8aa320ccbac122051f8e79d7184",
-        "registrySignatureSha256": "1f4e60e12f96d150539e539baee5a7e6bcbb761ce5466e92f4b53b858f15cd14",
-        "scanSha256": "b917ef42d24d900d1c4828c73b3c3a42e537348c3214e90dfa90c864bd01f321"
+        "archiveSha256": "b6cbff6f8390a6b4e2ab798804892059bd837a7016c3d265ea30c58c45fdaa7d",
+        "provenanceSha256": "50ea359445fa169dfb84e99e5e89926f1b0fa76b029acdd5bb7f5df54697ac73",
+        "registrySignatureSha256": "3b01c14b8e26c063be7fddb551cd54c75bd6b6fa54a013b23a5a02f0eb0d6435",
+        "scanSha256": "84b3c8fb7b9798f225272cc55dc0b0cd244bc69cbc8b897009e9364189cc5aba"
       },
-      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-darwin-x64/-/binding-darwin-x64-1.2.11.tgz",
+      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-darwin-x64/-/binding-darwin-x64-1.2.13.tgz",
       "sourceReference": "git+https://github.com/rolldown/rolldown.git",
       "sourceUrl": "https://github.com/rolldown/rolldown",
       "packageAuthor": null,
@@ -9702,9 +9761,9 @@
     },
     {
       "dependencyPath": "node_modules/@rolldown/binding-freebsd-x64",
-      "artifactId": "bd32d44c1e9d41ee8d3f2d77f5f0fa7347772937e38c49de038b716ec83d0a79",
+      "artifactId": "8cb5c4191d46362acbfcfd061eff5c232345fee41db20d6f3761de96680090d4",
       "name": "@rolldown/binding-freebsd-x64",
-      "version": "1.2.11",
+      "version": "1.2.13",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["MIT"],
       "tarballDeclaredLicenseExpression": "MIT",
@@ -9725,12 +9784,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "ec7601cff13a604ca23d4560b6b0d013ddd2e16b54ab30e8a626ce437ea69b71",
-        "provenanceSha256": "6b23194e204db0d4f3dffeccc3d3996227ac31f23180f11da6481f892ebb1c3a",
-        "registrySignatureSha256": "6e0ad620edf299a11a2c53014ca2a3adb015248d7b8fe364fa002f2411e026ec",
-        "scanSha256": "ee9f9c6a15b0b51e5d681e3d3630a31a2f225f19cb4da4ed4e8baed5a701afd3"
+        "archiveSha256": "0b064faffc1cbfa1404441f3cbd837122c589c9fb10ba84a8d72f7246ba16ab4",
+        "provenanceSha256": "40c5d36a31c1093d6ca36930c95d2b2c59b90a98a0ff9fb92d7a12629edf3d61",
+        "registrySignatureSha256": "143fde10f40db9881c66bd28b8caf93ae2ebbe36def31737163ec9c4bfb481fc",
+        "scanSha256": "fde0863ece39ab3da0f38e9640b587202da4fc3c16bfb4974ed0fb9abf978728"
       },
-      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-freebsd-x64/-/binding-freebsd-x64-1.2.11.tgz",
+      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-freebsd-x64/-/binding-freebsd-x64-1.2.13.tgz",
       "sourceReference": "git+https://github.com/rolldown/rolldown.git",
       "sourceUrl": "https://github.com/rolldown/rolldown",
       "packageAuthor": null,
@@ -9746,9 +9805,9 @@
     },
     {
       "dependencyPath": "node_modules/@rolldown/binding-linux-arm-gnueabihf",
-      "artifactId": "0fa01d54145e67c8411e4959fbaa78a4adf3e21a8d9e665452449454082879a8",
+      "artifactId": "2f512c040c5a341d3bf67c9a7ef152398e7606ea1868bedbd8bc5b82bc71ede1",
       "name": "@rolldown/binding-linux-arm-gnueabihf",
-      "version": "1.2.11",
+      "version": "1.2.13",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["MIT"],
       "tarballDeclaredLicenseExpression": "MIT",
@@ -9769,12 +9828,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "2210268129260165501260d3bffdf5267becf23500b581bd3534ff386ec36bdd",
-        "provenanceSha256": "2da8d23af1fc9cac20d804d552bb064912dbdaffe5feb411800f633fc6b1f8c2",
-        "registrySignatureSha256": "8ef449859d2641ab6c0c625be000da1f45f4acb92c15f1c8888865ed98bd4f96",
-        "scanSha256": "a408d1d111617ffc7f69272cd7fc0ba76f78296852f5283e7470f325670dc6aa"
+        "archiveSha256": "eae868b1bbdad875cdb85e757eaace3cb9e513f2226804939976cbdb5237568c",
+        "provenanceSha256": "ce9d9604ecccf4b02e53c3406de15c0489b2e425719a36b78d698693f13ae89b",
+        "registrySignatureSha256": "ff0d6ba361f6b1db8b6436274600ec6362e70c66de87d6b3de7d68a0a9847ef2",
+        "scanSha256": "bd1fe82dc2dbbb21fe3ecb2e46f050f13bc44354f10c48b8270a62f68e72ee3f"
       },
-      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-linux-arm-gnueabihf/-/binding-linux-arm-gnueabihf-1.2.11.tgz",
+      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-linux-arm-gnueabihf/-/binding-linux-arm-gnueabihf-1.2.13.tgz",
       "sourceReference": "git+https://github.com/rolldown/rolldown.git",
       "sourceUrl": "https://github.com/rolldown/rolldown",
       "packageAuthor": null,
@@ -9790,9 +9849,9 @@
     },
     {
       "dependencyPath": "node_modules/@rolldown/binding-linux-arm64-gnu",
-      "artifactId": "33e72cbadc79f187238734ffbb022fe69ec3d7893d93b9f7de6b748bfef96b42",
+      "artifactId": "a987d9e7abae4764e055320dc90a78ceda197a01ab37076a76be812dafec7b97",
       "name": "@rolldown/binding-linux-arm64-gnu",
-      "version": "1.2.11",
+      "version": "1.2.13",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["MIT"],
       "tarballDeclaredLicenseExpression": "MIT",
@@ -9813,12 +9872,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "e230a1fcb060fed69a583c5fdc1868a98056ab5252808c76a9ec0d04a4ef5949",
-        "provenanceSha256": "e5d29ca27de2a75a2dfc9f33578bc2e52bb703671f06c9f64938898e400f5401",
-        "registrySignatureSha256": "6e7becafe61ee0cafaae9f05070039ea88b3ae01ac146c15015f41c430363719",
-        "scanSha256": "c352790f340d9cb8d1b48dbe209344f427bfbd66eb581b10fd92c1b0c0c12832"
+        "archiveSha256": "9e2ee79d5d0a524253606da2215db606781089f34f1cdfba11865cbd5b25dc0d",
+        "provenanceSha256": "c49cc3477d1aebdcd973c7abc3fd2f1af338ef9918d1479266fb952dae418097",
+        "registrySignatureSha256": "d2c3005c17018ebc0f2be9c87d3e7161b678e650360eaf9e0c628f4fe87d85f9",
+        "scanSha256": "9b4683160a138516c55a9073909b2652219f310dfe58ec62685522b54b490363"
       },
-      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-linux-arm64-gnu/-/binding-linux-arm64-gnu-1.2.11.tgz",
+      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-linux-arm64-gnu/-/binding-linux-arm64-gnu-1.2.13.tgz",
       "sourceReference": "git+https://github.com/rolldown/rolldown.git",
       "sourceUrl": "https://github.com/rolldown/rolldown",
       "packageAuthor": null,
@@ -9834,9 +9893,9 @@
     },
     {
       "dependencyPath": "node_modules/@rolldown/binding-linux-arm64-musl",
-      "artifactId": "a7ba9bc9d7d724249d11a673248b72fa6df0818567fe260cb33394b1a53d33d5",
+      "artifactId": "5548e0e220a83355bab7be2698e042b1a7a69954a971ff1a0e291018e14d5265",
       "name": "@rolldown/binding-linux-arm64-musl",
-      "version": "1.2.11",
+      "version": "1.2.13",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["MIT"],
       "tarballDeclaredLicenseExpression": "MIT",
@@ -9857,12 +9916,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "f235f6c27fc541023bbd284544e4731700bdbd901818eb7bdafdd1bd64e81a5a",
-        "provenanceSha256": "e064dd0d56cdf693e4677477ee78af728485a1c5245f07a8ae987cd4afdbe95e",
-        "registrySignatureSha256": "7d2ad7f3050ba71b6bbe04499eb4c7525a0e532f89d1f79d9cde09c3dd387f50",
-        "scanSha256": "d98f95c25a9cb19bab569016a4b047463bb9febbbef018a0263f7c9601be79a0"
+        "archiveSha256": "c4bf4cdc8d4da65a27ee1965e254439f2bf5c7b2c0fbf943c0a7e8d287f90fa4",
+        "provenanceSha256": "999b039ff2b0c52e59a4b27d5556053d9f3a39a9b61dd09599e0497a035db112",
+        "registrySignatureSha256": "5fec7a487689a21f4daeb3697baf2b14f00d8b825a02ee2b25e3a807f2718d63",
+        "scanSha256": "ccdfbe5a659512b6c7878e057e8dc2165ee0face194102fe009e81b656598f23"
       },
-      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-linux-arm64-musl/-/binding-linux-arm64-musl-1.2.11.tgz",
+      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-linux-arm64-musl/-/binding-linux-arm64-musl-1.2.13.tgz",
       "sourceReference": "git+https://github.com/rolldown/rolldown.git",
       "sourceUrl": "https://github.com/rolldown/rolldown",
       "packageAuthor": null,
@@ -9878,9 +9937,9 @@
     },
     {
       "dependencyPath": "node_modules/@rolldown/binding-linux-ppc64-gnu",
-      "artifactId": "0650d92a1c52c9e27d3b797eba6d630cd23b20102818df4c32d09aadb23805a5",
+      "artifactId": "68d2f74b793fd8ecda32bf57ce5e2fea9e5da822e1dad7aaf2992be695825bfa",
       "name": "@rolldown/binding-linux-ppc64-gnu",
-      "version": "1.2.11",
+      "version": "1.2.13",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["MIT"],
       "tarballDeclaredLicenseExpression": "MIT",
@@ -9901,12 +9960,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "133382aa315b29e2c38ce8b03cbf6600f42ad8cf0bcdb37b2f8023aa1d098b97",
-        "provenanceSha256": "c31c1775e7cc3729b7f3419a03d65047eb0d0be2e172a39096d8ba5f6014dde7",
-        "registrySignatureSha256": "d9741c902220bd76b6bd667eb6120146afb99bb3976e2e0cc0f20b544b9c13f6",
-        "scanSha256": "f0defb89dd1957dd49ee69185a8af04a96e9a3e75a9d67c368c01577f3435f1c"
+        "archiveSha256": "f7b50dfc06ab909eabacd41a53fc07fb32d1e0d85e0d5dc11e0ea05beabf252c",
+        "provenanceSha256": "4bf28c893180ba3cf9a59d633a7c863e2a9aa972a8e584bee9b6ea48920f4394",
+        "registrySignatureSha256": "fb2d6077ddef7a6e9debef4acd72720b1f84ea361fa20a574d6c170f4cfe4234",
+        "scanSha256": "b30e0479d03809cb330c769a31e664fa2985400e2e07abc86887ebc56cacdca0"
       },
-      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-linux-ppc64-gnu/-/binding-linux-ppc64-gnu-1.2.11.tgz",
+      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-linux-ppc64-gnu/-/binding-linux-ppc64-gnu-1.2.13.tgz",
       "sourceReference": "git+https://github.com/rolldown/rolldown.git",
       "sourceUrl": "https://github.com/rolldown/rolldown",
       "packageAuthor": null,
@@ -9922,9 +9981,9 @@
     },
     {
       "dependencyPath": "node_modules/@rolldown/binding-linux-s390x-gnu",
-      "artifactId": "85e8dab24c8e15b527d3cb135e621b9dc02be018d1b3dc569c31c01375528a58",
+      "artifactId": "10e719c0fd61350b71c627081783d1ddae0d7c8da32c33af15f0cf195652e5ec",
       "name": "@rolldown/binding-linux-s390x-gnu",
-      "version": "1.2.11",
+      "version": "1.2.13",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["MIT"],
       "tarballDeclaredLicenseExpression": "MIT",
@@ -9945,12 +10004,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "e9fa7857f19b069d04164c9a2cbcff7cb6620f33d37364ccf26bfc5ebba6f1c1",
-        "provenanceSha256": "ba5ace09925fa81fc1b9e808c8e348713cc9e221b0b316d7e90e1b9fc620315f",
-        "registrySignatureSha256": "2eef73a8c5704b32cb41644cc74631bdca37ac5a87537998f0759f5d2480589b",
-        "scanSha256": "6eb522fb548291bb237e1a38c8e67f46a2fe41bfb68e22181b01f563e6627898"
+        "archiveSha256": "2abcfb0236f7a46415fe7d287bf0ea5a7c14b7f1f59cd6bb692d89ef37c4c997",
+        "provenanceSha256": "ca1d46999da74facf1d852812c5856bf1318fa9ea1743a5725536f2604260b99",
+        "registrySignatureSha256": "0468710228781825ba9a8c6c50068889c3132be8fe33aeaccb6a0906f6a08a1f",
+        "scanSha256": "ba18950d97657384e76eda503806e10fc45615ccf6b89a120f908c49e25ca735"
       },
-      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-linux-s390x-gnu/-/binding-linux-s390x-gnu-1.2.11.tgz",
+      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-linux-s390x-gnu/-/binding-linux-s390x-gnu-1.2.13.tgz",
       "sourceReference": "git+https://github.com/rolldown/rolldown.git",
       "sourceUrl": "https://github.com/rolldown/rolldown",
       "packageAuthor": null,
@@ -9966,9 +10025,9 @@
     },
     {
       "dependencyPath": "node_modules/@rolldown/binding-linux-x64-gnu",
-      "artifactId": "e9114c89432b239bd5b0487e6edd39c4ee7b28ae6ec34213cacf57073e08136d",
+      "artifactId": "ea2b35ff9d357efff4f4bd43e2c7a0dcb6c0dc211d276b0c3d1e68d06c97e225",
       "name": "@rolldown/binding-linux-x64-gnu",
-      "version": "1.2.11",
+      "version": "1.2.13",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["MIT"],
       "tarballDeclaredLicenseExpression": "MIT",
@@ -9989,12 +10048,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "026aff161a448a8422fb74d473626b651e001604b2e76ddfc9cfe711ec4006fd",
-        "provenanceSha256": "1b431031d67c195b57a6f95b6c4079554c8e0ec6792b7f3d6247b965e344265a",
-        "registrySignatureSha256": "d25bf8e5a058324375fe6721d052d34cc32d55f97e3d6a68af063211d0f77937",
-        "scanSha256": "ae5e58357a83b6c264e6ccb67757760210622b2e3e28c8e86ec07e1c229a0171"
+        "archiveSha256": "f5b35d8660a25f3057f3cb0cc0428cc7e75c4f8f4225d78a96add9d5873e4b8d",
+        "provenanceSha256": "cb5cfbdd8a7ee42529e94f5e7e3461101fe6d81c7860e2ee0b503295067cb0ce",
+        "registrySignatureSha256": "6f01c5ed33fbd8ec6e886c65ca0e0b954ba4b1b580f2580c41f6a9de83e91054",
+        "scanSha256": "6f3b9199b81996935f4f43dfe0ab31d38bf64c56413a6aac4674c363e6eceb30"
       },
-      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-linux-x64-gnu/-/binding-linux-x64-gnu-1.2.11.tgz",
+      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-linux-x64-gnu/-/binding-linux-x64-gnu-1.2.13.tgz",
       "sourceReference": "git+https://github.com/rolldown/rolldown.git",
       "sourceUrl": "https://github.com/rolldown/rolldown",
       "packageAuthor": null,
@@ -10010,9 +10069,9 @@
     },
     {
       "dependencyPath": "node_modules/@rolldown/binding-linux-x64-musl",
-      "artifactId": "0a3467a98bdb57f6a8b849362bde260bedda94b2af8562095c09145ef93931cc",
+      "artifactId": "8f0c3e3107a8ba6d69c59ad71e5747596139816cecaaf06df9c705394a10b961",
       "name": "@rolldown/binding-linux-x64-musl",
-      "version": "1.2.11",
+      "version": "1.2.13",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["MIT"],
       "tarballDeclaredLicenseExpression": "MIT",
@@ -10033,12 +10092,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "8bf0f7ee48eedb0206c63594c0d75a0ca6ca41d0d34b72c8f75efa59d9ba90f3",
-        "provenanceSha256": "aadb4339dfd278e8700b7788a6e8356e4771570859e5a1a4c52eb4120f1ab699",
-        "registrySignatureSha256": "bae5a99df1ddae0bf2a8816aa562d3b4638b365cdd08e4f1015ed667e0496bfc",
-        "scanSha256": "099d4ddcf440d1d903830fb8505577b852eb886ae8d035fcbe6b17ec023fd69b"
+        "archiveSha256": "e312bd982adc43e1bdd3122ae96af1bf582574630e742e5153d9c620d0dc1e00",
+        "provenanceSha256": "72dc5b79371c8e4a7537fe7db7a1047034b168f116a345c0a0fdc51e94abb037",
+        "registrySignatureSha256": "c924423b7068e46f1de39cdbcb2d3d5f718165cce56eeb6cc3be851b8db83f92",
+        "scanSha256": "5d97c098a82c595c68c244b4447225910d24fe4ebe968a2073209d7621a3abaa"
       },
-      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-linux-x64-musl/-/binding-linux-x64-musl-1.2.11.tgz",
+      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-linux-x64-musl/-/binding-linux-x64-musl-1.2.13.tgz",
       "sourceReference": "git+https://github.com/rolldown/rolldown.git",
       "sourceUrl": "https://github.com/rolldown/rolldown",
       "packageAuthor": null,
@@ -10054,9 +10113,9 @@
     },
     {
       "dependencyPath": "node_modules/@rolldown/binding-openharmony-arm64",
-      "artifactId": "69fec85a650085fc8ad8247934aa9f7f10a2199a296b48fcf98cc82cd1cda53d",
+      "artifactId": "653b87c71ed96b9d011db56d52d95d265bd413967a5954e428ada5824d806d4e",
       "name": "@rolldown/binding-openharmony-arm64",
-      "version": "1.2.11",
+      "version": "1.2.13",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["MIT"],
       "tarballDeclaredLicenseExpression": "MIT",
@@ -10077,12 +10136,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "4ef8bc86763f9deb1d4e39989a22cd355f5880c82a74f384037b6ae4b33db7e4",
-        "provenanceSha256": "9e21f5ca17f4fb4dba8fcb636cd798b6add706c5c05838de2f05ba972b894bea",
-        "registrySignatureSha256": "827a4438293af563a0889b54eae4585b2f7dec1ffbbd62616a6b8d1f6e784365",
-        "scanSha256": "aa6c6ce609d07e2836a0dd9b8b7b8b7209862a98434f7568f01bb29ba0716dfd"
+        "archiveSha256": "d092dc53bf449068712048a00b1e7fda1f6a37935e9d1d6f81bd2c3031f4d039",
+        "provenanceSha256": "f4c2eb38874603828e45b8a37cdd837377d3266ee946e6fb1247773c5264a337",
+        "registrySignatureSha256": "860365e1662d88b6bdcf3a430db8301d344215503d6864adf9284b7753ab35f2",
+        "scanSha256": "4128cbae9d974bd1118bae375b4f73c91b22d825a125a36cc77eeeddfb644a8b"
       },
-      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-openharmony-arm64/-/binding-openharmony-arm64-1.2.11.tgz",
+      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-openharmony-arm64/-/binding-openharmony-arm64-1.2.13.tgz",
       "sourceReference": "git+https://github.com/rolldown/rolldown.git",
       "sourceUrl": "https://github.com/rolldown/rolldown",
       "packageAuthor": null,
@@ -10098,9 +10157,9 @@
     },
     {
       "dependencyPath": "node_modules/@rolldown/binding-win32-arm64-msvc",
-      "artifactId": "aec1a3d5bd046795dc76f024cdd136ae17697fa148e6af4c8596a15cb575e719",
+      "artifactId": "9944cab2cd26d10b8b2ff4c3d276e32296e003f7e6ebe3134be222c0aa08f80a",
       "name": "@rolldown/binding-win32-arm64-msvc",
-      "version": "1.2.11",
+      "version": "1.2.13",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["MIT"],
       "tarballDeclaredLicenseExpression": "MIT",
@@ -10121,12 +10180,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "dca9d6f7daa636dffca73674280f23e2f89042d11bb358e792b337534a279fb9",
-        "provenanceSha256": "43b0cbda1219a08ac7e4082f9bcc0cddd29f2507f325f3059fd22e24f89d2c15",
-        "registrySignatureSha256": "6c4c56a539d729f55f8d28c38d5c28d83227c81920816de935b89006c893c6d6",
-        "scanSha256": "a32ab01b4039dcec9fffda855391ce0c82ad326397c2d8cf37526b78a57697af"
+        "archiveSha256": "522765ebc8829f77658065ed16d0369903adbae5edcfe02c297f47a9efff5041",
+        "provenanceSha256": "4aaab5c3e88b8ce8ebf52be91d466e7bacdbd7c9a4b02dae54d94b129fad3f69",
+        "registrySignatureSha256": "594cd49afbe55dff319c2fc4ab965f9ebce840cca2066601843a9e112051a0bc",
+        "scanSha256": "de77b90b6aa4cb73b000e2aba694c6a6a61c2b4c6de7c267a698698f991f0b33"
       },
-      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-win32-arm64-msvc/-/binding-win32-arm64-msvc-1.2.11.tgz",
+      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-win32-arm64-msvc/-/binding-win32-arm64-msvc-1.2.13.tgz",
       "sourceReference": "git+https://github.com/rolldown/rolldown.git",
       "sourceUrl": "https://github.com/rolldown/rolldown",
       "packageAuthor": null,
@@ -10142,9 +10201,9 @@
     },
     {
       "dependencyPath": "node_modules/@rolldown/binding-win32-x64-msvc",
-      "artifactId": "f9886e27302b72ee976f2206830b57f1119c7d049c2a7d33e460fc6aa89b52bf",
+      "artifactId": "2896a675cb36b14320da7fc24ba16243e798342888af148042b9535cab0d9325",
       "name": "@rolldown/binding-win32-x64-msvc",
-      "version": "1.2.11",
+      "version": "1.2.13",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["MIT"],
       "tarballDeclaredLicenseExpression": "MIT",
@@ -10165,12 +10224,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "f9ccd356cb55df275fabec5d0670daa77df3edb6b1a020b67b5f1e518c630591",
-        "provenanceSha256": "0ffa26de24d3682ccb93af25f38b366b28eb28358ea7994f0095215f1b56d18d",
-        "registrySignatureSha256": "e62d6ad9184f363761fab672049dbe979cf8083f807563a5e164163f8ac7705b",
-        "scanSha256": "df1994548d677721dd7dd7d71a6cd536b3402b6aef5815f61cbb27eaba798f9d"
+        "archiveSha256": "3931ce49321646a9d724c246c60fc714ff5808e35d7237093dd79851a6687f35",
+        "provenanceSha256": "a3b394b8311c8d757d1a1d39efc4378bd8d461ff4c2d58c32c5d0af024305235",
+        "registrySignatureSha256": "ad9c6633a2a2234512e46d7b919be657a6ffa1620b274996a072bce05b8c3463",
+        "scanSha256": "e28d5d6de3ac644df6c0dc5918e71f5e376a5bc08858f1778e579572e3048ea1"
       },
-      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-win32-x64-msvc/-/binding-win32-x64-msvc-1.2.11.tgz",
+      "registryUrl": "https://registry.npmjs.org/@rolldown/binding-win32-x64-msvc/-/binding-win32-x64-msvc-1.2.13.tgz",
       "sourceReference": "git+https://github.com/rolldown/rolldown.git",
       "sourceUrl": "https://github.com/rolldown/rolldown",
       "packageAuthor": null,
@@ -18452,9 +18511,9 @@
     },
     {
       "dependencyPath": "node_modules/eslint",
-      "artifactId": "8ce90a0401841d2ef9c5cab056a101fb4ab1c8ea88153513b14eb6253e1474ac",
+      "artifactId": "e634d45ddd70249e28277e75f86796c9e3830913d099712d4817a6f23ed86cb2",
       "name": "eslint",
-      "version": "10.11.0",
+      "version": "10.12.0",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["MIT"],
       "tarballDeclaredLicenseExpression": "MIT",
@@ -18477,9 +18536,9 @@
         {
           "path": "package/README.md",
           "kind": "README_ATTRIBUTION",
-          "sha256": "17c291e8a0f7fb7ab938c0dc8ccad5e010b71cf9b6727528573a0a12f11d3d33",
-          "blobSha256": "17c291e8a0f7fb7ab938c0dc8ccad5e010b71cf9b6727528573a0a12f11d3d33",
-          "blobPath": "blobs/sha256/17/17c291e8a0f7fb7ab938c0dc8ccad5e010b71cf9b6727528573a0a12f11d3d33"
+          "sha256": "c39c87be01b314de77fc61f0706400cbd88d6b08d2d0a12e479bc40f10b9014a",
+          "blobSha256": "c39c87be01b314de77fc61f0706400cbd88d6b08d2d0a12e479bc40f10b9014a",
+          "blobPath": "blobs/sha256/c3/c39c87be01b314de77fc61f0706400cbd88d6b08d2d0a12e479bc40f10b9014a"
         }
       ],
       "externalLicenseEvidence": [],
@@ -18490,12 +18549,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "4df1ffe99f451560bcf3577eae0428f7f09232005e9ba9ae7bab6537cff9b7ae",
-        "provenanceSha256": "da6e42a829b3a530030110eaff45d96e7f0d038739c09e95b43ea17d757ef08c",
-        "registrySignatureSha256": "95fd9ac765fc30ebb46649589073fd6a491bd7c712488af5d5b936a7f1849a50",
-        "scanSha256": "4140e748a932f778d557bf77aecba513d8daca9c098b1c037fb7894f7c6efba2"
+        "archiveSha256": "2f4162f446540020871628d173368fb6c449301744521badbba1d5dfa24f518a",
+        "provenanceSha256": "a96b5d6c0a866a779b6b4082f5e8e4125f29e225dd5ea3cca7dbde7a4059f8e9",
+        "registrySignatureSha256": "5e5923788a3e5e73b539e3ed5eb49e1c8f31df1e793b2a8556e7932a41f179e4",
+        "scanSha256": "dfd50e7f077fdf154067b668d1408b614d478fa4d1c1809eb5f71129be95e883"
       },
-      "registryUrl": "https://registry.npmjs.org/eslint/-/eslint-10.11.0.tgz",
+      "registryUrl": "https://registry.npmjs.org/eslint/-/eslint-10.12.0.tgz",
       "sourceReference": "eslint/eslint",
       "sourceUrl": "https://github.com/eslint/eslint",
       "packageAuthor": "Nicholas C. Zakas <nicholas+npm@nczconsulting.com>",
@@ -21528,9 +21587,9 @@
     },
     {
       "dependencyPath": "node_modules/http-cache-semantics",
-      "artifactId": "3d9fa62e07251a83bdfd45088c83c623266d32764811a66876c8f08a012da7bc",
+      "artifactId": "f6a7c8c9834c593a0ae2c208953bf65b7c8500fd47560b5edee8711988c4f53f",
       "name": "http-cache-semantics",
-      "version": "4.2.0",
+      "version": "4.3.0",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["BSD-2-Clause"],
       "tarballDeclaredLicenseExpression": "BSD-2-Clause",
@@ -21559,15 +21618,15 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "e11428bd3bdc401c38c31b2237f7b41605066ddabae15b5bd2baea4ecf04598a",
-        "provenanceSha256": "a43171a0e7f786ae974506ccab9fbafa96edd06632b917e292034441cc973326",
-        "registrySignatureSha256": "297cb1f89b5ddb259a22d7e7625fb1316c7433d0232426f4b39ef693663a9052",
-        "scanSha256": "e6fab7f07153c85a6df54d9f3a694cd78c91f872ed1d952323c390a0103cd6ba"
+        "archiveSha256": "d0cfd60887b3a32e67568ac80fa416711ae59940af298b2278c01041fdf10806",
+        "provenanceSha256": "ff643766dc86a9f94143f3fd2930751459725800ee74247610fb7bde3a2f7346",
+        "registrySignatureSha256": "9d7b7917ea2348c387482f35ea74a55c85cdd6ddf83f622a96be35836eb143db",
+        "scanSha256": "55fe343b016a0831ee2911a6d361a98d40d75463063ac79017bdb9d4e13d07ae"
       },
-      "registryUrl": "https://registry.npmjs.org/http-cache-semantics/-/http-cache-semantics-4.2.0.tgz",
+      "registryUrl": "https://registry.npmjs.org/http-cache-semantics/-/http-cache-semantics-4.3.0.tgz",
       "sourceReference": "git+https://github.com/kornelski/http-cache-semantics.git",
       "sourceUrl": "https://github.com/kornelski/http-cache-semantics",
-      "packageAuthor": "Kornel Lesiński <npms2@geekhood.net> (https://kornel.ski/)",
+      "packageAuthor": "Kornel Lesiński <kornel@geekhood.net> (https://kornel.ski/)",
       "packageTarballScope": false,
       "noticeDisposition": "DEVELOPMENT_ONLY_RECORDED_NOT_PACKED",
       "rationale": "This authenticated component belongs to the repository test, evidence, documentation, or release toolchain and is excluded from the owlapi tarball.",
@@ -27748,9 +27807,9 @@
     },
     {
       "dependencyPath": "node_modules/nanoid",
-      "artifactId": "d57898fc32daa81f120fec4a05287269b7bd36718447d6cd9a82c8d8265ce1e7",
+      "artifactId": "24de60a779f3c348a40e3960a6af467ae4d3eec8666dc707ac874ab9c6b42bc0",
       "name": "nanoid",
-      "version": "3.3.19",
+      "version": "3.3.20",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["MIT"],
       "tarballDeclaredLicenseExpression": "MIT",
@@ -27779,12 +27838,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "b37b2af87c4df51cb776d33c71ad83835ba237ea5bbe822949b7a3a64292e8aa",
-        "provenanceSha256": "44312c07a0ee1f5aa238d63907e2610c486c9d838be44d0f8b83a3ef546d1167",
-        "registrySignatureSha256": "dffffb67ae6b68d2198db75f764871ac180b1c45496966b2012f8ded4db9c56e",
-        "scanSha256": "a1e8c92e1a4b3cceacd8199cccf995776ab17ef0571fb22a7e4fe18d29fec007"
+        "archiveSha256": "bc270292d0d720da352fab3892fce8d988a1b20274b0c2bd61a22bc5796850ba",
+        "provenanceSha256": "debb91e86c9d801c10e9011328854410d462320148d338e13bb7f7aabd726709",
+        "registrySignatureSha256": "a41901066122507db3799469d3f04636c99d0e5b21c2b748d4d4355d79a1c9ed",
+        "scanSha256": "35331bfdf5570ad8632f12e8cb89f8f397494c4431b951f4583b152680450a36"
       },
-      "registryUrl": "https://registry.npmjs.org/nanoid/-/nanoid-3.3.19.tgz",
+      "registryUrl": "https://registry.npmjs.org/nanoid/-/nanoid-3.3.20.tgz",
       "sourceReference": "ai/nanoid",
       "sourceUrl": "https://github.com/ai/nanoid",
       "packageAuthor": "Andrey Sitnik <andrey@sitnik.ru>",
@@ -31931,9 +31990,9 @@
     },
     {
       "dependencyPath": "node_modules/playwright",
-      "artifactId": "aa9a48128f8f86e67f7b57bbbb25937bffd7ff6696a3a23562feec1f7db2ea1e",
+      "artifactId": "014846468a164ed058e390cddaef91a8ec7a9b5be61e291ee790e6ae135cf223",
       "name": "playwright",
-      "version": "1.63.0",
+      "version": "1.64.0",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["Apache-2.0"],
       "tarballDeclaredLicenseExpression": "Apache-2.0",
@@ -31987,12 +32046,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "a499371472a113c41ebc88a8ed05079d9a8aa188a8e1df1a14c43188a43af6de",
-        "provenanceSha256": "28d4eda09383d1d7cf5b682fd19e2f8ec74b6f55f1b0cdec7281d9da61b9bc5b",
-        "registrySignatureSha256": "eddea1cc0d1297ae4ae0e40d3f711dafc87d540f69e70c2e5a338afa65a96d53",
-        "scanSha256": "27c354b0f8ba93eac7727f983a52210d371395255c7782f4ecdb7c4e2af1dbb8"
+        "archiveSha256": "38b289479224d60c9dfc4f2bda47fe72824f6337a6fddb332f9e1b7420a7e5f6",
+        "provenanceSha256": "1a48d435c7d7400d3cc13dbbafd708cc724af9ed53f4ace6a36febec72478d04",
+        "registrySignatureSha256": "a72aef38445f2ef60a51b8b8c7442fd6c537ab59fde9cc478385d31b3a9a0ce4",
+        "scanSha256": "80d9e80cc59673c5107681a3d2f0365fa9c07b93b06c2f3ce10a285e03ec1916"
       },
-      "registryUrl": "https://registry.npmjs.org/playwright/-/playwright-1.63.0.tgz",
+      "registryUrl": "https://registry.npmjs.org/playwright/-/playwright-1.64.0.tgz",
       "sourceReference": "git+https://github.com/microsoft/playwright.git",
       "sourceUrl": "https://github.com/microsoft/playwright",
       "packageAuthor": "Microsoft Corporation",
@@ -32008,9 +32067,9 @@
     },
     {
       "dependencyPath": "node_modules/playwright-core",
-      "artifactId": "1f78514b3eabe0ba68f2b014da299b620be79f486696787ee01d0de56ec22682",
+      "artifactId": "11e6e039c4e327b7e214b26726a4d8c8eae0e0523d2c5e30426e9b1d477171e2",
       "name": "playwright-core",
-      "version": "1.63.0",
+      "version": "1.64.0",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["Apache-2.0"],
       "tarballDeclaredLicenseExpression": "Apache-2.0",
@@ -32068,12 +32127,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "81e8a1f23f6c8eb9ddebc86758801ffa996c2bdc16c968f029ccf8604cb6080a",
-        "provenanceSha256": "ae60144defb3ed583a24b953c57a798d226ba463f8b43b40e517171cfad8a5ba",
-        "registrySignatureSha256": "5e595278ea6612a3f08a089a6dabb0fd0706b55aa9c36c398bcd3622092cdd1b",
-        "scanSha256": "61d84aa270debd80b445285f7378075430f2ee9b66362cc94e3b93d1d85c9075"
+        "archiveSha256": "99ec65db6233173812361a014d794d7d83f0ade23ec2cb69b1f81f6f00178a6c",
+        "provenanceSha256": "e2afde60978bd2472aff1ed80d06e6a6f65518a93986e7ecbc1ab1d188e2eab7",
+        "registrySignatureSha256": "09c43fdd849f9ae4e13a1760a13e02479c2a2c7f8ebc81fe02928bc9c02d6048",
+        "scanSha256": "6bd3cf8d8905a1f9a3397c84acdd3ff8dd55187901ed241dc878ad105760b9ab"
       },
-      "registryUrl": "https://registry.npmjs.org/playwright-core/-/playwright-core-1.63.0.tgz",
+      "registryUrl": "https://registry.npmjs.org/playwright-core/-/playwright-core-1.64.0.tgz",
       "sourceReference": "git+https://github.com/microsoft/playwright.git",
       "sourceUrl": "https://github.com/microsoft/playwright",
       "packageAuthor": "Microsoft Corporation",
@@ -32089,9 +32148,9 @@
     },
     {
       "dependencyPath": "node_modules/postcss",
-      "artifactId": "b5112b23bd0dd7e269c06403516715168281e549fbff63759179098df6d37964",
+      "artifactId": "c49eb9db9313d142b4df9e608875d9be05edbf2a6fbe306af0d075408248d645",
       "name": "postcss",
-      "version": "8.5.28",
+      "version": "8.5.29",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["MIT"],
       "tarballDeclaredLicenseExpression": "MIT",
@@ -32120,12 +32179,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "93235ada746e4e38f15ba2392a9a2317def56d0ffec8315cabff3140939276b1",
-        "provenanceSha256": "838e255e23367a3445b7bd1c76963a338fb3f3c532047978f0c79f76bbcc5312",
-        "registrySignatureSha256": "8fe36b26c86c450dccf53b625c98fdead5a32ee150f8ea0afbeca04b1c1e1e60",
-        "scanSha256": "98ec87603d9c1a96ec5fa625a708f2db35b6e89229faefc35a68182da0d38fac"
+        "archiveSha256": "b155f25c8603576c900e205c4b2b435da53cd2b2ebd89178902b583e41dd99da",
+        "provenanceSha256": "a76859312989fffcd6b912603bcbe3bc6141a3f5cb8b13ecad08b5c8aea35edd",
+        "registrySignatureSha256": "45a65506ac74bd38c7eab358c11ea7d4e0bba3e918518eac113c3341dcd43af0",
+        "scanSha256": "c120235f6ce17b13a4ba21f45205f72250323e82501545894152ff90b8d1c57a"
       },
-      "registryUrl": "https://registry.npmjs.org/postcss/-/postcss-8.5.28.tgz",
+      "registryUrl": "https://registry.npmjs.org/postcss/-/postcss-8.5.29.tgz",
       "sourceReference": "postcss/postcss",
       "sourceUrl": "https://github.com/postcss/postcss",
       "packageAuthor": "Andrey Sitnik <andrey@sitnik.es>",
@@ -33925,9 +33984,9 @@
     },
     {
       "dependencyPath": "node_modules/rolldown",
-      "artifactId": "a8030c238095d518a7e3ff23cfdf468d22a854d2beddbe866f4be565191617bf",
+      "artifactId": "d300e6859a71a1103dc83afb71653394d1584244a7e0e3917ee6414e0cf450aa",
       "name": "rolldown",
-      "version": "1.2.11",
+      "version": "1.2.13",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["MIT"],
       "tarballDeclaredLicenseExpression": "MIT",
@@ -33963,12 +34022,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "9835d35893c6e202cb0008dd0f18c3bb5c4c6adda3e6224e1a02410fbf77b6d3",
-        "provenanceSha256": "285f66446d0c7b9f800751003ba89527e7658e19894ec0023258bef18373bc48",
-        "registrySignatureSha256": "0afdc74afb3219483e5c6e82354ae852a7a4212d3b27b5e5be43325aa6182fa9",
-        "scanSha256": "f36e11a927a534f3c1352d34377a2f44481ed3311941c0886b24c4d59b1029ed"
+        "archiveSha256": "14a449590674477cc892b49f3a585568e7f0b91c215fe760f5713e8de25ce07d",
+        "provenanceSha256": "800b4f34afa53eec2a706b1cff9b530df216bc8ae122d94ebdba18425c77979d",
+        "registrySignatureSha256": "e7db36a06728f715076f1e78eb87118f0b6e69d3921e6ba8950bce2711a8ff50",
+        "scanSha256": "5a611e3a40173977afb06c8240cce62caed7252408fe5ffdf3fcbe95c51df4a8"
       },
-      "registryUrl": "https://registry.npmjs.org/rolldown/-/rolldown-1.2.11.tgz",
+      "registryUrl": "https://registry.npmjs.org/rolldown/-/rolldown-1.2.13.tgz",
       "sourceReference": "git+https://github.com/rolldown/rolldown.git",
       "sourceUrl": "https://github.com/rolldown/rolldown",
       "packageAuthor": null,
@@ -38319,9 +38378,9 @@
     },
     {
       "dependencyPath": "node_modules/vite",
-      "artifactId": "160faede4a5747e1c5ddd61d3c082cd39fe4651cfdfe6bacb88dcf7b0c1f3b4a",
+      "artifactId": "9d4cf043f9848e1fef80074642ba4121a014fa92b7a5cc005d9bd10cbc31902b",
       "name": "vite",
-      "version": "8.3.2",
+      "version": "8.3.4",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["MIT"],
       "tarballDeclaredLicenseExpression": "MIT",
@@ -38360,12 +38419,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "01f2a57f87f66a9a915bb834a1da09a612bf0982da6e609d2f236a86063519ca",
-        "provenanceSha256": "6c6d284fcf8d12a368dd7443ee136a61f0be5eb59282d56617f9d0c5a4d2fdf7",
-        "registrySignatureSha256": "5bf888106fc320e2500500b825156c378e8a005813adbbe5951f6d8ac4343bf7",
-        "scanSha256": "425d172a8813b77a7b16c3c28c6af6a34b3f30b9d39e7fafbd8b90a43f4bd71f"
+        "archiveSha256": "769870dfd34068bc6ee4b8fbdce1596a860f891ca9e764282a07998c709b9c85",
+        "provenanceSha256": "7495ea2b35c7fe2b40f8a8f362920128fc18b550d0896e48deb8944493e795cb",
+        "registrySignatureSha256": "5590395ddb71b694fc955bcd3893d3c5e6132a5e12a760754269f6633a2f4936",
+        "scanSha256": "3ef26e10ec560f6b58c6050227eaaed6f1a76fe1883db4f54e9e18eb949dfd8a"
       },
-      "registryUrl": "https://registry.npmjs.org/vite/-/vite-8.3.2.tgz",
+      "registryUrl": "https://registry.npmjs.org/vite/-/vite-8.3.4.tgz",
       "sourceReference": "git+https://github.com/vitejs/vite.git",
       "sourceUrl": "https://github.com/vitejs/vite",
       "packageAuthor": "Evan You",

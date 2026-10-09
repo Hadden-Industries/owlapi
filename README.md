@@ -49,7 +49,9 @@ That form uses `@hadden-industries/owlapi` and `@hadden-industries/owlapi/<subpa
 Use exact versions for reproducible installations; neither `next` nor `latest` substitutes for an acceptance pin.
 Neither a bare `npm install owlapi` nor a future move to that registry name is part of this release.
 
-The package requires Node.js `>=22.23.3 <23 || >=24.21.0 <25`.
+The candidate package requires Node.js `>=22.23.3 <23 || >=24.21.0 <25 || >=26.11.1 <27`.
+Node 26.11.1 is being qualified through blocking source and retained-package lanes on Ubuntu x64, Windows x64, and macOS arm64.
+Its admission does not imply upstream LTS status; Node 24.21.0 remains the canonical package producer.
 Browser applications can consume the same native ESM through a package-aware bundler or an application-owned import map.
 No official TypeScript declarations are included in the initial release.
 
@@ -166,7 +168,7 @@ The [Canonical VOWL prerequisite contract](docs/compatibility/canonical-vowl-pre
 | Browser document through an application-owned, integrity-verified import map                                            | `SUPPORTED`            |
 | Bundled dedicated module worker through the tested path                                                                 | `SUPPORTED`            |
 | Yarn and pnpm installation of the published ESM package                                                                 | `PLAUSIBLE_UNVERIFIED` |
-| Node.js 26 while it remains Current rather than LTS                                                                     | `PLAUSIBLE_UNVERIFIED` |
+| Node.js 26.11.1 and later 26.x patches, pending complete blocking platform qualification                                | `PLAUSIBLE_UNVERIFIED` |
 | Bun, Deno, Cloudflare Workers, React Native, and Electron-specific integration                                          | `OUT_OF_SCOPE`         |
 | CommonJS `require()`, AMD/UMD globals, and classic-script/IIFE loading                                                  | `OUT_OF_SCOPE`         |
 | Raw HTTP serving of `node_modules` without an ESM-capable resolution/conversion step                                    | `OUT_OF_SCOPE`         |

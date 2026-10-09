@@ -198,7 +198,7 @@ const validateActionUses = (fileName, workflow, document, violations) => {
       if (step.uses.startsWith("actions/setup-node@")) {
         add(
           violations,
-          ["22.23.3", "24.21.0"].includes(inputs?.["node-version"]),
+          ["22.23.3", "24.21.0", "26.11.1"].includes(inputs?.["node-version"]),
           `${fileName}: setup-node must select an approved exact Node patch`,
         );
         requireFields(
@@ -767,6 +767,7 @@ const validateCiVerification = (workflow, violations) => {
     "metadata",
     "source_node_22",
     "source_node_24",
+    "source_node_26",
     "quality_windows",
     "dependency_review",
   ];
@@ -1804,8 +1805,18 @@ const validateEvidenceWorkflows = (workflows, violations) => {
 // Setup is confined to the quality consumers and the existing evidence shards.
 // A new caller of npm test/lint/format must explicitly adopt the locked tools.
 const QUALITY_CONSUMERS = {
-  "ci.yml": ["source_node_22", "source_node_24", "quality_windows"],
-  "release.yml": ["source_node_22", "source_node_24", "quality_windows"],
+  "ci.yml": [
+    "source_node_22",
+    "source_node_24",
+    "source_node_26",
+    "quality_windows",
+  ],
+  "release.yml": [
+    "source_node_22",
+    "source_node_24",
+    "source_node_26",
+    "quality_windows",
+  ],
   "extended-tests.yml": ["extended_evidence"],
   "maintenance.yml": ["health"],
 };
@@ -1863,11 +1874,11 @@ const validateQualityTooling = (workflows, violations) => {
         const markdownInstalls = list.filter(
           (step) => step.run === "npm run install:markdown",
         );
-        if (id === "source_node_22") {
+        if (["source_node_22", "source_node_26"].includes(id)) {
           add(
             violations,
             markdownInstalls.length === 0,
-            `${context} Node 22 must retain its source-only floor`,
+            `${context} noncanonical Node must retain its source-only floor`,
           );
           for (const command of [
             "npm run format:source-python:check",
@@ -2011,8 +2022,10 @@ const validateSourceGovernanceHistory = (workflows, violations) => {
   for (const [fileName, id, name] of [
     ["ci.yml", "source_node_22", "Check out the proposed source"],
     ["ci.yml", "source_node_24", "Check out the proposed source"],
+    ["ci.yml", "source_node_26", "Check out the proposed source"],
     ["release.yml", "source_node_22", "Check out the proposed source"],
     ["release.yml", "source_node_24", "Check out the proposed source"],
+    ["release.yml", "source_node_26", "Check out the proposed source"],
     ["maintenance.yml", "health", "Check out the default branch"],
     ["extended-tests.yml", "extended_evidence", "Check out the default branch"],
   ])
@@ -2309,6 +2322,48 @@ export const auditRepositoryControls = ({
       workflows[fileName] ?? {},
       violations,
     );
+
+  // Each admitted Node 26 floor must execute the same retained candidate.
+  // The Ubuntu package consumer follows candidate creation, separate from source.
+  for (const fileName of ["ci.yml", "release.yml"]) {
+    for (const [id, runner] of [
+      ["source_node_26", "ubuntu-24.04"],
+      ["portability_ubuntu_node_26", "ubuntu-24.04"],
+      ["portability_windows_node_26", "windows-2025"],
+      ["portability_macos_node_26", "macos-15"],
+    ]) {
+      const job = workflows[fileName]?.jobs?.[id];
+      const context = `${fileName}:${id} Node 26 floor`;
+      requireFields(job, { "runs-on": runner }, context, violations);
+      const setup = actionSteps(job, "actions/setup-node")[0];
+      requireFields(
+        setup?.with,
+        { "node-version": "26.11.1" },
+        context,
+        violations,
+      );
+      requireRun(
+        job,
+        "node scripts/assert-workflow-runtime.mjs --node 26.11.1 --npm 12.2.0",
+        context,
+        violations,
+      );
+      if (id.startsWith("portability_")) {
+        requireFields(job, { needs: "candidate" }, context, violations);
+        requireRun(
+          job,
+          "npm run candidate:portable -- --candidate .release/download --output .release/download/portability.json",
+          context,
+          violations,
+        );
+      }
+    }
+    add(
+      violations,
+      needs(workflows[fileName]?.jobs?.candidate).includes("source_node_26"),
+      `${fileName}: candidate requires Node 26 source qualification`,
+    );
+  }
 
   const issueConfig = parseControlYaml(
     "ISSUE_TEMPLATE/config.yml",

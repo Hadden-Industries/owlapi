@@ -1303,10 +1303,12 @@ Workflow configuration uses those literal patches, not the `22`, `24`, `lts/*`, 
 A later release-construction patch replacement follows the separate exact-tool update rule in §2.54, but it does not replace either minimum-version lane: the lowest version admitted by each public comparator remains a blocking installed-package test.
 Raising a minimum therefore requires the public `engines.node` range, compatibility records and blocking floor lanes to change together through the applicable zero-major compatibility decision; the manifest **MUST NOT** claim an untested earlier minor or patch merely because it belongs to a supported LTS major.
 
-Node 26 is a non-blocking Current-release probe until it becomes LTS.
-After that transition it first receives a provisional full qualification against the exact package, retained-tarball, browser-relevant and WebVOWL-consumer gates while the published `engines` range remains unchanged.
-If it passes, adding the qualified explicit Node 26 comparator, updating documentation and making its exact CI lanes blocking requires a separately approved configuration change followed by a complete rerun of every affected blocking gate.
-If it fails, the package records the honest provisional result and may still release for Node 22/24.
+**Current amendment, accepted 9 October 2026:** the [development dependency upgrade plan](plans/development-dependency-upgrade.md) permits Node 26 qualification while upstream still classifies it as Current.
+The candidate comparator is `>=26.11.1 <27`, alongside the preserved `>=22.23.3 <23` and `>=24.21.0 <25` floors.
+Exact Node 26.11.1 source checks and same-retained-tarball consumers on Ubuntu x64, Windows x64, and macOS arm64 are blocking in CI and release.
+Node 24.21.0 remains the canonical producer and Markdown/Java authority.
+Public `SUPPORTED` promotion requires successful complete blocking qualification; adding jobs or passing a host-only smoke check does not establish that result.
+If qualification fails, preserve its actual result and resolve the floor/support decision with the owner before publication.
 The separately approved change uses an explicit comparator beginning at the lowest Node 26 patch that passed the blocking floor qualification and ending below Node 27; it **MUST NOT** use `^26.0.0` unless `26.0.0` itself was qualified.
 Once Node 26 is publicly promoted to `SUPPORTED`, it cannot be removed within 0.1.x merely because the provisional evaluation was inconvenient.
 A Current-release probe never silently broadens the published `engines` claim.
@@ -1402,18 +1404,18 @@ The README, compatibility data and release notes use exactly these environment s
 
 The initial matrix is:
 
-| Environment or workflow                                                                                         | 0.1.0 status                              |
-| --------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
-| Node 22 and Node 24 native ESM through npm on the §2.57 Ubuntu x64, Windows x64 and macOS arm64 representatives | `SUPPORTED`                               |
-| Other upstream-supported Node OS/architecture combinations                                                      | `PLAUSIBLE_UNVERIFIED`                    |
-| Browser `Window`/document through a package-aware bundler                                                       | `SUPPORTED`                               |
-| Browser document through the §2.21 application-owned import-map path                                            | `SUPPORTED`                               |
-| Bundled dedicated module worker through the §2.21 tested path                                                   | `SUPPORTED`                               |
-| Yarn and pnpm installation of the published ESM package                                                         | `PLAUSIBLE_UNVERIFIED`                    |
-| Node 26 while it remains Current rather than LTS                                                                | `PLAUSIBLE_UNVERIFIED` non-blocking probe |
-| Bun, Deno, Cloudflare Workers, React Native and Electron-specific integration                                   | `OUT_OF_SCOPE`                            |
-| CommonJS `require()`, AMD/UMD globals and classic-script/IIFE loading                                           | `OUT_OF_SCOPE`                            |
-| Raw HTTP serving of the npm dependency tree without an ESM-capable resolution/conversion preparation step       | `OUT_OF_SCOPE`                            |
+| Environment or workflow                                                                                         | 0.1.0 status                     |
+| --------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| Node 22 and Node 24 native ESM through npm on the §2.57 Ubuntu x64, Windows x64 and macOS arm64 representatives | `SUPPORTED`                      |
+| Other upstream-supported Node OS/architecture combinations                                                      | `PLAUSIBLE_UNVERIFIED`           |
+| Browser `Window`/document through a package-aware bundler                                                       | `SUPPORTED`                      |
+| Browser document through the §2.21 application-owned import-map path                                            | `SUPPORTED`                      |
+| Bundled dedicated module worker through the §2.21 tested path                                                   | `SUPPORTED`                      |
+| Yarn and pnpm installation of the published ESM package                                                         | `PLAUSIBLE_UNVERIFIED`           |
+| Node 26.11.1 and later 26.x patches, while full blocking platform qualification is pending                      | `PLAUSIBLE_UNVERIFIED` candidate |
+| Bun, Deno, Cloudflare Workers, React Native and Electron-specific integration                                   | `OUT_OF_SCOPE`                   |
+| CommonJS `require()`, AMD/UMD globals and classic-script/IIFE loading                                           | `OUT_OF_SCOPE`                   |
+| Raw HTTP serving of the npm dependency tree without an ESM-capable resolution/conversion preparation step       | `OUT_OF_SCOPE`                   |
 
 Yarn or pnpm can expose a genuine standards-level package defect even though their complete workflows are unverified.
 A report that demonstrates an invalid `package.json`, broken `exports`, missing packed file, undeclared dependency or other npm/ESM contract violation remains actionable.
@@ -2132,7 +2134,8 @@ The canonical manifest does not add the separate top-level `packageManager` fiel
 
 CI and release jobs establish npm `12.0.2` before project `install`, `ci`, `run`, `pack`, audit, stage or publish operations and fail if `npm --version` differs.
 The blocking Node jobs use the exact §2.19 patches; release evidence records the actual Node and npm versions.
-The versionless `devEngines.runtime` check deliberately permits the separate non-blocking Node 26 probe to start while `engines.node`, CI status and documentation continue to classify it as unsupported for 0.1.0.
+The versionless `devEngines.runtime` check permits source-runtime qualification independently of the public package engines.
+The accepted 9 October 2026 amendment in §2.19 adds the provisional Node 26.11.1 comparator and blocking platform jobs; full passing qualification is required before `SUPPORTED` promotion.
 
 Every npm-distributed development tool is installed from the reviewed `package-lock.json` by `npm ci` and invoked through a named repository `npm run ...` script.
 A release gate **MUST NOT** use remote-resolving `npx`, `npm exec --package`, a globally installed npm package, a package-manager shim outside the selected Node toolchain or a moving registry tag.
@@ -2148,7 +2151,12 @@ The two Darwin-only optional `fsevents` builds accelerate watch mode, which no b
 The dependency-governance record binds each denial to its exact script, scope, rationale and evidence.
 Every clean install runs `npm install-scripts ls` and the governance test derives the complete expected decision set from the lockfile, so a platform-skipped optional package cannot evade review merely because it was absent on the host performing the inspection.
 
-Changing the source/release npm patch or either blocking Node patch is a dedicated reviewed configuration change: update the literal `devEngines` value and/or exact workflow authority together, regenerate the lockfile with that npm version, inspect the lockfile/packlist diff and rerun all package/release gates.
+**Current amendment, accepted 9 October 2026:** all 21 registry development dependencies use selected stable `>=` minimums, while the root lock records exact qualified versions and integrities.
+Local `devEngines.packageManager.version` is `>=12.2.0`; the development Node runtime remains deliberately versionless, and no top-level `packageManager` or Corepack authority is introduced.
+CI, release construction, runtime assertions, and governed qualification retain exact npm 12.2.0 bootstrap before any project command or cache probe.
+The isolated Markdown `file:` archive graph and lock are preserved.
+This amendment supersedes earlier exact-development-declaration wording in §§2.45–2.54, including JSPM, schema, SBOM, package-lint, browser, and fixture-bundler tools; their actual executions still use exact locked artifacts.
+Changing the source/release npm reference or a blocking Node patch is a dedicated reviewed configuration change: update exact workflow authority, inspect the lockfile/packlist diff and rerun affected package/release gates.
 No workflow follows `latest` or silently updates the release CLI.
 
 ### 2.46 Decision: use JSPM only as the exact-pinned reference import-map tool and provider
@@ -2901,7 +2909,8 @@ The protected `npm-release` publication job depends directly on this aggregate; 
 Every required matrix declares `strategy.fail-fast: false`: all blocking lanes finish and produce independently reviewable evidence.
 Required jobs have an effective `continue-on-error: false`.
 Workflow commands and report adapters must not use `|| true`, swallow exit status, mark a required lane allow-failure, or convert a test failure into a neutral/success conclusion.
-Node 26 Current probes and extended environments remain outside the required aggregate, but their own workflows report real failure when a check fails; non-blocking means “not a release prerequisite”, not “rewrite red as green”.
+Under the accepted 9 October 2026 amendment, the exact Node 26.11.1 source and retained-package platform floors are inside both required aggregates.
+Other extended environments remain outside the required aggregate, but their own workflows report real failure when a check fails; non-blocking means “not a release prerequisite”, not “rewrite red as green”.
 
 Workflow concurrency is literal and responsibility-specific:
 

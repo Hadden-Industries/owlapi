@@ -1,7 +1,25 @@
 {
   "schemaVersion": 2,
-  "authority": "Accepted unified installed OWL qualification plans, 2026-10-06",
+  "authority": "Accepted unified installed OWL qualification plans, 2026-10-06; accepted development dependency and Node 26 upgrade plan, 2026-10-09",
   "replacements": [
+    {
+      "historicalRequirementId": "P19-NODE-001",
+      "requirementId": "P19-NODE-FLOORS-001",
+      "obligation": "Admit exactly >=22.23.3 <23 || >=24.21.0 <25 || >=26.11.1 <27. Require complete source qualification at every exact floor and retained-tarball scoped/alias consumers on Ubuntu x64, Windows x64 and macOS arm64 for Node 26.11.1. Node 26 Current may be qualified before LTS; SUPPORTED promotion requires actual passing blocking evidence. Preserve Node 24.21.0 canonical production and Markdown/Java authority, the Node 22/24 floors, and upstream-support distinctions.",
+      "downstreamOwner": "Applications retain their own runtime and deployment acceptance."
+    },
+    {
+      "historicalRequirementId": "P19-TOOLCHAIN-001",
+      "requirementId": "P19-LOCKED-TOOLCHAIN-001",
+      "obligation": "All 21 registry development declarations use stable >= minimums; the exact qualified graph, integrity, authenticated legal evidence and install-script decisions remain locked and reviewed. Local npm eligibility is >=12.2.0 with versionless devEngines.runtime; CI, release and governed verification bootstrap exact npm 12.2.0 before project commands or cache probes. Preserve production pins, canonical Node 24.21.0, denied scripts, Markdown file archives/lock, Python and Actions pins. Deliberate resolution and frozen npm ci are distinct operations.",
+      "downstreamOwner": "Future locally eligible npm versions are not automatically release reference versions."
+    },
+    {
+      "historicalRequirementId": "P19-CI-CONTROLS-001",
+      "requirementId": "P19-CI-NODE-FLOORS-001",
+      "obligation": "CI and release require source_node_26 plus retained-candidate Ubuntu, Windows and macOS Node 26 jobs alongside all existing blocking gates. Closed job inventories, aggregate needs, exact runtime assertions, source-only Python setup, candidate creation ordering and qualification schema/policy version 5 reject incomplete or pre-expansion proof. Preserve full PR execution and independently validated exact landed-main reuse; Node 24 remains receipt and Java authority. No manual remote CI dispatch is authorized by this change.",
+      "downstreamOwner": "Hosted execution results and public package release remain distinct outcomes."
+    },
     {
       "historicalRequirementId": "P19-SCOPE-001",
       "requirementId": "P19-PRODUCER-SCOPE-001",

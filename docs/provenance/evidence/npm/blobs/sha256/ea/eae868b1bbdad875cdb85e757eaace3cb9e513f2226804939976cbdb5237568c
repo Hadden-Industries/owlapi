@@ -1,0 +1,89 @@
+{
+  "artifactId": "2f512c040c5a341d3bf67c9a7ef152398e7606ea1868bedbd8bc5b82bc71ede1",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7465749,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/README.md",
+        "sha256": "62236ef2e2d3c42ddfc96ae8c34f320fc5ce57eae817fae63dc3d49c6e1cf90d",
+        "size": 120,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "d260910ec640768d481216ab893f1c9dbf1d771a869babbabf5868c73cadfd7d",
+        "size": 873,
+        "type": "FILE"
+      },
+      {
+        "path": "package/rolldown-binding.linux-arm-gnueabihf.node",
+        "sha256": "b188fde81a294a219cea581f77eb674f767c6ccff278a3a8b6ee68c1d2f26192",
+        "size": 16208748,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [],
+    "expandedBytes": 16209741,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://rolldown.rs/",
+      "license": "MIT",
+      "name": "@rolldown/binding-linux-arm-gnueabihf",
+      "repository": {
+        "directory": "packages/rolldown",
+        "type": "git",
+        "url": "git+https://github.com/rolldown/rolldown.git"
+      },
+      "version": "1.2.13"
+    },
+    "packageMetadata": {
+      "bugs": {
+        "url": "https://github.com/rolldown/rolldown/issues"
+      },
+      "cpu": [
+        "arm"
+      ],
+      "description": "Fast JavaScript/TypeScript bundler in Rust with Rollup-compatible API.",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "files": [
+        "rolldown-binding.linux-arm-gnueabihf.node"
+      ],
+      "homepage": "https://rolldown.rs/",
+      "keywords": [
+        "bundler",
+        "esbuild",
+        "parcel",
+        "rolldown",
+        "rollup",
+        "webpack"
+      ],
+      "license": "MIT",
+      "main": "rolldown-binding.linux-arm-gnueabihf.node",
+      "name": "@rolldown/binding-linux-arm-gnueabihf",
+      "os": [
+        "linux"
+      ],
+      "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+      },
+      "repository": {
+        "directory": "packages/rolldown",
+        "type": "git",
+        "url": "git+https://github.com/rolldown/rolldown.git"
+      },
+      "version": "1.2.13"
+    },
+    "physicalEntryCount": 3,
+    "tarball": {
+      "bytes": 7465749,
+      "sha256": "ea21106a37ceba643e0e1cd9b9111f402481ac7a93f7febde61bb738ada110e3"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

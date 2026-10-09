@@ -346,7 +346,7 @@ const mainFixture = async (reused, partialOrigin = false) => {
       tree: [{ path: "ci.yml", type: "blob", sha: hash("f") }],
     },
     "/actions/runs/200/jobs?filter=latest&per_page=100": {
-      total_count: 16,
+      total_count: 20,
       jobs: Object.values(CI_JOB_NAMES).map((name) => ({
         name,
         run_id: 200,
@@ -716,7 +716,7 @@ describe("reuse of complete PR integration", () => {
   test("records typed FULL coverage rather than inferring live tests from job success", () => {
     const f = fixture();
     expect(f.receipt).toMatchObject({
-      schemaVersion: 4,
+      schemaVersion: 5,
       role: "PR",
       mode: "FULL",
       checks: {
@@ -745,7 +745,7 @@ describe("reuse of complete PR integration", () => {
       now,
     });
     expect(record).toMatchObject({
-      schemaVersion: 4,
+      schemaVersion: 5,
       role: "MAIN",
       mode: "REUSED",
       sourceMode: "FULL",
@@ -842,6 +842,19 @@ describe("reuse of complete PR integration", () => {
       "a different workflow blob",
       (f) => {
         f.receipt.snapshot.workflow = hash("a");
+      },
+    ],
+    [
+      "a receipt predating the Node 26 matrix",
+      (f) => {
+        f.receipt.schemaVersion = 4;
+      },
+    ],
+    [
+      "a receipt missing the Node 26 retained-package floor",
+      (f) => {
+        f.receipt.jobs = { ...f.receipt.jobs };
+        delete f.receipt.jobs.portability_ubuntu_node_26;
       },
     ],
     [

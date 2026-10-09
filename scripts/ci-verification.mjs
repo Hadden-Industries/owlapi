@@ -87,7 +87,7 @@ export const createVerificationReceipt = ({
     commit: snapshot.commit,
   });
   return assertQualificationRecord({
-    schemaVersion: 4,
+    schemaVersion: 5,
     role: "PR",
     mode: "FULL",
     sourceMode: "FULL",
@@ -181,7 +181,7 @@ export const createMainQualification = ({
     digest: `sha256:${needs.candidate.outputs.artifact_digest}`,
   };
   return assertQualificationRecord({
-    schemaVersion: 4,
+    schemaVersion: 5,
     role: "MAIN",
     mode: accepted.mode,
     sourceMode: "FULL",
@@ -379,7 +379,7 @@ export const verifyIntegrationProof = async ({
     "Consumer source snapshots changed; fresh qualification is required.",
   );
   requireFact(
-    receipt.schemaVersion === 4 &&
+    receipt.schemaVersion === 5 &&
       receipt.role === "PR" &&
       receipt.mode === "FULL" &&
       receipt.repository === context.repository &&
