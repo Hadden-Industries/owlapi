@@ -5,7 +5,7 @@ Its public concepts deliberately resemble the Java OWLAPI where that makes the A
 
 > **Published release candidate:** `@hadden-industries/owlapi@0.1.0-rc.1` is available on npm under `next` and `latest`, including the approved import-closure lifecycle capabilities.
 > The manifest and release tooling select this scoped identity; qualification and publication follow the [scoped-publication plan](./docs/plans/scoped-npm-publication.md).
-> Registry bytes, installations, signatures and provenance are verified; GitHub release finalization remains pending in the [publication record](./docs/provenance/releases/0.1.0-rc.1/publication-status.md).
+> Registry bytes, installations, signatures and provenance are verified; the [publication record](./docs/provenance/releases/0.1.0-rc.1/publication-status.md) records the later published immutable GitHub prerelease and final evidence asset.
 > `latest` is npm's default installation target and does not imply a stable version or consumer acceptance.
 > UO and WebVOWL may each use this exact RC in production after artifact verification and their own full consumer acceptance; `0.1.0` is not a prerequisite for either application.
 > A version in `main` is not a published or accepted package.
@@ -152,6 +152,9 @@ See [the generated API reference](./API.md) for every public binding, its call s
 `owlapi/profiles` exposes the asynchronous `OWL2DLProfile` checker and immutable `OWLProfileReport`.
 Use `checkOntology(ontology, {sourceAssessment: true})` after loading with `parsingMode: "preserve"` to assess retained source structures as well as the formal OWL model across the managed import closure.
 The checker reports `valid`, `invalid` or `unverified`; resource exhaustion and stale source evidence cannot certify validity.
+In current source after rc.1, omitted or null profile `timeoutMs` disables only its elapsed deadline; pass `{ timeoutMs: 30000 }` to retain rc.1's default cutoff.
+Explicit numeric deadlines, cancellation and other profile bounds remain enforced; the loader's separate default is unchanged.
+See the [profile default-policy inventory](docs/compatibility/default-behavior-inventory.md) for the source change and its migration boundary.
 The [Canonical VOWL prerequisite contract](docs/compatibility/canonical-vowl-prerequisites.md) specifies source preservation, exact per-document formats, import-parent context, lossless cardinalities, budgets and bounded compatibility differences.
 
 ## Environments and consumption modes
@@ -298,10 +301,11 @@ The [capability matrix](./docs/compatibility/capabilities.json), [Java API gap v
 
 The selected RC includes the [ontology-lifecycle capability plan](https://github.com/Hadden-Industries/owlapi/blob/main/docs/ontology-lifecycle-capability-implementation-plan.md): closure queries, atomic changes, the merger, and manager-selected Functional Syntax and RDF/XML storage through `saveOntology` and `StringDocumentTarget.toString()`.
 
-The current source also provides [immutable RDF/XML writer configuration](docs/compatibility/rdfxml-writer-configuration.md) through `owlapi/model`, with manager-local indentation and banner settings.
-Its first immutable package release is not yet selected.
+Current source after rc.1 also provides [immutable RDF/XML writer configuration](docs/compatibility/rdfxml-writer-configuration.md) through `owlapi/model`, with manager-local indentation, banner and anonymous-ID settings, plus `RDFXMLDocumentFormat` prefix operations through `owlapi/formats`.
+These additions and the profile repair are included in the [rc.2 delivery reconciliation](docs/plans/0.1.0-rc.2-java-parity.md#11-delivered-changes-from-rc1-through-9-october); they are not part of the published rc.1 tarball.
+The new bindings' immutable first-release metadata and exact rc.2 qualification remain outstanding.
 The [parity migration guide](https://github.com/Hadden-Industries/owlapi/blob/main/docs/migration/0.1.0-java-api-parity.md) gives the exact imports, target/error changes and consumer-owned closure composition.
-These remain subject to the plan's fresh parity, losslessness, installed-package and consumer acceptance gates.
+New candidates remain subject to producer parity, losslessness and installed-package gates; application acceptance and adoption are independently owned.
 UO owns catalog/network resolution, retries, redirects and materialization policy; downloading the npm dependency does not itself enable remote ontology loading.
 UO qualifies connected generation separately from the mandatory offline reload of its completed standalone outputs.
 

@@ -1,5 +1,10 @@
 # Java OWLAPI reference harness
 
+The executable source pin is defined by `pinned-version.json`; as reconciled on 9 October 2026 it is `b61ebe2da83daceebb3e7ba7afbd2582c9240c33` (`owlapi-parent-5.5.1-9-gb61ebe2da`).
+Historical fixtures and observations retain their recorded Java revisions; changing the current pin does not relabel their evidence.
+Native bundle transport and hosted qualification were delivered at the earlier pin, but shared reuse is currently disabled because its accepted publication catalogue covers `d7e997a53b470e32700de89cc610d9daf01ea769`.
+Use fresh native preparation and live comparisons for the current pin; see [ADR 0012](../../docs/adr/0012-gated-native-java-reference-reuse.md) for the implementation and operating history.
+
 `RunRdfConsumerContract.java` is an offline Java 5.5.1 characterization of the 2 October RDF consumer repairs.
 Compile and run with the pinned runtime classpath, using the Windows long-classpath launcher below if needed.
 It preloads the two imported ontologies in memory, refuses unexpected import acquisition, and prints the actual native axioms, annotations, imports and metadata for six project-authored cases.
@@ -49,7 +54,7 @@ Do not substitute the OWL2VOWL shaded JAR: its embedded OWLAPI is 5.1.1 and it i
 
 One reproducible setup is:
 
-1. Check out `d7e997a53b470e32700de89cc610d9daf01ea769` in the recorded OWLAPI source checkout.
+1. Check out the exact `sourceRevision` in `pinned-version.json` in the recorded OWLAPI source checkout (`b61ebe2da83daceebb3e7ba7afbd2582c9240c33` at the 9 October reconciliation).
 2. Run the OWLAPI Maven build with tests skipped, preserving its resolved Maven dependency versions.
 3. Build a runtime classpath for the OWLAPI distribution with Maven's dependency tooling.
 4. Compile `GenerateStructuralSnapshot.java` with that classpath.

@@ -1,15 +1,28 @@
 # Expose configurable formatting
 
-Status: Draft HISEW change dossier and implementation plan, 8 October 2026.
+Status: Accepted writer configuration delivered on 8 October 2026 through [PR 55](https://github.com/Hadden-Industries/owlapi/pull/55), with refinements integrated on 9 October at `8e6f2b46b548a847a59fdc888af4a82687f450b9`.
 The owner requested a Java OWLAPI-compatible formatting API that builds on the separately planned improvement to default RDF/XML output.
 The owner selected producer-first delivery: improve OwlAPI defaults, then let Universal Ontology adopt them.
-The public member inventory, adaptations, implementation and configuration/release effects in this document remain proposed.
-This draft does not approve implementation, scans, delegation, commits or publication.
+The original proposal below is retained with the delivery amendment that follows; current behavior and accepted adaptations are specified in the [writer contract](../compatibility/rdfxml-writer-configuration.md).
+Source delivery does not assert package publication or consumer acceptance.
 
 Decision owner: maksy.
 Integration owner: the OwlAPI implementation owner admitted to this worktree after its unrelated Markdown execution is resolved through its own lifecycle.
 The companion plan is `docs/plans/2026-10-08-improve-default-rdfxml-output.md` in `Hadden-Industries/universal-ontology`.
 IDs here are local to this plan; identify the plan when referring to an ID across repositories.
+
+## Delivery amendment, 9 October 2026
+
+The delivered subset has five settings: indentation, indent size, banners, label banners and anonymous-individual ID persistence.
+`RDFXMLDocumentFormat` now exposes bounded Java prefix operations; loaded root prefixes are available through the manager's independently mutable format copy, and saves capture those preferences before suspension.
+The exact Java format parameter `force xsd:string on literals` accepts booleans; other arbitrary output parameters remain unsupported.
+These additions supersede the original four-setting boundary and the deferral of anonymous-ID controls and public prefix mutation below.
+Namespace entities, anonymous-individual remapping, named graphs and the remaining omitted Java members remain outside the supported subset.
+
+The selected executable Java authority is `b61ebe2da83daceebb3e7ba7afbd2582c9240c33`.
+Earlier observations at `d7e997a…` retain their own identity; the contract records the actual public-call observations, accepted differences, graph/resource proof and bounded formatting comparator.
+Shared Java bundle reuse remains disabled because its approved catalogue covers the earlier pin.
+Both added bindings retain `firstPublicRelease: null`; the [rc.2 reconciliation](0.1.0-rc.2-java-parity.md#11-delivered-changes-from-rc1-through-9-october) includes this work as delivered supporting scope with exact-version qualification still outstanding.
 
 ## 1. Purpose, scope and relationship to existing plans
 
@@ -17,12 +30,12 @@ Consumers should be able to select indentation and banner behavior using names a
 One RDF/XML writer serves both uses.
 Universal Ontology can first benefit from the defaults without application code changes, then explicitly configure its output manager if it later needs a different presentation.
 
-The selected initial surface is `OWLOntologyWriterConfiguration` with four real settings and `OWLOntologyManager` configuration accessors.
+The original initial surface was `OWLOntologyWriterConfiguration` with four settings and `OWLOntologyManager` configuration accessors; the delivery amendment above records the subsequent fifth setting and format API.
 It is a documented subset of Java's API, not a claim that every Java configuration field, renderer, storer or prefix interface is implemented.
 There is no new `pretty` parameter, profile enum, root-level export alias, process-global preference singleton or alternate rendering engine.
 
 Included: immutable configuration values, Java-backed method names/defaults, manager ownership, per-save snapshotting, real RDF/XML effects, package/browser exports, compatibility inventory, tests and a consumer migration contract.
-Deferred: namespace entities, anonymous-individual ID policy, named-graph output, public prefix mutation and other serializer configuration families.
+Originally deferred: namespace entities, anonymous-individual ID policy, named-graph output, public prefix mutation and other serializer configuration families; current deferrals are narrowed by the delivery amendment.
 Section 4 records each deferred Java surface so omission cannot be mistaken for a silently ignored option.
 
 The [rc.2 Java parity plan](0.1.0-rc.2-java-parity.md) already covers a wider feature programme.

@@ -1,9 +1,15 @@
 # Gate native Java reference reuse while retaining full integration checks
 
-- Status: native protocol and bounded hosted qualification delivered; shared reuse enabled under the owner-authorized rollout, representative sustained benefit unestablished.
+- Status: native protocol and bounded hosted qualification delivered; shared reuse enabled for the earlier authorized rollout, then disabled after the Java pin advanced; representative sustained benefit remains unestablished.
 - Authority: Maksym Shostak's instruction to implement the entire input-aware CI plan, specific Java rights disposition, and subsequent decision to keep full integration checks.
 - Supersedes: ADR 0011's receipt format and eight-minute strategy bound.
   Its full behavioral floor, direct original proof, exact normal-merge equivalence and release boundaries remain binding.
+
+**Current disposition, 9 October 2026:** `scripts/java-reference-state.mjs` sets `JAVA_REFERENCE_POLICY.enabled` to false.
+The executable pin is `b61ebe2da83daceebb3e7ba7afbd2582c9240c33`; the accepted publication catalogue retains `d7e997a53b470e32700de89cc610d9daf01ea769`.
+The delivered transport protocol remains available, but current qualification uses fresh native preparation and live comparisons; the earlier rights/operating approval does not transfer to the new pin.
+The [installed OWL contract](../compatibility/installed-owl-contract.md) subsequently replaced application execution, and Node 26 delivery advanced current qualification policy/schema to 5.
+The schema-v3 decision and enablement history below retain their original scope; [rc.2 reconciliation](../plans/0.1.0-rc.2-java-parity.md#11-delivered-changes-from-rc1-through-9-october) records current delivery and remaining work.
 
 ## Decision
 

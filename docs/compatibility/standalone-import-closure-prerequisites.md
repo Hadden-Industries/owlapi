@@ -14,6 +14,10 @@ The canonical consumer artifacts are:
 
 ## Delivery sequencing
 
+**Current disposition, 9 October 2026:** the foundations and their original qualification below were completed and published in rc.1; the [publication record](../provenance/releases/0.1.0-rc.1/publication-status.md) now also records the immutable GitHub prerelease.
+The branch sequence below is historical implementation guidance, not work to repeat for rc.2.
+Current producer gates use the [installed OWL contract](installed-owl-contract.md), with consumer application acceptance independently owned; the [rc.2 plan](../plans/0.1.0-rc.2-java-parity.md) owns subsequent source changes and remaining features.
+
 The capability slice originated on `feature/ontology-import-closure-lifecycle` and is included in the selected first public `@hadden-industries/owlapi@0.1.0-rc.1` under `next`.
 The owner approved first-release integration on 2026-09-28 and scoped publication with UO RC production eligibility in the [current amendment](../plans/scoped-npm-publication.md).
 The target coordinate is not evidence of publication or acceptance.

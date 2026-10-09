@@ -1,10 +1,15 @@
 # Java API Parity Precondition Implementation and Reconciliation Plan
 
+> **9 October 2026 delivery reconciliation:** Phase 21 is a completed rc.1 foundation, not a second rc.2 feature plan.
+> The [decision record](../compatibility/java-api-parity-decisions.json) retains its completed checkpoint and original Java authority; the [rc.1 publication record](../provenance/releases/0.1.0-rc.1/publication-status.md) now records the immutable GitHub prerelease.
+> PR 47 implemented producer gate separation: the [active producer policy](../release/producer-release-policy.json) replaces `P21-CONSUMER-001` and its mixed checkpoint with `P21-OWL-CONTRACT-001` and `P21-PRODUCER-CHECKPOINT-001`.
+> Preserve the historical task sequence, adaptations, checklist and evidence below; use the [rc.2 delivery reconciliation](0.1.0-rc.2-java-parity.md#11-delivered-changes-from-rc1-through-9-october) for later source changes and remaining work.
+
 > **4 October 2026 scope amendment:** this document retains the Phase 21 foundations and their rc.1 evidence.
 > The next selected programme is [Java parity for rc.2](0.1.0-rc.2-java-parity.md), before stable `0.1.0`.
 > Under the [release-independence decision](../implementation-plan.md#release-independence), WebVOWL/UO acceptance, migration and sign-off are not prerequisites for any owlapi release or finalization.
 > Historical consumer-checkpoint dependencies below are superseded for current release decisions; target/error parity, installed-package semantics and existing approved adaptations remain producer requirements.
-> The rc.2 plan owns the executable gate/schema migration; this amendment does not change historical records or claim that current validators already enforce the new policy.
+> The 4 October amendment proposed executable gate/schema migration; the 9 October reconciliation above records its subsequent implementation without changing historical results.
 
 > **For agentic workers:** Execute this plan inline, test-first, and one task at a time.
 > Canonical pre-integration development is authorized on the dedicated lifecycle branch before `0.1.0`; release acceptance is not.
@@ -20,7 +25,7 @@ The existing WebVOWL candidate harness audits application-owned consumer code an
 
 **Tech stack:** Native ESM JavaScript; Node.js 22/24; Jest; AJV Draft 2020-12; the generated Public API Surface Registry; installed-package boundary tests; pinned Java OWLAPI 5.5.1 source at revision `d7e997a53b470e32700de89cc610d9daf01ea769`.
 
-**Status:** The owner approved inclusion of Phase 21 and Phase 22 in the first planned public `owlapi@0.1.0` release on 2026-09-28.
+**Historical implementation status:** The owner approved inclusion of Phase 21 and Phase 22 in the first planned public `owlapi@0.1.0` release on 2026-09-28.
 The canonical target, errors, and decision ledger are developed once and integrated into `main` without rewriting the lifecycle branch's original commits.
 The scoped-publication amendment selects `@hadden-industries/owlapi@0.1.0-rc.1` under `next` as the first public artifact.
 UO and WebVOWL may each use the exact RC in production after artifact verification and their own full consumer acceptance, without waiting for `0.1.0`.
@@ -29,7 +34,7 @@ Reconcile against an exact pinned `main` commit and registry digest before accep
 Preserve the existing Java parity, WebVOWL audit and installed-candidate evidence gates.
 This checkpoint does not publish an intermediate package or authorize a production-consumer cutover.
 
-**Revised:** 2026-09-28.
+**Original revision:** 2026-09-28; current delivery reconciliation: 2026-10-09.
 
 ---
 

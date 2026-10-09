@@ -1,10 +1,15 @@
 # `owlapi` Import-Closure Lifecycle Implementation Plan
 
+> **9 October 2026 delivery reconciliation:** the Phase 21/22 foundations shipped in rc.1 and remain the regression baseline for the [current rc.2 programme](plans/0.1.0-rc.2-java-parity.md#11-delivered-changes-from-rc1-through-9-october).
+> Subsequent source delivery adds RDF/XML writer configuration/refinements and the profile scheduling/deadline repair; it does not complete rc.2's new storers, profile families or other selected features.
+> PR 47 delivered the [installed OWL contract](compatibility/installed-owl-contract.md) and [active producer gate policy](release/producer-release-policy.json), including `P22-OWL-CONTRACT-001` and `P22-PRODUCER-CORPUS-001`.
+> The historical tasks, acceptance catalogue, Java pins and receipts below retain their original meaning; consumer application acceptance is independently owned.
+
 > **4 October 2026 scope amendment:** Phase 21/22 source foundations and rc.1 receipts remain historical baselines for [the next rc.2 programme](plans/0.1.0-rc.2-java-parity.md), before stable `0.1.0`.
 > The [release-independence decision](implementation-plan.md#release-independence) supersedes every WebVOWL/UO application-acceptance, migration or sign-off dependency on any owlapi release or finalization, including the Task 15, completion and acceptance-catalogue conditions below.
 > Producer-owned Java parity, installed-package/browser semantics, lossless storage and reproducible pinned-corpus checks remain required.
 > Applications choose their own adoption timetable; retained historical results are unchanged.
-> Executable gate/schema/workflow reconciliation is planned explicitly in rc.2 and has not been performed by this documentation revision.
+> The original documentation amendment did not implement executable controls; the 9 October reconciliation above records their later delivery.
 
 > **For agentic workers:** Execute this plan one task at a time.
 > Keep each red/green/refactor cycle reviewable, run the listed focused verification before continuing, and pause at every approval gate.
@@ -28,7 +33,7 @@ The public merger is deliberately policy-neutral: Universal Ontology supplies th
 **Release-qualification predecessor:** [`docs/plans/java-api-parity-precondition.md`](plans/java-api-parity-precondition.md), completed as Phase 21 against a pinned integration baseline before Phase 22 acceptance.
 Both phases belong to the selected first public scoped RC; no earlier public or stable release is a predecessor.
 
-**Status:** The owner approved integration into local and remote `main` on 2026-09-28, preserving every original lifecycle-branch commit.
+**Historical implementation status:** The owner approved integration into local and remote `main` on 2026-09-28, preserving every original lifecycle-branch commit.
 The 2026-09-30 scoped-publication amendment selects `@hadden-industries/owlapi@0.1.0-rc.1` for public publication under `next` after qualification.
 UO and WebVOWL may each use the exact RC in production after public-artifact verification and their own complete consumer acceptance; stable `0.1.0` is not a prerequisite for either application.
 Implement the [scoped-publication plan](plans/scoped-npm-publication.md) before enabling publication.
@@ -36,7 +41,7 @@ Merging, changing the candidate version, and passing source tests do not authori
 Fresh qualification must bind the actual integrated candidate.
 Preserve prior alpha evidence under its original identities; never relabel it as RC evidence.
 
-**Revised:** 2026-09-30.
+**Original revision:** 2026-09-30; current delivery reconciliation: 2026-10-09.
 
 ---
 

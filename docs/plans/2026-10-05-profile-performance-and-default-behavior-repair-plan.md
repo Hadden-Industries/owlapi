@@ -45,8 +45,8 @@ Use the configured external workflow evidence root `C:\Users\maksy\.hi\w\e`, res
 | Scheduling experiment      | Replacing only zero-delay timers with `setImmediate` in a disposable Node probe reduced the full operation to 5.19 seconds; 1,743 pauses were observed. | Supports scheduling-overhead causality. It is not a portable implementation or permission to replace globals.                                                                        |
 | Existing native pattern    | Several owning parsers yield after approximately 50 ms of work, using `scheduler.yield()` where available and a timer fallback.                         | Reuse candidate for profile scheduling; verify each runtime and cancellation behavior.                                                                                               |
 
-The profile budget's checkpoint currently queues a zero-delay timer every 256 work units.
-Its default elapsed deadline is 30 seconds even when the caller supplies no options.
+At the original 5 October diagnosis, the profile budget's checkpoint queued a zero-delay timer every 256 work units.
+Its default elapsed deadline was 30 seconds even when the caller supplied no options; the delivered repair and new default are recorded above and in the current default-policy inventory.
 Java's ordinary profile checking has no corresponding elapsed-time or work-budget options.
 Java does have network connection and XML entity-expansion controls; this plan does not characterize Java as universally unbounded.
 WebVOWL's separate 10-second worker deadline is consumer policy and remains outside library ownership.

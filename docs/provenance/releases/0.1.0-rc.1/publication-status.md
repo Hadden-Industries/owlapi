@@ -3,6 +3,9 @@
 Recorded 2026-10-03, Europe/Bucharest.
 Registry timestamps below are UTC.
 
+**Current disposition, read back 9 October 2026:** the original rc.1 GitHub prerelease is published and immutable, with four assets.
+The original registry-verification and pre-finalization observations below remain historical evidence; the [dated finalization readback](#github-finalization-readback-9-october-2026) records the later state without converting the original failed workflow into a pass.
+
 ## Published identity
 
 - Package: [`@hadden-industries/owlapi@0.1.0-rc.1`](https://www.npmjs.com/package/@hadden-industries/owlapi/v/0.1.0-rc.1), public access.
@@ -35,7 +38,7 @@ The working source's rights-inventory hash is refreshed for the approved README 
 It does not turn the RC into a stable version or replace exact consumer pins and acceptance.
 The recommended alias remains `"owlapi": "npm:@hadden-industries/owlapi@0.1.0-rc.1"`.
 
-## Completed checks and remaining work
+## Original completed checks and pre-finalization state
 
 The source/candidate qualification and protected publication completed in the original release run.
 They do not need repetition because of the extra tag.
@@ -68,3 +71,21 @@ The owner revoked both temporary bootstrap tokens and removed `NPM_BOOTSTRAP_TOK
 Readback confirmed an empty npm token list and an empty GitHub environment-secret list.
 A subsequent isolated CLI login used while investigating tag removal was also revoked; registry readback returned 401 for that session and its temporary local credential file was removed.
 No distribution tags were changed during that investigation, and no credential values were recorded here.
+
+## GitHub finalization readback, 9 October 2026
+
+Fresh GitHub API readback of [release `v0.1.0-rc.1`](https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.1), release ID `402217399`, reports `draft: false`, `prerelease: true` and `immutable: true`.
+Its publication timestamp is `2026-10-03T05:03:25Z` (08:03:25 in Europe/Bucharest).
+Its tag still resolves to source `59131be0c1dc3a634e8433b06d2949051c051c0a`; no replacement package or signed tag is recorded by this amendment.
+
+| Asset                                                       | GitHub asset ID | Bytes  | GitHub-reported SHA-256                                            |
+| ----------------------------------------------------------- | --------------- | ------ | ------------------------------------------------------------------ |
+| `hadden-industries-owlapi-0.1.0-rc.1.tgz`                   | `606696257`     | 262167 | `4e18d8a1d2f41af0f31f0426a24d57ddfa25316fba6be550adf2edd6202cabf8` |
+| `hadden-industries-owlapi-0.1.0-rc.1.cdx.json`              | `606696242`     | 79139  | `84637ec522451cd44c55bbd0aaa6674070161d14b28b1b92cf85a964e9603e14` |
+| `SHA256SUMS`                                                | `606696233`     | 217    | `50949efc74b3e088d88010fc00a508979e33d993081ebc6db0385bd70257bfdb` |
+| `hadden-industries-owlapi-0.1.0-rc.1.release-evidence.json` | `607178377`     | 34582  | `158e07b68c31365679149f7e54ba76ce704d4a5821fceac1789d8d33649909ed` |
+
+This readback establishes the later published/immutable state and presence of the final evidence asset, superseding the earlier pending-finalization description.
+The listed digests are GitHub's returned asset metadata; this documentation reconciliation did not download the assets or repeat cryptographic release/asset verification.
+The original failed registry job, local registry verification, historical evidence schema and public tarball identity retain their own meaning.
+No current-source qualification, rc.2 publication or consumer production acceptance is inferred from this rc.1 state.

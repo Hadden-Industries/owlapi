@@ -1,6 +1,6 @@
 # Scoped npm publication and consumer RC production acceptance
 
-- Status: Accepted design; scoped RC published and registry verification passed; GitHub release finalization remains pending.
+- Status: Accepted design; scoped RC published and registry verification passed; 9 October readback confirms the published immutable GitHub prerelease and final evidence asset.
   Distribution-tag policy amended on 2026-10-03.
   Successor scope and release independence amended on 2026-10-04.
   On the same date, the owner clarified that `latest` follows every most recent public release, including prereleases.
@@ -45,9 +45,9 @@ Pinned consumer-origin corpus tests can remain independently reproducible produc
 Consumer reports are advisory unless they establish a reproducible breach of a supported producer requirement, which is handled as a producer defect.
 Each application's own production contract and deployment authority remain with that application.
 
-The new plan identifies current executable consumer dependencies and their required migration before successor qualification.
-This documentation decision is not evidence that those controls have changed or passed.
-Rc.1 remains immutable and its outstanding GitHub finalization remains explicitly recorded.
+The [rc.2 reconciliation](../plans/0.1.0-rc.2-java-parity.md#72-executable-gap-to-close-before-rc2-qualification) records producer/application gate separation delivered through PR 47, with successor version/channel work and fresh qualification still required.
+The original policy amendment did not implement those controls; their actual implementation is recorded in the [installed OWL contract](../compatibility/installed-owl-contract.md).
+Rc.1 remains immutable, and the [publication record](../provenance/releases/0.1.0-rc.1/publication-status.md#github-finalization-readback-9-october-2026) now records its finalization separately from the original failed workflow.
 The owner's clarified policy is that `latest` identifies the most recently publicly released owlapi version, including prereleases.
 Accordingly, the authorized rc.2 release advances both `next` and `latest` to `0.1.0-rc.2`; each later public release advances `latest` as part of that release's existing authorization, without another version-specific permission gate.
 `next` continues to identify the selected prerelease channel and does not reserve `latest` for stable versions.
@@ -66,8 +66,8 @@ Qualify local candidates before publication, then qualify each application again
 The additional tag does not invalidate the existing qualification of identical package bytes.
 Do not rebuild, republish, move the signed tag, repeat code tests, or introduce a replacement release workflow solely for this metadata state.
 Retain the original workflow's failed check as evidence of the superseded `latest` prohibition; do not describe that workflow as passing.
-Finish only the outstanding public-registry and release-evidence checks, recording actual tag values and the original publication identity.
-The [publication record](../provenance/releases/0.1.0-rc.1/publication-status.md) distinguishes completed publication from remaining verification.
+The [publication record](../provenance/releases/0.1.0-rc.1/publication-status.md) preserves the original verification handoff and subsequent finalization readback with actual tag values and the original publication identity.
+Its completed steps do not authorize another publication or make historical failed checks pass.
 
 Native npm aliases are local dependency-name mappings, not API compatibility shims and not transitive or peer-dependency rewrites.
 No forwarding package, dual publication, runtime wrapper, source resolver alias or migration to the unscoped name is included.

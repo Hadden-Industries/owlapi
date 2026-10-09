@@ -1,8 +1,14 @@
 # Extract and Publish the `owlapi` Core Module from WebVOWL
 
-> **5 October 2026 deferred corrective track:** the [profile performance and default-behavior repair plan](plans/2026-10-05-profile-performance-and-default-behavior-repair-plan.md) records the library-owned part of the WebVOWL loading-regression split.
+> **9 October 2026 delivered corrective track:** the [profile performance and default-behavior repair plan](plans/2026-10-05-profile-performance-and-default-behavior-repair-plan.md) records the library-owned repair delivered through PR 58.
 > WebVOWL's companion repair can proceed with installed RC.1; it is not a producer release prerequisite.
-> This new draft selects neither implementation nor release scope and does not amend existing public defaults or configuration.
+> Current source uses elapsed-work scheduling and a null default profile deadline; explicit deadlines, cancellation, other profile bounds and loader defaults remain.
+> The [default-policy inventory](compatibility/default-behavior-inventory.md) records the accepted behavior and migration.
+
+> **9 October 2026 programme reconciliation:** [rc.1-to-current delivery](plans/0.1.0-rc.2-java-parity.md#11-delivered-changes-from-rc1-through-9-october) is recorded through `ccace6afe201c6e2cc6a49e53b2d50bd6617916f`.
+> RDF/XML configuration/refinements, producer contract qualification, Java/CI infrastructure and Node 26/tooling changes are delivered; the wider rc.2 feature slices and exact release qualification remain outstanding.
+> The [rc.1 publication record](provenance/releases/0.1.0-rc.1/publication-status.md#github-finalization-readback-9-october-2026) now records its published immutable GitHub prerelease.
+> No rc.2 publication is implied.
 
 > **4 October 2026 rc.2 and release-independence amendment:** the next feature candidate is `@hadden-industries/owlapi@0.1.0-rc.2`, before stable `0.1.0`, under the integrated [Java-parity plan](plans/0.1.0-rc.2-java-parity.md).
 > It adds the selected query/search, change/transformation, Manchester rendering, Turtle/OWL/XML storage, EL/QL/RL profile and syntactic-locality programme to the existing Phase 21/22 foundations.
@@ -11,8 +17,8 @@
 > Producer-owned semantic, package, browser, security, rights, performance, exact-artifact and provenance qualification remains mandatory.
 > The owner's channel clarification makes `latest` follow the most recent public release, including prereleases; rc.2 publication advances both `next` and `latest` under the same release authorization.
 > This supersedes older rc.1-only allowances and prohibitions on advancing `latest` for an RC; unpublished candidates are not releases.
-> See [§2.70](#release-independence) for ownership and [the executable migration plan](plans/0.1.0-rc.2-java-parity.md#72-executable-gap-to-close-before-rc2-qualification) for the still-required gate changes.
-> This planning amendment changes neither executable release controls nor historical results, and does not approve implementation or publication.
+> See [§2.70](#release-independence) for ownership and [the current gate disposition](plans/0.1.0-rc.2-java-parity.md#72-executable-gap-to-close-before-rc2-qualification) for delivered producer separation and remaining successor-release changes.
+> The original planning amendment changed no executable controls; their subsequent delivery preserves historical results and grants no publication approval.
 
 The owner's 2 October 2026 consumer-repair instruction is implemented through the [bounded RDF compatibility plan](plans/2026-10-02-rdf-consumer-compatibility.md) and [Java-style parser metadata contract](compatibility/rdf-parser-metadata.md).
 Consumer requests remain subject to owlapi's Java OWLAPI responsibility; VOWL source ledgers, projection and admission policy remain consumer work.
@@ -23,7 +29,7 @@ These additions require fresh candidate qualification and do not enable publicat
 > For this exact initial RC, this owner-approved decision supersedes older requirements below to keep `latest` absent, remove it, or repeat completed code qualification solely because of that tag.
 > Existing code qualification is reused; actual registry readback is recorded separately.
 > No runtime, validator, schema or workflow change is part of this documentation amendment.
-> The original failed workflow and pending GitHub finalization remain explicit in the [publication record](provenance/releases/0.1.0-rc.1/publication-status.md).
+> The original failed workflow and pre-finalization observations remain explicit beside the later finalization readback in the [publication record](provenance/releases/0.1.0-rc.1/publication-status.md).
 
 > **Status:** Final architecture and implementation blueprint\
 > **Research baseline:** 8 August 2026\
@@ -3384,9 +3390,10 @@ Do not manufacture a consumer PASS or use broad error suppression to implement t
 
 This decision supersedes every contrary release dependency in Phases 19–22, including Phase 20 entry/completion, the Phase 21 consumer checkpoint and Phase 22 WebVOWL/UO acceptance gates.
 Historical catalogues, receipts, approved adaptations and source bindings remain retained under their original identities.
-Before qualifying a successor, implement the rc.2 plan's explicit separation of workflow dependencies, aggregate/receipt inventories, prepublication assertions, schemas and gate prerequisites.
-Preserve producer portions of mixed requirements and require negative tests proving that actual producer failures still block.
-Documentation alone neither changes those validators nor makes an old failed result pass.
+PR 47 implemented that separation across workflow dependencies, aggregate/receipt inventories, prepublication assertions, schemas and gate prerequisites.
+The [installed OWL contract](compatibility/installed-owl-contract.md) and [active producer policy](release/producer-release-policy.json) preserve producer portions of mixed requirements and negative controls proving that actual producer failures still block.
+Successor qualification must extend the delivered graph for the new contracts and version/channel controls; old evidence does not qualify different candidate bytes.
+Documentation alone neither changes validators nor makes an old failed result pass.
 
 ## 3. Current Architecture (What Exists Today)
 
@@ -7802,9 +7809,10 @@ All selected families target rc.2; any reduction needs an explicit scope revisio
 The plan's IDs are local to that programme and do not repurpose existing phase 23 capability state or historical Phase 19–22 gate identities.
 
 Use the already implemented lifecycle APIs as foundations and regression obligations.
-Resolve exact Java members, adaptations, new public namespaces, dependency reuse and producer/application gate separation before their dependent implementation.
-The current release validator requires both prepublication consumer reports, so executable reconciliation is an explicit work item rather than an assumed consequence of this prose.
-No package version, public API completion flag, release tag or consumer pin changes during this planning revision.
+Resolve the remaining exact Java members, adaptations, new public namespaces and dependency reuse before their dependent implementation.
+Producer/application gate separation is delivered through the shared installed OWL contract; the [rc.2 reconciliation](plans/0.1.0-rc.2-java-parity.md#12-remaining-slice-and-release-work) records its partial SLICE-001 credit and the remaining feature and release work.
+RDF/XML additions and the existing DL profile repair are supporting changes, not completion of the planned Turtle/OWL/XML or EL/QL/RL families.
+No package version, public API completion flag, release tag or consumer pin changes during this documentation reconciliation.
 
 Library qualification, release approval, registry verification and immutable-release closure must all be attributable to exact rc.2 inputs and artifacts.
 Optional consumer pilots can provide feedback at any slice without becoming release dependencies.

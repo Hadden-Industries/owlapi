@@ -1,10 +1,24 @@
 # Development dependency upgrade and Node 26 implementation plan
 
-**Status:** Draft for owner review, 9 October 2026.
-This document plans the requested change; it is not an accepted implementation baseline, a qualification result, or authorization to commit, publish, or release.
+**Status:** Accepted and delivered on 9 October 2026, integrated at `4859f2ef8ff32f92c9c81e3632641d481a5e5e8f`.
+The original planning baseline and proposed sequence below are retained; the delivery record supersedes proposal-stage status statements without granting release authority.
 The decision and integration owner is Maksym Shostak.
 
 **Purpose:** Let maintainers deliberately refresh development tools to newer stable releases, reproduce each selected graph from its lockfile, and use a qualified Node 26 runtime without losing OwlAPI's existing compatibility, provenance, or release controls.
+
+## Delivered state and qualification
+
+All 21 root registry development dependencies now use stable `>=` floors, with their qualified graph recorded in the root lockfile.
+Local npm eligibility is `>=12.2.0`; CI, release and governed qualification bootstrap exact npm `12.2.0`.
+The runtime declaration in `devEngines` remains versionless and the manifest has no `packageManager` field.
+Production dependency pins and the separate retained Markdown archives/lock remain unchanged by this upgrade.
+
+Node `26.11.1` is admitted alongside the existing Node `22.23.3` and `24.21.0` floors.
+The complete 20-job [CI run 37875950984](https://github.com/Hadden-Industries/owlapi/actions/runs/37875950984) passed on `c64c3a297a5df13e6db12d2d65d43a62f63599c3`, including Node 26 source and retained-package Ubuntu x64, Windows x64 and macOS arm64 checks, all three browsers and the installed OWL contract.
+It qualified tarball SHA-256 `46c893beca80fc7421fff0296b60dd5fcf506a031bbe20c649636a2b32ac0e54`; later source and rc.2 candidates require their own evidence.
+The main plan's accepted §2.19 amendment promotes those Node 26 representatives to `SUPPORTED`; Node 24.21.0 remains the canonical release/Markdown/Java runtime.
+CI qualification policy/schema 5 and the active producer policy require the expanded job inventory and reject incomplete or pre-expansion proof.
+The [rc.2 plan](0.1.0-rc.2-java-parity.md#11-delivered-changes-from-rc1-through-9-october) consumes this baseline without marking rc.2 published or its remaining features complete.
 
 ## Basis and inspected baseline
 

@@ -4,9 +4,18 @@ This directory contains the executable governance and delivery records for the `
 `owlapi-js` remains the historical WebVOWL staging/path name; the selected public npm package is `@hadden-industries/owlapi`, maintained only in `https://github.com/Hadden-Industries/owlapi` after extraction.
 The implementation plan remains the highest-authority normative document.
 
-The [scoped npm publication plan](plans/scoped-npm-publication.md) defines the pending implementation work, exact native alias, public RC sequence and UO/WebVOWL acceptance handoffs.
+The [rc.1 publication record](provenance/releases/0.1.0-rc.1/publication-status.md) records the published package, registry verification and immutable GitHub prerelease.
+The [scoped npm publication plan](plans/scoped-npm-publication.md) retains the exact native alias, original release sequence and independently owned UO/WebVOWL adoption handoffs.
 The [identity decision](adr/0009-scoped-npm-publication-and-uo-rc-acceptance.md) records the approved rationale.
-This documentation amendment does not rename the executable manifest, refresh historical approvals or enable publication.
+The active [rc.2 Java-parity programme](plans/0.1.0-rc.2-java-parity.md) separates delivered source changes from remaining features and successor qualification; it does not authorize publication.
+
+Current supporting contracts and delivery records:
+
+- [Installed OWL contract](compatibility/installed-owl-contract.md): shared producer CI/release qualification and reviewed consumer-source coverage, without application acceptance as a producer prerequisite.
+- [RDF/XML writer configuration](compatibility/rdfxml-writer-configuration.md): five settings, prefix operations, supported parameters, Java adaptations and resource limits.
+- [Profile default-policy inventory](compatibility/default-behavior-inventory.md) and [repair plan](plans/2026-10-05-profile-performance-and-default-behavior-repair-plan.md): scheduling and profile-only deadline migration.
+- [Development dependency and Node 26 plan](plans/development-dependency-upgrade.md): delivered tool floors, exact qualification graph and expanded runtime coverage.
+- [CI qualification plan](plans/2026-10-03-ci-input-aware-qualification.md): delivered FULL lineage/native Java infrastructure and current disabled shared-reuse state.
 
 Authoritative machine-readable records:
 
@@ -22,15 +31,18 @@ Authoritative machine-readable records:
 - `compatibility/krss1-behavioral-oracle.json`: finite pinned Java observations and controlled KRSS1 compatibility decisions.
 - `compatibility/expected-differences.json`: exact Java/JavaScript differential exceptions.
 - `dependency-governance.json`: selected dependency authority, risk, licence, and replacement records.
+- `release/producer-release-policy.json` and generated `release/producer-gates.json`: active producer obligations; historical gate records retain their original identities.
 - `ontology-lifecycle-capability-implementation-plan.md`: imports-closure, mutation, merger, and storage included in the selected public `@hadden-industries/owlapi@0.1.0-rc.1` release under `next`.
-  The RC requires fresh qualification and may serve UO and WebVOWL production after full artifact verification and each application's consumer acceptance; no earlier or later stable `0.1.0` is a prerequisite for either application.
+  Those foundations shipped in rc.1; later candidates need fresh qualification.
+  UO and WebVOWL retain their own production acceptance, without a prerequisite stable `0.1.0` release.
 - `plans/w3c-test-conformance-reporting.md`: the independent post-release programme for complete versioned W3C result ledgers, EARL generation, and appropriately disclosed upstream implementation-report submissions; it is not a gate for the public scoped RC, later `@hadden-industries/owlapi@0.1.0`, its recorded cutover patch, or WebVOWL's package cutover.
 - `compatibility/standalone-import-closure-prerequisites.md`: the bounded Java-compatible library surface required by the external consumer contract.
 
 Repository implementation conventions are frozen in `engineering-conventions.md`.
 The isolated Java structural reference harness lives under `util/owlapi-reference/`; it is development evidence, never a production runtime dependency.
 
-The proposed [Python and Markdown quality tooling plan](plans/2026-09-29-python-markdown-quality-tooling.md) records the reusable tooling baseline, preservation requirements, implementation slices, and verification needed to extend repository formatting and linting.
+The original [Python and Markdown quality tooling plan](plans/2026-09-29-python-markdown-quality-tooling.md) retains its baseline and preservation requirements.
+Current Markdown commands, archive isolation and shared qualification are documented in the [delivered centralization plan](plans/markdown-quality-centralization.md) and [contributor guide](../CONTRIBUTING.md).
 
 Delivery records live under `migration/`.
 Historical lesson records preserve evidence; `migration/parser-migration-playbook.md` is the concise current method.
