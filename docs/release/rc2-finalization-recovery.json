@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "kind": "OWNER_AUTHORIZED_EXACT_RELEASE_FINALIZATION_RECOVERY",
+  "repository": "Hadden-Industries/owlapi",
+  "sourceCommit": "d3f9fdba5ac1409346bf0c59512e3cf23a3c1517",
+  "tag": "v0.1.0-rc.2",
+  "tagObject": "79699c3816912084202551dc2e043a12e081a3ef",
+  "runId": "37995865867",
+  "publicationAttempt": 1,
+  "verificationAttempt": 2,
+  "releaseId": 408398239,
+  "tarballSha256": "4f04d1456519fb75f23da51fce5174af0d4909ec7ea647cae2f4c9f4dc77b441",
+  "ownerDecision": {
+    "owner": "MaksymShostak",
+    "localDate": "2026-10-10",
+    "session": "01a12138-f264-7b50-9365-91c88701e54b",
+    "instruction": "Let's proceed with the narrowly reviewed finalization recovery",
+    "authority": "Direct owner instruction; not a newly fetched GitHub environment approval."
+  },
+  "approvalObservations": [
+    {
+      "environment": "release-manual",
+      "reviewer": "MaksymShostak",
+      "state": "approved",
+      "observedAt": "2026-10-09T22:31:57Z",
+      "record": "release-manual-owner-approval-verified.json",
+      "sha256": "c5f56570dce19d103532b0702bb5d844597f288b24c5de213c91047a9ffbd457",
+      "basis": "Retained operator observation of authenticated workflow approvals endpoint and direct owner confirmation.",
+      "jobId": 114053124312,
+      "environmentId": 20768965780
+    },
+    {
+      "environment": "npm-release",
+      "reviewer": "MaksymShostak",
+      "state": "approved",
+      "observedAt": "2026-10-09T22:37:06Z",
+      "record": "release-attempt1-registry-processing-failure.json",
+      "sha256": "6bfd6b357a2b72d770ed3402adc6971c7a56cf0b92026a19603d7a25df75a90a",
+      "basis": "Retained operator observation of authenticated workflow approvals endpoint and direct owner confirmation.",
+      "jobId": 114054625054,
+      "environmentId": 20769055110
+    }
+  ],
+  "deploymentId": 6972347297,
+  "githubCli": {
+    "version": "2.101.0",
+    "platform": "windows_amd64",
+    "archive": "gh_2.101.0_windows_amd64.zip",
+    "archiveSha256": "bc6c814367b193cd8e713611d61e36013c0ef843b8f516458fe3eda039192794",
+    "executableSha256": "df05089117a23889b3f6ea08d7644849afe7b6025647a09f33b45c71f1418f75",
+    "source": "https://github.com/cli/cli/releases/tag/v2.101.0",
+    "qualification": "Archive SHA256 matches the independently downloaded official release checksum set. Native Windows build uses the same existing verifier-required version; no global installation change."
+  },
+  "failedJobs": [
+    {
+      "id": 114055199700,
+      "name": "Release / fresh public registry",
+      "attempt": 1
+    },
+    {
+      "id": 114059354682,
+      "name": "Release / evidence",
+      "attempt": 2
+    }
+  ],
+  "artifacts": [
+    {
+      "key": "candidate",
+      "id": 11648109093,
+      "name": "hadden-industries-owlapi-0.1.0-rc.2-candidate-37995865867-1",
+      "digest": "sha256:f09c6d183f3b01c5e3556d6770e4752b37c019c03deab6aade7eadcf16d61143",
+      "files": [
+        "SHA256SUMS",
+        "hadden-industries-owlapi-0.1.0-rc.2.cdx.json",
+        "hadden-industries-owlapi-0.1.0-rc.2.tgz"
+      ]
+    },
+    {
+      "key": "publication",
+      "id": 11648208757,
+      "name": "release-publication-preflight-37995865867-1",
+      "digest": "sha256:493bc2d29e3dff66dd9dfab0e52f135a19f31fc31ac15cb0b590f979343fd9d2",
+      "files": ["publication-preflight.json"]
+    },
+    {
+      "key": "tag",
+      "id": 11648033948,
+      "name": "release-tag-verification-37995865867-1",
+      "digest": "sha256:eaac786116322b8f2adefca982d480d599116e59093eef5aba3bf8700cc9252e",
+      "files": ["tag-verification.json"]
+    },
+    {
+      "key": "draft",
+      "id": 11648538375,
+      "name": "release-draft-37995865867-1",
+      "digest": "sha256:b908f8f4267a828254e7c2b69d23212c20e07bfc79fbabf05dcceb5af1306d94",
+      "files": ["draft-release.json"]
+    },
+    {
+      "key": "registry",
+      "id": 11648877960,
+      "name": "release-registry-verification-37995865867-2",
+      "digest": "sha256:7baaabdf28e3405f10b3c7e1216a9578b487f519b779793e45b20fcca667f57c",
+      "files": ["registry-verification.json"]
+    }
+  ]
+}

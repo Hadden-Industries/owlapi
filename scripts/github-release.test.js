@@ -4,7 +4,54 @@ import {
   assertReleaseAssetSubset,
   assertReleaseAssets,
   classifyWriteReconciliation,
+  GitHubReleaseClient,
+  assertReleaseId,
 } from "./github-release.mjs";
+
+test("binds draft, publication reconciliation and immutable verification to the approved release ID", () => {
+  expect(() => assertReleaseId({ id: 408398239 }, 408398239)).not.toThrow();
+  expect(() => assertReleaseId({ id: 408398240 }, 408398239)).toThrow(
+    "release ID differs",
+  );
+  expect(() => assertReleaseId({ id: 408398239 }, undefined)).toThrow(
+    "release ID differs",
+  );
+});
+
+test("finds an authenticated draft when the published-by-tag endpoint returns 404", async () => {
+  const client = new GitHubReleaseClient({
+    repository: "Hadden-Industries/owlapi",
+    token: "fixture-token",
+  });
+  const reads = [];
+  const draft = { id: 42, draft: true, tag_name: "v0.1.0-rc.2" };
+  client.read = async (path) => {
+    reads.push(path);
+    return path.startsWith("/releases/tags/") ? null : [draft];
+  };
+  expect(await client.getReleaseByTag("v0.1.0-rc.2")).toBe(draft);
+  expect(reads).toEqual([
+    "/releases/tags/v0.1.0-rc.2",
+    "/releases?per_page=100&page=1",
+  ]);
+});
+
+test("rejects ambiguous drafts instead of choosing the first matching tag", async () => {
+  const client = new GitHubReleaseClient({
+    repository: "Hadden-Industries/owlapi",
+    token: "fixture-token",
+  });
+  client.read = async (path) =>
+    path.startsWith("/releases/tags/")
+      ? null
+      : [
+          { id: 42, draft: true, tag_name: "v0.1.0-rc.2" },
+          { id: 43, draft: true, tag_name: "v0.1.0-rc.2" },
+        ];
+  await expect(client.getReleaseByTag("v0.1.0-rc.2")).rejects.toThrow(
+    "Multiple releases",
+  );
+});
 
 describe("GitHub release state", () => {
   test("accepts only a draft attached to the independently verified tag", () => {

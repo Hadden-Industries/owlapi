@@ -6,6 +6,7 @@ import { pathToFileURL } from "node:url";
 import {
   assertPublishedRelease,
   assertReleaseAssets,
+  assertReleaseId,
   GitHubReleaseClient,
 } from "./github-release.mjs";
 import { GITHUB_CLI_IDENTITY } from "./github-cli.mjs";
@@ -158,6 +159,7 @@ const main = async () => {
   const evidence = validateReleaseEvidence(
     JSON.parse(readFileSync(evidencePath, "utf8")),
   );
+  assertReleaseId(accepted, evidence.githubRelease.id);
   assertReleaseExecutionIdentity({
     evidence,
     promotionCommit,

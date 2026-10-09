@@ -1,6 +1,15 @@
 const compareCodeUnits = (left, right) =>
   left < right ? -1 : left > right ? 1 : 0;
 
+export const assertReleaseId = (release, expectedId) => {
+  if (
+    !Number.isSafeInteger(expectedId) ||
+    expectedId <= 0 ||
+    release?.id !== expectedId
+  )
+    throw new Error("GitHub release ID differs from the approved evidence.");
+};
+
 export const assertDraftRelease = (release, { tag }) => {
   // GitHub documents target_commitish as unused once the tag exists, so the
   // independently verified signed tag—not this display field—binds the commit.
@@ -181,10 +190,27 @@ export class GitHubReleaseClient {
     }
   }
 
-  getReleaseByTag(tag) {
-    return this.read(`/releases/tags/${encodeURIComponent(tag)}`, {
-      accept404: true,
-    });
+  async getReleaseByTag(tag) {
+    const published = await this.read(
+      `/releases/tags/${encodeURIComponent(tag)}`,
+      {
+        accept404: true,
+      },
+    );
+    if (published) return published;
+    // The by-tag endpoint returns published releases. An authenticated release
+    // inventory is needed to find a draft without creating a duplicate release.
+    const matches = [];
+    for (let page = 1; page <= 5; page++) {
+      const releases = await this.read(`/releases?per_page=100&page=${page}`);
+      matches.push(...releases.filter((release) => release.tag_name === tag));
+      if (releases.length < 100) {
+        if (matches.length > 1)
+          throw new Error("Multiple releases match the canonical tag.");
+        return matches[0] ?? null;
+      }
+    }
+    throw new Error("Release inventory exceeded the bounded draft lookup.");
   }
 
   listAssets(releaseId) {
