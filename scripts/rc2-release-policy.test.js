@@ -4,6 +4,24 @@ import addFormats from "ajv-formats";
 import { assertPublicRegistryFacts } from "./qualify-public-registry.mjs";
 import { deriveWorkflowMetadata } from "./workflow-metadata.mjs";
 import { PACKAGE_VERSION, PUBLIC_SUBPATHS } from "./package-identity.mjs";
+import { matchesScopedCandidateArtifactName } from "./generate-release-evidence.mjs";
+
+test("rc.2 evidence accepts only its exact candidate coordinate and an existing run attempt", () => {
+  const name = "hadden-industries-owlapi-0.1.0-rc.2-candidate-123-1";
+  expect(matchesScopedCandidateArtifactName(name, "123", 1)).toBe(true);
+  expect(matchesScopedCandidateArtifactName(name, "123", 2)).toBe(true);
+  for (const invalid of [
+    name.replace("rc.2", "rc.1"),
+    name.replace("candidate-123", "candidate-124"),
+    name.replace(/-1$/u, "-0"),
+    name.replace(/-1$/u, "-01"),
+    name.replace(/-1$/u, "-2"),
+    `${name}-extra`,
+    `extra-${name}`,
+    null,
+  ])
+    expect(matchesScopedCandidateArtifactName(invalid, "123", 1)).toBe(false);
+});
 
 const version = "0.1.0-rc.2",
   sha256 = "a".repeat(64);
