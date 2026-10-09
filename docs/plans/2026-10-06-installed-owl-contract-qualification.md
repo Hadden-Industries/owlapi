@@ -17,6 +17,19 @@ This revision supersedes the original CI-only scope and DEC-004's preservation o
 Requirement IDs remain local and stable; REQ/AC-009–010 and QA-008–009 add release migration and historical-policy obligations.
 **Unified consumer amendment, 6 October 2026:** The owner requires identical CI/release interface tests grounded in the latest committed UO and WebVOWL source. The [UO plan reconciliation](2026-10-06-universal-ontology-consumer-ci.md) supplies UO-specific provenance within this single execution, superseding its separate advisory workflow and consumer-adapter execution proposal. REQ/AC-011 and QA-010 add current-source admission; no consumer application execution is introduced.
 
+**Pinned-input amendment, 9 October 2026:** The owner explicitly selected the consumer commits already recorded in `docs/release/owl-contract-sources.json`: UO `9a3b5bff5aeaff4540f14bdf65baeffc1c0d188d` and WebVOWL `a468e17701d495fd9e1a801aef169894b2045186`.
+This supersedes the live default-branch requirement in REQ/AC-011 and DEC-007, and the equivalent UO REQ/AC-008.
+Qualification, CI evidence reuse and release preflight must read and validate those exact commits, root trees and reviewed interface blobs; branch movement alone must not change an input or invalidate evidence.
+Missing or substituted pinned source still fails closed, including a different commit with identical interface blobs.
+Advancing a pin requires an explicit reviewed configuration change and corresponding candidate qualification; compatibility claims cover the selected baseline.
+The current OwlAPI candidate, 69 native assertions, artifact integrity, source transport limits and same-run release proof remain unchanged.
+
+The bounded implementation retains R2 because this selection controls CI and release evidence admission.
+Reuse the existing native GitHub commit/tree reader, reviewed inventory validator and historical archive reader; no dependency or service is introduced.
+One test-first slice updates the shared source reader and all current admission paths, with regression coverage for moving heads, missing/substituted pins, reuse and prepublication rejection, and preserved historical archive readability.
+Run the affected protocol suites, live pinned-source acquisition, the installed contract and the registered full profile on the prepared candidate; review the frozen diff and independently verify the admission boundary.
+Rollback reverts the reader and this policy amendment together without rewriting retained reports.
+
 ## Purpose and governing basis
 
 Make `CI / required` and producer release qualification establish that the retained OwlAPI package provides its documented OWL data and public API correctly, including the contracts used by UO and VOWL, without making either producer acceptance or publication depend on VOWL projection or WebVOWL application behavior.
@@ -228,7 +241,10 @@ Prefer the smallest rights-cleared product-owned ontology fixtures that expose e
 Any new external fixture needs exact identity, terms and provenance before adoption.
 Mock only genuine external acquisition boundaries with deterministic documents; exercise real manager, parser, model and storage operations against the installed package.
 
-## Current-source acquisition and identical test scope
+## Historical latest-source acquisition and identical test scope
+
+The pinned-input amendment above supersedes this section's latest-branch selection and freshness rules, including REQ/AC-011, QA-010 and DEC-007 below their original headings.
+The [installed contract](../compatibility/installed-owl-contract.md#pinned-consumer-source-admission) owns current acquisition and admission behavior.
 
 At each CI/release qualification start, resolve the default branch and committed HEAD of `Hadden-Industries/universal-ontology` and `Hadden-Industries/webvowl` once. Record repository, default branch, SHA, acquisition identity, relevant source/manifest digests and accepted inventory identity.
 “Latest” is the latest committed source at this capture; subsequent branch movement does not change that run's input.

@@ -127,15 +127,14 @@ export const assertPrepublicationOwlContract = ({
   nativeText,
   identity,
   artifact,
-  currentSources,
+  pinnedSources,
 }) => {
   assertNativeOwlContractReport(report, nativeText, {
     candidateSha256: candidate.tarball.sha256,
     artifact,
   });
-  // Freshness concerns the consumed interface. Preserve the producing HEAD;
-  // a later unrelated consumer commit does not invalidate those same blobs.
-  assertReviewedConsumerSources(currentSources, REVIEWED_CONSUMER_SOURCES);
+  // Revalidate the selected immutable inputs, independently of current branch heads.
+  assertReviewedConsumerSources(pinnedSources, REVIEWED_CONSUMER_SOURCES);
   if (
     report.identity.workflow !== "Release" ||
     report.identity.commit !== identity.commit ||
@@ -429,7 +428,7 @@ const main = async () => {
       id: Number(process.env.CANDIDATE_ARTIFACT_ID),
       digest: `sha256:${process.env.CANDIDATE_ARTIFACT_DIGEST}`,
     },
-    currentSources: await captureConsumerSources(),
+    pinnedSources: await captureConsumerSources(),
   });
   const dryRun = runDryRun(candidate.tarballPath);
   const dryRunResult = assertDryRunMatchesCandidate({ candidate, dryRun });

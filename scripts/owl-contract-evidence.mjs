@@ -5,16 +5,12 @@ import { isDeepStrictEqual } from "node:util";
 import { PACKAGE_NAME, PACKAGE_VERSION } from "./package-identity.mjs";
 import { OWL_CONTRACT_ASSERTIONS } from "../test/consumers/owl-contract/public-model-cases.js";
 import {
+  REVIEWED_CONSUMER_SOURCES,
   assertReviewedConsumerSources,
   sourceFingerprint,
 } from "./consumer-source-snapshot.mjs";
 
-export const REVIEWED_CONSUMER_SOURCES = JSON.parse(
-  readFileSync(
-    new URL("../docs/release/owl-contract-sources.json", import.meta.url),
-    "utf8",
-  ),
-);
+export { REVIEWED_CONSUMER_SOURCES };
 export const OWL_CONTRACT_FIXTURES = Object.freeze([
   "test/consumers/owl-contract/contract.test.mjs",
   "test/consumers/owl-contract/public-model-cases.js",

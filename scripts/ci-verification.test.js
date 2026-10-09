@@ -233,14 +233,17 @@ const fixture = () => {
   };
 };
 
-const verify = async (f) => {
+const verify = async (
+  f,
+  captureSources = async () => jsonClone(REVIEWED_CONSUMER_SOURCES),
+) => {
   const selection = await selectVerificationProof({
     context: f.context,
     read: f.read,
     now,
   });
   return verifyIntegrationProof({
-    captureSources: async () => jsonClone(REVIEWED_CONSUMER_SOURCES),
+    captureSources,
     context: f.context,
     selection,
     receipt: f.receipt,
@@ -374,14 +377,17 @@ const mainFixture = async (reused, partialOrigin = false) => {
   const downloadOriginal = async () => jsonClone(f.receipt);
   return { ...f, context, record, mainRun, mainArtifact, downloadOriginal };
 };
-const validateBase = async (f) => {
+const validateBase = async (
+  f,
+  captureSources = async () => jsonClone(REVIEWED_CONSUMER_SOURCES),
+) => {
   const selection = await selectBaseQualification({
     context: f.context,
     read: f.read,
     now,
   });
   return verifyBaseQualification({
-    captureSources: async () => jsonClone(REVIEWED_CONSUMER_SOURCES),
+    captureSources,
     context: f.context,
     selection,
     record: f.record,
@@ -390,6 +396,27 @@ const validateBase = async (f) => {
     now,
   });
 };
+
+test.each(["integration", "base"])(
+  "%s reuse requires the selected source pins and their availability",
+  async (route) => {
+    const f = route === "integration" ? fixture() : await mainFixture(false);
+    const admit = route === "integration" ? verify : validateBase;
+    await expect(admit(f)).resolves.toBeDefined();
+    const changed = jsonClone(REVIEWED_CONSUMER_SOURCES);
+    changed.snapshots[0].commit = "f".repeat(40);
+    await expect(admit(f, async () => changed)).rejects.toThrow(/pins differ/u);
+    await expect(
+      admit(f, async () => {
+        throw new Error("Pinned source unavailable");
+      }),
+    ).rejects.toThrow(/unavailable/u);
+    const record = route === "integration" ? f.receipt : f.record;
+    record.checks.owl_contract.evidence.consumerSources.snapshots[0].commit =
+      "f".repeat(40);
+    await expect(admit(f)).rejects.toThrow(/pin/iu);
+  },
+);
 
 describe("exact landed-main qualification and direct original execution", () => {
   test("reused main keeps direct check-producing attempts from a partial PR rerun", async () => {
