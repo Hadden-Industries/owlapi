@@ -7,6 +7,7 @@ import {
   assertDraftRelease,
   assertPublishedRelease,
   assertReleaseAssets,
+  assertReleaseId,
   GitHubReleaseClient,
 } from "./github-release.mjs";
 import { assertReleaseExecutionIdentity } from "./release-evidence.mjs";
@@ -116,6 +117,7 @@ const main = async () => {
     tag,
     commit: sourceCommit,
   });
+  assertReleaseId(acceptedDraft, evidence.githubRelease.id);
   assertReleaseAssets({
     assets: release.assets,
     expected: evidence.githubRelease.assets,
@@ -176,6 +178,7 @@ const main = async () => {
     tag,
     commit: sourceCommit,
   });
+  assertReleaseId(accepted, evidence.githubRelease.id);
   assertReleaseAssets({ assets: published.assets, expected: expectedAssets });
   const report = {
     schemaVersion: 1,

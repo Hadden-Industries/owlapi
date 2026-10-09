@@ -1,7 +1,14 @@
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { basename, join, resolve } from "node:path";
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  realpathSync,
+  writeFileSync,
+} from "node:fs";
+import { basename, dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
@@ -27,6 +34,33 @@ const writeJson = (path, value) =>
 const requireFact = (condition, message) => {
   if (!condition) throw new Error(message);
 };
+
+export const canonicalExternalOutput = (path, checkout = repositoryRoot) => {
+  const requested = resolve(path);
+  let ancestor = requested;
+  while (!existsSync(ancestor)) {
+    const parent = dirname(ancestor);
+    requireFact(
+      parent !== ancestor,
+      "Recovery output has no existing directory ancestor.",
+    );
+    ancestor = parent;
+  }
+  const canonical = resolve(
+    realpathSync(ancestor),
+    relative(ancestor, requested),
+  );
+  const source = realpathSync(checkout).toLowerCase();
+  requireFact(
+    canonical.toLowerCase() !== source &&
+      !canonical.toLowerCase().startsWith(`${source}${sep}`),
+    "Recovery outputs must remain outside the source checkout.",
+  );
+  return canonical;
+};
+
+export const freshRecoveryOutputs = (root) =>
+  mkdtempSync(join(root, "publication-"));
 
 const command = (executable, args, options = {}) => {
   const result = spawnSync(executable, args, {
@@ -271,8 +305,28 @@ const downloadArtifact = async (client, artifact, control, root) => {
   );
   const zip = join(root, `${artifact.key}.zip`);
   writeFileSync(zip, archive, { flag: "wx" });
-  assertArchiveEntries(command("tar", ["-tf", zip]), artifact.files);
+  assertArchiveEntries(
+    command("tar", ["-tf", "-"], { input: archive }),
+    artifact.files,
+  );
   return { archiveSha256: hash(archive) };
+};
+
+export const readVerifiedArchive = (bytes, artifact, run = command) => {
+  requireFact(
+    `sha256:${hash(bytes)}` === artifact.digest,
+    "Retained recovery archive changed after preparation.",
+  );
+  assertArchiveEntries(
+    run("tar", ["-tf", "-"], { input: bytes }),
+    artifact.files,
+  );
+  return Object.fromEntries(
+    artifact.files.map((name) => [
+      name,
+      run("tar", ["-xOf", "-", name], { input: bytes, encoding: null }),
+    ]),
+  );
 };
 
 export const buildRecoveryEvidence = ({
@@ -411,17 +465,9 @@ const evidenceFromArchives = ({
 }) => {
   const files = {};
   for (const artifact of control.artifacts) {
-    const zip = join(root, `${artifact.key}.zip`);
-    requireFact(
-      `sha256:${hash(readFileSync(zip))}` === artifact.digest,
-      "Retained recovery archive changed after preparation.",
-    );
-    assertArchiveEntries(command("tar", ["-tf", zip]), artifact.files);
-    files[artifact.key] = Object.fromEntries(
-      artifact.files.map((name) => [
-        name,
-        command("tar", ["-xOf", zip, name], { encoding: null }),
-      ]),
+    files[artifact.key] = readVerifiedArchive(
+      readFileSync(join(root, `${artifact.key}.zip`)),
+      artifact,
     );
   }
   const reports = Object.fromEntries(
@@ -560,12 +606,8 @@ const main = async () => {
       (!publish || args[6] === "--publish"),
     "Use --output <new external directory> --approval-records <retained directory> --gh <pinned Windows executable> [--publish].",
   );
-  const root = resolve(args[1]);
+  const root = canonicalExternalOutput(args[1]);
   const approvalRoot = resolve(args[3]);
-  requireFact(
-    !root.toLowerCase().startsWith(repositoryRoot.toLowerCase()),
-    "Recovery outputs must remain outside the source checkout.",
-  );
   const commit = command("git", ["rev-parse", "HEAD"]).trim();
   requireFact(
     command("git", ["status", "--porcelain"]).trim() === "",
@@ -608,7 +650,7 @@ const main = async () => {
       !existsSync(root),
       "Preparation requires a new evidence directory.",
     );
-    mkdirSync(root, { recursive: true });
+    mkdirSync(root);
     const downloads = {};
     for (const artifact of control.artifacts)
       downloads[artifact.key] = await downloadArtifact(
@@ -676,6 +718,7 @@ const main = async () => {
       "Retained recovery archive changed after preparation.",
     );
   }
+  const publicationRoot = freshRecoveryOutputs(root);
   command(
     process.execPath,
     [
@@ -685,7 +728,7 @@ const main = async () => {
       "--commit",
       control.sourceCommit,
       "--output",
-      join(root, "fresh-tag-before-publication.json"),
+      join(publicationRoot, "fresh-tag-before-publication.json"),
     ],
     { env: childEnv },
   );
@@ -697,8 +740,6 @@ const main = async () => {
     expected: evidence.githubRelease.assets,
   });
   const finalReadback = await publicReadback(control);
-  const publicationRoot = join(root, "publication-evidence");
-  mkdirSync(publicationRoot);
   const publicationEvidence = join(publicationRoot, evidenceName);
   writeJson(publicationEvidence, reconstructed);
   const publicationSha256 = hash(readFileSync(publicationEvidence));
@@ -730,7 +771,7 @@ const main = async () => {
           "--source-commit",
           control.sourceCommit,
           "--output",
-          join(root, "finalization.json"),
+          join(publicationRoot, "finalization.json"),
         ],
         { env: childEnv },
       ),
@@ -748,9 +789,9 @@ const main = async () => {
               "--source-commit",
               control.sourceCommit,
               "--output-directory",
-              join(root, "immutable-assets"),
+              join(publicationRoot, "immutable-assets"),
               "--report",
-              join(root, "immutable-verification.json"),
+              join(publicationRoot, "immutable-verification.json"),
             ],
             { env: childEnv },
           ),
@@ -758,9 +799,9 @@ const main = async () => {
     },
   });
   writeJson(
-    join(root, "operator-recovery-receipt.json"),
+    join(publicationRoot, "operator-recovery-receipt.json"),
     recoveryReceipt({
-      root,
+      root: publicationRoot,
       commit,
       control,
       controlBytes,
@@ -768,7 +809,9 @@ const main = async () => {
       githubCliObservation,
     }),
   );
-  process.stdout.write(`${join(root, "operator-recovery-receipt.json")}\n`);
+  process.stdout.write(
+    `${join(publicationRoot, "operator-recovery-receipt.json")}\n`,
+  );
 };
 
 if (process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url)

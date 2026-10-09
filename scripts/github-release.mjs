@@ -1,6 +1,15 @@
 const compareCodeUnits = (left, right) =>
   left < right ? -1 : left > right ? 1 : 0;
 
+export const assertReleaseId = (release, expectedId) => {
+  if (
+    !Number.isSafeInteger(expectedId) ||
+    expectedId <= 0 ||
+    release?.id !== expectedId
+  )
+    throw new Error("GitHub release ID differs from the approved evidence.");
+};
+
 export const assertDraftRelease = (release, { tag }) => {
   // GitHub documents target_commitish as unused once the tag exists, so the
   // independently verified signed tag—not this display field—binds the commit.

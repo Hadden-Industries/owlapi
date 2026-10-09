@@ -5,7 +5,18 @@ import {
   assertReleaseAssets,
   classifyWriteReconciliation,
   GitHubReleaseClient,
+  assertReleaseId,
 } from "./github-release.mjs";
+
+test("binds draft, publication reconciliation and immutable verification to the approved release ID", () => {
+  expect(() => assertReleaseId({ id: 408398239 }, 408398239)).not.toThrow();
+  expect(() => assertReleaseId({ id: 408398240 }, 408398239)).toThrow(
+    "release ID differs",
+  );
+  expect(() => assertReleaseId({ id: 408398239 }, undefined)).toThrow(
+    "release ID differs",
+  );
+});
 
 test("finds an authenticated draft when the published-by-tag endpoint returns 404", async () => {
   const client = new GitHubReleaseClient({

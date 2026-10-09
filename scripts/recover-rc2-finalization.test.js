@@ -1,5 +1,12 @@
 import { createHash } from "node:crypto";
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  symlinkSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { jest } from "@jest/globals";
@@ -13,6 +20,9 @@ import {
   pinnedGitHubToken,
   recoveryReceipt,
   verifyPinnedGitHubCli,
+  canonicalExternalOutput,
+  freshRecoveryOutputs,
+  readVerifiedArchive,
 } from "./recover-rc2-finalization.mjs";
 import { SCOPED_RELEASE_JOB_NAMES } from "./release-evidence.mjs";
 import { contractReport } from "./fixtures/owl-contract-report.mjs";
@@ -24,6 +34,84 @@ const originalControl = JSON.parse(
   ),
 );
 const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
+
+test("archive operations consume the authenticated buffer without reopening a pathname", () => {
+  const bytes = Buffer.from("authenticated archive fixture");
+  const artifact = {
+    digest: `sha256:${digest(bytes)}`,
+    files: ["report.json"],
+  };
+  const calls = [];
+  const run = (executable, args, options) => {
+    calls.push({ executable, args, options });
+    expect(options.input).toBe(bytes);
+    expect(args[1]).toBe("-");
+    return args[0] === "-tf"
+      ? "report.json\n"
+      : Buffer.from('{"result":"PASS"}');
+  };
+  expect(
+    readVerifiedArchive(bytes, artifact, run)["report.json"].toString(),
+  ).toContain("PASS");
+  expect(calls).toHaveLength(2);
+  const rejectRun = jest.fn();
+  expect(() =>
+    readVerifiedArchive(Buffer.from("substitute"), artifact, rejectRun),
+  ).toThrow("archive changed");
+  expect(rejectRun).not.toHaveBeenCalled();
+});
+
+test("canonicalizes output ancestry and rejects junction aliases into the checkout", () => {
+  const root = mkdtempSync(join(tmpdir(), "owlapi-output-boundary-"));
+  try {
+    const checkout = join(root, "checkout");
+    mkdirSync(checkout);
+    const alias = join(root, "alias");
+    symlinkSync(checkout, alias, "junction");
+    expect(() => canonicalExternalOutput(checkout, checkout)).toThrow(
+      "outside",
+    );
+    expect(() =>
+      canonicalExternalOutput(join(alias, "new-output"), checkout),
+    ).toThrow("outside");
+    expect(
+      canonicalExternalOutput(
+        join(root, "checkout-other", "new-output"),
+        checkout,
+      ),
+    ).toBe(join(root, "checkout-other", "new-output"));
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("child reports use a fresh directory instead of preplanted fixed-path links", () => {
+  const root = mkdtempSync(join(tmpdir(), "owlapi-report-destination-"));
+  try {
+    const target = join(root, "unrelated.txt");
+    writeFileSync(target, "preserve");
+    // A pre-existing destination, linked or ordinary, must never be reused.
+    writeFileSync(
+      join(root, "fresh-tag-before-publication.json"),
+      "untrusted destination",
+    );
+    const first = freshRecoveryOutputs(root);
+    const second = freshRecoveryOutputs(root);
+    expect(first).not.toBe(second);
+    expect(first).not.toBe(root);
+    writeFileSync(
+      join(first, "fresh-tag-before-publication.json"),
+      "fresh report",
+      { flag: "wx" },
+    );
+    expect(readFileSync(target, "utf8")).toBe("preserve");
+    expect(
+      readFileSync(join(root, "fresh-tag-before-publication.json"), "utf8"),
+    ).toBe("untrusted destination");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
 
 test.each(["ambiguous finalization", "verification failure", "success"])(
   "never replays writes after %s",
