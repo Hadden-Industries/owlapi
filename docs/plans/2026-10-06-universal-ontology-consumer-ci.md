@@ -11,6 +11,13 @@ This amendment supersedes the separate advisory UO workflow, execution of UO ada
 The original planning authority was followed by acceptance and implementation through the unified execution recorded above.
 The original discovery baseline below remains historical; current inventory bindings and evidence are owned by the installed-contract record, and publication retains separate authority.
 
+**Pinned-input amendment, 9 October 2026:** The owner selected the commits already recorded in `docs/release/owl-contract-sources.json`: UO `9a3b5bff5aeaff4540f14bdf65baeffc1c0d188d` and WebVOWL `a468e17701d495fd9e1a801aef169894b2045186`.
+The [unified plan amendment](2026-10-06-installed-owl-contract-qualification.md) supersedes this plan's latest-source REQ/AC-008 and DEC-002 and the corresponding unified REQ/AC-011 and DEC-007.
+Qualification, CI reuse and release preflight validate those exact commits, trees and reviewed interface blobs; missing or substituted inputs fail closed.
+Consumer branch movement does not change the selected input.
+Advance a pin through explicit source review and qualification.
+The current OwlAPI candidate, 69 native assertions and same-run artifact/release evidence remain mandatory; compatibility claims cover the selected consumer baseline.
+
 ## Outcome and relationship to the unified plan
 
 Qualify the installed OwlAPI candidate's supported public interfaces used by current Universal Ontology (UO) and VOWL/WebVOWL source.
@@ -30,7 +37,10 @@ Requiring producer contract evidence is consistent with independent consumer ado
 No downstream consumer success becomes a producer CI or release prerequisite.
 Selective execution remains inactive, and this reconciliation changes neither the pinned Java authority nor the producer's broader conformance responsibilities.
 
-## Latest consumer code as a qualification input
+## Historical latest-source policy, superseded 9 October 2026
+
+This section preserves the original design rationale.
+The pinned-input amendment above and the [installed contract](../compatibility/installed-owl-contract.md#pinned-consumer-source-admission) define current behavior.
 
 At the start of each CI or release qualification, resolve the GitHub default branch and current committed HEAD of both `Hadden-Industries/universal-ontology` and `Hadden-Industries/webvowl`.
 Capture that source snapshot once and retrieve relevant committed files at the exact SHA through bounded native GitHub/Git facilities.

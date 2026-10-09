@@ -53,6 +53,8 @@ test.each([
   "identity",
   "candidate",
   "source",
+  "source commit",
+  "source tree",
   "extra",
 ])("rejects invalid native contract proof: %s", (fault) => {
   const report = contractReport(identity);
@@ -66,6 +68,10 @@ test.each([
   if (fault === "candidate") report.candidate.tarballSha256 = "invalid";
   if (fault === "source")
     report.consumerSources.snapshots[0].sources[0].blob = "b".repeat(40);
+  if (fault === "source commit")
+    report.consumerSources.snapshots[0].commit = "b".repeat(40);
+  if (fault === "source tree")
+    report.consumerSources.snapshots[0].tree = "b".repeat(40);
   if (fault === "extra") report.extra = "PASS";
   expect(() => summarizeOwlContractExecution(report, identity)).toThrow();
 });

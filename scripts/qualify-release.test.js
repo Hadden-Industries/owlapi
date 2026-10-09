@@ -60,25 +60,22 @@ describe("release-candidate publication qualification", () => {
       nativeText: nativeContractText,
       identity: report.identity,
       artifact: report.candidate.artifact,
-      currentSources: report.consumerSources,
+      pinnedSources: report.consumerSources,
     };
   };
   test("prepublication accepts the same native OWL suite without downstream reports", () => {
     const input = acceptedContract();
     expect(assertPrepublicationOwlContract(input)).toBe(input.report);
   });
-  test("preserves the producing HEAD when current consumer HEAD advances without interface changes", () => {
-    const input = acceptedContract();
-    input.currentSources = JSON.parse(JSON.stringify(input.currentSources));
-    input.currentSources.snapshots[0].commit = "9".repeat(40);
-    input.currentSources.snapshots[0].tree = "8".repeat(40);
-    expect(assertPrepublicationOwlContract(input)).toBe(input.report);
-    expect(input.report.consumerSources.snapshots[0].commit).not.toBe(
-      "9".repeat(40),
-    );
-    input.currentSources.snapshots[0].sources[0].blob = "7".repeat(40);
-    expect(() => assertPrepublicationOwlContract(input)).toThrow();
-  });
+  test.each(["commit", "tree"])(
+    "rejects a substituted consumer %s even with identical interface blobs",
+    (field) => {
+      const input = acceptedContract();
+      input.pinnedSources = JSON.parse(JSON.stringify(input.pinnedSources));
+      input.pinnedSources.snapshots[0][field] = "9".repeat(40);
+      expect(() => assertPrepublicationOwlContract(input)).toThrow(/pin/iu);
+    },
+  );
   test.each([
     "candidate",
     "native",
@@ -97,7 +94,7 @@ describe("release-candidate publication qualification", () => {
       };
     if (fault === "native")
       input.nativeText = input.nativeText.replace("passed", "failed");
-    if (fault === "source") input.currentSources = {};
+    if (fault === "source") input.pinnedSources = {};
     if (fault === "workflow")
       input.identity = { ...input.identity, runId: 999 };
     if (fault === "attempt")

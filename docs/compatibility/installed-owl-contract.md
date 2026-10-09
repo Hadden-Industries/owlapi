@@ -44,23 +44,28 @@ Its closure fixture includes shared/cyclic relationships, annotation changes, id
 Projection, annotation selection, UO losslessness policy, remote retries, atomic publication and application deadlines are excluded from the oracles.
 Factory shape assertions supplement parser/Java conformance; they do not claim that every syntax can produce every shape.
 
-## Current-source admission
+## Pinned consumer-source admission
 
-Each qualification resolves both public repositories' latest default branch HEAD once, then reads immutable native Git trees for those SHAs.
-The report records default branch, commit, root tree, reviewed interface file/blob identities and source digest.
-There is no fallback to an old consumer revision.
+The owner's 9 October 2026 amendment makes `docs/release/owl-contract-sources.json` the input selection for qualification, CI evidence reuse and release preflight.
+Edit the commit and reviewed tree/blob bindings only in [the source configuration](../release/owl-contract-sources.json); every executable reader and test uses that one definition.
+Commit values in dated decision records below are historical observations and are not additional settings.
+Each acquisition reads those exact commits and their complete native Git trees, then verifies the configured root tree, reviewed interface file/blob identities and source digest.
+The report preserves every configured identity; `defaultBranch` records review provenance and does not select a moving branch.
+Missing or substituted pinned source fails admission without falling back to a branch head or another revision.
 
 The bounded scopes cover UO's `scripts/ontology` and its three relevant entry points, VOWL's `packages/vowl/src/owl`, the four direct WebVOWL metadata/error call sites, and consumer package manifests.
 Production imports were checked at the immutable SHAs with native Git search; consumer tests, historical migration generators and notice tooling are not runtime interface oracles.
 
-The initial guard is deliberately conservative: an edited interface file, removed/new adapter file or new interface subdirectory needs inventory review.
+A proposed pin update requires review of edited interface files, removed/new adapter files and new interface subdirectories.
 A changed consumer algorithm does not justify a new producer assertion.
 Review may refresh only source bindings when all supported interface obligations remain covered.
 No automatic baseline updater or success-map generator exists.
-Unrelated documentation and corpus edits can advance a captured HEAD with unchanged interface blobs.
+Consumer branch movement, including manifest-only changes, leaves qualification inputs unchanged until an explicit reviewed configuration update advances the pins.
+After an update, obtain candidate qualification against the selected commits; a receipt from a different commit is inadmissible even when its interface blobs match.
+Compatibility evidence covers this selected baseline, not later consumer changes.
 Relevant future entry points outside these seams require explicit inventory expansion.
 
-Transport permits only the fixed public GitHub API repositories and native metadata/ref/commit/tree paths, no redirects or archives.
+Transport permits only the fixed public GitHub API repositories and native metadata/commit/tree paths, no branch-ref lookups, redirects or archives.
 Its shared bounds are 32 requests, 60 seconds, 4 MiB per response and 16 MiB total.
 Truncated trees, non-ordinary interface files, invalid UTF-8 and unavailable reads fail closed.
 The optional workflow read token stays at the fixed API origin and is cleared from installed semantic test and installation child environments.
@@ -81,7 +86,7 @@ The coverage command reads and validates both files.
 CI qualification schema/policy version 4 replaces the historical `webvowl` check with `owl_contract` and `CI / installed OWL contract`.
 Old schema-3 verdicts cannot satisfy it.
 The aggregate also compares the proof's candidate artifact with the retained candidate output.
-Main reuse refreshes current consumer snapshots before admission; drift requires fresh qualification.
+Main reuse revalidates the configured consumer pins before admission; different pins require fresh qualification, while moving consumer branches do not invalidate evidence.
 The exact-base reader has the same guard but currently has no production caller; it does not authorize selective omission.
 Partial reruns retain only bounded earlier successful producing attempts in the same authenticated run.
 Selective omission remains unapproved.
@@ -90,7 +95,7 @@ Release uses identical assertions and native coverage.
 Both source Node 24 jobs also run the complete live pinned Java parity inventory and the pinned UO-origin July producer corpus (parsing and both closure formats).
 The retained candidate depends on that same-commit source qualification; the installed interface suite separately binds the exact retained tarball.
 These producer semantic checks execute no UO materialization code or WebVOWL application code.
-Publication preflight downloads the exact same-run proof by artifact ID with native digest enforcement, compares its tarball and execution identity, validates raw assertions, and refreshes current source bindings.
+Publication preflight downloads the exact same-run proof by artifact ID with native digest enforcement, compares its tarball and execution identity, validates raw assertions, and revalidates the configured consumer pins.
 Release evidence schema 4 retains that producer proof and requires the installed-contract job; old schema-2/3 assets remain readable as historical evidence and cannot satisfy current producer finalization.
 Historical schema-4 reading validates its recorded inventory and bindings, so later fixture or reviewed-source changes do not invalidate an immutable archive.
 New evidence construction and current finalization still require the current oracle.
@@ -117,7 +122,7 @@ GitHub's documented branch dispatch and Boolean input semantics are the underlyi
 
 Rollback is one coordinated ordinary revert of runner/inventory, workflows, readers/writers and active producer policy.
 Restore matching protocol versions and obtain fresh candidate qualification; do not rewrite historical evidence.
-Consumer snapshot drift, unexplained public contracts, candidate mismatch, missing native proof or surviving downstream prerequisite requires repair and requalification, never a fabricated success or ordinary waiver.
+Configured consumer-pin mismatch, unexplained public contracts, candidate mismatch, missing native proof or surviving downstream prerequisite requires repair and requalification, never a fabricated success or ordinary waiver.
 
 ## Decision basis
 
@@ -128,12 +133,17 @@ Current UO acceptance remains with its maintained qualification and full-build c
 WebVOWL's only captured change is its root manifest's documentation tooling commands, markdown probe entry and bounded Jest worker setting; its OwlAPI dependency and all inventoried OWL interface modules are unchanged.
 The existing shared writer-configuration probe now also loads an authored RDF/XML prefix, copies it through `RDFXMLDocumentFormat.copyPrefixesFrom`, rejects a reserved XML prefix, saves through the public manager, and reloads the authored class axiom.
 The same probe runs against installed Node, browser document and dedicated worker consumers, retaining the existing named assertion inventory.
-Source bindings, candidate/fixture digests and browser import maps remain independently verified; future unreviewed source edits still fail admission.
+Source bindings, candidate/fixture digests and browser import maps remain independently verified; unreviewed changes to selected source still fail admission.
 
 The subsequent 9 October 2026 source review advances WebVOWL from `b7ee72199d75674578c6657d90964c039959b390` to `a468e17701d495fd9e1a801aef169894b2045186`; UO remains at `9a3b5bff5aeaff4540f14bdf65baeffc1c0d188d`.
 The only changed captured blobs are WebVOWL's root and VOWL package manifests, which replace the published rc.1 dependency with the exact OwlAPI Git commit `ccace6afe201c6e2cc6a49e53b2d50bd6617916f`.
 Every inventoried OWL interface module is byte-identical to the previously reviewed snapshot, so the existing producer obligations and native assertions cover this source refresh.
-The reviewed source bindings and their derived inventory digest are refreshed under the existing admission policy.
+The reviewed source bindings and their derived inventory digest were refreshed under the admission policy then in force.
+
+The subsequent pinned-input decision preserves those exact configured identities and all 69 native assertions.
+It replaces repeated latest-branch capture with deliberate consumer-baseline updates across the shared runner, CI reuse and release preflight.
+The semantic inventory digest continues to bind assertion names and source blobs; the report's separately validated consumer commit/tree identities enforce the selected pins.
+Historical archive validation retains its recorded definitions, while current admission requires the selected baseline.
 
 First principles place assertions with the party that owns the public guarantee: OwlAPI owns parsing/model/loading/storage/profile data; consumers own their composition and UI.
 Modern practice favors small independent contract fixtures at that seam, native package resolution and explicit artifact provenance.

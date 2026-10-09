@@ -376,7 +376,7 @@ export const verifyIntegrationProof = async ({
       receipt.checks.owl_contract.evidence.consumerSources,
       await captureSources(),
     ),
-    "Consumer source snapshots changed; fresh qualification is required.",
+    "Consumer source pins differ; fresh qualification is required.",
   );
   requireFact(
     receipt.schemaVersion === 5 &&
@@ -620,13 +620,13 @@ export const verifyBaseQualification = async ({
     "Base qualification drifted from the event.",
   );
   assertQualificationRecord(record);
-  const currentConsumerSources = await captureSources();
+  const pinnedConsumerSources = await captureSources();
   requireFact(
     isDeepStrictEqual(
       record.checks.owl_contract.evidence.consumerSources,
-      currentConsumerSources,
+      pinnedConsumerSources,
     ),
-    "Consumer source snapshots changed; fresh qualification is required.",
+    "Consumer source pins differ; fresh qualification is required.",
   );
   const run = await read(`/actions/runs/${selection.run.id}`);
   assertMainRun(run, context, base, now);
@@ -714,7 +714,7 @@ export const verifyBaseQualification = async ({
       context: originalContext,
       selection: originalSelection,
       receipt: originalReceipt,
-      captureSources: async () => currentConsumerSources,
+      captureSources: async () => pinnedConsumerSources,
       read,
       now,
     });

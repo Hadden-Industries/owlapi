@@ -14,9 +14,9 @@ const fixture = () => {
   let nextTree = 10;
   for (const [index, scope] of CONSUMER_SOURCE_SCOPES.entries()) {
     const baseline = REVIEWED_CONSUMER_SOURCES.snapshots[index];
-    const commit = String(index + 1).repeat(40);
+    const commit = baseline.commit;
     const root = {
-      sha: (++nextTree).toString(16).padStart(40, "0"),
+      sha: baseline.tree,
       truncated: false,
       tree: [],
     };
@@ -27,10 +27,14 @@ const fixture = () => {
     });
     records.set(`${scope.repository}:/git/ref/heads/main`, {
       ref: "refs/heads/main",
-      object: { type: "commit", sha: commit },
+      object: { type: "commit", sha: "f".repeat(40) },
     });
     records.set(`${scope.repository}:/git/commits/${commit}`, {
       sha: commit,
+      tree: { sha: root.sha },
+    });
+    records.set(`${scope.repository}:/git/commits/${"f".repeat(40)}`, {
+      sha: "f".repeat(40),
       tree: { sha: root.sha },
     });
     records.set(`${scope.repository}:/git/trees/${root.sha}`, root);
@@ -71,53 +75,92 @@ const fixture = () => {
     },
   };
 };
-test("captures each latest default HEAD once and reads only its complete native trees", async () => {
+test("captures the configured commits even when consumer heads have advanced", async () => {
   const input = fixture();
   const actual = await captureConsumerSources(input);
   expect(assertReviewedConsumerSources(actual, REVIEWED_CONSUMER_SOURCES)).toBe(
     actual,
   );
-  for (const scope of CONSUMER_SOURCE_SCOPES)
+  for (const snapshot of REVIEWED_CONSUMER_SOURCES.snapshots)
     expect(
       input.requests.filter(
-        (path) => path === `${scope.repository}:/git/ref/heads/main`,
+        (path) =>
+          path === `${snapshot.repository}:/git/commits/${snapshot.commit}`,
       ),
     ).toHaveLength(1);
+  expect(input.requests.some((path) => path.includes("/git/ref/"))).toBe(false);
   expect(input.requests.length).toBeLessThanOrEqual(32);
-  expect(actual.snapshots[0].commit).not.toBe(
-    REVIEWED_CONSUMER_SOURCES.snapshots[0].commit,
-  );
+  expect(actual).toEqual(REVIEWED_CONSUMER_SOURCES);
 });
-test.each(["truncated", "missing", "symlink", "new directory", "wrong commit"])(
-  "rejects incomplete or substituted current source: %s",
-  async (fault) => {
-    const input = fixture();
-    const trees = [...input.records.values()].filter((row) =>
-      Array.isArray(row.tree),
-    );
-    if (fault === "truncated") trees[0].truncated = true;
-    if (fault === "missing") trees[0].tree = [];
-    if (fault === "symlink")
-      trees[0].tree.find((entry) => entry.path === "package.json").mode =
-        "120000";
-    if (fault === "new directory")
-      trees
-        .find((tree) =>
-          tree.tree.some((entry) => entry.path === "atomicOntologyWriter.js"),
-        )
-        .tree.push({
-          path: "new-adapter",
-          type: "tree",
-          mode: "040000",
-          sha: "a".repeat(40),
-        });
-    if (fault === "wrong commit")
-      [...input.records.values()].find((row) => row.tree?.sha).sha = "f".repeat(
-        40,
-      );
-    await expect(captureConsumerSources(input)).rejects.toThrow();
+
+test.each(["commit", "tree", "defaultBranch"])(
+  "rejects evidence for a different pinned %s even with identical interface blobs",
+  (field) => {
+    const actual = clone(REVIEWED_CONSUMER_SOURCES);
+    actual.snapshots[0][field] =
+      field === "defaultBranch" ? "other" : "f".repeat(40);
+    expect(() =>
+      assertReviewedConsumerSources(actual, REVIEWED_CONSUMER_SOURCES),
+    ).toThrow(/pin/iu);
   },
 );
+test.each([
+  "truncated",
+  "missing",
+  "symlink",
+  "new directory",
+  "wrong commit",
+  "wrong tree",
+  "wrong blob",
+  "unavailable pin",
+])("rejects incomplete or substituted pinned source: %s", async (fault) => {
+  const input = fixture();
+  const trees = [...input.records.values()].filter((row) =>
+    Array.isArray(row.tree),
+  );
+  if (fault === "truncated") trees[0].truncated = true;
+  if (fault === "missing") trees[0].tree = [];
+  if (fault === "symlink")
+    trees[0].tree.find((entry) => entry.path === "package.json").mode =
+      "120000";
+  if (fault === "new directory")
+    trees
+      .find((tree) =>
+        tree.tree.some((entry) => entry.path === "atomicOntologyWriter.js"),
+      )
+      .tree.push({
+        path: "new-adapter",
+        type: "tree",
+        mode: "040000",
+        sha: "a".repeat(40),
+      });
+  if (fault === "wrong commit")
+    [...input.records.values()].find((row) => row.tree?.sha).sha = "f".repeat(
+      40,
+    );
+  if (fault === "wrong tree") {
+    [...input.records.values()].find((row) => row.tree?.sha).tree.sha =
+      "f".repeat(40);
+    input.records.set(
+      `${CONSUMER_SOURCE_SCOPES[0].repository}:/git/trees/${"f".repeat(40)}`,
+      {
+        ...clone(trees[0]),
+        sha: "f".repeat(40),
+      },
+    );
+  }
+  if (fault === "wrong blob")
+    trees[0].tree.find((entry) => entry.path === "package.json").sha =
+      "f".repeat(40);
+  if (fault === "unavailable pin") {
+    const pinned = REVIEWED_CONSUMER_SOURCES.snapshots[0];
+    input.records.delete(`${pinned.repository}:/git/commits/${pinned.commit}`);
+  }
+  await expect(captureConsumerSources(input)).rejects.toThrow(
+    ["wrong commit", "wrong tree"].includes(fault) ? /pin/iu : undefined,
+  );
+  expect(input.requests.some((path) => path.includes("/git/ref/"))).toBe(false);
+});
 test.each(["changed", "new", "missing", "extra"])(
   "requires inventory review for source %s",
   (fault) => {
@@ -151,6 +194,9 @@ test("transport never sends its read credential to caller-selected URLs or redir
   await expect(read("outside/repository", "")).rejects.toThrow(/Unexpected/);
   await expect(
     read(CONSUMER_SOURCE_SCOPES[0].repository, "/actions/artifacts/1"),
+  ).rejects.toThrow(/Unexpected/);
+  await expect(
+    read(CONSUMER_SOURCE_SCOPES[0].repository, "/git/ref/heads/main"),
   ).rejects.toThrow(/Unexpected/);
   expect(calls).toHaveLength(0);
   await read(CONSUMER_SOURCE_SCOPES[0].repository, "");

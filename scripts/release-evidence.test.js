@@ -228,6 +228,24 @@ test("fresh scoped RC evidence binds one source and run without borrowing alpha 
   expect(validate(evidence)).toBe(true);
   expect(validate.errors).toBeNull();
 });
+test("historical consumer pins remain readable but cannot finalize a current release", () => {
+  const evidence = JSON.parse(
+    JSON.stringify(buildReleaseEvidence(scopedFacts())),
+  );
+  evidence.producerContract.consumerSources.snapshots[0].commit = "9".repeat(
+    40,
+  );
+  expect(validateReleaseEvidence(evidence)).toBe(evidence);
+  expect(() =>
+    releaseEvidence.assertReleaseExecutionIdentity({
+      evidence,
+      promotionCommit: evidence.workflow.commit,
+      sourceCommit: evidence.source.commit,
+      tag: evidence.source.tag,
+    }),
+  ).toThrow(/pin/iu);
+});
+
 test("historical schema-4 evidence remains readable after oracle changes but cannot finalize a current release", () => {
   const evidence = JSON.parse(
     JSON.stringify(buildReleaseEvidence(scopedFacts())),

@@ -1,6 +1,15 @@
 /** Capture committed consumer interfaces without installing or executing consumer code. */
 import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 import { isDeepStrictEqual } from "node:util";
+
+/** Reviewed qualification inputs. Advance these only through an explicit source review. */
+export const REVIEWED_CONSUMER_SOURCES = JSON.parse(
+  readFileSync(
+    new URL("../docs/release/owl-contract-sources.json", import.meta.url),
+    "utf8",
+  ),
+);
 
 export const CONSUMER_SOURCE_SCOPES = Object.freeze([
   {
@@ -37,6 +46,67 @@ const closed = (value, keys) =>
   !Array.isArray(value) &&
   isDeepStrictEqual(Object.keys(value).sort(), [...keys].sort());
 
+/** Admit only the exact reviewed pins and blobs; no consumer oracle is synthesized. */
+export const assertReviewedConsumerSources = (captured, reviewed) => {
+  if (
+    ![captured, reviewed].every(
+      (record) =>
+        closed(record, ["schemaVersion", "snapshots"]) &&
+        record.schemaVersion === 1 &&
+        Array.isArray(record.snapshots) &&
+        record.snapshots.length === CONSUMER_SOURCE_SCOPES.length,
+    )
+  )
+    throw new Error("Invalid consumer source snapshot schema.");
+  for (const [index, scope] of CONSUMER_SOURCE_SCOPES.entries()) {
+    const snapshot = captured.snapshots[index];
+    const baseline = reviewed.snapshots[index];
+    if (
+      ![snapshot, baseline].every(
+        (row) =>
+          closed(row, [
+            "repository",
+            "defaultBranch",
+            "commit",
+            "tree",
+            "sources",
+            "sourceSha256",
+          ]) &&
+          row.repository === scope.repository &&
+          /^[A-Za-z0-9_./-]+$/u.test(row.defaultBranch) &&
+          !row.defaultBranch.includes("..") &&
+          sha(row.commit) &&
+          sha(row.tree) &&
+          Array.isArray(row.sources) &&
+          row.sources.length > 0 &&
+          row.sources.length <= 400 &&
+          row.sources.every(
+            (source) =>
+              closed(source, ["path", "blob"]) &&
+              typeof source.path === "string" &&
+              !source.path.includes("..") &&
+              sha(source.blob),
+          ) &&
+          row.sourceSha256 === sourceFingerprint(row.sources),
+      )
+    )
+      throw new Error("Invalid committed consumer source binding.");
+    if (!isDeepStrictEqual(snapshot.sources, baseline.sources))
+      throw new Error(
+        "CONTRACT_INVENTORY_CHANGED: reviewed consumer interface sources changed.",
+      );
+    if (
+      snapshot.commit !== baseline.commit ||
+      snapshot.tree !== baseline.tree ||
+      snapshot.defaultBranch !== baseline.defaultBranch
+    )
+      throw new Error(
+        "Consumer source identity differs from the reviewed pin.",
+      );
+  }
+  return captured;
+};
+
 /** Native JSON transport: fixed public repositories, optional read token, no redirects or archive extraction. */
 export const createConsumerSourceReader = ({
   fetchImpl = fetch,
@@ -50,7 +120,7 @@ export const createConsumerSourceReader = ({
       !CONSUMER_SOURCE_SCOPES.some(
         (scope) => scope.repository === repository,
       ) ||
-      !/^(?:|\/git\/(?:ref\/heads\/[A-Za-z0-9_./%-]+|commits\/[a-f0-9]{40}|trees\/[a-f0-9]{40}))$/u.test(
+      !/^(?:|\/git\/(?:commits\/[a-f0-9]{40}|trees\/[a-f0-9]{40}))$/u.test(
         path,
       ) ||
       path.includes("..")
@@ -93,36 +163,26 @@ export const createConsumerSourceReader = ({
   };
 };
 
-/** Freeze default-branch HEAD once; all subsequent tree reads bind that committed snapshot. */
+/** Validate the configured commits and complete native trees without resolving moving branch heads. */
 export const captureConsumerSources = async ({
   read = createConsumerSourceReader(),
 } = {}) => {
+  assertReviewedConsumerSources(
+    REVIEWED_CONSUMER_SOURCES,
+    REVIEWED_CONSUMER_SOURCES,
+  );
   const snapshots = [];
-  for (const scope of CONSUMER_SOURCE_SCOPES) {
+  for (const [index, scope] of CONSUMER_SOURCE_SCOPES.entries()) {
+    const pinned = REVIEWED_CONSUMER_SOURCES.snapshots[index];
     const metadata = await read(scope.repository, "");
-    if (
-      metadata.full_name !== scope.repository ||
-      metadata.private !== false ||
-      typeof metadata.default_branch !== "string" ||
-      !/^[A-Za-z0-9_./-]+$/u.test(metadata.default_branch)
-    )
-      throw new Error("Invalid consumer default-branch metadata.");
-    const ref = await read(
-      scope.repository,
-      `/git/ref/heads/${encodeURIComponent(metadata.default_branch)}`,
-    );
-    if (
-      ref.ref !== `refs/heads/${metadata.default_branch}` ||
-      ref.object?.type !== "commit" ||
-      !sha(ref.object.sha)
-    )
-      throw new Error("Invalid consumer branch identity.");
+    if (metadata.full_name !== scope.repository || metadata.private !== false)
+      throw new Error("Invalid consumer repository metadata.");
     const commit = await read(
       scope.repository,
-      `/git/commits/${ref.object.sha}`,
+      `/git/commits/${pinned.commit}`,
     );
-    if (commit.sha !== ref.object.sha || !sha(commit.tree?.sha))
-      throw new Error("Invalid consumer commit tree.");
+    if (commit.sha !== pinned.commit || commit.tree?.sha !== pinned.tree)
+      throw new Error("Consumer commit tree differs from the reviewed pin.");
     const trees = new Map();
     const tree = async (identity) => {
       if (!trees.has(identity)) {
@@ -191,65 +251,16 @@ export const captureConsumerSources = async ({
     );
     snapshots.push({
       repository: scope.repository,
-      defaultBranch: metadata.default_branch,
+      // Branch name records the review's provenance, never a live input selector.
+      defaultBranch: pinned.defaultBranch,
       commit: commit.sha,
       tree: commit.tree.sha,
       sources,
       sourceSha256: sourceFingerprint(sources),
     });
   }
-  return { schemaVersion: 1, snapshots };
-};
-
-/** Reviewed blob identities conservatively reject changed code; no consumer oracle is synthesized. */
-export const assertReviewedConsumerSources = (captured, reviewed) => {
-  if (
-    ![captured, reviewed].every(
-      (record) =>
-        closed(record, ["schemaVersion", "snapshots"]) &&
-        record.schemaVersion === 1 &&
-        Array.isArray(record.snapshots) &&
-        record.snapshots.length === CONSUMER_SOURCE_SCOPES.length,
-    )
-  )
-    throw new Error("Invalid consumer source snapshot schema.");
-  for (const [index, scope] of CONSUMER_SOURCE_SCOPES.entries()) {
-    const snapshot = captured.snapshots[index];
-    const baseline = reviewed.snapshots[index];
-    if (
-      ![snapshot, baseline].every(
-        (row) =>
-          closed(row, [
-            "repository",
-            "defaultBranch",
-            "commit",
-            "tree",
-            "sources",
-            "sourceSha256",
-          ]) &&
-          row.repository === scope.repository &&
-          /^[A-Za-z0-9_./-]+$/u.test(row.defaultBranch) &&
-          !row.defaultBranch.includes("..") &&
-          sha(row.commit) &&
-          sha(row.tree) &&
-          Array.isArray(row.sources) &&
-          row.sources.length > 0 &&
-          row.sources.length <= 400 &&
-          row.sources.every(
-            (source) =>
-              closed(source, ["path", "blob"]) &&
-              typeof source.path === "string" &&
-              !source.path.includes("..") &&
-              sha(source.blob),
-          ) &&
-          row.sourceSha256 === sourceFingerprint(row.sources),
-      )
-    )
-      throw new Error("Invalid committed consumer source binding.");
-    if (!isDeepStrictEqual(snapshot.sources, baseline.sources))
-      throw new Error(
-        "CONTRACT_INVENTORY_CHANGED: reviewed consumer interface sources changed.",
-      );
-  }
-  return captured;
+  return assertReviewedConsumerSources(
+    { schemaVersion: 1, snapshots },
+    REVIEWED_CONSUMER_SOURCES,
+  );
 };
