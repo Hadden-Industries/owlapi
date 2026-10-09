@@ -19,7 +19,7 @@ const directories = [];
 test.each([
   [{}, "DEVELOPMENT"],
   [{ candidateDirectory: "retained-candidate" }, "PREPUBLICATION"],
-  [{ registryVersion: "0.1.0-rc.1" }, "REGISTRY_ACCEPTANCE"],
+  [{ registryVersion: "0.1.0-rc.2" }, "REGISTRY_ACCEPTANCE"],
 ])("labels qualification by the actual package source: %j", (mode, stage) => {
   expect(qualificationStage(mode)).toBe(stage);
 });
@@ -27,11 +27,11 @@ test.each([
 test("public-registry qualification selects only the exact scoped RC without a candidate fallback", () => {
   const args = ["--ontology-repository", "uo", "--output", "evidence"];
   expect(
-    parseQualificationArguments([...args, "--registry-version", "0.1.0-rc.1"]),
+    parseQualificationArguments([...args, "--registry-version", "0.1.0-rc.2"]),
   ).toEqual({
     ontologyRepository: "uo",
     outputDirectory: "evidence",
-    registryVersion: "0.1.0-rc.1",
+    registryVersion: "0.1.0-rc.2",
   });
   expect(() =>
     parseQualificationArguments([...args, "--registry-version", "next"]),
@@ -40,7 +40,7 @@ test("public-registry qualification selects only the exact scoped RC without a c
     parseQualificationArguments([
       ...args,
       "--registry-version",
-      "0.1.0-rc.1",
+      "0.1.0-rc.2",
       "--candidate",
       "local",
     ]),

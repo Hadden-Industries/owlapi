@@ -116,7 +116,7 @@ describe("manager-owned ontology storage", () => {
     expect(typeof manager.saveOntology).toBe("function");
     const operation = manager.saveOntology(
       ontology,
-      OWLDocumentFormats.TURTLE,
+      OWLDocumentFormats.MANCHESTER,
       target,
     );
     expect(operation).toBeInstanceOf(Promise);
@@ -154,13 +154,13 @@ describe("manager-owned ontology storage", () => {
     };
     const manager = new OWLOntologyManager({
       storerRegistry: { store: render },
-      storers: [{ formatKey: "turtle", render }],
+      storers: [{ formatKey: "manchester", render }],
     });
     expect(typeof manager.saveOntology).toBe("function");
     await expect(
       manager.saveOntology(
         manager.createOntology(),
-        OWLDocumentFormats.TURTLE,
+        OWLDocumentFormats.MANCHESTER,
         new StringDocumentTarget(),
       ),
     ).rejects.toBeInstanceOf(OWLStorerNotFoundError);
