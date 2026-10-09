@@ -43,6 +43,7 @@ test.each([true, false])(
     now = 50;
     await budget.checkpoint();
     expect(timer).toHaveBeenCalledTimes(1);
+    expect(yieldTask).not.toHaveBeenCalled();
     await budget.checkpoint();
     expect(timer).toHaveBeenCalledTimes(1);
   },

@@ -7,13 +7,13 @@
     "repository": "https://github.com/Hadden-Industries/owlapi",
     "scopeAuthority": {
       "method": "npm pack --dry-run --json plus local source-byte hashing",
-      "fileCount": 113,
-      "sourceManifestSha256": "0493684bf7dc3d8a6ee61597784ef3d44c3aff0fd73a174eef27f415dbd0e631"
+      "fileCount": 114,
+      "sourceManifestSha256": "58f6174ccf2da420bffd70391cc1f8888d1c054ac9242415d72b6c60e7a4e395"
     }
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "3804314a29705b57a1b8849eaaebee1f0cace7e8b59169b397e50aa0aef4a7a8",
+    "factsSha256": "91f011407e824338324679ca33bd6a6974cde1756a2f0f99b583d5175fb56eee",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -53,6 +53,7 @@
         "CHANGELOG.md",
         "NOTICE",
         "docs/compatibility/canonical-vowl-prerequisites.md",
+        "docs/compatibility/default-behavior-inventory.md",
         "docs/compatibility/rdf-parser-metadata.md",
         "docs/compatibility/capabilities.json",
         "docs/compatibility/rdfxml-writer-configuration.md"
