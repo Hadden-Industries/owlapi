@@ -12,6 +12,7 @@ import {
   buildRecoveryEvidence,
   pinnedGitHubToken,
   recoveryReceipt,
+  verifyPinnedGitHubCli,
 } from "./recover-rc2-finalization.mjs";
 import { SCOPED_RELEASE_JOB_NAMES } from "./release-evidence.mjs";
 import { contractReport } from "./fixtures/owl-contract-report.mjs";
@@ -326,17 +327,49 @@ test("binds actual operator and Windows CLI identity to child report bytes", () 
       control: originalControl,
       controlBytes: Buffer.from("control"),
       evidenceSha256: "e".repeat(64),
+      githubCliObservation: {
+        path: "checked-gh.exe",
+        executableSha256Before: "a".repeat(64),
+        executableSha256After: "a".repeat(64),
+      },
     });
     expect(receipt.controlCommit).toBe("f".repeat(40));
     expect(receipt.sourceCommit).toBe(originalControl.sourceCommit);
     expect(receipt.githubCli.executableSha256).toBe(
       originalControl.githubCli.executableSha256,
     );
+    expect(receipt.githubCliObservation.path).toBe("checked-gh.exe");
     expect(
       receipt.reports.every(
         ({ name, sha256 }) => sha256 === digest(readFileSync(join(root, name))),
       ),
     ).toBe(true);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("observes CLI bytes before and after the actual verification callback", () => {
+  const root = mkdtempSync(join(tmpdir(), "owlapi-verified-cli-"));
+  try {
+    const gh = join(root, "gh.exe");
+    writeFileSync(gh, "reviewed binary");
+    const expected = digest(readFileSync(gh));
+    expect(verifyPinnedGitHubCli(gh, expected, () => {})).toEqual({
+      path: gh,
+      executableSha256Before: expected,
+      executableSha256After: expected,
+    });
+    expect(() =>
+      verifyPinnedGitHubCli(gh, expected, () =>
+        writeFileSync(gh, "substituted binary"),
+      ),
+    ).toThrow("changed during verification");
+    const verify = jest.fn();
+    expect(() => verifyPinnedGitHubCli(gh, expected, verify)).toThrow(
+      "changed before verification",
+    );
+    expect(verify).not.toHaveBeenCalled();
   } finally {
     rmSync(root, { recursive: true, force: true });
   }

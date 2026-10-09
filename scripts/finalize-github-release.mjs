@@ -19,6 +19,15 @@ const argumentValue = (name) => {
   return index === -1 ? undefined : process.argv[index + 1];
 };
 
+export const finalizationEvidencePin = (args) => {
+  const index = args.indexOf("--evidence-sha256");
+  if (index === -1) return undefined;
+  const value = args[index + 1];
+  if (!/^[0-9a-f]{64}$/u.test(value ?? ""))
+    throw new Error("--evidence-sha256 requires a valid digest.");
+  return value;
+};
+
 export const readFinalizationEvidence = (path, expectedSha256) => {
   const bytes = readFileSync(path);
   const sha256 = createHash("sha256").update(bytes).digest("hex");
@@ -90,7 +99,7 @@ const main = async () => {
   }
   const evidenceInput = readFinalizationEvidence(
     evidencePath,
-    argumentValue("--evidence-sha256"),
+    finalizationEvidencePin(process.argv.slice(2)),
   );
   const evidence = validateReleaseEvidence(
     JSON.parse(evidenceInput.bytes.toString("utf8")),

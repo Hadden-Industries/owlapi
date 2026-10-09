@@ -501,12 +501,29 @@ export const pinnedGitHubToken = (gh, expectedSha256, run = command) => {
   }).trim();
 };
 
+export const verifyPinnedGitHubCli = (gh, expectedSha256, verify) => {
+  const before = hash(readFileSync(gh));
+  requireFact(
+    before === expectedSha256,
+    "GitHub CLI changed before verification.",
+  );
+  verify();
+  const after = hash(readFileSync(gh));
+  requireFact(after === before, "GitHub CLI changed during verification.");
+  return {
+    path: gh,
+    executableSha256Before: before,
+    executableSha256After: after,
+  };
+};
+
 export const recoveryReceipt = ({
   root,
   commit,
   control,
   controlBytes,
   evidenceSha256,
+  githubCliObservation,
 }) => ({
   schemaVersion: 1,
   result: "PASS",
@@ -515,9 +532,10 @@ export const recoveryReceipt = ({
   controlSha256: hash(controlBytes),
   sourceCommit: control.sourceCommit,
   githubCli: control.githubCli,
+  githubCliObservation,
   evidenceSha256,
   childIdentityInterpretation:
-    "Child promotionCommit binds the original release source; githubCli archive identity in the legacy verifier is its workflow policy constant. This receipt records the actual operator revision and Windows executable used.",
+    "Child promotionCommit binds the original release source; githubCli archive identity in the legacy verifier is its workflow policy constant. This receipt records the operator revision and observed Windows executable digests before and after verification.",
   reports: ["finalization.json", "immutable-verification.json"].map((name) => ({
     name,
     sha256: hash(readFileSync(join(root, name))),
@@ -696,6 +714,7 @@ const main = async () => {
     checkedAt: new Date().toISOString(),
     readback: finalReadback,
   };
+  let githubCliObservation;
   await completeRecovery({
     root,
     intent,
@@ -715,22 +734,28 @@ const main = async () => {
         ],
         { env: childEnv },
       ),
-    verify: () =>
-      command(
-        process.execPath,
-        [
-          "scripts/verify-immutable-release.mjs",
-          "--gh",
-          gh,
-          "--source-commit",
-          control.sourceCommit,
-          "--output-directory",
-          join(root, "immutable-assets"),
-          "--report",
-          join(root, "immutable-verification.json"),
-        ],
-        { env: childEnv },
-      ),
+    verify: () => {
+      githubCliObservation = verifyPinnedGitHubCli(
+        gh,
+        control.githubCli.executableSha256,
+        () =>
+          command(
+            process.execPath,
+            [
+              "scripts/verify-immutable-release.mjs",
+              "--gh",
+              gh,
+              "--source-commit",
+              control.sourceCommit,
+              "--output-directory",
+              join(root, "immutable-assets"),
+              "--report",
+              join(root, "immutable-verification.json"),
+            ],
+            { env: childEnv },
+          ),
+      );
+    },
   });
   writeJson(
     join(root, "operator-recovery-receipt.json"),
@@ -740,6 +765,7 @@ const main = async () => {
       control,
       controlBytes,
       evidenceSha256: publicationSha256,
+      githubCliObservation,
     }),
   );
   process.stdout.write(`${join(root, "operator-recovery-receipt.json")}\n`);
