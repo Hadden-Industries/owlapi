@@ -2,10 +2,13 @@
 
 ## Current publication transition
 
-The [scoped publication plan](../plans/scoped-npm-publication.md) selects `@hadden-industries/owlapi@0.1.0-rc.1` under `next`, including the Phase 21/22 lifecycle slice.
+`@hadden-industries/owlapi@0.1.0-rc.1` is published, including the Phase 21/22 lifecycle slice; its [publication record](../provenance/releases/0.1.0-rc.1/publication-status.md) records npm verification and the later immutable GitHub prerelease.
 The native npm alias preserves consumer imports as `owlapi/*`.
 UO and WebVOWL may each use that exact RC in production after immutable artifact verification and their own complete consumer acceptance, without waiting for stable `0.1.0`.
-Scoped implementation and publication remain pending; this documentation update does not mark any release gate complete.
+The next selected release is `0.1.0-rc.2` before stable `0.1.0`.
+Its [delivery reconciliation](../plans/0.1.0-rc.2-java-parity.md#11-delivered-changes-from-rc1-through-9-october) records RDF/XML configuration/refinements, profile repair, producer qualification and tooling/runtime changes delivered through `ccace6af`; the wider feature programme and exact rc.2 qualification remain outstanding.
+Current producer gates use the [installed OWL contract](../compatibility/installed-owl-contract.md); neither application's adoption is a release prerequisite.
+This status update does not relabel historical gates or qualify current source as the published rc.1 bytes.
 The [19D1 checkpoint record](../plans/phase19d-pre-registry-consumer-decoupling.md) preserves the later historical Git-consumer evidence.
 
 ## Historical Phase 18 snapshot

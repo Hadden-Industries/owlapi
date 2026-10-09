@@ -5,6 +5,8 @@
 
 Subsequent amendment: [ADR 0012](0012-gated-native-java-reference-reuse.md) coordinates schema-v3 Java materialization and cold-seeding, increases the bounded strategy job to twelve minutes, and records the owner's decision to retain full integration checks.
 The historical schema-v2 milestone and its verification retain their original meaning.
+The [9 October reconciliation](../plans/0.1.0-rc.2-java-parity.md#11-delivered-changes-from-rc1-through-9-october) records active qualification policy/schema 5, installed OWL contract coverage, Node 26 lanes and the later disabling of shared Java reuse after its pin changed.
+WebVOWL application reports and schema-v2 receipts below describe this historical milestone, not the current producer inventory.
 
 ## Decision
 

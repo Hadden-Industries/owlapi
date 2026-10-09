@@ -1,10 +1,17 @@
 # Unified installed OWL contract qualification for CI and release
 
-**Status:** Draft HISEW implementation plan, 6 October 2026.
+**Status:** Accepted and delivered through [PR 47](https://github.com/Hadden-Industries/owlapi/pull/47), merged on 6 October 2026 at `c6745a4a72dc08e906d416028a104e5057a237cb`; delivery reconciliation recorded 9 October.
+
+The original proposal and inspected baseline below remain historical planning context.
+The [installed OWL contract](../compatibility/installed-owl-contract.md) records the accepted plan snapshots, delivered runner, reviewed source inventory and active producer-policy migration.
+CI and release now use `test:owl-contract` against their own retained package; downstream application execution and acceptance are not required producer proof.
+Later Node 26 delivery advances the current CI qualification policy/schema to 5; exact inventories and source bindings are owned by their current records, not the original proposal's versions.
+This implements the gate-separation portion of [rc.2 SLICE-001](0.1.0-rc.2-java-parity.md#12-remaining-slice-and-release-work), not the wider feature programme or exact-release qualification.
+
 **Decision owner:** Maksym Shostak.
 **Authority:** The owner's request in Codex chat `01a10acc-165f-7c00-88f7-9e7b7a16157c` to plan replacement of the WebVOWL CI part, following the agreed producer/consumer responsibility boundary, and the subsequent instruction to apply the same proportionality to release-side WebVOWL checks.
-The boundary and preparation of this plan are authorized; these exact draft requirements, risk route and executable migration have not yet been baselined for implementation.
-This document records planning, not completed implementation, verification, independent review, publication or release approval.
+The original request authorized planning; the subsequent accepted snapshots and delivered migration are recorded above and in the installed-contract record.
+Historical proposed steps below do not replace actual verification evidence or authorize publication.
 **Scope amendment, 6 October 2026:** The owner explicitly added release-side WebVOWL qualification.
 This revision supersedes the original CI-only scope and DEC-004's preservation of the executable release application gate.
 Requirement IDs remain local and stable; REQ/AC-009–010 and QA-008–009 add release migration and historical-policy obligations.

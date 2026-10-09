@@ -6,7 +6,8 @@ Work stays in the primary checkout on local `main`.
 This continues the accepted R2 workflow assurance route; commit, publication and merge remain distinct effects.
 Reviews remain at the final candidate stage, without repeated intermediate review passes.
 The [3 October FULL-only lineage milestone](../adr/0011-full-ci-qualification-lineage.md) subsequently replaces the receipt format through a coordinated schema-v2 transition.
-The [gated native Java reference milestone](../adr/0012-gated-native-java-reference-reuse.md) subsequently coordinates schema-v3 materialization and cold-seed state while retaining full integration checks; shared reuse activation remains pending its separate gates.
+The [gated native Java reference milestone](../adr/0012-gated-native-java-reference-reuse.md) subsequently delivered schema-v3 materialization and cold-seed state while retaining full integration checks; shared reuse was enabled and qualified at the earlier pin, then disabled after the Java pin advanced.
+The [9 October reconciliation](0.1.0-rc.2-java-parity.md#11-delivered-changes-from-rc1-through-9-october) records current FULL-only policy/schema 5, installed OWL contract coverage, Node 26 lanes and fresh native Java preparation.
 This historical plan's exact-input, complete-qualification and ordinary-main reuse invariants remain binding; version-one records are not coerced or backfilled.
 
 The outcome is to avoid repeating a successful full application qualification when a normal PR merge lands exactly the tested integration.

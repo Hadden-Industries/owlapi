@@ -1,9 +1,17 @@
 # Accepted implementation plan for input aware CI qualification
 
 Status: implementation accepted by Maksym Shostak on 3 October 2026; the approved enable-and-verify rollout was delivered on 5 October through [PR 41](https://github.com/Hadden-Industries/owlapi/pull/41).
-Current disposition, 5 October: keep full integration checks; omission and its enforcement arrangement remain explicitly deferred by the owner.
+
+**Current disposition, 9 October:** full qualification remains required and selective execution remains inactive.
+The delivered [installed OWL contract](../compatibility/installed-owl-contract.md) now replaces application execution in CI/release; Node 26 delivery advances the active qualification policy/schema to 5.
+`JAVA_REFERENCE_POLICY.enabled` is false: the RDF/XML work advanced the executable Java pin to `b61ebe2da83daceebb3e7ba7afbd2582c9240c33`, while the approved publication catalogue remains bound to `d7e997a53b470e32700de89cc610d9daf01ea769`.
+Fresh native reference preparation and live comparisons remain active.
+The hosted reuse implementation and its earlier successful operating observations remain delivered evidence, not authority to reuse or redistribute the new pin.
+See the [rc.2 delivery reconciliation](0.1.0-rc.2-java-parity.md#11-delivered-changes-from-rc1-through-9-october) for the complete intervening baseline.
+
+Historical disposition, 5 October: keep full integration checks; omission and its enforcement arrangement remain explicitly deferred by the owner.
 The specific fixed-source Java rights disposition is accepted.
-The [native Java protocol milestone](../adr/0012-gated-native-java-reference-reuse.md) delivered coordinated schema-v3 materialization and cold-seeding, with shared reuse enabled under the subsequently accepted rollout below.
+The [native Java protocol milestone](../adr/0012-gated-native-java-reference-reuse.md) delivered coordinated schema-v3 materialization and cold-seeding, with shared reuse enabled for the subsequently accepted rollout below and later disabled as recorded above.
 This supersedes proposal-stage receipt-version references below without relabeling completed historical evidence.
 Preserve uncommitted work and experiments regardless of measured savings.
 On 5 October the owner accepted an ordinary enable-and-verify Java rollout through a reviewed control revision: enable the real protocol to qualify hosted cold/warm transport and operating effects, retain full comparisons and existing bounds, then assess continued operation from those observations.

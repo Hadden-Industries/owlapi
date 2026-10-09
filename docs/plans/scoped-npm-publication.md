@@ -4,13 +4,15 @@
 > The [release-independence decision](../implementation-plan.md#release-independence) applies to every owlapi release and finalization: producer qualification remains mandatory; WebVOWL/UO application acceptance and adoption are independent and non-blocking.
 > Slices D/E and steps 6–7's application work remain consumer-owned activities at their chosen pace, not publication or plan-completion conditions for the producer.
 > This overrides contrary consumer prerequisites below without rewriting rc.1 evidence or executable controls.
-> Successor preparation must implement the gate/schema/workflow reconciliation identified in the rc.2 plan, including separation of producer tests from application reports.
+> PR 47 delivered separation of producer tests from application reports through the installed OWL contract and active producer policy.
+> Successor version/channel controls and exact-candidate qualification remain in the [rc.2 reconciliation](0.1.0-rc.2-java-parity.md#72-executable-gap-to-close-before-rc2-qualification).
 > The owner's channel clarification makes `latest` follow the most recent public release, including RCs; the authorized rc.2 release therefore sets both `next` and `latest` to `0.1.0-rc.2` without an additional tag-specific approval gate.
 
 **Status:** Accepted implementation specification, recorded 2026-09-30.
 The qualified scoped RC was published on 2026-10-02 UTC (2026-10-03 in the owner's timezone), and fresh registry installation/signature/provenance verification passed.
-GitHub release finalization remains pending.
+GitHub readback on 9 October confirms the original rc.1 prerelease was published on 3 October and is immutable, with its final evidence asset present.
 The owner amended the distribution-tag policy on 2026-10-03; see the [publication record](../provenance/releases/0.1.0-rc.1/publication-status.md).
+The original execution sequence below is retained; completed first-publication steps are not instructions to reuse the occupied rc.1 coordinate or repeat its publication.
 
 **Authority:** [ADR 0009](../adr/0009-scoped-npm-publication-and-uo-rc-acceptance.md), the [main implementation plan](../implementation-plan.md), the [lifecycle plan](../ontology-lifecycle-capability-implementation-plan.md), and UO's canonical [specification](https://github.com/Hadden-Industries/universal-ontology/blob/main/docs/specs/2026-08-22-self-contained-owl-import-closure-contract.md), [policy](https://github.com/Hadden-Industries/universal-ontology/blob/main/docs/import-closure/contract.v1.json), and [implementation plan](https://github.com/Hadden-Industries/universal-ontology/blob/main/docs/plans/2026-08-22-self-contained-owl-import-closure.md).
 

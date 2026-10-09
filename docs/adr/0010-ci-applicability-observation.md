@@ -3,6 +3,9 @@
 - Status: Accepted implementation scope on 2026-10-03; selective execution and Java artifact consumption remain inactive.
 - Authority: Maksym Shostak's request to implement the [input aware CI plan](../plans/2026-10-03-ci-input-aware-qualification.md) using HISEW, in the existing checkout, with Claude Code independent reviews.
 
+This is the historical observation-only milestone.
+The [current delivery reconciliation](../plans/0.1.0-rc.2-java-parity.md#11-delivered-changes-from-rc1-through-9-october) records later FULL lineage, native Java transport, installed OWL contract and Node 26 coverage; selective execution remains inactive.
+
 ## Decision
 
 Deliver the independently useful dependency-review installation removal and a bounded observation preamble in the existing Node 24 job.

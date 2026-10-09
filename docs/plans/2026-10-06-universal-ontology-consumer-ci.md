@@ -1,11 +1,15 @@
 # Universal Ontology boundaries in unified CI and release qualification
 
-**Status:** Draft HISEW implementation-plan reconciliation, 6 October 2026.
+**Status:** Accepted and delivered with the unified qualification plan through [PR 47](https://github.com/Hadden-Industries/owlapi/pull/47), merged on 6 October 2026; delivery reconciliation recorded 9 October.
+
+The [installed OWL contract](../compatibility/installed-owl-contract.md) owns current source bindings, assertion inventory and executable behavior.
+The historical proposal below does not introduce a second active workflow or qualification suite.
+The shared producer runner and active gate replacements are implemented; UO materialization, WebVOWL application acceptance and future rc.2 publication remain separate outcomes.
 **Decision owner:** Maksym Shostak.
 **Authority:** The original planning request in Codex chat `01a10ad1-73ce-7512-926e-09463f441ee9`, amended by the owner's instruction in chat `01a10acc-165f-7c00-88f7-9e7b7a16157c` to use the same interface-boundary tests in CI and release against the latest consumer repositories' code.
 This amendment supersedes the separate advisory UO workflow, execution of UO adapters and fixed consumer revision proposed in the earlier draft.
-Planning is authorized; this document does not authorize implementation, configuration, delegation, publication or release.
-The exact requirements, route and inventory remain a draft pending implementation-baseline acceptance.
+The original planning authority was followed by acceptance and implementation through the unified execution recorded above.
+The original discovery baseline below remains historical; current inventory bindings and evidence are owned by the installed-contract record, and publication retains separate authority.
 
 ## Outcome and relationship to the unified plan
 
