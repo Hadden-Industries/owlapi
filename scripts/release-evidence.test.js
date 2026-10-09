@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
+import { parse } from "yaml";
 
 import * as evidenceGenerator from "./generate-release-evidence.mjs";
 import * as releaseEvidence from "./release-evidence.mjs";
@@ -357,7 +358,14 @@ test("partial reruns retain successful prerequisites and the original publicatio
   publisher.conclusion = "failure";
   publisher.steps = [
     {
-      name: "Perform the single authorized direct-bootstrap write",
+      name: parse(
+        readFileSync(
+          join(repositoryRoot, ".github/workflows/release.yml"),
+          "utf8",
+        ),
+      ).jobs.npm_release.steps.find((step) =>
+        step.run?.includes("npm publish "),
+      ).name,
       status: "completed",
       conclusion: "failure",
     },

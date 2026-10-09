@@ -1596,14 +1596,13 @@ jobs:
       run:
         shell: bash
     steps:
-      - name: Select Node 24.21.0 and the exact public npm registry
+      - name: Select Node 24.21.0 without npm token configuration
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: "24.21.0"
           check-latest: false
           cache: ""
           package-manager-cache: false
-          registry-url: https://registry.npmjs.org/
       - name: Establish the exact publication npm
         run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 10

@@ -193,7 +193,7 @@ The target/error migration audit may legitimately report `NO_OBSOLETE_USAGE`; th
    Do not inject a persistent npm token or silently fall back to the historical bootstrap route.
    The following bootstrap constraints remain applicable only to first publication of a new package.
    npm now supports staged publishing for a new package, but its documented first-stage operation publishes a public `0.0.0-stage` placeholder.
-   The accepted no-placeholder requirement therefore keeps the existing bounded direct bootstrap as the applicable route for this real RC; do not probe staging by creating that placeholder.
+   For a new package's first publication, the accepted no-placeholder requirement keeps bounded direct bootstrap as the applicable route; do not probe staging by creating that placeholder.
    A dry run or organization membership does not prove write authority.
    Configure and verify the exact repository/workflow/environment trusted publisher when supported; use no placeholder publication or silent mode fallback.
 4. Obtain the existing exact artifact/publication authorization, follow late signed-tag and protected-environment ordering, and publish the retained artifact with public access under `next`.

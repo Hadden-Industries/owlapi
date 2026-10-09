@@ -737,6 +737,9 @@ describe("repository workflow governance", () => {
     "inverted OIDC",
     "wrong artifact",
     "token fallback",
+    "secret fallback",
+    "npm auth configuration",
+    "npmrc write",
   ])("rejects an unsafe trusted publisher: %s", (mutation) => {
     const document = parseDocument(workflowSource("release.yml"));
     const publish = document
@@ -763,10 +766,37 @@ describe("repository workflow governance", () => {
       );
     if (mutation === "token fallback")
       publish.set("env", { NODE_AUTH_TOKEN: "${{ secrets.NPM_TOKEN }}" });
+    if (mutation === "secret fallback")
+      publish.set("env", { NPM_TOKEN: "${{ secrets.NPM_TOKEN }}" });
+    if (mutation === "npm auth configuration")
+      publish.set("env", { NPM_CONFIG_AUTHTOKEN: "persistent-token" });
+    if (mutation === "npmrc write")
+      publish.set("run", source + 'echo "token configuration" > .npmrc\n');
     expect(auditReleaseMutationBoundary(document.toString())).toContain(
       "release.yml:npm_release must require OIDC and the exact owner-approved artifact without token fallback",
     );
   });
+
+  test.each(["registry-url", "scope"])(
+    "rejects setup-node generated OIDC auth configuration: %s",
+    (field) => {
+      const document = parseDocument(workflowSource("release.yml"));
+      const setup = document
+        .getIn(["jobs", "npm_release", "steps"])
+        .items.find((step) =>
+          step.get("uses")?.startsWith("actions/setup-node@"),
+        );
+      setup.setIn(
+        ["with", field],
+        field === "scope"
+          ? "@hadden-industries"
+          : "https://registry.npmjs.org/",
+      );
+      expect(auditReleaseMutationBoundary(document.toString())).toContain(
+        "release.yml:npm_release must omit setup-node npm authentication configuration",
+      );
+    },
+  );
 
   test("rejects a scoped publisher that can write again during a failed-job rerun", () => {
     const document = parseDocument(

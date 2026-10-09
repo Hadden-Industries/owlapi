@@ -66,15 +66,18 @@ test("rc.2 configuration selects all eleven paths without inheriting rc.1 public
   expect(manifest.version).toBe(version);
   expect(PUBLIC_SUBPATHS).toHaveLength(11);
   expect(control).toMatchObject({
-    enabled: false,
-    mode: "UNRESOLVED",
+    enabled: true,
+    mode: "DIRECT_OIDC",
     coordinate: `@hadden-industries/owlapi@${version}`,
-    reviewedOn: null,
+    reviewedOn: "2026-10-10",
   });
   expect(
     deriveWorkflowMetadata({ manifest, publication: control })
       .publication_enabled,
-  ).toBe("false");
+  ).toBe("true");
+  expect(control.reason).toContain(
+    "4f04d1456519fb75f23da51fce5174af0d4909ec7ea647cae2f4c9f4dc77b441",
+  );
   const ajv = new Ajv2020({ strict: true, allErrors: true });
   addFormats(ajv);
   const schema = JSON.parse(

@@ -163,7 +163,8 @@ export const scopedWorkflowJobs = ({
   const publisher = publishers[0];
   const write = publisher?.steps?.find(
     (step) =>
-      step.name === "Perform the single authorized direct-bootstrap write",
+      step.name ===
+      "Perform the authorized publication and exact-version channel writes",
   );
   if (
     provenance.runId !== runId ||

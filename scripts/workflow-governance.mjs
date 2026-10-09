@@ -210,8 +210,7 @@ const validateActionUses = (fileName, workflow, document, violations) => {
           violations,
         );
         const isBootstrap =
-          ["release.yml", "release-reconciliation.yml"].includes(fileName) &&
-          jobId === "npm_release";
+          fileName === "release-reconciliation.yml" && jobId === "npm_release";
         if (isBootstrap)
           requireFields(
             inputs,
@@ -225,7 +224,7 @@ const validateActionUses = (fileName, workflow, document, violations) => {
             inputs,
             isBootstrap
               ? ["always-auth", "mirror", "token"]
-              : ["registry-url", "always-auth", "mirror", "token"],
+              : ["registry-url", "scope", "always-auth", "mirror", "token"],
           ),
           `${fileName}: setup-node broadens registry authority`,
         );
@@ -1270,10 +1269,13 @@ const validateReleaseMutationBoundary = (
   );
   add(
     violations,
-    actionSteps(publication, "actions/setup-node").some(
-      (step) => step.with?.["registry-url"] === "https://registry.npmjs.org/",
+    actionSteps(publication, "actions/setup-node").some((step) =>
+      reconciliation
+        ? step.with?.["registry-url"] === "https://registry.npmjs.org/"
+        : step.with?.["registry-url"] === undefined &&
+          step.with?.scope === undefined,
     ),
-    `${fileName}:npm_release must use the public npm registry`,
+    `${fileName}:npm_release must ${reconciliation ? "use the public npm registry" : "omit setup-node npm authentication configuration"}`,
   );
   const publishCommand = reconciliation
     ? ALPHA_RECONCILIATION_PUBLISH_COMMAND
@@ -1341,7 +1343,11 @@ const validateReleaseMutationBoundary = (
           )
           .includes("exit 1") &&
         publish.run.includes(`${approvedDigest}\n${publishCommand}`) &&
-        !JSON.stringify(workflow).includes("NODE_AUTH_TOKEN"),
+        !JSON.stringify(workflow).includes("NODE_AUTH_TOKEN") &&
+        !JSON.stringify(publication).includes("secrets.") &&
+        !/authToken|npmrc|npm[_-]config[^\n]*auth/iu.test(
+          JSON.stringify(publication),
+        ),
       `${fileName}:npm_release must require OIDC and the exact owner-approved artifact without token fallback`,
     );
   }
