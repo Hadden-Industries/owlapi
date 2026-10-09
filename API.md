@@ -1,4 +1,4 @@
-<!-- registry-sha256: 7a60a0d44f9bbf778e61d50122ca234dfb38231f83bf961006421a2a5bff7884 -->
+<!-- registry-sha256: a4d41d1b00634883a46b94e4bd043ae67fd3ee9f33425b7787e5b62dd060ab73 -->
 
 # owlapi API reference
 
@@ -316,7 +316,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 ## `OWLOntologyWriterConfiguration`
 
-An immutable partial Java adaptation controlling RDF/XML indentation and banners on an output manager.
+An immutable partial Java adaptation controlling RDF/XML indentation, banners and anonymous-individual ID persistence on an output manager.
 
 - Import: `@hadden-industries/owlapi/model`
 - Kind: CLASS
@@ -324,10 +324,10 @@ An immutable partial Java adaptation controlling RDF/XML indentation and banners
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
 - Release status: PRERELEASE; first public release not selected
 - Call shape: new OWLOntologyWriterConfiguration()
-- Supported members: prototype.getIndentSize; prototype.isIndenting; prototype.isLabelsAsBanner; prototype.shouldUseBanners; prototype.withBannersEnabled; prototype.withIndentSize; prototype.withIndenting; prototype.withLabelsAsBanner
-- Omitted Java members: shouldSaveIdsForAllAnonymousIndividuals / withSaveIdsForAllAnonymousIndividuals; shouldRemapAllAnonymousIndividualsIds / withRemapAllAnonymousIndividualsIds; isUseNamespaceEntities / withUseNamespaceEntities; shouldOutputNamedGraphIRI / withNamedGraphIRIEnabled
+- Supported members: prototype.getIndentSize; prototype.isIndenting; prototype.isLabelsAsBanner; prototype.shouldSaveIdsForAllAnonymousIndividuals; prototype.shouldUseBanners; prototype.withBannersEnabled; prototype.withIndentSize; prototype.withIndenting; prototype.withLabelsAsBanner; prototype.withSaveIdsForAllAnonymousIndividuals
+- Omitted Java members: shouldRemapAllAnonymousIndividualsIds / withRemapAllAnonymousIndividualsIds; isUseNamespaceEntities / withUseNamespaceEntities; shouldOutputNamedGraphIRI / withNamedGraphIRIEnabled
 - Public errors: none specific
-- Qualification: Defaults: isIndenting true, getIndentSize 4, shouldUseBanners true, isLabelsAsBanner false. Every with method returns an immutable configuration and preserves unrelated fields, unlike the pinned Java copy-reset behavior. withIndentSize accepts numeric integers 0 through 2147483647; nonnumbers throw TypeError and out-of-range/noninteger numbers throw RangeError. Java admits negative int values; JavaScript deliberately rejects them. The four controls affect RDF/XML only. Functional Syntax retains its output, matching the public-save Java probe. Disabling indentation retains structural newlines and literal whitespace. Labels use lexical ordering of language, label text, then datatype, with IRI fallback. XML comment sanitization affects presentation only; labels remain unchanged RDF literals. No-language labels sort first. Rendering is bounded to 32 MiB UTF-8 output, 128 nested resource levels and finite QName work. Long owned chains retain flat references at the nesting bound. Disabling indentation removes padding cost and admits any legal configured indentSize, subject to other conservative render budgets. Attach to the actual output manager using setOntologyWriterConfiguration, which returns undefined. Each save captures private immutable state before suspension; no live getter or global preferences are read.
+- Qualification: Defaults: isIndenting true, getIndentSize 4, shouldUseBanners true, isLabelsAsBanner false. Every with method returns an immutable configuration and preserves unrelated fields, unlike the pinned Java copy-reset behavior. withIndentSize accepts numeric integers 0 through 2147483647; nonnumbers throw TypeError and out-of-range/noninteger numbers throw RangeError. Java admits negative int values; JavaScript deliberately rejects them. The controls affect RDF/XML only. Functional Syntax retains its output, matching the public-save Java probe. Disabling indentation retains structural newlines and literal whitespace. shouldSaveIdsForAllAnonymousIndividuals defaults to false; its builder persists anonymous individual and axiom IDs while necessary shared/cyclic/depth-limited references always retain IDs. Labels use lexical ordering of language, label text, then datatype, with IRI fallback. XML comment sanitization affects presentation only; labels remain unchanged RDF literals. No-language labels sort first. Rendering is bounded to 32 MiB UTF-8 output, 128 nested resource levels and finite QName work. Long owned chains retain flat references at the nesting bound. Disabling indentation removes padding cost and admits any legal configured indentSize, subject to other conservative render budgets. Attach to the actual output manager using setOntologyWriterConfiguration, which returns undefined. Each save captures private immutable state before suspension; no live getter or global preferences are read.
 - Evidence: model/owlOntologyWriterConfiguration.test.js, internal/storage/rdfxml/rdfXmlGraphWriter.test.js, test/package-boundary.test.mjs
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
@@ -961,6 +961,24 @@ Immutable identities for every ontology document format supported by the initial
 - Evidence: model/model.test.js, test/package-boundary.test.mjs
 
 Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace.
+
+## `RDFXMLDocumentFormat`
+
+Java-backed RDF/XML format with bounded inherited prefix operations and captured save-time preferences.
+
+- Import: `@hadden-industries/owlapi/formats`
+- Kind: CLASS
+- Java authority: org.semanticweb.owlapi.formats.RDFXMLDocumentFormat
+- Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
+- Release status: PRERELEASE; first public release not selected
+- Call shape: new RDFXMLDocumentFormat()
+- Supported members: prototype.asPrefixOWLDocumentFormat; prototype.clear; prototype.containsPrefixMapping; prototype.copyPrefixesFrom; prototype.getDefaultPrefix; prototype.getPrefix; prototype.getPrefixName2PrefixMap; prototype.getPrefixNames; prototype.isPrefixOWLDocumentFormat; prototype.setDefaultPrefix; prototype.setPrefix; prototype.unregisterNamespace; prototype.withOntologyLoaderMetaData; prototype.withParameter
+- Omitted Java members: Prefix comparator, prefix IRI conversion and Stream overloads; setPrefixManager and standalone PrefixManager/PrefixDocumentFormat exports
+- Public errors: none specific
+- Qualification: Prefix methods use Java names. getPrefixName2PrefixMap and getPrefixNames return defensive Map/Set copies. copyPrefixesFrom accepts a native RDFXMLDocumentFormat or Map and validates the complete copy before mutation. Missing prefixes return null. Instances have frozen public identity and mutable private prefixes. Shared OWLDocumentFormats constants remain immutable. Loaded RDF/XML prefixes are retained in immutable source metadata; getOntologyFormat returns a cached independently mutable format without altering historical parse evidence. Existing withParameter and withOntologyLoaderMetaData adaptations preserve concrete format type and copy prefixes. RDF/XML honors only the Java parameter force xsd:string on literals, accepting booleans with false default. Each save captures private prefix/parameter values before suspension. Default namespaces determine xml:base following Java's trailing-hash rule. Explicit unused mappings are retained; declarations sort by prefix length then lexical order. No Java runtime renderer class or custom formatting profile is exported.
+- Evidence: formats/rdfXMLDocumentFormat.test.js, test/package-boundary.test.mjs
+
+Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
 
 ## `OWLOntologyImportsClosureSetProvider`
 

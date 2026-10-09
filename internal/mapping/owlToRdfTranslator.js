@@ -91,6 +91,10 @@ const assertTranslatorTaxonomyCoverage = () => {
   }
 };
 
+const anonymousIndividualNodes = new WeakMap();
+export const readAnonymousIndividualRdfNodes = (dataset) =>
+  new Set(anonymousIndividualNodes.get(dataset) ?? []);
+
 class TranslationSession {
   #anonymousIndividuals = new Map();
   #axiomHandlers;
@@ -518,6 +522,10 @@ class TranslationSession {
       dispatchAxiom(axiom, this.#axiomHandlers);
     }
 
+    anonymousIndividualNodes.set(
+      this.#dataset,
+      [...this.#anonymousIndividuals.values()].map((node) => node.value),
+    );
     return this.#dataset;
   }
 

@@ -2,7 +2,11 @@ import { OWLDocumentFormats } from "../../../formats/owlDocumentFormats.js";
 import { RdfToOwlTranslator } from "../../mapping/rdfToOwlTranslator.js";
 import { registerRdfDocumentPreparation } from "../rdf/rdfDocumentPreparation.js";
 
-import { documentBaseIRI, RdfXmlSyntaxAdapter } from "./rdfXmlSyntaxAdapter.js";
+import {
+  documentBaseIRI,
+  RdfXmlSyntaxAdapter,
+  readRdfXmlSourcePrefixes,
+} from "./rdfXmlSyntaxAdapter.js";
 
 const defaultTranslatorFactory = (dataFactory) =>
   new RdfToOwlTranslator({ dataFactory });
@@ -77,6 +81,7 @@ export class RDFXMLParser {
         this.#populateTransaction(
           await prepared.reconstruct(declarations, sourceRoles),
           completedTransaction,
+          syntax.dataset,
         ),
     };
   }
@@ -86,10 +91,11 @@ export class RDFXMLParser {
     return this.#populateTransaction(
       await syntax.translator.translate(syntax.dataset, syntax.options),
       transaction,
+      syntax.dataset,
     );
   }
 
-  #populateTransaction(translated, transaction) {
+  #populateTransaction(translated, transaction, dataset) {
     const { context, ontology } = translated;
 
     transaction.setOntologyID(ontology.getOntologyID());
@@ -101,11 +107,13 @@ export class RDFXMLParser {
     for (const diagnostic of context.diagnostics) {
       transaction.addDiagnostic(diagnostic);
     }
+    transaction.setPrefixes(
+      Object.fromEntries(readRdfXmlSourcePrefixes(dataset)),
+    );
+    const documentFormat = OWLDocumentFormats.RDF_XML;
     const loadedFormat = context.loaderMetaData
-      ? OWLDocumentFormats.RDF_XML.withOntologyLoaderMetaData(
-          context.loaderMetaData,
-        )
-      : OWLDocumentFormats.RDF_XML;
+      ? documentFormat.withOntologyLoaderMetaData(context.loaderMetaData)
+      : documentFormat;
     transaction.setDocumentFormat(loadedFormat);
     return loadedFormat;
   }

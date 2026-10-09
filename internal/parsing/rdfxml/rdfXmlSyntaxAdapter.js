@@ -596,8 +596,12 @@ const rootNamespace = (text, root) => {
   for (const match of startTag.matchAll(declaration)) {
     namespaces.set(match[1] || "", decodeXmlAttributeValue(match[3]));
   }
-  return { localName, namespaceURI: namespaces.get(prefix) };
+  return { localName, namespaceURI: namespaces.get(prefix), namespaces };
 };
+
+const parsedPrefixes = new WeakMap();
+export const readRdfXmlSourcePrefixes = (dataset) =>
+  new Map(parsedPrefixes.get(dataset) ?? []);
 
 const splitXmlDeclaration = (text) => {
   const bom = text.startsWith("\uFEFF") ? "\uFEFF" : "";
@@ -1047,6 +1051,13 @@ export class RdfXmlSyntaxAdapter {
       parser.end();
       await completion;
       execution.check();
+      parsedPrefixes.set(
+        dataset,
+        [...identity.namespaces].map(([name, namespace]) => [
+          `${name}:`,
+          namespace,
+        ]),
+      );
       return dataset;
     } catch (cause) {
       if (!parser.destroyed) {

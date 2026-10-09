@@ -806,6 +806,7 @@ describe("owlapi governance artifacts", () => {
           "profiles.OWL2DLProfile",
           "profiles.OWLProfileReport",
           "model.OWLOntologyWriterConfiguration",
+          "formats.RDFXMLDocumentFormat",
         ].sort(),
       );
       expect(
@@ -1492,7 +1493,10 @@ describe("owlapi governance artifacts", () => {
       expect(record.normativePublicSources.length).toBeGreaterThan(0);
       expect(record.compatibilityReferences.length).toBeGreaterThan(0);
       expect(record.referenceOwlapiRevision).toBe(
-        manifest.referenceOwlapi.revision,
+        record.id === "RDFXML-PREFIX-FORMAT"
+          ? readJson("./docs/compatibility/java-api-surface.json").javaReference
+              .revision
+          : manifest.referenceOwlapi.revision,
       );
       expect(record.focusedEvidence.length).toBeGreaterThan(0);
       expect(record.thirdPartyDependencies).toBeInstanceOf(Array);

@@ -1,4 +1,4 @@
-<!-- registry-sha256: 7a60a0d44f9bbf778e61d50122ca234dfb38231f83bf961006421a2a5bff7884 -->
+<!-- registry-sha256: a4d41d1b00634883a46b94e4bd043ae67fd3ee9f33425b7787e5b62dd060ab73 -->
 
 # Java OWLAPI compatibility surface
 
@@ -11,17 +11,17 @@ A mapped name does not promise every Java overload or method. The relationship, 
 ## Inventory summary
 
 - Public package namespaces: 7
-- Public JavaScript bindings: 57
+- Public JavaScript bindings: 58
 - Public Java types inspected: 1013
 - Unclassified Java types: 0
 
 | Java disposition                           | Count |
 | ------------------------------------------ | ----: |
-| PUBLIC_MAPPED                              |    26 |
-| STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT    |    74 |
-| FORMAT_IDENTITY_SUPPORTED_NOT_NAMED_EXPORT |     8 |
+| PUBLIC_MAPPED                              |    27 |
+| STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT    |    76 |
+| FORMAT_IDENTITY_SUPPORTED_NOT_NAMED_EXPORT |     7 |
 | INTERNAL_IMPLEMENTATION_ONLY               |     2 |
-| DEFERRED_NOT_EXPOSED                       |   859 |
+| DEFERRED_NOT_EXPOSED                       |   857 |
 | UNSUPPORTED_BY_DESIGN                      |    44 |
 | UNCLASSIFIED                               |     0 |
 
@@ -82,6 +82,7 @@ A mapped name does not promise every Java overload or method. The relationship, 
 | `UnsupportedConstructError`            | @hadden-industries/owlapi/io         | org.semanticweb.owlapi.io.OWLParserException                     | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
 | `XmlParseError`                        | @hadden-industries/owlapi/io         | org.semanticweb.owlapi.io.OWLParserException                     | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
 | `OWLDocumentFormats`                   | @hadden-industries/owlapi/formats    | org.semanticweb.owlapi.formats                                   | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `RDFXMLDocumentFormat`                 | @hadden-industries/owlapi/formats    | org.semanticweb.owlapi.formats.RDFXMLDocumentFormat              | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE    |
 | `OWLOntologyImportsClosureSetProvider` | @hadden-industries/owlapi/util       | org.semanticweb.owlapi.util.OWLOntologyImportsClosureSetProvider | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE    |
 | `OWLOntologyMerger`                    | @hadden-industries/owlapi/util       | org.semanticweb.owlapi.util.OWLOntologyMerger                    | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE    |
 | `OWL2DLProfile`                        | @hadden-industries/owlapi/profiles   | org.semanticweb.owlapi.profiles.OWL2DLProfile                    | JS_ADAPTATION | ADAPTED        | IN_PROGRESS / PRERELEASE |
@@ -91,55 +92,55 @@ A mapped name does not promise every Java overload or method. The relationship, 
 
 Every public Java type is classified in the machine-readable registry. This compact view groups those classifications by Java package.
 
-| Java package                                         | Disposition counts                                                                        |
-| ---------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| org.semanticweb.owlapi.annotations                   | DEFERRED_NOT_EXPOSED: 1                                                                   |
-| org.semanticweb.owlapi.apibinding                    | DEFERRED_NOT_EXPOSED: 1; PUBLIC_MAPPED: 1                                                 |
-| org.semanticweb.owlapi.atomicdecomposition           | DEFERRED_NOT_EXPOSED: 1                                                                   |
-| org.semanticweb.owlapi.benchmarks                    | DEFERRED_NOT_EXPOSED: 5                                                                   |
-| org.semanticweb.owlapi.change                        | DEFERRED_NOT_EXPOSED: 27                                                                  |
-| org.semanticweb.owlapi.debugging                     | DEFERRED_NOT_EXPOSED: 5                                                                   |
-| org.semanticweb.owlapi.dlsyntax.parser               | DEFERRED_NOT_EXPOSED: 3                                                                   |
-| org.semanticweb.owlapi.dlsyntax.renderer             | DEFERRED_NOT_EXPOSED: 7                                                                   |
-| org.semanticweb.owlapi.expression                    | DEFERRED_NOT_EXPOSED: 6                                                                   |
-| org.semanticweb.owlapi.formats                       | DEFERRED_NOT_EXPOSED: 53; FORMAT_IDENTITY_SUPPORTED_NOT_NAMED_EXPORT: 8                   |
-| org.semanticweb.owlapi.functional.parser             | DEFERRED_NOT_EXPOSED: 4                                                                   |
-| org.semanticweb.owlapi.functional.renderer           | DEFERRED_NOT_EXPOSED: 4                                                                   |
-| org.semanticweb.owlapi.io                            | DEFERRED_NOT_EXPOSED: 46; INTERNAL_IMPLEMENTATION_ONLY: 2; PUBLIC_MAPPED: 6               |
-| org.semanticweb.owlapi.krss1.parser                  | DEFERRED_NOT_EXPOSED: 4                                                                   |
-| org.semanticweb.owlapi.krss2.parser                  | DEFERRED_NOT_EXPOSED: 3                                                                   |
-| org.semanticweb.owlapi.krss2.renderer                | DEFERRED_NOT_EXPOSED: 13                                                                  |
-| org.semanticweb.owlapi.latex.renderer                | DEFERRED_NOT_EXPOSED: 9                                                                   |
-| org.semanticweb.owlapi.manchestersyntax.parser       | DEFERRED_NOT_EXPOSED: 11                                                                  |
-| org.semanticweb.owlapi.manchestersyntax.renderer     | DEFERRED_NOT_EXPOSED: 13                                                                  |
-| org.semanticweb.owlapi.metrics                       | DEFERRED_NOT_EXPOSED: 23                                                                  |
-| org.semanticweb.owlapi.model                         | DEFERRED_NOT_EXPOSED: 256; PUBLIC_MAPPED: 15; STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT: 74 |
-| org.semanticweb.owlapi.model.axiomproviders          | DEFERRED_NOT_EXPOSED: 11                                                                  |
-| org.semanticweb.owlapi.model.parameters              | DEFERRED_NOT_EXPOSED: 6                                                                   |
-| org.semanticweb.owlapi.model.providers               | DEFERRED_NOT_EXPOSED: 30                                                                  |
-| org.semanticweb.owlapi.modularity                    | DEFERRED_NOT_EXPOSED: 4                                                                   |
-| org.semanticweb.owlapi.modularity.locality           | DEFERRED_NOT_EXPOSED: 7                                                                   |
-| org.semanticweb.owlapi.normalform                    | DEFERRED_NOT_EXPOSED: 3                                                                   |
-| org.semanticweb.owlapi.oboformat                     | DEFERRED_NOT_EXPOSED: 5                                                                   |
-| org.semanticweb.owlapi.owlxml.parser                 | DEFERRED_NOT_EXPOSED: 2                                                                   |
-| org.semanticweb.owlapi.owlxml.renderer               | DEFERRED_NOT_EXPOSED: 6                                                                   |
-| org.semanticweb.owlapi.profiles                      | DEFERRED_NOT_EXPOSED: 13; PUBLIC_MAPPED: 2                                                |
-| org.semanticweb.owlapi.profiles.violations           | DEFERRED_NOT_EXPOSED: 50                                                                  |
-| org.semanticweb.owlapi.rdf                           | DEFERRED_NOT_EXPOSED: 2                                                                   |
-| org.semanticweb.owlapi.rdf.model                     | DEFERRED_NOT_EXPOSED: 3                                                                   |
-| org.semanticweb.owlapi.rdf.rdfxml.parser             | DEFERRED_NOT_EXPOSED: 18                                                                  |
-| org.semanticweb.owlapi.rdf.rdfxml.renderer           | DEFERRED_NOT_EXPOSED: 10                                                                  |
-| org.semanticweb.owlapi.rdf.turtle.parser             | DEFERRED_NOT_EXPOSED: 7                                                                   |
-| org.semanticweb.owlapi.rdf.turtle.renderer           | DEFERRED_NOT_EXPOSED: 3                                                                   |
-| org.semanticweb.owlapi.reasoner                      | UNSUPPORTED_BY_DESIGN: 26                                                                 |
-| org.semanticweb.owlapi.reasoner.impl                 | UNSUPPORTED_BY_DESIGN: 15                                                                 |
-| org.semanticweb.owlapi.reasoner.knowledgeexploration | UNSUPPORTED_BY_DESIGN: 1                                                                  |
-| org.semanticweb.owlapi.reasoner.structural           | UNSUPPORTED_BY_DESIGN: 2                                                                  |
-| org.semanticweb.owlapi.rio                           | DEFERRED_NOT_EXPOSED: 37                                                                  |
-| org.semanticweb.owlapi.rio.utils                     | DEFERRED_NOT_EXPOSED: 1                                                                   |
-| org.semanticweb.owlapi.search                        | DEFERRED_NOT_EXPOSED: 3                                                                   |
-| org.semanticweb.owlapi.test                          | DEFERRED_NOT_EXPOSED: 1                                                                   |
-| org.semanticweb.owlapi.util                          | DEFERRED_NOT_EXPOSED: 125; PUBLIC_MAPPED: 2                                               |
-| org.semanticweb.owlapi.util.mansyntax                | DEFERRED_NOT_EXPOSED: 1                                                                   |
-| org.semanticweb.owlapi.utilities                     | DEFERRED_NOT_EXPOSED: 1                                                                   |
-| org.semanticweb.owlapi.vocab                         | DEFERRED_NOT_EXPOSED: 15                                                                  |
+| Java package                                         | Disposition counts                                                                                                                    |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| org.semanticweb.owlapi.annotations                   | DEFERRED_NOT_EXPOSED: 1                                                                                                               |
+| org.semanticweb.owlapi.apibinding                    | DEFERRED_NOT_EXPOSED: 1; PUBLIC_MAPPED: 1                                                                                             |
+| org.semanticweb.owlapi.atomicdecomposition           | DEFERRED_NOT_EXPOSED: 1                                                                                                               |
+| org.semanticweb.owlapi.benchmarks                    | DEFERRED_NOT_EXPOSED: 5                                                                                                               |
+| org.semanticweb.owlapi.change                        | DEFERRED_NOT_EXPOSED: 27                                                                                                              |
+| org.semanticweb.owlapi.debugging                     | DEFERRED_NOT_EXPOSED: 5                                                                                                               |
+| org.semanticweb.owlapi.dlsyntax.parser               | DEFERRED_NOT_EXPOSED: 3                                                                                                               |
+| org.semanticweb.owlapi.dlsyntax.renderer             | DEFERRED_NOT_EXPOSED: 7                                                                                                               |
+| org.semanticweb.owlapi.expression                    | DEFERRED_NOT_EXPOSED: 6                                                                                                               |
+| org.semanticweb.owlapi.formats                       | DEFERRED_NOT_EXPOSED: 52; FORMAT_IDENTITY_SUPPORTED_NOT_NAMED_EXPORT: 7; PUBLIC_MAPPED: 1; STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT: 1 |
+| org.semanticweb.owlapi.functional.parser             | DEFERRED_NOT_EXPOSED: 4                                                                                                               |
+| org.semanticweb.owlapi.functional.renderer           | DEFERRED_NOT_EXPOSED: 4                                                                                                               |
+| org.semanticweb.owlapi.io                            | DEFERRED_NOT_EXPOSED: 46; INTERNAL_IMPLEMENTATION_ONLY: 2; PUBLIC_MAPPED: 6                                                           |
+| org.semanticweb.owlapi.krss1.parser                  | DEFERRED_NOT_EXPOSED: 4                                                                                                               |
+| org.semanticweb.owlapi.krss2.parser                  | DEFERRED_NOT_EXPOSED: 3                                                                                                               |
+| org.semanticweb.owlapi.krss2.renderer                | DEFERRED_NOT_EXPOSED: 13                                                                                                              |
+| org.semanticweb.owlapi.latex.renderer                | DEFERRED_NOT_EXPOSED: 9                                                                                                               |
+| org.semanticweb.owlapi.manchestersyntax.parser       | DEFERRED_NOT_EXPOSED: 11                                                                                                              |
+| org.semanticweb.owlapi.manchestersyntax.renderer     | DEFERRED_NOT_EXPOSED: 13                                                                                                              |
+| org.semanticweb.owlapi.metrics                       | DEFERRED_NOT_EXPOSED: 23                                                                                                              |
+| org.semanticweb.owlapi.model                         | DEFERRED_NOT_EXPOSED: 255; PUBLIC_MAPPED: 15; STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT: 75                                             |
+| org.semanticweb.owlapi.model.axiomproviders          | DEFERRED_NOT_EXPOSED: 11                                                                                                              |
+| org.semanticweb.owlapi.model.parameters              | DEFERRED_NOT_EXPOSED: 6                                                                                                               |
+| org.semanticweb.owlapi.model.providers               | DEFERRED_NOT_EXPOSED: 30                                                                                                              |
+| org.semanticweb.owlapi.modularity                    | DEFERRED_NOT_EXPOSED: 4                                                                                                               |
+| org.semanticweb.owlapi.modularity.locality           | DEFERRED_NOT_EXPOSED: 7                                                                                                               |
+| org.semanticweb.owlapi.normalform                    | DEFERRED_NOT_EXPOSED: 3                                                                                                               |
+| org.semanticweb.owlapi.oboformat                     | DEFERRED_NOT_EXPOSED: 5                                                                                                               |
+| org.semanticweb.owlapi.owlxml.parser                 | DEFERRED_NOT_EXPOSED: 2                                                                                                               |
+| org.semanticweb.owlapi.owlxml.renderer               | DEFERRED_NOT_EXPOSED: 6                                                                                                               |
+| org.semanticweb.owlapi.profiles                      | DEFERRED_NOT_EXPOSED: 13; PUBLIC_MAPPED: 2                                                                                            |
+| org.semanticweb.owlapi.profiles.violations           | DEFERRED_NOT_EXPOSED: 50                                                                                                              |
+| org.semanticweb.owlapi.rdf                           | DEFERRED_NOT_EXPOSED: 2                                                                                                               |
+| org.semanticweb.owlapi.rdf.model                     | DEFERRED_NOT_EXPOSED: 3                                                                                                               |
+| org.semanticweb.owlapi.rdf.rdfxml.parser             | DEFERRED_NOT_EXPOSED: 18                                                                                                              |
+| org.semanticweb.owlapi.rdf.rdfxml.renderer           | DEFERRED_NOT_EXPOSED: 10                                                                                                              |
+| org.semanticweb.owlapi.rdf.turtle.parser             | DEFERRED_NOT_EXPOSED: 7                                                                                                               |
+| org.semanticweb.owlapi.rdf.turtle.renderer           | DEFERRED_NOT_EXPOSED: 3                                                                                                               |
+| org.semanticweb.owlapi.reasoner                      | UNSUPPORTED_BY_DESIGN: 26                                                                                                             |
+| org.semanticweb.owlapi.reasoner.impl                 | UNSUPPORTED_BY_DESIGN: 15                                                                                                             |
+| org.semanticweb.owlapi.reasoner.knowledgeexploration | UNSUPPORTED_BY_DESIGN: 1                                                                                                              |
+| org.semanticweb.owlapi.reasoner.structural           | UNSUPPORTED_BY_DESIGN: 2                                                                                                              |
+| org.semanticweb.owlapi.rio                           | DEFERRED_NOT_EXPOSED: 37                                                                                                              |
+| org.semanticweb.owlapi.rio.utils                     | DEFERRED_NOT_EXPOSED: 1                                                                                                               |
+| org.semanticweb.owlapi.search                        | DEFERRED_NOT_EXPOSED: 3                                                                                                               |
+| org.semanticweb.owlapi.test                          | DEFERRED_NOT_EXPOSED: 1                                                                                                               |
+| org.semanticweb.owlapi.util                          | DEFERRED_NOT_EXPOSED: 125; PUBLIC_MAPPED: 2                                                                                           |
+| org.semanticweb.owlapi.util.mansyntax                | DEFERRED_NOT_EXPOSED: 1                                                                                                               |
+| org.semanticweb.owlapi.utilities                     | DEFERRED_NOT_EXPOSED: 1                                                                                                               |
+| org.semanticweb.owlapi.vocab                         | DEFERRED_NOT_EXPOSED: 15                                                                                                              |

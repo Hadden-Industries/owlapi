@@ -46,6 +46,30 @@ const LIFECYCLE_STORER_CAPABILITY_BY_JAVA_TYPE = Object.freeze({
 // These approved adaptations must not inherit the OWL-name heuristic: a native
 // Error suffix, private atomic target state, and io ownership differ from Java.
 const PARITY_BINDING_METADATA = Object.freeze({
+  RDFXMLDocumentFormat: {
+    javaType: "org.semanticweb.owlapi.formats.RDFXMLDocumentFormat",
+    sourceModule: "formats/rdfXMLDocumentFormat.js",
+    capabilityIds: ["writer.rdfxml-configuration"],
+    relationship: "JAVA_ANALOGUE",
+    callShapes: ["new RDFXMLDocumentFormat()"],
+    summary:
+      "Java-backed RDF/XML format with bounded inherited prefix operations and captured save-time preferences.",
+    firstPublicRelease: null,
+    omittedMembers: [
+      "Prefix comparator, prefix IRI conversion and Stream overloads",
+      "setPrefixManager and standalone PrefixManager/PrefixDocumentFormat exports",
+    ],
+    semanticQualifications: [
+      "Prefix methods use Java names. getPrefixName2PrefixMap and getPrefixNames return defensive Map/Set copies. copyPrefixesFrom accepts a native RDFXMLDocumentFormat or Map and validates the complete copy before mutation. Missing prefixes return null.",
+      "Instances have frozen public identity and mutable private prefixes. Shared OWLDocumentFormats constants remain immutable. Loaded RDF/XML prefixes are retained in immutable source metadata; getOntologyFormat returns a cached independently mutable format without altering historical parse evidence.",
+      "Existing withParameter and withOntologyLoaderMetaData adaptations preserve concrete format type and copy prefixes. RDF/XML honors only the Java parameter force xsd:string on literals, accepting booleans with false default. Each save captures private prefix/parameter values before suspension.",
+      "Default namespaces determine xml:base following Java's trailing-hash rule. Explicit unused mappings are retained; declarations sort by prefix length then lexical order. No Java runtime renderer class or custom formatting profile is exported.",
+    ],
+    verification: [
+      "formats/rdfXMLDocumentFormat.test.js",
+      "test/package-boundary.test.mjs",
+    ],
+  },
   OWLOntologyWriterConfiguration: {
     javaType: "org.semanticweb.owlapi.model.OWLOntologyWriterConfiguration",
     sourceModule: "model/owlOntologyWriterConfiguration.js",
@@ -53,10 +77,9 @@ const PARITY_BINDING_METADATA = Object.freeze({
     relationship: "JS_ADAPTATION",
     callShapes: ["new OWLOntologyWriterConfiguration()"],
     summary:
-      "An immutable partial Java adaptation controlling RDF/XML indentation and banners on an output manager.",
+      "An immutable partial Java adaptation controlling RDF/XML indentation, banners and anonymous-individual ID persistence on an output manager.",
     firstPublicRelease: null,
     omittedMembers: [
-      "shouldSaveIdsForAllAnonymousIndividuals / withSaveIdsForAllAnonymousIndividuals",
       "shouldRemapAllAnonymousIndividualsIds / withRemapAllAnonymousIndividualsIds",
       "isUseNamespaceEntities / withUseNamespaceEntities",
       "shouldOutputNamedGraphIRI / withNamedGraphIRIEnabled",
@@ -64,7 +87,7 @@ const PARITY_BINDING_METADATA = Object.freeze({
     semanticQualifications: [
       "Defaults: isIndenting true, getIndentSize 4, shouldUseBanners true, isLabelsAsBanner false. Every with method returns an immutable configuration and preserves unrelated fields, unlike the pinned Java copy-reset behavior.",
       "withIndentSize accepts numeric integers 0 through 2147483647; nonnumbers throw TypeError and out-of-range/noninteger numbers throw RangeError. Java admits negative int values; JavaScript deliberately rejects them.",
-      "The four controls affect RDF/XML only. Functional Syntax retains its output, matching the public-save Java probe. Disabling indentation retains structural newlines and literal whitespace.",
+      "The controls affect RDF/XML only. Functional Syntax retains its output, matching the public-save Java probe. Disabling indentation retains structural newlines and literal whitespace. shouldSaveIdsForAllAnonymousIndividuals defaults to false; its builder persists anonymous individual and axiom IDs while necessary shared/cyclic/depth-limited references always retain IDs.",
       "Labels use lexical ordering of language, label text, then datatype, with IRI fallback. XML comment sanitization affects presentation only; labels remain unchanged RDF literals. No-language labels sort first.",
       "Rendering is bounded to 32 MiB UTF-8 output, 128 nested resource levels and finite QName work. Long owned chains retain flat references at the nesting bound. Disabling indentation removes padding cost and admits any legal configured indentSize, subject to other conservative render budgets.",
       "Attach to the actual output manager using setOntologyWriterConfiguration, which returns undefined. Each save captures private immutable state before suspension; no live getter or global preferences are read.",
@@ -978,6 +1001,31 @@ const classifyJavaType = (type, bindingByJavaType) => {
     };
   }
 
+  if (["PrefixDocumentFormat", "PrefixManager"].includes(type.simpleName)) {
+    return {
+      ...type,
+      capabilityIds: ["writer.rdfxml-configuration"],
+      progress: "COMPLETE",
+      exposure: "INTERNAL_ONLY",
+      stability: null,
+      jsExport: null,
+      publicSpecifier: null,
+      sourceModule: "formats/rdfXMLDocumentFormat.js",
+      relationship: "JS_ADAPTATION",
+      compatibility: "ADAPTED",
+      disposition: "STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT",
+      supportedMembers: [
+        "RDFXMLDocumentFormat inherited bounded prefix operations",
+      ],
+      omittedMembers: [
+        "Standalone interface export",
+        "Prefix comparator, prefix IRI conversion, Stream and setPrefixManager operations",
+      ],
+      verification: ["formats/rdfXMLDocumentFormat.test.js"],
+      guidance:
+        "Use the documented RDFXMLDocumentFormat subset; unlisted Java members remain unavailable.",
+    };
+  }
   if (type.simpleName === "HasOntologyWriterConfiguration") {
     return {
       ...type,
@@ -1172,7 +1220,11 @@ const buildRegistry = async (javaRoot) => {
     ownedBindingIds:
       namespace.id === "root"
         ? allBindingIds.filter(
-            (id) => id !== "model.OWLOntologyWriterConfiguration",
+            (id) =>
+              ![
+                "model.OWLOntologyWriterConfiguration",
+                "formats.RDFXMLDocumentFormat",
+              ].includes(id),
           )
         : bindings
             .filter(

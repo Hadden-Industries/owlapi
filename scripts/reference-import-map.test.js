@@ -20,6 +20,12 @@ describe("reference import-map evidence", () => {
     expect(
       excludeNodeXmlParserFallback(
         "@xmldom/xmldom",
+        "file:///package/formats/rdfXMLDocumentFormat.js",
+      ),
+    ).toBe(false);
+    expect(
+      excludeNodeXmlParserFallback(
+        "@xmldom/xmldom",
         "file:///package/internal/parsing/xml/xmlParserAdapter.js",
       ),
     ).toBe(true);
@@ -30,6 +36,12 @@ describe("reference import-map evidence", () => {
       excludeNodeXmlParserFallback(
         "@xmldom/xmldom",
         "file:///package/unapproved.js",
+      ),
+    ).toThrow(/approved/u);
+    expect(() =>
+      excludeNodeXmlParserFallback(
+        "@xmldom/xmldom",
+        "file:///package/formats/otherRDFXMLDocumentFormat.js",
       ),
     ).toThrow(/approved/u);
   });

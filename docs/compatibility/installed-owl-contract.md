@@ -120,6 +120,15 @@ Consumer snapshot drift, unexplained public contracts, candidate mismatch, missi
 
 ## Decision basis
 
+The 9 October 2026 inventory review binds UO `9a3b5bff5aeaff4540f14bdf65baeffc1c0d188d` and WebVOWL `1d669a6261bbc2e124dfc1fcbc7fb735faf872ca`.
+Within the captured UO seams, the root manifest adopts the exact OwlAPI Git pin, the materializer copies loaded RDF/XML root prefixes, and the qualifier and its identity collector are explicitly renamed as historical RC lineage.
+The inventory follows `scripts/qualifyHistoricalRcImportClosure.js`; that file is not current Git-source acceptance.
+Current UO acceptance remains with its maintained qualification and full-build checks.
+WebVOWL's only captured change is its root manifest's documentation tooling commands, markdown probe entry and bounded Jest worker setting; its OwlAPI dependency and all inventoried OWL interface modules are unchanged.
+The existing shared writer-configuration probe now also loads an authored RDF/XML prefix, copies it through `RDFXMLDocumentFormat.copyPrefixesFrom`, rejects a reserved XML prefix, saves through the public manager, and reloads the authored class axiom.
+The same probe runs against installed Node, browser document and dedicated worker consumers, retaining the existing named assertion inventory.
+Source bindings, candidate/fixture digests and browser import maps remain independently verified; future unreviewed source edits still fail admission.
+
 First principles place assertions with the party that owns the public guarantee: OwlAPI owns parsing/model/loading/storage/profile data; consumers own their composition and UI.
 Modern practice favors small independent contract fixtures at that seam, native package resolution and explicit artifact provenance.
 Authoritative guidance supplies the native transport and identity controls: [GitHub repository metadata](https://docs.github.com/en/rest/repos/repos#get-a-repository), [complete native Git trees](https://docs.github.com/en/rest/git/trees#get-a-tree), [secure Actions use](https://docs.github.com/en/actions/reference/security/secure-use), [Node native test reporters](https://nodejs.org/api/test.html#test-reporters), and [branch dispatch](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow).

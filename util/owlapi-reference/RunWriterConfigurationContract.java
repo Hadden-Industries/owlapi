@@ -15,6 +15,10 @@ public final class RunWriterConfigurationContract {
     }
 
     public static void main(String[] arguments) throws Exception {
+        if (arguments.length == 2) {
+            observeFixture(Path.of(arguments[0]), Path.of(arguments[1]));
+            return;
+        }
         Path output = Path.of(arguments[0]);
         Files.createDirectories(output);
         OWLOntologyWriterConfiguration defaults = new OWLOntologyWriterConfiguration();
@@ -48,6 +52,30 @@ public final class RunWriterConfigurationContract {
                 manager.saveOntology(ontology, format, target);
                 Files.writeString(output.resolve(mode + (format instanceof RDFXMLDocumentFormat ? ".rdf" : ".ofn")), target.toString());
             }
+        }
+    }
+
+    /** Same-input RDF/XML observations, extending the existing writer contract. */
+    private static void observeFixture(Path input, Path output) throws Exception {
+        Files.createDirectories(output);
+        for (String mode : new String[] {"defaults", "no-banners", "two-spaces", "no-indent", "labels", "save-ids", "force-string"}) {
+            OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+            OWLOntology ontology = manager.loadOntologyFromOntologyDocument(input.toFile());
+            OWLOntologyWriterConfiguration configuration = new OWLOntologyWriterConfiguration();
+            if (mode.equals("no-banners")) configuration = configuration.withBannersEnabled(false);
+            if (mode.equals("two-spaces")) configuration = configuration.withIndentSize(2);
+            if (mode.equals("no-indent")) configuration = configuration.withIndenting(false);
+            if (mode.equals("labels")) configuration = configuration.withLabelsAsBanner(true);
+            if (mode.equals("save-ids")) configuration = configuration.withSaveIdsForAllAnonymousIndividuals(true);
+            manager.setOntologyWriterConfiguration(configuration);
+            RDFXMLDocumentFormat format = new RDFXMLDocumentFormat();
+            format.setDefaultPrefix("urn:refinement:");
+            format.setPrefix("schema:", "http://schema.org/");
+            format.setPrefix("unused:", "urn:unused:");
+            if (mode.equals("force-string")) format.setParameter("force xsd:string on literals", true);
+            StringDocumentTarget target = new StringDocumentTarget();
+            manager.saveOntology(ontology, format, target);
+            Files.writeString(output.resolve(mode + ".rdf"), target.toString());
         }
     }
 }
