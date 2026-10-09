@@ -20,9 +20,16 @@ assert.deepEqual(Object.keys(profiles).sort(), [
   "OWL2DLProfile",
   "OWLProfileReport",
 ]);
+assert.deepEqual(Object.keys(formats).sort(), [
+  "OWLDocumentFormats",
+  "RDFXMLDocumentFormat",
+]);
 for (const namespace of [apibinding, model, io, formats, util, profiles]) {
   for (const [name, binding] of Object.entries(namespace)) {
-    if (name === "OWLOntologyWriterConfiguration") {
+    if (
+      name === "OWLOntologyWriterConfiguration" ||
+      name === "RDFXMLDocumentFormat"
+    ) {
       assert.equal(Object.hasOwn(root, name), false);
       continue;
     }
