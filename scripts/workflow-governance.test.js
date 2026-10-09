@@ -740,6 +740,12 @@ describe("repository workflow governance", () => {
     "secret fallback",
     "npm auth configuration",
     "npmrc write",
+    "inherited secret fallback",
+    "inherited auth configuration",
+    "bracket secret fallback",
+    "serialized secret fallback",
+    "npm basic auth configuration",
+    "npm auth command",
   ])("rejects an unsafe trusted publisher: %s", (mutation) => {
     const document = parseDocument(workflowSource("release.yml"));
     const publish = document
@@ -772,6 +778,22 @@ describe("repository workflow governance", () => {
       publish.set("env", { NPM_CONFIG_AUTHTOKEN: "persistent-token" });
     if (mutation === "npmrc write")
       publish.set("run", source + 'echo "token configuration" > .npmrc\n');
+    if (mutation === "inherited secret fallback")
+      document.setIn(["env", "NPM_TOKEN"], "${{ secrets.NPM_TOKEN }}");
+    if (mutation === "inherited auth configuration")
+      document.setIn(["env", "npm_config__authToken"], "persistent-token");
+    if (mutation === "bracket secret fallback")
+      publish.set("env", { NPM_TOKEN: "${{ secrets['NPM_TOKEN'] }}" });
+    if (mutation === "serialized secret fallback")
+      publish.set("env", { NPM_TOKEN: "${{ toJSON(secrets) }}" });
+    if (mutation === "npm basic auth configuration")
+      publish.set("env", { NPM_CONFIG__AUTH: "persistent-token" });
+    if (mutation === "npm auth command")
+      publish.set(
+        "run",
+        source +
+          "npm config set //registry.npmjs.org/:_auth persistent-token\n",
+      );
     expect(auditReleaseMutationBoundary(document.toString())).toContain(
       "release.yml:npm_release must require OIDC and the exact owner-approved artifact without token fallback",
     );

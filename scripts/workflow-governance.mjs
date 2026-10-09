@@ -1344,9 +1344,9 @@ const validateReleaseMutationBoundary = (
           .includes("exit 1") &&
         publish.run.includes(`${approvedDigest}\n${publishCommand}`) &&
         !JSON.stringify(workflow).includes("NODE_AUTH_TOKEN") &&
-        !JSON.stringify(publication).includes("secrets.") &&
-        !/authToken|npmrc|npm[_-]config[^\n]*auth/iu.test(
-          JSON.stringify(publication),
+        !/\bsecrets\b/u.test(JSON.stringify([workflow.env, publication])) &&
+        !/authToken|npmrc|npm[_-]config[_-]*(?:auth|userconfig)|npm\s+config[^"\\]*(?:auth|token)/iu.test(
+          JSON.stringify([workflow.env, publication]),
         ),
       `${fileName}:npm_release must require OIDC and the exact owner-approved artifact without token fallback`,
     );
