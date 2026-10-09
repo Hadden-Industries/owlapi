@@ -34,16 +34,19 @@ describe("workflow runtime bootstrap", () => {
     });
   });
 
-  test("accepts only the exact requested Node and npm pair", () => {
-    expect(
-      assertWorkflowRuntime({
-        expectedNode: "24.21.0",
-        expectedNpm: "12.2.0",
-        observedNode: "v24.21.0",
-        observedNpm: "12.2.0",
-      }),
-    ).toEqual({ node: "v24.21.0", npm: "12.2.0" });
-  });
+  test.each(["24.21.0", "26.11.1"])(
+    "accepts only the exact requested Node %s and npm pair",
+    (nodeVersion) => {
+      expect(
+        assertWorkflowRuntime({
+          expectedNode: nodeVersion,
+          expectedNpm: "12.2.0",
+          observedNode: `v${nodeVersion}`,
+          observedNpm: "12.2.0",
+        }),
+      ).toEqual({ node: `v${nodeVersion}`, npm: "12.2.0" });
+    },
+  );
 
   test("finds a Windows global npm CLI beside its PATH shim before the bundled CLI", () => {
     const globalCli = "C:\\npm\\prefix\\node_modules\\npm\\bin\\npm-cli.js";

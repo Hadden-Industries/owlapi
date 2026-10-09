@@ -37,6 +37,12 @@ A later policy or CLA does not apply retroactively without the actual rights hol
 
 ## Source text, syntax, and formatting
 
+Development dependencies use stable `>=` minimums; `package-lock.json` records the exact qualified graph.
+Use `npm ci` to reproduce it and deliberately refresh the root lock only when upgrading tools.
+Local npm eligibility is `>=12.2.0`; CI, release construction, and governed qualification select exact npm 12.2.0 before project commands or cache probes.
+The development runtime remains versionless in `devEngines`; the public package admits the qualified Node 22.23.3, 24.21.0, and 26.11.1 floors within their respective majors.
+Node 24.21.0 remains canonical, including the separate Markdown archive graph; do not refresh its `file:` archives or lock as part of a root registry refresh.
+
 Repository text is UTF-8 with LF line endings and a final newline.
 The root `.gitattributes` makes that representation independent of a contributor's Git settings, while the nested override under `docs/conformance/upstream/` preserves pinned third-party fixtures byte for byte.
 Do not reformat or normalize those upstream evidence files.

@@ -1,0 +1,188 @@
+{
+  "artifactId": "9d35d6287a8a1235b00ff58f9fc4e1aaf5f222d44c9fee2f204bec735d949d43",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 89752,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "8a4b6c44eebfb026d23719a348145a661a555568dbfdc11618ff2d0dd9306b00",
+        "size": 1085,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "e49a08534a18bd4fe84faf7dc74705fb652905757cf834cafb3509d0d86d8af0",
+        "size": 19770,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/lexer.asm.js",
+        "sha256": "fa3cac5b4635e8bbc068c04652c61a26608093e6edd24f591f3440fd216f5044",
+        "size": 68310,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/lexer.cjs",
+        "sha256": "36bbe461242c1900068bed054fec4385e418407a34d97c1c2de0ea3998ff0ca6",
+        "size": 45162,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/lexer.js",
+        "sha256": "47a0fc4c32f46e328e8f10bf45011f66b9c2959989512cf097056abfac9ccce0",
+        "size": 45141,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/lexer.minimal.asm.js",
+        "sha256": "95f6b0530ab27cb146e89bc33acfa45f606c66ee589d16469b414942fc1b4864",
+        "size": 27257,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/lexer.minimal.cjs",
+        "sha256": "a544a5103cdae282b06efa457159fcf393b27ca65302b4255025794e9db97585",
+        "size": 18248,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/lexer.minimal.js",
+        "sha256": "582a1ba8cc98ba0580d6819ac0e42680c2720d0b2090e530a361d020817a20ec",
+        "size": 18232,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "340add1d00a99e80e016b079b61e89957a5b1e02fe83545df0a78c5563537392",
+        "size": 1739,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/lexer.d.ts",
+        "sha256": "ef9b9fc5f32d66a056f32fc1fbcd959c269aa8c6433a68646955bbf1a2db67a7",
+        "size": 10246,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/lexer.minimal.d.ts",
+        "sha256": "8c8218c37f0d81b067b8f2900e3015c660f3e5d1227a25ddb79d2ba596de7e72",
+        "size": 2721,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1085,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/8a/8a4b6c44eebfb026d23719a348145a661a555568dbfdc11618ff2d0dd9306b00",
+          "sha256": "8a4b6c44eebfb026d23719a348145a661a555568dbfdc11618ff2d0dd9306b00"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "8a4b6c44eebfb026d23719a348145a661a555568dbfdc11618ff2d0dd9306b00",
+        "size": 1085
+      },
+      {
+        "blob": {
+          "bytes": 19770,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/e4/e49a08534a18bd4fe84faf7dc74705fb652905757cf834cafb3509d0d86d8af0",
+          "sha256": "e49a08534a18bd4fe84faf7dc74705fb652905757cf834cafb3509d0d86d8af0"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "e49a08534a18bd4fe84faf7dc74705fb652905757cf834cafb3509d0d86d8af0",
+        "size": 19770
+      }
+    ],
+    "expandedBytes": 257911,
+    "packageIdentity": {
+      "author": "Guy Bedford",
+      "homepage": "https://github.com/guybedford/es-module-lexer#readme",
+      "license": "MIT",
+      "name": "es-module-lexer",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/guybedford/es-module-lexer.git"
+      },
+      "version": "3.0.3"
+    },
+    "packageMetadata": {
+      "author": "Guy Bedford",
+      "bugs": {
+        "url": "https://github.com/guybedford/es-module-lexer/issues"
+      },
+      "description": "Lexes ES modules returning their import/export metadata",
+      "devDependencies": {
+        "@babel/cli": "^7.29.7",
+        "@babel/core": "^7.29.7",
+        "@babel/plugin-transform-modules-commonjs": "^7.29.7",
+        "@swc/cli": "^0.8.1",
+        "@swc/core": "^1.16.2",
+        "@types/node": "^26.4.1",
+        "kleur": "^4.1.5",
+        "mocha": "^11.8.0",
+        "terser": "^5.51.2",
+        "typescript": "^7.0.2"
+      },
+      "directories": {
+        "lib": "lib",
+        "test": "test"
+      },
+      "exports": {
+        ".": {
+          "import": "./dist/lexer.js",
+          "module": "./dist/lexer.js",
+          "require": "./dist/lexer.cjs",
+          "types": "./types/lexer.d.ts"
+        },
+        "./js": {
+          "default": "./dist/lexer.asm.js",
+          "types": "./types/lexer.d.ts"
+        },
+        "./minimal": {
+          "import": "./dist/lexer.minimal.js",
+          "module": "./dist/lexer.minimal.js",
+          "require": "./dist/lexer.minimal.cjs",
+          "types": "./types/lexer.minimal.d.ts"
+        },
+        "./minimal/js": {
+          "default": "./dist/lexer.minimal.asm.js",
+          "types": "./types/lexer.minimal.d.ts"
+        }
+      },
+      "files": [
+        "dist",
+        "types"
+      ],
+      "homepage": "https://github.com/guybedford/es-module-lexer#readme",
+      "keywords": [],
+      "license": "MIT",
+      "main": "dist/lexer.cjs",
+      "module": "dist/lexer.js",
+      "name": "es-module-lexer",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/guybedford/es-module-lexer.git"
+      },
+      "scripts": {
+        "build": "npm install -g chomp ; chomp build",
+        "test": "npm install -g chomp ; chomp test"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "types": "types/lexer.d.ts",
+      "version": "3.0.3"
+    },
+    "physicalEntryCount": 11,
+    "tarball": {
+      "bytes": 89752,
+      "sha256": "09146f5722a78925928126548d53538c9293783707e80d581a00298919237d4c"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

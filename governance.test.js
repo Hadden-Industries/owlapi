@@ -2425,7 +2425,14 @@ bundle licence and notice review.
 
   it("uses SPDX-valid scoped licence conclusions and an explicit distribution policy", () => {
     const packageJson = readJson("./package.json");
-    expect(packageJson.devDependencies["spdx-expression-parse"]).toBe("5.0.0");
+    expect(packageJson.devDependencies["spdx-expression-parse"]).toBe(
+      ">=5.0.0",
+    );
+    expect(
+      readJson("./package-lock.json").packages[
+        "node_modules/spdx-expression-parse"
+      ].version,
+    ).toBe("5.0.0");
     const parseSpdxExpression = require("spdx-expression-parse");
     expect(() =>
       parseSpdxExpression("LicenseRef-project WITH Classpath-exception-2.0"),

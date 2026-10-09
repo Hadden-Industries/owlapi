@@ -35,6 +35,21 @@ const mutateWorkflow = (fileName, mutate) => {
 };
 
 describe("repository workflow governance", () => {
+  test.each(["ci.yml", "release.yml"])(
+    "rejects substituted Node 26 floor in %s",
+    (fileName) => {
+      expect(
+        mutateWorkflow(fileName, (document) => {
+          const setup = document
+            .getIn(["jobs", "portability_ubuntu_node_26", "steps"])
+            .items.find((step) =>
+              step.get("uses")?.startsWith("actions/setup-node@"),
+            );
+          setup.setIn(["with", "node-version"], "24.21.0");
+        }).join("\n"),
+      ).toMatch(/Node 26 floor/u);
+    },
+  );
   test.each(["skip", "ignore", "late"])(
     "rejects ineffective isolated Markdown acquisition: %s",
     (mutation) => {
@@ -55,17 +70,20 @@ describe("repository workflow governance", () => {
       ).toMatch(/isolated Markdown acquisition|Markdown setup before/u);
     },
   );
-  test("retains the Node 22 source and Python floor", () => {
-    expect(
-      mutateWorkflow("ci.yml", (document) => {
-        const steps = document.getIn(["jobs", "source_node_22", "steps"]);
-        const lint = steps.items.find(
-          (step) => step.get("run") === "npm run lint:source-python",
-        );
-        lint.set("run", "npm run lint");
-      }).join("\n"),
-    ).toMatch(/lint:source-python/u);
-  });
+  test.each(["source_node_22", "source_node_26"])(
+    "retains the %s source and Python floor",
+    (jobId) => {
+      expect(
+        mutateWorkflow("ci.yml", (document) => {
+          const steps = document.getIn(["jobs", jobId, "steps"]);
+          const lint = steps.items.find(
+            (step) => step.get("run") === "npm run lint:source-python",
+          );
+          lint.set("run", "npm run lint");
+        }).join("\n"),
+      ).toMatch(/lint:source-python/u);
+    },
+  );
   test.each([
     "bypass",
     "token",

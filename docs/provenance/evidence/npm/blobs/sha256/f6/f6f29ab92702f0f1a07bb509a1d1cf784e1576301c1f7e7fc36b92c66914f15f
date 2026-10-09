@@ -1,0 +1,982 @@
+{
+  "artifactId": "776ec993b3572249653f5a3127a14eb7a7daa6f1d18c5812d7ad5d3611b25522",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 236951,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd",
+        "size": 11357,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "30ffe356c94f4c67bbe1c7aceacf60e32af3dd81fbdd3523ddf12fc887aaf5d6",
+        "size": 1609,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/generator-BqADBUSC.js",
+        "sha256": "ddfd3e887f63f8f8be6a5d2e6414f2b5ba8c9753aabcdcc3f69e76747ad91bae",
+        "size": 293864,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/generator-deno.js",
+        "sha256": "8dc36d55ee0f00474b2e76f30915d3cc3f823a7e329979c3916b955b7c2e972e",
+        "size": 828,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/generator.js",
+        "sha256": "ec89de5ef82c8ce6aeb985f24ebe165d52e1d6c4ca0cb9eda6dd78a12614f3fd",
+        "size": 360,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/alphabetize.d.ts",
+        "sha256": "999664c8805b78a3759df524c2836da041e975ffd070b302d565752146f8b600",
+        "size": 83,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/alphabetize.js",
+        "sha256": "1e391d57ccb2ce96887ad93f9b5a76daf8d409e678d6e1aa7ac9b89fcd47e589",
+        "size": 181,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/alphabetize.js.map",
+        "sha256": "24a8c8818e4adfad8349ee5f27b402a81567fe5518510ce6b46be5e7f7606e5e",
+        "size": 324,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/b64.d.ts",
+        "sha256": "1b4811bc95368271df2f6257d5c9fb1160276b3455f683f3cb89393ad1f5983a",
+        "size": 120,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/b64.js",
+        "sha256": "a9bb8140f450b4d111e155df39698f0644c5ca447654f29c73967b97ffabdd14",
+        "size": 379,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/b64.js.map",
+        "sha256": "c35748fd264cedc5c9b5cc121062c3a393b37f85053efc843e307f06a47cdf71",
+        "size": 460,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/env.d.ts",
+        "sha256": "a4376bb24311b85a2287d2f273abd50f2583625047c65b167b12ae84211d124c",
+        "size": 154,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/env.js",
+        "sha256": "44f21bf7643bd3570b66ef90341b6f7c844feb4479f49996735c4838596578dd",
+        "size": 1033,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/env.js.map",
+        "sha256": "9097f06842e0cd431384660f7f045816fb958ee70b4898cb387063413566294d",
+        "size": 723,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/err.d.ts",
+        "sha256": "528ac1f1cefd60cda0f97fea10a8487cbc24da0581188cff6f447c4ac16ea57a",
+        "size": 215,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/err.js",
+        "sha256": "923234b39038195f7ac04b32b6551b3472095c762c7437afff81b06343e8da34",
+        "size": 668,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/err.js.map",
+        "sha256": "769b87cb20365137040e5dadd8614bfafa0d65d7d775d8f0c74317935ac13272",
+        "size": 470,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/fetch-deno.d.ts",
+        "sha256": "ee2cb3048c141784fe9d6429705da9e858ad8ecde9c93e56c2f8a28b7e516267",
+        "size": 386,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/fetch-deno.js",
+        "sha256": "a6c41b3e8e637be9529006f4899985ca5c1996203be7d14edf80c16d6d698a4e",
+        "size": 2053,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/fetch-deno.js.map",
+        "sha256": "9467d584d63b0c7eb56a6d94cd8456fbfc7d297532dcea122727e755ba43735f",
+        "size": 1154,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/fetch-native.d.ts",
+        "sha256": "53d851446d2eeb8df6aab205d71244891b1dbc04335bdcab758358ee541ad93e",
+        "size": 98,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/fetch-native.js",
+        "sha256": "4fce9fb0c87f9a6f6cdb2f5fc99fbd0ab846a4a04c12c500d4a9b936ee850466",
+        "size": 115,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/fetch-native.js.map",
+        "sha256": "3a9c4202bd09b9eeecf7aed8eee7c3585b6ee29c94e4ad3bc51bea2bf47bf68d",
+        "size": 175,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/fetch-node.d.ts",
+        "sha256": "be9dd16e2d31e986b02f11c9134031b8fd99a3eb6524162b91fc3d29e8e567fd",
+        "size": 1140,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/fetch-node.js",
+        "sha256": "963ecb0bef18688461d5440e6ce2010c404fa2e6301f60946b5509d21b641450",
+        "size": 3877,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/fetch-node.js.map",
+        "sha256": "b677c522a14841311cc5122f016b2e4081dd69ae53ae74b1d087e69f00460d9e",
+        "size": 2253,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/fetch-vscode.d.ts",
+        "sha256": "a5145d0dc99993df1d858e5cdaeec062d288011e2ce99eae04f1dae765a7090f",
+        "size": 440,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/fetch-vscode.js",
+        "sha256": "36e58f620db8dfec91479eb304c85085f5bfa6a814e4caa6f0f78d121e630555",
+        "size": 2333,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/fetch-vscode.js.map",
+        "sha256": "fbf0e8dd1575ecd50797f1dd1c37f88485b65bb173ebd94fdceac1b15ba030d8",
+        "size": 1427,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/fetch.d.ts",
+        "sha256": "6ea4e9dfb5df4af438cb4f45cbf08494f48071314957c10388d97133794d0e02",
+        "size": 939,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/fetch.js",
+        "sha256": "c7b4409f251e3e7cd7236497bc915450da7aa903bc6a0980220f1cafcbd90f92",
+        "size": 493,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/fetch.js.map",
+        "sha256": "efc3912f3aaa40e37b01a164fd73c25961a67251115903283fa80df071cfb220",
+        "size": 484,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/integrity.d.ts",
+        "sha256": "dd099a6c1158f1f2c982100bbcf27ae956c132dfa2e72350fb8be2dc4d3897c7",
+        "size": 195,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/integrity.js",
+        "sha256": "8dd5a8b389cab2a14d148413ecede67fca917ac0d75b8cc1e6d10a35ab54f2c3",
+        "size": 738,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/integrity.js.map",
+        "sha256": "f39df63f240f9727d094d2e635cf65b973d2d8e6117df6226e39aa78cc0df6b0",
+        "size": 897,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/json.d.ts",
+        "sha256": "a345441772c218f9fc4e967fb38ccb1b9eda8912e01c1efa62af1b6125f2cc35",
+        "size": 245,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/json.js",
+        "sha256": "39a96b6c49d19fe24626a75d4c325664a71c529725a32a01019ac931b4d1f592",
+        "size": 856,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/json.js.map",
+        "sha256": "8e1f957e151b44f88918a1580a20e1c6e0346cdca41dd52edbdd11ef60f9a912",
+        "size": 979,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/log.d.ts",
+        "sha256": "758002e20a92c4e6c885fe822a7b9048c1445ffbab0deb2d61e3dcc72544edf2",
+        "size": 250,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/log.js",
+        "sha256": "2d4d703a2e68e18952a1629a758b923c0adb81bc6568fa8c5de2b718fecd47d0",
+        "size": 1526,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/log.js.map",
+        "sha256": "5eea5835435b28d16091c12ee8f0c6112440c4d4f8fed5e8b709d7e35a16761d",
+        "size": 1184,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/package.d.ts",
+        "sha256": "fd34649a8144ba2ae10d6676f34e3bd0ecacefb325f929b78299f85488570d62",
+        "size": 1158,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/package.js",
+        "sha256": "bc2a9d780b76d9c86f811e1bdef07bcbe9993121186a3a66bcc0faf99953f408",
+        "size": 6706,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/package.js.map",
+        "sha256": "c3a7316b8de51b1ea9737a402d92e358873463a04fddcec0bb1b4c2b81e6c7bc",
+        "size": 4639,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/package.test.js",
+        "sha256": "87727027d5aeef4f4bb9445bd95c04c9b0ba8099d711f79522d81903463dac2d",
+        "size": 5141,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/package.test.js.map",
+        "sha256": "b063f57c6b72089c4f1125a44b9148030f12ea87167302acf1d104568fc1d002",
+        "size": 2594,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/pool.d.ts",
+        "sha256": "e5640072148d513c4ea602b631cf070af8cd71d5679067e1f4bbca4e7ef122a3",
+        "size": 158,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/pool.js",
+        "sha256": "c32cbce2d101e338013973ac188528e55070087e5a2f084bfda2b732a29b97df",
+        "size": 3557,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/pool.js.map",
+        "sha256": "3fb437f33fa2fd8f73569713cbf85d9b6281b278d6b81fd378096cb4508d2ecf",
+        "size": 560,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/source-style.d.ts",
+        "sha256": "5cf16cc5de334acbdc4bb8ea899fb4bdb7ce8f8a8ec555fc87277d2a76c64e67",
+        "size": 527,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/source-style.js",
+        "sha256": "d42e66bb4480c479c884307cfc5331cc13da91aa58ed4ab87aaad0b6e5040ac0",
+        "size": 2890,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/source-style.js.map",
+        "sha256": "f46ba6d66182d09de4a2993cf4ff0c0f6eee0aa45f3b003f673a392e321b9ce0",
+        "size": 2731,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/str.d.ts",
+        "sha256": "8fdc597e506c1288106db73809ab816d97678bd36cf986f98d799456c610039a",
+        "size": 295,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/str.js",
+        "sha256": "52bb20108f77fef2b156f192688dac45437b9825bb7ab0d1997ecf579e62afad",
+        "size": 2460,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/str.js.map",
+        "sha256": "3ac078ca1bd3044b1a720268b16f5561a8aa86575e3185317e4f6fa6baec8787",
+        "size": 1966,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/url.d.ts",
+        "sha256": "b92125c84e230c78bd22b824697a130389c9313a5971c22fef71193e5e3655dc",
+        "size": 658,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/url.js",
+        "sha256": "834e2e654812b8d823c1b68906a8e9e9202bc489badce71d0aa964c46dce0dae",
+        "size": 2658,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/url.js.map",
+        "sha256": "0baa007f05d9ea343d3cc937720d6bb84d6e2b3b9e1b5b88956c51212933f3f0",
+        "size": 2995,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/wrapper.d.ts",
+        "sha256": "92b7e416a6d424ed8508fa54fa776fb5b40c67fa765ece0e7b373ede0c04f7fe",
+        "size": 90,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/wrapper.js",
+        "sha256": "743faf8b27b07dcb65c8ad573b712ad26f50b1ca4ab4dbf5065b71f2351af400",
+        "size": 606,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/wrapper.js.map",
+        "sha256": "88a42221b58681fcfe91fea17d52651ccb2bf59e61aa29a0accac493406bb96d",
+        "size": 637,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/declarations.d.js",
+        "sha256": "4c94076f5efbd41449b104483467c703e65b1d3ea3555a724947baca8d846c0d",
+        "size": 44,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/declarations.d.js.map",
+        "sha256": "ad932b53400cb0e8aab64d0c2751bbae2b8dce171dd3de706bbeb99d5c2c9c26",
+        "size": 78,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/generator-deno.d.ts",
+        "sha256": "3fed44b9a1df75ea8da543d226aa72ebe44f13e22eb06c48b54df7b3fa86935f",
+        "size": 32,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/generator-deno.js",
+        "sha256": "a2e44459e508f8678074fd0e6808c644c5ef84125cd4d38b571b88058bf2881c",
+        "size": 619,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/generator-deno.js.map",
+        "sha256": "7f0c211ddf234d15c8cc8d7ecbbb67303db52bdf8e3736e897c04e45c88ac20a",
+        "size": 540,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/generator.d.ts",
+        "sha256": "30460807a7671f14ea21c7e17effff384b4d8ea592292aa9e3314385cc2f1ca0",
+        "size": 47034,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/generator.js",
+        "sha256": "6d6a472d2cb5ecb40939aafaf5fc2b5ac210366f286c8f66c864242889a6cad5",
+        "size": 63132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/generator.js.map",
+        "sha256": "da7256ca01b1971a10a784a2b7a43403dee1e71069d169b283fb7eb337a41b68",
+        "size": 39427,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/generator.test.js",
+        "sha256": "1c6ac862666f2c56d375deaa59235025ecc3d1b3982b09d132c93b90aaa3ac46",
+        "size": 603,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/generator.test.js.map",
+        "sha256": "bcd8292ac8c9b00d7342aa9222200a99e4a81e0bd29c1c7d7730db4040b826a1",
+        "size": 681,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/html/analyze.d.ts",
+        "sha256": "c04739e5d134af24e4f22c11dad16c218227be3a60a657242bcfaa3ee1c8810f",
+        "size": 871,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/html/analyze.js",
+        "sha256": "9c662b4fa53259867193be4151d07425c73f714e20f3117751d22161e2e4ae74",
+        "size": 9321,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/html/analyze.js.map",
+        "sha256": "d7c70a5d86a74497770a00281f56e3f094fac3b64eca6798c4822ee425e54b0c",
+        "size": 6713,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/html/lexer.d.ts",
+        "sha256": "7e7d16369fa9d3ab1ca36b05af9a8f1a2dfda14cdb6faf4750b6e2e86a59470b",
+        "size": 433,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/html/lexer.js",
+        "sha256": "5eeb520d6af93cd8e5bffbb5271c074a6b98c7c16f2879077a5dcd01b6acae78",
+        "size": 5596,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/html/lexer.js.map",
+        "sha256": "ec7e3be72f269920481f762261ba35d9af144013dd4699155daa123136b6bff2",
+        "size": 4188,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/install/installer.d.ts",
+        "sha256": "a1a44cc178d7014e8faf1549419aaa404d3cbddd71f9374414ba3ebc0b5b9cb9",
+        "size": 5068,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/install/installer.js",
+        "sha256": "7880ea99705c2c6099c297831979aaa23a7902ec2171f118e0520cc2826ee7d7",
+        "size": 28183,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/install/installer.js.map",
+        "sha256": "779ca3611fd9e026e6b5e19999f330c0bf04b24c536319789de3a6ca95f97e0b",
+        "size": 18874,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/install/lock.d.ts",
+        "sha256": "f0760d9803d302327e319383e1108496d6706471204fe45022889f85c51175dd",
+        "size": 2838,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/install/lock.js",
+        "sha256": "b08e7d6d270ffe48158edaf5d8deea6b513233667a6d361de45d54003c30b7b2",
+        "size": 19534,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/install/lock.js.map",
+        "sha256": "89b8721b0fa9b1c2805900a6603657a22c15dce7dc51ce95f3e4a6ca6ecb9f0a",
+        "size": 14618,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/install/lock.test.js",
+        "sha256": "943344331f8c3dfd9896c3055443341c9d29f6a123ab25d886286309c0b33a85",
+        "size": 1525,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/install/lock.test.js.map",
+        "sha256": "94ed72456394c704582366507fe7049b5ac839ad375db3f2b7858b3c70bf5671",
+        "size": 1245,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/install/package.d.ts",
+        "sha256": "8a199d746ff04103a5faa3e943b75bb1f28a2097853b433fb4d720060371e23f",
+        "size": 3598,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/install/package.js",
+        "sha256": "83c44aeb95a5443e28afb98602cbfc74567135f494e95599d436bc1e7ebc45be",
+        "size": 8605,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/install/package.js.map",
+        "sha256": "2f1685a4ee36c93fb9f446426427f4a63a90a59c3a96e70f954ae420c9c03301",
+        "size": 6276,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/install/package.test.js",
+        "sha256": "4a0bb52b3a54be921a0d032e0de267d38b33bb443f188b8d55bc190992f29981",
+        "size": 1301,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/install/package.test.js.map",
+        "sha256": "969ff1c20920844ebd74c4635cee187572246d15763d3d4926980cea3e8d7f71",
+        "size": 999,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/install/pjson.d.ts",
+        "sha256": "8620c15ebe6cec7e19b8c4321d20d39f620c5d95acf438a7ce4d365b90385ba6",
+        "size": 904,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/install/pjson.js",
+        "sha256": "89bdb59f4ebad9cf2c145395f539d18dd9ba373ad1e20976b458dc012d357754",
+        "size": 710,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/install/pjson.js.map",
+        "sha256": "31d98ffc8c5d3443cb6bc60603ab03f71246201b0388657e66ef1051f7ee4e6c",
+        "size": 804,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/deno.d.ts",
+        "sha256": "a4fd4bbe0b1ecde181fc604673fe30ff8a38840cef86d61266bdf11c560841e1",
+        "size": 839,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/deno.js",
+        "sha256": "07fb44f4e2bf5b0bca1bf0ec69faabc1a76811175056cda6695666f4b24dbf70",
+        "size": 8563,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/deno.js.map",
+        "sha256": "36e0807582ba0f4d87e62b9dbb8f27a07a01cb0094b411a52721e0dfbd9b93dc",
+        "size": 5075,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/esmsh.d.ts",
+        "sha256": "4ff94329e466b8bc4e97d70db98986eff9c47c2037cedbbd829000a0ceb7b571",
+        "size": 597,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/esmsh.js",
+        "sha256": "fc4289af44ba1a4cdaa2d97f16d15dddc3548bb320981ea0158d701fa020cf0e",
+        "size": 2076,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/esmsh.js.map",
+        "sha256": "021e5ee2af048c9ea69846c1d5c429853e667745d31dc85c060af1903a78bd6f",
+        "size": 1967,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/index.d.ts",
+        "sha256": "3a340b00187334fd853741bcbf2b2bf6a233d1cec29876a15f7f2e10be4dce30",
+        "size": 7553,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/index.js",
+        "sha256": "04f1353d00c66c2b70c7d0f57cb656bf1349325fb0055f7934b681c2d07ca276",
+        "size": 14394,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/index.js.map",
+        "sha256": "8cca762badd36d05c208b08714f6e4582b0670823f69696165abdabb69c2c1b9",
+        "size": 7612,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/index.test.js",
+        "sha256": "c812588ee24682170aa8ae824735f88392687dfbbd1a9fdb54cbea234e0e097d",
+        "size": 298,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/index.test.js.map",
+        "sha256": "50862e8526e8479f873b3efcf2cfd0065eea3a1d961ce7cbab5e41ffeca31f16",
+        "size": 355,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/jsdelivr.d.ts",
+        "sha256": "999e9788611401d176a18b7776047813c1fb0ea5bbd7ad79551a96accfc51728",
+        "size": 470,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/jsdelivr.js",
+        "sha256": "1c8f75ac0b12f049cc5e79c308f08b93177d1e29527e39ab2ed491a55302a17d",
+        "size": 1267,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/jsdelivr.js.map",
+        "sha256": "59b9de961b1ee17db424b3f493ce3aab4a8aa3f17e3bf4de14fe8a749eb3314f",
+        "size": 1360,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/jspm.d.ts",
+        "sha256": "24eef3b72a43c64477065a1c4fb003cac52110fdbb04a1086a27506350f5dada",
+        "size": 1958,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/jspm.js",
+        "sha256": "4e330a84485f31d381b4d2c4a2b584cf33cebfda6d0ffa4541aabb6478f8b194",
+        "size": 25030,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/jspm.js.map",
+        "sha256": "1f4603b6cbab843538c90800b523a799d9687c27d2dd398e136e3b10ececfdfb",
+        "size": 18521,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/node.d.ts",
+        "sha256": "56fb66cebf63262d9f7157f6622b8c31c6e5c4064467529a492689c46201d503",
+        "size": 794,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/node.js",
+        "sha256": "9533421bbb4960314793c7347116e81af357192939e585a5f1097971c502f5a6",
+        "size": 3139,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/node.js.map",
+        "sha256": "1b563d6f07dfa6e1e5db182cce4a4a02223676efcf78191048595ca386a76e98",
+        "size": 2127,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/nodemodules.d.ts",
+        "sha256": "75db0985b9712082bcb117cc3346d365165363c0e054869980fae9570d8f24dc",
+        "size": 128,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/nodemodules.js",
+        "sha256": "5de2b4c739b9aeeccba8586af41d8bbbd3b843214e63e8d68b64748c5ce4a58b",
+        "size": 6959,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/nodemodules.js.map",
+        "sha256": "820f9ed7b9e804f5881b44b6cd5b23df03a85abb6f939de61d30f9222e8af013",
+        "size": 5273,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/nodemodules.test.js",
+        "sha256": "2434416309d4b1f8dd4eade829c64a0564933492941242623da75044fca87948",
+        "size": 2074,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/nodemodules.test.js.map",
+        "sha256": "5fd95030fdf738369881ffc401f83a8017d429cc3c69c63bb6fc29cb876a87c3",
+        "size": 1570,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/skypack.d.ts",
+        "sha256": "41814c1c25ef7c67a83bee521bcd1454d5ccfe19cb5ac39649dacad2cfe64860",
+        "size": 465,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/skypack.js",
+        "sha256": "d1febfe5fe1631b8d355a99b1ddcfd866a52f5a7474bdf41c41977ce9d4f7e38",
+        "size": 1271,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/skypack.js.map",
+        "sha256": "3df3739ac1843846d65fdb3ec637813877c65861253a595f950653135011eab4",
+        "size": 1364,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/unpkg.d.ts",
+        "sha256": "de2ad3329abdef09ca1f4ee2be8862a074482dd9a9c3ef0758b38dfa4b2cc9f9",
+        "size": 475,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/unpkg.js",
+        "sha256": "ee7944bca3b36c9809ced1541a00528e3467e6a515a79ca0d202909c0d9fe640",
+        "size": 1267,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/providers/unpkg.js.map",
+        "sha256": "0624de4a2538de10372fb29723c1a2f668b7c04e8aff71ef8bfd204f6263a149",
+        "size": 1345,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/trace/analysis.d.ts",
+        "sha256": "25598036a6dc6fdcd5351564eeabcbe96f97fc1ebca226ae42b67c217722c44c",
+        "size": 877,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/trace/analysis.js",
+        "sha256": "aaa113152f99f7af33ef62a4acdb69e860cb9c313d2ac8601b424d9abc27dfe0",
+        "size": 3007,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/trace/analysis.js.map",
+        "sha256": "0595b3bc34d7ad1c4f9c9ba161de748bb3cf3aa820debd4e9a6f4b7f75dfab52",
+        "size": 2543,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/trace/cjs.d.ts",
+        "sha256": "58b745559fedf18c9d234a33c9205d7161fb568ac344bac1a09a9399a292511a",
+        "size": 265,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/trace/cjs.js",
+        "sha256": "1345c06dc70b7cdee386142bb37e5b5852634d6e6c99bfa00664cca0c7c887d1",
+        "size": 5720,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/trace/cjs.js.map",
+        "sha256": "201f2340b308890cad2565c6723d05a12d868ea5c73c9c477e943e924821c70d",
+        "size": 4183,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/trace/resolver.d.ts",
+        "sha256": "1fab88ec6b28146ee968f3189b859ae6cd6f188b1a584db049288e8cfe638df2",
+        "size": 3590,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/trace/resolver.js",
+        "sha256": "8fc1f0214c52b59ea5a349cf9551a354b0c095f1b3faaca6bec4b931780348a4",
+        "size": 32806,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/trace/resolver.js.map",
+        "sha256": "0bb14b953cc23fb07f3136594f0b40c42257fe4323050ef4b1fdec5a148f24f3",
+        "size": 24806,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/trace/tracemap.d.ts",
+        "sha256": "97cba1a842eac287a6f760a0bc1f95494299c70ea6593b8644f30b0a3300b05c",
+        "size": 6027,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/trace/tracemap.js",
+        "sha256": "c2e87a947c115c52161079b376131b766f2198a8bcf3a667e5f8951f898eccfa",
+        "size": 36313,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/trace/tracemap.js.map",
+        "sha256": "4e3bad6698d4408f9fdc83361e643e6e5caeba03fae0bcd1d327df5976c05d49",
+        "size": 25359,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/trace/ts.d.ts",
+        "sha256": "306148cc3e404a78d0e37292747520a1b586200e0a8d6cb6522000541a73029f",
+        "size": 241,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/trace/ts.js",
+        "sha256": "3f742359fb5050a1cf4610f5f7dfe190f2d7b475aef3a29e2eff1834598e5dad",
+        "size": 5371,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/trace/ts.js.map",
+        "sha256": "5b1cd672947ff61d09648ae04c14d1b299a099b6538d180e9bb8e75d38e45918",
+        "size": 4069,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/version.js",
+        "sha256": "45e35e1bbcef8236d83a83f42f2dbc46769336af3ecc751883fdea30e76ec6bc",
+        "size": 23,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "6357da3e2bddae971d4bc80713fe067f7d05d8b4c6d34d28bdc4c98e79031d3e",
+        "size": 1884,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 11357,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/58/58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd",
+          "sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd",
+        "size": 11357
+      },
+      {
+        "blob": {
+          "bytes": 1609,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/30/30ffe356c94f4c67bbe1c7aceacf60e32af3dd81fbdd3523ddf12fc887aaf5d6",
+          "sha256": "30ffe356c94f4c67bbe1c7aceacf60e32af3dd81fbdd3523ddf12fc887aaf5d6"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "30ffe356c94f4c67bbe1c7aceacf60e32af3dd81fbdd3523ddf12fc887aaf5d6",
+        "size": 1609
+      }
+    ],
+    "expandedBytes": 957755,
+    "packageIdentity": {
+      "author": "Guy Bedford",
+      "homepage": "https://github.com/jspm/jspm/tree/main/generator#readme",
+      "license": "Apache-2.0",
+      "name": "@jspm/generator",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jspm/jspm.git"
+      },
+      "version": "2.17.0"
+    },
+    "packageMetadata": {
+      "author": "Guy Bedford",
+      "bugs": {
+        "url": "https://github.com/jspm/jspm/issues"
+      },
+      "dependencies": {
+        "@babel/core": "^7.24.7",
+        "@babel/plugin-syntax-import-attributes": "^7.24.7",
+        "@babel/preset-typescript": "^7.24.7",
+        "@jspm/fetch": "^0.1.0",
+        "@jspm/import-map": "^1.5.0",
+        "es-module-lexer": "^3.0.1",
+        "minimatch": "^10.0.1",
+        "pako": "^2.1.0",
+        "sver": "^2.0.1",
+        "tar-stream": "^3.1.6"
+      },
+      "description": "Package Import Map Generation Tool",
+      "devDependencies": {
+        "@jspm/core": "^2.0.1",
+        "@swc/cli": "^0.8.1",
+        "@swc/core": "^1.11.18",
+        "@types/node": "^22.14.0",
+        "@types/vscode": "^1.75.1",
+        "@vscode/test-electron": "^2.2.3",
+        "chalk": "^5.6.2",
+        "cross-env": "^10.1.0",
+        "kleur": "^4.1.5",
+        "lit-element": "^4.2.2",
+        "mocha": "^11.7.1",
+        "open": "^11.0.0",
+        "prettier": "^3.8.3",
+        "rollup": "^4.60.4",
+        "typescript": "^5.5.4"
+      },
+      "exports": {
+        ".": {
+          "default": "./dist/generator.js",
+          "deno": "./dist/generator-deno.js",
+          "source": {
+            "default": "./lib/generator.js",
+            "deno": "./lib/generator-deno.js"
+          },
+          "types": "./lib/generator.d.ts"
+        },
+        "./*.js": {
+          "source": "./lib/*.js"
+        }
+      },
+      "files": [
+        "dist",
+        "lib"
+      ],
+      "homepage": "https://github.com/jspm/jspm/tree/main/generator#readme",
+      "imports": {
+        "#test/*": {
+          "source": "./test/*.js"
+        }
+      },
+      "keywords": [
+        "jspm",
+        "import maps",
+        "es modules",
+        "cdn",
+        "package manager"
+      ],
+      "license": "Apache-2.0",
+      "name": "@jspm/generator",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jspm/jspm.git"
+      },
+      "scripts": {
+        "build": "chomp build",
+        "prepublishOnly": "chomp build",
+        "test": "chomp test"
+      },
+      "type": "module",
+      "types": "lib/generator.d.ts",
+      "version": "2.17.0"
+    },
+    "physicalEntryCount": 141,
+    "tarball": {
+      "bytes": 236951,
+      "sha256": "4c935458185f122f3a403ac90d4c08152334ae123a2c98fa82dcda89c0236536"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

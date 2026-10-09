@@ -17,6 +17,7 @@ export const CI_JOB_NAMES = Object.freeze({
   metadata: "CI / metadata",
   source_node_22: "CI / Ubuntu / Node 22.23.3",
   source_node_24: "CI / Ubuntu / Node 24.21.0",
+  source_node_26: "CI / Ubuntu / Node 26.11.1",
   quality_windows: "CI / Windows / quality tools",
   dependency_review: "CI / dependency review",
   candidate: "CI / retained candidate",
@@ -24,6 +25,9 @@ export const CI_JOB_NAMES = Object.freeze({
   portability_windows_node_24: "CI / Windows / Node 24.21.0",
   portability_macos_node_22: "CI / macOS / Node 22.23.3",
   portability_macos_node_24: "CI / macOS / Node 24.21.0",
+  portability_ubuntu_node_26: "CI / Ubuntu / retained package / Node 26.11.1",
+  portability_windows_node_26: "CI / Windows / Node 26.11.1",
+  portability_macos_node_26: "CI / macOS / Node 26.11.1",
   browser_chromium: "CI / browser / Chromium",
   browser_firefox: "CI / browser / Firefox",
   browser_webkit: "CI / browser / WebKit",
@@ -39,7 +43,7 @@ export const CHECK_JOBS = Object.freeze({
  * this policy cannot authorize an omitted integration.
  */
 export const QUALIFICATION_POLICY = Object.freeze({
-  version: 4,
+  version: 5,
   mode: "FULL_ONLY",
   selectiveExecution: false,
   javaReferenceReuse: JAVA_REFERENCE_POLICY.enabled,
@@ -112,7 +116,7 @@ export const createQualificationChecks = ({
   return result;
 };
 
-/** Strict v4 FULL/reused envelope. Unsupported versions/modes require fresh CI. */
+/** Strict v5 FULL/reused envelope. Unsupported versions/modes require fresh CI. */
 export const assertQualificationRecord = (record) => {
   fact(
     closed(record, [
@@ -138,7 +142,7 @@ export const assertQualificationRecord = (record) => {
     "Qualification record has an invalid closed schema.",
   );
   fact(
-    record.schemaVersion === 4 &&
+    record.schemaVersion === 5 &&
       ["PR", "MAIN"].includes(record.role) &&
       ["FULL", "REUSED"].includes(record.mode) &&
       record.sourceMode === "FULL" &&

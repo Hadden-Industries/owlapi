@@ -1,0 +1,89 @@
+{
+  "artifactId": "f6a7c8c9834c593a0ae2c208953bf65b7c8500fd47560b5edee8711988c4f53f",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 14074,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "ab868ad5a2ef5068560d9cd3b2180ec63c140bb4c5cae1ba779d300a0ac74fa3",
+        "size": 1274,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "be77466544e7060ad859664e779d84db4440f6dcca28da0975d0bcd97000c9fa",
+        "size": 12687,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "ede1cc404a492fa348eb9d97a3007a0d72aa717bd22cd86a56bd0824c19729ca",
+        "size": 35882,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "dbe99941ed2092d43257294405cfb389a476ef54a029488b51125e6f3a777fde",
+        "size": 601,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1274,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ab/ab868ad5a2ef5068560d9cd3b2180ec63c140bb4c5cae1ba779d300a0ac74fa3",
+          "sha256": "ab868ad5a2ef5068560d9cd3b2180ec63c140bb4c5cae1ba779d300a0ac74fa3"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "ab868ad5a2ef5068560d9cd3b2180ec63c140bb4c5cae1ba779d300a0ac74fa3",
+        "size": 1274
+      }
+    ],
+    "expandedBytes": 50444,
+    "packageIdentity": {
+      "author": "Kornel Lesiński <kornel@geekhood.net> (https://kornel.ski/)",
+      "homepage": null,
+      "license": "BSD-2-Clause",
+      "name": "http-cache-semantics",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kornelski/http-cache-semantics.git"
+      },
+      "version": "4.3.0"
+    },
+    "packageMetadata": {
+      "author": "Kornel Lesiński <kornel@geekhood.net> (https://kornel.ski/)",
+      "description": "Parses Cache-Control and other headers. Helps building correct HTTP caches and proxies",
+      "devDependencies": {
+        "mocha": "^12.0"
+      },
+      "files": [
+        "index.js"
+      ],
+      "license": "BSD-2-Clause",
+      "main": "index.js",
+      "name": "http-cache-semantics",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kornelski/http-cache-semantics.git"
+      },
+      "scripts": {
+        "test": "mocha"
+      },
+      "types": "index.js",
+      "version": "4.3.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 14074,
+      "sha256": "d75e1e6a11587954da5e2f0e2b5c4b397a16d28cc2f7bdf64e9027fc2fe593ee"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}
