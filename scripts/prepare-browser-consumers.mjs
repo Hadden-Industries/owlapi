@@ -219,7 +219,7 @@ try {
     writeFileSync(REVIEWED_MAP_PATH, generatedMapText, "utf8");
   } else if (
     !existsSync(REVIEWED_MAP_PATH) ||
-    readFileSync(REVIEWED_MAP_PATH, "utf8") !== generatedMapText
+    stableJson(readJson(REVIEWED_MAP_PATH)) !== generatedMapText
   ) {
     throw new Error(
       "Generated reference import map differs from the committed reviewed map",
