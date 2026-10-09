@@ -1,6 +1,6 @@
 # Profile performance and default-behavior repair: OwlAPI
 
-**Status:** Deferred draft HISEW implementation plan, split on 5 October 2026.
+**Status:** Owner-selected repair implemented on 9 October 2026; split plan retained from 5 October.
 **Decision owner:** Maksym Shostak.
 **Scope:** Part 2, owned and retained in the OwlAPI repository.
 **Companion:** [Independent WebVOWL ontology-loading repair](https://github.com/Hadden-Industries/webvowl/blob/main/docs/plans/2026-10-05-ontology-loading-regression-repair-plan.md).
@@ -10,6 +10,14 @@ The owner requested postponing library fixes while WebVOWL restores successful l
 This plan preserves the deferred library work from the combined regression proposal and the subsequent default-behavior audit.
 It is related to the [rc.2 Java-parity programme](0.1.0-rc.2-java-parity.md), but does not automatically add scope to that release or select a version for this repair.
 Planning authority does not authorize implementation, public-contract/configuration changes, execution adoption, review delegation, commits or release.
+
+Implementation was authorized on 9 October 2026 from synchronized local `main` at `4859f2ef8ff32f92c9c81e3632641d481a5e5e8f`.
+The R2 execution covers scheduling, the [default-policy inventory and proposal](../compatibility/default-behavior-inventory.md), and producer qualification.
+The owner approved the profile-only `timeoutMs: null` default: omission and explicit null disable its elapsed deadline, while explicit nonnegative safe integers, including zero, retain their meaning.
+All other profile limits and loader defaults remain unchanged.
+The scheduler-capable prototype failed timer-based cancellation in Chromium windows and workers, so the selected elapsed-work implementation uses a timer turn after approximately 50 ms of work.
+This is a scheduling choice, not a change to explicit resource limits or ontology meaning.
+Current UO bytes and the executable Java pin differ from the historical observations below; qualification records their actual identities separately.
 
 ## Purpose, route and responsibility
 

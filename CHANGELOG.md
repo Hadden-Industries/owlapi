@@ -8,6 +8,11 @@ Prerelease identifiers do not create a stability promise.
 
 ## Unreleased
 
+- Yield profile assessment after elapsed work rather than every 256 checkpoints, reducing timer overhead while admitting queued cancellation.
+- Default profile `timeoutMs` to `null`; omission and explicit null disable only its elapsed deadline.
+  Pass `30000` to retain the previous cutoff.
+  Explicit numeric deadlines, other profile bounds and loader defaults remain enforced.
+
 - Add immutable `OWLOntologyWriterConfiguration` from `owlapi/model` and manager get/set accessors; each save captures its own settings.
 - Render readable RDF/XML defaults with typed nodes, useful prefixes, four-space indentation, banners, safe nesting and pure resource collections; preserve graph identity and atomic storage failures.
 - Pin qualification to npm 12.2.0 and Java OWLAPI upstream revision `b61ebe2da83daceebb3e7ba7afbd2582c9240c33`; disable shared Java bundles tied to the earlier source-notice catalogue.
