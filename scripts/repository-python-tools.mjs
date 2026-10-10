@@ -276,6 +276,16 @@ export async function synchronizePythonTools({
   checkPythonTools({ root });
 }
 
+/** Resolve the native catalogue key for Windows or the glibc Linux CI runners. */
+export function workflowPythonRequest(version, platform = process.platform) {
+  if (!["win32", "linux"].includes(platform))
+    throw new Error(
+      "Pinned Python setup is qualified for Windows/Linux x64 only.",
+    );
+  // uv distinguishes Linux libc builds; `none` exists only for Windows here.
+  return `cpython-${version}-${platform === "win32" ? "windows-x86_64-none" : "linux-x86_64-gnu"}`;
+}
+
 /** Explicit CI bootstrap installs pinned CPython locally, without PATH or registry registration. */
 export async function prepareWorkflowPython({ root = repositoryRoot } = {}) {
   if (!["win32", "linux"].includes(process.platform) || process.arch !== "x64")
@@ -287,7 +297,7 @@ export async function prepareWorkflowPython({ root = repositoryRoot } = {}) {
     join(tools.root, ".python-version"),
     "utf8",
   ).trim();
-  const request = `cpython-${version}-${process.platform === "win32" ? "windows" : "linux"}-x86_64-none`;
+  const request = workflowPythonRequest(version);
   const options = {
     ...tools,
     env: {

@@ -23,12 +23,12 @@
     "tarballDependenciesBundled": false
   },
   "review": {
-    "status": "REVIEWED",
-    "factsSha256": "3f21e02b61b524bcd8a870848ad23aa3b0685410bd4648f097f57f6f46d05d9c",
-    "reviewer": "Maksym Shostak",
-    "reviewedOn": "2026-10-10",
-    "capacity": "Project maintainer and accountable dependency decision owner",
-    "conclusion": "Approved this exact updated development dependency/rights record by direct human instruction in Codex session 01a12138-f264-7b50-9365-91c88701e54b. Includes Ruff 0.17.0, uv 0.13.0, source-built ScanCode 32.5.0, the exact scoped Beartype 0.23.0rc2 exception and the locked scanner/build graph with 102 retained upstream notices. Tools remain development-only; Linux qualification and final reviews remain required. No package publication or approval of changed facts is inferred."
+    "status": "PENDING_HUMAN_REVIEW",
+    "factsSha256": "a2cb283528153954018e9e3a802866aa317383d7fb16843ba2e8a19b7c1813b6",
+    "reviewer": null,
+    "reviewedOn": null,
+    "capacity": null,
+    "conclusion": null
   },
   "summary": {
     "componentCount": 710,
@@ -39460,7 +39460,7 @@
         },
         {
           "path": "scripts/repository-python-tools.mjs",
-          "sha256": "f2c74869f15b36b75decc75941ed7214c95ce84ffeae3eb793e6d78a15ff3e21"
+          "sha256": "e946efe324d9241cd9b58181452b3bc880383f34fdb1505d3b80c19ba272a6b8"
         }
       ],
       "treeEvidence": null,
@@ -40226,7 +40226,7 @@
         },
         {
           "path": "scripts/repository-python-tools.mjs",
-          "sha256": "f2c74869f15b36b75decc75941ed7214c95ce84ffeae3eb793e6d78a15ff3e21"
+          "sha256": "e946efe324d9241cd9b58181452b3bc880383f34fdb1505d3b80c19ba272a6b8"
         },
         {
           "path": "LICENSES/development/uv-0.13.0-MIT.txt",
