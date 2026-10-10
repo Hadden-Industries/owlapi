@@ -16,6 +16,7 @@ Current supporting contracts and delivery records:
 - [Profile default-policy inventory](compatibility/default-behavior-inventory.md) and [repair plan](plans/2026-10-05-profile-performance-and-default-behavior-repair-plan.md): scheduling and profile-only deadline migration.
 - [Development dependency and Node 26 plan](plans/development-dependency-upgrade.md): delivered tool floors, exact qualification graph and expanded runtime coverage.
 - [CI qualification plan](plans/2026-10-03-ci-input-aware-qualification.md): delivered FULL lineage/native Java infrastructure and current disabled shared-reuse state.
+- [DRY analysis and remediation plan](plans/dry-principle-remediation.md): source-backed duplication findings and a draft, behavior-preserving HISEW implementation programme.
 
 Authoritative machine-readable records:
 

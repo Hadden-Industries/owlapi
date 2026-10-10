@@ -1,3 +1,5 @@
+import { suiteRevision } from "./conformance/suiteRevision.mjs";
+import { MF, RDF, RDFT } from "./conformance/fixtureTerms.mjs";
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { resolve, sep } from "node:path";
@@ -7,10 +9,8 @@ import { pathToFileURL } from "node:url";
 import { Parser as N3Parser } from "n3";
 import { format as formatWithPrettier } from "prettier";
 
-const REVISION = "12774b0ebb385d17651b396654b19254d0fefbfa";
-const MF = "http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#";
-const RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
-const RDFT = "http://www.w3.org/ns/rdftest#";
+const REVISION = suiteRevision("w3c-rdf-tests", "N-Triples");
+
 const DEFAULT_INPUT_URL = new URL(
   "../.phase12-input/w3c-rdf-tests/rdf/",
   import.meta.url,

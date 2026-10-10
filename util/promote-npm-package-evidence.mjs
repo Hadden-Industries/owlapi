@@ -1,3 +1,4 @@
+import { EVIDENCE_MANIFEST_NAME as MANIFEST_NAME } from "./third-party-evidence/format.mjs";
 import { access, readFile, readdir } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -10,7 +11,6 @@ import { sha256, stableJson } from "./third-party-evidence/digests.mjs";
 import { verifyEvidenceManifest } from "./third-party-evidence/evidence-manifest.mjs";
 
 const DEFAULT_REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
-const MANIFEST_NAME = "npm-package-evidence.json";
 
 const exists = async (path) => {
   try {
@@ -60,10 +60,7 @@ export const promoteEvidenceAggregate = async ({
   });
 
   const provenanceRoot = join(repositoryRoot, "docs", "provenance");
-  const committedManifestPath = join(
-    provenanceRoot,
-    "npm-package-evidence.json",
-  );
+  const committedManifestPath = join(provenanceRoot, MANIFEST_NAME);
   const committedCorpusRoot = join(provenanceRoot, "evidence", "npm");
   const hasCommittedManifest = await exists(committedManifestPath);
   if (hasCommittedManifest) {

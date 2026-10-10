@@ -1,25 +1,26 @@
+import {
+  median,
+  RUN_COUNT,
+  WARMUP_COUNT,
+  SAMPLE_INTERVAL_MS,
+  sampleJsonLdEventLoop as sample,
+} from "./benchmarkSampling.mjs";
+import {
+  phase14Descriptors,
+  phase15Descriptors,
+} from "./benchmarkParserRegistries.mjs";
 import { Buffer } from "node:buffer";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { cpus, release, totalmem } from "node:os";
-import { performance } from "node:perf_hooks";
+
 import process from "node:process";
 
 import { StringDocumentSource } from "../io/index.js";
 import { OWLOntologyManager } from "../model/owlOntologyManager.js";
 import { OWLParserRegistry } from "../internal/parsing/parserRegistry.js";
-import { dlSyntaxParserDescriptor } from "../internal/parsing/dl/descriptor.js";
-import { functionalSyntaxParserDescriptor } from "../internal/parsing/functional/descriptor.js";
-import { jsonLdParserDescriptor } from "../internal/parsing/jsonld/descriptor.js";
+
 import { JsonLdSyntaxAdapter } from "../internal/parsing/jsonld/jsonLdSyntaxAdapter.js";
-import { krss2ParserDescriptor } from "../internal/parsing/krss2/descriptor.js";
-import { manchesterSyntaxParserDescriptor } from "../internal/parsing/manchester/descriptor.js";
-import { nQuadsParserDescriptor } from "../internal/parsing/nquads/descriptor.js";
-import { nTriplesParserDescriptor } from "../internal/parsing/ntriples/descriptor.js";
-import { owlXmlParserDescriptor } from "../internal/parsing/owlxml/descriptor.js";
-import { rdfXmlParserDescriptor } from "../internal/parsing/rdfxml/descriptor.js";
-import { triGParserDescriptor } from "../internal/parsing/trig/descriptor.js";
-import { turtleParserDescriptor } from "../internal/parsing/turtle/descriptor.js";
 
 import {
   assertQuiescentMachine,
@@ -28,9 +29,6 @@ import {
 
 await assertQuiescentMachine();
 
-const RUN_COUNT = 5;
-const SAMPLE_INTERVAL_MS = 5;
-const WARMUP_COUNT = 1;
 const MISMATCH_INPUT_BYTES = Object.freeze([1_048_576, 4_194_304, 16_777_216]);
 // Pin the last accepted value rather than judging release fitness only against
 // a favorable or unfavorable same-process control. The paired Phase 14 result
@@ -78,65 +76,7 @@ const sources = Object.freeze({
     documentIRI: "urn:owlapi-js:benchmark:jsonld:large",
   }),
 });
-const phase14Descriptors = Object.freeze([
-  owlXmlParserDescriptor,
-  rdfXmlParserDescriptor,
-  nQuadsParserDescriptor,
-  nTriplesParserDescriptor,
-  triGParserDescriptor,
-  turtleParserDescriptor,
-  dlSyntaxParserDescriptor,
-  krss2ParserDescriptor,
-  functionalSyntaxParserDescriptor,
-  manchesterSyntaxParserDescriptor,
-]);
-const phase15Descriptors = Object.freeze([
-  owlXmlParserDescriptor,
-  jsonLdParserDescriptor,
-  rdfXmlParserDescriptor,
-  nQuadsParserDescriptor,
-  nTriplesParserDescriptor,
-  triGParserDescriptor,
-  turtleParserDescriptor,
-  dlSyntaxParserDescriptor,
-  krss2ParserDescriptor,
-  functionalSyntaxParserDescriptor,
-  manchesterSyntaxParserDescriptor,
-]);
 
-const median = (values) => {
-  const sorted = [...values].sort((left, right) => left - right);
-  return sorted[Math.floor(sorted.length / 2)];
-};
-const sample = async (operation) => {
-  globalThis.gc?.();
-  const startHeapBytes = process.memoryUsage().heapUsed;
-  let peakHeapBytes = startHeapBytes;
-  let maxEventLoopDelayMs = 0;
-  let expectedSampleAt = performance.now() + SAMPLE_INTERVAL_MS;
-  const sampler = setInterval(() => {
-    const now = performance.now();
-    maxEventLoopDelayMs = Math.max(maxEventLoopDelayMs, now - expectedSampleAt);
-    expectedSampleAt = now + SAMPLE_INTERVAL_MS;
-    peakHeapBytes = Math.max(peakHeapBytes, process.memoryUsage().heapUsed);
-  }, SAMPLE_INTERVAL_MS);
-  const startedAt = performance.now();
-  try {
-    await operation();
-    await new Promise((resolve) => setTimeout(resolve, 0));
-  } finally {
-    clearInterval(sampler);
-  }
-  const endHeapBytes = process.memoryUsage().heapUsed;
-  peakHeapBytes = Math.max(peakHeapBytes, endHeapBytes);
-  return {
-    maxEventLoopDelayMs,
-    peakHeapBytes,
-    peakHeapDeltaBytes: Math.max(0, peakHeapBytes - startHeapBytes),
-    retainedHeapDeltaBytes: endHeapBytes - startHeapBytes,
-    wallMs: performance.now() - startedAt,
-  };
-};
 const syntaxOnly = async () => {
   const { dataset } = await new JsonLdSyntaxAdapter().parse(sources.jsonLd);
   if (dataset.size !== 50_000) {

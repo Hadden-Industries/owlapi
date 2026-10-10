@@ -1,6 +1,14 @@
+import { hasForbiddenIriCharacter, isAbsoluteIri } from "../iriCharacters.js";
 import {
-  isXmlNameStartCodePoint,
-  isXmlNameCodePoint,
+  OWL_NAMESPACE,
+  XML_NAMESPACE,
+  XMLNS_NAMESPACE,
+  XSI_NAMESPACE,
+  RDF_NAMESPACE,
+} from "../../rdfjs/vocabulary.js";
+import {
+  isNcNameStartCodePoint,
+  isNcNameCodePoint,
   isNcName,
 } from "../xml/xmlNames.js";
 import { OWLDocumentFormats } from "../../../formats/owlDocumentFormats.js";
@@ -15,14 +23,9 @@ import { xmlParserAdapter } from "../xml/xmlParserAdapter.js";
 
 import { OWLXML_GRAMMAR } from "./grammar.js";
 
-const OWL_NAMESPACE = "http://www.w3.org/2002/07/owl#";
-const XML_NAMESPACE = "http://www.w3.org/XML/1998/namespace";
-const XMLNS_NAMESPACE = "http://www.w3.org/2000/xmlns/";
-const XSI_NAMESPACE = "http://www.w3.org/2001/XMLSchema-instance";
 const COOPERATIVE_YIELD_INTERVAL_MS = 50;
 const LANGUAGE_TAG = /^[A-Za-z]{1,8}(?:-[A-Za-z0-9]{1,8})*$/u;
-const RDF_PLAIN_LITERAL =
-  "http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral";
+const RDF_PLAIN_LITERAL = RDF_NAMESPACE + "PlainLiteral";
 const IRI_REFERENCE =
   /^(?:([A-Za-z][A-Za-z0-9+.-]*):)?(?:\/\/([^/?#]*))?([^?#]*)(?:\?([^#]*))?(?:#(.*))?$/u;
 const ENTITY_CONSTRUCTORS = Object.freeze({
@@ -47,33 +50,14 @@ let anonymousDocumentSequence = 0;
 
 const monotonicNow = () => globalThis.performance?.now?.() ?? Date.now();
 
-const hasForbiddenIriCharacter = (value) => {
-  for (let offset = 0; offset < value.length;) {
-    const codePoint = value.codePointAt(offset);
-    const character = String.fromCodePoint(codePoint);
-    if (
-      codePoint <= 0x20 ||
-      (codePoint >= 0xd800 && codePoint <= 0xdfff) ||
-      '<>"{}|^`\\'.includes(character)
-    ) {
-      return true;
-    }
-    offset += character.length;
-  }
-  return false;
-};
-
-const isAbsoluteIri = (value) =>
-  /^[A-Za-z][A-Za-z0-9+.-]*:/u.test(value) && !hasForbiddenIriCharacter(value);
-
 const codePoints = (value) =>
   [...value].map((character) => character.codePointAt(0));
 
 const isPnCharsBaseCodePoint = (codePoint) =>
-  codePoint !== 0x5f && isXmlNameStartCodePoint(codePoint);
+  codePoint !== 0x5f && isNcNameStartCodePoint(codePoint);
 
 const isPnCharsCodePoint = (codePoint) =>
-  codePoint !== 0x2e && isXmlNameCodePoint(codePoint);
+  codePoint !== 0x2e && isNcNameCodePoint(codePoint);
 
 const hasValidPnTail = (points) =>
   points.length === 1 ||

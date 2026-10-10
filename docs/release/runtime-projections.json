@@ -1,0 +1,1354 @@
+{
+  "schemaVersion": 1,
+  "workflows": {
+    "ci.yml": [
+      {
+        "path": ["jobs", "verification", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": ["jobs", "verification", "steps", 1, "with", "node-version"],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "verification", "steps", 7, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund\nnode scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}\nnpm ci --ignore-scripts --no-audit --no-fund\n"
+      },
+      {
+        "path": ["jobs", "metadata", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": ["jobs", "metadata", "steps", 1, "with", "node-version"],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "metadata", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "metadata", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "source_node_22", "name"],
+        "template": "CI / Ubuntu / Node {{runtime:node.22}}"
+      },
+      {
+        "path": ["jobs", "source_node_22", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.22}} without package caching"
+      },
+      {
+        "path": ["jobs", "source_node_22", "steps", 1, "with", "node-version"],
+        "template": "{{runtime:node.22}}"
+      },
+      {
+        "path": ["jobs", "source_node_22", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "source_node_22", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.22}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "source_node_26", "name"],
+        "template": "CI / Ubuntu / Node {{runtime:node.26}}"
+      },
+      {
+        "path": ["jobs", "source_node_26", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.26}} without package caching"
+      },
+      {
+        "path": ["jobs", "source_node_26", "steps", 1, "with", "node-version"],
+        "template": "{{runtime:node.26}}"
+      },
+      {
+        "path": ["jobs", "source_node_26", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "source_node_26", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.26}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "source_node_24", "name"],
+        "template": "CI / Ubuntu / Node {{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "source_node_24", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": ["jobs", "source_node_24", "steps", 1, "with", "node-version"],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "source_node_24", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "source_node_24", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "dependency_review", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "dependency_review",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "dependency_review", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "dependency_review", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "candidate", "steps", 1, "name"],
+        "template": "Select authoritative Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": ["jobs", "candidate", "steps", 1, "with", "node-version"],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "candidate", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "candidate", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "portability_windows_node_22", "name"],
+        "template": "CI / Windows / Node {{runtime:node.22}}"
+      },
+      {
+        "path": ["jobs", "portability_windows_node_22", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.22}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "portability_windows_node_22",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.22}}"
+      },
+      {
+        "path": ["jobs", "portability_windows_node_22", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "portability_windows_node_22", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.22}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "portability_windows_node_24", "name"],
+        "template": "CI / Windows / Node {{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "portability_windows_node_24", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "portability_windows_node_24",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "portability_windows_node_24", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "portability_windows_node_24", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "portability_ubuntu_node_26", "name"],
+        "template": "CI / Ubuntu / retained package / Node {{runtime:node.26}}"
+      },
+      {
+        "path": ["jobs", "portability_ubuntu_node_26", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.26}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "portability_ubuntu_node_26",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.26}}"
+      },
+      {
+        "path": ["jobs", "portability_ubuntu_node_26", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "portability_ubuntu_node_26", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.26}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "portability_windows_node_26", "name"],
+        "template": "CI / Windows / Node {{runtime:node.26}}"
+      },
+      {
+        "path": ["jobs", "portability_windows_node_26", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.26}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "portability_windows_node_26",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.26}}"
+      },
+      {
+        "path": ["jobs", "portability_windows_node_26", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "portability_windows_node_26", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.26}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "portability_macos_node_22", "name"],
+        "template": "CI / macOS / Node {{runtime:node.22}}"
+      },
+      {
+        "path": ["jobs", "portability_macos_node_22", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.22}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "portability_macos_node_22",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.22}}"
+      },
+      {
+        "path": ["jobs", "portability_macos_node_22", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "portability_macos_node_22", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.22}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "portability_macos_node_24", "name"],
+        "template": "CI / macOS / Node {{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "portability_macos_node_24", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "portability_macos_node_24",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "portability_macos_node_24", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "portability_macos_node_24", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "portability_macos_node_26", "name"],
+        "template": "CI / macOS / Node {{runtime:node.26}}"
+      },
+      {
+        "path": ["jobs", "portability_macos_node_26", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.26}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "portability_macos_node_26",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.26}}"
+      },
+      {
+        "path": ["jobs", "portability_macos_node_26", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "portability_macos_node_26", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.26}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "browser_chromium", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "browser_chromium",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "browser_chromium", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "browser_chromium", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "browser_firefox", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": ["jobs", "browser_firefox", "steps", 1, "with", "node-version"],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "browser_firefox", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "browser_firefox", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "browser_webkit", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": ["jobs", "browser_webkit", "steps", 1, "with", "node-version"],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "browser_webkit", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "browser_webkit", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "owl_contract", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": ["jobs", "owl_contract", "steps", 1, "with", "node-version"],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "owl_contract", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "owl_contract", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "required", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": ["jobs", "required", "steps", 1, "with", "node-version"],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "quality_windows", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": ["jobs", "quality_windows", "steps", 1, "with", "node-version"],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "quality_windows", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "quality_windows", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      }
+    ],
+    "extended-tests.yml": [
+      {
+        "path": ["jobs", "extended_evidence", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "extended_evidence",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "extended_evidence", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "extended_evidence", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": [
+          "jobs",
+          "third_party_evidence_registry_keys",
+          "steps",
+          1,
+          "name"
+        ],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "third_party_evidence_registry_keys",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": [
+          "jobs",
+          "third_party_evidence_registry_keys",
+          "steps",
+          2,
+          "run"
+        ],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": [
+          "jobs",
+          "third_party_evidence_registry_keys",
+          "steps",
+          3,
+          "run"
+        ],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "third_party_evidence_shard", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "third_party_evidence_shard",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "third_party_evidence_shard", "steps", 3, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "third_party_evidence_shard", "steps", 4, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "third_party_evidence_aggregate", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "third_party_evidence_aggregate",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "third_party_evidence_aggregate", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "third_party_evidence_aggregate", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "third_party_evidence_parity", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "third_party_evidence_parity",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "third_party_evidence_parity", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "third_party_evidence_parity", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      }
+    ],
+    "maintenance.yml": [
+      {
+        "path": ["jobs", "health", "steps", 2, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": ["jobs", "health", "steps", 2, "with", "node-version"],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "health", "steps", 3, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "health", "steps", 4, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "reporter", "steps", 0, "with", "node-version"],
+        "template": "{{runtime:node.24}}"
+      }
+    ],
+    "release-reconciliation.yml": [
+      {
+        "path": ["jobs", "source_verification", "steps", 1, "name"],
+        "template": "Select authoritative Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "source_verification",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "source_verification", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "source_verification", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "accepted", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": ["jobs", "accepted", "steps", 1, "with", "node-version"],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "draft_release", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": ["jobs", "draft_release", "steps", 1, "with", "node-version"],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "draft_release", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "npm_release", "steps", 0, "name"],
+        "template": "Select Node {{runtime:node.24}} and the exact public npm registry"
+      },
+      {
+        "path": ["jobs", "npm_release", "steps", 0, "with", "node-version"],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "npm_release", "steps", 1, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "registry_verification", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "registry_verification",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "registry_verification", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "release_evidence", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "release_evidence",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "release_evidence", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "finalize_release", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "finalize_release",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "finalize_release", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "immutable_verification", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "immutable_verification",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "immutable_verification", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      }
+    ],
+    "release.yml": [
+      {
+        "path": ["jobs", "release_preflight", "steps", 1, "name"],
+        "template": "Select authoritative Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "release_preflight",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "release_preflight", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "release_preflight", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "metadata", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": ["jobs", "metadata", "steps", 1, "with", "node-version"],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "metadata", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "metadata", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "source_node_22", "name"],
+        "template": "Release / Ubuntu / Node {{runtime:node.22}}"
+      },
+      {
+        "path": ["jobs", "source_node_22", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.22}} without package caching"
+      },
+      {
+        "path": ["jobs", "source_node_22", "steps", 1, "with", "node-version"],
+        "template": "{{runtime:node.22}}"
+      },
+      {
+        "path": ["jobs", "source_node_22", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "source_node_22", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.22}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "source_node_26", "name"],
+        "template": "Release / Ubuntu / Node {{runtime:node.26}}"
+      },
+      {
+        "path": ["jobs", "source_node_26", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.26}} without package caching"
+      },
+      {
+        "path": ["jobs", "source_node_26", "steps", 1, "with", "node-version"],
+        "template": "{{runtime:node.26}}"
+      },
+      {
+        "path": ["jobs", "source_node_26", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "source_node_26", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.26}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "source_node_24", "name"],
+        "template": "Release / Ubuntu / Node {{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "source_node_24", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": ["jobs", "source_node_24", "steps", 1, "with", "node-version"],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "source_node_24", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "source_node_24", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "dependency_review", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "dependency_review",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "dependency_review", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "dependency_review", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": [
+          "jobs",
+          "third_party_evidence_registry_keys",
+          "steps",
+          1,
+          "name"
+        ],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "third_party_evidence_registry_keys",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": [
+          "jobs",
+          "third_party_evidence_registry_keys",
+          "steps",
+          2,
+          "run"
+        ],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": [
+          "jobs",
+          "third_party_evidence_registry_keys",
+          "steps",
+          3,
+          "run"
+        ],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "third_party_evidence_shard", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "third_party_evidence_shard",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "third_party_evidence_shard", "steps", 3, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "third_party_evidence_shard", "steps", 4, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "third_party_evidence", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "third_party_evidence",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "third_party_evidence", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "third_party_evidence", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "candidate", "steps", 1, "name"],
+        "template": "Select authoritative Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": ["jobs", "candidate", "steps", 1, "with", "node-version"],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "candidate", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "candidate", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "portability_windows_node_22", "name"],
+        "template": "Release / Windows / Node {{runtime:node.22}}"
+      },
+      {
+        "path": ["jobs", "portability_windows_node_22", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.22}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "portability_windows_node_22",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.22}}"
+      },
+      {
+        "path": ["jobs", "portability_windows_node_22", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "portability_windows_node_22", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.22}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "portability_windows_node_24", "name"],
+        "template": "Release / Windows / Node {{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "portability_windows_node_24", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "portability_windows_node_24",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "portability_windows_node_24", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "portability_windows_node_24", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "portability_ubuntu_node_26", "name"],
+        "template": "Release / Ubuntu / retained package / Node {{runtime:node.26}}"
+      },
+      {
+        "path": ["jobs", "portability_ubuntu_node_26", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.26}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "portability_ubuntu_node_26",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.26}}"
+      },
+      {
+        "path": ["jobs", "portability_ubuntu_node_26", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "portability_ubuntu_node_26", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.26}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "portability_windows_node_26", "name"],
+        "template": "Release / Windows / Node {{runtime:node.26}}"
+      },
+      {
+        "path": ["jobs", "portability_windows_node_26", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.26}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "portability_windows_node_26",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.26}}"
+      },
+      {
+        "path": ["jobs", "portability_windows_node_26", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "portability_windows_node_26", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.26}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "portability_macos_node_22", "name"],
+        "template": "Release / macOS / Node {{runtime:node.22}}"
+      },
+      {
+        "path": ["jobs", "portability_macos_node_22", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.22}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "portability_macos_node_22",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.22}}"
+      },
+      {
+        "path": ["jobs", "portability_macos_node_22", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "portability_macos_node_22", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.22}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "portability_macos_node_24", "name"],
+        "template": "Release / macOS / Node {{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "portability_macos_node_24", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "portability_macos_node_24",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "portability_macos_node_24", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "portability_macos_node_24", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "portability_macos_node_26", "name"],
+        "template": "Release / macOS / Node {{runtime:node.26}}"
+      },
+      {
+        "path": ["jobs", "portability_macos_node_26", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.26}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "portability_macos_node_26",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.26}}"
+      },
+      {
+        "path": ["jobs", "portability_macos_node_26", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "portability_macos_node_26", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.26}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "browser_chromium", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "browser_chromium",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "browser_chromium", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "browser_chromium", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "browser_firefox", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": ["jobs", "browser_firefox", "steps", 1, "with", "node-version"],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "browser_firefox", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "browser_firefox", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "browser_webkit", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": ["jobs", "browser_webkit", "steps", 1, "with", "node-version"],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "browser_webkit", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "browser_webkit", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "owl_contract", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": ["jobs", "owl_contract", "steps", 1, "with", "node-version"],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "owl_contract", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "owl_contract", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      },
+      {
+        "path": ["jobs", "required", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": ["jobs", "required", "steps", 1, "with", "node-version"],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "required", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "publication_preflight", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "publication_preflight",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "publication_preflight", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "tag_accepted", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": ["jobs", "tag_accepted", "steps", 1, "with", "node-version"],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "tag_accepted", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "draft_release", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": ["jobs", "draft_release", "steps", 1, "with", "node-version"],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "draft_release", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "npm_release", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without npm token configuration"
+      },
+      {
+        "path": ["jobs", "npm_release", "steps", 1, "with", "node-version"],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "npm_release", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "registry_verification", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "registry_verification",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "registry_verification", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "release_evidence", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "release_evidence",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "release_evidence", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "finalize_release", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "finalize_release",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "finalize_release", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "immutable_verification", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": [
+          "jobs",
+          "immutable_verification",
+          "steps",
+          1,
+          "with",
+          "node-version"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "immutable_verification", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "quality_windows", "steps", 1, "name"],
+        "template": "Select Node {{runtime:node.24}} without package caching"
+      },
+      {
+        "path": ["jobs", "quality_windows", "steps", 1, "with", "node-version"],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": ["jobs", "quality_windows", "steps", 2, "run"],
+        "template": "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund"
+      },
+      {
+        "path": ["jobs", "quality_windows", "steps", 3, "run"],
+        "template": "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}"
+      }
+    ]
+  }
+}

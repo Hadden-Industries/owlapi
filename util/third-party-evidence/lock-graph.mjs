@@ -1,3 +1,4 @@
+import { PUBLIC_REGISTRY_ORIGIN } from "./format.mjs";
 import {
   compareCodeUnits,
   parseExactSha512Sri,
@@ -6,7 +7,6 @@ import {
   verifySha512Sri,
 } from "./digests.mjs";
 
-const PUBLIC_REGISTRY_ORIGIN = "https://registry.npmjs.org";
 const NODE_MODULES_MARKER = "node_modules/";
 
 const requireNonemptyString = (value, label) => {

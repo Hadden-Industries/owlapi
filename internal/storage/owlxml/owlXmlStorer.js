@@ -1,3 +1,7 @@
+import {
+  OWL_NAMESPACE as OWL,
+  XML_NAMESPACE as XML,
+} from "../../rdfjs/vocabulary.js";
 import { parseIri } from "@hyperjump/uri";
 import { DOMImplementation, XMLSerializer } from "@xmldom/xmldom";
 import { OWLDocumentFormats } from "../../../formats/index.js";
@@ -22,8 +26,6 @@ import {
 } from "../../model/structuralValidation.js";
 import { OWLXML_GRAMMAR } from "../../parsing/owlxml/grammar.js";
 
-const OWL = "http://www.w3.org/2002/07/owl#";
-const XML = "http://www.w3.org/XML/1998/namespace";
 const MAX_OUTPUT_BYTES = 33554432;
 const MAX_NODE_DEPTH = 512;
 const MAX_ANNOTATION_DEPTH = 64;

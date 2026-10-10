@@ -1,3 +1,8 @@
+import {
+  CooperativeCheckpoint,
+  monotonicNow,
+} from "../cooperativeCheckpoint.js";
+import { RDF_NAMESPACE, XSD_NAMESPACE } from "../../rdfjs/vocabulary.js";
 import { OWLDocumentFormats } from "../../../formats/owlDocumentFormats.js";
 import {
   OWLSyntaxError,
@@ -10,18 +15,13 @@ import { IRI } from "../../../model/structural.js";
 import { normalizeCardinality } from "../../model/cardinality.js";
 
 import {
-  decodePrefixedLocalName,
   isManchesterKeyword,
   isManchesterNumericLiteral,
   ManchesterSyntaxLexer,
 } from "./lexer.js";
+import { decodePrefixedLocalName } from "../lexicalNames.js";
 
-const STANDARD_PREFIXES = Object.freeze({
-  "owl:": "http://www.w3.org/2002/07/owl#",
-  "rdf:": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-  "rdfs:": "http://www.w3.org/2000/01/rdf-schema#",
-  "xsd:": "http://www.w3.org/2001/XMLSchema#",
-});
+import { STANDARD_PARSER_PREFIXES as STANDARD_PREFIXES } from "../../rdfjs/vocabulary.js";
 
 const CLASS_FRAME_SECTIONS = new Set([
   "Annotations:",
@@ -97,28 +97,26 @@ const RESTRICTION_KEYWORDS = new Set([
   "value",
 ]);
 const SPECIAL_DATATYPES = Object.freeze({
-  decimal: "http://www.w3.org/2001/XMLSchema#decimal",
-  float: "http://www.w3.org/2001/XMLSchema#float",
-  integer: "http://www.w3.org/2001/XMLSchema#integer",
-  string: "http://www.w3.org/2001/XMLSchema#string",
+  decimal: XSD_NAMESPACE + "decimal",
+  float: XSD_NAMESPACE + "float",
+  integer: XSD_NAMESPACE + "integer",
+  string: XSD_NAMESPACE + "string",
 });
 const FACET_IRIS = Object.freeze({
-  "<": "http://www.w3.org/2001/XMLSchema#minExclusive",
-  "<=": "http://www.w3.org/2001/XMLSchema#minInclusive",
-  ">": "http://www.w3.org/2001/XMLSchema#maxExclusive",
-  ">=": "http://www.w3.org/2001/XMLSchema#maxInclusive",
-  langRange: "http://www.w3.org/1999/02/22-rdf-syntax-ns#langRange",
-  length: "http://www.w3.org/2001/XMLSchema#length",
-  maxLength: "http://www.w3.org/2001/XMLSchema#maxLength",
-  minLength: "http://www.w3.org/2001/XMLSchema#minLength",
-  pattern: "http://www.w3.org/2001/XMLSchema#pattern",
+  "<": XSD_NAMESPACE + "minExclusive",
+  "<=": XSD_NAMESPACE + "minInclusive",
+  ">": XSD_NAMESPACE + "maxExclusive",
+  ">=": XSD_NAMESPACE + "maxInclusive",
+  langRange: RDF_NAMESPACE + "langRange",
+  length: XSD_NAMESPACE + "length",
+  maxLength: XSD_NAMESPACE + "maxLength",
+  minLength: XSD_NAMESPACE + "minLength",
+  pattern: XSD_NAMESPACE + "pattern",
 });
 
 let anonymousDocumentSequence = 0;
 
 const isAbsoluteIri = (value) => /^[A-Za-z][A-Za-z0-9+.-]*:/u.test(value);
-const COOPERATIVE_YIELD_INTERVAL_MS = 50;
-const monotonicNow = () => globalThis.performance?.now?.() ?? Date.now();
 
 export class OWLManchesterSyntaxOWLParser {
   #anonymousIndividuals = new Map();
@@ -127,7 +125,7 @@ export class OWLManchesterSyntaxOWLParser {
   #documentScope;
   #entityKinds = new Map();
   #executionBudget;
-  #lastYieldAt;
+  #checkpoint;
   #lexer;
   #prefixes;
   #transaction;
@@ -145,7 +143,7 @@ export class OWLManchesterSyntaxOWLParser {
       deadline: startedAt + configuration.timeoutMs,
       startedAt,
     });
-    this.#lastYieldAt = startedAt;
+    this.#checkpoint = new CooperativeCheckpoint(startedAt);
     this.#lexer = new ManchesterSyntaxLexer(text, configuration, {
       executionBudget: this.#executionBudget,
     });
@@ -1142,19 +1140,7 @@ export class OWLManchesterSyntaxOWLParser {
   }
 
   #cooperate(lexer = this.#lexer) {
-    lexer.checkExecutionBudget();
-    if (monotonicNow() - this.#lastYieldAt < COOPERATIVE_YIELD_INTERVAL_MS) {
-      return undefined;
-    }
-    const scheduler = Reflect.get(globalThis, "scheduler");
-    const yieldRequest =
-      typeof scheduler?.yield === "function"
-        ? scheduler.yield()
-        : new Promise((resolve) => globalThis.setTimeout(resolve, 0));
-    return Promise.resolve(yieldRequest).then(() => {
-      this.#lastYieldAt = monotonicNow();
-      lexer.checkExecutionBudget();
-    });
+    return this.#checkpoint.cooperate(lexer);
   }
 
   #declareEntity(entity) {

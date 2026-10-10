@@ -1,3 +1,4 @@
+import { isXmlName } from "./xmlNames.js";
 import {
   ResourceLimitError,
   SecurityPolicyError,
@@ -5,51 +6,10 @@ import {
 } from "../../../io/errors.js";
 
 const PREDEFINED_ENTITIES = new Set(["amp", "apos", "gt", "lt", "quot"]);
-const DEFAULT_LIMITS = Object.freeze({
-  maxEntityDeclarations: 256,
-  maxEntityExpansionDepth: 16,
-  maxEntityReplacementLength: 65_536,
-  maxExpandedXmlBytes: 33_554_432,
-});
+import { XML_ENTITY_DEFAULTS as DEFAULT_LIMITS } from "./xmlEntityDefaults.js";
 const textEncoder = new TextEncoder();
 
 const byteLength = (value) => textEncoder.encode(value).byteLength;
-
-const isXmlNameStartCodePoint = (codePoint) =>
-  codePoint === 0x3a ||
-  codePoint === 0x5f ||
-  (codePoint >= 0x41 && codePoint <= 0x5a) ||
-  (codePoint >= 0x61 && codePoint <= 0x7a) ||
-  (codePoint >= 0xc0 && codePoint <= 0xd6) ||
-  (codePoint >= 0xd8 && codePoint <= 0xf6) ||
-  (codePoint >= 0xf8 && codePoint <= 0x2ff) ||
-  (codePoint >= 0x370 && codePoint <= 0x37d) ||
-  (codePoint >= 0x37f && codePoint <= 0x1fff) ||
-  (codePoint >= 0x200c && codePoint <= 0x200d) ||
-  (codePoint >= 0x2070 && codePoint <= 0x218f) ||
-  (codePoint >= 0x2c00 && codePoint <= 0x2fef) ||
-  (codePoint >= 0x3001 && codePoint <= 0xd7ff) ||
-  (codePoint >= 0xf900 && codePoint <= 0xfdcf) ||
-  (codePoint >= 0xfdf0 && codePoint <= 0xfffd) ||
-  (codePoint >= 0x10000 && codePoint <= 0xeffff);
-
-const isXmlNameCodePoint = (codePoint) =>
-  isXmlNameStartCodePoint(codePoint) ||
-  codePoint === 0x2d ||
-  codePoint === 0x2e ||
-  codePoint === 0xb7 ||
-  (codePoint >= 0x30 && codePoint <= 0x39) ||
-  (codePoint >= 0x300 && codePoint <= 0x36f) ||
-  (codePoint >= 0x203f && codePoint <= 0x2040);
-
-const isXmlName = (value) => {
-  const points = [...value].map((character) => character.codePointAt(0));
-  return (
-    points.length > 0 &&
-    isXmlNameStartCodePoint(points[0]) &&
-    points.slice(1).every(isXmlNameCodePoint)
-  );
-};
 
 const resourceLimit = (resource, limit, observed, details = {}) => {
   throw new ResourceLimitError(`The XML ${resource} limit was exceeded`, {

@@ -41,7 +41,8 @@
     "CANONICAL-VOWL-PREREQUISITES": "Owner authorization in the Canonical VOWL implementation session to implement, validate, commit and deliver the required owlapi prerequisites; owning contract and qualifications are recorded in docs/compatibility/canonical-vowl-prerequisites.md. This scope preserves the Phase 21 and 22 decisions.",
     "RDFXML-FORMATTING-2026-10-08": "Owner instruction to implement docs/plans/expose-configurable-rdfxml-formatting.md, including its proposed preserving-builder, numeric and deterministic label adaptations; subsequent owner decisions select npm 12.2.0 and upstream Java tip b61ebe2da83daceebb3e7ba7afbd2582c9240c33.",
     "RDFXML-REFINEMENTS-2026-10-08": "Owner instruction to implement the amended RDF/XML ownership/API table using HISEW; subsequent approval of bounded compatibility/provenance records and same-input Java qualification in session 01a11b94-bded-79e1-87b1-c5a7c3ac1ad9.",
-    "RC2-JAVA-PARITY-2026-10-09": "Owner-approved docs/plans/0.1.0-rc.2-java-parity-baseline.md, all nine implementation slices, and exact profile/storage/locality decisions. Native Java is a black-box behavioral authority and source research input; no implementation text is copied."
+    "RC2-JAVA-PARITY-2026-10-09": "Owner-approved docs/plans/0.1.0-rc.2-java-parity-baseline.md, all nine implementation slices, and exact profile/storage/locality decisions. Native Java is a black-box behavioral authority and source research input; no implementation text is copied.",
+    "DRY-REMEDIATION-2026-10-11": "Owner instruction to implement docs/plans/dry-principle-remediation.md via HISEW on current local main, preserving observable behavior, historical evidence and source rights."
   },
   "provenanceCategories": {
     "A_PROJECT_ORIGINAL": "Project-authored implementation with no identified upstream-derived semantic implementation",
@@ -3979,6 +3980,269 @@
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
       "recordedOn": "2026-10-09"
+    },
+    {
+      "id": "DRY-INTERNAL-RDFJS-TERMPOLICY-JS",
+      "path": "internal/rdfjs/termPolicy.js",
+      "phase": 24,
+      "scope": "Allowed RDF graph term types",
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/rdf11-concepts/#section-dataset",
+        "https://rdf.js.org/dataset-spec/",
+        "docs/implementation-plan.md section 5.4"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public RDF-loading behavior used only as behavioral context"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["internal/rdfjs/graphPolicy.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "DRY-REMEDIATION-2026-10-11",
+      "reviewDate": "2026-10-11",
+      "origin": "Extraction of project-authored source from internal/rdfjs/graphPolicy.js; no external implementation text added."
+    },
+    {
+      "id": "DRY-INTERNAL-MAPPING-ENTITYDECLARATIONS-JS",
+      "path": "internal/mapping/entityDeclarations.js",
+      "phase": 24,
+      "scope": "Six structural entity declaration mappings",
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-mapping-to-rdf/#Mapping_from_the_Structural_Specification_to_RDF_Graphs",
+        "https://www.w3.org/TR/owl2-syntax/",
+        "https://rdf.js.org/data-model-spec/",
+        "https://rdf.js.org/dataset-spec/",
+        "docs/implementation-plan.md sections 7, 17.23, 18.6, and 18.7"
+      ],
+      "compatibilityReferences": [
+        "Pinned OWLAPI 5.5.1 public N-Triples storer result generated from revision d7e997a53b470e32700de89cc610d9daf01ea769 with addMissingTypes disabled; the exact three rdf:type rdf:List extras are retained as a counted controlled Java deviation"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["internal/mapping/owlToRdfTranslator.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "DRY-REMEDIATION-2026-10-11",
+      "reviewDate": "2026-10-11",
+      "origin": "Extraction of project-authored source from internal/mapping/owlToRdfTranslator.js; no external implementation text added."
+    },
+    {
+      "id": "DRY-INTERNAL-MODEL-INTEGERDATATYPEBOUNDS-JS",
+      "path": "internal/model/integerDatatypeBounds.js",
+      "phase": 24,
+      "scope": "Trusted integer datatype bound facts",
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-mapping-to-rdf/#Mapping_from_RDF_Graphs_to_the_Structural_Specification",
+        "https://www.w3.org/TR/owl2-syntax/",
+        "https://rdf.js.org/data-model-spec/",
+        "https://rdf.js.org/dataset-spec/",
+        "docs/implementation-plan.md sections 6, 8, and 17.12"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 pinned Phase 5 Java structural snapshot and malformed-list black-box probe",
+        "Pinned 338-case W3C OWL 2 test manifest with 233 applicable tests and 312 constructed RDF/JS documents"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["internal/profiles/datatypes.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "DRY-REMEDIATION-2026-10-11",
+      "reviewDate": "2026-10-11",
+      "origin": "Extraction of project-authored source from internal/mapping/rdfToOwlTranslator.js; no external implementation text added."
+    },
+    {
+      "id": "DRY-INTERNAL-PARSING-XML-XMLENTITYDEFAULTS-JS",
+      "path": "internal/parsing/xml/xmlEntityDefaults.js",
+      "phase": 24,
+      "scope": "XML entity resource default facts",
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/xml/",
+        "docs/implementation-plan.md sections 10.8, 17.11, 20, and 21"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 pinned OWL/XML behavioral fixture; external-resource behavior is governed by the stricter project security policy"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["internal/parsing/xml/xmlParserAdapter.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "DRY-REMEDIATION-2026-10-11",
+      "reviewDate": "2026-10-11",
+      "origin": "Extraction of project-authored source from internal/parsing/xml/xmlEntityPolicy.js; no external implementation text added."
+    },
+    {
+      "id": "DRY-INTERNAL-PARSING-LEXICALNAMES-JS",
+      "path": "internal/parsing/lexicalNames.js",
+      "phase": 24,
+      "scope": "Functional and Manchester lexical name operations",
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/ sections 2.2-2.3 and 5.7",
+        "https://www.rfc-editor.org/rfc/rfc3987",
+        "docs/implementation-plan.md sections 18.3, 19, and 20.1"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 accepted/rejected input observed only through the pinned black-box harness and project-owned fixtures"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "internal/parsing/functional/functionalSyntax.conformance.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "DRY-REMEDIATION-2026-10-11",
+      "reviewDate": "2026-10-11",
+      "origin": "Extraction of project-authored source from internal/parsing/functional/lexer.js; no external implementation text added."
+    },
+    {
+      "id": "DRY-INTERNAL-PARSING-IRICHARACTERS-JS",
+      "path": "internal/parsing/iriCharacters.js",
+      "phase": 24,
+      "scope": "Shared absolute IRI and forbidden-character predicates",
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/ sections 3-10",
+        "docs/implementation-plan.md sections 4, 9, 17.9, and 18"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 pinned Java structural snapshots and the pinned 338-case W3C manifest copy"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["internal/parsing/owlxml/owlXml.conformance.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "DRY-REMEDIATION-2026-10-11",
+      "reviewDate": "2026-10-11",
+      "origin": "Extraction of project-authored source from internal/parsing/functional/parser.js; no external implementation text added."
+    },
+    {
+      "id": "DRY-INTERNAL-PARSING-ASCIILEADINGTRIVIA-JS",
+      "path": "internal/parsing/asciiLeadingTrivia.js",
+      "phase": 24,
+      "scope": "ASCII text parser detection trivia",
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/ section 2.3",
+        "docs/implementation-plan.md sections 9.4-9.6 and 17.9"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public FunctionalSyntaxDocumentFormat and OWLParserFactory identities"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "internal/parsing/functional/functionalSyntax.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "DRY-REMEDIATION-2026-10-11",
+      "reviewDate": "2026-10-11",
+      "origin": "Extraction of project-authored source from internal/parsing/functional/descriptor.js; no external implementation text added."
+    },
+    {
+      "id": "DRY-INTERNAL-PARSING-UNICODELEADINGTRIVIA-JS",
+      "path": "internal/parsing/unicodeLeadingTrivia.js",
+      "phase": 24,
+      "scope": "RDF descriptor Unicode leading trivia",
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/n-triples/",
+        "https://www.w3.org/TR/rdf12-n-triples/",
+        "docs/implementation-plan.md sections 9.4-9.6 and 17.19"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public NTriplesDocumentFormat identity and the pinned W3C RDF 1.1/RDF 1.2 syntax inventories"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["internal/parsing/ntriples/nTriples.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "DRY-REMEDIATION-2026-10-11",
+      "reviewDate": "2026-10-11",
+      "origin": "Extraction of project-authored source from internal/parsing/ntriples/descriptor.js; no external implementation text added."
+    },
+    {
+      "id": "DRY-INTERNAL-PARSING-TEXTCURSOR-JS",
+      "path": "internal/parsing/textCursor.js",
+      "phase": 24,
+      "scope": "Per-lexer UTF-16 position and scan cadence",
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/ sections 2.2-2.3 and 5.7",
+        "https://www.rfc-editor.org/rfc/rfc3987",
+        "docs/implementation-plan.md sections 18.3, 19, and 20.1"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 accepted/rejected input observed only through the pinned black-box harness and project-owned fixtures"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["internal/parsing/textCursor.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "DRY-REMEDIATION-2026-10-11",
+      "reviewDate": "2026-10-11",
+      "origin": "Extraction of project-authored source from internal/parsing/functional/lexer.js; no external implementation text added."
+    },
+    {
+      "id": "DRY-INTERNAL-PARSING-COOPERATIVECHECKPOINT-JS",
+      "path": "internal/parsing/cooperativeCheckpoint.js",
+      "phase": 24,
+      "scope": "Text parser cooperative execution checkpoints",
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/ sections 3-10",
+        "docs/implementation-plan.md sections 4, 9, 17.9, and 18"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 pinned Java structural snapshots and the pinned 338-case W3C manifest copy"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "internal/parsing/functional/functionalSyntax.resource.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "DRY-REMEDIATION-2026-10-11",
+      "reviewDate": "2026-10-11",
+      "origin": "Extraction of project-authored source from internal/parsing/functional/parser.js; no external implementation text added."
+    },
+    {
+      "id": "DRY-INTERNAL-PARSING-RDF-STREAMPRIMITIVES-JS",
+      "path": "internal/parsing/rdf/streamPrimitives.js",
+      "phase": 24,
+      "scope": "Surrogate-safe chunking, drain cleanup and nested blank nodes",
+      "provenanceCategory": "B_STANDARDS_ADAPTER",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/turtle/",
+        "https://www.w3.org/TR/rdf12-turtle/",
+        "https://www.w3.org/TR/n-triples/",
+        "https://www.w3.org/TR/rdf12-n-triples/",
+        "https://www.w3.org/TR/n-quads/",
+        "https://www.w3.org/TR/rdf12-n-quads/",
+        "https://www.w3.org/TR/trig/",
+        "https://www.w3.org/TR/rdf12-trig/",
+        "https://rdf.js.org/data-model-spec/",
+        "https://rdf.js.org/stream-spec/",
+        "docs/implementation-plan.md sections 6.7, 17.16, 17.19-17.20, and 21.7-21.8"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public Turtle parser behavior through the pinned black-box reference harness",
+        "Pinned W3C rdf-tests Turtle source revision 12774b0ebb385d17651b396654b19254d0fefbfa with all 387 classified RDF 1.1 and RDF 1.2 syntax entries passing",
+        "Pinned W3C rdf-tests N-Triples source revision 12774b0ebb385d17651b396654b19254d0fefbfa with all 99 classified RDF 1.1 and RDF 1.2 syntax entries passing",
+        "Pinned W3C rdf-tests N-Quads source revision 12774b0ebb385d17651b396654b19254d0fefbfa with all 114 classified RDF 1.1 and RDF 1.2 syntax entries passing",
+        "Pinned W3C rdf-tests TriG source revision 12774b0ebb385d17651b396654b19254d0fefbfa with all 401 REQUIRED entries passing and 17 RDF 1.2 evaluation entries individually excluded for the recorded N3.js 2.2.0 gap"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "internal/parsing/rdfxml/rdfXmlSyntaxAdapter.resource.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "DRY-REMEDIATION-2026-10-11",
+      "reviewDate": "2026-10-11",
+      "origin": "Extraction of project-authored source from internal/parsing/rdf/n3SyntaxAdapter.js; no external implementation text added."
     }
   ],
   "compatibilityResearch": [

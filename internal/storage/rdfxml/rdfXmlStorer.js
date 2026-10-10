@@ -14,6 +14,7 @@ import {
   ResourceLimitError,
 } from "../../../io/errors.js";
 import { StringDocumentSource } from "../../../io/stringDocumentSource.js";
+import { OWL_NAMESPACE } from "../../rdfjs/vocabulary.js";
 import { readDocumentFormatParameters } from "../../../model/owlDocumentFormat.js";
 
 import { readAnonymousIndividualRdfNodes } from "../../mapping/owlToRdfTranslator.js";
@@ -54,7 +55,7 @@ export const createRdfXmlStorer = ({
             ? /[#/]$/u.test(ontologyIRI)
               ? ontologyIRI
               : `${ontologyIRI}#`
-            : "http://www.w3.org/2002/07/owl#",
+            : OWL_NAMESPACE,
           forceXsdString: parameters["force xsd:string on literals"] ?? false,
           anonymousIndividuals: readAnonymousIndividualRdfNodes(mappedDataset),
         });

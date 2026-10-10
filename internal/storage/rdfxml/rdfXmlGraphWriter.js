@@ -1,3 +1,10 @@
+import {
+  XML_NAMESPACE,
+  XMLNS_NAMESPACE,
+  OWL_NAMESPACE,
+  RDFS_NAMESPACE,
+  XSD_NAMESPACE,
+} from "../../rdfjs/vocabulary.js";
 import { parseIri } from "@hyperjump/uri";
 import { DOMImplementation, XMLSerializer } from "@xmldom/xmldom";
 import { parse as parseLanguageTag } from "bcp-47";
@@ -11,12 +18,9 @@ import {
 } from "../../../model/owlOntologyWriterConfiguration.js";
 import { RDF_NAMESPACE } from "../../rdfjs/vocabulary.js";
 
-const XML_NAMESPACE = "http://www.w3.org/XML/1998/namespace";
-const XMLNS_NAMESPACE = "http://www.w3.org/2000/xmlns/";
 const TEXT_NODE = 3;
 const LANG_STRING = `${RDF_NAMESPACE}langString`;
-const OWL_NAMESPACE = "http://www.w3.org/2002/07/owl#";
-const RDFS_NAMESPACE = "http://www.w3.org/2000/01/rdf-schema#";
+
 const TYPE_IRI = `${RDF_NAMESPACE}type`;
 const FIRST_IRI = `${RDF_NAMESPACE}first`;
 const REST_IRI = `${RDF_NAMESPACE}rest`;
@@ -45,7 +49,7 @@ const STANDARD_PREFIXES = new Map([
   [RDF_NAMESPACE, "rdf"],
   [OWL_NAMESPACE, "owl"],
   [RDFS_NAMESPACE, "rdfs"],
-  ["http://www.w3.org/2001/XMLSchema#", "xsd"],
+  [XSD_NAMESPACE, "xsd"],
   ["http://www.w3.org/2004/02/skos/core#", "skos"],
   ["http://purl.org/dc/elements/1.1/", "dc"],
   ["http://purl.org/dc/terms/", "dcterms"],
@@ -567,8 +571,7 @@ const serializeGraph = (dataset, policy, context) => {
           attribute(property, XML_NAMESPACE, "xml:lang", quad.object.language);
         } else if (
           context.forceXsdString ||
-          quad.object.datatype.value !==
-            "http://www.w3.org/2001/XMLSchema#string"
+          quad.object.datatype.value !== XSD_NAMESPACE + "string"
         ) {
           attribute(
             property,

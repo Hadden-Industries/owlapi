@@ -1,9 +1,16 @@
+import {
+  median,
+  RUN_COUNT,
+  WARMUP_COUNT,
+  SAMPLE_INTERVAL_MS,
+  sampleEventLoop as sample,
+} from "./benchmarkSampling.mjs";
 import { Buffer } from "node:buffer";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { cpus, release, totalmem } from "node:os";
-import { performance } from "node:perf_hooks";
+
 import process from "node:process";
 
 import { StringDocumentSource } from "../io/index.js";
@@ -19,9 +26,6 @@ const {
   GENERATOR_VERSION,
   generateBenchmarkFixture,
 } = require("./generate-owlapi-benchmark-fixtures.cjs");
-const RUN_COUNT = 5;
-const SAMPLE_INTERVAL_MS = 5;
-const WARMUP_COUNT = 1;
 
 const firstUseText = generateBenchmarkFixture("turtle", { count: 100 });
 const largeText = generateBenchmarkFixture("turtle", { count: 50_000 });
@@ -33,42 +37,6 @@ const largeSource = new StringDocumentSource(largeText, {
   documentIRI: "urn:owlapi-js:benchmark:turtle:large",
   fileName: "generated-turtle-large.ttl",
 });
-
-const median = (values) => {
-  const sorted = [...values].sort((left, right) => left - right);
-  return sorted[Math.floor(sorted.length / 2)];
-};
-
-const sample = async (operation) => {
-  globalThis.gc?.();
-  const startHeapBytes = process.memoryUsage().heapUsed;
-  let peakHeapBytes = startHeapBytes;
-  let maxEventLoopDelayMs = 0;
-  let expectedSampleAt = performance.now() + SAMPLE_INTERVAL_MS;
-  const sampler = setInterval(() => {
-    const now = performance.now();
-    maxEventLoopDelayMs = Math.max(maxEventLoopDelayMs, now - expectedSampleAt);
-    expectedSampleAt = now + SAMPLE_INTERVAL_MS;
-    peakHeapBytes = Math.max(peakHeapBytes, process.memoryUsage().heapUsed);
-  }, SAMPLE_INTERVAL_MS);
-  const startedAt = performance.now();
-  try {
-    await operation();
-    await new Promise((resolve) => setTimeout(resolve, 0));
-  } finally {
-    clearInterval(sampler);
-  }
-  const wallMs = performance.now() - startedAt;
-  const endHeapBytes = process.memoryUsage().heapUsed;
-  peakHeapBytes = Math.max(peakHeapBytes, endHeapBytes);
-  return {
-    maxEventLoopDelayMs,
-    peakHeapBytes,
-    peakHeapDeltaBytes: Math.max(0, peakHeapBytes - startHeapBytes),
-    retainedHeapDeltaBytes: endHeapBytes - startHeapBytes,
-    wallMs,
-  };
-};
 
 const syntaxOnly = async (source, chunkSize) => {
   const { dataset } = await createTurtleSyntaxAdapter({ chunkSize }).parse(

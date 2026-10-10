@@ -1,3 +1,4 @@
+import { EVIDENCE_MANIFEST_NAME as MANIFEST_NAME } from "./third-party-evidence/format.mjs";
 import { readFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -6,7 +7,6 @@ import { stableJson } from "./third-party-evidence/digests.mjs";
 import { verifyEvidenceManifest } from "./third-party-evidence/evidence-manifest.mjs";
 
 const DEFAULT_REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
-const MANIFEST_NAME = "npm-package-evidence.json";
 
 const readManifest = async (root) =>
   JSON.parse(await readFile(join(root, MANIFEST_NAME), "utf8"));

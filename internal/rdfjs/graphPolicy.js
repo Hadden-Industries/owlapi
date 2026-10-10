@@ -4,7 +4,8 @@ import {
 } from "../../io/errors.js";
 import { rdfDataFactory, rdfDatasetFactory } from "./environment.js";
 
-const GRAPH_TERM_TYPES = new Set(["BlankNode", "DefaultGraph", "NamedNode"]);
+import { RDF_GRAPH_TERM_TYPES } from "./termPolicy.js";
+const GRAPH_TERM_TYPES = new Set(RDF_GRAPH_TERM_TYPES);
 
 const termKey = (term) => {
   if (!term || !GRAPH_TERM_TYPES.has(term.termType)) {

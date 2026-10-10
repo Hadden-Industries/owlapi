@@ -1,7 +1,19 @@
+/** Dependency-free vocabulary facts shared by parsing, mapping and storage. */
 export const RDF_NAMESPACE = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 export const RDFS_NAMESPACE = "http://www.w3.org/2000/01/rdf-schema#";
 export const OWL_NAMESPACE = "http://www.w3.org/2002/07/owl#";
 export const XSD_NAMESPACE = "http://www.w3.org/2001/XMLSchema#";
+export const XML_NAMESPACE = "http://www.w3.org/XML/1998/namespace";
+export const XMLNS_NAMESPACE = "http://www.w3.org/2000/xmlns/";
+export const XSI_NAMESPACE = "http://www.w3.org/2001/XMLSchema-instance";
+
+/** Parsers copy these facts into independent mutable prefix maps. */
+export const STANDARD_PARSER_PREFIXES = Object.freeze({
+  "owl:": OWL_NAMESPACE,
+  "rdf:": RDF_NAMESPACE,
+  "rdfs:": RDFS_NAMESPACE,
+  "xsd:": XSD_NAMESPACE,
+});
 
 const rdf = (name) => `${RDF_NAMESPACE}${name}`;
 const rdfs = (name) => `${RDFS_NAMESPACE}${name}`;

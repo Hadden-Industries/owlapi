@@ -1,3 +1,9 @@
+import {
+  OWL_NAMESPACE,
+  RDFS_NAMESPACE,
+  XSD_NAMESPACE,
+  RDF_NAMESPACE,
+} from "../internal/rdfjs/vocabulary.js";
 import { normalizeCardinality } from "../internal/model/cardinality.js";
 import {
   isSourcePreservingFactory,
@@ -22,8 +28,8 @@ import {
   OWLStructuralObject,
 } from "./structural.js";
 
-const OWL_THING_IRI = "http://www.w3.org/2002/07/owl#Thing";
-const RDFS_LITERAL_IRI = "http://www.w3.org/2000/01/rdf-schema#Literal";
+const OWL_THING_IRI = OWL_NAMESPACE + "Thing";
+const RDFS_LITERAL_IRI = RDFS_NAMESPACE + "Literal";
 
 const requireStructural = (value, name) => {
   if (!isCanonicalStructuralObject(value)) {
@@ -344,9 +350,7 @@ export class OWLDataFactory {
   }
 
   getRDFSLabel() {
-    return this.getOWLAnnotationProperty(
-      IRI.create("http://www.w3.org/2000/01/rdf-schema#label"),
-    );
+    return this.getOWLAnnotationProperty(IRI.create(RDFS_NAMESPACE + "label"));
   }
 
   getOWLLiteral(lexicalForm, languageOrDatatype) {
@@ -356,16 +360,12 @@ export class OWLDataFactory {
     let language = "";
     let datatype;
     if (languageOrDatatype === undefined) {
-      datatype = this.getOWLDatatype(
-        IRI.create("http://www.w3.org/2001/XMLSchema#string"),
-      );
+      datatype = this.getOWLDatatype(IRI.create(XSD_NAMESPACE + "string"));
     } else if (typeof languageOrDatatype === "string") {
       language = languageOrDatatype.toLowerCase();
       datatype = this.getOWLDatatype(
         IRI.create(
-          language
-            ? "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
-            : "http://www.w3.org/2001/XMLSchema#string",
+          language ? RDF_NAMESPACE + "langString" : XSD_NAMESPACE + "string",
         ),
       );
     } else if (languageOrDatatype?.kind === OWLObjectKind.IRI) {

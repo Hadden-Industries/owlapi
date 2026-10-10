@@ -1,11 +1,9 @@
+import { OWL_NAMESPACE, RDF_NAMESPACE } from "../../rdfjs/vocabulary.js";
 import { OWLDocumentFormats } from "../../../formats/owlDocumentFormats.js";
 import { ParserDescriptor } from "../parserRegistry.js";
 import { prepareXml } from "../xml/xmlEntityPolicy.js";
 
 import { OWLXMLParser } from "./parser.js";
-
-const OWL_NAMESPACE = "http://www.w3.org/2002/07/owl#";
-const RDF_NAMESPACE = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 
 const skipSpace = (text, start) => {
   let offset = start;

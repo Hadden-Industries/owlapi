@@ -1,10 +1,10 @@
+import { XSD_NAMESPACE as XSD } from "../../internal/rdfjs/vocabulary.js";
 import { ResourceLimitError } from "../../io/errors.js";
 import { ENTITY_KINDS, OWLObjectKind as K } from "../../model/kinds.js";
 import { sortedDisplayObjects } from "../../internal/model/structuralDisplayOrder.js";
 import { validateStructuralGraph } from "../../internal/model/structuralValidation.js";
 import { SimpleShortFormProvider } from "../../util/simpleShortFormProvider.js";
 
-const XSD = "http://www.w3.org/2001/XMLSchema#";
 const MAX_OUTPUT_BYTES = 33554432;
 const quoted = (value) =>
   `"${value.replaceAll("\\", "\\\\").replaceAll('"', '\\"')}"`;

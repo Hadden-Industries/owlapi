@@ -1,3 +1,10 @@
+import {
+  DEFAULT_CHUNK_SIZE,
+  MAX_TIMER_DELAY_MS,
+  chunksOf,
+  waitForDrain,
+  blankNodeKeys,
+} from "./streamPrimitives.js";
 import { OWLSyntaxError, ResourceLimitError } from "../../../io/errors.js";
 import { OWLOntologyLoaderConfiguration } from "../../../model/owlOntologyLoaderConfiguration.js";
 import { rdfDataFactory, rdfDatasetFactory } from "../../rdfjs/environment.js";
@@ -42,9 +49,9 @@ const EXACT_FORMAT_POLICIES = Object.freeze(
     ],
   ]),
 );
-const DEFAULT_CHUNK_SIZE = 65_536;
+
 const MAIN_THREAD_BUDGET_MS = 50;
-const MAX_TIMER_DELAY_MS = 2_147_483_647;
+
 const textEncoder = new TextEncoder();
 
 // Use N3's documented package root rather than coupling owlapi to a private
@@ -257,52 +264,6 @@ const normalizeParserFailure = (cause, configuration, syntaxName) => {
       syntax: syntaxName,
     },
   );
-};
-
-const chunksOf = function* (text, chunkSize) {
-  for (let start = 0; start < text.length;) {
-    let end = Math.min(start + chunkSize, text.length);
-    if (
-      end < text.length &&
-      text.charCodeAt(end - 1) >= 0xd800 &&
-      text.charCodeAt(end - 1) <= 0xdbff &&
-      text.charCodeAt(end) >= 0xdc00 &&
-      text.charCodeAt(end) <= 0xdfff
-    ) {
-      end += 1;
-    }
-    yield text.slice(start, end);
-    start = end;
-  }
-};
-
-const waitForDrain = (parser) =>
-  new Promise((resolve, reject) => {
-    function cleanup() {
-      parser.removeListener("drain", onDrain);
-      parser.removeListener("error", onError);
-    }
-    function onDrain() {
-      cleanup();
-      resolve();
-    }
-    function onError(error) {
-      cleanup();
-      reject(error);
-    }
-    parser.once("drain", onDrain);
-    parser.once("error", onError);
-  });
-
-const blankNodeKeys = (term, keys) => {
-  if (term?.termType === "BlankNode") {
-    keys.add(term.value);
-  } else if (term?.termType === "Quad") {
-    blankNodeKeys(term.subject, keys);
-    blankNodeKeys(term.predicate, keys);
-    blankNodeKeys(term.object, keys);
-    blankNodeKeys(term.graph, keys);
-  }
 };
 
 const validateTermLength = (term, configuration, syntaxName) => {

@@ -1,24 +1,8 @@
+import { skipTrivia } from "../unicodeLeadingTrivia.js";
 import { OWLDocumentFormats } from "../../../formats/owlDocumentFormats.js";
 import { ParserDescriptor } from "../parserRegistry.js";
 
 import { NTriplesParser } from "./parser.js";
-
-const skipTrivia = (text) => {
-  let offset = 0;
-  while (offset < text.length) {
-    if (/\s/u.test(text[offset])) {
-      offset += 1;
-      continue;
-    }
-    if (text[offset] !== "#") {
-      break;
-    }
-    while (offset < text.length && !["\n", "\r"].includes(text[offset])) {
-      offset += 1;
-    }
-  }
-  return offset;
-};
 
 export const detectNTriples = (source) => {
   const text = source.getText();

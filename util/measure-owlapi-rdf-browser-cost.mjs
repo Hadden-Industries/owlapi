@@ -1,6 +1,4 @@
-import { gzipSync } from "node:zlib";
-
-import { build } from "vite";
+import { buildBrowserBundle, codeSize } from "./browserBundleCost.mjs";
 
 const measurements = [
   {
@@ -23,33 +21,22 @@ const measurements = [
 const results = [];
 for (const measurement of measurements) {
   const virtualId = `\0owlapi-js:${measurement.id}`;
-  const output = await build({
-    configFile: false,
-    logLevel: "silent",
-    plugins: [
-      {
-        load(id) {
-          return id === virtualId ? measurement.source : undefined;
-        },
-        name: `owlapi-js-${measurement.id}`,
-        resolveId(id) {
-          return id === measurement.id ? virtualId : undefined;
-        },
+  const output = await buildBrowserBundle(measurement.id, [
+    {
+      load(id) {
+        return id === virtualId ? measurement.source : undefined;
       },
-    ],
-    build: {
-      minify: "oxc",
-      rollupOptions: { input: measurement.id },
-      target: "es2022",
-      write: false,
+      name: `owlapi-js-${measurement.id}`,
+      resolveId(id) {
+        return id === measurement.id ? virtualId : undefined;
+      },
     },
-  });
+  ]);
   const chunks = output.output.filter(({ type }) => type === "chunk");
   const code = chunks.map(({ code: chunkCode }) => chunkCode).join("\n");
   results.push({
-    gzipBytes: gzipSync(code).byteLength,
+    ...codeSize(code),
     id: measurement.id,
-    minifiedBytes: Buffer.byteLength(code),
     outputChunkCount: chunks.length,
   });
 }

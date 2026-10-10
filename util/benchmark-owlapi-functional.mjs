@@ -1,8 +1,14 @@
+import {
+  median,
+  RUN_COUNT,
+  WARMUP_COUNT,
+  SAMPLE_INTERVAL_MS,
+  sampleHeap as sample,
+} from "./benchmarkSampling.mjs";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { cpus, release, totalmem } from "node:os";
-import { performance } from "node:perf_hooks";
 
 import { OWLManager } from "../index.js";
 
@@ -15,44 +21,12 @@ const {
   GENERATOR_VERSION,
   generateBenchmarkFixture,
 } = require("./generate-owlapi-benchmark-fixtures.cjs");
-const RUN_COUNT = 5;
-const WARMUP_COUNT = 1;
-const SAMPLE_INTERVAL_MS = 5;
 
 const fixtures = Object.freeze({
   functionalLarge: generateBenchmarkFixture("functional", { count: 50000 }),
   functionalDepth: generateBenchmarkFixture("functional-depth", { depth: 512 }),
   mismatchLarge: generateBenchmarkFixture("mismatch", { bytes: 16777216 }),
 });
-
-const median = (values) => {
-  const sorted = [...values].sort((left, right) => left - right);
-  return sorted[Math.floor(sorted.length / 2)];
-};
-
-const sample = async (operation) => {
-  globalThis.gc?.();
-  const startHeapBytes = process.memoryUsage().heapUsed;
-  let peakHeapBytes = startHeapBytes;
-  const sampler = setInterval(() => {
-    peakHeapBytes = Math.max(peakHeapBytes, process.memoryUsage().heapUsed);
-  }, SAMPLE_INTERVAL_MS);
-  const startedAt = performance.now();
-  try {
-    await operation();
-  } finally {
-    clearInterval(sampler);
-  }
-  const wallMs = performance.now() - startedAt;
-  const endHeapBytes = process.memoryUsage().heapUsed;
-  peakHeapBytes = Math.max(peakHeapBytes, endHeapBytes);
-  return {
-    wallMs,
-    peakHeapBytes,
-    peakHeapDeltaBytes: Math.max(0, peakHeapBytes - startHeapBytes),
-    retainedHeapDeltaBytes: endHeapBytes - startHeapBytes,
-  };
-};
 
 const parse = async (source) => {
   const manager = OWLManager.createOWLOntologyManager();

@@ -32,7 +32,7 @@ const PORTABLE_MODES = new Set(["regular", "executable"]);
 const SHA256_PATTERN = /^[0-9a-f]{64}$/u;
 const FULL_COMMIT_PATTERN = /^[0-9a-f]{40}$/u;
 const SHA256_IDENTIFIER_PATTERN = /^sha256:[0-9a-f]{64}$/u;
-const PRE_REGISTRY_INSTALLED_TESTS = Object.freeze([
+export const PRE_REGISTRY_INSTALLED_TESTS = Object.freeze([
   "installed-package-smoke.mjs",
   "installed-package-boundary.mjs",
   "installed-package-import-purity.mjs",
@@ -46,15 +46,15 @@ const PRE_REGISTRY_LIMITATIONS = Object.freeze([
   "NO_DISTRIBUTION_TAG",
   "NO_IMMUTABLE_PUBLIC_COORDINATE",
 ]);
-const PRE_REGISTRY_EXPORTS = Object.freeze({
+export const PRE_REGISTRY_EXPORTS = Object.freeze({
   ".": "./index.js",
   "./apibinding": "./apibinding/index.js",
   "./model": "./model/index.js",
   "./io": "./io/index.js",
   "./formats": "./formats/index.js",
 });
-const PRE_REGISTRY_REPOSITORY_URL =
-  "git+https://github.com/Hadden-Industries/owlapi.git";
+export const PRE_REGISTRY_REPOSITORY_COORDINATE = "Hadden-Industries/owlapi";
+export const PRE_REGISTRY_REPOSITORY_URL = `git+https://github.com/${PRE_REGISTRY_REPOSITORY_COORDINATE}.git`;
 
 const hasOwn = (value, key) => Object.prototype.hasOwnProperty.call(value, key);
 
@@ -558,7 +558,7 @@ export function createPreRegistryEquivalenceEvidence(observation) {
       "Git package specifier does not bind the canonical full commit.",
     );
   }
-  if (source.repository !== "Hadden-Industries/owlapi") {
+  if (source.repository !== PRE_REGISTRY_REPOSITORY_COORDINATE) {
     throw new Error("Qualification source has the wrong repository.");
   }
   if (source.tag !== `v${observation.package.version}`) {

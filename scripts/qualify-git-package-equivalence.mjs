@@ -29,26 +29,18 @@ import {
 import { verifyLocalReleaseTag } from "./verify-release-tag.mjs";
 
 const REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
-const CANONICAL_REPOSITORY_URL =
-  "git+https://github.com/Hadden-Industries/owlapi.git";
-const FULL_GIT_SPEC_PATTERN =
-  /^git\+https:\/\/github\.com\/Hadden-Industries\/owlapi\.git#([0-9a-f]{40})$/u;
+import {
+  PRE_REGISTRY_REPOSITORY_URL as CANONICAL_REPOSITORY_URL,
+  PRE_REGISTRY_REPOSITORY_COORDINATE,
+  PRE_REGISTRY_INSTALLED_TESTS as INSTALLED_PACKAGE_TEST_SCRIPTS,
+  PRE_REGISTRY_EXPORTS as EXPECTED_EXPORTS,
+} from "./git-package-equivalence.mjs";
+export { INSTALLED_PACKAGE_TEST_SCRIPTS };
+const FULL_GIT_SPEC_PATTERN = new RegExp(
+  `^${CANONICAL_REPOSITORY_URL.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&")}#([0-9a-f]{40})$`,
+  "u",
+);
 const SHA256_IDENTIFIER_PATTERN = /^sha256:[0-9a-f]{64}$/u;
-
-export const INSTALLED_PACKAGE_TEST_SCRIPTS = Object.freeze([
-  "installed-package-smoke.mjs",
-  "installed-package-boundary.mjs",
-  "installed-package-import-purity.mjs",
-  "installed-package-no-network.mjs",
-]);
-
-const EXPECTED_EXPORTS = Object.freeze({
-  ".": "./index.js",
-  "./apibinding": "./apibinding/index.js",
-  "./model": "./model/index.js",
-  "./io": "./io/index.js",
-  "./formats": "./formats/index.js",
-});
 
 const stableJson = (value) => `${JSON.stringify(value, null, 2)}\n`;
 
@@ -324,7 +316,7 @@ const assertCandidateBinding = ({
     publicationControl.enabled !== true ||
     publicationControl.mode !== "DIRECT_BOOTSTRAP" ||
     reconciliation?.enabled !== true ||
-    source?.repository !== "Hadden-Industries/owlapi" ||
+    source?.repository !== PRE_REGISTRY_REPOSITORY_COORDINATE ||
     source.runId !== 33_160_042_447 ||
     source.runAttempt !== 1 ||
     source.commit !== commit ||

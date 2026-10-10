@@ -1,3 +1,4 @@
+import { XML_ENTITY_DEFAULTS } from "../internal/parsing/xml/xmlEntityDefaults.js";
 import { validateFormatSelection } from "../internal/parsing/formatSelection.js";
 
 const PARSING_MODES = new Set(["strict", "compatible", "preserve"]);
@@ -16,10 +17,7 @@ const DEFAULTS = Object.freeze({
   maxAnnotationDepth: 64,
   maxAxioms: 1000000,
   maxBlankNodes: 1000000,
-  maxEntityDeclarations: 256,
-  maxEntityExpansionDepth: 16,
-  maxEntityReplacementLength: 65536,
-  maxExpandedXmlBytes: 33554432,
+  ...XML_ENTITY_DEFAULTS,
   maxExpressionDepth: 512,
   maxImportCount: 256,
   maxImportDepth: 32,
