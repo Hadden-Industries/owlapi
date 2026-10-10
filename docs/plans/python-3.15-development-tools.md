@@ -58,6 +58,8 @@ Reassess this exact exception when a compatible stable Beartype is available.
 
 Quality tools and ScanCode use separate native uv lockfiles, both requiring Python `>=3.15.0`.
 ScanCode's build dependencies are frozen in its own lock and installed before source compilation with build isolation disabled; no hidden build resolver may select unrecorded versions.
+Scanner synchronization uses uv's temporary-cache mode: the source build expands beyond the Markdown discovery entry budget, so it must not retain that regenerable cache in the checkout.
+The installed environment and qualification reports remain available, and the directory-discovery limit and scan options remain unchanged.
 Explicit checkout-local bootstrap installs exact stable CPython 3.15.0 from pinned uv 0.13.0's native catalogue, because GitHub's Python manifest had not yet acquired stable 3.15.0.
 It changes neither PATH nor interpreter registration.
 

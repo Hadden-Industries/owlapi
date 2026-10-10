@@ -90,6 +90,9 @@ export const prepareScancode = async ({
   };
   const common = [
     "sync",
+    // Source archives expand to more entries than workspace discovery permits.
+    // uv owns a temporary cache per command; the installed environment survives.
+    "--no-cache",
     "--project",
     project,
     "--locked",
