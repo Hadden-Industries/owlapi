@@ -9,6 +9,7 @@ import {
 } from "./release-evidence.mjs";
 import { sha256File } from "./release-artifacts.mjs";
 import { validateReleaseEvidence } from "./validate-release-evidence.mjs";
+import { resolveRetainedApprovals } from "./release-approvals.mjs";
 import {
   PACKAGE_NAME,
   PACKAGE_VERSION,
@@ -316,6 +317,14 @@ const generateScopedEvidence = async () => {
       commit,
       provenance: registry.provenance,
     });
+  const retainedApprovals = await resolveRetainedApprovals({
+    client,
+    commit,
+    runId,
+    runAttempt,
+    jobs,
+    liveHistory: approvals,
+  });
   const workflow = {
     name: "Release",
     commit,
@@ -368,7 +377,7 @@ const generateScopedEvidence = async () => {
       draft: true,
       assets: draft.assets,
     },
-    approvals: flattenApprovals(approvals, generatedAt),
+    approvals: retainedApprovals.approvals,
     requiredJobs,
     extendedTests: [
       {
@@ -392,12 +401,15 @@ const generateScopedEvidence = async () => {
         reason: "NO_DEVICE_LAB_CONFIGURED",
       },
     ],
-    inputEvidence: names
-      .filter((name) => name !== "candidate" && name !== "output")
-      .map((name) => ({
-        name: basename(paths[name]),
-        sha256: sha256File(paths[name]),
-      })),
+    inputEvidence: [
+      ...retainedApprovals.inputs,
+      ...names
+        .filter((name) => name !== "candidate" && name !== "output")
+        .map((name) => ({
+          name: basename(paths[name]),
+          sha256: sha256File(paths[name]),
+        })),
+    ],
   });
   validateReleaseEvidence(evidence);
   writeFileSync(paths.output, `${JSON.stringify(evidence, null, 2)}\n`);

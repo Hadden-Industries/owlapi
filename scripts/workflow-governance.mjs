@@ -1203,7 +1203,9 @@ const validateReleaseMutationBoundary = (
   );
   requireFields(
     accepted?.permissions,
-    { contents: "read" },
+    reconciliation
+      ? { contents: "read" }
+      : { contents: "read", actions: "read" },
     `${fileName}:${acceptedId} permissions`,
     violations,
   );
@@ -1252,7 +1254,9 @@ const validateReleaseMutationBoundary = (
     {
       name: `${prefix} / npm ${reconciliation ? "direct bootstrap" : "trusted publisher"}`,
       environment: { name: "npm-release" },
-      permissions: { contents: "read", "id-token": "write" },
+      permissions: reconciliation
+        ? { contents: "read", "id-token": "write" }
+        : { contents: "read", "id-token": "write", actions: "read" },
     },
     `${fileName}:npm_release`,
     violations,
@@ -1312,12 +1316,21 @@ const validateReleaseMutationBoundary = (
     );
   add(
     violations,
-    actionSteps(publication, "actions/checkout").length === 0 &&
+    actionSteps(publication, "actions/checkout").length ===
+      (reconciliation ? 0 : 1) &&
+      (reconciliation ||
+        actionSteps(publication, "actions/checkout").every(
+          (step) =>
+            step.with?.ref === "${{ github.sha }}" &&
+            step.with?.["persist-credentials"] === false &&
+            step.with?.["fetch-depth"] === 1 &&
+            step.with?.path === "approval-tools",
+        )) &&
       publication?.permissions?.contents !== "write" &&
       occurrences(publication, "NPM_BOOTSTRAP_TOKEN") ===
         (reconciliation ? 1 : 0) &&
       occurrences(publication, "npm publish ") === 1,
-    `${fileName}:npm_release must have no checkout/write expansion or duplicate token/publish authority`,
+    `${fileName}:npm_release must isolate its pinned read-only approval checkout and avoid duplicate token/publish authority`,
   );
   if (reconciliation)
     add(
@@ -1353,6 +1366,59 @@ const validateReleaseMutationBoundary = (
   }
 
   const finalize = workflowJobs.finalize_release;
+  if (!reconciliation) {
+    for (const [id, environment] of [
+      ["tag_accepted", "release-manual"],
+      ["npm_release", "npm-release"],
+    ]) {
+      const gateSteps = steps(workflowJobs[id]);
+      const command = `node ${id === "npm_release" ? "approval-tools/" : ""}scripts/release-approvals.mjs --environment ${environment} --output .release/approval-${environment}.json`;
+      const captureIndex = gateSteps.findIndex((step) => step.run === command);
+      const uploadIndex = gateSteps.findIndex(
+        (step) =>
+          step.with?.name ===
+          `release-approval-${environment}-\u0024{{ github.run_id }}-\u0024{{ github.run_attempt }}`,
+      );
+      const effectIndex = gateSteps.findIndex((step) =>
+        step.run?.includes(
+          id === "npm_release" ? PUBLISH_COMMAND : "npm run release:verify-tag",
+        ),
+      );
+      add(
+        violations,
+        captureIndex >= 0 &&
+          uploadIndex > captureIndex &&
+          effectIndex > uploadIndex &&
+          gateSteps[captureIndex].if === "${{ github.run_attempt == 1 }}" &&
+          gateSteps[captureIndex].env?.GITHUB_TOKEN === "${{ github.token }}" &&
+          gateSteps[uploadIndex].if === "${{ github.run_attempt == 1 }}" &&
+          gateSteps[uploadIndex].with?.path ===
+            `.release/approval-${environment}.json` &&
+          gateSteps[uploadIndex].with?.overwrite === false &&
+          gateSteps[uploadIndex].with?.["if-no-files-found"] === "error" &&
+          gateSteps[uploadIndex].with?.["retention-days"] === 90,
+        `${fileName}:${id} must durably capture approval before effects and preserve it across reruns`,
+      );
+    }
+    const registryJob = workflowJobs.registry_verification;
+    const qualify = steps(registryJob).find((step) =>
+      step.run?.startsWith("npm run release:qualify-registry"),
+    );
+    const upload = steps(registryJob).find((step) => step.id === "upload");
+    add(
+      violations,
+      registryJob?.["timeout-minutes"] === 90 &&
+        isDeepStrictEqual(registryJob?.permissions, {
+          contents: "read",
+          actions: "read",
+        }) &&
+        qualify?.["timeout-minutes"] === 50 &&
+        qualify?.env?.GITHUB_TOKEN === "${{ github.token }}" &&
+        upload?.if === "${{ always() }}" &&
+        upload.with?.path === ".release/registry-verification.json",
+      `${fileName}:registry_verification must budget availability plus strict qualification and retain incomplete observations`,
+    );
+  }
   add(
     violations,
     isDeepStrictEqual(finalize?.permissions, { contents: "write" }) &&
@@ -2362,8 +2428,8 @@ export const auditRepositoryControls = ({
     Object.values(workflows).reduce(
       (count, workflow) => count + occurrences(workflow, "always()"),
       0,
-    ) === 1,
-    "always() is allowed only on CI / required",
+    ) === 2,
+    "always() is allowed only on CI / required and release registry evidence retention",
   );
   for (const fileName of ["ci.yml", "release.yml"])
     validateOwlContractQualification(

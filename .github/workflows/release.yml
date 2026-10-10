@@ -1463,6 +1463,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     permissions:
+      actions: read
       contents: read
     defaults:
       run:
@@ -1490,6 +1491,24 @@ jobs:
       - name: Install the reviewed tag-verification tools
         run: npm ci
         timeout-minutes: 15
+      - name: Capture the authenticated manual-gate approval
+        if: ${{ github.run_attempt == 1 }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/release-approvals.mjs --environment release-manual --output .release/approval-release-manual.json
+        timeout-minutes: 3
+      - name: Retain the manual-gate approval before publication
+        if: ${{ github.run_attempt == 1 }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: release-approval-release-manual-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/approval-release-manual.json
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 0
+          overwrite: false
+          include-hidden-files: false
+          archive: true
       - name: Verify the annotated tag, registered SSH signer, target, and GitHub result
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -1590,12 +1609,20 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     permissions:
+      actions: read
       contents: read
       id-token: write
     defaults:
       run:
         shell: bash
     steps:
+      - name: Check out the accepted approval-capture implementation
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+          path: approval-tools
       - name: Select Node 24.21.0 without npm token configuration
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
@@ -1618,6 +1645,24 @@ jobs:
         working-directory: .release/download
         run: sha256sum --check --strict SHA256SUMS
         timeout-minutes: 5
+      - name: Capture the authenticated publisher-gate approval
+        if: ${{ github.run_attempt == 1 }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node approval-tools/scripts/release-approvals.mjs --environment npm-release --output .release/approval-npm-release.json
+        timeout-minutes: 3
+      - name: Retain the publisher-gate approval before publication
+        if: ${{ github.run_attempt == 1 }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: release-approval-npm-release-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/approval-npm-release.json
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 0
+          overwrite: false
+          include-hidden-files: false
+          archive: true
       - name: Perform the authorized publication and exact-version channel writes
         # Failed-job reruns only resume registry verification of the first attempt.
         # An absent or mismatching publication fails there; it never authorizes another write.
@@ -1633,6 +1678,7 @@ jobs:
           echo "4f04d1456519fb75f23da51fce5174af0d4909ec7ea647cae2f4c9f4dc77b441  hadden-industries-owlapi-0.1.0-rc.2.tgz" | sha256sum --check --strict
           npm publish hadden-industries-owlapi-0.1.0-rc.2.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/
           npm dist-tag add @hadden-industries/owlapi@0.1.0-rc.2 latest --registry=https://registry.npmjs.org/
+          echo '{"state":"PUBLICATION_ACCEPTED","availability":"PENDING","publicationReplay":false}'
         timeout-minutes: 5
 
   registry_verification:
@@ -1643,8 +1689,9 @@ jobs:
       - metadata
       - npm_release
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 90
     permissions:
+      actions: read
       contents: read
     defaults:
       run:
@@ -1680,10 +1727,13 @@ jobs:
           skip-decompress: false
           digest-mismatch: error
       - name: Verify the fresh public coordinate, bytes, channel, signatures, and exports
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: npm run release:qualify-registry -- --candidate .release/download --output .release/registry-verification.json
-        timeout-minutes: 15
+        timeout-minutes: 50
       - name: Retain the public-registry evidence
         id: upload
+        if: ${{ always() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: release-registry-verification-${{ github.run_id }}-${{ github.run_attempt }}
