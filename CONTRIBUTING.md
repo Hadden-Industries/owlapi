@@ -59,10 +59,10 @@ Generated API views, upstream fixtures, and historical evidence retain their own
 
 Install the Node/npm versions declared in `package.json`, then run `npm ci`.
 For Markdown work, select Node 24.21.0 and explicitly run `npm run install:markdown`; canonical checks never install dependencies.
-Install CPython **3.14.7** and provide its absolute executable path during the explicit development-tool setup; for example, in PowerShell:
+Install CPython **3.15.0** and provide its absolute executable path during the explicit development-tool setup; for example, in PowerShell:
 
 ```powershell
-npm run tools:sync -- --python "C:\Path With Spaces\Python314\python.exe"
+npm run tools:sync -- --python "C:\Path With Spaces\Python315\python.exe"
 ```
 
 On Linux, use the same command with the installed interpreter's absolute path.
@@ -71,6 +71,10 @@ Later setup can use `npm run tools:sync` with the existing checkout interpreter.
 Checks use only these checkout tools and never synchronize dependencies.
 Foreign uv or virtual-environment settings cannot redirect the tool environment.
 Missing tools or a stale lock require explicit setup or a reviewed lock update.
+
+Alternatively, `node scripts/repository-python-tools.mjs python` explicitly installs the pinned CPython into `.development-tools/python/` using the pinned uv release's authenticated download catalogue, without PATH or Windows registry registration. CI uses this operation and passes its absolute interpreter path into later setup; checks still never download Python.
+
+ScanCode has its own `util/scancode-runtime/pyproject.toml` and `uv.lock`. Its source build uses the same Python pin, installs locked build dependencies first, and disables further build dependency resolution. Beartype `0.23.0rc2` is the sole owner-approved prerelease exception because stable `0.22.9` imports a typing API removed in Python 3.15. Reassess it when a compatible stable version is released. CI qualifies Windows and Linux findings against independently captured ScanCode 32.5.0 reports; a smoke qualification does not replace the full release corpus acquisition gates.
 
 Run the gates before opening or updating a pull request:
 

@@ -1227,6 +1227,7 @@ const retainReusableArtifact = async (
   };
 };
 
+/** Compare exact evidence semantics while preserving the historical interpreter observation. */
 export const compareCommittedEvidence = async ({
   repositoryRoot,
   manifest,
@@ -1245,7 +1246,35 @@ export const compareCommittedEvidence = async ({
       error,
     );
   }
-  if (stableJson(committed) !== stableJson(manifest)) {
+  const ajv = new Ajv2020({ allErrors: true, strict: true });
+  addFormats(ajv);
+  const validate = ajv.compile(
+    JSON.parse(
+      await readFile(
+        join(
+          DEFAULT_REPOSITORY_ROOT,
+          "docs/provenance/npm-package-evidence.schema.json",
+        ),
+        "utf8",
+      ),
+    ),
+  );
+  for (const document of [committed, manifest]) {
+    if (!validate(document))
+      controlFailure(
+        "COMMITTED_EVIDENCE_SCHEMA_INVALID",
+        `Evidence comparison requires valid runtime and semantic policy records: ${stableJson(validate.errors)}`,
+      );
+  }
+  // Python is an execution observation, not a scan finding. Do not rewrite the
+  // published 3.14 corpus to claim a 3.15 run. Every other field, including all
+  // normalized scan digests and semantic/execution options, must remain exact.
+  const comparable = (document) => {
+    const copy = structuredClone(document);
+    delete copy.policy.scanner.pythonVersion;
+    return copy;
+  };
+  if (stableJson(comparable(committed)) !== stableJson(comparable(manifest))) {
     controlFailure(
       "COMMITTED_EVIDENCE_DIFFERENT",
       "Fresh npm package evidence differs from the committed corpus",

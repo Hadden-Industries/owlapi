@@ -2527,6 +2527,7 @@ bundle licence and notice review.
     );
     expect([...materialsById.keys()].sort(compareCodeUnits)).toEqual([
       "apache-2.0-license-text",
+      "beartype-scancode-prerelease-exception",
       "contributor-covenant-3.0",
       "generated-w3c-conformance-manifests",
       "gnu-agpl-3.0-only-license-text",
@@ -2535,6 +2536,7 @@ bundle licence and notice review.
       "java-owlapi-reference-fixtures",
       "java-reference-publication-source-notice-materials",
       "ruff-development-tool",
+      "scancode-development-source-build",
       "shared-markdown-quality-development-tool",
       "universal-ontology-documentation-tooling",
       "uv-development-bootstrap",

@@ -46,20 +46,8 @@ export const SCANCODE_EXECUTION_OPTIONS = Object.freeze(["--processes", "1"]);
 export const SCANCODE_TOOL = Object.freeze({
   name: "scancode-toolkit",
   version: "32.5.0",
-  pythonVersion: "3.14",
+  pythonVersion: "3.15",
   outputFormatVersion: SCANCODE_OUTPUT_FORMAT_VERSION,
-  assets: Object.freeze({
-    windows: Object.freeze({
-      url: "https://github.com/aboutcode-org/scancode-toolkit/releases/download/v32.5.0/scancode-toolkit-v32.5.0_py3.14-windows.zip",
-      sha256:
-        "74dfca9f0f2a607dbc90cfbfd03df1ed5b3e7e4b3a12dbb028e0d158c1311ec5",
-    }),
-    linux: Object.freeze({
-      url: "https://github.com/aboutcode-org/scancode-toolkit/releases/download/v32.5.0/scancode-toolkit-v32.5.0_py3.14-linux.tar.gz",
-      sha256:
-        "02be93341e2f9775f88b4abd03cdd74f2e4de91941a12a1d8cd150eeb72a0945",
-    }),
-  }),
 });
 
 const isObject = (value) =>

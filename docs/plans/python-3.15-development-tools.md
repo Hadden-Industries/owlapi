@@ -48,3 +48,17 @@ Fixture parity is bounded evidence; complete acquisition qualification and indep
 Rollback preserves the original locked tool declarations and scanner archives.
 Temporary environments are isolated, explicitly owned and released after their consumers finish; retain reports, exact input identities and failure logs independently.
 No global interpreter installation is planned.
+
+## Accepted compatibility design and current evidence
+
+The owner approved the scoped Beartype `0.23.0rc2` prerelease exception for unmodified source-built ScanCode `32.5.0` on Python 3.15. Stable Beartype `0.22.9` fails at CLI startup because Python 3.15 removed `typing.no_type_check_decorator`. No source patch, monkey patch, weakened scan option or Python 3.14 execution fallback is accepted. Reassess this exact exception when a compatible stable Beartype is available.
+
+Quality tools and ScanCode use separate native uv lockfiles, both requiring Python `>=3.15.0`. ScanCode's build dependencies are frozen in its own lock and installed before source compilation with build isolation disabled; no hidden build resolver may select unrecorded versions. Explicit checkout-local bootstrap installs exact stable CPython 3.15.0 from pinned uv 0.13.0's native catalogue, because GitHub's Python manifest had not yet acquired stable 3.15.0. It changes neither PATH nor interpreter registration.
+
+Fresh Windows qualification of the locked source build passed: the five-file licence/package/generated/unknown-licence fixture and authenticated N3 2.7.12's 34 files have identical full normalized report digests to the independently authenticated official Python 3.14 ScanCode distribution. The first maintained fixture run exposed an input-directory basename mismatch retained in nested licence references; its failed reports remain preserved. Correcting the fixture basename restored equality without changing the oracle or normalizer. These are bounded compatibility observations, not a complete npm corpus scan or Linux proof.
+
+CI's existing Linux source and Windows quality jobs now exercise that same real scanner qualifier and retain raw and normalized reports. Release and extended qualification keep their full acquisition contracts. No workflow dispatch or publication is part of this task.
+
+Historical manifests and reports retain their recorded Python 3.14 identity. Comparison validates both documents against the authority schema, permits recorded Python 3.14/3.15, and excludes only the runtime observation from semantic comparison; every remaining manifest field and immutable evidence digest must agree. Reuse still requires exact current policy, so historical evidence cannot be claimed as a fresh Python 3.15 scan. Unknown runtimes and changed options are rejected by negative controls.
+
+The updated Ruff/uv notices and installed scanner dependency declarations/notices are retained as development-only material. Changed facts invalidate former human-review status; prerelease acceptance is not a legal or release approval. Final reviews and hosted Windows/Linux qualification remain integration prerequisites.

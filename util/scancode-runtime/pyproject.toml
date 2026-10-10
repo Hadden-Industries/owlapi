@@ -1,0 +1,24 @@
+# ScanCode is isolated from quality tooling and the shipped npm package.
+[project]
+name = "owlapi-scancode-runtime"
+version = "0.0.0"
+requires-python = ">=3.15.0"
+dependencies = ["scancode-toolkit==32.5.0", "beartype==0.23.0rc2"]
+
+# Install this locked group first. Source builds then use these exact packages
+# without a separate, unrecorded PEP 517 build dependency resolution.
+[dependency-groups]
+build = [
+    "Cython==3.3.0",
+    "packaging==26.3",
+    "setuptools==84.0.0",
+    "setuptools-scm==10.3.4",
+    "wheel==0.48.0",
+]
+
+[tool.uv]
+package = false
+required-version = "==0.13.0"
+default-groups = []
+no-build-isolation = true
+no-binary-package = ["scancode-toolkit"]

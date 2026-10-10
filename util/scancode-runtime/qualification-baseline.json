@@ -1,0 +1,29 @@
+{
+  "cases": [
+    {
+      "artifactId": "python315-compatibility-fixture",
+      "expectedSha256": "5c9a4a306fcb953f79a8d6bc6336b431a4bacb5a533ce65816a40eb0708836dd",
+      "fileCount": 5,
+      "id": "representative"
+    },
+    {
+      "artifactId": "n3-2.7.12-compatibility",
+      "expectedSha256": "da7fd690afd51e70884ad69e2b349d92a0df86a8446efbfa33d31572b19f9b47",
+      "fileCount": 34,
+      "id": "n3",
+      "integrity": "sha512-Hy6dfGg9yniLQpSBirvH2E2yO3EG7dSmA3aefRbtO411oqtzG8roD3h1kTc/N065bivCOPfTFIjf0KlwW7KlnQ==",
+      "name": "n3",
+      "version": "2.7.12"
+    }
+  ],
+  "normalizationVersion": 1,
+  "oracle": {
+    "archiveSha256": "74dfca9f0f2a607dbc90cfbfd03df1ed5b3e7e4b3a12dbb028e0d158c1311ec5",
+    "capturedOn": "2026-10-10",
+    "evidenceReference": "HISEW operator/790109839be841f0a3ad4765484f2733: comparison-v2 and comparison-n3; identical unmodified-source Python 3.15 probe reports",
+    "platform": "windows",
+    "pythonVersion": "3.14.8",
+    "scancodeVersion": "32.5.0"
+  },
+  "schemaVersion": 1
+}

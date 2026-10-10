@@ -24,11 +24,11 @@
   },
   "review": {
     "status": "REVIEWED",
-    "factsSha256": "5dee319142e0a6bfdf37ca0325dfaa15b1365c371aa92af1ec3eaf1ad78cf0b2",
+    "factsSha256": "3f21e02b61b524bcd8a870848ad23aa3b0685410bd4648f097f57f6f46d05d9c",
     "reviewer": "Maksym Shostak",
     "reviewedOn": "2026-10-10",
-    "capacity": "Project maintainer, identified original contributor and accountable release owner",
-    "conclusion": "Approved the current digest-bound rights and dependency records and release of the exact rc.2 artifact SHA-256 4f04d1456519fb75f23da51fce5174af0d4909ec7ea647cae2f4c9f4dc77b441 by direct human instruction in Codex session 01a12138-f264-7b50-9365-91c88701e54b. No external legal advice or approval of changed facts is inferred."
+    "capacity": "Project maintainer and accountable dependency decision owner",
+    "conclusion": "Approved this exact updated development dependency/rights record by direct human instruction in Codex session 01a12138-f264-7b50-9365-91c88701e54b. Includes Ruff 0.17.0, uv 0.13.0, source-built ScanCode 32.5.0, the exact scoped Beartype 0.23.0rc2 exception and the locked scanner/build graph with 102 retained upstream notices. Tools remain development-only; Linux qualification and final reviews remain required. No package publication or approval of changed facts is inferred."
   },
   "summary": {
     "componentCount": 710,
@@ -94,7 +94,7 @@
       "MPL-2.0": 12,
       "Python-2.0": 1
     },
-    "materialCount": 15
+    "materialCount": 17
   },
   "components": [
     {
@@ -39304,6 +39304,44 @@
       "rationale": "The separately classified licence text accompanies the compatibility metadata without being conflated with its generated or project-authored expression."
     },
     {
+      "id": "beartype-scancode-prerelease-exception",
+      "relationship": "DEVELOPMENT_ONLY",
+      "name": "Beartype scoped ScanCode compatibility dependency",
+      "versionOrRevision": "0.23.0rc2",
+      "licenseAssessments": [
+        {
+          "scope": "Development tooling or adapted test/configuration source",
+          "declaredLicenseExpression": "MIT",
+          "concludedLicenseExpression": "MIT",
+          "licenseConclusionRationale": "The retained source/distribution terms support repository development use under the recorded licence; no human review or release acceptance is inferred.",
+          "distributionDisposition": "REPOSITORY_ONLY_NOT_IN_PACKAGE"
+        }
+      ],
+      "sourceUrl": "https://github.com/beartype/beartype",
+      "evidenceFiles": [
+        {
+          "path": "util/scancode-runtime/pyproject.toml",
+          "sha256": "748f590d093bd50bc362a33dbfc84fe0beda567d7ff86e2d5dfb4eec111004ea"
+        },
+        {
+          "path": "util/scancode-runtime/uv.lock",
+          "sha256": "bf6780a685b0e9cb75e93f3b0d2581d199d2adef9a0f6652bacde14b7529fd3a"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/beartype-0.23.0rc2/licenses/LICENSE",
+          "sha256": "c7d3148ab7a1e87f643e7a79b15e933b6d41fe50d723341226c5188f2e227938"
+        }
+      ],
+      "treeEvidence": null,
+      "attributionText": [
+        "Copyright (c) 2014-2026 Beartype authors. The owner approved only this exact prerelease for unmodified ScanCode 32.5.0 on Python 3.15, conditional on frozen dependencies, unchanged options, Windows/Linux qualification and final review. Reassess when a compatible stable Beartype is released. The exception grants no release approval."
+      ],
+      "packageTarballScope": false,
+      "deployedApplicationScope": "NOT_APPLICABLE",
+      "noticeDisposition": "DEVELOPMENT_ONLY_RETAINED_LICENSE_SOURCE_AND_REVISION",
+      "rationale": "Development tooling is isolated from the published JavaScript runtime; native locked setup/checks qualify the selected Python graphs, while this record binds the exact retained inputs and terms."
+    },
+    {
       "id": "contributor-covenant-3.0",
       "relationship": "EMBEDDED_OR_COPIED",
       "name": "Contributor Covenant",
@@ -39422,7 +39460,7 @@
         },
         {
           "path": "scripts/repository-python-tools.mjs",
-          "sha256": "fb33fe270bc38886d1bfe154942767005a21a557e14a1c4e582b34150e11298c"
+          "sha256": "f2c74869f15b36b75decc75941ed7214c95ce84ffeae3eb793e6d78a15ff3e21"
         }
       ],
       "treeEvidence": null,
@@ -39432,7 +39470,7 @@
       "packageTarballScope": false,
       "deployedApplicationScope": "NOT_APPLICABLE",
       "noticeDisposition": "DEVELOPMENT_ONLY_RETAINED_LICENSE_SOURCE_AND_REVISION",
-      "rationale": "Quality tooling is isolated from the published JavaScript runtime; native locked setup/checks qualify the Python graph, while this record binds the exact retained inputs and terms."
+      "rationale": "Development tooling is isolated from the published JavaScript runtime; native locked setup/checks qualify the selected Python graphs, while this record binds the exact retained inputs and terms."
     },
     {
       "id": "java-owlapi-api-identity-metadata",
@@ -39574,7 +39612,7 @@
       "id": "ruff-development-tool",
       "relationship": "DEVELOPMENT_ONLY",
       "name": "Ruff development formatter and linter",
-      "versionOrRevision": "0.16.9",
+      "versionOrRevision": "0.17.0",
       "licenseAssessments": [
         {
           "scope": "Development tooling or adapted test/configuration source",
@@ -39588,18 +39626,18 @@
       "evidenceFiles": [
         {
           "path": "pyproject.toml",
-          "sha256": "8f4ea4384cdd12a549baacbfa56ac1d58bdcf1f38572a2ac51ef08d8cfee6c2a"
+          "sha256": "6d585a8bcd9009eb459dbb3a95405da39def326328e79a9c8fb311c1aac4c67a"
         },
         {
           "path": "uv.lock",
-          "sha256": "2ad00b7f3e2f674e7e2e7772a43db14eb2a0f9e44ce9e769ef79fdf9c6fdc9df"
+          "sha256": "2fcc3e7adcb8eb234ee85558a4539396a08ced08eb8b2277a127a09295068d5f"
         },
         {
           "path": "ruff.toml",
-          "sha256": "6515cb6c9d93267538677b8d037587782b1c93c63163c5734628591c5edae246"
+          "sha256": "a765a28db8ce8fd49481ecd57de60e76ccbc07a30281a69bcb82c0d9dfa8ff7c"
         },
         {
-          "path": "LICENSES/development/ruff-0.16.9.txt",
+          "path": "LICENSES/development/ruff-0.17.0.txt",
           "sha256": "2597d854122b77ddc71971564ca2350a37608575ce324adc5650a2b2051c8f18"
         }
       ],
@@ -39610,7 +39648,457 @@
       "packageTarballScope": false,
       "deployedApplicationScope": "NOT_APPLICABLE",
       "noticeDisposition": "DEVELOPMENT_ONLY_RETAINED_LICENSE_SOURCE_AND_REVISION",
-      "rationale": "Quality tooling is isolated from the published JavaScript runtime; native locked setup/checks qualify the Python graph, while this record binds the exact retained inputs and terms."
+      "rationale": "Development tooling is isolated from the published JavaScript runtime; native locked setup/checks qualify the selected Python graphs, while this record binds the exact retained inputs and terms."
+    },
+    {
+      "id": "scancode-development-source-build",
+      "relationship": "DEVELOPMENT_ONLY",
+      "name": "ScanCode development scanner and retained dependency notices",
+      "versionOrRevision": "32.5.0",
+      "licenseAssessments": [
+        {
+          "scope": "Development tooling or adapted test/configuration source",
+          "declaredLicenseExpression": "Apache-2.0 AND CC-BY-4.0",
+          "concludedLicenseExpression": "Apache-2.0 AND CC-BY-4.0",
+          "licenseConclusionRationale": "The retained source/distribution terms support repository development use under the recorded licence; no human review or release acceptance is inferred.",
+          "distributionDisposition": "REPOSITORY_ONLY_NOT_IN_PACKAGE"
+        }
+      ],
+      "sourceUrl": "https://github.com/aboutcode-org/scancode-toolkit",
+      "evidenceFiles": [
+        {
+          "path": "util/scancode-runtime/pyproject.toml",
+          "sha256": "748f590d093bd50bc362a33dbfc84fe0beda567d7ff86e2d5dfb4eec111004ea"
+        },
+        {
+          "path": "util/scancode-runtime/uv.lock",
+          "sha256": "bf6780a685b0e9cb75e93f3b0d2581d199d2adef9a0f6652bacde14b7529fd3a"
+        },
+        {
+          "path": "util/scancode-runtime/qualification-baseline.json",
+          "sha256": "34226a95e5e7dc27ea9f1bc57829eb44e79c2f5227e413ac24f7057b9726ce0d"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/inventory.json",
+          "sha256": "dc44645963c7c394313dc25ede20cb40bbf9f575f5a63793923f4723443b43d6"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/attrs-26.1.0/licenses/LICENSE",
+          "sha256": "882115c95dfc2af1eeb6714f8ec6d5cbcabf667caff8729f42420da63f714e9f"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/banal-1.1.2/licenses/LICENSE",
+          "sha256": "0005250484990c45980c459e0f46252cfa5fa9b7d775a3b5876bdb026eaf47fe"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/beartype-0.23.0rc2/licenses/LICENSE",
+          "sha256": "c7d3148ab7a1e87f643e7a79b15e933b6d41fe50d723341226c5188f2e227938"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/beautifulsoup4-4.15.0/licenses/AUTHORS",
+          "sha256": "b989238918e1fdac1e46717cb405b63e92497a272413af0d989c1df6c8abcb6f"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/beautifulsoup4-4.15.0/licenses/LICENSE",
+          "sha256": "55b4d8d4b1e5bc86d10efac91b74c87bcb77526b0f5b9edaf8b9cd2adc7397b2"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/binaryornot-0.6.0/licenses/LICENSE",
+          "sha256": "03f46bf43c101e64af64b9f818ac9783618290f725296881759c93c92d2f7968"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/boolean.py-5.0/licenses/LICENSE.txt",
+          "sha256": "5ea0cdf8cfc824b446cccf597ff6518c3607a659e9804bc75f1261f9c6ac4ada"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/certifi-2026.7.22/licenses/LICENSE",
+          "sha256": "e93716da6b9c0d5a4a1df60fe695b370f0695603d21f6f83f053e42cfc10caf7"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/cffi-2.1.1/licenses/LICENSE",
+          "sha256": "5ba24ddc57067f9249add644c3afc41a5d6dc37e23433ef759d95df370b0af63"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/chardet-7.6.0/licenses/LICENSE",
+          "sha256": "0517f574b0183d991eb7a9ec5dbf0add8d8ade5ac00341bd28ca0c18914d52e5"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/charset-normalizer-3.5.2/licenses/LICENSE",
+          "sha256": "18577485d3704f1a479ded8e573c0976cfed315fd2fd17983fa988da4c2f70d1"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/click-8.5.0/licenses/LICENSE.txt",
+          "sha256": "9a8ad106a394e853bfe21f42f4e72d592819a22805d991b5f3275029292b658d"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/colorama-0.4.6/licenses/LICENSE.txt",
+          "sha256": "cac35c02686e5d04a5a7140bfb3b36e73aed496656e891102e428886d7930318"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/commoncode-33.0.0/AUTHORS.rst",
+          "sha256": "28f1c004752fbb41d489fe123f4e1fab65de2a68d541a169204e4393ace06bb9"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/commoncode-33.0.0/NOTICE",
+          "sha256": "9049f9f2fca9ff13140af12a552d015fda6d4db09ae38e5a0323d73f69874691"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/container-inspector-33.1.0/licenses/AUTHORS.rst",
+          "sha256": "3861effd5a916b869622b70aa274a233bb4921c091f37e9c587d6e7527d49f51"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/container-inspector-33.1.0/licenses/NOTICE",
+          "sha256": "789e0f0a63a4b7c8101539a9996cf43993d8bee5b45be32988aa56db9ed6932c"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/cryptography-50.0.2/licenses/LICENSE",
+          "sha256": "3e0c7c091a948b82533ba98fd7cbb40432d6f1a9acbf85f5922d2f99a93ae6bb"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/cryptography-50.0.2/licenses/LICENSE.APACHE",
+          "sha256": "aac73b3148f6d1d7111dbca32099f68d26c644c6813ae1e4f05f6579aa2663fe"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/cryptography-50.0.2/licenses/LICENSE.BSD",
+          "sha256": "602c4c7482de6479dd2e9793cda275e5e63d773dacd1eca689232ab7008fb4fb"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/cyseq-0.1.3/licenses/AUTHORS.rst",
+          "sha256": "d4cb271ba5897b8a7d3daff21cf803258986d61e36e14808d52de635fe81e872"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/cyseq-0.1.3/licenses/NOTICE",
+          "sha256": "7e42c8973c8ff3358d9cf6c5497913227360625df94c71f9f89f2f30ab8dce17"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/debian_inspector-31.1.1/licenses/NOTICE",
+          "sha256": "7154f05497644992988a93cac79642ec32042b25f23ed354af6e91438ee13ace"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/dockerfile-parse-2.0.1/LICENSE",
+          "sha256": "91b6c3aa9ce5f52abcee11831e7faa2d376d16d30bcba38e06d7ec10b90c00ee"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/dparse2-0.7.0/LICENSE",
+          "sha256": "95897eb64933e7029af75f5205e98b6aca12bec45ea5ce09b85371645c025a3a"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/extractcode-31.1.0/licenses/AUTHORS.rst",
+          "sha256": "d382beb1729f6cd96b3edfe1f2869959dbf58d68074950cb442a67797660f1d6"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/extractcode-31.1.0/licenses/NOTICE",
+          "sha256": "8199b74243a038451b2aa631be7b6629c837f88b4f085ec9c15ffb15dd0e8a92"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/extractcode-7z-16.5.210531/LICENSE.txt",
+          "sha256": "0974bb5addc6e06c48911f8a292f7eb3b48f552073c5255ee9d70713d556f87f"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/extractcode-libarchive-3.5.1.210531/LICENSE.txt",
+          "sha256": "0dc6e562c11953ebb0d30cb2c64ba8d242ef468dfba490d6e139af32b27d57cf"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/fasteners-0.20/licenses/LICENSE",
+          "sha256": "d2de2f566d2d0e0b509fb0ea1fa3669f49064ab1de21c57453cab3750a234e8f"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/fingerprints-1.2.3/LICENSE",
+          "sha256": "4fd680e6e024d8fba2579b9b9a572b88f335c0e58bf5e4d3537fe8dcf700e5c4"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/ftfy-6.3.1/licenses/LICENSE.txt",
+          "sha256": "a0bfc5020bc2e1e820551a0625c70c95faa898c15e737100ff4880aa10197857"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/gemfileparser2-0.9.4/LICENSE.GPLv3",
+          "sha256": "8b9b96df553f41e684095457290b4fee31e891bfe7ef0aa7c4945de013cc9944"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/gemfileparser2-0.9.4/LICENSE.MIT",
+          "sha256": "9cec13ce50070373dc2e438e11d366d41a2c5dee59923616b09c00dd0e1a2bd9"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/html5lib-1.1/AUTHORS.rst",
+          "sha256": "0eb3403227e80e9b90c899fe296f87e8af13b766b9aca9d5d94178f8346b1942"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/html5lib-1.1/LICENSE",
+          "sha256": "16a39991619e92f18680932da2a9199fdf7d95df3ecaedc52ea06218aabafd6f"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/idna-3.20/licenses/LICENSE.md",
+          "sha256": "1a9a4f0e3d479a27240ddd59a9137a66ab4a0f9dfdc8ca6188cc0bfd85187f04"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/importlib_metadata-9.0.1/licenses/LICENSE",
+          "sha256": "e2f7bb0557e7a381499f15baa7c1d776d83d6616599179d71d3109b8e39f7b25"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/intbitset-4.1.2/licenses/AUTHORS.rst",
+          "sha256": "eedb5b6435d9acb35d676edcbec7c9ef0980ccd1561f5ce6a9e30a7b22348589"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/intbitset-4.1.2/licenses/LICENSE",
+          "sha256": "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/jaraco.functools-4.6.0/licenses/LICENSE",
+          "sha256": "9755a18519666e5f0f4cae3daad3d7012bcae48a600b31237d75e9fe134e6683"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/javaproperties-0.8.2/licenses/LICENSE",
+          "sha256": "856a2c0cc2124984c5cd75dd607da94d97b13a26d9af7991223929e444e8abdb"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/jinja2-3.1.6/licenses/LICENSE.txt",
+          "sha256": "3b49dcee4105eb37bac10faf1be260408fe85d252b8e9df2e0979fc1e094437b"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/jsonstreams-0.6.0/LICENSE",
+          "sha256": "1918eab7463da05add6a6aa7676907ab767654ca6f696c31835674246e8eadb3"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/license-expression-30.4.4/licenses/AUTHORS.rst",
+          "sha256": "d281b77e2e6dd089de830c623cf1c31e029d8232d0bd762005bf69bd5417f8e9"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/license-expression-30.4.4/licenses/NOTICE",
+          "sha256": "ef97db07e32f6e5d34363461acf5acc7d72db924533bce3d9f3b87046313363c"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/lxml-6.1.3/licenses/LICENSE.txt",
+          "sha256": "e7c3ce8d76331b0101cc46790ab43958ea90a364bcf962ed8763d5a818340e69"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/lxml-6.1.3/licenses/LICENSES.txt",
+          "sha256": "df682c668de65321677b5e4861dca4128a8bad8067f230956e9da3f985b3d398"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/markupsafe-3.0.4/licenses/LICENSE.txt",
+          "sha256": "4631ec0db5fd90a547e336817264c6798214338146f8ac94b4a57f96ee8c9ec4"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/more-itertools-11.1.0/licenses/LICENSE",
+          "sha256": "09f1c8c9e941af3e584d59641ea9b87d83c0cb0fd007eb5ef391a7e2643c1a46"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/multiregex-2.0.4/licenses/LICENSE",
+          "sha256": "f224e1eb74509c944792c2dac505850360b85b16976549cdf4bb2f52339d2858"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/normality-2.6.1/licenses/LICENSE",
+          "sha256": "9f7c8b48bbc47535f6ca9fc8c912a7f25e795b5811fe371f3747f35862de909a"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/packaging-26.3/licenses/LICENSE",
+          "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/packaging-26.3/licenses/LICENSE.APACHE",
+          "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/packaging-26.3/licenses/LICENSE.BSD",
+          "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/packvers-21.5/LICENSE",
+          "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/packvers-21.5/LICENSE.APACHE",
+          "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/packvers-21.5/LICENSE.BSD",
+          "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/parameter-expansion-patched-0.3.1/LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/pdfminer.six-20260107/licenses/LICENSE",
+          "sha256": "f01e5d699a33766b5caf4a5099f2856aba4f3f75ea1df05dc0572b34b4bea8f2"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/pefile-2024.8.26/LICENSE",
+          "sha256": "b44409c067c6da52bfb54bb6624fb11a7b52157c3a13ae1400232f8196e86ad3"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/pip-requirements-parser-32.0.1/AUTHORS.rst",
+          "sha256": "b25584f1e37242efa242a0f096c581892e1e4b910b992c510a4531110edbcb6f"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/pluggy-1.6.0/licenses/LICENSE",
+          "sha256": "d6b65e6c213a5d0b577911d34d6e5949b9f59d76c238c5071a2f3fc16cfb2606"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/plugincode-32.0.0/AUTHORS.rst",
+          "sha256": "96f54b7f596bb8fe45880940c1c03d65ecadb6af71615998ad3b463c69e4e616"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/plugincode-32.0.0/NOTICE",
+          "sha256": "e8ac8caca8845cdf00386e7ea7a040ca04da6b1296596038dc37c59b67552ee8"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/publicsuffix2-2.20191221/AUTHORS.rst",
+          "sha256": "1bab88e1393038e376b1e2d9673bb272598288b416251e3e18728b6fc2e968bb"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/pyahocorasick-2.3.1/licenses/LICENSE",
+          "sha256": "2a7f4000fcb22199112e682ae44400f8836b9ff2500c46a8bed7d0edc93b2185"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/pycparser-3.11/licenses/LICENSE",
+          "sha256": "0a9e78156ae8b96caf1b4f11ac2df424b83de29736f9e757630548a6272fdf90"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/pygmars-1.0.0/licenses/AUTHORS.rst",
+          "sha256": "25901b8d88623da33971a70575a5ad5aa2ad480aefe9756f34b670dfb3f7cdb8"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/pygmars-1.0.0/licenses/NOTICE",
+          "sha256": "6a10004abf53332291041e087839a86aec798b4ae4ad3b7511ac13545aeb104b"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/pygments-2.21.0/licenses/AUTHORS",
+          "sha256": "71a83872ad82f57be692cf827e048e2cd51d45169cfa1ea3f28706d97a872c0f"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/pygments-2.21.0/licenses/LICENSE",
+          "sha256": "a9d66f1d526df02e29dce73436d34e56e8632f46c275bbdffc70569e882f9f17"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/pymaven-patch-0.3.2/LICENSE",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/pyparsing-3.3.3/licenses/LICENSE",
+          "sha256": "a5425f9dc14ac74d4c5f0b679e941f2442e32cca7452a4418d5b1a49893ebe4e"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/pyyaml-6.0.3/licenses/LICENSE",
+          "sha256": "8d3928f9dc4490fd635707cb88eb26bd764102a7282954307d3e5167a577e8a4"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/rdflib-7.6.0/LICENSE",
+          "sha256": "53a705e51bfd199e8c97d0442376cb4bbd4ffcf13ba4f2c4c2794211400e4012"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/requests-2.34.2/licenses/LICENSE",
+          "sha256": "09e8a9bcec8067104652c168685ab0931e7868f9c8284b66f5ae6edae5f1130b"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/requests-2.34.2/licenses/NOTICE",
+          "sha256": "f5110972dedad2b4e9d314518daf3b7d72d6e02e499acd802181de6f74571dcc"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/saneyaml-0.6.1/AUTHORS.rst",
+          "sha256": "b25584f1e37242efa242a0f096c581892e1e4b910b992c510a4531110edbcb6f"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/saneyaml-0.6.1/NOTICE",
+          "sha256": "7e42c8973c8ff3358d9cf6c5497913227360625df94c71f9f89f2f30ab8dce17"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/scancode-toolkit-32.5.0/licenses/AUTHORS.rst",
+          "sha256": "516c69e136229518d9825e9f3332e24ea0610988ddcc0fae32ab8bfd15d878cb"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/scancode-toolkit-32.5.0/licenses/NOTICE",
+          "sha256": "9049f9f2fca9ff13140af12a552d015fda6d4db09ae38e5a0323d73f69874691"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/semantic-version-2.10.0/LICENSE",
+          "sha256": "a85e7ef2fbc670d26781ed6844cd31a7e8ada65d21328f75a0b02402faae37ea"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/setuptools-84.0.0/licenses/LICENSE",
+          "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/setuptools-scm-10.3.4/licenses/LICENSE",
+          "sha256": "89807acf2309bd285f033404ee78581602f3cd9b819a16ac2f0e5f60ff4a473e"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/six-1.17.0/LICENSE",
+          "sha256": "4375ba20e2b9c6c4e7cad2940a628fd90e95cc3d50ee92aae755715d8ba1fbd0"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/soupsieve-2.10/licenses/LICENSE.md",
+          "sha256": "76a0acdb98c3a63681e20b6f096699ef8cad5fb35d56eef8387e0fa71d797a9a"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/spdx-tools-0.8.2/LICENSE",
+          "sha256": "c5accbbd8546e94c34aed24afe689a617627d18eed5a6c48277e48db57c23851"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/text-unidecode-1.3/LICENSE.txt",
+          "sha256": "3938e7535c3e4ef7e6363de9b693fe3bafe3c4a5e5f4925cd48375096fe7afd5"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/toml-0.10.2/LICENSE",
+          "sha256": "2d9294823df6c89357c8be4927fce79361d6561e5ee7532d5926e63939aaa536"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-30.2.0/licenses/AUTHORS.rst",
+          "sha256": "e18095637f625a3d2dd4410fadd74ea9e5dda01c88af843d09b315e0e5835cac"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-30.2.0/licenses/NOTICE",
+          "sha256": "112b2342eba22f3558bcf26c48d34bded65df3c4c9974c17d3117c374553976f"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typing_extensions-4.16.0/licenses/LICENSE",
+          "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/uritools-6.1.3/licenses/LICENSE",
+          "sha256": "28c000b52b0ee27138a68ef778227e4057046e86b65f62f1cacb99b0cc49e0d2"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/urllib3-2.8.0/licenses/LICENSE.txt",
+          "sha256": "130e3a64d5fdd5d096a752694634a7d9df284469de86e5732100268041e3d686"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/urlpy-0.5/LICENSE",
+          "sha256": "2227fac28920cf09624d4cae5fb6673cf62fccf3c096bce14bab524561c4836a"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/vcs-versioning-2.6.0/licenses/LICENSE.txt",
+          "sha256": "f52f6085a2f4acdb7f425fac78d4bb013b2d723616792fb173a9f8aea191d8f0"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/wcwidth-0.9.2/licenses/LICENSE",
+          "sha256": "dff08668b8cfca00ec90011eb318e450c3719fcd40893bf375781a6beef7143a"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/webencodings-0.6.1/licenses/LICENSE",
+          "sha256": "e06ef33485e7498ad592887c41fa79cc8a7fecde576c7210e11bfdddef58040e"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/wheel-0.48.0/licenses/LICENSE.txt",
+          "sha256": "30c23618679108f3e8ea1d2a658c7ca417bdfc891c98ef1a89fa4ff0c9828654"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/xmltodict-1.0.4/licenses/LICENSE",
+          "sha256": "d66d5eb8f83a0ba21d3dd04318b8817588e8764daabea852d1035e3f07ffda55"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/zipp-4.1.1/licenses/LICENSE",
+          "sha256": "9755a18519666e5f0f4cae3daad3d7012bcae48a600b31237d75e9fe134e6683"
+        }
+      ],
+      "treeEvidence": null,
+      "attributionText": [
+        "Copyright (c) nexB Inc. and others. ScanCode is a trademark of nexB Inc. Software is Apache-2.0; scanner data is CC-BY-4.0. Source-built without patches on Python 3.15 using a separate hash-locked runtime/build graph. Retained dependency declarations and exact Windows distribution notices identify their respective terms; the scanner licence is not a conclusion about those dependencies. No scanner, dependency binary or data is packed into OwlAPI. Linux native qualification remains a separate obligation."
+      ],
+      "packageTarballScope": false,
+      "deployedApplicationScope": "NOT_APPLICABLE",
+      "noticeDisposition": "DEVELOPMENT_ONLY_RETAINED_LICENSE_SOURCE_AND_REVISION",
+      "rationale": "Development tooling is isolated from the published JavaScript runtime; native locked setup/checks qualify the selected Python graphs, while this record binds the exact retained inputs and terms."
     },
     {
       "id": "shared-markdown-quality-development-tool",
@@ -39634,7 +40122,7 @@
         },
         {
           "path": ".markdown-quality.json",
-          "sha256": "4983314e19fed8f73e4fd481d4e5543470be4296dd2b5756d975125ac04bc356"
+          "sha256": "43c6aa5c9151f05569b633526fff5f66ce62c71e66bec964b11afd43360b9dea"
         },
         {
           "path": ".markdown-quality-execution.json",
@@ -39672,7 +40160,7 @@
       "packageTarballScope": false,
       "deployedApplicationScope": "NOT_APPLICABLE",
       "noticeDisposition": "DEVELOPMENT_ONLY_RETAINED_LICENSE_SOURCE_AND_REVISION",
-      "rationale": "Quality tooling is isolated from the published JavaScript runtime; native locked setup/checks qualify the Python graph, while this record binds the exact retained inputs and terms."
+      "rationale": "Development tooling is isolated from the published JavaScript runtime; native locked setup/checks qualify the selected Python graphs, while this record binds the exact retained inputs and terms."
     },
     {
       "id": "universal-ontology-documentation-tooling",
@@ -39696,7 +40184,7 @@
         },
         {
           "path": "ruff.toml",
-          "sha256": "6515cb6c9d93267538677b8d037587782b1c93c63163c5734628591c5edae246"
+          "sha256": "a765a28db8ce8fd49481ecd57de60e76ccbc07a30281a69bcb82c0d9dfa8ff7c"
         }
       ],
       "treeEvidence": null,
@@ -39706,13 +40194,13 @@
       "packageTarballScope": false,
       "deployedApplicationScope": "NOT_APPLICABLE",
       "noticeDisposition": "DEVELOPMENT_ONLY_RETAINED_LICENSE_SOURCE_AND_REVISION",
-      "rationale": "Quality tooling is isolated from the published JavaScript runtime; native locked setup/checks qualify the Python graph, while this record binds the exact retained inputs and terms."
+      "rationale": "Development tooling is isolated from the published JavaScript runtime; native locked setup/checks qualify the selected Python graphs, while this record binds the exact retained inputs and terms."
     },
     {
       "id": "uv-development-bootstrap",
       "relationship": "DEVELOPMENT_ONLY",
       "name": "uv development-environment bootstrap",
-      "versionOrRevision": "0.12.20",
+      "versionOrRevision": "0.13.0",
       "licenseAssessments": [
         {
           "scope": "Development tooling or adapted test/configuration source",
@@ -39726,22 +40214,22 @@
       "evidenceFiles": [
         {
           "path": "pyproject.toml",
-          "sha256": "8f4ea4384cdd12a549baacbfa56ac1d58bdcf1f38572a2ac51ef08d8cfee6c2a"
+          "sha256": "6d585a8bcd9009eb459dbb3a95405da39def326328e79a9c8fb311c1aac4c67a"
         },
         {
           "path": "uv.lock",
-          "sha256": "2ad00b7f3e2f674e7e2e7772a43db14eb2a0f9e44ce9e769ef79fdf9c6fdc9df"
+          "sha256": "2fcc3e7adcb8eb234ee85558a4539396a08ced08eb8b2277a127a09295068d5f"
         },
         {
           "path": ".python-version",
-          "sha256": "922fe0c3de073b01988e23348ea184456161678c5e329e6f34be89be24383f93"
+          "sha256": "8effb955f195345405c0cf4d0fb35f65165b59f444ad1a5fd9ff1ca9194fde29"
         },
         {
           "path": "scripts/repository-python-tools.mjs",
-          "sha256": "fb33fe270bc38886d1bfe154942767005a21a557e14a1c4e582b34150e11298c"
+          "sha256": "f2c74869f15b36b75decc75941ed7214c95ce84ffeae3eb793e6d78a15ff3e21"
         },
         {
-          "path": "LICENSES/development/uv-0.12.20-MIT.txt",
+          "path": "LICENSES/development/uv-0.13.0-MIT.txt",
           "sha256": "860e3d7a86b84e6a7012c7a635fc64df475cebc6cce34dfeb73a5982ec58176c"
         }
       ],
@@ -39752,7 +40240,7 @@
       "packageTarballScope": false,
       "deployedApplicationScope": "NOT_APPLICABLE",
       "noticeDisposition": "DEVELOPMENT_ONLY_RETAINED_LICENSE_SOURCE_AND_REVISION",
-      "rationale": "Quality tooling is isolated from the published JavaScript runtime; native locked setup/checks qualify the Python graph, while this record binds the exact retained inputs and terms."
+      "rationale": "Development tooling is isolated from the published JavaScript runtime; native locked setup/checks qualify the selected Python graphs, while this record binds the exact retained inputs and terms."
     },
     {
       "id": "w3c-json-ld-api-tests",

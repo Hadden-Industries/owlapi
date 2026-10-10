@@ -1,4 +1,4 @@
-/** Checkout-local Python quality tools. Only `sync` may download or install.
+/** Checkout-local Python tools. Explicit `python` and `sync` operations install.
  * Environment isolation adapts HISEW runRepositoryUv.js at
  * 446ffa14c29fbcb18270ff32799fbe377c916426 (AGPL-3.0-only).
  */
@@ -6,6 +6,7 @@ import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import {
   chmodSync,
+  appendFileSync,
   existsSync,
   mkdirSync,
   readFileSync,
@@ -16,16 +17,16 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { parseArgs } from "node:util";
 
 export const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
-const uvVersion = "0.12.20";
+const uvVersion = "0.13.0";
 // Exact official release assets, verified against GitHub's release asset digests.
 const uvAssets = {
   win32: {
     file: "uv-x86_64-pc-windows-msvc.zip",
-    sha256: "95f9bc30fbb3574d276e28ac4a6de932d25153645853d13da8c21eec3bc88d06",
+    sha256: "088962f9e7b7bd9ea740c04c650b2a21c8928c345bd99ac24350dc924dba656c",
   },
   linux: {
     file: "uv-x86_64-unknown-linux-gnu.tar.gz",
-    sha256: "6590717592ace991ff83a63fef799e3ad9d33ecc8f96c5d6bdd732496e79337f",
+    sha256: "1468ebd5a5541121837c5a2817b9972ba6090fa6caa3d142620850a47fb75154",
   },
 };
 
@@ -182,7 +183,7 @@ export function checkPythonTools({ root = repositoryRoot } = {}) {
 }
 
 /** Download a hash-pinned uv release into an ignored, checkout-owned directory. */
-async function installUv(tools, python) {
+async function installUv(tools) {
   const asset = uvAssets[process.platform];
   if (!asset || process.arch !== "x64")
     throw new Error(
@@ -209,16 +210,23 @@ async function installUv(tools, python) {
     throw new Error("uv archive integrity mismatch; refusing extraction.");
   const archive = join(directory, asset.file);
   writeFileSync(archive, bytes);
-  // Extract one known member using standard-library archive readers; never trust
-  // archive paths or execute an installer obtained from the download.
+  // Select one exact member of the authenticated archive. The system archive
+  // reader lets CI install the selected Python without an older Python bootstrap.
   const extraction =
     process.platform === "win32"
-      ? "import pathlib,sys,zipfile; z=zipfile.ZipFile(sys.argv[1]); pathlib.Path(sys.argv[2]).write_bytes(z.read('uv.exe'))"
-      : "import pathlib,sys,tarfile; t=tarfile.open(sys.argv[1]); pathlib.Path(sys.argv[2]).write_bytes(t.extractfile('uv-x86_64-unknown-linux-gnu/uv').read())";
+      ? ["-xf", archive, "-C", directory, "uv.exe"]
+      : [
+          "-xzf",
+          archive,
+          "--strip-components=1",
+          "-C",
+          directory,
+          "uv-x86_64-unknown-linux-gnu/uv",
+        ];
   requireSuccess(
     execute(
-      python,
-      ["-I", "-X", "utf8", "-c", extraction, archive, tools.uv],
+      process.platform === "win32" ? "tar.exe" : "tar",
+      extraction,
       tools,
     ),
     "uv extraction",
@@ -227,21 +235,37 @@ async function installUv(tools, python) {
   checkUv(tools);
 }
 
-/** Explicit setup is the only path allowed to install; the lockfile is never regenerated here. */
-export async function synchronizePythonTools({
+/** Install only the pinned resolver; an explicit interpreter must match the repository pin. */
+export async function ensureRepositoryUv({
   root = repositoryRoot,
   python,
 } = {}) {
   const tools = repositoryPythonTools({ root });
+  if (python !== undefined) {
+    if (!isAbsolute(python) || !existsSync(python))
+      throw new Error(
+        "Supply --python with the absolute path to the installed pinned CPython interpreter.",
+      );
+    pythonVersion(python, tools);
+  }
+  if (installedUvVersion(tools)?.split(/\s/u)[1] !== uvVersion)
+    await installUv(tools);
+  checkUv(tools);
+  return tools;
+}
+
+/** Explicit setup synchronizes the exact quality lock without resolving new versions. */
+export async function synchronizePythonTools({
+  root = repositoryRoot,
+  python,
+} = {}) {
+  const tools = await ensureRepositoryUv({ root, python });
   python ??= tools.python;
   if (!isAbsolute(python) || !existsSync(python))
     throw new Error(
       "Supply --python with the absolute path to the installed pinned CPython interpreter.",
     );
   pythonVersion(python, tools);
-  if (installedUvVersion(tools)?.split(/\s/u)[1] !== uvVersion)
-    await installUv(tools, python);
-  checkUv(tools);
   requireSuccess(
     execute(tools.uv, [...syncArguments, "--python", python], {
       ...tools,
@@ -250,6 +274,50 @@ export async function synchronizePythonTools({
     "Locked tool synchronization",
   );
   checkPythonTools({ root });
+}
+
+/** Explicit CI bootstrap installs pinned CPython locally, without PATH or registry registration. */
+export async function prepareWorkflowPython({ root = repositoryRoot } = {}) {
+  if (!["win32", "linux"].includes(process.platform) || process.arch !== "x64")
+    throw new Error(
+      "Pinned Python setup is qualified for Windows/Linux x64 only.",
+    );
+  const tools = await ensureRepositoryUv({ root });
+  const version = readFileSync(
+    join(tools.root, ".python-version"),
+    "utf8",
+  ).trim();
+  const request = `cpython-${version}-${process.platform === "win32" ? "windows" : "linux"}-x86_64-none`;
+  const options = {
+    ...tools,
+    env: {
+      ...tools.env,
+      UV_PYTHON_INSTALL_DIR: join(tools.root, ".development-tools", "python"),
+      // Download authority exists only in this explicit setup operation.
+      UV_PYTHON_DOWNLOADS: "automatic",
+    },
+    timeout: 10 * 60_000,
+  };
+  requireSuccess(
+    execute(
+      tools.uv,
+      ["python", "install", request, "--no-bin", "--no-registry"],
+      options,
+    ),
+    "Pinned Python installation",
+  );
+  const python = requireSuccess(
+    execute(
+      tools.uv,
+      ["python", "find", request, "--managed-python", "--no-python-downloads"],
+      options,
+    ),
+    "Pinned Python location",
+  );
+  if (!isAbsolute(python) || !existsSync(python) || /[\r\n]/u.test(python))
+    throw new Error("uv did not return an installed absolute Python path.");
+  pythonVersion(python, tools);
+  return python;
 }
 
 if (
@@ -263,7 +331,16 @@ if (
       strict: false,
     });
     const [mode, ...args] = positionals;
-    if (mode === "sync") {
+    if (mode === "python") {
+      const python = await prepareWorkflowPython();
+      if (process.env.GITHUB_OUTPUT)
+        appendFileSync(
+          process.env.GITHUB_OUTPUT,
+          `python-path=${python}\n`,
+          "utf8",
+        );
+      process.stdout.write(`Prepared checkout CPython: ${python}\n`);
+    } else if (mode === "sync") {
       if (values.python && values["python-env"])
         throw new Error("Choose one Python input.");
       const python = values["python-env"]
@@ -285,7 +362,7 @@ if (
       process.exitCode = result.status;
     } else {
       throw new Error(
-        `Choose sync, check, or ruff; received ${[mode, ...args].join(" ")}.`,
+        `Choose python, sync, check, or ruff; received ${[mode, ...args].join(" ")}.`,
       );
     }
   } catch (error) {

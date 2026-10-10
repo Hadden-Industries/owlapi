@@ -447,14 +447,14 @@ const createQualityToolingFacts = () =>
     {
       id: "ruff-development-tool",
       name: "Ruff development formatter and linter",
-      versionOrRevision: "0.16.9",
+      versionOrRevision: "0.17.0",
       license: "MIT",
       source: "astral-sh/ruff",
       files: [
         "pyproject.toml",
         "uv.lock",
         "ruff.toml",
-        "LICENSES/development/ruff-0.16.9.txt",
+        "LICENSES/development/ruff-0.17.0.txt",
       ],
       attribution:
         "Copyright (c) 2022 Charles Marsh. The complete wheel licence, including its embedded third-party notices, is retained. The tool and its distributions are not packed.",
@@ -462,7 +462,7 @@ const createQualityToolingFacts = () =>
     {
       id: "uv-development-bootstrap",
       name: "uv development-environment bootstrap",
-      versionOrRevision: "0.12.20",
+      versionOrRevision: "0.13.0",
       license: "MIT OR Apache-2.0",
       concluded: "MIT",
       source: "astral-sh/uv",
@@ -471,10 +471,45 @@ const createQualityToolingFacts = () =>
         "uv.lock",
         ".python-version",
         "scripts/repository-python-tools.mjs",
-        "LICENSES/development/uv-0.12.20-MIT.txt",
+        "LICENSES/development/uv-0.13.0-MIT.txt",
       ],
       attribution:
         "Copyright (c) 2025 Astral Software Inc. The MIT alternative is elected for development use; its complete release terms are retained. Windows/Linux x64 archive digests are pinned in the bootstrap and no binary is packed.",
+    },
+    {
+      id: "scancode-development-source-build",
+      name: "ScanCode development scanner and retained dependency notices",
+      versionOrRevision: "32.5.0",
+      license: "Apache-2.0 AND CC-BY-4.0",
+      source: "aboutcode-org/scancode-toolkit",
+      files: [
+        "util/scancode-runtime/pyproject.toml",
+        "util/scancode-runtime/uv.lock",
+        "util/scancode-runtime/qualification-baseline.json",
+        "LICENSES/development/scancode-runtime/inventory.json",
+        ...readJson(
+          resolve(
+            repositoryRoot,
+            "LICENSES/development/scancode-runtime/inventory.json",
+          ),
+        ).components.flatMap(({ notices }) => notices.map(({ path }) => path)),
+      ],
+      attribution:
+        "Copyright (c) nexB Inc. and others. ScanCode is a trademark of nexB Inc. Software is Apache-2.0; scanner data is CC-BY-4.0. Source-built without patches on Python 3.15 using a separate hash-locked runtime/build graph. Retained dependency declarations and exact Windows distribution notices identify their respective terms; the scanner licence is not a conclusion about those dependencies. No scanner, dependency binary or data is packed into OwlAPI. Linux native qualification remains a separate obligation.",
+    },
+    {
+      id: "beartype-scancode-prerelease-exception",
+      name: "Beartype scoped ScanCode compatibility dependency",
+      versionOrRevision: "0.23.0rc2",
+      license: "MIT",
+      source: "beartype/beartype",
+      files: [
+        "util/scancode-runtime/pyproject.toml",
+        "util/scancode-runtime/uv.lock",
+        "LICENSES/development/scancode-runtime/beartype-0.23.0rc2/licenses/LICENSE",
+      ],
+      attribution:
+        "Copyright (c) 2014-2026 Beartype authors. The owner approved only this exact prerelease for unmodified ScanCode 32.5.0 on Python 3.15, conditional on frozen dependencies, unchanged options, Windows/Linux qualification and final review. Reassess when a compatible stable Beartype is released. The exception grants no release approval.",
     },
   ].map(
     ({
@@ -510,7 +545,7 @@ const createQualityToolingFacts = () =>
       noticeDisposition:
         "DEVELOPMENT_ONLY_RETAINED_LICENSE_SOURCE_AND_REVISION",
       rationale:
-        "Quality tooling is isolated from the published JavaScript runtime; native locked setup/checks qualify the Python graph, while this record binds the exact retained inputs and terms.",
+        "Development tooling is isolated from the published JavaScript runtime; native locked setup/checks qualify the selected Python graphs, while this record binds the exact retained inputs and terms.",
     }),
   );
 

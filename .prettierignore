@@ -4,6 +4,9 @@ docs/provenance/history-reconstruction/
 docs/provenance/npm-package-evidence.json
 docs/release/gates.json
 docs/release/producer-gates.json
+# Upstream notice bytes are bound by the development inventory.
+LICENSES/development/scancode-runtime/**
+!LICENSES/development/scancode-runtime/inventory.json
 # Exact byte checks belong to util/generate-java-api-surface.mjs.
 API.md
 docs/compatibility/java-api-surface.md

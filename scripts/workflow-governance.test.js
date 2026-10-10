@@ -35,6 +35,21 @@ const mutateWorkflow = (fileName, mutate) => {
 };
 
 describe("repository workflow governance", () => {
+  test.each(["source_node_24", "quality_windows"])(
+    "requires real scanner qualification in %s",
+    (id) => {
+      expect(
+        mutateWorkflow("ci.yml", (doc) => {
+          const steps = doc.getIn(["jobs", id, "steps"]);
+          const qualification = steps.items.find(
+            (step) => step.get("id") === "scanner_qualification",
+          );
+          expect(qualification).toBeDefined();
+          steps.items.splice(steps.items.indexOf(qualification), 1);
+        }).join("\n"),
+      ).toContain("requires unconditional locked scanner qualification");
+    },
+  );
   test.each(
     ["tag_accepted", "npm_release"].flatMap((id) =>
       ["remove-capture", "late-upload", "rerun-capture", "overwrite"].map(
