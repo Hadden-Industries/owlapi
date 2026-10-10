@@ -1,4 +1,5 @@
 import { TextCursor } from "../textCursor.js";
+import { monotonicNow } from "../cooperativeCheckpoint.js";
 import { OWLSyntaxError, ResourceLimitError } from "../../../io/errors.js";
 
 const WHITESPACE = new Set([" ", "\t", "\n", "\r"]);
@@ -114,7 +115,6 @@ const ID_DELIMITERS = new Set([
   "∈",
 ]);
 
-const monotonicNow = () => globalThis.performance?.now?.() ?? Date.now();
 const isAsciiDigit = (character) => character >= "0" && character <= "9";
 const isWordContinuation = (character) =>
   character !== undefined && !ID_DELIMITERS.has(character);

@@ -8,6 +8,7 @@ import addFormats from "ajv-formats";
 import { stableJson } from "./third-party-evidence/digests.mjs";
 import { ARCHIVE_LIMITS } from "./third-party-evidence/archive-evidence.mjs";
 import { verifyEvidenceManifest } from "./third-party-evidence/evidence-manifest.mjs";
+import { EVIDENCE_MANIFEST_NAME } from "./third-party-evidence/format.mjs";
 
 const DEFAULT_REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
 
@@ -116,7 +117,7 @@ export const measureRepositoryEvidence = async ({
 } = {}) => {
   const provenanceRoot = resolve(repositoryRoot, "docs", "provenance");
   const manifest = await readJson(
-    resolve(provenanceRoot, "npm-package-evidence.json"),
+    resolve(provenanceRoot, EVIDENCE_MANIFEST_NAME),
   );
   const blobRoot = resolve(provenanceRoot, "evidence", "npm");
   const records = await Promise.all(
@@ -144,7 +145,7 @@ export const verifyRepositoryEvidence = async ({
 } = {}) => {
   const provenanceRoot = resolve(repositoryRoot, "docs", "provenance");
   const [manifest, schema, lockfileBytes] = await Promise.all([
-    readJson(resolve(provenanceRoot, "npm-package-evidence.json")),
+    readJson(resolve(provenanceRoot, EVIDENCE_MANIFEST_NAME)),
     readJson(resolve(provenanceRoot, "npm-package-evidence.schema.json")),
     readFile(resolve(repositoryRoot, "package-lock.json")),
   ]);

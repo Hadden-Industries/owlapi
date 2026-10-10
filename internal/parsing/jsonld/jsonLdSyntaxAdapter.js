@@ -7,6 +7,7 @@ import {
 import { OWLOntologyLoaderConfiguration } from "../../../model/owlOntologyLoaderConfiguration.js";
 import { IRI } from "../../../model/structural.js";
 import { rdfDataFactory, rdfDatasetFactory } from "../../rdfjs/environment.js";
+import { RDF_NAMESPACE } from "../../rdfjs/vocabulary.js";
 
 import {
   prepareJsonLd10Document,
@@ -102,9 +103,9 @@ const normalizeImplementation = (module) => module.default || module;
 const textEncoder = new TextEncoder();
 const JSON_LD_PROCESSING_MODES = new Set(["json-ld-1.0", "json-ld-1.1"]);
 const JSON_LD_RDF_DIRECTIONS = new Set(["compound-literal", "i18n-datatype"]);
-const RDF_DIRECTION = "http://www.w3.org/1999/02/22-rdf-syntax-ns#direction";
-const RDF_LANGUAGE = "http://www.w3.org/1999/02/22-rdf-syntax-ns#language";
-const RDF_VALUE = "http://www.w3.org/1999/02/22-rdf-syntax-ns#value";
+const RDF_DIRECTION = `${RDF_NAMESPACE}direction`;
+const RDF_LANGUAGE = `${RDF_NAMESPACE}language`;
+const RDF_VALUE = `${RDF_NAMESPACE}value`;
 
 const replaceDirectionalValuesWithCompoundLiterals = (value) => {
   if (Array.isArray(value)) {

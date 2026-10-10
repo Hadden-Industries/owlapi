@@ -1,4 +1,5 @@
 import { TextCursor } from "../textCursor.js";
+import { monotonicNow } from "../cooperativeCheckpoint.js";
 import {
   inRange,
   prefixNameIsValid,
@@ -10,8 +11,6 @@ import { OWLSyntaxError, ResourceLimitError } from "../../../io/errors.js";
 
 const WHITESPACE = new Set([" ", "\t", "\n", "\r"]);
 const DELIMITERS = new Set(["=", "(", ")", "<", ">", "@", "^"]);
-
-const monotonicNow = () => globalThis.performance?.now?.() ?? Date.now();
 
 export class FunctionalSyntaxLexer {
   #cursor = new TextCursor(() => this.checkExecutionBudget());

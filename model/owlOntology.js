@@ -1,4 +1,5 @@
 import { OntologyState } from "../internal/model/ontologyState.js";
+import { XSD_NAMESPACE } from "../internal/rdfjs/vocabulary.js";
 import {
   AXIOM_KINDS,
   CLASS_EXPRESSION_KINDS,
@@ -657,8 +658,7 @@ export class OWLOntology {
               OWLObjectKind.ANNOTATION_ASSERTION_AXIOM,
             ].includes(axiom.kind) &&
             axiom.value?.kind === OWLObjectKind.LITERAL &&
-            axiom.value.datatype.iri.value ===
-              "http://www.w3.org/2001/XMLSchema#anyURI" &&
+            axiom.value.datatype.iri.value === `${XSD_NAMESPACE}anyURI` &&
             axiom.value.lexicalForm === entity.value)
         )
           result.add(axiom);

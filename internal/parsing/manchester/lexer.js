@@ -1,4 +1,5 @@
 import { TextCursor } from "../textCursor.js";
+import { monotonicNow } from "../cooperativeCheckpoint.js";
 import {
   isAsciiDigit,
   inRange,
@@ -81,8 +82,6 @@ export const isManchesterNumericLiteral = (value) =>
   /^[+-]?(?:[0-9]+(?:\.[0-9]+)?|\.[0-9]+)(?:[eE][+-]?[0-9]+)?[fF]$/u.test(
     value,
   );
-
-const monotonicNow = () => globalThis.performance?.now?.() ?? Date.now();
 
 export const isManchesterKeyword = (value) => KEYWORDS.has(value);
 

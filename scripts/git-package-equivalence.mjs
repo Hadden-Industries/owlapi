@@ -53,8 +53,8 @@ export const PRE_REGISTRY_EXPORTS = Object.freeze({
   "./io": "./io/index.js",
   "./formats": "./formats/index.js",
 });
-export const PRE_REGISTRY_REPOSITORY_URL =
-  "git+https://github.com/Hadden-Industries/owlapi.git";
+export const PRE_REGISTRY_REPOSITORY_COORDINATE = "Hadden-Industries/owlapi";
+export const PRE_REGISTRY_REPOSITORY_URL = `git+https://github.com/${PRE_REGISTRY_REPOSITORY_COORDINATE}.git`;
 
 const hasOwn = (value, key) => Object.prototype.hasOwnProperty.call(value, key);
 
@@ -558,7 +558,7 @@ export function createPreRegistryEquivalenceEvidence(observation) {
       "Git package specifier does not bind the canonical full commit.",
     );
   }
-  if (source.repository !== "Hadden-Industries/owlapi") {
+  if (source.repository !== PRE_REGISTRY_REPOSITORY_COORDINATE) {
     throw new Error("Qualification source has the wrong repository.");
   }
   if (source.tag !== `v${observation.package.version}`) {

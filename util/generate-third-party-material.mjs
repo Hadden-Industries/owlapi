@@ -1,4 +1,5 @@
 import { UV_SELECTION } from "../scripts/development-tool-policy.mjs";
+import { EVIDENCE_MANIFEST_NAME } from "./third-party-evidence/format.mjs";
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, relative, resolve, sep } from "node:path";
@@ -43,7 +44,7 @@ const lockfilePath = resolve(repositoryRoot, "package-lock.json");
 const packageJsonPath = resolve(repositoryRoot, "package.json");
 const evidenceManifestPath = resolve(
   repositoryRoot,
-  "docs/provenance/npm-package-evidence.json",
+  `docs/provenance/${EVIDENCE_MANIFEST_NAME}`,
 );
 const evidenceRoot = resolve(repositoryRoot, "docs/provenance/evidence/npm");
 
@@ -963,7 +964,7 @@ const createInventory = async ({ preserveReview }) => {
     lockfile: "package-lock.json",
     lockfileVersion: lockfile.lockfileVersion,
     lockfileSha256: sha256(lockfileBytes),
-    evidenceManifest: "docs/provenance/npm-package-evidence.json",
+    evidenceManifest: `docs/provenance/${EVIDENCE_MANIFEST_NAME}`,
     evidenceManifestSha256: sha256(evidenceManifestBytes),
     evidenceCorpusRoot: evidenceManifest.corpusRoot,
     tarballDependenciesBundled:

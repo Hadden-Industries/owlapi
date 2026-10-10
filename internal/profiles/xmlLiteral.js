@@ -1,6 +1,6 @@
 import { parseUri } from "@hyperjump/uri";
+import { XMLNS_NAMESPACE as XMLNS } from "../rdfjs/vocabulary.js";
 
-const XMLNS = "http://www.w3.org/2000/xmlns/";
 const validNamespaceName = (value) => {
   if (!value) return true;
   // Namespaces 1.0 section 3 requires a URI reference. C14N also forbids

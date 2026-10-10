@@ -31,12 +31,15 @@ import { verifyLocalReleaseTag } from "./verify-release-tag.mjs";
 const REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
 import {
   PRE_REGISTRY_REPOSITORY_URL as CANONICAL_REPOSITORY_URL,
+  PRE_REGISTRY_REPOSITORY_COORDINATE,
   PRE_REGISTRY_INSTALLED_TESTS as INSTALLED_PACKAGE_TEST_SCRIPTS,
   PRE_REGISTRY_EXPORTS as EXPECTED_EXPORTS,
 } from "./git-package-equivalence.mjs";
 export { INSTALLED_PACKAGE_TEST_SCRIPTS };
-const FULL_GIT_SPEC_PATTERN =
-  /^git\+https:\/\/github\.com\/Hadden-Industries\/owlapi\.git#([0-9a-f]{40})$/u;
+const FULL_GIT_SPEC_PATTERN = new RegExp(
+  `^${CANONICAL_REPOSITORY_URL.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&")}#([0-9a-f]{40})$`,
+  "u",
+);
 const SHA256_IDENTIFIER_PATTERN = /^sha256:[0-9a-f]{64}$/u;
 
 const stableJson = (value) => `${JSON.stringify(value, null, 2)}\n`;
@@ -313,7 +316,7 @@ const assertCandidateBinding = ({
     publicationControl.enabled !== true ||
     publicationControl.mode !== "DIRECT_BOOTSTRAP" ||
     reconciliation?.enabled !== true ||
-    source?.repository !== "Hadden-Industries/owlapi" ||
+    source?.repository !== PRE_REGISTRY_REPOSITORY_COORDINATE ||
     source.runId !== 33_160_042_447 ||
     source.runAttempt !== 1 ||
     source.commit !== commit ||

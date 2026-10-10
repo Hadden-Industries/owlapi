@@ -475,7 +475,8 @@ const defaultVerifyPackageMetadata = async ({
     preferOnline: true,
     verifySignatures: true,
     verifyAttestations: hasAttestations,
-    "//registry.npmjs.org/:_keys": registryKeysForPacote(registryKeys),
+    [`//${new URL(PUBLIC_REGISTRY_ORIGIN).host}/:_keys`]:
+      registryKeysForPacote(registryKeys),
     ...PACOTE_NETWORK_OPTIONS,
   });
 };

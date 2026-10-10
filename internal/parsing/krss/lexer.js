@@ -1,19 +1,10 @@
 import { TextCursor } from "../textCursor.js";
+import { monotonicNow } from "../cooperativeCheckpoint.js";
+import { utf8CodePointBytes } from "../lexicalNames.js";
 import { OWLSyntaxError, ResourceLimitError } from "../../../io/errors.js";
 
 const WHITESPACE = new Set([" ", "\t", "\n", "\r"]);
 const SYMBOL_DELIMITERS = new Set([" ", "\t", "\n", "\r", "(", ")", ";"]);
-const monotonicNow = () => globalThis.performance?.now?.() ?? Date.now();
-
-const utf8CodePointBytes = (codePoint) => {
-  if (codePoint <= 0x7f) {
-    return 1;
-  }
-  if (codePoint <= 0x7ff) {
-    return 2;
-  }
-  return codePoint <= 0xffff ? 3 : 4;
-};
 
 /**
  * Lazy lexer shared by the KRSS family. It deliberately emits neutral symbols:
