@@ -1,3 +1,4 @@
+import { isXmlName, isNcName, isXmlNmToken } from "../parsing/xml/xmlNames.js";
 import {
   parse as parseLanguageTag,
   stringify as stringifyLanguageTag,
@@ -13,21 +14,17 @@ import {
   XSD_NAMESPACE as XSD,
 } from "../rdfjs/vocabulary.js";
 
-export const integerBounds = new Map([
-  ["integer", []],
-  ["nonNegativeInteger", ["0"]],
-  ["positiveInteger", ["1"]],
-  ["nonPositiveInteger", [undefined, "0"]],
-  ["negativeInteger", [undefined, "-1"]],
-  ["long", ["-9223372036854775808", "9223372036854775807"]],
-  ["int", ["-2147483648", "2147483647"]],
-  ["short", ["-32768", "32767"]],
-  ["byte", ["-128", "127"]],
-  ["unsignedLong", ["0", "18446744073709551615"]],
-  ["unsignedInt", ["0", "4294967295"]],
-  ["unsignedShort", ["0", "65535"]],
-  ["unsignedByte", ["0", "255"]],
-]);
+import { INTEGER_DATATYPE_BOUNDS } from "../model/integerDatatypeBounds.js";
+export const integerBounds = new Map(
+  INTEGER_DATATYPE_BOUNDS.map(([name, minimum, maximum]) => [
+    name,
+    maximum !== null
+      ? [minimum ?? undefined, maximum]
+      : minimum !== null
+        ? [minimum]
+        : [],
+  ]),
+);
 export const stringDatatypes = new Set([
   "string",
   "normalizedString",
@@ -60,15 +57,6 @@ const xmlCharacters = (value) => {
   }
   return true;
 };
-const xmlNameStart =
-  ":A-Z_a-z\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02ff\u0370-\u037d\u037f-\u1fff\u200c-\u200d\u2070-\u218f\u2c00-\u2fef\u3001-\ud7ff\uf900-\ufdcf\ufdf0-\ufffd\u{10000}-\u{effff}";
-const xmlNameChar = xmlNameStart + "\\-.0-9\u00b7\u0300-\u036f\u203f-\u2040";
-// XML NameChar explicitly includes the combining-mark range U+0300–U+036F.
-// eslint-disable-next-line no-misleading-character-class -- The XML grammar specifies code-point ranges, including combining marks.
-const namePattern = new RegExp(`^[${xmlNameStart}][${xmlNameChar}]*$`, "u");
-// eslint-disable-next-line no-misleading-character-class -- The same normative XML NameChar range applies to NMTOKEN.
-const nmtokenPattern = new RegExp(`^[${xmlNameChar}]+$`, "u");
-
 export const validLanguageTag = (tag) => {
   let invalid = false;
   const parsed = parseLanguageTag(tag, {
@@ -216,11 +204,11 @@ export const inspectLiteral = async (literal, configuration = {}, budget) => {
     case "language":
       return result(/^[A-Za-z]{1,8}(?:-[A-Za-z0-9]{1,8})*$/u.test(lexical));
     case "Name":
-      return result(namePattern.test(lexical));
+      return result(isXmlName(lexical));
     case "NCName":
-      return result(!lexical.includes(":") && namePattern.test(lexical));
+      return result(isNcName(lexical));
     case "NMTOKEN":
-      return result(nmtokenPattern.test(lexical));
+      return result(isXmlNmToken(lexical));
     case "hexBinary":
       return result(/^(?:[0-9A-Fa-f]{2})*$/u.test(lexical));
     case "base64Binary":

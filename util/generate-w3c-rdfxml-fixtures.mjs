@@ -1,3 +1,5 @@
+import { suiteRevision } from "./conformance/suiteRevision.mjs";
+import { encodeQuad } from "./conformance/fixtureTerms.mjs";
 import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import process from "node:process";
@@ -5,7 +7,7 @@ import process from "node:process";
 import { Parser as N3Parser } from "n3";
 import { format as formatWithPrettier } from "prettier";
 
-const REVISION = "ad541a5f0479f0798608c4801369d97b8e08b36f";
+const REVISION = suiteRevision("w3c-rdf-tests", "RDF/XML");
 const EXPECTED_MANIFEST_SHA256 =
   "027679cf7d460cdc401ccf2aab3546dfbdfad64badcdd15f225948f5643f6370";
 const DEFAULT_INPUT_URL = new URL(
@@ -70,42 +72,6 @@ const readReference = (block, predicate, required = true) => {
   }
   return match?.[1];
 };
-
-const encodeTerm = (term) => {
-  switch (term.termType) {
-    case "NamedNode":
-      return ["N", term.value];
-    case "BlankNode":
-      return ["B", term.value];
-    case "Literal":
-      return [
-        "L",
-        term.value,
-        term.language,
-        term.direction || "",
-        term.datatype.value,
-      ];
-    case "DefaultGraph":
-      return ["D"];
-    case "Quad":
-      return [
-        "Q",
-        encodeTerm(term.subject),
-        encodeTerm(term.predicate),
-        encodeTerm(term.object),
-        encodeTerm(term.graph),
-      ];
-    default:
-      throw new TypeError(`Unsupported RDF fixture term: ${term.termType}`);
-  }
-};
-
-const encodeQuad = (quad) => [
-  encodeTerm(quad.subject),
-  encodeTerm(quad.predicate),
-  encodeTerm(quad.object),
-  encodeTerm(quad.graph),
-];
 
 const manifestBytes = await readFile(new URL("manifest.ttl", inputUrl));
 const manifestSha256 = sha256(manifestBytes);

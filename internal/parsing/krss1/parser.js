@@ -1,17 +1,8 @@
 import { OWLDocumentFormats } from "../../../formats/owlDocumentFormats.js";
 import { KRSSParserCore } from "../krss/parserCore.js";
 
-const KRSS1_TOP_LEVEL_KEYWORDS = new Set([
-  "define-primitive-concept",
-  "define-concept",
-  "define-primitive-role",
-  "transitive",
-  "range",
-  "instance",
-  "related",
-  "equal",
-  "distinct",
-]);
+import { SHARED_TOP_LEVEL_KEYWORDS } from "../krss/dialect.js";
+const KRSS1_TOP_LEVEL_KEYWORDS = new Set(SHARED_TOP_LEVEL_KEYWORDS);
 
 const KRSS1_POLICY = Object.freeze({
   anonymousNamespacePrefix: "urn:owlapi-js:krss1-document:",

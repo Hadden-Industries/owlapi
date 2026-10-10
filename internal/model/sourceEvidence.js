@@ -1,9 +1,11 @@
+import {
+  OWL_NAMESPACE as owl,
+  RDFS_NAMESPACE as rdfs,
+} from "../rdfjs/vocabulary.js";
 import { OWLObjectKind as K } from "../../model/kinds.js";
 import { readOntologySnapshot } from "../../model/owlOntology.js";
 import { readSourceArity } from "./sourceArity.js";
 
-const owl = "http://www.w3.org/2002/07/owl#";
-const rdfs = "http://www.w3.org/2000/01/rdf-schema#";
 const entityTypes = new Map([
   [K.CLASS, `${owl}Class`],
   [K.DATATYPE, `${rdfs}Datatype`],

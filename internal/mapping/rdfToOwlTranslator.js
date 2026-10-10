@@ -42,14 +42,10 @@ const DECLARATION_CONSTRUCTORS = new Map([
   [RDFS_VOCABULARY.Datatype, "getOWLDatatype"],
 ]);
 const SUBJECT_TERM_TYPES = new Set(["BlankNode", "NamedNode"]);
-const ENTITY_KIND_BY_ROLE = new Map([
-  [OWL_VOCABULARY.Class, OWLObjectKind.CLASS],
-  [RDFS_VOCABULARY.Datatype, OWLObjectKind.DATATYPE],
-  [OWL_VOCABULARY.ObjectProperty, OWLObjectKind.OBJECT_PROPERTY],
-  [OWL_VOCABULARY.DatatypeProperty, OWLObjectKind.DATA_PROPERTY],
-  [OWL_VOCABULARY.AnnotationProperty, OWLObjectKind.ANNOTATION_PROPERTY],
-  [OWL_VOCABULARY.NamedIndividual, OWLObjectKind.NAMED_INDIVIDUAL],
-]);
+import { ENTITY_DECLARATION_TYPES } from "./entityDeclarations.js";
+const ENTITY_KIND_BY_ROLE = new Map(
+  Object.entries(ENTITY_DECLARATION_TYPES).map(([kind, role]) => [role, kind]),
+);
 const RDF_ROLE_BY_ENTITY_KIND = new Map(
   [...ENTITY_KIND_BY_ROLE].map(([role, kind]) => [kind, role]),
 );
@@ -92,33 +88,23 @@ const NON_ASSERTION_TYPES = new Set([
 ]);
 
 const OBJECT_TERM_TYPES = new Set(["BlankNode", "Literal", "NamedNode"]);
-const GRAPH_TERM_TYPES = new Set(["BlankNode", "DefaultGraph", "NamedNode"]);
+import { RDF_GRAPH_TERM_TYPES } from "../rdfjs/termPolicy.js";
+const GRAPH_TERM_TYPES = new Set(RDF_GRAPH_TERM_TYPES);
 const SOURCE_LOCATION_FIELDS = Object.freeze([
   ["column", 1],
   ["line", 1],
   ["offset", 0],
 ]);
-const XSD_INTEGER_DATATYPE_BOUNDS = new Map([
-  [`${XSD_NAMESPACE}integer`, {}],
-  [`${XSD_NAMESPACE}nonPositiveInteger`, { maximum: 0n }],
-  [`${XSD_NAMESPACE}negativeInteger`, { maximum: -1n }],
-  [
-    `${XSD_NAMESPACE}long`,
-    { minimum: -9223372036854775808n, maximum: 9223372036854775807n },
-  ],
-  [`${XSD_NAMESPACE}int`, { minimum: -2147483648n, maximum: 2147483647n }],
-  [`${XSD_NAMESPACE}short`, { minimum: -32768n, maximum: 32767n }],
-  [`${XSD_NAMESPACE}byte`, { minimum: -128n, maximum: 127n }],
-  [`${XSD_NAMESPACE}nonNegativeInteger`, { minimum: 0n }],
-  [
-    `${XSD_NAMESPACE}unsignedLong`,
-    { minimum: 0n, maximum: 18446744073709551615n },
-  ],
-  [`${XSD_NAMESPACE}unsignedInt`, { minimum: 0n, maximum: 4294967295n }],
-  [`${XSD_NAMESPACE}unsignedShort`, { minimum: 0n, maximum: 65535n }],
-  [`${XSD_NAMESPACE}unsignedByte`, { minimum: 0n, maximum: 255n }],
-  [`${XSD_NAMESPACE}positiveInteger`, { minimum: 1n }],
-]);
+import { INTEGER_DATATYPE_BOUNDS } from "../model/integerDatatypeBounds.js";
+const XSD_INTEGER_DATATYPE_BOUNDS = new Map(
+  INTEGER_DATATYPE_BOUNDS.map(([name, minimum, maximum]) => [
+    `${XSD_NAMESPACE}${name}`,
+    {
+      ...(minimum !== null ? { minimum: BigInt(minimum) } : {}),
+      ...(maximum !== null ? { maximum: BigInt(maximum) } : {}),
+    },
+  ]),
+);
 const XSD_FLOATING_DATATYPES = new Set([
   `${XSD_NAMESPACE}double`,
   `${XSD_NAMESPACE}float`,

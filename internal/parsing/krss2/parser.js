@@ -1,25 +1,13 @@
 import { OWLDocumentFormats } from "../../../formats/owlDocumentFormats.js";
 import { KRSSParserCore } from "../krss/parserCore.js";
 
+import {
+  SHARED_TOP_LEVEL_KEYWORDS,
+  KRSS2_ONLY_TOP_LEVEL_KEYWORDS,
+} from "../krss/dialect.js";
 const KRSS2_TOP_LEVEL_KEYWORDS = new Set([
-  "define-primitive-concept",
-  "define-concept",
-  "implies",
-  "equivalent",
-  "disjoint",
-  "define-role",
-  "define-primitive-role",
-  "disjoint-roles",
-  "implies-role",
-  "inverse",
-  "roles-equivalent",
-  "role-inclusion",
-  "transitive",
-  "range",
-  "instance",
-  "related",
-  "equal",
-  "distinct",
+  ...SHARED_TOP_LEVEL_KEYWORDS,
+  ...KRSS2_ONLY_TOP_LEVEL_KEYWORDS,
 ]);
 
 const KRSS2_POLICY = Object.freeze({

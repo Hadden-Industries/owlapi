@@ -1,3 +1,7 @@
+import {
+  EVIDENCE_SHARD_NAME as SHARD_MANIFEST_NAME,
+  EVIDENCE_MANIFEST_NAME as AGGREGATE_MANIFEST_NAME,
+} from "./third-party-evidence/format.mjs";
 import { constants } from "node:fs";
 import {
   access,
@@ -33,8 +37,7 @@ import { mergeEvidenceShardDocuments } from "./third-party-evidence/evidence-sha
 import { normalizeLockedRegistryGraph } from "./third-party-evidence/lock-graph.mjs";
 
 const DEFAULT_REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
-const SHARD_MANIFEST_NAME = "npm-package-evidence-shard.json";
-const AGGREGATE_MANIFEST_NAME = "npm-package-evidence.json";
+
 const SCHEMA_ROOT = join(DEFAULT_REPOSITORY_ROOT, "docs", "provenance");
 
 const exists = async (path) => {

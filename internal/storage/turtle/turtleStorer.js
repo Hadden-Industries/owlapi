@@ -1,4 +1,3 @@
-import { Writer } from "n3";
 import { OWLDocumentFormats } from "../../../formats/index.js";
 import {
   OWLOntologyStorageError,
@@ -56,6 +55,7 @@ export const turtleStorer = Object.freeze({
     const chunks = [];
     const encoder = new TextEncoder();
     let bytes = 0;
+    const { Writer } = await import("n3");
     const writer = new Writer(
       {
         write(chunk, _encoding, done) {

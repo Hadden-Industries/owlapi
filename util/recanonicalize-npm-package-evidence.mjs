@@ -1,3 +1,4 @@
+import { EVIDENCE_MANIFEST_NAME as MANIFEST_NAME } from "./third-party-evidence/format.mjs";
 import {
   access,
   mkdir,
@@ -22,7 +23,6 @@ import {
 } from "./third-party-evidence/scancode.mjs";
 
 const DEFAULT_REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
-const MANIFEST_NAME = "npm-package-evidence.json";
 
 const exists = async (path) => {
   try {

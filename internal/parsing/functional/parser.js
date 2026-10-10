@@ -1,3 +1,9 @@
+import {
+  CooperativeCheckpoint,
+  monotonicNow,
+} from "../cooperativeCheckpoint.js";
+import { isAbsoluteIri } from "../iriCharacters.js";
+
 import { OWLDocumentFormats } from "../../../formats/owlDocumentFormats.js";
 import {
   OWLSyntaxError,
@@ -8,14 +14,10 @@ import {
 import { IRI } from "../../../model/structural.js";
 import { normalizeCardinality } from "../../model/cardinality.js";
 
-import { decodePrefixedLocalName, FunctionalSyntaxLexer } from "./lexer.js";
+import { decodePrefixedLocalName } from "../lexicalNames.js";
+import { FunctionalSyntaxLexer } from "./lexer.js";
 
-const STANDARD_PREFIXES = Object.freeze({
-  "owl:": "http://www.w3.org/2002/07/owl#",
-  "rdf:": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-  "rdfs:": "http://www.w3.org/2000/01/rdf-schema#",
-  "xsd:": "http://www.w3.org/2001/XMLSchema#",
-});
+import { STANDARD_PARSER_PREFIXES as STANDARD_PREFIXES } from "../../rdfjs/vocabulary.js";
 
 const IRI_TOKEN_TYPES = new Set(["FULL_IRI", "ABBREVIATED_IRI"]);
 const ANNOTATION_AXIOM_KEYWORDS = new Set([
@@ -27,28 +29,6 @@ const ANNOTATION_AXIOM_KEYWORDS = new Set([
 const UNSUPPORTED_FUNCTIONAL_CONSTRUCTS = new Set(["DLSafeRule"]);
 
 let anonymousDocumentSequence = 0;
-
-const hasForbiddenIriCharacter = (value) => {
-  for (let offset = 0; offset < value.length;) {
-    const codePoint = value.codePointAt(offset);
-    const character = String.fromCodePoint(codePoint);
-    if (
-      codePoint <= 0x20 ||
-      (codePoint >= 0xd800 && codePoint <= 0xdfff) ||
-      '<>"{}|^`\\'.includes(character)
-    ) {
-      return true;
-    }
-    offset += character.length;
-  }
-  return false;
-};
-
-const isAbsoluteIri = (value) =>
-  /^[A-Za-z][A-Za-z0-9+.-]*:/u.test(value) && !hasForbiddenIriCharacter(value);
-
-const COOPERATIVE_YIELD_INTERVAL_MS = 50;
-const monotonicNow = () => globalThis.performance?.now?.() ?? Date.now();
 
 const locationDetails = (token, configuration) =>
   configuration.sourceLocations
@@ -64,7 +44,7 @@ export class OWLFunctionalSyntaxOWLParser {
   #configuration;
   #dataFactory;
   #documentScope;
-  #lastYieldAt;
+  #checkpoint;
   #lexer;
   #prefixes;
   #transaction;
@@ -78,7 +58,7 @@ export class OWLFunctionalSyntaxOWLParser {
       source.getDocumentIRI()?.value ??
       `urn:owlapi-js:functional-document:${++anonymousDocumentSequence}`;
     this.#lexer = new FunctionalSyntaxLexer(source.getText(), configuration);
-    this.#lastYieldAt = monotonicNow();
+    this.#checkpoint = new CooperativeCheckpoint(monotonicNow());
 
     const first = this.#lexer.peek();
     if (
@@ -1134,20 +1114,8 @@ export class OWLFunctionalSyntaxOWLParser {
     return this.#anonymousIndividuals.get(token.value);
   }
 
-  #cooperate() {
-    this.#lexer.checkExecutionBudget();
-    if (monotonicNow() - this.#lastYieldAt < COOPERATIVE_YIELD_INTERVAL_MS) {
-      return undefined;
-    }
-    const scheduler = Reflect.get(globalThis, "scheduler");
-    const yieldRequest =
-      typeof scheduler?.yield === "function"
-        ? scheduler.yield()
-        : new Promise((resolve) => globalThis.setTimeout(resolve, 0));
-    return Promise.resolve(yieldRequest).then(() => {
-      this.#lastYieldAt = monotonicNow();
-      this.#lexer.checkExecutionBudget();
-    });
+  #cooperate(lexer = this.#lexer) {
+    return this.#checkpoint.cooperate(lexer);
   }
 
   #parseIri() {

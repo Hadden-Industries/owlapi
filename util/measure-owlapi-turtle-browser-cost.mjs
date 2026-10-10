@@ -1,75 +1,33 @@
-import { Buffer } from "node:buffer";
+import {
+  buildBrowserBundle,
+  analyzeBrowserChunks,
+} from "./browserBundleCost.mjs";
+
 import process from "node:process";
 import { fileURLToPath } from "node:url";
-import { gzipSync } from "node:zlib";
-
-import { build } from "vite";
 
 const input = fileURLToPath(new URL("../index.js", import.meta.url));
-const output = await build({
-  configFile: false,
-  logLevel: "silent",
-  build: {
-    minify: "oxc",
-    rollupOptions: { input },
-    target: "es2022",
-    write: false,
-  },
-});
-
-const chunks = output.output.filter(({ type }) => type === "chunk");
-const chunksByFile = new Map(chunks.map((chunk) => [chunk.fileName, chunk]));
-const normalizedModuleIds = (chunk) =>
-  Object.keys(chunk.modules).map((id) => id.replaceAll("\\", "/"));
-const containsModule = (chunk, fragment) =>
-  normalizedModuleIds(chunk).some((id) => id.includes(fragment));
-
-const transitiveImports = (roots) => {
-  const visited = new Set();
-  const visit = (fileName) => {
-    if (visited.has(fileName)) {
-      return;
-    }
-    visited.add(fileName);
-    for (const dependency of chunksByFile.get(fileName)?.imports || []) {
-      visit(dependency);
-    }
-  };
-  for (const root of roots) {
-    visit(root.fileName);
-  }
-  return visited;
-};
+const output = await buildBrowserBundle(input);
+const { chunks, chunksByFile, containsModule, transitiveImports, size } =
+  analyzeBrowserChunks(output);
 
 const entryChunks = chunks.filter(({ isEntry }) => isEntry);
-const turtleChunks = chunks.filter((chunk) =>
-  containsModule(chunk, "/node_modules/n3/browser/n3.min.js"),
-);
+// Current N3 separates its eager writer from the lazy parsing implementation.
+const containsTurtleParser = (chunk) =>
+  [
+    "/node_modules/n3/src/N3Parser.js",
+    "/node_modules/n3/lib/N3Parser.js",
+    "/node_modules/n3/browser/n3.min.js",
+  ].some((fragment) => containsModule(chunk, fragment));
+const turtleChunks = chunks.filter((chunk) => containsTurtleParser(chunk));
 const initialFiles = transitiveImports(entryChunks);
 const lazyFiles = transitiveImports(turtleChunks);
 for (const initialFile of initialFiles) {
   lazyFiles.delete(initialFile);
 }
 
-const selectedCode = (files) =>
-  [...files]
-    .sort()
-    .map((fileName) => chunksByFile.get(fileName)?.code || "")
-    .join("\n");
-const size = (files) => {
-  const code = selectedCode(files);
-  return {
-    chunkCount: files.size,
-    gzipBytes: gzipSync(code).byteLength,
-    minifiedBytes: Buffer.byteLength(code),
-  };
-};
-
 const turtleInInitialGraph = [...initialFiles].some((fileName) =>
-  containsModule(
-    chunksByFile.get(fileName),
-    "/node_modules/n3/browser/n3.min.js",
-  ),
+  containsTurtleParser(chunksByFile.get(fileName)),
 );
 const bundledLegacyTurtle = chunks.some((chunk) =>
   containsModule(chunk, "/src/owl2vowl/js/turtleParser.js"),

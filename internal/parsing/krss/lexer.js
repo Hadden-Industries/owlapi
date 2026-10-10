@@ -1,3 +1,4 @@
+import { TextCursor } from "../textCursor.js";
 import { OWLSyntaxError, ResourceLimitError } from "../../../io/errors.js";
 
 const WHITESPACE = new Set([" ", "\t", "\n", "\r"]);
@@ -20,14 +21,10 @@ const utf8CodePointBytes = (codePoint) => {
  * sharing tokenization cannot silently turn KRSS1 into an alias for KRSS2.
  */
 export class KRSSLexer {
-  #column = 1;
+  #cursor = new TextCursor(() => this.checkExecutionBudget());
   #configuration;
   #deadline;
-  #line = 1;
   #lookahead = [];
-  #offset = 0;
-  #previousWasCarriageReturn = false;
-  #scannedSinceBudgetCheck = 0;
   #startedAt;
   #text;
   #tokenCount = 0;
@@ -62,7 +59,7 @@ export class KRSSLexer {
   }
 
   checkExecutionBudget() {
-    this.#scannedSinceBudgetCheck = 0;
+    this.#cursor.scannedSinceBudgetCheck = 0;
     const { signal } = this.#configuration;
     if (signal?.aborted) {
       if (typeof signal.throwIfAborted === "function") {
@@ -101,42 +98,22 @@ export class KRSSLexer {
   }
 
   #advance() {
-    const character = this.#text[this.#offset];
-    this.#offset += 1;
-    if (character === "\r") {
-      this.#line += 1;
-      this.#column = 1;
-      this.#previousWasCarriageReturn = true;
-    } else if (character === "\n") {
-      if (!this.#previousWasCarriageReturn) {
-        this.#line += 1;
-      }
-      this.#column = 1;
-      this.#previousWasCarriageReturn = false;
-    } else {
-      this.#column += 1;
-      this.#previousWasCarriageReturn = false;
-    }
-    this.#scannedSinceBudgetCheck += 1;
-    if (this.#scannedSinceBudgetCheck >= 1024) {
-      this.checkExecutionBudget();
-    }
-    return character;
+    return this.#cursor.advance(this.#text);
   }
 
   #skipTrivia() {
-    while (this.#offset < this.#text.length) {
-      if (WHITESPACE.has(this.#text[this.#offset])) {
+    while (this.#cursor.offset < this.#text.length) {
+      if (WHITESPACE.has(this.#text[this.#cursor.offset])) {
         this.#advance();
         continue;
       }
-      if (this.#text[this.#offset] !== ";") {
+      if (this.#text[this.#cursor.offset] !== ";") {
         return;
       }
       while (
-        this.#offset < this.#text.length &&
-        this.#text[this.#offset] !== "\n" &&
-        this.#text[this.#offset] !== "\r"
+        this.#cursor.offset < this.#text.length &&
+        this.#text[this.#cursor.offset] !== "\n" &&
+        this.#text[this.#cursor.offset] !== "\r"
       ) {
         this.#advance();
       }
@@ -166,7 +143,7 @@ export class KRSSLexer {
     }
     return Object.freeze({
       ...location,
-      endOffset: this.#offset,
+      endOffset: this.#cursor.offset,
       type,
       value,
     });
@@ -174,16 +151,12 @@ export class KRSSLexer {
 
   #readToken() {
     this.#skipTrivia();
-    const location = {
-      column: this.#column,
-      line: this.#line,
-      offset: this.#offset,
-    };
-    if (this.#offset === this.#text.length) {
+    const location = this.#cursor.location();
+    if (this.#cursor.offset === this.#text.length) {
       return this.#emit("EOF", "", location, 0);
     }
 
-    const character = this.#text[this.#offset];
+    const character = this.#text[this.#cursor.offset];
     if (character === "(" || character === ")") {
       this.#advance();
       return this.#emit(character, character, location, 1);
@@ -207,11 +180,11 @@ export class KRSSLexer {
     let byteLength = 2;
     let value = "";
     while (
-      this.#offset < this.#text.length &&
-      this.#text[this.#offset] !== ">"
+      this.#cursor.offset < this.#text.length &&
+      this.#text[this.#cursor.offset] !== ">"
     ) {
-      const character = this.#text[this.#offset];
-      const codePoint = this.#text.codePointAt(this.#offset);
+      const character = this.#text[this.#cursor.offset];
+      const codePoint = this.#text.codePointAt(this.#cursor.offset);
       if (
         WHITESPACE.has(character) ||
         character === "<" ||
@@ -241,7 +214,7 @@ export class KRSSLexer {
         );
       }
     }
-    if (this.#text[this.#offset] !== ">") {
+    if (this.#text[this.#cursor.offset] !== ">") {
       this.#syntax("The KRSS full IRI is not terminated", location);
     }
     this.#advance();
@@ -251,12 +224,12 @@ export class KRSSLexer {
   #readSymbol(location, initialByteLength = 0) {
     let byteLength = initialByteLength;
     let value = "";
-    while (this.#offset < this.#text.length) {
-      const character = this.#text[this.#offset];
+    while (this.#cursor.offset < this.#text.length) {
+      const character = this.#text[this.#cursor.offset];
       if (SYMBOL_DELIMITERS.has(character)) {
         break;
       }
-      const codePoint = this.#text.codePointAt(this.#offset);
+      const codePoint = this.#text.codePointAt(this.#cursor.offset);
       if (codePoint === 0 || (codePoint >= 0xd800 && codePoint <= 0xdfff)) {
         this.#syntax("The KRSS symbol contains an invalid character", location);
       }
@@ -278,7 +251,7 @@ export class KRSSLexer {
     }
     if (value.length === 0 && initialByteLength === 0) {
       this.#syntax("The KRSS input contains an unexpected token", location, {
-        found: this.#text[this.#offset],
+        found: this.#text[this.#cursor.offset],
       });
     }
     const type = /^[0-9]+$/u.test(value) ? "INTEGER" : "SYMBOL";

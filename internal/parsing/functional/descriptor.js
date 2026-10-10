@@ -1,35 +1,8 @@
+import { skipTrivia } from "../asciiLeadingTrivia.js";
 import { OWLDocumentFormats } from "../../../formats/owlDocumentFormats.js";
 import { ParserDescriptor } from "../parserRegistry.js";
 
 import { OWLFunctionalSyntaxOWLParser } from "./parser.js";
-
-const skipTrivia = (text, start) => {
-  let offset = start;
-  while (offset < text.length) {
-    const character = text[offset];
-    if (
-      character === " " ||
-      character === "\t" ||
-      character === "\n" ||
-      character === "\r"
-    ) {
-      offset += 1;
-      continue;
-    }
-    if (character !== "#") {
-      break;
-    }
-    offset += 1;
-    while (
-      offset < text.length &&
-      text[offset] !== "\n" &&
-      text[offset] !== "\r"
-    ) {
-      offset += 1;
-    }
-  }
-  return offset;
-};
 
 const detectsKeyword = (text, offset, keyword) => {
   if (!text.startsWith(keyword, offset)) {

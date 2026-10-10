@@ -1,3 +1,4 @@
+import { UV_SELECTION } from "../scripts/development-tool-policy.mjs";
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, relative, resolve, sep } from "node:path";
@@ -482,7 +483,7 @@ const createQualityToolingFacts = () =>
     {
       id: "uv-development-bootstrap",
       name: "uv development-environment bootstrap",
-      versionOrRevision: "0.13.0",
+      versionOrRevision: UV_SELECTION.version,
       license: "MIT OR Apache-2.0",
       concluded: "MIT",
       source: "astral-sh/uv",

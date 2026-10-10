@@ -1,3 +1,8 @@
+import {
+  CooperativeCheckpoint,
+  monotonicNow,
+} from "../cooperativeCheckpoint.js";
+import { OWL_NAMESPACE, XSD_NAMESPACE } from "../../rdfjs/vocabulary.js";
 import { OWLDocumentFormats } from "../../../formats/owlDocumentFormats.js";
 import { OWLSyntaxError, ResourceLimitError } from "../../../io/errors.js";
 import { OWLObjectKind } from "../../../model/kinds.js";
@@ -6,12 +11,11 @@ import { normalizeCardinality } from "../../model/cardinality.js";
 
 import { DLSyntaxLexer } from "./lexer.js";
 
-const COOPERATIVE_YIELD_INTERVAL_MS = 50;
-const OWL_THING_IRI = "http://www.w3.org/2002/07/owl#Thing";
-const OWL_NOTHING_IRI = "http://www.w3.org/2002/07/owl#Nothing";
-const XSD_DOUBLE_IRI = "http://www.w3.org/2001/XMLSchema#double";
-const XSD_INTEGER_IRI = "http://www.w3.org/2001/XMLSchema#integer";
-const monotonicNow = () => globalThis.performance?.now?.() ?? Date.now();
+const OWL_THING_IRI = OWL_NAMESPACE + "Thing";
+const OWL_NOTHING_IRI = OWL_NAMESPACE + "Nothing";
+const XSD_DOUBLE_IRI = XSD_NAMESPACE + "double";
+const XSD_INTEGER_IRI = XSD_NAMESPACE + "integer";
+
 let anonymousDocumentSequence = 0;
 
 const documentNamespace = (source) => {
@@ -36,7 +40,7 @@ export class OWLDLSyntaxOWLParser {
   #configuration;
   #dataFactory;
   #executionBudget;
-  #lastYieldAt;
+  #checkpoint;
   #lexer;
   #namespace;
 
@@ -49,7 +53,7 @@ export class OWLDLSyntaxOWLParser {
       deadline: startedAt + configuration.timeoutMs,
       startedAt,
     });
-    this.#lastYieldAt = startedAt;
+    this.#checkpoint = new CooperativeCheckpoint(startedAt);
     this.#lexer = new DLSyntaxLexer(
       source.getText(),
       configuration,
@@ -548,20 +552,7 @@ export class OWLDLSyntaxOWLParser {
     });
   }
 
-  #cooperate() {
-    this.#lexer.checkExecutionBudget();
-    const current = monotonicNow();
-    if (current - this.#lastYieldAt < COOPERATIVE_YIELD_INTERVAL_MS) {
-      return undefined;
-    }
-    const scheduler = Reflect.get(globalThis, "scheduler");
-    const request =
-      typeof scheduler?.yield === "function"
-        ? scheduler.yield()
-        : new Promise((resolve) => globalThis.setTimeout(resolve, 0));
-    return Promise.resolve(request).then(() => {
-      this.#lastYieldAt = monotonicNow();
-      this.#lexer.checkExecutionBudget();
-    });
+  #cooperate(lexer = this.#lexer) {
+    return this.#checkpoint.cooperate(lexer);
   }
 }

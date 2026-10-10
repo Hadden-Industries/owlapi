@@ -27,7 +27,7 @@ import {
   writeInstalledConsumerFixtures,
 } from "./installed-consumer-fixtures.mjs";
 
-const registry = "https://registry.npmjs.org/";
+import { NPM_REGISTRY as registry } from "./package-identity.mjs";
 
 /** A successful read-only rerun must not hide an original pre-publication failure. */
 export const readPublicationAttempt = async ({ client, env = process.env }) => {

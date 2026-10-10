@@ -1,7 +1,12 @@
+import {
+  median,
+  RUN_COUNT,
+  WARMUP_COUNT,
+  sampleObservedHeap as sample,
+} from "./benchmarkSampling.mjs";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { cpus, release, totalmem } from "node:os";
-import { performance } from "node:perf_hooks";
 
 import { IRI, OWLDataFactory, OWLOntology } from "../model/index.js";
 import { OwlToRdfTranslator } from "../internal/mapping/owlToRdfTranslator.js";
@@ -10,8 +15,6 @@ import { assertQuiescentMachine } from "./benchmarkEnvironment.mjs";
 
 await assertQuiescentMachine();
 
-const RUN_COUNT = 5;
-const WARMUP_COUNT = 1;
 const HEAP_SAMPLE_INTERVAL_QUADS = 256;
 const EX = "urn:owlapi-js:benchmark:owl-to-rdf:";
 
@@ -60,32 +63,6 @@ const fixtures = Object.freeze({
   depth: deepExpressionOntology(),
   list: longListOntology(),
 });
-
-const median = (values) => {
-  const sorted = [...values].sort((left, right) => left - right);
-  return sorted[Math.floor(sorted.length / 2)];
-};
-
-const sample = async (operation) => {
-  globalThis.gc?.();
-  const startHeapBytes = process.memoryUsage().heapUsed;
-  let peakHeapBytes = startHeapBytes;
-  const observeHeap = () => {
-    peakHeapBytes = Math.max(peakHeapBytes, process.memoryUsage().heapUsed);
-  };
-  const startedAt = performance.now();
-  const outputQuads = await operation(observeHeap);
-  const wallMs = performance.now() - startedAt;
-  const endHeapBytes = process.memoryUsage().heapUsed;
-  peakHeapBytes = Math.max(peakHeapBytes, endHeapBytes);
-  return {
-    outputQuads,
-    wallMs,
-    peakHeapBytes,
-    peakHeapDeltaBytes: Math.max(0, peakHeapBytes - startHeapBytes),
-    retainedHeapDeltaBytes: endHeapBytes - startHeapBytes,
-  };
-};
 
 const translate = (ontology, observeHeap) => {
   const datasetFactory = {

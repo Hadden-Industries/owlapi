@@ -1,7 +1,13 @@
+import {
+  median,
+  RUN_COUNT,
+  WARMUP_COUNT,
+  SAMPLE_INTERVAL_MS,
+  sampleHeap as sample,
+} from "./benchmarkSampling.mjs";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { cpus, release, totalmem } from "node:os";
-import { performance } from "node:perf_hooks";
 
 import { RdfToOwlTranslator } from "../internal/mapping/rdfToOwlTranslator.js";
 import {
@@ -13,9 +19,6 @@ import { assertQuiescentMachine } from "./benchmarkEnvironment.mjs";
 
 await assertQuiescentMachine();
 
-const RUN_COUNT = 5;
-const WARMUP_COUNT = 1;
-const SAMPLE_INTERVAL_MS = 5;
 const RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 const RDFS = "http://www.w3.org/2000/01/rdf-schema#";
 const OWL = "http://www.w3.org/2002/07/owl#";
@@ -70,35 +73,6 @@ const fixtures = Object.freeze({
   depth: deepExpressionDataset(),
   list: longListDataset(),
 });
-
-const median = (values) => {
-  const sorted = [...values].sort((left, right) => left - right);
-  return sorted[Math.floor(sorted.length / 2)];
-};
-
-const sample = async (operation) => {
-  globalThis.gc?.();
-  const startHeapBytes = process.memoryUsage().heapUsed;
-  let peakHeapBytes = startHeapBytes;
-  const sampler = setInterval(() => {
-    peakHeapBytes = Math.max(peakHeapBytes, process.memoryUsage().heapUsed);
-  }, SAMPLE_INTERVAL_MS);
-  const startedAt = performance.now();
-  try {
-    await operation();
-  } finally {
-    clearInterval(sampler);
-  }
-  const wallMs = performance.now() - startedAt;
-  const endHeapBytes = process.memoryUsage().heapUsed;
-  peakHeapBytes = Math.max(peakHeapBytes, endHeapBytes);
-  return {
-    wallMs,
-    peakHeapBytes,
-    peakHeapDeltaBytes: Math.max(0, peakHeapBytes - startHeapBytes),
-    retainedHeapDeltaBytes: endHeapBytes - startHeapBytes,
-  };
-};
 
 const translate = async (dataset) => {
   await new RdfToOwlTranslator().translate(dataset);

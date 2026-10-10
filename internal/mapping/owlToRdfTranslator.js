@@ -30,16 +30,10 @@ import {
   XSD_VOCABULARY,
 } from "../rdfjs/vocabulary.js";
 
-const GRAPH_TERM_TYPES = new Set(["BlankNode", "DefaultGraph", "NamedNode"]);
+import { RDF_GRAPH_TERM_TYPES } from "../rdfjs/termPolicy.js";
+const GRAPH_TERM_TYPES = new Set(RDF_GRAPH_TERM_TYPES);
 const RDF_PLAIN_LITERAL = `${RDF_NAMESPACE}PlainLiteral`;
-const ENTITY_DECLARATION_TYPES = Object.freeze({
-  [OWLObjectKind.ANNOTATION_PROPERTY]: OWL_VOCABULARY.AnnotationProperty,
-  [OWLObjectKind.CLASS]: OWL_VOCABULARY.Class,
-  [OWLObjectKind.DATA_PROPERTY]: OWL_VOCABULARY.DatatypeProperty,
-  [OWLObjectKind.DATATYPE]: RDFS_VOCABULARY.Datatype,
-  [OWLObjectKind.NAMED_INDIVIDUAL]: OWL_VOCABULARY.NamedIndividual,
-  [OWLObjectKind.OBJECT_PROPERTY]: OWL_VOCABULARY.ObjectProperty,
-});
+import { ENTITY_DECLARATION_TYPES } from "./entityDeclarations.js";
 
 const requireMethod = (value, method, name) => {
   if (typeof value?.[method] !== "function") {

@@ -1,29 +1,17 @@
+import { TextCursor } from "../textCursor.js";
+import {
+  isAsciiDigit,
+  inRange,
+  prefixNameIsValid,
+  localNameIsValid,
+  nodeIdIsValid,
+  utf8CodePointBytes,
+} from "../lexicalNames.js";
 import { OWLSyntaxError, ResourceLimitError } from "../../../io/errors.js";
 
 const WHITESPACE = new Set([" ", "\t", "\n", "\r"]);
 const PUNCTUATION = new Set([",", "(", ")", "{", "}", "[", "]"]);
-const LOCAL_ESCAPES = new Set([
-  "_",
-  "~",
-  ".",
-  "-",
-  "!",
-  "$",
-  "&",
-  "'",
-  "(",
-  ")",
-  "*",
-  "+",
-  ",",
-  ";",
-  "=",
-  "/",
-  "?",
-  "#",
-  "@",
-  "%",
-]);
+
 const KEYWORDS = new Set([
   "AnnotationProperty:",
   "Annotations:",
@@ -87,133 +75,6 @@ const KEYWORDS = new Set([
   "value",
 ]);
 
-const isAsciiDigit = (character) => character >= "0" && character <= "9";
-const isHex = (character) =>
-  isAsciiDigit(character) ||
-  (character >= "A" && character <= "F") ||
-  (character >= "a" && character <= "f");
-const inRange = (codePoint, start, end) =>
-  codePoint >= start && codePoint <= end;
-
-const isPnCharsBase = (character) => {
-  const codePoint = character.codePointAt(0);
-  return (
-    inRange(codePoint, 0x41, 0x5a) ||
-    inRange(codePoint, 0x61, 0x7a) ||
-    inRange(codePoint, 0xc0, 0xd6) ||
-    inRange(codePoint, 0xd8, 0xf6) ||
-    inRange(codePoint, 0xf8, 0x2ff) ||
-    inRange(codePoint, 0x370, 0x37d) ||
-    inRange(codePoint, 0x37f, 0x1fff) ||
-    inRange(codePoint, 0x200c, 0x200d) ||
-    inRange(codePoint, 0x2070, 0x218f) ||
-    inRange(codePoint, 0x2c00, 0x2fef) ||
-    inRange(codePoint, 0x3001, 0xd7ff) ||
-    inRange(codePoint, 0xf900, 0xfdcf) ||
-    inRange(codePoint, 0xfdf0, 0xfffd) ||
-    inRange(codePoint, 0x10000, 0xeffff)
-  );
-};
-
-const isPnCharsU = (character) => character === "_" || isPnCharsBase(character);
-
-const isPnChars = (character) => {
-  const codePoint = character.codePointAt(0);
-  return (
-    isPnCharsU(character) ||
-    character === "-" ||
-    isAsciiDigit(character) ||
-    codePoint === 0xb7 ||
-    inRange(codePoint, 0x300, 0x36f) ||
-    inRange(codePoint, 0x203f, 0x2040)
-  );
-};
-
-const prefixNameIsValid = (value) => {
-  const local = value.slice(0, -1);
-  if (local.length === 0) {
-    return true;
-  }
-  const characters = [...local];
-  return (
-    isPnCharsBase(characters[0]) &&
-    characters.slice(1, -1).every((item) => isPnChars(item) || item === ".") &&
-    (characters.length === 1 || isPnChars(characters.at(-1)))
-  );
-};
-
-const localUnits = (value) => {
-  const units = [];
-  for (let offset = 0; offset < value.length;) {
-    const character = value[offset];
-    if (character === "\\") {
-      const escaped = value[offset + 1];
-      if (!LOCAL_ESCAPES.has(escaped)) {
-        return undefined;
-      }
-      units.push({ escaped: true, value: escaped });
-      offset += 2;
-      continue;
-    }
-    if (
-      character === "%" &&
-      isHex(value[offset + 1]) &&
-      isHex(value[offset + 2])
-    ) {
-      units.push({ escaped: true, value: value.slice(offset, offset + 3) });
-      offset += 3;
-      continue;
-    }
-    const codePoint = value.codePointAt(offset);
-    const item = String.fromCodePoint(codePoint);
-    units.push({ escaped: false, value: item });
-    offset += item.length;
-  }
-  return units;
-};
-
-const localNameIsValid = (value) => {
-  const units = localUnits(value);
-  if (!units || units.length === 0) {
-    return false;
-  }
-  const first = units[0];
-  if (
-    !first.escaped &&
-    !isPnCharsU(first.value) &&
-    first.value !== ":" &&
-    !isAsciiDigit(first.value)
-  ) {
-    return false;
-  }
-  return units.slice(1).every(({ escaped, value }, index) => {
-    if (escaped) {
-      return true;
-    }
-    if (index === units.length - 2 && value === ".") {
-      return false;
-    }
-    return isPnChars(value) || value === "." || value === ":";
-  });
-};
-
-const nodeIdIsValid = (value) => {
-  if (!value.startsWith("_:") || value.length === 2) {
-    return false;
-  }
-  const label = [...value.slice(2)];
-  const first = label[0];
-  if (!isPnCharsU(first) && !isAsciiDigit(first)) {
-    return false;
-  }
-  return label.slice(1).every((item, index) => {
-    if (index === label.length - 2 && item === ".") {
-      return false;
-    }
-    return isPnChars(item) || item === ".";
-  });
-};
-
 export const isManchesterNumericLiteral = (value) =>
   /^[+-]?[0-9]+$/u.test(value) ||
   /^[+-]?[0-9]+\.[0-9]+$/u.test(value) ||
@@ -221,33 +82,16 @@ export const isManchesterNumericLiteral = (value) =>
     value,
   );
 
-const utf8CodePointBytes = (codePoint) => {
-  if (codePoint <= 0x7f) {
-    return 1;
-  }
-  if (codePoint <= 0x7ff) {
-    return 2;
-  }
-  return codePoint <= 0xffff ? 3 : 4;
-};
-
 const monotonicNow = () => globalThis.performance?.now?.() ?? Date.now();
-
-export const decodePrefixedLocalName = (value) =>
-  value.replace(/\\([_~.\-!$&'()*+,;=/?#@%])/gu, "$1");
 
 export const isManchesterKeyword = (value) => KEYWORDS.has(value);
 
 export class ManchesterSyntaxLexer {
-  #column = 1;
+  #cursor = new TextCursor(() => this.checkExecutionBudget());
   #configuration;
   #countTokens;
   #deadline;
-  #line = 1;
   #lookahead;
-  #offset = 0;
-  #previousWasCarriageReturn = false;
-  #scannedSinceBudgetCheck = 0;
   #startedAt;
   #text;
   #tokenCount = 0;
@@ -277,7 +121,7 @@ export class ManchesterSyntaxLexer {
   }
 
   checkExecutionBudget() {
-    this.#scannedSinceBudgetCheck = 0;
+    this.#cursor.scannedSinceBudgetCheck = 0;
     this.#throwIfAborted();
     const current = monotonicNow();
     if (current < this.#deadline) {
@@ -324,42 +168,22 @@ export class ManchesterSyntaxLexer {
   }
 
   #advance() {
-    const character = this.#text[this.#offset];
-    this.#offset += 1;
-    if (character === "\r") {
-      this.#line += 1;
-      this.#column = 1;
-      this.#previousWasCarriageReturn = true;
-    } else if (character === "\n") {
-      if (!this.#previousWasCarriageReturn) {
-        this.#line += 1;
-      }
-      this.#column = 1;
-      this.#previousWasCarriageReturn = false;
-    } else {
-      this.#column += 1;
-      this.#previousWasCarriageReturn = false;
-    }
-    this.#scannedSinceBudgetCheck += 1;
-    if (this.#scannedSinceBudgetCheck >= 1024) {
-      this.checkExecutionBudget();
-    }
-    return character;
+    return this.#cursor.advance(this.#text);
   }
 
   #skipTrivia() {
-    while (this.#offset < this.#text.length) {
-      if (WHITESPACE.has(this.#text[this.#offset])) {
+    while (this.#cursor.offset < this.#text.length) {
+      if (WHITESPACE.has(this.#text[this.#cursor.offset])) {
         this.#advance();
         continue;
       }
-      if (this.#text[this.#offset] !== "#") {
+      if (this.#text[this.#cursor.offset] !== "#") {
         return;
       }
       while (
-        this.#offset < this.#text.length &&
-        this.#text[this.#offset] !== "\n" &&
-        this.#text[this.#offset] !== "\r"
+        this.#cursor.offset < this.#text.length &&
+        this.#text[this.#cursor.offset] !== "\n" &&
+        this.#text[this.#cursor.offset] !== "\r"
       ) {
         this.#advance();
       }
@@ -389,7 +213,7 @@ export class ManchesterSyntaxLexer {
     }
     return Object.freeze({
       ...location,
-      endOffset: this.#offset,
+      endOffset: this.#cursor.offset,
       type,
       value,
     });
@@ -397,18 +221,14 @@ export class ManchesterSyntaxLexer {
 
   #readToken() {
     this.#skipTrivia();
-    const location = {
-      column: this.#column,
-      line: this.#line,
-      offset: this.#offset,
-    };
-    if (this.#offset === this.#text.length) {
+    const location = this.#cursor.location();
+    if (this.#cursor.offset === this.#text.length) {
       return this.#emit("EOF", "", location, 0);
     }
 
-    const character = this.#text[this.#offset];
+    const character = this.#text[this.#cursor.offset];
     if (character === "<") {
-      const next = this.#text[this.#offset + 1];
+      const next = this.#text[this.#cursor.offset + 1];
       if (
         next === "=" ||
         next === '"' ||
@@ -427,7 +247,7 @@ export class ManchesterSyntaxLexer {
     if (character === ">") {
       this.#advance();
       const value =
-        this.#text[this.#offset] === "=" ? `>${this.#advance()}` : ">";
+        this.#text[this.#cursor.offset] === "=" ? `>${this.#advance()}` : ">";
       return this.#emit("FACET", value, location, value.length);
     }
     if (character === '"') {
@@ -438,7 +258,7 @@ export class ManchesterSyntaxLexer {
     }
     if (character === "^") {
       this.#advance();
-      if (this.#text[this.#offset] !== "^") {
+      if (this.#text[this.#cursor.offset] !== "^") {
         this.#syntax(
           "A Manchester datatype marker must contain two carets",
           location,
@@ -459,11 +279,11 @@ export class ManchesterSyntaxLexer {
     let byteLength = 2;
     let value = "";
     while (
-      this.#offset < this.#text.length &&
-      this.#text[this.#offset] !== ">"
+      this.#cursor.offset < this.#text.length &&
+      this.#text[this.#cursor.offset] !== ">"
     ) {
-      const character = this.#text[this.#offset];
-      const codePoint = this.#text.codePointAt(this.#offset);
+      const character = this.#text[this.#cursor.offset];
+      const codePoint = this.#text.codePointAt(this.#cursor.offset);
       if (
         WHITESPACE.has(character) ||
         '<"{}|^`\\'.includes(character) ||
@@ -491,7 +311,7 @@ export class ManchesterSyntaxLexer {
         );
       }
     }
-    if (this.#text[this.#offset] !== ">") {
+    if (this.#text[this.#cursor.offset] !== ">") {
       this.#syntax("The Manchester full IRI is not terminated", location);
     }
     this.#advance();
@@ -502,15 +322,15 @@ export class ManchesterSyntaxLexer {
     this.#advance();
     let byteLength = 2;
     let value = "";
-    while (this.#offset < this.#text.length) {
-      const character = this.#text[this.#offset];
+    while (this.#cursor.offset < this.#text.length) {
+      const character = this.#text[this.#cursor.offset];
       if (character === '"') {
         this.#advance();
         return this.#emit("STRING", value, location, byteLength);
       }
       if (character === "\\") {
         this.#advance();
-        const escaped = this.#text[this.#offset];
+        const escaped = this.#text[this.#cursor.offset];
         if (escaped !== '"' && escaped !== "\\") {
           this.#syntax(
             "Manchester strings allow only quote and slash escapes",
@@ -521,7 +341,7 @@ export class ManchesterSyntaxLexer {
         this.#advance();
         byteLength += 2;
       } else {
-        const codePoint = this.#text.codePointAt(this.#offset);
+        const codePoint = this.#text.codePointAt(this.#cursor.offset);
         if (
           codePoint === 0 ||
           inRange(codePoint, 0xd800, 0xdfff) ||
@@ -558,8 +378,8 @@ export class ManchesterSyntaxLexer {
   #readLanguage(location) {
     this.#advance();
     let value = "";
-    while (this.#offset < this.#text.length) {
-      const character = this.#text[this.#offset];
+    while (this.#cursor.offset < this.#text.length) {
+      const character = this.#text[this.#cursor.offset];
       if (
         WHITESPACE.has(character) ||
         PUNCTUATION.has(character) ||
@@ -583,8 +403,8 @@ export class ManchesterSyntaxLexer {
   #readBare(location) {
     let byteLength = 0;
     let value = "";
-    while (this.#offset < this.#text.length) {
-      const character = this.#text[this.#offset];
+    while (this.#cursor.offset < this.#text.length) {
+      const character = this.#text[this.#cursor.offset];
       if (
         WHITESPACE.has(character) ||
         PUNCTUATION.has(character) ||
@@ -600,7 +420,7 @@ export class ManchesterSyntaxLexer {
       if (character === "\\") {
         value += this.#advance();
         byteLength += 1;
-        if (this.#offset === this.#text.length) {
+        if (this.#cursor.offset === this.#text.length) {
           this.#syntax(
             "The Manchester prefixed-name escape is not terminated",
             location,
@@ -610,7 +430,7 @@ export class ManchesterSyntaxLexer {
         value += escaped;
         byteLength += new TextEncoder().encode(escaped).byteLength;
       } else {
-        const codePoint = this.#text.codePointAt(this.#offset);
+        const codePoint = this.#text.codePointAt(this.#cursor.offset);
         const item = String.fromCodePoint(codePoint);
         value += item;
         byteLength += utf8CodePointBytes(codePoint);

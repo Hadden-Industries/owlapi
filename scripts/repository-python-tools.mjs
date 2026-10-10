@@ -17,18 +17,12 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { parseArgs } from "node:util";
 
 export const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
-const uvVersion = "0.13.0";
+import {
+  UV_SELECTION,
+  checkUvProjections,
+} from "./development-tool-policy.mjs";
+const { version: uvVersion, assets: uvAssets } = UV_SELECTION;
 // Exact official release assets, verified against GitHub's release asset digests.
-const uvAssets = {
-  win32: {
-    file: "uv-x86_64-pc-windows-msvc.zip",
-    sha256: "088962f9e7b7bd9ea740c04c650b2a21c8928c345bd99ac24350dc924dba656c",
-  },
-  linux: {
-    file: "uv-x86_64-unknown-linux-gnu.tar.gz",
-    sha256: "1468ebd5a5541121837c5a2817b9972ba6090fa6caa3d142620850a47fb75154",
-  },
-};
 
 /** Resolve only this checkout's tools and remove inherited environment redirects. */
 export function repositoryPythonTools({
@@ -366,6 +360,7 @@ if (
       await synchronizePythonTools({ python });
       process.stdout.write("Synchronized checkout Python quality tools.\n");
     } else if (mode === "check") {
+      checkUvProjections();
       checkPythonTools();
       process.stdout.write("Locked Python quality tools are current.\n");
     } else if (mode === "ruff") {

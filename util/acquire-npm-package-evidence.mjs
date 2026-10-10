@@ -1,3 +1,8 @@
+import {
+  PUBLIC_REGISTRY_ORIGIN,
+  EVIDENCE_SHARD_NAME as SHARD_MANIFEST_NAME,
+  EVIDENCE_MANIFEST_NAME,
+} from "./third-party-evidence/format.mjs";
 import { execFile } from "node:child_process";
 import { createPublicKey, randomUUID } from "node:crypto";
 import {
@@ -54,12 +59,12 @@ import {
 
 const executeFile = promisify(execFile);
 const UTF8_DECODER = new TextDecoder("utf-8", { fatal: true });
-const PUBLIC_REGISTRY_ORIGIN = "https://registry.npmjs.org";
+
 const PUBLIC_REGISTRY = `${PUBLIC_REGISTRY_ORIGIN}/`;
 const REGISTRY_KEYS_URL = `${PUBLIC_REGISTRY_ORIGIN}/-/npm/v1/keys`;
 const DEFAULT_REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
 const MAX_JSON_BYTES = 64 * 1024 * 1024;
-const SHARD_MANIFEST_NAME = "npm-package-evidence-shard.json";
+
 const REGISTRY_RETRY_MINIMUM_MS = 10_000;
 const REGISTRY_RETRY_MAXIMUM_MS = 60_000;
 const REGISTRY_RETRY_FACTOR = 10;
@@ -1024,7 +1029,7 @@ export const publishEvidence = async ({
   const provenanceRoot = join(repositoryRoot, "docs", "provenance");
   const evidenceParent = join(provenanceRoot, "evidence");
   const destinationCorpus = join(evidenceParent, "npm");
-  const destinationManifest = join(provenanceRoot, "npm-package-evidence.json");
+  const destinationManifest = join(provenanceRoot, EVIDENCE_MANIFEST_NAME);
   const operation = randomUUID();
   const pendingCorpus = join(evidenceParent, `.npm.${operation}.pending`);
   const backupCorpus = join(evidenceParent, `.npm.${operation}.backup`);
@@ -1142,7 +1147,7 @@ const evidencePolicy = () => ({
 const readReusableEvidence = async (repositoryRoot) => {
   const provenanceRoot = join(repositoryRoot, "docs", "provenance");
   const [manifest, lockfileBytes, schema] = await Promise.all([
-    readFile(join(provenanceRoot, "npm-package-evidence.json"), "utf8").then(
+    readFile(join(provenanceRoot, EVIDENCE_MANIFEST_NAME), "utf8").then(
       JSON.parse,
     ),
     readFile(join(repositoryRoot, "package-lock.json")),
@@ -1237,7 +1242,7 @@ export const compareCommittedEvidence = async ({
   let committed;
   try {
     committed = JSON.parse(
-      await readFile(join(provenanceRoot, "npm-package-evidence.json"), "utf8"),
+      await readFile(join(provenanceRoot, EVIDENCE_MANIFEST_NAME), "utf8"),
     );
   } catch (error) {
     controlFailure(

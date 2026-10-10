@@ -1,9 +1,10 @@
+/** Immutable dialect facts; adapters own private membership indexes. */
 export const KRSSDialect = Object.freeze({
   KRSS1: "krss1",
   KRSS2: "krss2",
 });
 
-const SHARED_TOP_LEVEL_KEYWORDS = new Set([
+export const SHARED_TOP_LEVEL_KEYWORDS = Object.freeze([
   "define-primitive-concept",
   "define-concept",
   "define-primitive-role",
@@ -15,7 +16,7 @@ const SHARED_TOP_LEVEL_KEYWORDS = new Set([
   "distinct",
 ]);
 
-const KRSS2_ONLY_TOP_LEVEL_KEYWORDS = new Set([
+export const KRSS2_ONLY_TOP_LEVEL_KEYWORDS = Object.freeze([
   "define-role",
   "disjoint",
   "equivalent",
@@ -36,13 +37,13 @@ export function keywordSupportedByDialect(keyword, dialect) {
     typeof keyword === "string" ? keyword.toLowerCase() : "";
 
   if (dialect === KRSSDialect.KRSS1) {
-    return SHARED_TOP_LEVEL_KEYWORDS.has(normalizedKeyword);
+    return SHARED_TOP_LEVEL_KEYWORDS.includes(normalizedKeyword);
   }
 
   if (dialect === KRSSDialect.KRSS2) {
     return (
-      SHARED_TOP_LEVEL_KEYWORDS.has(normalizedKeyword) ||
-      KRSS2_ONLY_TOP_LEVEL_KEYWORDS.has(normalizedKeyword)
+      SHARED_TOP_LEVEL_KEYWORDS.includes(normalizedKeyword) ||
+      KRSS2_ONLY_TOP_LEVEL_KEYWORDS.includes(normalizedKeyword)
     );
   }
 

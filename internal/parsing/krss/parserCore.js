@@ -1,4 +1,9 @@
 import {
+  CooperativeCheckpoint,
+  monotonicNow,
+} from "../cooperativeCheckpoint.js";
+import { OWL_NAMESPACE } from "../../rdfjs/vocabulary.js";
+import {
   OWLSyntaxError,
   ResourceLimitError,
   UnsupportedConstructError,
@@ -7,9 +12,8 @@ import { IRI } from "../../../model/structural.js";
 import { normalizeCardinality } from "../../model/cardinality.js";
 import { KRSSLexer } from "./lexer.js";
 
-const COOPERATIVE_YIELD_INTERVAL_MS = 50;
-const OWL_THING_IRI = "http://www.w3.org/2002/07/owl#Thing";
-const OWL_NOTHING_IRI = "http://www.w3.org/2002/07/owl#Nothing";
+const OWL_THING_IRI = OWL_NAMESPACE + "Thing";
+const OWL_NOTHING_IRI = OWL_NAMESPACE + "Nothing";
 const PRIMITIVE_ROLE_ATTRIBUTE_ORDER = Object.freeze({
   "left-identity": 1,
   "right-identity": 1,
@@ -61,7 +65,7 @@ const RESERVED_NAME_KEYWORDS = new Set([
   "enum",
 ]);
 const ABSOLUTE_IRI = /^[A-Za-z][A-Za-z0-9+.-]*:/u;
-const monotonicNow = () => globalThis.performance?.now?.() ?? Date.now();
+
 let anonymousDocumentSequence = 0;
 
 const documentNamespace = (source, anonymousNamespacePrefix) => {
@@ -85,7 +89,7 @@ const uniqueStructuralValues = (values) => {
 export class KRSSParserCore {
   #configuration;
   #dataFactory;
-  #lastYieldAt;
+  #checkpoint;
   #lexer;
   #namespace;
   #policy;
@@ -110,7 +114,7 @@ export class KRSSParserCore {
       deadline: startedAt + configuration.timeoutMs,
       startedAt,
     });
-    this.#lastYieldAt = startedAt;
+    this.#checkpoint = new CooperativeCheckpoint(startedAt);
     this.#lexer = new KRSSLexer(
       source.getText(),
       configuration,
@@ -883,20 +887,7 @@ export class KRSSParserCore {
     });
   }
 
-  #cooperate() {
-    this.#lexer.checkExecutionBudget();
-    const current = monotonicNow();
-    if (current - this.#lastYieldAt < COOPERATIVE_YIELD_INTERVAL_MS) {
-      return undefined;
-    }
-    const scheduler = Reflect.get(globalThis, "scheduler");
-    const request =
-      typeof scheduler?.yield === "function"
-        ? scheduler.yield()
-        : new Promise((resolve) => globalThis.setTimeout(resolve, 0));
-    return Promise.resolve(request).then(() => {
-      this.#lastYieldAt = monotonicNow();
-      this.#lexer.checkExecutionBudget();
-    });
+  #cooperate(lexer = this.#lexer) {
+    return this.#checkpoint.cooperate(lexer);
   }
 }

@@ -1,3 +1,4 @@
+import { projectRuntimeText } from "./runtime-policy.mjs";
 /** Evidence reuse is an optimization. Unprovable equivalence always requires full CI. */
 import { isDeepStrictEqual } from "node:util";
 import { captureConsumerSources } from "./consumer-source-snapshot.mjs";
@@ -44,7 +45,7 @@ const validHost = (host) =>
   host.architecture === "X64" &&
   host.image === "ubuntu24" &&
   /^\d{8}\.\d+(?:\.\d+)?$/u.test(host.imageVersion ?? "") &&
-  host.node === "v24.21.0";
+  host.node === projectRuntimeText("v{{runtime:node.24}}");
 
 export const createVerificationReceipt = ({
   context,

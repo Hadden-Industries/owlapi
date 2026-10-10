@@ -1,4 +1,16 @@
 import {
+  DEFAULT_CHUNK_SIZE,
+  MAX_TIMER_DELAY_MS,
+  chunksOf,
+  waitForDrain,
+  blankNodeKeys,
+} from "../rdf/streamPrimitives.js";
+import {
+  RDF_NAMESPACE,
+  XML_NAMESPACE,
+  XMLNS_NAMESPACE,
+} from "../../rdfjs/vocabulary.js";
+import {
   OWLSyntaxError,
   ResourceLimitError,
   XmlParseError,
@@ -10,18 +22,17 @@ import { xmlParserAdapter } from "../xml/xmlParserAdapter.js";
 
 const CDATA_SECTION_NODE = 4;
 const COMMENT_NODE = 8;
-const DEFAULT_CHUNK_SIZE = 65_536;
+
 const DOCUMENT_FRAGMENT_NODE = 11;
 const ELEMENT_NODE = 1;
-const MAX_TIMER_DELAY_MS = 2_147_483_647;
+
 const PROCESSING_INSTRUCTION_NODE = 7;
-const RDF_NAMESPACE = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+
 const RDF_XML_LITERAL = `${RDF_NAMESPACE}XMLLiteral`;
 const RDF_NON_LITERAL_PARSE_TYPES = new Set(["Collection", "Resource"]);
 const TASK_YIELD_CHUNKS = 16;
 const TEXT_NODE = 3;
-const XML_NAMESPACE = "http://www.w3.org/XML/1998/namespace";
-const XMLNS_NAMESPACE = "http://www.w3.org/2000/xmlns/";
+
 const XML_PREDEFINED_ENTITIES = Object.freeze({
   amp: "&",
   apos: "'",
@@ -691,34 +702,6 @@ class ExecutionController {
   }
 }
 
-const chunksOf = function* (text, chunkSize) {
-  for (let start = 0; start < text.length;) {
-    let end = Math.min(start + chunkSize, text.length);
-    if (
-      end < text.length &&
-      text.charCodeAt(end - 1) >= 0xd800 &&
-      text.charCodeAt(end - 1) <= 0xdbff &&
-      text.charCodeAt(end) >= 0xdc00 &&
-      text.charCodeAt(end) <= 0xdfff
-    ) {
-      end += 1;
-    }
-    yield text.slice(start, end);
-    start = end;
-  }
-};
-
-const blankNodeKeys = (term, keys) => {
-  if (term?.termType === "BlankNode") {
-    keys.add(term.value);
-  } else if (term?.termType === "Quad") {
-    blankNodeKeys(term.subject, keys);
-    blankNodeKeys(term.predicate, keys);
-    blankNodeKeys(term.object, keys);
-    blankNodeKeys(term.graph, keys);
-  }
-};
-
 const xmlLiteralNormalizer = (classifications) => {
   const seenTerms = new WeakMap();
   let classificationIndex = 0;
@@ -837,24 +820,6 @@ const normalizeParserFailure = async (cause, text, configuration) => {
     parserMessage: String(cause?.message || cause),
   });
 };
-
-const waitForDrain = (parser) =>
-  new Promise((resolve, reject) => {
-    function cleanup() {
-      parser.removeListener("drain", onDrain);
-      parser.removeListener("error", onError);
-    }
-    function onDrain() {
-      cleanup();
-      resolve();
-    }
-    function onError(error) {
-      cleanup();
-      reject(error);
-    }
-    parser.once("drain", onDrain);
-    parser.once("error", onError);
-  });
 
 const defaultImplementationLoader = () => import("rdfxml-streaming-parser");
 

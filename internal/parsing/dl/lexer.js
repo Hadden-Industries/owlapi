@@ -1,3 +1,4 @@
+import { TextCursor } from "../textCursor.js";
 import { OWLSyntaxError, ResourceLimitError } from "../../../io/errors.js";
 
 const WHITESPACE = new Set([" ", "\t", "\n", "\r"]);
@@ -119,14 +120,10 @@ const isWordContinuation = (character) =>
   character !== undefined && !ID_DELIMITERS.has(character);
 
 export class DLSyntaxLexer {
-  #column = 1;
+  #cursor = new TextCursor(() => this.checkExecutionBudget());
   #configuration;
   #deadline;
-  #line = 1;
   #lookahead = [];
-  #offset = 0;
-  #previousWasCarriageReturn = false;
-  #scannedSinceBudgetCheck = 0;
   #startedAt;
   #text;
   #tokenCount = 0;
@@ -161,7 +158,7 @@ export class DLSyntaxLexer {
   }
 
   checkExecutionBudget() {
-    this.#scannedSinceBudgetCheck = 0;
+    this.#cursor.scannedSinceBudgetCheck = 0;
     const { signal } = this.#configuration;
     if (signal?.aborted) {
       if (typeof signal.throwIfAborted === "function") {
@@ -200,33 +197,13 @@ export class DLSyntaxLexer {
   }
 
   #advance() {
-    const character = this.#text[this.#offset];
-    this.#offset += 1;
-    if (character === "\r") {
-      this.#line += 1;
-      this.#column = 1;
-      this.#previousWasCarriageReturn = true;
-    } else if (character === "\n") {
-      if (!this.#previousWasCarriageReturn) {
-        this.#line += 1;
-      }
-      this.#column = 1;
-      this.#previousWasCarriageReturn = false;
-    } else {
-      this.#column += 1;
-      this.#previousWasCarriageReturn = false;
-    }
-    this.#scannedSinceBudgetCheck += 1;
-    if (this.#scannedSinceBudgetCheck >= 1024) {
-      this.checkExecutionBudget();
-    }
-    return character;
+    return this.#cursor.advance(this.#text);
   }
 
   #skipWhitespace() {
     while (
-      this.#offset < this.#text.length &&
-      WHITESPACE.has(this.#text[this.#offset])
+      this.#cursor.offset < this.#text.length &&
+      WHITESPACE.has(this.#text[this.#cursor.offset])
     ) {
       this.#advance();
     }
@@ -255,7 +232,7 @@ export class DLSyntaxLexer {
     }
     return Object.freeze({
       ...location,
-      endOffset: this.#offset,
+      endOffset: this.#cursor.offset,
       type,
       value,
     });
@@ -263,16 +240,12 @@ export class DLSyntaxLexer {
 
   #readToken() {
     this.#skipWhitespace();
-    const location = {
-      column: this.#column,
-      line: this.#line,
-      offset: this.#offset,
-    };
-    if (this.#offset === this.#text.length) {
+    const location = this.#cursor.location();
+    if (this.#cursor.offset === this.#text.length) {
       return this.#emit("EOF", "", location, 0);
     }
 
-    const character = this.#text[this.#offset];
+    const character = this.#text[this.#cursor.offset];
     const single = SINGLE_TOKENS[character];
     if (single) {
       this.#advance();
@@ -282,12 +255,12 @@ export class DLSyntaxLexer {
       return this.#readNumberOrId(location);
     }
     for (const [alias, type] of OPERATOR_ALIASES) {
-      if (!this.#text.startsWith(alias, this.#offset)) {
+      if (!this.#text.startsWith(alias, this.#cursor.offset)) {
         continue;
       }
       if (
         LONGEST_MATCH_ALIASES.has(alias) &&
-        isWordContinuation(this.#text[this.#offset + alias.length])
+        isWordContinuation(this.#text[this.#cursor.offset + alias.length])
       ) {
         continue;
       }
@@ -305,8 +278,8 @@ export class DLSyntaxLexer {
   }
 
   #readNumberOrId(location) {
-    const start = this.#offset;
-    let cursor = this.#offset;
+    const start = this.#cursor.offset;
+    let cursor = this.#cursor.offset;
     while (isAsciiDigit(this.#text[cursor])) {
       cursor += 1;
       if (cursor - start > this.#configuration.maxTokenLength) {
@@ -337,15 +310,15 @@ export class DLSyntaxLexer {
           this.checkExecutionBudget();
         }
       }
-      const value = this.#text.slice(this.#offset, cursor);
-      while (this.#offset < cursor) {
+      const value = this.#text.slice(this.#cursor.offset, cursor);
+      while (this.#cursor.offset < cursor) {
         this.#advance();
       }
       return this.#emit("DOUBLE", value, location, value.length);
     }
     if (cursor === this.#text.length || ID_DELIMITERS.has(this.#text[cursor])) {
-      const value = this.#text.slice(this.#offset, cursor);
-      while (this.#offset < cursor) {
+      const value = this.#text.slice(this.#cursor.offset, cursor);
+      while (this.#cursor.offset < cursor) {
         this.#advance();
       }
       return this.#emit("INTEGER", value, location, value.length);
@@ -354,14 +327,14 @@ export class DLSyntaxLexer {
   }
 
   #readId(location) {
-    const start = this.#offset;
+    const start = this.#cursor.offset;
     let byteLength = 0;
-    while (this.#offset < this.#text.length) {
-      const character = this.#text[this.#offset];
+    while (this.#cursor.offset < this.#text.length) {
+      const character = this.#text[this.#cursor.offset];
       if (ID_DELIMITERS.has(character)) {
         break;
       }
-      const codePoint = this.#text.codePointAt(this.#offset);
+      const codePoint = this.#text.codePointAt(this.#cursor.offset);
       const item = String.fromCodePoint(codePoint);
       byteLength += UTF8_ENCODER.encode(item).byteLength;
       if (byteLength > this.#configuration.maxTokenLength) {
@@ -377,13 +350,13 @@ export class DLSyntaxLexer {
         this.#advance();
       }
     }
-    const value = this.#text.slice(start, this.#offset);
+    const value = this.#text.slice(start, this.#cursor.offset);
     if (value.length === 0) {
       this.#syntax(
         "The DL Syntax input contains an unexpected token",
         location,
         {
-          found: this.#text[this.#offset],
+          found: this.#text[this.#cursor.offset],
         },
       );
     }

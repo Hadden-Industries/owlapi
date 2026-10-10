@@ -1,3 +1,5 @@
+import { suiteRevision } from "./conformance/suiteRevision.mjs";
+import { MF, RDF, RDFT, encodeQuad } from "./conformance/fixtureTerms.mjs";
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { resolve, sep } from "node:path";
@@ -7,10 +9,8 @@ import { pathToFileURL } from "node:url";
 import { Parser as N3Parser } from "n3";
 import { format as formatWithPrettier } from "prettier";
 
-const REVISION = "12774b0ebb385d17651b396654b19254d0fefbfa";
-const MF = "http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#";
-const RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
-const RDFT = "http://www.w3.org/ns/rdftest#";
+const REVISION = suiteRevision("w3c-rdf-tests", "Turtle");
+
 const DEFAULT_INPUT_URL = new URL(
   "../.phase9-input/w3c-rdf-tests/rdf/",
   import.meta.url,
@@ -58,42 +58,6 @@ const suites = [
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
 const formatJson = (value) =>
   formatWithPrettier(JSON.stringify(value), { parser: "json" });
-
-const encodeTerm = (term) => {
-  switch (term.termType) {
-    case "NamedNode":
-      return ["N", term.value];
-    case "BlankNode":
-      return ["B", term.value];
-    case "Literal":
-      return [
-        "L",
-        term.value,
-        term.language,
-        term.direction || "",
-        term.datatype.value,
-      ];
-    case "DefaultGraph":
-      return ["D"];
-    case "Quad":
-      return [
-        "Q",
-        encodeTerm(term.subject),
-        encodeTerm(term.predicate),
-        encodeTerm(term.object),
-        encodeTerm(term.graph),
-      ];
-    default:
-      throw new TypeError(`Unsupported RDF fixture term: ${term.termType}`);
-  }
-};
-
-const encodeQuad = (quad) => [
-  encodeTerm(quad.subject),
-  encodeTerm(quad.predicate),
-  encodeTerm(quad.object),
-  encodeTerm(quad.graph),
-];
 
 const objectFor = (quads, subject, predicate) =>
   quads.find(

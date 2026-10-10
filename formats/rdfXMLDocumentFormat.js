@@ -1,3 +1,10 @@
+import {
+  XML_NAMESPACE,
+  OWL_NAMESPACE,
+  RDF_NAMESPACE,
+  RDFS_NAMESPACE,
+  XSD_NAMESPACE,
+} from "../internal/rdfjs/vocabulary.js";
 import { parseIri } from "@hyperjump/uri";
 import { DOMImplementation, XMLSerializer } from "@xmldom/xmldom";
 import {
@@ -5,7 +12,6 @@ import {
   copyDocumentFormatState,
 } from "../model/owlDocumentFormat.js";
 
-const XML_NAMESPACE = "http://www.w3.org/XML/1998/namespace";
 const validatePrefix = (name, namespace) => {
   if (
     typeof name !== "string" ||
@@ -38,11 +44,11 @@ export let readRdfXmlPrefixes;
 /** Java RDFXMLDocumentFormat with a bounded inherited PrefixManager surface. */
 export class RDFXMLDocumentFormat extends OWLDocumentFormat {
   #prefixes = new Map([
-    ["owl:", "http://www.w3.org/2002/07/owl#"],
-    ["rdf:", "http://www.w3.org/1999/02/22-rdf-syntax-ns#"],
-    ["rdfs:", "http://www.w3.org/2000/01/rdf-schema#"],
+    ["owl:", OWL_NAMESPACE],
+    ["rdf:", RDF_NAMESPACE],
+    ["rdfs:", RDFS_NAMESPACE],
     ["xml:", XML_NAMESPACE],
-    ["xsd:", "http://www.w3.org/2001/XMLSchema#"],
+    ["xsd:", XSD_NAMESPACE],
   ]);
   static {
     readRdfXmlPrefixes = (format) => new Map(format.#prefixes);

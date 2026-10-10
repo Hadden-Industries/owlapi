@@ -1,3 +1,5 @@
+import { checkWorkflowRuntimeProjections } from "./workflow-runtime-policy.mjs";
+import { projectRuntimeText } from "./runtime-policy.mjs";
 /** Repository-owned workflow policy; YAML and GitHub grammar belong to yaml and actionlint. */
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
@@ -199,7 +201,11 @@ const validateActionUses = (fileName, workflow, document, violations) => {
       if (step.uses.startsWith("actions/setup-node@")) {
         add(
           violations,
-          ["22.23.3", "24.21.0", "26.11.1"].includes(inputs?.["node-version"]),
+          [
+            projectRuntimeText("{{runtime:node.22}}"),
+            projectRuntimeText("{{runtime:node.24}}"),
+            projectRuntimeText("{{runtime:node.26}}"),
+          ].includes(inputs?.["node-version"]),
           `${fileName}: setup-node must select an approved exact Node patch`,
         );
         requireFields(
@@ -700,8 +706,12 @@ const validateCiVerification = (workflow, violations) => {
     violations,
     JSON.stringify(dependencyCommands) ===
       JSON.stringify([
-        "npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund",
-        "node scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.2.0",
+        projectRuntimeText(
+          "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund",
+        ),
+        projectRuntimeText(
+          "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}",
+        ),
         "npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash",
         "npm run workflow:dependency-review-applicability",
       ]),
@@ -870,7 +880,9 @@ const validateCiVerification = (workflow, violations) => {
       "continue-on-error": true,
       "timeout-minutes": 2,
       env: { npm_config_fetch_retries: "0", npm_config_fetch_timeout: "30000" },
-      run: "npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund\nnode scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.2.0\nnpm ci --ignore-scripts --no-audit --no-fund\n",
+      run: projectRuntimeText(
+        "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund\nnode scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}\nnpm ci --ignore-scripts --no-audit --no-fund\n",
+      ),
     },
     `${label}: conditional locked seed verifier`,
     violations,
@@ -2370,7 +2382,7 @@ const validateTrustedMarkdownWorkflow = (workflow, violations) => {
 export const auditRepositoryControls = ({
   workflowSourceOverrides = {},
 } = {}) => {
-  const violations = [];
+  const violations = checkWorkflowRuntimeProjections(workflowSourceOverrides);
   const workflowFiles = sortedYamlFiles(WORKFLOW_DIRECTORY);
   const issueFormFiles = sortedYamlFiles(ISSUE_FORM_DIRECTORY, {
     exclude: ["config.yml"],
@@ -2507,13 +2519,15 @@ export const auditRepositoryControls = ({
       const setup = actionSteps(job, "actions/setup-node")[0];
       requireFields(
         setup?.with,
-        { "node-version": "26.11.1" },
+        { "node-version": projectRuntimeText("{{runtime:node.26}}") },
         context,
         violations,
       );
       requireRun(
         job,
-        "node scripts/assert-workflow-runtime.mjs --node 26.11.1 --npm 12.2.0",
+        projectRuntimeText(
+          "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.26}} --npm {{runtime:npm}}",
+        ),
         context,
         violations,
       );

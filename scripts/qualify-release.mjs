@@ -25,7 +25,7 @@ import {
 } from "./owl-contract-evidence.mjs";
 
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
-const registry = "https://registry.npmjs.org/";
+import { NPM_REGISTRY as registry } from "./package-identity.mjs";
 const compareCodeUnits = (left, right) =>
   left < right ? -1 : left > right ? 1 : 0;
 export const selectRecordedDefinitions = (record, retainedDefinitionsText) => {

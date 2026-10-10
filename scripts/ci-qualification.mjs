@@ -1,3 +1,4 @@
+import { projectRuntimeText } from "./runtime-policy.mjs";
 /** Versioned CI qualification and direct execution lineage. No selective state is admitted. */
 import { isDeepStrictEqual } from "node:util";
 import {
@@ -15,19 +16,33 @@ import { OWL_CONTRACT_INVENTORY_SHA256 } from "./owl-contract-evidence.mjs";
 export const CI_JOB_NAMES = Object.freeze({
   verification: "CI / verification strategy",
   metadata: "CI / metadata",
-  source_node_22: "CI / Ubuntu / Node 22.23.3",
-  source_node_24: "CI / Ubuntu / Node 24.21.0",
-  source_node_26: "CI / Ubuntu / Node 26.11.1",
+  source_node_22: projectRuntimeText("CI / Ubuntu / Node {{runtime:node.22}}"),
+  source_node_24: projectRuntimeText("CI / Ubuntu / Node {{runtime:node.24}}"),
+  source_node_26: projectRuntimeText("CI / Ubuntu / Node {{runtime:node.26}}"),
   quality_windows: "CI / Windows / quality tools",
   dependency_review: "CI / dependency review",
   candidate: "CI / retained candidate",
-  portability_windows_node_22: "CI / Windows / Node 22.23.3",
-  portability_windows_node_24: "CI / Windows / Node 24.21.0",
-  portability_macos_node_22: "CI / macOS / Node 22.23.3",
-  portability_macos_node_24: "CI / macOS / Node 24.21.0",
-  portability_ubuntu_node_26: "CI / Ubuntu / retained package / Node 26.11.1",
-  portability_windows_node_26: "CI / Windows / Node 26.11.1",
-  portability_macos_node_26: "CI / macOS / Node 26.11.1",
+  portability_windows_node_22: projectRuntimeText(
+    "CI / Windows / Node {{runtime:node.22}}",
+  ),
+  portability_windows_node_24: projectRuntimeText(
+    "CI / Windows / Node {{runtime:node.24}}",
+  ),
+  portability_macos_node_22: projectRuntimeText(
+    "CI / macOS / Node {{runtime:node.22}}",
+  ),
+  portability_macos_node_24: projectRuntimeText(
+    "CI / macOS / Node {{runtime:node.24}}",
+  ),
+  portability_ubuntu_node_26: projectRuntimeText(
+    "CI / Ubuntu / retained package / Node {{runtime:node.26}}",
+  ),
+  portability_windows_node_26: projectRuntimeText(
+    "CI / Windows / Node {{runtime:node.26}}",
+  ),
+  portability_macos_node_26: projectRuntimeText(
+    "CI / macOS / Node {{runtime:node.26}}",
+  ),
   browser_chromium: "CI / browser / Chromium",
   browser_firefox: "CI / browser / Firefox",
   browser_webkit: "CI / browser / WebKit",
@@ -178,7 +193,7 @@ export const assertQualificationRecord = (record) => {
       record.host.architecture === "X64" &&
       record.host.image === "ubuntu24" &&
       /^\d{8}\.\d+(?:\.\d+)?$/u.test(record.host.imageVersion ?? "") &&
-      record.host.node === "v24.21.0" &&
+      record.host.node === projectRuntimeText("v{{runtime:node.24}}") &&
       closed(record.candidate, ["id", "digest"]) &&
       id(record.candidate.id) &&
       digest(record.candidate.digest),

@@ -1,28 +1,10 @@
 import { hasXmlOntologySignature } from "../xmlOntologySignature.js";
 
 const LEADING_TRIVIA = String.raw`(?:\s|;[^\r\n]*(?:\r\n?|\n))*`;
-const SHARED_TOP_LEVEL_KEYWORDS = [
-  "define-primitive-concept",
-  "define-concept",
-  "define-primitive-role",
-  "transitive",
-  "range",
-  "instance",
-  "related",
-  "equal",
-  "distinct",
-];
-const KRSS2_ONLY_TOP_LEVEL_KEYWORDS = [
-  "disjoint",
-  "equivalent",
-  "implies",
-  "define-role",
-  "disjoint-roles",
-  "implies-role",
-  "inverse",
-  "roles-equivalent",
-  "role-inclusion",
-];
+import {
+  SHARED_TOP_LEVEL_KEYWORDS,
+  KRSS2_ONLY_TOP_LEVEL_KEYWORDS,
+} from "./dialect.js";
 const signature = (keywords) =>
   new RegExp(
     `^${LEADING_TRIVIA}\\(\\s*(?:${keywords.join("|")})(?=\\s|\\()`,
