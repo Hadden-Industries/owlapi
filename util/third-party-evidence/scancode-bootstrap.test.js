@@ -20,13 +20,13 @@ describe("isolated ScanCode bootstrap", () => {
           python: join(root, "absent-python.exe"),
           outputRoot,
         }),
-      ).rejects.toThrow();
+      ).rejects.toThrow("Supply --python with the absolute path");
       expect(
         await readFile(
           join(outputRoot, "reports", "installation-failure.log"),
           "utf8",
         ),
-      ).toMatch(/Python|python/u);
+      ).toContain("Supply --python with the absolute path");
     } finally {
       await rm(root, { recursive: true });
     }

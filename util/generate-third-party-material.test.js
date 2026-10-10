@@ -26,7 +26,7 @@ describe("third-party-material prospective generation", () => {
       [
         "-I",
         "-c",
-        "import json,tomllib; from pathlib import Path; p=tomllib.loads(Path('util/scancode-runtime/uv.lock').read_text(encoding='utf-8'))['package']; print(json.dumps([{'name': x['name'], 'version': x['version']} for x in p if not x.get('source', {}).get('virtual')]))",
+        "import json,tomllib; from pathlib import Path; p=[x for x in tomllib.loads(Path('util/scancode-runtime/uv.lock').read_text(encoding='utf-8'))['package'] if not x.get('source', {}).get('virtual')]; print(json.dumps({'packages': p, 'sourceBuilt': [x for x in p if x.get('sdist') and not x.get('wheels')]}))",
       ],
       { cwd: root, encoding: "utf8", timeout: 30000, windowsHide: true },
     );
@@ -38,8 +38,12 @@ describe("third-party-material prospective generation", () => {
             `${name.toLowerCase().replaceAll(/[-_.]+/gu, "-")}==${version}`,
         )
         .sort();
+    const nativeGraph = JSON.parse(parsed.stdout);
     expect(identities(inventory.components)).toEqual(
-      identities(JSON.parse(parsed.stdout)),
+      identities(nativeGraph.packages),
+    );
+    expect(identities(inventory.sourceBuiltComponents)).toEqual(
+      identities(nativeGraph.sourceBuilt),
     );
     for (const component of inventory.components) {
       expect(component.noticeEvidenceStatus).toBe(
