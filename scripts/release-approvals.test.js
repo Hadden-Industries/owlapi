@@ -210,16 +210,20 @@ test("recovers both original approvals when fresh authenticated history is empty
   ).toBe(true);
 });
 
-test.each([
-  history("release-manual", "rejected"),
-  history("release-manual", "approved", "DifferentOwner"),
-  [...history("release-manual"), ...history("release-manual", "rejected")],
+test.each(
   [
-    ...history("release-manual"),
-    ...history("release-manual", "approved", "DifferentOwner"),
-  ],
-])("rejects contradictory live approval history", async (live) => {
-  await expect(resolution(live).run()).rejects.toThrow();
+    history("release-manual", "rejected"),
+    history("release-manual", "approved", "DifferentOwner"),
+    [...history("release-manual"), ...history("release-manual", "rejected")],
+    [
+      ...history("release-manual"),
+      ...history("release-manual", "approved", "DifferentOwner"),
+    ],
+  ].map((live) => [live]),
+)("rejects contradictory live approval history", async (live) => {
+  await expect(resolution(live).run()).rejects.toThrow(
+    "Live approval history contradicts the retained reviewer or state.",
+  );
 });
 
 test("accepts repeated live approvals by the original reviewer without replacing the historical observation", async () => {
