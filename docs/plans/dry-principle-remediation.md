@@ -844,8 +844,13 @@ Runtime refactoring, tests of a changed implementation, CI, merge, deployment an
 
 The owner authorized implementation after this planning baseline and approved these bounded repairs when fresh bundle evidence exposed pre-existing probe defects:
 
-- Retain entry exports with `preserveEntrySignatures: "strict"`; the application-style entry previously emitted an empty bundle. Compare original and extracted analysis against the same retained build with this setting.
-- Recognize the installed N3 parser module paths as well as the historical browser bundle path. Change Turtle storage's eager Writer import to a dynamic import immediately before Writer construction in the existing asynchronous render method; verify storage and real browser behavior.
-- Report bundled XML support separately in the RDF/XML cost probe. The existing XML writers require `@xmldom/xmldom`, so its presence cannot identify an unwanted parser fallback. Continue to reject an eager RDF/XML parser and demonstrate that rejection with a retained-build negative control. This replaces the blanket XML-package rejection in SLICE-015; it does not certify that the browser artifact excludes the Node fallback implementation.
+- Retain entry exports with `preserveEntrySignatures: "strict"`; the application-style entry previously emitted an empty bundle.
+  Compare original and extracted analysis against the same retained build with this setting.
+- Recognize the installed N3 parser module paths as well as the historical browser bundle path.
+  Change Turtle storage's eager Writer import to a dynamic import immediately before Writer construction in the existing asynchronous render method; verify storage and real browser behavior.
+- Report bundled XML support separately in the RDF/XML cost probe. The existing XML writers require `@xmldom/xmldom`, so its presence cannot identify an unwanted parser fallback. Continue to reject an eager RDF/XML parser and demonstrate that rejection with a retained-build negative control.
+  This replaces the blanket XML-package rejection in SLICE-015; it does not certify that the browser artifact excludes the Node fallback implementation.
 
-The RDF/XML report's `checks.bundledNodeXmlFallback` key becomes `checks.bundledXmlSupport` under this explicit policy correction. Old and new analysis are compared under the same approved policy. Other report keys, graph accounting, parser lazy-loading checks and production storage output remain covered by the original acceptance criteria.
+The RDF/XML report's `checks.bundledNodeXmlFallback` key becomes `checks.bundledXmlSupport` under this explicit policy correction.
+Old and new analysis are compared under the same approved policy.
+Other report keys, graph accounting, parser lazy-loading checks and production storage output remain covered by the original acceptance criteria.
