@@ -8,8 +8,29 @@ import {
   parseScancodeBootstrapArguments,
   resolveScancodeBootstrap,
 } from "../prepare-scancode.mjs";
+import { qualifyScancodeRuntime } from "../qualify-scancode-runtime.mjs";
 
 describe("isolated ScanCode bootstrap", () => {
+  test("retains a preparation failure in the qualification reports", async () => {
+    const root = await mkdtemp(join(tmpdir(), "owlapi-scancode-failure-"));
+    const outputRoot = join(root, "qualification");
+    try {
+      await expect(
+        qualifyScancodeRuntime({
+          python: join(root, "absent-python.exe"),
+          outputRoot,
+        }),
+      ).rejects.toThrow();
+      expect(
+        await readFile(
+          join(outputRoot, "reports", "installation-failure.log"),
+          "utf8",
+        ),
+      ).toMatch(/Python|python/u);
+    } finally {
+      await rm(root, { recursive: true });
+    }
+  });
   test.each([
     ["linux", "venv/bin/scancode"],
     ["windows", "venv/Scripts/scancode.exe"],

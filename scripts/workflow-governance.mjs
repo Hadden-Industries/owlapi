@@ -1957,6 +1957,12 @@ const validateQualityTooling = (workflows, violations) => {
       if (scannerConsumer) {
         add(
           violations,
+          job["timeout-minutes"] >= (id === "quality_windows" ? 75 : 105) &&
+            qualification?.["timeout-minutes"] === 45,
+          `${context} must reserve scanner qualification and existing job time`,
+        );
+        add(
+          violations,
           qualification?.id === "scanner_qualification" &&
             qualification?.run ===
               "node util/qualify-scancode-runtime.mjs --python-env=SCANCODE_PYTHON" &&

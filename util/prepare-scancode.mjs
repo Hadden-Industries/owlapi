@@ -129,7 +129,7 @@ export const prepareScancode = async ({
       [
         "-I",
         "-c",
-        "import importlib.metadata as m, json, platform; print(json.dumps({'pythonVersion': platform.python_version(), 'scancodeVersion': m.version('scancode-toolkit'), 'beartypeVersion': m.version('beartype')}))",
+        "import importlib.metadata as m, json, platform, sysconfig, yaml; print(json.dumps({'pythonVersion': platform.python_version(), 'scancodeVersion': m.version('scancode-toolkit'), 'beartypeVersion': m.version('beartype'), 'pythonBuildCompiler': platform.python_compiler(), 'configuredCompiler': sysconfig.get_config_var('CC'), 'yamlWithLibyaml': yaml.__with_libyaml__, 'nativeExtensionCompiler': 'not-observed'}))",
       ],
       options,
     );

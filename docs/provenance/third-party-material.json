@@ -24,7 +24,7 @@
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "a2cb283528153954018e9e3a802866aa317383d7fb16843ba2e8a19b7c1813b6",
+    "factsSha256": "b314b49d693a65c783507ead258f660b187106f5260ff37828cd464d01547c98",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -39460,7 +39460,7 @@
         },
         {
           "path": "scripts/repository-python-tools.mjs",
-          "sha256": "e946efe324d9241cd9b58181452b3bc880383f34fdb1505d3b80c19ba272a6b8"
+          "sha256": "6371a9cb1ca65b5e8de3d740d9de1d109746198767c8a46988c28cc54261936b"
         }
       ],
       "treeEvidence": null,
@@ -39658,8 +39658,8 @@
       "licenseAssessments": [
         {
           "scope": "Development tooling or adapted test/configuration source",
-          "declaredLicenseExpression": "Apache-2.0 AND CC-BY-4.0",
-          "concludedLicenseExpression": "Apache-2.0 AND CC-BY-4.0",
+          "declaredLicenseExpression": "Apache-2.0 AND CC-BY-4.0 AND LicenseRef-scancode-other-permissive AND LicenseRef-scancode-other-copyleft",
+          "concludedLicenseExpression": "Apache-2.0 AND CC-BY-4.0 AND LicenseRef-scancode-other-permissive AND LicenseRef-scancode-other-copyleft",
           "licenseConclusionRationale": "The retained source/distribution terms support repository development use under the recorded licence; no human review or release acceptance is inferred.",
           "distributionDisposition": "REPOSITORY_ONLY_NOT_IN_PACKAGE"
         }
@@ -39680,7 +39680,7 @@
         },
         {
           "path": "LICENSES/development/scancode-runtime/inventory.json",
-          "sha256": "dc44645963c7c394313dc25ede20cb40bbf9f575f5a63793923f4723443b43d6"
+          "sha256": "c3e55290483a0d5d88d62e59035d1670f52ad5074fd661260f0a51fc1874962d"
         },
         {
           "path": "LICENSES/development/scancode-runtime/attrs-26.1.0/licenses/LICENSE",
@@ -40051,6 +40051,110 @@
           "sha256": "112b2342eba22f3558bcf26c48d34bded65df3c4c9974c17d3117c374553976f"
         },
         {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/bzip2/LICENSE",
+          "sha256": "c6dbbf828498be844a89eaa3b84adbab3199e342eb5cb2ed2f0d4ba7ec0f38a3"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/expat/COPYING",
+          "sha256": "8c6b5b6de8fae20b317f4992729abc0e520bfba4c7606cd1e9eeb87418eebdec"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/file/COPYING",
+          "sha256": "0bfa856a9930bddadbef95d1be1cf4e163c0be618e76ea3275caaf255283e274"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gcc-libs/COPYING.LIB",
+          "sha256": "a9bdde5616ecdd1e980b44f360600ee8783b1f99b8cc83a2beb163a0a390e861"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gcc-libs/COPYING.RUNTIME",
+          "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gcc-libs/COPYING3",
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gettext/COPYING",
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gettext/gettext-runtime/COPYING",
+          "sha256": "7ef2cdfe58e0c0460657b6598b49af29d4e03c1e41cbaf0e1da1eb8ad74b95d0"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gettext/gettext-runtime/intl/COPYING.LIB",
+          "sha256": "3fe5361f24b7c49ba12911c08f5a33f9cb18871d95d9fb881f5b8a4793e04288"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gettext/gettext-runtime/libasprintf/COPYING",
+          "sha256": "03133addae5b99a6148c538300e6d97074453089be1423b741bd081f18e2b298"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gettext/gettext-runtime/libasprintf/COPYING.LIB",
+          "sha256": "3fe5361f24b7c49ba12911c08f5a33f9cb18871d95d9fb881f5b8a4793e04288"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gettext/gettext-tools/COPYING",
+          "sha256": "5d4cff30d5038f82a0edc79798456049b61e1752fdb7e9ab1f4bfb9fae3a7303"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gettext/gettext-tools/gnulib-lib/libxml/COPYING",
+          "sha256": "c5c63674f8a83c4d2e385d96d1c670a03cb871ba2927755467017317878574bd"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gettext/gnulib-local/lib/libxml/COPYING",
+          "sha256": "c5c63674f8a83c4d2e385d96d1c670a03cb871ba2927755467017317878574bd"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/libiconv/COPYING",
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/libiconv/COPYING.LIB",
+          "sha256": "56bdea73b6145ef6ac5259b3da390b981d840c24cb03b8e1cbc678de7ecfa18d"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/libiconv/libcharset/COPYING.LIB",
+          "sha256": "56bdea73b6145ef6ac5259b3da390b981d840c24cb03b8e1cbc678de7ecfa18d"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/libsystre/LICENSE",
+          "sha256": "3200024286eb0a33c22da3a31c470df07c7b8cfbead2b9528195d67d107264ec"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/libtre/LICENSE",
+          "sha256": "6a50ab50d856b30c965cf2dd899e577ec108c938242fd3a2e7a7a25eed996200"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/libwinpthread/COPYING",
+          "sha256": "99a69660981156c21336fdb5661f89341b013c94e4bf9e1c7467b4745718397f"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/libwinpthread/mingw-w64-libraries/winpthreads/COPYING",
+          "sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/xz/COPYING",
+          "sha256": "bcb02973ef6e87ea73d331b3a80df7748407f17efdb784b61b47e0e610d3bb5c"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/xz/COPYING.GPLv2",
+          "sha256": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/xz/COPYING.GPLv3",
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/xz/COPYING.LGPLv2.1",
+          "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/zlib/LICENSE",
+          "sha256": "b8dc97ec24faf95f0f30bf2ab721dbdc30b32de1aa4a2a5853e56551c59d6f04"
+        },
+        {
           "path": "LICENSES/development/scancode-runtime/typing_extensions-4.16.0/licenses/LICENSE",
           "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
         },
@@ -40093,7 +40197,7 @@
       ],
       "treeEvidence": null,
       "attributionText": [
-        "Copyright (c) nexB Inc. and others. ScanCode is a trademark of nexB Inc. Software is Apache-2.0; scanner data is CC-BY-4.0. Source-built without patches on Python 3.15 using a separate hash-locked runtime/build graph. Retained dependency declarations and exact Windows distribution notices identify their respective terms; the scanner licence is not a conclusion about those dependencies. No scanner, dependency binary or data is packed into OwlAPI. Linux native qualification remains a separate obligation."
+        "Copyright (c) nexB Inc. and others. ScanCode is a trademark of nexB Inc. The full upstream declaration includes Apache-2.0 software, CC-BY-4.0 data and other permissive/copyleft material identified by the retained LicenseRef declarations and notices. The recorded expression is proposed for human review; no completed legal conclusion is inferred. ScanCode, cyseq, intbitset, pyahocorasick and PyYAML are source-built without patches on Python 3.15 using the separate hash-locked runtime/build graph. Exact installed Windows distribution notices, including package-data notices, are retained where provided; inventory entries explicitly identify distributions with no packaged notices. The scanner licence is not a conclusion about its dependencies. No scanner, dependency binary or data is packed into OwlAPI. Linux native qualification and terms remain separate obligations."
       ],
       "packageTarballScope": false,
       "deployedApplicationScope": "NOT_APPLICABLE",
@@ -40226,7 +40330,7 @@
         },
         {
           "path": "scripts/repository-python-tools.mjs",
-          "sha256": "e946efe324d9241cd9b58181452b3bc880383f34fdb1505d3b80c19ba272a6b8"
+          "sha256": "6371a9cb1ca65b5e8de3d740d9de1d109746198767c8a46988c28cc54261936b"
         },
         {
           "path": "LICENSES/development/uv-0.13.0-MIT.txt",

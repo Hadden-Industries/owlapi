@@ -72,9 +72,18 @@ Checks use only these checkout tools and never synchronize dependencies.
 Foreign uv or virtual-environment settings cannot redirect the tool environment.
 Missing tools or a stale lock require explicit setup or a reviewed lock update.
 
-Alternatively, `node scripts/repository-python-tools.mjs python` explicitly installs the pinned CPython into `.development-tools/python/` using the pinned uv release's authenticated download catalogue, without PATH or Windows registry registration. CI uses this operation and passes its absolute interpreter path into later setup; checks still never download Python.
+Alternatively, `node scripts/repository-python-tools.mjs python` explicitly installs the pinned CPython into `.development-tools/python/` using the pinned uv release's authenticated download catalogue, without PATH or Windows registry registration.
+CI uses this operation and passes its absolute interpreter path into later setup; checks still never download Python.
 
-ScanCode has its own `util/scancode-runtime/pyproject.toml` and `uv.lock`. Its source build uses the same Python pin, installs locked build dependencies first, and disables further build dependency resolution. Beartype `0.23.0rc2` is the sole owner-approved prerelease exception because stable `0.22.9` imports a typing API removed in Python 3.15. Reassess it when a compatible stable version is released. CI qualifies Windows and Linux findings against independently captured ScanCode 32.5.0 reports; a smoke qualification does not replace the full release corpus acquisition gates.
+ScanCode has its own `util/scancode-runtime/pyproject.toml` and `uv.lock`.
+Its source build uses the same Python pin, installs locked build dependencies first, and disables further build dependency resolution.
+Beartype `0.23.0rc2` is the sole owner-approved prerelease exception because stable `0.22.9` imports a typing API removed in Python 3.15.
+Reassess it when a compatible stable version is released.
+CI qualifies Windows and Linux findings against independently captured ScanCode 32.5.0 reports; a smoke qualification does not replace the full release corpus acquisition gates.
+
+The locked source builds include cyseq, intbitset, pyahocorasick and PyYAML as well as ScanCode.
+Installation receipts record observed compiler configuration and PyYAML's optional accelerator state; Python's build compiler does not identify the compiler of rebuilt extensions.
+Keep compilation and scanner failure logs with the compatibility reports.
 
 Run the gates before opening or updating a pull request:
 

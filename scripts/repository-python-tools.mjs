@@ -212,6 +212,18 @@ async function installUv(tools) {
   writeFileSync(archive, bytes);
   // Select one exact member of the authenticated archive. The system archive
   // reader lets CI install the selected Python without an older Python bootstrap.
+  const archiveReader =
+    process.platform === "win32"
+      ? join(
+          process.env.SystemRoot ?? process.env.SYSTEMROOT ?? "",
+          "System32",
+          "tar.exe",
+        )
+      : "tar";
+  if (process.platform === "win32" && !isAbsolute(archiveReader))
+    throw new Error(
+      "Windows system archive reader requires an absolute SystemRoot.",
+    );
   const extraction =
     process.platform === "win32"
       ? ["-xf", archive, "-C", directory, "uv.exe"]
@@ -223,14 +235,7 @@ async function installUv(tools) {
           directory,
           "uv-x86_64-unknown-linux-gnu/uv",
         ];
-  requireSuccess(
-    execute(
-      process.platform === "win32" ? "tar.exe" : "tar",
-      extraction,
-      tools,
-    ),
-    "uv extraction",
-  );
+  requireSuccess(execute(archiveReader, extraction, tools), "uv extraction");
   if (process.platform !== "win32") chmodSync(tools.uv, 0o755);
   checkUv(tools);
 }

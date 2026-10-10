@@ -402,6 +402,26 @@ const licenseAssessment = ({
 // Development tools are separate from npm runtime components and package bytes.
 // Hash their native lock/config inputs and retained terms, never an installed
 // environment's host-specific directory tree or a fabricated human approval.
+const scannerNoticePaths = () => {
+  const inventory = readJson(
+    resolve(
+      repositoryRoot,
+      "LICENSES/development/scancode-runtime/inventory.json",
+    ),
+  );
+  if (
+    inventory.lockSha256 !==
+    sha256(
+      readFileSync(resolve(repositoryRoot, "util/scancode-runtime/uv.lock")),
+    )
+  )
+    throw new Error(
+      "Scanner notice inventory is not bound to the current lock",
+    );
+  return inventory.components.flatMap(({ notices }) =>
+    notices.map(({ path }) => path),
+  );
+};
 const createQualityToolingFacts = () =>
   [
     {
@@ -480,22 +500,18 @@ const createQualityToolingFacts = () =>
       id: "scancode-development-source-build",
       name: "ScanCode development scanner and retained dependency notices",
       versionOrRevision: "32.5.0",
-      license: "Apache-2.0 AND CC-BY-4.0",
+      license:
+        "Apache-2.0 AND CC-BY-4.0 AND LicenseRef-scancode-other-permissive AND LicenseRef-scancode-other-copyleft",
       source: "aboutcode-org/scancode-toolkit",
       files: [
         "util/scancode-runtime/pyproject.toml",
         "util/scancode-runtime/uv.lock",
         "util/scancode-runtime/qualification-baseline.json",
         "LICENSES/development/scancode-runtime/inventory.json",
-        ...readJson(
-          resolve(
-            repositoryRoot,
-            "LICENSES/development/scancode-runtime/inventory.json",
-          ),
-        ).components.flatMap(({ notices }) => notices.map(({ path }) => path)),
+        ...scannerNoticePaths(),
       ],
       attribution:
-        "Copyright (c) nexB Inc. and others. ScanCode is a trademark of nexB Inc. Software is Apache-2.0; scanner data is CC-BY-4.0. Source-built without patches on Python 3.15 using a separate hash-locked runtime/build graph. Retained dependency declarations and exact Windows distribution notices identify their respective terms; the scanner licence is not a conclusion about those dependencies. No scanner, dependency binary or data is packed into OwlAPI. Linux native qualification remains a separate obligation.",
+        "Copyright (c) nexB Inc. and others. ScanCode is a trademark of nexB Inc. The full upstream declaration includes Apache-2.0 software, CC-BY-4.0 data and other permissive/copyleft material identified by the retained LicenseRef declarations and notices. The recorded expression is proposed for human review; no completed legal conclusion is inferred. ScanCode, cyseq, intbitset, pyahocorasick and PyYAML are source-built without patches on Python 3.15 using the separate hash-locked runtime/build graph. Exact installed Windows distribution notices, including package-data notices, are retained where provided; inventory entries explicitly identify distributions with no packaged notices. The scanner licence is not a conclusion about its dependencies. No scanner, dependency binary or data is packed into OwlAPI. Linux native qualification and terms remain separate obligations.",
     },
     {
       id: "beartype-scancode-prerelease-exception",

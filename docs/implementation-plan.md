@@ -11151,6 +11151,13 @@ Most importantly, it makes `owlapi` a genuine **OWL abstraction**, not merely a 
 
 ## Python development tooling effective policy (10 October 2026)
 
-[The Python 3.15 migration plan](plans/python-3.15-development-tools.md) supersedes earlier interpreter and tool selections for current development execution. Both Python projects require `>=3.15.0`; exact qualification initially uses stable 3.15.0, uv 0.13.0 and Ruff 0.17.0. ScanCode 32.5.0 is built without patches from a separate hash-locked runtime/build graph with the owner's scoped Beartype 0.23.0rc2 exception. Reassess upon a compatible stable Beartype release. Native checkout-local bootstrap supplies CI's exact interpreter without PATH or registry changes.
+[The Python 3.15 migration plan](plans/python-3.15-development-tools.md) supersedes earlier interpreter and tool selections for current development execution.
+Both Python projects require `>=3.15.0`; exact qualification initially uses stable 3.15.0, uv 0.13.0 and Ruff 0.17.0.
+ScanCode 32.5.0 and its locked native dependencies are built without patches from a separate runtime/build graph with the owner's scoped Beartype 0.23.0rc2 exception.
+Reassess upon a compatible stable Beartype release.
+Native checkout-local bootstrap supplies CI's exact interpreter without PATH or registry changes.
 
-Windows and Linux CI must execute the real scanner qualifier against independent historical observations; full acquisition remains governed by the existing release/extended lanes. Historical Python 3.14 evidence retains its original recorded identity. Semantic comparison permits only the schema-approved runtime observation to differ, and current-policy reuse remains exact. Earlier delivered results and approvals below retain their historical meaning; this update grants no publication authority.
+Windows and Linux CI must execute the real scanner qualifier against independent historical observations; full acquisition remains governed by the existing release/extended lanes.
+Historical Python 3.14 evidence retains its original recorded identity.
+Semantic comparison permits only the schema-approved runtime observation to differ, and current-policy reuse remains exact.
+Earlier delivered results and approvals retain their historical meaning; this update grants no publication authority.

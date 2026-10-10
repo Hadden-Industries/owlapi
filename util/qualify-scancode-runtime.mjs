@@ -41,11 +41,20 @@ export async function qualifyScancodeRuntime({
     new URL("./scancode-runtime/qualification-baseline.json", import.meta.url),
   );
   const baseline = JSON.parse(baselineBytes);
-  const prepared = await prepareScancode({
-    platform: process.platform === "win32" ? "windows" : "linux",
-    outputRoot: join(outputRoot, "tools"),
-    python,
-  });
+  let prepared;
+  try {
+    prepared = await prepareScancode({
+      platform: process.platform === "win32" ? "windows" : "linux",
+      outputRoot: join(outputRoot, "tools"),
+      python,
+    });
+  } catch (error) {
+    await writeFile(
+      join(reports, "installation-failure.log"),
+      `${error.stdout ?? ""}${error.stderr ?? ""}\n${error.stack ?? error.message}\n`,
+    );
+    throw error;
+  }
   await writeFile(
     join(reports, "installation.json"),
     stableJson({ ...prepared, baselineSha256: sha256(baselineBytes) }),

@@ -50,6 +50,16 @@ describe("repository workflow governance", () => {
       ).toContain("requires unconditional locked scanner qualification");
     },
   );
+  test.each(["source_node_24", "quality_windows"])(
+    "rejects a scanner job budget without existing-work headroom in %s",
+    (id) => {
+      expect(
+        mutateWorkflow("ci.yml", (doc) => {
+          doc.setIn(["jobs", id, "timeout-minutes"], 45);
+        }).join("\n"),
+      ).toContain("must reserve scanner qualification and existing job time");
+    },
+  );
   test.each(
     ["tag_accepted", "npm_release"].flatMap((id) =>
       ["remove-capture", "late-upload", "rerun-capture", "overwrite"].map(
