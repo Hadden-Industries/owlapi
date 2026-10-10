@@ -1323,7 +1323,8 @@ const validateReleaseMutationBoundary = (
           (step) =>
             step.with?.ref === "${{ github.sha }}" &&
             step.with?.["persist-credentials"] === false &&
-            step.with?.["fetch-depth"] === 1,
+            step.with?.["fetch-depth"] === 1 &&
+            step.with?.path === "approval-tools",
         )) &&
       publication?.permissions?.contents !== "write" &&
       occurrences(publication, "NPM_BOOTSTRAP_TOKEN") ===
@@ -1371,7 +1372,7 @@ const validateReleaseMutationBoundary = (
       ["npm_release", "npm-release"],
     ]) {
       const gateSteps = steps(workflowJobs[id]);
-      const command = `node scripts/release-approvals.mjs --environment ${environment} --output .release/approval-${environment}.json`;
+      const command = `node ${id === "npm_release" ? "approval-tools/" : ""}scripts/release-approvals.mjs --environment ${environment} --output .release/approval-${environment}.json`;
       const captureIndex = gateSteps.findIndex((step) => step.run === command);
       const uploadIndex = gateSteps.findIndex(
         (step) =>
@@ -1407,7 +1408,12 @@ const validateReleaseMutationBoundary = (
     add(
       violations,
       registryJob?.["timeout-minutes"] === 90 &&
+        isDeepStrictEqual(registryJob?.permissions, {
+          contents: "read",
+          actions: "read",
+        }) &&
         qualify?.["timeout-minutes"] === 50 &&
+        qualify?.env?.GITHUB_TOKEN === "${{ github.token }}" &&
         upload?.if === "${{ always() }}" &&
         upload.with?.path === ".release/registry-verification.json",
       `${fileName}:registry_verification must budget availability plus strict qualification and retain incomplete observations`,

@@ -35,19 +35,20 @@ const mutateWorkflow = (fileName, mutate) => {
 };
 
 describe("repository workflow governance", () => {
-  test.each([
-    "remove-capture",
-    "late-upload",
-    "rerun-capture",
-    "overwrite",
-    "short-budget",
-    "lose-failure-report",
-  ])("rejects release availability/approval regression: %s", (mutation) => {
+  test.each(
+    ["tag_accepted", "npm_release"].flatMap((id) =>
+      ["remove-capture", "late-upload", "rerun-capture", "overwrite"].map(
+        (mutation) => [id, mutation],
+      ),
+    ),
+  )("rejects %s approval regression: %s", (id, mutation) => {
     expect(
       mutateWorkflow("release.yml", (doc) => {
-        const gate = doc.getIn(["jobs", "npm_release", "steps"]);
+        const gate = doc.getIn(["jobs", id, "steps"]);
         const capture = gate.items.find((step) =>
-          step.get("run")?.startsWith("node scripts/release-approvals.mjs"),
+          step
+            .get("run")
+            ?.includes("scripts/release-approvals.mjs --environment"),
         );
         const upload = gate.items.find((step) =>
           step.getIn(["with", "name"])?.startsWith("release-approval-"),
@@ -60,16 +61,55 @@ describe("repository workflow governance", () => {
         }
         if (mutation === "rerun-capture") capture.delete("if");
         if (mutation === "overwrite") upload.setIn(["with", "overwrite"], true);
-        if (mutation === "short-budget")
-          doc.setIn(["jobs", "registry_verification", "timeout-minutes"], 30);
-        if (mutation === "lose-failure-report")
-          doc
-            .getIn(["jobs", "registry_verification", "steps"])
-            .items.find((step) => step.get("id") === "upload")
-            .delete("if");
       }).join("\n"),
-    ).toMatch(
-      /durably capture approval|budget availability|retain incomplete/u,
+    ).toContain(
+      `release.yml:${id} must durably capture approval before effects and preserve it across reruns`,
+    );
+  });
+  test.each([
+    "short-budget",
+    "lose-failure-report",
+    "missing-job-read",
+    "missing-token",
+    "ancestor-checkout",
+  ])("rejects registry/publication regression: %s", (mutation) => {
+    const violations = mutateWorkflow("release.yml", (doc) => {
+      const registrySteps = doc.getIn([
+        "jobs",
+        "registry_verification",
+        "steps",
+      ]).items;
+      if (mutation === "short-budget")
+        doc.setIn(["jobs", "registry_verification", "timeout-minutes"], 30);
+      if (mutation === "lose-failure-report")
+        registrySteps.find((step) => step.get("id") === "upload").delete("if");
+      if (mutation === "missing-job-read")
+        doc.deleteIn([
+          "jobs",
+          "registry_verification",
+          "permissions",
+          "actions",
+        ]);
+      if (mutation === "missing-token")
+        registrySteps
+          .find((step) =>
+            step.get("run")?.startsWith("npm run release:qualify-registry"),
+          )
+          .delete("env");
+      if (mutation === "ancestor-checkout")
+        doc
+          .getIn(["jobs", "npm_release", "steps"])
+          .items.find((step) =>
+            step.get("uses")?.startsWith("actions/checkout@"),
+          )
+          .deleteIn(["with", "path"]);
+    }).join("\n");
+    expect(violations).toContain(
+      mutation === "ancestor-checkout"
+        ? "npm_release must isolate its pinned read-only approval checkout"
+        : mutation === "lose-failure-report"
+          ? "retain incomplete"
+          : "budget availability",
     );
   });
   test.each(["ci.yml", "release.yml"])(

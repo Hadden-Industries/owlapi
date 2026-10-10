@@ -69,3 +69,9 @@ No package rebuild, tag mutation, registry write, remote dispatch or changed npm
 
 Observe accepted-to-available elapsed time, stage/reason, attempts, deadline and final verification separately. Review the initial 30-minute budget after a timeout or materially different npm guidance. Stop/replan on a new external write, weakened cryptographic checks, unbound approval provenance, unsupported archive identity, or a need for new publishing authority.
 Retain original receipts and fail closed on conflict; recovery starts with authenticated reads of the exact original publication.
+
+## Consolidated review corrections
+
+The frozen implementation review identified recovery and proof gaps, addressed together before narrow follow-up review: accept repeated live approvals only for the original reviewer and approved state; explicitly identify historical approval provenance through the retained artifact name/digest/job; isolate the approval checkout from npm's publication directory; authenticate the original completed write before waiting; retain its successful completion timestamp for accepted-to-available measurement; exercise retained failure reports and both protected gates; and migrate the current public-availability requirement to a distinct ID while preserving release-custodian ownership.
+A failed original write remains potentially submitted, not an invented acceptance.
+No new approval schema, registry write, re-approval capture or historical receipt rewrite is introduced.

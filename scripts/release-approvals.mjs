@@ -229,14 +229,13 @@ export const resolveRetainedApprovals = async ({
       review.environments?.some(({ name }) => name === environment),
     );
     if (relevant.length) {
-      const live = approvalFromHistory(
-        liveHistory,
-        environment,
-        observation.observedAt,
-      );
       requireFact(
-        live.reviewer === approval.reviewer,
-        "Live approval history contradicts the retained reviewer.",
+        relevant.every(
+          (review) =>
+            review.state === "approved" &&
+            review.user?.login === approval.reviewer,
+        ),
+        "Live approval history contradicts the retained reviewer or state.",
       );
     }
     approvals.push(approval);

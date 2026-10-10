@@ -4,7 +4,8 @@
   "replacements": [
     {
       "historicalRequirementId": "P19-PUBLIC-VERIFICATION-001",
-      "requirementId": "P19-PUBLIC-VERIFICATION-001",
+      "requirementId": "P19-PUBLIC-AVAILABILITY-001",
+      "preserveOwner": true,
       "obligation": "Distinguish publication accepted, availability pending, registry available and verified. Follow docs/release/availability-policy.json: immediate then approximately minute-spaced read-only probes under one monotonic 30-minute budget, exact-coordinate temporary absence and explicitly accepted predecessor channels only, strict byte/integrity/signature/provenance validation, retained incomplete observations and no repeated publication/channel writes. Retain authenticated protected-gate approval artifacts bound to source/run/attempt/environment/job and validate server identity plus downloaded archive digest before reuse; reject contradictions with live history. Review measured delays after a timeout or changed upstream guidance. Preserve historical release outcomes.",
       "downstreamOwner": "Consumer deployment readiness and runtime availability remain separately accepted."
     },
@@ -41,7 +42,7 @@
     {
       "historicalRequirementId": "P19-WEBVOWL-001",
       "requirementId": "P19-OWL-CONTRACT-001",
-      "obligation": "Verify native installed package identity, supported exports, dependency resolution without ancestor hoisting or source aliases, the exact retained package bytes and public OWL interface obligations. Fresh public registry integrity and complete package-tree/production-graph equivalence remain producer requirements under P19-PUBLIC-VERIFICATION-001 and P19-PACKAGE-001.",
+      "obligation": "Verify native installed package identity, supported exports, dependency resolution without ancestor hoisting or source aliases, the exact retained package bytes and public OWL interface obligations. Fresh public registry integrity and complete package-tree/production-graph equivalence remain producer requirements under P19-PUBLIC-AVAILABILITY-001 and P19-PACKAGE-001.",
       "downstreamOwner": "Consumer source copies, dependency declarations, builds, tests, transport cutover and deployment."
     },
     {

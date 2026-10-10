@@ -21,12 +21,79 @@ import {
 import { installRegistryConsumer } from "./public-registry-consumer.mjs";
 import { verifyRegistryProvenance } from "./registry-provenance.mjs";
 import { waitForReleaseAvailability } from "./release-availability.mjs";
+import { GitHubReleaseClient } from "./github-release.mjs";
 import {
   INSTALLED_TEST_SCRIPTS,
   writeInstalledConsumerFixtures,
 } from "./installed-consumer-fixtures.mjs";
 
 const registry = "https://registry.npmjs.org/";
+
+/** A successful read-only rerun must not hide an original pre-publication failure. */
+export const readPublicationAttempt = async ({ client, env = process.env }) => {
+  const runId = env.GITHUB_RUN_ID,
+    commit = env.GITHUB_SHA;
+  if (
+    env.GITHUB_REPOSITORY !== "Hadden-Industries/owlapi" ||
+    env.GITHUB_REF !== "refs/heads/main" ||
+    !/^[1-9][0-9]*$/u.test(runId ?? "") ||
+    !/^[0-9a-f]{40}$/u.test(commit ?? "")
+  )
+    throw new Error(
+      "Publication observation requires the canonical workflow identity.",
+    );
+  const [run, result] = await Promise.all([
+    client.read(`/actions/runs/${runId}`),
+    client.read(`/actions/runs/${runId}/attempts/1/jobs?per_page=100`),
+  ]);
+  if (
+    run.head_sha !== commit ||
+    run.path !== ".github/workflows/release.yml" ||
+    !Array.isArray(result.jobs) ||
+    result.jobs.length >= 100
+  )
+    throw new Error(
+      "Publication observation workflow identity differs or jobs are incomplete.",
+    );
+  const publishers = result.jobs.filter(
+    (job) => job.name === "Release / npm trusted publisher",
+  );
+  const publisher = publishers[0];
+  const writes =
+    publisher?.steps?.filter(
+      (step) =>
+        step.name ===
+        "Perform the authorized publication and exact-version channel writes",
+    ) ?? [];
+  const write = writes[0];
+  if (
+    publishers.length !== 1 ||
+    String(publisher.run_id) !== runId ||
+    publisher.head_sha !== commit ||
+    publisher.run_attempt !== 1 ||
+    publisher.status !== "completed" ||
+    !["success", "failure"].includes(publisher.conclusion) ||
+    writes.length !== 1 ||
+    write.status !== "completed" ||
+    !["success", "failure"].includes(write.conclusion) ||
+    !Number.isFinite(Date.parse(write.completed_at))
+  )
+    throw new Error(
+      "No completed publication attempt is established in this run. Inspect the original publisher job; do not replay possible writes.",
+    );
+  return {
+    state:
+      write.conclusion === "success"
+        ? "PUBLICATION_ACCEPTED"
+        : "PUBLICATION_ATTEMPTED",
+    runId,
+    runAttempt: 1,
+    jobId: publisher.id,
+    conclusion: write.conclusion,
+    completedAt: write.completed_at,
+    acceptedAt: write.conclusion === "success" ? write.completed_at : null,
+  };
+};
 
 export const assertPublicRegistryFacts = ({
   expectedVersion,
@@ -193,15 +260,21 @@ const argumentValue = (name) => {
   return index === -1 ? undefined : process.argv[index + 1];
 };
 
-const main = async () => {
-  const candidatePath = argumentValue("--candidate");
-  const outputPath = argumentValue("--output");
-  if (!candidatePath || !outputPath) {
-    throw new Error(
-      "Registry qualification requires --candidate and --output.",
-    );
-  }
-  const candidate = readCandidate(resolve(candidatePath));
+export const qualifyPublicRegistry = async ({
+  candidate,
+  outputPath,
+  publication = () =>
+    readPublicationAttempt({
+      client: new GitHubReleaseClient({
+        repository: "Hadden-Industries/owlapi",
+        token: process.env.GITHUB_TOKEN,
+      }),
+    }),
+  wait = waitForReleaseAvailability,
+  verifyConsumers = exerciseFreshConsumers,
+  now = () => new Date().toISOString(),
+  log = (value) => process.stdout.write(`${JSON.stringify(value)}\n`),
+}) => {
   const { version } = candidate.package;
   const observations = [];
   const pendingReport = {
@@ -212,7 +285,7 @@ const main = async () => {
     runId: process.env.GITHUB_RUN_ID ?? null,
     runAttempt: process.env.GITHUB_RUN_ATTEMPT ?? null,
     retainedSha256: candidate.tarball.sha256,
-    startedAt: new Date().toISOString(),
+    startedAt: now(),
     observations,
   };
   const retain = () =>
@@ -222,17 +295,29 @@ const main = async () => {
     );
   retain();
   try {
+    pendingReport.publication = await publication();
+    retain();
     const {
       metadata,
       distTags,
       tarball: registryTarball,
-    } = await waitForReleaseAvailability({
+    } = await wait({
       retainedSha256: candidate.tarball.sha256,
       observe: (observation) => {
         observations.push(observation);
         pendingReport.result = observation.state;
+        if (
+          observation.state === "REGISTRY_AVAILABLE" &&
+          pendingReport.publication.acceptedAt
+        ) {
+          pendingReport.acceptedToAvailableMs = Math.max(
+            0,
+            Date.parse(now()) -
+              Date.parse(pendingReport.publication.acceptedAt),
+          );
+        }
         retain();
-        process.stdout.write(`${JSON.stringify(observation)}\n`);
+        log(observation);
       },
     });
     verifyIntegrity(registryTarball, metadata.dist?.integrity);
@@ -243,42 +328,61 @@ const main = async () => {
       distTags,
       registryTarballSha256: sha256Buffer(registryTarball),
     });
-    const { consumer, provenance } = await exerciseFreshConsumers(
+    const { consumer, provenance } = await verifyConsumers(
       metadata,
       registryTarball,
     );
     observations.push({
       state: "VERIFICATION_PASSED",
-      verifiedAt: new Date().toISOString(),
+      verifiedAt: now(),
     });
     const report = {
       schemaVersion: 1,
       result: "PASS",
-      verifiedAt: new Date().toISOString(),
+      verifiedAt: now(),
       registry,
       ...facts,
       tarballUrl: metadata.dist.tarball,
       npmPublishedAt: metadata.time ?? null,
       consumer,
       provenance,
-      availability: { startedAt: pendingReport.startedAt, observations },
+      publication: pendingReport.publication,
+      availability: {
+        startedAt: pendingReport.startedAt,
+        acceptedToAvailableMs: pendingReport.acceptedToAvailableMs ?? null,
+        observations,
+      },
     };
     writeFileSync(
       resolve(outputPath),
       `${JSON.stringify(report, null, 2)}\n`,
       "utf8",
     );
-    process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
+    log(report);
+    return report;
   } catch (error) {
     pendingReport.result =
       error.code === "AVAILABILITY_INCOMPLETE"
         ? "AVAILABILITY_INCOMPLETE"
         : "FAIL";
     pendingReport.error = error.message;
-    pendingReport.finishedAt = new Date().toISOString();
+    pendingReport.finishedAt = now();
     retain();
     throw error;
   }
+};
+
+const main = async () => {
+  const candidatePath = argumentValue("--candidate"),
+    outputPath = argumentValue("--output");
+  if (!candidatePath || !outputPath)
+    throw new Error(
+      "Registry qualification requires --candidate and --output.",
+    );
+  await qualifyPublicRegistry({
+    candidate: readCandidate(resolve(candidatePath)),
+    outputPath,
+  });
 };
 
 if (

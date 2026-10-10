@@ -56,7 +56,8 @@ export const buildProducerReleaseGates = (
         throw new Error("Incomplete producer/downstream obligation split.");
       current.sourceAnchor = requirementId.toLowerCase();
       current.requirementDigest = `sha256:${sourceFingerprint(amendment)}`;
-      current.owner = "PACKAGE_MAINTAINER";
+      current.owner =
+        amendment.preserveOwner === true ? row.owner : "PACKAGE_MAINTAINER";
       current.verification = {
         kind: "HYBRID",
         command: `npm run qualify:release -- --requirement ${requirementId}`,

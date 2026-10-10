@@ -1622,6 +1622,7 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: 1
           persist-credentials: false
+          path: approval-tools
       - name: Select Node 24.21.0 without npm token configuration
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
@@ -1648,7 +1649,7 @@ jobs:
         if: ${{ github.run_attempt == 1 }}
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: node scripts/release-approvals.mjs --environment npm-release --output .release/approval-npm-release.json
+        run: node approval-tools/scripts/release-approvals.mjs --environment npm-release --output .release/approval-npm-release.json
         timeout-minutes: 3
       - name: Retain the publisher-gate approval before publication
         if: ${{ github.run_attempt == 1 }}
@@ -1690,6 +1691,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     permissions:
+      actions: read
       contents: read
     defaults:
       run:
@@ -1725,6 +1727,8 @@ jobs:
           skip-decompress: false
           digest-mismatch: error
       - name: Verify the fresh public coordinate, bytes, channel, signatures, and exports
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: npm run release:qualify-registry -- --candidate .release/download --output .release/registry-verification.json
         timeout-minutes: 50
       - name: Retain the public-registry evidence

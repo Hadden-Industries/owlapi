@@ -9,6 +9,16 @@ const historical = JSON.parse(
 test("current release graph removes application prerequisites and preserves producer parity/material/security", () => {
   const active = buildProducerReleaseGates(historical);
   const ids = new Set(active.requirements.map((row) => row.requirementId));
+  expect(
+    active.requirements.find(
+      (row) => row.requirementId === "P19-PUBLIC-AVAILABILITY-001",
+    ).owner,
+  ).toBe("RELEASE_CUSTODIAN");
+  expect(
+    active.leafGates.find(
+      (row) => row.ownerRequirementId === "P19-PUBLIC-AVAILABILITY-001",
+    ).owner,
+  ).toBe("RELEASE_CUSTODIAN");
   for (const amendment of PRODUCER_RELEASE_POLICY.replacements) {
     expect(ids.has(amendment.historicalRequirementId)).toBe(false);
     if (amendment.requirementId)
