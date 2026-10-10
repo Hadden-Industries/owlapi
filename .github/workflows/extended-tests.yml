@@ -50,13 +50,8 @@ jobs:
         timeout-minutes: 5
       - name: Select the pinned development Python
         id: quality_python
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.14.7"
-          architecture: x64
-          check-latest: false
-          update-environment: false
-          cache: ""
+        run: node scripts/repository-python-tools.mjs python
+        timeout-minutes: 10
       - name: Synchronize locked development tools
         run: npm run tools:sync -- --python-env QUALITY_PYTHON
         timeout-minutes: 5
@@ -195,13 +190,8 @@ jobs:
           package-manager-cache: false
       - name: Select the isolated ScanCode Python runtime
         id: scancode_python
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.14.7"
-          architecture: "x64"
-          check-latest: false
-          update-environment: false
-          cache: ""
+        run: node scripts/repository-python-tools.mjs python
+        timeout-minutes: 10
       - name: Establish the exact repository npm
         run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 20
@@ -227,7 +217,7 @@ jobs:
         if: ${{ matrix.os.id == 'windows' }}
         run: npm run workflow:runner-record -- --expected-os Windows --expected-arch X64 --label windows-2025 --shell pwsh
         timeout-minutes: 5
-      - name: Prepare the checksum-pinned ScanCode toolkit
+      - name: Prepare the locked ScanCode source build
         env:
           SCANCODE_PLATFORM: ${{ matrix.os.platform }}
           SCANCODE_PYTHON: ${{ steps.scancode_python.outputs.python-path }}

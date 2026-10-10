@@ -1,111 +1,27 @@
+/** Prepare an isolated, hash-locked ScanCode source build for the selected CPython. */
 import { execFile } from "node:child_process";
 import { createHash, randomUUID } from "node:crypto";
-import { createWriteStream } from "node:fs";
-import { access, mkdir, rename, rm } from "node:fs/promises";
-import { basename, join, resolve } from "node:path";
-import { pipeline } from "node:stream/promises";
-import { Transform } from "node:stream";
+import { access, mkdir, readFile, rename, rm } from "node:fs/promises";
+import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
-
+import { ensureRepositoryUv } from "../scripts/repository-python-tools.mjs";
 import { stableJson } from "./third-party-evidence/digests.mjs";
 import { SCANCODE_TOOL } from "./third-party-evidence/scancode.mjs";
 
 const executeFile = promisify(execFile);
 const DEFAULT_REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
-const MAXIMUM_ARCHIVE_BYTES = 512 * 1024 * 1024;
 
-const exists = async (path) => {
-  try {
-    await access(path);
-    return true;
-  } catch (error) {
-    if (error?.code === "ENOENT") {
-      return false;
-    }
-    throw error;
-  }
-};
-
-const delay = (milliseconds) =>
-  new Promise((resolveDelay) => setTimeout(resolveDelay, milliseconds));
-
-export const downloadPinnedAsset = async ({
-  asset,
-  destination,
-  fetchImpl = fetch,
-  sleep = delay,
-}) => {
-  let lastError;
-  for (let attempt = 1; attempt <= 3; attempt += 1) {
-    await rm(destination, { force: true });
-    try {
-      const response = await fetchImpl(asset.url, {
-        redirect: "follow",
-        signal: AbortSignal.timeout(10 * 60 * 1_000),
-      });
-      if (!response.ok || !response.body) {
-        throw new Error(`ScanCode download returned HTTP ${response.status}`);
-      }
-      const advertisedLength = response.headers.get("content-length");
-      if (
-        advertisedLength !== null &&
-        (!/^\d+$/u.test(advertisedLength) ||
-          Number(advertisedLength) > MAXIMUM_ARCHIVE_BYTES)
-      ) {
-        throw new Error("ScanCode archive exceeds the download size limit");
-      }
-      const hash = createHash("sha256");
-      let bytes = 0;
-      const digestingStream = new Transform({
-        transform(chunk, _encoding, callback) {
-          bytes += chunk.length;
-          if (bytes > MAXIMUM_ARCHIVE_BYTES) {
-            callback(
-              new Error("ScanCode archive exceeds the download size limit"),
-            );
-            return;
-          }
-          hash.update(chunk);
-          callback(null, chunk);
-        },
-      });
-      await pipeline(
-        response.body,
-        digestingStream,
-        createWriteStream(destination, { flags: "wx" }),
-      );
-      const actual = hash.digest("hex");
-      if (actual !== asset.sha256) {
-        throw new Error(
-          `ScanCode archive SHA-256 mismatch: expected ${asset.sha256}, received ${actual}`,
-        );
-      }
-      return { bytes, sha256: actual };
-    } catch (error) {
-      lastError = error;
-      if (attempt < 3) {
-        await sleep(attempt === 1 ? 1_000 : 4_000);
-      }
-    }
-  }
-  await rm(destination, { force: true });
-  throw new Error(`Pinned ScanCode download failed: ${lastError.message}`, {
-    cause: lastError,
-  });
-};
-
+/** Resolve the native command; platform selection must be explicit. */
 export const resolveScancodeBootstrap = ({
   platform,
   outputRoot,
   repositoryRoot = DEFAULT_REPOSITORY_ROOT,
 } = {}) => {
-  if (!new Set(["linux", "windows"]).has(platform)) {
+  if (!["linux", "windows"].includes(platform))
     throw new TypeError("ScanCode platform must be linux or windows");
-  }
-  if (typeof outputRoot !== "string" || outputRoot.length === 0) {
+  if (typeof outputRoot !== "string" || outputRoot.length === 0)
     throw new TypeError("ScanCode bootstrap requires an output root");
-  }
   const absoluteOutput = resolve(repositoryRoot, outputRoot);
   const toolkitRoot = join(
     absoluteOutput,
@@ -113,7 +29,6 @@ export const resolveScancodeBootstrap = ({
   );
   return {
     platform,
-    asset: SCANCODE_TOOL.assets[platform],
     outputRoot: absoluteOutput,
     toolkitRoot,
     command: join(
@@ -125,124 +40,120 @@ export const resolveScancodeBootstrap = ({
   };
 };
 
-const assertPython314 = async (python) => {
-  const result = await executeFile(python, ["--version"], {
-    timeout: 30_000,
-    windowsHide: true,
-    shell: false,
-  });
-  const version = `${result.stdout}${result.stderr}`.trim();
-  if (!/^Python 3\.14\.\d+$/u.test(version)) {
-    throw new Error(
-      `ScanCode requires a selected Python 3.14 runtime; received ${version}`,
-    );
-  }
-  return version.slice("Python ".length);
-};
-
-const extractArchive = async ({ platform, archive, destination }) => {
-  const command = platform === "windows" ? "tar.exe" : "tar";
-  const arguments_ =
-    platform === "windows"
-      ? ["-xf", archive, "-C", destination]
-      : ["-xzf", archive, "-C", destination];
-  await executeFile(command, arguments_, {
-    timeout: 10 * 60 * 1_000,
-    maxBuffer: 8 * 1024 * 1024,
-    windowsHide: true,
-    shell: false,
-  });
-};
-
-const configureToolkit = async ({ platform, python, toolkitRoot }) => {
-  const environment = {
-    ...process.env,
-    CFG_QUIET: "-qq",
-    PYTHON_EXECUTABLE: python,
-  };
-  // The Windows release's checksum-authenticated configure.bat is invoked via
-  // an explicit cmd.exe process with fixed arguments. No registry or package
-  // data is interpolated into the command shell.
-  const command = platform === "windows" ? "cmd.exe" : "bash";
-  const arguments_ =
-    platform === "windows"
-      ? ["/d", "/s", "/c", "configure.bat"]
-      : ["./configure"];
-  await executeFile(command, arguments_, {
-    cwd: toolkitRoot,
-    env: environment,
-    timeout: 30 * 60 * 1_000,
-    maxBuffer: 64 * 1024 * 1024,
-    windowsHide: true,
-    shell: false,
-  });
-};
-
+/** Install frozen build tools first, then build the frozen scanner without hidden build resolution. */
 export const prepareScancode = async ({
   platform,
   outputRoot,
   python,
   repositoryRoot = DEFAULT_REPOSITORY_ROOT,
-  fetchImpl = fetch,
-  sleep = delay,
 } = {}) => {
-  if (typeof python !== "string" || python.length === 0) {
+  if (typeof python !== "string" || python.length === 0)
     throw new TypeError("ScanCode bootstrap requires a Python executable");
-  }
+  if (
+    platform !== (process.platform === "win32" ? "windows" : "linux") ||
+    process.arch !== "x64"
+  )
+    throw new TypeError(
+      "ScanCode bootstrap requires the current Windows/Linux x64 platform",
+    );
   const resolved = resolveScancodeBootstrap({
     platform,
     outputRoot,
     repositoryRoot,
   });
-  if (await exists(resolved.outputRoot)) {
+  try {
+    await access(resolved.outputRoot);
     throw new TypeError(
       `ScanCode output already exists: ${resolved.outputRoot}`,
     );
-  }
-  const pending = `${resolved.outputRoot}.${randomUUID()}.pending`;
-  const archive = join(pending, basename(new URL(resolved.asset.url).pathname));
-  await mkdir(pending, { recursive: true });
-  let installed = false;
-  try {
-    const pythonVersion = await assertPython314(python);
-    const download = await downloadPinnedAsset({
-      asset: resolved.asset,
-      destination: archive,
-      fetchImpl,
-      sleep,
-    });
-    await extractArchive({ platform, archive, destination: pending });
-    await access(join(pending, `scancode-toolkit-v${SCANCODE_TOOL.version}`));
-    await rm(archive, { force: true });
-    await rename(pending, resolved.outputRoot);
-    installed = true;
-    await configureToolkit({
-      platform,
-      python,
-      toolkitRoot: resolved.toolkitRoot,
-    });
-    await access(resolved.command);
-    const versionCheck = await executeFile(resolved.command, ["--version"], {
-      timeout: 2 * 60 * 1_000,
-      maxBuffer: 8 * 1024 * 1024,
-      windowsHide: true,
-      shell: false,
-    });
-    if (
-      !`${versionCheck.stdout}${versionCheck.stderr}`.includes(
-        SCANCODE_TOOL.version,
-      )
-    ) {
-      throw new Error(
-        "Configured ScanCode command reports an unexpected version",
-      );
-    }
-    return { ...resolved, download, pythonVersion };
   } catch (error) {
-    await rm(pending, { recursive: true, force: true });
-    if (installed) {
-      await rm(resolved.outputRoot, { recursive: true, force: true });
-    }
+    if (error.code !== "ENOENT") throw error;
+  }
+  // Validation precedes installation and never accepts an ambient PATH interpreter.
+  const tools = await ensureRepositoryUv({ root: repositoryRoot, python });
+  const project = join(repositoryRoot, "util", "scancode-runtime");
+  const lockBytes = await readFile(join(project, "uv.lock"));
+  const lockSha256 = createHash("sha256").update(lockBytes).digest("hex");
+  const pending = `${resolved.outputRoot}.${randomUUID()}.pending`;
+  await mkdir(pending, { recursive: true });
+  // Venv launchers record their installation paths. Install at the final path,
+  // and remove that task-owned destination on a known failed preparation.
+  await rename(pending, resolved.outputRoot);
+  const environment = join(resolved.toolkitRoot, "venv");
+  const options = {
+    cwd: repositoryRoot,
+    env: { ...tools.env, UV_PROJECT_ENVIRONMENT: environment },
+    timeout: 30 * 60 * 1000,
+    maxBuffer: 64 * 1024 * 1024,
+    windowsHide: true,
+    shell: false,
+  };
+  const common = [
+    "sync",
+    // Source archives expand to more entries than workspace discovery permits.
+    // uv owns a temporary cache per command; the installed environment survives.
+    "--no-cache",
+    "--project",
+    project,
+    "--locked",
+    "--python",
+    python,
+    "--no-python-downloads",
+  ];
+  try {
+    await executeFile(
+      tools.uv,
+      [...common, "--only-group", "build", "--no-build"],
+      options,
+    );
+    await executeFile(
+      tools.uv,
+      [...common, "--group", "build", "--no-build-isolation"],
+      options,
+    );
+    await executeFile(
+      tools.uv,
+      [
+        ...common,
+        "--group",
+        "build",
+        "--no-build-isolation",
+        "--check",
+        "--offline",
+      ],
+      options,
+    );
+    const scannerPython = join(
+      environment,
+      platform === "windows" ? "Scripts/python.exe" : "bin/python",
+    );
+    const identity = await executeFile(
+      scannerPython,
+      [
+        "-I",
+        "-c",
+        "import importlib.metadata as m, json, platform, sysconfig, yaml; print(json.dumps({'pythonVersion': platform.python_version(), 'scancodeVersion': m.version('scancode-toolkit'), 'beartypeVersion': m.version('beartype'), 'pythonBuildCompiler': platform.python_compiler(), 'configuredCompiler': sysconfig.get_config_var('CC'), 'yamlWithLibyaml': yaml.__with_libyaml__, 'nativeExtensionCompiler': 'not-observed'}))",
+      ],
+      options,
+    );
+    const versions = JSON.parse(identity.stdout);
+    if (
+      versions.pythonVersion !==
+        (
+          await readFile(join(repositoryRoot, ".python-version"), "utf8")
+        ).trim() ||
+      versions.scancodeVersion !== SCANCODE_TOOL.version ||
+      versions.beartypeVersion !== "0.23.0rc2"
+    )
+      throw new Error(
+        "Configured ScanCode runtime does not match the approved locked identities",
+      );
+    await executeFile(resolved.command, ["--version"], options);
+    if (!lockBytes.equals(await readFile(join(project, "uv.lock"))))
+      throw new Error("Scanner lock changed during preparation");
+    return { ...resolved, ...versions, lockSha256 };
+  } catch (error) {
+    await rm(resolved.outputRoot, { recursive: true, force: true });
     throw error;
   }
 };
@@ -299,18 +210,19 @@ export const parseScancodeBootstrapArguments = (
 const isMain =
   process.argv[1] !== undefined &&
   resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url));
-
 if (isMain) {
   try {
-    const options = parseScancodeBootstrapArguments(process.argv.slice(2));
-    const result = await prepareScancode(options);
+    const result = await prepareScancode(
+      parseScancodeBootstrapArguments(process.argv.slice(2)),
+    );
     process.stdout.write(
       stableJson({
         status: "PREPARED",
         command: result.command,
-        archiveSha256: result.download.sha256,
+        lockSha256: result.lockSha256,
         pythonVersion: result.pythonVersion,
-        scancodeVersion: SCANCODE_TOOL.version,
+        scancodeVersion: result.scancodeVersion,
+        beartypeVersion: result.beartypeVersion,
       }),
     );
   } catch (error) {

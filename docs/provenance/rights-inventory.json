@@ -12,12 +12,12 @@
     }
   },
   "review": {
-    "status": "REVIEWED",
-    "factsSha256": "77fc30459e02e548d2d17c39a8e0033c44c25064f59d3c05318cfbf56015564e",
-    "reviewer": "Maksym Shostak",
-    "reviewedOn": "2026-10-10",
-    "capacity": "Project maintainer, identified original contributor and accountable release owner",
-    "conclusion": "Approved the current digest-bound rights and dependency records and release of the exact rc.2 artifact SHA-256 4f04d1456519fb75f23da51fce5174af0d4909ec7ea647cae2f4c9f4dc77b441 by direct human instruction in Codex session 01a12138-f264-7b50-9365-91c88701e54b. No external legal advice or approval of changed facts is inferred."
+    "status": "PENDING_HUMAN_REVIEW",
+    "factsSha256": "cfd17509c14bc4a5106357339d7bfbfb87a793945c5e255b924a9673aa6c48bc",
+    "reviewer": null,
+    "reviewedOn": null,
+    "capacity": null,
+    "conclusion": null
   },
   "contributors": [
     {
@@ -114,7 +114,7 @@
   "externalDependencies": {
     "bundled": false,
     "authority": "docs/provenance/third-party-material.json",
-    "inventoryFactsSha256": "5dee319142e0a6bfdf37ca0325dfaa15b1365c371aa92af1ec3eaf1ad78cf0b2",
+    "inventoryFactsSha256": "b314b49d693a65c783507ead258f660b187106f5260ff37828cd464d01547c98",
     "noticeRule": "Ordinary npm dependencies are installed separately and remain under their own licences. Their licence texts are not copied into the owlapi tarball merely because they appear in the installed dependency graph."
   },
   "unresolvedExternalContributions": [],

@@ -13,9 +13,48 @@ import {
   repositoryPythonTools,
   repositoryRoot,
   runPythonTool,
+  workflowPythonRequest,
 } from "./repository-python-tools.mjs";
 
 let root;
+
+test.each(["win32", "linux"])(
+  "workflow Python request is downloadable in the pinned uv catalogue on %s",
+  (platform) => {
+    const tools = repositoryPythonTools();
+    const version = readFileSync(
+      join(repositoryRoot, ".python-version"),
+      "utf8",
+    ).trim();
+    const request = workflowPythonRequest(version, platform);
+    const catalogue = spawnSync(
+      tools.uv,
+      [
+        "python",
+        "list",
+        request,
+        "--only-downloads",
+        "--all-platforms",
+        "--all-arches",
+        "--all-versions",
+        "--output-format",
+        "json",
+      ],
+      {
+        cwd: repositoryRoot,
+        env: tools.env,
+        encoding: "utf8",
+        timeout: 30_000,
+        windowsHide: true,
+      },
+    );
+    expect(catalogue.status).toBe(0);
+    expect(catalogue.error).toBeUndefined();
+    expect(JSON.parse(catalogue.stdout).map(({ key }) => key)).toContain(
+      request,
+    );
+  },
+);
 beforeEach(() => {
   root = mkdtempSync(join(tmpdir(), "owlapi-python-"));
 });

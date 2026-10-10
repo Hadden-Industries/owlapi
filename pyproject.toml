@@ -1,14 +1,14 @@
 [project]
 name = "owlapi-development-tools"
 version = "0.0.0"
-requires-python = ">=3.14,<3.15"
+requires-python = ">=3.15.0"
 dependencies = []
 
 [dependency-groups]
-quality = ["ruff==0.16.9"]
+quality = ["ruff==0.17.0"]
 
 [tool.uv]
 package = false
-required-version = "==0.12.20"
+required-version = "==0.13.0"
 default-groups = ["quality"]
 no-build = true

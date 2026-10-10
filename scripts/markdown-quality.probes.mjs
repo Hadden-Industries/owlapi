@@ -143,6 +143,8 @@ test("root policy accounts for every tracked Markdown path and preserves the rev
   const tracked = git.stdout.split("\0").filter(Boolean).sort();
   const excluded = [
     "API.md",
+    "LICENSES/development/scancode-runtime/idna-3.20/licenses/LICENSE.md",
+    "LICENSES/development/scancode-runtime/soupsieve-2.10/licenses/LICENSE.md",
     "docs/Deep Review of Phase 19 and Phase 20 of the owlapi Implementation Plan [2026-08-24T1130].md",
     "docs/Deep Review of Phase 19 and Phase 20 of the owlapi Implementation Plan [2026-08-25T0020].md",
     "docs/compatibility/java-api-surface.md",

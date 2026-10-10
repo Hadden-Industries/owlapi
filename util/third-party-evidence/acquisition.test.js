@@ -16,6 +16,7 @@ import { gzipSync } from "node:zlib";
 import {
   AcquisitionError,
   acquireEvidence,
+  compareCommittedEvidence,
   fetchJsonWithRetry,
   parseAcquisitionArguments,
 } from "../acquire-npm-package-evidence.mjs";
@@ -526,6 +527,61 @@ describe("acquireEvidence", () => {
         "--output=out",
       ]),
     ).toThrow(/reuse.*shard|shard.*reuse/i);
+  });
+
+  it("compares identical findings across recorded Python runtimes without accepting semantic policy changes", async () => {
+    const fixture = makeRegistryFixture();
+    const registry = await startRegistryServer(fixture);
+    const repositoryRoot = await mkdtemp(
+      join(tmpdir(), "owlapi-runtime-parity-"),
+    );
+    temporaryRoots.push(repositoryRoot);
+    await writeFile(
+      join(repositoryRoot, "package-lock.json"),
+      fixture.lockfileBytes,
+    );
+    const result = await acquireEvidence({
+      repositoryRoot,
+      fetchImpl: mappedFetch(registry.origin),
+      downloadTarball: fixtureDownload,
+      verifyPackageMetadata: fixtureMetadataVerification,
+      scanArtifact: fixtureScan,
+      write: true,
+      sleep: async () => {},
+    });
+    const historical = structuredClone(result.manifest);
+    historical.policy.scanner.pythonVersion = "3.14";
+    const manifestPath = join(
+      repositoryRoot,
+      "docs/provenance/npm-package-evidence.json",
+    );
+    await writeFile(manifestPath, stableJson(historical));
+    await expect(
+      compareCommittedEvidence({
+        repositoryRoot,
+        manifest: result.manifest,
+        lockfileBytes: fixture.lockfileBytes,
+      }),
+    ).resolves.toMatchObject({ artifactCount: 1 });
+    expect(await readFile(manifestPath, "utf8")).toBe(stableJson(historical));
+    const changed = structuredClone(result.manifest);
+    changed.policy.scanner.executionOptions = ["--processes", "2"];
+    await expect(
+      compareCommittedEvidence({
+        repositoryRoot,
+        manifest: changed,
+        lockfileBytes: fixture.lockfileBytes,
+      }),
+    ).rejects.toThrow();
+    const unknownRuntime = structuredClone(result.manifest);
+    unknownRuntime.policy.scanner.pythonVersion = "3.13";
+    await expect(
+      compareCommittedEvidence({
+        repositoryRoot,
+        manifest: unknownRuntime,
+        lockfileBytes: fixture.lockfileBytes,
+      }),
+    ).rejects.toThrow();
   });
 
   it("acquires, authenticates, scans and writes a platform-neutral fixture corpus", async () => {

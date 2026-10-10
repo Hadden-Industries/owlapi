@@ -75,7 +75,7 @@
           "properties": {
             "name": { "const": "scancode-toolkit" },
             "version": { "const": "32.5.0" },
-            "pythonVersion": { "const": "3.14" },
+            "pythonVersion": { "enum": ["3.14", "3.15"] },
             "outputFormatVersion": { "const": "4.1.0" },
             "normalizationVersion": { "const": 1 },
             "semanticOptions": {

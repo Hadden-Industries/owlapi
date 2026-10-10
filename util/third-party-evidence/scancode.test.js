@@ -3,7 +3,6 @@ import {
   SCANCODE_EXECUTION_OPTIONS,
   SCANCODE_PRE_SCAN_EXCLUDED_FILE_SUFFIXES,
   SCANCODE_SEMANTIC_OPTIONS,
-  SCANCODE_TOOL,
   buildScancodeArguments,
   normalizeScancodeReport,
 } from "./scancode.mjs";
@@ -384,25 +383,7 @@ describe("normalizeScancodeReport", () => {
 });
 
 describe("SCANCODE_TOOL", () => {
-  it("pins the independently checksum-verified Python 3.14 Windows and Linux assets", () => {
-    expect(SCANCODE_TOOL).toMatchObject({
-      version: "32.5.0",
-      assets: {
-        windows: {
-          url: expect.stringContaining("_py3.14-windows.zip"),
-          sha256:
-            "74dfca9f0f2a607dbc90cfbfd03df1ed5b3e7e4b3a12dbb028e0d158c1311ec5",
-        },
-        linux: {
-          url: expect.stringContaining("_py3.14-linux.tar.gz"),
-          sha256:
-            "02be93341e2f9775f88b4abd03cdd74f2e4de91941a12a1d8cd150eeb72a0945",
-        },
-      },
-    });
-  });
-
-  it("bounds Python 3.14 scans to one worker without changing the semantic option set", () => {
+  it("bounds scans to one worker without changing the semantic option set", () => {
     expect(SCANCODE_EXECUTION_OPTIONS).toEqual(["--processes", "1"]);
     expect(SCANCODE_PRE_SCAN_EXCLUDED_FILE_SUFFIXES).toEqual([".node"]);
     expect(

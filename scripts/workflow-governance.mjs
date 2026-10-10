@@ -31,7 +31,6 @@ const EXPECTED_ISSUE_FORMS = [
 const ACTIONS = Object.freeze({
   "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1": "v7.0.1",
   "actions/setup-node@820762786026740c76f36085b0efc47a31fe5020": "v7.0.0",
-  "actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97": "v7.0.0",
   "actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6": "v6.0.1",
   "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a": "v7.0.1",
   "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c":
@@ -227,19 +226,6 @@ const validateActionUses = (fileName, workflow, document, violations) => {
               : ["registry-url", "scope", "always-auth", "mirror", "token"],
           ),
           `${fileName}: setup-node broadens registry authority`,
-        );
-      }
-      if (step.uses.startsWith("actions/setup-python@")) {
-        add(
-          violations,
-          isDeepStrictEqual(inputs, {
-            "python-version": "3.14.7",
-            architecture: "x64",
-            "check-latest": false,
-            "update-environment": false,
-            cache: "",
-          }),
-          `${fileName}: setup-python inputs must match the exact approved surface`,
         );
       }
     }
@@ -1767,8 +1753,14 @@ const validateEvidenceWorkflows = (workflows, violations) => {
     );
     add(
       violations,
-      actionSteps(shard, "actions/setup-python").length === 1,
-      `${fileName}:${shardId} must select the approved Python action`,
+      steps(shard).filter(
+        (step) =>
+          step.id === "scancode_python" &&
+          step.run === "node scripts/repository-python-tools.mjs python" &&
+          !step.if &&
+          !step["continue-on-error"],
+      ).length === 1,
+      `${fileName}:${shardId} must select the pinned checkout Python bootstrap`,
     );
     add(
       violations,
@@ -1943,12 +1935,69 @@ const validateQualityTooling = (workflows, violations) => {
       const evidence =
         ["release.yml", "extended-tests.yml"].includes(file) &&
         id === "third_party_evidence_shard";
-      const python = actionSteps(job, "actions/setup-python");
+      const python = steps(job).filter((step) =>
+        step.run?.startsWith("node scripts/repository-python-tools.mjs python"),
+      );
       add(
         violations,
         python.length === (consumer || evidence ? 1 : 0),
         `${context} has an unexpected Python setup inventory`,
       );
+      const scannerConsumer =
+        file === "ci.yml" && ["source_node_24", "quality_windows"].includes(id);
+      const qualifications = steps(job).filter((step) =>
+        step.run?.includes("qualify-scancode-runtime.mjs"),
+      );
+      const qualification = qualifications[0];
+      add(
+        violations,
+        qualifications.length === (scannerConsumer ? 1 : 0),
+        `${context} requires unconditional locked scanner qualification`,
+      );
+      if (scannerConsumer) {
+        add(
+          violations,
+          job["timeout-minutes"] >= (id === "quality_windows" ? 75 : 105) &&
+            qualification?.["timeout-minutes"] === 45,
+          `${context} must reserve scanner qualification and existing job time`,
+        );
+        add(
+          violations,
+          qualification?.id === "scanner_qualification" &&
+            qualification?.run ===
+              "node util/qualify-scancode-runtime.mjs --python-env=SCANCODE_PYTHON" &&
+            isDeepStrictEqual(qualification?.env, {
+              SCANCODE_PYTHON:
+                "${{ steps.quality_python.outputs.python-path }}",
+            }) &&
+            !qualification?.if &&
+            !qualification?.["continue-on-error"],
+          `${context} requires unconditional locked scanner qualification`,
+        );
+        const retention = steps(job).filter(
+          (step) => step.with?.name === `scancode-qualification-${id}`,
+        );
+        add(
+          violations,
+          retention.length === 1 &&
+            retention[0]?.uses ===
+              "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a" &&
+            retention[0]?.if === "${{ !cancelled() }}" &&
+            isDeepStrictEqual(retention[0]?.with, {
+              name: `scancode-qualification-${id}`,
+              path: ".release/scancode-qualification/reports",
+              "if-no-files-found": "error",
+              "retention-days": 14,
+              "compression-level": 0,
+              overwrite: false,
+              "include-hidden-files": false,
+              archive: true,
+            }) &&
+            steps(job).indexOf(retention[0]) >
+              steps(job).indexOf(qualification),
+          `${context} must retain exact scanner compatibility reports`,
+        );
+      }
       if (!consumer) continue;
       const list = steps(job);
       const setupIndex = list.indexOf(python[0]);
@@ -1966,6 +2015,10 @@ const validateQualityTooling = (workflows, violations) => {
       add(
         violations,
         python[0]?.id === "quality_python" &&
+          python[0]?.run ===
+            "node scripts/repository-python-tools.mjs python" &&
+          !python[0]?.env &&
+          !python[0]?.with &&
           !python[0]?.if &&
           !python[0]?.["continue-on-error"],
         `${context} requires unconditional pinned Python selection`,
@@ -1981,6 +2034,7 @@ const validateQualityTooling = (workflows, violations) => {
           !sync[0]["continue-on-error"] &&
           setupIndex >= 0 &&
           syncIndex > setupIndex &&
+          (!scannerConsumer || list.indexOf(qualification) > syncIndex) &&
           checkIndexes.length > 0 &&
           checkIndexes.every((index) => index > syncIndex),
         `${context} requires locked synchronization before every consumer`,

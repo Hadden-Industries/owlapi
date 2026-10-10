@@ -1,0 +1,1642 @@
+{
+  "schemaVersion": 1,
+  "scope": "Development-only installed Windows x64 ScanCode and build graph on Python 3.15.0; metadata declarations are not legal conclusions or owner approval. Platform-specific Linux distributions remain subject to their native qualification and terms.",
+  "lockSha256": "bf6780a685b0e9cb75e93f3b0d2581d199d2adef9a0f6652bacde14b7529fd3a",
+  "components": [
+    {
+      "name": "attrs",
+      "version": "26.1.0",
+      "declaredLicenseExpression": "MIT",
+      "declaredLicense": null,
+      "licenseClassifiers": [],
+      "projectUrls": [
+        "Documentation, https://www.attrs.org/",
+        "Changelog, https://www.attrs.org/en/stable/changelog.html",
+        "GitHub, https://github.com/python-attrs/attrs",
+        "Funding, https://github.com/sponsors/hynek",
+        "Tidelift, https://tidelift.com/subscription/pkg/pypi-attrs?utm_source=pypi-attrs&utm_medium=pypi"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/attrs-26.1.0/licenses/LICENSE",
+          "sha256": "882115c95dfc2af1eeb6714f8ec6d5cbcabf667caff8729f42420da63f714e9f"
+        }
+      ]
+    },
+    {
+      "name": "banal",
+      "version": "1.1.2",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "MIT",
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "projectUrls": ["Homepage, http://github.com/pudo/banal"],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/banal-1.1.2/licenses/LICENSE",
+          "sha256": "0005250484990c45980c459e0f46252cfa5fa9b7d775a3b5876bdb026eaf47fe"
+        }
+      ]
+    },
+    {
+      "name": "beartype",
+      "version": "0.23.0rc2",
+      "declaredLicenseExpression": "MIT",
+      "declaredLicense": null,
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "projectUrls": [
+        "Docs, https://beartype.readthedocs.io",
+        "GitHub, https://github.com/beartype/beartype",
+        "Forums, https://github.com/beartype/beartype/discussions",
+        "Issues, https://github.com/beartype/beartype/issues",
+        "Releases, https://github.com/beartype/beartype/releases"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/beartype-0.23.0rc2/licenses/LICENSE",
+          "sha256": "c7d3148ab7a1e87f643e7a79b15e933b6d41fe50d723341226c5188f2e227938"
+        }
+      ]
+    },
+    {
+      "name": "beautifulsoup4",
+      "version": "4.15.0",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "MIT License",
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "projectUrls": [
+        "Download, https://www.crummy.com/software/BeautifulSoup/bs4/download/",
+        "Homepage, https://www.crummy.com/software/BeautifulSoup/bs4/"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/beautifulsoup4-4.15.0/licenses/AUTHORS",
+          "sha256": "b989238918e1fdac1e46717cb405b63e92497a272413af0d989c1df6c8abcb6f"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/beautifulsoup4-4.15.0/licenses/LICENSE",
+          "sha256": "55b4d8d4b1e5bc86d10efac91b74c87bcb77526b0f5b9edaf8b9cd2adc7397b2"
+        }
+      ]
+    },
+    {
+      "name": "binaryornot",
+      "version": "0.6.0",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "MIT",
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "projectUrls": [
+        "bugs, https://github.com/binaryornot/binaryornot/issues",
+        "changelog, https://github.com/binaryornot/binaryornot/releases",
+        "documentation, https://binaryornot.github.io/binaryornot/",
+        "homepage, https://github.com/binaryornot/binaryornot"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/binaryornot-0.6.0/licenses/LICENSE",
+          "sha256": "03f46bf43c101e64af64b9f818ac9783618290f725296881759c93c92d2f7968"
+        }
+      ]
+    },
+    {
+      "name": "boolean.py",
+      "version": "5.0",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "BSD-2-Clause",
+      "licenseClassifiers": [],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/boolean.py-5.0/licenses/LICENSE.txt",
+          "sha256": "5ea0cdf8cfc824b446cccf597ff6518c3607a659e9804bc75f1261f9c6ac4ada"
+        }
+      ]
+    },
+    {
+      "name": "certifi",
+      "version": "2026.7.22",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "MPL-2.0",
+      "licenseClassifiers": [
+        "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)"
+      ],
+      "projectUrls": ["Source, https://github.com/certifi/python-certifi"],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/certifi-2026.7.22/licenses/LICENSE",
+          "sha256": "e93716da6b9c0d5a4a1df60fe695b370f0695603d21f6f83f053e42cfc10caf7"
+        }
+      ]
+    },
+    {
+      "name": "cffi",
+      "version": "2.1.1",
+      "declaredLicenseExpression": "MIT-0",
+      "declaredLicense": null,
+      "licenseClassifiers": [],
+      "projectUrls": [
+        "Documentation, https://cffi.readthedocs.io/",
+        "Changelog, https://cffi.readthedocs.io/en/latest/whatsnew.html",
+        "Download, https://github.com/python-cffi/cffi/releases",
+        "Contact, https://groups.google.com/forum/#!forum/python-cffi",
+        "Source Code, https://github.com/python-cffi/cffi",
+        "Issue Tracker, https://github.com/python-cffi/cffi/issues"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/cffi-2.1.1/licenses/LICENSE",
+          "sha256": "5ba24ddc57067f9249add644c3afc41a5d6dc37e23433ef759d95df370b0af63"
+        }
+      ]
+    },
+    {
+      "name": "chardet",
+      "version": "7.6.0",
+      "declaredLicenseExpression": "0BSD",
+      "declaredLicense": null,
+      "licenseClassifiers": [],
+      "projectUrls": [
+        "Homepage, https://github.com/chardet/chardet",
+        "Repository, https://github.com/chardet/chardet",
+        "Bug Tracker, https://github.com/chardet/chardet/issues",
+        "Documentation, https://chardet.readthedocs.io",
+        "Changelog, https://chardet.readthedocs.io/en/latest/changelog.html"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/chardet-7.6.0/licenses/LICENSE",
+          "sha256": "0517f574b0183d991eb7a9ec5dbf0add8d8ade5ac00341bd28ca0c18914d52e5"
+        }
+      ]
+    },
+    {
+      "name": "charset-normalizer",
+      "version": "3.5.2",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "MIT",
+      "licenseClassifiers": [],
+      "projectUrls": [
+        "Changelog, https://github.com/jawah/charset_normalizer/blob/master/CHANGELOG.md",
+        "Documentation, https://charset-normalizer.readthedocs.io/",
+        "Code, https://github.com/jawah/charset_normalizer",
+        "Issue tracker, https://github.com/jawah/charset_normalizer/issues"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/charset-normalizer-3.5.2/licenses/LICENSE",
+          "sha256": "18577485d3704f1a479ded8e573c0976cfed315fd2fd17983fa988da4c2f70d1"
+        }
+      ]
+    },
+    {
+      "name": "click",
+      "version": "8.5.0",
+      "declaredLicenseExpression": "BSD-3-Clause",
+      "declaredLicense": null,
+      "licenseClassifiers": [],
+      "projectUrls": [
+        "Changes, https://click.palletsprojects.com/page/changes/",
+        "Chat, https://discord.gg/pallets",
+        "Documentation, https://click.palletsprojects.com/",
+        "Donate, https://palletsprojects.com/donate",
+        "Source, https://github.com/pallets/click/"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/click-8.5.0/licenses/LICENSE.txt",
+          "sha256": "9a8ad106a394e853bfe21f42f4e72d592819a22805d991b5f3275029292b658d"
+        }
+      ]
+    },
+    {
+      "name": "colorama",
+      "version": "0.4.6",
+      "declaredLicenseExpression": null,
+      "declaredLicense": null,
+      "licenseClassifiers": ["License :: OSI Approved :: BSD License"],
+      "projectUrls": ["Homepage, https://github.com/tartley/colorama"],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/colorama-0.4.6/licenses/LICENSE.txt",
+          "sha256": "cac35c02686e5d04a5a7140bfb3b36e73aed496656e891102e428886d7930318"
+        }
+      ]
+    },
+    {
+      "name": "commoncode",
+      "version": "33.0.0",
+      "declaredLicenseExpression": null,
+      "declaredLicense": null,
+      "licenseClassifiers": [],
+      "projectUrls": ["Homepage, https://github.com/nexB/scancode-toolkit"],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/commoncode-33.0.0/AUTHORS.rst",
+          "sha256": "28f1c004752fbb41d489fe123f4e1fab65de2a68d541a169204e4393ace06bb9"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/commoncode-33.0.0/NOTICE",
+          "sha256": "9049f9f2fca9ff13140af12a552d015fda6d4db09ae38e5a0323d73f69874691"
+        }
+      ]
+    },
+    {
+      "name": "container-inspector",
+      "version": "33.1.0",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "Apache-2.0",
+      "licenseClassifiers": [],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/container-inspector-33.1.0/licenses/AUTHORS.rst",
+          "sha256": "3861effd5a916b869622b70aa274a233bb4921c091f37e9c587d6e7527d49f51"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/container-inspector-33.1.0/licenses/NOTICE",
+          "sha256": "789e0f0a63a4b7c8101539a9996cf43993d8bee5b45be32988aa56db9ed6932c"
+        }
+      ]
+    },
+    {
+      "name": "cryptography",
+      "version": "50.0.2",
+      "declaredLicenseExpression": "Apache-2.0 OR BSD-3-Clause",
+      "declaredLicense": null,
+      "licenseClassifiers": [],
+      "projectUrls": [
+        "changelog, https://cryptography.io/en/latest/changelog/",
+        "documentation, https://cryptography.io/",
+        "homepage, https://github.com/pyca/cryptography",
+        "issues, https://github.com/pyca/cryptography/issues",
+        "source, https://github.com/pyca/cryptography/"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/cryptography-50.0.2/licenses/LICENSE",
+          "sha256": "3e0c7c091a948b82533ba98fd7cbb40432d6f1a9acbf85f5922d2f99a93ae6bb"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/cryptography-50.0.2/licenses/LICENSE.APACHE",
+          "sha256": "aac73b3148f6d1d7111dbca32099f68d26c644c6813ae1e4f05f6579aa2663fe"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/cryptography-50.0.2/licenses/LICENSE.BSD",
+          "sha256": "602c4c7482de6479dd2e9793cda275e5e63d773dacd1eca689232ab7008fb4fb"
+        }
+      ]
+    },
+    {
+      "name": "cyseq",
+      "version": "0.1.3",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "Apache-2.0",
+      "licenseClassifiers": [],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/cyseq-0.1.3/licenses/AUTHORS.rst",
+          "sha256": "d4cb271ba5897b8a7d3daff21cf803258986d61e36e14808d52de635fe81e872"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/cyseq-0.1.3/licenses/NOTICE",
+          "sha256": "7e42c8973c8ff3358d9cf6c5497913227360625df94c71f9f89f2f30ab8dce17"
+        }
+      ]
+    },
+    {
+      "name": "Cython",
+      "version": "3.3.0",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "Apache-2.0",
+      "licenseClassifiers": [],
+      "projectUrls": [
+        "Documentation, https://cython.readthedocs.io/",
+        "Donate, https://cython.readthedocs.io/en/latest/src/donating.html",
+        "Source Code, https://github.com/cython/cython",
+        "Bug Tracker, https://github.com/cython/cython/issues/",
+        "User Group, https://groups.google.com/g/cython-users"
+      ],
+      "noticeEvidenceStatus": "NOT_PROVIDED_BY_INSTALLED_DISTRIBUTION",
+      "notices": []
+    },
+    {
+      "name": "debian_inspector",
+      "version": "31.1.1",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "Apache-2.0 AND BSD-3-Clause AND MIT",
+      "licenseClassifiers": [],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/debian_inspector-31.1.1/licenses/NOTICE",
+          "sha256": "7154f05497644992988a93cac79642ec32042b25f23ed354af6e91438ee13ace"
+        }
+      ]
+    },
+    {
+      "name": "dockerfile-parse",
+      "version": "2.0.1",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "BSD",
+      "licenseClassifiers": ["License :: OSI Approved :: BSD License"],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/dockerfile-parse-2.0.1/LICENSE",
+          "sha256": "91b6c3aa9ce5f52abcee11831e7faa2d376d16d30bcba38e06d7ec10b90c00ee"
+        }
+      ]
+    },
+    {
+      "name": "dparse2",
+      "version": "0.7.0",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "MIT",
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/dparse2-0.7.0/LICENSE",
+          "sha256": "95897eb64933e7029af75f5205e98b6aca12bec45ea5ce09b85371645c025a3a"
+        }
+      ]
+    },
+    {
+      "name": "extractcode",
+      "version": "31.1.0",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "Apache-2.0",
+      "licenseClassifiers": [],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/extractcode-31.1.0/licenses/AUTHORS.rst",
+          "sha256": "d382beb1729f6cd96b3edfe1f2869959dbf58d68074950cb442a67797660f1d6"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/extractcode-31.1.0/licenses/NOTICE",
+          "sha256": "8199b74243a038451b2aa631be7b6629c837f88b4f085ec9c15ffb15dd0e8a92"
+        }
+      ]
+    },
+    {
+      "name": "extractcode-7z",
+      "version": "16.5.210531",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "apache-2.0 AND lgpl-2.1 and unrar and brian-gladman-3-clause",
+      "licenseClassifiers": [],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/extractcode-7z-16.5.210531/LICENSE.txt",
+          "sha256": "0974bb5addc6e06c48911f8a292f7eb3b48f552073c5255ee9d70713d556f87f"
+        }
+      ]
+    },
+    {
+      "name": "extractcode-libarchive",
+      "version": "3.5.1.210531",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "apache-2.0 AND bsd-simplified AND other-permissive AND other-copyleft",
+      "licenseClassifiers": [],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/extractcode-libarchive-3.5.1.210531/LICENSE.txt",
+          "sha256": "0dc6e562c11953ebb0d30cb2c64ba8d242ef468dfba490d6e139af32b27d57cf"
+        }
+      ]
+    },
+    {
+      "name": "fasteners",
+      "version": "0.20",
+      "declaredLicenseExpression": "Apache-2.0",
+      "declaredLicense": null,
+      "licenseClassifiers": [],
+      "projectUrls": ["Homepage, https://github.com/harlowja/fasteners"],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/fasteners-0.20/licenses/LICENSE",
+          "sha256": "d2de2f566d2d0e0b509fb0ea1fa3669f49064ab1de21c57453cab3750a234e8f"
+        }
+      ]
+    },
+    {
+      "name": "fingerprints",
+      "version": "1.2.3",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "MIT",
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/fingerprints-1.2.3/LICENSE",
+          "sha256": "4fd680e6e024d8fba2579b9b9a572b88f335c0e58bf5e4d3537fe8dcf700e5c4"
+        }
+      ]
+    },
+    {
+      "name": "ftfy",
+      "version": "6.3.1",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "Apache-2.0",
+      "licenseClassifiers": [],
+      "projectUrls": [
+        "Homepage, https://ftfy.readthedocs.io/en/latest/",
+        "Documentation, https://ftfy.readthedocs.io/en/latest/",
+        "Repository, https://github.com/rspeer/python-ftfy",
+        "Issues, https://github.com/rspeer/python-ftfy/issues/",
+        "Changelog, https://github.com/rspeer/python-ftfy/blob/main/CHANGELOG.md",
+        "Blog, https://posts.arborelia.net"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/ftfy-6.3.1/licenses/LICENSE.txt",
+          "sha256": "a0bfc5020bc2e1e820551a0625c70c95faa898c15e737100ff4880aa10197857"
+        }
+      ]
+    },
+    {
+      "name": "gemfileparser2",
+      "version": "0.9.4",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "GPL-3.0-or-later OR MIT",
+      "licenseClassifiers": [],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/gemfileparser2-0.9.4/LICENSE.GPLv3",
+          "sha256": "8b9b96df553f41e684095457290b4fee31e891bfe7ef0aa7c4945de013cc9944"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/gemfileparser2-0.9.4/LICENSE.MIT",
+          "sha256": "9cec13ce50070373dc2e438e11d366d41a2c5dee59923616b09c00dd0e1a2bd9"
+        }
+      ]
+    },
+    {
+      "name": "html5lib",
+      "version": "1.1",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "MIT License",
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/html5lib-1.1/AUTHORS.rst",
+          "sha256": "0eb3403227e80e9b90c899fe296f87e8af13b766b9aca9d5d94178f8346b1942"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/html5lib-1.1/LICENSE",
+          "sha256": "16a39991619e92f18680932da2a9199fdf7d95df3ecaedc52ea06218aabafd6f"
+        }
+      ]
+    },
+    {
+      "name": "idna",
+      "version": "3.20",
+      "declaredLicenseExpression": "BSD-3-Clause",
+      "declaredLicense": null,
+      "licenseClassifiers": [],
+      "projectUrls": [
+        "Changelog, https://github.com/kjd/idna/blob/master/HISTORY.md",
+        "Issue tracker, https://github.com/kjd/idna/issues",
+        "Source, https://github.com/kjd/idna"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/idna-3.20/licenses/LICENSE.md",
+          "sha256": "1a9a4f0e3d479a27240ddd59a9137a66ab4a0f9dfdc8ca6188cc0bfd85187f04"
+        }
+      ]
+    },
+    {
+      "name": "importlib_metadata",
+      "version": "9.0.1",
+      "declaredLicenseExpression": "Apache-2.0",
+      "declaredLicense": null,
+      "licenseClassifiers": [],
+      "projectUrls": ["Source, https://github.com/python/importlib_metadata"],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/importlib_metadata-9.0.1/licenses/LICENSE",
+          "sha256": "e2f7bb0557e7a381499f15baa7c1d776d83d6616599179d71d3109b8e39f7b25"
+        }
+      ]
+    },
+    {
+      "name": "intbitset",
+      "version": "4.1.2",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "LGPL-3.0-or-later",
+      "licenseClassifiers": [
+        "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)"
+      ],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/intbitset-4.1.2/licenses/AUTHORS.rst",
+          "sha256": "eedb5b6435d9acb35d676edcbec7c9ef0980ccd1561f5ce6a9e30a7b22348589"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/intbitset-4.1.2/licenses/LICENSE",
+          "sha256": "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768"
+        }
+      ]
+    },
+    {
+      "name": "jaraco.functools",
+      "version": "4.6.0",
+      "declaredLicenseExpression": "MIT",
+      "declaredLicense": null,
+      "licenseClassifiers": [],
+      "projectUrls": ["Source, https://github.com/jaraco/jaraco.functools"],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/jaraco.functools-4.6.0/licenses/LICENSE",
+          "sha256": "9755a18519666e5f0f4cae3daad3d7012bcae48a600b31237d75e9fe134e6683"
+        }
+      ]
+    },
+    {
+      "name": "javaproperties",
+      "version": "0.8.2",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "MIT",
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "projectUrls": [
+        "Source Code, https://github.com/jwodder/javaproperties",
+        "Bug Tracker, https://github.com/jwodder/javaproperties/issues",
+        "Documentation, https://javaproperties.readthedocs.io"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/javaproperties-0.8.2/licenses/LICENSE",
+          "sha256": "856a2c0cc2124984c5cd75dd607da94d97b13a26d9af7991223929e444e8abdb"
+        }
+      ]
+    },
+    {
+      "name": "Jinja2",
+      "version": "3.1.6",
+      "declaredLicenseExpression": null,
+      "declaredLicense": null,
+      "licenseClassifiers": ["License :: OSI Approved :: BSD License"],
+      "projectUrls": [
+        "Changes, https://jinja.palletsprojects.com/changes/",
+        "Chat, https://discord.gg/pallets",
+        "Documentation, https://jinja.palletsprojects.com/",
+        "Donate, https://palletsprojects.com/donate",
+        "Source, https://github.com/pallets/jinja/"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/jinja2-3.1.6/licenses/LICENSE.txt",
+          "sha256": "3b49dcee4105eb37bac10faf1be260408fe85d252b8e9df2e0979fc1e094437b"
+        }
+      ]
+    },
+    {
+      "name": "jsonstreams",
+      "version": "0.6.0",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "MIT",
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/jsonstreams-0.6.0/LICENSE",
+          "sha256": "1918eab7463da05add6a6aa7676907ab767654ca6f696c31835674246e8eadb3"
+        }
+      ]
+    },
+    {
+      "name": "license-expression",
+      "version": "30.4.4",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "Apache-2.0",
+      "licenseClassifiers": [],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/license-expression-30.4.4/licenses/AUTHORS.rst",
+          "sha256": "d281b77e2e6dd089de830c623cf1c31e029d8232d0bd762005bf69bd5417f8e9"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/license-expression-30.4.4/licenses/NOTICE",
+          "sha256": "ef97db07e32f6e5d34363461acf5acc7d72db924533bce3d9f3b87046313363c"
+        }
+      ]
+    },
+    {
+      "name": "lxml",
+      "version": "6.1.3",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "BSD-3-Clause",
+      "licenseClassifiers": [],
+      "projectUrls": [
+        "Source, https://github.com/lxml/lxml",
+        "Bug Tracker, https://bugs.launchpad.net/lxml"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/lxml-6.1.3/licenses/LICENSE.txt",
+          "sha256": "e7c3ce8d76331b0101cc46790ab43958ea90a364bcf962ed8763d5a818340e69"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/lxml-6.1.3/licenses/LICENSES.txt",
+          "sha256": "df682c668de65321677b5e4861dca4128a8bad8067f230956e9da3f985b3d398"
+        }
+      ]
+    },
+    {
+      "name": "MarkupSafe",
+      "version": "3.0.4",
+      "declaredLicenseExpression": "BSD-3-Clause",
+      "declaredLicense": null,
+      "licenseClassifiers": [],
+      "projectUrls": [
+        "Donate, https://palletsprojects.com/donate",
+        "Documentation, https://markupsafe.palletsprojects.com/",
+        "Changes, https://markupsafe.palletsprojects.com/page/changes/",
+        "Source, https://github.com/pallets/markupsafe/",
+        "Chat, https://discord.gg/pallets"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/markupsafe-3.0.4/licenses/LICENSE.txt",
+          "sha256": "4631ec0db5fd90a547e336817264c6798214338146f8ac94b4a57f96ee8c9ec4"
+        }
+      ]
+    },
+    {
+      "name": "more-itertools",
+      "version": "11.1.0",
+      "declaredLicenseExpression": "MIT",
+      "declaredLicense": null,
+      "licenseClassifiers": [],
+      "projectUrls": [
+        "Documentation, https://more-itertools.readthedocs.io/en/stable/",
+        "Homepage, https://github.com/more-itertools/more-itertools"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/more-itertools-11.1.0/licenses/LICENSE",
+          "sha256": "09f1c8c9e941af3e584d59641ea9b87d83c0cb0fd007eb5ef391a7e2643c1a46"
+        }
+      ]
+    },
+    {
+      "name": "multiregex",
+      "version": "2.0.4",
+      "declaredLicenseExpression": "BSD-3-Clause",
+      "declaredLicense": null,
+      "licenseClassifiers": [],
+      "projectUrls": ["repository, https://github.com/quantco/multiregex"],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/multiregex-2.0.4/licenses/LICENSE",
+          "sha256": "f224e1eb74509c944792c2dac505850360b85b16976549cdf4bb2f52339d2858"
+        }
+      ]
+    },
+    {
+      "name": "normality",
+      "version": "2.6.1",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "Copyright (c) 2013-2022, Friedrich Lindenberg, Gregor Aisch\n\nPermission is hereby granted, free of charge, to any person obtaining a\ncopy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be included\nin all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS\nOR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "projectUrls": [
+        "Documentation, https://github.com/pudo/normality",
+        "Repository, https://github.com/pudo/normality.git",
+        "Issues, https://github.com/pudo/normality/issues"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/normality-2.6.1/licenses/LICENSE",
+          "sha256": "9f7c8b48bbc47535f6ca9fc8c912a7f25e795b5811fe371f3747f35862de909a"
+        }
+      ]
+    },
+    {
+      "name": "packageurl-python",
+      "version": "0.17.6",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "MIT",
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "NOT_PROVIDED_BY_INSTALLED_DISTRIBUTION",
+      "notices": []
+    },
+    {
+      "name": "packaging",
+      "version": "26.3",
+      "declaredLicenseExpression": "Apache-2.0 OR BSD-2-Clause",
+      "declaredLicense": null,
+      "licenseClassifiers": [],
+      "projectUrls": [
+        "Documentation, https://packaging.pypa.io/",
+        "Source, https://github.com/pypa/packaging"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/packaging-26.3/licenses/LICENSE",
+          "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/packaging-26.3/licenses/LICENSE.APACHE",
+          "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/packaging-26.3/licenses/LICENSE.BSD",
+          "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+        }
+      ]
+    },
+    {
+      "name": "packvers",
+      "version": "21.5",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "BSD-2-Clause or Apache-2.0",
+      "licenseClassifiers": [
+        "License :: OSI Approved :: Apache Software License",
+        "License :: OSI Approved :: BSD License"
+      ],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/packvers-21.5/LICENSE",
+          "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/packvers-21.5/LICENSE.APACHE",
+          "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/packvers-21.5/LICENSE.BSD",
+          "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+        }
+      ]
+    },
+    {
+      "name": "parameter-expansion-patched",
+      "version": "0.3.1",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "Apache-2.0",
+      "licenseClassifiers": [
+        "License :: OSI Approved :: Apache Software License"
+      ],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/parameter-expansion-patched-0.3.1/LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "name": "pdfminer.six",
+      "version": "20260107",
+      "declaredLicenseExpression": "MIT",
+      "declaredLicense": null,
+      "licenseClassifiers": [],
+      "projectUrls": ["Homepage, https://github.com/pdfminer/pdfminer.six"],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/pdfminer.six-20260107/licenses/LICENSE",
+          "sha256": "f01e5d699a33766b5caf4a5099f2856aba4f3f75ea1df05dc0572b34b4bea8f2"
+        }
+      ]
+    },
+    {
+      "name": "pefile",
+      "version": "2024.8.26",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "MIT",
+      "licenseClassifiers": [],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/pefile-2024.8.26/LICENSE",
+          "sha256": "b44409c067c6da52bfb54bb6624fb11a7b52157c3a13ae1400232f8196e86ad3"
+        }
+      ]
+    },
+    {
+      "name": "pip-requirements-parser",
+      "version": "32.0.1",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "MIT",
+      "licenseClassifiers": [],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/pip-requirements-parser-32.0.1/AUTHORS.rst",
+          "sha256": "b25584f1e37242efa242a0f096c581892e1e4b910b992c510a4531110edbcb6f"
+        }
+      ]
+    },
+    {
+      "name": "pkginfo2",
+      "version": "30.1.0",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "MIT",
+      "licenseClassifiers": [],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "NOT_PROVIDED_BY_INSTALLED_DISTRIBUTION",
+      "notices": []
+    },
+    {
+      "name": "pluggy",
+      "version": "1.6.0",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "MIT",
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/pluggy-1.6.0/licenses/LICENSE",
+          "sha256": "d6b65e6c213a5d0b577911d34d6e5949b9f59d76c238c5071a2f3fc16cfb2606"
+        }
+      ]
+    },
+    {
+      "name": "plugincode",
+      "version": "32.0.0",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "Apache-2.0",
+      "licenseClassifiers": [],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/plugincode-32.0.0/AUTHORS.rst",
+          "sha256": "96f54b7f596bb8fe45880940c1c03d65ecadb6af71615998ad3b463c69e4e616"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/plugincode-32.0.0/NOTICE",
+          "sha256": "e8ac8caca8845cdf00386e7ea7a040ca04da6b1296596038dc37c59b67552ee8"
+        }
+      ]
+    },
+    {
+      "name": "ply",
+      "version": "3.11",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "BSD",
+      "licenseClassifiers": [],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "NOT_PROVIDED_BY_INSTALLED_DISTRIBUTION",
+      "notices": []
+    },
+    {
+      "name": "publicsuffix2",
+      "version": "2.20191221",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "MIT and MPL-2.0",
+      "licenseClassifiers": [
+        "License :: OSI Approved :: MIT License",
+        "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)"
+      ],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/publicsuffix2-2.20191221/AUTHORS.rst",
+          "sha256": "1bab88e1393038e376b1e2d9673bb272598288b416251e3e18728b6fc2e968bb"
+        }
+      ]
+    },
+    {
+      "name": "pyahocorasick",
+      "version": "2.3.1",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "BSD-3-Clause and Public-Domain",
+      "licenseClassifiers": [],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/pyahocorasick-2.3.1/licenses/LICENSE",
+          "sha256": "2a7f4000fcb22199112e682ae44400f8836b9ff2500c46a8bed7d0edc93b2185"
+        }
+      ]
+    },
+    {
+      "name": "pycparser",
+      "version": "3.11",
+      "declaredLicenseExpression": "BSD-3-Clause",
+      "declaredLicense": null,
+      "licenseClassifiers": [],
+      "projectUrls": ["Homepage, https://github.com/eliben/pycparser"],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/pycparser-3.11/licenses/LICENSE",
+          "sha256": "0a9e78156ae8b96caf1b4f11ac2df424b83de29736f9e757630548a6272fdf90"
+        }
+      ]
+    },
+    {
+      "name": "pygmars",
+      "version": "1.0.0",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "Apache-2.0",
+      "licenseClassifiers": [],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/pygmars-1.0.0/licenses/AUTHORS.rst",
+          "sha256": "25901b8d88623da33971a70575a5ad5aa2ad480aefe9756f34b670dfb3f7cdb8"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/pygmars-1.0.0/licenses/NOTICE",
+          "sha256": "6a10004abf53332291041e087839a86aec798b4ae4ad3b7511ac13545aeb104b"
+        }
+      ]
+    },
+    {
+      "name": "Pygments",
+      "version": "2.21.0",
+      "declaredLicenseExpression": "BSD-2-Clause",
+      "declaredLicense": null,
+      "licenseClassifiers": [],
+      "projectUrls": [
+        "Homepage, https://pygments.org",
+        "Documentation, https://pygments.org/docs",
+        "Source, https://github.com/pygments/pygments",
+        "Bug Tracker, https://github.com/pygments/pygments/issues",
+        "Changelog, https://github.com/pygments/pygments/blob/master/CHANGES"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/pygments-2.21.0/licenses/AUTHORS",
+          "sha256": "71a83872ad82f57be692cf827e048e2cd51d45169cfa1ea3f28706d97a872c0f"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/pygments-2.21.0/licenses/LICENSE",
+          "sha256": "a9d66f1d526df02e29dce73436d34e56e8632f46c275bbdffc70569e882f9f17"
+        }
+      ]
+    },
+    {
+      "name": "pymaven-patch",
+      "version": "0.3.2",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "Apache-2",
+      "licenseClassifiers": [],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/pymaven-patch-0.3.2/LICENSE",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        }
+      ]
+    },
+    {
+      "name": "pyparsing",
+      "version": "3.3.3",
+      "declaredLicenseExpression": "MIT",
+      "declaredLicense": null,
+      "licenseClassifiers": [],
+      "projectUrls": [
+        "Documentation, https://pyparsing-docs.readthedocs.io/en/latest/",
+        "Homepage, https://github.com/pyparsing/pyparsing/",
+        "Source, https://github.com/pyparsing/pyparsing.git"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/pyparsing-3.3.3/licenses/LICENSE",
+          "sha256": "a5425f9dc14ac74d4c5f0b679e941f2442e32cca7452a4418d5b1a49893ebe4e"
+        }
+      ]
+    },
+    {
+      "name": "PyYAML",
+      "version": "6.0.3",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "MIT",
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "projectUrls": [
+        "Bug Tracker, https://github.com/yaml/pyyaml/issues",
+        "CI, https://github.com/yaml/pyyaml/actions",
+        "Documentation, https://pyyaml.org/wiki/PyYAMLDocumentation",
+        "Mailing lists, http://lists.sourceforge.net/lists/listinfo/yaml-core",
+        "Source Code, https://github.com/yaml/pyyaml"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/pyyaml-6.0.3/licenses/LICENSE",
+          "sha256": "8d3928f9dc4490fd635707cb88eb26bd764102a7282954307d3e5167a577e8a4"
+        }
+      ]
+    },
+    {
+      "name": "rdflib",
+      "version": "7.6.0",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "BSD-3-Clause",
+      "licenseClassifiers": ["License :: OSI Approved :: BSD License"],
+      "projectUrls": [
+        "Documentation, https://rdflib.readthedocs.org/",
+        "Repository, https://github.com/RDFLib/rdflib"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/rdflib-7.6.0/LICENSE",
+          "sha256": "53a705e51bfd199e8c97d0442376cb4bbd4ffcf13ba4f2c4c2794211400e4012"
+        }
+      ]
+    },
+    {
+      "name": "requests",
+      "version": "2.34.2",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "Apache-2.0",
+      "licenseClassifiers": [
+        "License :: OSI Approved :: Apache Software License"
+      ],
+      "projectUrls": [
+        "Documentation, https://requests.readthedocs.io",
+        "Source, https://github.com/psf/requests"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/requests-2.34.2/licenses/LICENSE",
+          "sha256": "09e8a9bcec8067104652c168685ab0931e7868f9c8284b66f5ae6edae5f1130b"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/requests-2.34.2/licenses/NOTICE",
+          "sha256": "f5110972dedad2b4e9d314518daf3b7d72d6e02e499acd802181de6f74571dcc"
+        }
+      ]
+    },
+    {
+      "name": "saneyaml",
+      "version": "0.6.1",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "Apache-2.0",
+      "licenseClassifiers": [],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/saneyaml-0.6.1/AUTHORS.rst",
+          "sha256": "b25584f1e37242efa242a0f096c581892e1e4b910b992c510a4531110edbcb6f"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/saneyaml-0.6.1/NOTICE",
+          "sha256": "7e42c8973c8ff3358d9cf6c5497913227360625df94c71f9f89f2f30ab8dce17"
+        }
+      ]
+    },
+    {
+      "name": "scancode-toolkit",
+      "version": "32.5.0",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "Apache-2.0 AND CC-BY-4.0 AND LicenseRef-scancode-other-permissive AND LicenseRef-scancode-other-copyleft",
+      "licenseClassifiers": [],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/scancode-toolkit-32.5.0/licenses/AUTHORS.rst",
+          "sha256": "516c69e136229518d9825e9f3332e24ea0610988ddcc0fae32ab8bfd15d878cb"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/scancode-toolkit-32.5.0/licenses/NOTICE",
+          "sha256": "9049f9f2fca9ff13140af12a552d015fda6d4db09ae38e5a0323d73f69874691"
+        }
+      ]
+    },
+    {
+      "name": "semantic-version",
+      "version": "2.10.0",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "BSD",
+      "licenseClassifiers": ["License :: OSI Approved :: BSD License"],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/semantic-version-2.10.0/LICENSE",
+          "sha256": "a85e7ef2fbc670d26781ed6844cd31a7e8ada65d21328f75a0b02402faae37ea"
+        }
+      ]
+    },
+    {
+      "name": "setuptools",
+      "version": "84.0.0",
+      "declaredLicenseExpression": "MIT",
+      "declaredLicense": null,
+      "licenseClassifiers": [],
+      "projectUrls": [
+        "Source, https://github.com/pypa/setuptools",
+        "Documentation, https://setuptools.pypa.io/",
+        "Changelog, https://setuptools.pypa.io/en/stable/history.html"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/setuptools-84.0.0/licenses/LICENSE",
+          "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+        }
+      ]
+    },
+    {
+      "name": "setuptools-scm",
+      "version": "10.3.4",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "MIT",
+      "licenseClassifiers": [],
+      "projectUrls": [
+        "documentation, https://setuptools-scm.readthedocs.io/",
+        "repository, https://github.com/pypa/setuptools-scm/"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/setuptools-scm-10.3.4/licenses/LICENSE",
+          "sha256": "89807acf2309bd285f033404ee78581602f3cd9b819a16ac2f0e5f60ff4a473e"
+        }
+      ]
+    },
+    {
+      "name": "six",
+      "version": "1.17.0",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "MIT",
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/six-1.17.0/LICENSE",
+          "sha256": "4375ba20e2b9c6c4e7cad2940a628fd90e95cc3d50ee92aae755715d8ba1fbd0"
+        }
+      ]
+    },
+    {
+      "name": "soupsieve",
+      "version": "2.10",
+      "declaredLicenseExpression": "MIT",
+      "declaredLicense": null,
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "projectUrls": ["Homepage, https://github.com/facelessuser/soupsieve"],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/soupsieve-2.10/licenses/LICENSE.md",
+          "sha256": "76a0acdb98c3a63681e20b6f096699ef8cad5fb35d56eef8387e0fa71d797a9a"
+        }
+      ]
+    },
+    {
+      "name": "spdx-tools",
+      "version": "0.8.2",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "Apache-2.0",
+      "licenseClassifiers": [
+        "License :: OSI Approved :: Apache Software License"
+      ],
+      "projectUrls": ["Homepage, https://github.com/spdx/tools-python"],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/spdx-tools-0.8.2/LICENSE",
+          "sha256": "c5accbbd8546e94c34aed24afe689a617627d18eed5a6c48277e48db57c23851"
+        }
+      ]
+    },
+    {
+      "name": "text-unidecode",
+      "version": "1.3",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "Artistic License",
+      "licenseClassifiers": [
+        "License :: OSI Approved :: Artistic License",
+        "License :: OSI Approved :: GNU General Public License (GPL)",
+        "License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)"
+      ],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/text-unidecode-1.3/LICENSE.txt",
+          "sha256": "3938e7535c3e4ef7e6363de9b693fe3bafe3c4a5e5f4925cd48375096fe7afd5"
+        }
+      ]
+    },
+    {
+      "name": "toml",
+      "version": "0.10.2",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "MIT",
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/toml-0.10.2/LICENSE",
+          "sha256": "2d9294823df6c89357c8be4927fce79361d6561e5ee7532d5926e63939aaa536"
+        }
+      ]
+    },
+    {
+      "name": "typecode",
+      "version": "30.2.0",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "Apache-2.0",
+      "licenseClassifiers": [],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-30.2.0/licenses/AUTHORS.rst",
+          "sha256": "e18095637f625a3d2dd4410fadd74ea9e5dda01c88af843d09b315e0e5835cac"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-30.2.0/licenses/NOTICE",
+          "sha256": "112b2342eba22f3558bcf26c48d34bded65df3c4c9974c17d3117c374553976f"
+        }
+      ]
+    },
+    {
+      "name": "typecode-libmagic",
+      "version": "5.39.210531",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "apache-2.0 AND bsd-simplified-darwin AND (bsd-simplified AND public-domain AND bsd-new AND isc AND (bsd-new OR gpl-1.0-plus) AND bsd-original) AND other-permissive AND other-copyleft",
+      "licenseClassifiers": [],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/bzip2/LICENSE",
+          "sha256": "c6dbbf828498be844a89eaa3b84adbab3199e342eb5cb2ed2f0d4ba7ec0f38a3"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/expat/COPYING",
+          "sha256": "8c6b5b6de8fae20b317f4992729abc0e520bfba4c7606cd1e9eeb87418eebdec"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/file/COPYING",
+          "sha256": "0bfa856a9930bddadbef95d1be1cf4e163c0be618e76ea3275caaf255283e274"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gcc-libs/COPYING.LIB",
+          "sha256": "a9bdde5616ecdd1e980b44f360600ee8783b1f99b8cc83a2beb163a0a390e861"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gcc-libs/COPYING.RUNTIME",
+          "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gcc-libs/COPYING3",
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gettext/COPYING",
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gettext/gettext-runtime/COPYING",
+          "sha256": "7ef2cdfe58e0c0460657b6598b49af29d4e03c1e41cbaf0e1da1eb8ad74b95d0"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gettext/gettext-runtime/intl/COPYING.LIB",
+          "sha256": "3fe5361f24b7c49ba12911c08f5a33f9cb18871d95d9fb881f5b8a4793e04288"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gettext/gettext-runtime/libasprintf/COPYING",
+          "sha256": "03133addae5b99a6148c538300e6d97074453089be1423b741bd081f18e2b298"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gettext/gettext-runtime/libasprintf/COPYING.LIB",
+          "sha256": "3fe5361f24b7c49ba12911c08f5a33f9cb18871d95d9fb881f5b8a4793e04288"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gettext/gettext-tools/COPYING",
+          "sha256": "5d4cff30d5038f82a0edc79798456049b61e1752fdb7e9ab1f4bfb9fae3a7303"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gettext/gettext-tools/gnulib-lib/libxml/COPYING",
+          "sha256": "c5c63674f8a83c4d2e385d96d1c670a03cb871ba2927755467017317878574bd"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gettext/gnulib-local/lib/libxml/COPYING",
+          "sha256": "c5c63674f8a83c4d2e385d96d1c670a03cb871ba2927755467017317878574bd"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/libiconv/COPYING",
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/libiconv/COPYING.LIB",
+          "sha256": "56bdea73b6145ef6ac5259b3da390b981d840c24cb03b8e1cbc678de7ecfa18d"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/libiconv/libcharset/COPYING.LIB",
+          "sha256": "56bdea73b6145ef6ac5259b3da390b981d840c24cb03b8e1cbc678de7ecfa18d"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/libsystre/LICENSE",
+          "sha256": "3200024286eb0a33c22da3a31c470df07c7b8cfbead2b9528195d67d107264ec"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/libtre/LICENSE",
+          "sha256": "6a50ab50d856b30c965cf2dd899e577ec108c938242fd3a2e7a7a25eed996200"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/libwinpthread/COPYING",
+          "sha256": "99a69660981156c21336fdb5661f89341b013c94e4bf9e1c7467b4745718397f"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/libwinpthread/mingw-w64-libraries/winpthreads/COPYING",
+          "sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/xz/COPYING",
+          "sha256": "bcb02973ef6e87ea73d331b3a80df7748407f17efdb784b61b47e0e610d3bb5c"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/xz/COPYING.GPLv2",
+          "sha256": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/xz/COPYING.GPLv3",
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/xz/COPYING.LGPLv2.1",
+          "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/zlib/LICENSE",
+          "sha256": "b8dc97ec24faf95f0f30bf2ab721dbdc30b32de1aa4a2a5853e56551c59d6f04"
+        }
+      ]
+    },
+    {
+      "name": "typing_extensions",
+      "version": "4.16.0",
+      "declaredLicenseExpression": "PSF-2.0",
+      "declaredLicense": null,
+      "licenseClassifiers": [],
+      "projectUrls": [
+        "Bug Tracker, https://github.com/python/typing_extensions/issues",
+        "Changes, https://github.com/python/typing_extensions/blob/main/CHANGELOG.md",
+        "Documentation, https://typing-extensions.readthedocs.io/",
+        "Home, https://github.com/python/typing_extensions",
+        "Q & A, https://github.com/python/typing/discussions",
+        "Repository, https://github.com/python/typing_extensions"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/typing_extensions-4.16.0/licenses/LICENSE",
+          "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+        }
+      ]
+    },
+    {
+      "name": "uritools",
+      "version": "6.1.3",
+      "declaredLicenseExpression": "MIT",
+      "declaredLicense": null,
+      "licenseClassifiers": [],
+      "projectUrls": [
+        "Homepage, https://github.com/tkem/uritools/",
+        "Documentation, https://uritools.readthedocs.io/en/stable/",
+        "Source, https://github.com/tkem/uritools/",
+        "Repository, https://github.com/tkem/uritools/",
+        "Issues, https://github.com/tkem/uritools/issues",
+        "Changelog, https://github.com/tkem/uritools/blob/master/CHANGELOG.rst"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/uritools-6.1.3/licenses/LICENSE",
+          "sha256": "28c000b52b0ee27138a68ef778227e4057046e86b65f62f1cacb99b0cc49e0d2"
+        }
+      ]
+    },
+    {
+      "name": "urllib3",
+      "version": "2.8.0",
+      "declaredLicenseExpression": "MIT",
+      "declaredLicense": null,
+      "licenseClassifiers": [],
+      "projectUrls": [
+        "Changelog, https://github.com/urllib3/urllib3/blob/main/CHANGES.rst",
+        "Documentation, https://urllib3.readthedocs.io",
+        "Code, https://github.com/urllib3/urllib3",
+        "Issue tracker, https://github.com/urllib3/urllib3/issues",
+        "Security policy, https://urllib3.readthedocs.io/en/latest/security.html"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/urllib3-2.8.0/licenses/LICENSE.txt",
+          "sha256": "130e3a64d5fdd5d096a752694634a7d9df284469de86e5732100268041e3d686"
+        }
+      ]
+    },
+    {
+      "name": "urlpy",
+      "version": "0.5",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "MIT",
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "projectUrls": [],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/urlpy-0.5/LICENSE",
+          "sha256": "2227fac28920cf09624d4cae5fb6673cf62fccf3c096bce14bab524561c4836a"
+        }
+      ]
+    },
+    {
+      "name": "vcs-versioning",
+      "version": "2.6.0",
+      "declaredLicenseExpression": null,
+      "declaredLicense": "MIT",
+      "licenseClassifiers": [],
+      "projectUrls": [
+        "Documentation, https://github.com/pypa/setuptools-scm#readme",
+        "Issues, https://github.com/pypa/setuptools-scm/issues",
+        "Source, https://github.com/pypa/setuptools-scm"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/vcs-versioning-2.6.0/licenses/LICENSE.txt",
+          "sha256": "f52f6085a2f4acdb7f425fac78d4bb013b2d723616792fb173a9f8aea191d8f0"
+        }
+      ]
+    },
+    {
+      "name": "wcwidth",
+      "version": "0.9.2",
+      "declaredLicenseExpression": null,
+      "declaredLicense": null,
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "projectUrls": ["Homepage, https://github.com/jquast/wcwidth"],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/wcwidth-0.9.2/licenses/LICENSE",
+          "sha256": "dff08668b8cfca00ec90011eb318e450c3719fcd40893bf375781a6beef7143a"
+        }
+      ]
+    },
+    {
+      "name": "webencodings",
+      "version": "0.6.1",
+      "declaredLicenseExpression": null,
+      "declaredLicense": null,
+      "licenseClassifiers": ["License :: OSI Approved :: BSD License"],
+      "projectUrls": [
+        "Changelog, https://github.com/CourtBouillon/webencodings/releases",
+        "Code, https://github.com/CourtBouillon/webencodings",
+        "Documentation, https://doc.courtbouillon.org/webencodings",
+        "Donation, https://opencollective.com/courtbouillon",
+        "Homepage, https://github.com/CourtBouillon/webencodings",
+        "Issues, https://github.com/CourtBouillon/webencodings/issues"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/webencodings-0.6.1/licenses/LICENSE",
+          "sha256": "e06ef33485e7498ad592887c41fa79cc8a7fecde576c7210e11bfdddef58040e"
+        }
+      ]
+    },
+    {
+      "name": "wheel",
+      "version": "0.48.0",
+      "declaredLicenseExpression": "MIT",
+      "declaredLicense": null,
+      "licenseClassifiers": [],
+      "projectUrls": [
+        "Changelog, https://wheel.readthedocs.io/en/stable/news.html",
+        "Documentation, https://wheel.readthedocs.io/",
+        "Issue Tracker, https://github.com/pypa/wheel/issues",
+        "Source, https://github.com/pypa/wheel"
+      ],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/wheel-0.48.0/licenses/LICENSE.txt",
+          "sha256": "30c23618679108f3e8ea1d2a658c7ca417bdfc891c98ef1a89fa4ff0c9828654"
+        }
+      ]
+    },
+    {
+      "name": "xmltodict",
+      "version": "1.0.4",
+      "declaredLicenseExpression": "MIT",
+      "declaredLicense": null,
+      "licenseClassifiers": [],
+      "projectUrls": ["Homepage, https://github.com/martinblech/xmltodict"],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/xmltodict-1.0.4/licenses/LICENSE",
+          "sha256": "d66d5eb8f83a0ba21d3dd04318b8817588e8764daabea852d1035e3f07ffda55"
+        }
+      ]
+    },
+    {
+      "name": "zipp",
+      "version": "4.1.1",
+      "declaredLicenseExpression": "MIT",
+      "declaredLicense": null,
+      "licenseClassifiers": [],
+      "projectUrls": ["Source, https://github.com/jaraco/zipp"],
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/zipp-4.1.1/licenses/LICENSE",
+          "sha256": "9755a18519666e5f0f4cae3daad3d7012bcae48a600b31237d75e9fe134e6683"
+        }
+      ]
+    }
+  ],
+  "sourceBuiltComponents": [
+    {
+      "name": "cyseq",
+      "version": "0.1.3"
+    },
+    {
+      "name": "intbitset",
+      "version": "4.1.2"
+    },
+    {
+      "name": "pyahocorasick",
+      "version": "2.3.1"
+    },
+    {
+      "name": "pyyaml",
+      "version": "6.0.3"
+    },
+    {
+      "name": "scancode-toolkit",
+      "version": "32.5.0"
+    }
+  ]
+}

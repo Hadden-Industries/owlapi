@@ -4,8 +4,61 @@ import { join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
+import { createHash } from "node:crypto";
+import { repositoryPythonTools } from "../scripts/repository-python-tools.mjs";
 
 describe("third-party-material prospective generation", () => {
+  it("binds installed scanner declarations to the native locked package graph", () => {
+    const root = resolve(import.meta.dirname, "..");
+    const lock = readFileSync(join(root, "util/scancode-runtime/uv.lock"));
+    const inventory = JSON.parse(
+      readFileSync(
+        join(root, "LICENSES/development/scancode-runtime/inventory.json"),
+        "utf8",
+      ),
+    );
+    expect(inventory.lockSha256).toBe(
+      createHash("sha256").update(lock).digest("hex"),
+    );
+    const tools = repositoryPythonTools();
+    const parsed = spawnSync(
+      tools.python,
+      [
+        "-I",
+        "-c",
+        "import json,tomllib; from pathlib import Path; p=[x for x in tomllib.loads(Path('util/scancode-runtime/uv.lock').read_text(encoding='utf-8'))['package'] if not x.get('source', {}).get('virtual')]; print(json.dumps({'packages': p, 'sourceBuilt': [x for x in p if x.get('sdist') and not x.get('wheels')]}))",
+      ],
+      { cwd: root, encoding: "utf8", timeout: 30000, windowsHide: true },
+    );
+    expect(parsed.status).toBe(0);
+    const identities = (values) =>
+      values
+        .map(
+          ({ name, version }) =>
+            `${name.toLowerCase().replaceAll(/[-_.]+/gu, "-")}==${version}`,
+        )
+        .sort();
+    const nativeGraph = JSON.parse(parsed.stdout);
+    expect(identities(inventory.components)).toEqual(
+      identities(nativeGraph.packages),
+    );
+    expect(identities(inventory.sourceBuiltComponents)).toEqual(
+      identities(nativeGraph.sourceBuilt),
+    );
+    for (const component of inventory.components) {
+      expect(component.noticeEvidenceStatus).toBe(
+        component.notices.length
+          ? "RETAINED"
+          : "NOT_PROVIDED_BY_INSTALLED_DISTRIBUTION",
+      );
+      for (const notice of component.notices)
+        expect(
+          createHash("sha256")
+            .update(readFileSync(join(root, notice.path)))
+            .digest("hex"),
+        ).toBe(notice.sha256);
+    }
+  });
   it("writes an alternate output without changing the reviewed inventory", () => {
     const repositoryRoot = resolve(import.meta.dirname, "..");
     const canonicalPath = join(

@@ -217,13 +217,8 @@ jobs:
         timeout-minutes: 5
       - name: Select the pinned development Python
         id: quality_python
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.14.7"
-          architecture: x64
-          check-latest: false
-          update-environment: false
-          cache: ""
+        run: node scripts/repository-python-tools.mjs python
+        timeout-minutes: 10
       - name: Synchronize locked development tools
         run: npm run tools:sync -- --python-env QUALITY_PYTHON
         timeout-minutes: 5
@@ -287,13 +282,8 @@ jobs:
         timeout-minutes: 5
       - name: Select the pinned development Python
         id: quality_python
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.14.7"
-          architecture: x64
-          check-latest: false
-          update-environment: false
-          cache: ""
+        run: node scripts/repository-python-tools.mjs python
+        timeout-minutes: 10
       - name: Synchronize locked development tools
         run: npm run tools:sync -- --python-env QUALITY_PYTHON
         timeout-minutes: 5
@@ -323,7 +313,7 @@ jobs:
     needs: verification
     if: needs.verification.outputs.reuse != 'true'
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 105
     permissions:
       contents: read
       actions: read
@@ -361,18 +351,31 @@ jobs:
         timeout-minutes: 5
       - name: Select the pinned development Python
         id: quality_python
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.14.7"
-          architecture: x64
-          check-latest: false
-          update-environment: false
-          cache: ""
+        run: node scripts/repository-python-tools.mjs python
+        timeout-minutes: 10
       - name: Synchronize locked development tools
         run: npm run tools:sync -- --python-env QUALITY_PYTHON
         timeout-minutes: 5
         env:
           QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
+      - name: Qualify the locked Python 3.15 scanner
+        id: scanner_qualification
+        run: node util/qualify-scancode-runtime.mjs --python-env=SCANCODE_PYTHON
+        timeout-minutes: 45
+        env:
+          SCANCODE_PYTHON: ${{ steps.quality_python.outputs.python-path }}
+      - name: Retain scanner compatibility reports
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: scancode-qualification-source_node_24
+          path: .release/scancode-qualification/reports
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0
+          overwrite: false
+          include-hidden-files: false
+          archive: true
       - name: Acquire the exact isolated Markdown graph
         run: npm run install:markdown
         timeout-minutes: 5
@@ -1383,7 +1386,7 @@ jobs:
     needs: verification
     if: needs.verification.outputs.reuse != 'true'
     runs-on: windows-2025
-    timeout-minutes: 30
+    timeout-minutes: 75
     permissions:
       contents: read
     defaults:
@@ -1417,18 +1420,31 @@ jobs:
         timeout-minutes: 5
       - name: Select the pinned development Python
         id: quality_python
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.14.7"
-          architecture: x64
-          check-latest: false
-          update-environment: false
-          cache: ""
+        run: node scripts/repository-python-tools.mjs python
+        timeout-minutes: 10
       - name: Synchronize locked development tools
         run: npm run tools:sync -- --python-env QUALITY_PYTHON
         timeout-minutes: 5
         env:
           QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
+      - name: Qualify the locked Python 3.15 scanner
+        id: scanner_qualification
+        run: node util/qualify-scancode-runtime.mjs --python-env=SCANCODE_PYTHON
+        timeout-minutes: 45
+        env:
+          SCANCODE_PYTHON: ${{ steps.quality_python.outputs.python-path }}
+      - name: Retain scanner compatibility reports
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: scancode-qualification-quality_windows
+          path: .release/scancode-qualification/reports
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0
+          overwrite: false
+          include-hidden-files: false
+          archive: true
       - name: Verify the locked environment
         run: npm run tools:check
         timeout-minutes: 10
