@@ -20,7 +20,7 @@ import {
 } from "./package-identity.mjs";
 import { installRegistryConsumer } from "./public-registry-consumer.mjs";
 import { verifyRegistryProvenance } from "./registry-provenance.mjs";
-import { readPublicRegistry } from "./public-registry-read.mjs";
+import { waitForReleaseAvailability } from "./release-availability.mjs";
 import {
   INSTALLED_TEST_SCRIPTS,
   writeInstalledConsumerFixtures,
@@ -71,16 +71,6 @@ export const assertPublicRegistryFacts = ({
     integrity: metadata.dist.integrity,
     tarballSha256: registryTarballSha256,
   };
-};
-
-const fetchJson = async (path) => {
-  const url = new URL(path, registry);
-  url.searchParams.set("owlapi-read", String(Date.now()));
-  return JSON.parse((await readPublicRegistry(url)).toString("utf8"));
-};
-
-const fetchTarball = async (url) => {
-  return readPublicRegistry(url);
 };
 
 const verifyIntegrity = (buffer, integrity) => {
@@ -213,44 +203,82 @@ const main = async () => {
   }
   const candidate = readCandidate(resolve(candidatePath));
   const { version } = candidate.package;
-  const [metadata, distTags] = await Promise.all([
-    fetchJson(
-      `${encodeURIComponent(PACKAGE_NAME)}/${encodeURIComponent(version)}`,
-    ),
-    fetchJson(`-/package/${encodeURIComponent(PACKAGE_NAME)}/dist-tags`),
-  ]);
-  const registryTarball = await fetchTarball(
-    assertRegistryTarballUrl(metadata.dist?.tarball),
-  );
-  verifyIntegrity(registryTarball, metadata.dist?.integrity);
-  const facts = assertPublicRegistryFacts({
-    expectedVersion: version,
-    retainedSha256: candidate.tarball.sha256,
-    metadata,
-    distTags,
-    registryTarballSha256: sha256Buffer(registryTarball),
-  });
-  const { consumer, provenance } = await exerciseFreshConsumers(
-    metadata,
-    registryTarball,
-  );
-  const report = {
+  const observations = [];
+  const pendingReport = {
     schemaVersion: 1,
-    result: "PASS",
-    verifiedAt: new Date().toISOString(),
-    registry,
-    ...facts,
-    tarballUrl: metadata.dist.tarball,
-    npmPublishedAt: metadata.time ?? null,
-    consumer,
-    provenance,
+    result: "AVAILABILITY_PENDING",
+    coordinate: `${PACKAGE_NAME}@${version}`,
+    sourceCommit: process.env.GITHUB_SHA ?? null,
+    runId: process.env.GITHUB_RUN_ID ?? null,
+    runAttempt: process.env.GITHUB_RUN_ATTEMPT ?? null,
+    retainedSha256: candidate.tarball.sha256,
+    startedAt: new Date().toISOString(),
+    observations,
   };
-  writeFileSync(
-    resolve(outputPath),
-    `${JSON.stringify(report, null, 2)}\n`,
-    "utf8",
-  );
-  process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
+  const retain = () =>
+    writeFileSync(
+      resolve(outputPath),
+      `${JSON.stringify(pendingReport, null, 2)}\n`,
+    );
+  retain();
+  try {
+    const {
+      metadata,
+      distTags,
+      tarball: registryTarball,
+    } = await waitForReleaseAvailability({
+      retainedSha256: candidate.tarball.sha256,
+      observe: (observation) => {
+        observations.push(observation);
+        pendingReport.result = observation.state;
+        retain();
+        process.stdout.write(`${JSON.stringify(observation)}\n`);
+      },
+    });
+    verifyIntegrity(registryTarball, metadata.dist?.integrity);
+    const facts = assertPublicRegistryFacts({
+      expectedVersion: version,
+      retainedSha256: candidate.tarball.sha256,
+      metadata,
+      distTags,
+      registryTarballSha256: sha256Buffer(registryTarball),
+    });
+    const { consumer, provenance } = await exerciseFreshConsumers(
+      metadata,
+      registryTarball,
+    );
+    observations.push({
+      state: "VERIFICATION_PASSED",
+      verifiedAt: new Date().toISOString(),
+    });
+    const report = {
+      schemaVersion: 1,
+      result: "PASS",
+      verifiedAt: new Date().toISOString(),
+      registry,
+      ...facts,
+      tarballUrl: metadata.dist.tarball,
+      npmPublishedAt: metadata.time ?? null,
+      consumer,
+      provenance,
+      availability: { startedAt: pendingReport.startedAt, observations },
+    };
+    writeFileSync(
+      resolve(outputPath),
+      `${JSON.stringify(report, null, 2)}\n`,
+      "utf8",
+    );
+    process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
+  } catch (error) {
+    pendingReport.result =
+      error.code === "AVAILABILITY_INCOMPLETE"
+        ? "AVAILABILITY_INCOMPLETE"
+        : "FAIL";
+    pendingReport.error = error.message;
+    pendingReport.finishedAt = new Date().toISOString();
+    retain();
+    throw error;
+  }
 };
 
 if (

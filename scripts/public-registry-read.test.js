@@ -60,6 +60,31 @@ test("returns malformed JSON without retrying application-level failures", async
   expect(request).toHaveBeenCalledTimes(1);
 });
 
+test("bounds a stalled successful response body with the same request signal", async () => {
+  const request = jest
+    .spyOn(globalThis, "fetch")
+    .mockImplementation(async (_url, { signal }) => {
+      return new Response(
+        new ReadableStream({
+          start(controller) {
+            signal.addEventListener(
+              "abort",
+              () => controller.error(signal.reason),
+              { once: true },
+            );
+          },
+        }),
+      );
+    });
+  await expect(
+    readPublicRegistry("https://registry.npmjs.org/example", {
+      attempts: 1,
+      timeoutMs: 20,
+    }),
+  ).rejects.toThrow(/abort|timeout/iu);
+  expect(request).toHaveBeenCalledTimes(1);
+});
+
 test("stops after three transport failures", async () => {
   const request = jest
     .spyOn(globalThis, "fetch")

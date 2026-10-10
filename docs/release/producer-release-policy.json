@@ -1,7 +1,13 @@
 {
   "schemaVersion": 2,
-  "authority": "Accepted unified installed OWL qualification plans, 2026-10-06; accepted development dependency and Node 26 upgrade plan, 2026-10-09",
+  "authority": "Accepted unified installed OWL qualification plans, 2026-10-06; accepted development dependency and Node 26 upgrade plan, 2026-10-09; owner-requested availability and durable approvals policy, 2026-10-10",
   "replacements": [
+    {
+      "historicalRequirementId": "P19-PUBLIC-VERIFICATION-001",
+      "requirementId": "P19-PUBLIC-VERIFICATION-001",
+      "obligation": "Distinguish publication accepted, availability pending, registry available and verified. Follow docs/release/availability-policy.json: immediate then approximately minute-spaced read-only probes under one monotonic 30-minute budget, exact-coordinate temporary absence and explicitly accepted predecessor channels only, strict byte/integrity/signature/provenance validation, retained incomplete observations and no repeated publication/channel writes. Retain authenticated protected-gate approval artifacts bound to source/run/attempt/environment/job and validate server identity plus downloaded archive digest before reuse; reject contradictions with live history. Review measured delays after a timeout or changed upstream guidance. Preserve historical release outcomes.",
+      "downstreamOwner": "Consumer deployment readiness and runtime availability remain separately accepted."
+    },
     {
       "historicalRequirementId": "P19-NODE-001",
       "requirementId": "P19-NODE-FLOORS-001",

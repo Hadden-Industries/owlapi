@@ -3,7 +3,7 @@
   "schemaVersion": 2,
   "catalogue": {
     "historicalCatalogueSha256": "bdc1758cc9bc19fbea94fe557d4c43682ee9ab17127c08738fd64ffb07d3e64f",
-    "policySha256": "6bf715ec2bd5d4b1142dcb8c2d7b2e0b796139783ae4d2f6115f8c89911f39f0",
+    "policySha256": "c5f1268ba6b1189a03207cd331615f30135b19fbf5dcd3714a5008bdf8aec2d7",
     "sourcePaths": [
       "docs/implementation-plan.md",
       "docs/plans/java-api-parity-precondition.md",
@@ -557,10 +557,10 @@
       "requirementId": "P19-PUBLIC-VERIFICATION-001",
       "phase": 19,
       "sourceAnchor": "p19-public-verification-001",
-      "requirementDigest": "sha256:753f88c39390ba8ff0ac2f83c3bbd0f6e164b14a96766f3fb6a318caa0356ed2",
+      "requirementDigest": "sha256:0101ad4467221867b52cc8bdf7e7e9a53bf3ed618fa72058d2cfb57d6ba12639",
       "checkpoint": "19D",
       "prerequisiteRequirementIds": [],
-      "owner": "RELEASE_CUSTODIAN",
+      "owner": "PACKAGE_MAINTAINER",
       "applicability": {
         "mode": "ALWAYS"
       },
@@ -1980,7 +1980,7 @@
     {
       "gateId": "P19-CHECK-002",
       "phase": 19,
-      "rowDigest": "sha256:b39d310ba70546c946e1dc97437cdb3afe36bfe127b64fb22df611fb03052538",
+      "rowDigest": "sha256:e14d47b0770d7aa2ebf13cfc3bf2ce8f444b82fb4cff06a9ca9120c3e00bf7a1",
       "coveredRequirementIds": [
         "P19-PRODUCER-DOCUMENTATION-001"
       ]
@@ -1988,7 +1988,7 @@
     {
       "gateId": "P19-CHECK-003",
       "phase": 19,
-      "rowDigest": "sha256:27f2e54d7bf870d41e65ba0c2ad665f9a3756673301f968c77efd2c030b687f9",
+      "rowDigest": "sha256:37f65d7c263381dd73004317f46e1c74655dcc411ba5b0fea7c9f39f847068b0",
       "coveredRequirementIds": [
         "P19-PRODUCER-SCOPE-001"
       ]
@@ -2029,7 +2029,7 @@
     {
       "gateId": "P19-CHECK-008",
       "phase": 19,
-      "rowDigest": "sha256:29d68cda2e4beff9886bd782eb818b11a8c15aa3fb9669e5681f6c8364b3664b",
+      "rowDigest": "sha256:19ae1d0c62f1b76f749a35b130cfffd79fc9ceb5e54ee4784848c511e65c83c2",
       "coveredRequirementIds": [
         "P19-SECURITY-GOVERNANCE-001",
         "P19-CI-NODE-FLOORS-001"
@@ -2079,7 +2079,7 @@
     {
       "gateId": "P19-CHECK-014",
       "phase": 19,
-      "rowDigest": "sha256:b77c210d5c93b59ab85e6a112c4e82537bc4441bbfbf9fb11b52394a3515853a",
+      "rowDigest": "sha256:4e993924e650b4f384858278bc1a1a4a4724e2d9e21506c7868b5cb69b7f772d",
       "coveredRequirementIds": [
         "P19-OWL-CONTRACT-001"
       ]
@@ -2087,7 +2087,7 @@
     {
       "gateId": "P19-CHECK-015",
       "phase": 19,
-      "rowDigest": "sha256:b6203453227645b439b401edb2ad5340f69e30c2c22741a12490ea4b599e3460",
+      "rowDigest": "sha256:ac462b482cd6b0f29dc99bbc130e1e4a4b4b7904f59185e6b7b8f88bd5e6b537",
       "coveredRequirementIds": [
         "P19-OWL-CONTRACT-001",
         "P19-DEPENDENCIES-001"
@@ -2153,7 +2153,7 @@
     {
       "gateId": "P19-CHECK-023",
       "phase": 19,
-      "rowDigest": "sha256:acd4b7cd8246df15ef23d3e420cda1cb22223b84119d854b67699b1a4855ad45",
+      "rowDigest": "sha256:b22b10de061b58d61e81af278c55d191d9c6a7730ac0083bf35fc766e81bcd5e",
       "coveredRequirementIds": [
         "P19-PACKAGE-001",
         "P19-PRODUCER-DOCUMENTATION-001"
@@ -2170,7 +2170,7 @@
     {
       "gateId": "P19-CHECK-025",
       "phase": 19,
-      "rowDigest": "sha256:18316151021e9d944e7e024fb44dd9a76b73bb823661a648db05195209402515",
+      "rowDigest": "sha256:dce23d2a0486e6997b970bfa2a1e7261ec19aadcf95644fb83475e02495a9ee8",
       "coveredRequirementIds": [
         "P19-OWL-CONTRACT-001"
       ]
@@ -2186,7 +2186,7 @@
     {
       "gateId": "P19-CHECK-027",
       "phase": 19,
-      "rowDigest": "sha256:533054a7f68ddbf8b3cb60f5d02a052e187fd7f2264c2a641fb656cb3aa66cf0",
+      "rowDigest": "sha256:d0a4c5e5ad712c2960ca77277ec09b8ac03c5079d3f5f3983b355bd320ef9367",
       "coveredRequirementIds": [
         "P19-NODE-FLOORS-001",
         "P19-LOCKED-TOOLCHAIN-001"
@@ -2195,7 +2195,7 @@
     {
       "gateId": "P19-CHECK-028",
       "phase": 19,
-      "rowDigest": "sha256:8770873632ae4449412a03ad7e2357d95686585dde6b13eea2482bc31a11aa70",
+      "rowDigest": "sha256:3b2c27d78dc9ca2dc14809e25cee1b9aea2cc6bf56e08dc1e17bcc19ae58474c",
       "coveredRequirementIds": [
         "P19-LOCKED-TOOLCHAIN-001",
         "P19-PACKAGE-001",
@@ -2205,7 +2205,7 @@
     {
       "gateId": "P19-CHECK-029",
       "phase": 19,
-      "rowDigest": "sha256:7c5331fa4002abb2b637fffee1aedd830fac3148d49deead755f2a4c9fbd4427",
+      "rowDigest": "sha256:5830bc657bf3fdabcbf0b1ea53fb922668fe7bcf38f3b49801458bc6d121aee4",
       "coveredRequirementIds": [
         "P19-PACKAGE-001",
         "P19-LOCKED-TOOLCHAIN-001"
@@ -2214,7 +2214,7 @@
     {
       "gateId": "P19-CHECK-030",
       "phase": 19,
-      "rowDigest": "sha256:d0831e8357453b77c2348bcb87d09ca337d2467a2c9fec6bd6cc2fef5c96a298",
+      "rowDigest": "sha256:9cea57fa321690c34c7f66942d2cf843050a847b95b88f52fc1ed69ba0d4fc54",
       "coveredRequirementIds": [
         "P19-PRODUCER-DOCUMENTATION-001",
         "P19-PACKAGE-001"
@@ -2223,7 +2223,7 @@
     {
       "gateId": "P19-CHECK-031",
       "phase": 19,
-      "rowDigest": "sha256:40b19d7d89075db584bb73d9f42cd3f27e686e98716c6dcfb05c366280d51e23",
+      "rowDigest": "sha256:47003249345fd8d62228ae4001cb2af76410ac8b98ffb58bca96fb284d9a6203",
       "coveredRequirementIds": [
         "P19-NODE-FLOORS-001",
         "P19-BROWSER-001"
@@ -2232,7 +2232,7 @@
     {
       "gateId": "P19-CHECK-032",
       "phase": 19,
-      "rowDigest": "sha256:885ffd42e0ac77f2aaf6776dc7f8af46eaf6423d14f9423da7ddb8e8824aae35",
+      "rowDigest": "sha256:043d5415c353fee9329e8486caaab493791049a5c05be7922fc0e35fb1a56ec3",
       "coveredRequirementIds": [
         "P19-BROWSER-001",
         "P19-LOCKED-TOOLCHAIN-001"
@@ -2241,7 +2241,7 @@
     {
       "gateId": "P19-CHECK-033",
       "phase": 19,
-      "rowDigest": "sha256:61ede6365e124c0dfa200fa6f570ccc2ac434966fc6e663a5db56e57e612f38e",
+      "rowDigest": "sha256:221b00429c9d2a73e1e9dfc98065c8f9c1548d01a99081c88f2b7efffb09f112",
       "coveredRequirementIds": [
         "P19-PRODUCER-DOCUMENTATION-001"
       ]
@@ -2249,7 +2249,7 @@
     {
       "gateId": "P19-CHECK-034",
       "phase": 19,
-      "rowDigest": "sha256:c65caf9e208e1b2a9927997f178c221c5458d1593089dc1b9ba18ec018d4ab90",
+      "rowDigest": "sha256:aa7e6cbd2b42f471beec2bfebc21f9b45df50f6f575611f0d7477c5527ba8f3b",
       "coveredRequirementIds": [
         "P19-PRODUCER-DOCUMENTATION-001"
       ]
@@ -2257,7 +2257,7 @@
     {
       "gateId": "P19-CHECK-035",
       "phase": 19,
-      "rowDigest": "sha256:cb2d309099c849332eb1b6d11f6b2f243b9aff097a4b760d13e708db3dcb878b",
+      "rowDigest": "sha256:353efbd17203697ee084734b13042fb38599251ca0d6eb0fc05a27f300a77f8e",
       "coveredRequirementIds": [
         "P19-PRODUCER-DOCUMENTATION-001",
         "P19-SECURITY-GOVERNANCE-001"
@@ -2266,7 +2266,7 @@
     {
       "gateId": "P19-CHECK-036",
       "phase": 19,
-      "rowDigest": "sha256:0e7ab26d95064608a10704b2807deb44f19187a9ec71c1ddb95a7242d0a4886b",
+      "rowDigest": "sha256:29bb0de91c4056318ecc6777566778f491d0fb7416bc8af8d62f7b4ad4779633",
       "coveredRequirementIds": [
         "P19-PRODUCER-DOCUMENTATION-001",
         "P19-PACKAGE-001"
@@ -2275,7 +2275,7 @@
     {
       "gateId": "P19-CHECK-037",
       "phase": 19,
-      "rowDigest": "sha256:d430ec1a3f915aa64c44f7a4a620ac5f7079c0a518e2cd6542a32ac134802f47",
+      "rowDigest": "sha256:15d7e7fbe83a11105cff1a3de36de32a16d0f23ccaecc59b5de115a872b94728",
       "coveredRequirementIds": [
         "P19-PRODUCER-DOCUMENTATION-001"
       ]
@@ -2283,7 +2283,7 @@
     {
       "gateId": "P19-CHECK-038",
       "phase": 19,
-      "rowDigest": "sha256:3f3bd78f97f9074fa0b91d8bfdce8982811bbc61e4d92fa69ffe9662e68516fd",
+      "rowDigest": "sha256:50944765d59b842bbf336ec907f1706146b8e78f4864b21381dc3f56a11ac3af",
       "coveredRequirementIds": [
         "P19-PUBLICATION-001",
         "P19-CI-NODE-FLOORS-001"
@@ -2316,7 +2316,7 @@
     {
       "gateId": "P19-CHECK-042",
       "phase": 19,
-      "rowDigest": "sha256:71af09b7f12a94e323e4a45ccfac4856dc1088e475e6c5e0800d81f5ea6c1a9b",
+      "rowDigest": "sha256:e1ba94fffb568c3ab2ded93ad8fa0511d06549b79f912df061c4dfe78eaf031b",
       "coveredRequirementIds": [
         "P19-NAMESPACE-001",
         "P19-PRODUCER-DOCUMENTATION-001"
@@ -2398,7 +2398,7 @@
     {
       "gateId": "P19-CHECK-052",
       "phase": 19,
-      "rowDigest": "sha256:e1d74a2dc0108c4a1e9a7f97fc7352a326023104775862069528e362eafc4664",
+      "rowDigest": "sha256:8e0aff3a4139a221cb6536ed202ae27536fc335ad7bd1dacf1a99cc62991bee9",
       "coveredRequirementIds": [
         "P19-RIGHTS-001",
         "P19-PRODUCER-DOCUMENTATION-001"
@@ -2423,7 +2423,7 @@
     {
       "gateId": "P19-CHECK-055",
       "phase": 19,
-      "rowDigest": "sha256:9d7814eec2e169fc6311272a86ef439c2b24b907dcd60424b6b426c15ee8309f",
+      "rowDigest": "sha256:1340a7c1b4b67ead150681c7d94d9bbc23450e7e727da4aeaa36a8a32f7d07c8",
       "coveredRequirementIds": [
         "P19-RIGHTS-001",
         "P19-PRODUCER-DOCUMENTATION-001"
@@ -2450,7 +2450,7 @@
     {
       "gateId": "P19-CHECK-058",
       "phase": 19,
-      "rowDigest": "sha256:4d2a0ce595aa5ed32577f2b7149f95c7192ff21b563503b99f9f841c216bf295",
+      "rowDigest": "sha256:76a97472c7f5d15c5cd45e642cad7e15f6bb184b951408939270c03cf2eb09e2",
       "coveredRequirementIds": [
         "P19-PACKAGE-001",
         "P19-PRODUCER-DOCUMENTATION-001"
@@ -2475,7 +2475,7 @@
     {
       "gateId": "P19-CHECK-061",
       "phase": 19,
-      "rowDigest": "sha256:b72f0b5d174a5b9fdeedd995f0634fbe6915ee2f258f8f1a15a3d11aa15e4238",
+      "rowDigest": "sha256:5f6904ae39bb6fcff9b43d882ab44cc1d0e3a009459c466745670141b1795d48",
       "coveredRequirementIds": [
         "P19-DEPENDENCIES-001",
         "P19-SECURITY-GOVERNANCE-001",
@@ -2485,7 +2485,7 @@
     {
       "gateId": "P19-CHECK-062",
       "phase": 19,
-      "rowDigest": "sha256:b09641e5a182d2533901ca44435fcf80eed4fa85377606f3cf4bd40d520cea4b",
+      "rowDigest": "sha256:8acfc1e493d9eb471080b131767a741036d657d182635a54a8e54815428a1265",
       "coveredRequirementIds": [
         "P19-CI-NODE-FLOORS-001"
       ]
@@ -2493,7 +2493,7 @@
     {
       "gateId": "P19-CHECK-063",
       "phase": 19,
-      "rowDigest": "sha256:6c97213fa0d7406985785e64d2be122c5b56f781040478059a139ca3d41ea760",
+      "rowDigest": "sha256:dac24af4b4f223727f277689928ea0fe33b36141a8c3ce2bae102da6b558f92e",
       "coveredRequirementIds": [
         "P19-CI-NODE-FLOORS-001"
       ]
@@ -2501,7 +2501,7 @@
     {
       "gateId": "P19-CHECK-064",
       "phase": 19,
-      "rowDigest": "sha256:51ffa0fcbf3fd5243a6dfed5451dedcd9b61f1b017f33d4777d7592f627b077a",
+      "rowDigest": "sha256:70fcc0e24d7da9a8438b806ec5589cc0d67f560d9483210951666fa72d0524b1",
       "coveredRequirementIds": [
         "P19-CI-NODE-FLOORS-001",
         "P19-NODE-FLOORS-001"
@@ -2510,7 +2510,7 @@
     {
       "gateId": "P19-CHECK-065",
       "phase": 19,
-      "rowDigest": "sha256:9ef3658474f5eb8376638e02164792bd37d45336811aaf9066a547862bfea011",
+      "rowDigest": "sha256:6460a1a7fb19155caebf50a3e2231f91fd1297b91bdef7b4a172b3fcaff40ecc",
       "coveredRequirementIds": [
         "P19-CI-NODE-FLOORS-001",
         "P19-EVIDENCE-001"
@@ -2519,7 +2519,7 @@
     {
       "gateId": "P19-CHECK-066",
       "phase": 19,
-      "rowDigest": "sha256:08d64cb6573efb48dca217989b96c22be56e8458a7a539dc1c09efd4c0ccf6d1",
+      "rowDigest": "sha256:607e6c74b44cde3f83004d90497a6649b1129f55be650c90802c31bddf5c431f",
       "coveredRequirementIds": [
         "P19-CI-NODE-FLOORS-001",
         "P19-NODE-FLOORS-001"
@@ -2528,7 +2528,7 @@
     {
       "gateId": "P19-CHECK-067",
       "phase": 19,
-      "rowDigest": "sha256:27f011919e47145a2dae7c08f79c19170a3f404a224f9818a43de5ffbdf8b50b",
+      "rowDigest": "sha256:25dcd5c8836a470a5005833323b239e4e4db064b0c9a60b52d4dbbb6f2dc4701",
       "coveredRequirementIds": [
         "P19-NODE-FLOORS-001",
         "P19-CI-NODE-FLOORS-001"
@@ -2537,7 +2537,7 @@
     {
       "gateId": "P19-CHECK-068",
       "phase": 19,
-      "rowDigest": "sha256:af7c0584a46dfad1d2307fd76dbf75c497b54eb4656bd3a09f4ae16c3aeb223e",
+      "rowDigest": "sha256:a46db08a78f43ef52ea6df4b227a01ec99233074926b4b3fcb886ccbfe6e3adb",
       "coveredRequirementIds": [
         "P19-CI-NODE-FLOORS-001",
         "P19-LOCKED-TOOLCHAIN-001"
@@ -2546,7 +2546,7 @@
     {
       "gateId": "P19-CHECK-069",
       "phase": 19,
-      "rowDigest": "sha256:d16a8a2c19a53cec3688529a8688696f2c553f3d69697b479b921d60d20cd571",
+      "rowDigest": "sha256:25135fa8c93380c930fe0283853afa69e77193eb35cb1bec838cccc3941e79f1",
       "coveredRequirementIds": [
         "P19-CI-NODE-FLOORS-001"
       ]
@@ -2554,7 +2554,7 @@
     {
       "gateId": "P19-CHECK-070",
       "phase": 19,
-      "rowDigest": "sha256:e05b1557213c852ad1cbfe64fecb5ce419c9a77aa14ef618e1fe7a4bcfc9bd7d",
+      "rowDigest": "sha256:ddb89e2365fd405371f54034e60932a4bc614b3935dd2f748abdba7afcc4bcaa",
       "coveredRequirementIds": [
         "P19-CI-NODE-FLOORS-001",
         "P19-GATES-001"
@@ -2563,7 +2563,7 @@
     {
       "gateId": "P19-CHECK-071",
       "phase": 19,
-      "rowDigest": "sha256:17163dfd4ce3151641d5a0df328c0b28e15b37e14f8759b5f14311f1bbad42ed",
+      "rowDigest": "sha256:139c4056cdf565873c0127697c3cbd4293e6b4e037481fe9b1e743c5313fae77",
       "coveredRequirementIds": [
         "P19-CI-NODE-FLOORS-001"
       ]
@@ -2571,7 +2571,7 @@
     {
       "gateId": "P19-CHECK-072",
       "phase": 19,
-      "rowDigest": "sha256:807fbef33761ea010a24769ee111085286a426d1767a85e3646767b9e31a1ff8",
+      "rowDigest": "sha256:d5ed3a65fbba974d71ae4bb1d23f43a55f3c38a04c9e7cf06287db4462c4a3e6",
       "coveredRequirementIds": [
         "P19-CI-NODE-FLOORS-001"
       ]
@@ -2579,7 +2579,7 @@
     {
       "gateId": "P19-CHECK-073",
       "phase": 19,
-      "rowDigest": "sha256:eaf0ffbb811e4ddbacafbf888402a1f577559de5e4b7b1b34d4a110e6a2ed22f",
+      "rowDigest": "sha256:4d35be028c79d9fd91f839f150b7bcf6808d03f3189740a7278dcdd60d3228af",
       "coveredRequirementIds": [
         "P19-CI-NODE-FLOORS-001",
         "P19-SECURITY-GOVERNANCE-001"
@@ -2588,7 +2588,7 @@
     {
       "gateId": "P19-CHECK-074",
       "phase": 19,
-      "rowDigest": "sha256:4b97027bdc1480b56614baa07d0a4b7da29deba7fce47807bb63be8d7e065f87",
+      "rowDigest": "sha256:fab33d54264f9dc1e17430928371911bba866da959eb208366b6c53f38345726",
       "coveredRequirementIds": [
         "P19-DEPENDENCIES-001",
         "P19-CI-NODE-FLOORS-001"
@@ -2597,7 +2597,7 @@
     {
       "gateId": "P19-CHECK-075",
       "phase": 19,
-      "rowDigest": "sha256:42db989c9e01626c2c4bcf0c520f47c5b9fadf71da8b3762484b6b2bfcb599e9",
+      "rowDigest": "sha256:ea0ad5a9806888504ed401ab4b4449c68d47d89648ef17de0a84d697d9720960",
       "coveredRequirementIds": [
         "P19-DEPENDENCIES-001",
         "P19-SECURITY-GOVERNANCE-001",
@@ -2607,7 +2607,7 @@
     {
       "gateId": "P19-CHECK-076",
       "phase": 19,
-      "rowDigest": "sha256:f73c4a885ef780c019300028d432e66214efb2a9dd776ff060ba3414349579fa",
+      "rowDigest": "sha256:edfd84a6a4866e3c97a76f632e7856c9a95ea4848cd5c75a2d6a195986dc72f5",
       "coveredRequirementIds": [
         "P19-LOCKED-TOOLCHAIN-001",
         "P19-CI-NODE-FLOORS-001"
@@ -2643,7 +2643,7 @@
     {
       "gateId": "P19-CHECK-080",
       "phase": 19,
-      "rowDigest": "sha256:9209b1749ce09763d8df912af3aef39e3eef1a09428c996c158422a0bf90df05",
+      "rowDigest": "sha256:dc63c50f0de1038c362a0175e083fc8484d3321e1146193b5080d76fa0a0bcd5",
       "coveredRequirementIds": [
         "P19-PUBLICATION-001",
         "P19-EVIDENCE-001",
@@ -2678,7 +2678,7 @@
     {
       "gateId": "P19-CHECK-084",
       "phase": 19,
-      "rowDigest": "sha256:6abd2a4a7b4b406e0f596c5f954ca33815efd549be4ddf724a0c6b626e4a2131",
+      "rowDigest": "sha256:e20355228d9502596adb5f42a2e11cabaa8db06ce009a4f18d813939f5910ea5",
       "coveredRequirementIds": [
         "P19-PUBLICATION-001",
         "P19-CI-NODE-FLOORS-001"
@@ -2687,7 +2687,7 @@
     {
       "gateId": "P19-CHECK-085",
       "phase": 19,
-      "rowDigest": "sha256:b5618caa010f460d91c32efc922452f970edb92cd5f9e1993b5fdb8e245ba555",
+      "rowDigest": "sha256:6551479c1a39e5af9880b4c0ff63dcb041f60f5e0fe164dfca15ef16ea49ab32",
       "coveredRequirementIds": [
         "P19-PUBLICATION-001",
         "P19-CI-NODE-FLOORS-001"
@@ -2730,7 +2730,7 @@
     {
       "gateId": "P19-CHECK-090",
       "phase": 19,
-      "rowDigest": "sha256:b864b1b4ac38b7f1234cb323550d02fe78e32f99275e5c056215973a9a74ac2a",
+      "rowDigest": "sha256:511b73fc7986bbd942db1b0cd5c2a040e5f5c1a6193a7b97773e59bdd25ae498",
       "coveredRequirementIds": [
         "P19-CI-NODE-FLOORS-001",
         "P19-PUBLICATION-001"
@@ -2756,7 +2756,7 @@
     {
       "gateId": "P19-CHECK-093",
       "phase": 19,
-      "rowDigest": "sha256:671e9487a62b3b752497b01554809e02c535d92ba2aa28da8636b9a2f035138b",
+      "rowDigest": "sha256:181ddf2a7b00312f76637543e91e8ff89546738fd475b5ddd049da931e9834d4",
       "coveredRequirementIds": [
         "P19-EVIDENCE-001",
         "P19-GATES-001",
@@ -2832,7 +2832,7 @@
     {
       "gateId": "P20-CHECK-008",
       "phase": 20,
-      "rowDigest": "sha256:e457a972329089280d03202a79e50d520df45f85b8a3aadb65b760283eff0c3b",
+      "rowDigest": "sha256:fab63ffd1bcc0ea59a549c819ad3edf01076a13c7139680b808ee1eeaa5d00b3",
       "coveredRequirementIds": [
         "P20-RELEASE-001",
         "P20-CHANNEL-001",
@@ -2884,7 +2884,7 @@
     {
       "gateId": "P20-CHECK-013",
       "phase": 20,
-      "rowDigest": "sha256:367d278e88afecf4108adadcc5aa188d09c0c678d5bcddb4302469804bc01b1f",
+      "rowDigest": "sha256:be686ae16975407d9f173cb86776fe9068c33b93b35032d690a720103358f79e",
       "coveredRequirementIds": [
         "P20-OWL-CONTRACT-001"
       ]
@@ -2892,7 +2892,7 @@
     {
       "gateId": "P20-CHECK-014",
       "phase": 20,
-      "rowDigest": "sha256:04826981a093cd2592e0b8ff562dafc234a62764563ad9811bbe727c0fb075bc",
+      "rowDigest": "sha256:9d530b70b77c432ad7dcc92b2297a5fc139ba7b8bee1a5065aca8744419fd30b",
       "coveredRequirementIds": [
         "P20-PRODUCER-BACKUP-001"
       ]
@@ -2958,7 +2958,7 @@
     {
       "gateId": "P21-CHECK-003",
       "phase": 21,
-      "rowDigest": "sha256:442ca0f86f52fb828142ed32a06c0e86f09d68dd6e9be89135306048ed2c8629",
+      "rowDigest": "sha256:5560627bf753d328d1140adc8ead7860d99d7dbcb17e4903b0c4c1ca30960665",
       "coveredRequirementIds": [
         "P21-OWL-CONTRACT-001"
       ]
@@ -2966,7 +2966,7 @@
     {
       "gateId": "P21-CHECK-004",
       "phase": 21,
-      "rowDigest": "sha256:d3f32f8c6352b5559f652398fee7237e15a81f11cddb5526f4b25612ae2eaaa6",
+      "rowDigest": "sha256:f6132ea50da5e2333e7599b0e13d05925439b9ff5d3b4ce3d7eb694fb9b138bd",
       "coveredRequirementIds": [
         "P21-PRODUCER-CHECKPOINT-001"
       ]
@@ -3038,7 +3038,7 @@
     {
       "gateId": "P22-CHECK-009",
       "phase": 22,
-      "rowDigest": "sha256:0226ab69cd4e8e474a69e0db6362bdfb92822ee4dd1b75702d1625d6401f05c5",
+      "rowDigest": "sha256:b0285b3f19faae124680d57aec9f731687f4c96ac2668dff0bb1663d62970027",
       "coveredRequirementIds": [
         "P22-OWL-CONTRACT-001"
       ]
@@ -3054,7 +3054,7 @@
     {
       "gateId": "P22-CHECK-011",
       "phase": 22,
-      "rowDigest": "sha256:34063e2fdd17c9291e59843972f3e449e2c95b5ba1623444c2d6de25bd055d5a",
+      "rowDigest": "sha256:a5a63c90471d69b02c2ad358494c2241b844476127314422ace4a393afeb03ce",
       "coveredRequirementIds": [
         "P22-PRODUCER-CORPUS-001"
       ]
@@ -3653,7 +3653,7 @@
       "checklistGateIds": [
         "P19-CHECK-087"
       ],
-      "owner": "RELEASE_CUSTODIAN",
+      "owner": "PACKAGE_MAINTAINER",
       "applicability": {
         "mode": "ALWAYS"
       },

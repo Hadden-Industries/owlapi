@@ -35,6 +35,43 @@ const mutateWorkflow = (fileName, mutate) => {
 };
 
 describe("repository workflow governance", () => {
+  test.each([
+    "remove-capture",
+    "late-upload",
+    "rerun-capture",
+    "overwrite",
+    "short-budget",
+    "lose-failure-report",
+  ])("rejects release availability/approval regression: %s", (mutation) => {
+    expect(
+      mutateWorkflow("release.yml", (doc) => {
+        const gate = doc.getIn(["jobs", "npm_release", "steps"]);
+        const capture = gate.items.find((step) =>
+          step.get("run")?.startsWith("node scripts/release-approvals.mjs"),
+        );
+        const upload = gate.items.find((step) =>
+          step.getIn(["with", "name"])?.startsWith("release-approval-"),
+        );
+        if (mutation === "remove-capture")
+          gate.items.splice(gate.items.indexOf(capture), 1);
+        if (mutation === "late-upload") {
+          gate.items.splice(gate.items.indexOf(upload), 1);
+          gate.items.push(upload);
+        }
+        if (mutation === "rerun-capture") capture.delete("if");
+        if (mutation === "overwrite") upload.setIn(["with", "overwrite"], true);
+        if (mutation === "short-budget")
+          doc.setIn(["jobs", "registry_verification", "timeout-minutes"], 30);
+        if (mutation === "lose-failure-report")
+          doc
+            .getIn(["jobs", "registry_verification", "steps"])
+            .items.find((step) => step.get("id") === "upload")
+            .delete("if");
+      }).join("\n"),
+    ).toMatch(
+      /durably capture approval|budget availability|retain incomplete/u,
+    );
+  });
   test.each(["ci.yml", "release.yml"])(
     "rejects substituted Node 26 floor in %s",
     (fileName) => {
