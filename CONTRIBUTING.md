@@ -59,16 +59,17 @@ Generated API views, upstream fixtures, and historical evidence retain their own
 
 Install the Node/npm versions declared in `package.json`, then run `npm ci`.
 For Markdown work, select Node 24.21.0 and explicitly run `npm run install:markdown`; canonical checks never install dependencies.
-Install CPython **3.15.0** and provide its absolute executable path during the explicit development-tool setup; for example, in PowerShell:
+Install the CPython version selected in `.python-version` and provide its absolute executable path during the explicit development-tool setup; for example, in PowerShell:
 
 ```powershell
-npm run tools:sync -- --python "C:\Path With Spaces\Python315\python.exe"
+npm run tools:sync -- --python "C:\Path With Spaces\Python\python.exe"
 ```
 
 On Linux, use the same command with the installed interpreter's absolute path.
 Setup verifies the pinned interpreter, downloads the checksum-pinned uv release into `.development-tools/`, and synchronizes `.venv/` from `uv.lock` with `--locked` and no source builds or Python downloads.
 Later setup can use `npm run tools:sync` with the existing checkout interpreter.
 Checks use only these checkout tools and never synchronize dependencies.
+After changing `.python-version`, run `node scripts/sync-python-target.mjs --write` before updating locks; tool checks reject stale generated package and Ruff metadata.
 Foreign uv or virtual-environment settings cannot redirect the tool environment.
 Missing tools or a stale lock require explicit setup or a reviewed lock update.
 

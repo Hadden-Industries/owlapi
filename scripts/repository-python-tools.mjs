@@ -20,6 +20,7 @@ export const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
 import {
   UV_SELECTION,
   checkUvProjections,
+  syncPythonProjections,
 } from "./development-tool-policy.mjs";
 const { version: uvVersion, assets: uvAssets } = UV_SELECTION;
 // Exact official release assets, verified against GitHub's release asset digests.
@@ -164,6 +165,7 @@ export function checkPythonTools({ root = repositoryRoot } = {}) {
     throw new Error(
       "Missing checkout Python environment; run npm run tools:sync.",
     );
+  syncPythonProjections(root);
   pythonVersion(tools.python, tools);
   requireSuccess(
     execute(
@@ -258,6 +260,7 @@ export async function synchronizePythonTools({
   root = repositoryRoot,
   python,
 } = {}) {
+  syncPythonProjections(root);
   const tools = await ensureRepositoryUv({ root, python });
   python ??= tools.python;
   if (!isAbsolute(python) || !existsSync(python))
