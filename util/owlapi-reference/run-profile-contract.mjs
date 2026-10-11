@@ -19,6 +19,8 @@ import {
 } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
+import { verifyProfileAuthorityAmendments } from "./profile-authority-amendments.mjs";
+
 const here = dirname(fileURLToPath(import.meta.url));
 const repository = resolve(here, "../..");
 const fixture = join(here, "fixtures/profiles/canonical-vowl-inputs.json");
@@ -189,69 +191,12 @@ assert.deepEqual(
   inputs.map(({ id }) => id),
   "Every source case needs a rationale",
 );
-// The parent authorized only this exact factual documentation amendment.
-// The expectation manifest and its original authority pin remain immutable.
-const factualAmendment = {
-  path: "docs/compatibility/canonical-vowl-prerequisites.md",
-  previousSha256:
-    "742ba46a79ef1c6f51c1aaad765c2292a30c07ca707955c5ff6191c9564b9d2b",
-  currentSha256:
-    "35997fd661175251c6391839c202d889132ab285764d414e1ebae3bf61a4b722",
-  addedStatements: [
-    "RDF graph selection that omits source quads likewise leaves source evidence unverified; selecting all source content or explicitly merging it does not.",
-    "Each prepared document has a private proof identity, so shared base IRIs and blank-node labels cannot suppress another document's independent evidence.",
-    "The XML parser fallback remains a lazy, bundler-visible import for workers without a native `DOMParser`.",
-  ],
-};
-const authorityAmendments = [];
-for (const authority of expected.localAuthorities) {
-  const currentBytes = readFileSync(join(repository, authority.path));
-  const currentSha256 = sha256(currentBytes);
-  if (currentSha256 === authority.sha256) continue;
-  assert.equal(
-    authority.path,
-    factualAmendment.path,
-    "Unapproved authority path transition",
-  );
-  assert.equal(
-    authority.sha256,
-    factualAmendment.previousSha256,
-    "Unapproved prior authority pin",
-  );
-  assert.equal(
-    currentSha256,
-    factualAmendment.currentSha256,
-    "Unapproved current authority pin",
-  );
-  let reconstructed = currentBytes.toString("utf8");
-  for (const statement of factualAmendment.addedStatements) {
-    assert.equal(
-      reconstructed.split(statement).length,
-      2,
-      "Amendment sentence must occur exactly once",
-    );
-    const newline = reconstructed.includes(statement + "\r\n") ? "\r\n" : "\n";
-    assert.ok(
-      reconstructed.includes(statement + newline),
-      "Amendment sentence must occupy its declared line",
-    );
-    reconstructed = reconstructed.replace(statement + newline, "");
-  }
-  const reconstructedPreviousSha256 = sha256(
-    Buffer.from(reconstructed, "utf8"),
-  );
-  assert.equal(
-    reconstructedPreviousSha256,
-    authority.sha256,
-    "Documentation contains changes beyond the exact amendment",
-  );
-  authorityAmendments.push({
-    ...factualAmendment,
-    reconstructedPreviousSha256,
-    scope:
-      "Three factual documentation additions only; frozen inputs, expectations and external normative authorities are unchanged.",
-  });
-}
+const authorityAmendments = expected.localAuthorities.flatMap((authority) =>
+  verifyProfileAuthorityAmendments(
+    authority,
+    readFileSync(join(repository, authority.path)),
+  ),
+);
 
 const classpathFile = join(
   javaRoot,
@@ -272,6 +217,7 @@ const pinnedPaths = [
   harness,
   pinPath,
   fileURLToPath(import.meta.url),
+  join(here, "profile-authority-amendments.mjs"),
   join(here, "fixtures/profiles/README.md"),
   classpathFile,
   java,
