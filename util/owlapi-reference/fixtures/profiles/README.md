@@ -54,3 +54,12 @@ loaded classes from 22 of the 63 hashed classpath JARs. This is a bounded contra
 comparison with documented deviations, not a claim of identical Java/JavaScript
 profile verdicts. Immutable receipts retain their own candidate and artifact pins;
 later candidate changes require a new receipt and must preserve earlier ones.
+
+The expectation manifest and its original local-authority hashes remain frozen.
+The wrapper admits only the exact historical factual additions, the documented
+profile deadline amendment (`f07ec976`), and the existing Java reference-source
+update (`b361bedf`). It reverses each declared edit and verifies every predecessor
+hash through to the original manifest pin. Receipts record those transitions;
+unrecognized paths, pins, edits or line-ending changes still fail closed. The
+executed Java source revision remains the current `pinned-version.json` value,
+and the amendment verifier itself is included in the rechecked receipt inputs.
