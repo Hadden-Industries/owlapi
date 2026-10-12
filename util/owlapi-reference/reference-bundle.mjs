@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { canonicalJson } from "../../scripts/canonical-json.mjs";
 import {
   closeSync,
   constants,
@@ -174,7 +175,7 @@ function admittedBundle(
     manifest.source.commit !== expected.sourceCommit ||
     manifest.source.tree !== expected.sourceTree ||
     manifest.inputRecordSha256 !== expected.inputRecordSha256 ||
-    digest(JSON.stringify(manifest.inventory)) !== expected.inventorySha256
+    digest(canonicalJson(manifest.inventory)) !== expected.inventorySha256
   )
     fail("independent input identity mismatch");
   if (
@@ -182,7 +183,7 @@ function admittedBundle(
     (manifest.inputKeySha256 !== expected.inputKeySha256 ||
       manifest.runtimeGraphSha256 !== expected.runtimeGraphSha256 ||
       manifest.rightsSha256 !== expected.rightsSha256 ||
-      digest(JSON.stringify(manifest.provenance)) !==
+      digest(canonicalJson(manifest.provenance)) !==
         expected.provenanceSha256 ||
       !Number.isFinite(Date.parse(manifest.provenance.createdAt)))
   )

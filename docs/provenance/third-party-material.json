@@ -1,9 +1,9 @@
 {
   "$schema": "./third-party-material.schema.json",
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "generatedBy": {
     "path": "util/generate-third-party-material.mjs",
-    "version": "3.1.1",
+    "version": "3.2.0",
     "authorities": [
       "package-lock.json and the authenticated npm package evidence corpus for exact dependency occurrences, tarball identities, recursive legal files, registry signatures, provenance, and ScanCode observations",
       "docs/provenance/npm-package-evidence.json plus its content-addressed blobs as the platform-independent authority for every required and optional npm artifact",
@@ -24,7 +24,8 @@
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "c61dc2509ba14faa13b27b4ab7313dd2ba2a2263ed40ff689c3ee8f198e27c40",
+    "digestAlgorithm": "sha256-sorted-json-v1",
+    "factsSha256": "eca398f3c5c439d86eaf5178f4dbd358c1abe4d1e13c2b4146b3688170fac9cc",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,

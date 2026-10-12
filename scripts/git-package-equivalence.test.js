@@ -12,6 +12,7 @@ import {
 } from "./git-package-equivalence.mjs";
 import * as equivalence from "./git-package-equivalence.mjs";
 import { sha256Buffer } from "./release-artifacts.mjs";
+import { canonicalJson } from "./canonical-json.mjs";
 
 const EXPECTED_EXPORTS = {
   ".": "./index.js",
@@ -48,7 +49,7 @@ const validManifest = (overrides = {}) => ({
 });
 
 const canonicalTreeDigest = (entries) =>
-  sha256Buffer(Buffer.from(`${JSON.stringify(entries)}\n`, "utf8"));
+  sha256Buffer(Buffer.from(`${canonicalJson(entries)}\n`, "utf8"));
 
 const treeManifest = (entries) => ({
   entries,
@@ -435,9 +436,9 @@ describe("exact Git consumer lock validation", () => {
 
 describe("pre-registry equivalence evidence", () => {
   const TREE_ROOT =
-    "51b44340828d6d15414fa11cf123cca0ee157e54d94501ed24ca06354ef44def";
+    "225bd21599905c9deaa559d01f426c4f05cf333b791bbb9d2c721cf50ca272a3";
   const GRAPH_ROOT =
-    "c29f06a4fe4b2c6581c198740ce2970b7f5c2935817864d7c79126940073df43";
+    "807ba6996e3b9478e8e846781dcd5e669a69f59dd3cee9d203e6009d9de976fa";
   const ARTIFACT_DIGEST =
     "sha256:f5967321e1c18a9c5aa14ad44a1d45fe3606605453866ce7746afe9c394f52d7";
   const TARBALL_SHA256 =
@@ -551,6 +552,45 @@ describe("pre-registry equivalence evidence", () => {
     evidenceLimitations: LIMITATIONS,
   });
 
+  test("admits reordered tree and graph members with unchanged canonical roots", () => {
+    const observation = qualificationObservation();
+    const expected =
+      equivalence.createPreRegistryEquivalenceEvidence(observation);
+    for (const side of [
+      observation.retainedCandidate,
+      observation.gitInstallation,
+    ]) {
+      for (const list of [
+        side.installedPackageTree.entries,
+        side.productionGraph.packages,
+        side.productionGraph.edges,
+      ]) {
+        for (let index = 0; index < list.length; index++)
+          list[index] = Object.fromEntries(
+            Object.entries(list[index]).reverse(),
+          );
+      }
+    }
+    expect(
+      equivalence.createPreRegistryEquivalenceEvidence(
+        JSON.parse(JSON.stringify(observation)),
+      ),
+    ).toEqual(expected);
+    observation.gitInstallation.installedPackageTree.entries[0].bytes++;
+    expect(() =>
+      equivalence.createPreRegistryEquivalenceEvidence(observation),
+    ).toThrow(/rootSha256/u);
+  });
+
+  test("rejects legacy noncanonical roots without rewriting historical observations", () => {
+    const observation = qualificationObservation();
+    observation.retainedCandidate.installedPackageTree.rootSha256 =
+      "51b44340828d6d15414fa11cf123cca0ee157e54d94501ed24ca06354ef44def";
+    expect(() =>
+      equivalence.createPreRegistryEquivalenceEvidence(observation),
+    ).toThrow(/rootSha256/u);
+  });
+
   test("projects only bounded, reviewable facts from a successful qualification", () => {
     const evidence = equivalence.createPreRegistryEquivalenceEvidence(
       qualificationObservation(),
@@ -636,7 +676,7 @@ describe("pre-registry equivalence evidence", () => {
       },
     });
     expect(qualificationSummarySha256).toBe(
-      "sha256:bc0650bf2b39ad9f7a52c5d6dd23139bb1f8b5ed9c2d685b086f6573283154a1",
+      "sha256:239c6e49adcff3913b8ad83e1d05b3e6a3cb83b1f9c9a380328aa087f1e96be9",
     );
   });
 

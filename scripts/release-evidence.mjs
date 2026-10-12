@@ -5,6 +5,7 @@ import {
   assertRegistryTarballUrl,
 } from "./package-identity.mjs";
 import { assertOwlContractReport } from "./owl-contract-evidence.mjs";
+import { isDeepStrictEqual } from "node:util";
 const alphaVersion = "0.1.0-alpha.0";
 const compareCodeUnits = (left, right) =>
   left < right ? -1 : left > right ? 1 : 0;
@@ -209,8 +210,10 @@ export const buildReleaseEvidence = (facts) => {
     facts.candidate.tarball,
   ]);
   if (
-    JSON.stringify(candidateAssets) !==
-    JSON.stringify(normalizeAssets(facts.githubRelease?.assets ?? []))
+    !isDeepStrictEqual(
+      candidateAssets,
+      normalizeAssets(facts.githubRelease?.assets ?? []),
+    )
   ) {
     throw new Error("Draft GitHub release assets differ from the candidate.");
   }

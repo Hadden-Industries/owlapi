@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { lstatSync, readFileSync, readdirSync } from "node:fs";
 import { join, resolve } from "node:path";
+import { canonicalJson as canonicalizeJson } from "./canonical-json.mjs";
 
 export const GIT_BUILD_TRIGGER_SCRIPTS = Object.freeze([
   "preinstall",
@@ -64,7 +65,7 @@ const compareStrings = (left, right) =>
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
 
 const canonicalDigest = (value) =>
-  sha256(Buffer.from(`${JSON.stringify(value)}\n`, "utf8"));
+  sha256(Buffer.from(`${canonicalizeJson(value)}\n`, "utf8"));
 
 const assertObject = (value, label) => {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
@@ -77,19 +78,6 @@ const assertExactJson = (actual, expected, label) => {
     throw new Error(`${label} does not match the approved value.`);
   }
 };
-
-function canonicalizeJson(value) {
-  if (Array.isArray(value)) {
-    return `[${value.map(canonicalizeJson).join(",")}]`;
-  }
-  if (value && typeof value === "object") {
-    return `{${Object.keys(value)
-      .sort(compareStrings)
-      .map((key) => `${JSON.stringify(key)}:${canonicalizeJson(value[key])}`)
-      .join(",")}}`;
-  }
-  return JSON.stringify(value);
-}
 
 const repositoryUrl = (repository) => {
   if (typeof repository === "string") {

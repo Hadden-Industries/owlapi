@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
+import { canonicalJson } from "../scripts/canonical-json.mjs";
 
 import {
   OWLOntologyLoaderConfiguration,
@@ -74,8 +75,8 @@ const assertEqual = (actual, expected, message) => {
 };
 
 const assertJsonEqual = (actual, expected, message) => {
-  const actualJson = JSON.stringify(actual);
-  const expectedJson = JSON.stringify(expected);
+  const actualJson = canonicalJson(actual);
+  const expectedJson = canonicalJson(expected);
   if (actualJson !== expectedJson) {
     throw new Error(
       `${message}: expected ${expectedJson}, observed ${actualJson}`,

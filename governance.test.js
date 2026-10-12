@@ -20,6 +20,7 @@ import {
   OBJECT_PROPERTY_EXPRESSION_KINDS,
 } from "./model/index.js";
 import { verifyLocalReleaseTag } from "./scripts/verify-release-tag.mjs";
+import { stableJson } from "./scripts/canonical-json.mjs";
 
 const require = createRequire(import.meta.url);
 const {
@@ -31,8 +32,6 @@ const readJson = (relativePath) =>
   JSON.parse(readFileSync(new URL(relativePath, import.meta.url), "utf8"));
 
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
-
-const stableJson = (value) => `${JSON.stringify(value, null, 2)}\n`;
 
 // Historical development is a schema fixture, not the current accepted state.
 const provisionalParityFixture = () => {
@@ -2152,7 +2151,7 @@ bundle licence and notice review.
     const expectedIds = new Map([
       [
         "./docs/provenance/third-party-material.schema.json",
-        "https://haddenindustries.com/schemas/owlapi/third-party-material.v2.schema.json",
+        "https://haddenindustries.com/schemas/owlapi/third-party-material.v3.schema.json",
       ],
       [
         "./docs/provenance/npm-package-evidence.schema.json",
@@ -2160,11 +2159,11 @@ bundle licence and notice review.
       ],
       [
         "./docs/provenance/rights-inventory.schema.json",
-        "https://haddenindustries.com/schemas/owlapi/rights-inventory.v1.schema.json",
+        "https://haddenindustries.com/schemas/owlapi/rights-inventory.v2.schema.json",
       ],
       [
         "./docs/dependency-governance.schema.json",
-        "https://haddenindustries.com/schemas/owlapi/dependency-governance.v1.schema.json",
+        "https://haddenindustries.com/schemas/owlapi/dependency-governance.v2.schema.json",
       ],
     ]);
 
@@ -2691,18 +2690,17 @@ bundle licence and notice review.
     );
   });
 
-  it("requires a fresh review for the rc.2 dependency fact binding", () => {
+  it("requires a fresh human review after the canonical digest migration", () => {
     const governance = readJson("./docs/dependency-governance.json");
 
     expect(governance.review).toEqual({
-      status: "REVIEWED",
+      status: "PENDING_HUMAN_REVIEW",
+      digestAlgorithm: "sha256-sorted-json-v1",
       factsSha256: expect.stringMatching(/^[a-f0-9]{64}$/u),
-      reviewer: "Maksym Shostak",
-      reviewedOn: "2026-10-10",
-      capacity: expect.any(String),
-      conclusion: expect.stringContaining(
-        "4f04d1456519fb75f23da51fce5174af0d4909ec7ea647cae2f4c9f4dc77b441",
-      ),
+      reviewer: null,
+      reviewedOn: null,
+      capacity: null,
+      conclusion: null,
     });
     expect(governance.review.factsSha256).not.toBe(
       "60ccbac9295657fcdd69120ba77e2fc1838c022ceeab9bb60256d772d75708eb",
@@ -3160,7 +3158,7 @@ bundle licence and notice review.
       .sort(compareCodeUnits);
 
     expect(inventoryPaths).toEqual(lockPaths);
-    expect(inventory.schemaVersion).toBe(2);
+    expect(inventory.schemaVersion).toBe(3);
     expect(inventory.package).toMatchObject({
       evidenceManifest: "docs/provenance/npm-package-evidence.json",
       evidenceCorpusRoot: evidence.corpusRoot,

@@ -1,6 +1,6 @@
 {
   "$schema": "./rights-inventory.schema.json",
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "package": {
     "name": "@hadden-industries/owlapi",
     "version": "0.1.0-rc.2",
@@ -13,11 +13,12 @@
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "330869d8cf550441e86bfad056a263c51e601a0cdfb542b306e2e05fa19f5a5f",
+    "factsSha256": "0115101d3dafd53adc548e96891d4022435585e667438bad0cb2fba6d161f54d",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
-    "conclusion": null
+    "conclusion": null,
+    "digestAlgorithm": "sha256-sorted-json-v1"
   },
   "contributors": [
     {
@@ -114,7 +115,7 @@
   "externalDependencies": {
     "bundled": false,
     "authority": "docs/provenance/third-party-material.json",
-    "inventoryFactsSha256": "c61dc2509ba14faa13b27b4ab7313dd2ba2a2263ed40ff689c3ee8f198e27c40",
+    "inventoryFactsSha256": "eca398f3c5c439d86eaf5178f4dbd358c1abe4d1e13c2b4146b3688170fac9cc",
     "noticeRule": "Ordinary npm dependencies are installed separately and remain under their own licences. Their licence texts are not copied into the owlapi tarball merely because they appear in the installed dependency graph."
   },
   "unresolvedExternalContributions": [],

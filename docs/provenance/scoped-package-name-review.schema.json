@@ -24,7 +24,7 @@
       "const": "./scoped-package-name-review.schema.json"
     },
     "schemaVersion": {
-      "const": 1
+      "const": 2
     },
     "review": {
       "$ref": "#/$defs/review"
@@ -107,7 +107,8 @@
         "reviewedOn",
         "reviewer",
         "authority",
-        "factsSha256"
+        "factsSha256",
+        "digestAlgorithm"
       ],
       "properties": {
         "status": {
@@ -127,6 +128,10 @@
         "factsSha256": {
           "type": "string",
           "pattern": "^[0-9a-f]{64}$"
+        },
+        "digestAlgorithm": {
+          "const": "sha256-sorted-json-v1",
+          "description": "SHA-256 of recursively key-sorted JSON, two-space indentation and final LF; array order remains significant."
         }
       }
     }

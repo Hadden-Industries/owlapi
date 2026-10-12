@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { canonicalJson } from "../../scripts/canonical-json.mjs";
 import {
   existsSync,
   mkdirSync,
@@ -31,7 +32,7 @@ function save() {
   const manifestBytes = Buffer.from(`${JSON.stringify(manifest)}\n`);
   writeFileSync(join(bundle, "manifest.json"), manifestBytes);
   expected.manifestSha256 = hash(manifestBytes);
-  expected.inventorySha256 = hash(JSON.stringify(manifest.inventory));
+  expected.inventorySha256 = hash(canonicalJson(manifest.inventory));
   expected.inputRecordSha256 = manifest.inputRecordSha256;
 }
 const verify = () =>
@@ -134,7 +135,7 @@ beforeEach(() => {
     inputKeySha256: input.keySha256,
     runtimeGraphSha256: hash(graph),
     rightsSha256: manifest.rightsSha256,
-    provenanceSha256: hash(JSON.stringify(manifest.provenance)),
+    provenanceSha256: hash(canonicalJson(manifest.provenance)),
   };
   save();
 });
@@ -151,6 +152,34 @@ test("admits all closed bytes before materializing ordered runtime, sources and 
     expect(hash(readFileSync(join(root, "restored", entry.path)))).toBe(
       entry.sha256,
     );
+});
+
+test("semantic publication identities survive serialized member order while mutations fail", () => {
+  const reverseMembers = (value) =>
+    Array.isArray(value)
+      ? value.map(reverseMembers)
+      : value && typeof value === "object"
+        ? Object.fromEntries(
+            Object.entries(value)
+              .reverse()
+              .map(([key, entry]) => [key, reverseMembers(entry)]),
+          )
+        : value;
+  const rewriteManifest = () => {
+    const bytes = Buffer.from(`${JSON.stringify(manifest)}\n`);
+    writeFileSync(join(bundle, "manifest.json"), bytes);
+    expected.manifestSha256 = hash(bytes);
+  };
+  manifest = reverseMembers(manifest);
+  rewriteManifest();
+  expect(verify().jarCount).toBe(63);
+  manifest.provenance.runAttempt += 1;
+  rewriteManifest();
+  expect(verify).toThrow("independent publication identity");
+  manifest.provenance.runAttempt -= 1;
+  manifest.inventory.reverse();
+  rewriteManifest();
+  expect(verify).toThrow("independent input identity");
 });
 
 test.each([

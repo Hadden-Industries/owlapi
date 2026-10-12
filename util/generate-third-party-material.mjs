@@ -7,8 +7,12 @@ import { fileURLToPath } from "node:url";
 import parseSpdxExpression from "spdx-expression-parse";
 import { format as formatWithPrettier } from "prettier";
 import { verifyEvidenceManifest } from "./third-party-evidence/evidence-manifest.mjs";
+import {
+  reviewFactsDigest,
+  REVIEW_DIGEST_ALGORITHM,
+} from "../scripts/review-facts.mjs";
 
-export const GENERATOR_VERSION = "3.1.1";
+export const GENERATOR_VERSION = "3.2.0";
 
 // Legal evidence must be byte-for-byte reproducible on every platform. JavaScript
 // code-unit ordering avoids host locale and ICU-version differences.
@@ -1039,23 +1043,24 @@ const createInventory = async ({ preserveReview }) => {
     ),
     materialCount: materialFacts.length,
   };
-  const factsSha256 = sha256(
-    stableJson({
-      package: packageFacts,
-      summary,
-      components: componentFacts,
-      materials: materialFacts,
-    }),
-  );
+  const factsSha256 = reviewFactsDigest("thirdParty", {
+    package: packageFacts,
+    summary,
+    components: componentFacts,
+    materials: materialFacts,
+  });
 
   // A review attests to one exact machine-generated fact set. Any dependency,
   // evidence-file, or scope change alters this digest and deliberately returns
   // the inventory to a human-review gate instead of carrying approval forward.
   const review =
-    preserveReview && existing?.review?.factsSha256 === factsSha256
+    preserveReview &&
+    existing?.review?.digestAlgorithm === REVIEW_DIGEST_ALGORITHM &&
+    existing?.review?.factsSha256 === factsSha256
       ? existing.review
       : {
           status: "PENDING_HUMAN_REVIEW",
+          digestAlgorithm: REVIEW_DIGEST_ALGORITHM,
           factsSha256,
           reviewer: null,
           reviewedOn: null,
@@ -1064,7 +1069,7 @@ const createInventory = async ({ preserveReview }) => {
         };
   return {
     $schema: "./third-party-material.schema.json",
-    schemaVersion: 2,
+    schemaVersion: 3,
     generatedBy: {
       path: "util/generate-third-party-material.mjs",
       version: GENERATOR_VERSION,

@@ -2,6 +2,7 @@
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { isDeepStrictEqual } from "node:util";
+import { canonicalJson } from "./canonical-json.mjs";
 
 /** Reviewed qualification inputs. Advance these only through an explicit source review. */
 export const REVIEWED_CONSUMER_SOURCES = JSON.parse(
@@ -37,7 +38,7 @@ export const CONSUMER_SOURCE_SCOPES = Object.freeze([
   },
 ]);
 export const sourceFingerprint = (value) =>
-  createHash("sha256").update(JSON.stringify(value)).digest("hex");
+  createHash("sha256").update(canonicalJson(value)).digest("hex");
 const sha = (value) =>
   typeof value === "string" && /^[a-f0-9]{40}$/u.test(value);
 const closed = (value, keys) =>

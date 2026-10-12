@@ -10,6 +10,7 @@ import {
 import { createHash } from "node:crypto";
 import { dirname, join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
+import { isDeepStrictEqual } from "node:util";
 import { evidenceFingerprint } from "./ci-check-coverage.mjs";
 import {
   createRepositoryReader,
@@ -118,10 +119,13 @@ function nativeOptions(resume = false) {
 }
 function localInputs() {
   const input = readJson(join(NATIVE, "input-record.json"), 64 * 1024);
+  return assertNativeReferenceInputs(input);
+}
+export function assertNativeReferenceInputs(input) {
   const { recipeSha256, ...semantic } = input.semantic ?? {};
   const actual = createReferenceInputRecord(semantic);
   fact(
-    JSON.stringify(actual) === JSON.stringify(input) &&
+    isDeepStrictEqual(actual, input) &&
       recipeSha256 === actual.semantic.recipeSha256 &&
       actual.scope === "HOSTED_EXACT_IMAGE",
     "Native input record no longer matches this implementation.",
