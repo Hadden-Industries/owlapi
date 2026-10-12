@@ -1,0 +1,112 @@
+{
+  "artifactId": "6841cc0d75baba12bceb561b22432d565cb1d2dc0a7705adf36a81b4f92dd646",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2067,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "3f4609137f65070541b9214300ea0d640af8192857de0eeb2b03403003d9228a",
+        "size": 1080,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "d092ef6a3cb3d63789cc44c5508bfe4fabf63bc0a2eec8100f51701e39f9b08f",
+        "size": 871,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "6bd95b5d0cf6f3821cc8acf81c2f4d84b7a158f6fd284659884f9e3b44f34124",
+        "size": 1893,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "9c680ecfd322afe056b4ccbfdb6c7043342276903f017c0a29b77c3926790d13",
+        "size": 667,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1080,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/3f/3f4609137f65070541b9214300ea0d640af8192857de0eeb2b03403003d9228a",
+          "sha256": "3f4609137f65070541b9214300ea0d640af8192857de0eeb2b03403003d9228a"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "3f4609137f65070541b9214300ea0d640af8192857de0eeb2b03403003d9228a",
+        "size": 1080
+      },
+      {
+        "blob": {
+          "bytes": 871,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d0/d092ef6a3cb3d63789cc44c5508bfe4fabf63bc0a2eec8100f51701e39f9b08f",
+          "sha256": "d092ef6a3cb3d63789cc44c5508bfe4fabf63bc0a2eec8100f51701e39f9b08f"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "d092ef6a3cb3d63789cc44c5508bfe4fabf63bc0a2eec8100f51701e39f9b08f",
+        "size": 871
+      }
+    ],
+    "expandedBytes": 4511,
+    "packageIdentity": {
+      "author": "Javier Blanco <http://jbgutierrez.info>",
+      "homepage": "https://github.com/jbgutierrez/path-parse#readme",
+      "license": "MIT",
+      "name": "path-parse",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/jbgutierrez/path-parse.git"
+      },
+      "version": "1.0.7"
+    },
+    "packageMetadata": {
+      "author": "Javier Blanco <http://jbgutierrez.info>",
+      "bugs": {
+        "url": "https://github.com/jbgutierrez/path-parse/issues"
+      },
+      "description": "Node.js path.parse() ponyfill",
+      "homepage": "https://github.com/jbgutierrez/path-parse#readme",
+      "keywords": [
+        "path",
+        "paths",
+        "file",
+        "dir",
+        "parse",
+        "built-in",
+        "util",
+        "utils",
+        "core",
+        "ponyfill",
+        "polyfill",
+        "shim"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "path-parse",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/jbgutierrez/path-parse.git"
+      },
+      "scripts": {
+        "test": "node test.js"
+      },
+      "version": "1.0.7"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 2067,
+      "sha256": "a07a198ca727816296616928237bfab6571f211750d798030b3b7a3f4a5473a3"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

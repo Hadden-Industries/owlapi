@@ -1,0 +1,124 @@
+{
+  "artifactId": "97ec423f655bb472a44f9e7d0a42a3155187a5df880b3444f166328cf9250ee3",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1998,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "3a1d98b91b764d2bf4317f99f1783fe550f082199d47e6ff4e4444648b25c744",
+        "size": 735,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "90507e5cb39e14d2311487f3a9eca022b4b3f5326122cf61b01a0137b35307d7",
+        "size": 292,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "a7a0d67c13c25e2c03fa9777bdca2f25ff37ac04834484ae588dfef20ed46403",
+        "size": 693,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "0cfaf2bac7191f3362e32ad77d2547182c3cb230c907a47f94abd94614536521",
+        "size": 1365,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1117,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117
+      },
+      {
+        "blob": {
+          "bytes": 1365,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/0c/0cfaf2bac7191f3362e32ad77d2547182c3cb230c907a47f94abd94614536521",
+          "sha256": "0cfaf2bac7191f3362e32ad77d2547182c3cb230c907a47f94abd94614536521"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "0cfaf2bac7191f3362e32ad77d2547182c3cb230c907a47f94abd94614536521",
+        "size": 1365
+      }
+    ],
+    "expandedBytes": 4202,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "is-path-inside",
+      "repository": "sindresorhus/is-path-inside",
+      "version": "4.0.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "description": "Check if a path is inside another path",
+      "devDependencies": {
+        "ava": "^3.15.0",
+        "tsd": "^0.14.0",
+        "xo": "^0.39.1"
+      },
+      "engines": {
+        "node": ">=12"
+      },
+      "exports": "./index.js",
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "funding": "https://github.com/sponsors/sindresorhus",
+      "keywords": [
+        "path",
+        "inside",
+        "folder",
+        "directory",
+        "file",
+        "resolve"
+      ],
+      "license": "MIT",
+      "name": "is-path-inside",
+      "repository": "sindresorhus/is-path-inside",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "type": "module",
+      "version": "4.0.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 1998,
+      "sha256": "e420f717f4c70b0b1388807fb642cef27720aefbcfb7daf6d7aa9b86a1a89897"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,121 @@
+{
+  "artifactId": "e649ab31b3b3959b4370d04889115e1b253f42e255c8fe81dfa935fe518fd9d7",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4292,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.js",
+        "sha256": "6e44c44f579d362a4ccd439d2ffb942cf7d13f121c9aff480904691e462d252a",
+        "size": 2514,
+        "type": "FILE"
+      },
+      {
+        "path": "package/kleur.d.ts",
+        "sha256": "6ab263df6465e2ed8f1d02922bae18bb5b407020767de021449a4c509859b22e",
+        "size": 813,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "306fa513e39b23a6e8747520de761809d206b99800ef41907b530226574c59ae",
+        "size": 1114,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "5c7939426d07a99f10f9c8786d5db4d8bcdaf2098cf8a1a9dbb20e69cd4940e8",
+        "size": 646,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "a9885ca9ab0796ba8fd0deeecfa13e148f3fe7edc88d53fc9785024eab58ef02",
+        "size": 4806,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1114,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/30/306fa513e39b23a6e8747520de761809d206b99800ef41907b530226574c59ae",
+          "sha256": "306fa513e39b23a6e8747520de761809d206b99800ef41907b530226574c59ae"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "306fa513e39b23a6e8747520de761809d206b99800ef41907b530226574c59ae",
+        "size": 1114
+      },
+      {
+        "blob": {
+          "bytes": 4806,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a9/a9885ca9ab0796ba8fd0deeecfa13e148f3fe7edc88d53fc9785024eab58ef02",
+          "sha256": "a9885ca9ab0796ba8fd0deeecfa13e148f3fe7edc88d53fc9785024eab58ef02"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "a9885ca9ab0796ba8fd0deeecfa13e148f3fe7edc88d53fc9785024eab58ef02",
+        "size": 4806
+      }
+    ],
+    "expandedBytes": 9893,
+    "packageIdentity": {
+      "author": {
+        "email": "luke.edwards05@gmail.com",
+        "name": "Luke Edwards",
+        "url": "lukeed.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "kleur",
+      "repository": "lukeed/kleur",
+      "version": "3.0.3"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "luke.edwards05@gmail.com",
+        "name": "Luke Edwards",
+        "url": "lukeed.com"
+      },
+      "description": "The fastest Node.js library for formatting terminal text with ANSI colors~!",
+      "devDependencies": {
+        "tap-spec": "^5.0.0",
+        "tape": "^4.9.1"
+      },
+      "engines": {
+        "node": ">=6"
+      },
+      "files": [
+        "*.js",
+        "*.d.ts"
+      ],
+      "keywords": [
+        "ansi",
+        "cli",
+        "color",
+        "colors",
+        "console",
+        "terminal"
+      ],
+      "license": "MIT",
+      "name": "kleur",
+      "repository": "lukeed/kleur",
+      "scripts": {
+        "test": "tape test/*.js | tap-spec"
+      },
+      "types": "kleur.d.ts",
+      "version": "3.0.3"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 4292,
+      "sha256": "04e23e13916f23f19f76a902e6cf707eb886e721d23f8dc72c3dd1b5d7673fee"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

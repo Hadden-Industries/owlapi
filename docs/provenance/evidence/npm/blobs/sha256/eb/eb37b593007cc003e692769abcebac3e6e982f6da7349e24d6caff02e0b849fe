@@ -1,0 +1,189 @@
+{
+  "artifactId": "fdb5601aaf5e2801b6af8f8b26766b5deae6c10feb8a61026921870055e59930",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6251,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "05de55c82076226023fa9563eeb29c5b13cffac735099e9dd5d952320de60d85",
+        "size": 1086,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "229dbe985438452daa64ed172bbf2854afca1951a98d90f1748a7a526db51298",
+        "size": 3574,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/cli.js",
+        "sha256": "ae89d42dd3f71d90ba4f6b6155253387f2c0ee3a68ef7f93ad2a8a677f9f0aca",
+        "size": 2708,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/format/format.js",
+        "sha256": "9e588ac1ab40800cbc5903b5ccd0a5ec32e20740e3371781c0211de5d666c97f",
+        "size": 434,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/format/json.js",
+        "sha256": "5e13dfe3652cac70ca8ec1c0bb279b1fca0579d1973d140f9a66d2ee3081a407",
+        "size": 117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/format/regex.js",
+        "sha256": "a4fa998d6d2db9009caf91bcd0dbc771163cd821715690dfbe3ca17dff820514",
+        "size": 533,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/git-primitives.js",
+        "sha256": "879e29625b121b6b3c1ec1add33d8ed500a31fedb654724c78c93de575477b0c",
+        "size": 2025,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/main.js",
+        "sha256": "c114484c358be208bba16e50af19897c7b7f1da3300bc89e3364a9fde0562868",
+        "size": 954,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/map-change-type.js",
+        "sha256": "ed30ed436e9c38aec9d370281a9c5bf69e6c34678f08020937ad4c461cea688a",
+        "size": 353,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/parse-diff-lines.js",
+        "sha256": "a3156f8b9ca344719ebfb1488f210db57dd201208419fb322b41b6ab62875e8d",
+        "size": 972,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/parse-status-lines.js",
+        "sha256": "b4d5131b0696403c574767ac1f37c7304637369fd0115c331b07d79f6e7697c0",
+        "size": 1025,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/run-cli.js",
+        "sha256": "ac106bc9e09753df32e941866b42ddb3c518ea6474817d038f24441e1144add2",
+        "size": 65,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/version.js",
+        "sha256": "3414a9ff5ff52721e867f347e5db29f4955cd60adc3bf209a39ff6cd2f09c21e",
+        "size": 32,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "22042f09d97663b1b73308afb21c4e24278579a7d0192c36e07bc1e766d4c3ff",
+        "size": 1011,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/watskeburt.d.ts",
+        "sha256": "00f45174b7a18e8d54f4e003ab84a66fc3cd57389b8dcd4bf1991c6868e5f82d",
+        "size": 2128,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1086,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/05/05de55c82076226023fa9563eeb29c5b13cffac735099e9dd5d952320de60d85",
+          "sha256": "05de55c82076226023fa9563eeb29c5b13cffac735099e9dd5d952320de60d85"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "05de55c82076226023fa9563eeb29c5b13cffac735099e9dd5d952320de60d85",
+        "size": 1086
+      }
+    ],
+    "expandedBytes": 17017,
+    "packageIdentity": {
+      "author": {
+        "name": "Sander Verweij",
+        "url": "https://sverweij.github.io"
+      },
+      "homepage": "https://github.com/sverweij/watskeburt",
+      "license": "MIT",
+      "name": "watskeburt",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/sverweij/watskeburt.git"
+      },
+      "version": "6.0.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "name": "Sander Verweij",
+        "url": "https://sverweij.github.io"
+      },
+      "bin": {
+        "watskeburt": "dist/run-cli.js"
+      },
+      "bugs": {
+        "url": "https://github.com/sverweij/watskeburt/issues"
+      },
+      "description": "List files changed since a git revision",
+      "engines": {
+        "node": "^22.13||^24||>=26"
+      },
+      "exports": {
+        ".": [
+          {
+            "import": "./dist/main.js",
+            "types": "./types/watskeburt.d.ts"
+          },
+          "./dist/main.js"
+        ]
+      },
+      "files": [
+        "dist",
+        "!**/*.DS_Store",
+        "types",
+        "LICENSE",
+        "package.json",
+        "README.md"
+      ],
+      "homepage": "https://github.com/sverweij/watskeburt",
+      "keywords": [
+        "git",
+        "diff"
+      ],
+      "license": "MIT",
+      "main": "dist/main.js",
+      "module": "dist/main.js",
+      "name": "watskeburt",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/sverweij/watskeburt.git"
+      },
+      "scripts": {
+        "test": "echo see github for test, build and analysis scripts"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "types": "types/watskeburt.d.ts",
+      "version": "6.0.0"
+    },
+    "physicalEntryCount": 15,
+    "tarball": {
+      "bytes": 6251,
+      "sha256": "cc8d4bbe80dc11be7b400a69dc6c2860de0376e743fc09a9db8f08bc00c8c408"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

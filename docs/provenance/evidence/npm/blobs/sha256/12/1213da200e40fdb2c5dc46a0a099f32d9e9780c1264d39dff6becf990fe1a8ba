@@ -1,0 +1,570 @@
+{
+  "artifactId": "d0e05df676b0a6366810c17ebddc673aa332848f0f3e381d91665bd493173f4f",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 42595,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "69ec4f165f902ad8a4171f2bdce1e61b260abf4d0f772b2a98d2ccc045c0e632",
+        "size": 13698,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "8850a2d4828514113042db6ec97237b7ca6cb1599734874e5817d521f8f84e1c",
+        "size": 1078,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "9f607a14d168b074ea3fb52fc29c14bcdf5f67d801350a918bc7a7a92d368c28",
+        "size": 9981,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/__tests__/config-loader.test.d.ts",
+        "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+        "size": 11,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/__tests__/config-loader.test.js",
+        "sha256": "c9ee39bf34e97d10536cc76e5732425583a8e670224110a3dc74331d3fe18e12",
+        "size": 3568,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/__tests__/config-loader.test.js.map",
+        "sha256": "2fdceb663d11ad2de627581d4263320cadb4a5b7d5fafc6682577dd7e6bee955",
+        "size": 2650,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/__tests__/data/match-path-data.d.ts",
+        "sha256": "a6d518f7d4d0e09063a79107eb193050ebc7037226a15d54453903e294301ebe",
+        "size": 571,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/__tests__/data/match-path-data.js",
+        "sha256": "1d4d1a9c3b31df0074a5e29464a451779de9ef875e6a0e55932536e5d763ead4",
+        "size": 8924,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/__tests__/data/match-path-data.js.map",
+        "sha256": "985c42164f3119461c7e407014ce92653abd872e0b88a6658b52ed048ad1d0da",
+        "size": 6439,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/__tests__/filesystem.test.d.ts",
+        "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+        "size": 11,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/__tests__/filesystem.test.js",
+        "sha256": "3afeb83d2474fd1f63ca3d1a9ca7c9f6ca8c5fe78c8606c5104d8a665ed7182e",
+        "size": 1976,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/__tests__/filesystem.test.js.map",
+        "sha256": "997bb7b83f170c363dcbb5c9e1909a598e269754cf02ace89d2710af62720873",
+        "size": 1780,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/__tests__/mapping-entry.test.d.ts",
+        "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+        "size": 11,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/__tests__/mapping-entry.test.js",
+        "sha256": "e4765a1bc056a5c83bc213f913a98131b0573bc5c230a32d6d04558fc4ebd5d3",
+        "size": 1568,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/__tests__/mapping-entry.test.js.map",
+        "sha256": "6e9fe4c7ec4fb0714bf31614f4f45df9212da3cf59c47df14f51f10a10b436f1",
+        "size": 1270,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/__tests__/match-path-async.test.d.ts",
+        "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+        "size": 11,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/__tests__/match-path-async.test.js",
+        "sha256": "d58a5a3c7e5a026d02015f112468aa60bcd27e4ff4b50e0a4f78d5a007ac2b87",
+        "size": 885,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/__tests__/match-path-async.test.js.map",
+        "sha256": "1c3041d0dbcd94766a814f48a16775efaddde99302ea1c474718ae975c1466d6",
+        "size": 880,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/__tests__/match-path-sync.test.d.ts",
+        "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+        "size": 11,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/__tests__/match-path-sync.test.js",
+        "sha256": "5a4409762b1b01f4d322db67950211d33ffdb5f6aa1ee553cce4b84edcf3f1a6",
+        "size": 721,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/__tests__/match-path-sync.test.js.map",
+        "sha256": "de80aa28bbeea42b8b444785ae80ce19536b53ca1ea01971f73a95e9649d4cf5",
+        "size": 751,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/__tests__/try-path.test.d.ts",
+        "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+        "size": 11,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/__tests__/try-path.test.js",
+        "sha256": "8c3f96f2ad660293c4474973ebfff26dc5a385dfe258e2b2c2e779a8c21eb55d",
+        "size": 4950,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/__tests__/try-path.test.js.map",
+        "sha256": "9bee4cb3909920b8829ba4c8100a6f76a28c95cd1df19d463b3cb8135a1a70fc",
+        "size": 3962,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/__tests__/tsconfig-loader.test.d.ts",
+        "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+        "size": 11,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/__tests__/tsconfig-loader.test.js",
+        "sha256": "51620eb8ac666241581d8b0cd27803bda60ffb61a4afcd99d01799715abcb562",
+        "size": 14806,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/__tests__/tsconfig-loader.test.js.map",
+        "sha256": "df892ebada1056a7367da017e8760ce498e58a3a3929052e6d2218c274fa53f9",
+        "size": 11533,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/config-loader.d.ts",
+        "sha256": "73889c95ef78eedd6f6cc23ded4b79721acfe2cf7fc2fd9caf9be680d06874ce",
+        "size": 1152,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/config-loader.js",
+        "sha256": "b5989b67d233c7807ce5739f1592b1d1332c4ed021529854fc8f2c47f64207df",
+        "size": 1830,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/config-loader.js.map",
+        "sha256": "0706e70f7d549c2201dbb5b44e7d803310af5ffc31aade4468938b072a11b90a",
+        "size": 1370,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/filesystem.d.ts",
+        "sha256": "90b11dd1800f738962d4c90c34b4add5f02031f39feb179ea2eb6a2b6122abda",
+        "size": 1141,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/filesystem.js",
+        "sha256": "148d7dd0176db742e04a718db65cc40c1d3a88ef5f4c857689727482320f4d59",
+        "size": 2032,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/filesystem.js.map",
+        "sha256": "a8575046b1e76692accacc1d39d6d0f275748d2e6ebeee4747fcc6c397983eb2",
+        "size": 1431,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.d.ts",
+        "sha256": "cc82170cc5bf2e983b17ed04be0b156e15530c2731bc4521ec1a7817209ff2cc",
+        "size": 445,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "4aecdb675769825d39657bfd6d4f76390ae3943d8db3df44fb15b5a5377cf285",
+        "size": 1374,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js.map",
+        "sha256": "bab6fef7d0282b3ddae805a9e8f246bec88c5cad493458366f5509f443cf6768",
+        "size": 305,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/mapping-entry.d.ts",
+        "sha256": "2c56658417fa4942e564efa958c0b7f886090a42de6cc1220908fecaf8f03683",
+        "size": 651,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/mapping-entry.js",
+        "sha256": "ebb1275b46c278512e0dbbd3619bcb3a5ef77d3483d428a92b054ba39b8ed9da",
+        "size": 2102,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/mapping-entry.js.map",
+        "sha256": "ba743a15d3aba1a33651e015cad192b73a97c4b6bfad4161813b566205ba96cf",
+        "size": 1234,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/match-path-async.d.ts",
+        "sha256": "f02bc2658f645a42ac688a33aaa54670987ac5285a019de6e85c00dbd97cf8ab",
+        "size": 1116,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/match-path-async.js",
+        "sha256": "47d7309028fe456c901371710b084ac577d676a52b2d316fabcaccd8ed01aa8d",
+        "size": 5431,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/match-path-async.js.map",
+        "sha256": "c6f940ddc9a4670d536ad8f96afccabab577f9b4e0ef0b6008d845a7814b3b58",
+        "size": 3715,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/match-path-sync.d.ts",
+        "sha256": "7552b28a64b47a4f7be86b45ed2d4b44fc63a07ebc234ba7709f0146771dc75e",
+        "size": 1984,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/match-path-sync.js",
+        "sha256": "cc3ec470f4f70d3dd3195fdcfd12427f437eef5766a93b0b8e7a0e0320ffec9c",
+        "size": 4565,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/match-path-sync.js.map",
+        "sha256": "328254da0a483d66cdc00423db635fa3878597b89d3308801c33884bc1616fe7",
+        "size": 2524,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/register.d.ts",
+        "sha256": "a6b776a83c4e1ad18cf55925608bc3c0a95d7dd9f472fe174aca7e9d7d0367b2",
+        "size": 411,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/register.js",
+        "sha256": "db9383642060a1e3337b38f6c054e81f97a526aac4c3c1a6b1f39e5be43516fe",
+        "size": 3929,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/register.js.map",
+        "sha256": "a443c4dd8477bd0cfacac14b21a73f1ddabebe50e8f7f012a63a290923d64afd",
+        "size": 2403,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/try-path.d.ts",
+        "sha256": "8bec22840a34ba59fe63536ff90cb41ee031fefc6337d9bdab188aa27fed37e4",
+        "size": 816,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/try-path.js",
+        "sha256": "c1cf35f52d01c59dc0facedf97986d07f5ae6b7f6b48ae8cdf9bcc837823b727",
+        "size": 3765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/try-path.js.map",
+        "sha256": "2ad246a2e3bad76375e0ff4d5709a5acb29bf19d245b6930f159a570c259a46e",
+        "size": 2774,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tsconfig-loader.d.ts",
+        "sha256": "58368db6d139c6aae9b61272905336968bf56e3cd725b6db030bf9e76e5500d7",
+        "size": 1061,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tsconfig-loader.js",
+        "sha256": "c6237d97bf6e62a69faef93d6f83cf1a981ef7b5097edcfc67e18c672127a642",
+        "size": 6049,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tsconfig-loader.js.map",
+        "sha256": "c4665945bc3dc3692e3c7645eadb86836e96dee8304bfc5337e811984c0d6486",
+        "size": 4304,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "534782c3658c87fcab9d541e8ac4d28df5d1f2b09ffa57d4f438d65c5e052421",
+        "size": 2266,
+        "type": "FILE"
+      },
+      {
+        "path": "package/register.js",
+        "sha256": "fff6c32d217c6147376561b0a8afe6ae6d1389baba1de410fca0c365bc3f9686",
+        "size": 26,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/__tests__/config-loader.test.ts",
+        "sha256": "dcf3175dfb517eafb21fe395a55ceb35138e595d15cedebc5353ed458e11c312",
+        "size": 3067,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/__tests__/data/match-path-data.ts",
+        "sha256": "efa6d8f621a2380081b2efef6d918a81210356ff374d10f6b16ffb3283df1ac8",
+        "size": 8026,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/__tests__/filesystem.test.ts",
+        "sha256": "8440e3c7d2532917f0be009a75d93a14907f40a57cc0b29ae2712b391efcdd4e",
+        "size": 1567,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/__tests__/mapping-entry.test.ts",
+        "sha256": "ae3c4bd6b4a9782400188a123c892a9b3f54d5fc37dce6609d770cea656beda2",
+        "size": 1177,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/__tests__/match-path-async.test.ts",
+        "sha256": "c95054b2daed0726b3772dec542863d8bdc6b9e13c350a9fb95ff7c2e33641e3",
+        "size": 702,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/__tests__/match-path-sync.test.ts",
+        "sha256": "9dc18ea5ab29ec1f69986b4dcff2bc8aef9c974a6930e5d6243f3f7f54ab2d96",
+        "size": 580,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/__tests__/try-path.test.ts",
+        "sha256": "0628b082b8adc8d28901eeaefb8a9dbbd20f03c154c67782b152642e94706911",
+        "size": 3859,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/__tests__/tsconfig-loader.test.ts",
+        "sha256": "343df4ce88c757da377972ec8cb93c2828ef021f924e22b8cf3aea23ef379d33",
+        "size": 12331,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/__tests__/tsconfig-named.json",
+        "sha256": "0962bc90826236105ac6bfbad46a4b588da7b114af652542e262f76f8c61b6b4",
+        "size": 184,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/config-loader.ts",
+        "sha256": "2b477f3f32812e1fcb22890b0044fb78266870d580430d02058febc1b1937606",
+        "size": 2271,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/filesystem.ts",
+        "sha256": "6eb069d1e291aa0ee3319ef43d9efea41e4cd5babaf84e5992ddd8c8e172b9be",
+        "size": 2398,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/index.ts",
+        "sha256": "c285b85f15d6116c4e55a2316eb7a621aa34d20a7870e64621fa93636435330f",
+        "size": 522,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/mapping-entry.ts",
+        "sha256": "e2ed55199d9c654fc9a5e702e87dc0fd1941fda4fa2265b70a6dbdff12359e2a",
+        "size": 2002,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/match-path-async.ts",
+        "sha256": "c7e4b937a4101e0e93536c663d255c1c3e203cf524f88eb06fa1210489197706",
+        "size": 6024,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/match-path-sync.ts",
+        "sha256": "9e349e0aa5a75101a87dea1a3e3d23de4f20eb24280c2a38d3da2e0a90889f14",
+        "size": 4693,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/register.ts",
+        "sha256": "e8283719d475ebc2738ccb8e46afd43c68ee89bf0bedb5723e8f9942277b770e",
+        "size": 3235,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/try-path.ts",
+        "sha256": "9a07f796e29da013459af16a78dac580500ddea88bbafd75fe937789ee1b0125",
+        "size": 3284,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/tsconfig-loader.ts",
+        "sha256": "471446924fa6cb57840dc0d31f23f5bd265c70f76158ac48d4a37223f2206c08",
+        "size": 6025,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1078,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/88/8850a2d4828514113042db6ec97237b7ca6cb1599734874e5817d521f8f84e1c",
+          "sha256": "8850a2d4828514113042db6ec97237b7ca6cb1599734874e5817d521f8f84e1c"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "8850a2d4828514113042db6ec97237b7ca6cb1599734874e5817d521f8f84e1c",
+        "size": 1078
+      },
+      {
+        "blob": {
+          "bytes": 9981,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9f/9f607a14d168b074ea3fb52fc29c14bcdf5f67d801350a918bc7a7a92d368c28",
+          "sha256": "9f607a14d168b074ea3fb52fc29c14bcdf5f67d801350a918bc7a7a92d368c28"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "9f607a14d168b074ea3fb52fc29c14bcdf5f67d801350a918bc7a7a92d368c28",
+        "size": 9981
+      }
+    ],
+    "expandedBytes": 216221,
+    "packageIdentity": {
+      "author": "Jonas Kello",
+      "homepage": null,
+      "license": "MIT",
+      "name": "tsconfig-paths",
+      "repository": "https://github.com/dividab/tsconfig-paths",
+      "version": "4.2.0"
+    },
+    "packageMetadata": {
+      "author": "Jonas Kello",
+      "dependencies": {
+        "json5": "^2.2.2",
+        "minimist": "^1.2.6",
+        "strip-bom": "^3.0.0"
+      },
+      "description": "Load node modules according to tsconfig paths, in run-time or via API.",
+      "devDependencies": {
+        "@types/jest": "^27.0.3",
+        "@types/minimist": "^1.2.2",
+        "@types/node": "^6.0.54",
+        "@types/strip-bom": "^3.0.0",
+        "@types/strip-json-comments": "^0.0.30",
+        "@typescript-eslint/eslint-plugin": "^5.22.0",
+        "@typescript-eslint/parser": "^5.22.0",
+        "eslint": "^8.14.0",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-plugin-import": "^2.26.0",
+        "eslint-plugin-jsdoc": "^39.2.9",
+        "husky": "^4.2.5",
+        "jest": "^27.3.1",
+        "lint-staged": "^10.2.11",
+        "prettier": "^2.0.5",
+        "rimraf": "^2.6.2",
+        "ts-jest": "^27.0.7",
+        "ts-node": "^10.7.0",
+        "typescript": "^4.5.2"
+      },
+      "engines": {
+        "node": ">=6"
+      },
+      "files": [
+        "/src",
+        "/lib",
+        "register.js",
+        "package.json",
+        "CHANGELOG.md",
+        "LICENSE",
+        "README.md"
+      ],
+      "husky": {
+        "hooks": {
+          "pre-commit": "lint-staged"
+        }
+      },
+      "license": "MIT",
+      "lint-staged": {
+        "*.{ts,tsx,json,css}": [
+          "prettier --write",
+          "git add"
+        ],
+        "*.{ts,tsx}": "eslint"
+      },
+      "main": "lib/index.js",
+      "name": "tsconfig-paths",
+      "repository": "https://github.com/dividab/tsconfig-paths",
+      "scripts": {
+        "build": "rimraf lib && tsc -p .",
+        "example:api": "cd example/api && ts-node main.ts",
+        "example:node": "yarn build && cd ./example/node && ts-node -r ../../register.js main.ts",
+        "example:perf": "cd example/perf && ts-node main.ts",
+        "example:project": "yarn build && ts-node -r ./register.js -P ./example/project/tsconfig.json ./example/project/main.ts",
+        "lint": "eslint \"./{src,tests}/**/*.ts{,x}\" --ext .js,.ts,.tsx -f visualstudio",
+        "postversion": "git push --tags && yarn publish --new-version $npm_package_version && git push && echo \"Successfully released version $npm_package_version!\"",
+        "preversion": "yarn verify",
+        "start": "cd src && ts-node index.ts",
+        "test": "jest",
+        "test-coverage": "jest --coverage",
+        "verify": "yarn build && yarn lint && yarn test-coverage"
+      },
+      "types": "lib/index.d.ts",
+      "version": "4.2.0"
+    },
+    "physicalEntryCount": 74,
+    "tarball": {
+      "bytes": 42595,
+      "sha256": "1454d5f923d4330f4b8fb75c004df490ecbdce81cf0757de43351ac3078085c1"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

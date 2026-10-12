@@ -1,0 +1,165 @@
+{
+  "artifactId": "e30c0e236e1bc5d540f7c5a52d39d2f2bcc35f6b250dc32d27d268fb118fec99",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 39663,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE-MIT",
+        "sha256": "9c94db23dc4b1e9aaee5d195668b916afc71efed54af226b66cf0ccc4389c1c0",
+        "size": 1095,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "edc4cc02c75bd43242f6b10441365afad7707bb042af6c33875269113d455602",
+        "size": 15343,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "8b61608c154f87e13c88b21b5208a3acb906ddcee5e3001f3b27ef13703b61e8",
+        "size": 1958,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "7f3345bf31f8a3b24cd28b0e63415c759c95b56af409d4fac877b0942ef47662",
+        "size": 47059,
+        "type": "FILE"
+      },
+      {
+        "path": "package/legacy.js",
+        "sha256": "5e39d96e9f3506f819749d875736fd19d3e1ab2a8bc8011c3f3f2fb9bcf82ea8",
+        "size": 52214,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "f69eac576ce3133c2dd2f7b5a33936a714fe90c45713350b5d5fd7f6e558f340",
+        "size": 3280,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1095,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9c/9c94db23dc4b1e9aaee5d195668b916afc71efed54af226b66cf0ccc4389c1c0",
+          "sha256": "9c94db23dc4b1e9aaee5d195668b916afc71efed54af226b66cf0ccc4389c1c0"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE-MIT",
+        "sha256": "9c94db23dc4b1e9aaee5d195668b916afc71efed54af226b66cf0ccc4389c1c0",
+        "size": 1095
+      }
+    ],
+    "expandedBytes": 120949,
+    "packageIdentity": {
+      "author": "kael",
+      "homepage": null,
+      "license": "MIT",
+      "name": "ignore",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/kaelzhang/node-ignore.git"
+      },
+      "version": "7.0.12"
+    },
+    "packageMetadata": {
+      "author": "kael",
+      "bugs": {
+        "url": "https://github.com/kaelzhang/node-ignore/issues"
+      },
+      "description": "Ignore is a manager and filter for .gitignore rules, the one used by eslint, gitbook and many others.",
+      "devDependencies": {
+        "@babel/cli": "^7.22.9",
+        "@babel/core": "^7.22.9",
+        "@babel/preset-env": "^7.22.9",
+        "@typescript-eslint/eslint-plugin": "^8.19.1",
+        "debug": "^4.3.4",
+        "eslint": "^8.46.0",
+        "eslint-config-ostai": "^3.0.0",
+        "eslint-plugin-import": "^2.28.0",
+        "mkdirp": "^3.0.1",
+        "pre-suf": "^1.1.1",
+        "rimraf": "^6.0.1",
+        "spawn-sync": "^2.0.0",
+        "tap": "^16.3.9",
+        "tmp": "0.2.3",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.6.2"
+      },
+      "engines": {
+        "node": ">= 4"
+      },
+      "files": [
+        "legacy.js",
+        "index.js",
+        "index.d.ts",
+        "LICENSE-MIT"
+      ],
+      "keywords": [
+        "ignore",
+        ".gitignore",
+        "gitignore",
+        "npmignore",
+        "rules",
+        "manager",
+        "filter",
+        "regexp",
+        "regex",
+        "fnmatch",
+        "glob",
+        "asterisks",
+        "regular-expression"
+      ],
+      "license": "MIT",
+      "name": "ignore",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/kaelzhang/node-ignore.git"
+      },
+      "scripts": {
+        "=================== benchmark =====================": "",
+        "==================== compat =======================": "",
+        "==================== linting ======================": "",
+        "===================== cases =======================": "",
+        "===================== debug =======================": "",
+        "===================== import ======================": "",
+        "benchmark": "node benchmark",
+        "build": "babel -o legacy.js index.js",
+        "compat": "node compat && node compat --win32",
+        "lint": "eslint .",
+        "prepublishOnly": "npm run build",
+        "report": "tap --coverage-report=html",
+        "tap": "tap --reporter classic",
+        "test": "npm run lint && npm run ts && npm run build && npm run test:cases && npm run compat",
+        "test:16": "npm run test:ts:16 && npm run test:cjs:16 && npm run test:mjs:16",
+        "test:cases": "npm run tap test/*.test.js -- --coverage --100",
+        "test:cjs:16": "ts-node --compilerOptions '{\"moduleResolution\": \"Node16\", \"module\": \"Node16\"}' ./test/import/simple.cjs",
+        "test:git": "npm run tap test/git-check-ignore.test.js",
+        "test:ignore": "npm run tap test/ignore.test.js",
+        "test:ignore:only": "IGNORE_ONLY_IGNORES=1 npm run tap test/ignore.test.js",
+        "test:mjs:16": "ts-node --compilerOptions '{\"moduleResolution\": \"Node16\", \"module\": \"Node16\"}' ./test/import/simple.mjs && babel -o ./test/import/simple-mjs.js ./test/import/simple.mjs && node ./test/import/simple-mjs.js",
+        "test:no-coverage": "npm run tap test/*.test.js -- --no-check-coverage",
+        "test:others": "npm run tap test/others.test.js",
+        "test:ts": "ts-node ./test/import/simple.ts",
+        "test:ts:16": "ts-node --compilerOptions '{\"moduleResolution\": \"Node16\", \"module\": \"Node16\"}' ./test/import/simple.ts && tsc ./test/import/simple.ts --lib ES6 --moduleResolution Node16 --module Node16 && node ./test/import/simple.js",
+        "test:win32": "IGNORE_TEST_WIN32=1 npm run test",
+        "ts": "npm run test:ts && npm run test:16"
+      },
+      "types": "index.d.ts",
+      "version": "7.0.12"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 39663,
+      "sha256": "c7d39ab0c0a3161b3b199508044d385cc88d2ba4b417a34b8ded50e27f306e2f"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

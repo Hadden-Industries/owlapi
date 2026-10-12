@@ -1,0 +1,153 @@
+{
+  "artifactId": "0782713806e8d1bb9a6a5ff8a7c2b3f22262960412fbe3d727b4341d615d8123",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 25639,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "a66cefcd69285484449f849b4e1350380408dd4797ff2db0734c426340d3694f",
+        "size": 3247,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "c2d8184ea9becd063aa40be243e8c6ec2c4f72828fdfe4b0752664ef73e96ed3",
+        "size": 1099,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "7459bd4178ee2f6d7e2e403daaee314ee4b0be42d7bcdc168fc0635a3282b1a8",
+        "size": 2175,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/acorn-loose.d.mts",
+        "sha256": "738f098ff70bf841000f92b40d2860371b814d80b9baaa8fd02fa73603231e09",
+        "size": 346,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/acorn-loose.d.ts",
+        "sha256": "738f098ff70bf841000f92b40d2860371b814d80b9baaa8fd02fa73603231e09",
+        "size": 346,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/acorn-loose.js",
+        "sha256": "7fbc6db9ee5fd05a14184b2baa46eed10c82af9309f397d37c25a663443f4d93",
+        "size": 59295,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/acorn-loose.mjs",
+        "sha256": "038c1e39ac03e2260c87f5ef285e7e5cb20f5001038174f69ebda8bdaea82b08",
+        "size": 54607,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "101551d7b21b8e2c9b5f2d9d3830104764e2c6fd0da1f8ede99e6e7a6656b72c",
+        "size": 1127,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1099,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c2/c2d8184ea9becd063aa40be243e8c6ec2c4f72828fdfe4b0752664ef73e96ed3",
+          "sha256": "c2d8184ea9becd063aa40be243e8c6ec2c4f72828fdfe4b0752664ef73e96ed3"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "c2d8184ea9becd063aa40be243e8c6ec2c4f72828fdfe4b0752664ef73e96ed3",
+        "size": 1099
+      },
+      {
+        "blob": {
+          "bytes": 2175,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/74/7459bd4178ee2f6d7e2e403daaee314ee4b0be42d7bcdc168fc0635a3282b1a8",
+          "sha256": "7459bd4178ee2f6d7e2e403daaee314ee4b0be42d7bcdc168fc0635a3282b1a8"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "7459bd4178ee2f6d7e2e403daaee314ee4b0be42d7bcdc168fc0635a3282b1a8",
+        "size": 2175
+      }
+    ],
+    "expandedBytes": 122242,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/acornjs/acorn",
+      "license": "MIT",
+      "name": "acorn-loose",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/acornjs/acorn.git"
+      },
+      "version": "8.5.2"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "acorn": "^8.15.0"
+      },
+      "description": "Error-tolerant ECMAScript parser",
+      "engines": {
+        "node": ">=0.4.0"
+      },
+      "exports": {
+        ".": [
+          {
+            "default": "./dist/acorn-loose.js",
+            "import": "./dist/acorn-loose.mjs",
+            "require": "./dist/acorn-loose.js"
+          },
+          "./dist/acorn-loose.js"
+        ],
+        "./package.json": "./package.json"
+      },
+      "homepage": "https://github.com/acornjs/acorn",
+      "license": "MIT",
+      "main": "dist/acorn-loose.js",
+      "maintainers": [
+        {
+          "email": "marijnh@gmail.com",
+          "name": "Marijn Haverbeke",
+          "web": "https://marijnhaverbeke.nl"
+        },
+        {
+          "email": "me@rreverser.com",
+          "name": "Ingvar Stepanyan",
+          "web": "https://rreverser.com/"
+        },
+        {
+          "name": "Adrian Heine",
+          "web": "http://adrianheine.de"
+        }
+      ],
+      "module": "dist/acorn-loose.mjs",
+      "name": "acorn-loose",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/acornjs/acorn.git"
+      },
+      "scripts": {
+        "prepare": "cd ..; npm run build:loose"
+      },
+      "types": "dist/acorn-loose.d.ts",
+      "version": "8.5.2"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 25639,
+      "sha256": "fab65b1eac5a280c42daa85c54cbea279ca259397f40a7baa7f0d191920d3398"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

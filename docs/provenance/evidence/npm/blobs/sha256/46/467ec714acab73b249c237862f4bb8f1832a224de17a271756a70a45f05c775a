@@ -1,0 +1,152 @@
+{
+  "artifactId": "cd64108b9e57a7394b3c0f2b5139662077d1f28c1f94df73978af562072bd16b",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3822,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "f76bf172813c126b6b044d45740d1363df84ac3b89666ba9655ff631e3da981a",
+        "size": 423,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "2855ab56dc20c5383b1bb4165165e8d68bdb7649b369d1814ca99915ea720221",
+        "size": 1192,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "8d71b075857bf6f7f6224d7b82f586bb166e9ee00e05788f27a7ddfad3a149cd",
+        "size": 2932,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "415565b27b0453a5dacb6471d2549f520c43107e8931dc6a5ce97d27e4f60581",
+        "size": 1493,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/extension.js",
+        "sha256": "9e761a3fa1c555a6d2188eacb5526beab3370e9f6823439ef89978de282e0c3a",
+        "size": 922,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/normalize.js",
+        "sha256": "dd8317ce832db0a60397f83e01f9d1b091e0f3e966deb45b4d16d609b3c37391",
+        "size": 260,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/register.js",
+        "sha256": "b3f52939a827b1e1cab4351ec9ee7fc8e1ee8b3cc1e1655570468b89a7be666e",
+        "size": 340,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "cddeb04ac0fac95cf02640fd81993e46fa283a15ba074f97bcbe03c705c6b22f",
+        "size": 1077,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1192,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/28/2855ab56dc20c5383b1bb4165165e8d68bdb7649b369d1814ca99915ea720221",
+          "sha256": "2855ab56dc20c5383b1bb4165165e8d68bdb7649b369d1814ca99915ea720221"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "2855ab56dc20c5383b1bb4165165e8d68bdb7649b369d1814ca99915ea720221",
+        "size": 1192
+      },
+      {
+        "blob": {
+          "bytes": 2932,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/8d/8d71b075857bf6f7f6224d7b82f586bb166e9ee00e05788f27a7ddfad3a149cd",
+          "sha256": "8d71b075857bf6f7f6224d7b82f586bb166e9ee00e05788f27a7ddfad3a149cd"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "8d71b075857bf6f7f6224d7b82f586bb166e9ee00e05788f27a7ddfad3a149cd",
+        "size": 2932
+      }
+    ],
+    "expandedBytes": 8639,
+    "packageIdentity": {
+      "author": "Gulp Team <team@gulpjs.com> (http://gulpjs.com/)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "rechoir",
+      "repository": "gulpjs/rechoir",
+      "version": "0.8.0"
+    },
+    "packageMetadata": {
+      "author": "Gulp Team <team@gulpjs.com> (http://gulpjs.com/)",
+      "contributors": [
+        "Blaine Bublitz <blaine.bublitz@gmail.com>",
+        "Tyler Kellen <tyler@sleekcode.net> (http://goingslowly.com/)"
+      ],
+      "dependencies": {
+        "resolve": "^1.20.0"
+      },
+      "description": "Prepare a node environment to require files with different extensions.",
+      "devDependencies": {
+        "eslint": "^7.21.0",
+        "eslint-config-gulp": "^5.0.1",
+        "expect": "^27.0.0",
+        "mocha": "^8.3.0",
+        "nyc": "^15.1.0"
+      },
+      "engines": {
+        "node": ">= 10.13.0"
+      },
+      "files": [
+        "LICENSE",
+        "index.js",
+        "lib/"
+      ],
+      "keywords": [
+        "require",
+        "loader",
+        "extension",
+        "extensions",
+        "prepare"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "rechoir",
+      "nyc": {
+        "reporter": [
+          "lcov",
+          "text-summary"
+        ]
+      },
+      "prettier": {
+        "singleQuote": true
+      },
+      "repository": "gulpjs/rechoir",
+      "scripts": {
+        "lint": "eslint .",
+        "pretest": "rm -rf tmp/ && npm run lint",
+        "test": "nyc mocha --async-only"
+      },
+      "version": "0.8.0"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 3822,
+      "sha256": "6a9af1f7c2693a1b0d7824812b4db95f02367764bb2601f40bbdaf731b7a8d67"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,123 @@
+{
+  "artifactId": "1bfe8179aa150ba6ce2aa53876f012c0f32957dcb851c50f8f0d3939737f71cc",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2600,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/license",
+        "sha256": "ade66f698fd417addc4d948a85ef33e8abb302daff6453feda18b191d250e54d",
+        "size": 1079,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "4a17bc5c93db1b8f01d84708031339f3a22f39e60e1a92e089cde82f0bb48633",
+        "size": 659,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "3f4e9124698b113202fa43705e2c019cc7b9258de49094b045ecb1194910719e",
+        "size": 2587,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/index.js",
+        "sha256": "279f11bfe5f11e91eb935786d2251bcc55d4d61339177f3c5fe1fec18a4ca51f",
+        "size": 1361,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/sisteransi.d.ts",
+        "sha256": "b16cf6d7d309a6db2184b9eb97d6c9686bbc92cf8d335bc73c88ba5a8237429d",
+        "size": 1105,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1079,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ad/ade66f698fd417addc4d948a85ef33e8abb302daff6453feda18b191d250e54d",
+          "sha256": "ade66f698fd417addc4d948a85ef33e8abb302daff6453feda18b191d250e54d"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "ade66f698fd417addc4d948a85ef33e8abb302daff6453feda18b191d250e54d",
+        "size": 1079
+      },
+      {
+        "blob": {
+          "bytes": 2587,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/3f/3f4e9124698b113202fa43705e2c019cc7b9258de49094b045ecb1194910719e",
+          "sha256": "3f4e9124698b113202fa43705e2c019cc7b9258de49094b045ecb1194910719e"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "3f4e9124698b113202fa43705e2c019cc7b9258de49094b045ecb1194910719e",
+        "size": 2587
+      }
+    ],
+    "expandedBytes": 6791,
+    "packageIdentity": {
+      "author": {
+        "email": "terkel@terkel.com",
+        "name": "Terkel Gjervig",
+        "url": "https://terkel.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "sisteransi",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/terkelg/sisteransi"
+      },
+      "version": "1.0.5"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "terkel@terkel.com",
+        "name": "Terkel Gjervig",
+        "url": "https://terkel.com"
+      },
+      "description": "ANSI escape codes for some terminal swag",
+      "devDependencies": {
+        "tap-spec": "^5.0.0",
+        "tape": "^4.13.2"
+      },
+      "files": [
+        "src"
+      ],
+      "keywords": [
+        "ansi",
+        "escape codes",
+        "escape",
+        "terminal",
+        "style"
+      ],
+      "license": "MIT",
+      "main": "src/index.js",
+      "name": "sisteransi",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/terkelg/sisteransi"
+      },
+      "scripts": {
+        "test": "tape test/*.js | tap-spec"
+      },
+      "types": "./src/sisteransi.d.ts",
+      "version": "1.0.5"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2600,
+      "sha256": "9e4d29b24315611de5a1767ca1b09716f40bb04534836295fe36d80c643974b3"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

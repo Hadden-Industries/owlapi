@@ -1,0 +1,187 @@
+{
+  "artifactId": "56b52e643183f2aa68e1771d71076b0a1f10be8437cb4ecfba701bab911bb6ea",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6482,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.travis.yml",
+        "sha256": "3ba6eba4de694fe54d7d944afe20e6b39a8b30f0665bec89929956aba158f79a",
+        "size": 152,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "e8abaa425c82095ff9411a1029a515ca3716be2fab25aaacfc16c5eb1e4dcce4",
+        "size": 330,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "f94984c610492c5a9c5b8a26ae5a409946a335a71d509618888b230a5c53e0fb",
+        "size": 1234,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "ec43dc30242f1198e2ca745dde985c9251c6842cc27207fc3241720d2623fdec",
+        "size": 3658,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/cli.js",
+        "sha256": "64b4f1519660d5e3e9bfb4cab15842e288d9ec93145d0756394b3a0a5bfcfcbc",
+        "size": 955,
+        "type": "FILE"
+      },
+      {
+        "path": "package/example/safe.js",
+        "sha256": "a9e90fa2b1f16672cd9873e07669fbf09e05092edba8310d71561843b4f897ce",
+        "size": 98,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "193552769ef0048888ba65cacdb9708c45a48a661f25c6b8593c64469407f319",
+        "size": 1784,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/analyzer-family.js",
+        "sha256": "bbfdf4cfd5d09305ce9f18c6678c45d9297ddea4f73b1c37a2f79e27d5254625",
+        "size": 120,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/analyzer.js",
+        "sha256": "986da62f4e13e3c1cca31cb9366a92faae93dfceabd6808de1e7a3dde8fd5680",
+        "size": 1648,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/heuristic-analyzer.js",
+        "sha256": "593824fe42657842d3bd98e67df48c00b0df4f76201293afb8c674279c27d377",
+        "size": 1505,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "0870f399604ba1b31b217be4f8d324dd1fff75b195674dc4e927112bb3113c5d",
+        "size": 1131,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/regex.spec.js",
+        "sha256": "c1c8e9e5baf40cf79aa924aaeb4a89879bdfac63f9126f0aa5e609a8d4c41523",
+        "size": 3838,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1234,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/f9/f94984c610492c5a9c5b8a26ae5a409946a335a71d509618888b230a5c53e0fb",
+          "sha256": "f94984c610492c5a9c5b8a26ae5a409946a335a71d509618888b230a5c53e0fb"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "f94984c610492c5a9c5b8a26ae5a409946a335a71d509618888b230a5c53e0fb",
+        "size": 1234
+      },
+      {
+        "blob": {
+          "bytes": 3658,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ec/ec43dc30242f1198e2ca745dde985c9251c6842cc27207fc3241720d2623fdec",
+          "sha256": "ec43dc30242f1198e2ca745dde985c9251c6842cc27207fc3241720d2623fdec"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "ec43dc30242f1198e2ca745dde985c9251c6842cc27207fc3241720d2623fdec",
+        "size": 3658
+      }
+    ],
+    "expandedBytes": 16453,
+    "packageIdentity": {
+      "author": {
+        "email": "davisjam@vt.edu",
+        "name": "James C. (Jamie) Davis",
+        "url": "http://people.cs.vt.edu/~davisjam"
+      },
+      "homepage": "https://github.com/davisjam/safe-regex",
+      "license": "MIT",
+      "name": "safe-regex",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/davisjam/safe-regex.git"
+      },
+      "version": "2.1.1"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "davisjam@vt.edu",
+        "name": "James C. (Jamie) Davis",
+        "url": "http://people.cs.vt.edu/~davisjam"
+      },
+      "dependencies": {
+        "regexp-tree": "~0.1.1"
+      },
+      "description": "detect possibly catastrophic, exponential-time regular expressions",
+      "devDependencies": {
+        "jest": "^24.9.0"
+      },
+      "homepage": "https://github.com/davisjam/safe-regex",
+      "jest": {
+        "collectCoverage": true,
+        "collectCoverageFrom": [
+          "*.js"
+        ],
+        "coverageReporters": [
+          "text-summary",
+          "html",
+          "lcov"
+        ],
+        "coverageThreshold": {
+          "global": {
+            "branches": 100,
+            "functions": 100,
+            "lines": 100,
+            "statements": 100
+          }
+        },
+        "moduleFileExtensions": [
+          "js"
+        ],
+        "testRegex": "test.*\\.spec\\.js$"
+      },
+      "keywords": [
+        "catastrophic",
+        "exponential",
+        "regex",
+        "safe",
+        "sandbox"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "safe-regex",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/davisjam/safe-regex.git"
+      },
+      "scripts": {
+        "test": "jest"
+      },
+      "version": "2.1.1"
+    },
+    "physicalEntryCount": 12,
+    "tarball": {
+      "bytes": 6482,
+      "sha256": "baad562115a5f87acf3e9fa2343c80b60d9f8d240da3200af6e00fb4c4c95e27"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

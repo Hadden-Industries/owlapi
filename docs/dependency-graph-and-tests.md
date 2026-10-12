@@ -37,7 +37,7 @@ Use Jest's native inventory and advisory related-test discovery:
 
 ```powershell
 npm test -- --runInBand --listTests --json
-npm test -- --runInBand --findRelatedTests model/iri.js --listTests --json
+npm test -- --runInBand --findRelatedTests model/owlOntologyWriterConfiguration.js --listTests --json
 ```
 
 A related-test list is a hypothesis about static dependencies.

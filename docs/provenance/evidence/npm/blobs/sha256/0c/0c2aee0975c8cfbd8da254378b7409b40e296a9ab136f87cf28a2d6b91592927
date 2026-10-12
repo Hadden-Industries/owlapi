@@ -1,0 +1,161 @@
+{
+  "artifactId": "f47327eee0fada272edd11b0fc3fa8b95c18e11f38869ba5681702c03be46db8",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4859,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "303d5272704a7b6eac411b3b723fb418c13257ca8d8af5aeb872dfa888dfcc1b",
+        "size": 1192,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "36e72c365349d4e5cb79ccc82eaab7989a2ca47dd498861200a8dd72e3dc6501",
+        "size": 6064,
+        "type": "FILE"
+      },
+      {
+        "path": "package/cjs-stub.js",
+        "sha256": "551bf1775e57d81782739501a490d556c607aa40faedfbaabb0c8e32304d2adc",
+        "size": 35,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "883ffb3fd5bd012511ead6820bece545cd339d5d57fe594752b444505dd41f0d",
+        "size": 12636,
+        "type": "FILE"
+      },
+      {
+        "path": "package/mjs-stub.js",
+        "sha256": "ecbef8cc9d199314aef701ff4bd2ed114fd2c25bd33b88cb19decdea860b4758",
+        "size": 35,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "4ebc10f8d227e12b1458b8ece7b830794176dca1f3d92401366ddfe95ff314d8",
+        "size": 1496,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1192,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/30/303d5272704a7b6eac411b3b723fb418c13257ca8d8af5aeb872dfa888dfcc1b",
+          "sha256": "303d5272704a7b6eac411b3b723fb418c13257ca8d8af5aeb872dfa888dfcc1b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "303d5272704a7b6eac411b3b723fb418c13257ca8d8af5aeb872dfa888dfcc1b",
+        "size": 1192
+      },
+      {
+        "blob": {
+          "bytes": 6064,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/36/36e72c365349d4e5cb79ccc82eaab7989a2ca47dd498861200a8dd72e3dc6501",
+          "sha256": "36e72c365349d4e5cb79ccc82eaab7989a2ca47dd498861200a8dd72e3dc6501"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "36e72c365349d4e5cb79ccc82eaab7989a2ca47dd498861200a8dd72e3dc6501",
+        "size": 6064
+      }
+    ],
+    "expandedBytes": 21458,
+    "packageIdentity": {
+      "author": "Gulp Team <team@gulpjs.com> (https://gulpjs.com/)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "interpret",
+      "repository": "gulpjs/interpret",
+      "version": "3.1.1"
+    },
+    "packageMetadata": {
+      "author": "Gulp Team <team@gulpjs.com> (https://gulpjs.com/)",
+      "contributors": [
+        "Blaine Bublitz <blaine.bublitz@gmail.com>",
+        "Tyler Kellen <tyler@sleekcode.net> (http://goingslowly.com/)"
+      ],
+      "description": "A dictionary of file extensions and associated module loaders.",
+      "devDependencies": {
+        "eslint": "^7.0.0",
+        "eslint-config-gulp": "^5.0.0",
+        "eslint-plugin-node": "^11.1.0",
+        "expect": "^27.0.0",
+        "js-yaml": "^4.1.0",
+        "mocha": "^8.0.0",
+        "nyc": "^15.0.0",
+        "parse-node-version": "^2.0.0",
+        "rechoir": "^0.8.0",
+        "remark-cli": "^10.0.1",
+        "remark-code-import": "^1.1.0",
+        "shelljs": "0.8.5"
+      },
+      "engines": {
+        "node": ">=10.13.0"
+      },
+      "files": [
+        "LICENSE",
+        "index.js",
+        "cjs-stub.js",
+        "mjs-stub.js"
+      ],
+      "keywords": [
+        "coffee",
+        "coffee.md",
+        "coffeescript",
+        "es",
+        "es6",
+        "js",
+        "json",
+        "json5",
+        "jsx",
+        "react",
+        "litcoffee",
+        "toml",
+        "ts",
+        "typescript",
+        "xml",
+        "yaml",
+        "yml"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "interpret",
+      "nyc": {
+        "extension": [
+          ".js"
+        ],
+        "reporter": [
+          "lcov",
+          "text-summary"
+        ]
+      },
+      "prettier": {
+        "singleQuote": true
+      },
+      "repository": "gulpjs/interpret",
+      "scripts": {
+        "lint": "eslint .",
+        "pretest": "npm run lint",
+        "readme": "remark README.md --use ./scripts/plugin.mjs --output",
+        "test": "nyc mocha --async-only"
+      },
+      "version": "3.1.1"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 4859,
+      "sha256": "898eea4a6546a9d63c3e884af02dbdcebbe8df5b8b196c19daefd9b42321cc4f"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

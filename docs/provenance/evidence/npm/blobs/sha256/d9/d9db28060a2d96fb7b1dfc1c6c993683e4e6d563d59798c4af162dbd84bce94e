@@ -1,0 +1,120 @@
+{
+  "artifactId": "c75e69d9890eb120f77e175f5e4807180303ef446631480be7f6da9b6a30c9ce",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1736,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.js",
+        "sha256": "0fde7fd5ccd93e8ab043ea2f9dca6ec52c6e15fa5d4c66ac135e32c82a64517f",
+        "size": 317,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "6fb9754611c20f6649f68805e8c990e83261f29316e29de9e6cedae607b8634c",
+        "size": 1119,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "3165a2242ce2f930e841df38ea2383a6bb1e18758b782a392af63eb32facb93d",
+        "size": 655,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "6178bf3a45f28ad836af3b0ca8811143a6c360ad62a5f0798b294565612cdac1",
+        "size": 913,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1119,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/6f/6fb9754611c20f6649f68805e8c990e83261f29316e29de9e6cedae607b8634c",
+          "sha256": "6fb9754611c20f6649f68805e8c990e83261f29316e29de9e6cedae607b8634c"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "6fb9754611c20f6649f68805e8c990e83261f29316e29de9e6cedae607b8634c",
+        "size": 1119
+      },
+      {
+        "blob": {
+          "bytes": 913,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/61/6178bf3a45f28ad836af3b0ca8811143a6c360ad62a5f0798b294565612cdac1",
+          "sha256": "6178bf3a45f28ad836af3b0ca8811143a6c360ad62a5f0798b294565612cdac1"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "6178bf3a45f28ad836af3b0ca8811143a6c360ad62a5f0798b294565612cdac1",
+        "size": 913
+      }
+    ],
+    "expandedBytes": 3004,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "strip-bom",
+      "repository": "sindresorhus/strip-bom",
+      "version": "3.0.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "description": "Strip UTF-8 byte order mark (BOM) from a string",
+      "devDependencies": {
+        "ava": "*",
+        "xo": "*"
+      },
+      "engines": {
+        "node": ">=4"
+      },
+      "files": [
+        "index.js"
+      ],
+      "keywords": [
+        "strip",
+        "bom",
+        "byte",
+        "order",
+        "mark",
+        "unicode",
+        "utf8",
+        "utf-8",
+        "remove",
+        "delete",
+        "trim",
+        "text",
+        "string"
+      ],
+      "license": "MIT",
+      "name": "strip-bom",
+      "repository": "sindresorhus/strip-bom",
+      "scripts": {
+        "test": "xo && ava"
+      },
+      "version": "3.0.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1736,
+      "sha256": "48094c11a1f7faa867eb6919c09380232ce9b6d61fb3c43618ca6235b6013ee2"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}
