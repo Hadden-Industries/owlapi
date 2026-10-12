@@ -1,0 +1,153 @@
+{
+  "artifactId": "c92fb1ce7fac5c482603f85c62e68e9f1bd52c1e578956a145877cf09409350e",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 9793,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "d869142cd036770183e845016bd4a1c16df8061a9f66db220b723a09fde4e7e3",
+        "size": 3913,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "c2d8184ea9becd063aa40be243e8c6ec2c4f72828fdfe4b0752664ef73e96ed3",
+        "size": 1099,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "fb88ea37472b9f72ef2e9357f5d1a4611ab3ec7c23edfc6bea13303fe153649c",
+        "size": 4467,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/walk.d.mts",
+        "sha256": "18190ee9c0ce0451e8a4bddfdab39d4ce50a22f7be5bfac436da7ee1d2e2cc30",
+        "size": 5601,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/walk.d.ts",
+        "sha256": "18190ee9c0ce0451e8a4bddfdab39d4ce50a22f7be5bfac436da7ee1d2e2cc30",
+        "size": 5601,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/walk.js",
+        "sha256": "1aa9615d8ea06e2126a21a4c21eb7b8b97a69e5eda256f06d2c48834a57cbf0e",
+        "size": 16739,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/walk.mjs",
+        "sha256": "24bc7ea73dcc319360090f4849746b7493bf234f951ea99ae0b89105981b1b42",
+        "size": 15271,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "73c77feaf1224859bc6995cefe976d51cfd2abcd1edc0362df3149d8bd3633e3",
+        "size": 1074,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1099,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c2/c2d8184ea9becd063aa40be243e8c6ec2c4f72828fdfe4b0752664ef73e96ed3",
+          "sha256": "c2d8184ea9becd063aa40be243e8c6ec2c4f72828fdfe4b0752664ef73e96ed3"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "c2d8184ea9becd063aa40be243e8c6ec2c4f72828fdfe4b0752664ef73e96ed3",
+        "size": 1099
+      },
+      {
+        "blob": {
+          "bytes": 4467,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/fb/fb88ea37472b9f72ef2e9357f5d1a4611ab3ec7c23edfc6bea13303fe153649c",
+          "sha256": "fb88ea37472b9f72ef2e9357f5d1a4611ab3ec7c23edfc6bea13303fe153649c"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "fb88ea37472b9f72ef2e9357f5d1a4611ab3ec7c23edfc6bea13303fe153649c",
+        "size": 4467
+      }
+    ],
+    "expandedBytes": 53765,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/acornjs/acorn",
+      "license": "MIT",
+      "name": "acorn-walk",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/acornjs/acorn.git"
+      },
+      "version": "8.3.5"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "acorn": "^8.11.0"
+      },
+      "description": "ECMAScript (ESTree) AST walker",
+      "engines": {
+        "node": ">=0.4.0"
+      },
+      "exports": {
+        ".": [
+          {
+            "default": "./dist/walk.js",
+            "import": "./dist/walk.mjs",
+            "require": "./dist/walk.js"
+          },
+          "./dist/walk.js"
+        ],
+        "./package.json": "./package.json"
+      },
+      "homepage": "https://github.com/acornjs/acorn",
+      "license": "MIT",
+      "main": "dist/walk.js",
+      "maintainers": [
+        {
+          "email": "marijnh@gmail.com",
+          "name": "Marijn Haverbeke",
+          "web": "https://marijnhaverbeke.nl"
+        },
+        {
+          "email": "me@rreverser.com",
+          "name": "Ingvar Stepanyan",
+          "web": "https://rreverser.com/"
+        },
+        {
+          "name": "Adrian Heine",
+          "web": "http://adrianheine.de"
+        }
+      ],
+      "module": "dist/walk.mjs",
+      "name": "acorn-walk",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/acornjs/acorn.git"
+      },
+      "scripts": {
+        "prepare": "cd ..; npm run build:walk"
+      },
+      "types": "dist/walk.d.ts",
+      "version": "8.3.5"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 9793,
+      "sha256": "4ee2ff737c58ac95afb2969a3c6134ffc1e78a99e178e75ba54c602aa4d3ffcd"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -3,6 +3,7 @@
  * infer licenses, authenticate a producer, or qualify behavioral results. */
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
+import { isDeepStrictEqual } from "node:util";
 import {
   existsSync,
   lstatSync,
@@ -114,7 +115,7 @@ export function assembleReferencePublication({
   const { recipeSha256, ...semantic } = inputRecord.semantic ?? {};
   const current = createReferenceInputRecord(semantic);
   fact(
-    JSON.stringify(current) === JSON.stringify(inputRecord) &&
+    isDeepStrictEqual(current, inputRecord) &&
       recipeSha256 === current.semantic.recipeSha256 &&
       current.scope === "HOSTED_EXACT_IMAGE",
     "unqualified current native inputs",

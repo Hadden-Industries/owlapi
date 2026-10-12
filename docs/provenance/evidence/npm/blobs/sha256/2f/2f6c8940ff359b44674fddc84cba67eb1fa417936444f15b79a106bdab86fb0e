@@ -1,0 +1,185 @@
+{
+  "artifactId": "87ff16b83ca56bec182bd2be889d7e4a0a3ea1f6f6070dfafdf5c3b232a9ad3e",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3810,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.eslintrc",
+        "sha256": "e6a1231c8f071ae9a6dbb531e485b5dc1cbfdcb5c84c43c18b1c61182837d0cd",
+        "size": 132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "e6ce5e9e27435de1888df6b464c00ed0735c531c47b4daa138668d0a3e80cf3d",
+        "size": 601,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nycrc",
+        "sha256": "997785c50b0773e5e18bf15550fbf57823c634fefe623cd37b3c83696402ad0a",
+        "size": 139,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "0df426c4de6ac8822b122dc889e9c8862a32061f8b8871373a186b4058f2cc42",
+        "size": 1989,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "0f0ca96f50793990031ebc488a38f7292ff70bce8ab6a8e5eeda674abc32ccdf",
+        "size": 1067,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "3637266910242c0868e152ed41118f1201b73505ab775df903b6bc45fc07a6e9",
+        "size": 2287,
+        "type": "FILE"
+      },
+      {
+        "path": "package/browser.js",
+        "sha256": "f53f91e08e1243f1b20840f8b04079873987c4fc7b3ce4db29c3503268175fb4",
+        "size": 38,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "1d565122b3861c88d9c367fbe4f7ee5a1606429bcdec5a429129549abec2115c",
+        "size": 293,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "aef0ae2d21ae9181d8702c2063ce0ee274ba1063e5312e4baab5673aa6d4d5db",
+        "size": 1895,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "b80a3607ca19e18384059a67793a37d10772d7285d43abcece946a939db07528",
+        "size": 737,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1067,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/0f/0f0ca96f50793990031ebc488a38f7292ff70bce8ab6a8e5eeda674abc32ccdf",
+          "sha256": "0f0ca96f50793990031ebc488a38f7292ff70bce8ab6a8e5eeda674abc32ccdf"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "0f0ca96f50793990031ebc488a38f7292ff70bce8ab6a8e5eeda674abc32ccdf",
+        "size": 1067
+      },
+      {
+        "blob": {
+          "bytes": 2287,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/36/3637266910242c0868e152ed41118f1201b73505ab775df903b6bc45fc07a6e9",
+          "sha256": "3637266910242c0868e152ed41118f1201b73505ab775df903b6bc45fc07a6e9"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "3637266910242c0868e152ed41118f1201b73505ab775df903b6bc45fc07a6e9",
+        "size": 2287
+      }
+    ],
+    "expandedBytes": 9178,
+    "packageIdentity": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "homepage": "https://github.com/inspect-js/node-supports-preserve-symlinks-flag#readme",
+      "license": "MIT",
+      "name": "supports-preserve-symlinks-flag",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/node-supports-preserve-symlinks-flag.git"
+      },
+      "version": "1.0.0"
+    },
+    "packageMetadata": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "browser": "./browser.js",
+      "bugs": {
+        "url": "https://github.com/inspect-js/node-supports-preserve-symlinks-flag/issues"
+      },
+      "description": "Determine if the current node version supports the `--preserve-symlinks` flag.",
+      "devDependencies": {
+        "@ljharb/eslint-config": "^20.1.0",
+        "aud": "^1.1.5",
+        "auto-changelog": "^2.3.0",
+        "eslint": "^8.6.0",
+        "nyc": "^10.3.2",
+        "safe-publish-latest": "^2.0.0",
+        "semver": "^6.3.0",
+        "tape": "^5.4.0"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "exports": {
+        ".": [
+          {
+            "browser": "./browser.js",
+            "default": "./index.js"
+          },
+          "./index.js"
+        ],
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "homepage": "https://github.com/inspect-js/node-supports-preserve-symlinks-flag#readme",
+      "keywords": [
+        "node",
+        "flag",
+        "symlink",
+        "symlinks",
+        "preserve-symlinks"
+      ],
+      "license": "MIT",
+      "main": "./index.js",
+      "name": "supports-preserve-symlinks-flag",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/node-supports-preserve-symlinks-flag.git"
+      },
+      "scripts": {
+        "lint": "eslint --ext=js,mjs .",
+        "posttest": "aud --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only",
+        "tests-only": "nyc tape 'test/**/*.js'",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "sideEffects": false,
+      "version": "1.0.0"
+    },
+    "physicalEntryCount": 10,
+    "tarball": {
+      "bytes": 3810,
+      "sha256": "97da1160af5344534182e72502978374d20875d32c6071cd2dae997be604f7f9"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

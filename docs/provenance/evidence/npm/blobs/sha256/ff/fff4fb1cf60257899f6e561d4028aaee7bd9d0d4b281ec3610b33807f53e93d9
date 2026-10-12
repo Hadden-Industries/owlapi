@@ -1,0 +1,378 @@
+{
+  "artifactId": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 68410,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "0adcee8b9734247b3b836bc6c93096ac44c49ff6ca1a12f72eaf909ba1ad8489",
+        "size": 1073,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "42e14965bbfb90881feb2c4a932f3b0b755b57a5e4f719359e560bebb8f1ed11",
+        "size": 45199,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/regexp-tree",
+        "sha256": "ce4186def30b7f640e804419eb1565dbbbcbe13866ca59c1b47c563139bf96c5",
+        "size": 73,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/bin/regexp-tree.js",
+        "sha256": "df75f8f86dd23ea6e9e7d4e1f7e50df46c8a0aaa09e8718447cbbd876f7e0923",
+        "size": 560,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/compat-transpiler/index.js",
+        "sha256": "a66346cf8080d8061f69f3ffc844ed56f27c34ecc831ff5298beaad87651145b",
+        "size": 1471,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/compat-transpiler/runtime/index.js",
+        "sha256": "0ae54ab80482841ff0b490ba171e7df5bd9c325e634ba64355036540062a76cf",
+        "size": 3238,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/compat-transpiler/transforms/compat-dotall-s-transform.js",
+        "sha256": "138b84f2313d5030afc7e4ef54d92fb686ee1b442895c55e024a7cf1c5eab72b",
+        "size": 1354,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/compat-transpiler/transforms/compat-named-capturing-groups-transform.js",
+        "sha256": "88d4079ddb9d9d0d5eedb178ef2a5462a325e86e01472a4d94f3b1d1d96498ac",
+        "size": 1088,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/compat-transpiler/transforms/compat-x-flag-transform.js",
+        "sha256": "07108116da226784f1958988759776b15a0e1fed1d661d7a8afad36c20084ad7",
+        "size": 478,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/compat-transpiler/transforms/index.js",
+        "sha256": "ca1ea01e232e9fca69648845770f144e205df8d9bc93e3e065ebe8d7e446ff24",
+        "size": 388,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/generator/index.js",
+        "sha256": "cde48505eaeea163f2711ed37241617da3a2ed4579d623c1bef9807673180191",
+        "size": 4032,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/interpreter/finite-automaton/dfa/dfa-minimizer.js",
+        "sha256": "b2352f148763d8d2fcf04f10fd2155afbce292ffade6a9e9b0e57d71a3350774",
+        "size": 12415,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/interpreter/finite-automaton/dfa/dfa.js",
+        "sha256": "8cde9cf67d9027f4570fa2ca0ac5fe38d4ea5e405c113f25ffb2ac49b8f100ed",
+        "size": 11436,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/interpreter/finite-automaton/index.js",
+        "sha256": "8bb893414cc7b785bc1e6787af5ae3e8b0a57bbc6621dcd4012bd25f4d9a31da",
+        "size": 1150,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/interpreter/finite-automaton/nfa/builders.js",
+        "sha256": "ff2d4d439be432c26e34a19ccc521e51b965c812fd7ab30353ffc633165b5625",
+        "size": 5218,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/interpreter/finite-automaton/nfa/nfa-from-regexp.js",
+        "sha256": "753d96fcae22c2077a07f8ade964d161f363eef5fee1026c017000490751f8e7",
+        "size": 2268,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/interpreter/finite-automaton/nfa/nfa-state.js",
+        "sha256": "d6fded5ae97af8c9e31e00d083a6056ed5e1540448528d4ccaa72fe02ea0f9a2",
+        "size": 7605,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/interpreter/finite-automaton/nfa/nfa.js",
+        "sha256": "202e7e433fa59a9abfd0697ef9caf53fddfbe57169ae81db35b1260e9b030528",
+        "size": 7869,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/interpreter/finite-automaton/special-symbols.js",
+        "sha256": "1278a22a36da8276be287e0e634a2992690bdd534ffea7d8c5c3eda31076bbbc",
+        "size": 327,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/interpreter/finite-automaton/state.js",
+        "sha256": "b1e2bf0e9ec390e9144d806539c7bec426676aa30589b34b3b3713727136929d",
+        "size": 2290,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/optimizer/index.js",
+        "sha256": "9ad6a5494e65a4df357d1eb162f0241f4d84a62d2f8aea3406c49af4a89575cc",
+        "size": 2820,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/optimizer/transforms/char-case-insensitive-lowercase-transform.js",
+        "sha256": "462f5f85317197349532760ec28885bea275275b10a2c0550e12386889e84900",
+        "size": 3192,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/optimizer/transforms/char-class-classranges-merge-transform.js",
+        "sha256": "e928fb1715cfafaec931ee7b062733b30e89898336bf49661977a155eb577ff7",
+        "size": 10425,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/optimizer/transforms/char-class-classranges-to-chars-transform.js",
+        "sha256": "484a3a4fc979e9065438f52040f46cb6f4d244e1b0a1181cd4948a01313a4c06",
+        "size": 604,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/optimizer/transforms/char-class-remove-duplicates-transform.js",
+        "sha256": "38a3925c9dc21589efe6052170a1c9939b9ec3c09f3588019d1b343a1c080501",
+        "size": 702,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/optimizer/transforms/char-class-to-meta-transform.js",
+        "sha256": "cdfafc0fba0836cf31788955cdc504e136f67a4b4c16fabce9fc810413165c80",
+        "size": 5474,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/optimizer/transforms/char-class-to-single-char-transform.js",
+        "sha256": "327a9bbd9518923b1a1e66800333af90b36b3f65c5e16e21cc9097f373a1eae5",
+        "size": 2124,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/optimizer/transforms/char-code-to-simple-char-transform.js",
+        "sha256": "840432ec7947c094aaebb95d103dfadc8f35e6be46b7028e5fa6005ab9529db4",
+        "size": 2149,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/optimizer/transforms/char-escape-unescape-transform.js",
+        "sha256": "7e527fe64b6c4115880fa2f8596218adec0dd39fb0704b588fd8bee367608b2d",
+        "size": 3733,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/optimizer/transforms/char-surrogate-pair-to-single-unicode-transform.js",
+        "sha256": "fc14496c8e4c4ceb18f32dabe388b9e495cf6284121af14fb03b76ad4a1fbf62",
+        "size": 611,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/optimizer/transforms/combine-repeating-patterns-transform.js",
+        "sha256": "4c192ff2ebb1b5267acfac3ec3b9341460bd12f5b5245b8f72e5ca46acdc7fb5",
+        "size": 4991,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/optimizer/transforms/disjunction-remove-duplicates-transform.js",
+        "sha256": "87af51fa5d47423e1871227738533113fbe89dfe4120e9ae6c761cb92783bc2f",
+        "size": 1024,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/optimizer/transforms/group-single-chars-to-char-class.js",
+        "sha256": "03f33df8a3d0f1638c0b928b945b9fb0f9dd00276c727ed47827076f2a7f43d4",
+        "size": 1932,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/optimizer/transforms/index.js",
+        "sha256": "b644113af52f3f46f40d591064de6b418ecd7b246cc223ed3ddb0dcfbefac509",
+        "size": 1760,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/optimizer/transforms/quantifier-range-to-symbol-transform.js",
+        "sha256": "24e5635640cbb460de04d17b80e4108286b033ba3d9e67afa439e3b3bdf644ae",
+        "size": 1147,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/optimizer/transforms/quantifiers-merge-transform.js",
+        "sha256": "032e72b3a6b01c03f708c25ff20babb4a3a159df69e6f0882ed6caa376a0e83f",
+        "size": 2911,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/optimizer/transforms/remove-empty-group-transform.js",
+        "sha256": "dd69c38099ec2138bce84c4eb02dc9cd11731a998917930eb6dab77fc1db9ac9",
+        "size": 599,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/optimizer/transforms/ungroup-transform.js",
+        "sha256": "9a511aa666725752179f62802b55d7580a1fe46d12ac313c830b9491ce83c1eb",
+        "size": 2292,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/parser/generated/regexp-tree.js",
+        "sha256": "510924a052e96abe459a04ece1075d9813b55b5446c836d13d2b31fb9efb3cf4",
+        "size": 103316,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/parser/index.js",
+        "sha256": "d9bd844783d755b5bd38f9a9f6aee05ddcf4e9e03f0566631bb78e5c58e263a5",
+        "size": 741,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/parser/unicode/parser-unicode-properties.js",
+        "sha256": "3d319e9b287e23e1d4fcad6a1e9554078873e87597062ae06bc5c1a6969a9bc3",
+        "size": 9366,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/regexp-tree.js",
+        "sha256": "00c059f00431c526a8515dc23b5164aaea8d7c346f13e169cc054fe7b50bb9f0",
+        "size": 4415,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/transform/index.js",
+        "sha256": "f429821e6e786ef3c89bb854731371f998b788dacfa8763fdcc7ab22dda5c784",
+        "size": 3550,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/transform/utils.js",
+        "sha256": "c2f7e6c1530becc66460e088144c764bffb53cd89fd4422ff7ff9d871a8d4c2d",
+        "size": 1918,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/traverse/index.js",
+        "sha256": "c810a59dbe4f21af21e0be2aa8c383955c446cb6ec9f20d2930aa67aeb92dbb7",
+        "size": 9761,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/traverse/node-path.js",
+        "sha256": "975644001a1cc711fdffc714608d213c8285abda76636da1b6a4def3d17c6b0e",
+        "size": 11965,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/utils/clone.js",
+        "sha256": "df7e5ea20c711b0809519c6dd1203460017f4ca2f232748a0679e3af36182557",
+        "size": 524,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "7869e341021892d5c88474d44bcfd53c81dd10349e5d1a97c9ecb13a9ad0de76",
+        "size": 8949,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "c68abfc045d0065bc5482a0046b3225dd5a56a81fb7fd7ce302146cb69053f85",
+        "size": 172,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "151d1fdd1c94b432427ea4fe20b31f092210739ab94bf43bca4b4cddce35b916",
+        "size": 993,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1073,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/0a/0adcee8b9734247b3b836bc6c93096ac44c49ff6ca1a12f72eaf909ba1ad8489",
+          "sha256": "0adcee8b9734247b3b836bc6c93096ac44c49ff6ca1a12f72eaf909ba1ad8489"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "0adcee8b9734247b3b836bc6c93096ac44c49ff6ca1a12f72eaf909ba1ad8489",
+        "size": 1073
+      }
+    ],
+    "expandedBytes": 313692,
+    "packageIdentity": {
+      "author": "Dmitry Soshnikov",
+      "homepage": "https://github.com/DmitrySoshnikov/regexp-tree",
+      "license": "MIT",
+      "name": "regexp-tree",
+      "repository": "DmitrySoshnikov/regexp-tree",
+      "version": "0.1.27"
+    },
+    "packageMetadata": {
+      "author": "Dmitry Soshnikov",
+      "bin": {
+        "regexp-tree": "./bin/regexp-tree"
+      },
+      "bugs": "https://github.com/DmitrySoshnikov/regexp-tree/issues",
+      "description": "Regular Expressions parser in JavaScript",
+      "devDependencies": {
+        "babel-cli": "^6.26.0",
+        "babel-preset-env": "1.6.1",
+        "babel-preset-flow": "6.23.0",
+        "eslint": "^4.11.0",
+        "jest-cli": "^29.0.2",
+        "prettier": "^1.17.1",
+        "shelljs": "^0.8.5",
+        "syntax-cli": "^0.1.11"
+      },
+      "homepage": "https://github.com/DmitrySoshnikov/regexp-tree",
+      "keywords": [
+        "regexp",
+        "parser",
+        "AST",
+        "tree",
+        "JavaScript",
+        "ECMAScript"
+      ],
+      "license": "MIT",
+      "name": "regexp-tree",
+      "repository": "DmitrySoshnikov/regexp-tree",
+      "scripts": {
+        "build": "node ./scripts/build.js",
+        "eslint": "eslint ./src/ && eslint ./bin/regexp-tree",
+        "prepublish": "npm run build && npm test",
+        "test": "jest",
+        "watch": "node ./scripts/build.js --watch"
+      },
+      "version": "0.1.27"
+    },
+    "physicalEntryCount": 50,
+    "tarball": {
+      "bytes": 68410,
+      "sha256": "e2f950a1b2611ffd390d534045c8bb1b1c4ec7c6972b734ace208665b70386e0"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

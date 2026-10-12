@@ -1,0 +1,135 @@
+{
+  "artifactId": "d67d5b13f2bb5e18e29a34911ba84e944b01a2059a1faf139ddeee614e92a89b",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2876,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "dc6d5b2a8223af473c5eb8def03f853a5d57d31ac1ff43135f309182a5142dec",
+        "size": 1194,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "5487f0e843ec14ea72a4cc5c162349c9b3e7da3fb755090292eeb25b9237e2ad",
+        "size": 3387,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "6d65a3ffaf7e0a770b4019af76afb8db9352a70d3d03bc6d10016482503641de",
+        "size": 1029,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "a9c97be97f69fb95dc7613c79f4a1a2253978ab5fded782e8b9d7e4ab167f89e",
+        "size": 1328,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1117,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117
+      }
+    ],
+    "expandedBytes": 8055,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "global-directory",
+      "repository": "sindresorhus/global-directory",
+      "version": "4.0.1"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "dependencies": {
+        "ini": "4.1.1"
+      },
+      "description": "Get the directory of globally installed packages and binaries",
+      "devDependencies": {
+        "ava": "^5.3.1",
+        "execa": "^8.0.1",
+        "tsd": "^0.29.0",
+        "xo": "^0.56.0"
+      },
+      "engines": {
+        "node": ">=18"
+      },
+      "exports": {
+        "default": "./index.js",
+        "types": "./index.d.ts"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "funding": "https://github.com/sponsors/sindresorhus",
+      "keywords": [
+        "global",
+        "prefix",
+        "path",
+        "paths",
+        "npm",
+        "yarn",
+        "node",
+        "modules",
+        "node-modules",
+        "package",
+        "packages",
+        "binary",
+        "binaries",
+        "bin",
+        "directory",
+        "directories",
+        "npmrc",
+        "rc",
+        "config",
+        "root",
+        "resolve"
+      ],
+      "license": "MIT",
+      "name": "global-directory",
+      "repository": "sindresorhus/global-directory",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "version": "4.0.1"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2876,
+      "sha256": "c452ca61edd7a1c36b6d01cdcdfb609fc5f341ab99976c539d38c495f28a1747"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,187 @@
+{
+  "artifactId": "c3913dccd3014e40242655d4dc105282efc2400fe53a35caab69d34e3584fa2b",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 10253,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "912d77a6bfb98af94d75f4afe01487d173c592d8e90b262200d52f89ec00bf0b",
+        "size": 18435,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "5c496ce5ae47eb8e5ddcaa5e29c27c446a3855b19e3a66991b52f361bed22b28",
+        "size": 1078,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "06095186b4da1fdc49205d25938cb694a658811e0cc89a4742e83e261467361d",
+        "size": 2658,
+        "type": "FILE"
+      },
+      {
+        "path": "package/core.json",
+        "sha256": "acec3b2dfd60e743592f015e6d87fad85a57a2d532ff60546b20750851b4341e",
+        "size": 6073,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "863ec1f10cf597c968b9d4869b6dc1a9dfa697e7dab03d3e10fb83cf985b3d7b",
+        "size": 377,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "1ef75b5126cfc5720c4a4ce7e07d5c65c217fc3bff1df67284d1faa676a32a40",
+        "size": 2102,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "81a8a96ac71ffeaa488ec2352e64afd4e669b527e2129086d85164d50f896122",
+        "size": 2345,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1078,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5c496ce5ae47eb8e5ddcaa5e29c27c446a3855b19e3a66991b52f361bed22b28",
+          "sha256": "5c496ce5ae47eb8e5ddcaa5e29c27c446a3855b19e3a66991b52f361bed22b28"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "5c496ce5ae47eb8e5ddcaa5e29c27c446a3855b19e3a66991b52f361bed22b28",
+        "size": 1078
+      },
+      {
+        "blob": {
+          "bytes": 2658,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/06/06095186b4da1fdc49205d25938cb694a658811e0cc89a4742e83e261467361d",
+          "sha256": "06095186b4da1fdc49205d25938cb694a658811e0cc89a4742e83e261467361d"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "06095186b4da1fdc49205d25938cb694a658811e0cc89a4742e83e261467361d",
+        "size": 2658
+      }
+    ],
+    "expandedBytes": 33068,
+    "packageIdentity": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "homepage": "https://github.com/inspect-js/is-core-module",
+      "license": "MIT",
+      "name": "is-core-module",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/is-core-module.git"
+      },
+      "version": "2.17.0"
+    },
+    "packageMetadata": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "bugs": {
+        "url": "https://github.com/inspect-js/is-core-module/issues"
+      },
+      "dependencies": {
+        "hasown": "^2.0.4"
+      },
+      "description": "Is this specifier a node.js core module?",
+      "devDependencies": {
+        "@arethetypeswrong/cli": "^0.18.5",
+        "@ljharb/eslint-config": "^22.2.4",
+        "@ljharb/tsconfig": "^0.3.2",
+        "@types/node": "^26.6.1",
+        "@types/object-keys": "^1.0.3",
+        "@types/semver": "^6.2.7",
+        "auto-changelog": "^2.6.1",
+        "eslint": "^10.10.0",
+        "in-publish": "^2.0.1",
+        "jiti": "^0.0.0",
+        "mock-property": "^1.1.2",
+        "npmignore": "^0.3.5",
+        "nyc": "^10.3.2",
+        "object-keys": "^1.1.1",
+        "safe-publish-latest": "^2.0.0",
+        "semver": "^6.3.1",
+        "tape": "^5.10.2",
+        "typescript": "next"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "exports": {
+        ".": "./index.js",
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "homepage": "https://github.com/inspect-js/is-core-module",
+      "keywords": [
+        "core",
+        "modules",
+        "module",
+        "npm",
+        "node",
+        "dependencies"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "is-core-module",
+      "publishConfig": {
+        "ignore": [
+          ".github",
+          ".nycrc",
+          "eslint.config.mjs",
+          "tsconfig.json",
+          "test"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/is-core-module.git"
+      },
+      "scripts": {
+        "dependencies": "node -p \"process.env.npm_command\" | npx \"dt-clean@^1.2.2\" --auto",
+        "lint": "eslint .",
+        "postlint": "tsc -p . && attw -P",
+        "posttest": "npx npm@'>=10.2' audit --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only",
+        "tests-only": "nyc tape 'test/**/*.js'",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "sideEffects": false,
+      "types": "./index.d.ts",
+      "version": "2.17.0"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 10253,
+      "sha256": "cd58136125b52514f55031b7e8529a68f357b633e90f99b4804b733a89dfe271"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

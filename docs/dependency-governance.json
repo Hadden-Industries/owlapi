@@ -1,18 +1,19 @@
 {
   "$schema": "./dependency-governance.schema.json",
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "package": {
     "name": "@hadden-industries/owlapi",
     "version": "0.1.0-rc.2"
   },
   "recordedOn": "2026-09-30",
   "review": {
-    "status": "REVIEWED",
-    "factsSha256": "efec60094b6d98b3168d79d87abdc29f13372098b4c74e9d06029e132eb630a8",
-    "reviewer": "Maksym Shostak",
-    "reviewedOn": "2026-10-10",
-    "capacity": "Project maintainer, identified original contributor and accountable release owner",
-    "conclusion": "Approved the current digest-bound rights and dependency records and release of the exact rc.2 artifact SHA-256 4f04d1456519fb75f23da51fce5174af0d4909ec7ea647cae2f4c9f4dc77b441 by direct human instruction in Codex session 01a12138-f264-7b50-9365-91c88701e54b. No external legal advice or approval of changed facts is inferred."
+    "status": "PENDING_HUMAN_REVIEW",
+    "factsSha256": "5de13e8423e0eaf0e8d95e3e46f9d69c6a2a22b625066b9a832a39e0e77e66a3",
+    "reviewer": null,
+    "reviewedOn": null,
+    "capacity": null,
+    "conclusion": null,
+    "digestAlgorithm": "sha256-sorted-json-v1"
   },
   "productionAudit": {
     "performedOn": "2026-09-30",

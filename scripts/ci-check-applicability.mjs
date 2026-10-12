@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { appendFileSync, readFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { readGitSnapshot } from "./ci-verification-command.mjs";
+import { canonicalJson } from "./canonical-json.mjs";
 
 /** These two retained reviews are narrative evidence, excluded from the native npm package.
  * Source-quality tooling references only their names for ignore-policy checks; Java and
@@ -22,7 +23,7 @@ export const APPLICABILITY_POLICY = Object.freeze({
 const sha = (value) =>
   typeof value === "string" && /^[a-f0-9]{40}$/u.test(value);
 const fingerprint = (value) =>
-  createHash("sha256").update(JSON.stringify(value)).digest("hex");
+  createHash("sha256").update(canonicalJson(value)).digest("hex");
 const policyFingerprint = fingerprint(APPLICABILITY_POLICY);
 const checks = ["java", "owl_contract"];
 const maximumGitBytes = 4 * 1024 * 1024;

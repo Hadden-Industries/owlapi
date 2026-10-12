@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://haddenindustries.com/schemas/owlapi/rights-inventory.v1.schema.json",
+  "$id": "https://haddenindustries.com/schemas/owlapi/rights-inventory.v2.schema.json",
   "title": "owlapi tarball rights inventory",
   "type": "object",
   "additionalProperties": false,
@@ -16,14 +16,20 @@
     "conclusion"
   ],
   "properties": {
-    "$schema": { "const": "./rights-inventory.schema.json" },
-    "schemaVersion": { "const": 1 },
+    "$schema": {
+      "const": "./rights-inventory.schema.json"
+    },
+    "schemaVersion": {
+      "const": 2
+    },
     "package": {
       "type": "object",
       "additionalProperties": false,
       "required": ["name", "version", "repository", "scopeAuthority"],
       "properties": {
-        "name": { "enum": ["owlapi", "@hadden-industries/owlapi"] },
+        "name": {
+          "enum": ["owlapi", "@hadden-industries/owlapi"]
+        },
         "version": {
           "type": "string",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
@@ -39,13 +45,20 @@
             "method": {
               "const": "npm pack --dry-run --json plus local source-byte hashing"
             },
-            "fileCount": { "type": "integer", "minimum": 1 },
-            "sourceManifestSha256": { "$ref": "#/$defs/sha256" }
+            "fileCount": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "sourceManifestSha256": {
+              "$ref": "#/$defs/sha256"
+            }
           }
         }
       }
     },
-    "review": { "$ref": "#/$defs/review" },
+    "review": {
+      "$ref": "#/$defs/review"
+    },
     "contributors": {
       "type": "array",
       "minItems": 1,
@@ -61,15 +74,32 @@
           "evidence"
         ],
         "properties": {
-          "name": { "type": "string", "minLength": 1 },
-          "identity": { "type": "string", "minLength": 1 },
-          "role": { "type": "string", "minLength": 1 },
-          "copyrightStatement": { "type": "string", "minLength": 1 },
-          "licence": { "const": "AGPL-3.0-only" },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "identity": {
+            "type": "string",
+            "minLength": 1
+          },
+          "role": {
+            "type": "string",
+            "minLength": 1
+          },
+          "copyrightStatement": {
+            "type": "string",
+            "minLength": 1
+          },
+          "licence": {
+            "const": "AGPL-3.0-only"
+          },
           "evidence": {
             "type": "array",
             "minItems": 1,
-            "items": { "type": "string", "minLength": 1 }
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
           }
         }
       }
@@ -92,7 +122,10 @@
           "rationale"
         ],
         "properties": {
-          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9.-]*$" },
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9.-]*$"
+          },
           "relationship": {
             "enum": [
               "PROJECT_OWNED",
@@ -104,14 +137,34 @@
             "type": "array",
             "minItems": 1,
             "uniqueItems": true,
-            "items": { "type": "string", "minLength": 1 }
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
           },
-          "packageTarball": { "const": true },
-          "rightsHolder": { "type": "string", "minLength": 1 },
-          "licenceBasis": { "type": "string", "minLength": 1 },
-          "source": { "type": "string", "minLength": 1 },
-          "distributionAuthority": { "type": "string", "minLength": 1 },
-          "rationale": { "type": "string", "minLength": 1 }
+          "packageTarball": {
+            "const": true
+          },
+          "rightsHolder": {
+            "type": "string",
+            "minLength": 1
+          },
+          "licenceBasis": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1
+          },
+          "distributionAuthority": {
+            "type": "string",
+            "minLength": 1
+          },
+          "rationale": {
+            "type": "string",
+            "minLength": 1
+          }
         }
       }
     },
@@ -125,19 +178,29 @@
         "noticeRule"
       ],
       "properties": {
-        "bundled": { "const": false },
+        "bundled": {
+          "const": false
+        },
         "authority": {
           "const": "docs/provenance/third-party-material.json"
         },
-        "inventoryFactsSha256": { "$ref": "#/$defs/sha256" },
-        "noticeRule": { "type": "string", "minLength": 1 }
+        "inventoryFactsSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "noticeRule": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
     "unresolvedExternalContributions": {
       "type": "array",
       "maxItems": 0
     },
-    "conclusion": { "type": "string", "minLength": 1 }
+    "conclusion": {
+      "type": "string",
+      "minLength": 1
+    }
   },
   "$defs": {
     "sha256": {
@@ -145,7 +208,15 @@
       "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
     },
     "nullableNonemptyString": {
-      "oneOf": [{ "type": "string", "minLength": 1 }, { "type": "null" }]
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
     },
     "review": {
       "type": "object",
@@ -156,40 +227,93 @@
         "reviewer",
         "reviewedOn",
         "capacity",
-        "conclusion"
+        "conclusion",
+        "digestAlgorithm"
       ],
       "properties": {
-        "status": { "enum": ["PENDING_HUMAN_REVIEW", "REVIEWED"] },
-        "factsSha256": { "$ref": "#/$defs/sha256" },
-        "reviewer": { "$ref": "#/$defs/nullableNonemptyString" },
-        "reviewedOn": {
-          "oneOf": [{ "type": "string", "format": "date" }, { "type": "null" }]
+        "status": {
+          "enum": ["PENDING_HUMAN_REVIEW", "REVIEWED"]
         },
-        "capacity": { "$ref": "#/$defs/nullableNonemptyString" },
-        "conclusion": { "$ref": "#/$defs/nullableNonemptyString" }
+        "factsSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "reviewer": {
+          "$ref": "#/$defs/nullableNonemptyString"
+        },
+        "reviewedOn": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "capacity": {
+          "$ref": "#/$defs/nullableNonemptyString"
+        },
+        "conclusion": {
+          "$ref": "#/$defs/nullableNonemptyString"
+        },
+        "digestAlgorithm": {
+          "const": "sha256-sorted-json-v1",
+          "description": "SHA-256 of recursively key-sorted JSON, two-space indentation and final LF; array order remains significant."
+        }
       },
       "allOf": [
         {
           "if": {
-            "properties": { "status": { "const": "PENDING_HUMAN_REVIEW" } }
+            "properties": {
+              "status": {
+                "const": "PENDING_HUMAN_REVIEW"
+              }
+            }
           },
           "then": {
             "properties": {
-              "reviewer": { "type": "null" },
-              "reviewedOn": { "type": "null" },
-              "capacity": { "type": "null" },
-              "conclusion": { "type": "null" }
+              "reviewer": {
+                "type": "null"
+              },
+              "reviewedOn": {
+                "type": "null"
+              },
+              "capacity": {
+                "type": "null"
+              },
+              "conclusion": {
+                "type": "null"
+              }
             }
           }
         },
         {
-          "if": { "properties": { "status": { "const": "REVIEWED" } } },
+          "if": {
+            "properties": {
+              "status": {
+                "const": "REVIEWED"
+              }
+            }
+          },
           "then": {
             "properties": {
-              "reviewer": { "type": "string", "minLength": 1 },
-              "reviewedOn": { "type": "string", "format": "date" },
-              "capacity": { "type": "string", "minLength": 1 },
-              "conclusion": { "type": "string", "minLength": 1 }
+              "reviewer": {
+                "type": "string",
+                "minLength": 1
+              },
+              "reviewedOn": {
+                "type": "string",
+                "format": "date"
+              },
+              "capacity": {
+                "type": "string",
+                "minLength": 1
+              },
+              "conclusion": {
+                "type": "string",
+                "minLength": 1
+              }
             }
           }
         }

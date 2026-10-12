@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { isDeepStrictEqual } from "node:util";
 import { relative } from "node:path";
 import { assertOwlContractCoverage } from "./owl-contract-evidence.mjs";
+import { canonicalJson } from "./canonical-json.mjs";
 
 /** Independently reviewed live assertions in the two environment-gated suites.
  * Native Jest capture at 76350128 confirms all 23 names. Updating a live group
@@ -50,7 +51,7 @@ export const JAVA_LIVE_INVENTORY = Object.freeze(
   ),
 );
 export const evidenceFingerprint = (value) =>
-  createHash("sha256").update(JSON.stringify(value)).digest("hex");
+  createHash("sha256").update(canonicalJson(value)).digest("hex");
 const expectedJava = JAVA_LIVE_INVENTORY.flatMap(({ file, group, names }) =>
   names.map((name) => ({
     file,

@@ -422,6 +422,17 @@ test("partial reruns retain successful prerequisites and the original publicatio
 });
 
 describe("release evidence", () => {
+  test("accepts reordered parsed asset members while still binding actual asset facts", () => {
+    const reordered = structuredClone(facts);
+    reordered.githubRelease.assets = reordered.githubRelease.assets.map(
+      (asset) => Object.fromEntries(Object.entries(asset).reverse()),
+    );
+    expect(buildReleaseEvidence(JSON.parse(JSON.stringify(reordered)))).toEqual(
+      buildReleaseEvidence(facts),
+    );
+    reordered.githubRelease.assets[0].bytes++;
+    expect(() => buildReleaseEvidence(reordered)).toThrow(/assets differ/u);
+  });
   test("combines the successful qualification and promotion jobs", () => {
     const sourceJobs = [
       {

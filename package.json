@@ -150,7 +150,9 @@
     "test:markdown": "node --test scripts/markdown-quality.probes.mjs scripts/dependency-security-markdown.probes.mjs",
     "inspect:md": "npm --prefix tooling/markdown run inspect --",
     "qualify:md": "npm --prefix tooling/markdown run qualify --",
-    "install:markdown": "npm ci --prefix tooling/markdown --ignore-scripts --no-audit --no-fund"
+    "install:markdown": "npm ci --prefix tooling/markdown --ignore-scripts --no-audit --no-fund",
+    "graph:dependencies": "node scripts/dependency-graph.mjs",
+    "verify:architecture": "node scripts/dependency-graph.mjs --check-runtime"
   },
   "dependencies": {
     "@hyperjump/uri": "1.3.6",
@@ -170,6 +172,7 @@
     "ajv": ">=8.20.0",
     "ajv-formats": ">=3.0.1",
     "cross-env": ">=10.1.0",
+    "dependency-cruiser": ">=18.6.0",
     "eslint": ">=10.12.0",
     "eslint-config-prettier": ">=10.1.8",
     "eslint-plugin-compat": ">=7.0.2",

@@ -1,6 +1,6 @@
 {
   "$schema": "./rights-inventory.schema.json",
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "package": {
     "name": "@hadden-industries/owlapi",
     "version": "0.1.0-rc.2",
@@ -8,16 +8,17 @@
     "scopeAuthority": {
       "method": "npm pack --dry-run --json plus local source-byte hashing",
       "fileCount": 157,
-      "sourceManifestSha256": "b4e79c9b9006861de2ea9d211cfd7eb4acb33a341d15e95737cb3bbd5f6c93ce"
+      "sourceManifestSha256": "ee891b305c096b86c0edca97e86b57610637834a2b29a0d14cb4735234311f6b"
     }
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "c45ce66ec3fb4f4097b710ea3836aedb1097d5532789f70bf002de69c5d131db",
+    "factsSha256": "0115101d3dafd53adc548e96891d4022435585e667438bad0cb2fba6d161f54d",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
-    "conclusion": null
+    "conclusion": null,
+    "digestAlgorithm": "sha256-sorted-json-v1"
   },
   "contributors": [
     {
@@ -114,7 +115,7 @@
   "externalDependencies": {
     "bundled": false,
     "authority": "docs/provenance/third-party-material.json",
-    "inventoryFactsSha256": "d924f2dc90b201376d1a1c247d0fa2732fe7acf484c88986ae588b8ac73ef701",
+    "inventoryFactsSha256": "eca398f3c5c439d86eaf5178f4dbd358c1abe4d1e13c2b4146b3688170fac9cc",
     "noticeRule": "Ordinary npm dependencies are installed separately and remain under their own licences. Their licence texts are not copied into the owlapi tarball merely because they appear in the installed dependency graph."
   },
   "unresolvedExternalContributions": [],

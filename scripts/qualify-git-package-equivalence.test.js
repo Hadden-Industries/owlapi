@@ -9,6 +9,7 @@ import { execFileSync } from "node:child_process";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { crc32, deflateRawSync, gzipSync } from "node:zlib";
+import { canonicalJson } from "./canonical-json.mjs";
 
 import * as qualification from "./qualify-git-package-equivalence.mjs";
 import {
@@ -72,7 +73,7 @@ const ACCEPTED_NPM_CONFIGURATION = {
 };
 
 const canonicalDigest = (value) =>
-  sha256Buffer(Buffer.from(`${JSON.stringify(value)}\n`, "utf8"));
+  sha256Buffer(Buffer.from(`${canonicalJson(value)}\n`, "utf8"));
 
 const tarEntry = (name, content) => {
   const body = Buffer.from(content);

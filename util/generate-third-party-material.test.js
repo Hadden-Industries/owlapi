@@ -89,7 +89,7 @@ describe("third-party-material prospective generation", () => {
       expect(result.stderr).toBe("");
       const prospective = JSON.parse(readFileSync(prospectivePath, "utf8"));
       expect(prospective).toMatchObject({
-        schemaVersion: 2,
+        schemaVersion: 3,
         review: {
           status: "PENDING_HUMAN_REVIEW",
         },

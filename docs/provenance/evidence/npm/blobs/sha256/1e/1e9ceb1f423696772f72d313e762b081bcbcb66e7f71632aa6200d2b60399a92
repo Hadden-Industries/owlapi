@@ -1,0 +1,130 @@
+{
+  "artifactId": "0a0484299614e0248275b341139f199f24530da1ab5ba54ac6cb127778301a2d",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3005,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "343de85491dfca3719878bfa063e00c0a8522fc23991995d93a7b7b9d3763d68",
+        "size": 1080,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "d466e1b5d49bda69512f5dd697a7be1762ed5fc75205847e99bc14c0d4b3c950",
+        "size": 1062,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/acorn-jsx-walk.js",
+        "sha256": "f8b7ed7935ab2f532362d255f3e7e77408c158d4a6aae1b2b3381a8374a61b24",
+        "size": 4267,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/acorn-jsx-walk.mjs",
+        "sha256": "9cf7deb03d027221d49cfec5f0e8ba92b4c289c7a78fc6d88967928470b88fe4",
+        "size": 3716,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "1243e7d64f08d761ff4d455624f0ee19550b6e176155a67856f723876ae93798",
+        "size": 1181,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1080,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/34/343de85491dfca3719878bfa063e00c0a8522fc23991995d93a7b7b9d3763d68",
+          "sha256": "343de85491dfca3719878bfa063e00c0a8522fc23991995d93a7b7b9d3763d68"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "343de85491dfca3719878bfa063e00c0a8522fc23991995d93a7b7b9d3763d68",
+        "size": 1080
+      },
+      {
+        "blob": {
+          "bytes": 1062,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d4/d466e1b5d49bda69512f5dd697a7be1762ed5fc75205847e99bc14c0d4b3c950",
+          "sha256": "d466e1b5d49bda69512f5dd697a7be1762ed5fc75205847e99bc14c0d4b3c950"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "d466e1b5d49bda69512f5dd697a7be1762ed5fc75205847e99bc14c0d4b3c950",
+        "size": 1062
+      }
+    ],
+    "expandedBytes": 11306,
+    "packageIdentity": {
+      "author": "Julian Lloyd <me@jlmak.es>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "acorn-jsx-walk",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/sderosiaux/acorn-jsx-walk.git"
+      },
+      "version": "2.0.0"
+    },
+    "packageMetadata": {
+      "author": "Julian Lloyd <me@jlmak.es>",
+      "description": "JSX support for Acorn Walk",
+      "devDependencies": {
+        "acorn": "^6.1.1",
+        "acorn-jsx": "^5.0.1",
+        "acorn-walk": "^6.1.1",
+        "chai": "^4.2.0",
+        "eslint": "^5.15.1",
+        "mocha": "^6.0.2",
+        "reify": "^0.18.1",
+        "rimraf": "^2.5.2",
+        "rollup": "^1.5.0",
+        "rollup-plugin-buble": "^0.19.6",
+        "rollup-plugin-json": "^3.1.0",
+        "rollup-plugin-node-resolve": "^4.0.1"
+      },
+      "files": [
+        "dist"
+      ],
+      "keywords": [
+        "acorn",
+        "jsx",
+        "walk",
+        "parse"
+      ],
+      "license": "MIT",
+      "main": "dist/acorn-jsx-walk.js",
+      "module": "dist/acorn-jsx-walk.mjs",
+      "name": "acorn-jsx-walk",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/sderosiaux/acorn-jsx-walk.git"
+      },
+      "scripts": {
+        "build": "./node_modules/rollup/bin/rollup -c ./build/rollup.conf.js",
+        "lint": "./node_modules/eslint/bin/eslint.js src test",
+        "prebuild": "rimraf dist",
+        "prepublish": "npm test && npm run build",
+        "pretest": "rimraf .reify-cache/ && npm run lint",
+        "test": "mocha -r reify test/**/*.spec.js",
+        "testing": "npm test -- --watch"
+      },
+      "version": "2.0.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 3005,
+      "sha256": "0673d6c734cd4ac4973e2f6afc4967571a48e78ee721cf89930483c98945a445"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

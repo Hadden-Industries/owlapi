@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { canonicalJson } from "../../scripts/canonical-json.mjs";
 import {
   existsSync,
   linkSync,
@@ -26,7 +27,7 @@ const save = () => {
   const bytes = JSON.stringify(manifest);
   writeFileSync(join(bundle, "manifest.json"), bytes);
   expected.manifestSha256 = digest(bytes);
-  expected.inventorySha256 = digest(JSON.stringify(manifest.inventory));
+  expected.inventorySha256 = digest(canonicalJson(manifest.inventory));
 };
 const verify = () =>
   verifyReferenceBundle({ bundleDirectory: bundle, expected });
@@ -94,6 +95,23 @@ test("relocates admitted bytes and notices in exact original classpath order", (
   expect(readFileSync(join(scratch, "restored/manifest.json"))).toEqual(
     readFileSync(join(bundle, "manifest.json")),
   );
+});
+
+test("accepts reordered inventory members with the independently retained semantic digest", () => {
+  manifest.inventory = manifest.inventory.map(({ path, bytes, sha256 }) => ({
+    sha256,
+    bytes,
+    path,
+  }));
+  const serialized = JSON.stringify(manifest);
+  writeFileSync(join(bundle, "manifest.json"), serialized);
+  expected.manifestSha256 = digest(serialized);
+  expect(verify().jarCount).toBe(2);
+  manifest.inventory[0].bytes += 1;
+  const changed = JSON.stringify(manifest);
+  writeFileSync(join(bundle, "manifest.json"), changed);
+  expected.manifestSha256 = digest(changed);
+  expect(verify).toThrow("independent input identity");
 });
 
 test.each([

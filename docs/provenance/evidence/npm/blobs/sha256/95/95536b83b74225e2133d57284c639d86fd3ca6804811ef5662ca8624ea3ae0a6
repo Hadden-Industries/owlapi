@@ -1,0 +1,755 @@
+{
+  "artifactId": "6a82b76a0e2ab356cab72ac5a574da1fa30c589d81f6d237657a65663ae13f40",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 32777,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.editorconfig",
+        "sha256": "e0247d08e5620896f5bb511e10840f0caefa8ca7bffa0c5d281df1c0b55838fc",
+        "size": 654,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.eslintrc",
+        "sha256": "60da8289d2ef68f09299f390951ad12e89945a816cfcc118beca78e5942d5b95",
+        "size": 1687,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "8782905aa6bfaf730fb964ce168a0befcb012546784d4519a8342b2989aa5e0b",
+        "size": 578,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/INCIDENT_RESPONSE_PROCESS.md",
+        "sha256": "a9b2778ae696feee39b39e972f857c43308bac5aac5adb3390724ee3b5e27798",
+        "size": 3768,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/THREAT_MODEL.md",
+        "sha256": "224d4c0a0d296f9c67daf4c4b182a3eb9586e86c6167f497856f9fac9774fb01",
+        "size": 4244,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "60acd7711e6c138e6041836e32d922705254cc1568a30fdf16aa8f59bb87aeaa",
+        "size": 1071,
+        "type": "FILE"
+      },
+      {
+        "path": "package/SECURITY.md",
+        "sha256": "f7fef07b999aa229efae5fba0c3952b1ad815bfcca09a31b4d1e6de38af878ba",
+        "size": 384,
+        "type": "FILE"
+      },
+      {
+        "path": "package/async.js",
+        "sha256": "30d9986bdca6c456b803c4577913bc27b93b110aa7300bffb85254452067708d",
+        "size": 56,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/resolve",
+        "sha256": "38bfe8e320fb462083ff58d54aee6fc4cc2db9baef9ce9f88830652d55863e8b",
+        "size": 1535,
+        "type": "FILE"
+      },
+      {
+        "path": "package/eslint.config.mjs",
+        "sha256": "e16015d7421bcbfdbb304ded28ea2233cc213a90458b889c26bbf3f67af2b8a8",
+        "size": 1575,
+        "type": "FILE"
+      },
+      {
+        "path": "package/example/async.js",
+        "sha256": "39a9d5f97b6536b991b74f9ad5661b45819b2ae37c051af8d8c627e4c5f7bef7",
+        "size": 155,
+        "type": "FILE"
+      },
+      {
+        "path": "package/example/sync.js",
+        "sha256": "2e101fc3a627afd2c65c4c616a8927f61ad3a79cd566bd41fbdfa0400077ba69",
+        "size": 103,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "4952fa49a809ad740f6d9b6a1c1e9a9c93777f37b03efd253291ff68753a56b8",
+        "size": 174,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/async.js",
+        "sha256": "fba51744290eea716e1ddc179ed5b8865de5e55ce31c567c17e01a2f9c0ee6e5",
+        "size": 11550,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/caller.js",
+        "sha256": "1faea7ab3ce8c3eee7a5d647dfd6b7f0c91022a00e62cec54c948b7845f75004",
+        "size": 409,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/core.js",
+        "sha256": "5583c4b415d7390f2edbab4aa18e10b58096b4e773c03a00055e6c7ed7a31f2d",
+        "size": 309,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/core.json",
+        "sha256": "acec3b2dfd60e743592f015e6d87fad85a57a2d532ff60546b20750851b4341e",
+        "size": 6073,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/homedir.js",
+        "sha256": "5386cdb8c25db5c991091338c013a297fc67eb9b29ba9135c7f82c23b481f457",
+        "size": 956,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/is-core.js",
+        "sha256": "9e8f47a3ab41debd52aee46f12d5c1fcbac0e47703950dca9fc3567a5270738e",
+        "size": 116,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/node-modules-paths.js",
+        "sha256": "5e615db3c990b5169838a5a03fe9ced6180bf5c03fe68e18b095068a0829a289",
+        "size": 1339,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/normalize-options.js",
+        "sha256": "88db22b3239f92484b70acadf2b4c786c7117af191c0efe46d17fdda9e40743a",
+        "size": 348,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/sync.js",
+        "sha256": "101a84f2f3c085c567b7c76de1c20db113735a3d2b9de9ffa4f6bca33b3ae633",
+        "size": 7169,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "4e925ace386310ea77e3bb0221bd2caf7d7faea8fc9c9cca5090ed4559c75eab",
+        "size": 2119,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.markdown",
+        "sha256": "edad6c934decf678cddb85c10a15fc948d60457444d78984883213ac6eb0607e",
+        "size": 11552,
+        "type": "FILE"
+      },
+      {
+        "path": "package/sync.js",
+        "sha256": "48bf4ce0175e835cbfb3af9f4f848d9d839f9e9997587f175629a963283598d8",
+        "size": 55,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/core.js",
+        "sha256": "48bf903e7651308ccd673f433613a3801465ee65fa035f5eb1f507c4ad630dec",
+        "size": 3058,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/default_paths.js",
+        "sha256": "a5f8b66bd73caf39b59186ea82e14a3e5b66693f9cc2714633851c79816579ec",
+        "size": 1618,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/dotdot.js",
+        "sha256": "31bb7415309643a9ddaa8d4eca81523a5bfae167cb151fc39c0a875aa158ac1d",
+        "size": 799,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/dotdot/abc/index.js",
+        "sha256": "917f64ff1ac7e88b7c2c2aca1135c2cd99e894435838dd00e22a2c59121ffc42",
+        "size": 39,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/dotdot/index.js",
+        "sha256": "5299b6d1d00c7598bf5b580015b2722ccc9b2673956cc153f61ccbbc33beabdf",
+        "size": 29,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/faulty_basedir.js",
+        "sha256": "7fd0c45c47f3957f31389a2ecfa98ea0d983836939b4a52b52a917b46f34d36d",
+        "size": 807,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/filter.js",
+        "sha256": "d7e51d8820e3a919fd34ede446ad58ab2325578aab1d34e2132783e3b8c9eaf7",
+        "size": 1045,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/filter_sync.js",
+        "sha256": "0c381bfb2ec51f3916a376eb9f8b9d92c2b58ea7fb025172d51dfae3fdb96d5a",
+        "size": 1427,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/home_paths.js",
+        "sha256": "2216ba3cff8c16d7a603bd7f3afecd14ac889367195dd58534e29ea7fce89003",
+        "size": 4472,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/home_paths_sync.js",
+        "sha256": "a1b8fd06f59a85c2c35b9bd110994d454cb126ab3891bf45bf56d3f8c11ddf0b",
+        "size": 3797,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/homedir.js",
+        "sha256": "4632ff172892f0089ac04c8439df8f4b36d624d34d0d936f0a692d0e66687b9c",
+        "size": 3141,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/mock.js",
+        "sha256": "1fedae270b2fa18a3ca5f769b19d37897bc7f7eddeda98999f671006df5fc534",
+        "size": 11200,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/mock_sync.js",
+        "sha256": "0e0ee5bd3efe5eacfab3f887d6ebc7e232364a987a6246c9cd92ff827b517d7d",
+        "size": 6589,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/module_dir.js",
+        "sha256": "084a0f83f8baaff0a918aa47f2eb4187251529ecd72ece0b4ba200d33e1e019a",
+        "size": 1558,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/module_dir/xmodules/aaa/index.js",
+        "sha256": "9657125da658e9e0648e767d59d0773338b03623e4b238e698d456d336e4c94c",
+        "size": 51,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/module_dir/ymodules/aaa/index.js",
+        "sha256": "f092f74d8eec199aa40a944e96f546a786f7cbbfef5890388235c4ff5669d2cf",
+        "size": 51,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/module_dir/zmodules/bbb/main.js",
+        "sha256": "652198c18778572c922370c55c49c80b49b0587c2c7cd24df17678040c767320",
+        "size": 51,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/module_dir/zmodules/bbb/package.json",
+        "sha256": "be4c48fbcb9bcbed4019785e1b14f5150416acb00bff12442366826901555e05",
+        "size": 24,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/node-modules-paths.js",
+        "sha256": "7bb5cee27a9397dddfcf6479dd42b39740dd341731fbb1bc3d8579bbdc8c1e7d",
+        "size": 5057,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/node_path.js",
+        "sha256": "9107398b734da097531bdca48f2de2051be7e2f1748932727a14d553fad4c0f1",
+        "size": 2120,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/node_path/x/aaa/index.js",
+        "sha256": "92be6c1033b349f698beb024661077b8dc35cb8826f1e5b6472d1d666101b9f5",
+        "size": 22,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/node_path/x/ccc/index.js",
+        "sha256": "bda6764a35f67532924c2947792d43607077c432a80fb6eeaeacb5b6c2cb2dfc",
+        "size": 22,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/node_path/y/bbb/index.js",
+        "sha256": "55a5eb25cf5c91fe763958cc3a458eb42e45cbbc858efd597a41883add1bf69a",
+        "size": 22,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/node_path/y/ccc/index.js",
+        "sha256": "4d70e15bf4fe8e869e6239ef6a99e6fcf36abe7d02c39308877c4e185edcd85d",
+        "size": 23,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/nonstring.js",
+        "sha256": "df9d05dc6ec0090b937b6d5c8863c4a7d138ae154c4ede95c0f19d5457772e78",
+        "size": 182,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/pathfilter.js",
+        "sha256": "bfd895a3a2e938652d30c3f79514c6d5b49502eb5bfc39d961bcf36cbcc45939",
+        "size": 2240,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/pathfilter/deep_ref/main.js",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/pathfilter_sync.js",
+        "sha256": "ece353fbd24896f87c44fe8c223eee8af2dc9433803e1a4ddb3aed6c22ecec50",
+        "size": 901,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/precedence.js",
+        "sha256": "b7da2ea305e663e33d3613cf5c4436b16266a6717136a2bb82a6c225b2c7af4e",
+        "size": 646,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/precedence/aaa.js",
+        "sha256": "a49a7ae6beb9fb73f1507aacb3365e395d1d18a60790339d2fcb421163f26db2",
+        "size": 24,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/precedence/aaa/index.js",
+        "sha256": "fa5a75012753e5d2f448af1c8e63a7f3abf7fa4a418828c443e7b764851999d7",
+        "size": 25,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/precedence/aaa/main.js",
+        "sha256": "05ca0b0aef5b62bfba0f0ac42fcf14760d9d1c229df959272bf6f3e6020a741a",
+        "size": 28,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/precedence/bbb.js",
+        "sha256": "2186281fc4410287717bd80f49b0625c4b89180b7daaca8e1d396dd02c019a7d",
+        "size": 24,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/precedence/bbb/main.js",
+        "sha256": "62aa79a4ed27edce24f74298b0ccb28597f08bdecf71dbbc22bc45cfbd9efc9f",
+        "size": 44,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver.js",
+        "sha256": "ac5c9acb8b8cdf08a4c6909109f691e338637cb8baf67204d02022004a5d9438",
+        "size": 20054,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/baz/doom.js",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/baz/package.json",
+        "sha256": "cd33f816f635bcf9cdbe5a13d877bc8901a1a90819b1d73c16b35b6cdbebecaf",
+        "size": 45,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/baz/quux.js",
+        "sha256": "6e66e366f0aefb84ad8110afcd9b2245702c643c831edf8316ff048fec739d2e",
+        "size": 20,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/browser_field/a.js",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/browser_field/b.js",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/browser_field/package.json",
+        "sha256": "2857c211f81109bda6a96584f2e7a1ac5610baa0f67bbc77f7e766c4152281f4",
+        "size": 63,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/cup.coffee",
+        "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "size": 1,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/dot_main/index.js",
+        "sha256": "6e66e366f0aefb84ad8110afcd9b2245702c643c831edf8316ff048fec739d2e",
+        "size": 20,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/dot_main/package.json",
+        "sha256": "c16316c71a38c66c3cf13c48f52324c8f488337a89fd129884e8c9b3f1d65e1c",
+        "size": 20,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/dot_slash_main/index.js",
+        "sha256": "6e66e366f0aefb84ad8110afcd9b2245702c643c831edf8316ff048fec739d2e",
+        "size": 20,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/dot_slash_main/package.json",
+        "sha256": "f7d5b70847ddd6e2b385f38cba5bdc31a366b1883ffa0e986141543b7e598a53",
+        "size": 21,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/false_main/index.js",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/false_main/package.json",
+        "sha256": "064d9e3c87123a24e31276d1bcfce16b81bb2156d42c07f427b8ddcbf675f790",
+        "size": 42,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/foo.js",
+        "sha256": "6e66e366f0aefb84ad8110afcd9b2245702c643c831edf8316ff048fec739d2e",
+        "size": 20,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/incorrect_main/index.js",
+        "sha256": "056299c0c1ceda95624a055ec624f796a5b2e83a859e9315909d3132b6af4d71",
+        "size": 116,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/incorrect_main/package.json",
+        "sha256": "ac00da5e934b8bd9d1e077f2ab20bf434c4efe0f507276cf60e755649a0de383",
+        "size": 27,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/invalid_main/package.json",
+        "sha256": "ed30bf3c22be924be67b278ed079ba425dd0ae37110d7027bf9369f771abcb36",
+        "size": 93,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/mug.coffee",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/mug.js",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/multirepo/lerna.json",
+        "sha256": "9845b6f52c3ecb04e3ca5e18553a47c83dd8e692f48702ecc03ecff99ad654f7",
+        "size": 63,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/multirepo/package.json",
+        "sha256": "ec13311cdf8e7ba462d94656a0f2f90c55b290dc1ad6f7e82da2d3b140c27f20",
+        "size": 387,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/multirepo/packages/package-a/index.js",
+        "sha256": "f1cebc8b2be364cdef965682af898847d5120582a9cad954dd042dc2269cc74e",
+        "size": 1319,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/multirepo/packages/package-a/package.json",
+        "sha256": "ab5dbb7f635d5474648e5ac92df08020b60d0d91a68a740e46186587e05d3da3",
+        "size": 281,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/multirepo/packages/package-b/index.js",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/multirepo/packages/package-b/package.json",
+        "sha256": "f41fd8ba3d2df58d7d1658be4c77d11d07285fab1e94a6c8151b3548c6f0a8aa",
+        "size": 281,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/nested_symlinks/mylib/async.js",
+        "sha256": "379908f90bd2f53c644fee9d86415d931374181296e36bc60ed5cbe2388c64d6",
+        "size": 846,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/nested_symlinks/mylib/package.json",
+        "sha256": "41ea23c25ff8e7080ab08d38a9f5de9ab986280902f7268de45bc0a5b7e9e028",
+        "size": 259,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/nested_symlinks/mylib/sync.js",
+        "sha256": "5d4d74edf8eeb719bf2e40ddde566ac581cea8807b1d4c15b18c75cf1ae7d9ac",
+        "size": 606,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/other_path/lib/other-lib.js",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/other_path/root.js",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/quux/foo/index.js",
+        "sha256": "6e66e366f0aefb84ad8110afcd9b2245702c643c831edf8316ff048fec739d2e",
+        "size": 20,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/same_names/foo.js",
+        "sha256": "1737ef29ba647e558b55fccbdaebad1b5737bc2528f166d42d062e240a25c766",
+        "size": 21,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/same_names/foo/index.js",
+        "sha256": "6e66e366f0aefb84ad8110afcd9b2245702c643c831edf8316ff048fec739d2e",
+        "size": 20,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/symlinked/_/node_modules/foo.js",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/symlinked/_/symlink_target/.gitkeep",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/symlinked/package/bar.js",
+        "sha256": "f5013f841e8f78fc67b6fa1e6ef8b299ffa04192066a7e62b266d84a656cbbcc",
+        "size": 24,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/symlinked/package/package.json",
+        "sha256": "8caed21b350cd172328e10dd2000a1d786e2d59768a5a73d250ba7e518acb5c2",
+        "size": 24,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver/without_basedir/main.js",
+        "sha256": "cdbd3521451c090349184834b2c4b937f0a486f144fbd9e7c10d203ec87852e2",
+        "size": 111,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolver_sync.js",
+        "sha256": "3c5ffbff3801f448d1a2601786acb95e7967b375a7dd23a40c5842ce3bae4310",
+        "size": 20921,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/shadowed_core.js",
+        "sha256": "d9dac7834975814a4572bcc59effb3d3022f748876104903938bdd03777dc2d3",
+        "size": 1814,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/shadowed_core/node_modules/util/index.js",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/subdirs.js",
+        "sha256": "69e89b07dd922f37caecb129c6edde3a92156b04b2975fdc1310fadd3cc10a21",
+        "size": 353,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/symlinks.js",
+        "sha256": "cb8a2a7b38c09b62b278ce3bf0faf79de5e55249138ae57f785fce80c1b9bcf2",
+        "size": 6535,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1071,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/60/60acd7711e6c138e6041836e32d922705254cc1568a30fdf16aa8f59bb87aeaa",
+          "sha256": "60acd7711e6c138e6041836e32d922705254cc1568a30fdf16aa8f59bb87aeaa"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "60acd7711e6c138e6041836e32d922705254cc1568a30fdf16aa8f59bb87aeaa",
+        "size": 1071
+      },
+      {
+        "blob": {
+          "bytes": 11552,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ed/edad6c934decf678cddb85c10a15fc948d60457444d78984883213ac6eb0607e",
+          "sha256": "edad6c934decf678cddb85c10a15fc948d60457444d78984883213ac6eb0607e"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.markdown",
+        "sha256": "edad6c934decf678cddb85c10a15fc948d60457444d78984883213ac6eb0607e",
+        "size": 11552
+      }
+    ],
+    "expandedBytes": 163562,
+    "packageIdentity": {
+      "author": {
+        "email": "mail@substack.net",
+        "name": "James Halliday",
+        "url": "http://substack.net"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "resolve",
+      "repository": {
+        "type": "git",
+        "url": "ssh://github.com/browserify/resolve.git"
+      },
+      "version": "1.22.13"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "mail@substack.net",
+        "name": "James Halliday",
+        "url": "http://substack.net"
+      },
+      "bin": {
+        "resolve": "./bin/resolve"
+      },
+      "dependencies": {
+        "es-errors": "^1.3.0",
+        "is-core-module": "^2.17.0",
+        "path-parse": "^1.0.7",
+        "supports-preserve-symlinks-flag": "^1.0.0"
+      },
+      "description": "resolve like require.resolve() on behalf of files asynchronously and synchronously",
+      "devDependencies": {
+        "@ljharb/eslint-config": "^22.2.5",
+        "array.prototype.map": "^1.0.8",
+        "copy-dir": "^1.3.0",
+        "eclint": "^2.8.1",
+        "eslint": "^10.12.0",
+        "in-publish": "^2.0.1",
+        "jiti": "^0.0.0",
+        "mkdirp": "^0.5.6",
+        "mv": "^2.1.1",
+        "npmignore": "^0.3.5",
+        "object-keys": "^1.1.1",
+        "rimraf": "^2.7.1",
+        "safe-publish-latest": "^2.0.0",
+        "semver": "^6.3.1",
+        "tap": "^0.4.13",
+        "tape": "^5.10.2",
+        "tmp": "^0.0.31"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "keywords": [
+        "resolve",
+        "require",
+        "node",
+        "module"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "resolve",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows",
+          "appveyor.yml",
+          "CONTRIBUTING.md",
+          "test/resolver/malformed_package_json",
+          "test/list-exports"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "ssh://github.com/browserify/resolve.git"
+      },
+      "scripts": {
+        "lint": "eslint .",
+        "posttest": "npm run test:multirepo && npx npm@'>= 10.2' audit --production",
+        "prelint": "eclint check $(git ls-files | grep -Ev test\\/list-exports$ | xargs find 2> /dev/null | grep -vE 'node_modules|\\.git')",
+        "prepack": "npmignore --auto --commentLines=autogenerated && cp node_modules/is-core-module/core.json ./lib/ ||:",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "pretests-only": "cd ./test/resolver/nested_symlinks && node mylib/sync && node mylib/async",
+        "test": "npm run --silent tests-only",
+        "test:multirepo": "cd ./test/resolver/multirepo && npm install && npm test",
+        "tests-only": "tape test/*.js"
+      },
+      "version": "1.22.13"
+    },
+    "physicalEntryCount": 103,
+    "tarball": {
+      "bytes": 32777,
+      "sha256": "06e23bca048b4502161be79dbc3e4403a3bb7ab6dc8e56555db92cbfc6a0e885"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

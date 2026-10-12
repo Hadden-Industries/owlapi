@@ -1,0 +1,4086 @@
+{
+  "artifactId": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 50,
+      "digestVerifiedFileCount": 50,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 50
+    },
+    "artifactId": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "1.6.1",
+        "for_package_purl": "pkg:npm/regexp-tree@0.1.27",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/babel-preset-env",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "6.23.0",
+        "for_package_purl": "pkg:npm/regexp-tree@0.1.27",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/babel-preset-flow",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.1.11",
+        "for_package_purl": "pkg:npm/regexp-tree@0.1.27",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/syntax-cli",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.8.5",
+        "for_package_purl": "pkg:npm/regexp-tree@0.1.27",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/shelljs",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.17.1",
+        "for_package_purl": "pkg:npm/regexp-tree@0.1.27",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/prettier",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^29.0.2",
+        "for_package_purl": "pkg:npm/regexp-tree@0.1.27",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/jest-cli",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.11.0",
+        "for_package_purl": "pkg:npm/regexp-tree@0.1.27",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/eslint",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^6.26.0",
+        "for_package_purl": "pkg:npm/regexp-tree@0.1.27",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/babel-cli",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "Dmitry Soshnikov",
+            "end_line": 27,
+            "start_line": 27
+          }
+        ],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 4,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/package.json",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "  \"license\": \"MIT\",",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_30.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+                "score": 100,
+                "start_line": 4
+              }
+            ]
+          }
+        ],
+        "md5": "78ac14c22b9da653be5260b733cdbbc7",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/regexp-tree/0.1.27",
+            "bug_tracking_url": "https://github.com/DmitrySoshnikov/regexp-tree/issues",
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "mit",
+            "declared_license_expression_spdx": "MIT",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "1.6.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/babel-preset-env",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "6.23.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/babel-preset-flow",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.1.11",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/syntax-cli",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.8.5",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/shelljs",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.17.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/prettier",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^29.0.2",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/jest-cli",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.11.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/eslint",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^6.26.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/babel-cli",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              }
+            ],
+            "description": "Regular Expressions parser in JavaScript",
+            "download_url": "https://registry.npmjs.org/regexp-tree/-/regexp-tree-0.1.27.tgz",
+            "extra_data": {},
+            "extracted_license_statement": "- MIT\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": "https://github.com/DmitrySoshnikov/regexp-tree",
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [
+              "AST",
+              "ECMAScript",
+              "JavaScript",
+              "parser",
+              "regexp",
+              "tree"
+            ],
+            "license_detections": [
+              {
+                "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/package.json",
+                    "license_expression": "mit",
+                    "license_expression_spdx": "MIT",
+                    "match_coverage": 100,
+                    "matched_length": 1,
+                    "matched_text": "MIT",
+                    "matcher": "1-spdx-id",
+                    "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+                    "rule_relevance": 100,
+                    "rule_url": null,
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "regexp-tree",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": null,
+                "name": "Dmitry Soshnikov",
+                "role": "author",
+                "type": "person",
+                "url": null
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/regexp-tree@0.1.27",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/regexp-tree/-/regexp-tree-0.1.27.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/regexp-tree",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "https://github.com/DmitrySoshnikov/regexp-tree",
+            "version": "0.1.27"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 1.72,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "70cf692e1170e2af2984d139c8c99c8d3ef9644b",
+        "sha1_git": "0df7cbb56ed49ace958809a9d9735ea7193892e1",
+        "sha256": "151d1fdd1c94b432427ea4fe20b31f092210739ab94bf43bca4b4cddce35b916",
+        "size": 993,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017 Dmitry Soshnikov",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": "",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-ac40beba-5702-f54d-755f-333441314bb0",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "MIT License",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 1
+              },
+              {
+                "end_line": 21,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 161,
+                "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+                "score": 100,
+                "start_line": 5
+              }
+            ]
+          }
+        ],
+        "md5": "5d06bd44b61726e8ad570f35d48bf36a",
+        "name": "LICENSE",
+        "package_data": [],
+        "path": "package/LICENSE",
+        "percentage_of_license_text": 97.02,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "98c476a8624b2afbb2561d27b4a943969a630427",
+        "sha1_git": "bdfc66245de3ac842e46a4c91a8f2f63eacfcb37",
+        "sha256": "0adcee8b9734247b3b836bc6c93096ac44c49ff6ca1a12f72eaf909ba1ad8489",
+        "size": 1073,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "03b50e18cb1e1dd246db1e3ce8f4431a",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "e9124f71044b3560358c679c6ed4a6d11ef69dad",
+        "sha1_git": "34e1e67a56bb821bd1ed6e9432dbd88e1e91c735",
+        "sha256": "42e14965bbfb90881feb2c4a932f3b0b755b57a5e4f719359e560bebb8f1ed11",
+        "size": 45199,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "builders",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/interpreter/finite-automaton/nfa/builders.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "d809c7ee4627ba1cb3858cbfd402bd83",
+        "name": "builders.js",
+        "package_data": [],
+        "path": "package/dist/interpreter/finite-automaton/nfa/builders.js",
+        "percentage_of_license_text": 0.78,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "378ce81af2b621eea02fac2eb8fb4e1c370b3935",
+        "sha1_git": "3892071210884c2c1e5a83afb7d8f1d79a3af73f",
+        "sha256": "ff2d4d439be432c26e34a19ccc521e51b965c812fd7ab30353ffc633165b5625",
+        "size": 5218,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "char-case-insensitive-lowercase-transform",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/optimizer/transforms/char-case-insensitive-lowercase-transform.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "60e86cbc4e68952a4726c0fdef8e7e94",
+        "name": "char-case-insensitive-lowercase-transform.js",
+        "package_data": [],
+        "path": "package/dist/optimizer/transforms/char-case-insensitive-lowercase-transform.js",
+        "percentage_of_license_text": 1.08,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "5df81556f2edc9b0243997d00997794630c56f53",
+        "sha1_git": "323e1fe3bde00889fdcb67ef12e7212ccc096992",
+        "sha256": "462f5f85317197349532760ec28885bea275275b10a2c0550e12386889e84900",
+        "size": 3192,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "char-class-classranges-merge-transform",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/optimizer/transforms/char-class-classranges-merge-transform.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "8c714f55e60ffc1ebbf6f36f639871b1",
+        "name": "char-class-classranges-merge-transform.js",
+        "package_data": [],
+        "path": "package/dist/optimizer/transforms/char-class-classranges-merge-transform.js",
+        "percentage_of_license_text": 0.37,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "beb87779ac4016c7731c85d6a077875eb8dc9095",
+        "sha1_git": "369c613020c6c564ff10863ae743cd3be358e773",
+        "sha256": "e928fb1715cfafaec931ee7b062733b30e89898336bf49661977a155eb577ff7",
+        "size": 10425,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "char-class-classranges-to-chars-transform",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/optimizer/transforms/char-class-classranges-to-chars-transform.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "7623a2e1474101203140e81b5a2f22a3",
+        "name": "char-class-classranges-to-chars-transform.js",
+        "package_data": [],
+        "path": "package/dist/optimizer/transforms/char-class-classranges-to-chars-transform.js",
+        "percentage_of_license_text": 5.48,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "17127c08c4bad24afd0a82ab950b8137a67392e8",
+        "sha1_git": "128dc684c72970389233604297d66ce5b75ed2a4",
+        "sha256": "484a3a4fc979e9065438f52040f46cb6f4d244e1b0a1181cd4948a01313a4c06",
+        "size": 604,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "char-class-remove-duplicates-transform",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/optimizer/transforms/char-class-remove-duplicates-transform.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "7c52d7aaac41bc7fdc9dcdc1c66c5d3e",
+        "name": "char-class-remove-duplicates-transform.js",
+        "package_data": [],
+        "path": "package/dist/optimizer/transforms/char-class-remove-duplicates-transform.js",
+        "percentage_of_license_text": 5.06,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "62bbba9ce452904f0f3a688ddeb1ed35a260e5b6",
+        "sha1_git": "61b51e813c4635f62a607dcdbab4222c3be3ab91",
+        "sha256": "38a3925c9dc21589efe6052170a1c9939b9ec3c09f3588019d1b343a1c080501",
+        "size": 702,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "char-class-to-meta-transform",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/optimizer/transforms/char-class-to-meta-transform.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "34a4473a2cb065debb2ed6b0331df3c1",
+        "name": "char-class-to-meta-transform.js",
+        "package_data": [],
+        "path": "package/dist/optimizer/transforms/char-class-to-meta-transform.js",
+        "percentage_of_license_text": 0.68,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "03beb44dc4a2a711a2223cfd6861e636e68f7acb",
+        "sha1_git": "54d3470dde4429211e42ff2495a48878631d9d52",
+        "sha256": "cdfafc0fba0836cf31788955cdc504e136f67a4b4c16fabce9fc810413165c80",
+        "size": 5474,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "char-class-to-single-char-transform",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/optimizer/transforms/char-class-to-single-char-transform.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "03edfd4f648ecea08f6ff87017e57df2",
+        "name": "char-class-to-single-char-transform.js",
+        "package_data": [],
+        "path": "package/dist/optimizer/transforms/char-class-to-single-char-transform.js",
+        "percentage_of_license_text": 1.75,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "b82e54af5e2c98b36e8b69220920e7da7d80680f",
+        "sha1_git": "13de612ae6724f980b487a9bfa7c8949daa66dff",
+        "sha256": "327a9bbd9518923b1a1e66800333af90b36b3f65c5e16e21cc9097f373a1eae5",
+        "size": 2124,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "char-code-to-simple-char-transform",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/optimizer/transforms/char-code-to-simple-char-transform.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "a03edf64ebb27b14457ebce8295460b2",
+        "name": "char-code-to-simple-char-transform.js",
+        "package_data": [],
+        "path": "package/dist/optimizer/transforms/char-code-to-simple-char-transform.js",
+        "percentage_of_license_text": 1.58,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "1585c49485868f52a0fa1d6a90bc9333183cad5e",
+        "sha1_git": "e3a1f4883edb73e25bf7fc609ceaa6b19496ef9a",
+        "sha256": "840432ec7947c094aaebb95d103dfadc8f35e6be46b7028e5fa6005ab9529db4",
+        "size": 2149,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "char-escape-unescape-transform",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/optimizer/transforms/char-escape-unescape-transform.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "653475307649626b5fe753d46f51022d",
+        "name": "char-escape-unescape-transform.js",
+        "package_data": [],
+        "path": "package/dist/optimizer/transforms/char-escape-unescape-transform.js",
+        "percentage_of_license_text": 1.1,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "2beda116e8b2a70d0b216838cff935f812c42c20",
+        "sha1_git": "cd43c314b9d0bb18d0c24207416838cb8cd92ed7",
+        "sha256": "7e527fe64b6c4115880fa2f8596218adec0dd39fb0704b588fd8bee367608b2d",
+        "size": 3733,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "char-surrogate-pair-to-single-unicode-transform",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/optimizer/transforms/char-surrogate-pair-to-single-unicode-transform.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "64dcaabae3b3cdeec66486df6f459217",
+        "name": "char-surrogate-pair-to-single-unicode-transform.js",
+        "package_data": [],
+        "path": "package/dist/optimizer/transforms/char-surrogate-pair-to-single-unicode-transform.js",
+        "percentage_of_license_text": 5.63,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "167478841e4ca2162805aa7efbad4ff26c241cbc",
+        "sha1_git": "a39a090cc654e0e30959468c14ccdc78ec7b33c0",
+        "sha256": "fc14496c8e4c4ceb18f32dabe388b9e495cf6284121af14fb03b76ad4a1fbf62",
+        "size": 611,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "clone",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/utils/clone.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "985786d99f2b374d39ea90466146841b",
+        "name": "clone.js",
+        "package_data": [],
+        "path": "package/dist/utils/clone.js",
+        "percentage_of_license_text": 5.8,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "afd9f419945e4c4c4d2a31165978ba58acba2f80",
+        "sha1_git": "8c7cfbd0c0321c76b0e8e38c59510a71f2873651",
+        "sha256": "df7e5ea20c711b0809519c6dd1203460017f4ca2f232748a0679e3af36182557",
+        "size": 524,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "combine-repeating-patterns-transform",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/optimizer/transforms/combine-repeating-patterns-transform.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "e9ae8a383294046fd05d8c800f0765b7",
+        "name": "combine-repeating-patterns-transform.js",
+        "package_data": [],
+        "path": "package/dist/optimizer/transforms/combine-repeating-patterns-transform.js",
+        "percentage_of_license_text": 0.78,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "6518168e86c506cff3f77487c150da37d07e040f",
+        "sha1_git": "a1d1bf055b97b2d345e7bb42f277ab3f1ff3beae",
+        "sha256": "4c192ff2ebb1b5267acfac3ec3b9341460bd12f5b5245b8f72e5ca46acdc7fb5",
+        "size": 4991,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "compat-dotall-s-transform",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/compat-transpiler/transforms/compat-dotall-s-transform.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "bc3cdf795abb865aeea68b3f32431ada",
+        "name": "compat-dotall-s-transform.js",
+        "package_data": [],
+        "path": "package/dist/compat-transpiler/transforms/compat-dotall-s-transform.js",
+        "percentage_of_license_text": 2.76,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "87280bf57515a947324b40c6c08e1e80994f0f71",
+        "sha1_git": "28dd0031d90f523b351f292afc27647f56d4cad2",
+        "sha256": "138b84f2313d5030afc7e4ef54d92fb686ee1b442895c55e024a7cf1c5eab72b",
+        "size": 1354,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "compat-named-capturing-groups-transform",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/compat-transpiler/transforms/compat-named-capturing-groups-transform.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "5a59610af04359841f2d0fcb093aba88",
+        "name": "compat-named-capturing-groups-transform.js",
+        "package_data": [],
+        "path": "package/dist/compat-transpiler/transforms/compat-named-capturing-groups-transform.js",
+        "percentage_of_license_text": 3.2,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "4b740b50d02721b8fe2631c8f2d901c14c9e0301",
+        "sha1_git": "81c8c0a5d64ca22bffdd14dedaacc2c2c2817a62",
+        "sha256": "88d4079ddb9d9d0d5eedb178ef2a5462a325e86e01472a4d94f3b1d1d96498ac",
+        "size": 1088,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "compat-x-flag-transform",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/compat-transpiler/transforms/compat-x-flag-transform.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "103ef62865580f87c0307f9ff3198fb0",
+        "name": "compat-x-flag-transform.js",
+        "package_data": [],
+        "path": "package/dist/compat-transpiler/transforms/compat-x-flag-transform.js",
+        "percentage_of_license_text": 6.45,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "687f0680df17d7e4e759a44e564693b51166c4f3",
+        "sha1_git": "ad12df04d6ecef7c57c5ecf97b9f7631b35f7cec",
+        "sha256": "07108116da226784f1958988759776b15a0e1fed1d661d7a8afad36c20084ad7",
+        "size": 478,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "dfa",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/interpreter/finite-automaton/dfa/dfa.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "d85497d66c5af7564cdc12c3fe959827",
+        "name": "dfa.js",
+        "package_data": [],
+        "path": "package/dist/interpreter/finite-automaton/dfa/dfa.js",
+        "percentage_of_license_text": 0.46,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "25f30608104b42c02731f5db172e1cb6bf2ffba6",
+        "sha1_git": "489276a9218fef0287fce99f34d7bf699cda8bd0",
+        "sha256": "8cde9cf67d9027f4570fa2ca0ac5fe38d4ea5e405c113f25ffb2ac49b8f100ed",
+        "size": 11436,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "dfa-minimizer",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/interpreter/finite-automaton/dfa/dfa-minimizer.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "ae725a82481d89206ecbea1c82ba7ac1",
+        "name": "dfa-minimizer.js",
+        "package_data": [],
+        "path": "package/dist/interpreter/finite-automaton/dfa/dfa-minimizer.js",
+        "percentage_of_license_text": 0.35,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "8f47d886c3daf699fb9d2f063cedbd15bcfd69a1",
+        "sha1_git": "4fc2e7f40d14af6a056d3740bd29324545932f10",
+        "sha256": "b2352f148763d8d2fcf04f10fd2155afbce292ffade6a9e9b0e57d71a3350774",
+        "size": 12415,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "disjunction-remove-duplicates-transform",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/optimizer/transforms/disjunction-remove-duplicates-transform.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "9396ad011546a670e9271b800c36c168",
+        "name": "disjunction-remove-duplicates-transform.js",
+        "package_data": [],
+        "path": "package/dist/optimizer/transforms/disjunction-remove-duplicates-transform.js",
+        "percentage_of_license_text": 3.92,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "074154e92dd9ce5afd80d1e709219b7f9a8cc5a5",
+        "sha1_git": "05b44dbb1597c2d7a416220247849fc0bdedec14",
+        "sha256": "87af51fa5d47423e1871227738533113fbe89dfe4120e9ae6c761cb92783bc2f",
+        "size": 1024,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "group-single-chars-to-char-class",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/optimizer/transforms/group-single-chars-to-char-class.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "e661443da5835304da5f9f9042ed1e97",
+        "name": "group-single-chars-to-char-class.js",
+        "package_data": [],
+        "path": "package/dist/optimizer/transforms/group-single-chars-to-char-class.js",
+        "percentage_of_license_text": 2.01,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "b49e64d64f90154664c72067ff8b53ab805a48cd",
+        "sha1_git": "761f1f10cf80e1a2d35157af72abb2206a11a1ce",
+        "sha256": "03f33df8a3d0f1638c0b928b945b9fb0f9dd00276c727ed47827076f2a7f43d4",
+        "size": 1932,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/compat-transpiler/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "2d377a31c55cd13d5afdf4df3ba23062",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/dist/compat-transpiler/index.js",
+        "percentage_of_license_text": 2.78,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "ddc4a959a74bd501cd374e20a4a709ec666c49e6",
+        "sha1_git": "20cb84053d0d792aeb55c057eeefbeb04877c340",
+        "sha256": "a66346cf8080d8061f69f3ffc844ed56f27c34ecc831ff5298beaad87651145b",
+        "size": 1471,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/compat-transpiler/runtime/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "2074a4f37c820277d76c34a7444117e0",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/dist/compat-transpiler/runtime/index.js",
+        "percentage_of_license_text": 1.16,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "038ca3f53e4151561d10deb21d2fbb296bf62dda",
+        "sha1_git": "542465dff0c7e0f47d081f535ac10ce9152e4b87",
+        "sha256": "0ae54ab80482841ff0b490ba171e7df5bd9c325e634ba64355036540062a76cf",
+        "size": 3238,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/compat-transpiler/transforms/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "f2d8a9059ace32937d5ff6cfd389a9c8",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/dist/compat-transpiler/transforms/index.js",
+        "percentage_of_license_text": 8.89,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "1aaa58271ef32017137e4a5cf2d8f853f80310e3",
+        "sha1_git": "72720c148db711df1df22cea9b6cdcf3d0b838a2",
+        "sha256": "ca1ea01e232e9fca69648845770f144e205df8d9bc93e3e065ebe8d7e446ff24",
+        "size": 388,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/generator/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "56978954070b0333ac43a14ea170fe4e",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/dist/generator/index.js",
+        "percentage_of_license_text": 1.09,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "c2ce3d689315e587c5d4d5b003365f08419b3538",
+        "sha1_git": "4f863ff3fee84c7bb66299666016a00d51a1a566",
+        "sha256": "cde48505eaeea163f2711ed37241617da3a2ed4579d623c1bef9807673180191",
+        "size": 4032,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/interpreter/finite-automaton/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "e123aaab2585c1d0f2211085c958f89b",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/dist/interpreter/finite-automaton/index.js",
+        "percentage_of_license_text": 3.03,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "e789edd02be873a944cfed957d0ed469ab9c81eb",
+        "sha1_git": "f7bf2b92ca13c908a894863dee27164171e78a42",
+        "sha256": "8bb893414cc7b785bc1e6787af5ae3e8b0a57bbc6621dcd4012bd25f4d9a31da",
+        "size": 1150,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/optimizer/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "a5871bd0f84ea5618350c118126df0d6",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/dist/optimizer/index.js",
+        "percentage_of_license_text": 1.4,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "3869d40454b3ba32c5b97d202edbdaa6c9a7b960",
+        "sha1_git": "e30ceebb9298022c757535e6b211c5e684273c70",
+        "sha256": "9ad6a5494e65a4df357d1eb162f0241f4d84a62d2f8aea3406c49af4a89575cc",
+        "size": 2820,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/optimizer/transforms/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "d9a980861074049383fa3178cef05507",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/dist/optimizer/transforms/index.js",
+        "percentage_of_license_text": 2.35,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "b1719fd303b1c7c5cdcef6118d08648e035ef79e",
+        "sha1_git": "35bbef4832ccd08ada2529e54e453e52ffc8ffe7",
+        "sha256": "b644113af52f3f46f40d591064de6b418ecd7b246cc223ed3ddb0dcfbefac509",
+        "size": 1760,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/parser/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "983f9a6509b612c26e8ea73651aa7ecf",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/dist/parser/index.js",
+        "percentage_of_license_text": 5.06,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "08326b56a9142abdc335fe55013cce2eb46f103a",
+        "sha1_git": "a2ea111752eca0475ca0f3e66cbaba825c36e409",
+        "sha256": "d9bd844783d755b5bd38f9a9f6aee05ddcf4e9e03f0566631bb78e5c58e263a5",
+        "size": 741,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/transform/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "3454eaef7c439f769c3907f465903820",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/dist/transform/index.js",
+        "percentage_of_license_text": 1.18,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "0353eff422e376557dd1e97989ef63c08b3051db",
+        "sha1_git": "25decd90a566b1ef7ba76928bf877766e1f63dab",
+        "sha256": "f429821e6e786ef3c89bb854731371f998b788dacfa8763fdcc7ab22dda5c784",
+        "size": 3550,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/traverse/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "63df722529795d651040c02dc4ea1916",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/dist/traverse/index.js",
+        "percentage_of_license_text": 0.44,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "c74be41628d4894433762f4a73e4acc0f089b7e7",
+        "sha1_git": "17ad91c8533f6d8e8e1ee245212a043e3425e31b",
+        "sha256": "c810a59dbe4f21af21e0be2aa8c383955c446cb6ec9f20d2930aa67aeb92dbb7",
+        "size": 9761,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "321116413c6831db95a9c4123750420c",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/index.js",
+        "percentage_of_license_text": 18.18,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "2f4c982d8d608c782ca607f804b4488f5cfab9dd",
+        "sha1_git": "bef5407da5017dc7c6b1a9cdd5592beb9bb9d1a6",
+        "sha256": "c68abfc045d0065bc5482a0046b3225dd5a56a81fb7fd7ce302146cb69053f85",
+        "size": 172,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "0e296bb3fb99cdc556a5bc8324a1850d",
+        "name": "index.d.ts",
+        "package_data": [],
+        "path": "package/index.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "ceb63a63b9ae53adbf90b528ab179badaa550e18",
+        "sha1_git": "4bb0e8b49e560af76c74f6899e5ec06400f36e37",
+        "sha256": "7869e341021892d5c88474d44bcfd53c81dd10349e5d1a97c9ecb13a9ad0de76",
+        "size": 8949,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "nfa",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/interpreter/finite-automaton/nfa/nfa.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "e1aa8b17b0bfedfbaaf0744599e68f52",
+        "name": "nfa.js",
+        "package_data": [],
+        "path": "package/dist/interpreter/finite-automaton/nfa/nfa.js",
+        "percentage_of_license_text": 0.57,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "8457bca992bf226262bdbdc10539aca321e2a088",
+        "sha1_git": "6a8097aa8b95c9ea6b3423aba075490fb1ea4eee",
+        "sha256": "202e7e433fa59a9abfd0697ef9caf53fddfbe57169ae81db35b1260e9b030528",
+        "size": 7869,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "nfa-from-regexp",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/interpreter/finite-automaton/nfa/nfa-from-regexp.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "3bbf9ef8007f1c11c932ba01c897699f",
+        "name": "nfa-from-regexp.js",
+        "package_data": [],
+        "path": "package/dist/interpreter/finite-automaton/nfa/nfa-from-regexp.js",
+        "percentage_of_license_text": 1.57,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "1eb7d4a0d3348ab5da100bd1bdb5f26d493728fc",
+        "sha1_git": "8727941cd95a0b544dcd5bea95c25ac80a5712d9",
+        "sha256": "753d96fcae22c2077a07f8ade964d161f363eef5fee1026c017000490751f8e7",
+        "size": 2268,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "nfa-state",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/interpreter/finite-automaton/nfa/nfa-state.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "b5b8a1a7608734614010dd6670cf3c4d",
+        "name": "nfa-state.js",
+        "package_data": [],
+        "path": "package/dist/interpreter/finite-automaton/nfa/nfa-state.js",
+        "percentage_of_license_text": 0.6,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "0bc0c88e16a7b4f7077e1749295625eca1089b3b",
+        "sha1_git": "e485fc765a45420b5b2e5c0d1e295c3c824246ba",
+        "sha256": "d6fded5ae97af8c9e31e00d083a6056ed5e1540448528d4ccaa72fe02ea0f9a2",
+        "size": 7605,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "node-path",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/traverse/node-path.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "f5b11d0f9ecd3bea53ceedf10c74b3e7",
+        "name": "node-path.js",
+        "package_data": [],
+        "path": "package/dist/traverse/node-path.js",
+        "percentage_of_license_text": 0.32,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "615a628e55432e27573b98647d0ee3872a691881",
+        "sha1_git": "f9c1dd6ea7b385482cec62dbda9de1a1b57ecb0a",
+        "sha256": "975644001a1cc711fdffc714608d213c8285abda76636da1b6a4def3d17c6b0e",
+        "size": 11965,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "parser-unicode-properties",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 5,
+            "start_line": 5
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 5,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 5
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 4,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/parser/unicode/parser-unicode-properties.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 4
+              }
+            ]
+          }
+        ],
+        "md5": "cd64548a78fffe7351ec205417580bd2",
+        "name": "parser-unicode-properties.js",
+        "package_data": [],
+        "path": "package/dist/parser/unicode/parser-unicode-properties.js",
+        "percentage_of_license_text": 0.37,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "ddc3a67e50e95f016f5229d8ad4964f3719b1d74",
+        "sha1_git": "b58f4b828f60137b80d082bcebc96251f1c418a9",
+        "sha256": "3d319e9b287e23e1d4fcad6a1e9554078873e87597062ae06bc5c1a6969a9bc3",
+        "size": 9366,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "quantifier-range-to-symbol-transform",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/optimizer/transforms/quantifier-range-to-symbol-transform.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "5c1fb987d427c4146406b7a4a6ed26a6",
+        "name": "quantifier-range-to-symbol-transform.js",
+        "package_data": [],
+        "path": "package/dist/optimizer/transforms/quantifier-range-to-symbol-transform.js",
+        "percentage_of_license_text": 3.08,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "e04bfd8d7ecb4a245f654485d2423f84896a726b",
+        "sha1_git": "0a123232288dc67315e286e69ce5f90a16c004c5",
+        "sha256": "24e5635640cbb460de04d17b80e4108286b033ba3d9e67afa439e3b3bdf644ae",
+        "size": 1147,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "quantifiers-merge-transform",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/optimizer/transforms/quantifiers-merge-transform.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "94464d36c4fdd909ba09856b8c994aa7",
+        "name": "quantifiers-merge-transform.js",
+        "package_data": [],
+        "path": "package/dist/optimizer/transforms/quantifiers-merge-transform.js",
+        "percentage_of_license_text": 1.47,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "1870db53a825ba48d093a9077026d807909aae7e",
+        "sha1_git": "14e0da8694f1bcd49e59adb723174ebf009872e0",
+        "sha256": "032e72b3a6b01c03f708c25ff20babb4a3a159df69e6f0882ed6caa376a0e83f",
+        "size": 2911,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "regexp-tree",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/bin/regexp-tree.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "1a993e188b9a93b67b7a7ed940e0b213",
+        "name": "regexp-tree.js",
+        "package_data": [],
+        "path": "package/dist/bin/regexp-tree.js",
+        "percentage_of_license_text": 6.78,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "11388cc834b150d35e990fcb12539b44d59d208a",
+        "sha1_git": "f3af5bb53f1c64b7d2f5ce027c9cccd0e77eebb4",
+        "sha256": "df75f8f86dd23ea6e9e7d4e1f7e50df46c8a0aaa09e8718447cbbd876f7e0923",
+        "size": 560,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "regexp-tree",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/regexp-tree.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "7c4d79185058dc0088bdd0e4d97d598b",
+        "name": "regexp-tree.js",
+        "package_data": [],
+        "path": "package/dist/regexp-tree.js",
+        "percentage_of_license_text": 0.9,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "6a5a5ee33d1758c56b6919c1e28f313c942d411b",
+        "sha1_git": "9a7ae8ad968d8c8ea02240829a88a4904ea885b7",
+        "sha256": "00c059f00431c526a8515dc23b5164aaea8d7c346f13e169cc054fe7b50bb9f0",
+        "size": 4415,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "regexp-tree",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": "",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "d244c3d6775a8a73ea1674571cc5d0fc",
+        "name": "regexp-tree",
+        "package_data": [],
+        "path": "package/bin/regexp-tree",
+        "percentage_of_license_text": 0,
+        "programming_language": "verilog",
+        "scan_errors": [],
+        "sha1": "82be55405aacc38c911823c3e10c28b6b63f1feb",
+        "sha1_git": "f90c90a6f157aff64fbb48b3b668a05fdeb6bb96",
+        "sha256": "ce4186def30b7f640e804419eb1565dbbbcbe13866ca59c1b47c563139bf96c5",
+        "size": 73,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "regexp-tree",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": true,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "38afe817da76061fa856d99617ec4a6e",
+        "name": "regexp-tree.js",
+        "package_data": [],
+        "path": "package/dist/parser/generated/regexp-tree.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "4c8b425b7dcd8b56cf46c7b7a05d7320cc905f41",
+        "sha1_git": "1d7730cf47932040dd74529a9bf7ad9fc887692f",
+        "sha256": "510924a052e96abe459a04ece1075d9813b55b5446c836d13d2b31fb9efb3cf4",
+        "size": 103316,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "remove-empty-group-transform",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/optimizer/transforms/remove-empty-group-transform.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "6172b31a02caeb04634334a6651fd7a0",
+        "name": "remove-empty-group-transform.js",
+        "package_data": [],
+        "path": "package/dist/optimizer/transforms/remove-empty-group-transform.js",
+        "percentage_of_license_text": 6.45,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "5e90e23bbc11a7f24318507c0e1bb3d27b4cad6f",
+        "sha1_git": "9d2551aeada86b740e31394c3dbb4e4d5e4dcee3",
+        "sha256": "dd69c38099ec2138bce84c4eb02dc9cd11731a998917930eb6dab77fc1db9ac9",
+        "size": 599,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "special-symbols",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/interpreter/finite-automaton/special-symbols.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "fab49755abaf98bf132389b0da0f9313",
+        "name": "special-symbols.js",
+        "package_data": [],
+        "path": "package/dist/interpreter/finite-automaton/special-symbols.js",
+        "percentage_of_license_text": 10.81,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "ecb7d4fcdab49c942af9e67839b958864078d7a6",
+        "sha1_git": "389469188a500c41d3e5ad09001e80c6bc5883e0",
+        "sha256": "1278a22a36da8276be287e0e634a2992690bdd534ffea7d8c5c3eda31076bbbc",
+        "size": 327,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "state",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/interpreter/finite-automaton/state.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "af2268a0a08d413e9bb095613fe5b0f7",
+        "name": "state.js",
+        "package_data": [],
+        "path": "package/dist/interpreter/finite-automaton/state.js",
+        "percentage_of_license_text": 1.8,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "9f532a23117affef42a45bcaf11791cde65656cc",
+        "sha1_git": "56bde693e450143c527354e5c45e5cf4277cefbf",
+        "sha256": "b1e2bf0e9ec390e9144d806539c7bec426676aa30589b34b3b3713727136929d",
+        "size": 2290,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "ungroup-transform",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/optimizer/transforms/ungroup-transform.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "e70d0af5c56a0e43f42457b53614c9f5",
+        "name": "ungroup-transform.js",
+        "package_data": [],
+        "path": "package/dist/optimizer/transforms/ungroup-transform.js",
+        "percentage_of_license_text": 1.53,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "b4c42e54f89b3eb58c6299a0e52648005bdc5635",
+        "sha1_git": "9c395ece1b7f8defb74ef2637af197bb587f5980",
+        "sha256": "9a511aa666725752179f62802b55d7580a1fe46d12ac313c830b9491ce83c1eb",
+        "size": 2292,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "utils",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-present Dmitry Soshnikov <dmitry.soshnikov@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/regexp-tree@0.1.27"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Dmitry Soshnikov",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/dist/transform/utils.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": " * The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "3868ecdc3fde63dc92309628a4a9a75b",
+        "name": "utils.js",
+        "package_data": [],
+        "path": "package/dist/transform/utils.js",
+        "percentage_of_license_text": 1.89,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "e07a77bcba09b34bff9a5c9374e90989a2fda001",
+        "sha1_git": "265e93ad07bf0c032487f75bdafd0ded000f30f7",
+        "sha256": "c2f7e6c1530becc66460e088144c764bffb53cd89fd4422ff7ff9d871a8d4c2d",
+        "size": 1918,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 4,
+            "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/package.json",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "  \"license\": \"MIT\",",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_30.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+            "score": 100,
+            "start_line": 4
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/package.json",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 1,
+            "matched_text": "MIT",
+            "matcher": "1-spdx-id",
+            "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+            "rule_relevance": 100,
+            "rule_url": null,
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-ac40beba-5702-f54d-755f-333441314bb0",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/LICENSE",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "MIT License",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_14.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+            "score": 100,
+            "start_line": 1
+          },
+          {
+            "end_line": 21,
+            "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/LICENSE",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 161,
+            "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+            "matcher": "2-aho",
+            "rule_identifier": "mit.LICENSE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+            "score": 100,
+            "start_line": 5
+          }
+        ]
+      },
+      {
+        "detection_count": 44,
+        "identifier": "mit-d5ea549d-8e03-2a31-f0cc-bdb0a5b86996",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 2,
+            "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/index.js",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 4,
+            "matched_text": " * The MIT License (MIT)",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_26.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+            "score": 100,
+            "start_line": 2
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": "https://ieeexplore.ieee.org/document/9263265",
+        "homepage_url": "http://opensource.org/licenses/mit-license.php",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "mit",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/mit",
+        "minimum_coverage": 0,
+        "name": "MIT License",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": null,
+        "osi_url": "http://www.opensource.org/licenses/MIT",
+        "other_spdx_license_keys": [
+          "LicenseRef-MIT-Bootstrap",
+          "LicenseRef-MIT-Diehl",
+          "LicenseRef-MIT-Discord",
+          "LicenseRef-MIT-TC"
+        ],
+        "other_urls": [
+          "https://opensource.com/article/18/3/patent-grant-mit-license",
+          "https://opensource.com/article/19/4/history-mit-license",
+          "https://opensource.org/licenses/MIT"
+        ],
+        "owner": "MIT",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "short_name": "MIT License",
+        "spdx_license_key": "MIT",
+        "spdx_url": "https://spdx.org/licenses/MIT",
+        "standard_notice": null,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+        "text_urls": [
+          "http://opensource.org/licenses/mit-license.php"
+        ]
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "mit.LICENSE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": true,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 161,
+        "license_expression": "mit",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
+      },
+      {
+        "identifier": "mit_14.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "mit",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "MIT License"
+      },
+      {
+        "identifier": "mit_26.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 4,
+        "license_expression": "mit",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "{{The MIT License}} (MIT)"
+      },
+      {
+        "identifier": "mit_30.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "mit",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "License: MIT"
+      },
+      {
+        "identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": true,
+        "language": "en",
+        "length": 1,
+        "license_expression": "mit",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": null,
+        "skip_for_required_phrase_generation": false,
+        "text": "MIT"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/regexp-tree/0.1.27",
+        "bug_tracking_url": "https://github.com/DmitrySoshnikov/regexp-tree/issues",
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "mit",
+        "declared_license_expression_spdx": "MIT",
+        "description": "Regular Expressions parser in JavaScript",
+        "download_url": "https://registry.npmjs.org/regexp-tree/-/regexp-tree-0.1.27.tgz",
+        "extra_data": {},
+        "extracted_license_statement": "- MIT\n",
+        "holder": null,
+        "homepage_url": "https://github.com/DmitrySoshnikov/regexp-tree",
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [
+          "AST",
+          "ECMAScript",
+          "JavaScript",
+          "parser",
+          "regexp",
+          "tree"
+        ],
+        "license_detections": [
+          {
+            "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "6cfe79057beb7271e61ca8c30c6adb70beedc31e3b3db967c659db94ceb6da06/package/package.json",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 1,
+                "matched_text": "MIT",
+                "matcher": "1-spdx-id",
+                "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+                "rule_relevance": 100,
+                "rule_url": null,
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "regexp-tree",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": null,
+            "name": "Dmitry Soshnikov",
+            "role": "author",
+            "type": "person",
+            "url": null
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/regexp-tree@0.1.27",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/regexp-tree/-/regexp-tree-0.1.27.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/regexp-tree",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "https://github.com/DmitrySoshnikov/regexp-tree",
+        "version": "0.1.27"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

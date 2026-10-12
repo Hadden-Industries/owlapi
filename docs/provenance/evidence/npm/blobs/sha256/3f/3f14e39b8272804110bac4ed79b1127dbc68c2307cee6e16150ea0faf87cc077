@@ -1,0 +1,2081 @@
+{
+  "artifactId": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 20,
+      "digestVerifiedFileCount": 20,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 20
+    },
+    "artifactId": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.8.0",
+        "for_package_purl": "pkg:npm/tapable@2.3.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40changesets/get-github-info",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1",
+        "for_package_purl": "pkg:npm/tapable@2.3.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/prettier",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.31.0",
+        "for_package_purl": "pkg:npm/tapable@2.3.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40changesets/cli",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^3.8.3",
+        "for_package_purl": "pkg:npm/tapable@2.3.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/prettier",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^30.3.0",
+        "for_package_purl": "pkg:npm/tapable@2.3.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/babel-jest",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^30.3.0",
+        "for_package_purl": "pkg:npm/tapable@2.3.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/jest",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.6.3",
+        "for_package_purl": "pkg:npm/tapable@2.3.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/eslint-config-webpack",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^5.2.3",
+        "for_package_purl": "pkg:npm/tapable@2.3.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40stylistic/eslint-plugin",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^5.3.0",
+        "for_package_purl": "pkg:npm/tapable@2.3.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40codspeed/core",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^6.0.0",
+        "for_package_purl": "pkg:npm/tapable@2.3.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/tinybench",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^7.4.4",
+        "for_package_purl": "pkg:npm/tapable@2.3.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40babel/core",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^7.4.4",
+        "for_package_purl": "pkg:npm/tapable@2.3.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40babel/preset-env",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^9.28.0",
+        "for_package_purl": "pkg:npm/tapable@2.3.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/eslint",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "Tobias Koppers",
+            "end_line": 15,
+            "start_line": 15
+          }
+        ],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tapable@2.3.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 14,
+                "from_file": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33/package/package.json",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "  \"license\": \"MIT\",",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_30.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+                "score": 100,
+                "start_line": 14
+              }
+            ]
+          }
+        ],
+        "md5": "c4eb6cdbb27276c846e280f3a9b262a5",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/tapable/2.3.3",
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "mit",
+            "declared_license_expression_spdx": "MIT",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.8.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40changesets/get-github-info",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/prettier",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.31.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40changesets/cli",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^3.8.3",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/prettier",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^30.3.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/babel-jest",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^30.3.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/jest",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.6.3",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/eslint-config-webpack",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^5.2.3",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40stylistic/eslint-plugin",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^5.3.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40codspeed/core",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^6.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/tinybench",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^7.4.4",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40babel/core",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^7.4.4",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40babel/preset-env",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^9.28.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/eslint",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              }
+            ],
+            "description": "Just a little module for plugins.",
+            "download_url": "https://registry.npmjs.org/tapable/-/tapable-2.3.3.tgz",
+            "extra_data": {
+              "engines": {
+                "node": ">=6"
+              }
+            },
+            "extracted_license_statement": "- MIT\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": "https://github.com/webpack/tapable",
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [],
+            "license_detections": [
+              {
+                "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33/package/package.json",
+                    "license_expression": "mit",
+                    "license_expression_spdx": "MIT",
+                    "match_coverage": 100,
+                    "matched_length": 1,
+                    "matched_text": "MIT",
+                    "matcher": "1-spdx-id",
+                    "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+                    "rule_relevance": 100,
+                    "rule_url": null,
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "tapable",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": null,
+                "name": "Tobias Koppers @sokra",
+                "role": "author",
+                "type": "person",
+                "url": null
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/tapable@2.3.3",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/tapable/-/tapable-2.3.3.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/tapable",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "git+http://github.com/webpack/tapable.git",
+            "version": "2.3.3"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 0.83,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "e51829a2d14fc511b654a38c5fedaf450001ef43",
+        "sha1_git": "9d63912bf55f4f81fc281154c3e99a7dfdc013f4",
+        "sha256": "82d5903b3a6f9d6e41868f405176da8122799e8c71a51f5507087091862a2a3d",
+        "size": 1961,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Tobias Koppers",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "base_name": "AsyncParallelBailHook",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tapable@2.3.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d7b908af-3089-a82a-2253-49c92854cf3d",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33/package/lib/AsyncParallelBailHook.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 10,
+                "matched_text": "\tMIT License http://www.opensource.org/licenses/mit-license.php",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_121.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_121.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "386d08a14c08801c4df3f120efbd91eb",
+        "name": "AsyncParallelBailHook.js",
+        "package_data": [],
+        "path": "package/lib/AsyncParallelBailHook.js",
+        "percentage_of_license_text": 4.18,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "8e1c19cab03d116bf0ab2d2a7b70c4623db5303a",
+        "sha1_git": "5cabeaabc3ea03dd7f696f49cb3cdb86bb384c7c",
+        "sha256": "141de5a3604d922aa4c259c678b71b0e4c33d18aa9732cb4c4e106d6f436a3b5",
+        "size": 2357,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Tobias Koppers",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "base_name": "AsyncParallelHook",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tapable@2.3.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d7b908af-3089-a82a-2253-49c92854cf3d",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33/package/lib/AsyncParallelHook.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 10,
+                "matched_text": "\tMIT License http://www.opensource.org/licenses/mit-license.php",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_121.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_121.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "f8f59fa121712ab926be10830e872fb5",
+        "name": "AsyncParallelHook.js",
+        "package_data": [],
+        "path": "package/lib/AsyncParallelHook.js",
+        "percentage_of_license_text": 11.24,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "6dde94b234fdf2392c92dfbb8146d146d316a3ff",
+        "sha1_git": "3fa07222d8870a2828c0db4c38ee32a24563a7be",
+        "sha256": "642ff825a096928a71a5cb19cf2970b88448baf840bb3c3f62aefe52de0d23b9",
+        "size": 868,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Tobias Koppers",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "base_name": "AsyncSeriesBailHook",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tapable@2.3.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d7b908af-3089-a82a-2253-49c92854cf3d",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33/package/lib/AsyncSeriesBailHook.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 10,
+                "matched_text": "\tMIT License http://www.opensource.org/licenses/mit-license.php",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_121.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_121.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "811f604cfb46e4ba3f91b369d95e01ba",
+        "name": "AsyncSeriesBailHook.js",
+        "package_data": [],
+        "path": "package/lib/AsyncSeriesBailHook.js",
+        "percentage_of_license_text": 9.71,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "f3b7c9d4f414ae80ca407e5cd79b4663c1bc32b5",
+        "sha1_git": "a46d3d2d41b5acadd694307d501dbd1ba7f7f1a1",
+        "sha256": "7ce728a99733be718b6067e6631313dee732febb140974dc85da6f69935f9f8b",
+        "size": 1048,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Tobias Koppers",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "base_name": "AsyncSeriesHook",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tapable@2.3.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d7b908af-3089-a82a-2253-49c92854cf3d",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33/package/lib/AsyncSeriesHook.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 10,
+                "matched_text": "\tMIT License http://www.opensource.org/licenses/mit-license.php",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_121.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_121.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "91da3b9ce25e18d43fe60c7fd90b4a9c",
+        "name": "AsyncSeriesHook.js",
+        "package_data": [],
+        "path": "package/lib/AsyncSeriesHook.js",
+        "percentage_of_license_text": 11.24,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "eede803ab4e2b1aab45ec46cb0298aa01793dc87",
+        "sha1_git": "569d4802736b3181d98bf357e9c4d658949c0c92",
+        "sha256": "bc88189f293de687c1082dddec33ae11de06a403f7688596b08e5ccd2e7dd1eb",
+        "size": 854,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Tobias Koppers",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "base_name": "AsyncSeriesLoopHook",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tapable@2.3.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d7b908af-3089-a82a-2253-49c92854cf3d",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33/package/lib/AsyncSeriesLoopHook.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 10,
+                "matched_text": "\tMIT License http://www.opensource.org/licenses/mit-license.php",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_121.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_121.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "e61f479bdc8835692dfc0b64cdcdf29e",
+        "name": "AsyncSeriesLoopHook.js",
+        "package_data": [],
+        "path": "package/lib/AsyncSeriesLoopHook.js",
+        "percentage_of_license_text": 11.24,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "c6d4762e0eb8b37f89b1b1b06beefd540b22da52",
+        "sha1_git": "5c3c21ddb4120cc6e7371f19e1f3b01533ee2bd3",
+        "sha256": "36c09da98da6954a67e722dab2a092c5900f1aa40f4bfef721ebef1ad67c8243",
+        "size": 879,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Tobias Koppers",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "base_name": "AsyncSeriesWaterfallHook",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tapable@2.3.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d7b908af-3089-a82a-2253-49c92854cf3d",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33/package/lib/AsyncSeriesWaterfallHook.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 10,
+                "matched_text": "\tMIT License http://www.opensource.org/licenses/mit-license.php",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_121.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_121.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "1562d86b0663e5eee2eebf9aeb033dcf",
+        "name": "AsyncSeriesWaterfallHook.js",
+        "package_data": [],
+        "path": "package/lib/AsyncSeriesWaterfallHook.js",
+        "percentage_of_license_text": 7.75,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "daf025290e8aabd67cc425d1cc1c7f559d044677",
+        "sha1_git": "21a07013324555cf1b1dff690b28b7f8cdef41c1",
+        "sha256": "d0b62f82944a7cc16651b6feeaef2551d65a86d478ebb6a05a5d3c1f711da8a1",
+        "size": 1258,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Tobias Koppers",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "base_name": "Hook",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tapable@2.3.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d7b908af-3089-a82a-2253-49c92854cf3d",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33/package/lib/Hook.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 10,
+                "matched_text": "\tMIT License http://www.opensource.org/licenses/mit-license.php",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_121.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_121.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "125251f90a94fa209937eb6836f3889a",
+        "name": "Hook.js",
+        "package_data": [],
+        "path": "package/lib/Hook.js",
+        "percentage_of_license_text": 1.37,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "0528baf8b79c32840e1436098a1bb2bc1842af7e",
+        "sha1_git": "5bf741792eab308764c30357e9f4e75b6a5bb6bf",
+        "sha256": "3f76307d0cd231b46df6f35b1e49c99becb892b3eb3967711bb7e535453d8fcc",
+        "size": 5982,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Tobias Koppers",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "base_name": "HookCodeFactory",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tapable@2.3.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d7b908af-3089-a82a-2253-49c92854cf3d",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33/package/lib/HookCodeFactory.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 10,
+                "matched_text": "\tMIT License http://www.opensource.org/licenses/mit-license.php",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_121.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_121.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "7c25b0711dccbff9134ab15f0918b69f",
+        "name": "HookCodeFactory.js",
+        "package_data": [],
+        "path": "package/lib/HookCodeFactory.js",
+        "percentage_of_license_text": 0.77,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "5e521d15d88c6a10aba2fba9d603d4ac2d35a6bb",
+        "sha1_git": "2e0e6c10f65cfa82b1549bcc36c612242c3ed011",
+        "sha256": "ebd1c3d48d6b21622687eeff968ac9e52e4c6973386be6fd5e68aca0811768c9",
+        "size": 13132,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Tobias Koppers",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "base_name": "HookMap",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tapable@2.3.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d7b908af-3089-a82a-2253-49c92854cf3d",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33/package/lib/HookMap.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 10,
+                "matched_text": "\tMIT License http://www.opensource.org/licenses/mit-license.php",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_121.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_121.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "e005f72538d85117780a0bd17433e5c0",
+        "name": "HookMap.js",
+        "package_data": [],
+        "path": "package/lib/HookMap.js",
+        "percentage_of_license_text": 4.65,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "bcd03cf84aa317cec24ba4af6e9d66dd476d38f6",
+        "sha1_git": "ca91cd64eae6f49a948695a74a2260ae4f1b7635",
+        "sha256": "f481d9fa54f2e4a77708335d8fe90e35486bc0578374e272aa4e1c9569b6af5b",
+        "size": 1719,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Tobias Koppers",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "base_name": "MultiHook",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tapable@2.3.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d7b908af-3089-a82a-2253-49c92854cf3d",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33/package/lib/MultiHook.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 10,
+                "matched_text": "\tMIT License http://www.opensource.org/licenses/mit-license.php",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_121.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_121.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "77ed2fe76738c31c5e5223b4b6716a45",
+        "name": "MultiHook.js",
+        "package_data": [],
+        "path": "package/lib/MultiHook.js",
+        "percentage_of_license_text": 7.25,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "f8375581c9a6178bf75fada7fdc669f414f47b7c",
+        "sha1_git": "900abbdefe3a6bc73f70aed6c17502d847a967e6",
+        "sha256": "e40e41314d6d5f86b66c51b2d01d8baf40fcd8d6cd4629be643efb860f88f7c2",
+        "size": 1063,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Tobias Koppers",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "base_name": "SyncBailHook",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tapable@2.3.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d7b908af-3089-a82a-2253-49c92854cf3d",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33/package/lib/SyncBailHook.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 10,
+                "matched_text": "\tMIT License http://www.opensource.org/licenses/mit-license.php",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_121.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_121.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "9127d91fa75825514872cf6d2e990487",
+        "name": "SyncBailHook.js",
+        "package_data": [],
+        "path": "package/lib/SyncBailHook.js",
+        "percentage_of_license_text": 7.87,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "ae73da42939c511f94948d0a5a5cc175ba83777c",
+        "sha1_git": "4b538c3553c941488e37970d404f5ff12dc0f561",
+        "sha256": "447accd98688700751e9a296ec92f54c74e7ba313025c2482735a4f42645de0c",
+        "size": 1218,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Tobias Koppers",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "base_name": "SyncHook",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tapable@2.3.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d7b908af-3089-a82a-2253-49c92854cf3d",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33/package/lib/SyncHook.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 10,
+                "matched_text": "\tMIT License http://www.opensource.org/licenses/mit-license.php",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_121.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_121.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "efa35d3b73d9357933a2eb1be834061b",
+        "name": "SyncHook.js",
+        "package_data": [],
+        "path": "package/lib/SyncHook.js",
+        "percentage_of_license_text": 8.85,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "d0d4b1b3a406d4838e54778f2cf4171b38288233",
+        "sha1_git": "968dea2bc82f6960014aa58120bb184374eb641f",
+        "sha256": "d6d8ff87c32e1d67c13483c19801c4cf14e62b0ee2225b7a6745778d94259cda",
+        "size": 1015,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Tobias Koppers",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "base_name": "SyncLoopHook",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tapable@2.3.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d7b908af-3089-a82a-2253-49c92854cf3d",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33/package/lib/SyncLoopHook.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 10,
+                "matched_text": "\tMIT License http://www.opensource.org/licenses/mit-license.php",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_121.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_121.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "667e8c90430d4894b7c273143d5f26ab",
+        "name": "SyncLoopHook.js",
+        "package_data": [],
+        "path": "package/lib/SyncLoopHook.js",
+        "percentage_of_license_text": 8.85,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "3ca1d9d039bab197de9757dc7663bbcbafb46982",
+        "sha1_git": "da48ca1e9387953a017056d04b2fe4a48047d039",
+        "sha256": "65d46e31194274ade53254e25a74d7f47e510c91ce94de1505778300ffa8e0d6",
+        "size": 1048,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Tobias Koppers",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "base_name": "SyncWaterfallHook",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tapable@2.3.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d7b908af-3089-a82a-2253-49c92854cf3d",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33/package/lib/SyncWaterfallHook.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 10,
+                "matched_text": "\tMIT License http://www.opensource.org/licenses/mit-license.php",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_121.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_121.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "98d941cf1c4e7db941fc82352ae60d5b",
+        "name": "SyncWaterfallHook.js",
+        "package_data": [],
+        "path": "package/lib/SyncWaterfallHook.js",
+        "percentage_of_license_text": 6.45,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "4f2a9ba7706ae136b8817acdc217e48d6780a584",
+        "sha1_git": "8eca528c0484024ec8ed6f70fd3f7ca35ef5e698",
+        "sha256": "6d806bb60ef683516c32c9736e2cf18c7c14106cdd002d5b1a705b12150b8d83",
+        "size": 1474,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Tobias Koppers",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "base_name": "index",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tapable@2.3.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d7b908af-3089-a82a-2253-49c92854cf3d",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33/package/lib/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 10,
+                "matched_text": "\tMIT License http://www.opensource.org/licenses/mit-license.php",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_121.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_121.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "89c5033f9736718ef14848ca3383da01",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/lib/index.js",
+        "percentage_of_license_text": 12.5,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "e03aa4ca12b4cc81ce2252b7fb90dee8790dea25",
+        "sha1_git": "3a0dc67da256959604d951d4742164b65b733239",
+        "sha256": "db40318101efc7a8d5962e3250e7e8b93cb65ba193e29847ec4faa467d93d2d9",
+        "size": 905,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Tobias Koppers",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "base_name": "util-browser",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tapable@2.3.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-d7b908af-3089-a82a-2253-49c92854cf3d",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33/package/lib/util-browser.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 10,
+                "matched_text": "\tMIT License http://www.opensource.org/licenses/mit-license.php",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_121.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_121.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "5d07deb67675e1926e49ae9410a1794f",
+        "name": "util-browser.js",
+        "package_data": [],
+        "path": "package/lib/util-browser.js",
+        "percentage_of_license_text": 18.87,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "6893ae5df5756cde2d149a5ea92601382ba60c4c",
+        "sha1_git": "d07eb6ca55e83f3aee58d6acd56ad053520a06ce",
+        "sha256": "0d849c7db0815b58bed8e8b524048c23c721057f3cd12a01da1ade7fa866f623",
+        "size": 422,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright JS Foundation and other contributors",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": "",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tapable@2.3.3"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "JS Foundation and other contributors",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-f7452287-cb8f-dace-dd8d-3e62743150a2",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 3,
+                "matched_text": "The MIT License",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_27.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_27.RULE",
+                "score": 100,
+                "start_line": 1
+              },
+              {
+                "end_line": 21,
+                "from_file": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 161,
+                "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+                "score": 100,
+                "start_line": 5
+              }
+            ]
+          }
+        ],
+        "md5": "99925a76a3fcdae17c2c49211df7fe22",
+        "name": "LICENSE",
+        "package_data": [],
+        "path": "package/LICENSE",
+        "percentage_of_license_text": 96.47,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "c6a209cba2be365492ffbaebd7c233a286b7a764",
+        "sha1_git": "03c083cefe8a65cd548dba59d3af584df49891c1",
+        "sha256": "824ef6c33ae5ecbbab65d37f2b37da2bfc81d76cf7676ec0f59d00a0a38bdb75",
+        "size": 1088,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tapable@2.3.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "bf9513fe6822604651b0e6121a4593da",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "2f9c24ee056d47a2afabbc39850b563b97a480ea",
+        "sha1_git": "1415a31ee174abc1651917fec984c28e9d229896",
+        "sha256": "a3fe21061993c7fb1e28479dd8b0ee882344eef9bdc379ea4e7bfab049db5a6f",
+        "size": 30203,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "tapable.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tapable@2.3.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "bdfe6a626c334be9a90bdcbcecd82663",
+        "name": "tapable.d.ts",
+        "package_data": [],
+        "path": "package/tapable.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "5454eac229912b3947c470b30e5b798ce3ec8b3d",
+        "sha1_git": "e2ca8c2f028e0ae42e21a68e3c4e66ee2da2d5f3",
+        "sha256": "ef7c69c87186bc3b3b45238a1a1bac4c55fa1c5d065f45d4e45ab695291d9d05",
+        "size": 4924,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 14,
+            "from_file": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33/package/package.json",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "  \"license\": \"MIT\",",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_30.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+            "score": 100,
+            "start_line": 14
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33/package/package.json",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 1,
+            "matched_text": "MIT",
+            "matcher": "1-spdx-id",
+            "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+            "rule_relevance": 100,
+            "rule_url": null,
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-f7452287-cb8f-dace-dd8d-3e62743150a2",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33/package/LICENSE",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 3,
+            "matched_text": "The MIT License",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_27.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_27.RULE",
+            "score": 100,
+            "start_line": 1
+          },
+          {
+            "end_line": 21,
+            "from_file": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33/package/LICENSE",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 161,
+            "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.",
+            "matcher": "2-aho",
+            "rule_identifier": "mit.LICENSE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+            "score": 100,
+            "start_line": 5
+          }
+        ]
+      },
+      {
+        "detection_count": 16,
+        "identifier": "mit-d7b908af-3089-a82a-2253-49c92854cf3d",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 2,
+            "from_file": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33/package/lib/AsyncParallelBailHook.js",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 10,
+            "matched_text": "\tMIT License http://www.opensource.org/licenses/mit-license.php",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_121.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_121.RULE",
+            "score": 100,
+            "start_line": 2
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": "https://ieeexplore.ieee.org/document/9263265",
+        "homepage_url": "http://opensource.org/licenses/mit-license.php",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "mit",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/mit",
+        "minimum_coverage": 0,
+        "name": "MIT License",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": null,
+        "osi_url": "http://www.opensource.org/licenses/MIT",
+        "other_spdx_license_keys": [
+          "LicenseRef-MIT-Bootstrap",
+          "LicenseRef-MIT-Diehl",
+          "LicenseRef-MIT-Discord",
+          "LicenseRef-MIT-TC"
+        ],
+        "other_urls": [
+          "https://opensource.com/article/18/3/patent-grant-mit-license",
+          "https://opensource.com/article/19/4/history-mit-license",
+          "https://opensource.org/licenses/MIT"
+        ],
+        "owner": "MIT",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "short_name": "MIT License",
+        "spdx_license_key": "MIT",
+        "spdx_url": "https://spdx.org/licenses/MIT",
+        "standard_notice": null,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+        "text_urls": [
+          "http://opensource.org/licenses/mit-license.php"
+        ]
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "mit.LICENSE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": true,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 161,
+        "license_expression": "mit",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
+      },
+      {
+        "identifier": "mit_121.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [
+          "http://www.opensource.org/licenses/mit-license.php"
+        ],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 10,
+        "license_expression": "mit",
+        "minimum_coverage": 50,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_121.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "{{MIT License}} http://www.opensource.org/licenses/mit-license.php"
+      },
+      {
+        "identifier": "mit_27.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 3,
+        "license_expression": "mit",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_27.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "The MIT License"
+      },
+      {
+        "identifier": "mit_30.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "mit",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "License: MIT"
+      },
+      {
+        "identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": true,
+        "language": "en",
+        "length": 1,
+        "license_expression": "mit",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": null,
+        "skip_for_required_phrase_generation": false,
+        "text": "MIT"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/tapable/2.3.3",
+        "bug_tracking_url": null,
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "mit",
+        "declared_license_expression_spdx": "MIT",
+        "description": "Just a little module for plugins.",
+        "download_url": "https://registry.npmjs.org/tapable/-/tapable-2.3.3.tgz",
+        "extra_data": {
+          "engines": {
+            "node": ">=6"
+          }
+        },
+        "extracted_license_statement": "- MIT\n",
+        "holder": null,
+        "homepage_url": "https://github.com/webpack/tapable",
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [],
+        "license_detections": [
+          {
+            "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "1087a9d0f2a3f09b166f2c642b2eb0aee5eac51ffcd683143fc22cf23d6e3d33/package/package.json",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 1,
+                "matched_text": "MIT",
+                "matcher": "1-spdx-id",
+                "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+                "rule_relevance": 100,
+                "rule_url": null,
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "tapable",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": null,
+            "name": "Tobias Koppers @sokra",
+            "role": "author",
+            "type": "person",
+            "url": null
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/tapable@2.3.3",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/tapable/-/tapable-2.3.3.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/tapable",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "git+http://github.com/webpack/tapable.git",
+        "version": "2.3.3"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}
