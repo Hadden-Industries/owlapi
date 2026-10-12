@@ -1,0 +1,26 @@
+{
+  "forbidden": [
+    {
+      "name": "no-unresolvable-runtime",
+      "severity": "error",
+      "from": {},
+      "to": { "couldNotResolve": true }
+    },
+    {
+      "name": "no-relative-runtime-escape",
+      "severity": "error",
+      "from": {},
+      "to": { "path": "^\\.\\./" }
+    },
+    {
+      "name": "circular-dependencies",
+      "severity": "warn",
+      "from": {},
+      "to": { "circular": true }
+    }
+  ],
+  "options": {
+    "moduleSystems": ["es6", "cjs"],
+    "doNotFollow": { "path": "(^|/)node_modules/|^\\.\\./" }
+  }
+}
