@@ -645,8 +645,17 @@ That is a complete and useful outcome when the measured native capabilities, cor
 
 ## Accepted implementation continuation: semantic JSON identity
 
-On 12 October 2026, the owner additionally directed: fix the cause of JSON object-order dependence, find other instances, and fix them before publication. The first architecture candidate passed the full source profile at commit `38b4524c01a614a1584e3bb7247bd03477fbc9e8`; this continuation adds a coherent R2 checkpoint to the same delivery.
+On 12 October 2026, the owner additionally directed: fix the cause of JSON object-order dependence, find other instances, and fix them before publication.
+The first architecture candidate passed the full source profile at commit `38b4524c01a614a1584e3bb7247bd03477fbc9e8`; this continuation adds a coherent R2 checkpoint to the same delivery.
 
-Audit JSON serialization used for semantic hashing/equality across maintained source and tooling. Reuse the existing recursive key-sorting implementation as shared authority; object member insertion order must not change semantic identities, while array order and actual value changes remain significant. Exact-byte integrity hashes, retained raw artifacts, archived historical attestations and ordered structural tuples keep their existing meaning. Do not rerun scanner acquisition or shard verification for workflow bookkeeping.
+Audit JSON serialization used for semantic hashing/equality across maintained source and tooling.
+Reuse the existing recursive key-sorting implementation as shared authority; object member insertion order must not change semantic identities, while array order and actual value changes remain significant.
+Exact-byte integrity hashes, retained raw artifacts, archived historical attestations and ordered structural tuples keep their existing meaning.
+Do not rerun scanner acquisition or shard verification for workflow bookkeeping.
 
-Consolidate fixes to the four mutable review-facts digests, other confirmed semantic fingerprints and comparisons, and their producer/verifier pairs. Version changed review-digest contracts explicitly and recompute current records; do not silently carry human attestation to a new digest. Preserve prior approvals in immutable Git history. Add meaningful permutation tests at affected boundaries and negative tests proving mutations still fail. Review this continuation locally with narrow follow-ups, then obtain external review only for the final combined candidate. Keep existing full source and hosted obligations, normal protected PR merge and local-main synchronization.
+Consolidate fixes to the four mutable review-facts digests, other confirmed semantic fingerprints and comparisons, and their producer/verifier pairs.
+Version changed review-digest contracts explicitly and recompute current records; do not silently carry human attestation to a new digest.
+Preserve prior approvals in immutable Git history.
+Add meaningful permutation tests at affected boundaries and negative tests proving mutations still fail.
+Review this continuation locally with narrow follow-ups, then obtain external review only for the final combined candidate.
+Keep existing full source and hosted obligations, normal protected PR merge and local-main synchronization.
