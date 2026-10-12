@@ -54,3 +54,35 @@ Existing lint, formatting, release gates, workflow governance, browser, installe
 Graph output and related-test lists have their stated advisory scope.
 The existing HISEW profiles and required CI jobs remain unchanged.
 Selective execution is conditional on the accepted implementation plan's correctness, measurement and process-cleanup gates; this delivery does not activate it.
+
+## Adoption decision on 12 October 2026
+
+The [implementation plan](plans/2026-10-12-dependency-cruiser-implementation-plan.md) was accepted for implementation through HISEW.
+The first signed checkpoint includes the plan and graph/architecture delivery.
+The runtime baseline contains 143 shipped JavaScript modules, with no error-level violations and one existing cycle warning between `internal/model/sourceEvidence.js` and `model/owlOntology.js`.
+The authored baseline contains 546 JavaScript roots and 238 native Jest suites.
+Its 58 unresolved edges include consumer preparation templates whose relative imports and installed package alias exist only after preparation; these remain visible in the observation graph and do not relax runtime enforcement.
+
+The native selection experiment exercised clean, dirty, staged, partially staged, committed, renamed, deleted and diverged Git cases in an isolated synthetic repository, using explicit comparison identities.
+Literal imports selected their consuming test.
+A changed resource read through `readFileSync(new URL(...))` selected no tests with Jest's related or SCM modes, and its reader was absent from native graph impact output.
+An independently executed full synthetic suite failed that seeded reader.
+Deleted-source related discovery also returned an empty list while its current consumer remained in the full inventory.
+Empty lists therefore cannot establish successful verification.
+
+Five repeated native list-only probes on Windows, Node 24.21.0 and Jest 30.5.2 produced the following results.
+Times include native startup and discovery; they measure advisory listing, not test execution or savings against a full run.
+
+| Changed input                             | Selected suites | Median list time | Observed range |
+| ----------------------------------------- | --------------: | ---------------: | -------------: |
+| `model/owlOntologyWriterConfiguration.js` |             147 |           279 ms |     273–320 ms |
+| `internal/parsing/rdfxml/parser.js`       |             148 |           271 ms |     262–306 ms |
+| `apibinding/owlManager.js`                |             114 |           270 ms |     262–293 ms |
+| `io/io.test.js`                           |               1 |           263 ms |     262–269 ms |
+| `package.json`                            |               0 |           264 ms |     262–329 ms |
+
+The accepted outcome is **architecture delivered, selective execution declined**.
+The correctness reproduction and the absence of a qualified descendant-cleanup owner prevent managed selective execution.
+No local coordinator, impact-policy file, historical graph union or HISEW affected-profile migration is introduced.
+Paired selected/full execution timing, outcome shadow admission and Linux/macOS process qualification were not pursued after these prerequisite gates failed; no speedup or cross-platform selective-execution claim is made.
+Revisit the conditional slices only with an accepted policy for exceptional relations, supported process ownership and the plan's unchanged correctness and cost thresholds.
