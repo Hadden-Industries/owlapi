@@ -1,0 +1,2882 @@
+{
+  "schema": "owlapi-portable-behavior-research/v1",
+  "createdAtUtc": "2026-10-12T22:17:40.774Z",
+  "researchDate": "2026-10-13",
+  "timeZone": "Europe/Bucharest",
+  "purpose": "Read-only, non-output API behavior research for a later implementation plan. Not implementation, release qualification, or a new verification of retained JAR/source correspondence.",
+  "report": {
+    "path": "2026-10-13-owlapi-api-behavior-compatibility-research.md",
+    "bytes": 90418,
+    "sha256": "a07b268095e037e4e8d5b188a0bd78ba5300224f8ec4db3b9be7670259b60039",
+    "originalSha256": "63ed9ee12e384227c4e7cec46cfb1ce9e54d677505fe2e39e3a529aa55cc99b2"
+  },
+  "controllingScope": "Pinned matched Java behavior is mandatory under the current owner instruction, including observable quirks. Earlier approval or documentation does not authorize divergence. A changed target or exception needs a separate explicit owner change of scope.",
+  "baselines": {
+    "javascript": {
+      "path": "${OWLAPI_SOURCE}",
+      "commitAtResearch": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "commitAtEvidenceAssembly": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "tree": "18a3895c9b65f585de4f713e783b35c6ba3bff6f",
+      "branchAtEvidenceAssembly": "main",
+      "statusAtEvidenceAssembly": "?? docs/plans/2026-10-12-dependency-cruiser-architecture-hardening-plan.md",
+      "trackedDiffAtEvidenceAssembly": "",
+      "stagedDiffAtEvidenceAssembly": ""
+    },
+    "java": {
+      "path": "${JAVA_SOURCE}",
+      "commitAtResearch": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "commitAtEvidenceAssembly": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "tree": "b8dad5241dae6ff3bd3b755b9a1c605623eeb2c2",
+      "branchAtEvidenceAssembly": "version5",
+      "statusAtEvidenceAssembly": "",
+      "trackedDiffAtEvidenceAssembly": "",
+      "stagedDiffAtEvidenceAssembly": ""
+    }
+  },
+  "repositoryMutation": false,
+  "runtime": {
+    "javascript": {
+      "version": "v24.21.0",
+      "platform": "win32",
+      "architecture": "x64",
+      "executable": "${PROGRAM_FILES}\\nodejs\\node.exe"
+    },
+    "java": {
+      "versionCommandExitCode": 0,
+      "versionCommandStdout": "",
+      "versionCommandStderr": "openjdk version \"25.0.4.1\" 2026-08-18 LTS\r\nOpenJDK Runtime Environment Temurin-25.0.4.1+1 (build 25.0.4.1+1-LTS)\r\nOpenJDK 64-Bit Server VM Temurin-25.0.4.1+1 (build 25.0.4.1+1-LTS, mixed mode, sharing)\r\n",
+      "provenance": "Retained local Maven OWLAPI 5.5.1 JARs. Not rebuilt or freshly tied to the inspected pinned commit in this research."
+    }
+  },
+  "retainedJavaClasspath": {
+    "path": "${JAVA_SOURCE}\\distribution\\target\\owlapi-runtime-classpath.txt",
+    "bytes": 6126,
+    "sha256": "d9d6dea35c485169a6900fa264c07e307ccf60ea913d87bb4753bdf5f086ed8b",
+    "entries": [
+      {
+        "position": 1,
+        "path": "${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-apibinding\\5.5.1\\owlapi-apibinding-5.5.1.jar",
+        "bytes": 15035,
+        "sha256": "2dda030babe9c7c61112bab353c990372b5f3d294af17194c562b98e13ecfccf",
+        "owlapiModule": true
+      },
+      {
+        "position": 2,
+        "path": "${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-tools\\5.5.1\\owlapi-tools-5.5.1.jar",
+        "bytes": 309157,
+        "sha256": "91c23396044c86240b2d7319453dade5c28ddf7781c8e698adb51b8a4830df13",
+        "owlapiModule": true
+      },
+      {
+        "position": 3,
+        "path": "${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-impl\\5.5.1\\owlapi-impl-5.5.1.jar",
+        "bytes": 349631,
+        "sha256": "a1ea776d9b3b682e5fc1795331f47d350f356961cbb868a15cbbda7ff6dbc685",
+        "owlapiModule": true
+      },
+      {
+        "position": 4,
+        "path": "${MAVEN_REPOSITORY}\\javax\\inject\\javax.inject\\1\\javax.inject-1.jar",
+        "bytes": 2497,
+        "sha256": "91c77044a50c481636c32d916fd89c9118a72195390452c81065080f957de7ff",
+        "owlapiModule": false
+      },
+      {
+        "position": 5,
+        "path": "${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-parsers\\5.5.1\\owlapi-parsers-5.5.1.jar",
+        "bytes": 904301,
+        "sha256": "959af1ac9a1f794c28a658f0084a6e0ce152147699ecc6c54ef6a35f9f1c4a76",
+        "owlapiModule": true
+      },
+      {
+        "position": 6,
+        "path": "${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-oboformat\\5.5.1\\owlapi-oboformat-5.5.1.jar",
+        "bytes": 197826,
+        "sha256": "c8b335d9cf191410a3b2c7fd1708e2de9811f773283b1b49d7d13ca7843662b2",
+        "owlapiModule": true
+      },
+      {
+        "position": 7,
+        "path": "${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-rio\\5.5.1\\owlapi-rio-5.5.1.jar",
+        "bytes": 68831,
+        "sha256": "8b5fab834b2aa0ad303cc6aff2ac5f8f689eaa856018c15c4cecc39e7987d729",
+        "owlapiModule": true
+      },
+      {
+        "position": 8,
+        "path": "${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-api\\5.5.1\\owlapi-api-5.5.1.jar",
+        "bytes": 1164145,
+        "sha256": "46fa5c642581c53da9fa4d0a392b99e4c82aa3f1abfc616bbe5d1d2f9b880b03",
+        "owlapiModule": true
+      },
+      {
+        "position": 9,
+        "path": "${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-compatibility\\5.5.1\\owlapi-compatibility-5.5.1.jar",
+        "bytes": 124413,
+        "sha256": "b0a4779217ff709efa07ee967702a9d9613a091a2cc3d4a42864a1a0f44346ea",
+        "owlapiModule": true
+      },
+      {
+        "position": 10,
+        "path": "${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-core\\2.16.1\\jackson-core-2.16.1.jar",
+        "bytes": 578125,
+        "sha256": "f5f8ef90609e64fec82eb908e497dc7d81b2eb983fe509b870292a193cde4dfb",
+        "owlapiModule": false
+      },
+      {
+        "position": 11,
+        "path": "${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-databind\\2.16.1\\jackson-databind-2.16.1.jar",
+        "bytes": 1637611,
+        "sha256": "baf8a8ebee8f45ef68cdd5e2dd3923b3e296c0937b96ec0b4806aa3a31bccd1d",
+        "owlapiModule": false
+      },
+      {
+        "position": 12,
+        "path": "${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-annotations\\2.16.1\\jackson-annotations-2.16.1.jar",
+        "bytes": 78480,
+        "sha256": "a4730771e6a495dd3793a42cdb8ce6bddb96c77e15f40c98fd8d9a7ae09e7286",
+        "owlapiModule": false
+      },
+      {
+        "position": 13,
+        "path": "${MAVEN_REPOSITORY}\\org\\apache\\commons\\commons-rdf-api\\0.5.0\\commons-rdf-api-0.5.0.jar",
+        "bytes": 22565,
+        "sha256": "360fd9197008502cbc3fd09afe2ad45d8c8c905e21f42e7cd5b2aa1c39742b5e",
+        "owlapiModule": false
+      },
+      {
+        "position": 14,
+        "path": "${MAVEN_REPOSITORY}\\org\\tukaani\\xz\\1.9\\xz-1.9.jar",
+        "bytes": 116013,
+        "sha256": "211b306cfc44f8f96df3a0a3ddaf75ba8c5289eed77d60d72f889bb855f535e5",
+        "owlapiModule": false
+      },
+      {
+        "position": 15,
+        "path": "${MAVEN_REPOSITORY}\\org\\slf4j\\slf4j-api\\2.0.11\\slf4j-api-2.0.11.jar",
+        "bytes": 67831,
+        "sha256": "ce0e71d673acb9036bb55d0244b261cf033f8e4c1245f14f931dfb1937dd4c95",
+        "owlapiModule": false
+      },
+      {
+        "position": 16,
+        "path": "${MAVEN_REPOSITORY}\\org\\slf4j\\jcl-over-slf4j\\2.0.11\\jcl-over-slf4j-2.0.11.jar",
+        "bytes": 18425,
+        "sha256": "55e96f9830d732c81f0709e9090f308798381be7dc5aa67dd423c02831b5b4bb",
+        "owlapiModule": false
+      },
+      {
+        "position": 17,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model\\5.0.2\\rdf4j-model-5.0.2.jar",
+        "bytes": 173983,
+        "sha256": "c56becf8915a8e27d74ed6accc391d4cd6d231844766b07101aebae0c5eeab71",
+        "owlapiModule": false
+      },
+      {
+        "position": 18,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-exception\\5.0.2\\rdf4j-common-exception-5.0.2.jar",
+        "bytes": 4302,
+        "sha256": "ae5aa914291b4cebeb5fd3657cb0fd4097bfc7df43cb4aeeed36343b94c5eca9",
+        "owlapiModule": false
+      },
+      {
+        "position": 19,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-text\\5.0.2\\rdf4j-common-text-5.0.2.jar",
+        "bytes": 4674,
+        "sha256": "4e37650e9f124ab13dd5a5464630c83539ea6b70f4f7f024d60174853e57595b",
+        "owlapiModule": false
+      },
+      {
+        "position": 20,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-io\\5.0.2\\rdf4j-common-io-5.0.2.jar",
+        "bytes": 42431,
+        "sha256": "2268c55e5c7f968020fba63b1c917c87955624c691ad827485a2d2b9e444b05e",
+        "owlapiModule": false
+      },
+      {
+        "position": 21,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-iterator\\5.0.2\\rdf4j-common-iterator-5.0.2.jar",
+        "bytes": 46437,
+        "sha256": "cf53dce94ca08c24e3f3a6ef0a23c3d21b5baeafd482139c8a00155891c65c8f",
+        "owlapiModule": false
+      },
+      {
+        "position": 22,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-order\\5.0.2\\rdf4j-common-order-5.0.2.jar",
+        "bytes": 5146,
+        "sha256": "c3f43a907aaac7446fbac6b95f9e60d0c3a2a645798a7ee3f9a9d657afa57e73",
+        "owlapiModule": false
+      },
+      {
+        "position": 23,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model-api\\5.0.2\\rdf4j-model-api-5.0.2.jar",
+        "bytes": 57501,
+        "sha256": "9e13d31c4e090aa9f0af912ba2da0f46d0018414a8413e161dbbc208538e2029",
+        "owlapiModule": false
+      },
+      {
+        "position": 24,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-annotation\\5.0.2\\rdf4j-common-annotation-5.0.2.jar",
+        "bytes": 3249,
+        "sha256": "8860c175c0ac1ac7aa2e195b4895502a15060c44bc1092ece7a59db24d2423c5",
+        "owlapiModule": false
+      },
+      {
+        "position": 25,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model-vocabulary\\5.0.2\\rdf4j-model-vocabulary-5.0.2.jar",
+        "bytes": 98855,
+        "sha256": "b44d8d219a01377cb6b20b96baea4ba3e7549041112023117a183d40e8968ebf",
+        "owlapiModule": false
+      },
+      {
+        "position": 26,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-api\\5.0.2\\rdf4j-rio-api-5.0.2.jar",
+        "bytes": 99688,
+        "sha256": "7a4c190d974c2090f6d88b78427934b453dff34ad90ff520283df7f4adc82951",
+        "owlapiModule": false
+      },
+      {
+        "position": 27,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-xml\\5.0.2\\rdf4j-common-xml-5.0.2.jar",
+        "bytes": 19208,
+        "sha256": "f908c335f4127a395ab33bc5a463842cdde0cf944029bd8908c5b8eaa42fd56d",
+        "owlapiModule": false
+      },
+      {
+        "position": 28,
+        "path": "${MAVEN_REPOSITORY}\\commons-codec\\commons-codec\\1.15\\commons-codec-1.15.jar",
+        "bytes": 353793,
+        "sha256": "b3e9f6d63a790109bf0d056611fbed1cf69055826defeb9894a71369d246ed63",
+        "owlapiModule": false
+      },
+      {
+        "position": 29,
+        "path": "${MAVEN_REPOSITORY}\\no\\hasmac\\hasmac-json-ld\\0.9.0\\hasmac-json-ld-0.9.0.jar",
+        "bytes": 316411,
+        "sha256": "72782170501af33f4af0d7964cac6fe0e296c37915bbb6b67adbddd1d05fec89",
+        "owlapiModule": false
+      },
+      {
+        "position": 30,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-languages\\5.0.2\\rdf4j-rio-languages-5.0.2.jar",
+        "bytes": 5282,
+        "sha256": "10de37ce1a132ab9ed6cb735c2be7a2fda9eb7289e83b0695aa2af6af93749d2",
+        "owlapiModule": false
+      },
+      {
+        "position": 31,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-datatypes\\5.0.2\\rdf4j-rio-datatypes-5.0.2.jar",
+        "bytes": 9311,
+        "sha256": "44bdaa515ea28c962d036560a44530f24aea7cd10b4966053c3dee933bbcbf03",
+        "owlapiModule": false
+      },
+      {
+        "position": 32,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-binary\\5.0.2\\rdf4j-rio-binary-5.0.2.jar",
+        "bytes": 16089,
+        "sha256": "92095b0e5e967693f678792703fad5822c13dc13c01ffb84b3e60847b37f3d33",
+        "owlapiModule": false
+      },
+      {
+        "position": 33,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-n3\\5.0.2\\rdf4j-rio-n3-5.0.2.jar",
+        "bytes": 7114,
+        "sha256": "9d13afdc134eb460a5199163c10fa2d701cf4ba90775f470c940c1d57767a853",
+        "owlapiModule": false
+      },
+      {
+        "position": 34,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-nquads\\5.0.2\\rdf4j-rio-nquads-5.0.2.jar",
+        "bytes": 7012,
+        "sha256": "e8c0612c6c1750dd5123378909d8e7e4a4f79e5271a78a37493a37c3feee96d1",
+        "owlapiModule": false
+      },
+      {
+        "position": 35,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-ntriples\\5.0.2\\rdf4j-rio-ntriples-5.0.2.jar",
+        "bytes": 14666,
+        "sha256": "4b774744a461d6939de98f3e37aff8faeac99cf233328f95933d0df8b5eb92ad",
+        "owlapiModule": false
+      },
+      {
+        "position": 36,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-rdfjson\\5.0.2\\rdf4j-rio-rdfjson-5.0.2.jar",
+        "bytes": 18203,
+        "sha256": "0e923f6f2003ac8d1fd1e10c758fe14a767782a43ce45a8e6257008a90751ac3",
+        "owlapiModule": false
+      },
+      {
+        "position": 37,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-jsonld\\5.0.2\\rdf4j-rio-jsonld-5.0.2.jar",
+        "bytes": 39216,
+        "sha256": "e11b682c8688ccd6be62a519a8f4d86c438f76497ed64b7910f328d7edd1bbab",
+        "owlapiModule": false
+      },
+      {
+        "position": 38,
+        "path": "${MAVEN_REPOSITORY}\\jakarta\\json\\jakarta.json-api\\2.0.1\\jakarta.json-api-2.0.1.jar",
+        "bytes": 45295,
+        "sha256": "6152cdc29c3e99ad4bfb367d43464c9fe97ac800ddc1952b2452c5e0c21f89fd",
+        "owlapiModule": false
+      },
+      {
+        "position": 39,
+        "path": "${MAVEN_REPOSITORY}\\org\\glassfish\\jakarta.json\\2.0.1\\jakarta.json-2.0.1.jar",
+        "bytes": 143846,
+        "sha256": "52539b39498b86ca9910b0eacc608a8c78de8db3842caa84bc87169372202cc0",
+        "owlapiModule": false
+      },
+      {
+        "position": 40,
+        "path": "${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient\\4.5.14\\httpclient-4.5.14.jar",
+        "bytes": 785639,
+        "sha256": "c8bc7e1c51a6d4ce72f40d2ebbabf1c4b68bfe76e732104b04381b493478e9d6",
+        "owlapiModule": false
+      },
+      {
+        "position": 41,
+        "path": "${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore\\4.4.16\\httpcore-4.4.16.jar",
+        "bytes": 327891,
+        "sha256": "6c9b3dd142a09dc468e23ad39aad6f75a0f2b85125104469f026e52a474e464f",
+        "owlapiModule": false
+      },
+      {
+        "position": 42,
+        "path": "${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient-cache\\4.5.14\\httpclient-cache-4.5.14.jar",
+        "bytes": 164023,
+        "sha256": "5324d2cbc2d311c9f91b82bcbc746ec2a29f1f5b744395a50ff3afb873db1cee",
+        "owlapiModule": false
+      },
+      {
+        "position": 43,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-rdfxml\\5.0.2\\rdf4j-rio-rdfxml-5.0.2.jar",
+        "bytes": 42267,
+        "sha256": "fcd8ee30ae466ad44843308bce39173af1a71a3c8523bcd4678a696e3a4b64b2",
+        "owlapiModule": false
+      },
+      {
+        "position": 44,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-trix\\5.0.2\\rdf4j-rio-trix-5.0.2.jar",
+        "bytes": 14882,
+        "sha256": "ee4b4337a80a86d226398750952d2352ba19fcf9f6074d1a2cfc99038ab8e716",
+        "owlapiModule": false
+      },
+      {
+        "position": 45,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-turtle\\5.0.2\\rdf4j-rio-turtle-5.0.2.jar",
+        "bytes": 38573,
+        "sha256": "68b5f3b70ebbcf6505bda7f10a0febf45e2da17daa98b0ae0ec5730894ea97d4",
+        "owlapiModule": false
+      },
+      {
+        "position": 46,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-trig\\5.0.2\\rdf4j-rio-trig-5.0.2.jar",
+        "bytes": 12702,
+        "sha256": "1958859b71979e5e3e09ee82821a1bc7d41bb2725ac873e115e279f89fd7c208",
+        "owlapiModule": false
+      },
+      {
+        "position": 47,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-hdt\\5.0.2\\rdf4j-rio-hdt-5.0.2.jar",
+        "bytes": 40999,
+        "sha256": "5afa049723e69fe70aae7575ab44bd52ee2aef11ab323285aa360f8d2dc26605",
+        "owlapiModule": false
+      },
+      {
+        "position": 48,
+        "path": "${MAVEN_REPOSITORY}\\com\\github\\jsonld-java\\jsonld-java\\0.13.6\\jsonld-java-0.13.6.jar",
+        "bytes": 3336943,
+        "sha256": "ac158c23504fa76dc1a5f43436df2cb34b4b435b79b38c9b941d1c75e2efbe90",
+        "owlapiModule": false
+      },
+      {
+        "position": 49,
+        "path": "${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient-osgi\\4.5.13\\httpclient-osgi-4.5.13.jar",
+        "bytes": 1370788,
+        "sha256": "e18dd56f0719dec4fdea58fe79c178770fc09fee9a5b481ccd3eea4c07978e1e",
+        "owlapiModule": false
+      },
+      {
+        "position": 50,
+        "path": "${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpmime\\4.5.13\\httpmime-4.5.13.jar",
+        "bytes": 41790,
+        "sha256": "06e754d99245b98dcc2860dcb43d20e737d650da2bf2077a105f68accbd5c5cc",
+        "owlapiModule": false
+      },
+      {
+        "position": 51,
+        "path": "${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\fluent-hc\\4.5.13\\fluent-hc-4.5.13.jar",
+        "bytes": 31547,
+        "sha256": "f883b6b027d5e05c53e48e4fe3548715c52dbd590ffa3f52d039574f1a4d0728",
+        "owlapiModule": false
+      },
+      {
+        "position": 52,
+        "path": "${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore-osgi\\4.4.16\\httpcore-osgi-4.4.16.jar",
+        "bytes": 695131,
+        "sha256": "8b22476c8dcd1a10dab8666dadfd45424e1cb2fc0edaef86fe745566abdba86e",
+        "owlapiModule": false
+      },
+      {
+        "position": 53,
+        "path": "${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore-nio\\4.4.16\\httpcore-nio-4.4.16.jar",
+        "bytes": 368896,
+        "sha256": "4018736ede2d321034e8517ea90baefb31831a8608afccc446d8a699fb1d00d4",
+        "owlapiModule": false
+      },
+      {
+        "position": 54,
+        "path": "${MAVEN_REPOSITORY}\\com\\github\\vsonnier\\hppcrt\\0.7.5\\hppcrt-0.7.5.jar",
+        "bytes": 1935920,
+        "sha256": "f3cfbd511d0bd5a29b72bcca97fcaa81889cf6698f045c5f658744829c8784b9",
+        "owlapiModule": false
+      },
+      {
+        "position": 55,
+        "path": "${MAVEN_REPOSITORY}\\com\\github\\ben-manes\\caffeine\\caffeine\\3.1.8\\caffeine-3.1.8.jar",
+        "bytes": 889211,
+        "sha256": "7dd15f9df1be238ffaa367ce6f556737a88031de4294dad18eef57c474ddf1d3",
+        "owlapiModule": false
+      },
+      {
+        "position": 56,
+        "path": "${MAVEN_REPOSITORY}\\org\\checkerframework\\checker-qual\\3.37.0\\checker-qual-3.37.0.jar",
+        "bytes": 224460,
+        "sha256": "e4ce1376cc2735e1dde220b62ad0913f51297704daad155a33f386bc5db0d9f7",
+        "owlapiModule": false
+      },
+      {
+        "position": 57,
+        "path": "${MAVEN_REPOSITORY}\\com\\google\\errorprone\\error_prone_annotations\\2.21.1\\error_prone_annotations-2.21.1.jar",
+        "bytes": 16830,
+        "sha256": "d1f3c66aa91ac52549e00ae3b208ba4b9af7d72d68f230643553beb38e6118ac",
+        "owlapiModule": false
+      },
+      {
+        "position": 58,
+        "path": "${MAVEN_REPOSITORY}\\com\\google\\guava\\guava\\33.0.0-jre\\guava-33.0.0-jre.jar",
+        "bytes": 3047503,
+        "sha256": "f4d85c3e4d411694337cb873abea09b242b664bb013320be6105327c45991537",
+        "owlapiModule": false
+      },
+      {
+        "position": 59,
+        "path": "${MAVEN_REPOSITORY}\\com\\google\\guava\\failureaccess\\1.0.2\\failureaccess-1.0.2.jar",
+        "bytes": 4740,
+        "sha256": "8a8f81cf9b359e3f6dfa691a1e776985c061ef2f223c9b2c80753e1b458e8064",
+        "owlapiModule": false
+      },
+      {
+        "position": 60,
+        "path": "${MAVEN_REPOSITORY}\\com\\google\\guava\\listenablefuture\\9999.0-empty-to-avoid-conflict-with-guava\\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar",
+        "bytes": 2199,
+        "sha256": "b372a037d4230aa57fbeffdef30fd6123f9c0c2db85d0aced00c91b974f33f99",
+        "owlapiModule": false
+      },
+      {
+        "position": 61,
+        "path": "${MAVEN_REPOSITORY}\\com\\google\\j2objc\\j2objc-annotations\\2.8\\j2objc-annotations-2.8.jar",
+        "bytes": 9301,
+        "sha256": "f02a95fa1a5e95edb3ed859fd0fb7df709d121a35290eff8b74dce2ab7f4d6ed",
+        "owlapiModule": false
+      },
+      {
+        "position": 62,
+        "path": "${MAVEN_REPOSITORY}\\com\\google\\code\\findbugs\\jsr305\\3.0.2\\jsr305-3.0.2.jar",
+        "bytes": 19936,
+        "sha256": "766ad2a0783f2687962c8ad74ceecc38a28b9f72a2d085ee438b7813e928d0c7",
+        "owlapiModule": false
+      },
+      {
+        "position": 63,
+        "path": "${MAVEN_REPOSITORY}\\commons-io\\commons-io\\2.15.1\\commons-io-2.15.1.jar",
+        "bytes": 501218,
+        "sha256": "a58af12ee1b68cfd2ebb0c27caef164f084381a00ec81a48cc275fd7ea54e154",
+        "owlapiModule": false
+      }
+    ]
+  },
+  "javascriptProvenance": {
+    "package": {
+      "path": "${OWLAPI_SOURCE}\\package.json",
+      "bytes": 9416,
+      "sha256": "93e0b860903bde2711c6b688de127f6ada62393f5d3af23c0f66244ff4d19e4e",
+      "version": "0.1.0-rc.2"
+    },
+    "lock": {
+      "path": "${OWLAPI_SOURCE}\\package-lock.json",
+      "bytes": 373099,
+      "sha256": "067269937c0c72375cf968e44d4bb0ec4d2e258dc5704c402cad1ea1d5941340"
+    },
+    "registry": {
+      "path": "${OWLAPI_SOURCE}\\docs\\compatibility\\java-api-surface.json",
+      "bytes": 1019696,
+      "sha256": "5afc3d4e3d9cf7383d0e45f6983f956110020b6e0fef27377e745a8e34b7ddb5"
+    },
+    "referencePin": {
+      "path": "${OWLAPI_SOURCE}\\util\\owlapi-reference\\pinned-version.json",
+      "bytes": 699,
+      "sha256": "c6e6faedeb07eb531c53341d9c01eb06a02a2fedc04a8fbd69078498dd12c1b6",
+      "value": {
+        "schemaVersion": 1,
+        "owlapiVersionLine": "5.5.1",
+        "sourceRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+        "sourceDescribe": "owlapi-parent-5.5.1-9-gb61ebe2da",
+        "sourcePathForPhase0Evidence": "${JAVA_SOURCE}",
+        "use": "development-only black-box structural behavior oracle",
+        "productionRuntimeDependency": false,
+        "owl2vowlOracle": {
+          "pathForPhase0Evidence": "${HOME}/GitHub/VisualDataWeb/OWL2VOWL/target/OWL2VOWL-0.3.7-shaded.jar",
+          "sha256": "4bd16f5b953fa27bd7bded24da329d574b8c9114732e9c56379ee2eb905800de",
+          "use": "separate end-to-end VOWL output oracle only",
+          "embeddedOwlapiVersion": "5.1.1",
+          "structuralOracle": false
+        }
+      }
+    },
+    "runtimeDependencyFiles": [
+      {
+        "path": "${OWLAPI_SOURCE}\\node_modules\\jsonld\\package.json",
+        "bytes": 4458,
+        "sha256": "055ed69d0e7ac0f5f813667c106cb90191dbeef0a91454b3c42b2b9cf3819d21",
+        "repositoryRelativePath": "node_modules/jsonld/package.json"
+      },
+      {
+        "path": "${OWLAPI_SOURCE}\\node_modules\\jsonld\\lib\\ContextResolver.js",
+        "bytes": 7576,
+        "sha256": "2f8e65f3d73c5309e4312e7e81da427533745b800030f591a55056c69d1d3bf6",
+        "repositoryRelativePath": "node_modules/jsonld/lib/ContextResolver.js"
+      },
+      {
+        "path": "${OWLAPI_SOURCE}\\node_modules\\n3\\package.json",
+        "bytes": 6659,
+        "sha256": "53f19f13c3bf56aaf6649a301f166fc855855ab47e59390d481fc9a6b1689798",
+        "repositoryRelativePath": "node_modules/n3/package.json"
+      },
+      {
+        "path": "${OWLAPI_SOURCE}\\node_modules\\rdfxml-streaming-parser\\package.json",
+        "bytes": 3529,
+        "sha256": "098af9c02c3c13ac6938f1496cd518ce4eabe6beee2a5997c13bde82612e509d",
+        "repositoryRelativePath": "node_modules/rdfxml-streaming-parser/package.json"
+      }
+    ]
+  },
+  "configurationInventory": {
+    "javascriptLoaderDefaultsObserved": {
+      "collectWarnings": true,
+      "loadAnnotationAxioms": true,
+      "maxAnnotationDepth": 64,
+      "maxAxioms": 1000000,
+      "maxBlankNodes": 1000000,
+      "maxEntityDeclarations": 256,
+      "maxEntityExpansionDepth": 16,
+      "maxEntityReplacementLength": 65536,
+      "maxExpandedXmlBytes": 33554432,
+      "maxExpressionDepth": 512,
+      "maxImportCount": 256,
+      "maxImportDepth": 32,
+      "maxInputBytes": 33554432,
+      "maxQuads": 5000000,
+      "maxRdfListLength": 1000000,
+      "maxRedirects": 0,
+      "maxRemoteDocumentBytes": 33554432,
+      "maxRetries": 0,
+      "maxSniffBytes": 8192,
+      "maxTokenCount": 5000000,
+      "maxTokenLength": 1048576,
+      "maxXmlNestingDepth": 512,
+      "missingImportHandling": "throw",
+      "parsingMode": "strict",
+      "rdfDatasetGraphPolicy": "requireSingleGraph",
+      "remoteImports": false,
+      "remoteJsonLdContexts": false,
+      "sourceLocations": true,
+      "timeoutMs": 30000
+    },
+    "javascriptLoaderUndefinedDefaultsOmittedByJsonSerialization": [
+      "format",
+      "selectedGraph",
+      "signal"
+    ],
+    "javascriptLoaderNumericValueDomain": {
+      "minimum": 0,
+      "maximum": 9007199254740991,
+      "integerOnly": true,
+      "nullDisables": false,
+      "infinityDisables": false,
+      "zeroMeaning": "Actual zero wherever consumed; some declared fields are not package-enforced."
+    },
+    "javascriptProfileDefaultsSourceTraced": {
+      "maxWork": 1000000,
+      "maxDepth": 256,
+      "maxNumericDigits": 4096,
+      "maxLiteralLength": 1048576,
+      "timeoutMs": null,
+      "sourceAssessment": false
+    },
+    "javascriptProfileHardMaxima": {
+      "maxDepth": 512,
+      "maxNumericDigits": 65536
+    },
+    "javascriptLocalityDefaultsSourceTraced": {
+      "maxWork": null,
+      "maxAxioms": null,
+      "maxDepth": null,
+      "maxAnnotationDepth": null,
+      "timeoutMs": null
+    },
+    "localityNullMeaning": "Disabled; finite custom values must be nonnegative safe integers. No default numerical cap.",
+    "reportTables": [
+      {
+        "section": "Baselines and evidence interpretation",
+        "reportStartLine": 18,
+        "columns": ["Item", "Inspected identity"],
+        "rows": [
+          {
+            "Item": "JavaScript repository",
+            "Inspected identity": "`${OWLAPI_SOURCE}`, branch `main`"
+          },
+          {
+            "Item": "JavaScript commit",
+            "Inspected identity": "`20426357165a22248985ec43d7ac1266d49d6bec`"
+          },
+          {
+            "Item": "Package version",
+            "Inspected identity": "`@hadden-industries/owlapi` `0.1.0-rc.2`"
+          },
+          {
+            "Item": "JavaScript lock SHA256",
+            "Inspected identity": "`067269937c0c72375cf968e44d4bb0ec4d2e258dc5704c402cad1ea1d5941340`"
+          },
+          {
+            "Item": "Registry SHA256",
+            "Inspected identity": "`5afc3d4e3d9cf7383d0e45f6983f956110020b6e0fef27377e745a8e34b7ddb5`"
+          },
+          {
+            "Item": "Java repository",
+            "Inspected identity": "`${JAVA_SOURCE}`, branch `version5`"
+          },
+          {
+            "Item": "Matched Java source commit",
+            "Inspected identity": "`b61ebe2da83daceebb3e7ba7afbd2582c9240c33`"
+          },
+          {
+            "Item": "Java source tree",
+            "Inspected identity": "`b8dad5241dae6ff3bd3b755b9a1c605623eeb2c2`"
+          },
+          {
+            "Item": "Java source version",
+            "Inspected identity": "OWLAPI `5.5.1`; `owlapi-parent-5.5.1-9-gb61ebe2da` in the JavaScript pin"
+          },
+          {
+            "Item": "JavaScript runtime exercised",
+            "Inspected identity": "Node.js `v24.21.0`, Windows"
+          },
+          {
+            "Item": "Java runtime exercised",
+            "Inspected identity": "Temurin OpenJDK `25.0.4.1+1-LTS`, Windows"
+          }
+        ]
+      },
+      {
+        "section": "Public operations and actual execution paths",
+        "reportStartLine": 59,
+        "columns": [
+          "Public operation",
+          "JavaScript path and hidden gate",
+          "Matched Java authority",
+          "Observable consequence"
+        ],
+        "rows": [
+          {
+            "Public operation": "`loadOntologyFromOntologyDocument`",
+            "JavaScript path and hidden gate": "Manager input-byte check → parser selection over an 8,192-byte prefix → selected adapter/parser → parse transaction → import staging → RDF closure reconstruction → publication",
+            "Matched Java authority": "`OWLOntologyManagerImpl.loadOntology`, `OWLOntologyFactoryImpl.loadOWLOntology`",
+            "Observable consequence": "Admission, parser fallback and publication differ. [JS][JS-manager-load] [Java][J-factory]"
+          },
+          {
+            "Public operation": "Functional, Manchester, DL and KRSS loading",
+            "JavaScript path and hidden gate": "Per-parser lexer token counts/lengths and computation deadline; parser expression/annotation/blank-node checks; shared axiom transaction",
+            "Matched Java authority": "Native Java parser implementations under `parsers/`",
+            "Observable consequence": "No same named OWLAPI-wide token/input/computation budget exists on Java loader configuration. [JS lexer][JS-functional-lexer] [Java configuration][J-loader]"
+          },
+          {
+            "Public operation": "OWL/XML loading",
+            "JavaScript path and hidden gate": "Entity preprocessing → environment DOM parser → tree/OWL validation → transaction",
+            "Matched Java authority": "`OWLXMLParser` → `SAXParsers.initParserWithOWLAPIStandards`",
+            "Observable consequence": "JS entity policy and post-DOM depth guards differ from SAX expansion and runtime limits. [JS][JS-owlxml-parser] [Java][J-owlxml-parser]"
+          },
+          {
+            "Public operation": "Turtle, TriG, N-Triples and N-Quads loading",
+            "JavaScript path and hidden gate": "N3 syntax adapter → RDF dataset validation/graph policy → translator",
+            "Matched Java authority": "Java native/Rio parser selected by format and registry",
+            "Observable consequence": "Token and emitted-quad counts, graph policy and strictness affect acceptance. [JS adapter][JS-n3] [Java Rio][J-rio]"
+          },
+          {
+            "Public operation": "RDF/XML loading",
+            "JavaScript path and hidden gate": "XML entity preparation and nesting scan → streaming parser → RDF translator",
+            "Matched Java authority": "Native `RDFParser` or Rio RDF/XML",
+            "Observable consequence": "Native and Rio Java routes do not have identical configuration plumbing. [JS][JS-rdfxml] [Java SAX route][J-rdf-parser]"
+          },
+          {
+            "Public operation": "JSON-LD loading",
+            "JavaScript path and hidden gate": "`JSON.parse` → jsonld.js expansion/toRDF → materialized RDF dataset → translator",
+            "Matched Java authority": "Rio JSON-LD and its processor dependencies",
+            "Observable consequence": "Context policy, dependency cap and timing are distinct from the common loader settings. [JS][JS-jsonld] [Java][J-rio]"
+          },
+          {
+            "Public operation": "`OWL2DL/EL/QL/RLProfile.checkOntology`",
+            "JavaScript path and hidden gate": "Shared budget → captured closure model traversal → profile rules → optional source assessment → report",
+            "Matched Java authority": "`OWLProfile.checkOntologyClosureInProfiles` → profile walker and visitor",
+            "Observable consequence": "JS resource exhaustion yields an unverified report; `isInProfile()` becomes false with zero violations. [JS][JS-profile-check] [Java][J-profile]"
+          },
+          {
+            "Public operation": "`AddAxiom`, `RemoveAxiom`, `AddImport`, `RemoveImport`, `RemoveOntologyAnnotation` constructors",
+            "JavaScript path and hidden gate": "`ontologyChangeRecord` → structural graph validator, depth 512 and annotation depth 64",
+            "Matched Java authority": "Corresponding Java change constructors",
+            "Observable consequence": "Private admission limits; direct JS `addAxiom` has a different path. [JS][JS-change-record] [Java AddAxiom][J-addaxiom]"
+          },
+          {
+            "Public operation": "`OWLObjectDuplicator`, `OWLEntityRenamer` and transform helpers",
+            "JavaScript path and hidden gate": "`objectTransform` → same full graph validator before reconstruction/callbacks",
+            "Matched Java authority": "Java utility visitors and change construction",
+            "Observable consequence": "Caller cannot raise or disable these private defaults. [JS][JS-transform] [Java][J-duplicator]"
+          },
+          {
+            "Public operation": "`applyChange(s)`, add/remove batch",
+            "JavaScript path and hidden gate": "Materialize → all-participant validation/drafts → commit final states",
+            "Matched Java authority": "`applyChangesAndGetDetails` → sequential enactment, failure flag/rollback and listeners",
+            "Observable consequence": "Result meaning and partial-state behavior differ. [JS][JS-mutations] [Java][J-mutations]"
+          },
+          {
+            "Public operation": "Manchester object renderer",
+            "JavaScript path and hidden gate": "Full transform-kind validation → recursive renderer → 32 MiB rendered-string guard",
+            "Matched Java authority": "`ManchesterOWLSyntaxOWLObjectRendererImpl`",
+            "Observable consequence": "An ignored or small rendered subpart can still be rejected by full-object validation. [JS][JS-manchester-render] [Java][J-manchester-render]"
+          },
+          {
+            "Public operation": "`saveOntology` Functional",
+            "JavaScript path and hidden gate": "Capture snapshot → recursive Functional renderer → complete target replacement",
+            "Matched Java authority": "Functional storer/renderer through `AbstractOWLStorer`",
+            "Observable consequence": "No matching explicit JS 32 MiB budget was found here; runtime recursion/string limits still apply. [JS][JS-functional-render] [Java storage base][J-storage]"
+          },
+          {
+            "Public operation": "`saveOntology` Turtle",
+            "JavaScript path and hidden gate": "Default loader configuration → structural validation → bounded RDF mapping → N3 writer → reparse → OWL reconstruction → isomorphism → replacement",
+            "Matched Java authority": "`TurtleStorer` and renderer",
+            "Observable consequence": "Save inherits otherwise hidden loader defaults, including token length and time. [JS][JS-turtle-store] [Java][J-turtle-store]"
+          },
+          {
+            "Public operation": "`saveOntology` RDF/XML",
+            "JavaScript path and hidden gate": "RDF map → bounded graph writer → default configuration reparse → OWL reconstruction → isomorphism → replacement",
+            "Matched Java authority": "`RDFXMLStorer` and renderer",
+            "Observable consequence": "Graph/output/QName-work bounds plus loader and isomorphism gates; initial mapper is not given Turtle's quad cap. [JS][JS-rdfxml-store] [Java][J-rdfxml-store]"
+          },
+          {
+            "Public operation": "`saveOntology` OWL/XML",
+            "JavaScript path and hidden gate": "Structural/XML validation → DOM construction/output bytes → node and annotation depth → replacement",
+            "Matched Java authority": "`OWLXMLStorer` and renderer",
+            "Observable consequence": "Fixed private bounds, no public save override. [JS][JS-owlxml-store] [Java][J-owlxml-store]"
+          },
+          {
+            "Public operation": "Locality constructor, `extract`, `axiomBase`",
+            "JavaScript path and hidden gate": "Eager input capture without numerical default caps; async extraction with optional budget; eager filter on full base",
+            "Matched Java authority": "`LocalityModuleExtractor`",
+            "Observable consequence": "Default absence of caps agrees; callback evaluation and result protocol do not. [JS][JS-locality] [Java][J-locality]"
+          },
+          {
+            "Public operation": "`EntitySearcher` selected queries",
+            "JavaScript path and hidden gate": "Eager ontology iterable capture and eager arrays",
+            "Matched Java authority": "Stream-returning static Java queries",
+            "Observable consequence": "User iterator effects and errors happen earlier in JS. [JS][JS-search] [Java][J-search]"
+          }
+        ]
+      },
+      {
+        "section": "Loader budgets and counting semantics",
+        "reportStartLine": 83,
+        "columns": [
+          "Setting",
+          "JS default",
+          "Unit and actual scope",
+          "Java comparison"
+        ],
+        "rows": [
+          {
+            "Setting": "`maxInputBytes`",
+            "JS default": "33,554,432",
+            "Unit and actual scope": "UTF-8 encoding of the source string; every manager-loaded document, with additional checks in N3/RDFXML adapters",
+            "Java comparison": "No equivalent public Java loader byte-limit option found"
+          },
+          {
+            "Setting": "`maxAxioms`",
+            "JS default": "1,000,000",
+            "Unit and actual scope": "Distinct axioms in an individual parse/reconstruction transaction; duplicates already present are skipped; not an aggregate closure cap",
+            "Java comparison": "No matched public Java axiom-limit setting"
+          },
+          {
+            "Setting": "`maxTokenCount`",
+            "JS default": "5,000,000",
+            "Unit and actual scope": "Lexer tokens in Functional/Manchester/DL/KRSS and N3 paths; not a universal XML/JSON token budget",
+            "Java comparison": "No matched public Java token-count setting"
+          },
+          {
+            "Setting": "`maxTokenLength`",
+            "JS default": "1,048,576",
+            "Unit and actual scope": "UTF-8 lexer token/lexical fragment and, in RDF adapters, RDF term/component checks; exact lexeme accounting varies by syntax",
+            "Java comparison": "No matched public Java token-byte setting"
+          },
+          {
+            "Setting": "`maxQuads`",
+            "JS default": "5,000,000",
+            "Unit and actual scope": "N3/RDFXML emitted-quad counts before dataset deduplication; translator also checks materialized dataset size; Turtle mapping can bound emissions",
+            "Java comparison": "No matched public Java global quad setting"
+          },
+          {
+            "Setting": "`maxBlankNodes`",
+            "JS default": "1,000,000",
+            "Unit and actual scope": "Distinct blank-node/anonymous identities per parser or RDF dataset stage, not one closure-wide identity pool",
+            "Java comparison": "No matched public Java blank-node count setting"
+          },
+          {
+            "Setting": "`maxRdfListLength`",
+            "JS default": "1,000,000",
+            "Unit and actual scope": "RDF collection traversal items; tested before adding the next item",
+            "Java comparison": "No matched public Java list-length setting"
+          },
+          {
+            "Setting": "`maxExpressionDepth`",
+            "JS default": "512",
+            "Unit and actual scope": "Parser/translator expression levels; the same field is reused by Turtle's graph validator with different counting",
+            "Java comparison": "No matched public Java universal semantic-depth setting"
+          },
+          {
+            "Setting": "`maxAnnotationDepth`",
+            "JS default": "64",
+            "Unit and actual scope": "Nested annotations in relevant parsers/reconstruction",
+            "Java comparison": "No matched public Java annotation-depth setting"
+          },
+          {
+            "Setting": "`maxXmlNestingDepth`",
+            "JS default": "512",
+            "Unit and actual scope": "RDFXML scan depth and OWLXML DOM tree validation; OWLXML has already constructed the DOM",
+            "Java comparison": "JAXP `maxElementDepth` is runtime-owned and independently configurable; not this OWLAPI field"
+          },
+          {
+            "Setting": "`maxImportCount`",
+            "JS default": "256",
+            "Unit and actual scope": "New unresolved import attempts in a load session after reuse by ontology/document IRI; root excluded; failed diagnostic attempts can consume it",
+            "Java comparison": "No equivalent Java count option; ignored imports/reuse have their own rules"
+          },
+          {
+            "Setting": "`maxImportDepth`",
+            "JS default": "32",
+            "Unit and actual scope": "Root is depth 0; new child checked as parent depth plus one; reuse can bypass the new-load check",
+            "Java comparison": "No equivalent Java import-depth option"
+          },
+          {
+            "Setting": "`timeoutMs`",
+            "JS default": "30,000",
+            "Unit and actual scope": "Computation and selected context-load clocks described below",
+            "Java comparison": "Not equivalent to Java `setConnectionTimeout(int)`"
+          },
+          {
+            "Setting": "`maxSniffBytes`",
+            "JS default": "8,192",
+            "Unit and actual scope": "UTF-8 prefix used for detection, not a limit on full parsing",
+            "Java comparison": "No matched Java byte-limited detector contract; may cause a syntax/fallback error, not `ResourceLimitError`"
+          },
+          {
+            "Setting": "`maxEntityDeclarations`",
+            "JS default": "256",
+            "Unit and actual scope": "Count of internal general entity declarations, even before document use",
+            "Java comparison": "Not Java expansion count"
+          },
+          {
+            "Setting": "`maxEntityReplacementLength`",
+            "JS default": "65,536",
+            "Unit and actual scope": "UTF-8 bytes of raw and resolved replacement text",
+            "Java comparison": "Not Java expansion count; not identical to JAXP general-entity-size units/semantics"
+          },
+          {
+            "Setting": "`maxEntityExpansionDepth`",
+            "JS default": "16",
+            "Unit and actual scope": "JS declaration dependency expansion depth",
+            "Java comparison": "Not Java expansion count"
+          },
+          {
+            "Setting": "`maxExpandedXmlBytes`",
+            "JS default": "33,554,432",
+            "Unit and actual scope": "Bytes admitted while constructing the expanded XML text",
+            "Java comparison": "Not Java expansion count or JAXP aggregate entity size"
+          },
+          {
+            "Setting": "`maxRemoteDocumentBytes`",
+            "JS default": "33,554,432",
+            "Unit and actual scope": "Package checks returned JSON-LD context text; manager imports receive configuration but package does not check this field separately",
+            "Java comparison": "No equivalent generic Java byte-limit API found"
+          },
+          {
+            "Setting": "`maxRedirects`",
+            "JS default": "0",
+            "Unit and actual scope": "JSON-LD compares final URL with requested URL and counts either 0 or 1; it cannot count a hidden chain inside an injected loader",
+            "Java comparison": "Java `setFollowRedirects(boolean)` controls a different transport behavior"
+          },
+          {
+            "Setting": "`maxRetries`",
+            "JS default": "0",
+            "Unit and actual scope": "Defined and validated, but no package-side retry consumer found; passed to an injected loader in configuration",
+            "Java comparison": "Java `setRetriesToAttempt(int)` actually controls a helper loop"
+          }
+        ]
+      },
+      {
+        "section": "Bounds outside loader configuration",
+        "reportStartLine": 123,
+        "columns": [
+          "Area",
+          "Default or fixed bound",
+          "Units, ability to disable and result"
+        ],
+        "rows": [
+          {
+            "Area": "Profile work",
+            "Default or fixed bound": "`maxWork = 1,000,000`",
+            "Units, ability to disable and result": "Internal checkpoint/edge/node/rule work, not axiom count. Safe integer only; no `null`/Infinity disable. Shared across closure and optional source pass"
+          },
+          {
+            "Area": "Profile depth",
+            "Default or fixed bound": "`maxDepth = 256`, accepted maximum 512",
+            "Units, ability to disable and result": "Structural traversal includes arrays and object fields; also used by XSD-pattern validation. Cannot configure a higher value"
+          },
+          {
+            "Area": "Profile literal",
+            "Default or fixed bound": "`maxLiteralLength = 1,048,576`",
+            "Units, ability to disable and result": "JavaScript UTF-16 string length of a visited literal; not UTF-8 bytes; no disable sentinel"
+          },
+          {
+            "Area": "Profile arithmetic",
+            "Default or fixed bound": "`maxNumericDigits = 4,096`, accepted maximum 65,536",
+            "Units, ability to disable and result": "Facet numeric arithmetic checks raw lexical string length, including punctuation/signs; not a cap on every integer literal"
+          },
+          {
+            "Area": "Profile elapsed time",
+            "Default or fixed bound": "`timeoutMs = null`",
+            "Units, ability to disable and result": "Null disables only elapsed deadline. Explicit nonnegative safe integer permits a deadline; zero remains a deadline"
+          },
+          {
+            "Area": "Shared structural validation",
+            "Default or fixed bound": "depth 512; annotation depth 64",
+            "Units, ability to disable and result": "Arrays and structural field edges count towards depth. Private defaults; no public override on changes/duplicator/renamer/Manchester renderer. Annotation overflow is mislabeled `expressionDepth`, limit 512"
+          },
+          {
+            "Area": "Manchester rendering",
+            "Default or fixed bound": "33,554,432 bytes",
+            "Units, ability to disable and result": "Checks each rendered string's UTF-8 size, with a string-length precheck. No caller override"
+          },
+          {
+            "Area": "Turtle saving",
+            "Default or fixed bound": "33,554,432 bytes plus default loader budgets",
+            "Units, ability to disable and result": "Structural validation before mapping; 1,000,000 direct axioms; mapping 5,000,000 quads; parser/reconstruction budgets later. No save-level override"
+          },
+          {
+            "Area": "RDF/XML graph writer",
+            "Default or fixed bound": "33,554,432 bytes/work units; nesting 128",
+            "Units, ability to disable and result": "Term/output/construction byte gates; QName work counts UTF-16 candidate characters, not output bytes. Conservative construction and indentation checks can reject a smaller final text. It can flatten owned chains/lists at the nesting boundary, so graph depth over 128 does not imply failure"
+          },
+          {
+            "Area": "OWL/XML saving",
+            "Default or fixed bound": "33,554,432 bytes; node depth 512; annotation depth 64",
+            "Units, ability to disable and result": "DOM-construction values and final output are checked separately; no public override"
+          },
+          {
+            "Area": "RDF lossless-save comparator",
+            "Default or fixed bound": "1,000,000 search states",
+            "Units, ability to disable and result": "Both Turtle and RDFXML call `compareOntologies` with its private default. Requires positive safe integer internally; default/null handling is not unlimited. Throws `OntologyStructuralComparisonLimitError` with code `ONTOLOGY_STRUCTURAL_COMPARISON_LIMIT_EXCEEDED`, then a storage error"
+          },
+          {
+            "Area": "Locality optional limits",
+            "Default or fixed bound": "`maxWork`, `maxAxioms`, `maxDepth`, `maxAnnotationDepth`, `timeoutMs` all null",
+            "Units, ability to disable and result": "All disabled by default. Optional values are nonnegative safe integers; one extraction budget spans preparation and every STAR pass. Constructor work precedes these options and is synchronous"
+          },
+          {
+            "Area": "jsonld.js dependency",
+            "Default or fixed bound": "`MAX_CONTEXT_URLS = 10`",
+            "Units, ability to disable and result": "Private context-resolution chain/cycle-set gate, not a global cap on arbitrary independent contexts. Its `>` check admits 11 loader calls on the tested chain before the next resolution fails. Not a loader-configuration field"
+          },
+          {
+            "Area": "Runtime implementation",
+            "Default or fixed bound": "engine stack, maximum strings/arrays, available memory",
+            "Units, ability to disable and result": "Not a supported library numerical API. Functional's recursive renderer and parts of mapping/dependency work remain subject to these constraints"
+          }
+        ]
+      },
+      {
+        "section": "Existing Java public configuration methods",
+        "reportStartLine": 148,
+        "columns": [
+          "Java method pair",
+          "Default and semantics in the pinned source",
+          "JS implication"
+        ],
+        "rows": [
+          {
+            "Java method pair": "`getConnectionTimeout` / `setConnectionTimeout(int)`",
+            "Default and semantics in the pinned source": "20,000 milliseconds; copy on change, return same object if unchanged; setter stores negative ints too, but `URLConnection.setConnectTimeout` rejects negatives at use. Zero means no connection timeout in URLConnection",
+            "JS implication": "Do not rename `timeoutMs` to this: it currently bounds computation. Reuse this API and its units/stage/domain where transport is implemented"
+          },
+          {
+            "Java method pair": "`getRetriesToAttempt` / `setRetriesToAttempt(int)`",
+            "Default and semantics in the pinned source": "5; setter stores arbitrary ints; helper's loop bound counts attempts. Zero/negative means no input-stream attempt; repeated timeouts stop at the hardcoded fifth failure",
+            "JS implication": "`maxRetries = 0` is neither the default nor the effective Java semantics, and JS does not consume it itself"
+          },
+          {
+            "Java method pair": "`isFollowRedirects` / `setFollowRedirects(boolean)`",
+            "Default and semantics in the pinned source": "true; controls OWLAPI's explicit cross-protocol redirect handling with cycle detection. The code does not call `setInstanceFollowRedirects(false)` when false",
+            "JS implication": "Do not infer that false forbids every same-protocol redirect handled by HttpURLConnection. Preserve actual backend behavior or define an explicitly chosen adapted contract"
+          },
+          {
+            "Java method pair": "`getEntityExpansionLimit` / `setEntityExpansionLimit(String)`",
+            "Default and semantics in the pinned source": "`\"100000000\"`; passed to native SAX property setup. Setter stores strings; parsing/invalid-value behavior belongs to the selected SAX provider. Zero was accepted by the observed parser and disables this count limit",
+            "JS implication": "The four JS entity fields count different things. They cannot be aliases for this Java API"
+          },
+          {
+            "Java method pair": "`isStrict` / `setStrict(boolean)`",
+            "Default and semantics in the pinned source": "false by default",
+            "JS implication": "JS defaults to `parsingMode: \"strict\"`; `compatible` is not proven to be an exact inverse implementation of Java strictness"
+          },
+          {
+            "Java method pair": "`isLoadAnnotationAxioms` / `setLoadAnnotationAxioms(boolean)`",
+            "Default and semantics in the pinned source": "true; stored loader configuration also affects later manager annotation-axiom changes",
+            "JS implication": "Setting only parse-time behavior in JS loses a Java post-load effect"
+          },
+          {
+            "Java method pair": "`getMissingImportHandlingStrategy` / setter",
+            "Default and semantics in the pinned source": "`THROW_EXCEPTION`; silent mode catches ontology-creation failures from imports and notifies listeners",
+            "JS implication": "JS `\"diagnostic\"` only absorbs its defined missing-import cases; parse failures and generic loader failures can still abort"
+          },
+          {
+            "Java method pair": "`addIgnoredImport`, `removeIgnoredImport`, `clearIgnoredImports`, `isIgnoredImport`",
+            "Default and semantics in the pinned source": "Copy-based configured set plus built-in default ignored namespaces",
+            "JS implication": "Reusing locally managed documents is not a substitute for this policy"
+          },
+          {
+            "Java method pair": "Loader configuration property defaults",
+            "Default and semantics in the pinned source": "Per-instance override → process system property → classpath `owlapi.properties` → enum default",
+            "JS implication": "Default resolution is dynamic for system properties. JS snapshots a fixed object without this authority hierarchy"
+          },
+          {
+            "Java method pair": "`OWLDocumentFormat.setParameter` / `getParameter`",
+            "Default and semantics in the pinned source": "Java format parameter bag; Rio copies supported `RioSetting` values into its parser configuration",
+            "JS implication": "An existing Java seam for dependency controls. JS exposes immutable JSON-compatible parameters, primarily string-keyed selected settings"
+          }
+        ]
+      },
+      {
+        "section": "Native SAX and observed JDK 25 properties",
+        "reportStartLine": 173,
+        "columns": ["Property suffix", "Observed value"],
+        "rows": [
+          {
+            "Property suffix": "`entityExpansionLimit`",
+            "Observed value": "100,000,000"
+          },
+          {
+            "Property suffix": "`maxElementDepth`",
+            "Observed value": "100"
+          },
+          {
+            "Property suffix": "`totalEntitySizeLimit`",
+            "Observed value": "100,000"
+          },
+          {
+            "Property suffix": "`maxGeneralEntitySizeLimit`",
+            "Observed value": "100,000"
+          },
+          {
+            "Property suffix": "`maxParameterEntitySizeLimit`",
+            "Observed value": "15,000"
+          },
+          {
+            "Property suffix": "`entityReplacementLimit`",
+            "Observed value": "100,000"
+          },
+          {
+            "Property suffix": "`maxXMLNameLimit`",
+            "Observed value": "1,000"
+          },
+          {
+            "Property suffix": "`elementAttributeLimit`",
+            "Observed value": "200"
+          }
+        ]
+      },
+      {
+        "section": "Priorities and decisions required before an implementation plan",
+        "reportStartLine": 356,
+        "columns": ["Priority", "Required outcome or decision", "Dependency"],
+        "rows": [
+          {
+            "Priority": "Mandatory",
+            "Required outcome or decision": "Same admitted supported objects remain usable across addition/removal, changes, transforms, rendering and profile calls",
+            "Dependency": "Shared validator, direct paths and storer verification must be reconciled together; larger default numbers do not satisfy parity"
+          },
+          {
+            "Priority": "Mandatory",
+            "Required outcome or decision": "Existing Java configuration method names, value domains, defaults and operational meanings are honored for corresponding responsibilities",
+            "Dependency": "Java default-resolution hierarchy; actual URLConnection/SAX/Rio consumption; explicit environment target"
+          },
+          {
+            "Priority": "Mandatory",
+            "Required outcome or decision": "Default successful/failed loading agrees on implemented formats, including late syntax signatures and default strictness",
+            "Dependency": "Parser registry/fallback and RDF graph/reconstruction policy, not only configuration defaults"
+          },
+          {
+            "Priority": "Mandatory",
+            "Required outcome or decision": "Save admission is not silently restricted by private default reparsing/search ceilings",
+            "Dependency": "Complete mapping → output → reparse → reconstruction → comparison path"
+          },
+          {
+            "Priority": "Mandatory",
+            "Required outcome or decision": "Results and state after error are reviewed as API behavior",
+            "Dependency": "`ChangeApplied` adaptation, atomic batch policy, target reuse, retained loader policy and closure publication"
+          },
+          {
+            "Priority": "Mandatory",
+            "Required outcome or decision": "Ordinary hostnames are not misclassified by an address parser",
+            "Dependency": "A narrow URL classification correction can be specified independently of the larger policy decision"
+          },
+          {
+            "Priority": "Mandatory",
+            "Required outcome or decision": "Preserve observable pinned quirks while that target remains in scope",
+            "Dependency": "Writer copy-reset/identity, retry-helper anomalies and negative configuration acceptance; changing the target or allowing an exception requires a separate explicit owner change of scope"
+          },
+          {
+            "Priority": "Decision",
+            "Required outcome or decision": "Java environment baseline and supported variants",
+            "Dependency": "Native versus Rio parser, JDK 25 versus other JDK defaults, system/JAXP properties and relevant dependency versions"
+          },
+          {
+            "Priority": "Decision",
+            "Required outcome or decision": "Promise/iterator/exception mapping permitted by the migration contract",
+            "Dependency": "Browser responsiveness and cancellation are useful, but do not require eager query traversal or changed callback reachability"
+          },
+          {
+            "Priority": "Evidence",
+            "Required outcome or decision": "Effective Java JSON-LD chain/dependency/transport controls",
+            "Dependency": "Identify the selected processor and verify supported format parameters with bounded local loader/transport probes"
+          },
+          {
+            "Priority": "Evidence",
+            "Required outcome or decision": "Java failure-state and listener boundaries beyond the demonstrated batch",
+            "Dependency": "Root/import failure, ID-collision variants, unsuccessful rollback, target partial write and consumer reentrancy"
+          }
+        ]
+      },
+      {
+        "section": "Required compatibility and regression evidence",
+        "reportStartLine": 376,
+        "columns": [
+          "Evidence family",
+          "Concrete checks to retain or add",
+          "What constitutes useful proof"
+        ],
+        "rows": [
+          {
+            "Evidence family": "Configuration API",
+            "Concrete checks to retain or add": "Existing Java names; unchanged-value identity; null/negative/zero/max domains; setter chaining; process/config-file precedence",
+            "What constitutes useful proof": "Matched call results and stage of rejection, not a table of similar field names"
+          },
+          {
+            "Evidence family": "Budget removal or alignment",
+            "Concrete checks to retain or add": "Deep annotation probe; around 1 MiB literal; above former depth/work/axiom thresholds with controlled fixtures; explicit custom limits separately",
+            "What constitutes useful proof": "Default Java-compatible call succeeds or fails for the same reason; exact counters/units tested without repeating huge suites"
+          },
+          {
+            "Evidence family": "Profiles",
+            "Concrete checks to retain or add": "Valid report, known violation, explicit resource exhaustion, abort, incomplete closure, mutation during suspension, opt-in source evidence",
+            "What constitutes useful proof": "Distinguish violation from incomplete computation; preserve source/formal separation and closure scope"
+          },
+          {
+            "Evidence family": "Parsers",
+            "Concrete checks to retain or add": "Leading whitespace/comments across sniff window; ordinary parse failure followed by another parser; explicit format/media hint; small strict/compatible examples",
+            "What constitutes useful proof": "Correct candidate selection, exception category and observable publication"
+          },
+          {
+            "Evidence family": "XML environment",
+            "Concrete checks to retain or add": "Native OWLXML/RDFXML versus Rio; expansion-count setting including zero; unused external declaration; depth and entity-size overrides",
+            "What constitutes useful proof": "Selected provider/JDK and configuration recorded; no claim of universal Java defaults"
+          },
+          {
+            "Evidence family": "Imports/transport",
+            "Concrete checks to retain or add": "Reused documents, repeated missing imports, silent/throw strategy, ignored imports, timeout/retry/redirect controls, cancellation",
+            "What constitutes useful proof": "Bounded local/fake transport counters; no external network dependency required"
+          },
+          {
+            "Evidence family": "Changes",
+            "Concrete checks to retain or add": "Net-zero batch, no-op, unsuccessful change, thrown collision after a successful change, annotations disabled after loading",
+            "What constitutes useful proof": "Return protocol and exact post-call ontology/ID/closure state"
+          },
+          {
+            "Evidence family": "Storage",
+            "Concrete checks to retain or add": "All four formats on the same admitted ontology; loaded custom configuration followed by save; reuse target; controlled late failure; comparator exhaustion",
+            "What constitutes useful proof": "Target state and error cause; output equivalence is a separate concern"
+          },
+          {
+            "Evidence family": "Queries/locality",
+            "Concrete checks to retain or add": "Empty seed, unreachable axioms, throwing/counting filters, throwing ontology iterator, consuming versus not consuming results",
+            "What constitutes useful proof": "Callback count/reachability and error timing, not only final module/query values"
+          },
+          {
+            "Evidence family": "Runtime portability",
+            "Concrete checks to retain or add": "Node/browser XML parser and AbortSignal behavior; selected supported JVM/dependency combinations",
+            "What constitutes useful proof": "Explicit environment matrix with bounded evidence; intrinsic resource exhaustion is not an API numeric promise"
+          },
+          {
+            "Evidence family": "Artifact provenance",
+            "Concrete checks to retain or add": "Exact source/tree, ordered dependency/classpath identity, harness source and runtime, outputs and diagnostics",
+            "What constitutes useful proof": "Retained-runtime observation is clearly separate from a fresh verified Java build or release gate"
+          }
+        ]
+      }
+    ]
+  },
+  "sourceIndex": [
+    {
+      "id": "JS-registry",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "docs/compatibility/java-api-surface.json",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/docs/compatibility/java-api-surface.json#L1",
+      "startLine": 1,
+      "endLine": 1,
+      "blobObjectId": "79b320790db48cc1f0735c2ad968b1d6313ed5a4",
+      "lineCount": 24449,
+      "sha256": "5afc3d4e3d9cf7383d0e45f6983f956110020b6e0fef27377e745a8e34b7ddb5"
+    },
+    {
+      "id": "JS-pin",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "util/owlapi-reference/pinned-version.json",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/util/owlapi-reference/pinned-version.json#L1",
+      "startLine": 1,
+      "endLine": 1,
+      "blobObjectId": "9cfc4f89a78ee1eebeb8a3c0a92d863f52c61449",
+      "lineCount": 16,
+      "sha256": "c6e6faedeb07eb531c53341d9c01eb06a02a2fedc04a8fbd69078498dd12c1b6"
+    },
+    {
+      "id": "JS-loader",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "model/owlOntologyLoaderConfiguration.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/model/owlOntologyLoaderConfiguration.js#L13-L193",
+      "startLine": 13,
+      "endLine": 193,
+      "blobObjectId": "3d1ae67bcc3691ec708827f860e32f8269d53da1",
+      "lineCount": 193,
+      "sha256": "dce9bfa703335d1d40f61e82b3bd48d43d777026a186f128fb1653d2a1ad1f3e"
+    },
+    {
+      "id": "JS-manager-load",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "model/owlOntologyManager.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/model/owlOntologyManager.js#L606-L1089",
+      "startLine": 606,
+      "endLine": 1089,
+      "blobObjectId": "7f665254c4ce4323753ed9170381fc8c76b22e48",
+      "lineCount": 1349,
+      "sha256": "c1187c8e190c914016653e8a2769bc0f5d49a6165ec9617763f087cd8e6931e6"
+    },
+    {
+      "id": "JS-manager-parse",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "model/owlOntologyManager.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/model/owlOntologyManager.js#L1256-L1347",
+      "startLine": 1256,
+      "endLine": 1347,
+      "blobObjectId": "7f665254c4ce4323753ed9170381fc8c76b22e48",
+      "lineCount": 1349,
+      "sha256": "c1187c8e190c914016653e8a2769bc0f5d49a6165ec9617763f087cd8e6931e6"
+    },
+    {
+      "id": "JS-mutations",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "model/owlOntologyManager.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/model/owlOntologyManager.js#L1090-L1243",
+      "startLine": 1090,
+      "endLine": 1243,
+      "blobObjectId": "7f665254c4ce4323753ed9170381fc8c76b22e48",
+      "lineCount": 1349,
+      "sha256": "c1187c8e190c914016653e8a2769bc0f5d49a6165ec9617763f087cd8e6931e6"
+    },
+    {
+      "id": "JS-parser-registry",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/parsing/parserRegistry.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/parsing/parserRegistry.js#L145-L223",
+      "startLine": 145,
+      "endLine": 223,
+      "blobObjectId": "168611601a615ccb9bfb4fb226f5fbabaa697249",
+      "lineCount": 239,
+      "sha256": "34f4618f9649ad1ee6f5d1f193e62722eaf8e9d41b00298103d56552ae253c0d"
+    },
+    {
+      "id": "JS-functional-lexer",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/parsing/functional/lexer.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/parsing/functional/lexer.js#L20",
+      "startLine": 20,
+      "endLine": 20,
+      "blobObjectId": "71bd8881a21d39ce8aba904096e777d35c1f63b4",
+      "lineCount": 363,
+      "sha256": "61065f02d481a92d6f55cd07b760a4c0e2f76825e9a3b101bad2339a8139c8b5"
+    },
+    {
+      "id": "JS-owlxml-parser",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/parsing/owlxml/parser.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/parsing/owlxml/parser.js#L198",
+      "startLine": 198,
+      "endLine": 198,
+      "blobObjectId": "68e28a6914783c2feb4e03813e1521a5c7fd8448",
+      "lineCount": 1703,
+      "sha256": "e421463f6c23861224a0b768be5cf11ddb34c2731affeeb7d589eafb209a66db"
+    },
+    {
+      "id": "JS-n3",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/parsing/rdf/n3SyntaxAdapter.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/parsing/rdf/n3SyntaxAdapter.js#L90",
+      "startLine": 90,
+      "endLine": 90,
+      "blobObjectId": "652c8348cfe09b08dad41ef500179e8584990bd9",
+      "lineCount": 606,
+      "sha256": "f9d3788da7bf08da32e0a1e4a5e5b147144ec8bcece651de4cdae2d3d45344a0"
+    },
+    {
+      "id": "JS-rdfxml",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/parsing/rdfxml/rdfXmlSyntaxAdapter.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/parsing/rdfxml/rdfXmlSyntaxAdapter.js#L834",
+      "startLine": 834,
+      "endLine": 834,
+      "blobObjectId": "3f9311edae0a3724dff7c599643dec59198f3177",
+      "lineCount": 1041,
+      "sha256": "83bf0a8dcd7ca599f5247efe5eee3538c23b14fb4def89255eec47fee2e73c42"
+    },
+    {
+      "id": "JS-jsonld",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/parsing/jsonld/jsonLdSyntaxAdapter.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/parsing/jsonld/jsonLdSyntaxAdapter.js#L215-L501",
+      "startLine": 215,
+      "endLine": 501,
+      "blobObjectId": "da7fc7c9266da9d67536424c705a1379180b016d",
+      "lineCount": 519,
+      "sha256": "b9710af58367ee6c26f2c6ad346be4b44cbc0f479990b3e8d2ab8bbf5c954242"
+    },
+    {
+      "id": "JS-jsonld-descriptor",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/parsing/jsonld/descriptor.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/parsing/jsonld/descriptor.js#L14",
+      "startLine": 14,
+      "endLine": 14,
+      "blobObjectId": "fd9732858d0e6f86447e3804a8e07da78344d3f4",
+      "lineCount": 81,
+      "sha256": "b2b09ab4957159d166f468d476e19885ec3f0bfd392d992d66d82ac1874d1ff6"
+    },
+    {
+      "id": "JS-translator-clock",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/mapping/rdfToOwlTranslator.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/mapping/rdfToOwlTranslator.js#L376-L436",
+      "startLine": 376,
+      "endLine": 436,
+      "blobObjectId": "b612c609445a9a6b911a645e1030b5e7b2160a16",
+      "lineCount": 4928,
+      "sha256": "8c74824c78fe467f8f9af7ada034482b5e899c3fa8a32a528c34f8ebd0bab149"
+    },
+    {
+      "id": "JS-translator-limits",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/mapping/rdfToOwlTranslator.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/mapping/rdfToOwlTranslator.js#L4290-L4900",
+      "startLine": 4290,
+      "endLine": 4900,
+      "blobObjectId": "b612c609445a9a6b911a645e1030b5e7b2160a16",
+      "lineCount": 4928,
+      "sha256": "8c74824c78fe467f8f9af7ada034482b5e899c3fa8a32a528c34f8ebd0bab149"
+    },
+    {
+      "id": "JS-entity",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/parsing/xml/xmlEntityPolicy.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/parsing/xml/xmlEntityPolicy.js#L175-L446",
+      "startLine": 175,
+      "endLine": 446,
+      "blobObjectId": "6230b9c78f6b318f4b634a74e5231ce2c16a4fe7",
+      "lineCount": 447,
+      "sha256": "d6f5f06e78f3300edaa3972a239fe51d0843cce6a24de5111c89fbc377993c09"
+    },
+    {
+      "id": "JS-budget-doc",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "docs/performance/resource-budgets.json",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/docs/performance/resource-budgets.json#L1",
+      "startLine": 1,
+      "endLine": 1,
+      "blobObjectId": "11e9c9cb1707dafb17e8ac1602ccc3c3f0cf6151",
+      "lineCount": 142,
+      "sha256": "ced73f62b6ae53db4f7452760b21ace4cd278320e4fb3eb628ba55d156c70322"
+    },
+    {
+      "id": "JS-profile-budget",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/profiles/budget.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/profiles/budget.js#L5-L100",
+      "startLine": 5,
+      "endLine": 100,
+      "blobObjectId": "7230cdd39a7f1f3a2824df022e65a7273b9506a4",
+      "lineCount": 100,
+      "sha256": "77263a92d29dc463960b062796ba65c0ffdc1170aace3be6cff6facbf7af7f42"
+    },
+    {
+      "id": "JS-profile-check",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/profiles/owl2dl.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/profiles/owl2dl.js#L96-L490",
+      "startLine": 96,
+      "endLine": 490,
+      "blobObjectId": "ce2d04c1e5b462b9a29086375c8563003289d535",
+      "lineCount": 494,
+      "sha256": "e5bc21d9f09e57531bcbf9e782d5702c2215b1bde2ccaa4ed2974099a8374984"
+    },
+    {
+      "id": "JS-profile-report",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "profiles/owlProfileReport.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/profiles/owlProfileReport.js#L1",
+      "startLine": 1,
+      "endLine": 1,
+      "blobObjectId": "d5dc619013fefa7605176ff864855406a68efbc5",
+      "lineCount": 26,
+      "sha256": "bdf1bb02fefdc41c652e2584b88d106e07e7a541e40ce5a45b0970a4f0a6953d"
+    },
+    {
+      "id": "JS-facets",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/profiles/facets.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/profiles/facets.js#L27-L141",
+      "startLine": 27,
+      "endLine": 141,
+      "blobObjectId": "20b85fb3db7665f6565a56c18ba9dd223d0084e5",
+      "lineCount": 156,
+      "sha256": "34361778d0440401d5b39d042b1655e246930edc276d7384bccb7c6b6da563ba"
+    },
+    {
+      "id": "JS-pattern",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/profiles/xsdPattern.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/profiles/xsdPattern.js#L25",
+      "startLine": 25,
+      "endLine": 25,
+      "blobObjectId": "b8aeea855e309c1abb69994f51b0540547119b7a",
+      "lineCount": 140,
+      "sha256": "2fdacbf6db30b8493a5826afd30d83a602136b161df0e1eed5829c72a6c3bb22"
+    },
+    {
+      "id": "JS-structure",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/model/structuralValidation.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/model/structuralValidation.js#L117-L188",
+      "startLine": 117,
+      "endLine": 188,
+      "blobObjectId": "85484a46fc78ed855ab8e4c2bb0d88ff613142fb",
+      "lineCount": 188,
+      "sha256": "1dd3efcd9c80e4f2e8c3a3d2deddf528ed51c5229f41ee3bc53b0c9e7d8b2409"
+    },
+    {
+      "id": "JS-change-record",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/model/ontologyChangeRecord.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/model/ontologyChangeRecord.js#L1-L36",
+      "startLine": 1,
+      "endLine": 36,
+      "blobObjectId": "e42016e00b0a4f6f8767f96f8ac678792293b367",
+      "lineCount": 36,
+      "sha256": "1455c89579e3a311f48582aa3dbe80e93d3f8f69e18d1639c365cca265a44144"
+    },
+    {
+      "id": "JS-transform",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/model/objectTransform.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/model/objectTransform.js#L1-L90",
+      "startLine": 1,
+      "endLine": 90,
+      "blobObjectId": "d3d66e04b82935f45b57b6d5c1c3845d4d110d0e",
+      "lineCount": 138,
+      "sha256": "ce3ed8968caadcbdf2964875b07bcb579dd6356403ab70b9f332b566ffca1872"
+    },
+    {
+      "id": "JS-manchester-render",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "manchestersyntax/renderer/manchesterOWLSyntaxOWLObjectRendererImpl.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/manchestersyntax/renderer/manchesterOWLSyntaxOWLObjectRendererImpl.js#L248-L295",
+      "startLine": 248,
+      "endLine": 295,
+      "blobObjectId": "5726725ac8cf183eb53c60fbd057e44315d456d3",
+      "lineCount": 295,
+      "sha256": "a86c2033d1b856ccaed520ab34a930b4e5af88b26635888a3c395d8885cdcb61"
+    },
+    {
+      "id": "JS-functional-render",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/storage/functional/functionalSyntaxRenderer.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/storage/functional/functionalSyntaxRenderer.js#L347-L375",
+      "startLine": 347,
+      "endLine": 375,
+      "blobObjectId": "6e8396910223b6c3766a3debe391243c801dc8cd",
+      "lineCount": 375,
+      "sha256": "bcc09c5558463717af44b7c96f96e7bde6585674cfc7bc35a41c4893c124f4f1"
+    },
+    {
+      "id": "JS-turtle-store",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/storage/turtle/turtleStorer.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/storage/turtle/turtleStorer.js#L19-L96",
+      "startLine": 19,
+      "endLine": 96,
+      "blobObjectId": "233ab8f7bd25671e6003c4b8afce389963e03829",
+      "lineCount": 96,
+      "sha256": "b4d4b40ade8ab7ca768aa28a317ffe02452022fbb50496b2b81556a9ce6f7f9d"
+    },
+    {
+      "id": "JS-rdfxml-store",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/storage/rdfxml/rdfXmlStorer.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/storage/rdfxml/rdfXmlStorer.js#L26-L90",
+      "startLine": 26,
+      "endLine": 90,
+      "blobObjectId": "b99bef79735992f22caa0b0eab0ec0dfeb90face",
+      "lineCount": 90,
+      "sha256": "e165420654a80bd68e7a85d2c0aaa2835f13fa0c7e067cad58feef85077a8a75"
+    },
+    {
+      "id": "JS-rdfxml-writer",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/storage/rdfxml/rdfXmlGraphWriter.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/storage/rdfxml/rdfXmlGraphWriter.js#L28",
+      "startLine": 28,
+      "endLine": 28,
+      "blobObjectId": "3b148fe59d938b4f2e97fb719faabf070b8aba34",
+      "lineCount": 867,
+      "sha256": "31c3d8ff8c925d7bbc6102d7d45e0529039b098cde01c1475312fe82a96ea7c8"
+    },
+    {
+      "id": "JS-owlxml-store",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/storage/owlxml/owlXmlStorer.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/storage/owlxml/owlXmlStorer.js#L29-L247",
+      "startLine": 29,
+      "endLine": 247,
+      "blobObjectId": "bb5e1c384db438a766d3551ca1d7b19ffd5be719",
+      "lineCount": 248,
+      "sha256": "1524770a574bf013bb7b1d88eb8347b385c589bcb4b49c63130ad81a35b02aed"
+    },
+    {
+      "id": "JS-rdf-storage",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/storage/rdfStorage.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/storage/rdfStorage.js#L35-L73",
+      "startLine": 35,
+      "endLine": 73,
+      "blobObjectId": "5c51c2a18f611b283ee527429adc1af1bbaae394",
+      "lineCount": 73,
+      "sha256": "9d7a751f1eab50a57b9552aea14627efa173ae25d428c9e3f0faf51d0b169edb"
+    },
+    {
+      "id": "JS-isomorphism",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/model/ontologyStructuralIsomorphism.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/model/ontologyStructuralIsomorphism.js#L171-L191",
+      "startLine": 171,
+      "endLine": 191,
+      "blobObjectId": "2b73822169ac267b3cb6f9e2482da0972d68cd72",
+      "lineCount": 680,
+      "sha256": "8f4c5206615c713d3c73ee1bb392829312ad61b28d79e2983f6cea3fae64f71e"
+    },
+    {
+      "id": "JS-storer-registry",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/storage/storerRegistry.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/storage/storerRegistry.js#L71-L129",
+      "startLine": 71,
+      "endLine": 129,
+      "blobObjectId": "2514efc68f0fd2c38d57a3effaab92bb37e32c64",
+      "lineCount": 136,
+      "sha256": "cb5ce83571e950ebc45472b06aafe27c24b018b0532a8fb205d8e689631b7931"
+    },
+    {
+      "id": "JS-locality",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "modularity/locality/syntacticLocalityModuleExtractor.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/modularity/locality/syntacticLocalityModuleExtractor.js#L24-L190",
+      "startLine": 24,
+      "endLine": 190,
+      "blobObjectId": "89b1dac39ef52ecc0c7f14e68e8e4a85e23d902d",
+      "lineCount": 208,
+      "sha256": "3740b0e16b8656ca3c770ca7bd99b794a6cad40d0c47e94670da9858a428aef7"
+    },
+    {
+      "id": "JS-locality-budget",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/modularity/localityBudget.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/modularity/localityBudget.js#L1-L76",
+      "startLine": 1,
+      "endLine": 76,
+      "blobObjectId": "41b156edbf0ce612912c21fb8ff507ff92fc248f",
+      "lineCount": 76,
+      "sha256": "bcb912eec799bc4d798b8eeff6521ad6e8d65695f327ad971ae2624d62ae6fb7"
+    },
+    {
+      "id": "JS-locality-history",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "docs/plans/0.1.0-rc.2-locality-work-bound.md",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/docs/plans/0.1.0-rc.2-locality-work-bound.md#L1",
+      "startLine": 1,
+      "endLine": 1,
+      "blobObjectId": "7c392e6613bd9c57543b0b9b2478c0114bc12cef",
+      "lineCount": 48,
+      "sha256": "ce4c9ce7167ae079dda84d29c7b599dd71e9a5f9d94240e283db11633efb6b55"
+    },
+    {
+      "id": "JS-search",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "search/entitySearcher.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/search/entitySearcher.js#L18-L166",
+      "startLine": 18,
+      "endLine": 166,
+      "blobObjectId": "282ce7416bc67bccb3c5fbc3453e404a4ab52fd7",
+      "lineCount": 232,
+      "sha256": "4404602d23bc12e38f31e5b089cca0a3461af80466aaefe43964684397f75204"
+    },
+    {
+      "id": "JS-graphs",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/rdfjs/graphPolicy.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/rdfjs/graphPolicy.js#L103-L145",
+      "startLine": 103,
+      "endLine": 145,
+      "blobObjectId": "92fa0d6f62a036df13475afbc39abf54a3f2ab09",
+      "lineCount": 185,
+      "sha256": "f44b728ee8bc89048c4380c72fc30c6aa2dd13fe802b8dc9865fe1b1f114aeda"
+    },
+    {
+      "id": "JS-writer",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "model/owlOntologyWriterConfiguration.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/model/owlOntologyWriterConfiguration.js#L1-L74",
+      "startLine": 1,
+      "endLine": 74,
+      "blobObjectId": "f1d5b78bed3b435ed7a50506f3d1136366a9e9a9",
+      "lineCount": 74,
+      "sha256": "771fd4e7a73c6d8888f410e3658766494b29f5e3d093f4c6b3ba5710025fb0da"
+    },
+    {
+      "id": "JS-writer-history",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "docs/compatibility/rdfxml-writer-configuration.md",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/docs/compatibility/rdfxml-writer-configuration.md#L64",
+      "startLine": 64,
+      "endLine": 64,
+      "blobObjectId": "8c700da7e7a5a3f81bbb5cc10fb3351f3d52c59b",
+      "lineCount": 139,
+      "sha256": "8f0f67ab0092f697718540bafd59863b4b9522677de66bc460a582cbf527b934"
+    },
+    {
+      "id": "JS-cardinality",
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/model/cardinality.js",
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/model/cardinality.js#L1",
+      "startLine": 1,
+      "endLine": 1,
+      "blobObjectId": "b13e13dfc458f9bb577b229d25c520729afc3c92",
+      "lineCount": 20,
+      "sha256": "b9365726b0f608240e7fa6fa4f0962e6dd986556fcea6b9be8d6144cc4823958"
+    },
+    {
+      "id": "J-loader",
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyLoaderConfiguration.java",
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyLoaderConfiguration.java#L58-L550",
+      "startLine": 58,
+      "endLine": 550,
+      "blobObjectId": "e93412b5fb9554fe99f81c6daf9e2f585f1c686b",
+      "lineCount": 550,
+      "sha256": "a185b99e2a245a8be2ad17fcba5c0b1b0e042a81a6dc1be8514eef7869357179"
+    },
+    {
+      "id": "J-options",
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "api/src/main/java/org/semanticweb/owlapi/model/parameters/ConfigurationOptions.java",
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/api/src/main/java/org/semanticweb/owlapi/model/parameters/ConfigurationOptions.java#L18-L204",
+      "startLine": 18,
+      "endLine": 204,
+      "blobObjectId": "811ad5cd6fca33a024ed259e8df14bacb70d4f5a",
+      "lineCount": 205,
+      "sha256": "22ac53ae64b6ccf1943f0c7e8e6ec9b1acf61d7f4eff812de0f1ab4a2d942de7"
+    },
+    {
+      "id": "J-transport",
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "api/src/main/java/org/semanticweb/owlapi/io/DocumentSources.java",
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/api/src/main/java/org/semanticweb/owlapi/io/DocumentSources.java#L184-L284",
+      "startLine": 184,
+      "endLine": 284,
+      "blobObjectId": "60001b9b79040409d74464a02f7c1ba26b22bbb9",
+      "lineCount": 393,
+      "sha256": "27deee79c3aa711565053acf14d282ce447fa1b2db023f62d4a40f9451757572"
+    },
+    {
+      "id": "J-sax",
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "api/src/main/java/org/semanticweb/owlapi/util/SAXParsers.java",
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/api/src/main/java/org/semanticweb/owlapi/util/SAXParsers.java#L34-L115",
+      "startLine": 34,
+      "endLine": 115,
+      "blobObjectId": "d6267388ddc934d9519c3c66af9cd36a8f7cff2a",
+      "lineCount": 130,
+      "sha256": "012a389d2372936cadbaf7afdb07841daf7c571cdbef4d31e8d4f2589d9a2eff"
+    },
+    {
+      "id": "J-owlxml-parser",
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "parsers/src/main/java/org/semanticweb/owlapi/owlxml/parser/OWLXMLParser.java",
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/parsers/src/main/java/org/semanticweb/owlapi/owlxml/parser/OWLXMLParser.java#L40-L70",
+      "startLine": 40,
+      "endLine": 70,
+      "blobObjectId": "095d942b4494aac6036de205d66abdf55124fb87",
+      "lineCount": 81,
+      "sha256": "4a9c35f970df08014cf008ac7a133f4ef53fbdcf9e5c69834f0805b69da92107"
+    },
+    {
+      "id": "J-rdf-parser",
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "parsers/src/main/java/org/semanticweb/owlapi/rdf/rdfxml/parser/RDFParser.java",
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/parsers/src/main/java/org/semanticweb/owlapi/rdf/rdfxml/parser/RDFParser.java#L147-L166",
+      "startLine": 147,
+      "endLine": 166,
+      "blobObjectId": "2868450c368cb6101536f986cfc970cab1b02edd",
+      "lineCount": 485,
+      "sha256": "09d12ff8e4d44bae6f6cc9d1666349ff0ff2d5e70931b0abe78dcece0babf4da"
+    },
+    {
+      "id": "J-rio",
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "rio/src/main/java/org/semanticweb/owlapi/rio/RioParserImpl.java",
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/rio/src/main/java/org/semanticweb/owlapi/rio/RioParserImpl.java#L169-L224",
+      "startLine": 169,
+      "endLine": 224,
+      "blobObjectId": "10c9af69e396310d990258dfdbeb1e8b41e66f37",
+      "lineCount": 367,
+      "sha256": "856f2bb6b9243555ed755b15c2430f8d04d9ed6b3640ce042eac9e04417e6c49"
+    },
+    {
+      "id": "J-rio-consumer",
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "rio/src/main/java/org/semanticweb/owlapi/rio/RioOWLRDFConsumerAdapter.java",
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/rio/src/main/java/org/semanticweb/owlapi/rio/RioOWLRDFConsumerAdapter.java#L100-L140",
+      "startLine": 100,
+      "endLine": 140,
+      "blobObjectId": "a08c33a5abf7de24cd3ae0e4f6225660010aeb95",
+      "lineCount": 147,
+      "sha256": "e5dfa4ca5c544872ccbde542093d338e86879896cd9a0fcbdb4f0e70b6e2fa36"
+    },
+    {
+      "id": "J-factory",
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLOntologyFactoryImpl.java",
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLOntologyFactoryImpl.java#L151-L235",
+      "startLine": 151,
+      "endLine": 235,
+      "blobObjectId": "58a4eaab07525a62440c36987175b5681f38b5d1",
+      "lineCount": 244,
+      "sha256": "43dd416a9d7cc9473f5c313dde2e018dd4e15034628e474497e8e7fadc320257"
+    },
+    {
+      "id": "J-mutations",
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLOntologyManagerImpl.java",
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLOntologyManagerImpl.java#L569-L748",
+      "startLine": 569,
+      "endLine": 748,
+      "blobObjectId": "2debd6de2150c07c54cf39e0c9d40fe21bb5993e",
+      "lineCount": 1873,
+      "sha256": "4f05a4e75665358dc0082b40c25a4203f1666cac25e8f6bb60a1f4b848acfa08"
+    },
+    {
+      "id": "J-load-imports",
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLOntologyManagerImpl.java",
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLOntologyManagerImpl.java#L1039-L1110",
+      "startLine": 1039,
+      "endLine": 1110,
+      "blobObjectId": "2debd6de2150c07c54cf39e0c9d40fe21bb5993e",
+      "lineCount": 1873,
+      "sha256": "4f05a4e75665358dc0082b40c25a4203f1666cac25e8f6bb60a1f4b848acfa08"
+    },
+    {
+      "id": "J-profile",
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "api/src/main/java/org/semanticweb/owlapi/profiles/OWLProfile.java",
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/api/src/main/java/org/semanticweb/owlapi/profiles/OWLProfile.java#L43-L59",
+      "startLine": 43,
+      "endLine": 59,
+      "blobObjectId": "6197c42f846432beea76507ced28f680954a6c81",
+      "lineCount": 59,
+      "sha256": "45ab448eb4349432315607a50bbb410ca59a051630685d392d703a3e27542400"
+    },
+    {
+      "id": "J-profile-report",
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "api/src/main/java/org/semanticweb/owlapi/profiles/OWLProfileReport.java",
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/api/src/main/java/org/semanticweb/owlapi/profiles/OWLProfileReport.java#L36-L64",
+      "startLine": 36,
+      "endLine": 64,
+      "blobObjectId": "0f16d9627917fa6d1736a0961aa7173d3aafd9d8",
+      "lineCount": 101,
+      "sha256": "cee6036322259de92cd8d5335ca38db61cd0713203f2b965be9f25ea24aa5f5f"
+    },
+    {
+      "id": "J-addaxiom",
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "api/src/main/java/org/semanticweb/owlapi/model/AddAxiom.java",
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/api/src/main/java/org/semanticweb/owlapi/model/AddAxiom.java#L25",
+      "startLine": 25,
+      "endLine": 25,
+      "blobObjectId": "d3d1b298c39b5ecda2307394863b9110c30c3e1d",
+      "lineCount": 80,
+      "sha256": "b71d420760165dd47ed60bdba59c458751452f5ccae84e810843c601be84bf1c"
+    },
+    {
+      "id": "J-duplicator",
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "api/src/main/java/org/semanticweb/owlapi/util/OWLObjectDuplicator.java",
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/api/src/main/java/org/semanticweb/owlapi/util/OWLObjectDuplicator.java#L1",
+      "startLine": 1,
+      "endLine": 1,
+      "blobObjectId": "2824977302b46f36468378783cbb633366274463",
+      "lineCount": 745,
+      "sha256": "d1630a5223e3a1bcf2be6e84f6b4999679000fa8c3afae3fcceb22e6e1d48e02"
+    },
+    {
+      "id": "J-manchester-render",
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "parsers/src/main/java/org/semanticweb/owlapi/manchestersyntax/renderer/ManchesterOWLSyntaxOWLObjectRendererImpl.java",
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/parsers/src/main/java/org/semanticweb/owlapi/manchestersyntax/renderer/ManchesterOWLSyntaxOWLObjectRendererImpl.java#L1",
+      "startLine": 1,
+      "endLine": 1,
+      "blobObjectId": "58769689de903f355b73af2d7245727779e7af84",
+      "lineCount": 90,
+      "sha256": "42fbf5f3513d8b57576d4f756f9aa7745bb5e7ca405851b2d8f14f8bc091c54b"
+    },
+    {
+      "id": "J-storage",
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "api/src/main/java/org/semanticweb/owlapi/util/AbstractOWLStorer.java",
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/api/src/main/java/org/semanticweb/owlapi/util/AbstractOWLStorer.java#L86-L148",
+      "startLine": 86,
+      "endLine": 148,
+      "blobObjectId": "d610ee739b07721f5b8f21b41498845db115be0c",
+      "lineCount": 148,
+      "sha256": "706cd1fef2c90f9ae9571b826aba192e53b8c0cdc000d7ff517dda9612f858a8"
+    },
+    {
+      "id": "J-turtle-store",
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "parsers/src/main/java/org/semanticweb/owlapi/rdf/turtle/renderer/TurtleStorer.java",
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/parsers/src/main/java/org/semanticweb/owlapi/rdf/turtle/renderer/TurtleStorer.java#L1",
+      "startLine": 1,
+      "endLine": 1,
+      "blobObjectId": "e324f2b772116b2094a6ada8ed53651180f3e302",
+      "lineCount": 44,
+      "sha256": "4b5731efc4fbf81590ad6c9c0fb31ccb596da05d178da0f19644e59d7f42cf2e"
+    },
+    {
+      "id": "J-rdfxml-store",
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "parsers/src/main/java/org/semanticweb/owlapi/rdf/rdfxml/renderer/RDFXMLStorer.java",
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/parsers/src/main/java/org/semanticweb/owlapi/rdf/rdfxml/renderer/RDFXMLStorer.java#L1",
+      "startLine": 1,
+      "endLine": 1,
+      "blobObjectId": "9df586e9f0f10e41042a7db96067700fd2501233",
+      "lineCount": 56,
+      "sha256": "bc20671a86b6d973e2add12ff2d1beaade97d79e8e5ba0d2607633b85c5100c2"
+    },
+    {
+      "id": "J-owlxml-store",
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "parsers/src/main/java/org/semanticweb/owlapi/owlxml/renderer/OWLXMLStorer.java",
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/parsers/src/main/java/org/semanticweb/owlapi/owlxml/renderer/OWLXMLStorer.java#L1",
+      "startLine": 1,
+      "endLine": 1,
+      "blobObjectId": "1020951dc6a5ea3b69d8dff2ff693eced6e34951",
+      "lineCount": 38,
+      "sha256": "dc59bd1418790918a96c58dec39ddf2a066c65c36244e77d1dc04e0a6424731d"
+    },
+    {
+      "id": "J-locality",
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "tools/src/main/java/org/semanticweb/owlapi/modularity/locality/LocalityModuleExtractor.java",
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/tools/src/main/java/org/semanticweb/owlapi/modularity/locality/LocalityModuleExtractor.java#L72-L146",
+      "startLine": 72,
+      "endLine": 146,
+      "blobObjectId": "e9bebea34ef7a91ace038837e0a9acaac2041997",
+      "lineCount": 198,
+      "sha256": "2f13890a1655f9b19f4349ca0e6a866d4bb57ca4136f62036e59816c3f573487"
+    },
+    {
+      "id": "J-search",
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "api/src/main/java/org/semanticweb/owlapi/search/EntitySearcher.java",
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/api/src/main/java/org/semanticweb/owlapi/search/EntitySearcher.java#L398-L425",
+      "startLine": 398,
+      "endLine": 425,
+      "blobObjectId": "f4d282f39b05f268c6a651881452c0c1bc2a7e06",
+      "lineCount": 1648,
+      "sha256": "2341b7b325772c5c31d4b7f433b063134d741f92ce9ebb7d34cabadceef1a75c"
+    },
+    {
+      "id": "J-writer",
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyWriterConfiguration.java",
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyWriterConfiguration.java#L23-L203",
+      "startLine": 23,
+      "endLine": 203,
+      "blobObjectId": "eb576349ca32337674a84a76482b36e95383abd2",
+      "lineCount": 204,
+      "sha256": "c317e44716d07fde8f92b24d21cb3f4abbcce83065100e4f97bb62da3d4a84bb"
+    },
+    {
+      "id": "J-target",
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "api/src/main/java/org/semanticweb/owlapi/io/StringDocumentTarget.java",
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/api/src/main/java/org/semanticweb/owlapi/io/StringDocumentTarget.java#L25-L38",
+      "startLine": 25,
+      "endLine": 38,
+      "blobObjectId": "43a7c7563be34f6f674977e5d02cd16bff6a8bf4",
+      "lineCount": 38,
+      "sha256": "8d6bec44b92396527026f9bf34690cbfbc269e16591e822055e5334b8f24c254"
+    },
+    {
+      "id": "J-format",
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "api/src/main/java/org/semanticweb/owlapi/model/OWLDocumentFormat.java",
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/api/src/main/java/org/semanticweb/owlapi/model/OWLDocumentFormat.java#L1",
+      "startLine": 1,
+      "endLine": 1,
+      "blobObjectId": "022462207d8d9236d0a390bc86bad0ffc94e0ace",
+      "lineCount": 226,
+      "sha256": "7b262e823a8d5da75ecf2fc1cdc81e0039ffe2f26ef9018b6939a72796aa9d69"
+    },
+    {
+      "id": "J-datafactory",
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLDataFactoryImpl.java",
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLDataFactoryImpl.java#L588-L615",
+      "startLine": 588,
+      "endLine": 615,
+      "blobObjectId": "f50fa3f6113f9bcb4a6205639c4921e3bbbe38d7",
+      "lineCount": 1290,
+      "sha256": "bc80620be980cf4b780ffa1983d73a1bb39a76fa26ef53c3b72b3bc040819dd2"
+    }
+  ],
+  "probes": [
+    {
+      "id": "core-js",
+      "language": "JavaScript",
+      "source": {
+        "path": "${PRIMARY_WORKSPACE}\\probe-js.mjs",
+        "bytes": 5049,
+        "sha256": "dff6e7c14bd78c5f239f66ba933d553ccd15705b27ce0a2b8137571273cf9145",
+        "text": "import { OWLManager } from 'file:///${OWLAPI_SOURCE}/apibinding/index.js';\nimport { IRI, OWLOntologyLoaderConfiguration as LC, OWLOntologyWriterConfiguration as WC, AddAxiom, RemoveAxiom, SetOntologyID } from 'file:///${OWLAPI_SOURCE}/model/index.js';\nimport { StringDocumentSource, StringDocumentTarget } from 'file:///${OWLAPI_SOURCE}/io/index.js';\nimport { OWLDocumentFormats as F } from 'file:///${OWLAPI_SOURCE}/formats/index.js';\nimport { OWLObjectDuplicator } from 'file:///${OWLAPI_SOURCE}/util/index.js';\nimport { ManchesterOWLSyntaxOWLObjectRendererImpl } from 'file:///${OWLAPI_SOURCE}/manchestersyntax/renderer/index.js';\nimport { OWL2DLProfile } from 'file:///${OWLAPI_SOURCE}/profiles/index.js';\nconst out = [];\nconst shape = e => ({ name:e.name, code:e.code, resource:e.resource, limit:e.limit, message:e.message, cause:e.cause ? shape(e.cause) : undefined });\nasync function probe(id, fn) { try {out.push({id, outcome:'returned', result:await fn()});} catch(e) {out.push({id, outcome:'threw', error:shape(e)});} }\nconst m = OWLManager.createOWLOntologyManager(), df=m.getOWLDataFactory();\nconst makeOntology = id => m.createOntology(df.getOWLOntologyID(IRI.create(`urn:research:${id}`)));\nawait probe('loader-defaults', () => ({...new LC()}));\nfor (const value of [null, Infinity, -1, 0]) await probe(`loader-timeout-${value}`, () => new LC({timeoutMs:value}).timeoutMs);\nawait probe('loader-java-methods', () => ['setConnectionTimeout','getConnectionTimeout','setRetriesToAttempt','setFollowRedirects','setEntityExpansionLimit','setStrict'].map(key => [key,typeof new LC()[key]]));\nawait probe('writer-noop-identity', () => {const c=new WC(); return c === c.withIndentSize(4);});\nawait probe('writer-chain', () => {const c=new WC().withIndentSize(2).withBannersEnabled(false).withIndenting(false); return {indent:c.getIndentSize(), banners:c.shouldUseBanners()};});\nawait probe('writer-negative-indent', () => new WC().withIndentSize(-1).getIndentSize());\nconst p=df.getOWLAnnotationProperty(IRI.create('urn:research:p')), a=df.getOWLClass(IRI.create('urn:research:A'));\nlet annotation=df.getOWLAnnotation(p, df.getOWLLiteral('x'));\nfor(let n=1;n<65;n++) annotation=df.getOWLAnnotation(p,df.getOWLLiteral('x'),[annotation]);\nconst ax=df.getOWLDeclarationAxiom(a,[annotation]), nested=makeOntology('nested');\nawait probe('annotation65-direct-add', () => m.addAxiom(nested,ax));\nawait probe('annotation65-add-record', () => !!new AddAxiom(nested,ax));\nawait probe('annotation65-remove', () => m.removeAxiom(nested,ax));\nawait probe('annotation65-duplicate', () => !!new OWLObjectDuplicator(m).duplicateObject(ax));\nawait probe('annotation65-manchester', () => new ManchesterOWLSyntaxOWLObjectRendererImpl().render(ax).length);\nconst large=makeOntology('large'), longLiteral=df.getOWLLiteral('x'.repeat(1048577));\nm.addAxioms(large,[df.getOWLDeclarationAxiom(a),df.getOWLDeclarationAxiom(p),df.getOWLAnnotationAssertionAxiom(p,a.iri,longLiteral)]);\nawait probe('literal1048577-profile', async () => {const r=await new OWL2DLProfile().checkOntology(large); return {inProfile:r.isInProfile(),status:r.status,violations:r.getViolations(),unverified:r.unverifiedChecks};});\nfor(const [id,format] of [['functional',F.FUNCTIONAL],['turtle',F.TURTLE],['rdfxml',F.RDF_XML],['owlxml',F.OWL_XML]]) {\n const target=new StringDocumentTarget();\n await probe(`literal1048577-save-${id}`,async()=>{await m.saveOntology(large,format,target); return {bytes:new TextEncoder().encode(target.toString()).length};});\n out.push({id:`literal1048577-target-after-${id}`,bytes:new TextEncoder().encode(target.toString()).length});\n}\nconst netzero=makeOntology('netzero'), basic=df.getOWLDeclarationAxiom(a);\nawait probe('batch-netzero', () => ({result:m.applyChanges([new AddAxiom(netzero,basic),new RemoveAxiom(netzero,basic)]),count:netzero.getAxiomCount()}));\nconst batch=makeOntology('batch'), clash=makeOntology('clash');\nawait probe('batch-collision', () => m.applyChanges([new AddAxiom(batch,basic),new SetOntologyID(batch,clash.getOntologyID())]));\nout.push({id:'batch-count-after-collision',count:batch.getAxiomCount()});\nconst filtered=await m.loadOntologyFromOntologyDocument(new StringDocumentSource('Ontology(<urn:research:filtered>)',{format:F.FUNCTIONAL}),new LC({loadAnnotationAxioms:false}));\nawait probe('annotation-disabled-later-add', () => ({result:m.addAxiom(filtered,df.getOWLAnnotationAssertionAxiom(p,a.iri,df.getOWLLiteral('x'))),count:filtered.getAxiomCount()}));\nawait probe('save-reused-target',async()=>{const t=new StringDocumentTarget(); await m.saveOntology(netzero,F.FUNCTIONAL,t);const first=t.toString();await m.saveOntology(netzero,F.FUNCTIONAL,t);return {firstLength:first.length,secondLength:t.toString().length,equal:t.toString()===first};});\nawait probe('profile-empty-work-zero',async()=>{const r=await new OWL2DLProfile().checkOntology(netzero,{maxWork:0});return {inProfile:r.isInProfile(),status:r.status,unverified:r.unverifiedChecks};});\nconsole.log(JSON.stringify({runtime:process.version,results:out},null,2));\n",
+        "originalBytes": 5133,
+        "originalSha256": "af650883cf25d7deaefb40a0f8d136fc781c8afc36e6ff050f43cb79dcbbf77b"
+      },
+      "capturedStdout": {
+        "path": "${PRIMARY_WORKSPACE}\\probe-js-results.json",
+        "bytes": 7556,
+        "sha256": "3407e166bb96417eab1cde9c191a034e5ef3a52f7cbf418ec878063672983803",
+        "text": "{\r\n  \"runtime\": \"v24.21.0\",\r\n  \"results\": [\r\n    {\r\n      \"id\": \"loader-defaults\",\r\n      \"outcome\": \"returned\",\r\n      \"result\": {\r\n        \"collectWarnings\": true,\r\n        \"loadAnnotationAxioms\": true,\r\n        \"maxAnnotationDepth\": 64,\r\n        \"maxAxioms\": 1000000,\r\n        \"maxBlankNodes\": 1000000,\r\n        \"maxEntityDeclarations\": 256,\r\n        \"maxEntityExpansionDepth\": 16,\r\n        \"maxEntityReplacementLength\": 65536,\r\n        \"maxExpandedXmlBytes\": 33554432,\r\n        \"maxExpressionDepth\": 512,\r\n        \"maxImportCount\": 256,\r\n        \"maxImportDepth\": 32,\r\n        \"maxInputBytes\": 33554432,\r\n        \"maxQuads\": 5000000,\r\n        \"maxRdfListLength\": 1000000,\r\n        \"maxRedirects\": 0,\r\n        \"maxRemoteDocumentBytes\": 33554432,\r\n        \"maxRetries\": 0,\r\n        \"maxSniffBytes\": 8192,\r\n        \"maxTokenCount\": 5000000,\r\n        \"maxTokenLength\": 1048576,\r\n        \"maxXmlNestingDepth\": 512,\r\n        \"missingImportHandling\": \"throw\",\r\n        \"parsingMode\": \"strict\",\r\n        \"rdfDatasetGraphPolicy\": \"requireSingleGraph\",\r\n        \"remoteImports\": false,\r\n        \"remoteJsonLdContexts\": false,\r\n        \"sourceLocations\": true,\r\n        \"timeoutMs\": 30000\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"loader-timeout-null\",\r\n      \"outcome\": \"threw\",\r\n      \"error\": {\r\n        \"name\": \"RangeError\",\r\n        \"message\": \"timeoutMs must be a non-negative safe integer\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"loader-timeout-Infinity\",\r\n      \"outcome\": \"threw\",\r\n      \"error\": {\r\n        \"name\": \"RangeError\",\r\n        \"message\": \"timeoutMs must be a non-negative safe integer\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"loader-timeout--1\",\r\n      \"outcome\": \"threw\",\r\n      \"error\": {\r\n        \"name\": \"RangeError\",\r\n        \"message\": \"timeoutMs must be a non-negative safe integer\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"loader-timeout-0\",\r\n      \"outcome\": \"returned\",\r\n      \"result\": 0\r\n    },\r\n    {\r\n      \"id\": \"loader-java-methods\",\r\n      \"outcome\": \"returned\",\r\n      \"result\": [\r\n        [\r\n          \"setConnectionTimeout\",\r\n          \"undefined\"\r\n        ],\r\n        [\r\n          \"getConnectionTimeout\",\r\n          \"undefined\"\r\n        ],\r\n        [\r\n          \"setRetriesToAttempt\",\r\n          \"undefined\"\r\n        ],\r\n        [\r\n          \"setFollowRedirects\",\r\n          \"undefined\"\r\n        ],\r\n        [\r\n          \"setEntityExpansionLimit\",\r\n          \"undefined\"\r\n        ],\r\n        [\r\n          \"setStrict\",\r\n          \"undefined\"\r\n        ]\r\n      ]\r\n    },\r\n    {\r\n      \"id\": \"writer-noop-identity\",\r\n      \"outcome\": \"returned\",\r\n      \"result\": false\r\n    },\r\n    {\r\n      \"id\": \"writer-chain\",\r\n      \"outcome\": \"returned\",\r\n      \"result\": {\r\n        \"indent\": 2,\r\n        \"banners\": false\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"writer-negative-indent\",\r\n      \"outcome\": \"threw\",\r\n      \"error\": {\r\n        \"name\": \"RangeError\",\r\n        \"message\": \"indentSize must be an integer from 0 through 2147483647\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"annotation65-direct-add\",\r\n      \"outcome\": \"returned\",\r\n      \"result\": true\r\n    },\r\n    {\r\n      \"id\": \"annotation65-add-record\",\r\n      \"outcome\": \"threw\",\r\n      \"error\": {\r\n        \"name\": \"ResourceLimitError\",\r\n        \"code\": \"RESOURCE_LIMIT_EXCEEDED\",\r\n        \"resource\": \"expressionDepth\",\r\n        \"limit\": 512,\r\n        \"message\": \"Structural depth limit exceeded\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"annotation65-remove\",\r\n      \"outcome\": \"threw\",\r\n      \"error\": {\r\n        \"name\": \"ResourceLimitError\",\r\n        \"code\": \"RESOURCE_LIMIT_EXCEEDED\",\r\n        \"resource\": \"expressionDepth\",\r\n        \"limit\": 512,\r\n        \"message\": \"Structural depth limit exceeded\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"annotation65-duplicate\",\r\n      \"outcome\": \"threw\",\r\n      \"error\": {\r\n        \"name\": \"ResourceLimitError\",\r\n        \"code\": \"RESOURCE_LIMIT_EXCEEDED\",\r\n        \"resource\": \"expressionDepth\",\r\n        \"limit\": 512,\r\n        \"message\": \"Structural depth limit exceeded\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"annotation65-manchester\",\r\n      \"outcome\": \"threw\",\r\n      \"error\": {\r\n        \"name\": \"ResourceLimitError\",\r\n        \"code\": \"RESOURCE_LIMIT_EXCEEDED\",\r\n        \"resource\": \"expressionDepth\",\r\n        \"limit\": 512,\r\n        \"message\": \"Structural depth limit exceeded\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"literal1048577-profile\",\r\n      \"outcome\": \"returned\",\r\n      \"result\": {\r\n        \"inProfile\": false,\r\n        \"status\": \"unverified\",\r\n        \"violations\": [],\r\n        \"unverified\": [\r\n          {\r\n            \"code\": \"RESOURCE_LIMIT_EXCEEDED\",\r\n            \"resource\": \"profileLiteralLength\",\r\n            \"limit\": 1048576\r\n          }\r\n        ]\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"literal1048577-save-functional\",\r\n      \"outcome\": \"returned\",\r\n      \"result\": {\r\n        \"bytes\": 1048797\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"literal1048577-target-after-functional\",\r\n      \"bytes\": 1048797\r\n    },\r\n    {\r\n      \"id\": \"literal1048577-save-turtle\",\r\n      \"outcome\": \"threw\",\r\n      \"error\": {\r\n        \"name\": \"OWLOntologyStorageError\",\r\n        \"code\": \"ONTOLOGY_STORAGE_FAILED\",\r\n        \"message\": \"The ontology could not be stored\",\r\n        \"cause\": {\r\n          \"name\": \"ResourceLimitError\",\r\n          \"code\": \"RESOURCE_LIMIT_EXCEEDED\",\r\n          \"resource\": \"maxTokenLength\",\r\n          \"limit\": 1048576,\r\n          \"message\": \"An Turtle token exceeded the token byte limit\"\r\n        }\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"literal1048577-target-after-turtle\",\r\n      \"bytes\": 0\r\n    },\r\n    {\r\n      \"id\": \"literal1048577-save-rdfxml\",\r\n      \"outcome\": \"threw\",\r\n      \"error\": {\r\n        \"name\": \"OWLOntologyStorageError\",\r\n        \"code\": \"ONTOLOGY_STORAGE_FAILED\",\r\n        \"message\": \"RDF/XML lossless storage verification failed\",\r\n        \"cause\": {\r\n          \"name\": \"ResourceLimitError\",\r\n          \"code\": \"RESOURCE_LIMIT_EXCEEDED\",\r\n          \"resource\": \"maxTokenLength\",\r\n          \"limit\": 1048576,\r\n          \"message\": \"An RDF/XML term exceeded the token byte limit\"\r\n        }\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"literal1048577-target-after-rdfxml\",\r\n      \"bytes\": 0\r\n    },\r\n    {\r\n      \"id\": \"literal1048577-save-owlxml\",\r\n      \"outcome\": \"returned\",\r\n      \"result\": {\r\n        \"bytes\": 1049018\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"literal1048577-target-after-owlxml\",\r\n      \"bytes\": 1049018\r\n    },\r\n    {\r\n      \"id\": \"batch-netzero\",\r\n      \"outcome\": \"returned\",\r\n      \"result\": {\r\n        \"result\": false,\r\n        \"count\": 0\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"batch-collision\",\r\n      \"outcome\": \"threw\",\r\n      \"error\": {\r\n        \"name\": \"OWLOntologyStateError\",\r\n        \"code\": \"ONTOLOGY_STATE_INVALID\",\r\n        \"message\": \"An ontology with this ID already exists\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"batch-count-after-collision\",\r\n      \"count\": 0\r\n    },\r\n    {\r\n      \"id\": \"annotation-disabled-later-add\",\r\n      \"outcome\": \"returned\",\r\n      \"result\": {\r\n        \"result\": true,\r\n        \"count\": 1\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"save-reused-target\",\r\n      \"outcome\": \"returned\",\r\n      \"result\": {\r\n        \"firstLength\": 34,\r\n        \"secondLength\": 34,\r\n        \"equal\": true\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"profile-empty-work-zero\",\r\n      \"outcome\": \"returned\",\r\n      \"result\": {\r\n        \"inProfile\": false,\r\n        \"status\": \"unverified\",\r\n        \"unverified\": [\r\n          {\r\n            \"code\": \"RESOURCE_LIMIT_EXCEEDED\",\r\n            \"resource\": \"profileWork\",\r\n            \"limit\": 0\r\n          }\r\n        ]\r\n      }\r\n    }\r\n  ]\r\n}\r\n",
+        "originalBytes": 7556,
+        "originalSha256": "3407e166bb96417eab1cde9c191a034e5ef3a52f7cbf418ec878063672983803"
+      },
+      "execution": {
+        "executable": "node",
+        "arguments": ["${PRIMARY_WORKSPACE}\\probe-js.mjs"],
+        "exitCode": 0,
+        "sourceFileLaunching": false,
+        "network": "No live network requests; JSON-LD uses injected stub loaders and Java retry checks use a fake URLConnection."
+      },
+      "parsedOutput": {
+        "runtime": "v24.21.0",
+        "results": [
+          {
+            "id": "loader-defaults",
+            "outcome": "returned",
+            "result": {
+              "collectWarnings": true,
+              "loadAnnotationAxioms": true,
+              "maxAnnotationDepth": 64,
+              "maxAxioms": 1000000,
+              "maxBlankNodes": 1000000,
+              "maxEntityDeclarations": 256,
+              "maxEntityExpansionDepth": 16,
+              "maxEntityReplacementLength": 65536,
+              "maxExpandedXmlBytes": 33554432,
+              "maxExpressionDepth": 512,
+              "maxImportCount": 256,
+              "maxImportDepth": 32,
+              "maxInputBytes": 33554432,
+              "maxQuads": 5000000,
+              "maxRdfListLength": 1000000,
+              "maxRedirects": 0,
+              "maxRemoteDocumentBytes": 33554432,
+              "maxRetries": 0,
+              "maxSniffBytes": 8192,
+              "maxTokenCount": 5000000,
+              "maxTokenLength": 1048576,
+              "maxXmlNestingDepth": 512,
+              "missingImportHandling": "throw",
+              "parsingMode": "strict",
+              "rdfDatasetGraphPolicy": "requireSingleGraph",
+              "remoteImports": false,
+              "remoteJsonLdContexts": false,
+              "sourceLocations": true,
+              "timeoutMs": 30000
+            }
+          },
+          {
+            "id": "loader-timeout-null",
+            "outcome": "threw",
+            "error": {
+              "name": "RangeError",
+              "message": "timeoutMs must be a non-negative safe integer"
+            }
+          },
+          {
+            "id": "loader-timeout-Infinity",
+            "outcome": "threw",
+            "error": {
+              "name": "RangeError",
+              "message": "timeoutMs must be a non-negative safe integer"
+            }
+          },
+          {
+            "id": "loader-timeout--1",
+            "outcome": "threw",
+            "error": {
+              "name": "RangeError",
+              "message": "timeoutMs must be a non-negative safe integer"
+            }
+          },
+          {
+            "id": "loader-timeout-0",
+            "outcome": "returned",
+            "result": 0
+          },
+          {
+            "id": "loader-java-methods",
+            "outcome": "returned",
+            "result": [
+              ["setConnectionTimeout", "undefined"],
+              ["getConnectionTimeout", "undefined"],
+              ["setRetriesToAttempt", "undefined"],
+              ["setFollowRedirects", "undefined"],
+              ["setEntityExpansionLimit", "undefined"],
+              ["setStrict", "undefined"]
+            ]
+          },
+          {
+            "id": "writer-noop-identity",
+            "outcome": "returned",
+            "result": false
+          },
+          {
+            "id": "writer-chain",
+            "outcome": "returned",
+            "result": {
+              "indent": 2,
+              "banners": false
+            }
+          },
+          {
+            "id": "writer-negative-indent",
+            "outcome": "threw",
+            "error": {
+              "name": "RangeError",
+              "message": "indentSize must be an integer from 0 through 2147483647"
+            }
+          },
+          {
+            "id": "annotation65-direct-add",
+            "outcome": "returned",
+            "result": true
+          },
+          {
+            "id": "annotation65-add-record",
+            "outcome": "threw",
+            "error": {
+              "name": "ResourceLimitError",
+              "code": "RESOURCE_LIMIT_EXCEEDED",
+              "resource": "expressionDepth",
+              "limit": 512,
+              "message": "Structural depth limit exceeded"
+            }
+          },
+          {
+            "id": "annotation65-remove",
+            "outcome": "threw",
+            "error": {
+              "name": "ResourceLimitError",
+              "code": "RESOURCE_LIMIT_EXCEEDED",
+              "resource": "expressionDepth",
+              "limit": 512,
+              "message": "Structural depth limit exceeded"
+            }
+          },
+          {
+            "id": "annotation65-duplicate",
+            "outcome": "threw",
+            "error": {
+              "name": "ResourceLimitError",
+              "code": "RESOURCE_LIMIT_EXCEEDED",
+              "resource": "expressionDepth",
+              "limit": 512,
+              "message": "Structural depth limit exceeded"
+            }
+          },
+          {
+            "id": "annotation65-manchester",
+            "outcome": "threw",
+            "error": {
+              "name": "ResourceLimitError",
+              "code": "RESOURCE_LIMIT_EXCEEDED",
+              "resource": "expressionDepth",
+              "limit": 512,
+              "message": "Structural depth limit exceeded"
+            }
+          },
+          {
+            "id": "literal1048577-profile",
+            "outcome": "returned",
+            "result": {
+              "inProfile": false,
+              "status": "unverified",
+              "violations": [],
+              "unverified": [
+                {
+                  "code": "RESOURCE_LIMIT_EXCEEDED",
+                  "resource": "profileLiteralLength",
+                  "limit": 1048576
+                }
+              ]
+            }
+          },
+          {
+            "id": "literal1048577-save-functional",
+            "outcome": "returned",
+            "result": {
+              "bytes": 1048797
+            }
+          },
+          {
+            "id": "literal1048577-target-after-functional",
+            "bytes": 1048797
+          },
+          {
+            "id": "literal1048577-save-turtle",
+            "outcome": "threw",
+            "error": {
+              "name": "OWLOntologyStorageError",
+              "code": "ONTOLOGY_STORAGE_FAILED",
+              "message": "The ontology could not be stored",
+              "cause": {
+                "name": "ResourceLimitError",
+                "code": "RESOURCE_LIMIT_EXCEEDED",
+                "resource": "maxTokenLength",
+                "limit": 1048576,
+                "message": "An Turtle token exceeded the token byte limit"
+              }
+            }
+          },
+          {
+            "id": "literal1048577-target-after-turtle",
+            "bytes": 0
+          },
+          {
+            "id": "literal1048577-save-rdfxml",
+            "outcome": "threw",
+            "error": {
+              "name": "OWLOntologyStorageError",
+              "code": "ONTOLOGY_STORAGE_FAILED",
+              "message": "RDF/XML lossless storage verification failed",
+              "cause": {
+                "name": "ResourceLimitError",
+                "code": "RESOURCE_LIMIT_EXCEEDED",
+                "resource": "maxTokenLength",
+                "limit": 1048576,
+                "message": "An RDF/XML term exceeded the token byte limit"
+              }
+            }
+          },
+          {
+            "id": "literal1048577-target-after-rdfxml",
+            "bytes": 0
+          },
+          {
+            "id": "literal1048577-save-owlxml",
+            "outcome": "returned",
+            "result": {
+              "bytes": 1049018
+            }
+          },
+          {
+            "id": "literal1048577-target-after-owlxml",
+            "bytes": 1049018
+          },
+          {
+            "id": "batch-netzero",
+            "outcome": "returned",
+            "result": {
+              "result": false,
+              "count": 0
+            }
+          },
+          {
+            "id": "batch-collision",
+            "outcome": "threw",
+            "error": {
+              "name": "OWLOntologyStateError",
+              "code": "ONTOLOGY_STATE_INVALID",
+              "message": "An ontology with this ID already exists"
+            }
+          },
+          {
+            "id": "batch-count-after-collision",
+            "count": 0
+          },
+          {
+            "id": "annotation-disabled-later-add",
+            "outcome": "returned",
+            "result": {
+              "result": true,
+              "count": 1
+            }
+          },
+          {
+            "id": "save-reused-target",
+            "outcome": "returned",
+            "result": {
+              "firstLength": 34,
+              "secondLength": 34,
+              "equal": true
+            }
+          },
+          {
+            "id": "profile-empty-work-zero",
+            "outcome": "returned",
+            "result": {
+              "inProfile": false,
+              "status": "unverified",
+              "unverified": [
+                {
+                  "code": "RESOURCE_LIMIT_EXCEEDED",
+                  "resource": "profileWork",
+                  "limit": 0
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "portableRecord": {
+        "originalRecordSha256": "9a5693eb3a2a123a6d832dabbc4341a9dc16915c32fc5a1e4922fe659946154c",
+        "normalizedRecordSha256": "c1f9544a1ac098f32738e8447c8ff762ef8ed43b108b1fe7f798299e1182e505"
+      }
+    },
+    {
+      "id": "core-java",
+      "language": "Java",
+      "source": {
+        "path": "${PRIMARY_WORKSPACE}\\ProbeJava.java",
+        "bytes": 6090,
+        "sha256": "8860c2df93af2313c076014bccefc2670b3be6cb91e3c49f0ace7da69b29c834",
+        "text": "import java.util.*;\nimport java.util.stream.*;\nimport org.semanticweb.owlapi.apibinding.OWLManager;\nimport org.semanticweb.owlapi.model.*;\nimport org.semanticweb.owlapi.io.*;\nimport org.semanticweb.owlapi.formats.*;\nimport org.semanticweb.owlapi.profiles.*;\nimport org.semanticweb.owlapi.util.*;\nimport org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxOWLObjectRendererImpl;\n\nclass ProbeJava {\n interface Run {Object run() throws Exception;}\n static void probe(String name,Run fn) {try {System.out.println(name+\"\\tRETURN\\t\"+fn.run());}catch(Throwable e){System.out.println(name+\"\\tTHROW\\t\"+e.getClass().getName()+\": \"+e.getMessage());}}\n public static void main(String[] args) throws Exception {\n  System.out.println(\"runtime\\t\"+System.getProperty(\"java.runtime.version\"));\n  System.out.println(\"owlapi-origin\\t\"+OWLManager.class.getProtectionDomain().getCodeSource().getLocation());\n  System.out.println(\"api-origin\\t\"+OWLOntologyLoaderConfiguration.class.getProtectionDomain().getCodeSource().getLocation());\n  OWLOntologyLoaderConfiguration lc=new OWLOntologyLoaderConfiguration();\n  probe(\"loader-defaults\",()->\"connection=\"+lc.getConnectionTimeout()+\", retries=\"+lc.getRetriesToAttempt()+\", followRedirects=\"+lc.isFollowRedirects()+\", strict=\"+lc.isStrict()+\", entityExpansion=\"+lc.getEntityExpansionLimit());\n  probe(\"connection-negative-set\",()->lc.setConnectionTimeout(-1).getConnectionTimeout());\n  probe(\"retry-negative-set\",()->lc.setRetriesToAttempt(-1).getRetriesToAttempt());\n  String prefix=\"org.semanticweb.owlapi.model.parameters.ConfigurationOptions.\";\n  System.setProperty(prefix+\"CONNECTION_TIMEOUT\",\"123\");\n  probe(\"system-property-existing-config\",()->lc.getConnectionTimeout());\n  probe(\"system-property-instance-override\",()->lc.setConnectionTimeout(456).getConnectionTimeout());\n  System.clearProperty(prefix+\"CONNECTION_TIMEOUT\");\n  var sax=SAXParsers.initParserWithOWLAPIStandards(null,lc.getEntityExpansionLimit());\n  System.out.println(\"sax-class\\t\"+sax.getClass().getName());\n  for(String prop:List.of(\"entityExpansionLimit\",\"maxElementDepth\",\"totalEntitySizeLimit\",\"maxGeneralEntitySizeLimit\",\"maxParameterEntitySizeLimit\",\"entityReplacementLimit\",\"maxXMLNameLimit\",\"elementAttributeLimit\")) probe(\"sax-\"+prop,()->sax.getProperty(\"http://www.oracle.com/xml/jaxp/properties/\"+prop));\n  probe(\"entity-limit-zero\",()->SAXParsers.initParserWithOWLAPIStandards(null,\"0\").getProperty(\"http://www.oracle.com/xml/jaxp/properties/entityExpansionLimit\"));\n  probe(\"writer-noop-identity\",()->{var c=new OWLOntologyWriterConfiguration();return c==c.withIndentSize(4);});\n  probe(\"writer-chain\",()->{var c=new OWLOntologyWriterConfiguration().withIndentSize(2).withBannersEnabled(false).withIndenting(false);return \"indent=\"+c.getIndentSize()+\", banners=\"+c.shouldUseBanners();});\n  probe(\"writer-negative-indent\",()->new OWLOntologyWriterConfiguration().withIndentSize(-1).getIndentSize());\n  var m=OWLManager.createOWLOntologyManager();var df=m.getOWLDataFactory();\n  var p=df.getOWLAnnotationProperty(IRI.create(\"urn:research:p\"));var a=df.getOWLClass(IRI.create(\"urn:research:A\"));\n  OWLAnnotation annotation=df.getOWLAnnotation(p,df.getOWLLiteral(\"x\"));\n  for(int n=1;n<65;n++) annotation=df.getOWLAnnotation(p,df.getOWLLiteral(\"x\"),List.of(annotation));\n  var ax=df.getOWLDeclarationAxiom(a,List.of(annotation));var nested=m.createOntology(IRI.create(\"urn:research:nested\"));\n  probe(\"annotation65-direct-add\",()->m.addAxiom(nested,ax));\n  probe(\"annotation65-add-record\",()->new AddAxiom(nested,ax)!=null);\n  probe(\"annotation65-remove\",()->m.removeAxiom(nested,ax));\n  probe(\"annotation65-duplicate\",()->new OWLObjectDuplicator(m).duplicateObject(ax)!=null);\n  probe(\"annotation65-manchester\",()->new ManchesterOWLSyntaxOWLObjectRendererImpl().render(ax).length());\n  var large=m.createOntology(IRI.create(\"urn:research:large\"));\n  var literal=df.getOWLLiteral(\"x\".repeat(1048577));\n  m.addAxioms(large,Stream.of(df.getOWLDeclarationAxiom(a),df.getOWLDeclarationAxiom(p),df.getOWLAnnotationAssertionAxiom(p,a.getIRI(),literal)));\n  probe(\"literal1048577-profile\",()->{var r=new OWL2DLProfile().checkOntology(large);return \"inProfile=\"+r.isInProfile()+\", violations=\"+r.getViolations().size();});\n  Map<String,OWLDocumentFormat> formats=new LinkedHashMap<>();formats.put(\"functional\",new FunctionalSyntaxDocumentFormat());formats.put(\"turtle\",new TurtleDocumentFormat());formats.put(\"rdfxml\",new RDFXMLDocumentFormat());formats.put(\"owlxml\",new OWLXMLDocumentFormat());\n  for(var entry:formats.entrySet()){var target=new StringDocumentTarget();probe(\"literal1048577-save-\"+entry.getKey(),()->{m.saveOntology(large,entry.getValue(),target);return \"chars=\"+target.toString().length();});}\n  var netzero=m.createOntology(IRI.create(\"urn:research:netzero\"));var basic=df.getOWLDeclarationAxiom(a);\n  probe(\"batch-netzero\",()->\"result=\"+m.applyChanges(List.of(new AddAxiom(netzero,basic),new RemoveAxiom(netzero,basic)))+\", count=\"+netzero.getAxiomCount());\n  var batch=m.createOntology(IRI.create(\"urn:research:batch\"));var clash=m.createOntology(IRI.create(\"urn:research:clash\"));\n  probe(\"batch-collision\",()->m.applyChanges(List.of(new AddAxiom(batch,basic),new SetOntologyID(batch,clash.getOntologyID()))));\n  System.out.println(\"batch-count-after-collision\\t\"+batch.getAxiomCount());\n  var filtered=m.loadOntologyFromOntologyDocument(new StringDocumentSource(\"Ontology(<urn:research:filtered>)\",IRI.create(\"urn:research:filtered-document\"),new FunctionalSyntaxDocumentFormat(),null),lc.setLoadAnnotationAxioms(false));\n  probe(\"annotation-disabled-later-add\",()->\"result=\"+m.addAxiom(filtered,df.getOWLAnnotationAssertionAxiom(p,a.getIRI(),df.getOWLLiteral(\"x\")))+\", count=\"+filtered.getAxiomCount());\n  probe(\"save-reused-target\",()->{var t=new StringDocumentTarget();m.saveOntology(netzero,new FunctionalSyntaxDocumentFormat(),t);String first=t.toString();m.saveOntology(netzero,new FunctionalSyntaxDocumentFormat(),t);return \"firstLength=\"+first.length()+\", secondLength=\"+t.toString().length()+\", equal=\"+first.equals(t.toString());});\n }\n}\n",
+        "originalBytes": 6090,
+        "originalSha256": "8860c2df93af2313c076014bccefc2670b3be6cb91e3c49f0ace7da69b29c834"
+      },
+      "capturedStdout": {
+        "path": "${PRIMARY_WORKSPACE}\\probe-java-results.txt",
+        "bytes": 2016,
+        "sha256": "33f8f35bdc938456b7be5d6a6846fa9134681d270856c648e3ebc1edd726ce9b",
+        "text": "runtime\t25.0.4.1+1-LTS\r\nowlapi-origin\tfile:/${MAVEN_REPOSITORY}/net/sourceforge/owlapi/owlapi-apibinding/5.5.1/owlapi-apibinding-5.5.1.jar\r\napi-origin\tfile:/${MAVEN_REPOSITORY}/net/sourceforge/owlapi/owlapi-api/5.5.1/owlapi-api-5.5.1.jar\r\nloader-defaults\tRETURN\tconnection=20000, retries=5, followRedirects=true, strict=false, entityExpansion=100000000\r\nconnection-negative-set\tRETURN\t-1\r\nretry-negative-set\tRETURN\t-1\r\nsystem-property-existing-config\tRETURN\t123\r\nsystem-property-instance-override\tRETURN\t456\r\nsax-class\tcom.sun.org.apache.xerces.internal.jaxp.SAXParserImpl\r\nsax-entityExpansionLimit\tRETURN\t100000000\r\nsax-maxElementDepth\tRETURN\t100\r\nsax-totalEntitySizeLimit\tRETURN\t100000\r\nsax-maxGeneralEntitySizeLimit\tRETURN\t100000\r\nsax-maxParameterEntitySizeLimit\tRETURN\t15000\r\nsax-entityReplacementLimit\tRETURN\t100000\r\nsax-maxXMLNameLimit\tRETURN\t1000\r\nsax-elementAttributeLimit\tRETURN\t200\r\nentity-limit-zero\tRETURN\t0\r\nwriter-noop-identity\tRETURN\ttrue\r\nwriter-chain\tRETURN\tindent=4, banners=true\r\nwriter-negative-indent\tRETURN\t-1\r\nannotation65-direct-add\tRETURN\tSUCCESSFULLY\r\nannotation65-add-record\tRETURN\ttrue\r\nannotation65-remove\tRETURN\tSUCCESSFULLY\r\nannotation65-duplicate\tRETURN\ttrue\r\nannotation65-manchester\tRETURN\t8\r\nliteral1048577-profile\tRETURN\tinProfile=true, violations=0\r\nliteral1048577-save-functional\tRETURN\tchars=1049169\r\nliteral1048577-save-turtle\tRETURN\tchars=1049519\r\nliteral1048577-save-rdfxml\tRETURN\tchars=1049849\r\nliteral1048577-save-owlxml\tRETURN\tchars=1049713\r\nbatch-netzero\tRETURN\tresult=SUCCESSFULLY, count=0\r\nbatch-collision\tTHROW\torg.semanticweb.owlapi.model.OWLOntologyRenameException: Could not rename ontology. An ontology with this ID already exists: OntologyID(OntologyIRI(<urn:research:clash>) VersionIRI(<null>)) change: SetOntologyIDData(OntologyID(OntologyIRI(<urn:research:clash>) VersionIRI(<null>)))\r\nbatch-count-after-collision\t1\r\nannotation-disabled-later-add\tRETURN\tresult=UNSUCCESSFULLY, count=0\r\nsave-reused-target\tRETURN\tfirstLength=330, secondLength=660, equal=false\r\n",
+        "originalBytes": 2036,
+        "originalSha256": "176159330c01cce61ac7e9adab6c5ded3a59a872890b58658d853fd9b46b49f3"
+      },
+      "execution": {
+        "executable": "java",
+        "arguments": [
+          "-cp",
+          "<exact classpath recorded below>",
+          "${PRIMARY_WORKSPACE}\\ProbeJava.java"
+        ],
+        "exitCode": 0,
+        "sourceFileLaunching": true,
+        "network": "No live network requests; JSON-LD uses injected stub loaders and Java retry checks use a fake URLConnection."
+      },
+      "tabSeparatedRows": [
+        ["runtime", "25.0.4.1+1-LTS"],
+        [
+          "owlapi-origin",
+          "file:/${MAVEN_REPOSITORY}/net/sourceforge/owlapi/owlapi-apibinding/5.5.1/owlapi-apibinding-5.5.1.jar"
+        ],
+        [
+          "api-origin",
+          "file:/${MAVEN_REPOSITORY}/net/sourceforge/owlapi/owlapi-api/5.5.1/owlapi-api-5.5.1.jar"
+        ],
+        [
+          "loader-defaults",
+          "RETURN",
+          "connection=20000, retries=5, followRedirects=true, strict=false, entityExpansion=100000000"
+        ],
+        ["connection-negative-set", "RETURN", "-1"],
+        ["retry-negative-set", "RETURN", "-1"],
+        ["system-property-existing-config", "RETURN", "123"],
+        ["system-property-instance-override", "RETURN", "456"],
+        ["sax-class", "com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl"],
+        ["sax-entityExpansionLimit", "RETURN", "100000000"],
+        ["sax-maxElementDepth", "RETURN", "100"],
+        ["sax-totalEntitySizeLimit", "RETURN", "100000"],
+        ["sax-maxGeneralEntitySizeLimit", "RETURN", "100000"],
+        ["sax-maxParameterEntitySizeLimit", "RETURN", "15000"],
+        ["sax-entityReplacementLimit", "RETURN", "100000"],
+        ["sax-maxXMLNameLimit", "RETURN", "1000"],
+        ["sax-elementAttributeLimit", "RETURN", "200"],
+        ["entity-limit-zero", "RETURN", "0"],
+        ["writer-noop-identity", "RETURN", "true"],
+        ["writer-chain", "RETURN", "indent=4, banners=true"],
+        ["writer-negative-indent", "RETURN", "-1"],
+        ["annotation65-direct-add", "RETURN", "SUCCESSFULLY"],
+        ["annotation65-add-record", "RETURN", "true"],
+        ["annotation65-remove", "RETURN", "SUCCESSFULLY"],
+        ["annotation65-duplicate", "RETURN", "true"],
+        ["annotation65-manchester", "RETURN", "8"],
+        ["literal1048577-profile", "RETURN", "inProfile=true, violations=0"],
+        ["literal1048577-save-functional", "RETURN", "chars=1049169"],
+        ["literal1048577-save-turtle", "RETURN", "chars=1049519"],
+        ["literal1048577-save-rdfxml", "RETURN", "chars=1049849"],
+        ["literal1048577-save-owlxml", "RETURN", "chars=1049713"],
+        ["batch-netzero", "RETURN", "result=SUCCESSFULLY, count=0"],
+        [
+          "batch-collision",
+          "THROW",
+          "org.semanticweb.owlapi.model.OWLOntologyRenameException: Could not rename ontology. An ontology with this ID already exists: OntologyID(OntologyIRI(<urn:research:clash>) VersionIRI(<null>)) change: SetOntologyIDData(OntologyID(OntologyIRI(<urn:research:clash>) VersionIRI(<null>)))"
+        ],
+        ["batch-count-after-collision", "1"],
+        [
+          "annotation-disabled-later-add",
+          "RETURN",
+          "result=UNSUCCESSFULLY, count=0"
+        ],
+        [
+          "save-reused-target",
+          "RETURN",
+          "firstLength=330, secondLength=660, equal=false"
+        ]
+      ],
+      "portableRecord": {
+        "originalRecordSha256": "076dd8e422385bdd36d944ffd44237176ebcd896adf5f6cedaeec54e32740820",
+        "normalizedRecordSha256": "d69c0ff487d81eedccfef957d235c3e6902e359329e66210b097d82c84c29901"
+      }
+    },
+    {
+      "id": "admission-js",
+      "language": "JavaScript",
+      "source": {
+        "path": "${PRIMARY_WORKSPACE}\\probe-admission-js.mjs",
+        "bytes": 3597,
+        "sha256": "2a5ba4786426e28cda23be4150e4a3fe8fb8c418ec1a008bd52245eb930ea4f7",
+        "text": "import { OWLManager } from 'file:///${OWLAPI_SOURCE}/apibinding/index.js';\nimport { OWLOntologyLoaderConfiguration as LC, IRI } from 'file:///${OWLAPI_SOURCE}/model/index.js';\nimport { StringDocumentSource } from 'file:///${OWLAPI_SOURCE}/io/index.js';\nimport { OWLDocumentFormats as F } from 'file:///${OWLAPI_SOURCE}/formats/index.js';\nconst results=[];\nconst shape=e=>({name:e.name,code:e.code,resource:e.resource,limit:e.limit,message:e.message,cause:e.cause?shape(e.cause):undefined});\nasync function probe(id,fn){try{results.push({id,outcome:'returned',result:await fn()});}catch(e){results.push({id,outcome:'threw',error:shape(e)});}}\nconst load=(text,format,configuration)=>OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(new StringDocumentSource(text,format?{format}:{}),configuration).then(o=>o.getAxiomCount());\nawait probe('sniff-leading9000-spaces',()=>load(' '.repeat(9000)+'Ontology(<urn:research:sniff>)'));\nawait probe('sniff-leading9000-spaces-explicit',()=>load(' '.repeat(9000)+'Ontology(<urn:research:sniff>)',F.FUNCTIONAL));\nawait probe('xml-unused-external-entity',()=>load('<!DOCTYPE Ontology [<!ENTITY unused SYSTEM \"https://example.invalid/no-network\">]><Ontology xmlns=\"http://www.w3.org/2002/07/owl#\" ontologyIRI=\"urn:research:xml\"/>',F.OWL_XML));\nconst nested='<Ontology xmlns=\"http://www.w3.org/2002/07/owl#\" ontologyIRI=\"urn:research:deepxml\"><Declaration><Class IRI=\"urn:research:A\"/></Declaration><SubClassOf><Class IRI=\"urn:research:A\"/>'+'<ObjectComplementOf>'.repeat(110)+'<Class IRI=\"urn:research:A\"/>'+'</ObjectComplementOf>'.repeat(110)+'</SubClassOf></Ontology>';\nawait probe('xml-complement-depth110',()=>load(nested,F.OWL_XML));\nawait probe('functional-literal1048577',()=>load('Ontology(<urn:research:literal> Annotation(<urn:research:p> \"'+'x'.repeat(1048577)+'\"))',F.FUNCTIONAL));\nconst trig='@prefix owl: <http://www.w3.org/2002/07/owl#> . <urn:g1> { <urn:A> a owl:Class . } <urn:g2> { <urn:B> a owl:Class . }';\nawait probe('trig-two-named-graphs',()=>load(trig,F.TRIG));\nconst turtle='@prefix owl: <http://www.w3.org/2002/07/owl#> . <urn:o> a owl:Ontology . <urn:x> <urn:p> \"value\" .';\nawait probe('turtle-undeclared-annotation-default',()=>load(turtle,F.TURTLE));\nawait probe('turtle-undeclared-annotation-compatible',()=>load(turtle,F.TURTLE,new LC({parsingMode:'compatible'})));\nfor(const hostname of ['context.example','fcorp.example']){\n let calls=0;\n const m=OWLManager.createOWLOntologyManager({documentLoader:{load:async()=>{calls++;return '{\"@context\":{\"x\":\"urn:x\"}}';}}});\n await probe(`jsonld-context-${hostname}`,()=>m.loadOntologyFromOntologyDocument(new StringDocumentSource(JSON.stringify({'@context':`https://${hostname}/context`,'@id':'urn:a','@type':'http://www.w3.org/2002/07/owl#Class'}),{format:F.JSON_LD}),new LC({remoteJsonLdContexts:true})).then(o=>({calls,count:o.getAxiomCount()})));\n results.push({id:`jsonld-context-${hostname}-calls`,calls});\n}\nlet calls=0;\nconst m=OWLManager.createOWLOntologyManager({documentLoader:{load:async iri=>{calls++;const i=Number(iri.value.split('/').pop());return JSON.stringify({'@context': i<13?`https://context.example/${i+1}`:{x:'urn:x'}});}}});\nawait probe('jsonld-context-chain13',()=>m.loadOntologyFromOntologyDocument(new StringDocumentSource('{\"@context\":\"https://context.example/0\",\"@id\":\"urn:a\",\"@type\":\"http://www.w3.org/2002/07/owl#Class\"}',{format:F.JSON_LD}),new LC({remoteJsonLdContexts:true})).then(o=>o.getAxiomCount()));\nresults.push({id:'jsonld-context-chain13-calls',calls});\nconsole.log(JSON.stringify({runtime:process.version,results},null,2));\n",
+        "originalBytes": 3645,
+        "originalSha256": "1472cbddcbe0a9ff6024edfb88db75c0afc0fd3c9adab817e562b8275bf4a9f1"
+      },
+      "capturedStdout": {
+        "path": "${PRIMARY_WORKSPACE}\\probe-admission-js-results.json",
+        "bytes": 3106,
+        "sha256": "05c6da23ce2475961ba0f4d72d3c10b67c54714b3c8fbdf2827977c9ec1cf2ae",
+        "text": "{\r\n  \"runtime\": \"v24.21.0\",\r\n  \"results\": [\r\n    {\r\n      \"id\": \"sniff-leading9000-spaces\",\r\n      \"outcome\": \"threw\",\r\n      \"error\": {\r\n        \"name\": \"OWLSyntaxError\",\r\n        \"code\": \"OWL_SYNTAX_ERROR\",\r\n        \"message\": \"The JSON-LD document is not valid JSON\",\r\n        \"cause\": {\r\n          \"name\": \"SyntaxError\",\r\n          \"message\": \"Unexpected token 'O', ...\\\"          Ontology(<\\\"... is not valid JSON\"\r\n        }\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"sniff-leading9000-spaces-explicit\",\r\n      \"outcome\": \"returned\",\r\n      \"result\": 0\r\n    },\r\n    {\r\n      \"id\": \"xml-unused-external-entity\",\r\n      \"outcome\": \"threw\",\r\n      \"error\": {\r\n        \"name\": \"SecurityPolicyError\",\r\n        \"code\": \"SECURITY_POLICY_VIOLATION\",\r\n        \"message\": \"External XML entities are disabled\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"xml-complement-depth110\",\r\n      \"outcome\": \"returned\",\r\n      \"result\": 2\r\n    },\r\n    {\r\n      \"id\": \"functional-literal1048577\",\r\n      \"outcome\": \"threw\",\r\n      \"error\": {\r\n        \"name\": \"ResourceLimitError\",\r\n        \"code\": \"RESOURCE_LIMIT_EXCEEDED\",\r\n        \"resource\": \"maxTokenLength\",\r\n        \"limit\": 1048576,\r\n        \"message\": \"The Functional Syntax maxTokenLength limit was exceeded\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"trig-two-named-graphs\",\r\n      \"outcome\": \"threw\",\r\n      \"error\": {\r\n        \"name\": \"AmbiguousRdfDatasetError\",\r\n        \"code\": \"AMBIGUOUS_RDF_DATASET\",\r\n        \"message\": \"The RDF dataset has more than one non-empty named graph\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"turtle-undeclared-annotation-default\",\r\n      \"outcome\": \"threw\",\r\n      \"error\": {\r\n        \"name\": \"UnsupportedConstructError\",\r\n        \"code\": \"UNSUPPORTED_CONSTRUCT\",\r\n        \"message\": \"The RDF graph presented for OWL reconstruction contains an unconsumed statement\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"turtle-undeclared-annotation-compatible\",\r\n      \"outcome\": \"returned\",\r\n      \"result\": 1\r\n    },\r\n    {\r\n      \"id\": \"jsonld-context-context.example\",\r\n      \"outcome\": \"returned\",\r\n      \"result\": {\r\n        \"calls\": 1,\r\n        \"count\": 1\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"jsonld-context-context.example-calls\",\r\n      \"calls\": 1\r\n    },\r\n    {\r\n      \"id\": \"jsonld-context-fcorp.example\",\r\n      \"outcome\": \"threw\",\r\n      \"error\": {\r\n        \"name\": \"SecurityPolicyError\",\r\n        \"code\": \"SECURITY_POLICY_VIOLATION\",\r\n        \"resource\": \"jsonLdContextIRI\",\r\n        \"message\": \"The JSON-LD context IRI is blocked by the loading security policy\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"jsonld-context-fcorp.example-calls\",\r\n      \"calls\": 0\r\n    },\r\n    {\r\n      \"id\": \"jsonld-context-chain13\",\r\n      \"outcome\": \"threw\",\r\n      \"error\": {\r\n        \"name\": \"OWLSyntaxError\",\r\n        \"code\": \"OWL_SYNTAX_ERROR\",\r\n        \"message\": \"The JSON-LD document could not be converted to RDF\",\r\n        \"cause\": {\r\n          \"name\": \"jsonld.ContextUrlError\",\r\n          \"message\": \"Maximum number of @context URLs exceeded.\"\r\n        }\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"jsonld-context-chain13-calls\",\r\n      \"calls\": 11\r\n    }\r\n  ]\r\n}\r\n",
+        "originalBytes": 3106,
+        "originalSha256": "05c6da23ce2475961ba0f4d72d3c10b67c54714b3c8fbdf2827977c9ec1cf2ae"
+      },
+      "execution": {
+        "executable": "node",
+        "arguments": ["${PRIMARY_WORKSPACE}\\probe-admission-js.mjs"],
+        "exitCode": 0,
+        "sourceFileLaunching": false,
+        "network": "No live network requests; JSON-LD uses injected stub loaders and Java retry checks use a fake URLConnection."
+      },
+      "parsedOutput": {
+        "runtime": "v24.21.0",
+        "results": [
+          {
+            "id": "sniff-leading9000-spaces",
+            "outcome": "threw",
+            "error": {
+              "name": "OWLSyntaxError",
+              "code": "OWL_SYNTAX_ERROR",
+              "message": "The JSON-LD document is not valid JSON",
+              "cause": {
+                "name": "SyntaxError",
+                "message": "Unexpected token 'O', ...\"          Ontology(<\"... is not valid JSON"
+              }
+            }
+          },
+          {
+            "id": "sniff-leading9000-spaces-explicit",
+            "outcome": "returned",
+            "result": 0
+          },
+          {
+            "id": "xml-unused-external-entity",
+            "outcome": "threw",
+            "error": {
+              "name": "SecurityPolicyError",
+              "code": "SECURITY_POLICY_VIOLATION",
+              "message": "External XML entities are disabled"
+            }
+          },
+          {
+            "id": "xml-complement-depth110",
+            "outcome": "returned",
+            "result": 2
+          },
+          {
+            "id": "functional-literal1048577",
+            "outcome": "threw",
+            "error": {
+              "name": "ResourceLimitError",
+              "code": "RESOURCE_LIMIT_EXCEEDED",
+              "resource": "maxTokenLength",
+              "limit": 1048576,
+              "message": "The Functional Syntax maxTokenLength limit was exceeded"
+            }
+          },
+          {
+            "id": "trig-two-named-graphs",
+            "outcome": "threw",
+            "error": {
+              "name": "AmbiguousRdfDatasetError",
+              "code": "AMBIGUOUS_RDF_DATASET",
+              "message": "The RDF dataset has more than one non-empty named graph"
+            }
+          },
+          {
+            "id": "turtle-undeclared-annotation-default",
+            "outcome": "threw",
+            "error": {
+              "name": "UnsupportedConstructError",
+              "code": "UNSUPPORTED_CONSTRUCT",
+              "message": "The RDF graph presented for OWL reconstruction contains an unconsumed statement"
+            }
+          },
+          {
+            "id": "turtle-undeclared-annotation-compatible",
+            "outcome": "returned",
+            "result": 1
+          },
+          {
+            "id": "jsonld-context-context.example",
+            "outcome": "returned",
+            "result": {
+              "calls": 1,
+              "count": 1
+            }
+          },
+          {
+            "id": "jsonld-context-context.example-calls",
+            "calls": 1
+          },
+          {
+            "id": "jsonld-context-fcorp.example",
+            "outcome": "threw",
+            "error": {
+              "name": "SecurityPolicyError",
+              "code": "SECURITY_POLICY_VIOLATION",
+              "resource": "jsonLdContextIRI",
+              "message": "The JSON-LD context IRI is blocked by the loading security policy"
+            }
+          },
+          {
+            "id": "jsonld-context-fcorp.example-calls",
+            "calls": 0
+          },
+          {
+            "id": "jsonld-context-chain13",
+            "outcome": "threw",
+            "error": {
+              "name": "OWLSyntaxError",
+              "code": "OWL_SYNTAX_ERROR",
+              "message": "The JSON-LD document could not be converted to RDF",
+              "cause": {
+                "name": "jsonld.ContextUrlError",
+                "message": "Maximum number of @context URLs exceeded."
+              }
+            }
+          },
+          {
+            "id": "jsonld-context-chain13-calls",
+            "calls": 11
+          }
+        ]
+      },
+      "portableRecord": {
+        "originalRecordSha256": "0e6a9d22938e3a71500dae6e6b2f970857db0d95d7be693d2f00e50e880223c0",
+        "normalizedRecordSha256": "cb53cc1a8f3f0e3230b158d13f87f4f2a8fa9761e644a85aeeb5191fefea5151"
+      }
+    },
+    {
+      "id": "admission-java",
+      "language": "Java",
+      "source": {
+        "path": "${PRIMARY_WORKSPACE}\\ProbeAdmissionJava.java",
+        "bytes": 2823,
+        "sha256": "8be91da16abbe0fe7b719329d486a305d639fcffd81f2acbf79dd2518798173c",
+        "text": "import java.util.*;\nimport org.semanticweb.owlapi.apibinding.OWLManager;\nimport org.semanticweb.owlapi.model.*;\nimport org.semanticweb.owlapi.io.*;\nimport org.semanticweb.owlapi.formats.*;\nimport org.eclipse.rdf4j.rio.*;\n\nclass ProbeAdmissionJava {\n interface Run {Object run() throws Exception;}\n static void probe(String name,Run fn) {try {System.out.println(name+\"\\tRETURN\\t\"+fn.run());}catch(Throwable e){System.out.println(name+\"\\tTHROW\\t\"+e.getClass().getName()+\": \"+e.getMessage().lines().findFirst().orElse(\"\"));}}\n static Object load(String text,OWLDocumentFormat f) throws Exception{return OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(f==null?new StringDocumentSource(text):new StringDocumentSource(text,IRI.create(\"urn:research:document\"),f,null)).getAxiomCount();}\n public static void main(String[] args)throws Exception{\n  probe(\"sniff-leading9000-spaces\",()->load(\" \".repeat(9000)+\"Ontology(<urn:research:sniff>)\",null));\n  probe(\"sniff-leading9000-spaces-explicit\",()->load(\" \".repeat(9000)+\"Ontology(<urn:research:sniff>)\",new FunctionalSyntaxDocumentFormat()));\n  probe(\"xml-unused-external-entity\",()->load(\"<!DOCTYPE Ontology [<!ENTITY unused SYSTEM \\\"https://example.invalid/no-network\\\">]><Ontology xmlns=\\\"http://www.w3.org/2002/07/owl#\\\" ontologyIRI=\\\"urn:research:xml\\\"/>\",new OWLXMLDocumentFormat()));\n  String nested=\"<Ontology xmlns=\\\"http://www.w3.org/2002/07/owl#\\\" ontologyIRI=\\\"urn:research:deepxml\\\"><Declaration><Class IRI=\\\"urn:research:A\\\"/></Declaration><SubClassOf><Class IRI=\\\"urn:research:A\\\"/>\"+\"<ObjectComplementOf>\".repeat(110)+\"<Class IRI=\\\"urn:research:A\\\"/>\"+\"</ObjectComplementOf>\".repeat(110)+\"</SubClassOf></Ontology>\";\n  probe(\"xml-complement-depth110\",()->load(nested,new OWLXMLDocumentFormat()));\n  probe(\"functional-literal1048577\",()->load(\"Ontology(<urn:research:literal> Annotation(<urn:research:p> \\\"\"+\"x\".repeat(1048577)+\"\\\"))\",new FunctionalSyntaxDocumentFormat()));\n  String trig=\"@prefix owl: <http://www.w3.org/2002/07/owl#> . <urn:g1> { <urn:A> a owl:Class . } <urn:g2> { <urn:B> a owl:Class . }\";\n  probe(\"trig-two-named-graphs\",()->load(trig,new TrigDocumentFormat()));\n  String turtle=\"@prefix owl: <http://www.w3.org/2002/07/owl#> . <urn:o> a owl:Ontology . <urn:x> <urn:p> \\\"value\\\" .\";\n  probe(\"turtle-undeclared-annotation-default\",()->load(turtle,new TurtleDocumentFormat()));\n  for(RDFFormat f:List.of(RDFFormat.RDFXML,RDFFormat.TURTLE,RDFFormat.JSONLD,RDFFormat.TRIG)){\n   var parser=Rio.createParser(f);System.out.println(\"rio-parser\\t\"+f.getName()+\"\\t\"+parser.getClass().getName());\n   for(var setting:parser.getSupportedSettings()) if(setting.getKey().matches(\"(?i).*(limit|depth|large|xml|jsonld|timeout).*\")) System.out.println(\"rio-setting\\t\"+f.getName()+\"\\t\"+setting.getKey()+\"\\t\"+setting.getDefaultValue());\n  }\n }\n}\n",
+        "originalBytes": 2823,
+        "originalSha256": "8be91da16abbe0fe7b719329d486a305d639fcffd81f2acbf79dd2518798173c"
+      },
+      "capturedStdout": {
+        "path": "${PRIMARY_WORKSPACE}\\probe-admission-java-results.txt",
+        "bytes": 1216,
+        "sha256": "a46a103b8bfacb74cc2cc70fe7bde5d97cd2d84c8d9e71925c077fbcfa189a48",
+        "text": "sniff-leading9000-spaces\tRETURN\t0\r\nsniff-leading9000-spaces-explicit\tRETURN\t0\r\nxml-unused-external-entity\tRETURN\t0\r\nxml-complement-depth110\tTHROW\torg.semanticweb.owlapi.io.UnparsableOntologyException: Problem parsing urn:research:document\r\nfunctional-literal1048577\tRETURN\t0\r\ntrig-two-named-graphs\tRETURN\t2\r\nturtle-undeclared-annotation-default\tRETURN\t1\r\nrio-parser\tRDF/XML\torg.eclipse.rdf4j.rio.rdfxml.RDFXMLParser\r\nrio-setting\tRDF/XML\thttp://xml.org/sax/features/external-general-entities\tfalse\r\nrio-setting\tRDF/XML\thttp://apache.org/xml/features/nonvalidating/load-external-dtd\tfalse\r\nrio-setting\tRDF/XML\thttp://apache.org/xml/features/disallow-doctype-decl\tfalse\r\nrio-setting\tRDF/XML\thttp://xml.org/sax/features/external-parameter-entities\tfalse\r\nrio-setting\tRDF/XML\torg.eclipse.rdf4j.rio.xmlreader\tnull\r\nrio-setting\tRDF/XML\thttp://javax.xml.XMLConstants/feature/secure-processing\ttrue\r\nrio-parser\tTurtle\torg.eclipse.rdf4j.rio.turtle.TurtleParser\r\nrio-parser\tJSON-LD\torg.eclipse.rdf4j.rio.jsonld.JSONLDParser\r\nrio-setting\tJSON-LD\torg.eclipse.rdf4j.rio.jsonld.expand_context\tnull\r\nrio-setting\tJSON-LD\torg.eclipse.rdf4j.rio.jsonld.exception_on_warning\tfalse\r\nrio-parser\tTriG\torg.eclipse.rdf4j.rio.trig.TriGParser\r\n",
+        "originalBytes": 1216,
+        "originalSha256": "a46a103b8bfacb74cc2cc70fe7bde5d97cd2d84c8d9e71925c077fbcfa189a48"
+      },
+      "execution": {
+        "executable": "java",
+        "arguments": [
+          "-cp",
+          "<exact classpath recorded below>",
+          "${PRIMARY_WORKSPACE}\\ProbeAdmissionJava.java"
+        ],
+        "exitCode": 0,
+        "sourceFileLaunching": true,
+        "network": "No live network requests; JSON-LD uses injected stub loaders and Java retry checks use a fake URLConnection."
+      },
+      "tabSeparatedRows": [
+        ["sniff-leading9000-spaces", "RETURN", "0"],
+        ["sniff-leading9000-spaces-explicit", "RETURN", "0"],
+        ["xml-unused-external-entity", "RETURN", "0"],
+        [
+          "xml-complement-depth110",
+          "THROW",
+          "org.semanticweb.owlapi.io.UnparsableOntologyException: Problem parsing urn:research:document"
+        ],
+        ["functional-literal1048577", "RETURN", "0"],
+        ["trig-two-named-graphs", "RETURN", "2"],
+        ["turtle-undeclared-annotation-default", "RETURN", "1"],
+        ["rio-parser", "RDF/XML", "org.eclipse.rdf4j.rio.rdfxml.RDFXMLParser"],
+        [
+          "rio-setting",
+          "RDF/XML",
+          "http://xml.org/sax/features/external-general-entities",
+          "false"
+        ],
+        [
+          "rio-setting",
+          "RDF/XML",
+          "http://apache.org/xml/features/nonvalidating/load-external-dtd",
+          "false"
+        ],
+        [
+          "rio-setting",
+          "RDF/XML",
+          "http://apache.org/xml/features/disallow-doctype-decl",
+          "false"
+        ],
+        [
+          "rio-setting",
+          "RDF/XML",
+          "http://xml.org/sax/features/external-parameter-entities",
+          "false"
+        ],
+        ["rio-setting", "RDF/XML", "org.eclipse.rdf4j.rio.xmlreader", "null"],
+        [
+          "rio-setting",
+          "RDF/XML",
+          "http://javax.xml.XMLConstants/feature/secure-processing",
+          "true"
+        ],
+        ["rio-parser", "Turtle", "org.eclipse.rdf4j.rio.turtle.TurtleParser"],
+        ["rio-parser", "JSON-LD", "org.eclipse.rdf4j.rio.jsonld.JSONLDParser"],
+        [
+          "rio-setting",
+          "JSON-LD",
+          "org.eclipse.rdf4j.rio.jsonld.expand_context",
+          "null"
+        ],
+        [
+          "rio-setting",
+          "JSON-LD",
+          "org.eclipse.rdf4j.rio.jsonld.exception_on_warning",
+          "false"
+        ],
+        ["rio-parser", "TriG", "org.eclipse.rdf4j.rio.trig.TriGParser"]
+      ],
+      "portableRecord": {
+        "originalRecordSha256": "d8ef1c876f4a45eb8dbafc94606d5a004ae0256c266c28e90dd325ce40b012c9",
+        "normalizedRecordSha256": "f6a79bb038b500bf1b83e5b8efa44e369ac7cf8b985ba8fa98771a262f73bbe1"
+      }
+    },
+    {
+      "id": "control-js",
+      "language": "JavaScript",
+      "source": {
+        "path": "${PRIMARY_WORKSPACE}\\probe-control-js.mjs",
+        "bytes": 1032,
+        "sha256": "da1b5f3e7d99013e6b950199f26cb168cfbe937c7dd3b0e35b59b1d3cb6fbb0a",
+        "text": "import { OWLManager } from 'file:///${OWLAPI_SOURCE}/apibinding/index.js';\nimport { IRI } from 'file:///${OWLAPI_SOURCE}/model/index.js';\nimport { EntitySearcher } from 'file:///${OWLAPI_SOURCE}/search/index.js';\nimport { LocalityClass,SyntacticLocalityModuleExtractor } from 'file:///${OWLAPI_SOURCE}/modularity/locality/index.js';\nconst m=OWLManager.createOWLOntologyManager(),df=m.getOWLDataFactory();const a=df.getOWLClass(IRI.create('urn:A')),b=df.getOWLClass(IRI.create('urn:B')),ax=df.getOWLSubClassOfAxiom(a,b);const ont=m.createOntology();m.addAxiom(ont,ax);\nlet calls=0;const extractor=new SyntacticLocalityModuleExtractor(LocalityClass.BOTTOM,[ax]);const module=await extractor.extract([],()=>{calls++;return true;});\nlet visits=0;function* ontologies(){visits++;yield ont;}\nconst results=EntitySearcher.getSuperClasses(a,ontologies());\nconsole.log(JSON.stringify({runtime:process.version,locality:{filterCalls:calls,moduleSize:module.length},search:{visitsBeforeResultConsumption:visits,count:results.length}},null,2));\n",
+        "originalBytes": 1080,
+        "originalSha256": "58a70dea53701953b23d757e927072fd75db8804c3b85a402b8fdec9ce1cb13b"
+      },
+      "capturedStdout": {
+        "path": "${PRIMARY_WORKSPACE}\\probe-control-js-results.json",
+        "bytes": 176,
+        "sha256": "4a70d1c05395469589a0ddfef5528db17188e0e7b8a9ca298c62d09a81f262f4",
+        "text": "{\r\n  \"runtime\": \"v24.21.0\",\r\n  \"locality\": {\r\n    \"filterCalls\": 1,\r\n    \"moduleSize\": 0\r\n  },\r\n  \"search\": {\r\n    \"visitsBeforeResultConsumption\": 1,\r\n    \"count\": 1\r\n  }\r\n}\r\n",
+        "originalBytes": 176,
+        "originalSha256": "4a70d1c05395469589a0ddfef5528db17188e0e7b8a9ca298c62d09a81f262f4"
+      },
+      "execution": {
+        "executable": "node",
+        "arguments": ["${PRIMARY_WORKSPACE}\\probe-control-js.mjs"],
+        "exitCode": 0,
+        "sourceFileLaunching": false,
+        "network": "No live network requests; JSON-LD uses injected stub loaders and Java retry checks use a fake URLConnection."
+      },
+      "parsedOutput": {
+        "runtime": "v24.21.0",
+        "locality": {
+          "filterCalls": 1,
+          "moduleSize": 0
+        },
+        "search": {
+          "visitsBeforeResultConsumption": 1,
+          "count": 1
+        }
+      },
+      "portableRecord": {
+        "originalRecordSha256": "c5c57e9258f043dc18444e4f9bff1bd6d995a3099587b7838273073d926f865e",
+        "normalizedRecordSha256": "17e074a2d2c23eeaadf222b199a418e2a3b6fefc083ece296e39abfd2550bda0"
+      }
+    },
+    {
+      "id": "control-java",
+      "language": "Java",
+      "source": {
+        "path": "${PRIMARY_WORKSPACE}\\ProbeControlJava.java",
+        "bytes": 2313,
+        "sha256": "ef39c6fe29e0e96cab48c319f58ad47cf678750023cfee89f5e14efba7f0aac5",
+        "text": "import java.util.*;\nimport java.util.stream.*;\nimport java.net.*;\nimport java.io.*;\nimport java.lang.reflect.*;\nimport org.semanticweb.owlapi.apibinding.OWLManager;\nimport org.semanticweb.owlapi.model.*;\nimport org.semanticweb.owlapi.io.*;\nimport org.semanticweb.owlapi.search.EntitySearcher;\nimport org.semanticweb.owlapi.modularity.locality.*;\nclass ProbeControlJava {\n static class Conn extends URLConnection {\n  int calls=0; boolean fail;\n  Conn(boolean fail)throws Exception{super(new URL(\"https://example.invalid/no-network\"));this.fail=fail;}\n  public void connect(){}\n  public InputStream getInputStream()throws IOException{calls++;if(fail)throw new SocketTimeoutException(\"synthetic\");return new ByteArrayInputStream(new byte[0]);}\n }\n public static void main(String[]args)throws Exception{\n  Method method=DocumentSources.class.getDeclaredMethod(\"connectWithFiveRetries\",IRI.class,OWLOntologyLoaderConfiguration.class,URLConnection.class,int.class,String.class);method.setAccessible(true);\n  for(boolean fail:List.of(false,true))for(int retries:List.of(-1,0,1,2,5,6)){\n   Conn conn=new Conn(fail);String outcome;\n   try{Object result=method.invoke(null,IRI.create(\"https://example.invalid/no-network\"),new OWLOntologyLoaderConfiguration().setRetriesToAttempt(retries),conn,20,null);outcome=result==null?\"null\":\"stream\";}catch(InvocationTargetException e){outcome=e.getCause().getClass().getSimpleName();}\n   System.out.println(\"retries\\tfail=\"+fail+\"\\tconfigured=\"+retries+\"\\tcalls=\"+conn.calls+\"\\tresult=\"+outcome);\n  }\n  var m=OWLManager.createOWLOntologyManager();var df=m.getOWLDataFactory();var a=df.getOWLClass(IRI.create(\"urn:A\"));var b=df.getOWLClass(IRI.create(\"urn:B\"));var ax=df.getOWLSubClassOfAxiom(a,b);var ont=m.createOntology(Set.of(ax));\n  var extractor=new SyntacticLocalityModuleExtractor(LocalityClass.BOTTOM,Stream.of(ax));int[] calls={0};var module=extractor.extract(Stream.empty(),Optional.of(value->{calls[0]++;return true;}));System.out.println(\"locality-empty-seed\\tfilterCalls=\"+calls[0]+\"\\tmodule=\"+module.count());\n  int[] visits={0};var results=EntitySearcher.getSuperClasses(a,Stream.of(ont).peek(o->visits[0]++));System.out.println(\"search-before-consume\\tvisits=\"+visits[0]);System.out.println(\"search-after-consume\\tcount=\"+results.count()+\"\\tvisits=\"+visits[0]);\n }\n}\n",
+        "originalBytes": 2313,
+        "originalSha256": "ef39c6fe29e0e96cab48c319f58ad47cf678750023cfee89f5e14efba7f0aac5"
+      },
+      "capturedStdout": {
+        "path": "${PRIMARY_WORKSPACE}\\probe-control-java-results.txt",
+        "bytes": 809,
+        "sha256": "3e3c4217b98b8f26efab8ffaef4c0fcf7a6b162bd5d1d804e2c405c67cf00b15",
+        "text": "retries\tfail=false\tconfigured=-1\tcalls=0\tresult=null\r\nretries\tfail=false\tconfigured=0\tcalls=0\tresult=null\r\nretries\tfail=false\tconfigured=1\tcalls=1\tresult=stream\r\nretries\tfail=false\tconfigured=2\tcalls=1\tresult=stream\r\nretries\tfail=false\tconfigured=5\tcalls=1\tresult=stream\r\nretries\tfail=false\tconfigured=6\tcalls=1\tresult=stream\r\nretries\tfail=true\tconfigured=-1\tcalls=0\tresult=null\r\nretries\tfail=true\tconfigured=0\tcalls=0\tresult=null\r\nretries\tfail=true\tconfigured=1\tcalls=1\tresult=null\r\nretries\tfail=true\tconfigured=2\tcalls=2\tresult=null\r\nretries\tfail=true\tconfigured=5\tcalls=5\tresult=OWLOntologyInputSourceException\r\nretries\tfail=true\tconfigured=6\tcalls=5\tresult=OWLOntologyInputSourceException\r\nlocality-empty-seed\tfilterCalls=0\tmodule=0\r\nsearch-before-consume\tvisits=0\r\nsearch-after-consume\tcount=1\tvisits=1\r\n",
+        "originalBytes": 809,
+        "originalSha256": "3e3c4217b98b8f26efab8ffaef4c0fcf7a6b162bd5d1d804e2c405c67cf00b15"
+      },
+      "execution": {
+        "executable": "java",
+        "arguments": [
+          "-cp",
+          "<exact classpath recorded below>",
+          "${PRIMARY_WORKSPACE}\\ProbeControlJava.java"
+        ],
+        "exitCode": 0,
+        "sourceFileLaunching": true,
+        "network": "No live network requests; JSON-LD uses injected stub loaders and Java retry checks use a fake URLConnection."
+      },
+      "tabSeparatedRows": [
+        ["retries", "fail=false", "configured=-1", "calls=0", "result=null"],
+        ["retries", "fail=false", "configured=0", "calls=0", "result=null"],
+        ["retries", "fail=false", "configured=1", "calls=1", "result=stream"],
+        ["retries", "fail=false", "configured=2", "calls=1", "result=stream"],
+        ["retries", "fail=false", "configured=5", "calls=1", "result=stream"],
+        ["retries", "fail=false", "configured=6", "calls=1", "result=stream"],
+        ["retries", "fail=true", "configured=-1", "calls=0", "result=null"],
+        ["retries", "fail=true", "configured=0", "calls=0", "result=null"],
+        ["retries", "fail=true", "configured=1", "calls=1", "result=null"],
+        ["retries", "fail=true", "configured=2", "calls=2", "result=null"],
+        [
+          "retries",
+          "fail=true",
+          "configured=5",
+          "calls=5",
+          "result=OWLOntologyInputSourceException"
+        ],
+        [
+          "retries",
+          "fail=true",
+          "configured=6",
+          "calls=5",
+          "result=OWLOntologyInputSourceException"
+        ],
+        ["locality-empty-seed", "filterCalls=0", "module=0"],
+        ["search-before-consume", "visits=0"],
+        ["search-after-consume", "count=1", "visits=1"]
+      ],
+      "portableRecord": {
+        "originalRecordSha256": "8fcf69bca9db1b810c41ffa0e7babb2c5c3f5cd213e98a35884d991960f06c1f",
+        "normalizedRecordSha256": "12e488957d3b79608e53ad779e2f3d435f1a0c8eaffb2f242fc4f78e6da0539a"
+      }
+    }
+  ],
+  "diagnosticsNotInCapturedStdout": [
+    {
+      "probe": "core-java",
+      "detail": "Compiler warning that the manager removeAxiom API is deprecated; SLF4J no-provider/NOP logger notices."
+    },
+    {
+      "probe": "admission-java",
+      "detail": "SLF4J no-provider/NOP logger notices."
+    },
+    {
+      "probe": "control-java",
+      "detail": "Compiler warning that URL(String) is deprecated; SLF4J no-provider/NOP logger notices."
+    }
+  ],
+  "webPrimarySources": [
+    {
+      "url": "https://docs.oracle.com/en/java/javase/25/security/java-api-xml-processing-jaxp-security-guide.html",
+      "purpose": "JAXP processing-limit controls, nonpositive disabling semantics and precedence; exact observed numbers remain attributed to the recorded runtime probe."
+    },
+    {
+      "url": "https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/net/URLConnection.html#setConnectTimeout(int)",
+      "purpose": "Connection timeout stage, zero sentinel and negative-value rejection at URLConnection use."
+    }
+  ],
+  "coverageLimits": [
+    "No fresh Maven build, full test suite, remote CI, browser run, deployment, source/configuration/commit/publication change, or HISEW lifecycle mutation.",
+    "Local dependency and runtime observations are separate from pinned source facts; classpath labels and hashes alone do not prove build provenance.",
+    "Only the selected/matched surface and investigated paths are assessed. Missing entire API families are not silently characterized as implemented behavior.",
+    "Java JSON-LD remote-context/dependency chain behavior, arbitrary partial writer failure, full listener/reentrancy behavior and all closure-failure cleanup remain unresolved.",
+    "Large hardcoded byte/search-state boundaries were source traced, not exhausted; no universal unlimited Java claim is made."
+  ],
+  "validation": {
+    "sourceReferences": 68,
+    "tables": 8,
+    "probePrograms": 6,
+    "classpathEntries": 63,
+    "problems": []
+  },
+  "originalSchema": "owlapi-behavior-research-evidence-v1",
+  "portability": {
+    "original": {
+      "file": "2026-10-13-owlapi-api-behavior-evidence.json",
+      "bytes": 189214,
+      "sha256": "01c26bd06cba42fe3d495d417f2d137751f3ac0577730a3cba72ec2640d49d6d"
+    },
+    "guide": "README.md",
+    "manifest": "manifest.json",
+    "normalization": "Host-root substitution in strings, including program templates and recorded command/output text; semantic observations are unchanged. See README.md. These derived records are not native qualification receipts.",
+    "omissions": [
+      "preservedUnrelatedFile",
+      "retainedJavaClasspath.rawClasspath (ordered entries retained)",
+      "javascriptProvenance.jsonldContextResolverExcerpts",
+      "sourceIndex[].localPath"
+    ],
+    "rootTokens": [
+      "${PRIMARY_WORKSPACE}",
+      "${GAP_WORKSPACE}",
+      "${JAVA_SOURCE}",
+      "${OWLAPI_SOURCE}",
+      "${MAVEN_REPOSITORY}",
+      "${PROGRAM_FILES}",
+      "${HOME}"
+    ]
+  }
+}
