@@ -706,18 +706,20 @@ Sharing an axiom object does not transfer ontology ownership.
 
 **Cross-profile operation rules.**
 
-| Situation                                                                        | Required behaviour                                                                                                                         |
-| -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| Mutation requested through non-owning manager                                    | Reject before mutation                                                                                                                     |
-| One managed ontology passed to another manager for storage                       | The initiating/destination manager profile governs only where the API explicitly supports such a target; otherwise reject ownership misuse |
-| Composite operation consumes multiple managed ontologies from different profiles | Require an explicit destination manager and snapshot/copy semantics, or reject before effects                                              |
-| Profile-neutral equality/hash comparison                                         | Shared implementation; profile identity does not affect result                                                                             |
-| Profile-sensitive serialisation/parsing                                          | Initiating manager/context governs                                                                                                         |
-| Lazy result created under one context and consumed later                         | Original context remains authoritative                                                                                                     |
-| Context mismatch inside internal call graph                                      | Programming error; fail fast rather than selecting one profile implicitly                                                                  |
-| Future API needs mixed-profile semantics                                         | Requires a new explicit contract; it cannot infer “stricter wins”, “Java wins” or “normative wins”                                         |
+| Situation                                                                        | Required behaviour                                                                                                                          |
+| -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Mutation requested through non-owning manager                                    | Normative or mixed-profile: reject before mutation. Same-profile Java: preserve the qualified Java operation without transferring ownership |
+| One managed ontology passed to another manager for storage                       | The initiating/destination manager profile governs only where the API explicitly supports such a target; otherwise reject ownership misuse  |
+| Composite operation consumes multiple managed ontologies from different profiles | Require an explicit destination manager and snapshot/copy semantics, or reject before effects                                               |
+| Profile-neutral equality/hash comparison                                         | Shared implementation; profile identity does not affect result                                                                              |
+| Profile-sensitive serialisation/parsing                                          | Initiating manager/context governs                                                                                                          |
+| Lazy result created under one context and consumed later                         | Original context remains authoritative                                                                                                      |
+| Context mismatch inside internal call graph                                      | Programming error; fail fast rather than selecting one profile implicitly                                                                   |
+| Future API needs mixed-profile semantics                                         | Requires a new explicit contract; it cannot infer “stricter wins”, “Java wins” or “normative wins”                                          |
 
 Where concurrent or re-entrant manager writes can overlap, a `normative-v1` atomic operation must have a defined publication/linearisation point or the implementation must reject overlapping writes.
+The [released-oracle mutation observations](../compatibility/profiles/java-owlapi-5.5.1/README.md#newly-resolved-implementation-decisions) resolve DEC-008's original ownership assumption: Java permits same-profile non-owner mutation, including a rename that leaves the owning manager's previous index entry intact.
+The implementation must retain that observed vector in the Java profile; rejecting it would introduce a compatibility difference.
 Linearizability is relevant only where operations can be observably concurrent; it is not required for pure immutable computations. [linearizability] The implementation shall concentrate differences in policy and publication boundaries.
 Shared knowledge with the same meaning, authority and reasons for change has one owner.
 Separate profile rules and independent test oracles remain separate when their authority differs; identical text alone does not justify abstraction.

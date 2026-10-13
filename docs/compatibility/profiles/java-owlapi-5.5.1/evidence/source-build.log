@@ -1,0 +1,737 @@
+[INFO] Scanning for projects...
+[INFO] Inspecting build with total of 10 modules...
+[INFO] Installing Nexus Staging features:
+[INFO]   ... total of 10 executions of maven-deploy-plugin replaced with nexus-staging-maven-plugin
+[WARNING] The project net.sourceforge.owlapi:owlapi-parent:pom:5.5.1 uses prerequisites which is only intended for maven-plugin projects but not for non maven-plugin projects. For such purposes you should use the maven-enforcer-plugin. See https://maven.apache.org/enforcer/enforcer-rules/requireMavenVersion.html
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] OWLAPI                                                             [pom]
+[INFO] OWLAPI :: Interfaces                                               [jar]
+[INFO] OWLAPI :: Default Implementation                                   [jar]
+[INFO] OWLAPI :: Atomic Decomposition and Explanation                     [jar]
+[INFO] OWLAPI :: Parsers                                                  [jar]
+[INFO] OWLAPI :: OBO Format                                               [jar]
+[INFO] OWLAPI :: RDF4J Rio                                                [jar]
+[INFO] OWLAPI :: Binding and Config                                       [jar]
+[INFO] OWLAPI :: Compatibility                                            [jar]
+[INFO] OWLAPI :: Distribution                                          [bundle]
+[INFO] 
+[INFO] ----------------< net.sourceforge.owlapi:owlapi-parent >----------------
+[INFO] Building OWLAPI 5.5.1                                             [1/10]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-maven) @ owlapi-parent ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-bytecode-version) @ owlapi-parent ---
+[INFO] Rule 0: org.codehaus.mojo.extraenforcer.dependencies.EnforceBytecodeVersion passed
+[INFO] 
+[INFO] --- animal-sniffer:1.23:check (default) @ owlapi-parent ---
+[INFO] Checking unresolved references to org.codehaus.mojo.signature:java18:1.0
+[INFO] 
+[INFO] >>> source:3.3.0:jar (attach-sources) > generate-sources @ owlapi-parent >>>
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-maven) @ owlapi-parent ---
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-bytecode-version) @ owlapi-parent ---
+[INFO] Rule 0: org.codehaus.mojo.extraenforcer.dependencies.EnforceBytecodeVersion passed
+[INFO] 
+[INFO] <<< source:3.3.0:jar (attach-sources) < generate-sources @ owlapi-parent <<<
+[INFO] 
+[INFO] 
+[INFO] --- source:3.3.0:jar (attach-sources) @ owlapi-parent ---
+[INFO] 
+[INFO] --- javadoc:3.6.3:jar (attach-javadocs) @ owlapi-parent ---
+[INFO] Skipping javadoc generation
+[INFO] 
+[INFO] --- dependency:3.11.0:build-classpath (default-cli) @ owlapi-parent ---
+[INFO] Wrote classpath file '${QUALIFICATION_WORKSPACE}\source\target\owlapi-runtime-classpath.txt'.
+[INFO] 
+[INFO] -----------------< net.sourceforge.owlapi:owlapi-api >------------------
+[INFO] Building OWLAPI :: Interfaces 5.5.1                               [2/10]
+[INFO]   from api\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-maven) @ owlapi-api ---
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-bytecode-version) @ owlapi-api ---
+[INFO] Rule 0: org.codehaus.mojo.extraenforcer.dependencies.EnforceBytecodeVersion passed
+[INFO] 
+[INFO] --- resources:3.4.0:resources (default-resources) @ owlapi-api ---
+[INFO] skip non existing resourceDirectory ${QUALIFICATION_WORKSPACE}\source\api\src\main\resources
+[INFO] 
+[INFO] --- compiler:3.12.1:compile (default-compile) @ owlapi-api ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 852 source files with javac [forked debug target 11] to target\classes
+[WARNING] [options] location of system modules is not set in conjunction with -source 11
+[INFO] 
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ owlapi-api ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.12.1:testCompile (default-testCompile) @ owlapi-api ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ owlapi-api ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- animal-sniffer:1.23:check (default) @ owlapi-api ---
+[INFO] Checking unresolved references to org.codehaus.mojo.signature:java18:1.0
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ owlapi-api ---
+[INFO] Building jar: ${QUALIFICATION_WORKSPACE}\source\api\target\owlapi-api-5.5.1.jar
+[INFO] 
+[INFO] >>> source:3.3.0:jar (attach-sources) > generate-sources @ owlapi-api >>>
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-maven) @ owlapi-api ---
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-bytecode-version) @ owlapi-api ---
+[INFO] Rule 0: org.codehaus.mojo.extraenforcer.dependencies.EnforceBytecodeVersion passed
+[INFO] 
+[INFO] <<< source:3.3.0:jar (attach-sources) < generate-sources @ owlapi-api <<<
+[INFO] 
+[INFO] 
+[INFO] --- source:3.3.0:jar (attach-sources) @ owlapi-api ---
+[INFO] Building jar: ${QUALIFICATION_WORKSPACE}\source\api\target\owlapi-api-5.5.1-sources.jar
+[INFO] 
+[INFO] --- javadoc:3.6.3:jar (attach-javadocs) @ owlapi-api ---
+[INFO] Skipping javadoc generation
+[INFO] 
+[INFO] --- dependency:3.11.0:build-classpath (default-cli) @ owlapi-api ---
+[INFO] Wrote classpath file '${QUALIFICATION_WORKSPACE}\source\api\target\owlapi-runtime-classpath.txt'.
+[INFO] 
+[INFO] -----------------< net.sourceforge.owlapi:owlapi-impl >-----------------
+[INFO] Building OWLAPI :: Default Implementation 5.5.1                   [3/10]
+[INFO]   from impl\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-maven) @ owlapi-impl ---
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-bytecode-version) @ owlapi-impl ---
+[INFO] Rule 0: org.codehaus.mojo.extraenforcer.dependencies.EnforceBytecodeVersion passed
+[INFO] 
+[INFO] --- resources:3.4.0:resources (default-resources) @ owlapi-impl ---
+[INFO] Copying 3 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.12.1:compile (default-compile) @ owlapi-impl ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 173 source files with javac [forked debug target 11] to target\classes
+[WARNING] [options] location of system modules is not set in conjunction with -source 11
+[INFO] 
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ owlapi-impl ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.12.1:testCompile (default-testCompile) @ owlapi-impl ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ owlapi-impl ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- animal-sniffer:1.23:check (default) @ owlapi-impl ---
+[INFO] Checking unresolved references to org.codehaus.mojo.signature:java18:1.0
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ owlapi-impl ---
+[INFO] Building jar: ${QUALIFICATION_WORKSPACE}\source\impl\target\owlapi-impl-5.5.1.jar
+[INFO] 
+[INFO] >>> source:3.3.0:jar (attach-sources) > generate-sources @ owlapi-impl >>>
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-maven) @ owlapi-impl ---
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-bytecode-version) @ owlapi-impl ---
+[INFO] Rule 0: org.codehaus.mojo.extraenforcer.dependencies.EnforceBytecodeVersion passed
+[INFO] 
+[INFO] <<< source:3.3.0:jar (attach-sources) < generate-sources @ owlapi-impl <<<
+[INFO] 
+[INFO] 
+[INFO] --- source:3.3.0:jar (attach-sources) @ owlapi-impl ---
+[INFO] Building jar: ${QUALIFICATION_WORKSPACE}\source\impl\target\owlapi-impl-5.5.1-sources.jar
+[INFO] 
+[INFO] --- javadoc:3.6.3:jar (attach-javadocs) @ owlapi-impl ---
+[INFO] Skipping javadoc generation
+[INFO] 
+[INFO] --- dependency:3.11.0:build-classpath (default-cli) @ owlapi-impl ---
+[INFO] Wrote classpath file '${QUALIFICATION_WORKSPACE}\source\impl\target\owlapi-runtime-classpath.txt'.
+[INFO] 
+[INFO] ----------------< net.sourceforge.owlapi:owlapi-tools >-----------------
+[INFO] Building OWLAPI :: Atomic Decomposition and Explanation 5.5.1     [4/10]
+[INFO]   from tools\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-maven) @ owlapi-tools ---
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-bytecode-version) @ owlapi-tools ---
+[INFO] Rule 0: org.codehaus.mojo.extraenforcer.dependencies.EnforceBytecodeVersion passed
+[INFO] 
+[INFO] --- resources:3.4.0:resources (default-resources) @ owlapi-tools ---
+[INFO] skip non existing resourceDirectory ${QUALIFICATION_WORKSPACE}\source\tools\src\main\resources
+[INFO] 
+[INFO] --- compiler:3.12.1:compile (default-compile) @ owlapi-tools ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 134 source files with javac [forked debug target 11] to target\classes
+[WARNING] [options] location of system modules is not set in conjunction with -source 11
+[INFO] 
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ owlapi-tools ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.12.1:testCompile (default-testCompile) @ owlapi-tools ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ owlapi-tools ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- animal-sniffer:1.23:check (default) @ owlapi-tools ---
+[INFO] Checking unresolved references to org.codehaus.mojo.signature:java18:1.0
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ owlapi-tools ---
+[INFO] Building jar: ${QUALIFICATION_WORKSPACE}\source\tools\target\owlapi-tools-5.5.1.jar
+[INFO] 
+[INFO] >>> source:3.3.0:jar (attach-sources) > generate-sources @ owlapi-tools >>>
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-maven) @ owlapi-tools ---
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-bytecode-version) @ owlapi-tools ---
+[INFO] Rule 0: org.codehaus.mojo.extraenforcer.dependencies.EnforceBytecodeVersion passed
+[INFO] 
+[INFO] <<< source:3.3.0:jar (attach-sources) < generate-sources @ owlapi-tools <<<
+[INFO] 
+[INFO] 
+[INFO] --- source:3.3.0:jar (attach-sources) @ owlapi-tools ---
+[INFO] Building jar: ${QUALIFICATION_WORKSPACE}\source\tools\target\owlapi-tools-5.5.1-sources.jar
+[INFO] 
+[INFO] --- javadoc:3.6.3:jar (attach-javadocs) @ owlapi-tools ---
+[INFO] Skipping javadoc generation
+[INFO] 
+[INFO] --- dependency:3.11.0:build-classpath (default-cli) @ owlapi-tools ---
+[INFO] Wrote classpath file '${QUALIFICATION_WORKSPACE}\source\tools\target\owlapi-runtime-classpath.txt'.
+[INFO] 
+[INFO] ---------------< net.sourceforge.owlapi:owlapi-parsers >----------------
+[INFO] Building OWLAPI :: Parsers 5.5.1                                  [5/10]
+[INFO]   from parsers\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-maven) @ owlapi-parsers ---
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-bytecode-version) @ owlapi-parsers ---
+[INFO] Rule 0: org.codehaus.mojo.extraenforcer.dependencies.EnforceBytecodeVersion passed
+[INFO] 
+[INFO] --- resources:3.4.0:resources (default-resources) @ owlapi-parsers ---
+[INFO] Copying 3 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.12.1:compile (default-compile) @ owlapi-parsers ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 209 source files with javac [forked debug target 11] to target\classes
+[WARNING] [options] location of system modules is not set in conjunction with -source 11
+[INFO] 
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ owlapi-parsers ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.12.1:testCompile (default-testCompile) @ owlapi-parsers ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ owlapi-parsers ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- animal-sniffer:1.23:check (default) @ owlapi-parsers ---
+[INFO] Checking unresolved references to org.codehaus.mojo.signature:java18:1.0
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ owlapi-parsers ---
+[INFO] Building jar: ${QUALIFICATION_WORKSPACE}\source\parsers\target\owlapi-parsers-5.5.1.jar
+[INFO] 
+[INFO] >>> source:3.3.0:jar (attach-sources) > generate-sources @ owlapi-parsers >>>
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-maven) @ owlapi-parsers ---
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-bytecode-version) @ owlapi-parsers ---
+[INFO] Rule 0: org.codehaus.mojo.extraenforcer.dependencies.EnforceBytecodeVersion passed
+[INFO] 
+[INFO] <<< source:3.3.0:jar (attach-sources) < generate-sources @ owlapi-parsers <<<
+[INFO] 
+[INFO] 
+[INFO] --- source:3.3.0:jar (attach-sources) @ owlapi-parsers ---
+[INFO] Building jar: ${QUALIFICATION_WORKSPACE}\source\parsers\target\owlapi-parsers-5.5.1-sources.jar
+[INFO] 
+[INFO] --- javadoc:3.6.3:jar (attach-javadocs) @ owlapi-parsers ---
+[INFO] Skipping javadoc generation
+[INFO] 
+[INFO] --- dependency:3.11.0:build-classpath (default-cli) @ owlapi-parsers ---
+[INFO] Wrote classpath file '${QUALIFICATION_WORKSPACE}\source\parsers\target\owlapi-runtime-classpath.txt'.
+[INFO] 
+[INFO] --------------< net.sourceforge.owlapi:owlapi-oboformat >---------------
+[INFO] Building OWLAPI :: OBO Format 5.5.1                               [6/10]
+[INFO]   from oboformat\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-maven) @ owlapi-oboformat ---
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-bytecode-version) @ owlapi-oboformat ---
+[INFO] Rule 0: org.codehaus.mojo.extraenforcer.dependencies.EnforceBytecodeVersion passed
+[INFO] 
+[INFO] --- resources:3.4.0:resources (default-resources) @ owlapi-oboformat ---
+[INFO] Copying 2 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.12.1:compile (default-compile) @ owlapi-oboformat ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 42 source files with javac [forked debug target 11] to target\classes
+[WARNING] [options] location of system modules is not set in conjunction with -source 11
+[INFO] 
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ owlapi-oboformat ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.12.1:testCompile (default-testCompile) @ owlapi-oboformat ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ owlapi-oboformat ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- animal-sniffer:1.23:check (default) @ owlapi-oboformat ---
+[INFO] Checking unresolved references to org.codehaus.mojo.signature:java18:1.0
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ owlapi-oboformat ---
+[INFO] Building jar: ${QUALIFICATION_WORKSPACE}\source\oboformat\target\owlapi-oboformat-5.5.1.jar
+[INFO] 
+[INFO] >>> source:3.3.0:jar (attach-sources) > generate-sources @ owlapi-oboformat >>>
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-maven) @ owlapi-oboformat ---
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-bytecode-version) @ owlapi-oboformat ---
+[INFO] Rule 0: org.codehaus.mojo.extraenforcer.dependencies.EnforceBytecodeVersion passed
+[INFO] 
+[INFO] <<< source:3.3.0:jar (attach-sources) < generate-sources @ owlapi-oboformat <<<
+[INFO] 
+[INFO] 
+[INFO] --- source:3.3.0:jar (attach-sources) @ owlapi-oboformat ---
+[INFO] Building jar: ${QUALIFICATION_WORKSPACE}\source\oboformat\target\owlapi-oboformat-5.5.1-sources.jar
+[INFO] 
+[INFO] --- javadoc:3.6.3:jar (attach-javadocs) @ owlapi-oboformat ---
+[INFO] Skipping javadoc generation
+[INFO] 
+[INFO] --- dependency:3.11.0:build-classpath (default-cli) @ owlapi-oboformat ---
+[INFO] Wrote classpath file '${QUALIFICATION_WORKSPACE}\source\oboformat\target\owlapi-runtime-classpath.txt'.
+[INFO] 
+[INFO] -----------------< net.sourceforge.owlapi:owlapi-rio >------------------
+[INFO] Building OWLAPI :: RDF4J Rio 5.5.1                                [7/10]
+[INFO]   from rio\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-maven) @ owlapi-rio ---
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-bytecode-version) @ owlapi-rio ---
+[INFO] Rule 0: org.codehaus.mojo.extraenforcer.dependencies.EnforceBytecodeVersion passed
+[INFO] 
+[INFO] --- resources:3.4.0:resources (default-resources) @ owlapi-rio ---
+[INFO] Copying 4 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.12.1:compile (default-compile) @ owlapi-rio ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 69 source files with javac [forked debug target 11] to target\classes
+[WARNING] [options] location of system modules is not set in conjunction with -source 11
+[WARNING]   not setting the location of system modules may lead to class files that cannot run on JDK 11
+    --release 11 is recommended instead of -source 11 -target 11 because it sets the location of system modules automatically
+${QUALIFICATION_WORKSPACE}\source\rio\src\main\java\org\semanticweb\owlapi\rio\RioStorer.java:[354,38] [removal] ESCAPE_UNICODE in NTriplesWriterSettings has been deprecated and marked for removal
+[INFO] 
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ owlapi-rio ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.12.1:testCompile (default-testCompile) @ owlapi-rio ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ owlapi-rio ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- animal-sniffer:1.23:check (default) @ owlapi-rio ---
+[INFO] Checking unresolved references to org.codehaus.mojo.signature:java18:1.0
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ owlapi-rio ---
+[INFO] Building jar: ${QUALIFICATION_WORKSPACE}\source\rio\target\owlapi-rio-5.5.1.jar
+[INFO] 
+[INFO] >>> source:3.3.0:jar (attach-sources) > generate-sources @ owlapi-rio >>>
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-maven) @ owlapi-rio ---
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-bytecode-version) @ owlapi-rio ---
+[INFO] Rule 0: org.codehaus.mojo.extraenforcer.dependencies.EnforceBytecodeVersion passed
+[INFO] 
+[INFO] <<< source:3.3.0:jar (attach-sources) < generate-sources @ owlapi-rio <<<
+[INFO] 
+[INFO] 
+[INFO] --- source:3.3.0:jar (attach-sources) @ owlapi-rio ---
+[INFO] Building jar: ${QUALIFICATION_WORKSPACE}\source\rio\target\owlapi-rio-5.5.1-sources.jar
+[INFO] 
+[INFO] --- javadoc:3.6.3:jar (attach-javadocs) @ owlapi-rio ---
+[INFO] Skipping javadoc generation
+[INFO] 
+[INFO] --- dependency:3.11.0:build-classpath (default-cli) @ owlapi-rio ---
+[INFO] Wrote classpath file '${QUALIFICATION_WORKSPACE}\source\rio\target\owlapi-runtime-classpath.txt'.
+[INFO] 
+[INFO] --------------< net.sourceforge.owlapi:owlapi-apibinding >--------------
+[INFO] Building OWLAPI :: Binding and Config 5.5.1                       [8/10]
+[INFO]   from apibinding\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-maven) @ owlapi-apibinding ---
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-bytecode-version) @ owlapi-apibinding ---
+[INFO] Rule 0: org.codehaus.mojo.extraenforcer.dependencies.EnforceBytecodeVersion passed
+[INFO] 
+[INFO] --- resources:3.4.0:resources (default-resources) @ owlapi-apibinding ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.12.1:compile (default-compile) @ owlapi-apibinding ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 3 source files with javac [forked debug target 11] to target\classes
+[WARNING] [options] location of system modules is not set in conjunction with -source 11
+[INFO] 
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ owlapi-apibinding ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.12.1:testCompile (default-testCompile) @ owlapi-apibinding ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ owlapi-apibinding ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- animal-sniffer:1.23:check (default) @ owlapi-apibinding ---
+[INFO] Checking unresolved references to org.codehaus.mojo.signature:java18:1.0
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ owlapi-apibinding ---
+[INFO] Building jar: ${QUALIFICATION_WORKSPACE}\source\apibinding\target\owlapi-apibinding-5.5.1.jar
+[INFO] 
+[INFO] >>> source:3.3.0:jar (attach-sources) > generate-sources @ owlapi-apibinding >>>
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-maven) @ owlapi-apibinding ---
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-bytecode-version) @ owlapi-apibinding ---
+[INFO] Rule 0: org.codehaus.mojo.extraenforcer.dependencies.EnforceBytecodeVersion passed
+[INFO] 
+[INFO] <<< source:3.3.0:jar (attach-sources) < generate-sources @ owlapi-apibinding <<<
+[INFO] 
+[INFO] 
+[INFO] --- source:3.3.0:jar (attach-sources) @ owlapi-apibinding ---
+[INFO] Building jar: ${QUALIFICATION_WORKSPACE}\source\apibinding\target\owlapi-apibinding-5.5.1-sources.jar
+[INFO] 
+[INFO] --- javadoc:3.6.3:jar (attach-javadocs) @ owlapi-apibinding ---
+[INFO] Skipping javadoc generation
+[INFO] 
+[INFO] --- dependency:3.11.0:build-classpath (default-cli) @ owlapi-apibinding ---
+[INFO] Wrote classpath file '${QUALIFICATION_WORKSPACE}\source\apibinding\target\owlapi-runtime-classpath.txt'.
+[INFO] 
+[INFO] ------------< net.sourceforge.owlapi:owlapi-compatibility >-------------
+[INFO] Building OWLAPI :: Compatibility 5.5.1                            [9/10]
+[INFO]   from compatibility\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-maven) @ owlapi-compatibility ---
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-bytecode-version) @ owlapi-compatibility ---
+[INFO] Rule 0: org.codehaus.mojo.extraenforcer.dependencies.EnforceBytecodeVersion passed
+[INFO] 
+[INFO] --- resources:3.4.0:resources (default-resources) @ owlapi-compatibility ---
+[INFO] skip non existing resourceDirectory ${QUALIFICATION_WORKSPACE}\source\compatibility\src\main\resources
+[INFO] 
+[INFO] --- compiler:3.12.1:compile (default-compile) @ owlapi-compatibility ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 71 source files with javac [forked debug target 11] to target\classes
+[WARNING] [options] location of system modules is not set in conjunction with -source 11
+[INFO] 
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ owlapi-compatibility ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.12.1:testCompile (default-testCompile) @ owlapi-compatibility ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ owlapi-compatibility ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- animal-sniffer:1.23:check (default) @ owlapi-compatibility ---
+[INFO] Checking unresolved references to org.codehaus.mojo.signature:java18:1.0
+[INFO] 
+[INFO] --- jar:3.5.0:jar (default-jar) @ owlapi-compatibility ---
+[INFO] Building jar: ${QUALIFICATION_WORKSPACE}\source\compatibility\target\owlapi-compatibility-5.5.1.jar
+[INFO] 
+[INFO] >>> source:3.3.0:jar (attach-sources) > generate-sources @ owlapi-compatibility >>>
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-maven) @ owlapi-compatibility ---
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-bytecode-version) @ owlapi-compatibility ---
+[INFO] Rule 0: org.codehaus.mojo.extraenforcer.dependencies.EnforceBytecodeVersion passed
+[INFO] 
+[INFO] <<< source:3.3.0:jar (attach-sources) < generate-sources @ owlapi-compatibility <<<
+[INFO] 
+[INFO] 
+[INFO] --- source:3.3.0:jar (attach-sources) @ owlapi-compatibility ---
+[INFO] Building jar: ${QUALIFICATION_WORKSPACE}\source\compatibility\target\owlapi-compatibility-5.5.1-sources.jar
+[INFO] 
+[INFO] --- javadoc:3.6.3:jar (attach-javadocs) @ owlapi-compatibility ---
+[INFO] Skipping javadoc generation
+[INFO] 
+[INFO] --- dependency:3.11.0:build-classpath (default-cli) @ owlapi-compatibility ---
+[INFO] Wrote classpath file '${QUALIFICATION_WORKSPACE}\source\compatibility\target\owlapi-runtime-classpath.txt'.
+[INFO] 
+[INFO] -------------< net.sourceforge.owlapi:owlapi-distribution >-------------
+[INFO] Building OWLAPI :: Distribution 5.5.1                            [10/10]
+[INFO]   from distribution\pom.xml
+[INFO] -------------------------------[ bundle ]-------------------------------
+[WARNING] Ignoring incompatible plugin version 4.0.0-beta-2: 
+The plugin org.apache.maven.plugins:maven-resources-plugin:4.0.0-beta-2 has unmet prerequisites: 
+	Required Maven version 4.0.0-rc-7 is not met by current version 3.9.15
+[INFO] Latest version of plugin org.apache.maven.plugins:maven-resources-plugin failed compatibility check
+[INFO] Looking for compatible RELEASE version of plugin org.apache.maven.plugins:maven-resources-plugin
+[WARNING] Ignoring incompatible plugin version 4.0.0-beta-1: 
+The plugin org.apache.maven.plugins:maven-resources-plugin:4.0.0-beta-1 has unmet prerequisites: 
+	Required Maven version 4.0.0-beta-3 is not met by current version 3.9.15
+[INFO] Selected plugin org.apache.maven.plugins:maven-resources-plugin:3.5.0
+[WARNING] Ignoring incompatible plugin version 4.0.0-beta-3: 
+The plugin org.apache.maven.plugins:maven-install-plugin:4.0.0-beta-3 has unmet prerequisites: 
+	Required Maven version 4.0.0-rc-6 is not met by current version 3.9.15
+[INFO] Latest version of plugin org.apache.maven.plugins:maven-install-plugin failed compatibility check
+[INFO] Looking for compatible RELEASE version of plugin org.apache.maven.plugins:maven-install-plugin
+[WARNING] Ignoring incompatible plugin version 4.0.0-beta-2: 
+The plugin org.apache.maven.plugins:maven-install-plugin:4.0.0-beta-2 has unmet prerequisites: 
+	Required Maven version 4.0.0-rc-2 is not met by current version 3.9.15
+[WARNING] Ignoring incompatible plugin version 4.0.0-beta-1: 
+The plugin org.apache.maven.plugins:maven-install-plugin:4.0.0-beta-1 has unmet prerequisites: 
+	Required Maven version 4.0.0-beta-3 is not met by current version 3.9.15
+[INFO] Selected plugin org.apache.maven.plugins:maven-install-plugin:3.2.0
+[WARNING] Ignoring incompatible plugin version 4.0.0-beta-3: 
+The plugin org.apache.maven.plugins:maven-deploy-plugin:4.0.0-beta-3 has unmet prerequisites: 
+	Required Maven version 4.0.0-rc-6 is not met by current version 3.9.15
+[INFO] Latest version of plugin org.apache.maven.plugins:maven-deploy-plugin failed compatibility check
+[INFO] Looking for compatible RELEASE version of plugin org.apache.maven.plugins:maven-deploy-plugin
+[WARNING] Ignoring incompatible plugin version 4.0.0-beta-2: 
+The plugin org.apache.maven.plugins:maven-deploy-plugin:4.0.0-beta-2 has unmet prerequisites: 
+	Required Maven version 4.0.0-rc-2 is not met by current version 3.9.15
+[WARNING] Ignoring incompatible plugin version 4.0.0-beta-1: 
+The plugin org.apache.maven.plugins:maven-deploy-plugin:4.0.0-beta-1 has unmet prerequisites: 
+	Required Maven version 4.0.0-beta-3 is not met by current version 3.9.15
+[INFO] Selected plugin org.apache.maven.plugins:maven-deploy-plugin:3.2.0
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-maven) @ owlapi-distribution ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-bytecode-version) @ owlapi-distribution ---
+[INFO] Rule 0: org.codehaus.mojo.extraenforcer.dependencies.EnforceBytecodeVersion passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ owlapi-distribution ---
+[INFO] skip non existing resourceDirectory ${QUALIFICATION_WORKSPACE}\source\distribution\src\main\resources
+[INFO] 
+[INFO] --- compiler:3.12.1:compile (default-compile) @ owlapi-distribution ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ owlapi-distribution ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.12.1:testCompile (default-testCompile) @ owlapi-distribution ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ owlapi-distribution ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- animal-sniffer:1.23:check (default) @ owlapi-distribution ---
+[INFO] Checking unresolved references to org.codehaus.mojo.signature:java18:1.0
+[INFO] 
+[INFO] --- bundle:5.1.8:bundle (default-bundle) @ owlapi-distribution ---
+[WARNING] Bundle net.sourceforge.owlapi:owlapi-distribution:bundle:5.5.1 : Unused Import-Package instructions: [org.apache.commons.logging.*] 
+[INFO] Building bundle: ${QUALIFICATION_WORKSPACE}\source\distribution\target\owlapi-distribution-5.5.1.jar
+[INFO] Writing manifest: ${QUALIFICATION_WORKSPACE}\source\distribution\target\classes\META-INF\MANIFEST.MF
+[INFO] 
+[INFO] >>> source:3.3.0:jar (attach-sources) > generate-sources @ owlapi-distribution >>>
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-maven) @ owlapi-distribution ---
+[INFO] 
+[INFO] --- enforcer:3.4.1:enforce (enforce-bytecode-version) @ owlapi-distribution ---
+[INFO] Rule 0: org.codehaus.mojo.extraenforcer.dependencies.EnforceBytecodeVersion passed
+[INFO] 
+[INFO] <<< source:3.3.0:jar (attach-sources) < generate-sources @ owlapi-distribution <<<
+[INFO] 
+[INFO] 
+[INFO] --- source:3.3.0:jar (attach-sources) @ owlapi-distribution ---
+[INFO] No sources in project. Archive not created.
+[INFO] 
+[INFO] --- shade:3.5.1:shade (default) @ owlapi-distribution ---
+[INFO] Including net.sourceforge.owlapi:owlapi-apibinding:jar:5.5.1 in the shaded jar.
+[INFO] Including net.sourceforge.owlapi:owlapi-tools:jar:5.5.1 in the shaded jar.
+[INFO] Including net.sourceforge.owlapi:owlapi-impl:jar:5.5.1 in the shaded jar.
+[INFO] Including net.sourceforge.owlapi:owlapi-parsers:jar:5.5.1 in the shaded jar.
+[INFO] Including net.sourceforge.owlapi:owlapi-oboformat:jar:5.5.1 in the shaded jar.
+[INFO] Including net.sourceforge.owlapi:owlapi-rio:jar:5.5.1 in the shaded jar.
+[INFO] Including net.sourceforge.owlapi:owlapi-api:jar:5.5.1 in the shaded jar.
+[INFO] Excluding javax.inject:javax.inject:jar:1 from the shaded jar.
+[INFO] Excluding net.sourceforge.owlapi:owlapi-compatibility:jar:5.5.1 from the shaded jar.
+[INFO] Excluding com.fasterxml.jackson.core:jackson-core:jar:2.16.1 from the shaded jar.
+[INFO] Excluding com.fasterxml.jackson.core:jackson-databind:jar:2.16.1 from the shaded jar.
+[INFO] Excluding com.fasterxml.jackson.core:jackson-annotations:jar:2.16.1 from the shaded jar.
+[INFO] Excluding org.apache.commons:commons-rdf-api:jar:0.5.0 from the shaded jar.
+[INFO] Excluding org.tukaani:xz:jar:1.9 from the shaded jar.
+[INFO] Excluding org.slf4j:slf4j-api:jar:2.0.11 from the shaded jar.
+[INFO] Excluding org.slf4j:jcl-over-slf4j:jar:2.0.11 from the shaded jar.
+[INFO] Excluding org.eclipse.rdf4j:rdf4j-model:jar:5.0.2 from the shaded jar.
+[INFO] Excluding org.eclipse.rdf4j:rdf4j-common-exception:jar:5.0.2 from the shaded jar.
+[INFO] Excluding org.eclipse.rdf4j:rdf4j-common-text:jar:5.0.2 from the shaded jar.
+[INFO] Excluding org.eclipse.rdf4j:rdf4j-common-io:jar:5.0.2 from the shaded jar.
+[INFO] Excluding org.eclipse.rdf4j:rdf4j-common-iterator:jar:5.0.2 from the shaded jar.
+[INFO] Excluding org.eclipse.rdf4j:rdf4j-common-order:jar:5.0.2 from the shaded jar.
+[INFO] Excluding org.eclipse.rdf4j:rdf4j-model-api:jar:5.0.2 from the shaded jar.
+[INFO] Excluding org.eclipse.rdf4j:rdf4j-common-annotation:jar:5.0.2 from the shaded jar.
+[INFO] Excluding org.eclipse.rdf4j:rdf4j-model-vocabulary:jar:5.0.2 from the shaded jar.
+[INFO] Excluding org.eclipse.rdf4j:rdf4j-rio-api:jar:5.0.2 from the shaded jar.
+[INFO] Excluding org.eclipse.rdf4j:rdf4j-common-xml:jar:5.0.2 from the shaded jar.
+[INFO] Excluding commons-codec:commons-codec:jar:1.15 from the shaded jar.
+[INFO] Excluding no.hasmac:hasmac-json-ld:jar:0.9.0 from the shaded jar.
+[INFO] Excluding org.eclipse.rdf4j:rdf4j-rio-languages:jar:5.0.2 from the shaded jar.
+[INFO] Excluding org.eclipse.rdf4j:rdf4j-rio-datatypes:jar:5.0.2 from the shaded jar.
+[INFO] Excluding org.eclipse.rdf4j:rdf4j-rio-binary:jar:5.0.2 from the shaded jar.
+[INFO] Excluding org.eclipse.rdf4j:rdf4j-rio-n3:jar:5.0.2 from the shaded jar.
+[INFO] Excluding org.eclipse.rdf4j:rdf4j-rio-nquads:jar:5.0.2 from the shaded jar.
+[INFO] Excluding org.eclipse.rdf4j:rdf4j-rio-ntriples:jar:5.0.2 from the shaded jar.
+[INFO] Excluding org.eclipse.rdf4j:rdf4j-rio-rdfjson:jar:5.0.2 from the shaded jar.
+[INFO] Excluding org.eclipse.rdf4j:rdf4j-rio-jsonld:jar:5.0.2 from the shaded jar.
+[INFO] Excluding jakarta.json:jakarta.json-api:jar:2.0.1 from the shaded jar.
+[INFO] Excluding org.glassfish:jakarta.json:jar:2.0.1 from the shaded jar.
+[INFO] Excluding org.apache.httpcomponents:httpclient:jar:4.5.14 from the shaded jar.
+[INFO] Excluding org.apache.httpcomponents:httpcore:jar:4.4.16 from the shaded jar.
+[INFO] Excluding org.apache.httpcomponents:httpclient-cache:jar:4.5.14 from the shaded jar.
+[INFO] Excluding org.eclipse.rdf4j:rdf4j-rio-rdfxml:jar:5.0.2 from the shaded jar.
+[INFO] Excluding org.eclipse.rdf4j:rdf4j-rio-trix:jar:5.0.2 from the shaded jar.
+[INFO] Excluding org.eclipse.rdf4j:rdf4j-rio-turtle:jar:5.0.2 from the shaded jar.
+[INFO] Excluding org.eclipse.rdf4j:rdf4j-rio-trig:jar:5.0.2 from the shaded jar.
+[INFO] Excluding org.eclipse.rdf4j:rdf4j-rio-hdt:jar:5.0.2 from the shaded jar.
+[INFO] Excluding com.github.jsonld-java:jsonld-java:jar:0.13.6 from the shaded jar.
+[INFO] Excluding org.apache.httpcomponents:httpclient-osgi:jar:4.5.13 from the shaded jar.
+[INFO] Excluding org.apache.httpcomponents:httpmime:jar:4.5.13 from the shaded jar.
+[INFO] Excluding org.apache.httpcomponents:fluent-hc:jar:4.5.13 from the shaded jar.
+[INFO] Excluding org.apache.httpcomponents:httpcore-osgi:jar:4.4.16 from the shaded jar.
+[INFO] Excluding org.apache.httpcomponents:httpcore-nio:jar:4.4.16 from the shaded jar.
+[INFO] Excluding com.github.vsonnier:hppcrt:jar:0.7.5 from the shaded jar.
+[INFO] Excluding com.github.ben-manes.caffeine:caffeine:jar:3.1.8 from the shaded jar.
+[INFO] Excluding org.checkerframework:checker-qual:jar:3.37.0 from the shaded jar.
+[INFO] Excluding com.google.errorprone:error_prone_annotations:jar:2.21.1 from the shaded jar.
+[INFO] Excluding com.google.guava:guava:jar:33.0.0-jre from the shaded jar.
+[INFO] Excluding com.google.guava:failureaccess:jar:1.0.2 from the shaded jar.
+[INFO] Excluding com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava from the shaded jar.
+[INFO] Excluding com.google.j2objc:j2objc-annotations:jar:2.8 from the shaded jar.
+[INFO] Excluding com.google.code.findbugs:jsr305:jar:3.0.2 from the shaded jar.
+[INFO] Excluding commons-io:commons-io:jar:2.15.1 from the shaded jar.
+[INFO] Dependency-reduced POM written at: ${QUALIFICATION_WORKSPACE}\source\distribution\dependency-reduced-pom.xml
+[WARNING] owlapi-distribution-5.5.1.jar, owlapi-impl-5.5.1.jar define 202 overlapping classes and resources: 
+[WARNING]   - META-INF/maven/net.sourceforge.owlapi/owlapi-impl/pom.properties
+[WARNING]   - META-INF/maven/net.sourceforge.owlapi/owlapi-impl/pom.xml
+[WARNING]   - org.semanticweb.owlapi.reasoner.impl.DefaultNode
+[WARNING]   - org.semanticweb.owlapi.reasoner.impl.DefaultNodeSet
+[WARNING]   - org.semanticweb.owlapi.reasoner.impl.NodeFactory
+[WARNING]   - org.semanticweb.owlapi.reasoner.impl.OWLClassNode
+[WARNING]   - org.semanticweb.owlapi.reasoner.impl.OWLClassNodeSet
+[WARNING]   - org.semanticweb.owlapi.reasoner.impl.OWLDataPropertyNode
+[WARNING]   - org.semanticweb.owlapi.reasoner.impl.OWLDataPropertyNodeSet
+[WARNING]   - org.semanticweb.owlapi.reasoner.impl.OWLDatatypeNode
+[WARNING]   - 192 more...
+[WARNING] owlapi-distribution-5.5.1.jar, owlapi-rio-5.5.1.jar define 74 overlapping classes and resources: 
+[WARNING]   - META-INF/maven/net.sourceforge.owlapi/owlapi-rio/pom.properties
+[WARNING]   - META-INF/maven/net.sourceforge.owlapi/owlapi-rio/pom.xml
+[WARNING]   - org.semanticweb.owlapi.formats.AbstractRioRDFDocumentFormatFactory
+[WARNING]   - org.semanticweb.owlapi.formats.BinaryRDFDocumentFormat
+[WARNING]   - org.semanticweb.owlapi.formats.BinaryRDFDocumentFormatFactory
+[WARNING]   - org.semanticweb.owlapi.formats.HDTRDFDocumentFormat
+[WARNING]   - org.semanticweb.owlapi.formats.HDTRDFDocumentFormatFactory
+[WARNING]   - org.semanticweb.owlapi.formats.N3DocumentFormat
+[WARNING]   - org.semanticweb.owlapi.formats.N3DocumentFormatFactory
+[WARNING]   - org.semanticweb.owlapi.formats.NQuadsDocumentFormat
+[WARNING]   - 64 more...
+[WARNING] owlapi-api-5.5.1.jar, owlapi-apibinding-5.5.1.jar, owlapi-distribution-5.5.1.jar, owlapi-impl-5.5.1.jar, owlapi-oboformat-5.5.1.jar, owlapi-parsers-5.5.1.jar, owlapi-rio-5.5.1.jar, owlapi-tools-5.5.1.jar define 1 overlapping resource: 
+[WARNING]   - META-INF/MANIFEST.MF
+[WARNING] owlapi-distribution-5.5.1.jar, owlapi-oboformat-5.5.1.jar define 80 overlapping classes and resources: 
+[WARNING]   - META-INF/maven/net.sourceforge.owlapi/owlapi-oboformat/pom.properties
+[WARNING]   - META-INF/maven/net.sourceforge.owlapi/owlapi-oboformat/pom.xml
+[WARNING]   - org.obolibrary.macro.AbstractDataVisitorEx
+[WARNING]   - org.obolibrary.macro.AbstractMacroExpansionVisitor
+[WARNING]   - org.obolibrary.macro.AbstractMacroExpansionVisitor$AbstractClassExpressionVisitorEx
+[WARNING]   - org.obolibrary.macro.MacroExpansionGCIVisitor
+[WARNING]   - org.obolibrary.macro.MacroExpansionGCIVisitor$GCIVisitor
+[WARNING]   - org.obolibrary.macro.MacroExpansionGCIVisitor$GCIVisitor$ClassVisitor
+[WARNING]   - org.obolibrary.macro.MacroExpansionGCIVisitor$MacroExpansions
+[WARNING]   - org.obolibrary.macro.MacroExpansionVisitor
+[WARNING]   - 70 more...
+[WARNING] owlapi-api-5.5.1.jar, owlapi-distribution-5.5.1.jar define 922 overlapping classes and resources: 
+[WARNING]   - META-INF/maven/net.sourceforge.owlapi/owlapi-api/pom.properties
+[WARNING]   - META-INF/maven/net.sourceforge.owlapi/owlapi-api/pom.xml
+[WARNING]   - org.semanticweb.owlapi.annotations.HasPriority
+[WARNING]   - org.semanticweb.owlapi.annotations.package-info
+[WARNING]   - org.semanticweb.owlapi.change.AbstractCompositeOntologyChange
+[WARNING]   - org.semanticweb.owlapi.change.AddAxiomData
+[WARNING]   - org.semanticweb.owlapi.change.AddClassExpressionClosureAxiom
+[WARNING]   - org.semanticweb.owlapi.change.AddClassExpressionClosureAxiom$FillerCollector
+[WARNING]   - org.semanticweb.owlapi.change.AddImportData
+[WARNING]   - org.semanticweb.owlapi.change.AddOntologyAnnotationData
+[WARNING]   - 912 more...
+[WARNING] owlapi-distribution-5.5.1.jar, owlapi-parsers-5.5.1.jar define 461 overlapping classes and resources: 
+[WARNING]   - META-INF/maven/net.sourceforge.owlapi/owlapi-parsers/pom.properties
+[WARNING]   - META-INF/maven/net.sourceforge.owlapi/owlapi-parsers/pom.xml
+[WARNING]   - org.semanticweb.owlapi.dlsyntax.package-info
+[WARNING]   - org.semanticweb.owlapi.dlsyntax.parser.DLSyntaxOWLParser
+[WARNING]   - org.semanticweb.owlapi.dlsyntax.parser.DLSyntaxOWLParserFactory
+[WARNING]   - org.semanticweb.owlapi.dlsyntax.parser.DLSyntaxParser
+[WARNING]   - org.semanticweb.owlapi.dlsyntax.parser.DLSyntaxParser$JJCalls
+[WARNING]   - org.semanticweb.owlapi.dlsyntax.parser.DLSyntaxParser$LookaheadSuccess
+[WARNING]   - org.semanticweb.owlapi.dlsyntax.parser.DLSyntaxParserConstants
+[WARNING]   - org.semanticweb.owlapi.dlsyntax.parser.DLSyntaxParserTokenManager
+[WARNING]   - 451 more...
+[WARNING] owlapi-apibinding-5.5.1.jar, owlapi-distribution-5.5.1.jar define 6 overlapping classes and resources: 
+[WARNING]   - META-INF/maven/net.sourceforge.owlapi/owlapi-apibinding/pom.properties
+[WARNING]   - META-INF/maven/net.sourceforge.owlapi/owlapi-apibinding/pom.xml
+[WARNING]   - org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory
+[WARNING]   - org.semanticweb.owlapi.apibinding.OWLManager
+[WARNING]   - org.semanticweb.owlapi.apibinding.OWLManager$InjectorConstants
+[WARNING]   - org.semanticweb.owlapi.apibinding.package-info
+[WARNING] owlapi-distribution-5.5.1.jar, owlapi-tools-5.5.1.jar define 164 overlapping classes and resources: 
+[WARNING]   - META-INF/maven/net.sourceforge.owlapi/owlapi-tools/pom.properties
+[WARNING]   - META-INF/maven/net.sourceforge.owlapi/owlapi-tools/pom.xml
+[WARNING]   - com.clarkparsia.owlapi.explanation.AxiomConverter
+[WARNING]   - com.clarkparsia.owlapi.explanation.BlackBoxExplanation
+[WARNING]   - com.clarkparsia.owlapi.explanation.DefaultExplanationGenerator
+[WARNING]   - com.clarkparsia.owlapi.explanation.ExplanationGenerator
+[WARNING]   - com.clarkparsia.owlapi.explanation.HSTExplanationGenerator
+[WARNING]   - com.clarkparsia.owlapi.explanation.MultipleExplanationGenerator
+[WARNING]   - com.clarkparsia.owlapi.explanation.SatisfiabilityConverter
+[WARNING]   - com.clarkparsia.owlapi.explanation.SingleExplanationGenerator
+[WARNING]   - 154 more...
+[WARNING] maven-shade-plugin has detected that some files are
+[WARNING] present in two or more JARs. When this happens, only one
+[WARNING] single version of the file is copied to the uber jar.
+[WARNING] Usually this is not harmful and you can skip these warnings,
+[WARNING] otherwise try to manually exclude artifacts based on
+[WARNING] mvn dependency:tree -Ddetail=true and the above output.
+[WARNING] See https://maven.apache.org/plugins/maven-shade-plugin/
+[INFO] Replacing original artifact with shaded artifact.
+[INFO] Replacing ${QUALIFICATION_WORKSPACE}\source\distribution\target\owlapi-distribution-5.5.1.jar with ${QUALIFICATION_WORKSPACE}\source\distribution\target\owlapi-distribution-5.5.1-shaded.jar
+[INFO] 
+[INFO] --- javadoc:3.6.3:jar (attach-javadocs) @ owlapi-distribution ---
+[INFO] Skipping javadoc generation
+[INFO] 
+[INFO] --- javadoc:3.6.3:jar (attach-javadoc) @ owlapi-distribution ---
+[INFO] Skipping javadoc generation
+[INFO] 
+[INFO] --- assembly:3.6.0:single (attach-sources) @ owlapi-distribution ---
+[INFO] Reading assembly descriptor: src/assembly/sources.xml
+[INFO] Building jar: ${QUALIFICATION_WORKSPACE}\source\distribution\target\owlapi-distribution-5.5.1-sources.jar
+[INFO] 
+[INFO] --- dependency:3.11.0:build-classpath (default-cli) @ owlapi-distribution ---
+[INFO] Wrote classpath file '${QUALIFICATION_WORKSPACE}\source\distribution\target\owlapi-runtime-classpath.txt'.
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for OWLAPI 5.5.1:
+[INFO] 
+[INFO] OWLAPI ............................................. SUCCESS [ 14.537 s]
+[INFO] OWLAPI :: Interfaces ............................... SUCCESS [ 12.760 s]
+[INFO] OWLAPI :: Default Implementation ................... SUCCESS [  3.637 s]
+[INFO] OWLAPI :: Atomic Decomposition and Explanation ..... SUCCESS [  2.906 s]
+[INFO] OWLAPI :: Parsers .................................. SUCCESS [  4.445 s]
+[INFO] OWLAPI :: OBO Format ............................... SUCCESS [  1.978 s]
+[INFO] OWLAPI :: RDF4J Rio ................................ SUCCESS [  2.513 s]
+[INFO] OWLAPI :: Binding and Config ....................... SUCCESS [  1.745 s]
+[INFO] OWLAPI :: Compatibility ............................ SUCCESS [  2.329 s]
+[INFO] OWLAPI :: Distribution ............................. SUCCESS [  9.642 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  58.452 s
+[INFO] Finished at: 2026-10-13T23:43:53+03:00
+[INFO] ------------------------------------------------------------------------
