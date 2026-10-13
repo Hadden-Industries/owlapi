@@ -1,0 +1,1294 @@
+{
+  "schema": "owlapi-portable-behavior-research/v1",
+  "createdAtUtc": "2026-10-12T22:52:08.031Z",
+  "researchDate": "2026-10-13",
+  "purpose": "Source inspection and bounded zero-network behavior probes supporting a draft implementation plan; not product implementation or release qualification.",
+  "primaryEvidence": {
+    "report": {
+      "path": "2026-10-13-owlapi-api-behavior-compatibility-research.md",
+      "sha256": "a07b268095e037e4e8d5b188a0bd78ba5300224f8ec4db3b9be7670259b60039",
+      "originalSha256": "63ed9ee12e384227c4e7cec46cfb1ce9e54d677505fe2e39e3a529aa55cc99b2"
+    },
+    "json": {
+      "path": "2026-10-13-owlapi-api-behavior-evidence.json",
+      "sha256": "8190c531b5a2a7920bf774c11fe49ae04919bf76e9230a42d0dbe1da4c087166",
+      "originalSha256": "01c26bd06cba42fe3d495d417f2d137751f3ac0577730a3cba72ec2640d49d6d"
+    }
+  },
+  "baselines": {
+    "javascript": {
+      "path": "${OWLAPI_SOURCE}",
+      "head": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "tree": "18a3895c9b65f585de4f713e783b35c6ba3bff6f",
+      "status": "?? docs/plans/2026-10-12-dependency-cruiser-architecture-hardening-plan.md",
+      "trackedDiff": "",
+      "stagedDiff": ""
+    },
+    "java": {
+      "path": "${JAVA_SOURCE}",
+      "head": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "tree": "b8dad5241dae6ff3bd3b755b9a1c605623eeb2c2",
+      "status": "",
+      "trackedDiff": "",
+      "stagedDiff": ""
+    }
+  },
+  "runtime": {
+    "javascript": {
+      "version": "v24.21.0",
+      "platform": "win32",
+      "architecture": "x64",
+      "executable": "${PROGRAM_FILES}\\nodejs\\node.exe"
+    },
+    "java": {
+      "versionCommandExitCode": 0,
+      "versionCommandStdout": "",
+      "versionCommandStderr": "openjdk version \"25.0.4.1\" 2026-08-18 LTS\r\nOpenJDK Runtime Environment Temurin-25.0.4.1+1 (build 25.0.4.1+1-LTS)\r\nOpenJDK 64-Bit Server VM Temurin-25.0.4.1+1 (build 25.0.4.1+1-LTS, mixed mode, sharing)\r\n",
+      "provenance": "Retained local Maven OWLAPI 5.5.1 JARs. Not rebuilt or freshly tied to the inspected pinned commit in this research."
+    }
+  },
+  "sourceBoundOracle": {
+    "claim": "The seven listed pinned OWLAPI source files were compiled unchanged to an overlay. CodeSource confirms selected manager and storer implementation loading from it; Rio source also compiled. All other classes and dependencies remain retained JARs.",
+    "compilation": {
+      "command": "javac",
+      "args": [
+        "-proc:none",
+        "-cp",
+        "${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-apibinding\\5.5.1\\owlapi-apibinding-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-tools\\5.5.1\\owlapi-tools-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-impl\\5.5.1\\owlapi-impl-5.5.1.jar;${MAVEN_REPOSITORY}\\javax\\inject\\javax.inject\\1\\javax.inject-1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-parsers\\5.5.1\\owlapi-parsers-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-oboformat\\5.5.1\\owlapi-oboformat-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-rio\\5.5.1\\owlapi-rio-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-api\\5.5.1\\owlapi-api-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-compatibility\\5.5.1\\owlapi-compatibility-5.5.1.jar;${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-core\\2.16.1\\jackson-core-2.16.1.jar;${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-databind\\2.16.1\\jackson-databind-2.16.1.jar;${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-annotations\\2.16.1\\jackson-annotations-2.16.1.jar;${MAVEN_REPOSITORY}\\org\\apache\\commons\\commons-rdf-api\\0.5.0\\commons-rdf-api-0.5.0.jar;${MAVEN_REPOSITORY}\\org\\tukaani\\xz\\1.9\\xz-1.9.jar;${MAVEN_REPOSITORY}\\org\\slf4j\\slf4j-api\\2.0.11\\slf4j-api-2.0.11.jar;${MAVEN_REPOSITORY}\\org\\slf4j\\jcl-over-slf4j\\2.0.11\\jcl-over-slf4j-2.0.11.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model\\5.0.2\\rdf4j-model-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-exception\\5.0.2\\rdf4j-common-exception-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-text\\5.0.2\\rdf4j-common-text-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-io\\5.0.2\\rdf4j-common-io-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-iterator\\5.0.2\\rdf4j-common-iterator-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-order\\5.0.2\\rdf4j-common-order-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model-api\\5.0.2\\rdf4j-model-api-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-annotation\\5.0.2\\rdf4j-common-annotation-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model-vocabulary\\5.0.2\\rdf4j-model-vocabulary-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-api\\5.0.2\\rdf4j-rio-api-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-xml\\5.0.2\\rdf4j-common-xml-5.0.2.jar;${MAVEN_REPOSITORY}\\commons-codec\\commons-codec\\1.15\\commons-codec-1.15.jar;${MAVEN_REPOSITORY}\\no\\hasmac\\hasmac-json-ld\\0.9.0\\hasmac-json-ld-0.9.0.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-languages\\5.0.2\\rdf4j-rio-languages-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-datatypes\\5.0.2\\rdf4j-rio-datatypes-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-binary\\5.0.2\\rdf4j-rio-binary-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-n3\\5.0.2\\rdf4j-rio-n3-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-nquads\\5.0.2\\rdf4j-rio-nquads-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-ntriples\\5.0.2\\rdf4j-rio-ntriples-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-rdfjson\\5.0.2\\rdf4j-rio-rdfjson-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-jsonld\\5.0.2\\rdf4j-rio-jsonld-5.0.2.jar;${MAVEN_REPOSITORY}\\jakarta\\json\\jakarta.json-api\\2.0.1\\jakarta.json-api-2.0.1.jar;${MAVEN_REPOSITORY}\\org\\glassfish\\jakarta.json\\2.0.1\\jakarta.json-2.0.1.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient\\4.5.14\\httpclient-4.5.14.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore\\4.4.16\\httpcore-4.4.16.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient-cache\\4.5.14\\httpclient-cache-4.5.14.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-rdfxml\\5.0.2\\rdf4j-rio-rdfxml-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-trix\\5.0.2\\rdf4j-rio-trix-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-turtle\\5.0.2\\rdf4j-rio-turtle-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-trig\\5.0.2\\rdf4j-rio-trig-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-hdt\\5.0.2\\rdf4j-rio-hdt-5.0.2.jar;${MAVEN_REPOSITORY}\\com\\github\\jsonld-java\\jsonld-java\\0.13.6\\jsonld-java-0.13.6.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient-osgi\\4.5.13\\httpclient-osgi-4.5.13.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpmime\\4.5.13\\httpmime-4.5.13.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\fluent-hc\\4.5.13\\fluent-hc-4.5.13.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore-osgi\\4.4.16\\httpcore-osgi-4.4.16.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore-nio\\4.4.16\\httpcore-nio-4.4.16.jar;${MAVEN_REPOSITORY}\\com\\github\\vsonnier\\hppcrt\\0.7.5\\hppcrt-0.7.5.jar;${MAVEN_REPOSITORY}\\com\\github\\ben-manes\\caffeine\\caffeine\\3.1.8\\caffeine-3.1.8.jar;${MAVEN_REPOSITORY}\\org\\checkerframework\\checker-qual\\3.37.0\\checker-qual-3.37.0.jar;${MAVEN_REPOSITORY}\\com\\google\\errorprone\\error_prone_annotations\\2.21.1\\error_prone_annotations-2.21.1.jar;${MAVEN_REPOSITORY}\\com\\google\\guava\\guava\\33.0.0-jre\\guava-33.0.0-jre.jar;${MAVEN_REPOSITORY}\\com\\google\\guava\\failureaccess\\1.0.2\\failureaccess-1.0.2.jar;${MAVEN_REPOSITORY}\\com\\google\\guava\\listenablefuture\\9999.0-empty-to-avoid-conflict-with-guava\\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;${MAVEN_REPOSITORY}\\com\\google\\j2objc\\j2objc-annotations\\2.8\\j2objc-annotations-2.8.jar;${MAVEN_REPOSITORY}\\com\\google\\code\\findbugs\\jsr305\\3.0.2\\jsr305-3.0.2.jar;${MAVEN_REPOSITORY}\\commons-io\\commons-io\\2.15.1\\commons-io-2.15.1.jar",
+        "-d",
+        "${GAP_WORKSPACE}/source-overlay",
+        "${JAVA_SOURCE}/impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLOntologyManagerImpl.java",
+        "${JAVA_SOURCE}/impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLOntologyFactoryImpl.java",
+        "${JAVA_SOURCE}/api/src/main/java/org/semanticweb/owlapi/util/AbstractOWLStorer.java",
+        "${JAVA_SOURCE}/api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyLoaderConfiguration.java",
+        "${JAVA_SOURCE}/api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyWriterConfiguration.java",
+        "${JAVA_SOURCE}/api/src/main/java/org/semanticweb/owlapi/model/parameters/ConfigurationOptions.java",
+        "${JAVA_SOURCE}/rio/src/main/java/org/semanticweb/owlapi/rio/RioParserImpl.java"
+      ],
+      "stdout": "",
+      "stderr": "Note: ${JAVA_SOURCE}\\impl\\src\\main\\java\\uk\\ac\\manchester\\cs\\owl\\owlapi\\OWLOntologyManagerImpl.java uses or overrides a deprecated API.\r\nNote: Recompile with -Xlint:deprecation for details.\r\n",
+      "exitCode": 0
+    },
+    "classes": [
+      {
+        "path": "org/semanticweb/owlapi/model/OWLOntologyLoaderConfiguration.class",
+        "bytes": 7653,
+        "sha256": "aef6b1063052e543de1747b266d2318ee1b49a8aa740e8c71f7c480b3f7f592c"
+      },
+      {
+        "path": "org/semanticweb/owlapi/model/OWLOntologyWriterConfiguration.class",
+        "bytes": 2448,
+        "sha256": "3f88924874d6bb1e854f32849e5e73836280bf3a8701df4354a827f09537d445"
+      },
+      {
+        "path": "org/semanticweb/owlapi/model/parameters/ConfigurationOptions.class",
+        "bytes": 8284,
+        "sha256": "a6f86b47cb65521a9cff7717bb5292f9099192d3ba300823702ef761c0fdb09a"
+      },
+      {
+        "path": "org/semanticweb/owlapi/rio/RioParserImpl$RIOAnonymousNodeChecker.class",
+        "bytes": 1465,
+        "sha256": "993b1ffef53e764a1e19820dbf9135d725938afff4454b25149bb99cb30be4b4"
+      },
+      {
+        "path": "org/semanticweb/owlapi/rio/RioParserImpl$RioParserRDFHandler.class",
+        "bytes": 3843,
+        "sha256": "09d90f1adf2e03829c67133eed052181d6bb9c9da26965c60d19d391ab6fc64d"
+      },
+      {
+        "path": "org/semanticweb/owlapi/rio/RioParserImpl.class",
+        "bytes": 9544,
+        "sha256": "0c4cc32798909ce4a2e1a1462bb0cd6d487b303ba26a6fe2ea9a5bc25267b8cf"
+      },
+      {
+        "path": "org/semanticweb/owlapi/util/AbstractOWLStorer.class",
+        "bytes": 5255,
+        "sha256": "c66c493097697a6137785bfe98c7bc29d2f6e011ab1963d6a4253bbd24b7b918"
+      },
+      {
+        "path": "uk/ac/manchester/cs/owl/owlapi/OWLOntologyFactoryImpl.class",
+        "bytes": 8460,
+        "sha256": "bb8f1f41daa73cd8f0bd4003ee7e316f7f938c398486144ffb8a9ac801599b92"
+      },
+      {
+        "path": "uk/ac/manchester/cs/owl/owlapi/OWLOntologyManagerImpl$1.class",
+        "bytes": 888,
+        "sha256": "66fbbc48766b57a608b0a448439a0f2adc1d6541b97d9b7d93c66bd25776648c"
+      },
+      {
+        "path": "uk/ac/manchester/cs/owl/owlapi/OWLOntologyManagerImpl.class",
+        "bytes": 62196,
+        "sha256": "238a1d157c440e3d3879a226ec8ccd3f17f91b2e1a6053274c9f82e3b5b9f09a"
+      }
+    ],
+    "classpathOrder": [
+      "${GAP_WORKSPACE}/source-overlay",
+      "${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-apibinding\\5.5.1\\owlapi-apibinding-5.5.1.jar",
+      "${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-tools\\5.5.1\\owlapi-tools-5.5.1.jar",
+      "${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-impl\\5.5.1\\owlapi-impl-5.5.1.jar",
+      "${MAVEN_REPOSITORY}\\javax\\inject\\javax.inject\\1\\javax.inject-1.jar",
+      "${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-parsers\\5.5.1\\owlapi-parsers-5.5.1.jar",
+      "${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-oboformat\\5.5.1\\owlapi-oboformat-5.5.1.jar",
+      "${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-rio\\5.5.1\\owlapi-rio-5.5.1.jar",
+      "${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-api\\5.5.1\\owlapi-api-5.5.1.jar",
+      "${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-compatibility\\5.5.1\\owlapi-compatibility-5.5.1.jar",
+      "${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-core\\2.16.1\\jackson-core-2.16.1.jar",
+      "${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-databind\\2.16.1\\jackson-databind-2.16.1.jar",
+      "${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-annotations\\2.16.1\\jackson-annotations-2.16.1.jar",
+      "${MAVEN_REPOSITORY}\\org\\apache\\commons\\commons-rdf-api\\0.5.0\\commons-rdf-api-0.5.0.jar",
+      "${MAVEN_REPOSITORY}\\org\\tukaani\\xz\\1.9\\xz-1.9.jar",
+      "${MAVEN_REPOSITORY}\\org\\slf4j\\slf4j-api\\2.0.11\\slf4j-api-2.0.11.jar",
+      "${MAVEN_REPOSITORY}\\org\\slf4j\\jcl-over-slf4j\\2.0.11\\jcl-over-slf4j-2.0.11.jar",
+      "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model\\5.0.2\\rdf4j-model-5.0.2.jar",
+      "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-exception\\5.0.2\\rdf4j-common-exception-5.0.2.jar",
+      "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-text\\5.0.2\\rdf4j-common-text-5.0.2.jar",
+      "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-io\\5.0.2\\rdf4j-common-io-5.0.2.jar",
+      "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-iterator\\5.0.2\\rdf4j-common-iterator-5.0.2.jar",
+      "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-order\\5.0.2\\rdf4j-common-order-5.0.2.jar",
+      "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model-api\\5.0.2\\rdf4j-model-api-5.0.2.jar",
+      "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-annotation\\5.0.2\\rdf4j-common-annotation-5.0.2.jar",
+      "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model-vocabulary\\5.0.2\\rdf4j-model-vocabulary-5.0.2.jar",
+      "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-api\\5.0.2\\rdf4j-rio-api-5.0.2.jar",
+      "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-xml\\5.0.2\\rdf4j-common-xml-5.0.2.jar",
+      "${MAVEN_REPOSITORY}\\commons-codec\\commons-codec\\1.15\\commons-codec-1.15.jar",
+      "${MAVEN_REPOSITORY}\\no\\hasmac\\hasmac-json-ld\\0.9.0\\hasmac-json-ld-0.9.0.jar",
+      "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-languages\\5.0.2\\rdf4j-rio-languages-5.0.2.jar",
+      "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-datatypes\\5.0.2\\rdf4j-rio-datatypes-5.0.2.jar",
+      "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-binary\\5.0.2\\rdf4j-rio-binary-5.0.2.jar",
+      "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-n3\\5.0.2\\rdf4j-rio-n3-5.0.2.jar",
+      "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-nquads\\5.0.2\\rdf4j-rio-nquads-5.0.2.jar",
+      "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-ntriples\\5.0.2\\rdf4j-rio-ntriples-5.0.2.jar",
+      "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-rdfjson\\5.0.2\\rdf4j-rio-rdfjson-5.0.2.jar",
+      "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-jsonld\\5.0.2\\rdf4j-rio-jsonld-5.0.2.jar",
+      "${MAVEN_REPOSITORY}\\jakarta\\json\\jakarta.json-api\\2.0.1\\jakarta.json-api-2.0.1.jar",
+      "${MAVEN_REPOSITORY}\\org\\glassfish\\jakarta.json\\2.0.1\\jakarta.json-2.0.1.jar",
+      "${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient\\4.5.14\\httpclient-4.5.14.jar",
+      "${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore\\4.4.16\\httpcore-4.4.16.jar",
+      "${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient-cache\\4.5.14\\httpclient-cache-4.5.14.jar",
+      "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-rdfxml\\5.0.2\\rdf4j-rio-rdfxml-5.0.2.jar",
+      "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-trix\\5.0.2\\rdf4j-rio-trix-5.0.2.jar",
+      "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-turtle\\5.0.2\\rdf4j-rio-turtle-5.0.2.jar",
+      "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-trig\\5.0.2\\rdf4j-rio-trig-5.0.2.jar",
+      "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-hdt\\5.0.2\\rdf4j-rio-hdt-5.0.2.jar",
+      "${MAVEN_REPOSITORY}\\com\\github\\jsonld-java\\jsonld-java\\0.13.6\\jsonld-java-0.13.6.jar",
+      "${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient-osgi\\4.5.13\\httpclient-osgi-4.5.13.jar",
+      "${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpmime\\4.5.13\\httpmime-4.5.13.jar",
+      "${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\fluent-hc\\4.5.13\\fluent-hc-4.5.13.jar",
+      "${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore-osgi\\4.4.16\\httpcore-osgi-4.4.16.jar",
+      "${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore-nio\\4.4.16\\httpcore-nio-4.4.16.jar",
+      "${MAVEN_REPOSITORY}\\com\\github\\vsonnier\\hppcrt\\0.7.5\\hppcrt-0.7.5.jar",
+      "${MAVEN_REPOSITORY}\\com\\github\\ben-manes\\caffeine\\caffeine\\3.1.8\\caffeine-3.1.8.jar",
+      "${MAVEN_REPOSITORY}\\org\\checkerframework\\checker-qual\\3.37.0\\checker-qual-3.37.0.jar",
+      "${MAVEN_REPOSITORY}\\com\\google\\errorprone\\error_prone_annotations\\2.21.1\\error_prone_annotations-2.21.1.jar",
+      "${MAVEN_REPOSITORY}\\com\\google\\guava\\guava\\33.0.0-jre\\guava-33.0.0-jre.jar",
+      "${MAVEN_REPOSITORY}\\com\\google\\guava\\failureaccess\\1.0.2\\failureaccess-1.0.2.jar",
+      "${MAVEN_REPOSITORY}\\com\\google\\guava\\listenablefuture\\9999.0-empty-to-avoid-conflict-with-guava\\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar",
+      "${MAVEN_REPOSITORY}\\com\\google\\j2objc\\j2objc-annotations\\2.8\\j2objc-annotations-2.8.jar",
+      "${MAVEN_REPOSITORY}\\com\\google\\code\\findbugs\\jsr305\\3.0.2\\jsr305-3.0.2.jar",
+      "${MAVEN_REPOSITORY}\\commons-io\\commons-io\\2.15.1\\commons-io-2.15.1.jar"
+    ],
+    "retainedJars": [
+      {
+        "position": 1,
+        "path": "${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-apibinding\\5.5.1\\owlapi-apibinding-5.5.1.jar",
+        "bytes": 15035,
+        "sha256": "2dda030babe9c7c61112bab353c990372b5f3d294af17194c562b98e13ecfccf",
+        "owlapiModule": true,
+        "currentSha256": "2dda030babe9c7c61112bab353c990372b5f3d294af17194c562b98e13ecfccf",
+        "unchanged": true
+      },
+      {
+        "position": 2,
+        "path": "${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-tools\\5.5.1\\owlapi-tools-5.5.1.jar",
+        "bytes": 309157,
+        "sha256": "91c23396044c86240b2d7319453dade5c28ddf7781c8e698adb51b8a4830df13",
+        "owlapiModule": true,
+        "currentSha256": "91c23396044c86240b2d7319453dade5c28ddf7781c8e698adb51b8a4830df13",
+        "unchanged": true
+      },
+      {
+        "position": 3,
+        "path": "${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-impl\\5.5.1\\owlapi-impl-5.5.1.jar",
+        "bytes": 349631,
+        "sha256": "a1ea776d9b3b682e5fc1795331f47d350f356961cbb868a15cbbda7ff6dbc685",
+        "owlapiModule": true,
+        "currentSha256": "a1ea776d9b3b682e5fc1795331f47d350f356961cbb868a15cbbda7ff6dbc685",
+        "unchanged": true
+      },
+      {
+        "position": 4,
+        "path": "${MAVEN_REPOSITORY}\\javax\\inject\\javax.inject\\1\\javax.inject-1.jar",
+        "bytes": 2497,
+        "sha256": "91c77044a50c481636c32d916fd89c9118a72195390452c81065080f957de7ff",
+        "owlapiModule": false,
+        "currentSha256": "91c77044a50c481636c32d916fd89c9118a72195390452c81065080f957de7ff",
+        "unchanged": true
+      },
+      {
+        "position": 5,
+        "path": "${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-parsers\\5.5.1\\owlapi-parsers-5.5.1.jar",
+        "bytes": 904301,
+        "sha256": "959af1ac9a1f794c28a658f0084a6e0ce152147699ecc6c54ef6a35f9f1c4a76",
+        "owlapiModule": true,
+        "currentSha256": "959af1ac9a1f794c28a658f0084a6e0ce152147699ecc6c54ef6a35f9f1c4a76",
+        "unchanged": true
+      },
+      {
+        "position": 6,
+        "path": "${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-oboformat\\5.5.1\\owlapi-oboformat-5.5.1.jar",
+        "bytes": 197826,
+        "sha256": "c8b335d9cf191410a3b2c7fd1708e2de9811f773283b1b49d7d13ca7843662b2",
+        "owlapiModule": true,
+        "currentSha256": "c8b335d9cf191410a3b2c7fd1708e2de9811f773283b1b49d7d13ca7843662b2",
+        "unchanged": true
+      },
+      {
+        "position": 7,
+        "path": "${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-rio\\5.5.1\\owlapi-rio-5.5.1.jar",
+        "bytes": 68831,
+        "sha256": "8b5fab834b2aa0ad303cc6aff2ac5f8f689eaa856018c15c4cecc39e7987d729",
+        "owlapiModule": true,
+        "currentSha256": "8b5fab834b2aa0ad303cc6aff2ac5f8f689eaa856018c15c4cecc39e7987d729",
+        "unchanged": true
+      },
+      {
+        "position": 8,
+        "path": "${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-api\\5.5.1\\owlapi-api-5.5.1.jar",
+        "bytes": 1164145,
+        "sha256": "46fa5c642581c53da9fa4d0a392b99e4c82aa3f1abfc616bbe5d1d2f9b880b03",
+        "owlapiModule": true,
+        "currentSha256": "46fa5c642581c53da9fa4d0a392b99e4c82aa3f1abfc616bbe5d1d2f9b880b03",
+        "unchanged": true
+      },
+      {
+        "position": 9,
+        "path": "${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-compatibility\\5.5.1\\owlapi-compatibility-5.5.1.jar",
+        "bytes": 124413,
+        "sha256": "b0a4779217ff709efa07ee967702a9d9613a091a2cc3d4a42864a1a0f44346ea",
+        "owlapiModule": true,
+        "currentSha256": "b0a4779217ff709efa07ee967702a9d9613a091a2cc3d4a42864a1a0f44346ea",
+        "unchanged": true
+      },
+      {
+        "position": 10,
+        "path": "${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-core\\2.16.1\\jackson-core-2.16.1.jar",
+        "bytes": 578125,
+        "sha256": "f5f8ef90609e64fec82eb908e497dc7d81b2eb983fe509b870292a193cde4dfb",
+        "owlapiModule": false,
+        "currentSha256": "f5f8ef90609e64fec82eb908e497dc7d81b2eb983fe509b870292a193cde4dfb",
+        "unchanged": true
+      },
+      {
+        "position": 11,
+        "path": "${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-databind\\2.16.1\\jackson-databind-2.16.1.jar",
+        "bytes": 1637611,
+        "sha256": "baf8a8ebee8f45ef68cdd5e2dd3923b3e296c0937b96ec0b4806aa3a31bccd1d",
+        "owlapiModule": false,
+        "currentSha256": "baf8a8ebee8f45ef68cdd5e2dd3923b3e296c0937b96ec0b4806aa3a31bccd1d",
+        "unchanged": true
+      },
+      {
+        "position": 12,
+        "path": "${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-annotations\\2.16.1\\jackson-annotations-2.16.1.jar",
+        "bytes": 78480,
+        "sha256": "a4730771e6a495dd3793a42cdb8ce6bddb96c77e15f40c98fd8d9a7ae09e7286",
+        "owlapiModule": false,
+        "currentSha256": "a4730771e6a495dd3793a42cdb8ce6bddb96c77e15f40c98fd8d9a7ae09e7286",
+        "unchanged": true
+      },
+      {
+        "position": 13,
+        "path": "${MAVEN_REPOSITORY}\\org\\apache\\commons\\commons-rdf-api\\0.5.0\\commons-rdf-api-0.5.0.jar",
+        "bytes": 22565,
+        "sha256": "360fd9197008502cbc3fd09afe2ad45d8c8c905e21f42e7cd5b2aa1c39742b5e",
+        "owlapiModule": false,
+        "currentSha256": "360fd9197008502cbc3fd09afe2ad45d8c8c905e21f42e7cd5b2aa1c39742b5e",
+        "unchanged": true
+      },
+      {
+        "position": 14,
+        "path": "${MAVEN_REPOSITORY}\\org\\tukaani\\xz\\1.9\\xz-1.9.jar",
+        "bytes": 116013,
+        "sha256": "211b306cfc44f8f96df3a0a3ddaf75ba8c5289eed77d60d72f889bb855f535e5",
+        "owlapiModule": false,
+        "currentSha256": "211b306cfc44f8f96df3a0a3ddaf75ba8c5289eed77d60d72f889bb855f535e5",
+        "unchanged": true
+      },
+      {
+        "position": 15,
+        "path": "${MAVEN_REPOSITORY}\\org\\slf4j\\slf4j-api\\2.0.11\\slf4j-api-2.0.11.jar",
+        "bytes": 67831,
+        "sha256": "ce0e71d673acb9036bb55d0244b261cf033f8e4c1245f14f931dfb1937dd4c95",
+        "owlapiModule": false,
+        "currentSha256": "ce0e71d673acb9036bb55d0244b261cf033f8e4c1245f14f931dfb1937dd4c95",
+        "unchanged": true
+      },
+      {
+        "position": 16,
+        "path": "${MAVEN_REPOSITORY}\\org\\slf4j\\jcl-over-slf4j\\2.0.11\\jcl-over-slf4j-2.0.11.jar",
+        "bytes": 18425,
+        "sha256": "55e96f9830d732c81f0709e9090f308798381be7dc5aa67dd423c02831b5b4bb",
+        "owlapiModule": false,
+        "currentSha256": "55e96f9830d732c81f0709e9090f308798381be7dc5aa67dd423c02831b5b4bb",
+        "unchanged": true
+      },
+      {
+        "position": 17,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model\\5.0.2\\rdf4j-model-5.0.2.jar",
+        "bytes": 173983,
+        "sha256": "c56becf8915a8e27d74ed6accc391d4cd6d231844766b07101aebae0c5eeab71",
+        "owlapiModule": false,
+        "currentSha256": "c56becf8915a8e27d74ed6accc391d4cd6d231844766b07101aebae0c5eeab71",
+        "unchanged": true
+      },
+      {
+        "position": 18,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-exception\\5.0.2\\rdf4j-common-exception-5.0.2.jar",
+        "bytes": 4302,
+        "sha256": "ae5aa914291b4cebeb5fd3657cb0fd4097bfc7df43cb4aeeed36343b94c5eca9",
+        "owlapiModule": false,
+        "currentSha256": "ae5aa914291b4cebeb5fd3657cb0fd4097bfc7df43cb4aeeed36343b94c5eca9",
+        "unchanged": true
+      },
+      {
+        "position": 19,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-text\\5.0.2\\rdf4j-common-text-5.0.2.jar",
+        "bytes": 4674,
+        "sha256": "4e37650e9f124ab13dd5a5464630c83539ea6b70f4f7f024d60174853e57595b",
+        "owlapiModule": false,
+        "currentSha256": "4e37650e9f124ab13dd5a5464630c83539ea6b70f4f7f024d60174853e57595b",
+        "unchanged": true
+      },
+      {
+        "position": 20,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-io\\5.0.2\\rdf4j-common-io-5.0.2.jar",
+        "bytes": 42431,
+        "sha256": "2268c55e5c7f968020fba63b1c917c87955624c691ad827485a2d2b9e444b05e",
+        "owlapiModule": false,
+        "currentSha256": "2268c55e5c7f968020fba63b1c917c87955624c691ad827485a2d2b9e444b05e",
+        "unchanged": true
+      },
+      {
+        "position": 21,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-iterator\\5.0.2\\rdf4j-common-iterator-5.0.2.jar",
+        "bytes": 46437,
+        "sha256": "cf53dce94ca08c24e3f3a6ef0a23c3d21b5baeafd482139c8a00155891c65c8f",
+        "owlapiModule": false,
+        "currentSha256": "cf53dce94ca08c24e3f3a6ef0a23c3d21b5baeafd482139c8a00155891c65c8f",
+        "unchanged": true
+      },
+      {
+        "position": 22,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-order\\5.0.2\\rdf4j-common-order-5.0.2.jar",
+        "bytes": 5146,
+        "sha256": "c3f43a907aaac7446fbac6b95f9e60d0c3a2a645798a7ee3f9a9d657afa57e73",
+        "owlapiModule": false,
+        "currentSha256": "c3f43a907aaac7446fbac6b95f9e60d0c3a2a645798a7ee3f9a9d657afa57e73",
+        "unchanged": true
+      },
+      {
+        "position": 23,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model-api\\5.0.2\\rdf4j-model-api-5.0.2.jar",
+        "bytes": 57501,
+        "sha256": "9e13d31c4e090aa9f0af912ba2da0f46d0018414a8413e161dbbc208538e2029",
+        "owlapiModule": false,
+        "currentSha256": "9e13d31c4e090aa9f0af912ba2da0f46d0018414a8413e161dbbc208538e2029",
+        "unchanged": true
+      },
+      {
+        "position": 24,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-annotation\\5.0.2\\rdf4j-common-annotation-5.0.2.jar",
+        "bytes": 3249,
+        "sha256": "8860c175c0ac1ac7aa2e195b4895502a15060c44bc1092ece7a59db24d2423c5",
+        "owlapiModule": false,
+        "currentSha256": "8860c175c0ac1ac7aa2e195b4895502a15060c44bc1092ece7a59db24d2423c5",
+        "unchanged": true
+      },
+      {
+        "position": 25,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model-vocabulary\\5.0.2\\rdf4j-model-vocabulary-5.0.2.jar",
+        "bytes": 98855,
+        "sha256": "b44d8d219a01377cb6b20b96baea4ba3e7549041112023117a183d40e8968ebf",
+        "owlapiModule": false,
+        "currentSha256": "b44d8d219a01377cb6b20b96baea4ba3e7549041112023117a183d40e8968ebf",
+        "unchanged": true
+      },
+      {
+        "position": 26,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-api\\5.0.2\\rdf4j-rio-api-5.0.2.jar",
+        "bytes": 99688,
+        "sha256": "7a4c190d974c2090f6d88b78427934b453dff34ad90ff520283df7f4adc82951",
+        "owlapiModule": false,
+        "currentSha256": "7a4c190d974c2090f6d88b78427934b453dff34ad90ff520283df7f4adc82951",
+        "unchanged": true
+      },
+      {
+        "position": 27,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-xml\\5.0.2\\rdf4j-common-xml-5.0.2.jar",
+        "bytes": 19208,
+        "sha256": "f908c335f4127a395ab33bc5a463842cdde0cf944029bd8908c5b8eaa42fd56d",
+        "owlapiModule": false,
+        "currentSha256": "f908c335f4127a395ab33bc5a463842cdde0cf944029bd8908c5b8eaa42fd56d",
+        "unchanged": true
+      },
+      {
+        "position": 28,
+        "path": "${MAVEN_REPOSITORY}\\commons-codec\\commons-codec\\1.15\\commons-codec-1.15.jar",
+        "bytes": 353793,
+        "sha256": "b3e9f6d63a790109bf0d056611fbed1cf69055826defeb9894a71369d246ed63",
+        "owlapiModule": false,
+        "currentSha256": "b3e9f6d63a790109bf0d056611fbed1cf69055826defeb9894a71369d246ed63",
+        "unchanged": true
+      },
+      {
+        "position": 29,
+        "path": "${MAVEN_REPOSITORY}\\no\\hasmac\\hasmac-json-ld\\0.9.0\\hasmac-json-ld-0.9.0.jar",
+        "bytes": 316411,
+        "sha256": "72782170501af33f4af0d7964cac6fe0e296c37915bbb6b67adbddd1d05fec89",
+        "owlapiModule": false,
+        "currentSha256": "72782170501af33f4af0d7964cac6fe0e296c37915bbb6b67adbddd1d05fec89",
+        "unchanged": true
+      },
+      {
+        "position": 30,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-languages\\5.0.2\\rdf4j-rio-languages-5.0.2.jar",
+        "bytes": 5282,
+        "sha256": "10de37ce1a132ab9ed6cb735c2be7a2fda9eb7289e83b0695aa2af6af93749d2",
+        "owlapiModule": false,
+        "currentSha256": "10de37ce1a132ab9ed6cb735c2be7a2fda9eb7289e83b0695aa2af6af93749d2",
+        "unchanged": true
+      },
+      {
+        "position": 31,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-datatypes\\5.0.2\\rdf4j-rio-datatypes-5.0.2.jar",
+        "bytes": 9311,
+        "sha256": "44bdaa515ea28c962d036560a44530f24aea7cd10b4966053c3dee933bbcbf03",
+        "owlapiModule": false,
+        "currentSha256": "44bdaa515ea28c962d036560a44530f24aea7cd10b4966053c3dee933bbcbf03",
+        "unchanged": true
+      },
+      {
+        "position": 32,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-binary\\5.0.2\\rdf4j-rio-binary-5.0.2.jar",
+        "bytes": 16089,
+        "sha256": "92095b0e5e967693f678792703fad5822c13dc13c01ffb84b3e60847b37f3d33",
+        "owlapiModule": false,
+        "currentSha256": "92095b0e5e967693f678792703fad5822c13dc13c01ffb84b3e60847b37f3d33",
+        "unchanged": true
+      },
+      {
+        "position": 33,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-n3\\5.0.2\\rdf4j-rio-n3-5.0.2.jar",
+        "bytes": 7114,
+        "sha256": "9d13afdc134eb460a5199163c10fa2d701cf4ba90775f470c940c1d57767a853",
+        "owlapiModule": false,
+        "currentSha256": "9d13afdc134eb460a5199163c10fa2d701cf4ba90775f470c940c1d57767a853",
+        "unchanged": true
+      },
+      {
+        "position": 34,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-nquads\\5.0.2\\rdf4j-rio-nquads-5.0.2.jar",
+        "bytes": 7012,
+        "sha256": "e8c0612c6c1750dd5123378909d8e7e4a4f79e5271a78a37493a37c3feee96d1",
+        "owlapiModule": false,
+        "currentSha256": "e8c0612c6c1750dd5123378909d8e7e4a4f79e5271a78a37493a37c3feee96d1",
+        "unchanged": true
+      },
+      {
+        "position": 35,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-ntriples\\5.0.2\\rdf4j-rio-ntriples-5.0.2.jar",
+        "bytes": 14666,
+        "sha256": "4b774744a461d6939de98f3e37aff8faeac99cf233328f95933d0df8b5eb92ad",
+        "owlapiModule": false,
+        "currentSha256": "4b774744a461d6939de98f3e37aff8faeac99cf233328f95933d0df8b5eb92ad",
+        "unchanged": true
+      },
+      {
+        "position": 36,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-rdfjson\\5.0.2\\rdf4j-rio-rdfjson-5.0.2.jar",
+        "bytes": 18203,
+        "sha256": "0e923f6f2003ac8d1fd1e10c758fe14a767782a43ce45a8e6257008a90751ac3",
+        "owlapiModule": false,
+        "currentSha256": "0e923f6f2003ac8d1fd1e10c758fe14a767782a43ce45a8e6257008a90751ac3",
+        "unchanged": true
+      },
+      {
+        "position": 37,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-jsonld\\5.0.2\\rdf4j-rio-jsonld-5.0.2.jar",
+        "bytes": 39216,
+        "sha256": "e11b682c8688ccd6be62a519a8f4d86c438f76497ed64b7910f328d7edd1bbab",
+        "owlapiModule": false,
+        "currentSha256": "e11b682c8688ccd6be62a519a8f4d86c438f76497ed64b7910f328d7edd1bbab",
+        "unchanged": true
+      },
+      {
+        "position": 38,
+        "path": "${MAVEN_REPOSITORY}\\jakarta\\json\\jakarta.json-api\\2.0.1\\jakarta.json-api-2.0.1.jar",
+        "bytes": 45295,
+        "sha256": "6152cdc29c3e99ad4bfb367d43464c9fe97ac800ddc1952b2452c5e0c21f89fd",
+        "owlapiModule": false,
+        "currentSha256": "6152cdc29c3e99ad4bfb367d43464c9fe97ac800ddc1952b2452c5e0c21f89fd",
+        "unchanged": true
+      },
+      {
+        "position": 39,
+        "path": "${MAVEN_REPOSITORY}\\org\\glassfish\\jakarta.json\\2.0.1\\jakarta.json-2.0.1.jar",
+        "bytes": 143846,
+        "sha256": "52539b39498b86ca9910b0eacc608a8c78de8db3842caa84bc87169372202cc0",
+        "owlapiModule": false,
+        "currentSha256": "52539b39498b86ca9910b0eacc608a8c78de8db3842caa84bc87169372202cc0",
+        "unchanged": true
+      },
+      {
+        "position": 40,
+        "path": "${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient\\4.5.14\\httpclient-4.5.14.jar",
+        "bytes": 785639,
+        "sha256": "c8bc7e1c51a6d4ce72f40d2ebbabf1c4b68bfe76e732104b04381b493478e9d6",
+        "owlapiModule": false,
+        "currentSha256": "c8bc7e1c51a6d4ce72f40d2ebbabf1c4b68bfe76e732104b04381b493478e9d6",
+        "unchanged": true
+      },
+      {
+        "position": 41,
+        "path": "${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore\\4.4.16\\httpcore-4.4.16.jar",
+        "bytes": 327891,
+        "sha256": "6c9b3dd142a09dc468e23ad39aad6f75a0f2b85125104469f026e52a474e464f",
+        "owlapiModule": false,
+        "currentSha256": "6c9b3dd142a09dc468e23ad39aad6f75a0f2b85125104469f026e52a474e464f",
+        "unchanged": true
+      },
+      {
+        "position": 42,
+        "path": "${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient-cache\\4.5.14\\httpclient-cache-4.5.14.jar",
+        "bytes": 164023,
+        "sha256": "5324d2cbc2d311c9f91b82bcbc746ec2a29f1f5b744395a50ff3afb873db1cee",
+        "owlapiModule": false,
+        "currentSha256": "5324d2cbc2d311c9f91b82bcbc746ec2a29f1f5b744395a50ff3afb873db1cee",
+        "unchanged": true
+      },
+      {
+        "position": 43,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-rdfxml\\5.0.2\\rdf4j-rio-rdfxml-5.0.2.jar",
+        "bytes": 42267,
+        "sha256": "fcd8ee30ae466ad44843308bce39173af1a71a3c8523bcd4678a696e3a4b64b2",
+        "owlapiModule": false,
+        "currentSha256": "fcd8ee30ae466ad44843308bce39173af1a71a3c8523bcd4678a696e3a4b64b2",
+        "unchanged": true
+      },
+      {
+        "position": 44,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-trix\\5.0.2\\rdf4j-rio-trix-5.0.2.jar",
+        "bytes": 14882,
+        "sha256": "ee4b4337a80a86d226398750952d2352ba19fcf9f6074d1a2cfc99038ab8e716",
+        "owlapiModule": false,
+        "currentSha256": "ee4b4337a80a86d226398750952d2352ba19fcf9f6074d1a2cfc99038ab8e716",
+        "unchanged": true
+      },
+      {
+        "position": 45,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-turtle\\5.0.2\\rdf4j-rio-turtle-5.0.2.jar",
+        "bytes": 38573,
+        "sha256": "68b5f3b70ebbcf6505bda7f10a0febf45e2da17daa98b0ae0ec5730894ea97d4",
+        "owlapiModule": false,
+        "currentSha256": "68b5f3b70ebbcf6505bda7f10a0febf45e2da17daa98b0ae0ec5730894ea97d4",
+        "unchanged": true
+      },
+      {
+        "position": 46,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-trig\\5.0.2\\rdf4j-rio-trig-5.0.2.jar",
+        "bytes": 12702,
+        "sha256": "1958859b71979e5e3e09ee82821a1bc7d41bb2725ac873e115e279f89fd7c208",
+        "owlapiModule": false,
+        "currentSha256": "1958859b71979e5e3e09ee82821a1bc7d41bb2725ac873e115e279f89fd7c208",
+        "unchanged": true
+      },
+      {
+        "position": 47,
+        "path": "${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-hdt\\5.0.2\\rdf4j-rio-hdt-5.0.2.jar",
+        "bytes": 40999,
+        "sha256": "5afa049723e69fe70aae7575ab44bd52ee2aef11ab323285aa360f8d2dc26605",
+        "owlapiModule": false,
+        "currentSha256": "5afa049723e69fe70aae7575ab44bd52ee2aef11ab323285aa360f8d2dc26605",
+        "unchanged": true
+      },
+      {
+        "position": 48,
+        "path": "${MAVEN_REPOSITORY}\\com\\github\\jsonld-java\\jsonld-java\\0.13.6\\jsonld-java-0.13.6.jar",
+        "bytes": 3336943,
+        "sha256": "ac158c23504fa76dc1a5f43436df2cb34b4b435b79b38c9b941d1c75e2efbe90",
+        "owlapiModule": false,
+        "currentSha256": "ac158c23504fa76dc1a5f43436df2cb34b4b435b79b38c9b941d1c75e2efbe90",
+        "unchanged": true
+      },
+      {
+        "position": 49,
+        "path": "${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient-osgi\\4.5.13\\httpclient-osgi-4.5.13.jar",
+        "bytes": 1370788,
+        "sha256": "e18dd56f0719dec4fdea58fe79c178770fc09fee9a5b481ccd3eea4c07978e1e",
+        "owlapiModule": false,
+        "currentSha256": "e18dd56f0719dec4fdea58fe79c178770fc09fee9a5b481ccd3eea4c07978e1e",
+        "unchanged": true
+      },
+      {
+        "position": 50,
+        "path": "${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpmime\\4.5.13\\httpmime-4.5.13.jar",
+        "bytes": 41790,
+        "sha256": "06e754d99245b98dcc2860dcb43d20e737d650da2bf2077a105f68accbd5c5cc",
+        "owlapiModule": false,
+        "currentSha256": "06e754d99245b98dcc2860dcb43d20e737d650da2bf2077a105f68accbd5c5cc",
+        "unchanged": true
+      },
+      {
+        "position": 51,
+        "path": "${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\fluent-hc\\4.5.13\\fluent-hc-4.5.13.jar",
+        "bytes": 31547,
+        "sha256": "f883b6b027d5e05c53e48e4fe3548715c52dbd590ffa3f52d039574f1a4d0728",
+        "owlapiModule": false,
+        "currentSha256": "f883b6b027d5e05c53e48e4fe3548715c52dbd590ffa3f52d039574f1a4d0728",
+        "unchanged": true
+      },
+      {
+        "position": 52,
+        "path": "${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore-osgi\\4.4.16\\httpcore-osgi-4.4.16.jar",
+        "bytes": 695131,
+        "sha256": "8b22476c8dcd1a10dab8666dadfd45424e1cb2fc0edaef86fe745566abdba86e",
+        "owlapiModule": false,
+        "currentSha256": "8b22476c8dcd1a10dab8666dadfd45424e1cb2fc0edaef86fe745566abdba86e",
+        "unchanged": true
+      },
+      {
+        "position": 53,
+        "path": "${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore-nio\\4.4.16\\httpcore-nio-4.4.16.jar",
+        "bytes": 368896,
+        "sha256": "4018736ede2d321034e8517ea90baefb31831a8608afccc446d8a699fb1d00d4",
+        "owlapiModule": false,
+        "currentSha256": "4018736ede2d321034e8517ea90baefb31831a8608afccc446d8a699fb1d00d4",
+        "unchanged": true
+      },
+      {
+        "position": 54,
+        "path": "${MAVEN_REPOSITORY}\\com\\github\\vsonnier\\hppcrt\\0.7.5\\hppcrt-0.7.5.jar",
+        "bytes": 1935920,
+        "sha256": "f3cfbd511d0bd5a29b72bcca97fcaa81889cf6698f045c5f658744829c8784b9",
+        "owlapiModule": false,
+        "currentSha256": "f3cfbd511d0bd5a29b72bcca97fcaa81889cf6698f045c5f658744829c8784b9",
+        "unchanged": true
+      },
+      {
+        "position": 55,
+        "path": "${MAVEN_REPOSITORY}\\com\\github\\ben-manes\\caffeine\\caffeine\\3.1.8\\caffeine-3.1.8.jar",
+        "bytes": 889211,
+        "sha256": "7dd15f9df1be238ffaa367ce6f556737a88031de4294dad18eef57c474ddf1d3",
+        "owlapiModule": false,
+        "currentSha256": "7dd15f9df1be238ffaa367ce6f556737a88031de4294dad18eef57c474ddf1d3",
+        "unchanged": true
+      },
+      {
+        "position": 56,
+        "path": "${MAVEN_REPOSITORY}\\org\\checkerframework\\checker-qual\\3.37.0\\checker-qual-3.37.0.jar",
+        "bytes": 224460,
+        "sha256": "e4ce1376cc2735e1dde220b62ad0913f51297704daad155a33f386bc5db0d9f7",
+        "owlapiModule": false,
+        "currentSha256": "e4ce1376cc2735e1dde220b62ad0913f51297704daad155a33f386bc5db0d9f7",
+        "unchanged": true
+      },
+      {
+        "position": 57,
+        "path": "${MAVEN_REPOSITORY}\\com\\google\\errorprone\\error_prone_annotations\\2.21.1\\error_prone_annotations-2.21.1.jar",
+        "bytes": 16830,
+        "sha256": "d1f3c66aa91ac52549e00ae3b208ba4b9af7d72d68f230643553beb38e6118ac",
+        "owlapiModule": false,
+        "currentSha256": "d1f3c66aa91ac52549e00ae3b208ba4b9af7d72d68f230643553beb38e6118ac",
+        "unchanged": true
+      },
+      {
+        "position": 58,
+        "path": "${MAVEN_REPOSITORY}\\com\\google\\guava\\guava\\33.0.0-jre\\guava-33.0.0-jre.jar",
+        "bytes": 3047503,
+        "sha256": "f4d85c3e4d411694337cb873abea09b242b664bb013320be6105327c45991537",
+        "owlapiModule": false,
+        "currentSha256": "f4d85c3e4d411694337cb873abea09b242b664bb013320be6105327c45991537",
+        "unchanged": true
+      },
+      {
+        "position": 59,
+        "path": "${MAVEN_REPOSITORY}\\com\\google\\guava\\failureaccess\\1.0.2\\failureaccess-1.0.2.jar",
+        "bytes": 4740,
+        "sha256": "8a8f81cf9b359e3f6dfa691a1e776985c061ef2f223c9b2c80753e1b458e8064",
+        "owlapiModule": false,
+        "currentSha256": "8a8f81cf9b359e3f6dfa691a1e776985c061ef2f223c9b2c80753e1b458e8064",
+        "unchanged": true
+      },
+      {
+        "position": 60,
+        "path": "${MAVEN_REPOSITORY}\\com\\google\\guava\\listenablefuture\\9999.0-empty-to-avoid-conflict-with-guava\\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar",
+        "bytes": 2199,
+        "sha256": "b372a037d4230aa57fbeffdef30fd6123f9c0c2db85d0aced00c91b974f33f99",
+        "owlapiModule": false,
+        "currentSha256": "b372a037d4230aa57fbeffdef30fd6123f9c0c2db85d0aced00c91b974f33f99",
+        "unchanged": true
+      },
+      {
+        "position": 61,
+        "path": "${MAVEN_REPOSITORY}\\com\\google\\j2objc\\j2objc-annotations\\2.8\\j2objc-annotations-2.8.jar",
+        "bytes": 9301,
+        "sha256": "f02a95fa1a5e95edb3ed859fd0fb7df709d121a35290eff8b74dce2ab7f4d6ed",
+        "owlapiModule": false,
+        "currentSha256": "f02a95fa1a5e95edb3ed859fd0fb7df709d121a35290eff8b74dce2ab7f4d6ed",
+        "unchanged": true
+      },
+      {
+        "position": 62,
+        "path": "${MAVEN_REPOSITORY}\\com\\google\\code\\findbugs\\jsr305\\3.0.2\\jsr305-3.0.2.jar",
+        "bytes": 19936,
+        "sha256": "766ad2a0783f2687962c8ad74ceecc38a28b9f72a2d085ee438b7813e928d0c7",
+        "owlapiModule": false,
+        "currentSha256": "766ad2a0783f2687962c8ad74ceecc38a28b9f72a2d085ee438b7813e928d0c7",
+        "unchanged": true
+      },
+      {
+        "position": 63,
+        "path": "${MAVEN_REPOSITORY}\\commons-io\\commons-io\\2.15.1\\commons-io-2.15.1.jar",
+        "bytes": 501218,
+        "sha256": "a58af12ee1b68cfd2ebb0c27caef164f084381a00ec81a48cc275fd7ea54e154",
+        "owlapiModule": false,
+        "currentSha256": "a58af12ee1b68cfd2ebb0c27caef164f084381a00ec81a48cc275fd7ea54e154",
+        "unchanged": true
+      }
+    ],
+    "releaseBuildNotClaimed": true,
+    "releaseAuthority": "util/owlapi-reference/reference-native-build.mjs; CI and release select Temurin 25.0.4+101.0.LTS with checksum-pinned Maven 3.10.0 on Linux. Local research is Windows Temurin 25.0.4.1+1."
+  },
+  "sources": [
+    {
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLOntologyManagerImpl.java",
+      "sha256": "4f05a4e75665358dc0082b40c25a4203f1666cac25e8f6bb60a1f4b848acfa08",
+      "bytes": 74180,
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLOntologyManagerImpl.java"
+    },
+    {
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLOntologyFactoryImpl.java",
+      "sha256": "43dd416a9d7cc9473f5c313dde2e018dd4e15034628e474497e8e7fadc320257",
+      "bytes": 11740,
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLOntologyFactoryImpl.java"
+    },
+    {
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "api/src/main/java/org/semanticweb/owlapi/util/AbstractOWLStorer.java",
+      "sha256": "706cd1fef2c90f9ae9571b826aba192e53b8c0cdc000d7ff517dda9612f858a8",
+      "bytes": 6855,
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/api/src/main/java/org/semanticweb/owlapi/util/AbstractOWLStorer.java"
+    },
+    {
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyLoaderConfiguration.java",
+      "sha256": "a185b99e2a245a8be2ad17fcba5c0b1b0e042a81a6dc1be8514eef7869357179",
+      "bytes": 24742,
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyLoaderConfiguration.java"
+    },
+    {
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyWriterConfiguration.java",
+      "sha256": "c317e44716d07fde8f92b24d21cb3f4abbcce83065100e4f97bb62da3d4a84bb",
+      "bytes": 7058,
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyWriterConfiguration.java"
+    },
+    {
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "api/src/main/java/org/semanticweb/owlapi/model/parameters/ConfigurationOptions.java",
+      "sha256": "22ac53ae64b6ccf1943f0c7e8e6ec9b1acf61d7f4eff812de0f1ab4a2d942de7",
+      "bytes": 8668,
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/api/src/main/java/org/semanticweb/owlapi/model/parameters/ConfigurationOptions.java"
+    },
+    {
+      "repository": "java",
+      "commit": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "path": "rio/src/main/java/org/semanticweb/owlapi/rio/RioParserImpl.java",
+      "sha256": "856f2bb6b9243555ed755b15c2430f8d04d9ed6b3640ce042eac9e04417e6c49",
+      "bytes": 16364,
+      "permalink": "https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/rio/src/main/java/org/semanticweb/owlapi/rio/RioParserImpl.java"
+    },
+    {
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/parsing/xml/xmlParserAdapter.js",
+      "sha256": "edfa2de6b9c9e345fe5a88d5bfd206bef05969b668e547fcd539aacd30a42d75",
+      "bytes": 2423,
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/parsing/xml/xmlParserAdapter.js"
+    },
+    {
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/parsing/xml/xmlEntityPolicy.js",
+      "sha256": "d6f5f06e78f3300edaa3972a239fe51d0843cce6a24de5111c89fbc377993c09",
+      "bytes": 13316,
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/parsing/xml/xmlEntityPolicy.js"
+    },
+    {
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/parsing/xml/xmlNames.js",
+      "sha256": "8eaf88234f94f3cd3ab26096726e728cdca999f896c9d9b4d6d951010793868a",
+      "bytes": 2536,
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/parsing/xml/xmlNames.js"
+    },
+    {
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/parsing/xml/xmlEntityDefaults.js",
+      "sha256": "6358c2347b46a6c9b302c1dd105adcd1a9bcfc0d4811211dffb926bb8a39bf65",
+      "bytes": 277,
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/parsing/xml/xmlEntityDefaults.js"
+    },
+    {
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "io/errors.js",
+      "sha256": "22abb952d0a9bb7a73e34b097aa2643ba4e593069f87bf4fc6ed0e7b213ebfb6",
+      "bytes": 4537,
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/io/errors.js"
+    },
+    {
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/profiles/budget.js",
+      "sha256": "77263a92d29dc463960b062796ba65c0ffdc1170aace3be6cff6facbf7af7f42",
+      "bytes": 3531,
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/profiles/budget.js"
+    },
+    {
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "internal/modularity/localityBudget.js",
+      "sha256": "bcb912eec799bc4d798b8eeff6521ad6e8d65695f327ad971ae2624d62ae6fb7",
+      "bytes": 2711,
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/internal/modularity/localityBudget.js"
+    },
+    {
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "model/owlOntologyLoaderConfiguration.js",
+      "sha256": "dce9bfa703335d1d40f61e82b3bd48d43d777026a186f128fb1653d2a1ad1f3e",
+      "bytes": 5211,
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/model/owlOntologyLoaderConfiguration.js"
+    },
+    {
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "util/owlOntologyImportsClosureSetProvider.js",
+      "sha256": "9e224439ee870b34437d1c47f6c372b5086236e2025867a97becbf929e67695c",
+      "bytes": 1507,
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/util/owlOntologyImportsClosureSetProvider.js"
+    },
+    {
+      "repository": "javascript",
+      "commit": null,
+      "path": "node_modules/jsonld/lib/ContextResolver.js",
+      "sha256": "2f8e65f3d73c5309e4312e7e81da427533745b800030f591a55056c69d1d3bf6",
+      "bytes": 7576,
+      "permalink": null
+    },
+    {
+      "repository": "javascript",
+      "commit": null,
+      "path": "node_modules/jsonld/package.json",
+      "sha256": "055ed69d0e7ac0f5f813667c106cb90191dbeef0a91454b3c42b2b9cf3819d21",
+      "bytes": 4458,
+      "permalink": null
+    },
+    {
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": "util/owlapi-reference/reference-native-build.mjs",
+      "sha256": "b519d4758e4b403552c30355efe1457953e16e8efc199e2e82f32309e4ddd6c2",
+      "bytes": 18433,
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/util/owlapi-reference/reference-native-build.mjs"
+    },
+    {
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": ".github/workflows/ci.yml",
+      "sha256": "e1aa1030181575775c087d8538bf5f52c6cbb258aca1cb16961ba84c9bfaed38",
+      "bytes": 60763,
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/.github/workflows/ci.yml"
+    },
+    {
+      "repository": "javascript",
+      "commit": "20426357165a22248985ec43d7ac1266d49d6bec",
+      "path": ".github/workflows/release.yml",
+      "sha256": "355cb901f6cb04033f077fe7b6e78a93881be5ab293c7764cf67e73c9ffc5fbb",
+      "bytes": 80467,
+      "permalink": "https://github.com/Hadden-Industries/owlapi/blob/20426357165a22248985ec43d7ac1266d49d6bec/.github/workflows/release.yml"
+    },
+    {
+      "name": "JSONLDParser.java",
+      "url": "https://raw.githubusercontent.com/eclipse-rdf4j/rdf4j/5.0.2/core/rio/jsonld/src/main/java/org/eclipse/rdf4j/rio/jsonld/JSONLDParser.java",
+      "sha256": "961cbcf7c17d1815608e829cacd7ec55408bb50ed57c4c8cc30edddae34ea3a4",
+      "bytes": 10067
+    },
+    {
+      "name": "CachingDocumentLoader.java",
+      "url": "https://raw.githubusercontent.com/eclipse-rdf4j/rdf4j/5.0.2/core/rio/jsonld/src/main/java/org/eclipse/rdf4j/rio/jsonld/CachingDocumentLoader.java",
+      "sha256": "c8b4d4bcba3d2a399e1489db8b5a9581119b247d30aee11cf0dc5894f6990aae",
+      "bytes": 3191
+    },
+    {
+      "name": "JSONLDSettings.java",
+      "url": "https://raw.githubusercontent.com/eclipse-rdf4j/rdf4j/5.0.2/core/rio/api/src/main/java/org/eclipse/rdf4j/rio/helpers/JSONLDSettings.java",
+      "sha256": "52f4908cc4b95f5a4d3358625f4bcf278c0aad90f33dc1c00d964c510729fe9f",
+      "bytes": 10996
+    },
+    {
+      "name": "hasmac-json-ld-0.9.0-sources.jar",
+      "url": "https://repo.maven.apache.org/maven2/no/hasmac/hasmac-json-ld/0.9.0/hasmac-json-ld-0.9.0-sources.jar",
+      "bytes": 216410,
+      "sha256": "69d6f6e07b0defb00e71bef4f0c4f3f0cca568abcfc085a51ddeb97782f07ef3"
+    },
+    {
+      "sourceArtifact": "no.hasmac:hasmac-json-ld:0.9.0:sources",
+      "path": "no/hasmac/jsonld/context/ActiveContextBuilder.java",
+      "sha256": "599c650738b7d64980e385d51c52124f22f9f86e91935b54a4645f9cb019d8df",
+      "bytes": 23792
+    },
+    {
+      "sourceArtifact": "no.hasmac:hasmac-json-ld:0.9.0:sources",
+      "path": "no/hasmac/jsonld/loader/DefaultHttpLoader.java",
+      "sha256": "328589718fbf1fedbb3eea986b722e670ffce7f7798d9486fe5f305a74e0e681",
+      "bytes": 8537
+    },
+    {
+      "sourceArtifact": "no.hasmac:hasmac-json-ld:0.9.0:sources",
+      "path": "no/hasmac/jsonld/loader/HttpLoader.java",
+      "sha256": "a63f44d02cc12b3270da7c46c665ec519f7ae5eb03571c5fed41e62cb8feb9de",
+      "bytes": 1873
+    },
+    {
+      "name": "Guava-LoadingCache.java",
+      "url": "https://raw.githubusercontent.com/google/guava/v33.0.0/guava/src/com/google/common/cache/LoadingCache.java",
+      "sha256": "51298288988298ea09a5a6fbbe8b4cff308605c9036a08ba8281f2bc152de6a7",
+      "bytes": 8550
+    }
+  ],
+  "probes": [
+    {
+      "id": "GAP-P01",
+      "name": "manager state, listeners and import cleanup",
+      "source": "import java.io.*;\nimport java.nio.file.*;\nimport java.util.*;\nimport org.semanticweb.owlapi.apibinding.OWLManager;\nimport org.semanticweb.owlapi.model.*;\nimport org.semanticweb.owlapi.model.parameters.*;\nimport org.semanticweb.owlapi.formats.*;\nimport org.semanticweb.owlapi.io.*;\nimport org.semanticweb.owlapi.util.SimpleIRIMapper;\npublic class ProbeManagerBehavior {\n static void row(String key,Object...values){System.out.println(key+\"\\t\"+Arrays.toString(values));}\n static OWLOntology load(OWLOntologyManager m,String s,boolean annotations)throws Exception{return m.loadOntologyFromOntologyDocument(new StringDocumentSource(s,IRI.create(\"urn:source:\"+UUID.randomUUID()),new FunctionalSyntaxDocumentFormat(),null),new OWLOntologyLoaderConfiguration().setLoadAnnotationAxioms(annotations));}\n static OWLAxiom ax(OWLOntologyManager m,String s){return m.getOWLDataFactory().getOWLDeclarationAxiom(m.getOWLDataFactory().getOWLClass(IRI.create(\"urn:\"+s)));}\n static OWLAxiom ann(OWLOntologyManager m){return m.getOWLDataFactory().getOWLAnnotationAssertionAxiom(m.getOWLDataFactory().getRDFSLabel(),IRI.create(\"urn:S\"),m.getOWLDataFactory().getOWLLiteral(\"value\"));}\n static String names(OWLOntologyManager m){return m.ontologies().map(o->o.getOntologyID().getOntologyIRI().map(Object::toString).orElse(\"anonymous\")+\":\"+o.getAxiomCount()).sorted().toList().toString();}\n public static void main(String[]args)throws Exception {\n  row(\"source\",uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl.class.getProtectionDomain().getCodeSource().getLocation());\n  var m=OWLManager.createOWLOntologyManager();var o=load(m,\"Ontology(<urn:filtered>)\",false);var a=ax(m,\"A\");\n  row(\"empty-batch\",m.applyChangesAndGetDetails(List.of()).getChangeEffect());\n  row(\"inverse\",m.applyChangesAndGetDetails(List.of(new AddAxiom(o,a),new RemoveAxiom(o,a))).getChangeEffect(),o.getAxiomCount());\n  var details=m.applyChangesAndGetDetails(List.of(new AddAxiom(o,a),new RemoveAxiom(o,a),new AddAxiom(o,ann(m))));\n  row(\"inverse-before-unsuccess\",details.getChangeEffect(),details.getEnactedChanges().size(),o.getAxiomCount(),o.containsAxiom(a));\n  m.removeAxiom(o,a);var old=o.getOntologyID();row(\"rename\",m.applyChange(new SetOntologyID(o,new OWLOntologyID(IRI.create(\"urn:renamed\")))),m.addAxiom(o,ann(m)),o.getAxiomCount());\n  var reused=m.createOntology(old);row(\"old-id-config-retained\",m.addAxiom(reused,ann(m)),reused.getAxiomCount());\n  m.removeOntology(reused);reused=m.createOntology(old);row(\"remove-config-retained\",m.addAxiom(reused,ann(m)),reused.getAxiomCount());\n  var lm=OWLManager.createOWLOntologyManager();var lo=lm.createOntology(IRI.create(\"urn:listeners\"));var events=new ArrayList<String>();\n  lm.addImpendingOntologyChangeListener(cs->events.add(\"impending:\"+cs.size()+\":\"+lo.getAxiomCount()));\n  lm.addOntologyChangeProgessListener(new OWLOntologyChangeProgressListener(){public void begin(int s){events.add(\"begin:\"+s+\":\"+lo.getAxiomCount());}public void appliedChange(OWLOntologyChange c){events.add(\"applied:\"+c.getClass().getSimpleName()+\":\"+lo.getAxiomCount());}public void end(){events.add(\"end:\"+lo.getAxiomCount());}});\n  lm.addOntologyChangeListener(cs->events.add(\"changed:\"+cs.size()+\":\"+lo.getAxiomCount()));\n  var la=ax(lm,\"L\");row(\"listener-batch-result\",lm.applyChanges(List.of(new AddAxiom(lo,la),new AddAxiom(lo,la),new RemoveAxiom(lo,la))));row(\"listener-batch-events\",events);events.clear();\n  var collide=lm.createOntology(IRI.create(\"urn:collision\"));lm.addAxiom(collide,ax(lm,\"Other\"));events.clear();\n  try{lm.applyChanges(List.of(new AddAxiom(lo,la),new SetOntologyID(lo,collide.getOntologyID())));}catch(Exception e){row(\"listener-thrown\",e.getClass().getSimpleName(),lo.getAxiomCount(),events);}events.clear();\n  var vm=OWLManager.createOWLOntologyManager();var vo=vm.createOntology(IRI.create(\"urn:veto\"));var ve=new ArrayList<String>();\n  vm.addImpendingOntologyChangeListener(cs->{ve.add(\"impending\");throw new OWLOntologyChangeVetoException(cs.get(0).getChangeData(),\"veto\");});vm.addOntologyChangesVetoedListener((cs,e)->ve.add(\"vetoed:\"+cs.size()));vm.addOntologyChangeListener(cs->ve.add(\"changed\"));row(\"veto\",vm.addAxiom(vo,ax(vm,\"V\")),vo.getAxiomCount(),ve);\n  var rm=OWLManager.createOWLOntologyManager();var ro=rm.createOntology(IRI.create(\"urn:reentrant\"));var re=new ArrayList<String>();boolean[] nested={false};\n  rm.addOntologyChangeListener(cs->{re.add(\"callback:\"+ro.getAxiomCount());if(!nested[0]){nested[0]=true;rm.addAxiom(ro,ax(rm,\"Nested\"));}});row(\"reentrant\",rm.addAxiom(ro,ax(rm,\"Outer\")),ro.getAxiomCount(),re);\n  Path folder=Path.of(args[0]);Path af=folder.resolve(\"import-a.ofn\"),bf=folder.resolve(\"import-b.ofn\");Files.writeString(af,\"Ontology(<urn:import-a> Declaration(Class(<urn:A>)))\");Files.writeString(bf,\"not functional\");\n  var im=OWLManager.createOWLOntologyManager();var existing=im.createOntology(IRI.create(\"urn:existing\"));im.addAxiom(existing,ax(im,\"Existing\"));im.getIRIMappers().add(new SimpleIRIMapper(IRI.create(\"urn:import-a\"),IRI.create(af.toFile())));im.getIRIMappers().add(new SimpleIRIMapper(IRI.create(\"urn:import-b\"),IRI.create(bf.toFile())));\n  String root=\"Ontology(<urn:root> Import(<urn:import-a>) Import(<urn:import-b>) Declaration(Class(<urn:Root>)))\";\n  try{load(im,root,false);}catch(Exception e){row(\"import-failure\",e.getClass().getSimpleName(),names(im));}\n  row(\"retained-import-config\",im.addAxiom(im.getOntology(IRI.create(\"urn:import-a\")),ann(im)),names(im));Files.writeString(bf,\"Ontology(<urn:import-b> Declaration(Class(<urn:B>)))\");\n  try{var retried=load(im,root,false);row(\"retry-after-fixed-import\",names(im),retried.importsClosure().count(),retried.importsDeclarations().count());}catch(Exception e){row(\"retry-after-fixed-import-error\",e.getClass().getSimpleName(),names(im));}\n  var sm=OWLManager.createOWLOntologyManager();sm.getIRIMappers().add(new SimpleIRIMapper(IRI.create(\"urn:import-a\"),IRI.create(af.toFile())));try{load(sm,\"Ontology(<urn:bad-root> Import(<urn:import-a>) NOT_SYNTAX)\",true);}catch(Exception e){row(\"root-syntax-failure\",e.getClass().getSimpleName(),names(sm));}\n }\n}\n",
+      "execution": {
+        "command": "java",
+        "args": [
+          "-cp",
+          "${GAP_WORKSPACE}/source-overlay;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-apibinding\\5.5.1\\owlapi-apibinding-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-tools\\5.5.1\\owlapi-tools-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-impl\\5.5.1\\owlapi-impl-5.5.1.jar;${MAVEN_REPOSITORY}\\javax\\inject\\javax.inject\\1\\javax.inject-1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-parsers\\5.5.1\\owlapi-parsers-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-oboformat\\5.5.1\\owlapi-oboformat-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-rio\\5.5.1\\owlapi-rio-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-api\\5.5.1\\owlapi-api-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-compatibility\\5.5.1\\owlapi-compatibility-5.5.1.jar;${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-core\\2.16.1\\jackson-core-2.16.1.jar;${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-databind\\2.16.1\\jackson-databind-2.16.1.jar;${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-annotations\\2.16.1\\jackson-annotations-2.16.1.jar;${MAVEN_REPOSITORY}\\org\\apache\\commons\\commons-rdf-api\\0.5.0\\commons-rdf-api-0.5.0.jar;${MAVEN_REPOSITORY}\\org\\tukaani\\xz\\1.9\\xz-1.9.jar;${MAVEN_REPOSITORY}\\org\\slf4j\\slf4j-api\\2.0.11\\slf4j-api-2.0.11.jar;${MAVEN_REPOSITORY}\\org\\slf4j\\jcl-over-slf4j\\2.0.11\\jcl-over-slf4j-2.0.11.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model\\5.0.2\\rdf4j-model-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-exception\\5.0.2\\rdf4j-common-exception-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-text\\5.0.2\\rdf4j-common-text-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-io\\5.0.2\\rdf4j-common-io-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-iterator\\5.0.2\\rdf4j-common-iterator-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-order\\5.0.2\\rdf4j-common-order-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model-api\\5.0.2\\rdf4j-model-api-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-annotation\\5.0.2\\rdf4j-common-annotation-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model-vocabulary\\5.0.2\\rdf4j-model-vocabulary-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-api\\5.0.2\\rdf4j-rio-api-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-xml\\5.0.2\\rdf4j-common-xml-5.0.2.jar;${MAVEN_REPOSITORY}\\commons-codec\\commons-codec\\1.15\\commons-codec-1.15.jar;${MAVEN_REPOSITORY}\\no\\hasmac\\hasmac-json-ld\\0.9.0\\hasmac-json-ld-0.9.0.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-languages\\5.0.2\\rdf4j-rio-languages-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-datatypes\\5.0.2\\rdf4j-rio-datatypes-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-binary\\5.0.2\\rdf4j-rio-binary-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-n3\\5.0.2\\rdf4j-rio-n3-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-nquads\\5.0.2\\rdf4j-rio-nquads-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-ntriples\\5.0.2\\rdf4j-rio-ntriples-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-rdfjson\\5.0.2\\rdf4j-rio-rdfjson-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-jsonld\\5.0.2\\rdf4j-rio-jsonld-5.0.2.jar;${MAVEN_REPOSITORY}\\jakarta\\json\\jakarta.json-api\\2.0.1\\jakarta.json-api-2.0.1.jar;${MAVEN_REPOSITORY}\\org\\glassfish\\jakarta.json\\2.0.1\\jakarta.json-2.0.1.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient\\4.5.14\\httpclient-4.5.14.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore\\4.4.16\\httpcore-4.4.16.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient-cache\\4.5.14\\httpclient-cache-4.5.14.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-rdfxml\\5.0.2\\rdf4j-rio-rdfxml-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-trix\\5.0.2\\rdf4j-rio-trix-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-turtle\\5.0.2\\rdf4j-rio-turtle-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-trig\\5.0.2\\rdf4j-rio-trig-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-hdt\\5.0.2\\rdf4j-rio-hdt-5.0.2.jar;${MAVEN_REPOSITORY}\\com\\github\\jsonld-java\\jsonld-java\\0.13.6\\jsonld-java-0.13.6.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient-osgi\\4.5.13\\httpclient-osgi-4.5.13.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpmime\\4.5.13\\httpmime-4.5.13.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\fluent-hc\\4.5.13\\fluent-hc-4.5.13.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore-osgi\\4.4.16\\httpcore-osgi-4.4.16.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore-nio\\4.4.16\\httpcore-nio-4.4.16.jar;${MAVEN_REPOSITORY}\\com\\github\\vsonnier\\hppcrt\\0.7.5\\hppcrt-0.7.5.jar;${MAVEN_REPOSITORY}\\com\\github\\ben-manes\\caffeine\\caffeine\\3.1.8\\caffeine-3.1.8.jar;${MAVEN_REPOSITORY}\\org\\checkerframework\\checker-qual\\3.37.0\\checker-qual-3.37.0.jar;${MAVEN_REPOSITORY}\\com\\google\\errorprone\\error_prone_annotations\\2.21.1\\error_prone_annotations-2.21.1.jar;${MAVEN_REPOSITORY}\\com\\google\\guava\\guava\\33.0.0-jre\\guava-33.0.0-jre.jar;${MAVEN_REPOSITORY}\\com\\google\\guava\\failureaccess\\1.0.2\\failureaccess-1.0.2.jar;${MAVEN_REPOSITORY}\\com\\google\\guava\\listenablefuture\\9999.0-empty-to-avoid-conflict-with-guava\\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;${MAVEN_REPOSITORY}\\com\\google\\j2objc\\j2objc-annotations\\2.8\\j2objc-annotations-2.8.jar;${MAVEN_REPOSITORY}\\com\\google\\code\\findbugs\\jsr305\\3.0.2\\jsr305-3.0.2.jar;${MAVEN_REPOSITORY}\\commons-io\\commons-io\\2.15.1\\commons-io-2.15.1.jar",
+          "${GAP_WORKSPACE}\\ProbeManagerBehavior.java",
+          "${GAP_WORKSPACE}"
+        ],
+        "network": "Local file mappings only; no remote source input."
+      },
+      "result": {
+        "stdout": "source\t[file:/${GAP_WORKSPACE}/source-overlay/]\r\nempty-batch\t[NO_OPERATION]\r\ninverse\t[SUCCESSFULLY, 0]\r\ninverse-before-unsuccess\t[UNSUCCESSFULLY, 0, 1, true]\r\nrename\t[SUCCESSFULLY, SUCCESSFULLY, 1]\r\nold-id-config-retained\t[UNSUCCESSFULLY, 0]\r\nremove-config-retained\t[UNSUCCESSFULLY, 0]\r\nlistener-batch-result\t[SUCCESSFULLY]\r\nlistener-batch-events\t[[impending:3:0, begin:3:0, applied:AddAxiom:1, applied:AddAxiom:1, applied:RemoveAxiom:0, end:0, changed:2:0]]\r\nlistener-thrown\t[OWLOntologyRenameException, 1, [impending:2:0, begin:2:0, applied:AddAxiom:1]]\r\nveto\t[UNSUCCESSFULLY, 0, [impending, vetoed:1]]\r\nreentrant\t[SUCCESSFULLY, 2, [callback:1, callback:2]]\r\nimport-failure\t[UnloadableImportException, [urn:existing:1, urn:import-a:1]]\r\nretained-import-config\t[UNSUCCESSFULLY, [urn:existing:1, urn:import-a:1]]\r\nretry-after-fixed-import\t[[urn:existing:1, urn:import-a:1, urn:root:1], 2, 2]\r\nroot-syntax-failure\t[UnparsableOntologyException, [urn:import-a:1]]\r\n",
+        "stderr": "${GAP_WORKSPACE}\\ProbeManagerBehavior.java:23: warning: [deprecation] removeAxiom(OWLOntology,OWLAxiom) in HasRemoveAxiom has been deprecated\r\n  m.removeAxiom(o,a);var old=o.getOntologyID();row(\"rename\",m.applyChange(new SetOntologyID(o,new OWLOntologyID(IRI.create(\"urn:renamed\")))),m.addAxiom(o,ann(m)),o.getAxiomCount());\r\n   ^\r\n1 warning\r\nSLF4J(W): No SLF4J providers were found.\r\nSLF4J(W): Defaulting to no-operation (NOP) logger implementation\r\nSLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.\r\n",
+        "exitCode": 0
+      },
+      "portableRecord": {
+        "originalRecordSha256": "1a60a02f631836fab6581a90893a2d54705f1b9c6206dba7957ffdd8b6c4e830",
+        "normalizedRecordSha256": "8d60c04015aee2710db4df76dfbbbdf35fff9083679179a0798d1053cf95b655",
+        "originalSourceSha256": "266ba1d27ee833b8839cbc5d7c2b83ee9f4ddbbd3ca47aafe4abd29e8e0484ff",
+        "sourceSha256": "266ba1d27ee833b8839cbc5d7c2b83ee9f4ddbbd3ca47aafe4abd29e8e0484ff"
+      }
+    },
+    {
+      "id": "GAP-P02",
+      "name": "four storers, supplied writer failures, stream ownership and target reuse",
+      "source": "import java.io.*;\nimport java.util.*;\nimport org.semanticweb.owlapi.apibinding.OWLManager;\nimport org.semanticweb.owlapi.model.*;\nimport org.semanticweb.owlapi.formats.*;\nimport org.semanticweb.owlapi.io.*;\npublic class ProbeWriterBehavior {\n static class Sink extends Writer {StringBuilder text=new StringBuilder();int writes,flushes,closes;final String mode;Sink(String m){mode=m;}public void write(char[]b,int o,int n)throws IOException {writes++;for(int i=0;i<n;i++){if(text.length()==20){if(mode.equals(\"write-io\"))throw new IOException(\"write20\");if(mode.equals(\"write-runtime\"))throw new IllegalStateException(\"write20\");}text.append(b[o+i]);}}public void flush()throws IOException {flushes++;if(mode.equals(\"flush-io\"))throw new IOException(\"flush\");}public void close()throws IOException{closes++;if(mode.equals(\"close-io\"))throw new IOException(\"close\");}}\n static class Bytes extends OutputStream {int bytes,flushes,closes;public void write(int b)throws IOException{if(bytes==20)throw new IOException(\"bytes20\");bytes++;}public void flush(){flushes++;}public void close(){closes++;}}\n static String desc(Throwable e){return e.getClass().getSimpleName()+\":\"+e.getMessage()+\";cause=\"+(e.getCause()==null?\"none\":e.getCause().getClass().getSimpleName());}\n public static void main(String[]args)throws Exception {\n System.out.println(\"source\\t\"+org.semanticweb.owlapi.util.AbstractOWLStorer.class.getProtectionDomain().getCodeSource().getLocation());\n var m=OWLManager.createOWLOntologyManager();var o=m.createOntology(IRI.create(\"urn:writer\"));m.addAxiom(o,m.getOWLDataFactory().getOWLDeclarationAxiom(m.getOWLDataFactory().getOWLClass(IRI.create(\"urn:A\"))));\n for(var f:List.of(new FunctionalSyntaxDocumentFormat(),new RDFXMLDocumentFormat(),new OWLXMLDocumentFormat(),new TurtleDocumentFormat()))for(var mode:List.of(\"normal\",\"write-io\",\"write-runtime\",\"flush-io\",\"close-io\")){\n  var sink=new Sink(mode);var t=new OWLOntologyDocumentTarget(){public Optional<Writer> getWriter(){return Optional.of(sink);}};String result=\"OK\";try{m.saveOntology(o,f,t);}catch(Throwable e){result=desc(e);}System.out.println(f.getKey()+\"\\t\"+mode+\"\\t\"+result+\"\\tchars=\"+sink.text.length()+\"\\twrites=\"+sink.writes+\"\\tflushes=\"+sink.flushes+\"\\tcloses=\"+sink.closes);\n }\n var stream=new Bytes();String result=\"OK\";try{m.saveOntology(o,new FunctionalSyntaxDocumentFormat(),new OWLOntologyDocumentTarget(){public Optional<OutputStream> getOutputStream(){return Optional.of(stream);}});}catch(Throwable e){result=desc(e);}System.out.println(\"stream\\t\"+result+\"\\tbytes=\"+stream.bytes+\"\\tflushes=\"+stream.flushes+\"\\tcloses=\"+stream.closes);\n var target=new StringDocumentTarget();m.saveOntology(o,new FunctionalSyntaxDocumentFormat(),target);int n=target.toString().length();m.saveOntology(o,new FunctionalSyntaxDocumentFormat(),target);System.out.println(\"reuse\\t\"+n+\"\\t\"+target.toString().length());\n }\n}\n",
+      "execution": {
+        "command": "java",
+        "args": [
+          "-cp",
+          "${GAP_WORKSPACE}/source-overlay;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-apibinding\\5.5.1\\owlapi-apibinding-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-tools\\5.5.1\\owlapi-tools-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-impl\\5.5.1\\owlapi-impl-5.5.1.jar;${MAVEN_REPOSITORY}\\javax\\inject\\javax.inject\\1\\javax.inject-1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-parsers\\5.5.1\\owlapi-parsers-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-oboformat\\5.5.1\\owlapi-oboformat-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-rio\\5.5.1\\owlapi-rio-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-api\\5.5.1\\owlapi-api-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-compatibility\\5.5.1\\owlapi-compatibility-5.5.1.jar;${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-core\\2.16.1\\jackson-core-2.16.1.jar;${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-databind\\2.16.1\\jackson-databind-2.16.1.jar;${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-annotations\\2.16.1\\jackson-annotations-2.16.1.jar;${MAVEN_REPOSITORY}\\org\\apache\\commons\\commons-rdf-api\\0.5.0\\commons-rdf-api-0.5.0.jar;${MAVEN_REPOSITORY}\\org\\tukaani\\xz\\1.9\\xz-1.9.jar;${MAVEN_REPOSITORY}\\org\\slf4j\\slf4j-api\\2.0.11\\slf4j-api-2.0.11.jar;${MAVEN_REPOSITORY}\\org\\slf4j\\jcl-over-slf4j\\2.0.11\\jcl-over-slf4j-2.0.11.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model\\5.0.2\\rdf4j-model-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-exception\\5.0.2\\rdf4j-common-exception-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-text\\5.0.2\\rdf4j-common-text-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-io\\5.0.2\\rdf4j-common-io-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-iterator\\5.0.2\\rdf4j-common-iterator-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-order\\5.0.2\\rdf4j-common-order-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model-api\\5.0.2\\rdf4j-model-api-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-annotation\\5.0.2\\rdf4j-common-annotation-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model-vocabulary\\5.0.2\\rdf4j-model-vocabulary-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-api\\5.0.2\\rdf4j-rio-api-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-xml\\5.0.2\\rdf4j-common-xml-5.0.2.jar;${MAVEN_REPOSITORY}\\commons-codec\\commons-codec\\1.15\\commons-codec-1.15.jar;${MAVEN_REPOSITORY}\\no\\hasmac\\hasmac-json-ld\\0.9.0\\hasmac-json-ld-0.9.0.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-languages\\5.0.2\\rdf4j-rio-languages-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-datatypes\\5.0.2\\rdf4j-rio-datatypes-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-binary\\5.0.2\\rdf4j-rio-binary-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-n3\\5.0.2\\rdf4j-rio-n3-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-nquads\\5.0.2\\rdf4j-rio-nquads-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-ntriples\\5.0.2\\rdf4j-rio-ntriples-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-rdfjson\\5.0.2\\rdf4j-rio-rdfjson-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-jsonld\\5.0.2\\rdf4j-rio-jsonld-5.0.2.jar;${MAVEN_REPOSITORY}\\jakarta\\json\\jakarta.json-api\\2.0.1\\jakarta.json-api-2.0.1.jar;${MAVEN_REPOSITORY}\\org\\glassfish\\jakarta.json\\2.0.1\\jakarta.json-2.0.1.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient\\4.5.14\\httpclient-4.5.14.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore\\4.4.16\\httpcore-4.4.16.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient-cache\\4.5.14\\httpclient-cache-4.5.14.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-rdfxml\\5.0.2\\rdf4j-rio-rdfxml-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-trix\\5.0.2\\rdf4j-rio-trix-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-turtle\\5.0.2\\rdf4j-rio-turtle-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-trig\\5.0.2\\rdf4j-rio-trig-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-hdt\\5.0.2\\rdf4j-rio-hdt-5.0.2.jar;${MAVEN_REPOSITORY}\\com\\github\\jsonld-java\\jsonld-java\\0.13.6\\jsonld-java-0.13.6.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient-osgi\\4.5.13\\httpclient-osgi-4.5.13.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpmime\\4.5.13\\httpmime-4.5.13.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\fluent-hc\\4.5.13\\fluent-hc-4.5.13.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore-osgi\\4.4.16\\httpcore-osgi-4.4.16.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore-nio\\4.4.16\\httpcore-nio-4.4.16.jar;${MAVEN_REPOSITORY}\\com\\github\\vsonnier\\hppcrt\\0.7.5\\hppcrt-0.7.5.jar;${MAVEN_REPOSITORY}\\com\\github\\ben-manes\\caffeine\\caffeine\\3.1.8\\caffeine-3.1.8.jar;${MAVEN_REPOSITORY}\\org\\checkerframework\\checker-qual\\3.37.0\\checker-qual-3.37.0.jar;${MAVEN_REPOSITORY}\\com\\google\\errorprone\\error_prone_annotations\\2.21.1\\error_prone_annotations-2.21.1.jar;${MAVEN_REPOSITORY}\\com\\google\\guava\\guava\\33.0.0-jre\\guava-33.0.0-jre.jar;${MAVEN_REPOSITORY}\\com\\google\\guava\\failureaccess\\1.0.2\\failureaccess-1.0.2.jar;${MAVEN_REPOSITORY}\\com\\google\\guava\\listenablefuture\\9999.0-empty-to-avoid-conflict-with-guava\\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;${MAVEN_REPOSITORY}\\com\\google\\j2objc\\j2objc-annotations\\2.8\\j2objc-annotations-2.8.jar;${MAVEN_REPOSITORY}\\com\\google\\code\\findbugs\\jsr305\\3.0.2\\jsr305-3.0.2.jar;${MAVEN_REPOSITORY}\\commons-io\\commons-io\\2.15.1\\commons-io-2.15.1.jar",
+          "${GAP_WORKSPACE}\\ProbeWriterBehavior.java"
+        ],
+        "network": "String document and in-memory writer/stream targets only."
+      },
+      "result": {
+        "stdout": "source\tfile:/${GAP_WORKSPACE}/source-overlay/\r\nOWL Functional Syntax\tnormal\tOK\tchars=339\twrites=75\tflushes=3\tcloses=2\r\nOWL Functional Syntax\twrite-io\tOK\tchars=20\twrites=75\tflushes=3\tcloses=2\r\nOWL Functional Syntax\twrite-runtime\tIllegalStateException:write20;cause=none\tchars=20\twrites=6\tflushes=0\tcloses=2\r\nOWL Functional Syntax\tflush-io\tOK\tchars=339\twrites=75\tflushes=3\tcloses=2\r\nOWL Functional Syntax\tclose-io\tOWLOntologyStorageException:java.io.IOException: close;cause=IOException\tchars=339\twrites=75\tflushes=3\tcloses=2\r\nRDF/XML Syntax\tnormal\tOK\tchars=795\twrites=173\tflushes=2\tcloses=2\r\nRDF/XML Syntax\twrite-io\tOK\tchars=20\twrites=173\tflushes=2\tcloses=2\r\nRDF/XML Syntax\twrite-runtime\tIllegalStateException:write20;cause=none\tchars=20\twrites=1\tflushes=0\tcloses=2\r\nRDF/XML Syntax\tflush-io\tOK\tchars=795\twrites=173\tflushes=2\tcloses=2\r\nRDF/XML Syntax\tclose-io\tOWLOntologyStorageException:java.io.IOException: close;cause=IOException\tchars=795\twrites=173\tflushes=2\tcloses=2\r\nOWL/XML Syntax\tnormal\tOK\tchars=857\twrites=219\tflushes=3\tcloses=2\r\nOWL/XML Syntax\twrite-io\tOK\tchars=20\twrites=219\tflushes=3\tcloses=2\r\nOWL/XML Syntax\twrite-runtime\tIllegalStateException:write20;cause=none\tchars=20\twrites=1\tflushes=0\tcloses=2\r\nOWL/XML Syntax\tflush-io\tOK\tchars=857\twrites=219\tflushes=3\tcloses=2\r\nOWL/XML Syntax\tclose-io\tOWLOntologyStorageException:java.io.IOException: close;cause=IOException\tchars=857\twrites=219\tflushes=3\tcloses=2\r\nTurtle Syntax\tnormal\tOK\tchars=626\twrites=80\tflushes=4\tcloses=2\r\nTurtle Syntax\twrite-io\tOK\tchars=20\twrites=80\tflushes=4\tcloses=2\r\nTurtle Syntax\twrite-runtime\tIllegalStateException:write20;cause=none\tchars=20\twrites=5\tflushes=0\tcloses=2\r\nTurtle Syntax\tflush-io\tOK\tchars=626\twrites=80\tflushes=4\tcloses=2\r\nTurtle Syntax\tclose-io\tOWLOntologyStorageException:java.io.IOException: close;cause=IOException\tchars=626\twrites=80\tflushes=4\tcloses=2\r\nstream\tOK\tbytes=20\tflushes=2\tcloses=0\r\nreuse\t339\t678\r\n",
+        "stderr": "SLF4J(W): No SLF4J providers were found.\r\nSLF4J(W): Defaulting to no-operation (NOP) logger implementation\r\nSLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.\r\n",
+        "exitCode": 0
+      },
+      "portableRecord": {
+        "originalRecordSha256": "c29ba0fe89176747474ebb377a2fa87a9f3a8942a0be794ab7eb9d21934589ab",
+        "normalizedRecordSha256": "940ee9b65ed2d318c0b158963ee36e21f9df8351552c10f210e43f3af962d75d",
+        "originalSourceSha256": "7b66d7be56ebe18a7e81e462ac5fa9c44df194a16a01e778765e7f58680b7fd5",
+        "sourceSha256": "7b66d7be56ebe18a7e81e462ac5fa9c44df194a16a01e778765e7f58680b7fd5"
+      }
+    },
+    {
+      "id": "GAP-P03",
+      "name": "selected Rio JSON-LD processor defaults and context chain",
+      "source": "import java.io.*;\nimport java.net.*;\nimport java.util.*;\nimport java.util.concurrent.atomic.AtomicInteger;\nimport org.semanticweb.owlapi.apibinding.OWLManager;\nimport org.semanticweb.owlapi.io.*;\nimport org.semanticweb.owlapi.formats.*;\nimport org.semanticweb.owlapi.model.*;\nimport org.eclipse.rdf4j.rio.*;\nimport org.eclipse.rdf4j.rio.helpers.JSONLDSettings;\nimport no.hasmac.jsonld.loader.*;\nimport no.hasmac.jsonld.document.*;\npublic class ProbeJsonLdBehavior {\n static int maximum, calls;static String tag;static boolean cyclic;\n static String outcome(Throwable e){StringBuilder s=new StringBuilder();for(int i=0;e!=null&&i<12;i++,e=e.getCause()){s.append(e.getClass().getSimpleName()).append(\":\").append(e.getMessage()).append(\" |\");}return s.toString().replace('\\n',' ');}\n static Document response(URI u,DocumentLoaderOptions options) throws no.hasmac.jsonld.JsonLdError {calls++;if(calls>300)throw new IllegalStateException(\"probe bound\");String next;int i;if(u.toString().equals(\"https://schema.org/\")){i=maximum;}else{i=Integer.parseInt(u.getPath().substring(u.getPath().lastIndexOf('/')+1));}next=i<maximum?\"{\\\"@context\\\":\\\"https://probe.example/\"+tag+\"/\"+(cyclic?1:i+1)+\"\\\"}\":\"{\\\"@context\\\":{\\\"x\\\":\\\"urn:x:\\\"}}\";var d=JsonDocument.of(new StringReader(next));d.setDocumentUrl(u);return d;}\n static void run(String id,int count,String first,Boolean systemSecure,boolean formatOff){tag=id;maximum=count;calls=0;System.clearProperty(JSONLDSettings.SECURE_MODE.getKey());System.setProperty(JSONLDSettings.DOCUMENT_LOADER_CACHE.getKey(),\"false\");if(systemSecure!=null)System.setProperty(JSONLDSettings.SECURE_MODE.getKey(),systemSecure.toString());var f=new RDFJsonLDDocumentFormat();if(formatOff)f.setParameter(JSONLDSettings.SECURE_MODE,false);String text=\"{\\\"@context\\\":\\\"\"+first+\"\\\",\\\"@id\\\":\\\"urn:s\\\",\\\"@type\\\":\\\"http://www.w3.org/2002/07/owl#Class\\\"}\";try{var o=OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(new StringDocumentSource(text,IRI.create(\"urn:jsonld:\"+id),f,null));System.out.println(id+\"\\tOK\\tcalls=\"+calls+\"\\taxioms=\"+o.getAxiomCount());}catch(Throwable e){System.out.println(id+\"\\tFAIL\\tcalls=\"+calls+\"\\t\"+outcome(e));}}\n public static void main(String[]args)throws Exception {\n  var router=(SchemeRouter)SchemeRouter.defaultInstance();router.set(\"https\",ProbeJsonLdBehavior::response);router.set(\"http\",ProbeJsonLdBehavior::response);router.set(\"file\",(u,o)->{throw new IllegalStateException(\"probe denies file\");});\n  var parser=Rio.createParser(RDFFormat.JSONLD);System.out.println(\"selected\\t\"+parser.getClass().getName()+\"\\t\"+parser.getClass().getProtectionDomain().getCodeSource().getLocation());\n  System.out.println(\"processor\\t\"+no.hasmac.jsonld.JsonLd.class.getProtectionDomain().getCodeSource().getLocation());\n  System.out.println(\"supported\\t\"+parser.getSupportedSettings().stream().map(RioSetting::getKey).sorted().toList());\n  System.out.println(\"defaults\\tsecure=\"+parser.getParserConfig().get(JSONLDSettings.SECURE_MODE)+\"\\tcache=\"+parser.getParserConfig().get(JSONLDSettings.DOCUMENT_LOADER_CACHE)+\"\\twhitelist=\"+parser.getParserConfig().get(JSONLDSettings.WHITELIST).size());\n  run(\"default-unlisted\",1,\"https://probe.example/default-unlisted/1\",null,false);\n  run(\"default-listed\",1,\"https://schema.org/\",null,false);\n  run(\"format-off-unlisted\",1,\"https://probe.example/format-off-unlisted/1\",null,true);\n  run(\"system-off-chain13\",13,\"https://probe.example/system-off-chain13/1\",false,false);\n  run(\"system-off-chain257\",257,\"https://probe.example/system-off-chain257/1\",false,false);\n  run(\"system-off-chain258\",258,\"https://probe.example/system-off-chain258/1\",false,false);\n  System.clearProperty(JSONLDSettings.SECURE_MODE.getKey());System.clearProperty(JSONLDSettings.DOCUMENT_LOADER_CACHE.getKey());\n }\n}\n",
+      "execution": {
+        "command": "java",
+        "args": [
+          "-cp",
+          "${GAP_WORKSPACE}/source-overlay;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-apibinding\\5.5.1\\owlapi-apibinding-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-tools\\5.5.1\\owlapi-tools-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-impl\\5.5.1\\owlapi-impl-5.5.1.jar;${MAVEN_REPOSITORY}\\javax\\inject\\javax.inject\\1\\javax.inject-1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-parsers\\5.5.1\\owlapi-parsers-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-oboformat\\5.5.1\\owlapi-oboformat-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-rio\\5.5.1\\owlapi-rio-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-api\\5.5.1\\owlapi-api-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-compatibility\\5.5.1\\owlapi-compatibility-5.5.1.jar;${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-core\\2.16.1\\jackson-core-2.16.1.jar;${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-databind\\2.16.1\\jackson-databind-2.16.1.jar;${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-annotations\\2.16.1\\jackson-annotations-2.16.1.jar;${MAVEN_REPOSITORY}\\org\\apache\\commons\\commons-rdf-api\\0.5.0\\commons-rdf-api-0.5.0.jar;${MAVEN_REPOSITORY}\\org\\tukaani\\xz\\1.9\\xz-1.9.jar;${MAVEN_REPOSITORY}\\org\\slf4j\\slf4j-api\\2.0.11\\slf4j-api-2.0.11.jar;${MAVEN_REPOSITORY}\\org\\slf4j\\jcl-over-slf4j\\2.0.11\\jcl-over-slf4j-2.0.11.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model\\5.0.2\\rdf4j-model-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-exception\\5.0.2\\rdf4j-common-exception-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-text\\5.0.2\\rdf4j-common-text-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-io\\5.0.2\\rdf4j-common-io-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-iterator\\5.0.2\\rdf4j-common-iterator-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-order\\5.0.2\\rdf4j-common-order-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model-api\\5.0.2\\rdf4j-model-api-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-annotation\\5.0.2\\rdf4j-common-annotation-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model-vocabulary\\5.0.2\\rdf4j-model-vocabulary-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-api\\5.0.2\\rdf4j-rio-api-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-xml\\5.0.2\\rdf4j-common-xml-5.0.2.jar;${MAVEN_REPOSITORY}\\commons-codec\\commons-codec\\1.15\\commons-codec-1.15.jar;${MAVEN_REPOSITORY}\\no\\hasmac\\hasmac-json-ld\\0.9.0\\hasmac-json-ld-0.9.0.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-languages\\5.0.2\\rdf4j-rio-languages-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-datatypes\\5.0.2\\rdf4j-rio-datatypes-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-binary\\5.0.2\\rdf4j-rio-binary-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-n3\\5.0.2\\rdf4j-rio-n3-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-nquads\\5.0.2\\rdf4j-rio-nquads-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-ntriples\\5.0.2\\rdf4j-rio-ntriples-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-rdfjson\\5.0.2\\rdf4j-rio-rdfjson-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-jsonld\\5.0.2\\rdf4j-rio-jsonld-5.0.2.jar;${MAVEN_REPOSITORY}\\jakarta\\json\\jakarta.json-api\\2.0.1\\jakarta.json-api-2.0.1.jar;${MAVEN_REPOSITORY}\\org\\glassfish\\jakarta.json\\2.0.1\\jakarta.json-2.0.1.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient\\4.5.14\\httpclient-4.5.14.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore\\4.4.16\\httpcore-4.4.16.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient-cache\\4.5.14\\httpclient-cache-4.5.14.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-rdfxml\\5.0.2\\rdf4j-rio-rdfxml-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-trix\\5.0.2\\rdf4j-rio-trix-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-turtle\\5.0.2\\rdf4j-rio-turtle-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-trig\\5.0.2\\rdf4j-rio-trig-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-hdt\\5.0.2\\rdf4j-rio-hdt-5.0.2.jar;${MAVEN_REPOSITORY}\\com\\github\\jsonld-java\\jsonld-java\\0.13.6\\jsonld-java-0.13.6.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient-osgi\\4.5.13\\httpclient-osgi-4.5.13.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpmime\\4.5.13\\httpmime-4.5.13.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\fluent-hc\\4.5.13\\fluent-hc-4.5.13.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore-osgi\\4.4.16\\httpcore-osgi-4.4.16.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore-nio\\4.4.16\\httpcore-nio-4.4.16.jar;${MAVEN_REPOSITORY}\\com\\github\\vsonnier\\hppcrt\\0.7.5\\hppcrt-0.7.5.jar;${MAVEN_REPOSITORY}\\com\\github\\ben-manes\\caffeine\\caffeine\\3.1.8\\caffeine-3.1.8.jar;${MAVEN_REPOSITORY}\\org\\checkerframework\\checker-qual\\3.37.0\\checker-qual-3.37.0.jar;${MAVEN_REPOSITORY}\\com\\google\\errorprone\\error_prone_annotations\\2.21.1\\error_prone_annotations-2.21.1.jar;${MAVEN_REPOSITORY}\\com\\google\\guava\\guava\\33.0.0-jre\\guava-33.0.0-jre.jar;${MAVEN_REPOSITORY}\\com\\google\\guava\\failureaccess\\1.0.2\\failureaccess-1.0.2.jar;${MAVEN_REPOSITORY}\\com\\google\\guava\\listenablefuture\\9999.0-empty-to-avoid-conflict-with-guava\\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;${MAVEN_REPOSITORY}\\com\\google\\j2objc\\j2objc-annotations\\2.8\\j2objc-annotations-2.8.jar;${MAVEN_REPOSITORY}\\com\\google\\code\\findbugs\\jsr305\\3.0.2\\jsr305-3.0.2.jar;${MAVEN_REPOSITORY}\\commons-io\\commons-io\\2.15.1\\commons-io-2.15.1.jar",
+          "${GAP_WORKSPACE}\\ProbeJsonLdBehavior.java"
+        ],
+        "network": "Supported SchemeRouter stubs for https/http, file denied, 300-call ceiling, no actual request."
+      },
+      "result": {
+        "stdout": "selected\torg.eclipse.rdf4j.rio.jsonld.JSONLDParser\tfile:/${MAVEN_REPOSITORY}/org/eclipse/rdf4j/rdf4j-rio-jsonld/5.0.2/rdf4j-rio-jsonld-5.0.2.jar\r\nprocessor\tfile:/${MAVEN_REPOSITORY}/no/hasmac/hasmac-json-ld/0.9.0/hasmac-json-ld-0.9.0.jar\r\nsupported\t[org.eclipse.rdf4j.rio.datatype_handlers, org.eclipse.rdf4j.rio.fail_on_unknown_datatypes, org.eclipse.rdf4j.rio.fail_on_unknown_languages, org.eclipse.rdf4j.rio.jsonld.exception_on_warning, org.eclipse.rdf4j.rio.jsonld.expand_context, org.eclipse.rdf4j.rio.language_handlers, org.eclipse.rdf4j.rio.namespaces, org.eclipse.rdf4j.rio.normalize_datatype_values, org.eclipse.rdf4j.rio.normalize_language_tags, org.eclipse.rdf4j.rio.preserve_bnode_ids, org.eclipse.rdf4j.rio.skolem_origin, org.eclipse.rdf4j.rio.verify_datatype_values, org.eclipse.rdf4j.rio.verify_language_tags, org.eclipse.rdf4j.rio.verify_relative_uris, org.eclipse.rdf4j.rio.verify_uri_syntax]\r\ndefaults\tsecure=true\tcache=true\twhitelist=25\r\ndefault-unlisted\tFAIL\tcalls=0\tUnparsableOntologyException:Problem parsing urn:jsonld:default-unlisted Could not parse ontology.  Either a suitable parser could not be found, or parsing failed.  See parser logs below for explanation. The following parsers were tried: 1) org.semanticweb.owlapi.rio.RioParserImpl : org.semanticweb.owlapi.formats.RDFJsonLDDocumentFormatFactory@dcacc47d   Detailed logs: -------------------------------------------------------------------------------- Parser: org.semanticweb.owlapi.rio.RioParserImpl : org.semanticweb.owlapi.formats.RDFJsonLDDocumentFormatFactory@dcacc47d     Stack trace: org.eclipse.rdf4j.rio.RDFParseException: Could not load document from https://probe.example/default-unlisted/1 because it is not whitelisted. See: JSONLDSettings.WHITELIST and JSONLDSettings.SECURE_MODE which can also be set as system properties.        org.semanticweb.owlapi.rio.RioParserImpl.parse(RioParserImpl.java:148)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyFactoryImpl.loadOWLOntology(OWLOntologyFactoryImpl.java:195)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl.load(OWLOntologyManagerImpl.java:1105)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl.loadOntology(OWLOntologyManagerImpl.java:1055)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl.loadOntologyFromOntologyDocument(OWLOntologyManagerImpl.java:1005)         ProbeJsonLdBehavior.run(ProbeJsonLdBehavior.java:17)         ProbeJsonLdBehavior.main(ProbeJsonLdBehavior.java:24)         java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)         java.base/java.lang.reflect.Method.invoke(Method.java:565)         jdk.compiler/com.sun.tools.javac.launcher.SourceLauncher.execute(SourceLauncher.java:258) Could not load document from https://probe.example/default-unlisted/1 because it is not whitelisted. See: JSONLDSettings.WHITELIST and JSONLDSettings.SECURE_MODE which can also be set as system properties.        org.eclipse.rdf4j.rio.jsonld.CachingDocumentLoader.loadDocument(CachingDocumentLoader.java:80)         no.hasmac.jsonld.context.ActiveContextBuilder.fetch(ActiveContextBuilder.java:539)         no.hasmac.jsonld.context.ActiveContextBuilder.create(ActiveContextBuilder.java:175)         no.hasmac.jsonld.expansion.ObjectExpansion.initLocalContext(ObjectExpansion.java:199)         no.hasmac.jsonld.expansion.ObjectExpansion.expand(ObjectExpansion.java:101)         no.hasmac.jsonld.expansion.Expansion.compute(Expansion.java:121)         no.hasmac.jsonld.processor.ExpansionProcessor.expand(ExpansionProcessor.java:126)         no.hasmac.jsonld.processor.ToRdfProcessor.toRdf(ToRdfProcessor.java:83)         no.hasmac.jsonld.api.ToRdfApi.get(ToRdfApi.java:187)         org.eclipse.rdf4j.rio.jsonld.JSONLDParser.parse(JSONLDParser.java:185)    |\r\ndefault-listed\tOK\tcalls=1\taxioms=1\r\nformat-off-unlisted\tFAIL\tcalls=0\tUnparsableOntologyException:Problem parsing urn:jsonld:format-off-unlisted Could not parse ontology.  Either a suitable parser could not be found, or parsing failed.  See parser logs below for explanation. The following parsers were tried: 1) org.semanticweb.owlapi.rio.RioParserImpl : org.semanticweb.owlapi.formats.RDFJsonLDDocumentFormatFactory@dcacc47d   Detailed logs: -------------------------------------------------------------------------------- Parser: org.semanticweb.owlapi.rio.RioParserImpl : org.semanticweb.owlapi.formats.RDFJsonLDDocumentFormatFactory@dcacc47d     Stack trace: org.eclipse.rdf4j.rio.RDFParseException: Could not load document from https://probe.example/format-off-unlisted/1 because it is not whitelisted. See: JSONLDSettings.WHITELIST and JSONLDSettings.SECURE_MODE which can also be set as system properties.        org.semanticweb.owlapi.rio.RioParserImpl.parse(RioParserImpl.java:148)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyFactoryImpl.loadOWLOntology(OWLOntologyFactoryImpl.java:195)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl.load(OWLOntologyManagerImpl.java:1105)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl.loadOntology(OWLOntologyManagerImpl.java:1055)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl.loadOntologyFromOntologyDocument(OWLOntologyManagerImpl.java:1005)         ProbeJsonLdBehavior.run(ProbeJsonLdBehavior.java:17)         ProbeJsonLdBehavior.main(ProbeJsonLdBehavior.java:26)         java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)         java.base/java.lang.reflect.Method.invoke(Method.java:565)         jdk.compiler/com.sun.tools.javac.launcher.SourceLauncher.execute(SourceLauncher.java:258) Could not load document from https://probe.example/format-off-unlisted/1 because it is not whitelisted. See: JSONLDSettings.WHITELIST and JSONLDSettings.SECURE_MODE which can also be set as system properties.        org.eclipse.rdf4j.rio.jsonld.CachingDocumentLoader.loadDocument(CachingDocumentLoader.java:80)         no.hasmac.jsonld.context.ActiveContextBuilder.fetch(ActiveContextBuilder.java:539)         no.hasmac.jsonld.context.ActiveContextBuilder.create(ActiveContextBuilder.java:175)         no.hasmac.jsonld.expansion.ObjectExpansion.initLocalContext(ObjectExpansion.java:199)         no.hasmac.jsonld.expansion.ObjectExpansion.expand(ObjectExpansion.java:101)         no.hasmac.jsonld.expansion.Expansion.compute(Expansion.java:121)         no.hasmac.jsonld.processor.ExpansionProcessor.expand(ExpansionProcessor.java:126)         no.hasmac.jsonld.processor.ToRdfProcessor.toRdf(ToRdfProcessor.java:83)         no.hasmac.jsonld.api.ToRdfApi.get(ToRdfApi.java:187)         org.eclipse.rdf4j.rio.jsonld.JSONLDParser.parse(JSONLDParser.java:185)    |\r\nsystem-off-chain13\tOK\tcalls=13\taxioms=1\r\nsystem-off-chain257\tOK\tcalls=257\taxioms=1\r\nsystem-off-chain258\tFAIL\tcalls=257\tUnparsableOntologyException:Problem parsing urn:jsonld:system-off-chain258 Could not parse ontology.  Either a suitable parser could not be found, or parsing failed.  See parser logs below for explanation. The following parsers were tried: 1) org.semanticweb.owlapi.rio.RioParserImpl : org.semanticweb.owlapi.formats.RDFJsonLDDocumentFormatFactory@dcacc47d   Detailed logs: -------------------------------------------------------------------------------- Parser: org.semanticweb.owlapi.rio.RioParserImpl : org.semanticweb.owlapi.formats.RDFJsonLDDocumentFormatFactory@dcacc47d     Stack trace: org.eclipse.rdf4j.rio.RDFParseException: Could not parse JSONLD        org.semanticweb.owlapi.rio.RioParserImpl.parse(RioParserImpl.java:148)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyFactoryImpl.loadOWLOntology(OWLOntologyFactoryImpl.java:195)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl.load(OWLOntologyManagerImpl.java:1105)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl.loadOntology(OWLOntologyManagerImpl.java:1055)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl.loadOntologyFromOntologyDocument(OWLOntologyManagerImpl.java:1005)         ProbeJsonLdBehavior.run(ProbeJsonLdBehavior.java:17)         ProbeJsonLdBehavior.main(ProbeJsonLdBehavior.java:29)         java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)         java.base/java.lang.reflect.Method.invoke(Method.java:565)         jdk.compiler/com.sun.tools.javac.launcher.SourceLauncher.execute(SourceLauncher.java:258) Could not parse JSONLD        org.eclipse.rdf4j.rio.jsonld.JSONLDParser.parse(JSONLDParser.java:251)         org.eclipse.rdf4j.rio.jsonld.JSONLDParser.parse(JSONLDParser.java:107)         org.semanticweb.owlapi.rio.RioParserImpl.parseDocumentSource(RioParserImpl.java:186)         org.semanticweb.owlapi.rio.RioParserImpl.parse(RioParserImpl.java:134)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyFactoryImpl.loadOWLOntology(OWLOntologyFactoryImpl.java:195)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl.load(OWLOntologyManagerImpl.java:1105)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl.loadOntology(OWLOntologyManagerImpl.java:1055)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl.loadOntologyFromOntologyDocument(OWLOntologyManagerImpl.java:1005)         ProbeJsonLdBehavior.run(ProbeJsonLdBehavior.java:17)         ProbeJsonLdBehavior.main(ProbeJsonLdBehavior.java:29) There was a problem encountered loading a remote context [code=LOADING_REMOTE_CONTEXT_FAILED].        no.hasmac.jsonld.context.ActiveContextBuilder.fetch(ActiveContextBuilder.java:592)         no.hasmac.jsonld.context.ActiveContextBuilder.create(ActiveContextBuilder.java:175)         no.hasmac.jsonld.expansion.ObjectExpansion.initLocalContext(ObjectExpansion.java:199)         no.hasmac.jsonld.expansion.ObjectExpansion.expand(ObjectExpansion.java:101)         no.hasmac.jsonld.expansion.Expansion.compute(Expansion.java:121)         no.hasmac.jsonld.processor.ExpansionProcessor.expand(ExpansionProcessor.java:126)         no.hasmac.jsonld.processor.ToRdfProcessor.toRdf(ToRdfProcessor.java:83)         no.hasmac.jsonld.api.ToRdfApi.get(ToRdfApi.java:187)         org.eclipse.rdf4j.rio.jsonld.JSONLDParser.parse(JSONLDParser.java:185)         org.eclipse.rdf4j.rio.jsonld.JSONLDParser.parse(JSONLDParser.java:107) There was a problem encountered loading a remote context [code=LOADING_REMOTE_CONTEXT_FAILED].        no.hasmac.jsonld.context.ActiveContextBuilder.fetch(ActiveContextBuilder.java:592)         no.hasmac.jsonld.context.ActiveContextBuilder.create(ActiveContextBuilder.java:175)         no.hasmac.jsonld.context.ActiveContextBuilder.fetch(ActiveContextBuilder.java:585)         no.hasmac.jsonld.context.ActiveContextBuilder.create(ActiveContextBuilder.java:175)         no.hasmac.jsonld.expansion.ObjectExpansion.initLocalContext(ObjectExpansion.java:199)         no.hasmac.jsonld.expansion.ObjectExpansion.expand(ObjectExpansion.java:101)         no.hasmac.jsonld.expansion.Expansion.compute(Expansion.java:121)         no.hasmac.jsonld.processor.ExpansionProcessor.expand(ExpansionProcessor.java:126)         no.hasmac.jsonld.processor.ToRdfProcessor.toRdf(ToRdfProcessor.java:83)         no.hasmac.jsonld.api.ToRdfApi.get(ToRdfApi.java:187) There was a problem encountered loading a remote context [code=LOADING_REMOTE_CONTEXT_FAILED].        no.hasmac.jsonld.context.ActiveContextBuilder.fetch(ActiveContextBuilder.java:592)         no.hasmac.jsonld.context.ActiveContextBuilder.create(ActiveContextBuilder.java:175)         no.hasmac.jsonld.context.ActiveContextBuilder.fetch(ActiveContextBuilder.java:585)         no.hasmac.jsonld.context.ActiveContextBuilder.create(ActiveContextBuilder.java:175)         no.hasmac.jsonld.context.ActiveContextBuilder.fetch(ActiveContextBuilder.java:585)         no.hasmac.jsonld.context.ActiveContextBuilder.create(ActiveContextBuilder.java:175)         no.hasmac.jsonld.expansion.ObjectExpansion.initLocalContext(ObjectExpansion.java:199)         no.hasmac.jsonld.expansion.ObjectExpansion.expand(ObjectExpansion.java:101)         no.hasmac.jsonld.expansion.Expansion.compute(Expansion.java:121)         no.hasmac.jsonld.processor.ExpansionProcessor.expand(ExpansionProcessor.java:126)    |\r\n",
+        "stderr": "SLF4J(W): No SLF4J providers were found.\r\nSLF4J(W): Defaulting to no-operation (NOP) logger implementation\r\nSLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.\r\n",
+        "exitCode": 0
+      },
+      "attempts": [
+        {
+          "source": "import java.io.*;\nimport java.net.*;\nimport java.util.*;\nimport java.util.concurrent.atomic.AtomicInteger;\nimport org.semanticweb.owlapi.apibinding.OWLManager;\nimport org.semanticweb.owlapi.io.*;\nimport org.semanticweb.owlapi.formats.*;\nimport org.semanticweb.owlapi.model.*;\nimport org.eclipse.rdf4j.rio.*;\nimport org.eclipse.rdf4j.rio.helpers.JSONLDSettings;\nimport no.hasmac.jsonld.loader.*;\nimport no.hasmac.jsonld.document.*;\npublic class ProbeJsonLdBehavior {\n static int maximum, calls;static String tag;static boolean cyclic;\n static String outcome(Throwable e){StringBuilder s=new StringBuilder();for(int i=0;e!=null&&i<12;i++,e=e.getCause()){s.append(e.getClass().getSimpleName()).append(\":\").append(e.getMessage()).append(\" |\");}return s.toString().replace('\\n',' ');}\n static Document response(URI u,DocumentLoaderOptions options){calls++;if(calls>300)throw new IllegalStateException(\"probe bound\");String next;int i;if(u.toString().equals(\"https://schema.org/\")){i=maximum;}else{i=Integer.parseInt(u.getPath().substring(u.getPath().lastIndexOf('/')+1));}next=i<maximum?\"{\\\"@context\\\":\\\"https://probe.example/\"+tag+\"/\"+(cyclic?1:i+1)+\"\\\"}\":\"{\\\"@context\\\":{\\\"x\\\":\\\"urn:x:\\\"}}\";var d=JsonDocument.of(new StringReader(next));d.setDocumentUrl(u);return d;}\n static void run(String id,int count,String first,Boolean systemSecure,boolean formatOff){tag=id;maximum=count;calls=0;System.clearProperty(JSONLDSettings.SECURE_MODE.getKey());System.setProperty(JSONLDSettings.DOCUMENT_LOADER_CACHE.getKey(),\"false\");if(systemSecure!=null)System.setProperty(JSONLDSettings.SECURE_MODE.getKey(),systemSecure.toString());var f=new RDFJsonLDDocumentFormat();if(formatOff)f.setParameter(JSONLDSettings.SECURE_MODE,false);String text=\"{\\\"@context\\\":\\\"\"+first+\"\\\",\\\"@id\\\":\\\"urn:s\\\",\\\"@type\\\":\\\"http://www.w3.org/2002/07/owl#Class\\\"}\";try{var o=OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(new StringDocumentSource(text,IRI.create(\"urn:jsonld:\"+id),f,null));System.out.println(id+\"\\tOK\\tcalls=\"+calls+\"\\taxioms=\"+o.getAxiomCount());}catch(Throwable e){System.out.println(id+\"\\tFAIL\\tcalls=\"+calls+\"\\t\"+outcome(e));}}\n public static void main(String[]args)throws Exception {\n  var router=(SchemeRouter)SchemeRouter.defaultInstance();router.set(\"https\",ProbeJsonLdBehavior::response);router.set(\"http\",ProbeJsonLdBehavior::response);router.set(\"file\",(u,o)->{throw new IllegalStateException(\"probe denies file\");});\n  var parser=Rio.createParser(RDFFormat.JSONLD);System.out.println(\"selected\\t\"+parser.getClass().getName()+\"\\t\"+parser.getClass().getProtectionDomain().getCodeSource().getLocation());\n  System.out.println(\"processor\\t\"+no.hasmac.jsonld.JsonLd.class.getProtectionDomain().getCodeSource().getLocation());\n  System.out.println(\"supported\\t\"+parser.getSupportedSettings().stream().map(RioSetting::getKey).sorted().toList());\n  System.out.println(\"defaults\\tsecure=\"+parser.getParserConfig().get(JSONLDSettings.SECURE_MODE)+\"\\tcache=\"+parser.getParserConfig().get(JSONLDSettings.DOCUMENT_LOADER_CACHE)+\"\\twhitelist=\"+parser.getParserConfig().get(JSONLDSettings.WHITELIST).size());\n  run(\"default-unlisted\",1,\"https://probe.example/default-unlisted/1\",null,false);\n  run(\"default-listed\",1,\"https://schema.org/\",null,false);\n  run(\"format-off-unlisted\",1,\"https://probe.example/format-off-unlisted/1\",null,true);\n  run(\"system-off-chain13\",13,\"https://probe.example/system-off-chain13/1\",false,false);\n  run(\"system-off-chain257\",257,\"https://probe.example/system-off-chain257/1\",false,false);\n  run(\"system-off-chain258\",258,\"https://probe.example/system-off-chain258/1\",false,false);\n  System.clearProperty(JSONLDSettings.SECURE_MODE.getKey());System.clearProperty(JSONLDSettings.DOCUMENT_LOADER_CACHE.getKey());\n }\n}\n",
+          "result": {
+            "stdout": "",
+            "stderr": "${GAP_WORKSPACE}\\ProbeJsonLdBehavior.java:16: error: unreported exception JsonLdError; must be caught or declared to be thrown\r\n static Document response(URI u,DocumentLoaderOptions options){calls++;if(calls>300)throw new IllegalStateException(\"probe bound\");String next;int i;if(u.toString().equals(\"https://schema.org/\")){i=maximum;}else{i=Integer.parseInt(u.getPath().substring(u.getPath().lastIndexOf('/')+1));}next=i<maximum?\"{\\\"@context\\\":\\\"https://probe.example/\"+tag+\"/\"+(cyclic?1:i+1)+\"\\\"}\":\"{\\\"@context\\\":{\\\"x\\\":\\\"urn:x:\\\"}}\";var d=JsonDocument.of(new StringReader(next));d.setDocumentUrl(u);return d;}\r\n                                                                                                                                                                                                                                                                                                                                                                                                                                             ^\r\n1 error\r\nerror: compilation failed\r\n",
+            "exitCode": 1
+          }
+        },
+        {
+          "source": "import java.io.*;\nimport java.net.*;\nimport java.util.*;\nimport java.util.concurrent.atomic.AtomicInteger;\nimport org.semanticweb.owlapi.apibinding.OWLManager;\nimport org.semanticweb.owlapi.io.*;\nimport org.semanticweb.owlapi.formats.*;\nimport org.semanticweb.owlapi.model.*;\nimport org.eclipse.rdf4j.rio.*;\nimport org.eclipse.rdf4j.rio.helpers.JSONLDSettings;\nimport no.hasmac.jsonld.loader.*;\nimport no.hasmac.jsonld.document.*;\npublic class ProbeJsonLdBehavior {\n static int maximum, calls;static String tag;static boolean cyclic;\n static String outcome(Throwable e){StringBuilder s=new StringBuilder();for(int i=0;e!=null&&i<12;i++,e=e.getCause()){s.append(e.getClass().getSimpleName()).append(\":\").append(e.getMessage()).append(\" |\");}return s.toString().replace('\\n',' ');}\n static Document response(URI u,DocumentLoaderOptions options) throws no.hasmac.jsonld.JsonLdError {calls++;if(calls>300)throw new IllegalStateException(\"probe bound\");String next;int i;if(u.toString().equals(\"https://schema.org/\")){i=maximum;}else{i=Integer.parseInt(u.getPath().substring(u.getPath().lastIndexOf('/')+1));}next=i<maximum?\"{\\\"@context\\\":\\\"https://probe.example/\"+tag+\"/\"+(cyclic?1:i+1)+\"\\\"}\":\"{\\\"@context\\\":{\\\"x\\\":\\\"urn:x:\\\"}}\";var d=JsonDocument.of(new StringReader(next));d.setDocumentUrl(u);return d;}\n static void run(String id,int count,String first,Boolean systemSecure,boolean formatOff){tag=id;maximum=count;calls=0;System.clearProperty(JSONLDSettings.SECURE_MODE.getKey());System.setProperty(JSONLDSettings.DOCUMENT_LOADER_CACHE.getKey(),\"false\");if(systemSecure!=null)System.setProperty(JSONLDSettings.SECURE_MODE.getKey(),systemSecure.toString());var f=new RDFJsonLDDocumentFormat();if(formatOff)f.setParameter(JSONLDSettings.SECURE_MODE,false);String text=\"{\\\"@context\\\":\\\"\"+first+\"\\\",\\\"@id\\\":\\\"urn:s\\\",\\\"@type\\\":\\\"http://www.w3.org/2002/07/owl#Class\\\"}\";try{var o=OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(new StringDocumentSource(text,IRI.create(\"urn:jsonld:\"+id),f,null));System.out.println(id+\"\\tOK\\tcalls=\"+calls+\"\\taxioms=\"+o.getAxiomCount());}catch(Throwable e){System.out.println(id+\"\\tFAIL\\tcalls=\"+calls+\"\\t\"+outcome(e));}}\n public static void main(String[]args)throws Exception {\n  var router=(SchemeRouter)SchemeRouter.defaultInstance();router.set(\"https\",ProbeJsonLdBehavior::response);router.set(\"http\",ProbeJsonLdBehavior::response);router.set(\"file\",(u,o)->{throw new IllegalStateException(\"probe denies file\");});\n  var parser=Rio.createParser(RDFFormat.JSONLD);System.out.println(\"selected\\t\"+parser.getClass().getName()+\"\\t\"+parser.getClass().getProtectionDomain().getCodeSource().getLocation());\n  System.out.println(\"processor\\t\"+no.hasmac.jsonld.JsonLd.class.getProtectionDomain().getCodeSource().getLocation());\n  System.out.println(\"supported\\t\"+parser.getSupportedSettings().stream().map(RioSetting::getKey).sorted().toList());\n  System.out.println(\"defaults\\tsecure=\"+parser.getParserConfig().get(JSONLDSettings.SECURE_MODE)+\"\\tcache=\"+parser.getParserConfig().get(JSONLDSettings.DOCUMENT_LOADER_CACHE)+\"\\twhitelist=\"+parser.getParserConfig().get(JSONLDSettings.WHITELIST).size());\n  run(\"default-unlisted\",1,\"https://probe.example/default-unlisted/1\",null,false);\n  run(\"default-listed\",1,\"https://schema.org/\",null,false);\n  run(\"format-off-unlisted\",1,\"https://probe.example/format-off-unlisted/1\",null,true);\n  run(\"system-off-chain13\",13,\"https://probe.example/system-off-chain13/1\",false,false);\n  run(\"system-off-chain257\",257,\"https://probe.example/system-off-chain257/1\",false,false);\n  run(\"system-off-chain258\",258,\"https://probe.example/system-off-chain258/1\",false,false);\n  System.clearProperty(JSONLDSettings.SECURE_MODE.getKey());System.clearProperty(JSONLDSettings.DOCUMENT_LOADER_CACHE.getKey());\n }\n}\n",
+          "result": {
+            "stdout": "selected\torg.eclipse.rdf4j.rio.jsonld.JSONLDParser\tfile:/${MAVEN_REPOSITORY}/org/eclipse/rdf4j/rdf4j-rio-jsonld/5.0.2/rdf4j-rio-jsonld-5.0.2.jar\r\nprocessor\tfile:/${MAVEN_REPOSITORY}/no/hasmac/hasmac-json-ld/0.9.0/hasmac-json-ld-0.9.0.jar\r\nsupported\t[org.eclipse.rdf4j.rio.datatype_handlers, org.eclipse.rdf4j.rio.fail_on_unknown_datatypes, org.eclipse.rdf4j.rio.fail_on_unknown_languages, org.eclipse.rdf4j.rio.jsonld.exception_on_warning, org.eclipse.rdf4j.rio.jsonld.expand_context, org.eclipse.rdf4j.rio.language_handlers, org.eclipse.rdf4j.rio.namespaces, org.eclipse.rdf4j.rio.normalize_datatype_values, org.eclipse.rdf4j.rio.normalize_language_tags, org.eclipse.rdf4j.rio.preserve_bnode_ids, org.eclipse.rdf4j.rio.skolem_origin, org.eclipse.rdf4j.rio.verify_datatype_values, org.eclipse.rdf4j.rio.verify_language_tags, org.eclipse.rdf4j.rio.verify_relative_uris, org.eclipse.rdf4j.rio.verify_uri_syntax]\r\ndefaults\tsecure=true\tcache=true\twhitelist=25\r\ndefault-unlisted\tFAIL\tcalls=0\tUnparsableOntologyException:Problem parsing urn:jsonld:default-unlisted Could not parse ontology.  Either a suitable parser could not be found, or parsing failed.  See parser logs below for explanation. The following parsers were tried: 1) org.semanticweb.owlapi.rio.RioParserImpl : org.semanticweb.owlapi.formats.RDFJsonLDDocumentFormatFactory@dcacc47d   Detailed logs: -------------------------------------------------------------------------------- Parser: org.semanticweb.owlapi.rio.RioParserImpl : org.semanticweb.owlapi.formats.RDFJsonLDDocumentFormatFactory@dcacc47d     Stack trace: org.eclipse.rdf4j.rio.RDFParseException: Could not load document from https://probe.example/default-unlisted/1 because it is not whitelisted. See: JSONLDSettings.WHITELIST and JSONLDSettings.SECURE_MODE which can also be set as system properties.        org.semanticweb.owlapi.rio.RioParserImpl.parse(RioParserImpl.java:148)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyFactoryImpl.loadOWLOntology(OWLOntologyFactoryImpl.java:195)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl.load(OWLOntologyManagerImpl.java:1105)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl.loadOntology(OWLOntologyManagerImpl.java:1055)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl.loadOntologyFromOntologyDocument(OWLOntologyManagerImpl.java:1005)         ProbeJsonLdBehavior.run(ProbeJsonLdBehavior.java:17)         ProbeJsonLdBehavior.main(ProbeJsonLdBehavior.java:24)         java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)         java.base/java.lang.reflect.Method.invoke(Method.java:565)         jdk.compiler/com.sun.tools.javac.launcher.SourceLauncher.execute(SourceLauncher.java:258) Could not load document from https://probe.example/default-unlisted/1 because it is not whitelisted. See: JSONLDSettings.WHITELIST and JSONLDSettings.SECURE_MODE which can also be set as system properties.        org.eclipse.rdf4j.rio.jsonld.CachingDocumentLoader.loadDocument(CachingDocumentLoader.java:80)         no.hasmac.jsonld.context.ActiveContextBuilder.fetch(ActiveContextBuilder.java:539)         no.hasmac.jsonld.context.ActiveContextBuilder.create(ActiveContextBuilder.java:175)         no.hasmac.jsonld.expansion.ObjectExpansion.initLocalContext(ObjectExpansion.java:199)         no.hasmac.jsonld.expansion.ObjectExpansion.expand(ObjectExpansion.java:101)         no.hasmac.jsonld.expansion.Expansion.compute(Expansion.java:121)         no.hasmac.jsonld.processor.ExpansionProcessor.expand(ExpansionProcessor.java:126)         no.hasmac.jsonld.processor.ToRdfProcessor.toRdf(ToRdfProcessor.java:83)         no.hasmac.jsonld.api.ToRdfApi.get(ToRdfApi.java:187)         org.eclipse.rdf4j.rio.jsonld.JSONLDParser.parse(JSONLDParser.java:185)    |\r\ndefault-listed\tOK\tcalls=1\taxioms=1\r\nformat-off-unlisted\tFAIL\tcalls=0\tUnparsableOntologyException:Problem parsing urn:jsonld:format-off-unlisted Could not parse ontology.  Either a suitable parser could not be found, or parsing failed.  See parser logs below for explanation. The following parsers were tried: 1) org.semanticweb.owlapi.rio.RioParserImpl : org.semanticweb.owlapi.formats.RDFJsonLDDocumentFormatFactory@dcacc47d   Detailed logs: -------------------------------------------------------------------------------- Parser: org.semanticweb.owlapi.rio.RioParserImpl : org.semanticweb.owlapi.formats.RDFJsonLDDocumentFormatFactory@dcacc47d     Stack trace: org.eclipse.rdf4j.rio.RDFParseException: Could not load document from https://probe.example/format-off-unlisted/1 because it is not whitelisted. See: JSONLDSettings.WHITELIST and JSONLDSettings.SECURE_MODE which can also be set as system properties.        org.semanticweb.owlapi.rio.RioParserImpl.parse(RioParserImpl.java:148)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyFactoryImpl.loadOWLOntology(OWLOntologyFactoryImpl.java:195)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl.load(OWLOntologyManagerImpl.java:1105)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl.loadOntology(OWLOntologyManagerImpl.java:1055)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl.loadOntologyFromOntologyDocument(OWLOntologyManagerImpl.java:1005)         ProbeJsonLdBehavior.run(ProbeJsonLdBehavior.java:17)         ProbeJsonLdBehavior.main(ProbeJsonLdBehavior.java:26)         java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)         java.base/java.lang.reflect.Method.invoke(Method.java:565)         jdk.compiler/com.sun.tools.javac.launcher.SourceLauncher.execute(SourceLauncher.java:258) Could not load document from https://probe.example/format-off-unlisted/1 because it is not whitelisted. See: JSONLDSettings.WHITELIST and JSONLDSettings.SECURE_MODE which can also be set as system properties.        org.eclipse.rdf4j.rio.jsonld.CachingDocumentLoader.loadDocument(CachingDocumentLoader.java:80)         no.hasmac.jsonld.context.ActiveContextBuilder.fetch(ActiveContextBuilder.java:539)         no.hasmac.jsonld.context.ActiveContextBuilder.create(ActiveContextBuilder.java:175)         no.hasmac.jsonld.expansion.ObjectExpansion.initLocalContext(ObjectExpansion.java:199)         no.hasmac.jsonld.expansion.ObjectExpansion.expand(ObjectExpansion.java:101)         no.hasmac.jsonld.expansion.Expansion.compute(Expansion.java:121)         no.hasmac.jsonld.processor.ExpansionProcessor.expand(ExpansionProcessor.java:126)         no.hasmac.jsonld.processor.ToRdfProcessor.toRdf(ToRdfProcessor.java:83)         no.hasmac.jsonld.api.ToRdfApi.get(ToRdfApi.java:187)         org.eclipse.rdf4j.rio.jsonld.JSONLDParser.parse(JSONLDParser.java:185)    |\r\nsystem-off-chain13\tOK\tcalls=13\taxioms=1\r\nsystem-off-chain257\tOK\tcalls=257\taxioms=1\r\nsystem-off-chain258\tFAIL\tcalls=257\tUnparsableOntologyException:Problem parsing urn:jsonld:system-off-chain258 Could not parse ontology.  Either a suitable parser could not be found, or parsing failed.  See parser logs below for explanation. The following parsers were tried: 1) org.semanticweb.owlapi.rio.RioParserImpl : org.semanticweb.owlapi.formats.RDFJsonLDDocumentFormatFactory@dcacc47d   Detailed logs: -------------------------------------------------------------------------------- Parser: org.semanticweb.owlapi.rio.RioParserImpl : org.semanticweb.owlapi.formats.RDFJsonLDDocumentFormatFactory@dcacc47d     Stack trace: org.eclipse.rdf4j.rio.RDFParseException: Could not parse JSONLD        org.semanticweb.owlapi.rio.RioParserImpl.parse(RioParserImpl.java:148)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyFactoryImpl.loadOWLOntology(OWLOntologyFactoryImpl.java:195)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl.load(OWLOntologyManagerImpl.java:1105)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl.loadOntology(OWLOntologyManagerImpl.java:1055)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl.loadOntologyFromOntologyDocument(OWLOntologyManagerImpl.java:1005)         ProbeJsonLdBehavior.run(ProbeJsonLdBehavior.java:17)         ProbeJsonLdBehavior.main(ProbeJsonLdBehavior.java:29)         java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)         java.base/java.lang.reflect.Method.invoke(Method.java:565)         jdk.compiler/com.sun.tools.javac.launcher.SourceLauncher.execute(SourceLauncher.java:258) Could not parse JSONLD        org.eclipse.rdf4j.rio.jsonld.JSONLDParser.parse(JSONLDParser.java:251)         org.eclipse.rdf4j.rio.jsonld.JSONLDParser.parse(JSONLDParser.java:107)         org.semanticweb.owlapi.rio.RioParserImpl.parseDocumentSource(RioParserImpl.java:186)         org.semanticweb.owlapi.rio.RioParserImpl.parse(RioParserImpl.java:134)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyFactoryImpl.loadOWLOntology(OWLOntologyFactoryImpl.java:195)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl.load(OWLOntologyManagerImpl.java:1105)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl.loadOntology(OWLOntologyManagerImpl.java:1055)         uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl.loadOntologyFromOntologyDocument(OWLOntologyManagerImpl.java:1005)         ProbeJsonLdBehavior.run(ProbeJsonLdBehavior.java:17)         ProbeJsonLdBehavior.main(ProbeJsonLdBehavior.java:29) There was a problem encountered loading a remote context [code=LOADING_REMOTE_CONTEXT_FAILED].        no.hasmac.jsonld.context.ActiveContextBuilder.fetch(ActiveContextBuilder.java:592)         no.hasmac.jsonld.context.ActiveContextBuilder.create(ActiveContextBuilder.java:175)         no.hasmac.jsonld.expansion.ObjectExpansion.initLocalContext(ObjectExpansion.java:199)         no.hasmac.jsonld.expansion.ObjectExpansion.expand(ObjectExpansion.java:101)         no.hasmac.jsonld.expansion.Expansion.compute(Expansion.java:121)         no.hasmac.jsonld.processor.ExpansionProcessor.expand(ExpansionProcessor.java:126)         no.hasmac.jsonld.processor.ToRdfProcessor.toRdf(ToRdfProcessor.java:83)         no.hasmac.jsonld.api.ToRdfApi.get(ToRdfApi.java:187)         org.eclipse.rdf4j.rio.jsonld.JSONLDParser.parse(JSONLDParser.java:185)         org.eclipse.rdf4j.rio.jsonld.JSONLDParser.parse(JSONLDParser.java:107) There was a problem encountered loading a remote context [code=LOADING_REMOTE_CONTEXT_FAILED].        no.hasmac.jsonld.context.ActiveContextBuilder.fetch(ActiveContextBuilder.java:592)         no.hasmac.jsonld.context.ActiveContextBuilder.create(ActiveContextBuilder.java:175)         no.hasmac.jsonld.context.ActiveContextBuilder.fetch(ActiveContextBuilder.java:585)         no.hasmac.jsonld.context.ActiveContextBuilder.create(ActiveContextBuilder.java:175)         no.hasmac.jsonld.expansion.ObjectExpansion.initLocalContext(ObjectExpansion.java:199)         no.hasmac.jsonld.expansion.ObjectExpansion.expand(ObjectExpansion.java:101)         no.hasmac.jsonld.expansion.Expansion.compute(Expansion.java:121)         no.hasmac.jsonld.processor.ExpansionProcessor.expand(ExpansionProcessor.java:126)         no.hasmac.jsonld.processor.ToRdfProcessor.toRdf(ToRdfProcessor.java:83)         no.hasmac.jsonld.api.ToRdfApi.get(ToRdfApi.java:187) There was a problem encountered loading a remote context [code=LOADING_REMOTE_CONTEXT_FAILED].        no.hasmac.jsonld.context.ActiveContextBuilder.fetch(ActiveContextBuilder.java:592)         no.hasmac.jsonld.context.ActiveContextBuilder.create(ActiveContextBuilder.java:175)         no.hasmac.jsonld.context.ActiveContextBuilder.fetch(ActiveContextBuilder.java:585)         no.hasmac.jsonld.context.ActiveContextBuilder.create(ActiveContextBuilder.java:175)         no.hasmac.jsonld.context.ActiveContextBuilder.fetch(ActiveContextBuilder.java:585)         no.hasmac.jsonld.context.ActiveContextBuilder.create(ActiveContextBuilder.java:175)         no.hasmac.jsonld.expansion.ObjectExpansion.initLocalContext(ObjectExpansion.java:199)         no.hasmac.jsonld.expansion.ObjectExpansion.expand(ObjectExpansion.java:101)         no.hasmac.jsonld.expansion.Expansion.compute(Expansion.java:121)         no.hasmac.jsonld.processor.ExpansionProcessor.expand(ExpansionProcessor.java:126)    |\r\n",
+            "stderr": "SLF4J(W): No SLF4J providers were found.\r\nSLF4J(W): Defaulting to no-operation (NOP) logger implementation\r\nSLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.\r\n",
+            "exitCode": 0
+          }
+        }
+      ],
+      "portableRecord": {
+        "originalRecordSha256": "edf870aa976507ed88b1aa0a1572bcb0bb315d4613ff3636a276e4acdecd972c",
+        "normalizedRecordSha256": "2c9bb6638fe8d48746405e3eca46e3d827588333cf788f0204590fbf5a550bff",
+        "originalSourceSha256": "0356dc91462a2ca9f7ba1a88005460836a31634eeb8c1b6d1f70abd3cce9e176",
+        "sourceSha256": "0356dc91462a2ca9f7ba1a88005460836a31634eeb8c1b6d1f70abd3cce9e176"
+      }
+    },
+    {
+      "id": "GAP-P04",
+      "name": "Node XML, native browser XML and AbortSignal",
+      "source": "import { createRequire } from 'node:module';import { pathToFileURL } from 'node:url';\nconst root='${OWLAPI_SOURCE}';process.env.TEMP=\"${GAP_WORKSPACE}/temporary\";process.env.TMP=process.env.TEMP;const req=createRequire(root+'/package.json');const pw=req('playwright');\nconst {xmlParserAdapter}=await import(pathToFileURL(root+'/internal/parsing/xml/xmlParserAdapter.js'));\nconst {prepareXml}=await import(pathToFileURL(root+'/internal/parsing/xml/xmlEntityPolicy.js'));\nconst {OWLOntologyLoaderConfiguration}=await import(pathToFileURL(root+'/model/owlOntologyLoaderConfiguration.js'));\nconst configuration=new OWLOntologyLoaderConfiguration();\nconst cases=[['valid','<r xmlns:x=\"urn:x\"><x:c/></r>'],['duplicate-attribute','<r a=\"1\" a=\"2\"/>'],['control-character','<r>\\u0001</r>'],['xml11','<?xml version=\"1.1\"?><r/>'],['depth110','<r>'.repeat(110)+'</r>'.repeat(110)],['empty-prefix','<r xmlns:p=\"\"><p:c/></r>']];\nconst results={node:{version:process.version,xml:[]},browsers:{}};\nfor(const [id,text]of cases){try{await xmlParserAdapter.parseXml(text,configuration);results.node.xml.push({id,result:'OK'});}catch(e){results.node.xml.push({id,result:e.name,code:e.code});}}\nfor(const name of ['chromium','firefox','webkit']){let browser;try{browser=await pw[name].launch({headless:true,timeout:10000});const page=await browser.newPage();let network=0;await page.route('**/*',route=>{network++;return route.abort();});await page.setContent('<!doctype html><iframe></iframe>');results.browsers[name]=await page.evaluate(items=>({userAgent:navigator.userAgent,xml:items.map(([id,text])=>{const d=new DOMParser().parseFromString(text,'application/xml');return{id,result:d.documentElement.localName==='parsererror'?'parsererror':'OK',root:d.documentElement.localName,ns:d.documentElement.namespaceURI};}),nativeSignal:Object.getOwnPropertyDescriptor(AbortSignal.prototype,'aborted').get.call(new AbortController().signal),crossRealmSignal:Object.getOwnPropertyDescriptor(AbortSignal.prototype,'aborted').get.call(new (document.querySelector('iframe').contentWindow.AbortController)().signal),duckSignal:(()=>{try{return Object.getOwnPropertyDescriptor(AbortSignal.prototype,'aborted').get.call({aborted:false});}catch(e){return e.name;}})()}),cases.map(([id,text])=>[id,prepareXml(text,configuration)]));results.browsers[name].networkRequests=network;}catch(e){results.browsers[name]={error:e.message};}finally{if(browser)await browser.close();}}\nconsole.log(JSON.stringify(results));\n",
+      "execution": {
+        "command": "node",
+        "args": ["${GAP_WORKSPACE}\\probe-runtime.mjs"],
+        "network": "Playwright aborts every browser request."
+      },
+      "result": {
+        "stdout": "{\"node\":{\"version\":\"v24.21.0\",\"xml\":[{\"id\":\"valid\",\"result\":\"OK\"},{\"id\":\"duplicate-attribute\",\"result\":\"XmlParseError\",\"code\":\"XML_PARSE_ERROR\"},{\"id\":\"control-character\",\"result\":\"OK\"},{\"id\":\"xml11\",\"result\":\"OK\"},{\"id\":\"depth110\",\"result\":\"OK\"},{\"id\":\"empty-prefix\",\"result\":\"XmlParseError\",\"code\":\"XML_PARSE_ERROR\"}]},\"browsers\":{\"chromium\":{\"userAgent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36\",\"xml\":[{\"id\":\"valid\",\"result\":\"OK\",\"root\":\"r\",\"ns\":null},{\"id\":\"duplicate-attribute\",\"result\":\"OK\",\"root\":\"html\",\"ns\":\"http://www.w3.org/1999/xhtml\"},{\"id\":\"control-character\",\"result\":\"OK\",\"root\":\"r\",\"ns\":null},{\"id\":\"xml11\",\"result\":\"OK\",\"root\":\"r\",\"ns\":null},{\"id\":\"depth110\",\"result\":\"OK\",\"root\":\"r\",\"ns\":null},{\"id\":\"empty-prefix\",\"result\":\"OK\",\"root\":\"html\",\"ns\":\"http://www.w3.org/1999/xhtml\"}],\"nativeSignal\":false,\"crossRealmSignal\":false,\"duckSignal\":\"TypeError\",\"networkRequests\":0},\"firefox\":{\"error\":\"browserType.launch: spawn UNKNOWN\\nCall log:\\n\\u001b[2m  - <launching> ${HOME}\\\\AppData\\\\Local\\\\ms-playwright\\\\firefox-1555\\\\firefox\\\\firefox.exe -no-remote -headless -profile ${GAP_WORKSPACE}\\\\temporary\\\\playwright_firefoxdev_profile-QARrVa -juggler-pipe -silent\\u001b[22m\\n\"},\"webkit\":{\"userAgent\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.2 Safari/605.1.15\",\"xml\":[{\"id\":\"valid\",\"result\":\"OK\",\"root\":\"r\",\"ns\":null},{\"id\":\"duplicate-attribute\",\"result\":\"OK\",\"root\":\"html\",\"ns\":\"http://www.w3.org/1999/xhtml\"},{\"id\":\"control-character\",\"result\":\"OK\",\"root\":\"r\",\"ns\":null},{\"id\":\"xml11\",\"result\":\"OK\",\"root\":\"r\",\"ns\":null},{\"id\":\"depth110\",\"result\":\"OK\",\"root\":\"r\",\"ns\":null},{\"id\":\"empty-prefix\",\"result\":\"OK\",\"root\":\"r\",\"ns\":null}],\"nativeSignal\":false,\"crossRealmSignal\":false,\"duckSignal\":\"TypeError\",\"networkRequests\":0}}}\n",
+        "stderr": "",
+        "exitCode": 0
+      },
+      "attempts": [
+        {
+          "source": "import { createRequire } from 'node:module';import { pathToFileURL } from 'node:url';\nconst root='${OWLAPI_SOURCE}';const req=createRequire(root+'/package.json');const pw=req('playwright');\nconst {xmlParserAdapter}=await import(pathToFileURL(root+'/internal/parsing/xml/xmlParserAdapter.js'));\nconst {prepareXml}=await import(pathToFileURL(root+'/internal/parsing/xml/xmlEntityPolicy.js'));\nconst {OWLOntologyLoaderConfiguration}=await import(pathToFileURL(root+'/model/owlOntologyLoaderConfiguration.js'));\nconst configuration=new OWLOntologyLoaderConfiguration();\nconst cases=[['valid','<r xmlns:x=\"urn:x\"><x:c/></r>'],['duplicate-attribute','<r a=\"1\" a=\"2\"/>'],['control-character','<r>\\u0001</r>'],['xml11','<?xml version=\"1.1\"?><r/>'],['depth110','<r>'.repeat(110)+'</r>'.repeat(110)],['empty-prefix','<r xmlns:p=\"\"><p:c/></r>']];\nconst results={node:{version:process.version,xml:[]},browsers:{}};\nfor(const [id,text]of cases){try{await xmlParserAdapter.parseXml(text,configuration);results.node.xml.push({id,result:'OK'});}catch(e){results.node.xml.push({id,result:e.name,code:e.code});}}\nfor(const name of ['chromium','firefox','webkit']){let browser;try{browser=await pw[name].launch({headless:true,timeout:10000});const page=await browser.newPage();let network=0;await page.route('**/*',route=>{network++;return route.abort();});await page.setContent('<!doctype html><iframe></iframe>');results.browsers[name]=await page.evaluate(items=>({userAgent:navigator.userAgent,xml:items.map(([id,text])=>{const d=new DOMParser().parseFromString(text,'application/xml');return{id,result:d.documentElement.localName==='parsererror'?'parsererror':'OK',root:d.documentElement.localName,ns:d.documentElement.namespaceURI};}),nativeSignal:Object.getOwnPropertyDescriptor(AbortSignal.prototype,'aborted').get.call(new AbortController().signal),crossRealmSignal:Object.getOwnPropertyDescriptor(AbortSignal.prototype,'aborted').get.call(new document.querySelector('iframe').contentWindow.AbortController().signal),duckSignal:(()=>{try{return Object.getOwnPropertyDescriptor(AbortSignal.prototype,'aborted').get.call({aborted:false});}catch(e){return e.name;}})()}),cases.map(([id,text])=>[id,prepareXml(text,configuration)]));results.browsers[name].networkRequests=network;}catch(e){results.browsers[name]={error:e.message};}finally{if(browser)await browser.close();}}\nconsole.log(JSON.stringify(results));\n",
+          "result": {
+            "stdout": "{\"node\":{\"version\":\"v24.21.0\",\"xml\":[{\"id\":\"valid\",\"result\":\"OK\"},{\"id\":\"duplicate-attribute\",\"result\":\"XmlParseError\",\"code\":\"XML_PARSE_ERROR\"},{\"id\":\"control-character\",\"result\":\"OK\"},{\"id\":\"xml11\",\"result\":\"OK\"},{\"id\":\"depth110\",\"result\":\"OK\"},{\"id\":\"empty-prefix\",\"result\":\"XmlParseError\",\"code\":\"XML_PARSE_ERROR\"}]},\"browsers\":{\"chromium\":{\"error\":\"page.evaluate: TypeError: document.querySelector is not a constructor\\n    at eval (eval at evaluate (:370:30), <anonymous>:1:491)\\n    at UtilityScript.evaluate (<anonymous>:372:16)\\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\"},\"firefox\":{\"error\":\"browserType.launch: spawn UNKNOWN\\nCall log:\\n\\u001b[2m  - <launching> ${HOME}\\\\AppData\\\\Local\\\\ms-playwright\\\\firefox-1555\\\\firefox\\\\firefox.exe -no-remote -headless -profile ${HOME}\\\\AppData\\\\Local\\\\Temp\\\\playwright_firefoxdev_profile-hyZjgu -juggler-pipe -silent\\u001b[22m\\n\"},\"webkit\":{\"error\":\"page.evaluate: TypeError: function is not a constructor (evaluating 'new document.querySelector('iframe')')\"}}}\n",
+            "stderr": "",
+            "exitCode": 0
+          }
+        },
+        {
+          "source": "import { createRequire } from 'node:module';import { pathToFileURL } from 'node:url';\nconst root='${OWLAPI_SOURCE}';process.env.TEMP=\"${GAP_WORKSPACE}/temporary\";process.env.TMP=process.env.TEMP;const req=createRequire(root+'/package.json');const pw=req('playwright');\nconst {xmlParserAdapter}=await import(pathToFileURL(root+'/internal/parsing/xml/xmlParserAdapter.js'));\nconst {prepareXml}=await import(pathToFileURL(root+'/internal/parsing/xml/xmlEntityPolicy.js'));\nconst {OWLOntologyLoaderConfiguration}=await import(pathToFileURL(root+'/model/owlOntologyLoaderConfiguration.js'));\nconst configuration=new OWLOntologyLoaderConfiguration();\nconst cases=[['valid','<r xmlns:x=\"urn:x\"><x:c/></r>'],['duplicate-attribute','<r a=\"1\" a=\"2\"/>'],['control-character','<r>\\u0001</r>'],['xml11','<?xml version=\"1.1\"?><r/>'],['depth110','<r>'.repeat(110)+'</r>'.repeat(110)],['empty-prefix','<r xmlns:p=\"\"><p:c/></r>']];\nconst results={node:{version:process.version,xml:[]},browsers:{}};\nfor(const [id,text]of cases){try{await xmlParserAdapter.parseXml(text,configuration);results.node.xml.push({id,result:'OK'});}catch(e){results.node.xml.push({id,result:e.name,code:e.code});}}\nfor(const name of ['chromium','firefox','webkit']){let browser;try{browser=await pw[name].launch({headless:true,timeout:10000});const page=await browser.newPage();let network=0;await page.route('**/*',route=>{network++;return route.abort();});await page.setContent('<!doctype html><iframe></iframe>');results.browsers[name]=await page.evaluate(items=>({userAgent:navigator.userAgent,xml:items.map(([id,text])=>{const d=new DOMParser().parseFromString(text,'application/xml');return{id,result:d.documentElement.localName==='parsererror'?'parsererror':'OK',root:d.documentElement.localName,ns:d.documentElement.namespaceURI};}),nativeSignal:Object.getOwnPropertyDescriptor(AbortSignal.prototype,'aborted').get.call(new AbortController().signal),crossRealmSignal:Object.getOwnPropertyDescriptor(AbortSignal.prototype,'aborted').get.call(new (document.querySelector('iframe').contentWindow.AbortController)().signal),duckSignal:(()=>{try{return Object.getOwnPropertyDescriptor(AbortSignal.prototype,'aborted').get.call({aborted:false});}catch(e){return e.name;}})()}),cases.map(([id,text])=>[id,prepareXml(text,configuration)]));results.browsers[name].networkRequests=network;}catch(e){results.browsers[name]={error:e.message};}finally{if(browser)await browser.close();}}\nconsole.log(JSON.stringify(results));\n",
+          "result": {
+            "stdout": "{\"node\":{\"version\":\"v24.21.0\",\"xml\":[{\"id\":\"valid\",\"result\":\"OK\"},{\"id\":\"duplicate-attribute\",\"result\":\"XmlParseError\",\"code\":\"XML_PARSE_ERROR\"},{\"id\":\"control-character\",\"result\":\"OK\"},{\"id\":\"xml11\",\"result\":\"OK\"},{\"id\":\"depth110\",\"result\":\"OK\"},{\"id\":\"empty-prefix\",\"result\":\"XmlParseError\",\"code\":\"XML_PARSE_ERROR\"}]},\"browsers\":{\"chromium\":{\"userAgent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36\",\"xml\":[{\"id\":\"valid\",\"result\":\"OK\",\"root\":\"r\",\"ns\":null},{\"id\":\"duplicate-attribute\",\"result\":\"OK\",\"root\":\"html\",\"ns\":\"http://www.w3.org/1999/xhtml\"},{\"id\":\"control-character\",\"result\":\"OK\",\"root\":\"r\",\"ns\":null},{\"id\":\"xml11\",\"result\":\"OK\",\"root\":\"r\",\"ns\":null},{\"id\":\"depth110\",\"result\":\"OK\",\"root\":\"r\",\"ns\":null},{\"id\":\"empty-prefix\",\"result\":\"OK\",\"root\":\"html\",\"ns\":\"http://www.w3.org/1999/xhtml\"}],\"nativeSignal\":false,\"crossRealmSignal\":false,\"duckSignal\":\"TypeError\",\"networkRequests\":0},\"firefox\":{\"error\":\"browserType.launch: spawn UNKNOWN\\nCall log:\\n\\u001b[2m  - <launching> ${HOME}\\\\AppData\\\\Local\\\\ms-playwright\\\\firefox-1555\\\\firefox\\\\firefox.exe -no-remote -headless -profile ${GAP_WORKSPACE}\\\\temporary\\\\playwright_firefoxdev_profile-QARrVa -juggler-pipe -silent\\u001b[22m\\n\"},\"webkit\":{\"userAgent\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.2 Safari/605.1.15\",\"xml\":[{\"id\":\"valid\",\"result\":\"OK\",\"root\":\"r\",\"ns\":null},{\"id\":\"duplicate-attribute\",\"result\":\"OK\",\"root\":\"html\",\"ns\":\"http://www.w3.org/1999/xhtml\"},{\"id\":\"control-character\",\"result\":\"OK\",\"root\":\"r\",\"ns\":null},{\"id\":\"xml11\",\"result\":\"OK\",\"root\":\"r\",\"ns\":null},{\"id\":\"depth110\",\"result\":\"OK\",\"root\":\"r\",\"ns\":null},{\"id\":\"empty-prefix\",\"result\":\"OK\",\"root\":\"r\",\"ns\":null}],\"nativeSignal\":false,\"crossRealmSignal\":false,\"duckSignal\":\"TypeError\",\"networkRequests\":0}}}\n",
+            "stderr": "",
+            "exitCode": 0
+          }
+        }
+      ],
+      "portableRecord": {
+        "originalRecordSha256": "4bb44079665bd91841c4c104dd3d43675bf31218e9c5a2835a2dbe27d2d64b31",
+        "normalizedRecordSha256": "18004044aa57e13a1cc50cdc7ee5af5c1bce8803cb294496d8c4c7968db989f9",
+        "originalSourceSha256": "f2b60590240763126eb8c9452c7257460048e8d4d48dc7df1c4fc68bb14955e0",
+        "sourceSha256": "a58b9da9eb7c0824181e21fc1cae95f4b14c3b1280b624e7455b1c804f10b5cb"
+      }
+    },
+    {
+      "id": "GAP-P05",
+      "name": "exact browser source modules XML and budget behavior",
+      "source": "import {createRequire} from 'node:module';import {readFile} from 'node:fs/promises';import {pathToFileURL} from 'node:url';const root='${OWLAPI_SOURCE}';const scratch=process.argv[2];process.env.TEMP=scratch+'/temporary';process.env.TMP=process.env.TEMP;const req=createRequire(root+'/package.json');const pw=req('playwright');const {OWLOntologyLoaderConfiguration}=await import(pathToFileURL(root+'/model/owlOntologyLoaderConfiguration.js'));const config=new OWLOntologyLoaderConfiguration();const results={};const allowed=new Set(['internal/parsing/xml/xmlParserAdapter.js','internal/parsing/xml/xmlEntityPolicy.js','internal/parsing/xml/xmlNames.js','internal/parsing/xml/xmlEntityDefaults.js','io/errors.js','internal/profiles/budget.js','internal/modularity/localityBudget.js']);const cases=[['valid','<r/>'],['duplicate-attribute','<r a=\"1\" a=\"2\"/>'],['empty-prefix','<r xmlns:p=\"\"><p:c/></r>']];for(const name of ['chromium','webkit']){const browser=await pw[name].launch({headless:true,timeout:10000});try{const page=await browser.newPage();const requests=[];const blocked=[];await page.route('**/*',async route=>{const u=new URL(route.request().url());const p=u.pathname.substring(1);if(u.host!=='owlapi-probe.invalid'||!allowed.has(p)){blocked.push(u.href);await route.abort();return;}requests.push(p);await route.fulfill({status:200,headers:{'access-control-allow-origin':'*','content-type':'text/javascript'},body:await readFile(root+'/'+p,'utf8')});});await page.setContent('<!doctype html><iframe></iframe>');results[name]=await page.evaluate(async({cases,config})=>{const {xmlParserAdapter}=await import('https://owlapi-probe.invalid/internal/parsing/xml/xmlParserAdapter.js');const {createProfileBudget}=await import('https://owlapi-probe.invalid/internal/profiles/budget.js');const {createLocalityBudget}=await import('https://owlapi-probe.invalid/internal/modularity/localityBudget.js');const xml=[];for(const[id,text]of cases){try{const d=await xmlParserAdapter.parseXml(text,config);xml.push({id,result:'OK',root:d.documentElement.localName,descendantParserErrors:d.getElementsByTagName('parsererror').length});}catch(e){xml.push({id,result:e.name,code:e.code});}}const signals={native:new AbortController().signal,crossRealm:new(document.querySelector('iframe').contentWindow.AbortController)().signal,duck:{aborted:false}};const budgets=[];for(const [id,signal]of Object.entries(signals))for(const[k,f]of [['profile',createProfileBudget],['locality',createLocalityBudget]]){try{f({signal});budgets.push({id,kind:k,result:'OK'});}catch(e){budgets.push({id,kind:k,result:e.name});}}return{xml,budgets};},{cases,config});results[name].fulfilledLocalModules=requests;results[name].blockedRequests=blocked;}finally{await browser.close();}}console.log(JSON.stringify(results));",
+      "execution": {
+        "command": "node",
+        "args": ["${GAP_WORKSPACE}\\probe-runtime-modules.mjs"],
+        "network": "Only seven repository modules at a synthetic origin fulfilled from disk; all other requests aborted. No local HTTP server."
+      },
+      "result": {
+        "stdout": "{\"chromium\":{\"xml\":[{\"id\":\"valid\",\"result\":\"OK\",\"root\":\"r\",\"descendantParserErrors\":0},{\"id\":\"duplicate-attribute\",\"result\":\"OK\",\"root\":\"html\",\"descendantParserErrors\":1},{\"id\":\"empty-prefix\",\"result\":\"OK\",\"root\":\"html\",\"descendantParserErrors\":1}],\"budgets\":[{\"id\":\"native\",\"kind\":\"profile\",\"result\":\"OK\"},{\"id\":\"native\",\"kind\":\"locality\",\"result\":\"OK\"},{\"id\":\"crossRealm\",\"kind\":\"profile\",\"result\":\"OK\"},{\"id\":\"crossRealm\",\"kind\":\"locality\",\"result\":\"OK\"},{\"id\":\"duck\",\"kind\":\"profile\",\"result\":\"TypeError\"},{\"id\":\"duck\",\"kind\":\"locality\",\"result\":\"TypeError\"}],\"fulfilledLocalModules\":[\"internal/parsing/xml/xmlParserAdapter.js\",\"io/errors.js\",\"internal/parsing/xml/xmlEntityPolicy.js\",\"internal/parsing/xml/xmlNames.js\",\"internal/parsing/xml/xmlEntityDefaults.js\",\"internal/profiles/budget.js\",\"internal/modularity/localityBudget.js\"],\"blockedRequests\":[]},\"webkit\":{\"xml\":[{\"id\":\"valid\",\"result\":\"OK\",\"root\":\"r\",\"descendantParserErrors\":0},{\"id\":\"duplicate-attribute\",\"result\":\"OK\",\"root\":\"html\",\"descendantParserErrors\":1},{\"id\":\"empty-prefix\",\"result\":\"OK\",\"root\":\"r\",\"descendantParserErrors\":1}],\"budgets\":[{\"id\":\"native\",\"kind\":\"profile\",\"result\":\"OK\"},{\"id\":\"native\",\"kind\":\"locality\",\"result\":\"OK\"},{\"id\":\"crossRealm\",\"kind\":\"profile\",\"result\":\"OK\"},{\"id\":\"crossRealm\",\"kind\":\"locality\",\"result\":\"OK\"},{\"id\":\"duck\",\"kind\":\"profile\",\"result\":\"TypeError\"},{\"id\":\"duck\",\"kind\":\"locality\",\"result\":\"TypeError\"}],\"fulfilledLocalModules\":[\"internal/parsing/xml/xmlParserAdapter.js\",\"io/errors.js\",\"internal/parsing/xml/xmlEntityPolicy.js\",\"internal/parsing/xml/xmlNames.js\",\"internal/parsing/xml/xmlEntityDefaults.js\",\"internal/profiles/budget.js\",\"internal/modularity/localityBudget.js\"],\"blockedRequests\":[]}}\n",
+        "stderr": "",
+        "exitCode": 0
+      },
+      "portableRecord": {
+        "originalRecordSha256": "cac1f7e799d43a83ba699568b73e23bf401a53532256595fce3f571743a7544b",
+        "normalizedRecordSha256": "754c25c87207b50403bb4c97495c1c27eac0684f35a30f56cf6f302d72a9cde9",
+        "originalSourceSha256": "42d87b49f18ba78a4c9566962e00a5ca65a4d859046bc64b8d5c7ef6e13c03cd",
+        "sourceSha256": "d0344f41f7704eb5d2b67a037b668e70f6ea7515a043a9ed8676c964339f179c"
+      }
+    },
+    {
+      "id": "GAP-P06",
+      "name": "default-secure default-cache long allowlisted JSON-LD chains",
+      "source": "import java.io.*;\nimport java.net.*;\nimport java.util.*;\nimport org.semanticweb.owlapi.apibinding.OWLManager;\nimport org.semanticweb.owlapi.io.*;\nimport org.semanticweb.owlapi.formats.*;\nimport org.semanticweb.owlapi.model.*;\nimport org.eclipse.rdf4j.rio.*;\nimport org.eclipse.rdf4j.rio.helpers.JSONLDSettings;\nimport no.hasmac.jsonld.loader.*;\nimport no.hasmac.jsonld.document.*;\npublic class ProbeJsonLdDefaultChain {\n static List<String> urls;static int limit,calls;\n static Document response(URI uri,DocumentLoaderOptions options) throws no.hasmac.jsonld.JsonLdError {\n  if(++calls>30)throw new IllegalStateException(\"probe bound\");\n  int i=urls.indexOf(uri.toString());if(i<0)throw new IllegalStateException(\"unlisted route\");\n  String text=i+1<limit?\"{\\\"@context\\\":\\\"\"+urls.get(i+1)+\"\\\"}\":\"{\\\"@context\\\":{\\\"x\\\":\\\"urn:x:\\\"}}\";\n  var d=JsonDocument.of(new StringReader(text));d.setDocumentUrl(uri);return d;\n }\n public static void main(String[]args)throws Exception {\n  System.clearProperty(JSONLDSettings.SECURE_MODE.getKey());System.clearProperty(JSONLDSettings.DOCUMENT_LOADER_CACHE.getKey());System.clearProperty(JSONLDSettings.WHITELIST.getKey());\n  var p=Rio.createParser(RDFFormat.JSONLD);urls=new ArrayList<>(p.getParserConfig().get(JSONLDSettings.WHITELIST));Collections.sort(urls);limit=Integer.parseInt(args[0]);if(limit>urls.size())throw new IllegalArgumentException(\"probe exceeds whitelist\");\n  var r=(SchemeRouter)SchemeRouter.defaultInstance();r.set(\"http\",ProbeJsonLdDefaultChain::response);r.set(\"https\",ProbeJsonLdDefaultChain::response);r.set(\"file\",(u,o)->{throw new IllegalStateException(\"file denied\");});\n  String text=\"{\\\"@context\\\":\\\"\"+urls.get(0)+\"\\\",\\\"@id\\\":\\\"urn:s\\\",\\\"@type\\\":\\\"http://www.w3.org/2002/07/owl#Class\\\"}\";\n  try{var o=OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(new StringDocumentSource(text,IRI.create(\"urn:default-chain:\"+limit),new RDFJsonLDDocumentFormat(),null));System.out.println(\"OK\\tlimit=\"+limit+\"\\tcalls=\"+calls+\"\\taxioms=\"+o.getAxiomCount()+\"\\tsecure=\"+p.getParserConfig().get(JSONLDSettings.SECURE_MODE)+\"\\tcache=\"+p.getParserConfig().get(JSONLDSettings.DOCUMENT_LOADER_CACHE));}\n  catch(Throwable e){System.out.println(\"FAIL\\tlimit=\"+limit+\"\\tcalls=\"+calls+\"\\t\"+e);}\n }\n}\n",
+      "execution": {
+        "command": "${PROGRAM_FILES}/Eclipse Adoptium/jdk-25.0.4.101-hotspot/bin/java.exe",
+        "runs": [
+          {
+            "args": [
+              "-cp",
+              "${GAP_WORKSPACE}/source-overlay;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-apibinding\\5.5.1\\owlapi-apibinding-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-tools\\5.5.1\\owlapi-tools-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-impl\\5.5.1\\owlapi-impl-5.5.1.jar;${MAVEN_REPOSITORY}\\javax\\inject\\javax.inject\\1\\javax.inject-1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-parsers\\5.5.1\\owlapi-parsers-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-oboformat\\5.5.1\\owlapi-oboformat-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-rio\\5.5.1\\owlapi-rio-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-api\\5.5.1\\owlapi-api-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-compatibility\\5.5.1\\owlapi-compatibility-5.5.1.jar;${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-core\\2.16.1\\jackson-core-2.16.1.jar;${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-databind\\2.16.1\\jackson-databind-2.16.1.jar;${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-annotations\\2.16.1\\jackson-annotations-2.16.1.jar;${MAVEN_REPOSITORY}\\org\\apache\\commons\\commons-rdf-api\\0.5.0\\commons-rdf-api-0.5.0.jar;${MAVEN_REPOSITORY}\\org\\tukaani\\xz\\1.9\\xz-1.9.jar;${MAVEN_REPOSITORY}\\org\\slf4j\\slf4j-api\\2.0.11\\slf4j-api-2.0.11.jar;${MAVEN_REPOSITORY}\\org\\slf4j\\jcl-over-slf4j\\2.0.11\\jcl-over-slf4j-2.0.11.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model\\5.0.2\\rdf4j-model-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-exception\\5.0.2\\rdf4j-common-exception-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-text\\5.0.2\\rdf4j-common-text-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-io\\5.0.2\\rdf4j-common-io-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-iterator\\5.0.2\\rdf4j-common-iterator-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-order\\5.0.2\\rdf4j-common-order-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model-api\\5.0.2\\rdf4j-model-api-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-annotation\\5.0.2\\rdf4j-common-annotation-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model-vocabulary\\5.0.2\\rdf4j-model-vocabulary-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-api\\5.0.2\\rdf4j-rio-api-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-xml\\5.0.2\\rdf4j-common-xml-5.0.2.jar;${MAVEN_REPOSITORY}\\commons-codec\\commons-codec\\1.15\\commons-codec-1.15.jar;${MAVEN_REPOSITORY}\\no\\hasmac\\hasmac-json-ld\\0.9.0\\hasmac-json-ld-0.9.0.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-languages\\5.0.2\\rdf4j-rio-languages-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-datatypes\\5.0.2\\rdf4j-rio-datatypes-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-binary\\5.0.2\\rdf4j-rio-binary-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-n3\\5.0.2\\rdf4j-rio-n3-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-nquads\\5.0.2\\rdf4j-rio-nquads-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-ntriples\\5.0.2\\rdf4j-rio-ntriples-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-rdfjson\\5.0.2\\rdf4j-rio-rdfjson-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-jsonld\\5.0.2\\rdf4j-rio-jsonld-5.0.2.jar;${MAVEN_REPOSITORY}\\jakarta\\json\\jakarta.json-api\\2.0.1\\jakarta.json-api-2.0.1.jar;${MAVEN_REPOSITORY}\\org\\glassfish\\jakarta.json\\2.0.1\\jakarta.json-2.0.1.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient\\4.5.14\\httpclient-4.5.14.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore\\4.4.16\\httpcore-4.4.16.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient-cache\\4.5.14\\httpclient-cache-4.5.14.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-rdfxml\\5.0.2\\rdf4j-rio-rdfxml-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-trix\\5.0.2\\rdf4j-rio-trix-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-turtle\\5.0.2\\rdf4j-rio-turtle-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-trig\\5.0.2\\rdf4j-rio-trig-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-hdt\\5.0.2\\rdf4j-rio-hdt-5.0.2.jar;${MAVEN_REPOSITORY}\\com\\github\\jsonld-java\\jsonld-java\\0.13.6\\jsonld-java-0.13.6.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient-osgi\\4.5.13\\httpclient-osgi-4.5.13.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpmime\\4.5.13\\httpmime-4.5.13.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\fluent-hc\\4.5.13\\fluent-hc-4.5.13.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore-osgi\\4.4.16\\httpcore-osgi-4.4.16.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore-nio\\4.4.16\\httpcore-nio-4.4.16.jar;${MAVEN_REPOSITORY}\\com\\github\\vsonnier\\hppcrt\\0.7.5\\hppcrt-0.7.5.jar;${MAVEN_REPOSITORY}\\com\\github\\ben-manes\\caffeine\\caffeine\\3.1.8\\caffeine-3.1.8.jar;${MAVEN_REPOSITORY}\\org\\checkerframework\\checker-qual\\3.37.0\\checker-qual-3.37.0.jar;${MAVEN_REPOSITORY}\\com\\google\\errorprone\\error_prone_annotations\\2.21.1\\error_prone_annotations-2.21.1.jar;${MAVEN_REPOSITORY}\\com\\google\\guava\\guava\\33.0.0-jre\\guava-33.0.0-jre.jar;${MAVEN_REPOSITORY}\\com\\google\\guava\\failureaccess\\1.0.2\\failureaccess-1.0.2.jar;${MAVEN_REPOSITORY}\\com\\google\\guava\\listenablefuture\\9999.0-empty-to-avoid-conflict-with-guava\\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;${MAVEN_REPOSITORY}\\com\\google\\j2objc\\j2objc-annotations\\2.8\\j2objc-annotations-2.8.jar;${MAVEN_REPOSITORY}\\com\\google\\code\\findbugs\\jsr305\\3.0.2\\jsr305-3.0.2.jar;${MAVEN_REPOSITORY}\\commons-io\\commons-io\\2.15.1\\commons-io-2.15.1.jar",
+              "${GAP_WORKSPACE}\\ProbeJsonLdDefaultChain.java",
+              "13"
+            ],
+            "freshProcess": true
+          },
+          {
+            "args": [
+              "-cp",
+              "${GAP_WORKSPACE}/source-overlay;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-apibinding\\5.5.1\\owlapi-apibinding-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-tools\\5.5.1\\owlapi-tools-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-impl\\5.5.1\\owlapi-impl-5.5.1.jar;${MAVEN_REPOSITORY}\\javax\\inject\\javax.inject\\1\\javax.inject-1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-parsers\\5.5.1\\owlapi-parsers-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-oboformat\\5.5.1\\owlapi-oboformat-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-rio\\5.5.1\\owlapi-rio-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-api\\5.5.1\\owlapi-api-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-compatibility\\5.5.1\\owlapi-compatibility-5.5.1.jar;${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-core\\2.16.1\\jackson-core-2.16.1.jar;${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-databind\\2.16.1\\jackson-databind-2.16.1.jar;${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-annotations\\2.16.1\\jackson-annotations-2.16.1.jar;${MAVEN_REPOSITORY}\\org\\apache\\commons\\commons-rdf-api\\0.5.0\\commons-rdf-api-0.5.0.jar;${MAVEN_REPOSITORY}\\org\\tukaani\\xz\\1.9\\xz-1.9.jar;${MAVEN_REPOSITORY}\\org\\slf4j\\slf4j-api\\2.0.11\\slf4j-api-2.0.11.jar;${MAVEN_REPOSITORY}\\org\\slf4j\\jcl-over-slf4j\\2.0.11\\jcl-over-slf4j-2.0.11.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model\\5.0.2\\rdf4j-model-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-exception\\5.0.2\\rdf4j-common-exception-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-text\\5.0.2\\rdf4j-common-text-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-io\\5.0.2\\rdf4j-common-io-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-iterator\\5.0.2\\rdf4j-common-iterator-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-order\\5.0.2\\rdf4j-common-order-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model-api\\5.0.2\\rdf4j-model-api-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-annotation\\5.0.2\\rdf4j-common-annotation-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model-vocabulary\\5.0.2\\rdf4j-model-vocabulary-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-api\\5.0.2\\rdf4j-rio-api-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-xml\\5.0.2\\rdf4j-common-xml-5.0.2.jar;${MAVEN_REPOSITORY}\\commons-codec\\commons-codec\\1.15\\commons-codec-1.15.jar;${MAVEN_REPOSITORY}\\no\\hasmac\\hasmac-json-ld\\0.9.0\\hasmac-json-ld-0.9.0.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-languages\\5.0.2\\rdf4j-rio-languages-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-datatypes\\5.0.2\\rdf4j-rio-datatypes-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-binary\\5.0.2\\rdf4j-rio-binary-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-n3\\5.0.2\\rdf4j-rio-n3-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-nquads\\5.0.2\\rdf4j-rio-nquads-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-ntriples\\5.0.2\\rdf4j-rio-ntriples-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-rdfjson\\5.0.2\\rdf4j-rio-rdfjson-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-jsonld\\5.0.2\\rdf4j-rio-jsonld-5.0.2.jar;${MAVEN_REPOSITORY}\\jakarta\\json\\jakarta.json-api\\2.0.1\\jakarta.json-api-2.0.1.jar;${MAVEN_REPOSITORY}\\org\\glassfish\\jakarta.json\\2.0.1\\jakarta.json-2.0.1.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient\\4.5.14\\httpclient-4.5.14.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore\\4.4.16\\httpcore-4.4.16.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient-cache\\4.5.14\\httpclient-cache-4.5.14.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-rdfxml\\5.0.2\\rdf4j-rio-rdfxml-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-trix\\5.0.2\\rdf4j-rio-trix-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-turtle\\5.0.2\\rdf4j-rio-turtle-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-trig\\5.0.2\\rdf4j-rio-trig-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-hdt\\5.0.2\\rdf4j-rio-hdt-5.0.2.jar;${MAVEN_REPOSITORY}\\com\\github\\jsonld-java\\jsonld-java\\0.13.6\\jsonld-java-0.13.6.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient-osgi\\4.5.13\\httpclient-osgi-4.5.13.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpmime\\4.5.13\\httpmime-4.5.13.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\fluent-hc\\4.5.13\\fluent-hc-4.5.13.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore-osgi\\4.4.16\\httpcore-osgi-4.4.16.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore-nio\\4.4.16\\httpcore-nio-4.4.16.jar;${MAVEN_REPOSITORY}\\com\\github\\vsonnier\\hppcrt\\0.7.5\\hppcrt-0.7.5.jar;${MAVEN_REPOSITORY}\\com\\github\\ben-manes\\caffeine\\caffeine\\3.1.8\\caffeine-3.1.8.jar;${MAVEN_REPOSITORY}\\org\\checkerframework\\checker-qual\\3.37.0\\checker-qual-3.37.0.jar;${MAVEN_REPOSITORY}\\com\\google\\errorprone\\error_prone_annotations\\2.21.1\\error_prone_annotations-2.21.1.jar;${MAVEN_REPOSITORY}\\com\\google\\guava\\guava\\33.0.0-jre\\guava-33.0.0-jre.jar;${MAVEN_REPOSITORY}\\com\\google\\guava\\failureaccess\\1.0.2\\failureaccess-1.0.2.jar;${MAVEN_REPOSITORY}\\com\\google\\guava\\listenablefuture\\9999.0-empty-to-avoid-conflict-with-guava\\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;${MAVEN_REPOSITORY}\\com\\google\\j2objc\\j2objc-annotations\\2.8\\j2objc-annotations-2.8.jar;${MAVEN_REPOSITORY}\\com\\google\\code\\findbugs\\jsr305\\3.0.2\\jsr305-3.0.2.jar;${MAVEN_REPOSITORY}\\commons-io\\commons-io\\2.15.1\\commons-io-2.15.1.jar",
+              "${GAP_WORKSPACE}\\ProbeJsonLdDefaultChain.java",
+              "25"
+            ],
+            "freshProcess": true
+          }
+        ],
+        "network": "Supported SchemeRouter serves default whitelist URLs from memory; file denied; 30-call ceiling; system secure/cache/whitelist properties cleared."
+      },
+      "results": [
+        {
+          "length": 13,
+          "result": {
+            "stdout": "OK\tlimit=13\tcalls=13\taxioms=1\tsecure=true\tcache=true\r\n",
+            "stderr": "SLF4J(W): No SLF4J providers were found.\r\nSLF4J(W): Defaulting to no-operation (NOP) logger implementation\r\nSLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.\r\nWARNING: A terminally deprecated method in sun.misc.Unsafe has been called\nWARNING: sun.misc.Unsafe::objectFieldOffset has been called by com.google.common.util.concurrent.AbstractFuture$UnsafeAtomicHelper (file:/${MAVEN_REPOSITORY}/com/google/guava/guava/33.0.0-jre/guava-33.0.0-jre.jar)\nWARNING: Please consider reporting this to the maintainers of class com.google.common.util.concurrent.AbstractFuture$UnsafeAtomicHelper\nWARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release\r\n",
+            "exitCode": 0
+          }
+        },
+        {
+          "length": 25,
+          "result": {
+            "stdout": "OK\tlimit=25\tcalls=25\taxioms=1\tsecure=true\tcache=true\r\n",
+            "stderr": "SLF4J(W): No SLF4J providers were found.\r\nSLF4J(W): Defaulting to no-operation (NOP) logger implementation\r\nSLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.\r\nWARNING: A terminally deprecated method in sun.misc.Unsafe has been called\nWARNING: sun.misc.Unsafe::objectFieldOffset has been called by com.google.common.util.concurrent.AbstractFuture$UnsafeAtomicHelper (file:/${MAVEN_REPOSITORY}/com/google/guava/guava/33.0.0-jre/guava-33.0.0-jre.jar)\nWARNING: Please consider reporting this to the maintainers of class com.google.common.util.concurrent.AbstractFuture$UnsafeAtomicHelper\nWARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release\r\n",
+            "exitCode": 0
+          }
+        }
+      ],
+      "portableRecord": {
+        "originalRecordSha256": "f7cc1aab1787eada9ab8fc5e2eefc5921f41df3d2526de2a2f14ac1d1a11243e",
+        "normalizedRecordSha256": "eae4dd3c4629991716507cc9a79d69d80bd68770a8b238c5a49f22a3b3541220",
+        "originalSourceSha256": "2530e680559460ff44a4aece5d73e8821dd86c5fca11a1f80114240922246410",
+        "sourceSha256": "2530e680559460ff44a4aece5d73e8821dd86c5fca11a1f80114240922246410"
+      }
+    },
+    {
+      "id": "GAP-P07",
+      "name": "JSON-LD cache ownership, errors, bypass and whitelist precedence",
+      "source": "import java.io.*;\nimport java.net.*;\nimport java.util.*;\nimport org.semanticweb.owlapi.apibinding.OWLManager;\nimport org.semanticweb.owlapi.io.*;\nimport org.semanticweb.owlapi.formats.*;\nimport org.semanticweb.owlapi.model.*;\nimport org.eclipse.rdf4j.rio.*;\nimport org.eclipse.rdf4j.rio.helpers.JSONLDSettings;\nimport no.hasmac.jsonld.*;\nimport no.hasmac.jsonld.loader.*;\nimport no.hasmac.jsonld.document.*;\npublic class ProbeJsonLdCache {\n static int calls,version=1;static Set<String> failures=new HashSet<>();\n static Document response(URI uri,DocumentLoaderOptions options)throws JsonLdError {\n  if(++calls>20)throw new IllegalStateException(\"probe bound\");\n  if(failures.remove(uri.toString()))throw new JsonLdError(JsonLdErrorCode.LOADING_DOCUMENT_FAILED,\"injected\");\n  var d=JsonDocument.of(new StringReader(\"{\\\"@context\\\":{\\\"x\\\":\\\"urn:v\"+version+\":\\\"}}\"));d.setDocumentUrl(uri);return d;\n }\n static void run(String name,String uri,boolean formatOff){\n  int before=calls;var format=new RDFJsonLDDocumentFormat();if(formatOff)format.setParameter(JSONLDSettings.DOCUMENT_LOADER_CACHE,false);\n  try{var o=OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(new StringDocumentSource(\"{\\\"@context\\\":\\\"\"+uri+\"\\\",\\\"@id\\\":\\\"x:s\\\",\\\"@type\\\":\\\"http://www.w3.org/2002/07/owl#Class\\\"}\",IRI.create(\"urn:cache:\"+name),format,null));System.out.println(name+\"\\tOK\\tcalls=\"+(calls-before)+\"\\tclasses=\"+o.classesInSignature().map(c->c.getIRI().toString()).sorted().toList());}\n  catch(Throwable e){System.out.println(name+\"\\t\"+e.getClass().getSimpleName()+\"\\tcalls=\"+(calls-before));}\n }\n public static void main(String[]args)throws Exception{\n  System.clearProperty(JSONLDSettings.SECURE_MODE.getKey());System.clearProperty(JSONLDSettings.DOCUMENT_LOADER_CACHE.getKey());System.clearProperty(JSONLDSettings.WHITELIST.getKey());\n  var p=Rio.createParser(RDFFormat.JSONLD);var urls=new ArrayList<>(p.getParserConfig().get(JSONLDSettings.WHITELIST));Collections.sort(urls);String a=urls.get(0),b=urls.get(1),u=\"https://unlisted.example/cache\";\n  var r=(SchemeRouter)SchemeRouter.defaultInstance();r.set(\"http\",ProbeJsonLdCache::response);r.set(\"https\",ProbeJsonLdCache::response);r.set(\"file\",(x,o)->{throw new IllegalStateException(\"file denied\");});\n  run(\"first\",a,false);version=2;run(\"new-manager-reuse\",a,false);run(\"format-cache-false-ignored\",a,true);\n  failures.add(b);run(\"failure\",b,false);run(\"retry-failure\",b,false);version=3;run(\"reuse-after-retry\",b,false);\n  System.setProperty(JSONLDSettings.DOCUMENT_LOADER_CACHE.getKey(),\"false\");run(\"system-cache-bypass\",a,false);System.clearProperty(JSONLDSettings.DOCUMENT_LOADER_CACHE.getKey());run(\"cache-restored-old-value\",a,false);\n  System.setProperty(JSONLDSettings.SECURE_MODE.getKey(),\"false\");run(\"unlisted-warm\",u,false);System.clearProperty(JSONLDSettings.SECURE_MODE.getKey());run(\"secure-rejects-warm-cache\",u,false);\n }\n}\n",
+      "execution": {
+        "command": "${PROGRAM_FILES}/Eclipse Adoptium/jdk-25.0.4.101-hotspot/bin/java.exe",
+        "args": [
+          "-cp",
+          "${GAP_WORKSPACE}/source-overlay;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-apibinding\\5.5.1\\owlapi-apibinding-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-tools\\5.5.1\\owlapi-tools-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-impl\\5.5.1\\owlapi-impl-5.5.1.jar;${MAVEN_REPOSITORY}\\javax\\inject\\javax.inject\\1\\javax.inject-1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-parsers\\5.5.1\\owlapi-parsers-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-oboformat\\5.5.1\\owlapi-oboformat-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-rio\\5.5.1\\owlapi-rio-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-api\\5.5.1\\owlapi-api-5.5.1.jar;${MAVEN_REPOSITORY}\\net\\sourceforge\\owlapi\\owlapi-compatibility\\5.5.1\\owlapi-compatibility-5.5.1.jar;${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-core\\2.16.1\\jackson-core-2.16.1.jar;${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-databind\\2.16.1\\jackson-databind-2.16.1.jar;${MAVEN_REPOSITORY}\\com\\fasterxml\\jackson\\core\\jackson-annotations\\2.16.1\\jackson-annotations-2.16.1.jar;${MAVEN_REPOSITORY}\\org\\apache\\commons\\commons-rdf-api\\0.5.0\\commons-rdf-api-0.5.0.jar;${MAVEN_REPOSITORY}\\org\\tukaani\\xz\\1.9\\xz-1.9.jar;${MAVEN_REPOSITORY}\\org\\slf4j\\slf4j-api\\2.0.11\\slf4j-api-2.0.11.jar;${MAVEN_REPOSITORY}\\org\\slf4j\\jcl-over-slf4j\\2.0.11\\jcl-over-slf4j-2.0.11.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model\\5.0.2\\rdf4j-model-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-exception\\5.0.2\\rdf4j-common-exception-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-text\\5.0.2\\rdf4j-common-text-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-io\\5.0.2\\rdf4j-common-io-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-iterator\\5.0.2\\rdf4j-common-iterator-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-order\\5.0.2\\rdf4j-common-order-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model-api\\5.0.2\\rdf4j-model-api-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-annotation\\5.0.2\\rdf4j-common-annotation-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-model-vocabulary\\5.0.2\\rdf4j-model-vocabulary-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-api\\5.0.2\\rdf4j-rio-api-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-common-xml\\5.0.2\\rdf4j-common-xml-5.0.2.jar;${MAVEN_REPOSITORY}\\commons-codec\\commons-codec\\1.15\\commons-codec-1.15.jar;${MAVEN_REPOSITORY}\\no\\hasmac\\hasmac-json-ld\\0.9.0\\hasmac-json-ld-0.9.0.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-languages\\5.0.2\\rdf4j-rio-languages-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-datatypes\\5.0.2\\rdf4j-rio-datatypes-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-binary\\5.0.2\\rdf4j-rio-binary-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-n3\\5.0.2\\rdf4j-rio-n3-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-nquads\\5.0.2\\rdf4j-rio-nquads-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-ntriples\\5.0.2\\rdf4j-rio-ntriples-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-rdfjson\\5.0.2\\rdf4j-rio-rdfjson-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-jsonld\\5.0.2\\rdf4j-rio-jsonld-5.0.2.jar;${MAVEN_REPOSITORY}\\jakarta\\json\\jakarta.json-api\\2.0.1\\jakarta.json-api-2.0.1.jar;${MAVEN_REPOSITORY}\\org\\glassfish\\jakarta.json\\2.0.1\\jakarta.json-2.0.1.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient\\4.5.14\\httpclient-4.5.14.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore\\4.4.16\\httpcore-4.4.16.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient-cache\\4.5.14\\httpclient-cache-4.5.14.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-rdfxml\\5.0.2\\rdf4j-rio-rdfxml-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-trix\\5.0.2\\rdf4j-rio-trix-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-turtle\\5.0.2\\rdf4j-rio-turtle-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-trig\\5.0.2\\rdf4j-rio-trig-5.0.2.jar;${MAVEN_REPOSITORY}\\org\\eclipse\\rdf4j\\rdf4j-rio-hdt\\5.0.2\\rdf4j-rio-hdt-5.0.2.jar;${MAVEN_REPOSITORY}\\com\\github\\jsonld-java\\jsonld-java\\0.13.6\\jsonld-java-0.13.6.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpclient-osgi\\4.5.13\\httpclient-osgi-4.5.13.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpmime\\4.5.13\\httpmime-4.5.13.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\fluent-hc\\4.5.13\\fluent-hc-4.5.13.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore-osgi\\4.4.16\\httpcore-osgi-4.4.16.jar;${MAVEN_REPOSITORY}\\org\\apache\\httpcomponents\\httpcore-nio\\4.4.16\\httpcore-nio-4.4.16.jar;${MAVEN_REPOSITORY}\\com\\github\\vsonnier\\hppcrt\\0.7.5\\hppcrt-0.7.5.jar;${MAVEN_REPOSITORY}\\com\\github\\ben-manes\\caffeine\\caffeine\\3.1.8\\caffeine-3.1.8.jar;${MAVEN_REPOSITORY}\\org\\checkerframework\\checker-qual\\3.37.0\\checker-qual-3.37.0.jar;${MAVEN_REPOSITORY}\\com\\google\\errorprone\\error_prone_annotations\\2.21.1\\error_prone_annotations-2.21.1.jar;${MAVEN_REPOSITORY}\\com\\google\\guava\\guava\\33.0.0-jre\\guava-33.0.0-jre.jar;${MAVEN_REPOSITORY}\\com\\google\\guava\\failureaccess\\1.0.2\\failureaccess-1.0.2.jar;${MAVEN_REPOSITORY}\\com\\google\\guava\\listenablefuture\\9999.0-empty-to-avoid-conflict-with-guava\\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;${MAVEN_REPOSITORY}\\com\\google\\j2objc\\j2objc-annotations\\2.8\\j2objc-annotations-2.8.jar;${MAVEN_REPOSITORY}\\com\\google\\code\\findbugs\\jsr305\\3.0.2\\jsr305-3.0.2.jar;${MAVEN_REPOSITORY}\\commons-io\\commons-io\\2.15.1\\commons-io-2.15.1.jar",
+          "${GAP_WORKSPACE}\\ProbeJsonLdCache.java"
+        ],
+        "network": "Supported SchemeRouter returns memory documents, 20-call ceiling, file denied; JVM property changes limited to the isolated process."
+      },
+      "result": {
+        "stdout": "first\tOK\tcalls=1\tclasses=[urn:v1:s]\r\nnew-manager-reuse\tOK\tcalls=0\tclasses=[urn:v1:s]\r\nformat-cache-false-ignored\tOK\tcalls=0\tclasses=[urn:v1:s]\r\nfailure\tUnparsableOntologyException\tcalls=1\r\nretry-failure\tOK\tcalls=1\tclasses=[urn:v2:s]\r\nreuse-after-retry\tOK\tcalls=0\tclasses=[urn:v2:s]\r\nsystem-cache-bypass\tOK\tcalls=1\tclasses=[urn:v3:s]\r\ncache-restored-old-value\tOK\tcalls=0\tclasses=[urn:v1:s]\r\nunlisted-warm\tOK\tcalls=1\tclasses=[urn:v3:s]\r\nsecure-rejects-warm-cache\tUnparsableOntologyException\tcalls=0\r\n",
+        "stderr": "SLF4J(W): No SLF4J providers were found.\r\nSLF4J(W): Defaulting to no-operation (NOP) logger implementation\r\nSLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.\r\nWARNING: A terminally deprecated method in sun.misc.Unsafe has been called\nWARNING: sun.misc.Unsafe::objectFieldOffset has been called by com.google.common.util.concurrent.AbstractFuture$UnsafeAtomicHelper (file:/${MAVEN_REPOSITORY}/com/google/guava/guava/33.0.0-jre/guava-33.0.0-jre.jar)\nWARNING: Please consider reporting this to the maintainers of class com.google.common.util.concurrent.AbstractFuture$UnsafeAtomicHelper\nWARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release\r\n",
+        "exitCode": 0
+      },
+      "portableRecord": {
+        "originalRecordSha256": "919550f198c345e10f3930390921f3da395b0c2ca45a85e40753b818126e4d2b",
+        "normalizedRecordSha256": "6fd421d29e2dcb9796d9054cecd10b9543b83ad9a9284bca510496df95b20bf9",
+        "originalSourceSha256": "c6e114eeafabc533938d00cd1f69643cc6f1b804007cdcdbd2a6d6e17a65075a",
+        "sourceSha256": "c6e114eeafabc533938d00cd1f69643cc6f1b804007cdcdbd2a6d6e17a65075a"
+      }
+    }
+  ],
+  "closures": [
+    {
+      "id": "GAP-01",
+      "status": "observed-and-source-traced",
+      "subject": "Selected Rio uses RDF4J 5.0.2 and no.hasmac 0.9.0; secure/cache true, whitelist25; unsupported format settings ignored; system override route active; 257 contexts succeed, 258 fails after257 calls. Additional fresh-process public-default probes: 13 and 25 distinct allowlisted contexts succeed with secure/cache true and exactly13/25 stub calls. Cache probe: cross-manager success reuse; failures not cached; unsupported format cache=false ignored; JVM bypass preserves prior cache entries; secure whitelist rejects warmed unlisted entries before cache access. Exact Guava LoadingCache source specifies same-key coalescing."
+    },
+    {
+      "id": "GAP-02",
+      "status": "observed-and-source-traced",
+      "subject": "Supplied writer IOException write/flush suppression, runtime failure partial output, double close, stream ownership, StringDocumentTarget append."
+    },
+    {
+      "id": "GAP-03",
+      "status": "observed-and-source-traced",
+      "subject": "Sequential batch outcomes, forward rollback quirk, thrown collision partial state, veto and reentrant listener traces."
+    },
+    {
+      "id": "GAP-04",
+      "status": "observed-and-source-traced",
+      "subject": "New successful imports retained on root failure, prior ontologies preserved, failed import placeholder affects retry, ID-keyed configuration retained through rename/removal."
+    },
+    {
+      "id": "GAP-05",
+      "status": "observed-adapter-only",
+      "subject": "Chromium/WebKit exact XML adapter accepts DOM wrappers with nested parsererror; Node rejects. Native/cross-realm signals work; duck objects rejected in profile/locality. No public-load success claim."
+    },
+    {
+      "id": "GAP-06",
+      "status": "source-bound-selected-implementations-only",
+      "subject": "Seven pinned source files compiled in an overlay; remaining retained JAR source/build provenance not established and full native release gate not satisfied."
+    }
+  ],
+  "coverageLimits": [
+    "No product source, configuration, dependency, commit, publication, remote CI or HISEW engine receipt was changed.",
+    "No fresh full Maven build. Selected unchanged source overlay establishes only the listed classes; retained JAR hashes and versions are not full source-build provenance.",
+    "Local JDK is not the exact canonical hosted JDK build; native/Rio/JDK/provider distinctions must remain explicit.",
+    "Browser adapter results do not establish malformed ontology publication through every public manager route. Public category/publication scenarios remain mandatory implementation proofs.",
+    "Firefox launch returned spawn UNKNOWN; Chromium and WebKit completed. Firefox is an environment qualification gate, not a new Java semantic uncertainty.",
+    "Probe matrices are bounded representatives, not exhaustive listeners, all parser factories, all import permutations, all custom targets or all network protocols.",
+    "Large byte/search-state boundaries remain source traced rather than exhausted. No claim that Java has no limits.",
+    "Supplied Writer and listeners are currently unavailable public API families in JavaScript; their observations delimit the selected matched behavior scope.",
+    "Downloaded primary dependency sources are retained with digests; remote context data was never fetched by a behavior probe."
+  ],
+  "errorsAndCorrections": [
+    "JSON-LD initial probe missed checked JsonLdError declaration; fixed version ran. Both attempts retained.",
+    "Initial browser probe had JavaScript constructor precedence error; corrected, then exact repository modules tested. Both initial attempts retained.",
+    "Metadata-only where.exe lookup could not resolve Java inside Node REPL; PowerShell Get-Command identified the Java/Javac executables. This did not invalidate completed probe results."
+  ],
+  "validation": {
+    "all63RetainedJarsUnchanged": true,
+    "overlayCompileExitCode": 0,
+    "successfulProbeExitCodes": [0, 0, 0, 0, 0, 0, 0, 0]
+  },
+  "updatedAtUtc": "2026-10-12T23:08:10.200Z",
+  "originalSchema": "owlapi-java-api-behavior-gap-closure/v1",
+  "portability": {
+    "original": {
+      "file": "2026-10-13-owlapi-api-behavior-gap-closure-evidence.json",
+      "bytes": 637234,
+      "sha256": "a8045b72d3695a11925cdd11dfd69ce63cf148c4fe4ddfc175be20fd734314b1"
+    },
+    "guide": "README.md",
+    "manifest": "manifest.json",
+    "normalization": "Host-root substitution in strings, including program templates and recorded command/output text; semantic observations are unchanged. See README.md. These derived records are not native qualification receipts.",
+    "omissions": [
+      "preservedUnrelatedFile",
+      "workflow",
+      "scratchInventory",
+      "sources[].source"
+    ],
+    "rootTokens": [
+      "${PRIMARY_WORKSPACE}",
+      "${GAP_WORKSPACE}",
+      "${JAVA_SOURCE}",
+      "${OWLAPI_SOURCE}",
+      "${MAVEN_REPOSITORY}",
+      "${PROGRAM_FILES}",
+      "${HOME}"
+    ]
+  }
+}

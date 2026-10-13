@@ -1,0 +1,103 @@
+{
+  "schema": "owlapi-behavior-research-dossier-manifest/v1",
+  "researchDate": "2026-10-13",
+  "originals": [
+    {
+      "file": "2026-10-13-owlapi-api-behavior-compatibility-research.md",
+      "bytes": 72689,
+      "sha256": "63ed9ee12e384227c4e7cec46cfb1ce9e54d677505fe2e39e3a529aa55cc99b2",
+      "retention": "Unmodified Drive original retained externally"
+    },
+    {
+      "file": "2026-10-13-owlapi-api-behavior-evidence.json",
+      "bytes": 189214,
+      "sha256": "01c26bd06cba42fe3d495d417f2d137751f3ac0577730a3cba72ec2640d49d6d",
+      "retention": "Unmodified Drive original retained externally"
+    },
+    {
+      "file": "2026-10-13-owlapi-api-behavior-gap-closure-research.md",
+      "bytes": 18600,
+      "sha256": "78403115615c0cf8d8ec2a26a72fe82a02e2f1e9a2e9bb054b348cc5accaa580",
+      "retention": "Unmodified Drive original retained externally"
+    },
+    {
+      "file": "2026-10-13-owlapi-api-behavior-gap-closure-evidence.json",
+      "bytes": 637234,
+      "sha256": "a8045b72d3695a11925cdd11dfd69ce63cf148c4fe4ddfc175be20fd734314b1",
+      "retention": "Unmodified Drive original retained externally"
+    }
+  ],
+  "transformations": [
+    "Relative repository document/evidence links and storage notes in copied reports and plan",
+    "Portable evidence format with named host-root tokens; source templates and recorded output are derived path-normalized transcriptions",
+    "Copied source bodies, duplicate dependency excerpts, unrelated checkout snapshot, operator workflow records and scratch inventories omitted",
+    "Source/dependency hashes and semantic observations preserved; normalized probe-source/output hashes distinguished from original hashes"
+  ],
+  "artifacts": [
+    {
+      "path": "2026-10-13-owlapi-api-behavior-compatibility-research.md",
+      "bytes": 90418,
+      "sha256": "a07b268095e037e4e8d5b188a0bd78ba5300224f8ec4db3b9be7670259b60039"
+    },
+    {
+      "path": "2026-10-13-owlapi-api-behavior-evidence.json",
+      "bytes": 172357,
+      "sha256": "8190c531b5a2a7920bf774c11fe49ae04919bf76e9230a42d0dbe1da4c087166"
+    },
+    {
+      "path": "2026-10-13-owlapi-api-behavior-gap-closure-research.md",
+      "bytes": 22941,
+      "sha256": "055858f4bf1d6a9b8aa012b6bda646989e33c7e991db1739ab65055efcf87795"
+    },
+    {
+      "path": "2026-10-13-owlapi-api-behavior-gap-closure-evidence.json",
+      "bytes": 180504,
+      "sha256": "ce1efafce28b4fd4893a09efeb12b90987f02e2811b728c3925d220108c99430"
+    },
+    {
+      "path": "README.md",
+      "bytes": 5028,
+      "sha256": "c3b342f9318fd26adfca0313fe858d39051769dc98f89ce8c0fcf6c178538849"
+    },
+    {
+      "path": "../../../plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+      "bytes": 129412,
+      "sha256": "05e9738e7634c0c2884623da7812d8019bb4934290f061a6da1bff462c546aa6"
+    }
+  ],
+  "validation": {
+    "scope": "Repository report relocation and portable snapshot validation; not runtime or release qualification",
+    "markdown": {
+      "documents": 4,
+      "exitCode": 0,
+      "localLinks": "validated by repository markdown-quality",
+      "longProseLines": "informational only"
+    },
+    "json": {
+      "files": 3,
+      "parseAndPrettierExitCode": 0
+    },
+    "originalDriveFiles": {
+      "count": 4,
+      "hashesUnchanged": true
+    },
+    "repositoryArtifacts": {
+      "hashedFiles": 6,
+      "allSizesAndSha256Match": true
+    },
+    "evidence": {
+      "primaryProbePrograms": 6,
+      "gapProbePrograms": 7,
+      "sourceReferences": 97,
+      "orderedJavaClasspathEntries": 63,
+      "semanticConfigurationAndResultsMatchOriginalsAfterDeclaredNormalization": true,
+      "originalAndNormalizedProbeRecordHashesVerified": true,
+      "embeddedUpstreamSourceAndOperatorScratchOmitted": true,
+      "machineAbsolutePathsInPortableJson": 0
+    },
+    "references": {
+      "planAndReportDigestsMatchRepositoryEditions": true,
+      "machineLocalDocumentationLinks": 0
+    }
+  }
+}
