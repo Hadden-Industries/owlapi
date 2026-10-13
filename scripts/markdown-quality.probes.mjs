@@ -1,6 +1,12 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import {
+  mkdtempSync,
+  mkdirSync,
+  readFileSync,
+  writeFileSync,
+  rmSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { createRequire } from "node:module";
 import { dirname, join, resolve } from "node:path";
@@ -162,6 +168,9 @@ test("root policy accounts for every tracked Markdown path and preserves the rev
   );
   const result = await inspectSelection({ root: repository });
   validateQualityResult(result, { operation: "inspect", exitCode: 0 });
+  // Native full selection also admits authored untracked documents. Verify the
+  // complete tracked contract without treating parallel authored work as drift.
+  const isTracked = (path) => tracked.includes(path);
   assert.deepEqual(
     result.selection.inventory.map((entry) => entry.path).sort(),
     tracked,
@@ -174,9 +183,38 @@ test("root policy accounts for every tracked Markdown path and preserves the rev
     excluded,
   );
   assert.deepEqual(
-    result.selection.files,
+    result.selection.files.filter(isTracked),
     tracked.filter((path) => !excluded.includes(path)),
   );
+});
+
+test("native Git reconciliation retains authored untracked Markdown", async () => {
+  const root = mkdtempSync(join(tmpdir(), "owlapi-markdown-untracked-"));
+  try {
+    writeFileSync(
+      join(root, ".markdown-quality.json"),
+      readFileSync(join(repository, ".markdown-quality.json")),
+    );
+    writeFileSync(join(root, "README.md"), "# Tracked\n");
+    for (const args of [
+      ["init", "--quiet"],
+      ["add", "README.md"],
+    ]) {
+      assert.equal(spawnSync("git", args, { cwd: root }).status, 0);
+    }
+    writeFileSync(join(root, "draft.md"), "# Authored draft\n");
+    const result = await inspectSelection({ root });
+    validateQualityResult(result, { operation: "inspect", exitCode: 0 });
+    assert.deepEqual(result.selection.files, ["README.md", "draft.md"]);
+    assert.deepEqual(
+      result.selection.inventory.map(({ path }) => path),
+      ["README.md"],
+    );
+  } finally {
+    assert.equal(dirname(root), resolve(tmpdir()));
+    assert.ok(root.startsWith(join(tmpdir(), "owlapi-markdown-untracked-")));
+    rmSync(root, { recursive: true, force: true });
+  }
 });
 
 test("external ignore files cannot suppress authored data; logical exclusions preserve invalid bytes", async () => {
