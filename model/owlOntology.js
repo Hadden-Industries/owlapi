@@ -14,15 +14,43 @@ import {
   requireAxiom,
 } from "../internal/model/axiomSemantics.js";
 import { AxiomAnnotations, Imports } from "./parameters/index.js";
-import { readLoadedImportsClosure } from "../internal/model/sourceEvidence.js";
 
 const managerOwnedOntologyStatesByInitializer = new WeakMap();
 const ontologySnapshotReaders = new WeakMap();
+const managers = new WeakMap();
 
 export const readOntologySnapshot = (ontology) => {
   const read = ontologySnapshotReaders.get(ontology);
   if (!read) throw new TypeError("ontology must be a package OWLOntology");
   return read();
+};
+
+// Loaded membership and package identity share one authority. Source evidence
+// consumes snapshots without making the ontology depend on source evidence.
+export const bindManagedOntology = (ontology, readClosure, hasResolvedImport) =>
+  managers.set(ontology, { readClosure, hasResolvedImport });
+
+/** Read loaded membership only; completeness remains the caller's policy. */
+export const readLoadedImportsClosure = (ontology) => {
+  readOntologySnapshot(ontology);
+  return managers.get(ontology)?.readClosure() ?? [ontology];
+};
+
+export const readProfileClosure = (ontology) => {
+  const snapshot = readOntologySnapshot(ontology);
+  const manager = managers.get(ontology);
+  if (!manager)
+    return {
+      ontologies: [ontology],
+      complete: snapshot.authoredImportDeclarations.length === 0,
+    };
+  const ontologies = readLoadedImportsClosure(ontology);
+  const complete = ontologies.every((member) =>
+    readOntologySnapshot(member).authoredImportDeclarations.every(
+      (declaration) => manager.hasResolvedImport(member, declaration.iri),
+    ),
+  );
+  return { ontologies, complete };
 };
 
 const requireKind = (value, kinds, name) => {

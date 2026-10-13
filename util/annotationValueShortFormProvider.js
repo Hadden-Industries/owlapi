@@ -1,6 +1,6 @@
 import { ENTITY_KINDS, OWLObjectKind as K } from "../model/kinds.js";
 import { readOntologySnapshot } from "../model/owlOntology.js";
-import { readLoadedImportsClosure } from "../internal/model/sourceEvidence.js";
+import { readLoadedImportsClosure } from "../model/owlOntology.js";
 import {
   iriShortForm,
   SimpleShortFormProvider,

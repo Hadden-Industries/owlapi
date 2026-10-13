@@ -16,7 +16,6 @@ import { readOntologyChange } from "../internal/model/ontologyChangeRecord.js";
 import { RemoveAxiom } from "./removeAxiom.js";
 import { createImmutableDocumentMetadataSnapshot } from "../internal/model/ontologyState.js";
 import {
-  bindManagedOntology,
   createSourceStructure,
   publishSourceEvidence,
   readSourceEvidence,
@@ -43,6 +42,7 @@ import {
 import { OWLObjectKind } from "./kinds.js";
 import { readAddOntologyAnnotationChange } from "./addOntologyAnnotation.js";
 import {
+  bindManagedOntology,
   createManagerOwnedOWLOntology,
   readOntologySnapshot,
 } from "./owlOntology.js";
