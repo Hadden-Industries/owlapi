@@ -1,12 +1,14 @@
-import { checkRuntime } from "./scripts/dependency-graph.mjs";
+import { checkRuntime, checkTooling } from "./scripts/dependency-graph.mjs";
 
 // npm owns package membership; dependency-cruiser owns dependency resolution.
 // The lexical domain invariant remains an independent oracle.
 
 describe("owlapi-js core isolation", () => {
   let result;
+  let tooling;
   beforeAll(async () => {
     result = await checkRuntime();
+    tooling = await checkTooling();
   }, 120000);
 
   it("scans the complete non-empty shipped JavaScript inventory", () => {
@@ -22,5 +24,9 @@ describe("owlapi-js core isolation", () => {
 
   it("resolves runtime dependencies within the repository and package boundary", () => {
     expect(result.errors).toEqual([]);
+  });
+
+  it("keeps shared tooling primitives independent of effectful commands", () => {
+    expect(tooling.errors).toEqual([]);
   });
 });

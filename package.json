@@ -152,7 +152,7 @@
     "qualify:md": "npm --prefix tooling/markdown run qualify --",
     "install:markdown": "npm ci --prefix tooling/markdown --ignore-scripts --no-audit --no-fund",
     "graph:dependencies": "node scripts/dependency-graph.mjs",
-    "verify:architecture": "node scripts/dependency-graph.mjs --check-runtime"
+    "verify:architecture": "node scripts/dependency-graph.mjs --check-architecture"
   },
   "dependencies": {
     "@hyperjump/uri": "1.3.6",

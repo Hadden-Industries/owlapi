@@ -1,11 +1,11 @@
 import { parseIri } from "@hyperjump/uri";
 import { ResourceLimitError } from "../../io/errors.js";
 import { ENTITY_KINDS, OWLObjectKind as K } from "../../model/kinds.js";
-import { readOntologySnapshot } from "../../model/owlOntology.js";
 import {
+  readOntologySnapshot,
   readProfileClosure,
-  readSourceEvidence,
-} from "../model/sourceEvidence.js";
+} from "../../model/owlOntology.js";
+import { readSourceEvidence } from "../model/sourceEvidence.js";
 import { readSourceArity } from "../model/sourceArity.js";
 import { minimumTwoSetFields } from "../model/setConstructs.js";
 import {

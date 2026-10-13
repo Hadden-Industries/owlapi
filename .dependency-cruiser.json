@@ -14,9 +14,27 @@
     },
     {
       "name": "circular-dependencies",
-      "severity": "warn",
+      "severity": "error",
       "from": {},
       "to": { "circular": true }
+    },
+    {
+      "name": "structural-primitives-stay-independent",
+      "severity": "error",
+      "from": { "path": "^model/(?:kinds|structural)\\.js$" },
+      "to": {
+        "path": "^(?:internal/(?:parsing|loading|storage)/|model/owlOntologyManager\\.js$)",
+        "reachable": true
+      }
+    },
+    {
+      "name": "loading-index-stays-independent",
+      "severity": "error",
+      "from": { "path": "^internal/loading/managedOntologyIndex\\.js$" },
+      "to": {
+        "path": "^(?:internal/(?:parsing|storage)/|model/owlOntologyManager\\.js$)",
+        "reachable": true
+      }
     }
   ],
   "options": {
