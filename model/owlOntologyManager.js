@@ -1169,10 +1169,13 @@ export class OWLOntologyManager {
   async #loadImport(importIRI, importingEntry, configuration, session, depth) {
     const index =
       session.managedOntologyIndexSession ?? this.#managedOntologyIndex;
-    let importedOntology = index.getOntologyByIRI(
-      importIRI,
-      this.#behaviorContext.behaviorProfileDefinition.ontologyIdentityPolicy,
-    );
+    let importedOntology = session.managedOntologyIndexSession
+      ? index.getOntologyByIRI(
+          importIRI,
+          this.#behaviorContext.behaviorProfileDefinition
+            .ontologyIdentityPolicy,
+        )
+      : this.#resolveJavaImport(importIRI);
     if (importedOntology) {
       await this.#authorizeImportedOntology(
         importedOntology,

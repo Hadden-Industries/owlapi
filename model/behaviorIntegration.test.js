@@ -127,6 +127,42 @@ test("Java-produced structural values survive mutation, storage, rendering and p
   ).toBe(false);
 });
 
+test("Java reauthorizes cached imports whose document IRI differs from the ontology IRI", async () => {
+  let permitted = true;
+  let acquisitions = 0;
+  const authorizations = [];
+  const manager = createManager({
+    documentLoader: {
+      authorize(iri) {
+        authorizations.push(iri.value);
+        return permitted;
+      },
+      load() {
+        acquisitions++;
+        return source(
+          "Ontology(<urn:integration:declared> Declaration(Class(<urn:integration:Private>)))",
+        );
+      },
+    },
+  });
+  await manager.loadOntologyFromOntologyDocument(
+    source(
+      "Ontology(<urn:integration:first> Import(<urn:integration:document>))",
+    ),
+  );
+  permitted = false;
+  authorizations.length = 0;
+  await expect(
+    manager.loadOntologyFromOntologyDocument(
+      source(
+        "Ontology(<urn:integration:second> Import(<urn:integration:document>))",
+      ),
+    ),
+  ).rejects.toThrow(/denied/);
+  expect(authorizations).toEqual(["urn:integration:document"]);
+  expect(acquisitions).toBe(1);
+});
+
 test.each(["load", "change", "late-registration"])(
   "Java %s resolves multiple versions without a normative ambiguity error",
   async (route) => {
