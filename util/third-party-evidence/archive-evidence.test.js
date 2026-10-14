@@ -75,6 +75,18 @@ const inspect = async (
   }
 };
 
+test.each(["A", "S"])(
+  "native archive inventory rejects ignored metadata type %s",
+  async (type) => {
+    await expect(
+      inspect([
+        ...baseEntries(),
+        { path: "package/ignored.json", body: '{"a":1,"a":2}', type },
+      ]),
+    ).rejects.toThrow(/ignored|Unsupported archive entry type/iu);
+  },
+);
+
 describe("inspectPackageTarball", () => {
   it("recursively inventories files and retains legal evidence without extracting it", async () => {
     const result = await inspect([

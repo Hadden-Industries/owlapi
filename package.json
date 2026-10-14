@@ -96,6 +96,8 @@
   },
   "browserslist": "baseline widely available",
   "scripts": {
+    "install:json": "node scripts/install-json-quality.mjs json",
+    "test:json": "node --test scripts/json-quality.probes.mjs",
     "browser:prepare": "node scripts/prepare-browser-consumers.mjs",
     "browser:serve": "node scripts/serve-browser-consumers.mjs",
     "candidate:prepare": "node scripts/prepare-downloaded-candidate.mjs",

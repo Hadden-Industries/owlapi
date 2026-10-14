@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { mkdir, rm, stat, writeFile } from "node:fs/promises";
+import { createReadStream } from "node:fs";
 import { dirname, join, resolve, sep } from "node:path";
 import { basename } from "node:path/posix";
 import { TextDecoder } from "node:util";
@@ -136,6 +137,29 @@ const normalizePackageIdentity = (packageMetadata) => ({
   homepage: packageMetadata.homepage ?? null,
 });
 
+/** Native tar can ignore unsupported metadata without emitting an entry. Such
+ * omissions cannot qualify a complete inventory or materialized evidence tree.
+ * The filtered metadata identity pass below has a separate, deliberate purpose.
+ */
+const readCompleteArchive = (tarballPath, options) =>
+  new Promise((resolve, reject) => {
+    const parser = list(options);
+    const input = createReadStream(tarballPath, { signal: options.signal });
+    const fail = (error) => {
+      input.destroy();
+      reject(error);
+    };
+    parser.on("error", fail);
+    input.on("error", fail);
+    parser.on("end", resolve);
+    parser.on("ignoredEntry", () => {
+      const error = new Error("Unsupported or oversized ignored archive entry");
+      parser.abort(error);
+      fail(error);
+    });
+    input.pipe(parser);
+  });
+
 export const inspectPackageTarball = async (
   tarballPath,
   expected,
@@ -158,8 +182,7 @@ export const inspectPackageTarball = async (
   let archiveRoot;
 
   try {
-    await list({
-      file: tarballPath,
+    await readCompleteArchive(tarballPath, {
       strict: true,
       noResume: true,
       win32: false,
@@ -614,8 +637,7 @@ export const materializePackageForScan = async (
 
   try {
     try {
-      await list({
-        file: tarballPath,
+      await readCompleteArchive(tarballPath, {
         strict: true,
         noResume: true,
         win32: false,

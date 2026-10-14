@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "defaults": {
+    "formatContract": "prettier-json",
+    "allowFormatWrites": true,
+    "normalization": "NFC"
+  },
+  "exceptions": [
+    {
+      "paths": [
+        "package-lock.json",
+        "tooling/markdown/package-lock.json",
+        "tooling/json/package-lock.json"
+      ],
+      "owner": "native npm lockfile producer",
+      "reason": "Only the actual packages root key is empty; locked identities remain protected from generic writers.",
+      "allowEmptyKeys": [
+        "/packages/"
+      ],
+      "allowFormatWrites": false
+    },
+    {
+      "paths": [
+        "**/node_modules/**",
+        ".git/**",
+        ".release/**",
+        ".development-tools/**",
+        ".venv/**",
+        "docs/provenance/history-reconstruction/**",
+        "docs/provenance/evidence/**",
+        "docs/conformance/**",
+        "internal/parsing/jsonld/provider/build-manifest.json",
+        "docs/release/gates.json",
+        "docs/release/producer-gates.json"
+      ],
+      "owner": "native dependency, evidence, fixture, generator and administrative producers",
+      "reason": "Analysis remains mandatory; these bytes can only be changed by their owning producer after an accepted decision.",
+      "allowFormatWrites": false
+    }
+  ]
+}

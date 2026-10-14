@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { createHash } from "node:crypto";
 import { JsonStrictValidator } from "@cyclonedx/cyclonedx-library/Validation";
+import { canonicalJson } from "./canonical-json.mjs";
 
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 
@@ -81,7 +82,7 @@ export async function addEmbeddedJsonLdComponents(document, repositoryRoot) {
     throw new Error("The npm SBOM has no root component reference");
   result.components ??= [];
   const existing = result.components.find(({ name }) => name === fileName);
-  if (existing && JSON.stringify(existing) !== JSON.stringify(provider))
+  if (existing && canonicalJson(existing) !== canonicalJson(provider))
     throw new Error("The SBOM already describes a different embedded provider");
   if (!existing) {
     result.components.push(provider);
