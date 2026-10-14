@@ -1366,7 +1366,12 @@ export class OWLOntologyManager {
       importingDocumentIRI: importingEntry.context.documentIRI,
       signal: configuration.signal,
     });
-    for (const member of index.getImportsClosure(ontology)) {
+    const importsClosure =
+      this.#behaviorContext.behaviorProfileDefinition.ontologyLoadingPolicy
+        .importResolution === "retained-id"
+        ? this.#readImportsClosure(ontology, "authorizeImportedOntology")
+        : index.getImportsClosure(ontology);
+    for (const member of importsClosure) {
       for (const documentIRI of this.#externalDocumentIRIsByOntology.get(
         member,
       ) ?? []) {

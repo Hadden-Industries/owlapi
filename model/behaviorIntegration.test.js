@@ -19,6 +19,57 @@ const source = (text, documentIRI) =>
     documentIRI,
   });
 
+test("Java cache authorization follows retained IDs after an occupied ontology rename", async () => {
+  let permitsRenamedOntology = true;
+  const authorizedIRIs = [];
+  const manager = createManager({
+    documentLoader: {
+      authorize(iri) {
+        authorizedIRIs.push(iri.value);
+        return (
+          permitsRenamedOntology || iri.value !== "urn:integration:renamed"
+        );
+      },
+      load: (iri) =>
+        source(
+          iri.value === "urn:integration:parent"
+            ? "Ontology(<urn:integration:parent> Import(<urn:integration:occupied>))"
+            : iri.value === "urn:integration:renamed"
+              ? 'Ontology(<urn:integration:renamed> Annotation(<urn:integration:label> "private"))'
+              : "Ontology(<urn:integration:occupied>)",
+        ),
+    },
+  });
+  await manager.loadOntologyFromOntologyDocument(
+    source(
+      "Ontology(<urn:integration:first> Import(<urn:integration:parent>))",
+    ),
+  );
+  await manager.loadOntologyFromOntologyDocument(
+    source(
+      "Ontology(<urn:integration:second> Import(<urn:integration:renamed>))",
+    ),
+  );
+  const factory = manager.getOWLDataFactory();
+  const get = (iri) =>
+    manager.getOntology(factory.getOWLOntologyID(IRI.create(iri)));
+  const renamed = get("urn:integration:renamed");
+  const occupied = get("urn:integration:occupied");
+  manager.applyChange(new SetOntologyID(renamed, occupied.getOntologyID()));
+  expect(manager.getImportsClosure(get("urn:integration:parent"))).toContain(
+    renamed,
+  );
+  permitsRenamedOntology = false;
+  authorizedIRIs.length = 0;
+  await expect(
+    manager.loadOntologyFromOntologyDocument(
+      source(
+        "Ontology(<urn:integration:third> Import(<urn:integration:parent>))",
+      ),
+    ),
+  ).rejects.toThrow(/denied/);
+  expect(authorizedIRIs).toContain("urn:integration:renamed");
+});
 test("Java-produced structural values survive mutation, storage, rendering and profile checking", async () => {
   const manager = createManager();
   const factory = manager.getOWLDataFactory();
