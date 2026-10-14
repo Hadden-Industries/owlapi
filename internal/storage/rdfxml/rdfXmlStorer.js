@@ -15,13 +15,14 @@ import {
 } from "../../../io/errors.js";
 import { StringDocumentSource } from "../../../io/stringDocumentSource.js";
 import { OWL_NAMESPACE } from "../../rdfjs/vocabulary.js";
-import { readDocumentFormatParameters } from "../../../model/owlDocumentFormat.js";
 
 import { readAnonymousIndividualRdfNodes } from "../../mapping/owlToRdfTranslator.js";
 
 import { OntologyStructuralComparisonLimitError } from "../../model/ontologyStructuralIsomorphism.js";
 import { RdfXmlSyntaxAdapter } from "../../parsing/rdfxml/rdfXmlSyntaxAdapter.js";
 import { writeRdfXmlGraph } from "./rdfXmlGraphWriter.js";
+import { defaultDocumentStoragePolicy } from "../../behavior/ontologyBehaviorContext.js";
+import { readStorageFormatParameters } from "../storageFormatParameters.js";
 
 /** Private composition seam for testing mapping defects, never a manager option. */
 export const createRdfXmlStorer = ({
@@ -29,13 +30,25 @@ export const createRdfXmlStorer = ({
 } = {}) =>
   Object.freeze({
     formatKey: OWLDocumentFormats.RDF_XML.key,
-    async render(snapshot, format, writerContext) {
-      const parameters = readDocumentFormatParameters(format);
+    async render(
+      snapshot,
+      format,
+      writerContext,
+      documentStoragePolicy = defaultDocumentStoragePolicy,
+    ) {
+      const parameters = readStorageFormatParameters(
+        format,
+        documentStoragePolicy,
+        ["force xsd:string on literals"],
+      );
       if (
-        Object.keys(parameters).some(
-          (key) => key !== "force xsd:string on literals",
-        ) ||
+        (documentStoragePolicy.rejectsUnknownFormatParameters &&
+          Object.keys(parameters).some(
+            (key) => key !== "force xsd:string on literals",
+          )) ||
         (Object.hasOwn(parameters, "force xsd:string on literals") &&
+          (documentStoragePolicy.rejectsUnknownFormatParameters ||
+            parameters["force xsd:string on literals"] !== null) &&
           typeof parameters["force xsd:string on literals"] !== "boolean")
       ) {
         throw new OWLOntologyStorageError(
@@ -58,7 +71,9 @@ export const createRdfXmlStorer = ({
             : OWL_NAMESPACE,
           forceXsdString: parameters["force xsd:string on literals"] ?? false,
           anonymousIndividuals: readAnonymousIndividualRdfNodes(mappedDataset),
+          documentStoragePolicy,
         });
+        if (!documentStoragePolicy.requiresLosslessRdfRoundTrip) return text;
         // Work only with the complete generated document. This context contains
         // neither a manager, IRI mapper, nor document loader, so imports remain
         // authored declarations rather than triggering external retrieval.

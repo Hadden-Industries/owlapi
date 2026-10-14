@@ -1,12 +1,11 @@
 import { ResourceLimitError } from "../../io/errors.js";
+import { defaultBehaviorProfileDefinition } from "../behavior/ontologyBehaviorContext.js";
 
 const COOPERATIVE_YIELD_INTERVAL_MS = 50;
 
 const defaults = Object.freeze({
-  maxWork: 1000000,
-  maxDepth: 256,
-  maxNumericDigits: 4096,
-  maxLiteralLength: 1048576,
+  ...defaultBehaviorProfileDefinition.computationResourcePolicy
+    .owlProfileLimits,
   timeoutMs: null,
   sourceAssessment: false,
   signal: undefined,
@@ -16,10 +15,14 @@ const aborted = Object.getOwnPropertyDescriptor(
   "aborted",
 ).get;
 
-export const createProfileBudget = (options = {}) => {
+export const createProfileBudget = (
+  options = {},
+  behaviorProfileDefinition = defaultBehaviorProfileDefinition,
+) => {
   if (!options || typeof options !== "object" || Array.isArray(options))
     throw new TypeError("Profile options must be an object");
-  const configuration = { ...defaults };
+  const policy = behaviorProfileDefinition.computationResourcePolicy;
+  const configuration = { ...defaults, ...policy.owlProfileLimits };
   for (const key of Reflect.ownKeys(options)) {
     const descriptor = Object.getOwnPropertyDescriptor(options, key);
     if (!Object.hasOwn(defaults, key) || !Object.hasOwn(descriptor, "value"))
@@ -34,14 +37,11 @@ export const createProfileBudget = (options = {}) => {
     "timeoutMs",
   ]) {
     if (key === "timeoutMs" && configuration[key] === null) continue;
+    if (policy.usesJavaProviderDefaults && configuration[key] === Infinity)
+      continue;
     if (!Number.isSafeInteger(configuration[key]) || configuration[key] < 0)
       throw new TypeError(`${key} must be a nonnegative safe integer`);
   }
-  // The parser uses bounded recursion only for XSD pattern grammar.
-  if (configuration.maxDepth > 512)
-    throw new RangeError("maxDepth must not exceed 512");
-  if (configuration.maxNumericDigits > 65536)
-    throw new RangeError("maxNumericDigits must not exceed 65536");
   if (typeof configuration.sourceAssessment !== "boolean")
     throw new TypeError("sourceAssessment must be boolean");
   if (configuration.signal !== undefined) {

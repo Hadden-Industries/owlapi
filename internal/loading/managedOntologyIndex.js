@@ -478,7 +478,7 @@ class ManagedOntologyMutation {
     ontology,
     currentOntologyID,
     newOntologyID,
-    { change, index, operation } = {},
+    { change, index, operation, permitsOccupiedDestination = false } = {},
   ) {
     this.#requireOpen();
     requireManagedOntology(this.#stagedState, ontology, operation, {
@@ -517,7 +517,11 @@ class ManagedOntologyMutation {
     const conflictingOntology = this.#stagedState.ontologyByID.get(
       newIdentity.ontologyIDKey,
     );
-    if (conflictingOntology && conflictingOntology !== ontology) {
+    if (
+      conflictingOntology &&
+      conflictingOntology !== ontology &&
+      !permitsOccupiedDestination
+    ) {
       throw new OWLOntologyStateError(
         "An ontology with this ID already exists",
         {
@@ -532,6 +536,19 @@ class ManagedOntologyMutation {
     }
 
     if (!this.#originalIdentityStateByOntology.has(ontology)) {
+      if (conflictingOntology && conflictingOntology !== ontology) {
+        this.#stagedState.ontologies.delete(conflictingOntology);
+        removeFromSetIndex(
+          this.#stagedState.ontologiesByOntologyIRI,
+          newIdentity.ontologyIRIKey,
+          conflictingOntology,
+        );
+        removeFromSetIndex(
+          this.#stagedState.ontologiesByVersionIRI,
+          newIdentity.versionIRIKey,
+          conflictingOntology,
+        );
+      }
       this.#originalIdentityStateByOntology.set(
         ontology,
         Object.freeze({
@@ -597,6 +614,24 @@ class ManagedOntologyMutation {
     }
     this.#refreshChangeStatus();
     return true;
+  }
+
+  /** Rename the alias selected by the change record's captured original ID.
+   * Java permits a non-owning initiator and leaves absent aliases untouched.
+   * The caller has already checked the destination against the target axioms.
+   */
+  stageOntologyAliasReplacement(originalOntologyID, newOntologyID, details) {
+    this.#requireOpen();
+    const ontology = this.#stagedState.ontologyByID.get(
+      ontologyIDKey(originalOntologyID),
+    );
+    if (!ontology) return false;
+    return this.stageOntologyIDReplacement(
+      ontology,
+      originalOntologyID,
+      newOntologyID,
+      { ...details, permitsOccupiedDestination: true },
+    );
   }
 
   /** Replace one loaded adjacency bucket after all aliases have been staged. */
@@ -696,6 +731,24 @@ export class ManagedOntologyIndex {
     return Object.freeze([...this.#state.ontologies]);
   }
 
+  /** Java's named-ID lookup permits any registered version when no exact ID exists. */
+  getFirstOntologyByOntologyIRI(iri) {
+    return this.#state.ontologiesByOntologyIRI
+      .get(iriKey(iri, "ontologyIRI"))
+      ?.values()
+      .next().value;
+  }
+
+  getFirstOntologyByIRI(iri) {
+    return (
+      this.getFirstOntologyByOntologyIRI(iri) ??
+      this.#state.ontologiesByVersionIRI
+        .get(iriKey(iri, "IRI"))
+        ?.values()
+        .next().value
+    );
+  }
+
   getOntologyByID(ontologyID) {
     return this.#state.ontologyByID.get(ontologyIDKey(ontologyID));
   }
@@ -748,6 +801,29 @@ export class ManagedOntologyIndex {
     const registration = normalizeOntologyRegistration(ontology, options);
     validateOntologyRegistrationAgainstState(this.#state, registration);
     applyOntologyRegistrationToState(this.#state, registration);
+    this.#state.revision += 1;
+  }
+
+  /** Withdraw only the failed document's registration; completed imports remain. */
+  unregisterOntology(ontology) {
+    if (!this.#state.ontologies.delete(ontology)) return;
+    for (const index of [
+      this.#state.ontologyByID,
+      this.#state.ontologyByDocumentIRI,
+    ])
+      for (const [key, value] of index)
+        if (value === ontology) index.delete(key);
+    for (const index of [
+      this.#state.ontologiesByOntologyIRI,
+      this.#state.ontologiesByVersionIRI,
+    ])
+      for (const key of index.keys()) removeFromSetIndex(index, key, ontology);
+    this.#state.documentIRIByOntology.delete(ontology);
+    this.#state.deterministicImportOrderKeyByOntology.delete(ontology);
+    this.#state.directImportsByOntology.delete(ontology);
+    this.#state.resolvedImportIRIsByOntology.delete(ontology);
+    for (const imports of this.#state.directImportsByOntology.values())
+      imports.delete(ontology);
     this.#state.revision += 1;
   }
 

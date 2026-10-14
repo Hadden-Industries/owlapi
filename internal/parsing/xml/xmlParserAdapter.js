@@ -1,4 +1,5 @@
-import { XmlParseError } from "../../../io/errors.js";
+import { ResourceLimitError, XmlParseError } from "../../../io/errors.js";
+import { xmlProcessingPolicy } from "./xmlProcessingPolicy.js";
 
 import { prepareXml } from "./xmlEntityPolicy.js";
 
@@ -84,6 +85,39 @@ export class XmlParserAdapter {
     }
     if (!document?.documentElement) {
       throw new XmlParseError("The XML document has no root element");
+    }
+    const policy = xmlProcessingPolicy(configuration);
+    const pending = [document.documentElement];
+    while (pending.length) {
+      const element = pending.pop();
+      const attributes = Array.from(element.attributes);
+      if (attributes.length > policy.maxAttributesPerElement) {
+        throw new ResourceLimitError(
+          "The XML provider attribute count limit was exceeded",
+          {
+            resource: "maxAttributesPerElement",
+            limit: policy.maxAttributesPerElement,
+            observed: attributes.length,
+          },
+        );
+      }
+      for (const node of [element, ...attributes]) {
+        const nameLength = Math.max(
+          node.localName?.length ?? node.nodeName.length,
+          node.prefix?.length ?? 0,
+        );
+        if (nameLength > policy.maxXmlNameCodeUnits)
+          throw new ResourceLimitError(
+            "The XML provider name length limit was exceeded",
+            {
+              resource: "maxXmlNameCodeUnits",
+              limit: policy.maxXmlNameCodeUnits,
+              observed: nameLength,
+            },
+          );
+      }
+      for (const child of Array.from(element.childNodes))
+        if (child.nodeType === 1) pending.push(child);
     }
     return document;
   }

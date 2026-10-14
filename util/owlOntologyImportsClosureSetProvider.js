@@ -33,22 +33,19 @@ const captureClosureSnapshot = (manager, rootOntology) => {
 };
 
 export class OWLOntologyImportsClosureSetProvider {
-  #capturedOntologies;
+  #manager;
+  #rootOntology;
 
   constructor(manager, rootOntology) {
-    const normalizedManager = requireClosureManager(manager);
-    const normalizedRootOntology = requireOntology(
-      rootOntology,
-      "rootOntology",
-    );
-    this.#capturedOntologies = captureClosureSnapshot(
-      normalizedManager,
-      normalizedRootOntology,
-    );
+    this.#manager = requireClosureManager(manager);
+    this.#rootOntology = requireOntology(rootOntology, "rootOntology");
     Object.freeze(this);
   }
 
+  /** Read the current closure at each call; retain that result's membership
+   * independently of later manager changes, matching Java's stream creation.
+   */
   ontologies() {
-    return new Set(this.#capturedOntologies);
+    return new Set(captureClosureSnapshot(this.#manager, this.#rootOntology));
   }
 }

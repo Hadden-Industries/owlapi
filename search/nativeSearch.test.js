@@ -86,8 +86,9 @@ test.each(fixture.observations.map((row, index) => [index, row.method, row]))(
       expect(result).toBe(row.boolean);
       return;
     }
-    expect(result).toHaveLength(row.results.length);
-    const remaining = result.map(wrap);
+    const values = [...result];
+    expect(values).toHaveLength(row.results.length);
+    const remaining = values.map(wrap);
     for (const input of row.results) {
       const expected = await load(input);
       const index = remaining.findIndex(

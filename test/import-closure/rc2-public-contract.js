@@ -29,8 +29,8 @@ export const exerciseRC2PublicContract = async (owl) => {
   ]);
   require(ontology.getSubClassAxiomsForSubClass(a).size ===
     1, "Named axiom index failed");
-  require(owl.EntitySearcher.getSuperClasses(a, [ontology, ontology]).length ===
-    2, "Search lost input multiplicity");
+  require([...owl.EntitySearcher.getSuperClasses(a, [ontology, ontology])]
+    .length === 2, "Search lost input multiplicity");
   const snapshot = ontology.getClassesInSignature(owl.Imports.EXCLUDED);
   snapshot.clear();
   require(ontology.getClassesInSignature().size ===
@@ -161,7 +161,105 @@ export const exerciseRC2PublicContract = async (owl) => {
       b,
     ), "Removal damaged unrelated declarations");
   require(acquisitions === 0, "RC.2 operations acquired remote documents");
+  const behaviorProfiles = {};
+  for (const behaviorProfileId of ["java-owlapi-5.5.1", "normative-v1"]) {
+    const java = behaviorProfileId === "java-owlapi-5.5.1";
+    const selected = owl.OWLManager.createOWLOntologyManager({
+      behaviorProfileId,
+    });
+    const selectedFactory = selected.getOWLDataFactory();
+    require(selected.getBehaviorProfileId() ===
+      behaviorProfileId, "Installed profile identity changed");
+    const configuration = selected.getOntologyLoaderConfiguration();
+    require(configuration.maxInputBytes ===
+      (java
+        ? Infinity
+        : 33554432), "Installed profile selected a hidden input ceiling");
+    require(configuration.getConnectionTimeout() === 20000 &&
+      configuration.getRetriesToAttempt() ===
+        5, "Installed native transport defaults differ");
+    const literal = selectedFactory.getOWLLiteral(
+      "+1",
+      selectedFactory.getOWLDatatype(
+        owl.IRI.create("http://www.w3.org/2001/XMLSchema#integer"),
+      ),
+    );
+    require(literal.lexicalForm ===
+      (java
+        ? "1"
+        : "+1"), "Installed literal construction changed profile semantics");
+    const loaded = await selected.loadOntologyFromOntologyDocument(
+      new owl.StringDocumentSource(
+        "Ontology(<urn:installed:behavior> Declaration(Class(<urn:installed:C>)))",
+        { format: owl.OWLDocumentFormats.FUNCTIONAL },
+      ),
+    );
+    const declaration = [...loaded.getAxioms()][0];
+    require(selected.addAxiom(loaded, declaration) ===
+      (java ? "NO_OPERATION" : false), "Installed no-op return differs");
+    const target = new owl.StringDocumentTarget();
+    await selected.saveOntology(
+      loaded,
+      owl.OWLDocumentFormats.FUNCTIONAL,
+      target,
+    );
+    const first = target.toString();
+    await selected.saveOntology(
+      loaded,
+      owl.OWLDocumentFormats.FUNCTIONAL,
+      target,
+    );
+    require(target.toString() ===
+      (java ? first + first : first), "Installed target publication differs");
+    const configurationAfterCopies = selected
+      .getOntologyWriterConfiguration()
+      .withIndentSize(2)
+      .withBannersEnabled(false)
+      .withIndenting(false);
+    require(configurationAfterCopies.getIndentSize() === (java ? 4 : 2) &&
+      configurationAfterCopies.shouldUseBanners() ===
+        java, "Installed writer copy/reset behavior differs");
+    const occupiedID = selectedFactory.getOWLOntologyID(
+      owl.IRI.create("urn:installed:occupied"),
+    );
+    selected.createOntology(occupiedID);
+    const newAxiom = selectedFactory.getOWLDeclarationAxiom(
+      selectedFactory.getOWLClass(owl.IRI.create("urn:installed:added")),
+    );
+    let failed = false;
+    try {
+      selected.applyChanges([
+        new owl.AddAxiom(loaded, newAxiom),
+        new owl.SetOntologyID(loaded, occupiedID),
+      ]);
+    } catch {
+      failed = true;
+    }
+    require(failed &&
+      loaded.containsAxiom(newAxiom) ===
+        java, "Installed failed batch has the wrong publication boundary");
+    const jsonManager = owl.OWLManager.createOWLOntologyManager({
+      behaviorProfileId,
+    });
+    const json =
+      '{"@id":"urn:installed:json","@type":"http://www.w3.org/2002/07/owl#Class"}';
+    const jsonOntology = await jsonManager.loadOntologyFromOntologyDocument(
+      new owl.StringDocumentSource(json, {
+        format: owl.OWLDocumentFormats.JSON_LD,
+      }),
+    );
+    require(jsonOntology.getAxiomCount() ===
+      1, "Installed JSON-LD provider failed");
+    require(selected.getBehaviorProfileId() ===
+      behaviorProfileId, "Another installed manager changed profile identity");
+    behaviorProfiles[behaviorProfileId] = {
+      targetPublication: java ? "append" : "replace",
+      partialBatch: loaded.containsAxiom(newAxiom),
+      jsonAxioms: jsonOntology.getAxiomCount(),
+    };
+  }
   return {
+    behaviorProfiles,
     localityModules,
     profileStatuses,
     stored,

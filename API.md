@@ -1,4 +1,4 @@
-<!-- registry-sha256: 5afc3d4e3d9cf7383d0e45f6983f956110020b6e0fef27377e745a8e34b7ddb5 -->
+<!-- registry-sha256: 2d1be5f0eb0ea3018bdc4a3e2277f3acc3d0bb41c3a308c46189c09be8a4d75a -->
 
 # owlapi API reference
 
@@ -6,7 +6,7 @@ This reference is generated from the authoritative compatibility registry for `@
 
 This is an independently maintained JavaScript implementation. It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project; Java names identify compatibility authorities, not organizational continuity or complete parity.
 
-The package exposes one convenience aggregate and 10 Java-recognizable namespace entry points. Import from declared package specifiers only; paths below `internal/` are intentionally outside the public contract.
+The package exposes one convenience aggregate and 11 Java-recognizable namespace entry points. Import from declared package specifiers only; paths below `internal/` are intentionally outside the public contract.
 
 ## `OWLManager`
 
@@ -64,7 +64,7 @@ Use this export only through its documented package specifier; do not infer addi
 
 ## `AddAxiom`
 
-An immutable nominal change record consumed by the manager's atomic batch transaction.
+An immutable nominal change record consumed by the manager's selected behavior profile.
 
 - Import: `@hadden-industries/owlapi/model`
 - Kind: CLASS
@@ -73,16 +73,16 @@ An immutable nominal change record consumed by the manager's atomic batch transa
 - Release status: PRERELEASE; from 0.1.0-rc.2
 - Call shape: new AddAxiom(ontology, axiom)
 - Supported members: prototype.getAxiom; prototype.getOntology
-- Omitted Java members: ChangeApplied, change-data serialization, visitors and inverse-change protocols
+- Omitted Java members: Change-data serialization, visitors and inverse-change protocols
 - Public errors: none specific
-- Qualification: Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable. Records retain canonical ontology identity and validated immutable structural values. Manager application preserves the established boolean adaptation and validates the complete batch before publication. Import changes reconcile only loaded manager state and never acquire documents.
+- Qualification: Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable. Records retain canonical ontology identity and validated immutable structural values. normative-v1 validates and commits a complete batch atomically with a boolean result; java-owlapi-5.5.1 applies changes sequentially and returns ChangeApplied. Mixed behavior profiles reject before application. Import changes reconcile only loaded state and never acquire documents.
 - Evidence: model/rc2Changes.test.js, test/package-boundary.test.mjs
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
 
 ## `AddImport`
 
-An immutable nominal change record consumed by the manager's atomic batch transaction.
+An immutable nominal change record consumed by the manager's selected behavior profile.
 
 - Import: `@hadden-industries/owlapi/model`
 - Kind: CLASS
@@ -91,9 +91,9 @@ An immutable nominal change record consumed by the manager's atomic batch transa
 - Release status: PRERELEASE; from 0.1.0-rc.2
 - Call shape: new AddImport(ontology, importsDeclaration)
 - Supported members: prototype.getImportDeclaration; prototype.getOntology
-- Omitted Java members: ChangeApplied, change-data serialization, visitors and inverse-change protocols
+- Omitted Java members: Change-data serialization, visitors and inverse-change protocols
 - Public errors: none specific
-- Qualification: Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable. Records retain canonical ontology identity and validated immutable structural values. Manager application preserves the established boolean adaptation and validates the complete batch before publication. Import changes reconcile only loaded manager state and never acquire documents.
+- Qualification: Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable. Records retain canonical ontology identity and validated immutable structural values. normative-v1 validates and commits a complete batch atomically with a boolean result; java-owlapi-5.5.1 applies changes sequentially and returns ChangeApplied. Mixed behavior profiles reject before application. Import changes reconcile only loaded state and never acquire documents.
 - Evidence: model/rc2Changes.test.js, test/package-boundary.test.mjs
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
@@ -252,10 +252,10 @@ A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to 
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
 - Release status: PRERELEASE; from 0.1.0-alpha.0
 - Call shape: new OWLDataFactory(...arguments)
-- Supported members: prototype.getOWLAnnotation; prototype.getOWLAnnotationAssertionAxiom; prototype.getOWLAnnotationProperty; prototype.getOWLAnnotationPropertyDomainAxiom; prototype.getOWLAnnotationPropertyRangeAxiom; prototype.getOWLAnonymousIndividual; prototype.getOWLAsymmetricObjectPropertyAxiom; prototype.getOWLClass; prototype.getOWLClassAssertionAxiom; prototype.getOWLDataAllValuesFrom; prototype.getOWLDataComplementOf; prototype.getOWLDataExactCardinality; prototype.getOWLDataHasValue; prototype.getOWLDataIntersectionOf; prototype.getOWLDataMaxCardinality; prototype.getOWLDataMinCardinality; prototype.getOWLDataOneOf; prototype.getOWLDataProperty; prototype.getOWLDataPropertyAssertionAxiom; prototype.getOWLDataPropertyDomainAxiom; prototype.getOWLDataPropertyRangeAxiom; prototype.getOWLDataSomeValuesFrom; prototype.getOWLDataUnionOf; prototype.getOWLDatatype; prototype.getOWLDatatypeDefinitionAxiom; prototype.getOWLDatatypeRestriction; prototype.getOWLDeclarationAxiom; prototype.getOWLDifferentIndividualsAxiom; prototype.getOWLDisjointClassesAxiom; prototype.getOWLDisjointDataPropertiesAxiom; prototype.getOWLDisjointObjectPropertiesAxiom; prototype.getOWLDisjointUnionAxiom; prototype.getOWLEquivalentClassesAxiom; prototype.getOWLEquivalentDataPropertiesAxiom; prototype.getOWLEquivalentObjectPropertiesAxiom; prototype.getOWLFacetRestriction; prototype.getOWLFunctionalDataPropertyAxiom; prototype.getOWLFunctionalObjectPropertyAxiom; prototype.getOWLHasKeyAxiom; prototype.getOWLImportsDeclaration; prototype.getOWLInverseFunctionalObjectPropertyAxiom; prototype.getOWLInverseObjectPropertiesAxiom; prototype.getOWLIrreflexiveObjectPropertyAxiom; prototype.getOWLLiteral; prototype.getOWLNamedIndividual; prototype.getOWLNegativeDataPropertyAssertionAxiom; prototype.getOWLNegativeObjectPropertyAssertionAxiom; prototype.getOWLObjectAllValuesFrom; prototype.getOWLObjectComplementOf; prototype.getOWLObjectExactCardinality; prototype.getOWLObjectHasSelf; prototype.getOWLObjectHasValue; prototype.getOWLObjectIntersectionOf; prototype.getOWLObjectInverseOf; prototype.getOWLObjectMaxCardinality; prototype.getOWLObjectMinCardinality; prototype.getOWLObjectOneOf; prototype.getOWLObjectProperty; prototype.getOWLObjectPropertyAssertionAxiom; prototype.getOWLObjectPropertyDomainAxiom; prototype.getOWLObjectPropertyRangeAxiom; prototype.getOWLObjectSomeValuesFrom; prototype.getOWLObjectUnionOf; prototype.getOWLOntologyID; prototype.getOWLReflexiveObjectPropertyAxiom; prototype.getOWLSameIndividualAxiom; prototype.getOWLSubAnnotationPropertyOfAxiom; prototype.getOWLSubClassOfAxiom; prototype.getOWLSubDataPropertyOfAxiom; prototype.getOWLSubObjectPropertyOfAxiom; prototype.getOWLSubPropertyChainOfAxiom; prototype.getOWLSymmetricObjectPropertyAxiom; prototype.getOWLTransitiveObjectPropertyAxiom; prototype.getRDFSLabel
+- Supported members: prototype.getBehaviorProfileId; prototype.getOWLAnnotation; prototype.getOWLAnnotationAssertionAxiom; prototype.getOWLAnnotationProperty; prototype.getOWLAnnotationPropertyDomainAxiom; prototype.getOWLAnnotationPropertyRangeAxiom; prototype.getOWLAnonymousIndividual; prototype.getOWLAsymmetricObjectPropertyAxiom; prototype.getOWLClass; prototype.getOWLClassAssertionAxiom; prototype.getOWLDataAllValuesFrom; prototype.getOWLDataComplementOf; prototype.getOWLDataExactCardinality; prototype.getOWLDataHasValue; prototype.getOWLDataIntersectionOf; prototype.getOWLDataMaxCardinality; prototype.getOWLDataMinCardinality; prototype.getOWLDataOneOf; prototype.getOWLDataProperty; prototype.getOWLDataPropertyAssertionAxiom; prototype.getOWLDataPropertyDomainAxiom; prototype.getOWLDataPropertyRangeAxiom; prototype.getOWLDataSomeValuesFrom; prototype.getOWLDataUnionOf; prototype.getOWLDatatype; prototype.getOWLDatatypeDefinitionAxiom; prototype.getOWLDatatypeRestriction; prototype.getOWLDeclarationAxiom; prototype.getOWLDifferentIndividualsAxiom; prototype.getOWLDisjointClassesAxiom; prototype.getOWLDisjointDataPropertiesAxiom; prototype.getOWLDisjointObjectPropertiesAxiom; prototype.getOWLDisjointUnionAxiom; prototype.getOWLEquivalentClassesAxiom; prototype.getOWLEquivalentDataPropertiesAxiom; prototype.getOWLEquivalentObjectPropertiesAxiom; prototype.getOWLFacetRestriction; prototype.getOWLFunctionalDataPropertyAxiom; prototype.getOWLFunctionalObjectPropertyAxiom; prototype.getOWLHasKeyAxiom; prototype.getOWLImportsDeclaration; prototype.getOWLInverseFunctionalObjectPropertyAxiom; prototype.getOWLInverseObjectPropertiesAxiom; prototype.getOWLIrreflexiveObjectPropertyAxiom; prototype.getOWLLiteral; prototype.getOWLNamedIndividual; prototype.getOWLNegativeDataPropertyAssertionAxiom; prototype.getOWLNegativeObjectPropertyAssertionAxiom; prototype.getOWLObjectAllValuesFrom; prototype.getOWLObjectComplementOf; prototype.getOWLObjectExactCardinality; prototype.getOWLObjectHasSelf; prototype.getOWLObjectHasValue; prototype.getOWLObjectIntersectionOf; prototype.getOWLObjectInverseOf; prototype.getOWLObjectMaxCardinality; prototype.getOWLObjectMinCardinality; prototype.getOWLObjectOneOf; prototype.getOWLObjectProperty; prototype.getOWLObjectPropertyAssertionAxiom; prototype.getOWLObjectPropertyDomainAxiom; prototype.getOWLObjectPropertyRangeAxiom; prototype.getOWLObjectSomeValuesFrom; prototype.getOWLObjectUnionOf; prototype.getOWLOntologyID; prototype.getOWLReflexiveObjectPropertyAxiom; prototype.getOWLSameIndividualAxiom; prototype.getOWLSubAnnotationPropertyOfAxiom; prototype.getOWLSubClassOfAxiom; prototype.getOWLSubDataPropertyOfAxiom; prototype.getOWLSubObjectPropertyOfAxiom; prototype.getOWLSubPropertyChainOfAxiom; prototype.getOWLSymmetricObjectPropertyAxiom; prototype.getOWLTransitiveObjectPropertyAxiom; prototype.getRDFSLabel
 - Omitted Java members: SWRL object construction
 - Public errors: none specific
-- Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.
+- Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised. Construct with { behaviorProfileId } or obtain the manager's factory. The immutable identity follows factory-created values and manager ownership. Java-profile literal construction reproduces native boolean, integer, floating-point, language and PlainLiteral normalization; normative-v1 retains its separately accepted lexical contract.
 - Evidence: model/model.test.js, test/package-boundary.test.mjs
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
@@ -324,10 +324,10 @@ A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to 
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
 - Release status: PRERELEASE; from 0.1.0-alpha.0
 - Call shape: new OWLOntologyLoaderConfiguration(...arguments)
-- Supported members: prototype.with; prototype.withFormat; prototype.withMissingImportHandling; prototype.withParsingMode; prototype.withRdfDatasetGraphPolicy; prototype.withRemoteImports; prototype.withRemoteJsonLdContexts; static defaults
+- Supported members: prototype.getAuthorizationValue; prototype.getBehaviorProfileId; prototype.getConnectionTimeout; prototype.getEntityExpansionLimit; prototype.getRetriesToAttempt; prototype.isAcceptingHTTPCompression; prototype.isFollowRedirects; prototype.isLoadAnnotationAxioms; prototype.isStrict; prototype.setAcceptingHTTPCompression; prototype.setAuthorizationValue; prototype.setConnectionTimeout; prototype.setEntityExpansionLimit; prototype.setFollowRedirects; prototype.setLoadAnnotationAxioms; prototype.setRetriesToAttempt; prototype.setStrict; prototype.with; prototype.withFormat; prototype.withMissingImportHandling; prototype.withParsingMode; prototype.withRdfDatasetGraphPolicy; prototype.withRemoteImports; prototype.withRemoteJsonLdContexts; static defaults
 - Omitted Java members: Java parser-factory and priority-collection settings; Java fluent setter for every Java-only loading option
 - Public errors: none specific
-- Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.
+- Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised. new OWLOntologyLoaderConfiguration({ behaviorProfileId }) selects an immutable identity, defaulting to normative-v1. with() and native fluent setters preserve that identity; a manager rejects a configuration from another profile. Native methods get/setConnectionTimeout, get/setRetriesToAttempt, is/setFollowRedirects, get/setEntityExpansionLimit, is/setStrict, is/setLoadAnnotationAxioms, get/setAuthorizationValue and is/setAcceptingHTTPCompression retain Java names, types, values and observed immutable-copy/no-op semantics. The Java profile adds no JS-only finite acquisition, token, expression, byte or work defaults. The qualified Java XML/provider limits remain explicit. Normative budgets and remote-default-deny behavior remain separately documented. An authorization grant is independent of either profile. NodeDocumentLoader consumes native transport values at actual resource acquisition; JSON-LD context transport follows its independent native provider. Caller-defined loaders own their transport implementation and are not qualified merely because configuration is passed to load().
 - Evidence: model/model.test.js, test/package-boundary.test.mjs
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
@@ -342,17 +342,17 @@ A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to 
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
 - Release status: PRERELEASE; from 0.1.0-alpha.0
 - Call shape: new OWLOntologyManager(...arguments)
-- Supported members: prototype.addAxiom; prototype.addAxioms; prototype.applyChange; prototype.applyChanges; prototype.createOntology; prototype.getImportsClosure; prototype.getOWLDataFactory; prototype.getOntology; prototype.getOntologyFormat; prototype.getOntologyWriterConfiguration; prototype.importsClosure; prototype.loadOntologyFromOntologyDocument; prototype.loadOntologyGraphFromOntologyDocument; prototype.removeAxiom; prototype.removeAxioms; prototype.saveOntology; prototype.setOntologyWriterConfiguration
-- Omitted Java members: Change and progress listeners; AddAxiom/RemoveAxiom change records and axiom removal operations; AddImport/RemoveImport changes; RemoveOntologyAnnotation changes; Storer and ontology-factory registration; IRI, stream, implicit-format, and default-document saveOntology overloads
+- Supported members: prototype.addAxiom; prototype.addAxioms; prototype.applyChange; prototype.applyChanges; prototype.createOntology; prototype.getBehaviorProfileId; prototype.getImportsClosure; prototype.getOWLDataFactory; prototype.getOntology; prototype.getOntologyFormat; prototype.getOntologyLoaderConfiguration; prototype.getOntologyWriterConfiguration; prototype.importsClosure; prototype.loadOntologyFromOntologyDocument; prototype.loadOntologyGraphFromOntologyDocument; prototype.removeAxiom; prototype.removeAxioms; prototype.saveOntology; prototype.setOntologyLoaderConfiguration; prototype.setOntologyWriterConfiguration
+- Omitted Java members: Change and progress listeners; Storer and ontology-factory registration; IRI, stream, implicit-format, and default-document saveOntology overloads
 - Public errors: DocumentLoadError; MissingImportError; OWLOntologyCreationError; OWLOntologyStateError; OWLOntologyStorageError; OWLStorerNotFoundError; UnparsableOntologyException
-- Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised. getOntologyFormat returns this manager's loaded OWLDocumentFormat or undefined for a programmatically created ontology, and rejects foreign or removed ontologies. RDF metadata belongs to the original completed parse and remains historical after edits. importsClosure returns a frozen deterministic root-first array snapshot instead of Java's Stream<OWLOntology>; getImportsClosure returns a fresh defensive Set with the same order and membership. Both closure methods reject an ontology not owned by this manager with OWLOntologyStateError instead of returning Java's empty closure. addAxiom/addAxioms accept one JavaScript iterable form and return boolean instead of Java's ChangeApplied; each complete call is validated and committed atomically. applyChange/applyChanges accept only SetOntologyID and AddOntologyAnnotation records, materialize one JavaScript iterable form, atomically publish the complete list, and return boolean instead of Java's ChangeApplied or ChangeDetails. LIFECYCLE-ASYNC-SAVE-OVERLOAD: saveOntology(ontology, format, target) returns Promise<void>, validates ownership and genuine format/target identities, and selects only the exact format key. LIFECYCLE-LOSSLESS-STORAGE: saveOntology renders one committed snapshot and atomically replaces target text only after success; unexpected renderer failures are wrapped with cause and typed storage errors retain identity. getOntologyWriterConfiguration/setOntologyWriterConfiguration attach genuine immutable values to this manager; saveOntology captures native private settings before its first await, independently of later manager changes.
+- Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised. getOntologyFormat returns this manager's loaded OWLDocumentFormat or undefined for a programmatically created ontology, and rejects foreign or removed ontologies. RDF metadata belongs to the original completed parse and remains historical after edits. importsClosure returns a frozen deterministic root-first array snapshot instead of Java's Stream<OWLOntology>; getImportsClosure returns a fresh defensive Set with the same order and membership. Both closure methods reject unknown ontology identities at the observed manager-query boundary. normative-v1 mutation operations validate and commit a complete batch atomically and return boolean. java-owlapi-5.5.1 applies sequential changes, retains native partial effects after failure, permits same-profile foreign targets where Java does, and returns ChangeApplied. Behavior-profile mismatches reject before publication. applyChange/applyChanges accept the exported axiom, import, ontology annotation and ontology ID records. Collection/varargs/stream overloads retain one JavaScript iterable adaptation. Native net-zero sequences can still return ChangeApplied.SUCCESSFULLY. LIFECYCLE-ASYNC-SAVE-OVERLOAD: saveOntology(ontology, format, target) returns Promise<void>, validates ownership and genuine format/target identities, and selects only the exact format key. normative-v1 saves one committed snapshot and atomically replaces target text after success. Java saves append to a reused StringDocumentTarget and retain native partial output at observed failure points. Unexpected renderer failures retain a cause and typed storage errors retain identity. getOntologyWriterConfiguration/setOntologyWriterConfiguration attach genuine immutable values to this manager; saveOntology captures native private settings before its first await, independently of later manager changes.
 - Evidence: internal/loading/managedOntologyIndex.test.js, internal/model/axiomSemantics.test.js, internal/model/ontologyState.test.js, model/model.test.js, model/ontologyChanges.test.js, model/owlOntologyManager.integration.test.js, model/owlOntologyManager.test.js, test/package-boundary.test.mjs, internal/storage/storerRegistry.test.js, model/owlOntologyManager.storage.test.js
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
 
 ## `OWLOntologyWriterConfiguration`
 
-An immutable partial Java adaptation controlling RDF/XML indentation, banners and anonymous-individual ID persistence on an output manager.
+Immutable native writer settings with profile-specific copy behavior and format-specific consumers.
 
 - Import: `@hadden-industries/owlapi/model`
 - Kind: CLASS
@@ -360,10 +360,10 @@ An immutable partial Java adaptation controlling RDF/XML indentation, banners an
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
 - Release status: PRERELEASE; from 0.1.0-rc.2
 - Call shape: new OWLOntologyWriterConfiguration()
-- Supported members: prototype.getIndentSize; prototype.isIndenting; prototype.isLabelsAsBanner; prototype.shouldSaveIdsForAllAnonymousIndividuals; prototype.shouldUseBanners; prototype.withBannersEnabled; prototype.withIndentSize; prototype.withIndenting; prototype.withLabelsAsBanner; prototype.withSaveIdsForAllAnonymousIndividuals
+- Supported members: prototype.getBehaviorProfileId; prototype.getIndentSize; prototype.isIndenting; prototype.isLabelsAsBanner; prototype.shouldSaveIdsForAllAnonymousIndividuals; prototype.shouldUseBanners; prototype.withBannersEnabled; prototype.withIndentSize; prototype.withIndenting; prototype.withLabelsAsBanner; prototype.withSaveIdsForAllAnonymousIndividuals
 - Omitted Java members: shouldRemapAllAnonymousIndividualsIds / withRemapAllAnonymousIndividualsIds; isUseNamespaceEntities / withUseNamespaceEntities; shouldOutputNamedGraphIRI / withNamedGraphIRIEnabled
 - Public errors: none specific
-- Qualification: Defaults: isIndenting true, getIndentSize 4, shouldUseBanners true, isLabelsAsBanner false. Every with method returns an immutable configuration and preserves unrelated fields, unlike the pinned Java copy-reset behavior. withIndentSize accepts numeric integers 0 through 2147483647; nonnumbers throw TypeError and out-of-range/noninteger numbers throw RangeError. Java admits negative int values; JavaScript deliberately rejects them. The controls affect RDF/XML only. Functional Syntax retains its output, matching the public-save Java probe. Disabling indentation retains structural newlines and literal whitespace. shouldSaveIdsForAllAnonymousIndividuals defaults to false; its builder persists anonymous individual and axiom IDs while necessary shared/cyclic/depth-limited references always retain IDs. Labels use lexical ordering of language, label text, then datatype, with IRI fallback. XML comment sanitization affects presentation only; labels remain unchanged RDF literals. No-language labels sort first. Rendering is bounded to 32 MiB UTF-8 output, 128 nested resource levels and finite QName work. Long owned chains retain flat references at the nesting bound. Disabling indentation removes padding cost and admits any legal configured indentSize, subject to other conservative render budgets. Attach to the actual output manager using setOntologyWriterConfiguration, which returns undefined. Each save captures private immutable state before suspension; no live getter or global preferences are read.
+- Qualification: Defaults: isIndenting true, getIndentSize 4, shouldUseBanners true, isLabelsAsBanner false, shouldSaveIdsForAllAnonymousIndividuals false. normative-v1 copies preserve unrelated fields. Java no-op setters retain identity; changed copies reproduce the released reset of indent size, banners and label selection before applying the requested value. withIndentSize accepts Java int values in java-owlapi-5.5.1, including negative values, and nonnegative Java int values in normative-v1. The setting is consumed by the selected format at save time. Java RDF/XML consumes indentation, banners, labels and anonymous ID settings; OWL/XML consumes indentation, Turtle consumes banners and anonymous ID settings, and Functional Syntax ignores the presentation controls. Each selected behavior is tested at the real save boundary. Labels use lexical ordering of language, label text, then datatype, with IRI fallback. XML comment sanitization affects presentation only; labels remain unchanged RDF literals. No-language labels sort first. normative-v1 retains the documented 32 MiB UTF-8 output and depth budgets. java-owlapi-5.5.1 adds no finite output or structure-depth defaults. Resource exhaustion is a distinct error rather than malformed ontology output. Attach to the actual output manager using setOntologyWriterConfiguration, which returns undefined. Each save captures private immutable state before suspension; no live getter or global preferences are read.
 - Evidence: model/owlOntologyWriterConfiguration.test.js, internal/storage/rdfxml/rdfXmlGraphWriter.test.js, test/package-boundary.test.mjs
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
@@ -406,7 +406,7 @@ Use this export only through its documented package specifier; do not infer addi
 
 ## `RemoveAxiom`
 
-An immutable nominal change record consumed by the manager's atomic batch transaction.
+An immutable nominal change record consumed by the manager's selected behavior profile.
 
 - Import: `@hadden-industries/owlapi/model`
 - Kind: CLASS
@@ -415,16 +415,16 @@ An immutable nominal change record consumed by the manager's atomic batch transa
 - Release status: PRERELEASE; from 0.1.0-rc.2
 - Call shape: new RemoveAxiom(ontology, axiom)
 - Supported members: prototype.getAxiom; prototype.getOntology
-- Omitted Java members: ChangeApplied, change-data serialization, visitors and inverse-change protocols
+- Omitted Java members: Change-data serialization, visitors and inverse-change protocols
 - Public errors: none specific
-- Qualification: Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable. Records retain canonical ontology identity and validated immutable structural values. Manager application preserves the established boolean adaptation and validates the complete batch before publication. Import changes reconcile only loaded manager state and never acquire documents.
+- Qualification: Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable. Records retain canonical ontology identity and validated immutable structural values. normative-v1 validates and commits a complete batch atomically with a boolean result; java-owlapi-5.5.1 applies changes sequentially and returns ChangeApplied. Mixed behavior profiles reject before application. Import changes reconcile only loaded state and never acquire documents.
 - Evidence: model/rc2Changes.test.js, test/package-boundary.test.mjs
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
 
 ## `RemoveImport`
 
-An immutable nominal change record consumed by the manager's atomic batch transaction.
+An immutable nominal change record consumed by the manager's selected behavior profile.
 
 - Import: `@hadden-industries/owlapi/model`
 - Kind: CLASS
@@ -433,16 +433,16 @@ An immutable nominal change record consumed by the manager's atomic batch transa
 - Release status: PRERELEASE; from 0.1.0-rc.2
 - Call shape: new RemoveImport(ontology, importsDeclaration)
 - Supported members: prototype.getImportDeclaration; prototype.getOntology
-- Omitted Java members: ChangeApplied, change-data serialization, visitors and inverse-change protocols
+- Omitted Java members: Change-data serialization, visitors and inverse-change protocols
 - Public errors: none specific
-- Qualification: Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable. Records retain canonical ontology identity and validated immutable structural values. Manager application preserves the established boolean adaptation and validates the complete batch before publication. Import changes reconcile only loaded manager state and never acquire documents.
+- Qualification: Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable. Records retain canonical ontology identity and validated immutable structural values. normative-v1 validates and commits a complete batch atomically with a boolean result; java-owlapi-5.5.1 applies changes sequentially and returns ChangeApplied. Mixed behavior profiles reject before application. Import changes reconcile only loaded state and never acquire documents.
 - Evidence: model/rc2Changes.test.js, test/package-boundary.test.mjs
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
 
 ## `RemoveOntologyAnnotation`
 
-An immutable nominal change record consumed by the manager's atomic batch transaction.
+An immutable nominal change record consumed by the manager's selected behavior profile.
 
 - Import: `@hadden-industries/owlapi/model`
 - Kind: CLASS
@@ -451,9 +451,9 @@ An immutable nominal change record consumed by the manager's atomic batch transa
 - Release status: PRERELEASE; from 0.1.0-rc.2
 - Call shape: new RemoveOntologyAnnotation(ontology, annotation)
 - Supported members: prototype.getAnnotation; prototype.getOntology
-- Omitted Java members: ChangeApplied, change-data serialization, visitors and inverse-change protocols
+- Omitted Java members: Change-data serialization, visitors and inverse-change protocols
 - Public errors: none specific
-- Qualification: Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable. Records retain canonical ontology identity and validated immutable structural values. Manager application preserves the established boolean adaptation and validates the complete batch before publication. Import changes reconcile only loaded manager state and never acquire documents.
+- Qualification: Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable. Records retain canonical ontology identity and validated immutable structural values. normative-v1 validates and commits a complete batch atomically with a boolean result; java-owlapi-5.5.1 applies changes sequentially and returns ChangeApplied. Mixed behavior profiles reject before application. Import changes reconcile only loaded state and never acquire documents.
 - Evidence: model/rc2Changes.test.js, test/package-boundary.test.mjs
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
@@ -885,8 +885,8 @@ A JavaScript adaptation supporting the initial public OWLAPI workflow.
 - Supported members: prototype.getGuessedDeclarations; prototype.getHeaderState; prototype.getTripleCount; prototype.getUnparsedTriples
 - Omitted Java members: Java RDFTriple/RDFNode wrapper hierarchy, Java Stream and Class-valued Multimap APIs, serialization and positional constructor overload
 - Public errors: none specific
-- Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised. Construct with {tripleCount, headerState, unparsedTriples = [], guessedDeclarations = []}; all inputs are defensively copied into immutable parse metadata. getUnparsedTriples returns a frozen array of {subject, predicate, object} RDF/JS-shaped term records, not Java RDFTriple instances. Each record has termType and value; literals also have language and datatype {termType: NamedNode, value}, and optionally direction. Blank-node labels are local to the containing document metadata. getGuessedDeclarations returns a frozen array of {iri: IRI, entityType: OWLObjectKind} for entity roles in this document's reconstructed structure without explicit local/imported declarations or built-in status. This replaces Java's IRI-to-Class multimap and does not itself add Declaration axioms; unused imported roles are excluded. getTripleCount counts unique triples in the selected or merged reconstruction graph, not duplicate source occurrences or excluded named graphs. getHeaderState reflects explicit owl:Ontology subjects in that graph; unlike the pinned Java parser's constant ONE result it reports ZERO and MULTIPLE truthfully. Metadata remains available when collectWarnings is false. It records the original parse; it neither tracks subsequent ontology edits nor certifies complete source preservation, inferred-axiom provenance or current source assessment.
-- Evidence: io/rdfParserMetaData.test.js, model/rdfConsumerCompatibility.test.js, test/package-boundary.test.mjs
+- Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised. Construct with {tripleCount, headerState, unparsedTriples = [], guessedDeclarations = []}; all inputs are defensively copied into immutable parse metadata. getUnparsedTriples returns a frozen array of {subject, predicate, object} RDF/JS-shaped term records, not Java RDFTriple instances. Each record has termType and value; literals also have language and datatype {termType: NamedNode, value}, and optionally direction. Blank-node labels are local to the containing document metadata. getGuessedDeclarations returns a frozen array of {iri: IRI, entityType: OWLObjectKind} for entity roles in this document's reconstructed structure without explicit local/imported declarations or built-in status. This replaces Java's IRI-to-Class multimap and does not itself add Declaration axioms; unused imported roles are excluded. java-owlapi-5.5.1 getTripleCount counts source statement occurrences before deduplication and getHeaderState preserves the released consumer's constant PARSED_ONE_HEADER. normative-v1 counts selected unique triples and distinct explicit owl:Ontology subjects, including ZERO and MULTIPLE. Metadata remains available when collectWarnings is false. It records the original parse; it neither tracks subsequent ontology edits nor certifies complete source preservation, inferred-axiom provenance or current source assessment.
+- Evidence: io/rdfParserMetaData.test.js, model/behaviorParserSelection.test.js, model/rdfConsumerCompatibility.test.js, test/package-boundary.test.mjs
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
 
@@ -946,7 +946,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 ## `StringDocumentTarget`
 
-An in-memory ontology document target with Java's toString() text reader and private atomic replacement.
+An in-memory ontology document target with Java's toString() text reader; the manager's behavior profile selects append or complete replacement.
 
 - Import: `@hadden-industries/owlapi/io`
 - Kind: CLASS
@@ -957,7 +957,7 @@ An in-memory ontology document target with Java's toString() text reader and pri
 - Supported members: prototype.toString
 - Omitted Java members: getWriter() and the Java Writer protocol (PARITY-TARGET-WRITER-OMISSION)
 - Public errors: none specific
-- Qualification: PARITY-TARGET-WRITER-OMISSION: toString() is the only public text reader; no getText(), getWriter(), write(), append(), or constructor-text overload is exposed. PARITY-TARGET-ATOMIC-COMMIT: package-private complete-text replacement validates before changing private state; failed storage retains prior text.
+- Qualification: PARITY-TARGET-WRITER-OMISSION: toString() is the only public text reader; no getText(), getWriter(), write(), append(), or constructor-text overload is exposed. PARITY-TARGET-ATOMIC-COMMIT is the historical normative-v1 contract: complete-text replacement retains prior text after failure. java-owlapi-5.5.1 appends and preserves native partial output at characterized failure boundaries. The target stores text without selecting its own behavior profile.
 - Evidence: io/stringDocumentTarget.test.js, test/package-boundary.test.mjs, test/installed-package-boundary.mjs, test/installed-package-smoke.mjs
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
@@ -1070,6 +1070,24 @@ Java-backed RDF/XML format with bounded inherited prefix operations and captured
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
 
+## `NodeDocumentLoader`
+
+A JavaScript adaptation supporting the initial public OWLAPI workflow.
+
+- Import: `@hadden-industries/owlapi/io/node`
+- Kind: CLASS
+- Java authority: org.semanticweb.owlapi.io
+- Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
+- Release status: PRERELEASE; from 0.1.0-rc.2
+- Call shape: new NodeDocumentLoader(...arguments)
+- Supported members: prototype.authorize; prototype.load
+- Omitted Java members: none recorded
+- Public errors: none specific
+- Qualification: This helper is public because it makes the supported structural API practical in JavaScript; it is not claimed as a Java type translation. Construct with { authorize(resourceIRI, context) }. The callback must return true for each requested operation; receiving a loader never silently grants access to a new destination. load(IRI, { config, purpose, signal }) returns a Promise for a StringDocumentSource. The configuration fixes each operation's behavior profile. Native ontology-document settings and the separate Java JSON-LD context provider settings are consumed by their actual transport boundaries. The Node-only adapter authorizes hostname resolution, the pinned IP address, redirects, credentials, resolved local file paths and file reads. It does not use ambient URL credentials or automatically enable network access in a manager. Java ontology documents retain the requested parsing base; contexts use the final document URL. Gzip, raw DEFLATE, XZ and first-entry ZIP input follow the qualified Java provider. Native dependencies, permission decisions and caller cancellation remain host capabilities. Browser document parsing remains supported; browser external transport parity is not qualified. See docs/compatibility/profiles/java-owlapi-5.5.1/transport-decision.md and its live qualification status.
+- Evidence: io/node/nodeDocumentLoader.test.js
+
+Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace.
+
 ## `AnnotationValueShortFormProvider`
 
 Uses captured annotation and language preferences with explicitly supplied live ontology snapshots.
@@ -1144,7 +1162,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 ## `OWLOntologyImportsClosureSetProvider`
 
-A constructor-time imports-closure snapshot provider with defensive JavaScript Set results.
+A provider that queries the current imports closure on each call and returns that call's defensive JavaScript Set snapshot.
 
 - Import: `@hadden-industries/owlapi/util`
 - Kind: CLASS
@@ -1155,7 +1173,7 @@ A constructor-time imports-closure snapshot provider with defensive JavaScript S
 - Supported members: prototype.ontologies
 - Omitted Java members: none recorded
 - Public errors: OWLOntologyStateError; TypeError
-- Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised. ontologies returns a fresh defensive JavaScript Set instead of Java's Stream<OWLOntology>. The imports-closure membership is captured at construction instead of remaining a live Java view.
+- Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised. ontologies returns a fresh defensive JavaScript Set instead of Java's Stream<OWLOntology>. Each ontologies() call reads the manager's current closure and returns that call's defensive snapshot. Construction does not query the manager; unknown-ontology failure occurs at query time.
 - Evidence: util/owlOntologyImportsClosureSetProvider.test.js, test/package-boundary.test.mjs, test/installed-package-smoke.mjs, test/consumers/browser/browser-consumers.playwright.js
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
@@ -1173,8 +1191,8 @@ A Java-shaped ontology merger that materializes the structural union of supplied
 - Supported members: prototype.createMergedOntology
 - Omitted Java members: OWLAxiomFilter constructor overload and passes(axiom) surface
 - Public errors: OWLOntologyStateError; TypeError
-- Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised. createMergedOntology builds a structural set union from each supplied ontology's direct axioms before creating the target, then mutates the target only through public manager methods. The optional boolean constructor form selects Java-compatible logical-axiom filtering; the OWLAxiomFilter constructor remains unavailable. An omitted ontologyIRI creates an anonymous target; a supplied value must be an IRI.
-- Evidence: util/owlOntologyMerger.test.js, test/package-boundary.test.mjs, test/installed-package-smoke.mjs, test/consumers/browser/browser-consumers.playwright.js
+- Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised. createMergedOntology copies direct axioms into a new destination-owned ontology without transferring source ownership. The destination profile governs explicit mixed-profile copies. normative-v1 validates the complete snapshot before target creation; Java creates the target before querying the provider and retains copied axioms after later provider failure. A Java target identity collision prevents the provider call. The optional boolean constructor form selects Java-compatible logical-axiom filtering; the OWLAxiomFilter constructor remains unavailable. An omitted ontologyIRI creates an anonymous target; a supplied value must be an IRI.
+- Evidence: util/owlOntologyMerger.test.js, util/behaviorMerger.test.js, test/package-boundary.test.mjs, test/installed-package-smoke.mjs, test/consumers/browser/browser-consumers.playwright.js
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
 
@@ -1198,7 +1216,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 ## `OWL2DLProfile`
 
-An asynchronous, bounded OWL 2 DL structural checker over the complete managed import closure, with a separate source-qualified assessment.
+An asynchronous OWL 2 DL checker over the managed import closure, with profile-owned defaults and a separate source-qualified assessment.
 
 - Import: `@hadden-industries/owlapi/profiles`
 - Kind: CLASS
@@ -1209,7 +1227,7 @@ An asynchronous, bounded OWL 2 DL structural checker over the complete managed i
 - Supported members: prototype.checkOntology; prototype.getIRI; prototype.getName
 - Omitted Java members: Java visitor implementation classes; getDatatypeIRIs(); Stream and Collection overloads
 - Public errors: none specific
-- Qualification: Returns a Promise and supports cooperative cancellation and resource limits; incomplete validation is unverified, never valid. The formal verdict applies to the structural OWL closure. Optional sourceAssessment also validates retained RDF/RDFS structures and parsed expressions before consumer filtering. Only trusted original source arity and unambiguous typed use qualify the two documented normalization/declaration differences; mutation invalidates that evidence. Datatype checks follow the mandatory OWL 2 datatype map and raw lexical/value spaces, including nested annotations. See docs/compatibility/canonical-vowl-prerequisites.md for normative choices and Java deviations.
+- Qualification: Returns a Promise and supports cooperative cancellation and resource limits; incomplete validation is unverified, never valid. The formal verdict applies to the structural OWL closure. Optional sourceAssessment also validates retained RDF/RDFS structures and parsed expressions before consumer filtering. Only trusted original source arity and unambiguous typed use qualify the two documented normalization/declaration differences; mutation invalidates that evidence. normative-v1 uses the accepted OWL datatype/constraint contracts. java-owlapi-5.5.1 uses the released Java datatype patterns, facets, constraint scope and exclusions. An explicitly selected checker profile must match the ontology; omission binds the ontology's immutable identity.
 - Evidence: profiles/owl2DLProfile.test.js, model/rdfsSourcePreservation.test.js, model/sourcePropertyRoles.test.js, internal/profiles/datatypes.test.js, test/package-boundary.test.mjs
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
@@ -1281,7 +1299,7 @@ An immutable checker result separating valid, invalid and unverified outcomes, w
 - Supported members: prototype.getOntology; prototype.getProfile; prototype.getSourceAssessment; prototype.getViolations; prototype.isInProfile
 - Omitted Java members: Java violation class hierarchy; Java stream/visitor overloads; Java constructor overloads
 - Public errors: none specific
-- Qualification: isInProfile() returns true only for a completed valid formal check. getSourceAssessment() returns the independently stated source-qualified verdict when requested. Violations are immutable data records rather than Java visitor objects. getOntology() and getProfile() retain their input identities. Additional status, closure revisions, unverifiedChecks and sourceAssessment fields expose bounded JavaScript validation evidence; direct construction does not execute validation.
+- Qualification: isInProfile() returns true only for a completed valid formal check and throws ResourceLimitError for incomplete resource-limited validation. Exhaustion is not an invalid-ontology verdict. getSourceAssessment() returns the separately stated source-qualified verdict when requested. Violations are immutable data records rather than Java visitor objects. getOntology() and getProfile() retain their input identities. Additional status, closure revisions, unverifiedChecks and sourceAssessment fields expose bounded JavaScript validation evidence; direct construction does not execute validation.
 - Evidence: profiles/owl2DLProfile.test.js, test/package-boundary.test.mjs
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
@@ -1301,6 +1319,24 @@ Frozen explicit query policy values with Java-shaped names.
 - Public errors: none specific
 - Qualification: Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable. Omitted imports scope retains direct-only behavior. Only selected scope-bearing overloads accept these values; named axiom index accessors stay direct-only.
 - Evidence: model/rc2Queries.test.js, test/package-boundary.test.mjs
+
+Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
+
+## `ChangeApplied`
+
+A JavaScript-specific helper at an approved Java OWLAPI namespace boundary.
+
+- Import: `@hadden-industries/owlapi/model/parameters`
+- Kind: CONSTANT
+- Java authority: org.semanticweb.owlapi.model.parameters.ChangeApplied
+- Relationship: JS_ADAPTATION; compatibility: ADAPTED
+- Release status: PRERELEASE; from 0.1.0-rc.2
+- Call shape: import { ChangeApplied } from "@hadden-industries/owlapi/model/parameters"
+- Supported members: NO_OPERATION; SUCCESSFULLY; UNSUCCESSFULLY
+- Omitted Java members: none recorded
+- Public errors: none specific
+- Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised. Frozen Java-compatible SUCCESSFULLY, NO_OPERATION and UNSUCCESSFULLY values. Java-profile manager changes return this vocabulary; normative-v1 retains the accepted boolean adaptation.
+- Evidence: model/behaviorMutation.test.js
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
 
@@ -1335,7 +1371,7 @@ Asserted entity and annotation searches over explicitly supplied ontologies.
 - Supported members: static getAnnotationAssertionAxioms; static getAnnotationObjects; static getAnnotations; static getDisjointClasses; static getDomains; static getEquivalentClasses; static getInverses; static getRanges; static getSubClasses; static getSubProperties; static getSuperClasses; static getSuperProperties; static isAsymmetric; static isFunctional; static isInverseFunctional; static isIrreflexive; static isReflexive; static isSymmetric; static isTransitive
 - Omitted Java members: All unselected search methods and Java Stream protocols
 - Public errors: none specific
-- Qualification: Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable. Java Stream results are fresh eager arrays preserving multiplicity, including repeated ontology inputs and annotated variants. Search never expands imports implicitly. Selected ontology iterable overloads retain their own Java property-filter requirements. Native getDisjointClasses retains the queried operand; getEquivalentClasses excludes it.
+- Qualification: Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable. Java Stream results are single-use lazy iterables in both behavior profiles. They read current ontology state on consumption and preserve multiplicity, including repeated ontology inputs and annotated variants. Boolean searches remain eager. Search never expands imports implicitly. Selected ontology iterable overloads retain their native property-filter requirements. getDisjointClasses retains the queried operand; getEquivalentClasses excludes it.
 - Evidence: search/entitySearcher.test.js, search/nativeSearch.test.js, test/package-boundary.test.mjs
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
@@ -1350,10 +1386,10 @@ Plain Manchester text for the selected complete structural-kind inventory.
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
 - Release status: PRERELEASE; from 0.1.0-rc.2
 - Call shape: new ManchesterOWLSyntaxOWLObjectRendererImpl(); renderer.render(object); renderer.setShortFormProvider(provider)
-- Supported members: prototype.render; prototype.setShortFormProvider
+- Supported members: prototype.getBehaviorProfileId; prototype.render; prototype.setShortFormProvider
 - Omitted Java members: Short aliases; Ontology storage; HTML and DOM rendering
 - Public errors: none specific
-- Qualification: Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable. Validates canonical input before invoking a captured synchronous provider. Preserves observed Java precedence, whitespace and annotation behavior; anonymous names are compared through one consistent bijection. Output and structural depth remain bounded.
+- Qualification: Selected members and omissions are governed by docs/plans/0.1.0-rc.2-java-parity-baseline.md. Unlisted Java members are unavailable. Validates canonical input before invoking a captured synchronous provider. Preserves observed Java precedence, whitespace and annotation behavior; anonymous names are compared through one consistent bijection. The immutable behaviorProfileId selects resource defaults: normative-v1 uses explicit output/depth budgets and java-owlapi-5.5.1 adds no such finite defaults.
 - Evidence: manchestersyntax/renderer/renderer.test.js, test/package-boundary.test.mjs
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.

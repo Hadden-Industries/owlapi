@@ -32,8 +32,12 @@ export const mapStorageOntologyToRdf = (ontology, options) =>
     options,
   );
 
-export const rdfStorageConfiguration = (snapshot) =>
+export const rdfStorageConfiguration = (
+  snapshot,
+  behaviorProfileId = "normative-v1",
+) =>
   new OWLOntologyLoaderConfiguration({
+    behaviorProfileId,
     parsingMode: hasNormalizedSingleton(snapshot.directAxioms)
       ? "preserve"
       : "strict",

@@ -4,7 +4,10 @@ import { dirname, relative, resolve, sep } from "node:path";
 import { pathToFileURL } from "node:url";
 
 import { Generator } from "@jspm/generator";
-import { assertPackageIdentity } from "./package-identity.mjs";
+import {
+  assertPackageIdentity,
+  NODE_ONLY_PUBLIC_SUBPATHS,
+} from "./package-identity.mjs";
 
 const repositoryManifest = JSON.parse(
   readFileSync(new URL("../package.json", import.meta.url), "utf8"),
@@ -24,6 +27,9 @@ const toPublicSpecifier = (packageName, exportKey) => {
 /** The application owns these import-map aliases; the installed manifest owns package identity. */
 export const BROWSER_CONSUMER_SPECIFIERS = Object.freeze(
   Object.keys(repositoryManifest.exports)
+    .filter(
+      (exportKey) => !NODE_ONLY_PUBLIC_SUBPATHS.includes(exportKey.slice(1)),
+    )
     .map((exportKey) => toPublicSpecifier("owlapi", exportKey))
     .sort(compareCodeUnits),
 );
@@ -39,17 +45,12 @@ const RDF_XML_WRITER_URL_SUFFIX =
 const RDF_XML_FORMAT_URL_SUFFIX = "/formats/rdfXMLDocumentFormat.js";
 const OWL_XML_WRITER_URL_SUFFIX = "/internal/storage/owlxml/owlXmlStorer.js";
 const JSON_LD_SPECIFIER = "jsonld";
-const JSPM_PROVIDER_BASE_URL = "https://ga.jspm.io/";
 const jsonLdVersion = repositoryManifest.dependencies?.[JSON_LD_SPECIFIER];
 if (!/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/u.test(jsonLdVersion ?? "")) {
   throw new Error(
     "Reference import-map generation requires an exact jsonld dependency version",
   );
 }
-const JSON_LD_BROWSER_BUNDLE_URL = new URL(
-  `./npm:jsonld@${jsonLdVersion}/dist/jsonld.js`,
-  JSPM_PROVIDER_BASE_URL,
-).href;
 
 export const excludeNodeXmlParserFallback = (specifier, parentUrl) => {
   if (specifier !== XML_DOM_PACKAGE) return false;
@@ -98,12 +99,11 @@ export const resolveReferenceBrowserDependency = ({
     return undefined;
   }
 
-  // jsonld publishes this bundle specifically for browser consumers. Asking
-  // JSPM to convert that supported subpath keeps the native import-map graph
-  // standards-based while avoiding the split CommonJS conversion graph whose
-  // export-initialization order fails in the pre-Safari-27 WebKit ESM loader.
-  // Node and bundler consumers continue to resolve jsonld's ordinary entry.
-  return JSON_LD_BROWSER_BUNDLE_URL;
+  // Every host consumes the same maintained, package-local provider build.
+  // Resolving stock jsonld here would silently restore its incompatible limit.
+  throw new Error(
+    "OwlAPI browser consumers must use the package-local JSON-LD provider",
+  );
 };
 
 export const toLocalProviderPath = (providerUrl) => {

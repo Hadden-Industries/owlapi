@@ -7,13 +7,13 @@
     "repository": "https://github.com/Hadden-Industries/owlapi",
     "scopeAuthority": {
       "method": "npm pack --dry-run --json plus local source-byte hashing",
-      "fileCount": 157,
-      "sourceManifestSha256": "d168fd8e252cc2218c5e18046f43265aedef08b1bcab2f6326331f23835da172"
+      "fileCount": 194,
+      "sourceManifestSha256": "9ecbf0edd7ee87cd268227e900b644bbd3ddae20dff233db0e9c1cb4100a2007"
     }
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "8ce17b3d868267d03177b164e677371e764d12615feb750a61b45229ea67b1cf",
+    "factsSha256": "331ea272b5489acaa1d123f71370d8585e5629e1c1e1ea3b6563155a37adffb6",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -65,14 +65,43 @@
         "util/owlEntityRenamer.js",
         "util/owlEntityRemover.js",
         "util/simpleShortFormProvider.js",
-        "util/annotationValueShortFormProvider.js"
+        "util/annotationValueShortFormProvider.js",
+        "docs/compatibility/behavior-profiles.md",
+        "docs/compatibility/java-api-parity-decisions.json",
+        "docs/compatibility/java-api-parity-decisions.schema.json"
       ],
       "packageTarball": true,
+      "excludedPaths": [
+        "internal/parsing/jsonld/provider/",
+        "internal/behavior/javaDatatypePolicy.js"
+      ],
       "rightsHolder": "Maksym Shostak for his contributions",
       "licenceBasis": "AGPL-3.0-only",
       "source": "https://github.com/Hadden-Industries/owlapi",
       "distributionAuthority": "Copyright-owner publication under AGPL-3.0-only",
       "rationale": "This class contains the independently authored JavaScript implementation, package metadata, and project-authored consumer documentation other than the separately classified generated Java compatibility views."
+    },
+    {
+      "id": "jsonld-generated-provider",
+      "relationship": "GENERATED_FROM_THIRD_PARTY",
+      "paths": ["internal/parsing/jsonld/provider/"],
+      "packageTarball": true,
+      "rightsHolder": "Original component holders identified in the complete retained notices; Maksym Shostak for project-authored modifications and metadata",
+      "licenceBasis": "BSD-3-Clause (jsonld and rdf-canonize), Apache-2.0 (canonicalize), ISC (lru-cache and yallist), MIT (setimmediate and rolldown runtime); AGPL-3.0-only for project-authored modifications and metadata",
+      "source": "internal/parsing/jsonld/provider/build-manifest.json",
+      "distributionAuthority": "Original permissive component grants with complete notices packed under provider/licenses; the approved two-file source change and all build inputs and outputs are recorded in the manifest.",
+      "rationale": "Generated executable dependency material remains separately attributed from the project's independently authored source. The seven individual components and notice hashes are recorded in the third-party-material inventory."
+    },
+    {
+      "id": "java-owlapi-datatype-constants",
+      "relationship": "GENERATED_FROM_THIRD_PARTY",
+      "paths": ["internal/behavior/javaDatatypePolicy.js"],
+      "packageTarball": true,
+      "rightsHolder": "Java OWLAPI project and contributors for public datatype constants; Maksym Shostak for independently authored observation and generation tooling",
+      "licenceBasis": "Apache-2.0 alternative elected from the released Java source's Apache-2.0 OR LGPL-3.0 declaration; complete licence packed at LICENSES/Apache-2.0.txt",
+      "source": "https://github.com/owlcs/owlapi/tree/f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "distributionAuthority": "Released OWL2Datatype getter observations reproduced as data under the elected Apache-2.0 terms; implementation bodies are not copied.",
+      "rationale": "The generated patterns and supported-facet lists are public constant observations used by the Java behavior profile. Their source is distinguished from independent structural validation code."
     },
     {
       "id": "gnu-agpl-3.0-only-licence-text",
@@ -107,16 +136,16 @@
       "packageTarball": true,
       "rightsHolder": "Maksym Shostak for project-authored compatibility analysis; Java OWLAPI public API identifiers are attributed to the owlcs/owlapi project and its contributors",
       "licenceBasis": "Project-authored analysis is AGPL-3.0-only. Public API identity and declaration facts are distributed under the Apache-2.0 alternative elected from the pinned Java source's Apache-2.0 OR LGPL-3.0 declaration; the complete elected licence text is packed at LICENSES/Apache-2.0.txt.",
-      "source": "https://github.com/owlcs/owlapi/tree/b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
+      "source": "https://github.com/owlcs/owlapi/tree/f760b3a4c107c6d5f90f856e5680c39b18af646f",
       "distributionAuthority": "The generated output records public package/type/declaration facts under the elected Apache-2.0 basis and independently authored mappings under AGPL-3.0-only; it contains no Java implementation bodies or copied Java documentation.",
       "rationale": "The classification acknowledges the exact third-party source consulted without implying source transliteration, organizational continuity, affiliation, endorsement, or Java implementation-code incorporation."
     }
   ],
   "externalDependencies": {
-    "bundled": false,
+    "bundled": true,
     "authority": "docs/provenance/third-party-material.json",
-    "inventoryFactsSha256": "eca398f3c5c439d86eaf5178f4dbd358c1abe4d1e13c2b4146b3688170fac9cc",
-    "noticeRule": "Ordinary npm dependencies are installed separately and remain under their own licences. Their licence texts are not copied into the owlapi tarball merely because they appear in the installed dependency graph."
+    "inventoryFactsSha256": "19687400a7bd96fdd4beb6d014a80de3e2ed55a230010c3250139e3b07021234",
+    "noticeRule": "Ordinary npm dependencies are installed separately under their own licences. The generated JSON-LD provider embeds seven separately inventoried components and retains their complete original licences and notices under internal/parsing/jsonld/provider/licenses/. The provider manifest binds the incorporated source, approved modifications, generated runtime and output."
   },
   "unresolvedExternalContributions": [],
   "conclusion": "Every material class in the machine-defined 0.1.0-rc.2 tarball scope has an identified distribution basis, the bound third-party-material inventory records no unresolved production licence conclusion, and no unresolved external copyrightable contribution is recorded."

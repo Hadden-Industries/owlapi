@@ -1,8 +1,9 @@
 # Released Java 5.5.1 oracle
 
 This directory records new observations against the Maven Central distribution, separately from the historical development-revision research.
-The package implementation and the complete compatibility profile are still in progress.
-`provenance.json` remains unqualified until the frozen harness identity and admission checks are complete.
+The released Java oracle is qualified against frozen harness commit `31638db1e270d7a5e98cee8a4499e5d4d4b1b829`.
+Admission verifies all measured fixture bytes in that commit, 28 Central/source observations, 15 selected-surface replays and the 2,146 acquired dependency artifacts.
+This oracle qualification is distinct from the complete JavaScript compatibility profile, whose final review and hosted package matrix remain in progress.
 
 The Central distribution SHA-256 is `747b1a5269fee2992487dcde946f16dfbc14aa458d50854994a0485cf263ce07`.
 Its annotated release tag resolves to commit `f760b3a4c107c6d5f90f856e5680c39b18af646f` and tree `6b87391a36b7341f7253f57046b5b8621d3d0ac8`.

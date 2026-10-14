@@ -68,6 +68,18 @@ const runConsumer = async (page, mode) => {
     renderer: true,
   });
   expect(result.rc2).toMatchObject({
+    behaviorProfiles: {
+      "java-owlapi-5.5.1": {
+        targetPublication: "append",
+        partialBatch: true,
+        jsonAxioms: 1,
+      },
+      "normative-v1": {
+        targetPublication: "replace",
+        partialBatch: false,
+        jsonAxioms: 1,
+      },
+    },
     profileStatuses: ["valid", "valid", "valid"],
     localityModules: { BOTTOM: 2, TOP: 0, STAR: 0 },
     stored: { OWL_XML: 4, TURTLE: 4 },

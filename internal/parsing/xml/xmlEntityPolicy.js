@@ -1,4 +1,13 @@
 import { isXmlName } from "./xmlNames.js";
+import { xmlProcessingPolicy } from "./xmlProcessingPolicy.js";
+import {
+  applyDtdAttributes,
+  readAttributeListDeclaration,
+} from "./xmlDtdAttributes.js";
+import {
+  validateElementDeclaration,
+  validateNotationDeclaration,
+} from "./xmlDtdDeclarations.js";
 import {
   ResourceLimitError,
   SecurityPolicyError,
@@ -11,6 +20,28 @@ const textEncoder = new TextEncoder();
 
 const byteLength = (value) => textEncoder.encode(value).byteLength;
 
+const xmlError = (message, details = {}) => {
+  throw new XmlParseError(message, details);
+};
+
+const decodeCharacterReferences = (text) =>
+  text.replace(/&#(x[\dA-Fa-f]+|\d+);/gu, (_reference, digits) => {
+    const code = Number.parseInt(
+      digits[0] === "x" ? digits.slice(1) : digits,
+      digits[0] === "x" ? 16 : 10,
+    );
+    if (!(
+      code === 9 ||
+      code === 10 ||
+      code === 13 ||
+      (code >= 32 && code <= 0xd7ff) ||
+      (code >= 0xe000 && code <= 0xfffd) ||
+      (code >= 0x10000 && code <= 0x10ffff)
+    ))
+      xmlError("An XML character reference is invalid");
+    return String.fromCodePoint(code);
+  });
+
 const resourceLimit = (resource, limit, observed, details = {}) => {
   throw new ResourceLimitError(`The XML ${resource} limit was exceeded`, {
     ...details,
@@ -18,10 +49,6 @@ const resourceLimit = (resource, limit, observed, details = {}) => {
     observed,
     resource,
   });
-};
-
-const xmlError = (message, details = {}) => {
-  throw new XmlParseError(message, details);
 };
 
 const findDelimitedEnd = (text, start, terminator) => {
@@ -134,7 +161,7 @@ const internalSubsetBounds = (doctype) => {
   };
 };
 
-const validateDoctypeHead = (head) => {
+const validateDoctypeHead = (head, policy) => {
   const match = head.match(/^([^\s<>&'"[\]]+)(?:\s+([\s\S]*))?$/u);
   if (!match) {
     xmlError("The XML DOCTYPE name is malformed");
@@ -145,6 +172,15 @@ const validateDoctypeHead = (head) => {
   const external = match[2]?.trim();
   if (external) {
     if (/^(?:SYSTEM|PUBLIC)\b/u.test(external)) {
+      if (policy.admitsExternalDeclarations) {
+        if (
+          !/^(?:SYSTEM\s+(?:"[^"]*"|'[^']*')|PUBLIC\s+(?:"[^"]*"|'[^']*')\s+(?:"[^"]*"|'[^']*'))$/u.test(
+            external,
+          )
+        )
+          xmlError("The XML DOCTYPE external identifier is malformed");
+        return;
+      }
       throw new SecurityPolicyError("External XML subsets are disabled", {
         policy: "externalXmlSubset",
       });
@@ -172,8 +208,96 @@ const readMarkupDeclarationEnd = (subset, start) => {
   });
 };
 
-const parseEntityDeclarations = (subset, limits) => {
+/** Expand internal parameter entities at declaration boundaries. The selected
+ * provider disables external parameter retrieval, including external subsets.
+ * References inside an internal entity declaration remain XML errors.
+ */
+const expandParameterDeclarations = (subset, policy, counters) => {
+  if (!policy.admitsParameterEntities) return subset;
+  const parameters = new Map();
+  const visit = (input, stack = []) => {
+    const output = [];
+    for (let offset = 0; offset < input.length;) {
+      if (input.startsWith("<!--", offset) || input.startsWith("<?", offset)) {
+        const terminator = input.startsWith("<!--", offset) ? "-->" : "?>";
+        const end = findDelimitedEnd(input, offset + 2, terminator);
+        output.push(input.slice(offset, end));
+        offset = end;
+        continue;
+      }
+      if (input[offset] === "%") {
+        const reference = input.slice(offset).match(/^%([^;\s]+);/u);
+        if (!reference || !parameters.has(reference[1]))
+          xmlError("An XML parameter entity is not declared");
+        const name = reference[1];
+        if (stack.includes(name))
+          xmlError("An XML parameter entity is recursive", {
+            entityName: name,
+          });
+        counters.expansions++;
+        if (counters.expansions > policy.maxEntityExpansions)
+          resourceLimit(
+            "entityExpansionLimit",
+            policy.maxEntityExpansions,
+            counters.expansions,
+          );
+        output.push(visit(parameters.get(name), [...stack, name]));
+        offset += reference[0].length;
+        continue;
+      }
+      if (!input.startsWith("<!", offset)) {
+        output.push(input[offset++]);
+        continue;
+      }
+      const end = readMarkupDeclarationEnd(input, offset);
+      const declaration = input.slice(offset, end);
+      if (!/^<!ENTITY\s+%/u.test(declaration)) output.push(declaration);
+      else {
+        const match = declaration.match(
+          /^<!ENTITY\s+%\s+([^\s]+)\s+(["'])([\s\S]*)\2\s*>$/u,
+        );
+        const external = declaration.match(
+          /^<!ENTITY\s+%\s+([^\s]+)\s+(?:SYSTEM\s+(?:"[^"]*"|'[^']*')|PUBLIC\s+(?:"[^"]*"|'[^']*')\s+(?:"[^"]*"|'[^']*'))\s*>$/u,
+        );
+        if ((!match && !external) || !isXmlName((match ?? external)[1]))
+          xmlError("An XML parameter entity declaration is malformed");
+        const name = (match ?? external)[1];
+        const replacement = decodeCharacterReferences(match?.[3] ?? "");
+        if (name.length > policy.maxXmlNameCodeUnits)
+          resourceLimit(
+            "maxXmlNameCodeUnits",
+            policy.maxXmlNameCodeUnits,
+            name.length,
+          );
+        if (/%[^;\s]+;/u.test(replacement))
+          xmlError(
+            "Parameter references cannot occur inside declarations in an internal subset",
+          );
+        if (replacement.length > policy.maxParameterEntityCodeUnits)
+          resourceLimit(
+            "maxParameterEntityCodeUnits",
+            policy.maxParameterEntityCodeUnits,
+            replacement.length,
+          );
+        counters.declaredCodeUnits += replacement.length;
+        if (counters.declaredCodeUnits > policy.maxTotalEntityCodeUnits)
+          resourceLimit(
+            "maxTotalEntityCodeUnits",
+            policy.maxTotalEntityCodeUnits,
+            counters.declaredCodeUnits,
+          );
+        if (!parameters.has(name)) parameters.set(name, replacement);
+      }
+      offset = end;
+    }
+    return output.join("");
+  };
+  return visit(subset);
+};
+
+const parseEntityDeclarations = (subset, limits, policy, counters) => {
   const declarations = new Map();
+  let declaredEntityCodeUnits = counters.declaredCodeUnits;
   for (let offset = 0; offset < subset.length;) {
     if (/\s/u.test(subset[offset])) {
       offset += 1;
@@ -184,6 +308,12 @@ const parseEntityDeclarations = (subset, limits) => {
       if (end < 0) {
         xmlError("A comment in the XML DOCTYPE is not terminated", { offset });
       }
+      const comment = subset.slice(offset + 4, end);
+      if (comment.includes("--") || comment.endsWith("-"))
+        xmlError(
+          "A comment in the XML DOCTYPE contains a forbidden double hyphen",
+          { offset },
+        );
       offset = end + 3;
       continue;
     }
@@ -206,6 +336,36 @@ const parseEntityDeclarations = (subset, limits) => {
       });
     }
     if (!subset.startsWith("<!ENTITY", offset)) {
+      if (
+        policy.admitsDtdMetadataDeclarations &&
+        subset.startsWith("<!ATTLIST", offset)
+      ) {
+        const end = readMarkupDeclarationEnd(subset, offset);
+        readAttributeListDeclaration(
+          subset.slice(offset, end),
+          counters.attributeDeclarations,
+        );
+        offset = end;
+        continue;
+      }
+      if (
+        policy.admitsDtdMetadataDeclarations &&
+        subset.startsWith("<!ELEMENT", offset)
+      ) {
+        const end = readMarkupDeclarationEnd(subset, offset);
+        validateElementDeclaration(subset.slice(offset, end));
+        offset = end;
+        continue;
+      }
+      if (
+        policy.admitsDtdMetadataDeclarations &&
+        subset.startsWith("<!NOTATION", offset)
+      ) {
+        const end = readMarkupDeclarationEnd(subset, offset);
+        validateNotationDeclaration(subset.slice(offset, end));
+        offset = end;
+        continue;
+      }
       throw new SecurityPolicyError(
         "Only bounded internal general entities are allowed in XML DOCTYPE subsets",
         { policy: "xmlDtdMarkup" },
@@ -220,6 +380,23 @@ const parseEntityDeclarations = (subset, limits) => {
     }
     if (/^<!ENTITY\s+[^\s%]+\s+(?:SYSTEM|PUBLIC)\b/u.test(declaration)) {
       const name = declaration.match(/^<!ENTITY\s+([^\s%]+)/u)?.[1];
+      if (policy.admitsExternalDeclarations) {
+        if (!isXmlName(name))
+          xmlError("An external XML entity name is malformed");
+        const external =
+          /^<!ENTITY\s+[^\s%]+\s+(?:SYSTEM\s+(?:"[^"]*"|'[^']*')|PUBLIC\s+(?:"[^"]*"|'[^']*')\s+(?:"[^"]*"|'[^']*'))(?:\s+NDATA\s+([^\s>]+))?\s*>$/u.exec(
+            declaration,
+          );
+        if (!external || (external[1] && !isXmlName(external[1])))
+          xmlError("An external XML entity declaration is malformed");
+        if (!declarations.has(name)) {
+          declarations.set(name, "");
+          counters.externalEntities.add(name);
+          if (external[1]) counters.unparsedEntities.add(name);
+        }
+        offset = end;
+        continue;
+      }
       throw new SecurityPolicyError("External XML entities are disabled", {
         entityName: name,
         policy: "externalXmlEntity",
@@ -232,6 +409,25 @@ const parseEntityDeclarations = (subset, limits) => {
       xmlError("The internal XML entity declaration is malformed", { offset });
     }
     const [, name, , replacement] = match;
+    if (name.length > policy.maxXmlNameCodeUnits)
+      resourceLimit(
+        "maxXmlNameCodeUnits",
+        policy.maxXmlNameCodeUnits,
+        name.length,
+      );
+    if (replacement.length > policy.maxGeneralEntityCodeUnits)
+      resourceLimit(
+        "maxGeneralEntityCodeUnits",
+        policy.maxGeneralEntityCodeUnits,
+        replacement.length,
+      );
+    declaredEntityCodeUnits += replacement.length;
+    if (declaredEntityCodeUnits > policy.maxTotalEntityCodeUnits)
+      resourceLimit(
+        "maxTotalEntityCodeUnits",
+        policy.maxTotalEntityCodeUnits,
+        declaredEntityCodeUnits,
+      );
     if (/%[^;\s]+;/u.test(replacement)) {
       throw new SecurityPolicyError("XML parameter entities are disabled", {
         entityName: name,
@@ -239,6 +435,10 @@ const parseEntityDeclarations = (subset, limits) => {
       });
     }
     if (declarations.has(name)) {
+      if (policy.keepsFirstEntityDeclaration) {
+        offset = end;
+        continue;
+      }
       xmlError(`The XML entity ${name} is declared more than once`, {
         entityName: name,
       });
@@ -274,10 +474,21 @@ const replaceEntityReferences = (value, replace) =>
     isBuiltInReference(name) ? reference : replace(name),
   );
 
-const resolveDeclarations = (declarations, limits) => {
+const createEntityResolver = (
+  declarations,
+  limits,
+  policy,
+  externalEntities,
+  unparsedEntities,
+) => {
   const resolved = new Map();
 
   const resolve = (name, stack = []) => {
+    if (unparsedEntities.has(name))
+      xmlError(
+        "An unparsed XML entity cannot be referenced as parsed content",
+        { entityName: name },
+      );
     const cached = resolved.get(name);
     if (cached) {
       return cached;
@@ -292,9 +503,19 @@ const resolveDeclarations = (declarations, limits) => {
       });
     }
     let maximumNestedDepth = 0;
+    let expansionCount = 1;
+    let usesExternalEntity = externalEntities.has(name);
     const text = replaceEntityReferences(replacement, (nestedName) => {
       const nested = resolve(nestedName, [...stack, name]);
       maximumNestedDepth = Math.max(maximumNestedDepth, nested.depth);
+      expansionCount += nested.expansionCount;
+      usesExternalEntity ||= nested.usesExternalEntity;
+      if (expansionCount > policy.maxEntityExpansions)
+        resourceLimit(
+          "entityExpansionLimit",
+          policy.maxEntityExpansions,
+          expansionCount,
+        );
       return nested.text;
     });
     const depth = maximumNestedDepth + 1;
@@ -315,20 +536,35 @@ const resolveDeclarations = (declarations, limits) => {
         { entityName: name },
       );
     }
-    const result = { depth, text };
+    if (text.length > policy.maxGeneralEntityCodeUnits)
+      resourceLimit(
+        "maxGeneralEntityCodeUnits",
+        policy.maxGeneralEntityCodeUnits,
+        text.length,
+      );
+    const result = { depth, text, expansionCount, usesExternalEntity };
     resolved.set(name, result);
     return result;
   };
 
-  for (const name of declarations.keys()) {
-    resolve(name);
-  }
-  return resolved;
+  if (policy.resolvesUnusedEntities)
+    for (const name of declarations.keys()) {
+      resolve(name);
+    }
+  return resolve;
 };
 
-const expandDocumentEntities = (text, declarations, limits) => {
+const expandDocumentEntities = (
+  text,
+  resolveEntity,
+  limits,
+  policy,
+  counters,
+) => {
   const output = [];
   let outputBytes = 0;
+  let entityExpansions = counters.expansions;
+  let expandedEntityCodeUnits = counters.expandedEntityCodeUnits ?? 0;
   const append = (value) => {
     const nextBytes = outputBytes + byteLength(value);
     if (nextBytes > limits.maxExpandedXmlBytes) {
@@ -397,7 +633,7 @@ const expandDocumentEntities = (text, declarations, limits) => {
       offset = end + 1;
       continue;
     }
-    const entity = declarations.get(name);
+    const entity = resolveEntity(name);
     if (!entity) {
       xmlError(`The XML entity ${name} is not declared`, {
         entityName: name,
@@ -405,7 +641,25 @@ const expandDocumentEntities = (text, declarations, limits) => {
       });
     }
     let replacement = entity.text;
+    entityExpansions += entity.expansionCount;
+    expandedEntityCodeUnits += replacement.length;
+    if (entityExpansions > policy.maxEntityExpansions)
+      resourceLimit(
+        "entityExpansionLimit",
+        policy.maxEntityExpansions,
+        entityExpansions,
+      );
+    if (expandedEntityCodeUnits > policy.maxTotalEntityCodeUnits)
+      resourceLimit(
+        "maxTotalEntityCodeUnits",
+        policy.maxTotalEntityCodeUnits,
+        expandedEntityCodeUnits,
+      );
     if (insideTag) {
+      if (entity.usesExternalEntity)
+        xmlError("An external XML entity cannot occur in an attribute", {
+          entityName: name,
+        });
       if (replacement.includes("<")) {
         xmlError("An XML entity used in an attribute contains markup", {
           entityName: name,
@@ -423,25 +677,71 @@ const expandDocumentEntities = (text, declarations, limits) => {
     chunkStart = offset;
   }
   append(text.slice(chunkStart));
+  counters.expansions = entityExpansions;
+  counters.expandedEntityCodeUnits = expandedEntityCodeUnits;
   return output.join("");
 };
 
 export const prepareXml = (text, configuration = {}) => {
   const limits = { ...DEFAULT_LIMITS, ...configuration };
+  const policy = xmlProcessingPolicy(configuration);
+  const counters = {
+    expansions: 0,
+    declaredCodeUnits: 0,
+    attributeDeclarations: new Map(),
+    externalEntities: new Set(),
+    unparsedEntities: new Set(),
+  };
   const doctype = findDoctype(text);
   let declarations = new Map();
   let documentText = text;
   if (doctype) {
     const { head, subset } = internalSubsetBounds(doctype.text);
-    validateDoctypeHead(head);
-    declarations = resolveDeclarations(
-      parseEntityDeclarations(subset, limits),
+    validateDoctypeHead(head, policy);
+    declarations = parseEntityDeclarations(
+      expandParameterDeclarations(subset, policy, counters),
       limits,
+      policy,
+      counters,
     );
     const preservedLines = doctype.text.replace(/[^\r\n]/gu, "");
     documentText = `${text.slice(0, doctype.start)}${preservedLines}${text.slice(
       doctype.end,
     )}`;
   }
-  return expandDocumentEntities(documentText, declarations, limits);
+  const resolveEntity = createEntityResolver(
+    declarations,
+    limits,
+    policy,
+    counters.externalEntities,
+    counters.unparsedEntities,
+  );
+  // Default values enter the same expansion and resource accounting path as
+  // explicitly written attributes, before the XML parser resolves namespaces.
+  const prepared = applyDtdAttributes(
+    documentText,
+    counters.attributeDeclarations,
+    (value, quote) => {
+      const prefix = `<a value=${quote}`;
+      const suffix = `${quote}/>`;
+      const escaped = value.replaceAll(
+        quote,
+        quote === '"' ? "&quot;" : "&apos;",
+      );
+      return expandDocumentEntities(
+        prefix + escaped + suffix,
+        resolveEntity,
+        limits,
+        policy,
+        counters,
+      ).slice(prefix.length, -suffix.length);
+    },
+  );
+  return expandDocumentEntities(
+    prepared,
+    resolveEntity,
+    limits,
+    policy,
+    counters,
+  );
 };

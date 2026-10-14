@@ -117,8 +117,8 @@ export const createStructuralValidator = () => {
 export const validateStructuralGraph = (
   root,
   supportedKinds,
-  maxDepth = 512,
-  maxAnnotationDepth = 64,
+  maxDepth = Infinity,
+  maxAnnotationDepth = Infinity,
 ) => {
   if (!root || Array.isArray(root) || typeof root !== "object")
     throw new TypeError("Expected an OWL object");

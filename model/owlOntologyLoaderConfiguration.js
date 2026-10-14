@@ -1,5 +1,6 @@
 import { XML_ENTITY_DEFAULTS } from "../internal/parsing/xml/xmlEntityDefaults.js";
 import { validateFormatSelection } from "../internal/parsing/formatSelection.js";
+import { OntologyBehaviorContext } from "../internal/behavior/ontologyBehaviorContext.js";
 
 const PARSING_MODES = new Set(["strict", "compatible", "preserve"]);
 const IMPORT_HANDLING = new Set(["throw", "diagnostic"]);
@@ -96,7 +97,7 @@ const snapshotRdfTerm = (term) => {
   });
 };
 
-const validate = (values) => {
+const validate = (values, allowsUnboundedResources) => {
   if (!PARSING_MODES.has(values.parsingMode)) {
     throw new RangeError(`Unknown parsingMode: ${values.parsingMode}`);
   }
@@ -117,6 +118,7 @@ const validate = (values) => {
     throw new TypeError("selectGraph requires selectedGraph");
   }
   for (const name of NUMERIC_LIMITS) {
+    if (allowsUnboundedResources && values[name] === Infinity) continue;
     if (!Number.isSafeInteger(values[name]) || values[name] < 0) {
       throw new RangeError(`${name} must be a non-negative safe integer`);
     }
@@ -137,24 +139,58 @@ const validate = (values) => {
   }
 };
 
+const requireJavaInt = (value, name) => {
+  if (!Number.isInteger(value) || value < -2147483648 || value > 2147483647)
+    throw new RangeError(`${name} must be a Java int`);
+};
+const requireBoolean = (value, name) => {
+  if (typeof value !== "boolean")
+    throw new TypeError(`${name} must be a boolean`);
+};
+
 export class OWLOntologyLoaderConfiguration {
+  #behaviorContext;
+  #connectionTimeoutMilliseconds = 20000;
+  #configuredConnectionAttempts = 5;
+  #shouldFollowRedirects = true;
+  #entityExpansionLimit = "100000000";
+  #authorizationHeaderValue = "";
+  #acceptsHttpCompression = true;
+
   constructor(values = {}) {
     if (!values || typeof values !== "object" || Array.isArray(values)) {
       throw new TypeError("loader configuration values must be an object");
     }
-    for (const name of Object.keys(values)) {
+    const { behaviorProfileId, ...settings } = values;
+    this.#behaviorContext = new OntologyBehaviorContext(behaviorProfileId);
+    for (const name of Object.keys(settings)) {
       if (!ALLOWED_SETTINGS.has(name)) {
         throw new TypeError(`Unknown loader configuration setting: ${name}`);
       }
     }
-    const normalizedValues = { ...values };
+    const normalizedValues = { ...settings };
     if (normalizedValues.selectedGraph !== undefined) {
       normalizedValues.selectedGraph = snapshotRdfTerm(
         normalizedValues.selectedGraph,
       );
     }
-    const merged = { ...DEFAULTS, ...normalizedValues };
-    validate(merged);
+    const usesJavaProviderDefaults =
+      this.#behaviorContext.behaviorProfileDefinition.computationResourcePolicy
+        .usesJavaProviderDefaults;
+    const profileDefaults = usesJavaProviderDefaults
+      ? {
+          ...DEFAULTS,
+          ...Object.fromEntries(NUMERIC_LIMITS.map((name) => [name, Infinity])),
+          // Observed provider boundaries are distinct from OWLAPI-wide caps.
+          maxXmlNestingDepth: 100,
+          parsingMode: "compatible",
+          rdfDatasetGraphPolicy: "merge",
+          remoteImports: true,
+          remoteJsonLdContexts: true,
+        }
+      : DEFAULTS;
+    const merged = { ...profileDefaults, ...normalizedValues };
+    validate(merged, usesJavaProviderDefaults);
     Object.assign(this, merged);
     Object.freeze(this);
   }
@@ -164,7 +200,116 @@ export class OWLOntologyLoaderConfiguration {
   }
 
   with(changes) {
-    return new OWLOntologyLoaderConfiguration({ ...this, ...changes });
+    if (Object.hasOwn(changes ?? {}, "behaviorProfileId"))
+      throw new TypeError(
+        "A loader configuration cannot change its behavior profile",
+      );
+    const copy = new OWLOntologyLoaderConfiguration({
+      ...this,
+      ...changes,
+      behaviorProfileId:
+        this.#behaviorContext.behaviorProfileDefinition.behaviorProfileId,
+    });
+    copy.#connectionTimeoutMilliseconds = this.#connectionTimeoutMilliseconds;
+    copy.#configuredConnectionAttempts = this.#configuredConnectionAttempts;
+    copy.#shouldFollowRedirects = this.#shouldFollowRedirects;
+    copy.#entityExpansionLimit = this.#entityExpansionLimit;
+    copy.#authorizationHeaderValue = this.#authorizationHeaderValue;
+    copy.#acceptsHttpCompression = this.#acceptsHttpCompression;
+    return copy;
+  }
+
+  getBehaviorProfileId() {
+    return this.#behaviorContext.behaviorProfileDefinition.behaviorProfileId;
+  }
+  getConnectionTimeout() {
+    return this.#connectionTimeoutMilliseconds;
+  }
+  getRetriesToAttempt() {
+    return this.#configuredConnectionAttempts;
+  }
+  isFollowRedirects() {
+    return this.#shouldFollowRedirects;
+  }
+  getEntityExpansionLimit() {
+    return this.#entityExpansionLimit;
+  }
+  /** Java treats a null override as the default empty authorization value. */
+  getAuthorizationValue() {
+    return this.#authorizationHeaderValue ?? "";
+  }
+  isAcceptingHTTPCompression() {
+    return this.#acceptsHttpCompression;
+  }
+  setAuthorizationValue(value) {
+    if (value !== null && typeof value !== "string")
+      throw new TypeError(
+        "authorization header value must be a string or null",
+      );
+    if (this.getAuthorizationValue() === value) return this;
+    const copy = this.with({});
+    copy.#authorizationHeaderValue = value;
+    return copy;
+  }
+  setAcceptingHTTPCompression(value) {
+    requireBoolean(value, "accept HTTP compression");
+    if (this.#acceptsHttpCompression === value) return this;
+    const copy = this.with({});
+    copy.#acceptsHttpCompression = value;
+    return copy;
+  }
+  isStrict() {
+    return this.parsingMode === "strict";
+  }
+  isLoadAnnotationAxioms() {
+    return this.loadAnnotationAxioms;
+  }
+
+  setConnectionTimeout(value) {
+    requireJavaInt(value, "connection timeout");
+    if (value === this.#connectionTimeoutMilliseconds) return this;
+    const copy = this.with({});
+    copy.#connectionTimeoutMilliseconds = value;
+    return copy;
+  }
+
+  setRetriesToAttempt(value) {
+    requireJavaInt(value, "connection attempts");
+    if (value === this.#configuredConnectionAttempts) return this;
+    const copy = this.with({});
+    copy.#configuredConnectionAttempts = value;
+    return copy;
+  }
+
+  setFollowRedirects(value) {
+    requireBoolean(value, "follow redirects");
+    if (value === this.#shouldFollowRedirects) return this;
+    const copy = this.with({});
+    copy.#shouldFollowRedirects = value;
+    return copy;
+  }
+
+  setEntityExpansionLimit(value) {
+    if (typeof value !== "string")
+      throw new TypeError("entity expansion limit must be a string");
+    if (value === this.#entityExpansionLimit) return this;
+    const copy = this.with({});
+    copy.#entityExpansionLimit = value;
+    return copy;
+  }
+
+  setStrict(value) {
+    requireBoolean(value, "strict");
+    return this.isStrict() === value
+      ? this
+      : this.withParsingMode(value ? "strict" : "compatible");
+  }
+
+  setLoadAnnotationAxioms(value) {
+    requireBoolean(value, "load annotation axioms");
+    return this.loadAnnotationAxioms === value
+      ? this
+      : this.with({ loadAnnotationAxioms: value });
   }
 
   withParsingMode(parsingMode) {

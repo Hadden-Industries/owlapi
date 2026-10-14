@@ -4,7 +4,11 @@ import {
   OWLObjectKind as K,
 } from "../model/kinds.js";
 import { OWLDataFactory } from "../model/owlDataFactory.js";
-import { readOntologySnapshot } from "../model/owlOntology.js";
+import {
+  readOntologySnapshot,
+  readOntologyBehaviorDefinition,
+} from "../model/owlOntology.js";
+import { deferredQuery } from "../internal/model/deferredQuery.js";
 import {
   isCanonicalStructuralObject,
   StructuralSet,
@@ -27,18 +31,25 @@ const readOntologies = (input) => {
   }
   const result = [...input];
   for (const ontology of result) readOntologySnapshot(ontology);
+  const behaviorDefinitions = new Set(
+    result.map(readOntologyBehaviorDefinition).filter(Boolean),
+  );
+  if (behaviorDefinitions.size > 1)
+    throw new TypeError("Search ontologies must use the same behavior profile");
   return result;
 };
 
 const classValues = (entity, input, method, field, excludeSelf = true) => {
   requireKind(entity, [K.CLASS]);
-  return readOntologies(input).flatMap((ontology) =>
-    [...ontology[method](entity)].flatMap((axiom) => {
-      const value = axiom[field];
-      return Array.isArray(value)
-        ? value.filter((member) => !excludeSelf || !member.equals(entity))
-        : [value];
-    }),
+  return deferredQuery(() =>
+    readOntologies(input).flatMap((ontology) =>
+      [...ontology[method](entity)].flatMap((axiom) => {
+        const value = axiom[field];
+        return Array.isArray(value)
+          ? value.filter((member) => !excludeSelf || !member.equals(entity))
+          : [value];
+      }),
+    ),
   );
 };
 
@@ -56,24 +67,26 @@ const annotationValues = (
   const subject = annotationSubject(entity);
   if (property !== undefined && property !== null)
     requireKind(property, [K.ANNOTATION_PROPERTY]);
-  const ontologies = readOntologies(input);
   const factory = new OWLDataFactory();
-  return ontologies.flatMap((ontology) => [
-    ...new StructuralSet(
-      [...ontology.getAnnotationAssertionAxioms(subject)].flatMap((axiom) => {
-        const annotations = [
-          factory.getOWLAnnotation(axiom.property, axiom.value),
-        ];
-        if (includeAssertionAnnotations) annotations.push(...axiom.annotations);
-        return annotations.filter(
-          (annotation) =>
-            property === undefined ||
-            property === null ||
-            annotation.property.equals(property),
-        );
-      }),
-    ),
-  ]);
+  return deferredQuery(() =>
+    readOntologies(input).flatMap((ontology) => [
+      ...new StructuralSet(
+        [...ontology.getAnnotationAssertionAxioms(subject)].flatMap((axiom) => {
+          const annotations = [
+            factory.getOWLAnnotation(axiom.property, axiom.value),
+          ];
+          if (includeAssertionAnnotations)
+            annotations.push(...axiom.annotations);
+          return annotations.filter(
+            (annotation) =>
+              property === undefined ||
+              property === null ||
+              annotation.property.equals(property),
+          );
+        }),
+      ),
+    ]),
+  );
 };
 
 const propertyFamily = (property) => {
@@ -100,10 +113,12 @@ const propertyValues = (property, input, relation) => {
       : "subProperty"
     : "property";
   const output = hierarchy ? (sub ? "subProperty" : "superProperty") : relation;
-  return readOntologies(input).flatMap((ontology) =>
-    [...ontology.getAxiomsByType(kind)]
-      .filter((axiom) => axiom[match].equals(property))
-      .map((axiom) => axiom[output]),
+  return deferredQuery(() =>
+    readOntologies(input).flatMap((ontology) =>
+      [...ontology.getAxiomsByType(kind)]
+        .filter((axiom) => axiom[match].equals(property))
+        .map((axiom) => axiom[output]),
+    ),
   );
 };
 
@@ -121,13 +136,16 @@ const characteristic = (property, input, name, allowData = false) => {
   );
 };
 
-/** Selected Java static queries return eager arrays with stream multiplicity. */
+/** Selected Java stream queries are lazy, live, single-consumption ES iterables.
+ * Boolean predicates execute immediately. Repeated ontologies retain multiplicity.
+ */
 export class EntitySearcher {
   static getAnnotationAssertionAxioms(entity, ontology) {
     readOntologySnapshot(ontology);
-    return [
-      ...ontology.getAnnotationAssertionAxioms(annotationSubject(entity)),
-    ];
+    const subject = annotationSubject(entity);
+    return deferredQuery(() => [
+      ...ontology.getAnnotationAssertionAxioms(subject),
+    ]);
   }
 
   /** Include assertion annotations as separate annotation results, as Java does. */
@@ -199,10 +217,12 @@ export class EntitySearcher {
   /** Return the other endpoint of each directly asserted inverse axiom. */
   static getInverses(property, ontologies) {
     requireKind(property, OBJECT_PROPERTY_EXPRESSION_KINDS);
-    return readOntologies(ontologies).flatMap((ontology) =>
-      [...ontology.getInverseObjectPropertyAxioms(property)].map(
-        (axiom) =>
-          axiom.properties[axiom.properties[0].equals(property) ? 1 : 0],
+    return deferredQuery(() =>
+      readOntologies(ontologies).flatMap((ontology) =>
+        [...ontology.getInverseObjectPropertyAxioms(property)].map(
+          (axiom) =>
+            axiom.properties[axiom.properties[0].equals(property) ? 1 : 0],
+        ),
       ),
     );
   }

@@ -14,7 +14,6 @@ import {
   ENTITY_KINDS,
   OWLObjectKind as K,
 } from "../../../model/kinds.js";
-import { readDocumentFormatParameters } from "../../../model/owlDocumentFormat.js";
 import { structuralFields } from "../../model/structuralFields.js";
 import {
   minimumTwoSetFields,
@@ -25,10 +24,19 @@ import {
   validateStructuralShape,
 } from "../../model/structuralValidation.js";
 import { OWLXML_GRAMMAR } from "../../parsing/owlxml/grammar.js";
+import { defaultDocumentStoragePolicy } from "../../behavior/ontologyBehaviorContext.js";
+import {
+  readStorageFormatParameters,
+  readForceStringDatatype,
+} from "../storageFormatParameters.js";
+import {
+  initializeJavaOwlXmlDocument,
+  serializeJavaOwlXmlDocument,
+} from "./owlXmlPresentation.js";
+import { retainPartialStorageOutput } from "../storageFailureOutput.js";
+import { visitStructuralValues } from "../../model/sourceEvidence.js";
+import { XSD_NAMESPACE } from "../../rdfjs/vocabulary.js";
 
-const MAX_OUTPUT_BYTES = 33554432;
-const MAX_NODE_DEPTH = 512;
-const MAX_ANNOTATION_DEPTH = 64;
 const tags = new Set([
   ...OWLXML_GRAMMAR.axioms,
   ...OWLXML_GRAMMAR.classExpressions,
@@ -53,11 +61,19 @@ const fail = (message) => {
  */
 export const owlXmlStorer = Object.freeze({
   formatKey: OWLDocumentFormats.OWL_XML.key,
-  render(snapshot, format) {
-    if (Object.keys(readDocumentFormatParameters(format)).length)
-      throw new OWLOntologyStorageError(
-        "OWL/XML storage does not support output parameters",
-      );
+  render(
+    snapshot,
+    format,
+    writerContext,
+    documentStoragePolicy = defaultDocumentStoragePolicy,
+  ) {
+    const parameters = readStorageFormatParameters(
+      format,
+      documentStoragePolicy,
+    );
+    const usesJavaPresentation =
+      documentStoragePolicy.owlXmlPresentation === "java-writer";
+    let forceXsdString = !usesJavaPresentation;
     const document = new DOMImplementation().createDocument(
       OWL,
       "Ontology",
@@ -66,6 +82,8 @@ export const owlXmlStorer = Object.freeze({
     const serializer = new XMLSerializer();
     const validate = createStructuralValidator();
     const root = document.documentElement;
+    if (usesJavaPresentation)
+      initializeJavaOwlXmlDocument(document, snapshot.ontologyID);
     const labels = new Map();
     let constructionBytes = 0;
     const encoder = new TextEncoder();
@@ -73,14 +91,17 @@ export const owlXmlStorer = Object.freeze({
       if (typeof value !== "string" || !value.isWellFormed())
         fail("OWL/XML requires well-formed Unicode");
       // XML 1.0 explicitly excludes these controls; this is validation, not matching document content.
-      // eslint-disable-next-line no-control-regex
-      if (/[\u0000-\u0008\u000B\u000C\u000E-\u001F\uFFFE\uFFFF]/u.test(value))
+      if (
+        documentStoragePolicy.requiresXml10Characters &&
+        // eslint-disable-next-line no-control-regex
+        /[\u0000-\u0008\u000B\u000C\u000E-\u001F\uFFFE\uFFFF]/u.test(value)
+      )
         fail("OWL/XML requires XML 1.0-compatible characters");
       constructionBytes += encoder.encode(value).byteLength;
-      if (constructionBytes > MAX_OUTPUT_BYTES)
+      if (constructionBytes > documentStoragePolicy.maxOutputBytes)
         throw new ResourceLimitError("OWL/XML output byte limit exceeded", {
           resource: "outputBytes",
-          limit: MAX_OUTPUT_BYTES,
+          limit: documentStoragePolicy.maxOutputBytes,
         });
       try {
         serializer.serializeToString(document.createTextNode(value));
@@ -124,9 +145,40 @@ export const owlXmlStorer = Object.freeze({
       element.appendChild(document.createTextNode(iri(declaration.iri)));
       root.appendChild(element);
     }
+    const declarationAxioms = sorted(
+      snapshot.directAxioms.filter(
+        (axiom) => axiom.kind === K.DECLARATION_AXIOM,
+      ),
+    );
+    const declared = new Set(
+      declarationAxioms.map((axiom) => axiom.entity.structuralKey()),
+    );
+    let hasUndeclaredEntity = false;
+    if (usesJavaPresentation)
+      visitStructuralValues(
+        [snapshot.directOntologyAnnotations, snapshot.directAxioms],
+        (value) => {
+          if (
+            ENTITY_KINDS.includes(value.kind) &&
+            !declared.has(value.structuralKey())
+          )
+            hasUndeclaredEntity = true;
+        },
+      );
+    const configurationBoundary = {};
     const values = [
       ...sorted(snapshot.directOntologyAnnotations),
-      ...sorted(snapshot.directAxioms),
+      ...(usesJavaPresentation
+        ? [
+            ...declarationAxioms,
+            configurationBoundary,
+            ...sorted(
+              snapshot.directAxioms.filter(
+                (axiom) => axiom.kind !== K.DECLARATION_AXIOM,
+              ),
+            ),
+          ]
+        : sorted(snapshot.directAxioms)),
     ];
     const pending = values.reverse().map((value) => ({
       value,
@@ -138,22 +190,40 @@ export const owlXmlStorer = Object.freeze({
     const active = new Set();
     while (pending.length) {
       const { value, parent, depth, annotationDepth, exiting } = pending.pop();
+      if (value === configurationBoundary) {
+        if (hasUndeclaredEntity) {
+          try {
+            forceXsdString = readForceStringDatatype(parameters);
+          } catch (cause) {
+            throw retainPartialStorageOutput(
+              new OWLOntologyStorageError(
+                "OWL/XML string datatype configuration is invalid",
+                { cause },
+              ),
+              serializeJavaOwlXmlDocument(document, serializer, writerContext, {
+                completed: false,
+              }),
+            );
+          }
+        }
+        continue;
+      }
       if (exiting) {
         validate(value);
         active.delete(value);
         continue;
       }
-      if (depth > MAX_NODE_DEPTH)
+      if (depth > documentStoragePolicy.maxStructureDepth)
         throw new ResourceLimitError("OWL/XML output depth limit exceeded", {
           resource: "outputDepth",
-          limit: MAX_NODE_DEPTH,
+          limit: documentStoragePolicy.maxStructureDepth,
         });
-      if (annotationDepth > MAX_ANNOTATION_DEPTH)
+      if (annotationDepth > documentStoragePolicy.maxAnnotationDepth)
         throw new ResourceLimitError(
           "OWL/XML annotation depth limit exceeded",
           {
             resource: "annotationDepth",
-            limit: MAX_ANNOTATION_DEPTH,
+            limit: documentStoragePolicy.maxAnnotationDepth,
           },
         );
       if (active.has(value)) fail("Cyclic OWL/XML structural input");
@@ -190,7 +260,11 @@ export const owlXmlStorer = Object.freeze({
         validateStructuralShape(value.datatype);
         validate(value.datatype);
         if (value.language) attribute(element, "xml:lang", value.language, XML);
-        else attribute(element, "datatypeIRI", iri(value.datatype.iri));
+        else if (
+          forceXsdString ||
+          value.datatype.iri.value !== `${XSD_NAMESPACE}string`
+        )
+          attribute(element, "datatypeIRI", iri(value.datatype.iri));
         element.appendChild(document.createTextNode(admit(value.lexicalForm)));
         continue;
       }
@@ -237,11 +311,19 @@ export const owlXmlStorer = Object.freeze({
           exiting: false,
         });
     }
-    const text = `<?xml version="1.0" encoding="UTF-8"?>\n${serializer.serializeToString(document).replaceAll("\r", "&#13;").replaceAll("\n", "&#10;").replaceAll("\t", "&#9;")}\n`;
-    if (encoder.encode(text).byteLength > MAX_OUTPUT_BYTES)
+    // Escape value whitespace before adding layout; parsed literal content must
+    // survive XML end-of-line normalization in either presentation.
+    const valueSerializer = {
+      serializeToString: (node) =>
+        serializer.serializeToString(node).replaceAll("\r", "&#13;"),
+    };
+    const text = usesJavaPresentation
+      ? serializeJavaOwlXmlDocument(document, valueSerializer, writerContext)
+      : `<?xml version="1.0" encoding="UTF-8"?>\n${serializer.serializeToString(document).replaceAll("\r", "&#13;").replaceAll("\n", "&#10;").replaceAll("\t", "&#9;")}\n`;
+    if (encoder.encode(text).byteLength > documentStoragePolicy.maxOutputBytes)
       throw new ResourceLimitError("OWL/XML output byte limit exceeded", {
         resource: "outputBytes",
-        limit: MAX_OUTPUT_BYTES,
+        limit: documentStoragePolicy.maxOutputBytes,
       });
     return text;
   },

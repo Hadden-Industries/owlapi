@@ -784,13 +784,37 @@ describe("owlapi governance artifacts", () => {
             ],
           };
         }
-        // Task 7 changes only these manager projections. Their exact contents
-        // are checked below. The owner-approved first-release retarget changes
-        // only the four provisional release identities named above.
+        // Preserve historical identity and release fields. The accepted behavior
+        // plan changes these specific contract projections; paired public API
+        // tests and the current ledger govern their semantics.
+        const behaviorFields =
+          {
+            "apibinding.OWLManager": ["capabilityIds", "progress"],
+            "model.OWLDataFactory": [
+              "supportedMembers",
+              "semanticQualifications",
+            ],
+            "model.OWLOntologyLoaderConfiguration": [
+              "supportedMembers",
+              "semanticQualifications",
+            ],
+            "util.OWLOntologyImportsClosureSetProvider": [
+              "summary",
+              "semanticQualifications",
+            ],
+            "util.OWLOntologyMerger": [
+              "semanticQualifications",
+              "verification",
+            ],
+          }[prior.id] ?? [];
+        const historicalProjection = {
+          ...current,
+          ...Object.fromEntries(behaviorFields.map((key) => [key, prior[key]])),
+        };
         expect(
           prior.id === "model.OWLOntologyManager"
             ? {
-                ...current,
+                ...historicalProjection,
                 supportedMembers: prior.supportedMembers,
                 omittedMembers: prior.omittedMembers,
                 semanticQualifications: prior.semanticQualifications,
@@ -800,8 +824,11 @@ describe("owlapi governance artifacts", () => {
             : ["model.OWLOntology", "model.OWLStructuralObject"].includes(
                   prior.id,
                 )
-              ? { ...current, supportedMembers: prior.supportedMembers }
-              : current,
+              ? {
+                  ...historicalProjection,
+                  supportedMembers: prior.supportedMembers,
+                }
+              : historicalProjection,
         ).toEqual(expected);
       }
       expect(
@@ -825,6 +852,8 @@ describe("owlapi governance artifacts", () => {
           "model.RemoveOntologyAnnotation",
           "model/parameters.Imports",
           "model/parameters.AxiomAnnotations",
+          "model/parameters.ChangeApplied",
+          "io/node.NodeDocumentLoader",
           "search.EntitySearcher",
           "util.OWLObjectDuplicator",
           "util.OWLEntityRenamer",
@@ -842,9 +871,12 @@ describe("owlapi governance artifacts", () => {
       expect(
         registry.namespaces.map(({ npmSpecifier }) => npmSpecifier),
       ).toEqual([
-        ...baseline.namespaces.map(
-          ({ npmSpecifier }) => `@hadden-industries/${npmSpecifier}`,
-        ),
+        ...baseline.namespaces.flatMap(({ npmSpecifier }) => [
+          `@hadden-industries/${npmSpecifier}`,
+          ...(npmSpecifier === "owlapi/formats"
+            ? ["@hadden-industries/owlapi/io/node"]
+            : []),
+        ]),
         "@hadden-industries/owlapi/profiles",
         "@hadden-industries/owlapi/model/parameters",
         "@hadden-industries/owlapi/search",
@@ -993,7 +1025,7 @@ describe("owlapi governance artifacts", () => {
     ).toBe(true);
   });
 
-  it("records the exact provisional Task 5 and Task 7 manager surface", () => {
+  it("records the current manager surface with profile-specific behavior", () => {
     const registry = readJson("./docs/compatibility/java-api-surface.json");
     const managerBinding = registry.bindings.find(
       ({ id }) => id === "model.OWLOntologyManager",
@@ -1020,10 +1052,12 @@ describe("owlapi governance artifacts", () => {
       "prototype.applyChange",
       "prototype.applyChanges",
       "prototype.createOntology",
+      "prototype.getBehaviorProfileId",
       "prototype.getImportsClosure",
       "prototype.getOWLDataFactory",
       "prototype.getOntology",
       "prototype.getOntologyFormat",
+      "prototype.getOntologyLoaderConfiguration",
       "prototype.getOntologyWriterConfiguration",
       "prototype.importsClosure",
       "prototype.loadOntologyFromOntologyDocument",
@@ -1031,13 +1065,11 @@ describe("owlapi governance artifacts", () => {
       "prototype.removeAxiom",
       "prototype.removeAxioms",
       "prototype.saveOntology",
+      "prototype.setOntologyLoaderConfiguration",
       "prototype.setOntologyWriterConfiguration",
     ]);
     expect(managerBinding.omittedMembers).toEqual([
       "Change and progress listeners",
-      "AddAxiom/RemoveAxiom change records and axiom removal operations",
-      "AddImport/RemoveImport changes",
-      "RemoveOntologyAnnotation changes",
       "Storer and ontology-factory registration",
       "IRI, stream, implicit-format, and default-document saveOntology overloads",
     ]);
@@ -1045,11 +1077,11 @@ describe("owlapi governance artifacts", () => {
       "Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.",
       "getOntologyFormat returns this manager's loaded OWLDocumentFormat or undefined for a programmatically created ontology, and rejects foreign or removed ontologies. RDF metadata belongs to the original completed parse and remains historical after edits.",
       "importsClosure returns a frozen deterministic root-first array snapshot instead of Java's Stream<OWLOntology>; getImportsClosure returns a fresh defensive Set with the same order and membership.",
-      "Both closure methods reject an ontology not owned by this manager with OWLOntologyStateError instead of returning Java's empty closure.",
-      "addAxiom/addAxioms accept one JavaScript iterable form and return boolean instead of Java's ChangeApplied; each complete call is validated and committed atomically.",
-      "applyChange/applyChanges accept only SetOntologyID and AddOntologyAnnotation records, materialize one JavaScript iterable form, atomically publish the complete list, and return boolean instead of Java's ChangeApplied or ChangeDetails.",
+      "Both closure methods reject unknown ontology identities at the observed manager-query boundary.",
+      "normative-v1 mutation operations validate and commit a complete batch atomically and return boolean. java-owlapi-5.5.1 applies sequential changes, retains native partial effects after failure, permits same-profile foreign targets where Java does, and returns ChangeApplied. Behavior-profile mismatches reject before publication.",
+      "applyChange/applyChanges accept the exported axiom, import, ontology annotation and ontology ID records. Collection/varargs/stream overloads retain one JavaScript iterable adaptation. Native net-zero sequences can still return ChangeApplied.SUCCESSFULLY.",
       "LIFECYCLE-ASYNC-SAVE-OVERLOAD: saveOntology(ontology, format, target) returns Promise<void>, validates ownership and genuine format/target identities, and selects only the exact format key.",
-      "LIFECYCLE-LOSSLESS-STORAGE: saveOntology renders one committed snapshot and atomically replaces target text only after success; unexpected renderer failures are wrapped with cause and typed storage errors retain identity.",
+      "normative-v1 saves one committed snapshot and atomically replaces target text after success. Java saves append to a reused StringDocumentTarget and retain native partial output at observed failure points. Unexpected renderer failures retain a cause and typed storage errors retain identity.",
       "getOntologyWriterConfiguration/setOntologyWriterConfiguration attach genuine immutable values to this manager; saveOntology captures native private settings before its first await, independently of later manager changes.",
     ]);
     expect(managerBinding.verification).toEqual([
@@ -1189,7 +1221,7 @@ describe("owlapi governance artifacts", () => {
       semanticQualifications: [
         "Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.",
         "ontologies returns a fresh defensive JavaScript Set instead of Java's Stream<OWLOntology>.",
-        "The imports-closure membership is captured at construction instead of remaining a live Java view.",
+        "Each ontologies() call reads the manager's current closure and returns that call's defensive snapshot. Construction does not query the manager; unknown-ontology failure occurs at query time.",
       ],
       verification: [
         "util/owlOntologyImportsClosureSetProvider.test.js",
@@ -1215,12 +1247,13 @@ describe("owlapi governance artifacts", () => {
       supportedMembers: ["prototype.createMergedOntology"],
       semanticQualifications: [
         "Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.",
-        "createMergedOntology builds a structural set union from each supplied ontology's direct axioms before creating the target, then mutates the target only through public manager methods.",
+        "createMergedOntology copies direct axioms into a new destination-owned ontology without transferring source ownership. The destination profile governs explicit mixed-profile copies. normative-v1 validates the complete snapshot before target creation; Java creates the target before querying the provider and retains copied axioms after later provider failure. A Java target identity collision prevents the provider call.",
         "The optional boolean constructor form selects Java-compatible logical-axiom filtering; the OWLAxiomFilter constructor remains unavailable.",
         "An omitted ontologyIRI creates an anonymous target; a supplied value must be an IRI.",
       ],
       verification: [
         "util/owlOntologyMerger.test.js",
+        "util/behaviorMerger.test.js",
         "test/package-boundary.test.mjs",
         "test/installed-package-smoke.mjs",
         "test/consumers/browser/browser-consumers.playwright.js",
@@ -1534,6 +1567,7 @@ describe("owlapi governance artifacts", () => {
     for (const record of records) {
       expect([
         1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 21, 22, 23, 24,
+        25,
       ]).toContain(record.phase);
       expect(manifest.provenanceCategories).toHaveProperty(
         record.provenanceCategory,
@@ -1541,10 +1575,11 @@ describe("owlapi governance artifacts", () => {
       expect(record.normativePublicSources.length).toBeGreaterThan(0);
       expect(record.compatibilityReferences.length).toBeGreaterThan(0);
       expect(record.referenceOwlapiRevision).toBe(
-        record.id === "RDFXML-PREFIX-FORMAT" || record.id.startsWith("RC2-")
-          ? readJson("./docs/compatibility/java-api-surface.json").javaReference
-              .revision
-          : manifest.referenceOwlapi.revision,
+        record.phase === 25
+          ? "f760b3a4c107c6d5f90f856e5680c39b18af646f"
+          : record.id === "RDFXML-PREFIX-FORMAT" || record.id.startsWith("RC2-")
+            ? "b61ebe2da83daceebb3e7ba7afbd2582c9240c33"
+            : manifest.referenceOwlapi.revision,
       );
       expect(record.focusedEvidence.length).toBeGreaterThan(0);
       expect(record.thirdPartyDependencies).toBeInstanceOf(Array);
@@ -1827,7 +1862,7 @@ describe("owlapi governance artifacts", () => {
         dependency.version,
       );
       expect(dependency.adapterBoundary).toMatch(
-        /^(?:internal\/(?:mapping|parsing|rdfjs|storage)|model)\//,
+        /^(?:internal\/(?:mapping|parsing|rdfjs|storage)|model|io\/node)\//,
       );
       expect(dependency.declaredLicenseExpression).toBeTruthy();
       expect(dependency.networkBehavior).toBeTruthy();
@@ -1923,7 +1958,9 @@ describe("owlapi governance artifacts", () => {
     expect(validate.errors).toBeNull();
     expect(registry.packageVersion).toBe(packageJson.version);
     expect(registry.javaReference.revision).toBe(
-      readJson("./util/owlapi-reference/pinned-version.json").sourceRevision,
+      readJson(
+        "./docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+      ).upstream.commit.commitObjectId,
     );
 
     const capabilityById = new Map(
@@ -1993,11 +2030,13 @@ describe("owlapi governance artifacts", () => {
           (id) => capabilityById.get(id).status === binding.capabilityStatus,
         ),
       ).toBe(true);
-      expect(
-        binding.capabilityIds.every(
-          (id) => capabilityById.get(id).progress === binding.progress,
-        ),
-      ).toBe(true);
+      const capabilityProgress = binding.capabilityIds.map(
+        (id) => capabilityById.get(id).progress,
+      );
+      const requiredProgress = ["NOT_STARTED", "IN_PROGRESS", "COMPLETE"].find(
+        (progress) => capabilityProgress.includes(progress),
+      );
+      expect(binding.progress).toBe(requiredProgress);
       expect(
         existsSync(new URL(`./${binding.sourceModule}`, import.meta.url)),
       ).toBe(true);
@@ -2087,12 +2126,21 @@ Java OWLAPI names and package identities appear in compatibility documentation
 generated from the pinned Java OWLAPI reference. owlapi is independently
 maintained and is not affiliated with or endorsed by the Java OWLAPI project.
 
-For Java OWLAPI public API identity and declaration metadata, this package elects
+For Java OWLAPI public API identity, declaration metadata and released datatype
+constant observations, this package elects
 the Apache License 2.0 alternative offered by the pinned Java OWLAPI source.
 See LICENSES/Apache-2.0.txt for the complete licence text.
 
 WebVOWL is a separate downstream distribution and maintains its own deployed-
 bundle licence and notice review.
+
+The private JSON-LD provider bundle reuses jsonld 9.0.0 and its bundled
+dependencies, with a generated Rolldown runtime. The build manifest identifies
+every included component and version. Their licence terms and notices are under
+internal/parsing/jsonld/provider/licenses/. The jsonld source change exposes
+the context-count control; the versioned build manifest records its complete
+two-file patch, original input digests, bundled components and output identity.
+Neither this NOTICE nor the package licence replaces those upstream terms.
 `);
 
     for (const requiredText of [
@@ -2218,6 +2266,7 @@ bundle licence and notice review.
       "./search": searchExport,
       "./manchestersyntax/renderer": rendererExport,
       "./modularity/locality": localityExport,
+      "./io/node": nodeTransportExport,
       ...retainedCandidateExports
     } = manifest.exports;
 
@@ -2232,6 +2281,7 @@ bundle licence and notice review.
     });
     expect(provisionalUtilExport).toBe("./util/index.js");
     expect(canonicalProfilesExport).toBe("./profiles/index.js");
+    expect(nodeTransportExport).toBe("./io/node/index.js");
     expect([
       parametersExport,
       searchExport,
@@ -2532,8 +2582,16 @@ bundle licence and notice review.
       "gnu-agpl-3.0-only-license-text",
       "hisew-checkout-environment-isolation",
       "java-owlapi-api-identity-metadata",
+      "java-owlapi-datatype-constants",
       "java-owlapi-reference-fixtures",
       "java-reference-publication-source-notice-materials",
+      "jsonld-provider-canonicalize",
+      "jsonld-provider-jsonld",
+      "jsonld-provider-lru-cache",
+      "jsonld-provider-rdf-canonize",
+      "jsonld-provider-rolldown",
+      "jsonld-provider-setimmediate",
+      "jsonld-provider-yallist",
       "ruff-development-tool",
       "scancode-development-source-build",
       "shared-markdown-quality-development-tool",
@@ -2727,7 +2785,7 @@ bundle licence and notice review.
     expect(governance.productionAudit).toMatchObject({
       command: "npm audit --omit=dev --json",
       performedOn: governance.recordedOn,
-      productionPackageCount: 39,
+      productionPackageCount: 47,
       vulnerabilityCounts: {
         info: 0,
         low: 0,
@@ -2831,6 +2889,7 @@ bundle licence and notice review.
       "@parcel/watcher@2.6.0": false,
       "fsevents@2.3.3": false,
       "libxmljs2@0.37.0": false,
+      "lzma-native@8.0.6": false,
       "unrs-resolver@1.12.2": false,
     });
     expect(
@@ -2885,13 +2944,14 @@ bundle licence and notice review.
     const inventory = readJson("./docs/provenance/third-party-material.json");
 
     for (const path of packedPaths) {
+      const matches = (candidate) =>
+        candidate.endsWith("/")
+          ? path.startsWith(candidate)
+          : path === candidate;
       const classificationIds = rights.materialClasses
-        .filter(({ paths }) =>
-          paths.some((candidate) =>
-            candidate.endsWith("/")
-              ? path.startsWith(candidate)
-              : path === candidate,
-          ),
+        .filter(
+          ({ paths, excludedPaths = [] }) =>
+            paths.some(matches) && !excludedPaths.some(matches),
         )
         .map(({ id }) => id);
       expect({ classificationIds, path }).toEqual({

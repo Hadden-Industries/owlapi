@@ -1,0 +1,344 @@
+{
+  "schemaVersion": 1,
+  "upstream": {
+    "name": "jsonld",
+    "version": "9.0.0",
+    "license": "BSD-3-Clause"
+  },
+  "builder": {
+    "path": "scripts/build-jsonld-provider.mjs",
+    "sha256": "3aef6451e0fe4a67fbfcf160b290e39e6a8bbc04f00640d861f29fd47a0614ca",
+    "viteVersion": "8.3.4",
+    "rolldownVersion": "1.2.13",
+    "prettierVersion": "3.9.9",
+    "packageLockSha256": "99eeebd4cbaa754663a61fb8d30e7226b6c22f004d711cbc4a606b9ba9f164e5"
+  },
+  "output": {
+    "path": "jsonld.js",
+    "sha256": "fe8b378948cad189666576c948b3f3398169496290380b49ba2e218f086b768d",
+    "byteLength": 269402
+  },
+  "sourceChanges": [
+    {
+      "path": "lib/ContextResolver.js",
+      "originalSha256": "2f8e65f3d73c5309e4312e7e81da427533745b800030f591a55056c69d1d3bf6",
+      "patchedSha256": "8a440b48c543ca6e2caa3e5e6256952bf40c03cb4573572f7f160c2fa4da827c",
+      "replacements": [
+        [
+          "constructor({sharedCache}) {",
+          "constructor({sharedCache, maxContextUrls = MAX_CONTEXT_URLS + 1}) {\n    if(!Number.isSafeInteger(maxContextUrls) || maxContextUrls < 0) {\n      throw new TypeError('maxContextUrls must be a nonnegative safe integer');\n    }\n    this.maxContextUrls = maxContextUrls;"
+        ],
+        [
+          "if(cycles.size > MAX_CONTEXT_URLS) {",
+          "if(cycles.size >= this.maxContextUrls) {"
+        ],
+        ["max: MAX_CONTEXT_URLS", "max: this.maxContextUrls"]
+      ]
+    },
+    {
+      "path": "lib/jsonld.js",
+      "originalSha256": "14fd60de8ce342f47c105e6fa4ceeae1278452536de5fa8b79332f0487c8f252",
+      "patchedSha256": "11d4804f5d79f1b5bd7996f9a03d2a63a523e243904ca2812f7f2c85f447e439",
+      "replacements": [
+        [
+          "{sharedCache: _resolvedContextCache})",
+          "{sharedCache: _resolvedContextCache, maxContextUrls: options?.maxContextUrls})"
+        ]
+      ]
+    }
+  ],
+  "inputs": [
+    {
+      "path": "node_modules/canonicalize/lib/canonicalize.js",
+      "sha256": "8a22f6848f00747463146fbfb11619944fc5800cf8f1ff0dfb9eb6489a05fe21",
+      "byteLength": 1108
+    },
+    {
+      "path": "node_modules/jsonld/lib/ContextResolver.js",
+      "sha256": "2f8e65f3d73c5309e4312e7e81da427533745b800030f591a55056c69d1d3bf6",
+      "byteLength": 7576
+    },
+    {
+      "path": "node_modules/jsonld/lib/JsonLdError.js",
+      "sha256": "743345136e24ef00c4dc5ac8673c248685d0f11ac9661b90e55df7ee1008e1ca",
+      "byteLength": 514
+    },
+    {
+      "path": "node_modules/jsonld/lib/JsonLdProcessor.js",
+      "sha256": "4f212aea363632dd3e830955ee0ff83eb9881d88c95c705718ef75238d65da29",
+      "byteLength": 1485
+    },
+    {
+      "path": "node_modules/jsonld/lib/NQuads.js",
+      "sha256": "e37f0cd14b1fc01b6e846318ff9dbc4b6227569da852dd614096f09637c73b8a",
+      "byteLength": 177
+    },
+    {
+      "path": "node_modules/jsonld/lib/RequestQueue.js",
+      "sha256": "69738752d6dde37b44b60a0bd05c478aefed3c08b60deb823154769049c6b143",
+      "byteLength": 764
+    },
+    {
+      "path": "node_modules/jsonld/lib/ResolvedContext.js",
+      "sha256": "a63af18a67418c8bb49dd34be25a69c9868becfeeb516da96ad7d0dcca6e00ba",
+      "byteLength": 704
+    },
+    {
+      "path": "node_modules/jsonld/lib/compact.js",
+      "sha256": "7ccfe8996cb335e7b6c66f61f9d6cdb98aedf94a286d2eb4e92b967f77aac071",
+      "byteLength": 38367
+    },
+    {
+      "path": "node_modules/jsonld/lib/constants.js",
+      "sha256": "12280956c21c8dd3e3a50d04656503fb91bfc5294755718913e36f7f681b67e3",
+      "byteLength": 868
+    },
+    {
+      "path": "node_modules/jsonld/lib/context.js",
+      "sha256": "eaa538a319076e8750299817ae51cd253bcea2a3aa1fdf15c15297aedcf720af",
+      "byteLength": 50000
+    },
+    {
+      "path": "node_modules/jsonld/lib/documentLoaders/xhr.js",
+      "sha256": "6cd215fd118c6036eabc0884222d11c6e9b0839007237df41f0deb1b456bd4c9",
+      "byteLength": 3735
+    },
+    {
+      "path": "node_modules/jsonld/lib/events.js",
+      "sha256": "f3e4ce80b42758305c8e77af375598e0ec12648791ce6602d25672d9d3d39be6",
+      "byteLength": 5200
+    },
+    {
+      "path": "node_modules/jsonld/lib/expand.js",
+      "sha256": "ca0d293995542784d8ce0851c135993043d13b6c13f918b4f870cde297ddefef",
+      "byteLength": 39859
+    },
+    {
+      "path": "node_modules/jsonld/lib/flatten.js",
+      "sha256": "a1a4c36cdece1aad52e37bd436348e2582daa823fc220b7cee736e64d4466d97",
+      "byteLength": 819
+    },
+    {
+      "path": "node_modules/jsonld/lib/frame.js",
+      "sha256": "ee82b013b3097f718e66aaa9f8d623f6f772f9952ec63b582d759a2c9c9b7cec",
+      "byteLength": 25273
+    },
+    {
+      "path": "node_modules/jsonld/lib/fromRdf.js",
+      "sha256": "f5a515d7755777b4f787e5c65fd1399db646a20649a8715c51fe477f3499b804",
+      "byteLength": 11593
+    },
+    {
+      "path": "node_modules/jsonld/lib/graphTypes.js",
+      "sha256": "8ca15b8bf7960ed06151286069ceca5a0c0a0de04d809e55c1c5522e7eca1c34",
+      "byteLength": 3300
+    },
+    {
+      "path": "node_modules/jsonld/lib/jsonld.js",
+      "sha256": "14fd60de8ce342f47c105e6fa4ceeae1278452536de5fa8b79332f0487c8f252",
+      "byteLength": 33578
+    },
+    {
+      "path": "node_modules/jsonld/lib/nodeMap.js",
+      "sha256": "4d1d60c5cec708b6377b40497b0655b991aa0e76e365a48a0c1029a70e4b8631",
+      "byteLength": 8379
+    },
+    {
+      "path": "node_modules/jsonld/lib/platform-browser.js",
+      "sha256": "e56bfa5fff87ceaf625bc681a87b773c846a54a1269163e843cd210f683e3e73",
+      "byteLength": 871
+    },
+    {
+      "path": "node_modules/jsonld/lib/toRdf.js",
+      "sha256": "569a8cc0cee3c06c8b217f0c7682c7c792a17c43e6e61301a5150022ee7f866c",
+      "byteLength": 11782
+    },
+    {
+      "path": "node_modules/jsonld/lib/types.js",
+      "sha256": "3d11e664de2a672f01abe029ca89cbb4f8704ad0d6aa7c18a9c9ffb82d47cea7",
+      "byteLength": 2206
+    },
+    {
+      "path": "node_modules/jsonld/lib/url.js",
+      "sha256": "8774106ffc62553976cc3b29d93fbf135fbbe3ab482d27fa245e5a8158e3a560",
+      "byteLength": 7347
+    },
+    {
+      "path": "node_modules/jsonld/lib/util.js",
+      "sha256": "032b1b1a852d502cd194f73ddccacf10cf8a5b0fa38b9e82ea1b24ea47a1d251",
+      "byteLength": 12638
+    },
+    {
+      "path": "node_modules/jsonld/node_modules/lru-cache/index.js",
+      "sha256": "f527d2386a6266b9bf67d264194948cf741b12daa19fea19e3537414ee31f9a7",
+      "byteLength": 8186
+    },
+    {
+      "path": "node_modules/jsonld/node_modules/yallist/iterator.js",
+      "sha256": "d02451fa396de7f9ec93cc6fb3b07aaa7be637acb3409a9ddebd1c2de9279c1a",
+      "byteLength": 207
+    },
+    {
+      "path": "node_modules/jsonld/node_modules/yallist/yallist.js",
+      "sha256": "69a10f726d26f8d804a3deaeac89f0106ddfa03d576d13971002fffc8f0e8a56",
+      "byteLength": 8411
+    },
+    {
+      "path": "node_modules/rdf-canonize/index.js",
+      "sha256": "f255d71cfe0cc54bd85753e8227bb6b0071cb12deee963cd3a216f07e17d14a8",
+      "byteLength": 186
+    },
+    {
+      "path": "node_modules/rdf-canonize/lib/IdentifierIssuer.js",
+      "sha256": "83aca58cc739075dd5aebd25bf5fac8d41ed4f008add508604a409c1989da9ee",
+      "byteLength": 2128
+    },
+    {
+      "path": "node_modules/rdf-canonize/lib/MessageDigest-webcrypto.js",
+      "sha256": "d05a577b14e39cdbf49b3f72d7dc2a127073e6413350c3cdb76df713c6d0a3bd",
+      "byteLength": 1226
+    },
+    {
+      "path": "node_modules/rdf-canonize/lib/NQuads.js",
+      "sha256": "7555c8cdff0dd702ff0c0ef836200fda382746b02e0b9f657c012d4c2c2b3a32",
+      "byteLength": 11982
+    },
+    {
+      "path": "node_modules/rdf-canonize/lib/Permuter.js",
+      "sha256": "4a4e9e3d1c461d1937da98e9edd258d0b95be7cfa402be2c3d75aaeeb21e24d8",
+      "byteLength": 2155
+    },
+    {
+      "path": "node_modules/rdf-canonize/lib/RDFC10.js",
+      "sha256": "454a1158dd18a1559f7259573ffd9748999921cd18064c3ed48ab2b135446a98",
+      "byteLength": 20113
+    },
+    {
+      "path": "node_modules/rdf-canonize/lib/RDFC10Sync.js",
+      "sha256": "0f08af51ac41dc730f146cc1eb12b07d913f67ffbf1498d9b124e1cef589a02d",
+      "byteLength": 19644
+    },
+    {
+      "path": "node_modules/rdf-canonize/lib/index.js",
+      "sha256": "8bc236cb8cea6a8e6fb8cf46e826bae7bb6618883c83413000e16d45d57726ac",
+      "byteLength": 10686
+    },
+    {
+      "path": "node_modules/rdf-canonize/lib/platform-browser.js",
+      "sha256": "03db9714392fb29c13dae8aae3d8f2b4ce7a91e7b7c17bccdb2f59043f715e9c",
+      "byteLength": 546
+    },
+    {
+      "path": "node_modules/setimmediate/setImmediate.js",
+      "sha256": "9dc2eb8ff83f16f42fa5d9721bc15ac5a0b12eca91d185b7840dacf3381b3cd7",
+      "byteLength": 6475
+    }
+  ],
+  "bundledPackages": [
+    {
+      "name": "canonicalize",
+      "version": "2.1.0",
+      "license": "Apache-2.0",
+      "role": "bundled-source",
+      "packageJsonPath": "node_modules/canonicalize/package.json",
+      "packageJsonSha256": "1c0de6f2742e9c61f8983c38093cca1b14564a7a982ef96cb04a60328b5653a8",
+      "notices": [
+        {
+          "path": "licenses/canonicalize-2.1.0-LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "byteLength": 11357
+        }
+      ]
+    },
+    {
+      "name": "jsonld",
+      "version": "9.0.0",
+      "license": "BSD-3-Clause",
+      "role": "bundled-source",
+      "packageJsonPath": "node_modules/jsonld/package.json",
+      "packageJsonSha256": "055ed69d0e7ac0f5f813667c106cb90191dbeef0a91454b3c42b2b9cf3819d21",
+      "notices": [
+        {
+          "path": "licenses/jsonld-9.0.0-LICENSE",
+          "sha256": "0707101bd4a2fc564788b1ba03c53615e35388dad33879663db263e724a6bd4a",
+          "byteLength": 2336
+        }
+      ]
+    },
+    {
+      "name": "lru-cache",
+      "version": "6.0.0",
+      "license": "ISC",
+      "role": "bundled-source",
+      "packageJsonPath": "node_modules/jsonld/node_modules/lru-cache/package.json",
+      "packageJsonSha256": "b06071b99bebe6cc7f7716f65ed4f36ff54aaf78d74ea0bec72f9029a8e2c215",
+      "notices": [
+        {
+          "path": "licenses/lru-cache-6.0.0-LICENSE",
+          "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+          "byteLength": 765
+        }
+      ]
+    },
+    {
+      "name": "yallist",
+      "version": "4.0.0",
+      "license": "ISC",
+      "role": "bundled-source",
+      "packageJsonPath": "node_modules/jsonld/node_modules/yallist/package.json",
+      "packageJsonSha256": "c56b604bce814520105739e9559142ea9d4417454ebb933fd5687ca1d8d89bd5",
+      "notices": [
+        {
+          "path": "licenses/yallist-4.0.0-LICENSE",
+          "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+          "byteLength": 765
+        }
+      ]
+    },
+    {
+      "name": "rdf-canonize",
+      "version": "5.0.0",
+      "license": "BSD-3-Clause",
+      "role": "bundled-source",
+      "packageJsonPath": "node_modules/rdf-canonize/package.json",
+      "packageJsonSha256": "4fea40db683ef464ac7e36227d7c80e7076b6dc92e262c9d342058e4b1cf36cf",
+      "notices": [
+        {
+          "path": "licenses/rdf-canonize-5.0.0-LICENSE",
+          "sha256": "ce809f30d8416b87c46a5affa6e5f8cdad868df31045986ea510bed856b397aa",
+          "byteLength": 1537
+        }
+      ]
+    },
+    {
+      "name": "rolldown",
+      "version": "1.2.13",
+      "license": "MIT",
+      "role": "bundler-runtime",
+      "packageJsonPath": "node_modules/rolldown/package.json",
+      "packageJsonSha256": "2b7a7eb200cef2191475439e441690ac69aaf85e6677c699e7916efa2af7e8a7",
+      "notices": [
+        {
+          "path": "licenses/rolldown-1.2.13-LICENSE",
+          "sha256": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734",
+          "byteLength": 1302
+        }
+      ]
+    },
+    {
+      "name": "setimmediate",
+      "version": "1.0.5",
+      "license": "MIT",
+      "role": "bundled-source",
+      "packageJsonPath": "node_modules/setimmediate/package.json",
+      "packageJsonSha256": "56c7968c8062ad56e94b8ddb477e514098e0fa34b060aa86b67232fdb12e184d",
+      "notices": [
+        {
+          "path": "licenses/setimmediate-1.0.5-LICENSE.txt",
+          "sha256": "c4b4ad3a5746f1f5249a6dd90396ec519264e1bb02e01e48a6522c48a3a97cb4",
+          "byteLength": 1103
+        }
+      ]
+    }
+  ]
+}

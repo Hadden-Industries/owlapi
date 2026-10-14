@@ -184,7 +184,7 @@ const expressionAllowed = async (root, profile, position, budget) => {
   return true;
 };
 
-const inspectELRanges = async (axioms, budget, violate) => {
+const inspectELRanges = async (axioms, budget, violate, validationPolicy) => {
   // RC2-PRF-DIFF-003: imposed ranges follow zero or more subproperty steps;
   // equivalence contributes both directions. Cycles never restart traversal.
   const ranges = new Map(),
@@ -240,7 +240,9 @@ const inspectELRanges = async (axioms, budget, violate) => {
     await budget.checkpoint();
     if (value.kind !== K.SUB_PROPERTY_CHAIN_AXIOM) continue;
     const headRanges = await imposedRanges(value.superProperty);
-    const lastRanges = await imposedRanges(value.chain.at(-1));
+    const lastRanges = validationPolicy.elLastChainPropertyInheritsRanges
+      ? await imposedRanges(value.chain.at(-1))
+      : (ranges.get(value.chain.at(-1).structuralKey()) ?? new Set());
     for (const range of headRanges) {
       await budget.checkpoint();
       if (!lastRanges.has(range))
@@ -262,6 +264,7 @@ export const inspectProfileRules = async (
   nodes,
   budget,
   violate,
+  validationPolicy,
 ) => {
   const datatypes = profile === "RL" ? rlDatatypes : elqlDatatypes;
   for (const { value, scope, annotationContext } of nodes) {
@@ -273,6 +276,7 @@ export const inspectProfileRules = async (
     // RC2-PRF-DIFF-002: the RL property production excludes all four built-ins.
     if (
       profile === "RL" &&
+      !validationPolicy.rlAllowsTopAndBottomProperties &&
       ((value.kind === K.OBJECT_PROPERTY &&
         [OWL + "topObjectProperty", OWL + "bottomObjectProperty"].includes(
           value.iri.value,
@@ -286,7 +290,14 @@ export const inspectProfileRules = async (
         ...detail,
         iri: value.iri.value,
       });
-    if (value.kind === K.DATATYPE && !datatypes.has(value.iri.value))
+    if (
+      value.kind === K.DATATYPE &&
+      (!datatypes.has(value.iri.value) ||
+        (profile === "RL" &&
+          validationPolicy.rlExcludedDatatypeNames.some(
+            (name) => value.iri.value === XSD + name,
+          )))
+    )
       violate("PROFILE_DATATYPE_NOT_ALLOWED", {
         ...detail,
         iri: value.iri.value,
@@ -342,7 +353,12 @@ export const inspectProfileRules = async (
         break;
       case K.DISJOINT_CLASSES_AXIOM:
         for (const expression of value.classExpressions)
-          await check(expression, "sub");
+          await check(
+            expression,
+            profile === "RL"
+              ? validationPolicy.rlDisjointOperandPosition
+              : "sub",
+          );
         break;
       case K.OBJECT_PROPERTY_DOMAIN_AXIOM:
       case K.DATA_PROPERTY_DOMAIN_AXIOM:
@@ -362,5 +378,6 @@ export const inspectProfileRules = async (
         break;
     }
   }
-  if (profile === "EL") await inspectELRanges(axioms, budget, violate);
+  if (profile === "EL")
+    await inspectELRanges(axioms, budget, violate, validationPolicy);
 };

@@ -20,6 +20,7 @@ import {
 import { IRI } from "../../../model/structural.js";
 import { normalizeCardinality } from "../../model/cardinality.js";
 import { xmlParserAdapter } from "../xml/xmlParserAdapter.js";
+import { OntologyBehaviorContext } from "../../behavior/ontologyBehaviorContext.js";
 
 import { OWLXML_GRAMMAR } from "./grammar.js";
 
@@ -195,9 +196,16 @@ export class OWLXMLParser {
   #source;
   #startedAt;
   #transaction;
+  #owlSyntaxPolicy;
+  #individualEnumerationPolicy;
 
   async parse(source, transaction, configuration) {
     this.#configuration = configuration;
+    const definition = new OntologyBehaviorContext(
+      configuration.getBehaviorProfileId?.(),
+    ).behaviorProfileDefinition;
+    this.#owlSyntaxPolicy = definition.owlSyntaxPolicy;
+    this.#individualEnumerationPolicy = definition.individualEnumerationPolicy;
     this.#dataFactory = transaction.getOWLDataFactory();
     this.#source = source;
     this.#transaction = transaction;
@@ -247,7 +255,7 @@ export class OWLXMLParser {
       offset += 1;
     }
     while (children[offset]?.localName === "Import") {
-      this.#parseImport(children[offset]);
+      await this.#parseImport(children[offset]);
       offset += 1;
     }
     while (children[offset]?.localName === "Annotation") {
@@ -319,7 +327,7 @@ export class OWLXMLParser {
         construct: "Import",
       });
     }
-    this.#transaction.addImportsDeclaration(
+    return this.#transaction.addImportsDeclaration(
       this.#dataFactory.getOWLImportsDeclaration(
         this.#resolveAnyUri(element, value),
       ),
@@ -809,11 +817,18 @@ export class OWLXMLParser {
         const children = this.#requireArity(
           element,
           this.#children(element),
-          1,
+          this.#individualEnumerationPolicy.minimumIndividualCount,
           Number.POSITIVE_INFINITY,
         );
         return this.#dataFactory.getOWLObjectOneOf(
-          children.map((child) => this.#parseIndividual(child)),
+          children
+            .filter(
+              (child) =>
+                this.#individualEnumerationPolicy
+                  .includesAnonymousOwlXmlOperands ||
+                child.localName !== "AnonymousIndividual",
+            )
+            .map((child) => this.#parseIndividual(child)),
         );
       }
       case "ObjectSomeValuesFrom":
@@ -1575,6 +1590,7 @@ export class OWLXMLParser {
     allowedNames,
     { allowSchemaLocation = false, allowXmlSpecial = true } = {},
   ) {
+    if (!this.#owlSyntaxPolicy.rejectsUndeclaredOwlXmlAttributes) return;
     const allowed = new Set(allowedNames);
     for (const attribute of element.attributes) {
       if (attribute.namespaceURI === XMLNS_NAMESPACE) {

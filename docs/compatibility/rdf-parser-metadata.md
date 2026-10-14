@@ -1,6 +1,11 @@
 # RDF parser metadata and consumer compatibility
 
 This contract implements the [bounded consumer plan](../plans/2026-10-02-rdf-consumer-compatibility.md) within the Java OWLAPI surface.
+The [behavior profiles](behavior-profiles.md) now distinguish released Java metadata from the retained normative reconstruction metadata.
+The table below describes `normative-v1`.
+For `java-owlapi-5.5.1`, `getTripleCount()` counts source statement occurrences before dataset deduplication, and `getHeaderState()` keeps the released Java consumer's constant `PARSED_ONE_HEADER`, even for zero or multiple explicit ontology headers.
+The independently replayed `ObserveParserSelection` rows and `model/behaviorParserSelection.test.js` bind these results.
+Record the manager's profile alongside metadata when comparing it.
 It adds no VOWL model, second OWL interpreter or `compatible-view` parsing mode.
 Existing `strict`, `compatible` and `preserve` modes remain distinct.
 
@@ -82,7 +87,7 @@ For its minimized inverse/functional case, Java emits exactly the inverse, funct
 For its two-header case, Java records both imports.
 These expectations are independently specified in `model/rdfConsumerCompatibility.test.js`.
 The oracle also reports `PARSED_ONE_HEADER` for zero- and multiple-header documents.
-This implementation deliberately reports the observed explicit-header state.
+The normative profile deliberately reports the observed explicit-header state; the Java profile now preserves the released constant value.
 Java's handling of an unknown blank-node predicate and multi-header annotations differs from the existing JavaScript policy; those observations do not authorize a broad parser reinterpretation.
 `io/rdfParserMetaData.test.js` covers exact literal terms, immutable defensive copies, disabled warnings, per-document metadata, selected graphs, foreign-manager rejection and historical lifetime.
 Existing parser and profile suites continue to define strict/preserve, datatype and resource boundaries.

@@ -12,7 +12,7 @@ import {
   REVIEW_DIGEST_ALGORITHM,
 } from "../scripts/review-facts.mjs";
 
-export const GENERATOR_VERSION = "3.2.0";
+export const GENERATOR_VERSION = "3.3.0";
 
 // Legal evidence must be byte-for-byte reproducible on every platform. JavaScript
 // code-unit ordering avoids host locale and ICU-version differences.
@@ -571,7 +571,98 @@ const createQualityToolingFacts = () =>
     }),
   );
 
+// Embedded processor code is packed even when npm classifies its build tools as
+// development dependencies. The reproducible provider manifest owns that scope.
+const createJsonLdProviderMaterials = () => {
+  const directory = "internal/parsing/jsonld/provider";
+  const manifestPath = `${directory}/build-manifest.json`;
+  const manifest = readJson(resolve(repositoryRoot, manifestPath));
+  return manifest.bundledPackages.map(
+    ({ name, version, license, role, notices }) => {
+      const noticeEvidence = notices.map(({ path, sha256: expectedDigest }) => {
+        const evidence = evidenceFile(`${directory}/${path}`);
+        if (evidence.sha256 !== expectedDigest)
+          throw new Error(`Embedded provider notice changed: ${evidence.path}`);
+        return evidence;
+      });
+      if (!noticeEvidence.length)
+        throw new Error(`Embedded provider has no retained notice: ${name}`);
+      return {
+        id: `jsonld-provider-${name}`,
+        relationship: "GENERATED_FROM_THIRD_PARTY",
+        name,
+        versionOrRevision: version,
+        licenseAssessments: [
+          licenseAssessment({
+            scope: `Original ${role} expression incorporated in the JSON-LD provider`,
+            declaredLicenseExpression: license,
+            licenseConclusionRationale:
+              "The provider retains the original component's complete licence and notices. The manifest binds the input source and generated output; the approved two-file jsonld source change is identified there. Original component terms continue to apply to their expression.",
+            distributionDisposition: "PACKED_UNDER_RECORDED_BASIS",
+          }),
+        ],
+        sourceUrl: `https://registry.npmjs.org/${name}/-/${name}-${version}.tgz`,
+        evidenceFiles: [
+          evidenceFile(manifestPath),
+          evidenceFile(`${directory}/jsonld.js`),
+          ...noticeEvidence,
+        ],
+        treeEvidence: null,
+        attributionText: [
+          `Original ${name} copyright and licence notices are retained verbatim in ${noticeEvidence.map(({ path }) => path).join(", ")}.`,
+        ],
+        packageTarballScope: true,
+        deployedApplicationScope: "REVIEW_REQUIRED_BY_CONSUMER",
+        noticeDisposition:
+          "ORIGINAL_COMPONENT_NOTICES_PACKED_WITH_GENERATED_PROVIDER",
+        rationale:
+          "The component contributes executable code to the packed provider. It is inventoried independently of npm's separate dependency installation and of development-only use of its build tooling.",
+      };
+    },
+  );
+};
+
 const createMaterialFacts = () => [
+  ...createJsonLdProviderMaterials(),
+  {
+    id: "java-owlapi-datatype-constants",
+    relationship: "GENERATED_FROM_THIRD_PARTY",
+    name: "Released Java OWLAPI datatype constants",
+    versionOrRevision:
+      "OWLAPI 5.5.1 at f760b3a4c107c6d5f90f856e5680c39b18af646f",
+    licenseAssessments: [
+      licenseAssessment({
+        scope: "Released OWL2Datatype public getter observations",
+        declaredLicenseExpression: "Apache-2.0 OR LGPL-3.0",
+        concludedLicenseExpression: "Apache-2.0",
+        licenseConclusionRationale:
+          "The Apache-2.0 alternative is elected for the observed public constants. The generated module contains the patterns and supported facet lists returned by the released library, without Java implementation bodies.",
+        distributionDisposition: "PACKED_UNDER_RECORDED_BASIS",
+      }),
+    ],
+    sourceUrl:
+      "https://github.com/owlcs/owlapi/tree/f760b3a4c107c6d5f90f856e5680c39b18af646f",
+    evidenceFiles: [
+      evidenceFile("internal/behavior/javaDatatypePolicy.js"),
+      evidenceFile("util/owlapi-reference/generate-java-datatype-policy.mjs"),
+      evidenceFile(
+        "util/owlapi-reference/ObserveLanguageProfileSemantics.java",
+      ),
+      evidenceFile(
+        "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
+      ),
+      evidenceFile("LICENSES/Apache-2.0.txt"),
+    ],
+    treeEvidence: null,
+    attributionText: [
+      "The public datatype constants are attributed to Java OWLAPI and its contributors. The complete elected Apache-2.0 licence is packed at LICENSES/Apache-2.0.txt.",
+    ],
+    packageTarballScope: true,
+    deployedApplicationScope: "REVIEW_REQUIRED_BY_CONSUMER",
+    noticeDisposition: "ATTRIBUTION_IN_PACKED_NOTICE",
+    rationale:
+      "The generated constant table has its own source attribution and reproducible native observations; independent JS validation remains project-authored.",
+  },
   ...createQualityToolingFacts(),
   {
     id: "java-reference-publication-source-notice-materials",

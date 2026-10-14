@@ -1,3 +1,4 @@
+import { defaultDocumentStoragePolicy } from "../../behavior/ontologyBehaviorContext.js";
 import {
   XML_NAMESPACE,
   XMLNS_NAMESPACE,
@@ -6,7 +7,10 @@ import {
   XSD_NAMESPACE,
 } from "../../rdfjs/vocabulary.js";
 import { parseIri } from "@hyperjump/uri";
-import { DOMImplementation, XMLSerializer } from "@xmldom/xmldom";
+import { DOMImplementation, DOMParser, XMLSerializer } from "@xmldom/xmldom";
+import { prepareXml } from "../../parsing/xml/xmlEntityPolicy.js";
+import { OWLOntologyLoaderConfiguration } from "../../../model/owlOntologyLoaderConfiguration.js";
+import { retainPartialStorageOutput } from "../storageFailureOutput.js";
 import { parse as parseLanguageTag } from "bcp-47";
 import {
   OWLOntologyStorageError,
@@ -26,8 +30,7 @@ const FIRST_IRI = `${RDF_NAMESPACE}first`;
 const REST_IRI = `${RDF_NAMESPACE}rest`;
 const NIL_IRI = `${RDF_NAMESPACE}nil`;
 // Aligned with the storer's 32 MiB reparse admission; bounded before padding.
-const MAX_OUTPUT_BYTES = 33554432;
-const MAX_NODE_DEPTH = 128;
+
 const TYPE_PRIORITY = [
   ...[
     "Ontology",
@@ -76,14 +79,7 @@ const PREDICATE_PRIORITY = new Map(
     `${OWL_NAMESPACE}imports`,
   ].map((iri, index) => [iri, index]),
 );
-const SECTION_NAMES = new Map([
-  [`${OWL_NAMESPACE}AnnotationProperty`, "Annotation properties"],
-  [`${RDFS_NAMESPACE}Datatype`, "Datatypes"],
-  [`${OWL_NAMESPACE}ObjectProperty`, "Object Properties"],
-  [`${OWL_NAMESPACE}DatatypeProperty`, "Data properties"],
-  [`${OWL_NAMESPACE}Class`, "Classes"],
-  [`${OWL_NAMESPACE}NamedIndividual`, "Individuals"],
-]);
+import { rdfEntitySectionName } from "../rdfEntitySections.js";
 // RDF/XML 1.1 sections 7.2.2-7.2.6 and 7.4: rdf:li rewrites to rdf:_n,
 // so it too cannot represent a predicate with its literal input identity.
 const RESERVED_PREDICATES = new Set(
@@ -147,13 +143,19 @@ const requireLanguageTag = (language) => {
 };
 
 const serializeGraph = (dataset, policy, context) => {
+  const documentStoragePolicy =
+    context.documentStoragePolicy ?? defaultDocumentStoragePolicy;
+  const embeddedXmlLiterals = new WeakMap();
+  const indentationSize = Math.max(0, policy.indentSize);
   const document = new DOMImplementation().createDocument(
     RDF_NAMESPACE,
     "rdf:RDF",
   );
   const serializer = new XMLSerializer();
   const serialize = (node) =>
-    serializer.serializeToString(node, { requireWellFormed: true });
+    serializer.serializeToString(node, {
+      requireWellFormed: documentStoragePolicy.requiresXml10Characters,
+    });
   const utf8 = new TextEncoder();
   let constructionBytes = 0;
   const requireTextBudget = (value) => {
@@ -174,17 +176,17 @@ const serializeGraph = (dataset, policy, context) => {
                   : code > 0x7f
                     ? 2
                     : 1;
-      if (bytes > MAX_OUTPUT_BYTES)
+      if (bytes > documentStoragePolicy.maxOutputBytes)
         throw new ResourceLimitError("RDF/XML term budget exceeded", {
-          limit: MAX_OUTPUT_BYTES,
+          limit: documentStoragePolicy.maxOutputBytes,
         });
     }
   };
   const admitNode = (node) => {
     constructionBytes += utf8.encode(serialize(node.cloneNode(false))).length;
-    if (constructionBytes > MAX_OUTPUT_BYTES)
+    if (constructionBytes > documentStoragePolicy.maxOutputBytes)
       throw new ResourceLimitError("RDF/XML construction budget exceeded", {
-        limit: MAX_OUTPUT_BYTES,
+        limit: documentStoragePolicy.maxOutputBytes,
       });
   };
   let root = document.documentElement;
@@ -262,9 +264,9 @@ const serializeGraph = (dataset, policy, context) => {
       // Charge candidate character work before copying or validating suffixes.
       // Native QName grammar remains authoritative, including fallback splits.
       qnameWork += iri.length;
-      if (qnameWork > MAX_OUTPUT_BYTES)
+      if (qnameWork > documentStoragePolicy.maxOutputBytes)
         throw new ResourceLimitError("RDF/XML QName work budget exceeded", {
-          limit: MAX_OUTPUT_BYTES,
+          limit: documentStoragePolicy.maxOutputBytes,
         });
       const namespace = characters.slice(0, split).join("");
       // RDF/XML section 5.1 forbids extending the RDF namespace name.
@@ -521,9 +523,9 @@ const serializeGraph = (dataset, policy, context) => {
     depth = 1,
     referenceOnly = false,
   ) => {
-    if (depth > MAX_NODE_DEPTH)
+    if (depth > documentStoragePolicy.maxRdfXmlNodeDepth)
       throw new ResourceLimitError("RDF/XML nesting limit exceeded", {
-        limit: MAX_NODE_DEPTH,
+        limit: documentStoragePolicy.maxRdfXmlNodeDepth,
       });
     const key = termKey(term);
     const subject = referenceOnly ? undefined : subjects.get(key);
@@ -567,7 +569,12 @@ const serializeGraph = (dataset, policy, context) => {
         elementName(name),
       );
       if (quad.object.termType === "Literal") {
-        if (quad.object.language) {
+        const embedsXmlLiteral =
+          documentStoragePolicy.xmlLiteralRepresentation === "embedded" &&
+          quad.object.datatype.value === RDF_NAMESPACE + "XMLLiteral";
+        if (embedsXmlLiteral) {
+          attribute(property, RDF_NAMESPACE, "rdf:parseType", "Literal");
+        } else if (quad.object.language) {
           attribute(property, XML_NAMESPACE, "xml:lang", quad.object.language);
         } else if (
           context.forceXsdString ||
@@ -580,15 +587,20 @@ const serializeGraph = (dataset, policy, context) => {
             quad.object.datatype.value,
           );
         }
-        property.appendChild(document.createTextNode(quad.object.value));
+        const literalText = document.createTextNode(quad.object.value);
+        property.appendChild(literalText);
+        if (embedsXmlLiteral)
+          embeddedXmlLiterals.set(literalText, quad.object.value);
         constructionBytes += utf8.encode(serialize(property)).length;
-        if (constructionBytes > MAX_OUTPUT_BYTES)
+        if (constructionBytes > documentStoragePolicy.maxOutputBytes)
           throw new ResourceLimitError("RDF/XML construction budget exceeded", {
-            limit: MAX_OUTPUT_BYTES,
+            limit: documentStoragePolicy.maxOutputBytes,
           });
       } else {
         const list =
-          depth < MAX_NODE_DEPTH ? collection(quad.object, path) : null;
+          depth < documentStoragePolicy.maxRdfXmlNodeDepth
+            ? collection(quad.object, path)
+            : null;
         if (list) {
           attribute(property, RDF_NAMESPACE, "rdf:parseType", "Collection");
           admitNode(property);
@@ -600,9 +612,12 @@ const serializeGraph = (dataset, policy, context) => {
             property.appendChild(renderNode(member, path, depth + 1, true));
         } else if (
           quad.object.termType === "BlankNode" &&
-          depth < MAX_NODE_DEPTH &&
+          depth < documentStoragePolicy.maxRdfXmlNodeDepth &&
           incoming.get(keys[2]) === 1 &&
-          subjects.has(keys[2]) &&
+          (subjects.has(keys[2]) ||
+            (documentStoragePolicy.inlinesEmptyAnonymousIndividuals &&
+              !policy.saveIds &&
+              context.anonymousIndividuals?.has(quad.object.value))) &&
           !path.has(keys[2]) &&
           !emitted.has(keys[2])
         ) {
@@ -659,14 +674,17 @@ const serializeGraph = (dataset, policy, context) => {
     const type = subject.type?.quad.object.value;
     const group = context.anonymousIndividuals?.has(subject.term.value)
       ? "Individuals"
-      : (SECTION_NAMES.get(type) ?? "General axioms");
+      : (rdfEntitySectionName(type) ?? "General axioms");
     if (policy.banners && type !== `${OWL_NAMESPACE}Ontology`) {
       if (previousGroup !== group) {
-        const width = policy.indenting ? policy.indentSize : 0;
-        if (width * 7 > MAX_OUTPUT_BYTES - constructionBytes)
+        const width = policy.indenting ? indentationSize : 0;
+        if (
+          width * 7 >
+          documentStoragePolicy.maxOutputBytes - constructionBytes
+        )
           throw new ResourceLimitError(
             "RDF/XML banner indentation budget exceeded",
-            { limit: MAX_OUTPUT_BYTES },
+            { limit: documentStoragePolicy.maxOutputBytes },
           );
         const padding = " ".repeat(width);
         root.appendChild(
@@ -729,14 +747,14 @@ const serializeGraph = (dataset, policy, context) => {
   let predictedBytes = 0;
   const charge = (text) => {
     // UTF-8 cannot encode fewer than one byte per UTF-16 code unit here.
-    if (text.length > MAX_OUTPUT_BYTES - predictedBytes)
+    if (text.length > documentStoragePolicy.maxOutputBytes - predictedBytes)
       throw new ResourceLimitError("RDF/XML output budget exceeded", {
-        limit: MAX_OUTPUT_BYTES,
+        limit: documentStoragePolicy.maxOutputBytes,
       });
     predictedBytes += utf8.encode(text).length;
-    if (predictedBytes > MAX_OUTPUT_BYTES)
+    if (predictedBytes > documentStoragePolicy.maxOutputBytes)
       throw new ResourceLimitError("RDF/XML output budget exceeded", {
-        limit: MAX_OUTPUT_BYTES,
+        limit: documentStoragePolicy.maxOutputBytes,
       });
   };
   const formatElement = (element, depth) => {
@@ -744,30 +762,38 @@ const serializeGraph = (dataset, policy, context) => {
     // A literal leaf is indivisible: never inject or normalize its whitespace.
     if (children.some((child) => child.nodeType === TEXT_NODE)) {
       charge(serialize(element));
-      return element.cloneNode(true);
+      const copy = element.cloneNode(true);
+      children.forEach((child, index) => {
+        if (embeddedXmlLiterals.has(child))
+          embeddedXmlLiterals.set(
+            copy.childNodes[index],
+            embeddedXmlLiterals.get(child),
+          );
+      });
+      return copy;
     }
     const formatted = element.cloneNode(false);
     charge(serialize(formatted));
     if (!children.length) return formatted;
-    const indentation = policy.indenting ? depth * policy.indentSize : 0;
+    const indentation = policy.indenting ? depth * indentationSize : 0;
     if (
       !Number.isSafeInteger(indentation) ||
-      indentation > MAX_OUTPUT_BYTES - predictedBytes
+      indentation > documentStoragePolicy.maxOutputBytes - predictedBytes
     )
       throw new ResourceLimitError("RDF/XML indentation budget exceeded", {
-        limit: MAX_OUTPUT_BYTES,
+        limit: documentStoragePolicy.maxOutputBytes,
       });
     // Charge all padding before constructing even a single large string.
     const whitespaceBytes =
       children.length * (7 + indentation * 2) +
       1 +
-      (policy.indenting ? (depth - 1) * policy.indentSize : 0);
+      (policy.indenting ? (depth - 1) * indentationSize : 0);
     if (
       !Number.isSafeInteger(whitespaceBytes) ||
-      whitespaceBytes > MAX_OUTPUT_BYTES - predictedBytes
+      whitespaceBytes > documentStoragePolicy.maxOutputBytes - predictedBytes
     )
       throw new ResourceLimitError("RDF/XML indentation budget exceeded", {
-        limit: MAX_OUTPUT_BYTES,
+        limit: documentStoragePolicy.maxOutputBytes,
       });
     predictedBytes += whitespaceBytes;
     const padding = " ".repeat(indentation);
@@ -792,39 +818,127 @@ const serializeGraph = (dataset, policy, context) => {
     }
     formatted.appendChild(
       document.createTextNode(
-        `\n${" ".repeat(policy.indenting ? (depth - 1) * policy.indentSize : 0)}`,
+        `\n${" ".repeat(policy.indenting ? (depth - 1) * indentationSize : 0)}`,
       ),
     );
     return formatted;
   };
   // Append-only construction avoids xmldom's full sibling reindex on insertion.
   document.replaceChild(formatElement(root, 1), root);
-  const text = serializer.serializeToString(document, {
-    requireWellFormed: true,
-    nodeFilter(node) {
-      // XML end-of-line normalization would turn literal CR into LF. Native
-      // serialization still validates and escapes each intervening segment.
-      if (node.nodeType === TEXT_NODE) {
-        return node.data
-          .split("\r")
-          .map((part) =>
-            serialize(document.createTextNode(part))
-              .replaceAll('"', "&quot;")
-              .replaceAll("'", "&apos;"),
-          )
-          .join("&#xD;");
+  const serializeDocument = (tree, validateLiteral) =>
+    serializer.serializeToString(tree, {
+      requireWellFormed: documentStoragePolicy.requiresXml10Characters,
+      nodeFilter(node) {
+        if (embeddedXmlLiterals.has(node)) {
+          const literal = embeddedXmlLiterals.get(node);
+          validateLiteral?.(literal, node);
+          return literal;
+        }
+        // XML end-of-line normalization would turn literal CR into LF. Native
+        // serialization still validates and escapes each intervening segment.
+        if (node.nodeType === TEXT_NODE) {
+          return node.data
+            .split("\r")
+            .map((part) =>
+              serialize(document.createTextNode(part))
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&apos;"),
+            )
+            .join("&#xD;");
+        }
+        return node;
+      },
+    });
+  const declaration =
+    documentStoragePolicy.xmlDeclaration ??
+    '<?xml version="1.0" encoding="UTF-8"?>';
+  const wrapRootAttributes = (text) => {
+    const end = text.indexOf(">");
+    const padding = (policy.indenting ? indentationSize : 0) + 1;
+    return (
+      text
+        .slice(0, end)
+        .replaceAll(/ (?=(?:xmlns(?::[^=\s]+)?|xml:base)=)/gu, (_, offset) =>
+          offset === `<${root.nodeName}`.length
+            ? " "
+            : `\n${" ".repeat(padding)}`,
+        ) + text.slice(end)
+    );
+  };
+  const prefixBefore = (failingText) => {
+    const ancestors = [];
+    for (
+      let node = failingText.parentNode;
+      node.nodeType === 1;
+      node = node.parentNode
+    )
+      ancestors.push(node);
+    const onPath = new Set(ancestors);
+    const copyThrough = (node) => {
+      const copy = node.cloneNode(false);
+      for (const child of Array.from(node.childNodes)) {
+        if (child === failingText) break;
+        if (onPath.has(child)) {
+          copy.appendChild(copyThrough(child));
+          break;
+        }
+        const copiedChild = child.cloneNode(true);
+        const carryLiteral = (original, copied) => {
+          if (embeddedXmlLiterals.has(original))
+            embeddedXmlLiterals.set(copied, embeddedXmlLiterals.get(original));
+          Array.from(original.childNodes ?? []).forEach((nested, index) =>
+            carryLiteral(nested, copied.childNodes[index]),
+          );
+        };
+        carryLiteral(child, copiedChild);
+        copy.appendChild(copiedChild);
       }
-      return node;
-    },
+      return copy;
+    };
+    const prefix = serializeDocument(copyThrough(document.documentElement));
+    const closingAncestors = ancestors
+      .slice(1)
+      .map((node) => `</${node.nodeName}>`)
+      .join("");
+    if (!prefix.endsWith(`/>${closingAncestors}`))
+      throw new Error("Unexpected partial RDF/XML serialization boundary");
+    return `${declaration}\n${wrapRootAttributes(prefix.slice(0, -closingAncestors.length - 2) + ">")}`;
+  };
+  const text = serializeDocument(document, (literal, node) => {
+    try {
+      const prepared = prepareXml(
+        literal,
+        new OWLOntologyLoaderConfiguration({
+          behaviorProfileId: "java-owlapi-5.5.1",
+        }),
+      );
+      const parsed = new DOMParser({
+        onError(_level, message) {
+          throw new Error(message);
+        },
+      }).parseFromString(prepared, "application/xml");
+      if (!parsed.documentElement)
+        throw new Error("The XML literal has no document element");
+    } catch (cause) {
+      throw retainPartialStorageOutput(
+        new OWLOntologyStorageError("XML literal is not self contained", {
+          cause,
+        }),
+        prefixBefore(node),
+      );
+    }
   });
   // Only structural root attributes are wrapped; serialized attribute contents
   // cannot contain a raw quote, so this never rewrites a literal or entity.
   const rootEnd = text.indexOf(">");
-  const wrapPadding = (policy.indenting ? policy.indentSize : 0) + 1;
-  if (wrapPadding * root.attributes.length > MAX_OUTPUT_BYTES - predictedBytes)
+  const wrapPadding = (policy.indenting ? indentationSize : 0) + 1;
+  if (
+    wrapPadding * root.attributes.length >
+    documentStoragePolicy.maxOutputBytes - predictedBytes
+  )
     throw new ResourceLimitError(
       "RDF/XML root attribute padding budget exceeded",
-      { limit: MAX_OUTPUT_BYTES },
+      { limit: documentStoragePolicy.maxOutputBytes },
     );
   const opening = text
     .slice(0, rootEnd)
@@ -833,13 +947,13 @@ const serializeGraph = (dataset, policy, context) => {
         ? " "
         : `\n${" ".repeat(wrapPadding)}`,
     );
-  const output = `<?xml version="1.0" encoding="UTF-8"?>\n${opening}${text.slice(rootEnd)}\n\n\n\n<!-- Generated by @hadden-industries/owlapi (JavaScript implementation; version 0.1.0-rc.1) https://github.com/Hadden-Industries/owlapi -->\n\n\n`;
+  const output = `${declaration}\n${opening}${text.slice(rootEnd)}\n\n\n\n<!-- Generated by @hadden-industries/owlapi (JavaScript implementation; version 0.1.0-rc.1) https://github.com/Hadden-Industries/owlapi -->\n\n\n`;
   if (
-    output.length > MAX_OUTPUT_BYTES ||
-    utf8.encode(output).length > MAX_OUTPUT_BYTES
+    output.length > documentStoragePolicy.maxOutputBytes ||
+    utf8.encode(output).length > documentStoragePolicy.maxOutputBytes
   )
     throw new ResourceLimitError("RDF/XML output budget exceeded", {
-      limit: MAX_OUTPUT_BYTES,
+      limit: documentStoragePolicy.maxOutputBytes,
     });
   return output;
 };

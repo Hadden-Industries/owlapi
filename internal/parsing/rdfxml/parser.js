@@ -68,7 +68,7 @@ export class RDFXMLParser {
       syntax.options,
     );
     transaction.setOntologyID(prepared.ontology.getOntologyID());
-    transaction.addImportsDeclarations(
+    await transaction.addImportsDeclarations(
       prepared.ontology.getImportsDeclarations(),
     );
     transaction.setDocumentFormat(OWLDocumentFormats.RDF_XML);
@@ -95,12 +95,12 @@ export class RDFXMLParser {
     );
   }
 
-  #populateTransaction(translated, transaction, dataset) {
+  async #populateTransaction(translated, transaction, dataset) {
     const { context, ontology } = translated;
 
     transaction.setOntologyID(ontology.getOntologyID());
     transaction.addAnnotations(ontology.getAnnotations());
-    transaction.addImportsDeclarations(ontology.getImportsDeclarations());
+    await transaction.addImportsDeclarations(ontology.getImportsDeclarations());
     transaction.addAxioms(ontology.getAxioms());
     if (context.sourceStructure)
       transaction.setSourceStructure(context.sourceStructure);

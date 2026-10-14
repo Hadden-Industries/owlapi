@@ -13,6 +13,7 @@ import {
 } from "../../../io/errors.js";
 import { IRI } from "../../../model/structural.js";
 import { normalizeCardinality } from "../../model/cardinality.js";
+import { OntologyBehaviorContext } from "../../behavior/ontologyBehaviorContext.js";
 
 import { decodePrefixedLocalName } from "../lexicalNames.js";
 import { FunctionalSyntaxLexer } from "./lexer.js";
@@ -48,9 +49,13 @@ export class OWLFunctionalSyntaxOWLParser {
   #lexer;
   #prefixes;
   #transaction;
+  #owlSyntaxPolicy;
 
   async parse(source, transaction, configuration) {
     this.#configuration = configuration;
+    this.#owlSyntaxPolicy = new OntologyBehaviorContext(
+      configuration.getBehaviorProfileId?.(),
+    ).behaviorProfileDefinition.owlSyntaxPolicy;
     this.#dataFactory = transaction.getOWLDataFactory();
     this.#transaction = transaction;
     this.#prefixes = new Map(Object.entries(STANDARD_PREFIXES));
@@ -141,7 +146,7 @@ export class OWLFunctionalSyntaxOWLParser {
     );
 
     while (this.#isWord("Import")) {
-      this.#parseImport();
+      await this.#parseImport();
       const yieldRequest = this.#cooperate();
       if (yieldRequest) {
         await yieldRequest;
@@ -175,7 +180,7 @@ export class OWLFunctionalSyntaxOWLParser {
     this.#expectType("(");
     const iri = this.#parseIri();
     this.#expectType(")");
-    this.#transaction.addImportsDeclaration(
+    return this.#transaction.addImportsDeclaration(
       this.#dataFactory.getOWLImportsDeclaration(iri),
     );
   }
@@ -846,6 +851,14 @@ export class OWLFunctionalSyntaxOWLParser {
     const properties = iris.map((iri) =>
       this.#dataFactory.getOWLDataProperty(iri),
     );
+    if (
+      this.#owlSyntaxPolicy.requiresUnaryFunctionalDataRestrictions &&
+      properties.length !== 1
+    )
+      this.#syntax(
+        "The Java Functional parser accepts one data property in a quantified restriction",
+        start,
+      );
     return this.#dataFactory[constructor](properties, filler);
   }
 

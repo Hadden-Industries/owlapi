@@ -4,8 +4,8 @@ import { ENTITY_KINDS, OWLObjectKind as K } from "../../model/kinds.js";
 import { sortedDisplayObjects } from "../../internal/model/structuralDisplayOrder.js";
 import { validateStructuralGraph } from "../../internal/model/structuralValidation.js";
 import { SimpleShortFormProvider } from "../../util/simpleShortFormProvider.js";
+import { OntologyBehaviorContext } from "../../internal/behavior/ontologyBehaviorContext.js";
 
-const MAX_OUTPUT_BYTES = 33554432;
 const quoted = (value) =>
   `"${value.replaceAll("\\", "\\\\").replaceAll('"', '\\"')}"`;
 const anonymousExpression = (value) => value.kind !== K.CLASS;
@@ -240,14 +240,33 @@ const supportedKinds = new Set([...ENTITY_KINDS, ...Object.keys(renderers)]);
  */
 export class ManchesterOWLSyntaxOWLObjectRendererImpl {
   #provider = new SimpleShortFormProvider();
+  #behaviorContext;
+
+  /** Select an immutable behavioral contract; omitted selection is normative. */
+  constructor({ behaviorProfileId } = {}) {
+    this.#behaviorContext = new OntologyBehaviorContext(behaviorProfileId);
+  }
+
+  getBehaviorProfileId() {
+    return this.#behaviorContext.behaviorProfileDefinition.behaviorProfileId;
+  }
+
   setShortFormProvider(provider) {
     if (typeof provider?.getShortForm !== "function")
       throw new TypeError("provider must implement getShortForm()");
     this.#provider = provider;
   }
   render(object) {
+    const limits =
+      this.#behaviorContext.behaviorProfileDefinition.computationResourcePolicy
+        .manchesterRenderingLimits;
     try {
-      validateStructuralGraph(object, supportedKinds);
+      validateStructuralGraph(
+        object,
+        supportedKinds,
+        limits.maxDepth,
+        limits.maxAnnotationDepth,
+      );
     } catch (cause) {
       if (cause instanceof ResourceLimitError || cause instanceof TypeError)
         throw cause;
@@ -281,12 +300,12 @@ export class ManchesterOWLSyntaxOWLObjectRendererImpl {
           "short-form providers must return a string synchronously",
         );
       if (
-        text.length > MAX_OUTPUT_BYTES ||
-        encoder.encode(text).byteLength > MAX_OUTPUT_BYTES
+        text.length > limits.maxOutputBytes ||
+        encoder.encode(text).byteLength > limits.maxOutputBytes
       )
         throw new ResourceLimitError("Manchester output byte limit exceeded", {
           resource: "outputBytes",
-          limit: MAX_OUTPUT_BYTES,
+          limit: limits.maxOutputBytes,
         });
       return text;
     };

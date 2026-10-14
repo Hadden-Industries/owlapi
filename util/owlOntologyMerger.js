@@ -4,6 +4,8 @@ import {
 } from "../internal/model/axiomSemantics.js";
 import { OWLObjectKind } from "../model/kinds.js";
 import { OWLOntology } from "../model/owlOntology.js";
+import { OWLOntologyManager } from "../model/owlOntologyManager.js";
+import { OntologyBehaviorContext } from "../internal/behavior/ontologyBehaviorContext.js";
 import { isCanonicalStructuralObject } from "../model/structural.js";
 
 const requireOntologySetProvider = (ontologySetProvider) => {
@@ -64,7 +66,7 @@ const requireOntology = (ontology, index) => {
   }
 };
 
-const materializeProviderOntologies = (ontologySetProvider) => {
+const providerOntologies = (ontologySetProvider) => {
   const providedOntologies = ontologySetProvider.ontologies();
   if (
     !providedOntologies ||
@@ -74,9 +76,13 @@ const materializeProviderOntologies = (ontologySetProvider) => {
       "ontologySetProvider.ontologies() must return an iterable",
     );
   }
+  return providedOntologies;
+};
+
+const materializeProviderOntologies = (ontologySetProvider) => {
   const ontologies = [];
   let index = 0;
-  for (const ontology of providedOntologies) {
+  for (const ontology of providerOntologies(ontologySetProvider)) {
     ontologies.push(requireOntology(ontology, index));
     index += 1;
   }
@@ -123,9 +129,43 @@ export class OWLOntologyMerger {
     Object.freeze(this);
   }
 
+  /** Copy direct axioms into a new destination-owned ontology. The destination
+   * profile governs publication, including Java's retained partial target after
+   * provider failure. Source ownership is never transferred.
+   */
   createMergedOntology(ontologyManager, ontologyIRI) {
     const normalizedOntologyManager = requireOntologyManager(ontologyManager);
     const normalizedOntologyIRI = requireOptionalOntologyIRI(ontologyIRI);
+    // A genuine destination manager owns this operation's profile. Existing
+    // structural manager adapters retain the original snapshot contract.
+    const definition = new OntologyBehaviorContext(
+      normalizedOntologyManager instanceof OWLOntologyManager
+        ? OWLOntologyManager.prototype.getBehaviorProfileId.call(
+            normalizedOntologyManager,
+          )
+        : "normative-v1",
+    ).behaviorProfileDefinition;
+    if (
+      definition.ontologyCopyPolicy.mergePublication === "before-provider-read"
+    ) {
+      // The released merger publishes its new ontology before it queries the
+      // provider. A later provider failure leaves the already copied axioms in
+      // that destination-owned object; source ownership never changes.
+      const mergedOntology = createTargetOntology(
+        normalizedOntologyManager,
+        normalizedOntologyIRI,
+      );
+      let index = 0;
+      for (const ontology of providerOntologies(this.#ontologySetProvider)) {
+        const source = requireOntology(ontology, index++);
+        if (source === mergedOntology) continue;
+        normalizedOntologyManager.addAxioms(
+          mergedOntology,
+          collectAxiomUnion([source], this.#mergeOnlyLogicalAxioms),
+        );
+      }
+      return mergedOntology;
+    }
     const ontologies = materializeProviderOntologies(this.#ontologySetProvider);
     const axiomUnion = collectAxiomUnion(
       ontologies,

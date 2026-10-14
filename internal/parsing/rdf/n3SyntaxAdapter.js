@@ -8,6 +8,7 @@ import {
 import { OWLSyntaxError, ResourceLimitError } from "../../../io/errors.js";
 import { OWLOntologyLoaderConfiguration } from "../../../model/owlOntologyLoaderConfiguration.js";
 import { rdfDataFactory, rdfDatasetFactory } from "../../rdfjs/environment.js";
+import { recordSourceStatementCount } from "../../rdfjs/sourceStatementCount.js";
 
 const TURTLE_MEDIA_TYPE = "text/turtle";
 const N_TRIPLES_MEDIA_TYPE = "application/n-triples";
@@ -557,6 +558,7 @@ export class N3SyntaxAdapter {
       parser.end();
       await completion;
       execution.check();
+      recordSourceStatementCount(dataset, emittedQuads);
       return Object.freeze({
         dataset,
         prefixes: Object.freeze({ ...prefixes }),

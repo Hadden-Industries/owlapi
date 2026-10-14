@@ -90,9 +90,10 @@ test("native annotation search deduplicates each ontology and retains repeated o
     ]),
   );
   expect([
-    EntitySearcher.getAnnotations(a, root).length,
-    EntitySearcher.getAnnotationObjects(a, root).length,
-    EntitySearcher.getAnnotations(a, [root, root], f.getRDFSLabel()).length,
+    [...EntitySearcher.getAnnotations(a, root)].length,
+    [...EntitySearcher.getAnnotationObjects(a, root)].length,
+    [...EntitySearcher.getAnnotations(a, [root, root], f.getRDFSLabel())]
+      .length,
   ]).toEqual(native.annotationCounts);
 });
 
@@ -102,7 +103,7 @@ test("native inverse endpoints and anyURI reference rules include self and liter
   const p = f.getOWLObjectProperty(IRI.create("urn:edge:p"));
   m.addAxiom(root, f.getOWLInverseObjectPropertiesAxiom(p, p));
   expect(
-    EntitySearcher.getInverses(p, root).map((value) => value.iri.value),
+    [...EntitySearcher.getInverses(p, root)].map((value) => value.iri.value),
   ).toEqual(native.selfInverse);
   const target = IRI.create("urn:edge:literalIRI");
   const literal = f.getOWLLiteral(

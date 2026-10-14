@@ -13,21 +13,21 @@ test("search preserves annotation variants and repeated ontology-stream multipli
   const plain = factory.getOWLSubClassOfAxiom(a, b);
   const annotated = factory.getOWLSubClassOfAxiom(a, b, [annotation]);
   const ontology = new OWLOntology({ axioms: [plain, annotated] });
-  expect(EntitySearcher.getSuperClasses(a, ontology)).toEqual([b, b]);
-  expect(EntitySearcher.getSuperClasses(a, [ontology, ontology])).toEqual([
+  expect([...EntitySearcher.getSuperClasses(a, ontology)]).toEqual([b, b]);
+  expect([...EntitySearcher.getSuperClasses(a, [ontology, ontology])]).toEqual([
     b,
     b,
     b,
     b,
   ]);
-  expect(EntitySearcher.getSubClasses(a, ontology)).toEqual([]);
-  const result = EntitySearcher.getSuperClasses(a, ontology);
+  expect([...EntitySearcher.getSubClasses(a, ontology)]).toEqual([]);
+  const result = [...EntitySearcher.getSuperClasses(a, ontology)];
   result.length = 0;
-  expect(EntitySearcher.getSuperClasses(a, ontology)).toHaveLength(2);
-  expect(() => EntitySearcher.getSuperClasses(a.iri, ontology)).toThrow(
+  expect([...EntitySearcher.getSuperClasses(a, ontology)]).toHaveLength(2);
+  expect(() => [...EntitySearcher.getSuperClasses(a.iri, ontology)]).toThrow(
     TypeError,
   );
-  expect(() => EntitySearcher.getSuperClasses(a, [ontology, {}])).toThrow(
+  expect(() => [...EntitySearcher.getSuperClasses(a, [ontology, {}])]).toThrow(
     TypeError,
   );
 });
@@ -49,25 +49,27 @@ test("annotation objects exclude assertion annotations while getAnnotations reta
     [nested],
   );
   const ontology = new OWLOntology({ axioms: [assertion] });
-  expect(EntitySearcher.getAnnotationAssertionAxioms(a, ontology)).toEqual([
-    assertion,
-  ]);
-  expect(EntitySearcher.getAnnotationObjects(a, ontology)).toEqual([
+  expect([...EntitySearcher.getAnnotationAssertionAxioms(a, ontology)]).toEqual(
+    [assertion],
+  );
+  expect([...EntitySearcher.getAnnotationObjects(a, ontology)]).toEqual([
     factory.getOWLAnnotation(label, value),
   ]);
-  expect(new Set(EntitySearcher.getAnnotations(a, ontology))).toEqual(
+  expect(new Set([...EntitySearcher.getAnnotations(a, ontology)])).toEqual(
     new Set([nested, factory.getOWLAnnotation(label, value)]),
   );
-  expect(
-    EntitySearcher.getAnnotations(a, [ontology, ontology], label),
-  ).toHaveLength(2);
-  expect(
-    EntitySearcher.getAnnotationObjects(a.iri, [ontology, ontology], null),
-  ).toHaveLength(2);
-  expect(() =>
-    EntitySearcher.getAnnotationAssertionAxioms(a, [ontology]),
-  ).toThrow(TypeError);
-  expect(() => EntitySearcher.getAnnotations(a, [ontology])).toThrow(TypeError);
+  expect([
+    ...EntitySearcher.getAnnotations(a, [ontology, ontology], label),
+  ]).toHaveLength(2);
+  expect([
+    ...EntitySearcher.getAnnotationObjects(a.iri, [ontology, ontology], null),
+  ]).toHaveLength(2);
+  expect(() => [
+    ...EntitySearcher.getAnnotationAssertionAxioms(a, [ontology]),
+  ]).toThrow(TypeError);
+  expect(() => [...EntitySearcher.getAnnotations(a, [ontology])]).toThrow(
+    TypeError,
+  );
 });
 
 test.each([
@@ -109,15 +111,16 @@ test.each([
         factory[range](p, rangeValue),
       ],
     });
-    expect(EntitySearcher.getSuperProperties(p, [ontology, ontology])).toEqual([
-      q,
-      q,
-    ]);
-    expect(EntitySearcher.getSubProperties(q, ontology)).toEqual([p]);
-    expect(EntitySearcher.getDomains(p, ontology)).toEqual([domainValue]);
-    expect(EntitySearcher.getRanges(p, ontology)).toEqual([rangeValue]);
-    expect(EntitySearcher.getDomains(q, ontology)).toEqual([]);
-    expect(() => EntitySearcher.getDomains(a, ontology)).toThrow(TypeError);
+    expect([
+      ...EntitySearcher.getSuperProperties(p, [ontology, ontology]),
+    ]).toEqual([q, q]);
+    expect([...EntitySearcher.getSubProperties(q, ontology)]).toEqual([p]);
+    expect([...EntitySearcher.getDomains(p, ontology)]).toEqual([domainValue]);
+    expect([...EntitySearcher.getRanges(p, ontology)]).toEqual([rangeValue]);
+    expect([...EntitySearcher.getDomains(q, ontology)]).toEqual([]);
+    expect(() => [...EntitySearcher.getDomains(a, ontology)]).toThrow(
+      TypeError,
+    );
   },
 );
 
@@ -152,7 +155,7 @@ test("inverse queries exclude self and data functional overload uses its own fam
       factory.getOWLFunctionalDataPropertyAxiom(data),
     ],
   });
-  expect(EntitySearcher.getInverses(q, ontology)).toEqual([p]);
+  expect([...EntitySearcher.getInverses(q, ontology)]).toEqual([p]);
   expect(EntitySearcher.isFunctional(p, ontology)).toBe(false);
   expect(EntitySearcher.isFunctional(data, ontology)).toBe(true);
 });

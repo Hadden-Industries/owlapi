@@ -1,9 +1,16 @@
+import {
+  initializeProfileBehavior,
+  readProfileBehavior,
+} from "../internal/profiles/profileBehaviorContext.js";
 import { checkOWL2Profile } from "../internal/profiles/owl2dl.js";
 import { IRI } from "../model/structural.js";
 import { OWLProfileReport } from "./owlProfileReport.js";
 
 /** Asynchronous assessment of the root-inclusive OWL 2 EL closure. */
 export class OWL2ELProfile {
+  constructor(options) {
+    initializeProfileBehavior(this, options);
+  }
   getName() {
     return "OWL 2 EL";
   }
@@ -14,7 +21,12 @@ export class OWL2ELProfile {
     return new OWLProfileReport(
       ontology,
       this,
-      await checkOWL2Profile(ontology, options, "EL"),
+      await checkOWL2Profile(
+        ontology,
+        options,
+        "EL",
+        readProfileBehavior(this, ontology),
+      ),
     );
   }
 }

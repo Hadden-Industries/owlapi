@@ -2,8 +2,9 @@ const targetText = new WeakMap();
 
 /**
  * In-memory ontology document target with Java's toString() text reader.
- * Starts empty; only the package-private complete-text storage seam can mutate
- * content. Java's incremental Writer accessor is deliberately not exposed.
+ * Starts empty. Package-private storage seams replace complete normative output
+ * or append Java output, including the native prefix retained after a failure.
+ * Java's incremental Writer accessor is deliberately not exposed.
  */
 export class StringDocumentTarget {
   constructor() {
@@ -11,7 +12,7 @@ export class StringDocumentTarget {
     Object.freeze(this);
   }
 
-  /** Return the complete stored text without normalizing its code units. */
+  /** Return all retained text without normalizing its code units. */
   toString() {
     if (!targetText.has(this)) {
       throw new TypeError("The receiver must be a StringDocumentTarget");
@@ -35,4 +36,11 @@ export const replaceStringDocumentTargetText = (target, completeText) => {
     throw new TypeError("completeText must be a string");
   }
   targetText.set(target, completeText);
+};
+
+/** Package-private append for the Java target's retained Writer semantics. */
+export const appendStringDocumentTargetText = (target, text) => {
+  const previous = StringDocumentTarget.prototype.toString.call(target);
+  if (typeof text !== "string") throw new TypeError("text must be a string");
+  targetText.set(target, previous + text);
 };

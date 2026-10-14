@@ -4,6 +4,10 @@ docs/provenance/history-reconstruction/
 docs/provenance/npm-package-evidence.json
 docs/release/gates.json
 docs/release/producer-gates.json
+# Reproduced from pinned upstream sources; build verification owns these bytes.
+internal/parsing/jsonld/provider/jsonld.js
+internal/parsing/jsonld/provider/LICENSE.txt
+internal/parsing/jsonld/provider/licenses/
 # Upstream notice bytes are bound by the development inventory.
 LICENSES/development/scancode-runtime/**
 !LICENSES/development/scancode-runtime/inventory.json

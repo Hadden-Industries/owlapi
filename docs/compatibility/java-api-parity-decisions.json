@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "qualification": "RECONCILED",
   "developmentBaseline": {
     "commit": "1e588030c6ba7cdc24fbf6c055c3c02ceb388a65",
@@ -526,5 +526,1136 @@
       "commit": "c45f07719e0d846be354c818d281a38281913c38",
       "registrySha256": "cf367d97cea09eb9fe99b6f0e68f8ddb8ded8555259a4cc956b16bb19218ba6a"
     }
+  },
+  "currentBehaviorContracts": {
+    "qualificationStatus": "unqualified",
+    "historicalDecisionScope": "Top-level javaAuthority, decisions, qualification, phase21 and phase22 preserve their original historical authority and receipts. Current profile-specific rows govern the new candidate without rewriting those checkpoints.",
+    "acceptedPlanPath": "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+    "acceptedPlanCommitObjectId": "182846768401c2ace226a94389194cfaa319342e",
+    "selectedApiInventoryPath": "docs/compatibility/java-api-surface.json",
+    "omittedBehaviorProfileId": "normative-v1",
+    "javaAuthority": {
+      "releaseVersion": "5.5.1",
+      "commitObjectId": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "provenancePath": "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json"
+    },
+    "normativeContract": {
+      "version": 1,
+      "definitionPath": "docs/compatibility/behavior-profiles.md"
+    },
+    "pendingQualification": [
+      "Consolidated API/security/external reviews and any repair deltas.",
+      "Final rights/provider inventory and reproducible package outputs.",
+      "Exact installed Node/browser/worker candidate and recovery evidence.",
+      "Frozen oracle harness identity, profile admission and HISEW final verification."
+    ],
+    "decisions": [
+      {
+        "decisionId": "BEHAVIOR-PROFILE-IDENTITY",
+        "apiMembers": [
+          "OWLManager.createOWLOntologyManager",
+          "OWLOntologyManager.getBehaviorProfileId"
+        ],
+        "behaviorRelationship": "profile-specific",
+        "decisionStatus": "accepted",
+        "implementationStatus": "development-tested",
+        "decisionOwnerRole": "repository-owner",
+        "acceptanceReference": "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "observableBehavior": "One immutable behavior identity owns a manager, its configuration, factory and asynchronous operations.",
+        "applicability": "The selected current public members and their declared host/structural adaptations; this row does not admit the complete compatibility profile.",
+        "preconditions": [
+          "Explicit selected behavior profile; omitted selection is normative-v1.",
+          "Genuine matched API arguments and any caller authorization required by the selected resource boundary."
+        ],
+        "javaExpectation": {
+          "behaviorProfileId": "java-owlapi-5.5.1",
+          "expectedOutcome": "Explicit java-owlapi-5.5.1 uses the released native contracts. No mutable alias or setter is exposed.",
+          "oracleProbeIds": ["ObserveBehaviorContracts"]
+        },
+        "normativeExpectation": {
+          "behaviorProfileId": "normative-v1",
+          "expectedOutcome": "Omission selects normative-v1. Unknown identities and incompatible configuration/factory bindings fail before effects.",
+          "contractReference": "docs/compatibility/behavior-profiles.md"
+        },
+        "postconditions": [
+          "Managers and their mutable ontologies never acquire a different profile later. Structural values remain shareable."
+        ],
+        "compatibilityConsequences": "Java migration must explicitly select the Java identity; omission never promises native Java behavior.",
+        "authorityReferences": [
+          "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
+          "docs/compatibility/behavior-profiles.md"
+        ],
+        "rationaleReferences": [
+          "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
+        ],
+        "testCaseReferences": [
+          "model/behaviorProfile.test.js",
+          "model/behaviorInstalledContract.test.js"
+        ],
+        "requirementIds": ["REQ-001", "REQ-002", "REQ-005", "REQ-012"],
+        "acceptanceCriterionIds": ["AC-001", "AC-002", "AC-005", "AC-012"],
+        "qualityScenarioIds": ["QA-004", "QA-007"],
+        "sliceIds": ["SLICE-002"]
+      },
+      {
+        "decisionId": "BEHAVIOR-LOADER-CONFIGURATION",
+        "apiMembers": [
+          "OWLOntologyLoaderConfiguration",
+          "OWLOntologyManager.setOntologyLoaderConfiguration"
+        ],
+        "behaviorRelationship": "profile-specific",
+        "decisionStatus": "accepted",
+        "implementationStatus": "development-tested",
+        "decisionOwnerRole": "repository-owner",
+        "acceptanceReference": "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "observableBehavior": "Native getters, setters, defaults, copies and their actual consumption boundaries.",
+        "applicability": "The selected current public members and their declared host/structural adaptations; this row does not admit the complete compatibility profile.",
+        "preconditions": [
+          "Explicit selected behavior profile; omitted selection is normative-v1.",
+          "Genuine matched API arguments and any caller authorization required by the selected resource boundary."
+        ],
+        "javaExpectation": {
+          "behaviorProfileId": "java-owlapi-5.5.1",
+          "expectedOutcome": "Connection timeout 20000 ms, attempts 5, follow redirects true, entity expansion limit 100000000, strict false and annotation loading true retain native values and failure timing. Java adds no finite JS-only computation/input default.",
+          "oracleProbeIds": [
+            "ObserveBehaviorContracts",
+            "ObserveNetworkContracts",
+            "ObserveXmlContracts"
+          ]
+        },
+        "normativeExpectation": {
+          "behaviorProfileId": "normative-v1",
+          "expectedOutcome": "The adopted normative parsing, time, byte, graph and import defaults remain explicit. Host resource controls stay separate from native getter semantics.",
+          "contractReference": "docs/compatibility/behavior-profiles.md"
+        },
+        "postconditions": [
+          "Configuration snapshots cannot change while a suspended operation continues. Native settings are consumed only by their actual Java counterpart."
+        ],
+        "compatibilityConsequences": "setRetriesToAttempt counts native attempts; maxRetries is a separate JS host extension and is not a native alias.",
+        "authorityReferences": [
+          "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
+          "docs/compatibility/behavior-profiles.md"
+        ],
+        "rationaleReferences": [
+          "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
+        ],
+        "testCaseReferences": [
+          "model/behaviorProfile.test.js",
+          "io/node/nodeDocumentLoader.test.js",
+          "internal/parsing/xml/behaviorXml.test.js"
+        ],
+        "requirementIds": ["REQ-001", "REQ-004", "REQ-008"],
+        "acceptanceCriterionIds": ["AC-001", "AC-004", "AC-008"],
+        "qualityScenarioIds": ["QA-001", "QA-004"],
+        "sliceIds": ["SLICE-002"]
+      },
+      {
+        "decisionId": "BEHAVIOR-WRITER-CONFIGURATION",
+        "apiMembers": [
+          "OWLOntologyWriterConfiguration",
+          "OWLOntologyManager.setOntologyWriterConfiguration"
+        ],
+        "behaviorRelationship": "profile-specific",
+        "decisionStatus": "accepted",
+        "implementationStatus": "development-tested",
+        "decisionOwnerRole": "repository-owner",
+        "acceptanceReference": "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "observableBehavior": "Changed setter copies, no-op identity, accepted integers and save-time setting capture.",
+        "applicability": "The selected current public members and their declared host/structural adaptations; this row does not admit the complete compatibility profile.",
+        "preconditions": [
+          "Explicit selected behavior profile; omitted selection is normative-v1.",
+          "Genuine matched API arguments and any caller authorization required by the selected resource boundary."
+        ],
+        "javaExpectation": {
+          "behaviorProfileId": "java-owlapi-5.5.1",
+          "expectedOutcome": "Changed copies reset indent size to 4, banners to true and labels-as-banner to false; no-op setters retain identity. Negative Java integers survive configuration and fail or act at the native consumer.",
+          "oracleProbeIds": [
+            "ObserveBehaviorContracts",
+            "ObserveStorageContracts"
+          ]
+        },
+        "normativeExpectation": {
+          "behaviorProfileId": "normative-v1",
+          "expectedOutcome": "Copies preserve unrelated options and validate normative bounds. Save captures one immutable configuration before asynchronous work.",
+          "contractReference": "docs/compatibility/behavior-profiles.md"
+        },
+        "postconditions": [
+          "A later manager configuration replacement does not alter an already-started save."
+        ],
+        "compatibilityConsequences": "Fluent chains can produce different settings between profiles because the Java reset quirk is observable.",
+        "authorityReferences": [
+          "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
+          "docs/compatibility/behavior-profiles.md"
+        ],
+        "rationaleReferences": [
+          "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
+        ],
+        "testCaseReferences": [
+          "model/behaviorProfile.test.js",
+          "model/behaviorStorage.test.js"
+        ],
+        "requirementIds": ["REQ-001", "REQ-004", "REQ-007"],
+        "acceptanceCriterionIds": ["AC-001", "AC-004", "AC-007"],
+        "qualityScenarioIds": ["QA-002", "QA-004"],
+        "sliceIds": ["SLICE-002"]
+      },
+      {
+        "decisionId": "BEHAVIOR-LITERAL-CONSTRUCTION",
+        "apiMembers": ["OWLDataFactory.getOWLLiteral"],
+        "behaviorRelationship": "profile-specific",
+        "decisionStatus": "accepted",
+        "implementationStatus": "development-tested",
+        "decisionOwnerRole": "repository-owner",
+        "acceptanceReference": "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "observableBehavior": "Typed lexical canonicalization, integer/float parsing and language argument treatment.",
+        "applicability": "The selected current public members and their declared host/structural adaptations; this row does not admit the complete compatibility profile.",
+        "preconditions": [
+          "Explicit selected behavior profile; omitted selection is normative-v1.",
+          "Genuine matched API arguments and any caller authorization required by the selected resource boundary."
+        ],
+        "javaExpectation": {
+          "behaviorProfileId": "java-owlapi-5.5.1",
+          "expectedOutcome": "Use released Java lexical results, signed integer ranges, Unicode decimal digits, JDK float/double rounding, ASCII trim, language lowercasing and PlainLiteral last-at-sign handling.",
+          "oracleProbeIds": [
+            "ObserveBehaviorContracts",
+            "ObserveLanguageProfileSemantics"
+          ]
+        },
+        "normativeExpectation": {
+          "behaviorProfileId": "normative-v1",
+          "expectedOutcome": "Preserve the adopted normative lexical construction contract and its existing datatype authority.",
+          "contractReference": "docs/compatibility/behavior-profiles.md"
+        },
+        "postconditions": [
+          "Equal structural values retain shared equality and hashing; the construction policy selects their actual lexical content."
+        ],
+        "compatibilityConsequences": "A Java user receives the native constructed literal rather than a merely datatype-equivalent lexical string.",
+        "authorityReferences": [
+          "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
+          "docs/compatibility/behavior-profiles.md"
+        ],
+        "rationaleReferences": [
+          "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
+        ],
+        "testCaseReferences": ["model/behaviorLiterals.test.js"],
+        "requirementIds": ["REQ-001", "REQ-003", "REQ-004"],
+        "acceptanceCriterionIds": ["AC-001", "AC-003", "AC-004"],
+        "qualityScenarioIds": ["QA-007"],
+        "sliceIds": ["SLICE-003"]
+      },
+      {
+        "decisionId": "BEHAVIOR-MUTATION-PUBLICATION",
+        "apiMembers": [
+          "OWLOntologyManager.applyChange",
+          "OWLOntologyManager.applyChanges",
+          "OWLOntologyManager.addAxiom",
+          "OWLOntologyManager.removeAxiom"
+        ],
+        "behaviorRelationship": "profile-specific",
+        "decisionStatus": "accepted",
+        "implementationStatus": "development-tested",
+        "decisionOwnerRole": "repository-owner",
+        "acceptanceReference": "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "observableBehavior": "Batch return values, no-op/net-zero sequences and effects preceding failure.",
+        "applicability": "The selected current public members and their declared host/structural adaptations; this row does not admit the complete compatibility profile.",
+        "preconditions": [
+          "Explicit selected behavior profile; omitted selection is normative-v1.",
+          "Genuine matched API arguments and any caller authorization required by the selected resource boundary."
+        ],
+        "javaExpectation": {
+          "behaviorProfileId": "java-owlapi-5.5.1",
+          "expectedOutcome": "Apply changes sequentially, return ChangeApplied and retain effects before a later collision. A net-zero enacted batch can return SUCCESSFULLY.",
+          "oracleProbeIds": ["ObserveMutationContracts"]
+        },
+        "normativeExpectation": {
+          "behaviorProfileId": "normative-v1",
+          "expectedOutcome": "Preflight and atomically publish a batch, returning boolean; failure preserves the promised ontology and index state.",
+          "contractReference": "docs/compatibility/behavior-profiles.md"
+        },
+        "postconditions": [
+          "Mixed-profile mutation fails before any mutation. Native ID-keyed annotation filtering remains with the initiating Java manager."
+        ],
+        "compatibilityConsequences": "Callers must handle Java partial effects and ChangeApplied rather than assume a transactional boolean.",
+        "authorityReferences": [
+          "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
+          "docs/compatibility/behavior-profiles.md"
+        ],
+        "rationaleReferences": [
+          "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
+        ],
+        "testCaseReferences": ["model/behaviorMutation.test.js"],
+        "requirementIds": ["REQ-001", "REQ-005", "REQ-006"],
+        "acceptanceCriterionIds": ["AC-001", "AC-005", "AC-006"],
+        "qualityScenarioIds": ["QA-002", "QA-004"],
+        "sliceIds": ["SLICE-003"]
+      },
+      {
+        "decisionId": "BEHAVIOR-FOREIGN-MANAGER-MUTATION",
+        "apiMembers": [
+          "OWLOntologyManager.applyChange",
+          "OWLOntologyManager.addAxiom",
+          "SetOntologyID"
+        ],
+        "behaviorRelationship": "profile-specific",
+        "decisionStatus": "accepted",
+        "implementationStatus": "development-tested",
+        "decisionOwnerRole": "repository-owner",
+        "acceptanceReference": "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "observableBehavior": "Same-profile foreign targets, captured old IDs, equal-axiom collisions and retained owner indexes.",
+        "applicability": "The selected current public members and their declared host/structural adaptations; this row does not admit the complete compatibility profile.",
+        "preconditions": [
+          "Explicit selected behavior profile; omitted selection is normative-v1.",
+          "Genuine matched API arguments and any caller authorization required by the selected resource boundary."
+        ],
+        "javaExpectation": {
+          "behaviorProfileId": "java-owlapi-5.5.1",
+          "expectedOutcome": "Permit observed foreign mutation without transferring ownership; preserve the owning manager old-ID index and native captured-change behavior.",
+          "oracleProbeIds": ["ObserveMutationContracts"]
+        },
+        "normativeExpectation": {
+          "behaviorProfileId": "normative-v1",
+          "expectedOutcome": "Reject foreign targets before mutation and enforce the owning manager identity/index contract.",
+          "contractReference": "docs/compatibility/behavior-profiles.md"
+        },
+        "postconditions": [
+          "A Java operation never silently re-parents the source ontology; mixed profiles reject before effects."
+        ],
+        "compatibilityConsequences": "Java native index quirks remain observable and cannot be silently normalized.",
+        "authorityReferences": [
+          "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
+          "docs/compatibility/behavior-profiles.md"
+        ],
+        "rationaleReferences": [
+          "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
+        ],
+        "testCaseReferences": ["model/behaviorMutation.test.js"],
+        "requirementIds": ["REQ-001", "REQ-005", "REQ-006"],
+        "acceptanceCriterionIds": ["AC-001", "AC-005", "AC-006"],
+        "qualityScenarioIds": ["QA-002", "QA-004"],
+        "sliceIds": ["SLICE-003"]
+      },
+      {
+        "decisionId": "BEHAVIOR-ONTOLOGY-COPY",
+        "apiMembers": ["OWLOntologyMerger.createMergedOntology"],
+        "behaviorRelationship": "profile-specific",
+        "decisionStatus": "accepted",
+        "implementationStatus": "development-tested",
+        "decisionOwnerRole": "repository-owner",
+        "acceptanceReference": "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "observableBehavior": "Provider query timing, destination identity conflict, copied contents and failed-copy publication.",
+        "applicability": "The selected current public members and their declared host/structural adaptations; this row does not admit the complete compatibility profile.",
+        "preconditions": [
+          "Explicit selected behavior profile; omitted selection is normative-v1.",
+          "Genuine matched API arguments and any caller authorization required by the selected resource boundary."
+        ],
+        "javaExpectation": {
+          "behaviorProfileId": "java-owlapi-5.5.1",
+          "expectedOutcome": "Create the destination-owned target before querying the provider, copy direct axioms and retain copied axioms if later provider iteration fails. Identity collision prevents the provider call.",
+          "oracleProbeIds": ["ObserveMutationContracts"]
+        },
+        "normativeExpectation": {
+          "behaviorProfileId": "normative-v1",
+          "expectedOutcome": "Validate a complete source snapshot before creating the target. Failed provider iteration publishes no destination ontology.",
+          "contractReference": "docs/compatibility/behavior-profiles.md"
+        },
+        "postconditions": [
+          "Both profiles create a new destination-owned object and preserve source identity, state and ownership. Explicit mixed-profile copies use destination semantics."
+        ],
+        "compatibilityConsequences": "A failed Java copy can leave a fully destination-owned partial ontology; this is not ownership transfer.",
+        "authorityReferences": [
+          "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
+          "docs/compatibility/behavior-profiles.md"
+        ],
+        "rationaleReferences": [
+          "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
+        ],
+        "testCaseReferences": [
+          "util/behaviorMerger.test.js",
+          "util/owlOntologyMerger.test.js"
+        ],
+        "requirementIds": ["REQ-001", "REQ-005", "REQ-006"],
+        "acceptanceCriterionIds": ["AC-001", "AC-005", "AC-006"],
+        "qualityScenarioIds": ["QA-002", "QA-004"],
+        "sliceIds": ["SLICE-003"]
+      },
+      {
+        "decisionId": "BEHAVIOR-LOAD-PUBLICATION",
+        "apiMembers": [
+          "OWLOntologyManager.loadOntologyFromOntologyDocument",
+          "OWLOntologyManager.loadOntologyGraphFromOntologyDocument"
+        ],
+        "behaviorRelationship": "profile-specific",
+        "decisionStatus": "accepted",
+        "implementationStatus": "development-tested",
+        "decisionOwnerRole": "repository-owner",
+        "acceptanceReference": "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "observableBehavior": "Root/import visibility, failed roots, retained successful children and requested-import/configuration state.",
+        "applicability": "The selected current public members and their declared host/structural adaptations; this row does not admit the complete compatibility profile.",
+        "preconditions": [
+          "Explicit selected behavior profile; omitted selection is normative-v1.",
+          "Genuine matched API arguments and any caller authorization required by the selected resource boundary."
+        ],
+        "javaExpectation": {
+          "behaviorProfileId": "java-owlapi-5.5.1",
+          "expectedOutcome": "Publish per document, expose native in-progress visibility, withdraw a failed root while retaining native successful children, request markers and ID-keyed configuration effects.",
+          "oracleProbeIds": [
+            "ObserveLoadingContracts",
+            "ObserveMutationContracts"
+          ]
+        },
+        "normativeExpectation": {
+          "behaviorProfileId": "normative-v1",
+          "expectedOutcome": "Publish the completed graph atomically and preserve the prior graph/index/configuration state on failure.",
+          "contractReference": "docs/compatibility/behavior-profiles.md"
+        },
+        "postconditions": [
+          "Suspended continuations retain their initiating context; denied access never receives a grant from another manager."
+        ],
+        "compatibilityConsequences": "Retry behavior and inspection of manager contents after failure follow the selected profile.",
+        "authorityReferences": [
+          "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
+          "docs/compatibility/behavior-profiles.md"
+        ],
+        "rationaleReferences": [
+          "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
+        ],
+        "testCaseReferences": [
+          "model/behaviorLoading.test.js",
+          "model/behaviorMutation.test.js"
+        ],
+        "requirementIds": ["REQ-001", "REQ-004", "REQ-005", "REQ-006"],
+        "acceptanceCriterionIds": ["AC-001", "AC-004", "AC-005", "AC-006"],
+        "qualityScenarioIds": ["QA-002", "QA-004"],
+        "sliceIds": ["SLICE-004"]
+      },
+      {
+        "decisionId": "BEHAVIOR-STORAGE-TARGET",
+        "apiMembers": [
+          "OWLOntologyManager.saveOntology",
+          "StringDocumentTarget.toString"
+        ],
+        "behaviorRelationship": "profile-specific",
+        "decisionStatus": "accepted",
+        "implementationStatus": "development-tested",
+        "decisionOwnerRole": "repository-owner",
+        "acceptanceReference": "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "observableBehavior": "Repeated save, per-format presentation and failure output.",
+        "applicability": "The selected current public members and their declared host/structural adaptations; this row does not admit the complete compatibility profile.",
+        "preconditions": [
+          "Explicit selected behavior profile; omitted selection is normative-v1.",
+          "Genuine matched API arguments and any caller authorization required by the selected resource boundary."
+        ],
+        "javaExpectation": {
+          "behaviorProfileId": "java-owlapi-5.5.1",
+          "expectedOutcome": "Append to reused targets and retain the released partial prefix on qualified renderer failures; consume writer options only where the native storer does.",
+          "oracleProbeIds": ["ObserveStorageContracts"]
+        },
+        "normativeExpectation": {
+          "behaviorProfileId": "normative-v1",
+          "expectedOutcome": "Replace with one complete rendered document after success; failure preserves existing target text.",
+          "contractReference": "docs/compatibility/behavior-profiles.md"
+        },
+        "postconditions": [
+          "No public incremental Writer is added. All exposed formats retain their selected target and failure contract."
+        ],
+        "compatibilityConsequences": "Target contents after repeated/failed saves differ intentionally under independently accepted contracts.",
+        "authorityReferences": [
+          "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
+          "docs/compatibility/behavior-profiles.md"
+        ],
+        "rationaleReferences": [
+          "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
+        ],
+        "testCaseReferences": ["model/behaviorStorage.test.js"],
+        "requirementIds": ["REQ-001", "REQ-004", "REQ-007"],
+        "acceptanceCriterionIds": ["AC-001", "AC-004", "AC-007"],
+        "qualityScenarioIds": ["QA-002", "QA-004"],
+        "sliceIds": ["SLICE-005"]
+      },
+      {
+        "decisionId": "BEHAVIOR-STORAGE-PARAMETERS",
+        "apiMembers": [
+          "OWLDocumentFormat.withParameter",
+          "OWLOntologyManager.saveOntology"
+        ],
+        "behaviorRelationship": "profile-specific",
+        "decisionStatus": "accepted",
+        "implementationStatus": "development-tested",
+        "decisionOwnerRole": "repository-owner",
+        "acceptanceReference": "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "observableBehavior": "Unknown parameters, native parameter types and deferred consumption.",
+        "applicability": "The selected current public members and their declared host/structural adaptations; this row does not admit the complete compatibility profile.",
+        "preconditions": [
+          "Explicit selected behavior profile; omitted selection is normative-v1.",
+          "Genuine matched API arguments and any caller authorization required by the selected resource boundary."
+        ],
+        "javaExpectation": {
+          "behaviorProfileId": "java-owlapi-5.5.1",
+          "expectedOutcome": "Ignore unconsumed parameters; evaluate native force-xsd-string and presentation options only at the observed use site, preserving null/wrong-type timing.",
+          "oracleProbeIds": ["ObserveStorageContracts"]
+        },
+        "normativeExpectation": {
+          "behaviorProfileId": "normative-v1",
+          "expectedOutcome": "Reject unsupported parameter keys/types according to the adopted explicit storage contract.",
+          "contractReference": "docs/compatibility/behavior-profiles.md"
+        },
+        "postconditions": [
+          "A getter accepting a value is not proof that every format consumes it."
+        ],
+        "compatibilityConsequences": "Callers retain native defaults and timing instead of a new JS validation boundary.",
+        "authorityReferences": [
+          "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
+          "docs/compatibility/behavior-profiles.md"
+        ],
+        "rationaleReferences": [
+          "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
+        ],
+        "testCaseReferences": ["model/behaviorStorage.test.js"],
+        "requirementIds": ["REQ-001", "REQ-003", "REQ-004", "REQ-007"],
+        "acceptanceCriterionIds": ["AC-001", "AC-003", "AC-004", "AC-007"],
+        "qualityScenarioIds": ["QA-002"],
+        "sliceIds": ["SLICE-005"]
+      },
+      {
+        "decisionId": "BEHAVIOR-RESOURCE-ACCEPTANCE",
+        "apiMembers": [
+          "OWLOntologyManager.loadOntologyFromOntologyDocument",
+          "OWLOntologyManager.saveOntology",
+          "ManchesterOWLSyntaxOWLObjectRendererImpl.render",
+          "OWL2DLProfile.checkOntology"
+        ],
+        "behaviorRelationship": "profile-specific",
+        "decisionStatus": "accepted",
+        "implementationStatus": "development-tested",
+        "decisionOwnerRole": "repository-owner",
+        "acceptanceReference": "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "observableBehavior": "Byte, token, structure, work, numeric, output and annotation limits at their consumers.",
+        "applicability": "The selected current public members and their declared host/structural adaptations; this row does not admit the complete compatibility profile.",
+        "preconditions": [
+          "Explicit selected behavior profile; omitted selection is normative-v1.",
+          "Genuine matched API arguments and any caller authorization required by the selected resource boundary."
+        ],
+        "javaExpectation": {
+          "behaviorProfileId": "java-owlapi-5.5.1",
+          "expectedOutcome": "No JS-only finite default narrows the Java domain; native XML/provider limits remain. Large valid fixtures cross the former 32 MiB and literal/depth limits.",
+          "oracleProbeIds": ["ObserveResourceContracts", "ObserveXmlContracts"]
+        },
+        "normativeExpectation": {
+          "behaviorProfileId": "normative-v1",
+          "expectedOutcome": "Retain documented explicit budgets and distinguish cancellation/resource exhaustion from an invalid ontology.",
+          "contractReference": "docs/compatibility/behavior-profiles.md"
+        },
+        "postconditions": [
+          "An incomplete OWL profile result cannot report a verified negative isInProfile verdict. Caller-selected limits retain their separate meaning."
+        ],
+        "compatibilityConsequences": "Java compatibility does not imply unlimited host memory or permission; process exhaustion remains a host constraint.",
+        "authorityReferences": [
+          "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
+          "docs/compatibility/behavior-profiles.md"
+        ],
+        "rationaleReferences": [
+          "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
+        ],
+        "testCaseReferences": [
+          "model/behaviorResources.test.js",
+          "internal/parsing/xml/behaviorXml.test.js"
+        ],
+        "requirementIds": ["REQ-001", "REQ-004", "REQ-008"],
+        "acceptanceCriterionIds": ["AC-001", "AC-004", "AC-008"],
+        "qualityScenarioIds": ["QA-001", "QA-006"],
+        "sliceIds": ["SLICE-007"]
+      },
+      {
+        "decisionId": "BEHAVIOR-XML-PROVIDER",
+        "apiMembers": [
+          "OWLOntologyLoaderConfiguration.setEntityExpansionLimit",
+          "OWLOntologyManager.loadOntologyFromOntologyDocument"
+        ],
+        "behaviorRelationship": "profile-specific",
+        "decisionStatus": "accepted",
+        "implementationStatus": "development-tested",
+        "decisionOwnerRole": "repository-owner",
+        "acceptanceReference": "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "observableBehavior": "DTD metadata, entity expansion, XML names, attribute counts and external declarations.",
+        "applicability": "The selected current public members and their declared host/structural adaptations; this row does not admit the complete compatibility profile.",
+        "preconditions": [
+          "Explicit selected behavior profile; omitted selection is normative-v1.",
+          "Genuine matched API arguments and any caller authorization required by the selected resource boundary."
+        ],
+        "javaExpectation": {
+          "behaviorProfileId": "java-owlapi-5.5.1",
+          "expectedOutcome": "Admit observed internal/parameter declarations and native defaults, enforce the selected JAXP bounds, and preserve the observed zero external fetches for admitted external declarations.",
+          "oracleProbeIds": ["ObserveXmlContracts"]
+        },
+        "normativeExpectation": {
+          "behaviorProfileId": "normative-v1",
+          "expectedOutcome": "Use the adopted hardened XML policy and its explicit entity/depth/byte budgets.",
+          "contractReference": "docs/compatibility/behavior-profiles.md"
+        },
+        "postconditions": [
+          "An external declaration does not itself authorize or perform file/network access. Recursive/malformed expansion fails under its actual policy."
+        ],
+        "compatibilityConsequences": "The Java profile preserves provider behavior rather than replacing it with a security-oriented parser default.",
+        "authorityReferences": [
+          "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
+          "docs/compatibility/behavior-profiles.md"
+        ],
+        "rationaleReferences": [
+          "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
+        ],
+        "testCaseReferences": ["internal/parsing/xml/behaviorXml.test.js"],
+        "requirementIds": ["REQ-001", "REQ-004", "REQ-008", "REQ-009"],
+        "acceptanceCriterionIds": ["AC-001", "AC-004", "AC-008", "AC-009"],
+        "qualityScenarioIds": ["QA-001", "QA-003"],
+        "sliceIds": ["SLICE-006"]
+      },
+      {
+        "decisionId": "BEHAVIOR-NODE-TRANSPORT",
+        "apiMembers": [
+          "NodeDocumentLoader.load",
+          "NodeDocumentLoader.authorize",
+          "OWLOntologyLoaderConfiguration.setConnectionTimeout",
+          "OWLOntologyLoaderConfiguration.setRetriesToAttempt"
+        ],
+        "behaviorRelationship": "profile-specific",
+        "decisionStatus": "accepted",
+        "implementationStatus": "development-tested",
+        "decisionOwnerRole": "repository-owner",
+        "acceptanceReference": "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "observableBehavior": "Real HTTP/file access, resolved destinations, attempts, connection timeout, redirects, credentials, compression and source base.",
+        "applicability": "The selected current public members and their declared host/structural adaptations; this row does not admit the complete compatibility profile.",
+        "preconditions": [
+          "Explicit selected behavior profile; omitted selection is normative-v1.",
+          "Genuine matched API arguments and any caller authorization required by the selected resource boundary."
+        ],
+        "javaExpectation": {
+          "behaviorProfileId": "java-owlapi-5.5.1",
+          "expectedOutcome": "Use native connection-only timeout and released attempt/redirect behavior, original ontology document base, gzip/raw-DEFLATE/XZ and first ZIP entry behavior.",
+          "oracleProbeIds": [
+            "ObserveNetworkContracts",
+            "ObserveCompressionContracts"
+          ]
+        },
+        "normativeExpectation": {
+          "behaviorProfileId": "normative-v1",
+          "expectedOutcome": "Use explicit normative host budgets and redirect permission, final document base and the documented adapter capability.",
+          "contractReference": "docs/compatibility/behavior-profiles.md"
+        },
+        "postconditions": [
+          "Every concrete request, DNS resolution, pinned address connection and resolved file read requires current caller authorization. Cancellation closes active streams."
+        ],
+        "compatibilityConsequences": "The Node-only adapter is opt-in. Browser parsing of supplied documents is supported; browser external transport parity is explicitly unqualified.",
+        "authorityReferences": [
+          "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
+          "docs/compatibility/behavior-profiles.md"
+        ],
+        "rationaleReferences": [
+          "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
+        ],
+        "testCaseReferences": ["io/node/nodeDocumentLoader.test.js"],
+        "requirementIds": [
+          "REQ-001",
+          "REQ-004",
+          "REQ-008",
+          "REQ-009",
+          "REQ-013"
+        ],
+        "acceptanceCriterionIds": [
+          "AC-001",
+          "AC-004",
+          "AC-008",
+          "AC-009",
+          "AC-013"
+        ],
+        "qualityScenarioIds": ["QA-001", "QA-003", "QA-006"],
+        "sliceIds": ["SLICE-006"]
+      },
+      {
+        "decisionId": "BEHAVIOR-JSONLD-CONTEXT-PROVIDER",
+        "apiMembers": ["OWLOntologyManager.loadOntologyFromOntologyDocument"],
+        "behaviorRelationship": "profile-specific",
+        "decisionStatus": "accepted",
+        "implementationStatus": "development-tested",
+        "decisionOwnerRole": "repository-owner",
+        "acceptanceReference": "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "observableBehavior": "Native whitelist, context-count control, authority-owned caching and the actual separate context HTTP consumer.",
+        "applicability": "The selected current public members and their declared host/structural adaptations; this row does not admit the complete compatibility profile.",
+        "preconditions": [
+          "Explicit selected behavior profile; omitted selection is normative-v1.",
+          "Genuine matched API arguments and any caller authorization required by the selected resource boundary."
+        ],
+        "javaExpectation": {
+          "behaviorProfileId": "java-owlapi-5.5.1",
+          "expectedOutcome": "Use the released 25-IRI whitelist, provider count 257 and one-hour successful cache; coalesce same-authority pending loads and evict failures. Context HTTP uses ten total requests, only status 200, no ontology-loader auth/timeout settings, final base and native media/Link/encoding rules.",
+          "oracleProbeIds": ["ObserveJsonLdProvider", "ObserveJsonLdTransport"]
+        },
+        "normativeExpectation": {
+          "behaviorProfileId": "normative-v1",
+          "expectedOutcome": "Remote contexts are off by default; enabled access uses normative URL safety, explicit host budgets, no Java cache and provider count 11.",
+          "contractReference": "docs/compatibility/behavior-profiles.md"
+        },
+        "postconditions": [
+          "Cache hits are reauthorized and never share data across host authority objects. Context Link headers do not add the non-Java remote-context request that stock jsonld.js would make."
+        ],
+        "compatibilityConsequences": "The approved maintained jsonld build exposes the provider count control. RDF4J cache capacity 1000 is unreachable through the fixed 25-entry matched OWLAPI whitelist; no new public whitelist override is introduced.",
+        "authorityReferences": [
+          "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
+          "docs/compatibility/behavior-profiles.md"
+        ],
+        "rationaleReferences": [
+          "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
+        ],
+        "testCaseReferences": [
+          "internal/parsing/jsonld/behaviorJsonLd.test.js",
+          "io/node/nodeDocumentLoader.test.js"
+        ],
+        "requirementIds": ["REQ-001", "REQ-004", "REQ-008", "REQ-009"],
+        "acceptanceCriterionIds": ["AC-001", "AC-004", "AC-008", "AC-009"],
+        "qualityScenarioIds": ["QA-001", "QA-003", "QA-004"],
+        "sliceIds": ["SLICE-006"]
+      },
+      {
+        "decisionId": "BEHAVIOR-JSONLD-FIRST-STRUCTURE",
+        "apiMembers": ["OWLOntologyManager.loadOntologyFromOntologyDocument"],
+        "behaviorRelationship": "profile-specific",
+        "decisionStatus": "accepted",
+        "implementationStatus": "development-tested",
+        "decisionOwnerRole": "repository-owner",
+        "acceptanceReference": "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "observableBehavior": "Accepted trailing content and Unicode detection at JSON document acquisition.",
+        "applicability": "The selected current public members and their declared host/structural adaptations; this row does not admit the complete compatibility profile.",
+        "preconditions": [
+          "Explicit selected behavior profile; omitted selection is normative-v1.",
+          "Genuine matched API arguments and any caller authorization required by the selected resource boundary."
+        ],
+        "javaExpectation": {
+          "behaviorProfileId": "java-owlapi-5.5.1",
+          "expectedOutcome": "Consume the first JSON object/array as Jakarta JSON-P does, use native character validation on that structure and stop before an unused stream tail; context bytes autodetect UTF-8/16/32 independently of HTTP charset.",
+          "oracleProbeIds": ["ObserveJsonLdTransport"]
+        },
+        "normativeExpectation": {
+          "behaviorProfileId": "normative-v1",
+          "expectedOutcome": "Require complete valid JSON text for supplied documents under the normative contract.",
+          "contractReference": "docs/compatibility/behavior-profiles.md"
+        },
+        "postconditions": [
+          "Invalid JSON within the first structure still fails; ignoring trailing bytes is not permissive JSON grammar."
+        ],
+        "compatibilityConsequences": "A Java migration retains native acceptance rather than receiving a new end-of-document rejection.",
+        "authorityReferences": [
+          "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
+          "docs/compatibility/behavior-profiles.md"
+        ],
+        "rationaleReferences": [
+          "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
+        ],
+        "testCaseReferences": [
+          "internal/parsing/jsonld/behaviorJsonLd.test.js",
+          "io/node/nodeDocumentLoader.test.js"
+        ],
+        "requirementIds": ["REQ-001", "REQ-003", "REQ-008"],
+        "acceptanceCriterionIds": ["AC-001", "AC-003", "AC-008"],
+        "qualityScenarioIds": ["QA-001"],
+        "sliceIds": ["SLICE-007"]
+      },
+      {
+        "decisionId": "BEHAVIOR-PARSER-SELECTION",
+        "apiMembers": ["OWLOntologyManager.loadOntologyFromOntologyDocument"],
+        "behaviorRelationship": "profile-specific",
+        "decisionStatus": "accepted",
+        "implementationStatus": "development-tested",
+        "decisionOwnerRole": "repository-owner",
+        "acceptanceReference": "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "observableBehavior": "Supported parser factory order, explicit hints, empty documents and aggregated failures.",
+        "applicability": "The selected current public members and their declared host/structural adaptations; this row does not admit the complete compatibility profile.",
+        "preconditions": [
+          "Explicit selected behavior profile; omitted selection is normative-v1.",
+          "Genuine matched API arguments and any caller authorization required by the selected resource boundary."
+        ],
+        "javaExpectation": {
+          "behaviorProfileId": "java-owlapi-5.5.1",
+          "expectedOutcome": "Use released priority/order on the selected exposed syntaxes, aggregate attempted parser failures and accept the observed empty Turtle document.",
+          "oracleProbeIds": ["ObserveParserSelection"]
+        },
+        "normativeExpectation": {
+          "behaviorProfileId": "normative-v1",
+          "expectedOutcome": "Retain exact explicit-format selection and normative syntax/error policy.",
+          "contractReference": "docs/compatibility/behavior-profiles.md"
+        },
+        "postconditions": [
+          "Unavailable Java parser formats remain listed omissions, never fabricated successful parsers. Host authorization is not reset by fallback."
+        ],
+        "compatibilityConsequences": "Structural API omissions are separate from hidden resource/validation restrictions on matched formats.",
+        "authorityReferences": [
+          "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
+          "docs/compatibility/behavior-profiles.md"
+        ],
+        "rationaleReferences": [
+          "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
+        ],
+        "testCaseReferences": [
+          "model/behaviorParserSelection.test.js",
+          "model/behaviorLoading.test.js"
+        ],
+        "requirementIds": ["REQ-001", "REQ-004", "REQ-008"],
+        "acceptanceCriterionIds": ["AC-001", "AC-004", "AC-008"],
+        "qualityScenarioIds": ["QA-001", "QA-004"],
+        "sliceIds": ["SLICE-007"]
+      },
+      {
+        "decisionId": "BEHAVIOR-RDF-METADATA",
+        "apiMembers": [
+          "RDFParserMetaData.getHeaderState",
+          "RDFParserMetaData.getTripleCount"
+        ],
+        "behaviorRelationship": "profile-specific",
+        "decisionStatus": "accepted",
+        "implementationStatus": "development-tested",
+        "decisionOwnerRole": "repository-owner",
+        "acceptanceReference": "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "observableBehavior": "Metadata header status and duplicate statement counting.",
+        "applicability": "The selected current public members and their declared host/structural adaptations; this row does not admit the complete compatibility profile.",
+        "preconditions": [
+          "Explicit selected behavior profile; omitted selection is normative-v1.",
+          "Genuine matched API arguments and any caller authorization required by the selected resource boundary."
+        ],
+        "javaExpectation": {
+          "behaviorProfileId": "java-owlapi-5.5.1",
+          "expectedOutcome": "Report the released consumer constant PARSED_ONE_HEADER and count source statement occurrences before RDF dataset deduplication.",
+          "oracleProbeIds": ["ObserveParserSelection"]
+        },
+        "normativeExpectation": {
+          "behaviorProfileId": "normative-v1",
+          "expectedOutcome": "Count distinct explicit headers and unique triples in the selected reconstruction graph.",
+          "contractReference": "docs/compatibility/behavior-profiles.md"
+        },
+        "postconditions": [
+          "Metadata describes the completed parse and remains historical after mutation; it is not proof of complete source preservation."
+        ],
+        "compatibilityConsequences": "Native metadata quirks are preserved separately from actual graph/ontology contents.",
+        "authorityReferences": [
+          "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
+          "docs/compatibility/behavior-profiles.md"
+        ],
+        "rationaleReferences": [
+          "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
+        ],
+        "testCaseReferences": [
+          "model/behaviorParserSelection.test.js",
+          "io/rdfParserMetaData.test.js",
+          "model/rdfConsumerCompatibility.test.js"
+        ],
+        "requirementIds": ["REQ-001", "REQ-003", "REQ-004"],
+        "acceptanceCriterionIds": ["AC-001", "AC-003", "AC-004"],
+        "qualityScenarioIds": ["QA-007"],
+        "sliceIds": ["SLICE-007"]
+      },
+      {
+        "decisionId": "BEHAVIOR-SEARCH-CONSUMPTION",
+        "apiMembers": [
+          "EntitySearcher.getSuperClasses",
+          "EntitySearcher.getSubClasses",
+          "EntitySearcher.getAnnotationObjects"
+        ],
+        "behaviorRelationship": "shared",
+        "decisionStatus": "accepted",
+        "implementationStatus": "development-tested",
+        "decisionOwnerRole": "repository-owner",
+        "acceptanceReference": "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "observableBehavior": "Single-use lazy iteration, source timing and callback/error phases across the selected EntitySearcher family.",
+        "applicability": "The selected current public members and their declared host/structural adaptations; this row does not admit the complete compatibility profile.",
+        "preconditions": [
+          "Explicit selected behavior profile; omitted selection is normative-v1.",
+          "Genuine matched API arguments and any caller authorization required by the selected resource boundary."
+        ],
+        "javaExpectation": {
+          "behaviorProfileId": "java-owlapi-5.5.1",
+          "expectedOutcome": "Defer source traversal until consumption and reject a second terminal consumption as the released Java Stream contract requires.",
+          "oracleProbeIds": ["ObserveQueryTiming"]
+        },
+        "normativeExpectation": {
+          "behaviorProfileId": "normative-v1",
+          "expectedOutcome": "Use the same deferred single-use query contract where no normative authority prescribes a difference.",
+          "contractReference": "docs/compatibility/behavior-profiles.md"
+        },
+        "postconditions": [
+          "The creating context remains authoritative and snapshots occur at the measured native call/consumption boundary."
+        ],
+        "compatibilityConsequences": "Callers must materialize once if they need repeat traversal. Existing eager array assumptions require migration.",
+        "authorityReferences": [
+          "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
+          "docs/compatibility/behavior-profiles.md"
+        ],
+        "rationaleReferences": [
+          "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
+        ],
+        "testCaseReferences": [
+          "search/behaviorTiming.test.js",
+          "search/entitySearcher.test.js"
+        ],
+        "requirementIds": ["REQ-001", "REQ-002", "REQ-010"],
+        "acceptanceCriterionIds": ["AC-001", "AC-002", "AC-010"],
+        "qualityScenarioIds": ["QA-004"],
+        "sliceIds": ["SLICE-008"]
+      },
+      {
+        "decisionId": "BEHAVIOR-CLOSURE-PROVIDER",
+        "apiMembers": [
+          "OWLOntologyImportsClosureSetProvider.ontologies",
+          "OWLOntologyManager.importsClosure"
+        ],
+        "behaviorRelationship": "shared",
+        "decisionStatus": "accepted",
+        "implementationStatus": "development-tested",
+        "decisionOwnerRole": "repository-owner",
+        "acceptanceReference": "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "observableBehavior": "Provider construction versus query and mutation visibility.",
+        "applicability": "The selected current public members and their declared host/structural adaptations; this row does not admit the complete compatibility profile.",
+        "preconditions": [
+          "Explicit selected behavior profile; omitted selection is normative-v1.",
+          "Genuine matched API arguments and any caller authorization required by the selected resource boundary."
+        ],
+        "javaExpectation": {
+          "behaviorProfileId": "java-owlapi-5.5.1",
+          "expectedOutcome": "Construction does not query closure; each ontologies call reads the current closure and returns that call snapshot in the JS Set adaptation.",
+          "oracleProbeIds": ["ObserveQueryTiming"]
+        },
+        "normativeExpectation": {
+          "behaviorProfileId": "normative-v1",
+          "expectedOutcome": "Use the same live-per-call provider contract and defensive returned membership.",
+          "contractReference": "docs/compatibility/behavior-profiles.md"
+        },
+        "postconditions": [
+          "The returned collection does not change when later manager mutations occur."
+        ],
+        "compatibilityConsequences": "Constructor-time snapshots are removed; Java/JS collection type adaptation remains explicit.",
+        "authorityReferences": [
+          "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
+          "docs/compatibility/behavior-profiles.md"
+        ],
+        "rationaleReferences": [
+          "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
+        ],
+        "testCaseReferences": [
+          "util/owlOntologyImportsClosureSetProvider.test.js",
+          "search/behaviorTiming.test.js"
+        ],
+        "requirementIds": ["REQ-001", "REQ-002", "REQ-010"],
+        "acceptanceCriterionIds": ["AC-001", "AC-002", "AC-010"],
+        "qualityScenarioIds": ["QA-004"],
+        "sliceIds": ["SLICE-008"]
+      },
+      {
+        "decisionId": "BEHAVIOR-OWL-LANGUAGE-PROFILES",
+        "apiMembers": [
+          "OWL2DLProfile.checkOntology",
+          "OWL2ELProfile.checkOntology",
+          "OWL2QLProfile.checkOntology",
+          "OWL2RLProfile.checkOntology",
+          "OWLProfileReport.isInProfile"
+        ],
+        "behaviorRelationship": "profile-specific",
+        "decisionStatus": "accepted",
+        "implementationStatus": "development-tested",
+        "decisionOwnerRole": "repository-owner",
+        "acceptanceReference": "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "observableBehavior": "Native datatype patterns, profile rule scope, exceptional outcomes and resource verification.",
+        "applicability": "The selected current public members and their declared host/structural adaptations; this row does not admit the complete compatibility profile.",
+        "preconditions": [
+          "Explicit selected behavior profile; omitted selection is normative-v1.",
+          "Genuine matched API arguments and any caller authorization required by the selected resource boundary."
+        ],
+        "javaExpectation": {
+          "behaviorProfileId": "java-owlapi-5.5.1",
+          "expectedOutcome": "Apply released pattern tables, datatype sets and observed DL/EL/QL/RL rule scope and exception behavior without JS-only finite work/length defaults.",
+          "oracleProbeIds": [
+            "ObserveLanguageProfileSemantics",
+            "RunRC2Profiles"
+          ]
+        },
+        "normativeExpectation": {
+          "behaviorProfileId": "normative-v1",
+          "expectedOutcome": "Apply the frozen normative specification/project checks and explicit budgets, retaining verified versus unverified outcomes.",
+          "contractReference": "docs/compatibility/behavior-profiles.md"
+        },
+        "postconditions": [
+          "An exhausted assessment throws when asked for isInProfile instead of claiming semantic invalidity. Checker and ontology context must match."
+        ],
+        "compatibilityConsequences": "OWL language profile identity (DL/EL/QL/RL) is separate from behavior profile identity.",
+        "authorityReferences": [
+          "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/central-selected-parity.json",
+          "docs/compatibility/behavior-profiles.md"
+        ],
+        "rationaleReferences": [
+          "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
+        ],
+        "testCaseReferences": [
+          "profiles/behaviorProfiles.test.js",
+          "model/behaviorResources.test.js"
+        ],
+        "requirementIds": ["REQ-001", "REQ-003", "REQ-008", "REQ-010"],
+        "acceptanceCriterionIds": ["AC-001", "AC-003", "AC-008", "AC-010"],
+        "qualityScenarioIds": ["QA-001", "QA-007"],
+        "sliceIds": ["SLICE-008"]
+      },
+      {
+        "decisionId": "BEHAVIOR-LOCALITY",
+        "apiMembers": ["SyntacticLocalityModuleExtractor.extract"],
+        "behaviorRelationship": "shared",
+        "decisionStatus": "accepted",
+        "implementationStatus": "development-tested",
+        "decisionOwnerRole": "repository-owner",
+        "acceptanceReference": "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "observableBehavior": "Empty seed callback suppression, fixed-point results and default resource acceptance.",
+        "applicability": "The selected current public members and their declared host/structural adaptations; this row does not admit the complete compatibility profile.",
+        "preconditions": [
+          "Explicit selected behavior profile; omitted selection is normative-v1.",
+          "Genuine matched API arguments and any caller authorization required by the selected resource boundary."
+        ],
+        "javaExpectation": {
+          "behaviorProfileId": "java-owlapi-5.5.1",
+          "expectedOutcome": "An empty seed invokes no filter, and there is no undeclared JS default extraction budget.",
+          "oracleProbeIds": [
+            "RunRC2Locality",
+            "RunRC2LocalityFixedPoints",
+            "ObserveQueryTiming"
+          ]
+        },
+        "normativeExpectation": {
+          "behaviorProfileId": "normative-v1",
+          "expectedOutcome": "Preserve the independently qualified syntactic locality semantics and explicit caller controls.",
+          "contractReference": "docs/compatibility/behavior-profiles.md"
+        },
+        "postconditions": [
+          "No work exhaustion or cancellation is converted to an empty verified module."
+        ],
+        "compatibilityConsequences": "Explicit filter and iteration timing remain part of API compatibility.",
+        "authorityReferences": [
+          "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/central-selected-parity.json",
+          "docs/compatibility/behavior-profiles.md"
+        ],
+        "rationaleReferences": [
+          "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
+        ],
+        "testCaseReferences": [
+          "search/behaviorTiming.test.js",
+          "util/rc2ParityEdges.test.js"
+        ],
+        "requirementIds": ["REQ-001", "REQ-008", "REQ-010"],
+        "acceptanceCriterionIds": ["AC-001", "AC-008", "AC-010"],
+        "qualityScenarioIds": ["QA-001", "QA-004"],
+        "sliceIds": ["SLICE-008"]
+      },
+      {
+        "decisionId": "BEHAVIOR-INDIVIDUAL-ENUMERATION",
+        "apiMembers": [
+          "OWLDataFactory.getOWLObjectOneOf",
+          "OWLOntologyManager.loadOntologyFromOntologyDocument"
+        ],
+        "behaviorRelationship": "profile-specific",
+        "decisionStatus": "accepted",
+        "implementationStatus": "development-tested",
+        "decisionOwnerRole": "repository-owner",
+        "acceptanceReference": "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "observableBehavior": "Empty individual enumerations and anonymous OWL/XML operands.",
+        "applicability": "The selected current public members and their declared host/structural adaptations; this row does not admit the complete compatibility profile.",
+        "preconditions": [
+          "Explicit selected behavior profile; omitted selection is normative-v1.",
+          "Genuine matched API arguments and any caller authorization required by the selected resource boundary."
+        ],
+        "javaExpectation": {
+          "behaviorProfileId": "java-owlapi-5.5.1",
+          "expectedOutcome": "The factory permits an empty ObjectOneOf. OWL/XML omits anonymous operands and admits the observed empty result.",
+          "oracleProbeIds": ["ObserveParserSelection"]
+        },
+        "normativeExpectation": {
+          "behaviorProfileId": "normative-v1",
+          "expectedOutcome": "OWL 2 XML serialization section 3.4 requires one or more Individual operands, including anonymous individuals; the structural constructor requires one operand.",
+          "contractReference": "docs/compatibility/behavior-profiles.md"
+        },
+        "postconditions": [
+          "The profile choice does not mutate previously created immutable structural values."
+        ],
+        "compatibilityConsequences": "The older exact-revision expected-difference record remains historical; it is not an exemption for the Java behavior profile.",
+        "authorityReferences": [
+          "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
+          "docs/compatibility/behavior-profiles.md"
+        ],
+        "rationaleReferences": [
+          "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
+        ],
+        "testCaseReferences": ["model/behaviorParserSelection.test.js"],
+        "requirementIds": ["REQ-001", "REQ-004", "REQ-008"],
+        "acceptanceCriterionIds": ["AC-001", "AC-004", "AC-008"],
+        "qualityScenarioIds": ["QA-001", "QA-004"],
+        "sliceIds": ["SLICE-007"]
+      },
+      {
+        "decisionId": "BEHAVIOR-NAMED-DATATYPE-RESTRICTION",
+        "apiMembers": ["OWLOntologyManager.loadOntologyFromOntologyDocument"],
+        "behaviorRelationship": "profile-specific",
+        "decisionStatus": "accepted",
+        "implementationStatus": "development-tested",
+        "decisionOwnerRole": "repository-owner",
+        "acceptanceReference": "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "observableBehavior": "Compatible-mode reconstruction of named RDF datatype restrictions.",
+        "applicability": "The selected current public members and their declared host/structural adaptations; this row does not admit the complete compatibility profile.",
+        "preconditions": [
+          "Explicit selected behavior profile; omitted selection is normative-v1.",
+          "Genuine matched API arguments and any caller authorization required by the selected resource boundary."
+        ],
+        "javaExpectation": {
+          "behaviorProfileId": "java-owlapi-5.5.1",
+          "expectedOutcome": "No datatype definition is invented. Orphan literal facets remain anonymous annotation assertions under the native annotation-loading option.",
+          "oracleProbeIds": ["ObserveParserSelection"]
+        },
+        "normativeExpectation": {
+          "behaviorProfileId": "normative-v1",
+          "expectedOutcome": "The adopted compatible-mode recovery preserves the named restriction as a datatype definition under OWL 2 RDF-Based Semantics tables 5.7 and 5.9; strict structural mapping does not adopt this recovery.",
+          "contractReference": "docs/compatibility/behavior-profiles.md"
+        },
+        "postconditions": [
+          "The profile choice does not mutate previously created immutable structural values."
+        ],
+        "compatibilityConsequences": "The older exact-revision expected-difference record remains historical; it is not an exemption for the Java behavior profile.",
+        "authorityReferences": [
+          "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
+          "docs/compatibility/behavior-profiles.md"
+        ],
+        "rationaleReferences": [
+          "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
+        ],
+        "testCaseReferences": ["model/behaviorParserSelection.test.js"],
+        "requirementIds": ["REQ-001", "REQ-004", "REQ-008"],
+        "acceptanceCriterionIds": ["AC-001", "AC-004", "AC-008"],
+        "qualityScenarioIds": ["QA-001", "QA-004"],
+        "sliceIds": ["SLICE-007"]
+      }
+    ]
   }
 }

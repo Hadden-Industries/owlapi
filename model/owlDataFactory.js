@@ -1,3 +1,10 @@
+import { OntologyBehaviorContext } from "../internal/behavior/ontologyBehaviorContext.js";
+import { normalizeJavaTypedLiteral } from "../internal/model/javaLiteralConstruction.js";
+import { trimJavaStringWhitespace } from "../internal/model/javaStringTrim.js";
+const factoryBehaviorContexts = new WeakMap();
+export const readDataFactoryBehaviorDefinition = (factory) =>
+  factoryBehaviorContexts.get(factory)?.behaviorProfileDefinition;
+
 import {
   OWL_NAMESPACE,
   RDFS_NAMESPACE,
@@ -217,6 +224,18 @@ export class OWLDataFactory {
   // `factory.required-v1-constructors` plus factory.test.js.
   #entities = new Map();
 
+  /** Structural values remain profile-neutral; construction follows this contract. */
+  constructor({ behaviorProfileId } = {}) {
+    factoryBehaviorContexts.set(
+      this,
+      new OntologyBehaviorContext(behaviorProfileId),
+    );
+  }
+
+  getBehaviorProfileId() {
+    return readDataFactoryBehaviorDefinition(this).behaviorProfileId;
+  }
+
   getOWLClass(iri) {
     const normalizedIri = requireIri(iri, "iri");
     const key = `${OWLObjectKind.CLASS}:${normalizedIri.value}`;
@@ -359,10 +378,16 @@ export class OWLDataFactory {
     }
     let language = "";
     let datatype;
+    const constructionPolicy =
+      readDataFactoryBehaviorDefinition(this).literalConstructionPolicy;
     if (languageOrDatatype === undefined) {
       datatype = this.getOWLDatatype(IRI.create(XSD_NAMESPACE + "string"));
     } else if (typeof languageOrDatatype === "string") {
-      language = languageOrDatatype.toLowerCase();
+      language = (
+        constructionPolicy.trimsLanguageArgument
+          ? trimJavaStringWhitespace(languageOrDatatype)
+          : languageOrDatatype
+      ).toLowerCase();
       datatype = this.getOWLDatatype(
         IRI.create(
           language ? RDF_NAMESPACE + "langString" : XSD_NAMESPACE + "string",
@@ -378,6 +403,18 @@ export class OWLDataFactory {
         [OWLObjectKind.DATATYPE],
         "languageOrDatatype",
       );
+    }
+    if (
+      constructionPolicy.normalizesTypedLiterals &&
+      typeof languageOrDatatype !== "string"
+    ) {
+      const normalized = normalizeJavaTypedLiteral(
+        lexicalForm,
+        datatype.iri.value,
+      );
+      lexicalForm = normalized.lexicalForm;
+      language = normalized.language;
+      datatype = this.getOWLDatatype(IRI.create(normalized.datatypeIRI));
     }
     return new OWLStructuralObject(
       OWLObjectKind.LITERAL,
@@ -470,12 +507,14 @@ export class OWLDataFactory {
     );
   }
 
+  /** Java permits an empty enumeration; normative OWL 2 requires an operand. */
   getOWLObjectOneOf(individuals) {
     const normalized = requireKindSet(
       individuals,
       INDIVIDUAL_KINDS,
       "individuals",
-      1,
+      factoryBehaviorContexts.get(this).behaviorProfileDefinition
+        .individualEnumerationPolicy.minimumIndividualCount,
     );
     return new OWLStructuralObject(
       OWLObjectKind.OBJECT_ONE_OF,
@@ -1251,5 +1290,10 @@ export const createSourcePreservingDataFactory = (factory) => {
       "Source preservation requires the package OWLDataFactory",
     );
   }
-  return markSourcePreservingFactory(new OWLDataFactory());
+  return markSourcePreservingFactory(
+    new OWLDataFactory({
+      behaviorProfileId:
+        readDataFactoryBehaviorDefinition(factory).behaviorProfileId,
+    }),
+  );
 };

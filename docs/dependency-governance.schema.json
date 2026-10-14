@@ -296,7 +296,8 @@
             "DEVELOPMENT_OPTIONAL_DARWIN",
             "DEVELOPMENT_OPTIONAL_SBOM_XML_VALIDATOR",
             "DEVELOPMENT_TEST_RESOLVER",
-            "DEVELOPMENT_FILE_WATCHER"
+            "DEVELOPMENT_FILE_WATCHER",
+            "PRODUCTION_NODE_XZ_DECODER"
           ]
         },
         "lifecycleScript": {
@@ -386,6 +387,8 @@
             "IN_MEMORY_DATASET",
             "COMPLEX_SYNTAX_PARSER",
             "NETWORK_CAPABLE_JSONLD_PROCESSOR",
+            "NODE_ONLY_COMPRESSION_DECODER",
+            "NODE_ONLY_CHARACTER_DECODER",
             "NODE_ONLY_XML_PARSER"
           ]
         },

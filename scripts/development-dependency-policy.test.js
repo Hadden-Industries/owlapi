@@ -8,7 +8,7 @@ const lock = JSON.parse(readFileSync("package-lock.json", "utf8"));
 
 describe("development dependency and runtime eligibility", () => {
   test("floating minimums retain an exact reproducible root graph", () => {
-    expect(Object.keys(manifest.devDependencies)).toHaveLength(22);
+    expect(Object.keys(manifest.devDependencies)).toHaveLength(23);
     expect(lock.packages[""].devDependencies).toEqual(manifest.devDependencies);
     for (const [name, range] of Object.entries(manifest.devDependencies)) {
       expect(range).toMatch(/^>=\d+\.\d+\.\d+$/u);

@@ -1,0 +1,531 @@
+{
+  "artifactId": "b57b40100682bcebe9cb03878d70830afafa52a1cc3ae573a8f8a0a7da750662",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 67002,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "19d10849c982b452f5c80e3880ab59914fc9063bbb9512f3719b7b2359f77198",
+        "size": 66352,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "4fcf69bbecb999ec8fa0ece62bc8934b7cdd45061ac1a8b1939a09be64cd4352",
+        "size": 1245,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "2b5d5dc55bf4608a96857e21ee348429a82c62e1b56ffbcf4a16a79676806547",
+        "size": 12881,
+        "type": "FILE"
+      },
+      {
+        "path": "package/common.gypi",
+        "sha256": "f15742e3019096b85ef3e8985e2fe66c4dda722908577e113a1b0264893ecca8",
+        "size": 762,
+        "type": "FILE"
+      },
+      {
+        "path": "package/except.gypi",
+        "sha256": "da3a1c3c08fdf60c68d7d8d11ef1c73adc5d8b73d8ac8d649922109e077a7808",
+        "size": 381,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "6528e924b31e091c3243132fe713ea0f1fa6362ffaa3c2dd09d12670db6b60dc",
+        "size": 296,
+        "type": "FILE"
+      },
+      {
+        "path": "package/napi-inl.deprecated.h",
+        "sha256": "96afb169fd8af899ddcadc102ea137e3cd253c13b8862cb11bd58601fe2a5f90",
+        "size": 7251,
+        "type": "FILE"
+      },
+      {
+        "path": "package/napi-inl.h",
+        "sha256": "732f3d74b7c64c761a989455bca127d9c384651264ab27e5009d0bc78882bf81",
+        "size": 186981,
+        "type": "FILE"
+      },
+      {
+        "path": "package/napi.h",
+        "sha256": "1084a55623f0357f42ff55918bdd960c226fd90ddd1815b55ce094e55486689e",
+        "size": 111175,
+        "type": "FILE"
+      },
+      {
+        "path": "package/node_api.gyp",
+        "sha256": "3cd2c44fb0974f016376b676d46bbebbca7c89d4383b09ece30e4cb4122a1499",
+        "size": 132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/noexcept.gypi",
+        "sha256": "780402b7acd03ea966de2f89f08a13fde81ace1b498b748621f908478f3778b0",
+        "size": 386,
+        "type": "FILE"
+      },
+      {
+        "path": "package/nothing.c",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package-support.json",
+        "sha256": "b1cb7da23cca1681c7392a3c889eb0cc4916c53d2d7692d4b654ae751f3442f3",
+        "size": 467,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "c4aa829866d5d642d80acc265108c5ab312f825c38306541a4d21fc6ad3fded0",
+        "size": 8171,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tools/README.md",
+        "sha256": "65e9ea918538f453166b10a1d609cf44cec3d2d01f23fecb5265fb3a4bf303d5",
+        "size": 3217,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tools/check-napi.js",
+        "sha256": "f3264fd3f9dd9bc3e051cdcf72125d34617b2b06b914c49f1e1297e53cfd524b",
+        "size": 3210,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tools/clang-format.js",
+        "sha256": "f046340b3d14125bdfd6bf72af97a14967e8bc78816fcecc4df2db15f7472fa4",
+        "size": 1912,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tools/conversion.js",
+        "sha256": "df2f681bdb4a1dac5faf7fa70a60dace4dd12ce0b9964effcee56a43f693fc6c",
+        "size": 15275,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1245,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4f/4fcf69bbecb999ec8fa0ece62bc8934b7cdd45061ac1a8b1939a09be64cd4352",
+          "sha256": "4fcf69bbecb999ec8fa0ece62bc8934b7cdd45061ac1a8b1939a09be64cd4352"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "4fcf69bbecb999ec8fa0ece62bc8934b7cdd45061ac1a8b1939a09be64cd4352",
+        "size": 1245
+      },
+      {
+        "blob": {
+          "bytes": 12881,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/2b/2b5d5dc55bf4608a96857e21ee348429a82c62e1b56ffbcf4a16a79676806547",
+          "sha256": "2b5d5dc55bf4608a96857e21ee348429a82c62e1b56ffbcf4a16a79676806547"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "2b5d5dc55bf4608a96857e21ee348429a82c62e1b56ffbcf4a16a79676806547",
+        "size": 12881
+      }
+    ],
+    "expandedBytes": 420094,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/nodejs/node-addon-api",
+      "license": "MIT",
+      "name": "node-addon-api",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/nodejs/node-addon-api.git"
+      },
+      "version": "3.2.1"
+    },
+    "packageMetadata": {
+      "bugs": {
+        "url": "https://github.com/nodejs/node-addon-api/issues"
+      },
+      "contributors": [
+        {
+          "name": "Abhishek Kumar Singh",
+          "url": "https://github.com/abhi11210646"
+        },
+        {
+          "name": "Alba Mendez",
+          "url": "https://github.com/jmendeth"
+        },
+        {
+          "name": "András Timár, Dr",
+          "url": "https://github.com/timarandras"
+        },
+        {
+          "name": "Andrew Petersen",
+          "url": "https://github.com/kirbysayshi"
+        },
+        {
+          "name": "Anisha Rohra",
+          "url": "https://github.com/anisha-rohra"
+        },
+        {
+          "name": "Anna Henningsen",
+          "url": "https://github.com/addaleax"
+        },
+        {
+          "name": "Arnaud Botella",
+          "url": "https://github.com/BotellaA"
+        },
+        {
+          "name": "Arunesh Chandra",
+          "url": "https://github.com/aruneshchandra"
+        },
+        {
+          "name": "Azlan Mukhtar",
+          "url": "https://github.com/azlan"
+        },
+        {
+          "name": "Ben Berman",
+          "url": "https://github.com/rivertam"
+        },
+        {
+          "name": "Benjamin Byholm",
+          "url": "https://github.com/kkoopa"
+        },
+        {
+          "name": "Bill Gallafent",
+          "url": "https://github.com/gallafent"
+        },
+        {
+          "name": "blagoev",
+          "url": "https://github.com/blagoev"
+        },
+        {
+          "name": "Bruce A. MacNaughton",
+          "url": "https://github.com/bmacnaughton"
+        },
+        {
+          "name": "Cory Mickelson",
+          "url": "https://github.com/corymickelson"
+        },
+        {
+          "name": "Daniel Bevenius",
+          "url": "https://github.com/danbev"
+        },
+        {
+          "name": "Darshan Sen",
+          "url": "https://github.com/RaisinTen"
+        },
+        {
+          "name": "David Halls",
+          "url": "https://github.com/davedoesdev"
+        },
+        {
+          "name": "Dmitry Ashkadov",
+          "url": "https://github.com/dmitryash"
+        },
+        {
+          "name": "Dongjin Na",
+          "url": "https://github.com/nadongguri"
+        },
+        {
+          "name": "Ferdinand Holzer",
+          "url": "https://github.com/fholzer"
+        },
+        {
+          "name": "Eric Bickle",
+          "url": "https://github.com/ebickle"
+        },
+        {
+          "name": "Gabriel Schulhof",
+          "url": "https://github.com/gabrielschulhof"
+        },
+        {
+          "name": "Guenter Sandner",
+          "url": "https://github.com/gms1"
+        },
+        {
+          "name": "Gus Caplan",
+          "url": "https://github.com/devsnek"
+        },
+        {
+          "name": "Helio Frota",
+          "url": "https://github.com/helio-frota"
+        },
+        {
+          "name": "Hitesh Kanwathirtha",
+          "url": "https://github.com/digitalinfinity"
+        },
+        {
+          "name": "ikokostya",
+          "url": "https://github.com/ikokostya"
+        },
+        {
+          "name": "Jack Xia",
+          "url": "https://github.com/JckXia"
+        },
+        {
+          "name": "Jake Barnes",
+          "url": "https://github.com/DuBistKomisch"
+        },
+        {
+          "name": "Jake Yoon",
+          "url": "https://github.com/yjaeseok"
+        },
+        {
+          "name": "Jason Ginchereau",
+          "url": "https://github.com/jasongin"
+        },
+        {
+          "name": "Jeroen Janssen",
+          "url": "https://github.com/japj"
+        },
+        {
+          "name": "Jim Schlight",
+          "url": "https://github.com/jschlight"
+        },
+        {
+          "name": "Jinho Bang",
+          "url": "https://github.com/romandev"
+        },
+        {
+          "name": "José Expósito",
+          "url": "https://github.com/JoseExposito"
+        },
+        {
+          "name": "joshgarde",
+          "url": "https://github.com/joshgarde"
+        },
+        {
+          "name": "Kasumi Hanazuki",
+          "url": "https://github.com/hanazuki"
+        },
+        {
+          "name": "Kelvin",
+          "url": "https://github.com/kelvinhammond"
+        },
+        {
+          "name": "Kevin Eady",
+          "url": "https://github.com/KevinEady"
+        },
+        {
+          "name": "Kévin VOYER",
+          "url": "https://github.com/kecsou"
+        },
+        {
+          "name": "kidneysolo",
+          "url": "https://github.com/kidneysolo"
+        },
+        {
+          "name": "Koki Nishihara",
+          "url": "https://github.com/Nishikoh"
+        },
+        {
+          "name": "Konstantin Tarkus",
+          "url": "https://github.com/koistya"
+        },
+        {
+          "name": "Kyle Farnung",
+          "url": "https://github.com/kfarnung"
+        },
+        {
+          "name": "legendecas",
+          "url": "https://github.com/legendecas"
+        },
+        {
+          "name": "LongYinan",
+          "url": "https://github.com/Brooooooklyn"
+        },
+        {
+          "name": "Lovell Fuller",
+          "url": "https://github.com/lovell"
+        },
+        {
+          "name": "Luciano Martorella",
+          "url": "https://github.com/lmartorella"
+        },
+        {
+          "name": "mastergberry",
+          "url": "https://github.com/mastergberry"
+        },
+        {
+          "name": "Mathias Küsel",
+          "url": "https://github.com/mathiask88"
+        },
+        {
+          "name": "Matteo Collina",
+          "url": "https://github.com/mcollina"
+        },
+        {
+          "name": "Michael Dawson",
+          "url": "https://github.com/mhdawson"
+        },
+        {
+          "name": "Michael Price",
+          "url": "https://github.com/mikepricedev"
+        },
+        {
+          "name": "Michele Campus",
+          "url": "https://github.com/kYroL01"
+        },
+        {
+          "name": "Mikhail Cheshkov",
+          "url": "https://github.com/mcheshkov"
+        },
+        {
+          "name": "nempoBu4",
+          "url": "https://github.com/nempoBu4"
+        },
+        {
+          "name": "Nicola Del Gobbo",
+          "url": "https://github.com/NickNaso"
+        },
+        {
+          "name": "Nick Soggin",
+          "url": "https://github.com/iSkore"
+        },
+        {
+          "name": "Nikolai Vavilov",
+          "url": "https://github.com/seishun"
+        },
+        {
+          "name": "Nurbol Alpysbayev",
+          "url": "https://github.com/anurbol"
+        },
+        {
+          "name": "pacop",
+          "url": "https://github.com/pacop"
+        },
+        {
+          "name": "Philipp Renoth",
+          "url": "https://github.com/DaAitch"
+        },
+        {
+          "name": "Rolf Timmermans",
+          "url": "https://github.com/rolftimmermans"
+        },
+        {
+          "name": "Ross Weir",
+          "url": "https://github.com/ross-weir"
+        },
+        {
+          "name": "Ryuichi Okumura",
+          "url": "https://github.com/okuryu"
+        },
+        {
+          "name": "Sampson Gao",
+          "url": "https://github.com/sampsongao"
+        },
+        {
+          "name": "Sam Roberts",
+          "url": "https://github.com/sam-github"
+        },
+        {
+          "name": "Taylor Woll",
+          "url": "https://github.com/boingoing"
+        },
+        {
+          "name": "Thomas Gentilhomme",
+          "url": "https://github.com/fraxken"
+        },
+        {
+          "name": "Tim Rach",
+          "url": "https://github.com/timrach"
+        },
+        {
+          "name": "Tobias Nießen",
+          "url": "https://github.com/tniessen"
+        },
+        {
+          "name": "Tux3",
+          "url": "https://github.com/tux3"
+        },
+        {
+          "name": "Vlad Velmisov",
+          "url": "https://github.com/Velmisov"
+        },
+        {
+          "name": "Yohei Kishimoto",
+          "url": "https://github.com/morokosi"
+        },
+        {
+          "name": "Yulong Wang",
+          "url": "https://github.com/fs-eire"
+        },
+        {
+          "name": "Ziqiu Zhao",
+          "url": "https://github.com/ZzqiZQute"
+        }
+      ],
+      "description": "Node.js API (Node-API)",
+      "devDependencies": {
+        "benchmark": "^2.1.4",
+        "bindings": "^1.5.0",
+        "clang-format": "^1.4.0",
+        "fs-extra": "^9.0.1",
+        "pre-commit": "^1.2.2",
+        "safe-buffer": "^5.1.1"
+      },
+      "directories": {},
+      "files": [
+        "*.{c,h,gyp,gypi}",
+        "package-support.json",
+        "tools/"
+      ],
+      "gypfile": false,
+      "homepage": "https://github.com/nodejs/node-addon-api",
+      "keywords": [
+        "n-api",
+        "napi",
+        "addon",
+        "native",
+        "bindings",
+        "c",
+        "c++",
+        "nan",
+        "node-addon-api"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "node-addon-api",
+      "optionalDependencies": {},
+      "pre-commit": "lint",
+      "readme": "README.md",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/nodejs/node-addon-api.git"
+      },
+      "scripts": {
+        "benchmark": "node benchmark",
+        "dev": "node test",
+        "dev:incremental": "node test",
+        "doc": "doxygen doc/Doxyfile",
+        "lint": "node tools/clang-format",
+        "lint:fix": "node tools/clang-format --fix",
+        "prebenchmark": "node-gyp rebuild -C benchmark",
+        "predev": "node-gyp rebuild -C test --debug",
+        "predev:incremental": "node-gyp configure build -C test --debug",
+        "pretest": "node-gyp rebuild -C test",
+        "test": "node test"
+      },
+      "support": true,
+      "version": "3.2.1"
+    },
+    "physicalEntryCount": 18,
+    "tarball": {
+      "bytes": 67002,
+      "sha256": "1b91635d718d4980ac560a4d598921d18447f927f48bbd073342cf5c7a4b0c2d"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

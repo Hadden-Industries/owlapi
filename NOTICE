@@ -24,9 +24,18 @@ Java OWLAPI names and package identities appear in compatibility documentation
 generated from the pinned Java OWLAPI reference. owlapi is independently
 maintained and is not affiliated with or endorsed by the Java OWLAPI project.
 
-For Java OWLAPI public API identity and declaration metadata, this package elects
+For Java OWLAPI public API identity, declaration metadata and released datatype
+constant observations, this package elects
 the Apache License 2.0 alternative offered by the pinned Java OWLAPI source.
 See LICENSES/Apache-2.0.txt for the complete licence text.
 
 WebVOWL is a separate downstream distribution and maintains its own deployed-
 bundle licence and notice review.
+
+The private JSON-LD provider bundle reuses jsonld 9.0.0 and its bundled
+dependencies, with a generated Rolldown runtime. The build manifest identifies
+every included component and version. Their licence terms and notices are under
+internal/parsing/jsonld/provider/licenses/. The jsonld source change exposes
+the context-count control; the versioned build manifest records its complete
+two-file patch, original input digests, bundled components and output identity.
+Neither this NOTICE nor the package licence replaces those upstream terms.

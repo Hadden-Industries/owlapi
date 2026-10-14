@@ -127,6 +127,34 @@ describe("third-party-material prospective generation", () => {
       );
       expect(validate(prospective)).toBe(true);
       expect(validate.errors).toBeNull();
+      const embeddedProviderMaterials = prospective.materials.filter(({ id }) =>
+        id.startsWith("jsonld-provider-"),
+      );
+      expect(embeddedProviderMaterials.map(({ name }) => name).sort()).toEqual([
+        "canonicalize",
+        "jsonld",
+        "lru-cache",
+        "rdf-canonize",
+        "rolldown",
+        "setimmediate",
+        "yallist",
+      ]);
+      for (const material of embeddedProviderMaterials) {
+        expect(material.packageTarballScope).toBe(true);
+        expect(material.relationship).toBe("GENERATED_FROM_THIRD_PARTY");
+        expect(
+          material.evidenceFiles.some(({ path }) =>
+            path.includes("/provider/licenses/"),
+          ),
+        ).toBe(true);
+        for (const evidence of material.evidenceFiles) {
+          expect(
+            createHash("sha256")
+              .update(readFileSync(join(repositoryRoot, evidence.path)))
+              .digest("hex"),
+          ).toBe(evidence.sha256);
+        }
+      }
       expect(readFileSync(canonicalPath)).toEqual(canonicalBefore);
       const shared = prospective.materials.find(
         ({ id }) => id === "shared-markdown-quality-development-tool",

@@ -36,15 +36,26 @@ const overrideJson = (filename, mutate) => (path) => {
   return Buffer.from(JSON.stringify(value));
 };
 
-test("measured draft evidence validates without being promoted to qualified release evidence", () => {
-  const result = validateReleasedOracle({ requireQualified: false });
+test("qualified oracle evidence validates against its frozen committed harness", () => {
+  const result = validateReleasedOracle();
   expect(result).toEqual({
-    qualificationStatus: "unqualified",
+    qualificationStatus: "qualified",
     observationCount: 28,
     selectedObservationCount: 15,
     dependencyArtifactCount: 2146,
   });
-  expect(() => validateReleasedOracle()).toThrow(/unqualified/);
+  const draft = overrideJson("provenance.json", (value) => {
+    value.qualification.status = "unqualified";
+    value.qualification.completedAt = null;
+    value.oracle.harnessSourceCommitObjectId = null;
+  });
+  expect(() => validateReleasedOracle({ readArtifact: draft })).toThrow(
+    /unqualified/,
+  );
+  expect(
+    validateReleasedOracle({ readArtifact: draft, requireQualified: false })
+      .qualificationStatus,
+  ).toBe("unqualified");
 });
 
 test("incomplete dependency closure and altered observations fail admission", () => {
