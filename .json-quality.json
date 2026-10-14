@@ -8,6 +8,14 @@
   "exceptions": [
     {
       "paths": [
+        ".development-tools/python/**"
+      ],
+      "owner": "repository Python toolchain installer",
+      "reason": "Owner-approved temporary exclusion of the ignored installed Python tree, including its directory aliases. Reassess during JSON gate qualification; Python version and locked environment checks remain mandatory, and tracked JSON stays checked.",
+      "exclude": true
+    },
+    {
+      "paths": [
         "tooling/markdown/node_modules/@hadden-industries/markdown-quality-win32-x64/cargo-notices.json",
         "tooling/markdown/node_modules/@hadden-industries/markdown-quality-linux-x64/cargo-notices.json"
       ],

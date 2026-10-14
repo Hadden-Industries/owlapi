@@ -1,5 +1,12 @@
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import {
+  mkdir,
+  mkdtemp,
+  readFile,
+  rm,
+  symlink,
+  writeFile,
+} from "node:fs/promises";
 import { execFileSync } from "node:child_process";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -212,6 +219,72 @@ test("the temporary Markdown report boundary excludes only pinned bytes and expi
     await assert.rejects(
       readRepositoryJsonPolicy(root),
       /Remove the temporary/,
+    );
+  } finally {
+    await rm(root, { recursive: true });
+  }
+});
+
+test("the Python installation exclusion prunes its junction while preserving sibling and tracked JSON checks", async () => {
+  const root = await mkdtemp(join(tmpdir(), "owlapi-json-python-boundary-"));
+  const pythonRoot = join(root, ".development-tools", "python");
+  const runtime = join(pythonRoot, "runtime");
+  const policy = {
+    schemaVersion: 1,
+    defaults: {
+      formatContract: "prettier-json",
+      allowFormatWrites: true,
+      normalization: "NFC",
+    },
+    exceptions: [
+      {
+        paths: [".development-tools/python/**"],
+        owner: "repository Python toolchain installer",
+        reason: "Owner-approved temporary installed-tree boundary",
+        exclude: true,
+      },
+    ],
+  };
+  try {
+    execFileSync("git", ["init", "--quiet", root], { windowsHide: true });
+    await writeFile(join(root, ".gitignore"), ".development-tools/\n");
+    await writeFile(
+      join(root, ".json-quality.json"),
+      JSON.stringify(policy, null, 2) + "\n",
+    );
+    await mkdir(runtime, { recursive: true });
+    await writeFile(join(runtime, "untracked.json"), '{"installed":}\n');
+    await symlink(
+      runtime,
+      join(pythonRoot, "current"),
+      process.platform === "win32" ? "junction" : "dir",
+    );
+    await readRepositoryJsonPolicy(root);
+    const excluded = await runJsonQuality("lint", { root });
+    assert.equal(excluded.status, "passed");
+    assert.equal(excluded.complete, true);
+
+    const sibling = join(root, ".development-tools", "python-neighbor");
+    await mkdir(sibling);
+    await writeFile(join(sibling, "bad.json"), '{"neighbor":}\n');
+    await writeFile(join(pythonRoot, "tracked.json"), '{"tracked":}\n');
+    execFileSync(
+      "git",
+      ["-C", root, "add", "--force", ".development-tools/python/tracked.json"],
+      { windowsHide: true },
+    );
+    const checked = await runJsonQuality("lint", { root });
+    assert.equal(checked.status, "failed");
+    for (const path of [
+      ".development-tools/python-neighbor/bad.json",
+      ".development-tools/python/tracked.json",
+    ]) {
+      assert(checked.findings.some((finding) => finding.path === path));
+    }
+    assert(
+      !checked.findings.some((finding) =>
+        finding.path.endsWith("untracked.json"),
+      ),
     );
   } finally {
     await rm(root, { recursive: true });

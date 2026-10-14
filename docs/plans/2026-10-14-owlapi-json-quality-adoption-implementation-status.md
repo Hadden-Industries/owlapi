@@ -55,8 +55,9 @@ Their retention does not renew any historical approval or qualify altered bytes.
 
 On 14 October 2026 the owner instructed: "Let's exclude this file from json-quality until that time."
 The exact exception covers `cargo-notices.json` in the installed `@hadden-industries/markdown-quality-win32-x64` and `@hadden-industries/markdown-quality-linux-x64` packages at version 1.0.3.
-No entire dependency tree, archive, directory or other report is excluded.
-The repository policy reader rejects every other exclusion and requires the installed package identity and original report SHA-256 to match; a package or report change requires removing the exception.
+This report exception excludes no entire dependency tree, archive or other report.
+The repository policy reader separately admits the Python installation exception below and rejects every other exclusion.
+For the Markdown reports it requires the installed package identity and original report SHA-256 to match; a package or report change requires removing the exception.
 Optional platform packages can be absent on the opposite host.
 
 The Windows report digest is `f5459fbdcf02354f87e1caf051238493f097be172b5af3e4f5e74b359146c29e`.
@@ -71,16 +72,30 @@ No Markdown Quality dependency selection has been changed in this increment.
 All five consumer probes pass, including neighboring-file rejection, protected report bytes and exception expiry after version/byte changes.
 Focused source lint and native Markdown checking of the amended plan/status also pass.
 
+### Owner-approved temporary Python installation exclusion
+
+The owner approved excluding `.development-tools/python/` for now on 14 October 2026.
+The exact policy pattern is `.development-tools/python/**`, which prunes the ignored installation tree before encountering its internal directory aliases.
+The shared tool still independently inventories any tracked JSON under this boundary; no tracked source is exempted.
+No parent `.development-tools/` exclusion or general link-support change is authorized.
+Neighboring development-tool files remain checked.
+
+This reduces JSON discovery/analysis work and removes the known Python-junction blocker.
+It does not reduce Python builds or tests, validate the Python installation by itself, or establish that the remaining JSON adoption is qualified.
+The existing Python/uv version checks and native offline locked-environment check remain mandatory.
+Reassess this temporary installed-tree boundary during final JSON gate qualification.
+All six consumer probes pass, including a real directory link, neighboring bad JSON and tracked bad JSON inside the excluded tree.
+`npm run tools:check` confirms the locked Python quality tools are current.
+The physical inventory now passes with `complete: true`, 1,595 physical files and no discovery findings; JSON analysis and logical/archive integration remain separate unfinished obligations.
+The raw inventory result is retained as `python-exclusion-inventory-result.json` in the owner-bound operator evidence group.
+
 ### Remaining integration decisions
 
-Physical inventory fails at `.development-tools/python/cpython-3.15-windows-x86_64-none`, an internal directory alias of `.development-tools/python/cpython-3.15.0-windows-x86_64-none`.
-The shared CLI reports `complete: false` with unknown counts.
-Linux native npm executable links also require an explicit ownership rule.
-No link or directory exclusion has been introduced.
+Linux native npm executable links outside the excluded Python tree still require their own accepted disposition.
 
-The earlier combined link-accounting/supplier-preservation proposal was superseded by the owner's narrower temporary Markdown report exclusion.
+The earlier shared link-accounting proposal was superseded by the owner's narrower Python-tree exclusion.
 This does not authorize shared internal-link accounting, other supplier-preservation contracts or dependency/archive updates.
-The internal-link decision remains unanswered; other supplier findings still require their own accepted resolution.
+Other supplier findings still require their own accepted resolution.
 
 The separate canonical identity configuration is present as an integration candidate.
 Its first whole-scope probe found further identity-contract work across model tuple keys, release inventories and reference evidence comparisons.

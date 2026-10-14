@@ -7,6 +7,9 @@ The owner subsequently approved temporarily excluding only the unchanged Markdow
 This overrides the no-exclusion clauses below for that exact report in the Windows/Linux installed packages and corresponding archive member `package/cargo-notices.json`; no directory or entire archive is excluded.
 Retain the original bytes and prior diagnostics, remove the exception on package update, and continue checking every other member.
 The implementation status records the active physical exception and the outstanding native logical/archive gate integration.
+The owner also approved temporarily excluding only the ignored `.development-tools/python/` installed tree from JSON discovery.
+This prunes its internal aliases without changing the shared producer's link contract; tracked JSON remains checked and Python version/locked-environment checks remain mandatory.
+Other development tools, source files, generated release inputs and the rest of the JSON scope retain their existing obligations.
 
 Prepared on 14 October 2026 against local OwlAPI `main` at `7d7d29bfcb96374ceed818a91c2c2740cb8f9823`.
 

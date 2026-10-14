@@ -3,8 +3,8 @@ import { dirname, join } from "node:path";
 import { readJsonPolicy } from "../tooling/json/public-api.mjs";
 import { sha256 } from "../util/third-party-evidence/digests.mjs";
 
-// The owner superseded the zero-exclusion rule only for these two installed
-// reports. Package updates must remove the exception rather than inherit it.
+// The owner approved the Python installation boundary and these two reports.
+// Markdown package updates must remove the report exception rather than inherit it.
 const temporaryCargoNotices = new Map(
   [
     [
@@ -28,6 +28,7 @@ export async function readRepositoryJsonPolicy(root) {
   const policy = await readJsonPolicy(root);
   for (const exception of policy.exceptions.filter(({ exclude }) => exclude)) {
     for (const path of exception.paths) {
+      if (path === ".development-tools/python/**") continue;
       const pin = temporaryCargoNotices.get(path);
       if (!pin) {
         throw new Error(
