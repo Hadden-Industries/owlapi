@@ -1,4 +1,5 @@
 import { readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { jsonEquals } from "./canonical-json.mjs";
 import { basename, join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
@@ -46,10 +47,7 @@ const readCandidate = (directory, selectedVersion = version) => {
     `${stem}-${selectedVersion}.cdx.json`,
     `${stem}-${selectedVersion}.tgz`,
   ];
-  if (
-    JSON.stringify(readdirSync(directory).sort()) !==
-    JSON.stringify([...names].sort())
-  ) {
+  if (!jsonEquals(readdirSync(directory).sort(), [...names].sort())) {
     throw new Error(
       "Release-evidence generation requires the closed candidate bundle.",
     );

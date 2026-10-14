@@ -6,6 +6,7 @@ import {
 } from "./package-identity.mjs";
 import { assertOwlContractReport } from "./owl-contract-evidence.mjs";
 import { isDeepStrictEqual } from "node:util";
+import { jsonEquals } from "./canonical-json.mjs";
 const alphaVersion = "0.1.0-alpha.0";
 const compareCodeUnits = (left, right) =>
   left < right ? -1 : left > right ? 1 : 0;
@@ -230,8 +231,10 @@ export const buildReleaseEvidence = (facts) => {
   }
   const requiredJobs = normalizeBy(facts.requiredJobs ?? [], "name");
   if (
-    JSON.stringify(requiredJobs.map(({ name }) => name)) !==
-      JSON.stringify(scoped ? SCOPED_RELEASE_JOB_NAMES : REQUIRED_JOB_NAMES) ||
+    !jsonEquals(
+      requiredJobs.map(({ name }) => name),
+      scoped ? SCOPED_RELEASE_JOB_NAMES : REQUIRED_JOB_NAMES,
+    ) ||
     requiredJobs.some(({ conclusion, url }) => conclusion !== "success" || !url)
   ) {
     throw new Error("The release required job inventory is incomplete.");

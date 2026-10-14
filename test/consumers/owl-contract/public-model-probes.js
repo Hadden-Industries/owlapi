@@ -1,4 +1,5 @@
 import { PUBLIC_MODEL_CASES } from "./public-model-cases.js";
+import { jsonEquals } from "./json-identity.mjs";
 /** Shared producer-only shape probes for Node and existing browser/worker modes. */
 export const createPublicModelProbes = (owl) => {
   const factory = owl.OWLManager.createOWLOntologyManager().getOWLDataFactory();
@@ -65,10 +66,24 @@ export const exercisePublicModelFields = (owl) => {
   const { probes } = createPublicModelProbes(owl);
   for (const { kind, value, fields } of probes) {
     if (value.kind !== kind) throw new Error(`Public kind differs: ${kind}`);
-    for (const [field, expected] of Object.entries(fields))
-      if (JSON.stringify(value[field]) !== JSON.stringify(expected))
+    for (const [field, expected] of Object.entries(fields)) {
+      const actual = value[field];
+      // Compare the observable JSON projection of model instances; private
+      // structural keys or the implementation's equals() are not the oracle.
+      const matches =
+        actual === undefined || expected === undefined
+          ? actual === expected
+          : jsonEquals(
+              JSON.parse(JSON.stringify(actual)),
+              JSON.parse(JSON.stringify(expected)),
+            );
+      if (!matches)
         throw new Error(`Public model field differs: ${kind}.${field}`);
-    if (kind.endsWith("Axiom") && JSON.stringify(value.annotations) !== "[]")
+    }
+    if (
+      kind.endsWith("Axiom") &&
+      (!Array.isArray(value.annotations) || value.annotations.length !== 0)
+    )
       throw new Error(`Public axiom annotations differ: ${kind}`);
   }
   return probes.length;

@@ -33,6 +33,7 @@ export const inspectAnonymousGraph = async (
     if (leftAnonymous && rightAnonymous) {
       const a = key(value.subject, scope),
         b = key(value.value, scope);
+      // json-identity-contract: ordered-tuple; owner: anonymous-individual profile; reason: Sorted scoped individual keys give an unambiguous two-string edge identity.
       const pair = JSON.stringify([a, b].sort());
       if (pairs.has(pair))
         violation("MULTIPLE_ANONYMOUS_EDGE_ASSERTIONS", { scope });

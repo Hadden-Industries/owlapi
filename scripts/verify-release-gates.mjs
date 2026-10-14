@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
 import { buildProducerReleaseGates } from "./producer-release-policy.mjs";
-import { isDeepStrictEqual } from "node:util";
+import { jsonEquals } from "./canonical-json.mjs";
 
 import {
   parseCatalogueRequirements,
@@ -29,7 +29,7 @@ const sortedUnique = (values) => [...new Set(values)].sort();
 const assertSameIds = (label, expected, actual) => {
   const expectedIds = sortedUnique(expected);
   const actualIds = sortedUnique(actual);
-  if (JSON.stringify(actualIds) !== JSON.stringify(expectedIds)) {
+  if (!jsonEquals(actualIds, expectedIds)) {
     const missing = expectedIds.filter((id) => !actualIds.includes(id));
     const unexpected = actualIds.filter((id) => !expectedIds.includes(id));
     throw new Error(
@@ -45,7 +45,7 @@ const assertUnique = (label, values) => {
 };
 
 const assertEqualJson = (label, expected, actual) => {
-  if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+  if (!jsonEquals(actual, expected)) {
     throw new Error(
       `${label} differs; expected=${JSON.stringify(expected)} actual=${JSON.stringify(actual)}`,
     );
@@ -249,7 +249,7 @@ const run = () => {
   const schema = readJson("docs/release/gates.schema.json");
   const result = verifyReleaseGates({ planMarkdown, registry, schema });
   const producer = readJson("docs/release/producer-gates.json");
-  if (!isDeepStrictEqual(producer, buildProducerReleaseGates(registry)))
+  if (!jsonEquals(producer, buildProducerReleaseGates(registry)))
     throw new Error("Current producer gate projection is stale or altered.");
   const producerSchema = ajvProducerSchema(producer);
   if (!producerSchema)

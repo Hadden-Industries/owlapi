@@ -54,6 +54,11 @@ export const writeInstalledConsumerFixtures = (
   if (!["owlapi", PACKAGE_NAME].includes(dependencyName))
     throw new Error("Unexpected fixture dependency name.");
   mkdirSync(join(directory, "import-closure"));
+  // Both source bridges and transported fixtures use the one pure encoder.
+  copyFileSync(
+    fileURLToPath(new URL("./canonical-json.mjs", import.meta.url)),
+    join(directory, "import-closure", "json-identity.mjs"),
+  );
   copyFileSync(
     join(testRoot, "import-closure", "public-contract.js"),
     join(directory, "import-closure", "public-contract.js"),

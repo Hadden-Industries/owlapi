@@ -1,4 +1,5 @@
 import { spawnSync } from "node:child_process";
+import { jsonEquals } from "./canonical-json.mjs";
 import { createHash } from "node:crypto";
 import {
   existsSync,
@@ -82,9 +83,10 @@ const command = (executable, args, options = {}) => {
 /** These are retained observations, not a replacement GitHub approvals response. */
 export const assertApprovalObservations = (control, records, jobs) => {
   requireFact(
-    JSON.stringify(
+    jsonEquals(
       control.approvalObservations.map(({ environment }) => environment).sort(),
-    ) === JSON.stringify(["npm-release", "release-manual"]),
+      ["npm-release", "release-manual"],
+    ),
     "Both distinct original approval observations are required.",
   );
   for (const observation of control.approvalObservations) {
@@ -151,7 +153,7 @@ export const assertRecoveryRun = (control, run, jobs) => {
 export const assertArchiveEntries = (entries, expected) => {
   const observed = entries.trim().split(/\r?\n/u).sort();
   requireFact(
-    JSON.stringify(observed) === JSON.stringify([...expected].sort()) &&
+    jsonEquals(observed, [...expected].sort()) &&
       observed.every(
         (name) =>
           /^[A-Za-z0-9_.-]+$/u.test(name) && name !== "." && name !== "..",

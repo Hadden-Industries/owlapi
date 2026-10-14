@@ -1,4 +1,5 @@
 import { readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { jsonEquals } from "./canonical-json.mjs";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
@@ -36,7 +37,7 @@ const readCandidateAssets = (candidateDirectory, version) => {
     `${stem}-${version}.tgz`,
   ].sort();
   const observedNames = readdirSync(candidateDirectory).sort();
-  if (JSON.stringify(observedNames) !== JSON.stringify(expectedNames)) {
+  if (!jsonEquals(observedNames, expectedNames)) {
     throw new Error(
       "The draft release input is not the closed candidate bundle.",
     );

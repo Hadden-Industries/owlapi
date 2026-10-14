@@ -388,6 +388,7 @@ const matchFingerprintGroup = (
     if (leftIndex === leftValues.length) {
       return () => currentSuccess(currentMapping, currentFailure);
     }
+    // json-identity-contract: ordered-tuple; owner: structural isomorphism search; reason: Index, available-index sequence and sorted mapping signature define an ordered search-state tuple.
     const failedStateKey = JSON.stringify([
       leftIndex,
       availableIndexes,

@@ -12,6 +12,9 @@ import {
 
 export { REVIEWED_CONSUMER_SOURCES };
 export const OWL_CONTRACT_FIXTURES = Object.freeze([
+  "scripts/canonical-json.mjs",
+  "test/consumers/owl-contract/json-identity.mjs",
+  "test/import-closure/json-identity.mjs",
   "test/consumers/owl-contract/contract.test.mjs",
   "test/consumers/owl-contract/public-model-cases.js",
   "test/consumers/owl-contract/native-reporter.mjs",

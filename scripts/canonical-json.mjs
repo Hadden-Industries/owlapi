@@ -41,3 +41,9 @@ const compact = (value) => {
 };
 // Preserve the established compact encoding of qualification summaries.
 export const canonicalJson = (value) => compact(canonicalize(value));
+
+/** Compare JSON values across realms without making prototypes or member order
+ * part of identity. Non-JSON values remain rejected by the common encoder.
+ */
+export const jsonEquals = (left, right) =>
+  canonicalJson(left) === canonicalJson(right);

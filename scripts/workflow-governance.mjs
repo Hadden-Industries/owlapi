@@ -5,6 +5,7 @@ import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { isDeepStrictEqual } from "node:util";
+import { jsonEquals } from "./canonical-json.mjs";
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
 import { parseDocument } from "yaml";
@@ -704,17 +705,16 @@ const validateCiVerification = (workflow, violations) => {
     .filter(Boolean);
   add(
     violations,
-    JSON.stringify(dependencyCommands) ===
-      JSON.stringify([
-        projectRuntimeText(
-          "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund",
-        ),
-        projectRuntimeText(
-          "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}",
-        ),
-        "npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash",
-        "npm run workflow:dependency-review-applicability",
-      ]),
+    jsonEquals(dependencyCommands, [
+      projectRuntimeText(
+        "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund",
+      ),
+      projectRuntimeText(
+        "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}",
+      ),
+      "npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash",
+      "npm run workflow:dependency-review-applicability",
+    ]),
     `${label} dependency review must retain its no-installation npm entry points`,
   );
   add(

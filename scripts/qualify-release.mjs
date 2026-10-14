@@ -1,4 +1,5 @@
 import { spawnSync } from "node:child_process";
+import { jsonEquals } from "./canonical-json.mjs";
 import {
   existsSync,
   lstatSync,
@@ -171,7 +172,7 @@ export const assertDryRunMatchesCandidate = ({ candidate, dryRun }) => {
   }
   if (
     dryRun.entryCount !== expectedPaths.length ||
-    JSON.stringify(actualPaths) !== JSON.stringify(expectedPaths)
+    !jsonEquals(actualPaths, expectedPaths)
   ) {
     throw new Error(
       "The npm dry-run packlist differs from the retained tarball.",

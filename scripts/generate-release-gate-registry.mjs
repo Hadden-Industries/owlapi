@@ -198,11 +198,13 @@ const buildRegistry = (planMarkdown) => {
 };
 
 const planMarkdown = readReleasePlans();
+// json-identity-contract: bytes; owner: release gate generator; reason: Exact generated serialization is compared with the owned output to diagnose producer drift.
 const generated = `${JSON.stringify(buildRegistry(planMarkdown), null, 2)}\n`;
 const producerUrl = new URL(
   "docs/release/producer-gates.json",
   REPOSITORY_ROOT,
 );
+// json-identity-contract: bytes; owner: producer gate generator; reason: Exact generated serialization is compared with the owned output to diagnose producer drift.
 const producerGenerated = `${JSON.stringify(buildProducerReleaseGates(JSON.parse(generated)), null, 2)}\n`;
 
 if (process.argv.includes("--write")) {

@@ -110,6 +110,10 @@ const installFixture = (mode) => {
     recursive: true,
   });
   copyFileSync(
+    join(REPOSITORY_ROOT, "scripts", "canonical-json.mjs"),
+    join(fixtureDirectory, "json-identity.mjs"),
+  );
+  copyFileSync(
     SHARED_EXERCISE_PATH,
     join(fixtureDirectory, "exercise-package.js"),
   );
@@ -237,6 +241,7 @@ try {
     join(runtimeDirectory, "exercise-package.js"),
   );
   for (const fileName of [
+    "json-identity.mjs",
     "public-contract.js",
     "rc2-public-contract.js",
     "import-closure-documents.js",

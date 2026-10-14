@@ -646,6 +646,7 @@ describePinnedOracle("pinned Java cyclic import-closure oracle", () => {
           jarCount: relocatedClasspath.length,
           runtimeJarBytes: copiedRuntimeBytes,
           orderedClasspathSha256: createHash("sha256")
+            // json-identity-contract: digest; owner: import-closure receipt; reason: Preserve the established digest of the ordered classpath hash array.
             .update(JSON.stringify(orderedHashes))
             .digest("hex"),
           comparisonOutcome: relocatedExecution.result.comparisonOutcome,

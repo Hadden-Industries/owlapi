@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { jsonEquals } from "../../scripts/canonical-json.mjs";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { basename, delimiter, dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -53,11 +54,7 @@ export function replayBehaviorResearch({
   const retained = reuseUnchangedProbes
     ? JSON.parse(readFileSync(join(output, "observations.json"), "utf8"))
     : undefined;
-  if (
-    retained &&
-    JSON.stringify(retained.classpathEntries) !==
-      JSON.stringify(classpathEntries)
-  )
+  if (retained && !jsonEquals(retained.classpathEntries, classpathEntries))
     throw new Error("Cannot reuse Java observations from a changed classpath");
   const inputs = [
     ...researchFiles.map((file) => {
@@ -119,7 +116,8 @@ export function replayBehaviorResearch({
           retained?.observations.filter((observation) =>
             Object.entries(identity).every(
               ([key, value]) =>
-                JSON.stringify(observation[key]) === JSON.stringify(value),
+                observation[key] !== undefined &&
+                jsonEquals(observation[key], value),
             ),
           ) ?? [];
         if (matches.length > 1)
