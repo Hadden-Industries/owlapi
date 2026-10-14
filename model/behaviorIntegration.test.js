@@ -19,6 +19,65 @@ const source = (text, documentIRI) =>
     documentIRI,
   });
 
+test("Java refreshes a retained import when a current ontology IRI match appears", async () => {
+  const manager = createManager({
+    documentLoader: {
+      authorize: () => true,
+      load: () => source("Ontology(<urn:precedence:declared>)"),
+    },
+  });
+  const first = await manager.loadOntologyFromOntologyDocument(
+    source(
+      "Ontology(<urn:precedence:first> Import(<urn:precedence:document>))",
+    ),
+  );
+  const current = await manager.loadOntologyFromOntologyDocument(
+    source(
+      "Ontology(<urn:precedence:document>)",
+      IRI.create("urn:precedence:alternate-document"),
+    ),
+  );
+  const second = await manager.loadOntologyFromOntologyDocument(
+    source(
+      "Ontology(<urn:precedence:second> Import(<urn:precedence:document>))",
+    ),
+  );
+  expect(manager.getImportsClosure(second)).toContain(current);
+  expect(manager.getImportsClosure(first)).toContain(current);
+});
+
+test("Java consults IRI mappers before a raw document alias on first import", async () => {
+  const acquisitions = [];
+  const manager = createManager({
+    iriMappers: [
+      {
+        getDocumentIRI: (iri) =>
+          iri.value === "urn:precedence:import"
+            ? IRI.create("urn:precedence:mapped")
+            : undefined,
+      },
+    ],
+    documentLoader: {
+      authorize: () => true,
+      load(iri) {
+        acquisitions.push(iri.value);
+        return source("Ontology(<urn:precedence:mapped-ontology>)");
+      },
+    },
+  });
+  const alias = await manager.loadOntologyFromOntologyDocument(
+    source(
+      "Ontology(<urn:precedence:alias>)",
+      IRI.create("urn:precedence:import"),
+    ),
+  );
+  const root = await manager.loadOntologyFromOntologyDocument(
+    source("Ontology(<urn:precedence:root> Import(<urn:precedence:import>))"),
+  );
+  expect(acquisitions).toEqual(["urn:precedence:mapped"]);
+  expect(manager.getImportsClosure(root)).not.toContain(alias);
+});
+
 test("Java cache authorization follows retained IDs after an occupied ontology rename", async () => {
   let permitsRenamedOntology = true;
   const authorizedIRIs = [];

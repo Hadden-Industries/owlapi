@@ -1,7 +1,9 @@
 # API behavior profiles
 
 This is the current contract for the profile-aware source candidate.
-Full profile qualification is still in progress; neither profile admission nor a new npm publication is claimed here.
+The selected API implementation is complete; public profile admission is held for complete designated security evidence and a release decision.
+The [implementation and release-readiness record](profiles/java-owlapi-5.5.1/implementation-qualification.md) distinguishes passed checks, retained review findings and the interrupted security scan.
+No new npm publication is claimed here.
 The [current decision ledger](java-api-parity-decisions.json) records paired expectations, native probes, tests and accepted-plan traceability.
 Its `currentBehaviorContracts` section is separate from the retained phase 21/22 receipts and their historical Java revision.
 

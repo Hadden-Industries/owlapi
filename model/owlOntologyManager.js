@@ -1169,13 +1169,10 @@ export class OWLOntologyManager {
   async #loadImport(importIRI, importingEntry, configuration, session, depth) {
     const index =
       session.managedOntologyIndexSession ?? this.#managedOntologyIndex;
-    let importedOntology = session.managedOntologyIndexSession
-      ? index.getOntologyByIRI(
-          importIRI,
-          this.#behaviorContext.behaviorProfileDefinition
-            .ontologyIdentityPolicy,
-        )
-      : this.#resolveJavaImport(importIRI);
+    let importedOntology = index.getOntologyByIRI(
+      importIRI,
+      this.#behaviorContext.behaviorProfileDefinition.ontologyIdentityPolicy,
+    );
     if (importedOntology) {
       await this.#authorizeImportedOntology(
         importedOntology,
@@ -1194,7 +1191,20 @@ export class OWLOntologyManager {
     }
 
     if (!session.managedOntologyIndexSession) {
-      if (this.#requestedImportIRIs.has(importIRI.value)) return undefined;
+      if (this.#requestedImportIRIs.has(importIRI.value)) {
+        // Java skips another acquisition, but its retained-ID closure can still
+        // expose earlier content. Recheck authority without changing lookup order.
+        const retainedOntology = this.#resolveJavaImport(importIRI);
+        if (retainedOntology)
+          await this.#authorizeImportedOntology(
+            retainedOntology,
+            importIRI,
+            importingEntry,
+            configuration,
+            index,
+          );
+        return undefined;
+      }
       this.#requestedImportIRIs.add(importIRI.value);
     }
 

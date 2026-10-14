@@ -1,4 +1,4 @@
-<!-- registry-sha256: b0e88beb39347433e18826ad330cf8385a8b5482531be393acc87a2bd9460fde -->
+<!-- registry-sha256: 2902d4f5d3c2bc759af9417862aebe00c4eb0b5d006f742f1003fdb86d3759e4 -->
 
 # Java OWLAPI compatibility surface
 
@@ -29,7 +29,7 @@ A mapped name does not promise every Java overload or method. The relationship, 
 
 | JavaScript export                          | Package specifier                                   | Java authority                                                                            | Relationship  | Compatibility  | Status                   |
 | ------------------------------------------ | --------------------------------------------------- | ----------------------------------------------------------------------------------------- | ------------- | -------------- | ------------------------ |
-| `OWLManager`                               | @hadden-industries/owlapi/apibinding                | org.semanticweb.owlapi.apibinding.OWLManager                                              | JAVA_ANALOGUE | ADAPTED        | IN_PROGRESS / PRERELEASE |
+| `OWLManager`                               | @hadden-industries/owlapi/apibinding                | org.semanticweb.owlapi.apibinding.OWLManager                                              | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE    |
 | `ANNOTATION_VALUE_KINDS`                   | @hadden-industries/owlapi/model                     | org.semanticweb.owlapi.model.OWLObject                                                    | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
 | `AXIOM_KINDS`                              | @hadden-industries/owlapi/model                     | org.semanticweb.owlapi.model.OWLObject                                                    | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
 | `AddAxiom`                                 | @hadden-industries/owlapi/model                     | org.semanticweb.owlapi.model.AddAxiom                                                     | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE    |
@@ -88,7 +88,7 @@ A mapped name does not promise every Java overload or method. The relationship, 
 | `XmlParseError`                            | @hadden-industries/owlapi/io                        | org.semanticweb.owlapi.io.OWLParserException                                              | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
 | `OWLDocumentFormats`                       | @hadden-industries/owlapi/formats                   | org.semanticweb.owlapi.formats                                                            | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
 | `RDFXMLDocumentFormat`                     | @hadden-industries/owlapi/formats                   | org.semanticweb.owlapi.formats.RDFXMLDocumentFormat                                       | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE    |
-| `NodeDocumentLoader`                       | @hadden-industries/owlapi/io/node                   | org.semanticweb.owlapi.io                                                                 | JS_EXTENSION  | NOT_APPLICABLE | IN_PROGRESS / PRERELEASE |
+| `NodeDocumentLoader`                       | @hadden-industries/owlapi/io/node                   | org.semanticweb.owlapi.io                                                                 | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
 | `AnnotationValueShortFormProvider`         | @hadden-industries/owlapi/util                      | org.semanticweb.owlapi.util.AnnotationValueShortFormProvider                              | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE    |
 | `OWLEntityRemover`                         | @hadden-industries/owlapi/util                      | org.semanticweb.owlapi.util.OWLEntityRemover                                              | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE    |
 | `OWLEntityRenamer`                         | @hadden-industries/owlapi/util                      | org.semanticweb.owlapi.util.OWLEntityRenamer                                              | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE    |
