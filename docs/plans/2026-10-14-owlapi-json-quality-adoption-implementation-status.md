@@ -13,7 +13,7 @@ HISEW preserved its evidence and recorded closure without verification.
 - Added isolated native npm acquisition at the plan's exact shared source, its native lock, a generated bootstrap and a public bridge.
   Installation verified the locked cached payload and bootstrap.
   Consumer probes reject installed-byte tampering and exercise the real public document analyzer and identity plugin.
-- Added a zero-exclusion policy and assertion.
+- Added an initially zero-exclusion policy and assertion, subsequently narrowed by the owner-approved temporary report exception below.
   Protection entries prohibit generic writes while retaining checking.
   Native npm root keys are allowed only at `/packages/` in the three owned locks.
   Mutation probes prove that ignored and hidden bad peers remain checked and block a proposed repair batch without changing an ordinary peer.
@@ -51,14 +51,36 @@ Their retention does not renew any historical approval or qualify altered bytes.
 
 ## Remaining decisions and work
 
+### Owner-approved temporary Markdown report exclusion
+
+On 14 October 2026 the owner instructed: "Let's exclude this file from json-quality until that time."
+The exact exception covers `cargo-notices.json` in the installed `@hadden-industries/markdown-quality-win32-x64` and `@hadden-industries/markdown-quality-linux-x64` packages at version 1.0.3.
+No entire dependency tree, archive, directory or other report is excluded.
+The repository policy reader rejects every other exclusion and requires the installed package identity and original report SHA-256 to match; a package or report change requires removing the exception.
+Optional platform packages can be absent on the opposite host.
+
+The Windows report digest is `f5459fbdcf02354f87e1caf051238493f097be172b5af3e4f5e74b359146c29e`.
+The Linux report digest is `22473eb073afc5d9f451888f96ab31dffc9bf3a55c50650f6fad058ba726df85`.
+Both were independently read from the locked archives through the existing native archive inspector.
+The same temporary decision applies to the exact archive member `package/cargo-notices.json` when the remaining native logical/archive gate is composed; that gate is still unfinished, so no complete archive-exclusion result is claimed here.
+All original archive/report bytes and the earlier diagnostic evidence remain intact.
+
+The current latest GitHub release and npm package are still 1.0.3, already selected by OwlAPI.
+Current Markdown Quality source rewrites cargo-about output through `json.loads` and `json.dumps`, but a future qualified package must actually contain that rewrite before an upgrade resolves the duplicate keys.
+No Markdown Quality dependency selection has been changed in this increment.
+All five consumer probes pass, including neighboring-file rejection, protected report bytes and exception expiry after version/byte changes.
+Focused source lint and native Markdown checking of the amended plan/status also pass.
+
+### Remaining integration decisions
+
 Physical inventory fails at `.development-tools/python/cpython-3.15-windows-x86_64-none`, an internal directory alias of `.development-tools/python/cpython-3.15.0-windows-x86_64-none`.
 The shared CLI reports `complete: false` with unknown counts.
 Linux native npm executable links also require an explicit ownership rule.
 No link or directory exclusion has been introduced.
 
-The owner has been asked whether to authorize shared internal-link accounting with independently checked canonical targets, and exact supplier-byte preservation contracts retaining diagnostics; or require supplier repairs and qualified dependency/archive updates.
-The latter changes selections expressly reserved by the plan.
-Neither choice has been inferred from silence.
+The earlier combined link-accounting/supplier-preservation proposal was superseded by the owner's narrower temporary Markdown report exclusion.
+This does not authorize shared internal-link accounting, other supplier-preservation contracts or dependency/archive updates.
+The internal-link decision remains unanswered; other supplier findings still require their own accepted resolution.
 
 The separate canonical identity configuration is present as an integration candidate.
 Its first whole-scope probe found further identity-contract work across model tuple keys, release inventories and reference evidence comparisons.

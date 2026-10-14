@@ -8,6 +8,15 @@
   "exceptions": [
     {
       "paths": [
+        "tooling/markdown/node_modules/@hadden-industries/markdown-quality-win32-x64/cargo-notices.json",
+        "tooling/markdown/node_modules/@hadden-industries/markdown-quality-linux-x64/cargo-notices.json"
+      ],
+      "owner": "Markdown Quality native package producer",
+      "reason": "Owner-approved temporary exclusion of the unchanged 1.0.3 cargo-about report until a qualified Markdown Quality package update. Remove this exception on update; original report and archive diagnostics remain retained.",
+      "exclude": true
+    },
+    {
+      "paths": [
         "package-lock.json",
         "tooling/markdown/package-lock.json",
         "tooling/json/package-lock.json"

@@ -2,6 +2,12 @@
 
 Status: **Draft for owner review; implementation, configuration changes and delivery are not authorized by this plan.**
 
+Owner amendment on 14 October 2026: implementation and delivery were authorized separately in the conversation.
+The owner subsequently approved temporarily excluding only the unchanged Markdown Quality 1.0.3 `cargo-notices.json` reports until a qualified package update.
+This overrides the no-exclusion clauses below for that exact report in the Windows/Linux installed packages and corresponding archive member `package/cargo-notices.json`; no directory or entire archive is excluded.
+Retain the original bytes and prior diagnostics, remove the exception on package update, and continue checking every other member.
+The implementation status records the active physical exception and the outstanding native logical/archive gate integration.
+
 Prepared on 14 October 2026 against local OwlAPI `main` at `7d7d29bfcb96374ceed818a91c2c2740cb8f9823`.
 
 The intended outcome is complete, attributable checking of OwlAPI-owned JSON through the maintained `@hadden-industries/json-quality` implementation, while retaining the meaning of fixtures, the integrity of evidence, and the existing package/runtime contracts.

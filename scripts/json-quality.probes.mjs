@@ -137,3 +137,83 @@ test("ignored and hidden peers remain checked and a bad peer blocks the whole re
     await rm(root, { recursive: true });
   }
 });
+
+test("the temporary Markdown report boundary excludes only pinned bytes and expires on package changes", async () => {
+  const root = await mkdtemp(join(tmpdir(), "owlapi-json-markdown-exception-"));
+  const path =
+    "tooling/markdown/node_modules/@hadden-industries/markdown-quality-win32-x64/cargo-notices.json";
+  const packageRoot = join(root, path, "..");
+  const policy = {
+    schemaVersion: 1,
+    defaults: {
+      formatContract: "prettier-json",
+      allowFormatWrites: true,
+      normalization: "NFC",
+    },
+    exceptions: [
+      {
+        paths: [path],
+        owner: "Markdown Quality native package producer",
+        reason: "Owner-approved temporary report exception",
+        exclude: true,
+      },
+    ],
+  };
+  try {
+    execFileSync("git", ["init", "--quiet", root], { windowsHide: true });
+    await writeFile(
+      join(root, ".json-quality.json"),
+      JSON.stringify(policy, null, 2) + "\n",
+    );
+    // The opposite platform need not be installed.
+    await readRepositoryJsonPolicy(root);
+    await mkdir(packageRoot, { recursive: true });
+    const report = await readFile(new URL(`../${path}`, import.meta.url));
+    await writeFile(join(root, path), report);
+    await assert.rejects(readRepositoryJsonPolicy(root), /ENOENT/);
+    const metadata = {
+      name: "@hadden-industries/markdown-quality-win32-x64",
+      version: "1.0.3",
+    };
+    await writeFile(
+      join(packageRoot, "package.json"),
+      JSON.stringify(metadata, null, 2) + "\n",
+    );
+    await readRepositoryJsonPolicy(root);
+    await writeFile(join(packageRoot, "peer.json"), '{"peer":}\n');
+    const lint = await runJsonQuality("lint", { root });
+    assert.equal(lint.status, "failed");
+    assert(
+      lint.findings.some((finding) => finding.path.endsWith("/peer.json")),
+    );
+    assert(!lint.findings.some((finding) => finding.path === path));
+    const repair = await runJsonQuality("format", { root });
+    assert.notEqual(repair.status, "passed");
+    assert.deepEqual(await readFile(join(root, path)), report);
+
+    metadata.version = "1.0.4";
+    await writeFile(
+      join(packageRoot, "package.json"),
+      JSON.stringify(metadata),
+    );
+    await assert.rejects(
+      readRepositoryJsonPolicy(root),
+      /Remove the temporary/,
+    );
+    metadata.version = "1.0.3";
+    await writeFile(
+      join(packageRoot, "package.json"),
+      JSON.stringify(metadata),
+    );
+    await writeFile(
+      join(root, path),
+      Buffer.concat([report, Buffer.from("\n")]),
+    );
+    await assert.rejects(
+      readRepositoryJsonPolicy(root),
+      /Remove the temporary/,
+    );
+  } finally {
+    await rm(root, { recursive: true });
+  }
+});
