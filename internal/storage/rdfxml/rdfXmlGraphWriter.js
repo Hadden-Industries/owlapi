@@ -232,7 +232,8 @@ const serializeGraph = (dataset, policy, context) => {
         "An RDF language tag and rdf:langString datatype must occur together",
       );
     }
-    if (term.language) requireLanguageTag(term.language);
+    if (term.language && documentStoragePolicy.validatesRdfLanguageTags)
+      requireLanguageTag(term.language);
     requireTextBudget(term.value);
     // RDF/XML 1.1 section 8 explicitly excludes this RDF 1.1 datatype.
     if (term.datatype.value === `${RDF_NAMESPACE}HTML`) {

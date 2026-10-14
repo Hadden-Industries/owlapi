@@ -60,8 +60,32 @@ const referenceAmendment = {
     "Exact existing reference-source update from b361bedf; the current source revision is still enforced at execution.",
 };
 
+const behaviorProfileAmendment = {
+  path: factualAmendment.path,
+  previousSha256: deadlineAmendment.currentSha256,
+  currentSha256:
+    "f4be6e8aa2625f8ef1c2a144598ce608c4012142c88624ea18d1b2873ae80f4e",
+  replacements: [
+    {
+      previous: "# Canonical VOWL prerequisites\n\n",
+      current:
+        "# Canonical VOWL prerequisites\n\n" +
+        "The [behavior profile contract](behavior-profiles.md) now governs explicit Java versus normative selection and resource defaults.\n" +
+        "The rule table and bounded source-assessment guarantees below describe `normative-v1`; Java uses the released native datatype and profile rules.\n" +
+        "An unverified report never certifies validity or invalidity: `isInProfile()` throws its resource/capability failure.\n\n",
+    },
+    {
+      previous: "`isInProfile()` is true only for `valid`.\n",
+      current:
+        "`isInProfile()` returns true for `valid`, false for `invalid`, and throws for `unverified`.\n",
+    },
+  ],
+  scope:
+    "Owner-authorized behavior-profile implementation: distinguish native and normative contracts and stop treating incomplete assessment as a Boolean verdict. Original authority and every earlier amendment retain their exact hashes.",
+};
+
 const approvedChains = [
-  [factualAmendment, deadlineAmendment],
+  [factualAmendment, deadlineAmendment, behaviorProfileAmendment],
   [referenceAmendment],
 ];
 

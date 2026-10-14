@@ -58,7 +58,12 @@ describe("W3C Manchester grammar mapping conformance", () => {
       "phase3-structural.omn",
     );
     const functional = await load(
-      readFileSync(FUNCTIONAL_FIXTURE_URL, "utf8"),
+      // The historical Functional fixture encoded the former reversed facet
+      // mapping. Preserve its pinned bytes, but compare the corrected grammar
+      // against >= 0 / <= 10 as confirmed by the retained Java observation.
+      readFileSync(FUNCTIONAL_FIXTURE_URL, "utf8")
+        .replace('xsd:maxInclusive "0"', 'xsd:minInclusive "0"')
+        .replace('xsd:minInclusive "10"', 'xsd:maxInclusive "10"'),
       "phase3-structural.ofn",
     );
 

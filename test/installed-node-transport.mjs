@@ -37,6 +37,8 @@ try {
     const operations = new Set();
     const allowed = new NodeDocumentLoader({
       authorize(resourceIRI, context) {
+        if (context.operation === "read-file")
+          assert.equal(context.requiresStablePathAncestors, true);
         operations.add(context.operation);
         return (
           resourceIRI.toString().startsWith(base + "/") ||

@@ -386,7 +386,12 @@ const normalizeConfiguration = (configuration, behaviorProfileId) => {
       throw new TypeError(
         "Loader configuration and manager behavior profiles must match",
       );
-    return configuration;
+    // All consumers receive the admitted private identity and native settings,
+    // even when a caller subclasses the configuration's public query methods.
+    return OWLOntologyLoaderConfiguration.prototype.with.call(
+      configuration,
+      {},
+    );
   }
   const normalized = new OWLOntologyLoaderConfiguration({
     behaviorProfileId,
@@ -445,6 +450,7 @@ export class OWLOntologyManager {
   #loaderConfigurationsByOntologyID = new Map();
   #requestedImportIRIs = new Set();
   #importedOntologyIDsByImportIRI = new Map();
+  #externalDocumentIRIsByOntology = new WeakMap();
   #rdfXmlFormats = new WeakMap();
 
   constructor({
@@ -593,7 +599,11 @@ export class OWLOntologyManager {
           )
             continue;
           const imported =
-            registration.getOntologyByIRI(declaration.iri) ??
+            registration.getOntologyByIRI(
+              declaration.iri,
+              this.#behaviorContext.behaviorProfileDefinition
+                .ontologyIdentityPolicy,
+            ) ??
             registration.getOntologyByDocumentIRI(
               this.#mapDocumentIRI(declaration.iri),
             );
@@ -796,8 +806,11 @@ export class OWLOntologyManager {
     );
     return retainedID
       ? this.getOntology(retainedID)
-      : (this.#managedOntologyIndex.getFirstOntologyByIRI(importIRI) ??
-          this.#managedOntologyIndex.getOntologyByDocumentIRI(importIRI));
+      : (this.#managedOntologyIndex.getOntologyByIRI(
+          importIRI,
+          this.#behaviorContext.behaviorProfileDefinition
+            .ontologyIdentityPolicy,
+        ) ?? this.#managedOntologyIndex.getOntologyByDocumentIRI(importIRI));
   }
 
   async loadOntologyFromOntologyDocument(source, configuration) {
@@ -1156,8 +1169,18 @@ export class OWLOntologyManager {
   async #loadImport(importIRI, importingEntry, configuration, session, depth) {
     const index =
       session.managedOntologyIndexSession ?? this.#managedOntologyIndex;
-    let importedOntology = index.getOntologyByIRI(importIRI);
+    let importedOntology = index.getOntologyByIRI(
+      importIRI,
+      this.#behaviorContext.behaviorProfileDefinition.ontologyIdentityPolicy,
+    );
     if (importedOntology) {
+      await this.#authorizeImportedOntology(
+        importedOntology,
+        importIRI,
+        importingEntry,
+        configuration,
+        index,
+      );
       this.#recordLoadedImport(
         session,
         importingEntry.ontology,
@@ -1175,6 +1198,13 @@ export class OWLOntologyManager {
     const documentIRI = this.#mapDocumentIRI(importIRI);
     importedOntology = index.getOntologyByDocumentIRI(documentIRI);
     if (importedOntology) {
+      await this.#authorizeImportedOntology(
+        importedOntology,
+        importIRI,
+        importingEntry,
+        configuration,
+        index,
+      );
       this.#recordLoadedImport(
         session,
         importingEntry.ontology,
@@ -1303,6 +1333,16 @@ export class OWLOntologyManager {
       session,
       depth + 1,
     );
+    this.#externalDocumentIRIsByOntology.set(
+      importedOntology,
+      Object.freeze([
+        documentIRI,
+        ...(importedSource.getDocumentIRI?.()?.value !== documentIRI.value &&
+        importedSource.getDocumentIRI?.()
+          ? [importedSource.getDocumentIRI()]
+          : []),
+      ]),
+    );
     this.#recordLoadedImport(
       session,
       importingEntry.ontology,
@@ -1310,6 +1350,34 @@ export class OWLOntologyManager {
       importIRI,
     );
     return importedOntology;
+  }
+
+  async #authorizeImportedOntology(
+    ontology,
+    importIRI,
+    importingEntry,
+    configuration,
+    index,
+  ) {
+    const context = Object.freeze({
+      config: configuration,
+      purpose: "ontology-import",
+      importIRI,
+      importingDocumentIRI: importingEntry.context.documentIRI,
+      signal: configuration.signal,
+    });
+    for (const member of index.getImportsClosure(ontology)) {
+      for (const documentIRI of this.#externalDocumentIRIsByOntology.get(
+        member,
+      ) ?? []) {
+        await assertDocumentLoaderAuthorization(
+          this.#documentLoader,
+          documentIRI,
+          context,
+        );
+        this.#throwIfAborted(configuration);
+      }
+    }
   }
 
   #recordLoadedImport(session, ontology, importedOntology, importIRI) {
@@ -1677,6 +1745,8 @@ export class OWLOntologyManager {
               ? declaration.iri
               : this.#mapDocumentIRI(declaration.iri),
           })),
+          this.#behaviorContext.behaviorProfileDefinition
+            .ontologyIdentityPolicy,
         );
       }
 
@@ -1730,8 +1800,11 @@ export class OWLOntologyManager {
         if (descriptor.kind === "ADD_IMPORT") {
           const iri = descriptor.value.iri;
           const imported =
-            this.#managedOntologyIndex.getFirstOntologyByIRI(iri) ??
-            this.#managedOntologyIndex.getOntologyByDocumentIRI(iri);
+            this.#managedOntologyIndex.getOntologyByIRI(
+              iri,
+              this.#behaviorContext.behaviorProfileDefinition
+                .ontologyIdentityPolicy,
+            ) ?? this.#managedOntologyIndex.getOntologyByDocumentIRI(iri);
           if (imported)
             this.#importedOntologyIDsByImportIRI.set(
               iri.value,

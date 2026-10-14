@@ -3,6 +3,7 @@ import { OWLObjectKind } from "../../model/kinds.js";
 import {
   isCanonicalStructuralObject,
   OWLStructuralObject,
+  structuralKey,
 } from "../../model/structural.js";
 
 const ontologyIDKey = (ontologyID, name = "ontologyID") => {
@@ -239,8 +240,31 @@ const applyDirectImportToState = (
     );
 };
 
-const getOntologyByIRIFromStates = (states, iri) => {
+const getOntologyByIRIFromStates = (
+  states,
+  iri,
+  { allowNamedIDFallback = false } = {},
+) => {
   const key = iriKey(iri, "iri");
+  if (allowNamedIDFallback) {
+    const exactIDKey = structuralKey(OWLObjectKind.ONTOLOGY_ID, [
+      iri,
+      undefined,
+    ]);
+    for (const state of states) {
+      const exact = state.ontologyByID.get(exactIDKey);
+      if (exact) return exact;
+    }
+    for (const indexName of [
+      "ontologiesByOntologyIRI",
+      "ontologiesByVersionIRI",
+    ])
+      for (const state of states) {
+        const match = state[indexName].get(key)?.values().next().value;
+        if (match) return match;
+      }
+    return undefined;
+  }
   const matches = new Set();
   for (const state of states) {
     state.ontologiesByOntologyIRI
@@ -273,6 +297,34 @@ const getOntologyByDocumentIRIFromStates = (states, documentIRI) => {
     }
   }
   return undefined;
+};
+
+const getImportsClosureFromStates = (states, ontology) => {
+  requireManagedOntologyInStates(states, ontology);
+  const closure = new Set([ontology]);
+  for (const member of closure)
+    for (const state of states)
+      for (const imported of state.directImportsByOntology.get(member) ?? [])
+        closure.add(imported);
+  return closure;
+};
+
+const removeOntologyFromState = (state, ontology) => {
+  if (!state.ontologies.delete(ontology)) return false;
+  for (const index of [state.ontologyByID, state.ontologyByDocumentIRI])
+    for (const [key, value] of index) if (value === ontology) index.delete(key);
+  for (const index of [
+    state.ontologiesByOntologyIRI,
+    state.ontologiesByVersionIRI,
+  ])
+    for (const key of index.keys()) removeFromSetIndex(index, key, ontology);
+  state.documentIRIByOntology.delete(ontology);
+  state.deterministicImportOrderKeyByOntology.delete(ontology);
+  state.directImportsByOntology.delete(ontology);
+  state.resolvedImportIRIsByOntology.delete(ontology);
+  for (const imports of state.directImportsByOntology.values())
+    imports.delete(ontology);
+  return true;
 };
 
 const compareCodeUnitStrings = (left, right) => {
@@ -359,11 +411,12 @@ class ManagedOntologyLoadSession {
     );
   }
 
-  getOntologyByIRI(iri) {
+  getOntologyByIRI(iri, identityPolicy) {
     this.#requireOpen();
     return getOntologyByIRIFromStates(
       [this.#stagedState, this.#getCommittedState()],
       iri,
+      identityPolicy,
     );
   }
 
@@ -403,18 +456,10 @@ class ManagedOntologyLoadSession {
   /** Reachability over staged and committed edges for canonical parsing's AllDecl. */
   getImportsClosure(ontology) {
     this.#requireOpen();
-    const states = [this.#stagedState, this.#getCommittedState()];
-    requireManagedOntologyInStates(states, ontology);
-    const closure = new Set([ontology]);
-    for (const member of closure) {
-      for (const state of states) {
-        for (const imported of state.directImportsByOntology.get(member) ??
-          []) {
-          closure.add(imported);
-        }
-      }
-    }
-    return closure;
+    return getImportsClosureFromStates(
+      [this.#stagedState, this.#getCommittedState()],
+      ontology,
+    );
   }
 
   commit() {
@@ -535,20 +580,9 @@ class ManagedOntologyMutation {
       );
     }
 
+    if (conflictingOntology && conflictingOntology !== ontology)
+      removeOntologyFromState(this.#stagedState, conflictingOntology);
     if (!this.#originalIdentityStateByOntology.has(ontology)) {
-      if (conflictingOntology && conflictingOntology !== ontology) {
-        this.#stagedState.ontologies.delete(conflictingOntology);
-        removeFromSetIndex(
-          this.#stagedState.ontologiesByOntologyIRI,
-          newIdentity.ontologyIRIKey,
-          conflictingOntology,
-        );
-        removeFromSetIndex(
-          this.#stagedState.ontologiesByVersionIRI,
-          newIdentity.versionIRIKey,
-          conflictingOntology,
-        );
-      }
       this.#originalIdentityStateByOntology.set(
         ontology,
         Object.freeze({
@@ -635,7 +669,7 @@ class ManagedOntologyMutation {
   }
 
   /** Replace one loaded adjacency bucket after all aliases have been staged. */
-  stageImportsReplacement(ontology, declarations) {
+  stageImportsReplacement(ontology, declarations, identityPolicy) {
     this.#requireOpen();
     requireManagedOntology(this.#stagedState, ontology);
     if (!this.#originalImportsByOntology.has(ontology))
@@ -654,7 +688,7 @@ class ManagedOntologyMutation {
     const resolvedIRIs = new Set();
     for (const { iri, documentIRI } of declarations) {
       const imported =
-        getOntologyByIRIFromStates([this.#stagedState], iri) ??
+        getOntologyByIRIFromStates([this.#stagedState], iri, identityPolicy) ??
         getOntologyByDocumentIRIFromStates([this.#stagedState], documentIRI);
       if (imported) {
         imports.add(imported);
@@ -739,22 +773,12 @@ export class ManagedOntologyIndex {
       .next().value;
   }
 
-  getFirstOntologyByIRI(iri) {
-    return (
-      this.getFirstOntologyByOntologyIRI(iri) ??
-      this.#state.ontologiesByVersionIRI
-        .get(iriKey(iri, "IRI"))
-        ?.values()
-        .next().value
-    );
-  }
-
   getOntologyByID(ontologyID) {
     return this.#state.ontologyByID.get(ontologyIDKey(ontologyID));
   }
 
-  getOntologyByIRI(iri) {
-    return getOntologyByIRIFromStates([this.#state], iri);
+  getOntologyByIRI(iri, identityPolicy) {
+    return getOntologyByIRIFromStates([this.#state], iri, identityPolicy);
   }
 
   getOntologyByDocumentIRI(documentIRI) {
@@ -763,6 +787,10 @@ export class ManagedOntologyIndex {
 
   getDirectImports(ontology) {
     return new Set(this.#state.directImportsByOntology.get(ontology) || []);
+  }
+
+  getImportsClosure(ontology) {
+    return getImportsClosureFromStates([this.#state], ontology);
   }
 
   /** Whether this declaration has a retained, manager-owned loaded resolution. */
@@ -806,24 +834,7 @@ export class ManagedOntologyIndex {
 
   /** Withdraw only the failed document's registration; completed imports remain. */
   unregisterOntology(ontology) {
-    if (!this.#state.ontologies.delete(ontology)) return;
-    for (const index of [
-      this.#state.ontologyByID,
-      this.#state.ontologyByDocumentIRI,
-    ])
-      for (const [key, value] of index)
-        if (value === ontology) index.delete(key);
-    for (const index of [
-      this.#state.ontologiesByOntologyIRI,
-      this.#state.ontologiesByVersionIRI,
-    ])
-      for (const key of index.keys()) removeFromSetIndex(index, key, ontology);
-    this.#state.documentIRIByOntology.delete(ontology);
-    this.#state.deterministicImportOrderKeyByOntology.delete(ontology);
-    this.#state.directImportsByOntology.delete(ontology);
-    this.#state.resolvedImportIRIsByOntology.delete(ontology);
-    for (const imports of this.#state.directImportsByOntology.values())
-      imports.delete(ontology);
+    if (!removeOntologyFromState(this.#state, ontology)) return;
     this.#state.revision += 1;
   }
 

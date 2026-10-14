@@ -107,6 +107,28 @@
   },
   "implementationRecords": [
     {
+      "id": "JAVA-BEHAVIOR-INTERNAL-LOADING-AWAIT-ABORTABLE-OPERATION",
+      "path": "internal/loading/awaitAbortableOperation.js",
+      "phase": 25,
+      "scope": "Settle cancelled host operations promptly while retaining observation of late completion and caller-owned resource cleanup.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "docs/compatibility/behavior-profiles.md"
+      ],
+      "compatibilityReferences": [
+        "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+        "docs/compatibility/java-api-parity-decisions.json"
+      ],
+      "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "focusedEvidence": ["io/node/nodeDocumentLoaderCancellation.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+      "recordedOn": "2026-10-14"
+    },
+    {
       "id": "RDF-CONSUMER-PARSER-METADATA",
       "path": "io/rdfParserMetaData.js",
       "phase": 23,

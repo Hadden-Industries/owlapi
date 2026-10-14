@@ -14,6 +14,7 @@ import { StringDocumentSource } from "../stringDocumentSource.js";
 import { IRI } from "../../model/structural.js";
 import { OWLOntologyLoaderConfiguration } from "../../model/owlOntologyLoaderConfiguration.js";
 import { assertDocumentLoaderAuthorization } from "../../internal/loading/documentLoaderAuthorization.js";
+import { awaitAbortableOperation } from "../../internal/loading/awaitAbortableOperation.js";
 import { OntologyBehaviorContext } from "../../internal/behavior/ontologyBehaviorContext.js";
 import {
   jsonLdAlternateDocument,
@@ -166,13 +167,16 @@ export class NodeDocumentLoader {
     );
     try {
       effectiveSignal.throwIfAborted();
-      return await this.#loadDocument(documentIRI, {
-        config,
-        purpose,
-        signal: effectiveSignal,
-        policy,
-        connectionTimeoutMilliseconds,
-      });
+      return await awaitAbortableOperation(
+        this.#loadDocument(documentIRI, {
+          config,
+          purpose,
+          signal: effectiveSignal,
+          policy,
+          connectionTimeoutMilliseconds,
+        }),
+        effectiveSignal,
+      );
     } catch (error) {
       if (effectiveSignal.aborted) throw effectiveSignal.reason;
       throw error;
@@ -402,14 +406,18 @@ export class NodeDocumentLoader {
       operation: "read-file",
       requestedFilePath,
       resolvedFilePath,
+      requiresStablePathAncestors: true,
     });
     signal.throwIfAborted();
-    // O_NOFOLLOW prevents replacing the authorized final component with a
-    // symlink on hosts that provide it. The host still owns filesystem policy.
+    // The read-file grant includes the host's guarantee that every ancestor is
+    // trusted and stable during acquisition. Portable Node cannot establish
+    // that guarantee. O_NOFOLLOW additionally protects the final component on
+    // hosts that provide it; it does not constrain ancestor traversal.
     // eslint-disable-next-line no-bitwise -- Node open flags are a native bitmask.
     const openFlags = fileConstants.O_RDONLY | (fileConstants.O_NOFOLLOW ?? 0);
     const file = await open(resolvedFilePath, openFlags);
     try {
+      signal.throwIfAborted();
       const stream = file.createReadStream({ autoClose: false, signal });
       if (context.policy.readsJavaJsonDocument)
         return new StringDocumentSource(
@@ -458,6 +466,7 @@ export class NodeDocumentLoader {
       // approved result so core HTTP cannot perform a second unchecked lookup.
       destination = await lookup(hostname, { order: "ipv4first" });
     }
+    signal?.throwIfAborted();
     await assertDocumentLoaderAuthorization(this, iri, {
       ...context,
       operation: "connect-http",

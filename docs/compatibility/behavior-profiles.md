@@ -122,6 +122,9 @@ const manager = OWLManager.createOWLOntologyManager({
 `applicationAccessPolicy` is supplied by the consuming application.
 The callback must return `true` for each concrete operation; omission/false rejects it. Its context exposes the purpose, configuration, credential headers, redirect origin, requested file path or resolved address/path as appropriate.
 Operations include `use-document`, `request-document`, `resolve-hostname`, `connect-http`, `resolve-file` and `read-file`.
+For `read-file`, `requiresStablePathAncestors: true` requires the host to guarantee trusted, stable ancestor directories throughout acquisition.
+The portable adapter cannot contain concurrent replacement of parent directories by an untrusted actor; hosts with that trust model must use a caller-owned loader with platform-specific file-handle authorization.
+See the [approved local-file boundary](profiles/java-owlapi-5.5.1/file-transport-boundary.md).
 Resolved addresses are pinned for the authorized connection.
 Cache reuse requires current authority; distinct loader authorities never share context contents.
 

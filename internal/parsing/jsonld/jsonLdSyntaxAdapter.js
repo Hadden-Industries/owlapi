@@ -480,7 +480,10 @@ export class JsonLdSyntaxAdapter {
           },
         );
       }
-      const parsedDocument = loaded.document;
+      // The upstream resolver rewrites relative context URLs in its input.
+      // Keep the authority-scoped cached value immutable and provide a private
+      // mutable copy for every processor invocation, including JSON-LD 1.1.
+      const parsedDocument = structuredClone(loaded.document);
       return {
         contextUrl: null,
         // JSON-LD 1.0 compatibility must be applied at every document

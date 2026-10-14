@@ -15,6 +15,7 @@ const normativeDocumentStoragePolicy = Object.freeze({
   inlinesEmptyAnonymousIndividuals: false,
   requiresLosslessRdfRoundTrip: true,
   requiresXml10Characters: true,
+  validatesRdfLanguageTags: true,
   maxOutputBytes: 33554432,
   maxStructureDepth: 512,
   maxAnnotationDepth: 64,
@@ -31,6 +32,7 @@ const javaDocumentStoragePolicy = Object.freeze({
   xmlDeclaration: '<?xml version="1.0"?>',
   requiresLosslessRdfRoundTrip: false,
   requiresXml10Characters: false,
+  validatesRdfLanguageTags: false,
   maxOutputBytes: Infinity,
   maxStructureDepth: Infinity,
   maxAnnotationDepth: Infinity,
@@ -132,6 +134,7 @@ const definitions = new Map([
       }),
       computationResourcePolicy: Object.freeze({
         usesJavaProviderDefaults: false,
+        maxTransformDepth: 512,
         manchesterRenderingLimits: Object.freeze({
           maxOutputBytes: 33554432,
           maxDepth: 512,
@@ -278,6 +281,7 @@ const definitions = new Map([
       }),
       computationResourcePolicy: Object.freeze({
         usesJavaProviderDefaults: true,
+        maxTransformDepth: Infinity,
         manchesterRenderingLimits: Object.freeze({
           maxOutputBytes: Infinity,
           maxDepth: Infinity,

@@ -17,7 +17,7 @@ test("every retained Central and source-build observation is identical or explic
     readObservation("central"),
     readObservation("source"),
   );
-  expect(result).toHaveLength(26);
+  expect(result).toHaveLength(28);
   expect(result.filter((row) => row.comparisonStatus === "unresolved")).toEqual(
     [],
   );

@@ -19,6 +19,7 @@ Existing caller-supplied loaders remain available; their transport behavior is o
 The adapter uses Node's HTTP, HTTPS, DNS and file APIs.
 It receives the actual loader configuration for each operation and applies the native Java getter/setter values without replacement defaults. It preserves the released Java/JDK-observed attempt, connection-only timeout, redirect and credential behavior.
 Each resolved destination, redirect and file access requires authorization before access.
+Local-file authorization also requires the [approved trusted, stable ancestor condition](file-transport-boundary.md); portable Node does not guarantee containment in attacker-writable directory trees.
 Credentials and resolved destinations are available to that decision.
 Errors distinguish denied access from parsing failures and unsupported host capabilities.
 

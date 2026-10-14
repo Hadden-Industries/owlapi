@@ -11,15 +11,32 @@ const current = read(
   "../../docs/compatibility/canonical-vowl-prerequisites.md",
 );
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
+const historicalDeadlineBytes = Buffer.from(
+  current
+    .toString()
+    .replace(
+      "The [behavior profile contract](behavior-profiles.md) now governs explicit Java versus normative selection and resource defaults.\n" +
+        "The rule table and bounded source-assessment guarantees below describe `normative-v1`; Java uses the released native datatype and profile rules.\n" +
+        "An unverified report never certifies validity or invalidity: `isInProfile()` throws its resource/capability failure.\n\n",
+      "",
+    )
+    .replace(
+      "`isInProfile()` returns true for `valid`, false for `invalid`, and throws for `unverified`.\n",
+      "`isInProfile()` is true only for `valid`.\n",
+    ),
+);
 
 describe("profile authority amendment verification", () => {
-  it("reconstructs the frozen authority through both approved documentation transitions", () => {
+  it("reconstructs the frozen authority through the approved documentation transitions", () => {
     // Hashes come from the original manifest and the approved historical blobs,
     // independently of the verifier's amendment declarations.
     expect(authority.sha256).toBe(
       "742ba46a79ef1c6f51c1aaad765c2292a30c07ca707955c5ff6191c9564b9d2b",
     );
     expect(sha256(current)).toBe(
+      "f4be6e8aa2625f8ef1c2a144598ce608c4012142c88624ea18d1b2873ae80f4e",
+    );
+    expect(sha256(historicalDeadlineBytes)).toBe(
       "f2719c65ccb3bce29356ae3cc54251c98513752f042bdcb683e1bb8430333e45",
     );
     const amendments = verifyProfileAuthorityAmendments(authority, current);
@@ -39,8 +56,13 @@ describe("profile authority amendment verification", () => {
       ],
       [
         "35997fd661175251c6391839c202d889132ab285764d414e1ebae3bf61a4b722",
-        sha256(current),
+        sha256(historicalDeadlineBytes),
         "35997fd661175251c6391839c202d889132ab285764d414e1ebae3bf61a4b722",
+      ],
+      [
+        sha256(historicalDeadlineBytes),
+        sha256(current),
+        sha256(historicalDeadlineBytes),
       ],
     ]);
   });
@@ -79,7 +101,7 @@ describe("profile authority amendment verification", () => {
 
   it("retains the historical factual-only amendment and the original authority", () => {
     const factualOnly = Buffer.from(
-      current
+      historicalDeadlineBytes
         .toString()
         .replace(
           /Default limits are .*\n(?:.*\n){4}The depth ceiling/u,

@@ -279,6 +279,8 @@ const checkModel = async (
           });
       }
       const setField = minimumTwoSetFields.get(value.kind);
+      if (value.kind === K.OBJECT_ONE_OF && value.individuals.length === 0)
+        violate("SET_CONSTRUCTOR_ARITY", { scope, kind: value.kind });
       if (setField && value[setField].length < 2) {
         const original = readSourceArity(value);
         violate(

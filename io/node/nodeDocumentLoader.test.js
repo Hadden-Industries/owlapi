@@ -567,7 +567,10 @@ test("Java follows the observed HTTP-to-file transition only after authorizing t
   expect(events.map(({ path }) => path)).toEqual(["/file"]);
   expect(
     operations.find(({ operation }) => operation === "read-file"),
-  ).toMatchObject({ resolvedFilePath: ownedFile });
+  ).toMatchObject({
+    resolvedFilePath: ownedFile,
+    requiresStablePathAncestors: true,
+  });
 });
 
 test.each(["connect-http", "read-file"])(

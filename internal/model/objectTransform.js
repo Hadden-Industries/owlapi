@@ -5,7 +5,10 @@ import {
 } from "../../model/kinds.js";
 import { OWLOntologyManager } from "../../model/owlOntologyManager.js";
 import { readOntologySnapshot } from "../../model/owlOntology.js";
-import { createSourcePreservingDataFactory } from "../../model/owlDataFactory.js";
+import {
+  createSourcePreservingDataFactory,
+  readDataFactoryBehaviorDefinition,
+} from "../../model/owlDataFactory.js";
 import { IRI, OWLStructuralObject } from "../../model/structural.js";
 import { validateStructuralGraph } from "./structuralValidation.js";
 import { structuralFields } from "./structuralFields.js";
@@ -64,6 +67,8 @@ export const transformObject = (root, factory, resolve) => {
         (kind) => ![K.ONTOLOGY_ID, K.IMPORTS_DECLARATION].includes(kind),
       ),
     ),
+    readDataFactoryBehaviorDefinition(factory).computationResourcePolicy
+      .maxTransformDepth,
   );
   const done = new Map();
   const get = (value) =>
