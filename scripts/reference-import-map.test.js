@@ -52,7 +52,7 @@ describe("reference import-map evidence", () => {
     ).toThrow(/approved/u);
   });
 
-  it("requires every declared public package entry point", () => {
+  it("requires every portable public entry point and excludes the approved Node transport boundary", () => {
     expect(BROWSER_CONSUMER_SPECIFIERS).toEqual([
       "owlapi",
       "owlapi/apibinding",
@@ -86,15 +86,15 @@ describe("reference import-map evidence", () => {
     ).toThrow(/do not match/u);
   });
 
-  it("selects jsonld's browser bundle only for owlapi's native module graph", () => {
+  it("rejects stock jsonld substitution inside owlapi's native module graph", () => {
     const packageUrl = "file:///fixture/node_modules/owlapi/";
-    expect(
+    expect(() =>
       resolveReferenceBrowserDependency({
         packageUrl,
         parentUrl: `${packageUrl}internal/parsing/jsonld/parser.js`,
         specifier: "jsonld",
       }),
-    ).toBe("https://ga.jspm.io/npm:jsonld@9.0.0/dist/jsonld.js");
+    ).toThrow(/package-local JSON-LD provider/);
     expect(
       resolveReferenceBrowserDependency({
         packageUrl,

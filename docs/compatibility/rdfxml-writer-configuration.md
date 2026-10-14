@@ -1,5 +1,12 @@
 # RDF/XML writer configuration
 
+The current [behavior profile contract](behavior-profiles.md) owns profile selection, native copy/reset behavior and target publication.
+The guarantees and example in the next section describe `normative-v1`.
+The historical compatibility decisions below retain their original revision and are not current Java-profile exceptions.
+Java selects native writer behavior explicitly and appends output.
+
+## Normative v1 writer contract
+
 `OWLOntologyWriterConfiguration` is an immutable value exported only from `owlapi/model`.
 Managers own independent configuration values.
 Every save captures both the ontology and the settings before its first asynchronous operation, so changing the manager affects subsequent saves without changing one already in progress.
@@ -10,7 +17,7 @@ import { OWLOntologyWriterConfiguration } from "owlapi/model";
 import { StringDocumentTarget } from "owlapi/io";
 import { OWLDocumentFormats } from "owlapi/formats";
 
-const manager = OWLManager.createOWLOntologyManager();
+const manager = OWLManager.createOWLOntologyManager({ behaviorProfileId: "normative-v1" });
 manager.setOntologyWriterConfiguration(
   new OWLOntologyWriterConfiguration()
     .withIndentSize(2)
@@ -32,7 +39,7 @@ All builders return fresh frozen values and retain every unrelated setting, incl
 Boolean arguments must be actual booleans.
 Indentation must be a finite integer from zero through `2147483647`: other numeric values raise `RangeError` and other types raise `TypeError`.
 Negative zero is normalized to ordinary zero.
-The constructor takes no arguments.
+The constructor accepts the optional immutable `behaviorProfileId` selection.
 The manager setter returns `undefined` and accepts genuine configurations, rejecting null, lookalikes and proxies.
 The getter returns the current immutable value.
 
@@ -61,7 +68,7 @@ Construction accounting is conservative because independently serialized element
 Excessive output or QName work raises a storage error caused by `ResourceLimitError`; the target retains its previous complete text.
 A legal integer setting is not a promise that any ontology can be rendered within the budget.
 
-## Compatibility decisions and observations
+## Historical compatibility decisions and observations
 
 The owner accepted the implementation plan and its proposed adaptations on 2026-10-08, then selected npm 12.2.0 and the current upstream default-branch Java pin.
 The actual Java checkout and upstream `version5` tip were both `b61ebe2da83daceebb3e7ba7afbd2582c9240c33` (`owlapi-parent-5.5.1-9-gb61ebe2da`).

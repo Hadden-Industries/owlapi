@@ -1,4 +1,6 @@
 import { StringDocumentSource } from "../../io/stringDocumentSource.js";
+import { skipTrivia } from "./asciiLeadingTrivia.js";
+import { OntologyBehaviorContext } from "../behavior/ontologyBehaviorContext.js";
 
 const DETECTION_RESULTS = new Set(["MATCH", "NO_MATCH", "INDETERMINATE"]);
 const DETECTION_RANK = Object.freeze({
@@ -26,6 +28,7 @@ const fileExtension = (fileName) => {
 };
 
 const boundedUtf8Prefix = (text, maxBytes) => {
+  if (maxBytes === Infinity) return text;
   if (!Number.isSafeInteger(maxBytes) || maxBytes < 0) {
     throw new RangeError("maxSniffBytes must be a non-negative safe integer");
   }
@@ -169,9 +172,44 @@ export class OWLParserRegistry {
       );
     }
 
+    const { factoryOrder } = new OntologyBehaviorContext(
+      configuration.getBehaviorProfileId?.(),
+    ).behaviorProfileDefinition.parserSelectionPolicy;
+    if (factoryOrder) {
+      let descriptors = factoryOrder
+        .map((id) =>
+          this.#descriptors.find((descriptor) => descriptor.id === id),
+        )
+        .filter(Boolean);
+      const mediaType = normalizeMediaType(source.getContentType());
+      const matchingMediaType = descriptors.filter((descriptor) =>
+        descriptor.format.mediaTypes
+          .map(normalizeMediaType)
+          .includes(mediaType),
+      );
+      if (matchingMediaType.length) descriptors = matchingMediaType;
+      return descriptors.map((descriptor) =>
+        Object.freeze({
+          descriptor,
+          eligible: true,
+          detection: Object.freeze({
+            result: "INDETERMINATE",
+            reasonCode: "JAVA_FACTORY_ORDER",
+            reason:
+              "The qualified Java factory order selects this supported parser",
+          }),
+          ordering: Object.freeze({
+            contentTypeMatch: matchingMediaType.length > 0,
+            extensionMatch: false,
+            explicit: false,
+          }),
+        }),
+      );
+    }
     const maxSniffBytes = configuration.maxSniffBytes ?? 8192;
+    const text = source.getText();
     const boundedSource = new StringDocumentSource(
-      boundedUtf8Prefix(source.getText(), maxSniffBytes),
+      boundedUtf8Prefix(text.slice(skipTrivia(text, 0)), maxSniffBytes),
       {
         contentType: source.getContentType(),
         documentIRI: source.getDocumentIRI(),

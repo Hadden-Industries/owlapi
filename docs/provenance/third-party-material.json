@@ -3,7 +3,7 @@
   "schemaVersion": 3,
   "generatedBy": {
     "path": "util/generate-third-party-material.mjs",
-    "version": "3.2.0",
+    "version": "3.3.0",
     "authorities": [
       "package-lock.json and the authenticated npm package evidence corpus for exact dependency occurrences, tarball identities, recursive legal files, registry signatures, provenance, and ScanCode observations",
       "docs/provenance/npm-package-evidence.json plus its content-addressed blobs as the platform-independent authority for every required and optional npm artifact",
@@ -16,37 +16,37 @@
     "version": "0.1.0-rc.2",
     "lockfile": "package-lock.json",
     "lockfileVersion": 3,
-    "lockfileSha256": "067269937c0c72375cf968e44d4bb0ec4d2e258dc5704c402cad1ea1d5941340",
+    "lockfileSha256": "99eeebd4cbaa754663a61fb8d30e7226b6c22f004d711cbc4a606b9ba9f164e5",
     "evidenceManifest": "docs/provenance/npm-package-evidence.json",
-    "evidenceManifestSha256": "8dc85dc24d62c3de7a8a218928fc6c5dd8990811c00774c4876e949e68e74e78",
-    "evidenceCorpusRoot": "6bf162e370fd66f2bd07878c92a95300f145fddf95a7144cf57a5177b1ca4f1e",
+    "evidenceManifestSha256": "def15cc2e918e93f837c68dbbefb039c33a5d2234929f5cca6942fab75fc0d00",
+    "evidenceCorpusRoot": "1a5ebc4be680b99fa0a4643d70472042dad9802297a3a602b0c041400b464a55",
     "tarballDependenciesBundled": false
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
     "digestAlgorithm": "sha256-sorted-json-v1",
-    "factsSha256": "eca398f3c5c439d86eaf5178f4dbd358c1abe4d1e13c2b4146b3688170fac9cc",
+    "factsSha256": "97ceda3411b54e9b4f761089101f2c0a391230534f50e3f57dceeb0ba9d1c5e9",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
     "conclusion": null
   },
   "summary": {
-    "componentCount": 740,
-    "artifactCount": 681,
-    "productionComponentCount": 38,
-    "developmentComponentCount": 702,
-    "authenticatedTarballArtifactCount": 681,
-    "registrySignatureVerifiedArtifactCount": 681,
+    "componentCount": 743,
+    "artifactCount": 684,
+    "productionComponentCount": 46,
+    "developmentComponentCount": 697,
+    "authenticatedTarballArtifactCount": 684,
+    "registrySignatureVerifiedArtifactCount": 684,
     "provenanceVerifiedArtifactCount": 202,
-    "provenanceNotPublishedArtifactCount": 479,
-    "scanVerifiedArtifactCount": 681,
-    "evidenceBlobCount": 3329,
-    "evidenceRetainedBytes": 69141017,
-    "inspectedLicenceFileCount": 648,
-    "inspectedNoticeFileCount": 315,
-    "productionInspectedLicenceFileCount": 38,
-    "productionInspectedNoticeFileCount": 17,
+    "provenanceNotPublishedArtifactCount": 482,
+    "scanVerifiedArtifactCount": 684,
+    "evidenceBlobCount": 3347,
+    "evidenceRetainedBytes": 69468730,
+    "inspectedLicenceFileCount": 651,
+    "inspectedNoticeFileCount": 318,
+    "productionInspectedLicenceFileCount": 46,
+    "productionInspectedNoticeFileCount": 23,
     "productionComponentsWithoutInspectedLicence": [
       "node_modules/@rubensworks/saxes"
     ],
@@ -67,15 +67,15 @@
       "CC-BY-4.0": 1,
       "CC0-1.0": 4,
       "ISC": 115,
-      "MIT": 508,
+      "MIT": 511,
       "MPL-2.0": 12,
       "Python-2.0": 1
     },
     "productionDeclaredLicenseCounts": {
       "Apache-2.0": 1,
       "BSD-3-Clause": 4,
-      "ISC": 3,
-      "MIT": 30
+      "ISC": 4,
+      "MIT": 37
     },
     "developmentDeclaredLicenseCounts": {
       "(BSD-2-Clause OR MIT OR Apache-2.0)": 1,
@@ -90,12 +90,12 @@
       "CC-BY-3.0": 1,
       "CC-BY-4.0": 1,
       "CC0-1.0": 4,
-      "ISC": 112,
-      "MIT": 478,
+      "ISC": 111,
+      "MIT": 474,
       "MPL-2.0": 12,
       "Python-2.0": 1
     },
-    "materialCount": 17
+    "materialCount": 25
   },
   "components": [
     {
@@ -10882,65 +10882,6 @@
       }
     },
     {
-      "dependencyPath": "node_modules/@sigstore/sign/node_modules/iconv-lite",
-      "artifactId": "e4f9817a044f6e9e854e27db85815a704404fbb4994c51d59191b272e68cf0fe",
-      "name": "iconv-lite",
-      "version": "0.7.3",
-      "relationship": "DEVELOPMENT_ONLY",
-      "lockfileDeclaredLicenseExpressions": ["MIT"],
-      "tarballDeclaredLicenseExpression": "MIT",
-      "scanObservedLicenseExpressions": ["MIT"],
-      "declaredLicenseExpression": "MIT",
-      "concludedLicenseExpression": "MIT",
-      "licenseQualification": "LOCKFILE_TARBALL_DECLARATIONS_CONSISTENT",
-      "licenseConclusionRationale": "The concluded SPDX expression preserves an equivalent prior recorded conclusion when present; otherwise it selects the first SPDX-valid lockfile declaration, then authenticated package.json declaration, and only then ScanCode evidence. The distribution disposition likewise preserves an equivalent prior decision when present; otherwise it follows development/runtime scope and the concluded-licence policy. The lockfile and authenticated package.json declarations are consistent where present. ScanCode's additional file-level observations remain separately recorded and do not silently redefine the package declaration.",
-      "distributionDisposition": "DEVELOPMENT_ONLY_NOT_DISTRIBUTED",
-      "inspectionBasis": "LOCKED_REGISTRY_TARBALL",
-      "licenseFilePresence": "PRESENT",
-      "inspectedFiles": [
-        {
-          "path": "package/LICENSE",
-          "kind": "LICENCE",
-          "sha256": "ac779f7314c74f232ef847ea86e714abe25cf6eeb5cc97b69451b74e2af6492d",
-          "blobSha256": "ac779f7314c74f232ef847ea86e714abe25cf6eeb5cc97b69451b74e2af6492d",
-          "blobPath": "blobs/sha256/ac/ac779f7314c74f232ef847ea86e714abe25cf6eeb5cc97b69451b74e2af6492d"
-        },
-        {
-          "path": "package/README.md",
-          "kind": "README_ATTRIBUTION",
-          "sha256": "c8154c0e94dd628ed5bfc9c18c7accd9863c8b826e19b01bf71791c175504faf",
-          "blobSha256": "c8154c0e94dd628ed5bfc9c18c7accd9863c8b826e19b01bf71791c175504faf",
-          "blobPath": "blobs/sha256/c8/c8154c0e94dd628ed5bfc9c18c7accd9863c8b826e19b01bf71791c175504faf"
-        }
-      ],
-      "externalLicenseEvidence": [],
-      "authentication": {
-        "registrySignature": "VERIFIED",
-        "provenance": "NOT_PUBLISHED",
-        "archive": "VERIFIED",
-        "scan": "VERIFIED"
-      },
-      "artifactEvidence": {
-        "archiveSha256": "01194f400e1b3514fdee343f9dfbe5bf683b86391ee4336d04dfe1f5c7dc9aed",
-        "provenanceSha256": "9ee8e8392d58805fc24410567234e8a3c4c46ef29a94650aa67e22032fc1919b",
-        "registrySignatureSha256": "a6c641949268277b7246c1a9e4cb1a85cb0272237a0de8471860c5794fe48b00",
-        "scanSha256": "35baba7b63ae680de8ca57c9a40eb4e6ce3637d340996a8ac0dda0e4f0d9961f"
-      },
-      "registryUrl": "https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.7.3.tgz",
-      "sourceReference": "https://github.com/pillarjs/iconv-lite.git",
-      "sourceUrl": "https://github.com/pillarjs/iconv-lite",
-      "packageAuthor": "Alexander Shtuchkin <ashtuchkin@gmail.com>",
-      "packageTarballScope": false,
-      "noticeDisposition": "DEVELOPMENT_ONLY_RECORDED_NOT_PACKED",
-      "rationale": "This authenticated component belongs to the repository test, evidence, documentation, or release toolchain and is excluded from the owlapi tarball.",
-      "optional": true,
-      "platformSelectors": {
-        "cpu": [],
-        "libc": [],
-        "os": []
-      }
-    },
-    {
       "dependencyPath": "node_modules/@sigstore/sign/node_modules/lru-cache",
       "artifactId": "c00e725b334060dc84bc3df0ca362ffff76b89c9270de48f242638af66cf4ae3",
       "name": "lru-cache",
@@ -18448,6 +18389,65 @@
       }
     },
     {
+      "dependencyPath": "node_modules/encoding/node_modules/iconv-lite",
+      "artifactId": "9028a6a639a205db1d830cfb629c0606ae54623696995bf4e7e3b9fa62be24f9",
+      "name": "iconv-lite",
+      "version": "0.6.3",
+      "relationship": "DEVELOPMENT_ONLY",
+      "lockfileDeclaredLicenseExpressions": ["MIT"],
+      "tarballDeclaredLicenseExpression": "MIT",
+      "scanObservedLicenseExpressions": ["MIT"],
+      "declaredLicenseExpression": "MIT",
+      "concludedLicenseExpression": "MIT",
+      "licenseQualification": "LOCKFILE_TARBALL_DECLARATIONS_CONSISTENT",
+      "licenseConclusionRationale": "The concluded SPDX expression preserves an equivalent prior recorded conclusion when present; otherwise it selects the first SPDX-valid lockfile declaration, then authenticated package.json declaration, and only then ScanCode evidence. The distribution disposition likewise preserves an equivalent prior decision when present; otherwise it follows development/runtime scope and the concluded-licence policy. The lockfile and authenticated package.json declarations are consistent where present. ScanCode's additional file-level observations remain separately recorded and do not silently redefine the package declaration.",
+      "distributionDisposition": "DEVELOPMENT_ONLY_NOT_DISTRIBUTED",
+      "inspectionBasis": "LOCKED_REGISTRY_TARBALL",
+      "licenseFilePresence": "PRESENT",
+      "inspectedFiles": [
+        {
+          "path": "package/LICENSE",
+          "kind": "LICENCE",
+          "sha256": "ac779f7314c74f232ef847ea86e714abe25cf6eeb5cc97b69451b74e2af6492d",
+          "blobSha256": "ac779f7314c74f232ef847ea86e714abe25cf6eeb5cc97b69451b74e2af6492d",
+          "blobPath": "blobs/sha256/ac/ac779f7314c74f232ef847ea86e714abe25cf6eeb5cc97b69451b74e2af6492d"
+        },
+        {
+          "path": "package/README.md",
+          "kind": "README_ATTRIBUTION",
+          "sha256": "d320d84b29280ae77bc70b2ae6f0510b7fedce9ba6aa2da9bcec5c68688a83ae",
+          "blobSha256": "d320d84b29280ae77bc70b2ae6f0510b7fedce9ba6aa2da9bcec5c68688a83ae",
+          "blobPath": "blobs/sha256/d3/d320d84b29280ae77bc70b2ae6f0510b7fedce9ba6aa2da9bcec5c68688a83ae"
+        }
+      ],
+      "externalLicenseEvidence": [],
+      "authentication": {
+        "registrySignature": "VERIFIED",
+        "provenance": "NOT_PUBLISHED",
+        "archive": "VERIFIED",
+        "scan": "VERIFIED"
+      },
+      "artifactEvidence": {
+        "archiveSha256": "8544ea47791417dacfa830bb9093efb06cb13fc35e91c33cf3920bfd4b96f790",
+        "provenanceSha256": "b100156495b36ec3baa3fabdbc335f7dca326d654f349772fc556f14fe452689",
+        "registrySignatureSha256": "7bfd49d9a41795bf49fe5747b5f2b60c59070ee8bc37e2350be74d55695dbeba",
+        "scanSha256": "bad1363313914cbf94ab10f457c3eba4ad95ff2a2e4b9518a18ad6a3dcece3ef"
+      },
+      "registryUrl": "https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.6.3.tgz",
+      "sourceReference": "git://github.com/ashtuchkin/iconv-lite.git",
+      "sourceUrl": "https://github.com/ashtuchkin/iconv-lite",
+      "packageAuthor": "Alexander Shtuchkin <ashtuchkin@gmail.com>",
+      "packageTarballScope": false,
+      "noticeDisposition": "DEVELOPMENT_ONLY_RECORDED_NOT_PACKED",
+      "rationale": "This authenticated component belongs to the repository test, evidence, documentation, or release toolchain and is excluded from the owlapi tarball.",
+      "optional": true,
+      "platformSelectors": {
+        "cpu": [],
+        "libc": [],
+        "os": []
+      }
+    },
+    {
       "dependencyPath": "node_modules/end-of-stream",
       "artifactId": "36ced55d2ced0f29294cca77bf52ace17b226fbb8a248fbeddb2f2584feadc71",
       "name": "end-of-stream",
@@ -22479,10 +22479,10 @@
     },
     {
       "dependencyPath": "node_modules/iconv-lite",
-      "artifactId": "9028a6a639a205db1d830cfb629c0606ae54623696995bf4e7e3b9fa62be24f9",
+      "artifactId": "e4f9817a044f6e9e854e27db85815a704404fbb4994c51d59191b272e68cf0fe",
       "name": "iconv-lite",
-      "version": "0.6.3",
-      "relationship": "DEVELOPMENT_ONLY",
+      "version": "0.7.3",
+      "relationship": "EXTERNAL_RUNTIME_DEPENDENCY",
       "lockfileDeclaredLicenseExpressions": ["MIT"],
       "tarballDeclaredLicenseExpression": "MIT",
       "scanObservedLicenseExpressions": ["MIT"],
@@ -22490,7 +22490,7 @@
       "concludedLicenseExpression": "MIT",
       "licenseQualification": "LOCKFILE_TARBALL_DECLARATIONS_CONSISTENT",
       "licenseConclusionRationale": "The concluded SPDX expression preserves an equivalent prior recorded conclusion when present; otherwise it selects the first SPDX-valid lockfile declaration, then authenticated package.json declaration, and only then ScanCode evidence. The distribution disposition likewise preserves an equivalent prior decision when present; otherwise it follows development/runtime scope and the concluded-licence policy. The lockfile and authenticated package.json declarations are consistent where present. ScanCode's additional file-level observations remain separately recorded and do not silently redefine the package declaration.",
-      "distributionDisposition": "DEVELOPMENT_ONLY_NOT_DISTRIBUTED",
+      "distributionDisposition": "ALLOWED_SEPARATELY_INSTALLED_EXTERNAL_RUNTIME",
       "inspectionBasis": "LOCKED_REGISTRY_TARBALL",
       "licenseFilePresence": "PRESENT",
       "inspectedFiles": [
@@ -22504,9 +22504,9 @@
         {
           "path": "package/README.md",
           "kind": "README_ATTRIBUTION",
-          "sha256": "d320d84b29280ae77bc70b2ae6f0510b7fedce9ba6aa2da9bcec5c68688a83ae",
-          "blobSha256": "d320d84b29280ae77bc70b2ae6f0510b7fedce9ba6aa2da9bcec5c68688a83ae",
-          "blobPath": "blobs/sha256/d3/d320d84b29280ae77bc70b2ae6f0510b7fedce9ba6aa2da9bcec5c68688a83ae"
+          "sha256": "c8154c0e94dd628ed5bfc9c18c7accd9863c8b826e19b01bf71791c175504faf",
+          "blobSha256": "c8154c0e94dd628ed5bfc9c18c7accd9863c8b826e19b01bf71791c175504faf",
+          "blobPath": "blobs/sha256/c8/c8154c0e94dd628ed5bfc9c18c7accd9863c8b826e19b01bf71791c175504faf"
         }
       ],
       "externalLicenseEvidence": [],
@@ -22517,19 +22517,19 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "8544ea47791417dacfa830bb9093efb06cb13fc35e91c33cf3920bfd4b96f790",
-        "provenanceSha256": "b100156495b36ec3baa3fabdbc335f7dca326d654f349772fc556f14fe452689",
-        "registrySignatureSha256": "7bfd49d9a41795bf49fe5747b5f2b60c59070ee8bc37e2350be74d55695dbeba",
-        "scanSha256": "bad1363313914cbf94ab10f457c3eba4ad95ff2a2e4b9518a18ad6a3dcece3ef"
+        "archiveSha256": "01194f400e1b3514fdee343f9dfbe5bf683b86391ee4336d04dfe1f5c7dc9aed",
+        "provenanceSha256": "9ee8e8392d58805fc24410567234e8a3c4c46ef29a94650aa67e22032fc1919b",
+        "registrySignatureSha256": "a6c641949268277b7246c1a9e4cb1a85cb0272237a0de8471860c5794fe48b00",
+        "scanSha256": "35baba7b63ae680de8ca57c9a40eb4e6ce3637d340996a8ac0dda0e4f0d9961f"
       },
-      "registryUrl": "https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.6.3.tgz",
-      "sourceReference": "git://github.com/ashtuchkin/iconv-lite.git",
-      "sourceUrl": "https://github.com/ashtuchkin/iconv-lite",
+      "registryUrl": "https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.7.3.tgz",
+      "sourceReference": "https://github.com/pillarjs/iconv-lite.git",
+      "sourceUrl": "https://github.com/pillarjs/iconv-lite",
       "packageAuthor": "Alexander Shtuchkin <ashtuchkin@gmail.com>",
       "packageTarballScope": false,
-      "noticeDisposition": "DEVELOPMENT_ONLY_RECORDED_NOT_PACKED",
-      "rationale": "This authenticated component belongs to the repository test, evidence, documentation, or release toolchain and is excluded from the owlapi tarball.",
-      "optional": true,
+      "noticeDisposition": "EXTERNAL_DEPENDENCY_RECORDED_NOT_PACKED",
+      "rationale": "npm installs this authenticated component outside the owlapi tarball. Its own licence remains authoritative, while every downstream physical bundle must perform a separate distribution-scope review.",
+      "optional": false,
       "platformSelectors": {
         "cpu": [],
         "libc": [],
@@ -22811,7 +22811,7 @@
       "artifactId": "8d9b9af24f6e0aa84f8fc0624128624b02663d89970b5aca0cca219e71e83355",
       "name": "inherits",
       "version": "2.0.4",
-      "relationship": "DEVELOPMENT_ONLY",
+      "relationship": "EXTERNAL_RUNTIME_DEPENDENCY",
       "lockfileDeclaredLicenseExpressions": ["ISC"],
       "tarballDeclaredLicenseExpression": "ISC",
       "scanObservedLicenseExpressions": ["ISC"],
@@ -22849,9 +22849,9 @@
       "sourceUrl": "https://github.com/isaacs/inherits",
       "packageAuthor": null,
       "packageTarballScope": false,
-      "noticeDisposition": "DEVELOPMENT_ONLY_RECORDED_NOT_PACKED",
-      "rationale": "This authenticated component belongs to the repository test, evidence, documentation, or release toolchain and is excluded from the owlapi tarball.",
-      "optional": true,
+      "noticeDisposition": "EXTERNAL_DEPENDENCY_RECORDED_NOT_PACKED",
+      "rationale": "npm installs this authenticated component outside the owlapi tarball. Its own licence remains authoritative, while every downstream physical bundle must perform a separate distribution-scope review.",
+      "optional": false,
       "platformSelectors": {
         "cpu": [],
         "libc": [],
@@ -27348,6 +27348,180 @@
       }
     },
     {
+      "dependencyPath": "node_modules/lzma-native",
+      "artifactId": "c09c894094a00d0aee9dacf95b3e12ba5fe069c6d6088efbb4ef6b0d374484ac",
+      "name": "lzma-native",
+      "version": "8.0.6",
+      "relationship": "EXTERNAL_RUNTIME_DEPENDENCY",
+      "lockfileDeclaredLicenseExpressions": ["MIT"],
+      "tarballDeclaredLicenseExpression": "MIT",
+      "scanObservedLicenseExpressions": [
+        "LicenseRef-scancode-public-domain",
+        "LicenseRef-scancode-public-domain AND MIT",
+        "MIT"
+      ],
+      "declaredLicenseExpression": "MIT",
+      "concludedLicenseExpression": "MIT",
+      "licenseQualification": "LOCKFILE_TARBALL_DECLARATIONS_CONSISTENT",
+      "licenseConclusionRationale": "The concluded SPDX expression preserves an equivalent prior recorded conclusion when present; otherwise it selects the first SPDX-valid lockfile declaration, then authenticated package.json declaration, and only then ScanCode evidence. The distribution disposition likewise preserves an equivalent prior decision when present; otherwise it follows development/runtime scope and the concluded-licence policy. The lockfile and authenticated package.json declarations are consistent where present. ScanCode's additional file-level observations remain separately recorded and do not silently redefine the package declaration.",
+      "distributionDisposition": "ALLOWED_SEPARATELY_INSTALLED_EXTERNAL_RUNTIME",
+      "inspectionBasis": "LOCKED_REGISTRY_TARBALL",
+      "licenseFilePresence": "PRESENT",
+      "inspectedFiles": [
+        {
+          "path": "package/LICENSE",
+          "kind": "LICENCE",
+          "sha256": "9415b233c6c5a6fc3ac6977cde3530d149f45a61d86b2fd9611cbca4bf08f4e2",
+          "blobSha256": "9415b233c6c5a6fc3ac6977cde3530d149f45a61d86b2fd9611cbca4bf08f4e2",
+          "blobPath": "blobs/sha256/94/9415b233c6c5a6fc3ac6977cde3530d149f45a61d86b2fd9611cbca4bf08f4e2"
+        },
+        {
+          "path": "package/README.md",
+          "kind": "README_ATTRIBUTION",
+          "sha256": "1602df4be0484608077cb39493d870143a962ffcd455e6e9839a44a6d5a6a092",
+          "blobSha256": "1602df4be0484608077cb39493d870143a962ffcd455e6e9839a44a6d5a6a092",
+          "blobPath": "blobs/sha256/16/1602df4be0484608077cb39493d870143a962ffcd455e6e9839a44a6d5a6a092"
+        }
+      ],
+      "externalLicenseEvidence": [],
+      "authentication": {
+        "registrySignature": "VERIFIED",
+        "provenance": "NOT_PUBLISHED",
+        "archive": "VERIFIED",
+        "scan": "VERIFIED"
+      },
+      "artifactEvidence": {
+        "archiveSha256": "20d3dda0bcac50170f0717186e0428b08aca45013245fe272c0270a1edee738d",
+        "provenanceSha256": "5af191bd85bfb09dd945de6ce5fa9628ff01dcca32c081f3da52b86dd8b273b2",
+        "registrySignatureSha256": "4dd882e372276746928b7f691e3986b4e57e4913a00e1c60d63a90f5abc71e9b",
+        "scanSha256": "de1be8f8b27e3d656085d878dc671f5b9d9f5a8c4dcb1f5c7a01b8e00ff28435"
+      },
+      "registryUrl": "https://registry.npmjs.org/lzma-native/-/lzma-native-8.0.6.tgz",
+      "sourceReference": "https://github.com/addaleax/lzma-native.git",
+      "sourceUrl": "https://github.com/addaleax/lzma-native",
+      "packageAuthor": "Anna Henningsen | anna@addaleax.net",
+      "packageTarballScope": false,
+      "noticeDisposition": "EXTERNAL_DEPENDENCY_RECORDED_NOT_PACKED",
+      "rationale": "npm installs this authenticated component outside the owlapi tarball. Its own licence remains authoritative, while every downstream physical bundle must perform a separate distribution-scope review.",
+      "optional": false,
+      "platformSelectors": {
+        "cpu": [],
+        "libc": [],
+        "os": []
+      }
+    },
+    {
+      "dependencyPath": "node_modules/lzma-native/node_modules/node-addon-api",
+      "artifactId": "b57b40100682bcebe9cb03878d70830afafa52a1cc3ae573a8f8a0a7da750662",
+      "name": "node-addon-api",
+      "version": "3.2.1",
+      "relationship": "EXTERNAL_RUNTIME_DEPENDENCY",
+      "lockfileDeclaredLicenseExpressions": ["MIT"],
+      "tarballDeclaredLicenseExpression": "MIT",
+      "scanObservedLicenseExpressions": ["MIT"],
+      "declaredLicenseExpression": "MIT",
+      "concludedLicenseExpression": "MIT",
+      "licenseQualification": "LOCKFILE_TARBALL_DECLARATIONS_CONSISTENT",
+      "licenseConclusionRationale": "The concluded SPDX expression preserves an equivalent prior recorded conclusion when present; otherwise it selects the first SPDX-valid lockfile declaration, then authenticated package.json declaration, and only then ScanCode evidence. The distribution disposition likewise preserves an equivalent prior decision when present; otherwise it follows development/runtime scope and the concluded-licence policy. The lockfile and authenticated package.json declarations are consistent where present. ScanCode's additional file-level observations remain separately recorded and do not silently redefine the package declaration.",
+      "distributionDisposition": "ALLOWED_SEPARATELY_INSTALLED_EXTERNAL_RUNTIME",
+      "inspectionBasis": "LOCKED_REGISTRY_TARBALL",
+      "licenseFilePresence": "PRESENT",
+      "inspectedFiles": [
+        {
+          "path": "package/LICENSE.md",
+          "kind": "LICENCE",
+          "sha256": "4fcf69bbecb999ec8fa0ece62bc8934b7cdd45061ac1a8b1939a09be64cd4352",
+          "blobSha256": "4fcf69bbecb999ec8fa0ece62bc8934b7cdd45061ac1a8b1939a09be64cd4352",
+          "blobPath": "blobs/sha256/4f/4fcf69bbecb999ec8fa0ece62bc8934b7cdd45061ac1a8b1939a09be64cd4352"
+        },
+        {
+          "path": "package/README.md",
+          "kind": "README_ATTRIBUTION",
+          "sha256": "2b5d5dc55bf4608a96857e21ee348429a82c62e1b56ffbcf4a16a79676806547",
+          "blobSha256": "2b5d5dc55bf4608a96857e21ee348429a82c62e1b56ffbcf4a16a79676806547",
+          "blobPath": "blobs/sha256/2b/2b5d5dc55bf4608a96857e21ee348429a82c62e1b56ffbcf4a16a79676806547"
+        }
+      ],
+      "externalLicenseEvidence": [],
+      "authentication": {
+        "registrySignature": "VERIFIED",
+        "provenance": "NOT_PUBLISHED",
+        "archive": "VERIFIED",
+        "scan": "VERIFIED"
+      },
+      "artifactEvidence": {
+        "archiveSha256": "dad71f5cdad035d34068c2187bc85f18b2f9b8855d273446a835ff1baa6e210a",
+        "provenanceSha256": "e61ef444469e99002b887d7b89cf76e4537fee6095bcf663307b108ff23d44bb",
+        "registrySignatureSha256": "68b48e264f01c23a122b8da77a74544a6feee028704213e98bc708a91da1feaf",
+        "scanSha256": "d4e071c11dc14a0f94589b7fecc460693fe11754c9dae6da5538b72c2d50ba6e"
+      },
+      "registryUrl": "https://registry.npmjs.org/node-addon-api/-/node-addon-api-3.2.1.tgz",
+      "sourceReference": "git://github.com/nodejs/node-addon-api.git",
+      "sourceUrl": "https://github.com/nodejs/node-addon-api",
+      "packageAuthor": null,
+      "packageTarballScope": false,
+      "noticeDisposition": "EXTERNAL_DEPENDENCY_RECORDED_NOT_PACKED",
+      "rationale": "npm installs this authenticated component outside the owlapi tarball. Its own licence remains authoritative, while every downstream physical bundle must perform a separate distribution-scope review.",
+      "optional": false,
+      "platformSelectors": {
+        "cpu": [],
+        "libc": [],
+        "os": []
+      }
+    },
+    {
+      "dependencyPath": "node_modules/lzma-native/node_modules/readable-stream",
+      "artifactId": "55ca5eb5bd3aa743e6e0a76a8d556fdb0d0f34ed52ffd0cf810c051ace0284e7",
+      "name": "readable-stream",
+      "version": "3.6.2",
+      "relationship": "EXTERNAL_RUNTIME_DEPENDENCY",
+      "lockfileDeclaredLicenseExpressions": ["MIT"],
+      "tarballDeclaredLicenseExpression": "MIT",
+      "scanObservedLicenseExpressions": ["LicenseRef-scancode-dco-1.1", "MIT"],
+      "declaredLicenseExpression": "MIT",
+      "concludedLicenseExpression": "MIT",
+      "licenseQualification": "LOCKFILE_TARBALL_DECLARATIONS_CONSISTENT",
+      "licenseConclusionRationale": "The concluded SPDX expression preserves an equivalent prior recorded conclusion when present; otherwise it selects the first SPDX-valid lockfile declaration, then authenticated package.json declaration, and only then ScanCode evidence. The distribution disposition likewise preserves an equivalent prior decision when present; otherwise it follows development/runtime scope and the concluded-licence policy. The lockfile and authenticated package.json declarations are consistent where present. ScanCode's additional file-level observations remain separately recorded and do not silently redefine the package declaration.",
+      "distributionDisposition": "ALLOWED_SEPARATELY_INSTALLED_EXTERNAL_RUNTIME",
+      "inspectionBasis": "LOCKED_REGISTRY_TARBALL",
+      "licenseFilePresence": "PRESENT",
+      "inspectedFiles": [
+        {
+          "path": "package/LICENSE",
+          "kind": "LICENCE",
+          "sha256": "ec62dc96da0099b87f4511736c87309335527fb7031639493e06c95728dc8c54",
+          "blobSha256": "ec62dc96da0099b87f4511736c87309335527fb7031639493e06c95728dc8c54",
+          "blobPath": "blobs/sha256/ec/ec62dc96da0099b87f4511736c87309335527fb7031639493e06c95728dc8c54"
+        }
+      ],
+      "externalLicenseEvidence": [],
+      "authentication": {
+        "registrySignature": "VERIFIED",
+        "provenance": "NOT_PUBLISHED",
+        "archive": "VERIFIED",
+        "scan": "VERIFIED"
+      },
+      "artifactEvidence": {
+        "archiveSha256": "f72cc1b3dfeb964d7ffb4e1bf91febef0310941753f7733d3c650336c89f9bbd",
+        "provenanceSha256": "b968086d6216c53bff45b9162e0a0657f9f6aacca0e76b447fc5fb45e6046e2a",
+        "registrySignatureSha256": "ce953540330865b206423d473d53b0c227ea169a866d957e8893dc224b9684a5",
+        "scanSha256": "a0bae7265cd0a46ed61b9ec2a87d379e2b7a5e69f3aac448d58c468d5aae8647"
+      },
+      "registryUrl": "https://registry.npmjs.org/readable-stream/-/readable-stream-3.6.2.tgz",
+      "sourceReference": "git://github.com/nodejs/readable-stream",
+      "sourceUrl": "https://github.com/nodejs/readable-stream",
+      "packageAuthor": null,
+      "packageTarballScope": false,
+      "noticeDisposition": "EXTERNAL_DEPENDENCY_RECORDED_NOT_PACKED",
+      "rationale": "npm installs this authenticated component outside the owlapi tarball. Its own licence remains authoritative, while every downstream physical bundle must perform a separate distribution-scope review.",
+      "optional": false,
+      "platformSelectors": {
+        "cpu": [],
+        "libc": [],
+        "os": []
+      }
+    },
+    {
       "dependencyPath": "node_modules/make-dir",
       "artifactId": "882473932199413957489d8dfa23aa4537e0ae4f1265ce39fef894e04ba60f3a",
       "name": "make-dir",
@@ -29386,6 +29560,65 @@
       }
     },
     {
+      "dependencyPath": "node_modules/node-gyp-build",
+      "artifactId": "07538b70170a9ad3ad2c139e841927806f72b45a8808374dbc347983c94ef7ec",
+      "name": "node-gyp-build",
+      "version": "4.8.4",
+      "relationship": "EXTERNAL_RUNTIME_DEPENDENCY",
+      "lockfileDeclaredLicenseExpressions": ["MIT"],
+      "tarballDeclaredLicenseExpression": "MIT",
+      "scanObservedLicenseExpressions": ["MIT"],
+      "declaredLicenseExpression": "MIT",
+      "concludedLicenseExpression": "MIT",
+      "licenseQualification": "LOCKFILE_TARBALL_DECLARATIONS_CONSISTENT",
+      "licenseConclusionRationale": "The concluded SPDX expression preserves an equivalent prior recorded conclusion when present; otherwise it selects the first SPDX-valid lockfile declaration, then authenticated package.json declaration, and only then ScanCode evidence. The distribution disposition likewise preserves an equivalent prior decision when present; otherwise it follows development/runtime scope and the concluded-licence policy. The lockfile and authenticated package.json declarations are consistent where present. ScanCode's additional file-level observations remain separately recorded and do not silently redefine the package declaration.",
+      "distributionDisposition": "ALLOWED_SEPARATELY_INSTALLED_EXTERNAL_RUNTIME",
+      "inspectionBasis": "LOCKED_REGISTRY_TARBALL",
+      "licenseFilePresence": "PRESENT",
+      "inspectedFiles": [
+        {
+          "path": "package/LICENSE",
+          "kind": "LICENCE",
+          "sha256": "7b3638496004b2daed183a91c4ba45d3ef6331db6c9d0eb1dd882a505630c172",
+          "blobSha256": "7b3638496004b2daed183a91c4ba45d3ef6331db6c9d0eb1dd882a505630c172",
+          "blobPath": "blobs/sha256/7b/7b3638496004b2daed183a91c4ba45d3ef6331db6c9d0eb1dd882a505630c172"
+        },
+        {
+          "path": "package/README.md",
+          "kind": "README_ATTRIBUTION",
+          "sha256": "7e029ae991bdedf8de9d3af211cbca405ed0829b0d0b6887ecde5c4931841b21",
+          "blobSha256": "7e029ae991bdedf8de9d3af211cbca405ed0829b0d0b6887ecde5c4931841b21",
+          "blobPath": "blobs/sha256/7e/7e029ae991bdedf8de9d3af211cbca405ed0829b0d0b6887ecde5c4931841b21"
+        }
+      ],
+      "externalLicenseEvidence": [],
+      "authentication": {
+        "registrySignature": "VERIFIED",
+        "provenance": "NOT_PUBLISHED",
+        "archive": "VERIFIED",
+        "scan": "VERIFIED"
+      },
+      "artifactEvidence": {
+        "archiveSha256": "63bcb15f8eb6f00492574b9c32889c5f30f384f79ae919c1049fe570c88b61da",
+        "provenanceSha256": "5b1399452f44727d2885660c7c071dd3fbc39dd958b4e03164c4878ecd37f6a6",
+        "registrySignatureSha256": "6eaf547b97458ecb7828c6aeb88e5d43faef3f3e329e152ce216b561d2a1cf42",
+        "scanSha256": "3800038a1f3b1d50318ec7e27fc1ac7792f41cda5b594f363efbff4fb979ecf5"
+      },
+      "registryUrl": "https://registry.npmjs.org/node-gyp-build/-/node-gyp-build-4.8.4.tgz",
+      "sourceReference": "https://github.com/prebuild/node-gyp-build.git",
+      "sourceUrl": "https://github.com/prebuild/node-gyp-build",
+      "packageAuthor": "Mathias Buus (@mafintosh)",
+      "packageTarballScope": false,
+      "noticeDisposition": "EXTERNAL_DEPENDENCY_RECORDED_NOT_PACKED",
+      "rationale": "npm installs this authenticated component outside the owlapi tarball. Its own licence remains authoritative, while every downstream physical bundle must perform a separate distribution-scope review.",
+      "optional": false,
+      "platformSelectors": {
+        "cpu": [],
+        "libc": [],
+        "os": []
+      }
+    },
+    {
       "dependencyPath": "node_modules/node-gyp/node_modules/isexe",
       "artifactId": "da56d0c2c3c21afc2f581bc3685330d903edaeabbb1f2ebec2842ea0aba75e25",
       "name": "isexe",
@@ -30683,65 +30916,6 @@
       "noticeDisposition": "DEVELOPMENT_ONLY_RECORDED_NOT_PACKED",
       "rationale": "This authenticated component belongs to the repository test, evidence, documentation, or release toolchain and is excluded from the owlapi tarball.",
       "optional": false,
-      "platformSelectors": {
-        "cpu": [],
-        "libc": [],
-        "os": []
-      }
-    },
-    {
-      "dependencyPath": "node_modules/npm-registry-fetch/node_modules/iconv-lite",
-      "artifactId": "e4f9817a044f6e9e854e27db85815a704404fbb4994c51d59191b272e68cf0fe",
-      "name": "iconv-lite",
-      "version": "0.7.3",
-      "relationship": "DEVELOPMENT_ONLY",
-      "lockfileDeclaredLicenseExpressions": ["MIT"],
-      "tarballDeclaredLicenseExpression": "MIT",
-      "scanObservedLicenseExpressions": ["MIT"],
-      "declaredLicenseExpression": "MIT",
-      "concludedLicenseExpression": "MIT",
-      "licenseQualification": "LOCKFILE_TARBALL_DECLARATIONS_CONSISTENT",
-      "licenseConclusionRationale": "The concluded SPDX expression preserves an equivalent prior recorded conclusion when present; otherwise it selects the first SPDX-valid lockfile declaration, then authenticated package.json declaration, and only then ScanCode evidence. The distribution disposition likewise preserves an equivalent prior decision when present; otherwise it follows development/runtime scope and the concluded-licence policy. The lockfile and authenticated package.json declarations are consistent where present. ScanCode's additional file-level observations remain separately recorded and do not silently redefine the package declaration.",
-      "distributionDisposition": "DEVELOPMENT_ONLY_NOT_DISTRIBUTED",
-      "inspectionBasis": "LOCKED_REGISTRY_TARBALL",
-      "licenseFilePresence": "PRESENT",
-      "inspectedFiles": [
-        {
-          "path": "package/LICENSE",
-          "kind": "LICENCE",
-          "sha256": "ac779f7314c74f232ef847ea86e714abe25cf6eeb5cc97b69451b74e2af6492d",
-          "blobSha256": "ac779f7314c74f232ef847ea86e714abe25cf6eeb5cc97b69451b74e2af6492d",
-          "blobPath": "blobs/sha256/ac/ac779f7314c74f232ef847ea86e714abe25cf6eeb5cc97b69451b74e2af6492d"
-        },
-        {
-          "path": "package/README.md",
-          "kind": "README_ATTRIBUTION",
-          "sha256": "c8154c0e94dd628ed5bfc9c18c7accd9863c8b826e19b01bf71791c175504faf",
-          "blobSha256": "c8154c0e94dd628ed5bfc9c18c7accd9863c8b826e19b01bf71791c175504faf",
-          "blobPath": "blobs/sha256/c8/c8154c0e94dd628ed5bfc9c18c7accd9863c8b826e19b01bf71791c175504faf"
-        }
-      ],
-      "externalLicenseEvidence": [],
-      "authentication": {
-        "registrySignature": "VERIFIED",
-        "provenance": "NOT_PUBLISHED",
-        "archive": "VERIFIED",
-        "scan": "VERIFIED"
-      },
-      "artifactEvidence": {
-        "archiveSha256": "01194f400e1b3514fdee343f9dfbe5bf683b86391ee4336d04dfe1f5c7dc9aed",
-        "provenanceSha256": "9ee8e8392d58805fc24410567234e8a3c4c46ef29a94650aa67e22032fc1919b",
-        "registrySignatureSha256": "a6c641949268277b7246c1a9e4cb1a85cb0272237a0de8471860c5794fe48b00",
-        "scanSha256": "35baba7b63ae680de8ca57c9a40eb4e6ce3637d340996a8ac0dda0e4f0d9961f"
-      },
-      "registryUrl": "https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.7.3.tgz",
-      "sourceReference": "https://github.com/pillarjs/iconv-lite.git",
-      "sourceUrl": "https://github.com/pillarjs/iconv-lite",
-      "packageAuthor": "Alexander Shtuchkin <ashtuchkin@gmail.com>",
-      "packageTarballScope": false,
-      "noticeDisposition": "DEVELOPMENT_ONLY_RECORDED_NOT_PACKED",
-      "rationale": "This authenticated component belongs to the repository test, evidence, documentation, or release toolchain and is excluded from the owlapi tarball.",
-      "optional": true,
       "platformSelectors": {
         "cpu": [],
         "libc": [],
@@ -35483,7 +35657,7 @@
       "artifactId": "45cbed684c8f6b18284acf5d9d26f557a04b2f1358f932f6cddf4c69012cd188",
       "name": "safer-buffer",
       "version": "2.1.2",
-      "relationship": "DEVELOPMENT_ONLY",
+      "relationship": "EXTERNAL_RUNTIME_DEPENDENCY",
       "lockfileDeclaredLicenseExpressions": ["MIT"],
       "tarballDeclaredLicenseExpression": "MIT",
       "scanObservedLicenseExpressions": ["MIT"],
@@ -35528,9 +35702,9 @@
       "sourceUrl": "https://github.com/ChALkeR/safer-buffer",
       "packageAuthor": "Nikita Skovoroda | chalkerx@gmail.com | https://github.com/ChALkeR",
       "packageTarballScope": false,
-      "noticeDisposition": "DEVELOPMENT_ONLY_RECORDED_NOT_PACKED",
-      "rationale": "This authenticated component belongs to the repository test, evidence, documentation, or release toolchain and is excluded from the owlapi tarball.",
-      "optional": true,
+      "noticeDisposition": "EXTERNAL_DEPENDENCY_RECORDED_NOT_PACKED",
+      "rationale": "npm installs this authenticated component outside the owlapi tarball. Its own licence remains authoritative, while every downstream physical bundle must perform a separate distribution-scope review.",
+      "optional": false,
       "platformSelectors": {
         "cpu": [],
         "libc": [],
@@ -39683,7 +39857,7 @@
       "artifactId": "1b698a14cb4a972a1b6c63988af7ee089cd950ba415217ba2b40ba820d6b0ea9",
       "name": "util-deprecate",
       "version": "1.0.2",
-      "relationship": "DEVELOPMENT_ONLY",
+      "relationship": "EXTERNAL_RUNTIME_DEPENDENCY",
       "lockfileDeclaredLicenseExpressions": ["MIT"],
       "tarballDeclaredLicenseExpression": "MIT",
       "scanObservedLicenseExpressions": ["MIT"],
@@ -39728,9 +39902,9 @@
       "sourceUrl": "https://github.com/TooTallNate/util-deprecate",
       "packageAuthor": "Nathan Rajlich <nathan@tootallnate.net> (http://n8.io/)",
       "packageTarballScope": false,
-      "noticeDisposition": "DEVELOPMENT_ONLY_RECORDED_NOT_PACKED",
-      "rationale": "This authenticated component belongs to the repository test, evidence, documentation, or release toolchain and is excluded from the owlapi tarball.",
-      "optional": true,
+      "noticeDisposition": "EXTERNAL_DEPENDENCY_RECORDED_NOT_PACKED",
+      "rationale": "npm installs this authenticated component outside the owlapi tarball. Its own licence remains authoritative, while every downstream physical bundle must perform a separate distribution-scope review.",
+      "optional": false,
       "platformSelectors": {
         "cpu": [],
         "libc": [],
@@ -41215,15 +41389,15 @@
       "evidenceFiles": [
         {
           "path": "API.md",
-          "sha256": "ff932aa21316cb3ce523203fe449c2ecfb76dd9f435922147b0a3ab9e143e52f"
+          "sha256": "7c0a2c881c5417eda7f9019d6652d0b2a6ad0e4334bc6203f4f5528be1ba12ac"
         },
         {
           "path": "docs/compatibility/java-api-surface.json",
-          "sha256": "5afc3d4e3d9cf7383d0e45f6983f956110020b6e0fef27377e745a8e34b7ddb5"
+          "sha256": "2902d4f5d3c2bc759af9417862aebe00c4eb0b5d006f742f1003fdb86d3759e4"
         },
         {
           "path": "docs/compatibility/java-api-surface.md",
-          "sha256": "2a80ab42bb85f5d32d9a98364c04210dff9e2eeb3f750344d645ecf23daa18e6"
+          "sha256": "da6ead75b6c7f592421b0cfe29f7d645b428ffc7e5ce5f781f8c54e2cb26c7a3"
         }
       ],
       "treeEvidence": null,
@@ -41236,6 +41410,52 @@
       "deployedApplicationScope": "REVIEW_REQUIRED_BY_CONSUMER",
       "noticeDisposition": "ATTRIBUTION_IN_PACKED_NOTICE",
       "rationale": "Generated output is limited to public API identity/declaration facts and independently authored mappings; no Java implementation body or copied Java documentation is distributed."
+    },
+    {
+      "id": "java-owlapi-datatype-constants",
+      "relationship": "GENERATED_FROM_THIRD_PARTY",
+      "name": "Released Java OWLAPI datatype constants",
+      "versionOrRevision": "OWLAPI 5.5.1 at f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "licenseAssessments": [
+        {
+          "scope": "Released OWL2Datatype public getter observations",
+          "declaredLicenseExpression": "Apache-2.0 OR LGPL-3.0",
+          "concludedLicenseExpression": "Apache-2.0",
+          "licenseConclusionRationale": "The Apache-2.0 alternative is elected for the observed public constants. The generated module contains the patterns and supported facet lists returned by the released library, without Java implementation bodies.",
+          "distributionDisposition": "PACKED_UNDER_RECORDED_BASIS"
+        }
+      ],
+      "sourceUrl": "https://github.com/owlcs/owlapi/tree/f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "evidenceFiles": [
+        {
+          "path": "internal/behavior/javaDatatypePolicy.js",
+          "sha256": "626df6a7b9baad7239e589b5506d108f1ea0d741471316ee5f92c254f13fd7dd"
+        },
+        {
+          "path": "util/owlapi-reference/generate-java-datatype-policy.mjs",
+          "sha256": "61794d78d5f0f7f558ab3885e782379df21a54c5cf2710e11c1a376fed30774b"
+        },
+        {
+          "path": "util/owlapi-reference/ObserveLanguageProfileSemantics.java",
+          "sha256": "600089cd6033ebe51f8721c06024815b2336cd0626d28dc43b1dc1049598418b"
+        },
+        {
+          "path": "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
+          "sha256": "98a34f0788c182b4ee181cd13b2bf172e8ac2dbe33c56dde9280fc9ef24419b1"
+        },
+        {
+          "path": "LICENSES/Apache-2.0.txt",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        }
+      ],
+      "treeEvidence": null,
+      "attributionText": [
+        "The public datatype constants are attributed to Java OWLAPI and its contributors. The complete elected Apache-2.0 licence is packed at LICENSES/Apache-2.0.txt."
+      ],
+      "packageTarballScope": true,
+      "deployedApplicationScope": "REVIEW_REQUIRED_BY_CONSUMER",
+      "noticeDisposition": "ATTRIBUTION_IN_PACKED_NOTICE",
+      "rationale": "The generated constant table has its own source attribution and reproducible native observations; independent JS validation remains project-authored."
     },
     {
       "id": "java-owlapi-reference-fixtures",
@@ -41325,6 +41545,272 @@
       "deployedApplicationScope": "NOT_APPLICABLE",
       "noticeDisposition": "ORIGINAL_COMPONENT_NOTICES_AND_FIXED_SOURCE_OWNER_DISPOSITION",
       "rationale": "The catalogue binds the exact approved source/notice closure and disposition hashes. These development-reference materials are excluded from npm and application deployment. Shared compiled-reference publication and activation remain separately gated."
+    },
+    {
+      "id": "jsonld-provider-canonicalize",
+      "relationship": "GENERATED_FROM_THIRD_PARTY",
+      "name": "canonicalize",
+      "versionOrRevision": "2.1.0",
+      "licenseAssessments": [
+        {
+          "scope": "Original bundled-source expression incorporated in the JSON-LD provider",
+          "declaredLicenseExpression": "Apache-2.0",
+          "concludedLicenseExpression": "Apache-2.0",
+          "licenseConclusionRationale": "The provider retains the original component's complete licence and notices. The manifest binds the input source and generated output; the approved two-file jsonld source change is identified there. Original component terms continue to apply to their expression.",
+          "distributionDisposition": "PACKED_UNDER_RECORDED_BASIS"
+        }
+      ],
+      "sourceUrl": "https://registry.npmjs.org/canonicalize/-/canonicalize-2.1.0.tgz",
+      "evidenceFiles": [
+        {
+          "path": "internal/parsing/jsonld/provider/build-manifest.json",
+          "sha256": "0d77ef2ba2b4696cf5d0ebda7f3741e90f34c8b92b1f0c2d72786f09f691b7cc"
+        },
+        {
+          "path": "internal/parsing/jsonld/provider/jsonld.js",
+          "sha256": "fe8b378948cad189666576c948b3f3398169496290380b49ba2e218f086b768d"
+        },
+        {
+          "path": "internal/parsing/jsonld/provider/licenses/canonicalize-2.1.0-LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ],
+      "treeEvidence": null,
+      "attributionText": [
+        "Original canonicalize copyright and licence notices are retained verbatim in internal/parsing/jsonld/provider/licenses/canonicalize-2.1.0-LICENSE."
+      ],
+      "packageTarballScope": true,
+      "deployedApplicationScope": "REVIEW_REQUIRED_BY_CONSUMER",
+      "noticeDisposition": "ORIGINAL_COMPONENT_NOTICES_PACKED_WITH_GENERATED_PROVIDER",
+      "rationale": "The component contributes executable code to the packed provider. It is inventoried independently of npm's separate dependency installation and of development-only use of its build tooling."
+    },
+    {
+      "id": "jsonld-provider-jsonld",
+      "relationship": "GENERATED_FROM_THIRD_PARTY",
+      "name": "jsonld",
+      "versionOrRevision": "9.0.0",
+      "licenseAssessments": [
+        {
+          "scope": "Original bundled-source expression incorporated in the JSON-LD provider",
+          "declaredLicenseExpression": "BSD-3-Clause",
+          "concludedLicenseExpression": "BSD-3-Clause",
+          "licenseConclusionRationale": "The provider retains the original component's complete licence and notices. The manifest binds the input source and generated output; the approved two-file jsonld source change is identified there. Original component terms continue to apply to their expression.",
+          "distributionDisposition": "PACKED_UNDER_RECORDED_BASIS"
+        }
+      ],
+      "sourceUrl": "https://registry.npmjs.org/jsonld/-/jsonld-9.0.0.tgz",
+      "evidenceFiles": [
+        {
+          "path": "internal/parsing/jsonld/provider/build-manifest.json",
+          "sha256": "0d77ef2ba2b4696cf5d0ebda7f3741e90f34c8b92b1f0c2d72786f09f691b7cc"
+        },
+        {
+          "path": "internal/parsing/jsonld/provider/jsonld.js",
+          "sha256": "fe8b378948cad189666576c948b3f3398169496290380b49ba2e218f086b768d"
+        },
+        {
+          "path": "internal/parsing/jsonld/provider/licenses/jsonld-9.0.0-LICENSE",
+          "sha256": "0707101bd4a2fc564788b1ba03c53615e35388dad33879663db263e724a6bd4a"
+        }
+      ],
+      "treeEvidence": null,
+      "attributionText": [
+        "Original jsonld copyright and licence notices are retained verbatim in internal/parsing/jsonld/provider/licenses/jsonld-9.0.0-LICENSE."
+      ],
+      "packageTarballScope": true,
+      "deployedApplicationScope": "REVIEW_REQUIRED_BY_CONSUMER",
+      "noticeDisposition": "ORIGINAL_COMPONENT_NOTICES_PACKED_WITH_GENERATED_PROVIDER",
+      "rationale": "The component contributes executable code to the packed provider. It is inventoried independently of npm's separate dependency installation and of development-only use of its build tooling."
+    },
+    {
+      "id": "jsonld-provider-lru-cache",
+      "relationship": "GENERATED_FROM_THIRD_PARTY",
+      "name": "lru-cache",
+      "versionOrRevision": "6.0.0",
+      "licenseAssessments": [
+        {
+          "scope": "Original bundled-source expression incorporated in the JSON-LD provider",
+          "declaredLicenseExpression": "ISC",
+          "concludedLicenseExpression": "ISC",
+          "licenseConclusionRationale": "The provider retains the original component's complete licence and notices. The manifest binds the input source and generated output; the approved two-file jsonld source change is identified there. Original component terms continue to apply to their expression.",
+          "distributionDisposition": "PACKED_UNDER_RECORDED_BASIS"
+        }
+      ],
+      "sourceUrl": "https://registry.npmjs.org/lru-cache/-/lru-cache-6.0.0.tgz",
+      "evidenceFiles": [
+        {
+          "path": "internal/parsing/jsonld/provider/build-manifest.json",
+          "sha256": "0d77ef2ba2b4696cf5d0ebda7f3741e90f34c8b92b1f0c2d72786f09f691b7cc"
+        },
+        {
+          "path": "internal/parsing/jsonld/provider/jsonld.js",
+          "sha256": "fe8b378948cad189666576c948b3f3398169496290380b49ba2e218f086b768d"
+        },
+        {
+          "path": "internal/parsing/jsonld/provider/licenses/lru-cache-6.0.0-LICENSE",
+          "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+        }
+      ],
+      "treeEvidence": null,
+      "attributionText": [
+        "Original lru-cache copyright and licence notices are retained verbatim in internal/parsing/jsonld/provider/licenses/lru-cache-6.0.0-LICENSE."
+      ],
+      "packageTarballScope": true,
+      "deployedApplicationScope": "REVIEW_REQUIRED_BY_CONSUMER",
+      "noticeDisposition": "ORIGINAL_COMPONENT_NOTICES_PACKED_WITH_GENERATED_PROVIDER",
+      "rationale": "The component contributes executable code to the packed provider. It is inventoried independently of npm's separate dependency installation and of development-only use of its build tooling."
+    },
+    {
+      "id": "jsonld-provider-rdf-canonize",
+      "relationship": "GENERATED_FROM_THIRD_PARTY",
+      "name": "rdf-canonize",
+      "versionOrRevision": "5.0.0",
+      "licenseAssessments": [
+        {
+          "scope": "Original bundled-source expression incorporated in the JSON-LD provider",
+          "declaredLicenseExpression": "BSD-3-Clause",
+          "concludedLicenseExpression": "BSD-3-Clause",
+          "licenseConclusionRationale": "The provider retains the original component's complete licence and notices. The manifest binds the input source and generated output; the approved two-file jsonld source change is identified there. Original component terms continue to apply to their expression.",
+          "distributionDisposition": "PACKED_UNDER_RECORDED_BASIS"
+        }
+      ],
+      "sourceUrl": "https://registry.npmjs.org/rdf-canonize/-/rdf-canonize-5.0.0.tgz",
+      "evidenceFiles": [
+        {
+          "path": "internal/parsing/jsonld/provider/build-manifest.json",
+          "sha256": "0d77ef2ba2b4696cf5d0ebda7f3741e90f34c8b92b1f0c2d72786f09f691b7cc"
+        },
+        {
+          "path": "internal/parsing/jsonld/provider/jsonld.js",
+          "sha256": "fe8b378948cad189666576c948b3f3398169496290380b49ba2e218f086b768d"
+        },
+        {
+          "path": "internal/parsing/jsonld/provider/licenses/rdf-canonize-5.0.0-LICENSE",
+          "sha256": "ce809f30d8416b87c46a5affa6e5f8cdad868df31045986ea510bed856b397aa"
+        }
+      ],
+      "treeEvidence": null,
+      "attributionText": [
+        "Original rdf-canonize copyright and licence notices are retained verbatim in internal/parsing/jsonld/provider/licenses/rdf-canonize-5.0.0-LICENSE."
+      ],
+      "packageTarballScope": true,
+      "deployedApplicationScope": "REVIEW_REQUIRED_BY_CONSUMER",
+      "noticeDisposition": "ORIGINAL_COMPONENT_NOTICES_PACKED_WITH_GENERATED_PROVIDER",
+      "rationale": "The component contributes executable code to the packed provider. It is inventoried independently of npm's separate dependency installation and of development-only use of its build tooling."
+    },
+    {
+      "id": "jsonld-provider-rolldown",
+      "relationship": "GENERATED_FROM_THIRD_PARTY",
+      "name": "rolldown",
+      "versionOrRevision": "1.2.13",
+      "licenseAssessments": [
+        {
+          "scope": "Original bundler-runtime expression incorporated in the JSON-LD provider",
+          "declaredLicenseExpression": "MIT",
+          "concludedLicenseExpression": "MIT",
+          "licenseConclusionRationale": "The provider retains the original component's complete licence and notices. The manifest binds the input source and generated output; the approved two-file jsonld source change is identified there. Original component terms continue to apply to their expression.",
+          "distributionDisposition": "PACKED_UNDER_RECORDED_BASIS"
+        }
+      ],
+      "sourceUrl": "https://registry.npmjs.org/rolldown/-/rolldown-1.2.13.tgz",
+      "evidenceFiles": [
+        {
+          "path": "internal/parsing/jsonld/provider/build-manifest.json",
+          "sha256": "0d77ef2ba2b4696cf5d0ebda7f3741e90f34c8b92b1f0c2d72786f09f691b7cc"
+        },
+        {
+          "path": "internal/parsing/jsonld/provider/jsonld.js",
+          "sha256": "fe8b378948cad189666576c948b3f3398169496290380b49ba2e218f086b768d"
+        },
+        {
+          "path": "internal/parsing/jsonld/provider/licenses/rolldown-1.2.13-LICENSE",
+          "sha256": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734"
+        }
+      ],
+      "treeEvidence": null,
+      "attributionText": [
+        "Original rolldown copyright and licence notices are retained verbatim in internal/parsing/jsonld/provider/licenses/rolldown-1.2.13-LICENSE."
+      ],
+      "packageTarballScope": true,
+      "deployedApplicationScope": "REVIEW_REQUIRED_BY_CONSUMER",
+      "noticeDisposition": "ORIGINAL_COMPONENT_NOTICES_PACKED_WITH_GENERATED_PROVIDER",
+      "rationale": "The component contributes executable code to the packed provider. It is inventoried independently of npm's separate dependency installation and of development-only use of its build tooling."
+    },
+    {
+      "id": "jsonld-provider-setimmediate",
+      "relationship": "GENERATED_FROM_THIRD_PARTY",
+      "name": "setimmediate",
+      "versionOrRevision": "1.0.5",
+      "licenseAssessments": [
+        {
+          "scope": "Original bundled-source expression incorporated in the JSON-LD provider",
+          "declaredLicenseExpression": "MIT",
+          "concludedLicenseExpression": "MIT",
+          "licenseConclusionRationale": "The provider retains the original component's complete licence and notices. The manifest binds the input source and generated output; the approved two-file jsonld source change is identified there. Original component terms continue to apply to their expression.",
+          "distributionDisposition": "PACKED_UNDER_RECORDED_BASIS"
+        }
+      ],
+      "sourceUrl": "https://registry.npmjs.org/setimmediate/-/setimmediate-1.0.5.tgz",
+      "evidenceFiles": [
+        {
+          "path": "internal/parsing/jsonld/provider/build-manifest.json",
+          "sha256": "0d77ef2ba2b4696cf5d0ebda7f3741e90f34c8b92b1f0c2d72786f09f691b7cc"
+        },
+        {
+          "path": "internal/parsing/jsonld/provider/jsonld.js",
+          "sha256": "fe8b378948cad189666576c948b3f3398169496290380b49ba2e218f086b768d"
+        },
+        {
+          "path": "internal/parsing/jsonld/provider/licenses/setimmediate-1.0.5-LICENSE.txt",
+          "sha256": "c4b4ad3a5746f1f5249a6dd90396ec519264e1bb02e01e48a6522c48a3a97cb4"
+        }
+      ],
+      "treeEvidence": null,
+      "attributionText": [
+        "Original setimmediate copyright and licence notices are retained verbatim in internal/parsing/jsonld/provider/licenses/setimmediate-1.0.5-LICENSE.txt."
+      ],
+      "packageTarballScope": true,
+      "deployedApplicationScope": "REVIEW_REQUIRED_BY_CONSUMER",
+      "noticeDisposition": "ORIGINAL_COMPONENT_NOTICES_PACKED_WITH_GENERATED_PROVIDER",
+      "rationale": "The component contributes executable code to the packed provider. It is inventoried independently of npm's separate dependency installation and of development-only use of its build tooling."
+    },
+    {
+      "id": "jsonld-provider-yallist",
+      "relationship": "GENERATED_FROM_THIRD_PARTY",
+      "name": "yallist",
+      "versionOrRevision": "4.0.0",
+      "licenseAssessments": [
+        {
+          "scope": "Original bundled-source expression incorporated in the JSON-LD provider",
+          "declaredLicenseExpression": "ISC",
+          "concludedLicenseExpression": "ISC",
+          "licenseConclusionRationale": "The provider retains the original component's complete licence and notices. The manifest binds the input source and generated output; the approved two-file jsonld source change is identified there. Original component terms continue to apply to their expression.",
+          "distributionDisposition": "PACKED_UNDER_RECORDED_BASIS"
+        }
+      ],
+      "sourceUrl": "https://registry.npmjs.org/yallist/-/yallist-4.0.0.tgz",
+      "evidenceFiles": [
+        {
+          "path": "internal/parsing/jsonld/provider/build-manifest.json",
+          "sha256": "0d77ef2ba2b4696cf5d0ebda7f3741e90f34c8b92b1f0c2d72786f09f691b7cc"
+        },
+        {
+          "path": "internal/parsing/jsonld/provider/jsonld.js",
+          "sha256": "fe8b378948cad189666576c948b3f3398169496290380b49ba2e218f086b768d"
+        },
+        {
+          "path": "internal/parsing/jsonld/provider/licenses/yallist-4.0.0-LICENSE",
+          "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+        }
+      ],
+      "treeEvidence": null,
+      "attributionText": [
+        "Original yallist copyright and licence notices are retained verbatim in internal/parsing/jsonld/provider/licenses/yallist-4.0.0-LICENSE."
+      ],
+      "packageTarballScope": true,
+      "deployedApplicationScope": "REVIEW_REQUIRED_BY_CONSUMER",
+      "noticeDisposition": "ORIGINAL_COMPONENT_NOTICES_PACKED_WITH_GENERATED_PROVIDER",
+      "rationale": "The component contributes executable code to the packed provider. It is inventoried independently of npm's separate dependency installation and of development-only use of its build tooling."
     },
     {
       "id": "ruff-development-tool",

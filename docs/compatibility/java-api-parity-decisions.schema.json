@@ -15,11 +15,12 @@
     "forbiddenBindings",
     "consumerMigrations",
     "phase21",
-    "phase22"
+    "phase22",
+    "currentBehaviorContracts"
   ],
   "properties": {
     "schemaVersion": {
-      "const": 2
+      "const": 3
     },
     "qualification": {
       "enum": ["PRE_INTEGRATION", "RECONCILED"]
@@ -339,6 +340,374 @@
           ]
         }
       }
+    },
+    "currentBehaviorContracts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "qualificationStatus",
+        "historicalDecisionScope",
+        "acceptedPlanPath",
+        "acceptedPlanCommitObjectId",
+        "selectedApiInventoryPath",
+        "omittedBehaviorProfileId",
+        "javaAuthority",
+        "normativeContract",
+        "pendingQualification",
+        "decisions"
+      ],
+      "properties": {
+        "qualificationStatus": {
+          "enum": ["unqualified", "qualified"]
+        },
+        "historicalDecisionScope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "acceptedPlanPath": {
+          "type": "string",
+          "minLength": 1
+        },
+        "acceptedPlanCommitObjectId": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "selectedApiInventoryPath": {
+          "type": "string",
+          "minLength": 1
+        },
+        "omittedBehaviorProfileId": {
+          "const": "normative-v1"
+        },
+        "javaAuthority": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["releaseVersion", "commitObjectId", "provenancePath"],
+          "properties": {
+            "releaseVersion": {
+              "const": "5.5.1"
+            },
+            "commitObjectId": {
+              "const": "f760b3a4c107c6d5f90f856e5680c39b18af646f"
+            },
+            "provenancePath": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "normativeContract": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["version", "definitionPath"],
+          "properties": {
+            "version": {
+              "const": 1
+            },
+            "definitionPath": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "pendingQualification": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "decisions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "decisionId",
+              "apiMembers",
+              "behaviorRelationship",
+              "decisionStatus",
+              "implementationStatus",
+              "decisionOwnerRole",
+              "acceptanceReference",
+              "observableBehavior",
+              "applicability",
+              "preconditions",
+              "javaExpectation",
+              "normativeExpectation",
+              "postconditions",
+              "compatibilityConsequences",
+              "authorityReferences",
+              "rationaleReferences",
+              "testCaseReferences",
+              "requirementIds",
+              "acceptanceCriterionIds",
+              "qualityScenarioIds",
+              "sliceIds"
+            ],
+            "properties": {
+              "decisionId": {
+                "type": "string",
+                "pattern": "^BEHAVIOR-[A-Z0-9-]+$"
+              },
+              "apiMembers": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "behaviorRelationship": {
+                "enum": [
+                  "shared",
+                  "profile-specific",
+                  "java-only",
+                  "normative-only"
+                ]
+              },
+              "decisionStatus": {
+                "const": "accepted"
+              },
+              "implementationStatus": {
+                "enum": ["development-tested", "qualified"]
+              },
+              "decisionOwnerRole": {
+                "const": "repository-owner"
+              },
+              "acceptanceReference": {
+                "type": "string",
+                "minLength": 1
+              },
+              "observableBehavior": {
+                "type": "string",
+                "minLength": 1
+              },
+              "applicability": {
+                "type": "string",
+                "minLength": 1
+              },
+              "preconditions": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "javaExpectation": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "behaviorProfileId",
+                  "expectedOutcome",
+                  "oracleProbeIds"
+                ],
+                "properties": {
+                  "behaviorProfileId": {
+                    "const": "java-owlapi-5.5.1"
+                  },
+                  "expectedOutcome": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "oracleProbeIds": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                }
+              },
+              "normativeExpectation": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "behaviorProfileId",
+                  "expectedOutcome",
+                  "contractReference"
+                ],
+                "properties": {
+                  "behaviorProfileId": {
+                    "const": "normative-v1"
+                  },
+                  "expectedOutcome": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "contractReference": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "postconditions": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "compatibilityConsequences": {
+                "type": "string",
+                "minLength": 1
+              },
+              "authorityReferences": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "rationaleReferences": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "testCaseReferences": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "requirementIds": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "REQ-001",
+                    "REQ-002",
+                    "REQ-003",
+                    "REQ-004",
+                    "REQ-005",
+                    "REQ-006",
+                    "REQ-007",
+                    "REQ-008",
+                    "REQ-009",
+                    "REQ-010",
+                    "REQ-011",
+                    "REQ-012",
+                    "REQ-013",
+                    "REQ-014"
+                  ]
+                }
+              },
+              "acceptanceCriterionIds": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "AC-001",
+                    "AC-002",
+                    "AC-003",
+                    "AC-004",
+                    "AC-005",
+                    "AC-006",
+                    "AC-007",
+                    "AC-008",
+                    "AC-009",
+                    "AC-010",
+                    "AC-011",
+                    "AC-012",
+                    "AC-013",
+                    "AC-014"
+                  ]
+                }
+              },
+              "qualityScenarioIds": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "QA-001",
+                    "QA-002",
+                    "QA-003",
+                    "QA-004",
+                    "QA-005",
+                    "QA-006",
+                    "QA-007",
+                    "QA-008"
+                  ]
+                }
+              },
+              "sliceIds": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "SLICE-001",
+                    "SLICE-002",
+                    "SLICE-003",
+                    "SLICE-004",
+                    "SLICE-005",
+                    "SLICE-006",
+                    "SLICE-007",
+                    "SLICE-008",
+                    "SLICE-009"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "qualificationStatus": {
+                "const": "qualified"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "pendingQualification": {
+                "type": "array",
+                "maxItems": 0
+              },
+              "decisions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "implementationStatus": {
+                      "const": "qualified"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
     }
   },
   "allOf": [
@@ -348,17 +717,27 @@
         "properties": {
           "phase22": {
             "type": "object",
-            "properties": { "status": { "const": "COMPLETE" } }
+            "properties": {
+              "status": {
+                "const": "COMPLETE"
+              }
+            }
           }
         }
       },
       "then": {
         "type": "object",
         "properties": {
-          "qualification": { "const": "RECONCILED" },
+          "qualification": {
+            "const": "RECONCILED"
+          },
           "phase21": {
             "type": "object",
-            "properties": { "status": { "const": "COMPLETE" } }
+            "properties": {
+              "status": {
+                "const": "COMPLETE"
+              }
+            }
           },
           "phase22": {
             "type": "object",
@@ -368,7 +747,9 @@
                 "type": "string",
                 "pattern": "^[a-f0-9]{64}$"
               },
-              "phase21Checkpoint": { "$ref": "#/$defs/baseline" }
+              "phase21Checkpoint": {
+                "$ref": "#/$defs/baseline"
+              }
             }
           }
         }

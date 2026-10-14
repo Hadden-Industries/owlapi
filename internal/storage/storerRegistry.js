@@ -4,6 +4,7 @@ import {
 } from "../../io/errors.js";
 import {
   replaceStringDocumentTargetText,
+  appendStringDocumentTargetText,
   StringDocumentTarget,
 } from "../../io/stringDocumentTarget.js";
 import {
@@ -15,6 +16,8 @@ import { rdfXmlStorer } from "./rdfxml/rdfXmlStorer.js";
 import { turtleStorer } from "./turtle/turtleStorer.js";
 import { owlXmlStorer } from "./owlxml/owlXmlStorer.js";
 import { visitStructuralValues } from "../model/sourceEvidence.js";
+import { defaultBehaviorProfileDefinition } from "../behavior/ontologyBehaviorContext.js";
+import { readPartialStorageOutput } from "./storageFailureOutput.js";
 
 const requireDocumentFormat = (format) => {
   if (!(format instanceof OWLDocumentFormat) || !Object.isFrozen(format)) {
@@ -68,7 +71,14 @@ export class StorerRegistry {
    * Publish complete string text only after success; every failure retains the
    * previous target value. Invalid public arguments remain TypeErrors.
    */
-  async store(ontologySnapshot, format, target, writerContext) {
+  async store(
+    ontologySnapshot,
+    format,
+    target,
+    writerContext,
+    behaviorProfileDefinition = defaultBehaviorProfileDefinition,
+  ) {
+    const { documentStoragePolicy } = behaviorProfileDefinition;
     requireDocumentFormat(format);
     StringDocumentTarget.prototype.toString.call(target);
     const storer = this.select(format);
@@ -115,9 +125,19 @@ export class StorerRegistry {
         ontologySnapshot,
         format,
         writerContext,
+        documentStoragePolicy,
+        behaviorProfileDefinition,
       );
-      replaceStringDocumentTargetText(target, completeText);
+      if (documentStoragePolicy.targetPublication === "append")
+        appendStringDocumentTargetText(target, completeText);
+      else replaceStringDocumentTargetText(target, completeText);
     } catch (cause) {
+      const partialOutput = readPartialStorageOutput(cause);
+      if (
+        documentStoragePolicy.targetPublication === "append" &&
+        partialOutput !== undefined
+      )
+        appendStringDocumentTargetText(target, partialOutput);
       if (cause instanceof OWLOntologyStorageError) throw cause;
       throw new OWLOntologyStorageError("The ontology could not be stored", {
         cause,

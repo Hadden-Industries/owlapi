@@ -8,16 +8,20 @@ import { OWLOntologyLoaderConfiguration } from "../../../model/owlOntologyLoader
 import { IRI } from "../../../model/structural.js";
 import { rdfDataFactory, rdfDatasetFactory } from "../../rdfjs/environment.js";
 import { RDF_NAMESPACE } from "../../rdfjs/vocabulary.js";
+import { OntologyBehaviorContext } from "../../behavior/ontologyBehaviorContext.js";
+import { assertDocumentLoaderAuthorization } from "../../loading/documentLoaderAuthorization.js";
+import { parseJavaJsonStructure } from "./javaJsonStructure.js";
+import { recordSourceStatementCount } from "../../rdfjs/sourceStatementCount.js";
 
 import {
   prepareJsonLd10Document,
   rejectJsonLd10ListsOfLists,
 } from "./jsonLd10Compatibility.js";
 
-// Use JSON-LD's documented root and normalize its CJS/ESM namespace below.
-// Keeping the dependency lazy preserves startup cost while letting each
-// supported resolver select the package's own declared environment entry.
-const defaultImplementationLoader = () => import("jsonld");
+// The maintained source build exposes the qualified context limit control.
+// See provider/README.md and the owner's scoped provider decision.
+const defaultImplementationLoader = () => import("./provider/jsonld.js");
+const textEncoder = new TextEncoder();
 
 const freezeJson = (value) => {
   if (Array.isArray(value)) {
@@ -31,6 +35,59 @@ const freezeJson = (value) => {
     );
   }
   return value;
+};
+
+// A document-loader object is the host's authority. Never share cached data
+// across different authorities. Revocable authorities implement authorize().
+const contextCachesByAuthority = new WeakMap();
+const readContextDocument = (loaded, requestedIRI, policy) => {
+  const text = typeof loaded === "string" ? loaded : loaded?.getText?.();
+  if (typeof text !== "string")
+    throw new TypeError(
+      "The JSON-LD context loader must return a string or document source",
+    );
+  return Object.freeze({
+    document: freezeJson(
+      policy.readsFirstJsonStructure
+        ? parseJavaJsonStructure(text)
+        : JSON.parse(text),
+    ),
+    utf8ByteLength: textEncoder.encode(text).byteLength,
+    documentUrl: loaded?.getDocumentIRI?.()?.value ?? requestedIRI.value,
+  });
+};
+const loadCachedContext = (authority, iri, options, policy) => {
+  const lifetimeMilliseconds = policy.contextCacheLifetimeMilliseconds;
+  const acquire = () =>
+    Promise.resolve()
+      .then(() => authority.load(iri, options))
+      .then((loaded) => readContextDocument(loaded, iri, policy));
+  if (!lifetimeMilliseconds) return acquire();
+  let cache = contextCachesByAuthority.get(authority);
+  if (!cache) {
+    cache = new Map();
+    contextCachesByAuthority.set(authority, cache);
+  }
+  const cached = cache.get(iri.value);
+  if (
+    cached &&
+    (cached.completedAt === undefined ||
+      Date.now() - cached.completedAt < lifetimeMilliseconds)
+  )
+    return cached.result;
+  const entry = {};
+  entry.result = acquire().then(
+    (value) => {
+      entry.completedAt = Date.now();
+      return value;
+    },
+    (error) => {
+      if (cache.get(iri.value) === entry) cache.delete(iri.value);
+      throw error;
+    },
+  );
+  cache.set(iri.value, entry);
+  return entry.result;
 };
 
 const normalizeTerm = (term) => {
@@ -100,7 +157,6 @@ const isWellFormedQuad = (quad) =>
   (quad.graph === undefined || isWellFormedTerm(quad.graph, "graph"));
 
 const normalizeImplementation = (module) => module.default || module;
-const textEncoder = new TextEncoder();
 const JSON_LD_PROCESSING_MODES = new Set(["json-ld-1.0", "json-ld-1.1"]);
 const JSON_LD_RDF_DIRECTIONS = new Set(["compound-literal", "i18n-datatype"]);
 const RDF_DIRECTION = `${RDF_NAMESPACE}direction`;
@@ -288,18 +344,19 @@ const awaitControlledLoad = (loading, configuration) => {
       callback(value);
     };
     controls.onAbort = () => finish(reject, abortError(signal));
-    controls.timeout = globalThis.setTimeout(
-      () =>
-        finish(
-          reject,
-          new ResourceLimitError("JSON-LD context loading timed out", {
-            limit: timeoutMs,
-            observed: timeoutMs,
-            resource: "timeoutMs",
-          }),
-        ),
-      timeoutMs,
-    );
+    if (Number.isFinite(timeoutMs))
+      controls.timeout = globalThis.setTimeout(
+        () =>
+          finish(
+            reject,
+            new ResourceLimitError("JSON-LD context loading timed out", {
+              limit: timeoutMs,
+              observed: timeoutMs,
+              resource: "timeoutMs",
+            }),
+          ),
+        timeoutMs,
+      );
     signal?.addEventListener("abort", controls.onAbort, { once: true });
     Promise.resolve(loading).then(
       (value) => finish(resolve, value),
@@ -329,7 +386,7 @@ export class JsonLdSyntaxAdapter {
     this.#loadImplementation = loadImplementation;
   }
 
-  #createContextDocumentLoader(configuration, processingMode) {
+  #createContextDocumentLoader(configuration, processingMode, policy) {
     return async (contextIRI) => {
       if (!configuration.remoteJsonLdContexts) {
         throw new SecurityPolicyError("Remote JSON-LD contexts are disabled", {
@@ -342,17 +399,49 @@ export class JsonLdSyntaxAdapter {
           { resource: "documentLoader" },
         );
       }
-      const url = requireSafeRemoteUrl(contextIRI);
+      if (
+        policy.contextWhitelist &&
+        !policy.contextWhitelist.includes(contextIRI)
+      ) {
+        throw new SecurityPolicyError(
+          "The Java JSON-LD provider does not whitelist this context",
+          { resource: "jsonLdContextWhitelist" },
+        );
+      }
+      const url = policy.validatesContextURLHost
+        ? requireSafeRemoteUrl(contextIRI)
+        : new URL(contextIRI);
       let loaded;
       try {
+        const options = Object.freeze({
+          config: configuration,
+          purpose: "jsonld-context",
+          signal: configuration.signal,
+        });
+        await assertDocumentLoaderAuthorization(
+          this.#documentLoader,
+          IRI.create(url.href),
+          options,
+        );
         loaded = await awaitControlledLoad(
-          this.#documentLoader.load(IRI.create(url.href), {
-            config: configuration,
-            purpose: "jsonld-context",
-            signal: configuration.signal,
-          }),
+          loadCachedContext(
+            this.#documentLoader,
+            IRI.create(url.href),
+            options,
+            policy,
+          ),
           configuration,
         );
+        if (loaded.documentUrl !== url.href) {
+          await assertDocumentLoaderAuthorization(
+            this.#documentLoader,
+            IRI.create(loaded.documentUrl),
+            Object.freeze({
+              ...options,
+              requestedDocumentIRI: IRI.create(url.href),
+            }),
+          );
+        }
       } catch (error) {
         const projectError = findProjectError(error);
         if (projectError) {
@@ -367,18 +456,7 @@ export class JsonLdSyntaxAdapter {
           },
         );
       }
-      const text =
-        typeof loaded === "string"
-          ? loaded
-          : typeof loaded?.getText === "function"
-            ? loaded.getText()
-            : undefined;
-      if (typeof text !== "string") {
-        throw new TypeError(
-          "The JSON-LD context loader must return a string or document source",
-        );
-      }
-      const byteLength = textEncoder.encode(text).byteLength;
+      const byteLength = loaded.utf8ByteLength;
       if (byteLength > configuration.maxRemoteDocumentBytes) {
         throw new ResourceLimitError(
           "The remote JSON-LD context byte limit was exceeded",
@@ -389,8 +467,8 @@ export class JsonLdSyntaxAdapter {
           },
         );
       }
-      const finalUrl = loaded?.getDocumentIRI?.()?.value || url.href;
-      requireSafeRemoteUrl(finalUrl);
+      const finalUrl = loaded.documentUrl;
+      if (policy.validatesContextURLHost) requireSafeRemoteUrl(finalUrl);
       const redirects = finalUrl === url.href ? 0 : 1;
       if (redirects > configuration.maxRedirects) {
         throw new SecurityPolicyError(
@@ -402,7 +480,10 @@ export class JsonLdSyntaxAdapter {
           },
         );
       }
-      const parsedDocument = JSON.parse(text);
+      // The upstream resolver rewrites relative context URLs in its input.
+      // Keep the authority-scoped cached value immutable and provide a private
+      // mutable copy for every processor invocation, including JSON-LD 1.1.
+      const parsedDocument = structuredClone(loaded.document);
       return {
         contextUrl: null,
         // JSON-LD 1.0 compatibility must be applied at every document
@@ -422,9 +503,14 @@ export class JsonLdSyntaxAdapter {
       configuration instanceof OWLOntologyLoaderConfiguration
         ? configuration
         : new OWLOntologyLoaderConfiguration(configuration);
+    const policy = new OntologyBehaviorContext(
+      normalizedConfiguration.getBehaviorProfileId(),
+    ).behaviorProfileDefinition.jsonLdProcessingPolicy;
     let document;
     try {
-      document = JSON.parse(source.getText());
+      document = policy.readsFirstJsonStructure
+        ? parseJavaJsonStructure(source.getText())
+        : JSON.parse(source.getText());
     } catch (error) {
       throw new OWLSyntaxError("The JSON-LD document is not valid JSON", {
         cause: error,
@@ -442,7 +528,9 @@ export class JsonLdSyntaxAdapter {
         documentLoader: this.#createContextDocumentLoader(
           normalizedConfiguration,
           jsonLdOptions.processingMode,
+          policy,
         ),
+        maxContextUrls: policy.maxContextUrls,
         ...jsonLdOptions,
         // Generalized RDF permits blank-node predicates, which cannot cross
         // the ordinary RDF/JS-to-OWL property boundary. It remains an explicit
@@ -488,6 +576,7 @@ export class JsonLdSyntaxAdapter {
       );
     }
     const dataset = rdfDatasetFactory.dataset();
+    let statementCount = 0;
     for (const quad of quads) {
       // JSON-LD's to-RDF algorithm emits only well-formed RDF statements.
       // Older processor releases can surface null/relative/ill-tagged terms;
@@ -495,6 +584,7 @@ export class JsonLdSyntaxAdapter {
       if (!isWellFormedQuad(quad)) {
         continue;
       }
+      statementCount++;
       dataset.add(
         rdfDataFactory.quad(
           normalizeTerm(quad.subject),
@@ -509,6 +599,7 @@ export class JsonLdSyntaxAdapter {
     const contexts = Object.hasOwn(document, "@context")
       ? [freezeJson(document["@context"])]
       : [];
+    recordSourceStatementCount(dataset, statementCount);
 
     return Object.freeze({
       dataset,

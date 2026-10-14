@@ -42,6 +42,8 @@ describe("XmlParserAdapter", () => {
         documentElement: {
           localName: "native",
           namespaceURI: "urn:test:native",
+          attributes: [],
+          childNodes: [],
         },
       };
     };

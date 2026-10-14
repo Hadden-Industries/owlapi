@@ -16,6 +16,8 @@ import { OWLOntology } from "../../model/owlOntology.js";
 import { OWLOntologyLoaderConfiguration } from "../../model/owlOntologyLoaderConfiguration.js";
 import { IRI, StructuralSet } from "../../model/structural.js";
 import { normalizeCardinality } from "../model/cardinality.js";
+import { OntologyBehaviorContext } from "../behavior/ontologyBehaviorContext.js";
+import { readSourceStatementCount } from "../rdfjs/sourceStatementCount.js";
 import { selectOntologyGraph } from "../rdfjs/graphPolicy.js";
 import {
   BUILT_IN_ANNOTATION_PROPERTIES,
@@ -497,6 +499,9 @@ class OntologyTransaction {
 }
 
 class RdfGraphInterpreter {
+  #metadataPolicy;
+  #rdfReconstructionPolicy;
+  #sourceStatementCount;
   #unparsedTriples = [];
   #headerState = RDFOntologyHeaderStatus.PARSED_ZERO_HEADERS;
   #knownRoles = new Set();
@@ -571,9 +576,18 @@ class RdfGraphInterpreter {
     roleProofScope,
     selectedGraph,
     sourceLocationsByTriple,
+    sourceStatementCount,
     transaction,
   }) {
     this.#configuration = configuration;
+    const behaviorDefinition = new OntologyBehaviorContext(
+      OWLOntologyLoaderConfiguration.prototype.getBehaviorProfileId.call(
+        configuration,
+      ),
+    ).behaviorProfileDefinition;
+    this.#metadataPolicy = behaviorDefinition.rdfParserMetadataPolicy;
+    this.#rdfReconstructionPolicy = behaviorDefinition.rdfReconstructionPolicy;
+    this.#sourceStatementCount = sourceStatementCount;
     this.#dataFactory = dataFactory;
     this.#dataset = dataset;
     this.#diagnostics = diagnostics;
@@ -671,8 +685,14 @@ class RdfGraphInterpreter {
       await this.#execution.cooperate();
     }
     return new RDFParserMetaData({
-      tripleCount: this.#dataset.size,
-      headerState: this.#headerState,
+      tripleCount:
+        this.#metadataPolicy.tripleCount === "source-statement-occurrences"
+          ? (this.#sourceStatementCount ?? this.#dataset.size)
+          : this.#dataset.size,
+      headerState:
+        this.#metadataPolicy.headerStatus === "java-consumer-one-header"
+          ? RDFOntologyHeaderStatus.PARSED_ONE_HEADER
+          : this.#headerState,
       unparsedTriples: this.#unparsedTriples,
       guessedDeclarations,
     });
@@ -1391,7 +1411,11 @@ class RdfGraphInterpreter {
   }
 
   async #readNamedDatatypeRestrictions() {
-    if (this.#configuration.parsingMode !== "compatible") return;
+    if (
+      this.#configuration.parsingMode !== "compatible" ||
+      !this.#rdfReconstructionPolicy.recoversNamedDatatypeRestrictions
+    )
+      return;
     // OWL 2 RDF-Based Semantics tables 5.7 and 5.9 give a named restriction
     // the same datatype extension as a DatatypeDefinition with that restriction.
     // The OWL 2 DL RDF mapping instead requires an anonymous expression; this
@@ -3168,11 +3192,9 @@ class RdfGraphInterpreter {
   // with an undeclared one leaves triples matching no pattern. Strict mode is
   // right to reject them; compatible mode recovers.
   //
-  // Only a literal object is recovered. A literal cannot belong to an object
-  // property, and a data property assertion would be nonsense on a class, so an
-  // annotation is the reading that keeps the statement while asserting nothing
-  // logically. An IRI object is left alone, because there it is genuinely
-  // ambiguous whether an object property assertion was meant.
+  // Literal objects and the unambiguous named-entity cases below are recovered.
+  // Java also preserves orphan literal facets as annotations on anonymous
+  // subjects; normative recovery does not invent that disconnected structure.
   //
   // Real vocabularies rely on this: `spatial.rdf` annotates sixteen properties
   // and a class with `vs:term_status` while declaring no annotation property at
@@ -3180,7 +3202,12 @@ class RdfGraphInterpreter {
   #recoverUndeclaredAnnotation(quad) {
     if (
       this.#configuration.parsingMode !== "compatible" ||
-      quad.subject.termType !== "NamedNode"
+      !this.#configuration.loadAnnotationAxioms ||
+      (quad.subject.termType !== "NamedNode" &&
+        !(
+          quad.subject.termType === "BlankNode" &&
+          this.#rdfReconstructionPolicy.recoversAnonymousUndeclaredAnnotations
+        ))
     ) {
       return false;
     }
@@ -3234,7 +3261,7 @@ class RdfGraphInterpreter {
     this.#transaction.addAxiom(
       this.#dataFactory.getOWLAnnotationAssertionAxiom(
         this.#dataFactory.getOWLAnnotationProperty(IRI.create(iri)),
-        IRI.create(quad.subject.value),
+        this.#annotationSubject(quad.subject),
         this.#annotationValue(quad.object),
       ),
     );
@@ -3283,7 +3310,13 @@ class RdfGraphInterpreter {
         );
       }
       const owlSignificant = this.#isOwlSignificant(currentQuad);
-      if (owlSignificant && this.#recoverUndeclaredAnnotation(currentQuad)) {
+      if (
+        (owlSignificant ||
+          (currentQuad.subject.termType === "BlankNode" &&
+            this.#rdfReconstructionPolicy
+              .recoversAnonymousUndeclaredAnnotations)) &&
+        this.#recoverUndeclaredAnnotation(currentQuad)
+      ) {
         continue;
       }
       // Unlike optional warning text, loader metadata must retain every
@@ -4803,6 +4836,7 @@ export class RdfToOwlTranslator {
 
     return {
       configuration: normalizedConfiguration,
+      sourceStatementCount: readSourceStatementCount(dataset),
       dataFactory:
         normalizedConfiguration.parsingMode === "preserve"
           ? createSourcePreservingDataFactory(this.#dataFactory)

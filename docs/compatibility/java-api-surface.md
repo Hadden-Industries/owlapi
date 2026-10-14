@@ -1,8 +1,8 @@
-<!-- registry-sha256: 5afc3d4e3d9cf7383d0e45f6983f956110020b6e0fef27377e745a8e34b7ddb5 -->
+<!-- registry-sha256: 2902d4f5d3c2bc759af9417862aebe00c4eb0b5d006f742f1003fdb86d3759e4 -->
 
 # Java OWLAPI compatibility surface
 
-This generated view compares `@hadden-industries/owlapi` 0.1.0-rc.2 with Java OWLAPI 5.5.1 at `b61ebe2da83daceebb3e7ba7afbd2582c9240c33`. The JSON registry beside this file is authoritative.
+This generated view compares `@hadden-industries/owlapi` 0.1.0-rc.2 with Java OWLAPI 5.5.1 at `f760b3a4c107c6d5f90f856e5680c39b18af646f`. The JSON registry beside this file is authoritative.
 
 This independently maintained JavaScript implementation is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project. Compatibility rows describe a bounded technical relationship and do not claim complete API parity.
 
@@ -10,18 +10,18 @@ A mapped name does not promise every Java overload or method. The relationship, 
 
 ## Inventory summary
 
-- Public package namespaces: 11
-- Public JavaScript bindings: 77
+- Public package namespaces: 12
+- Public JavaScript bindings: 79
 - Public Java types inspected: 1013
 - Unclassified Java types: 0
 
 | Java disposition                           | Count |
 | ------------------------------------------ | ----: |
-| PUBLIC_MAPPED                              |    46 |
+| PUBLIC_MAPPED                              |    47 |
 | STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT    |    76 |
 | FORMAT_IDENTITY_SUPPORTED_NOT_NAMED_EXPORT |     7 |
 | INTERNAL_IMPLEMENTATION_ONLY               |     2 |
-| DEFERRED_NOT_EXPOSED                       |   838 |
+| DEFERRED_NOT_EXPOSED                       |   837 |
 | UNSUPPORTED_BY_DESIGN                      |    44 |
 | UNCLASSIFIED                               |     0 |
 
@@ -88,6 +88,7 @@ A mapped name does not promise every Java overload or method. The relationship, 
 | `XmlParseError`                            | @hadden-industries/owlapi/io                        | org.semanticweb.owlapi.io.OWLParserException                                              | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
 | `OWLDocumentFormats`                       | @hadden-industries/owlapi/formats                   | org.semanticweb.owlapi.formats                                                            | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
 | `RDFXMLDocumentFormat`                     | @hadden-industries/owlapi/formats                   | org.semanticweb.owlapi.formats.RDFXMLDocumentFormat                                       | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE    |
+| `NodeDocumentLoader`                       | @hadden-industries/owlapi/io/node                   | org.semanticweb.owlapi.io                                                                 | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
 | `AnnotationValueShortFormProvider`         | @hadden-industries/owlapi/util                      | org.semanticweb.owlapi.util.AnnotationValueShortFormProvider                              | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE    |
 | `OWLEntityRemover`                         | @hadden-industries/owlapi/util                      | org.semanticweb.owlapi.util.OWLEntityRemover                                              | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE    |
 | `OWLEntityRenamer`                         | @hadden-industries/owlapi/util                      | org.semanticweb.owlapi.util.OWLEntityRenamer                                              | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE    |
@@ -101,6 +102,7 @@ A mapped name does not promise every Java overload or method. The relationship, 
 | `OWL2RLProfile`                            | @hadden-industries/owlapi/profiles                  | org.semanticweb.owlapi.profiles.OWL2RLProfile                                             | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE    |
 | `OWLProfileReport`                         | @hadden-industries/owlapi/profiles                  | org.semanticweb.owlapi.profiles.OWLProfileReport                                          | JS_ADAPTATION | ADAPTED        | IN_PROGRESS / PRERELEASE |
 | `AxiomAnnotations`                         | @hadden-industries/owlapi/model/parameters          | org.semanticweb.owlapi.model.parameters.AxiomAnnotations                                  | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE    |
+| `ChangeApplied`                            | @hadden-industries/owlapi/model/parameters          | org.semanticweb.owlapi.model.parameters.ChangeApplied                                     | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE    |
 | `Imports`                                  | @hadden-industries/owlapi/model/parameters          | org.semanticweb.owlapi.model.parameters.Imports                                           | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE    |
 | `EntitySearcher`                           | @hadden-industries/owlapi/search                    | org.semanticweb.owlapi.search.EntitySearcher                                              | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE    |
 | `ManchesterOWLSyntaxOWLObjectRendererImpl` | @hadden-industries/owlapi/manchestersyntax/renderer | org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxOWLObjectRendererImpl | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE    |
@@ -135,7 +137,7 @@ Every public Java type is classified in the machine-readable registry. This comp
 | org.semanticweb.owlapi.metrics                       | DEFERRED_NOT_EXPOSED: 23                                                                                                              |
 | org.semanticweb.owlapi.model                         | DEFERRED_NOT_EXPOSED: 250; PUBLIC_MAPPED: 20; STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT: 75                                             |
 | org.semanticweb.owlapi.model.axiomproviders          | DEFERRED_NOT_EXPOSED: 11                                                                                                              |
-| org.semanticweb.owlapi.model.parameters              | DEFERRED_NOT_EXPOSED: 4; PUBLIC_MAPPED: 2                                                                                             |
+| org.semanticweb.owlapi.model.parameters              | DEFERRED_NOT_EXPOSED: 3; PUBLIC_MAPPED: 3                                                                                             |
 | org.semanticweb.owlapi.model.providers               | DEFERRED_NOT_EXPOSED: 30                                                                                                              |
 | org.semanticweb.owlapi.modularity                    | DEFERRED_NOT_EXPOSED: 4                                                                                                               |
 | org.semanticweb.owlapi.modularity.locality           | DEFERRED_NOT_EXPOSED: 5; PUBLIC_MAPPED: 2                                                                                             |

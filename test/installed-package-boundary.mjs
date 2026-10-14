@@ -27,6 +27,12 @@ const [
   import("owlapi/modularity/locality"),
 ]);
 
+const nodeIo = await import("owlapi/io/node");
+assert.deepEqual(Object.keys(nodeIo), ["NodeDocumentLoader"]);
+assert.equal(root.NodeDocumentLoader, undefined);
+assert.equal(io.NodeDocumentLoader, undefined);
+assert.throws(() => new nodeIo.NodeDocumentLoader(), TypeError);
+
 assert.deepEqual(Object.keys(util).sort(), [
   "AnnotationValueShortFormProvider",
   "OWLEntityRemover",

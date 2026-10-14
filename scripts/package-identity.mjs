@@ -11,6 +11,7 @@ export const PUBLIC_SUBPATHS = Object.freeze([
   "/apibinding",
   "/model",
   "/io",
+  "/io/node",
   "/formats",
   "/profiles",
   "/util",
@@ -19,6 +20,8 @@ export const PUBLIC_SUBPATHS = Object.freeze([
   "/manchestersyntax/renderer",
   "/modularity/locality",
 ]);
+/** Approved host-specific entry points; these must never enter a browser graph. */
+export const NODE_ONLY_PUBLIC_SUBPATHS = Object.freeze(["/io/node"]);
 
 /** Refuse a different package/version before using any candidate-supplied location. */
 export const assertPackageIdentity = (manifest, version = PACKAGE_VERSION) => {

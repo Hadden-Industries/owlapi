@@ -47,7 +47,9 @@ public final class RunRC2QueryMatrix {
       else if (argument instanceof OWLLiteral literal) { descriptor.put("kind","Literal"); descriptor.put("lexicalForm",literal.getLiteral()); descriptor.put("language",literal.getLang()); descriptor.put("datatype",literal.getDatatype().getIRI().toString()); }
       else if (argument instanceof OWLObjectInverseOf inverse) { descriptor.put("kind","ObjectInverseOf"); descriptor.put("iri",inverse.getNamedProperty().getIRI().toString()); }
       else throw new IllegalStateException("Unselected argument");
-      rows.add(Map.of("method",name,"argument",descriptor,"count",result.size(),"resultInput","Ontology(" + String.join(" ",result.stream().map(RunRC2QueryMatrix::functional).toList()) + ")"));
+      // This matched overload returns Set<OWLAxiom>; record its membership in a
+      // stable fixture order without asserting a Java iteration-order contract.
+      rows.add(Map.of("method",name,"argument",descriptor,"count",result.size(),"resultInput","Ontology(" + String.join(" ",result.stream().map(RunRC2QueryMatrix::functional).sorted().toList()) + ")"));
     }
     var fixture = Map.of("schemaVersion",1,"sourceRevision","b61ebe2da83daceebb3e7ba7afbd2582c9240c33","runtimeQualification","EXISTING_RUNTIME_OBSERVATION_REQUIRES_FRESH_BUILD_BINDING","harness","util/owlapi-reference/RunRC2QueryMatrix.java","input",input,"observations",rows);
     ObjectMapper mapper = new ObjectMapper(); mapper.getFactory().configure(JsonGenerator.Feature.ESCAPE_NON_ASCII,true);

@@ -1,0 +1,234 @@
+{
+  "schemaVersion": 1,
+  "profileAdmission": "not-admitted",
+  "releaseHold": "Designated Codex Security review coverage incomplete; release-owner decision pending.",
+  "oracleManifestPath": "provenance.json",
+  "implementationSourceCommitObjectId": "2d751ce2844570b0c8c5cf534a4b76999c25b33a",
+  "installedNodeSnapshots": [
+    {
+      "originalCaptureSha256": "63a8a36bcac9cbf903de66ad3eb34fc249f35d774d287ca9eaa4dd4359ffa4a7",
+      "result": "PASS",
+      "runtime": {
+        "node": "v22.23.3",
+        "npm": "12.2.0",
+        "platform": "win32",
+        "architecture": "x64",
+        "osRelease": "10.0.26300"
+      },
+      "tarball": {
+        "fileName": "hadden-industries-owlapi-0.1.0-rc.2.tgz",
+        "sha256": "48c4154c4adf3e2041635cda3c41e9060d60e5e034bd796cf67d0c341e6cae57",
+        "bytes": 458974,
+        "fileCount": 195
+      },
+      "consumers": {
+        "alias": {
+          "dependencyName": "owlapi",
+          "installedTests": [
+            "installed-package-smoke.mjs",
+            "installed-package-boundary.mjs",
+            "installed-package-import-purity.mjs",
+            "installed-package-no-network.mjs",
+            "installed-package-import-closure.mjs",
+            "installed-node-transport.mjs"
+          ]
+        },
+        "scoped": {
+          "dependencyName": "@hadden-industries/owlapi",
+          "installedTests": [
+            "installed-package-smoke.mjs",
+            "installed-package-boundary.mjs",
+            "installed-package-import-purity.mjs",
+            "installed-package-no-network.mjs",
+            "installed-package-import-closure.mjs",
+            "installed-node-transport.mjs"
+          ]
+        }
+      }
+    },
+    {
+      "originalCaptureSha256": "f87797d26a8a0923979bcbec20e87178b246072ca1abd453dcd8d18eb9ea2aea",
+      "result": "PASS",
+      "runtime": {
+        "node": "v24.21.0",
+        "npm": "12.2.0",
+        "platform": "win32",
+        "architecture": "x64",
+        "osRelease": "10.0.26300"
+      },
+      "tarball": {
+        "fileName": "hadden-industries-owlapi-0.1.0-rc.2.tgz",
+        "sha256": "48c4154c4adf3e2041635cda3c41e9060d60e5e034bd796cf67d0c341e6cae57",
+        "bytes": 458974,
+        "fileCount": 195
+      },
+      "consumers": {
+        "alias": {
+          "dependencyName": "owlapi",
+          "installedTests": [
+            "installed-package-smoke.mjs",
+            "installed-package-boundary.mjs",
+            "installed-package-import-purity.mjs",
+            "installed-package-no-network.mjs",
+            "installed-package-import-closure.mjs",
+            "installed-node-transport.mjs"
+          ]
+        },
+        "scoped": {
+          "dependencyName": "@hadden-industries/owlapi",
+          "installedTests": [
+            "installed-package-smoke.mjs",
+            "installed-package-boundary.mjs",
+            "installed-package-import-purity.mjs",
+            "installed-package-no-network.mjs",
+            "installed-package-import-closure.mjs",
+            "installed-node-transport.mjs"
+          ]
+        }
+      }
+    },
+    {
+      "originalCaptureSha256": "0ef0c5100c773ee45b801973a77e8d52c241b836d0430fd70e021e98cc1ac773",
+      "result": "PASS",
+      "runtime": {
+        "node": "v26.11.1",
+        "npm": "12.2.0",
+        "platform": "win32",
+        "architecture": "x64",
+        "osRelease": "10.0.26300"
+      },
+      "tarball": {
+        "fileName": "hadden-industries-owlapi-0.1.0-rc.2.tgz",
+        "sha256": "48c4154c4adf3e2041635cda3c41e9060d60e5e034bd796cf67d0c341e6cae57",
+        "bytes": 458974,
+        "fileCount": 195
+      },
+      "consumers": {
+        "alias": {
+          "dependencyName": "owlapi",
+          "installedTests": [
+            "installed-package-smoke.mjs",
+            "installed-package-boundary.mjs",
+            "installed-package-import-purity.mjs",
+            "installed-package-no-network.mjs",
+            "installed-package-import-closure.mjs",
+            "installed-node-transport.mjs"
+          ]
+        },
+        "scoped": {
+          "dependencyName": "@hadden-industries/owlapi",
+          "installedTests": [
+            "installed-package-smoke.mjs",
+            "installed-package-boundary.mjs",
+            "installed-package-import-purity.mjs",
+            "installed-package-no-network.mjs",
+            "installed-package-import-closure.mjs",
+            "installed-node-transport.mjs"
+          ]
+        }
+      }
+    }
+  ],
+  "browserSnapshot": {
+    "tarball": {
+      "fileName": "hadden-industries-owlapi-0.1.0-rc.2.tgz",
+      "sha256": "48c4154c4adf3e2041635cda3c41e9060d60e5e034bd796cf67d0c341e6cae57",
+      "bytes": 458974,
+      "fileCount": 195
+    },
+    "testsPerEngine": 3,
+    "engines": ["chromium", "firefox", "webkit"],
+    "modes": ["bundler", "import-map", "DedicatedWorker"],
+    "result": "PASS",
+    "evidenceKind": "operator-observed native test command results"
+  },
+  "sourceVerification": {
+    "runId": "02441172-9c5e-4288-a4dd-dd8e4d33999f",
+    "sourceCommitObjectId": "2d751ce2844570b0c8c5cf534a4b76999c25b33a",
+    "result": "PASS",
+    "passedSuites": 262,
+    "skippedSuites": 1,
+    "passedTests": 16139,
+    "skippedTests": 26,
+    "scope": "Frozen source baseline; not relabelled as the later lookup-order repair."
+  },
+  "lookupOrderRepair": {
+    "nativeProbePath": "evidence/ImportLookupPrecedenceProbe.java",
+    "nativeOutputPath": "evidence/import-lookup-precedence-java.txt",
+    "regressionTestPath": "../../../../model/behaviorIntegration.test.js",
+    "focusedPassedTests": 36,
+    "result": "PASS"
+  },
+  "gitTarballComparison": {
+    "originalCaptureSha256": "2d8e5efa2b4ee92ad6df0054d72005447008ffe9d83b3a3222a687d2fbb1180c",
+    "result": "PASS",
+    "revision": "7b6e661dd954bdb4da91562f1c3eb35af6edd723",
+    "tarball": {
+      "fileName": "hadden-industries-owlapi-0.1.0-rc.2.tgz",
+      "sha256": "75b3628cc28e99debb90d17662948fc4e4fd8b5af0ffc38b71f3c56896a15514",
+      "bytes": 458976,
+      "fileCount": 195
+    },
+    "comparison": {
+      "equal": true,
+      "differences": []
+    },
+    "installedFileCount": 195
+  },
+  "recovery": {
+    "originalCaptureSha256": "14bdcc127b17792992fa50b06bbe18b6927651778416858237bef9db6d5ef0bb",
+    "schemaVersion": 1,
+    "result": "PASS",
+    "priorRevision": "e9adc821688928e7a494eb59f76b7cedab79faa1",
+    "candidateTarball": {
+      "fileName": "hadden-industries-owlapi-0.1.0-rc.2.tgz",
+      "sha256": "75b3628cc28e99debb90d17662948fc4e4fd8b5af0ffc38b71f3c56896a15514",
+      "bytes": 458976,
+      "fileCount": 195
+    },
+    "migration": [
+      {
+        "behaviorProfileId": "java-owlapi-5.5.1",
+        "requests": ["urn:recovery:child", "urn:recovery:missing"],
+        "rootRetained": false,
+        "childRetained": true,
+        "configuredConnectionTimeout": 1234
+      },
+      {
+        "behaviorProfileId": "normative-v1",
+        "requests": ["urn:recovery:child", "urn:recovery:missing"],
+        "rootRetained": false,
+        "childRetained": false,
+        "configuredConnectionTimeout": 1234
+      }
+    ],
+    "before": {
+      "axioms": 1,
+      "emptyEnumeration": "rejected"
+    },
+    "after": {
+      "axioms": 1,
+      "emptyEnumeration": "rejected"
+    },
+    "restoredExactPriorGitRevision": true,
+    "remainingEffects": "Authorized acquisitions remain effects; package rollback and a fresh manager do not undo them.",
+    "decision": "Abort promotion on mismatch; application owner restores its state, repository maintainer supplies a forward fix. No package published."
+  },
+  "downstream": {
+    "result": "PASS",
+    "assertionCount": 70,
+    "universalOntologyCommitObjectId": "9a3b5bff5aeaff4540f14bdf65baeffc1c0d188d",
+    "webvowlCommitObjectId": "a468e17701d495fd9e1a801aef169894b2045186"
+  },
+  "review": {
+    "claudeAssignmentId": "8275a9b8-9c04-52ba-a55a-0dfa8a179ff5",
+    "nativeControlQualificationId": "84088c9b-6063-4b29-98a7-b913da22e45e",
+    "confirmedFindingIds": ["R-1", "R-2"],
+    "securityScanId": "45f253ac-f086-4af2-a467-69306dacbad0",
+    "securityScanStatus": "failed-incomplete"
+  },
+  "retention": {
+    "resourceDispositionRecordId": "9fa88ab70a204ec3845160ef392506d7",
+    "reviewAt": "2026-10-21T09:00:00Z"
+  }
+}

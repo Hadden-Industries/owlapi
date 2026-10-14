@@ -142,6 +142,10 @@
               "minLength": 1
             }
           },
+          "excludedPaths": {
+            "$ref": "#/properties/materialClasses/items/properties/paths",
+            "description": "Exact files or directory prefixes excluded from this class so separately classified embedded or generated material is not assigned project ownership."
+          },
           "packageTarball": {
             "const": true
           },
@@ -179,7 +183,8 @@
       ],
       "properties": {
         "bundled": {
-          "const": false
+          "type": "boolean",
+          "description": "Whether external executable material is embedded in packed files, independently of npm bundleDependencies."
         },
         "authority": {
           "const": "docs/provenance/third-party-material.json"

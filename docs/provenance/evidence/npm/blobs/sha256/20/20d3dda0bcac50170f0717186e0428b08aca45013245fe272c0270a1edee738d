@@ -1,0 +1,435 @@
+{
+  "artifactId": "c09c894094a00d0aee9dacf95b3e12ba5fe069c6d6088efbb4ef6b0d374484ac",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3563452,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.github/workflows/ci.yml",
+        "sha256": "621ab98517f0305b666608e6696ea116ae1bb5fa64a9185f1ec8c769f41f6c7b",
+        "size": 2845,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "0f6f00275d5739582660d3b0462ea2feedf2f3b104f3c319fd2c0fd6c4dc0d4a",
+        "size": 11345,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "9415b233c6c5a6fc3ac6977cde3530d149f45a61d86b2fd9611cbca4bf08f4e2",
+        "size": 1088,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "1602df4be0484608077cb39493d870143a962ffcd455e6e9839a44a6d5a6a092",
+        "size": 23728,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/lzmajs",
+        "sha256": "f29aae866c7bb66e5424a730c473231c1329f6bb0636ad33945299a4c4957a50",
+        "size": 1893,
+        "type": "FILE"
+      },
+      {
+        "path": "package/binding.gyp",
+        "sha256": "53737f023e7d3503aa8fd00bf2b8916c7508944bc49ab78278a3d1971733058b",
+        "size": 3329,
+        "type": "FILE"
+      },
+      {
+        "path": "package/deps/bin_i686/liblzma.dll",
+        "sha256": "37c4a4277ac066522402c71fd03bea5e8900fefd505ccf9b6399128c92182780",
+        "size": 151552,
+        "type": "FILE"
+      },
+      {
+        "path": "package/deps/bin_x86-64/liblzma.dll",
+        "sha256": "fc7348418be392d5ecebd7b9f07c1ae5bc530260fef923801b140088eddce96e",
+        "size": 150528,
+        "type": "FILE"
+      },
+      {
+        "path": "package/deps/doc/liblzma.def",
+        "sha256": "fb198888d3e6addf7250708d07fb49d1749d89716a04db11a99dacf170990ee0",
+        "size": 2581,
+        "type": "FILE"
+      },
+      {
+        "path": "package/deps/include/lzma.h",
+        "sha256": "ce953067d3657a1378db60fd785525b1c591fceb8fde5fa1329787befa90028c",
+        "size": 10058,
+        "type": "FILE"
+      },
+      {
+        "path": "package/deps/include/lzma/base.h",
+        "sha256": "a689e5ce4a78485a12d8ea67e33a842c7bf9509585ed900202ca32665467c7b7",
+        "size": 25248,
+        "type": "FILE"
+      },
+      {
+        "path": "package/deps/include/lzma/bcj.h",
+        "sha256": "446536588c1904d8d053d4b3bdb1094766d57f3df033927818e5918afdca5bc5",
+        "size": 2720,
+        "type": "FILE"
+      },
+      {
+        "path": "package/deps/include/lzma/block.h",
+        "sha256": "c8a00eefc8476eec40e017a15172a79c1baabe1c2c0dcf9accccdc6069063389",
+        "size": 22687,
+        "type": "FILE"
+      },
+      {
+        "path": "package/deps/include/lzma/check.h",
+        "sha256": "be9f4fa878e0295172b59a3738604a30eb3ea0fb6863d5a26b38e8d590cf2a88",
+        "size": 4405,
+        "type": "FILE"
+      },
+      {
+        "path": "package/deps/include/lzma/container.h",
+        "sha256": "f8f1360ea64208b689412f307a7467cab567b5a73a1366081ec5d2caf5d4a25b",
+        "size": 24619,
+        "type": "FILE"
+      },
+      {
+        "path": "package/deps/include/lzma/delta.h",
+        "sha256": "dd864c6b0b64547dbd9e030b1ab3e78d39677b93815abb69ba57bb85729dd181",
+        "size": 1942,
+        "type": "FILE"
+      },
+      {
+        "path": "package/deps/include/lzma/filter.h",
+        "sha256": "9e797c673f4278a2fd7aea3c24e6bba272d17c4043abc1c2851f427bfa63caf5",
+        "size": 16854,
+        "type": "FILE"
+      },
+      {
+        "path": "package/deps/include/lzma/hardware.h",
+        "sha256": "6cb6d9b3e79da27531ca1a95d1d839a9acf3620c3af592044bedf100e3861697",
+        "size": 2669,
+        "type": "FILE"
+      },
+      {
+        "path": "package/deps/include/lzma/index.h",
+        "sha256": "53e8de177fbd1adaa256c25510daab00dccf1a14b9c923f5f363ded1db8413fe",
+        "size": 23918,
+        "type": "FILE"
+      },
+      {
+        "path": "package/deps/include/lzma/index_hash.h",
+        "sha256": "469fb467556ba9781a00958e5be88ff584dc50a2b37e7e59ae053affa4d8d90c",
+        "size": 4021,
+        "type": "FILE"
+      },
+      {
+        "path": "package/deps/include/lzma/lzma12.h",
+        "sha256": "8d7e83d1356af649041385d0558e3ee6bab0576fd11d30ded6bf1d2a2afbc822",
+        "size": 15163,
+        "type": "FILE"
+      },
+      {
+        "path": "package/deps/include/lzma/stream_flags.h",
+        "sha256": "d581899893811e361171d24542ee44d5ec390321adc7ef6d077e62d4d706a7ea",
+        "size": 8476,
+        "type": "FILE"
+      },
+      {
+        "path": "package/deps/include/lzma/version.h",
+        "sha256": "2d9780634dff81459abaf91009d19db5d3755766d2bb2dc7ec70dbb8acaf55bd",
+        "size": 3618,
+        "type": "FILE"
+      },
+      {
+        "path": "package/deps/include/lzma/vli.h",
+        "sha256": "ca28d9fec7adfb4fddf2d6c393ed53c721895fe70fd807e5b342aa58ff9739e8",
+        "size": 6713,
+        "type": "FILE"
+      },
+      {
+        "path": "package/deps/xz-5.2.3-windows.7z.sig",
+        "sha256": "4e9000392b8b6150be182434d768d7489e74b47dc545449d54ecc1624297bd13",
+        "size": 566,
+        "type": "FILE"
+      },
+      {
+        "path": "package/deps/xz-5.2.3.tar.bz2",
+        "sha256": "fd9ca16de1052aac899ad3495ad20dfa906c27b4a5070102a2ec35ca3a4740c1",
+        "size": 1207242,
+        "type": "FILE"
+      },
+      {
+        "path": "package/deps/xz-5.2.3.tar.bz2.sig",
+        "sha256": "8d00353aa7e5107ffe82246d74e58c8a76e1cf5dcf3e7b657c95b538ae0e0b28",
+        "size": 566,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "77d9568c9c5479953a4588875b9d5c4a06ce9f926f9fab96d7678e68a74e6985",
+        "size": 13940,
+        "type": "FILE"
+      },
+      {
+        "path": "package/liblzma-build.sh",
+        "sha256": "ae56a4c3e521e37c5677e4d867e79ab46ac23b3f5682a7e2893497232a0326ce",
+        "size": 138,
+        "type": "FILE"
+      },
+      {
+        "path": "package/liblzma-config.sh",
+        "sha256": "100d04495f6b1804aef3983377d91509864758cf9aa7470d28a24b69f0bce116",
+        "size": 733,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "08494f60c7dbf22fbab878e965dbd4a1f32b8697ce3c69d0bdff436f541070ee",
+        "size": 1406,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prebuilds/darwin-arm64/electron.napi.node",
+        "sha256": "b322385eb19c1d0737144fbe2fef3c5d27b5e5531878f5a21700489785e51ac4",
+        "size": 232621,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prebuilds/darwin-arm64/node.napi.node",
+        "sha256": "7eb79b4ace336fc1f31923f7407d997d2676f95a5fab4a3dc4688be2ed659f1a",
+        "size": 232637,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prebuilds/darwin-x64/electron.napi.node",
+        "sha256": "37713bcaf2468d4a60c94652dd2ed8801fff57f270650b2fee90428bc5ad290a",
+        "size": 444576,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prebuilds/darwin-x64/node.napi.node",
+        "sha256": "5c77fb5f183ee197b110c76440b390d74aae7c35ab1ea48861308d8b62c22f65",
+        "size": 444584,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prebuilds/linux-arm64/electron.napi.node",
+        "sha256": "99006146d3f02a3701a254dbf57d10175a2950fa7d85b4dee90b99c997d882da",
+        "size": 431376,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prebuilds/linux-arm64/node.napi.node",
+        "sha256": "9a03f9e38254ac721d042561b23842c944db243c3c30fb21f240a577a34c8cb8",
+        "size": 431472,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prebuilds/linux-x64/electron.napi.node",
+        "sha256": "99006146d3f02a3701a254dbf57d10175a2950fa7d85b4dee90b99c997d882da",
+        "size": 431376,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prebuilds/linux-x64/node.napi.node",
+        "sha256": "9a03f9e38254ac721d042561b23842c944db243c3c30fb21f240a577a34c8cb8",
+        "size": 431472,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prebuilds/win32-ia32/electron.napi.node",
+        "sha256": "e73951d1d9f4155cadbeb530be14dd32e1abc4ad9332527507ede586ce41e095",
+        "size": 634368,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prebuilds/win32-ia32/liblzma.dll",
+        "sha256": "37c4a4277ac066522402c71fd03bea5e8900fefd505ccf9b6399128c92182780",
+        "size": 151552,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prebuilds/win32-ia32/node.napi.node",
+        "sha256": "ab5e095b49f13ef86a3dc83f0c11b9bee1fef24a4cf0616b0015d0ebabd443e5",
+        "size": 634368,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prebuilds/win32-x64/electron.napi.node",
+        "sha256": "5c7dd24a625d806e37cca949e52ec348ef0054a902e8700f9fdb61cac44e4c9e",
+        "size": 816640,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prebuilds/win32-x64/liblzma.dll",
+        "sha256": "fc7348418be392d5ecebd7b9f07c1ae5bc530260fef923801b140088eddce96e",
+        "size": 150528,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prebuilds/win32-x64/node.napi.node",
+        "sha256": "c738ba03c84330556184b07d4f9a94bb875807834f46c0b49ea42c8e45df714f",
+        "size": 815616,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/filter-array.cpp",
+        "sha256": "0cbca5a1c726cbb06e9f466727cdd2eeabf33588f9b54138eaf14f5e8eb1f988",
+        "size": 1759,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/index-parser.cpp",
+        "sha256": "9fe709a77ab9073a903922a88f242f997985fb62e997e1c876685a67beac54cd",
+        "size": 15925,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/index-parser.h",
+        "sha256": "e3f9760df002dcf558888484cd4eea67b4812b9ea46411d4574e1f1270d7feeb",
+        "size": 7373,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/liblzma-functions.cpp",
+        "sha256": "0061d0cf1cafa5664e456d28156b26b864eb3db973e4d7d66c8e6a00951a5820",
+        "size": 2408,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/liblzma-node.hpp",
+        "sha256": "083be435288cabebb7e7d2663e06396327b5d9c58bc0a48ffa1e849aa4bc3998",
+        "size": 7339,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/lzma-stream.cpp",
+        "sha256": "62a94542647f30332b4c9d4b26092980a46e056b15037c68a6ad2463beb378d8",
+        "size": 11039,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/module.cpp",
+        "sha256": "952f0fe5f1e6421a91f5cfc5f1556d8f88af6072676bed71691c2d1dfe8bbd33",
+        "size": 5168,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/mt-options.cpp",
+        "sha256": "955fef2460387cab4f96a45bc03a110bf82e062d1b6f62c524cd037a9835857c",
+        "size": 793,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/util.cpp",
+        "sha256": "88a6913de83d47fb45ae173d7b61c2545d65cf19707ceaedbc0385bb1ea0301e",
+        "size": 4526,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1088,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/94/9415b233c6c5a6fc3ac6977cde3530d149f45a61d86b2fd9611cbca4bf08f4e2",
+          "sha256": "9415b233c6c5a6fc3ac6977cde3530d149f45a61d86b2fd9611cbca4bf08f4e2"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9415b233c6c5a6fc3ac6977cde3530d149f45a61d86b2fd9611cbca4bf08f4e2",
+        "size": 1088
+      },
+      {
+        "blob": {
+          "bytes": 23728,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/16/1602df4be0484608077cb39493d870143a962ffcd455e6e9839a44a6d5a6a092",
+          "sha256": "1602df4be0484608077cb39493d870143a962ffcd455e6e9839a44a6d5a6a092"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "1602df4be0484608077cb39493d870143a962ffcd455e6e9839a44a6d5a6a092",
+        "size": 23728
+      }
+    ],
+    "expandedBytes": 8086107,
+    "packageIdentity": {
+      "author": {
+        "email": "anna@addaleax.net",
+        "name": "Anna Henningsen"
+      },
+      "homepage": "https://github.com/addaleax/lzma-native",
+      "license": "MIT",
+      "name": "lzma-native",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/addaleax/lzma-native.git"
+      },
+      "version": "8.0.6"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "anna@addaleax.net",
+        "name": "Anna Henningsen"
+      },
+      "bin": {
+        "lzmajs": "bin/lzmajs"
+      },
+      "bugs": {
+        "url": "https://github.com/addaleax/lzma-native/issues"
+      },
+      "dependencies": {
+        "node-addon-api": "^3.1.0",
+        "node-gyp-build": "^4.2.1",
+        "readable-stream": "^3.6.0"
+      },
+      "description": "Provides bindings to the native liblzma library (.xz file format, among others)",
+      "devDependencies": {
+        "bl": "^4.1.0",
+        "jshint": "^2.12.0",
+        "mocha": "^8.3.1",
+        "prebuildify": "^5.0.0"
+      },
+      "engines": {
+        "node": ">=10.0.0"
+      },
+      "gypfile": true,
+      "homepage": "https://github.com/addaleax/lzma-native",
+      "keywords": [
+        "lzma",
+        "compression",
+        "crc32",
+        "xz",
+        "liblzma"
+      ],
+      "license": "MIT",
+      "main": "index",
+      "name": "lzma-native",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/addaleax/lzma-native.git"
+      },
+      "scripts": {
+        "install": "node-gyp-build",
+        "jshint": "jshint .",
+        "prebuild": "prebuildify --napi --electron-compat",
+        "prepack": "[ $(ls prebuilds | wc -l) = '6' ] || (echo 'Some prebuilds are missing'; exit 1)",
+        "prepare": "npm run prepare-win32 || true",
+        "prepare-win32": "cd deps && 7z x -y xz-5.2.3-windows.7z bin_i686/liblzma.dll bin_x86-64/liblzma.dll include doc/liblzma.def",
+        "test": "mocha --expose-gc -s 1000 -t 15000"
+      },
+      "version": "8.0.6"
+    },
+    "physicalEntryCount": 54,
+    "tarball": {
+      "bytes": 3563452,
+      "sha256": "326b39004b4c91973b584030f99d768b8dc94491c346103fa20de179c0fae369"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

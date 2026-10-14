@@ -75,7 +75,11 @@ export {
   OWL2RLProfile,
   OWLProfileReport,
 } from "./profiles/index.js";
-export { Imports, AxiomAnnotations } from "./model/parameters/index.js";
+export {
+  Imports,
+  AxiomAnnotations,
+  ChangeApplied,
+} from "./model/parameters/index.js";
 export { EntitySearcher } from "./search/index.js";
 export { ManchesterOWLSyntaxOWLObjectRendererImpl } from "./manchestersyntax/renderer/index.js";
 export {

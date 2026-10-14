@@ -10,3 +10,7 @@ util/owlapi-reference/publication-assets/** -text -diff -whitespace
 # Retain upstream development scanner notice bytes exactly, including CRLF.
 LICENSES/development/scancode-runtime/** -text -diff -whitespace
 LICENSES/development/scancode-runtime/inventory.json text eol=lf diff
+
+# Hash-bound upstream tool output retains its recorded whitespace.
+docs/compatibility/profiles/java-owlapi-5.5.1/evidence/*.log -whitespace
+docs/compatibility/profiles/java-owlapi-5.5.1/evidence/active-profiles.txt -whitespace

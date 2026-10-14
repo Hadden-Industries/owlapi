@@ -22,6 +22,7 @@
     "./apibinding": "./apibinding/index.js",
     "./model": "./model/index.js",
     "./io": "./io/index.js",
+    "./io/node": "./io/node/index.js",
     "./formats": "./formats/index.js",
     "./profiles": "./profiles/index.js",
     "./util": "./util/index.js",
@@ -66,7 +67,10 @@
     "!**/*.test.mjs",
     "!**/__tests__/**",
     "!**/test/**",
-    "!**/fixtures/**"
+    "!**/fixtures/**",
+    "docs/compatibility/behavior-profiles.md",
+    "docs/compatibility/java-api-parity-decisions.json",
+    "docs/compatibility/java-api-parity-decisions.schema.json"
   ],
   "sideEffects": false,
   "engines": {
@@ -87,7 +91,8 @@
     "@parcel/watcher@2.6.0": false,
     "fsevents@2.3.3": false,
     "libxmljs2@0.37.0": false,
-    "unrs-resolver@1.12.2": false
+    "unrs-resolver@1.12.2": false,
+    "lzma-native@8.0.6": false
   },
   "browserslist": "baseline widely available",
   "scripts": {
@@ -127,7 +132,7 @@
     "release:prepare-github-cli": "node scripts/prepare-github-cli.mjs",
     "release:verify-immutable": "node scripts/verify-immutable-release.mjs",
     "extended:record-status": "node scripts/record-extended-test-status.mjs",
-    "release:sbom": "cyclonedx-npm --spec-version 1.6 --output-format JSON --output-reproducible --validate --mc-type library --omit dev",
+    "release:sbom": "node scripts/generate-release-sbom.mjs",
     "tools:sync": "node scripts/repository-python-tools.mjs sync",
     "tools:check": "node scripts/repository-python-tools.mjs check",
     "lint": "npm run tools:check && npm run lint:js && npm run lint:md && npm run lint:py",
@@ -160,11 +165,14 @@
     "@rdfjs/dataset": "2.0.3",
     "@xmldom/xmldom": "0.9.12",
     "bcp-47": "2.1.1",
+    "iconv-lite": "0.7.3",
     "jsonld": "9.0.0",
+    "lzma-native": "8.0.6",
     "n3": "2.7.12",
     "rdfxml-streaming-parser": "3.3.0"
   },
   "devDependencies": {
+    "@cyclonedx/cyclonedx-library": ">=10.3.0",
     "@cyclonedx/cyclonedx-npm": ">=6.0.1",
     "@eslint/js": ">=10.0.1",
     "@jspm/generator": ">=2.17.0",

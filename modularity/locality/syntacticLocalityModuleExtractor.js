@@ -123,6 +123,7 @@ export class SyntacticLocalityModuleExtractor {
         );
       seed.add(key);
     }
+    if (seed.size === 0) return [];
     // All admission precedes callbacks, including optional limits on the full
     // original base. Count edges as well as unique DAG nodes, never just roots.
     for (const entry of this.#base.values()) {

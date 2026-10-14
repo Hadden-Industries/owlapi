@@ -27,8 +27,27 @@ export const readOntologySnapshot = (ontology) => {
 
 // Loaded membership and package identity share one authority. Source evidence
 // consumes snapshots without making the ontology depend on source evidence.
-export const bindManagedOntology = (ontology, readClosure, hasResolvedImport) =>
-  managers.set(ontology, { readClosure, hasResolvedImport });
+export const bindManagedOntology = (
+  ontology,
+  readClosure,
+  hasResolvedImport,
+  owner,
+  behaviorProfileDefinition,
+) =>
+  managers.set(
+    ontology,
+    Object.freeze({
+      readClosure,
+      hasResolvedImport,
+      owner,
+      behaviorProfileDefinition,
+    }),
+  );
+
+/** Internal ownership read; copying structural values never changes this binding. */
+export const readOntologyOwner = (ontology) => managers.get(ontology)?.owner;
+export const readOntologyBehaviorDefinition = (ontology) =>
+  managers.get(ontology)?.behaviorProfileDefinition;
 
 /** Read loaded membership only; completeness remains the caller's policy. */
 export const readLoadedImportsClosure = (ontology) => {

@@ -1,4 +1,5 @@
 import { RDFXMLDocumentFormat } from "../formats/rdfXMLDocumentFormat.js";
+import { assertDocumentLoaderAuthorization } from "../internal/loading/documentLoaderAuthorization.js";
 import { copyDocumentFormatState } from "./owlDocumentFormat.js";
 import {
   MissingImportError,
@@ -8,12 +9,16 @@ import {
   UnloadableImportError,
   UnparsableOntologyException,
   OWLOntologyStateError,
+  OWLParserError,
+  UnsupportedConstructError,
 } from "../io/errors.js";
 import { StringDocumentSource } from "../io/stringDocumentSource.js";
 import { ManagedOntologyIndex } from "../internal/loading/managedOntologyIndex.js";
 import { materializeAxiomIterable } from "../internal/model/axiomSemantics.js";
 import { readOntologyChange } from "../internal/model/ontologyChangeRecord.js";
 import { RemoveAxiom } from "./removeAxiom.js";
+import { AddAxiom } from "./addAxiom.js";
+import { ChangeApplied } from "./parameters/index.js";
 import { createImmutableDocumentMetadataSnapshot } from "../internal/model/ontologyState.js";
 import {
   createSourceStructure,
@@ -37,6 +42,7 @@ import { turtleParserDescriptor } from "../internal/parsing/turtle/descriptor.js
 import { createDefaultStorerRegistry } from "../internal/storage/storerRegistry.js";
 import {
   OWLDataFactory,
+  readDataFactoryBehaviorDefinition,
   createSourcePreservingDataFactory,
 } from "./owlDataFactory.js";
 import { OWLObjectKind } from "./kinds.js";
@@ -45,6 +51,7 @@ import {
   bindManagedOntology,
   createManagerOwnedOWLOntology,
   readOntologySnapshot,
+  readOntologyOwner,
 } from "./owlOntology.js";
 import { OWLOntologyLoaderConfiguration } from "./owlOntologyLoaderConfiguration.js";
 import {
@@ -53,9 +60,38 @@ import {
 } from "./owlOntologyWriterConfiguration.js";
 import { readSetOntologyIDChange } from "./setOntologyID.js";
 import { IRI, StructuralSet } from "./structural.js";
+import { OntologyBehaviorContext } from "../internal/behavior/ontologyBehaviorContext.js";
 
 const DIAGNOSTIC_SEVERITIES = new Set(["info", "warning"]);
 const SOURCE_LOCATION_FIELDS = ["line", "column", "offset"];
+const ANNOTATION_AXIOM_KINDS = new Set([
+  OWLObjectKind.ANNOTATION_ASSERTION_AXIOM,
+  OWLObjectKind.SUB_ANNOTATION_PROPERTY_AXIOM,
+  OWLObjectKind.ANNOTATION_PROPERTY_DOMAIN_AXIOM,
+  OWLObjectKind.ANNOTATION_PROPERTY_RANGE_AXIOM,
+]);
+const REVERSE_CHANGE_KINDS = Object.freeze({
+  ADD_AXIOM: "REMOVE_AXIOM",
+  REMOVE_AXIOM: "ADD_AXIOM",
+  ADD_IMPORT: "REMOVE_IMPORT",
+  REMOVE_IMPORT: "ADD_IMPORT",
+  ADD_ONTOLOGY_ANNOTATION: "REMOVE_ONTOLOGY_ANNOTATION",
+  REMOVE_ONTOLOGY_ANNOTATION: "ADD_ONTOLOGY_ANNOTATION",
+});
+
+const reverseChangeDescriptor = (descriptor) =>
+  descriptor.kind === "SET_ONTOLOGY_ID"
+    ? {
+        ...descriptor,
+        originalOntologyID: descriptor.newOntologyID,
+        newOntologyID: descriptor.originalOntologyID,
+      }
+    : {
+        ...descriptor,
+        kind: REVERSE_CHANGE_KINDS[descriptor.kind],
+        value: descriptor.value ?? descriptor.annotation,
+        annotation: descriptor.annotation ?? descriptor.value,
+      };
 const builtinDescriptors = new Set([
   owlXmlParserDescriptor,
   jsonLdParserDescriptor,
@@ -188,13 +224,15 @@ class ParseTransaction {
   #sourceStructure;
   #ontologyID;
   #prefixes;
+  #publication;
 
-  constructor(dataFactory, configuration) {
+  constructor(dataFactory, configuration, publication) {
     this.#dataFactory =
       configuration.parsingMode === "preserve"
         ? createSourcePreservingDataFactory(dataFactory)
         : dataFactory;
     this.#configuration = configuration;
+    this.#publication = publication;
   }
 
   getOWLDataFactory() {
@@ -212,6 +250,7 @@ class ParseTransaction {
       });
     }
     this.#axioms.add(axiom);
+    this.#publication?.addAxiom(axiom);
   }
 
   addAxioms(axioms) {
@@ -222,6 +261,7 @@ class ParseTransaction {
 
   addAnnotation(annotation) {
     this.#annotations.add(annotation);
+    this.#publication?.addAnnotation(annotation);
   }
 
   addAnnotations(annotations) {
@@ -231,12 +271,14 @@ class ParseTransaction {
   }
 
   addImportsDeclaration(declaration) {
+    if (this.#imports.has(declaration)) return;
     this.#imports.add(declaration);
+    return this.#publication?.addImport(declaration);
   }
 
-  addImportsDeclarations(declarations) {
+  async addImportsDeclarations(declarations) {
     for (const declaration of declarations) {
-      this.addImportsDeclaration(declaration);
+      await this.addImportsDeclaration(declaration);
     }
   }
 
@@ -246,6 +288,7 @@ class ParseTransaction {
 
   setOntologyID(ontologyID) {
     this.#ontologyID = ontologyID;
+    this.#publication?.setOntologyID(ontologyID);
   }
 
   setDocumentFormat(documentFormat) {
@@ -304,12 +347,14 @@ class ParseTransaction {
 
   commit(defaultFormat, documentIRI) {
     const ontologyID = this.#ontologyID || this.#dataFactory.getOWLOntologyID();
-    const managedOntology = createManagerOwnedOWLOntology({
-      annotations: this.#annotations,
-      axioms: this.#axioms,
-      imports: this.#imports,
-      ontologyID,
-    });
+    const managedOntology =
+      this.#publication?.managedOntology ??
+      createManagerOwnedOWLOntology({
+        annotations: this.#annotations,
+        axioms: this.#axioms,
+        imports: this.#imports,
+        ontologyID,
+      });
     return {
       context: {
         diagnostics: [...this.#diagnostics],
@@ -331,11 +376,28 @@ class ParseTransaction {
   }
 }
 
-const normalizeConfiguration = (configuration) => {
+const normalizeConfiguration = (configuration, behaviorProfileId) => {
   if (configuration instanceof OWLOntologyLoaderConfiguration) {
-    return configuration;
+    if (
+      OWLOntologyLoaderConfiguration.prototype.getBehaviorProfileId.call(
+        configuration,
+      ) !== behaviorProfileId
+    )
+      throw new TypeError(
+        "Loader configuration and manager behavior profiles must match",
+      );
+    // All consumers receive the admitted private identity and native settings,
+    // even when a caller subclasses the configuration's public query methods.
+    return OWLOntologyLoaderConfiguration.prototype.with.call(
+      configuration,
+      {},
+    );
   }
-  return new OWLOntologyLoaderConfiguration(configuration);
+  const normalized = new OWLOntologyLoaderConfiguration({
+    behaviorProfileId,
+    ...configuration,
+  });
+  return normalizeConfiguration(normalized, behaviorProfileId);
 };
 
 const normalizeSource = (source, documentIRI) => {
@@ -375,6 +437,7 @@ const isHttpIRI = (iri) => {
 };
 
 export class OWLOntologyManager {
+  #behaviorContext;
   #dataFactory;
   #documentLoader;
   #iriMappers;
@@ -382,16 +445,48 @@ export class OWLOntologyManager {
   #managedOntologyStates = new WeakMap();
   #registry;
   #storerRegistry = createDefaultStorerRegistry();
-  #writerConfiguration = new OWLOntologyWriterConfiguration();
+  #writerConfiguration;
+  #loaderConfiguration;
+  #loaderConfigurationsByOntologyID = new Map();
+  #requestedImportIRIs = new Set();
+  #importedOntologyIDsByImportIRI = new Map();
+  #externalDocumentIRIsByOntology = new WeakMap();
   #rdfXmlFormats = new WeakMap();
 
-  constructor({ dataFactory, documentLoader, iriMappers = [], registry } = {}) {
+  constructor({
+    behaviorProfileId,
+    dataFactory,
+    documentLoader,
+    iriMappers = [],
+    registry,
+  } = {}) {
+    this.#behaviorContext = new OntologyBehaviorContext(behaviorProfileId);
+    this.#writerConfiguration = new OWLOntologyWriterConfiguration({
+      behaviorProfileId,
+    });
+    this.#loaderConfiguration = new OWLOntologyLoaderConfiguration({
+      behaviorProfileId,
+    });
     if (!iriMappers || typeof iriMappers[Symbol.iterator] !== "function") {
       throw new TypeError("iriMappers must be iterable");
     }
-    const normalizedDataFactory = dataFactory || new OWLDataFactory();
+    const normalizedDataFactory =
+      dataFactory || new OWLDataFactory({ behaviorProfileId });
     if (typeof normalizedDataFactory.getOWLOntologyID !== "function") {
       throw new TypeError("dataFactory must implement getOWLOntologyID()");
+    }
+    const factoryDefinition = readDataFactoryBehaviorDefinition(
+      normalizedDataFactory,
+    );
+    if (
+      factoryDefinition
+        ? factoryDefinition !== this.#behaviorContext.behaviorProfileDefinition
+        : this.#behaviorContext.behaviorProfileDefinition.behaviorProfileId !==
+          "normative-v1"
+    ) {
+      throw new TypeError(
+        "Manager and data factory behavior profiles must match",
+      );
     }
     if (
       documentLoader !== undefined &&
@@ -436,12 +531,43 @@ export class OWLOntologyManager {
     return this.#dataFactory;
   }
 
+  getBehaviorProfileId() {
+    return this.#behaviorContext.behaviorProfileDefinition.behaviorProfileId;
+  }
+
   getOntologyWriterConfiguration() {
     return this.#writerConfiguration;
   }
 
+  getOntologyLoaderConfiguration() {
+    return this.#loaderConfiguration;
+  }
+
+  setOntologyLoaderConfiguration(configuration) {
+    OWLOntologyLoaderConfiguration.prototype.getConnectionTimeout.call(
+      configuration,
+    );
+    if (
+      OWLOntologyLoaderConfiguration.prototype.getBehaviorProfileId.call(
+        configuration,
+      ) !== this.#behaviorContext.behaviorProfileDefinition.behaviorProfileId
+    )
+      throw new TypeError(
+        "Loader configuration and manager behavior profiles must match",
+      );
+    this.#loaderConfiguration = configuration;
+  }
+
   setOntologyWriterConfiguration(configuration) {
     readOntologyWriterConfiguration(configuration);
+    if (
+      OWLOntologyWriterConfiguration.prototype.getBehaviorProfileId.call(
+        configuration,
+      ) !== this.#behaviorContext.behaviorProfileDefinition.behaviorProfileId
+    )
+      throw new TypeError(
+        "Writer configuration and manager behavior profiles must match",
+      );
     this.#writerConfiguration = configuration;
   }
 
@@ -451,7 +577,15 @@ export class OWLOntologyManager {
     });
     const registration = this.#managedOntologyIndex.beginLoadSession();
     try {
-      registration.stageOntology(ontology);
+      const defaultDocumentIRI =
+        ontologyID.versionIRI ?? ontologyID.ontologyIRI;
+      registration.stageOntology(ontology, {
+        documentIRI:
+          this.#behaviorContext.behaviorProfileDefinition.ontologyIdentityPolicy
+            .registerDefaultDocumentIRI && defaultDocumentIRI
+            ? this.#mapDocumentIRI(defaultDocumentIRI)
+            : undefined,
+      });
       const participants = this.#managedOntologyIndex
         .ontologies()
         .map((member) => [member, readOntologySnapshot(member)]);
@@ -465,7 +599,11 @@ export class OWLOntologyManager {
           )
             continue;
           const imported =
-            registration.getOntologyByIRI(declaration.iri) ??
+            registration.getOntologyByIRI(
+              declaration.iri,
+              this.#behaviorContext.behaviorProfileDefinition
+                .ontologyIdentityPolicy,
+            ) ??
             registration.getOntologyByDocumentIRI(
               this.#mapDocumentIRI(declaration.iri),
             );
@@ -490,22 +628,53 @@ export class OWLOntologyManager {
     this.#managedOntologyStates.set(ontology, ontologyState);
     bindManagedOntology(
       ontology,
-      () =>
-        this.#managedOntologyIndex.createImportsClosureSnapshot(ontology, {
-          operation: "loadedImportsClosure",
-        }),
+      () => this.#readImportsClosure(ontology, "readLoadedImportsClosure"),
       (member, iri) =>
         this.#managedOntologyIndex.hasResolvedImport(member, iri),
+      this,
+      this.#behaviorContext.behaviorProfileDefinition,
     );
     return ontology;
   }
 
   getOntology(ontologyID) {
-    return this.#managedOntologyIndex.getOntologyByID(ontologyID);
+    const exact = this.#managedOntologyIndex.getOntologyByID(ontologyID);
+    if (
+      exact ||
+      !this.#behaviorContext.behaviorProfileDefinition.ontologyIdentityPolicy
+        .allowNamedIDFallback
+    )
+      return exact;
+    if (ontologyID.ontologyIRI) {
+      const version = this.#managedOntologyIndex.getFirstOntologyByOntologyIRI(
+        ontologyID.ontologyIRI,
+      );
+      if (version) return version;
+      const documentIRI = this.#mapDocumentIRI(
+        ontologyID.versionIRI ?? ontologyID.ontologyIRI,
+      );
+      if (this.#managedOntologyIndex.getOntologyByDocumentIRI(documentIRI))
+        throw new OWLOntologyStateError(
+          "An ontology document with this IRI is already registered",
+          { documentIRI, ontologyID, operation: "getOntology" },
+        );
+    }
+    return undefined;
   }
 
   /** Java-compatible access to this manager's loaded format; authored ontologies have none. */
   getOntologyFormat(ontology) {
+    if (
+      this.#behaviorContext.behaviorProfileDefinition.ontologyChangePolicy
+        .permitsSameProfileForeignTargets &&
+      readOntologyOwner(ontology) !== this
+    ) {
+      this.#requireManagedOntologyState(ontology, "getOntologyFormat");
+      const registered = this.#managedOntologyIndex.getOntologyByID(
+        ontology.getOntologyID(),
+      );
+      return registered ? this.getOntologyFormat(registered) : undefined;
+    }
     const metadata = this.#requireManagedOntologyState(
       ontology,
       "getOntologyFormat",
@@ -537,7 +706,7 @@ export class OWLOntologyManager {
     return this.#addAxiomIterable(ontology, axioms, "addAxioms");
   }
 
-  /** Atomically remove exact annotated axioms; return whether the final state differs. */
+  /** Remove an exact annotated axiom using the selected profile's change result. */
   removeAxiom(ontology, axiom) {
     return this.#applyChangeIterable(
       [new RemoveAxiom(ontology, axiom)],
@@ -557,14 +726,15 @@ export class OWLOntologyManager {
     );
   }
 
-  /** Apply one nominal change through the same atomic batch boundary. */
+  /** Apply one nominal change through the selected profile's batch boundary. */
   applyChange(change) {
     return this.#applyChangeIterable([change], "applyChange");
   }
 
-  /** Apply the complete iterable atomically; true means the final state differs.
-   * Invalid records, foreign targets and failed/stale preflight publish nothing.
-   * Import changes resolve only local manager-owned documents, without loading.
+  /** Materialize the iterable, then apply its nominal changes.
+   * Normative changes publish atomically and return whether final state differs.
+   * Java changes publish sequentially and return ChangeApplied; an exception
+   * retains earlier changes. Import edits resolve loaded documents without I/O.
    */
   applyChanges(changes) {
     return this.#applyChangeIterable(changes, "applyChanges");
@@ -578,29 +748,69 @@ export class OWLOntologyManager {
    */
   async saveOntology(ontology, format, target) {
     const state = this.#requireManagedOntologyState(ontology, "saveOntology");
+    // Java renderers obtain preferences from the ontology's owning manager,
+    // including when a second manager invokes the save operation.
+    const owner = readOntologyOwner(ontology);
     const writerContext = readOntologyWriterConfiguration(
-      this.#writerConfiguration,
+      owner.#writerConfiguration,
     );
     await this.#storerRegistry.store(
       state.createSnapshot(),
       format,
       target,
       writerContext,
+      this.#behaviorContext.behaviorProfileDefinition,
     );
   }
 
   importsClosure(ontology) {
+    return this.#readImportsClosure(ontology, "importsClosure");
+  }
+
+  #readImportsClosure(ontology, operation) {
+    if (
+      this.#behaviorContext.behaviorProfileDefinition.ontologyLoadingPolicy
+        .importResolution === "retained-id"
+    ) {
+      const result = new Set();
+      const pending = [ontology];
+      while (pending.length) {
+        const member = pending.pop();
+        if (result.has(member)) continue;
+        if (!this.#managedOntologyIndex.getOntologyByID(member.getOntologyID()))
+          throw new OWLOntologyStateError(
+            "The ontology is not registered in this manager",
+            { ontology: member, operation },
+          );
+        result.add(member);
+        for (const declaration of readOntologySnapshot(member)
+          .authoredImportDeclarations) {
+          const imported = this.#resolveJavaImport(declaration.iri);
+          if (imported) pending.push(imported);
+        }
+      }
+      return Object.freeze([...result]);
+    }
     return this.#managedOntologyIndex.createImportsClosureSnapshot(ontology, {
-      operation: "importsClosure",
+      operation,
     });
   }
 
   getImportsClosure(ontology) {
-    return new Set(
-      this.#managedOntologyIndex.createImportsClosureSnapshot(ontology, {
-        operation: "getImportsClosure",
-      }),
+    return new Set(this.#readImportsClosure(ontology, "getImportsClosure"));
+  }
+
+  #resolveJavaImport(importIRI) {
+    const retainedID = this.#importedOntologyIDsByImportIRI.get(
+      importIRI.value,
     );
+    return retainedID
+      ? this.getOntology(retainedID)
+      : (this.#managedOntologyIndex.getOntologyByIRI(
+          importIRI,
+          this.#behaviorContext.behaviorProfileDefinition
+            .ontologyIdentityPolicy,
+        ) ?? this.#managedOntologyIndex.getOntologyByDocumentIRI(importIRI));
   }
 
   async loadOntologyFromOntologyDocument(source, configuration) {
@@ -612,9 +822,34 @@ export class OWLOntologyManager {
   }
 
   async loadOntologyGraphFromOntologyDocument(source, configuration) {
-    const normalizedConfiguration = normalizeConfiguration(configuration);
+    const normalizedConfiguration = normalizeConfiguration(
+      configuration ?? this.#loaderConfiguration,
+      this.#behaviorContext.behaviorProfileDefinition.behaviorProfileId,
+    );
     this.#throwIfAborted(normalizedConfiguration);
     const normalizedSource = normalizeSource(source);
+
+    if (
+      this.#behaviorContext.behaviorProfileDefinition.ontologyLoadingPolicy
+        .publication === "document"
+    ) {
+      const session = { entries: [], importCount: 0 };
+      const ontology = await this.#loadDocument(
+        normalizedSource,
+        normalizedConfiguration,
+        session,
+        0,
+      );
+      return Object.freeze({
+        ontology,
+        importsClosure: this.importsClosure(ontology),
+        documents: Object.freeze(
+          session.entries.map(({ context, ontology: member }) =>
+            Object.freeze({ context, ontology: member }),
+          ),
+        ),
+      });
+    }
 
     const managedOntologyLoadSession =
       this.#managedOntologyIndex.beginLoadSession();
@@ -852,14 +1087,17 @@ export class OWLOntologyManager {
     for (const publication of documentPublications) {
       publication.ontologyState.commitMutation(publication.mutationDraft);
       const { ontology } = publication.entry;
+      this.#loaderConfigurationsByOntologyID.set(
+        ontology.getOntologyID().structuralKey(),
+        normalizedConfiguration,
+      );
       bindManagedOntology(
         ontology,
-        () =>
-          this.#managedOntologyIndex.createImportsClosureSnapshot(ontology, {
-            operation: "loadedImportsClosure",
-          }),
+        () => this.#readImportsClosure(ontology, "readLoadedImportsClosure"),
         (member, iri) =>
           this.#managedOntologyIndex.hasResolvedImport(member, iri),
+        this,
+        this.#behaviorContext.behaviorProfileDefinition,
       );
       publishSourceEvidence(
         ontology,
@@ -883,6 +1121,9 @@ export class OWLOntologyManager {
   async #loadDocument(source, configuration, session, depth) {
     this.#throwIfAborted(configuration);
     this.#checkInputSize(source, configuration);
+
+    if (!session.managedOntologyIndexSession)
+      return this.#loadPublishedDocument(source, configuration, session, depth);
 
     const sourceDocumentIRI = source.getDocumentIRI?.();
     const existingOntology =
@@ -926,10 +1167,22 @@ export class OWLOntologyManager {
   }
 
   async #loadImport(importIRI, importingEntry, configuration, session, depth) {
-    let importedOntology =
-      session.managedOntologyIndexSession.getOntologyByIRI(importIRI);
+    const index =
+      session.managedOntologyIndexSession ?? this.#managedOntologyIndex;
+    let importedOntology = index.getOntologyByIRI(
+      importIRI,
+      this.#behaviorContext.behaviorProfileDefinition.ontologyIdentityPolicy,
+    );
     if (importedOntology) {
-      session.managedOntologyIndexSession.stageDirectImport(
+      await this.#authorizeImportedOntology(
+        importedOntology,
+        importIRI,
+        importingEntry,
+        configuration,
+        index,
+      );
+      this.#recordLoadedImport(
+        session,
         importingEntry.ontology,
         importedOntology,
         importIRI,
@@ -937,11 +1190,36 @@ export class OWLOntologyManager {
       return importedOntology;
     }
 
+    if (!session.managedOntologyIndexSession) {
+      if (this.#requestedImportIRIs.has(importIRI.value)) {
+        // Java skips another acquisition, but its retained-ID closure can still
+        // expose earlier content. Recheck authority without changing lookup order.
+        const retainedOntology = this.#resolveJavaImport(importIRI);
+        if (retainedOntology)
+          await this.#authorizeImportedOntology(
+            retainedOntology,
+            importIRI,
+            importingEntry,
+            configuration,
+            index,
+          );
+        return undefined;
+      }
+      this.#requestedImportIRIs.add(importIRI.value);
+    }
+
     const documentIRI = this.#mapDocumentIRI(importIRI);
-    importedOntology =
-      session.managedOntologyIndexSession.getOntologyByDocumentIRI(documentIRI);
+    importedOntology = index.getOntologyByDocumentIRI(documentIRI);
     if (importedOntology) {
-      session.managedOntologyIndexSession.stageDirectImport(
+      await this.#authorizeImportedOntology(
+        importedOntology,
+        importIRI,
+        importingEntry,
+        configuration,
+        index,
+      );
+      this.#recordLoadedImport(
+        session,
         importingEntry.ontology,
         importedOntology,
         importIRI,
@@ -989,15 +1267,30 @@ export class OWLOntologyManager {
 
     let loaded;
     try {
-      loaded = await this.#documentLoader.load(
+      const requestContext = Object.freeze({
+        config: configuration,
+        purpose: "ontology-import",
+        importIRI,
+        importingDocumentIRI: importingEntry.context.documentIRI,
+        signal: configuration.signal,
+      });
+      await assertDocumentLoaderAuthorization(
+        this.#documentLoader,
         documentIRI,
-        Object.freeze({
-          config: configuration,
-          importIRI,
-          importingDocumentIRI: importingEntry.context.documentIRI,
-          signal: configuration.signal,
-        }),
+        requestContext,
       );
+      loaded = await this.#documentLoader.load(documentIRI, requestContext);
+      const finalDocumentIRI = loaded?.getDocumentIRI?.();
+      if (finalDocumentIRI && finalDocumentIRI.value !== documentIRI.value) {
+        await assertDocumentLoaderAuthorization(
+          this.#documentLoader,
+          finalDocumentIRI,
+          Object.freeze({
+            ...requestContext,
+            requestedDocumentIRI: documentIRI,
+          }),
+        );
+      }
     } catch (error) {
       if (configuration.signal?.aborted) {
         this.#throwIfAborted(configuration);
@@ -1053,12 +1346,182 @@ export class OWLOntologyManager {
       session,
       depth + 1,
     );
-    session.managedOntologyIndexSession.stageDirectImport(
+    this.#externalDocumentIRIsByOntology.set(
+      importedOntology,
+      Object.freeze([
+        documentIRI,
+        ...(importedSource.getDocumentIRI?.()?.value !== documentIRI.value &&
+        importedSource.getDocumentIRI?.()
+          ? [importedSource.getDocumentIRI()]
+          : []),
+      ]),
+    );
+    this.#recordLoadedImport(
+      session,
       importingEntry.ontology,
       importedOntology,
       importIRI,
     );
     return importedOntology;
+  }
+
+  async #authorizeImportedOntology(
+    ontology,
+    importIRI,
+    importingEntry,
+    configuration,
+    index,
+  ) {
+    const context = Object.freeze({
+      config: configuration,
+      purpose: "ontology-import",
+      importIRI,
+      importingDocumentIRI: importingEntry.context.documentIRI,
+      signal: configuration.signal,
+    });
+    const importsClosure =
+      this.#behaviorContext.behaviorProfileDefinition.ontologyLoadingPolicy
+        .importResolution === "retained-id"
+        ? this.#readImportsClosure(ontology, "authorizeImportedOntology")
+        : index.getImportsClosure(ontology);
+    for (const member of importsClosure) {
+      for (const documentIRI of this.#externalDocumentIRIsByOntology.get(
+        member,
+      ) ?? []) {
+        await assertDocumentLoaderAuthorization(
+          this.#documentLoader,
+          documentIRI,
+          context,
+        );
+        this.#throwIfAborted(configuration);
+      }
+    }
+  }
+
+  #recordLoadedImport(session, ontology, importedOntology, importIRI) {
+    const indexSession =
+      session.managedOntologyIndexSession ??
+      this.#managedOntologyIndex.beginLoadSession();
+    indexSession.stageDirectImport(ontology, importedOntology, importIRI);
+    if (!session.managedOntologyIndexSession) {
+      indexSession.commit();
+      this.#importedOntologyIDsByImportIRI.set(
+        importIRI.value,
+        importedOntology.getOntologyID(),
+      );
+    }
+  }
+
+  /** Java exposes the document while its parser resolves imports. A failed
+   * document is withdrawn, without withdrawing imports that completed earlier.
+   */
+  async #loadPublishedDocument(source, configuration, session, depth) {
+    const documentIRI = source.getDocumentIRI?.();
+    const existing =
+      documentIRI &&
+      this.#managedOntologyIndex.getOntologyByDocumentIRI(documentIRI);
+    if (existing && depth > 0) return existing;
+    let publication;
+    const committed = await this.#parseDocument(source, configuration, () => {
+      const managedOntology = createManagerOwnedOWLOntology({
+        ontologyID: this.#dataFactory.getOWLOntologyID(),
+      });
+      const { ontology, ontologyState } = managedOntology;
+      this.#managedOntologyIndex.registerOntology(ontology, { documentIRI });
+      this.#managedOntologyStates.set(ontology, ontologyState);
+      bindManagedOntology(
+        ontology,
+        () => this.#readImportsClosure(ontology, "readLoadedImportsClosure"),
+        (_member, iri) => Boolean(this.#resolveJavaImport(iri)),
+        this,
+        this.#behaviorContext.behaviorProfileDefinition,
+      );
+      const entry = { ontology, context: { documentIRI, diagnostics: [] } };
+      const mutate = (edit, value) => {
+        const draft = ontologyState.createMutationDraft();
+        draft[edit](value);
+        ontologyState.preflightMutation(draft);
+        ontologyState.commitMutation(draft);
+      };
+      publication = {
+        managedOntology,
+        addAxiom: (axiom) => mutate("stageAxiomAddition", axiom),
+        addAnnotation: (annotation) =>
+          mutate("stageOntologyAnnotationAddition", annotation),
+        addImport: async (declaration) => {
+          mutate("stageImportAddition", declaration);
+          await this.#loadImport(
+            declaration.iri,
+            entry,
+            configuration,
+            session,
+            depth,
+          );
+        },
+        setOntologyID: (ontologyID) => {
+          this.#commitAtomicChanges(
+            [
+              {
+                kind: "SET_ONTOLOGY_ID",
+                ontology,
+                originalOntologyID: ontology.getOntologyID(),
+                newOntologyID: ontologyID,
+              },
+            ],
+            "loadOntologyDocument",
+          );
+        },
+        discard: () => this.#managedOntologyIndex.unregisterOntology(ontology),
+        entry,
+      };
+      return publication;
+    });
+    try {
+      if (committed.prepared) {
+        const declarations = new StructuralSet();
+        for (const member of this.importsClosure(committed.ontology)) {
+          if (member === committed.ontology) continue;
+          for (const axiom of member.getAxioms())
+            if (axiom.kind === OWLObjectKind.DECLARATION_AXIOM)
+              declarations.add(axiom.entity);
+        }
+        const reconstructed = new ParseTransaction(
+          this.#dataFactory,
+          configuration,
+          publication,
+        );
+        await committed.prepared.reconstruct(declarations, reconstructed);
+        committed.context = reconstructed.commit(
+          committed.context.format,
+          documentIRI,
+        ).context;
+      }
+      const context = createImmutableDocumentMetadataSnapshot({
+        ...committed.context,
+        diagnostics: [
+          ...committed.context.diagnostics,
+          ...publication.entry.context.diagnostics,
+        ],
+      });
+      const draft = committed.ontologyState.createMutationDraft();
+      draft.stageDocumentMetadataReplacement(context);
+      committed.ontologyState.preflightMutation(draft);
+      committed.ontologyState.commitMutation(draft);
+      this.#loaderConfigurationsByOntologyID.set(
+        committed.ontology.getOntologyID().structuralKey(),
+        configuration,
+      );
+      publishSourceEvidence(
+        committed.ontology,
+        context.sourceStructure,
+        committed.sourceTrusted,
+      );
+      session.entries.push({ ontology: committed.ontology, context });
+      return committed.ontology;
+    } catch (error) {
+      publication.discard();
+      throw error;
+    }
   }
 
   #handleMissingImport(error, importingEntry, configuration) {
@@ -1088,6 +1551,16 @@ export class OWLOntologyManager {
   }
 
   #addAxiomIterable(ontology, axioms, operation) {
+    if (
+      this.#behaviorContext.behaviorProfileDefinition.ontologyChangePolicy
+        .publication === "sequential"
+    ) {
+      const values = materializeAxiomIterable(axioms, { operation });
+      return this.#applyChangeIterable(
+        values.map((axiom) => new AddAxiom(ontology, axiom)),
+        operation,
+      );
+    }
     const ontologyState = this.#requireManagedOntologyState(
       ontology,
       operation,
@@ -1105,6 +1578,69 @@ export class OWLOntologyManager {
 
   #applyChangeIterable(changes, operation) {
     const materializedChanges = materializeOntologyChanges(changes, operation);
+    // Profile compatibility is an admission condition, before Java's sequential
+    // failure semantics can publish any member of a mixed-profile batch.
+    for (const { ontology } of materializedChanges) {
+      const owner = readOntologyOwner(ontology);
+      if (
+        owner &&
+        owner.#behaviorContext.behaviorProfileDefinition !==
+          this.#behaviorContext.behaviorProfileDefinition
+      )
+        throw new TypeError("Ontology mutation behavior profiles must match");
+    }
+    if (
+      this.#behaviorContext.behaviorProfileDefinition.ontologyChangePolicy
+        .publication === "sequential"
+    )
+      return this.#applySequentialChanges(materializedChanges, operation);
+    return this.#commitAtomicChanges(materializedChanges, operation);
+  }
+
+  #isAnnotationAdditionFiltered(descriptor) {
+    return (
+      descriptor.kind === "ADD_AXIOM" &&
+      ANNOTATION_AXIOM_KINDS.has(descriptor.value.kind) &&
+      this.#loaderConfigurationsByOntologyID
+        .get(descriptor.ontology.getOntologyID().structuralKey())
+        ?.isLoadAnnotationAxioms() === false
+    );
+  }
+
+  #applySequentialChanges(descriptors, operation) {
+    const enacted = [];
+    for (const descriptor of descriptors) {
+      this.#requireManagedOntologyState(descriptor.ontology, operation, {
+        change: descriptor.change,
+        index: descriptor.index,
+      });
+      if (this.#isAnnotationAdditionFiltered(descriptor)) {
+        // Recorded Java outcome: inverses are enacted in encounter order.
+        // Exceptions, unlike an unsuccessful result, retain prior publication.
+        for (const previous of enacted) {
+          const inverse = reverseChangeDescriptor(previous);
+          if (this.#isAnnotationAdditionFiltered(inverse))
+            throw new OWLOntologyStateError(
+              "An inverse ontology change was rejected",
+              { ontology: inverse.ontology, operation },
+            );
+          this.#commitAtomicChanges([inverse], operation, true);
+        }
+        return ChangeApplied.UNSUCCESSFULLY;
+      }
+      if (this.#commitAtomicChanges([descriptor], operation, true))
+        enacted.push(descriptor);
+    }
+    return enacted.length
+      ? ChangeApplied.SUCCESSFULLY
+      : ChangeApplied.NO_OPERATION;
+  }
+
+  #commitAtomicChanges(
+    materializedChanges,
+    operation,
+    usesJavaIndexSemantics = false,
+  ) {
     const ontologyStates = new Map();
     for (const descriptor of materializedChanges) {
       if (!ontologyStates.has(descriptor.ontology)) {
@@ -1163,21 +1699,51 @@ export class OWLOntologyManager {
 
         const currentOntologyID = mutationDraft.getStagedOntologyID();
         mutationDraft.stageOntologyIDReplacement(descriptor.newOntologyID);
-        identityMutation.stageOntologyIDReplacement(
-          descriptor.ontology,
-          currentOntologyID,
-          descriptor.newOntologyID,
-          {
-            change: descriptor.change,
-            index: descriptor.index,
-            operation,
-          },
-        );
+        if (usesJavaIndexSemantics) {
+          const occupied = this.#managedOntologyIndex.getOntologyByID(
+            descriptor.newOntologyID,
+          );
+          const sourceAxioms = descriptor.ontology.getAxioms();
+          if (
+            occupied &&
+            occupied !== descriptor.ontology &&
+            (occupied.getAxiomCount() !== sourceAxioms.size ||
+              [...sourceAxioms].some((axiom) => !occupied.containsAxiom(axiom)))
+          )
+            throw new OWLOntologyStateError(
+              "An ontology with this ID already exists",
+              {
+                ontology: descriptor.ontology,
+                ontologyID: descriptor.newOntologyID,
+                operation,
+              },
+            );
+          identityMutation.stageOntologyAliasReplacement(
+            descriptor.originalOntologyID,
+            descriptor.newOntologyID,
+            { change: descriptor.change, index: descriptor.index, operation },
+          );
+        } else
+          identityMutation.stageOntologyIDReplacement(
+            descriptor.ontology,
+            currentOntologyID,
+            descriptor.newOntologyID,
+            {
+              change: descriptor.change,
+              index: descriptor.index,
+              operation,
+            },
+          );
       }
 
       // Resolve declarations only against final staged aliases and loaded documents.
       // Mapping may invoke caller code, so it precedes every final revision check.
       for (const ontology of importParticipants) {
+        if (
+          usesJavaIndexSemantics &&
+          !this.#managedOntologyIndex.hasOntology(ontology)
+        )
+          continue;
         const declarations = ontologyMutations
           .get(ontology)
           .mutationDraft.getStagedImportsDeclarations();
@@ -1193,8 +1759,12 @@ export class OWLOntologyManager {
           ontology,
           declarations.map((declaration) => ({
             iri: declaration.iri,
-            documentIRI: this.#mapDocumentIRI(declaration.iri),
+            documentIRI: usesJavaIndexSemantics
+              ? declaration.iri
+              : this.#mapDocumentIRI(declaration.iri),
           })),
+          this.#behaviorContext.behaviorProfileDefinition
+            .ontologyIdentityPolicy,
         );
       }
 
@@ -1239,10 +1809,42 @@ export class OWLOntologyManager {
     for (const { mutationDraft, ontologyState } of ontologyMutations.values()) {
       ontologyState.commitMutation(mutationDraft);
     }
+    if (usesJavaIndexSemantics)
+      for (const descriptor of materializedChanges) {
+        if (descriptor.kind === "REMOVE_IMPORT")
+          this.#importedOntologyIDsByImportIRI.delete(
+            descriptor.value.iri.value,
+          );
+        if (descriptor.kind === "ADD_IMPORT") {
+          const iri = descriptor.value.iri;
+          const imported =
+            this.#managedOntologyIndex.getOntologyByIRI(
+              iri,
+              this.#behaviorContext.behaviorProfileDefinition
+                .ontologyIdentityPolicy,
+            ) ?? this.#managedOntologyIndex.getOntologyByDocumentIRI(iri);
+          if (imported)
+            this.#importedOntologyIDsByImportIRI.set(
+              iri.value,
+              imported.getOntologyID(),
+            );
+        }
+      }
     return changesState;
   }
 
   #requireManagedOntologyState(ontology, operation, details = {}) {
+    const policy =
+      this.#behaviorContext.behaviorProfileDefinition.ontologyChangePolicy;
+    const owner = readOntologyOwner(ontology);
+    if (
+      policy.permitsSameProfileForeignTargets &&
+      owner?.#behaviorContext.behaviorProfileDefinition ===
+        this.#behaviorContext.behaviorProfileDefinition
+    ) {
+      const state = owner.#managedOntologyStates.get(ontology);
+      if (state) return state;
+    }
     const ontologyState = this.#managedOntologyStates.get(ontology);
     if (!this.#managedOntologyIndex.hasOntology(ontology) || !ontologyState) {
       throw new OWLOntologyStateError(
@@ -1253,7 +1855,7 @@ export class OWLOntologyManager {
     return ontologyState;
   }
 
-  async #parseDocument(source, configuration) {
+  async #parseDocument(source, configuration, createPublication) {
     const sourceFormat = source.getFormat?.();
     if (sourceFormat !== undefined) {
       configuration = configuration.withFormat(sourceFormat);
@@ -1275,9 +1877,11 @@ export class OWLOntologyManager {
           `Parser ${candidate.descriptor.id} does not implement parse()`,
         );
       }
+      const publication = createPublication?.();
       const transaction = new ParseTransaction(
         this.#dataFactory,
         configuration,
+        publication,
       );
 
       try {
@@ -1306,6 +1910,16 @@ export class OWLOntologyManager {
             prepared?.sourceComplete !== false,
         };
       } catch (error) {
+        publication?.discard();
+        if (
+          this.#behaviorContext.behaviorProfileDefinition.parserSelectionPolicy
+            .aggregatesParserFailures &&
+          error instanceof OWLParserError &&
+          !(error instanceof UnsupportedConstructError)
+        ) {
+          mismatches.push(error);
+          continue;
+        }
         if (error instanceof ParserMismatchError) {
           if (explicitFormat) {
             throw error;

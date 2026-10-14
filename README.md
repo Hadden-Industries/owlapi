@@ -16,6 +16,10 @@ It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project.
 
 The current source candidate is `0.1.0-rc.2`, adding the selected ontology queries, changes, transforms, short-form providers, Manchester rendering, Turtle and OWL/XML storage, EL/QL/RL profiles, and syntactic locality extraction described in the [rc.2 plan](./docs/plans/0.1.0-rc.2-java-parity.md).
 Its integrated qualification and publication are separate from the published rc.1 release.
+The current profile-aware source also implements explicit `normative-v1` and `java-owlapi-5.5.1` selection under the [behavior profile contract](docs/compatibility/behavior-profiles.md).
+These options describe this candidate, not the published rc.1 tarball.
+Qualification is still in progress; the current ledger and provenance do not claim admission.
+Java migrations must select `java-owlapi-5.5.1`; omitted selection remains normative.
 To test a retained rc.2 candidate, substitute its actual absolute tarball path:
 
 ```shell
@@ -82,7 +86,7 @@ const source = new StringDocumentSource(
   },
 );
 
-const manager = OWLManager.createOWLOntologyManager();
+const manager = OWLManager.createOWLOntologyManager({ behaviorProfileId: "normative-v1" });
 const ontology = await manager.loadOntologyFromOntologyDocument(source);
 
 console.log(ontology.getOntologyID());
@@ -102,7 +106,7 @@ OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 ```js
 import { OWLManager } from "owlapi/apibinding";
 
-const manager = OWLManager.createOWLOntologyManager();
+const manager = OWLManager.createOWLOntologyManager({ behaviorProfileId: "normative-v1" });
 ```
 
 Create an IRI and a structural class through the manager's data factory:
@@ -150,6 +154,7 @@ With the documented npm alias, import public bindings only through these seven p
 - `owlapi/apibinding`
 - `owlapi/model`
 - `owlapi/io`
+- `owlapi/io/node` (explicit Node document transport; excluded from browser imports)
 - `owlapi/formats`
 - `owlapi/profiles`
 - `owlapi/util`
@@ -161,7 +166,8 @@ See [the generated API reference](./API.md) for every public binding, its call s
 Use `checkOntology(ontology, {sourceAssessment: true})` after loading with `parsingMode: "preserve"` to assess retained source structures as well as the formal OWL model across the managed import closure.
 The checker reports `valid`, `invalid` or `unverified`; resource exhaustion and stale source evidence cannot certify validity.
 In current source after rc.1, omitted or null profile `timeoutMs` disables only its elapsed deadline; pass `{ timeoutMs: 30000 }` to retain rc.1's default cutoff.
-Explicit numeric deadlines, cancellation and other profile bounds remain enforced; the loader's separate default is unchanged.
+Explicit deadlines and cancellation remain available.
+The behavior profile now owns default resource bounds: Java adds no JS-only finite ceiling; normative loading retains its separate default.
 See the [profile default-policy inventory](docs/compatibility/default-behavior-inventory.md) for the source change and its migration boundary.
 The [Canonical VOWL prerequisite contract](docs/compatibility/canonical-vowl-prerequisites.md) specifies source preservation, exact per-document formats, import-parent context, lossless cardinalities, budgets and bounded compatibility differences.
 
@@ -196,7 +202,7 @@ A package-aware browser bundler can resolve the ordinary public specifiers:
 import { OWLManager } from "owlapi/apibinding";
 import { StringDocumentSource } from "owlapi/io";
 
-const manager = OWLManager.createOWLOntologyManager();
+const manager = OWLManager.createOWLOntologyManager({ behaviorProfileId: "normative-v1" });
 const ontology = await manager.loadOntologyFromOntologyDocument(
   new StringDocumentSource(documentText, {
     contentType: "text/turtle",
@@ -253,7 +259,7 @@ import { OWLManager } from "owlapi/apibinding";
 import { StringDocumentSource } from "owlapi/io";
 
 self.onmessage = async ({ data: { documentText, contentType } }) => {
-  const manager = OWLManager.createOWLOntologyManager();
+  const manager = OWLManager.createOWLOntologyManager({ behaviorProfileId: "normative-v1" });
   const ontology = await manager.loadOntologyFromOntologyDocument(
     new StringDocumentSource(documentText, { contentType }),
   );

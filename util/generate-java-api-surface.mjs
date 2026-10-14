@@ -9,6 +9,7 @@ import { format as formatWithPrettier } from "prettier";
 import * as apibinding from "../apibinding/index.js";
 import * as formats from "../formats/index.js";
 import * as io from "../io/index.js";
+import * as nodeIo from "../io/node/index.js";
 import * as model from "../model/index.js";
 import * as profiles from "../profiles/index.js";
 import * as util from "./index.js";
@@ -18,7 +19,15 @@ import * as renderer from "../manchestersyntax/renderer/index.js";
 import * as locality from "../modularity/locality/index.js";
 
 const PACKAGE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const EXPECTED_JAVA_REVISION = "b61ebe2da83daceebb3e7ba7afbd2582c9240c33";
+const EXPECTED_JAVA_REVISION = JSON.parse(
+  await readFile(
+    new URL(
+      "../docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+      import.meta.url,
+    ),
+    "utf8",
+  ),
+).upstream.commit.commitObjectId;
 const JAVA_PACKAGE_SOURCE_SUFFIX = join(
   "src",
   "main",
@@ -132,12 +141,10 @@ const RC2_BINDING_METADATA = Object.freeze({
           `model/${file}.js`,
           "manager.atomic-changes",
           [`new ${name}(ontology, ${argument})`],
-          "An immutable nominal change record consumed by the manager's atomic batch transaction.",
+          "An immutable nominal change record consumed by the manager's selected behavior profile.",
+          ["Change-data serialization, visitors and inverse-change protocols"],
           [
-            "ChangeApplied, change-data serialization, visitors and inverse-change protocols",
-          ],
-          [
-            "Records retain canonical ontology identity and validated immutable structural values. Manager application preserves the established boolean adaptation and validates the complete batch before publication. Import changes reconcile only loaded manager state and never acquire documents.",
+            "Records retain canonical ontology identity and validated immutable structural values. normative-v1 validates and commits a complete batch atomically with a boolean result; java-owlapi-5.5.1 applies changes sequentially and returns ChangeApplied. Mixed behavior profiles reject before application. Import changes reconcile only loaded state and never acquire documents.",
           ],
           ["model/rc2Changes.test.js"],
         ),
@@ -177,7 +184,7 @@ const RC2_BINDING_METADATA = Object.freeze({
     "Asserted entity and annotation searches over explicitly supplied ontologies.",
     ["All unselected search methods and Java Stream protocols"],
     [
-      "Java Stream results are fresh eager arrays preserving multiplicity, including repeated ontology inputs and annotated variants. Search never expands imports implicitly. Selected ontology iterable overloads retain their own Java property-filter requirements. Native getDisjointClasses retains the queried operand; getEquivalentClasses excludes it.",
+      "Java Stream results are single-use lazy iterables in both behavior profiles. They read current ontology state on consumption and preserve multiplicity, including repeated ontology inputs and annotated variants. Boolean searches remain eager. Search never expands imports implicitly. Selected ontology iterable overloads retain their native property-filter requirements. getDisjointClasses retains the queried operand; getEquivalentClasses excludes it.",
     ],
     ["search/entitySearcher.test.js", "search/nativeSearch.test.js"],
   ),
@@ -285,7 +292,7 @@ const RC2_BINDING_METADATA = Object.freeze({
     "Plain Manchester text for the selected complete structural-kind inventory.",
     ["Short aliases", "Ontology storage", "HTML and DOM rendering"],
     [
-      "Validates canonical input before invoking a captured synchronous provider. Preserves observed Java precedence, whitespace and annotation behavior; anonymous names are compared through one consistent bijection. Output and structural depth remain bounded.",
+      "Validates canonical input before invoking a captured synchronous provider. Preserves observed Java precedence, whitespace and annotation behavior; anonymous names are compared through one consistent bijection. The immutable behaviorProfileId selects resource defaults: normative-v1 uses explicit output/depth budgets and java-owlapi-5.5.1 adds no such finite defaults.",
     ],
     ["manchestersyntax/renderer/renderer.test.js"],
   ),
@@ -350,7 +357,7 @@ const PARITY_BINDING_METADATA = Object.freeze({
     relationship: "JS_ADAPTATION",
     callShapes: ["new OWLOntologyWriterConfiguration()"],
     summary:
-      "An immutable partial Java adaptation controlling RDF/XML indentation, banners and anonymous-individual ID persistence on an output manager.",
+      "Immutable native writer settings with profile-specific copy behavior and format-specific consumers.",
     firstPublicRelease: "0.1.0-rc.2",
     omittedMembers: [
       "shouldRemapAllAnonymousIndividualsIds / withRemapAllAnonymousIndividualsIds",
@@ -358,11 +365,11 @@ const PARITY_BINDING_METADATA = Object.freeze({
       "shouldOutputNamedGraphIRI / withNamedGraphIRIEnabled",
     ],
     semanticQualifications: [
-      "Defaults: isIndenting true, getIndentSize 4, shouldUseBanners true, isLabelsAsBanner false. Every with method returns an immutable configuration and preserves unrelated fields, unlike the pinned Java copy-reset behavior.",
-      "withIndentSize accepts numeric integers 0 through 2147483647; nonnumbers throw TypeError and out-of-range/noninteger numbers throw RangeError. Java admits negative int values; JavaScript deliberately rejects them.",
-      "The controls affect RDF/XML only. Functional Syntax retains its output, matching the public-save Java probe. Disabling indentation retains structural newlines and literal whitespace. shouldSaveIdsForAllAnonymousIndividuals defaults to false; its builder persists anonymous individual and axiom IDs while necessary shared/cyclic/depth-limited references always retain IDs.",
+      "Defaults: isIndenting true, getIndentSize 4, shouldUseBanners true, isLabelsAsBanner false, shouldSaveIdsForAllAnonymousIndividuals false. normative-v1 copies preserve unrelated fields. Java no-op setters retain identity; changed copies reproduce the released reset of indent size, banners and label selection before applying the requested value.",
+      "withIndentSize accepts Java int values in java-owlapi-5.5.1, including negative values, and nonnegative Java int values in normative-v1. The setting is consumed by the selected format at save time.",
+      "Java RDF/XML consumes indentation, banners, labels and anonymous ID settings; OWL/XML consumes indentation, Turtle consumes banners and anonymous ID settings, and Functional Syntax ignores the presentation controls. Each selected behavior is tested at the real save boundary.",
       "Labels use lexical ordering of language, label text, then datatype, with IRI fallback. XML comment sanitization affects presentation only; labels remain unchanged RDF literals. No-language labels sort first.",
-      "Rendering is bounded to 32 MiB UTF-8 output, 128 nested resource levels and finite QName work. Long owned chains retain flat references at the nesting bound. Disabling indentation removes padding cost and admits any legal configured indentSize, subject to other conservative render budgets.",
+      "normative-v1 retains the documented 32 MiB UTF-8 output and depth budgets. java-owlapi-5.5.1 adds no finite output or structure-depth defaults. Resource exhaustion is a distinct error rather than malformed ontology output.",
       "Attach to the actual output manager using setOntologyWriterConfiguration, which returns undefined. Each save captures private immutable state before suspension; no live getter or global preferences are read.",
     ],
     verification: [
@@ -381,7 +388,7 @@ const PARITY_BINDING_METADATA = Object.freeze({
       "await profile.checkOntology(ontology, options?)",
     ],
     summary:
-      "An asynchronous, bounded OWL 2 DL structural checker over the complete managed import closure, with a separate source-qualified assessment.",
+      "An asynchronous OWL 2 DL checker over the managed import closure, with profile-owned defaults and a separate source-qualified assessment.",
     omittedMembers: [
       "Java visitor implementation classes",
       "getDatatypeIRIs()",
@@ -391,7 +398,7 @@ const PARITY_BINDING_METADATA = Object.freeze({
       "Returns a Promise and supports cooperative cancellation and resource limits; incomplete validation is unverified, never valid.",
       "The formal verdict applies to the structural OWL closure. Optional sourceAssessment also validates retained RDF/RDFS structures and parsed expressions before consumer filtering.",
       "Only trusted original source arity and unambiguous typed use qualify the two documented normalization/declaration differences; mutation invalidates that evidence.",
-      "Datatype checks follow the mandatory OWL 2 datatype map and raw lexical/value spaces, including nested annotations. See docs/compatibility/canonical-vowl-prerequisites.md for normative choices and Java deviations.",
+      "normative-v1 uses the accepted OWL datatype/constraint contracts. java-owlapi-5.5.1 uses the released Java datatype patterns, facets, constraint scope and exclusions. An explicitly selected checker profile must match the ontology; omission binds the ontology's immutable identity.",
     ],
     verification: [
       "profiles/owl2DLProfile.test.js",
@@ -415,7 +422,7 @@ const PARITY_BINDING_METADATA = Object.freeze({
       "Java constructor overloads",
     ],
     semanticQualifications: [
-      "isInProfile() returns true only for a completed valid formal check. getSourceAssessment() returns the independently stated source-qualified verdict when requested.",
+      "isInProfile() returns true only for a completed valid formal check and throws ResourceLimitError for incomplete resource-limited validation. Exhaustion is not an invalid-ontology verdict. getSourceAssessment() returns the separately stated source-qualified verdict when requested.",
       "Violations are immutable data records rather than Java visitor objects. getOntology() and getProfile() retain their input identities.",
       "Additional status, closure revisions, unverifiedChecks and sourceAssessment fields expose bounded JavaScript validation evidence; direct construction does not execute validation.",
     ],
@@ -431,13 +438,13 @@ const PARITY_BINDING_METADATA = Object.freeze({
     relationship: "JS_ADAPTATION",
     callShapes: ["new StringDocumentTarget()"],
     summary:
-      "An in-memory ontology document target with Java's toString() text reader and private atomic replacement.",
+      "An in-memory ontology document target with Java's toString() text reader; the manager's behavior profile selects append or complete replacement.",
     omittedMembers: [
       "getWriter() and the Java Writer protocol (PARITY-TARGET-WRITER-OMISSION)",
     ],
     semanticQualifications: [
       "PARITY-TARGET-WRITER-OMISSION: toString() is the only public text reader; no getText(), getWriter(), write(), append(), or constructor-text overload is exposed.",
-      "PARITY-TARGET-ATOMIC-COMMIT: package-private complete-text replacement validates before changing private state; failed storage retains prior text.",
+      "PARITY-TARGET-ATOMIC-COMMIT is the historical normative-v1 contract: complete-text replacement retains prior text after failure. java-owlapi-5.5.1 appends and preserves native partial output at characterized failure boundaries. The target stores text without selecting its own behavior profile.",
     ],
     verification: [
       "io/stringDocumentTarget.test.js",
@@ -543,6 +550,15 @@ const MODULES = Object.freeze([
       "Mirrors the Java OWLAPI formats namespace while exposing stable format identities rather than parser internals.",
   },
   {
+    id: "io/node",
+    javaPackage: "org.semanticweb.owlapi.io",
+    npmSpecifier: "@hadden-industries/owlapi/io/node",
+    module: nodeIo,
+    firstPublicRelease: "0.1.0-rc.2",
+    rationale:
+      "Explicit Node HTTP, HTTPS and local-file capability. Every access requires caller authorization; this entry is unavailable in browsers and is absent from the bare aggregate.",
+  },
+  {
     id: "util",
     javaPackage: "org.semanticweb.owlapi.util",
     npmSpecifier: "@hadden-industries/owlapi/util",
@@ -596,6 +612,8 @@ const MODULES = Object.freeze([
 ]);
 
 const SOURCE_MODULES = Object.freeze({
+  NodeDocumentLoader: "io/node/nodeDocumentLoader.js",
+  ChangeApplied: "model/parameters/index.js",
   RDFParserMetaData: "io/rdfParserMetaData.js",
   RDFOntologyHeaderStatus: "io/rdfParserMetaData.js",
   AddOntologyAnnotation: "model/addOntologyAnnotation.js",
@@ -617,6 +635,7 @@ const SOURCE_MODULES = Object.freeze({
 });
 
 const JAVA_TYPES_BY_EXPORT = Object.freeze({
+  ChangeApplied: "org.semanticweb.owlapi.model.parameters.ChangeApplied",
   RDFParserMetaData: "org.semanticweb.owlapi.io.RDFParserMetaData",
   RDFOntologyHeaderStatus: "org.semanticweb.owlapi.io.RDFOntologyHeaderStatus",
   AddOntologyAnnotation: "org.semanticweb.owlapi.model.AddOntologyAnnotation",
@@ -645,6 +664,8 @@ const JAVA_TYPES_BY_EXPORT = Object.freeze({
 });
 
 const FIRST_PUBLIC_RELEASE_BY_EXPORT = Object.freeze({
+  ChangeApplied: "0.1.0-rc.2",
+  NodeDocumentLoader: "0.1.0-rc.2",
   RDFParserMetaData: "0.1.0-rc.1",
   RDFOntologyHeaderStatus: "0.1.0-rc.1",
   AddOntologyAnnotation: "0.1.0-rc.1",
@@ -675,12 +696,18 @@ const CLOSEST_JAVA_AUTHORITY = Object.freeze({
 });
 
 const CAPABILITIES_BY_EXPORT = Object.freeze({
+  NodeDocumentLoader: [
+    "loading.node-authorized-transport",
+    "loading.import-closure",
+    "loading.abort-signal",
+  ],
+  ChangeApplied: ["manager.atomic-changes"],
   RDFParserMetaData: ["compatibility.owlapi-5.5.1"],
   RDFOntologyHeaderStatus: ["compatibility.owlapi-5.5.1"],
   AddOntologyAnnotation: ["compatibility.owlapi-5.5.1"],
   OWLOntologyImportsClosureSetProvider: ["compatibility.owlapi-5.5.1"],
   OWLOntologyMerger: ["compatibility.owlapi-5.5.1"],
-  OWLManager: ["manager.narrow-v1-surface"],
+  OWLManager: ["manager.narrow-v1-surface", "behavior.explicit-profiles"],
   OWLOntologyManager: ["manager.narrow-v1-surface", "loading.import-closure"],
   OWLOntologyLoaderConfiguration: [
     "loading.import-closure",
@@ -700,6 +727,7 @@ const CAPABILITIES_BY_EXPORT = Object.freeze({
 });
 
 const VERIFICATION_BY_GROUP = Object.freeze({
+  "io/node": ["io/node/nodeDocumentLoader.test.js"],
   apibinding: [
     "apibinding/owlManager.test.js",
     "test/package-boundary.test.mjs",
@@ -715,8 +743,10 @@ const VERIFICATION_BY_GROUP = Object.freeze({
 });
 
 const VERIFICATION_BY_EXPORT = Object.freeze({
+  ChangeApplied: ["model/behaviorMutation.test.js"],
   RDFParserMetaData: [
     "io/rdfParserMetaData.test.js",
+    "model/behaviorParserSelection.test.js",
     "model/rdfConsumerCompatibility.test.js",
     "test/package-boundary.test.mjs",
   ],
@@ -754,6 +784,7 @@ const VERIFICATION_BY_EXPORT = Object.freeze({
   ],
   OWLOntologyMerger: [
     "util/owlOntologyMerger.test.js",
+    "util/behaviorMerger.test.js",
     "test/package-boundary.test.mjs",
     "test/installed-package-smoke.mjs",
     "test/consumers/browser/browser-consumers.playwright.js",
@@ -767,11 +798,31 @@ const VERIFICATION_BY_EXPORT = Object.freeze({
 });
 
 const SEMANTIC_QUALIFICATIONS_BY_EXPORT = Object.freeze({
+  OWLOntologyLoaderConfiguration: [
+    "new OWLOntologyLoaderConfiguration({ behaviorProfileId }) selects an immutable identity, defaulting to normative-v1. with() and native fluent setters preserve that identity; a manager rejects a configuration from another profile.",
+    "Native methods get/setConnectionTimeout, get/setRetriesToAttempt, is/setFollowRedirects, get/setEntityExpansionLimit, is/setStrict, is/setLoadAnnotationAxioms, get/setAuthorizationValue and is/setAcceptingHTTPCompression retain Java names, types, values and observed immutable-copy/no-op semantics.",
+    "The Java profile adds no JS-only finite acquisition, token, expression, byte or work defaults. The qualified Java XML/provider limits remain explicit. Normative budgets and remote-default-deny behavior remain separately documented. An authorization grant is independent of either profile.",
+    "NodeDocumentLoader consumes native transport values at actual resource acquisition; JSON-LD context transport follows its independent native provider. Caller-defined loaders own their transport implementation and are not qualified merely because configuration is passed to load().",
+  ],
+  OWLDataFactory: [
+    "Construct with { behaviorProfileId } or obtain the manager's factory. The immutable identity follows factory-created values and manager ownership. Java-profile literal construction reproduces native boolean, integer, floating-point, language and PlainLiteral normalization; normative-v1 retains its separately accepted lexical contract.",
+  ],
+  NodeDocumentLoader: [
+    "Construct with { authorize(resourceIRI, context) }. The callback must return true for each requested operation; receiving a loader never silently grants access to a new destination.",
+    "load(IRI, { config, purpose, signal }) returns a Promise for a StringDocumentSource. The configuration fixes each operation's behavior profile. Native ontology-document settings and the separate Java JSON-LD context provider settings are consumed by their actual transport boundaries.",
+    "The Node-only adapter authorizes hostname resolution, the pinned IP address, redirects, credentials, resolved local file paths and file reads. It does not use ambient URL credentials or automatically enable network access in a manager.",
+    "The read-file context requiresStablePathAncestors=true means its grant also guarantees trusted, stable parent directories throughout acquisition. Attacker-writable directory trees require a caller-owned loader with platform-specific file-handle authorization; portable Node pathname checks cannot provide that containment.",
+    "Java ontology documents retain the requested parsing base; contexts use the final document URL. Gzip, raw DEFLATE, XZ and first-entry ZIP input follow the qualified Java provider. Native dependencies, permission decisions and caller cancellation remain host capabilities.",
+    "Browser document parsing remains supported; browser external transport parity is not qualified. See docs/compatibility/profiles/java-owlapi-5.5.1/transport-decision.md and its live qualification status.",
+  ],
+  ChangeApplied: [
+    "Frozen Java-compatible SUCCESSFULLY, NO_OPERATION and UNSUCCESSFULLY values. Java-profile manager changes return this vocabulary; normative-v1 retains the accepted boolean adaptation.",
+  ],
   RDFParserMetaData: [
     "Construct with {tripleCount, headerState, unparsedTriples = [], guessedDeclarations = []}; all inputs are defensively copied into immutable parse metadata.",
     "getUnparsedTriples returns a frozen array of {subject, predicate, object} RDF/JS-shaped term records, not Java RDFTriple instances. Each record has termType and value; literals also have language and datatype {termType: NamedNode, value}, and optionally direction. Blank-node labels are local to the containing document metadata.",
     "getGuessedDeclarations returns a frozen array of {iri: IRI, entityType: OWLObjectKind} for entity roles in this document's reconstructed structure without explicit local/imported declarations or built-in status. This replaces Java's IRI-to-Class multimap and does not itself add Declaration axioms; unused imported roles are excluded.",
-    "getTripleCount counts unique triples in the selected or merged reconstruction graph, not duplicate source occurrences or excluded named graphs. getHeaderState reflects explicit owl:Ontology subjects in that graph; unlike the pinned Java parser's constant ONE result it reports ZERO and MULTIPLE truthfully.",
+    "java-owlapi-5.5.1 getTripleCount counts source statement occurrences before deduplication and getHeaderState preserves the released consumer's constant PARSED_ONE_HEADER. normative-v1 counts selected unique triples and distinct explicit owl:Ontology subjects, including ZERO and MULTIPLE.",
     "Metadata remains available when collectWarnings is false. It records the original parse; it neither tracks subsequent ontology edits nor certifies complete source preservation, inferred-axiom provenance or current source assessment.",
   ],
   RDFOntologyHeaderStatus: [
@@ -783,19 +834,19 @@ const SEMANTIC_QUALIFICATIONS_BY_EXPORT = Object.freeze({
   OWLOntologyManager: [
     "getOntologyFormat returns this manager's loaded OWLDocumentFormat or undefined for a programmatically created ontology, and rejects foreign or removed ontologies. RDF metadata belongs to the original completed parse and remains historical after edits.",
     "importsClosure returns a frozen deterministic root-first array snapshot instead of Java's Stream<OWLOntology>; getImportsClosure returns a fresh defensive Set with the same order and membership.",
-    "Both closure methods reject an ontology not owned by this manager with OWLOntologyStateError instead of returning Java's empty closure.",
-    "addAxiom/addAxioms accept one JavaScript iterable form and return boolean instead of Java's ChangeApplied; each complete call is validated and committed atomically.",
-    "applyChange/applyChanges accept only SetOntologyID and AddOntologyAnnotation records, materialize one JavaScript iterable form, atomically publish the complete list, and return boolean instead of Java's ChangeApplied or ChangeDetails.",
+    "Both closure methods reject unknown ontology identities at the observed manager-query boundary.",
+    "normative-v1 mutation operations validate and commit a complete batch atomically and return boolean. java-owlapi-5.5.1 applies sequential changes, retains native partial effects after failure, permits same-profile foreign targets where Java does, and returns ChangeApplied. Behavior-profile mismatches reject before publication.",
+    "applyChange/applyChanges accept the exported axiom, import, ontology annotation and ontology ID records. Collection/varargs/stream overloads retain one JavaScript iterable adaptation. Native net-zero sequences can still return ChangeApplied.SUCCESSFULLY.",
     "LIFECYCLE-ASYNC-SAVE-OVERLOAD: saveOntology(ontology, format, target) returns Promise<void>, validates ownership and genuine format/target identities, and selects only the exact format key.",
-    "LIFECYCLE-LOSSLESS-STORAGE: saveOntology renders one committed snapshot and atomically replaces target text only after success; unexpected renderer failures are wrapped with cause and typed storage errors retain identity.",
+    "normative-v1 saves one committed snapshot and atomically replaces target text after success. Java saves append to a reused StringDocumentTarget and retain native partial output at observed failure points. Unexpected renderer failures retain a cause and typed storage errors retain identity.",
     "getOntologyWriterConfiguration/setOntologyWriterConfiguration attach genuine immutable values to this manager; saveOntology captures native private settings before its first await, independently of later manager changes.",
   ],
   OWLOntologyImportsClosureSetProvider: [
     "ontologies returns a fresh defensive JavaScript Set instead of Java's Stream<OWLOntology>.",
-    "The imports-closure membership is captured at construction instead of remaining a live Java view.",
+    "Each ontologies() call reads the manager's current closure and returns that call's defensive snapshot. Construction does not query the manager; unknown-ontology failure occurs at query time.",
   ],
   OWLOntologyMerger: [
-    "createMergedOntology builds a structural set union from each supplied ontology's direct axioms before creating the target, then mutates the target only through public manager methods.",
+    "createMergedOntology copies direct axioms into a new destination-owned ontology without transferring source ownership. The destination profile governs explicit mixed-profile copies. normative-v1 validates the complete snapshot before target creation; Java creates the target before querying the provider and retains copied axioms after later provider failure. A Java target identity collision prevents the provider call.",
     "The optional boolean constructor form selects Java-compatible logical-axiom filtering; the OWLAxiomFilter constructor remains unavailable.",
     "An omitted ontologyIRI creates an anonymous target; a supplied value must be an IRI.",
   ],
@@ -840,9 +891,6 @@ const OMITTED_MEMBERS = Object.freeze({
   ],
   OWLOntologyManager: [
     "Change and progress listeners",
-    "AddAxiom/RemoveAxiom change records and axiom removal operations",
-    "AddImport/RemoveImport changes",
-    "RemoveOntologyAnnotation changes",
     "Storer and ontology-factory registration",
     "IRI, stream, implicit-format, and default-document saveOntology overloads",
   ],
@@ -1153,7 +1201,7 @@ const closestJavaAuthorityFor = (exportName, javaType, javaPackage) => {
 
 const summaryFor = (exportName, kind, relationship) => {
   if (exportName === "OWLOntologyImportsClosureSetProvider") {
-    return "A constructor-time imports-closure snapshot provider with defensive JavaScript Set results.";
+    return "A provider that queries the current imports closure on each call and returns that call's defensive JavaScript Set snapshot.";
   }
   if (exportName === "OWLOntologyMerger") {
     return "A Java-shaped ontology merger that materializes the structural union of supplied direct axioms.";
@@ -1206,18 +1254,24 @@ const buildBindings = (capabilityById) => {
               : "JS_ADAPTATION"
           : "JS_EXTENSION");
       const kind = kindOfBinding(binding, exportName);
+      const capabilityIds =
+        parityMetadata?.capabilityIds ?? capabilitiesFor(exportName);
+      const progressStates = capabilityIds.map(
+        (id) => capabilityById.get(id).progress,
+      );
       bindings.push({
         id: `${namespace.id}.${exportName}`,
         jsExport: exportName,
         kind,
         summary:
           parityMetadata?.summary ?? summaryFor(exportName, kind, relationship),
-        capabilityIds:
-          parityMetadata?.capabilityIds ?? capabilitiesFor(exportName),
+        capabilityIds,
         capabilityStatus: "REQUIRED_V1",
-        progress: parityMetadata
-          ? capabilityById.get(parityMetadata.capabilityIds[0]).progress
-          : "COMPLETE",
+        progress: progressStates.includes("NOT_STARTED")
+          ? "NOT_STARTED"
+          : progressStates.includes("IN_PROGRESS")
+            ? "IN_PROGRESS"
+            : "COMPLETE",
         exposure: "PUBLIC",
         stability: "PRERELEASE",
         firstPublicRelease: parityMetadata

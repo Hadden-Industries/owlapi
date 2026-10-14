@@ -1224,6 +1224,66 @@
     {
       "archive": {
         "evidence": {
+          "bytes": 4651,
+          "kind": "ARCHIVE_INVENTORY",
+          "path": "blobs/sha256/63/63bcb15f8eb6f00492574b9c32889c5f30f384f79ae919c1049fe570c88b61da",
+          "sha256": "63bcb15f8eb6f00492574b9c32889c5f30f384f79ae919c1049fe570c88b61da"
+        },
+        "state": "VERIFIED"
+      },
+      "artifactId": "07538b70170a9ad3ad2c139e841927806f72b45a8808374dbc347983c94ef7ec",
+      "integrity": "sha512-LA4ZjwlnUblHVgq0oBF3Jl/6h/Nvs5fzBLwdEF4nuxnFdsfajde4WfxtJr3CaiH+F6ewcIB/q4jQ4UzPyid+CQ==",
+      "lockfileLicenses": [
+        "MIT"
+      ],
+      "name": "node-gyp-build",
+      "occurrencePaths": [
+        "node_modules/node-gyp-build"
+      ],
+      "provenance": {
+        "evidence": {
+          "bytes": 238,
+          "kind": "NPM_PROVENANCE",
+          "path": "blobs/sha256/5b/5b1399452f44727d2885660c7c071dd3fbc39dd958b4e03164c4878ecd37f6a6",
+          "sha256": "5b1399452f44727d2885660c7c071dd3fbc39dd958b4e03164c4878ecd37f6a6"
+        },
+        "state": "NOT_PUBLISHED"
+      },
+      "registrySignature": {
+        "evidence": {
+          "bytes": 518,
+          "kind": "REGISTRY_SIGNATURE",
+          "path": "blobs/sha256/6e/6eaf547b97458ecb7828c6aeb88e5d43faef3f3e329e152ce216b561d2a1cf42",
+          "sha256": "6eaf547b97458ecb7828c6aeb88e5d43faef3f3e329e152ce216b561d2a1cf42"
+        },
+        "publishedAt": "2024-11-19T14:43:46.572Z",
+        "signatures": [
+          {
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
+            "sig": "MEQCIBiK/mZ8tfA7fOlZaoUetv0lk8ECOjQn9wFP+1AMSayAAiBiD485HHqIt2sfZz2UWFhgRS5aOO/voFCmFOgQ4dl3IQ=="
+          }
+        ],
+        "state": "VERIFIED"
+      },
+      "resolved": "https://registry.npmjs.org/node-gyp-build/-/node-gyp-build-4.8.4.tgz",
+      "scan": {
+        "evidence": {
+          "bytes": 37105,
+          "kind": "SCANCODE_FINDINGS",
+          "path": "blobs/sha256/38/3800038a1f3b1d50318ec7e27fc1ac7792f41cda5b594f363efbff4fb979ecf5",
+          "sha256": "3800038a1f3b1d50318ec7e27fc1ac7792f41cda5b594f363efbff4fb979ecf5"
+        },
+        "state": "VERIFIED"
+      },
+      "tarball": {
+        "bytes": 5449,
+        "sha256": "940450fb4158bddc23ae156432a67338a4d7ab6a585b639c61b3b0a14d2bac24"
+      },
+      "version": "4.8.4"
+    },
+    {
+      "archive": {
+        "evidence": {
           "bytes": 4615,
           "kind": "ARCHIVE_INVENTORY",
           "path": "blobs/sha256/d9/d9b1663f42b43991e75e7370b625ce095800f5f30767e8c55edfa94408e178d7",
@@ -13925,6 +13985,7 @@
       "name": "readable-stream",
       "occurrencePaths": [
         "node_modules/bl/node_modules/readable-stream",
+        "node_modules/lzma-native/node_modules/readable-stream",
         "node_modules/tar-fs/node_modules/readable-stream"
       ],
       "provenance": {
@@ -23492,7 +23553,7 @@
       ],
       "name": "iconv-lite",
       "occurrencePaths": [
-        "node_modules/iconv-lite"
+        "node_modules/encoding/node_modules/iconv-lite"
       ],
       "provenance": {
         "evidence": {
@@ -29261,6 +29322,66 @@
     {
       "archive": {
         "evidence": {
+          "bytes": 14828,
+          "kind": "ARCHIVE_INVENTORY",
+          "path": "blobs/sha256/da/dad71f5cdad035d34068c2187bc85f18b2f9b8855d273446a835ff1baa6e210a",
+          "sha256": "dad71f5cdad035d34068c2187bc85f18b2f9b8855d273446a835ff1baa6e210a"
+        },
+        "state": "VERIFIED"
+      },
+      "artifactId": "b57b40100682bcebe9cb03878d70830afafa52a1cc3ae573a8f8a0a7da750662",
+      "integrity": "sha512-mmcei9JghVNDYydghQmeDX8KoAm0FAiYyIcUt/N4nhyAipB17pllZQDOJD2fotxABnt4Mdz+dKTO7eftLg4d0A==",
+      "lockfileLicenses": [
+        "MIT"
+      ],
+      "name": "node-addon-api",
+      "occurrencePaths": [
+        "node_modules/lzma-native/node_modules/node-addon-api"
+      ],
+      "provenance": {
+        "evidence": {
+          "bytes": 238,
+          "kind": "NPM_PROVENANCE",
+          "path": "blobs/sha256/e6/e61ef444469e99002b887d7b89cf76e4537fee6095bcf663307b108ff23d44bb",
+          "sha256": "e61ef444469e99002b887d7b89cf76e4537fee6095bcf663307b108ff23d44bb"
+        },
+        "state": "NOT_PUBLISHED"
+      },
+      "registrySignature": {
+        "evidence": {
+          "bytes": 518,
+          "kind": "REGISTRY_SIGNATURE",
+          "path": "blobs/sha256/68/68b48e264f01c23a122b8da77a74544a6feee028704213e98bc708a91da1feaf",
+          "sha256": "68b48e264f01c23a122b8da77a74544a6feee028704213e98bc708a91da1feaf"
+        },
+        "publishedAt": "2021-05-28T18:25:15.697Z",
+        "signatures": [
+          {
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
+            "sig": "MEQCIAro6Ym8EQEed5L1Reg3ZK8nngodEteqnctqQunFUpvRAiBC4QRIsR3yEdZ6/H35MVBOew0ImbUY+84wgMcbsrxk5Q=="
+          }
+        ],
+        "state": "VERIFIED"
+      },
+      "resolved": "https://registry.npmjs.org/node-addon-api/-/node-addon-api-3.2.1.tgz",
+      "scan": {
+        "evidence": {
+          "bytes": 85785,
+          "kind": "SCANCODE_FINDINGS",
+          "path": "blobs/sha256/d4/d4e071c11dc14a0f94589b7fecc460693fe11754c9dae6da5538b72c2d50ba6e",
+          "sha256": "d4e071c11dc14a0f94589b7fecc460693fe11754c9dae6da5538b72c2d50ba6e"
+        },
+        "state": "VERIFIED"
+      },
+      "tarball": {
+        "bytes": 67002,
+        "sha256": "1b91635d718d4980ac560a4d598921d18447f927f48bbd073342cf5c7a4b0c2d"
+      },
+      "version": "3.2.1"
+    },
+    {
+      "archive": {
+        "evidence": {
           "bytes": 3327,
           "kind": "ARCHIVE_INVENTORY",
           "path": "blobs/sha256/5b/5b14bb113ea417086d19c230317402add29d3a1b30473286992350604afe15f3",
@@ -31080,6 +31201,66 @@
         "sha256": "867a2bb62ef5277e6b2065cdd1332cda07cc92aa2979b22d05c86c89fb918552"
       },
       "version": "18.3.1"
+    },
+    {
+      "archive": {
+        "evidence": {
+          "bytes": 14355,
+          "kind": "ARCHIVE_INVENTORY",
+          "path": "blobs/sha256/20/20d3dda0bcac50170f0717186e0428b08aca45013245fe272c0270a1edee738d",
+          "sha256": "20d3dda0bcac50170f0717186e0428b08aca45013245fe272c0270a1edee738d"
+        },
+        "state": "VERIFIED"
+      },
+      "artifactId": "c09c894094a00d0aee9dacf95b3e12ba5fe069c6d6088efbb4ef6b0d374484ac",
+      "integrity": "sha512-09xfg67mkL2Lz20PrrDeNYZxzeW7ADtpYFbwSQh9U8+76RIzx5QsJBMy8qikv3hbUPfpy6hqwxt6FcGK81g9AA==",
+      "lockfileLicenses": [
+        "MIT"
+      ],
+      "name": "lzma-native",
+      "occurrencePaths": [
+        "node_modules/lzma-native"
+      ],
+      "provenance": {
+        "evidence": {
+          "bytes": 238,
+          "kind": "NPM_PROVENANCE",
+          "path": "blobs/sha256/5a/5af191bd85bfb09dd945de6ce5fa9628ff01dcca32c081f3da52b86dd8b273b2",
+          "sha256": "5af191bd85bfb09dd945de6ce5fa9628ff01dcca32c081f3da52b86dd8b273b2"
+        },
+        "state": "NOT_PUBLISHED"
+      },
+      "registrySignature": {
+        "evidence": {
+          "bytes": 518,
+          "kind": "REGISTRY_SIGNATURE",
+          "path": "blobs/sha256/4d/4dd882e372276746928b7f691e3986b4e57e4913a00e1c60d63a90f5abc71e9b",
+          "sha256": "4dd882e372276746928b7f691e3986b4e57e4913a00e1c60d63a90f5abc71e9b"
+        },
+        "publishedAt": "2022-01-18T13:07:48.860Z",
+        "signatures": [
+          {
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
+            "sig": "MEQCIAhbf/A2IQdrWjDfppqxko8Mtp52Whgf1Cu0jbkNNK6wAiBAGEnrE42bTrILcSmBkMTlF1L7ahZNOjoT25WhjKtRhw=="
+          }
+        ],
+        "state": "VERIFIED"
+      },
+      "resolved": "https://registry.npmjs.org/lzma-native/-/lzma-native-8.0.6.tgz",
+      "scan": {
+        "evidence": {
+          "bytes": 126215,
+          "kind": "SCANCODE_FINDINGS",
+          "path": "blobs/sha256/de/de1be8f8b27e3d656085d878dc671f5b9d9f5a8c4dcb1f5c7a01b8e00ff28435",
+          "sha256": "de1be8f8b27e3d656085d878dc671f5b9d9f5a8c4dcb1f5c7a01b8e00ff28435"
+        },
+        "state": "VERIFIED"
+      },
+      "tarball": {
+        "bytes": 3563452,
+        "sha256": "326b39004b4c91973b584030f99d768b8dc94491c346103fa20de179c0fae369"
+      },
+      "version": "8.0.6"
     },
     {
       "archive": {
@@ -37503,8 +37684,7 @@
       ],
       "name": "iconv-lite",
       "occurrencePaths": [
-        "node_modules/@sigstore/sign/node_modules/iconv-lite",
-        "node_modules/npm-registry-fetch/node_modules/iconv-lite"
+        "node_modules/iconv-lite"
       ],
       "provenance": {
         "evidence": {
@@ -42039,6 +42219,12 @@
       "sha256": "207ff2e9343a62bf34e944d75ec25d0faedc96d762da2449c6a3ee25b3ef0176"
     },
     {
+      "bytes": 14355,
+      "kind": "ARCHIVE_INVENTORY",
+      "path": "blobs/sha256/20/20d3dda0bcac50170f0717186e0428b08aca45013245fe272c0270a1edee738d",
+      "sha256": "20d3dda0bcac50170f0717186e0428b08aca45013245fe272c0270a1edee738d"
+    },
+    {
       "bytes": 3844,
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/21/2186158507fb94509fc1034b1d4c306f0fdb9f92e1a98643ed0bab4cb59598b1",
@@ -43165,6 +43351,12 @@
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/63/63531c55b18cc0eda23800d1477449ed47ddb0f502d0b2f45c7aa11326698b50",
       "sha256": "63531c55b18cc0eda23800d1477449ed47ddb0f502d0b2f45c7aa11326698b50"
+    },
+    {
+      "bytes": 4651,
+      "kind": "ARCHIVE_INVENTORY",
+      "path": "blobs/sha256/63/63bcb15f8eb6f00492574b9c32889c5f30f384f79ae919c1049fe570c88b61da",
+      "sha256": "63bcb15f8eb6f00492574b9c32889c5f30f384f79ae919c1049fe570c88b61da"
     },
     {
       "bytes": 2757,
@@ -44995,6 +45187,12 @@
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/da/da84728e0b4080298a6aaa72b27b3e995146d189558eee283ce8334404cf476d",
       "sha256": "da84728e0b4080298a6aaa72b27b3e995146d189558eee283ce8334404cf476d"
+    },
+    {
+      "bytes": 14828,
+      "kind": "ARCHIVE_INVENTORY",
+      "path": "blobs/sha256/da/dad71f5cdad035d34068c2187bc85f18b2f9b8855d273446a835ff1baa6e210a",
+      "sha256": "dad71f5cdad035d34068c2187bc85f18b2f9b8855d273446a835ff1baa6e210a"
     },
     {
       "bytes": 5207,
@@ -46895,8 +47093,20 @@
     {
       "bytes": 238,
       "kind": "NPM_PROVENANCE",
+      "path": "blobs/sha256/5a/5af191bd85bfb09dd945de6ce5fa9628ff01dcca32c081f3da52b86dd8b273b2",
+      "sha256": "5af191bd85bfb09dd945de6ce5fa9628ff01dcca32c081f3da52b86dd8b273b2"
+    },
+    {
+      "bytes": 238,
+      "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/5b/5b0e21c848a1e048449e0112af8b4e58764b8688f0a760261296ec09a5c6c727",
       "sha256": "5b0e21c848a1e048449e0112af8b4e58764b8688f0a760261296ec09a5c6c727"
+    },
+    {
+      "bytes": 238,
+      "kind": "NPM_PROVENANCE",
+      "path": "blobs/sha256/5b/5b1399452f44727d2885660c7c071dd3fbc39dd958b4e03164c4878ecd37f6a6",
+      "sha256": "5b1399452f44727d2885660c7c071dd3fbc39dd958b4e03164c4878ecd37f6a6"
     },
     {
       "bytes": 16706,
@@ -49181,6 +49391,12 @@
     {
       "bytes": 238,
       "kind": "NPM_PROVENANCE",
+      "path": "blobs/sha256/e6/e61ef444469e99002b887d7b89cf76e4537fee6095bcf663307b108ff23d44bb",
+      "sha256": "e61ef444469e99002b887d7b89cf76e4537fee6095bcf663307b108ff23d44bb"
+    },
+    {
+      "bytes": 238,
+      "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/e6/e662460e0ac021c6933584cf187b0d6b322bc95d6b78c9fd6e43ae38361e4684",
       "sha256": "e662460e0ac021c6933584cf187b0d6b322bc95d6b78c9fd6e43ae38361e4684"
     },
@@ -49917,6 +50133,12 @@
       "sha256": "148718606d34f467fd08a2176bb4c1ab275f999576f779368503d8d3e3642861"
     },
     {
+      "bytes": 23728,
+      "kind": "PACKAGE_EVIDENCE_FILE",
+      "path": "blobs/sha256/16/1602df4be0484608077cb39493d870143a962ffcd455e6e9839a44a6d5a6a092",
+      "sha256": "1602df4be0484608077cb39493d870143a962ffcd455e6e9839a44a6d5a6a092"
+    },
+    {
       "bytes": 3148,
       "kind": "PACKAGE_EVIDENCE_FILE",
       "path": "blobs/sha256/16/16620f2c96dc28780052234b8d397ad3c807eb1d685de4864767982e007d038f",
@@ -50191,6 +50413,12 @@
       "kind": "PACKAGE_EVIDENCE_FILE",
       "path": "blobs/sha256/2a/2a8a5d6197bb97a018b8a190dd3ed853d750ca87c8e80c17aad41d6c6ff448e1",
       "sha256": "2a8a5d6197bb97a018b8a190dd3ed853d750ca87c8e80c17aad41d6c6ff448e1"
+    },
+    {
+      "bytes": 12881,
+      "kind": "PACKAGE_EVIDENCE_FILE",
+      "path": "blobs/sha256/2b/2b5d5dc55bf4608a96857e21ee348429a82c62e1b56ffbcf4a16a79676806547",
+      "sha256": "2b5d5dc55bf4608a96857e21ee348429a82c62e1b56ffbcf4a16a79676806547"
     },
     {
       "bytes": 28473,
@@ -50713,6 +50941,12 @@
       "kind": "PACKAGE_EVIDENCE_FILE",
       "path": "blobs/sha256/4f/4fa85d2dee529dd0db0945498b85b462f7f8297d915e759fe43ac9f4666d5e53",
       "sha256": "4fa85d2dee529dd0db0945498b85b462f7f8297d915e759fe43ac9f4666d5e53"
+    },
+    {
+      "bytes": 1245,
+      "kind": "PACKAGE_EVIDENCE_FILE",
+      "path": "blobs/sha256/4f/4fcf69bbecb999ec8fa0ece62bc8934b7cdd45061ac1a8b1939a09be64cd4352",
+      "sha256": "4fcf69bbecb999ec8fa0ece62bc8934b7cdd45061ac1a8b1939a09be64cd4352"
     },
     {
       "bytes": 1084,
@@ -51357,10 +51591,22 @@
       "sha256": "7a48d28601909f5065727c3c087f31ecc891509f266629b9d8b74ea73b63fd4a"
     },
     {
+      "bytes": 1079,
+      "kind": "PACKAGE_EVIDENCE_FILE",
+      "path": "blobs/sha256/7b/7b3638496004b2daed183a91c4ba45d3ef6331db6c9d0eb1dd882a505630c172",
+      "sha256": "7b3638496004b2daed183a91c4ba45d3ef6331db6c9d0eb1dd882a505630c172"
+    },
+    {
       "bytes": 1074,
       "kind": "PACKAGE_EVIDENCE_FILE",
       "path": "blobs/sha256/7b/7bf9b2de73a6b356761c948d0e9eeb4be6c1270bd04c79cd489c1e400ffdfc1a",
       "sha256": "7bf9b2de73a6b356761c948d0e9eeb4be6c1270bd04c79cd489c1e400ffdfc1a"
+    },
+    {
+      "bytes": 2485,
+      "kind": "PACKAGE_EVIDENCE_FILE",
+      "path": "blobs/sha256/7e/7e029ae991bdedf8de9d3af211cbca405ed0829b0d0b6887ecde5c4931841b21",
+      "sha256": "7e029ae991bdedf8de9d3af211cbca405ed0829b0d0b6887ecde5c4931841b21"
     },
     {
       "bytes": 3041,
@@ -51613,6 +51859,12 @@
       "kind": "PACKAGE_EVIDENCE_FILE",
       "path": "blobs/sha256/94/94092712ac3a26191c967ab828e66cc4c9db56e9e7963fdf37e469488fe4c3e5",
       "sha256": "94092712ac3a26191c967ab828e66cc4c9db56e9e7963fdf37e469488fe4c3e5"
+    },
+    {
+      "bytes": 1088,
+      "kind": "PACKAGE_EVIDENCE_FILE",
+      "path": "blobs/sha256/94/9415b233c6c5a6fc3ac6977cde3530d149f45a61d86b2fd9611cbca4bf08f4e2",
+      "sha256": "9415b233c6c5a6fc3ac6977cde3530d149f45a61d86b2fd9611cbca4bf08f4e2"
     },
     {
       "bytes": 1100,
@@ -54567,6 +54819,12 @@
       "sha256": "4dc0df9bcf307f71d15d5593313d0bc30d3e3f41f88b03e63a65e7a94965588c"
     },
     {
+      "bytes": 518,
+      "kind": "REGISTRY_SIGNATURE",
+      "path": "blobs/sha256/4d/4dd882e372276746928b7f691e3986b4e57e4913a00e1c60d63a90f5abc71e9b",
+      "sha256": "4dd882e372276746928b7f691e3986b4e57e4913a00e1c60d63a90f5abc71e9b"
+    },
+    {
       "bytes": 780,
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/4e/4e6dcadf9c26d3cbdebbb1fff2df915477cb75d19613b06aa33e4e1525c27c40",
@@ -54953,6 +55211,12 @@
     {
       "bytes": 518,
       "kind": "REGISTRY_SIGNATURE",
+      "path": "blobs/sha256/68/68b48e264f01c23a122b8da77a74544a6feee028704213e98bc708a91da1feaf",
+      "sha256": "68b48e264f01c23a122b8da77a74544a6feee028704213e98bc708a91da1feaf"
+    },
+    {
+      "bytes": 518,
+      "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/69/691c71ece4d59cd14f9212777b7cd7aca331dbf6721e98eaae4f90b53ee58c0b",
       "sha256": "691c71ece4d59cd14f9212777b7cd7aca331dbf6721e98eaae4f90b53ee58c0b"
     },
@@ -54991,6 +55255,12 @@
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/6e/6e76f7ddb6c35709262f98b0b502107c575696e66169d1d399543b9b43564e3d",
       "sha256": "6e76f7ddb6c35709262f98b0b502107c575696e66169d1d399543b9b43564e3d"
+    },
+    {
+      "bytes": 518,
+      "kind": "REGISTRY_SIGNATURE",
+      "path": "blobs/sha256/6e/6eaf547b97458ecb7828c6aeb88e5d43faef3f3e329e152ce216b561d2a1cf42",
+      "sha256": "6eaf547b97458ecb7828c6aeb88e5d43faef3f3e329e152ce216b561d2a1cf42"
     },
     {
       "bytes": 518,
@@ -58227,6 +58497,12 @@
       "sha256": "37fc5aa912bf7fb9d85729030525c356f215d5686fec2899227e82ebd2b2735a"
     },
     {
+      "bytes": 37105,
+      "kind": "SCANCODE_FINDINGS",
+      "path": "blobs/sha256/38/3800038a1f3b1d50318ec7e27fc1ac7792f41cda5b594f363efbff4fb979ecf5",
+      "sha256": "3800038a1f3b1d50318ec7e27fc1ac7792f41cda5b594f363efbff4fb979ecf5"
+    },
+    {
       "bytes": 37147,
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/38/386b79c10a2fbeea62df9bb9d1417e8c5c6ccbfa5b6aedf14f1247766d2537ed",
@@ -60825,6 +61101,12 @@
       "sha256": "d4c2289375394e7b639d647f0ae0a4755b339a906a2891842eb8edb15f04443d"
     },
     {
+      "bytes": 85785,
+      "kind": "SCANCODE_FINDINGS",
+      "path": "blobs/sha256/d4/d4e071c11dc14a0f94589b7fecc460693fe11754c9dae6da5538b72c2d50ba6e",
+      "sha256": "d4e071c11dc14a0f94589b7fecc460693fe11754c9dae6da5538b72c2d50ba6e"
+    },
+    {
       "bytes": 86758,
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/d5/d517e073726f634b7d91b4940b1e927ebbb917a96b3e2277ccda1371e0986e34",
@@ -60943,6 +61225,12 @@
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/de/de009622e6b599d6099f9132bdecff44770f428fa7179ee2bfb631dda29808e5",
       "sha256": "de009622e6b599d6099f9132bdecff44770f428fa7179ee2bfb631dda29808e5"
+    },
+    {
+      "bytes": 126215,
+      "kind": "SCANCODE_FINDINGS",
+      "path": "blobs/sha256/de/de1be8f8b27e3d656085d878dc671f5b9d9f5a8c4dcb1f5c7a01b8e00ff28435",
+      "sha256": "de1be8f8b27e3d656085d878dc671f5b9d9f5a8c4dcb1f5c7a01b8e00ff28435"
     },
     {
       "bytes": 17514,
@@ -61437,14 +61725,14 @@
       "sha256": "ff2f62576b30719d7dbf0d1232c4a52fea847a2adb60659b8fa4c30bd90968c1"
     }
   ],
-  "corpusRoot": "6bf162e370fd66f2bd07878c92a95300f145fddf95a7144cf57a5177b1ca4f1e",
+  "corpusRoot": "1a5ebc4be680b99fa0a4643d70472042dad9802297a3a602b0c041400b464a55",
   "generatedBy": {
     "path": "util/acquire-npm-package-evidence.mjs",
     "version": "1.0.0"
   },
   "lockfile": {
     "path": "package-lock.json",
-    "sha256": "067269937c0c72375cf968e44d4bb0ec4d2e258dc5704c402cad1ea1d5941340",
+    "sha256": "99eeebd4cbaa754663a61fb8d30e7226b6c22f004d711cbc4a606b9ba9f164e5",
     "version": 3
   },
   "occurrences": [
@@ -63969,18 +64257,6 @@
       }
     },
     {
-      "artifactId": "e4f9817a044f6e9e854e27db85815a704404fbb4994c51d59191b272e68cf0fe",
-      "dependencyName": "iconv-lite",
-      "dependencyPath": "node_modules/@sigstore/sign/node_modules/iconv-lite",
-      "development": true,
-      "optional": true,
-      "platformSelectors": {
-        "cpu": [],
-        "libc": [],
-        "os": []
-      }
-    },
-    {
       "artifactId": "c00e725b334060dc84bc3df0ca362ffff76b89c9270de48f242638af66cf4ae3",
       "dependencyName": "lru-cache",
       "dependencyPath": "node_modules/@sigstore/sign/node_modules/lru-cache",
@@ -65767,6 +66043,18 @@
       }
     },
     {
+      "artifactId": "9028a6a639a205db1d830cfb629c0606ae54623696995bf4e7e3b9fa62be24f9",
+      "dependencyName": "iconv-lite",
+      "dependencyPath": "node_modules/encoding/node_modules/iconv-lite",
+      "development": true,
+      "optional": true,
+      "platformSelectors": {
+        "cpu": [],
+        "libc": [],
+        "os": []
+      }
+    },
+    {
       "artifactId": "36ced55d2ced0f29294cca77bf52ace17b226fbb8a248fbeddb2f2584feadc71",
       "dependencyName": "end-of-stream",
       "dependencyPath": "node_modules/end-of-stream",
@@ -66621,11 +66909,11 @@
       }
     },
     {
-      "artifactId": "9028a6a639a205db1d830cfb629c0606ae54623696995bf4e7e3b9fa62be24f9",
+      "artifactId": "e4f9817a044f6e9e854e27db85815a704404fbb4994c51d59191b272e68cf0fe",
       "dependencyName": "iconv-lite",
       "dependencyPath": "node_modules/iconv-lite",
-      "development": true,
-      "optional": true,
+      "development": false,
+      "optional": false,
       "platformSelectors": {
         "cpu": [],
         "libc": [],
@@ -66696,8 +66984,8 @@
       "artifactId": "8d9b9af24f6e0aa84f8fc0624128624b02663d89970b5aca0cca219e71e83355",
       "dependencyName": "inherits",
       "dependencyPath": "node_modules/inherits",
-      "development": true,
-      "optional": true,
+      "development": false,
+      "optional": false,
       "platformSelectors": {
         "cpu": [],
         "libc": [],
@@ -67741,6 +68029,42 @@
       }
     },
     {
+      "artifactId": "c09c894094a00d0aee9dacf95b3e12ba5fe069c6d6088efbb4ef6b0d374484ac",
+      "dependencyName": "lzma-native",
+      "dependencyPath": "node_modules/lzma-native",
+      "development": false,
+      "optional": false,
+      "platformSelectors": {
+        "cpu": [],
+        "libc": [],
+        "os": []
+      }
+    },
+    {
+      "artifactId": "b57b40100682bcebe9cb03878d70830afafa52a1cc3ae573a8f8a0a7da750662",
+      "dependencyName": "node-addon-api",
+      "dependencyPath": "node_modules/lzma-native/node_modules/node-addon-api",
+      "development": false,
+      "optional": false,
+      "platformSelectors": {
+        "cpu": [],
+        "libc": [],
+        "os": []
+      }
+    },
+    {
+      "artifactId": "55ca5eb5bd3aa743e6e0a76a8d556fdb0d0f34ed52ffd0cf810c051ace0284e7",
+      "dependencyName": "readable-stream",
+      "dependencyPath": "node_modules/lzma-native/node_modules/readable-stream",
+      "development": false,
+      "optional": false,
+      "platformSelectors": {
+        "cpu": [],
+        "libc": [],
+        "os": []
+      }
+    },
+    {
       "artifactId": "882473932199413957489d8dfa23aa4537e0ae4f1265ce39fef894e04ba60f3a",
       "dependencyName": "make-dir",
       "dependencyPath": "node_modules/make-dir",
@@ -68173,6 +68497,18 @@
       }
     },
     {
+      "artifactId": "07538b70170a9ad3ad2c139e841927806f72b45a8808374dbc347983c94ef7ec",
+      "dependencyName": "node-gyp-build",
+      "dependencyPath": "node_modules/node-gyp-build",
+      "development": false,
+      "optional": false,
+      "platformSelectors": {
+        "cpu": [],
+        "libc": [],
+        "os": []
+      }
+    },
+    {
       "artifactId": "da56d0c2c3c21afc2f581bc3685330d903edaeabbb1f2ebec2842ea0aba75e25",
       "dependencyName": "isexe",
       "dependencyPath": "node_modules/node-gyp/node_modules/isexe",
@@ -68454,18 +68790,6 @@
       "dependencyPath": "node_modules/npm-registry-fetch/node_modules/https-proxy-agent",
       "development": true,
       "optional": false,
-      "platformSelectors": {
-        "cpu": [],
-        "libc": [],
-        "os": []
-      }
-    },
-    {
-      "artifactId": "e4f9817a044f6e9e854e27db85815a704404fbb4994c51d59191b272e68cf0fe",
-      "dependencyName": "iconv-lite",
-      "dependencyPath": "node_modules/npm-registry-fetch/node_modules/iconv-lite",
-      "development": true,
-      "optional": true,
       "platformSelectors": {
         "cpu": [],
         "libc": [],
@@ -69460,8 +69784,8 @@
       "artifactId": "45cbed684c8f6b18284acf5d9d26f557a04b2f1358f932f6cddf4c69012cd188",
       "dependencyName": "safer-buffer",
       "dependencyPath": "node_modules/safer-buffer",
-      "development": true,
-      "optional": true,
+      "development": false,
+      "optional": false,
       "platformSelectors": {
         "cpu": [],
         "libc": [],
@@ -70348,8 +70672,8 @@
       "artifactId": "1b698a14cb4a972a1b6c63988af7ee089cd950ba415217ba2b40ba820d6b0ea9",
       "dependencyName": "util-deprecate",
       "dependencyPath": "node_modules/util-deprecate",
-      "development": true,
-      "optional": true,
+      "development": false,
+      "optional": false,
       "platformSelectors": {
         "cpu": [],
         "libc": [],
@@ -70671,14 +70995,14 @@
   ],
   "schemaVersion": 1,
   "summary": {
-    "archiveVerifiedCount": 681,
-    "artifactCount": 681,
-    "blobCount": 3329,
-    "occurrenceCount": 740,
-    "provenanceNotPublishedCount": 479,
+    "archiveVerifiedCount": 684,
+    "artifactCount": 684,
+    "blobCount": 3347,
+    "occurrenceCount": 743,
+    "provenanceNotPublishedCount": 482,
     "provenanceVerifiedCount": 202,
-    "registrySignatureVerifiedCount": 681,
-    "retainedBytes": 69141017,
-    "scanVerifiedCount": 681
+    "registrySignatureVerifiedCount": 684,
+    "retainedBytes": 69468730,
+    "scanVerifiedCount": 684
   }
 }

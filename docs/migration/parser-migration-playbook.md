@@ -5,6 +5,11 @@ Rewrite obsolete advice; do not append chronology here.
 
 ## Pre-flight
 
+The [behavior profile contract](../compatibility/behavior-profiles.md) governs new parser work.
+Keep normative W3C conformance and released-Java differential results separate; a native implementation quirk is not a W3C conformance claim.
+The default-deny and finite-resource guidance below describes the normative profile.
+Java parser work must preserve the released acceptance, provider limits, fallback and failure timing under independent caller authorization.
+
 1. Confirm the prior ingestion learning gate is closed and only one ingestion migration is active.
 2. Consult `provenance/provenance.json` before reading or changing legacy code.
 3. Enumerate the public grammar and the OWLAPI parser/factory/format identity.

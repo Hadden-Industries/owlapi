@@ -20,6 +20,7 @@ import {
 } from "./package-identity.mjs";
 import {
   INSTALLED_TEST_SCRIPTS,
+  productionInstallScriptPolicy,
   writeInstalledConsumerFixtures,
 } from "./installed-consumer-fixtures.mjs";
 
@@ -145,6 +146,7 @@ const writeConsumerManifest = (
       version: "0.0.0",
       private: true,
       type: "module",
+      allowScripts: productionInstallScriptPolicy(),
       dependencies: {
         [dependencyName]: `file:${tarballPath.replaceAll("\\", "/")}`,
       },

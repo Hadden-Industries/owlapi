@@ -42,14 +42,16 @@
     "RDFXML-FORMATTING-2026-10-08": "Owner instruction to implement docs/plans/expose-configurable-rdfxml-formatting.md, including its proposed preserving-builder, numeric and deterministic label adaptations; subsequent owner decisions select npm 12.2.0 and upstream Java tip b61ebe2da83daceebb3e7ba7afbd2582c9240c33.",
     "RDFXML-REFINEMENTS-2026-10-08": "Owner instruction to implement the amended RDF/XML ownership/API table using HISEW; subsequent approval of bounded compatibility/provenance records and same-input Java qualification in session 01a11b94-bded-79e1-87b1-c5a7c3ac1ad9.",
     "RC2-JAVA-PARITY-2026-10-09": "Owner-approved docs/plans/0.1.0-rc.2-java-parity-baseline.md, all nine implementation slices, and exact profile/storage/locality decisions. Native Java is a black-box behavioral authority and source research input; no implementation text is copied.",
-    "DRY-REMEDIATION-2026-10-11": "Owner instruction to implement docs/plans/dry-principle-remediation.md via HISEW on current local main, preserving observable behavior, historical evidence and source rights."
+    "DRY-REMEDIATION-2026-10-11": "Owner instruction to implement docs/plans/dry-principle-remediation.md via HISEW on current local main, preserving observable behavior, historical evidence and source rights.",
+    "JAVA-BEHAVIOR-2026-10-13": "Owner instruction to implement docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md using HISEW, including required configuration changes. Separate explicit approvals admit the narrowly scoped jsonld provider build and caller-authorized NodeDocumentLoader public adapter with the stated browser transport boundary. Historical decisions and measured hashes retain their original subjects."
   },
   "provenanceCategories": {
     "A_PROJECT_ORIGINAL": "Project-authored implementation with no identified upstream-derived semantic implementation",
     "B_STANDARDS_ADAPTER": "Project adapter around a separately governed standards implementation",
     "C_LEGACY_DERIVED_OR_MIXED": "Legacy semantic implementation described as upstream-derived or materially mixed and requiring independent replacement",
     "D_EXTERNAL_REFERENCE": "External or generated behavioral evidence usable only as an oracle",
-    "E_APPLICATION_SPECIFIC": "WebVOWL application concern excluded from the generic core"
+    "E_APPLICATION_SPECIFIC": "WebVOWL application concern excluded from the generic core",
+    "F_GOVERNED_DERIVED_MATERIAL": "Embedded upstream implementation or generated upstream facts under the recorded source, patch, licence and distribution basis; not independently authored semantic implementation."
   },
   "dispositions": [
     "REUSE_ALLOWED",
@@ -104,6 +106,28 @@
     }
   },
   "implementationRecords": [
+    {
+      "id": "JAVA-BEHAVIOR-INTERNAL-LOADING-AWAIT-ABORTABLE-OPERATION",
+      "path": "internal/loading/awaitAbortableOperation.js",
+      "phase": 25,
+      "scope": "Settle cancelled host operations promptly while retaining observation of late completion and caller-owned resource cleanup.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "docs/compatibility/behavior-profiles.md"
+      ],
+      "compatibilityReferences": [
+        "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+        "docs/compatibility/java-api-parity-decisions.json"
+      ],
+      "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "focusedEvidence": ["io/node/nodeDocumentLoaderCancellation.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+      "recordedOn": "2026-10-14"
+    },
     {
       "id": "RDF-CONSUMER-PARSER-METADATA",
       "path": "io/rdfParserMetaData.js",
@@ -251,6 +275,25 @@
           ],
           "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
           "recordedOn": "2026-09-30"
+        },
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": [
+            "model/behaviorLiterals.test.js",
+            "model/behaviorParserSelection.test.js"
+          ],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
         }
       ]
     },
@@ -303,6 +346,26 @@
           ],
           "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
           "recordedOn": "2026-09-30"
+        },
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": [
+            "model/behaviorProfile.test.js",
+            "model/behaviorLoading.test.js",
+            "model/behaviorMutation.test.js"
+          ],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
         }
       ],
       "thirdPartyDependencies": [],
@@ -396,7 +459,25 @@
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "PHASE21-PREBUILD-2026-09-25",
-      "reviewDate": "2026-09-25"
+      "reviewDate": "2026-09-25",
+      "laterPhaseChanges": [
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": ["model/behaviorStorage.test.js"],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
+        }
+      ]
     },
     {
       "id": "PHASE1-IO-LOADER-CONFIGURATION",
@@ -437,6 +518,26 @@
           ],
           "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
           "recordedOn": "2026-09-30"
+        },
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": [
+            "model/behaviorProfile.test.js",
+            "model/behaviorLoading.test.js",
+            "model/behaviorMutation.test.js"
+          ],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
         }
       ]
     },
@@ -521,6 +622,25 @@
           ],
           "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
           "recordedOn": "2026-09-30"
+        },
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": [
+            "model/behaviorParserSelection.test.js",
+            "model/behaviorResources.test.js"
+          ],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
         }
       ]
     },
@@ -719,6 +839,26 @@
           ],
           "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
           "recordedOn": "2026-09-30"
+        },
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": [
+            "model/behaviorProfile.test.js",
+            "model/behaviorLoading.test.js",
+            "model/behaviorMutation.test.js"
+          ],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
         }
       ],
       "thirdPartyDependencies": [],
@@ -781,6 +921,26 @@
             "model/owlOntologyManager.test.js"
           ],
           "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01"
+        },
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": [
+            "model/behaviorProfile.test.js",
+            "model/behaviorLoading.test.js",
+            "model/behaviorMutation.test.js"
+          ],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
         }
       ],
       "thirdPartyDependencies": [],
@@ -833,6 +993,22 @@
           ],
           "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
           "recordedOn": "2026-09-30"
+        },
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": ["model/behaviorStorage.test.js"],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
         }
       ]
     },
@@ -858,7 +1034,25 @@
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
-      "reviewDate": "2026-09-25"
+      "reviewDate": "2026-09-25",
+      "laterPhaseChanges": [
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": ["model/behaviorStorage.test.js"],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
+        }
+      ]
     },
     {
       "id": "PHASE22-RDFXML-GRAPH-WRITER",
@@ -886,7 +1080,25 @@
       "thirdPartyDependencies": ["@hyperjump/uri", "@xmldom/xmldom", "bcp-47"],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
-      "reviewDate": "2026-09-25"
+      "reviewDate": "2026-09-25",
+      "laterPhaseChanges": [
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": ["model/behaviorStorage.test.js"],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
+        }
+      ]
     },
     {
       "id": "PHASE22-RDFXML-STORER",
@@ -934,6 +1146,22 @@
           ],
           "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
           "recordedOn": "2026-09-30"
+        },
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": ["model/behaviorStorage.test.js"],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
         }
       ]
     },
@@ -979,6 +1207,22 @@
           ],
           "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
           "recordedOn": "2026-09-30"
+        },
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": ["model/behaviorStorage.test.js"],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
         }
       ]
     },
@@ -1132,7 +1376,25 @@
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
-      "reviewDate": "2026-09-01"
+      "reviewDate": "2026-09-01",
+      "laterPhaseChanges": [
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": ["search/behaviorTiming.test.js"],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
+        }
+      ]
     },
     {
       "id": "PHASE22-UTIL-ONTOLOGY-MERGER",
@@ -1161,7 +1423,25 @@
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
-      "reviewDate": "2026-09-01"
+      "reviewDate": "2026-09-01",
+      "laterPhaseChanges": [
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": ["util/behaviorMerger.test.js"],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
+        }
+      ]
     },
     {
       "id": "PHASE1-RDF-ENVIRONMENT",
@@ -1349,6 +1629,25 @@
           ],
           "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
           "recordedOn": "2026-09-30"
+        },
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": [
+            "model/behaviorParserSelection.test.js",
+            "model/behaviorResources.test.js"
+          ],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
         }
       ]
     },
@@ -1455,6 +1754,25 @@
           ],
           "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
           "recordedOn": "2026-09-30"
+        },
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": [
+            "model/behaviorParserSelection.test.js",
+            "model/behaviorResources.test.js"
+          ],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
         }
       ]
     },
@@ -1556,6 +1874,25 @@
           ],
           "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
           "recordedOn": "2026-09-30"
+        },
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": [
+            "internal/parsing/xml/behaviorXml.test.js",
+            "model/behaviorParserSelection.test.js"
+          ],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
         }
       ]
     },
@@ -1581,7 +1918,28 @@
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE4-2026-08-11",
-      "reviewDate": "2026-08-11"
+      "reviewDate": "2026-08-11",
+      "laterPhaseChanges": [
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": [
+            "internal/parsing/xml/behaviorXml.test.js",
+            "model/behaviorParserSelection.test.js"
+          ],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
+        }
+      ]
     },
     {
       "id": "PHASE4-XML-PARSER-ADAPTER",
@@ -1628,6 +1986,25 @@
           ],
           "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
           "recordedOn": "2026-09-30"
+        },
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": [
+            "internal/parsing/xml/behaviorXml.test.js",
+            "model/behaviorParserSelection.test.js"
+          ],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
         }
       ]
     },
@@ -1775,6 +2152,25 @@
           ],
           "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
           "recordedOn": "2026-09-30"
+        },
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": [
+            "model/behaviorParserSelection.test.js",
+            "model/behaviorResources.test.js"
+          ],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
         }
       ],
       "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset"],
@@ -1857,6 +2253,25 @@
           ],
           "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
           "recordedOn": "2026-09-30"
+        },
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": [
+            "model/behaviorParserSelection.test.js",
+            "model/behaviorResources.test.js"
+          ],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
         }
       ]
     },
@@ -1893,7 +2308,28 @@
       ],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE6-2026-08-13",
-      "reviewDate": "2026-08-13"
+      "reviewDate": "2026-08-13",
+      "laterPhaseChanges": [
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": [
+            "model/behaviorParserSelection.test.js",
+            "model/behaviorResources.test.js"
+          ],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
+        }
+      ]
     },
     {
       "id": "PHASE9-TURTLE-DESCRIPTOR",
@@ -2007,7 +2443,28 @@
         "PHASE13-2026-08-22",
         "PHASE14-2026-08-22"
       ],
-      "reviewDate": "2026-08-22"
+      "reviewDate": "2026-08-22",
+      "laterPhaseChanges": [
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": [
+            "model/behaviorParserSelection.test.js",
+            "model/behaviorResources.test.js"
+          ],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
+        }
+      ]
     },
     {
       "id": "PHASE10-DL-DESCRIPTOR",
@@ -2421,6 +2878,25 @@
           ],
           "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
           "recordedOn": "2026-09-30"
+        },
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": [
+            "model/behaviorParserSelection.test.js",
+            "model/behaviorResources.test.js"
+          ],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
         }
       ],
       "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset"],
@@ -2658,7 +3134,25 @@
       ],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE15-2026-08-22",
-      "reviewDate": "2026-08-22"
+      "reviewDate": "2026-08-22",
+      "laterPhaseChanges": [
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": ["internal/parsing/jsonld/behaviorJsonLd.test.js"],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
+        }
+      ]
     },
     {
       "id": "PHASE15-JSONLD10-COMPATIBILITY",
@@ -3014,7 +3508,28 @@
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
-      "recordedOn": "2026-09-30"
+      "recordedOn": "2026-09-30",
+      "laterPhaseChanges": [
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": [
+            "profiles/behaviorProfiles.test.js",
+            "model/behaviorResources.test.js"
+          ],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
+        }
+      ]
     },
     {
       "id": "CANONICAL-VOWL-INTERNAL-PROFILES-DATATYPES-JS",
@@ -3086,7 +3601,28 @@
       "thirdPartyDependencies": ["@hyperjump/uri"],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
-      "recordedOn": "2026-09-30"
+      "recordedOn": "2026-09-30",
+      "laterPhaseChanges": [
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": [
+            "profiles/behaviorProfiles.test.js",
+            "model/behaviorResources.test.js"
+          ],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
+        }
+      ]
     },
     {
       "id": "CANONICAL-VOWL-INTERNAL-PROFILES-PROPERTYHIERARCHY-JS",
@@ -3155,7 +3691,29 @@
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
-      "recordedOn": "2026-09-30"
+      "recordedOn": "2026-09-30",
+      "laterPhaseChanges": [
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": [
+            "model/behaviorProfile.test.js",
+            "model/behaviorLoading.test.js",
+            "model/behaviorMutation.test.js"
+          ],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
+        }
+      ]
     },
     {
       "id": "CANONICAL-VOWL-INTERNAL-PROFILES-XMLLITERAL-JS",
@@ -3231,7 +3789,28 @@
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
-      "recordedOn": "2026-09-30"
+      "recordedOn": "2026-09-30",
+      "laterPhaseChanges": [
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": [
+            "profiles/behaviorProfiles.test.js",
+            "model/behaviorResources.test.js"
+          ],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
+        }
+      ]
     },
     {
       "id": "CANONICAL-VOWL-PROFILES-OWLPROFILEREPORT-JS",
@@ -3257,7 +3836,28 @@
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
-      "recordedOn": "2026-09-30"
+      "recordedOn": "2026-09-30",
+      "laterPhaseChanges": [
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": [
+            "profiles/behaviorProfiles.test.js",
+            "model/behaviorResources.test.js"
+          ],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
+        }
+      ]
     },
     {
       "id": "RDFXML-WRITER-CONFIGURATION",
@@ -3282,7 +3882,25 @@
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "RDFXML-FORMATTING-2026-10-08",
-      "recordedOn": "2026-10-08"
+      "recordedOn": "2026-10-08",
+      "laterPhaseChanges": [
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": ["model/behaviorStorage.test.js"],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
+        }
+      ]
     },
     {
       "id": "RDFXML-PREFIX-FORMAT",
@@ -3499,7 +4117,28 @@
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
-      "recordedOn": "2026-10-09"
+      "recordedOn": "2026-10-09",
+      "laterPhaseChanges": [
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": [
+            "profiles/behaviorProfiles.test.js",
+            "model/behaviorResources.test.js"
+          ],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
+        }
+      ]
     },
     {
       "id": "RC2-INTERNAL-STORAGE-OWLXML-OWLXMLSTORER",
@@ -3523,7 +4162,25 @@
       "thirdPartyDependencies": ["@hyperjump/uri", "@xmldom/xmldom"],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
-      "recordedOn": "2026-10-09"
+      "recordedOn": "2026-10-09",
+      "laterPhaseChanges": [
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": ["model/behaviorStorage.test.js"],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
+        }
+      ]
     },
     {
       "id": "RC2-INTERNAL-STORAGE-RDFSTORAGE",
@@ -3547,7 +4204,25 @@
       "thirdPartyDependencies": ["@rdfjs/data-model/Factory.js"],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
-      "recordedOn": "2026-10-09"
+      "recordedOn": "2026-10-09",
+      "laterPhaseChanges": [
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": ["model/behaviorStorage.test.js"],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
+        }
+      ]
     },
     {
       "id": "RC2-INTERNAL-STORAGE-TURTLE-TURTLESTORER",
@@ -3571,7 +4246,25 @@
       "thirdPartyDependencies": ["n3"],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
-      "recordedOn": "2026-10-09"
+      "recordedOn": "2026-10-09",
+      "laterPhaseChanges": [
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": ["model/behaviorStorage.test.js"],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
+        }
+      ]
     },
     {
       "id": "RC2-MANCHESTERSYNTAX-RENDERER-MANCHESTEROWLSYNTAXOWLOBJECTRENDERERIMPL",
@@ -3595,7 +4288,29 @@
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
-      "recordedOn": "2026-10-09"
+      "recordedOn": "2026-10-09",
+      "laterPhaseChanges": [
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": [
+            "model/behaviorProfile.test.js",
+            "model/behaviorLoading.test.js",
+            "model/behaviorMutation.test.js"
+          ],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
+        }
+      ]
     },
     {
       "id": "RC2-MODEL-ADDAXIOM",
@@ -3763,7 +4478,28 @@
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
-      "recordedOn": "2026-10-09"
+      "recordedOn": "2026-10-09",
+      "laterPhaseChanges": [
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": [
+            "profiles/behaviorProfiles.test.js",
+            "model/behaviorResources.test.js"
+          ],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
+        }
+      ]
     },
     {
       "id": "RC2-PROFILES-OWL2ELPROFILE",
@@ -3787,7 +4523,28 @@
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
-      "recordedOn": "2026-10-09"
+      "recordedOn": "2026-10-09",
+      "laterPhaseChanges": [
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": [
+            "profiles/behaviorProfiles.test.js",
+            "model/behaviorResources.test.js"
+          ],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
+        }
+      ]
     },
     {
       "id": "RC2-PROFILES-OWL2QLPROFILE",
@@ -3811,7 +4568,28 @@
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
-      "recordedOn": "2026-10-09"
+      "recordedOn": "2026-10-09",
+      "laterPhaseChanges": [
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": [
+            "profiles/behaviorProfiles.test.js",
+            "model/behaviorResources.test.js"
+          ],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
+        }
+      ]
     },
     {
       "id": "RC2-PROFILES-OWL2RLPROFILE",
@@ -3835,7 +4613,28 @@
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
-      "recordedOn": "2026-10-09"
+      "recordedOn": "2026-10-09",
+      "laterPhaseChanges": [
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": [
+            "profiles/behaviorProfiles.test.js",
+            "model/behaviorResources.test.js"
+          ],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
+        }
+      ]
     },
     {
       "id": "RC2-SEARCH-ENTITYSEARCHER",
@@ -3859,7 +4658,25 @@
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
-      "recordedOn": "2026-10-09"
+      "recordedOn": "2026-10-09",
+      "laterPhaseChanges": [
+        {
+          "phase": 25,
+          "scope": "Apply the selected immutable behavior profile at this module boundary; preserve normative-v1 behavior and use the released Java observations for the matched Java API contract.",
+          "normativePublicSources": [
+            "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+            "docs/compatibility/behavior-profiles.md"
+          ],
+          "compatibilityReferences": [
+            "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+            "docs/compatibility/java-api-parity-decisions.json"
+          ],
+          "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+          "focusedEvidence": ["search/behaviorTiming.test.js"],
+          "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+          "recordedOn": "2026-10-14"
+        }
+      ]
     },
     {
       "id": "RC2-UTIL-ANNOTATIONVALUESHORTFORMPROVIDER",
@@ -4243,6 +5060,545 @@
       "decisionRef": "DRY-REMEDIATION-2026-10-11",
       "reviewDate": "2026-10-11",
       "origin": "Extraction of project-authored source from internal/parsing/rdf/n3SyntaxAdapter.js; no external implementation text added."
+    },
+    {
+      "id": "JAVA-BEHAVIOR-INTERNAL-BEHAVIOR-ONTOLOGY-BEHAVIOR-CONTEXT",
+      "path": "internal/behavior/ontologyBehaviorContext.js",
+      "phase": 25,
+      "scope": "Immutable behavior identities and shared policies for loading, mutations, literals, XML, JSON-LD, storage and computations.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "docs/compatibility/behavior-profiles.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+        "docs/compatibility/java-api-parity-decisions.json"
+      ],
+      "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "focusedEvidence": ["model/behaviorProfile.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+      "recordedOn": "2026-10-14"
+    },
+    {
+      "id": "JAVA-BEHAVIOR-INTERNAL-BEHAVIOR-JSON-LD-PROVIDER-POLICY",
+      "path": "internal/behavior/jsonLdProviderPolicy.js",
+      "phase": 25,
+      "scope": "Released provider context whitelist and document-loader cache identity facts.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "docs/compatibility/behavior-profiles.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+        "docs/compatibility/java-api-parity-decisions.json"
+      ],
+      "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "focusedEvidence": ["internal/parsing/jsonld/behaviorJsonLd.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+      "recordedOn": "2026-10-14"
+    },
+    {
+      "id": "JAVA-BEHAVIOR-INTERNAL-BEHAVIOR-JAVA-DATATYPE-POLICY",
+      "path": "internal/behavior/javaDatatypePolicy.js",
+      "phase": 25,
+      "scope": "Generated released Java datatype lexical patterns and profile datatype sets; Apache-2.0 elected basis in the rights inventory.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "F_GOVERNED_DERIVED_MATERIAL",
+      "normativePublicSources": [
+        "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "docs/compatibility/behavior-profiles.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+        "docs/compatibility/java-api-parity-decisions.json",
+        "docs/provenance/rights-inventory.json"
+      ],
+      "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "focusedEvidence": ["profiles/behaviorProfiles.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+      "recordedOn": "2026-10-14"
+    },
+    {
+      "id": "JAVA-BEHAVIOR-INTERNAL-LOADING-DOCUMENT-LOADER-AUTHORIZATION",
+      "path": "internal/loading/documentLoaderAuthorization.js",
+      "phase": 25,
+      "scope": "Per-access caller authorization independent of provider selection and resource configuration.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "docs/compatibility/behavior-profiles.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+        "docs/compatibility/java-api-parity-decisions.json"
+      ],
+      "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "focusedEvidence": ["io/node/nodeDocumentLoader.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+      "recordedOn": "2026-10-14"
+    },
+    {
+      "id": "JAVA-BEHAVIOR-INTERNAL-MODEL-DEFERRED-QUERY",
+      "path": "internal/model/deferredQuery.js",
+      "phase": 25,
+      "scope": "Deferred single-use iteration with query-time snapshot and failure timing.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "docs/compatibility/behavior-profiles.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+        "docs/compatibility/java-api-parity-decisions.json"
+      ],
+      "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "focusedEvidence": ["search/behaviorTiming.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+      "recordedOn": "2026-10-14"
+    },
+    {
+      "id": "JAVA-BEHAVIOR-INTERNAL-MODEL-JAVA-FLOATING-POINT-LEXICAL-FORM",
+      "path": "internal/model/javaFloatingPointLexicalForm.js",
+      "phase": 25,
+      "scope": "Independent Java binary floating-point lexical reconstruction and boundary rounding.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "docs/compatibility/behavior-profiles.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+        "docs/compatibility/java-api-parity-decisions.json"
+      ],
+      "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "focusedEvidence": ["model/behaviorLiterals.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+      "recordedOn": "2026-10-14"
+    },
+    {
+      "id": "JAVA-BEHAVIOR-INTERNAL-MODEL-JAVA-LITERAL-CONSTRUCTION",
+      "path": "internal/model/javaLiteralConstruction.js",
+      "phase": 25,
+      "scope": "Profile-selected literal lexical normalization and PlainLiteral language handling.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "docs/compatibility/behavior-profiles.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+        "docs/compatibility/java-api-parity-decisions.json"
+      ],
+      "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "focusedEvidence": ["model/behaviorLiterals.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+      "recordedOn": "2026-10-14"
+    },
+    {
+      "id": "JAVA-BEHAVIOR-INTERNAL-MODEL-JAVA-STRING-TRIM",
+      "path": "internal/model/javaStringTrim.js",
+      "phase": 25,
+      "scope": "Java String.trim code-unit boundary used by selected literal and XML contracts.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "docs/compatibility/behavior-profiles.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+        "docs/compatibility/java-api-parity-decisions.json"
+      ],
+      "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "focusedEvidence": ["model/behaviorLiterals.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+      "recordedOn": "2026-10-14"
+    },
+    {
+      "id": "JAVA-BEHAVIOR-INTERNAL-PARSING-JSONLD-JAVA-JSON-STRUCTURE",
+      "path": "internal/parsing/jsonld/javaJsonStructure.js",
+      "phase": 25,
+      "scope": "Native provider first-JSON-structure decoding, Unicode autodetection and malformed-input behavior.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "docs/compatibility/behavior-profiles.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+        "docs/compatibility/java-api-parity-decisions.json"
+      ],
+      "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "focusedEvidence": ["io/node/nodeDocumentLoader.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+      "recordedOn": "2026-10-14"
+    },
+    {
+      "id": "JAVA-BEHAVIOR-INTERNAL-PARSING-JSONLD-PROVIDER-JSONLD",
+      "path": "internal/parsing/jsonld/provider/jsonld.js",
+      "phase": 25,
+      "scope": "Maintained generated jsonld provider with the approved two-file context-limit patch, seven embedded components and reproducible build manifest.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "F_GOVERNED_DERIVED_MATERIAL",
+      "normativePublicSources": [
+        "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "docs/compatibility/behavior-profiles.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+        "docs/compatibility/java-api-parity-decisions.json",
+        "docs/provenance/rights-inventory.json"
+      ],
+      "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "focusedEvidence": ["internal/parsing/jsonld/behaviorJsonLd.test.js"],
+      "thirdPartyDependencies": [
+        "jsonld",
+        "canonicalize",
+        "lru-cache",
+        "rdf-canonize",
+        "setimmediate",
+        "yallist",
+        "rolldown"
+      ],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+      "recordedOn": "2026-10-14"
+    },
+    {
+      "id": "JAVA-BEHAVIOR-INTERNAL-PARSING-XML-XML-DTD-ATTRIBUTES",
+      "path": "internal/parsing/xml/xmlDtdAttributes.js",
+      "phase": 25,
+      "scope": "DTD attribute defaults and normalization under the selected XML provider policy.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "docs/compatibility/behavior-profiles.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+        "docs/compatibility/java-api-parity-decisions.json"
+      ],
+      "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "focusedEvidence": ["internal/parsing/xml/behaviorXml.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+      "recordedOn": "2026-10-14"
+    },
+    {
+      "id": "JAVA-BEHAVIOR-INTERNAL-PARSING-XML-XML-DTD-DECLARATIONS",
+      "path": "internal/parsing/xml/xmlDtdDeclarations.js",
+      "phase": 25,
+      "scope": "XML DTD declaration recognition without external acquisition.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "docs/compatibility/behavior-profiles.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+        "docs/compatibility/java-api-parity-decisions.json"
+      ],
+      "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "focusedEvidence": ["internal/parsing/xml/behaviorXml.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+      "recordedOn": "2026-10-14"
+    },
+    {
+      "id": "JAVA-BEHAVIOR-INTERNAL-PARSING-XML-XML-PROCESSING-POLICY",
+      "path": "internal/parsing/xml/xmlProcessingPolicy.js",
+      "phase": 25,
+      "scope": "Shared profile-selected XML entity, name, nesting and attribute limits with native counter units.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "docs/compatibility/behavior-profiles.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+        "docs/compatibility/java-api-parity-decisions.json"
+      ],
+      "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "focusedEvidence": ["internal/parsing/xml/behaviorXml.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+      "recordedOn": "2026-10-14"
+    },
+    {
+      "id": "JAVA-BEHAVIOR-INTERNAL-PROFILES-JAVA-DATATYPE-VALIDATION",
+      "path": "internal/profiles/javaDatatypeValidation.js",
+      "phase": 25,
+      "scope": "Native datatype pattern and facet validation using measured policy facts.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "docs/compatibility/behavior-profiles.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+        "docs/compatibility/java-api-parity-decisions.json"
+      ],
+      "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "focusedEvidence": ["profiles/behaviorProfiles.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+      "recordedOn": "2026-10-14"
+    },
+    {
+      "id": "JAVA-BEHAVIOR-INTERNAL-PROFILES-PROFILE-BEHAVIOR-CONTEXT",
+      "path": "internal/profiles/profileBehaviorContext.js",
+      "phase": 25,
+      "scope": "OWL language-profile check identity binding and resource policy.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "docs/compatibility/behavior-profiles.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+        "docs/compatibility/java-api-parity-decisions.json"
+      ],
+      "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "focusedEvidence": ["profiles/behaviorProfiles.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+      "recordedOn": "2026-10-14"
+    },
+    {
+      "id": "JAVA-BEHAVIOR-INTERNAL-RDFJS-SOURCE-STATEMENT-COUNT",
+      "path": "internal/rdfjs/sourceStatementCount.js",
+      "phase": 25,
+      "scope": "Private source statement occurrence metadata before RDF dataset deduplication.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "docs/compatibility/behavior-profiles.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+        "docs/compatibility/java-api-parity-decisions.json"
+      ],
+      "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "focusedEvidence": ["model/behaviorParserSelection.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+      "recordedOn": "2026-10-14"
+    },
+    {
+      "id": "JAVA-BEHAVIOR-INTERNAL-STORAGE-OWLXML-OWL-XML-PRESENTATION",
+      "path": "internal/storage/owlxml/owlXmlPresentation.js",
+      "phase": 25,
+      "scope": "Independent OWL/XML presentation and partial failure output for the Java profile.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "docs/compatibility/behavior-profiles.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+        "docs/compatibility/java-api-parity-decisions.json"
+      ],
+      "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "focusedEvidence": ["model/behaviorStorage.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+      "recordedOn": "2026-10-14"
+    },
+    {
+      "id": "JAVA-BEHAVIOR-INTERNAL-STORAGE-RDF-ENTITY-SECTIONS",
+      "path": "internal/storage/rdfEntitySections.js",
+      "phase": 25,
+      "scope": "Shared RDF entity sections and profile-selected native writer presentation.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "docs/compatibility/behavior-profiles.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+        "docs/compatibility/java-api-parity-decisions.json"
+      ],
+      "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "focusedEvidence": ["model/behaviorStorage.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+      "recordedOn": "2026-10-14"
+    },
+    {
+      "id": "JAVA-BEHAVIOR-INTERNAL-STORAGE-STORAGE-FAILURE-OUTPUT",
+      "path": "internal/storage/storageFailureOutput.js",
+      "phase": 25,
+      "scope": "Private association between a storage failure and its observed partial target output.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "docs/compatibility/behavior-profiles.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+        "docs/compatibility/java-api-parity-decisions.json"
+      ],
+      "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "focusedEvidence": ["model/behaviorStorage.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+      "recordedOn": "2026-10-14"
+    },
+    {
+      "id": "JAVA-BEHAVIOR-INTERNAL-STORAGE-STORAGE-FORMAT-PARAMETERS",
+      "path": "internal/storage/storageFormatParameters.js",
+      "phase": 25,
+      "scope": "Format-specific parameter interpretation and failure timing.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "docs/compatibility/behavior-profiles.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+        "docs/compatibility/java-api-parity-decisions.json"
+      ],
+      "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "focusedEvidence": ["model/behaviorStorage.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+      "recordedOn": "2026-10-14"
+    },
+    {
+      "id": "JAVA-BEHAVIOR-IO-NODE-DOCUMENT-BYTES",
+      "path": "io/node/documentBytes.js",
+      "phase": 25,
+      "scope": "Node stream acquisition and independently implemented first-entry ZIP framing around native compression and character decoders.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "docs/compatibility/behavior-profiles.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+        "docs/compatibility/java-api-parity-decisions.json"
+      ],
+      "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "focusedEvidence": ["io/node/nodeDocumentLoader.test.js"],
+      "thirdPartyDependencies": ["lzma-native", "iconv-lite"],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+      "recordedOn": "2026-10-14"
+    },
+    {
+      "id": "JAVA-BEHAVIOR-IO-NODE-JSON-LD-DOCUMENT-RESPONSE",
+      "path": "io/node/jsonLdDocumentResponse.js",
+      "phase": 25,
+      "scope": "Java JSON-LD provider response status, media type, alternate-link and charset behavior.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "docs/compatibility/behavior-profiles.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+        "docs/compatibility/java-api-parity-decisions.json"
+      ],
+      "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "focusedEvidence": ["io/node/nodeDocumentLoader.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+      "recordedOn": "2026-10-14"
+    },
+    {
+      "id": "JAVA-BEHAVIOR-IO-NODE-NODE-DOCUMENT-LOADER",
+      "path": "io/node/nodeDocumentLoader.js",
+      "phase": 25,
+      "scope": "Caller-authorized Node file and HTTP transport with native timeout, attempt, redirect, credential and compression semantics.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md",
+        "docs/compatibility/behavior-profiles.md",
+        "https://www.w3.org/TR/owl2-syntax/"
+      ],
+      "compatibilityReferences": [
+        "docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json",
+        "docs/compatibility/java-api-parity-decisions.json"
+      ],
+      "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "focusedEvidence": ["io/node/nodeDocumentLoader.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
+      "recordedOn": "2026-10-14"
     }
   ],
   "compatibilityResearch": [

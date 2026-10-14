@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.StringDocumentSource;
+import org.semanticweb.owlapi.formats.FunctionalSyntaxDocumentFormat;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.profiles.*;
 
@@ -222,9 +223,18 @@ public final class RunRC2Profiles {
         input = input.replaceAll("\\b" + prefix.getKey() + ":([A-Za-z][A-Za-z0-9]*)", "<" + prefix.getValue() + "$1>");
       }
       var manager = OWLManager.createOWLOntologyManager();
-      var ontology = manager.loadOntologyFromOntologyDocument(new StringDocumentSource(input));
       Map<String,Object> row = new LinkedHashMap<>();
       row.put("id",entry.getKey()); row.put("input",input);
+      OWLOntology ontology;
+      try {
+        ontology = manager.loadOntologyFromOntologyDocument(new StringDocumentSource(input, IRI.create("urn:profile-fixture:" + entry.getKey()), new FunctionalSyntaxDocumentFormat(), null));
+        row.put("parsedFormat", manager.getOntologyFormat(ontology).getKey());
+        row.put("axiomCount", ontology.getAxiomCount());
+      } catch (OWLOntologyCreationException error) {
+        row.put("parseError", error.getClass().getSimpleName());
+        output.add(row);
+        continue;
+      }
       Map<String,Object> profiles = new LinkedHashMap<>();
       for (OWLProfile profile : List.of(new OWL2DLProfile(),new OWL2ELProfile(),new OWL2QLProfile(),new OWL2RLProfile())) {
         Map<String,Object> result = new LinkedHashMap<>();

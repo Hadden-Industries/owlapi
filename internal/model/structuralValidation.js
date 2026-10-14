@@ -1,6 +1,11 @@
 import { OWLObjectKind as K } from "../../model/kinds.js";
 import { ResourceLimitError } from "../../io/errors.js";
-import { IRI, OWLStructuralObject } from "../../model/structural.js";
+import {
+  IRI,
+  OWLStructuralObject,
+  structuralKey,
+} from "../../model/structural.js";
+import { RDF_NAMESPACE } from "../rdfjs/vocabulary.js";
 import {
   OWLDataFactory,
   createSourcePreservingDataFactory,
@@ -59,22 +64,41 @@ export const validateStructuralShape = (value) => {
   }
 };
 
-/** Recheck factory invariants and stored-key/field agreement after every child
+/** Recheck representation invariants and stored-key/field agreement after every child
  * has passed the data-only shape check. Public OWLStructuralObject constructors
  * cannot manufacture a false-valid report by supplying different key tuples.
  */
 export const createStructuralValidator = () => {
-  const factory = createSourcePreservingDataFactory(new OWLDataFactory());
+  // Structural authenticity accepts values from either supported factory.
+  // OWL-language semantics, including empty enumerations, are checked separately.
+  const factory = createSourcePreservingDataFactory(
+    new OWLDataFactory({ behaviorProfileId: "java-owlapi-5.5.1" }),
+  );
   return (value) => {
     let rebuilt;
     try {
       if (value.kind === K.IRI) rebuilt = IRI.create(value.value);
-      else if (value.kind === K.LITERAL)
-        rebuilt = factory.getOWLLiteral(
-          value.lexicalForm,
-          value.language || value.datatype,
-        );
-      else if (value.kind === K.INVERSE_OBJECT_PROPERTIES_AXIOM) {
+      else if (value.kind === K.LITERAL) {
+        // Construction overloads can normalize lexical or language forms.
+        // Validate the stored representation without invoking an overload again.
+        if (
+          typeof value.lexicalForm !== "string" ||
+          typeof value.language !== "string" ||
+          value.datatype?.kind !== K.DATATYPE ||
+          (value.language !== "" &&
+            value.datatype.iri.value !== RDF_NAMESPACE + "langString")
+        )
+          return fail();
+        if (
+          structuralKey(K.LITERAL, [
+            value.lexicalForm,
+            value.language,
+            value.datatype,
+          ]) !== key(value)
+        )
+          return fail();
+        return;
+      } else if (value.kind === K.INVERSE_OBJECT_PROPERTIES_AXIOM) {
         if (value.properties.length !== 2) return fail();
         rebuilt = factory.getOWLInverseObjectPropertiesAxiom(
           value.properties[0],
@@ -117,8 +141,8 @@ export const createStructuralValidator = () => {
 export const validateStructuralGraph = (
   root,
   supportedKinds,
-  maxDepth = 512,
-  maxAnnotationDepth = 64,
+  maxDepth = Infinity,
+  maxAnnotationDepth = Infinity,
 ) => {
   if (!root || Array.isArray(root) || typeof root !== "object")
     throw new TypeError("Expected an OWL object");

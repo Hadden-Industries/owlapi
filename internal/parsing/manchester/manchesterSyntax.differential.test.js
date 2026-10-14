@@ -242,6 +242,6 @@ describe("Manchester Syntax OWLAPI 5.5.1 structural differential", () => {
       ambiguous: [],
       unsatisfied: [],
     });
-    expect(reconciliation.matches).toHaveLength(2);
+    expect(reconciliation.matches).toHaveLength(0);
   });
 });

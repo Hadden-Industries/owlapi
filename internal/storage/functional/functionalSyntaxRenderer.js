@@ -2,6 +2,7 @@ import { parseIri } from "@hyperjump/uri";
 import { parse as parseLanguageTag } from "bcp-47";
 import { OWLOntologyStorageError } from "../../../io/errors.js";
 import { OWLObjectKind } from "../../../model/kinds.js";
+import { XSD_NAMESPACE } from "../../rdfjs/vocabulary.js";
 import {
   minimumTwoSetFields,
   repeatSingleton,
@@ -27,7 +28,7 @@ const fullIri = (iri) => {
   return `<${iri.value}>`;
 };
 
-const renderLiteral = (literal, render) => {
+const renderLiteral = (literal, render, _labels, { forceXsdString }) => {
   const { lexicalForm, language } = literal;
   if (typeof lexicalForm !== "string" || !lexicalForm.isWellFormed()) {
     notRepresentable("A literal must contain well-formed Unicode characters");
@@ -37,7 +38,11 @@ const renderLiteral = (literal, render) => {
   const quoted = `"${lexicalForm.replaceAll("\\", "\\\\").replaceAll('"', '\\"')}"`;
   if (typeof language !== "string")
     notRepresentable("Invalid literal language");
-  if (!language) return `${quoted}^^${render(literal.datatype)}`;
+  if (!language)
+    return !forceXsdString &&
+      literal.datatype.iri.value === `${XSD_NAMESPACE}string`
+      ? quoted
+      : `${quoted}^^${render(literal.datatype)}`;
   let invalid = false;
   const parsed = parseLanguageTag(language, {
     normalize: false,
@@ -355,7 +360,10 @@ const sorted = (values) =>
   });
 
 /** Render only a committed direct ontology snapshot, without I/O or inference. */
-export const renderFunctionalSyntax = (snapshot) => {
+export const renderFunctionalSyntax = (
+  snapshot,
+  { forceXsdString = true } = {},
+) => {
   const labels = new Map();
   const render = (object) => {
     if (!object || !Object.hasOwn(renderers, object.kind)) {
@@ -363,7 +371,7 @@ export const renderFunctionalSyntax = (snapshot) => {
         `No Functional Syntax rendering for structural kind ${object?.kind}`,
       );
     }
-    return renderers[object.kind](object, render, labels);
+    return renderers[object.kind](object, render, labels, { forceXsdString });
   };
   const header = render(snapshot.ontologyID);
   const body = [

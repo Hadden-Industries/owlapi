@@ -15,8 +15,36 @@ export const INSTALLED_TEST_SCRIPTS = Object.freeze([
   "installed-package-import-purity.mjs",
   "installed-package-no-network.mjs",
   "installed-package-import-closure.mjs",
+  "installed-node-transport.mjs",
 ]);
 const testRoot = fileURLToPath(new URL("../test/", import.meta.url));
+
+/** Carry the reviewed production script decisions into isolated consumer roots.
+ * npm owns enforcement; a dependency cannot grant itself install-script access.
+ */
+export const productionInstallScriptPolicy = () => {
+  const manifest = JSON.parse(
+    readFileSync(new URL("../package.json", import.meta.url), "utf8"),
+  );
+  const lock = JSON.parse(
+    readFileSync(new URL("../package-lock.json", import.meta.url), "utf8"),
+  );
+  return Object.fromEntries(
+    Object.entries(lock.packages)
+      .filter(
+        ([path, record]) => path && !record.dev && record.hasInstallScript,
+      )
+      .map(([path, record]) => {
+        const name = record.name ?? path.split("node_modules/").at(-1);
+        const identity = `${name}@${record.version}`;
+        if (!Object.hasOwn(manifest.allowScripts, identity))
+          throw new Error(
+            `Missing production install-script decision: ${identity}`,
+          );
+        return [identity, manifest.allowScripts[identity]];
+      }),
+  );
+};
 
 /** Materialize identical consumer exercises using each real native installation name. */
 export const writeInstalledConsumerFixtures = (
@@ -45,7 +73,7 @@ export const writeInstalledConsumerFixtures = (
     const fixture =
       dependencyName === "owlapi"
         ? source
-        : source.replaceAll('"owlapi', `"${dependencyName}`);
+        : source.replaceAll(/"owlapi(?="|\/)/gu, `"${dependencyName}`);
     writeFileSync(join(directory, name), fixture);
   }
 };

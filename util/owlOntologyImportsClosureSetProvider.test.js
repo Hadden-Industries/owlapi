@@ -51,7 +51,7 @@ describe("OWLOntologyImportsClosureSetProvider", () => {
     expect(captured[1]).toBe(imported);
   });
 
-  it("freezes membership at construction and returns a fresh defensive Set", () => {
+  it("reads current membership at each call and returns a fresh defensive Set", () => {
     const dataFactory = new OWLDataFactory();
     const manager = new OWLOntologyManager({ dataFactory });
     const root = manager.createOntology(
@@ -76,30 +76,32 @@ describe("OWLOntologyImportsClosureSetProvider", () => {
       snapshotManager,
       root,
     );
+    expect(closureReads).toBe(0);
     mutableManagerResult.add(later);
     const first = provider.ontologies();
     const second = provider.ontologies();
 
-    expect(closureReads).toBe(1);
+    expect(closureReads).toBe(2);
     expect(first).not.toBe(second);
-    expect([...first]).toEqual([root]);
-    expect([...second]).toEqual([root]);
+    expect([...first]).toEqual([root, later]);
+    expect([...second]).toEqual([root, later]);
     first.clear();
-    expect([...provider.ontologies()]).toEqual([root]);
+    expect([...provider.ontologies()]).toEqual([root, later]);
   });
 
-  it("propagates the manager's typed foreign-ontology failure", () => {
+  it("propagates the manager's typed foreign-ontology failure at query creation", () => {
     const dataFactory = new OWLDataFactory();
     const owner = new OWLOntologyManager({ dataFactory });
     const otherManager = new OWLOntologyManager({ dataFactory });
     const foreignRoot = owner.createOntology();
 
+    const provider = Reflect.construct(OWLOntologyImportsClosureSetProvider, [
+      otherManager,
+      foreignRoot,
+    ]);
     let thrown;
     try {
-      Reflect.construct(OWLOntologyImportsClosureSetProvider, [
-        otherManager,
-        foreignRoot,
-      ]);
+      provider.ontologies();
     } catch (error) {
       thrown = error;
     }

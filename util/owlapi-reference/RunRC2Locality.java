@@ -8,6 +8,7 @@ import java.io.StringWriter;
 import org.semanticweb.owlapi.functional.renderer.FunctionalSyntaxObjectRenderer;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.StringDocumentSource;
+import org.semanticweb.owlapi.formats.FunctionalSyntaxDocumentFormat;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.modularity.locality.*;
 
@@ -22,15 +23,22 @@ public final class RunRC2Locality {
   }
   public static void main(String[] arguments) throws Exception {
     var manager = OWLManager.createOWLOntologyManager();
-    var ontology = manager.loadOntologyFromOntologyDocument(new StringDocumentSource(Files.readString(Path.of(arguments[0]))));
+    var ontology = manager.loadOntologyFromOntologyDocument(new StringDocumentSource(Files.readString(Path.of(arguments[0])), IRI.create("urn:locality:root"), new FunctionalSyntaxDocumentFormat(), null));
     List<OWLAxiom> axioms = ontology.axioms().sorted(Comparator.comparing(Object::toString)).toList();
     Set<OWLAxiom> probeSet = new LinkedHashSet<>(axioms);
+    List<Map<String,String>> rejectedInputs = new ArrayList<>();
     if (arguments.length > 2) {
       var profiles = new ObjectMapper().readTree(Files.readString(Path.of(arguments[2])));
       for (var row : profiles.get("observations")) {
         var probeManager = OWLManager.createOWLOntologyManager();
-        var probe = probeManager.loadOntologyFromOntologyDocument(new StringDocumentSource(row.get("input").asText()));
-        probe.axioms().forEach(probeSet::add);
+        try {
+          var probe = probeManager.loadOntologyFromOntologyDocument(new StringDocumentSource(row.get("input").asText(), IRI.create("urn:locality:" + row.get("id").asText()), new FunctionalSyntaxDocumentFormat(), null));
+          if (row.has("parseError")) throw new IllegalStateException("Profile/locality parse admission differs");
+          probe.axioms().forEach(probeSet::add);
+        } catch (OWLOntologyCreationException error) {
+          if (!row.has("parseError")) throw error;
+          rejectedInputs.add(Map.of("id", row.get("id").asText(), "error", error.getClass().getSimpleName()));
+        }
       }
     }
     List<OWLAxiom> probeAxioms = probeSet.stream().sorted(Comparator.comparing(Object::toString)).toList();
@@ -78,7 +86,7 @@ public final class RunRC2Locality {
       Predicate<OWLAxiom> filter = axiom -> !axiom.signature().anyMatch(entity -> entity.getIRI().toString().equals("urn:module:C") && axiom.signature().anyMatch(other -> other.getIRI().toString().equals("urn:module:B")));
       chainCases.put(mode.name(),Map.of("all",extractor.extract(java.util.stream.Stream.of(seed)).map(Object::toString).sorted().toList(),"filtered",extractor.extract(java.util.stream.Stream.of(seed),Optional.of(filter)).map(Object::toString).sorted().toList()));
     }
-    var fixture = Map.of("schemaVersion",1,"sourceRevision","b61ebe2da83daceebb3e7ba7afbd2582c9240c33","runtimeQualification","EXISTING_RUNTIME_OBSERVATION_REQUIRES_FRESH_BUILD_BINDING","harness","util/owlapi-reference/RunRC2Locality.java","input",Files.readString(Path.of(arguments[0])),"singleAxiomCases",rows,"modules",modules,"chain",chainCases);
+    var fixture = Map.of("schemaVersion",1,"sourceRevision","b61ebe2da83daceebb3e7ba7afbd2582c9240c33","runtimeQualification","EXISTING_RUNTIME_OBSERVATION_REQUIRES_FRESH_BUILD_BINDING","harness","util/owlapi-reference/RunRC2Locality.java","input",Files.readString(Path.of(arguments[0])),"singleAxiomCases",rows,"modules",modules,"chain",chainCases,"rejectedInputs",rejectedInputs);
     ObjectMapper mapper = new ObjectMapper(); mapper.getFactory().configure(JsonGenerator.Feature.ESCAPE_NON_ASCII,true);
     Files.writeString(Path.of(arguments[1]),mapper.writerWithDefaultPrettyPrinter().writeValueAsString(fixture) + "\n");
   }

@@ -165,7 +165,7 @@ describe("JSON-LD manager integration", () => {
       documentLoader: {
         load: async (iri, options) => {
           expect(iri.value).toBe(importedIRI);
-          expect(options.purpose).toBeUndefined();
+          expect(options.purpose).toBe("ontology-import");
           return source(
             JSON.stringify({
               "@id": importedIRI,

@@ -103,10 +103,10 @@ const SPECIAL_DATATYPES = Object.freeze({
   string: XSD_NAMESPACE + "string",
 });
 const FACET_IRIS = Object.freeze({
-  "<": XSD_NAMESPACE + "minExclusive",
-  "<=": XSD_NAMESPACE + "minInclusive",
-  ">": XSD_NAMESPACE + "maxExclusive",
-  ">=": XSD_NAMESPACE + "maxInclusive",
+  "<": XSD_NAMESPACE + "maxExclusive",
+  "<=": XSD_NAMESPACE + "maxInclusive",
+  ">": XSD_NAMESPACE + "minExclusive",
+  ">=": XSD_NAMESPACE + "minInclusive",
   langRange: RDF_NAMESPACE + "langRange",
   length: XSD_NAMESPACE + "length",
   maxLength: XSD_NAMESPACE + "maxLength",
@@ -185,7 +185,7 @@ export class OWLManchesterSyntaxOWLParser {
     );
 
     while (this.#isBare("Import:")) {
-      this.#parseImport();
+      await this.#parseImport();
       const yieldRequest = this.#cooperate();
       if (yieldRequest) {
         await yieldRequest;
@@ -265,7 +265,7 @@ export class OWLManchesterSyntaxOWLParser {
   #parseImport() {
     this.#expectBare("Import:");
     const iri = this.#parseIri();
-    this.#transaction.addImportsDeclaration(
+    return this.#transaction.addImportsDeclaration(
       this.#dataFactory.getOWLImportsDeclaration(iri),
     );
   }

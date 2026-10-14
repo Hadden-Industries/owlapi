@@ -1,0 +1,152 @@
+{
+  "artifactId": "07538b70170a9ad3ad2c139e841927806f72b45a8808374dbc347983c94ef7ec",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5449,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "7b3638496004b2daed183a91c4ba45d3ef6331db6c9d0eb1dd882a505630c172",
+        "size": 1079,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "7e029ae991bdedf8de9d3af211cbca405ed0829b0d0b6887ecde5c4931841b21",
+        "size": 2485,
+        "type": "FILE"
+      },
+      {
+        "path": "package/SECURITY.md",
+        "sha256": "994ea9cf579d2164b7736a6728ba48773ae78b0ae8f20290bee63fc62bb7362e",
+        "size": 193,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin.js",
+        "sha256": "dc022adc093b9b79e1a0ef4b6bc3e6a52e3d627102113dad4afacbbe81f13a26",
+        "size": 2094,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build-test.js",
+        "sha256": "34c19ff8b6675d6d27c63a7df44d77a442805eeea8756d1c89e0264f4a3028f6",
+        "size": 398,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "a7ed0d5ae218a19bdbdf15a590d0893790ddf536313b66a787554693cfaae078",
+        "size": 390,
+        "type": "FILE"
+      },
+      {
+        "path": "package/node-gyp-build.js",
+        "sha256": "134f0585f7c665db89f332a379158c6f113274422e42aaf54e0aa9d5ac37f577",
+        "size": 6078,
+        "type": "FILE"
+      },
+      {
+        "path": "package/optional.js",
+        "sha256": "e0b3a3a04166e6ecf1020cb31c0c4a54432c16d6d88714bd4de2214cf67dec81",
+        "size": 143,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "9e8def3fbf123e28aa1ca4b6aa557fba4e66eecf6e86d170b61ec1c7ed51305d",
+        "size": 1004,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1079,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/7b/7b3638496004b2daed183a91c4ba45d3ef6331db6c9d0eb1dd882a505630c172",
+          "sha256": "7b3638496004b2daed183a91c4ba45d3ef6331db6c9d0eb1dd882a505630c172"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "7b3638496004b2daed183a91c4ba45d3ef6331db6c9d0eb1dd882a505630c172",
+        "size": 1079
+      },
+      {
+        "blob": {
+          "bytes": 2485,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/7e/7e029ae991bdedf8de9d3af211cbca405ed0829b0d0b6887ecde5c4931841b21",
+          "sha256": "7e029ae991bdedf8de9d3af211cbca405ed0829b0d0b6887ecde5c4931841b21"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "7e029ae991bdedf8de9d3af211cbca405ed0829b0d0b6887ecde5c4931841b21",
+        "size": 2485
+      }
+    ],
+    "expandedBytes": 13864,
+    "packageIdentity": {
+      "author": "Mathias Buus (@mafintosh)",
+      "homepage": "https://github.com/prebuild/node-gyp-build",
+      "license": "MIT",
+      "name": "node-gyp-build",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/prebuild/node-gyp-build.git"
+      },
+      "version": "4.8.4"
+    },
+    "packageMetadata": {
+      "author": "Mathias Buus (@mafintosh)",
+      "bin": {
+        "node-gyp-build": "./bin.js",
+        "node-gyp-build-optional": "./optional.js",
+        "node-gyp-build-test": "./build-test.js"
+      },
+      "bugs": {
+        "url": "https://github.com/prebuild/node-gyp-build/issues"
+      },
+      "description": "Build tool and bindings loader for node-gyp that supports prebuilds",
+      "devDependencies": {
+        "array-shuffle": "^1.0.1",
+        "standard": "^14.0.0",
+        "tape": "^5.0.0"
+      },
+      "homepage": "https://github.com/prebuild/node-gyp-build",
+      "imports": {
+        "fs": {
+          "bare": "builtin:fs",
+          "default": "fs"
+        },
+        "os": {
+          "bare": "builtin:os",
+          "default": "os"
+        },
+        "path": {
+          "bare": "builtin:path",
+          "default": "path"
+        }
+      },
+      "license": "MIT",
+      "main": "index.js",
+      "name": "node-gyp-build",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/prebuild/node-gyp-build.git"
+      },
+      "scripts": {
+        "test": "standard && node test"
+      },
+      "version": "4.8.4"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 5449,
+      "sha256": "940450fb4158bddc23ae156432a67338a4d7ab6a585b639c61b3b0a14d2bac24"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,6 +1,15 @@
 # Java OWLAPI reference harness
 
-The executable source pin is defined by `pinned-version.json`; as reconciled on 9 October 2026 it is `b61ebe2da83daceebb3e7ba7afbd2582c9240c33` (`owlapi-parent-5.5.1-9-gb61ebe2da`).
+The `java-owlapi-5.5.1` behavior work uses the released `f760b3a4` authority,
+Central/source paired captures and the current
+[provenance manifest](../../docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json).
+The [profile evidence README](../../docs/compatibility/profiles/java-owlapi-5.5.1/README.md)
+owns replay instructions and qualification status.
+Historical harness sections below keep their original pins; they do not qualify the new behavior profile.
+
+## Earlier harness authority
+
+The older executable source pin is defined by `pinned-version.json`; as reconciled on 9 October 2026 it is `b61ebe2da83daceebb3e7ba7afbd2582c9240c33` (`owlapi-parent-5.5.1-9-gb61ebe2da`).
 Historical fixtures and observations retain their recorded Java revisions; changing the current pin does not relabel their evidence.
 Native bundle transport and hosted qualification were delivered at the earlier pin, but shared reuse is currently disabled because its accepted publication catalogue covers `d7e997a53b470e32700de89cc610d9daf01ea769`.
 Use fresh native preparation and live comparisons for the current pin; see [ADR 0012](../../docs/adr/0012-gated-native-java-reference-reuse.md) for the implementation and operating history.

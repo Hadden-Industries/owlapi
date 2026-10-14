@@ -1,5 +1,9 @@
 # Canonical VOWL prerequisites
 
+The [behavior profile contract](behavior-profiles.md) now governs explicit Java versus normative selection and resource defaults.
+The rule table and bounded source-assessment guarantees below describe `normative-v1`; Java uses the released native datatype and profile rules.
+An unverified report never certifies validity or invalidity: `isInProfile()` throws its resource/capability failure.
+
 These additions implement the owning-library prerequisites authorized by the Canonical VOWL plan.
 They do not extend the accepted Phase 21 or Phase 22 decision sets or assert completion of either phase.
 Executable Java parity, installed-package qualification and final independent review remain separate evidence gates.
@@ -12,7 +16,7 @@ It accepts a package ontology; unresolved unmanaged imports remain unverified.
 Private manager membership supplies closure authority, so overriding a public manager query cannot hide imported violations.
 
 The formal `status` describes the structural OWL model and is `valid`, `invalid` or `unverified`.
-`isInProfile()` is true only for `valid`.
+`isInProfile()` returns true for `valid`, false for `invalid`, and throws for `unverified`.
 `getViolations()` returns immutable records with stable `code` identifiers and contextual fields.
 `getOntology()` and `getProfile()` preserve input identity.
 `getSourceAssessment()` returns the optional independent source assessment.

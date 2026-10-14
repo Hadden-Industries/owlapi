@@ -11,6 +11,8 @@ The active [rc.2 Java-parity programme](plans/0.1.0-rc.2-java-parity.md) separat
 
 Current supporting contracts and delivery records:
 
+- [Behavior profiles](compatibility/behavior-profiles.md): current Java/normative selection, native defaults, resource/access boundaries and qualification status.
+  The typed current section of the existing parity ledger preserves separate historical receipts.
 - [Installed OWL contract](compatibility/installed-owl-contract.md): shared producer CI/release qualification and reviewed consumer-source coverage, without application acceptance as a producer prerequisite.
 - [RDF/XML writer configuration](compatibility/rdfxml-writer-configuration.md): five settings, prefix operations, supported parameters, Java adaptations and resource limits.
 - [Profile default-policy inventory](compatibility/default-behavior-inventory.md) and [repair plan](plans/2026-10-05-profile-performance-and-default-behavior-repair-plan.md): scheduling and profile-only deadline migration.
@@ -21,7 +23,7 @@ Current supporting contracts and delivery records:
 Authoritative machine-readable records:
 
 - `compatibility/capabilities.json`: `REQUIRED_V1` migration-capability and release-status matrix; the historical label is not an npm major-version promise.
-- `performance/resource-budgets.json`: finite resource limits and benchmark policy.
+- `performance/resource-budgets.json`: normative finite resource limits and benchmark policy; the Java behavior contract retains native provider limits and removes JS-only defaults.
 - `performance/benchmark-corpus.json`: pinned real-world and generated benchmark inputs.
 - `provenance/provenance.json`: legacy-source dispositions, new-module provenance records, and recorded compatibility research.
 - `conformance/suites.json`: pinned external standards and behavioural references.

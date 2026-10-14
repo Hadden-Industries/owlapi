@@ -1,0 +1,135 @@
+[
+  {
+    "probeId": "RunRC2Profiles",
+    "arguments": ["${PROBE_WORKSPACE}\\RunRC2Profiles.json"],
+    "centralResultSha256": "6c759e5578809d88b9a9e364125711606fad578310ca21421d87db3df5559077",
+    "sourceResultSha256": "6c759e5578809d88b9a9e364125711606fad578310ca21421d87db3df5559077",
+    "areSelectedResultsEquivalent": true
+  },
+  {
+    "probeId": "RunRC2QueryMatrix",
+    "arguments": [
+      "${PROBE_WORKSPACE}\\selected-ontology.ofn",
+      "${PROBE_WORKSPACE}\\RunRC2QueryMatrix.json"
+    ],
+    "centralResultSha256": "eb4fc661d0e53b672880a0d3b63b2a2af0e9143ae23a61afe8c037b9f941710b",
+    "sourceResultSha256": "eb4fc661d0e53b672880a0d3b63b2a2af0e9143ae23a61afe8c037b9f941710b",
+    "areSelectedResultsEquivalent": true
+  },
+  {
+    "probeId": "RunRC2Search",
+    "arguments": [
+      "${PROBE_WORKSPACE}\\selected-ontology.ofn",
+      "${PROBE_WORKSPACE}\\RunRC2Search.json"
+    ],
+    "centralResultSha256": "8281474ca6f66896ec3cd03740270bdaed136c96e15315846ea0ab5a32a7abd7",
+    "sourceResultSha256": "8281474ca6f66896ec3cd03740270bdaed136c96e15315846ea0ab5a32a7abd7",
+    "areSelectedResultsEquivalent": true
+  },
+  {
+    "probeId": "RunRC2Providers",
+    "arguments": ["${PROBE_WORKSPACE}\\RunRC2Providers.json"],
+    "centralResultSha256": "c5c792f0a64d101ac0d1472e3b468bf38b00e1b6db6d89cdaa64a39c512b86ac",
+    "sourceResultSha256": "c5c792f0a64d101ac0d1472e3b468bf38b00e1b6db6d89cdaa64a39c512b86ac",
+    "areSelectedResultsEquivalent": true
+  },
+  {
+    "probeId": "RunRC2Renderer",
+    "arguments": ["${PROBE_WORKSPACE}\\selected-ontology.ofn"],
+    "centralResultSha256": "5333bae088bdabcba3003d11fb4226d2458b7335e3fe09190134052b98c7a3b3",
+    "sourceResultSha256": "5333bae088bdabcba3003d11fb4226d2458b7335e3fe09190134052b98c7a3b3",
+    "areSelectedResultsEquivalent": true
+  },
+  {
+    "probeId": "RunRC2Locality",
+    "arguments": [
+      "${PROBE_WORKSPACE}\\selected-ontology.ofn",
+      "${PROBE_WORKSPACE}\\RunRC2Locality.json",
+      "${PROBE_WORKSPACE}\\RunRC2Profiles.json"
+    ],
+    "centralResultSha256": "50c5b70fc15de55ac1f45f3b11b8b9308b4f74135d2038a927863bdbf771d654",
+    "sourceResultSha256": "50c5b70fc15de55ac1f45f3b11b8b9308b4f74135d2038a927863bdbf771d654",
+    "areSelectedResultsEquivalent": true
+  },
+  {
+    "probeId": "RunRC2LocalityFixedPoints",
+    "arguments": ["${PROBE_WORKSPACE}\\RunRC2LocalityFixedPoints.json"],
+    "centralResultSha256": "47e98fcccc0a62bb73e15bde7afdc96ad040fdc2cd1d48ecc1c4c4775968398d",
+    "sourceResultSha256": "47e98fcccc0a62bb73e15bde7afdc96ad040fdc2cd1d48ecc1c4c4775968398d",
+    "areSelectedResultsEquivalent": true
+  },
+  {
+    "probeId": "RunRC2TransformsMatrix",
+    "arguments": ["${PROBE_WORKSPACE}\\RunRC2TransformsMatrix.json"],
+    "centralResultSha256": "9b4dd4b4dd5652d543a94f4c250ee994298fe14af39bc2784ce2eb594bc621ed",
+    "sourceResultSha256": "9b4dd4b4dd5652d543a94f4c250ee994298fe14af39bc2784ce2eb594bc621ed",
+    "areSelectedResultsEquivalent": true
+  },
+  {
+    "probeId": "RunRC2ParityEdges",
+    "arguments": [],
+    "centralResultSha256": "3194f1fe1e32678d3cb103cdb55c63fda49f7e7577ce2c70aedc61a163ae51d3",
+    "sourceResultSha256": "3194f1fe1e32678d3cb103cdb55c63fda49f7e7577ce2c70aedc61a163ae51d3",
+    "areSelectedResultsEquivalent": true
+  },
+  {
+    "probeId": "RunRC2Queries",
+    "arguments": [],
+    "centralResultSha256": "a465b4998732de00d4a389a6cf41ad040998de6e0dc032f8e320f37594862536",
+    "sourceResultSha256": "a465b4998732de00d4a389a6cf41ad040998de6e0dc032f8e320f37594862536",
+    "areSelectedResultsEquivalent": true
+  },
+  {
+    "probeId": "RunRC2Changes",
+    "arguments": [],
+    "centralResultSha256": "587c7c26c5ccc83e7fcd7ac355c6398b8e6660736517bde9e48cf552e53faca2",
+    "sourceResultSha256": "587c7c26c5ccc83e7fcd7ac355c6398b8e6660736517bde9e48cf552e53faca2",
+    "areSelectedResultsEquivalent": true
+  },
+  {
+    "probeId": "RunRC2Storage",
+    "arguments": [
+      "${PROBE_WORKSPACE}\\selected-ontology.ofn",
+      "OWL_XML",
+      "${PROBE_WORKSPACE}\\selected.owl.xml"
+    ],
+    "centralResultSha256": "127571d6727079ba9a12e7c6f29cdd6c596e369b16ce891c04fa21ea5cb35676",
+    "sourceResultSha256": "127571d6727079ba9a12e7c6f29cdd6c596e369b16ce891c04fa21ea5cb35676",
+    "areSelectedResultsEquivalent": true
+  },
+  {
+    "probeId": "RunRC2Storage",
+    "arguments": [
+      "${PROBE_WORKSPACE}\\selected-ontology.ofn",
+      "TURTLE",
+      "${PROBE_WORKSPACE}\\selected.ttl"
+    ],
+    "centralResultSha256": "1f9f3245f8f4c9c369b617db786589c736fef3eb8f7f871ab3250a320e11f6f6",
+    "sourceResultSha256": "1f9f3245f8f4c9c369b617db786589c736fef3eb8f7f871ab3250a320e11f6f6",
+    "areSelectedResultsEquivalent": true
+  },
+  {
+    "probeId": "RunRC2Storage",
+    "arguments": [
+      "${PROBE_WORKSPACE}\\selected-ontology.ofn",
+      "OWL_XML",
+      "${PROBE_WORKSPACE}\\selected-https.owl.xml",
+      "HTTPS_ONTOLOGY_IRI"
+    ],
+    "centralResultSha256": "b21a09888e53ec0dd9739529929a10cbd69ae5fc57ed4646d7550fc5c65ed9cd",
+    "sourceResultSha256": "b21a09888e53ec0dd9739529929a10cbd69ae5fc57ed4646d7550fc5c65ed9cd",
+    "areSelectedResultsEquivalent": true
+  },
+  {
+    "probeId": "RunRC2Storage",
+    "arguments": [
+      "${PROBE_WORKSPACE}\\selected-ontology.ofn",
+      "TURTLE",
+      "${PROBE_WORKSPACE}\\selected-https.ttl",
+      "HTTPS_ONTOLOGY_IRI"
+    ],
+    "centralResultSha256": "27b5bbba10ca4fd07d7c89d5565bad8c9e18a14e20fca2409381f6edfa09f267",
+    "sourceResultSha256": "27b5bbba10ca4fd07d7c89d5565bad8c9e18a14e20fca2409381f6edfa09f267",
+    "areSelectedResultsEquivalent": true
+  }
+]

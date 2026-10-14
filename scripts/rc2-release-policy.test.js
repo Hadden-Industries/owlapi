@@ -64,7 +64,7 @@ test("rc.2 configuration selects all eleven paths without inheriting rc.1 public
   );
   expect(PACKAGE_VERSION).toBe(version);
   expect(manifest.version).toBe(version);
-  expect(PUBLIC_SUBPATHS).toHaveLength(11);
+  expect(PUBLIC_SUBPATHS).toHaveLength(12);
   expect(control).toMatchObject({
     enabled: true,
     mode: "DIRECT_OIDC",

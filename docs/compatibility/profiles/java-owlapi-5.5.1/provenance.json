@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "behaviorProfileId": "java-owlapi-5.5.1",
+  "qualification": {
+    "status": "qualified",
+    "completedAt": "2026-10-14T09:09:15.137Z",
+    "evidenceManifestPath": "evidence-manifest.json"
+  },
+  "upstream": {
+    "repositoryUrl": "https://github.com/owlcs/owlapi",
+    "releaseVersion": "5.5.1",
+    "gitObjectFormat": "sha1",
+    "tag": {
+      "name": "owlapi-parent-5.5.1",
+      "objectType": "tag",
+      "tagObjectId": "8003508e8c185579898ca4eda1245f808461d06a",
+      "peeledCommitObjectId": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "taggedAt": "2024-09-08T13:30:53Z",
+      "signature": {
+        "verificationStatus": "unsigned",
+        "signerFingerprint": null,
+        "verificationEvidencePath": null
+      }
+    },
+    "commit": {
+      "commitObjectId": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "treeObjectId": "6b87391a36b7341f7253f57046b5b8621d3d0ac8",
+      "subject": "OWLAPI version 5.5.1",
+      "committedAt": "2024-09-07T20:46:24Z",
+      "signature": {
+        "verificationStatus": "unsigned",
+        "signerFingerprint": null,
+        "verificationEvidencePath": null
+      }
+    }
+  },
+  "mavenCentral": {
+    "repositoryUrl": "https://repo.maven.apache.org/maven2",
+    "primaryCoordinate": {
+      "groupId": "net.sourceforge.owlapi",
+      "artifactId": "owlapi-distribution",
+      "version": "5.5.1"
+    },
+    "artifacts": [
+      {
+        "groupId": "net.sourceforge.owlapi",
+        "artifactId": "owlapi-distribution",
+        "version": "5.5.1",
+        "artifactType": "pom",
+        "classifier": null,
+        "byteLength": 15061,
+        "sha256": "07fdcdbf9ed09174d9c2f61a11d9ea6ef2c562f105714c5e7a95359c5dca98c4",
+        "signature": {
+          "verificationStatus": "verified",
+          "signerFingerprint": "C55B55B3B376584205FC74019B12DCAC50DE39AB",
+          "verificationEvidencePath": "evidence/pom-signature.log",
+          "signerTrustDecisionReference": "README.md#provenance-admission"
+        }
+      },
+      {
+        "groupId": "net.sourceforge.owlapi",
+        "artifactId": "owlapi-distribution",
+        "version": "5.5.1",
+        "artifactType": "jar",
+        "classifier": null,
+        "byteLength": 3199677,
+        "sha256": "747b1a5269fee2992487dcde946f16dfbc14aa458d50854994a0485cf263ce07",
+        "signature": {
+          "verificationStatus": "verified",
+          "signerFingerprint": "C55B55B3B376584205FC74019B12DCAC50DE39AB",
+          "verificationEvidencePath": "evidence/jar-signature.log",
+          "signerTrustDecisionReference": "README.md#provenance-admission"
+        }
+      }
+    ],
+    "dependencyLock": {
+      "path": "java-dependencies.lock.json",
+      "sha256": "df6e8ad787443ebce9116469ec387850380bd3f97037b7d369a2ff5fd7ba0b04",
+      "repositoryUrl": "https://repo.maven.apache.org/maven2",
+      "oracleExecutionClosureStatus": "complete",
+      "sourceBuildClosureStatus": "complete"
+    }
+  },
+  "toolchain": {
+    "jdk": {
+      "distributionName": "Eclipse Temurin",
+      "version": "25.0.4.1+1-LTS",
+      "distributionArchiveSha256": null,
+      "installationIdentityEvidencePath": "evidence/tool-identities.json"
+    },
+    "maven": {
+      "version": "3.9.15",
+      "distributionArchiveSha256": "b0d9292f06c5faded31ddcb6cb69099f316d6fea40a7778624b259bad9fed18a"
+    },
+    "operatingSystem": {
+      "name": "Windows 11",
+      "version": "10.0",
+      "architecture": "amd64"
+    }
+  },
+  "sourceBuild": {
+    "sourceCommitObjectId": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+    "requiresCleanCheckout": true,
+    "checkoutVerificationStatus": "clean",
+    "invocation": {
+      "executable": "mvn",
+      "arguments": [
+        "-B",
+        "-ntp",
+        "-s",
+        "${OWLAPI_SOURCE}/util/owlapi-reference/reference-reuse-settings.xml",
+        "-gs",
+        "${OWLAPI_SOURCE}/util/owlapi-reference/reference-reuse-settings.xml",
+        "-Dmaven.repo.local=${QUALIFICATION_WORKSPACE}/repository",
+        "-f",
+        "${QUALIFICATION_WORKSPACE}/source/pom.xml",
+        "-pl",
+        "distribution",
+        "-am",
+        "-Dmaven.test.skip=true",
+        "-Dno-javadoc=true",
+        "package",
+        "org.apache.maven.plugins:maven-dependency-plugin:3.11.0:build-classpath",
+        "-DincludeScope=runtime",
+        "-Dmdep.outputFile=target/owlapi-runtime-classpath.txt"
+      ],
+      "workingDirectory": "${OWLAPI_SOURCE}",
+      "environment": {}
+    },
+    "dependencyResolutionMode": "online-with-offline-replay",
+    "artifactComparison": {
+      "centralJarSha256": "747b1a5269fee2992487dcde946f16dfbc14aa458d50854994a0485cf263ce07",
+      "rebuiltJarSha256": "7816f2553e41014446c10a4e541ec308431d835e37b7e434183489e080213612",
+      "areJarsByteIdentical": false,
+      "byteDifferenceExplanation": "README.md#source-build-comparison",
+      "behavioralComparisonEvidencePath": "behavior-comparison.json"
+    }
+  },
+  "oracle": {
+    "harnessSourceCommitObjectId": "31638db1e270d7a5e98cee8a4499e5d4d4b1b829",
+    "fixtureManifestSha256": "d1dc8095d4564d11b99661e0c0a4a443c82a0e9cf56a830a55b12f2829036f51",
+    "observationManifestSha256": "98a34f0788c182b4ee181cd13b2bf172e8ac2dbe33c56dde9280fc9ef24419b1",
+    "invocation": {
+      "executable": "node",
+      "arguments": [
+        "util/owlapi-reference/replay-behavior-research.mjs",
+        "${QUALIFICATION_WORKSPACE}/oracle/classpath.txt",
+        "${QUALIFICATION_WORKSPACE}/central-probes"
+      ],
+      "workingDirectory": ".",
+      "environment": {}
+    },
+    "classpathLockSha256": "df6e8ad787443ebce9116469ec387850380bd3f97037b7d369a2ff5fd7ba0b04"
+  }
+}

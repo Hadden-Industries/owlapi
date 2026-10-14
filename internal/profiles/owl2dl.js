@@ -4,6 +4,7 @@ import { ENTITY_KINDS, OWLObjectKind as K } from "../../model/kinds.js";
 import {
   readOntologySnapshot,
   readProfileClosure,
+  readOntologyBehaviorDefinition,
 } from "../../model/owlOntology.js";
 import { readSourceEvidence } from "../model/sourceEvidence.js";
 import { readSourceArity } from "../model/sourceArity.js";
@@ -16,8 +17,13 @@ import {
 } from "../rdfjs/vocabulary.js";
 import { createProfileBudget } from "./budget.js";
 import { inspectProfileRules } from "./profileRules.js";
+import { defaultBehaviorProfileDefinition } from "../behavior/ontologyBehaviorContext.js";
 import { inspectLiteral, isBuiltinDatatype } from "./datatypes.js";
 import { inspectFacet } from "./facets.js";
+import {
+  inspectJavaFacet,
+  inspectJavaLiteral,
+} from "./javaDatatypeValidation.js";
 import {
   inspectPropertyHierarchy,
   propertyKey,
@@ -100,6 +106,7 @@ const checkModel = async (
   members,
   includeSource,
   profile,
+  validationPolicy,
 ) => {
   const violations = [],
     unverified = [],
@@ -141,6 +148,12 @@ const checkModel = async (
         const entry = pending.pop(),
           value = entry.value;
         if (!value || typeof value !== "object") continue;
+        if (
+          !validationPolicy.inspectsAnnotationValues &&
+          entry.annotationContext &&
+          [K.LITERAL, K.ANONYMOUS_INDIVIDUAL].includes(value.kind)
+        )
+          continue;
         budget.depth(entry.depth);
         validateStructuralShape(value);
         if (Array.isArray(value)) {
@@ -199,7 +212,14 @@ const checkModel = async (
       validateStructure(nodes[index].value);
     }
     if (profile !== "DL")
-      await inspectProfileRules(profile, axioms, nodes, budget, violate);
+      await inspectProfileRules(
+        profile,
+        axioms,
+        nodes,
+        budget,
+        violate,
+        validationPolicy,
+      );
     for (const { value: axiom } of axioms) {
       await budget.checkpoint();
       if (axiom.kind === K.DECLARATION_AXIOM)
@@ -230,7 +250,15 @@ const checkModel = async (
         const iri = value.iri.value;
         if (!entities.has(iri)) entities.set(iri, new Set());
         entities.get(iri).add(value.kind);
-        if (reserved(iri) && !builtin(value))
+        if (
+          reserved(iri) &&
+          !builtin(value) &&
+          !(
+            value.kind === K.DATATYPE &&
+            validationPolicy.allowsUnknownXsdDatatypes &&
+            iri.startsWith(XSD)
+          )
+        )
           violate("RESERVED_ENTITY_IRI", { scope, iri, kind: value.kind });
         if (value.kind === K.DATATYPE && node.definition) {
           const definition = node.definition.iri.value;
@@ -241,13 +269,18 @@ const checkModel = async (
       }
       if (value.kind === K.ANONYMOUS_INDIVIDUAL) {
         anonymous.push(node);
-        if (node.anonymousForbidden)
+        if (
+          validationPolicy.checksAnonymousStructure &&
+          node.anonymousForbidden
+        )
           violate("ANONYMOUS_INDIVIDUAL_POSITION", {
             scope,
             kind: node.anonymousForbidden,
           });
       }
       const setField = minimumTwoSetFields.get(value.kind);
+      if (value.kind === K.OBJECT_ONE_OF && value.individuals.length === 0)
+        violate("SET_CONSTRUCTOR_ARITY", { scope, kind: value.kind });
       if (setField && value[setField].length < 2) {
         const original = readSourceArity(value);
         violate(
@@ -261,13 +294,17 @@ const checkModel = async (
       if (
         value.kind === K.DATA_PROPERTY &&
         value.iri.value === OWL + "topDataProperty" &&
-        !(
-          node.parent?.kind === K.SUB_DATA_PROPERTY_AXIOM &&
-          node.field === "superProperty"
-        )
+        (validationPolicy.topDataPropertyRestriction === "not-sub-property"
+          ? node.parent?.kind === K.SUB_DATA_PROPERTY_AXIOM &&
+            node.field === "subProperty"
+          : !(
+              node.parent?.kind === K.SUB_DATA_PROPERTY_AXIOM &&
+              node.field === "superProperty"
+            ))
       )
         violate("TOP_DATA_PROPERTY_POSITION", { scope });
       if (
+        validationPolicy.requiresUnaryDataRanges &&
         (value.kind === K.DATA_SOME_VALUES_FROM ||
           value.kind === K.DATA_ALL_VALUES_FROM) &&
         value.properties.length !== 1
@@ -282,7 +319,13 @@ const checkModel = async (
         violate("CLASS_DATATYPE_COLLISION", { iri });
       if (kinds.has(K.DATATYPE)) {
         const count = definitions.get(iri)?.size ?? 0;
-        if (isBuiltinDatatype(iri) ? count !== 0 : count !== 1)
+        if (
+          validationPolicy.requiresUniqueDatatypeDefinition
+            ? isBuiltinDatatype(iri)
+              ? count !== 0
+              : count !== 1
+            : reserved(iri) && count !== 0
+        )
           violate("DATATYPE_DEFINITION_COUNT", { iri, count });
       }
     }
@@ -333,11 +376,10 @@ const checkModel = async (
             datatype: value.datatype.iri.value,
           });
         else {
-          const result = await inspectLiteral(
-            value,
-            budget.configuration,
-            budget,
-          );
+          const result =
+            validationPolicy.literalValidation === "java-pattern"
+              ? inspectJavaLiteral(value)
+              : await inspectLiteral(value, budget.configuration, budget);
           if (result.status === "invalid")
             violate(result.rule, { scope, datatype: value.datatype.iri.value });
           if (result.status === "unverified")
@@ -348,6 +390,13 @@ const checkModel = async (
         }
       }
       if (value.kind === K.DATATYPE_RESTRICTION) {
+        if (
+          !isBuiltinDatatype(value.datatype.iri.value) &&
+          validationPolicy.definedDatatypeRestrictionOutcome === "exception"
+        )
+          throw new RangeError(
+            "The restricted datatype is not a built in datatype",
+          );
         if (!isBuiltinDatatype(value.datatype.iri.value))
           violate("DEFINED_DATATYPE_RESTRICTION", {
             scope,
@@ -356,12 +405,14 @@ const checkModel = async (
         else
           for (const facet of value.facetRestrictions) {
             await budget.checkpoint();
-            const result = await inspectFacet(
-              value.datatype,
-              facet,
-              budget.configuration,
-              budget,
-            );
+            const result = validationPolicy.checksFacetValueSpace
+              ? await inspectFacet(
+                  value.datatype,
+                  facet,
+                  budget.configuration,
+                  budget,
+                )
+              : inspectJavaFacet(value.datatype, facet);
             if (result.status === "invalid")
               violate(result.rule, {
                 scope,
@@ -377,7 +428,8 @@ const checkModel = async (
           }
       }
     }
-    await inspectAnonymousGraph(axioms, anonymous, budget, violate);
+    if (validationPolicy.checksAnonymousStructure)
+      await inspectAnonymousGraph(axioms, anonymous, budget, violate);
   } catch (error) {
     if (error instanceof StructuralValidationError)
       violate("STRUCTURAL_OBJECT_INVALID");
@@ -437,9 +489,23 @@ const checkModel = async (
 };
 
 /** Read and inspect one complete, root-inclusive closure before any consumer filter. */
-export const checkOWL2Profile = async (ontology, options, profile = "DL") => {
-  const budget = createProfileBudget(options);
+export const checkOWL2Profile = async (
+  ontology,
+  options,
+  profile = "DL",
+  behaviorProfileDefinition = defaultBehaviorProfileDefinition,
+) => {
+  const budget = createProfileBudget(options, behaviorProfileDefinition);
   const closure = readProfileClosure(ontology);
+  if (
+    closure.ontologies.some((member) => {
+      const definition = readOntologyBehaviorDefinition(member);
+      return definition && definition !== behaviorProfileDefinition;
+    })
+  )
+    throw new TypeError(
+      "OWL profile checker and imported ontology behavior profiles must match",
+    );
   const members = closure.ontologies.map((member, scope) => ({
     ontology: member,
     scope,
@@ -452,6 +518,7 @@ export const checkOWL2Profile = async (ontology, options, profile = "DL") => {
     members,
     false,
     profile,
+    behaviorProfileDefinition.owlLanguageProfilePolicy,
   );
   if (
     !budget.configuration.sourceAssessment ||
@@ -470,6 +537,7 @@ export const checkOWL2Profile = async (ontology, options, profile = "DL") => {
     members,
     true,
     profile,
+    behaviorProfileDefinition.owlLanguageProfilePolicy,
   );
   // Both passes assess the same captured revision. A source-only unsupported
   // construct leaves formal validity separate, but mutation invalidates that
@@ -490,5 +558,5 @@ export const checkOWL2Profile = async (ontology, options, profile = "DL") => {
   });
 };
 
-export const checkOWL2DL = (ontology, options) =>
-  checkOWL2Profile(ontology, options);
+export const checkOWL2DL = (ontology, options, behaviorProfileDefinition) =>
+  checkOWL2Profile(ontology, options, "DL", behaviorProfileDefinition);

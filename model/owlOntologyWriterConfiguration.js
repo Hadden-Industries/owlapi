@@ -1,24 +1,45 @@
+import { OntologyBehaviorContext } from "../internal/behavior/ontologyBehaviorContext.js";
+
 // Package-private native reader; the public namespace exports only the type.
 export let readOntologyWriterConfiguration;
 
+const DEFAULTS = Object.freeze({
+  indenting: true,
+  indentSize: 4,
+  banners: true,
+  labelsAsBanner: false,
+  saveIds: false,
+});
+
 /** Immutable bounded Java OWLAPI adaptation for RDF/XML presentation. */
 export class OWLOntologyWriterConfiguration {
-  #values = Object.freeze({
-    indenting: true,
-    indentSize: 4,
-    banners: true,
-    labelsAsBanner: false,
-    saveIds: false,
-  });
+  #behaviorContext;
+  #values = DEFAULTS;
 
   static {
     readOntologyWriterConfiguration = (configuration) => configuration.#values;
   }
 
-  constructor() {
-    if (arguments.length)
-      throw new TypeError("Writer configuration takes no arguments");
+  constructor(options) {
+    if (
+      options !== undefined &&
+      (!options ||
+        typeof options !== "object" ||
+        Array.isArray(options) ||
+        Object.keys(options).length !== 1 ||
+        !Object.hasOwn(options, "behaviorProfileId"))
+    )
+      throw new TypeError(
+        "Writer configuration accepts only an explicit behaviorProfileId",
+      );
+    this.#behaviorContext = new OntologyBehaviorContext(
+      options?.behaviorProfileId,
+    );
     Object.freeze(this);
+  }
+
+  getBehaviorProfileId() {
+    return this.#behaviorContext.behaviorProfileDefinition.behaviorProfileId;
   }
 
   isIndenting() {
@@ -41,8 +62,21 @@ export class OWLOntologyWriterConfiguration {
   }
 
   #with(name, value) {
-    const copy = new OWLOntologyWriterConfiguration();
-    copy.#values = Object.freeze({ ...this.#values, [name]: value });
+    const policy =
+      this.#behaviorContext.behaviorProfileDefinition.configurationPolicy;
+    if (policy.preservesNoOpWriterIdentity && this.#values[name] === value)
+      return this;
+    const copy = new OWLOntologyWriterConfiguration({
+      behaviorProfileId:
+        this.#behaviorContext.behaviorProfileDefinition.behaviorProfileId,
+    });
+    copy.#values = Object.freeze({
+      ...this.#values,
+      ...Object.fromEntries(
+        policy.writerCopyResetFields.map((field) => [field, DEFAULTS[field]]),
+      ),
+      [name]: value,
+    });
     return copy;
   }
 
@@ -64,9 +98,13 @@ export class OWLOntologyWriterConfiguration {
   withIndentSize(value) {
     if (typeof value !== "number")
       throw new TypeError("indentSize must be a number");
-    if (!Number.isInteger(value) || value < 0 || value > 2147483647) {
+    const minimum = this.#behaviorContext.behaviorProfileDefinition
+      .configurationPolicy.acceptsNegativeIndentSize
+      ? -2147483648
+      : 0;
+    if (!Number.isInteger(value) || value < minimum || value > 2147483647) {
       throw new RangeError(
-        "indentSize must be an integer from 0 through 2147483647",
+        `indentSize must be an integer from ${minimum} through 2147483647`,
       );
     }
     return this.#with("indentSize", value + 0);

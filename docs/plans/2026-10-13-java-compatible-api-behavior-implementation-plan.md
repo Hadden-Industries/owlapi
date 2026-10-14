@@ -1,766 +1,1368 @@
-# Java-compatible API behavior implementation plan
-
-**Status:** Draft for owner review.
-Research and proposed design are complete to the bounded extent recorded here; this revision is not accepted, baselined, implemented or release-qualified.
-
-**Date:** 2026-10-13.
-**Plan namespace:** JBC.
-Unqualified `REQ-###`, `AC-###`, `QA-###`, `DEC-###`, `SLICE-###`, `PROOF-###` and `CLEAN-###` identifiers belong to this document.
-All new requirements, scenarios and decisions below are **proposals**, not invented historical acceptance.
-
-**Intended outcome:** On the selected Java/JavaScript public API routes, a migrating Java OWLAPI user obtains the same accepted inputs, configuration methods and defaults, result classification, failure category and phase, callback/evaluation behavior, and manager/ontology/target consequences.
-A documented hidden behavioral difference does not satisfy this outcome.
-A pinned Java quirk remains the target for these concerns unless the owner changes this scope explicitly.
-
-## 1. Baseline, authority and scope
-
-### 1.1 Exact baseline and evidence
-
-| Authority                       | Revision or evidence                                                                                                                                                                                                                                                                                                                                                                                     |
-| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| JavaScript source               | `20426357165a22248985ec43d7ac1266d49d6bec`, tree `18a3895c9b65f585de4f713e783b35c6ba3bff6f`, `main`, package `0.1.0-rc.2`                                                                                                                                                                                                                                                                                |
-| Java OWLAPI source              | [`b61ebe2da83daceebb3e7ba7afbd2582c9240c33`](https://github.com/owlcs/owlapi/tree/b61ebe2da83daceebb3e7ba7afbd2582c9240c33), tree `b8dad5241dae6ff3bd3b755b9a1c605623eeb2c2`, `version5`                                                                                                                                                                                                                 |
-| Primary research                | [Behavior report](../compatibility/research/java-api-behavior/2026-10-13-owlapi-api-behavior-compatibility-research.md), SHA-256 `a07b268095e037e4e8d5b188a0bd78ba5300224f8ec4db3b9be7670259b60039`; [structured evidence](../compatibility/research/java-api-behavior/2026-10-13-owlapi-api-behavior-evidence.json), SHA-256 `8190c531b5a2a7920bf774c11fe49ae04919bf76e9230a42d0dbe1da4c087166`         |
-| Gap-closure research            | [Supplement](../compatibility/research/java-api-behavior/2026-10-13-owlapi-api-behavior-gap-closure-research.md), SHA-256 `055858f4bf1d6a9b8aa012b6bda646989e33c7e991db1739ab65055efcf87795`; [supplementary evidence](../compatibility/research/java-api-behavior/2026-10-13-owlapi-api-behavior-gap-closure-evidence.json), SHA-256 `ce1efafce28b4fd4893a09efeb12b90987f02e2811b728c3925d220108c99430` |
-| Canonical reference environment | Existing [CI](../../.github/workflows/ci.yml) and [release](../../.github/workflows/release.yml): Temurin `25.0.4+101.0.LTS`, checksum-pinned Maven 3.10.0, Linux native build under [reference-native-build.mjs](../../util/owlapi-reference/reference-native-build.mjs)                                                                                                                                |
-| Current local observations      | Node 24.21.0, Windows, Temurin 25.0.4.1+1; Chromium 156.0.8078.4 and WebKit 27.2; Firefox local launch unavailable                                                                                                                                                                                                                                                                                       |
-| Preserved unrelated work        | `docs/plans/2026-10-12-dependency-cruiser-architecture-hardening-plan.md` was already untracked and remains outside this plan                                                                                                                                                                                                                                                                            |
-
-The original research contains 13 findings, 68 source references, eight structured tables and six probe programs.
-The supplement adds seven bounded probe programs, 29 source records and a freshly compiled overlay of seven unchanged pinned Java source files.
-All 63 retained Java classpath digests match the original evidence.
-The overlay makes the selected manager, factory, configuration, storer and Rio implementation paths source-bound; all remaining Java classes and dependencies are still retained artifacts.
-Repository editions and portable snapshots are retained with the plan; the [research dossier](../compatibility/research/java-api-behavior/README.md) and [manifest](../compatibility/research/java-api-behavior/manifest.json) distinguish their hashes from the unchanged Drive originals and document host-path normalization and omitted source bodies.
-Neither these digests nor a clean checkout establish a complete fresh native source build.
-The existing hosted native gate remains required and source-build reuse remains inactive for the current pin.
-
-No source implementation, dependency installation, project configuration, commit, push, remote CI, release or consumer cutover is authorized by this planning artifact.
-
-### 1.2 Selected surface and non-goals
-
-The behavioral audit covers every currently matched route in the public registry, not just the 13 discovered examples: configuration, loading/imports, changes, transforms, selected queries/search, providers, profiles, locality and the existing four StringDocumentTarget save paths.
-New canonical configuration members needed to fulfill an already selected responsibility are included.
-The scope is not an implementation of every absent Java class or overload.
-
-Existing intentionally normative ontology/parser/profile **output-semantic** corrections remain in their separately admitted programme.
-This track does not automatically reverse their exact expected-difference rules or port every Java semantic bug.
-It does cover an acceptance/failure/timing consequence when an otherwise matched route rejects, admits or mutates differently.
-Every overlap with a normative correction must receive a case-specific classification; “standards compliant,” “safer,” “asynchronous JavaScript” or a broad adaptation label cannot waive a behavioral row.
-
-Pre-existing omitted capabilities stay separately visible: custom Writer/OutputStream/IRI storage targets and change/progress listener registration are not added here.
-JVM System properties and classpath resource lookup are absent host facilities in ordinary ECMAScript.
-They are not silently imitated by environment variables or network file discovery.
-These exclusions constrain parity claims; they do not excuse differing behavior on implemented instance methods or existing StringDocumentTarget routes.
-
-No new general workflow engine, Java implementation copy, compatibility shim, migration alias, default guard wrapper, public resource-limit family, release number, dist-tag, whole-Java-API claim or consumer policy is selected.
-
-### 1.3 HISEW applicability and authority
-
-The HISEW `hadden-industries-plan-software-change` planning skill (`0.1.0-dev.21`), current engine invocation guidance and engineering principles informed this draft.
-Personal workflow applicability is active.
-Read-only status found the project ready, no active lifecycle work, and no active engine risk-route selection.
-Current project ID is `f6ded748-f3c0-41f4-8e89-def537c290f4`; worktree ID is `6f8858af-3ef0-44bd-a5c8-a57b2f25d410`.
-
-Reuse the accepted R2 programme context recorded in the [rc.2 plan](0.1.0-rc.2-java-parity.md) and [baseline](0.1.0-rc.2-java-parity-baseline.md); do not reset completed slices or manufacture a new accepted route.
-At implementation intake, the maintainer must bind this exact accepted revision to the current route and re-evaluate only material scope/risk changes. This plan proposes R2 continuation with security and native-dependency specialist review. A requirement to add ambient JVM emulation, custom target/listener families, a new transport service or a materially broader dependency fork triggers replanning.
-
-The external evidence destination was rediscovered from current HISEW configuration as the configured external evidence root.
-Supplemental operator artifacts live only under the isolated session path ending `java-behavior-plan-research-20261013`.
-Engine-owned state/receipts were not edited.
-Legacy `.sdlc/runtime` and `.sdlc/tmp` are not new destinations.
-Unrelated feedback notices are outside this task.
-
-Current verification profiles were read, not executed as implementation proof.
-Capability inspection exposed procedure availability but did not establish a ready code/security reviewer executor.
-Resolve actual capabilities through the current supported procedure before any later review; do not treat discovery as a successful review or create a manual receipt.
-
-### 1.4 Existing authority and proposed supersession
-
-The latest user goal controls this proposed behavioral repair.
-Historical plans, approvals, publications and evidence retain their original meaning.
-Reconciliation must add dated, scoped amendments and regenerate current views from their owners; it must not rewrite old publication facts.
-
-| Existing authority                                                                                                                    | Retain                                                                                                                          | Proposed change for this track                                                                                                                                                                                                                      |
-| ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [rc.2 plan](0.1.0-rc.2-java-parity.md), section 1.2 and completed slices                                                              | Completed implementation history; canonical owners; producer independence; selected output semantics                            | Correct current claims of complete behavioral equivalence. RC2 REQ/AC-004, -007, -008, -010; DEC-005; QA-002/-004 and related claims no longer authorize atomic mutation/save or arbitrary finite defaults                                          |
-| [rc.2 baseline](0.1.0-rc.2-java-parity-baseline.md)                                                                                   | Java member/namespace and type mapping that is actually structural                                                              | Revisit RC2-ADAPT-001 eager collections, -003 boolean/atomic changes and -006 async timing on affected matched routes; keep narrowly necessary overload/type mappings                                                                               |
-| [Default behavior inventory](../compatibility/default-behavior-inventory.md)                                                          | Inventory as a required public proof view                                                                                       | Replace retained strictness, default caps, blanket network opt-in, dataset rejection, atomic target and snapshot lifecycle rows with this plan's canonical observations; list omissions explicitly                                                  |
-| [5 October profile/default plan](2026-10-05-profile-performance-and-default-behavior-repair-plan.md)                                  | OA-REQ-001 efficiency, -004 inventory, -006 producer qualification; accepted null profile deadline; measured performance method | Amend OA-REQ-002/-003/-005, OA-QA-002/-003 and default-policy decisions only where “documented differences” or resource rejection conflicts with Java behavior                                                                                      |
-| [Phase 21 foundation](java-api-parity-precondition.md), [decision ledger](../compatibility/java-api-parity-decisions.json) and schema | Immutable rc.1 history; canonical toString; appropriate JS error hierarchy mapping                                              | Supersede current `PARITY-TARGET-ATOMIC-COMMIT`. Keep Writer omission as an unavailable capability, withdraw claims that it is language-required or proves atomicity. Review `PARITY-STORAGE-REASON` causes; version the closed schema deliberately |
-| [WebVOWL](../requirements/java-parity-for-webvowl.md) and [UO requirements](../requirements/java-parity-for-universal-ontology.md)    | Public Java responsibility, no shims, consumer ownership and pinned admission                                                   | Consumers migrate their policy at their own adoption boundary; old consumer requirements do not override this target. No consumer sign-off is added to producer release gates                                                                       |
-| [Installed OWL contract](../compatibility/installed-owl-contract.md), native contract fixtures                                        | Exact installed-candidate provenance, native assertion accounting and producer/consumer separation                              | Replace old unchanged-target, atomic closure, safe-default and immutable-all-configuration assertions through reviewed versioned native cases; preserve 69-assertion coverage until explicitly migrated, never delete proof to obtain green results |
-| [Migration guide](../migration/0.1.0-java-api-parity.md), writer/resource-budget/performance docs, API views                          | Published history and valid independent performance/structure claims                                                            | Add current breaking-behavior migration instructions and remove stale current claims from owning sources; no aliases                                                                                                                                |
-| [KRSS1 oracle](../compatibility/krss1-behavioral-oracle.json), RDF metadata, expected differences                                     | Narrowly admitted normative output corrections and zero-tolerance unknown differences                                           | Separate structural output corrections from acceptance/error/timing rows. Do not use the ledger as a blanket behavioral exemption or silently expand this track to all grammar output defects                                                       |
-| [Java API surface](../compatibility/java-api-surface.json), capabilities and generated API.md                                         | Generator ownership and exact selected-member traceability                                                                      | Correct stale manager omittedMembers that list implemented change types; classify live provider, lazy search and capabilities accurately; regenerate all views together                                                                             |
-
-## 2. Requirements and falsifiable acceptance
-
-Every acceptance item is evaluated against the pinned source plus the named provider/runtime route.
-“Java has no limits” is not an acceptance statement.
-Java-visible provider limits, retries, failure phases and quirks are part of the target; private JS-only restrictions are not.
-
-| ID               | Requirement and acceptance criterion                                                                                                                                                                                                                                                                                                                        | Main proof      |
-| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- |
-| REQ-001 / AC-001 | A complete selected-route inventory maps every public binding/overload to Java authority, host mapping, configuration owner, observable vector and executable proof or explicit omitted capability. Zero unclassified matched routes and zero unknown behavioral deviations at release                                                                      | PROOF-001, -010 |
-| REQ-002 / AC-002 | Canonical loader/writer/manager configuration names, defaults, value domains, no-op identity, copy/reset behavior, override timing and effects match Java within the selected host capability. No invented JS defaults, aliases or constructor guard substitutes                                                                                            | PROOF-002       |
-| REQ-003 / AC-003 | Load selection, parser fallback, compatible default acceptance, graph selection, transport attempts and failure categories/phases match the selected native/Rio routes. The 9,000-space Functional document succeeds without a hint; positive controls retain annotation loading and THROW_EXCEPTION defaults                                               | PROOF-003, -004 |
-| REQ-004 / AC-004 | XML entity/configuration interpretation and failure recognition are qualified per Node and browser provider. Malformed input yields the measured public failure category/state at the proper phase; a nested parsererror cannot be mistaken for successful parsing                                                                                          | PROOF-005       |
-| REQ-005 / AC-005 | JSON-LD uses the selected Rio-equivalent default secure whitelist/cache behavior and supported-setting filtering. Public defaults admit the observed 13/25 allowlisted-context chains. Backend qualification separately admits 257 and rejects 258 under the same effective configuration as the Java system-property probe; no hidden JS cap of 10 remains | PROOF-006       |
-| REQ-006 / AC-006 | Matched changes expose canonical success/no-operation/unsuccessful outcomes and sequential effects, including inverse success, thrown partial effects and forward-rollback quirks. Result lists and indexes reflect actual state rather than assumed atomicity                                                                                              | PROOF-007       |
-| REQ-007 / AC-007 | Loading, retrying, renaming and removal reproduce retained imports, import-request markers, ontology/document identity indexes and ID-keyed configuration lifetime. No manager-wide cleanup removes Java-retained state                                                                                                                                     | PROOF-007, -003 |
-| REQ-008 / AC-008 | Valid structures accepted by Java pass every matched construction/change/transform/parse route without private inconsistent depth or annotation caps. Unsupported representation and actual runtime exhaustion remain distinguishable failures                                                                                                              | PROOF-008       |
-| REQ-009 / AC-009 | Profile result/verdict and evaluation phase match Java on the selected ontology/model. Private work/depth/numeric/literal defaults do not turn a valid assessment into unverified/false; null default deadline and existing normative rule outcomes are preserved                                                                                           | PROOF-008, -009 |
-| REQ-010 / AC-010 | Search consumption, locality callbacks and closure providers follow Java's eager/lazy/live behavior on each matched method. Empty-seed locality makes zero irrelevant filter calls; deferred search observes the correct state/failure on consumption; provider calls observe current closure                                                               | PROOF-009       |
-| REQ-011 / AC-011 | Each existing StringDocumentTarget save route has Java-compatible accumulation, reuse and failure effects. Private byte/tree/reparse/isomorphism admission gates cannot reject Java-accepted output. Writer configuration preserves observed copy/no-op/negative-int quirks                                                                                 | PROOF-002, -011 |
-| REQ-012 / AC-012 | One exact installed candidate satisfies migrated native assertions, full configured verification, canonical fresh Java reference execution, required Node/browser lanes and producer release evidence. Stale assertions, skipped engines, source-overlay results or mock-only comparisons cannot satisfy this criterion                                     | PROOF-010, -012 |
-
-### 2.1 Quality scenarios
-
-| ID     | Stimulus and environment                                                                                                                            | Falsifiable response                                                                                                                                                                                                                         |
-| ------ | --------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| QA-001 | Same small behavioral fixture through Java and an installed JS candidate, with identical modeled configuration and source/target state              | Equality of the ordered observable vector defined below; unexplained differences fail, even if final ontology structure matches                                                                                                              |
-| QA-002 | Inputs immediately below/at/above each discovered private default boundary, using bounded fixtures; source tracing for prohibitively large counters | Java-accepted cases have no additional JS admission failure; error kind and stage match at real Java limits. Resource exhaustion is never mislabeled as a profile violation or unrepresentability                                            |
-| QA-003 | Delayed connection, delayed response body, redirects, transient timeout and import failure using owned deterministic transports                     | Connection-only timeout and attempt/event ordering match the selected route; no hidden whole-parse deadline, retry, credential forwarding or publication behavior                                                                            |
-| QA-004 | Failed batch, failed root/import, rename/remove/recreate, reuse after error                                                                         | Exact returned outcome, enacted changes, manager indexes, import/config markers, ontology contents and target contents match the oracle at every observed phase                                                                              |
-| QA-005 | Native and cross-realm signals, malformed XML and repeated parsing in Node plus Chromium/Firefox/WebKit                                             | Runtime-specific public categories and state match the admitted host contract; no missing required browser result is treated as a pass                                                                                                       |
-| QA-006 | Empty/nonempty seed, throwing/recording filter, one-shot/deferred search, mutation between creation and consumption                                 | Same callback count/order, evaluation phase, visible state, exception timing and multiplicity; eager locality is not confused with lazy EntitySearcher                                                                                       |
-| QA-007 | Existing ontology/profile/locality workload after admission caps and extra validation are removed                                                   | Preserve semantic verdicts and the earlier measured profile efficiency objective on its approved benchmark; record time/peak memory and avoid a new input-dependent superlinear path. No arbitrary timing threshold becomes a public timeout |
-| QA-008 | Dependency enhancement and an untrusted remote context/entity fixture in isolated qualification                                                     | Zero unintended external requests; explicit allowlist/redirect/size capability events agree with Java; dependency provenance/licence and security assessment are complete before admission                                                   |
-| QA-009 | Exact package tarball installed in a clean fixture, with old and new native assertion versions accounted for                                        | All current required assertion IDs execute with no duplicate/missing IDs; current contract version rejects the old incompatible default/atomic behavior rather than passing through a weakened matcher                                       |
-| QA-010 | Interrupted implementation, partial candidate qualification or post-release regression                                                              | Maintainer can identify the last exact candidate, preserve evidence and restore the previous package without replaying successful partial ontology mutations. No unavailable rollback promise or silently reused stale evidence              |
-
-The common observable vector records input identity; relevant instance/configuration values; API invocation/consumption phase; return category; stable error class/code and causal category; filter/loader/storer callbacks and order; target bytes/characters when relevant; manager members/IDs/document IRIs/import markers; ontology contents/revision/index freshness; and owned resource flush/close events where the capability exists.
-Normalize only structurally unavoidable host representations, such as an exception class mapped to the established JS Error subclass.
-Do not normalize missing events, earlier errors, lazy-to-eager shifts or partial state.
-
-## 3. Selected design decisions
-
-These decisions select a concrete implementation direction for review.
-They are not approvals to change the package.
-Alternatives become relevant only at the explicit failure/replan conditions.
-
-| ID      | Proposed decision                                                                                                                                             | Consequence and rejected alternative                                                                                                                                                                                                                                                                                                                                                           |
-| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| DEC-001 | Use pinned Java behavior as authority for matched non-structural behavior; admit only explicit host type/capability mappings                                  | A safer or more atomic JS result is still a failure. Preserve separately accepted normative output corrections by exact case; no global Java-bug exemption                                                                                                                                                                                                                                     |
-| DEC-002 | Implement canonical loader/writer/manager configuration objects and public methods, with one internal option authority and Java value/copy/identity semantics | Remove divergent generic bags/with aliases from the matched API during the breaking migration. Do not make current caps null through a new JS-only configuration facade                                                                                                                                                                                                                        |
-| DEC-003 | JVM System and classpath sources have no implicit ECMAScript substitute                                                                                       | Ordinary Node/browser builds have no JVM system/classpath source. Canonical instance overrides and Java built-in defaults apply. No process.env, globalThis, CWD, package-file scan or remote owlapi.properties lookup is introduced. Ambient JVM facilities are explicit omitted host capabilities, not changed defaults                                                                      |
-| DEC-004 | Route parsers and transports by the selected Java source/provider authority, applying supported options at the stage Java applies them                        | Preserve factory fallback and native/Rio distinctions. Choose a Node transport with actual connection-phase control for the native route; do not fake a connection timeout with a whole-operation AbortController deadline. Browser transport feasibility is an explicit capability gate                                                                                                       |
-| DEC-005 | Keep the current jsonld processor family through a maintained dependency enhancement with a supported context-bound/loader integration seam                   | Prefer a reviewed upstream release; if unavailable, use a separately maintained, versioned package fork of jsonld@9.0.0 with BSD-3-Clause notices and an explicit maintainer. Bind the dependency's internal context bound to the selected Java provider behavior; do not expose a fabricated OWLAPI max-context setter. Replan if maintainability, licence, browser or corpus admission fails |
-| DEC-006 | Express manager mutation/loading as the Java phase/state machine using existing ontology/index owners                                                         | Preserve partial progress, forward rollback and stale import/configuration markers where observed. Remove global preflight/full rollback assumptions; do not “fix” Java's pinned quirks                                                                                                                                                                                                        |
-| DEC-007 | Separate structure validity and operational implementation from default admission policy                                                                      | Iterative traversal/worklists and allocation discipline replace private depth/work checks on matched routes. Move structural-isomorphism and default-reparse proof out of production save admission and into qualification                                                                                                                                                                     |
-| DEC-008 | Match evaluation and consumption phase per API                                                                                                                | Pure in-memory profile/locality/model and StringDocumentTarget work is synchronous where Java is synchronous; EntitySearcher stream-shaped results become lazy single-use iterables, while locality performs its eager computation before exposing results. Existing promises/cooperative yields are not automatically structural adaptations                                                  |
-| DEC-009 | Repair existing StringDocumentTarget behavior without selecting missing custom-writer APIs                                                                    | Append to the same target, preserve prior and partial text exactly at the corresponding storer phase, and allow reuse. Keep getWriter/custom Writer/OutputStream/IRI targets explicitly omitted. Withdraw the old atomicity justification; no claim of full storage-API parity                                                                                                                 |
-| DEC-010 | Keep one owner for each semantic fact and generate compatibility views                                                                                        | Public membership stays owned by the existing registry generator. A new behavior-contract inventory owns route/scenario/proof classification; independent Java observations own expected outcomes. Human default inventory/API/capability views consume those owners                                                                                                                           |
-| DEC-011 | Security policy cannot silently change a matched default                                                                                                      | Match canonical Java controls and selected provider defaults. Application isolation/cancellation/network permissions belong to the explicit embedding host. If security review cannot accept that behavior, stop that slice and seek an explicit scope/design change rather than ship a private safeguard                                                                                      |
-| DEC-012 | Qualify one complete installed candidate and migrate existing assertions deliberately                                                                         | Preserve producer release independence and exact consumer pin admission. No staged release with incompatible mixtures of default, state and contract authority; no unreviewed assertion deletion or native-oracle reuse                                                                                                                                                                        |
-
-### 3.1 Canonical configuration contract
-
-The source authorities are [OWLOntologyLoaderConfiguration](https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyLoaderConfiguration.java), [ConfigurationOptions](https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/api/src/main/java/org/semanticweb/owlapi/model/parameters/ConfigurationOptions.java), [OWLOntologyWriterConfiguration](https://github.com/owlcs/owlapi/blob/b61ebe2da83daceebb3e7ba7afbd2582c9240c33/api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyWriterConfiguration.java), and the manager's HasOntologyLoaderConfiguration/HasOntologyWriterConfiguration interfaces.
-
-| Loader query / canonical modifier                                           | Pinned built-in default                                      | Required semantics and consumers                                                                                                                             |
-| --------------------------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| getConnectionTimeout / setConnectionTimeout                                 | 20000                                                        | Milliseconds for establishing connections, 0 unlimited; negative Java int accepted by configuration and may fail later at transport. No whole-parse deadline |
-| getRetriesToAttempt / setRetriesToAttempt                                   | 5                                                            | Same attempt count and zero/negative behavior; native helper's fifth SocketTimeoutException rule must remain visible                                         |
-| isFollowRedirects / setFollowRedirects                                      | true                                                         | Cross-protocol policy plus underlying provider behavior; false is not an automatic ban on native same-protocol redirects                                     |
-| isLoadAnnotationAxioms / setLoadAnnotationAxioms                            | true                                                         | Initial load and later manager annotation-change applicability, with ID-keyed lifetime                                                                       |
-| getMissingImportHandlingStrategy / setMissingImportHandlingStrategy         | THROW_EXCEPTION                                              | Canonical strategy values and failure/event phase; SILENT behavior proven separately                                                                         |
-| getMissingOntologyHeaderStrategy / setMissingOntologyHeaderStrategy         | INCLUDE_GRAPH                                                | Native/Rio graph/header treatment through actual parser routes                                                                                               |
-| isReportStackTrace / setReportStackTraces                                   | true                                                         | Report content/cause treatment, not a new parse policy                                                                                                       |
-| isStrict / setStrict                                                        | false                                                        | Canonical parser compatibility behavior, not a relabeling of current strict mode                                                                             |
-| isTreatDublinCoreAsBuiltIn / setTreatDublinCoreAsBuiltIn                    | true                                                         | Native parser semantic responsibility                                                                                                                        |
-| getPriorityCollectionSorting / setPriorityCollectionSorting                 | ON_SET_INJECTION_ONLY                                        | Factory/provider selection order at the corresponding mutation/lookup phase                                                                                  |
-| getAuthorizationValue / setAuthorizationValue                               | empty string                                                 | Exact transport use; never include secret values in reports                                                                                                  |
-| isAcceptingHTTPCompression / setAcceptingHTTPCompression                    | true                                                         | Negotiation and decoding in the selected transport                                                                                                           |
-| shouldTrimToSize / setTrimToSize                                            | true                                                         | Post-load trim phase; no invented admission cap                                                                                                              |
-| shouldRepairIllegalPunnings / setRepairIllegalPunnings                      | true                                                         | Existing selected semantic authority and parser application                                                                                                  |
-| getBannedParsers / setBannedParsers                                         | org.semanticweb.owlapi.rio.RioTrixParserFactory              | String matching and factory exclusion behavior; no JS-only parser ban                                                                                        |
-| getEntityExpansionLimit / setEntityExpansionLimit                           | string "100000000"                                           | Preserve string API, validation timing and native/Rio/JDK application; not a replacement-count/depth/bytes tuple                                             |
-| shouldSkipModuleAnnotations / withSkipModuleAnnotations                     | false                                                        | Selected locality/module annotation behavior                                                                                                                 |
-| shouldAllowDuplicatesInConstructSets / withAllowDuplicatesInConstructSets   | false                                                        | Selected construct semantics; do not expand the unrelated normative correction programme                                                                     |
-| addIgnoredImport, removeIgnoredImport, clearIgnoredImports, isIgnoredImport | Empty configured set plus Java's built-in ignored namespaces | Copy/no-op behavior and namespace membership, not only exact caller-added values                                                                             |
-
-Java integer parameters map to Number values in the signed 32-bit integer domain; booleans, strings, enum objects and nullability follow the declared Java type with an explicit JS type-error mapping.
-Java-inexpressible Number values do not create an “unlimited Infinity” API.
-Conversely, a negative Java int or string that Java accepts at the setter cannot be rejected early merely for safety.
-Establish each modifier's identity/copy rule from source/probe, including unusual ignored-import modifiers; do not assume every “set” mutates or every modifier returns a new instance.
-
-Loader getters resolve instance overrides dynamically.
-In Java, the remaining precedence is JVM System property, classpath owlapi.properties loaded at class initialization, then enum default.
-Ordinary ECMAScript has neither middle source: its admitted configuration-source vector is instance override then the same enum default.
-This is an explicit absent host capability, not a renamed default.
-A later embedded JVM bridge would require a separately selected host integration that supplies the real facilities and retains their exact timing/coercion; no bridge is implemented here.
-The Java probes still test all four sources to prevent accidental claims of full JVM configuration-source coverage.
-
-Writer configuration has eight public option pairs: shouldSaveIdsForAllAnonymousIndividuals/withSaveIdsForAllAnonymousIndividuals=false; shouldRemapAllAnonymousIndividualsIds/withRemapAllAnonymousIndividualsIds=true; isUseNamespaceEntities/withUseNamespaceEntities=false; isIndenting/withIndenting=true; isLabelsAsBanner/withLabelsAsBanner=false; shouldUseBanners/withBannersEnabled=true; getIndentSize/withIndentSize=4; shouldOutputNamedGraphIRI/withNamedGraphIRIEnabled=false.
-These are writer-instance defaults, not an excuse to route every writer getter through ConfigurationOptions.
-The private copy operation omits indent size and banners; a changed modifier can reset those fields.
-Same-value modifiers return the same object.
-Negative indent ints are accepted.
-Test chained modifications and emitted output, not only getters.
-
-Expose the canonical manager getOntologyLoaderConfiguration/setOntologyLoaderConfiguration and getOntologyWriterConfiguration/setOntologyWriterConfiguration with Java ownership and replacement behavior.
-Loading an ontology can retain a configuration association independent of subsequent manager replacement.
-OWLDocumentFormat parameter mutability/key semantics remain their own authority; the Rio adapter applies only settings the actual provider reports.
-Do not freeze or JSON-snapshot every parameter just because the current generic JS bag is immutable.
-
-### 3.2 Default restrictions and complete finding disposition
-
-The inventory below is the minimum finding coverage, not the full matched-route inventory required by AC-001.
-
-| Finding / extension           | Current divergence and selected repair                                                                                                                                                                                                                  | Slice / proof                            |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
-| F01                           | Structural depth 512 and annotation depth 64 differ across add/change/transform/Manchester/Turtle, with wrong expressionDepth diagnostics. One validity/traversal authority without non-Java default admission; retain input-path consistency           | SLICE-008; PROOF-008                     |
-| F02                           | Profile work 1000000, depth 256/hard 512, numeric length 4096/hard 65536 and literal length 1048576 UTF-16 can produce unverified/false for valid Java input. Remove their default verdict influence; preserve null timeout and normative profile rules | SLICE-009; PROOF-008/-009                |
-| F03                           | Save caps at 32 MiB plus term/tree/construction bounds, loader reparse gates and private isomorphism work 1000000 reject Java-accepted data. Rendering owns correctness; independent qualification owns round-trip/isomorphism proof                    | SLICE-011; PROOF-011                     |
-| F04                           | Loader custom fields/defaults/value validation disagree with canonical methods, Java connection/retry/redirect/entity semantics and option lifetime. Replace the policy bag on matched routes with canonical authority                                  | SLICE-002/-003/-004; PROOF-002/-003/-004 |
-| F05                           | Default strict Turtle, multi-graph rejection and unused external-entity rejection differ from selected Java acceptance. Match route-specific default acceptance and failure phase; do not infer universal parser behavior                               | SLICE-003/-004; PROOF-003/-005           |
-| F06                           | 8192-byte sniff and fallback only after ParserMismatch reject 9000-space Functional input without a hint. Match factory order, retry/fallback and retained parser diagnostics                                                                           | SLICE-003; PROOF-003                     |
-| F07 / GAP-03                  | Boolean net change, whole-batch rollback, thrown collision cleanup and result details differ. Preserve Java ChangeApplied outcomes, sequential state and forward-rollback quirk                                                                         | SLICE-006; PROOF-007                     |
-| F08 / GAP-04                  | Annotation false applies to later adds; rename/remove leave configuration keyed to old ID. Preserve those associations and same-manager lifetime                                                                                                        | SLICE-006/-007; PROOF-002/-007           |
-| F09                           | Writer modifier identity, omitted copy fields and negative ints differ. Port the observed value/identity consequences through canonical methods                                                                                                         | SLICE-002/-011; PROOF-002/-011           |
-| F10 / GAP-02                  | Existing StringDocumentTarget replaces instead of appending; failed-save consequences cannot be assumed atomic. Characterized custom Writer remains omitted, not proof of a JS limitation                                                               | SLICE-011; PROOF-011                     |
-| F11                           | Empty-seed locality invokes a filter unnecessarily; EntitySearcher eagerly consumes Java-deferred work. Match each algorithm's actual eager/lazy boundary and exception phase                                                                           | SLICE-010; PROOF-009                     |
-| F12                           | Hostnames beginning fc/fd are mistaken for private IPv6 and denied. Parse address literals correctly and apply only the selected Java/provider policy; no blanket private-network rule without authority                                                | SLICE-003/-005; PROOF-004/-006           |
-| F13 / GAP-01                  | jsonld.js private context cap 10 differs from selected hasmac 256 check/257 admissions. Rio secure/cache defaults true, whitelist 25; several format settings ignored. Admit the dependency enhancement and exact provider settings                     | SLICE-005; PROOF-006                     |
-| GAP-04 additional             | Root failure retains successful new imports; retry can observe failed-import markers. Preserve existing and new member/index/config state at every load phase                                                                                           | SLICE-007; PROOF-007                     |
-| GAP-05 additional             | Browser adapter returns normally for nested parsererror documents while Node rejects. Observed adapter behavior only; qualify public parse error/fallback/publication before fixing the relevant seam                                                   | SLICE-004; PROOF-005                     |
-| Matched provider audit        | ImportsClosureSetProvider currently snapshots construction-time closure; Java observes live manager state. Include removed/foreign ontology ownership and lifecycle cases                                                                               | SLICE-010; PROOF-009                     |
-| Matched language/parser audit | KRSS/DL/RDF and profile ledgers mix acceptance and normative output corrections. Classify each selected route, including full-IRI positive controls and integer input-domain boundaries, without reversing unrelated output corrections                 | SLICE-001/-003; PROOF-001/-003           |
-
-F04's current numeric restrictions are all inventoried, not just maxInputBytes: maxAnnotationDepth 64; maxAxioms/maxBlankNodes/maxRdfListLength 1000000; maxExpressionDepth/maxXmlNestingDepth 512; maxImportCount 256; maxImportDepth 32; maxInputBytes/maxRemoteDocumentBytes 33554432; maxQuads/maxTokenCount 5000000; maxTokenLength 1048576; maxRedirects/maxRetries 0; maxSniffBytes 8192; timeoutMs 30000; XML entity declarations 256, replacement length 65536, nesting 16 and expanded bytes 33554432.
-The default remote-import/context false flags and strict/single-graph modes also need canonical-route disposition.
-Do not merely raise these numbers or leave a private hard maximum behind a nullable public field.
-Optional safety limits survive only where an actual selected Java configuration authority permits the same semantics; other host policy is external and explicit.
-
-### 3.3 Single authorities, seams and failure ownership (DRY-01)
-
-| Semantic fact / proposed owner                                                                                                                                                                  | Consumers and dependency direction                                                     | Deployment and failure contract                                                                                                                                        |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Java public membership: existing `util/generate-java-api-surface.mjs` and its source metadata                                                                                                   | Generated java-api-surface.json/.md, API.md, capability assertions and package exports | Regenerate as one change. Stale/unknown route or omitted-member mismatch fails registry qualification                                                                  |
-| Behavioral route classification: proposed `docs/compatibility/java-api-behavior-contract.json` plus schema                                                                                      | Default-behavior inventory, scenario selection, proof reports and migration coverage   | One owner for route IDs, source authority and proof links. It does not generate Java expected results or duplicate public member authority                             |
-| Runtime configuration semantics: `model/owlOntologyLoaderConfiguration.js`, `model/owlOntologyWriterConfiguration.js` and a proposed internal canonical-option module under `internal/loading/` | Manager, parsers, transports and storers use getters at the measured phase             | No per-parser default tables. Changed option, invalid value and missing capability use their owning error category, not a generic resource error                       |
-| Manager state: `model/owlOntologyManager.js` with `internal/loading/managedOntologyIndex.js` and `internal/model/ontologyState.js`                                                              | Loading, mutation, search/query indexes and closure providers                          | One authoritative member/ID/document/config/import-marker state machine; derived caches invalidate on actual enacted changes, including unsuccessful/throwing batches  |
-| Structural validity: `internal/model/structuralValidation.js` and existing structural fields/transform owners                                                                                   | Change records, direct model entry, transforms, Manchester and RDF paths               | No duplicate depth admission. Validity errors describe actual invalid structure; allocation/stack failure is not “unsupported ontology”                                |
-| Transport/provider behavior: existing I/O loading path and syntax adapters                                                                                                                      | Parser registry delegates acquisition; JSON-LD uses its admitted loader seam           | Native/Rio/provider distinctions remain explicit. Connection/body/error phase recorded in tests; no fallback to a hidden transport with different policy               |
-| XML interpretation: existing `internal/parsing/xml/` authority                                                                                                                                  | OWL/XML, RDF/XML, profile XML literals and browser/Node adapters                       | One entity/configuration policy; provider-specific error recognition normalized at the correct boundary, with public call-path proof                                   |
-| JSON-LD processing: maintained dependency API plus `internal/parsing/jsonld/jsonLdSyntaxAdapter.js`                                                                                             | JSON-LD parser and shared remote loader                                                | No second context expander or preflattening pipeline. Dependency admission failure blocks this slice and release                                                       |
-| Storage text/state: existing storer registry, format renderers and package-private target append seam                                                                                           | Four existing storers and StringDocumentTarget                                         | Format owns rendering/failure phase; target owns accumulated text. Qualification uses structural comparison; production does not reparse as a default acceptance guard |
-| Native expectations: independent Java harness observations                                                                                                                                      | Behavior differential runner and installed-contract assertion cases                    | Source/runtime/classpath/candidate identity required; no JS-generated expected result or mock simulating “what Java should do”                                         |
-| Release contract: existing installed OWL contract assertion inventory and qualification scripts                                                                                                 | Native reporter, candidate/release gates and downstream pin admission                  | Versioned migration with complete executed assertion accounting; no duplicated hand-maintained consumer oracle                                                         |
-
-If an implementation introduces a second authority for one of these facts, the owning slice must explain the distinct semantic responsibility or redesign before integration.
-Separate oracle expectations are intentionally independent proof, not runtime defaults duplicated for convenience.
-
-## 4. Vertical implementation slices and integration order
-
-The integration owner is the assigned owlapi implementer; the owlapi maintainer owns acceptance and security-policy decisions.
-Each specialist contributor owns the semantic boundary stated below, its proof and its migration notes.
-Concurrent execution is not authorized by this document alone.
-If separately authorized, parallelism follows semantic ownership, not file count.
-
-Every slice delivers a public behavior plus its independent oracle/installed assertion and current documentation classification.
-“Code complete, tests later” does not finish a slice.
-Predicted file locations identify owners and seams; they are not microscopic edit instructions or promises about future line numbers.
-
-### SLICE-001 — Admit the behavior contract and independent oracle
-
-**Outcome:** A reviewer can identify every matched route, its exact behavior target and the proof that will fail on the current divergence.
-Reconcile existing selected membership and stale omissions without resetting completed rc.2 work.
-
-**Scope and files:** Existing `util/generate-java-api-surface.mjs`, registry metadata, `docs/compatibility/java-api-surface.json/.md`, `API.md`, capabilities, current decision ledger/schema, `docs/compatibility/default-behavior-inventory.md`, and proposed behavior-contract JSON/schema.
-Extend the existing `util/owlapi-reference/` harness family and installed behavioral fixtures; add a focused `test/java-behavior/` suite rather than a second qualification framework.
-Behavioral rows reference public-member IDs and independent Java fixture IDs; generator output does not become the oracle.
-
-**Proof and completion:** PROOF-001 inventories all current bindings and each selected overload with one disposition: matched and proven; host representation mapping with a precise proof; or unavailable capability outside this track.
-It fails unknown routes, stale source pins, missing configuration consumers and broad unbounded adaptation statements.
-PROOF-002 through -011 start as reproducible failing behavioral cases on the baseline.
-Source-bound exploratory overlays remain labeled research; the future fresh reference build generates the admitted native expectations.
-An overlap review identifies which KRSS/DL/RDF/profile rows concern acceptance versus separately accepted output semantics.
-
-**Dependencies and handoff:** First slice; supplies a frozen contract revision to all subsequent slices.
-REQ/AC-001 and -012; QA-001/-009; DEC-001/-010/-012.
-The owner accepts new decisions and scoped supersessions before product implementation; drafting this plan does not perform that acceptance.
-CLEAN-001 removes superseded current authority only after its replacement is validated, preserving historical records.
-
-### SLICE-002 — Canonical configuration through observable effects
-
-**Outcome:** A caller constructs the Java-named configuration, uses the canonical methods, observes the correct object identity/copy behavior, and sees the values applied at the same phase.
-
-**Scope and files:** `model/owlOntologyLoaderConfiguration.js`, `model/owlOntologyWriterConfiguration.js`, `model/owlOntologyManager.js`, model exports and the internal option authority.
-Coordinate format parameter behavior with `formats/` and parser adapters.
-Remove the current divergent configuration-bag API from the matched surface without aliases.
-Reconcile exact accepted types, optional/null behavior and enum namespace mapping in the public registry.
-
-**Proof and completion:** PROOF-002 covers every table row, every option consumer and writer chain: default, changed value, repeated same value, copy isolation, chained indent/banner reset, negative int, 0 timeout, zero/negative retries, malformed string and failure timing.
-Include manager replacement before/after load, loadAnnotationAxioms true as a positive control, built-in ignored imports and mutation-time annotation filtering. Test format parameter mutability and unsupported Rio settings. Real JVM property/classpath precedence is separately recorded on Java; Node/browser tests confirm no fabricated ambient source or read at import time.
-Public defaults remain identical when those JVM host sources are absent.
-
-**Dependencies and handoff:** After SLICE-001.
-Configuration owner alone changes canonical values; parser/storage owners consume them. REQ/AC-002/-003/-007/-011; QA-001/-003/-004; DEC-002/-003.
-Complete shared option contract before parser or state slices integrate.
-CLEAN-002 retires unused bag fields/with aliases/default tables and their exports/tests/docs at the coordinated breaking boundary.
-
-### SLICE-003 — Loader selection, acceptance and native transport
-
-**Outcome:** Existing public loading routes accept Java-compatible documents and report errors at the right stage, with Java-compatible factory ordering, parser retries and import transport behavior.
-
-**Scope and files:** `io/` acquisition/loading owners, `model/owlOntologyManager.js` load entry, `internal/parsing/parserRegistry.js`, format selection/descriptors, lexical cursors and RDF/N3 preparation.
-Consumer responsibilities remain parser-specific; a new facade that merely catches all errors is not selected.
-The loader uses actual canonical getters at the observed phase and passes only supported values into each selected provider.
-
-**Proof and completion:** PROOF-003 covers no hint, explicit format, known extension/media type and misleading hint, leading whitespace beyond 8192, parser mismatch versus syntax failure, unsupported format and retained diagnostic ordering. Include strict false/true behavior, multiple graphs where the selected Java route accepts them, annotation true/false and THROW_EXCEPTION/SILENT controls.
-Existing formats outside the original examples receive matrix rows; normative output differences remain exactly scoped.
-
-PROOF-004 uses owned transport fakes at the transport interface for deterministic connection/read timing, and bounded loopback integration only when separately permitted by the verification environment. Verify timeout 0 and 20000 connect-only behavior, delayed bodies, zero/negative/default retries, the hard fifth socket-timeout branch, native same-protocol versus cross-protocol redirects, compression, authorization and cleanup after error. Prove ordinary fcorp.example/fd-prefixed DNS names are not IPv6 literals.
-Tests deny real external egress.
-
-The proposed Node implementation uses an existing maintained transport capability that exposes connection establishment separately from body consumption; prefer existing Node HTTP(S)/current dependency facilities over a new generic client. A browser fetch implementation must be characterized for redirects, opaque responses, CORS and connection-phase visibility. Where the browser cannot express an operation, classify that exact host capability as unavailable; do not apply a different hidden timeout/retry policy or advertise complete transport equivalence.
-
-**Dependencies and handoff:** After SLICE-001/-002; interfaces agreed with SLICE-004/-005 and manager integration owned jointly with SLICE-007.
-REQ/AC-003/-007; QA-001/-003/-008; DEC-001/-004/-011.
-CLEAN-003 removes obsolete sniff ceilings, fallback guards and transport-policy duplicates once all entry points are routed.
-
-### SLICE-004 — XML semantics across real providers
-
-**Outcome:** Selected OWL/XML, RDF/XML and XML-literal routes apply the canonical entity configuration and detect failure consistently with the qualified Java/provider path.
-
-**Scope and files:** `internal/parsing/xml/xmlParserAdapter.js`, `xmlEntityPolicy.js`, `xmlEntityDefaults.js`, `xmlNames.js`, OWL/XML and RDF/XML syntax adapters, `internal/profiles/xmlLiteral.js` and their consumer tests.
-Reuse XML parser native capability; do not turn a lexical prescan into a second XML parser or automatically reject declarations Java never expands.
-
-**Proof and completion:** PROOF-005 starts from the observed duplicate-attribute and empty-prefix cases, but executes through each public load/profile route before setting its expected error/state.
-The adapter's nested-parsererror acceptance is observed; malformed ontology publication has not been claimed.
-Add internal entity expansion, unused external declaration, used external entity, XML 1.0/1.1, control character, namespaces and nesting cases under the canonical Java/JDK and Node/browser providers. Test entity-expansion string values and their application/validation stage rather than treating all current byte/depth restrictions as Java defaults.
-
-Cover native and cross-realm AbortSignals only where an explicitly retained host operation uses them.
-A duck mock does not prove platform support.
-Chromium, Firefox and WebKit results are mandatory in the supported browser lanes; the local Firefox spawn failure is an environmental gate, not permission to waive Firefox.
-
-**Dependencies and handoff:** After SLICE-001/-002, shared load/error ordering from SLICE-003.
-REQ/AC-004/-008/-009; QA-001/-002/-005; DEC-004/-007/-011.
-CLEAN-004 removes duplicate private entity defaults and updates provider capability claims after all consumers pass.
-
-### SLICE-005 — JSON-LD dependency and Rio-equivalent defaults
-
-**Outcome:** A default public JSON-LD load succeeds through 13 and 25 allowlisted contexts, rejects an unlisted context before loading, and preserves selected Rio setting/filter/cache behavior without the JS private cap.
-
-**Scope and files:** `internal/parsing/jsonld/parser.js`, `jsonLdSyntaxAdapter.js`, existing JSON-LD compatibility adapter, the shared context loader, `package.json`/lock only for an admitted dependency artifact, browser import maps/bundling, dependency evidence/licence inventory. Keep the OWL/RDF mapping owner unchanged.
-The dependency enhancement owns only the missing supported context-processing control; it is not a second JSON-LD algorithm in owlapi.
-
-**Concrete dependency route:** The current jsonld@9.0.0 documentLoader capability is reused.
-A maintained enhancement must add a supported context-count control with documented counting/error phase, preserve cycle handling and allow the adapter to select the Java-provider bound without a new OWLAPI public setter. Prefer an upstream version that passes admission; otherwise maintain a separately versioned fork of that same dependency, retaining its BSD-3-Clause attribution and a small reviewed patch. The owlapi maintainer must accept ongoing maintenance/security ownership before adopting the artifact.
-If the fork needs broad algorithm replacement, loses supported browser execution, cannot meet callback/error phase, or cannot be licensed/maintained, stop and replan a processor replacement.
-No preflattening, dummy cycle counters, internal contextResolver API, import-path override or node_modules patch is an alternative.
-
-**Proof and completion:** PROOF-006 distinguishes public and backend scenarios.
-Public defaults use the actual 25-entry Rio whitelist with secure/cache true; a 13- and 25-URL chain succeeds, unlisted URLs make zero loader calls, and setting SECURE_MODE=false through OWLDocumentFormat remains ineffective because that setting is not reported supported. The 257-success/258-failure boundary is a backend qualification case supplied with effective secure mode false, corresponding to the real Java system-property probe.
-It does not add a new JS setter or claim that ordinary JS supports JVM properties.
-
-The cache contract is now closed: one static URI-keyed cache is shared across parsers/managers; successful loads are reused with their original document, failures are not cached, bypass does not clear prior entries, and secure whitelist checks precede cache access. Format DOCUMENT_LOADER_CACHE=false is ignored. The provider source configures maximumSize(1000), expireAfterWrite(1 hour), concurrencyLevel(8) and fresh default loader options in the cached branch; exact Guava source specifies same-key concurrent-load coalescing. TTL/capacity/single-flight are source-traced, while reuse/error/bypass/whitelist ordering were bounded-probed.
-Select an existing cache primitive only if those observables can be configured exactly, with a controlled-clock proof instead of a one-hour sleep.
-Ordinary default secure mode admits only 25 distinct whitelist URLs, so the 1000-entry bound is not reached on that public capability; broader backend configuration remains separately qualified.
-Avoid network-dependent tests or approximate TTL defaults.
-The dependency artifact must pass its supported JSON-LD corpus, existing ontology fixtures, cycle/error/multiplicity/callback cases, package/browser lanes, SBOM/provenance and vulnerability/licence review.
-The separate hasmac HTTP redirect limit is qualified on the relevant route, not confused with context depth.
-
-**Dependencies and handoff:** After SLICE-001/-002 and the transport contract from SLICE-003; can develop in parallel with XML after those boundaries stabilize. REQ/AC-003/-005/-012; QA-001/-003/-008/-009; DEC-003/-004/-005/-011/-012. CLEAN-005 removes the old dependency/default-cap path and updates exact lock/evidence/import-map sources together.
-
-### SLICE-006 — Java mutation outcomes and partial state
-
-**Outcome:** Existing change application exposes canonical ChangeApplied categories and the actual Java state transition sequence, including awkward failure cases.
-
-**Scope and files:** `model/owlOntologyManager.js`, change classes and result/enum exports, `internal/model/ontologyChangeRecord.js`, `ontologyState.js`, structural validators and query/index invalidation.
-Use the existing change semantic owners; do not put the old atomic pipeline behind a Java-named wrapper.
-
-**Proof and completion:** PROOF-007 covers empty and no-op batches; add/remove inverse returning SUCCESSFULLY despite no net difference; duplicate changes; unsuccessful annotation addition; add/remove followed by unsuccessful change leaving one axiom through forward rollback; thrown SetOntologyID collision leaving earlier changes; enacted-change details and subsequent query freshness.
-Synchronous precondition versus mid-batch failure is part of the assertion.
-Result details and state revisions follow actual enacted effects, including rollback effects, rather than final structural equality.
-
-Listener/veto/reentrancy observations from the supplement constrain the design and are native characterization fixtures.
-This slice does not expose currently omitted listener registration APIs.
-If a matched existing callback invokes mutation, qualify that reentrancy through its public route.
-Adding the complete listener family requires a separate scope decision, not accidental convenience during state refactoring.
-
-**Dependencies and handoff:** After SLICE-001/-002 and shared structure contract with SLICE-008; one manager-state integration owner coordinates SLICE-007. REQ/AC-006/-007/-008; QA-001/-004; DEC-006/-007/-008. CLEAN-006 retires boolean/net-delta assumptions and whole-batch rollback assertions after migration of all installed consumers of those results.
-
-### SLICE-007 — Manager load lifetime, identity and retry
-
-**Outcome:** A caller who inspects or reuses the manager after a failed load sees the Java-retained ontologies, markers and configuration associations.
-
-**Scope and files:** Manager loading and ID maps, `internal/loading/managedOntologyIndex.js`, existing import-closure loaders/resolvers and IRI mappers.
-Reuse one state machine with the change owner; do not maintain a second transactional shadow manager for loading.
-
-**Proof and completion:** PROOF-007 records state before each load phase, immediately after error and after a second operation.
-Mandatory fixtures: valid A then malformed B leaves new A and preexisting ontologies but removes root; malformed root after A leaves A; repaired B/retry with the same manager preserves the observed failed-import marker consequence; retained A still rejects annotation addition under its original configuration. Also cover reused imports, shared/cyclic closure, already-managed roots, aliases/document IRIs, silent strategy, failure before registration and after ontology ID replacement.
-
-Configuration rows require load false → later annotation rejection; rename → accepted annotation under new ID; old-ID reuse and remove/recreate → retained rejection. These are fixed pinned-target acceptance cases. Derived ontology/document/ID/import indexes, getOntology/contains checks and closure providers must agree with the actual retained state.
-Any unprobed permutation is a named oracle case, not an assumption of full rollback.
-
-**Dependencies and handoff:** After SLICE-002/-003 and coordinated SLICE-006. REQ/AC-003/-006/-007/-010; QA-001/-003/-004; DEC-006. CLEAN-007 removes closure-wide compensating cleanup and documentation promises only after all error/retry branches are qualified.
-
-### SLICE-008 — Structural admission and transformations
-
-**Outcome:** A valid deeply nested expression or annotation structure has consistent acceptance through direct model operations, changes, transforms and selected parsers.
-
-**Scope and files:** `internal/model/structuralValidation.js`, `structuralFields.js`, `objectTransform.js`, change-record creation, selected utilities and Manchester/Turtle consumers. Preserve semantic equality/canonicalization and existing output corrections.
-Prefer iterative traversal/worklists and existing field metadata; do not duplicate walkers or hide the old cap in a common helper.
-
-**Proof and completion:** PROOF-008 exercises boundaries around 64 annotations and 512 expression depth through every applicable route, confirms no false expression-depth diagnosis and checks duplicates/cycles/invalid fields separately.
-Java oracle cases are bounded to valid input the canonical runtime can evaluate.
-Source inspection accounts for large internal counters; no stress run to exhaustion is required.
-A real Java/provider stack or memory failure is characterized separately and does not authorize a smaller arbitrary JS default.
-
-Transform/rename/duplicate callbacks, exception phase and mutation consequences must be tested as well as structure.
-Performance evidence verifies that replacing recursive admission does not add repeated full traversal or destabilize existing identity rules.
-
-**Dependencies and handoff:** After SLICE-001/-002; agreed contract before SLICE-006 integration and SLICE-009/-011 completion.
-REQ/AC-008/-009/-011; QA-001/-002/-007; DEC-007/-008/-010.
-CLEAN-008 removes unused default depth validators and callers, preserving true structural checks.
-
-### SLICE-009 — Profile execution and verdicts
-
-**Outcome:** Profile assessment has Java-compatible accepted input, verdict and evaluation/failure phase while retaining the separately selected normative rule semantics.
-
-**Scope and files:** `profiles/` report and four profile classes, `internal/profiles/budget.js`, datatype/facet/numeric/XML-literal logic and source evidence.
-Separate Java profile verdict from any application-owned scheduling or forensic source metadata.
-Java-incompatible budget failure cannot be represented as “not in profile, no violations.”
-
-**Proof and completion:** PROOF-008/-009 exercise work/depth/literal/numeric boundaries with bounded Java-accepted examples, profile violations as positive controls, empty/small ontology, source-backed and programmatic objects, stale source evidence and actual error categories. The accepted null default deadline remains a positive control. Remove private hard ceilings as well as public defaults where no Java authority exists. No new maxWork/maxDepth fallback is introduced by a helper.
-
-DEC-008 proposes a breaking return/scheduling change for synchronous pure-model profile assessment: results and thrown failures occur in the corresponding Java phase. The old cooperative-yield approval and OA-DEC-001 do not settle this new behavior target. Measure event order before changing it; if retained source acquisition actually requires asynchronous host I/O, split that acquisition from pure-model assessment and classify the exact host capability in SLICE-001 rather than claiming all profile work must be asynchronous.
-Existing callers relying on Promise methods, cancellation options or UI yielding need the migration specified in section 7.
-Revalidate the approved profile performance benchmark; speed does not excuse a verdict change.
-
-**Dependencies and handoff:** After SLICE-001/-002/-004/-008. REQ/AC-008/-009/-012; QA-001/-002/-005/-007; DEC-007/-008/-011. CLEAN-009 removes matched-path budget/verdict adapters and stale “unverified means false” claims after native and installed proofs.
-
-### SLICE-010 — Search, locality and live providers
-
-**Outcome:** Same caller/filter activity at the same stage observes the same graph state and failure as Java.
-
-**Scope and files:** `search/entitySearcher.js`, ontology query/index APIs, `modularity/locality/syntacticLocalityModuleExtractor.js`, `internal/modularity/`, `util/owlOntologyImportsClosureSetProvider.js` and public iterator/enum representations.
-Reuse existing structural/query owners.
-A reusable array is not a substitute for Java's one-shot deferred stream.
-
-**Proof and completion:** PROOF-009 inventories all selected EntitySearcher methods and overloads for single versus collection/stream sources, encounter order, multiplicity, null/input failure and evaluation phase.
-Construct a result, mutate the ontology, then consume it; record callbacks/exceptions and second consumption.
-Return a lazy single-use iterable for the Java stream contract, preserving the existing output elements and Java's single-use consequence with the selected Error mapping.
-
-Locality is different: Java computes the module eagerly before returning its stream.
-Test empty seed with a throwing/recording filter (zero irrelevant calls), nonempty closure, relevant/rejected candidates, exceptions and fixed points.
-Pure-model locality computation is synchronous under DEC-008; no forced cooperative yield or hidden budget.
-ImportsClosureSetProvider.ontologies() recomputes from current manager state; test add/remove imports and removed/foreign ontology ownership against Java, not merely snapshot equality at construction.
-
-**Dependencies and handoff:** After SLICE-001 and manager/structure contracts; final integration after SLICE-006/-007/-008. REQ/AC-006/-007/-010; QA-001/-004/-006/-007; DEC-006/-008/-010.
-CLEAN-010 removes eager snapshots, copied callback pipelines and stale provider lifetime documentation.
-
-### SLICE-011 — Existing storage target, configuration and failures
-
-**Outcome:** The four selected save formats preserve Java-compatible target accumulation and error consequences, and no hidden production validation limit rejects representable output.
-
-**Scope and files:** `io/stringDocumentTarget.js`, manager storage entry, `internal/storage/storerRegistry.js`, Functional/OWLXML/Turtle/RDFXML renderers, `rdfStorage.js`, writer configuration consumers and storage error classification. Replace the private complete-text replacement seam with a format-consumable append sink. It is internal target ownership, not a new public write/append/getText shim.
-
-**Proof and completion:** PROOF-011 covers fresh target, prepopulated target from a prior save, saving twice, configuration changes between saves, empty ontology, invalid ontology/format, no storer, renderer runtime error, failure after earlier text and subsequent reuse.
-For existing StringDocumentTarget, use supported public input sequences and controlled storer fixtures at the registry seam; do not add a custom public writer merely for tests.
-Each injected internal failure is paired with a real pinned Java storer scenario or explicitly remains a seam test, never a claimed public equivalence observation.
-
-A 1048577-character valid literal and structural boundaries exercise the former reparse/default-cap path. Source accounting covers 32 MiB and 1000000 isomorphism limits proportionately. Structural round-trip/isomorphism checks stay in independent tests/native oracle, with ambiguity reported honestly; they no longer veto a successful production save through a second differently configured loader.
-
-For synchronous in-memory StringDocumentTarget saving, DEC-008 proposes immediate completion/failure and append effects. Preserve writer copy/no-op/negative-int behavior. Custom Writer observations of swallowed IOExceptions, double close and partial runtime failures remain explicit evidence about an omitted capability; this slice neither maps every JS Error to IOException nor claims that StringDocumentTarget itself can inject arbitrary I/O failures.
-
-**Dependencies and handoff:** After SLICE-001/-002/-008 and shared error/format contract; require SLICE-004/-005 as consumers for round-trip proof, without restoring production reparse.
-REQ/AC-002/-008/-011; QA-001/-002/-004/-009; DEC-007/-008/-009.
-CLEAN-011 retires replacement/atomic-commit helpers, unused production reparse/isomorphism paths and old target assertions after migrated proof passes.
-
-### SLICE-012 — Installed contract, documentation and candidate qualification
-
-**Outcome:** One exact installed package and its release evidence describe the repaired behavior consistently, and no obsolete assertion or hidden route remains.
-
-**Scope and files:** `docs/compatibility/installed-owl-contract.md`; `test/consumers/owl-contract/` public-model, acquisition and writer cases/native reporter; `scripts/qualify-owl-contract.mjs` and `owl-contract-evidence.mjs`; `docs/release/owl-contract-sources.json`; public registry/default inventory/decision schema; migration/resource/writer/performance documents; consumer qualification fixtures and existing release gates.
-Update source owners and regenerate derived views together.
-
-**Proof and completion:** PROOF-010/-012 requires a reviewed old-to-new assertion inventory. The baseline 69 native assertions remain accounted for until the versioned replacement intentionally supersedes them; every removed atomic/safe-default assertion points to a stronger precise Java-compatible behavior assertion and migration reason.
-Native reporting still fails missing/duplicate IDs or failed execution.
-Add config-retention, forward-rollback, retry-marker, target-append, default-whitelist and scheduling cases to the producer contract.
-Do not use a changed matcher to hide mismatches.
-
-Run configured full checks once on the complete candidate and the additional exact installed/native/browser gates.
-Preserve fixed consumer source pins and their admission rules; revise the current producer contract version through its owner rather than forge old consumer success.
-Consumer adoption and production deployment remain independently authorized.
-Update claims only to the coverage actually proven, including unavailable JVM/custom-writer/listener capabilities and browser transport limits.
-
-**Dependencies and handoff:** Completes after all other slices.
-REQ/AC-001 through -012; QA-001 through -010; DEC-010/-012.
-The integration owner delivers exact candidate identity, source/reference/runtime records, proof/cleanup manifest, residual capability boundaries and migration/recovery instructions to the maintainer.
-CLEAN-012 completes all current-document/fixture/dependency cleanup and verifies no temporary shim or private divergent default remains.
-
-### 4.1 Dependency and parallelism contract
-
-The critical order is SLICE-001 → SLICE-002 → shared loader/manager/structure contracts → behavioral slices → SLICE-012.
-Specifically, SLICE-003 feeds -004/-005/-007; SLICE-006 and -007 share one serialized manager-state integration; SLICE-008 feeds -006/-009/-011; SLICE-010 consumes the resulting state/query contract. Storage and profile work can proceed independently after configuration/structure contracts stabilize, but their integration waits for the relevant XML/JSON-LD proof.
-
-The integration owner resolves shared manager and error contracts before merging slice work.
-Configuration defaults have one editor/owner; no parallel slice may invent a local override to make its tests pass. Contract/oracle fixture updates stay synchronized with behavior revisions.
-The new dependency artifact can be prepared independently after its admission contract is accepted; it cannot enter the candidate until its complete proof passes.
-
-A changed Java pin, dependency provider, host scheduling mapping, API selection or security-policy decision invalidates dependent contracts and triggers replan.
-It does not justify quietly rebasing golden outputs.
-
-## 5. Proof ownership and executable verification
-
-### 5.1 Oracle contract and test doubles
-
-The Java harness owns expected outcomes.
-It executes pinned source in the canonical native build environment, records provider selection and emits the observable vector independently of JS.
-The JS runner consumes the same fixture stimulus and compares its observed vector.
-Fixtures encode intent; golden output is never generated by running the implementation under test and declaring its result correct.
-
-Mocks belong only at externally controlled seams: clock/connection/body events, remote document content, input stream, storer failure trigger and callback recorder.
-They do not replace the manager, configuration, profile verdict, XML provider, JSON-LD processor or native reference.
-Every mock-driven state case has a native observation or a clearly labeled seam-only invariant.
-In-memory remote content makes context/import tests deterministic and zero-egress; mock calls, unexpected requests and cleanup are asserted.
-
-Extend the existing reference harness framework with a proposed `RunAPIBehaviorContract.java` and a companion behavior comparison entry point under `util/owlapi-reference/`.
-Its CLI contract is selected here for implementation: exact reference directory, exact candidate directory, output directory and closed fixture selector; no hidden environment-dependent source discovery or mutable network oracle.
-The implementation must integrate with existing native build/candidate identity verification instead of creating another build/release workflow.
-
-Each result binds JS commit/tree and package digest; Java commit/tree; ordered classpath and dependency bytes; harness source digest; canonical JDK/Maven identity; runtime/browser version; parser/provider; explicit effective settings with secrets redacted; exact fixture; command/exit status; observed events/state; and assertion IDs.
-Unknown source provenance or a missing required lane yields “not qualified,” not an inferred pass.
-
-### 5.2 Proof matrix and focused commands
-
-Commands below are future implementation verification, not a record that they ran for this plan.
-Proposed test files are created by the named slice using the existing Jest/native framework. Output directories are fresh task-owned external evidence paths. Resolve current tooling/profile prerequisites before execution; do not install, configure or publish as an incidental response to a failed proof.
-
-| Proof     | Owner and falsifiable evidence                                                                                                                                                       | Focused entry point                                                                                                                                                                                                                                                             |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| PROOF-001 | SLICE-001: route/member inventory, schema, source pin and adaptation completeness; every matched configuration consumer classified                                                   | `node util/generate-java-api-surface.mjs --java-root "<pinned-java-checkout>"` (check mode); `npm test -- --runInBand --runTestsByPath governance.test.js test/java-behavior/coverage.test.js`                                                                                  |
-| PROOF-002 | SLICE-002: all canonical config methods/defaults/domains/identities/effects; writer copy quirks; instance versus absent JVM host-source boundary                                     | `npm test -- --runInBand --runTestsByPath model/owlOntologyWriterConfiguration.test.js test/java-behavior/configuration.test.js` plus exact native configuration fixtures                                                                                                       |
-| PROOF-003 | SLICE-003/-007: parser selection, 9000-space input, default acceptance, graph/header/annotation/import strategies, exception/fallback phase                                          | `npm test -- --runInBand --runTestsByPath io/io.test.js test/java-behavior/loading.test.js` plus parsing/import native harnesses                                                                                                                                                |
-| PROOF-004 | SLICE-003: connection-only timeout, retries, redirects, DNS/IP classification, auth/compression and cleanup; Java native/Rio routes separate                                         | `npm test -- --runInBand --runTestsByPath test/java-behavior/transport.test.js` plus bounded native transport observations                                                                                                                                                      |
-| PROOF-005 | SLICE-004: real XML provider error recognition and public error/state path, entities and valid/cross-realm signals where selected                                                    | `npm test -- --runInBand --runTestsByPath internal/parsing/xml/xmlParserAdapter.test.js test/java-behavior/xml-runtime.test.js`; required browser fixture lanes below                                                                                                           |
-| PROOF-006 | SLICE-005: real processor/default whitelist13/25, unlisted rejection, ignored unsupported format setting, cache ownership, backend257/258, cycles, failures and dependency admission | `npm test -- --runInBand --runTestsByPath test/java-behavior/jsonld.test.js` plus admitted processor corpus and native Java JSON-LD fixture family                                                                                                                              |
-| PROOF-007 | SLICE-006/-007: sequential outcomes, inverse/forward rollback, thrown partial effects, load cleanup/retry and ID/config lifetime                                                     | `npm test -- --runInBand --runTestsByPath model/rc2Changes.test.js model/ontologyChanges.test.js test/import-closure/public-contract.test.js test/java-behavior/manager-state.test.js` plus native event/state snapshots                                                        |
-| PROOF-008 | SLICE-008/-009: structure/annotation, profile literal/numeric/work boundaries and real invalid structure; absence of hidden hard ceilings is source-accounted                        | `npm test -- --runInBand --runTestsByPath util/rc2Transforms.test.js profiles/rc2Profiles.test.js test/java-behavior/admission.test.js`                                                                                                                                         |
-| PROOF-009 | SLICE-009/-010: synchronous verdict phase, lazy search consumption, eager locality callbacks, live providers, query freshness and performance                                        | `npm test -- --runInBand --runTestsByPath search/entitySearcher.test.js modularity/locality/locality.test.js util/owlOntologyImportsClosureSetProvider.test.js profiles/profileDeadline.test.js test/java-behavior/evaluation.test.js` plus approved profile benchmark protocol |
-| PROOF-010 | SLICE-012: native assertion migration, exact candidate, package boundaries, current docs/ledger/registry consistency                                                                 | `npm run test:boundary`; `npm run test:owl-contract -- --candidate "<candidate-directory>" --output "<fresh-contract-evidence-directory>"`                                                                                                                                      |
-| PROOF-011 | SLICE-011: four formats, target append/reuse/error phase, configuration output and no private reparse admission; independent structural oracle                                       | `npm test -- --runInBand --runTestsByPath io/stringDocumentTarget.test.js model/owlOntologyManager.storage.test.js internal/storage/rc2Storers.test.js test/java-behavior/storage.test.js` plus native four-format storage fixtures                                             |
-| PROOF-012 | Integration owner: all configured full checks, fresh canonical native reference, exact installed candidate, required Node/browser jobs and accepted release gate inventory           | Current profiles below; existing candidate/native jobs; `npm run test:browser -- --fixture-root "<prepared-installed-fixture>" --project chromium`, then firefox and webkit; governed release qualification with real candidate/native evidence                                 |
-
-The registry command above is verified check-only without `--write`.
-Regeneration uses its existing `--write` mode during implementation.
-Existing `npm run qualify:release -- --candidate "<candidate-directory>" --output "<qualification-file>" --owl-contract "<native-contract-directory>"` is a later hosted release-evidence operation: it requires authentic CI/candidate metadata and executes a credential-free publication dry run plus registry-state checks.
-It is not a replacement for full tests and must not be run with fabricated CI environment values to obtain a local PASS.
-
-Compilation/invocation of the proposed native behavior harness uses the existing validated source build and classpath launcher. Supply the exact emitted distribution/runtime classpath, compile harnesses into the task-owned output directory, and run the closed scenario selector through that launcher.
-Do not use the exploratory selected-class overlay or a Maven-labelled JAR as the final oracle.
-Native class/provider identity and runtime-dependent results accompany every comparison.
-
-### 5.3 Current HISEW profiles and final selection
-
-Read-only profile inspection on 2026-10-13 returned these commands and declared timeouts.
-They are current workflow configuration, not acceptance evidence:
-
-| Profile  | Current commands                                                                                                                                                                               | Declared timeout per command             |
-| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
-| focused  | `npm run test:boundary`; `npm test -- --runInBand --runTestsByPath governance.test.js io/io.test.js`                                                                                           | 120 s; 180 s                             |
-| affected | `npm run lint`; `npm run test:boundary`; `npm test -- --runInBand governance.test.js io/ model/ internal/model/ internal/storage/ test/import-closure/ test/consumers/webvowl/cutover.test.js` | 180 s; 120 s; 300 s                      |
-| full     | `npm run lint`; `npm run format:check`; `npm run verify:release-gates`; `npm run verify:workflow-governance`; `npm run test:boundary`; `npm test -- --runInBand --silent`                      | 180 s; 180 s; 120 s; 120 s; 120 s; 600 s |
-
-Use focused slice proofs during implementation, affected checks at integration seams, and the configured **full** profile for the final coherent candidate.
-Add PROOF-001 check-mode regeneration, `npm run verify:architecture` when dependency/module boundaries change, all behavior-native comparisons, the installed OWL contract and required Node/browser lanes.
-The configured full profile alone does not execute every native/browser/installed qualification and cannot stand in for them.
-
-Run the full suite once after required slice checks pass on the final candidate.
-Repeat only checks invalidated by later changes or concrete failures; record dependency-based invalidation.
-Research-only documentation validation is scoped Markdown formatting/checking, JSON parsing, source hashes, local link/ID checks and worktree preservation.
-It does not require the product suite and confers no product acceptance.
-
-### 5.4 Research-to-proof distinction
-
-The primary six programs and supplementary seven programs are reproducible research evidence.
-The supplementary 13/25 default-context tests are two fresh JVM executions of one program. Their success does not count as PROOF-012. The two exploratory probe coding errors were corrected and both attempts retained; final Java/browser program exits were zero.
-Firefox did not launch.
-Source tracing of large byte/isomorphism boundaries is explicitly distinct from boundary exhaustion. Public XML error/state qualification and complete permutation matrices are future proof obligations.
-
-## 6. Security, privacy, reuse and observability
-
-### 6.1 Assessment ownership and admission
-
-The owlapi maintainer is accountable for accepting the compatibility/security tradeoff.
-The assigned security reviewer assesses the selected transport, XML, JSON-LD dependency and removal of arbitrary defaults before candidate admission; the integration owner supplies the exact diff, threat-relevant routes and bounded evidence.
-Reviewer capability must be resolved through the current HISEW procedure.
-An unavailable reviewer is a named review gate; it does not authorize a fabricated pass or a private alternative default.
-
-Security review covers increased accepted workload, entity expansion, remote import/context access, redirects, credential forwarding, local-file/native-host capabilities, cache reuse and denial of service.
-Java's provider-specific secure JSON-LD default is preserved.
-It is incorrect either to retain blanket JS network false everywhere or to declare Java universally allows every URL.
-Private-network filtering must use correct address parsing and real selected policy; it must not misclassify DNS names or become an unrequested default guard.
-
-The accepted public configuration must retain its semantic responsibility.
-Applications can run untrusted work in a worker/process, constrain their transport capability and cancel their own operation through supported host facilities; this plan does not add policy wrappers to owlapi or claim that host restrictions are Java behavior.
-If exact default behavior is unacceptable for a supported product environment, stop and obtain an explicit scope change.
-Documenting a hidden divergent default does not resolve the conflict.
-
-### 6.2 Native capability, naming and licence review
-
-Prefer current parser, stream/iterator, transport, cache and native XML facilities when they implement the required semantics.
-Capability comparison precedes introducing a replacement.
-Java names identify semantic authority; they do not justify mechanically copying Java implementation code or exporting helper internals.
-Keep existing package namespaces and canonical method spellings.
-New internal names describe their owned responsibility, not “compat,” “legacy,” “safe” or “Java mode” wrappers.
-
-The current jsonld package declares BSD-3-Clause.
-A dependency enhancement/fork must retain the licence/notices, record source revision, reviewed patch, reproducible package digest, maintainer, vulnerability response and browser distribution.
-Verify actual licence files and transitive licences at the selected candidate; a package.json label is not complete licence admission.
-Java reference sources and dependencies are research/test artifacts with their own notices; no copied Java control flow or source file is introduced into the runtime package under this plan.
-If reuse changes that boundary, perform a fresh licence review before adoption.
-
-Consumer validation uses the existing installed candidate fixtures and pinned source-admission rules.
-No copied consumer algorithm or second producer oracle is selected.
-UO/WebVOWL continue to own application semantics, policy and deployment.
-
-### 6.3 Observable evidence without product leakage
-
-Compatibility reports must make hidden differences visible: provider/runtime, scenario/configuration ID, outcome category, failure phase, callback counts/order, retained-state summary, target length/digest, request attempts, and assertion execution counts.
-Reports must never log authorization values, raw user ontology contents, tokens or secret URLs.
-Use synthetic fixtures and redact credentials before writing diagnostics.
-
-Do not add a public trace callback or telemetry stream merely to collect proof.
-Instrument test-owned adapters and existing report seams; prove instrumentation does not change lazy/eager behavior.
-Runtime acceptance uses existing public operations and package provenance, with any environmental restriction recorded as a capability outcome.
-There is no new production telemetry service in scope.
-
-The release observer is the owlapi maintainer or their designated release operator.
-They inspect native assertion completeness, required browser/Node jobs, first candidate/public-package qualification and reported consumer regressions.
-This plan does not schedule monitoring, send external messages or authorize new deployment.
-
-## 7. Compatibility, migration and interruption
-
-### 7.1 Breaking migration contract
-
-This repair changes behavior previously advertised in rc.1/rc.2 plans. The maintainer selects the next version/channel through the existing release process after reviewing the exact candidate.
-Do not silently republish or mutate an existing immutable package.
-
-| Existing caller assumption                                                            | Required migration and validation                                                                                                                                                                                                                                             |
-| ------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Generic loader bag, withParsingMode/withRemoteImports/max* fields                     | Use canonical Java configuration methods and strategies. Remove old aliases in one coordinated package change; inventory every supported consumer call site and test default/explicit behavior                                                                                |
-| Zero/Infinity/negative limit conventions                                              | Follow the canonical method's Java value domain and phase. Connection timeout 0 is unlimited; a rejected JS-only Number value is not reinterpreted. Entity expansion remains a string option                                                                                  |
-| Boolean result or atomic batch rollback                                               | Consume ChangeApplied's canonical categories and inspect actual manager state after unsuccessful/thrown operations. Do not retry a whole batch under an assumption that nothing happened                                                                                      |
-| Failed import load leaves no new ontologies                                           | Account for retained successful imports, ID/configuration associations and request markers. A clean retry may require a new manager if the caller needs a fresh session                                                                                                       |
-| Reusing StringDocumentTarget replaces text                                            | Construct a fresh target for a fresh document; reuse only when accumulation is intended. Save after failure cannot assume the target is empty or unchanged                                                                                                                    |
-| Promise-returning pure in-memory profile/locality/save calls and cooperative yielding | Update return-type declarations and Promise-method call sites; awaiting an immediate result alone does not preserve previous callback/error timing. Catch synchronous failures around invocation. Move application scheduling to its own worker/event-loop boundary if needed |
-| Profile/locality AbortSignal or implicit time/work limits                             | Remove unsupported matched-signature options. Preserve only a separately admitted canonical host capability. Application cancellation must explicitly own interruption and the resulting partial state; no library default deadline remains                                   |
-| Eager reusable EntitySearcher arrays                                                  | Consume the lazy single-use iterable at the intended time; materialize explicitly in application code when a snapshot/reusable collection is desired. Test mutation between creation and consumption and second use                                                           |
-| Closure provider snapshots construction time                                          | Obtain a deliberate application snapshot if required; repeated provider calls now reflect current manager closure                                                                                                                                                             |
-| All writer modifiers preserve all other fields                                        | Test Java's actual chained reset/no-op identity consequences, especially indent size and banners                                                                                                                                                                              |
-| No network by default or a universal redirect policy                                  | Configure the actual supported canonical/provider behavior and embedding permissions. Verify the declared runtime capability; do not depend on a removed accidental guard                                                                                                     |
-| Full JVM/configuration/custom-writer/listener parity                                  | Treat those omitted capabilities as unavailable; canonical instance methods and existing targets retain their exact selected contract                                                                                                                                         |
-
-DEC-008 is a proposed consequential API/scheduling change, not an already accepted adaptation. Before implementation, SLICE-001 records the Java invocation/return/consumption phases and current JS public phases for each route. Pure-model work has no inherent reason to yield. An unavoidable browser network Promise is a host representation mapping only after the exact operation's capability/ordering has been demonstrated; it does not waive synchronous input errors, parser fallback, callback ordering or state publication.
-If a supported parser/dependency cannot realize the selected in-memory phase without a broader replacement, stop that affected slice and replan the dependency/capability boundary.
-Do not preserve the existing async implementation by relabeling it structural.
-
-Published migration history remains intact.
-Add the new current migration amendment and reconcile the registry/default inventory.
-Downstream adoption is a separate decision; the producer may release when its own gates pass, and consumers retain their previously qualified pin until their own migration is authorized.
-
-### 7.2 Interruption, resume and artifact ownership
-
-Before each implementation session, record exact checkout/tree, accepted plan revision, source/dependency pin, contract schema version, active slice, completed proof IDs and known unrelated changes.
-Reuse the same accepted dossier and valid results.
-On resume, compare relevant inputs and invalidate only dependent evidence.
-Never adopt another worktree/execution, reset completed rc.2 history, or infer authority from an old branch name.
-
-If interrupted while compiling or qualifying, close task-owned Java/browser processes, deny further fixture transport, and leave complete/partial outputs distinctly labeled.
-A half-written result cannot be promoted into proof.
-Retain source programs and logs before cleaning external scratch.
-Do not delete other sessions' evidence or manually alter HISEW state.
-
-Runtime interruption is part of the behavior proof: record already-applied changes, retained imports, partial target content and resource ownership at the exact stage.
-Recovery must not replay a whole operation blindly.
-Java-compatible partial progress is not a rollback failure to conceal; it is caller-visible state the migration must explain.
-
-## 8. Release, abort, rollback and cleanup
-
-### 8.1 Admission and rollout
-
-The maintainer accepts the exact plan/decision revision before implementation, assigns the integration and security-review roles, and binds the R2 route through the supported workflow. Slice integration produces one coherent source candidate. A reviewed candidate then completes configured full checks, fresh canonical Java/native execution, exact installed contract, required browser/Node lanes and current producer release gates.
-
-Publication, signing, push/merge and consumer deployment require their existing separate authority. This plan selects no release number, publication date or automated CI dispatch. Reuse naturally triggered/retained authenticated evidence only under current exact identity rules; do not activate source-build reuse for the new pin merely because research used retained JARs.
-
-The rollout unit is the immutable owlapi package plus its registry, migration and qualified dependency artifacts.
-The observer verifies candidate/public-package digests and the required proof inventory before advertising the new behavior.
-Consumers validate their chosen pin with the existing admission contract; production cutover belongs to each consumer.
-
-### 8.2 Stop and recovery conditions
-
-| Condition                                                                                                              | Required response and owner                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Unknown behavioral difference, missing matched route, wrong native source/runtime, missing assertion or browser result | Integration owner stops candidate qualification, retains evidence and fixes the owning slice. No expectation rewrite without the Java/source classification                                                                                  |
-| Dependency patch cannot meet supported API, semantic corpus, licence, browser or maintenance admission                 | Maintainer rejects dependency admission; replan a processor replacement or explicit scope change. Do not patch installed files                                                                                                               |
-| Security review rejects Java-compatible default exposure in the intended host                                          | Maintainer resolves product scope/capability explicitly. Do not ship an undocumented restrictive mode or alter Java's public default                                                                                                         |
-| Existing installed consumer fixture fails because it assumes old behavior                                              | Version/review its canonical assertion/migration through the existing source owner. Do not bypass source pin checks or mark a failed fixture optional                                                                                        |
-| Qualification interrupted or later source/config/runtime input changes                                                 | Preserve candidate identity and partial logs; rerun only invalidated proofs before release                                                                                                                                                   |
-| Regression found before publication                                                                                    | Back out the coherent repair/dependency unit to the last verified source candidate, or forward-fix and requalify affected/full gates as required                                                                                             |
-| Regression found after immutable publication                                                                           | Retain the published artifact/evidence. Stop promotion, pin consumers to the prior qualified package when safe, and publish a separately qualified forward fix under new version authority                                                   |
-| A caller has already accumulated target text or partially mutated/loaded a manager                                     | Package rollback alone cannot undo state. Discard the affected target/manager and reconstruct from caller-owned known-good source/snapshot when a fresh session is required; never promise automatic restoration from an unsuccessful status |
-
-There is no persisted on-disk database migration in the selected library change.
-In-memory state and the dependency/public API contract still require coordinated restoration. Reverting only a helper while retaining new config/contract consumers is unsafe; rollback is the coherent dependency unit identified by the integration owner.
-A fresh manager is the reliable restoration boundary for retained ID/import/config markers; removing ontologies is not guaranteed to clear those markers on the pinned Java target.
-
-### 8.3 Cleanup and traceability ledger
-
-| Slice     | Requirement / acceptance  | QA / decision                                      | Proof                  | Release cleanup obligation                                                                             |
-| --------- | ------------------------- | -------------------------------------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------ |
-| SLICE-001 | REQ/AC-001, -012          | QA-001/-009; DEC-001/-010/-012                     | PROOF-001/-010         | CLEAN-001: amend current authority, preserve historical records and exact source pins                  |
-| SLICE-002 | REQ/AC-002/-003/-007/-011 | QA-001/-003/-004; DEC-002/-003                     | PROOF-002              | CLEAN-002: remove divergent bag/alias/default producers and regenerate API views                       |
-| SLICE-003 | REQ/AC-003/-007           | QA-001/-003/-008; DEC-001/-004/-011                | PROOF-003/-004         | CLEAN-003: retire sniff/fallback/transport guard duplicates                                            |
-| SLICE-004 | REQ/AC-004/-008/-009      | QA-001/-002/-005; DEC-004/-007/-011                | PROOF-005              | CLEAN-004: consolidate XML default/policy owners and qualify all provider claims                       |
-| SLICE-005 | REQ/AC-003/-005/-012      | QA-001/-003/-008/-009; DEC-003/-004/-005/-011/-012 | PROOF-006              | CLEAN-005: exact dependency, notice, import-map, cache/default and old-path cleanup                    |
-| SLICE-006 | REQ/AC-006/-007/-008      | QA-001/-004; DEC-006/-007/-008                     | PROOF-007              | CLEAN-006: retire boolean/atomic assumptions and update native caller assertions                       |
-| SLICE-007 | REQ/AC-003/-006/-007/-010 | QA-001/-003/-004; DEC-006                          | PROOF-003/-007         | CLEAN-007: remove closure-wide cleanup promises and stale retry/config assumptions                     |
-| SLICE-008 | REQ/AC-008/-009/-011      | QA-001/-002/-007; DEC-007/-008/-010                | PROOF-008              | CLEAN-008: remove private admission caps and duplicate walkers                                         |
-| SLICE-009 | REQ/AC-008/-009/-012      | QA-001/-002/-005/-007; DEC-007/-008/-011           | PROOF-008/-009         | CLEAN-009: remove resource-to-verdict and obsolete scheduling adapters/docs                            |
-| SLICE-010 | REQ/AC-006/-007/-010      | QA-001/-004/-006/-007; DEC-006/-008/-010           | PROOF-009              | CLEAN-010: remove eager snapshots and document actual consumption/lifetime                             |
-| SLICE-011 | REQ/AC-002/-008/-011      | QA-001/-002/-004/-009; DEC-007/-008/-009           | PROOF-002/-011         | CLEAN-011: retire target replacement and production reparse/isomorphism admission                      |
-| SLICE-012 | REQ/AC-001 through -012   | QA-001 through -010; DEC-010/-012                  | PROOF-001 through -012 | CLEAN-012: version all current assertions, preserve native coverage and qualify the exact release unit |
-
-Cleanup is part of slice completion, not deferred technical debt.
-Delete obsolete code only when its consumers and proof have moved.
-Keep historical ledger/publication evidence and external research; label superseded current claims instead of silently erasing their authority.
-Audit for unused dependencies, stale exports, duplicate defaults, hidden hard maxima, compatibility aliases, generated views and test helpers before candidate freeze.
-
-## 9. Unknowns, cheapest experiments and replan triggers
-
-The known research gaps have bounded answers; the following items remain explicit implementation/qualification gates.
-They are not reasons to ask the owner to repeat the semantic goal, and they must not be reported as already proven.
-
-| Gate                                     | Known fact and cheapest next evidence                                                                                                                                         | Pass / replan boundary                                                                                                                                                                                                   |
-| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Complete native source build             | Seven source-bound classes plus retained dependencies were enough for scoped research. Use the existing closed-environment native recipe on the exact candidate/reference pin | Pass only with full required provenance and canonical runtime. Unsupported reuse or changed provider/runtime requires fresh evidence                                                                                     |
-| XML public failure consequences          | Exact adapter accepts nested parsererror wrappers in Chromium/WebKit; downstream public ontology behavior not measured                                                        | Run the small malformed fixtures through installed load/profile routes, record error/fallback/state. Replan seam ownership if several routes bypass the adapter                                                          |
-| Firefox execution                        | Local spawn UNKNOWN; other two engines completed                                                                                                                              | Execute the existing mandatory Firefox lane in a working supported environment. No waiver based on local unavailability                                                                                                  |
-| Browser transport capabilities           | Fetch may hide redirect chains and connection phase; source policy cannot prove those are controllable                                                                        | A bounded controlled transport case measures visibility/control before implementation. If impossible, classify exact capability as unavailable or seek an explicit host/transport design change                          |
-| JSON-LD maintained enhancement           | Current private cap has no supported public override; 13/25 default-whitelist acceptance proves a real divergence                                                             | Minimal dependency enhancement plus official corpus and exact callback/error tests. Broad rewrite or unowned fork triggers processor-replacement replan                                                                  |
-| JSON-LD backend versus public settings   | Java format SECURE_MODE is ignored, JVM property works; JS has no JVM source                                                                                                  | Keep public ignored-setting and default cases separate from effective-backend257/258 proof. Any request for ambient property support is a new host-capability design                                                     |
-| Evaluation/Promise mapping               | Current JS eagerly/async executes several pure-model routes; this is not inherently structural                                                                                | Record invocation/return/consume/error order for each selected method, implement synchronous/lazy target where feasible. Dependency requiring a broader replacement or genuine host-only I/O triggers exact-route replan |
-| Full manager permutations                | Representative partial-state, retry and config-retention quirks are proven                                                                                                    | Small native matrix covers branch-specific reuse/alias/cycle/silent cases; unexpected state extends the same state-machine proof rather than imposing atomic cleanup                                                     |
-| String target partial failure            | Append and arbitrary Java Writer behavior are proven; custom Writer remains omitted                                                                                           | Use real storer/input failures and controlled registry seams to establish existing String target effects. Need for public custom target support requires explicit scope expansion                                        |
-| Huge limits and performance              | 32 MiB/isomorphism/private hard maxima are source traced; no exhaustive allocation run                                                                                        | Prefer counter/algorithm source proof plus representative bounded cross-route fixtures and existing workloads. Unexpected stack/memory growth or superlinear work requires algorithm replan, not a lower hidden default  |
-| Normative output correction overlap      | Existing ledgers preserve deliberately different ontology output semantics                                                                                                    | Classify acceptance/timing separately with exact source and fixture. If inseparable, obtain a scoped decision on that fixture; do not blanket-reverse or blanket-exempt the programme                                    |
-| Reviewer capability / security admission | Read-only HISEW discovery did not establish a ready reviewer executor                                                                                                         | Resolve current supported review capability at the review phase. Preserve draft/unreviewed status if unavailable; no manual receipt or invented security acceptance                                                      |
-
-Replan also when the Java reference revision, supported runtime matrix, public API selection, dependency licence, canonical configuration responsibility or release gate ownership changes.
-A routine file move or a same-input passing focused check does not require repeating discovery or owner permission.
-
-## 10. Review checklist and current deliverable state
-
-The owner reviews the concrete decisions, especially canonical configuration replacement, synchronous/iterator return-shape migration, retained partial-state quirks, String target accumulation, absent JVM/custom-writer capabilities, maintained JSON-LD dependency ownership and security exposure.
-Acceptance of this plan must identify its exact revision/digest and any amended DEC IDs.
-Until then, implementation remains unauthorized.
-
-This task delivers this plan and the two supplementary research artifacts.
-It preserves the two original research artifacts and unrelated checkout work.
-Validation for the plan is limited to its Markdown/tooling, reference/identifier consistency, structured evidence parsing/hashes and final worktree inspection.
-No implementation or release acceptance is implied by those checks.
+# Java-compatible API behaviour implementation plan
+
+**File:** `docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md`\
+**Date:** 2026-10-13\
+**Status:** Draft HISEW revision; implementation and profile qualification pending\
+**Profiles:** `java-owlapi-5.5.1`, `normative-v1`\
+**Java oracle release:** OWLAPI 5.5.1\
+**Java source commit:** `f760b3a4c107c6d5f90f856e5680c39b18af646f`\
+**Java source tree:** `6b87391a36b7341f7253f57046b5b8621d3d0ac8`\
+**Release tag:** `owlapi-parent-5.5.1`
+
+This revision preserves the two-profile design and technical worklist in commit `3e68d03c8061dbfd7604984e3f26d3b8b2defc9d`, and makes its requirements, naming, TDD, ownership and delivery gates explicit.
+The design conversation is retained as context [design-chat]; this document is the reviewable draft, not evidence that all consequential decisions have been accepted or implemented.
+Historical research, probes, baselines and completed implementation evidence remain evidence of what was observed at the time; they do not retain authority where this plan deliberately changes the target contract.
+
+## Executive summary
+
+The project will implement **one OWLAPI JavaScript codebase with two immutable, explicitly versioned behavioural profiles**:
+
+| Profile             | Purpose                                           | Governing question                                                                                                    |
+| ------------------- | ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `java-owlapi-5.5.1` | Exact migration and behavioural-emulation profile | “What does the official Java OWLAPI 5.5.1 release actually do?”                                                       |
+| `normative-v1`      | Standards- and contract-governed profile          | “What behaviour is required by applicable normative specifications and the project's formally adopted API contracts?” |
+
+This replaces the previous premise that every observable Java quirk should become the single JavaScript behaviour.
+The earlier implementation plan explicitly targeted Java-observed sequential change effects, retained manager/import state after failures, StringDocumentTarget accumulation and other quirks. The underlying research remains highly valuable, but those observations now become **profile inputs rather than universal requirements**. The existing evidence records, for example, Java-style thrown partial effects during change application, retained import/configuration state, StringDocumentTarget reuse behaviour, parser-fallback differences and lazy/live query behaviour. [research-primary] [research-gaps] The Java compatibility baseline is no longer an arbitrary source revision.
+It is the formal OWLAPI **5.5.1 release**.
+Maven Central publishes `net.sourceforge.owlapi:owlapi-distribution:5.5.1`; the upstream release commit is `f760b3a4c107c6d5f90f856e5680c39b18af646f`; the annotated tag `owlapi-parent-5.5.1` points through tag object `8003508e8c185579898ca4eda1245f808461d06a` to that exact commit.
+The commit message is `OWLAPI version 5.5.1`, and the release commit changes the project from `5.5.1-SNAPSHOT` to `5.5.1`. [java-pom] [java-tag] [java-commit] The profile architecture is **policy separation, not implementation duplication**.
+A manager receives one immutable behavioural context at construction.
+Loading, parsing, mutation, storage, security/resource handling and profile-sensitive utilities receive that context explicitly.
+Model values remain profile-neutral wherever behaviour does not depend on a profile.
+There is no global mode, no mutable profile switch, no “latest Java” alias and no arbitrary combination of independent compatibility flags.
+
+The governing hierarchy for `normative-v1` is:
+
+1. applicable **normative external specifications** and published errata;
+2. explicit, versioned **project contracts**, including security and engineering guarantees adopted from referenceable principles;
+3. Java OWLAPI 5.5.1 behaviour as the **compatibility fallback** where the first two levels do not prescribe a different observable result.
+
+The hierarchy deliberately distinguishes a normative specification from any document colloquially called a “spec”.
+OWL 2 Structural Specification and Functional-Style Syntax is a W3C Recommendation whose normative structural rules explicitly govern observable OWL-tool behaviour.
+By contrast, OWL 2 Manchester Syntax is a W3C Working Group Note and expressly states that publication does not imply W3C endorsement. [owl-structure] [manchester-note] That distinction corrects an important example discussed during design.
+OWLAPI 5.5.1 maps the Manchester token `<=` to `xsd:maxInclusive`. [java-facets] The Manchester Working Group Note's mapping table instead says `<=` maps to `xsd:minInclusive`. [manchester-note] But the normative OWL 2 Structural Recommendation defines `xsd:minInclusive` as the lower-bound relation \(x \ge v\) and `xsd:maxInclusive` as the upper-bound relation \(x \le v\). [owl-structure] Consequently **`normative-v1` must not blindly reproduce the Working Group Note's table merely because it is a W3C document**.
+Under the hierarchy proposed here, the Recommendation outranks the non-endorsed Note; a project contract cannot override an applicable higher-ranked normative requirement.
+The Manchester token mapping must be adopted explicitly from the compatible Java/source evidence: both profiles should retain `<= → xsd:maxInclusive`, with greater-than counterparts checked together (DEC-003).
+This example is the model for future authority resolution.
+
+The implementation therefore has two complementary promises:
+
+> **`java-owlapi-5.5.1` is an emulation contract. `normative-v1` is a conformance-and-contract contract.**
+
+Neither is “the real implementation” with the other treated as a compatibility shim.
+Both are first-class test subjects over the same shared implementation.
+
+Release qualification requires three independent forms of proof: differential regression against the exact Java oracle for `java-owlapi-5.5.1`; specification, invariant and fault-injection testing for `normative-v1`; and cross-profile tests proving both deliberate differences and deliberate common behaviour.
+
+## HISEW baseline, requirements and decisions
+
+### Purpose, status and governing method
+
+The higher outcome is a dependable migration path: on the selected matched API surface, a Java OWLAPI user selecting `java-owlapi-5.5.1` receives the same observable behaviour, configuration methods and defaults under equivalent declared host conditions.
+Equality includes accepted inputs, failure timing, partial effects and resource rejection; equal successful output alone is insufficient.
+The separate `normative-v1` contract makes explicitly adopted differences available without changing the Java profile.
+
+This is a draft revision of the committed plan, not implementation authority or a completed qualification report.
+The [design conversation][design-chat] supports the two-profile direction.
+Its individual recommendations, this plan's proposed public names, normative defaults and stronger guarantees still require the decision records below before their dependent implementation.
+Rewriting this document does not reset any earlier human approval, but an approval must identify the scope and version it actually covered.
+
+The review uses HISEW `hisew-dev 0.1.0-dev.21`, its [planning procedure][hisew-planning] and [engineering principles][hisew-principles].
+The locally inspected planning skill has SHA-256 `3b3b770b060acdbce7725fea2a660b34cf575f0a80e08244e8fb66e5145a2d35`; the principles document has SHA-256 `777ad41e148d5b4378a7b5960fecfcc3ea1471e046cec5a697fda2b59712f261`.
+The links are navigational references to maintained sources; these version/digest observations identify the instructions used for this review.
+Active personal workflow applicability was checked for this worktree.
+No new workflow execution, implementation, release or retrospective approval is claimed.
+
+The proposed implementation risk route is **R2**, because this changes public API contracts, input acceptance, parser and network boundaries, re-entrant state and installed-package behaviour.
+The repository owner accepts the route and design baseline before implementation.
+A concrete critical-system, privileged-host or irreversible-data consequence would trigger a new risk assessment; the presence of XML or HTTP alone does not automatically justify R3.
+This document-only revision does not run the future implementation gates.
+
+### Review findings and disposition
+
+| HISEW concern               | Finding in the incoming plan                                                                                                                                          | Required correction in this revision                                                                                               |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| NAM-01                      | `profile` could mean a behavioural profile, an OWL language profile or an identifier; `sha`, `qualifiedAt` and signature booleans obscured identity or evidence state | Use the terminology and field contracts below; distinguish identity, definition, evidence, authorization and qualification state   |
+| DRY-01                      | Prohibition of duplicated algorithms did not establish the owner of each shared rule or allow independent oracles                                                     | Record current authorities, consumers, reasons for change, deliberate separation and drift tests                                   |
+| Requirements and acceptance | No stable REQ/AC/QA/DEC-to-slice chain; several proposed contracts read as already accepted                                                                           | Add the draft dossier and acceptance decisions; implementation may not manufacture acceptance                                      |
+| TDD                         | Comprehensive end-state tests, but no red–green–refactor delivery method                                                                                              | Make each slice begin with independent failing behavioural proof and finish with refactoring plus affected regression evidence     |
+| Vertical delivery           | Timeline separated architecture, implementation and testing into broad phases                                                                                         | Deliver thin observable paths with their contract, implementation, tests and owning documentation together                         |
+| Security and compatibility  | External-resource behaviour and permission were conflated                                                                                                             | Separate the behaviour a profile specifies from resources a caller/host permits; qualify Java under explicitly matched permissions |
+| Provenance                  | Placeholder strings had the wrong types; `false` could mean unsigned or unverified; dependency closures were asserted before proof                                    | Use typed draft state, explicit verification outcomes, measured locks and qualification guards                                     |
+| Evidence and migration      | Chat-only citations were unresolved; support and freeze wording preceded evidence                                                                                     | Replace citations with portable references, preserve historical digests, and label target support/freeze states as future gates    |
+
+### Draft requirements and acceptance criteria
+
+All IDs are stable plan identifiers.
+Requirement acceptance belongs to the repository/product owner; measurements belong to the relevant slice's evidence owner.
+The selected API inventory must be frozen by DEC-001, not inferred from the phrase “Java compatible”.
+
+| Requirement | Required outcome                                                                                     | Acceptance criterion                                                                                                                                                                                                                               |
+| ----------- | ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| REQ-001     | Exact Java compatibility on the selected released surface and declared host boundary                 | AC-001: every selected member has a 5.5.1 observable vector; zero unmatched differences in accepted input, output, error, phase, side effects, order, lazy consumption, storage or resource attempts                                               |
+| REQ-002     | Two immutable, explicitly versioned behaviour profiles in one codebase                               | AC-002: construction and read-only identity work for both profiles; no global switching, mutation setter, mutable latest alias or undeclared hybrid; asynchronous and lazy paths retain the initiating identity                                    |
+| REQ-003     | Normative changes have an applicable, accepted authority and falsifiable guarantee                   | AC-003: each split/one-sided row cites clauses or an accepted project contract, states preconditions and success/failure invariants, and has paired proof; zero unclassified rows                                                                  |
+| REQ-004     | Java configuration methods, types, defaults, copy/reset semantics and read timing match Java         | AC-004: a setter/getter/identity/timing matrix passes the released oracle, including zero, negative and no-op cases; no JS-only finite default changes the Java profile's accepted input                                                           |
+| REQ-005     | Correct manager ownership and profile propagation                                                    | AC-005: source ownership survives copy, destination collision fails before publication, misuse is classified, and concurrent/re-entrant operations have tested profile-specific effects                                                            |
+| REQ-006     | Profile-specific mutation and loading failure guarantees                                             | AC-006: Java partial-state vectors match; normative failure preserves the stated ontology/index/import/configuration boundary at every meaningful injected failure point                                                                           |
+| REQ-007     | Profile-specific target reuse and save-failure semantics                                             | AC-007: repeat-save and renderer-failure tests cover all exposed formats; Java bytes match, normative replacement publishes once and failed save preserves the old text                                                                            |
+| REQ-008     | Resource exhaustion is distinct from semantic invalidity                                             | AC-008: all cap owners and consumers are inventoried; below/at/above tests and large valid fixtures prove Java-compatible acceptance and explicit normative budgets, units and failure categories                                                  |
+| REQ-009     | XML, remote imports and JSON-LD respect declared behaviour and independent access authority          | AC-009: owned-server/file-fixture tests prove request/redirect/cache/credential and XXE outcomes for matched allowed and denied capabilities, with no cross-manager or cross-profile permission leakage                                            |
+| REQ-010     | Parser selection, structural mappings, lazy search, providers and locality have classified contracts | AC-010: fallback/error chains, Manchester facets, callback/order/live-view and empty-seed/locality probes pass their authority-specific and shared vectors                                                                                         |
+| REQ-011     | Release oracle and installed-package proof are reproducible and attributable                         | AC-011: tag/commit/tree, Central POM/JAR, complete dependency/toolchain locks, source comparison and fixture/observation digests pass the provenance gates; both profiles pass from the exact package bytes                                        |
+| REQ-012     | Material names are semantically correct and shared knowledge has one owner                           | AC-012: field/name audit resolves each ambiguity, Java-mandated names are preserved, affected consumers and schemas agree, and DRY decisions identify separate or shared authority with drift checks                                               |
+| REQ-013     | Migration, versioning, support, abort and recovery are explicit                                      | AC-013: documentation identifies the omission default, exact Java opt-in, host boundary, accepted differences, support state and recovery route; no historic record or existing profile identity is retargeted                                     |
+| REQ-014     | Delivery is test-first, traceable and evidence-driven                                                | AC-014: every slice records an observed meaningful red, minimum green, refactor check and affected regressions; the frozen candidate passes the applicable HISEW route with independent review and evidence reuse assessed against measured inputs |
+
+### Quality scenarios
+
+Each scenario states source, stimulus, environment, affected artefact, response and measurable acceptance.
+Performance observations characterize cost; they do not authorize inventing Java-incompatible rejection limits.
+
+| Scenario | Source and stimulus                                                                      | Environment and artefact                                                                   | Required response                                                                                                                  | Measure and trace                                                                                                                                  |
+| -------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| QA-001   | Migrating caller supplies a valid structure above a former JS-only ceiling               | Both profiles; source and installed package; data factory, parser, storage and query paths | Java accepts whenever the qualified oracle accepts; normative uses its explicitly adopted policy and reports exhaustion separately | Boundary `n-1/n/n+1` where finite plus an oracle-accepted large fixture; zero unexplained rejection; AC-001, AC-008                                |
+| QA-002   | A dependency or injected stage fails during mutation, root load, copy or save            | Manager already contains observable state; every meaningful publication boundary           | Java exposes the oracle's effects; normative preserves exactly the promised in-memory state                                        | State-vector equality before/after normative failure, exact Java vector, successful retry and no orphan ownership; AC-005–AC-007                   |
+| QA-003   | Untrusted XML/context/import requests local or remote resources or redirects credentials | Controlled files and owned HTTP servers; permitted and denied host policies                | No request exceeds caller/host authorization; profile-specific attempts, failure phase and diagnostics are classified              | Exact event trace, zero prohibited file/network access and credential forwarding; AC-009                                                           |
+| QA-004   | Two callers interleave loads/writes or consume a lazy result after mutation              | Two managers with different behaviour profiles; asynchronous and re-entrant paths          | Original context remains bound; normative publication is atomic at its declared point or overlap is rejected                       | Controlled schedules and callback order/count match expected vectors; zero cross-context effects; AC-002, AC-005, AC-010                           |
+| QA-005   | Release engineer rebuilds and reruns the Java oracle                                     | Isolated dependency cache; pinned source, JDK, Maven and ordered classpaths                | All resolved bytes are accounted for; Central/source observations are compared without modifying upstream code                     | Zero unexpected dependency resolution; complete digests; byte non-identity explained; semantic non-identity blocks qualification; AC-011           |
+| QA-006   | Consumer installs the exact candidate and selects each profile                           | Supported Node and browser lanes with capability matrix                                    | Public signatures, defaults and behaviour match the contract without source-tree imports                                           | Exact package digest and environment recorded; every selected lane passes or is explicitly excluded from the support claim; AC-004, AC-011, AC-013 |
+| QA-007   | Maintainer changes a field, shared rule or profile decision                              | Production code, schema, ledger, documentation and independent tests                       | One term denotes one concept; consumers follow one current authority; oracle expectations remain independent                       | Naming/schema checks and relevant conformance tests detect a deliberate representative mismatch; AC-012, AC-014                                    |
+| QA-008   | Delivery is interrupted or a post-release regression is found                            | Partial slice, frozen candidate or published package                                       | Resume from recorded identity; stale evidence is not relabelled; observer aborts promotion or performs the agreed recovery         | Recovery rehearsal identifies remaining effects, owner and exact package/contract version; no promise to undo external requests; AC-013, AC-014    |
+
+### Decisions and acceptance boundaries
+
+“Carried forward” means retained from the incoming plan, not newly approved by this rewrite.
+No open decision is resolved by choosing whichever implementation is easiest.
+
+| Decision | Proposed or established direction                                                                                               | Status and owner                                                                                                                              | Minimum evidence / stop condition                                                                                                                                         |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| DEC-001  | Two immutable profiles, released Java 5.5.1 baseline and exact selected public surface; implementation route R2                 | Two-profile direction supported by the design chat; repository owner must accept the implementation baseline, member inventory and risk route | Reconcile current capability/parity inventories and identify supported hosts; an unlisted public API or release-target change requires re-baselining                      |
+| DEC-002  | Omitted `behaviorProfileId` selects `normative-v1`; Java migrations select `java-owlapi-5.5.1` explicitly                       | Carried-forward public default; owner acceptance must be attached before SLICE-002                                                            | Installed-consumer impact and migration examples; this default cannot be described as automatic Java migration equivalence                                                |
+| DEC-003  | Normative authority hierarchy, facet adjudication and project contracts for atomicity, replacement, fallback and configuration  | Carried-forward proposal; repository owner accepts each consequential contract                                                                | Applicable normative clauses/errata, exact Java observation and paired pre/postconditions; conflicts remain blocked for the affected slice                                |
+| DEC-004  | Independent access authorization and profile-specific resource/transport semantics                                              | Clarification supported by the earlier chat research; repository owner and security reviewer confirm the resulting public/host boundary       | Allowed/denied capability matrix, exact Java settings and no hidden JS-default restriction; policy that narrows the claimed Java surface requires explicit scope decision |
+| DEC-005  | One authoritative owner for common knowledge; narrow separate rules for real profile differences                                | Architectural direction; implementation owner records material DRY choices, reviewer validates                                                | Current owner/consumer inventory and tests; oracle/implementation independence cannot be abstracted away                                                                  |
+| DEC-006  | Precise proposed names and typed evidence contracts in this revision                                                            | Naming proposal; owner/API reviewer accepts new public extension names; NAM-01 correctness is mandatory                                       | Verify identifiers are unshipped, check existing schema consumers, preserve Java-required names; no compatibility alias is authorized                                     |
+| DEC-007  | Central artefact is executable oracle; source build corroborates; complete locks and explicit trust state                       | Carried-forward provenance contract; qualification owner provides evidence                                                                    | All provenance gates and Central/source behavioural comparison; unsigned identity is not signed trust and placeholders cannot qualify                                     |
+| DEC-008  | Preserve manager ownership; cross-manager operation described here is a copy; normative protected-state boundaries are explicit | Carried-forward semantics with terminology corrected; Java ownership behaviour still requires oracle confirmation                             | Conflict between Java-observed ownership and the proposed invariant stops the affected design; never silently impose a new Java rejection                                 |
+| DEC-009  | Reuse existing parser/storage/model/toolchain/harness facilities and independently validate actual consumers                    | Reuse direction; residual new capability selection and licence clearance remain prerequisites                                                 | REU-01/VER-01/LIC-01 evidence for the actual dependency/source reuse; no claim that this document completes deep selection or rights review                               |
+| DEC-010  | Profile/version support and release promotion follow evidence, with an explicit observer and recovery route                     | Carried-forward lifecycle; repository owner assigns release observer and approves promotion when qualified                                    | Exact candidate, route-selected checks, migration acceptance and recovery rehearsal; publication is outside this rewrite                                                  |
+
+The linked chat also discussed inserting documented Java public contracts above observed Java behaviour in the normative fallback hierarchy.
+This incoming plan instead falls back directly to the released observation.
+That difference is recorded for DEC-003: Javadoc is supporting contract evidence, not a silently inserted new precedence rank.
+If the distinction changes an outcome, reconcile and accept the rank before implementation.
+The Java emulation profile always targets actual qualified behaviour.
+
+## Scope and objectives
+
+The implementation covers the selected Java-shaped public OWLAPI surface already represented by the repository's compatibility programme: manager construction and lifecycle, ontology loading and imports, parser selection, configuration, ontology changes, selected searches/providers/locality operations, OWL language profile evaluation and the currently exposed StringDocumentTarget storage routes.
+The existing public factory already accepts an optional options object and constructs `OWLOntologyManager`, making behavioural-profile selection an extension of the existing API shape rather than a second public hierarchy. [manager-factory] The public documentation likewise describes the call as `OWLManager.createOWLOntologyManager(options?)`. [public-api] The replacement plan has the following objectives.
+
+| Objective                              | Required outcome                                                                                                                                                                    |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| One implementation                     | Common model, parser infrastructure, indexes, renderers and transport abstractions; no forked “Java” and “normative” packages                                                       |
+| Explicit behavioural contracts         | Every profile-sensitive observable is assigned to `java-owlapi-5.5.1`, `normative-v1`, or shared behaviour                                                                          |
+| Formal Java provenance                 | Java oracle derives from the released OWLAPI 5.5.1 tag, published artefacts and locked effective dependency graph                                                                   |
+| Immutable profile identity             | A manager's behavioural profile cannot change after construction                                                                                                                    |
+| Standards discipline                   | “Normative” means normative specifications plus deliberately adopted contracts, not a generic preference for cleaner behaviour                                                      |
+| Strong failure contracts where adopted | Operations designated transactional by `normative-v1` satisfy their stated commit-or-rollback invariant                                                                             |
+| Secure external-resource handling      | `normative-v1` uses explicit policy for XML external resources and network dereferencing; Java compatibility reproduces Java behaviour within the declared host-capability boundary |
+| Verifiable intentional divergence      | Every profile difference has a source, rationale, expected observable vector and paired test                                                                                        |
+| Stable version semantics               | Existing profile identifiers never silently acquire new behaviour                                                                                                                   |
+| Migration clarity                      | Consumers can choose exact Java emulation or the normative contract without learning hidden switches                                                                                |
+
+**In scope.**
+Structural and semantic output corrections are now governed by the same authority hierarchy rather than being categorically outside behavioural compatibility.
+A Java/specification difference may therefore be intentionally split between profiles, but only after the specification's status, applicable normative clauses, errata and scope have been established.
+
+**Out of scope.**
+This plan does not require implementing every missing Java class or overload; ambient JVM facilities that have no JavaScript-host analogue; a second parser stack; a second ontology model; a global Java-emulation environment; arbitrary feature-flag combinations; or automatic compatibility with unreleased/future Java revisions.
+Missing host capabilities must be reported as capability boundaries rather than silently approximated.
+
+The old source pin `b61ebe2da83daceebb3e7ba7afbd2582c9240c33` is superseded for oracle qualification.
+Existing probes produced against that revision may seed the new suite, but none constitutes final `java-owlapi-5.5.1` proof until rerun against the release artefacts.
+The previous plan explicitly recorded the earlier arbitrary source pin, so this is a deliberate baseline change rather than a reinterpretation of existing evidence. [research-primary] The portable [primary probe evidence][research-evidence] and [gap-closure probe evidence][research-gap-evidence] retain the observations and source references behind the reports.
+The nine previously evaluated divergence areas remain the minimum behavioural worklist.
+The research already establishes concrete observations in those areas, including Java partial change effects, retained manager state, private JavaScript resource ceilings, StringDocumentTarget reuse, JSON-LD boundaries and lazy/live search behaviour. [research-primary] [research-gaps] Completion of this plan requires **zero unclassified observable divergences on the selected surface**.
+“Unclassified” means that a difference cannot be traced to one of: shared behaviour, an exact Java-profile expectation, or an explicit `normative-v1` authority decision.
+
+## Authority and profile contracts
+
+The authority model is intentionally asymmetric: `normative-v1` resolves conflicts using a hierarchy; `java-owlapi-5.5.1` intentionally preserves the released Java implementation even where a higher-level specification would produce a different answer.
+Otherwise the Java profile would cease to be a faithful migration oracle.
+
+**Authority hierarchy for `normative-v1`.**
+
+| Rank          | Authority                                       | What qualifies                                                                                                    | What does not qualify                                                                                           |
+| ------------- | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Highest       | External normative specification                | Applicable normative clauses of W3C Recommendations or equivalent standards, including published normative errata | Examples, informative prose, Working Group Notes merely because they are on `w3.org`, implementation traditions |
+| Next          | Adopted project contract                        | A versioned, explicit, testable OWLAPI-JS requirement with cited rationale and defined observable guarantee       | “Best practice”, “idiomatic JavaScript”, performance preference, aesthetic simplification                       |
+| Fallback      | Java OWLAPI 5.5.1                               | Behaviour of the exact published oracle where higher authorities leave the question open                          | Behaviour from another Java version, an unreleased branch, inferred “likely Java behaviour”                     |
+| Evidence only | Existing JS implementation and historical plans | Evidence of migration impact, prior design and existing consumers                                                 | Independent authority to override the three ranks above                                                         |
+
+The OWL 2 Structural Specification is particularly strong authority because it explicitly says its structural model provides the normative abstract representation for OWL 2 and is used to specify observable behaviour of OWL 2 tools, while permitting implementations to use different internal structures so long as observable behaviour conforms. [owl-structure] This supports the architectural decision to share internal JavaScript mechanisms while varying only observable policy where required.
+
+**Conflict-resolution procedure.**
+Every proposed `normative-v1` difference must pass the following decision record before implementation:
+
+| Field                     | Required decision                                                                                                                                              |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Observable                | Define exactly what callers can distinguish: value, structure, accepted input, error category, failure phase, side effect, ordering, timing or external effect |
+| External authority        | Identify the exact specification, status and applicable normative clause; check errata                                                                         |
+| Contract authority        | If no external rule resolves it, identify the project contract and referenceable engineering/security rationale                                                |
+| Java observation          | Record the exact 5.5.1 behaviour from independent oracle execution and, where useful, source inspection                                                        |
+| Applicability             | Explain why the authority actually applies to this operation and not merely to a superficially similar problem                                                 |
+| Guarantee                 | State preconditions, postconditions and failure guarantees in testable terms                                                                                   |
+| Profile outcome           | `shared`, `profile-specific`, or—in a genuinely one-sided extension—`java-only`/`normative-only`                                                               |
+| Proof                     | Identify oracle, conformance, invariant, fault-injection and cross-profile tests                                                                               |
+| Compatibility consequence | State migration impact and security consequence                                                                                                                |
+| Decision status           | Proposed, accepted, superseded or rejected; never infer acceptance from implementation                                                                         |
+
+Check the [published OWL errata][owl-errata] alongside the exact specification revision.
+If a normative external specification and an informative document disagree, the normative text wins.
+If two applicable normative sources genuinely conflict, implementation must stop at the decision boundary until their scopes, revisions and errata are reconciled; arbitrary precedence by publication date is not permitted.
+A non-normative source can influence `normative-v1` only after its relevant behaviour is deliberately adopted as a project contract.
+
+Engineering principles therefore have **referenceable but bounded authority**.
+The strong exception-safety guarantee is a useful model: it means an operation either completes or leaves the protected program state as it was before the operation—commit-or-rollback semantics.
+Boost's canonical exception-safety exposition distinguishes this from the weaker basic guarantee, which preserves invariants but may permit state changes. [exception-guarantees] The project may adopt the strong guarantee for an operation, but the mere existence of that principle does not imply every OWLAPI operation must provide it.
+
+Similarly, ACID provides the historical transaction vocabulary, but OWLAPI JavaScript must not casually claim database-level ACID semantics.
+Härder and Reuter's transaction/recovery work concerns transaction-oriented database systems.
+Here, **atomicity** is relevant by analogy to operations explicitly defined as transactional; durability and database isolation do not automatically follow. [transactions] Linearizability is narrower still.
+Herlihy and Wing define it as a correctness condition for concurrent objects in which an operation appears to take effect at a point between invocation and response.
+It should be applied only to stateful operations that can actually overlap or become observably interleaved—for example through asynchronous execution or re-entrancy—not as a decorative synonym for atomicity. [linearizability] Security authorities are also contractual inputs rather than OWL language semantics.
+OWASP recommends disabling DTDs where possible and, where they are required, disabling external entity resolution/external DTD loading and limiting expansion; it identifies local-file disclosure, SSRF and resource exhaustion as XXE consequences. [xxe-guidance] OWASP's SSRF guidance additionally calls for destination-policy validation at connection time rather than relying solely on superficial URL validation. [ssrf-guidance] NIST SP 800-218 SSDF 1.1 remains the current final SSDF publication as of this plan; NIST lists SP 800-218 Rev. 1 / SSDF 1.2 as a draft rather than a final replacement. [ssdf-final] [ssdf-draft] These sources justify a secure-development and external-resource contract but do not themselves prescribe OWLAPI method signatures.
+
+**Profile definitions.**
+
+`java-owlapi-5.5.1` means:
+
+> The observable behaviour of the official OWLAPI 5.5.1 release, running with the dependency/runtime configuration recorded in its provenance manifest, reproduced on the selected JavaScript public surface including observable implementation quirks and specification deviations.
+
+Its canonical name is exactly `java-owlapi-5.5.1`.
+There is no `java-owlapi-latest`, `java-compatible`, `java5`, SHA-derived public alias or mutable pointer.
+A later Java release receives a different immutable profile identifier.
+
+`normative-v1` means:
+
+> The observable behaviour required by the normative specification set and explicit project contracts frozen into normative contract version 1, falling back to `java-owlapi-5.5.1` where those authorities do not prescribe a different result.
+
+Its canonical name is exactly `normative-v1`.
+A behaviourally significant change to that contract requires `normative-v2`; a documentation clarification that leaves all observable requirements unchanged does not.
+
+The distinction is deliberately not “correct” versus “incorrect”.
+A Java-compatible result may faithfully emulate a historical implementation quirk and therefore be correct under its own contract.
+Conversely, a `normative-v1` change must not be justified merely as “better”.
+
+**Default policy.**
+Public documentation and all new project code must select a profile explicitly.
+For compatibility with the existing optional-options call shape, omitted `behaviorProfileId` remains accepted in the first profile-aware release and resolves to `normative-v1`.
+This carries forward the incoming plan's normative omission default (DEC-002).
+It is a consequential product decision: migration instructions must select the Java profile explicitly, and the implementation must not describe an omitted selector as Java-compatible behaviour.
+Changing that default later is itself a behavioural breaking change.
+The current factory already supports an options object, so this choice does not require a parallel constructor family. [manager-factory] The proposed read-only identity method is:
+
+```js
+manager.getBehaviorProfileId();
+// "normative-v1" or "java-owlapi-5.5.1"
+```
+
+There is no `setBehaviorProfileId()`.
+
+## Provenance and reproducibility
+
+The Java profile must be qualified against a **release artefact, source identity and complete dependency environment**, not merely a Git commit.
+Qualification has not been completed by this document rewrite.
+
+The upstream Git provenance is already sufficiently clear to freeze the source identity.
+The Git reference `refs/tags/owlapi-parent-5.5.1` resolves to annotated tag object `8003508e8c185579898ca4eda1245f808461d06a`; that tag object targets commit `f760b3a4c107c6d5f90f856e5680c39b18af646f`. [java-tag] The target commit's tree is `6b87391a36b7341f7253f57046b5b8621d3d0ac8`, its message is `OWLAPI version 5.5.1`, and it records the 5.5.1 release changes. [java-commit] The raw Git objects inspected during this revision contain no commit or tag signature.
+The manifest must distinguish unsigned objects from signatures that were not checked, could not be checked, or failed verification. [java-commit] [java-tag] Maven Central independently publishes the 5.5.1 distribution and related modules, providing a second release channel to bind into the oracle. [java-pom] The canonical provenance file shall be:
+
+```text
+docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json
+```
+
+The resolved Java dependency lock shall be:
+
+```text
+docs/compatibility/profiles/java-owlapi-5.5.1/java-dependencies.lock.json
+```
+
+The following is the proposed **draft manifest data shape**, not a JSON Schema or a qualification result.
+Known source identities are retained; unresolved measurements use `null` or an explicit status, never a string masquerading as a number or boolean.
+SLICE-001 must add a schema and consumer validator using the repository's existing validation facilities.
+A qualified instance has stricter conditional requirements than a draft.
+
+```json
+{
+  "schemaVersion": 1,
+  "behaviorProfileId": "java-owlapi-5.5.1",
+  "qualification": {
+    "status": "unqualified",
+    "completedAt": null,
+    "evidenceManifestPath": null
+  },
+  "upstream": {
+    "repositoryUrl": "https://github.com/owlcs/owlapi",
+    "releaseVersion": "5.5.1",
+    "gitObjectFormat": "sha1",
+    "tag": {
+      "name": "owlapi-parent-5.5.1",
+      "objectType": "tag",
+      "tagObjectId": "8003508e8c185579898ca4eda1245f808461d06a",
+      "peeledCommitObjectId": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "taggedAt": "2024-09-08T13:30:53Z",
+      "signature": {
+        "verificationStatus": "unsigned",
+        "signerFingerprint": null,
+        "verificationEvidencePath": null
+      }
+    },
+    "commit": {
+      "commitObjectId": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "treeObjectId": "6b87391a36b7341f7253f57046b5b8621d3d0ac8",
+      "subject": "OWLAPI version 5.5.1",
+      "committedAt": "2024-09-07T20:46:24Z",
+      "signature": {
+        "verificationStatus": "unsigned",
+        "signerFingerprint": null,
+        "verificationEvidencePath": null
+      }
+    }
+  },
+  "mavenCentral": {
+    "repositoryUrl": "https://repo.maven.apache.org/maven2",
+    "primaryCoordinate": {
+      "groupId": "net.sourceforge.owlapi",
+      "artifactId": "owlapi-distribution",
+      "version": "5.5.1"
+    },
+    "artifacts": [
+      {
+        "groupId": "net.sourceforge.owlapi",
+        "artifactId": "owlapi-distribution",
+        "version": "5.5.1",
+        "artifactType": "pom",
+        "classifier": null,
+        "byteLength": null,
+        "sha256": null,
+        "signature": {
+          "verificationStatus": "not-checked",
+          "signerFingerprint": null,
+          "verificationEvidencePath": null,
+          "signerTrustDecisionReference": null
+        }
+      },
+      {
+        "groupId": "net.sourceforge.owlapi",
+        "artifactId": "owlapi-distribution",
+        "version": "5.5.1",
+        "artifactType": "jar",
+        "classifier": null,
+        "byteLength": null,
+        "sha256": null,
+        "signature": {
+          "verificationStatus": "not-checked",
+          "signerFingerprint": null,
+          "verificationEvidencePath": null,
+          "signerTrustDecisionReference": null
+        }
+      }
+    ],
+    "dependencyLock": {
+      "path": "java-dependencies.lock.json",
+      "sha256": null,
+      "repositoryUrl": "https://repo.maven.apache.org/maven2",
+      "oracleExecutionClosureStatus": "not-checked",
+      "sourceBuildClosureStatus": "not-checked"
+    }
+  },
+  "toolchain": {
+    "jdk": {
+      "distributionName": null,
+      "version": null,
+      "distributionArchiveSha256": null,
+      "installationIdentityEvidencePath": null
+    },
+    "maven": {
+      "version": null,
+      "distributionArchiveSha256": null
+    },
+    "operatingSystem": {
+      "name": null,
+      "version": null,
+      "architecture": null
+    }
+  },
+  "sourceBuild": {
+    "sourceCommitObjectId": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+    "requiresCleanCheckout": true,
+    "checkoutVerificationStatus": "not-checked",
+    "invocation": null,
+    "dependencyResolutionMode": "offline-after-seeding",
+    "artifactComparison": {
+      "centralJarSha256": null,
+      "rebuiltJarSha256": null,
+      "areJarsByteIdentical": null,
+      "byteDifferenceExplanation": null,
+      "behavioralComparisonEvidencePath": null
+    }
+  },
+  "oracle": {
+    "harnessSourceCommitObjectId": null,
+    "fixtureManifestSha256": null,
+    "observationManifestSha256": null,
+    "invocation": null,
+    "classpathLockSha256": null
+  }
+}
+```
+
+Field contracts preserve every datum required by the incoming manifest while making its meaning explicit:
+
+| Field or family                                                                            | Meaning and validation rule                                                                                                                                                                                                                             |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `schemaVersion`                                                                            | Positive integer identifying the evidence format, not a profile version, package version or Java release                                                                                                                                                |
+| `behaviorProfileId`                                                                        | Exact immutable profile identifier; no display label, object or mutable alias                                                                                                                                                                           |
+| `qualification.status`, `completedAt`, `evidenceManifestPath`                              | Lifecycle state and evidence of qualification. A UTC RFC 3339 completion instant is present only after all gates pass; recording a date does not itself qualify anything                                                                                |
+| `gitObjectFormat`, `tagObjectId`, `peeledCommitObjectId`, `commitObjectId`, `treeObjectId` | Git SHA-1 object identities of different object kinds; never confused with a content SHA-256. The tag must peel to the recorded commit and its tree                                                                                                     |
+| `taggedAt`, `committedAt`, `subject`                                                       | Upstream object timestamps normalized to UTC and the commit's first-line subject, not the date of local verification or the complete message                                                                                                            |
+| `signature.verificationStatus`                                                             | Enumerated `not-checked`, `unsigned`, `verified`, `invalid` or `unverifiable`; presence alone does not establish validity or signer trust                                                                                                               |
+| `signerFingerprint`, `verificationEvidencePath`, `signerTrustDecisionReference`            | Fingerprint in the signature scheme's defined form, verification record and separate trust decision where relevant. No invented fingerprint or claim that cryptographic validity establishes source/build equivalence                                   |
+| Maven `groupId`, `artifactId`, `version`, `classifier`, `artifactType`                     | Preserve native Maven coordinate meanings; a Maven type is not always interchangeable with a filename extension. Null classifier means absent classifier                                                                                                |
+| `byteLength`, `sha256`                                                                     | Non-negative integer byte length and 64-character lowercase hexadecimal SHA-256 of the exact named file; null only while the measurement is unresolved                                                                                                  |
+| Closure status fields                                                                      | `not-checked`, `complete` or `incomplete`, with inventory and replay evidence; never default to complete because a dependency command exited successfully                                                                                               |
+| Toolchain identity                                                                         | Exact JDK distribution/version, Maven version, OS/version/architecture and distribution digests. Hash a locally archived JDK distribution; otherwise preserve reproducible installation identity evidence and the reason no archive digest is available |
+| `invocation`                                                                               | Structured executable, ordered argument list, working directory relative to the qualification workspace, and an allowlisted environment map; preserve exact build/Java invocation without embedding credentials or relying on ambiguous shell quoting   |
+| `requiresCleanCheckout` / `checkoutVerificationStatus`                                     | Separate the requirement for a clean source tree from measured proof that the checkout was clean                                                                                                                                                        |
+| `areJarsByteIdentical`, `byteDifferenceExplanation`                                        | Nullable boolean until comparison; false requires an explanation. Byte equivalence and behavioural equivalence are separate claims                                                                                                                      |
+| Oracle manifest and classpath digests                                                      | Bind the exact harness source commit, fixture manifest, observation manifest and ordered classpath lock; record each subject's relative path in the owning evidence inventory                                                                           |
+
+Relative evidence paths are resolved against their containing manifest, unless a schema explicitly identifies a different root.
+Mutable branch URLs or local Drive paths cannot be the only identity of a qualification input.
+The manifest itself is hashed by its parent evidence record, not by a self-referential digest inside its own bytes.
+
+Qualification validation rejects unresolved required values, incomplete closures, failed/unverifiable required signature checks, missing trust decisions for claimed trusted signers, unexplained byte differences and all unexplained semantic differences. An actually unsigned upstream Git object is recorded as unsigned; it cannot be relabelled verified, and its admission must follow the accepted provenance/trust decision.
+Central POM/JAR signature availability and verification remain to be measured.
+
+The dependency lock must contain every artefact that can affect oracle execution or source reconstruction.
+Maven's official Dependency Plugin can output the dependency tree in JSON and describes that tree as the hierarchy actually resolved by Maven; this is the appropriate starting point, but the project's lock adds byte-level SHA-256 verification because coordinates alone do not prove which bytes were executed. [maven-locking] Each lock entry shall have at least the following shape.
+The coordinate below is illustrative and the null measurements do not qualify an artefact.
+
+```json
+{
+  "groupId": "org.example",
+  "artifactId": "example",
+  "version": "1.2.3",
+  "artifactType": "jar",
+  "classifier": null,
+  "dependencyScope": "runtime",
+  "isOptionalDependency": false,
+  "resolutionPurposes": [
+    "oracle-execution"
+  ],
+  "sha256": null,
+  "byteLength": null,
+  "repositoryUrl": "https://repo.maven.apache.org/maven2"
+}
+```
+
+`dependencyScope` preserves Maven scope; `resolutionPurposes` distinguishes oracle execution from source reconstruction and can contain both.
+“Build” is a closure purpose, not an invented Maven scope.
+Parent POMs, imported BOMs, build plugins and their dependencies must be inventoried when they affect reconstruction.
+Record dependency edges, repositories, activated Maven profiles/properties and the ordered execution classpath as well as individual files; an unordered list of JAR hashes cannot identify class-loading behaviour.
+
+Separate `runtime` and `build` closures are required.
+A source build can be affected by Maven plugins and plugin dependencies even when they are not on the application's runtime classpath.
+
+**Provenance verification procedure.**
+
+| Gate               | Required verification                                                                                                                                |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tag identity       | Fetch exact `owlapi-parent-5.5.1` ref; assert type `tag`; record tag-object SHA                                                                      |
+| Tag peel           | Dereference annotated tag; assert target commit equals `f760b3a4…`                                                                                   |
+| Commit identity    | Assert commit tree equals `6b87391…`, release message/version and clean checkout                                                                     |
+| Release source     | Assert parent/module versions at that commit identify `5.5.1`, not `5.5.1-SNAPSHOT`                                                                  |
+| Maven publication  | Resolve `net.sourceforge.owlapi:owlapi-distribution:5.5.1` from Maven Central only                                                                   |
+| Artefact integrity | Download POM/JAR and associated signatures/checksums where provided; compute project-owned SHA-256 values independently                              |
+| Dependency lock    | Resolve complete effective dependency graph with a pinned Maven version; hash every resolved POM/JAR/plugin artefact                                 |
+| Clean replay       | Use an isolated Maven repository; resolve only the locked set and fail on unexpected additional resolution. Do not purge a user-owned shared cache   |
+| Source build       | Build unmodified commit with pinned JDK/Maven; record exact outputs and compare with Central                                                         |
+| Oracle proof       | Run the Java behavioural harness against the Central artefact/classpath and separately against the source build; investigate any semantic difference |
+| Freeze             | Commit manifest, dependency lock, oracle observations and their digests before using the profile as release evidence                                 |
+
+Maven defines a reproducible build as one that can recreate bit-for-bit identical artefacts from the same source, environment and build instructions, and documents `project.build.outputTimestamp` and reproducible plugin configuration as enabling mechanisms. [maven-reproducibility] Because this project is verifying an already-published upstream release, it must **not modify OWLAPI 5.5.1 source merely to make it reproducible**.
+If an unmodified 5.5.1 source build is not byte-identical to Central, the manifest records that fact.
+The Central bytes remain the executable compatibility oracle; the source build then provides corroborating source/probe evidence rather than a fabricated claim of bit-reproducibility.
+
+A release cannot claim `java-owlapi-5.5.1` qualification while any required provenance measurement, trust decision or comparison remains unresolved.
+The incoming REQUIRED_* strings are replaced by typed draft state, not by fabricated evidence.
+
+## Behavioural architecture
+
+The behavioural profile is owned by the ontology manager and represented internally by an immutable `OntologyBehaviorContext`.
+The context resolves a coherent set of policies at construction rather than scattering checks of raw profile identifiers throughout parsing, loading and model code.
+
+```mermaid
+flowchart TD
+    F["OWLManager.createOWLOntologyManager(options)"] --> R["Immutable behaviour-profile definitions"]
+    R --> J["java-owlapi-5.5.1 definition"]
+    R --> N["normative-v1 definition"]
+    J --> JC["Manager-bound OntologyBehaviorContext"]
+    N --> NC["Manager-bound OntologyBehaviorContext"]
+    JC --> M1["Java-profile manager instance"]
+    NC --> M2["Normative-profile manager instance"]
+    M1 --> O1["Manager-owned ontology"]
+    M2 --> O2["Manager-owned ontology"]
+    M1 --> S["Shared model, loaders, parsers, indexes, renderers and queries"]
+    M2 --> S
+    S --> P["Selected change, loading, parser selection, storage,<br/>computation resource, resolution and query policies"]
+    P --> B["External-resource boundary"]
+    A["Independent caller / host access authorization"] --> B
+    O1 -. "share profile-neutral immutable values" .-> V["Axioms, entities and literals"]
+    O2 -. "share profile-neutral immutable values" .-> V
+```
+
+The two manager nodes represent instances of the same implementation.
+Arrows show ownership and contract flow, not a runtime execution trace.
+The access-authority input is independent of profile selection; a behaviour definition cannot grant permissions.
+
+The public call shape is:
+
+```js
+const normativeManager = OWLManager.createOWLOntologyManager({
+  behaviorProfileId: "normative-v1",
+});
+
+const javaManager = OWLManager.createOWLOntologyManager({
+  behaviorProfileId: "java-owlapi-5.5.1",
+});
+```
+
+Existing calls remain valid:
+
+```js
+const manager = OWLManager.createOWLOntologyManager();
+
+// Proposed omission default in the first profile-aware release:
+manager.getBehaviorProfileId() === "normative-v1";
+```
+
+The current factory already forwards an optional options object to `OWLOntologyManager`, so the implementation should extend that configuration path instead of adding `JavaOWLManager`, `NormativeOWLManager`, duplicate packages or profile-specific public class trees. [manager-factory]
+
+### Semantic naming and field contracts
+
+NAM-01 applies to new names and to retained names whose meaning changes.
+Use American spelling in JavaScript identifiers to match existing `behavior` identifiers; prose may retain British spelling.
+A behavioural profile is a contract selection, whereas an OWL language profile such as OWL 2 DL is a language-subset test.
+Never abbreviate both to an unqualified `profile` at a shared boundary.
+
+The public extension names below are proposed for the first profile-aware release.
+Inspection of the current factory and manager found no implemented behaviour-profile selector; there is therefore no demonstrated need for aliases for the incoming draft names.
+Confirm this against the release/export inventory before coding.
+Java-required method names remain exact, even where a different private JS name would be clearer.
+
+| Incoming or ambiguous name                                       | Proposed name / rule                                                                            | Exact meaning and boundary                                                                                                                   |
+| ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `behaviorProfile`, generic `profileId`, ledger `profile`         | `behaviorProfileId`                                                                             | One canonical string such as `java-owlapi-5.5.1`, not the definition object or an OWL language profile                                       |
+| `getBehaviorProfile()`                                           | `getBehaviorProfileId()`                                                                        | Returns the resolved immutable identifier; no mutation counterpart                                                                           |
+| `BehaviorContext`                                                | `OntologyBehaviorContext`                                                                       | Manager-bound immutable behaviour definition reference; no hidden global mode or per-operation mutable counters                              |
+| Generic registry entry                                           | `BehaviorProfileDefinition`                                                                     | Shared immutable definition of one behaviour contract and its policies; no manager ownership or granted permissions                          |
+| `contractVersion`                                                | `normativeContractVersion` in the normative definition only                                     | Integer version of the adopted normative contract; the Java definition instead identifies its Java release and oracle provenance             |
+| `provenanceDigest`                                               | `javaOracleProvenanceSha256` or `normativeContractSha256`                                       | Hash algorithm and hashed subject are explicit; actual values come from qualified/frozen records                                             |
+| `mutationPolicy`                                                 | `ontologyChangePolicy`                                                                          | Ordering, result classification and failure/publication semantics for ontology changes                                                       |
+| `loadingPolicy`                                                  | `ontologyLoadingPolicy`                                                                         | Root/import session retention and publication semantics                                                                                      |
+| `parserPolicy`                                                   | `parserSelectionPolicy` for candidate/fallback rules                                            | Does not silently include XML authorization or every grammar rule; add a separately named rule only when a real contract difference needs it |
+| `storagePolicy`                                                  | `documentStoragePolicy`                                                                         | Target reuse, rendering publication and failure guarantees                                                                                   |
+| `resourcePolicy`                                                 | `computationResourcePolicy`                                                                     | Contract for limits and exhaustion classification; a runtime counter belongs to a separately scoped budget instance                          |
+| `externalResourcePolicy`                                         | `externalResourceResolutionPolicy` plus `externalResourceAccessPolicy`                          | First specifies lookup/attempt/redirect/cache behaviour; second expresses caller/host authorization. They must not be interchangeable        |
+| `evaluationPolicy`                                               | `queryEvaluationPolicy`                                                                         | Eager/lazy/live evaluation, callbacks and consumption timing; does not mean OWL-language-profile validity                                    |
+| `sha`, `objectSha`, `treeSha`                                    | `commitObjectId`, `tagObjectId`, `treeObjectId` with `gitObjectFormat`                          | Distinct Git object identities; arbitrary “SHA” never substitutes for a known kind/algorithm                                                 |
+| `qualifiedAt`, `gitSignatureVerified`                            | Qualification lifecycle and signature verification status records                               | Completion is distinct from observation time; unsigned, unchecked and invalid are different states                                           |
+| `bytes`, `type`, `scope`, `optional`, `os` in proposed evidence  | `byteLength`, `artifactType`, `dependencyScope`, `isOptionalDependency`, `operatingSystem`      | Quantity, domain and positive boolean assertion are explicit; mandated external schema keys are retained at their real wire boundary         |
+| Ledger `id`, `surface`, `classification`, `expectation`, `tests` | `decisionId`, `apiMember`, `behaviorRelationship`, `expectationReference`, `testCaseReferences` | Distinguish decision identity, member identity, relationship, referenced expectation and a collection of test identifiers                    |
+| Copy described as transfer, move or adoption                     | `copyOntology` only if that exact API is selected; otherwise “cross-manager ontology copy”      | Source survives and a new destination-owned object is created; no implication that source ownership changes                                  |
+
+For every material field, record value type/domain, unit, cardinality, owner, lifetime, null/absence meaning, default origin and validation/read boundary.
+Boolean names assert one positive proposition; enum statuses represent multiple states.
+Operations use verbs and values use nouns.
+Use domain-standard acronyms (`IRI`, `JDK`, `XML`, `SHA-256`) where their meaning is established.
+Avoid a redundant unit suffix only when a mandated Java signature already defines the unit in its contract.
+
+Name limits by the resource actually counted and its scope: document bytes, connection timeout in milliseconds, parser tokens, import depth, entity expansions, or an operation-wide work budget are different concepts.
+`timeoutMs` must not be reused to mean both connection establishment and total operation duration.
+A recursion depth is not the number of axioms; retries after an initial attempt are not the total number of attempts.
+Error fields must identify the exhausted resource and configured boundary without calling a valid ontology invalid.
+
+The incoming context example duplicated identity, contract version and provenance next to policy objects.
+Use one definition as the authority instead:
+
+| Object                      | Proposed fields and ownership                                                                                                                                                                                                                                         |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `BehaviorProfileDefinition` | `behaviorProfileId`; applicable normative contract version/digest or Java release/provenance digest; the seven precisely named policy references above. A tagged definition cannot contain both a normative contract version and a misleading Java “contract version” |
+| `OntologyBehaviorContext`   | A private `behaviorProfileDefinition` reference owned by the manager; identity queries derive from it. Manager authorization is separately owned and supplied explicitly at resource boundaries                                                                       |
+| Operation state             | Initiating context, exact configuration sources/read timing, staged state, counters and diagnostic accumulation. Mutable operation state is never stored in the shared frozen definition                                                                              |
+
+These are contract-level shapes, not complete proposed implementation code.
+Freeze the definition, its strategies and manager profile binding.
+A shallow `Object.freeze` is insufficient if nested strategies or closures still expose mutable global state.
+Capturing a profile at operation start does **not** license snapshotting every Java configuration value early: configuration reads and lazy observations must occur at the qualified Java time.
+Normative read timing must be explicit as well.
+
+### Java configuration and resource semantics
+
+The Java profile reuses the matched Java method and type wherever one exists.
+It must not invent an alternative option, renamed setter, finite default or early validation that changes Java behaviour.
+A distinct JS host capability may need an explicit extension only after proving the native/reused boundary insufficient (DEC-004/DEC-009).
+There is no approved compatibility shim or naming waiver.
+
+The following historical observations from [research-primary] and [research-gaps] are probe requirements, **not newly qualified 5.5.1 facts**.
+Reconfirm them in SLICE-001/SLICE-002 against the released oracle; source and provider dependencies matter.
+
+| Java configuration seam                                                 | Historical observation to requalify                                                                                                | Naming and implementation consequence                                                                                                                |
+| ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `getConnectionTimeout()` / `setConnectionTimeout(int)`                  | Default 20,000 ms; zero disables the connection timeout; a negative value can be retained until the connection consumer rejects it | Preserve the Java API name, integer/value timing and connection meaning; never substitute the JS 30-second whole-operation limit                     |
+| `getRetriesToAttempt()` / `setRetriesToAttempt(int)`                    | Default 5; helper behaviour counts attempts, including zero/negative no-attempt cases and the final timeout                        | Preserve the exact public name despite possible colloquial ambiguity; private names and tests must distinguish attempt count from additional retries |
+| `isFollowRedirects()` / `setFollowRedirects(boolean)`                   | Default true; protocol transitions and same-protocol behaviour depend on the actual URL/provider path                              | A single `maxRedirects` ceiling does not implement this contract; qualify cycles, protocol changes and the false setting                             |
+| `getEntityExpansionLimit()` / `setEntityExpansionLimit(String)`         | Default string `"100000000"`; native SAX/provider application; observed zero-unlimited behaviour                                   | Preserve string domain and expansion-count meaning; do not translate into document byte, XML nesting or ontology-expression limits                   |
+| `isStrict()` / `setStrict(boolean)`                                     | Default false, unlike the existing JS strict parsing default                                                                       | Identify exactly what strictness affects at each consumer; preserve default and application phase                                                    |
+| `isLoadAnnotationAxioms()` / `setLoadAnnotationAxioms(boolean)`         | Default true; manager configuration and post-load changes affect later observable state                                            | Test setter/copy/reset/no-op identity, per-ontology retention and reads after load failure/rename/remove/reload                                      |
+| Format `getParameter` / `setParameter` and actual Rio/provider settings | Existing format parameters are a native configuration path; provider defaults and unsupported settings can be observable           | Reuse the native key/type/consumer where matched; do not replace it with an unrelated set of JS-only parser knobs                                    |
+
+The current JS loader's finite defaults include expression depth 512, annotation depth 64, import depth 32, import count 256, input/remote-document bytes 33,554,432, quads/tokens 5,000,000, RDF-list length 1,000,000, token length 1,048,576, XML nesting depth 512, sniff bytes 8,192 and timeout 30,000 ms; redirects/retries default to zero and remote imports/JSON-LD contexts are disabled.
+These are a source-inspection inventory in [loader configuration](../../model/owlOntologyLoaderConfiguration.js), not accepted target values for either new profile.
+Trace every read and hidden fallback across model, parsing, translation, writing, OWL-language-profile evaluation and locality.
+A finite value buried in a dependency is still part of the observable inventory.
+
+Normative limits require a dimension, scope, justified default, public/native configuration route, precedence and exhaustion result.
+An absent limit, explicit unlimited value, zero, negative, malformed value and omitted setting must each have a defined meaning.
+For the Java profile, those meanings come from Java and the qualified provider; for the normative profile, they require an adopted contract.
+JavaScript numeric representation or host failure is a declared capability limitation when unavoidable, not permission to quietly cap accepted input earlier.
+
+### Behaviour and external-resource authorization
+
+Resolve two independent questions at the existing resource boundary:
+
+1. What operation, lookup, redirect, retry, cache reuse or external access would this behaviour profile perform under its configuration?
+2. Does the caller/host authorize that concrete resource access?
+
+Selecting `java-owlapi-5.5.1` does not grant network or filesystem authority.
+Equally, a new JS-specific deny default cannot be hidden inside that profile and then counted as Java equivalence.
+Qualification supplies explicitly matched access conditions and records a distinct capability-denied outcome when the host refuses an otherwise expected action.
+The published support matrix must state those conditions and any unmatched host limitation.
+
+For `normative-v1`, carry forward the explicit-deny-until-authorized network contract and default XML external-resource restrictions.
+Separate destination/scheme/credential authorization from profile-specific resolution, cache ownership, retries and resource budgets.
+Reuse the current document-loader/resolver boundary where it can express the accepted contract; introduce a new public `externalResourceAccessPolicy` shape only for a demonstrated residual gap, with owner acceptance and consumer tests. Authorization must not be broadened by a profile switch, redirect, nested import/context, cached response or another manager.
+
+The normative profile's secure-processing rules are not silently imposed as Java parser semantics.
+Any unavoidable provider/host hardening that prevents the qualified Java behaviour must be declared, measured and resolved as a capability/scope decision before claiming compatibility.
+Java configuration remains the source of Java resource defaults.
+
+The profile registry is immutable after module initialization.
+Consumers cannot inject individual internal strategies to assemble an undeclared hybrid profile.
+
+**Propagation rules.**
+
+| Component                                              | Rule                                                                                                                                     |
+| ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Manager                                                | Primary owner of the immutable `OntologyBehaviorContext`                                                                                 |
+| Managed ontology                                       | Bound privately to its owning manager/context for profile-sensitive operations                                                           |
+| Axioms, entities, literals and other structural values | Profile-neutral unless an external specification truly defines different structure at construction                                       |
+| Loader/import session                                  | Captures the manager context at operation start and retains that exact context until completion                                          |
+| Parser                                                 | Receives an operation context; does not query a global profile                                                                           |
+| Storer/renderer                                        | Receives the initiating manager context                                                                                                  |
+| Search/provider/locality operation                     | Receives or closes over the manager context needed to define lazy/live behaviour                                                         |
+| Data factory                                           | Manager-owned factories inherit the manager context where construction semantics can differ; profile-neutral construction remains shared |
+| Standalone profile-sensitive utility                   | Must receive an explicit context/profile through its public construction boundary; no ambient lookup                                     |
+| Asynchronous continuation                              | Retains its initiating context; later global/default changes cannot alter it                                                             |
+| Error normalisation                                    | Uses the active profile's contract without mutating context or leaking another profile's semantics                                       |
+
+**Ontology ownership and cross-manager copy.**
+A managed ontology belongs to exactly one manager for lifecycle and mutation semantics.
+It cannot be silently re-parented to a second manager, because that would change the behavioural contract governing the same mutable object.
+
+Where the selected surface supports a cross-manager ontology copy, the proposed ownership contract is:
+
+1. obtain a profile-neutral structural snapshot from the source ontology;
+2. preflight destination identity/import/index conflicts under the destination manager's context;
+3. validate any destination-profile structural requirements;
+4. create a **new destination-managed ontology instance**;
+5. publish that instance according to the destination manager's failure contract;
+6. leave the source manager and source ontology unchanged.
+
+A failed copy must not leave an ontology half-owned by either manager.
+This is copy semantics: it creates a new destination object and preserves the source.
+It must not be named move, transfer or adoption.
+A real ownership-transfer operation would require its own explicit contract and Java oracle evidence.
+A destination identity collision must fail before publication.
+The source object's manager binding never changes.
+
+Immutable structural values may be shared across profile contexts when their meaning is identical.
+Sharing an axiom object does not transfer ontology ownership.
+
+**Cross-profile operation rules.**
+
+| Situation                                                                        | Required behaviour                                                                                                                          |
+| -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Mutation requested through non-owning manager                                    | Normative or mixed-profile: reject before mutation. Same-profile Java: preserve the qualified Java operation without transferring ownership |
+| One managed ontology passed to another manager for storage                       | The initiating/destination manager profile governs only where the API explicitly supports such a target; otherwise reject ownership misuse  |
+| Composite operation consumes multiple managed ontologies from different profiles | Require an explicit destination manager and snapshot/copy semantics, or reject before effects                                               |
+| Profile-neutral equality/hash comparison                                         | Shared implementation; profile identity does not affect result                                                                              |
+| Profile-sensitive serialisation/parsing                                          | Initiating manager/context governs                                                                                                          |
+| Lazy result created under one context and consumed later                         | Original context remains authoritative                                                                                                      |
+| Context mismatch inside internal call graph                                      | Programming error; fail fast rather than selecting one profile implicitly                                                                   |
+| Future API needs mixed-profile semantics                                         | Requires a new explicit contract; it cannot infer “stricter wins”, “Java wins” or “normative wins”                                          |
+
+Where concurrent or re-entrant manager writes can overlap, a `normative-v1` atomic operation must have a defined publication/linearisation point or the implementation must reject overlapping writes.
+The [released-oracle mutation observations](../compatibility/profiles/java-owlapi-5.5.1/README.md#newly-resolved-implementation-decisions) resolve DEC-008's original ownership assumption: Java permits same-profile non-owner mutation, including a rename that leaves the owning manager's previous index entry intact.
+The implementation must retain that observed vector in the Java profile; rejecting it would introduce a compatibility difference.
+Linearizability is relevant only where operations can be observably concurrent; it is not required for pure immutable computations. [linearizability] The implementation shall concentrate differences in policy and publication boundaries.
+Shared knowledge with the same meaning, authority and reasons for change has one owner.
+Separate profile rules and independent test oracles remain separate when their authority differs; identical text alone does not justify abstraction.
+Whole parser/model forks and scattered profile switches require redesign.
+Any necessary separate implementation records its boundary, owner and conformance tests in the DRY decision table below.
+
+### DRY authority, reuse and architectural seams
+
+The following paths are **predictions based on current source inspection**, not a requirement to create a module for every policy.
+Choose the smallest existing owner that satisfies the consumer contract.
+A material extraction is justified by shared meaning and change responsibility, not similar-looking loops.
+
+| Knowledge / current authority                         | Current consumers and predicted seams                                                                                                                                                                                                        | Strategy and reason for sharing or separation                                                                                                                                            | Drift control / accountable owner                                                                          |
+| ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Manager construction and ownership                    | [factory](../../apibinding/owlManager.js), [manager](../../model/owlOntologyManager.js), [managed ontology index](../../internal/loading/managedOntologyIndex.js)                                                                            | Extend the existing construction and index lifecycle; one profile-definition registry, one owning manager, explicit operation context                                                    | Integration owner; both-profile construction, async retention, collision and copy tests                    |
+| Loader/writer default values and configuration timing | [loader configuration](../../model/owlOntologyLoaderConfiguration.js), [writer configuration](../../model/owlOntologyWriterConfiguration.js), all manager/parser/storer reads                                                                | One accepted source per profile/native setting; different Java/normative contracts are deliberate separate rules, not a merged “strictest” default                                       | API/configuration owner; independent Java matrix, normative domain checks and caller-consumer tests        |
+| Structural rules and input acceptance                 | [structural validation](../../internal/model/structuralValidation.js), data factory, format parsers, RDF translators                                                                                                                         | Share structure algorithms where meaning agrees; keep resource accounting separate from validity and select only proven profile-sensitive decisions                                      | Model/parsing owner; large valid cases, facet tests and exhaustion classification                          |
+| Candidate selection and format parsing                | [parser registry](../../internal/parsing/parserRegistry.js), `internal/parsing/` format owners                                                                                                                                               | One parser stack; policy controls mismatch/fallback boundaries. Do not share a routine whose exception/failure contract differs without an explicit seam                                 | Parser owner; candidate order, malformed-input and 9,000-space probes                                      |
+| XML and remote resolution                             | [XML adapter](../../internal/parsing/xml/xmlParserAdapter.js), [JSON-LD parser](../../internal/parsing/jsonld/parser.js), manager document loader                                                                                            | Common transport/adapter boundary, separately owned behaviour and access authorization; security and failure boundaries constrain consolidation                                          | Loading owner plus security reviewer; owned-server/XXE tests and no permission/cache leakage               |
+| Rendering and target publication                      | [target](../../io/stringDocumentTarget.js), [storer registry](../../internal/storage/storerRegistry.js), [RDF storage](../../internal/storage/rdfStorage.js), format renderers                                                               | Reuse rendering algorithms; separate complete-text replacement from Java accumulation. Do not change a helper named `replaceStringDocumentTargetText` to append while retaining its name | Storage owner; all-format repeat/failure tests                                                             |
+| Query consumption, OWL language profiles and locality | [entity search](../../search/entitySearcher.js), [profile budget](../../internal/profiles/budget.js), [locality budget](../../internal/modularity/localityBudget.js), `modularity/`                                                          | Shared lazy/live semantics until an authority proves divergence; OWL-profile checks must not turn exhausted computation into a false invalidity result                                   | Query/profile owner; callback/live/empty-seed and budget tests                                             |
+| Released Java identity and harness inputs             | [reference native build](../../util/owlapi-reference/reference-native-build.mjs), [reference inputs](../../util/owlapi-reference/reference-inputs.mjs), existing Java runners                                                                | Extend existing resolution/build/observation owners; do not create an independent Maven resolver or second provenance truth                                                              | Qualification owner; hash, clean replay, dependency closure and source/Central comparison                  |
+| Current compatibility decisions and schemas           | [parity schema](../compatibility/java-api-parity-decisions.schema.json), [expected differences](../compatibility/expected-differences.json), [default inventory](../compatibility/default-behavior-inventory.md), API/capability inventories | Reconcile existing owners and validators. A current executable ledger is authoritative; reports and this plan refer to it, not competing copies                                          | Compatibility owner; schema validation, no unmatched/ambiguous/missing required differences                |
+| Test expectations                                     | Java harness, adopted normative clauses/contracts, official W3C cases, [installed consumer](../../test/consumers/owl-contract/writer-configuration.js)                                                                                       | Deliberately independent expected observations; share neutral fixture/input setup only when it cannot reproduce the implementation's mistake                                             | Test owner and independent reviewer; representative fault/mutation sensitivity and package-boundary checks |
+
+Before a new capability or dependency is adopted, complete the applicable REU-01/VER-01/LIC-01 research: native/current dependency support, latest stable or applicable LTS identity, actual consumer validation, actual licence/terms and the residual custom gap.
+Existing parser, validation, build and test dependencies are candidates for reuse, not evidence of new rights clearance.
+A frozen historical Java oracle is an intentional compatibility target, not an excuse to choose obsolete new tooling.
+Copying upstream Java implementation source into this AGPL repository requires an actual rights decision; using independently observed behaviour does not justify copying source automatically.
+
+At each material DRY decision, record the current accepted contract, affected current consumers, ownership/reasons for change, deployment/trust/failure boundaries, selected strategy (reuse, generate, or separate conforming implementations), and a drift test.
+A generated document must identify its executable source; a test oracle must retain independent authority.
+No new capability selection, framework, adapter shim or parallel parser family is authorized merely by inclusion in this table.
+
+## Divergence implementation and verification
+
+The original behavioural investigation remains the starting inventory, but profile outcomes change.
+Existing research specifically identified Java partial batch effects, import/configuration retention, private JavaScript resource ceilings, XML/JSON-LD limits, parser fallback behaviour, target accumulation and deferred/live search semantics. [research-primary] [research-gaps] In the table, **Shared** means the same observable contract is deliberately adopted by both profiles.
+**Profile-specific** means the divergence is intentional and both sides require independent expected results.
+A common internal mechanism can still serve a split row.
+
+| Evaluated divergence                        | `java-owlapi-5.5.1`                                                                                                    | `normative-v1`                                                                                                                                                                                     | Outcome                                                        | Required tests                                                                                                                | Acceptance criterion                                                                                                                                                                          |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Failed change batches                       | Reproduce 5.5.1 sequential effects, return classifications, thrown partial effects and rollback quirks exactly         | Batch mutation is an atomic unit: preflight what is knowable, stage changes/index updates, publish once; failure before publication restores all manager/ontology observable state                 | Profile-specific                                               | Java differential probe; fault at every mutation stage; index/import/annotation/ID state snapshots; paired profile test       | Java vector exactly equals oracle. Normative failure leaves ontology contents, ID indexes, metadata and change-visible state observationally equivalent to pre-call state                     |
+| Failed ontology/import loading              | Reproduce Java retention of imports, import-request markers, ID-keyed configuration and other measured manager effects | Stage state created solely by the load session and publish only when the root operation satisfies its configured missing-import policy; pre-existing manager state is untouched                    | Profile-specific                                               | Root parse failure; nested import failure; duplicate IDs; retry; rename/remove/reload; every publication fault point          | Java matches 5.5.1. Normative failed root load publishes no new root/import/index/config state from that transaction; a configured “missing import tolerated” result is success, not rollback |
+| Save failure and StringDocumentTarget reuse | Reproduce Java 5.5.1 accumulation/reuse and measured failure effects                                                   | Current in-memory StringDocumentTarget save is transactional replacement: render into private buffer, commit only on success; failed save leaves prior target value unchanged                      | Profile-specific                                               | Save twice; injected renderer failures before/after bytes are produced; all supported formats                                 | Java target bytes match oracle. Normative success replaces target once; failure preserves exact pre-call target content                                                                       |
+| Private resource limits                     | Reproduce actual Java/Rio/provider limits where observable; remove JS-only limits not present in oracle                | No hidden semantic-validity caps. Security/resource budgets are named, documented, typed and configurable; defaults must be justified by threat model and qualification data                       | Profile-specific, with shared “no undocumented caps” invariant | Boundary tests below/at/above every limit; large valid structures; exhaustion classification                                  | Every finite rejection names its resource and configured/Java authority. No private unexplained depth/annotation/work/byte cap affects results                                                |
+| XML entity processing                       | Match 5.5.1's qualified XML-provider behaviour within available host capabilities                                      | External entity resolution and external DTD loading disabled for untrusted/default parsing; unsupported hardening fails closed; entity expansion bounded where DTD support is deliberately enabled | Profile-specific                                               | Local-file XXE, HTTP XXE, recursive entity expansion, malformed XML, parser-security-setting failure                          | Java oracle match. Normative default produces no external file/network access and no unbounded entity expansion                                                                               |
+| Remote imports and JSON-LD contexts         | Match 5.5.1 attempts, redirects, caching, whitelist/settings and effective provider boundaries                         | Remote dereference disabled unless an explicit manager access policy authorises it; policy covers schemes, destinations, redirects, credentials, retries, byte/time budgets and cache behaviour    | Profile-specific                                               | Owned HTTP server; redirects; private/loopback destinations; retry/cache; context chains; credential redirect tests           | Java network event vector matches oracle. Normative performs no undeclared external request and rejects/permits every request according to one inspectable policy                             |
+| Parser fallback and error reporting         | Match Java factory/candidate order, mismatch/fallback behaviour and failure phase                                      | Deterministic evidence-based candidate resolution; fallback only after an explicitly classified parser mismatch; genuine malformed-input errors retain their diagnostic cause                      | Profile-specific                                               | 9,000-space Functional fixture and controls; ambiguous extensions/media types; malformed high-confidence syntax; error chains | Java exactly reproduces oracle. Normative never converts a real syntax/security/resource failure into an unrelated successful fallback                                                        |
+| Configuration semantics                     | Preserve 5.5.1 defaults, copy/reset/no-op/negative-value quirks and timing where observable                            | Canonical documented value domain and defaults; invalid values fail at documented boundary; configuration ownership is explicit and no ambient JVM/System-property substitute is invented          | Profile-specific                                               | Getter/setter/copy/no-op identity matrix; invalid values; operation-start versus consumption-time reads                       | Java matrix equals 5.5.1. Normative configuration has one documented source of truth and no hidden ambient override                                                                           |
+| Lazy search and callback timing             | Preserve measured Java eager/lazy/live and callback-consumption semantics                                              | Adopt the same semantics in `normative-v1` because no higher authority currently requires a different contract                                                                                     | Shared                                                         | Creation/consume mutation probes; callback count/order; empty-seed locality; live closure changes                             | Both profiles pass the same expected vectors; no profile branch exists for behaviour currently classified shared                                                                              |
+
+The resource-ceiling research is particularly important: the dossier identifies private resource ceilings as breaking closure of the public object API. [research-primary] `normative-v1` does **not** solve that by pretending resources are infinite.
+It replaces invisible semantic constraints with explicit resource policy.
+Security limits and ontology-language validity are different concepts and must have different errors.
+
+The XML and network policies derive from concrete secure-processing risks.
+OWASP identifies XXE as capable of local-file disclosure, SSRF and resource exhaustion and recommends disabling external entities/external DTD loading when DTDs are needed. [xxe-guidance] OWASP SSRF guidance requires validating the actual destination, including resolved addresses, rather than assuming a syntactically acceptable domain is safe. [ssrf-guidance] `normative-v1` therefore treats transport permission as an explicit capability, while `java-owlapi-5.5.1` remains an emulation profile and must be documented as unsuitable for untrusted input where Java-compatible external-resource behaviour increases risk.
+
+**Security and resource-policy contract.**
+
+The external-resource contract for `normative-v1` must cover, at minimum, the following independently named responsibilities.
+Reuse native Java/configuration seams where applicable and expose any genuinely new normative control through one accepted configuration owner.
+
+| Responsibility       | Required decisions                                                                                                 |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Access authorization | Allowed schemes, remote-access enablement, destination/host/IP rules and credential-forwarding permissions         |
+| Resolution behaviour | Redirect processing, retries/attempt counts, import/context traversal and cache lifetime/ownership                 |
+| Resource accounting  | Per-request and aggregate byte ceilings, connection versus operation timeout semantics and traversal/work budgets  |
+| Composition          | Effective configuration precedence, nested-request propagation, unsupported host controls and the failure boundary |
+
+Values must be public configuration or documented contract constants with a measured rationale; no parser-owned magic numbers.
+The independently owned access policy is applied to both profiles without pretending an authorization denial is equivalent to an otherwise successful Java execution.
+Normative resolution defaults remain explicit; Java resolution defaults remain those of its qualified native configuration.
+
+No production parser may silently continue after an accepted normative security control or host access restriction could not be established.
+A Java-native setting that the released provider ignores remains part of the exact Java configuration observation; it must not be advertised as an enforced security control.
+Preserve that Java behaviour only within the independently authorized host boundary, and expose any host-enforced denial as a capability outcome.
+This follows OWASP's fail-closed guidance for unsupported XML-security settings. [xxe-guidance] Secure-development review and provenance controls shall follow the current final NIST SSDF 1.1 baseline; the draft SSDF 1.2 can inform review but does not become governing authority until finalised and deliberately adopted.
+NIST still lists 1.2 as draft when checked on 2026-10-13. [ssdf-draft] **Exception and transaction guarantees.**
+
+For `normative-v1`, the following operations are explicitly assigned the strong exception guarantee over their stated in-memory boundary:
+
+| Operation                   | Protected state                                                            |
+| --------------------------- | -------------------------------------------------------------------------- |
+| Batch ontology change       | Managed ontology state plus manager indexes/metadata modified by the batch |
+| Root ontology load          | Manager state newly staged by that load session                            |
+| Cross-manager ontology copy | Destination manager publication state                                      |
+| StringDocumentTarget save   | Existing in-memory target contents                                         |
+
+The strong exception guarantee has an established meaning of successful completion or no change to protected program state. [exception-guarantees] It is therefore a suitable reference for these contracts.
+It is **not** automatically assigned to future network streams, file descriptors or caller-owned writers where external side effects may be inherently irreversible; those APIs must document their own basic/strong guarantee when introduced.
+
+ACID terminology may be used internally to reason about atomic commit and consistency of staged manager state, but public documentation must not claim full ACID transactions unless isolation and durability are actually specified and proven.
+Härder and Reuter's transaction framework is database-oriented and broader than these in-memory API guarantees. [transactions] **Test architecture.**
+
+Java-profile verification must be differential.
+The independent Java harness runs against the Maven-Central-qualified 5.5.1 classpath and records an ordered observable vector including, as applicable:
+
+`accepted/rejected → result/value → exception class/category → failure phase → ontology contents → manager indexes → imports/markers/configuration → callback count/order → deferred-consumption result → target bytes → network attempts`.
+
+Expected Java observations may never be generated by the JavaScript implementation itself.
+The old probes can be reused structurally, but their expectations must be regenerated against the newly frozen 5.5.1 oracle.
+
+Normative-profile verification is contract-based, not Java-derived.
+Each normative row must have precondition, success postcondition, failure postcondition and invariants.
+Fault injection must force every meaningful failure point in staged operations.
+Standards-sensitive parsing/structural behaviours must use official W3C tests where applicable; the repository already has a separate plan for exact-package, pinned-suite W3C conformance reporting and explicitly treats conformance evidence as version-specific. [w3c-plan] Cross-profile verification is mandatory even where each profile passes independently.
+Every classified difference must have a paired test proving that:
+
+```text
+same input
++ same host capabilities
++ different profile
+= exactly the documented expected difference
+```
+
+Every `shared` row must have a paired test proving equality and, where practical, asserting that both profiles use the same policy owner when that is a meaningful architecture invariant.
+
+The release matrix is therefore:
+
+| Test layer                   | Java profile                        | Normative profile                  | Cross-profile                           |
+| ---------------------------- | ----------------------------------- | ---------------------------------- | --------------------------------------- |
+| Public API shape             | Required                            | Required                           | Required                                |
+| Black-box Java oracle        | Primary                             | Informative only                   | Used to identify intentional difference |
+| W3C conformance              | Diagnostic where Java differs       | Primary where normative            | Expected-difference check               |
+| Contract/invariant tests     | Java-observed contract              | Primary                            | Required                                |
+| Fault injection              | Match Java consequence              | Strong/basic guarantee as declared | Required on split rows                  |
+| Security adversarial tests   | Characterise compatibility exposure | Primary release gate               | Verify separation                       |
+| Node/browser qualification   | Required where capability exists    | Required                           | Required                                |
+| Lazy/re-entrant timing tests | Required                            | Required                           | Required                                |
+| Installed-package tests      | Required                            | Required                           | Required                                |
+
+Release acceptance requires all of the following simultaneously: zero unknown Java-profile differences on the selected surface; zero unresolved normative contract failures; zero unclassified cross-profile differences; zero profile-context leaks; complete provenance; and documentation matching the shipped profile matrix.
+
+### TDD and independent proof method
+
+Each SLICE below crosses a real public operation, its contract/policy seam, tests and owning documentation.
+Tests are part of the slice, not a later horizontal phase.
+
+1. **Specify the observation before implementation.**
+   Select REQ/AC/QA/DEC IDs, exact host conditions and independently owned expectations. For Java, capture the released oracle's full vector; for normative behaviour, cite an accepted clause/contract and state preconditions, success/failure postconditions and invariants.
+   A shared row has an independently justified equality.
+2. **Observe a meaningful red.**
+   Add the smallest representative public-contract test that exposes the current difference or missing capability and run it.
+   Record the failure reason and candidate/input identity.
+   A missing test dependency, unavailable host or broken harness is infrastructure evidence, not the intended red.
+   For preserved behaviour that already passes, use characterization plus a deliberate representative semantic perturbation to demonstrate test sensitivity instead of fabricating a failure.
+3. **Make the smallest cohesive change green.**
+   Reuse the current model/parser/loader/storer/query owner.
+   Add only the accepted policy difference needed for the observable path; do not expand to all profiles, formats or adjacent APIs without the slice's scope.
+4. **Refactor under proof.**
+   Apply NAM-01 and the DRY decision test after green.
+   Remove redundant rule copies and unnecessary profile branches; retain independent oracle expectations and deliberately distinct contracts.
+   Re-run affected contract/invariant tests and the relevant caller/package boundary.
+5. **Demonstrate and checkpoint.**
+   Capture the paired result, affected regressions, documents/ledger reconciliation, remaining gaps and recovery implications.
+   A passed focused check is development evidence; it is not automatically final HISEW verification or release qualification.
+
+Mock genuine external boundaries: owned HTTP endpoints, deterministic file fixtures, clock/transport failure boundaries and injected dependency failures.
+Do not mock the manager, parser, index or result computation whose contract is under test.
+Normative expected state comes from the accepted invariant and an independent before-state observation, not a copy of the staging algorithm.
+Java expected observations come from the frozen Java execution, not JS outputs, transpiled copies of the implementation, or expectations auto-updated after a failing JS test.
+
+For faults, cover each meaningful mutation/publication boundary and the relevant caller-observable stages rather than asserting private function call counts. Verify tests detect a representative wrong default, altered failure phase, partial publication, forbidden request, profile-context leak and resource-exhaustion-as-invalidity defect. Use controlled deterministic schedules for timing/ordering; do not compare wall-clock durations as if they were exact Java semantics.
+
+The [W3C conformance plan][w3c-plan] has its own post-public-release and installed WebVOWL-consumer prerequisites.
+Reusing applicable official fixtures and exact-package methods here does not activate the entire deferred reporting/EARL programme.
+Record the dependency and satisfy its own release gate before making that broader conformance claim.
+
+## Vertical implementation and verification plan
+
+### Ownership, ordering and traceability
+
+The repository owner is accountable for requirements, consequential defaults, accepted contracts and release promotion.
+The **integration owner** is the implementation executor explicitly assigned to this accepted task; before work begins, record the named person/agent and execution identity rather than treating this role label as an assignment. That owner coordinates the Java qualification, API/configuration, model/loading, storage, parsing/security and query owners from the DRY table.
+Independent review and security assessment remain separate obligations with their own named reviewers.
+
+The table is the scheduling authority.
+“Potentially independent” describes semantic boundaries; it grants no delegation authority and does not authorize concurrent writes to shared manager, configuration, ledger or harness files.
+Assign one integration owner for those shared files.
+Final integration is serial after the dependent contracts settle.
+
+| Slice     | Trace                                                                                                                                                                             | Demonstrable proof                                                                                                        | Dependencies / release and cleanup implication                                                                                                             |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SLICE-001 | REQ-001, REQ-003, REQ-011, REQ-012, REQ-014; AC-001, AC-003, AC-011, AC-012, AC-014; QA-005, QA-007; DEC-001, DEC-003, DEC-007, DEC-009                                           | Released Java qualification path, requalified research observations and current decision-ledger validator                 | First evidence increment; no public behaviour change. Own and retain/delete temporary qualification assets according to the resolved evidence destination  |
+| SLICE-002 | REQ-002, REQ-004, REQ-005, REQ-012, REQ-014; AC-002, AC-004, AC-005, AC-012, AC-014; QA-004, QA-006, QA-007; DEC-002, DEC-004, DEC-005, DEC-006                                   | Construct each profile, inspect immutable identity and exercise a native configuration value through a real load boundary | Requires SLICE-001 and accepted defaults/names; internal candidate until dependent profile paths qualify                                                   |
+| SLICE-003 | REQ-001, REQ-005, REQ-006, REQ-012, REQ-014; AC-001, AC-005, AC-006, AC-012, AC-014; QA-002, QA-004, QA-007; DEC-003, DEC-005, DEC-008                                            | Failed/successful batch and cross-manager copy from public call through index/publication to paired vector                | Requires SLICE-002; may proceed alongside storage only with distinct write ownership; no unsupported claim of undoing caller effects                       |
+| SLICE-004 | REQ-001, REQ-004, REQ-005, REQ-006, REQ-014; AC-001, AC-004, AC-005, AC-006, AC-014; QA-002, QA-004; DEC-003, DEC-005, DEC-008                                                    | Root/import failure, retention and retry through the actual loader/manager lifecycle                                      | Requires SLICE-002 and reconciled manager/index changes from SLICE-003; fixture document loader may isolate transport while preserving real load semantics |
+| SLICE-005 | REQ-001, REQ-004, REQ-007, REQ-012, REQ-014; AC-001, AC-004, AC-007, AC-012, AC-014; QA-002, QA-006, QA-007; DEC-003, DEC-005, DEC-006                                            | Repeat save and injected failure for both profiles plus writer configuration through actual renderers                     | Requires SLICE-002; isolated storage work can overlap loading after ownership contracts settle; published output is tested per format                      |
+| SLICE-006 | REQ-001, REQ-004, REQ-008, REQ-009, REQ-014; AC-001, AC-004, AC-008, AC-009, AC-014; QA-001, QA-003, QA-004; DEC-003, DEC-004, DEC-009                                            | Controlled XML/import/JSON-LD operations prove both behaviour and access policy at the host boundary                      | Requires SLICE-002/SLICE-004 and accepted resource/default decisions; security reviewer owns trust-boundary assessment; clean up owned servers/files       |
+| SLICE-007 | REQ-001, REQ-003, REQ-004, REQ-008, REQ-010, REQ-012, REQ-014; AC-001, AC-003, AC-004, AC-008, AC-010, AC-012, AC-014; QA-001, QA-006, QA-007; DEC-003, DEC-004, DEC-005, DEC-009 | Real parser/model/translator/storer paths prove acceptance boundaries, fallback and facet mapping                         | Requires SLICE-002, relevant storage/security seams and accepted per-resource contracts; remove obsolete cap owners only after their consumers move        |
+| SLICE-008 | REQ-001, REQ-002, REQ-008, REQ-010, REQ-012, REQ-014; AC-001, AC-002, AC-008, AC-010, AC-012, AC-014; QA-001, QA-004, QA-007; DEC-003, DEC-005                                    | Shared lazy/live search, providers, locality and OWL-profile evaluation prove timing and exhaustion outcomes              | Requires SLICE-002 and SLICE-007 resource taxonomy; query work can be isolated only after shared context/default contracts stabilize                       |
+| SLICE-009 | REQ-001–REQ-014; AC-001–AC-014; QA-001–QA-008; DEC-001–DEC-010                                                                                                                    | Exact installed candidate, consolidated paired matrix, migration/abort rehearsal and route-selected final evidence        | Requires all prior slices and resolved release gaps; no publication until release owner accepts the evidence and authorized route                          |
+
+### SLICE-001 — Reproducible Java observation and current authority
+
+Deliver an independently executable path from the official tag/Central artefact through the existing Java harness to a typed observation and classified compatibility record. Freeze the selected API/host inventory.
+Re-run the retained research/probe suite, not merely a single example: all 13 primary findings, five gap groups, native configuration matrices, structural facet cases and existing selected parity probes must be reconfirmed or revised before their expectations authorize implementation.
+Preserve the old observations as historical inputs.
+
+Predicted seams are `util/owlapi-reference/reference-inputs.mjs`, `reference-native-build.mjs`, existing Java runners and observation/qualification tests, the current parity/expected-difference schemas and the proposed profile provenance/lock files.
+Reuse the existing build and byte-identity facilities; add only the missing released-oracle and profile-decision contract.
+
+The red demonstrates rejection of a wrong source identity, incomplete closure, changed artefact, ambiguous difference rule or unqualified evidence presented as qualification.
+The green demonstrates a real selected API observation against Central with correct source/build comparison and independent expected values; representative perturbations prove the validator detects material drift. Refactor only neutral acquisition/recording mechanics, retaining oracle independence.
+The output includes all eleven provenance gates, conflict records, an exact member/capability inventory and explicit unresolved measurements.
+Source identity verified by this document is not sufficient to mark this slice complete.
+
+### SLICE-002 — Profile selection and native configuration through a public call
+
+Deliver manager creation with each immutable `behaviorProfileId`, the read-only identity query, and one representative native configuration path observed at its actual consumer.
+Extend the existing options object and constructor rather than creating public manager subclasses.
+Bind context through a real load/parse operation and an asynchronous continuation; test manager-owned factories and standalone profile-sensitive entry points.
+
+Predicted seams are `apibinding/owlManager.js`, `model/owlOntologyManager.js`, loader/writer configuration and their tests, the smallest required internal profile-definition owner, API examples and installed contract fixtures. Validate the selected Java getter/setter/default/copy/reset/no-op/timing matrix using the independently requalified observations; completing one representative path demonstrates the slice but does not excuse uncovered selected configuration members.
+
+The red exposes a wrong default, early/late validation, mutable/global identity or cross-manager context leak.
+The green proves both profiles, omitted-selection behaviour only after DEC-002 acceptance, unknown-ID rejection at the documented boundary and no permission grant from profile selection.
+Refactor duplicated default ownership and ambiguous names; test nested/async/lazy use.
+Do not publish a partially implemented profile as supported.
+
+### SLICE-003 — Batch mutation and cross-manager copy
+
+Deliver `applyChanges` success and a meaningful failed batch through ontology contents, result classification and manager indexes, with the exact Java partial effects and the normative protected-state guarantee.
+Include identity, annotations/imports, no-op changes, rollback quirks and exposed callback/listener effects within the selected surface.
+Extend a supported cross-manager copy path through destination preflight, structure validation, publication and unchanged source ownership; do not introduce missing Java APIs solely to make a test possible.
+
+Predicted seams are the manager's existing change owner, managed ontology/index implementation, change result classes, copy entry point if selected, corresponding public-contract tests and ledger rows.
+The red distinguishes an actual Java partial vector from current atomic behaviour and exposes a normative mid-publication leak.
+Green covers each meaningful failure stage, duplicate destination IDs, retry, non-owner mutation and copy rejection without half-owned objects.
+
+Refactor shared staging/index primitives only where their meaning agrees.
+Java sequential semantics and normative commit semantics remain independently specified policies.
+Characterize re-entrancy and define the normative linearization point or explicit overlap rejection; preserve Java-observed timing.
+The strong guarantee protects stated in-memory state and cannot undo an external callback already invoked.
+
+### SLICE-004 — Root load, imports and configuration retention
+
+Deliver a root load with nested imports from input selection to manager publication, including failure and retry under each profile.
+Cover root parse failure, nested import failure, duplicate IDs, import-request markers, ID-keyed configuration, rename/remove/reload and post-load annotation configuration.
+Distinguish a tolerated missing import (configured success) from a failed root operation.
+
+Predicted seams are `model/owlOntologyManager.js`, `internal/loading/managedOntologyIndex.js`, loader configuration, parser registry and import/ontology contract runners. The red exposes incorrect retention or rollback through the public manager rather than inspecting only a private map. Green matches all Java retention/configuration effects and proves normative failure publishes no newly staged root/import/index/configuration state while leaving pre-existing state untouched. Include faults immediately before/after each observable publication boundary and a subsequent successful operation.
+
+Refactor loading sessions to own only their operation state and captured behaviour context.
+Separate manager lifetime configuration from load-session snapshots at the actual profile-specific read boundary.
+Transport can be a deterministic external fixture boundary here; SLICE-006 adds genuine controlled network observations.
+
+### SLICE-005 — Writer configuration and target publication
+
+Deliver a save, second save to the same `StringDocumentTarget`, and a renderer failure for both profiles using real supported renderers.
+Cover exact Java accumulation/reuse/failure bytes and normative complete replacement with pre-existing text preserved on failure.
+Carry configuration builder/copy/reset/no-op identity and lifetime semantics through the writer consumer.
+
+Predicted seams are `io/stringDocumentTarget.js`, writer configuration, `internal/storage/storerRegistry.js`, format storers/renderers, the existing writer Java runner and `test/consumers/owl-contract/writer-configuration.js`.
+The red distinguishes append from replacement and catches publication before rendering succeeds.
+Green includes failures before output, after intermediate bytes and before final target publication, then expands the same public contract to every exposed format.
+
+Share profile-neutral rendering and buffer handling; give different publication operations names that describe their effect.
+Do not silently change a replacement helper to append.
+Future caller-owned writers, descriptors or network streams remain outside this in-memory strong-guarantee claim and need their own contract before support.
+
+### SLICE-006 — XML and external-resource behaviour under explicit permissions
+
+Deliver an XML/import/JSON-LD request path against owned files and HTTP servers with inspectable access authorization and profile-specific resolution.
+Cover XXE file/HTTP access, external DTD loading, recursive expansion, malformed XML and unsupported security controls; cover schemes, actual destination IPs, redirects/protocol changes, credentials, attempts/retries, caches/context chains, per-request/aggregate bytes and timeout phases.
+
+Predicted seams are the document loader, XML adapter, JSON-LD parser, native configuration/Rio parameter adapter where already selected, resource boundary tests and security/migration docs.
+The red demonstrates a real extra/missing request, wrong default, denied-access leak, credential forwarding, incorrect cache lifetime or wrong failure phase. Green compares exact Java network events under matched permissions and proves normative denial/default hardening and explicitly permitted cases.
+
+The security reviewer assesses actual trust boundaries and proposed controls after the final implementation is consolidated.
+Reuse transport/parser-native controls where they satisfy the adopted contract. If a provider cannot establish a required control, expose a defined failure/capability limitation; do not log success or weaken it silently.
+Remove only owned test servers and fixtures, retain captured evidence in the resolved HISEW destination, and record any irreversible external effects.
+
+### SLICE-007 — Resource acceptance, parser fallback and structural authority
+
+Deliver a valid large structure through creation, parse, translation and save, and ambiguous/malformed inputs through the actual parser selection path. Replace or remove JS-only Java-profile caps at their true owners, preserve real Java/provider configuration and defaults, and implement only accepted normative budgets with explicit units and exhaustion semantics.
+
+Predicted seams are structural validation, format parsers and resource tests under `internal/parsing/`, RDF translators and resource tests under `internal/mapping/`, storer resource paths, parser registry and the owning configuration/decision schemas. The red demonstrates a Java-accepted input wrongly rejected, a budget exhaustion falsely reported as ontology invalidity, a timeout with the wrong scope, or fallback that swallows the actual cause. Green includes below/at/above each finite limit, zero/unlimited/negative/omitted cases as applicable, large valid structures and the 9,000-space Functional fixture plus controls.
+
+Adjudicate Manchester `>=`/ `<=` together against released Java, normative structure and the informative Note; update the current expected-difference rule and its consumer proof together.
+Fallback occurs only after the active contract's explicit mismatch classification, preserving genuine syntax/security/resource causes in the normative profile and exact Java candidate/error behaviour in the Java profile.
+Consolidate counting primitives only where resource dimension, scope and read boundary agree; do not combine byte counts, depths and work units into a generic misleading `limit`.
+
+### SLICE-008 — Shared query semantics and language-profile/locality outcomes
+
+Deliver a lazy/live query produced before ontology/closure mutation and consumed afterwards, including callback count/order and empty-seed locality. Verify selected search/provider/locality semantics against the new Java oracle and retain the same behaviour in both profiles where the authority ledger classifies it shared.
+
+Predicted seams are `search/entitySearcher.js`, provider/query owners, `internal/profiles/budget.js`, `internal/modularity/localityBudget.js`, `syntacticLocality.js` and associated public tests/runners.
+The red exposes early materialization, changed callbacks, leaked initiating context, incorrect live closure or a resource-exhausted OWL profile check returning ordinary invalidity.
+Green covers construction versus consumption reads, repeated consumption where supported, re-entrancy and configured budgets.
+
+Remove unnecessary behaviour-profile branches only after the shared vector is proven.
+Keep OWL-language-profile validation terminology distinct from behaviour-profile selection.
+Budget failure remains an execution outcome under the active contract; neither an error label nor a “not in profile” result may silently replace the observed Java semantics.
+
+### SLICE-009 — Exact installed candidate, migration and release evidence
+
+Deliver the complete selected surface from exact packaged bytes in supported Node/browser lanes. Consolidate both profiles, final ledger, API/default/security/support documentation and Java/toolchain evidence, then demonstrate explicit Java migration and normative selection with installed consumer fixtures.
+Reconcile release and rights inventories if packed source or evidence changes their inputs.
+
+The red for packaging is an independently detected source/package discrepancy, missing public member/default, incorrectly declared capability or stale/ambiguous evidence. The green is the combined installed contract, differential, normative, fault, security, cross-profile and timing matrix. Refactor packaging/docs duplication through existing owners without deriving independent semantic expectations from implementation output.
+
+Select the real HISEW final capture route and command composition before expensive checks.
+Finish planned edits, generators, formatting, staging, authorized checkpoint commits and review fixes in the order required by that route; these actions can change candidate identity.
+Run each required expensive suite once on the settled candidate, plus any explicitly required independent execution.
+Reuse valid captured evidence when its relevant inputs and ownership remain unchanged.
+The slice exits with a reviewable release decision and recovery evidence, not an implicit publication authorization.
+
+### Development checks and final verification contract
+
+The following commands exist in the inspected repository.
+They identify reusable entry points, not an instruction to run every command for every slice.
+The active workflow's accepted route and current command definitions determine mandatory final obligations; resolve duplicate composition, missing lanes and input writers before running them.
+
+| Stage                              | Current entry points and selection                                                                                                           | Evidence and scope                                                                                                             |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| Test-first development             | `npm test -- --runInBand --runTestsByPath <affected-existing-or-new-test-paths>`                                                             | Meaningful red/green and affected regressions; choose concrete files from the slice, not the literal placeholder               |
+| Java and compatibility integration | Existing `util/owlapi-reference/` runners/tests and their documented CLI; `npm run test:owl-contract` with the required candidate inputs     | Independent released Java and exact selected consumer contract; inspect runner arguments before use                            |
+| Architecture and source quality    | `npm run verify:architecture`; applicable file-scoped lint/format entry points                                                               | A dependency graph helps select consumers but cannot prove dynamic/resource/schema/runtime coverage                            |
+| Package/host integration           | `npm run test:boundary`, `npm run test:browser`, `npm run qualify:git-package-equivalence` with required inputs                              | Exact installed bytes and supported host matrix; an unavailable browser lane is a qualification gap, not a pass                |
+| Release/governance                 | `npm run verify:release-gates`, `npm run verify:workflow-governance`, accepted release qualification path                                    | Binding repository gates remain distinct from HISEW risk profiles; verify actual command composition before claiming overlap   |
+| This plan-only revision            | Scoped `markdown-quality` format/check, JSON example parsing, reference/anchor checks, original-detail reconciliation and `git diff --check` | Document verification only; no claim that future implementation, Java replay, product tests or HISEW release gates have passed |
+
+Use the active HISEW execution and required-profile inspection at implementation time; do not hard-code a new profile configuration in this document or adopt another task's execution.
+Native receipts, manually produced operator evidence, hosted CI and installed-runtime qualification are different evidence classes.
+An ordinary successful shell command cannot be reconstructed into a native receipt.
+
+R2 final assurance includes the route's applicable independent code verification and native security assessment with assigned owners and accepted scope.
+Where cross-vendor independent execution/review is required, the implementation author's run does not substitute for it. Consolidate before broad review, address findings, then review repair deltas narrowly. An empty or denied reviewer response marked successful is not a substantive review. Missing reviewer/tool capability is an integration gap to resolve through the workflow, not permission to claim the obligation complete.
+
+A later delta invalidates only the evidence whose relevant inputs or assurance obligations changed, assessed explicitly.
+Formatting-only edits still need source/candidate identity and semantic-sensitivity assessment; they do not automatically require every expensive test again.
+No lower-cost development check changes the accepted risk or closes the implementation.
+
+## Release lifecycle, migration and references
+
+### Migration, interruption and evidence ownership
+
+Migrate current contracts and their consumers as one slice: schemas/validators, ledger rows, harness input pins, public API/default inventories, installed fixtures and documentation.
+Inspect format versions before choosing an incompatible schema revision.
+Do not write a second permanent ledger merely because the existing one needs extension.
+Migrate current executable records explicitly; do not backfill old evidence with new profile names or reclassify old observations as released-oracle proof.
+
+The historical research package and its [manifest](../compatibility/research/java-api-behavior/manifest.json) remain immutable snapshots for this task.
+The manifest's plan entry identifies a previous version, not this rewritten document.
+Do **not** refresh that historical hash to the new plan bytes.
+The incoming committed plan has SHA-256 `b02b45a1a4fb11a17a0a0600d72bc5c3b3530d1766199e2d9ef34008747cc29e` and byte length 74,177; this revision is identified by its own Git history and any newly authorized evidence record.
+Drive originals remain untouched.
+Qualification manifests introduced by later implementation describe their own current subjects and must not repurpose the historical snapshot.
+
+Resolve the active HISEW external evidence/temporary storage destination before creating supplemental qualification assets. Keep durable, reviewable and licence-permitted portable evidence in the owning repository when it is intended to travel with the plan; keep native workflow receipts and machine-specific/transient artefacts in their resolved owners.
+Record relative links from repository documents to tracked evidence.
+Do not invent a `.sdlc/runtime` or `.sdlc/tmp` convention, copy credentials/tool caches into the repository, or represent a local report as a native receipt.
+
+At each authorized checkpoint record the slice, accepted decision/evidence references, source/index/candidate identities, completed meaningful red/green checks, pending writers and exact remaining gaps.
+On interruption, inspect the worktree and current execution ownership, compare relevant inputs and resume the smallest incomplete slice.
+Do not rerun unchanged expensive proof solely because a session ended, and do not adopt another execution or overwrite unrelated work.
+An interrupted load/publication is itself covered by the operation contracts; an interrupted development task is handled through retained code/evidence checkpoints.
+
+Cleanup belongs to the owner who created each temporary checkout, dependency cache, server, fixture and generated candidate.
+Retain artefacts referenced by the accepted evidence record until the retention decision permits disposal.
+Remove obsolete current cap/configuration owners and superseded generated outputs only after migrated consumers and validators pass.
+No unsupported alias, old profile-selection field or second parser family is left as an informal migration mechanism; any necessary compatibility shim needs a specific NSH-01 decision, and NAM-01 semantic correctness remains mandatory.
+
+### Observability and operational acceptance
+
+Use existing error/diagnostic/event boundaries first.
+The plan does not authorize a new telemetry service or mandatory data collection.
+Any new public diagnostic fields require the same naming and API review as other fields.
+
+| Operational question                      | Required observable evidence                                                                                                                                                                                   | Acceptance / owner                                                                                                                                      |
+| ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Which contract produced this outcome?     | Resolved `behaviorProfileId`, package/candidate identity and a traceable decision/expectation reference in test or optional diagnostic context                                                                 | No ambient/global answer; API owner verifies public identity and qualification owner binds evidence                                                     |
+| Why was input rejected?                   | Distinct syntax mismatch, malformed input, ontology-language invalidity, configured resource exhaustion, host access denial and provider/capability failure, normalized only where the active contract permits | Resource/phase/type remains identifiable; Java exception-category/timing mapping stays faithful; no budget failure silently becomes ordinary invalidity |
+| Which resource boundary applied?          | Resource kind, unit, scope, configured value/origin and applicable Java/provider or normative contract reference; record observed count only when available without changing semantics                         | Every finite rejection has an authority; no logging of ontology content, credentials, authorization headers or secret URL query data                    |
+| Did a failure leak state?                 | Test-owned before/after ontology/index/import/configuration/target snapshots and publication/failure phase                                                                                                     | Exact Java vector or normative protected-state equality; manager/storage owners investigate mismatches                                                  |
+| Did external activity obey authorization? | Owned-server request/redirect/cache/credential traces and controlled file-access observations                                                                                                                  | Zero prohibited access; no cross-manager permission/cache leakage; security reviewer owns assessment                                                    |
+| Are cost and support claims credible?     | Measured time/memory/work observations for representative fixtures plus actual Node/browser/provider/toolchain identity                                                                                        | Cost regression is assessed against an accepted workload criterion; do not invent a hidden Java cap to make the benchmark pass                          |
+
+Production acceptance means the exact released/installed candidate and the stated host/configuration matrix satisfy the same public contracts.
+Hosted CI success alone does not prove installation, deployed state, source/build identity or all host capabilities. The release observer checks the migration examples, profile identification, rejection diagnostics and representative allowed/denied resource cases on the intended consumer environment before declaring that environment accepted.
+Unavailable environments remain explicit scope/evidence gaps.
+
+### Rollout, abort and recovery
+
+Introduce profile support in an internal candidate while the slice matrix is incomplete.
+After integrated qualification, exercise explicit profile selection in installed consumer fixtures and the selected downstream migration case.
+Publish only through the separately authorized repository/release route with a frozen support matrix, exact candidate evidence and an assigned observer.
+The omitted-selector default must have DEC-002 acceptance before it can ship; explicit Java migration instructions are mandatory.
+
+Abort promotion for any unexplained Java difference, unaccepted normative contract, unclassified profile difference, context/permission leak, provenance/closure failure, stale candidate evidence, unresolved critical review finding or failed supported-host/installed check.
+Do not hide a failure by shrinking an allowlist, updating a golden file, relabelling the profile or broadening “expected difference”.
+A real scope reduction is a new owner decision with user-visible compatibility consequences.
+
+Before publication, discard or repair only task-owned unpromoted candidates and restore the previous explicitly recorded development state where permitted, preserving unrelated changes.
+After publication, do not promise to erase installed packages or undo requests, callbacks, file writes or caller-observed partial state.
+The release owner chooses an explicit forward fix for an implementation bug, a separately named normative contract version for a changed contract, or a clearly communicated temporary support/promotion restriction. Consumers may pin a previously qualified package only if its own profile/host contract is acceptable; pinning is not proof of state rollback.
+
+The release observer and integration owner rehearse this decision path in SLICE-009 with a representative failure and record remaining effects, affected versions and remediation responsibility.
+Do not mutate `java-owlapi-5.5.1` to a later Java release or quietly harden away an observed Java behaviour.
+Existing normative v1 bugs can be corrected to meet its accepted contract; a genuinely changed requirement follows the normative version table below.
+
+### Remaining gaps and cheapest discriminating work
+
+This rewrite resolves planning/naming defects and source identity references.
+It does not manufacture new release-oracle, dependency, licence, timing or host observations.
+The following are explicit implementation prerequisites, with a bounded next experiment and owner.
+
+| Gap                                                              | Cheapest useful evidence / decision                                                                                                                                                          | Owner and dependent work                                                                |
+| ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| Exact surface, omission default and profile-extension names      | Diff current capability/API/consumer inventories; demonstrate omitted versus explicit selection in migration examples; attach applicable existing approval or accept DEC-001/DEC-002/DEC-006 | Repository owner; SLICE-001/SLICE-002                                                   |
+| Released 5.5.1 observations versus historical pins               | Run existing probes on the locked Central classpath; compare all 13 findings, five gap groups and selected parity vectors without changing expected values first                             | Qualification owner; every Java-dependent slice                                         |
+| Full provenance, signatures and source/Central equivalence       | Resolve and hash POM/JAR, parent/BOM/plugin/runtime closures, verify available signatures and trust, then isolated replay/build and paired harness                                           | Qualification owner; SLICE-001 and release admission                                    |
+| Normative fallback rank and project guarantees                   | Compare the linked chat's documented-Java-contract proposal with this plan's fallback; enumerate only outcomes that differ and accept exact clauses/pre/postconditions                       | Repository owner/API reviewer; DEC-003 and affected slices                              |
+| Actual Java ownership and overlap behaviour                      | Minimal non-owner mutation/save/copy, collision and re-entrant probes on selected exposed APIs                                                                                               | Model/loading owner; SLICE-003/SLICE-004; a contradictory observation requires redesign |
+| Provider-specific XML/JSON-LD/network defaults                   | Controlled file/server probes for actual provider/version, settings, redirect/cache/credential/abort timing and unsupported controls                                                         | Parsing/loading owner plus security reviewer; SLICE-006                                 |
+| Normative budget values and host capability parity               | Resource inventory with exact consumers, threat/workload evidence and allowed/denied host matrix; accept each finite default before implementing it                                          | API owner and security reviewer; SLICE-002/SLICE-006/SLICE-007                          |
+| Native reuse, software selection and rights                      | Inspect actual existing interfaces/dependencies and licenses, latest applicable supported tool identities, consumer validators and only the remaining custom gap                             | Integration owner; DEC-009 before any new capability/dependency/source reuse            |
+| Browser/installed/downstream coverage and deferred W3C programme | Run the actual packaged representative consumer on available supported lanes; reconcile the W3C plan's public-release prerequisites and declare any excluded claim                           | Qualification/release owners; SLICE-009                                                 |
+| Final workflow route and recovery ownership                      | Inspect the active accepted execution, actual command composition, candidate writers and review obligations; assign release observer and exercise abort/forward-fix decision                 | Integration/release owners; final verification and promotion                            |
+
+Replan or re-baseline if a new public surface is needed; a Java observation contradicts an ownership or configuration assumption; profile-independent values acquire profile-dependent meaning; a shared helper crosses incompatible trust/failure boundaries; a provider cannot implement the qualified Java contract; an authority/erratum changes an expected outcome; a finite normative budget lacks justification; a schema change strands consumers; or a release/recovery route cannot support the promised claim.
+Reassess the higher outcome first: solving a local parser, security or performance problem must not quietly undermine Java API migration compatibility or the declared normative contract.
+
+Profile semantics and package semantics are versioned independently.
+
+Semantic Versioning requires a declared public API, prohibits modifying the contents of an already released version, and treats incompatible public-API changes as major-version changes once the package is at or beyond 1.0.0; it also explicitly treats 0.y.z as initial development. [semver] The project should follow the same immutability principle for profile contracts even while package versioning remains pre-1.0.
+
+**Java-profile lifecycle.**
+
+| Event                                      | Rule                                                                                                    |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------- |
+| Upstream patch/minor/major release appears | No existing profile changes                                                                             |
+| Candidate new Java profile                 | Must correspond to a formal published OWLAPI release, not merely a branch or release-preparation commit |
+| Intake                                     | Verify release tag, peeled commit, Maven Central publication and artefact signatures/digests            |
+| Qualification                              | Lock dependencies/toolchain; run full Java oracle; compare against prior supported Java profile         |
+| Classification                             | Every changed observable receives an authority/profile decision                                         |
+| Admission                                  | Add `java-owlapi-X.Y.Z` only after implementation and full qualification                                |
+| Old profile                                | Retains its exact semantics indefinitely while supported                                                |
+| Security defect in Java behaviour          | Document prominently; do not silently “fix” the Java profile and continue claiming equivalence          |
+| Retirement                                 | Profile may move to archived/unsupported status, but its documented identity is never retargeted        |
+
+There is never a `java-owlapi-latest` contract.
+“Latest” is inherently mutable and therefore incompatible with reproducible behavioural emulation.
+
+**Normative-profile lifecycle.**
+
+| Change                                                                           | Treatment                                                                                                             |
+| -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| Typographical/documentation clarification with no observable change              | Keep `normative-v1`                                                                                                   |
+| Additional tests proving an existing v1 rule                                     | Keep `normative-v1`                                                                                                   |
+| Bug fix that makes implementation comply with an already-existing v1 requirement | Keep `normative-v1`; package version changes normally                                                                 |
+| New external Recommendation that would change observable behaviour               | Analyse and explicitly adopt into `normative-v2`; never mutate v1 silently                                            |
+| Newly discovered conflict in existing authorities                                | Record decision; if resolution changes the frozen v1 contract, create v2                                              |
+| Changed security default that affects observable behaviour                       | New normative profile version unless the old behaviour was already non-conforming to a frozen v1 security requirement |
+| Addition of a purely new capability outside existing contract                    | Package-compatible addition where appropriate; assign its profile contract explicitly                                 |
+| “Better” behaviour with no higher authority                                      | Retain v1 behaviour; candidate change belongs in a future contract proposal                                           |
+
+The package release must publish a support matrix such as the following **target state after qualification**, not a claim about the current implementation:
+
+| Profile             | Status                          | Oracle/contract                  | Intended user                                                       |
+| ------------------- | ------------------------------- | -------------------------------- | ------------------------------------------------------------------- |
+| `normative-v1`      | Supported, recommended          | Normative contract v1            | New JavaScript applications; security/standards-sensitive consumers |
+| `java-owlapi-5.5.1` | Supported compatibility profile | OWLAPI 5.5.1 provenance manifest | Java migrations requiring behavioural equivalence                   |
+
+**Migration plan.**
+
+Public README/API examples must always show explicit profile selection even though omitted `behaviorProfileId` uses the documented omission default `normative-v1`.
+Existing examples currently create managers without options, so they must be updated to make contract selection visible. [readme] The documentation set must contain one canonical profile document:
+
+```text
+docs/compatibility/behavior-profiles.md
+```
+
+It must define the authority hierarchy, profile identities, default, security warning for Java compatibility, immutable versioning rules, cross-profile ownership rules and links to each profile's manifest/contract ledger.
+
+The compatibility research dossier remains historical/technical evidence.
+Its README already treats the research reports and evidence snapshots as inputs to this implementation plan; that relationship should be retained while making clear that the new plan classifies observations per profile. [research-overview] The following owning documents must be reconciled rather than duplicated: `README.md`, `API.md`, default-behaviour inventory, Java parity/decision ledgers, W3C conformance documentation, migration guide, native contract fixtures and the Java reference-harness documentation.
+Historical release records must not be rewritten to pretend the two-profile architecture existed previously.
+
+Every intentional difference needs a record in the owning executable compatibility ledger, equivalent in meaning to the following **proposed, unaccepted example**.
+These reference strings identify planned records/test cases; they do not assert those fixtures already exist or have passed.
+
+```json
+{
+  "decisionId": "BEHAVIOR-MUTATION-FAILED-BATCH",
+  "apiMember": "OWLOntologyManager.applyChanges",
+  "behaviorRelationship": "profile-specific",
+  "decisionStatus": "proposed",
+  "decisionOwnerRole": "repository-owner",
+  "acceptanceReference": null,
+  "javaExpectation": {
+    "behaviorProfileId": "java-owlapi-5.5.1",
+    "expectationReference": "oracle:java-5.5.1:mutation-failed-batch"
+  },
+  "normativeExpectation": {
+    "behaviorProfileId": "normative-v1",
+    "expectationReference": "contract:normative-v1:atomic-batch-mutation"
+  },
+  "authorityReferences": [
+    "project-contract:normative-v1:atomic-batch-mutation"
+  ],
+  "rationaleReferences": [
+    "reference:exception-safety-strong-guarantee"
+  ],
+  "testCaseReferences": [
+    "java-oracle/mutation-failed-batch",
+    "normative/mutation-atomicity-fault-injection",
+    "cross-profile/mutation-failed-batch"
+  ],
+  "requirementIds": [
+    "REQ-006"
+  ],
+  "acceptanceCriterionIds": [
+    "AC-006"
+  ],
+  "qualityScenarioIds": [
+    "QA-002"
+  ],
+  "sliceIds": [
+    "SLICE-003"
+  ]
+}
+```
+
+`behaviorRelationship` is one of `shared`, `profile-specific`, `java-only` or `normative-only`.
+A profile-specific row has both independent expectations; a shared row proves the same contract; a one-sided capability must identify its selected public scope.
+`authorityReferences` identifies governing contracts/clauses, while `rationaleReferences` identifies supporting engineering sources. A cited paper does not silently become an adopted project contract. Retain the earlier conflict-record fields for observable, applicability, pre/postconditions, evidence and compatibility consequences in the owning decision record; this example does not replace them.
+
+SLICE-001 reconciles this proposed shape with the existing parity/expected-difference schemas and their readers. The current [parity schema](../compatibility/java-api-parity-decisions.schema.json) labels Java 5.5.1 while constraining revision `d7e997a53b470e32700de89cc610d9daf01ea769`; the historical research separately used `b61ebe2da83daceebb3e7ba7afbd2582c9240c33`. Neither revision becomes the formal release oracle by relabelling a version string. The current [expected-differences ledger](../compatibility/expected-differences.json) includes Manchester facet rules requiring re-adjudication under DEC-003.
+Update current inputs, schemas, fixtures and validators together after fresh proof; preserve historical snapshots and their original identity.
+
+This ledger replaces broad labels such as “intentional standards difference” with an auditable decision per observable.
+
+**Release and verification sequence.**
+The sequence is gate-driven rather than date-estimated: no later stage starts merely because time has elapsed.
+
+```mermaid
+flowchart TD
+    A["Draft plan and accepted decisions / risk route"] --> B["SLICE-001: released oracle, provenance and decision records"]
+    B --> C["SLICE-002: public selection and native configuration"]
+    C --> D["SLICE-003: mutation and copy"]
+    D --> E["SLICE-004: root/import lifecycle"]
+    C --> F["SLICE-005: writer and target publication"]
+    E --> G["SLICE-006: XML and permitted external access"]
+    F --> H["SLICE-007: resource acceptance, fallback and facets"]
+    G --> H
+    H --> I["SLICE-008: query, OWL profiles and locality"]
+    I --> J["SLICE-009: exact installed candidate and migration"]
+    J --> K["Frozen candidate: differential, normative, security and cross-profile gates"]
+    K --> L["Owner release decision, support matrix and evidence"]
+```
+
+Each implementation slice includes independent red–green–refactor proof and its owning documentation.
+Provenance, observation, context/ownership, Java/normative policy, shared paths, differential/W3C-sensitive/security/cross-profile qualification, installed bytes and publication evidence retain the incoming sequence's substantive gates.
+Their completion is evidence-driven; the plan date does not assert the architecture or contracts are already frozen.
+
+**Key references.**
+
+| Reference                                                                                          | Role in this plan                                                                             |
+| -------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| OWLAPI `owlapi-parent-5.5.1` annotated release tag and `f760b3a4…` commit [java-tag] [java-commit] | Exact Java source provenance                                                                  |
+| Maven Central `net.sourceforge.owlapi:owlapi-distribution:5.5.1` [java-pom]                        | Canonical published executable oracle                                                         |
+| W3C OWL 2 Structural Specification and Functional-Style Syntax, Second Edition [owl-structure]     | Primary OWL structural normative authority                                                    |
+| W3C OWL 2 Manchester Syntax, Second Edition, Working Group Note [manchester-note]                  | Informative/adoptable syntax authority whose status must not be mistaken for a Recommendation |
+| OWLAPI 5.5.1 `OWLFacet` source [java-facets]                                                       | Exact Java facet-symbol behaviour                                                             |
+| OWASP XML External Entity Prevention Cheat Sheet [xxe-guidance]                                    | XML external-resource security contract                                                       |
+| OWASP SSRF Prevention Cheat Sheet [ssrf-guidance]                                                  | Network destination/redirect policy rationale                                                 |
+| NIST SP 800-218 SSDF 1.1 [ssdf-final]                                                              | Current final secure-development framework                                                    |
+| Apache Maven reproducible-build guidance [maven-reproducibility]                                   | Reproducible-build qualification                                                              |
+| Apache Maven Dependency Plugin documentation [maven-locking]                                       | Resolved-dependency inventory                                                                 |
+| David Abrahams, exception-safety guarantees [exception-guarantees]                                 | Basic versus strong exception guarantee                                                       |
+| Härder and Reuter, transaction-oriented recovery [transactions]                                    | Transaction/atomicity vocabulary, used with limited scope                                     |
+| Herlihy and Wing, linearizability [linearizability]                                                | Correctness model for genuinely overlapping stateful operations                               |
+| Semantic Versioning 2.0.0 [semver]                                                                 | Public-package version/change discipline                                                      |
+
+**Prioritised implementation gates.**
+
+| Priority | Work                                                                              | Exit condition                                                                                                                      |
+| -------- | --------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| P0       | Replace the old Java source pin with the formal 5.5.1 release provenance          | Tag, tag object, commit, tree, Central POM/JAR SHA-256, dependency lock and toolchain manifest all frozen                           |
+| P0       | Re-run the complete Java research/oracle suite against the 5.5.1 Central artefact | Existing findings either reconfirmed or explicitly revised; no old-pin assumption remains silently authoritative                    |
+| P0       | Establish authority/expected-difference ledger                                    | Every known divergence, including structural corrections, has status, authority and profile outcome                                 |
+| P0       | Implement immutable `OntologyBehaviorContext` and manager ownership               | No global/mutable profile state; profile identity survives every async/internal path                                                |
+| P1       | Implement mutation and loading transaction boundaries                             | Java partial-state behaviour passes oracle; normative strong-guarantee fault injection passes                                       |
+| P1       | Implement storage transaction policy                                              | StringDocumentTarget Java reuse and normative replacement/rollback both proven                                                      |
+| P1       | Consolidate XML, remote-import, JSON-LD and resource policy                       | Java compatibility and normative secure defaults each pass adversarial tests                                                        |
+| P1       | Rework parser fallback/configuration through policy boundaries                    | No duplicated parser stacks; all Java/normative differences explicitly tested                                                       |
+| P2       | Prove shared lazy/search semantics and remove unnecessary profile branches        | Shared tests pass both profiles with identical observable vectors                                                                   |
+| P2       | Qualify exact installed package in Node and supported browser lanes               | Both profiles pass from packaged bytes, not source-tree imports                                                                     |
+| P2       | Complete migration, security and support documentation                            | A developer can select either profile and understand guarantees, risks and version identity without consulting implementation code  |
+| Release  | Freeze evidence and publish only after all profile gates pass                     | Zero unknown Java differences, zero normative contract violations, zero unclassified cross-profile differences, complete provenance |
+
+The resulting architecture preserves the strongest reason for Java compatibility—**a genuinely faithful migration target**—without making Java implementation accidents the permanent design authority for all JavaScript users.
+At the same time, `normative-v1` is constrained enough to avoid becoming a subjective “better behaviour” mode: every departure from Java must be grounded in an applicable normative source or an explicit, versioned and independently testable project contract.
+
+### Original-detail reconciliation
+
+The incoming plan's substantive contracts remain in this document.
+Corrections change terminology, evidence status or delivery method explicitly rather than silently deleting a requirement.
+
+| Incoming content                             | Retained detail / explicit correction                                                                                                                                                                                                                                                                              |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Executive summary and scope                  | Two profiles, one codebase, exact 5.5.1 tag/commit/tree, superseded historical pin, ten objectives, selected surfaces, non-goals, Manchester example and zero-unclassified-difference exit                                                                                                                         |
+| Authority and profile contracts              | All authority ranks and conflict-record questions, strong/basic guarantee, limited ACID/linearizability usage, security sources, immutable version identities and proposed normative omission default; acceptance and the chat's alternative fallback rank are now explicit                                        |
+| Provenance and reproducibility               | Release identity/timestamps, both Central artefacts, signature/trust information, runtime/build closure, toolchain, clean unmodified source build, byte/semantic comparisons, harness/fixture/observation/classpath identity and all eleven gates; typed fields replace placeholder strings and ambiguous booleans |
+| Behavioural architecture                     | Manager construction examples, immutable registry/context, all eleven propagation rules, six-step copy procedure, eight cross-profile rules and concurrency requirement; identity/definition/permission names are disambiguated and copy is no longer called transfer                                              |
+| Divergence implementation and verification   | All nine divergence rows with both outcomes, tests and acceptance; all four protected-state boundaries; full ordered observable vector, independent Java/normative/paired proof, all nine test layers and simultaneous release conditions                                                                          |
+| Release lifecycle and migration              | All nine Java-release events, eight normative-version change rules, target support matrix, canonical profile document, owning-document reconciliation, ledger example and historical-evidence preservation                                                                                                         |
+| Original sequence, references and priorities | All provenance/oracle/architecture/policy/qualification/documentation/installed/publication milestones and twelve priority gates remain; vertical slices replace the horizontal timeline, the date no longer claims a freeze, and portable sources replace opaque chat citations                                   |
+
+This revision does not rerun the research or promote its old observations to new Java qualification.
+It preserves them as work inputs, adds the discriminating experiments, and records exactly which decisions or measurements must precede dependent implementation.
+
+[research-overview]: ../compatibility/research/java-api-behavior/README.md
+[research-primary]: ../compatibility/research/java-api-behavior/2026-10-13-owlapi-api-behavior-compatibility-research.md
+[research-gaps]: ../compatibility/research/java-api-behavior/2026-10-13-owlapi-api-behavior-gap-closure-research.md
+[research-evidence]: ../compatibility/research/java-api-behavior/2026-10-13-owlapi-api-behavior-evidence.json
+[research-gap-evidence]: ../compatibility/research/java-api-behavior/2026-10-13-owlapi-api-behavior-gap-closure-evidence.json
+[java-tag]: https://github.com/owlcs/owlapi/releases/tag/owlapi-parent-5.5.1
+[java-commit]: https://github.com/owlcs/owlapi/commit/f760b3a4c107c6d5f90f856e5680c39b18af646f
+[java-pom]: https://repo.maven.apache.org/maven2/net/sourceforge/owlapi/owlapi-distribution/5.5.1/owlapi-distribution-5.5.1.pom
+[java-facets]: https://github.com/owlcs/owlapi/blob/f760b3a4c107c6d5f90f856e5680c39b18af646f/api/src/main/java/org/semanticweb/owlapi/vocab/OWLFacet.java
+[owl-structure]: https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/
+[manchester-note]: https://www.w3.org/TR/2012/NOTE-owl2-manchester-syntax-20121211/
+[owl-errata]: https://www.w3.org/2001/sw/wiki/OWL_Errata
+[exception-guarantees]: https://www.boost.org/doc/user-guide/exception-safety.html
+[transactions]: https://cs-people.bu.edu/mathan/reading-groups/papers-classics/recovery.pdf
+[linearizability]: https://cs.brown.edu/people/mph/HerlihyW90/p463-herlihy.pdf
+[xxe-guidance]: https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html
+[ssrf-guidance]: https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html
+[ssdf-final]: https://csrc.nist.gov/pubs/sp/800/218/final
+[ssdf-draft]: https://csrc.nist.gov/pubs/sp/800/218/r1/ipd
+[maven-locking]: https://maven.apache.org/plugins/maven-dependency-plugin/examples/tree-mojo.html
+[maven-reproducibility]: https://maven.apache.org/guides/mini/guide-reproducible-builds.html
+[semver]: https://semver.org/spec/v2.0.0.html
+[manager-factory]: ../../apibinding/owlManager.js
+[public-api]: ../../API.md
+[readme]: ../../README.md
+[w3c-plan]: w3c-test-conformance-reporting.md
+[design-chat]: https://chatgpt.com/c/6acdab85-6cd0-83eb-a12f-63262652f164
+[hisew-planning]: https://github.com/Hadden-Industries/software-engineering-workflow/blob/main/skills/hadden-industries-plan-software-change/SKILL.md
+[hisew-principles]: https://github.com/Hadden-Industries/software-engineering-workflow/blob/main/method/engineering-principles.md

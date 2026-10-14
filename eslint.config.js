@@ -55,6 +55,9 @@ export default [
       "docs/conformance/upstream/**",
       "docs/provenance/history-reconstruction/**",
       "util/owlapi-reference/fixtures/**",
+      // Generated third-party source is checked by the provider build and
+      // consumer contracts; repository style rules do not rewrite upstream.
+      "internal/parsing/jsonld/provider/jsonld.js",
       "API.md",
       "docs/compatibility/java-api-surface.md",
       "docs/Deep Review of Phase 19 and Phase 20 of the owlapi Implementation Plan \\[2026-08-24T1130\\].md",
@@ -77,7 +80,8 @@ export default [
   {
     ...compat.configs["flat/recommended"],
     files: shippedSourceFiles,
-    ignores: ["**/*.test.js", "**/*.test.mjs"],
+    // The approved explicit Node transport boundary is not a browser entry.
+    ignores: ["**/*.test.js", "**/*.test.mjs", "io/node/**"],
     settings: {
       ...compat.configs["flat/recommended"].settings,
       lintAllEsApis: true,

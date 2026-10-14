@@ -5,10 +5,10 @@
     "name": "@hadden-industries/owlapi",
     "version": "0.1.0-rc.2"
   },
-  "recordedOn": "2026-09-30",
+  "recordedOn": "2026-10-14",
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "5de13e8423e0eaf0e8d95e3e46f9d69c6a2a22b625066b9a832a39e0e77e66a3",
+    "factsSha256": "2f2f59955f52f78dbab566cea23b9be07d3e7ce23340b377c6d980a733b0d05b",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -16,10 +16,10 @@
     "digestAlgorithm": "sha256-sorted-json-v1"
   },
   "productionAudit": {
-    "performedOn": "2026-09-30",
+    "performedOn": "2026-10-14",
     "command": "npm audit --omit=dev --json",
-    "npmVersion": "12.1.0",
-    "productionPackageCount": 39,
+    "npmVersion": "12.2.0",
+    "productionPackageCount": 47,
     "vulnerabilityCounts": {
       "info": 0,
       "low": 0,
@@ -88,6 +88,20 @@
           "package-lock.json#node_modules/unrs-resolver",
           "Phase 19B strict-policy full Jest suite: 103 suites, 2645 passed, 1 skipped",
           "governance.test.js"
+        ]
+      },
+      {
+        "name": "lzma-native",
+        "version": "8.0.6",
+        "allowed": false,
+        "dependencyScope": "PRODUCTION_NODE_XZ_DECODER",
+        "lifecycleScript": "install: node-gyp-build",
+        "requiredForBlockingWorkflows": false,
+        "rationale": "The package includes N-API prebuilds for Windows x64, Linux x64 and macOS arm64. The selected Windows decoder works with scripts disabled; the library loads the packaged binding at use time. Source compilation is not enabled. Installed supported-host qualification remains required.",
+        "evidence": [
+          "package-lock.json#node_modules/lzma-native",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/compression-provider-selection.md",
+          "io/node/nodeDocumentLoader.test.js"
         ]
       }
     ]
@@ -513,6 +527,98 @@
       "declaredLicenseExpression": "MIT",
       "noticeAction": "Record the separately licensed external dependency and its inspected licence evidence in the repository third-party-material inventory; do not copy its licence into the owlapi tarball NOTICE because npm installs it separately",
       "adapterBoundary": "internal/parsing/xml/xmlParserAdapter.js and internal/storage/rdfxml/rdfXmlGraphWriter.js"
+    },
+    {
+      "name": "lzma-native",
+      "version": "8.0.6",
+      "role": "Native XZ/LZMA2 decoding for Java document envelopes",
+      "standardsGrounding": [
+        "XZ file format",
+        "Released OWLAPI DocumentSources XZInputStream behavior"
+      ],
+      "conformanceEvidence": [
+        "io/node/nodeDocumentLoader.test.js",
+        "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json"
+      ],
+      "releaseAuthority": "addaleax/lzma-native maintainers",
+      "maintenanceStatus": "Selected unmodified 8.0.6 prebuilds decode concatenated streams and validate checksums. The Windows prebuild reports liblzma 5.2.3. No new memory or output default is imposed on the Java profile. Native install scripts remain denied; supported-host loading must pass installed qualification.",
+      "runtimeDependencies": [
+        "node-addon-api",
+        "node-gyp-build",
+        "readable-stream"
+      ],
+      "networkBehavior": "No ambient acquisition; the explicit Node adapter authorizes actual resources before providing bytes to the decoder.",
+      "browserCost": {
+        "disposition": "NODE_ONLY_EXCLUDED",
+        "initialStaticClosureIncluded": false,
+        "measurementReference": "scripts/reference-import-map.test.js and the browser package-entry import graph; exact installed qualification remains separately recorded.",
+        "minifiedBytes": null,
+        "gzipBytes": null,
+        "fileCount": null,
+        "comparisonContext": "This decoder is reachable only through the explicit io/node export."
+      },
+      "securityDisposition": {
+        "assessedOn": "2026-10-14",
+        "riskClass": "NODE_ONLY_COMPRESSION_DECODER",
+        "controls": [
+          "Per-access caller authorization precedes acquisition",
+          "Explicit byte limits and cancellation remain enforceable",
+          "Native input/provider boundary vectors are compared with released Java"
+        ],
+        "rationale": "Selected unmodified 8.0.6 prebuilds decode concatenated streams and validate checksums. The Windows prebuild reports liblzma 5.2.3. No new memory or output default is imposed on the Java profile. Native install scripts remain denied; supported-host loading must pass installed qualification.",
+        "evidence": [
+          "io/node/nodeDocumentLoader.test.js",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/compression-provider-selection.md",
+          "docs/provenance/npm-package-evidence.json"
+        ]
+      },
+      "declaredLicenseExpression": "MIT",
+      "noticeAction": "Retain authenticated npm license evidence in the dependency corpus. The package is installed separately and retains its own notices.",
+      "adapterBoundary": "io/node/documentBytes.js"
+    },
+    {
+      "name": "iconv-lite",
+      "version": "0.7.3",
+      "role": "Incremental UTF-8/16/32 decoding for Java JSON documents",
+      "standardsGrounding": [
+        "RFC 8259 JSON Unicode encoding",
+        "Jakarta JSON-P Unicode byte detection used by Hasmac 0.9.0"
+      ],
+      "conformanceEvidence": [
+        "io/node/nodeDocumentLoader.test.js",
+        "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json"
+      ],
+      "releaseAuthority": "ashtuchkin/iconv-lite maintainers",
+      "maintenanceStatus": "Selected maintained decoding owns BOM removal and malformed-sequence replacement. The adapter selects the native detected encoding independently of HTTP charset; no new JSON grammar is implemented.",
+      "runtimeDependencies": ["safer-buffer"],
+      "networkBehavior": "No ambient acquisition; the explicit Node adapter authorizes actual resources before providing bytes to the decoder.",
+      "browserCost": {
+        "disposition": "NODE_ONLY_EXCLUDED",
+        "initialStaticClosureIncluded": false,
+        "measurementReference": "scripts/reference-import-map.test.js and the browser package-entry import graph; exact installed qualification remains separately recorded.",
+        "minifiedBytes": null,
+        "gzipBytes": null,
+        "fileCount": null,
+        "comparisonContext": "This decoder is reachable only through the explicit io/node export."
+      },
+      "securityDisposition": {
+        "assessedOn": "2026-10-14",
+        "riskClass": "NODE_ONLY_CHARACTER_DECODER",
+        "controls": [
+          "Per-access caller authorization precedes acquisition",
+          "Explicit byte limits and cancellation remain enforceable",
+          "Native input/provider boundary vectors are compared with released Java"
+        ],
+        "rationale": "Selected maintained decoding owns BOM removal and malformed-sequence replacement. The adapter selects the native detected encoding independently of HTTP charset; no new JSON grammar is implemented.",
+        "evidence": [
+          "io/node/nodeDocumentLoader.test.js",
+          "docs/compatibility/profiles/java-owlapi-5.5.1/compression-provider-selection.md",
+          "docs/provenance/npm-package-evidence.json"
+        ]
+      },
+      "declaredLicenseExpression": "MIT",
+      "noticeAction": "Retain authenticated npm license evidence in the dependency corpus. The package is installed separately and retains its own notices.",
+      "adapterBoundary": "io/node/jsonLdDocumentResponse.js"
     }
   ]
 }

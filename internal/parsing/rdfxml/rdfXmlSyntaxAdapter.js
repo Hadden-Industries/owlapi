@@ -19,6 +19,7 @@ import { OWLOntologyLoaderConfiguration } from "../../../model/owlOntologyLoader
 import { rdfDataFactory, rdfDatasetFactory } from "../../rdfjs/environment.js";
 import { prepareXml } from "../xml/xmlEntityPolicy.js";
 import { xmlParserAdapter } from "../xml/xmlParserAdapter.js";
+import { recordSourceStatementCount } from "../../rdfjs/sourceStatementCount.js";
 
 const CDATA_SECTION_NODE = 4;
 const COMMENT_NODE = 8;
@@ -1016,6 +1017,7 @@ export class RdfXmlSyntaxAdapter {
       parser.end();
       await completion;
       execution.check();
+      recordSourceStatementCount(dataset, emittedQuads);
       parsedPrefixes.set(
         dataset,
         [...identity.namespaces].map(([name, namespace]) => [
