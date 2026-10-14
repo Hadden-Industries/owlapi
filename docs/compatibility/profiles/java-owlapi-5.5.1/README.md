@@ -35,9 +35,11 @@ The entry-by-entry comparison is retained in `evidence/jar-comparison.json`.
 Source was not changed to manufacture identical bytes.
 Central remains the executable oracle.
 
-All 17 Java executions (15 retained research cases and two additional contract probes) agree on their behavioral rows.
+All 28 Java executions (15 retained research cases and 13 current contract probes) have Central/source behavioral comparisons.
+The separate selected-surface replay contains 15 additional executions.
+Current comparison files bind each capture; new probe edits require fresh comparison before admission.
 The comparison preserves callback order, exception outcomes, configuration values and partial effects.
-Only the iteration order of the unordered `getSupportedSettings()` inventory is canonicalized; artifact/runtime locations remain separate provenance.
+The comparator classifies only recorded build-timestamp comments and equal-priority parser inventory order; artifact/runtime locations remain separate provenance.
 Agreement is limited to the recorded probes, not a proof that every bytecode path is equivalent.
 
 The exact installed Maven tree matches the downloaded 3.9.15 binary archive.
@@ -81,6 +83,13 @@ Installed browser acceptance remains a SLICE-009 obligation.
 - Both profiles use the normal facet meanings: `<`/`<=` are upper bounds and `>`/`>=` are lower bounds.
   The previous Manchester table-based inversion must be removed.
 - Java writer copy/no-op behavior is observed in `evidence/behavior-contracts.txt`; loader settings preserve their earlier overrides, whereas changed writer setters reset selected presentation fields.
-- The installed JSON-LD dependency still has an internal context limit of 10.
-  Its internal context-resolver hook is not an accepted implementation seam.
-  Dependency selection remains open until a supported configuration route meets the actual Java and normative boundaries.
+- The owner approved the narrowly scoped maintained jsonld 9.0.0 source build in [provider-decision.md](provider-decision.md).
+  It exposes the context counter control without replacing Java's observed boundary or the normative default.
+- The owner approved the explicit Node adapter and browser transport boundary in [transport-decision.md](transport-decision.md).
+  The actual RDF4J 5.0.2 Hasmac 0.9.0 context client is distinct from the ontology document client.
+  Its ten-request limit, media/Link processing, Unicode detection and native first-JSON-structure consumption have separate owned-server probes.
+- Java RDF metadata reports `PARSED_ONE_HEADER` independently of explicit header count, and counts source statement occurrences before deduplication.
+- Java's ontology merger creates its target before provider iteration and retains copied axioms after a later provider failure.
+  A destination identity collision prevents the provider query; source ownership remains unchanged.
+
+The [profile contract](../../behavior-profiles.md) and the `currentBehaviorContracts` section of the [owning decision ledger](../../java-api-parity-decisions.json) describe the current implementation separately from the historical research and receipts.

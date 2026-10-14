@@ -30,6 +30,15 @@ public final class ObserveBehaviorContracts {
             defaults == defaults.setLoadAnnotationAxioms(true), defaults == defaults.setStrict(false));
         loader("loader-chain", defaults.setConnectionTimeout(123).setRetriesToAttempt(2)
             .setStrict(true).setLoadAnnotationAxioms(false).setEntityExpansionLimit("0"));
+        row("loader-http-noop", defaults == defaults.setAuthorizationValue(""),
+            defaults == defaults.setAcceptingHTTPCompression(true));
+        var credentials = defaults.setAuthorizationValue("Bearer owned-test-token").setAcceptingHTTPCompression(false);
+        row("loader-http-copy", credentials.getAuthorizationValue(), credentials.isAcceptingHTTPCompression(),
+            credentials.setConnectionTimeout(3).getAuthorizationValue());
+        var nullCredentials = defaults.setAuthorizationValue(null);
+        row("loader-http-null", nullCredentials.getAuthorizationValue());
+        try { row("loader-http-null-copy", nullCredentials.setAuthorizationValue("x").getAuthorizationValue()); }
+        catch (Throwable error) { row("loader-http-null-copy", error.getClass().getName()); }
         for (String value : new String[] {"0", "-1", "1", "bad", "", "2147483648"}) {
             try { row("entity-limit-" + value, defaults.setEntityExpansionLimit(value).getEntityExpansionLimit()); }
             catch (Throwable error) { row("entity-limit-" + value, error.getClass().getName()); }

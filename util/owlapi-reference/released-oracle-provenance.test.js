@@ -40,7 +40,8 @@ test("measured draft evidence validates without being promoted to qualified rele
   const result = validateReleasedOracle({ requireQualified: false });
   expect(result).toEqual({
     qualificationStatus: "unqualified",
-    observationCount: 17,
+    observationCount: 28,
+    selectedObservationCount: 15,
     dependencyArtifactCount: 2146,
   });
   expect(() => validateReleasedOracle()).toThrow(/unqualified/);

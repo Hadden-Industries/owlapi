@@ -3,15 +3,27 @@
   "evidence": [
     {
       "path": "central-observations.json",
-      "sha256": "98381ad4ea674f5b265b2e099c7885c7451c93c3014566717851432b6794af1b",
-      "byteLength": 48876,
-      "originalSha256": "7991a4f9d4e45bcc9bb7cb6f27b6ec6b90ee1947135b4057d79e5e4048214748"
+      "sha256": "98a34f0788c182b4ee181cd13b2bf172e8ac2dbe33c56dde9280fc9ef24419b1",
+      "byteLength": 306196,
+      "originalSha256": "2f3808e079205bf682bf06ea9a05c33f69f24a0025ea04b7f99c10b5428df2af"
     },
     {
       "path": "source-observations.json",
-      "sha256": "127c2a8eb14f80138e6fe9df162b3dc08f10f4194a24dbaf5f4c6aecc4ba9f36",
-      "byteLength": 48744,
-      "originalSha256": "ef924aba85d2ddba0785d0c16d87e630080453202f6259e9b6d124b558a5b5d5"
+      "sha256": "63d9614c110f4f3c16b37d577eaaf0f6981cbb9a84c6c9edf4079ff9068397e3",
+      "byteLength": 306064,
+      "originalSha256": "78c1d1080e55f56b48fcf22a1ddef7213ee40e50d4fb90e38c16ee7a56c0ed87"
+    },
+    {
+      "path": "central-selected-parity.json",
+      "sha256": "bf0cef2dcfff1d66d469a91a0db67094c2cea701e6870ef599f2c251eaeb5790",
+      "byteLength": 2120434,
+      "originalSha256": "0b4ebfd45061c31874a72d2fe47bc657cf32ca659338adbeba1d894042b08999"
+    },
+    {
+      "path": "source-selected-parity.json",
+      "sha256": "9cfba95071f1ff7d3d5f4c627ce58dd0d4aa4668be270b3bfa50eaa4088a39c7",
+      "byteLength": 2120434,
+      "originalSha256": "d1769bb4964b567333fbe9dca5e1bb9b7096a61d92f5fd5d4b0fd57b07c1a019"
     },
     {
       "path": "javascript-baseline-observations.json",
@@ -27,9 +39,15 @@
     },
     {
       "path": "behavior-comparison.json",
-      "sha256": "6b3c6e6bcd7bb03d79637c5ca81c7b981a0f1d43aa634c0fc5c1597a4933564e",
-      "byteLength": 5149,
-      "originalSha256": "15a95b64867ec1f86dffd4958d723e9daad214b755a71f65a7ae55dfb9543f40"
+      "sha256": "b2c859dc1b761db3b809eaa9df0448bb7e1cdbfae0f4d3b0b93bf3cb438dc061",
+      "byteLength": 10700,
+      "originalSha256": "75c995393bc5962244341436d12aef21ccc95d946ae1b26975ef1c00ff0db248"
+    },
+    {
+      "path": "selected-parity-comparison.json",
+      "sha256": "3aa261ddbb862a6c7ce7945ba987294a35d3aad3c67f2141f9202fb701529562",
+      "byteLength": 5535,
+      "originalSha256": "1e566a6f9c016941477b2b4a580a7a97d9a5ba44e1544afb58bd8f59081a1fc7"
     },
     {
       "path": "evidence/behavior-contracts.txt",

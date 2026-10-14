@@ -2,13 +2,34 @@ import java.util.*;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.io.StringDocumentSource;
+import org.semanticweb.owlapi.util.OWLOntologyMerger;
+import java.util.stream.Stream;
 
 /** Black-box observations of selected manager mutation boundaries. */
 public final class ObserveMutationContracts {
     static void row(String name, Object... values) {
         System.out.println(name + "\t" + Arrays.toString(values));
     }
+    static void mergerProbes() throws Exception {
+        var sourceManager = OWLManager.createOWLOntologyManager();
+        var source = sourceManager.createOntology(IRI.create("urn:copy:source"));
+        var axiom = sourceManager.getOWLDataFactory().getOWLDeclarationAxiom(sourceManager.getOWLDataFactory().getOWLClass(IRI.create("urn:copy:C")));
+        sourceManager.addAxiom(source, axiom);
+        var destination = OWLManager.createOWLOntologyManager();
+        var targetIRI = IRI.create("urn:copy:target");
+        boolean[] publishedDuringProvider = {false};
+        OWLOntologySetProvider provider = () -> { publishedDuringProvider[0] = destination.contains(targetIRI); return Stream.of(source); };
+        var copied = new OWLOntologyMerger(provider).createMergedOntology(destination, targetIRI);
+        row("merger-copy", publishedDuringProvider[0], copied != source, copied.getAxiomCount(), source.getAxiomCount(), copied.getOWLOntologyManager() == destination, source.getOWLOntologyManager() == sourceManager);
+        int[] calls = {0};
+        try { new OWLOntologyMerger(() -> { calls[0]++; return Stream.of(source); }).createMergedOntology(destination, targetIRI); }
+        catch (Throwable error) { row("merger-collision", error.getClass().getSimpleName(), calls[0], destination.getOntology(targetIRI) == copied); }
+        var failedIRI = IRI.create("urn:copy:failed");
+        try { new OWLOntologyMerger(() -> Stream.concat(Stream.of(source), Stream.generate(() -> { throw new IllegalStateException("owned provider failure"); }))).createMergedOntology(destination, failedIRI); }
+        catch (Throwable error) { row("merger-provider-failure", error.getClass().getSimpleName(), destination.getOntology(failedIRI).getAxiomCount(), source.getAxiomCount(), destination.getOntology(failedIRI).getOWLOntologyManager() == destination); }
+    }
     public static void main(String[] arguments) throws Exception {
+        mergerProbes();
         var owner = OWLManager.createOWLOntologyManager();
         var other = OWLManager.createOWLOntologyManager();
         var f = owner.getOWLDataFactory();

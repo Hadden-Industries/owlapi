@@ -65,12 +65,15 @@ async function preserve(source, target) {
 for (const [source, target] of [
   ["central-probes/observations.json", "central-observations.json"],
   ["source-probes/observations.json", "source-observations.json"],
+  ["central-selected-parity/observations.json", "central-selected-parity.json"],
+  ["source-selected-parity/observations.json", "source-selected-parity.json"],
   [
     "javascript-baseline/observations.json",
     "javascript-baseline-observations.json",
   ],
   ["oracle/java-dependencies.lock.json", "java-dependencies.lock.json"],
   ["oracle/probe-comparison.json", "behavior-comparison.json"],
+  ["oracle/selected-parity-comparison.json", "selected-parity-comparison.json"],
   ["oracle/behavior-contracts.txt", "evidence/behavior-contracts.txt"],
   ["oracle/jar-comparison.json", "evidence/jar-comparison.json"],
   ["oracle/tool-identities.json", "evidence/tool-identities.json"],
@@ -175,9 +178,29 @@ provenance.sourceBuild.artifactComparison = {
 };
 const fixturePaths = [
   "util/owlapi-reference/replay-behavior-research.mjs",
+  "util/owlapi-reference/run-java-observation.mjs",
+  "util/owlapi-reference/replay-selected-parity.mjs",
   "util/owlapi-reference/ObserveBehaviorContracts.java",
   "util/owlapi-reference/compare-behavior-observations.mjs",
   "util/owlapi-reference/ObserveMutationContracts.java",
+  ...[
+    "ObserveLoadingContracts",
+    "ObserveStorageContracts",
+    "ObserveQueryTiming",
+    "ObserveJsonLdProvider",
+    "ObserveXmlContracts",
+    "ObserveParserSelection",
+    "ObserveLanguageProfileSemantics",
+    "ObserveNetworkContracts",
+    "ObserveCompressionContracts",
+    "ObserveJsonLdTransport",
+    "ObserveResourceContracts",
+  ].map((name) => `util/owlapi-reference/${name}.java`),
+  ...fs
+    .readdirSync(root + "/util/owlapi-reference")
+    .filter((name) => /^RunRC2.*\.java$/u.test(name))
+    .map((name) => `util/owlapi-reference/${name}`),
+  "util/owlapi-reference/fixtures/rc2/query-observations.json",
   "util/owlapi-reference/validate-released-oracle.mjs",
   "util/owlapi-reference/record-released-oracle-evidence.mjs",
   "docs/compatibility/research/java-api-behavior/2026-10-13-owlapi-api-behavior-evidence.json",

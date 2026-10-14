@@ -6,6 +6,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
 import { compareBehaviorObservations } from "./compare-behavior-observations.mjs";
+import { compareSelectedParity } from "./compare-selected-parity.mjs";
 
 const defaultDirectory = fileURLToPath(
   new URL(
@@ -229,8 +230,8 @@ export function validateReleasedOracle({
   );
   const comparison = compareBehaviorObservations(central, rebuilt);
   assert(
-    comparison.every((row) => row.areBehavioralObservationsIdentical),
-    "Central and source observations differ",
+    comparison.every((row) => row.comparisonStatus !== "unresolved"),
+    "Central and source observations contain unclassified differences",
   );
   const recordedComparison = json(
     sourceBuild.artifactComparison.behavioralComparisonEvidencePath,
@@ -238,6 +239,20 @@ export function validateReleasedOracle({
   assert(
     JSON.stringify(comparison) === JSON.stringify(recordedComparison),
     "Recorded behavioral comparison differs",
+  );
+  const selected = compareSelectedParity(
+    json("central-selected-parity.json"),
+    json("source-selected-parity.json"),
+  );
+  assert(
+    selected.length === 15 &&
+      selected.every((row) => row.areSelectedResultsEquivalent),
+    "Selected native parity observations differ or are incomplete",
+  );
+  assert(
+    JSON.stringify(selected) ===
+      JSON.stringify(json("selected-parity-comparison.json")),
+    "Recorded selected parity comparison differs",
   );
   for (const observation of central.observations) {
     assert(
@@ -261,6 +276,7 @@ export function validateReleasedOracle({
   return {
     qualificationStatus: provenance.qualification.status,
     observationCount: comparison.length,
+    selectedObservationCount: selected.length,
     dependencyArtifactCount: artifacts.size,
   };
 }

@@ -1,8 +1,8 @@
-import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { basename, delimiter, dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { runJavaObservation } from "./run-java-observation.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const researchDirectory = join(
@@ -16,17 +16,31 @@ const researchFiles = [
 const additionalProbeFiles = [
   "ObserveBehaviorContracts.java",
   "ObserveMutationContracts.java",
+  "ObserveLoadingContracts.java",
+  "ObserveStorageContracts.java",
+  "ObserveQueryTiming.java",
+  "ObserveJsonLdProvider.java",
+  "ObserveXmlContracts.java",
+  "ObserveParserSelection.java",
+  "ObserveLanguageProfileSemantics.java",
+  "ObserveNetworkContracts.java",
+  "ObserveCompressionContracts.java",
+  "ObserveJsonLdTransport.java",
+  "ObserveResourceContracts.java",
 ];
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 
 /** Replay the retained black-box Java probes without an implementation overlay.
  * The caller chooses an acquired release classpath or an unmodified source build.
  * Historical expectations stay untouched; this produces new observations.
+ * reuseUnchangedProbes is only for the same qualified JVM/runtime: classpath,
+ * probe inputs, source and invocation arguments are rechecked before reuse.
  */
 export function replayBehaviorResearch({
   classpathFile,
   outputDirectory,
   java = "java",
+  reuseUnchangedProbes = false,
 }) {
   const output = resolve(outputDirectory);
   mkdirSync(output, { recursive: true });
@@ -36,6 +50,15 @@ export function replayBehaviorResearch({
     sha256: sha256(readFileSync(path)),
   }));
   const observations = [];
+  const retained = reuseUnchangedProbes
+    ? JSON.parse(readFileSync(join(output, "observations.json"), "utf8"))
+    : undefined;
+  if (
+    retained &&
+    JSON.stringify(retained.classpathEntries) !==
+      JSON.stringify(classpathEntries)
+  )
+    throw new Error("Cannot reuse Java observations from a changed classpath");
   const inputs = [
     ...researchFiles.map((file) => {
       const bytes = readFileSync(join(researchDirectory, file));
@@ -72,41 +95,58 @@ export function replayBehaviorResearch({
       const argumentSets =
         probe.id === "GAP-P06"
           ? [1, 2, 5, 10, 11, 12, 20, 25].map((length) => [String(length)])
-          : [probe.id === "GAP-P01" ? [output] : []];
+          : [
+              [
+                "GAP-P01",
+                "ObserveLoadingContracts",
+                "ObserveNetworkContracts",
+                "ObserveJsonLdTransport",
+              ].includes(probe.id)
+                ? [output]
+                : [],
+            ];
       for (const arguments_ of argumentSets) {
-        const argv = [
-          "-Duser.language=en",
-          "-Duser.country=GB",
-          "-Duser.timezone=UTC",
-          "-Dfile.encoding=UTF-8",
-          "-Dstdout.encoding=UTF-8",
-          "-Dstderr.encoding=UTF-8",
-          "-cp",
+        const identity = {
+          probeId: probe.id,
+          arguments: arguments_.map((argument) =>
+            argument === output ? "${PROBE_WORKSPACE}" : argument,
+          ),
+          inputPath: input.path,
+          inputSha256: sha256(input.bytes),
+          sourceSha256: sha256(source),
+        };
+        const matches =
+          retained?.observations.filter((observation) =>
+            Object.entries(identity).every(
+              ([key, value]) =>
+                JSON.stringify(observation[key]) === JSON.stringify(value),
+            ),
+          ) ?? [];
+        if (matches.length > 1)
+          throw new Error(`Duplicate retained Java observations: ${probe.id}`);
+        const previous = matches[0];
+        if (
+          previous?.exitCode === 0 &&
+          previous.signal === null &&
+          previous.error === null
+        ) {
+          observations.push(previous);
+          process.stderr.write(
+            `${probe.id} ${arguments_.join(" ")}: unchanged capture reused\n`,
+          );
+          continue;
+        }
+        const result = runJavaObservation({
+          java,
           classpath,
           sourcePath,
-          ...arguments_,
-        ];
-        // Java's native argument-file format also avoids Windows command limits.
-        const argumentFile = join(output, "java-arguments.txt");
-        writeFileSync(
-          argumentFile,
-          argv.map((value) => JSON.stringify(value)).join("\n"),
-        );
-        const result = spawnSync(java, [`@${argumentFile}`], {
-          encoding: "utf8",
-          timeout: 120_000,
-          maxBuffer: 8 * 1024 * 1024,
-          env: Object.fromEntries(
-            Object.entries(process.env).filter(
-              ([name]) =>
-                ![
-                  "JAVA_TOOL_OPTIONS",
-                  "JDK_JAVA_OPTIONS",
-                  "_JAVA_OPTIONS",
-                  "CLASSPATH",
-                ].includes(name.toUpperCase()),
-            ),
-          ),
+          arguments: arguments_,
+          outputDirectory: output,
+          // The released Turtle JavaCharStream expands/copies buffers in 2048
+          // character steps. The 33 MiB stress probe needs a separate harness
+          // budget; its earlier two-minute timeouts remain operator evidence.
+          timeoutMilliseconds:
+            probe.id === "ObserveResourceContracts" ? 600_000 : 120_000,
         });
         const normalize = (text = "") =>
           text
@@ -114,13 +154,7 @@ export function replayBehaviorResearch({
             .replaceAll(output, "${PROBE_WORKSPACE}")
             .replaceAll(output.replaceAll("\\", "/"), "${PROBE_WORKSPACE}");
         const observation = {
-          probeId: probe.id,
-          arguments: arguments_.map((arg) =>
-            arg === output ? "${PROBE_WORKSPACE}" : arg,
-          ),
-          inputPath: input.path,
-          inputSha256: sha256(input.bytes),
-          sourceSha256: sha256(source),
+          ...identity,
           exitCode: result.status,
           signal: result.signal,
           error: result.error?.message ?? null,
@@ -129,7 +163,7 @@ export function replayBehaviorResearch({
         };
         observations.push(observation);
         writeFileSync(
-          join(output, "observations.json"),
+          join(output, "incomplete-observations.json"),
           JSON.stringify(
             {
               schemaVersion: 1,
@@ -148,17 +182,28 @@ export function replayBehaviorResearch({
       }
     }
   }
-  return { schemaVersion: 1, classpathEntries, observations };
+  const captured = { schemaVersion: 1, classpathEntries, observations };
+  writeFileSync(
+    join(output, "observations.json"),
+    JSON.stringify(captured, null, 2) + "\n",
+  );
+  return captured;
 }
 
 if (
   process.argv[1] &&
   import.meta.url === pathToFileURL(resolve(process.argv[1])).href
 ) {
-  const [classpathFile, outputDirectory] = process.argv.slice(2);
+  const [classpathFile, outputDirectory, option] = process.argv.slice(2);
   if (!classpathFile || !outputDirectory)
     throw new Error(
-      "Usage: replay-behavior-research.mjs CLASSPATH_FILE OUTPUT_DIRECTORY",
+      "Usage: replay-behavior-research.mjs CLASSPATH_FILE OUTPUT_DIRECTORY [--reuse-unchanged]",
     );
-  replayBehaviorResearch({ classpathFile, outputDirectory });
+  if (option && option !== "--reuse-unchanged")
+    throw new Error(`Unknown replay option: ${option}`);
+  replayBehaviorResearch({
+    classpathFile,
+    outputDirectory,
+    reuseUnchangedProbes: option === "--reuse-unchanged",
+  });
 }
