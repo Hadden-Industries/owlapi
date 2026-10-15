@@ -29,10 +29,13 @@ Current owner amendments on 15 October 2026 supersede the initial proposal where
 - Deliver through a normal merge PR into remote `main` after checks pass, retaining the related Java documentation commit in the signed implementation ancestry.
   Use detailed per-file commit messages for subsequent commits and notify the owner's designated chat after completion.
 - The owner subsequently selected direct signed pushes for both shared quality repositories and explicitly approved removing their unnecessary merge commits from `main` ancestry.
-  Markdown Quality `main` is `d9736e6bb4f3bd83d421ea99f54431e8380e6ec1`; JSON Quality `main` is `e5e7c66be14af4445946fbb5cf454d4b4a1b7cf5` after recreating ten signed descendants on the original PR #1 source.
+  The rewrite moved Markdown Quality `main` to `d9736e6bb4f3bd83d421ea99f54431e8380e6ec1`; JSON Quality `main` is `e5e7c66be14af4445946fbb5cf454d4b4a1b7cf5` after recreating ten signed descendants on the original PR #1 source.
   Every recreated commit is locally signature-verified and GitHub Verified; messages, authors and file trees are unchanged.
   Preserve original histories, PR records and OwlAPI's qualified source pins; the final producer trees match exactly, and the existing consumer pins remain available.
   OwlAPI's normal merge PR route remains required.
+- The owner subsequently instructed keeping OwlAPI's Markdown source pin unchanged.
+  The separate Verified producer repair `ccb4d21270bc9d5221a6e22f70e244543da77fcb` fixes asynchronous Linux cleanup observation and passes local and hosted package qualification, but OwlAPI's core/native archives, lock and workflow stay at the already qualified `d9736e6b` source.
+  Matching Node and worker heap caps become 256 MiB after fixed-package timing and native memory probes; the 30-second checker target, six samples and 1,024 MiB observed-memory gate stay unchanged and require fresh acceptance.
 - The owner approved ten exact original Maven dependency-plugin 3.11.0 runtime-report presentation contracts from hosted run `38696140928`.
   Require their unchanged original hashes and lengths with zero semantic differences; preserve native graph digest protocols, all thirteen Unicode pins and the existing exclusion set.
   The repaired native Jest report and build-attempt marker pass without these contracts.

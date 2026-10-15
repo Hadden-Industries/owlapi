@@ -7,9 +7,11 @@ Delivery-stage results are retained separately in the native task evidence and m
 The shared JSON package remains selected at qualified source `ded6b960e588ab708910953fb735b92760c913a3`, retained from [producer PR #2](https://github.com/Hadden-Industries/json-quality/pull/2).
 The owner subsequently authorized removing the unnecessary producer merges from `main` ancestry and using direct signed pushes for both shared quality repositories.
 JSON Quality `main` is now `e5e7c66be14af4445946fbb5cf454d4b4a1b7cf5`; its ten recreated descendants retain every message, author and file tree and all show Verified on GitHub.
-Markdown Quality `main` is the unchanged qualified source `d9736e6bb4f3bd83d421ea99f54431e8380e6ec1`, also Verified.
+The rewrite initially moved Markdown Quality `main` to unchanged qualified source `d9736e6bb4f3bd83d421ea99f54431e8380e6ec1`, also Verified.
 Both final producer trees are identical to the earlier merged trees; recovery bundles, raw signature evidence, original commits and PR records remain preserved, and the consumer's exact source pins remain valid.
 The local shared `main` refs match their remote heads; the unrelated untracked Markdown plan is unchanged.
+The later signed direct-main producer repair `ccb4d21270bc9d5221a6e22f70e244543da77fcb` fixes asynchronous Linux cleanup observation; three deterministic regressions fail before the repair and pass afterward, and both hosted package matrices pass.
+The owner instructed leaving OwlAPI's Markdown pin unchanged, so its archives, lock and qualification workflow retain `d9736e6b` and do not adopt that separate repair.
 Its native isolated npm lock, installed payload and generated bootstrap pass admission.
 Canonical lint/format/test commands and JSON setup are activated.
 All six existing Node 24, Node 26 and Windows quality jobs have an unconditional final JSON check after their native producers; workflow governance rejects missing, skipped, optional or prematurely placed gates.
@@ -64,6 +66,10 @@ The retained raw archive independently matches the native distribution-graph dig
 The owner approved ten exact original-report contracts with unchanged hashes and lengths, no semantic differences and no new exclusions.
 Shared public analysis verifies all ten identities and zero semantic findings; the captured Jest report and attempt marker pass their existing contracts without new exceptions.
 Current policy applies those exact contracts; later byte drift fails rather than refreshing a pin automatically.
+The full HISEW run `e2dcd7ee-5112-48e6-8126-3c0d4f057196` passed all six commands at `db35b09e`; the hosted source job also passed its final complete JSON gate.
+Its later browser preparation correctly rejected five stale local source integrities and the absent canonical-identity helper integrity; the native map generator now refreshes exactly those six entries without dependency or provider changes.
+Trusted Markdown qualification retained deadline failures under the 128 MiB profile and its one bounded retry; Linux passed the retry, while Windows still exceeded the unchanged checker deadline.
+Fixed-package timing and native Windows memory measurements support matching 256 MiB heap caps within the existing 1,024 MiB target; fresh full and hosted qualification remain required after these final writers.
 Independent correctness review reports no findings for the final repair.
 The complete native security scan `7859574e-73bd-4af4-97e7-60fccb0cc7fc` retained one low-severity quadratic inventory finding.
 The subsequent indexed ancestor lookup and deterministic regression passed focused security scan `62b5c57d-0fcc-43ac-8a7e-11470c4c08dc` with no new findings; the original finding and proof remain preserved.
