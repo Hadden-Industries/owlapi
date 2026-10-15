@@ -22,7 +22,11 @@
     "catalogue": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["historicalCatalogueSha256", "policySha256", "sourcePaths"],
+      "required": [
+        "historicalCatalogueSha256",
+        "policySha256",
+        "sourcePaths"
+      ],
       "properties": {
         "historicalCatalogueSha256": {
           "type": "string",

@@ -54,7 +54,12 @@
     "strictAllowScripts": false,
     "packageLock": true,
     "installStrategy": "hoisted",
-    "include": ["prod", "dev", "optional", "peer"],
+    "include": [
+      "prod",
+      "dev",
+      "optional",
+      "peer"
+    ],
     "omit": []
   },
   "installedPackageTree": {

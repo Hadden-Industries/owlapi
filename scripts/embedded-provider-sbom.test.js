@@ -85,6 +85,32 @@ test("a retained SBOM for different embedded bytes is rejected rather than relab
   ).rejects.toThrow(/different embedded provider/);
 });
 
+test("object member ordering does not change the embedded provider while array ordering does", async () => {
+  const result = await addEmbeddedJsonLdComponents(base(), repositoryRoot);
+  const reverseObjects = (value) => {
+    if (Array.isArray(value)) return value.map(reverseObjects);
+    if (value && typeof value === "object") {
+      return Object.fromEntries(
+        Object.entries(value)
+          .reverse()
+          .map(([key, entry]) => [key, reverseObjects(entry)]),
+      );
+    }
+    return value;
+  };
+  const reordered = reverseObjects(result);
+  await expect(
+    addEmbeddedJsonLdComponents(reordered, repositoryRoot),
+  ).resolves.toEqual(result);
+  const changedArray = structuredClone(result);
+  changedArray.components
+    .find(({ type }) => type === "file")
+    .components.reverse();
+  await expect(
+    addEmbeddedJsonLdComponents(changedArray, repositoryRoot),
+  ).rejects.toThrow(/different embedded provider/);
+});
+
 test("the native CycloneDX validator rejects malformed pre-existing component metadata", async () => {
   const input = base();
   input.components[0].type = "invented-component-kind";

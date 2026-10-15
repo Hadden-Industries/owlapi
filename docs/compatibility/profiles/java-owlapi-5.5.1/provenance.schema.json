@@ -9,7 +9,11 @@
         "properties": {
           "qualification": {
             "type": "object",
-            "properties": { "status": { "const": "qualified" } }
+            "properties": {
+              "status": {
+                "const": "qualified"
+              }
+            }
           }
         }
       },
@@ -18,7 +22,10 @@
           "qualification": {
             "type": "object",
             "properties": {
-              "completedAt": { "type": "string", "format": "date-time" }
+              "completedAt": {
+                "type": "string",
+                "format": "date-time"
+              }
             }
           },
           "oracle": {
@@ -54,10 +61,17 @@
     "qualification": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["status", "completedAt", "evidenceManifestPath"],
+      "required": [
+        "status",
+        "completedAt",
+        "evidenceManifestPath"
+      ],
       "properties": {
         "status": {
-          "enum": ["unqualified", "qualified"]
+          "enum": [
+            "unqualified",
+            "qualified"
+          ]
         },
         "completedAt": {
           "anyOf": [
@@ -254,7 +268,11 @@
         "primaryCoordinate": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["groupId", "artifactId", "version"],
+          "required": [
+            "groupId",
+            "artifactId",
+            "version"
+          ],
           "properties": {
             "groupId": {
               "const": "net.sourceforge.owlapi"
@@ -295,7 +313,10 @@
                 "const": "5.5.1"
               },
               "artifactType": {
-                "enum": ["pom", "jar"]
+                "enum": [
+                  "pom",
+                  "jar"
+                ]
               },
               "classifier": {
                 "type": "null"
@@ -381,10 +402,18 @@
               "const": "https://repo.maven.apache.org/maven2"
             },
             "oracleExecutionClosureStatus": {
-              "enum": ["not-checked", "complete", "incomplete"]
+              "enum": [
+                "not-checked",
+                "complete",
+                "incomplete"
+              ]
             },
             "sourceBuildClosureStatus": {
-              "enum": ["not-checked", "complete", "incomplete"]
+              "enum": [
+                "not-checked",
+                "complete",
+                "incomplete"
+              ]
             }
           }
         }
@@ -393,7 +422,11 @@
     "toolchain": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["jdk", "maven", "operatingSystem"],
+      "required": [
+        "jdk",
+        "maven",
+        "operatingSystem"
+      ],
       "properties": {
         "jdk": {
           "type": "object",
@@ -440,7 +473,10 @@
         "maven": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["version", "distributionArchiveSha256"],
+          "required": [
+            "version",
+            "distributionArchiveSha256"
+          ],
           "properties": {
             "version": {
               "type": "string",
@@ -455,7 +491,11 @@
         "operatingSystem": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["name", "version", "architecture"],
+          "required": [
+            "name",
+            "version",
+            "architecture"
+          ],
           "properties": {
             "name": {
               "type": "string",
@@ -492,7 +532,11 @@
           "const": true
         },
         "checkoutVerificationStatus": {
-          "enum": ["not-checked", "clean", "dirty"]
+          "enum": [
+            "not-checked",
+            "clean",
+            "dirty"
+          ]
         },
         "invocation": {
           "type": "object",
@@ -527,7 +571,10 @@
           }
         },
         "dependencyResolutionMode": {
-          "enum": ["offline-after-seeding", "online-with-offline-replay"]
+          "enum": [
+            "offline-after-seeding",
+            "online-with-offline-replay"
+          ]
         },
         "artifactComparison": {
           "type": "object",

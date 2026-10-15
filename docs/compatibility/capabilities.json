@@ -7,7 +7,11 @@
     "UNSUPPORTED_BY_DESIGN",
     "DELEGATED"
   ],
-  "progressStates": ["NOT_STARTED", "IN_PROGRESS", "COMPLETE"],
+  "progressStates": [
+    "NOT_STARTED",
+    "IN_PROGRESS",
+    "COMPLETE"
+  ],
   "capabilities": [
     {
       "id": "modularity.syntactic-locality",
@@ -231,9 +235,19 @@
       "progress": "COMPLETE",
       "phase": 15,
       "delegate": "jsonld",
-      "formatParameters": ["processingMode", "expandContext", "rdfDirection"],
-      "processingModes": ["json-ld-1.0", "json-ld-1.1"],
-      "rdfDirectionModes": ["i18n-datatype", "compound-literal"],
+      "formatParameters": [
+        "processingMode",
+        "expandContext",
+        "rdfDirection"
+      ],
+      "processingModes": [
+        "json-ld-1.0",
+        "json-ld-1.1"
+      ],
+      "rdfDirectionModes": [
+        "i18n-datatype",
+        "compound-literal"
+      ],
       "generalizedRdf": "UNSUPPORTED_BY_DESIGN"
     },
     {

@@ -221,6 +221,18 @@ jobs:
         timeout-minutes: 5
         env:
           QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
+      - name: Acquire the exact isolated JSON graph
+        run: npm run install:json
+        timeout-minutes: 5
+      - name: Exercise JSON isolation and exact preservation probes
+        run: npm run test:json
+        timeout-minutes: 5
+      - name: Verify complete JSON coverage on Node 26
+        run: npm run check:json
+        timeout-minutes: 5
+      - name: Verify semantic JSON identity on Node 26
+        run: npm run lint:json-identity
+        timeout-minutes: 5
       - name: Verify formatting
         run: npm run format:source-python:check
         timeout-minutes: 45
@@ -239,6 +251,9 @@ jobs:
       - name: Verify repository workflow governance
         run: npm run verify:workflow-governance
         timeout-minutes: 45
+      - name: Check complete JSON after every native producer
+        run: npm run check:json
+        timeout-minutes: 5
 
   source_node_24:
     name: Release / Ubuntu / Node 24.21.0
@@ -288,6 +303,12 @@ jobs:
           QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
       - name: Acquire the exact isolated Markdown graph
         run: npm run install:markdown
+        timeout-minutes: 5
+      - name: Acquire the exact isolated JSON graph
+        run: npm run install:json
+        timeout-minutes: 5
+      - name: Exercise JSON isolation and exact preservation probes
+        run: npm run test:json
         timeout-minutes: 5
       - name: Exercise canonical Markdown isolation probes
         run: npm run test:markdown
@@ -378,6 +399,9 @@ jobs:
           overwrite: false
           include-hidden-files: false
           archive: true
+      - name: Check complete JSON after every native producer
+        run: npm run check:json
+        timeout-minutes: 5
 
   dependency_review:
     name: Release / dependency policy
@@ -1984,6 +2008,12 @@ jobs:
       - name: Acquire the exact isolated Markdown graph
         run: npm run install:markdown
         timeout-minutes: 5
+      - name: Acquire the exact isolated JSON graph
+        run: npm run install:json
+        timeout-minutes: 5
+      - name: Exercise JSON isolation and exact preservation probes
+        run: npm run test:json
+        timeout-minutes: 5
       - name: Verify formatting
         run: npm run format:check
         timeout-minutes: 10
@@ -1993,3 +2023,6 @@ jobs:
       - name: Run native quality regressions
         run: npm run test:quality
         timeout-minutes: 10
+      - name: Check complete JSON after every native producer
+        run: npm run check:json
+        timeout-minutes: 5

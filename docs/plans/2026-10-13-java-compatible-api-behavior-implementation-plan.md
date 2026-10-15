@@ -2,7 +2,7 @@
 
 **File:** `docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md`\
 **Date:** 2026-10-13\
-**Status:** Draft HISEW revision; implementation and profile qualification pending\
+**Status:** Implementation complete and merged; public profile admission and publication held\
 **Profiles:** `java-owlapi-5.5.1`, `normative-v1`\
 **Java oracle release:** OWLAPI 5.5.1\
 **Java source commit:** `f760b3a4c107c6d5f90f856e5680c39b18af646f`\
@@ -10,7 +10,10 @@
 **Release tag:** `owlapi-parent-5.5.1`
 
 This revision preserves the two-profile design and technical worklist in commit `3e68d03c8061dbfd7604984e3f26d3b8b2defc9d`, and makes its requirements, naming, TDD, ownership and delivery gates explicit.
-The design conversation is retained as context [design-chat]; this document is the reviewable draft, not evidence that all consequential decisions have been accepted or implemented.
+The design conversation is retained as context [design-chat]; the accepted implementation baseline is commit `182846768401c2ace226a94389194cfaa319342e`.
+The nine implementation slices were delivered through [PR #76](https://github.com/Hadden-Industries/owlapi/pull/76), merged into `main` on 2026-10-14 as `957deb38362b0ab55ed809f9722fcbf44eaec2ae`.
+The [implementation and release-readiness record](../compatibility/profiles/java-owlapi-5.5.1/implementation-qualification.md) identifies completed verification, the source-integration security exception and the remaining security, resource-reconciliation and release gates.
+The requirements, prospective checks and planning decisions below preserve the accepted baseline; they are not an outstanding implementation checklist.
 Historical research, probes, baselines and completed implementation evidence remain evidence of what was observed at the time; they do not retain authority where this plan deliberately changes the target contract.
 
 ## Executive summary
@@ -63,21 +66,21 @@ The higher outcome is a dependable migration path: on the selected matched API s
 Equality includes accepted inputs, failure timing, partial effects and resource rejection; equal successful output alone is insufficient.
 The separate `normative-v1` contract makes explicitly adopted differences available without changing the Java profile.
 
-This is a draft revision of the committed plan, not implementation authority or a completed qualification report.
+The repository owner accepted this plan for implementation; public profile qualification remains a separate, incomplete decision.
 The [design conversation][design-chat] supports the two-profile direction.
-Its individual recommendations, this plan's proposed public names, normative defaults and stronger guarantees still require the decision records below before their dependent implementation.
+Implemented public names, defaults, guarantees and accepted host boundaries are recorded in the [current behavior contracts](../compatibility/java-api-parity-decisions.json) and [profile contract](../compatibility/behavior-profiles.md).
 Rewriting this document does not reset any earlier human approval, but an approval must identify the scope and version it actually covered.
 
-The review uses HISEW `hisew-dev 0.1.0-dev.21`, its [planning procedure][hisew-planning] and [engineering principles][hisew-principles].
+The planning review used HISEW `hisew-dev 0.1.0-dev.21`, its [planning procedure][hisew-planning] and [engineering principles][hisew-principles].
 The locally inspected planning skill has SHA-256 `3b3b770b060acdbce7725fea2a660b34cf575f0a80e08244e8fb66e5145a2d35`; the principles document has SHA-256 `777ad41e148d5b4378a7b5960fecfcc3ea1471e046cec5a697fda2b59712f261`.
 The links are navigational references to maintained sources; these version/digest observations identify the instructions used for this review.
-Active personal workflow applicability was checked for this worktree.
-No new workflow execution, implementation, release or retrospective approval is claimed.
+Active personal workflow applicability was checked for this worktree during that planning review.
+These historical instruction identities are unchanged; implementation and delivery evidence is recorded separately.
 
-The proposed implementation risk route is **R2**, because this changes public API contracts, input acceptance, parser and network boundaries, re-entrant state and installed-package behaviour.
-The repository owner accepts the route and design baseline before implementation.
+The accepted implementation risk route is **R2**, because this changes public API contracts, input acceptance, parser and network boundaries, re-entrant state and installed-package behaviour.
+The repository owner accepted the route and design baseline before implementation.
 A concrete critical-system, privileged-host or irreversible-data consequence would trigger a new risk assessment; the presence of XML or HTTP alone does not automatically justify R3.
-This document-only revision does not run the future implementation gates.
+Updating this plan's status does not relabel historical receipts or complete the remaining qualification gates.
 
 ### Review findings and disposition
 
@@ -92,7 +95,7 @@ This document-only revision does not run the future implementation gates.
 | Provenance                  | Placeholder strings had the wrong types; `false` could mean unsigned or unverified; dependency closures were asserted before proof                                    | Use typed draft state, explicit verification outcomes, measured locks and qualification guards                                     |
 | Evidence and migration      | Chat-only citations were unresolved; support and freeze wording preceded evidence                                                                                     | Replace citations with portable references, preserve historical digests, and label target support/freeze states as future gates    |
 
-### Draft requirements and acceptance criteria
+### Requirements and acceptance criteria
 
 All IDs are stable plan identifiers.
 Requirement acceptance belongs to the repository/product owner; measurements belong to the relevant slice's evidence owner.
@@ -134,6 +137,7 @@ Performance observations characterize cost; they do not authorize inventing Java
 ### Decisions and acceptance boundaries
 
 “Carried forward” means retained from the incoming plan, not newly approved by this rewrite.
+The table preserves the decisions and evidence prerequisites recorded at plan acceptance; their implementation dispositions are in the current behavior contracts and release-readiness record linked above.
 No open decision is resolved by choosing whichever implementation is easiest.
 
 | Decision | Proposed or established direction                                                                                               | Status and owner                                                                                                                              | Minimum evidence / stop condition                                                                                                                                         |
@@ -560,9 +564,9 @@ Use American spelling in JavaScript identifiers to match existing `behavior` ide
 A behavioural profile is a contract selection, whereas an OWL language profile such as OWL 2 DL is a language-subset test.
 Never abbreviate both to an unqualified `profile` at a shared boundary.
 
-The public extension names below are proposed for the first profile-aware release.
-Inspection of the current factory and manager found no implemented behaviour-profile selector; there is therefore no demonstrated need for aliases for the incoming draft names.
-Confirm this against the release/export inventory before coding.
+The public extension names below define the naming requirements for the profile-aware implementation.
+At the planning baseline, the factory and manager had no implemented behaviour-profile selector, so no compatibility aliases for the incoming proposed names were required.
+The current profile contract records the implemented selection interface.
 Java-required method names remain exact, even where a different private JS name would be clearer.
 
 | Incoming or ambiguous name                                       | Proposed name / rule                                                                            | Exact meaning and boundary                                                                                                                   |
@@ -1125,11 +1129,11 @@ The release observer and integration owner rehearse this decision path in SLICE-
 Do not mutate `java-owlapi-5.5.1` to a later Java release or quietly harden away an observed Java behaviour.
 Existing normative v1 bugs can be corrected to meet its accepted contract; a genuinely changed requirement follows the normative version table below.
 
-### Remaining gaps and cheapest discriminating work
+### Planning gaps and discriminating work
 
-This rewrite resolves planning/naming defects and source identity references.
-It does not manufacture new release-oracle, dependency, licence, timing or host observations.
-The following are explicit implementation prerequisites, with a bounded next experiment and owner.
+The following table preserves the implementation prerequisites identified during planning, with their discriminating experiments and owners.
+The implementation and release-readiness record links the subsequent oracle, dependency, host, installed-consumer and recovery evidence.
+Current outstanding work is limited to the recorded security coverage, resource reconciliation and release-admission gates; the table is not a list of unresolved implementation gaps.
 
 | Gap                                                              | Cheapest useful evidence / decision                                                                                                                                                          | Owner and dependent work                                                                |
 | ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
@@ -1262,7 +1266,7 @@ The sequence is gate-driven rather than date-estimated: no later stage starts me
 
 ```mermaid
 flowchart TD
-    A["Draft plan and accepted decisions / risk route"] --> B["SLICE-001: released oracle, provenance and decision records"]
+    A["Accepted plan, decisions and risk route"] --> B["SLICE-001: released oracle, provenance and decision records"]
     B --> C["SLICE-002: public selection and native configuration"]
     C --> D["SLICE-003: mutation and copy"]
     D --> E["SLICE-004: root/import lifecycle"]

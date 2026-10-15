@@ -94,9 +94,18 @@
       "OWLObjectProperty",
       "OWLObjectInverseOf"
     ],
-    "dataPropertyExpressionKinds": ["OWLDataProperty"],
-    "individualKinds": ["OWLNamedIndividual", "OWLAnonymousIndividual"],
-    "annotationValueKinds": ["IRI", "OWLAnonymousIndividual", "OWLLiteral"]
+    "dataPropertyExpressionKinds": [
+      "OWLDataProperty"
+    ],
+    "individualKinds": [
+      "OWLNamedIndividual",
+      "OWLAnonymousIndividual"
+    ],
+    "annotationValueKinds": [
+      "IRI",
+      "OWLAnonymousIndividual",
+      "OWLLiteral"
+    ]
   },
   "sharedEvidence": [
     "internal/mapping/owlToRdfTranslator.test.js",
@@ -240,7 +249,9 @@
         },
         {
           "id": "T02-NESTED-ANNOTATION",
-          "constructs": ["recursive owl:Annotation reification"],
+          "constructs": [
+            "recursive owl:Annotation reification"
+          ],
           "status": "COMPLETE",
           "evidence": [
             "internal/mapping/owlToRdfTranslator.annotations.test.js"

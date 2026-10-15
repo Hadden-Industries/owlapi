@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
-import { canonicalJson, stableJson } from "./canonical-json.mjs";
+import { canonicalJson, jsonEquals, stableJson } from "./canonical-json.mjs";
+import { runInNewContext } from "node:vm";
 import {
   sourceFingerprint,
   assertReviewedConsumerSources,
@@ -21,6 +22,14 @@ const reverseMembers = (value) =>
       : value;
 
 describe("semantic JSON identity", () => {
+  test("comparison ignores realms and member order while retaining values and array order", () => {
+    const foreign = runInNewContext("({ b: [{ y: 2, x: 1 }], a: true })");
+    const local = { a: true, b: [{ x: 1, y: 2 }] };
+    expect(jsonEquals(foreign, local)).toBe(true);
+    expect(jsonEquals(foreign, { ...local, a: false })).toBe(false);
+    expect(jsonEquals(["a", "b"], ["b", "a"])).toBe(false);
+    expect(() => jsonEquals({ missing: undefined }, {})).toThrow(TypeError);
+  });
   test("has stable encodings independent of nested member order, including numeric keys", () => {
     const input = { z: [{ b: 2, a: 1 }, null], 2: "two", 10: "ten" };
     expect(canonicalJson(input)).toBe(

@@ -50,6 +50,44 @@ function check(root, extra = []) {
   return { exitCode: child.status, report };
 }
 
+test("installed canonical profile and supplied-format commands retain their distinct effects", () => {
+  const original = readFileSync(join(repository, "README.md"));
+  const profile = spawnSync(
+    process.execPath,
+    [cli, "inspect-profile", "--root", repository, "--json"],
+    { encoding: "utf8", timeout: 15000 },
+  );
+  assert.equal(profile.status, 0, profile.stdout + profile.stderr);
+  assert.equal(
+    JSON.parse(profile.stdout).profileSha256,
+    readExecutionProfile({ root: repository }).profileSha256,
+  );
+  assert.equal(Object.hasOwn(JSON.parse(profile.stdout), "passed"), false);
+  const formatted = spawnSync(
+    process.execPath,
+    [cli, "format", "--stdin-request", "--root", repository, "--json"],
+    {
+      input: JSON.stringify({
+        path: "README.md",
+        requestId: "canonical-consumer-command",
+        contentBase64: original.toString("base64"),
+      }),
+      encoding: "utf8",
+      timeout: 30000,
+      maxBuffer: 8 * 1024 * 1024,
+    },
+  );
+  assert.equal(formatted.status, 0, formatted.stdout + formatted.stderr);
+  const result = JSON.parse(formatted.stdout);
+  validateQualityResult(result, {
+    operation: "format",
+    exitCode: 0,
+    requestId: "canonical-consumer-command",
+  });
+  assert.deepEqual(result.written, []);
+  assert.deepEqual(readFileSync(join(repository, "README.md")), original);
+});
+
 test("root npm commands preserve explicit-file scope without reconciling a full inventory", () => {
   const root = mkdtempSync(join(tmpdir(), "owlapi-markdown-npm-"));
   const initialized = spawnSync("git", ["init", "--quiet", root], {
@@ -72,9 +110,9 @@ test("root npm commands preserve explicit-file scope without reconciling a full 
     "Run the maintained npm run test:markdown entry point with the repository's required npm version",
   );
   for (const [command, operation] of [
-    ["lint:md", "check"],
-    ["format:md", "format"],
-    ["inspect:md", "inspect"],
+    ["check:markdown", "check"],
+    ["format:markdown", "format"],
+    ["inspect:markdown", "inspect"],
   ]) {
     const child = spawnSync(
       process.execPath,

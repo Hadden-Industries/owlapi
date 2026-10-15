@@ -1,4 +1,5 @@
 import { basename } from "node:path";
+import { jsonEquals } from "./canonical-json.mjs";
 import {
   PACKAGE_NAME,
   PACKAGE_VERSION,
@@ -39,7 +40,7 @@ const verifyCandidateBundle = (
   const actualFileNames = [...fileNames]
     .map((fileName) => basename(fileName))
     .sort(compareCodeUnits);
-  if (JSON.stringify(actualFileNames) !== JSON.stringify(expectedFileNames)) {
+  if (!jsonEquals(actualFileNames, expectedFileNames)) {
     throw new Error(
       `Downloaded candidate inventory is not closed: expected=${JSON.stringify(expectedFileNames)} actual=${JSON.stringify(actualFileNames)}.`,
     );

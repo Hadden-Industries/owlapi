@@ -78,11 +78,11 @@ describe("pinned W3C TriG syntax conformance", () => {
       },
       manifests: {
         rdf11:
-          "151cee87899fe6efc049c4ea606c5ea44a7074469e147df8e56df67b69e87ae2",
+          "5638fd7f38fa73201df4eb3d97a12d4eccb50b8806fbbb43489ccaeaa654288f",
         rdf12Eval:
-          "e341c4f3a810602ca7c26a677735740d5409298d7dba22782b03e878ff41a9d5",
+          "ac24d21a3f44b591919743e5eceb15960c0caef7cd00ac560b15be1444dfde1e",
         rdf12Syntax:
-          "dd7edf4f760dc6c30fff3ed874ac1796130a253ebe4abaf37f8ac6b3721f0086",
+          "a980964814fecb2ee4f367afdc6b5a27910a0f112b7d446207a7d7e747a1c29c",
       },
       revision: "12774b0ebb385d17651b396654b19254d0fefbfa",
       schemaVersion: 1,

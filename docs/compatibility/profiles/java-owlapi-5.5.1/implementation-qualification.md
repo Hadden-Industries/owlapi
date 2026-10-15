@@ -1,10 +1,11 @@
 # Implementation and release-readiness evidence
 
-The selected Java-compatible API implementation is complete on the source branch; public profile admission remains **NOT READY**.
+The selected Java-compatible API implementation is complete and merged into `main` through [PR #76](https://github.com/Hadden-Industries/owlapi/pull/76) on 2026-10-14; public profile admission remains **NOT READY**.
 The designated Codex Security scan was interrupted by an automated content check before completing coverage.
 Its partial findings are retained and remediated as described below; neither zero findings nor a completed security scan is claimed.
 The repository owner must resolve that evidence gap before admitting or publishing a qualified profile.
-Source integration through the protected PR is a separate delivery decision and does not publish an npm package.
+The owner explicitly accepted the incomplete security coverage for source integration after the ordinary review findings were resolved.
+That exception authorized the protected PR merge only; public profile admission and npm publication remain held.
 
 ## Scope and authority
 
@@ -28,6 +29,7 @@ This record does not claim all Java OWLAPI members, every W3C feature, browser e
 | Claude, repair delta                                       | Identified repeated document-location imports that skipped reauthorization. The report was substantive; its native full-file control check did not accept the paged read of the large manager file.                                                                        |
 | Claude, document-alias repair                              | Native control trial passed. Confirmed the authorization repair but found two changed lookup priorities. Released Java 5.5.1 reproduced both: a current ontology-IRI match supersedes the retained ID; a mapper precedes a raw document alias on first acquisition.        |
 | Final lookup-order repair                                  | Restores the original current-IRI and mapped-document order. Only an already-requested import reauthorizes its effective retained closure before the native skip. All authorization and precedence regressions pass together.                                              |
+| Review Agent, final lookup-order repair                    | No findings on the repair through `dc2260a61628f81edc0f295bca76b0ebb3cb57f3`; independently ran two focused suites with 25 passing tests. The retained review and repair chain has no unresolved ordinary-code-review findings.                                            |
 | Codex Security scan `45f253ac-f086-4af2-a467-69306dacbad0` | Interrupted before final report; partial coverage. Confirmed cache reauthorization and DNS cancellation defects were repaired. Conditional parent-directory replacement remains outside the explicitly approved file-host contract.                                        |
 | Hosted CodeQL                                              | The reported costly trim expression was replaced by a linear scan. Later pushed implementation snapshots passed the CodeQL gate; final PR checks remain authoritative for their exact commit.                                                                              |
 
@@ -41,7 +43,10 @@ See the [file boundary](file-transport-boundary.md), [transport decision](transp
 The recorded full HISEW source run `02441172-9c5e-4288-a4dd-dd8e4d33999f` passed on `2d751ce2844570b0c8c5cf534a4b76999c25b33a`: lint, formatting, release/workflow governance, four package-boundary tests, and 262 Jest suites with 16,139 passed and 26 skipped tests.
 The subsequent lookup-order repair has independent native red evidence and 36 passing focused tests.
 That earlier full run is not relabelled as a receipt for the later commit.
-The final delivery requires its own applicable HISEW evidence and the protected PR's checks after all writers have finished.
+A subsequent full HISEW source run `2806c4cb-b2b9-4425-8844-8b7505ba44dd` passed on the final implementation commit `dc2260a61628f81edc0f295bca76b0ebb3cb57f3`, including lint, formatting, release/workflow governance, package-boundary tests and Jest.
+All 23 pre-merge checks passed on that commit, including the required CI and CodeQL checks.
+The merge commit `957deb38362b0ab55ed809f9722fcbf44eaec2ae` has the same tree, `086ec7e32c57350087b4092a53533755c5d644ec`, as the reviewed implementation.
+These are completed checks on their recorded candidates; HISEW handoff and public profile admission remain separate from those results.
 
 Installed consumer qualification covers Node 22.23.3, 24.21.0 and 26.11.1, using both the scoped package name and the supported `owlapi` alias.
 Each executes six package fixtures, including import purity, no-network behavior, import closure and explicitly authorized Node transport.
@@ -72,7 +77,7 @@ A source rollback does not rewrite native observations, historical receipts or p
 ## Release hold and retained resources
 
 Public profile admission and npm publication remain held for complete designated security evidence and an accountable release decision.
-The partial scan is not a waiver.
+The source-integration exception does not waive these release gates or make the partial scan complete.
 The implementation and supported host boundaries are reviewable independently of that hold.
 
 PR #76 records the exact external working-directory locator, owner and retention checkpoint.

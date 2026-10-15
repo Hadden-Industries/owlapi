@@ -6,7 +6,8 @@
     "check": "cd ../.. && \"tooling/markdown/node_modules/.bin/markdown-quality\" check",
     "format": "cd ../.. && \"tooling/markdown/node_modules/.bin/markdown-quality\" format",
     "inspect": "cd ../.. && \"tooling/markdown/node_modules/.bin/markdown-quality\" inspect",
-    "qualify": "cd ../.. && \"tooling/markdown/node_modules/.bin/markdown-quality-qualify\""
+    "inspect:profile": "cd ../.. && \"tooling/markdown/node_modules/.bin/markdown-quality\" inspect-profile",
+    "qualify": "cd ../.. && \"tooling/markdown/node_modules/.bin/markdown-quality-qualify\" consumer"
   },
   "overrides": {
     "micromark-extension-math": {

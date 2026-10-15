@@ -75,7 +75,51 @@ const inspect = async (
   }
 };
 
+test.each(["A", "S"])(
+  "native archive inventory rejects ignored metadata type %s",
+  async (type) => {
+    await expect(
+      inspect([
+        ...baseEntries(),
+        { path: "package/ignored.json", body: '{"a":1,"a":2}', type },
+      ]),
+    ).rejects.toThrow(/ignored|Unsupported archive entry type/iu);
+  },
+);
+
 describe("inspectPackageTarball", () => {
+  it("returns selected original members without changing default evidence envelopes", async () => {
+    const entries = [
+      ...baseEntries(),
+      { path: "package/input.json", body: ' { "n": 1 }\r\n' },
+    ];
+    expect(await inspect(entries)).not.toHaveProperty("retainedMembers");
+    const retained = await inspect(entries, {
+      retainMembers: ["package/input.json"],
+    });
+    expect(retained.retainedMembers).toHaveLength(1);
+    expect(retained.retainedMembers[0].bytes.toString("utf8")).toBe(
+      ' { "n": 1 }\r\n',
+    );
+    expect(retained.entries).toEqual((await inspect(entries)).entries);
+    await expect(
+      inspect(entries, { retainMembers: ["package/missing.json"] }),
+    ).rejects.toThrow(/Missing retained/u);
+    await expect(
+      inspect(entries, {
+        retainMembers: ["package/input.json", "package/input.json"],
+      }),
+    ).rejects.toThrow(/Invalid retained/u);
+    await expect(
+      inspect(entries, { retainMembers: ["../input.json"] }),
+    ).rejects.toThrow(/Unsafe/u);
+    await expect(
+      inspect(entries, {
+        retainMembers: ["package/input.json"],
+        limits: { ...ARCHIVE_LIMITS, retainedEvidenceBytes: 1 },
+      }),
+    ).rejects.toThrow(/retained member byte limit/u);
+  });
   it("recursively inventories files and retains legal evidence without extracting it", async () => {
     const result = await inspect([
       ...baseEntries(),

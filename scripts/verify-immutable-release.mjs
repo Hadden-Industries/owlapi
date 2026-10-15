@@ -1,4 +1,5 @@
 import { spawnSync } from "node:child_process";
+import { jsonEquals } from "./canonical-json.mjs";
 import { mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { basename, join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -135,8 +136,7 @@ const main = async () => {
     `${stem}-${version}.tgz`,
   ].sort();
   if (
-    JSON.stringify(release.assets.map(({ name }) => name).sort()) !==
-    JSON.stringify(expectedNames)
+    !jsonEquals(release.assets.map(({ name }) => name).sort(), expectedNames)
   ) {
     throw new Error(
       "The immutable release does not contain exactly four assets.",

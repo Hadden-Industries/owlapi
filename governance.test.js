@@ -3607,9 +3607,9 @@ Neither this NOTICE nor the package licence replaces those upstream terms.
       manifestEntryCounts: { rdf11: 313, rdf12Syntax: 74 },
       manifestSha256: {
         rdf11:
-          "b90a85ee867279b7688033dc18088789580f0bcc2c59600b8c5796889414cf36",
+          "52b5667f7c85743b06ab0bbee3f5d74cf4fd9c117b98cde94ad66bb5c9489b17",
         rdf12Syntax:
-          "cd097ec4c5b312b04897eb9fcf0e7429381967936dfe14194fff9c7027a7203b",
+          "438abd39f13454555b3144ef249ac5898a81d0676028102fd479a6fc4b3ee553",
       },
       negativeSyntaxTestCount: 127,
       positiveSyntaxTestCount: 115,
@@ -3632,9 +3632,9 @@ Neither this NOTICE nor the package licence replaces those upstream terms.
       manifestEntryCounts: { rdf11: 87, rdf12Syntax: 27 },
       manifestSha256: {
         rdf11:
-          "aacaf7a803763a09ae68bba75575346847cb62405c7e4f33c8a0a244ffc11847",
+          "4c658a4e111adff512e89ff2c39acf9195109592f54711ce06823dac544c62ca",
         rdf12Syntax:
-          "53eca8aa5ec0c0662e5b56b90603363e72093425fa9f71fff85e7f3c654b5af3",
+          "90d06079b66e5f2d0df598cf451eeaa7b896c11f8869bec6219a40ac6b504768",
       },
       negativeSyntaxTestCount: 54,
       positiveSyntaxTestCount: 60,
@@ -3662,11 +3662,11 @@ Neither this NOTICE nor the package licence replaces those upstream terms.
       manifestEntryCounts: { rdf11: 357, rdf12Eval: 26, rdf12Syntax: 35 },
       manifestSha256: {
         rdf11:
-          "151cee87899fe6efc049c4ea606c5ea44a7074469e147df8e56df67b69e87ae2",
+          "5638fd7f38fa73201df4eb3d97a12d4eccb50b8806fbbb43489ccaeaa654288f",
         rdf12Eval:
-          "e341c4f3a810602ca7c26a677735740d5409298d7dba22782b03e878ff41a9d5",
+          "ac24d21a3f44b591919743e5eceb15960c0caef7cd00ac560b15be1444dfde1e",
         rdf12Syntax:
-          "dd7edf4f760dc6c30fff3ed874ac1796130a253ebe4abaf37f8ac6b3721f0086",
+          "a980964814fecb2ee4f367afdc6b5a27910a0f112b7d446207a7d7e747a1c29c",
       },
       negativeSyntaxTestCount: 126,
       positiveSyntaxTestCount: 123,

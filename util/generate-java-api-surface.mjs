@@ -1794,7 +1794,7 @@ const main = async () => {
   // checked-in bytes, and ordinary format gate all describe one canonical form.
   const registryText = await formatWithPrettier(JSON.stringify(registry), {
     endOfLine: "lf",
-    parser: "json",
+    parser: "json-stringify",
   });
   const digest = createHash("sha256").update(registryText).digest("hex");
   const apiView = await formatWithPrettier(renderApiView(registry, digest), {

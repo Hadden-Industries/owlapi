@@ -1,5 +1,9 @@
 {
-  "counts": { "evaluation": 126, "negativeSyntax": 40, "required": 166 },
+  "counts": {
+    "evaluation": 126,
+    "negativeSyntax": 40,
+    "required": 166
+  },
   "generatedBy": "util/generate-w3c-rdfxml-fixtures.mjs",
   "manifestSha256": "027679cf7d460cdc401ccf2aab3546dfbdfad64badcdd15f225948f5643f6370",
   "revision": "ad541a5f0479f0798608c4801369d97b8e08b36f",
@@ -13,10 +17,24 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example/q?abc=1&def=2"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#value"],
-          ["L", "xxx", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example/q?abc=1&def=2"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#value"
+          ],
+          [
+            "L",
+            "xxx",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "amp-in-url/test001.nt"
@@ -29,16 +47,44 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/foo"],
-          ["N", "http://example.org/bar"],
-          ["L", "10", "", "", "http://www.w3.org/2001/XMLSchema#integer"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/foo"
+          ],
+          [
+            "N",
+            "http://example.org/bar"
+          ],
+          [
+            "L",
+            "10",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#integer"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.org/foo"],
-          ["N", "http://example.org/baz"],
-          ["L", "10", "", "", "http://www.w3.org/2001/XMLSchema#integer"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/foo"
+          ],
+          [
+            "N",
+            "http://example.org/baz"
+          ],
+          [
+            "L",
+            "10",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#integer"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "datatypes/test001.nt"
@@ -51,10 +97,24 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/foo"],
-          ["N", "http://example.org/bar"],
-          ["L", "flargh", "", "", "http://www.w3.org/2001/XMLSchema#integer"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/foo"
+          ],
+          [
+            "N",
+            "http://example.org/bar"
+          ],
+          [
+            "L",
+            "flargh",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#integer"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "datatypes/test002.nt"
@@ -67,16 +127,41 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b3_a"],
-          ["N", "http://example.org/named"],
-          ["L", "Dürst", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "B",
+            "b3_a"
+          ],
+          [
+            "N",
+            "http://example.org/named"
+          ],
+          [
+            "L",
+            "Dürst",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://www.w3.org/TR/2002/WD-charmod-20020220"],
-          ["N", "http://example.org/Creator"],
-          ["B", "b3_a"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/TR/2002/WD-charmod-20020220"
+          ],
+          [
+            "N",
+            "http://example.org/Creator"
+          ],
+          [
+            "B",
+            "b3_a"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdf-charmod-literals/test001.nt"
@@ -89,10 +174,24 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/#André"],
-          ["N", "http://example.org/#owes"],
-          ["L", "2000", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/#André"
+          ],
+          [
+            "N",
+            "http://example.org/#owes"
+          ],
+          [
+            "L",
+            "2000",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdf-charmod-uris/test001.nt"
@@ -105,10 +204,24 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/#Andr%C3%A9"],
-          ["N", "http://example.org/#owes"],
-          ["L", "2000", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/#Andr%C3%A9"
+          ],
+          [
+            "N",
+            "http://example.org/#owes"
+          ],
+          [
+            "L",
+            "2000",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdf-charmod-uris/test002.nt"
@@ -135,22 +248,61 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b6_bag"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"],
-          ["L", "1", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "B",
+            "b6_bag"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"
+          ],
+          [
+            "L",
+            "1",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b6_bag"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_2"],
-          ["L", "2", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "B",
+            "b6_bag"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_2"
+          ],
+          [
+            "L",
+            "2",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b6_bag"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"],
-          ["D"]
+          [
+            "B",
+            "b6_bag"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdf-containers-syntax-vs-schema/test001.nt"
@@ -163,34 +315,101 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b7_bag"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"],
-          ["L", "_1", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "B",
+            "b7_bag"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"
+          ],
+          [
+            "L",
+            "_1",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b7_bag"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"],
-          ["L", "1", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "B",
+            "b7_bag"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"
+          ],
+          [
+            "L",
+            "1",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b7_bag"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_2"],
-          ["L", "2", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "B",
+            "b7_bag"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_2"
+          ],
+          [
+            "L",
+            "2",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b7_bag"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_3"],
-          ["L", "_3", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "B",
+            "b7_bag"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_3"
+          ],
+          [
+            "L",
+            "_3",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b7_bag"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://foo/Bar"],
-          ["D"]
+          [
+            "B",
+            "b7_bag"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://foo/Bar"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdf-containers-syntax-vs-schema/test002.nt"
@@ -203,22 +422,61 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b8_bar"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"],
-          ["L", "1", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "B",
+            "b8_bar"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"
+          ],
+          [
+            "L",
+            "1",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b8_bar"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_2"],
-          ["L", "2", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "B",
+            "b8_bar"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_2"
+          ],
+          [
+            "L",
+            "2",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b8_bar"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://foo/Bar"],
-          ["D"]
+          [
+            "B",
+            "b8_bar"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://foo/Bar"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdf-containers-syntax-vs-schema/test003.nt"
@@ -231,14 +489,34 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b9_bar"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"],
-          ["L", "1", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "B",
+            "b9_bar"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"
+          ],
+          [
+            "L",
+            "1",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b9_bar"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_2"],
+          [
+            "B",
+            "b9_bar"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_2"
+          ],
           [
             "L",
             "2",
@@ -246,109 +524,236 @@
             "",
             "http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral"
           ],
-          ["D"]
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b9_bar"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_3"],
-          ["B", "b9_res"],
-          ["D"]
+          [
+            "B",
+            "b9_bar"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_3"
+          ],
+          [
+            "B",
+            "b9_res"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b9_bar"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_4"],
-          ["B", "b9_res2"],
-          ["D"]
+          [
+            "B",
+            "b9_bar"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_4"
+          ],
+          [
+            "B",
+            "b9_res2"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b9_bar"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://foo/Bar"],
-          ["D"]
+          [
+            "B",
+            "b9_bar"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://foo/Bar"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b9_res"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://foo/Bar"],
-          ["D"]
+          [
+            "B",
+            "b9_res"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://foo/Bar"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b9_res2"],
-          ["N", "http://foo/bar"],
-          ["L", "foobar", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "B",
+            "b9_res2"
+          ],
+          [
+            "N",
+            "http://foo/bar"
+          ],
+          [
+            "L",
+            "foobar",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-containers-syntax-vs-schema/test004.rdf#e1"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"],
-          ["L", "1", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"
+          ],
+          [
+            "L",
+            "1",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-containers-syntax-vs-schema/test004.rdf#e1"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-containers-syntax-vs-schema/test004.rdf#e1"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"],
-          ["B", "b9_bar"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"
+          ],
+          [
+            "B",
+            "b9_bar"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-containers-syntax-vs-schema/test004.rdf#e1"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-containers-syntax-vs-schema/test004.rdf#e4"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"],
-          ["B", "b9_res2"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"
+          ],
+          [
+            "B",
+            "b9_res2"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-containers-syntax-vs-schema/test004.rdf#e4"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_4"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_4"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-containers-syntax-vs-schema/test004.rdf#e4"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"],
-          ["B", "b9_bar"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"
+          ],
+          [
+            "B",
+            "b9_bar"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-containers-syntax-vs-schema/test004.rdf#e4"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdf-containers-syntax-vs-schema/test004.nt"
@@ -361,73 +766,155 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b10_bag"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"],
-          ["D"]
+          [
+            "B",
+            "b10_bag"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-containers-syntax-vs-schema/test006.rdf#e1"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_3"],
-          ["L", "3", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_3"
+          ],
+          [
+            "L",
+            "3",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-containers-syntax-vs-schema/test006.rdf#e1"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-containers-syntax-vs-schema/test006.rdf#e1"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#value"],
-          ["L", "foobar", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#value"
+          ],
+          [
+            "L",
+            "foobar",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-containers-syntax-vs-schema/test006.rdf#e2"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_2"],
-          ["L", "2", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_2"
+          ],
+          [
+            "L",
+            "2",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-containers-syntax-vs-schema/test006.rdf#e2"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-containers-syntax-vs-schema/test006.rdf#e2"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#value"],
-          ["L", "barfoo", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#value"
+          ],
+          [
+            "L",
+            "barfoo",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-containers-syntax-vs-schema/test006.rdf#e2"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#value"],
-          ["L", "foobar", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#value"
+          ],
+          [
+            "L",
+            "foobar",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdf-containers-syntax-vs-schema/test006.nt"
@@ -440,28 +927,81 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b11_d1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"],
-          ["B", "b11_d2"],
-          ["D"]
+          [
+            "B",
+            "b11_d1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"
+          ],
+          [
+            "B",
+            "b11_d2"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b11_d1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_2"],
-          ["L", "2", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "B",
+            "b11_d1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_2"
+          ],
+          [
+            "L",
+            "2",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b11_d2"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"],
-          ["L", "1", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "B",
+            "b11_d2"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"
+          ],
+          [
+            "L",
+            "1",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b11_d2"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_2"],
-          ["L", "2", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "B",
+            "b11_d2"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_2"
+          ],
+          [
+            "L",
+            "2",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdf-containers-syntax-vs-schema/test007.nt"
@@ -474,16 +1014,44 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://desc"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"],
-          ["L", "1-again", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://desc"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"
+          ],
+          [
+            "L",
+            "1-again",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://desc"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"],
-          ["L", "1", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://desc"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"
+          ],
+          [
+            "L",
+            "1",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdf-containers-syntax-vs-schema/test008.nt"
@@ -496,8 +1064,14 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b13_a"],
-          ["N", "http://example.org/terms#title"],
+          [
+            "B",
+            "b13_a"
+          ],
+          [
+            "N",
+            "http://example.org/terms#title"
+          ],
           [
             "L",
             "Dogs in Hats",
@@ -505,13 +1079,26 @@
             "",
             "http://www.w3.org/2001/XMLSchema#string"
           ],
-          ["D"]
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b13_a"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://example.org/terms#Book"],
-          ["D"]
+          [
+            "B",
+            "b13_a"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://example.org/terms#Book"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdf-element-not-mandatory/test001.nt"
@@ -524,8 +1111,14 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/Book"],
-          ["N", "http://example.org/terms#title"],
+          [
+            "N",
+            "http://example.org/Book"
+          ],
+          [
+            "N",
+            "http://example.org/terms#title"
+          ],
           [
             "L",
             "Dogs in Hats",
@@ -533,13 +1126,26 @@
             "",
             "http://www.w3.org/2001/XMLSchema#string"
           ],
-          ["D"]
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.org/Book"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://example.org/terms#Book"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/Book"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://example.org/terms#Book"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdf-node-element/test001.nt"
@@ -552,10 +1158,24 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/resource1/"],
-          ["N", "http://example.org/property"],
-          ["L", "bar", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/resource1/"
+          ],
+          [
+            "N",
+            "http://example.org/property"
+          ],
+          [
+            "L",
+            "bar",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdf-ns-prefix-confusion/test0001.nt"
@@ -568,10 +1188,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/resource1/"],
-          ["N", "http://example.org/property"],
-          ["N", "http://example.org/resource2/"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/resource1/"
+          ],
+          [
+            "N",
+            "http://example.org/property"
+          ],
+          [
+            "N",
+            "http://example.org/resource2/"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdf-ns-prefix-confusion/test0003.nt"
@@ -588,9 +1219,20 @@
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-ns-prefix-confusion/test0004.rdf#foo"
           ],
-          ["N", "http://example.org/property"],
-          ["L", "bar", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/property"
+          ],
+          [
+            "L",
+            "bar",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdf-ns-prefix-confusion/test0004.nt"
@@ -603,16 +1245,41 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b18_genid"],
-          ["N", "http://example.org/property2"],
-          ["L", "bar", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "B",
+            "b18_genid"
+          ],
+          [
+            "N",
+            "http://example.org/property2"
+          ],
+          [
+            "L",
+            "bar",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.org/resource1/"],
-          ["N", "http://example.org/property"],
-          ["B", "b18_genid"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/resource1/"
+          ],
+          [
+            "N",
+            "http://example.org/property"
+          ],
+          [
+            "B",
+            "b18_genid"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdf-ns-prefix-confusion/test0005.nt"
@@ -625,10 +1292,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/resource/"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://example.org/class/"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/resource/"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://example.org/class/"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdf-ns-prefix-confusion/test0006.nt"
@@ -641,10 +1319,24 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/resource/"],
-          ["N", "http://example.org/property"],
-          ["L", "bar", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/resource/"
+          ],
+          [
+            "N",
+            "http://example.org/property"
+          ],
+          [
+            "L",
+            "bar",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdf-ns-prefix-confusion/test0009.nt"
@@ -657,10 +1349,24 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/resource/"],
-          ["N", "http://example.org/property"],
-          ["L", "bar", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/resource/"
+          ],
+          [
+            "N",
+            "http://example.org/property"
+          ],
+          [
+            "L",
+            "bar",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdf-ns-prefix-confusion/test0010.nt"
@@ -677,18 +1383,37 @@
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-ns-prefix-confusion/test0011.rdf#container"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"],
-          ["L", "bar", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"
+          ],
+          [
+            "L",
+            "bar",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-ns-prefix-confusion/test0011.rdf#container"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdf-ns-prefix-confusion/test0011.nt"
@@ -705,18 +1430,37 @@
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-ns-prefix-confusion/test0012.rdf#container"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"],
-          ["L", "bar", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"
+          ],
+          [
+            "L",
+            "bar",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-ns-prefix-confusion/test0012.rdf#container"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdf-ns-prefix-confusion/test0012.nt"
@@ -733,18 +1477,37 @@
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-ns-prefix-confusion/test0013.rdf#container"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"],
-          ["L", "bar", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"
+          ],
+          [
+            "L",
+            "bar",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-ns-prefix-confusion/test0013.rdf#container"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdf-ns-prefix-confusion/test0013.nt"
@@ -761,18 +1524,37 @@
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-ns-prefix-confusion/test0014.rdf#container"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"],
-          ["L", "bar", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"
+          ],
+          [
+            "L",
+            "bar",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdf-ns-prefix-confusion/test0014.rdf#container"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdf-ns-prefix-confusion/test0014.nt"
@@ -810,9 +1592,20 @@
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-difference-between-ID-and-about/test1.rdf#foo"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#value"],
-          ["L", "abc", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#value"
+          ],
+          [
+            "L",
+            "abc",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-difference-between-ID-and-about/test1.nt"
@@ -829,9 +1622,20 @@
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-difference-between-ID-and-about/test2.rdf#Dürst"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#value"],
-          ["L", "abc", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#value"
+          ],
+          [
+            "L",
+            "abc",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-difference-between-ID-and-about/test2.nt"
@@ -848,9 +1652,20 @@
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-difference-between-ID-and-about/test3.rdf#Dürst"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#value"],
-          ["L", "abc", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#value"
+          ],
+          [
+            "L",
+            "abc",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-difference-between-ID-and-about/test3.nt"
@@ -863,22 +1678,55 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/foo"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"],
-          ["N", "http://example.org/a"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/foo"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"
+          ],
+          [
+            "N",
+            "http://example.org/a"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.org/foo"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"],
-          ["N", "http://example.org/b"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/foo"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"
+          ],
+          [
+            "N",
+            "http://example.org/b"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.org/foo"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/foo"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-duplicate-member-props/test001.nt"
@@ -905,10 +1753,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://random.ioctl.org/#bar"],
-          ["N", "http://random.ioctl.org/#someProperty"],
-          ["N", "http://random.ioctl.org/#foo"],
-          ["D"]
+          [
+            "N",
+            "http://random.ioctl.org/#bar"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#someProperty"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#foo"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-empty-property-elements/test001.nt"
@@ -921,10 +1780,24 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://random.ioctl.org/#bar"],
-          ["N", "http://random.ioctl.org/#someProperty"],
-          ["L", "", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://random.ioctl.org/#bar"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#someProperty"
+          ],
+          [
+            "L",
+            "",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-empty-property-elements/test002.nt"
@@ -937,10 +1810,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://random.ioctl.org/#bar"],
-          ["N", "http://random.ioctl.org/#someProperty"],
-          ["B", "b32_a1"],
-          ["D"]
+          [
+            "N",
+            "http://random.ioctl.org/#bar"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#someProperty"
+          ],
+          [
+            "B",
+            "b32_a1"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-empty-property-elements/test004.nt"
@@ -953,46 +1837,95 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://random.ioctl.org/#bar"],
-          ["N", "http://random.ioctl.org/#someProperty"],
-          ["L", "", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://random.ioctl.org/#bar"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#someProperty"
+          ],
+          [
+            "L",
+            "",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-empty-property-elements/test005.rdf#foo"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"],
-          ["L", "", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"
+          ],
+          [
+            "L",
+            "",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-empty-property-elements/test005.rdf#foo"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"],
-          ["N", "http://random.ioctl.org/#someProperty"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#someProperty"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-empty-property-elements/test005.rdf#foo"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"],
-          ["N", "http://random.ioctl.org/#bar"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#bar"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-empty-property-elements/test005.rdf#foo"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-empty-property-elements/test005.nt"
@@ -1005,46 +1938,89 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://random.ioctl.org/#bar"],
-          ["N", "http://random.ioctl.org/#someProperty"],
-          ["B", "b34_a1"],
-          ["D"]
+          [
+            "N",
+            "http://random.ioctl.org/#bar"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#someProperty"
+          ],
+          [
+            "B",
+            "b34_a1"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-empty-property-elements/test006.rdf#foo"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"],
-          ["B", "b34_a1"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"
+          ],
+          [
+            "B",
+            "b34_a1"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-empty-property-elements/test006.rdf#foo"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"],
-          ["N", "http://random.ioctl.org/#someProperty"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#someProperty"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-empty-property-elements/test006.rdf#foo"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"],
-          ["N", "http://random.ioctl.org/#bar"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#bar"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-empty-property-elements/test006.rdf#foo"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-empty-property-elements/test006.nt"
@@ -1057,10 +2033,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://random.ioctl.org/#bar"],
-          ["N", "http://random.ioctl.org/#someProperty"],
-          ["N", "http://random.ioctl.org/#foo"],
-          ["D"]
+          [
+            "N",
+            "http://random.ioctl.org/#bar"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#someProperty"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#foo"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-empty-property-elements/test007.nt"
@@ -1073,10 +2060,24 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://random.ioctl.org/#bar"],
-          ["N", "http://random.ioctl.org/#someProperty"],
-          ["L", "", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://random.ioctl.org/#bar"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#someProperty"
+          ],
+          [
+            "L",
+            "",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-empty-property-elements/test008.nt"
@@ -1089,10 +2090,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://random.ioctl.org/#bar"],
-          ["N", "http://random.ioctl.org/#someProperty"],
-          ["B", "b37_a1"],
-          ["D"]
+          [
+            "N",
+            "http://random.ioctl.org/#bar"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#someProperty"
+          ],
+          [
+            "B",
+            "b37_a1"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-empty-property-elements/test010.nt"
@@ -1105,46 +2117,95 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://random.ioctl.org/#bar"],
-          ["N", "http://random.ioctl.org/#someProperty"],
-          ["L", "", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://random.ioctl.org/#bar"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#someProperty"
+          ],
+          [
+            "L",
+            "",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-empty-property-elements/test011.rdf#foo"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"],
-          ["L", "", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"
+          ],
+          [
+            "L",
+            "",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-empty-property-elements/test011.rdf#foo"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"],
-          ["N", "http://random.ioctl.org/#someProperty"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#someProperty"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-empty-property-elements/test011.rdf#foo"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"],
-          ["N", "http://random.ioctl.org/#bar"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#bar"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-empty-property-elements/test011.rdf#foo"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-empty-property-elements/test011.nt"
@@ -1157,46 +2218,89 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://random.ioctl.org/#bar"],
-          ["N", "http://random.ioctl.org/#someProperty"],
-          ["B", "b39_a1"],
-          ["D"]
+          [
+            "N",
+            "http://random.ioctl.org/#bar"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#someProperty"
+          ],
+          [
+            "B",
+            "b39_a1"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-empty-property-elements/test012.rdf#foo"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"],
-          ["B", "b39_a1"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"
+          ],
+          [
+            "B",
+            "b39_a1"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-empty-property-elements/test012.rdf#foo"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"],
-          ["N", "http://random.ioctl.org/#someProperty"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#someProperty"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-empty-property-elements/test012.rdf#foo"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"],
-          ["N", "http://random.ioctl.org/#bar"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#bar"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-empty-property-elements/test012.rdf#foo"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-empty-property-elements/test012.nt"
@@ -1209,16 +2313,41 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://random.ioctl.org/#bar"],
-          ["N", "http://random.ioctl.org/#someProperty"],
-          ["N", "http://random.ioctl.org/#foo"],
-          ["D"]
+          [
+            "N",
+            "http://random.ioctl.org/#bar"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#someProperty"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#foo"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://random.ioctl.org/#foo"],
-          ["N", "http://random.ioctl.org/#prop2"],
-          ["L", "baz", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://random.ioctl.org/#foo"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#prop2"
+          ],
+          [
+            "L",
+            "baz",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-empty-property-elements/test013.nt"
@@ -1231,16 +2360,41 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b41_a1"],
-          ["N", "http://random.ioctl.org/#prop2"],
-          ["L", "baz", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "B",
+            "b41_a1"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#prop2"
+          ],
+          [
+            "L",
+            "baz",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://random.ioctl.org/#bar"],
-          ["N", "http://random.ioctl.org/#someProperty"],
-          ["B", "b41_a1"],
-          ["D"]
+          [
+            "N",
+            "http://random.ioctl.org/#bar"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#someProperty"
+          ],
+          [
+            "B",
+            "b41_a1"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-empty-property-elements/test014.nt"
@@ -1253,16 +2407,41 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b42_a1"],
-          ["N", "http://random.ioctl.org/#prop2"],
-          ["L", "baz", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "B",
+            "b42_a1"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#prop2"
+          ],
+          [
+            "L",
+            "baz",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://random.ioctl.org/#bar"],
-          ["N", "http://random.ioctl.org/#someProperty"],
-          ["B", "b42_a1"],
-          ["D"]
+          [
+            "N",
+            "http://random.ioctl.org/#bar"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#someProperty"
+          ],
+          [
+            "B",
+            "b42_a1"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-empty-property-elements/test015.nt"
@@ -1275,10 +2454,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://random.ioctl.org/#bar"],
-          ["N", "http://random.ioctl.org/#someProperty"],
-          ["N", "http://random.ioctl.org/#foo"],
-          ["D"]
+          [
+            "N",
+            "http://random.ioctl.org/#bar"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#someProperty"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#foo"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-empty-property-elements/test016.nt"
@@ -1291,10 +2481,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://random.ioctl.org/#bar"],
-          ["N", "http://random.ioctl.org/#someProperty"],
-          ["N", "http://random.ioctl.org/#foo"],
-          ["D"]
+          [
+            "N",
+            "http://random.ioctl.org/#bar"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#someProperty"
+          ],
+          [
+            "N",
+            "http://random.ioctl.org/#foo"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-empty-property-elements/test017.nt"
@@ -1307,8 +2508,14 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b45_j0"],
-          ["N", "http://example.org/property"],
+          [
+            "B",
+            "b45_j0"
+          ],
+          [
+            "N",
+            "http://example.org/property"
+          ],
           [
             "L",
             "property value",
@@ -1316,7 +2523,9 @@
             "",
             "http://www.w3.org/2001/XMLSchema#string"
           ],
-          ["D"]
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-identity-anon-resources/test001.nt"
@@ -1329,8 +2538,14 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b46_j0"],
-          ["N", "http://example.org/property"],
+          [
+            "B",
+            "b46_j0"
+          ],
+          [
+            "N",
+            "http://example.org/property"
+          ],
           [
             "L",
             "property value",
@@ -1338,13 +2553,26 @@
             "",
             "http://www.w3.org/2001/XMLSchema#string"
           ],
-          ["D"]
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b46_j0"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://example.org/node"],
-          ["D"]
+          [
+            "B",
+            "b46_j0"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://example.org/node"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-identity-anon-resources/test002.nt"
@@ -1357,10 +2585,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b47_j0"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"],
-          ["D"]
+          [
+            "B",
+            "b47_j0"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-identity-anon-resources/test003.nt"
@@ -1373,8 +2612,14 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b48_j0"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"],
+          [
+            "B",
+            "b48_j0"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"
+          ],
           [
             "L",
             "some value",
@@ -1382,13 +2627,26 @@
             "",
             "http://www.w3.org/2001/XMLSchema#string"
           ],
-          ["D"]
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b48_j0"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt"],
-          ["D"]
+          [
+            "B",
+            "b48_j0"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-identity-anon-resources/test004.nt"
@@ -1401,10 +2659,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b49_j0"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"],
-          ["D"]
+          [
+            "B",
+            "b49_j0"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-identity-anon-resources/test005.nt"
@@ -1417,52 +2686,109 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b50_j88090"],
-          ["N", "http://example.org/prop1"],
-          ["B", "b50_j88091"],
-          ["D"]
+          [
+            "B",
+            "b50_j88090"
+          ],
+          [
+            "N",
+            "http://example.org/prop1"
+          ],
+          [
+            "B",
+            "b50_j88091"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b50_j88091"],
-          ["N", "http://example.org/prop2"],
-          ["L", "val", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "B",
+            "b50_j88091"
+          ],
+          [
+            "N",
+            "http://example.org/prop2"
+          ],
+          [
+            "L",
+            "val",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-not-id-and-resource-attr/test001.rdf#reify"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"],
-          ["B", "b50_j88091"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"
+          ],
+          [
+            "B",
+            "b50_j88091"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-not-id-and-resource-attr/test001.rdf#reify"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"],
-          ["N", "http://example.org/prop1"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"
+          ],
+          [
+            "N",
+            "http://example.org/prop1"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-not-id-and-resource-attr/test001.rdf#reify"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"],
-          ["B", "b50_j88090"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"
+          ],
+          [
+            "B",
+            "b50_j88090"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-not-id-and-resource-attr/test001.rdf#reify"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-not-id-and-resource-attr/test001.nt"
@@ -1475,16 +2801,41 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b51_j88093"],
-          ["N", "http://example.org/prop1"],
-          ["N", "http://example.org/object#uriRef"],
-          ["D"]
+          [
+            "B",
+            "b51_j88093"
+          ],
+          [
+            "N",
+            "http://example.org/prop1"
+          ],
+          [
+            "N",
+            "http://example.org/object#uriRef"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.org/object#uriRef"],
-          ["N", "http://example.org/prop2"],
-          ["L", "val", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/object#uriRef"
+          ],
+          [
+            "N",
+            "http://example.org/prop2"
+          ],
+          [
+            "L",
+            "val",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-not-id-and-resource-attr/test002.nt"
@@ -1497,46 +2848,89 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b52_j88101"],
-          ["N", "http://example.org/prop1"],
-          ["N", "http://example.org/object"],
-          ["D"]
+          [
+            "B",
+            "b52_j88101"
+          ],
+          [
+            "N",
+            "http://example.org/prop1"
+          ],
+          [
+            "N",
+            "http://example.org/object"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-not-id-and-resource-attr/test004.rdf#reify"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"],
-          ["N", "http://example.org/object"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"
+          ],
+          [
+            "N",
+            "http://example.org/object"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-not-id-and-resource-attr/test004.rdf#reify"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"],
-          ["N", "http://example.org/prop1"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"
+          ],
+          [
+            "N",
+            "http://example.org/prop1"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-not-id-and-resource-attr/test004.rdf#reify"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"],
-          ["B", "b52_j88101"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"
+          ],
+          [
+            "B",
+            "b52_j88101"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-not-id-and-resource-attr/test004.rdf#reify"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-not-id-and-resource-attr/test004.nt"
@@ -1549,52 +2943,109 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b53_j88106"],
-          ["N", "http://example.org/prop1"],
-          ["N", "http://example.org/object"],
-          ["D"]
+          [
+            "B",
+            "b53_j88106"
+          ],
+          [
+            "N",
+            "http://example.org/prop1"
+          ],
+          [
+            "N",
+            "http://example.org/object"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.org/object"],
-          ["N", "http://example.org/prop2"],
-          ["L", "val", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/object"
+          ],
+          [
+            "N",
+            "http://example.org/prop2"
+          ],
+          [
+            "L",
+            "val",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-not-id-and-resource-attr/test005.rdf#reify"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"],
-          ["N", "http://example.org/object"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"
+          ],
+          [
+            "N",
+            "http://example.org/object"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-not-id-and-resource-attr/test005.rdf#reify"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"],
-          ["N", "http://example.org/prop1"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"
+          ],
+          [
+            "N",
+            "http://example.org/prop1"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-not-id-and-resource-attr/test005.rdf#reify"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"],
-          ["B", "b53_j88106"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"
+          ],
+          [
+            "B",
+            "b53_j88106"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-not-id-and-resource-attr/test005.rdf#reify"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-not-id-and-resource-attr/test005.nt"
@@ -1607,8 +3058,14 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/"],
-          ["N", "http://www.w3.org/TR/REC-rdf-syntax-blah-blahbar"],
+          [
+            "N",
+            "http://example.org/"
+          ],
+          [
+            "N",
+            "http://www.w3.org/TR/REC-rdf-syntax-blah-blahbar"
+          ],
           [
             "L",
             "also permitted",
@@ -1616,11 +3073,19 @@
             "",
             "http://www.w3.org/2001/XMLSchema#string"
           ],
-          ["D"]
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.org/"],
-          ["N", "http://www.w3.org/TR/REC-rdf-syntax#baz"],
+          [
+            "N",
+            "http://example.org/"
+          ],
+          [
+            "N",
+            "http://www.w3.org/TR/REC-rdf-syntax#baz"
+          ],
           [
             "L",
             "this one also permitted",
@@ -1628,13 +3093,29 @@
             "",
             "http://www.w3.org/2001/XMLSchema#string"
           ],
-          ["D"]
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.org/"],
-          ["N", "http://www.w3.org/TR/REC-rdf-syntaxfoo"],
-          ["L", "permitted", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/"
+          ],
+          [
+            "N",
+            "http://www.w3.org/TR/REC-rdf-syntaxfoo"
+          ],
+          [
+            "L",
+            "permitted",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-para196/test001.nt"
@@ -1845,10 +3326,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-002.nt"
@@ -1861,10 +3353,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-003.nt"
@@ -1877,10 +3380,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-004.nt"
@@ -1893,10 +3407,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-005.nt"
@@ -1909,10 +3434,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-006.nt"
@@ -1925,10 +3461,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#List"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#List"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-007.nt"
@@ -1941,10 +3488,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-008.nt"
@@ -1957,10 +3515,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-009.nt"
@@ -1973,10 +3542,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-010.nt"
@@ -1989,10 +3569,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-011.nt"
@@ -2005,10 +3596,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#value"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#value"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-012.nt"
@@ -2021,10 +3623,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#first"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#first"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-013.nt"
@@ -2037,10 +3650,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-014.nt"
@@ -2053,10 +3677,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-015.nt"
@@ -2069,10 +3704,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-016.nt"
@@ -2085,10 +3731,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"],
-          ["N", "http://example.org/node2"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"
+          ],
+          [
+            "N",
+            "http://example.org/node2"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-017.nt"
@@ -2101,10 +3758,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"],
-          ["N", "http://example.org/node2"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"
+          ],
+          [
+            "N",
+            "http://example.org/node2"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-018.nt"
@@ -2117,10 +3785,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt"],
-          ["N", "http://example.org/node2"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt"
+          ],
+          [
+            "N",
+            "http://example.org/node2"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-019.nt"
@@ -2133,10 +3812,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"],
-          ["N", "http://example.org/node2"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+          ],
+          [
+            "N",
+            "http://example.org/node2"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-020.nt"
@@ -2149,10 +3839,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
-          ["N", "http://example.org/node2"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+          ],
+          [
+            "N",
+            "http://example.org/node2"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-021.nt"
@@ -2165,10 +3866,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#List"],
-          ["N", "http://example.org/node2"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#List"
+          ],
+          [
+            "N",
+            "http://example.org/node2"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-022.nt"
@@ -2181,10 +3893,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"],
-          ["N", "http://example.org/node2"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"
+          ],
+          [
+            "N",
+            "http://example.org/node2"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-023.nt"
@@ -2197,10 +3920,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"],
-          ["N", "http://example.org/node2"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"
+          ],
+          [
+            "N",
+            "http://example.org/node2"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-024.nt"
@@ -2213,10 +3947,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"],
-          ["N", "http://example.org/node2"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"
+          ],
+          [
+            "N",
+            "http://example.org/node2"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-025.nt"
@@ -2229,10 +3974,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://example.org/node2"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://example.org/node2"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-026.nt"
@@ -2245,10 +4001,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#value"],
-          ["N", "http://example.org/node2"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#value"
+          ],
+          [
+            "N",
+            "http://example.org/node2"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-027.nt"
@@ -2261,10 +4028,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#first"],
-          ["N", "http://example.org/node2"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#first"
+          ],
+          [
+            "N",
+            "http://example.org/node2"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-028.nt"
@@ -2277,10 +4055,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"],
-          ["N", "http://example.org/node2"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"
+          ],
+          [
+            "N",
+            "http://example.org/node2"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-029.nt"
@@ -2293,10 +4082,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"],
-          ["N", "http://example.org/node2"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"
+          ],
+          [
+            "N",
+            "http://example.org/node2"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-030.nt"
@@ -2309,10 +4109,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"],
-          ["N", "http://example.org/node2"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1"
+          ],
+          [
+            "N",
+            "http://example.org/node2"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-031.nt"
@@ -2325,10 +4136,24 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"],
-          ["L", "string", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"
+          ],
+          [
+            "L",
+            "string",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-032.nt"
@@ -2341,10 +4166,24 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"],
-          ["L", "string", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"
+          ],
+          [
+            "L",
+            "string",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-033.nt"
@@ -2357,10 +4196,24 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt"],
-          ["L", "string", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt"
+          ],
+          [
+            "L",
+            "string",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-034.nt"
@@ -2373,10 +4226,24 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"],
-          ["L", "string", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+          ],
+          [
+            "L",
+            "string",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-035.nt"
@@ -2389,10 +4256,24 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
-          ["L", "string", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+          ],
+          [
+            "L",
+            "string",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-036.nt"
@@ -2405,10 +4286,24 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#List"],
-          ["L", "string", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#List"
+          ],
+          [
+            "L",
+            "string",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/test-037.nt"
@@ -2421,10 +4316,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#foo"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#foo"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/warn-001.nt"
@@ -2437,10 +4343,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#foo"],
-          ["N", "http://example.org/node2"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#foo"
+          ],
+          [
+            "N",
+            "http://example.org/node2"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/warn-002.nt"
@@ -2453,10 +4370,24 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#foo"],
-          ["L", "string", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#foo"
+          ],
+          [
+            "L",
+            "string",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-rdf-names-use/warn-003.nt"
@@ -2469,10 +4400,24 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/"],
-          ["N", "http://example.org#prop"],
-          ["L", "10", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/"
+          ],
+          [
+            "N",
+            "http://example.org#prop"
+          ],
+          [
+            "L",
+            "10",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-reification-required/test001.nt"
@@ -2485,64 +4430,174 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.com/#reify"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"],
-          ["N", "http://example.org/b"],
-          ["D"]
+          [
+            "N",
+            "http://example.com/#reify"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"
+          ],
+          [
+            "N",
+            "http://example.org/b"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.com/#reify"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"],
-          ["N", "http://example.org/prop"],
-          ["D"]
+          [
+            "N",
+            "http://example.com/#reify"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"
+          ],
+          [
+            "N",
+            "http://example.org/prop"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.com/#reify"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"],
-          ["N", "http://example.org/a"],
-          ["D"]
+          [
+            "N",
+            "http://example.com/#reify"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"
+          ],
+          [
+            "N",
+            "http://example.org/a"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.com/#reify"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"],
-          ["D"]
+          [
+            "N",
+            "http://example.com/#reify"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.com/#reify2"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"],
-          ["N", "http://example.org/c"],
-          ["D"]
+          [
+            "N",
+            "http://example.com/#reify2"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"
+          ],
+          [
+            "N",
+            "http://example.org/c"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.com/#reify2"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"],
-          ["N", "http://example.org/prop"],
-          ["D"]
+          [
+            "N",
+            "http://example.com/#reify2"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"
+          ],
+          [
+            "N",
+            "http://example.org/prop"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.com/#reify2"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"],
-          ["N", "http://example.org/b"],
-          ["D"]
+          [
+            "N",
+            "http://example.com/#reify2"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"
+          ],
+          [
+            "N",
+            "http://example.org/b"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.com/#reify2"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"],
-          ["D"]
+          [
+            "N",
+            "http://example.com/#reify2"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.org/a"],
-          ["N", "http://example.org/prop"],
-          ["N", "http://example.org/b"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/a"
+          ],
+          [
+            "N",
+            "http://example.org/prop"
+          ],
+          [
+            "N",
+            "http://example.org/b"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.org/b"],
-          ["N", "http://example.org/prop"],
-          ["N", "http://example.org/c"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/b"
+          ],
+          [
+            "N",
+            "http://example.org/prop"
+          ],
+          [
+            "N",
+            "http://example.org/c"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-reification-required/test002.nt"
@@ -2555,40 +4610,106 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b97_a0"],
-          ["N", "http://example.org/eg#intersectionOf"],
-          ["B", "b97_a1"],
-          ["D"]
+          [
+            "B",
+            "b97_a0"
+          ],
+          [
+            "N",
+            "http://example.org/eg#intersectionOf"
+          ],
+          [
+            "B",
+            "b97_a1"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b97_a1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#first"],
-          ["N", "http://example.org/eg#Person"],
-          ["D"]
+          [
+            "B",
+            "b97_a1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#first"
+          ],
+          [
+            "N",
+            "http://example.org/eg#Person"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b97_a1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"],
-          ["B", "b97_a2"],
-          ["D"]
+          [
+            "B",
+            "b97_a1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"
+          ],
+          [
+            "B",
+            "b97_a2"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b97_a2"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#first"],
-          ["N", "http://example.org/eg#Male"],
-          ["D"]
+          [
+            "B",
+            "b97_a2"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#first"
+          ],
+          [
+            "N",
+            "http://example.org/eg#Male"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b97_a2"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"],
-          ["D"]
+          [
+            "B",
+            "b97_a2"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.org/eg#eric"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["B", "b97_a0"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/eg#eric"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "B",
+            "b97_a0"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-seq-representation/test001.nt"
@@ -2601,64 +4722,174 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b98_a0"],
-          ["N", "http://example.org/eg#intersectionOf"],
-          ["B", "b98_a1"],
-          ["D"]
+          [
+            "B",
+            "b98_a0"
+          ],
+          [
+            "N",
+            "http://example.org/eg#intersectionOf"
+          ],
+          [
+            "B",
+            "b98_a1"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b98_a1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#first"],
-          ["N", "http://example.org/eg#Person"],
-          ["D"]
+          [
+            "B",
+            "b98_a1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#first"
+          ],
+          [
+            "N",
+            "http://example.org/eg#Person"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b98_a1"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"],
-          ["B", "b98_a2"],
-          ["D"]
+          [
+            "B",
+            "b98_a1"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"
+          ],
+          [
+            "B",
+            "b98_a2"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b98_a2"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#first"],
-          ["N", "http://example.org/eg#Male"],
-          ["D"]
+          [
+            "B",
+            "b98_a2"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#first"
+          ],
+          [
+            "N",
+            "http://example.org/eg#Male"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b98_a2"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"],
-          ["D"]
+          [
+            "B",
+            "b98_a2"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.com/#reif"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"],
-          ["B", "b98_a1"],
-          ["D"]
+          [
+            "N",
+            "http://example.com/#reif"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"
+          ],
+          [
+            "B",
+            "b98_a1"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.com/#reif"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"],
-          ["N", "http://example.org/eg#intersectionOf"],
-          ["D"]
+          [
+            "N",
+            "http://example.com/#reif"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"
+          ],
+          [
+            "N",
+            "http://example.org/eg#intersectionOf"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.com/#reif"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"],
-          ["B", "b98_a0"],
-          ["D"]
+          [
+            "N",
+            "http://example.com/#reif"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"
+          ],
+          [
+            "B",
+            "b98_a0"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.com/#reif"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"],
-          ["D"]
+          [
+            "N",
+            "http://example.com/#reif"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.org/eg#eric"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["B", "b98_a0"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/eg#eric"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "B",
+            "b98_a0"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-seq-representation/test002.nt"
@@ -2671,10 +4902,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b99_j0"],
-          ["N", "http://example.org/property"],
-          ["B", "b99_j0"],
-          ["D"]
+          [
+            "B",
+            "b99_j0"
+          ],
+          [
+            "N",
+            "http://example.org/property"
+          ],
+          [
+            "B",
+            "b99_j0"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-syntax-incomplete/test001.nt"
@@ -2687,22 +4929,55 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b100_j0A"],
-          ["N", "http://example.org/property1"],
-          ["B", "b100_j0A"],
-          ["D"]
+          [
+            "B",
+            "b100_j0A"
+          ],
+          [
+            "N",
+            "http://example.org/property1"
+          ],
+          [
+            "B",
+            "b100_j0A"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b100_j1B"],
-          ["N", "http://example.org/property3"],
-          ["B", "b100_j0A"],
-          ["D"]
+          [
+            "B",
+            "b100_j1B"
+          ],
+          [
+            "N",
+            "http://example.org/property3"
+          ],
+          [
+            "B",
+            "b100_j0A"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b100_j2"],
-          ["N", "http://example.org/property2"],
-          ["B", "b100_j1B"],
-          ["D"]
+          [
+            "B",
+            "b100_j2"
+          ],
+          [
+            "N",
+            "http://example.org/property2"
+          ],
+          [
+            "B",
+            "b100_j1B"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-syntax-incomplete/test002.nt"
@@ -2715,10 +4990,24 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b101_j0A"],
-          ["N", "http://example.org/property1"],
-          ["L", "value", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "B",
+            "b101_j0A"
+          ],
+          [
+            "N",
+            "http://example.org/property1"
+          ],
+          [
+            "L",
+            "value",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-syntax-incomplete/test003.nt"
@@ -2731,52 +5020,106 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b102_j0"],
-          ["N", "http://example.org/property1"],
-          ["B", "b102_j1A"],
-          ["D"]
+          [
+            "B",
+            "b102_j0"
+          ],
+          [
+            "N",
+            "http://example.org/property1"
+          ],
+          [
+            "B",
+            "b102_j1A"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["B", "b102_j2"],
-          ["N", "http://example.org/property2"],
-          ["B", "b102_j1A"],
-          ["D"]
+          [
+            "B",
+            "b102_j2"
+          ],
+          [
+            "N",
+            "http://example.org/property2"
+          ],
+          [
+            "B",
+            "b102_j1A"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-syntax-incomplete/test004.rdf#reify"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"],
-          ["B", "b102_j1A"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"
+          ],
+          [
+            "B",
+            "b102_j1A"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-syntax-incomplete/test004.rdf#reify"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"],
-          ["N", "http://example.org/property1"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"
+          ],
+          [
+            "N",
+            "http://example.org/property1"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-syntax-incomplete/test004.rdf#reify"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"],
-          ["B", "b102_j0"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"
+          ],
+          [
+            "B",
+            "b102_j0"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/rdfms-syntax-incomplete/test004.rdf#reify"
           ],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"],
-          ["D"]
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-syntax-incomplete/test004.nt"
@@ -2831,10 +5174,24 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b103_a"],
-          ["N", "http://example.org/property"],
-          ["L", "10", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "B",
+            "b103_a"
+          ],
+          [
+            "N",
+            "http://example.org/property"
+          ],
+          [
+            "L",
+            "10",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-uri-substructure/test001.nt"
@@ -2847,10 +5204,24 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node"],
-          ["N", "http://example.org/property"],
-          ["L", "chat", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node"
+          ],
+          [
+            "N",
+            "http://example.org/property"
+          ],
+          [
+            "L",
+            "chat",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-xmllang/test003.nt"
@@ -2863,8 +5234,14 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node"],
-          ["N", "http://example.org/property"],
+          [
+            "N",
+            "http://example.org/node"
+          ],
+          [
+            "N",
+            "http://example.org/property"
+          ],
           [
             "L",
             "chat",
@@ -2872,7 +5249,9 @@
             "",
             "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
           ],
-          ["D"]
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-xmllang/test004.nt"
@@ -2885,10 +5264,24 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node"],
-          ["N", "http://example.org/property"],
-          ["L", "chat", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/node"
+          ],
+          [
+            "N",
+            "http://example.org/property"
+          ],
+          [
+            "L",
+            "chat",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-xmllang/test005.nt"
@@ -2901,8 +5294,14 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/node"],
-          ["N", "http://example.org/property"],
+          [
+            "N",
+            "http://example.org/node"
+          ],
+          [
+            "N",
+            "http://example.org/property"
+          ],
           [
             "L",
             "chat",
@@ -2910,7 +5309,9 @@
             "",
             "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
           ],
-          ["D"]
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfms-xmllang/test006.nt"
@@ -2923,22 +5324,55 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/bar"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/bar"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.org/bar"],
-          ["N", "http://www.w3.org/2000/01/rdf-schema#domain"],
-          ["N", "http://example.org/Domain1"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/bar"
+          ],
+          [
+            "N",
+            "http://www.w3.org/2000/01/rdf-schema#domain"
+          ],
+          [
+            "N",
+            "http://example.org/Domain1"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.org/bar"],
-          ["N", "http://www.w3.org/2000/01/rdf-schema#domain"],
-          ["N", "http://example.org/Domain2"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/bar"
+          ],
+          [
+            "N",
+            "http://www.w3.org/2000/01/rdf-schema#domain"
+          ],
+          [
+            "N",
+            "http://example.org/Domain2"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfs-domain-and-range/test001.nt"
@@ -2951,22 +5385,55 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/bar"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/bar"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.org/bar"],
-          ["N", "http://www.w3.org/2000/01/rdf-schema#range"],
-          ["N", "http://example.org/Range1"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/bar"
+          ],
+          [
+            "N",
+            "http://www.w3.org/2000/01/rdf-schema#range"
+          ],
+          [
+            "N",
+            "http://example.org/Range1"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.org/bar"],
-          ["N", "http://www.w3.org/2000/01/rdf-schema#range"],
-          ["N", "http://example.org/Range2"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/bar"
+          ],
+          [
+            "N",
+            "http://www.w3.org/2000/01/rdf-schema#range"
+          ],
+          [
+            "N",
+            "http://example.org/Range2"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "rdfs-domain-and-range/test002.nt"
@@ -2979,16 +5446,44 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/thing"],
-          ["N", "http://example.org/schema#prop1"],
-          ["L", "blah", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/thing"
+          ],
+          [
+            "N",
+            "http://example.org/schema#prop1"
+          ],
+          [
+            "L",
+            "blah",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.org/thing"],
-          ["N", "http://example.org/schema#prop2"],
-          ["L", "more", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/thing"
+          ],
+          [
+            "N",
+            "http://example.org/schema#prop2"
+          ],
+          [
+            "L",
+            "more",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "unrecognised-xml-attributes/test001.nt"
@@ -3001,10 +5496,24 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/thing"],
-          ["N", "http://example.org/schema#prop1"],
-          ["L", "stuff", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/thing"
+          ],
+          [
+            "N",
+            "http://example.org/schema#prop1"
+          ],
+          [
+            "L",
+            "stuff",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "unrecognised-xml-attributes/test002.nt"
@@ -3017,8 +5526,14 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://www.example.org/a"],
-          ["N", "http://example.org/prop"],
+          [
+            "N",
+            "http://www.example.org/a"
+          ],
+          [
+            "N",
+            "http://example.org/prop"
+          ],
           [
             "L",
             "<br></br>",
@@ -3026,7 +5541,9 @@
             "",
             "http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral"
           ],
-          ["D"]
+          [
+            "D"
+          ]
         ]
       ],
       "result": "xml-canon/test001.nt"
@@ -3039,8 +5556,14 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.com/#reif"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"],
+          [
+            "N",
+            "http://example.com/#reif"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"
+          ],
           [
             "L",
             "<br></br>",
@@ -3048,29 +5571,70 @@
             "",
             "http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral"
           ],
-          ["D"]
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.com/#reif"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"],
-          ["N", "http://example.org/prop"],
-          ["D"]
+          [
+            "N",
+            "http://example.com/#reif"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"
+          ],
+          [
+            "N",
+            "http://example.org/prop"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.com/#reif"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"],
-          ["N", "http://www.example.org/a"],
-          ["D"]
+          [
+            "N",
+            "http://example.com/#reif"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"
+          ],
+          [
+            "N",
+            "http://www.example.org/a"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.com/#reif"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"],
-          ["D"]
+          [
+            "N",
+            "http://example.com/#reif"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://www.example.org/a"],
-          ["N", "http://example.org/prop"],
+          [
+            "N",
+            "http://www.example.org/a"
+          ],
+          [
+            "N",
+            "http://example.org/prop"
+          ],
           [
             "L",
             "<br></br>",
@@ -3078,7 +5642,9 @@
             "",
             "http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral"
           ],
-          ["D"]
+          [
+            "D"
+          ]
         ]
       ],
       "result": "xml-canon/test002.nt"
@@ -3091,10 +5657,24 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/dir/file#frag"],
-          ["N", "http://example.org/value"],
-          ["L", "v", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/dir/file#frag"
+          ],
+          [
+            "N",
+            "http://example.org/value"
+          ],
+          [
+            "L",
+            "v",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "xmlbase/test001.nt"
@@ -3107,10 +5687,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b115_j0"],
-          ["N", "http://example.org/value"],
-          ["N", "http://example.org/dir/relFile"],
-          ["D"]
+          [
+            "B",
+            "b115_j0"
+          ],
+          [
+            "N",
+            "http://example.org/value"
+          ],
+          [
+            "N",
+            "http://example.org/dir/relFile"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "xmlbase/test002.nt"
@@ -3123,10 +5714,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/dir/relfile"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://example.org/type"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/dir/relfile"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://example.org/type"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "xmlbase/test003.nt"
@@ -3139,34 +5741,95 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["B", "b117_j0"],
-          ["N", "http://example.org/value"],
-          ["L", "v", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "B",
+            "b117_j0"
+          ],
+          [
+            "N",
+            "http://example.org/value"
+          ],
+          [
+            "L",
+            "v",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.org/dir/file#frag"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"],
-          ["L", "v", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/dir/file#frag"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"
+          ],
+          [
+            "L",
+            "v",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.org/dir/file#frag"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"],
-          ["N", "http://example.org/value"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/dir/file#frag"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"
+          ],
+          [
+            "N",
+            "http://example.org/value"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.org/dir/file#frag"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"],
-          ["B", "b117_j0"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/dir/file#frag"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"
+          ],
+          [
+            "B",
+            "b117_j0"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.org/dir/file#frag"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/dir/file#frag"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "xmlbase/test004.nt"
@@ -3179,16 +5842,41 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/dir/relFile"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://example.org/type"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/dir/relFile"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://example.org/type"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.org/file2#frag"],
-          ["N", "http://example.org/value"],
-          ["L", "v", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/file2#frag"
+          ],
+          [
+            "N",
+            "http://example.org/value"
+          ],
+          [
+            "L",
+            "v",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "xmlbase/test006.nt"
@@ -3201,10 +5889,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/relfile"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://example.org/type"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/relfile"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://example.org/type"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "xmlbase/test007.nt"
@@ -3217,10 +5916,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/dir/file"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://example.org/type"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/dir/file"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://example.org/type"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "xmlbase/test008.nt"
@@ -3233,10 +5943,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/absfile"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://example.org/type"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/absfile"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://example.org/type"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "xmlbase/test009.nt"
@@ -3249,10 +5970,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://another.example.org/absfile"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://example.org/type"],
-          ["D"]
+          [
+            "N",
+            "http://another.example.org/absfile"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://example.org/type"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "xmlbase/test010.nt"
@@ -3265,10 +5997,21 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/relfile"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://example.org/type"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/relfile"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://example.org/type"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "xmlbase/test011.nt"
@@ -3281,16 +6024,38 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/dir/file"],
-          ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
-          ["N", "http://example.org/type"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/dir/file"
+          ],
+          [
+            "N",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "N",
+            "http://example.org/type"
+          ],
+          [
+            "D"
+          ]
         ],
         [
-          ["N", "http://example.org/dir/file#foo"],
-          ["N", "http://example.org/value"],
-          ["N", "http://example.org/dir/relpath"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/dir/file#foo"
+          ],
+          [
+            "N",
+            "http://example.org/value"
+          ],
+          [
+            "N",
+            "http://example.org/dir/relpath"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "xmlbase/test013.nt"
@@ -3303,19 +6068,44 @@
       "type": "EVALUATION",
       "expectedQuads": [
         [
-          ["N", "http://example.org/dir/file#frag"],
-          ["N", "http://example.org/value"],
-          ["L", "v", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/dir/file#frag"
+          ],
+          [
+            "N",
+            "http://example.org/value"
+          ],
+          [
+            "L",
+            "v",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ],
         [
           [
             "N",
             "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/xmlbase/test014.rdf#frag"
           ],
-          ["N", "http://example.org/value"],
-          ["L", "v", "", "", "http://www.w3.org/2001/XMLSchema#string"],
-          ["D"]
+          [
+            "N",
+            "http://example.org/value"
+          ],
+          [
+            "L",
+            "v",
+            "",
+            "",
+            "http://www.w3.org/2001/XMLSchema#string"
+          ],
+          [
+            "D"
+          ]
         ]
       ],
       "result": "xmlbase/test014.nt"

@@ -5,13 +5,17 @@
     "version": "5.5.1",
     "revision": "d7e997a53b470e32700de89cc610d9daf01ea769",
     "harness": "util/owlapi-reference/GenerateStructuralSnapshot.java",
-    "ignoredImports": ["urn:owlapi-js:phase4:import"]
+    "ignoredImports": [
+      "urn:owlapi-js:phase4:import"
+    ]
   },
   "fixture": "util/owlapi-reference/fixtures/owlxml/phase4-structural.owx",
   "snapshot": {
     "ontologyIRI": "urn:owlapi-js:phase4",
     "versionIRI": "urn:owlapi-js:phase4:v1",
-    "imports": ["urn:owlapi-js:phase4:import"],
+    "imports": [
+      "urn:owlapi-js:phase4:import"
+    ],
     "ontologyAnnotations": [
       "Annotation(Annotation(rdfs:comment \"nested\"@en)rdfs:label \"Phase 4\"@en)"
     ],
@@ -111,13 +115,19 @@
         "urn:owlapi-js:phase4:q",
         "urn:owlapi-js:phase4:r"
       ],
-      "dataProperties": ["urn:owlapi-js:phase4:d", "urn:owlapi-js:phase4:e"],
+      "dataProperties": [
+        "urn:owlapi-js:phase4:d",
+        "urn:owlapi-js:phase4:e"
+      ],
       "annotationProperties": [
         "http://www.w3.org/2000/01/rdf-schema#comment",
         "http://www.w3.org/2000/01/rdf-schema#label",
         "urn:owlapi-js:phase4:note"
       ],
-      "individuals": ["urn:owlapi-js:phase4:i", "urn:owlapi-js:phase4:j"],
+      "individuals": [
+        "urn:owlapi-js:phase4:i",
+        "urn:owlapi-js:phase4:j"
+      ],
       "datatypes": [
         "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString",
         "http://www.w3.org/2001/XMLSchema#integer",

@@ -1,14 +1,22 @@
 {
   "schemaVersion": 1,
-  "classifications": ["REQUIRED", "NOT_APPLICABLE", "EXCLUDED_WITH_REASON"],
+  "classifications": [
+    "REQUIRED",
+    "NOT_APPLICABLE",
+    "EXCLUDED_WITH_REASON"
+  ],
   "policy": "Every test in an applicable independently owned syntax or mapping scope must receive exactly one classification before its owning phase can complete.",
   "manifests": [
     {
       "id": "w3c-rdf-tests.rdfxml",
       "suite": "w3c-rdf-tests",
       "revision": "ad541a5f0479f0798608c4801369d97b8e08b36f",
-      "paths": ["rdf/rdf11/rdf-xml/manifest.ttl"],
-      "classificationOwnerPhases": [6],
+      "paths": [
+        "rdf/rdf11/rdf-xml/manifest.ttl"
+      ],
+      "classificationOwnerPhases": [
+        6
+      ],
       "entries": [
         {
           "action": "amp-in-url/test001.rdf",
@@ -1201,7 +1209,9 @@
         "rdf/rdf11/rdf-turtle/manifest.ttl",
         "rdf/rdf12/rdf-turtle/syntax/manifest.ttl"
       ],
-      "classificationOwnerPhases": [9],
+      "classificationOwnerPhases": [
+        9
+      ],
       "entries": [
         {
           "action": "IRI_subject.ttl",
@@ -4064,10 +4074,13 @@
         "docs/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-turtle/syntax/manifest.ttl"
       ],
       "manifestEntryCount": 387,
-      "manifestEntryCounts": { "rdf11": 313, "rdf12Syntax": 74 },
+      "manifestEntryCounts": {
+        "rdf11": 313,
+        "rdf12Syntax": 74
+      },
       "manifestSha256": {
-        "rdf11": "b90a85ee867279b7688033dc18088789580f0bcc2c59600b8c5796889414cf36",
-        "rdf12Syntax": "cd097ec4c5b312b04897eb9fcf0e7429381967936dfe14194fff9c7027a7203b"
+        "rdf11": "52b5667f7c85743b06ab0bbee3f5d74cf4fd9c117b98cde94ad66bb5c9489b17",
+        "rdf12Syntax": "438abd39f13454555b3144ef249ac5898a81d0676028102fd479a6fc4b3ee553"
       },
       "negativeSyntaxTestCount": 127,
       "positiveSyntaxTestCount": 115,
@@ -4085,7 +4098,9 @@
         "rdf/rdf11/rdf-n-triples/manifest.ttl",
         "rdf/rdf12/rdf-n-triples/syntax/manifest.ttl"
       ],
-      "classificationOwnerPhases": [12],
+      "classificationOwnerPhases": [
+        12
+      ],
       "entries": [
         {
           "action": "nt-syntax-file-01.nt",
@@ -4786,10 +4801,13 @@
         "docs/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-n-triples/syntax/manifest.ttl"
       ],
       "manifestEntryCount": 99,
-      "manifestEntryCounts": { "rdf11": 70, "rdf12Syntax": 29 },
+      "manifestEntryCounts": {
+        "rdf11": 70,
+        "rdf12Syntax": 29
+      },
       "manifestSha256": {
-        "rdf11": "65b748e9e15783c6e9808dad663ee9e139803ceee2fb9a0704fbe00ddbdafc7b",
-        "rdf12Syntax": "cd80d5bd8ae702cafcd78bc238d31a17aba7913b78eecadb5b55683e22feb3d7"
+        "rdf11": "561ad17572c14d9290a0a1481f58d701bc8996da996b88e1beb1308c5dff55d6",
+        "rdf12Syntax": "bc3250200d58058f4ab7d89681b63fd3d06c8b3393eec165ab3481ee46d7708e"
       },
       "negativeSyntaxTestCount": 51,
       "positiveSyntaxTestCount": 48,
@@ -4807,7 +4825,9 @@
         "rdf/rdf11/rdf-n-quads/manifest.ttl",
         "rdf/rdf12/rdf-n-quads/syntax/manifest.ttl"
       ],
-      "classificationOwnerPhases": [13],
+      "classificationOwnerPhases": [
+        13
+      ],
       "entries": [
         {
           "action": "nq-syntax-uri-01.nq",
@@ -5613,10 +5633,13 @@
         "docs/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-n-quads/syntax/manifest.ttl"
       ],
       "manifestEntryCount": 114,
-      "manifestEntryCounts": { "rdf11": 87, "rdf12Syntax": 27 },
+      "manifestEntryCounts": {
+        "rdf11": 87,
+        "rdf12Syntax": 27
+      },
       "manifestSha256": {
-        "rdf11": "aacaf7a803763a09ae68bba75575346847cb62405c7e4f33c8a0a244ffc11847",
-        "rdf12Syntax": "53eca8aa5ec0c0662e5b56b90603363e72093425fa9f71fff85e7f3c654b5af3"
+        "rdf11": "4c658a4e111adff512e89ff2c39acf9195109592f54711ce06823dac544c62ca",
+        "rdf12Syntax": "90d06079b66e5f2d0df598cf451eeaa7b896c11f8869bec6219a40ac6b504768"
       },
       "negativeSyntaxTestCount": 54,
       "positiveSyntaxTestCount": 60,
@@ -5635,7 +5658,9 @@
         "rdf/rdf12/rdf-trig/syntax/manifest.ttl",
         "rdf/rdf12/rdf-trig/eval/manifest.ttl"
       ],
-      "classificationOwnerPhases": [14],
+      "classificationOwnerPhases": [
+        14
+      ],
       "entries": [
         {
           "action": "anonymous_blank_node_graph.trig",
@@ -8751,9 +8776,9 @@
         "rdf12Eval": 26
       },
       "manifestSha256": {
-        "rdf11": "151cee87899fe6efc049c4ea606c5ea44a7074469e147df8e56df67b69e87ae2",
-        "rdf12Syntax": "dd7edf4f760dc6c30fff3ed874ac1796130a253ebe4abaf37f8ac6b3721f0086",
-        "rdf12Eval": "e341c4f3a810602ca7c26a677735740d5409298d7dba22782b03e878ff41a9d5"
+        "rdf11": "5638fd7f38fa73201df4eb3d97a12d4eccb50b8806fbbb43489ccaeaa654288f",
+        "rdf12Syntax": "a980964814fecb2ee4f367afdc6b5a27910a0f112b7d446207a7d7e747a1c29c",
+        "rdf12Eval": "ac24d21a3f44b591919743e5eceb15960c0caef7cd00ac560b15be1444dfde1e"
       },
       "negativeSyntaxTestCount": 126,
       "positiveSyntaxTestCount": 123,
@@ -8771,27 +8796,42 @@
       "id": "w3c-json-ld-api.to-from-rdf",
       "suite": "w3c-json-ld-api",
       "revision": "ffdb326121ea89b7b8280e76a5caea923834bcef",
-      "paths": ["tests/toRdf-manifest.jsonld", "tests/fromRdf-manifest.jsonld"],
-      "classificationOwnerPhases": [15],
+      "paths": [
+        "tests/toRdf-manifest.jsonld",
+        "tests/fromRdf-manifest.jsonld"
+      ],
+      "classificationOwnerPhases": [
+        15
+      ],
       "entries": []
     },
     {
       "id": "w3c-owl2.rdf-to-owl",
       "suite": "w3c-owl2",
       "revision": "sha256:986ce4f9df655b1f44aec86a5753530d295355a8e9a16700e0253ac30759c4e1",
-      "paths": ["docs/conformance/upstream/w3c-owl2/all.rdf"],
-      "classificationOwnerPhases": [5],
+      "paths": [
+        "docs/conformance/upstream/w3c-owl2/all.rdf"
+      ],
+      "classificationOwnerPhases": [
+        5
+      ],
       "runnerScope": "Classify and execute every applicable RDF premise, conclusion, and non-conclusion document at the RDF-to-OWL mapping seam, requiring its governed successful-reconstruction or strict-completeness-rejection disposition; semantic entailment/profile outcomes remain outside this phase.",
       "entries": [
         {
           "classification": "REQUIRED",
           "id": "bnode2somevaluesfrom",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "chain2trans1",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "NOT_APPLICABLE",
@@ -8821,12 +8861,16 @@
         {
           "classification": "REQUIRED",
           "id": "Datatype-DataComplementOf-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "Datatype-Float-Discrete-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "NOT_APPLICABLE",
@@ -8841,17 +8885,25 @@
         {
           "classification": "REQUIRED",
           "id": "DisjointClasses-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "DisjointClasses-002",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "DisjointClasses-003",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "NOT_APPLICABLE",
@@ -8886,52 +8938,78 @@
         {
           "classification": "REQUIRED",
           "id": "New-Feature-AsymmetricProperty-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "New-Feature-DisjointDataProperties-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "New-Feature-DisjointDataProperties-002",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "New-Feature-DisjointObjectProperties-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "New-Feature-DisjointObjectProperties-002",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "New-Feature-DisjointUnion-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "New-Feature-IrreflexiveProperty-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "New-Feature-Keys-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "New-Feature-Keys-002",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "New-Feature-Keys-003",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
@@ -8944,12 +9022,16 @@
         {
           "classification": "REQUIRED",
           "id": "New-Feature-Keys-005",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "New-Feature-Keys-006",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
@@ -8962,22 +9044,32 @@
         {
           "classification": "REQUIRED",
           "id": "New-Feature-NegativeDataPropertyAssertion-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "New-Feature-NegativeObjectPropertyAssertion-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "New-Feature-ObjectPropertyChain-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "New-Feature-ObjectPropertyChain-BJP-003",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
@@ -8990,112 +9082,163 @@
         {
           "classification": "REQUIRED",
           "id": "New-Feature-ObjectQCR-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "New-Feature-ObjectQCR-002",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "New-Feature-Rational-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "New-Feature-Rational-002",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "New-Feature-Rational-003",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "New-Feature-ReflexiveProperty-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "New-Feature-SelfRestriction-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "New-Feature-SelfRestriction-002",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "one=two",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "owl2-rl-anonymous-individual",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "owl2-rl-invalid-leftside-allvaluesfrom",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "owl2-rl-invalid-leftside-maxcard",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "owl2-rl-invalid-oneof",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "owl2-rl-invalid-owlreal",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "owl2-rl-invalid-rightside-somevaluesfrom",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "owl2-rl-invalid-rightside-unionof",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "owl2-rl-invalid-unionof",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "owl2-rl-rules-fp-differentFrom",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "owl2-rl-rules-ifp-differentFrom",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "owl2-rl-valid-mincard",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "owl2-rl-valid-oneof",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "owl2-rl-valid-rightside-allvaluesfrom",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "NOT_APPLICABLE",
@@ -9550,27 +9693,39 @@
         {
           "classification": "REQUIRED",
           "id": "WebOnt-AnnotationProperty-002",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-AnnotationProperty-003",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-AnnotationProperty-004",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I4.5-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I4.5-002",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
@@ -9583,117 +9738,174 @@
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I4.6-005-Direct",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I5.2-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I5.2-002",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I5.2-003",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I5.2-004",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I5.2-005",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I5.2-006",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I5.21-002",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I5.24-003",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I5.24-004",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I5.26-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I5.26-002",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I5.26-003",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I5.26-004",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I5.26-005",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I5.26-009",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I5.26-010",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I5.3-006",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I5.3-008",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I5.3-010",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I5.3-011",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I5.5-005",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I5.8-006",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
@@ -9706,22 +9918,34 @@
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I5.8-008",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I5.8-009",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I5.8-010",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-I5.8-011",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "NOT_APPLICABLE",
@@ -9731,37 +9955,53 @@
         {
           "classification": "REQUIRED",
           "id": "WebOnt-Nothing-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-Ontology-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-Restriction-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-Restriction-002",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-Restriction-003",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-Restriction-004",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-SymmetricProperty-002",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "NOT_APPLICABLE",
@@ -9771,22 +10011,32 @@
         {
           "classification": "REQUIRED",
           "id": "WebOnt-Thing-003",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-Thing-004",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-TransitiveProperty-002",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-allValuesFrom-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
@@ -9799,282 +10049,402 @@
         {
           "classification": "REQUIRED",
           "id": "WebOnt-backwardCompatibleWith-002",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-cardinality-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-cardinality-002",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-cardinality-003",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-cardinality-004",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-002",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-003",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-004",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-005",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-006",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-007",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-008",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-009",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-010",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-011",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-012",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-013",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-014",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-015",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-016",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-017",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-018",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-019",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-020",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-021",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-022",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-023",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-024",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-025",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-026",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-027",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-028",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-029",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-030",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-031",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-032",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-033",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-034",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-035",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-040",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-101",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-102",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-103",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-104",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-105",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-106",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-107",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-108",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-109",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-110",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-111",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-201",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-205",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-207",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-208",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
@@ -10087,212 +10457,300 @@
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-501",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-502",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-503",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-504",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-601",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-602",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-603",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-604",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-605",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-606",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-608",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-609",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-610",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-611",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-612",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-613",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-614",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-615",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-616",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-617",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-623",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-624",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-625",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-626",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-627",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-628",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-629",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-630",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-631",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-632",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-633",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-634",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-641",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-642",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-643",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-644",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-646",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-650",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-661",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-665",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-667",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-901",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
@@ -10305,77 +10763,113 @@
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-905",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-description-logic-908",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-differentFrom-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-disjointWith-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-disjointWith-003",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-disjointWith-004",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-disjointWith-005",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-disjointWith-006",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-disjointWith-007",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-disjointWith-008",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-disjointWith-009",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-equivalentClass-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-equivalentClass-002",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-equivalentClass-003",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-equivalentClass-004",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
@@ -10388,117 +10882,175 @@
         {
           "classification": "REQUIRED",
           "id": "WebOnt-equivalentClass-006",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-equivalentClass-008-Direct",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-equivalentClass-009",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-equivalentProperty-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-equivalentProperty-002",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-equivalentProperty-003",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-equivalentProperty-004",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-imports-011",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-maxCardinality-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-miscellaneous-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-miscellaneous-002",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-miscellaneous-102",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-miscellaneous-103",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-miscellaneous-202",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-miscellaneous-203",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-miscellaneous-204",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-miscellaneous-302-Direct",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-miscellaneous-303",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-oneOf-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-oneOf-004",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-sameAs-001",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-unionOf-003",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         },
         {
           "classification": "REQUIRED",
           "id": "WebOnt-unionOf-004",
-          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlConclusionOntology"
+          ]
         }
       ],
       "notApplicableReasonCategories": {
@@ -10516,7 +11068,11 @@
       "expectedStrictCompletenessRejections": [
         {
           "errorCode": "UNSUPPORTED_CONSTRUCT",
-          "governingRules": ["Table 9", "Table 16", "final graph emptiness"],
+          "governingRules": [
+            "Table 9",
+            "Table 16",
+            "final graph emptiness"
+          ],
           "governingSpecification": "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
           "predicate": "http://example.org/hasAunt",
           "rdfDocument": "rdfXmlConclusionOntology",
@@ -10525,7 +11081,11 @@
         },
         {
           "errorCode": "UNSUPPORTED_CONSTRUCT",
-          "governingRules": ["Table 9", "Table 16", "final graph emptiness"],
+          "governingRules": [
+            "Table 9",
+            "Table 16",
+            "final graph emptiness"
+          ],
           "governingSpecification": "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
           "predicate": "http://example.org/p",
           "rdfDocument": "rdfXmlConclusionOntology",
@@ -10540,7 +11100,10 @@
           "javaOwlapi551Behavior": "Accepts the unstructured IRI as a terminal and reconstructs both list literals.",
           "rdfDocument": "rdfXmlPremiseOntology",
           "strictOutcome": "OWL_SYNTAX_ERROR",
-          "testIds": ["New-Feature-Rational-002", "New-Feature-Rational-003"]
+          "testIds": [
+            "New-Feature-Rational-002",
+            "New-Feature-Rational-003"
+          ]
         }
       ],
       "runnerParsingPolicy": "Strict reconstruction succeeds for 308 documents; two declared malformed-list source documents reconstruct with the narrow Java-compatible non-rdf:nil terminal recovery and assert its warning; two isolated entailment-conclusion documents require the exact governed strict-completeness rejection because their undeclared assertion predicates cannot satisfy OWL 2 reverse-mapping Tables 9 and 16 or the final graph-emptiness condition."
@@ -10549,8 +11112,12 @@
       "id": "w3c-owl2.functional",
       "suite": "w3c-owl2",
       "revision": "sha256:986ce4f9df655b1f44aec86a5753530d295355a8e9a16700e0253ac30759c4e1",
-      "paths": ["docs/conformance/upstream/w3c-owl2/all.rdf"],
-      "classificationOwnerPhases": [2],
+      "paths": [
+        "docs/conformance/upstream/w3c-owl2/all.rdf"
+      ],
+      "classificationOwnerPhases": [
+        2
+      ],
       "sourceTestCount": 338,
       "requiredTestCount": 46,
       "requiredDocumentCount": 62,
@@ -10575,142 +11142,206 @@
         {
           "id": "Consistent Datatype restrictions with Different Types",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "consistent-dataproperty-disjointness",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "consistent-integer-filler",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "Contradicting datatype Restrictions",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "Contradicting-dateTime-restrictions",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "Datatype-DataComplementOf-001",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "Datatype-Float-Discrete-001",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "datatype-restriction-min-max-inconsistency",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "Different types in Datatype Restrictions and Complement",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "DisjointClasses-001",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology",
+            "fsConclusionOntology"
+          ]
         },
         {
           "id": "DisjointClasses-002",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "DisjointClasses-003",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology",
+            "fsConclusionOntology"
+          ]
         },
         {
           "id": "functionality-clash",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "Inconsistent Byte Filler",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "Inconsistent Data Complement with the Restrictions",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "inconsistent-integer-filler",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "inconsistent_datatypes",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "Minus Infinity is not in owl:real",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "New-Feature-AsymmetricProperty-001",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "New-Feature-DisjointDataProperties-001",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "New-Feature-DisjointDataProperties-002",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology",
+            "fsConclusionOntology"
+          ]
         },
         {
           "id": "New-Feature-DisjointObjectProperties-001",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology",
+            "fsConclusionOntology"
+          ]
         },
         {
           "id": "New-Feature-DisjointObjectProperties-002",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology",
+            "fsConclusionOntology"
+          ]
         },
         {
           "id": "New-Feature-DisjointUnion-001",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology",
+            "fsConclusionOntology"
+          ]
         },
         {
           "id": "New-Feature-IrreflexiveProperty-001",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "New-Feature-Keys-001",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology",
+            "fsConclusionOntology"
+          ]
         },
         {
           "id": "New-Feature-Keys-002",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "New-Feature-Keys-003",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology",
+            "fsConclusionOntology"
+          ]
         },
         {
           "id": "New-Feature-Keys-004",
@@ -10723,12 +11354,16 @@
         {
           "id": "New-Feature-Keys-005",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "New-Feature-Keys-006",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "New-Feature-Keys-007",
@@ -10741,17 +11376,24 @@
         {
           "id": "New-Feature-NegativeDataPropertyAssertion-001",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "New-Feature-NegativeObjectPropertyAssertion-001",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "New-Feature-ObjectPropertyChain-001",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology",
+            "fsConclusionOntology"
+          ]
         },
         {
           "id": "New-Feature-ObjectPropertyChain-BJP-003",
@@ -10766,42 +11408,63 @@
         {
           "id": "New-Feature-ObjectQCR-001",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology",
+            "fsConclusionOntology"
+          ]
         },
         {
           "id": "New-Feature-ObjectQCR-002",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology",
+            "fsConclusionOntology"
+          ]
         },
         {
           "id": "New-Feature-Rational-001",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "New-Feature-Rational-002",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "New-Feature-Rational-003",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "New-Feature-ReflexiveProperty-001",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology",
+            "fsConclusionOntology"
+          ]
         },
         {
           "id": "New-Feature-SelfRestriction-001",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology",
+            "fsConclusionOntology"
+          ]
         },
         {
           "id": "New-Feature-SelfRestriction-002",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology",
+            "fsConclusionOntology"
+          ]
         },
         {
           "id": "one=two",
@@ -10876,12 +11539,16 @@
         {
           "id": "Plus and Minus Zero Integer",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "Plus and Minus Zero are Distinct",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "rdfbased-sem-bool-complement-inst",
@@ -11321,7 +11988,9 @@
         {
           "id": "string-integer-clash",
           "classification": "REQUIRED",
-          "functionalDocuments": ["fsPremiseOntology"]
+          "functionalDocuments": [
+            "fsPremiseOntology"
+          ]
         },
         {
           "id": "WebOnt-AnnotationProperty-002",
@@ -12261,7 +12930,9 @@
       ]
     },
     {
-      "classificationOwnerPhases": [15],
+      "classificationOwnerPhases": [
+        15
+      ],
       "entries": [
         {
           "action": "toRdf/0001-in.jsonld",
@@ -12549,7 +13220,9 @@
           "exclusionReason": "This test requires generalized RDF with blank-node predicates. Ordinary RDF/JS and the OWL 2 RDF mapping require property predicates to be IRIs, so generalized RDF cannot enter the RDF-to-OWL ingestion boundary.",
           "reasonCategory": "JSONLD_GENERALIZED_RDF_OUTSIDE_OWL_INGESTION",
           "id": "0118",
-          "parameters": { "processingMode": "json-ld-1.0" },
+          "parameters": {
+            "processingMode": "json-ld-1.0"
+          },
           "testType": "POSITIVE_EVALUATION",
           "result": "toRdf/0118-out.nq"
         },
@@ -12858,7 +13531,9 @@
           "action": "toRdf/c029-in.jsonld",
           "classification": "REQUIRED",
           "id": "c029",
-          "parameters": { "processingMode": "json-ld-1.0" },
+          "parameters": {
+            "processingMode": "json-ld-1.0"
+          },
           "testType": "NEGATIVE_EVALUATION"
         },
         {
@@ -12984,7 +13659,9 @@
           "action": "toRdf/di09-in.jsonld",
           "classification": "REQUIRED",
           "id": "di09",
-          "parameters": { "rdfDirection": "i18n-datatype" },
+          "parameters": {
+            "rdfDirection": "i18n-datatype"
+          },
           "testType": "POSITIVE_EVALUATION",
           "result": "toRdf/di09-out.nq"
         },
@@ -12992,7 +13669,9 @@
           "action": "toRdf/di10-in.jsonld",
           "classification": "REQUIRED",
           "id": "di10",
-          "parameters": { "rdfDirection": "i18n-datatype" },
+          "parameters": {
+            "rdfDirection": "i18n-datatype"
+          },
           "testType": "POSITIVE_EVALUATION",
           "result": "toRdf/di10-out.nq"
         },
@@ -13000,7 +13679,9 @@
           "action": "toRdf/di11-in.jsonld",
           "classification": "REQUIRED",
           "id": "di11",
-          "parameters": { "rdfDirection": "compound-literal" },
+          "parameters": {
+            "rdfDirection": "compound-literal"
+          },
           "testType": "POSITIVE_EVALUATION",
           "result": "toRdf/di11-out.nq"
         },
@@ -13008,7 +13689,9 @@
           "action": "toRdf/di12-in.jsonld",
           "classification": "REQUIRED",
           "id": "di12",
-          "parameters": { "rdfDirection": "compound-literal" },
+          "parameters": {
+            "rdfDirection": "compound-literal"
+          },
           "testType": "POSITIVE_EVALUATION",
           "result": "toRdf/di12-out.nq"
         },
@@ -13107,7 +13790,9 @@
           "action": "toRdf/e014-in.jsonld",
           "classification": "REQUIRED",
           "id": "e014",
-          "parameters": { "processingMode": "json-ld-1.0" },
+          "parameters": {
+            "processingMode": "json-ld-1.0"
+          },
           "testType": "POSITIVE_EVALUATION",
           "result": "toRdf/e014-out.nq"
         },
@@ -13192,7 +13877,9 @@
           "action": "toRdf/e026-in.jsonld",
           "classification": "REQUIRED",
           "id": "e026",
-          "parameters": { "processingMode": "json-ld-1.0" },
+          "parameters": {
+            "processingMode": "json-ld-1.0"
+          },
           "testType": "POSITIVE_EVALUATION",
           "result": "toRdf/e026-out.nq"
         },
@@ -13277,7 +13964,9 @@
           "action": "toRdf/e038-in.jsonld",
           "classification": "REQUIRED",
           "id": "e038",
-          "parameters": { "processingMode": "json-ld-1.0" },
+          "parameters": {
+            "processingMode": "json-ld-1.0"
+          },
           "testType": "POSITIVE_EVALUATION",
           "result": "toRdf/e038-out.nq"
         },
@@ -13509,7 +14198,9 @@
           "action": "toRdf/e071-in.jsonld",
           "classification": "REQUIRED",
           "id": "e071",
-          "parameters": { "processingMode": "json-ld-1.0" },
+          "parameters": {
+            "processingMode": "json-ld-1.0"
+          },
           "testType": "POSITIVE_EVALUATION",
           "result": "toRdf/e071-out.nq"
         },
@@ -13540,7 +14231,9 @@
           "exclusionReason": "This test requires generalized RDF with blank-node predicates. Ordinary RDF/JS and the OWL 2 RDF mapping require property predicates to be IRIs, so generalized RDF cannot enter the RDF-to-OWL ingestion boundary.",
           "reasonCategory": "JSONLD_GENERALIZED_RDF_OUTSIDE_OWL_INGESTION",
           "id": "e075",
-          "parameters": { "processingMode": "json-ld-1.0" },
+          "parameters": {
+            "processingMode": "json-ld-1.0"
+          },
           "testType": "POSITIVE_EVALUATION",
           "result": "toRdf/e075-out.nq"
         },
@@ -13824,14 +14517,18 @@
           "action": "toRdf/e115-in.jsonld",
           "classification": "REQUIRED",
           "id": "e115",
-          "parameters": { "processingMode": "json-ld-1.0" },
+          "parameters": {
+            "processingMode": "json-ld-1.0"
+          },
           "testType": "NEGATIVE_EVALUATION"
         },
         {
           "action": "toRdf/e116-in.jsonld",
           "classification": "REQUIRED",
           "id": "e116",
-          "parameters": { "processingMode": "json-ld-1.0" },
+          "parameters": {
+            "processingMode": "json-ld-1.0"
+          },
           "testType": "NEGATIVE_EVALUATION"
         },
         {
@@ -13989,7 +14686,9 @@
           "action": "toRdf/ep02-in.jsonld",
           "classification": "REQUIRED",
           "id": "ep02",
-          "parameters": { "processingMode": "json-ld-1.0" },
+          "parameters": {
+            "processingMode": "json-ld-1.0"
+          },
           "testType": "NEGATIVE_EVALUATION"
         },
         {
@@ -14008,14 +14707,18 @@
           "action": "toRdf/er02-in.jsonld",
           "classification": "REQUIRED",
           "id": "er02",
-          "parameters": { "processingMode": "json-ld-1.0" },
+          "parameters": {
+            "processingMode": "json-ld-1.0"
+          },
           "testType": "NEGATIVE_EVALUATION"
         },
         {
           "action": "toRdf/er03-in.jsonld",
           "classification": "REQUIRED",
           "id": "er03",
-          "parameters": { "processingMode": "json-ld-1.0" },
+          "parameters": {
+            "processingMode": "json-ld-1.0"
+          },
           "testType": "NEGATIVE_EVALUATION"
         },
         {
@@ -14118,7 +14821,9 @@
           "action": "toRdf/er21-in.jsonld",
           "classification": "REQUIRED",
           "id": "er21",
-          "parameters": { "processingMode": "json-ld-1.0" },
+          "parameters": {
+            "processingMode": "json-ld-1.0"
+          },
           "testType": "NEGATIVE_EVALUATION"
         },
         {
@@ -14137,7 +14842,9 @@
           "action": "toRdf/er24-in.jsonld",
           "classification": "REQUIRED",
           "id": "er24",
-          "parameters": { "processingMode": "json-ld-1.0" },
+          "parameters": {
+            "processingMode": "json-ld-1.0"
+          },
           "testType": "NEGATIVE_EVALUATION"
         },
         {
@@ -14186,7 +14893,9 @@
           "action": "toRdf/er32-in.jsonld",
           "classification": "REQUIRED",
           "id": "er32",
-          "parameters": { "processingMode": "json-ld-1.0" },
+          "parameters": {
+            "processingMode": "json-ld-1.0"
+          },
           "testType": "NEGATIVE_EVALUATION"
         },
         {
@@ -14247,7 +14956,9 @@
           "action": "toRdf/er42-in.jsonld",
           "classification": "REQUIRED",
           "id": "er42",
-          "parameters": { "processingMode": "json-ld-1.0" },
+          "parameters": {
+            "processingMode": "json-ld-1.0"
+          },
           "testType": "NEGATIVE_EVALUATION"
         },
         {
@@ -14960,7 +15671,9 @@
           "action": "toRdf/pi01-in.jsonld",
           "classification": "REQUIRED",
           "id": "pi01",
-          "parameters": { "processingMode": "json-ld-1.0" },
+          "parameters": {
+            "processingMode": "json-ld-1.0"
+          },
           "testType": "NEGATIVE_EVALUATION"
         },
         {
@@ -15316,7 +16029,9 @@
           "action": "toRdf/so01-in.jsonld",
           "classification": "REQUIRED",
           "id": "so01",
-          "parameters": { "processingMode": "json-ld-1.0" },
+          "parameters": {
+            "processingMode": "json-ld-1.0"
+          },
           "testType": "NEGATIVE_EVALUATION"
         },
         {
@@ -15394,7 +16109,9 @@
           "action": "toRdf/tn01-in.jsonld",
           "classification": "REQUIRED",
           "id": "tn01",
-          "parameters": { "processingMode": "json-ld-1.0" },
+          "parameters": {
+            "processingMode": "json-ld-1.0"
+          },
           "testType": "NEGATIVE_EVALUATION"
         },
         {
@@ -15448,12 +16165,16 @@
         }
       ],
       "id": "w3c-json-ld-api.to-rdf",
-      "paths": ["tests/toRdf-manifest.jsonld"],
+      "paths": [
+        "tests/toRdf-manifest.jsonld"
+      ],
       "revision": "ffdb326121ea89b7b8280e76a5caea923834bcef",
       "suite": "w3c-json-ld-api"
     },
     {
-      "classificationOwnerPhases": [15],
+      "classificationOwnerPhases": [
+        15
+      ],
       "entries": [
         {
           "action": "fromRdf/0001-in.nq",
@@ -15941,7 +16662,9 @@
         }
       ],
       "id": "w3c-json-ld-api.from-rdf",
-      "paths": ["tests/fromRdf-manifest.jsonld"],
+      "paths": [
+        "tests/fromRdf-manifest.jsonld"
+      ],
       "revision": "ffdb326121ea89b7b8280e76a5caea923834bcef",
       "suite": "w3c-json-ld-api"
     }

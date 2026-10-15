@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { jsonEquals } from "../../scripts/canonical-json.mjs";
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -110,8 +111,7 @@ export function compareBehaviorObservations(central, rebuilt) {
     if (
       observation.probeId !== counterpart.probeId ||
       observation.sourceSha256 !== counterpart.sourceSha256 ||
-      JSON.stringify(observation.arguments) !==
-        JSON.stringify(counterpart.arguments) ||
+      !jsonEquals(observation.arguments, counterpart.arguments) ||
       observation.exitCode !== 0 ||
       counterpart.exitCode !== 0
     )

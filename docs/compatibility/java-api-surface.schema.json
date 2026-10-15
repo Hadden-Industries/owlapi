@@ -33,7 +33,12 @@
     "javaReference": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["version", "revision", "source", "inventoryRule"],
+      "required": [
+        "version",
+        "revision",
+        "source",
+        "inventoryRule"
+      ],
       "properties": {
         "version": {
           "const": "5.5.1"
@@ -159,7 +164,12 @@
       ]
     },
     "publicReleaseVersion": {
-      "enum": ["0.1.0-alpha.0", "0.1.0-rc.1", "0.1.0", "0.1.0-rc.2"]
+      "enum": [
+        "0.1.0-alpha.0",
+        "0.1.0-rc.1",
+        "0.1.0",
+        "0.1.0-rc.2"
+      ]
     },
     "stringArray": {
       "type": "array",
@@ -242,7 +252,11 @@
           "$ref": "#/$defs/nonEmptyString"
         },
         "kind": {
-          "enum": ["CLASS", "FUNCTION", "CONSTANT"]
+          "enum": [
+            "CLASS",
+            "FUNCTION",
+            "CONSTANT"
+          ]
         },
         "summary": {
           "$ref": "#/$defs/nonEmptyString"
@@ -259,7 +273,11 @@
           ]
         },
         "progress": {
-          "enum": ["NOT_STARTED", "IN_PROGRESS", "COMPLETE"]
+          "enum": [
+            "NOT_STARTED",
+            "IN_PROGRESS",
+            "COMPLETE"
+          ]
         },
         "exposure": {
           "const": "PUBLIC"
@@ -293,7 +311,11 @@
           "$ref": "#/$defs/nonEmptyString"
         },
         "relationship": {
-          "enum": ["JAVA_ANALOGUE", "JS_ADAPTATION", "JS_EXTENSION"]
+          "enum": [
+            "JAVA_ANALOGUE",
+            "JS_ADAPTATION",
+            "JS_EXTENSION"
+          ]
         },
         "compatibility": {
           "enum": [
@@ -368,16 +390,30 @@
           "$ref": "#/$defs/nonEmptyString"
         },
         "kind": {
-          "enum": ["CLASS", "INTERFACE", "ENUM", "ANNOTATION", "RECORD"]
+          "enum": [
+            "CLASS",
+            "INTERFACE",
+            "ENUM",
+            "ANNOTATION",
+            "RECORD"
+          ]
         },
         "capabilityIds": {
           "$ref": "#/$defs/stringArray"
         },
         "progress": {
-          "enum": ["NOT_STARTED", "IN_PROGRESS", "COMPLETE"]
+          "enum": [
+            "NOT_STARTED",
+            "IN_PROGRESS",
+            "COMPLETE"
+          ]
         },
         "exposure": {
-          "enum": ["PUBLIC", "INTERNAL_ONLY", "NOT_EXPOSED"]
+          "enum": [
+            "PUBLIC",
+            "INTERNAL_ONLY",
+            "NOT_EXPOSED"
+          ]
         },
         "stability": {
           "oneOf": [
@@ -403,7 +439,11 @@
           "$ref": "#/$defs/nullableString"
         },
         "relationship": {
-          "enum": ["JAVA_ANALOGUE", "JS_ADAPTATION", "INTERNAL"]
+          "enum": [
+            "JAVA_ANALOGUE",
+            "JS_ADAPTATION",
+            "INTERNAL"
+          ]
         },
         "compatibility": {
           "enum": [

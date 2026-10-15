@@ -64,6 +64,7 @@ export class RDFParserMetaData {
           "Literal",
         ]),
       });
+      // json-identity-contract: bytes; owner: RDF parser metadata snapshot; reason: Constructor and snapshotTerm impose fixed field order on validated term snapshots before deduplication.
       triples.set(JSON.stringify(copy), copy);
     }
     const declarations = new Map();
@@ -71,6 +72,7 @@ export class RDFParserMetaData {
       if (!ENTITY_KINDS.includes(entityType))
         throw new TypeError("guessed declarations require an OWL entity kind");
       const copy = Object.freeze({ iri: IRI.create(iri), entityType });
+      // json-identity-contract: ordered-tuple; owner: RDF parser metadata declarations; reason: IRI string and validated entity kind form an ordered declaration identity.
       declarations.set(JSON.stringify([copy.iri.value, entityType]), copy);
     }
     this.#tripleCount = tripleCount;

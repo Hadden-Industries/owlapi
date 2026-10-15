@@ -8,12 +8,12 @@
     "scopeAuthority": {
       "method": "npm pack --dry-run --json plus local source-byte hashing",
       "fileCount": 195,
-      "sourceManifestSha256": "0f41bca0df2d9da6f5412996a648abbe86ae04ee653010672f89fcd2e9fe9874"
+      "sourceManifestSha256": "6523d54321f9bd232c1f74dfa90bd7c1ae5b59f7ab04dedc57cb4dd5df67688e"
     }
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "093654548feb70386c59e6119a0997398781a5d301ed04d97813d8bbe7fbefc3",
+    "factsSha256": "ecb00d39cfde2900344cb26ca9d87e06870066ee8496485b2d036c318c3c523c",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -84,7 +84,9 @@
     {
       "id": "jsonld-generated-provider",
       "relationship": "GENERATED_FROM_THIRD_PARTY",
-      "paths": ["internal/parsing/jsonld/provider/"],
+      "paths": [
+        "internal/parsing/jsonld/provider/"
+      ],
       "packageTarball": true,
       "rightsHolder": "Original component holders identified in the complete retained notices; Maksym Shostak for project-authored modifications and metadata",
       "licenceBasis": "BSD-3-Clause (jsonld and rdf-canonize), Apache-2.0 (canonicalize), ISC (lru-cache and yallist), MIT (setimmediate and rolldown runtime); AGPL-3.0-only for project-authored modifications and metadata",
@@ -95,7 +97,9 @@
     {
       "id": "java-owlapi-datatype-constants",
       "relationship": "GENERATED_FROM_THIRD_PARTY",
-      "paths": ["internal/behavior/javaDatatypePolicy.js"],
+      "paths": [
+        "internal/behavior/javaDatatypePolicy.js"
+      ],
       "packageTarball": true,
       "rightsHolder": "Java OWLAPI project and contributors for public datatype constants; Maksym Shostak for independently authored observation and generation tooling",
       "licenceBasis": "Apache-2.0 alternative elected from the released Java source's Apache-2.0 OR LGPL-3.0 declaration; complete licence packed at LICENSES/Apache-2.0.txt",
@@ -106,7 +110,9 @@
     {
       "id": "gnu-agpl-3.0-only-licence-text",
       "relationship": "EMBEDDED_OR_COPIED",
-      "paths": ["LICENSE"],
+      "paths": [
+        "LICENSE"
+      ],
       "packageTarball": true,
       "rightsHolder": "Free Software Foundation, Inc. and contributors to the licence text",
       "licenceBasis": "Unmodified GNU Affero General Public License version 3 text, redistributed as the package licence notice",
@@ -117,7 +123,9 @@
     {
       "id": "apache-2.0-licence-text",
       "relationship": "EMBEDDED_OR_COPIED",
-      "paths": ["LICENSES/Apache-2.0.txt"],
+      "paths": [
+        "LICENSES/Apache-2.0.txt"
+      ],
       "packageTarball": true,
       "rightsHolder": "Apache Software Foundation and contributors to the Apache License text",
       "licenceBasis": "Complete Apache License version 2.0 wording accompanying the elected Apache-2.0 distribution basis for Java OWLAPI compatibility facts",
@@ -144,7 +152,7 @@
   "externalDependencies": {
     "bundled": true,
     "authority": "docs/provenance/third-party-material.json",
-    "inventoryFactsSha256": "97ceda3411b54e9b4f761089101f2c0a391230534f50e3f57dceeb0ba9d1c5e9",
+    "inventoryFactsSha256": "54c31bb6d2aecf4caae014ca53d8c9230d617ef5c2e5b6096a98c1b5b08c99be",
     "noticeRule": "Ordinary npm dependencies are installed separately under their own licences. The generated JSON-LD provider embeds seven separately inventoried components and retains their complete original licences and notices under internal/parsing/jsonld/provider/licenses/. The provider manifest binds the incorporated source, approved modifications, generated runtime and output."
   },
   "unresolvedExternalContributions": [],

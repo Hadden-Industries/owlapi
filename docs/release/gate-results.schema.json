@@ -16,27 +16,51 @@
     "requirements"
   ],
   "properties": {
-    "$schema": { "const": "../../../release/gate-results.schema.json" },
-    "schemaVersion": { "const": 1 },
+    "$schema": {
+      "const": "../../../release/gate-results.schema.json"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
     "package": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["name", "version"],
+      "required": [
+        "name",
+        "version"
+      ],
       "properties": {
-        "name": { "enum": ["owlapi", "@hadden-industries/owlapi"] },
+        "name": {
+          "enum": [
+            "owlapi",
+            "@hadden-industries/owlapi"
+          ]
+        },
         "version": {
           "type": "string",
           "pattern": "^(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
         }
       }
     },
-    "phase": { "enum": [19, 20, 21, 22] },
+    "phase": {
+      "enum": [
+        19,
+        20,
+        21,
+        22
+      ]
+    },
     "sourceCommit": {
       "type": "string",
       "pattern": "^[0-9a-f]{40}$"
     },
-    "recordedAt": { "type": "string", "format": "date-time" },
-    "accepted": { "type": "boolean" },
+    "recordedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "accepted": {
+      "type": "boolean"
+    },
     "definitionDigests": {
       "type": "object",
       "additionalProperties": false,
@@ -48,17 +72,29 @@
         "checklistCoverageSha256"
       ],
       "properties": {
-        "gateRegistrySha256": { "$ref": "#/$defs/sha256" },
-        "gateSchemaSha256": { "$ref": "#/$defs/sha256" },
-        "resultSchemaSha256": { "$ref": "#/$defs/sha256" },
-        "catalogueSha256": { "$ref": "#/$defs/sha256" },
-        "checklistCoverageSha256": { "$ref": "#/$defs/sha256" }
+        "gateRegistrySha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "gateSchemaSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "resultSchemaSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "catalogueSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "checklistCoverageSha256": {
+          "$ref": "#/$defs/sha256"
+        }
       }
     },
     "requirements": {
       "type": "array",
       "minItems": 1,
-      "items": { "$ref": "#/$defs/requirementResult" }
+      "items": {
+        "$ref": "#/$defs/requirementResult"
+      }
     }
   },
   "$defs": {
@@ -86,19 +122,41 @@
     "evidence": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["kind", "location", "sha256"],
+      "required": [
+        "kind",
+        "location",
+        "sha256"
+      ],
       "properties": {
-        "kind": { "enum": ["FILE", "URL_SNAPSHOT", "COMMAND_OUTPUT"] },
-        "location": { "type": "string", "minLength": 1 },
-        "sha256": { "$ref": "#/$defs/sha256" }
+        "kind": {
+          "enum": [
+            "FILE",
+            "URL_SNAPSHOT",
+            "COMMAND_OUTPUT"
+          ]
+        },
+        "location": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
       }
     },
     "attempt": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["observedAt", "result", "detail"],
+      "required": [
+        "observedAt",
+        "result",
+        "detail"
+      ],
       "properties": {
-        "observedAt": { "type": "string", "format": "date-time" },
+        "observedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
         "result": {
           "enum": [
             "PASS",
@@ -109,28 +167,50 @@
             "INFRASTRUCTURE_ERROR"
           ]
         },
-        "detail": { "type": "string", "minLength": 1 }
+        "detail": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
     "leafResult": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["gateId", "finalResult", "evidence"],
+      "required": [
+        "gateId",
+        "finalResult",
+        "evidence"
+      ],
       "properties": {
-        "gateId": { "$ref": "#/$defs/leafGateId" },
-        "finalResult": { "$ref": "#/$defs/terminalResult" },
-        "applicabilityReason": { "type": "string", "minLength": 1 },
+        "gateId": {
+          "$ref": "#/$defs/leafGateId"
+        },
+        "finalResult": {
+          "$ref": "#/$defs/terminalResult"
+        },
+        "applicabilityReason": {
+          "type": "string",
+          "minLength": 1
+        },
         "evidence": {
           "type": "array",
           "minItems": 1,
-          "items": { "$ref": "#/$defs/evidence" }
+          "items": {
+            "$ref": "#/$defs/evidence"
+          }
         },
         "attemptHistory": {
           "type": "array",
-          "items": { "$ref": "#/$defs/attempt" }
+          "items": {
+            "$ref": "#/$defs/attempt"
+          }
         }
       },
-      "allOf": [{ "$ref": "#/$defs/applicabilityReasonRule" }]
+      "allOf": [
+        {
+          "$ref": "#/$defs/applicabilityReasonRule"
+        }
+      ]
     },
     "requirementResult": {
       "type": "object",
@@ -143,55 +223,91 @@
         "evidence"
       ],
       "properties": {
-        "requirementId": { "$ref": "#/$defs/requirementId" },
+        "requirementId": {
+          "$ref": "#/$defs/requirementId"
+        },
         "requirementDigest": {
           "type": "string",
           "pattern": "^sha256:[0-9a-f]{64}$"
         },
-        "finalResult": { "$ref": "#/$defs/terminalResult" },
-        "applicabilityReason": { "type": "string", "minLength": 1 },
+        "finalResult": {
+          "$ref": "#/$defs/terminalResult"
+        },
+        "applicabilityReason": {
+          "type": "string",
+          "minLength": 1
+        },
         "leafResults": {
           "type": "array",
           "minItems": 1,
-          "items": { "$ref": "#/$defs/leafResult" }
+          "items": {
+            "$ref": "#/$defs/leafResult"
+          }
         },
         "evidence": {
           "type": "array",
           "minItems": 1,
-          "items": { "$ref": "#/$defs/evidence" }
+          "items": {
+            "$ref": "#/$defs/evidence"
+          }
         },
         "attemptHistory": {
           "type": "array",
-          "items": { "$ref": "#/$defs/attempt" }
+          "items": {
+            "$ref": "#/$defs/attempt"
+          }
         }
       },
-      "allOf": [{ "$ref": "#/$defs/applicabilityReasonRule" }]
+      "allOf": [
+        {
+          "$ref": "#/$defs/applicabilityReasonRule"
+        }
+      ]
     },
     "applicabilityReasonRule": {
       "type": "object",
       "if": {
         "type": "object",
-        "properties": { "finalResult": { "const": "NOT_APPLICABLE" } },
-        "required": ["finalResult"]
+        "properties": {
+          "finalResult": {
+            "const": "NOT_APPLICABLE"
+          }
+        },
+        "required": [
+          "finalResult"
+        ]
       },
       "then": {
         "type": "object",
         "properties": {
-          "applicabilityReason": { "type": "string", "minLength": 1 }
+          "applicabilityReason": {
+            "type": "string",
+            "minLength": 1
+          }
         },
-        "required": ["applicabilityReason"]
+        "required": [
+          "applicabilityReason"
+        ]
       },
       "else": {
         "type": "object",
         "properties": {
-          "applicabilityReason": { "type": "string", "minLength": 1 }
+          "applicabilityReason": {
+            "type": "string",
+            "minLength": 1
+          }
         },
         "not": {
           "type": "object",
           "properties": {
-            "applicabilityReason": { "type": "string", "minLength": 1 }
+            "applicabilityReason": {
+              "type": "string",
+              "minLength": 1
+            }
           },
-          "required": ["applicabilityReason"]
+          "required": [
+            "applicabilityReason"
+          ]
         }
       }
     }

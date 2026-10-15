@@ -4,7 +4,8 @@ import { resolve, sep } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
-import { format as formatWithPrettier } from "prettier";
+import { formatConformanceJson as formatJson } from "./conformance/jsonPresentation.mjs";
+import { readW3cSource } from "./conformance/w3cSource.mjs";
 
 const REVISION = "ffdb326121ea89b7b8280e76a5caea923834bcef";
 const TEST_BASE = "https://w3c.github.io/json-ld-api/tests/";
@@ -25,8 +26,8 @@ const ARCHIVE_URL = new URL(
   import.meta.url,
 );
 const EXPECTED_HASHES = Object.freeze({
-  fromRdf: "7257466aa9cb9cc4d8cd7e345cd522056b5d2283b6a907783aca118c1afd05c8",
-  toRdf: "aeb5b24dd17a3d1b5fae5f39f75f796a9e7fbe7e717dfcb10f47619fbe00e41e",
+  fromRdf: "c0bcca085187a15c0b869c3902ea130922f837634486724cec38f16bab26b283",
+  toRdf: "2b8b602eef56b0c307422bcf644477c11a299b3d0188be265e097ad64eb843af",
 });
 const GENERALIZED_RDF_EXCLUSION =
   "This test requires generalized RDF with blank-node predicates. Ordinary RDF/JS and the OWL 2 RDF mapping require property predicates to be IRIs, so generalized RDF cannot enter the RDF-to-OWL ingestion boundary.";
@@ -51,8 +52,6 @@ const inputUrl = process.argv[2]
   ? pathToFileURL(`${resolve(process.argv[2])}${sep}`)
   : DEFAULT_INPUT_URL;
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
-const formatJson = (value) =>
-  formatWithPrettier(JSON.stringify(value), { parser: "json" });
 const readJson = async (url) => JSON.parse(await readFile(url, "utf8"));
 const idFor = (entry) => entry["@id"].replace(/^#t/u, "");
 const testType = (entry) => {
@@ -138,10 +137,18 @@ for (const entry of manifests.toRdf.sequence) {
     baseIRI: entry.option?.base || new URL(entry.input, TEST_BASE).href,
     ...(entry.expect
       ? {
-          expected: await readFile(new URL(entry.expect, inputUrl), "utf8"),
+          expected: await readW3cSource(
+            new URL(entry.expect, inputUrl),
+            new URL(entry.expect, TEST_BASE).href,
+            REVISION,
+          ),
         }
       : {}),
-    source: await readFile(new URL(entry.input, inputUrl), "utf8"),
+    source: await readW3cSource(
+      new URL(entry.input, inputUrl),
+      new URL(entry.input, TEST_BASE).href,
+      REVISION,
+    ),
   });
 }
 
@@ -166,18 +173,20 @@ const collectResources = async (relativeDirectory) => {
     if (entry.isDirectory()) {
       await collectResources(`${relative}/`);
     } else if (/\.json(?:ld)?$/u.test(entry.name)) {
-      resources[new URL(relative, TEST_BASE).href] = await readFile(
+      resources[new URL(relative, TEST_BASE).href] = await readW3cSource(
         new URL(relative, inputUrl),
-        "utf8",
+        new URL(relative, TEST_BASE).href,
+        REVISION,
       );
     }
   }
 };
 await collectResources("toRdf/");
 for (const relative of ["context.jsonld", "vocab_context.jsonld"]) {
-  resources[new URL(relative, TEST_BASE).href] = await readFile(
+  resources[new URL(relative, TEST_BASE).href] = await readW3cSource(
     new URL(relative, inputUrl),
-    "utf8",
+    new URL(relative, TEST_BASE).href,
+    REVISION,
   );
 }
 

@@ -72,9 +72,9 @@ describe("pinned W3C JSON-LD to-RDF conformance", () => {
       },
       manifests: {
         fromRdf:
-          "7257466aa9cb9cc4d8cd7e345cd522056b5d2283b6a907783aca118c1afd05c8",
+          "c0bcca085187a15c0b869c3902ea130922f837634486724cec38f16bab26b283",
         toRdf:
-          "aeb5b24dd17a3d1b5fae5f39f75f796a9e7fbe7e717dfcb10f47619fbe00e41e",
+          "2b8b602eef56b0c307422bcf644477c11a299b3d0188be265e097ad64eb843af",
       },
       revision: "ffdb326121ea89b7b8280e76a5caea923834bcef",
       schemaVersion: 1,

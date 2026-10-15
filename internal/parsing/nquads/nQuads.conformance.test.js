@@ -32,9 +32,9 @@ describe("pinned W3C N-Quads syntax conformance", () => {
       },
       manifests: {
         rdf11:
-          "aacaf7a803763a09ae68bba75575346847cb62405c7e4f33c8a0a244ffc11847",
+          "4c658a4e111adff512e89ff2c39acf9195109592f54711ce06823dac544c62ca",
         rdf12Syntax:
-          "53eca8aa5ec0c0662e5b56b90603363e72093425fa9f71fff85e7f3c654b5af3",
+          "90d06079b66e5f2d0df598cf451eeaa7b896c11f8869bec6219a40ac6b504768",
       },
       revision: "12774b0ebb385d17651b396654b19254d0fefbfa",
       schemaVersion: 1,

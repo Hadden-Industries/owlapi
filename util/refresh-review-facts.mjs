@@ -75,7 +75,7 @@ async function main() {
       writeFileSync(
         file,
         await format(`${JSON.stringify(document, null, 2)}\n`, {
-          parser: "json",
+          parser: "json-stringify",
         }),
       );
   }

@@ -68,10 +68,12 @@ export function referenceToolIdentity(directory) {
       const target = readlinkSync(path);
       if (!within(root, realpathSync.native(path)) || isAbsolute(target))
         fail("tool link leaves selected distribution");
+      // json-identity-contract: digest; owner: native reference tool identity; reason: Preserve the established digest encoding of path, link kind, mode and target.
       identity.update(JSON.stringify([name, "link", mode, target]));
       return;
     }
     if (before.isDirectory()) {
+      // json-identity-contract: digest; owner: native reference tool identity; reason: Preserve the established ordered directory tuple in the distribution digest.
       identity.update(JSON.stringify([name, "directory", mode]));
       for (const child of readdirSync(path).sort()) visit(join(path, child));
       return;
@@ -114,6 +116,7 @@ export function referenceToolIdentity(directory) {
       )
         fail("tool file changed while reading");
       identity.update(
+        // json-identity-contract: digest; owner: native reference tool identity; reason: Preserve the established ordered file tuple in the distribution digest.
         JSON.stringify([
           name,
           "file",
@@ -412,6 +415,7 @@ export function prepareReferenceBuild({
       environment,
       host,
     });
+    // json-identity-contract: bytes; owner: native reference build journal; reason: Persisted input-record bytes bind resumability and retained evidence to the owning serializer.
     inputRecordBytes = Buffer.from(`${JSON.stringify(inputRecord, null, 2)}\n`);
     if (resume) {
       phase = "saved-record";
@@ -510,10 +514,14 @@ export function prepareReferenceBuild({
     buildFresh() {
       if (built) fail("fresh build already attempted");
       built = true;
-      writeFileSync(join(workspace, "build-attempt.json"), '{"attempt":1}\n', {
-        flag: "wx",
-        mode: 0o600,
-      });
+      writeFileSync(
+        join(workspace, "build-attempt.json"),
+        '{\n  "attempt": 1\n}\n',
+        {
+          flag: "wx",
+          mode: 0o600,
+        },
+      );
       sourceIdentity();
       verifyTools();
       run(

@@ -4,24 +4,32 @@
       "name": "no-unresolvable-runtime",
       "severity": "error",
       "from": {},
-      "to": { "couldNotResolve": true }
+      "to": {
+        "couldNotResolve": true
+      }
     },
     {
       "name": "no-relative-runtime-escape",
       "severity": "error",
       "from": {},
-      "to": { "path": "^\\.\\./" }
+      "to": {
+        "path": "^\\.\\./"
+      }
     },
     {
       "name": "circular-dependencies",
       "severity": "error",
       "from": {},
-      "to": { "circular": true }
+      "to": {
+        "circular": true
+      }
     },
     {
       "name": "structural-primitives-stay-independent",
       "severity": "error",
-      "from": { "path": "^model/(?:kinds|structural)\\.js$" },
+      "from": {
+        "path": "^model/(?:kinds|structural)\\.js$"
+      },
       "to": {
         "path": "^(?:internal/(?:parsing|loading|storage)/|model/owlOntologyManager\\.js$)",
         "reachable": true
@@ -30,7 +38,9 @@
     {
       "name": "loading-index-stays-independent",
       "severity": "error",
-      "from": { "path": "^internal/loading/managedOntologyIndex\\.js$" },
+      "from": {
+        "path": "^internal/loading/managedOntologyIndex\\.js$"
+      },
       "to": {
         "path": "^(?:internal/(?:parsing|storage)/|model/owlOntologyManager\\.js$)",
         "reachable": true
@@ -38,7 +48,12 @@
     }
   ],
   "options": {
-    "moduleSystems": ["es6", "cjs"],
-    "doNotFollow": { "path": "(^|/)node_modules/|^\\.\\./" }
+    "moduleSystems": [
+      "es6",
+      "cjs"
+    ],
+    "doNotFollow": {
+      "path": "(^|/)node_modules/|^\\.\\./"
+    }
   }
 }

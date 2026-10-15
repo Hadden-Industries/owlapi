@@ -289,6 +289,18 @@ jobs:
         timeout-minutes: 5
         env:
           QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
+      - name: Acquire the exact isolated JSON graph
+        run: npm run install:json
+        timeout-minutes: 5
+      - name: Exercise JSON isolation and exact preservation probes
+        run: npm run test:json
+        timeout-minutes: 5
+      - name: Verify complete JSON coverage on Node 26
+        run: npm run check:json
+        timeout-minutes: 5
+      - name: Verify semantic JSON identity on Node 26
+        run: npm run lint:json-identity
+        timeout-minutes: 5
       - name: Verify formatting
         run: npm run format:source-python:check
         timeout-minutes: 45
@@ -307,6 +319,9 @@ jobs:
       - name: Verify repository workflow governance
         run: npm run verify:workflow-governance
         timeout-minutes: 45
+      - name: Check complete JSON after every native producer
+        run: npm run check:json
+        timeout-minutes: 5
 
   source_node_24:
     name: CI / Ubuntu / Node 24.21.0
@@ -360,10 +375,11 @@ jobs:
           QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
       - name: Qualify the locked Python 3.15 scanner
         id: scanner_qualification
-        run: node util/qualify-scancode-runtime.mjs --python-env=SCANCODE_PYTHON
+        run: node util/qualify-scancode-runtime.mjs --python-env=SCANCODE_PYTHON --work-root-env=SCANCODE_WORK_ROOT
         timeout-minutes: 45
         env:
           SCANCODE_PYTHON: ${{ steps.quality_python.outputs.python-path }}
+          SCANCODE_WORK_ROOT: ${{ runner.temp }}/scancode-qualification
       - name: Retain scanner compatibility reports
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -378,6 +394,12 @@ jobs:
           archive: true
       - name: Acquire the exact isolated Markdown graph
         run: npm run install:markdown
+        timeout-minutes: 5
+      - name: Acquire the exact isolated JSON graph
+        run: npm run install:json
+        timeout-minutes: 5
+      - name: Exercise JSON isolation and exact preservation probes
+        run: npm run test:json
         timeout-minutes: 5
       - name: Exercise canonical Markdown isolation probes
         run: npm run test:markdown
@@ -531,6 +553,22 @@ jobs:
           OWLAPI_REFERENCE_CHECKOUT: ${{ github.workspace }}/.release/java-owlapi
         run: npm run test:universal-ontology -- --ontology-repository .release/universal-ontology --output .release/july-qualification
         timeout-minutes: 15
+      - name: Capture original native JSON reports before the final quality gate
+        if: ${{ !cancelled() }}
+        run: |
+          mkdir -p .release/july-qualification
+          : > .release/july-qualification/native-json-files.nul
+          if test -d .release/java-owlapi; then
+            find .release/java-owlapi -path '*/target/reference-runtime-tree.json' -type f -print0 >> .release/july-qualification/native-json-files.nul
+          fi
+          if test -f .release/java-qualification/jest.json; then
+            printf '%s\0' .release/java-qualification/jest.json >> .release/july-qualification/native-json-files.nul
+          fi
+          if test -f .release/java-reference-reuse/native/build-attempt.json; then
+            printf '%s\0' .release/java-reference-reuse/native/build-attempt.json >> .release/july-qualification/native-json-files.nul
+          fi
+          tar --null --files-from=.release/july-qualification/native-json-files.nul -czf .release/july-qualification/native-json-originals.tar.gz
+        timeout-minutes: 1
       - name: Retain July reconciliation evidence, including failed comparisons
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -566,6 +604,9 @@ jobs:
           REFERENCE_ARTIFACT_DIGEST: ${{ steps.reference_upload.outputs.artifact-digest }}
         run: node scripts/java-reference-command.mjs publication
         timeout-minutes: 1
+      - name: Check complete JSON after every native producer
+        run: npm run check:json
+        timeout-minutes: 5
 
   dependency_review:
     name: CI / dependency review
@@ -1429,10 +1470,11 @@ jobs:
           QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
       - name: Qualify the locked Python 3.15 scanner
         id: scanner_qualification
-        run: node util/qualify-scancode-runtime.mjs --python-env=SCANCODE_PYTHON
+        run: node util/qualify-scancode-runtime.mjs --python-env=SCANCODE_PYTHON --work-root-env=SCANCODE_WORK_ROOT
         timeout-minutes: 45
         env:
           SCANCODE_PYTHON: ${{ steps.quality_python.outputs.python-path }}
+          SCANCODE_WORK_ROOT: ${{ runner.temp }}/scancode-qualification
       - name: Retain scanner compatibility reports
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -1451,6 +1493,12 @@ jobs:
       - name: Acquire the exact isolated Markdown graph
         run: npm run install:markdown
         timeout-minutes: 5
+      - name: Acquire the exact isolated JSON graph
+        run: npm run install:json
+        timeout-minutes: 5
+      - name: Exercise JSON isolation and exact preservation probes
+        run: npm run test:json
+        timeout-minutes: 5
       - name: Verify formatting
         run: npm run format:check
         timeout-minutes: 10
@@ -1460,3 +1508,6 @@ jobs:
       - name: Run native quality regressions
         run: npm run test:quality
         timeout-minutes: 10
+      - name: Check complete JSON after every native producer
+        run: npm run check:json
+        timeout-minutes: 5

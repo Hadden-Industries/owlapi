@@ -23,7 +23,10 @@
       "const": 3
     },
     "qualification": {
-      "enum": ["PRE_INTEGRATION", "RECONCILED"]
+      "enum": [
+        "PRE_INTEGRATION",
+        "RECONCILED"
+      ]
     },
     "developmentBaseline": {
       "$ref": "#/$defs/baseline"
@@ -41,7 +44,10 @@
     "javaAuthority": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["version", "revision"],
+      "required": [
+        "version",
+        "revision"
+      ],
       "properties": {
         "version": {
           "const": "5.5.1"
@@ -64,7 +70,9 @@
           "contains": {
             "$ref": "#/$defs/targetDecisionContract",
             "type": "object",
-            "required": ["id"],
+            "required": [
+              "id"
+            ],
             "properties": {
               "id": {
                 "const": "PARITY-TARGET-WRITER-OMISSION"
@@ -79,7 +87,9 @@
           "contains": {
             "$ref": "#/$defs/targetDecisionContract",
             "type": "object",
-            "required": ["id"],
+            "required": [
+              "id"
+            ],
             "properties": {
               "id": {
                 "const": "PARITY-TARGET-ATOMIC-COMMIT"
@@ -94,7 +104,9 @@
           "contains": {
             "$ref": "#/$defs/storageErrorDecisionContract",
             "type": "object",
-            "required": ["id"],
+            "required": [
+              "id"
+            ],
             "properties": {
               "id": {
                 "const": "PARITY-ERROR-SUFFIX"
@@ -109,7 +121,9 @@
           "contains": {
             "$ref": "#/$defs/storageErrorDecisionContract",
             "type": "object",
-            "required": ["id"],
+            "required": [
+              "id"
+            ],
             "properties": {
               "id": {
                 "const": "PARITY-ERROR-HIERARCHY"
@@ -124,7 +138,9 @@
           "contains": {
             "$ref": "#/$defs/storageErrorDecisionContract",
             "type": "object",
-            "required": ["id"],
+            "required": [
+              "id"
+            ],
             "properties": {
               "id": {
                 "const": "PARITY-ERROR-NAMESPACE"
@@ -139,7 +155,9 @@
           "contains": {
             "$ref": "#/$defs/storageReasonDecisionContract",
             "type": "object",
-            "required": ["id"],
+            "required": [
+              "id"
+            ],
             "properties": {
               "id": {
                 "const": "PARITY-STORAGE-REASON"
@@ -175,7 +193,9 @@
     "consumerMigrations": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["webvowl"],
+      "required": [
+        "webvowl"
+      ],
       "properties": {
         "webvowl": {
           "anyOf": [
@@ -200,7 +220,10 @@
       ],
       "properties": {
         "status": {
-          "enum": ["IN_PROGRESS", "COMPLETE"]
+          "enum": [
+            "IN_PROGRESS",
+            "COMPLETE"
+          ]
         },
         "registrySha256": {
           "anyOf": [
@@ -228,10 +251,16 @@
     "phase22": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["status", "decisions"],
+      "required": [
+        "status",
+        "decisions"
+      ],
       "properties": {
         "status": {
-          "enum": ["IN_PROGRESS", "COMPLETE"]
+          "enum": [
+            "IN_PROGRESS",
+            "COMPLETE"
+          ]
         },
         "registrySha256": {
           "type": "string",
@@ -252,7 +281,9 @@
             {
               "contains": {
                 "type": "object",
-                "required": ["id"],
+                "required": [
+                  "id"
+                ],
                 "properties": {
                   "id": {
                     "const": "LIFECYCLE-CLOSURE-COLLECTION-MAPPING"
@@ -263,7 +294,9 @@
             {
               "contains": {
                 "type": "object",
-                "required": ["id"],
+                "required": [
+                  "id"
+                ],
                 "properties": {
                   "id": {
                     "const": "LIFECYCLE-FOREIGN-ONTOLOGY-STATE"
@@ -274,7 +307,9 @@
             {
               "contains": {
                 "type": "object",
-                "required": ["id"],
+                "required": [
+                  "id"
+                ],
                 "properties": {
                   "id": {
                     "const": "LIFECYCLE-MUTATION-RESULT-ATOMICITY"
@@ -285,7 +320,9 @@
             {
               "contains": {
                 "type": "object",
-                "required": ["id"],
+                "required": [
+                  "id"
+                ],
                 "properties": {
                   "id": {
                     "const": "LIFECYCLE-CHANGE-OVERLOAD-SUBSET"
@@ -296,7 +333,9 @@
             {
               "contains": {
                 "type": "object",
-                "required": ["id"],
+                "required": [
+                  "id"
+                ],
                 "properties": {
                   "id": {
                     "const": "LIFECYCLE-PROVIDER-SNAPSHOT"
@@ -307,7 +346,9 @@
             {
               "contains": {
                 "type": "object",
-                "required": ["id"],
+                "required": [
+                  "id"
+                ],
                 "properties": {
                   "id": {
                     "const": "LIFECYCLE-MERGER-OPTIONAL-FILTER"
@@ -318,7 +359,9 @@
             {
               "contains": {
                 "type": "object",
-                "required": ["id"],
+                "required": [
+                  "id"
+                ],
                 "properties": {
                   "id": {
                     "const": "LIFECYCLE-ASYNC-SAVE-OVERLOAD"
@@ -329,7 +372,9 @@
             {
               "contains": {
                 "type": "object",
-                "required": ["id"],
+                "required": [
+                  "id"
+                ],
                 "properties": {
                   "id": {
                     "const": "LIFECYCLE-LOSSLESS-STORAGE"
@@ -358,7 +403,10 @@
       ],
       "properties": {
         "qualificationStatus": {
-          "enum": ["unqualified", "qualified"]
+          "enum": [
+            "unqualified",
+            "qualified"
+          ]
         },
         "historicalDecisionScope": {
           "type": "string",
@@ -382,7 +430,11 @@
         "javaAuthority": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["releaseVersion", "commitObjectId", "provenancePath"],
+          "required": [
+            "releaseVersion",
+            "commitObjectId",
+            "provenancePath"
+          ],
           "properties": {
             "releaseVersion": {
               "const": "5.5.1"
@@ -399,7 +451,10 @@
         "normativeContract": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["version", "definitionPath"],
+          "required": [
+            "version",
+            "definitionPath"
+          ],
           "properties": {
             "version": {
               "const": 1
@@ -474,7 +529,10 @@
                 "const": "accepted"
               },
               "implementationStatus": {
-                "enum": ["development-tested", "qualified"]
+                "enum": [
+                  "development-tested",
+                  "qualified"
+                ]
               },
               "decisionOwnerRole": {
                 "const": "repository-owner"
@@ -741,7 +799,10 @@
           },
           "phase22": {
             "type": "object",
-            "required": ["registrySha256", "phase21Checkpoint"],
+            "required": [
+              "registrySha256",
+              "phase21Checkpoint"
+            ],
             "properties": {
               "registrySha256": {
                 "type": "string",
@@ -845,7 +906,10 @@
     "baseline": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["commit", "registrySha256"],
+      "required": [
+        "commit",
+        "registrySha256"
+      ],
       "properties": {
         "commit": {
           "type": "string",
@@ -874,7 +938,9 @@
           ]
         },
         "jsBindings": {
-          "const": ["io.StringDocumentTarget"]
+          "const": [
+            "io.StringDocumentTarget"
+          ]
         }
       }
     },
@@ -895,12 +961,17 @@
             {
               "type": "org.semanticweb.owlapi.model.OWLStorerNotFoundException",
               "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLStorerNotFoundException.java",
-              "members": ["OWLStorerNotFoundException(OWLDocumentFormat)"]
+              "members": [
+                "OWLStorerNotFoundException(OWLDocumentFormat)"
+              ]
             }
           ]
         },
         "jsBindings": {
-          "const": ["io.OWLOntologyStorageError", "io.OWLStorerNotFoundError"]
+          "const": [
+            "io.OWLOntologyStorageError",
+            "io.OWLStorerNotFoundError"
+          ]
         }
       }
     },
@@ -921,7 +992,9 @@
           ]
         },
         "jsBindings": {
-          "const": ["io.OWLOntologyStorageError"]
+          "const": [
+            "io.OWLOntologyStorageError"
+          ]
         }
       }
     },
@@ -960,7 +1033,11 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["type", "sourcePath", "members"],
+            "required": [
+              "type",
+              "sourcePath",
+              "members"
+            ],
             "properties": {
               "type": {
                 "type": "string",
@@ -1120,7 +1197,10 @@
           "pattern": "^[a-f0-9]{64}$"
         },
         "disposition": {
-          "enum": ["NO_OBSOLETE_USAGE", "MIGRATED"]
+          "enum": [
+            "NO_OBSOLETE_USAGE",
+            "MIGRATED"
+          ]
         },
         "changedPaths": {
           "type": "array",
@@ -1155,7 +1235,11 @@
         "installedCandidate": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["sha256", "evidenceSha256", "result"],
+          "required": [
+            "sha256",
+            "evidenceSha256",
+            "result"
+          ],
           "properties": {
             "sha256": {
               "type": "string",
@@ -1287,7 +1371,9 @@
               ]
             },
             "jsBindings": {
-              "const": ["model.OWLOntologyManager"]
+              "const": [
+                "model.OWLOntologyManager"
+              ]
             },
             "category": {
               "const": "BEHAVIOR_ADAPTATION"
@@ -1312,7 +1398,9 @@
               ]
             },
             "jsBindings": {
-              "const": ["model.OWLOntologyManager"]
+              "const": [
+                "model.OWLOntologyManager"
+              ]
             },
             "category": {
               "const": "BEHAVIOR_ADAPTATION"
@@ -1329,7 +1417,9 @@
                 {
                   "type": "org.semanticweb.owlapi.model.HasAddAxiom",
                   "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/HasAddAxiom.java",
-                  "members": ["ChangeApplied addAxiom(OWLOntology, OWLAxiom)"]
+                  "members": [
+                    "ChangeApplied addAxiom(OWLOntology, OWLAxiom)"
+                  ]
                 },
                 {
                   "type": "org.semanticweb.owlapi.model.HasAddAxioms",
@@ -1342,7 +1432,9 @@
                 {
                   "type": "org.semanticweb.owlapi.model.HasApplyChange",
                   "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/HasApplyChange.java",
-                  "members": ["ChangeApplied applyChange(OWLOntologyChange)"]
+                  "members": [
+                    "ChangeApplied applyChange(OWLOntologyChange)"
+                  ]
                 },
                 {
                   "type": "org.semanticweb.owlapi.model.HasApplyChanges",
@@ -1355,7 +1447,9 @@
               ]
             },
             "jsBindings": {
-              "const": ["model.OWLOntologyManager"]
+              "const": [
+                "model.OWLOntologyManager"
+              ]
             },
             "category": {
               "const": "BEHAVIOR_ADAPTATION"
@@ -1372,7 +1466,9 @@
                 {
                   "type": "org.semanticweb.owlapi.model.HasAddAxiom",
                   "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/HasAddAxiom.java",
-                  "members": ["ChangeApplied addAxiom(OWLOntology, OWLAxiom)"]
+                  "members": [
+                    "ChangeApplied addAxiom(OWLOntology, OWLAxiom)"
+                  ]
                 },
                 {
                   "type": "org.semanticweb.owlapi.model.HasAddAxioms",
@@ -1385,7 +1481,9 @@
                 {
                   "type": "org.semanticweb.owlapi.model.HasApplyChange",
                   "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/HasApplyChange.java",
-                  "members": ["ChangeApplied applyChange(OWLOntologyChange)"]
+                  "members": [
+                    "ChangeApplied applyChange(OWLOntologyChange)"
+                  ]
                 },
                 {
                   "type": "org.semanticweb.owlapi.model.HasApplyChanges",
@@ -1415,12 +1513,16 @@
                 {
                   "type": "org.semanticweb.owlapi.model.OWLOntologyChange",
                   "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyChange.java",
-                  "members": ["OWLOntology getOntology()"]
+                  "members": [
+                    "OWLOntology getOntology()"
+                  ]
                 },
                 {
                   "type": "org.semanticweb.owlapi.model.AnnotationChange",
                   "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/AnnotationChange.java",
-                  "members": ["OWLAnnotation getAnnotation()"]
+                  "members": [
+                    "OWLAnnotation getAnnotation()"
+                  ]
                 }
               ]
             },
@@ -1454,7 +1556,9 @@
               ]
             },
             "jsBindings": {
-              "const": ["util.OWLOntologyImportsClosureSetProvider"]
+              "const": [
+                "util.OWLOntologyImportsClosureSetProvider"
+              ]
             },
             "category": {
               "const": "BEHAVIOR_ADAPTATION"
@@ -1481,7 +1585,9 @@
               ]
             },
             "jsBindings": {
-              "const": ["util.OWLOntologyMerger"]
+              "const": [
+                "util.OWLOntologyMerger"
+              ]
             },
             "category": {
               "const": "OMISSION"
@@ -1505,7 +1611,9 @@
               ]
             },
             "jsBindings": {
-              "const": ["model.OWLOntologyManager"]
+              "const": [
+                "model.OWLOntologyManager"
+              ]
             },
             "category": {
               "const": "BEHAVIOR_ADAPTATION"

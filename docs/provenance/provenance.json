@@ -61,7 +61,10 @@
     "REVIEW_EXCEPTION"
   ],
   "revisionDispositionPolicy": {
-    "selectors": ["AT_REVISION", "AFTER_REVISION"],
+    "selectors": [
+      "AT_REVISION",
+      "AFTER_REVISION"
+    ],
     "semantics": {
       "AT_REVISION": "matches only the named Git commit snapshot",
       "AFTER_REVISION": "matches descendants of the named Git commit and excludes the named commit"
@@ -98,7 +101,10 @@
     }
   },
   "artifactLifecyclePolicy": {
-    "states": ["PRESENT", "DELETED"],
+    "states": [
+      "PRESENT",
+      "DELETED"
+    ],
     "defaultState": "PRESENT",
     "semantics": {
       "PRESENT": "The governed path belongs to the current repository inventory unless a more specific record says otherwise.",
@@ -122,7 +128,9 @@
         "docs/compatibility/java-api-parity-decisions.json"
       ],
       "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-      "focusedEvidence": ["io/node/nodeDocumentLoaderCancellation.test.js"],
+      "focusedEvidence": [
+        "io/node/nodeDocumentLoaderCancellation.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
@@ -158,7 +166,9 @@
       "path": "model/kinds.js",
       "phase": 1,
       "scope": "canonical OWL object-kind taxonomy and category memberships",
-      "legacyWebVowlSources": ["src/owl2vowl/js/constants.js"],
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/constants.js"
+      ],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-syntax/ sections 5-10",
@@ -168,7 +178,10 @@
         "OWLAPI 5.5.1 public model interfaces and pinned black-box reference harness"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["model/dispatch.test.js", "model/factory.test.js"],
+      "focusedEvidence": [
+        "model/dispatch.test.js",
+        "model/factory.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "PHASE0-2026-08-10",
@@ -189,7 +202,9 @@
         "OWLAPI 5.5.1 public OWLObject equality behavior and pinned black-box reference harness"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["model/model.test.js"],
+      "focusedEvidence": [
+        "model/model.test.js"
+      ],
       "laterPhaseChanges": [
         {
           "phase": 3,
@@ -227,7 +242,9 @@
         "OWLAPI 5.5.1 public OWLObjectVisitor interface family"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["model/dispatch.test.js"],
+      "focusedEvidence": [
+        "model/dispatch.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "PHASE0-2026-08-10",
@@ -251,7 +268,10 @@
         "OWLAPI 5.5.1 public OWLDataFactory and model interfaces plus pinned black-box reference harness"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["model/factory.test.js", "model/model.test.js"],
+      "focusedEvidence": [
+        "model/factory.test.js",
+        "model/model.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE0-2026-08-10",
@@ -312,7 +332,9 @@
         "OWLAPI 5.5.1 public OWLOntology and OWLOntologyID interfaces plus pinned black-box reference harness"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["model/model.test.js"],
+      "focusedEvidence": [
+        "model/model.test.js"
+      ],
       "laterPhaseChanges": [
         {
           "phase": 22,
@@ -378,7 +400,9 @@
       "path": "io/stringDocumentSource.js",
       "phase": 1,
       "scope": "immutable string document sources, format metadata, and JSON-compatible format parameters",
-      "legacyWebVowlSources": ["src/owl2vowl/js/importLoader.js"],
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/importLoader.js"
+      ],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "docs/implementation-plan.md sections 11.1-11.2"
@@ -387,7 +411,9 @@
         "OWLAPI 5.5.1 public OWLOntologyDocumentSource and OWLDocumentFormat interfaces"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["io/io.test.js"],
+      "focusedEvidence": [
+        "io/io.test.js"
+      ],
       "laterPhaseChanges": [
         {
           "phase": 4,
@@ -408,7 +434,9 @@
           "normativePublicSources": [
             "docs/implementation-plan.md sections 10.8, 11.2, and 17.22"
           ],
-          "focusedEvidence": ["io/io.test.js"],
+          "focusedEvidence": [
+            "io/io.test.js"
+          ],
           "decisionRef": "PHASE15-2026-08-22"
         },
         {
@@ -473,7 +501,9 @@
             "docs/compatibility/java-api-parity-decisions.json"
           ],
           "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-          "focusedEvidence": ["model/behaviorStorage.test.js"],
+          "focusedEvidence": [
+            "model/behaviorStorage.test.js"
+          ],
           "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
           "recordedOn": "2026-10-14"
         }
@@ -484,7 +514,9 @@
       "path": "model/owlOntologyLoaderConfiguration.js",
       "phase": 1,
       "scope": "immutable loader/security/resource configuration",
-      "legacyWebVowlSources": ["src/owl2vowl/js/importLoader.js"],
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/importLoader.js"
+      ],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://dom.spec.whatwg.org/#abortsignal",
@@ -494,7 +526,9 @@
         "OWLAPI 5.5.1 public OWLOntologyLoaderConfiguration API"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["io/io.test.js"],
+      "focusedEvidence": [
+        "io/io.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE0-2026-08-10",
@@ -556,7 +590,9 @@
         "OWLAPI 5.5.1 public ontology-creation and parser exception APIs"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["io/io.test.js"],
+      "focusedEvidence": [
+        "io/io.test.js"
+      ],
       "laterPhaseChanges": [
         {
           "phase": 21,
@@ -585,7 +621,9 @@
       "path": "internal/parsing/parserRegistry.js",
       "phase": 1,
       "scope": "immutable parser descriptors, bounded tri-state detection, and deterministic candidate ordering",
-      "legacyWebVowlSources": ["src/owl2vowl/js/index.js"],
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/index.js"
+      ],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://encoding.spec.whatwg.org/#interface-textencoder",
@@ -663,7 +701,9 @@
         "OWLAPI 5.5.1 public OWLOntologyManager loading and importsClosure/getImportsClosure APIs plus pinned black-box reference harness"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["model/owlOntologyManager.test.js"],
+      "focusedEvidence": [
+        "model/owlOntologyManager.test.js"
+      ],
       "laterPhaseChanges": [
         {
           "phase": 22,
@@ -733,7 +773,9 @@
           "normativePublicSources": [
             "docs/implementation-plan.md sections 10.3-10.6, 11.5, and 17.14"
           ],
-          "focusedEvidence": ["model/owlOntologyManager.integration.test.js"],
+          "focusedEvidence": [
+            "model/owlOntologyManager.integration.test.js"
+          ],
           "decisionRef": "PHASE7-2026-08-18"
         },
         {
@@ -771,7 +813,9 @@
             "https://rdf.js.org/data-model-spec/",
             "docs/implementation-plan.md sections 6.4-6.5, 9.4-9.6, and 17.20"
           ],
-          "focusedEvidence": ["internal/parsing/nquads/nQuads.test.js"],
+          "focusedEvidence": [
+            "internal/parsing/nquads/nQuads.test.js"
+          ],
           "decisionRef": "PHASE13-2026-08-22"
         },
         {
@@ -880,7 +924,9 @@
         "OWLAPI 5.5.1 public OWLManager.createOWLOntologyManager API"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["apibinding/owlManager.test.js"],
+      "focusedEvidence": [
+        "apibinding/owlManager.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "PHASE0-2026-08-10",
@@ -970,7 +1016,10 @@
         "util/owlapi-reference/fixtures/storage/functional-all-kinds.ofn",
         "util/owlapi-reference/fixtures/storage/functional-all-kinds.java.json"
       ],
-      "thirdPartyDependencies": ["@hyperjump/uri", "bcp-47"],
+      "thirdPartyDependencies": [
+        "@hyperjump/uri",
+        "bcp-47"
+      ],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
       "reviewDate": "2026-09-25",
@@ -1006,7 +1055,9 @@
             "docs/compatibility/java-api-parity-decisions.json"
           ],
           "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-          "focusedEvidence": ["model/behaviorStorage.test.js"],
+          "focusedEvidence": [
+            "model/behaviorStorage.test.js"
+          ],
           "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
           "recordedOn": "2026-10-14"
         }
@@ -1048,7 +1099,9 @@
             "docs/compatibility/java-api-parity-decisions.json"
           ],
           "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-          "focusedEvidence": ["model/behaviorStorage.test.js"],
+          "focusedEvidence": [
+            "model/behaviorStorage.test.js"
+          ],
           "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
           "recordedOn": "2026-10-14"
         }
@@ -1077,7 +1130,11 @@
         "internal/parsing/rdfxml/rdfXmlSyntaxAdapter.test.js",
         "internal/rdfjs/datasetIsomorphism.test.js"
       ],
-      "thirdPartyDependencies": ["@hyperjump/uri", "@xmldom/xmldom", "bcp-47"],
+      "thirdPartyDependencies": [
+        "@hyperjump/uri",
+        "@xmldom/xmldom",
+        "bcp-47"
+      ],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
       "reviewDate": "2026-09-25",
@@ -1094,7 +1151,9 @@
             "docs/compatibility/java-api-parity-decisions.json"
           ],
           "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-          "focusedEvidence": ["model/behaviorStorage.test.js"],
+          "focusedEvidence": [
+            "model/behaviorStorage.test.js"
+          ],
           "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
           "recordedOn": "2026-10-14"
         }
@@ -1123,7 +1182,9 @@
         "util/owlapi-reference/fixtures/storage/rdfxml-all-kinds.rdf",
         "util/owlapi-reference/fixtures/storage/rdfxml-all-kinds.java.json"
       ],
-      "thirdPartyDependencies": ["@rdfjs/data-model"],
+      "thirdPartyDependencies": [
+        "@rdfjs/data-model"
+      ],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
       "reviewDate": "2026-09-25",
@@ -1159,7 +1220,9 @@
             "docs/compatibility/java-api-parity-decisions.json"
           ],
           "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-          "focusedEvidence": ["model/behaviorStorage.test.js"],
+          "focusedEvidence": [
+            "model/behaviorStorage.test.js"
+          ],
           "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
           "recordedOn": "2026-10-14"
         }
@@ -1220,7 +1283,9 @@
             "docs/compatibility/java-api-parity-decisions.json"
           ],
           "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-          "focusedEvidence": ["model/behaviorStorage.test.js"],
+          "focusedEvidence": [
+            "model/behaviorStorage.test.js"
+          ],
           "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
           "recordedOn": "2026-10-14"
         }
@@ -1242,7 +1307,9 @@
         "OWLAPI 5.5.1 AxiomType.isLogical classification and OWLAxiom structural equality responsibilities at pinned revision d7e997a53b470e32700de89cc610d9daf01ea769"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["internal/model/axiomSemantics.test.js"],
+      "focusedEvidence": [
+        "internal/model/axiomSemantics.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
@@ -1390,7 +1457,9 @@
             "docs/compatibility/java-api-parity-decisions.json"
           ],
           "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-          "focusedEvidence": ["search/behaviorTiming.test.js"],
+          "focusedEvidence": [
+            "search/behaviorTiming.test.js"
+          ],
           "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
           "recordedOn": "2026-10-14"
         }
@@ -1437,7 +1506,9 @@
             "docs/compatibility/java-api-parity-decisions.json"
           ],
           "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-          "focusedEvidence": ["util/behaviorMerger.test.js"],
+          "focusedEvidence": [
+            "util/behaviorMerger.test.js"
+          ],
           "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
           "recordedOn": "2026-10-14"
         }
@@ -1448,7 +1519,9 @@
       "path": "internal/rdfjs/environment.js",
       "phase": 1,
       "scope": "canonical RDF/JS data-factory and DatasetCore boundary",
-      "legacyWebVowlSources": ["src/owl2vowl/js/turtleParser.js"],
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/turtleParser.js"
+      ],
       "provenanceCategory": "B_STANDARDS_ADAPTER",
       "normativePublicSources": [
         "https://rdf.js.org/data-model-spec/",
@@ -1459,8 +1532,13 @@
         "OWLAPI 5.5.1 public RDF parser boundary used only as behavioral context"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["internal/rdfjs/graphPolicy.test.js"],
-      "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset"],
+      "focusedEvidence": [
+        "internal/rdfjs/graphPolicy.test.js"
+      ],
+      "thirdPartyDependencies": [
+        "@rdfjs/data-model",
+        "@rdfjs/dataset"
+      ],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE0-2026-08-10",
       "reviewDate": "2026-08-10"
@@ -1470,7 +1548,9 @@
       "path": "internal/rdfjs/graphPolicy.js",
       "phase": 1,
       "scope": "dataset graph analysis and explicit selection-policy foundation",
-      "legacyWebVowlSources": ["src/owl2vowl/js/rdfParser.js"],
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/rdfParser.js"
+      ],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/rdf11-concepts/#section-dataset",
@@ -1481,7 +1561,9 @@
         "OWLAPI 5.5.1 public RDF-loading behavior used only as behavioral context"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["internal/rdfjs/graphPolicy.test.js"],
+      "focusedEvidence": [
+        "internal/rdfjs/graphPolicy.test.js"
+      ],
       "laterPhaseChanges": [
         {
           "phase": 5,
@@ -1506,11 +1588,16 @@
             "https://www.w3.org/TR/n-quads/",
             "docs/implementation-plan.md sections 6.4 and 17.20"
           ],
-          "focusedEvidence": ["internal/parsing/nquads/nQuads.test.js"],
+          "focusedEvidence": [
+            "internal/parsing/nquads/nQuads.test.js"
+          ],
           "decisionRef": "PHASE13-2026-08-22"
         }
       ],
-      "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset"],
+      "thirdPartyDependencies": [
+        "@rdfjs/data-model",
+        "@rdfjs/dataset"
+      ],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE0-2026-08-10",
       "reviewDate": "2026-08-10"
@@ -1547,7 +1634,9 @@
       "path": "internal/parsing/functional/lexer.js",
       "phase": 2,
       "scope": "lazy pull lexer for Functional tokens, exact lexical values, source locations, cancellation, timeout, and token budgets",
-      "legacyWebVowlSources": ["src/owl2vowl/js/functionalSyntaxParser.js"],
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/functionalSyntaxParser.js"
+      ],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-syntax/ sections 2.2-2.3 and 5.7",
@@ -1683,7 +1772,9 @@
       "path": "internal/parsing/manchester/lexer.js",
       "phase": 3,
       "scope": "lazy pull lexer for Manchester tokens, exact lexical values and adjacency, SPARQL-style names, source locations, cancellation, timeout, and token budgets",
-      "legacyWebVowlSources": ["src/owl2vowl/js/manchesterSyntaxParser.js"],
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/manchesterSyntaxParser.js"
+      ],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-manchester-syntax/",
@@ -1808,7 +1899,9 @@
       "path": "internal/parsing/owlxml/grammar.js",
       "phase": 4,
       "scope": "immutable complete finite inventory of OWL/XML ontology, entity, expression, data-range, annotation, and axiom productions",
-      "legacyWebVowlSources": ["src/owl2vowl/js/owlXmlParser.js"],
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/owlXmlParser.js"
+      ],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-xml-serialization/#sec-xml-schema",
@@ -1819,7 +1912,9 @@
         "OWLAPI 5.5.1 public OWL/XML parser surface and pinned Phase 4 fixture inventory"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["internal/parsing/owlxml/owlXml.conformance.test.js"],
+      "focusedEvidence": [
+        "internal/parsing/owlxml/owlXml.conformance.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE4-2026-08-11",
@@ -1901,7 +1996,9 @@
       "path": "internal/parsing/xml/xmlEntityPolicy.js",
       "phase": 4,
       "scope": "default-deny external XML resource policy and bounded internal general-entity validation and expansion",
-      "legacyWebVowlSources": ["src/owl2vowl/js/xmlUtils.js"],
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/xmlUtils.js"
+      ],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/xml/",
@@ -2173,7 +2270,10 @@
           "recordedOn": "2026-10-14"
         }
       ],
-      "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset"],
+      "thirdPartyDependencies": [
+        "@rdfjs/data-model",
+        "@rdfjs/dataset"
+      ],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE5-2026-08-13",
       "reviewDate": "2026-08-13"
@@ -2183,7 +2283,9 @@
       "path": "internal/parsing/rdfxml/descriptor.js",
       "phase": 6,
       "scope": "bounded tri-state RDF/XML detection and immutable manager-registry metadata without claiming OWL/XML documents",
-      "legacyWebVowlSources": ["src/owl2vowl/js/importLoader.js"],
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/importLoader.js"
+      ],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/rdf-syntax-grammar/",
@@ -2280,7 +2382,9 @@
       "path": "internal/parsing/rdfxml/rdfXmlSyntaxAdapter.js",
       "phase": 6,
       "scope": "private streaming RDF/XML-to-RDF/JS normalization with bounded XML security, chunking, cancellation, error normalization, and source-aware XMLLiteral canonicalization",
-      "legacyWebVowlSources": ["src/owl2vowl/js/rdfParser.js"],
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/rdfParser.js"
+      ],
       "provenanceCategory": "B_STANDARDS_ADAPTER",
       "normativePublicSources": [
         "https://www.w3.org/TR/rdf-syntax-grammar/",
@@ -2382,7 +2486,11 @@
         "internal/parsing/turtle/turtle.differential.test.js",
         "src/owl2vowl/js/index.test.js"
       ],
-      "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset", "n3"],
+      "thirdPartyDependencies": [
+        "@rdfjs/data-model",
+        "@rdfjs/dataset",
+        "n3"
+      ],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE9-2026-08-20",
       "reviewDate": "2026-08-20"
@@ -2392,7 +2500,9 @@
       "path": "internal/parsing/rdf/n3SyntaxAdapter.js",
       "phase": 9,
       "scope": "private exact-format Turtle, N-Triples, N-Quads, and TriG N3.js stream adaptation with canonical RDF/JS normalization, Unicode-safe chunking, backpressure, cancellation, watchdog timeouts, finite resource limits, cooperative scheduling, syntax-specific errors, Turtle/TriG prefix isolation, N-Triples default-graph normalization, and lossless N-Quads/TriG graph preservation",
-      "legacyWebVowlSources": ["src/owl2vowl/js/turtleParser.js"],
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/turtleParser.js"
+      ],
       "provenanceCategory": "B_STANDARDS_ADAPTER",
       "normativePublicSources": [
         "https://www.w3.org/TR/turtle/",
@@ -2435,7 +2545,11 @@
         "internal/parsing/trig/trig.resource.test.js",
         "util/verify-webvowl-lazy-parser-chunks.mjs"
       ],
-      "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset", "n3"],
+      "thirdPartyDependencies": [
+        "@rdfjs/data-model",
+        "@rdfjs/dataset",
+        "n3"
+      ],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE9-2026-08-20",
       "extensionDecisionRefs": [
@@ -2498,7 +2612,9 @@
       "path": "internal/parsing/dl/lexer.js",
       "phase": 10,
       "scope": "independently authored lazy pull lexer for the characterized OWLAPI DL dialect, including longest-token alias handling, UTF-8 token limits, source locations, cancellation, monotonic timeout, and token budgets",
-      "legacyWebVowlSources": ["src/owl2vowl/js/dlSyntaxParser.js"],
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/dlSyntaxParser.js"
+      ],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-syntax/ sections 8-9",
@@ -2522,7 +2638,9 @@
       "path": "internal/parsing/dl/parser.js",
       "phase": 10,
       "scope": "independently authored direct construction of the OWLAPI DL dialect's structural class, assertion, and object-property axiom subset with deterministic document namespaces and no RDF or legacy-parser detour; the owner-approved 2026-10-01 correction preserves exact numeric lexical strings per OWL 2 Structural Specification section 5.7",
-      "legacyWebVowlSources": ["src/owl2vowl/js/dlSyntaxParser.js"],
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/dlSyntaxParser.js"
+      ],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-syntax/ sections 8-9",
@@ -2571,7 +2689,9 @@
       "path": "internal/parsing/krss/dialect.js",
       "phase": 11,
       "scope": "independently authored KRSS-family dialect policy that classifies shared and KRSS2-only top-level vocabulary for separate executable adapters",
-      "legacyWebVowlSources": ["src/owl2vowl/js/krss2SyntaxParser.js"],
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/krss2SyntaxParser.js"
+      ],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://owlcs.github.io/owlapi/apidocs_5/org/semanticweb/owlapi/krss1/parser/KRSSOWLParser.html",
@@ -2582,7 +2702,9 @@
         "OWLAPI 5.5.1 public KRSSOWLParser/KRSSDocumentFormat and KRSS2OWLParser/KRSS2DocumentFormat identities"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["internal/parsing/krss/dialect.test.js"],
+      "focusedEvidence": [
+        "internal/parsing/krss/dialect.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE11-2026-08-21",
@@ -2593,7 +2715,9 @@
       "path": "internal/parsing/krss/lexer.js",
       "phase": 11,
       "scope": "independently authored dialect-neutral lazy KRSS-family lexer with bounded lookahead, semicolon comments, UTF-8 limits, locations, cancellation, and monotonic timeout",
-      "legacyWebVowlSources": ["src/owl2vowl/js/krss2SyntaxParser.js"],
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/krss2SyntaxParser.js"
+      ],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://owlcs.github.io/owlapi/apidocs_5/org/semanticweb/owlapi/krss1/parser/KRSSOWLParser.html",
@@ -2645,7 +2769,9 @@
       "path": "internal/parsing/krss2/parser.js",
       "phase": 11,
       "scope": "thin public KRSS2 adapter supplying the preserved Phase 11 dialect policy to the Phase 17 shared core",
-      "legacyWebVowlSources": ["src/owl2vowl/js/krss2SyntaxParser.js"],
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/krss2SyntaxParser.js"
+      ],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-syntax/ sections 8-9",
@@ -2856,7 +2982,9 @@
           "normativePublicSources": [
             "docs/implementation-plan.md sections 10.8, 11.2, and 17.22"
           ],
-          "focusedEvidence": ["internal/parsing/jsonld/jsonLd.test.js"],
+          "focusedEvidence": [
+            "internal/parsing/jsonld/jsonLd.test.js"
+          ],
           "decisionRef": "PHASE15-2026-08-22"
         },
         {
@@ -2899,7 +3027,10 @@
           "recordedOn": "2026-10-14"
         }
       ],
-      "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset"],
+      "thirdPartyDependencies": [
+        "@rdfjs/data-model",
+        "@rdfjs/dataset"
+      ],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE12-2026-08-22",
       "extensionDecisionRef": "PHASE13-2026-08-22",
@@ -2928,7 +3059,9 @@
         "internal/parsing/ntriples/nTriples.test.js",
         "internal/parsing/ntriples/nTriples.conformance.test.js"
       ],
-      "thirdPartyDependencies": ["n3"],
+      "thirdPartyDependencies": [
+        "n3"
+      ],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE12-2026-08-22",
       "reviewDate": "2026-08-22"
@@ -2938,7 +3071,9 @@
       "path": "internal/parsing/ntriples/parser.js",
       "phase": 12,
       "scope": "strict N-Triples parser binding that selects the exact N3.js-backed adapter, normalizes graph-only RDF/JS output, and delegates all OWL reconstruction to the shared structural translator",
-      "legacyWebVowlSources": ["src/owl2vowl/js/turtleParser.js"],
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/turtleParser.js"
+      ],
       "provenanceCategory": "B_STANDARDS_ADAPTER",
       "normativePublicSources": [
         "https://www.w3.org/TR/n-triples/",
@@ -2957,7 +3092,11 @@
         "internal/parsing/ntriples/nTriples.resource.test.js",
         "internal/parsing/ntriples/nTriples.browser.test.js"
       ],
-      "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset", "n3"],
+      "thirdPartyDependencies": [
+        "@rdfjs/data-model",
+        "@rdfjs/dataset",
+        "n3"
+      ],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE12-2026-08-22",
       "reviewDate": "2026-08-22"
@@ -2985,7 +3124,9 @@
         "internal/parsing/nquads/nQuads.test.js",
         "internal/parsing/nquads/nQuads.conformance.test.js"
       ],
-      "thirdPartyDependencies": ["n3"],
+      "thirdPartyDependencies": [
+        "n3"
+      ],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE13-2026-08-22",
       "reviewDate": "2026-08-22"
@@ -2995,7 +3136,9 @@
       "path": "internal/parsing/nquads/parser.js",
       "phase": 13,
       "scope": "strict N-Quads parser binding that selects the exact N3.js-backed adapter, preserves complete RDF/JS dataset graph terms, and delegates graph policy plus OWL reconstruction to the shared project-owned pipeline",
-      "legacyWebVowlSources": ["src/owl2vowl/js/turtleParser.js"],
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/turtleParser.js"
+      ],
       "provenanceCategory": "B_STANDARDS_ADAPTER",
       "normativePublicSources": [
         "https://www.w3.org/TR/n-quads/",
@@ -3014,7 +3157,11 @@
         "internal/parsing/nquads/nQuads.resource.test.js",
         "internal/parsing/nquads/nQuads.browser.test.js"
       ],
-      "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset", "n3"],
+      "thirdPartyDependencies": [
+        "@rdfjs/data-model",
+        "@rdfjs/dataset",
+        "n3"
+      ],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE13-2026-08-22",
       "reviewDate": "2026-08-22"
@@ -3043,7 +3190,9 @@
         "internal/parsing/trig/trig.test.js",
         "internal/parsing/trig/trig.conformance.test.js"
       ],
-      "thirdPartyDependencies": ["n3"],
+      "thirdPartyDependencies": [
+        "n3"
+      ],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE14-2026-08-22",
       "reviewDate": "2026-08-22"
@@ -3053,7 +3202,9 @@
       "path": "internal/parsing/trig/parser.js",
       "phase": 14,
       "scope": "strict TriG parser binding that preserves prefixes and complete RDF/JS dataset graph terms while delegating graph policy and OWL reconstruction to the shared project-owned pipeline",
-      "legacyWebVowlSources": ["src/owl2vowl/js/turtleParser.js"],
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/turtleParser.js"
+      ],
       "provenanceCategory": "B_STANDARDS_ADAPTER",
       "normativePublicSources": [
         "https://www.w3.org/TR/trig/",
@@ -3072,7 +3223,11 @@
         "internal/parsing/trig/trig.resource.test.js",
         "internal/parsing/trig/trig.browser.test.js"
       ],
-      "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset", "n3"],
+      "thirdPartyDependencies": [
+        "@rdfjs/data-model",
+        "@rdfjs/dataset",
+        "n3"
+      ],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE14-2026-08-22",
       "reviewDate": "2026-08-22"
@@ -3082,7 +3237,9 @@
       "path": "internal/parsing/jsonld/descriptor.js",
       "phase": 15,
       "scope": "immutable JSON-LD format identity and bounded conservative detection using characteristic JSON-LD keywords while treating the exact application/ld+json media type as authoritative",
-      "legacyWebVowlSources": ["src/owl2vowl/js/jsonLdParser.js"],
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/jsonLdParser.js"
+      ],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/json-ld11/",
@@ -3097,7 +3254,9 @@
         "internal/parsing/jsonld/jsonLd.test.js",
         "internal/parsing/trig/trig.test.js"
       ],
-      "thirdPartyDependencies": ["jsonld"],
+      "thirdPartyDependencies": [
+        "jsonld"
+      ],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE15-2026-08-22",
       "reviewDate": "2026-08-22"
@@ -3107,7 +3266,9 @@
       "path": "internal/parsing/jsonld/jsonLdSyntaxAdapter.js",
       "phase": 15,
       "scope": "Digital Bazaar jsonld.js adapter that converts JSON-LD directly into normalized RDF/JS quads without an N-Quads string round-trip, applies immutable processing-mode, expansion-context, and RDF-direction format parameters, canonicalizes rdf:JSON, and confines remote contexts to the injected resource-limited security boundary",
-      "legacyWebVowlSources": ["src/owl2vowl/js/jsonLdParser.js"],
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/jsonLdParser.js"
+      ],
       "provenanceCategory": "B_STANDARDS_ADAPTER",
       "normativePublicSources": [
         "https://www.w3.org/TR/2014/REC-json-ld-20140116/",
@@ -3148,7 +3309,9 @@
             "docs/compatibility/java-api-parity-decisions.json"
           ],
           "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-          "focusedEvidence": ["internal/parsing/jsonld/behaviorJsonLd.test.js"],
+          "focusedEvidence": [
+            "internal/parsing/jsonld/behaviorJsonLd.test.js"
+          ],
           "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
           "recordedOn": "2026-10-14"
         }
@@ -3159,7 +3322,9 @@
       "path": "internal/parsing/jsonld/jsonLd10Compatibility.js",
       "phase": 15,
       "scope": "narrow standards-compatibility boundary for JSON-LD 1.0 context definitions and list-of-lists that jsonld.js 9 no longer provides directly; general expansion and context processing remain delegated",
-      "legacyWebVowlSources": ["src/owl2vowl/js/jsonLdParser.js"],
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/jsonLdParser.js"
+      ],
       "provenanceCategory": "B_STANDARDS_ADAPTER",
       "normativePublicSources": [
         "https://www.w3.org/TR/2014/REC-json-ld-20140116/",
@@ -3174,7 +3339,9 @@
         "internal/parsing/jsonld/jsonLdSyntaxAdapter.test.js",
         "internal/parsing/jsonld/jsonLd.conformance.test.js"
       ],
-      "thirdPartyDependencies": ["jsonld"],
+      "thirdPartyDependencies": [
+        "jsonld"
+      ],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE15-2026-08-22",
       "reviewDate": "2026-08-22"
@@ -3184,7 +3351,9 @@
       "path": "internal/parsing/jsonld/parser.js",
       "phase": 15,
       "scope": "thin JSON-LD parser binding that injects the manager document loader, preserves context metadata, applies the shared RDF dataset graph policy, and delegates OWL reconstruction to the common RDF-to-OWL translator",
-      "legacyWebVowlSources": ["src/owl2vowl/js/jsonLdParser.js"],
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/jsonLdParser.js"
+      ],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/json-ld11-api/",
@@ -3199,7 +3368,9 @@
         "internal/parsing/jsonld/jsonLd.test.js",
         "internal/parsing/jsonld/jsonLd.differential.test.js"
       ],
-      "thirdPartyDependencies": ["jsonld"],
+      "thirdPartyDependencies": [
+        "jsonld"
+      ],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE15-2026-08-22",
       "reviewDate": "2026-08-22"
@@ -3236,7 +3407,10 @@
         "util/owlapi-reference/fixtures/rdf/phase16-graph.ofn",
         "util/owlapi-reference/fixtures/rdf/phase16-graph.java.nt"
       ],
-      "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset"],
+      "thirdPartyDependencies": [
+        "@rdfjs/data-model",
+        "@rdfjs/dataset"
+      ],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE16-2026-08-22",
       "reviewDate": "2026-08-22",
@@ -3277,7 +3451,10 @@
         "Java OWLAPI 5.5.1 OWLDocumentFormat public API identity and the approved package Public API Surface Registry contract"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["io/io.test.js", "test/package-boundary.test.mjs"],
+      "focusedEvidence": [
+        "io/io.test.js",
+        "test/package-boundary.test.mjs"
+      ],
       "laterPhaseChanges": [
         {
           "phase": 22,
@@ -3313,7 +3490,10 @@
         "Java OWLAPI 5.5.1 document-format namespace and the approved package Public API Surface Registry contract"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["io/io.test.js", "test/package-boundary.test.mjs"],
+      "focusedEvidence": [
+        "io/io.test.js",
+        "test/package-boundary.test.mjs"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "PHASE19B-2026-08-26",
@@ -3362,7 +3542,9 @@
         "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["model/losslessCardinality.test.js"],
+      "focusedEvidence": [
+        "model/losslessCardinality.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
@@ -3385,7 +3567,9 @@
         "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["model/sourcePreservation.test.js"],
+      "focusedEvidence": [
+        "model/sourcePreservation.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
@@ -3408,7 +3592,9 @@
         "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["model/sourcePreservation.test.js"],
+      "focusedEvidence": [
+        "model/sourcePreservation.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
@@ -3458,7 +3644,9 @@
         "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["model/documentFormatContext.test.js"],
+      "focusedEvidence": [
+        "model/documentFormatContext.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
@@ -3481,7 +3669,9 @@
         "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["profiles/owl2DLProfile.test.js"],
+      "focusedEvidence": [
+        "profiles/owl2DLProfile.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
@@ -3504,7 +3694,9 @@
         "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["profiles/owl2DLProfile.test.js"],
+      "focusedEvidence": [
+        "profiles/owl2DLProfile.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
@@ -3548,8 +3740,13 @@
         "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["internal/profiles/datatypes.test.js"],
-      "thirdPartyDependencies": ["bcp-47", "@xmldom/xmldom"],
+      "focusedEvidence": [
+        "internal/profiles/datatypes.test.js"
+      ],
+      "thirdPartyDependencies": [
+        "bcp-47",
+        "@xmldom/xmldom"
+      ],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
       "recordedOn": "2026-09-30"
@@ -3571,7 +3768,9 @@
         "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["internal/profiles/facets.test.js"],
+      "focusedEvidence": [
+        "internal/profiles/facets.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
@@ -3598,7 +3797,9 @@
         "profiles/owl2DLProfile.test.js",
         "model/rdfsSourcePreservation.test.js"
       ],
-      "thirdPartyDependencies": ["@hyperjump/uri"],
+      "thirdPartyDependencies": [
+        "@hyperjump/uri"
+      ],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
       "recordedOn": "2026-09-30",
@@ -3641,7 +3842,9 @@
         "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["profiles/owl2DLProfile.test.js"],
+      "focusedEvidence": [
+        "profiles/owl2DLProfile.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
@@ -3664,8 +3867,12 @@
         "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["model/rdfsSourcePreservation.test.js"],
-      "thirdPartyDependencies": ["@hyperjump/uri"],
+      "focusedEvidence": [
+        "model/rdfsSourcePreservation.test.js"
+      ],
+      "thirdPartyDependencies": [
+        "@hyperjump/uri"
+      ],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
       "recordedOn": "2026-09-30"
@@ -3687,7 +3894,9 @@
         "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["profiles/owl2DLProfile.test.js"],
+      "focusedEvidence": [
+        "profiles/owl2DLProfile.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
@@ -3736,7 +3945,9 @@
         "internal/profiles/datatypes.test.js",
         "profiles/owl2DLProfile.test.js"
       ],
-      "thirdPartyDependencies": ["@hyperjump/uri"],
+      "thirdPartyDependencies": [
+        "@hyperjump/uri"
+      ],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
       "recordedOn": "2026-09-30"
@@ -3758,7 +3969,9 @@
         "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["internal/profiles/xsdPattern.test.js"],
+      "focusedEvidence": [
+        "internal/profiles/xsdPattern.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
@@ -3896,7 +4109,9 @@
             "docs/compatibility/java-api-parity-decisions.json"
           ],
           "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-          "focusedEvidence": ["model/behaviorStorage.test.js"],
+          "focusedEvidence": [
+            "model/behaviorStorage.test.js"
+          ],
           "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
           "recordedOn": "2026-10-14"
         }
@@ -3922,7 +4137,10 @@
         "util/owlapi-reference/RunWriterConfigurationContract.java",
         "util/owlapi-reference/run-writer-configuration-contract.test.js"
       ],
-      "thirdPartyDependencies": ["@hyperjump/uri", "@xmldom/xmldom"],
+      "thirdPartyDependencies": [
+        "@hyperjump/uri",
+        "@xmldom/xmldom"
+      ],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "RDFXML-REFINEMENTS-2026-10-08",
       "recordedOn": "2026-10-09"
@@ -4159,7 +4377,10 @@
         "test/import-closure/rc2-public-contract.js",
         "util/owlapi-reference/fixtures/rc2/"
       ],
-      "thirdPartyDependencies": ["@hyperjump/uri", "@xmldom/xmldom"],
+      "thirdPartyDependencies": [
+        "@hyperjump/uri",
+        "@xmldom/xmldom"
+      ],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
       "recordedOn": "2026-10-09",
@@ -4176,7 +4397,9 @@
             "docs/compatibility/java-api-parity-decisions.json"
           ],
           "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-          "focusedEvidence": ["model/behaviorStorage.test.js"],
+          "focusedEvidence": [
+            "model/behaviorStorage.test.js"
+          ],
           "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
           "recordedOn": "2026-10-14"
         }
@@ -4201,7 +4424,9 @@
         "test/import-closure/rc2-public-contract.js",
         "util/owlapi-reference/fixtures/rc2/"
       ],
-      "thirdPartyDependencies": ["@rdfjs/data-model/Factory.js"],
+      "thirdPartyDependencies": [
+        "@rdfjs/data-model/Factory.js"
+      ],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
       "recordedOn": "2026-10-09",
@@ -4218,7 +4443,9 @@
             "docs/compatibility/java-api-parity-decisions.json"
           ],
           "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-          "focusedEvidence": ["model/behaviorStorage.test.js"],
+          "focusedEvidence": [
+            "model/behaviorStorage.test.js"
+          ],
           "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
           "recordedOn": "2026-10-14"
         }
@@ -4243,7 +4470,9 @@
         "test/import-closure/rc2-public-contract.js",
         "util/owlapi-reference/fixtures/rc2/"
       ],
-      "thirdPartyDependencies": ["n3"],
+      "thirdPartyDependencies": [
+        "n3"
+      ],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "RC2-JAVA-PARITY-2026-10-09",
       "recordedOn": "2026-10-09",
@@ -4260,7 +4489,9 @@
             "docs/compatibility/java-api-parity-decisions.json"
           ],
           "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-          "focusedEvidence": ["model/behaviorStorage.test.js"],
+          "focusedEvidence": [
+            "model/behaviorStorage.test.js"
+          ],
           "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
           "recordedOn": "2026-10-14"
         }
@@ -4672,7 +4903,9 @@
             "docs/compatibility/java-api-parity-decisions.json"
           ],
           "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-          "focusedEvidence": ["search/behaviorTiming.test.js"],
+          "focusedEvidence": [
+            "search/behaviorTiming.test.js"
+          ],
           "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
           "recordedOn": "2026-10-14"
         }
@@ -4813,7 +5046,9 @@
         "OWLAPI 5.5.1 public RDF-loading behavior used only as behavioral context"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["internal/rdfjs/graphPolicy.test.js"],
+      "focusedEvidence": [
+        "internal/rdfjs/graphPolicy.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "DRY-REMEDIATION-2026-10-11",
@@ -4837,7 +5072,9 @@
         "Pinned OWLAPI 5.5.1 public N-Triples storer result generated from revision d7e997a53b470e32700de89cc610d9daf01ea769 with addMissingTypes disabled; the exact three rdf:type rdf:List extras are retained as a counted controlled Java deviation"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["internal/mapping/owlToRdfTranslator.test.js"],
+      "focusedEvidence": [
+        "internal/mapping/owlToRdfTranslator.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "DRY-REMEDIATION-2026-10-11",
@@ -4862,7 +5099,9 @@
         "Pinned 338-case W3C OWL 2 test manifest with 233 applicable tests and 312 constructed RDF/JS documents"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["internal/profiles/datatypes.test.js"],
+      "focusedEvidence": [
+        "internal/profiles/datatypes.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "DRY-REMEDIATION-2026-10-11",
@@ -4883,7 +5122,9 @@
         "OWLAPI 5.5.1 pinned OWL/XML behavioral fixture; external-resource behavior is governed by the stricter project security policy"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["internal/parsing/xml/xmlParserAdapter.test.js"],
+      "focusedEvidence": [
+        "internal/parsing/xml/xmlParserAdapter.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "DRY-REMEDIATION-2026-10-11",
@@ -4928,7 +5169,9 @@
         "OWLAPI 5.5.1 pinned Java structural snapshots and the pinned 338-case W3C manifest copy"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["internal/parsing/owlxml/owlXml.conformance.test.js"],
+      "focusedEvidence": [
+        "internal/parsing/owlxml/owlXml.conformance.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "DRY-REMEDIATION-2026-10-11",
@@ -4973,7 +5216,9 @@
         "OWLAPI 5.5.1 public NTriplesDocumentFormat identity and the pinned W3C RDF 1.1/RDF 1.2 syntax inventories"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["internal/parsing/ntriples/nTriples.test.js"],
+      "focusedEvidence": [
+        "internal/parsing/ntriples/nTriples.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "DRY-REMEDIATION-2026-10-11",
@@ -4995,7 +5240,9 @@
         "OWLAPI 5.5.1 accepted/rejected input observed only through the pinned black-box harness and project-owned fixtures"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["internal/parsing/textCursor.test.js"],
+      "focusedEvidence": [
+        "internal/parsing/textCursor.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "DRY-REMEDIATION-2026-10-11",
@@ -5078,7 +5325,9 @@
         "docs/compatibility/java-api-parity-decisions.json"
       ],
       "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-      "focusedEvidence": ["model/behaviorProfile.test.js"],
+      "focusedEvidence": [
+        "model/behaviorProfile.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
@@ -5101,7 +5350,9 @@
         "docs/compatibility/java-api-parity-decisions.json"
       ],
       "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-      "focusedEvidence": ["internal/parsing/jsonld/behaviorJsonLd.test.js"],
+      "focusedEvidence": [
+        "internal/parsing/jsonld/behaviorJsonLd.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
@@ -5125,7 +5376,9 @@
         "docs/provenance/rights-inventory.json"
       ],
       "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-      "focusedEvidence": ["profiles/behaviorProfiles.test.js"],
+      "focusedEvidence": [
+        "profiles/behaviorProfiles.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
@@ -5148,7 +5401,9 @@
         "docs/compatibility/java-api-parity-decisions.json"
       ],
       "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-      "focusedEvidence": ["io/node/nodeDocumentLoader.test.js"],
+      "focusedEvidence": [
+        "io/node/nodeDocumentLoader.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
@@ -5171,7 +5426,9 @@
         "docs/compatibility/java-api-parity-decisions.json"
       ],
       "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-      "focusedEvidence": ["search/behaviorTiming.test.js"],
+      "focusedEvidence": [
+        "search/behaviorTiming.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
@@ -5194,7 +5451,9 @@
         "docs/compatibility/java-api-parity-decisions.json"
       ],
       "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-      "focusedEvidence": ["model/behaviorLiterals.test.js"],
+      "focusedEvidence": [
+        "model/behaviorLiterals.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
@@ -5217,7 +5476,9 @@
         "docs/compatibility/java-api-parity-decisions.json"
       ],
       "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-      "focusedEvidence": ["model/behaviorLiterals.test.js"],
+      "focusedEvidence": [
+        "model/behaviorLiterals.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
@@ -5240,7 +5501,9 @@
         "docs/compatibility/java-api-parity-decisions.json"
       ],
       "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-      "focusedEvidence": ["model/behaviorLiterals.test.js"],
+      "focusedEvidence": [
+        "model/behaviorLiterals.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
@@ -5263,7 +5526,9 @@
         "docs/compatibility/java-api-parity-decisions.json"
       ],
       "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-      "focusedEvidence": ["io/node/nodeDocumentLoader.test.js"],
+      "focusedEvidence": [
+        "io/node/nodeDocumentLoader.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
@@ -5287,7 +5552,9 @@
         "docs/provenance/rights-inventory.json"
       ],
       "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-      "focusedEvidence": ["internal/parsing/jsonld/behaviorJsonLd.test.js"],
+      "focusedEvidence": [
+        "internal/parsing/jsonld/behaviorJsonLd.test.js"
+      ],
       "thirdPartyDependencies": [
         "jsonld",
         "canonicalize",
@@ -5318,7 +5585,9 @@
         "docs/compatibility/java-api-parity-decisions.json"
       ],
       "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-      "focusedEvidence": ["internal/parsing/xml/behaviorXml.test.js"],
+      "focusedEvidence": [
+        "internal/parsing/xml/behaviorXml.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
@@ -5341,7 +5610,9 @@
         "docs/compatibility/java-api-parity-decisions.json"
       ],
       "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-      "focusedEvidence": ["internal/parsing/xml/behaviorXml.test.js"],
+      "focusedEvidence": [
+        "internal/parsing/xml/behaviorXml.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
@@ -5364,7 +5635,9 @@
         "docs/compatibility/java-api-parity-decisions.json"
       ],
       "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-      "focusedEvidence": ["internal/parsing/xml/behaviorXml.test.js"],
+      "focusedEvidence": [
+        "internal/parsing/xml/behaviorXml.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
@@ -5387,7 +5660,9 @@
         "docs/compatibility/java-api-parity-decisions.json"
       ],
       "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-      "focusedEvidence": ["profiles/behaviorProfiles.test.js"],
+      "focusedEvidence": [
+        "profiles/behaviorProfiles.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
@@ -5410,7 +5685,9 @@
         "docs/compatibility/java-api-parity-decisions.json"
       ],
       "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-      "focusedEvidence": ["profiles/behaviorProfiles.test.js"],
+      "focusedEvidence": [
+        "profiles/behaviorProfiles.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
@@ -5433,7 +5710,9 @@
         "docs/compatibility/java-api-parity-decisions.json"
       ],
       "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-      "focusedEvidence": ["model/behaviorParserSelection.test.js"],
+      "focusedEvidence": [
+        "model/behaviorParserSelection.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
@@ -5456,7 +5735,9 @@
         "docs/compatibility/java-api-parity-decisions.json"
       ],
       "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-      "focusedEvidence": ["model/behaviorStorage.test.js"],
+      "focusedEvidence": [
+        "model/behaviorStorage.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
@@ -5479,7 +5760,9 @@
         "docs/compatibility/java-api-parity-decisions.json"
       ],
       "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-      "focusedEvidence": ["model/behaviorStorage.test.js"],
+      "focusedEvidence": [
+        "model/behaviorStorage.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
@@ -5502,7 +5785,9 @@
         "docs/compatibility/java-api-parity-decisions.json"
       ],
       "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-      "focusedEvidence": ["model/behaviorStorage.test.js"],
+      "focusedEvidence": [
+        "model/behaviorStorage.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
@@ -5525,7 +5810,9 @@
         "docs/compatibility/java-api-parity-decisions.json"
       ],
       "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-      "focusedEvidence": ["model/behaviorStorage.test.js"],
+      "focusedEvidence": [
+        "model/behaviorStorage.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
@@ -5548,8 +5835,13 @@
         "docs/compatibility/java-api-parity-decisions.json"
       ],
       "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-      "focusedEvidence": ["io/node/nodeDocumentLoader.test.js"],
-      "thirdPartyDependencies": ["lzma-native", "iconv-lite"],
+      "focusedEvidence": [
+        "io/node/nodeDocumentLoader.test.js"
+      ],
+      "thirdPartyDependencies": [
+        "lzma-native",
+        "iconv-lite"
+      ],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
       "recordedOn": "2026-10-14"
@@ -5571,7 +5863,9 @@
         "docs/compatibility/java-api-parity-decisions.json"
       ],
       "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-      "focusedEvidence": ["io/node/nodeDocumentLoader.test.js"],
+      "focusedEvidence": [
+        "io/node/nodeDocumentLoader.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
@@ -5594,7 +5888,9 @@
         "docs/compatibility/java-api-parity-decisions.json"
       ],
       "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
-      "focusedEvidence": ["io/node/nodeDocumentLoader.test.js"],
+      "focusedEvidence": [
+        "io/node/nodeDocumentLoader.test.js"
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
@@ -5627,7 +5923,10 @@
       "sourceRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "reason": "Source inspection resolved a narrow compatibility question after the plan established that no semantic ontology IRI may be invented.",
       "productionUse": "No implementation text or control flow was copied; project-owned model and manager regressions establish the behavior.",
-      "evidence": ["model/model.test.js", "model/owlOntologyManager.test.js"]
+      "evidence": [
+        "model/model.test.js",
+        "model/owlOntologyManager.test.js"
+      ]
     },
     {
       "id": "PHASE1-RESEARCH-LITERAL-DATATYPE",

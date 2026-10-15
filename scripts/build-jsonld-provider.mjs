@@ -224,7 +224,7 @@ await publishOrCheck(
   "build-manifest.json",
   await format(JSON.stringify(manifest), {
     ...(await resolveConfig(resolve(destination, "build-manifest.json"))),
-    parser: "json",
+    parser: "json-stringify",
   }),
 );
 if (inputs.length === 0)

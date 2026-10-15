@@ -5,14 +5,20 @@
     "version": "5.5.1",
     "revision": "d7e997a53b470e32700de89cc610d9daf01ea769",
     "harness": "util/owlapi-reference/GenerateStructuralSnapshot.java",
-    "ignoredImports": ["https://example.com/imported"]
+    "ignoredImports": [
+      "https://example.com/imported"
+    ]
   },
   "fixture": "util/owlapi-reference/fixtures/rdf/phase5-structural.rdf",
   "snapshot": {
     "ontologyIRI": "https://example.com/phase5",
     "versionIRI": "https://example.com/phase5/1",
-    "imports": ["https://example.com/imported"],
-    "ontologyAnnotations": ["Annotation(rdfs:label \"Phase 5\"@en)"],
+    "imports": [
+      "https://example.com/imported"
+    ],
+    "ontologyAnnotations": [
+      "Annotation(rdfs:label \"Phase 5\"@en)"
+    ],
     "axiomTypeCounts": {
       "ClassAssertion": 1,
       "DataPropertyAssertion": 1,
@@ -51,7 +57,9 @@
         "https://example.com/phase5#hasChild",
         "https://example.com/phase5#knows"
       ],
-      "dataProperties": ["https://example.com/phase5#age"],
+      "dataProperties": [
+        "https://example.com/phase5#age"
+      ],
       "annotationProperties": [
         "http://www.w3.org/2000/01/rdf-schema#label",
         "https://example.com/phase5#source"

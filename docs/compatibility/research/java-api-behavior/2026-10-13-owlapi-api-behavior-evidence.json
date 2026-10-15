@@ -630,7 +630,10 @@
       {
         "section": "Baselines and evidence interpretation",
         "reportStartLine": 18,
-        "columns": ["Item", "Inspected identity"],
+        "columns": [
+          "Item",
+          "Inspected identity"
+        ],
         "rows": [
           {
             "Item": "JavaScript repository",
@@ -1075,7 +1078,10 @@
       {
         "section": "Native SAX and observed JDK 25 properties",
         "reportStartLine": 173,
-        "columns": ["Property suffix", "Observed value"],
+        "columns": [
+          "Property suffix",
+          "Observed value"
+        ],
         "rows": [
           {
             "Property suffix": "`entityExpansionLimit`",
@@ -1114,7 +1120,11 @@
       {
         "section": "Priorities and decisions required before an implementation plan",
         "reportStartLine": 356,
-        "columns": ["Priority", "Required outcome or decision", "Dependency"],
+        "columns": [
+          "Priority",
+          "Required outcome or decision",
+          "Dependency"
+        ],
         "rows": [
           {
             "Priority": "Mandatory",
@@ -2081,7 +2091,9 @@
       },
       "execution": {
         "executable": "node",
-        "arguments": ["${PRIMARY_WORKSPACE}\\probe-js.mjs"],
+        "arguments": [
+          "${PRIMARY_WORKSPACE}\\probe-js.mjs"
+        ],
         "exitCode": 0,
         "sourceFileLaunching": false,
         "network": "No live network requests; JSON-LD uses injected stub loaders and Java retry checks use a fake URLConnection."
@@ -2157,12 +2169,30 @@
             "id": "loader-java-methods",
             "outcome": "returned",
             "result": [
-              ["setConnectionTimeout", "undefined"],
-              ["getConnectionTimeout", "undefined"],
-              ["setRetriesToAttempt", "undefined"],
-              ["setFollowRedirects", "undefined"],
-              ["setEntityExpansionLimit", "undefined"],
-              ["setStrict", "undefined"]
+              [
+                "setConnectionTimeout",
+                "undefined"
+              ],
+              [
+                "getConnectionTimeout",
+                "undefined"
+              ],
+              [
+                "setRetriesToAttempt",
+                "undefined"
+              ],
+              [
+                "setFollowRedirects",
+                "undefined"
+              ],
+              [
+                "setEntityExpansionLimit",
+                "undefined"
+              ],
+              [
+                "setStrict",
+                "undefined"
+              ]
             ]
           },
           {
@@ -2404,7 +2434,10 @@
         "network": "No live network requests; JSON-LD uses injected stub loaders and Java retry checks use a fake URLConnection."
       },
       "tabSeparatedRows": [
-        ["runtime", "25.0.4.1+1-LTS"],
+        [
+          "runtime",
+          "25.0.4.1+1-LTS"
+        ],
         [
           "owlapi-origin",
           "file:/${MAVEN_REPOSITORY}/net/sourceforge/owlapi/owlapi-apibinding/5.5.1/owlapi-apibinding-5.5.1.jar"
@@ -2418,40 +2451,154 @@
           "RETURN",
           "connection=20000, retries=5, followRedirects=true, strict=false, entityExpansion=100000000"
         ],
-        ["connection-negative-set", "RETURN", "-1"],
-        ["retry-negative-set", "RETURN", "-1"],
-        ["system-property-existing-config", "RETURN", "123"],
-        ["system-property-instance-override", "RETURN", "456"],
-        ["sax-class", "com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl"],
-        ["sax-entityExpansionLimit", "RETURN", "100000000"],
-        ["sax-maxElementDepth", "RETURN", "100"],
-        ["sax-totalEntitySizeLimit", "RETURN", "100000"],
-        ["sax-maxGeneralEntitySizeLimit", "RETURN", "100000"],
-        ["sax-maxParameterEntitySizeLimit", "RETURN", "15000"],
-        ["sax-entityReplacementLimit", "RETURN", "100000"],
-        ["sax-maxXMLNameLimit", "RETURN", "1000"],
-        ["sax-elementAttributeLimit", "RETURN", "200"],
-        ["entity-limit-zero", "RETURN", "0"],
-        ["writer-noop-identity", "RETURN", "true"],
-        ["writer-chain", "RETURN", "indent=4, banners=true"],
-        ["writer-negative-indent", "RETURN", "-1"],
-        ["annotation65-direct-add", "RETURN", "SUCCESSFULLY"],
-        ["annotation65-add-record", "RETURN", "true"],
-        ["annotation65-remove", "RETURN", "SUCCESSFULLY"],
-        ["annotation65-duplicate", "RETURN", "true"],
-        ["annotation65-manchester", "RETURN", "8"],
-        ["literal1048577-profile", "RETURN", "inProfile=true, violations=0"],
-        ["literal1048577-save-functional", "RETURN", "chars=1049169"],
-        ["literal1048577-save-turtle", "RETURN", "chars=1049519"],
-        ["literal1048577-save-rdfxml", "RETURN", "chars=1049849"],
-        ["literal1048577-save-owlxml", "RETURN", "chars=1049713"],
-        ["batch-netzero", "RETURN", "result=SUCCESSFULLY, count=0"],
+        [
+          "connection-negative-set",
+          "RETURN",
+          "-1"
+        ],
+        [
+          "retry-negative-set",
+          "RETURN",
+          "-1"
+        ],
+        [
+          "system-property-existing-config",
+          "RETURN",
+          "123"
+        ],
+        [
+          "system-property-instance-override",
+          "RETURN",
+          "456"
+        ],
+        [
+          "sax-class",
+          "com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl"
+        ],
+        [
+          "sax-entityExpansionLimit",
+          "RETURN",
+          "100000000"
+        ],
+        [
+          "sax-maxElementDepth",
+          "RETURN",
+          "100"
+        ],
+        [
+          "sax-totalEntitySizeLimit",
+          "RETURN",
+          "100000"
+        ],
+        [
+          "sax-maxGeneralEntitySizeLimit",
+          "RETURN",
+          "100000"
+        ],
+        [
+          "sax-maxParameterEntitySizeLimit",
+          "RETURN",
+          "15000"
+        ],
+        [
+          "sax-entityReplacementLimit",
+          "RETURN",
+          "100000"
+        ],
+        [
+          "sax-maxXMLNameLimit",
+          "RETURN",
+          "1000"
+        ],
+        [
+          "sax-elementAttributeLimit",
+          "RETURN",
+          "200"
+        ],
+        [
+          "entity-limit-zero",
+          "RETURN",
+          "0"
+        ],
+        [
+          "writer-noop-identity",
+          "RETURN",
+          "true"
+        ],
+        [
+          "writer-chain",
+          "RETURN",
+          "indent=4, banners=true"
+        ],
+        [
+          "writer-negative-indent",
+          "RETURN",
+          "-1"
+        ],
+        [
+          "annotation65-direct-add",
+          "RETURN",
+          "SUCCESSFULLY"
+        ],
+        [
+          "annotation65-add-record",
+          "RETURN",
+          "true"
+        ],
+        [
+          "annotation65-remove",
+          "RETURN",
+          "SUCCESSFULLY"
+        ],
+        [
+          "annotation65-duplicate",
+          "RETURN",
+          "true"
+        ],
+        [
+          "annotation65-manchester",
+          "RETURN",
+          "8"
+        ],
+        [
+          "literal1048577-profile",
+          "RETURN",
+          "inProfile=true, violations=0"
+        ],
+        [
+          "literal1048577-save-functional",
+          "RETURN",
+          "chars=1049169"
+        ],
+        [
+          "literal1048577-save-turtle",
+          "RETURN",
+          "chars=1049519"
+        ],
+        [
+          "literal1048577-save-rdfxml",
+          "RETURN",
+          "chars=1049849"
+        ],
+        [
+          "literal1048577-save-owlxml",
+          "RETURN",
+          "chars=1049713"
+        ],
+        [
+          "batch-netzero",
+          "RETURN",
+          "result=SUCCESSFULLY, count=0"
+        ],
         [
           "batch-collision",
           "THROW",
           "org.semanticweb.owlapi.model.OWLOntologyRenameException: Could not rename ontology. An ontology with this ID already exists: OntologyID(OntologyIRI(<urn:research:clash>) VersionIRI(<null>)) change: SetOntologyIDData(OntologyID(OntologyIRI(<urn:research:clash>) VersionIRI(<null>)))"
         ],
-        ["batch-count-after-collision", "1"],
+        [
+          "batch-count-after-collision",
+          "1"
+        ],
         [
           "annotation-disabled-later-add",
           "RETURN",
@@ -2489,7 +2636,9 @@
       },
       "execution": {
         "executable": "node",
-        "arguments": ["${PRIMARY_WORKSPACE}\\probe-admission-js.mjs"],
+        "arguments": [
+          "${PRIMARY_WORKSPACE}\\probe-admission-js.mjs"
+        ],
         "exitCode": 0,
         "sourceFileLaunching": false,
         "network": "No live network requests; JSON-LD uses injected stub loaders and Java retry checks use a fake URLConnection."
@@ -2644,18 +2793,46 @@
         "network": "No live network requests; JSON-LD uses injected stub loaders and Java retry checks use a fake URLConnection."
       },
       "tabSeparatedRows": [
-        ["sniff-leading9000-spaces", "RETURN", "0"],
-        ["sniff-leading9000-spaces-explicit", "RETURN", "0"],
-        ["xml-unused-external-entity", "RETURN", "0"],
+        [
+          "sniff-leading9000-spaces",
+          "RETURN",
+          "0"
+        ],
+        [
+          "sniff-leading9000-spaces-explicit",
+          "RETURN",
+          "0"
+        ],
+        [
+          "xml-unused-external-entity",
+          "RETURN",
+          "0"
+        ],
         [
           "xml-complement-depth110",
           "THROW",
           "org.semanticweb.owlapi.io.UnparsableOntologyException: Problem parsing urn:research:document"
         ],
-        ["functional-literal1048577", "RETURN", "0"],
-        ["trig-two-named-graphs", "RETURN", "2"],
-        ["turtle-undeclared-annotation-default", "RETURN", "1"],
-        ["rio-parser", "RDF/XML", "org.eclipse.rdf4j.rio.rdfxml.RDFXMLParser"],
+        [
+          "functional-literal1048577",
+          "RETURN",
+          "0"
+        ],
+        [
+          "trig-two-named-graphs",
+          "RETURN",
+          "2"
+        ],
+        [
+          "turtle-undeclared-annotation-default",
+          "RETURN",
+          "1"
+        ],
+        [
+          "rio-parser",
+          "RDF/XML",
+          "org.eclipse.rdf4j.rio.rdfxml.RDFXMLParser"
+        ],
         [
           "rio-setting",
           "RDF/XML",
@@ -2680,15 +2857,28 @@
           "http://xml.org/sax/features/external-parameter-entities",
           "false"
         ],
-        ["rio-setting", "RDF/XML", "org.eclipse.rdf4j.rio.xmlreader", "null"],
+        [
+          "rio-setting",
+          "RDF/XML",
+          "org.eclipse.rdf4j.rio.xmlreader",
+          "null"
+        ],
         [
           "rio-setting",
           "RDF/XML",
           "http://javax.xml.XMLConstants/feature/secure-processing",
           "true"
         ],
-        ["rio-parser", "Turtle", "org.eclipse.rdf4j.rio.turtle.TurtleParser"],
-        ["rio-parser", "JSON-LD", "org.eclipse.rdf4j.rio.jsonld.JSONLDParser"],
+        [
+          "rio-parser",
+          "Turtle",
+          "org.eclipse.rdf4j.rio.turtle.TurtleParser"
+        ],
+        [
+          "rio-parser",
+          "JSON-LD",
+          "org.eclipse.rdf4j.rio.jsonld.JSONLDParser"
+        ],
         [
           "rio-setting",
           "JSON-LD",
@@ -2701,7 +2891,11 @@
           "org.eclipse.rdf4j.rio.jsonld.exception_on_warning",
           "false"
         ],
-        ["rio-parser", "TriG", "org.eclipse.rdf4j.rio.trig.TriGParser"]
+        [
+          "rio-parser",
+          "TriG",
+          "org.eclipse.rdf4j.rio.trig.TriGParser"
+        ]
       ],
       "portableRecord": {
         "originalRecordSha256": "d8ef1c876f4a45eb8dbafc94606d5a004ae0256c266c28e90dd325ce40b012c9",
@@ -2729,7 +2923,9 @@
       },
       "execution": {
         "executable": "node",
-        "arguments": ["${PRIMARY_WORKSPACE}\\probe-control-js.mjs"],
+        "arguments": [
+          "${PRIMARY_WORKSPACE}\\probe-control-js.mjs"
+        ],
         "exitCode": 0,
         "sourceFileLaunching": false,
         "network": "No live network requests; JSON-LD uses injected stub loaders and Java retry checks use a fake URLConnection."
@@ -2781,16 +2977,76 @@
         "network": "No live network requests; JSON-LD uses injected stub loaders and Java retry checks use a fake URLConnection."
       },
       "tabSeparatedRows": [
-        ["retries", "fail=false", "configured=-1", "calls=0", "result=null"],
-        ["retries", "fail=false", "configured=0", "calls=0", "result=null"],
-        ["retries", "fail=false", "configured=1", "calls=1", "result=stream"],
-        ["retries", "fail=false", "configured=2", "calls=1", "result=stream"],
-        ["retries", "fail=false", "configured=5", "calls=1", "result=stream"],
-        ["retries", "fail=false", "configured=6", "calls=1", "result=stream"],
-        ["retries", "fail=true", "configured=-1", "calls=0", "result=null"],
-        ["retries", "fail=true", "configured=0", "calls=0", "result=null"],
-        ["retries", "fail=true", "configured=1", "calls=1", "result=null"],
-        ["retries", "fail=true", "configured=2", "calls=2", "result=null"],
+        [
+          "retries",
+          "fail=false",
+          "configured=-1",
+          "calls=0",
+          "result=null"
+        ],
+        [
+          "retries",
+          "fail=false",
+          "configured=0",
+          "calls=0",
+          "result=null"
+        ],
+        [
+          "retries",
+          "fail=false",
+          "configured=1",
+          "calls=1",
+          "result=stream"
+        ],
+        [
+          "retries",
+          "fail=false",
+          "configured=2",
+          "calls=1",
+          "result=stream"
+        ],
+        [
+          "retries",
+          "fail=false",
+          "configured=5",
+          "calls=1",
+          "result=stream"
+        ],
+        [
+          "retries",
+          "fail=false",
+          "configured=6",
+          "calls=1",
+          "result=stream"
+        ],
+        [
+          "retries",
+          "fail=true",
+          "configured=-1",
+          "calls=0",
+          "result=null"
+        ],
+        [
+          "retries",
+          "fail=true",
+          "configured=0",
+          "calls=0",
+          "result=null"
+        ],
+        [
+          "retries",
+          "fail=true",
+          "configured=1",
+          "calls=1",
+          "result=null"
+        ],
+        [
+          "retries",
+          "fail=true",
+          "configured=2",
+          "calls=2",
+          "result=null"
+        ],
         [
           "retries",
           "fail=true",
@@ -2805,9 +3061,20 @@
           "calls=5",
           "result=OWLOntologyInputSourceException"
         ],
-        ["locality-empty-seed", "filterCalls=0", "module=0"],
-        ["search-before-consume", "visits=0"],
-        ["search-after-consume", "count=1", "visits=1"]
+        [
+          "locality-empty-seed",
+          "filterCalls=0",
+          "module=0"
+        ],
+        [
+          "search-before-consume",
+          "visits=0"
+        ],
+        [
+          "search-after-consume",
+          "count=1",
+          "visits=1"
+        ]
       ],
       "portableRecord": {
         "originalRecordSha256": "8fcf69bca9db1b810c41ffa0e7babb2c5c3f5cd213e98a35884d991960f06c1f",

@@ -24,7 +24,11 @@
     "generatedBy": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["path", "version", "authorities"],
+      "required": [
+        "path",
+        "version",
+        "authorities"
+      ],
       "properties": {
         "path": {
           "const": "util/generate-third-party-material.mjs"
@@ -59,7 +63,10 @@
       ],
       "properties": {
         "name": {
-          "enum": ["owlapi", "@hadden-industries/owlapi"]
+          "enum": [
+            "owlapi",
+            "@hadden-industries/owlapi"
+          ]
         },
         "version": {
           "type": "string",
@@ -253,7 +260,10 @@
       "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
     },
     "nullableString": {
-      "type": ["string", "null"]
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "nullableNonemptyString": {
       "oneOf": [
@@ -280,7 +290,10 @@
       ],
       "properties": {
         "status": {
-          "enum": ["PENDING_HUMAN_REVIEW", "REVIEWED"]
+          "enum": [
+            "PENDING_HUMAN_REVIEW",
+            "REVIEWED"
+          ]
         },
         "factsSha256": {
           "$ref": "#/$defs/sha256"
@@ -370,7 +383,13 @@
     "inspectedFile": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["path", "kind", "sha256", "blobSha256", "blobPath"],
+      "required": [
+        "path",
+        "kind",
+        "sha256",
+        "blobSha256",
+        "blobPath"
+      ],
       "properties": {
         "path": {
           "type": "string",
@@ -449,7 +468,10 @@
           "minLength": 1
         },
         "relationship": {
-          "enum": ["EXTERNAL_RUNTIME_DEPENDENCY", "DEVELOPMENT_ONLY"]
+          "enum": [
+            "EXTERNAL_RUNTIME_DEPENDENCY",
+            "DEVELOPMENT_ONLY"
+          ]
         },
         "lockfileDeclaredLicenseExpressions": {
           "type": "array",
@@ -503,7 +525,11 @@
           "const": "LOCKED_REGISTRY_TARBALL"
         },
         "licenseFilePresence": {
-          "enum": ["PRESENT", "EXTERNAL_EVIDENCE_ONLY", "ABSENT"]
+          "enum": [
+            "PRESENT",
+            "EXTERNAL_EVIDENCE_ONLY",
+            "ABSENT"
+          ]
         },
         "inspectedFiles": {
           "type": "array",
@@ -516,7 +542,13 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["url", "filename", "sha256", "observedOn", "reason"],
+            "required": [
+              "url",
+              "filename",
+              "sha256",
+              "observedOn",
+              "reason"
+            ],
             "properties": {
               "url": {
                 "type": "string",
@@ -543,13 +575,21 @@
         "authentication": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["registrySignature", "provenance", "archive", "scan"],
+          "required": [
+            "registrySignature",
+            "provenance",
+            "archive",
+            "scan"
+          ],
           "properties": {
             "registrySignature": {
               "const": "VERIFIED"
             },
             "provenance": {
-              "enum": ["VERIFIED", "NOT_PUBLISHED"]
+              "enum": [
+                "VERIFIED",
+                "NOT_PUBLISHED"
+              ]
             },
             "archive": {
               "const": "VERIFIED"
@@ -623,7 +663,11 @@
         "platformSelectors": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["cpu", "os", "libc"],
+          "required": [
+            "cpu",
+            "os",
+            "libc"
+          ],
           "properties": {
             "cpu": {
               "type": "array",
@@ -685,7 +729,10 @@
     "evidenceFile": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["path", "sha256"],
+      "required": [
+        "path",
+        "sha256"
+      ],
       "properties": {
         "path": {
           "type": "string",
@@ -697,9 +744,16 @@
       }
     },
     "treeEvidence": {
-      "type": ["object", "null"],
+      "type": [
+        "object",
+        "null"
+      ],
       "additionalProperties": false,
-      "required": ["root", "fileCount", "manifestSha256"],
+      "required": [
+        "root",
+        "fileCount",
+        "manifestSha256"
+      ],
       "properties": {
         "root": {
           "type": "string",
@@ -784,7 +838,10 @@
           "type": "boolean"
         },
         "deployedApplicationScope": {
-          "enum": ["REVIEW_REQUIRED_BY_CONSUMER", "NOT_APPLICABLE"]
+          "enum": [
+            "REVIEW_REQUIRED_BY_CONSUMER",
+            "NOT_APPLICABLE"
+          ]
         },
         "noticeDisposition": {
           "type": "string",

@@ -370,9 +370,13 @@ describe("acquireEvidence", () => {
     },
   );
 
-  it.each([".", "..", "bad\uD800name"])(
+  it.each([
+    ["dot", "."],
+    ["parent segment", ".."],
+    ["unpaired high surrogate", "bad\uD800name"],
+  ])(
     "rejects a package identity that cannot round-trip as a URL component: %s",
-    async (name) => {
+    async (_label, name) => {
       const fixture = makeRegistryFixture({ name });
       const repositoryRoot = await mkdtemp(
         join(tmpdir(), "owlapi-registry-invalid-name-test-"),

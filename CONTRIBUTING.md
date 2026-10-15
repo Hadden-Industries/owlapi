@@ -95,9 +95,10 @@ npm run lint
 npm run test:quality
 ```
 
-Use `format:source`, `format:md`, and `format:py` for language-specific writes; their `:check` variants only check.
-Use `lint:js`, `lint:md`, and `lint:py` for separate static checks.
-For selected Markdown files, use `npm run format:md:check -- -- "docs/guide.md"` or `npm run lint:md -- --files-json "[\"docs/guide.md\"]"`; the canonical CLI requires a literal `--` boundary or JSON selection.
+Use `format:source`, `format:markdown`, `format:py`, and `format:json` for language-specific writes.
+Use `check:markdown` for full read-only Markdown checking, including formatting drift, linting and local links; both `lint` and `format:check` retain that check.
+Use `lint:js` and `lint:py` for separate static checks, and the source/Python/JSON `:check` formatting scripts for read-only presentation checks.
+For selected Markdown files, use `npm run check:markdown -- -- "docs/guide.md"` or `npm run check:markdown -- --files-json "[\"docs/guide.md\"]"`; the canonical CLI requires a literal `--` boundary or JSON selection.
 `lint:files` remains available for existing JavaScript callers.
 On Node 22, use `format:source-python:check`, `lint:source-python`, and `test:quality:source` for the complete source/Python floor; Markdown checks require Node 24.
 The shared Markdown selector includes `.github/` and eligible untracked files, honours repository ignore rules, and rejects symlink and outside paths.

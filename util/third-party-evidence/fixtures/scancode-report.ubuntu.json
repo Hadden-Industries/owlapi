@@ -5,7 +5,9 @@
       "tool_version": "32.5.0",
       "output_format_version": "4.1.0",
       "options": {
-        "input": ["/home/runner/work/owlapi/.release/scan/artifact-a"],
+        "input": [
+          "/home/runner/work/owlapi/.release/scan/artifact-a"
+        ],
         "--license-references": true,
         "--license-text": true,
         "--processes": 1,
@@ -68,7 +70,9 @@
     },
     {
       "scan_errors": [],
-      "for_packages": ["pkg:npm/alpha@1.0.0"],
+      "for_packages": [
+        "pkg:npm/alpha@1.0.0"
+      ],
       "package_data": [],
       "authors": [],
       "holders": [
@@ -85,7 +89,9 @@
           "copyright": "Copyright Example"
         }
       ],
-      "license_detections": ["mit-0001"],
+      "license_detections": [
+        "mit-0001"
+      ],
       "detected_license_expression_spdx": "MIT",
       "detected_license_expression": "mit",
       "is_legal": true,

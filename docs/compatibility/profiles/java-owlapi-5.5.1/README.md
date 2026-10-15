@@ -3,7 +3,15 @@
 This directory records new observations against the Maven Central distribution, separately from the historical development-revision research.
 The released Java oracle is qualified against frozen harness commit `31638db1e270d7a5e98cee8a4499e5d4d4b1b829`.
 Admission verifies all measured fixture bytes in that commit, 28 Central/source observations, 15 selected-surface replays and the 2,146 acquired dependency artifacts.
-This oracle qualification is distinct from the complete JavaScript compatibility profile, whose final review and hosted package matrix remain in progress.
+The JavaScript implementation is complete and merged through [PR #76](https://github.com/Hadden-Industries/owlapi/pull/76).
+The [implementation and release-readiness record](implementation-qualification.md) records completed ordinary review and installed Node/browser qualification for their measured candidates.
+Public JavaScript profile admission remains held for complete designated security evidence and an accountable release decision; oracle qualification does not remove that hold.
+
+On 15 October 2026 the owner authorized regenerating this unreleased evidence's JSON presentation under shared JSON Quality.
+The native recorder's `--refresh-presentation ABSOLUTE_FRESH_BACKUP_DIRECTORY` mode preserves the previous copies, verifies the candidate, and rebinds the evidence, observation and dependency-lock hashes.
+This operation retains the original capture identities, frozen harness and qualification timestamp; it does not claim another Java execution.
+Every JSON file in this profile receives ordinary semantic and presentation checks and is eligible for shared formatter writes.
+Generator freshness and oracle verification remain required when bytes change.
 
 The Central distribution SHA-256 is `747b1a5269fee2992487dcde946f16dfbc14aa458d50854994a0485cf263ce07`.
 Its annotated release tag resolves to commit `f760b3a4c107c6d5f90f856e5680c39b18af646f` and tree `6b87391a36b7341f7253f57046b5b8621d3d0ac8`.
@@ -71,7 +79,7 @@ The evidence includes its file count, total bytes and SHA-256.
 Paths in manifests resolve relative to their containing manifest.
 Native command logs are operator observations, not HISEW verification receipts.
 The JavaScript baseline retains a Firefox launch failure inside its browser probe output; the outer process's zero exit status does not qualify that browser lane.
-Installed browser acceptance remains a SLICE-009 obligation.
+Subsequent SLICE-009 installed-browser qualification passed in Chromium, Firefox and WebKit, as recorded in the implementation and release-readiness record; the earlier failed observation remains unchanged.
 
 ## Newly resolved implementation decisions
 

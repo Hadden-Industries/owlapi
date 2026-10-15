@@ -46,7 +46,9 @@
       "observedAt": "2026-08-26T14:38:50Z",
       "toolchain": "Node.js 24.19.0 and npm 12.0.2",
       "commandShape": "npm view owlapi versions --json --registry=https://registry.npmjs.org/",
-      "requestedSpecifiers": ["owlapi"],
+      "requestedSpecifiers": [
+        "owlapi"
+      ],
       "resultCode": "E404",
       "summary": "The registry reported that owlapi was unpublished on 2021-12-21T07:06:27.732Z and returned no available version inventory.",
       "interpretation": "The name has historical registry state but no currently viewable versions; the result does not prove publish permission."
@@ -55,7 +57,9 @@
       "observedAt": "2026-08-26T14:38:57Z",
       "toolchain": "Node.js 24.19.0 and npm 12.0.2",
       "commandShape": "npm view owlapi dist-tags --json --registry=https://registry.npmjs.org/",
-      "requestedSpecifiers": ["owlapi"],
+      "requestedSpecifiers": [
+        "owlapi"
+      ],
       "resultCode": "E404",
       "summary": "The registry returned no live distribution-tag document and repeated the 2021-12-21 unpublication fact.",
       "interpretation": "No live latest or next tag was observable; the qualified publication path remains the authority for whether a new tag can be created."
@@ -64,7 +68,9 @@
       "observedAt": "2026-08-26T14:39:05Z",
       "toolchain": "Node.js 24.19.0 and npm 12.0.2",
       "commandShape": "npm view owlapi@0.1.0-alpha.0 version --json --registry=https://registry.npmjs.org/",
-      "requestedSpecifiers": ["owlapi@0.1.0-alpha.0"],
+      "requestedSpecifiers": [
+        "owlapi@0.1.0-alpha.0"
+      ],
       "resultCode": "E404",
       "summary": "The intended first coordinate did not resolve and the registry repeated the package unpublication response.",
       "interpretation": "The result is consistent with an unused coordinate but cannot reserve it or prove authority to publish it."
@@ -73,7 +79,9 @@
       "observedAt": "2026-08-28T14:46:56Z",
       "toolchain": "GitHub-hosted ubuntu-24.04 x64, Node.js 24.19.0, and npm 12.0.2 in Hadden-Industries/owlapi Actions run 33180218814, job 98881292478",
       "commandShape": "npm publish owlapi-0.1.0-alpha.0.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/",
-      "requestedSpecifiers": ["owlapi@0.1.0-alpha.0"],
+      "requestedSpecifiers": [
+        "owlapi@0.1.0-alpha.0"
+      ],
       "resultCode": "E403",
       "summary": "The authenticated write of the byte-verified retained tarball was rejected because npm's package-name similarity control compared owlapi with nwsapi. No version or distribution tag became public. Sanitized, digest-bound evidence is retained in releases/0.1.0-alpha.0/npm-publication-attempt-2026-08-28.txt.",
       "interpretation": "This real publication attempt is the decisive authority observation. P19-NAMESPACE-001 and P19-PUBLICATION-001 are EXTERNAL_BLOCKED pending npm Support; the outcome is not a package defect and does not authorize renaming the package or abandoning the coordinate."
@@ -82,7 +90,9 @@
       "observedAt": "2026-08-31T01:23:13.939Z",
       "toolchain": "Node.js 24.19.0 and npm 12.0.2",
       "commandShape": "npm view owlapi@0.1.0-alpha.0 version --json --registry=https://registry.npmjs.org/",
-      "requestedSpecifiers": ["owlapi@0.1.0-alpha.0"],
+      "requestedSpecifiers": [
+        "owlapi@0.1.0-alpha.0"
+      ],
       "resultCode": "E404",
       "summary": "The intended alpha remained publicly unresolved after the authenticated write failed, and the registry repeated the 2021-12-21 unpublication response.",
       "interpretation": "The observation confirms that the failed write did not publish or consume owlapi@0.1.0-alpha.0; it does not supersede the E403 authority result or resolve the external block."

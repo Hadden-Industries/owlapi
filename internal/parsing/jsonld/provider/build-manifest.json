@@ -7,7 +7,7 @@
   },
   "builder": {
     "path": "scripts/build-jsonld-provider.mjs",
-    "sha256": "3aef6451e0fe4a67fbfcf160b290e39e6a8bbc04f00640d861f29fd47a0614ca",
+    "sha256": "cb760a05a2ae25e28d695e21c441c2be0b636804d27fc4ba8de6f8cb1dfc9ae7",
     "viteVersion": "8.3.4",
     "rolldownVersion": "1.2.13",
     "prettierVersion": "3.9.9",
@@ -32,7 +32,10 @@
           "if(cycles.size > MAX_CONTEXT_URLS) {",
           "if(cycles.size >= this.maxContextUrls) {"
         ],
-        ["max: MAX_CONTEXT_URLS", "max: this.maxContextUrls"]
+        [
+          "max: MAX_CONTEXT_URLS",
+          "max: this.maxContextUrls"
+        ]
       ]
     },
     {

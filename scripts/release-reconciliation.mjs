@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { jsonEquals } from "./canonical-json.mjs";
 import { spawnSync } from "node:child_process";
 import {
   appendFileSync,
@@ -425,7 +426,7 @@ const readCandidate = (directory, version) => {
     `owlapi-${version}.tgz`,
   ].sort();
   const names = readdirSync(directory).sort();
-  if (JSON.stringify(names) !== JSON.stringify(expectedNames)) {
+  if (!jsonEquals(names, expectedNames)) {
     throw new Error(
       "The source candidate artifact is not the closed three-file bundle.",
     );

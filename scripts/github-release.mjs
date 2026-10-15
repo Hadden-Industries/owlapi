@@ -1,3 +1,5 @@
+import { jsonEquals } from "./canonical-json.mjs";
+
 const compareCodeUnits = (left, right) =>
   left < right ? -1 : left > right ? 1 : 0;
 
@@ -79,7 +81,7 @@ export const assertReleaseAssets = ({ assets, expected }) => {
       digest: `sha256:${sha256}`,
     }))
     .sort((left, right) => compareCodeUnits(left.name, right.name));
-  if (JSON.stringify(observed) !== JSON.stringify(required)) {
+  if (!jsonEquals(observed, required)) {
     throw new Error(
       "The GitHub release asset inventory or digest is not exact.",
     );

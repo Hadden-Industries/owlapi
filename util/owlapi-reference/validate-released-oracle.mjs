@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { jsonEquals } from "../../scripts/canonical-json.mjs";
 import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { resolve, isAbsolute, relative } from "node:path";
@@ -38,7 +39,8 @@ export function validateReleasedOracle({
 } = {}) {
   const directory = resolve(profileDirectory);
   const repository = resolve(directory, "../../../..");
-  const read = (path) => {
+  const frozenFixtureBytes = new Map();
+  const resolveArtifact = (path) => {
     assert(
       typeof path === "string" && !isAbsolute(path),
       "Evidence paths must be relative",
@@ -49,7 +51,11 @@ export function validateReleasedOracle({
       !withinRepository.startsWith("..") && !isAbsolute(withinRepository),
       "Evidence path escapes the repository",
     );
-    return readArtifact(absolute);
+    return absolute;
+  };
+  const read = (path) => {
+    const absolute = resolveArtifact(path);
+    return frozenFixtureBytes.get(absolute) ?? readArtifact(absolute);
   };
   const json = (path) => JSON.parse(read(path).toString("utf8"));
   const provenance = json("provenance.json");
@@ -64,6 +70,26 @@ export function validateReleasedOracle({
     !requireQualified || provenance.qualification.status === "qualified",
     "Released oracle is unqualified",
   );
+  const fixtures = json("fixture-manifest.json").fixtures;
+  assert(fixtures.length > 0, "Fixture manifest is empty");
+  if (provenance.qualification.status === "qualified") {
+    const commit = provenance.oracle.harnessSourceCommitObjectId;
+    for (const fixture of fixtures) {
+      const absolute = resolveArtifact(fixture.path);
+      const path = relative(repository, absolute).split("\\").join("/");
+      const committed = spawnSync("git", ["show", `${commit}:${path}`], {
+        cwd: repository,
+        maxBuffer: 16 * 1024 * 1024,
+      });
+      assert(
+        committed.status === 0 && digest(committed.stdout) === fixture.sha256,
+        `Frozen harness commit does not contain the measured fixture: ${path}`,
+      );
+      // Historical qualification names these exact committed inputs. Current
+      // helper edits require their own tests, not replacement historical pins.
+      frozenFixtureBytes.set(absolute, committed.stdout);
+    }
+  }
   const evidence = json(provenance.qualification.evidenceManifestPath).evidence;
   assert(evidence.length > 0, "Evidence manifest is empty");
   const evidencePaths = new Set();
@@ -76,29 +102,11 @@ export function validateReleasedOracle({
       `Changed evidence artifact: ${record.path}`,
     );
   }
-  const fixtures = json("fixture-manifest.json").fixtures;
-  assert(fixtures.length > 0, "Fixture manifest is empty");
   for (const fixture of fixtures)
     assert(
       digest(read(fixture.path)) === fixture.sha256,
       `Changed oracle fixture: ${fixture.path}`,
     );
-  if (provenance.qualification.status === "qualified") {
-    const commit = provenance.oracle.harnessSourceCommitObjectId;
-    for (const fixture of fixtures) {
-      const path = relative(repository, resolve(directory, fixture.path))
-        .split("\\")
-        .join("/");
-      const committed = spawnSync("git", ["show", `${commit}:${path}`], {
-        cwd: repository,
-        maxBuffer: 16 * 1024 * 1024,
-      });
-      assert(
-        committed.status === 0 && digest(committed.stdout) === fixture.sha256,
-        `Frozen harness commit does not contain the measured fixture: ${path}`,
-      );
-    }
-  }
   const { oracle, mavenCentral, sourceBuild } = provenance;
   assert(
     digest(read("fixture-manifest.json")) === oracle.fixtureManifestSha256,
@@ -237,7 +245,7 @@ export function validateReleasedOracle({
     sourceBuild.artifactComparison.behavioralComparisonEvidencePath,
   );
   assert(
-    JSON.stringify(comparison) === JSON.stringify(recordedComparison),
+    jsonEquals(comparison, recordedComparison),
     "Recorded behavioral comparison differs",
   );
   const selected = compareSelectedParity(
@@ -250,8 +258,7 @@ export function validateReleasedOracle({
     "Selected native parity observations differ or are incomplete",
   );
   assert(
-    JSON.stringify(selected) ===
-      JSON.stringify(json("selected-parity-comparison.json")),
+    jsonEquals(selected, json("selected-parity-comparison.json")),
     "Recorded selected parity comparison differs",
   );
   for (const observation of central.observations) {

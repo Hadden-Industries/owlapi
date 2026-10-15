@@ -1,4 +1,5 @@
 import { spawnSync } from "node:child_process";
+import { jsonEquals } from "./canonical-json.mjs";
 import {
   copyFileSync,
   existsSync,
@@ -239,10 +240,7 @@ export function validateEffectiveNpmConfiguration(
     include: effective.include,
     omit: effective.omit,
   };
-  if (
-    !pathsMatch ||
-    JSON.stringify(projected) !== JSON.stringify(PRE_REGISTRY_NPM_CONFIGURATION)
-  ) {
+  if (!pathsMatch || !jsonEquals(projected, PRE_REGISTRY_NPM_CONFIGURATION)) {
     throw new Error(
       "Effective npm configuration does not match the accepted qualification policy.",
     );
@@ -279,7 +277,7 @@ export function verifyCandidateArtifactArchive({ archive, expectedDigest }) {
   const expectedPaths = ["SHA256SUMS", sbomFileName, tarballFileName].sort();
   const entries = readZipArchiveFiles(archiveBytes);
   const actualPaths = entries.map(({ path }) => path).sort();
-  if (JSON.stringify(actualPaths) !== JSON.stringify(expectedPaths)) {
+  if (!jsonEquals(actualPaths, expectedPaths)) {
     throw new Error(
       `Candidate artifact archive inventory is not closed: expected=${JSON.stringify(expectedPaths)} actual=${JSON.stringify(actualPaths)}.`,
     );

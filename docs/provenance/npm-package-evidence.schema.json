@@ -19,23 +19,40 @@
     "corpusRoot"
   ],
   "properties": {
-    "$schema": { "const": "./npm-package-evidence.schema.json" },
-    "schemaVersion": { "const": 1 },
+    "$schema": {
+      "const": "./npm-package-evidence.schema.json"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
     "generatedBy": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["path", "version"],
+      "required": [
+        "path",
+        "version"
+      ],
       "properties": {
-        "path": { "const": "util/acquire-npm-package-evidence.mjs" },
-        "version": { "const": "1.0.0" }
+        "path": {
+          "const": "util/acquire-npm-package-evidence.mjs"
+        },
+        "version": {
+          "const": "1.0.0"
+        }
       }
     },
     "package": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["name", "version"],
+      "required": [
+        "name",
+        "version"
+      ],
       "properties": {
-        "name": { "type": "string", "minLength": 1 },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
         "version": {
           "type": "string",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
@@ -45,20 +62,38 @@
     "lockfile": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["path", "version", "sha256"],
+      "required": [
+        "path",
+        "version",
+        "sha256"
+      ],
       "properties": {
-        "path": { "const": "package-lock.json" },
-        "version": { "const": 3 },
-        "sha256": { "$ref": "#/$defs/sha256" }
+        "path": {
+          "const": "package-lock.json"
+        },
+        "version": {
+          "const": 3
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
       }
     },
     "policy": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["registryOrigin", "provenance", "scanner"],
+      "required": [
+        "registryOrigin",
+        "provenance",
+        "scanner"
+      ],
       "properties": {
-        "registryOrigin": { "const": "https://registry.npmjs.org" },
-        "provenance": { "const": "VERIFY_WHEN_PUBLISHED" },
+        "registryOrigin": {
+          "const": "https://registry.npmjs.org"
+        },
+        "provenance": {
+          "const": "VERIFY_WHEN_PUBLISHED"
+        },
         "scanner": {
           "type": "object",
           "additionalProperties": false,
@@ -73,11 +108,24 @@
             "executionOptions"
           ],
           "properties": {
-            "name": { "const": "scancode-toolkit" },
-            "version": { "const": "32.5.0" },
-            "pythonVersion": { "enum": ["3.14", "3.15"] },
-            "outputFormatVersion": { "const": "4.1.0" },
-            "normalizationVersion": { "const": 1 },
+            "name": {
+              "const": "scancode-toolkit"
+            },
+            "version": {
+              "const": "32.5.0"
+            },
+            "pythonVersion": {
+              "enum": [
+                "3.14",
+                "3.15"
+              ]
+            },
+            "outputFormatVersion": {
+              "const": "4.1.0"
+            },
+            "normalizationVersion": {
+              "const": 1
+            },
             "semanticOptions": {
               "const": [
                 "--copyright",
@@ -90,8 +138,17 @@
                 "--unknown-licenses"
               ]
             },
-            "preScanExcludedFileSuffixes": { "const": [".node"] },
-            "executionOptions": { "const": ["--processes", "1"] }
+            "preScanExcludedFileSuffixes": {
+              "const": [
+                ".node"
+              ]
+            },
+            "executionOptions": {
+              "const": [
+                "--processes",
+                "1"
+              ]
+            }
           }
         }
       }
@@ -99,22 +156,34 @@
     "registryKeys": {
       "type": "array",
       "minItems": 1,
-      "items": { "$ref": "#/$defs/registryKey" }
+      "items": {
+        "$ref": "#/$defs/registryKey"
+      }
     },
     "occurrences": {
       "type": "array",
-      "items": { "$ref": "#/$defs/occurrence" }
+      "items": {
+        "$ref": "#/$defs/occurrence"
+      }
     },
     "artifacts": {
       "type": "array",
-      "items": { "$ref": "#/$defs/artifact" }
+      "items": {
+        "$ref": "#/$defs/artifact"
+      }
     },
     "blobs": {
       "type": "array",
-      "items": { "$ref": "#/$defs/blobReference" }
+      "items": {
+        "$ref": "#/$defs/blobReference"
+      }
     },
-    "summary": { "$ref": "#/$defs/summary" },
-    "corpusRoot": { "$ref": "#/$defs/sha256" }
+    "summary": {
+      "$ref": "#/$defs/summary"
+    },
+    "corpusRoot": {
+      "$ref": "#/$defs/sha256"
+    }
   },
   "$defs": {
     "sha256": {
@@ -127,16 +196,29 @@
     },
     "selector": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1 }
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
     "platformSelectors": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["cpu", "os", "libc"],
+      "required": [
+        "cpu",
+        "os",
+        "libc"
+      ],
       "properties": {
-        "cpu": { "$ref": "#/$defs/selector" },
-        "os": { "$ref": "#/$defs/selector" },
-        "libc": { "$ref": "#/$defs/selector" }
+        "cpu": {
+          "$ref": "#/$defs/selector"
+        },
+        "os": {
+          "$ref": "#/$defs/selector"
+        },
+        "libc": {
+          "$ref": "#/$defs/selector"
+        }
       }
     },
     "occurrence": {
@@ -151,21 +233,45 @@
         "platformSelectors"
       ],
       "properties": {
-        "dependencyPath": { "type": "string", "pattern": "^node_modules/" },
-        "dependencyName": { "type": "string", "minLength": 1 },
-        "artifactId": { "$ref": "#/$defs/sha256" },
-        "development": { "type": "boolean" },
-        "optional": { "type": "boolean" },
-        "platformSelectors": { "$ref": "#/$defs/platformSelectors" }
+        "dependencyPath": {
+          "type": "string",
+          "pattern": "^node_modules/"
+        },
+        "dependencyName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "artifactId": {
+          "$ref": "#/$defs/sha256"
+        },
+        "development": {
+          "type": "boolean"
+        },
+        "optional": {
+          "type": "boolean"
+        },
+        "platformSelectors": {
+          "$ref": "#/$defs/platformSelectors"
+        }
       }
     },
     "blobReference": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["sha256", "bytes", "path", "kind"],
+      "required": [
+        "sha256",
+        "bytes",
+        "path",
+        "kind"
+      ],
       "properties": {
-        "sha256": { "$ref": "#/$defs/sha256" },
-        "bytes": { "type": "integer", "minimum": 1 },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
         "path": {
           "type": "string",
           "pattern": "^blobs/sha256/[0-9a-f]{2}/[0-9a-f]{64}$"
@@ -184,34 +290,65 @@
     "evidenceState": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["state", "evidence"],
+      "required": [
+        "state",
+        "evidence"
+      ],
       "properties": {
-        "state": { "const": "VERIFIED" },
-        "evidence": { "$ref": "#/$defs/blobReference" }
+        "state": {
+          "const": "VERIFIED"
+        },
+        "evidence": {
+          "$ref": "#/$defs/blobReference"
+        }
       }
     },
     "registrySignature": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["state", "publishedAt", "signatures", "evidence"],
+      "required": [
+        "state",
+        "publishedAt",
+        "signatures",
+        "evidence"
+      ],
       "properties": {
-        "state": { "const": "VERIFIED" },
-        "publishedAt": { "type": "string", "format": "date-time" },
+        "state": {
+          "const": "VERIFIED"
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
         "signatures": {
           "type": "array",
           "minItems": 1,
-          "items": { "$ref": "#/$defs/signature" }
+          "items": {
+            "$ref": "#/$defs/signature"
+          }
         },
-        "evidence": { "$ref": "#/$defs/blobReference" }
+        "evidence": {
+          "$ref": "#/$defs/blobReference"
+        }
       }
     },
     "provenance": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["state", "evidence"],
+      "required": [
+        "state",
+        "evidence"
+      ],
       "properties": {
-        "state": { "enum": ["VERIFIED", "NOT_PUBLISHED"] },
-        "evidence": { "$ref": "#/$defs/blobReference" }
+        "state": {
+          "enum": [
+            "VERIFIED",
+            "NOT_PUBLISHED"
+          ]
+        },
+        "evidence": {
+          "$ref": "#/$defs/blobReference"
+        }
       }
     },
     "artifact": {
@@ -232,36 +369,68 @@
         "scan"
       ],
       "properties": {
-        "artifactId": { "$ref": "#/$defs/sha256" },
-        "name": { "type": "string", "minLength": 1 },
-        "version": { "type": "string", "minLength": 1 },
+        "artifactId": {
+          "$ref": "#/$defs/sha256"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
         "resolved": {
           "type": "string",
           "pattern": "^https://registry\\.npmjs\\.org/.+\\.tgz$"
         },
-        "integrity": { "$ref": "#/$defs/sri" },
+        "integrity": {
+          "$ref": "#/$defs/sri"
+        },
         "lockfileLicenses": {
           "type": "array",
-          "items": { "type": "string", "minLength": 1 }
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
         },
         "occurrencePaths": {
           "type": "array",
           "minItems": 1,
-          "items": { "type": "string", "pattern": "^node_modules/" }
+          "items": {
+            "type": "string",
+            "pattern": "^node_modules/"
+          }
         },
         "tarball": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["sha256", "bytes"],
+          "required": [
+            "sha256",
+            "bytes"
+          ],
           "properties": {
-            "sha256": { "$ref": "#/$defs/sha256" },
-            "bytes": { "type": "integer", "minimum": 1 }
+            "sha256": {
+              "$ref": "#/$defs/sha256"
+            },
+            "bytes": {
+              "type": "integer",
+              "minimum": 1
+            }
           }
         },
-        "archive": { "$ref": "#/$defs/evidenceState" },
-        "registrySignature": { "$ref": "#/$defs/registrySignature" },
-        "provenance": { "$ref": "#/$defs/provenance" },
-        "scan": { "$ref": "#/$defs/evidenceState" }
+        "archive": {
+          "$ref": "#/$defs/evidenceState"
+        },
+        "registrySignature": {
+          "$ref": "#/$defs/registrySignature"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "scan": {
+          "$ref": "#/$defs/evidenceState"
+        }
       }
     },
     "keyid": {
@@ -271,25 +440,53 @@
     "signature": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["keyid", "sig"],
+      "required": [
+        "keyid",
+        "sig"
+      ],
       "properties": {
-        "keyid": { "$ref": "#/$defs/keyid" },
-        "sig": { "type": "string", "minLength": 1 }
+        "keyid": {
+          "$ref": "#/$defs/keyid"
+        },
+        "sig": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
     "registryKey": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["keyid", "keytype", "scheme", "key", "expires"],
+      "required": [
+        "keyid",
+        "keytype",
+        "scheme",
+        "key",
+        "expires"
+      ],
       "properties": {
-        "keyid": { "$ref": "#/$defs/keyid" },
-        "keytype": { "const": "ecdsa-sha2-nistp256" },
-        "scheme": { "const": "ecdsa-sha2-nistp256" },
-        "key": { "type": "string", "minLength": 1 },
+        "keyid": {
+          "$ref": "#/$defs/keyid"
+        },
+        "keytype": {
+          "const": "ecdsa-sha2-nistp256"
+        },
+        "scheme": {
+          "const": "ecdsa-sha2-nistp256"
+        },
+        "key": {
+          "type": "string",
+          "minLength": 1
+        },
         "expires": {
           "oneOf": [
-            { "type": "string", "format": "date-time" },
-            { "type": "null" }
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
           ]
         }
       }
@@ -309,21 +506,42 @@
         "scanVerifiedCount"
       ],
       "properties": {
-        "occurrenceCount": { "type": "integer", "minimum": 0 },
-        "artifactCount": { "type": "integer", "minimum": 0 },
-        "blobCount": { "type": "integer", "minimum": 0 },
-        "retainedBytes": { "type": "integer", "minimum": 0 },
+        "occurrenceCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "artifactCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "blobCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "retainedBytes": {
+          "type": "integer",
+          "minimum": 0
+        },
         "registrySignatureVerifiedCount": {
           "type": "integer",
           "minimum": 0
         },
-        "provenanceVerifiedCount": { "type": "integer", "minimum": 0 },
+        "provenanceVerifiedCount": {
+          "type": "integer",
+          "minimum": 0
+        },
         "provenanceNotPublishedCount": {
           "type": "integer",
           "minimum": 0
         },
-        "archiveVerifiedCount": { "type": "integer", "minimum": 0 },
-        "scanVerifiedCount": { "type": "integer", "minimum": 0 }
+        "archiveVerifiedCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "scanVerifiedCount": {
+          "type": "integer",
+          "minimum": 0
+        }
       }
     }
   }

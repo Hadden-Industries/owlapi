@@ -140,7 +140,7 @@ export function observeFreshReferenceCost(env = process.env) {
     );
     fact(
       !result.error && !result.signal && result.status === 0,
-      "native observation failed; no retry",
+      `native ${label} observation failed; no retry (status=${result.status}, signal=${result.signal}, error=${result.error?.code ?? "none"})\n${`${result.stdout ?? ""}${result.stderr ?? ""}`.slice(-8192)}`,
     );
     return Date.now() - startedAt;
   };

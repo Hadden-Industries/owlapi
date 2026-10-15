@@ -1,6 +1,6 @@
 # OwlAPI Markdown centralization
 
-OwlAPI adopts the producer's current public contracts from source commit `47febbe1b6f3282814e77db7ea13eac72b4928ed` and its exact transported core and native archives.
+OwlAPI adopts the producer's current public contracts from source commit `d9736e6bb4f3bd83d421ea99f54431e8380e6ec1` and its exact transported core and native archives.
 The manifest version remains 1.0.3; the published registry package does not contain these contracts.
 Release status is not the adoption gate.
 The isolated lock records the retained archive integrities and installs with lifecycle scripts disabled.
@@ -9,12 +9,15 @@ Application dependencies and the OwlAPI tarball do not include this development 
 ## Consumer commands and policy
 
 `npm run install:markdown` acquires the reviewed isolated graph.
-`lint:md`, `format:md:check`, `format:md` and `inspect:md` invoke its installed public bins from the repository root.
+`check:markdown`, `format:markdown` and `inspect:markdown` invoke its installed public bins from the repository root.
+The full-word target is consistent across install, test, check, format, inspect and qualification scripts.
+The read-only `check:markdown` operation covers formatting drift, linting and local links; both aggregate lint and formatting checks retain it.
+The former abbreviated names and duplicate formatting-check entry point are removed without compatibility aliases.
 They do not acquire missing packages or use a global fallback.
 Full requests reconcile the Git-tracked Markdown inventory; explicit requests retain their declared scope.
-`npm run qualify:md -- profile --root .` reads the producer-owned execution profile.
-Candidate qualification uses that same bin's `candidate` operation with explicit trusted inputs and an external fresh output directory.
-See the installed [producer contracts](https://github.com/Hadden-Industries/markdown-quality/blob/47febbe1b6f3282814e77db7ea13eac72b4928ed/docs/centralized-contracts.md) for its supported arguments.
+`npm run inspect:markdown:profile -- --root .` resolves the producer-owned execution profile without measuring qualification.
+`npm run qualify:markdown -- ...` invokes `markdown-quality-qualify consumer` with explicit trusted inputs and an external fresh output directory.
+See the installed [producer contracts](https://github.com/Hadden-Industries/markdown-quality/blob/d9736e6bb4f3bd83d421ea99f54431e8380e6ec1/docs/centralized-contracts.md) for its supported arguments.
 
 Schema 2 `.markdown-quality.json` is the sole Markdown policy authority.
 The translation preserves the independently captured 68 selected and 11 excluded tracked documents at the cutover baseline.
@@ -38,7 +41,21 @@ The owner discarded the unrelated performance-plan edit before final qualificati
 
 `.markdown-quality-execution.json` owns six samples, 30,000 ms checker latency, a 180,000 ms window and 1,024 MiB observed memory.
 It also bounds Node old space, framing, staging and analyzer limits.
-Node old space and the declared worker heap limit are both 128 MiB.
+The complete committed checkout measured 148,286,489 bytes at candidate `09b8900d089cb8ad185ec835c60061e5d9ae6f9f`, exceeding the former 128 MiB staging allowance before document analysis.
+The finite staging allowance is now 192 MiB; checker latency, sample count, memory, framing and analyzer limits are unchanged.
+The native batch setup has a finite three-second allowance within the unchanged 30-second checker deadline.
+A controlled Windows probe measured 15.5 seconds with batch setup and 18.3 seconds when its setup allowance forced the per-document fallback; hosted setup can be slower than the inherited one-second default.
+This allowance is a candidate correction requiring fresh hosted qualification, not proof that the two retained Windows deadline failures are resolved.
+At subsequent candidate `2fcdf7779ae90c0b8b4d1dd4895e1270c5e891b9`, hosted run `38693291547` completed six positive samples on both systems: observed nearest-rank p95 was 22,801 ms on Linux and 23,420 ms on Windows.
+Both negative jobs in run `38693504213` retained the intended missing-link finding without native errors or writes.
+These receipts retain their exact candidate identities; later document or trusted-input changes require fresh qualification.
+Two native evidence text captures retain their original CRLF bytes through exact `.gitattributes` rules, so fresh Git checkouts match the same native hash-bound inputs used locally.
+Node old space and the declared worker heap limit are both 256 MiB within the unchanged 1,024 MiB observed-memory target.
+The package pin remains `d9736e6bb4f3bd83d421ea99f54431e8380e6ec1`, as instructed by the owner; no archive, lock or qualification-workflow pin changes accompany this capacity correction.
+At candidate `db35b09eaeae4c9233c972396e41319caf681b6d`, the later trusted run and its one bounded retry retained checker-deadline failures, with Linux passing the retry and Windows still failing.
+A controlled fixed-package probe measured 23.4 seconds with matching 128 MiB heaps and 12.6 seconds with matching 256 MiB heaps over the same 99 selected documents.
+A separate native Windows observation of the 256 MiB case measured 16.6 seconds and 589,885,440 peak committed bytes with no surviving descendants.
+These are exploratory measurements; the new trusted profile still requires six-sample hosted acceptance on each system, with the same 30-second checker deadline and 1,024 MiB memory gate.
 [Node's inherited command-line old-space flag](https://nodejs.org/docs/latest-v24.x/api/worker_threads.html#new-workerfilename-options) overrides the worker setting in the current producer, so matching declarations avoid claiming an independently enforced smaller worker heap.
 The initial 256 MiB cap and the later 128 MiB cap failed the shared local memory window, the latter after five completed samples.
 Read-only staged diagnostics failed analysis at 64/96 MiB and completed at 112 MiB without errors or writes.
@@ -47,7 +64,7 @@ The matching 112 MiB profile passed six local and hosted Windows samples under t
 On 2026-10-08 the owner separately authorized the 1,024 MiB target and matching 128 MiB Node/worker caps.
 The profile has one shared memory value, so the revised target applies to both OS jobs.
 These changed trust bytes require fresh qualification and exact bootstrap, dispatch and result acceptance; the larger limit is not a demonstrated pass.
-`.node-version` declares 24.21.0; the existing `.python-version` declares 3.14.7.
+`.node-version` declares 24.21.0; `.python-version` declares 3.15.0.
 The isolated core/native archives and lock are explicit trusted inputs.
 Changing a runtime, policy, profile, lock or archive invalidates its qualification identity.
 
@@ -70,6 +87,8 @@ KaTeX dependency-security probes, application tests, release/provenance checks a
 OwlAPI has no generated-policy helper to migrate; Java API freshness remains its existing generator's obligation.
 The current consumer-source inventory refresh records UO's changed package manifest; its inventoried interface code and WebVOWL's inventoried sources are unchanged.
 The browser import map is regenerated by the existing preparation command after fresh JSPM resolution advances the transitive `readable-stream` dependency to 4.8.0.
+The subsequent native browser check found five stale local module integrities and a missing `json-identity.mjs` integrity after the source-format and canonical-identity changes.
+The owning generator refreshed exactly those six entries, independently matching their source bytes; provider URLs and dependency versions stayed unchanged.
 The independent installed contract and browser checks must qualify these updated records.
 
 The UO preparation established useful public-bin/schema and logical-path techniques.

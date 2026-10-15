@@ -364,7 +364,11 @@ describe("RDF/XML default-graph writer", () => {
       "\udfff",
       "\r\0",
     ].map((value) => [
-      `an XML-forbidden literal ${JSON.stringify(value)}`,
+      `an XML-forbidden literal ${Array.from(
+        value,
+        (character) =>
+          `U+${character.codePointAt(0).toString(16).toUpperCase().padStart(4, "0")}`,
+      ).join(" ")}`,
       quad(subject, predicate, literal(value)),
     ]),
     ...[

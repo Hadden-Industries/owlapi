@@ -1,3 +1,5 @@
+import { jsonEquals } from "./json-identity.mjs";
+
 /** Exercise the supplied native public bindings in source, alias, and browser consumers. */
 export const createPublicContract = ({
   OWLManager,
@@ -21,7 +23,7 @@ export const createPublicContract = ({
   };
   const keys = (values) =>
     [...values].map((value) => value.structuralKey()).sort();
-  const same = (left, right) => JSON.stringify(left) === JSON.stringify(right);
+  const same = jsonEquals;
   const strict = { parsingMode: "strict", collectWarnings: true };
 
   // Hand-authored expected axioms and declarations keep this oracle independent
@@ -325,6 +327,7 @@ export const createPublicContract = ({
         return tuple;
       }
       if (tuple[0] === OWLObjectKind.ANONYMOUS_INDIVIDUAL) {
+        // json-identity-contract: ordered-tuple; owner: import-closure fixture anchors; reason: Native structural tuples preserve positional OWL components in anonymous-node anchor identities.
         const key = JSON.stringify(tuple);
         requireContract(
           anchors.has(key),

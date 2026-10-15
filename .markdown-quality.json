@@ -1,7 +1,9 @@
 {
   "schemaVersion": 2,
   "preset": "authored-gfm@1",
-  "include": ["**/*.md"],
+  "include": [
+    "**/*.md"
+  ],
   "exclude": [
     "**/node_modules/**",
     "**/.venv/**",
@@ -23,7 +25,15 @@
     "docs/Deep Review of Phase 19 and Phase 20 of the owlapi Implementation Plan [[]2026-08-25T0020[]].md"
   ],
   "lint": {},
-  "limits": { "documentDiagnostics": 10000 },
-  "links": { "localFiles": true, "rootRelative": "reject" },
-  "layout": { "endOfLine": "lf", "tabWidth": 2 }
+  "limits": {
+    "documentDiagnostics": 10000
+  },
+  "links": {
+    "localFiles": true,
+    "rootRelative": "reject"
+  },
+  "layout": {
+    "endOfLine": "lf",
+    "tabWidth": 2
+  }
 }

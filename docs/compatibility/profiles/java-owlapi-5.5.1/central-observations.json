@@ -297,7 +297,9 @@
     },
     {
       "probeId": "GAP-P01",
-      "arguments": ["${PROBE_WORKSPACE}"],
+      "arguments": [
+        "${PROBE_WORKSPACE}"
+      ],
       "inputPath": "../../research/java-api-behavior/2026-10-13-owlapi-api-behavior-gap-closure-evidence.json",
       "inputSha256": "ce1efafce28b4fd4893a09efeb12b90987f02e2811b728c3925d220108c99430",
       "sourceSha256": "266ba1d27ee833b8839cbc5d7c2b83ee9f4ddbbd3ca47aafe4abd29e8e0484ff",
@@ -333,7 +335,9 @@
     },
     {
       "probeId": "GAP-P06",
-      "arguments": ["1"],
+      "arguments": [
+        "1"
+      ],
       "inputPath": "../../research/java-api-behavior/2026-10-13-owlapi-api-behavior-gap-closure-evidence.json",
       "inputSha256": "ce1efafce28b4fd4893a09efeb12b90987f02e2811b728c3925d220108c99430",
       "sourceSha256": "2530e680559460ff44a4aece5d73e8821dd86c5fca11a1f80114240922246410",
@@ -345,7 +349,9 @@
     },
     {
       "probeId": "GAP-P06",
-      "arguments": ["2"],
+      "arguments": [
+        "2"
+      ],
       "inputPath": "../../research/java-api-behavior/2026-10-13-owlapi-api-behavior-gap-closure-evidence.json",
       "inputSha256": "ce1efafce28b4fd4893a09efeb12b90987f02e2811b728c3925d220108c99430",
       "sourceSha256": "2530e680559460ff44a4aece5d73e8821dd86c5fca11a1f80114240922246410",
@@ -357,7 +363,9 @@
     },
     {
       "probeId": "GAP-P06",
-      "arguments": ["5"],
+      "arguments": [
+        "5"
+      ],
       "inputPath": "../../research/java-api-behavior/2026-10-13-owlapi-api-behavior-gap-closure-evidence.json",
       "inputSha256": "ce1efafce28b4fd4893a09efeb12b90987f02e2811b728c3925d220108c99430",
       "sourceSha256": "2530e680559460ff44a4aece5d73e8821dd86c5fca11a1f80114240922246410",
@@ -369,7 +377,9 @@
     },
     {
       "probeId": "GAP-P06",
-      "arguments": ["10"],
+      "arguments": [
+        "10"
+      ],
       "inputPath": "../../research/java-api-behavior/2026-10-13-owlapi-api-behavior-gap-closure-evidence.json",
       "inputSha256": "ce1efafce28b4fd4893a09efeb12b90987f02e2811b728c3925d220108c99430",
       "sourceSha256": "2530e680559460ff44a4aece5d73e8821dd86c5fca11a1f80114240922246410",
@@ -381,7 +391,9 @@
     },
     {
       "probeId": "GAP-P06",
-      "arguments": ["11"],
+      "arguments": [
+        "11"
+      ],
       "inputPath": "../../research/java-api-behavior/2026-10-13-owlapi-api-behavior-gap-closure-evidence.json",
       "inputSha256": "ce1efafce28b4fd4893a09efeb12b90987f02e2811b728c3925d220108c99430",
       "sourceSha256": "2530e680559460ff44a4aece5d73e8821dd86c5fca11a1f80114240922246410",
@@ -393,7 +405,9 @@
     },
     {
       "probeId": "GAP-P06",
-      "arguments": ["12"],
+      "arguments": [
+        "12"
+      ],
       "inputPath": "../../research/java-api-behavior/2026-10-13-owlapi-api-behavior-gap-closure-evidence.json",
       "inputSha256": "ce1efafce28b4fd4893a09efeb12b90987f02e2811b728c3925d220108c99430",
       "sourceSha256": "2530e680559460ff44a4aece5d73e8821dd86c5fca11a1f80114240922246410",
@@ -405,7 +419,9 @@
     },
     {
       "probeId": "GAP-P06",
-      "arguments": ["20"],
+      "arguments": [
+        "20"
+      ],
       "inputPath": "../../research/java-api-behavior/2026-10-13-owlapi-api-behavior-gap-closure-evidence.json",
       "inputSha256": "ce1efafce28b4fd4893a09efeb12b90987f02e2811b728c3925d220108c99430",
       "sourceSha256": "2530e680559460ff44a4aece5d73e8821dd86c5fca11a1f80114240922246410",
@@ -417,7 +433,9 @@
     },
     {
       "probeId": "GAP-P06",
-      "arguments": ["25"],
+      "arguments": [
+        "25"
+      ],
       "inputPath": "../../research/java-api-behavior/2026-10-13-owlapi-api-behavior-gap-closure-evidence.json",
       "inputSha256": "ce1efafce28b4fd4893a09efeb12b90987f02e2811b728c3925d220108c99430",
       "sourceSha256": "2530e680559460ff44a4aece5d73e8821dd86c5fca11a1f80114240922246410",
@@ -465,7 +483,9 @@
     },
     {
       "probeId": "ObserveLoadingContracts",
-      "arguments": ["${PROBE_WORKSPACE}"],
+      "arguments": [
+        "${PROBE_WORKSPACE}"
+      ],
       "inputPath": "../../../../util/owlapi-reference/ObserveLoadingContracts.java",
       "inputSha256": "6fbdadffd2e0c82019277f76a0d3c52524d943f2133042b81a0164a2b9170acb",
       "sourceSha256": "6fbdadffd2e0c82019277f76a0d3c52524d943f2133042b81a0164a2b9170acb",
@@ -549,7 +569,9 @@
     },
     {
       "probeId": "ObserveNetworkContracts",
-      "arguments": ["${PROBE_WORKSPACE}"],
+      "arguments": [
+        "${PROBE_WORKSPACE}"
+      ],
       "inputPath": "../../../../util/owlapi-reference/ObserveNetworkContracts.java",
       "inputSha256": "4f55627ea14000c10a912adc86760e9c8c9455c207c59b58a4c8db5ce0848165",
       "sourceSha256": "4f55627ea14000c10a912adc86760e9c8c9455c207c59b58a4c8db5ce0848165",
@@ -573,7 +595,9 @@
     },
     {
       "probeId": "ObserveJsonLdTransport",
-      "arguments": ["${PROBE_WORKSPACE}"],
+      "arguments": [
+        "${PROBE_WORKSPACE}"
+      ],
       "inputPath": "../../../../util/owlapi-reference/ObserveJsonLdTransport.java",
       "inputSha256": "37db924b4c814cef83a52345bce467a41a6344d846941cbe7a2496924b9057d9",
       "sourceSha256": "37db924b4c814cef83a52345bce467a41a6344d846941cbe7a2496924b9057d9",
