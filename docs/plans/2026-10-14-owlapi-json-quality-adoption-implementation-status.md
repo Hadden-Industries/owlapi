@@ -71,6 +71,9 @@ Its later browser preparation correctly rejected five stale local source integri
 Trusted Markdown qualification retained deadline failures under the 128 MiB profile and its one bounded retry; Linux passed the retry, while Windows still exceeded the unchanged checker deadline.
 Fixed-package timing and native Windows memory measurements support matching 256 MiB heap caps within the existing 1,024 MiB target; fresh full and hosted qualification remain required after these final writers.
 Independent correctness review reports no findings for the final repair.
+The next hosted candidate passed source, native reconciliation and installed-platform checks but all three browser import-map runs rejected the transported `.mjs` identity helper's binary MIME type.
+The fixture server now serves `.mjs` as JavaScript; a regression fetching the actual helper through the real HTTP server fails before this one-entry correction and passes afterward.
+The existing six import-map tests also pass; fresh final verification and browser qualification follow this harness repair with the Markdown source pin unchanged.
 The complete native security scan `7859574e-73bd-4af4-97e7-60fccb0cc7fc` retained one low-severity quadratic inventory finding.
 The subsequent indexed ancestor lookup and deterministic regression passed focused security scan `62b5c57d-0fcc-43ac-8a7e-11470c4c08dc` with no new findings; the original finding and proof remain preserved.
 All eight hosted producer checks pass across Windows/Linux and Node 24/26 at the current CLI head; the native readback is retained separately from local proof.
