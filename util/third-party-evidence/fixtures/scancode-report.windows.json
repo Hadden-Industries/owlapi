@@ -94,7 +94,9 @@
       "is_legal": true,
       "detected_license_expression": "mit",
       "detected_license_expression_spdx": "MIT",
-      "license_detections": ["mit-0001"],
+      "license_detections": [
+        "mit-0001"
+      ],
       "copyrights": [
         {
           "copyright": "Copyright Example",
@@ -111,7 +113,9 @@
       ],
       "authors": [],
       "package_data": [],
-      "for_packages": ["pkg:npm/alpha@1.0.0"],
+      "for_packages": [
+        "pkg:npm/alpha@1.0.0"
+      ],
       "scan_errors": []
     }
   ]

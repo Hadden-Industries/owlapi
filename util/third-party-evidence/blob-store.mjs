@@ -28,7 +28,8 @@ const validateReference = (reference) => {
 const absoluteBlobPath = (root, reference) =>
   join(root, "blobs", "sha256", reference.sha256.slice(0, 2), reference.sha256);
 
-export const verifyBlob = async (root, reference) => {
+/** Return the exact bytes admitted against the independently owned reference. */
+export const readVerifiedBlob = async (root, reference) => {
   const expected = validateReference(reference);
   const bytes = await readFile(absoluteBlobPath(root, expected));
   if (bytes.length !== expected.bytes) {
@@ -39,6 +40,11 @@ export const verifyBlob = async (root, reference) => {
   if (sha256(bytes) !== expected.sha256) {
     throw new Error(`Evidence blob digest mismatch for ${expected.sha256}`);
   }
+  return bytes;
+};
+
+export const verifyBlob = async (root, reference) => {
+  await readVerifiedBlob(root, reference);
   return true;
 };
 

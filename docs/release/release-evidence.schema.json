@@ -36,7 +36,13 @@
         "package": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["name", "version", "coordinate", "channel", "registry"],
+          "required": [
+            "name",
+            "version",
+            "coordinate",
+            "channel",
+            "registry"
+          ],
           "properties": {
             "name": {
               "const": "owlapi"
@@ -62,7 +68,12 @@
         "source": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["repository", "ref", "commit", "tag"],
+          "required": [
+            "repository",
+            "ref",
+            "commit",
+            "tag"
+          ],
           "properties": {
             "repository": {
               "const": "Hadden-Industries/owlapi"
@@ -81,7 +92,14 @@
         "workflow": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["name", "commit", "runId", "runAttempt", "url", "actor"],
+          "required": [
+            "name",
+            "commit",
+            "runId",
+            "runAttempt",
+            "url",
+            "actor"
+          ],
           "properties": {
             "name": {
               "const": "Release reconciliation"
@@ -110,7 +128,14 @@
         "qualificationWorkflow": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["name", "commit", "runId", "runAttempt", "url", "actor"],
+          "required": [
+            "name",
+            "commit",
+            "runId",
+            "runAttempt",
+            "url",
+            "actor"
+          ],
           "properties": {
             "name": {
               "const": "Release"
@@ -268,7 +293,11 @@
             "packageReproduction": {
               "type": "object",
               "additionalProperties": false,
-              "required": ["result", "bytes", "sha256"],
+              "required": [
+                "result",
+                "bytes",
+                "sha256"
+              ],
               "properties": {
                 "result": {
                   "const": "BYTE_IDENTICAL"
@@ -315,7 +344,12 @@
         "githubRelease": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["id", "url", "draft", "assets"],
+          "required": [
+            "id",
+            "url",
+            "draft",
+            "assets"
+          ],
           "properties": {
             "id": {
               "type": "integer",
@@ -510,7 +544,13 @@
         "package": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["name", "version", "coordinate", "channel", "registry"],
+          "required": [
+            "name",
+            "version",
+            "coordinate",
+            "channel",
+            "registry"
+          ],
           "properties": {
             "name": {
               "const": "@hadden-industries/owlapi"
@@ -536,7 +576,12 @@
         "source": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["repository", "ref", "commit", "tag"],
+          "required": [
+            "repository",
+            "ref",
+            "commit",
+            "tag"
+          ],
           "properties": {
             "repository": {
               "const": "Hadden-Industries/owlapi"
@@ -555,7 +600,14 @@
         "workflow": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["name", "commit", "runId", "runAttempt", "url", "actor"],
+          "required": [
+            "name",
+            "commit",
+            "runId",
+            "runAttempt",
+            "url",
+            "actor"
+          ],
           "properties": {
             "name": {
               "const": "Release"
@@ -584,7 +636,14 @@
         "qualificationWorkflow": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["name", "commit", "runId", "runAttempt", "url", "actor"],
+          "required": [
+            "name",
+            "commit",
+            "runId",
+            "runAttempt",
+            "url",
+            "actor"
+          ],
           "properties": {
             "name": {
               "const": "Release"
@@ -747,7 +806,11 @@
             "publisherJob": {
               "type": "object",
               "additionalProperties": false,
-              "required": ["url", "runAttempt", "conclusion"],
+              "required": [
+                "url",
+                "runAttempt",
+                "conclusion"
+              ],
               "properties": {
                 "url": {
                   "type": "string",
@@ -758,7 +821,10 @@
                   "minimum": 1
                 },
                 "conclusion": {
-                  "enum": ["success", "failure"]
+                  "enum": [
+                    "success",
+                    "failure"
+                  ]
                 }
               }
             }
@@ -798,7 +864,12 @@
         "githubRelease": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["id", "url", "draft", "assets"],
+          "required": [
+            "id",
+            "url",
+            "draft",
+            "assets"
+          ],
           "properties": {
             "id": {
               "type": "integer",
@@ -1011,7 +1082,13 @@
         "package": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["name", "version", "coordinate", "channel", "registry"],
+          "required": [
+            "name",
+            "version",
+            "coordinate",
+            "channel",
+            "registry"
+          ],
           "properties": {
             "name": {
               "const": "@hadden-industries/owlapi"
@@ -1037,7 +1114,12 @@
         "source": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["repository", "ref", "commit", "tag"],
+          "required": [
+            "repository",
+            "ref",
+            "commit",
+            "tag"
+          ],
           "properties": {
             "repository": {
               "const": "Hadden-Industries/owlapi"
@@ -1056,7 +1138,14 @@
         "workflow": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["name", "commit", "runId", "runAttempt", "url", "actor"],
+          "required": [
+            "name",
+            "commit",
+            "runId",
+            "runAttempt",
+            "url",
+            "actor"
+          ],
           "properties": {
             "name": {
               "const": "Release"
@@ -1085,7 +1174,14 @@
         "qualificationWorkflow": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["name", "commit", "runId", "runAttempt", "url", "actor"],
+          "required": [
+            "name",
+            "commit",
+            "runId",
+            "runAttempt",
+            "url",
+            "actor"
+          ],
           "properties": {
             "name": {
               "const": "Release"
@@ -1248,7 +1344,11 @@
             "publisherJob": {
               "type": "object",
               "additionalProperties": false,
-              "required": ["url", "runAttempt", "conclusion"],
+              "required": [
+                "url",
+                "runAttempt",
+                "conclusion"
+              ],
               "properties": {
                 "url": {
                   "type": "string",
@@ -1259,7 +1359,10 @@
                   "minimum": 1
                 },
                 "conclusion": {
-                  "enum": ["success", "failure"]
+                  "enum": [
+                    "success",
+                    "failure"
+                  ]
                 }
               }
             }
@@ -1299,7 +1402,12 @@
         "githubRelease": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["id", "url", "draft", "assets"],
+          "required": [
+            "id",
+            "url",
+            "draft",
+            "assets"
+          ],
           "properties": {
             "id": {
               "type": "integer",
@@ -1519,7 +1627,12 @@
             "identity": {
               "type": "object",
               "additionalProperties": false,
-              "required": ["workflow", "runId", "runAttempt", "commit"],
+              "required": [
+                "workflow",
+                "runId",
+                "runAttempt",
+                "commit"
+              ],
               "properties": {
                 "workflow": {
                   "const": "Release"
@@ -1599,7 +1712,13 @@
         "package": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["name", "version", "coordinate", "channel", "registry"],
+          "required": [
+            "name",
+            "version",
+            "coordinate",
+            "channel",
+            "registry"
+          ],
           "properties": {
             "name": {
               "const": "@hadden-industries/owlapi"
@@ -1625,7 +1744,12 @@
         "source": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["repository", "ref", "commit", "tag"],
+          "required": [
+            "repository",
+            "ref",
+            "commit",
+            "tag"
+          ],
           "properties": {
             "repository": {
               "const": "Hadden-Industries/owlapi"
@@ -1644,7 +1768,14 @@
         "workflow": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["name", "commit", "runId", "runAttempt", "url", "actor"],
+          "required": [
+            "name",
+            "commit",
+            "runId",
+            "runAttempt",
+            "url",
+            "actor"
+          ],
           "properties": {
             "name": {
               "const": "Release"
@@ -1673,7 +1804,14 @@
         "qualificationWorkflow": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["name", "commit", "runId", "runAttempt", "url", "actor"],
+          "required": [
+            "name",
+            "commit",
+            "runId",
+            "runAttempt",
+            "url",
+            "actor"
+          ],
           "properties": {
             "name": {
               "const": "Release"
@@ -1837,7 +1975,11 @@
             "publisherJob": {
               "type": "object",
               "additionalProperties": false,
-              "required": ["url", "runAttempt", "conclusion"],
+              "required": [
+                "url",
+                "runAttempt",
+                "conclusion"
+              ],
               "properties": {
                 "url": {
                   "type": "string",
@@ -1848,7 +1990,10 @@
                   "minimum": 1
                 },
                 "conclusion": {
-                  "enum": ["success", "failure"]
+                  "enum": [
+                    "success",
+                    "failure"
+                  ]
                 }
               }
             },
@@ -1891,7 +2036,12 @@
         "githubRelease": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["id", "url", "draft", "assets"],
+          "required": [
+            "id",
+            "url",
+            "draft",
+            "assets"
+          ],
           "properties": {
             "id": {
               "type": "integer",
@@ -2111,7 +2261,12 @@
             "identity": {
               "type": "object",
               "additionalProperties": false,
-              "required": ["workflow", "runId", "runAttempt", "commit"],
+              "required": [
+                "workflow",
+                "runId",
+                "runAttempt",
+                "commit"
+              ],
               "properties": {
                 "workflow": {
                   "const": "Release"
@@ -2170,7 +2325,11 @@
     "asset": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["name", "bytes", "sha256"],
+      "required": [
+        "name",
+        "bytes",
+        "sha256"
+      ],
       "properties": {
         "name": {
           "type": "string",
@@ -2188,7 +2347,11 @@
     "artifactReference": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "name", "digest"],
+      "required": [
+        "id",
+        "name",
+        "digest"
+      ],
       "properties": {
         "id": {
           "type": "string",
@@ -2207,7 +2370,11 @@
     "failedJob": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["name", "conclusion", "url"],
+      "required": [
+        "name",
+        "conclusion",
+        "url"
+      ],
       "properties": {
         "name": {
           "const": "Release / tag accepted"
@@ -2224,10 +2391,18 @@
     "approval": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["environment", "reviewer", "state", "observedAt"],
+      "required": [
+        "environment",
+        "reviewer",
+        "state",
+        "observedAt"
+      ],
       "properties": {
         "environment": {
-          "enum": ["release-manual", "npm-release"]
+          "enum": [
+            "release-manual",
+            "npm-release"
+          ]
         },
         "reviewer": {
           "const": "MaksymShostak"
@@ -2244,7 +2419,11 @@
     "job": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["name", "conclusion", "url"],
+      "required": [
+        "name",
+        "conclusion",
+        "url"
+      ],
       "properties": {
         "name": {
           "type": "string",
@@ -2262,14 +2441,22 @@
     "extendedTest": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["environment", "result", "reason"],
+      "required": [
+        "environment",
+        "result",
+        "reason"
+      ],
       "properties": {
         "environment": {
           "type": "string",
           "minLength": 1
         },
         "result": {
-          "enum": ["PASS", "FAIL", "NOT_RUN"]
+          "enum": [
+            "PASS",
+            "FAIL",
+            "NOT_RUN"
+          ]
         },
         "reason": {
           "type": "string",
@@ -2280,7 +2467,10 @@
     "inputEvidence": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["name", "sha256"],
+      "required": [
+        "name",
+        "sha256"
+      ],
       "properties": {
         "name": {
           "type": "string",

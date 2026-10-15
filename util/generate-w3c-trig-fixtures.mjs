@@ -1,4 +1,5 @@
 import { suiteRevision } from "./conformance/suiteRevision.mjs";
+import { readW3cSource } from "./conformance/w3cSource.mjs";
 import { MF, RDF, RDFT, encodeQuad } from "./conformance/fixtureTerms.mjs";
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
@@ -7,7 +8,7 @@ import process from "node:process";
 import { pathToFileURL } from "node:url";
 
 import { Parser as N3Parser } from "n3";
-import { format as formatWithPrettier } from "prettier";
+import { formatConformanceJson as formatJson } from "./conformance/jsonPresentation.mjs";
 
 const REVISION = suiteRevision("w3c-rdf-tests", "TriG");
 
@@ -47,7 +48,7 @@ const suites = [
     ),
     expectedCount: 357,
     expectedSha256:
-      "151cee87899fe6efc049c4ea606c5ea44a7074469e147df8e56df67b69e87ae2",
+      "5638fd7f38fa73201df4eb3d97a12d4eccb50b8806fbbb43489ccaeaa654288f",
     inputUrl: new URL("rdf11/rdf-trig/", inputUrl),
     key: "rdf11",
     manifestPath: "rdf/rdf11/rdf-trig/manifest.ttl",
@@ -59,7 +60,7 @@ const suites = [
     ),
     expectedCount: 35,
     expectedSha256:
-      "dd7edf4f760dc6c30fff3ed874ac1796130a253ebe4abaf37f8ac6b3721f0086",
+      "a980964814fecb2ee4f367afdc6b5a27910a0f112b7d446207a7d7e747a1c29c",
     inputUrl: new URL("rdf12/rdf-trig/syntax/", inputUrl),
     key: "rdf12Syntax",
     manifestPath: "rdf/rdf12/rdf-trig/syntax/manifest.ttl",
@@ -71,7 +72,7 @@ const suites = [
     ),
     expectedCount: 26,
     expectedSha256:
-      "e341c4f3a810602ca7c26a677735740d5409298d7dba22782b03e878ff41a9d5",
+      "ac24d21a3f44b591919743e5eceb15960c0caef7cd00ac560b15be1444dfde1e",
     inputUrl: new URL("rdf12/rdf-trig/eval/", inputUrl),
     key: "rdf12Eval",
     manifestPath: "rdf/rdf12/rdf-trig/eval/manifest.ttl",
@@ -79,8 +80,6 @@ const suites = [
 ];
 
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
-const formatJson = (value) =>
-  formatWithPrettier(JSON.stringify(value), { parser: "json" });
 
 const objectFor = (quads, subject, predicate) =>
   quads.find(
@@ -174,7 +173,11 @@ for (const suite of suites) {
     }
     const actionTerm = objectFor(quads, entry, `${MF}action`);
     const action = relativeReference(actionTerm, assumedBase, "mf:action");
-    const source = await readFile(new URL(action, suite.inputUrl), "utf8");
+    const source = await readW3cSource(
+      new URL(action, suite.inputUrl),
+      actionTerm.value,
+      REVISION,
+    );
     const classification = N3JS_RDF12_EVALUATION_GAPS.has(`${suite.key}:${id}`)
       ? "EXCLUDED_WITH_REASON"
       : "REQUIRED";

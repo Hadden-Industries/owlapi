@@ -1,4 +1,5 @@
 import { suiteRevision } from "./conformance/suiteRevision.mjs";
+import { readW3cSource } from "./conformance/w3cSource.mjs";
 import { MF, RDF, RDFT } from "./conformance/fixtureTerms.mjs";
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
@@ -7,7 +8,7 @@ import process from "node:process";
 import { pathToFileURL } from "node:url";
 
 import { Parser as N3Parser } from "n3";
-import { format as formatWithPrettier } from "prettier";
+import { formatConformanceJson as formatJson } from "./conformance/jsonPresentation.mjs";
 
 const REVISION = suiteRevision("w3c-rdf-tests", "N-Quads");
 
@@ -37,7 +38,7 @@ const suites = [
     ),
     expectedCount: 87,
     expectedSha256:
-      "aacaf7a803763a09ae68bba75575346847cb62405c7e4f33c8a0a244ffc11847",
+      "4c658a4e111adff512e89ff2c39acf9195109592f54711ce06823dac544c62ca",
     inputUrl: new URL("rdf11/rdf-n-quads/", inputUrl),
     key: "rdf11",
     manifestPath: "rdf/rdf11/rdf-n-quads/manifest.ttl",
@@ -51,7 +52,7 @@ const suites = [
     ),
     expectedCount: 27,
     expectedSha256:
-      "53eca8aa5ec0c0662e5b56b90603363e72093425fa9f71fff85e7f3c654b5af3",
+      "90d06079b66e5f2d0df598cf451eeaa7b896c11f8869bec6219a40ac6b504768",
     inputUrl: new URL("rdf12/rdf-n-quads/syntax/", inputUrl),
     key: "rdf12Syntax",
     manifestPath: "rdf/rdf12/rdf-n-quads/syntax/manifest.ttl",
@@ -59,8 +60,6 @@ const suites = [
 ];
 
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
-const formatJson = (value) =>
-  formatWithPrettier(JSON.stringify(value), { parser: "json" });
 
 const objectFor = (quads, subject, predicate) =>
   quads.find(
@@ -154,7 +153,11 @@ for (const suite of suites) {
     }
     const actionTerm = objectFor(quads, entry, `${MF}action`);
     const action = relativeReference(actionTerm, assumedBase, "mf:action");
-    const source = await readFile(new URL(action, suite.inputUrl), "utf8");
+    const source = await readW3cSource(
+      new URL(action, suite.inputUrl),
+      actionTerm.value,
+      REVISION,
+    );
     const expectedQuads =
       type === "POSITIVE_SYNTAX"
         ? new N3Parser({ format: "N-Quads" }).parse(source)

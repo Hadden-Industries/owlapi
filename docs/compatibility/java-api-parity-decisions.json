@@ -28,7 +28,9 @@
           ]
         }
       ],
-      "jsBindings": ["io.StringDocumentTarget"],
+      "jsBindings": [
+        "io.StringDocumentTarget"
+      ],
       "category": "OMISSION",
       "rationale": "JavaScript has no java.io.Writer protocol; an exposed writer would defeat complete-text atomicity.",
       "rule": "Expose only constructor and toString; omit getWriter, getText, write, append, and constructor text.",
@@ -54,7 +56,9 @@
           ]
         }
       ],
-      "jsBindings": ["io.StringDocumentTarget"],
+      "jsBindings": [
+        "io.StringDocumentTarget"
+      ],
       "category": "BEHAVIOR_ADAPTATION",
       "rationale": "The consumer requires failed saves to preserve prior text, unlike incremental Java writer mutation.",
       "rule": "Replace complete text through one package-private helper only after target identity and string validation; expose no mutator.",
@@ -82,10 +86,15 @@
         {
           "type": "org.semanticweb.owlapi.model.OWLStorerNotFoundException",
           "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLStorerNotFoundException.java",
-          "members": ["OWLStorerNotFoundException(OWLDocumentFormat)"]
+          "members": [
+            "OWLStorerNotFoundException(OWLDocumentFormat)"
+          ]
         }
       ],
-      "jsBindings": ["io.OWLOntologyStorageError", "io.OWLStorerNotFoundError"],
+      "jsBindings": [
+        "io.OWLOntologyStorageError",
+        "io.OWLStorerNotFoundError"
+      ],
       "category": "NAME_ADAPTATION",
       "rationale": "The established JavaScript throwable convention uses the Error suffix.",
       "rule": "Use the two canonical Error names and no Exception aliases.",
@@ -112,10 +121,15 @@
         {
           "type": "org.semanticweb.owlapi.model.OWLStorerNotFoundException",
           "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLStorerNotFoundException.java",
-          "members": ["OWLStorerNotFoundException(OWLDocumentFormat)"]
+          "members": [
+            "OWLStorerNotFoundException(OWLDocumentFormat)"
+          ]
         }
       ],
-      "jsBindings": ["io.OWLOntologyStorageError", "io.OWLStorerNotFoundError"],
+      "jsBindings": [
+        "io.OWLOntologyStorageError",
+        "io.OWLStorerNotFoundError"
+      ],
       "category": "HIERARCHY_ADAPTATION",
       "rationale": "The package already uses OWLAPIError and has no separate checked-exception root.",
       "rule": "OWLOntologyStorageError extends OWLAPIError; OWLStorerNotFoundError extends OWLOntologyStorageError.",
@@ -142,10 +156,15 @@
         {
           "type": "org.semanticweb.owlapi.model.OWLStorerNotFoundException",
           "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLStorerNotFoundException.java",
-          "members": ["OWLStorerNotFoundException(OWLDocumentFormat)"]
+          "members": [
+            "OWLStorerNotFoundException(OWLDocumentFormat)"
+          ]
         }
       ],
-      "jsBindings": ["io.OWLOntologyStorageError", "io.OWLStorerNotFoundError"],
+      "jsBindings": [
+        "io.OWLOntologyStorageError",
+        "io.OWLStorerNotFoundError"
+      ],
       "category": "NAMESPACE_ADAPTATION",
       "rationale": "The existing package owns throwable bindings in io; duplicating model exports adds no semantic capability.",
       "rule": "Export only through io and the existing bare aggregate with one binding identity; do not export these errors through model.",
@@ -170,7 +189,9 @@
           ]
         }
       ],
-      "jsBindings": ["io.OWLOntologyStorageError"],
+      "jsBindings": [
+        "io.OWLOntologyStorageError"
+      ],
       "category": "DIAGNOSTIC_ADAPTATION",
       "rationale": "A stable reason can classify lossless-representation failure without inventing a public subtype.",
       "rule": "Retain reason ONTOLOGY_NOT_REPRESENTABLE through safe own details without overriding canonical name, code, message, cause, or prototype.",
@@ -270,7 +291,9 @@
             ]
           }
         ],
-        "jsBindings": ["model.OWLOntologyManager"],
+        "jsBindings": [
+          "model.OWLOntologyManager"
+        ],
         "category": "BEHAVIOR_ADAPTATION",
         "rationale": "JavaScript consumers need deterministic snapshots without a Java Stream runtime.",
         "rule": "Return a frozen root-first array from importsClosure and a fresh defensive Set from getImportsClosure; retain reflexive transitive membership.",
@@ -294,13 +317,17 @@
             ]
           }
         ],
-        "jsBindings": ["model.OWLOntologyManager"],
+        "jsBindings": [
+          "model.OWLOntologyManager"
+        ],
         "category": "BEHAVIOR_ADAPTATION",
         "rationale": "Manager ownership errors must not silently masquerade as empty closures.",
         "rule": "Reject a foreign ontology with OWLOntologyStateError before traversal.",
         "rejectedAlternative": "Java's empty closure would conceal an invalid manager/ontology pairing.",
         "approvalSource": "docs/ontology-lifecycle-capability-implementation-plan.md",
-        "verificationPaths": ["model/owlOntologyManager.test.js"]
+        "verificationPaths": [
+          "model/owlOntologyManager.test.js"
+        ]
       },
       {
         "id": "LIFECYCLE-MUTATION-RESULT-ATOMICITY",
@@ -309,7 +336,9 @@
           {
             "type": "org.semanticweb.owlapi.model.HasAddAxiom",
             "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/HasAddAxiom.java",
-            "members": ["ChangeApplied addAxiom(OWLOntology, OWLAxiom)"]
+            "members": [
+              "ChangeApplied addAxiom(OWLOntology, OWLAxiom)"
+            ]
           },
           {
             "type": "org.semanticweb.owlapi.model.HasAddAxioms",
@@ -322,7 +351,9 @@
           {
             "type": "org.semanticweb.owlapi.model.HasApplyChange",
             "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/HasApplyChange.java",
-            "members": ["ChangeApplied applyChange(OWLOntologyChange)"]
+            "members": [
+              "ChangeApplied applyChange(OWLOntologyChange)"
+            ]
           },
           {
             "type": "org.semanticweb.owlapi.model.HasApplyChanges",
@@ -333,7 +364,9 @@
             ]
           }
         ],
-        "jsBindings": ["model.OWLOntologyManager"],
+        "jsBindings": [
+          "model.OWLOntologyManager"
+        ],
         "category": "BEHAVIOR_ADAPTATION",
         "rationale": "The accepted composition requires boolean change results and all-or-nothing iterable mutation.",
         "rule": "Validate complete addAxiom/addAxioms and applyChange/applyChanges operations before publication; return true exactly when state changes.",
@@ -351,7 +384,9 @@
           {
             "type": "org.semanticweb.owlapi.model.HasAddAxiom",
             "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/HasAddAxiom.java",
-            "members": ["ChangeApplied addAxiom(OWLOntology, OWLAxiom)"]
+            "members": [
+              "ChangeApplied addAxiom(OWLOntology, OWLAxiom)"
+            ]
           },
           {
             "type": "org.semanticweb.owlapi.model.HasAddAxioms",
@@ -364,7 +399,9 @@
           {
             "type": "org.semanticweb.owlapi.model.HasApplyChange",
             "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/HasApplyChange.java",
-            "members": ["ChangeApplied applyChange(OWLOntologyChange)"]
+            "members": [
+              "ChangeApplied applyChange(OWLOntologyChange)"
+            ]
           },
           {
             "type": "org.semanticweb.owlapi.model.HasApplyChanges",
@@ -387,17 +424,23 @@
           {
             "type": "org.semanticweb.owlapi.model.AddOntologyAnnotation",
             "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/AddOntologyAnnotation.java",
-            "members": ["AddOntologyAnnotation(OWLOntology, OWLAnnotation)"]
+            "members": [
+              "AddOntologyAnnotation(OWLOntology, OWLAnnotation)"
+            ]
           },
           {
             "type": "org.semanticweb.owlapi.model.OWLOntologyChange",
             "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyChange.java",
-            "members": ["OWLOntology getOntology()"]
+            "members": [
+              "OWLOntology getOntology()"
+            ]
           },
           {
             "type": "org.semanticweb.owlapi.model.AnnotationChange",
             "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/AnnotationChange.java",
-            "members": ["OWLAnnotation getAnnotation()"]
+            "members": [
+              "OWLAnnotation getAnnotation()"
+            ]
           }
         ],
         "jsBindings": [
@@ -428,7 +471,9 @@
             ]
           }
         ],
-        "jsBindings": ["util.OWLOntologyImportsClosureSetProvider"],
+        "jsBindings": [
+          "util.OWLOntologyImportsClosureSetProvider"
+        ],
         "category": "BEHAVIOR_ADAPTATION",
         "rationale": "Materialization needs stable closure membership throughout its operation.",
         "rule": "Capture membership at construction and return fresh defensive Sets; ontology objects retain their existing manager-owned identity.",
@@ -453,13 +498,17 @@
             ]
           }
         ],
-        "jsBindings": ["util.OWLOntologyMerger"],
+        "jsBindings": [
+          "util.OWLOntologyMerger"
+        ],
         "category": "OMISSION",
         "rationale": "The accepted caller needs the direct-axiom union and optional logical-axiom filter, not arbitrary Java filter implementations.",
         "rule": "Use omitted/undefined ontologyIRI for anonymous output, retain the boolean constructor form, and omit OWLAxiomFilter.",
         "rejectedAlternative": "A nullable Java overload family or exposed arbitrary filter adds unnecessary public protocols.",
         "approvalSource": "docs/ontology-lifecycle-capability-implementation-plan.md",
-        "verificationPaths": ["util/owlOntologyMerger.test.js"]
+        "verificationPaths": [
+          "util/owlOntologyMerger.test.js"
+        ]
       },
       {
         "id": "LIFECYCLE-ASYNC-SAVE-OVERLOAD",
@@ -473,7 +522,9 @@
             ]
           }
         ],
-        "jsBindings": ["model.OWLOntologyManager"],
+        "jsBindings": [
+          "model.OWLOntologyManager"
+        ],
         "category": "BEHAVIOR_ADAPTATION",
         "rationale": "Browser-compatible storage may require asynchronous rendering and validation.",
         "rule": "Return Promise<void> only from the explicit ontology/format/target overload; select exactly by format key with no syntax fallback.",
@@ -568,7 +619,9 @@
         "javaExpectation": {
           "behaviorProfileId": "java-owlapi-5.5.1",
           "expectedOutcome": "Explicit java-owlapi-5.5.1 uses the released native contracts. No mutable alias or setter is exposed.",
-          "oracleProbeIds": ["ObserveBehaviorContracts"]
+          "oracleProbeIds": [
+            "ObserveBehaviorContracts"
+          ]
         },
         "normativeExpectation": {
           "behaviorProfileId": "normative-v1",
@@ -591,10 +644,25 @@
           "model/behaviorProfile.test.js",
           "model/behaviorInstalledContract.test.js"
         ],
-        "requirementIds": ["REQ-001", "REQ-002", "REQ-005", "REQ-012"],
-        "acceptanceCriterionIds": ["AC-001", "AC-002", "AC-005", "AC-012"],
-        "qualityScenarioIds": ["QA-004", "QA-007"],
-        "sliceIds": ["SLICE-002"]
+        "requirementIds": [
+          "REQ-001",
+          "REQ-002",
+          "REQ-005",
+          "REQ-012"
+        ],
+        "acceptanceCriterionIds": [
+          "AC-001",
+          "AC-002",
+          "AC-005",
+          "AC-012"
+        ],
+        "qualityScenarioIds": [
+          "QA-004",
+          "QA-007"
+        ],
+        "sliceIds": [
+          "SLICE-002"
+        ]
       },
       {
         "decisionId": "BEHAVIOR-LOADER-CONFIGURATION",
@@ -644,10 +712,23 @@
           "io/node/nodeDocumentLoader.test.js",
           "internal/parsing/xml/behaviorXml.test.js"
         ],
-        "requirementIds": ["REQ-001", "REQ-004", "REQ-008"],
-        "acceptanceCriterionIds": ["AC-001", "AC-004", "AC-008"],
-        "qualityScenarioIds": ["QA-001", "QA-004"],
-        "sliceIds": ["SLICE-002"]
+        "requirementIds": [
+          "REQ-001",
+          "REQ-004",
+          "REQ-008"
+        ],
+        "acceptanceCriterionIds": [
+          "AC-001",
+          "AC-004",
+          "AC-008"
+        ],
+        "qualityScenarioIds": [
+          "QA-001",
+          "QA-004"
+        ],
+        "sliceIds": [
+          "SLICE-002"
+        ]
       },
       {
         "decisionId": "BEHAVIOR-WRITER-CONFIGURATION",
@@ -695,14 +776,29 @@
           "model/behaviorProfile.test.js",
           "model/behaviorStorage.test.js"
         ],
-        "requirementIds": ["REQ-001", "REQ-004", "REQ-007"],
-        "acceptanceCriterionIds": ["AC-001", "AC-004", "AC-007"],
-        "qualityScenarioIds": ["QA-002", "QA-004"],
-        "sliceIds": ["SLICE-002"]
+        "requirementIds": [
+          "REQ-001",
+          "REQ-004",
+          "REQ-007"
+        ],
+        "acceptanceCriterionIds": [
+          "AC-001",
+          "AC-004",
+          "AC-007"
+        ],
+        "qualityScenarioIds": [
+          "QA-002",
+          "QA-004"
+        ],
+        "sliceIds": [
+          "SLICE-002"
+        ]
       },
       {
         "decisionId": "BEHAVIOR-LITERAL-CONSTRUCTION",
-        "apiMembers": ["OWLDataFactory.getOWLLiteral"],
+        "apiMembers": [
+          "OWLDataFactory.getOWLLiteral"
+        ],
         "behaviorRelationship": "profile-specific",
         "decisionStatus": "accepted",
         "implementationStatus": "development-tested",
@@ -739,11 +835,25 @@
         "rationaleReferences": [
           "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
         ],
-        "testCaseReferences": ["model/behaviorLiterals.test.js"],
-        "requirementIds": ["REQ-001", "REQ-003", "REQ-004"],
-        "acceptanceCriterionIds": ["AC-001", "AC-003", "AC-004"],
-        "qualityScenarioIds": ["QA-007"],
-        "sliceIds": ["SLICE-003"]
+        "testCaseReferences": [
+          "model/behaviorLiterals.test.js"
+        ],
+        "requirementIds": [
+          "REQ-001",
+          "REQ-003",
+          "REQ-004"
+        ],
+        "acceptanceCriterionIds": [
+          "AC-001",
+          "AC-003",
+          "AC-004"
+        ],
+        "qualityScenarioIds": [
+          "QA-007"
+        ],
+        "sliceIds": [
+          "SLICE-003"
+        ]
       },
       {
         "decisionId": "BEHAVIOR-MUTATION-PUBLICATION",
@@ -767,7 +877,9 @@
         "javaExpectation": {
           "behaviorProfileId": "java-owlapi-5.5.1",
           "expectedOutcome": "Apply changes sequentially, return ChangeApplied and retain effects before a later collision. A net-zero enacted batch can return SUCCESSFULLY.",
-          "oracleProbeIds": ["ObserveMutationContracts"]
+          "oracleProbeIds": [
+            "ObserveMutationContracts"
+          ]
         },
         "normativeExpectation": {
           "behaviorProfileId": "normative-v1",
@@ -786,11 +898,26 @@
         "rationaleReferences": [
           "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
         ],
-        "testCaseReferences": ["model/behaviorMutation.test.js"],
-        "requirementIds": ["REQ-001", "REQ-005", "REQ-006"],
-        "acceptanceCriterionIds": ["AC-001", "AC-005", "AC-006"],
-        "qualityScenarioIds": ["QA-002", "QA-004"],
-        "sliceIds": ["SLICE-003"]
+        "testCaseReferences": [
+          "model/behaviorMutation.test.js"
+        ],
+        "requirementIds": [
+          "REQ-001",
+          "REQ-005",
+          "REQ-006"
+        ],
+        "acceptanceCriterionIds": [
+          "AC-001",
+          "AC-005",
+          "AC-006"
+        ],
+        "qualityScenarioIds": [
+          "QA-002",
+          "QA-004"
+        ],
+        "sliceIds": [
+          "SLICE-003"
+        ]
       },
       {
         "decisionId": "BEHAVIOR-FOREIGN-MANAGER-MUTATION",
@@ -813,7 +940,9 @@
         "javaExpectation": {
           "behaviorProfileId": "java-owlapi-5.5.1",
           "expectedOutcome": "Permit observed foreign mutation without transferring ownership; preserve the owning manager old-ID index and native captured-change behavior.",
-          "oracleProbeIds": ["ObserveMutationContracts"]
+          "oracleProbeIds": [
+            "ObserveMutationContracts"
+          ]
         },
         "normativeExpectation": {
           "behaviorProfileId": "normative-v1",
@@ -832,15 +961,32 @@
         "rationaleReferences": [
           "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
         ],
-        "testCaseReferences": ["model/behaviorMutation.test.js"],
-        "requirementIds": ["REQ-001", "REQ-005", "REQ-006"],
-        "acceptanceCriterionIds": ["AC-001", "AC-005", "AC-006"],
-        "qualityScenarioIds": ["QA-002", "QA-004"],
-        "sliceIds": ["SLICE-003"]
+        "testCaseReferences": [
+          "model/behaviorMutation.test.js"
+        ],
+        "requirementIds": [
+          "REQ-001",
+          "REQ-005",
+          "REQ-006"
+        ],
+        "acceptanceCriterionIds": [
+          "AC-001",
+          "AC-005",
+          "AC-006"
+        ],
+        "qualityScenarioIds": [
+          "QA-002",
+          "QA-004"
+        ],
+        "sliceIds": [
+          "SLICE-003"
+        ]
       },
       {
         "decisionId": "BEHAVIOR-ONTOLOGY-COPY",
-        "apiMembers": ["OWLOntologyMerger.createMergedOntology"],
+        "apiMembers": [
+          "OWLOntologyMerger.createMergedOntology"
+        ],
         "behaviorRelationship": "profile-specific",
         "decisionStatus": "accepted",
         "implementationStatus": "development-tested",
@@ -855,7 +1001,9 @@
         "javaExpectation": {
           "behaviorProfileId": "java-owlapi-5.5.1",
           "expectedOutcome": "Create the destination-owned target before querying the provider, copy direct axioms and retain copied axioms if later provider iteration fails. Identity collision prevents the provider call.",
-          "oracleProbeIds": ["ObserveMutationContracts"]
+          "oracleProbeIds": [
+            "ObserveMutationContracts"
+          ]
         },
         "normativeExpectation": {
           "behaviorProfileId": "normative-v1",
@@ -878,10 +1026,23 @@
           "util/behaviorMerger.test.js",
           "util/owlOntologyMerger.test.js"
         ],
-        "requirementIds": ["REQ-001", "REQ-005", "REQ-006"],
-        "acceptanceCriterionIds": ["AC-001", "AC-005", "AC-006"],
-        "qualityScenarioIds": ["QA-002", "QA-004"],
-        "sliceIds": ["SLICE-003"]
+        "requirementIds": [
+          "REQ-001",
+          "REQ-005",
+          "REQ-006"
+        ],
+        "acceptanceCriterionIds": [
+          "AC-001",
+          "AC-005",
+          "AC-006"
+        ],
+        "qualityScenarioIds": [
+          "QA-002",
+          "QA-004"
+        ],
+        "sliceIds": [
+          "SLICE-003"
+        ]
       },
       {
         "decisionId": "BEHAVIOR-LOAD-PUBLICATION",
@@ -929,10 +1090,25 @@
           "model/behaviorLoading.test.js",
           "model/behaviorMutation.test.js"
         ],
-        "requirementIds": ["REQ-001", "REQ-004", "REQ-005", "REQ-006"],
-        "acceptanceCriterionIds": ["AC-001", "AC-004", "AC-005", "AC-006"],
-        "qualityScenarioIds": ["QA-002", "QA-004"],
-        "sliceIds": ["SLICE-004"]
+        "requirementIds": [
+          "REQ-001",
+          "REQ-004",
+          "REQ-005",
+          "REQ-006"
+        ],
+        "acceptanceCriterionIds": [
+          "AC-001",
+          "AC-004",
+          "AC-005",
+          "AC-006"
+        ],
+        "qualityScenarioIds": [
+          "QA-002",
+          "QA-004"
+        ],
+        "sliceIds": [
+          "SLICE-004"
+        ]
       },
       {
         "decisionId": "BEHAVIOR-STORAGE-TARGET",
@@ -954,7 +1130,9 @@
         "javaExpectation": {
           "behaviorProfileId": "java-owlapi-5.5.1",
           "expectedOutcome": "Append to reused targets and retain the released partial prefix on qualified renderer failures; consume writer options only where the native storer does.",
-          "oracleProbeIds": ["ObserveStorageContracts"]
+          "oracleProbeIds": [
+            "ObserveStorageContracts"
+          ]
         },
         "normativeExpectation": {
           "behaviorProfileId": "normative-v1",
@@ -973,11 +1151,26 @@
         "rationaleReferences": [
           "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
         ],
-        "testCaseReferences": ["model/behaviorStorage.test.js"],
-        "requirementIds": ["REQ-001", "REQ-004", "REQ-007"],
-        "acceptanceCriterionIds": ["AC-001", "AC-004", "AC-007"],
-        "qualityScenarioIds": ["QA-002", "QA-004"],
-        "sliceIds": ["SLICE-005"]
+        "testCaseReferences": [
+          "model/behaviorStorage.test.js"
+        ],
+        "requirementIds": [
+          "REQ-001",
+          "REQ-004",
+          "REQ-007"
+        ],
+        "acceptanceCriterionIds": [
+          "AC-001",
+          "AC-004",
+          "AC-007"
+        ],
+        "qualityScenarioIds": [
+          "QA-002",
+          "QA-004"
+        ],
+        "sliceIds": [
+          "SLICE-005"
+        ]
       },
       {
         "decisionId": "BEHAVIOR-STORAGE-PARAMETERS",
@@ -999,7 +1192,9 @@
         "javaExpectation": {
           "behaviorProfileId": "java-owlapi-5.5.1",
           "expectedOutcome": "Ignore unconsumed parameters; evaluate native force-xsd-string and presentation options only at the observed use site, preserving null/wrong-type timing.",
-          "oracleProbeIds": ["ObserveStorageContracts"]
+          "oracleProbeIds": [
+            "ObserveStorageContracts"
+          ]
         },
         "normativeExpectation": {
           "behaviorProfileId": "normative-v1",
@@ -1018,11 +1213,27 @@
         "rationaleReferences": [
           "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
         ],
-        "testCaseReferences": ["model/behaviorStorage.test.js"],
-        "requirementIds": ["REQ-001", "REQ-003", "REQ-004", "REQ-007"],
-        "acceptanceCriterionIds": ["AC-001", "AC-003", "AC-004", "AC-007"],
-        "qualityScenarioIds": ["QA-002"],
-        "sliceIds": ["SLICE-005"]
+        "testCaseReferences": [
+          "model/behaviorStorage.test.js"
+        ],
+        "requirementIds": [
+          "REQ-001",
+          "REQ-003",
+          "REQ-004",
+          "REQ-007"
+        ],
+        "acceptanceCriterionIds": [
+          "AC-001",
+          "AC-003",
+          "AC-004",
+          "AC-007"
+        ],
+        "qualityScenarioIds": [
+          "QA-002"
+        ],
+        "sliceIds": [
+          "SLICE-005"
+        ]
       },
       {
         "decisionId": "BEHAVIOR-RESOURCE-ACCEPTANCE",
@@ -1046,7 +1257,10 @@
         "javaExpectation": {
           "behaviorProfileId": "java-owlapi-5.5.1",
           "expectedOutcome": "No JS-only finite default narrows the Java domain; native XML/provider limits remain. Large valid fixtures cross the former 32 MiB and literal/depth limits.",
-          "oracleProbeIds": ["ObserveResourceContracts", "ObserveXmlContracts"]
+          "oracleProbeIds": [
+            "ObserveResourceContracts",
+            "ObserveXmlContracts"
+          ]
         },
         "normativeExpectation": {
           "behaviorProfileId": "normative-v1",
@@ -1069,10 +1283,23 @@
           "model/behaviorResources.test.js",
           "internal/parsing/xml/behaviorXml.test.js"
         ],
-        "requirementIds": ["REQ-001", "REQ-004", "REQ-008"],
-        "acceptanceCriterionIds": ["AC-001", "AC-004", "AC-008"],
-        "qualityScenarioIds": ["QA-001", "QA-006"],
-        "sliceIds": ["SLICE-007"]
+        "requirementIds": [
+          "REQ-001",
+          "REQ-004",
+          "REQ-008"
+        ],
+        "acceptanceCriterionIds": [
+          "AC-001",
+          "AC-004",
+          "AC-008"
+        ],
+        "qualityScenarioIds": [
+          "QA-001",
+          "QA-006"
+        ],
+        "sliceIds": [
+          "SLICE-007"
+        ]
       },
       {
         "decisionId": "BEHAVIOR-XML-PROVIDER",
@@ -1094,7 +1321,9 @@
         "javaExpectation": {
           "behaviorProfileId": "java-owlapi-5.5.1",
           "expectedOutcome": "Admit observed internal/parameter declarations and native defaults, enforce the selected JAXP bounds, and preserve the observed zero external fetches for admitted external declarations.",
-          "oracleProbeIds": ["ObserveXmlContracts"]
+          "oracleProbeIds": [
+            "ObserveXmlContracts"
+          ]
         },
         "normativeExpectation": {
           "behaviorProfileId": "normative-v1",
@@ -1113,11 +1342,28 @@
         "rationaleReferences": [
           "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
         ],
-        "testCaseReferences": ["internal/parsing/xml/behaviorXml.test.js"],
-        "requirementIds": ["REQ-001", "REQ-004", "REQ-008", "REQ-009"],
-        "acceptanceCriterionIds": ["AC-001", "AC-004", "AC-008", "AC-009"],
-        "qualityScenarioIds": ["QA-001", "QA-003"],
-        "sliceIds": ["SLICE-006"]
+        "testCaseReferences": [
+          "internal/parsing/xml/behaviorXml.test.js"
+        ],
+        "requirementIds": [
+          "REQ-001",
+          "REQ-004",
+          "REQ-008",
+          "REQ-009"
+        ],
+        "acceptanceCriterionIds": [
+          "AC-001",
+          "AC-004",
+          "AC-008",
+          "AC-009"
+        ],
+        "qualityScenarioIds": [
+          "QA-001",
+          "QA-003"
+        ],
+        "sliceIds": [
+          "SLICE-006"
+        ]
       },
       {
         "decisionId": "BEHAVIOR-NODE-TRANSPORT",
@@ -1163,7 +1409,9 @@
         "rationaleReferences": [
           "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
         ],
-        "testCaseReferences": ["io/node/nodeDocumentLoader.test.js"],
+        "testCaseReferences": [
+          "io/node/nodeDocumentLoader.test.js"
+        ],
         "requirementIds": [
           "REQ-001",
           "REQ-004",
@@ -1178,12 +1426,20 @@
           "AC-009",
           "AC-013"
         ],
-        "qualityScenarioIds": ["QA-001", "QA-003", "QA-006"],
-        "sliceIds": ["SLICE-006"]
+        "qualityScenarioIds": [
+          "QA-001",
+          "QA-003",
+          "QA-006"
+        ],
+        "sliceIds": [
+          "SLICE-006"
+        ]
       },
       {
         "decisionId": "BEHAVIOR-JSONLD-CONTEXT-PROVIDER",
-        "apiMembers": ["OWLOntologyManager.loadOntologyFromOntologyDocument"],
+        "apiMembers": [
+          "OWLOntologyManager.loadOntologyFromOntologyDocument"
+        ],
         "behaviorRelationship": "profile-specific",
         "decisionStatus": "accepted",
         "implementationStatus": "development-tested",
@@ -1198,7 +1454,10 @@
         "javaExpectation": {
           "behaviorProfileId": "java-owlapi-5.5.1",
           "expectedOutcome": "Use the released 25-IRI whitelist, provider count 257 and one-hour successful cache; coalesce same-authority pending loads and evict failures. Context HTTP uses ten total requests, only status 200, no ontology-loader auth/timeout settings, final base and native media/Link/encoding rules.",
-          "oracleProbeIds": ["ObserveJsonLdProvider", "ObserveJsonLdTransport"]
+          "oracleProbeIds": [
+            "ObserveJsonLdProvider",
+            "ObserveJsonLdTransport"
+          ]
         },
         "normativeExpectation": {
           "behaviorProfileId": "normative-v1",
@@ -1221,14 +1480,32 @@
           "internal/parsing/jsonld/behaviorJsonLd.test.js",
           "io/node/nodeDocumentLoader.test.js"
         ],
-        "requirementIds": ["REQ-001", "REQ-004", "REQ-008", "REQ-009"],
-        "acceptanceCriterionIds": ["AC-001", "AC-004", "AC-008", "AC-009"],
-        "qualityScenarioIds": ["QA-001", "QA-003", "QA-004"],
-        "sliceIds": ["SLICE-006"]
+        "requirementIds": [
+          "REQ-001",
+          "REQ-004",
+          "REQ-008",
+          "REQ-009"
+        ],
+        "acceptanceCriterionIds": [
+          "AC-001",
+          "AC-004",
+          "AC-008",
+          "AC-009"
+        ],
+        "qualityScenarioIds": [
+          "QA-001",
+          "QA-003",
+          "QA-004"
+        ],
+        "sliceIds": [
+          "SLICE-006"
+        ]
       },
       {
         "decisionId": "BEHAVIOR-JSONLD-FIRST-STRUCTURE",
-        "apiMembers": ["OWLOntologyManager.loadOntologyFromOntologyDocument"],
+        "apiMembers": [
+          "OWLOntologyManager.loadOntologyFromOntologyDocument"
+        ],
         "behaviorRelationship": "profile-specific",
         "decisionStatus": "accepted",
         "implementationStatus": "development-tested",
@@ -1243,7 +1520,9 @@
         "javaExpectation": {
           "behaviorProfileId": "java-owlapi-5.5.1",
           "expectedOutcome": "Consume the first JSON object/array as Jakarta JSON-P does, use native character validation on that structure and stop before an unused stream tail; context bytes autodetect UTF-8/16/32 independently of HTTP charset.",
-          "oracleProbeIds": ["ObserveJsonLdTransport"]
+          "oracleProbeIds": [
+            "ObserveJsonLdTransport"
+          ]
         },
         "normativeExpectation": {
           "behaviorProfileId": "normative-v1",
@@ -1266,14 +1545,28 @@
           "internal/parsing/jsonld/behaviorJsonLd.test.js",
           "io/node/nodeDocumentLoader.test.js"
         ],
-        "requirementIds": ["REQ-001", "REQ-003", "REQ-008"],
-        "acceptanceCriterionIds": ["AC-001", "AC-003", "AC-008"],
-        "qualityScenarioIds": ["QA-001"],
-        "sliceIds": ["SLICE-007"]
+        "requirementIds": [
+          "REQ-001",
+          "REQ-003",
+          "REQ-008"
+        ],
+        "acceptanceCriterionIds": [
+          "AC-001",
+          "AC-003",
+          "AC-008"
+        ],
+        "qualityScenarioIds": [
+          "QA-001"
+        ],
+        "sliceIds": [
+          "SLICE-007"
+        ]
       },
       {
         "decisionId": "BEHAVIOR-PARSER-SELECTION",
-        "apiMembers": ["OWLOntologyManager.loadOntologyFromOntologyDocument"],
+        "apiMembers": [
+          "OWLOntologyManager.loadOntologyFromOntologyDocument"
+        ],
         "behaviorRelationship": "profile-specific",
         "decisionStatus": "accepted",
         "implementationStatus": "development-tested",
@@ -1288,7 +1581,9 @@
         "javaExpectation": {
           "behaviorProfileId": "java-owlapi-5.5.1",
           "expectedOutcome": "Use released priority/order on the selected exposed syntaxes, aggregate attempted parser failures and accept the observed empty Turtle document.",
-          "oracleProbeIds": ["ObserveParserSelection"]
+          "oracleProbeIds": [
+            "ObserveParserSelection"
+          ]
         },
         "normativeExpectation": {
           "behaviorProfileId": "normative-v1",
@@ -1311,10 +1606,23 @@
           "model/behaviorParserSelection.test.js",
           "model/behaviorLoading.test.js"
         ],
-        "requirementIds": ["REQ-001", "REQ-004", "REQ-008"],
-        "acceptanceCriterionIds": ["AC-001", "AC-004", "AC-008"],
-        "qualityScenarioIds": ["QA-001", "QA-004"],
-        "sliceIds": ["SLICE-007"]
+        "requirementIds": [
+          "REQ-001",
+          "REQ-004",
+          "REQ-008"
+        ],
+        "acceptanceCriterionIds": [
+          "AC-001",
+          "AC-004",
+          "AC-008"
+        ],
+        "qualityScenarioIds": [
+          "QA-001",
+          "QA-004"
+        ],
+        "sliceIds": [
+          "SLICE-007"
+        ]
       },
       {
         "decisionId": "BEHAVIOR-RDF-METADATA",
@@ -1336,7 +1644,9 @@
         "javaExpectation": {
           "behaviorProfileId": "java-owlapi-5.5.1",
           "expectedOutcome": "Report the released consumer constant PARSED_ONE_HEADER and count source statement occurrences before RDF dataset deduplication.",
-          "oracleProbeIds": ["ObserveParserSelection"]
+          "oracleProbeIds": [
+            "ObserveParserSelection"
+          ]
         },
         "normativeExpectation": {
           "behaviorProfileId": "normative-v1",
@@ -1360,10 +1670,22 @@
           "io/rdfParserMetaData.test.js",
           "model/rdfConsumerCompatibility.test.js"
         ],
-        "requirementIds": ["REQ-001", "REQ-003", "REQ-004"],
-        "acceptanceCriterionIds": ["AC-001", "AC-003", "AC-004"],
-        "qualityScenarioIds": ["QA-007"],
-        "sliceIds": ["SLICE-007"]
+        "requirementIds": [
+          "REQ-001",
+          "REQ-003",
+          "REQ-004"
+        ],
+        "acceptanceCriterionIds": [
+          "AC-001",
+          "AC-003",
+          "AC-004"
+        ],
+        "qualityScenarioIds": [
+          "QA-007"
+        ],
+        "sliceIds": [
+          "SLICE-007"
+        ]
       },
       {
         "decisionId": "BEHAVIOR-SEARCH-CONSUMPTION",
@@ -1386,7 +1708,9 @@
         "javaExpectation": {
           "behaviorProfileId": "java-owlapi-5.5.1",
           "expectedOutcome": "Defer source traversal until consumption and reject a second terminal consumption as the released Java Stream contract requires.",
-          "oracleProbeIds": ["ObserveQueryTiming"]
+          "oracleProbeIds": [
+            "ObserveQueryTiming"
+          ]
         },
         "normativeExpectation": {
           "behaviorProfileId": "normative-v1",
@@ -1409,10 +1733,22 @@
           "search/behaviorTiming.test.js",
           "search/entitySearcher.test.js"
         ],
-        "requirementIds": ["REQ-001", "REQ-002", "REQ-010"],
-        "acceptanceCriterionIds": ["AC-001", "AC-002", "AC-010"],
-        "qualityScenarioIds": ["QA-004"],
-        "sliceIds": ["SLICE-008"]
+        "requirementIds": [
+          "REQ-001",
+          "REQ-002",
+          "REQ-010"
+        ],
+        "acceptanceCriterionIds": [
+          "AC-001",
+          "AC-002",
+          "AC-010"
+        ],
+        "qualityScenarioIds": [
+          "QA-004"
+        ],
+        "sliceIds": [
+          "SLICE-008"
+        ]
       },
       {
         "decisionId": "BEHAVIOR-CLOSURE-PROVIDER",
@@ -1434,7 +1770,9 @@
         "javaExpectation": {
           "behaviorProfileId": "java-owlapi-5.5.1",
           "expectedOutcome": "Construction does not query closure; each ontologies call reads the current closure and returns that call snapshot in the JS Set adaptation.",
-          "oracleProbeIds": ["ObserveQueryTiming"]
+          "oracleProbeIds": [
+            "ObserveQueryTiming"
+          ]
         },
         "normativeExpectation": {
           "behaviorProfileId": "normative-v1",
@@ -1457,10 +1795,22 @@
           "util/owlOntologyImportsClosureSetProvider.test.js",
           "search/behaviorTiming.test.js"
         ],
-        "requirementIds": ["REQ-001", "REQ-002", "REQ-010"],
-        "acceptanceCriterionIds": ["AC-001", "AC-002", "AC-010"],
-        "qualityScenarioIds": ["QA-004"],
-        "sliceIds": ["SLICE-008"]
+        "requirementIds": [
+          "REQ-001",
+          "REQ-002",
+          "REQ-010"
+        ],
+        "acceptanceCriterionIds": [
+          "AC-001",
+          "AC-002",
+          "AC-010"
+        ],
+        "qualityScenarioIds": [
+          "QA-004"
+        ],
+        "sliceIds": [
+          "SLICE-008"
+        ]
       },
       {
         "decisionId": "BEHAVIOR-OWL-LANGUAGE-PROFILES",
@@ -1512,14 +1862,31 @@
           "profiles/behaviorProfiles.test.js",
           "model/behaviorResources.test.js"
         ],
-        "requirementIds": ["REQ-001", "REQ-003", "REQ-008", "REQ-010"],
-        "acceptanceCriterionIds": ["AC-001", "AC-003", "AC-008", "AC-010"],
-        "qualityScenarioIds": ["QA-001", "QA-007"],
-        "sliceIds": ["SLICE-008"]
+        "requirementIds": [
+          "REQ-001",
+          "REQ-003",
+          "REQ-008",
+          "REQ-010"
+        ],
+        "acceptanceCriterionIds": [
+          "AC-001",
+          "AC-003",
+          "AC-008",
+          "AC-010"
+        ],
+        "qualityScenarioIds": [
+          "QA-001",
+          "QA-007"
+        ],
+        "sliceIds": [
+          "SLICE-008"
+        ]
       },
       {
         "decisionId": "BEHAVIOR-LOCALITY",
-        "apiMembers": ["SyntacticLocalityModuleExtractor.extract"],
+        "apiMembers": [
+          "SyntacticLocalityModuleExtractor.extract"
+        ],
         "behaviorRelationship": "shared",
         "decisionStatus": "accepted",
         "implementationStatus": "development-tested",
@@ -1562,10 +1929,23 @@
           "search/behaviorTiming.test.js",
           "util/rc2ParityEdges.test.js"
         ],
-        "requirementIds": ["REQ-001", "REQ-008", "REQ-010"],
-        "acceptanceCriterionIds": ["AC-001", "AC-008", "AC-010"],
-        "qualityScenarioIds": ["QA-001", "QA-004"],
-        "sliceIds": ["SLICE-008"]
+        "requirementIds": [
+          "REQ-001",
+          "REQ-008",
+          "REQ-010"
+        ],
+        "acceptanceCriterionIds": [
+          "AC-001",
+          "AC-008",
+          "AC-010"
+        ],
+        "qualityScenarioIds": [
+          "QA-001",
+          "QA-004"
+        ],
+        "sliceIds": [
+          "SLICE-008"
+        ]
       },
       {
         "decisionId": "BEHAVIOR-INDIVIDUAL-ENUMERATION",
@@ -1587,7 +1967,9 @@
         "javaExpectation": {
           "behaviorProfileId": "java-owlapi-5.5.1",
           "expectedOutcome": "The factory permits an empty ObjectOneOf. OWL/XML omits anonymous operands and admits the observed empty result.",
-          "oracleProbeIds": ["ObserveParserSelection"]
+          "oracleProbeIds": [
+            "ObserveParserSelection"
+          ]
         },
         "normativeExpectation": {
           "behaviorProfileId": "normative-v1",
@@ -1606,15 +1988,32 @@
         "rationaleReferences": [
           "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
         ],
-        "testCaseReferences": ["model/behaviorParserSelection.test.js"],
-        "requirementIds": ["REQ-001", "REQ-004", "REQ-008"],
-        "acceptanceCriterionIds": ["AC-001", "AC-004", "AC-008"],
-        "qualityScenarioIds": ["QA-001", "QA-004"],
-        "sliceIds": ["SLICE-007"]
+        "testCaseReferences": [
+          "model/behaviorParserSelection.test.js"
+        ],
+        "requirementIds": [
+          "REQ-001",
+          "REQ-004",
+          "REQ-008"
+        ],
+        "acceptanceCriterionIds": [
+          "AC-001",
+          "AC-004",
+          "AC-008"
+        ],
+        "qualityScenarioIds": [
+          "QA-001",
+          "QA-004"
+        ],
+        "sliceIds": [
+          "SLICE-007"
+        ]
       },
       {
         "decisionId": "BEHAVIOR-NAMED-DATATYPE-RESTRICTION",
-        "apiMembers": ["OWLOntologyManager.loadOntologyFromOntologyDocument"],
+        "apiMembers": [
+          "OWLOntologyManager.loadOntologyFromOntologyDocument"
+        ],
         "behaviorRelationship": "profile-specific",
         "decisionStatus": "accepted",
         "implementationStatus": "development-tested",
@@ -1629,7 +2028,9 @@
         "javaExpectation": {
           "behaviorProfileId": "java-owlapi-5.5.1",
           "expectedOutcome": "No datatype definition is invented. Orphan literal facets remain anonymous annotation assertions under the native annotation-loading option.",
-          "oracleProbeIds": ["ObserveParserSelection"]
+          "oracleProbeIds": [
+            "ObserveParserSelection"
+          ]
         },
         "normativeExpectation": {
           "behaviorProfileId": "normative-v1",
@@ -1648,11 +2049,26 @@
         "rationaleReferences": [
           "docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md"
         ],
-        "testCaseReferences": ["model/behaviorParserSelection.test.js"],
-        "requirementIds": ["REQ-001", "REQ-004", "REQ-008"],
-        "acceptanceCriterionIds": ["AC-001", "AC-004", "AC-008"],
-        "qualityScenarioIds": ["QA-001", "QA-004"],
-        "sliceIds": ["SLICE-007"]
+        "testCaseReferences": [
+          "model/behaviorParserSelection.test.js"
+        ],
+        "requirementIds": [
+          "REQ-001",
+          "REQ-004",
+          "REQ-008"
+        ],
+        "acceptanceCriterionIds": [
+          "AC-001",
+          "AC-004",
+          "AC-008"
+        ],
+        "qualityScenarioIds": [
+          "QA-001",
+          "QA-004"
+        ],
+        "sliceIds": [
+          "SLICE-007"
+        ]
       }
     ]
   }

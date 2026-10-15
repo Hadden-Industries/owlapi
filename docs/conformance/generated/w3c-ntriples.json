@@ -1,9 +1,13 @@
 {
-  "counts": { "negativeSyntax": 51, "positiveSyntax": 48, "required": 99 },
+  "counts": {
+    "negativeSyntax": 51,
+    "positiveSyntax": 48,
+    "required": 99
+  },
   "generatedBy": "util/generate-w3c-ntriples-fixtures.mjs",
   "manifests": {
-    "rdf11": "65b748e9e15783c6e9808dad663ee9e139803ceee2fb9a0704fbe00ddbdafc7b",
-    "rdf12Syntax": "cd80d5bd8ae702cafcd78bc238d31a17aba7913b78eecadb5b55683e22feb3d7"
+    "rdf11": "561ad17572c14d9290a0a1481f58d701bc8996da996b88e1beb1308c5dff55d6",
+    "rdf12Syntax": "bc3250200d58058f4ab7d89681b63fd3d06c8b3393eec165ab3481ee46d7708e"
   },
   "revision": "12774b0ebb385d17651b396654b19254d0fefbfa",
   "schemaVersion": 1,
@@ -20,7 +24,7 @@
       "action": "nt-syntax-file-02.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-file-02.nt",
       "id": "nt-syntax-file-02",
-      "source": "#Empty file.\r\n",
+      "source": "#Empty file.\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -28,7 +32,7 @@
       "action": "nt-syntax-file-03.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-file-03.nt",
       "id": "nt-syntax-file-03",
-      "source": "#One comment, one empty line.\r\n\r\n",
+      "source": "#One comment, one empty line.\n\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -36,7 +40,7 @@
       "action": "nt-syntax-uri-01.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-uri-01.nt",
       "id": "nt-syntax-uri-01",
-      "source": "<http://example/s> <http://example/p> <http://example/o> .\r\n",
+      "source": "<http://example/s> <http://example/p> <http://example/o> .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -44,7 +48,7 @@
       "action": "nt-syntax-uri-02.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-uri-02.nt",
       "id": "nt-syntax-uri-02",
-      "source": "# x53 is capital S\r\n<http://example/\\u0053> <http://example/p> <http://example/o> .\r\n",
+      "source": "# x53 is capital S\n<http://example/\\u0053> <http://example/p> <http://example/o> .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -52,7 +56,7 @@
       "action": "nt-syntax-uri-03.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-uri-03.nt",
       "id": "nt-syntax-uri-03",
-      "source": "# x53 is capital S\r\n<http://example/\\U00000053> <http://example/p> <http://example/o> .\r\n",
+      "source": "# x53 is capital S\n<http://example/\\U00000053> <http://example/p> <http://example/o> .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -60,7 +64,7 @@
       "action": "nt-syntax-uri-04.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-uri-04.nt",
       "id": "nt-syntax-uri-04",
-      "source": "# IRI with all chars in it.\r\n<http://example/s> <http://example/p> <scheme:!$%25&'()*+,-./0123456789:/@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~?#> .\r\n",
+      "source": "# IRI with all chars in it.\n<http://example/s> <http://example/p> <scheme:!$%25&'()*+,-./0123456789:/@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~?#> .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -68,7 +72,7 @@
       "action": "nt-syntax-string-01.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-string-01.nt",
       "id": "nt-syntax-string-01",
-      "source": "<http://example/s> <http://example/p> \"string\" .\r\n",
+      "source": "<http://example/s> <http://example/p> \"string\" .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -76,7 +80,7 @@
       "action": "nt-syntax-string-02.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-string-02.nt",
       "id": "nt-syntax-string-02",
-      "source": "<http://example/s> <http://example/p> \"string\"@en .\r\n",
+      "source": "<http://example/s> <http://example/p> \"string\"@en .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -84,7 +88,7 @@
       "action": "nt-syntax-string-03.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-string-03.nt",
       "id": "nt-syntax-string-03",
-      "source": "<http://example/s> <http://example/p> \"string\"@en-uk .\r\n",
+      "source": "<http://example/s> <http://example/p> \"string\"@en-uk .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -92,7 +96,7 @@
       "action": "nt-syntax-str-esc-01.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-str-esc-01.nt",
       "id": "nt-syntax-str-esc-01",
-      "source": "<http://example/s> <http://example/p> \"a\\n\" .\r\n",
+      "source": "<http://example/s> <http://example/p> \"a\\n\" .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -100,7 +104,7 @@
       "action": "nt-syntax-str-esc-02.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-str-esc-02.nt",
       "id": "nt-syntax-str-esc-02",
-      "source": "<http://example/s> <http://example/p> \"a\\u0020b\" .\r\n",
+      "source": "<http://example/s> <http://example/p> \"a\\u0020b\" .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -108,7 +112,7 @@
       "action": "nt-syntax-str-esc-03.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-str-esc-03.nt",
       "id": "nt-syntax-str-esc-03",
-      "source": "<http://example/s> <http://example/p> \"a\\U00000020b\" .\r\n",
+      "source": "<http://example/s> <http://example/p> \"a\\U00000020b\" .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -116,7 +120,7 @@
       "action": "nt-syntax-bnode-01.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bnode-01.nt",
       "id": "nt-syntax-bnode-01",
-      "source": "_:a  <http://example/p> <http://example/o> .\r\n",
+      "source": "_:a  <http://example/p> <http://example/o> .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -124,7 +128,7 @@
       "action": "nt-syntax-bnode-02.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bnode-02.nt",
       "id": "nt-syntax-bnode-02",
-      "source": "<http://example/s> <http://example/p> _:a .\r\n_:a  <http://example/p> <http://example/o> .\r\n",
+      "source": "<http://example/s> <http://example/p> _:a .\n_:a  <http://example/p> <http://example/o> .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -132,7 +136,7 @@
       "action": "nt-syntax-bnode-03.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bnode-03.nt",
       "id": "nt-syntax-bnode-03",
-      "source": "<http://example/s> <http://example/p> _:1a .\r\n_:1a  <http://example/p> <http://example/o> .\r\n",
+      "source": "<http://example/s> <http://example/p> _:1a .\n_:1a  <http://example/p> <http://example/o> .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -140,7 +144,7 @@
       "action": "nt-syntax-datatypes-01.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-datatypes-01.nt",
       "id": "nt-syntax-datatypes-01",
-      "source": "<http://example/s> <http://example/p> \"123\"^^<http://www.w3.org/2001/XMLSchema#byte> .\r\n",
+      "source": "<http://example/s> <http://example/p> \"123\"^^<http://www.w3.org/2001/XMLSchema#byte> .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -148,7 +152,7 @@
       "action": "nt-syntax-datatypes-02.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-datatypes-02.nt",
       "id": "nt-syntax-datatypes-02",
-      "source": "<http://example/s> <http://example/p> \"123\"^^<http://www.w3.org/2001/XMLSchema#string> .\r\n",
+      "source": "<http://example/s> <http://example/p> \"123\"^^<http://www.w3.org/2001/XMLSchema#string> .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -156,7 +160,7 @@
       "action": "nt-syntax-bad-uri-01.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-uri-01.nt",
       "id": "nt-syntax-bad-uri-01",
-      "source": "# Bad IRI : space.\r\n<http://example/ space> <http://example/p> <http://example/o> .\r\n",
+      "source": "# Bad IRI : space.\n<http://example/ space> <http://example/p> <http://example/o> .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -164,7 +168,7 @@
       "action": "nt-syntax-bad-uri-02.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-uri-02.nt",
       "id": "nt-syntax-bad-uri-02",
-      "source": "# Bad IRI : bad escape\r\n<http://example/\\u00ZZ11> <http://example/p> <http://example/o> .\r\n",
+      "source": "# Bad IRI : bad escape\n<http://example/\\u00ZZ11> <http://example/p> <http://example/o> .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -172,7 +176,7 @@
       "action": "nt-syntax-bad-uri-03.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-uri-03.nt",
       "id": "nt-syntax-bad-uri-03",
-      "source": "# Bad IRI : bad escape\r\n<http://example/\\U00ZZ1111> <http://example/p> <http://example/o> .\r\n",
+      "source": "# Bad IRI : bad escape\n<http://example/\\U00ZZ1111> <http://example/p> <http://example/o> .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -180,7 +184,7 @@
       "action": "nt-syntax-bad-uri-04.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-uri-04.nt",
       "id": "nt-syntax-bad-uri-04",
-      "source": "# Bad IRI : character escapes not allowed.\r\n<http://example/\\n> <http://example/p> <http://example/o> .\r\n",
+      "source": "# Bad IRI : character escapes not allowed.\n<http://example/\\n> <http://example/p> <http://example/o> .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -188,7 +192,7 @@
       "action": "nt-syntax-bad-uri-05.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-uri-05.nt",
       "id": "nt-syntax-bad-uri-05",
-      "source": "# Bad IRI : character escapes not allowed.\r\n<http://example/\\/> <http://example/p> <http://example/o> .\r\n",
+      "source": "# Bad IRI : character escapes not allowed.\n<http://example/\\/> <http://example/p> <http://example/o> .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -196,7 +200,7 @@
       "action": "nt-syntax-bad-uri-06.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-uri-06.nt",
       "id": "nt-syntax-bad-uri-06",
-      "source": "# No relative IRIs in N-Triples\r\n<s> <http://example/p> <http://example/o> .\r\n",
+      "source": "# No relative IRIs in N-Triples\n<s> <http://example/p> <http://example/o> .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -204,7 +208,7 @@
       "action": "nt-syntax-bad-uri-07.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-uri-07.nt",
       "id": "nt-syntax-bad-uri-07",
-      "source": "# No relative IRIs in N-Triples\r\n<http://example/s> <p> <http://example/o> .\r\n",
+      "source": "# No relative IRIs in N-Triples\n<http://example/s> <p> <http://example/o> .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -212,7 +216,7 @@
       "action": "nt-syntax-bad-uri-08.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-uri-08.nt",
       "id": "nt-syntax-bad-uri-08",
-      "source": "# No relative IRIs in N-Triples\r\n<http://example/s> <http://example/p> <o> .\r\n",
+      "source": "# No relative IRIs in N-Triples\n<http://example/s> <http://example/p> <o> .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -220,7 +224,7 @@
       "action": "nt-syntax-bad-uri-09.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-uri-09.nt",
       "id": "nt-syntax-bad-uri-09",
-      "source": "# No relative IRIs in N-Triples\r\n<http://example/s> <http://example/p> \"foo\"^^<dt> .\r\n",
+      "source": "# No relative IRIs in N-Triples\n<http://example/s> <http://example/p> \"foo\"^^<dt> .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -228,7 +232,7 @@
       "action": "nt-syntax-bad-prefix-01.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-prefix-01.nt",
       "id": "nt-syntax-bad-prefix-01",
-      "source": "@prefix : <http://example/> .\r\n",
+      "source": "@prefix : <http://example/> .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -236,7 +240,7 @@
       "action": "nt-syntax-bad-base-01.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-base-01.nt",
       "id": "nt-syntax-bad-base-01",
-      "source": "@base <http://example/> .\r\n",
+      "source": "@base <http://example/> .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -244,7 +248,7 @@
       "action": "nt-syntax-bad-bnode-01.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-bnode-01.nt",
       "id": "nt-syntax-bad-bnode-01",
-      "source": "_::a  <http://example/p> <http://example/o> .\r\n",
+      "source": "_::a  <http://example/p> <http://example/o> .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -252,7 +256,7 @@
       "action": "nt-syntax-bad-bnode-02.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-bnode-02.nt",
       "id": "nt-syntax-bad-bnode-02",
-      "source": "_:abc:def  <http://example/p> <http://example/o> .\r\n",
+      "source": "_:abc:def  <http://example/p> <http://example/o> .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -260,7 +264,7 @@
       "action": "nt-syntax-bad-struct-01.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-struct-01.nt",
       "id": "nt-syntax-bad-struct-01",
-      "source": "<http://example/s> <http://example/p> <http://example/o>, <http://example/o2> .\r\n",
+      "source": "<http://example/s> <http://example/p> <http://example/o>, <http://example/o2> .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -268,7 +272,7 @@
       "action": "nt-syntax-bad-struct-02.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-struct-02.nt",
       "id": "nt-syntax-bad-struct-02",
-      "source": "<http://example/s> <http://example/p> <http://example/o>; <http://example/p2>, <http://example/o2> .\r\n",
+      "source": "<http://example/s> <http://example/p> <http://example/o>; <http://example/p2>, <http://example/o2> .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -276,7 +280,7 @@
       "action": "nt-syntax-bad-lang-01.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-lang-01.nt",
       "id": "nt-syntax-bad-lang-01",
-      "source": "# Bad lang tag\r\n<http://example/s> <http://example/p> \"string\"@1 .\r\n",
+      "source": "# Bad lang tag\n<http://example/s> <http://example/p> \"string\"@1 .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -284,7 +288,7 @@
       "action": "nt-syntax-bad-esc-01.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-esc-01.nt",
       "id": "nt-syntax-bad-esc-01",
-      "source": "# Bad string escape\r\n<http://example/s> <http://example/p> \"a\\zb\" .\r\n",
+      "source": "# Bad string escape\n<http://example/s> <http://example/p> \"a\\zb\" .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -292,7 +296,7 @@
       "action": "nt-syntax-bad-esc-02.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-esc-02.nt",
       "id": "nt-syntax-bad-esc-02",
-      "source": "# Bad string escape\r\n<http://example/s> <http://example/p> \"\\uWXYZ\" .\r\n",
+      "source": "# Bad string escape\n<http://example/s> <http://example/p> \"\\uWXYZ\" .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -300,7 +304,7 @@
       "action": "nt-syntax-bad-esc-03.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-esc-03.nt",
       "id": "nt-syntax-bad-esc-03",
-      "source": "# Bad string escape\r\n<http://example/s> <http://example/p> \"\\U0000WXYZ\" .\r\n",
+      "source": "# Bad string escape\n<http://example/s> <http://example/p> \"\\U0000WXYZ\" .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -308,7 +312,7 @@
       "action": "nt-syntax-bad-string-01.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-string-01.nt",
       "id": "nt-syntax-bad-string-01",
-      "source": "<http://example/s> <http://example/p> \"abc' .\r\n",
+      "source": "<http://example/s> <http://example/p> \"abc' .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -316,7 +320,7 @@
       "action": "nt-syntax-bad-string-02.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-string-02.nt",
       "id": "nt-syntax-bad-string-02",
-      "source": "<http://example/s> <http://example/p> 1.0 .\r\n",
+      "source": "<http://example/s> <http://example/p> 1.0 .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -324,7 +328,7 @@
       "action": "nt-syntax-bad-string-03.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-string-03.nt",
       "id": "nt-syntax-bad-string-03",
-      "source": "<http://example/s> <http://example/p> 1.0e1 .\r\n",
+      "source": "<http://example/s> <http://example/p> 1.0e1 .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -332,7 +336,7 @@
       "action": "nt-syntax-bad-string-04.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-string-04.nt",
       "id": "nt-syntax-bad-string-04",
-      "source": "<http://example/s> <http://example/p> '''abc''' .\r\n",
+      "source": "<http://example/s> <http://example/p> '''abc''' .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -340,7 +344,7 @@
       "action": "nt-syntax-bad-string-05.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-string-05.nt",
       "id": "nt-syntax-bad-string-05",
-      "source": "<http://example/s> <http://example/p> \"\"\"abc\"\"\" .\r\n",
+      "source": "<http://example/s> <http://example/p> \"\"\"abc\"\"\" .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -348,7 +352,7 @@
       "action": "nt-syntax-bad-string-06.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-string-06.nt",
       "id": "nt-syntax-bad-string-06",
-      "source": "<http://example/s> <http://example/p> \"abc .\r\n",
+      "source": "<http://example/s> <http://example/p> \"abc .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -356,7 +360,7 @@
       "action": "nt-syntax-bad-string-07.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-string-07.nt",
       "id": "nt-syntax-bad-string-07",
-      "source": "<http://example/s> <http://example/p> abc\" .\r\n",
+      "source": "<http://example/s> <http://example/p> abc\" .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -364,7 +368,7 @@
       "action": "nt-syntax-bad-num-01.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-num-01.nt",
       "id": "nt-syntax-bad-num-01",
-      "source": "<http://example/s> <http://example/p> 1 .\r\n",
+      "source": "<http://example/s> <http://example/p> 1 .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -372,7 +376,7 @@
       "action": "nt-syntax-bad-num-02.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-num-02.nt",
       "id": "nt-syntax-bad-num-02",
-      "source": "<http://example/s> <http://example/p> 1.0 .\r\n",
+      "source": "<http://example/s> <http://example/p> 1.0 .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -380,7 +384,7 @@
       "action": "nt-syntax-bad-num-03.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-bad-num-03.nt",
       "id": "nt-syntax-bad-num-03",
-      "source": "<http://example/s> <http://example/p> 1.0e0 .\r\n",
+      "source": "<http://example/s> <http://example/p> 1.0e0 .\n",
       "suite": "rdf11",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -388,7 +392,7 @@
       "action": "nt-syntax-subm-01.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/nt-syntax-subm-01.nt",
       "id": "nt-syntax-subm-01",
-      "source": "#\r\n# Copyright World Wide Web Consortium, (Massachusetts Institute of\r\n# Technology, Institut National de Recherche en Informatique et en\r\n# Automatique, Keio University).\r\n#\r\n# All Rights Reserved.\r\n#\r\n# Please see the full Copyright clause at\r\n# <http://www.w3.org/Consortium/Legal/copyright-software.html>\r\n#\r\n# Test file with a variety of legal N-Triples\r\n#\r\n# Dave Beckett - http://purl.org/net/dajobe/\r\n# \r\n# $Id: test.nt,v 1.7 2003/10/06 15:52:19 dbeckett2 Exp $\r\n# \r\n#####################################################################\r\n\r\n# comment lines\r\n  \t  \t   # comment line after whitespace\r\n# empty blank line, then one with spaces and tabs\r\n\r\n         \t\r\n<http://example.org/resource1> <http://example.org/property> <http://example.org/resource2> .\r\n_:anon <http://example.org/property> <http://example.org/resource2> .\r\n<http://example.org/resource2> <http://example.org/property> _:anon .\r\n# spaces and tabs throughout:\r\n \t <http://example.org/resource3> \t <http://example.org/property>\t <http://example.org/resource2> \t.\t \r\n\r\n# line ending with CR NL (ASCII 13, ASCII 10)\r\n<http://example.org/resource4> <http://example.org/property> <http://example.org/resource2> .\r\n\r\n# 2 statement lines separated by single CR (ASCII 10)\r\n<http://example.org/resource5> <http://example.org/property> <http://example.org/resource2> .\r\n<http://example.org/resource6> <http://example.org/property> <http://example.org/resource2> .\r\n\r\n\r\n# All literal escapes\r\n<http://example.org/resource7> <http://example.org/property> \"simple literal\" .\r\n<http://example.org/resource8> <http://example.org/property> \"backslash:\\\\\" .\r\n<http://example.org/resource9> <http://example.org/property> \"dquote:\\\"\" .\r\n<http://example.org/resource10> <http://example.org/property> \"newline:\\n\" .\r\n<http://example.org/resource11> <http://example.org/property> \"return\\r\" .\r\n<http://example.org/resource12> <http://example.org/property> \"tab:\\t\" .\r\n\r\n# Space is optional before final .\r\n<http://example.org/resource13> <http://example.org/property> <http://example.org/resource2>.\r\n<http://example.org/resource14> <http://example.org/property> \"x\".\r\n<http://example.org/resource15> <http://example.org/property> _:anon.\r\n\r\n# \\u and \\U escapes\r\n# latin small letter e with acute symbol \\u00E9 - 3 UTF-8 bytes #xC3 #A9\r\n<http://example.org/resource16> <http://example.org/property> \"\\u00E9\" .\r\n# Euro symbol \\u20ac  - 3 UTF-8 bytes #xE2 #x82 #xAC\r\n<http://example.org/resource17> <http://example.org/property> \"\\u20AC\" .\r\n# resource18 test removed\r\n# resource19 test removed\r\n# resource20 test removed\r\n\r\n# XML Literals as Datatyped Literals\r\n<http://example.org/resource21> <http://example.org/property> \"\"^^<http://www.w3.org/2000/01/rdf-schema#XMLLiteral> .\r\n<http://example.org/resource22> <http://example.org/property> \" \"^^<http://www.w3.org/2000/01/rdf-schema#XMLLiteral> .\r\n<http://example.org/resource23> <http://example.org/property> \"x\"^^<http://www.w3.org/2000/01/rdf-schema#XMLLiteral> .\r\n<http://example.org/resource23> <http://example.org/property> \"\\\"\"^^<http://www.w3.org/2000/01/rdf-schema#XMLLiteral> .\r\n<http://example.org/resource24> <http://example.org/property> \"<a></a>\"^^<http://www.w3.org/2000/01/rdf-schema#XMLLiteral> .\r\n<http://example.org/resource25> <http://example.org/property> \"a <b></b>\"^^<http://www.w3.org/2000/01/rdf-schema#XMLLiteral> .\r\n<http://example.org/resource26> <http://example.org/property> \"a <b></b> c\"^^<http://www.w3.org/2000/01/rdf-schema#XMLLiteral> .\r\n<http://example.org/resource26> <http://example.org/property> \"a\\n<b></b>\\nc\"^^<http://www.w3.org/2000/01/rdf-schema#XMLLiteral> .\r\n<http://example.org/resource27> <http://example.org/property> \"chat\"^^<http://www.w3.org/2000/01/rdf-schema#XMLLiteral> .\r\n# resource28 test removed 2003-08-03\r\n# resource29 test removed 2003-08-03\r\n\r\n# Plain literals with languages\r\n<http://example.org/resource30> <http://example.org/property> \"chat\"@fr .\r\n<http://example.org/resource31> <http://example.org/property> \"chat\"@en .\r\n\r\n# Typed Literals\r\n<http://example.org/resource32> <http://example.org/property> \"abc\"^^<http://example.org/datatype1> .\r\n# resource33 test removed 2003-08-03\r\n",
+      "source": "#\n# Copyright World Wide Web Consortium, (Massachusetts Institute of\n# Technology, Institut National de Recherche en Informatique et en\n# Automatique, Keio University).\n#\n# All Rights Reserved.\n#\n# Please see the full Copyright clause at\n# <http://www.w3.org/Consortium/Legal/copyright-software.html>\n#\n# Test file with a variety of legal N-Triples\n#\n# Dave Beckett - http://purl.org/net/dajobe/\n# \n# $Id: test.nt,v 1.7 2003/10/06 15:52:19 dbeckett2 Exp $\n# \n#####################################################################\n\n# comment lines\n  \t  \t   # comment line after whitespace\n# empty blank line, then one with spaces and tabs\n\n         \t\n<http://example.org/resource1> <http://example.org/property> <http://example.org/resource2> .\n_:anon <http://example.org/property> <http://example.org/resource2> .\n<http://example.org/resource2> <http://example.org/property> _:anon .\n# spaces and tabs throughout:\n \t <http://example.org/resource3> \t <http://example.org/property>\t <http://example.org/resource2> \t.\t \n\n# line ending with CR NL (ASCII 13, ASCII 10)\n<http://example.org/resource4> <http://example.org/property> <http://example.org/resource2> .\n\n# 2 statement lines separated by single CR (ASCII 10)\n<http://example.org/resource5> <http://example.org/property> <http://example.org/resource2> .\n<http://example.org/resource6> <http://example.org/property> <http://example.org/resource2> .\n\n\n# All literal escapes\n<http://example.org/resource7> <http://example.org/property> \"simple literal\" .\n<http://example.org/resource8> <http://example.org/property> \"backslash:\\\\\" .\n<http://example.org/resource9> <http://example.org/property> \"dquote:\\\"\" .\n<http://example.org/resource10> <http://example.org/property> \"newline:\\n\" .\n<http://example.org/resource11> <http://example.org/property> \"return\\r\" .\n<http://example.org/resource12> <http://example.org/property> \"tab:\\t\" .\n\n# Space is optional before final .\n<http://example.org/resource13> <http://example.org/property> <http://example.org/resource2>.\n<http://example.org/resource14> <http://example.org/property> \"x\".\n<http://example.org/resource15> <http://example.org/property> _:anon.\n\n# \\u and \\U escapes\n# latin small letter e with acute symbol \\u00E9 - 3 UTF-8 bytes #xC3 #A9\n<http://example.org/resource16> <http://example.org/property> \"\\u00E9\" .\n# Euro symbol \\u20ac  - 3 UTF-8 bytes #xE2 #x82 #xAC\n<http://example.org/resource17> <http://example.org/property> \"\\u20AC\" .\n# resource18 test removed\n# resource19 test removed\n# resource20 test removed\n\n# XML Literals as Datatyped Literals\n<http://example.org/resource21> <http://example.org/property> \"\"^^<http://www.w3.org/2000/01/rdf-schema#XMLLiteral> .\n<http://example.org/resource22> <http://example.org/property> \" \"^^<http://www.w3.org/2000/01/rdf-schema#XMLLiteral> .\n<http://example.org/resource23> <http://example.org/property> \"x\"^^<http://www.w3.org/2000/01/rdf-schema#XMLLiteral> .\n<http://example.org/resource23> <http://example.org/property> \"\\\"\"^^<http://www.w3.org/2000/01/rdf-schema#XMLLiteral> .\n<http://example.org/resource24> <http://example.org/property> \"<a></a>\"^^<http://www.w3.org/2000/01/rdf-schema#XMLLiteral> .\n<http://example.org/resource25> <http://example.org/property> \"a <b></b>\"^^<http://www.w3.org/2000/01/rdf-schema#XMLLiteral> .\n<http://example.org/resource26> <http://example.org/property> \"a <b></b> c\"^^<http://www.w3.org/2000/01/rdf-schema#XMLLiteral> .\n<http://example.org/resource26> <http://example.org/property> \"a\\n<b></b>\\nc\"^^<http://www.w3.org/2000/01/rdf-schema#XMLLiteral> .\n<http://example.org/resource27> <http://example.org/property> \"chat\"^^<http://www.w3.org/2000/01/rdf-schema#XMLLiteral> .\n# resource28 test removed 2003-08-03\n# resource29 test removed 2003-08-03\n\n# Plain literals with languages\n<http://example.org/resource30> <http://example.org/property> \"chat\"@fr .\n<http://example.org/resource31> <http://example.org/property> \"chat\"@en .\n\n# Typed Literals\n<http://example.org/resource32> <http://example.org/property> \"abc\"^^<http://example.org/datatype1> .\n# resource33 test removed 2003-08-03\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -396,7 +400,7 @@
       "action": "comment_following_triple.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/comment_following_triple.nt",
       "id": "comment_following_triple",
-      "source": "<http://example/s> <http://example/p> <http://example/o> . # comment\r\n<http://example/s> <http://example/p> _:o . # comment\r\n<http://example/s> <http://example/p> \"o\" . # comment\r\n<http://example/s> <http://example/p> \"o\"^^<http://example/dt> . # comment\r\n<http://example/s> <http://example/p> \"o\"@en . # comment\r\n",
+      "source": "<http://example/s> <http://example/p> <http://example/o> . # comment\n<http://example/s> <http://example/p> _:o . # comment\n<http://example/s> <http://example/p> \"o\" . # comment\n<http://example/s> <http://example/p> \"o\"^^<http://example/dt> . # comment\n<http://example/s> <http://example/p> \"o\"@en . # comment\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -404,7 +408,7 @@
       "action": "literal.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/literal.nt",
       "id": "literal",
-      "source": "<http://a.example/s> <http://a.example/p> \"x\" .\r\n",
+      "source": "<http://a.example/s> <http://a.example/p> \"x\" .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -412,7 +416,7 @@
       "action": "literal_all_controls.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/literal_all_controls.nt",
       "id": "literal_all_controls",
-      "source": "<http://a.example/s> <http://a.example/p> \"\\u0000\\u0001\\u0002\\u0003\\u0004\\u0005\\u0006\\u0007\\u0008\\t\\u000B\\u000C\\u000E\\u000F\\u0010\\u0011\\u0012\\u0013\\u0014\\u0015\\u0016\\u0017\\u0018\\u0019\\u001A\\u001B\\u001C\\u001D\\u001E\\u001F\" .\r\n",
+      "source": "<http://a.example/s> <http://a.example/p> \"\\u0000\\u0001\\u0002\\u0003\\u0004\\u0005\\u0006\\u0007\\u0008\\t\\u000B\\u000C\\u000E\\u000F\\u0010\\u0011\\u0012\\u0013\\u0014\\u0015\\u0016\\u0017\\u0018\\u0019\\u001A\\u001B\\u001C\\u001D\\u001E\\u001F\" .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -420,7 +424,7 @@
       "action": "literal_all_punctuation.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/literal_all_punctuation.nt",
       "id": "literal_all_punctuation",
-      "source": "<http://a.example/s> <http://a.example/p> \" !\\\"#$%&():;<=>?@[]^_`{|}~\" .\r\n",
+      "source": "<http://a.example/s> <http://a.example/p> \" !\\\"#$%&():;<=>?@[]^_`{|}~\" .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -436,7 +440,7 @@
       "action": "literal_with_2_dquotes.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/literal_with_2_dquotes.nt",
       "id": "literal_with_2_dquotes",
-      "source": "<http://a.example/s> <http://a.example/p> \"x\\\"\\\"y\" .\r\n",
+      "source": "<http://a.example/s> <http://a.example/p> \"x\\\"\\\"y\" .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -444,7 +448,7 @@
       "action": "literal_with_2_squotes.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/literal_with_2_squotes.nt",
       "id": "literal_with_2_squotes",
-      "source": "<http://a.example/s> <http://a.example/p> \"x''y\" .\r\n",
+      "source": "<http://a.example/s> <http://a.example/p> \"x''y\" .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -452,7 +456,7 @@
       "action": "literal_with_BACKSPACE.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/literal_with_BACKSPACE.nt",
       "id": "literal_with_BACKSPACE",
-      "source": "<http://a.example/s> <http://a.example/p> \"\\b\" .\r\n",
+      "source": "<http://a.example/s> <http://a.example/p> \"\\b\" .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -460,7 +464,7 @@
       "action": "literal_with_CARRIAGE_RETURN.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/literal_with_CARRIAGE_RETURN.nt",
       "id": "literal_with_CARRIAGE_RETURN",
-      "source": "<http://a.example/s> <http://a.example/p> \"\\r\" .\r\n",
+      "source": "<http://a.example/s> <http://a.example/p> \"\\r\" .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -468,7 +472,7 @@
       "action": "literal_with_CHARACTER_TABULATION.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/literal_with_CHARACTER_TABULATION.nt",
       "id": "literal_with_CHARACTER_TABULATION",
-      "source": "<http://a.example/s> <http://a.example/p> \"\\t\" .\r\n",
+      "source": "<http://a.example/s> <http://a.example/p> \"\\t\" .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -476,7 +480,7 @@
       "action": "literal_with_dquote.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/literal_with_dquote.nt",
       "id": "literal_with_dquote",
-      "source": "<http://a.example/s> <http://a.example/p> \"x\\\"y\" .\r\n",
+      "source": "<http://a.example/s> <http://a.example/p> \"x\\\"y\" .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -484,7 +488,7 @@
       "action": "literal_with_FORM_FEED.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/literal_with_FORM_FEED.nt",
       "id": "literal_with_FORM_FEED",
-      "source": "<http://a.example/s> <http://a.example/p> \"\\f\" .\r\n",
+      "source": "<http://a.example/s> <http://a.example/p> \"\\f\" .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -492,7 +496,7 @@
       "action": "literal_with_LINE_FEED.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/literal_with_LINE_FEED.nt",
       "id": "literal_with_LINE_FEED",
-      "source": "<http://a.example/s> <http://a.example/p> \"\\n\" .\r\n",
+      "source": "<http://a.example/s> <http://a.example/p> \"\\n\" .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -500,7 +504,7 @@
       "action": "literal_with_numeric_escape4.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/literal_with_numeric_escape4.nt",
       "id": "literal_with_numeric_escape4",
-      "source": "<http://a.example/s> <http://a.example/p> \"\\u006F\" .\r\n",
+      "source": "<http://a.example/s> <http://a.example/p> \"\\u006F\" .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -508,7 +512,7 @@
       "action": "literal_with_numeric_escape8.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/literal_with_numeric_escape8.nt",
       "id": "literal_with_numeric_escape8",
-      "source": "<http://a.example/s> <http://a.example/p> \"\\U0000006F\" .\r\n",
+      "source": "<http://a.example/s> <http://a.example/p> \"\\U0000006F\" .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -516,7 +520,7 @@
       "action": "literal_with_REVERSE_SOLIDUS.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/literal_with_REVERSE_SOLIDUS.nt",
       "id": "literal_with_REVERSE_SOLIDUS",
-      "source": "<http://a.example/s> <http://a.example/p> \"\\\\\" .\r\n",
+      "source": "<http://a.example/s> <http://a.example/p> \"\\\\\" .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -524,7 +528,7 @@
       "action": "literal_with_REVERSE_SOLIDUS2.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/literal_with_REVERSE_SOLIDUS2.nt",
       "id": "literal_with_REVERSE_SOLIDUS2",
-      "source": "<http://example.org/ns#s> <http://example.org/ns#p1> \"test-\\\\\" .\r\n",
+      "source": "<http://example.org/ns#s> <http://example.org/ns#p1> \"test-\\\\\" .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -532,7 +536,7 @@
       "action": "literal_with_squote.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/literal_with_squote.nt",
       "id": "literal_with_squote",
-      "source": "<http://a.example/s> <http://a.example/p> \"x'y\" .\r\n",
+      "source": "<http://a.example/s> <http://a.example/p> \"x'y\" .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -540,7 +544,7 @@
       "action": "literal_with_UTF8_boundaries.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/literal_with_UTF8_boundaries.nt",
       "id": "literal_with_UTF8_boundaries",
-      "source": "<http://a.example/s> <http://a.example/p> \"߿ࠀ࿿က쿿퀀퟿�𐀀𿿽񀀀󿿽􀀀􏿽\" .\r\n",
+      "source": "<http://a.example/s> <http://a.example/p> \"߿ࠀ࿿က쿿퀀퟿�𐀀𿿽񀀀󿿽􀀀􏿽\" .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -548,7 +552,7 @@
       "action": "langtagged_string.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/langtagged_string.nt",
       "id": "langtagged_string",
-      "source": "<http://a.example/s> <http://a.example/p> \"chat\"@en .\r\n",
+      "source": "<http://a.example/s> <http://a.example/p> \"chat\"@en .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -556,7 +560,7 @@
       "action": "lantag_with_subtag.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/lantag_with_subtag.nt",
       "id": "lantag_with_subtag",
-      "source": "<http://example.org/ex#a> <http://example.org/ex#b> \"Cheers\"@en-UK .\r\n",
+      "source": "<http://example.org/ex#a> <http://example.org/ex#b> \"Cheers\"@en-UK .\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -564,7 +568,7 @@
       "action": "minimal_whitespace.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/minimal_whitespace.nt",
       "id": "minimal_whitespace",
-      "source": "<http://example/s><http://example/p><http://example/o>.\r\n<http://example/s><http://example/p>\"Alice\".\r\n<http://example/s><http://example/p>_:o.\r\n_:s<http://example/p><http://example/o>.\r\n_:s<http://example/p>\"Alice\".\r\n_:s<http://example/p>_:bnode1.\r\n",
+      "source": "<http://example/s><http://example/p><http://example/o>.\n<http://example/s><http://example/p>\"Alice\".\n<http://example/s><http://example/p>_:o.\n_:s<http://example/p><http://example/o>.\n_:s<http://example/p>\"Alice\".\n_:s<http://example/p>_:bnode1.\n",
       "suite": "rdf11",
       "type": "POSITIVE_SYNTAX"
     },
@@ -572,7 +576,7 @@
       "action": "ntriples12-syntax-01.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples12-syntax-01.nt",
       "id": "ntriples12-01",
-      "source": "<http://example/a> <http://www.w3.org/1999/02/22-rdf-syntax-ns#reifies> <<( <http://example/s> <http://example/p> <http://example/o> )>> .\r\n",
+      "source": "<http://example/a> <http://www.w3.org/1999/02/22-rdf-syntax-ns#reifies> <<( <http://example/s> <http://example/p> <http://example/o> )>> .\n",
       "suite": "rdf12Syntax",
       "type": "POSITIVE_SYNTAX"
     },
@@ -580,7 +584,7 @@
       "action": "ntriples12-syntax-02.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples12-syntax-02.nt",
       "id": "ntriples12-02",
-      "source": "<http://example/s><http://www.w3.org/1999/02/22-rdf-syntax-ns#reifies><<(<http://example/s2><http://example/p2><http://example/o2>)>>.\r\n",
+      "source": "<http://example/s><http://www.w3.org/1999/02/22-rdf-syntax-ns#reifies><<(<http://example/s2><http://example/p2><http://example/o2>)>>.\n",
       "suite": "rdf12Syntax",
       "type": "POSITIVE_SYNTAX"
     },
@@ -596,7 +600,7 @@
       "action": "ntriples12-bnode-1.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples12-bnode-1.nt",
       "id": "ntriples12-bnode-1",
-      "source": "_:b0 <http://example/p> <http://example/o> .\r\n_:b1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#reifies> <<( _:b0 <http://example/p> <http://example/o> )>> .\r\n",
+      "source": "_:b0 <http://example/p> <http://example/o> .\n_:b1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#reifies> <<( _:b0 <http://example/p> <http://example/o> )>> .\n",
       "suite": "rdf12Syntax",
       "type": "POSITIVE_SYNTAX"
     },
@@ -604,7 +608,7 @@
       "action": "ntriples12-nested-1.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples12-nested-1.nt",
       "id": "ntriples12-nested-1",
-      "source": "<http://example/s> <http://example/p> <http://example/o> .\r\n<http://example/a> <http://www.w3.org/1999/02/22-rdf-syntax-ns#reifies> <<( <http://example/s1> <http://example/p1> <http://example/o1> )>> .\r\n<http://example/r> <http://www.w3.org/1999/02/22-rdf-syntax-ns#reifies> <<( <http://example/23> <http://www.w3.org/1999/02/22-rdf-syntax-ns#reifies> <<( <http://example/s3> <http://example/p3> <http://example/o3> )>> )>> .\r\n",
+      "source": "<http://example/s> <http://example/p> <http://example/o> .\n<http://example/a> <http://www.w3.org/1999/02/22-rdf-syntax-ns#reifies> <<( <http://example/s1> <http://example/p1> <http://example/o1> )>> .\n<http://example/r> <http://www.w3.org/1999/02/22-rdf-syntax-ns#reifies> <<( <http://example/23> <http://www.w3.org/1999/02/22-rdf-syntax-ns#reifies> <<( <http://example/s3> <http://example/p3> <http://example/o3> )>> )>> .\n",
       "suite": "rdf12Syntax",
       "type": "POSITIVE_SYNTAX"
     },
@@ -612,7 +616,7 @@
       "action": "ntriples-langdir-1.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples-langdir-1.nt",
       "id": "ntriples-langdir-1",
-      "source": "<http://example/a> <http://example/b> \"Hello\"@en--ltr .\r\n",
+      "source": "<http://example/a> <http://example/b> \"Hello\"@en--ltr .\n",
       "suite": "rdf12Syntax",
       "type": "POSITIVE_SYNTAX"
     },
@@ -620,7 +624,7 @@
       "action": "ntriples-langdir-2.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples-langdir-2.nt",
       "id": "ntriples-langdir-2",
-      "source": "<http://example/a> <http://example/b> \"Hello\"@en--rtl .\r\n",
+      "source": "<http://example/a> <http://example/b> \"Hello\"@en--rtl .\n",
       "suite": "rdf12Syntax",
       "type": "POSITIVE_SYNTAX"
     },
@@ -628,7 +632,7 @@
       "action": "ntriples12-bad-syntax-01.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples12-bad-syntax-01.nt",
       "id": "ntriples12-bad-01",
-      "source": "<http://example/a> <<( <http://example/s> <http://example/p> <http://example/o> )>>  <http://example/z> .\r\n",
+      "source": "<http://example/a> <<( <http://example/s> <http://example/p> <http://example/o> )>>  <http://example/z> .\n",
       "suite": "rdf12Syntax",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -636,7 +640,7 @@
       "action": "ntriples12-bad-syntax-02.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples12-bad-syntax-02.nt",
       "id": "ntriples12-bad-02",
-      "source": "<http://example/q> <http://www.w3.org/1999/02/22-rdf-syntax-ns#reifies> <<( \"XYZ\" <http://example/p> <http://example/o> )>> .\r\n",
+      "source": "<http://example/q> <http://www.w3.org/1999/02/22-rdf-syntax-ns#reifies> <<( \"XYZ\" <http://example/p> <http://example/o> )>> .\n",
       "suite": "rdf12Syntax",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -644,7 +648,7 @@
       "action": "ntriples12-bad-syntax-03.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples12-bad-syntax-03.nt",
       "id": "ntriples12-bad-03",
-      "source": "<http://example/q> <http://www.w3.org/1999/02/22-rdf-syntax-ns#reifies> <<( <http://example/s> \"XYZ\" <http://example/o> )>> .\r\n",
+      "source": "<http://example/q> <http://www.w3.org/1999/02/22-rdf-syntax-ns#reifies> <<( <http://example/s> \"XYZ\" <http://example/o> )>> .\n",
       "suite": "rdf12Syntax",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -652,7 +656,7 @@
       "action": "ntriples12-bad-syntax-04.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples12-bad-syntax-04.nt",
       "id": "ntriples12-bad-04",
-      "source": "<http://example/q> <http://www.w3.org/1999/02/22-rdf-syntax-ns#reifies> << <http://example/s> _:label <http://example/o> >> .\r\n",
+      "source": "<http://example/q> <http://www.w3.org/1999/02/22-rdf-syntax-ns#reifies> << <http://example/s> _:label <http://example/o> >> .\n",
       "suite": "rdf12Syntax",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -660,7 +664,7 @@
       "action": "ntriples12-bad-syntax-05.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples12-bad-syntax-05.nt",
       "id": "ntriples12-bad-05",
-      "source": "<http://example/a> <<( <http://example/s> <http://example/p>  <http://example/o> )>> <http://example/z> .\r\n",
+      "source": "<http://example/a> <<( <http://example/s> <http://example/p>  <http://example/o> )>> <http://example/z> .\n",
       "suite": "rdf12Syntax",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -668,7 +672,7 @@
       "action": "ntriples12-bad-syntax-06.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples12-bad-syntax-06.nt",
       "id": "ntriples12-bad-06",
-      "source": "<<( \"XYZ\" <http://example/p> <http://example/o> )>> <http://example/q> <http://example/z> .\r\n",
+      "source": "<<( \"XYZ\" <http://example/p> <http://example/o> )>> <http://example/q> <http://example/z> .\n",
       "suite": "rdf12Syntax",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -676,7 +680,7 @@
       "action": "ntriples12-bad-syntax-07.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples12-bad-syntax-07.nt",
       "id": "ntriples12-bad-07",
-      "source": "<<( <http://example/s> \"XYZ\" <http://example/o> )>> <http://example/q> <http://example/z> .\r\n",
+      "source": "<<( <http://example/s> \"XYZ\" <http://example/o> )>> <http://example/q> <http://example/z> .\n",
       "suite": "rdf12Syntax",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -684,7 +688,7 @@
       "action": "ntriples12-bad-syntax-08.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples12-bad-syntax-08.nt",
       "id": "ntriples12-bad-08",
-      "source": "<<( <http://example/s> _:label <http://example/o> )>> <http://example/q> <http://example/z> .\r\n",
+      "source": "<<( <http://example/s> _:label <http://example/o> )>> <http://example/q> <http://example/z> .\n",
       "suite": "rdf12Syntax",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -692,7 +696,7 @@
       "action": "ntriples12-bad-syntax-09.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples12-bad-syntax-09.nt",
       "id": "ntriples12-bad-09",
-      "source": "<http://example/a> <http://example/b> << <http://example/s> <http://example/p> <http://example/o> >> .\r\n",
+      "source": "<http://example/a> <http://example/b> << <http://example/s> <http://example/p> <http://example/o> >> .\n",
       "suite": "rdf12Syntax",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -700,7 +704,7 @@
       "action": "ntriples12-bad-syntax-10.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples12-bad-syntax-10.nt",
       "id": "ntriples12-bad-10",
-      "source": "<<( <http://example/s> <http://example/p> <http://example/o> )>> <http://example/a> <http://example/z> .\r\n",
+      "source": "<<( <http://example/s> <http://example/p> <http://example/o> )>> <http://example/a> <http://example/z> .\n",
       "suite": "rdf12Syntax",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -708,7 +712,7 @@
       "action": "ntriples12-bad-iri-1.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples12-bad-iri-1.nt",
       "id": "ntriples12-bad-iri-1",
-      "source": "<http://example/a> <http://example/b> <//example/missing-scheme> .\r\n",
+      "source": "<http://example/a> <http://example/b> <//example/missing-scheme> .\n",
       "suite": "rdf12Syntax",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -716,7 +720,7 @@
       "action": "ntriples12-bad-reified-syntax-1.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples12-bad-reified-syntax-1.nt",
       "id": "ntriples12-bad-reified-1",
-      "source": "<< <http://example/s> <http://example/p> <http://example/o> >> <http://example/q> <http://example/z> .\r\n",
+      "source": "<< <http://example/s> <http://example/p> <http://example/o> >> <http://example/q> <http://example/z> .\n",
       "suite": "rdf12Syntax",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -724,7 +728,7 @@
       "action": "ntriples12-bad-reified-syntax-2.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples12-bad-reified-syntax-2.nt",
       "id": "ntriples12-bad-reified-2",
-      "source": "<http://example/x> <http://example/p> << <http://example/s> <http://example/p> <http://example/o> >> .\r\n",
+      "source": "<http://example/x> <http://example/p> << <http://example/s> <http://example/p> <http://example/o> >> .\n",
       "suite": "rdf12Syntax",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -732,7 +736,7 @@
       "action": "ntriples12-bad-reified-syntax-3.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples12-bad-reified-syntax-3.nt",
       "id": "ntriples12-bad-reified-3",
-      "source": "<< <http://example/s1> <http://example/p1> <http://example/o1> >> <http://example/q> << <http://example/s2> <http://example/p2> <http://example/o2> >> .\r\n",
+      "source": "<< <http://example/s1> <http://example/p1> <http://example/o1> >> <http://example/q> << <http://example/s2> <http://example/p2> <http://example/o2> >> .\n",
       "suite": "rdf12Syntax",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -740,7 +744,7 @@
       "action": "ntriples12-bad-reified-syntax-4.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples12-bad-reified-syntax-4.nt",
       "id": "ntriples12-bad-reified-4",
-      "source": "<http://example/x> << <http://example/s> <http://example/p> <http://example/o> >> <http://example/z> .\r\n",
+      "source": "<http://example/x> << <http://example/s> <http://example/p> <http://example/o> >> <http://example/z> .\n",
       "suite": "rdf12Syntax",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -748,7 +752,7 @@
       "action": "ntriples12-bnode-bad-annotated-syntax-1.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples12-bnode-bad-annotated-syntax-1.nt",
       "id": "ntriples12-bnode-bad-annotated-syntax-1",
-      "source": "_:b0 <http://example/p> <http://example/o> {| <http://example/q> \"ABC\" |} .\r\n",
+      "source": "_:b0 <http://example/p> <http://example/o> {| <http://example/q> \"ABC\" |} .\n",
       "suite": "rdf12Syntax",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -756,7 +760,7 @@
       "action": "ntriples12-bnode-bad-annotated-syntax-2.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples12-bnode-bad-annotated-syntax-2.nt",
       "id": "ntriples12-bnode-bad-annotated-syntax-2",
-      "source": "<http://example/s> <http://example/p> _:b1 {| <http://example/q> \"456\"^^<http://www.w3.org/2001/XMLSchema#integer> |} .\r\n",
+      "source": "<http://example/s> <http://example/p> _:b1 {| <http://example/q> \"456\"^^<http://www.w3.org/2001/XMLSchema#integer> |} .\n",
       "suite": "rdf12Syntax",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -764,7 +768,7 @@
       "action": "ntriples-langdir-bad-1.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples-langdir-bad-1.nt",
       "id": "ntriples-langdir-bad-1",
-      "source": "<http://example/a> <http://example/b> \"Hello\"@en--unk .\r\n",
+      "source": "<http://example/a> <http://example/b> \"Hello\"@en--unk .\n",
       "suite": "rdf12Syntax",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -772,7 +776,7 @@
       "action": "ntriples-langdir-bad-2.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples-langdir-bad-2.nt",
       "id": "ntriples-langdir-bad-2",
-      "source": "<http://example/a> <http://example/b> \"Hello\"@en--LTR .\r\n",
+      "source": "<http://example/a> <http://example/b> \"Hello\"@en--LTR .\n",
       "suite": "rdf12Syntax",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -780,7 +784,7 @@
       "action": "ntriples-langdir-bad-3.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples-langdir-bad-3.nt",
       "id": "ntriples-langdir-bad-3",
-      "source": "<http://example/a> <http://example/b> \"Hello\"^^<http://www.w3.org/1999/02/22-rdf-syntax-ns#langString> .\r\n",
+      "source": "<http://example/a> <http://example/b> \"Hello\"^^<http://www.w3.org/1999/02/22-rdf-syntax-ns#langString> .\n",
       "suite": "rdf12Syntax",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -788,7 +792,7 @@
       "action": "ntriples-langdir-bad-4.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples-langdir-bad-4.nt",
       "id": "ntriples-langdir-bad-4",
-      "source": "<http://example/a> <http://example/b> \"Hello\"@cantbethislong .\r\n",
+      "source": "<http://example/a> <http://example/b> \"Hello\"@cantbethislong .\n",
       "suite": "rdf12Syntax",
       "type": "NEGATIVE_SYNTAX"
     },
@@ -796,7 +800,7 @@
       "action": "ntriples-langdir-bad-5.nt",
       "baseIRI": "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/ntriples-langdir-bad-5.nt",
       "id": "ntriples-langdir-bad-5",
-      "source": "<http://example/a> <http://example/b> \"Hello\"^^<http://www.w3.org/1999/02/22-rdf-syntax-ns#dirLangString> .\r\n",
+      "source": "<http://example/a> <http://example/b> \"Hello\"^^<http://www.w3.org/1999/02/22-rdf-syntax-ns#dirLangString> .\n",
       "suite": "rdf12Syntax",
       "type": "NEGATIVE_SYNTAX"
     }

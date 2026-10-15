@@ -1977,10 +1977,11 @@ const validateQualityTooling = (workflows, violations) => {
           violations,
           qualification?.id === "scanner_qualification" &&
             qualification?.run ===
-              "node util/qualify-scancode-runtime.mjs --python-env=SCANCODE_PYTHON" &&
+              "node util/qualify-scancode-runtime.mjs --python-env=SCANCODE_PYTHON --work-root-env=SCANCODE_WORK_ROOT" &&
             isDeepStrictEqual(qualification?.env, {
               SCANCODE_PYTHON:
                 "${{ steps.quality_python.outputs.python-path }}",
+              SCANCODE_WORK_ROOT: "${{ runner.temp }}/scancode-qualification",
             }) &&
             !qualification?.if &&
             !qualification?.["continue-on-error"],
@@ -2052,6 +2053,79 @@ const validateQualityTooling = (workflows, violations) => {
         `${context} requires locked synchronization before every consumer`,
       );
       if (["ci.yml", "release.yml"].includes(file)) {
+        const jsonInstalls = list.filter(
+          (step) => step.run === "npm run install:json",
+        );
+        const jsonProbes = list.filter(
+          (step) => step.run === "npm run test:json",
+        );
+        if (id === "source_node_22") {
+          add(
+            violations,
+            jsonInstalls.length === 0 &&
+              jsonProbes.length === 0 &&
+              !list.some((step) =>
+                /^npm run (?:(?:install|check|lint|format|normalize|inventory):json(?:-identity|:producers|:check)?|lint|format(?::check)?|test:quality)(?: |$)/u.test(
+                  step.run ?? "",
+                ),
+              ),
+            `${context} Node 22 must not load the isolated JSON graph`,
+          );
+        } else {
+          const installIndex = list.indexOf(jsonInstalls[0]);
+          add(
+            violations,
+            jsonInstalls.length === 1 &&
+              jsonProbes.length === 1 &&
+              !jsonInstalls[0]?.if &&
+              !jsonInstalls[0]?.["continue-on-error"] &&
+              !jsonProbes[0]?.if &&
+              !jsonProbes[0]?.["continue-on-error"] &&
+              installIndex > syncIndex &&
+              list.indexOf(jsonProbes[0]) > installIndex,
+            `${context} requires unconditional isolated JSON acquisition and probes`,
+          );
+          const jsonConsumers = list.flatMap((step, index) =>
+            [
+              "npm run format:check",
+              "npm run lint",
+              "npm run test:quality",
+              "npm run check:json",
+              "npm run lint:json-identity",
+              "npm run check:json:producers",
+            ].includes(step.run)
+              ? [index]
+              : [],
+          );
+          add(
+            violations,
+            jsonConsumers.length >= 2 &&
+              jsonConsumers.every(
+                (index) =>
+                  index > installIndex &&
+                  !list[index].if &&
+                  !list[index]["continue-on-error"],
+              ),
+            `${context} requires JSON acquisition before every canonical consumer`,
+          );
+          if (id === "source_node_26")
+            for (const command of [
+              "npm run check:json",
+              "npm run lint:json-identity",
+            ])
+              requireRun(job, command, context, violations);
+          const producerChecks = list.filter(
+            (step) => step.run === "npm run check:json:producers",
+          );
+          add(
+            violations,
+            producerChecks.length === 1 &&
+              list.at(-1) === producerChecks[0] &&
+              !producerChecks[0]?.if &&
+              !producerChecks[0]?.["continue-on-error"],
+            `${context} requires one unconditional final JSON producer gate after all producers`,
+          );
+        }
         const markdownInstalls = list.filter(
           (step) => step.run === "npm run install:markdown",
         );

@@ -1078,7 +1078,9 @@
       "source": "import { createRequire } from 'node:module';import { pathToFileURL } from 'node:url';\nconst root='${OWLAPI_SOURCE}';process.env.TEMP=\"${GAP_WORKSPACE}/temporary\";process.env.TMP=process.env.TEMP;const req=createRequire(root+'/package.json');const pw=req('playwright');\nconst {xmlParserAdapter}=await import(pathToFileURL(root+'/internal/parsing/xml/xmlParserAdapter.js'));\nconst {prepareXml}=await import(pathToFileURL(root+'/internal/parsing/xml/xmlEntityPolicy.js'));\nconst {OWLOntologyLoaderConfiguration}=await import(pathToFileURL(root+'/model/owlOntologyLoaderConfiguration.js'));\nconst configuration=new OWLOntologyLoaderConfiguration();\nconst cases=[['valid','<r xmlns:x=\"urn:x\"><x:c/></r>'],['duplicate-attribute','<r a=\"1\" a=\"2\"/>'],['control-character','<r>\\u0001</r>'],['xml11','<?xml version=\"1.1\"?><r/>'],['depth110','<r>'.repeat(110)+'</r>'.repeat(110)],['empty-prefix','<r xmlns:p=\"\"><p:c/></r>']];\nconst results={node:{version:process.version,xml:[]},browsers:{}};\nfor(const [id,text]of cases){try{await xmlParserAdapter.parseXml(text,configuration);results.node.xml.push({id,result:'OK'});}catch(e){results.node.xml.push({id,result:e.name,code:e.code});}}\nfor(const name of ['chromium','firefox','webkit']){let browser;try{browser=await pw[name].launch({headless:true,timeout:10000});const page=await browser.newPage();let network=0;await page.route('**/*',route=>{network++;return route.abort();});await page.setContent('<!doctype html><iframe></iframe>');results.browsers[name]=await page.evaluate(items=>({userAgent:navigator.userAgent,xml:items.map(([id,text])=>{const d=new DOMParser().parseFromString(text,'application/xml');return{id,result:d.documentElement.localName==='parsererror'?'parsererror':'OK',root:d.documentElement.localName,ns:d.documentElement.namespaceURI};}),nativeSignal:Object.getOwnPropertyDescriptor(AbortSignal.prototype,'aborted').get.call(new AbortController().signal),crossRealmSignal:Object.getOwnPropertyDescriptor(AbortSignal.prototype,'aborted').get.call(new (document.querySelector('iframe').contentWindow.AbortController)().signal),duckSignal:(()=>{try{return Object.getOwnPropertyDescriptor(AbortSignal.prototype,'aborted').get.call({aborted:false});}catch(e){return e.name;}})()}),cases.map(([id,text])=>[id,prepareXml(text,configuration)]));results.browsers[name].networkRequests=network;}catch(e){results.browsers[name]={error:e.message};}finally{if(browser)await browser.close();}}\nconsole.log(JSON.stringify(results));\n",
       "execution": {
         "command": "node",
-        "args": ["${GAP_WORKSPACE}\\probe-runtime.mjs"],
+        "args": [
+          "${GAP_WORKSPACE}\\probe-runtime.mjs"
+        ],
         "network": "Playwright aborts every browser request."
       },
       "result": {
@@ -1117,7 +1119,9 @@
       "source": "import {createRequire} from 'node:module';import {readFile} from 'node:fs/promises';import {pathToFileURL} from 'node:url';const root='${OWLAPI_SOURCE}';const scratch=process.argv[2];process.env.TEMP=scratch+'/temporary';process.env.TMP=process.env.TEMP;const req=createRequire(root+'/package.json');const pw=req('playwright');const {OWLOntologyLoaderConfiguration}=await import(pathToFileURL(root+'/model/owlOntologyLoaderConfiguration.js'));const config=new OWLOntologyLoaderConfiguration();const results={};const allowed=new Set(['internal/parsing/xml/xmlParserAdapter.js','internal/parsing/xml/xmlEntityPolicy.js','internal/parsing/xml/xmlNames.js','internal/parsing/xml/xmlEntityDefaults.js','io/errors.js','internal/profiles/budget.js','internal/modularity/localityBudget.js']);const cases=[['valid','<r/>'],['duplicate-attribute','<r a=\"1\" a=\"2\"/>'],['empty-prefix','<r xmlns:p=\"\"><p:c/></r>']];for(const name of ['chromium','webkit']){const browser=await pw[name].launch({headless:true,timeout:10000});try{const page=await browser.newPage();const requests=[];const blocked=[];await page.route('**/*',async route=>{const u=new URL(route.request().url());const p=u.pathname.substring(1);if(u.host!=='owlapi-probe.invalid'||!allowed.has(p)){blocked.push(u.href);await route.abort();return;}requests.push(p);await route.fulfill({status:200,headers:{'access-control-allow-origin':'*','content-type':'text/javascript'},body:await readFile(root+'/'+p,'utf8')});});await page.setContent('<!doctype html><iframe></iframe>');results[name]=await page.evaluate(async({cases,config})=>{const {xmlParserAdapter}=await import('https://owlapi-probe.invalid/internal/parsing/xml/xmlParserAdapter.js');const {createProfileBudget}=await import('https://owlapi-probe.invalid/internal/profiles/budget.js');const {createLocalityBudget}=await import('https://owlapi-probe.invalid/internal/modularity/localityBudget.js');const xml=[];for(const[id,text]of cases){try{const d=await xmlParserAdapter.parseXml(text,config);xml.push({id,result:'OK',root:d.documentElement.localName,descendantParserErrors:d.getElementsByTagName('parsererror').length});}catch(e){xml.push({id,result:e.name,code:e.code});}}const signals={native:new AbortController().signal,crossRealm:new(document.querySelector('iframe').contentWindow.AbortController)().signal,duck:{aborted:false}};const budgets=[];for(const [id,signal]of Object.entries(signals))for(const[k,f]of [['profile',createProfileBudget],['locality',createLocalityBudget]]){try{f({signal});budgets.push({id,kind:k,result:'OK'});}catch(e){budgets.push({id,kind:k,result:e.name});}}return{xml,budgets};},{cases,config});results[name].fulfilledLocalModules=requests;results[name].blockedRequests=blocked;}finally{await browser.close();}}console.log(JSON.stringify(results));",
       "execution": {
         "command": "node",
-        "args": ["${GAP_WORKSPACE}\\probe-runtime-modules.mjs"],
+        "args": [
+          "${GAP_WORKSPACE}\\probe-runtime-modules.mjs"
+        ],
         "network": "Only seven repository modules at a synthetic origin fulfilled from disk; all other requests aborted. No local HTTP server."
       },
       "result": {
@@ -1262,7 +1266,16 @@
   "validation": {
     "all63RetainedJarsUnchanged": true,
     "overlayCompileExitCode": 0,
-    "successfulProbeExitCodes": [0, 0, 0, 0, 0, 0, 0, 0]
+    "successfulProbeExitCodes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
   },
   "updatedAtUtc": "2026-10-12T23:08:10.200Z",
   "originalSchema": "owlapi-java-api-behavior-gap-closure/v1",

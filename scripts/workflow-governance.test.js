@@ -35,6 +35,97 @@ const mutateWorkflow = (fileName, mutate) => {
 };
 
 describe("repository workflow governance", () => {
+  test.each(
+    ["ci.yml", "release.yml"].flatMap((file) =>
+      ["source_node_24", "source_node_26", "quality_windows"].flatMap((id) =>
+        ["removed", "conditional", "optional", "later producer"].map(
+          (mutation) => [file, id, mutation],
+        ),
+      ),
+    ),
+  )("rejects a %s:%s final JSON gate that is %s", (file, id, mutation) => {
+    const violations = mutateWorkflow(file, (doc) => {
+      const steps = doc.getIn(["jobs", id, "steps"]);
+      const gate = steps.items.find(
+        (step) => step.get("run") === "npm run check:json:producers",
+      );
+      expect(gate).toBeDefined();
+      if (mutation === "removed")
+        steps.items.splice(steps.items.indexOf(gate), 1);
+      if (mutation === "conditional") gate.set("if", "false");
+      if (mutation === "optional") gate.set("continue-on-error", true);
+      if (mutation === "later producer")
+        steps.add({
+          name: "Unchecked later producer",
+          run: "node util/generate-w3c-jsonld-fixtures.mjs",
+        });
+    });
+    expect(violations.join("\n")).toContain(
+      "requires one unconditional final JSON producer gate after all producers",
+    );
+  });
+  test.each(
+    ["ci.yml", "release.yml"].flatMap((file) =>
+      ["source_node_24", "source_node_26", "quality_windows"].map((id) => [
+        file,
+        id,
+      ]),
+    ),
+  )("requires complete JSON setup in %s:%s", (file, id) => {
+    const violations = mutateWorkflow(file, (doc) => {
+      const steps = doc.getIn(["jobs", id, "steps"]);
+      const setup = steps.items.find(
+        (step) => step.get("run") === "npm run install:json",
+      );
+      expect(setup).toBeDefined();
+      steps.items.splice(steps.items.indexOf(setup), 1);
+    });
+    expect(violations.join("\n")).toContain(
+      "requires unconditional isolated JSON acquisition and probes",
+    );
+  });
+  test.each(["if", "continue-on-error"])(
+    "rejects %s on the Node 26 JSON gate",
+    (field) => {
+      const violations = mutateWorkflow("ci.yml", (doc) => {
+        const gate = doc
+          .getIn(["jobs", "source_node_26", "steps"])
+          .items.find((step) => step.get("run") === "npm run check:json");
+        gate.set(field, field === "if" ? "false" : true);
+      });
+      expect(violations.join("\n")).toContain(
+        "requires JSON acquisition before every canonical consumer",
+      );
+    },
+  );
+  test.each([
+    "npm run install:json",
+    "npm run lint:json-identity",
+    "npm run format:check",
+  ])("keeps Node 22 independent of %s", (command) => {
+    const violations = mutateWorkflow("ci.yml", (doc) => {
+      doc
+        .getIn(["jobs", "source_node_22", "steps"])
+        .add({ name: "Unqualified tool graph", run: command });
+    });
+    expect(violations.join("\n")).toContain(
+      "Node 22 must not load the isolated JSON graph",
+    );
+  });
+  test("keeps the scanner work root out of retained repository reports", () => {
+    const violations = mutateWorkflow("ci.yml", (doc) => {
+      const step = doc
+        .getIn(["jobs", "source_node_24", "steps"])
+        .items.find((step) => step.get("id") === "scanner_qualification");
+      step.setIn(
+        ["env", "SCANCODE_WORK_ROOT"],
+        "${{ github.workspace }}/.release/scancode-tools",
+      );
+    });
+    expect(violations.join("\n")).toContain(
+      "requires unconditional locked scanner qualification",
+    );
+  });
   test.each(["source_node_24", "quality_windows"])(
     "requires real scanner qualification in %s",
     (id) => {

@@ -78,10 +78,17 @@
     "decision": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["outcome", "rationale", "conditions"],
+      "required": [
+        "outcome",
+        "rationale",
+        "conditions"
+      ],
       "properties": {
         "outcome": {
-          "enum": ["PENDING_HUMAN_REVIEW", "APPROVED_WITH_MITIGATIONS"]
+          "enum": [
+            "PENDING_HUMAN_REVIEW",
+            "APPROVED_WITH_MITIGATIONS"
+          ]
         },
         "rationale": {
           "type": "string",
@@ -112,17 +119,29 @@
       ],
       "properties": {
         "status": {
-          "enum": ["PENDING_HUMAN_REVIEW", "REVIEWED"]
+          "enum": [
+            "PENDING_HUMAN_REVIEW",
+            "REVIEWED"
+          ]
         },
         "reviewedOn": {
-          "type": ["string", "null"],
+          "type": [
+            "string",
+            "null"
+          ],
           "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
         },
         "reviewer": {
-          "enum": [null, "Maksym Shostak"]
+          "enum": [
+            null,
+            "Maksym Shostak"
+          ]
         },
         "authority": {
-          "type": ["string", "null"],
+          "type": [
+            "string",
+            "null"
+          ],
           "minLength": 1
         },
         "factsSha256": {

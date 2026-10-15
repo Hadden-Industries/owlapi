@@ -25,10 +25,18 @@
     "package": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["name", "version", "repository", "scopeAuthority"],
+      "required": [
+        "name",
+        "version",
+        "repository",
+        "scopeAuthority"
+      ],
       "properties": {
         "name": {
-          "enum": ["owlapi", "@hadden-industries/owlapi"]
+          "enum": [
+            "owlapi",
+            "@hadden-industries/owlapi"
+          ]
         },
         "version": {
           "type": "string",
@@ -40,7 +48,11 @@
         "scopeAuthority": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["method", "fileCount", "sourceManifestSha256"],
+          "required": [
+            "method",
+            "fileCount",
+            "sourceManifestSha256"
+          ],
           "properties": {
             "method": {
               "const": "npm pack --dry-run --json plus local source-byte hashing"
@@ -237,7 +249,10 @@
       ],
       "properties": {
         "status": {
-          "enum": ["PENDING_HUMAN_REVIEW", "REVIEWED"]
+          "enum": [
+            "PENDING_HUMAN_REVIEW",
+            "REVIEWED"
+          ]
         },
         "factsSha256": {
           "$ref": "#/$defs/sha256"

@@ -1,7 +1,9 @@
 [
   {
     "probeId": "RunRC2Profiles",
-    "arguments": ["${PROBE_WORKSPACE}\\RunRC2Profiles.json"],
+    "arguments": [
+      "${PROBE_WORKSPACE}\\RunRC2Profiles.json"
+    ],
     "centralResultSha256": "6c759e5578809d88b9a9e364125711606fad578310ca21421d87db3df5559077",
     "sourceResultSha256": "6c759e5578809d88b9a9e364125711606fad578310ca21421d87db3df5559077",
     "areSelectedResultsEquivalent": true
@@ -28,14 +30,18 @@
   },
   {
     "probeId": "RunRC2Providers",
-    "arguments": ["${PROBE_WORKSPACE}\\RunRC2Providers.json"],
+    "arguments": [
+      "${PROBE_WORKSPACE}\\RunRC2Providers.json"
+    ],
     "centralResultSha256": "c5c792f0a64d101ac0d1472e3b468bf38b00e1b6db6d89cdaa64a39c512b86ac",
     "sourceResultSha256": "c5c792f0a64d101ac0d1472e3b468bf38b00e1b6db6d89cdaa64a39c512b86ac",
     "areSelectedResultsEquivalent": true
   },
   {
     "probeId": "RunRC2Renderer",
-    "arguments": ["${PROBE_WORKSPACE}\\selected-ontology.ofn"],
+    "arguments": [
+      "${PROBE_WORKSPACE}\\selected-ontology.ofn"
+    ],
     "centralResultSha256": "5333bae088bdabcba3003d11fb4226d2458b7335e3fe09190134052b98c7a3b3",
     "sourceResultSha256": "5333bae088bdabcba3003d11fb4226d2458b7335e3fe09190134052b98c7a3b3",
     "areSelectedResultsEquivalent": true
@@ -53,14 +59,18 @@
   },
   {
     "probeId": "RunRC2LocalityFixedPoints",
-    "arguments": ["${PROBE_WORKSPACE}\\RunRC2LocalityFixedPoints.json"],
+    "arguments": [
+      "${PROBE_WORKSPACE}\\RunRC2LocalityFixedPoints.json"
+    ],
     "centralResultSha256": "47e98fcccc0a62bb73e15bde7afdc96ad040fdc2cd1d48ecc1c4c4775968398d",
     "sourceResultSha256": "47e98fcccc0a62bb73e15bde7afdc96ad040fdc2cd1d48ecc1c4c4775968398d",
     "areSelectedResultsEquivalent": true
   },
   {
     "probeId": "RunRC2TransformsMatrix",
-    "arguments": ["${PROBE_WORKSPACE}\\RunRC2TransformsMatrix.json"],
+    "arguments": [
+      "${PROBE_WORKSPACE}\\RunRC2TransformsMatrix.json"
+    ],
     "centralResultSha256": "9b4dd4b4dd5652d543a94f4c250ee994298fe14af39bc2784ce2eb594bc621ed",
     "sourceResultSha256": "9b4dd4b4dd5652d543a94f4c250ee994298fe14af39bc2784ce2eb594bc621ed",
     "areSelectedResultsEquivalent": true

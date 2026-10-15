@@ -137,8 +137,16 @@
       "fileCount": 195
     },
     "testsPerEngine": 3,
-    "engines": ["chromium", "firefox", "webkit"],
-    "modes": ["bundler", "import-map", "DedicatedWorker"],
+    "engines": [
+      "chromium",
+      "firefox",
+      "webkit"
+    ],
+    "modes": [
+      "bundler",
+      "import-map",
+      "DedicatedWorker"
+    ],
     "result": "PASS",
     "evidenceKind": "operator-observed native test command results"
   },
@@ -189,14 +197,20 @@
     "migration": [
       {
         "behaviorProfileId": "java-owlapi-5.5.1",
-        "requests": ["urn:recovery:child", "urn:recovery:missing"],
+        "requests": [
+          "urn:recovery:child",
+          "urn:recovery:missing"
+        ],
         "rootRetained": false,
         "childRetained": true,
         "configuredConnectionTimeout": 1234
       },
       {
         "behaviorProfileId": "normative-v1",
-        "requests": ["urn:recovery:child", "urn:recovery:missing"],
+        "requests": [
+          "urn:recovery:child",
+          "urn:recovery:missing"
+        ],
         "rootRetained": false,
         "childRetained": false,
         "configuredConnectionTimeout": 1234
@@ -223,7 +237,10 @@
   "review": {
     "claudeAssignmentId": "8275a9b8-9c04-52ba-a55a-0dfa8a179ff5",
     "nativeControlQualificationId": "84088c9b-6063-4b29-98a7-b913da22e45e",
-    "confirmedFindingIds": ["R-1", "R-2"],
+    "confirmedFindingIds": [
+      "R-1",
+      "R-2"
+    ],
     "securityScanId": "45f253ac-f086-4af2-a467-69306dacbad0",
     "securityScanStatus": "failed-incomplete"
   },

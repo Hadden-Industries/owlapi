@@ -5,7 +5,79 @@
     "allowFormatWrites": true,
     "normalization": "NFC"
   },
+  "nativeSources": [
+    {
+      "id": "npm-evidence",
+      "provider": "npmEvidence",
+      "owner": "native npm evidence verifier",
+      "reason": "Independently verify manifest, schemas, locked acquisition and each original envelope/source-map blob before shared checking.",
+      "formatContract": "producer-json-indent",
+      "minimumDocuments": 1
+    },
+    {
+      "id": "markdown-archives",
+      "provider": "markdownArchives",
+      "owner": "native Markdown lock/archive verifier",
+      "reason": "Independently admit every tracked frozen Markdown archive and original JSON member, including visible exact report exclusions.",
+      "minimumDocuments": 1,
+      "parameters": {
+        "temporaryReports": [
+          {
+            "packageName": "@hadden-industries/markdown-quality-win32-x64",
+            "version": "1.0.3",
+            "memberPath": "package/cargo-notices.json",
+            "sha256": "f5459fbdcf02354f87e1caf051238493f097be172b5af3e4f5e74b359146c29e"
+          },
+          {
+            "packageName": "@hadden-industries/markdown-quality-linux-x64",
+            "version": "1.0.3",
+            "memberPath": "package/cargo-notices.json",
+            "sha256": "22473eb073afc5d9f451888f96ab31dffc9bf3a55c50650f6fad058ba726df85"
+          }
+        ]
+      }
+    }
+  ],
+  "preserveSourcePresentation": [
+    {
+      "paths": [
+        "logical/w3c-jsonld/**"
+      ],
+      "owner": "Pinned original W3C JSON-LD sources",
+      "reason": "Retain original presentation only after pinned Git-byte admission and actual container-pointer reconciliation; every semantic rule remains checked."
+    },
+    {
+      "paths": [
+        "tooling/markdown/archives/*.tgz!/**"
+      ],
+      "owner": "Native locked Markdown archive owner",
+      "reason": "Retain original installed-member presentation only after independent SRI and full native archive census admission; every included member retains semantic checks."
+    }
+  ],
   "exceptions": [
+    {
+      "paths": [
+        "**/node_modules/**"
+      ],
+      "owner": "native npm dependency installers",
+      "reason": "Owner-approved exclusion of every node_modules installation from JSON quality, including root and isolated tooling trees. Native acquisition/payload, locks, package/evidence and domain checks remain mandatory; tracked JSON remains independently checked.",
+      "exclude": true
+    },
+    {
+      "paths": [
+        "**/node_modules/**",
+        ".development-tools/**",
+        ".git/**",
+        ".release/**",
+        ".venv/**",
+        "docs/conformance/**",
+        "docs/provenance/evidence/**",
+        "docs/provenance/history-reconstruction/**"
+      ],
+      "owner": "native dependency, evidence, fixture, generator and administrative producers",
+      "reason": "Analysis remains mandatory; these bytes can only be changed by their owning producer after an accepted decision.",
+      "allowFormatWrites": false
+    },
     {
       "paths": [
         ".development-tools/python/**"
@@ -16,43 +88,705 @@
     },
     {
       "paths": [
-        "tooling/markdown/node_modules/@hadden-industries/markdown-quality-win32-x64/cargo-notices.json",
-        "tooling/markdown/node_modules/@hadden-industries/markdown-quality-linux-x64/cargo-notices.json"
+        ".development-tools/uv-cache/**",
+        ".venv/**"
       ],
-      "owner": "Markdown Quality native package producer",
-      "reason": "Owner-approved temporary exclusion of the unchanged 1.0.3 cargo-about report until a qualified Markdown Quality package update. Remove this exception on update; original report and archive diagnostics remain retained.",
+      "owner": "Native locked Python environment/cache installer",
+      "reason": "Owner-approved temporary exclusion of ignored uv cache and installed virtual environment from JSON quality. Tracked JSON is independently rescued; native Python versions, locked offline environment checks and Python tests remain mandatory.",
       "exclude": true
     },
     {
       "paths": [
-        "package-lock.json",
-        "tooling/markdown/package-lock.json",
-        "tooling/json/package-lock.json"
+        ".release/java-qualification/jest.json"
       ],
-      "owner": "native npm lockfile producer",
-      "reason": "Only the actual packages root key is empty; locked identities remain protected from generic writers.",
-      "allowEmptyKeys": [
-        "/packages/"
-      ],
-      "allowFormatWrites": false
+      "owner": "native Jest qualification reporter",
+      "reason": "The existing source qualification invokes Jest's native JSON output file, whose platform serializer emits a compact body. All semantic rules and native Java coverage reconciliation remain mandatory.",
+      "formatContract": "producer-json-compact-body"
     },
     {
       "paths": [
-        "**/node_modules/**",
-        ".git/**",
-        ".release/**",
-        ".development-tools/**",
-        ".venv/**",
-        "docs/provenance/history-reconstruction/**",
-        "docs/provenance/evidence/**",
-        "docs/conformance/**",
-        "internal/parsing/jsonld/provider/build-manifest.json",
-        "docs/release/gates.json",
-        "docs/release/producer-gates.json"
+        ".release/playwright-output/.last-run.json"
       ],
-      "owner": "native dependency, evidence, fixture, generator and administrative producers",
-      "reason": "Analysis remains mandatory; these bytes can only be changed by their owning producer after an accepted decision.",
-      "allowFormatWrites": false
+      "owner": "Native Playwright LastRunReporter",
+      "reason": "The locked Playwright reporter writes JSON.stringify(lastRunInfo, undefined, 2) without a final LF. Retain native reporter ownership and every semantic check; no exclusion or historical-byte exception.",
+      "formatContract": "producer-json-indent-body"
+    },
+    {
+      "paths": [
+        ".release/scancode-qualification/reports/*.json"
+      ],
+      "owner": "locked native ScanCode runtime qualifier",
+      "reason": "The existing qualifier requests ScanCode --json-pp. Check its canonical JSON body while accepting the Python producer's newline convention and preserving numeric lexemes; syntax, NFC, interoperable numbers and all native scanner assertions remain mandatory.",
+      "formatContract": "producer-json-body"
+    },
+    {
+      "paths": [
+        ".release/universal-ontology/**"
+      ],
+      "owner": "pinned Universal Ontology integration checkout",
+      "reason": "Owner-approved separately owned checkout boundary, guarded by its real contained Git root and the frozen July input revision. Full native ontology reconciliation and every OwlAPI JSON report remain checked; tracked OwlAPI JSON remains independently checked.",
+      "exclude": true
+    },
+    {
+      "paths": [
+        "docs/conformance/generated/w3c-jsonld.json"
+      ],
+      "owner": "W3C conformance fixture generators",
+      "reason": "Owner-approved exact W3C Unicode value preservation; source strings bind pinned original Git bytes, while derived expected RDF terms retain separately verified value identities. Every key and unselected value retains NFC enforcement.",
+      "allowFormatWrites": false,
+      "preserveNfcValues": [
+        {
+          "pointer": "/tests/318/expected",
+          "sha256": "21b1321e21b2e3ecbf7111e7e52b80cd2e5d20f3f196a5129ee47fcde2396c08",
+          "byteLength": 126
+        }
+      ]
+    },
+    {
+      "paths": [
+        "docs/conformance/generated/w3c-trig.json"
+      ],
+      "owner": "W3C conformance fixture generators",
+      "reason": "Owner-approved exact W3C Unicode value preservation; source strings bind pinned original Git bytes, while derived expected RDF terms retain separately verified value identities. Every key and unselected value retains NFC enforcement.",
+      "allowFormatWrites": false,
+      "preserveNfcValues": [
+        {
+          "pointer": "/tests/21/source",
+          "sha256": "b715cc6b51d7e9d4910aae0fc9470695e3b83a02dd517e4f0a8045d7228947e2",
+          "byteLength": 356
+        },
+        {
+          "pointer": "/tests/31/source",
+          "sha256": "af2e6a0fcb910d5ee86f9b959246b0dd1eb4cb38e9b4fc0759dfb13e7cea0bfa",
+          "byteLength": 292
+        },
+        {
+          "pointer": "/tests/31/expectedQuads/0/2/1",
+          "sha256": "30c4619a65d7a3425508a9f38c239543b3a1cfa7a6953c8b7c904e7d0dbc0a6f",
+          "byteLength": 86
+        },
+        {
+          "pointer": "/tests/31/expectedQuads/1/2/1",
+          "sha256": "30c4619a65d7a3425508a9f38c239543b3a1cfa7a6953c8b7c904e7d0dbc0a6f",
+          "byteLength": 86
+        },
+        {
+          "pointer": "/tests/40/source",
+          "sha256": "9b4629c7eca38d7a2d258183afcc8a217c33c5337396ad603c99ea6ab8d1b3ad",
+          "byteLength": 259
+        }
+      ]
+    },
+    {
+      "paths": [
+        "docs/conformance/generated/w3c-turtle.json"
+      ],
+      "owner": "W3C conformance fixture generators",
+      "reason": "Owner-approved exact W3C Unicode value preservation; source strings bind pinned original Git bytes, while derived expected RDF terms retain separately verified value identities. Every key and unselected value retains NFC enforcement.",
+      "allowFormatWrites": false,
+      "preserveNfcValues": [
+        {
+          "pointer": "/tests/10/source",
+          "sha256": "4a8d00163cabad0cb711c8b165331355ed69d1f5eb1dbb76479a9c774e35b1ea",
+          "byteLength": 217
+        },
+        {
+          "pointer": "/tests/20/source",
+          "sha256": "eebddbc2f871db039d42692f1100b48e978d18a52e13fd40859971b37f748ee8",
+          "byteLength": 149
+        },
+        {
+          "pointer": "/tests/20/expectedQuads/0/2/1",
+          "sha256": "30c4619a65d7a3425508a9f38c239543b3a1cfa7a6953c8b7c904e7d0dbc0a6f",
+          "byteLength": 86
+        },
+        {
+          "pointer": "/tests/29/source",
+          "sha256": "64a9f2ff0fe3a610633a69e2890c206cfe52325d83e389d4c60226de694e9c5c",
+          "byteLength": 116
+        }
+      ]
+    },
+    {
+      "paths": [
+        "docs/conformance/upstream/w3c-json-ld-api/tests/fromRdf-manifest.jsonld"
+      ],
+      "owner": "Pinned W3C JSON-LD manifests",
+      "reason": "Retain the exact original Git bytes at ffdb326121ea89b7b8280e76a5caea923834bcef; original presentation is source evidence and all semantic diagnostics remain checked.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "c0bcca085187a15c0b869c3902ea130922f837634486724cec38f16bab26b283",
+        "byteLength": 19727,
+        "diagnostics": []
+      }
+    },
+    {
+      "paths": [
+        "docs/conformance/upstream/w3c-json-ld-api/tests/toRdf-manifest.jsonld"
+      ],
+      "owner": "Pinned W3C JSON-LD manifests",
+      "reason": "Retain the exact original Git bytes at ffdb326121ea89b7b8280e76a5caea923834bcef; original presentation is source evidence and all semantic diagnostics remain checked.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "2b8b602eef56b0c307422bcf644477c11a299b3d0188be265e097ad64eb843af",
+        "byteLength": 157402,
+        "diagnostics": []
+      }
+    },
+    {
+      "paths": [
+        "docs/provenance/evidence/npm/blobs/sha256/43/43676e3bfbd1e8044dbcd066c284aebeeaec817cd4c67d9c3c3025bd8e95e937"
+      ],
+      "owner": "native npm evidence verifier",
+      "reason": "Owner-approved DEC-004 preservation of the two exact captured source-map-js contributor-name values. The native manifest independently binds original envelope bytes.",
+      "allowFormatWrites": false,
+      "preserveNfcValues": [
+        {
+          "pointer": "/evidence/files/1/package_data/0/parties/30/name",
+          "sha256": "71399d5093873f6414aa555768fd658da8b721eff8902ffaa661f78815a2d2a3",
+          "byteLength": 17
+        },
+        {
+          "pointer": "/evidence/packages/0/parties/30/name",
+          "sha256": "71399d5093873f6414aa555768fd658da8b721eff8902ffaa661f78815a2d2a3",
+          "byteLength": 17
+        }
+      ]
+    },
+    {
+      "paths": [
+        "docs/provenance/evidence/npm/blobs/sha256/83/830fccd0d0e78b1607c2018c774bc2e857521035d5f481a59af9249c52fce532",
+        "docs/provenance/evidence/npm/blobs/sha256/8f/8f7afa0c0e1cd3d50b88eabdc048f34f9638edf736ec563cc8f537c0740599ce",
+        "docs/provenance/evidence/npm/blobs/sha256/e0/e05621b338362a3114bace192a89d029a7a069a2e870a5c3aeef9a74d99b3842",
+        "docs/provenance/evidence/npm/blobs/sha256/ff/fff15d0830c28513fc28364ecba0a03030c0e4e082d41f0039cb54dabc9a19db"
+      ],
+      "owner": "retained upstream source-map producers",
+      "reason": "The native archive manifest binds these four original source maps and their compact JSON bodies without a final LF; native blob admission and every semantic quality check remain mandatory.",
+      "formatContract": "producer-json-compact-body"
+    },
+    {
+      "paths": [
+        "docs/provenance/evidence/npm/blobs/sha256/83/83d624b3d46dc3a8c39e5c7ffb1c24349dfab4e6d9295ee7958bb12a48b76781"
+      ],
+      "owner": "native npm evidence verifier",
+      "reason": "Owner-approved DEC-004 preservation of the exact captured source-map-js contributor value. The native manifest independently binds original envelope bytes.",
+      "allowFormatWrites": false,
+      "preserveNfcValues": [
+        {
+          "pointer": "/evidence/packageMetadata/contributors/36",
+          "sha256": "684eb0b0ae2d00f9d2830f20c393e4b9e3e5d9ed4e675070d3d310abe36cd7c1",
+          "byteLength": 46
+        }
+      ]
+    },
+    {
+      "paths": [
+        "docs/provenance/history-reconstruction/backups/accepted/accepted-off-platform-manifest.schema.json"
+      ],
+      "owner": "Historical reconstruction evidence owner",
+      "reason": "Retain unchanged original committed bytes (ef266fc36dd725466833da3179aceb5bb0b0e020); changing retained qualification/history presentation would replace original evidence. All semantic rules remain checked.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "801937a810719568dd73d6888e3766fabcbab2e2c96af18fb48c2db897c17bce",
+        "byteLength": 3969,
+        "diagnostics": []
+      }
+    },
+    {
+      "paths": [
+        "docs/provenance/history-reconstruction/backups/pre-rewrite/pre-rewrite-off-platform-manifest.schema.json"
+      ],
+      "owner": "Historical reconstruction evidence owner",
+      "reason": "Retain unchanged original committed bytes (26009dd1016e3aba907b9d03c45382ffae8db347); changing retained qualification/history presentation would replace original evidence. All semantic rules remain checked.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "62e06acfed06d2b54b384aef05ed0f416f37e03f3c696c1c4d29a9f681e3af0b",
+        "byteLength": 2936,
+        "diagnostics": []
+      }
+    },
+    {
+      "paths": [
+        "docs/provenance/history-reconstruction/checkpoint-summary.schema.json"
+      ],
+      "owner": "Historical reconstruction evidence owner",
+      "reason": "Retain unchanged original committed bytes (be4f898f63131090b5c18f2eeb8db4095357036d); changing retained qualification/history presentation would replace original evidence. All semantic rules remain checked.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "a5d6d4634998b583331ecdcd1b9bd0c880942d8536982846b90e5d08108f801b",
+        "byteLength": 6155,
+        "diagnostics": []
+      }
+    },
+    {
+      "paths": [
+        "docs/provenance/history-reconstruction/control/commit-inventory.schema.json"
+      ],
+      "owner": "Historical reconstruction evidence owner",
+      "reason": "Retain unchanged original committed bytes (49b8c1697c76ea8ccb99ae1caf6953770bbae470); changing retained qualification/history presentation would replace original evidence. All semantic rules remain checked.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "9d1f0d8895c796e70a970221515925c8788579938a9dedf0dccfb28b6abec6cd",
+        "byteLength": 5184,
+        "diagnostics": []
+      }
+    },
+    {
+      "paths": [
+        "docs/provenance/history-reconstruction/control/freeze.schema.json"
+      ],
+      "owner": "Historical reconstruction evidence owner",
+      "reason": "Retain unchanged original committed bytes (8206161b0ef02fb0ba93a50b54b1d1a004c52440); changing retained qualification/history presentation would replace original evidence. All semantic rules remain checked.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "3b5da4f16bf77bc3264741d63fc1e06738793d1735af9f6861ec8af5c635926d",
+        "byteLength": 4718,
+        "diagnostics": []
+      }
+    },
+    {
+      "paths": [
+        "docs/provenance/history-reconstruction/control/partition-decisions.schema.json"
+      ],
+      "owner": "Historical reconstruction evidence owner",
+      "reason": "Retain unchanged original committed bytes (bbbdf5d6b50a03b5f0db6363750aa2ac69721549); changing retained qualification/history presentation would replace original evidence. All semantic rules remain checked.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "de920b76470530d664f44396de25bf17b1785e1d7837560b790747b48ad805b2",
+        "byteLength": 3376,
+        "diagnostics": []
+      }
+    },
+    {
+      "paths": [
+        "docs/provenance/history-reconstruction/control/ref-operation-journal.schema.json"
+      ],
+      "owner": "Historical reconstruction evidence owner",
+      "reason": "Retain unchanged original committed bytes (fd15ca7e3c09f55f5be9471b6b2ee6122ec1ffd0); changing retained qualification/history presentation would replace original evidence. All semantic rules remain checked.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "333153a636c26d1c44ba89364da13b7c00bfec34ed3ef16cc9b8843a44cd8395",
+        "byteLength": 2815,
+        "diagnostics": []
+      }
+    },
+    {
+      "paths": [
+        "docs/provenance/history-reconstruction/control/reference-candidates.schema.json"
+      ],
+      "owner": "Historical reconstruction evidence owner",
+      "reason": "Retain unchanged original committed bytes (c566e51fc15c5abc19e21ef8f76964a901c663a0); changing retained qualification/history presentation would replace original evidence. All semantic rules remain checked.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "e769289919d73ae202ddfbd14702aaec292c83dc795b8c0656f74ab18fd7266e",
+        "byteLength": 1986,
+        "diagnostics": []
+      }
+    },
+    {
+      "paths": [
+        "docs/provenance/history-reconstruction/operations/operational-ref-journal.schema.json"
+      ],
+      "owner": "Historical reconstruction evidence owner",
+      "reason": "Retain unchanged original committed bytes (fbf6af3354b258fb06816030c6daab842db6a1a5); changing retained qualification/history presentation would replace original evidence. All semantic rules remain checked.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "0dc66f5bd0a275d41e8e600d5cc3780428d9ebb1aa46be07b96c9c4de1ede3ee",
+        "byteLength": 7183,
+        "diagnostics": []
+      }
+    },
+    {
+      "paths": [
+        "docs/provenance/history-reconstruction/reconstruction/phase19-lineage.schema.json"
+      ],
+      "owner": "Historical reconstruction evidence owner",
+      "reason": "Retain unchanged original committed bytes (14b516efd56a85f7ffe4c32407dfc9f058f8a6af); changing retained qualification/history presentation would replace original evidence. All semantic rules remain checked.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "b212eb63726fceb9cfe927cdee3274ab14acb061e722cc597be45d846e667c6f",
+        "byteLength": 11091,
+        "diagnostics": []
+      }
+    },
+    {
+      "paths": [
+        "docs/provenance/history-reconstruction/review/toolchain-sources.schema.json"
+      ],
+      "owner": "Historical reconstruction evidence owner",
+      "reason": "Retain unchanged original committed bytes (c05ba7a75bc3f2b797d201901dd8b9981429c822); changing retained qualification/history presentation would replace original evidence. All semantic rules remain checked.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "8c26c92ffb2cc4f882444bea8f50b01ea7ec31249afb15153f1cf3cef73b2724",
+        "byteLength": 2725,
+        "diagnostics": []
+      }
+    },
+    {
+      "paths": [
+        "logical/w3c-jsonld/resources/toRdf/er52-in.jsonld"
+      ],
+      "owner": "Pinned W3C JSON-LD conformance owner",
+      "reason": "Retain the exact original jld:NegativeEvaluationTest, jld:ToRDFTest fixture er52 at ffdb326121ea89b7b8280e76a5caea923834bcef. Original standard conformance data differs from strict repository rules; every unlisted diagnostic and changed byte remains a failure.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "b192dd3c5dbb00041e3b49d12b69bc6a181875fee008f50a089a5f9695faaefc",
+        "byteLength": 155,
+        "diagnostics": [
+          {
+            "phase": "lint",
+            "ruleId": "json/no-empty-keys",
+            "messageId": "emptyKey",
+            "line": 4,
+            "column": 5,
+            "endLine": 4,
+            "endColumn": 7
+          }
+        ]
+      }
+    },
+    {
+      "paths": [
+        "logical/w3c-jsonld/resources/toRdf/js10-in.jsonld"
+      ],
+      "owner": "Pinned W3C JSON-LD conformance owner",
+      "reason": "Retain the exact original jld:PositiveEvaluationTest, jld:ToRDFTest fixture js10 at ffdb326121ea89b7b8280e76a5caea923834bcef. Original standard conformance data differs from strict repository rules; every unlisted diagnostic and changed byte remains a failure.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "53cef3ae8ddf3e65d7330c7f048b8800b6a69cb0029bb2472236f1d5ad9e92ee",
+        "byteLength": 272,
+        "diagnostics": [
+          {
+            "phase": "lint",
+            "ruleId": "json/no-empty-keys",
+            "messageId": "emptyKey",
+            "line": 7,
+            "column": 36,
+            "endLine": 7,
+            "endColumn": 39
+          },
+          {
+            "phase": "lint",
+            "ruleId": "json/no-empty-keys",
+            "messageId": "emptyKey",
+            "line": 9,
+            "column": 5,
+            "endLine": 9,
+            "endColumn": 7
+          }
+        ]
+      }
+    },
+    {
+      "paths": [
+        "logical/w3c-jsonld/resources/toRdf/js11-in.jsonld"
+      ],
+      "owner": "Pinned W3C JSON-LD conformance owner",
+      "reason": "Retain the exact original jld:PositiveEvaluationTest, jld:ToRDFTest fixture js11 at ffdb326121ea89b7b8280e76a5caea923834bcef. Original standard conformance data differs from strict repository rules; every unlisted diagnostic and changed byte remains a failure.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "caf39adb20f75ca8ddcdb80199387ca5040da26b19b3b588cd7d4d44468938e8",
+        "byteLength": 163,
+        "diagnostics": [
+          {
+            "phase": "lint",
+            "ruleId": "json-quality/normalized-strings",
+            "messageId": "unnormalized",
+            "line": 7,
+            "column": 28,
+            "endLine": 7,
+            "endColumn": 37
+          }
+        ]
+      }
+    },
+    {
+      "paths": [
+        "logical/w3c-jsonld/resources/toRdf/js12-in.jsonld"
+      ],
+      "owner": "Pinned W3C JSON-LD conformance owner",
+      "reason": "Retain the exact original jld:PositiveEvaluationTest, jld:ToRDFTest fixture js12 at ffdb326121ea89b7b8280e76a5caea923834bcef. Original standard conformance data differs from strict repository rules; every unlisted diagnostic and changed byte remains a failure.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "10373347f4012d23011ae5ebda75b53912f3c7193881e57dc52ba7a899bde0b6",
+        "byteLength": 311,
+        "diagnostics": [
+          {
+            "phase": "lint",
+            "ruleId": "json-quality/interoperability",
+            "messageId": "integer",
+            "line": 7,
+            "column": 37,
+            "endLine": 7,
+            "endColumn": 41
+          }
+        ]
+      }
+    },
+    {
+      "paths": [
+        "logical/w3c-jsonld/resources/toRdf/js13-in.jsonld"
+      ],
+      "owner": "Pinned W3C JSON-LD conformance owner",
+      "reason": "Retain the exact original jld:PositiveEvaluationTest, jld:ToRDFTest fixture js13 at ffdb326121ea89b7b8280e76a5caea923834bcef. Original standard conformance data differs from strict repository rules; every unlisted diagnostic and changed byte remains a failure.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "86f114e49ecf01eb931e66a9e973d39cc2fe383cb4a7b25153e0baf194854850",
+        "byteLength": 374,
+        "diagnostics": [
+          {
+            "phase": "lint",
+            "ruleId": "json/no-empty-keys",
+            "messageId": "emptyKey",
+            "line": 8,
+            "column": 5,
+            "endLine": 8,
+            "endColumn": 9
+          },
+          {
+            "phase": "lint",
+            "ruleId": "json/no-empty-keys",
+            "messageId": "emptyKey",
+            "line": 9,
+            "column": 5,
+            "endLine": 9,
+            "endColumn": 13
+          }
+        ]
+      }
+    },
+    {
+      "paths": [
+        "logical/w3c-jsonld/resources/toRdf/rt01-in.jsonld"
+      ],
+      "owner": "Pinned W3C JSON-LD conformance owner",
+      "reason": "Retain the exact original jld:PositiveEvaluationTest, jld:ToRDFTest fixture rt01 at ffdb326121ea89b7b8280e76a5caea923834bcef. Original standard conformance data differs from strict repository rules; every unlisted diagnostic and changed byte remains a failure.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "a9c087d5579d1bab867357d27d14e479c988c8a958839013ffd3646a64399be1",
+        "byteLength": 110,
+        "diagnostics": [
+          {
+            "phase": "lint",
+            "ruleId": "json-quality/interoperability",
+            "messageId": "integer",
+            "line": 5,
+            "column": 28,
+            "endLine": 5,
+            "endColumn": 32
+          }
+        ]
+      }
+    },
+    {
+      "paths": [
+        "logical/w3c-jsonld/tests/er52/source.jsonld"
+      ],
+      "owner": "Pinned W3C JSON-LD conformance owner",
+      "reason": "Retain the exact original jld:NegativeEvaluationTest, jld:ToRDFTest fixture er52 at ffdb326121ea89b7b8280e76a5caea923834bcef. Original standard conformance data differs from strict repository rules; every unlisted diagnostic and changed byte remains a failure.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "b192dd3c5dbb00041e3b49d12b69bc6a181875fee008f50a089a5f9695faaefc",
+        "byteLength": 155,
+        "diagnostics": [
+          {
+            "phase": "lint",
+            "ruleId": "json/no-empty-keys",
+            "messageId": "emptyKey",
+            "line": 4,
+            "column": 5,
+            "endLine": 4,
+            "endColumn": 7
+          }
+        ]
+      }
+    },
+    {
+      "paths": [
+        "logical/w3c-jsonld/tests/js10/source.jsonld"
+      ],
+      "owner": "Pinned W3C JSON-LD conformance owner",
+      "reason": "Retain the exact original jld:PositiveEvaluationTest, jld:ToRDFTest fixture js10 at ffdb326121ea89b7b8280e76a5caea923834bcef. Original standard conformance data differs from strict repository rules; every unlisted diagnostic and changed byte remains a failure.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "53cef3ae8ddf3e65d7330c7f048b8800b6a69cb0029bb2472236f1d5ad9e92ee",
+        "byteLength": 272,
+        "diagnostics": [
+          {
+            "phase": "lint",
+            "ruleId": "json/no-empty-keys",
+            "messageId": "emptyKey",
+            "line": 7,
+            "column": 36,
+            "endLine": 7,
+            "endColumn": 39
+          },
+          {
+            "phase": "lint",
+            "ruleId": "json/no-empty-keys",
+            "messageId": "emptyKey",
+            "line": 9,
+            "column": 5,
+            "endLine": 9,
+            "endColumn": 7
+          }
+        ]
+      }
+    },
+    {
+      "paths": [
+        "logical/w3c-jsonld/tests/js11/source.jsonld"
+      ],
+      "owner": "Pinned W3C JSON-LD conformance owner",
+      "reason": "Retain the exact original jld:PositiveEvaluationTest, jld:ToRDFTest fixture js11 at ffdb326121ea89b7b8280e76a5caea923834bcef. Original standard conformance data differs from strict repository rules; every unlisted diagnostic and changed byte remains a failure.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "caf39adb20f75ca8ddcdb80199387ca5040da26b19b3b588cd7d4d44468938e8",
+        "byteLength": 163,
+        "diagnostics": [
+          {
+            "phase": "lint",
+            "ruleId": "json-quality/normalized-strings",
+            "messageId": "unnormalized",
+            "line": 7,
+            "column": 28,
+            "endLine": 7,
+            "endColumn": 37
+          }
+        ]
+      }
+    },
+    {
+      "paths": [
+        "logical/w3c-jsonld/tests/js12/source.jsonld"
+      ],
+      "owner": "Pinned W3C JSON-LD conformance owner",
+      "reason": "Retain the exact original jld:PositiveEvaluationTest, jld:ToRDFTest fixture js12 at ffdb326121ea89b7b8280e76a5caea923834bcef. Original standard conformance data differs from strict repository rules; every unlisted diagnostic and changed byte remains a failure.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "10373347f4012d23011ae5ebda75b53912f3c7193881e57dc52ba7a899bde0b6",
+        "byteLength": 311,
+        "diagnostics": [
+          {
+            "phase": "lint",
+            "ruleId": "json-quality/interoperability",
+            "messageId": "integer",
+            "line": 7,
+            "column": 37,
+            "endLine": 7,
+            "endColumn": 41
+          }
+        ]
+      }
+    },
+    {
+      "paths": [
+        "logical/w3c-jsonld/tests/js13/source.jsonld"
+      ],
+      "owner": "Pinned W3C JSON-LD conformance owner",
+      "reason": "Retain the exact original jld:PositiveEvaluationTest, jld:ToRDFTest fixture js13 at ffdb326121ea89b7b8280e76a5caea923834bcef. Original standard conformance data differs from strict repository rules; every unlisted diagnostic and changed byte remains a failure.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "86f114e49ecf01eb931e66a9e973d39cc2fe383cb4a7b25153e0baf194854850",
+        "byteLength": 374,
+        "diagnostics": [
+          {
+            "phase": "lint",
+            "ruleId": "json/no-empty-keys",
+            "messageId": "emptyKey",
+            "line": 8,
+            "column": 5,
+            "endLine": 8,
+            "endColumn": 9
+          },
+          {
+            "phase": "lint",
+            "ruleId": "json/no-empty-keys",
+            "messageId": "emptyKey",
+            "line": 9,
+            "column": 5,
+            "endLine": 9,
+            "endColumn": 13
+          }
+        ]
+      }
+    },
+    {
+      "paths": [
+        "logical/w3c-jsonld/tests/rt01/source.jsonld"
+      ],
+      "owner": "Pinned W3C JSON-LD conformance owner",
+      "reason": "Retain the exact original jld:PositiveEvaluationTest, jld:ToRDFTest fixture rt01 at ffdb326121ea89b7b8280e76a5caea923834bcef. Original standard conformance data differs from strict repository rules; every unlisted diagnostic and changed byte remains a failure.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "a9c087d5579d1bab867357d27d14e479c988c8a958839013ffd3646a64399be1",
+        "byteLength": 110,
+        "diagnostics": [
+          {
+            "phase": "lint",
+            "ruleId": "json-quality/interoperability",
+            "messageId": "integer",
+            "line": 5,
+            "column": 28,
+            "endLine": 5,
+            "endColumn": 32
+          }
+        ]
+      }
+    },
+    {
+      "paths": [
+        "package-lock.json",
+        "tooling/json/package-lock.json",
+        "tooling/markdown/package-lock.json"
+      ],
+      "owner": "native npm lockfile producer",
+      "reason": "Only the actual packages root key is empty; locked identities remain protected from generic writers.",
+      "allowFormatWrites": false,
+      "allowEmptyKeys": [
+        "/packages/"
+      ]
+    },
+    {
+      "paths": [
+        "tooling/markdown/archives/hadden-industries-markdown-quality-linux-x64-1.0.3.tgz!/package/cargo-notices.json"
+      ],
+      "owner": "Markdown Quality native cargo-about report producer",
+      "reason": "Owner-approved temporary exact original archive-report exclusion. Native owner checks locked package version and original report SHA-256; remove after qualified producer update. Full member census and unchanged archive integrity remain mandatory.",
+      "exclude": true
+    },
+    {
+      "paths": [
+        "tooling/markdown/archives/hadden-industries-markdown-quality-win32-x64-1.0.3.tgz!/package/cargo-notices.json"
+      ],
+      "owner": "Markdown Quality native cargo-about report producer",
+      "reason": "Owner-approved temporary exact original archive-report exclusion. Native owner checks locked package version and original report SHA-256; remove after qualified producer update. Full member census and unchanged archive integrity remain mandatory.",
+      "exclude": true
     }
   ]
 }

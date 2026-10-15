@@ -1,11 +1,12 @@
 import { suiteRevision } from "./conformance/suiteRevision.mjs";
+import { readW3cSource } from "./conformance/w3cSource.mjs";
 import { encodeQuad } from "./conformance/fixtureTerms.mjs";
 import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import process from "node:process";
 
 import { Parser as N3Parser } from "n3";
-import { format as formatWithPrettier } from "prettier";
+import { formatConformanceJson as formatJson } from "./conformance/jsonPresentation.mjs";
 
 const REVISION = suiteRevision("w3c-rdf-tests", "RDF/XML");
 const EXPECTED_MANIFEST_SHA256 =
@@ -35,9 +36,6 @@ const inputUrl = process.argv[2]
   : DEFAULT_INPUT_URL;
 
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
-
-const formatJson = (value) =>
-  formatWithPrettier(JSON.stringify(value), { parser: "json" });
 
 const definitionBlocks = (manifest) => {
   const lines = manifest.split(/\r\n|\r|\n/u);
@@ -127,7 +125,11 @@ for (const id of activeIds) {
     "mf:result",
     definition.type === "TestXMLEval",
   );
-  const source = await readFile(new URL(action, inputUrl), "utf8");
+  const source = await readW3cSource(
+    new URL(action, inputUrl),
+    new URL(action, assumedBase).href,
+    REVISION,
+  );
   const test = {
     action,
     baseIRI: new URL(action, assumedBase).href,

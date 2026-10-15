@@ -25,7 +25,9 @@
       "table": 4,
       "title": "Parsing of the Ontology Header",
       "status": "COMPLETE",
-      "handlers": ["#readOntologyHeader"],
+      "handlers": [
+        "#readOntologyHeader"
+      ],
       "rules": [
         {
           "id": "T04-NAMED-HEADER",
@@ -35,13 +37,20 @@
             "zero or more imports"
           ],
           "status": "COMPLETE",
-          "evidence": ["internal/mapping/rdfToOwlTranslator.test.js"]
+          "evidence": [
+            "internal/mapping/rdfToOwlTranslator.test.js"
+          ]
         },
         {
           "id": "T04-ANONYMOUS-HEADER",
-          "constructs": ["anonymous ontology", "zero or more imports"],
+          "constructs": [
+            "anonymous ontology",
+            "zero or more imports"
+          ],
           "status": "COMPLETE",
-          "evidence": ["internal/mapping/rdfToOwlTranslator.test.js"]
+          "evidence": [
+            "internal/mapping/rdfToOwlTranslator.test.js"
+          ]
         },
         {
           "id": "T04-REFERENCED-ONTOLOGY",
@@ -70,9 +79,13 @@
       "rules": [
         {
           "id": "T05-ONTOLOGY-TYPE",
-          "constructs": ["owl:Ontology type consumption"],
+          "constructs": [
+            "owl:Ontology type consumption"
+          ],
           "status": "COMPLETE",
-          "evidence": ["internal/mapping/rdfToOwlTranslator.test.js"]
+          "evidence": [
+            "internal/mapping/rdfToOwlTranslator.test.js"
+          ]
         },
         {
           "id": "T05-REDUNDANT-RDFS-CLASS",
@@ -83,11 +96,15 @@
             "owl:Restriction plus rdfs:Class"
           ],
           "status": "COMPLETE",
-          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": [
+            "internal/mapping/rdfToOwlTranslator.axioms.test.js"
+          ]
         },
         {
           "id": "T05-REDUNDANT-OWL-CLASS",
-          "constructs": ["owl:Restriction plus owl:Class"],
+          "constructs": [
+            "owl:Restriction plus owl:Class"
+          ],
           "status": "COMPLETE",
           "evidence": [
             "internal/mapping/rdfToOwlTranslator.expressions.test.js",
@@ -106,7 +123,9 @@
             "owl:OntologyProperty"
           ],
           "status": "COMPLETE",
-          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": [
+            "internal/mapping/rdfToOwlTranslator.axioms.test.js"
+          ]
         },
         {
           "id": "T05-REDUNDANT-RDF-LIST",
@@ -114,7 +133,9 @@
             "rdf:List type on a node with exactly one rdf:first and rdf:rest"
           ],
           "status": "COMPLETE",
-          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": [
+            "internal/mapping/rdfToOwlTranslator.axioms.test.js"
+          ]
         }
       ]
     },
@@ -122,7 +143,9 @@
       "table": 6,
       "title": "Additional Declaration Triples",
       "status": "COMPLETE",
-      "handlers": ["#readDeclarations"],
+      "handlers": [
+        "#readDeclarations"
+      ],
       "rules": [
         {
           "id": "T06-ONTOLOGY-PROPERTY",
@@ -130,7 +153,9 @@
             "owl:OntologyProperty to annotation-property declaration"
           ],
           "status": "COMPLETE",
-          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": [
+            "internal/mapping/rdfToOwlTranslator.axioms.test.js"
+          ]
         },
         {
           "id": "T06-OWL1-OBJECT-PROPERTY-INFERENCE",
@@ -140,7 +165,9 @@
             "owl:SymmetricProperty"
           ],
           "status": "COMPLETE",
-          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": [
+            "internal/mapping/rdfToOwlTranslator.axioms.test.js"
+          ]
         }
       ]
     },
@@ -210,7 +237,9 @@
             "owl:NegativePropertyAssertion"
           ],
           "status": "COMPLETE",
-          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": [
+            "internal/mapping/rdfToOwlTranslator.axioms.test.js"
+          ]
         }
       ]
     },
@@ -301,7 +330,9 @@
       "table": 11,
       "title": "Parsing Object Property Expressions",
       "status": "COMPLETE",
-      "handlers": ["#objectPropertyExpression"],
+      "handlers": [
+        "#objectPropertyExpression"
+      ],
       "rules": [
         {
           "id": "T11-INVERSE-OBJECT-PROPERTY",
@@ -322,7 +353,11 @@
       "table": 12,
       "title": "Parsing of Data Ranges",
       "status": "COMPLETE",
-      "handlers": ["#dataRange", "#facetRestriction", "#rdfList"],
+      "handlers": [
+        "#dataRange",
+        "#facetRestriction",
+        "#rdfList"
+      ],
       "rules": [
         {
           "id": "T12-BOOLEAN-DATA-RANGES",
@@ -338,7 +373,9 @@
         },
         {
           "id": "T12-DATA-ONE-OF",
-          "constructs": ["DataOneOf with one or more literals"],
+          "constructs": [
+            "DataOneOf with one or more literals"
+          ],
           "status": "COMPLETE",
           "evidence": [
             "internal/mapping/rdfToOwlTranslator.expressions.test.js"
@@ -446,7 +483,10 @@
       "table": 14,
       "title": "OWL 1 DL Compatible Data Ranges",
       "status": "COMPLETE",
-      "handlers": ["#readDeclarations", "#dataRange"],
+      "handlers": [
+        "#readDeclarations",
+        "#dataRange"
+      ],
       "rules": [
         {
           "id": "T14-OWL1-DATA-ONE-OF",
@@ -465,7 +505,10 @@
       "table": 15,
       "title": "OWL 1 DL Compatible Class Expressions",
       "status": "COMPLETE",
-      "handlers": ["#classExpression", "#normalizedObjectBooleanExpression"],
+      "handlers": [
+        "#classExpression",
+        "#normalizedObjectBooleanExpression"
+      ],
       "rules": [
         {
           "id": "T15-OWL1-BOOLEAN-NORMALIZATION",
@@ -525,7 +568,9 @@
             "DisjointUnion"
           ],
           "status": "COMPLETE",
-          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": [
+            "internal/mapping/rdfToOwlTranslator.axioms.test.js"
+          ]
         },
         {
           "id": "T16-OBJECT-PROPERTY-AXIOMS",
@@ -547,7 +592,9 @@
             "TransitiveObjectProperty"
           ],
           "status": "COMPLETE",
-          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": [
+            "internal/mapping/rdfToOwlTranslator.axioms.test.js"
+          ]
         },
         {
           "id": "T16-DATA-PROPERTY-AXIOMS",
@@ -561,7 +608,9 @@
             "FunctionalDataProperty"
           ],
           "status": "COMPLETE",
-          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": [
+            "internal/mapping/rdfToOwlTranslator.axioms.test.js"
+          ]
         },
         {
           "id": "T16-DATATYPE-AND-KEY-AXIOMS",
@@ -570,7 +619,9 @@
             "HasKey with object and data property partition"
           ],
           "status": "COMPLETE",
-          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": [
+            "internal/mapping/rdfToOwlTranslator.axioms.test.js"
+          ]
         },
         {
           "id": "T16-INDIVIDUAL-AXIOMS",
@@ -586,7 +637,9 @@
             "NegativeDataPropertyAssertion"
           ],
           "status": "COMPLETE",
-          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": [
+            "internal/mapping/rdfToOwlTranslator.axioms.test.js"
+          ]
         },
         {
           "id": "T16-OWL1-DEPRECATION-AXIOMS",
@@ -595,7 +648,9 @@
             "owl:DeprecatedProperty to owl:deprecated true"
           ],
           "status": "COMPLETE",
-          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": [
+            "internal/mapping/rdfToOwlTranslator.axioms.test.js"
+          ]
         },
         {
           "id": "T16-ANNOTATION-PROPERTY-AXIOMS",
@@ -605,7 +660,9 @@
             "AnnotationPropertyRange"
           ],
           "status": "COMPLETE",
-          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": [
+            "internal/mapping/rdfToOwlTranslator.axioms.test.js"
+          ]
         }
       ]
     },
@@ -640,7 +697,9 @@
             "NegativePropertyAssertion annotations"
           ],
           "status": "COMPLETE",
-          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": [
+            "internal/mapping/rdfToOwlTranslator.axioms.test.js"
+          ]
         }
       ]
     },
@@ -656,13 +715,21 @@
       "rules": [
         {
           "id": "T18-NAMED-CLASS-COMPLEMENT",
-          "constructs": ["named class owl:complementOf to EquivalentClasses"],
+          "constructs": [
+            "named class owl:complementOf to EquivalentClasses"
+          ],
           "status": "COMPLETE",
-          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": [
+            "internal/mapping/rdfToOwlTranslator.axioms.test.js"
+          ]
         },
         {
           "id": "T18-NAMED-CLASS-UNION",
-          "constructs": ["empty union", "singleton union", "n-ary union"],
+          "constructs": [
+            "empty union",
+            "singleton union",
+            "n-ary union"
+          ],
           "status": "COMPLETE",
           "evidence": [
             "internal/mapping/rdfToOwlTranslator.axioms.test.js",
@@ -684,9 +751,14 @@
         },
         {
           "id": "T18-NAMED-CLASS-ONE-OF",
-          "constructs": ["empty oneOf", "nonempty named-individual oneOf"],
+          "constructs": [
+            "empty oneOf",
+            "nonempty named-individual oneOf"
+          ],
           "status": "COMPLETE",
-          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": [
+            "internal/mapping/rdfToOwlTranslator.axioms.test.js"
+          ]
         }
       ]
     }

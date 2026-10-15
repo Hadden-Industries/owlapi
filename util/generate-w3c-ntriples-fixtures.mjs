@@ -1,4 +1,5 @@
 import { suiteRevision } from "./conformance/suiteRevision.mjs";
+import { readW3cSource } from "./conformance/w3cSource.mjs";
 import { MF, RDF, RDFT } from "./conformance/fixtureTerms.mjs";
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
@@ -7,7 +8,7 @@ import process from "node:process";
 import { pathToFileURL } from "node:url";
 
 import { Parser as N3Parser } from "n3";
-import { format as formatWithPrettier } from "prettier";
+import { formatConformanceJson as formatJson } from "./conformance/jsonPresentation.mjs";
 
 const REVISION = suiteRevision("w3c-rdf-tests", "N-Triples");
 
@@ -37,7 +38,7 @@ const suites = [
     ),
     expectedCount: 70,
     expectedSha256:
-      "65b748e9e15783c6e9808dad663ee9e139803ceee2fb9a0704fbe00ddbdafc7b",
+      "561ad17572c14d9290a0a1481f58d701bc8996da996b88e1beb1308c5dff55d6",
     inputUrl: new URL("rdf11/rdf-n-triples/", inputUrl),
     key: "rdf11",
     manifestPath: "rdf/rdf11/rdf-n-triples/manifest.ttl",
@@ -51,7 +52,7 @@ const suites = [
     ),
     expectedCount: 29,
     expectedSha256:
-      "cd80d5bd8ae702cafcd78bc238d31a17aba7913b78eecadb5b55683e22feb3d7",
+      "bc3250200d58058f4ab7d89681b63fd3d06c8b3393eec165ab3481ee46d7708e",
     inputUrl: new URL("rdf12/rdf-n-triples/syntax/", inputUrl),
     key: "rdf12Syntax",
     manifestPath: "rdf/rdf12/rdf-n-triples/syntax/manifest.ttl",
@@ -59,8 +60,6 @@ const suites = [
 ];
 
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
-const formatJson = (value) =>
-  formatWithPrettier(JSON.stringify(value), { parser: "json" });
 
 const objectFor = (quads, subject, predicate) =>
   quads.find(
@@ -158,7 +157,11 @@ for (const suite of suites) {
       action,
       baseIRI: actionTerm.value,
       id,
-      source: await readFile(new URL(action, suite.inputUrl), "utf8"),
+      source: await readW3cSource(
+        new URL(action, suite.inputUrl),
+        actionTerm.value,
+        REVISION,
+      ),
       suite: suite.key,
       type,
     });

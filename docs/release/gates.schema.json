@@ -14,8 +14,12 @@
     "leafGates"
   ],
   "properties": {
-    "$schema": { "const": "./gates.schema.json" },
-    "schemaVersion": { "const": 1 },
+    "$schema": {
+      "const": "./gates.schema.json"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
     "catalogue": {
       "type": "object",
       "additionalProperties": false,
@@ -34,9 +38,15 @@
         "checklistNormalizationAlgorithm": {
           "const": "markdown-checklist-row-v1"
         },
-        "phase19Section": { "const": "17.26.5" },
-        "phase20Section": { "const": "17.27.6" },
-        "checklistSection": { "const": "30" },
+        "phase19Section": {
+          "const": "17.26.5"
+        },
+        "phase20Section": {
+          "const": "17.27.6"
+        },
+        "checklistSection": {
+          "const": "30"
+        },
         "sourcePaths": {
           "const": [
             "docs/implementation-plan.md",
@@ -57,29 +67,46 @@
       ],
       "properties": {
         "successfulFinalResults": {
-          "const": ["PASS", "NOT_APPLICABLE"]
+          "const": [
+            "PASS",
+            "NOT_APPLICABLE"
+          ]
         },
         "failureClasses": {
-          "const": ["PRODUCT_FAILURE", "CONTROL_FAILURE", "EXTERNAL_BLOCKED"]
+          "const": [
+            "PRODUCT_FAILURE",
+            "CONTROL_FAILURE",
+            "EXTERNAL_BLOCKED"
+          ]
         },
-        "transientDiagnosticResult": { "const": "INFRASTRUCTURE_ERROR" },
-        "waiverPolicy": { "const": "NO_ORDINARY_WAIVER" }
+        "transientDiagnosticResult": {
+          "const": "INFRASTRUCTURE_ERROR"
+        },
+        "waiverPolicy": {
+          "const": "NO_ORDINARY_WAIVER"
+        }
       }
     },
     "requirements": {
       "type": "array",
       "minItems": 1,
-      "items": { "$ref": "#/$defs/requirement" }
+      "items": {
+        "$ref": "#/$defs/requirement"
+      }
     },
     "checklistGates": {
       "type": "array",
       "minItems": 1,
-      "items": { "$ref": "#/$defs/checklistGate" }
+      "items": {
+        "$ref": "#/$defs/checklistGate"
+      }
     },
     "leafGates": {
       "type": "array",
       "minItems": 1,
-      "items": { "$ref": "#/$defs/leafGate" }
+      "items": {
+        "$ref": "#/$defs/leafGate"
+      }
     }
   },
   "$defs": {
@@ -107,15 +134,22 @@
     "applicability": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["mode"],
+      "required": [
+        "mode"
+      ],
       "properties": {
-        "mode": { "const": "ALWAYS" }
+        "mode": {
+          "const": "ALWAYS"
+        }
       }
     },
     "verification": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["kind", "command"],
+      "required": [
+        "kind",
+        "command"
+      ],
       "properties": {
         "kind": {
           "enum": [
@@ -134,7 +168,10 @@
     "evidence": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["recordPath", "jsonPointer"],
+      "required": [
+        "recordPath",
+        "jsonPointer"
+      ],
       "properties": {
         "recordPath": {
           "const": "docs/provenance/releases/<version>/gates.json"
@@ -166,13 +203,24 @@
         "prerequisiteRequirementIds"
       ],
       "properties": {
-        "requirementId": { "$ref": "#/$defs/requirementId" },
+        "requirementId": {
+          "$ref": "#/$defs/requirementId"
+        },
         "prerequisiteRequirementIds": {
           "type": "array",
           "uniqueItems": true,
-          "items": { "$ref": "#/$defs/requirementId" }
+          "items": {
+            "$ref": "#/$defs/requirementId"
+          }
         },
-        "phase": { "enum": [19, 20, 21, 22] },
+        "phase": {
+          "enum": [
+            19,
+            20,
+            21,
+            22
+          ]
+        },
         "sourceAnchor": {
           "type": "string",
           "pattern": "^p(?:19|20|21|22)-[a-z0-9]+(?:-[a-z0-9]+)*-[0-9]{3}$"
@@ -182,36 +230,78 @@
           "pattern": "^sha256:[0-9a-f]{64}$"
         },
         "checkpoint": {
-          "enum": ["19A", "19B", "19C", "19D", "20", "21", "22"]
+          "enum": [
+            "19A",
+            "19B",
+            "19C",
+            "19D",
+            "20",
+            "21",
+            "22"
+          ]
         },
-        "owner": { "$ref": "#/$defs/owner" },
-        "applicability": { "$ref": "#/$defs/applicability" },
-        "blocking": { "const": "REQUIRED" },
-        "verification": { "$ref": "#/$defs/verification" },
-        "evidence": { "$ref": "#/$defs/evidence" },
-        "permittedFinalResults": { "const": ["PASS"] },
+        "owner": {
+          "$ref": "#/$defs/owner"
+        },
+        "applicability": {
+          "$ref": "#/$defs/applicability"
+        },
+        "blocking": {
+          "const": "REQUIRED"
+        },
+        "verification": {
+          "$ref": "#/$defs/verification"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence"
+        },
+        "permittedFinalResults": {
+          "const": [
+            "PASS"
+          ]
+        },
         "failureClasses": {
-          "const": ["PRODUCT_FAILURE", "CONTROL_FAILURE", "EXTERNAL_BLOCKED"]
+          "const": [
+            "PRODUCT_FAILURE",
+            "CONTROL_FAILURE",
+            "EXTERNAL_BLOCKED"
+          ]
         },
-        "waiverPolicy": { "const": "NO_ORDINARY_WAIVER" },
+        "waiverPolicy": {
+          "const": "NO_ORDINARY_WAIVER"
+        },
         "childGateIds": {
           "type": "array",
           "minItems": 1,
           "uniqueItems": true,
-          "items": { "$ref": "#/$defs/leafGateId" }
+          "items": {
+            "$ref": "#/$defs/leafGateId"
+          }
         }
       }
     },
     "checklistGate": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["gateId", "phase", "rowDigest", "coveredRequirementIds"],
+      "required": [
+        "gateId",
+        "phase",
+        "rowDigest",
+        "coveredRequirementIds"
+      ],
       "properties": {
         "gateId": {
           "type": "string",
           "pattern": "^P(?:19|20|21|22)-CHECK-[0-9]{3}$"
         },
-        "phase": { "enum": [19, 20, 21, 22] },
+        "phase": {
+          "enum": [
+            19,
+            20,
+            21,
+            22
+          ]
+        },
         "rowDigest": {
           "type": "string",
           "pattern": "^sha256:[0-9a-f]{64}$"
@@ -220,7 +310,9 @@
           "type": "array",
           "minItems": 1,
           "uniqueItems": true,
-          "items": { "$ref": "#/$defs/requirementId" }
+          "items": {
+            "$ref": "#/$defs/requirementId"
+          }
         }
       }
     },
@@ -241,8 +333,12 @@
         "waiverPolicy"
       ],
       "properties": {
-        "gateId": { "$ref": "#/$defs/leafGateId" },
-        "ownerRequirementId": { "$ref": "#/$defs/requirementId" },
+        "gateId": {
+          "$ref": "#/$defs/leafGateId"
+        },
+        "ownerRequirementId": {
+          "$ref": "#/$defs/requirementId"
+        },
         "checklistGateIds": {
           "type": "array",
           "minItems": 1,
@@ -252,16 +348,36 @@
             "pattern": "^P(?:19|20|21|22)-CHECK-[0-9]{3}$"
           }
         },
-        "owner": { "$ref": "#/$defs/owner" },
-        "applicability": { "$ref": "#/$defs/applicability" },
-        "blocking": { "const": "REQUIRED" },
-        "verification": { "$ref": "#/$defs/verification" },
-        "evidence": { "$ref": "#/$defs/evidence" },
-        "permittedFinalResults": { "const": ["PASS"] },
-        "failureClasses": {
-          "const": ["PRODUCT_FAILURE", "CONTROL_FAILURE", "EXTERNAL_BLOCKED"]
+        "owner": {
+          "$ref": "#/$defs/owner"
         },
-        "waiverPolicy": { "const": "NO_ORDINARY_WAIVER" }
+        "applicability": {
+          "$ref": "#/$defs/applicability"
+        },
+        "blocking": {
+          "const": "REQUIRED"
+        },
+        "verification": {
+          "$ref": "#/$defs/verification"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence"
+        },
+        "permittedFinalResults": {
+          "const": [
+            "PASS"
+          ]
+        },
+        "failureClasses": {
+          "const": [
+            "PRODUCT_FAILURE",
+            "CONTROL_FAILURE",
+            "EXTERNAL_BLOCKED"
+          ]
+        },
+        "waiverPolicy": {
+          "const": "NO_ORDINARY_WAIVER"
+        }
       }
     }
   }

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile, stat } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -11,6 +11,35 @@ import {
 import { qualifyScancodeRuntime } from "../qualify-scancode-runtime.mjs";
 
 describe("isolated ScanCode bootstrap", () => {
+  test("retains report failures while keeping installation and inputs in the selected working root", async () => {
+    const root = await mkdtemp(join(tmpdir(), "owlapi-scancode-placement-"));
+    const outputRoot = join(root, "reports-owner"),
+      workingRoot = join(root, "temporary-work");
+    try {
+      await expect(
+        qualifyScancodeRuntime({
+          python: join(root, "absent-python.exe"),
+          outputRoot,
+          workingRoot,
+        }),
+      ).rejects.toThrow("Supply --python with the absolute path");
+      expect(
+        await readFile(
+          join(outputRoot, "reports", "installation-failure.log"),
+          "utf8",
+        ),
+      ).toContain("Supply --python with the absolute path");
+      expect((await stat(join(workingRoot, "inputs"))).isDirectory()).toBe(
+        true,
+      );
+      await expect(stat(join(outputRoot, "inputs"))).rejects.toHaveProperty(
+        "code",
+        "ENOENT",
+      );
+    } finally {
+      await rm(root, { recursive: true });
+    }
+  });
   test("retains a preparation failure in the qualification reports", async () => {
     const root = await mkdtemp(join(tmpdir(), "owlapi-scancode-failure-"));
     const outputRoot = join(root, "qualification");

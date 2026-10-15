@@ -4,6 +4,13 @@ import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { format, resolveConfig } from "prettier";
 const workspace = process.argv[2];
+if (workspace === "--refresh-presentation") {
+  const { refreshReleasedOraclePresentation } =
+    await import("./refresh-released-oracle-presentation.mjs");
+  const report = await refreshReleasedOraclePresentation(process.argv[3]);
+  process.stdout.write(`${JSON.stringify(report)}\n`);
+  process.exit(0);
+}
 if (!workspace)
   throw new Error(
     "Usage: record-released-oracle-evidence.mjs QUALIFICATION_WORKSPACE",
@@ -22,7 +29,7 @@ if (provenance.qualification.status === "qualified")
   );
 const jsonOptions = {
   ...(await resolveConfig(destination + "/provenance.json")),
-  parser: "json",
+  parser: "json-stringify",
 };
 const writeJson = async (path, value) =>
   fs.writeFileSync(path, await format(JSON.stringify(value), jsonOptions));

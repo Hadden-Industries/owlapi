@@ -28,7 +28,9 @@
   },
   {
     "probeId": "GAP-P01",
-    "arguments": ["${PROBE_WORKSPACE}"],
+    "arguments": [
+      "${PROBE_WORKSPACE}"
+    ],
     "centralBehaviorSha256": "3e262d7d85fdb64cec2016b47f8f12ab3fe19b585ee8926dfe155711eabaeba6",
     "rebuiltBehaviorSha256": "3e262d7d85fdb64cec2016b47f8f12ab3fe19b585ee8926dfe155711eabaeba6",
     "areBehavioralObservationsIdentical": true,
@@ -55,7 +57,9 @@
   },
   {
     "probeId": "GAP-P06",
-    "arguments": ["1"],
+    "arguments": [
+      "1"
+    ],
     "centralBehaviorSha256": "afdfbdda31308105d8db0b128f00104f702bd26ac1b5cf3ef678691c1e01ab5c",
     "rebuiltBehaviorSha256": "afdfbdda31308105d8db0b128f00104f702bd26ac1b5cf3ef678691c1e01ab5c",
     "areBehavioralObservationsIdentical": true,
@@ -64,7 +68,9 @@
   },
   {
     "probeId": "GAP-P06",
-    "arguments": ["2"],
+    "arguments": [
+      "2"
+    ],
     "centralBehaviorSha256": "226bc98d81d7b8db8339b1520430933e54ad4bec8cd61fa5de1e0ed3e9818ab1",
     "rebuiltBehaviorSha256": "226bc98d81d7b8db8339b1520430933e54ad4bec8cd61fa5de1e0ed3e9818ab1",
     "areBehavioralObservationsIdentical": true,
@@ -73,7 +79,9 @@
   },
   {
     "probeId": "GAP-P06",
-    "arguments": ["5"],
+    "arguments": [
+      "5"
+    ],
     "centralBehaviorSha256": "ccb944eb53a9d14bf7bd0aaffdefa912f53ed2aec7f564549bafd24594ed2305",
     "rebuiltBehaviorSha256": "ccb944eb53a9d14bf7bd0aaffdefa912f53ed2aec7f564549bafd24594ed2305",
     "areBehavioralObservationsIdentical": true,
@@ -82,7 +90,9 @@
   },
   {
     "probeId": "GAP-P06",
-    "arguments": ["10"],
+    "arguments": [
+      "10"
+    ],
     "centralBehaviorSha256": "43746ee04cfb556c9a70fc97b5b856d22c7fbf233e6df5b2166610a202ad4a8e",
     "rebuiltBehaviorSha256": "43746ee04cfb556c9a70fc97b5b856d22c7fbf233e6df5b2166610a202ad4a8e",
     "areBehavioralObservationsIdentical": true,
@@ -91,7 +101,9 @@
   },
   {
     "probeId": "GAP-P06",
-    "arguments": ["11"],
+    "arguments": [
+      "11"
+    ],
     "centralBehaviorSha256": "007cbf7ece8ff080072773687dfaea643c55f5ddb475a28c7c267d1e67bed77c",
     "rebuiltBehaviorSha256": "007cbf7ece8ff080072773687dfaea643c55f5ddb475a28c7c267d1e67bed77c",
     "areBehavioralObservationsIdentical": true,
@@ -100,7 +112,9 @@
   },
   {
     "probeId": "GAP-P06",
-    "arguments": ["12"],
+    "arguments": [
+      "12"
+    ],
     "centralBehaviorSha256": "581716682504f5a584f7bd5ccbbab6b8695a79635b87f408ada17827b3d29667",
     "rebuiltBehaviorSha256": "581716682504f5a584f7bd5ccbbab6b8695a79635b87f408ada17827b3d29667",
     "areBehavioralObservationsIdentical": true,
@@ -109,7 +123,9 @@
   },
   {
     "probeId": "GAP-P06",
-    "arguments": ["20"],
+    "arguments": [
+      "20"
+    ],
     "centralBehaviorSha256": "5b74557a43cd88cfcee4a95d95a0929d015789dab8798d6c9fcbf574a7b14b49",
     "rebuiltBehaviorSha256": "5b74557a43cd88cfcee4a95d95a0929d015789dab8798d6c9fcbf574a7b14b49",
     "areBehavioralObservationsIdentical": true,
@@ -118,7 +134,9 @@
   },
   {
     "probeId": "GAP-P06",
-    "arguments": ["25"],
+    "arguments": [
+      "25"
+    ],
     "centralBehaviorSha256": "261692d4c24a7055340a008809ff890d88167494fdfa3d30f90a575eba89e196",
     "rebuiltBehaviorSha256": "261692d4c24a7055340a008809ff890d88167494fdfa3d30f90a575eba89e196",
     "areBehavioralObservationsIdentical": true,
@@ -154,7 +172,9 @@
   },
   {
     "probeId": "ObserveLoadingContracts",
-    "arguments": ["${PROBE_WORKSPACE}"],
+    "arguments": [
+      "${PROBE_WORKSPACE}"
+    ],
     "centralBehaviorSha256": "c890c545aa1c91e27ebc68bd7b8b319de02c42d660c47f85149bb3cb6d74de3d",
     "rebuiltBehaviorSha256": "c890c545aa1c91e27ebc68bd7b8b319de02c42d660c47f85149bb3cb6d74de3d",
     "areBehavioralObservationsIdentical": true,
@@ -168,7 +188,9 @@
     "rebuiltBehaviorSha256": "97eec3cb1530e4158b84dd37bb6f37ff523afe1f63396847d2b41f7f980441f4",
     "areBehavioralObservationsIdentical": false,
     "comparisonStatus": "classified-differences",
-    "classifiedDifferences": ["generated-build-version-comment"]
+    "classifiedDifferences": [
+      "generated-build-version-comment"
+    ]
   },
   {
     "probeId": "ObserveQueryTiming",
@@ -204,7 +226,9 @@
     "rebuiltBehaviorSha256": "7403d4805d03d98f51ed4a1b47a5809cd581c04cc758cca0fa826448ecef32a8",
     "areBehavioralObservationsIdentical": false,
     "comparisonStatus": "classified-differences",
-    "classifiedDifferences": ["parser-priority-tie-order"]
+    "classifiedDifferences": [
+      "parser-priority-tie-order"
+    ]
   },
   {
     "probeId": "ObserveLanguageProfileSemantics",
@@ -217,7 +241,9 @@
   },
   {
     "probeId": "ObserveNetworkContracts",
-    "arguments": ["${PROBE_WORKSPACE}"],
+    "arguments": [
+      "${PROBE_WORKSPACE}"
+    ],
     "centralBehaviorSha256": "284589c77dde91b04ad85c47738624bcb37e69a22cadaa0a54594ea514c42e94",
     "rebuiltBehaviorSha256": "284589c77dde91b04ad85c47738624bcb37e69a22cadaa0a54594ea514c42e94",
     "areBehavioralObservationsIdentical": true,
@@ -235,7 +261,9 @@
   },
   {
     "probeId": "ObserveJsonLdTransport",
-    "arguments": ["${PROBE_WORKSPACE}"],
+    "arguments": [
+      "${PROBE_WORKSPACE}"
+    ],
     "centralBehaviorSha256": "36f5e07945c939574f86aabbc290aa4eeb1e883b00fc853ef25f5a4112358c61",
     "rebuiltBehaviorSha256": "36f5e07945c939574f86aabbc290aa4eeb1e883b00fc853ef25f5a4112358c61",
     "areBehavioralObservationsIdentical": true,

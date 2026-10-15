@@ -240,10 +240,7 @@ export function validateEffectiveNpmConfiguration(
     include: effective.include,
     omit: effective.omit,
   };
-  if (
-    !pathsMatch ||
-    !jsonEquals(projected, PRE_REGISTRY_NPM_CONFIGURATION)
-  ) {
+  if (!pathsMatch || !jsonEquals(projected, PRE_REGISTRY_NPM_CONFIGURATION)) {
     throw new Error(
       "Effective npm configuration does not match the accepted qualification policy.",
     );

@@ -163,8 +163,18 @@ const readCompleteArchive = (tarballPath, options) =>
 export const inspectPackageTarball = async (
   tarballPath,
   expected,
-  { limits = ARCHIVE_LIMITS } = {},
+  { limits = ARCHIVE_LIMITS, retainMembers } = {},
 ) => {
+  const selected = new Set(retainMembers ?? []);
+  if (
+    retainMembers !== undefined &&
+    (!Array.isArray(retainMembers) ||
+      selected.size !== retainMembers.length ||
+      retainMembers.some((path) => validatePath(path, limits) !== path))
+  ) {
+    throw new Error("Invalid retained archive member selection");
+  }
+  const retainedMembers = new Map();
   const compressed = await stat(tarballPath);
   assertLimit(compressed.size, limits.compressedBytes, "compressed byte limit");
 
@@ -179,6 +189,7 @@ export const inspectPackageTarball = async (
   let physicalEntryCount = 0;
   let expandedBytes = 0;
   let retainedEvidenceBytes = 0;
+  let retainedMemberBytes = 0;
   let archiveRoot;
 
   try {
@@ -271,6 +282,20 @@ export const inspectPackageTarball = async (
                   sha256: digest,
                 });
                 if (REGULAR_FILE_TYPES.has(entry.type)) {
+                  if (selected.has(path)) {
+                    retainedMemberBytes += bytes.length;
+                    assertLimit(
+                      retainedMemberBytes,
+                      limits.retainedEvidenceBytes,
+                      "retained member byte limit",
+                    );
+                    retainedMembers.set(path, {
+                      path,
+                      size,
+                      sha256: digest,
+                      bytes,
+                    });
+                  }
                   const kind = classifyEvidence(path, bytes);
                   if (kind) {
                     retainedEvidenceBytes += bytes.length;
@@ -405,6 +430,10 @@ export const inspectPackageTarball = async (
     );
   }
 
+  if (selected.size !== retainedMembers.size) {
+    throw new Error("Missing retained regular archive member");
+  }
+
   return {
     archiveRoot,
     compressedBytes: compressed.size,
@@ -415,6 +444,13 @@ export const inspectPackageTarball = async (
     packageMetadata,
     entries,
     evidenceFiles,
+    ...(retainMembers === undefined
+      ? {}
+      : {
+          retainedMembers: [...retainedMembers.values()].sort((left, right) =>
+            compareCodeUnits(left.path, right.path),
+          ),
+        }),
   };
 };
 

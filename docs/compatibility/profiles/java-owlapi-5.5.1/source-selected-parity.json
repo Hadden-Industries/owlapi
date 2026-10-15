@@ -264,7 +264,9 @@
     {
       "probeId": "RunRC2Profiles",
       "sourceSha256": "8902f5647a18b7eeb6a8ee4a7d0acd94ecc9ff6e7160fdd2260cf3c4a34cdca4",
-      "arguments": ["${PROBE_WORKSPACE}\\RunRC2Profiles.json"],
+      "arguments": [
+        "${PROBE_WORKSPACE}\\RunRC2Profiles.json"
+      ],
       "exitCode": 0,
       "signal": null,
       "error": null,
@@ -324,7 +326,9 @@
     {
       "probeId": "RunRC2Providers",
       "sourceSha256": "98b0065bd1026731dc0e2643d69a4642b8ac80821cb3ac0c8365128769e2b419",
-      "arguments": ["${PROBE_WORKSPACE}\\RunRC2Providers.json"],
+      "arguments": [
+        "${PROBE_WORKSPACE}\\RunRC2Providers.json"
+      ],
       "exitCode": 0,
       "signal": null,
       "error": null,
@@ -342,7 +346,9 @@
     {
       "probeId": "RunRC2Renderer",
       "sourceSha256": "e89820873a47a04be5482cb94acec34e5873422dedf9cbfd8fa901b2c6d3711c",
-      "arguments": ["${PROBE_WORKSPACE}\\selected-ontology.ofn"],
+      "arguments": [
+        "${PROBE_WORKSPACE}\\selected-ontology.ofn"
+      ],
       "exitCode": 0,
       "signal": null,
       "error": null,
@@ -377,7 +383,9 @@
     {
       "probeId": "RunRC2LocalityFixedPoints",
       "sourceSha256": "262768c2bff9ebe7db35f22c5c74ac8bdc34b1a06795c9360687d0d7130e7a76",
-      "arguments": ["${PROBE_WORKSPACE}\\RunRC2LocalityFixedPoints.json"],
+      "arguments": [
+        "${PROBE_WORKSPACE}\\RunRC2LocalityFixedPoints.json"
+      ],
       "exitCode": 0,
       "signal": null,
       "error": null,
@@ -395,7 +403,9 @@
     {
       "probeId": "RunRC2TransformsMatrix",
       "sourceSha256": "c7256ae3705a9c5d82b190b2b3a0cda886bb4945db5a4386dca0e4d18e91f84b",
-      "arguments": ["${PROBE_WORKSPACE}\\RunRC2TransformsMatrix.json"],
+      "arguments": [
+        "${PROBE_WORKSPACE}\\RunRC2TransformsMatrix.json"
+      ],
       "exitCode": 0,
       "signal": null,
       "error": null,

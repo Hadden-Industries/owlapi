@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import { finished } from "node:stream/promises";
 
-import { format as formatWithPrettier } from "prettier";
+import { formatConformanceJson as formatJson } from "./conformance/jsonPresentation.mjs";
 import { RdfXmlParser } from "rdfxml-streaming-parser";
 
 const SOURCE_URL = new URL(
@@ -127,9 +127,6 @@ const encodeQuad = (quad) => [
   encodeTerm(quad.predicate),
   encodeTerm(quad.object),
 ];
-
-const formatJson = (value) =>
-  formatWithPrettier(JSON.stringify(value), { parser: "json" });
 
 const parseRdfXml = async (source, baseIRI) => {
   const parser = new RdfXmlParser({ baseIRI });

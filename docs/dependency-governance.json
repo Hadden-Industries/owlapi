@@ -215,7 +215,9 @@
       "name": "@rdfjs/data-model",
       "version": "2.1.2",
       "role": "Canonical RDF/JS term and quad factory",
-      "standardsGrounding": ["RDF/JS Data Model specification"],
+      "standardsGrounding": [
+        "RDF/JS Data Model specification"
+      ],
       "conformanceEvidence": [
         "internal/rdfjs/graphPolicy.test.js",
         "internal/mapping/rdfToOwlTranslator.test.js",
@@ -256,7 +258,9 @@
       "name": "@rdfjs/dataset",
       "version": "2.0.3",
       "role": "Canonical indexed RDF/JS DatasetCore implementation",
-      "standardsGrounding": ["RDF/JS Dataset specification"],
+      "standardsGrounding": [
+        "RDF/JS Dataset specification"
+      ],
       "conformanceEvidence": [
         "internal/rdfjs/graphPolicy.test.js",
         "internal/mapping/rdfToOwlTranslator.test.js",
@@ -330,7 +334,10 @@
       ],
       "releaseAuthority": "RDF/JS community; rdfjs/N3.js maintainers",
       "maintenanceStatus": "Version 2.7.12 passes the pinned Turtle, N-Triples, N-Quads and REQUIRED TriG classifications plus adapter and resource tests in the 29 September 2026 qualification. The five enumerated RDF 1.2 TriG reifier/annotation exclusions remain explicit in the accepted classification manifest; this dependency refresh does not expand the supported language contract.",
-      "runtimeDependencies": ["buffer", "readable-stream"],
+      "runtimeDependencies": [
+        "buffer",
+        "readable-stream"
+      ],
       "networkBehavior": "Parser APIs consume caller-provided input and do not resolve documents",
       "browserCost": {
         "disposition": "MEASURED_LAZY_CLOSURE",
@@ -368,7 +375,10 @@
       "name": "rdfxml-streaming-parser",
       "version": "3.3.0",
       "role": "RDF/XML syntax-to-RDF/JS adapter only",
-      "standardsGrounding": ["W3C RDF/XML", "RDF/JS streams and quads"],
+      "standardsGrounding": [
+        "W3C RDF/XML",
+        "RDF/JS streams and quads"
+      ],
       "conformanceEvidence": [
         "docs/conformance/classification-manifests.json#w3c-rdf-tests.rdfxml",
         "internal/parsing/rdfxml/rdfXml.conformance.test.js",
@@ -590,7 +600,9 @@
       ],
       "releaseAuthority": "ashtuchkin/iconv-lite maintainers",
       "maintenanceStatus": "Selected maintained decoding owns BOM removal and malformed-sequence replacement. The adapter selects the native detected encoding independently of HTTP charset; no new JSON grammar is implemented.",
-      "runtimeDependencies": ["safer-buffer"],
+      "runtimeDependencies": [
+        "safer-buffer"
+      ],
       "networkBehavior": "No ambient acquisition; the explicit Node adapter authorizes actual resources before providing bytes to the decoder.",
       "browserCost": {
         "disposition": "NODE_ONLY_EXCLUDED",

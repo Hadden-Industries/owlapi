@@ -1211,7 +1211,7 @@ const expected = await formatWithPrettier(
     }),
   ),
   {
-    parser: "json",
+    parser: "json-stringify",
   },
 );
 if (requestedWrite) {

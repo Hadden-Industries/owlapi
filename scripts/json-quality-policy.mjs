@@ -1,67 +1,33 @@
-import { readFile } from "node:fs/promises";
-import { dirname, join } from "node:path";
 import { readJsonPolicy } from "../tooling/json/public-api.mjs";
-import { sha256 } from "../util/third-party-evidence/digests.mjs";
+import { verifyPinnedIntegrationCheckout } from "../util/owlapi-reference/pinned-integration-checkout.mjs";
 
-// The owner approved the Python installation boundary and these two reports.
-// Markdown package updates must remove the report exception rather than inherit it.
-const temporaryCargoNotices = new Map(
-  [
-    [
-      "win32-x64",
-      "f5459fbdcf02354f87e1caf051238493f097be172b5af3e4f5e74b359146c29e",
-    ],
-    [
-      "linux-x64",
-      "22473eb073afc5d9f451888f96ab31dffc9bf3a55c50650f6fad058ba726df85",
-    ],
-  ].map(([platform, digest]) => [
-    `tooling/markdown/node_modules/@hadden-industries/markdown-quality-${platform}/cargo-notices.json`,
-    { name: `@hadden-industries/markdown-quality-${platform}`, digest },
-  ]),
-);
+const approvedExclusions = new Set([
+  "**/node_modules/**",
+  ".development-tools/python/**",
+  ".development-tools/uv-cache/**",
+  ".venv/**",
+  ".release/universal-ontology/**",
+  "tooling/markdown/archives/hadden-industries-markdown-quality-linux-x64-1.0.3.tgz!/package/cargo-notices.json",
+  "tooling/markdown/archives/hadden-industries-markdown-quality-win32-x64-1.0.3.tgz!/package/cargo-notices.json",
+]);
 
-/** Enforce the exact temporary owner-approved boundary after schema admission.
- * All other protection and producer formatting entries retain checking.
+/** Repository approval authority only; the package owns schema and checking.
+ * Report version/bytes are independently admitted by the native archive owner.
  */
 export async function readRepositoryJsonPolicy(root) {
   const policy = await readJsonPolicy(root);
-  for (const exception of policy.exceptions.filter(({ exclude }) => exclude)) {
-    for (const path of exception.paths) {
-      if (path === ".development-tools/python/**") continue;
-      const pin = temporaryCargoNotices.get(path);
-      if (!pin) {
+  for (const entry of policy.exceptions.filter((entry) => entry.exclude))
+    for (const path of entry.paths)
+      if (!approvedExclusions.has(path))
         throw new Error(
-          `OwlAPI JSON coverage exclusions require a new owner decision: ${path}`,
+          `OwlAPI JSON coverage exclusion requires a new owner decision: ${path}`,
         );
-      }
-      let metadata;
-      try {
-        metadata = JSON.parse(
-          await readFile(join(root, dirname(path), "package.json"), "utf8"),
-        );
-      } catch (error) {
-        // Optional platform packages are legitimately absent on other hosts.
-        if (error.code === "ENOENT") {
-          try {
-            await readFile(join(root, path));
-          } catch (reportError) {
-            if (reportError.code === "ENOENT") continue;
-            throw reportError;
-          }
-        }
-        throw error;
-      }
-      if (
-        metadata.name !== pin.name ||
-        metadata.version !== "1.0.3" ||
-        sha256(await readFile(join(root, path))) !== pin.digest
-      ) {
-        throw new Error(
-          `Remove the temporary cargo-notices.json exclusion after the Markdown Quality package changes: ${path}`,
-        );
-      }
-    }
-  }
+  if (
+    policy.exceptions.some(
+      (entry) =>
+        entry.exclude && entry.paths.includes(".release/universal-ontology/**"),
+    )
+  )
+    await verifyPinnedIntegrationCheckout(root);
   return policy;
 }

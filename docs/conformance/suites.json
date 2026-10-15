@@ -4,30 +4,46 @@
   "suites": [
     {
       "id": "w3c-rdf-tests",
-      "specifications": ["RDF 1.1", "RDF 1.2"],
+      "specifications": [
+        "RDF 1.1",
+        "RDF 1.2"
+      ],
       "upstream": "https://github.com/w3c/rdf-tests",
       "revisionScopes": [
         {
-          "formats": ["RDF/XML"],
+          "formats": [
+            "RDF/XML"
+          ],
           "revision": "ad541a5f0479f0798608c4801369d97b8e08b36f"
         },
         {
-          "formats": ["Turtle", "N-Triples", "N-Quads", "TriG"],
+          "formats": [
+            "Turtle",
+            "N-Triples",
+            "N-Quads",
+            "TriG"
+          ],
           "revision": "12774b0ebb385d17651b396654b19254d0fefbfa"
         }
       ],
-      "applicable": ["Turtle", "TriG", "N-Triples", "N-Quads", "RDF/XML"],
+      "applicable": [
+        "Turtle",
+        "TriG",
+        "N-Triples",
+        "N-Quads",
+        "RDF/XML"
+      ],
       "classificationManifest": "docs/conformance/classification-manifests.json#w3c-rdf-tests",
       "turtle": {
         "classificationOwnerPhase": 9,
         "archivedManifests": [
           {
             "path": "docs/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-turtle/manifest.ttl",
-            "sha256": "b90a85ee867279b7688033dc18088789580f0bcc2c59600b8c5796889414cf36"
+            "sha256": "52b5667f7c85743b06ab0bbee3f5d74cf4fd9c117b98cde94ad66bb5c9489b17"
           },
           {
             "path": "docs/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-turtle/syntax/manifest.ttl",
-            "sha256": "cd097ec4c5b312b04897eb9fcf0e7429381967936dfe14194fff9c7027a7203b"
+            "sha256": "438abd39f13454555b3144ef249ac5898a81d0676028102fd479a6fc4b3ee553"
           }
         ],
         "generatedArtifact": "docs/conformance/generated/w3c-turtle.json",
@@ -45,15 +61,15 @@
         "archivedManifests": [
           {
             "path": "docs/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-trig/manifest.ttl",
-            "sha256": "151cee87899fe6efc049c4ea606c5ea44a7074469e147df8e56df67b69e87ae2"
+            "sha256": "5638fd7f38fa73201df4eb3d97a12d4eccb50b8806fbbb43489ccaeaa654288f"
           },
           {
             "path": "docs/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-trig/syntax/manifest.ttl",
-            "sha256": "dd7edf4f760dc6c30fff3ed874ac1796130a253ebe4abaf37f8ac6b3721f0086"
+            "sha256": "a980964814fecb2ee4f367afdc6b5a27910a0f112b7d446207a7d7e747a1c29c"
           },
           {
             "path": "docs/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-trig/eval/manifest.ttl",
-            "sha256": "e341c4f3a810602ca7c26a677735740d5409298d7dba22782b03e878ff41a9d5"
+            "sha256": "ac24d21a3f44b591919743e5eceb15960c0caef7cd00ac560b15be1444dfde1e"
           }
         ],
         "generatedArtifact": "docs/conformance/generated/w3c-trig.json",
@@ -81,17 +97,23 @@
       ],
       "upstream": "https://github.com/w3c/json-ld-api",
       "revision": "ffdb326121ea89b7b8280e76a5caea923834bcef",
-      "applicable": ["toRdf", "remote document policy", "processor options"],
-      "inventoriedNotApplicable": ["fromRdf"],
+      "applicable": [
+        "toRdf",
+        "remote document policy",
+        "processor options"
+      ],
+      "inventoriedNotApplicable": [
+        "fromRdf"
+      ],
       "classificationManifest": "docs/conformance/classification-manifests.json#w3c-json-ld-api",
       "sourceArtifacts": [
         {
           "path": "tests/toRdf-manifest.jsonld",
-          "sha256": "aeb5b24dd17a3d1b5fae5f39f75f796a9e7fbe7e717dfcb10f47619fbe00e41e"
+          "sha256": "2b8b602eef56b0c307422bcf644477c11a299b3d0188be265e097ad64eb843af"
         },
         {
           "path": "tests/fromRdf-manifest.jsonld",
-          "sha256": "7257466aa9cb9cc4d8cd7e345cd522056b5d2283b6a907783aca118c1afd05c8"
+          "sha256": "c0bcca085187a15c0b869c3902ea130922f837634486724cec38f16bab26b283"
         }
       ],
       "generatedArtifact": "docs/conformance/generated/w3c-jsonld.json",
@@ -140,7 +162,9 @@
       "upstream": "https://www.w3.org/TR/2012/REC-owl2-xml-serialization-20121211/",
       "revision": "W3C Recommendation 11 December 2012",
       "retrievedOn": "2026-08-11",
-      "applicable": ["complete finite OWL/XML structural-production inventory"],
+      "applicable": [
+        "complete finite OWL/XML structural-production inventory"
+      ],
       "runner": "internal/parsing/owlxml/owlXml.conformance.test.js"
     },
     {
@@ -149,7 +173,11 @@
       "specifications": [
         "VOWL: Visual Notation for OWL Ontologies, Specification of Version 2.0"
       ],
-      "authors": ["Stefan Negru", "Steffen Lohmann", "Florian Haag"],
+      "authors": [
+        "Stefan Negru",
+        "Steffen Lohmann",
+        "Florian Haag"
+      ],
       "documentVersion": "2.0",
       "documentDate": "2014-04-07",
       "canonicalVersionIri": "http://purl.org/vowl/spec/v2/",
@@ -244,7 +272,9 @@
     },
     {
       "id": "owlapi-reference",
-      "specifications": ["selected OWLAPI 5 behavioral compatibility"],
+      "specifications": [
+        "selected OWLAPI 5 behavioral compatibility"
+      ],
       "upstream": "C:/Users/maksy/GitHub/owlcs/owlapi",
       "revision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
       "version": "5.5.1",
@@ -266,12 +296,16 @@
     {
       "id": "owl2vowl-reference",
       "repositoryOwner": "Hadden-Industries/WebVOWL",
-      "specifications": ["legacy WebVOWL behavioral characterization"],
+      "specifications": [
+        "legacy WebVOWL behavioral characterization"
+      ],
       "upstream": "C:/Users/maksy/GitHub/VisualDataWeb/OWL2VOWL/target/OWL2VOWL-0.3.7-shaded.jar",
       "revision": "sha256:4bd16f5b953fa27bd7bded24da329d574b8c9114732e9c56379ee2eb905800de",
       "embeddedOwlapiVersion": "5.1.1",
       "runtime": "development and test only",
-      "applicable": ["VOWL semantic snapshot"],
+      "applicable": [
+        "VOWL semantic snapshot"
+      ],
       "dialectNormalization": "src/owl2vowl/test/vowlSemanticSnapshot.js#JAVA_OWL2VOWL_DIALECT",
       "runner": "src/owl2vowl/test/vowlBuilder.differential.test.js"
     }

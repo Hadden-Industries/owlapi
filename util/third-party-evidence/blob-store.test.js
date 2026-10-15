@@ -1,7 +1,12 @@
 import { mkdir, mkdtemp, readdir, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { computeCorpusRoot, retainBlob, verifyBlob } from "./blob-store.mjs";
+import {
+  computeCorpusRoot,
+  readVerifiedBlob,
+  retainBlob,
+  verifyBlob,
+} from "./blob-store.mjs";
 
 const withStore = async (run) => {
   const root = await mkdtemp(join(tmpdir(), "owlapi-blob-test-"));
@@ -13,6 +18,20 @@ const withStore = async (run) => {
 };
 
 describe("retainBlob", () => {
+  it("returns admitted bytes and refuses changed bytes of the same length", async () => {
+    await withStore(async (root) => {
+      const original = Buffer.from("original\n");
+      const reference = await retainBlob(root, original);
+      const admitted = await readVerifiedBlob(root, reference);
+      expect(admitted).toEqual(original);
+      await writeFile(join(root, reference.path), "modified\n");
+      // The returned buffer remains the originally admitted byte view.
+      expect(admitted).toEqual(original);
+      await expect(readVerifiedBlob(root, reference)).rejects.toThrow(
+        /digest mismatch/iu,
+      );
+    });
+  });
   it("deduplicates identical bytes at a lowercase suffixless digest path", async () => {
     await withStore(async (root) => {
       const first = await retainBlob(root, Buffer.from("licence text\n"));

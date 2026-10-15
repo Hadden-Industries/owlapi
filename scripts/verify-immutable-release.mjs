@@ -136,10 +136,7 @@ const main = async () => {
     `${stem}-${version}.tgz`,
   ].sort();
   if (
-    !jsonEquals(
-      release.assets.map(({ name }) => name).sort(),
-      expectedNames,
-    )
+    !jsonEquals(release.assets.map(({ name }) => name).sort(), expectedNames)
   ) {
     throw new Error(
       "The immutable release does not contain exactly four assets.",

@@ -1,2 +1,3 @@
-# Preserve files exactly as supplied/generated
+# Original upstream bytes are evidence: preserve LF, CRLF and BOM exactly.
+# Generators check pinned Git blob IDs, SHA-256 and sizes before importing them.
 * -text !eol

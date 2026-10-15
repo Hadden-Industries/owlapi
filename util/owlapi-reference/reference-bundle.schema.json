@@ -12,19 +12,36 @@
     "classpath"
   ],
   "properties": {
-    "schemaVersion": { "const": 1 },
-    "purpose": { "const": "LOCAL_RELOCATION_EXPERIMENT" },
-    "redistribution": { "const": "NOT_CLEARED" },
+    "schemaVersion": {
+      "const": 1
+    },
+    "purpose": {
+      "const": "LOCAL_RELOCATION_EXPERIMENT"
+    },
+    "redistribution": {
+      "const": "NOT_CLEARED"
+    },
     "source": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["commit", "tree"],
+      "required": [
+        "commit",
+        "tree"
+      ],
       "properties": {
-        "commit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
-        "tree": { "type": "string", "pattern": "^[a-f0-9]{40}$" }
+        "commit": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "tree": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        }
       }
     },
-    "inputRecordSha256": { "$ref": "#/definitions/digest" },
+    "inputRecordSha256": {
+      "$ref": "#/definitions/digest"
+    },
     "inventory": {
       "type": "array",
       "minItems": 2,
@@ -32,15 +49,25 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["path", "bytes", "sha256"],
+        "required": [
+          "path",
+          "bytes",
+          "sha256"
+        ],
         "properties": {
           "path": {
             "type": "string",
             "maxLength": 120,
             "pattern": "^(runtime/[0-9]{3}\\.jar|notices/[a-z0-9][a-z0-9._-]{0,100}\\.txt)$"
           },
-          "bytes": { "type": "integer", "minimum": 1, "maximum": 67108864 },
-          "sha256": { "$ref": "#/definitions/digest" }
+          "bytes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 67108864
+          },
+          "sha256": {
+            "$ref": "#/definitions/digest"
+          }
         }
       }
     },
@@ -49,10 +76,16 @@
       "minItems": 1,
       "maxItems": 256,
       "uniqueItems": true,
-      "items": { "type": "string", "pattern": "^runtime/[0-9]{3}\\.jar$" }
+      "items": {
+        "type": "string",
+        "pattern": "^runtime/[0-9]{3}\\.jar$"
+      }
     }
   },
   "definitions": {
-    "digest": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+    "digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
   }
 }

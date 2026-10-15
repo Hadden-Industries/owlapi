@@ -32,9 +32,9 @@ describe("pinned W3C N-Triples syntax conformance", () => {
       },
       manifests: {
         rdf11:
-          "65b748e9e15783c6e9808dad663ee9e139803ceee2fb9a0704fbe00ddbdafc7b",
+          "561ad17572c14d9290a0a1481f58d701bc8996da996b88e1beb1308c5dff55d6",
         rdf12Syntax:
-          "cd80d5bd8ae702cafcd78bc238d31a17aba7913b78eecadb5b55683e22feb3d7",
+          "bc3250200d58058f4ab7d89681b63fd3d06c8b3393eec165ab3481ee46d7708e",
       },
       revision: "12774b0ebb385d17651b396654b19254d0fefbfa",
       schemaVersion: 1,

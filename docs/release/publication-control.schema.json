@@ -26,7 +26,12 @@
       "type": "boolean"
     },
     "mode": {
-      "enum": ["UNRESOLVED", "OIDC_STAGED", "DIRECT_BOOTSTRAP", "DIRECT_OIDC"]
+      "enum": [
+        "UNRESOLVED",
+        "OIDC_STAGED",
+        "DIRECT_BOOTSTRAP",
+        "DIRECT_OIDC"
+      ]
     },
     "coordinate": {
       "enum": [
@@ -68,7 +73,12 @@
     "artifact": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "name", "digest", "expiresAt"],
+      "required": [
+        "id",
+        "name",
+        "digest",
+        "expiresAt"
+      ],
       "properties": {
         "id": {
           "type": "integer",
@@ -190,7 +200,10 @@
           ]
         },
         "requiredSuccessfulJobs": {
-          "const": ["Release / qualified", "Release / publication preflight"]
+          "const": [
+            "Release / qualified",
+            "Release / publication preflight"
+          ]
         },
         "packageReproduction": {
           "const": "BYTE_IDENTICAL"

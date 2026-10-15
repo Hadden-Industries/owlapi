@@ -7,6 +7,12 @@ The JavaScript implementation is complete and merged through [PR #76](https://gi
 The [implementation and release-readiness record](implementation-qualification.md) records completed ordinary review and installed Node/browser qualification for their measured candidates.
 Public JavaScript profile admission remains held for complete designated security evidence and an accountable release decision; oracle qualification does not remove that hold.
 
+On 15 October 2026 the owner authorized regenerating this unreleased evidence's JSON presentation under shared JSON Quality.
+The native recorder's `--refresh-presentation ABSOLUTE_FRESH_BACKUP_DIRECTORY` mode preserves the previous copies, verifies the candidate, and rebinds the evidence, observation and dependency-lock hashes.
+This operation retains the original capture identities, frozen harness and qualification timestamp; it does not claim another Java execution.
+Every JSON file in this profile receives ordinary semantic and presentation checks and is eligible for shared formatter writes.
+Generator freshness and oracle verification remain required when bytes change.
+
 The Central distribution SHA-256 is `747b1a5269fee2992487dcde946f16dfbc14aa458d50854994a0485cf263ce07`.
 Its annotated release tag resolves to commit `f760b3a4c107c6d5f90f856e5680c39b18af646f` and tree `6b87391a36b7341f7253f57046b5b8621d3d0ac8`.
 

@@ -1,7 +1,7 @@
 /** Exercise the real scanner and repository normalizer against independent 3.14 observations. */
 import { execFile } from "node:child_process";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { dirname, join, resolve } from "node:path";
+import { dirname, join, resolve, isAbsolute } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs, promisify } from "node:util";
 import { prepareScancode } from "./prepare-scancode.mjs";
@@ -29,12 +29,19 @@ const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
 export async function qualifyScancodeRuntime({
   python,
   outputRoot = ".release/scancode-qualification",
+  workingRoot,
 } = {}) {
   outputRoot = resolve(repositoryRoot, outputRoot);
+  workingRoot =
+    workingRoot === undefined
+      ? outputRoot
+      : resolve(repositoryRoot, workingRoot);
   await mkdir(dirname(outputRoot), { recursive: true });
   await mkdir(outputRoot, { recursive: false });
+  if (workingRoot !== outputRoot)
+    await mkdir(workingRoot, { recursive: false });
   const reports = join(outputRoot, "reports");
-  const inputs = join(outputRoot, "inputs");
+  const inputs = join(workingRoot, "inputs");
   await mkdir(reports);
   await mkdir(inputs);
   const baselineBytes = await readFile(
@@ -45,7 +52,7 @@ export async function qualifyScancodeRuntime({
   try {
     prepared = await prepareScancode({
       platform: process.platform === "win32" ? "windows" : "linux",
-      outputRoot: join(outputRoot, "tools"),
+      outputRoot: join(workingRoot, "tools"),
       python,
     });
   } catch (error) {
@@ -203,7 +210,11 @@ if (
 ) {
   try {
     const { values } = parseArgs({
-      options: { "python-env": { type: "string" }, output: { type: "string" } },
+      options: {
+        "python-env": { type: "string" },
+        output: { type: "string" },
+        "work-root-env": { type: "string" },
+      },
       strict: true,
       allowPositionals: false,
     });
@@ -217,7 +228,24 @@ if (
         `Qualification Python environment variable ${values["python-env"]} is not set`,
       );
     const outputRoot = values.output;
-    const result = await qualifyScancodeRuntime({ python, outputRoot });
+    let workingRoot;
+    if (values["work-root-env"] !== undefined) {
+      const name = values["work-root-env"];
+      if (
+        !/^[A-Z][A-Z0-9_]*$/u.test(name) ||
+        !process.env[name] ||
+        !isAbsolute(process.env[name])
+      )
+        throw new TypeError(
+          "Qualification working root requires an environment variable naming an absolute fresh directory",
+        );
+      workingRoot = process.env[name];
+    }
+    const result = await qualifyScancodeRuntime({
+      python,
+      outputRoot,
+      workingRoot,
+    });
     process.stdout.write(stableJson(result));
   } catch (error) {
     process.stderr.write(`${error.stack}\n`);

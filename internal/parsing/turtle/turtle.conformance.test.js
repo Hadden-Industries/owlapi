@@ -76,9 +76,9 @@ describe("pinned W3C Turtle syntax conformance", () => {
       },
       manifests: {
         rdf11:
-          "b90a85ee867279b7688033dc18088789580f0bcc2c59600b8c5796889414cf36",
+          "52b5667f7c85743b06ab0bbee3f5d74cf4fd9c117b98cde94ad66bb5c9489b17",
         rdf12Syntax:
-          "cd097ec4c5b312b04897eb9fcf0e7429381967936dfe14194fff9c7027a7203b",
+          "438abd39f13454555b3144ef249ac5898a81d0676028102fd479a6fc4b3ee553",
       },
       revision: "12774b0ebb385d17651b396654b19254d0fefbfa",
       schemaVersion: 1,

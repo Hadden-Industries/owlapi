@@ -9,7 +9,11 @@
       "localEvidencePath": "C:/Users/maksy/GitHub/universal-ontology/src/external/sosa.ttl",
       "bytes": 2997,
       "sha256": "a1875d19988b0bd17e5cd3a61f76440b6e0f7b1e07bd30237e6fb7341c170305",
-      "roles": ["small valid ontology", "Turtle", "complete WebVOWL conversion"]
+      "roles": [
+        "small valid ontology",
+        "Turtle",
+        "complete WebVOWL conversion"
+      ]
     },
     {
       "id": "real-medium-wine",
@@ -54,56 +58,80 @@
       "generator": "owlapi-benchmark-corpus-v1",
       "kind": "functional",
       "count": 50000,
-      "roles": ["large Functional Syntax", "axiom throughput"]
+      "roles": [
+        "large Functional Syntax",
+        "axiom throughput"
+      ]
     },
     {
       "id": "generated-manchester-large",
       "generator": "owlapi-benchmark-corpus-v1",
       "kind": "manchester",
       "count": 50000,
-      "roles": ["large Manchester Syntax", "frame throughput"]
+      "roles": [
+        "large Manchester Syntax",
+        "frame throughput"
+      ]
     },
     {
       "id": "generated-owlxml-large",
       "generator": "owlapi-benchmark-corpus-v1",
       "kind": "owlxml",
       "count": 50000,
-      "roles": ["large OWL/XML", "XML nesting and node throughput"]
+      "roles": [
+        "large OWL/XML",
+        "XML nesting and node throughput"
+      ]
     },
     {
       "id": "generated-rdfxml-large",
       "generator": "owlapi-benchmark-corpus-v1",
       "kind": "rdfxml",
       "count": 50000,
-      "roles": ["large RDF/XML", "RDF quad throughput"]
+      "roles": [
+        "large RDF/XML",
+        "RDF quad throughput"
+      ]
     },
     {
       "id": "generated-turtle-large",
       "generator": "owlapi-benchmark-corpus-v1",
       "kind": "turtle",
       "count": 50000,
-      "roles": ["large RDF input", "RDF quad throughput"]
+      "roles": [
+        "large RDF input",
+        "RDF quad throughput"
+      ]
     },
     {
       "id": "generated-dl-large",
       "generator": "owlapi-benchmark-corpus-v1",
       "kind": "dl",
       "count": 50000,
-      "roles": ["large DL Syntax", "axiom throughput"]
+      "roles": [
+        "large DL Syntax",
+        "axiom throughput"
+      ]
     },
     {
       "id": "generated-dl-depth",
       "generator": "owlapi-benchmark-corpus-v1",
       "kind": "dl-depth",
       "depth": 256,
-      "roles": ["deeply nested DL expression", "expression depth boundary"]
+      "roles": [
+        "deeply nested DL expression",
+        "expression depth boundary"
+      ]
     },
     {
       "id": "generated-krss1-large",
       "generator": "owlapi-benchmark-corpus-v1",
       "kind": "krss1",
       "count": 50000,
-      "roles": ["large original-KRSS document", "axiom throughput"]
+      "roles": [
+        "large original-KRSS document",
+        "axiom throughput"
+      ]
     },
     {
       "id": "generated-krss1-depth",
@@ -120,14 +148,20 @@
       "generator": "owlapi-benchmark-corpus-v1",
       "kind": "functional-depth",
       "depth": 512,
-      "roles": ["deeply nested valid expression", "expression depth boundary"]
+      "roles": [
+        "deeply nested valid expression",
+        "expression depth boundary"
+      ]
     },
     {
       "id": "generated-turtle-list",
       "generator": "owlapi-benchmark-corpus-v1",
       "kind": "turtle-list",
       "count": 100000,
-      "roles": ["long RDF list", "list decoder throughput"]
+      "roles": [
+        "long RDF list",
+        "list decoder throughput"
+      ]
     },
     {
       "id": "generated-import-closure",
@@ -144,14 +178,20 @@
       "generator": "owlapi-benchmark-corpus-v1",
       "kind": "mismatch",
       "bytes": 1048576,
-      "roles": ["bounded early-rejection scaling", "64 KiB heap ceiling"]
+      "roles": [
+        "bounded early-rejection scaling",
+        "64 KiB heap ceiling"
+      ]
     },
     {
       "id": "generated-mismatch-4m",
       "generator": "owlapi-benchmark-corpus-v1",
       "kind": "mismatch",
       "bytes": 4194304,
-      "roles": ["bounded early-rejection scaling", "64 KiB heap ceiling"]
+      "roles": [
+        "bounded early-rejection scaling",
+        "64 KiB heap ceiling"
+      ]
     },
     {
       "id": "generated-mismatch-large",

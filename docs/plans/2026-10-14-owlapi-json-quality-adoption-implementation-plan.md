@@ -1,15 +1,56 @@
 # OwlAPI shared JSON quality adoption implementation plan
 
-Status: **Draft for owner review; implementation, configuration changes and delivery are not authorized by this plan.**
+Status: **Accepted for implementation and delivery; execution remains in progress.**
+
+Current owner amendments on 15 October 2026 supersede the initial proposal where stated:
+
+- The shared JSON Quality extension is approved.
+  Generic checking, census accounting and presentation belong to the package; native source/evidence owners retain byte admission and domain verification.
+- Restore original W3C sources and manifests from the exact pinned Git blobs, including 976 RDF source strings, 1,273 JSON-LD source/resource/result views and 11 manifests.
+  Keep native import and logical-link guards, original backups, and the six approved replacement NFC identities.
+  The table below records the current approved pins.
+- Exclude every `**/node_modules/**` tree, `.development-tools/python/**`, `.development-tools/uv-cache/**`, `.venv/**`, the two exact unchanged Markdown archive reports, and the separately owned `.release/universal-ontology/**` checkout only after contained Git-root and frozen July-revision admission.
+  This is the complete approved exclusion set; first-party reports and the scanner inventory remain checked.
+- Retain the approved 12 exact W3C logical source/resource contracts and 11 historical reconstruction presentation contracts.
+  The earlier nine Java profile presentation contracts are superseded by the owner's authorization to regenerate the unreleased evidence.
+- All Java profile JSON and the owned provider build manifest and two release-gate registries receive ordinary presentation and semantic checking and are eligible for shared formatter writes.
+  Refresh their native generators and dependent byte identities, preserve previous evidence copies, and require the existing freshness/domain checks.
+  Java presentation regeneration does not claim new JVM measurements.
+- The selected shared source is `9e3f6f55ec6e6689aca49b3f6161b97f96b92a7b`, published in producer PR #2 and admitted through the native isolated lock and payload check.
+  This supersedes the initial source candidate without changing the product runtime floor or other consumer pins.
+  Retain the complete producer security scan and its low-severity inventory finding, the subsequent repair scan, and local/hosted qualification separately.
+- Canonical JSON commands and all six final post-producer workflow checks are activated in the implementation candidate.
+  The policy uses stable section and path ordering for readability while preserving contract resolution and meaningful array order.
+  Final OwlAPI correctness/security review, full HISEW verification, resource reconciliation and authorized publication remain required.
+
+The chronology below records earlier decisions; the current amendments and implementation status determine the active disposition.
 
 Owner amendment on 14 October 2026: implementation and delivery were authorized separately in the conversation.
 The owner subsequently approved temporarily excluding only the unchanged Markdown Quality 1.0.3 `cargo-notices.json` reports until a qualified package update.
 This overrides the no-exclusion clauses below for that exact report in the Windows/Linux installed packages and corresponding archive member `package/cargo-notices.json`; no directory or entire archive is excluded.
 Retain the original bytes and prior diagnostics, remove the exception on package update, and continue checking every other member.
-The implementation status records the active physical exception and the outstanding native logical/archive gate integration.
+The implementation status records the current disposition and retains the earlier physical-exception and native-integration checkpoints.
 The owner also approved temporarily excluding only the ignored `.development-tools/python/` installed tree from JSON discovery.
 This prunes its internal aliases without changing the shared producer's link contract; tracked JSON remains checked and Python version/locked-environment checks remain mandatory.
 Other development tools, source files, generated release inputs and the rest of the JSON scope retain their existing obligations.
+The owner subsequently approved the 13 exact DEC-004 NFC value pins: the ten W3C values listed below and three captured contributor-name values in the two named npm evidence envelopes.
+Pinned upstream text was independently checked for the W3C values.
+Six initially captured source values differed from the pinned originals in CRLF/LF bytes; the subsequent approved source-truth restoration replaces those copies and their six NFC identities with exact original Git bytes.
+The cause of the earlier conversion has not been established.
+The native manifest/blob verifier independently admits the evidence envelope identities.
+These approvals preserve original values while every key and unselected value retains NFC checking; they grant no additional exclusions or supplier-wide normalization waiver.
+The owner subsequently instructed excluding the entire root `node_modules/` directory from JSON quality instead of adopting the 21-file supplier preservation proposal.
+The exact boundary is `node_modules/**`; tracked JSON is still independently rescued by shared discovery.
+Native lock, installed-package, archive/evidence and domain checks retain their obligations.
+The proposal's original package proof and diagnostics remain preserved, with no supplier bytes or metadata rewritten.
+The owner clarified that the exclusion covers every `node_modules` tree, including both isolated tooling installations.
+The active pattern is `**/node_modules/**`; this supersedes the narrow physical Markdown report exclusions while retaining their earlier evidence.
+Tracked Markdown archives and native evidence remain outside that installation boundary; their independent checking and exact archive-report decision remain applicable.
+
+## Original planning baseline and retained decisions
+
+The following sections preserve the planning baseline and original acceptance conditions.
+Current owner amendments above and the implementation status record subsequent approvals and implementation evidence; this baseline is not a statement that those approvals or completed increments remain pending.
 
 Prepared on 14 October 2026 against local OwlAPI `main` at `7d7d29bfcb96374ceed818a91c2c2740cb8f9823`.
 
@@ -40,7 +81,7 @@ Registration and configuration remain readable, but that does not establish exec
 Resolve compatibility through a supported HISEW recovery route with the actual execution owner's authority before managed implementation.
 Preserve the record and original evidence; this JSON planning task does not authorize adopting, resuming, closing, deleting or rewriting that execution, or changing the installed engine.
 
-**Recommended route: R2, pending acceptance.**
+**Accepted route: R2.**
 This changes parsing and filesystem coverage, dependency acquisition, guarded writing, provenance validation and blocking CI controls.
 A missed member can admit bad evidence; an unsafe formatter can invalidate a retained artifact.
 No inspected consequence requires R3 by itself.
@@ -299,15 +340,15 @@ Hashes identify decoded UTF-8 string values, not JSON source spelling.
 | File and JSON pointer                             | Decoded bytes | SHA-256                                                            |
 | ------------------------------------------------- | ------------: | ------------------------------------------------------------------ |
 | `w3c-jsonld.json` `/tests/318/expected`           |           126 | `21b1321e21b2e3ecbf7111e7e52b80cd2e5d20f3f196a5129ee47fcde2396c08` |
-| `w3c-trig.json` `/tests/21/source`                |           359 | `444d33b7860e1388868bcaf25052083428356e90b90f9e7976391cc3ad5f08c4` |
-| `w3c-trig.json` `/tests/31/source`                |           295 | `ed4d494858f2bdbf292bf0bf15b211a345544d2a5d93ded2e266113137f95116` |
+| `w3c-trig.json` `/tests/21/source`                |           356 | `b715cc6b51d7e9d4910aae0fc9470695e3b83a02dd517e4f0a8045d7228947e2` |
+| `w3c-trig.json` `/tests/31/source`                |           292 | `af2e6a0fcb910d5ee86f9b959246b0dd1eb4cb38e9b4fc0759dfb13e7cea0bfa` |
 | `w3c-trig.json` `/tests/31/expectedQuads/0/2/1`   |            86 | `30c4619a65d7a3425508a9f38c239543b3a1cfa7a6953c8b7c904e7d0dbc0a6f` |
 | `w3c-trig.json` `/tests/31/expectedQuads/1/2/1`   |            86 | `30c4619a65d7a3425508a9f38c239543b3a1cfa7a6953c8b7c904e7d0dbc0a6f` |
-| `w3c-trig.json` `/tests/40/source`                |           261 | `f4d06d25670726f70263610aabedfef782a255d19c754c5ae45454c54a487e4b` |
-| `w3c-turtle.json` `/tests/10/source`              |           219 | `5bf526e7d88cb26e413856d623973e42228df1b13105c5b329dd7e7ee0b49887` |
-| `w3c-turtle.json` `/tests/20/source`              |           151 | `d5631b478a25b91a8c7d120ee1028fc29903eb32ec66ede8be7edd9242a796db` |
+| `w3c-trig.json` `/tests/40/source`                |           259 | `9b4629c7eca38d7a2d258183afcc8a217c33c5337396ad603c99ea6ab8d1b3ad` |
+| `w3c-turtle.json` `/tests/10/source`              |           217 | `4a8d00163cabad0cb711c8b165331355ed69d1f5eb1dbb76479a9c774e35b1ea` |
+| `w3c-turtle.json` `/tests/20/source`              |           149 | `eebddbc2f871db039d42692f1100b48e978d18a52e13fd40859971b37f748ee8` |
 | `w3c-turtle.json` `/tests/20/expectedQuads/0/2/1` |            86 | `30c4619a65d7a3425508a9f38c239543b3a1cfa7a6953c8b7c904e7d0dbc0a6f` |
-| `w3c-turtle.json` `/tests/29/source`              |           117 | `c6edd25f2a7ff90f68a1df4104bdfa320214abaa910a845c42649b21077b9375` |
+| `w3c-turtle.json` `/tests/29/source`              |           116 | `64a9f2ff0fe3a610633a69e2890c206cfe52325d83e389d4c60226de694e9c5c` |
 
 The corresponding fixture names are `prefix_with_PN_CHARS_BASE_character_boundaries`, `localName_with_assigned_nfc_PN_CHARS_BASE_character_boundaries`, `labeled_blank_node_with_PN_CHARS_BASE_character_boundaries`, and JSON-LD case `js11`.
 The policy should not derive acceptance identities from the post-normalization candidate.

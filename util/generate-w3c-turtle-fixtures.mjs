@@ -1,4 +1,5 @@
 import { suiteRevision } from "./conformance/suiteRevision.mjs";
+import { readW3cSource } from "./conformance/w3cSource.mjs";
 import { MF, RDF, RDFT, encodeQuad } from "./conformance/fixtureTerms.mjs";
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
@@ -7,7 +8,7 @@ import process from "node:process";
 import { pathToFileURL } from "node:url";
 
 import { Parser as N3Parser } from "n3";
-import { format as formatWithPrettier } from "prettier";
+import { formatConformanceJson as formatJson } from "./conformance/jsonPresentation.mjs";
 
 const REVISION = suiteRevision("w3c-rdf-tests", "Turtle");
 
@@ -36,7 +37,7 @@ const suites = [
     ),
     expectedCount: 313,
     expectedSha256:
-      "b90a85ee867279b7688033dc18088789580f0bcc2c59600b8c5796889414cf36",
+      "52b5667f7c85743b06ab0bbee3f5d74cf4fd9c117b98cde94ad66bb5c9489b17",
     inputUrl: new URL("rdf11/rdf-turtle/", inputUrl),
     key: "rdf11",
     manifestPath: "rdf/rdf11/rdf-turtle/manifest.ttl",
@@ -48,7 +49,7 @@ const suites = [
     ),
     expectedCount: 74,
     expectedSha256:
-      "cd097ec4c5b312b04897eb9fcf0e7429381967936dfe14194fff9c7027a7203b",
+      "438abd39f13454555b3144ef249ac5898a81d0676028102fd479a6fc4b3ee553",
     inputUrl: new URL("rdf12/rdf-turtle/syntax/", inputUrl),
     key: "rdf12Syntax",
     manifestPath: "rdf/rdf12/rdf-turtle/syntax/manifest.ttl",
@@ -56,8 +57,6 @@ const suites = [
 ];
 
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
-const formatJson = (value) =>
-  formatWithPrettier(JSON.stringify(value), { parser: "json" });
 
 const objectFor = (quads, subject, predicate) =>
   quads.find(
@@ -151,7 +150,11 @@ for (const suite of suites) {
     }
     const actionTerm = objectFor(quads, entry, `${MF}action`);
     const action = relativeReference(actionTerm, assumedBase, "mf:action");
-    const source = await readFile(new URL(action, suite.inputUrl), "utf8");
+    const source = await readW3cSource(
+      new URL(action, suite.inputUrl),
+      actionTerm.value,
+      REVISION,
+    );
     const test = {
       action,
       baseIRI: actionTerm.value,

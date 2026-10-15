@@ -26,7 +26,10 @@
     "package": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["name", "version"],
+      "required": [
+        "name",
+        "version"
+      ],
       "properties": {
         "name": {
           "const": "@hadden-industries/owlapi"
@@ -73,7 +76,14 @@
         "vulnerabilityCounts": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["info", "low", "moderate", "high", "critical", "total"],
+          "required": [
+            "info",
+            "low",
+            "moderate",
+            "high",
+            "critical",
+            "total"
+          ],
           "properties": {
             "info": {
               "type": "integer",
@@ -155,7 +165,10 @@
       ],
       "properties": {
         "status": {
-          "enum": ["PENDING_HUMAN_REVIEW", "REVIEWED"]
+          "enum": [
+            "PENDING_HUMAN_REVIEW",
+            "REVIEWED"
+          ]
         },
         "factsSha256": {
           "$ref": "#/$defs/sha256"
@@ -245,7 +258,12 @@
     "installScriptPolicy": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["npmVersion", "mode", "projectConfig", "decisions"],
+      "required": [
+        "npmVersion",
+        "mode",
+        "projectConfig",
+        "decisions"
+      ],
       "properties": {
         "npmVersion": {
           "const": "12.2.0"
@@ -349,15 +367,24 @@
           "minLength": 1
         },
         "minifiedBytes": {
-          "type": ["integer", "null"],
+          "type": [
+            "integer",
+            "null"
+          ],
           "minimum": 0
         },
         "gzipBytes": {
-          "type": ["integer", "null"],
+          "type": [
+            "integer",
+            "null"
+          ],
           "minimum": 0
         },
         "fileCount": {
-          "type": ["integer", "null"],
+          "type": [
+            "integer",
+            "null"
+          ],
           "minimum": 1
         },
         "comparisonContext": {

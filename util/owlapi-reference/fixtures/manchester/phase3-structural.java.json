@@ -5,13 +5,17 @@
     "version": "5.5.1",
     "revision": "d7e997a53b470e32700de89cc610d9daf01ea769",
     "harness": "util/owlapi-reference/GenerateStructuralSnapshot.java",
-    "ignoredImports": ["urn:owlapi-js:phase3:import"]
+    "ignoredImports": [
+      "urn:owlapi-js:phase3:import"
+    ]
   },
   "fixture": "util/owlapi-reference/fixtures/manchester/phase3-structural.omn",
   "snapshot": {
     "ontologyIRI": "urn:owlapi-js:phase3",
     "versionIRI": "urn:owlapi-js:phase3:v1",
-    "imports": ["urn:owlapi-js:phase3:import"],
+    "imports": [
+      "urn:owlapi-js:phase3:import"
+    ],
     "ontologyAnnotations": [
       "Annotation(Annotation(rdfs:comment \"nested\"@en)rdfs:label \"Phase 3\"@en)"
     ],
@@ -126,7 +130,10 @@
         "urn:owlapi-js:phase3:q",
         "urn:owlapi-js:phase3:r"
       ],
-      "dataProperties": ["urn:owlapi-js:phase3:d", "urn:owlapi-js:phase3:e"],
+      "dataProperties": [
+        "urn:owlapi-js:phase3:d",
+        "urn:owlapi-js:phase3:e"
+      ],
       "annotationProperties": [
         "http://www.w3.org/2000/01/rdf-schema#comment",
         "http://www.w3.org/2000/01/rdf-schema#label",

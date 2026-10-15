@@ -3,6 +3,7 @@ import {
   mkdir,
   mkdtemp,
   readFile,
+  readdir,
   rm,
   symlink,
   writeFile,
@@ -15,16 +16,65 @@ import test from "node:test";
 import { ESLint } from "eslint";
 import {
   checkJsonDocument,
+  formatJsonValue,
   jsonQualityEslint,
+  jsonContract,
   runJsonQuality,
   verifyJsonQualityInstallation,
 } from "../tooling/json/public-api.mjs";
+import { readJsonPolicy } from "../tooling/json/public-api.mjs";
 import { readRepositoryJsonPolicy } from "./json-quality-policy.mjs";
 
 const toolingRoot = fileURLToPath(new URL("../tooling/json/", import.meta.url));
 const bootstrapPath = fileURLToPath(
   new URL("./install-json-quality.mjs", import.meta.url),
 );
+
+test("empty arrays remain valid at the root and in ordinary object members", async () => {
+  for (const value of [[], { items: [] }]) {
+    const result = await checkJsonDocument(
+      Buffer.from(await formatJsonValue(value)),
+    );
+    assert.equal(result.syntaxValid, true);
+    assert.deepEqual(result.findings, []);
+  }
+});
+
+test("owned release documents and every Java profile JSON receive full quality checks", async () => {
+  const root = fileURLToPath(new URL("../", import.meta.url));
+  const directory = "docs/compatibility/profiles/java-owlapi-5.5.1";
+  const paths = [
+    "internal/parsing/jsonld/provider/build-manifest.json",
+    "docs/release/gates.json",
+    "docs/release/producer-gates.json",
+    ...(await readdir(join(root, directory), { recursive: true }))
+      .filter((path) => path.endsWith(".json"))
+      .map((path) => `${directory}/${path.split("\\").join("/")}`),
+  ];
+  const policy = await readRepositoryJsonPolicy(root);
+  for (const path of paths) {
+    const contract = jsonContract(path, policy);
+    assert.equal(contract.exclude, false, path);
+    assert.equal(contract.allowFormatWrites, true, path);
+    assert.equal(contract.formatContract, "prettier-json", path);
+    const result = await checkJsonDocument(
+      await readFile(join(root, path)),
+      contract,
+    );
+    assert.equal(result.presentationChecked, true, path);
+    assert.deepEqual(result.findings, [], path);
+    const duplicate = await checkJsonDocument(
+      Buffer.from('{"a":1,"a":2}\n'),
+      contract,
+    );
+    assert(
+      duplicate.findings.some(
+        ({ ruleId }) => ruleId === "json/no-duplicate-keys",
+      ),
+      path,
+    );
+  }
+});
 
 test("native locked payload and generated bootstrap admit installed tooling and reject changed bytes", async () => {
   await verifyJsonQualityInstallation({ toolingRoot, bootstrapPath });
@@ -130,8 +180,8 @@ test("ignored and hidden peers remain checked and a bad peer blocks the whole re
     policy.exceptions = [
       {
         paths: ["generated/**"],
-        owner: "probe",
-        reason: "Attempt to omit an ignored peer",
+        owner: "Probe",
+        reason: "Unapproved omitted peer",
         exclude: true,
       },
     ];
@@ -139,90 +189,31 @@ test("ignored and hidden peers remain checked and a bad peer blocks the whole re
       join(root, ".json-quality.json"),
       JSON.stringify(policy, null, 2) + "\n",
     );
-    await assert.rejects(readRepositoryJsonPolicy(root), /coverage exclusions/);
+    await assert.rejects(readRepositoryJsonPolicy(root), /new owner decision/u);
   } finally {
     await rm(root, { recursive: true });
   }
 });
 
-test("the temporary Markdown report boundary excludes only pinned bytes and expires on package changes", async () => {
-  const root = await mkdtemp(join(tmpdir(), "owlapi-json-markdown-exception-"));
-  const path =
-    "tooling/markdown/node_modules/@hadden-industries/markdown-quality-win32-x64/cargo-notices.json";
-  const packageRoot = join(root, path, "..");
-  const policy = {
-    schemaVersion: 1,
-    defaults: {
-      formatContract: "prettier-json",
-      allowFormatWrites: true,
-      normalization: "NFC",
-    },
-    exceptions: [
-      {
-        paths: [path],
-        owner: "Markdown Quality native package producer",
-        reason: "Owner-approved temporary report exception",
-        exclude: true,
-      },
-    ],
-  };
-  try {
-    execFileSync("git", ["init", "--quiet", root], { windowsHide: true });
-    await writeFile(
-      join(root, ".json-quality.json"),
-      JSON.stringify(policy, null, 2) + "\n",
-    );
-    // The opposite platform need not be installed.
-    await readRepositoryJsonPolicy(root);
-    await mkdir(packageRoot, { recursive: true });
-    const report = await readFile(new URL(`../${path}`, import.meta.url));
-    await writeFile(join(root, path), report);
-    await assert.rejects(readRepositoryJsonPolicy(root), /ENOENT/);
-    const metadata = {
-      name: "@hadden-industries/markdown-quality-win32-x64",
-      version: "1.0.3",
-    };
-    await writeFile(
-      join(packageRoot, "package.json"),
-      JSON.stringify(metadata, null, 2) + "\n",
-    );
-    await readRepositoryJsonPolicy(root);
-    await writeFile(join(packageRoot, "peer.json"), '{"peer":}\n');
-    const lint = await runJsonQuality("lint", { root });
-    assert.equal(lint.status, "failed");
-    assert(
-      lint.findings.some((finding) => finding.path.endsWith("/peer.json")),
-    );
-    assert(!lint.findings.some((finding) => finding.path === path));
-    const repair = await runJsonQuality("format", { root });
-    assert.notEqual(repair.status, "passed");
-    assert.deepEqual(await readFile(join(root, path)), report);
-
-    metadata.version = "1.0.4";
-    await writeFile(
-      join(packageRoot, "package.json"),
-      JSON.stringify(metadata),
-    );
-    await assert.rejects(
-      readRepositoryJsonPolicy(root),
-      /Remove the temporary/,
-    );
-    metadata.version = "1.0.3";
-    await writeFile(
-      join(packageRoot, "package.json"),
-      JSON.stringify(metadata),
-    );
-    await writeFile(
-      join(root, path),
-      Buffer.concat([report, Buffer.from("\n")]),
-    );
-    await assert.rejects(
-      readRepositoryJsonPolicy(root),
-      /Remove the temporary/,
-    );
-  } finally {
-    await rm(root, { recursive: true });
-  }
+test("only the seven owner-approved exclusion paths remain configured", async () => {
+  const policy = await readJsonPolicy(
+    fileURLToPath(new URL("../", import.meta.url)),
+  );
+  assert.deepEqual(
+    policy.exceptions
+      .filter((entry) => entry.exclude)
+      .flatMap((entry) => entry.paths)
+      .sort(),
+    [
+      "**/node_modules/**",
+      ".development-tools/python/**",
+      ".development-tools/uv-cache/**",
+      ".venv/**",
+      ".release/universal-ontology/**",
+      "tooling/markdown/archives/hadden-industries-markdown-quality-linux-x64-1.0.3.tgz!/package/cargo-notices.json",
+      "tooling/markdown/archives/hadden-industries-markdown-quality-win32-x64-1.0.3.tgz!/package/cargo-notices.json",
+    ].sort(),
+  );
 });
 
 test("the Python installation exclusion prunes its junction while preserving sibling and tracked JSON checks", async () => {
@@ -259,7 +250,7 @@ test("the Python installation exclusion prunes its junction while preserving sib
       join(pythonRoot, "current"),
       process.platform === "win32" ? "junction" : "dir",
     );
-    await readRepositoryJsonPolicy(root);
+    await readJsonPolicy(root);
     const excluded = await runJsonQuality("lint", { root });
     assert.equal(excluded.status, "passed");
     assert.equal(excluded.complete, true);
@@ -284,6 +275,135 @@ test("the Python installation exclusion prunes its junction while preserving sib
     assert(
       !checked.findings.some((finding) =>
         finding.path.endsWith("untracked.json"),
+      ),
+    );
+  } finally {
+    await rm(root, { recursive: true });
+  }
+});
+
+test("the root npm boundary prunes ignored installs but checks tracked JSON and sibling tooling", async () => {
+  const root = await mkdtemp(join(tmpdir(), "owlapi-json-root-npm-"));
+  const installation = join(root, "node_modules");
+  const policy = {
+    schemaVersion: 1,
+    defaults: {
+      formatContract: "prettier-json",
+      allowFormatWrites: true,
+      normalization: "NFC",
+    },
+    exceptions: [
+      {
+        paths: ["node_modules/**"],
+        owner: "native npm installer",
+        reason: "Owner-approved root installation boundary",
+        exclude: true,
+      },
+    ],
+  };
+  try {
+    execFileSync("git", ["init", "--quiet", root], { windowsHide: true });
+    await writeFile(join(root, ".gitignore"), "node_modules/\n");
+    await writeFile(
+      join(root, ".json-quality.json"),
+      JSON.stringify(policy, null, 2) + "\n",
+    );
+    await mkdir(installation);
+    await writeFile(join(installation, "bad.json"), '{"installed":}\n');
+    await readJsonPolicy(root);
+    const excluded = await runJsonQuality("lint", { root });
+    assert.equal(excluded.status, "passed");
+    assert.equal(excluded.complete, true);
+    await writeFile(join(installation, "tracked.json"), '{"tracked":}\n');
+    execFileSync(
+      "git",
+      ["-C", root, "add", "--force", "node_modules/tracked.json"],
+      { windowsHide: true },
+    );
+    await mkdir(join(root, "tooling", "node_modules"), { recursive: true });
+    await writeFile(
+      join(root, "tooling", "node_modules", "bad.json"),
+      '{"sibling":}\n',
+    );
+    const checked = await runJsonQuality("lint", { root });
+    assert.equal(checked.status, "failed");
+    assert(
+      checked.findings.some((f) => f.path === "node_modules/tracked.json"),
+    );
+    assert(
+      checked.findings.some((f) => f.path === "tooling/node_modules/bad.json"),
+    );
+    assert(!checked.findings.some((f) => f.path === "node_modules/bad.json"));
+  } finally {
+    await rm(root, { recursive: true });
+  }
+});
+
+test("the all-npm boundary includes isolated installations and still rescues tracked JSON", async () => {
+  const root = await mkdtemp(join(tmpdir(), "owlapi-json-all-npm-"));
+  const policy = {
+    schemaVersion: 1,
+    defaults: {
+      formatContract: "prettier-json",
+      allowFormatWrites: true,
+      normalization: "NFC",
+    },
+    exceptions: [
+      {
+        paths: ["**/node_modules/**"],
+        owner: "native npm installers",
+        reason: "Owner-approved exclusion of every npm installation tree",
+        exclude: true,
+      },
+    ],
+  };
+  try {
+    execFileSync("git", ["init", "--quiet", root], { windowsHide: true });
+    await writeFile(join(root, ".gitignore"), "node_modules/\n");
+    await writeFile(
+      join(root, ".json-quality.json"),
+      JSON.stringify(policy, null, 2) + "\n",
+    );
+    for (const path of [
+      "node_modules",
+      "tooling/json/node_modules",
+      "tooling/markdown/node_modules",
+    ]) {
+      await mkdir(join(root, path), { recursive: true });
+      await writeFile(join(root, path, "bad.json"), '{"installed":}\n');
+    }
+    await readJsonPolicy(root);
+    const excluded = await runJsonQuality("lint", { root });
+    assert.equal(excluded.status, "passed");
+    assert.equal(excluded.complete, true);
+    await writeFile(
+      join(root, "tooling/json/node_modules/tracked.json"),
+      '{"tracked":}\n',
+    );
+    execFileSync(
+      "git",
+      ["-C", root, "add", "--force", "tooling/json/node_modules/tracked.json"],
+      { windowsHide: true },
+    );
+    await mkdir(join(root, "tooling", "neighbor"));
+    await writeFile(
+      join(root, "tooling", "neighbor", "bad.json"),
+      '{"neighbor":}\n',
+    );
+    const checked = await runJsonQuality("lint", { root });
+    assert.equal(checked.status, "failed");
+    assert(
+      checked.findings.some(
+        (f) => f.path === "tooling/json/node_modules/tracked.json",
+      ),
+    );
+    assert(
+      checked.findings.some((f) => f.path === "tooling/neighbor/bad.json"),
+    );
+    assert(!checked.findings.some((f) => f.path === "node_modules/bad.json"));
+    assert(
+      !checked.findings.some(
+        (f) => f.path === "tooling/markdown/node_modules/bad.json",
       ),
     );
   } finally {
