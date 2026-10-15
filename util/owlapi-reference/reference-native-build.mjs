@@ -514,10 +514,14 @@ export function prepareReferenceBuild({
     buildFresh() {
       if (built) fail("fresh build already attempted");
       built = true;
-      writeFileSync(join(workspace, "build-attempt.json"), '{"attempt":1}\n', {
-        flag: "wx",
-        mode: 0o600,
-      });
+      writeFileSync(
+        join(workspace, "build-attempt.json"),
+        '{\n  "attempt": 1\n}\n',
+        {
+          flag: "wx",
+          mode: 0o600,
+        },
+      );
       sourceIdentity();
       verifyTools();
       run(

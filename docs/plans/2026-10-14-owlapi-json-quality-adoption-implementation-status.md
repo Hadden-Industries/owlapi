@@ -51,6 +51,9 @@ The first exact OwlAPI trusted Windows/Linux dispatch stopped at checkout admiss
 The consumer now declares a finite 192 MiB staging allowance and pins two existing native evidence text captures against Git newline conversion; document rules and observation targets remain unchanged.
 That failed dispatch and the earlier passing local full run remain separate retained results; fresh qualification follows the corrected candidate.
 The first OwlAPI Node 22 hosted run also exceeded Jest's default five-second limit while validating all three native Markdown archives; its 12-second integration read now has an explicit finite 30-second budget with every inventory assertion retained.
+The subsequent complete Node 24 run passed native Java and July reconciliation but its final JSON gate found ten original Maven tree presentations, a compact attempt marker and 14 diagnostics in Jest's generated labels.
+The three label generators now describe Unicode cases with ASCII labels while retaining every original test input; a four-suite, 119-test report checks the actual reporter output.
+The fixed first-party attempt marker uses ordinary presentation, and CI retains original native JSON reports before the final gate so Maven's exact byte-based evidence can receive its separately reviewed presentation disposition.
 Independent correctness review reports no findings for the final repair.
 The complete native security scan `7859574e-73bd-4af4-97e7-60fccb0cc7fc` retained one low-severity quadratic inventory finding.
 The subsequent indexed ancestor lookup and deterministic regression passed focused security scan `62b5c57d-0fcc-43ac-8a7e-11470c4c08dc` with no new findings; the original finding and proof remain preserved.

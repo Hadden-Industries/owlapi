@@ -553,6 +553,22 @@ jobs:
           OWLAPI_REFERENCE_CHECKOUT: ${{ github.workspace }}/.release/java-owlapi
         run: npm run test:universal-ontology -- --ontology-repository .release/universal-ontology --output .release/july-qualification
         timeout-minutes: 15
+      - name: Capture original native JSON reports before the final quality gate
+        if: ${{ !cancelled() }}
+        run: |
+          mkdir -p .release/july-qualification
+          : > .release/july-qualification/native-json-files.nul
+          if test -d .release/java-owlapi; then
+            find .release/java-owlapi -path '*/target/reference-runtime-tree.json' -type f -print0 >> .release/july-qualification/native-json-files.nul
+          fi
+          if test -f .release/java-qualification/jest.json; then
+            printf '%s\0' .release/java-qualification/jest.json >> .release/july-qualification/native-json-files.nul
+          fi
+          if test -f .release/java-reference-reuse/native/build-attempt.json; then
+            printf '%s\0' .release/java-reference-reuse/native/build-attempt.json >> .release/july-qualification/native-json-files.nul
+          fi
+          tar --null --files-from=.release/july-qualification/native-json-files.nul -czf .release/july-qualification/native-json-originals.tar.gz
+        timeout-minutes: 1
       - name: Retain July reconciliation evidence, including failed comparisons
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
