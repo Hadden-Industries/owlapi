@@ -28,7 +28,7 @@ test("both platform archives remain fully inventoried regardless of installed pl
     assert.equal(sha256(bytes), entry.sha256);
     assert.equal(bytes.length, entry.byteLength);
   }
-});
+}, 30_000);
 
 test.each(["version", "sha256", "memberPath"])(
   "temporary original-report boundaries reject changed %s",

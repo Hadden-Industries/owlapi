@@ -50,6 +50,7 @@ Producer PR #18 is integrated by normal merge `ad710dac4b2c11befd8beeb661cc5e7d3
 The first exact OwlAPI trusted Windows/Linux dispatch stopped at checkout admission: its 148,286,489 committed bytes exceed the former 128 MiB allowance.
 The consumer now declares a finite 192 MiB staging allowance and pins two existing native evidence text captures against Git newline conversion; document rules and observation targets remain unchanged.
 That failed dispatch and the earlier passing local full run remain separate retained results; fresh qualification follows the corrected candidate.
+The first OwlAPI Node 22 hosted run also exceeded Jest's default five-second limit while validating all three native Markdown archives; its 12-second integration read now has an explicit finite 30-second budget with every inventory assertion retained.
 Independent correctness review reports no findings for the final repair.
 The complete native security scan `7859574e-73bd-4af4-97e7-60fccb0cc7fc` retained one low-severity quadratic inventory finding.
 The subsequent indexed ancestor lookup and deterministic regression passed focused security scan `62b5c57d-0fcc-43ac-8a7e-11470c4c08dc` with no new findings; the original finding and proof remain preserved.
