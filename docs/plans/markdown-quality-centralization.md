@@ -43,6 +43,9 @@ The owner discarded the unrelated performance-plan edit before final qualificati
 It also bounds Node old space, framing, staging and analyzer limits.
 The complete committed checkout measured 148,286,489 bytes at candidate `09b8900d089cb8ad185ec835c60061e5d9ae6f9f`, exceeding the former 128 MiB staging allowance before document analysis.
 The finite staging allowance is now 192 MiB; checker latency, sample count, memory, framing and analyzer limits are unchanged.
+The native batch setup has a finite three-second allowance within the unchanged 30-second checker deadline.
+A controlled Windows probe measured 15.5 seconds with batch setup and 18.3 seconds when its setup allowance forced the per-document fallback; hosted setup can be slower than the inherited one-second default.
+This allowance is a candidate correction requiring fresh hosted qualification, not proof that the two retained Windows deadline failures are resolved.
 Two native evidence text captures retain their original CRLF bytes through exact `.gitattributes` rules, so fresh Git checkouts match the same native hash-bound inputs used locally.
 Node old space and the declared worker heap limit are both 128 MiB.
 [Node's inherited command-line old-space flag](https://nodejs.org/docs/latest-v24.x/api/worker_threads.html#new-workerfilename-options) overrides the worker setting in the current producer, so matching declarations avoid claiming an independently enforced smaller worker heap.

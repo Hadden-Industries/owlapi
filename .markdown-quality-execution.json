@@ -11,7 +11,8 @@
   "stagingEntries": 100000,
   "limits": {
     "documentDiagnostics": 10000,
-    "workerHeapMb": 128
+    "workerHeapMb": 128,
+    "stagingMs": 3000
   },
   "runtimes": {
     "node": {
