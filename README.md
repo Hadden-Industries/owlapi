@@ -372,3 +372,5 @@ Licensed under the [GNU Affero General Public License, version 3 only](https://w
 The complete, unmodified licence text is included in [`LICENSE`](./LICENSE).
 
 Dependencies and deliberately retained third-party materials remain under their own licences; the package licence does not relicense them.
+
+Expected missing-link qualification: [absent fixture](./missing-json-quality-negative-fixture.json).
