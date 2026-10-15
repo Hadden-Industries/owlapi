@@ -9,10 +9,13 @@ Application dependencies and the OwlAPI tarball do not include this development 
 ## Consumer commands and policy
 
 `npm run install:markdown` acquires the reviewed isolated graph.
-`lint:md`, `format:md:check`, `format:md` and `inspect:md` invoke its installed public bins from the repository root.
+`check:markdown`, `format:markdown` and `inspect:markdown` invoke its installed public bins from the repository root.
+The full-word target is consistent across install, test, check, format, inspect and qualification scripts.
+The read-only `check:markdown` operation covers formatting drift, linting and local links; both aggregate lint and formatting checks retain it.
+The former abbreviated names and duplicate formatting-check entry point are removed without compatibility aliases.
 They do not acquire missing packages or use a global fallback.
 Full requests reconcile the Git-tracked Markdown inventory; explicit requests retain their declared scope.
-`npm run qualify:md -- profile --root .` reads the producer-owned execution profile.
+`npm run qualify:markdown -- profile --root .` reads the producer-owned execution profile.
 Candidate qualification uses that same bin's `candidate` operation with explicit trusted inputs and an external fresh output directory.
 See the installed [producer contracts](https://github.com/Hadden-Industries/markdown-quality/blob/47febbe1b6f3282814e77db7ea13eac72b4928ed/docs/centralized-contracts.md) for its supported arguments.
 

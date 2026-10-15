@@ -16,7 +16,7 @@ Current owner amendments on 15 October 2026 supersede the initial proposal where
 - All Java profile JSON and the owned provider build manifest and two release-gate registries receive ordinary presentation and semantic checking and are eligible for shared formatter writes.
   Refresh their native generators and dependent byte identities, preserve previous evidence copies, and require the existing freshness/domain checks.
   Java presentation regeneration does not claim new JVM measurements.
-- The selected shared source is `9e3f6f55ec6e6689aca49b3f6161b97f96b92a7b`, published in producer PR #2 and admitted through the native isolated lock and payload check.
+- The selected shared source is `e66ded9da10ec09b3ca08310178c4cc33f1ef8fe`, published in producer PR #2 and admitted through the native isolated lock and payload check.
   This supersedes the initial source candidate without changing the product runtime floor or other consumer pins.
   Retain the complete producer security scan and its low-severity inventory finding, the subsequent repair scan, and local/hosted qualification separately.
 - Canonical JSON commands and all six final post-producer workflow checks are activated in the implementation candidate.
@@ -27,6 +27,18 @@ Current owner amendments on 15 October 2026 supersede the initial proposal where
   This instruction supersedes the remaining OwlAPI security-analysis requirements below; existing completed producer reports remain retained.
 - Deliver through a normal merge PR into remote `main` after checks pass, retaining the related Java documentation commit in the signed implementation ancestry.
   Use detailed per-file commit messages for subsequent commits and notify the owner's designated chat after completion.
+- The owner selected `format --check` as the sole formatting-verification CLI spelling, following established formatter conventions.
+  Reject the former `check-format` CLI spelling and add no compatibility alias; the separate library/result operation identity remains unchanged.
+  Use `markdown` consistently in npm script targets, with one `check:markdown` entry point for the existing full read-only quality operation, and remove abbreviated/duplicate script names without aliases.
+- The owner approved all five semantic-review proposals across both shared packages before delivery.
+  JSON Quality will replace its misnamed protected-document operation, name the complete test suite accurately, and own one discoverable CLI grammar.
+  OwlAPI will call the full JSON check directly after producers, keeping ordering in workflow governance rather than a pass-through script name.
+  Markdown Quality will expose supplied-document formatting as an explicit format mode, separate profile inspection from measured consumer qualification, and migrate current callers without aliases.
+  Use an isolated producer worktree; preserve the existing Markdown checkout and its unrelated untracked plan.
+  Qualify and adopt new exact shared sources and current contracts while retaining original evidence and the owner's prohibition on further candidate security analysis.
+- The owner subsequently selected real affected-test selection for JSON Quality, superseding the review's rename-only recommendation.
+  Reuse the existing dependency-cruiser library with a package-owned selector, before/after graphs, declared non-import inputs and conservative full-suite fallbacks; create no shared tooling repository.
+  Retain `test` for the complete suite, make `check:affected` genuinely change-based, and keep complete tests mandatory in full qualification.
 
 The chronology below records earlier decisions; the current amendments and implementation status determine the active disposition.
 
@@ -398,7 +410,8 @@ Node 22 never loads this configuration.
 The canonical gate always runs it; missing tooling/configuration is a failure.
 Independently qualify the tool command on supported Node 24 and 26.
 
-Public operations retain precise names and effects: `inventory` reports scope without analysis; `lint` checks syntax/interoperability; `check-format` checks presentation; `check` combines the declared analysis; `producers` checks protected producer outputs; `format` writes only admitted ordinary sources; `normalize` requires explicit source paths and collision-safe admission.
+Public library operations retain precise names and effects: `inventory` reports scope without analysis; `lint` checks syntax/interoperability; `check-format` checks presentation; `check` combines the declared analysis; `producers` checks protected producer outputs; `format` writes only admitted ordinary sources; `normalize` requires explicit source paths and collision-safe admission.
+The CLI exposes presentation verification as `format --check`, with no `check-format` or `format-check` command aliases.
 There is no legacy `inspect` alias or overlapping full-check command masquerading as an inventory.
 
 Proposed npm entry points are `install:json`, `inventory:json`, `lint:json`, `format:json:check`, `check:json`, `check:json:producers`, `format:json`, `normalize:json`, `lint:json-identity` and `test:json`.

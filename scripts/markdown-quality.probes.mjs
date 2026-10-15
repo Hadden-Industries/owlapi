@@ -72,9 +72,9 @@ test("root npm commands preserve explicit-file scope without reconciling a full 
     "Run the maintained npm run test:markdown entry point with the repository's required npm version",
   );
   for (const [command, operation] of [
-    ["lint:md", "check"],
-    ["format:md", "format"],
-    ["inspect:md", "inspect"],
+    ["check:markdown", "check"],
+    ["format:markdown", "format"],
+    ["inspect:markdown", "inspect"],
   ]) {
     const child = spawnSync(
       process.execPath,

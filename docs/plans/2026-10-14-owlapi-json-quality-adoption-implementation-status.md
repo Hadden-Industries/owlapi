@@ -3,12 +3,15 @@
 ## Current checkpoint on 15 October 2026
 
 Implementation remains in progress; no final HISEW full-profile receipt or OwlAPI publication is claimed.
-The shared package candidate is published and selected at `9e3f6f55ec6e6689aca49b3f6161b97f96b92a7b` in [producer PR #2](https://github.com/Hadden-Industries/json-quality/pull/2).
+The shared package candidate is published and selected at `e66ded9da10ec09b3ca08310178c4cc33f1ef8fe` in [producer PR #2](https://github.com/Hadden-Industries/json-quality/pull/2).
 Its native isolated npm lock, installed payload and generated bootstrap pass admission.
 Canonical lint/format/test commands and JSON setup are activated.
 All six existing Node 24, Node 26 and Windows quality jobs have an unconditional final JSON check after their native producers; workflow governance rejects missing, skipped, optional or prematurely placed gates.
 Broad independent OwlAPI correctness review covered all 183 changed paths and found one formatting-command defect.
-The JSON formatting alias is corrected to the shared CLI's `check-format` operation.
+The JSON formatting command uses the shared CLI's sole `format --check` spelling; both compound alternatives are rejected without aliases.
+Markdown npm script targets consistently use `markdown`, with `check:markdown` for the full read-only operation and updated callers/probes.
+The first full HISEW attempt passed five commands, 267 suites and 16,209 tests but found stale third-party inventory hashes for two regenerated Java API Markdown documents.
+That failed run remains preserved; the native generator repaired both references and refreshed current facts, with final qualification following the final writers.
 Governed qualification and hosted delivery remain outstanding.
 The owner instructed continuation without further security analysis of this candidate on 15 October 2026.
 The existing partial native OwlAPI scan and its unvalidated candidate remain preserved; no completed OwlAPI security qualification is claimed.
@@ -30,11 +33,12 @@ Native suppliers retain archive/blob/source admission; the shared package owns q
 The seven conformance suites previously passed 1,652 tests after exact-source restoration.
 Original source guards check pinned Git blob identity, SHA-256 and byte length before generation or admission; the upstream `.gitattributes` retains `* -text !eol` to prevent checkout conversion of original files.
 
-Producer qualification passes 375 tests, lint, formatting, JSON dogfood and clean transported library/CLI/plugin/schema/native/formatter probes on Windows with Node 24.21.0 and npm 12.2.0.
+Producer qualification passes 376 tests, lint, formatting, JSON dogfood and clean transported library/CLI/plugin/schema/native/formatter probes on Windows with Node 24.21.0 and npm 12.2.0.
 Independent correctness review reports no findings for the final repair.
 The complete native security scan `7859574e-73bd-4af4-97e7-60fccb0cc7fc` retained one low-severity quadratic inventory finding.
 The subsequent indexed ancestor lookup and deterministic regression passed focused security scan `62b5c57d-0fcc-43ac-8a7e-11470c4c08dc` with no new findings; the original finding and proof remain preserved.
-All eight hosted producer checks pass across Windows/Linux and Node 24/26 at this exact head; their native results are retained separately from local proof.
+All eight hosted producer checks pass across Windows/Linux and Node 24/26 at the current CLI head; the native readback is retained separately from local proof.
+The completed producer security reports concern their recorded earlier revisions; the owner authorized no further candidate security analysis.
 
 The policy has a stable reading order: schema, defaults, native sources, source-presentation retention and path-sorted exceptions.
 Selector sets are sorted, and each exception presents ownership before settings.
