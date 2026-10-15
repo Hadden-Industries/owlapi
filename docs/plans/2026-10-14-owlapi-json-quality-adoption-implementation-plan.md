@@ -21,7 +21,12 @@ Current owner amendments on 15 October 2026 supersede the initial proposal where
   Retain the complete producer security scan and its low-severity inventory finding, the subsequent repair scan, and local/hosted qualification separately.
 - Canonical JSON commands and all six final post-producer workflow checks are activated in the implementation candidate.
   The policy uses stable section and path ordering for readability while preserving contract resolution and meaningful array order.
-  Final OwlAPI correctness/security review, full HISEW verification, resource reconciliation and authorized publication remain required.
+  Final OwlAPI correctness review, full HISEW verification, resource reconciliation and authorized publication remain required.
+- The owner instructed on 15 October 2026 to continue without any further security analysis of this candidate.
+  Preserve the partial OwlAPI scan and its unvalidated candidate without claiming completed security qualification.
+  This instruction supersedes the remaining OwlAPI security-analysis requirements below; existing completed producer reports remain retained.
+- Deliver through a normal merge PR into remote `main` after checks pass, retaining the related Java documentation commit in the signed implementation ancestry.
+  Use detailed per-file commit messages for subsequent commits and notify the owner's designated chat after completion.
 
 The chronology below records earlier decisions; the current amendments and implementation status determine the active disposition.
 

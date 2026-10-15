@@ -162,7 +162,7 @@
     "verify:architecture": "node scripts/dependency-graph.mjs --check-architecture",
     "inventory:json": "node scripts/run-json-quality.mjs inventory",
     "lint:json": "node scripts/run-json-quality.mjs lint",
-    "format:json:check": "node scripts/run-json-quality.mjs format-check",
+    "format:json:check": "node scripts/run-json-quality.mjs check-format",
     "check:json": "node scripts/run-json-quality.mjs check",
     "check:json:producers": "npm run check:json",
     "format:json": "node scripts/run-json-quality.mjs format",

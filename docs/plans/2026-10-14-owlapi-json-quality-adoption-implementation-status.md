@@ -7,7 +7,12 @@ The shared package candidate is published and selected at `9e3f6f55ec6e6689aca49
 Its native isolated npm lock, installed payload and generated bootstrap pass admission.
 Canonical lint/format/test commands and JSON setup are activated.
 All six existing Node 24, Node 26 and Windows quality jobs have an unconditional final JSON check after their native producers; workflow governance rejects missing, skipped, optional or prematurely placed gates.
-OwlAPI final review, governed qualification and hosted delivery remain outstanding.
+Broad independent OwlAPI correctness review covered all 183 changed paths and found one formatting-command defect.
+The JSON formatting alias is corrected to the shared CLI's `check-format` operation.
+Governed qualification and hosted delivery remain outstanding.
+The owner instructed continuation without further security analysis of this candidate on 15 October 2026.
+The existing partial native OwlAPI scan and its unvalidated candidate remain preserved; no completed OwlAPI security qualification is claimed.
+The owner authorized normal merge PR delivery into remote `main` after passing checks and detailed per-file messages for subsequent commits.
 
 The owner approved original W3C source restoration, 13 exact NFC pins with six replacement source identities, 12 exact logical W3C preservation contracts, and 11 historical reconstruction presentation contracts.
 The complete exclusion set has seven paths: every npm installation, three Python installation/cache boundaries, two exact Markdown archive reports, and the independently guarded pinned Universal Ontology integration checkout.
@@ -37,7 +42,7 @@ This presentation change preserves all resolved contracts and meaningful array o
 Native packlist and current review facts are refreshed after changed packed bytes; the package scope remains 195 files and human review remains pending.
 The Java API registry and both generated Markdown views are regenerated from the exact released source revision `f760b3a4c107c6d5f90f856e5680c39b18af646f`, rebinding their digest to ordinary JSON presentation.
 Governance assertions use the restored original Turtle manifest hashes.
-These are development and producer checks; final OwlAPI source/security review, resource reconciliation and governed delivery remain required.
+These are development and producer checks; final OwlAPI correctness repair review, resource reconciliation and governed delivery remain required.
 
 ## Earlier checkpoint history
 
