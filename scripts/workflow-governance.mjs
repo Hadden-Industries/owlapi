@@ -2092,7 +2092,6 @@ const validateQualityTooling = (workflows, violations) => {
               "npm run test:quality",
               "npm run check:json",
               "npm run lint:json-identity",
-              "npm run check:json:producers",
             ].includes(step.run)
               ? [index]
               : [],
@@ -2115,11 +2114,13 @@ const validateQualityTooling = (workflows, violations) => {
             ])
               requireRun(job, command, context, violations);
           const producerChecks = list.filter(
-            (step) => step.run === "npm run check:json:producers",
+            (step) =>
+              step.name === "Check complete JSON after every native producer",
           );
           add(
             violations,
             producerChecks.length === 1 &&
+              producerChecks[0].run === "npm run check:json" &&
               list.at(-1) === producerChecks[0] &&
               !producerChecks[0]?.if &&
               !producerChecks[0]?.["continue-on-error"],
@@ -2440,7 +2441,7 @@ const validateTrustedMarkdownWorkflow = (workflow, violations) => {
     sameInventory(Object.keys(job ?? {}), ["permissions", "uses", "with"]) &&
       isDeepStrictEqual(job?.permissions, { contents: "read" }) &&
       job?.uses ===
-        "Hadden-Industries/markdown-quality/.github/workflows/markdown-quality.yml@47febbe1b6f3282814e77db7ea13eac72b4928ed" &&
+        "Hadden-Industries/markdown-quality/.github/workflows/markdown-quality.yml@d9736e6bb4f3bd83d421ea99f54431e8380e6ec1" &&
       isDeepStrictEqual(job?.with, {
         "trusted-repository": "Hadden-Industries/owlapi",
         "trusted-sha": "${{ inputs.trusted_sha }}",

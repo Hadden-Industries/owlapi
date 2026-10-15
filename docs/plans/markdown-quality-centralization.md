@@ -1,6 +1,6 @@
 # OwlAPI Markdown centralization
 
-OwlAPI adopts the producer's current public contracts from source commit `47febbe1b6f3282814e77db7ea13eac72b4928ed` and its exact transported core and native archives.
+OwlAPI adopts the producer's current public contracts from source commit `d9736e6bb4f3bd83d421ea99f54431e8380e6ec1` and its exact transported core and native archives.
 The manifest version remains 1.0.3; the published registry package does not contain these contracts.
 Release status is not the adoption gate.
 The isolated lock records the retained archive integrities and installs with lifecycle scripts disabled.
@@ -15,9 +15,9 @@ The read-only `check:markdown` operation covers formatting drift, linting and lo
 The former abbreviated names and duplicate formatting-check entry point are removed without compatibility aliases.
 They do not acquire missing packages or use a global fallback.
 Full requests reconcile the Git-tracked Markdown inventory; explicit requests retain their declared scope.
-`npm run qualify:markdown -- profile --root .` reads the producer-owned execution profile.
-Candidate qualification uses that same bin's `candidate` operation with explicit trusted inputs and an external fresh output directory.
-See the installed [producer contracts](https://github.com/Hadden-Industries/markdown-quality/blob/47febbe1b6f3282814e77db7ea13eac72b4928ed/docs/centralized-contracts.md) for its supported arguments.
+`npm run inspect:markdown:profile -- --root .` resolves the producer-owned execution profile without measuring qualification.
+`npm run qualify:markdown -- ...` invokes `markdown-quality-qualify consumer` with explicit trusted inputs and an external fresh output directory.
+See the installed [producer contracts](https://github.com/Hadden-Industries/markdown-quality/blob/d9736e6bb4f3bd83d421ea99f54431e8380e6ec1/docs/centralized-contracts.md) for its supported arguments.
 
 Schema 2 `.markdown-quality.json` is the sole Markdown policy authority.
 The translation preserves the independently captured 68 selected and 11 excluded tracked documents at the cutover baseline.
@@ -50,7 +50,7 @@ The matching 112 MiB profile passed six local and hosted Windows samples under t
 On 2026-10-08 the owner separately authorized the 1,024 MiB target and matching 128 MiB Node/worker caps.
 The profile has one shared memory value, so the revised target applies to both OS jobs.
 These changed trust bytes require fresh qualification and exact bootstrap, dispatch and result acceptance; the larger limit is not a demonstrated pass.
-`.node-version` declares 24.21.0; the existing `.python-version` declares 3.14.7.
+`.node-version` declares 24.21.0; `.python-version` declares 3.15.0.
 The isolated core/native archives and lock are explicit trusted inputs.
 Changing a runtime, policy, profile, lock or archive invalidates its qualification identity.
 

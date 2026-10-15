@@ -320,7 +320,7 @@ jobs:
         run: npm run verify:workflow-governance
         timeout-minutes: 45
       - name: Check complete JSON after every native producer
-        run: npm run check:json:producers
+        run: npm run check:json
         timeout-minutes: 5
 
   source_node_24:
@@ -589,7 +589,7 @@ jobs:
         run: node scripts/java-reference-command.mjs publication
         timeout-minutes: 1
       - name: Check complete JSON after every native producer
-        run: npm run check:json:producers
+        run: npm run check:json
         timeout-minutes: 5
 
   dependency_review:
@@ -1493,5 +1493,5 @@ jobs:
         run: npm run test:quality
         timeout-minutes: 10
       - name: Check complete JSON after every native producer
-        run: npm run check:json:producers
+        run: npm run check:json
         timeout-minutes: 5

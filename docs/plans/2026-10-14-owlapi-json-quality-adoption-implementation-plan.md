@@ -1,6 +1,6 @@
 # OwlAPI shared JSON quality adoption implementation plan
 
-Status: **Accepted for implementation and delivery; execution remains in progress.**
+Status: **Implementation candidate complete; final verification and delivery are recorded separately.**
 
 Current owner amendments on 15 October 2026 supersede the initial proposal where stated:
 
@@ -16,8 +16,9 @@ Current owner amendments on 15 October 2026 supersede the initial proposal where
 - All Java profile JSON and the owned provider build manifest and two release-gate registries receive ordinary presentation and semantic checking and are eligible for shared formatter writes.
   Refresh their native generators and dependent byte identities, preserve previous evidence copies, and require the existing freshness/domain checks.
   Java presentation regeneration does not claim new JVM measurements.
-- The selected shared source is `e66ded9da10ec09b3ca08310178c4cc33f1ef8fe`, published in producer PR #2 and admitted through the native isolated lock and payload check.
-  This supersedes the initial source candidate without changing the product runtime floor or other consumer pins.
+- The selected JSON Quality source is `ded6b960e588ab708910953fb735b92760c913a3`, integrated through normal merge in producer PR #2 and admitted through the native isolated lock and payload check.
+  This supersedes the earlier JSON candidates without changing the product runtime floor.
+  The approved Markdown interface extension selects source `d9736e6bb4f3bd83d421ea99f54431e8380e6ec1`, its exact transported archives and matching workflow in producer PR #18.
   Retain the complete producer security scan and its low-severity inventory finding, the subsequent repair scan, and local/hosted qualification separately.
 - Canonical JSON commands and all six final post-producer workflow checks are activated in the implementation candidate.
   The policy uses stable section and path ordering for readability while preserving contract resolution and meaningful array order.
@@ -39,6 +40,12 @@ Current owner amendments on 15 October 2026 supersede the initial proposal where
 - The owner subsequently selected real affected-test selection for JSON Quality, superseding the review's rename-only recommendation.
   Reuse the existing dependency-cruiser library with a package-owned selector, before/after graphs, declared non-import inputs and conservative full-suite fallbacks; create no shared tooling repository.
   Retain `test` for the complete suite, make `check:affected` genuinely change-based, and keep complete tests mandatory in full qualification.
+- Both packages' approved semantic interfaces are implemented without aliases.
+  JSON Quality uses `check --scope protected` and result schema 3; regenerate current reports at the clean result-contract cutover.
+  Its package-owned affected selector combines before/after graphs, declared process/payload relations and full-suite fallbacks.
+  Markdown Quality uses `format --stdin-request`, `inspect-profile` and qualifier `consumer`.
+  OwlAPI exposes `inspect:markdown:profile` separately from `qualify:markdown`, removes `check:json:producers`, and keeps all six final full JSON checks and their last-writer governance requirements.
+  Full source and transported Windows qualification passed for both exact producer sources; consumer and hosted evidence remain separate obligations.
 
 The chronology below records earlier decisions; the current amendments and implementation status determine the active disposition.
 

@@ -155,6 +155,7 @@
     "test:quality:source": "npm test -- --runInBand --runTestsByPath scripts/repository-python-tools.test.js scripts/source-policy.test.js",
     "test:markdown": "node --test scripts/markdown-quality.probes.mjs scripts/dependency-security-markdown.probes.mjs",
     "inspect:markdown": "npm --prefix tooling/markdown run inspect --",
+    "inspect:markdown:profile": "npm --prefix tooling/markdown run inspect:profile --",
     "qualify:markdown": "npm --prefix tooling/markdown run qualify --",
     "install:markdown": "npm ci --prefix tooling/markdown --ignore-scripts --no-audit --no-fund",
     "graph:dependencies": "node scripts/dependency-graph.mjs",
@@ -163,7 +164,6 @@
     "lint:json": "node scripts/run-json-quality.mjs lint",
     "format:json:check": "node scripts/run-json-quality.mjs format --check",
     "check:json": "node scripts/run-json-quality.mjs check",
-    "check:json:producers": "npm run check:json",
     "format:json": "node scripts/run-json-quality.mjs format",
     "normalize:json": "node scripts/run-json-quality.mjs normalize",
     "lint:json-identity": "eslint --config eslint.json-identity.config.mjs \"**/*.{js,mjs,cjs}\""

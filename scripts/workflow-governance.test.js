@@ -38,22 +38,29 @@ describe("repository workflow governance", () => {
   test.each(
     ["ci.yml", "release.yml"].flatMap((file) =>
       ["source_node_24", "source_node_26", "quality_windows"].flatMap((id) =>
-        ["removed", "conditional", "optional", "later producer"].map(
-          (mutation) => [file, id, mutation],
-        ),
+        [
+          "removed",
+          "conditional",
+          "optional",
+          "wrong command",
+          "later producer",
+        ].map((mutation) => [file, id, mutation]),
       ),
     ),
   )("rejects a %s:%s final JSON gate that is %s", (file, id, mutation) => {
     const violations = mutateWorkflow(file, (doc) => {
       const steps = doc.getIn(["jobs", id, "steps"]);
       const gate = steps.items.find(
-        (step) => step.get("run") === "npm run check:json:producers",
+        (step) =>
+          step.get("name") ===
+          "Check complete JSON after every native producer",
       );
       expect(gate).toBeDefined();
       if (mutation === "removed")
         steps.items.splice(steps.items.indexOf(gate), 1);
       if (mutation === "conditional") gate.set("if", "false");
       if (mutation === "optional") gate.set("continue-on-error", true);
+      if (mutation === "wrong command") gate.set("run", "npm run lint:json");
       if (mutation === "later producer")
         steps.add({
           name: "Unchecked later producer",

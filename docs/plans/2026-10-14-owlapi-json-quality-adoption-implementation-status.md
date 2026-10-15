@@ -1,18 +1,27 @@
 # OwlAPI JSON quality adoption implementation status
 
-## Current checkpoint on 15 October 2026
+## Final implementation candidate on 15 October 2026
 
-Implementation remains in progress; no final HISEW full-profile receipt or OwlAPI publication is claimed.
-The shared package candidate is published and selected at `e66ded9da10ec09b3ca08310178c4cc33f1ef8fe` in [producer PR #2](https://github.com/Hadden-Industries/json-quality/pull/2).
+This report records the implementation candidate before final HISEW verification and OwlAPI publication.
+Delivery-stage results are retained separately in the native task evidence and merged pull request; this checkpoint claims neither result in advance.
+The shared JSON package is selected at `ded6b960e588ab708910953fb735b92760c913a3` and integrated by normal merge `8baa67b921964389a0786abb5ccc1eb3e146147e` in [producer PR #2](https://github.com/Hadden-Industries/json-quality/pull/2).
 Its native isolated npm lock, installed payload and generated bootstrap pass admission.
 Canonical lint/format/test commands and JSON setup are activated.
 All six existing Node 24, Node 26 and Windows quality jobs have an unconditional final JSON check after their native producers; workflow governance rejects missing, skipped, optional or prematurely placed gates.
 Broad independent OwlAPI correctness review covered all 183 changed paths and found one formatting-command defect.
 The JSON formatting command uses the shared CLI's sole `format --check` spelling; both compound alternatives are rejected without aliases.
 Markdown npm script targets consistently use `markdown`, with `check:markdown` for the full read-only operation and updated callers/probes.
+JSON Quality's canonical `check --scope protected` replaces its misleading producer operation, with a clean result-schema-3 cutover and a single closed command/help grammar.
+Its genuine affected selector uses before/after dependency-cruiser graphs and declared process/payload relations, while `npm test` and full qualification retain every test.
+Ordinary review found an incomplete graph-snapshot defect and stale contract prose; the repair and narrow follow-up resolve both.
+The real package probe selected 11 test files for a source change and restored original bytes exactly; no shared tooling repository was introduced.
+Markdown Quality source `d9736e6bb4f3bd83d421ea99f54431e8380e6ec1` is published in [producer PR #18](https://github.com/Hadden-Industries/markdown-quality/pull/18), with its exact transported core/native archives installed through the native isolated lock.
+Its canonical operations are `format --stdin-request`, `inspect-profile` and qualifier `consumer`, without retired-name aliases.
+OwlAPI separates `inspect:markdown:profile` from measured `qualify:markdown`, calls `check:json` directly after producers and retains the final-step mutation guards.
+Current consumer probes pass 17 JSON tests and 12 Markdown tests; all 30 final JSON-gate governance mutations pass.
 The first full HISEW attempt passed five commands, 267 suites and 16,209 tests but found stale third-party inventory hashes for two regenerated Java API Markdown documents.
 That failed run remains preserved; the native generator repaired both references and refreshed current facts, with final qualification following the final writers.
-Governed qualification and hosted delivery remain outstanding.
+Governed qualification and hosted delivery are assessed separately from this implementation checkpoint.
 The owner instructed continuation without further security analysis of this candidate on 15 October 2026.
 The existing partial native OwlAPI scan and its unvalidated candidate remain preserved; no completed OwlAPI security qualification is claimed.
 The owner authorized normal merge PR delivery into remote `main` after passing checks and detailed per-file messages for subsequent commits.
@@ -33,7 +42,10 @@ Native suppliers retain archive/blob/source admission; the shared package owns q
 The seven conformance suites previously passed 1,652 tests after exact-source restoration.
 Original source guards check pinned Git blob identity, SHA-256 and byte length before generation or admission; the upstream `.gitattributes` retains `* -text !eol` to prevent checkout conversion of original files.
 
-Producer qualification passes 376 tests, lint, formatting, JSON dogfood and clean transported library/CLI/plugin/schema/native/formatter probes on Windows with Node 24.21.0 and npm 12.2.0.
+JSON producer qualification passes 384 tests, lint, formatting, JSON dogfood and clean transported library/CLI/plugin/schema/native/formatter probes on Windows with Node 24.21.0 and npm 12.2.0.
+The new Markdown source passes its full native Python/archive/text and style checks, 467 tests (464 passed, three platform skips), and complete Markdown checking.
+Its transported Windows archives pass root and isolated installs, exact installed-file hashes, frozen offline reinstall and public runtime contracts.
+The Markdown hosted platform and consumer matrix remains in progress at this checkpoint.
 Independent correctness review reports no findings for the final repair.
 The complete native security scan `7859574e-73bd-4af4-97e7-60fccb0cc7fc` retained one low-severity quadratic inventory finding.
 The subsequent indexed ancestor lookup and deterministic regression passed focused security scan `62b5c57d-0fcc-43ac-8a7e-11470c4c08dc` with no new findings; the original finding and proof remain preserved.
@@ -46,6 +58,8 @@ This presentation change preserves all resolved contracts and meaningful array o
 Native packlist and current review facts are refreshed after changed packed bytes; the package scope remains 195 files and human review remains pending.
 The Java API registry and both generated Markdown views are regenerated from the exact released source revision `f760b3a4c107c6d5f90f856e5680c39b18af646f`, rebinding their digest to ordinary JSON presentation.
 Governance assertions use the restored original Turtle manifest hashes.
+HISEW execution `db273c1d-e22b-4eb8-a49f-f22f89bf01a5`, generation 17, owns the approved scope expansion under requirement snapshot `0cd17532-3832-4f83-8f12-f8f180e37c32`.
+The original execution, failed full run and evidence remain retained through the native pause/reroute lineage.
 These are development and producer checks; final OwlAPI correctness repair review, resource reconciliation and governed delivery remain required.
 
 ## Earlier checkpoint history
