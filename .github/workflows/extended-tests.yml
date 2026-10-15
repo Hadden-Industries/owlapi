@@ -30,7 +30,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - name: Select Node 24.21.0 without package caching
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: "24.21.0"
           check-latest: false
@@ -81,7 +81,7 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
       - name: Select Node 24.21.0 without package caching
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: "24.21.0"
           check-latest: false
@@ -103,7 +103,7 @@ jobs:
         run: node util/snapshot-npm-registry-keys.mjs --output=.release/registry-keys/npm-registry-keys.json
         timeout-minutes: 5
       - name: Retain the exact same-run signing-key snapshot
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: npm-evidence-registry-keys
           path: .release/registry-keys/npm-registry-keys.json
@@ -182,7 +182,7 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
       - name: Select Node 24.21.0 without package caching
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: "24.21.0"
           check-latest: false
@@ -202,7 +202,7 @@ jobs:
         run: npm ci
         timeout-minutes: 20
       - name: Download the exact same-run npm signing-key snapshot
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: npm-evidence-registry-keys
           path: .release/registry-keys
@@ -230,7 +230,7 @@ jobs:
         run: node util/acquire-npm-package-evidence.mjs --shard-count=32 --shard-index-env=EVIDENCE_SHARD_INDEX --output=.release/evidence-shard --scancode-env=SCANCODE_COMMAND --registry-keys=.release/registry-keys/npm-registry-keys.json
         timeout-minutes: 60
       - name: Retain the independently verifiable shard for aggregation
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: npm-evidence-${{ matrix.os.id }}-${{ matrix.shard }}
           path: .release/evidence-shard
@@ -263,7 +263,7 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
       - name: Select Node 24.21.0 without package caching
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: "24.21.0"
           check-latest: false
@@ -282,7 +282,7 @@ jobs:
         run: npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
         timeout-minutes: 5
       - name: Download every same-run operating-system shard
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           pattern: npm-evidence-${{ matrix.os }}-*
           path: .release/evidence-shards
@@ -293,7 +293,7 @@ jobs:
         run: node util/merge-npm-package-evidence.mjs --input=.release/evidence-shards --output=.release/evidence-aggregate
         timeout-minutes: 15
       - name: Retain the verified aggregate for parity comparison
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: npm-evidence-aggregate-${{ matrix.os }}
           path: .release/evidence-aggregate
@@ -322,7 +322,7 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
       - name: Select Node 24.21.0 without package caching
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: "24.21.0"
           check-latest: false
@@ -341,7 +341,7 @@ jobs:
         run: npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
         timeout-minutes: 5
       - name: Download both verified operating-system aggregates
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           pattern: npm-evidence-aggregate-*
           path: .release/evidence-aggregates
