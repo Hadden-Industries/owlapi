@@ -4,7 +4,12 @@
 
 This report records the implementation candidate before final HISEW verification and OwlAPI publication.
 Delivery-stage results are retained separately in the native task evidence and merged pull request; this checkpoint claims neither result in advance.
-The shared JSON package is selected at `ded6b960e588ab708910953fb735b92760c913a3` and integrated by normal merge `8baa67b921964389a0786abb5ccc1eb3e146147e` in [producer PR #2](https://github.com/Hadden-Industries/json-quality/pull/2).
+The shared JSON package remains selected at qualified source `ded6b960e588ab708910953fb735b92760c913a3`, retained from [producer PR #2](https://github.com/Hadden-Industries/json-quality/pull/2).
+The owner subsequently authorized removing the unnecessary producer merges from `main` ancestry and using direct signed pushes for both shared quality repositories.
+JSON Quality `main` is now `e5e7c66be14af4445946fbb5cf454d4b4a1b7cf5`; its ten recreated descendants retain every message, author and file tree and all show Verified on GitHub.
+Markdown Quality `main` is the unchanged qualified source `d9736e6bb4f3bd83d421ea99f54431e8380e6ec1`, also Verified.
+Both final producer trees are identical to the earlier merged trees; recovery bundles, raw signature evidence, original commits and PR records remain preserved, and the consumer's exact source pins remain valid.
+The local shared `main` refs match their remote heads; the unrelated untracked Markdown plan is unchanged.
 Its native isolated npm lock, installed payload and generated bootstrap pass admission.
 Canonical lint/format/test commands and JSON setup are activated.
 All six existing Node 24, Node 26 and Windows quality jobs have an unconditional final JSON check after their native producers; workflow governance rejects missing, skipped, optional or prematurely placed gates.
@@ -46,7 +51,7 @@ JSON producer qualification passes 384 tests, lint, formatting, JSON dogfood and
 The new Markdown source passes its full native Python/archive/text and style checks, 467 tests (464 passed, three platform skips), and complete Markdown checking.
 Its transported Windows archives pass root and isolated installs, exact installed-file hashes, frozen offline reinstall and public runtime contracts.
 The Markdown hosted platform and transported consumer matrix passed after one bounded unchanged-source retry of a fresh npm-install failure; the original failure remains retained.
-Producer PR #18 is integrated by normal merge `ad710dac4b2c11befd8beeb661cc5e7d31742c35`.
+Producer PR #18's original merge `ad710dac4b2c11befd8beeb661cc5e7d31742c35` remains historical evidence; the owner-approved history rewrite removes it from current `main` ancestry.
 The first exact OwlAPI trusted Windows/Linux dispatch stopped at checkout admission: its 148,286,489 committed bytes exceed the former 128 MiB allowance.
 The consumer now declares a finite 192 MiB staging allowance and pins two existing native evidence text captures against Git newline conversion; document rules and observation targets remain unchanged.
 That failed dispatch and the earlier passing local full run remain separate retained results; fresh qualification follows the corrected candidate.
@@ -54,6 +59,11 @@ The first OwlAPI Node 22 hosted run also exceeded Jest's default five-second lim
 The subsequent complete Node 24 run passed native Java and July reconciliation but its final JSON gate found ten original Maven tree presentations, a compact attempt marker and 14 diagnostics in Jest's generated labels.
 The three label generators now describe Unicode cases with ASCII labels while retaining every original test input; a four-suite, 119-test report checks the actual reporter output.
 The fixed first-party attempt marker uses ordinary presentation, and CI retains original native JSON reports before the final gate so Maven's exact byte-based evidence can receive its separately reviewed presentation disposition.
+Hosted run `38696140928` then passed the package suite, native Java qualification and all four reconciliations; only the ten original Maven graph presentations failed its final JSON gate.
+The retained raw archive independently matches the native distribution-graph digest recorded before the final gate.
+The owner approved ten exact original-report contracts with unchanged hashes and lengths, no semantic differences and no new exclusions.
+Shared public analysis verifies all ten identities and zero semantic findings; the captured Jest report and attempt marker pass their existing contracts without new exceptions.
+Current policy applies those exact contracts; later byte drift fails rather than refreshing a pin automatically.
 Independent correctness review reports no findings for the final repair.
 The complete native security scan `7859574e-73bd-4af4-97e7-60fccb0cc7fc` retained one low-severity quadratic inventory finding.
 The subsequent indexed ancestor lookup and deterministic regression passed focused security scan `62b5c57d-0fcc-43ac-8a7e-11470c4c08dc` with no new findings; the original finding and proof remain preserved.

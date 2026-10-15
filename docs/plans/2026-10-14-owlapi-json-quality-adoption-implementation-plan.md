@@ -16,7 +16,7 @@ Current owner amendments on 15 October 2026 supersede the initial proposal where
 - All Java profile JSON and the owned provider build manifest and two release-gate registries receive ordinary presentation and semantic checking and are eligible for shared formatter writes.
   Refresh their native generators and dependent byte identities, preserve previous evidence copies, and require the existing freshness/domain checks.
   Java presentation regeneration does not claim new JVM measurements.
-- The selected JSON Quality source is `ded6b960e588ab708910953fb735b92760c913a3`, integrated through normal merge in producer PR #2 and admitted through the native isolated lock and payload check.
+- The selected JSON Quality source is `ded6b960e588ab708910953fb735b92760c913a3`, retained from producer PR #2 and admitted through the native isolated lock and payload check.
   This supersedes the earlier JSON candidates without changing the product runtime floor.
   The approved Markdown interface extension selects source `d9736e6bb4f3bd83d421ea99f54431e8380e6ec1`, its exact transported archives and matching workflow in producer PR #18.
   Retain the complete producer security scan and its low-severity inventory finding, the subsequent repair scan, and local/hosted qualification separately.
@@ -28,6 +28,14 @@ Current owner amendments on 15 October 2026 supersede the initial proposal where
   This instruction supersedes the remaining OwlAPI security-analysis requirements below; existing completed producer reports remain retained.
 - Deliver through a normal merge PR into remote `main` after checks pass, retaining the related Java documentation commit in the signed implementation ancestry.
   Use detailed per-file commit messages for subsequent commits and notify the owner's designated chat after completion.
+- The owner subsequently selected direct signed pushes for both shared quality repositories and explicitly approved removing their unnecessary merge commits from `main` ancestry.
+  Markdown Quality `main` is `d9736e6bb4f3bd83d421ea99f54431e8380e6ec1`; JSON Quality `main` is `e5e7c66be14af4445946fbb5cf454d4b4a1b7cf5` after recreating ten signed descendants on the original PR #1 source.
+  Every recreated commit is locally signature-verified and GitHub Verified; messages, authors and file trees are unchanged.
+  Preserve original histories, PR records and OwlAPI's qualified source pins; the final producer trees match exactly, and the existing consumer pins remain available.
+  OwlAPI's normal merge PR route remains required.
+- The owner approved ten exact original Maven dependency-plugin 3.11.0 runtime-report presentation contracts from hosted run `38696140928`.
+  Require their unchanged original hashes and lengths with zero semantic differences; preserve native graph digest protocols, all thirteen Unicode pins and the existing exclusion set.
+  The repaired native Jest report and build-attempt marker pass without these contracts.
 - The owner selected `format --check` as the sole formatting-verification CLI spelling, following established formatter conventions.
   Reject the former `check-format` CLI spelling and add no compatibility alias; the separate library/result operation identity remains unchanged.
   Use `markdown` consistently in npm script targets, with one `check:markdown` entry point for the existing full read-only quality operation, and remove abbreviated/duplicate script names without aliases.

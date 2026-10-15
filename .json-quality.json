@@ -97,6 +97,146 @@
     },
     {
       "paths": [
+        ".release/java-owlapi/api/target/reference-runtime-tree.json"
+      ],
+      "owner": "Pinned native Maven dependency-plugin runtime graph producer",
+      "reason": "Owner-approved exact Maven dependency-plugin 3.11.0 output preservation. Retain the independently captured native graph byte identity and every semantic rule without rewriting the original serializer presentation.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "4f74b64139ef87a509d062fb7dc57a39286078d091574ff3c45a6d0939491ab9",
+        "byteLength": 3391,
+        "diagnostics": []
+      }
+    },
+    {
+      "paths": [
+        ".release/java-owlapi/apibinding/target/reference-runtime-tree.json"
+      ],
+      "owner": "Pinned native Maven dependency-plugin runtime graph producer",
+      "reason": "Owner-approved exact Maven dependency-plugin 3.11.0 output preservation. Retain the independently captured native graph byte identity and every semantic rule without rewriting the original serializer presentation.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "92cbd477f555b7601651334f9d2cc77efa7e11ee3973a18ca44d3bad4d9a45e0",
+        "byteLength": 16529,
+        "diagnostics": []
+      }
+    },
+    {
+      "paths": [
+        ".release/java-owlapi/compatibility/target/reference-runtime-tree.json"
+      ],
+      "owner": "Pinned native Maven dependency-plugin runtime graph producer",
+      "reason": "Owner-approved exact Maven dependency-plugin 3.11.0 output preservation. Retain the independently captured native graph byte identity and every semantic rule without rewriting the original serializer presentation.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "63c075ce2ebc95413823e45b9ebd4ec1db633205e0097651702f0184cba2438a",
+        "byteLength": 18670,
+        "diagnostics": []
+      }
+    },
+    {
+      "paths": [
+        ".release/java-owlapi/distribution/target/reference-runtime-tree.json"
+      ],
+      "owner": "Pinned native Maven dependency-plugin runtime graph producer",
+      "reason": "Owner-approved exact Maven dependency-plugin 3.11.0 output preservation. Retain the independently captured native graph byte identity and every semantic rule without rewriting the original serializer presentation.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "227acf2f1008f050f37f47bf8dca9e265c6aaea271a4c0b1dc28551ed4310fbf",
+        "byteLength": 15183,
+        "diagnostics": []
+      }
+    },
+    {
+      "paths": [
+        ".release/java-owlapi/impl/target/reference-runtime-tree.json"
+      ],
+      "owner": "Pinned native Maven dependency-plugin runtime graph producer",
+      "reason": "Owner-approved exact Maven dependency-plugin 3.11.0 output preservation. Retain the independently captured native graph byte identity and every semantic rule without rewriting the original serializer presentation.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "7c276b4016ac927b18e0eacb02bd72874f6bbe5181fb5e25c8cb0e2abe60b5c9",
+        "byteLength": 3707,
+        "diagnostics": []
+      }
+    },
+    {
+      "paths": [
+        ".release/java-owlapi/oboformat/target/reference-runtime-tree.json"
+      ],
+      "owner": "Pinned native Maven dependency-plugin runtime graph producer",
+      "reason": "Owner-approved exact Maven dependency-plugin 3.11.0 output preservation. Retain the independently captured native graph byte identity and every semantic rule without rewriting the original serializer presentation.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "95607b62bdb1dc8be67f13abf319f9a621bd6e7437421812420c969683eb45bd",
+        "byteLength": 4147,
+        "diagnostics": []
+      }
+    },
+    {
+      "paths": [
+        ".release/java-owlapi/parsers/target/reference-runtime-tree.json"
+      ],
+      "owner": "Pinned native Maven dependency-plugin runtime graph producer",
+      "reason": "Owner-approved exact Maven dependency-plugin 3.11.0 output preservation. Retain the independently captured native graph byte identity and every semantic rule without rewriting the original serializer presentation.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "a1fd05a4335615f5d666b82b31ecaff206e601f1d6e3afa5af89c515efabc776",
+        "byteLength": 3746,
+        "diagnostics": []
+      }
+    },
+    {
+      "paths": [
+        ".release/java-owlapi/rio/target/reference-runtime-tree.json"
+      ],
+      "owner": "Pinned native Maven dependency-plugin runtime graph producer",
+      "reason": "Owner-approved exact Maven dependency-plugin 3.11.0 output preservation. Retain the independently captured native graph byte identity and every semantic rule without rewriting the original serializer presentation.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "85bf32eabfc0c55fb0b054663aa5f91519aba630bb65b1be4eb073e96e696963",
+        "byteLength": 14265,
+        "diagnostics": []
+      }
+    },
+    {
+      "paths": [
+        ".release/java-owlapi/target/reference-runtime-tree.json"
+      ],
+      "owner": "Pinned native Maven dependency-plugin runtime graph producer",
+      "reason": "Owner-approved exact Maven dependency-plugin 3.11.0 output preservation. Retain the independently captured native graph byte identity and every semantic rule without rewriting the original serializer presentation.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "0bbcc4847cdd4f43537f00cc1a2dff166e833752cb3e8faaf9212e59a266b9cb",
+        "byteLength": 2787,
+        "diagnostics": []
+      }
+    },
+    {
+      "paths": [
+        ".release/java-owlapi/tools/target/reference-runtime-tree.json"
+      ],
+      "owner": "Pinned native Maven dependency-plugin runtime graph producer",
+      "reason": "Owner-approved exact Maven dependency-plugin 3.11.0 output preservation. Retain the independently captured native graph byte identity and every semantic rule without rewriting the original serializer presentation.",
+      "allowFormatWrites": false,
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "8c172dd25b53143ffece5e4676bf4532cbf56d4292e52ef110f4503c80746650",
+        "byteLength": 3744,
+        "diagnostics": []
+      }
+    },
+    {
+      "paths": [
         ".release/java-qualification/jest.json"
       ],
       "owner": "native Jest qualification reporter",

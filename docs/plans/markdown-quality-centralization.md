@@ -46,6 +46,9 @@ The finite staging allowance is now 192 MiB; checker latency, sample count, memo
 The native batch setup has a finite three-second allowance within the unchanged 30-second checker deadline.
 A controlled Windows probe measured 15.5 seconds with batch setup and 18.3 seconds when its setup allowance forced the per-document fallback; hosted setup can be slower than the inherited one-second default.
 This allowance is a candidate correction requiring fresh hosted qualification, not proof that the two retained Windows deadline failures are resolved.
+At subsequent candidate `2fcdf7779ae90c0b8b4d1dd4895e1270c5e891b9`, hosted run `38693291547` completed six positive samples on both systems: observed nearest-rank p95 was 22,801 ms on Linux and 23,420 ms on Windows.
+Both negative jobs in run `38693504213` retained the intended missing-link finding without native errors or writes.
+These receipts retain their exact candidate identities; later document or trusted-input changes require fresh qualification.
 Two native evidence text captures retain their original CRLF bytes through exact `.gitattributes` rules, so fresh Git checkouts match the same native hash-bound inputs used locally.
 Node old space and the declared worker heap limit are both 128 MiB.
 [Node's inherited command-line old-space flag](https://nodejs.org/docs/latest-v24.x/api/worker_threads.html#new-workerfilename-options) overrides the worker setting in the current producer, so matching declarations avoid claiming an independently enforced smaller worker heap.
