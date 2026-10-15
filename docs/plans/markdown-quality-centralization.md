@@ -41,6 +41,9 @@ The owner discarded the unrelated performance-plan edit before final qualificati
 
 `.markdown-quality-execution.json` owns six samples, 30,000 ms checker latency, a 180,000 ms window and 1,024 MiB observed memory.
 It also bounds Node old space, framing, staging and analyzer limits.
+The complete committed checkout measured 148,286,489 bytes at candidate `09b8900d089cb8ad185ec835c60061e5d9ae6f9f`, exceeding the former 128 MiB staging allowance before document analysis.
+The finite staging allowance is now 192 MiB; checker latency, sample count, memory, framing and analyzer limits are unchanged.
+Two native evidence text captures retain their original CRLF bytes through exact `.gitattributes` rules, so fresh Git checkouts match the same native hash-bound inputs used locally.
 Node old space and the declared worker heap limit are both 128 MiB.
 [Node's inherited command-line old-space flag](https://nodejs.org/docs/latest-v24.x/api/worker_threads.html#new-workerfilename-options) overrides the worker setting in the current producer, so matching declarations avoid claiming an independently enforced smaller worker heap.
 The initial 256 MiB cap and the later 128 MiB cap failed the shared local memory window, the latter after five completed samples.

@@ -14,3 +14,7 @@ LICENSES/development/scancode-runtime/inventory.json text eol=lf diff
 # Hash-bound upstream tool output retains its recorded whitespace.
 docs/compatibility/profiles/java-owlapi-5.5.1/evidence/*.log -whitespace
 docs/compatibility/profiles/java-owlapi-5.5.1/evidence/active-profiles.txt -whitespace
+
+# Retain hash-bound native captures without Git newline conversion.
+docs/compatibility/profiles/java-owlapi-5.5.1/evidence/import-lookup-precedence-java.txt -text !eol -whitespace
+docs/provenance/history-reconstruction/control/signature-trust-source.txt -text !eol -whitespace

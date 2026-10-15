@@ -45,7 +45,11 @@ Original source guards check pinned Git blob identity, SHA-256 and byte length b
 JSON producer qualification passes 384 tests, lint, formatting, JSON dogfood and clean transported library/CLI/plugin/schema/native/formatter probes on Windows with Node 24.21.0 and npm 12.2.0.
 The new Markdown source passes its full native Python/archive/text and style checks, 467 tests (464 passed, three platform skips), and complete Markdown checking.
 Its transported Windows archives pass root and isolated installs, exact installed-file hashes, frozen offline reinstall and public runtime contracts.
-The Markdown hosted platform and consumer matrix remains in progress at this checkpoint.
+The Markdown hosted platform and transported consumer matrix passed after one bounded unchanged-source retry of a fresh npm-install failure; the original failure remains retained.
+Producer PR #18 is integrated by normal merge `ad710dac4b2c11befd8beeb661cc5e7d31742c35`.
+The first exact OwlAPI trusted Windows/Linux dispatch stopped at checkout admission: its 148,286,489 committed bytes exceed the former 128 MiB allowance.
+The consumer now declares a finite 192 MiB staging allowance and pins two existing native evidence text captures against Git newline conversion; document rules and observation targets remain unchanged.
+That failed dispatch and the earlier passing local full run remain separate retained results; fresh qualification follows the corrected candidate.
 Independent correctness review reports no findings for the final repair.
 The complete native security scan `7859574e-73bd-4af4-97e7-60fccb0cc7fc` retained one low-severity quadratic inventory finding.
 The subsequent indexed ancestor lookup and deterministic regression passed focused security scan `62b5c57d-0fcc-43ac-8a7e-11470c4c08dc` with no new findings; the original finding and proof remain preserved.

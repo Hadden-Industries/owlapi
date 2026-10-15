@@ -40,6 +40,50 @@ const isWithinEvidenceTree = (path, root) => {
 };
 
 describe("standalone source policy", () => {
+  it("retains native capture bytes through the Git index and a fresh checkout", () => {
+    const fixture = mkdtempSync(join(tmpdir(), "owlapi-native-capture-"));
+    const checkout = mkdtempSync(join(tmpdir(), "owlapi-native-checkout-"));
+    const paths = [
+      "docs/compatibility/profiles/java-owlapi-5.5.1/evidence/import-lookup-precedence-java.txt",
+      "docs/provenance/history-reconstruction/control/signature-trust-source.txt",
+    ];
+    const run = (args) =>
+      execFileSync(
+        "git",
+        ["-c", "core.autocrlf=true", "-C", fixture, ...args],
+        { windowsHide: true },
+      );
+    try {
+      run(["init", "--quiet"]);
+      writeFileSync(
+        join(fixture, ".gitattributes"),
+        readFileSync(join(repositoryRoot, ".gitattributes")),
+      );
+      for (const path of paths) {
+        mkdirSync(resolve(fixture, path, ".."), { recursive: true });
+        writeFileSync(
+          join(fixture, path),
+          readFileSync(join(repositoryRoot, path)),
+        );
+      }
+      run(["add", "."]);
+      run([
+        "checkout-index",
+        "--all",
+        "--prefix",
+        checkout.replaceAll("\\", "/") + "/",
+      ]);
+      for (const path of paths) {
+        const original = readFileSync(join(repositoryRoot, path));
+        expect(run(["show", ":" + path])).toEqual(original);
+        expect(readFileSync(join(checkout, path))).toEqual(original);
+      }
+    } finally {
+      rmSync(fixture, { recursive: true, force: true });
+      rmSync(checkout, { recursive: true, force: true });
+    }
+  });
+
   let eslint;
 
   beforeAll(async () => {
