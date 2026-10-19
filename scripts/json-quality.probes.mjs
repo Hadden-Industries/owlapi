@@ -40,6 +40,45 @@ test("empty arrays remain valid at the root and in ordinary object members", asy
   }
 });
 
+test("canonical format verification retains selection and bypasses only capacity controls", async (t) => {
+  const root = await mkdtemp(join(tmpdir(), "owlapi-json-interface-"));
+  t.after(() => rm(root, { recursive: true, force: true, maxRetries: 10 }));
+  execFileSync("git", ["init", "--quiet", root], { windowsHide: true });
+  await writeFile(
+    join(root, ".json-quality.json"),
+    JSON.stringify({
+      schemaVersion: 1,
+      defaults: {
+        formatContract: "prettier-json",
+        allowFormatWrites: true,
+        normalization: "NFC",
+      },
+      exceptions: [
+        {
+          paths: [".git/**", "**/node_modules/**"],
+          exclude: true,
+          owner: "Git and package manager",
+          reason: "External storage; tracked JSON retains checking.",
+        },
+      ],
+    }),
+  );
+  const original = '{"value":1.00e+2}';
+  await writeFile(join(root, "selected.json"), original);
+  const result = await runJsonQuality("format", {
+    root,
+    check: true,
+    files: ["selected.json"],
+    capacityLimits: false,
+  });
+  assert.equal(result.schemaVersion, 4);
+  assert.equal(result.operation, "format");
+  assert.equal(result.check, true);
+  assert.equal(result.status, "failed");
+  assert.deepEqual(result.writes.changed, []);
+  assert.equal(await readFile(join(root, "selected.json"), "utf8"), original);
+});
+
 test("owned release documents and every Java profile JSON receive full quality checks", async () => {
   const root = fileURLToPath(new URL("../", import.meta.url));
   const directory = "docs/compatibility/profiles/java-owlapi-5.5.1";

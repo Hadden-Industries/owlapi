@@ -1,5 +1,10 @@
 # OwlAPI shared JSON quality adoption implementation plan
 
+Consumer interface amendment, 19 October 2026: use the current [contributor JSON guidance](../../CONTRIBUTING.md) and the exact isolated manifest selector.
+Result schema 4 uses `format` with `check: true`, `check` with `scope: "protected"`, `files`, `formatJsonDocument` and `capacityLimits` with corresponding CLI names.
+Earlier separate API identities, result versions, dated pins and proof below remain historical adoption evidence and do not qualify this migration.
+Only focused checks are requested for this update.
+
 Status: **Implementation candidate complete; final verification and delivery are recorded separately.**
 
 Current owner amendments on 15 October 2026 supersede the initial proposal where stated:

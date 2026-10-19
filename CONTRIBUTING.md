@@ -100,6 +100,17 @@ Use `check:markdown` for full read-only Markdown checking, including formatting 
 Use `lint:js` and `lint:py` for separate static checks, and the source/Python/JSON `:check` formatting scripts for read-only presentation checks.
 For selected Markdown files, use `npm run check:markdown -- -- "docs/guide.md"` or `npm run check:markdown -- --files-json "[\"docs/guide.md\"]"`; the canonical CLI requires a literal `--` boundary or JSON selection.
 `lint:files` remains available for existing JavaScript callers.
+
+JSON tooling is installed separately with `npm run install:json`; its exact source selector lives in `tooling/json/package.json`, with a native npm lock and producer-generated acquisition bootstrap.
+`npm run format:json:check` delegates to `format --check`; protected checking is `npm run check:json -- --scope protected`.
+The API equivalents are `runJsonQuality("format", { check: true })` and `runJsonQuality("check", { scope: "protected" })`, with result schema 4.
+JSON file selection uses literal paths after `--` or `--files '["path.json"]'`, corresponding to API `files`; normalization requires a nonempty selection.
+Supplied-document formatting uses `format --request - --json` or `formatJsonDocument(request, options)`; `--check` / `check: true` retains original bytes.
+Policy and API resource overrides use `capacityLimits`; CLI `--no-capacity-limits` / API `false` disables every shared capacity check while retaining semantic and writer safeguards.
+Individual numeric overrides cannot be combined with that bypass.
+The generated bootstrap accepts `JSON_QUALITY_CAPACITY_LIMITS` and independent `JSON_QUALITY_CLEANUP` retry options.
+The JSON API names `check-format` / `check-protected`, `sourcePaths`, JSON CLI `--files-json` / `--stdin-request` / `--no-limits`, and export `processJsonDocument` are retired without aliases; Markdown's own CLI grammar is unchanged.
+
 On Node 22, use `format:source-python:check`, `lint:source-python`, and `test:quality:source` for the complete source/Python floor; Markdown checks require Node 24.
 The shared Markdown selector includes `.github/` and eligible untracked files, honours repository ignore rules, and rejects symlink and outside paths.
 
