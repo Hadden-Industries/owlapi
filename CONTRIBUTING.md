@@ -41,19 +41,19 @@ Development dependencies use stable `>=` minimums; `package-lock.json` records t
 Use `npm ci` to reproduce it and deliberately refresh the root lock only when upgrading tools.
 <!-- runtime-policy:start -->
 
-**Intended consumer support policy (qualification pending):**
+**Consumer support policy:**
 
 > Requires Node.js 22 or newer.
 > Official support covers the maintained Node.js release lines listed in our [support matrix](docs/release/runtime-policy.json).
 > Other releases receive best-effort support.
 
-Official support under this policy remains pending until the required installed-package and native-platform qualification passes.
-The current package engine admission range is `>=22.0.0 <23 || >=24.0.0 <25 || >=26.0.0 <27`; broadening it remains a separate metadata change after qualification.
+The package declares the engine admission range `>=22.0.0`.
+The maintained-family minimums of Node 22.0.0, 24.0.0 and 26.0.0 passed hosted installed-package and native-platform qualification; see the [qualification record](docs/release/node-consumer-qualification.md).
+Every release candidate still requires qualification of its own bytes and human release acceptance.
 
 Local npm eligibility is `>=12.2.0`; producer CI, release construction, and governed qualification select exact npm 12.2.0 before project commands or cache probes.
 Consumer runtime qualification separately selects exact npm 10.9.9, whose declared engines admit every consumer minimum; it does not lower the producer toolchain requirement.
-The development runtime remains versionless in `devEngines`; the public package declares consumer minimums of Node 22.0.0, 24.0.0 and 26.0.0 within their respective majors.
-These consumer minimums await installed-package and native-platform qualification.
+The development runtime remains versionless in `devEngines`; consumer admission is derived from the lowest maintained-family minimum, independently of producer toolchain requirements.
 The exact CI reference runtimes remain Node 22.23.3, 24.22.0 and 26.12.0; Node 24.22.0 is canonical.
 
 <!-- runtime-policy:end -->

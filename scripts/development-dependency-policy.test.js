@@ -7,6 +7,7 @@ import {
   CI_RUNTIME,
   consumerNodeRange,
   projectRuntimeText,
+  runtimeSemver,
 } from "./runtime-policy.mjs";
 
 const manifest = JSON.parse(readFileSync("package.json", "utf8"));
@@ -24,28 +25,41 @@ describe("development dependency and runtime eligibility", () => {
       ).toBe(true);
     }
   });
-  test.each(CI_RUNTIME.minimums)(
-    "consumer Node %s has closed family boundaries",
-    (minimum) => {
-      expect(manifest.engines.node).toBe(consumerNodeRange());
-      for (const version of [minimum, semver.inc(minimum, "patch")]) {
-        expect(semver.satisfies(version, manifest.engines.node)).toBe(true);
+  test("consumer admission has one floor without restricting supported families", () => {
+    const minimum = semver.sort([...CI_RUNTIME.minimums])[0];
+    expect(manifest.engines.node).toBe(consumerNodeRange());
+    const latestFamily = Math.max(...CI_RUNTIME.minimums.map(semver.major));
+    for (
+      let major = semver.major(minimum);
+      major <= latestFamily + 2;
+      major++
+    ) {
+      for (const version of [`${major}.0.0`, `${major}.999.999`]) {
+        const admitted = semver.gte(version, minimum);
+        expect(semver.satisfies(version, manifest.engines.node)).toBe(admitted);
+        expect(runtimeSemver.satisfies(version, manifest.engines.node)).toBe(
+          admitted,
+        );
       }
-      expect(semver.satisfies(`${minimum}-rc.1`, manifest.engines.node)).toBe(
+      expect(semver.satisfies(`${major}.0.0-rc.1`, manifest.engines.node)).toBe(
         false,
       );
-      expect(
-        semver.satisfies(semver.inc(minimum, "major"), manifest.engines.node),
-      ).toBe(false);
-      const { major, minor, patch } = semver.parse(minimum);
-      const below = patch
-        ? `${major}.${minor}.${patch - 1}`
-        : minor
-          ? `${major}.${minor - 1}.999`
-          : `${major - 1}.999.999`;
-      expect(semver.satisfies(below, manifest.engines.node)).toBe(false);
-    },
-  );
+    }
+    const { major, minor, patch } = semver.parse(minimum);
+    const below = patch
+      ? `${major}.${minor}.${patch - 1}`
+      : minor
+        ? `${major}.${minor - 1}.999`
+        : `${major - 1}.999.999`;
+    expect(semver.satisfies(below, manifest.engines.node)).toBe(false);
+    // Matrix order and higher-family floors cannot accidentally raise admission.
+    expect(
+      consumerNodeRange({
+        ...CI_RUNTIME,
+        minimums: ["26.1.0", "22.1.0", "24.2.0"],
+      }),
+    ).toBe(">=22.1.0");
+  });
   test("npm eligibility follows the local minimum independently of the reference", () => {
     const range = manifest.devEngines.packageManager.version;
     expect(range).toBe(projectRuntimeText("{{runtime:npmRange}}"));

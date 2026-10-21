@@ -63,15 +63,15 @@ Neither a bare `npm install owlapi` nor a future move to that registry name is p
 
 <!-- runtime-policy:start -->
 
-**Intended consumer support policy (qualification pending):**
+**Consumer support policy:**
 
 > Requires Node.js 22 or newer.
 > Official support covers the maintained Node.js release lines listed in our [support matrix](docs/release/runtime-policy.json).
 > Other releases receive best-effort support.
 
-Official support under this policy remains pending until the required installed-package and native-platform qualification passes.
-The candidate package currently declares the engine admission range `>=22.0.0 <23 || >=24.0.0 <25 || >=26.0.0 <27`; the broader intended policy does not change that range or establish qualification.
-The 22.0.0, 24.0.0 and 26.0.0 consumer minimums await installed-package and native-platform qualification.
+The package declares the engine admission range `>=22.0.0`.
+The maintained-family minimums of Node 22.0.0, 24.0.0 and 26.0.0 passed hosted installed-package and native-platform qualification; see the [qualification record](docs/release/node-consumer-qualification.md).
+Every release candidate still requires qualification of its own bytes and human release acceptance.
 Hosted qualification selects each family's exact minimum and latest released version, plus distinct reference versions, using one frozen matrix and one retained package archive.
 Node 24.22.0 is the selected canonical package producer.
 

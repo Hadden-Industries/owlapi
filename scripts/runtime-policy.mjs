@@ -1,4 +1,4 @@
-/** One editable version policy; consumer bounds and exact reference lanes are distinct. */
+/** One editable version policy; consumer admission and supported reference lanes are distinct. */
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
@@ -103,7 +103,7 @@ const nodeFamilyRange = (versions) =>
     .join(" || ");
 
 export const consumerNodeRange = (policy = CI_RUNTIME) =>
-  nodeFamilyRange(policy.minimums);
+  `>=${semver.sort([...policy.minimums])[0]}`;
 
 const versionList = (values) =>
   values.length < 2

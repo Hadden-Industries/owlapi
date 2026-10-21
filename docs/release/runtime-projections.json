@@ -26,7 +26,7 @@
           "obligation"
         ],
         "requirementId": "P19-NODE-FLOORS-001",
-        "template": "Consumer admission is projected from docs/release/runtime-policy.json into package.json engines.node, with declared minimums of Node {{runtime:minimums}} within those majors. Freeze the minimum, latest released patch and distinct reference for each policy family once per hosted qualification; require the same retained-tarball scoped/alias consumer contracts on every declared platform and product source behavior on Linux. Producer tools use exact reference runtimes {{runtime:referenceRange}} and npm {{runtime:npm}}; consumer qualification uses separately admitted npm {{runtime:consumerNpm}}. Each report binds actual Node/npm, OS/architecture, source, run/attempt, matrix digest and candidate bytes. These minimums await actual passing installed-package and native-platform evidence; tests and workflow dispatches remain deferred for this change. Preserve Node {{runtime:canonicalNode}} canonical production and Markdown/Java authority and upstream-support distinctions."
+        "template": "Consumer admission is projected from the lowest minimum in docs/release/runtime-policy.json into package.json engines.node as {{runtime:consumerRange}}. Official support covers the maintained policy families, with minimums of Node {{runtime:minimums}}; other releases receive best-effort support. Freeze the minimum, latest released patch and distinct reference for each policy family once per hosted qualification; require the same retained-tarball scoped/alias consumer contracts on every declared platform and product source behavior on Linux. Producer tools use exact reference runtimes {{runtime:referenceRange}} and npm {{runtime:npm}}; consumer qualification uses separately admitted npm {{runtime:consumerNpm}}. Each report binds actual Node/npm, OS/architecture, source, run/attempt, matrix digest and candidate bytes. Passing hosted evidence supporting the open-ended admission policy is recorded in docs/release/node-consumer-qualification.md; every release candidate still requires its own qualification. Preserve Node {{runtime:canonicalNode}} canonical production and Markdown/Java authority and upstream-support distinctions."
       },
       {
         "path": [
@@ -41,32 +41,32 @@
   },
   "documents": {
     "README.md": [
-      "**Intended consumer support policy (qualification pending):**",
+      "**Consumer support policy:**",
       "",
       "> Requires Node.js {{runtime:minimumNodeMajor}} or newer.",
       "> Official support covers the maintained Node.js release lines listed in our [support matrix](docs/release/runtime-policy.json).",
       "> Other releases receive best-effort support.",
       "",
-      "Official support under this policy remains pending until the required installed-package and native-platform qualification passes.",
-      "The candidate package currently declares the engine admission range `{{runtime:consumerRange}}`; the broader intended policy does not change that range or establish qualification.",
-      "The {{runtime:minimums}} consumer minimums await installed-package and native-platform qualification.",
+      "The package declares the engine admission range `{{runtime:consumerRange}}`.",
+      "The maintained-family minimums of Node {{runtime:minimums}} passed hosted installed-package and native-platform qualification; see the [qualification record](docs/release/node-consumer-qualification.md).",
+      "Every release candidate still requires qualification of its own bytes and human release acceptance.",
       "Hosted qualification selects each family's exact minimum and latest released version, plus distinct reference versions, using one frozen matrix and one retained package archive.",
       "Node {{runtime:canonicalNode}} is the selected canonical package producer."
     ],
     "CONTRIBUTING.md": [
-      "**Intended consumer support policy (qualification pending):**",
+      "**Consumer support policy:**",
       "",
       "> Requires Node.js {{runtime:minimumNodeMajor}} or newer.",
       "> Official support covers the maintained Node.js release lines listed in our [support matrix](docs/release/runtime-policy.json).",
       "> Other releases receive best-effort support.",
       "",
-      "Official support under this policy remains pending until the required installed-package and native-platform qualification passes.",
-      "The current package engine admission range is `{{runtime:consumerRange}}`; broadening it remains a separate metadata change after qualification.",
+      "The package declares the engine admission range `{{runtime:consumerRange}}`.",
+      "The maintained-family minimums of Node {{runtime:minimums}} passed hosted installed-package and native-platform qualification; see the [qualification record](docs/release/node-consumer-qualification.md).",
+      "Every release candidate still requires qualification of its own bytes and human release acceptance.",
       "",
       "Local npm eligibility is `{{runtime:npmRange}}`; producer CI, release construction, and governed qualification select exact npm {{runtime:npm}} before project commands or cache probes.",
       "Consumer runtime qualification separately selects exact npm {{runtime:consumerNpm}}, whose declared engines admit every consumer minimum; it does not lower the producer toolchain requirement.",
-      "The development runtime remains versionless in `devEngines`; the public package declares consumer minimums of Node {{runtime:minimums}} within their respective majors.",
-      "These consumer minimums await installed-package and native-platform qualification.",
+      "The development runtime remains versionless in `devEngines`; consumer admission is derived from the lowest maintained-family minimum, independently of producer toolchain requirements.",
       "The exact CI reference runtimes remain Node {{runtime:references}}; Node {{runtime:canonicalNode}} is canonical."
     ]
   },

@@ -37,9 +37,7 @@ describe("one runtime version authority", () => {
     const projected = projectNodeSupport(files, policy);
     const before = JSON.parse(files["package.json"]),
       after = JSON.parse(projected["package.json"]);
-    expect(after.engines.node).toBe(
-      ">=22.1.0 <23 || >=24.1.0 <25 || >=26.0.0 <27",
-    );
+    expect(after.engines.node).toBe(">=22.1.0");
     expect(after.dependencies).toEqual(before.dependencies);
     expect(after.devDependencies).toEqual(before.devDependencies);
     expect(after.devEngines.packageManager).toEqual(
