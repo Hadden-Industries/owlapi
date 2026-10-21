@@ -2702,6 +2702,9 @@ On 28 September 2026, the owner approved adding the existing `actions/setup-java
 This supersedes the six-Action limit; the selected-Action allowlist names only these seven repositories and the repository continues to require full-SHA references.
 The existing six repository patterns remain unchanged.
 The Java addition is restricted in repository settings to the exact `actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6` selector, not a wildcard.
+On 21 October 2026, PR #82's dependency refresh required adding the exact `actions/setup-java` commit selected by its CI and release workflows to this allowlist.
+The previous exact selector remains allowed while `main` still uses it; both selectors are immutable commits, and no Java wildcard is permitted.
+The repository policy was applied and read back through the selected-actions API after GitHub rejected the PR's first CI run at startup.
 Broad GitHub-owned and verified-publisher allowances remain disabled.
 Use GitHub's native [selected-actions API](https://docs.github.com/en/rest/actions/permissions#set-allowed-actions-and-reusable-workflows-for-a-repository) to apply and read back this policy; a local workflow validation pass does not prove that hosted execution is permitted.
 GitHub authorship does not exempt an Action from the immutable-pin rule.
