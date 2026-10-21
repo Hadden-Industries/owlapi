@@ -1,0 +1,170 @@
+{
+  "artifactId": "03e971b627f2e750bda1b91de0e60a8c4c5d199a93d8120c38b3310c1aea49e1",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 35993,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "25ba5c59dad3e0dd8f9540beaa0f0a86a10e3aec35af5fdc8e88c5f6a5c0d8c6",
+        "size": 728,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "feeb1f76eff5ad7da2567897a0f3227d1e775dd664316ee3fbda4e83ecebb5e1",
+        "size": 6327,
+        "type": "FILE"
+      },
+      {
+        "path": "package/chromium-versions.js",
+        "sha256": "1596e18a1c51bd4fe31f65bbf56d6f607c9f2fa1932a49fbe0bcb4c08d4abd84",
+        "size": 1431,
+        "type": "FILE"
+      },
+      {
+        "path": "package/chromium-versions.json",
+        "sha256": "4ccbec51c7fda2fe5c01e22ad61d950a14991632e59fbccc929e5ab897ee28b6",
+        "size": 1136,
+        "type": "FILE"
+      },
+      {
+        "path": "package/full-chromium-versions.js",
+        "sha256": "7e8215fa8f31d06d3bb7c1b41531bab5d8c8061e25c2dd8944cb13f7a8957366",
+        "size": 41131,
+        "type": "FILE"
+      },
+      {
+        "path": "package/full-chromium-versions.json",
+        "sha256": "f5a1032c74aa8b2c476229c1f438f6e80a1b987e8e42a0e1c37fbff0304fe85d",
+        "size": 32526,
+        "type": "FILE"
+      },
+      {
+        "path": "package/full-versions.js",
+        "sha256": "2b01a487a805f6d47f98c54cbaf245e11bb249fcb781df5e954a42182011a7a8",
+        "size": 59395,
+        "type": "FILE"
+      },
+      {
+        "path": "package/full-versions.json",
+        "sha256": "a8f5c47ee02c19bca8a19a3ca1d4db30dffbe02f7b1c82744441dc893a2d4561",
+        "size": 53550,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "c07cbb083eece52acb542c34f8a8985743706fd5a42da5aa86817b640d7e3cc0",
+        "size": 1204,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "31bbeeb49aabc72811297c92f42957854d2ad1465928e03001771dd4ecca4e59",
+        "size": 1021,
+        "type": "FILE"
+      },
+      {
+        "path": "package/versions.js",
+        "sha256": "6058ec67479c7f068647c235d59c6481ee550d70d8fcd9bbf57811755b40869c",
+        "size": 4413,
+        "type": "FILE"
+      },
+      {
+        "path": "package/versions.json",
+        "sha256": "ca316612bb5a3b0bd7ed3bc892383a823e41bc671e4991e67dd765cf8c95d8d0",
+        "size": 3548,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 728,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/25/25ba5c59dad3e0dd8f9540beaa0f0a86a10e3aec35af5fdc8e88c5f6a5c0d8c6",
+          "sha256": "25ba5c59dad3e0dd8f9540beaa0f0a86a10e3aec35af5fdc8e88c5f6a5c0d8c6"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "25ba5c59dad3e0dd8f9540beaa0f0a86a10e3aec35af5fdc8e88c5f6a5c0d8c6",
+        "size": 728
+      },
+      {
+        "blob": {
+          "bytes": 6327,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/fe/feeb1f76eff5ad7da2567897a0f3227d1e775dd664316ee3fbda4e83ecebb5e1",
+          "sha256": "feeb1f76eff5ad7da2567897a0f3227d1e775dd664316ee3fbda4e83ecebb5e1"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "feeb1f76eff5ad7da2567897a0f3227d1e775dd664316ee3fbda4e83ecebb5e1",
+        "size": 6327
+      }
+    ],
+    "expandedBytes": 206410,
+    "packageIdentity": {
+      "author": "Kilian Valkhof",
+      "homepage": null,
+      "license": "ISC",
+      "name": "electron-to-chromium",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Kilian/electron-to-chromium.git"
+      },
+      "version": "1.5.462"
+    },
+    "packageMetadata": {
+      "author": "Kilian Valkhof",
+      "description": "Provides a list of electron-to-chromium version mappings",
+      "devDependencies": {
+        "ava": "^7.0.0",
+        "compare-versions": "^6.1.1",
+        "node-fetch": "^3.3.2",
+        "nyc": "^18.0.0",
+        "shelljs": "^0.10.0"
+      },
+      "files": [
+        "versions.js",
+        "full-versions.js",
+        "chromium-versions.js",
+        "full-chromium-versions.js",
+        "versions.json",
+        "full-versions.json",
+        "chromium-versions.json",
+        "full-chromium-versions.json",
+        "LICENSE"
+      ],
+      "keywords": [
+        "electron",
+        "chrome",
+        "chromium",
+        "browserslist",
+        "browserlist"
+      ],
+      "license": "ISC",
+      "main": "index.js",
+      "name": "electron-to-chromium",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Kilian/electron-to-chromium.git"
+      },
+      "scripts": {
+        "build": "node build.mjs",
+        "report": "nyc report --reporter=text-lcov > coverage.lcov",
+        "test": "nyc ava --verbose",
+        "update": "node automated-update.js"
+      },
+      "version": "1.5.462"
+    },
+    "physicalEntryCount": 12,
+    "tarball": {
+      "bytes": 35993,
+      "sha256": "c3e00c848dc212d49e182dac62f1fc772a5f12598045db6622d0466e3e3f38e8"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

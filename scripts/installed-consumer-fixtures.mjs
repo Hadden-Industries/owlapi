@@ -54,6 +54,36 @@ export const writeInstalledConsumerFixtures = (
   if (!["owlapi", PACKAGE_NAME].includes(dependencyName))
     throw new Error("Unexpected fixture dependency name.");
   mkdirSync(join(directory, "import-closure"));
+  // Transport independently captured Java archive vectors, never a decoder-built oracle.
+  const observations = JSON.parse(
+    readFileSync(
+      new URL(
+        "../docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+  ).observations;
+  const zipVectors = observations
+    .find(({ probeId }) => probeId === "ObserveCompressionContracts")
+    .stdout.trimEnd()
+    .split("\n")
+    .map((line) => line.split("\t"))
+    .filter(([name]) => ["zip-first", "zip-stored", "zip-crc"].includes(name))
+    .map(([name, suffix, encoding, disposition, base64, outcome]) => ({
+      name,
+      suffix,
+      encoding,
+      disposition,
+      base64,
+      outcome,
+    }));
+  if (zipVectors.length !== 3)
+    throw new Error("Missing independent installed ZIP vectors");
+  writeFileSync(
+    join(directory, "compression-vectors.json"),
+    `${JSON.stringify(zipVectors, null, 2)}\n`,
+  );
   // Both source bridges and transported fixtures use the one pure encoder.
   copyFileSync(
     fileURLToPath(new URL("./canonical-json.mjs", import.meta.url)),

@@ -15,7 +15,6 @@ import {
   stableJson,
   verifySha512Sri,
 } from "./third-party-evidence/digests.mjs";
-import { normalizeLockedRegistryGraph } from "./third-party-evidence/lock-graph.mjs";
 import {
   buildScancodeArguments,
   normalizeScancodeReport,
@@ -108,17 +107,17 @@ export async function qualifyScancodeRuntime({
   const lockfileBytes = await readFile(
     join(repositoryRoot, "package-lock.json"),
   );
-  const graph = normalizeLockedRegistryGraph(lockfileBytes);
   const expectedN3 = baseline.cases.find(({ id }) => id === "n3");
-  const identity = graph.artifacts.find(
-    ({ name, version, integrity }) =>
-      name === expectedN3.name &&
-      version === expectedN3.version &&
-      integrity === expectedN3.integrity,
-  );
-  if (!identity)
+  // Scanner qualification compares a frozen independent oracle. Application
+  // dependency upgrades must not replace its exact package bytes or findings.
+  const identity = expectedN3.packageArtifact;
+  if (
+    identity?.name !== expectedN3.name ||
+    identity.version !== expectedN3.version ||
+    identity.integrity !== expectedN3.integrity
+  )
     throw new Error(
-      "Locked N3 identity differs from the reviewed scanner qualification baseline",
+      "Frozen N3 artifact differs from the reviewed scanner qualification baseline",
     );
   const tarball = join(inputs, "n3.tgz");
   await downloadLockedRegistryTarball({

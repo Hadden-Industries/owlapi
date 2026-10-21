@@ -108,9 +108,11 @@ describe("standalone source policy", () => {
     ).toBe(true);
   });
 
-  it("keeps generated Markdown and retained evidence out of editor and CLI lint/format scope", async () => {
+  it("keeps authored and generated Markdown out of generic lint/format scope", async () => {
     const ignorePath = resolve(repositoryRoot, ".prettierignore");
     for (const name of [
+      "README.md",
+      ".github/pull_request_template.md",
       "API.md",
       "docs/compatibility/java-api-surface.md",
       "docs/conformance/upstream/w3c-rdf-tests/LICENSE.md",
@@ -125,10 +127,11 @@ describe("standalone source policy", () => {
       expect(await eslint.isPathIgnored(path)).toBe(true);
     }
     expect(
-      await eslint.isPathIgnored(
-        resolve(repositoryRoot, ".github/pull_request_template.md"),
+      await prettier.getFileInfo(
+        resolve(repositoryRoot, ".github/workflows/ci.yml"),
+        { ignorePath },
       ),
-    ).toBe(true);
+    ).toMatchObject({ ignored: false, inferredParser: "yaml" });
   });
 
   it("normalizes first-party text to LF without rewriting pinned upstream bytes", () => {

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "scope": "Development-only installed Windows x64 ScanCode and build graph on Python 3.15.0; metadata declarations are not legal conclusions or owner approval. Platform-specific Linux distributions remain subject to their native qualification and terms.",
-  "lockSha256": "bf6780a685b0e9cb75e93f3b0d2581d199d2adef9a0f6652bacde14b7529fd3a",
+  "lockSha256": "7cd656bcc5a45134ef2509c210e0b203be1cd854eaf71a82dbc66cd39c15f006",
   "components": [
     {
       "name": "attrs",
@@ -45,7 +45,7 @@
     },
     {
       "name": "beartype",
-      "version": "0.23.0rc2",
+      "version": "0.23.1",
       "declaredLicenseExpression": "MIT",
       "declaredLicense": null,
       "licenseClassifiers": [
@@ -61,7 +61,7 @@
       "noticeEvidenceStatus": "RETAINED",
       "notices": [
         {
-          "path": "LICENSES/development/scancode-runtime/beartype-0.23.0rc2/licenses/LICENSE",
+          "path": "LICENSES/development/scancode-runtime/beartype-0.23.1/licenses/LICENSE",
           "sha256": "c7d3148ab7a1e87f643e7a79b15e933b6d41fe50d723341226c5188f2e227938"
         }
       ]
@@ -113,7 +113,7 @@
       ]
     },
     {
-      "name": "boolean.py",
+      "name": "boolean-py",
       "version": "5.0",
       "declaredLicenseExpression": null,
       "declaredLicense": "BSD-2-Clause",
@@ -122,14 +122,22 @@
       "noticeEvidenceStatus": "RETAINED",
       "notices": [
         {
-          "path": "LICENSES/development/scancode-runtime/boolean.py-5.0/licenses/LICENSE.txt",
+          "path": "LICENSES/development/scancode-runtime/boolean-py-5.0/licenses/CHANGELOG.rst",
+          "sha256": "668591601989e0845d728db39fdcbf005323965b1a0db7580988da78e163c519"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/boolean-py-5.0/licenses/LICENSE.txt",
           "sha256": "5ea0cdf8cfc824b446cccf597ff6518c3607a659e9804bc75f1261f9c6ac4ada"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/boolean-py-5.0/licenses/README.rst",
+          "sha256": "c159099ed4ae91ff7e1ba43e52f7bef5fab963deeae47e4d6a2ec6fd73ea4cbb"
         }
       ]
     },
     {
       "name": "certifi",
-      "version": "2026.7.22",
+      "version": "2026.10.19",
       "declaredLicenseExpression": null,
       "declaredLicense": "MPL-2.0",
       "licenseClassifiers": [
@@ -141,7 +149,7 @@
       "noticeEvidenceStatus": "RETAINED",
       "notices": [
         {
-          "path": "LICENSES/development/scancode-runtime/certifi-2026.7.22/licenses/LICENSE",
+          "path": "LICENSES/development/scancode-runtime/certifi-2026.10.19/licenses/LICENSE",
           "sha256": "e93716da6b9c0d5a4a1df60fe695b370f0695603d21f6f83f053e42cfc10caf7"
         }
       ]
@@ -170,7 +178,7 @@
     },
     {
       "name": "chardet",
-      "version": "7.6.0",
+      "version": "7.7.0",
       "declaredLicenseExpression": "0BSD",
       "declaredLicense": null,
       "licenseClassifiers": [],
@@ -184,7 +192,7 @@
       "noticeEvidenceStatus": "RETAINED",
       "notices": [
         {
-          "path": "LICENSES/development/scancode-runtime/chardet-7.6.0/licenses/LICENSE",
+          "path": "LICENSES/development/scancode-runtime/chardet-7.7.0/licenses/LICENSE",
           "sha256": "0517f574b0183d991eb7a9ec5dbf0add8d8ade5ac00341bd28ca0c18914d52e5"
         }
       ]
@@ -267,6 +275,14 @@
         {
           "path": "LICENSES/development/scancode-runtime/commoncode-33.0.0/NOTICE",
           "sha256": "9049f9f2fca9ff13140af12a552d015fda6d4db09ae38e5a0323d73f69874691"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/commoncode-33.0.0/apache-2.0.LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/commoncode-33.0.0/cc-by-4.0.LICENSE",
+          "sha256": "2a82ac9bbc3e3ee066908381e8d373896db5a6025d083fbd59692fe9ccfb9111"
         }
       ]
     },
@@ -284,8 +300,24 @@
           "sha256": "3861effd5a916b869622b70aa274a233bb4921c091f37e9c587d6e7527d49f51"
         },
         {
+          "path": "LICENSES/development/scancode-runtime/container-inspector-33.1.0/licenses/CHANGELOG.rst",
+          "sha256": "c2fa7ba04267b19faaed2ab9812b5008b7b53ef5e92abcb78c41637481211cb9"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/container-inspector-33.1.0/licenses/CODE_OF_CONDUCT.rst",
+          "sha256": "c570d3169618dd8ec9a31ad60038a189e52f84697025cfe8c6c6e62c9681bc4e"
+        },
+        {
           "path": "LICENSES/development/scancode-runtime/container-inspector-33.1.0/licenses/NOTICE",
           "sha256": "789e0f0a63a4b7c8101539a9996cf43993d8bee5b45be32988aa56db9ed6932c"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/container-inspector-33.1.0/licenses/README.rst",
+          "sha256": "dbafb3c868794b5941a3f4eb2cd51ba514ae54a85a32241ab6c6268ef298700a"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/container-inspector-33.1.0/licenses/apache-2.0.LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
         }
       ]
     },
@@ -332,13 +364,29 @@
           "sha256": "d4cb271ba5897b8a7d3daff21cf803258986d61e36e14808d52de635fe81e872"
         },
         {
+          "path": "LICENSES/development/scancode-runtime/cyseq-0.1.3/licenses/CHANGELOG.rst",
+          "sha256": "28bd2534ef43bb92487b838e70b75c4c9a4fd617d954aabfa60b53e551169848"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/cyseq-0.1.3/licenses/CODE_OF_CONDUCT.rst",
+          "sha256": "c570d3169618dd8ec9a31ad60038a189e52f84697025cfe8c6c6e62c9681bc4e"
+        },
+        {
           "path": "LICENSES/development/scancode-runtime/cyseq-0.1.3/licenses/NOTICE",
           "sha256": "7e42c8973c8ff3358d9cf6c5497913227360625df94c71f9f89f2f30ab8dce17"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/cyseq-0.1.3/licenses/README.rst",
+          "sha256": "6c9d5b74c1ebc7419597cb59674307b3026f3977ddeb0b2bedffe93e1814740c"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/cyseq-0.1.3/licenses/apache-2.0.LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
         }
       ]
     },
     {
-      "name": "Cython",
+      "name": "cython",
       "version": "3.3.0",
       "declaredLicenseExpression": null,
       "declaredLicense": "Apache-2.0",
@@ -354,7 +402,7 @@
       "notices": []
     },
     {
-      "name": "debian_inspector",
+      "name": "debian-inspector",
       "version": "31.1.1",
       "declaredLicenseExpression": null,
       "declaredLicense": "Apache-2.0 AND BSD-3-Clause AND MIT",
@@ -363,8 +411,24 @@
       "noticeEvidenceStatus": "RETAINED",
       "notices": [
         {
-          "path": "LICENSES/development/scancode-runtime/debian_inspector-31.1.1/licenses/NOTICE",
+          "path": "LICENSES/development/scancode-runtime/debian-inspector-31.1.1/licenses/CHANGELOG.rst",
+          "sha256": "864e9286d594df780a593a44833ab16e73e1834f4fce2044cedce7e20f8fa75b"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/debian-inspector-31.1.1/licenses/CODE_OF_CONDUCT.rst",
+          "sha256": "c570d3169618dd8ec9a31ad60038a189e52f84697025cfe8c6c6e62c9681bc4e"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/debian-inspector-31.1.1/licenses/NOTICE",
           "sha256": "7154f05497644992988a93cac79642ec32042b25f23ed354af6e91438ee13ace"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/debian-inspector-31.1.1/licenses/README.rst",
+          "sha256": "9aae2f6c336124cffa9d997ebaa0628fb1e1797ec127b6478e9a9608aed5f356"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/debian-inspector-31.1.1/licenses/apache-2.0.LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
         }
       ]
     },
@@ -416,8 +480,24 @@
           "sha256": "d382beb1729f6cd96b3edfe1f2869959dbf58d68074950cb442a67797660f1d6"
         },
         {
+          "path": "LICENSES/development/scancode-runtime/extractcode-31.1.0/licenses/CHANGELOG.rst",
+          "sha256": "ce6c596d2ab7ab89e71c702aae00157876297d8f001beb75be6cb042df1022d3"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/extractcode-31.1.0/licenses/CODE_OF_CONDUCT.rst",
+          "sha256": "c570d3169618dd8ec9a31ad60038a189e52f84697025cfe8c6c6e62c9681bc4e"
+        },
+        {
           "path": "LICENSES/development/scancode-runtime/extractcode-31.1.0/licenses/NOTICE",
           "sha256": "8199b74243a038451b2aa631be7b6629c837f88b4f085ec9c15ffb15dd0e8a92"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/extractcode-31.1.0/licenses/README.rst",
+          "sha256": "3201bafc4a4dc78f5a5f3df76a9330f6f87d6fd64833ca1c6c43e646573f3d17"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/extractcode-31.1.0/licenses/apache-2.0.LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
         }
       ]
     },
@@ -433,6 +513,10 @@
         {
           "path": "LICENSES/development/scancode-runtime/extractcode-7z-16.5.210531/LICENSE.txt",
           "sha256": "0974bb5addc6e06c48911f8a292f7eb3b48f552073c5255ee9d70713d556f87f"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/extractcode-7z-16.5.210531/apache-2.0.LICENSE",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
         }
       ]
     },
@@ -448,6 +532,10 @@
         {
           "path": "LICENSES/development/scancode-runtime/extractcode-libarchive-3.5.1.210531/LICENSE.txt",
           "sha256": "0dc6e562c11953ebb0d30cb2c64ba8d242ef468dfba490d6e139af32b27d57cf"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/extractcode-libarchive-3.5.1.210531/apache-2.0.LICENSE",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
         }
       ]
     },
@@ -567,7 +655,7 @@
       ]
     },
     {
-      "name": "importlib_metadata",
+      "name": "importlib-metadata",
       "version": "9.0.1",
       "declaredLicenseExpression": "Apache-2.0",
       "declaredLicense": null,
@@ -578,7 +666,7 @@
       "noticeEvidenceStatus": "RETAINED",
       "notices": [
         {
-          "path": "LICENSES/development/scancode-runtime/importlib_metadata-9.0.1/licenses/LICENSE",
+          "path": "LICENSES/development/scancode-runtime/importlib-metadata-9.0.1/licenses/LICENSE",
           "sha256": "e2f7bb0557e7a381499f15baa7c1d776d83d6616599179d71d3109b8e39f7b25"
         }
       ]
@@ -599,13 +687,21 @@
           "sha256": "eedb5b6435d9acb35d676edcbec7c9ef0980ccd1561f5ce6a9e30a7b22348589"
         },
         {
+          "path": "LICENSES/development/scancode-runtime/intbitset-4.1.2/licenses/CHANGELOG.rst",
+          "sha256": "3bc173ffcc2f75b4c358341c8b0a5c98a29061e56a05e3dc69b9a9354ff87f32"
+        },
+        {
           "path": "LICENSES/development/scancode-runtime/intbitset-4.1.2/licenses/LICENSE",
           "sha256": "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/intbitset-4.1.2/licenses/README.rst",
+          "sha256": "e0e92ca2102b0e421169f381a7cdeeae8a1558ae98f9ac7fe476ebfa3917f885"
         }
       ]
     },
     {
-      "name": "jaraco.functools",
+      "name": "jaraco-functools",
       "version": "4.6.0",
       "declaredLicenseExpression": "MIT",
       "declaredLicense": null,
@@ -616,7 +712,7 @@
       "noticeEvidenceStatus": "RETAINED",
       "notices": [
         {
-          "path": "LICENSES/development/scancode-runtime/jaraco.functools-4.6.0/licenses/LICENSE",
+          "path": "LICENSES/development/scancode-runtime/jaraco-functools-4.6.0/licenses/LICENSE",
           "sha256": "9755a18519666e5f0f4cae3daad3d7012bcae48a600b31237d75e9fe134e6683"
         }
       ]
@@ -643,7 +739,7 @@
       ]
     },
     {
-      "name": "Jinja2",
+      "name": "jinja2",
       "version": "3.1.6",
       "declaredLicenseExpression": null,
       "declaredLicense": null,
@@ -696,8 +792,24 @@
           "sha256": "d281b77e2e6dd089de830c623cf1c31e029d8232d0bd762005bf69bd5417f8e9"
         },
         {
+          "path": "LICENSES/development/scancode-runtime/license-expression-30.4.4/licenses/CHANGELOG.rst",
+          "sha256": "5c150f030597fda082ef81788fa6981d9993ed0a85de5f3d69ab3f316b405515"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/license-expression-30.4.4/licenses/CODE_OF_CONDUCT.rst",
+          "sha256": "c570d3169618dd8ec9a31ad60038a189e52f84697025cfe8c6c6e62c9681bc4e"
+        },
+        {
           "path": "LICENSES/development/scancode-runtime/license-expression-30.4.4/licenses/NOTICE",
           "sha256": "ef97db07e32f6e5d34363461acf5acc7d72db924533bce3d9f3b87046313363c"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/license-expression-30.4.4/licenses/README.rst",
+          "sha256": "0b11cadafb5e34444e3bea9d3af608f89354a058bb46e91158f7280376c03bfb"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/license-expression-30.4.4/licenses/apache-2.0.LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
         }
       ]
     },
@@ -724,7 +836,7 @@
       ]
     },
     {
-      "name": "MarkupSafe",
+      "name": "markupsafe",
       "version": "3.0.4",
       "declaredLicenseExpression": "BSD-3-Clause",
       "declaredLicense": null,
@@ -746,7 +858,7 @@
     },
     {
       "name": "more-itertools",
-      "version": "11.1.0",
+      "version": "11.2.1",
       "declaredLicenseExpression": "MIT",
       "declaredLicense": null,
       "licenseClassifiers": [],
@@ -757,7 +869,7 @@
       "noticeEvidenceStatus": "RETAINED",
       "notices": [
         {
-          "path": "LICENSES/development/scancode-runtime/more-itertools-11.1.0/licenses/LICENSE",
+          "path": "LICENSES/development/scancode-runtime/more-itertools-11.2.1/licenses/LICENSE",
           "sha256": "09f1c8c9e941af3e584d59641ea9b87d83c0cb0fd007eb5ef391a7e2643c1a46"
         }
       ]
@@ -882,7 +994,7 @@
       ]
     },
     {
-      "name": "pdfminer.six",
+      "name": "pdfminer-six",
       "version": "20260107",
       "declaredLicenseExpression": "MIT",
       "declaredLicense": null,
@@ -893,7 +1005,7 @@
       "noticeEvidenceStatus": "RETAINED",
       "notices": [
         {
-          "path": "LICENSES/development/scancode-runtime/pdfminer.six-20260107/licenses/LICENSE",
+          "path": "LICENSES/development/scancode-runtime/pdfminer-six-20260107/licenses/LICENSE",
           "sha256": "f01e5d699a33766b5caf4a5099f2856aba4f3f75ea1df05dc0572b34b4bea8f2"
         }
       ]
@@ -925,6 +1037,10 @@
         {
           "path": "LICENSES/development/scancode-runtime/pip-requirements-parser-32.0.1/AUTHORS.rst",
           "sha256": "b25584f1e37242efa242a0f096c581892e1e4b910b992c510a4531110edbcb6f"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/pip-requirements-parser-32.0.1/mit.LICENSE",
+          "sha256": "18081c2c82771ca09d99d08cdac405924309e09fd19b16f1eea59cbc6ab809ed"
         }
       ]
     },
@@ -935,8 +1051,25 @@
       "declaredLicense": "MIT",
       "licenseClassifiers": [],
       "projectUrls": [],
-      "noticeEvidenceStatus": "NOT_PROVIDED_BY_INSTALLED_DISTRIBUTION",
-      "notices": []
+      "noticeEvidenceStatus": "RETAINED",
+      "notices": [
+        {
+          "path": "LICENSES/development/scancode-runtime/pkginfo2-30.1.0/licenses/CHANGELOG.rst",
+          "sha256": "1164d69ae81b1815c1bf691bb34f824fea285f6de850060ae3b79e2648ec64d2"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/pkginfo2-30.1.0/licenses/CODE_OF_CONDUCT.rst",
+          "sha256": "c570d3169618dd8ec9a31ad60038a189e52f84697025cfe8c6c6e62c9681bc4e"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/pkginfo2-30.1.0/licenses/README.rst",
+          "sha256": "1c01a99814265a9a9096c1c64dbfb53734dbf7bfeba9f36c3e882e655d203360"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/pkginfo2-30.1.0/licenses/mit.LICENSE",
+          "sha256": "08ea83077299fd21f6a14a1c9ba90da7d66162b6506d07c4471c4096ad8f1cd8"
+        }
+      ]
     },
     {
       "name": "pluggy",
@@ -971,6 +1104,10 @@
         {
           "path": "LICENSES/development/scancode-runtime/plugincode-32.0.0/NOTICE",
           "sha256": "e8ac8caca8845cdf00386e7ea7a040ca04da6b1296596038dc37c59b67552ee8"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/plugincode-32.0.0/apache-2.0.LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
         }
       ]
     },
@@ -1048,13 +1185,29 @@
           "sha256": "25901b8d88623da33971a70575a5ad5aa2ad480aefe9756f34b670dfb3f7cdb8"
         },
         {
+          "path": "LICENSES/development/scancode-runtime/pygmars-1.0.0/licenses/CHANGELOG.rst",
+          "sha256": "0944077ba72305aefe6133536ef6f104031d1cada9be7a2727bc799551129a13"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/pygmars-1.0.0/licenses/CODE_OF_CONDUCT.rst",
+          "sha256": "c570d3169618dd8ec9a31ad60038a189e52f84697025cfe8c6c6e62c9681bc4e"
+        },
+        {
           "path": "LICENSES/development/scancode-runtime/pygmars-1.0.0/licenses/NOTICE",
           "sha256": "6a10004abf53332291041e087839a86aec798b4ae4ad3b7511ac13545aeb104b"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/pygmars-1.0.0/licenses/README.rst",
+          "sha256": "0a3f7b1713d4ed866d8d362ac6246c79bc1dc5dd5159f4420e8bb33b17c6c40a"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/pygmars-1.0.0/licenses/apache-2.0.LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
         }
       ]
     },
     {
-      "name": "Pygments",
+      "name": "pygments",
       "version": "2.21.0",
       "declaredLicenseExpression": "BSD-2-Clause",
       "declaredLicense": null,
@@ -1113,7 +1266,7 @@
       ]
     },
     {
-      "name": "PyYAML",
+      "name": "pyyaml",
       "version": "6.0.3",
       "declaredLicenseExpression": null,
       "declaredLicense": "MIT",
@@ -1195,6 +1348,10 @@
         {
           "path": "LICENSES/development/scancode-runtime/saneyaml-0.6.1/NOTICE",
           "sha256": "7e42c8973c8ff3358d9cf6c5497913227360625df94c71f9f89f2f30ab8dce17"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/saneyaml-0.6.1/apache-2.0.LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
         }
       ]
     },
@@ -1208,12 +1365,40 @@
       "noticeEvidenceStatus": "RETAINED",
       "notices": [
         {
+          "path": "LICENSES/development/scancode-runtime/scancode-toolkit-32.5.0/licensedcode/_vendor/attrs-21.4.0.dist-info/AUTHORS.rst",
+          "sha256": "c2ca8235b1b3fe6925709aede7800f2191d9a684c824b917a848619f835df217"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/scancode-toolkit-32.5.0/licensedcode/_vendor/attrs-21.4.0.dist-info/LICENSE",
+          "sha256": "bf659a28b49240602f56bbdf490cbe2ec509b15b98f99d7b19a52c740e327863"
+        },
+        {
           "path": "LICENSES/development/scancode-runtime/scancode-toolkit-32.5.0/licenses/AUTHORS.rst",
           "sha256": "516c69e136229518d9825e9f3332e24ea0610988ddcc0fae32ab8bfd15d878cb"
         },
         {
+          "path": "LICENSES/development/scancode-runtime/scancode-toolkit-32.5.0/licenses/CHANGELOG.rst",
+          "sha256": "14468c4b6d474659506913e5991c2dbf3931efb4b4575bdea7e52b7b6a30551c"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/scancode-toolkit-32.5.0/licenses/CODE_OF_CONDUCT.rst",
+          "sha256": "c570d3169618dd8ec9a31ad60038a189e52f84697025cfe8c6c6e62c9681bc4e"
+        },
+        {
           "path": "LICENSES/development/scancode-runtime/scancode-toolkit-32.5.0/licenses/NOTICE",
           "sha256": "9049f9f2fca9ff13140af12a552d015fda6d4db09ae38e5a0323d73f69874691"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/scancode-toolkit-32.5.0/licenses/README.rst",
+          "sha256": "42b61766016a3ca17eb84daaeaf9ee4e70cc59eb537a62c67746fd2e9cce9ba1"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/scancode-toolkit-32.5.0/licenses/apache-2.0.LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/scancode-toolkit-32.5.0/licenses/cc-by-4.0.LICENSE",
+          "sha256": "2a82ac9bbc3e3ee066908381e8d373896db5a6025d083fbd59692fe9ccfb9111"
         }
       ]
     },
@@ -1236,7 +1421,7 @@
     },
     {
       "name": "setuptools",
-      "version": "84.0.0",
+      "version": "84.2.1",
       "declaredLicenseExpression": "MIT",
       "declaredLicense": null,
       "licenseClassifiers": [],
@@ -1248,8 +1433,64 @@
       "noticeEvidenceStatus": "RETAINED",
       "notices": [
         {
-          "path": "LICENSES/development/scancode-runtime/setuptools-84.0.0/licenses/LICENSE",
+          "path": "LICENSES/development/scancode-runtime/setuptools-84.2.1/licenses/LICENSE",
           "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/setuptools-84.2.1/setuptools/_vendor/autocommand-2.2.2.dist-info/LICENSE",
+          "sha256": "ade78d04982d69972d444a8e14a94f87a2334dd3855cc80348ea8e240aa0df2d"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/setuptools-84.2.1/setuptools/_vendor/backports.tarfile-1.2.0.dist-info/LICENSE",
+          "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/setuptools-84.2.1/setuptools/_vendor/importlib_metadata-8.7.1.dist-info/licenses/LICENSE",
+          "sha256": "458502e12d97bbf64438606a20044aa85eb05fb0a8a807bb35dbec253fd1fc04"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/setuptools-84.2.1/setuptools/_vendor/jaraco.text-4.0.0.dist-info/LICENSE",
+          "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/setuptools-84.2.1/setuptools/_vendor/jaraco_context-6.1.0.dist-info/licenses/LICENSE",
+          "sha256": "9755a18519666e5f0f4cae3daad3d7012bcae48a600b31237d75e9fe134e6683"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/setuptools-84.2.1/setuptools/_vendor/jaraco_functools-4.4.0.dist-info/licenses/LICENSE",
+          "sha256": "5a57cb4db85e2a2dd88c290628908add57e3451449e0a9a71fdfb38776fd759d"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/setuptools-84.2.1/setuptools/_vendor/more_itertools-10.8.0.dist-info/licenses/LICENSE",
+          "sha256": "09f1c8c9e941af3e584d59641ea9b87d83c0cb0fd007eb5ef391a7e2643c1a46"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/setuptools-84.2.1/setuptools/_vendor/packaging-26.3.dist-info/licenses/LICENSE",
+          "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/setuptools-84.2.1/setuptools/_vendor/packaging-26.3.dist-info/licenses/LICENSE.APACHE",
+          "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/setuptools-84.2.1/setuptools/_vendor/packaging-26.3.dist-info/licenses/LICENSE.BSD",
+          "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/setuptools-84.2.1/setuptools/_vendor/platformdirs-4.4.0.dist-info/licenses/LICENSE",
+          "sha256": "29e0fd62e929850e86eb28c3fdccf0cefdf4fa94879011cffb3d0d4bed6d4db6"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/setuptools-84.2.1/setuptools/_vendor/tomli-2.4.0.dist-info/licenses/LICENSE",
+          "sha256": "b80816b0d530b8accb4c2211783790984a6e3b61922c2b5ee92f3372ab2742fe"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/setuptools-84.2.1/setuptools/_vendor/wheel-0.46.3.dist-info/licenses/LICENSE.txt",
+          "sha256": "30c23618679108f3e8ea1d2a658c7ca417bdfc891c98ef1a89fa4ff0c9828654"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/setuptools-84.2.1/setuptools/_vendor/zipp-3.23.0.dist-info/licenses/LICENSE",
+          "sha256": "5a57cb4db85e2a2dd88c290628908add57e3451449e0a9a71fdfb38776fd759d"
         }
       ]
     },
@@ -1290,7 +1531,7 @@
     },
     {
       "name": "soupsieve",
-      "version": "2.10",
+      "version": "3.0.3",
       "declaredLicenseExpression": "MIT",
       "declaredLicense": null,
       "licenseClassifiers": [
@@ -1302,7 +1543,7 @@
       "noticeEvidenceStatus": "RETAINED",
       "notices": [
         {
-          "path": "LICENSES/development/scancode-runtime/soupsieve-2.10/licenses/LICENSE.md",
+          "path": "LICENSES/development/scancode-runtime/soupsieve-3.0.3/licenses/LICENSE.md",
           "sha256": "76a0acdb98c3a63681e20b6f096699ef8cad5fb35d56eef8387e0fa71d797a9a"
         }
       ]
@@ -1376,8 +1617,24 @@
           "sha256": "e18095637f625a3d2dd4410fadd74ea9e5dda01c88af843d09b315e0e5835cac"
         },
         {
+          "path": "LICENSES/development/scancode-runtime/typecode-30.2.0/licenses/CHANGELOG.rst",
+          "sha256": "d31e04a97d34fd668c8a4e71c04458500cceedffc02cb50736d18aeb458ad3ac"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-30.2.0/licenses/CODE_OF_CONDUCT.rst",
+          "sha256": "c570d3169618dd8ec9a31ad60038a189e52f84697025cfe8c6c6e62c9681bc4e"
+        },
+        {
           "path": "LICENSES/development/scancode-runtime/typecode-30.2.0/licenses/NOTICE",
           "sha256": "112b2342eba22f3558bcf26c48d34bded65df3c4c9974c17d3117c374553976f"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-30.2.0/licenses/README.rst",
+          "sha256": "0af9af9ee4a31cdda5b23a23cb85e8edbf6959cfabdfcd4565a5abf1b28755be"
+        },
+        {
+          "path": "LICENSES/development/scancode-runtime/typecode-30.2.0/licenses/apache-2.0.LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
         }
       ]
     },
@@ -1391,113 +1648,45 @@
       "noticeEvidenceStatus": "RETAINED",
       "notices": [
         {
-          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/bzip2/LICENSE",
-          "sha256": "c6dbbf828498be844a89eaa3b84adbab3199e342eb5cb2ed2f0d4ba7ec0f38a3"
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/bsd-new.LICENSE",
+          "sha256": "c5843d278d0dd5cb0a1e0e383c29af8e3004dea04358064b0004d31e2b422117"
         },
         {
-          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/expat/COPYING",
-          "sha256": "8c6b5b6de8fae20b317f4992729abc0e520bfba4c7606cd1e9eeb87418eebdec"
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/bsd-original.LICENSE",
+          "sha256": "7e92be3438bf57f5816cca9bc967f9e8c55716f21d80e9309106a3aa80dc25f5"
         },
         {
-          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/file/COPYING",
-          "sha256": "0bfa856a9930bddadbef95d1be1cf4e163c0be618e76ea3275caaf255283e274"
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/bsd-simplified-darwin.LICENSE",
+          "sha256": "03c307f26dfae36de97aca495735fe940244c36916953241350a4f830eb0d73a"
         },
         {
-          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gcc-libs/COPYING.LIB",
-          "sha256": "a9bdde5616ecdd1e980b44f360600ee8783b1f99b8cc83a2beb163a0a390e861"
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/bsd-simplified.LICENSE",
+          "sha256": "6ea1b3212ff977b3bbfa76d19ebeeb09d52f34eb6be0856f017b40ebc88405e1"
         },
         {
-          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gcc-libs/COPYING.RUNTIME",
-          "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74"
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/gpl-1.0-plus.LICENSE",
+          "sha256": "76fff03178f385aa03270374ac95579716d4fedc15ba3642fd750852915a76d1"
         },
         {
-          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gcc-libs/COPYING3",
-          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/gpl-1.0.LICENSE",
+          "sha256": "4a59b4d7e8a7cb9d5309f045343068dcc3eea17dd7d31779aecc7185e4d80d38"
         },
         {
-          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gettext/COPYING",
-          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/isc.LICENSE",
+          "sha256": "34e81d310411c9121fc9dfb439f0a85e2626882cfa7984bb52679705244b400b"
         },
         {
-          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gettext/gettext-runtime/COPYING",
-          "sha256": "7ef2cdfe58e0c0460657b6598b49af29d4e03c1e41cbaf0e1da1eb8ad74b95d0"
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/libmagic.NOTICE",
+          "sha256": "d1d53c2cadb72811efc25d0495f2275d659666a5e9dd1ceb006c45d0f35249aa"
         },
         {
-          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gettext/gettext-runtime/intl/COPYING.LIB",
-          "sha256": "3fe5361f24b7c49ba12911c08f5a33f9cb18871d95d9fb881f5b8a4793e04288"
-        },
-        {
-          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gettext/gettext-runtime/libasprintf/COPYING",
-          "sha256": "03133addae5b99a6148c538300e6d97074453089be1423b741bd081f18e2b298"
-        },
-        {
-          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gettext/gettext-runtime/libasprintf/COPYING.LIB",
-          "sha256": "3fe5361f24b7c49ba12911c08f5a33f9cb18871d95d9fb881f5b8a4793e04288"
-        },
-        {
-          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gettext/gettext-tools/COPYING",
-          "sha256": "5d4cff30d5038f82a0edc79798456049b61e1752fdb7e9ab1f4bfb9fae3a7303"
-        },
-        {
-          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gettext/gettext-tools/gnulib-lib/libxml/COPYING",
-          "sha256": "c5c63674f8a83c4d2e385d96d1c670a03cb871ba2927755467017317878574bd"
-        },
-        {
-          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/gettext/gnulib-local/lib/libxml/COPYING",
-          "sha256": "c5c63674f8a83c4d2e385d96d1c670a03cb871ba2927755467017317878574bd"
-        },
-        {
-          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/libiconv/COPYING",
-          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
-        },
-        {
-          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/libiconv/COPYING.LIB",
-          "sha256": "56bdea73b6145ef6ac5259b3da390b981d840c24cb03b8e1cbc678de7ecfa18d"
-        },
-        {
-          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/libiconv/libcharset/COPYING.LIB",
-          "sha256": "56bdea73b6145ef6ac5259b3da390b981d840c24cb03b8e1cbc678de7ecfa18d"
-        },
-        {
-          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/libsystre/LICENSE",
-          "sha256": "3200024286eb0a33c22da3a31c470df07c7b8cfbead2b9528195d67d107264ec"
-        },
-        {
-          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/libtre/LICENSE",
-          "sha256": "6a50ab50d856b30c965cf2dd899e577ec108c938242fd3a2e7a7a25eed996200"
-        },
-        {
-          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/libwinpthread/COPYING",
-          "sha256": "99a69660981156c21336fdb5661f89341b013c94e4bf9e1c7467b4745718397f"
-        },
-        {
-          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/libwinpthread/mingw-w64-libraries/winpthreads/COPYING",
-          "sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177"
-        },
-        {
-          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/xz/COPYING",
-          "sha256": "bcb02973ef6e87ea73d331b3a80df7748407f17efdb784b61b47e0e610d3bb5c"
-        },
-        {
-          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/xz/COPYING.GPLv2",
-          "sha256": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643"
-        },
-        {
-          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/xz/COPYING.GPLv3",
-          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
-        },
-        {
-          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/xz/COPYING.LGPLv2.1",
-          "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
-        },
-        {
-          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/package-data/typecode_libmagic/licenses/zlib/LICENSE",
-          "sha256": "b8dc97ec24faf95f0f30bf2ab721dbdc30b32de1aa4a2a5853e56551c59d6f04"
+          "path": "LICENSES/development/scancode-runtime/typecode-libmagic-5.39.210531/public-domain.LICENSE",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
         }
       ]
     },
     {
-      "name": "typing_extensions",
+      "name": "typing-extensions",
       "version": "4.16.0",
       "declaredLicenseExpression": "PSF-2.0",
       "declaredLicense": null,
@@ -1513,7 +1702,7 @@
       "noticeEvidenceStatus": "RETAINED",
       "notices": [
         {
-          "path": "LICENSES/development/scancode-runtime/typing_extensions-4.16.0/licenses/LICENSE",
+          "path": "LICENSES/development/scancode-runtime/typing-extensions-4.16.0/licenses/LICENSE",
           "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
         }
       ]
@@ -1599,7 +1788,7 @@
     },
     {
       "name": "wcwidth",
-      "version": "0.9.2",
+      "version": "0.9.3",
       "declaredLicenseExpression": null,
       "declaredLicense": null,
       "licenseClassifiers": [
@@ -1611,7 +1800,7 @@
       "noticeEvidenceStatus": "RETAINED",
       "notices": [
         {
-          "path": "LICENSES/development/scancode-runtime/wcwidth-0.9.2/licenses/LICENSE",
+          "path": "LICENSES/development/scancode-runtime/wcwidth-0.9.3/licenses/LICENSE",
           "sha256": "dff08668b8cfca00ec90011eb318e450c3719fcd40893bf375781a6beef7143a"
         }
       ]

@@ -14,7 +14,7 @@ import {
   sep,
 } from "node:path";
 import { parseArgs } from "node:util";
-import { isStrictDescendantPath } from "../../scripts/release-artifacts.mjs";
+import { isStrictDescendantPath } from "../../scripts/release-file-utils.mjs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import {

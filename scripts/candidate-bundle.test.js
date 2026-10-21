@@ -1,7 +1,8 @@
 import { gzipSync } from "node:zlib";
 
 import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
-import { formatSha256Sums, sha256Buffer } from "./release-artifacts.mjs";
+import { sha256Buffer } from "./release-file-utils.mjs";
+import { formatSha256Sums } from "./release-artifacts.mjs";
 
 const tarEntry = (name, content) => {
   const body = Buffer.from(content);

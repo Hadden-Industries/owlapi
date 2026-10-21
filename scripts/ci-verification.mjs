@@ -9,6 +9,7 @@ import {
 } from "./require-job-success.mjs";
 import {
   CI_JOB_NAMES,
+  hostedCiJobNames,
   CHECK_JOBS,
   QUALIFICATION_POLICY_SHA256,
   assertQualificationRecord,
@@ -411,7 +412,7 @@ export const verifyIntegrationProof = async ({
   const observed = await read(
     `/actions/runs/${run.id}/jobs?filter=latest&per_page=100`,
   );
-  const names = Object.values(CI_JOB_NAMES);
+  const names = hostedCiJobNames();
   requireFact(
     observed.total_count === names.length &&
       observed.jobs?.length === names.length &&
@@ -489,7 +490,7 @@ const assertMainRun = (run, context, commit, now) =>
     "Latest exact-base main run is incomplete, unsuccessful or from another source.",
   );
 const assertClosedJobs = (observed, run, reused) => {
-  const names = Object.values(CI_JOB_NAMES);
+  const names = hostedCiJobNames();
   requireFact(
     observed.total_count === names.length &&
       observed.jobs?.length === names.length &&
@@ -504,9 +505,11 @@ const assertClosedJobs = (observed, run, reused) => {
           job.status === "completed" &&
           job.conclusion ===
             (reused &&
-            ![CI_JOB_NAMES.verification, CI_JOB_NAMES.required].includes(
-              job.name,
-            )
+            ![
+              CI_JOB_NAMES.runtime_matrix,
+              CI_JOB_NAMES.verification,
+              CI_JOB_NAMES.required,
+            ].includes(job.name)
               ? "skipped"
               : "success"),
       ),

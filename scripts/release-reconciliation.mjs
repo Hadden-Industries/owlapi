@@ -19,7 +19,7 @@ import addFormats from "ajv-formats";
 
 import { verifyHistoricalAlphaCandidateBundle } from "./candidate-bundle.mjs";
 import { GitHubReleaseClient } from "./github-release.mjs";
-import { isStrictDescendantPath } from "./release-artifacts.mjs";
+import { isStrictDescendantPath } from "./release-file-utils.mjs";
 import { classifyReleaseState } from "./release-state.mjs";
 
 const SHA256_PATTERN = /^sha256:[0-9a-f]{64}$/u;

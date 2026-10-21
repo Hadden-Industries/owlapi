@@ -27,7 +27,7 @@ import {
   isStrictDescendantPath,
   sha256Buffer,
   sha256File,
-} from "./release-artifacts.mjs";
+} from "./release-file-utils.mjs";
 
 const REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
 const FIXTURE_SOURCE_ROOT = join(

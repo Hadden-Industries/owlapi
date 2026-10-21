@@ -1,12 +1,12 @@
 import { crc32, deflateRawSync, gzipSync } from "node:zlib";
 
-import * as releaseArtifacts from "./release-artifacts.mjs";
+import { readZipArchiveFiles } from "./release-zip.mjs";
 
+import { isStrictDescendantPath } from "./release-file-utils.mjs";
 import {
   assertReleasePacklist,
   formatSha256Sums,
   inspectGzipTar,
-  isStrictDescendantPath,
   readGzipTarFile,
 } from "./release-artifacts.mjs";
 
@@ -123,7 +123,7 @@ describe("release artifact primitives", () => {
       },
     ]);
 
-    expect(releaseArtifacts.readZipArchiveFiles(archive)).toEqual([
+    expect(readZipArchiveFiles(archive)).toEqual([
       {
         path: "SHA256SUMS",
         bytes: 10,
@@ -139,7 +139,7 @@ describe("release artifact primitives", () => {
 
   it("rejects duplicate or unsafe paths in a ZIP archive", () => {
     expect(() =>
-      releaseArtifacts.readZipArchiveFiles(
+      readZipArchiveFiles(
         zipArchive([
           { path: "SHA256SUMS", content: "first" },
           { path: "SHA256SUMS", content: "second" },
@@ -147,7 +147,7 @@ describe("release artifact primitives", () => {
       ),
     ).toThrow(/duplicate/u);
     expect(() =>
-      releaseArtifacts.readZipArchiveFiles(
+      readZipArchiveFiles(
         zipArchive([{ path: "../candidate.tgz", content: "escape" }]),
       ),
     ).toThrow(/unsafe/u);

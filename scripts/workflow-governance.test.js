@@ -35,6 +35,78 @@ const mutateWorkflow = (fileName, mutate) => {
 };
 
 describe("repository workflow governance", () => {
+  test.each(["cache", "skip", "command"])(
+    "rejects consumer setup bypass: %s",
+    (mutation) => {
+      const action = parseDocument(
+        readFileSync(".github/actions/setup-consumer/action.yml", "utf8"),
+      );
+      if (mutation === "cache")
+        action.setIn(
+          ["runs", "steps", 4, "with", "package-manager-cache"],
+          true,
+        );
+      if (mutation === "skip")
+        action.setIn(["runs", "steps", 5, "if"], "false");
+      if (mutation === "command")
+        action.setIn(["runs", "steps", 5, "run"], "node -e 'process.exit(0)'");
+      expect(
+        auditRepositoryControls({
+          consumerActionOverrides: { "setup-consumer": action.toString() },
+        }).violations.join("\n"),
+      ).toMatch(/setup-consumer/u);
+    },
+  );
+  test("rejects a consumer workflow selecting only one frozen lane", () => {
+    expect(
+      mutateWorkflow("release.yml", (document) =>
+        document.setIn(
+          ["jobs", "consumer_runtime", "strategy", "matrix", "include"],
+          [],
+        ),
+      ).join("\n"),
+    ).toMatch(/every frozen lane/u);
+  });
+  test.each(["cache", "guard", "command", "registry", "envelope"])(
+    "rejects weakened shared bootstrap metadata: %s",
+    (mutation) => {
+      const action = parseDocument(
+        readFileSync(".github/actions/setup-producer/action.yml", "utf8"),
+      );
+      if (mutation === "cache")
+        action.setIn(
+          ["runs", "steps", 1, "with", "package-manager-cache"],
+          true,
+        );
+      if (mutation === "guard") action.deleteIn(["runs", "steps", 2, "if"]);
+      if (mutation === "command")
+        action.setIn(["runs", "steps", 2, "run"], "npm install npm@latest");
+      if (mutation === "registry")
+        action.setIn(
+          ["runs", "steps", 1, "with", "registry-url"],
+          "https://registry.npmjs.org/",
+        );
+      if (mutation === "envelope")
+        action.set("env", { NODE_AUTH_TOKEN: "unapproved-token" });
+      expect(
+        auditRepositoryControls({
+          setupSourceOverride: action.toString(),
+        }).violations.join("\n"),
+      ).toMatch(/Shared runtime setup/u);
+    },
+  );
+  test("rejects hidden project installation through the dependency-review bootstrap", () => {
+    expect(
+      mutateWorkflow("ci.yml", (doc) => {
+        const action = doc
+          .getIn(["jobs", "dependency_review", "steps"])
+          .items.find(
+            (step) => step.get("uses") === "./.github/actions/setup-producer",
+          );
+        action.setIn(["with", "install"], "locked-no-scripts");
+      }).join("\n"),
+    ).toMatch(/shared runtime setup/u);
+  });
   test.each(
     ["ci.yml", "release.yml"].flatMap((file) =>
       ["source_node_24", "source_node_26", "quality_windows"].flatMap((id) =>
@@ -216,7 +288,7 @@ describe("repository workflow governance", () => {
       if (mutation === "missing-token")
         registrySteps
           .find((step) =>
-            step.get("run")?.startsWith("npm run release:qualify-registry"),
+            step.get("run")?.startsWith("npm run qualify:public-registry"),
           )
           .delete("env");
       if (mutation === "ancestor-checkout")
@@ -242,10 +314,10 @@ describe("repository workflow governance", () => {
         mutateWorkflow(fileName, (document) => {
           const setup = document
             .getIn(["jobs", "portability_ubuntu_node_26", "steps"])
-            .items.find((step) =>
-              step.get("uses")?.startsWith("actions/setup-node@"),
+            .items.find(
+              (step) => step.get("uses") === "./.github/actions/setup-producer",
             );
-          setup.setIn(["with", "node-version"], "24.21.0");
+          setup.setIn(["with", "node-family"], "24");
         }).join("\n"),
       ).toMatch(/Node 26 floor/u);
     },
@@ -450,7 +522,7 @@ describe("repository workflow governance", () => {
       const violations = mutateWorkflow(file, (doc) => {
         const steps = doc.getIn(["jobs", job, "steps"]);
         const index = steps.items.findIndex((step) =>
-          (step.get("run") ?? "").startsWith("npm run tools:sync"),
+          (step.get("run") ?? "").startsWith("npm run sync:python-tools"),
         );
         expect(index).toBeGreaterThan(-1);
         if (mutation === "remove") steps.items.splice(index, 1);
@@ -458,7 +530,7 @@ describe("repository workflow governance", () => {
         if (mutation === "path")
           steps.items[index].set(
             "run",
-            "npm run tools:sync -- --python python",
+            "npm run sync:python-tools -- --python python",
           );
         if (mutation === "late")
           steps.items.push(...steps.items.splice(index, 1));
@@ -1008,8 +1080,10 @@ describe("repository workflow governance", () => {
       const document = parseDocument(workflowSource("release.yml"));
       const setup = document
         .getIn(["jobs", "npm_release", "steps"])
-        .items.find((step) =>
-          step.get("uses")?.startsWith("actions/setup-node@"),
+        .items.find(
+          (step) =>
+            step.get("uses") ===
+            "./approval-tools/.github/actions/setup-producer",
         );
       setup.setIn(
         ["with", field],

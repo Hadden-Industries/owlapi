@@ -19,7 +19,7 @@ import {
   PACKAGE_FILE_STEM,
   PACKAGE_VERSION,
 } from "./package-identity.mjs";
-import { isStrictDescendantPath } from "./release-artifacts.mjs";
+import { isStrictDescendantPath } from "./release-file-utils.mjs";
 import {
   captureConsumerSources,
   assertReviewedConsumerSources,

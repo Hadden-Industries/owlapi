@@ -1,0 +1,128 @@
+{
+  "artifactId": "e23ef90e719f3cb50ea8b63d242303bc560f567b4e881981c504dd331015cd5f",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 8585,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9877e90da14aa8c931a1f9d07cc2a20ce119106e5dab1ebb41af865266d0cd2a",
+        "size": 1118,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "0a139eedb051fd23f427dae9b1341a6a58663b849d0ea0b08838fac5f8dd11e4",
+        "size": 1026,
+        "type": "FILE"
+      },
+      {
+        "path": "package/check-npm-version.js",
+        "sha256": "bf07151b8100e9dfb8aa96d0659564d2cc214e13a68487cd8aa9bfc2a3a26c6d",
+        "size": 512,
+        "type": "FILE"
+      },
+      {
+        "path": "package/cli.js",
+        "sha256": "8f4d4b133a5098dd14d9e297981fee9ab7b1dc5f57bf8075b85d1e21eb7490af",
+        "size": 917,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "14414b424a0da2e75712e9e17f477a01998d981fa497e543eb52f24bbff817ae",
+        "size": 134,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "827ee106dc763577947bdab176d1808e520e347a2c46d8b495349f982b9eb5ac",
+        "size": 21173,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "dc6e9b00df55afed365bfd907d840f25d0e91fc00abd53c097a3b56b0066f0b5",
+        "size": 916,
+        "type": "FILE"
+      },
+      {
+        "path": "package/utils.js",
+        "sha256": "870d08522302ee97355a55e4c279badeb35df4afa815edc422332728b2ba83cb",
+        "size": 709,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1118,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/98/9877e90da14aa8c931a1f9d07cc2a20ce119106e5dab1ebb41af865266d0cd2a",
+          "sha256": "9877e90da14aa8c931a1f9d07cc2a20ce119106e5dab1ebb41af865266d0cd2a"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9877e90da14aa8c931a1f9d07cc2a20ce119106e5dab1ebb41af865266d0cd2a",
+        "size": 1118
+      }
+    ],
+    "expandedBytes": 26505,
+    "packageIdentity": {
+      "author": "Andrey Sitnik <andrey@sitnik.es>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "update-browserslist-db",
+      "repository": "browserslist/update-db",
+      "version": "1.3.4"
+    },
+    "packageMetadata": {
+      "author": "Andrey Sitnik <andrey@sitnik.es>",
+      "bin": "cli.js",
+      "dependencies": {
+        "escalade": "^3.2.0",
+        "picocolors": "^1.1.1"
+      },
+      "description": "CLI tool to update caniuse-lite to refresh target browsers from Browserslist config",
+      "exports": {
+        ".": "./index.js",
+        "./package.json": "./package.json"
+      },
+      "funding": [
+        {
+          "type": "opencollective",
+          "url": "https://opencollective.com/browserslist"
+        },
+        {
+          "type": "tidelift",
+          "url": "https://tidelift.com/funding/github/npm/browserslist"
+        },
+        {
+          "type": "github",
+          "url": "https://github.com/sponsors/ai"
+        }
+      ],
+      "keywords": [
+        "browsers",
+        "caniuse",
+        "target"
+      ],
+      "license": "MIT",
+      "name": "update-browserslist-db",
+      "peerDependencies": {
+        "browserslist": ">= 4.21.0"
+      },
+      "repository": "browserslist/update-db",
+      "types": "./index.d.ts",
+      "version": "1.3.4"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 8585,
+      "sha256": "8804801cca499f383d0dc8d8b78ed0e3775aa99832bddfeb9853d1eaa21e85ca"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

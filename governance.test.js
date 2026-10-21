@@ -2576,7 +2576,7 @@ Neither this NOTICE nor the package licence replaces those upstream terms.
     );
     expect([...materialsById.keys()].sort(compareCodeUnits)).toEqual([
       "apache-2.0-license-text",
-      "beartype-scancode-prerelease-exception",
+      "beartype-scancode-compatibility-dependency",
       "contributor-covenant-3.0",
       "generated-w3c-conformance-manifests",
       "gnu-agpl-3.0-only-license-text",
@@ -2785,7 +2785,7 @@ Neither this NOTICE nor the package licence replaces those upstream terms.
     expect(governance.productionAudit).toMatchObject({
       command: "npm audit --omit=dev --json",
       performedOn: governance.recordedOn,
-      productionPackageCount: 47,
+      productionPackageCount: 48,
       vulnerabilityCounts: {
         info: 0,
         low: 0,

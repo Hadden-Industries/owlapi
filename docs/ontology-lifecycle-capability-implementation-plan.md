@@ -1233,9 +1233,9 @@ outputManager.applyChanges(
    npm test -- --runInBand test/import-closure/public-contract.test.js
    npm test -- --runInBand test/consumers/webvowl/cutover.test.js
    npm run test:boundary
-   npm run release:pack -- --output .release/import-closure-candidate
-   npm run candidate:portable -- --candidate .release/import-closure-candidate --output .release/import-closure-portability.json
-   npm run browser:prepare -- --candidate .release/import-closure-candidate --output .release/import-closure-browser
+   npm run build:release-candidate -- --output .release/import-closure-candidate
+   npm run qualify:installed-candidate -- --candidate .release/import-closure-candidate --output .release/import-closure-portability.json
+   npm run prepare:browser-consumers -- --candidate .release/import-closure-candidate --output .release/import-closure-browser
    npm run test:browser -- --fixture-root .release/import-closure-browser
    npm run test:webvowl-consumer -- --candidate-dir .release/import-closure-candidate --webvowl-repository ../webvowl --output .release/import-closure-webvowl
    ```
@@ -1402,10 +1402,10 @@ The pinned integration baseline and Phase 21 commits must be ancestors, every pr
    npm run format:check
    node util/generate-java-api-surface.mjs
    npm run test:boundary
-   npm run release:lint-package
-   npm run release:pack -- --output .release/0.1.0-rc.1-qualification-candidate
-   npm run candidate:portable -- --candidate .release/0.1.0-rc.1-qualification-candidate --output .release/0.1.0-rc.1-portability.json
-   npm run browser:prepare -- --candidate .release/0.1.0-rc.1-qualification-candidate --output .release/0.1.0-rc.1-browser
+   npm run lint:package
+   npm run build:release-candidate -- --output .release/0.1.0-rc.1-qualification-candidate
+   npm run qualify:installed-candidate -- --candidate .release/0.1.0-rc.1-qualification-candidate --output .release/0.1.0-rc.1-portability.json
+   npm run prepare:browser-consumers -- --candidate .release/0.1.0-rc.1-qualification-candidate --output .release/0.1.0-rc.1-browser
    npm run test:browser -- --fixture-root .release/0.1.0-rc.1-browser
    npm run test:webvowl-consumer -- --candidate-dir .release/0.1.0-rc.1-qualification-candidate --webvowl-repository ../webvowl --output .release/0.1.0-rc.1-webvowl
    npm run verify:release-gates

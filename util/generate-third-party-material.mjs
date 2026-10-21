@@ -458,7 +458,7 @@ const createQualityToolingFacts = () =>
         "tooling/markdown/archives/hadden-industries-markdown-quality-linux-x64-1.0.3.tgz",
       ],
       attribution:
-        "Copyright (c) 2026 Hadden Industries Ltd. The isolated AGPL-3.0-only capability is bound to the exact clean producer source commit through retained core/native archives, their npm lock integrities and the same reusable-workflow revision. Manifest version 1.0.3 alone does not identify these development bytes. Its distribution retains native Snapper/Rust source and component notices; no tool binary or dependency graph is packed into the OwlAPI application. Former WebVOWL-derived prose examples and copied qualification mechanics are retired.",
+        "Copyright (c) 2026 Hadden Industries Ltd. The isolated AGPL-3.0-only capability is bound to the exact clean producer source commit through retained core/native archives and their npm lock integrities. The reusable workflow is independently pinned in .github/workflows/markdown-quality.yml. Manifest version 1.0.3 alone does not identify these development bytes. Its distribution retains native Snapper/Rust source and component notices; no tool binary or dependency graph is packed into the OwlAPI application. Former WebVOWL-derived prose examples and copied qualification mechanics are retired.",
     },
     {
       id: "hisew-checkout-environment-isolation",
@@ -473,14 +473,14 @@ const createQualityToolingFacts = () =>
     {
       id: "ruff-development-tool",
       name: "Ruff development formatter and linter",
-      versionOrRevision: "0.17.0",
+      versionOrRevision: "0.17.1",
       license: "MIT",
       source: "astral-sh/ruff",
       files: [
         "pyproject.toml",
         "uv.lock",
         "ruff.toml",
-        "LICENSES/development/ruff-0.17.0.txt",
+        "LICENSES/development/ruff-0.17.1.txt",
       ],
       attribution:
         "Copyright (c) 2022 Charles Marsh. The complete wheel licence, including its embedded third-party notices, is retained. The tool and its distributions are not packed.",
@@ -497,7 +497,7 @@ const createQualityToolingFacts = () =>
         "uv.lock",
         ".python-version",
         "scripts/repository-python-tools.mjs",
-        "LICENSES/development/uv-0.13.0-MIT.txt",
+        "LICENSES/development/uv-0.13.4-MIT.txt",
       ],
       attribution:
         "Copyright (c) 2025 Astral Software Inc. The MIT alternative is elected for development use; its complete release terms are retained. Windows/Linux x64 archive digests are pinned in the bootstrap and no binary is packed.",
@@ -520,18 +520,18 @@ const createQualityToolingFacts = () =>
         "Copyright (c) nexB Inc. and others. ScanCode is a trademark of nexB Inc. The full upstream declaration includes Apache-2.0 software, CC-BY-4.0 data and other permissive/copyleft material identified by the retained LicenseRef declarations and notices. The recorded expression is proposed for human review; no completed legal conclusion is inferred. ScanCode, cyseq, intbitset, pyahocorasick and PyYAML are source-built without patches on Python 3.15 using the separate hash-locked runtime/build graph. Exact installed Windows distribution notices, including package-data notices, are retained where provided; inventory entries explicitly identify distributions with no packaged notices. The scanner licence is not a conclusion about its dependencies. No scanner, dependency binary or data is packed into OwlAPI. Linux native qualification and terms remain separate obligations.",
     },
     {
-      id: "beartype-scancode-prerelease-exception",
+      id: "beartype-scancode-compatibility-dependency",
       name: "Beartype scoped ScanCode compatibility dependency",
-      versionOrRevision: "0.23.0rc2",
+      versionOrRevision: "0.23.1",
       license: "MIT",
       source: "beartype/beartype",
       files: [
         "util/scancode-runtime/pyproject.toml",
         "util/scancode-runtime/uv.lock",
-        "LICENSES/development/scancode-runtime/beartype-0.23.0rc2/licenses/LICENSE",
+        "LICENSES/development/scancode-runtime/beartype-0.23.1/licenses/LICENSE",
       ],
       attribution:
-        "Copyright (c) 2014-2026 Beartype authors. The owner approved only this exact prerelease for unmodified ScanCode 32.5.0 on Python 3.15, conditional on frozen dependencies, unchanged options, Windows/Linux qualification and final review. Reassess when a compatible stable Beartype is released. The exception grants no release approval.",
+        "Copyright (c) 2014-2026 Beartype authors. Stable Beartype 0.23.1 replaces the former scoped prerelease selection for unmodified ScanCode 32.5.0 on Python 3.15. Native Windows qualification reproduces both retained independent fixture hashes with the frozen scanner graph and unchanged options. Linux qualification and final human review remain pending; Windows qualification does not establish release acceptance.",
     },
   ].map(
     ({

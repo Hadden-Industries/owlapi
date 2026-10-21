@@ -2856,7 +2856,7 @@ Each installs only its matching revision and Linux system dependencies through t
 The conceptual invocations are:
 
 ```text
-npm run playwright:install -- --with-deps <chromium|firefox|webkit>
+npm run install:playwright-browsers -- --with-deps <chromium|firefox|webkit>
 npm run test:browser -- --project=<chromium|firefox|webkit> --workers=1
 ```
 

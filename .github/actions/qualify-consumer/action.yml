@@ -1,0 +1,37 @@
+name: Qualify the retained package on a frozen consumer lane
+description: Exercise source behavior and the exact transported archive with consumer-native tools
+inputs:
+  matrix:
+    description: Complete frozen matrix
+    required: true
+  node:
+    description: Exact consumer Node
+    required: true
+  candidate-id:
+    description: Same-run candidate artifact ID
+    required: true
+  candidate-digest:
+    description: Same-run candidate artifact digest
+    required: true
+runs:
+  using: composite
+  steps:
+    - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+      with:
+        artifact-ids: ${{ inputs.candidate-id }}
+        path: .release/runtime-candidate
+        merge-multiple: false
+        skip-decompress: false
+        digest-mismatch: error
+    - uses: ./.github/actions/setup-consumer
+      with:
+        matrix: ${{ inputs.matrix }}
+        node: ${{ inputs.node }}
+    - name: Exercise the installed package and product runtime contracts
+      shell: bash
+      env:
+        OWLAPI_RUNTIME_MATRIX: ${{ inputs.matrix }}
+        OWLAPI_EXPECTED_NODE: ${{ inputs.node }}
+        OWLAPI_CANDIDATE_ID: ${{ inputs.candidate-id }}
+        OWLAPI_CANDIDATE_DIGEST: ${{ inputs.candidate-digest }}
+      run: node scripts/qualify-consumer-runtime.mjs

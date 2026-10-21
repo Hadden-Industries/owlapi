@@ -8,7 +8,7 @@ import {
 } from "node:fs";
 import { createRequire } from "node:module";
 import { join, resolve } from "node:path";
-import { isStrictDescendantPath } from "./release-artifacts.mjs";
+import { isStrictDescendantPath } from "./release-file-utils.mjs";
 import { readPublicRegistry } from "./public-registry-read.mjs";
 import {
   PACKAGE_NAME,

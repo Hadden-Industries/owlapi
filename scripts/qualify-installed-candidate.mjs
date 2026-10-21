@@ -14,7 +14,7 @@ import {
   writeInstalledConsumerFixtures,
 } from "./installed-consumer-fixtures.mjs";
 
-import { isStrictDescendantPath, sha256File } from "./release-artifacts.mjs";
+import { isStrictDescendantPath, sha256File } from "./release-file-utils.mjs";
 
 const valueAfter = (name) => {
   const index = process.argv.indexOf(name);
@@ -25,7 +25,7 @@ const valueAfter = (name) => {
 };
 const candidateDirectory = resolve(valueAfter("--candidate"));
 const outputPath = resolve(valueAfter("--output"));
-const npmCli = process.env.npm_execpath;
+const npmCli = process.env.OWLAPI_CONSUMER_NPM ?? process.env.npm_execpath;
 if (!npmCli) {
   throw new Error(
     "Run installed-candidate qualification through its named npm script.",
@@ -64,6 +64,9 @@ const run = (arguments_, options = {}) => {
     encoding: "utf8",
     env: options.env ?? process.env,
     maxBuffer: 128 * 1024 * 1024,
+    timeout: 10 * 60_000,
+    windowsHide: true,
+    shell: false,
   });
   if (result.status !== 0) {
     throw new Error(
@@ -102,6 +105,7 @@ try {
       [
         npmCli,
         "install",
+        "--engine-strict",
         "--ignore-scripts",
         "--no-audit",
         "--no-fund",

@@ -1,0 +1,188 @@
+{
+  "artifactId": "58694c0bef7e8a88d582ec590781581ad226aad6a33a6fed594a54c9d7ea39b1",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 9097,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "05c365176db3cc00e951c44b921c809c75b8e99d2d724f7daf00381e26fb0850",
+        "size": 1102,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "8186d1f2bafb9320ac869b97aa1f780c5f51d2916c94cfb0dfb5fd61c5eaec98",
+        "size": 4551,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commands.d.mts",
+        "sha256": "3284479e933465c648decc94b7ab35a9e90c66ed137233799f32aa9490914ffa",
+        "size": 2702,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commands.mjs",
+        "sha256": "7e79c2e9f7b13994d2b7945b730acc1f5fe95081e25d6eb103a498b39595dd9c",
+        "size": 8081,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/constants.d.mts",
+        "sha256": "cf916d638306691d24506e000d020a0c19852a227c196a6f09b60f66aba7f732",
+        "size": 342,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/constants.mjs",
+        "sha256": "479a2d3729d2919dfcefae1ad1d05f5bbf2004d2a08128dcdf6c0935baeb4ec3",
+        "size": 1541,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/detect.d.mts",
+        "sha256": "55bbf32c256bd3a4103bd222a5f44d3766e7da1073cf88d6a93b7334d6ec584d",
+        "size": 1713,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/detect.mjs",
+        "sha256": "471e03ca1647cef82346c013a67bd55b2d575c0239cf6615fb94020b03acbecd",
+        "size": 4485,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.mts",
+        "sha256": "706110dc92d9c746018709e4cb20ef4ce2d6ef0e4e69732bed2b7f91645f75df",
+        "size": 472,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.mjs",
+        "sha256": "1c26658634c3332397cd4d6eeeb6534649d7df5d4e97802362945152e73d8926",
+        "size": 281,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/shared/package-manager-detector.vknIX8gX.d.mts",
+        "sha256": "70bfe282c58bdaa0e036357a731df84c34496c0a6f3058fc90dc8b5d2f33159e",
+        "size": 4165,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "54068806306f453f41d4b3d7b357e654fd23ec556e5d6bae2c1372a2cc5bf56a",
+        "size": 1499,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1102,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/05/05c365176db3cc00e951c44b921c809c75b8e99d2d724f7daf00381e26fb0850",
+          "sha256": "05c365176db3cc00e951c44b921c809c75b8e99d2d724f7daf00381e26fb0850"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "05c365176db3cc00e951c44b921c809c75b8e99d2d724f7daf00381e26fb0850",
+        "size": 1102
+      },
+      {
+        "blob": {
+          "bytes": 4551,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/81/8186d1f2bafb9320ac869b97aa1f780c5f51d2916c94cfb0dfb5fd61c5eaec98",
+          "sha256": "8186d1f2bafb9320ac869b97aa1f780c5f51d2916c94cfb0dfb5fd61c5eaec98"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "8186d1f2bafb9320ac869b97aa1f780c5f51d2916c94cfb0dfb5fd61c5eaec98",
+        "size": 4551
+      }
+    ],
+    "expandedBytes": 30934,
+    "packageIdentity": {
+      "author": "Anthony Fu <anthonyfu117@hotmail.com>",
+      "homepage": "https://github.com/antfu-collective/package-manager-detector#readme",
+      "license": "MIT",
+      "name": "package-manager-detector",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/antfu-collective/package-manager-detector.git"
+      },
+      "version": "1.9.0"
+    },
+    "packageMetadata": {
+      "author": "Anthony Fu <anthonyfu117@hotmail.com>",
+      "bugs": {
+        "url": "https://github.com/antfu-collective/package-manager-detector/issues"
+      },
+      "description": "Package manager detector",
+      "devDependencies": {
+        "@antfu/eslint-config": "^9.5.1",
+        "@types/node": "^26.6.4",
+        "bumpp": "^12.3.0",
+        "eslint": "^10.12.0",
+        "tsnapi": "^1.5.0",
+        "typescript": "^6.0.3",
+        "unbuild": "^3.6.1",
+        "vitest": "^5.0.3"
+      },
+      "exports": {
+        ".": "./dist/index.mjs",
+        "./commands": "./dist/commands.mjs",
+        "./constants": "./dist/constants.mjs",
+        "./detect": "./dist/detect.mjs"
+      },
+      "files": [
+        "dist"
+      ],
+      "homepage": "https://github.com/antfu-collective/package-manager-detector#readme",
+      "license": "MIT",
+      "main": "./dist/index.mjs",
+      "module": "./dist/index.mjs",
+      "name": "package-manager-detector",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/antfu-collective/package-manager-detector.git"
+      },
+      "scripts": {
+        "build": "unbuild",
+        "lint": "eslint",
+        "lint:fix": "eslint --fix",
+        "release": "bumpp",
+        "stub": "unbuild --stub",
+        "test": "vitest",
+        "typecheck": "tsc --noEmit"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "types": "./dist/index.d.mts",
+      "typesVersions": {
+        "*": {
+          "commands": [
+            "./dist/commands.d.mts"
+          ],
+          "constants": [
+            "./dist/constants.d.mts"
+          ],
+          "detect": [
+            "./dist/detect.d.mts"
+          ]
+        }
+      },
+      "version": "1.9.0"
+    },
+    "physicalEntryCount": 12,
+    "tarball": {
+      "bytes": 9097,
+      "sha256": "a576bd69dd069ec7dc8626de773906150c2bb15c7e2e43a6c3aaadccfe386ec4"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

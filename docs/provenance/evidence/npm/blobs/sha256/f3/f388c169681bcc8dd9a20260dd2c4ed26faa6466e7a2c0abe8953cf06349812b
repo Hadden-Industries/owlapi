@@ -1,0 +1,1604 @@
+{
+  "artifactId": "4f5342d881384d331706ae260ae8fb42529f1649710bce2f2f71aa57d465b6af",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 13,
+      "digestVerifiedFileCount": 13,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 13
+    },
+    "artifactId": "4f5342d881384d331706ae260ae8fb42529f1649710bce2f2f71aa57d465b6af",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.0.26",
+        "for_package_purl": "pkg:npm/js-yaml@5.5.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40streamparser/json",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.14.1",
+        "for_package_purl": "pkg:npm/js-yaml@5.5.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/neostandard",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.28.0",
+        "for_package_purl": "pkg:npm/js-yaml@5.5.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/vite-plugin-node-polyfills",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.28.20",
+        "for_package_purl": "pkg:npm/js-yaml@5.5.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/typedoc",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.0.34",
+        "for_package_purl": "pkg:npm/js-yaml@5.5.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/mitata",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^10.0.3",
+        "for_package_purl": "pkg:npm/js-yaml@5.5.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/workerpool",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^10.12.0",
+        "for_package_purl": "pkg:npm/js-yaml@5.5.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/eslint",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^12.0.0",
+        "for_package_purl": "pkg:npm/js-yaml@5.5.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/c8",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.3.3",
+        "for_package_purl": "pkg:npm/js-yaml@5.5.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/vite-plugin-singlefile",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^26.6.5",
+        "for_package_purl": "pkg:npm/js-yaml@5.5.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40types/node",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^3.0.3",
+        "for_package_purl": "pkg:npm/js-yaml@5.5.0",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/argparse",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.10.2",
+        "for_package_purl": "pkg:npm/js-yaml@5.5.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/fast-check",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.64.7",
+        "for_package_purl": "pkg:npm/js-yaml@5.5.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/rollup",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^5.65.21",
+        "for_package_purl": "pkg:npm/js-yaml@5.5.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/codemirror",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^6.0.3",
+        "for_package_purl": "pkg:npm/js-yaml@5.5.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/typescript",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^6.3.0",
+        "for_package_purl": "pkg:npm/js-yaml@5.5.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/gh-pages",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^6.5.1",
+        "for_package_purl": "pkg:npm/js-yaml@5.5.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/rollup-plugin-dts",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^8.3.4",
+        "for_package_purl": "pkg:npm/js-yaml@5.5.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/vite",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "Vladimir Zapparov <dervus.grim@gmail.com> contributors' Aleksey V Zapparov <ixti@member.fsf.org> (http://www.ixti.net/) Vitaly Puzrin <vitaly@rcdesign.ru> (https://github.com/puzrin) Martin Grenfell <martin.grenfell@gmail.com> (http://got-ravings.blogspot.com)",
+            "end_line": 15,
+            "start_line": 11
+          }
+        ],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/js-yaml@5.5.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 17,
+                "from_file": "4f5342d881384d331706ae260ae8fb42529f1649710bce2f2f71aa57d465b6af/package/package.json",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "  \"license\": \"MIT\",",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_30.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+                "score": 100,
+                "start_line": 17
+              }
+            ]
+          }
+        ],
+        "md5": "cfac6c0247258de47a17cf1f495a139a",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/js-yaml/5.5.0",
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "mit",
+            "declared_license_expression_spdx": "MIT",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.0.26",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40streamparser/json",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.14.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/neostandard",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.28.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/vite-plugin-node-polyfills",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.28.20",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/typedoc",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.0.34",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/mitata",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^10.0.3",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/workerpool",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^10.12.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/eslint",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^12.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/c8",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.3.3",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/vite-plugin-singlefile",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^26.6.5",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40types/node",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^3.0.3",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/argparse",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.10.2",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/fast-check",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.64.7",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/rollup",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^5.65.21",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/codemirror",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^6.0.3",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/typescript",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^6.3.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/gh-pages",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^6.5.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/rollup-plugin-dts",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^8.3.4",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/vite",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              }
+            ],
+            "description": "YAML 1.2 parser and serializer",
+            "download_url": "https://registry.npmjs.org/js-yaml/-/js-yaml-5.5.0.tgz",
+            "extra_data": {},
+            "extracted_license_statement": "- MIT\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": null,
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [
+              "parser",
+              "pyyaml",
+              "serializer",
+              "yaml"
+            ],
+            "license_detections": [
+              {
+                "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "4f5342d881384d331706ae260ae8fb42529f1649710bce2f2f71aa57d465b6af/package/package.json",
+                    "license_expression": "mit",
+                    "license_expression_spdx": "MIT",
+                    "match_coverage": 100,
+                    "matched_length": 1,
+                    "matched_text": "MIT",
+                    "matcher": "1-spdx-id",
+                    "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+                    "rule_relevance": 100,
+                    "rule_url": null,
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "js-yaml",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": "dervus.grim@gmail.com",
+                "name": "Vladimir Zapparov",
+                "role": "author",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "ixti@member.fsf.org",
+                "name": "Aleksey V Zapparov",
+                "role": "contributor",
+                "type": "person",
+                "url": "http://www.ixti.net/"
+              },
+              {
+                "email": "martin.grenfell@gmail.com",
+                "name": "Martin Grenfell",
+                "role": "contributor",
+                "type": "person",
+                "url": "http://got-ravings.blogspot.com"
+              },
+              {
+                "email": "vitaly@rcdesign.ru",
+                "name": "Vitaly Puzrin",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/puzrin"
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/js-yaml@5.5.0",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/js-yaml/-/js-yaml-5.5.0.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/js-yaml",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "https://github.com/nodeca/js-yaml",
+            "version": "5.5.0"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 0.5,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "c07d58bef6bc8328af95ac6af1e0130e4a6e16ed",
+        "sha1_git": "d1d6f95910deb19c64d4e072e8856c9d6e7b6659",
+        "sha256": "3ad7fe3eba5cf97410524a34ae9638f9c711cf0f25b3239c2ff2b2a604ecea1d",
+        "size": 2951,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2011-2015 by Vitaly Puzrin",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": "",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/js-yaml@5.5.0"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Vitaly Puzrin",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-f7452287-cb8f-dace-dd8d-3e62743150a2",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "4f5342d881384d331706ae260ae8fb42529f1649710bce2f2f71aa57d465b6af/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 3,
+                "matched_text": "(The MIT License)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_27.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_27.RULE",
+                "score": 100,
+                "start_line": 1
+              },
+              {
+                "end_line": 21,
+                "from_file": "4f5342d881384d331706ae260ae8fb42529f1649710bce2f2f71aa57d465b6af/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 161,
+                "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+                "score": 100,
+                "start_line": 5
+              }
+            ]
+          }
+        ],
+        "md5": "effd621a9bf5d72d6a7e6ef819bf3afb",
+        "name": "LICENSE",
+        "package_data": [],
+        "path": "package/LICENSE",
+        "percentage_of_license_text": 95.91,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "cf1619aed46c3c608c54e1e4bdec5e7e38e436a7",
+        "sha1_git": "09d3a29e93d1239edf737a58fb1cd893808abc82",
+        "sha256": "a07bc24468b9654ce76a547d47a2db282d07733b715db4c73a98bd63961f9550",
+        "size": 1084,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/js-yaml@5.5.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "73ec800e4de69a4fa64445d336bc5ff4",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "4924b7af4de409d2dd73604383f3454c60939a02",
+        "sha1_git": "b7bfb84633e206ac5f00a73e03004f4a094f674d",
+        "sha256": "644e84cad15ae061e60c39c63099fd1efeca25eb6dfcf05801a3b01ef13efb2f",
+        "size": 917,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "js-yaml",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".mjs",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/js-yaml@5.5.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "4f5342d881384d331706ae260ae8fb42529f1649710bce2f2f71aa57d465b6af/package/dist/js-yaml.mjs",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "license MIT */",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_30.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": "653acfd43eb0a4455659f7d4b004fe5a",
+        "name": "js-yaml.mjs",
+        "package_data": [],
+        "path": "package/dist/js-yaml.mjs",
+        "percentage_of_license_text": 0.01,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "e3cecd02419296280fe363d1213e0ade44174951",
+        "sha1_git": "44ec5f1260d6bcbfcca63797153bcf9cfcd51094",
+        "sha256": "213470960d9c2ff1d01f9164e5017749bfc383d8a6ebb8683f35c76e8c6d052b",
+        "size": 130603,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "js-yaml",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".mjs",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/js-yaml@5.5.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "4e7619d62fae2c9b9c543bdeb07ec8f2",
+        "name": "js-yaml.mjs",
+        "package_data": [],
+        "path": "package/bin/js-yaml.mjs",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "2f0679e2056d104139db10086ba7618c2417b9e6",
+        "sha1_git": "fe265981f29fb5331f29f3ac0ea1d86aa236a9a8",
+        "sha256": "a4ed507c9e2840c251364aae5295b4ea23d756c8855eb69e3f819405a2834c70",
+        "size": 2440,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "js-yaml.cjs",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/js-yaml@5.5.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "4f5342d881384d331706ae260ae8fb42529f1649710bce2f2f71aa57d465b6af/package/dist/js-yaml.cjs.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "license MIT */",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_30.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": "c9441359d1263c0ee5a08a42359e8138",
+        "name": "js-yaml.cjs.js",
+        "package_data": [],
+        "path": "package/dist/js-yaml.cjs.js",
+        "percentage_of_license_text": 0.01,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "2f6d1edca796f7104a917020066182753096a07c",
+        "sha1_git": "7fb64c8d6cbdfa279ba45c01b69085cc93e06228",
+        "sha256": "b9e4f9b63c9fc56b034f0b032127d57028d347070fdabdc33b3a28abc02bc5b0",
+        "size": 138183,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "js-yaml.cjs.js",
+        "copyrights": [
+          {
+            "copyright": "(c) https://yaml.org/spec/1.2.2",
+            "end_line": 5093,
+            "start_line": 5092
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/js-yaml@5.5.0"
+        ],
+        "holders": [
+          {
+            "end_line": 5093,
+            "holder": "https://yaml.org/spec/1.2.2",
+            "start_line": 5093
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "cd9e7b43c8f378309ddc78e6c3e6e12b",
+        "name": "js-yaml.cjs.js.map",
+        "package_data": [],
+        "path": "package/dist/js-yaml.cjs.js.map",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "5be7e43e9a22b0d6e22fdcae99cb6735ed513950",
+        "sha1_git": "05f37412c66994b12d2d91794304ea7c0f25e787",
+        "sha256": "6210edeff7108b8bfd44cdf513b44a82e97cbd93db006f3f0e02424dfa46204e",
+        "size": 287880,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "js-yaml.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/js-yaml@5.5.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "357edb962fab23803ff54d9d57357a91",
+        "name": "js-yaml.d.ts",
+        "package_data": [],
+        "path": "package/dist/js-yaml.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "13cf824c84420df1cac574929e6101aabec8a9c2",
+        "sha1_git": "993af346d0379112db2973f9957b81006c084432",
+        "sha256": "4bdd04182f1fa53c0818caf3d3c602fc4b322188bc23a28bf357f5cb3049234b",
+        "size": 36463,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "js-yaml.esm.min",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".mjs",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/js-yaml@5.5.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "4f5342d881384d331706ae260ae8fb42529f1649710bce2f2f71aa57d465b6af/package/dist/browser/js-yaml.esm.min.mjs",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "license MIT */",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_30.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": "8ff7700f112799645c40e649ce6519f1",
+        "name": "js-yaml.esm.min.mjs",
+        "package_data": [],
+        "path": "package/dist/browser/js-yaml.esm.min.mjs",
+        "percentage_of_license_text": 0.02,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "901e11fc1ddf051db8a6384f61351ecf53882ebc",
+        "sha1_git": "f0981f17ae5c2e02d1be21fb98352e355dc44e93",
+        "sha256": "de0f5266d4312ab9cd564aba4217eb9cc98dcfd18bd59988aa7e0971e7c722b5",
+        "size": 79763,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "js-yaml.esm.min.mjs",
+        "copyrights": [
+          {
+            "copyright": "(c) // https://yaml.org/spec/1.2.2",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/js-yaml@5.5.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "https://yaml.org/spec/1.2.2",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "ce4181c706e9a1fb5ccf4a03e4d36226",
+        "name": "js-yaml.esm.min.mjs.map",
+        "package_data": [],
+        "path": "package/dist/browser/js-yaml.esm.min.mjs.map",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "644020de969acff27a255266a1adac5af134d83a",
+        "sha1_git": "053e37abfbb83f42bf22c6dde9210ac6a0f481ec",
+        "sha256": "40acb04bb5e91407173f186207e9e001b2c64a0c08a2f2faad79e10412b209e9",
+        "size": 299158,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "js-yaml.mjs",
+        "copyrights": [
+          {
+            "copyright": "(c) // https://yaml.org/spec/1.2.2",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/js-yaml@5.5.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "https://yaml.org/spec/1.2.2",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "53e8b49638e7a180871e70f0718c7a42",
+        "name": "js-yaml.mjs.map",
+        "package_data": [],
+        "path": "package/dist/js-yaml.mjs.map",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "f103e25678b6288413943c9c6b0973c543ace106",
+        "sha1_git": "1d6b0401a9871d242a0d22a299999234830f4727",
+        "sha256": "b80d31d8ce0e041ea2843b516cce4ede7c749272b28b7708019c3c2d820541f5",
+        "size": 286313,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "js-yaml.umd.min",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/js-yaml@5.5.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "baeb653a0b4717b858a320dd2393ee53",
+        "name": "js-yaml.umd.min.js",
+        "package_data": [],
+        "path": "package/dist/browser/js-yaml.umd.min.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "f87fb5f5e2d036c7a2e112e7ee86fe40e3b59ea7",
+        "sha1_git": "bfb70f5eb8457dd400d101b9b4e862d3d308d79c",
+        "sha256": "02970a652376ad653ff069c606ee7440b0514f52ed94a98426cb52426c8e5a02",
+        "size": 62553,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "js-yaml.umd.min.js",
+        "copyrights": [
+          {
+            "copyright": "(c) https://yaml.org/spec/1.2.2",
+            "end_line": 5093,
+            "start_line": 5092
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/js-yaml@5.5.0"
+        ],
+        "holders": [
+          {
+            "end_line": 5093,
+            "holder": "https://yaml.org/spec/1.2.2",
+            "start_line": 5093
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "e180d4b0d83edc32765eaa3d3cb3714d",
+        "name": "js-yaml.umd.min.js.map",
+        "package_data": [],
+        "path": "package/dist/browser/js-yaml.umd.min.js.map",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "2012f83d14c5aed4dc4956599e7a5ac2c6c31e8e",
+        "sha1_git": "c71831cb5a73d3641f91e545c8fbc6c2c5cda7f9",
+        "sha256": "0870ddbe0821ef1e496483f41c659ad0621ab422a0d224b6832f1dbf5686765e",
+        "size": 298271,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "4f5342d881384d331706ae260ae8fb42529f1649710bce2f2f71aa57d465b6af/package/package.json",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 1,
+            "matched_text": "MIT",
+            "matcher": "1-spdx-id",
+            "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+            "rule_relevance": 100,
+            "rule_url": null,
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-f7452287-cb8f-dace-dd8d-3e62743150a2",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "4f5342d881384d331706ae260ae8fb42529f1649710bce2f2f71aa57d465b6af/package/LICENSE",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 3,
+            "matched_text": "(The MIT License)",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_27.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_27.RULE",
+            "score": 100,
+            "start_line": 1
+          },
+          {
+            "end_line": 21,
+            "from_file": "4f5342d881384d331706ae260ae8fb42529f1649710bce2f2f71aa57d465b6af/package/LICENSE",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 161,
+            "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.",
+            "matcher": "2-aho",
+            "rule_identifier": "mit.LICENSE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+            "score": 100,
+            "start_line": 5
+          }
+        ]
+      },
+      {
+        "detection_count": 4,
+        "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 17,
+            "from_file": "4f5342d881384d331706ae260ae8fb42529f1649710bce2f2f71aa57d465b6af/package/package.json",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "  \"license\": \"MIT\",",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_30.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+            "score": 100,
+            "start_line": 17
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": "https://ieeexplore.ieee.org/document/9263265",
+        "homepage_url": "http://opensource.org/licenses/mit-license.php",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "mit",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/mit",
+        "minimum_coverage": 0,
+        "name": "MIT License",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": null,
+        "osi_url": "http://www.opensource.org/licenses/MIT",
+        "other_spdx_license_keys": [
+          "LicenseRef-MIT-Bootstrap",
+          "LicenseRef-MIT-Diehl",
+          "LicenseRef-MIT-Discord",
+          "LicenseRef-MIT-TC"
+        ],
+        "other_urls": [
+          "https://opensource.com/article/18/3/patent-grant-mit-license",
+          "https://opensource.com/article/19/4/history-mit-license",
+          "https://opensource.org/licenses/MIT"
+        ],
+        "owner": "MIT",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "short_name": "MIT License",
+        "spdx_license_key": "MIT",
+        "spdx_url": "https://spdx.org/licenses/MIT",
+        "standard_notice": null,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+        "text_urls": [
+          "http://opensource.org/licenses/mit-license.php"
+        ]
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "mit.LICENSE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": true,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 161,
+        "license_expression": "mit",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
+      },
+      {
+        "identifier": "mit_27.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 3,
+        "license_expression": "mit",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_27.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "The MIT License"
+      },
+      {
+        "identifier": "mit_30.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "mit",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "License: MIT"
+      },
+      {
+        "identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": true,
+        "language": "en",
+        "length": 1,
+        "license_expression": "mit",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": null,
+        "skip_for_required_phrase_generation": false,
+        "text": "MIT"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/js-yaml/5.5.0",
+        "bug_tracking_url": null,
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "mit",
+        "declared_license_expression_spdx": "MIT",
+        "description": "YAML 1.2 parser and serializer",
+        "download_url": "https://registry.npmjs.org/js-yaml/-/js-yaml-5.5.0.tgz",
+        "extra_data": {},
+        "extracted_license_statement": "- MIT\n",
+        "holder": null,
+        "homepage_url": null,
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [
+          "parser",
+          "pyyaml",
+          "serializer",
+          "yaml"
+        ],
+        "license_detections": [
+          {
+            "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "4f5342d881384d331706ae260ae8fb42529f1649710bce2f2f71aa57d465b6af/package/package.json",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 1,
+                "matched_text": "MIT",
+                "matcher": "1-spdx-id",
+                "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+                "rule_relevance": 100,
+                "rule_url": null,
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "js-yaml",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": "dervus.grim@gmail.com",
+            "name": "Vladimir Zapparov",
+            "role": "author",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "ixti@member.fsf.org",
+            "name": "Aleksey V Zapparov",
+            "role": "contributor",
+            "type": "person",
+            "url": "http://www.ixti.net/"
+          },
+          {
+            "email": "martin.grenfell@gmail.com",
+            "name": "Martin Grenfell",
+            "role": "contributor",
+            "type": "person",
+            "url": "http://got-ravings.blogspot.com"
+          },
+          {
+            "email": "vitaly@rcdesign.ru",
+            "name": "Vitaly Puzrin",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/puzrin"
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/js-yaml@5.5.0",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/js-yaml/-/js-yaml-5.5.0.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/js-yaml",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "https://github.com/nodeca/js-yaml",
+        "version": "5.5.0"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

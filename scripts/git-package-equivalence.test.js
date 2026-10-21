@@ -11,7 +11,7 @@ import {
   validateGitConsumerLock,
 } from "./git-package-equivalence.mjs";
 import * as equivalence from "./git-package-equivalence.mjs";
-import { sha256Buffer } from "./release-artifacts.mjs";
+import { sha256Buffer } from "./release-file-utils.mjs";
 import { canonicalJson } from "./canonical-json.mjs";
 
 const EXPECTED_EXPORTS = {

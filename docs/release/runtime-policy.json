@@ -1,10 +1,37 @@
 {
   "schemaVersion": 1,
+  "minimums": [
+    "22.0.0",
+    "24.0.0",
+    "26.0.0"
+  ],
   "node": {
     "22": "22.23.3",
-    "24": "24.21.0",
-    "26": "26.11.1"
+    "24": "24.22.0",
+    "26": "26.12.0"
   },
   "canonicalNodeMajor": "24",
-  "npm": "12.2.0"
+  "npm": "12.2.0",
+  "npmMinimum": "12.2.0",
+  "consumerNpm": "10.9.9",
+  "consumerPlatforms": [
+    {
+      "runner": "ubuntu-24.04",
+      "os": "linux",
+      "arch": "x64",
+      "shell": "bash"
+    },
+    {
+      "runner": "windows-2025",
+      "os": "win32",
+      "arch": "x64",
+      "shell": "pwsh"
+    },
+    {
+      "runner": "macos-15",
+      "os": "darwin",
+      "arch": "arm64",
+      "shell": "bash"
+    }
+  ]
 }

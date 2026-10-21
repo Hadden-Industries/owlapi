@@ -24,12 +24,11 @@ import {
   writeInstalledConsumerFixtures,
 } from "./installed-consumer-fixtures.mjs";
 
+import { isStrictDescendantPath, sha256File } from "./release-file-utils.mjs";
 import {
   assertReleasePacklist,
   formatSha256Sums,
   inspectGzipTar,
-  isStrictDescendantPath,
-  sha256File,
 } from "./release-artifacts.mjs";
 
 const REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
@@ -220,7 +219,7 @@ try {
   writeJson("pack-dry-run.json", dryRun);
   writeJson("pack-actual.json", actualPack);
 
-  runNpm(["run", "release:lint-package", "--", tarballPath], {
+  runNpm(["run", "lint:package", "--", tarballPath], {
     label: "strict publint retained-tarball check",
   });
 
@@ -242,7 +241,7 @@ try {
   runNpm(
     [
       "run",
-      "release:sbom",
+      "generate:release-sbom",
       "--",
       "--output-file",
       sbomPath,

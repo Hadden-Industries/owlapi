@@ -14,7 +14,8 @@ import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
 
 import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
-import { inspectGzipTar, sha256Buffer } from "./release-artifacts.mjs";
+import { sha256Buffer } from "./release-file-utils.mjs";
+import { inspectGzipTar } from "./release-artifacts.mjs";
 import { classifyReleaseState } from "./release-state.mjs";
 import {
   captureConsumerSources,

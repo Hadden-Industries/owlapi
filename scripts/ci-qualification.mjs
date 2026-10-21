@@ -1,4 +1,11 @@
 import { projectRuntimeText } from "./runtime-policy.mjs";
+import {
+  validateFrozenMatrix,
+  runtimeDigest,
+} from "./consumer-runtime-matrix.mjs";
+export const FROZEN_RUNTIME_MATRIX = process.env.OWLAPI_RUNTIME_MATRIX
+  ? validateFrozenMatrix(JSON.parse(process.env.OWLAPI_RUNTIME_MATRIX))
+  : null;
 /** Versioned CI qualification and direct execution lineage. No selective state is admitted. */
 import { isDeepStrictEqual } from "node:util";
 import {
@@ -14,6 +21,10 @@ import {
 import { OWL_CONTRACT_INVENTORY_SHA256 } from "./owl-contract-evidence.mjs";
 
 export const CI_JOB_NAMES = Object.freeze({
+  runtime_matrix: "CI / frozen consumer matrix",
+  consumer_runtime:
+    "CI / consumer / ${{ matrix.runner }} / Node ${{ matrix.node }}",
+  consumer_runtimes: "CI / complete consumer qualification",
   verification: "CI / verification strategy",
   metadata: "CI / metadata",
   source_node_22: projectRuntimeText("CI / Ubuntu / Node {{runtime:node.22}}"),
@@ -49,6 +60,15 @@ export const CI_JOB_NAMES = Object.freeze({
   owl_contract: "CI / installed OWL contract",
   required: "CI / required",
 });
+/** GitHub expands matrix jobs; proof admission must enumerate every exact lane. */
+export const hostedCiJobNames = () =>
+  Object.entries(CI_JOB_NAMES).flatMap(([id, name]) =>
+    id === "consumer_runtime" && FROZEN_RUNTIME_MATRIX
+      ? FROZEN_RUNTIME_MATRIX.include.map(
+          ({ runner, node }) => `CI / consumer / ${runner} / Node ${node}`,
+        )
+      : [name],
+  );
 export const CHECK_JOBS = Object.freeze({
   java: "source_node_24",
   owl_contract: "owl_contract",
@@ -58,7 +78,10 @@ export const CHECK_JOBS = Object.freeze({
  * this policy cannot authorize an omitted integration.
  */
 export const QUALIFICATION_POLICY = Object.freeze({
-  version: 5,
+  version: 6,
+  runtimeMatrixSha256: FROZEN_RUNTIME_MATRIX
+    ? runtimeDigest(FROZEN_RUNTIME_MATRIX)
+    : null,
   mode: "FULL_ONLY",
   selectiveExecution: false,
   javaReferenceReuse: JAVA_REFERENCE_POLICY.enabled,

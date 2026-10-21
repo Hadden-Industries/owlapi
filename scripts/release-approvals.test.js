@@ -7,7 +7,7 @@ import {
   resolveRetainedApprovals,
   validateApprovalObservation,
 } from "./release-approvals.mjs";
-import { sha256Buffer } from "./release-artifacts.mjs";
+import { sha256Buffer } from "./release-file-utils.mjs";
 
 // A real stored ZIP models the external artifact format, including CRC and headers.
 const zip = (path, value) => {

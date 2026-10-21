@@ -22,14 +22,19 @@ import {
   readDownloadedReceipt,
   readGitSnapshot,
 } from "./ci-verification-command.mjs";
-import { REQUIRED_JOB_IDS, requireCiJobs } from "./require-job-success.mjs";
+import {
+  REQUIRED_JOB_IDS,
+  FULL_CI_JOB_IDS,
+  requireCiJobs,
+} from "./require-job-success.mjs";
 import { summarizeJavaExecution } from "./ci-check-coverage.mjs";
 import {
   summarizeOwlContractExecution,
   REVIEWED_CONSUMER_SOURCES,
 } from "./owl-contract-evidence.mjs";
 import { contractReport } from "./fixtures/owl-contract-report.mjs";
-import { CI_JOB_NAMES } from "./ci-qualification.mjs";
+import { CI_JOB_NAMES, hostedCiJobNames } from "./ci-qualification.mjs";
+import { CANONICAL_NODE } from "./runtime-policy.mjs";
 import {
   JAVA_REFERENCE_POLICY,
   JAVA_REFERENCE_POLICY_SHA256,
@@ -118,7 +123,7 @@ const fixture = () => {
       architecture: "X64",
       image: "ubuntu24",
       imageVersion: "20260920.314.1",
-      node: "v24.21.0",
+      node: `v${CANONICAL_NODE}`,
     },
   };
   const prContext = {
@@ -276,7 +281,7 @@ const mainFixture = async (reused, partialOrigin = false) => {
   });
   if (reused) {
     const outputs = await verify(f);
-    for (const job of Object.values(needs)) job.result = "skipped";
+    for (const jobId of FULL_CI_JOB_IDS) needs[jobId].result = "skipped";
     needs.verification = { result: "success", outputs };
   }
   const record = createMainQualification({ context: mainContext, needs, now });
@@ -349,8 +354,8 @@ const mainFixture = async (reused, partialOrigin = false) => {
       tree: [{ path: "ci.yml", type: "blob", sha: hash("f") }],
     },
     "/actions/runs/200/jobs?filter=latest&per_page=100": {
-      total_count: 20,
-      jobs: Object.values(CI_JOB_NAMES).map((name) => ({
+      total_count: hostedCiJobNames().length,
+      jobs: hostedCiJobNames().map((name) => ({
         name,
         run_id: 200,
         run_attempt: 1,
@@ -358,7 +363,11 @@ const mainFixture = async (reused, partialOrigin = false) => {
         status: "completed",
         conclusion:
           reused &&
-          ![CI_JOB_NAMES.verification, CI_JOB_NAMES.required].includes(name)
+          ![
+            CI_JOB_NAMES.runtime_matrix,
+            CI_JOB_NAMES.verification,
+            CI_JOB_NAMES.required,
+          ].includes(name)
             ? "skipped"
             : "success",
       })),
@@ -664,7 +673,7 @@ describe("reuse of complete PR integration", () => {
       }),
     ).toThrow(/coverage/u);
     const outputs = await verify(f);
-    for (const job of Object.values(needs)) job.result = "skipped";
+    for (const jobId of FULL_CI_JOB_IDS) needs[jobId].result = "skipped";
     needs.verification = { result: "success", outputs };
     const main = createMainQualification({
       context: { ...f.context, runId: 200, runAttempt: 1 },
@@ -764,7 +773,7 @@ describe("reuse of complete PR integration", () => {
     const f = fixture();
     const outputs = await verify(f);
     const needs = successfulNeeds();
-    for (const job of Object.values(needs)) job.result = "skipped";
+    for (const jobId of FULL_CI_JOB_IDS) needs[jobId].result = "skipped";
     needs.verification = { result: "success", outputs };
     const record = createMainQualification({
       context: { ...f.context, runId: 200, runAttempt: 1 },
@@ -1154,7 +1163,7 @@ describe("reuse of complete PR integration", () => {
     const f = fixture();
     const outputs = await verify(f);
     const needs = successfulNeeds();
-    for (const job of Object.values(needs)) job.result = "skipped";
+    for (const jobId of FULL_CI_JOB_IDS) needs[jobId].result = "skipped";
     needs.verification = { result: "success", outputs };
     expect(
       requireCiJobs(needs, { eventName: "push", ref: "refs/heads/main" }).mode,

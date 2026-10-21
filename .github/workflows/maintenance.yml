@@ -19,12 +19,33 @@ env:
   npm_config_fetch_timeout: "300000"
 
 jobs:
+  runtime_matrix:
+    name: Maintenance / frozen consumer matrix
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      matrix: ${{ steps.freeze.outputs.matrix }}
+      sha256: ${{ steps.freeze.outputs.sha256 }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - id: freeze
+        uses: ./.github/actions/freeze-runtime-matrix
+
   health:
     name: Maintenance / dependency and package health
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     outputs:
       reporter_artifact_id: ${{ steps.reporter_bundle.outputs.artifact-id }}
+      artifact_id: ${{ steps.runtime_candidate.outputs.artifact-id }}
+      artifact_digest: ${{ steps.runtime_candidate.outputs.artifact-digest }}
     permissions:
       contents: read
     defaults:
@@ -41,7 +62,7 @@ jobs:
       # reviewed logic without checking out the repository or gaining contents access.
       - name: Retain the maintenance reporter for the write-only job
         id: reporter_bundle
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: maintenance-reporter-${{ github.run_id }}-${{ github.run_attempt }}
           path: scripts/report-maintenance-failure.mjs
@@ -51,31 +72,20 @@ jobs:
           overwrite: false
           include-hidden-files: false
           archive: true
-      - name: Select Node 24.21.0 without package caching
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
-        with:
-          node-version: "24.21.0"
-          check-latest: false
-          cache: ""
-          package-manager-cache: false
-      - name: Establish the exact repository npm
-        run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
-        timeout-minutes: 20
-      - name: Verify the exact runtime pair
-        run: node scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.2.0
-        timeout-minutes: 5
+      - name: Set up the policy-owned Node/npm runtime
+        uses: ./.github/actions/setup-producer
       - name: Install the reviewed dependency graph
         run: npm ci
         timeout-minutes: 20
       - name: Record the hosted runner identity
-        run: npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
+        run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
         timeout-minutes: 5
       - name: Select the pinned development Python
         id: quality_python
         run: node scripts/repository-python-tools.mjs python
         timeout-minutes: 10
       - name: Synchronize locked development tools
-        run: npm run tools:sync -- --python-env QUALITY_PYTHON
+        run: npm run sync:python-tools -- --python-env QUALITY_PYTHON
         timeout-minutes: 5
         env:
           QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
@@ -83,11 +93,92 @@ jobs:
         run: npm test -- --runInBand
         timeout-minutes: 45
       - name: Rebuild and audit a disposable retained candidate
-        run: npm run release:pack
+        run: npm run build:release-candidate
         timeout-minutes: 45
+      - name: Read the candidate version
+        id: runtime_metadata
+        run: node scripts/workflow-metadata.mjs
+      - name: Retain the weekly compatibility candidate
+        id: runtime_candidate
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: runtime-candidate-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            .release/candidate/${{ steps.runtime_metadata.outputs.version }}/hadden-industries-owlapi-${{ steps.runtime_metadata.outputs.version }}.tgz
+            .release/candidate/${{ steps.runtime_metadata.outputs.version }}/hadden-industries-owlapi-${{ steps.runtime_metadata.outputs.version }}.cdx.json
+            .release/candidate/${{ steps.runtime_metadata.outputs.version }}/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 0
+          overwrite: false
+          include-hidden-files: false
+          archive: true
       - name: Observe the active public production coordinate
-        run: npm run maintenance:published-health
+        run: npm run check:published-coordinate
         timeout-minutes: 20
+
+  consumer_runtime:
+    name: Maintenance / consumer / ${{ matrix.runner }} / Node ${{ matrix.node }}
+    needs: [runtime_matrix, health]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 90
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: ${{ matrix.shell }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.runtime_matrix.outputs.matrix).include }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/qualify-consumer
+        with:
+          matrix: ${{ needs.runtime_matrix.outputs.matrix }}
+          node: ${{ matrix.node }}
+          candidate-id: ${{ needs.health.outputs.artifact_id }}
+          candidate-digest: sha256:${{ needs.health.outputs.artifact_digest }}
+      - name: Retain the actual consumer lane evidence
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: consumer-runtime-${{ matrix.runner }}-${{ matrix.node }}-attempt-${{ github.run_attempt }}
+          path: .release/runtime-report/
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 0
+          overwrite: false
+          include-hidden-files: false
+          archive: true
+
+  consumer_runtimes:
+    name: Maintenance / complete consumer qualification
+    needs: [runtime_matrix, health, consumer_runtime]
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      coverage: ${{ steps.require.outputs.coverage }}
+      artifact_id: ${{ steps.require.outputs.artifact-id }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - id: require
+        uses: ./.github/actions/aggregate-consumer-runtimes
+        with:
+          matrix: ${{ needs.runtime_matrix.outputs.matrix }}
+          lanes-result: ${{ needs.consumer_runtime.result }}
+          candidate-id: ${{ needs.health.outputs.artifact_id }}
+          candidate-digest: sha256:${{ needs.health.outputs.artifact_digest }}
 
   reporter:
     name: Maintenance / isolated finding reporter
@@ -102,14 +193,14 @@ jobs:
         shell: bash
     steps:
       - name: Select the reporter runtime
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: "24.21.0"
+          node-version: "24.22.0"
           check-latest: false
           cache: ""
           package-manager-cache: false
       - name: Download the same-run reporter by immutable artifact ID
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           artifact-ids: ${{ needs.health.outputs.reporter_artifact_id }}
           path: .maintenance-reporter

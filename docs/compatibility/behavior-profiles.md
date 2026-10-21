@@ -131,7 +131,7 @@ Resolved addresses are pinned for the authorized connection.
 Cache reuse requires current authority; distinct loader authorities never share context contents.
 
 The adapter implements HTTP, HTTPS and local files.
-It uses Node's native gzip, raw DEFLATE and CRC32, the selected XZ binding, and a first-entry ZIP envelope reader.
+It uses Node's native gzip and raw DEFLATE, the selected `lzma-native` binding for XZ and CRC32, and a first-entry ZIP envelope reader.
 Consumers enforcing npm's strict install-script policy must explicitly deny `lzma-native@8.0.6` in their own `allowScripts` map.
 The tested Windows hosts use the package's prebuilt native binding, with no install script or compiler invocation.
 It retains Java's original ontology document IRI after redirects.

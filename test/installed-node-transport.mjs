@@ -5,6 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { gzipSync } from "node:zlib";
+import { readFileSync } from "node:fs";
 import { NodeDocumentLoader } from "owlapi/io/node";
 import { IRI, OWLOntologyLoaderConfiguration } from "owlapi/model";
 
@@ -15,8 +16,18 @@ const xz = Buffer.from(
   "base64",
 );
 let requests = 0;
+const zipVectors = JSON.parse(
+  readFileSync(new URL("./compression-vectors.json", import.meta.url), "utf8"),
+);
 const server = createServer((request, response) => {
   requests++;
+  const zip = zipVectors.find(
+    ({ name, suffix }) => request.url === `/${name}${suffix}`,
+  );
+  if (zip) {
+    response.end(Buffer.from(zip.base64, "base64"));
+    return;
+  }
   response.setHeader("Content-Encoding", request.url === "/xz" ? "xz" : "gzip");
   response.end(request.url === "/xz" ? xz : gzipSync("ok"));
 });
@@ -61,6 +72,26 @@ try {
     );
     assert.ok(operations.has("connect-http"));
     assert.ok(operations.has("read-file"));
+    if (behaviorProfileId === "java-owlapi-5.5.1") {
+      for (const fixture of zipVectors) {
+        const loading = allowed.load(
+          IRI.create(`${base}/${fixture.name}${fixture.suffix}`),
+          { config },
+        );
+        if (fixture.outcome.startsWith("RETURN:"))
+          assert.equal(
+            (await loading).getText(),
+            Buffer.from(fixture.outcome.slice(7), "base64").toString("utf8"),
+          );
+        else {
+          assert.equal(fixture.outcome, "THROW:ZipException");
+          await assert.rejects(loading, {
+            code: "DOCUMENT_LOAD_FAILED",
+            phase: "content-decoding",
+          });
+        }
+      }
+    }
   }
 } finally {
   server.closeAllConnections();

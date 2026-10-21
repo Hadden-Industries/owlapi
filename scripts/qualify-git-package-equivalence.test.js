@@ -19,7 +19,8 @@ import {
   parseQualificationArguments,
   qualifyGitPackageEquivalence,
 } from "./qualify-git-package-equivalence.mjs";
-import { formatSha256Sums, sha256Buffer } from "./release-artifacts.mjs";
+import { sha256Buffer } from "./release-file-utils.mjs";
+import { formatSha256Sums } from "./release-artifacts.mjs";
 import { PACKAGE_NAME } from "./package-identity.mjs";
 
 test("the historical no-network entry point needs no lifecycle companion files", () => {

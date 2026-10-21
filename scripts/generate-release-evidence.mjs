@@ -8,7 +8,7 @@ import {
   buildReleaseEvidence,
   SCOPED_RELEASE_JOB_NAMES,
 } from "./release-evidence.mjs";
-import { sha256File } from "./release-artifacts.mjs";
+import { sha256File } from "./release-file-utils.mjs";
 import { validateReleaseEvidence } from "./validate-release-evidence.mjs";
 import { resolveRetainedApprovals } from "./release-approvals.mjs";
 import {

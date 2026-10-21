@@ -43,7 +43,8 @@
     "RDFXML-REFINEMENTS-2026-10-08": "Owner instruction to implement the amended RDF/XML ownership/API table using HISEW; subsequent approval of bounded compatibility/provenance records and same-input Java qualification in session 01a11b94-bded-79e1-87b1-c5a7c3ac1ad9.",
     "RC2-JAVA-PARITY-2026-10-09": "Owner-approved docs/plans/0.1.0-rc.2-java-parity-baseline.md, all nine implementation slices, and exact profile/storage/locality decisions. Native Java is a black-box behavioral authority and source research input; no implementation text is copied.",
     "DRY-REMEDIATION-2026-10-11": "Owner instruction to implement docs/plans/dry-principle-remediation.md via HISEW on current local main, preserving observable behavior, historical evidence and source rights.",
-    "JAVA-BEHAVIOR-2026-10-13": "Owner instruction to implement docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md using HISEW, including required configuration changes. Separate explicit approvals admit the narrowly scoped jsonld provider build and caller-authorized NodeDocumentLoader public adapter with the stated browser transport boundary. Historical decisions and measured hashes retain their original subjects."
+    "JAVA-BEHAVIOR-2026-10-13": "Owner instruction to implement docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md using HISEW, including required configuration changes. Separate explicit approvals admit the narrowly scoped jsonld provider build and caller-authorized NodeDocumentLoader public adapter with the stated browser transport boundary. Historical decisions and measured hashes retain their original subjects.",
+    "NODE-COMPRESSION-2026-10-21": "Owner authorization on 21 October 2026 to replace Node zlib.crc32 with the existing lzma-native public incremental CRC32 through one shared bounded Buffer adapter, preserve ZIP integrity and consumer runtime floors, and reconcile source provenance. Existing Java phase-25 references remain behavioral context rather than implementation sources."
   },
   "provenanceCategories": {
     "A_PROJECT_ORIGINAL": "Project-authored implementation with no identified upstream-derived semantic implementation",
@@ -5817,6 +5818,34 @@
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
       "recordedOn": "2026-10-14"
+    },
+    {
+      "id": "JAVA-BEHAVIOR-IO-NODE-CRC32",
+      "path": "io/node/crc32.js",
+      "phase": 25,
+      "scope": "Project-authored Node-only Buffer adapter to lzma-native's public incremental IEEE CRC32; 64-KiB input slices bound native copies while preserving the initial zero seed, empty input, byte offsets and unsigned checksum result. Used by Node document ZIP decoding and release ZIP integrity validation.",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "B_STANDARDS_ADAPTER",
+      "normativePublicSources": [
+        "https://www.rfc-editor.org/rfc/rfc1952#section-8",
+        "https://registry.npmjs.org/lzma-native/-/lzma-native-8.0.6.tgz (package/README.md#api-crc32 and package/index.js; exact artifact integrity in package-lock.json)"
+      ],
+      "compatibilityReferences": [
+        "docs/compatibility/profiles/java-owlapi-5.5.1/compression-provider-selection.md",
+        "docs/release/runtime-policy.json"
+      ],
+      "referenceOwlapiRevision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
+      "focusedEvidence": [
+        "io/node/crc32.test.js",
+        "io/node/nodeDocumentLoader.test.js",
+        "scripts/release-artifacts.test.js"
+      ],
+      "thirdPartyDependencies": [
+        "lzma-native"
+      ],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "NODE-COMPRESSION-2026-10-21",
+      "recordedOn": "2026-10-21"
     },
     {
       "id": "JAVA-BEHAVIOR-IO-NODE-DOCUMENT-BYTES",

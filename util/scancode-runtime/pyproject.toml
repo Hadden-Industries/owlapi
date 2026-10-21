@@ -4,7 +4,7 @@ name = "owlapi-scancode-runtime"
 version = "0.0.0"
 # Generated from the repository .python-version by scripts/sync-python-target.mjs --write.
 requires-python = ">=3.15.0"
-dependencies = ["scancode-toolkit==32.5.0", "beartype==0.23.0rc2"]
+dependencies = ["scancode-toolkit==32.5.0", "beartype==0.23.1"]
 
 # Install this locked group first. Source builds then use these exact packages
 # without a separate, unrecorded PEP 517 build dependency resolution.
@@ -12,14 +12,17 @@ dependencies = ["scancode-toolkit==32.5.0", "beartype==0.23.0rc2"]
 build = [
     "Cython==3.3.0",
     "packaging==26.3",
-    "setuptools==84.0.0",
+    "setuptools==84.2.1",
     "setuptools-scm==10.3.4",
     "wheel==0.48.0",
 ]
 
 [tool.uv]
 package = false
-required-version = "==0.13.0"
+required-version = "==0.13.4"
+# Plugincode 32.0.0 marks hook classes, which Pluggy 1.7 no longer discovers.
+# Remove after a Plugincode/Pluggy update passes native ScanCode qualification.
+constraint-dependencies = ["pluggy<1.7"]
 default-groups = []
 no-build-isolation = true
 no-binary-package = ["scancode-toolkit"]

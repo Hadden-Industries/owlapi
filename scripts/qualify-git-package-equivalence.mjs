@@ -22,11 +22,8 @@ import {
   validateGitConsumerLock,
 } from "./git-package-equivalence.mjs";
 import { verifyHistoricalAlphaCandidateBundle } from "./candidate-bundle.mjs";
-import {
-  isStrictDescendantPath,
-  readZipArchiveFiles,
-  sha256Buffer,
-} from "./release-artifacts.mjs";
+import { isStrictDescendantPath, sha256Buffer } from "./release-file-utils.mjs";
+import { readZipArchiveFiles } from "./release-zip.mjs";
 import { verifyLocalReleaseTag } from "./verify-release-tag.mjs";
 
 const REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));

@@ -2,7 +2,8 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { pathToFileURL } from "node:url";
 import { GitHubReleaseClient } from "./github-release.mjs";
-import { readZipArchiveFiles, sha256Buffer } from "./release-artifacts.mjs";
+import { sha256Buffer } from "./release-file-utils.mjs";
+import { readZipArchiveFiles } from "./release-zip.mjs";
 
 const repository = "Hadden-Industries/owlapi";
 const gateJobs = {

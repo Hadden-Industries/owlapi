@@ -100,7 +100,7 @@ export const selectNpmCliForVersion = ({
   );
 };
 
-const observeNpmVersion = (npmCli) => {
+export const observeNpmVersion = (npmCli) => {
   // Invoke the JavaScript entry point with the selected Node executable so a
   // `.cmd` shim or command shell is never part of the runtime assertion.
   const observation = spawnSync(process.execPath, [npmCli, "--version"], {
