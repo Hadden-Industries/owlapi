@@ -190,13 +190,17 @@ const fixture = () => {
       now: now - 20 * 60_000,
     }),
   );
-  const jobs = Object.values(CI_JOB_NAMES).map((name) => ({
+  const jobs = Object.values(CI_JOB_NAMES).map((name, index) => ({
+    id: 2000 + index,
     name,
     run_id: 100,
     run_attempt: 2,
     head_sha: hash("b"),
     status: "completed",
     conclusion: "success",
+    runner_id: 1000 + index,
+    started_at: "2026-09-29T17:10:00Z",
+    completed_at: "2026-09-29T17:11:00Z",
   }));
   const responses = {
     [`/commits/${context.sha}/pulls?per_page=100`]: [pr],
@@ -217,6 +221,16 @@ const fixture = () => {
     "/actions/runs/100/jobs?filter=latest&per_page=100": {
       total_count: jobs.length,
       jobs,
+    },
+    "/actions/runs/100/attempts/1/jobs?per_page=100": {
+      total_count: jobs.length,
+      jobs: jobs.map((job) => ({
+        ...job,
+        id: job.id - 1000,
+        run_attempt: 1,
+        started_at: "2026-09-29T17:00:00Z",
+        completed_at: "2026-09-29T17:01:00Z",
+      })),
     },
   };
   const read = async (path) => {
@@ -257,6 +271,35 @@ const verify = async (
   });
 };
 
+// Reproduce the native API's retained-job copies without changing execution.
+const retainExecution = (f, runId, attempt, names) => {
+  const original =
+    f.responses[`/actions/runs/${runId}/attempts/${attempt}/jobs?per_page=100`];
+  for (const job of f.responses[
+    `/actions/runs/${runId}/jobs?filter=latest&per_page=100`
+  ].jobs) {
+    if (!names.includes(job.name)) continue;
+    const prior = original.jobs.find((item) => item.name === job.name);
+    job.runner_id = prior.runner_id;
+    job.started_at = prior.started_at;
+    job.completed_at = prior.completed_at;
+  }
+};
+
+const partialPrFixture = () => {
+  const f = fixture();
+  f.receipt = createVerificationReceipt({
+    context: f.prContext,
+    needs: successfulNeeds({ runId: 100, runAttempt: 1, commit: hash("c") }),
+    now: now - 20 * 60_000,
+  });
+  retainExecution(f, 100, 1, [
+    CI_JOB_NAMES.source_node_24,
+    CI_JOB_NAMES.owl_contract,
+  ]);
+  return f;
+};
+
 const mainFixture = async (reused, partialOrigin = false) => {
   const f = fixture();
   if (partialOrigin) {
@@ -265,13 +308,10 @@ const mainFixture = async (reused, partialOrigin = false) => {
       needs: successfulNeeds({ runId: 100, runAttempt: 1, commit: hash("c") }),
       now: now - 20 * 60_000,
     });
-    for (const job of f.jobs)
-      if (
-        [CI_JOB_NAMES.source_node_24, CI_JOB_NAMES.owl_contract].includes(
-          job.name,
-        )
-      )
-        job.run_attempt = 1;
+    retainExecution(f, 100, 1, [
+      CI_JOB_NAMES.source_node_24,
+      CI_JOB_NAMES.owl_contract,
+    ]);
   }
   const mainContext = { ...f.context, runId: 200, runAttempt: 1 };
   const needs = successfulNeeds({
@@ -355,12 +395,16 @@ const mainFixture = async (reused, partialOrigin = false) => {
     },
     "/actions/runs/200/jobs?filter=latest&per_page=100": {
       total_count: hostedCiJobNames().length,
-      jobs: hostedCiJobNames().map((name) => ({
+      jobs: hostedCiJobNames().map((name, index) => ({
+        id: 3000 + index,
         name,
         run_id: 200,
         run_attempt: 1,
         head_sha: hash("d"),
         status: "completed",
+        runner_id: 2000 + index,
+        started_at: "2026-09-29T17:20:00Z",
+        completed_at: "2026-09-29T17:21:00Z",
         conclusion:
           reused &&
           ![
@@ -373,6 +417,9 @@ const mainFixture = async (reused, partialOrigin = false) => {
       })),
     },
   });
+  f.responses["/actions/runs/200/attempts/1/jobs?per_page=100"] = jsonClone(
+    f.responses["/actions/runs/200/jobs?filter=latest&per_page=100"],
+  );
   if (!reused)
     f.responses["/actions/artifacts/702"] = {
       ...f.candidate,
@@ -463,9 +510,10 @@ describe("exact landed-main qualification and direct original execution", () => 
       now,
     });
     f.mainArtifact.name = "ci-main-qualification-200-2";
-    f.responses["/actions/runs/200/jobs?filter=latest&per_page=100"].jobs.at(
-      -1,
-    ).run_attempt = 2;
+    for (const job of f.responses[
+      "/actions/runs/200/jobs?filter=latest&per_page=100"
+    ].jobs)
+      job.run_attempt = 2;
     expect(await validateBase(f)).toMatchObject({
       originals: { java: { original: { runAttempt: 1 } } },
     });
@@ -692,21 +740,164 @@ describe("reuse of complete PR integration", () => {
       needs: successfulNeeds({ runId: 100, runAttempt: 1, commit: hash("c") }),
       now: now - 20 * 60_000,
     });
-    for (const job of f.jobs)
-      if (
-        [
-          CI_JOB_NAMES.source_node_24,
-          CI_JOB_NAMES.owl_contract,
-          CI_JOB_NAMES.metadata,
-        ].includes(job.name)
-      )
-        job.run_attempt = 1;
+    retainExecution(f, 100, 1, [
+      CI_JOB_NAMES.source_node_24,
+      CI_JOB_NAMES.owl_contract,
+      CI_JOB_NAMES.metadata,
+    ]);
     expect(f.receipt.checks.java.original.runAttempt).toBe(1);
     expect(f.receipt.runAttempt).toBe(2);
     expect((await verify(f)).reuse).toBe("true");
-    f.jobs.find((job) => job.name === CI_JOB_NAMES.owl_contract).run_attempt =
-      2;
+    f.jobs.find((job) => job.name === CI_JOB_NAMES.owl_contract).completed_at =
+      "2026-09-29T17:22:00Z";
     await expect(verify(f)).rejects.toThrow(/producing attempt/u);
+  });
+
+  test("reuses partial-rerun proof when GitHub relabels retained jobs", async () => {
+    const f = partialPrFixture();
+    // The native latest endpoint copies retained jobs into attempt 2, while
+    // the attempt-specific endpoint preserves their actual attempt-1 execution.
+    expect(f.jobs.every((job) => job.run_attempt === 2)).toBe(true);
+    expect(
+      f.jobs.find((job) => job.name === CI_JOB_NAMES.source_node_24).id,
+    ).not.toBe(
+      f.responses["/actions/runs/100/attempts/1/jobs?per_page=100"].jobs.find(
+        (job) => job.name === CI_JOB_NAMES.source_node_24,
+      ).id,
+    );
+    await expect(verify(f)).resolves.toMatchObject({ reuse: "true" });
+  });
+
+  test.each([
+    "runner",
+    "start",
+    "completion",
+    "missing runner",
+    "invalid time",
+    "missing time",
+    "reversed time",
+  ])(
+    "rejects changed or unavailable retained execution identity: %s",
+    async (fault) => {
+      const f = partialPrFixture();
+      const latest = f.jobs.find(
+        (job) => job.name === CI_JOB_NAMES.source_node_24,
+      );
+      if (fault === "runner") latest.runner_id++;
+      if (fault === "start") latest.started_at = "2026-09-29T17:00:01Z";
+      if (fault === "completion") latest.completed_at = "2026-09-29T17:01:01Z";
+      if (fault === "missing runner") delete latest.runner_id;
+      if (fault === "invalid time") latest.started_at = "invalid";
+      if (fault === "missing time") delete latest.completed_at;
+      if (fault === "reversed time")
+        latest.completed_at = "2026-09-29T16:59:00Z";
+      await expect(verify(f)).rejects.toThrow(/execution/u);
+    },
+  );
+
+  test.each([
+    "truncated",
+    "duplicate",
+    "foreign run",
+    "foreign head",
+    "foreign attempt",
+    "missing producer",
+    "failed producer",
+  ])(
+    "rejects an unauthenticated original attempt inventory: %s",
+    async (fault) => {
+      const f = partialPrFixture();
+      const inventory =
+        f.responses["/actions/runs/100/attempts/1/jobs?per_page=100"];
+      const producer = inventory.jobs.find(
+        (job) => job.name === CI_JOB_NAMES.source_node_24,
+      );
+      if (fault === "truncated") inventory.total_count++;
+      if (fault === "duplicate") {
+        inventory.jobs.push({ ...producer });
+        inventory.total_count++;
+      }
+      if (fault === "foreign run") producer.run_id++;
+      if (fault === "foreign head") producer.head_sha = hash("a");
+      if (fault === "foreign attempt") producer.run_attempt++;
+      if (fault === "missing producer") {
+        inventory.jobs = inventory.jobs.filter((job) => job !== producer);
+        inventory.total_count--;
+      }
+      if (fault === "failed producer") producer.conclusion = "failure";
+      await expect(verify(f)).rejects.toThrow(/producing attempt/u);
+    },
+  );
+
+  test("rejects relabeling a retained execution as a new producing attempt", async () => {
+    const f = fixture();
+    retainExecution(f, 100, 1, [CI_JOB_NAMES.source_node_24]);
+    expect(f.receipt.checks.java.original.runAttempt).toBe(2);
+    await expect(verify(f)).rejects.toThrow(/retained earlier execution/u);
+  });
+
+  test.each(["runner_id", "started_at", "completed_at"])(
+    "cannot prove a new producer when predecessor %s is unavailable",
+    async (field) => {
+      const f = fixture();
+      retainExecution(f, 100, 1, [CI_JOB_NAMES.source_node_24]);
+      const previous = f.responses[
+        "/actions/runs/100/attempts/1/jobs?per_page=100"
+      ].jobs.find((job) => job.name === CI_JOB_NAMES.source_node_24);
+      delete previous[field];
+      await expect(verify(f)).rejects.toThrow(
+        /execution identity is unavailable/u,
+      );
+    },
+  );
+
+  test.each(["absent", "skipped"])(
+    "accepts a genuine new producer after a definitively %s predecessor",
+    async (state) => {
+      const f = fixture();
+      const inventory =
+        f.responses["/actions/runs/100/attempts/1/jobs?per_page=100"];
+      const previous = inventory.jobs.find(
+        (job) => job.name === CI_JOB_NAMES.source_node_24,
+      );
+      if (state === "absent") {
+        inventory.jobs = inventory.jobs.filter((job) => job !== previous);
+        inventory.total_count--;
+      } else {
+        previous.conclusion = "skipped";
+        previous.runner_id = 0;
+        previous.started_at = null;
+        previous.completed_at = null;
+      }
+      await expect(verify(f)).resolves.toMatchObject({ reuse: "true" });
+    },
+  );
+
+  test("authenticates mixed producing attempts with one cached historical read", async () => {
+    const f = partialPrFixture();
+    // Java was retained; the OWL contract really reran on the newer runner.
+    const fresh = fixture();
+    f.receipt.checks.owl_contract = fresh.receipt.checks.owl_contract;
+    Object.assign(
+      f.jobs.find((job) => job.name === CI_JOB_NAMES.owl_contract),
+      fresh.jobs.find((job) => job.name === CI_JOB_NAMES.owl_contract),
+    );
+    const historical =
+      f.responses["/actions/runs/100/attempts/1/jobs?per_page=100"];
+    historical.jobs.find(
+      (job) => job.name === CI_JOB_NAMES.owl_contract,
+    ).conclusion = "failure";
+    const paths = [];
+    const read = f.read;
+    f.read = async (path) => {
+      paths.push(path);
+      return read(path);
+    };
+    await expect(verify(f)).resolves.toMatchObject({ reuse: "true" });
+    expect(paths.filter((path) => path.includes("/attempts/"))).toEqual([
+      "/actions/runs/100/attempts/1/jobs?per_page=100",
+    ]);
+    expect(paths.length).toBeLessThanOrEqual(32);
   });
 
   test.each(["later attempt", "another run", "another commit"])(

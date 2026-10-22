@@ -364,8 +364,12 @@ test.each([
 test("partial reruns retain successful prerequisites and the original publication attempt", () => {
   const candidate = scopedFacts();
   const { runId, commit } = candidate.workflow;
-  const jobs = candidate.requiredJobs.map((job) => ({
+  const jobs = candidate.requiredJobs.map((job, index) => ({
     ...job,
+    id: 100 + index,
+    runner_id: 200 + index,
+    started_at: "2026-08-28T11:00:00Z",
+    completed_at: "2026-08-28T11:01:00Z",
     html_url: job.url,
     run_id: Number(runId),
     head_sha: commit,
@@ -439,6 +443,87 @@ test("partial reruns retain successful prerequisites and the original publicatio
   ).steps[0].conclusion = "skipped";
   expect(() => evidenceGenerator.scopedWorkflowJobs(skippedWrite)).toThrow(
     /publisher job/u,
+  );
+});
+
+test("release qualification keeps its original attempt when GitHub copies retained jobs", () => {
+  const candidate = scopedFacts();
+  const { runId, commit } = candidate.workflow;
+  const originals = candidate.requiredJobs.map((job, index) => ({
+    ...job,
+    id: 100 + index,
+    runner_id: 200 + index,
+    started_at: "2026-08-28T11:00:00Z",
+    completed_at: "2026-08-28T11:01:00Z",
+    html_url: job.url,
+    run_id: Number(runId),
+    head_sha: commit,
+    run_attempt: 1,
+    status: "completed",
+    steps: [
+      {
+        name: "Perform the authorized publication and exact-version channel writes",
+        status: "completed",
+        conclusion: "success",
+      },
+    ],
+  }));
+  const copies = originals.map((job) => ({
+    ...job,
+    id: job.id + 1000,
+    run_attempt: 2,
+    html_url: `${candidate.workflow.url}/job/${job.id + 1000}`,
+  }));
+  const input = {
+    jobs: [...originals, ...copies],
+    runId,
+    runAttempt: 2,
+    commit,
+    provenance: candidate.publication.provenance,
+  };
+  expect(evidenceGenerator.scopedWorkflowJobs(input)).toMatchObject({
+    qualificationRunAttempt: 1,
+    publisherJob: { runAttempt: 1 },
+  });
+  for (const fault of [
+    "missing runner",
+    "invalid time",
+    "failed",
+    "incomplete",
+    "duplicate",
+  ]) {
+    const changed = structuredClone(input);
+    const original = changed.jobs.find(
+      (job) => job.name === "Release / qualified",
+    );
+    if (fault === "missing runner") delete original.runner_id;
+    if (fault === "invalid time") original.completed_at = "invalid";
+    if (fault === "failed") original.conclusion = "failure";
+    if (fault === "incomplete") original.status = "in_progress";
+    if (fault === "duplicate") changed.jobs.push({ ...original, id: 9999 });
+    expect(() => evidenceGenerator.scopedWorkflowJobs(changed)).toThrow(
+      /execution identity|Qualification/u,
+    );
+  }
+  const qualified = copies.find((job) => job.name === "Release / qualified");
+  qualified.started_at = "2026-08-28T11:10:00Z";
+  qualified.completed_at = "2026-08-28T11:11:00Z";
+  expect(evidenceGenerator.scopedWorkflowJobs(input)).toMatchObject({
+    qualificationRunAttempt: 2,
+  });
+  const originalQualified = originals.find(
+    (job) => job.name === "Release / qualified",
+  );
+  originalQualified.conclusion = "skipped";
+  originalQualified.runner_id = 0;
+  originalQualified.started_at = null;
+  originalQualified.completed_at = null;
+  expect(evidenceGenerator.scopedWorkflowJobs(input)).toMatchObject({
+    qualificationRunAttempt: 2,
+  });
+  qualified.conclusion = "failure";
+  expect(() => evidenceGenerator.scopedWorkflowJobs(input)).toThrow(
+    /latest execution/u,
   );
 });
 

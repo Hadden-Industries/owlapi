@@ -174,6 +174,9 @@ const fixture = () => {
   }
   const jobs = SCOPED_RELEASE_JOB_NAMES.map((name, index) => ({
     id: index + 1,
+    runner_id: index + 1000,
+    started_at: "2026-09-01T10:00:00Z",
+    completed_at: "2026-09-01T10:01:00Z",
     name,
     run_id: Number(control.runId),
     head_sha: control.sourceCommit,

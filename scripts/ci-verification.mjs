@@ -5,6 +5,7 @@ import {
 } from "../tooling/artifact-transport/identity.mjs";
 /** Evidence reuse is an optimization. Unprovable equivalence always requires full CI. */
 import { isDeepStrictEqual } from "node:util";
+import { sameJobExecution } from "./github-job-execution.mjs";
 import { captureConsumerSources } from "./consumer-source-snapshot.mjs";
 import { javaReferenceFromNeeds } from "./java-reference-state.mjs";
 import {
@@ -442,12 +443,12 @@ export const verifyIntegrationProof = async ({
       ),
     "The latest source job inventory is incomplete, failed or contains skipped checks.",
   );
-  for (const [check, jobId] of Object.entries(CHECK_JOBS))
-    requireFact(
-      observed.jobs.find((job) => job.name === CI_JOB_NAMES[jobId])
-        .run_attempt === receipt.checks[check].original.runAttempt,
-      "Coverage producing attempt differs from its authenticated source job.",
-    );
+  await verifyCheckProducingAttempts({
+    run,
+    checks: receipt.checks,
+    observed,
+    read,
+  });
   requireFact(
     id(receipt.candidate?.id) && digest(receipt.candidate.digest),
     "Receipt candidate identity is invalid.",
@@ -524,6 +525,69 @@ const assertClosedJobs = (observed, run, reused) => {
     "Main qualification does not match its complete native job inventory.",
   );
 };
+
+/** GitHub can copy a retained job into a later attempt with a new job/check ID.
+ * Runner and execution timestamps identify the retained execution, while native
+ * attempt inventories authenticate where it first ran. Never equate the latest
+ * inventory's attempt label with the producing attempt in typed coverage.
+ */
+async function verifyCheckProducingAttempts({ run, checks, observed, read }) {
+  const inventories = new Map([[run.run_attempt, observed]]);
+  const inventory = async (attempt) => {
+    requireFact(
+      id(attempt) && attempt <= run.run_attempt,
+      "Coverage producing attempt is outside its authenticated run.",
+    );
+    if (!inventories.has(attempt)) {
+      const value = await read(
+        `/actions/runs/${run.id}/attempts/${attempt}/jobs?per_page=100`,
+      );
+      requireFact(
+        Array.isArray(value.jobs) &&
+          value.jobs.length <= 100 &&
+          value.total_count === value.jobs.length &&
+          new Set(value.jobs.map((job) => job.name)).size ===
+            value.jobs.length &&
+          value.jobs.every(
+            (job) =>
+              job.run_id === run.id &&
+              job.head_sha === run.head_sha &&
+              job.run_attempt === attempt,
+          ),
+        "Coverage producing attempt has an incomplete or foreign native inventory.",
+      );
+      inventories.set(attempt, value);
+    }
+    return inventories.get(attempt).jobs;
+  };
+  for (const [check, jobId] of Object.entries(CHECK_JOBS)) {
+    const attempt = checks[check].original.runAttempt;
+    const name = CI_JOB_NAMES[jobId];
+    const latest = observed.jobs.find((job) => job.name === name);
+    const original = (await inventory(attempt)).find(
+      (job) => job.name === name,
+    );
+    requireFact(
+      original?.run_attempt === attempt &&
+        original.status === "completed" &&
+        original.conclusion === "success" &&
+        sameJobExecution(original, latest),
+      "Coverage producing attempt differs from its authenticated source execution.",
+    );
+    if (attempt > 1) {
+      const previous = (await inventory(attempt - 1)).find(
+        (job) => job.name === name,
+      );
+      requireFact(
+        previous === undefined ||
+          (previous.status === "completed" &&
+            previous.conclusion === "skipped") ||
+          !sameJobExecution(original, previous),
+        "Coverage producing attempt names a retained earlier execution.",
+      );
+    }
+  }
+}
 const verifyWorkflowBlob = async (snapshot, read) => {
   let tree = snapshot.tree;
   for (const [path, type] of [
@@ -688,12 +752,12 @@ export const verifyBaseQualification = async ({
   );
   assertClosedJobs(jobs, run, record.mode === "REUSED");
   if (record.mode === "FULL")
-    for (const [check, jobId] of Object.entries(CHECK_JOBS))
-      requireFact(
-        jobs.jobs.find((job) => job.name === CI_JOB_NAMES[jobId])
-          .run_attempt === record.checks[check].original.runAttempt,
-        "Main coverage producing attempt differs from its authenticated job.",
-      );
+    await verifyCheckProducingAttempts({
+      run,
+      checks: record.checks,
+      observed: jobs,
+      read,
+    });
   if (record.mode === "REUSED") {
     const originalContext = {
       ...context,

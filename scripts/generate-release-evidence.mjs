@@ -1,5 +1,6 @@
 import { readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { jsonEquals } from "./canonical-json.mjs";
+import { sameJobExecution } from "./github-job-execution.mjs";
 import { artifactProducingAttempt } from "../tooling/artifact-transport/identity.mjs";
 import { basename, join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -155,7 +156,30 @@ export const scopedWorkflowJobs = ({
       throw new Error(
         `Required scoped release job ${name} did not succeed exactly once in its latest execution.`,
       );
-    if (name === "Release / qualified") qualificationRunAttempt = latestAttempt;
+    if (name === "Release / qualified") {
+      // filter=all retains original rows alongside relabeled copies. The
+      // earliest matching execution supplies provenance, while the latest
+      // wrapper above must still succeed; never fall back to an older success.
+      const originals = matches.filter(
+        (job) =>
+          !(job.status === "completed" && job.conclusion === "skipped") &&
+          sameJobExecution(job, latest[0]),
+      );
+      if (
+        originals.length === 0 ||
+        new Set(originals.map((job) => job.run_attempt)).size !==
+          originals.length ||
+        originals.some(
+          (job) => job.status !== "completed" || job.conclusion !== "success",
+        )
+      )
+        throw new Error(
+          "Qualification origin lacks one authenticated successful execution per attempt.",
+        );
+      qualificationRunAttempt = Math.min(
+        ...originals.map((job) => job.run_attempt),
+      );
+    }
     return { name, conclusion: "success", url: latest[0].html_url };
   });
   const publishers = jobs.filter(
