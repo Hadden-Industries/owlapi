@@ -1,0 +1,59 @@
+name: Set up the policy-owned Node and npm
+description: Reuse the reviewed runtime policy without installing the project dependency graph
+inputs:
+  phase:
+    description: producer selects Node and npm; runtime selects only Node; npm provisions an already selected runtime
+    default: producer
+  node-family:
+    description: canonical or an exact reference family from the runtime policy
+    default: canonical
+  npm-timeout-minutes:
+    description: Preserve the caller's npm provisioning deadline
+    default: "20"
+  verify-runtime:
+    description: Assert the exact Node/npm pair after npm provisioning
+    default: "true"
+  install:
+    description: none or locked-no-scripts for the conditional seed verifier only
+    default: none
+runs:
+  using: composite
+  steps:
+    - name: Read the selected reference from the runtime policy
+      id: policy
+      shell: bash
+      env:
+        OWLAPI_NODE_FAMILY: ${{ inputs.node-family }}
+        OWLAPI_BOOTSTRAP_PHASE: ${{ inputs.phase }}
+        OWLAPI_VERIFY_RUNTIME: ${{ inputs.verify-runtime }}
+        OWLAPI_SEED_INSTALL: ${{ inputs.install }}
+        OWLAPI_NPM_TIMEOUT_MINUTES: ${{ inputs.npm-timeout-minutes }}
+      run: node "$GITHUB_ACTION_PATH/../../../scripts/setup-workflow-runtime.mjs" policy
+    - name: Select the policy-owned Node without package caching
+      if: inputs.phase != 'npm'
+      uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      with:
+        node-version: ${{ steps.policy.outputs.node-version }}
+        node-version-file: ${{ steps.policy.outputs.node-version-file }}
+        check-latest: false
+        cache: ""
+        package-manager-cache: false
+    - name: Provision the exact policy-owned npm
+      if: inputs.phase != 'runtime'
+      shell: bash
+      env:
+        OWLAPI_NODE_FAMILY: ${{ inputs.node-family }}
+        OWLAPI_NPM_TIMEOUT_MINUTES: ${{ inputs.npm-timeout-minutes }}
+      run: node "$GITHUB_ACTION_PATH/../../../scripts/setup-workflow-runtime.mjs" npm
+    - name: Assert the exact selected Node and npm
+      if: inputs.phase != 'runtime' && inputs.verify-runtime == 'true'
+      shell: bash
+      env:
+        OWLAPI_NODE_FAMILY: ${{ inputs.node-family }}
+      run: node "$GITHUB_ACTION_PATH/../../../scripts/setup-workflow-runtime.mjs" assert
+    - name: Install only the conditional seed verifier's locked graph
+      if: inputs.install == 'locked-no-scripts'
+      shell: bash
+      env:
+        OWLAPI_NODE_FAMILY: ${{ inputs.node-family }}
+      run: node "$GITHUB_ACTION_PATH/../../../scripts/setup-workflow-runtime.mjs" seed

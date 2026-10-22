@@ -1,0 +1,142 @@
+{
+  "artifactId": "1277456c593425423557a3ee478a7ca666312d0d3df187d7e79b913c24f42065",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2383,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "08f234e8871dacf59e1f194fd83c11d002d8d4d488f7be138900755e3e637a24",
+        "size": 792,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "ed69ea4f757130e46dc48a0cc31beb6257e61a31c70936d82b8a3f02ffd64df5",
+        "size": 923,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "6457a02418f004fe5d3fbbb19c7cbcc1450a8b887ff9a471dc6985ac83a48d36",
+        "size": 941,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "cd4aaf53cc7df4210595512d1fdfcd78b671da703a7e695673fcecc167ec66a3",
+        "size": 1396,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1109,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/48/48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+          "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109
+      },
+      {
+        "blob": {
+          "bytes": 1396,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/cd/cd4aaf53cc7df4210595512d1fdfcd78b671da703a7e695673fcecc167ec66a3",
+          "sha256": "cd4aaf53cc7df4210595512d1fdfcd78b671da703a7e695673fcecc167ec66a3"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "cd4aaf53cc7df4210595512d1fdfcd78b671da703a7e695673fcecc167ec66a3",
+        "size": 1396
+      }
+    ],
+    "expandedBytes": 5161,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "string-width",
+      "repository": "sindresorhus/string-width",
+      "version": "4.2.3"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "dependencies": {
+        "emoji-regex": "^8.0.0",
+        "is-fullwidth-code-point": "^3.0.0",
+        "strip-ansi": "^6.0.1"
+      },
+      "description": "Get the visual width of a string - the number of columns required to display it",
+      "devDependencies": {
+        "ava": "^1.4.1",
+        "tsd": "^0.7.1",
+        "xo": "^0.24.0"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "keywords": [
+        "string",
+        "character",
+        "unicode",
+        "width",
+        "visual",
+        "column",
+        "columns",
+        "fullwidth",
+        "full-width",
+        "full",
+        "ansi",
+        "escape",
+        "codes",
+        "cli",
+        "command-line",
+        "terminal",
+        "console",
+        "cjk",
+        "chinese",
+        "japanese",
+        "korean",
+        "fixed-width"
+      ],
+      "license": "MIT",
+      "name": "string-width",
+      "repository": "sindresorhus/string-width",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "version": "4.2.3"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2383,
+      "sha256": "adbb4fb1b26e8069af99adff0079369c93f17cf887b91086691d671ddbd52934"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

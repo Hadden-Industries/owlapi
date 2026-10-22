@@ -99,7 +99,7 @@ export function runPythonTool(
   const executable = tools.executable(name);
   if (!existsSync(executable))
     throw new Error(
-      `Missing ${name}; run npm run tools:sync -- --python <absolute Python path>.`,
+      `Missing ${name}; run npm run sync:python-tools -- --python <absolute Python path>.`,
     );
   return execute(executable, args, { ...tools, ...options });
 }
@@ -139,11 +139,11 @@ function checkUv(tools) {
   const version = installedUvVersion(tools);
   if (version === null)
     throw new Error(
-      "Missing checkout uv; run npm run tools:sync -- --python <absolute Python path>.",
+      "Missing checkout uv; run npm run sync:python-tools -- --python <absolute Python path>.",
     );
   if (version.split(/\s/u)[1] !== uvVersion)
     throw new Error(
-      `uv ${uvVersion} is required; found ${version}. Run tools:sync.`,
+      `uv ${uvVersion} is required; found ${version}. Run sync:python-tools.`,
     );
 }
 
@@ -163,7 +163,7 @@ export function checkPythonTools({ root = repositoryRoot } = {}) {
   checkUv(tools);
   if (!existsSync(tools.python))
     throw new Error(
-      "Missing checkout Python environment; run npm run tools:sync.",
+      "Missing checkout Python environment; run npm run sync:python-tools.",
     );
   syncPythonProjections(root);
   pythonVersion(tools.python, tools);

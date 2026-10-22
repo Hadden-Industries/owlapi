@@ -1,0 +1,448 @@
+{
+  "artifactId": "f0b6371f12a568d99e55d77b2f9906b1a68dcf8ff3d92fc85f73da5a9cdd5568",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 25863,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "5e3400b93bbb099e83e52bab885e7441750673c21f97988ca3f1240639b63283",
+        "size": 10140,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "463b9ac549356a3725a45b5fbb9608e36e870c50a0f75c390cc91af57b596c0a",
+        "size": 870,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/client-streaming-call.js",
+        "sha256": "127ba6949b7281fd3c221b6740a9e75fe4d75be07c2876d07a9ad94150930312",
+        "size": 2309,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/deferred.js",
+        "sha256": "81111983cd58db7d4a37b774e70383569ae5c37de9c7fc94d08803c1af1b3ad0",
+        "size": 3118,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/duplex-streaming-call.js",
+        "sha256": "664676e107d13d3356b78718ee6cba67d63f08c236db01fb315558d95669c7ae",
+        "size": 2308,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/index.js",
+        "sha256": "1a429b81f859244f092e345ce43c3a618ad1122b4e255e3a1ea813c9d2f5f920",
+        "size": 3800,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/reflection-info.js",
+        "sha256": "4a3139611b59b0403af2e08cf87a0f9744f3ec4a326af7eaa91fc12c5b5791ac",
+        "size": 2368,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/rpc-call-shared.js",
+        "sha256": "d43aa81f5bc89faa359e0f97c814ba25155591ff078fbb9bfd40f8c7c9683230",
+        "size": 77,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/rpc-error.js",
+        "sha256": "b6650adead26a72631210c9bc6604f40885640352319e6f1b2006bd373ab677d",
+        "size": 1156,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/rpc-input-stream.js",
+        "sha256": "d43aa81f5bc89faa359e0f97c814ba25155591ff078fbb9bfd40f8c7c9683230",
+        "size": 77,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/rpc-interceptor.js",
+        "sha256": "b7c3e3e0844aea95de464e68bbd036749498d69769eec1caeb166b2ed2aeae65",
+        "size": 3558,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/rpc-metadata.js",
+        "sha256": "d43aa81f5bc89faa359e0f97c814ba25155591ff078fbb9bfd40f8c7c9683230",
+        "size": 77,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/rpc-options.js",
+        "sha256": "0bbddda6dd087b46776f08e967dcb31c383be1af94f30ca378a16157dec63129",
+        "size": 2323,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/rpc-output-stream.js",
+        "sha256": "c7f32a443dbbe60f87102fe1c3eb45835fa30b0da328f09fbef75b7a59c58ffb",
+        "size": 6242,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/rpc-status.js",
+        "sha256": "d43aa81f5bc89faa359e0f97c814ba25155591ff078fbb9bfd40f8c7c9683230",
+        "size": 77,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/rpc-transport.js",
+        "sha256": "d43aa81f5bc89faa359e0f97c814ba25155591ff078fbb9bfd40f8c7c9683230",
+        "size": 77,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/server-call-context.js",
+        "sha256": "badce1e65fa4fe11c53cf4e2b7d2c28a6145d41e91e3befd194eec2c7669d16e",
+        "size": 1673,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/server-streaming-call.js",
+        "sha256": "02a917e7aadc8b5c926ba897347d4d71043efbcc928c6f8b73ca60fd20590aca",
+        "size": 2327,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/service-type.js",
+        "sha256": "b836e4fe4b42ab47d49d42e36b90f3fdde86adb0f241f16d5c3fbac223dbf374",
+        "size": 473,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/test-transport.js",
+        "sha256": "af145789d69e60f50afcbfa8d2710b291ab0959296575b2b53447fe2f334e150",
+        "size": 13687,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/unary-call.js",
+        "sha256": "b13d1e9f829f394abc7bf3ae7f555d0b4a15693f2f5a0bca221a5a05a7925ff3",
+        "size": 2190,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/client-streaming-call.js",
+        "sha256": "577da5f6d2c84c35279a41f5f6d5f3dc8b11e18d173965935cfd6c3f38e2cd8e",
+        "size": 2150,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/deferred.js",
+        "sha256": "f905ccaf33d7fc2e84b8fe02b8b37fb10baa7177f6c3b7723bccc9cb229399b4",
+        "size": 2943,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/duplex-streaming-call.js",
+        "sha256": "994a3cf42d05f25fa08d144ab67cc26f0e29de97b62aeaf5d3453f14d15f880a",
+        "size": 2149,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/index.js",
+        "sha256": "ad9775f401f00b8d7dd45d21281f3a533f1d7766b1c6359f1652c939ab677f3e",
+        "size": 1032,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/reflection-info.js",
+        "sha256": "50f74b5084e96f93144a3f5a234a48f234ddd9942812702ec566106da42407f8",
+        "size": 2002,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/rpc-call-shared.js",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/rpc-error.js",
+        "sha256": "916727cb3f255cfa54daf0e814b8441542372f9f91e54cfacd636658de206866",
+        "size": 1030,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/rpc-input-stream.js",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/rpc-interceptor.js",
+        "sha256": "8ff3ccdcee75e78422ae6295cbbe79f12deaa80bc2010d17368fb672683469f8",
+        "size": 2983,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/rpc-metadata.js",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/rpc-options.js",
+        "sha256": "1442537012b186c22af9fbdc1661f4b34789645796890c19ae33293de94c516c",
+        "size": 2182,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/rpc-output-stream.js",
+        "sha256": "67c4ebcac264e7507e8723ce10793519e669580d9921e6a83f2b579bf9f1b0fd",
+        "size": 5981,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/rpc-status.js",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/rpc-transport.js",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/server-call-context.js",
+        "sha256": "3125cb015eb0b22c47c34c85a2fbfdaceb0846a9b442f4dbbe212a9e8f4d6c80",
+        "size": 1490,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/server-streaming-call.js",
+        "sha256": "01c5fe78b9f8811d36c786bf4e5bf91b8e1614594ae5eb80b8f85b75f723fe21",
+        "size": 2168,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/service-type.js",
+        "sha256": "bbc019d6ffb996ae7af63c9a7a2f772fddafe7ad847d71aa0fe59443c2eae45f",
+        "size": 321,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/test-transport.js",
+        "sha256": "e9821e384fe2a9a44b1fd97863b359e9c56025f4baec05598094f7dca6031769",
+        "size": 13202,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/unary-call.js",
+        "sha256": "f8a7940d112aeb3321797af165d45d216c1707b4cc34c94057229e233ed07e84",
+        "size": 2061,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/client-streaming-call.d.ts",
+        "sha256": "8cff85891e43c22234d2f28c09c8a2263413554e43ec5830620f5093a1fd1564",
+        "size": 3638,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/deferred.d.ts",
+        "sha256": "48cb91ab0d3d3168532d57e85558bb985bb722eed680f8194d9dd81b15e6623c",
+        "size": 1965,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/duplex-streaming-call.d.ts",
+        "sha256": "b61e500242afb8122934f47f053a5f52f68e7ddd15a0ee8b422c94dd545a249e",
+        "size": 3675,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/index.d.ts",
+        "sha256": "e049b868d2f5ff9a6b65f47c9a54d2a3b28d21b4aa328c96b5c1a9077c2ed5ee",
+        "size": 1301,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/reflection-info.d.ts",
+        "sha256": "a7341f3ae95fe70a8023ce34cc7022e493f93de2bb389faa94ac4cc7b505f19b",
+        "size": 4750,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/rpc-call-shared.d.ts",
+        "sha256": "f16fe3da1f9527a8d0286bbeaf335a125f8282771be4ca31b6aaff1f26dbab88",
+        "size": 1422,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/rpc-error.d.ts",
+        "sha256": "d3ce4df104da2eb71fd3df0d1794014dc8f4ab3f8a5c90cf50b56331e8a29fac",
+        "size": 1274,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/rpc-input-stream.d.ts",
+        "sha256": "aa34dd12db0a2cbb6ab2042ad60f00137d0fef9dfc874db6626312831fa7acd7",
+        "size": 399,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/rpc-interceptor.d.ts",
+        "sha256": "6d8384230e9acfdae36ec3390bc1f86acde9b996dcaa774d4eb7663b5ecc69f0",
+        "size": 5838,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/rpc-metadata.d.ts",
+        "sha256": "299e9f5508125dbe175da6336961b00cee87764f5ce4ab0651b67fac7c07f1bf",
+        "size": 639,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/rpc-options.d.ts",
+        "sha256": "9893b9ea57ef4c298ccf02c80dda8422881fe3442be0b3cc6b7be06701a22786",
+        "size": 2939,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/rpc-output-stream.d.ts",
+        "sha256": "865ca8446839fc0ba3cc2edbe23ce0f468ffd81770444af18b0f029d39d89a97",
+        "size": 3987,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/rpc-status.d.ts",
+        "sha256": "aa359299975d40bcaeeec35dd71502c51fb05c25c94e135290b0441e62906903",
+        "size": 825,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/rpc-transport.d.ts",
+        "sha256": "1b0fbe670d42a996a119e7ba0d84e4b07c9df3d51f8f4fbfe6e789a08aaa8093",
+        "size": 2476,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/server-call-context.d.ts",
+        "sha256": "43c04dba0e3352cd61cf6f59604b1a89cd71b5c88934a763137597b5459c00da",
+        "size": 2827,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/server-streaming-call.d.ts",
+        "sha256": "1a2d5ff9a5c8ea2863f2e5372473010654fa96f66dd321472dea7e7bf7a189fa",
+        "size": 3746,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/service-type.d.ts",
+        "sha256": "a715c766c3a38f904dd8a22f2761f4fbbc6827e58bb77cd9f194b67d66588a6e",
+        "size": 803,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/test-transport.d.ts",
+        "sha256": "4561d92fc60010f03330a286f7a4c9208116e79f0ae491f2956af8c5732ed7e5",
+        "size": 4156,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/unary-call.d.ts",
+        "sha256": "da304f2e6d1b0be58ffad8f2df60751017eac487f5535a1341808ea728113e1d",
+        "size": 3571,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "aaa1abdde2754717d37ee8cdc08c1952fce91072307d585f346e25e8a2c06baf",
+        "size": 1483,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 10140,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5e/5e3400b93bbb099e83e52bab885e7441750673c21f97988ca3f1240639b63283",
+          "sha256": "5e3400b93bbb099e83e52bab885e7441750673c21f97988ca3f1240639b63283"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "5e3400b93bbb099e83e52bab885e7441750673c21f97988ca3f1240639b63283",
+        "size": 10140
+      }
+    ],
+    "expandedBytes": 152335,
+    "packageIdentity": {
+      "author": "Timo Stamm <ts@timostamm.com>",
+      "homepage": "https://github.com/timostamm/protobuf-ts",
+      "license": "Apache-2.0",
+      "name": "@protobuf-ts/runtime-rpc",
+      "repository": {
+        "directory": "packages/runtime-rpc",
+        "type": "git",
+        "url": "https://github.com/timostamm/protobuf-ts.git"
+      },
+      "version": "2.11.1"
+    },
+    "packageMetadata": {
+      "author": "Timo Stamm <ts@timostamm.com>",
+      "dependencies": {
+        "@protobuf-ts/runtime": "^2.11.1"
+      },
+      "description": "Runtime library for RPC clients generated by the protoc plugin \"protobuf-ts\"",
+      "devDependencies": {
+        "@types/jasmine": "^3.5.10",
+        "jasmine": "^3.99.0",
+        "jasmine-spec-reporter": "^5.0.2",
+        "ts-node": "^8.10.2",
+        "tslib": ">=1.6.1",
+        "typescript": ">=3.8.3 <4"
+      },
+      "homepage": "https://github.com/timostamm/protobuf-ts",
+      "keywords": [
+        "Protocol Buffers",
+        "protobuf",
+        "TypeScript",
+        "RPC"
+      ],
+      "license": "Apache-2.0",
+      "main": "./build/commonjs/index.js",
+      "module": "./build/es2015/index.js",
+      "name": "@protobuf-ts/runtime-rpc",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/runtime-rpc",
+        "type": "git",
+        "url": "https://github.com/timostamm/protobuf-ts.git"
+      },
+      "scripts": {
+        "build": "npm run build:es6 && npm run build:cjs",
+        "build:cjs": "tsc --project tsconfig.build.json --module commonjs --outDir build/commonjs --declaration --declarationDir build/types",
+        "build:es6": "tsc --project tsconfig.build.json --module es2015 --outDir build/es2015",
+        "clean": "rm -rf build/* *.descriptorset *.codegenreq",
+        "test": "ts-node --project tsconfig.test.json ../../node_modules/.bin/jasmine --helper=spec/jasmine-reporter.ts spec/*.spec.ts"
+      },
+      "sideEffects": false,
+      "typings": "./build/types/index.d.ts",
+      "version": "2.11.1"
+    },
+    "physicalEntryCount": 60,
+    "tarball": {
+      "bytes": 25863,
+      "sha256": "b4226f2052274f94fa3d509580389c1e51908a1d4cb6bbbeb134c0e4bf795a5f"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -2,6 +2,7 @@ import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 import { describe, expect, test } from "@jest/globals";
+import { CI_RUNTIME } from "./runtime-policy.mjs";
 
 import {
   assertWorkflowRuntime,
@@ -20,7 +21,7 @@ describe("workflow runtime bootstrap", () => {
         "--node",
         process.version.slice(1),
         "--npm",
-        "12.2.0",
+        CI_RUNTIME.npm,
       ],
       { encoding: "utf8", shell: false },
     );
@@ -30,11 +31,12 @@ describe("workflow runtime bootstrap", () => {
     expect(command.stderr).toBe("");
     expect(JSON.parse(command.stdout)).toEqual({
       node: process.version,
-      npm: "12.2.0",
+      npm: CI_RUNTIME.npm,
     });
   });
 
-  test.each(["24.21.0", "26.11.1"])(
+  // Fixed synthetic pairs below exercise argument validation, not current policy.
+  test.each(["24.22.0", "26.12.0"])(
     "accepts only the exact requested Node %s and npm pair",
     (nodeVersion) => {
       expect(
@@ -104,7 +106,7 @@ describe("workflow runtime bootstrap", () => {
   test("rejects patch-level drift", () => {
     expect(() =>
       assertWorkflowRuntime({
-        expectedNode: "24.21.0",
+        expectedNode: "24.22.0",
         expectedNpm: "12.2.0",
         observedNode: "v24.19.1",
         observedNpm: "12.2.0",

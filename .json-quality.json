@@ -5,7 +5,18 @@
     "allowFormatWrites": true,
     "normalization": "NFC"
   },
+  "capacityLimits": {
+    "maxTotalBytes": 536870912
+  },
   "nativeSources": [
+    {
+      "id": "artifact-tool-evidence",
+      "provider": "artifactToolEvidence",
+      "owner": "native npm evidence verifier for the isolated artifact SDK graph",
+      "reason": "Reuse the authenticated package, licence and scanner corpus verifier under its isolated namespace before shared checking.",
+      "formatContract": "producer-json-indent",
+      "minimumDocuments": 1
+    },
     {
       "id": "npm-evidence",
       "provider": "npmEvidence",
@@ -72,6 +83,7 @@
         ".venv/**",
         "docs/conformance/**",
         "docs/provenance/evidence/**",
+        "tooling/artifact-transport/docs/provenance/evidence/**",
         "docs/provenance/history-reconstruction/**"
       ],
       "owner": "native dependency, evidence, fixture, generator and administrative producers",
@@ -902,6 +914,7 @@
     {
       "paths": [
         "package-lock.json",
+        "tooling/artifact-transport/package-lock.json",
         "tooling/json/package-lock.json",
         "tooling/markdown/package-lock.json"
       ],

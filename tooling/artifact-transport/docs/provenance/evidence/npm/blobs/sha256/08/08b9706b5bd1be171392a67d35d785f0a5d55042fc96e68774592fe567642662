@@ -1,0 +1,145 @@
+{
+  "artifactId": "2a0cec7c73138da02e71b4d49425c41b06d06acaaedcd09e7625c4914dada6b8",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2825,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "91fd2d025ca697f02becd68acaabc6373fa853a04c4f7543b306e830d3ed6b36",
+        "size": 1107,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "ba7dd218accc7369b41feaf7ad7ece8bda2e1272108137a2ad1f72a28c17f137",
+        "size": 2325,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist-src/index.js",
+        "sha256": "224c8f0c8ce59371e8e1e61674bf551a02cb26e37b2a0928e79dd45f911013e6",
+        "size": 959,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist-src/version.js",
+        "sha256": "68013d6f0673b15397f3e205c59f9da790d26a8514f84e32abe1fc5361d8376e",
+        "size": 47,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist-types/index.d.ts",
+        "sha256": "a36cc17e797eea8a81ab55c7fae54aeab8d47dec875aabf07640f80fb5f698d7",
+        "size": 270,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist-types/version.d.ts",
+        "sha256": "dcfcdca68a97c41277d8be8eaa0cbd633d6bde53d3723992590044b623641973",
+        "size": 40,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "ae58fc2c2791515dfd44cfefa77ae44509b03ffeade6ee0c0b57411c4045dfb8",
+        "size": 1167,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1107,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/91/91fd2d025ca697f02becd68acaabc6373fa853a04c4f7543b306e830d3ed6b36",
+          "sha256": "91fd2d025ca697f02becd68acaabc6373fa853a04c4f7543b306e830d3ed6b36"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "91fd2d025ca697f02becd68acaabc6373fa853a04c4f7543b306e830d3ed6b36",
+        "size": 1107
+      },
+      {
+        "blob": {
+          "bytes": 2325,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ba/ba7dd218accc7369b41feaf7ad7ece8bda2e1272108137a2ad1f72a28c17f137",
+          "sha256": "ba7dd218accc7369b41feaf7ad7ece8bda2e1272108137a2ad1f72a28c17f137"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "ba7dd218accc7369b41feaf7ad7ece8bda2e1272108137a2ad1f72a28c17f137",
+        "size": 2325
+      }
+    ],
+    "expandedBytes": 5915,
+    "packageIdentity": {
+      "author": "Gregor Martynus (https://twitter.com/gr2m)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "@octokit/plugin-request-log",
+      "repository": "github:octokit/plugin-request-log.js",
+      "version": "6.0.0"
+    },
+    "packageMetadata": {
+      "author": "Gregor Martynus (https://twitter.com/gr2m)",
+      "description": "Log all requests and request errors",
+      "devDependencies": {
+        "@octokit/core": "^7.0.0",
+        "@octokit/tsconfig": "^4.0.0",
+        "@types/node": "^22.0.0",
+        "@vitest/coverage-v8": "^3.1.4",
+        "esbuild": "^0.25.0",
+        "fetch-mock": "^11.0.0",
+        "prettier": "3.5.3",
+        "semantic-release-plugin-update-version-in-files": "^2.0.0",
+        "tinyglobby": "^0.2.13",
+        "typescript": "^5.0.0",
+        "vitest": "^3.1.4"
+      },
+      "engines": {
+        "node": ">= 20"
+      },
+      "exports": {
+        ".": {
+          "default": "./dist-src/index.js",
+          "import": "./dist-src/index.js",
+          "types": "./dist-types/index.d.ts"
+        }
+      },
+      "files": [
+        "dist-*/**",
+        "bin/**"
+      ],
+      "keywords": [
+        "github",
+        "api",
+        "sdk",
+        "toolkit"
+      ],
+      "license": "MIT",
+      "name": "@octokit/plugin-request-log",
+      "peerDependencies": {
+        "@octokit/core": ">=6"
+      },
+      "publishConfig": {
+        "access": "public",
+        "provenance": true
+      },
+      "repository": "github:octokit/plugin-request-log.js",
+      "sideEffects": false,
+      "type": "module",
+      "types": "dist-types/index.d.ts",
+      "version": "6.0.0"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 2825,
+      "sha256": "d8d8c8c3e87e78e61a2f3ba92ef0d603b7db40d986ef596ace01c66febc83be7"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

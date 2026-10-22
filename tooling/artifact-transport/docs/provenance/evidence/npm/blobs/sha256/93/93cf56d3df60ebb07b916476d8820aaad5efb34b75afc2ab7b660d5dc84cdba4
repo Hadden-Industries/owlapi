@@ -1,0 +1,138 @@
+{
+  "artifactId": "a0153ccf8fbe76915f2574f2182ba899eaa0ee945876ca6d4a4400386acf26ca",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7371,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "8ee36ea6d63567ca62e3edb1323a49d4f865852811758ac42bfe26a96745a66f",
+        "size": 54,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "68f12f6e2c33688699249c01d8f9623c534da20aa71989c57b061b7bc1676d14",
+        "size": 1096,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "ca9e0150b598f4361108074b1bd3476a85a09d69e1ef70c14af7faaec2af4dee",
+        "size": 4898,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "e29eb4a5a3a589c7fd88f1dc9e80220961acd3a6f2e40b485949c1f0174f3847",
+        "size": 12391,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "d217a00ed39214d81f5d9999c0c639f147bab438f94589f9a5b96debf57d6e61",
+        "size": 1135,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1096,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/68/68f12f6e2c33688699249c01d8f9623c534da20aa71989c57b061b7bc1676d14",
+          "sha256": "68f12f6e2c33688699249c01d8f9623c534da20aa71989c57b061b7bc1676d14"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "68f12f6e2c33688699249c01d8f9623c534da20aa71989c57b061b7bc1676d14",
+        "size": 1096
+      },
+      {
+        "blob": {
+          "bytes": 4898,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ca/ca9e0150b598f4361108074b1bd3476a85a09d69e1ef70c14af7faaec2af4dee",
+          "sha256": "ca9e0150b598f4361108074b1bd3476a85a09d69e1ef70c14af7faaec2af4dee"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "ca9e0150b598f4361108074b1bd3476a85a09d69e1ef70c14af7faaec2af4dee",
+        "size": 4898
+      }
+    ],
+    "expandedBytes": 19574,
+    "packageIdentity": {
+      "author": {
+        "email": "mail@juliangruber.com",
+        "name": "Julian Gruber",
+        "url": "http://juliangruber.com"
+      },
+      "homepage": "https://github.com/juliangruber/brace-expansion",
+      "license": "MIT",
+      "name": "brace-expansion",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/juliangruber/brace-expansion.git"
+      },
+      "version": "2.1.7"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "mail@juliangruber.com",
+        "name": "Julian Gruber",
+        "url": "http://juliangruber.com"
+      },
+      "dependencies": {
+        "balanced-match": "^1.0.0"
+      },
+      "description": "Brace expansion as known from sh/bash",
+      "devDependencies": {
+        "@c4312/matcha": "^1.3.1",
+        "tape": "^4.6.0"
+      },
+      "homepage": "https://github.com/juliangruber/brace-expansion",
+      "keywords": [],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "brace-expansion",
+      "publishConfig": {
+        "tag": "2.x"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/juliangruber/brace-expansion.git"
+      },
+      "scripts": {
+        "bench": "matcha test/perf/bench.js",
+        "gentest": "bash test/generate.sh",
+        "test": "tape test/*.js"
+      },
+      "testling": {
+        "browsers": [
+          "ie/8..latest",
+          "firefox/20..latest",
+          "firefox/nightly",
+          "chrome/25..latest",
+          "chrome/canary",
+          "opera/12..latest",
+          "opera/next",
+          "safari/5.1..latest",
+          "ipad/6.0..latest",
+          "iphone/6.0..latest",
+          "android-browser/4.2..latest"
+        ],
+        "files": "test/*.js"
+      },
+      "version": "2.1.7"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 7371,
+      "sha256": "6f4d64fdab4cdc5096d48537f35a6bbb2b8b918abaa4bdb0833e92486f66befc"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

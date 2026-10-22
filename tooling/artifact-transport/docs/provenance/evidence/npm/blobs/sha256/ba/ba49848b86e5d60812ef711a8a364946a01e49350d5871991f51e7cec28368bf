@@ -1,0 +1,210 @@
+{
+  "artifactId": "08c8deb5aaf587ac9edd3ac851c42a0daaf813f7eeffba444471bee9bc8fb763",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6732,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.editorconfig",
+        "sha256": "0a73be687a86b6f0e5494b1be555fcfbb886108794948837170c28f18820aae2",
+        "size": 286,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.eslintrc",
+        "sha256": "0694050195fc694c5846b0a2a66b437ac775da988f0a779c55fb892597f7f641",
+        "size": 43,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "32d10c27102889b92eb564c34f6e36371b6a3353abe6d813eb6f88517578ffe6",
+        "size": 592,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nycrc",
+        "sha256": "948366fea3b423a46366326d0bb2e54b08abd1cf0b243678ba6625740c40da5a",
+        "size": 216,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "9b2a373541685ce112a44039162a816aa0716268fadd199457835e00be6ce2ae",
+        "size": 9120,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "cfc3f455254c0af0655cc3ff46a41ed644b67599f6043346169d285bf2b3cf3b",
+        "size": 1071,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "f0c3759d1d25baf3267fac3d0f4cfe7b8f6d2691fcd118c16a7a2407f3f3138c",
+        "size": 3071,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "5d8ce012c2e1fb502b13fb5381234a8ba88ea489a24e14753873093913e2b766",
+        "size": 557,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "164c87104dcbfb81973fdb4e2681ed184483808cd75c1bd90c87730e60bf3c90",
+        "size": 718,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "9e0869e7c145b1d1e6ea0e63b2870a1aa230e7f75ffe69240908c90d35c02aa9",
+        "size": 2264,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "097c5ad6557b0e2ed0f0893b9d6205fd4e18f723741d93690af3662b85f91c53",
+        "size": 1226,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "496e8783bf107e3416811badcfcc68d7a51c76283b399d4fd7ec028372c5915c",
+        "size": 114,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1071,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/cf/cfc3f455254c0af0655cc3ff46a41ed644b67599f6043346169d285bf2b3cf3b",
+          "sha256": "cfc3f455254c0af0655cc3ff46a41ed644b67599f6043346169d285bf2b3cf3b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "cfc3f455254c0af0655cc3ff46a41ed644b67599f6043346169d285bf2b3cf3b",
+        "size": 1071
+      },
+      {
+        "blob": {
+          "bytes": 3071,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/f0/f0c3759d1d25baf3267fac3d0f4cfe7b8f6d2691fcd118c16a7a2407f3f3138c",
+          "sha256": "f0c3759d1d25baf3267fac3d0f4cfe7b8f6d2691fcd118c16a7a2407f3f3138c"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "f0c3759d1d25baf3267fac3d0f4cfe7b8f6d2691fcd118c16a7a2407f3f3138c",
+        "size": 3071
+      }
+    ],
+    "expandedBytes": 19278,
+    "packageIdentity": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "homepage": "https://github.com/inspect-js/which-boxed-primitive#readme",
+      "license": "MIT",
+      "name": "which-boxed-primitive",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/which-boxed-primitive.git"
+      },
+      "version": "1.1.1"
+    },
+    "packageMetadata": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "bugs": {
+        "url": "https://github.com/inspect-js/which-boxed-primitive/issues"
+      },
+      "dependencies": {
+        "is-bigint": "^1.1.0",
+        "is-boolean-object": "^1.2.1",
+        "is-number-object": "^1.1.1",
+        "is-string": "^1.1.1",
+        "is-symbol": "^1.1.1"
+      },
+      "description": "Which kind of boxed JS primitive is this?",
+      "devDependencies": {
+        "@arethetypeswrong/cli": "^0.17.1",
+        "@ljharb/eslint-config": "^21.1.1",
+        "@ljharb/tsconfig": "^0.2.2",
+        "@types/for-each": "^0.3.3",
+        "@types/object-inspect": "^1.13.0",
+        "@types/tape": "^5.7.0",
+        "auto-changelog": "^2.5.0",
+        "encoding": "^0.1.13",
+        "es-value-fixtures": "^1.5.0",
+        "eslint": "=8.8.0",
+        "for-each": "^0.3.3",
+        "in-publish": "^2.0.1",
+        "npmignore": "^0.3.1",
+        "nyc": "^10.3.2",
+        "object-inspect": "^1.13.3",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.9.0",
+        "typescript": "next"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "homepage": "https://github.com/inspect-js/which-boxed-primitive#readme",
+      "keywords": [
+        "boxed",
+        "primitive",
+        "object",
+        "ecmascript",
+        "javascript",
+        "which"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "which-boxed-primitive",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/which-boxed-primitive.git"
+      },
+      "scripts": {
+        "lint": "eslint --ext=js,mjs .",
+        "postlint": "tsc -p . && attw -P",
+        "posttest": "npx npm@'>=10.2' audit --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only",
+        "tests-only": "nyc tape 'test/**/*.js'",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "version": "1.1.1"
+    },
+    "physicalEntryCount": 12,
+    "tarball": {
+      "bytes": 6732,
+      "sha256": "ce9a5c3b02e59b8d016a2ee39d26d088720142e62870731cf988af18e2696751"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

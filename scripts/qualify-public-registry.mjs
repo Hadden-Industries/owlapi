@@ -12,7 +12,7 @@ import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
-import { sha256Buffer } from "./release-artifacts.mjs";
+import { sha256Buffer } from "./release-file-utils.mjs";
 import {
   PACKAGE_NAME,
   PACKAGE_VERSION,

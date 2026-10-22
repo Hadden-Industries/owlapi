@@ -52,7 +52,7 @@ test.each(["deadline", "caller"])(
       if (cancellation === "caller") expect(outcome).toBe(callerReason);
       else expect(outcome).toMatchObject({ resource: "deadline" });
     } finally {
-      releaseLookup({ address: "127.0.0.1", family: 4 });
+      releaseLookup([{ address: "127.0.0.1", family: 4 }]);
       await loading;
       await new Promise((resolve) => setImmediate(resolve));
     }

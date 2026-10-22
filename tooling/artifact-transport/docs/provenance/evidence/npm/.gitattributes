@@ -1,0 +1,2 @@
+# Authenticated upstream bytes retain their path-derived SHA-256 across checkout.
+blobs/** -text !eol -diff -whitespace

@@ -1,0 +1,613 @@
+{
+  "artifactId": "cf682ea6c1ceaf97e7949076fb3f8991a2ca6cfe817d17eb6b1244e3f8b77c37",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 55990,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "e7ceb6a6926e76a67981a440f4107d6152ac1fc2250c90a66460444518328b75",
+        "size": 1068,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "2ffb6a1026b29baec83bcde8c19353f203be5520ce6804ea78c00ce5daeea7a3",
+        "size": 7286,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/artifact.d.ts",
+        "sha256": "5f078809b4b81a043390dddd72414ab02fa1593c0187467fd2902d9b4e849275",
+        "size": 248,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/artifact.js",
+        "sha256": "767d73362f34cc323231b614434fa93967110fdd7a7aa807b1a1d2b03a572cd0",
+        "size": 297,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/artifact.js.map",
+        "sha256": "efba216da07a8bd4320aea5f8442392c77c85e06dc77cdb94c2f5b6bab7e0d2e",
+        "size": 286,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/generated/google/protobuf/timestamp.d.ts",
+        "sha256": "1dc0d36b3e00055e37878e17045397760317dad81a69eb0831cae3e4f754a24e",
+        "size": 6115,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/generated/google/protobuf/timestamp.js",
+        "sha256": "7f59fa22f75a96a8fa74714928205b917033bbfd62827feda4aee395250e4296",
+        "size": 6039,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/generated/google/protobuf/timestamp.js.map",
+        "sha256": "4d770269103ef2cabefb32034995a32b82cb700963a2e2a69e83534b20ad2acf",
+        "size": 5751,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/generated/google/protobuf/wrappers.d.ts",
+        "sha256": "f71110109b0b93fc634ecc5bb587281a404f2a0973e25d4ec8b2b6dd7c5c23e0",
+        "size": 10855,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/generated/google/protobuf/wrappers.js",
+        "sha256": "765f0421fcb2b0e18f1420b617128552e8ae46a2daa28f2a3ba80cd4e308035d",
+        "size": 24740,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/generated/google/protobuf/wrappers.js.map",
+        "sha256": "25dac2825caf017f37b26a624a965cb3eec93688de7e163f9617731df3389c51",
+        "size": 21218,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/generated/index.d.ts",
+        "sha256": "6fd5ab37826068ec07584d9030ca31c1df233caa62d374b24263fb713d403db6",
+        "size": 200,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/generated/index.js",
+        "sha256": "d2749682618958f7156046f475e1297625d0e0cf9a4fe1fe02a169b003bd4768",
+        "size": 233,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/generated/index.js.map",
+        "sha256": "f777b063243b1cf0787bfe09079278a039e69f156d7349a7657e313aae0d7c0a",
+        "size": 205,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/generated/results/api/v1/artifact.d.ts",
+        "sha256": "8110e64139e0b62bbe8bcd53befc3efae7a0e55d9a4d60e3921f9c54fa0f968e",
+        "size": 14407,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/generated/results/api/v1/artifact.js",
+        "sha256": "e4309dbbc44f848274f9be6b2404cc8ef8aba02227196db30c54ab995d43b5f8",
+        "size": 36682,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/generated/results/api/v1/artifact.js.map",
+        "sha256": "61d41330e0092902d99452799479a1fa4c17474b42aa8e643b7727d8ce332ff7",
+        "size": 31556,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/generated/results/api/v1/artifact.twirp-client.d.ts",
+        "sha256": "ffac82dd1645c131e07b69b3deef8f276ef6e960d22c3827dc81f71323ae8ba6",
+        "size": 2130,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/generated/results/api/v1/artifact.twirp-client.js",
+        "sha256": "c7f12d90cbcfc2b732400464b1acb80cf23beb216cb15d65919c38d7712f1efd",
+        "size": 4806,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/generated/results/api/v1/artifact.twirp-client.js.map",
+        "sha256": "83673fd02779bb1bef39a90608ec96c75cb32cf5b6a866322212624d041375d1",
+        "size": 4421,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/client.d.ts",
+        "sha256": "a335fc52abd6aeb1ed463b3c8c2acf6261e52747f2ceb71d6ddce581e91339c2",
+        "size": 4589,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/client.js",
+        "sha256": "11f78cd7b4b8e64fd95ed7b67fba8d2727c52df38b348ecc64835143e2844bd8",
+        "size": 7059,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/client.js.map",
+        "sha256": "b86499b789dd7622b09c76518d7093a3fd31d2783ce3142bba4680a33a3980b3",
+        "size": 3155,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/delete/delete-artifact.d.ts",
+        "sha256": "b14ea4d6a08dba9bfcf80e223752e8e15a365eec2ea4be338e07014e14163827",
+        "size": 354,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/delete/delete-artifact.js",
+        "sha256": "ce9dce93d397851141ddf9f091fdd95f98d637987a4c2254b18f902915b65a7d",
+        "size": 4155,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/delete/delete-artifact.js.map",
+        "sha256": "ed53d483a5edfdc46cbfdccba00ce01c7f1fc877bacf98559a1073595a7acd9a",
+        "size": 2740,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/download/download-artifact.d.ts",
+        "sha256": "0a158529b02100f16f96041a95c4e8adb9dbba7f0ec9e2bf3159d12d21d6208c",
+        "size": 633,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/download/download-artifact.js",
+        "sha256": "f82d52b17008fe68e4ace05acdd912ccd4222e9817631cad3b6f552ed596d52d",
+        "size": 12009,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/download/download-artifact.js.map",
+        "sha256": "a7a62e9eb77bde95e8443223ff2662d80671f8b6cb31e5964c56169fb4398fc4",
+        "size": 8681,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/find/get-artifact.d.ts",
+        "sha256": "234970428760b35437ce7790bff685a881583355c4aa7d62e632e927b0228434",
+        "size": 342,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/find/get-artifact.js",
+        "sha256": "7a3a53a99710476766694222a4b911289604068a73af12fa43b0b70715f53d5d",
+        "size": 5340,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/find/get-artifact.js.map",
+        "sha256": "590e077517c92d524232bbb58571b5e7a59ceb8eacdacf7cdfcdcb3d76f00b88",
+        "size": 3290,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/find/list-artifacts.d.ts",
+        "sha256": "f9de435532cbf778c7abeb1a5a23ae78cba773fb41e1b7455ca056183009f4d9",
+        "size": 344,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/find/list-artifacts.js",
+        "sha256": "13cb7673f63cf56fef8da32ed8fbd86785e2b953cdcddf4be9a8fa6fedd996ca",
+        "size": 6548,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/find/list-artifacts.js.map",
+        "sha256": "64871aefaa804d4690ef47b6ce876b634444fee5f168c25ba90a55b5b0fd7ead",
+        "size": 4347,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/find/retry-options.d.ts",
+        "sha256": "cef5f5ee5bf2dc677db175f8a8c2329d0f280427f9fb4d72e37bd7e321459f40",
+        "size": 369,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/find/retry-options.js",
+        "sha256": "1354f8b0fa2edbad78824064926160d2b44e16bee99af73df7b44ab2ca6d4acb",
+        "size": 1319,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/find/retry-options.js.map",
+        "sha256": "9afc30009390eeb20dabbc8c0fd60db048288ef4066adc3fcaa4a8d82cb0b959",
+        "size": 900,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/shared/artifact-twirp-client.d.ts",
+        "sha256": "898341f4a228529eb7a9f42d5f0f5f06a5d74f2d312e6fc3e3ed7997254af0a3",
+        "size": 251,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/shared/artifact-twirp-client.js",
+        "sha256": "be55915e73465782fbae3c4c2e79ef41092ccdeb0e822c107674bc1bc238ce09",
+        "size": 8609,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/shared/artifact-twirp-client.js.map",
+        "sha256": "170fc40d79cf3e0fd70b4da88c41f622e4c0b4f315b90423ff9ac04b64f2fddf",
+        "size": 6096,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/shared/config.d.ts",
+        "sha256": "238af3a433bd3b63a8246508c5cdf9d23ff911285fabe272f7953b5730b67643",
+        "size": 427,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/shared/config.js",
+        "sha256": "4dfeefbe961fb2f8fe493722133b5da659a822cb97799116e13069f964595645",
+        "size": 3433,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/shared/config.js.map",
+        "sha256": "f55706c17d5a3bf5a39c9f2f0a44484ca3c14a3fa7ad6bba45d46c41c622b1f2",
+        "size": 2721,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/shared/errors.d.ts",
+        "sha256": "1badc1648983c99dc21ce11739f6bd24847dcc3da0b0c10eb1475114882da2f6",
+        "size": 688,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/shared/errors.js",
+        "sha256": "dc6ffc76aa7b87ded7e3c53976c781ef5d50223d5c285985b7e7e0d156eeb4a9",
+        "size": 2212,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/shared/errors.js.map",
+        "sha256": "70dceaf01aee4a22afb12570f80ad6404d4af118aeb85dad65c7495d0bf48cb2",
+        "size": 1552,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/shared/interfaces.d.ts",
+        "sha256": "3c95b257d7447f733cb61bfbea4d5b6c5d97a482d897f1d28954e6ea67d09f8d",
+        "size": 5444,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/shared/interfaces.js",
+        "sha256": "2917500edae04434675de07c4dbe5b09545465557231e2fb986f20ae5f1015e8",
+        "size": 49,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/shared/interfaces.js.map",
+        "sha256": "21f1448bc3fc1abf48076e34b29a88da395f0cee10af02e1248eae96df700ed8",
+        "size": 134,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/shared/package-version.cjs",
+        "sha256": "617df8062ce178dc2564d75923a3c1aa95b93eb5ce561caebe0892f6ae1225f4",
+        "size": 458,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/shared/user-agent.d.ts",
+        "sha256": "3ce42dfb975aecec2a289cac323f54881761d5538fde444d0d151ba9cc72c3b5",
+        "size": 202,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/shared/user-agent.js",
+        "sha256": "c82cd51970647cfe762894243d9bc68497bd19cad55edde0214cf12e0cf43df6",
+        "size": 319,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/shared/user-agent.js.map",
+        "sha256": "190de878f0926dc95eea0619bea55963998c4a6f7c18873be3973622af449328",
+        "size": 253,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/shared/util.d.ts",
+        "sha256": "85733d064015123762ca4e31afaea8af51a862b76df9a0ee4a536493f2881007",
+        "size": 1770,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/shared/util.js",
+        "sha256": "064333a5b8744c7ae47a1fda8ddc9e93147d12410978a8e398e6902b6d2c9a6e",
+        "size": 4301,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/shared/util.js.map",
+        "sha256": "ea5171b3d1d1fc428aa34882327ed9428f948fc1bd546d528075133c8ddc6d19",
+        "size": 2279,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/upload/blob-upload.d.ts",
+        "sha256": "00d467acdeb2512496a82c25f86b62d8acde73b71d51af4a5fc1582e23aa1893",
+        "size": 490,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/upload/blob-upload.js",
+        "sha256": "08cfc257f4a0b488bb0bfcf046c10902119e79fa0fcbfe1df95ea7b690333366",
+        "size": 4148,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/upload/blob-upload.js.map",
+        "sha256": "5497a0346604fe1c13e51579eb030cb16ae38cade4d4f0cb70119f99bdc2e3f7",
+        "size": 2719,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/upload/path-and-artifact-name-validation.d.ts",
+        "sha256": "23320b62f5a9a292739e73b97536153e6775355f2c6fe45a77ae0b4e67e3baf2",
+        "size": 346,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/upload/path-and-artifact-name-validation.js",
+        "sha256": "4e8e5be8a2185063f1d0c12dc044c470dd6c05c8f96216acc6e8dbe13d0c46c5",
+        "size": 3085,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/upload/path-and-artifact-name-validation.js.map",
+        "sha256": "7ff99868234c2506b9375f09766f036805aaae560a39ebb1070d8cfc9f3dffb4",
+        "size": 1590,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/upload/retention.d.ts",
+        "sha256": "0b017cb93384461c33f83dbf8bbe387393689b6a526b0deeab35da63b22f6fa4",
+        "size": 140,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/upload/retention.js",
+        "sha256": "b909a1b96f2cf21bd3b80257ce501ec161a9c8113077b5e524fdfe6901e2cbdc",
+        "size": 977,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/upload/retention.js.map",
+        "sha256": "d8ff6d3a55d5750dd362d5c39ae2a18addfc60c85ae1ef548695804f73893fdc",
+        "size": 936,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/upload/stream.d.ts",
+        "sha256": "051e10088e7c7739026f7abf5d9194aa045f9f34283008e24893050806fe0cde",
+        "size": 301,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/upload/stream.js",
+        "sha256": "f48d8643580aa23a779f07f6be42e062a008ff8953302aa9603db566ae9f3c67",
+        "size": 2429,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/upload/stream.js.map",
+        "sha256": "34d05c03e4630d886bb7166ab19f417bb45124d46057e101eda9176ee206631e",
+        "size": 1391,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/upload/types.d.ts",
+        "sha256": "1cffdaca3301471425f9865c09adcbe5dbbe4518dc50b01c838488c430531388",
+        "size": 127,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/upload/types.js",
+        "sha256": "e524b011b43e4fb7b789bf9317daca95f0f40876c746a0ef7e71afd9bb30b748",
+        "size": 2084,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/upload/types.js.map",
+        "sha256": "4b8e34369a12ca8d053e04bc4b4d49f209346fe5e9c310130cfb050bcc88a4ec",
+        "size": 1517,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/upload/upload-artifact.d.ts",
+        "sha256": "e3b912ea251fe73dd3321d7353d55e19b39bbbb399fd8e09c92c7c1a0c00d399",
+        "size": 261,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/upload/upload-artifact.js",
+        "sha256": "48e1f12b017550c1d6865f5310b33fd0374b2feffca3f951e54555535a5afcb5",
+        "size": 5560,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/upload/upload-artifact.js.map",
+        "sha256": "cb45dcf396166c0be1d61035b515dbcd523fa4cc609e5a3cde9a718611e06230",
+        "size": 3798,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/upload/upload-zip-specification.d.ts",
+        "sha256": "e724fd7021c6907de893286a313e77c11301e9cb8a232daecd0388fd86d8810c",
+        "size": 1155,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/upload/upload-zip-specification.js",
+        "sha256": "770ddc02798dd42627653f48aada2168d3d3af4f5c0f9f7e4b655f0ba914fe94",
+        "size": 3505,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/upload/upload-zip-specification.js.map",
+        "sha256": "96bb22593b420f6c31a470a9e11c85087e766be19e820b602745b513dc2b38b1",
+        "size": 1883,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/upload/zip.d.ts",
+        "sha256": "41ce4b91582607f3625899f1412cea56dbfbab8cf5de5298375dd7c6ae033e8d",
+        "size": 334,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/upload/zip.js",
+        "sha256": "8a8708fd49b2d6474a67fea2aa5e0ff56bae90401f5b6c95db0a600eb91e5a23",
+        "size": 3617,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/upload/zip.js.map",
+        "sha256": "49816ba4ca0763858de8cf6dbc0935f6f939fbadd071c9c701218d3165889506",
+        "size": 2382,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "11e27d680ad6960344214666ccf7d98d036ef6d5793fcc9bfafb6b60f9f45a35",
+        "size": 2182,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1068,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/e7/e7ceb6a6926e76a67981a440f4107d6152ac1fc2250c90a66460444518328b75",
+          "sha256": "e7ceb6a6926e76a67981a440f4107d6152ac1fc2250c90a66460444518328b75"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "e7ceb6a6926e76a67981a440f4107d6152ac1fc2250c90a66460444518328b75",
+        "size": 1068
+      }
+    ],
+    "expandedBytes": 332872,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/actions/toolkit/tree/main/packages/artifact",
+      "license": "MIT",
+      "name": "@actions/artifact",
+      "repository": {
+        "directory": "packages/artifact",
+        "type": "git",
+        "url": "git+https://github.com/actions/toolkit.git"
+      },
+      "version": "6.3.1"
+    },
+    "packageMetadata": {
+      "bugs": {
+        "url": "https://github.com/actions/toolkit/issues"
+      },
+      "dependencies": {
+        "@actions/core": "^3.0.1",
+        "@actions/github": "^9.1.1",
+        "@actions/http-client": "^4.0.1",
+        "@azure/storage-blob": "^12.31.0",
+        "@octokit/core": "^7.0.6",
+        "@octokit/plugin-request-log": "^6.0.0",
+        "@octokit/plugin-retry": "^8.1.0",
+        "@octokit/request": "^10.0.8",
+        "@octokit/request-error": "^7.1.0",
+        "@protobuf-ts/runtime": "^2.11.1",
+        "@protobuf-ts/runtime-rpc": "^2.11.1",
+        "archiver": "^7.0.1",
+        "jwt-decode": "^4.0.0",
+        "unzip-stream": "^0.3.1"
+      },
+      "description": "Actions artifact lib",
+      "devDependencies": {
+        "@protobuf-ts/plugin": "^2.11.1",
+        "@types/archiver": "^7.0.0",
+        "@types/unzip-stream": "^0.3.4",
+        "typedoc": "^0.28.19",
+        "typedoc-plugin-markdown": "^4.11.0",
+        "typescript": "^5.9.3"
+      },
+      "directories": {
+        "lib": "lib",
+        "test": "__tests__"
+      },
+      "exports": {
+        ".": {
+          "import": "./lib/artifact.js",
+          "types": "./lib/artifact.d.ts"
+        }
+      },
+      "files": [
+        "lib",
+        "!.DS_Store"
+      ],
+      "homepage": "https://github.com/actions/toolkit/tree/main/packages/artifact",
+      "keywords": [
+        "github",
+        "actions",
+        "artifact"
+      ],
+      "license": "MIT",
+      "main": "lib/artifact.js",
+      "name": "@actions/artifact",
+      "overrides": {
+        "node-fetch": "^3.3.2",
+        "uri-js": "npm:uri-js-replace@^1.0.1"
+      },
+      "preview": true,
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/artifact",
+        "type": "git",
+        "url": "git+https://github.com/actions/toolkit.git"
+      },
+      "scripts": {
+        "audit-moderate": "npm install && npm audit --json --audit-level=moderate > audit.json",
+        "bootstrap": "cd ../../ && npm run bootstrap",
+        "gen:docs": "typedoc --plugin typedoc-plugin-markdown --out docs/generated src/artifact.ts --githubPages false --readme none",
+        "test": "cd ../../ && npm run test ./packages/artifact",
+        "tsc": "npm run bootstrap && npm run tsc-run",
+        "tsc-run": "tsc && cp src/internal/shared/package-version.cjs lib/internal/shared/"
+      },
+      "type": "module",
+      "types": "lib/artifact.d.ts",
+      "version": "6.3.1"
+    },
+    "physicalEntryCount": 82,
+    "tarball": {
+      "bytes": 55990,
+      "sha256": "3917e287b36403f9fe7cda27a56e84f83be2ad5a8602d8d9e0bdc713645d1a91"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

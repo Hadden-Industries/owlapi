@@ -7,11 +7,8 @@ import {
   PACKAGE_SBOM_PURL,
 } from "./package-identity.mjs";
 
-import {
-  formatSha256Sums,
-  readGzipTarFile,
-  sha256Buffer,
-} from "./release-artifacts.mjs";
+import { sha256Buffer } from "./release-file-utils.mjs";
+import { formatSha256Sums, readGzipTarFile } from "./release-artifacts.mjs";
 
 const compareCodeUnits = (left, right) =>
   left < right ? -1 : left > right ? 1 : 0;

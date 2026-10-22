@@ -1,0 +1,226 @@
+{
+  "artifactId": "52838bce420f74ba500d8e6a2d8e3dfc1fa2b65721917cfa33deae837a132d7a",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4474,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.eslintrc",
+        "sha256": "f234bdd351b6201bfbe156b83e1ec1372fe18d669d26670398c3919b5e21c630",
+        "size": 104,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "efc240256bdc771e8b442e1e88b40157e9fd51f5a1b2cb510da770087b77719c",
+        "size": 580,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nycrc",
+        "sha256": "997785c50b0773e5e18bf15550fbf57823c634fefe623cd37b3c83696402ad0a",
+        "size": 139,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "11759506474827be4b01f43de7d038f1f23effaada2c84ae430459c2aa4dc205",
+        "size": 1054,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "be46ce1e3b0479af9ce82d22b465a6d7d2ff084fca0aaf3d54172da2b5eb5781",
+        "size": 1071,
+        "type": "FILE"
+      },
+      {
+        "path": "package/Object.getPrototypeOf.d.ts",
+        "sha256": "b741a7e634a760b535687ff4b64e2477ea9ec085fb90a57013a8dd478d679b81",
+        "size": 125,
+        "type": "FILE"
+      },
+      {
+        "path": "package/Object.getPrototypeOf.js",
+        "sha256": "66d51243588d269eb28f5bc8236e111a9a36e010e9b5b9b496be2963882a9e28",
+        "size": 156,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "5a3c611a2e47ccbe9b01df7ee9f6bce0a2035fd35acbff028e5ceef77a1331ee",
+        "size": 1794,
+        "type": "FILE"
+      },
+      {
+        "path": "package/Reflect.getPrototypeOf.d.ts",
+        "sha256": "9be2e264638db3866380db1e22f491a565e70c2f8c5a6cf6a085b24bbfb6e336",
+        "size": 67,
+        "type": "FILE"
+      },
+      {
+        "path": "package/Reflect.getPrototypeOf.js",
+        "sha256": "bab0332997a67c0eb3d2ab24ee9ae5d106d275a8ef5bde2a711faa1c96899c59",
+        "size": 150,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "7538ce3a26100e7dca4c6d51b9315e91ab2088a1bb0f2033f752f506311df206",
+        "size": 126,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "ee310261ff252b6d90c1a9fc4b9eceb63ddb963e7eec5125631cf169daad38c1",
+        "size": 821,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "73839e012ac7134a632c9d9fc6bdb700ac9ab5553cce39eb789ba2b65663e734",
+        "size": 2176,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "1f4edb40034d0c23400ab56be0d20fd8bc2cee1aeb4298905b2eb5e78e946a56",
+        "size": 2359,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "2f3c811aa59dd8b9d58e160110c7ad919cab9827c1fa89f580e328da3c573db4",
+        "size": 118,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1071,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/be/be46ce1e3b0479af9ce82d22b465a6d7d2ff084fca0aaf3d54172da2b5eb5781",
+          "sha256": "be46ce1e3b0479af9ce82d22b465a6d7d2ff084fca0aaf3d54172da2b5eb5781"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "be46ce1e3b0479af9ce82d22b465a6d7d2ff084fca0aaf3d54172da2b5eb5781",
+        "size": 1071
+      },
+      {
+        "blob": {
+          "bytes": 1794,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5a/5a3c611a2e47ccbe9b01df7ee9f6bce0a2035fd35acbff028e5ceef77a1331ee",
+          "sha256": "5a3c611a2e47ccbe9b01df7ee9f6bce0a2035fd35acbff028e5ceef77a1331ee"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "5a3c611a2e47ccbe9b01df7ee9f6bce0a2035fd35acbff028e5ceef77a1331ee",
+        "size": 1794
+      }
+    ],
+    "expandedBytes": 10840,
+    "packageIdentity": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "homepage": "https://github.com/ljharb/get-proto#readme",
+      "license": "MIT",
+      "name": "get-proto",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ljharb/get-proto.git"
+      },
+      "version": "1.0.1"
+    },
+    "packageMetadata": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "bugs": {
+        "url": "https://github.com/ljharb/get-proto/issues"
+      },
+      "dependencies": {
+        "dunder-proto": "^1.0.1",
+        "es-object-atoms": "^1.0.0"
+      },
+      "description": "Robustly get the [[Prototype]] of an object",
+      "devDependencies": {
+        "@arethetypeswrong/cli": "^0.17.2",
+        "@ljharb/eslint-config": "^21.1.1",
+        "@ljharb/tsconfig": "^0.2.3",
+        "@types/tape": "^5.8.0",
+        "auto-changelog": "^2.5.0",
+        "eslint": "=8.8.0",
+        "evalmd": "^0.0.19",
+        "in-publish": "^2.0.1",
+        "npmignore": "^0.3.1",
+        "nyc": "^10.3.2",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.9.0",
+        "typescript": "next"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "exports": {
+        ".": "./index.js",
+        "./Object.getPrototypeOf": "./Object.getPrototypeOf.js",
+        "./Reflect.getPrototypeOf": "./Reflect.getPrototypeOf.js",
+        "./package.json": "./package.json"
+      },
+      "homepage": "https://github.com/ljharb/get-proto#readme",
+      "keywords": [
+        "get",
+        "proto",
+        "prototype",
+        "getPrototypeOf",
+        "[[Prototype]]"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "get-proto",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ljharb/get-proto.git"
+      },
+      "scripts": {
+        "lint": "eslint --ext=js,mjs .",
+        "postlint": "tsc && attw -P",
+        "posttest": "npx npm@\">=10.2\" audit --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prelint": "evalmd README.md",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run --silent lint",
+        "test": "npm run tests-only",
+        "tests-only": "nyc tape 'test/**/*.js'",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "testling": {
+        "files": "test/index.js"
+      },
+      "version": "1.0.1"
+    },
+    "physicalEntryCount": 15,
+    "tarball": {
+      "bytes": 4474,
+      "sha256": "eb2cc52afb1f1fd82c5fc2a58c2380f0f16fdcdb5631538f3c66887435d70681"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

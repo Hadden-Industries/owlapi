@@ -1,0 +1,207 @@
+{
+  "artifactId": "0daf5551256d5f16cfe1088abea653032dcc595b6767837e05f37751ddcb2c77",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 17834,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "a338a09e00418402e779e3ff372a2bca3be66259d6192e0a9fe2949969d648f3",
+        "size": 1119,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "08ce1c980b08d27ca6b61b1b29196569b87f8a0bcf72f712d610769b69d3d525",
+        "size": 1790,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/auth.d.ts",
+        "sha256": "1dca2f073e2935d643496555e7a78437f30cdf9133c8a00cbf7e54f7ddac3a92",
+        "size": 1026,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/auth.js",
+        "sha256": "41e1567d319e7f7670d25f5a5f6f2261b6731c4b7e9acb0d40468ff6c1201be7",
+        "size": 2749,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/auth.js.map",
+        "sha256": "196b2f39af33990808966ba54a4d42cee783e042ece492b123dcf45002468640",
+        "size": 1582,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.d.ts",
+        "sha256": "71ae43b33fb0e5e4f17a1a7b6fc6bb5a230453bde15dd155375383db667762ed",
+        "size": 6377,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "380555cf0661b7421087525d3fe0c7d0e325e3cb6daf4a1ddce2010ec745d001",
+        "size": 30737,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js.map",
+        "sha256": "a27dc3ba65182a567ab4f8665fd87f3f2dc7199ee801d67bd7a01be56ccd10e4",
+        "size": 21001,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/interfaces.d.ts",
+        "sha256": "7ec32d983f8fa5a56c67a0c6479e90605892dbc2227c7babd064dec9cbd4471d",
+        "size": 2301,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/interfaces.js",
+        "sha256": "2917500edae04434675de07c4dbe5b09545465557231e2fb986f20ae5f1015e8",
+        "size": 49,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/interfaces.js.map",
+        "sha256": "0f280255a151b57b8567a3128da97cd57bb74c6b7e828f259325a690cc860a5e",
+        "size": 112,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/proxy.d.ts",
+        "sha256": "2b5f94a1403fc26dc40b95a70b039a29329e145a206e0a05e35e26c94eee1737",
+        "size": 126,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/proxy.js",
+        "sha256": "5769b9ae459f65d6623aa7b1a3409ef7e5660c875a38aeb75bb9adc98dedb154",
+        "size": 2682,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/proxy.js.map",
+        "sha256": "20fe3ccb4d6eff38835324fd63c1c10c62e6e4bf43a4991d02dd64bf64d84655",
+        "size": 2843,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "4f94a1593b926907dae7801656c5fc6a99db884d3bc929d1ea7d3b3487c0004a",
+        "size": 1700,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1119,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a3/a338a09e00418402e779e3ff372a2bca3be66259d6192e0a9fe2949969d648f3",
+          "sha256": "a338a09e00418402e779e3ff372a2bca3be66259d6192e0a9fe2949969d648f3"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "a338a09e00418402e779e3ff372a2bca3be66259d6192e0a9fe2949969d648f3",
+        "size": 1119
+      }
+    ],
+    "expandedBytes": 76194,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/actions/toolkit/tree/main/packages/http-client",
+      "license": "MIT",
+      "name": "@actions/http-client",
+      "repository": {
+        "directory": "packages/http-client",
+        "type": "git",
+        "url": "git+https://github.com/actions/toolkit.git"
+      },
+      "version": "4.0.1"
+    },
+    "packageMetadata": {
+      "bugs": {
+        "url": "https://github.com/actions/toolkit/issues"
+      },
+      "dependencies": {
+        "tunnel": "^0.0.6",
+        "undici": "^6.23.0"
+      },
+      "description": "Actions Http Client",
+      "devDependencies": {
+        "@types/node": "24.1.0",
+        "@types/proxy": "^1.0.1",
+        "@types/tunnel": "0.0.3",
+        "proxy": "^2.1.1"
+      },
+      "directories": {
+        "lib": "lib",
+        "test": "__tests__"
+      },
+      "exports": {
+        ".": {
+          "import": "./lib/index.js",
+          "types": "./lib/index.d.ts"
+        },
+        "./lib/auth": {
+          "import": "./lib/auth.js",
+          "types": "./lib/auth.d.ts"
+        },
+        "./lib/interfaces": {
+          "import": "./lib/interfaces.js",
+          "types": "./lib/interfaces.d.ts"
+        },
+        "./lib/proxy": {
+          "import": "./lib/proxy.js",
+          "types": "./lib/proxy.d.ts"
+        }
+      },
+      "files": [
+        "lib",
+        "!.DS_Store"
+      ],
+      "homepage": "https://github.com/actions/toolkit/tree/main/packages/http-client",
+      "keywords": [
+        "github",
+        "actions",
+        "http"
+      ],
+      "license": "MIT",
+      "main": "lib/index.js",
+      "name": "@actions/http-client",
+      "overrides": {
+        "uri-js": "npm:uri-js-replace@^1.0.1"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/http-client",
+        "type": "git",
+        "url": "git+https://github.com/actions/toolkit.git"
+      },
+      "scripts": {
+        "audit-moderate": "npm install && npm audit --json --audit-level=moderate > audit.json",
+        "build": "tsc",
+        "format": "prettier --write **/*.ts",
+        "format-check": "prettier --check **/*.ts",
+        "test": "echo \"Error: run tests from root\" && exit 1",
+        "tsc": "tsc"
+      },
+      "type": "module",
+      "types": "lib/index.d.ts",
+      "version": "4.0.1"
+    },
+    "physicalEntryCount": 15,
+    "tarball": {
+      "bytes": 17834,
+      "sha256": "7f4b0466ca81b3cf0f48fc5091fd3aa138d576fc6f43cb6ddce00c37644bec34"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

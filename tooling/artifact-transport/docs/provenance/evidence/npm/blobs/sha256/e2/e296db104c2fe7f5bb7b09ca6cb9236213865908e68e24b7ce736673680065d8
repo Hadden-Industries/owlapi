@@ -1,0 +1,206 @@
+{
+  "artifactId": "7a0b57147a3af0bc47a878d19189ce2ad85bad29cd46cdf1a7b1c970930791bd",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 30636,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "3bfea16b0bcaa953d701112d85803a4a9641aaaea07779a899e070857a72b0cd",
+        "size": 554,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "64d808604befee58c2efc84f71868c160b9524584bf2937eb2e5f527a7dda474",
+        "size": 74578,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "50810ca34b3c662b51f54cdf2ba6bfa346f5528cc2af4001716092a55c397c28",
+        "size": 1088,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "9fb755601fec5aa062dedfb76145e9354f9fc4cf83e9e1793c8829acc04a1283",
+        "size": 6864,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "dddee5f194f52417bb295c200b22f6592885742a1241f0550c25a0583c813b2c",
+        "size": 18618,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "77b0f0bdd43d6aad0586f9002fe8e772a637a8aace97187f469abb5196b21089",
+        "size": 2425,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1088,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/50/50810ca34b3c662b51f54cdf2ba6bfa346f5528cc2af4001716092a55c397c28",
+          "sha256": "50810ca34b3c662b51f54cdf2ba6bfa346f5528cc2af4001716092a55c397c28"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "50810ca34b3c662b51f54cdf2ba6bfa346f5528cc2af4001716092a55c397c28",
+        "size": 1088
+      },
+      {
+        "blob": {
+          "bytes": 6864,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9f/9fb755601fec5aa062dedfb76145e9354f9fc4cf83e9e1793c8829acc04a1283",
+          "sha256": "9fb755601fec5aa062dedfb76145e9354f9fc4cf83e9e1793c8829acc04a1283"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "9fb755601fec5aa062dedfb76145e9354f9fc4cf83e9e1793c8829acc04a1283",
+        "size": 6864
+      }
+    ],
+    "expandedBytes": 104127,
+    "packageIdentity": {
+      "author": {
+        "email": "mail@substack.net",
+        "name": "James Halliday",
+        "url": "http://substack.net"
+      },
+      "homepage": "https://github.com/ljharb/js-traverse",
+      "license": "MIT",
+      "name": "traverse",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/ljharb/js-traverse.git"
+      },
+      "version": "0.3.10"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "mail@substack.net",
+        "name": "James Halliday",
+        "url": "http://substack.net"
+      },
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "dependencies": {
+        "define-data-property": "^1.1.4",
+        "es-to-primitive": "^1.3.4",
+        "gopd": "^1.2.0",
+        "typedarray.prototype.slice": "^1.0.6",
+        "which-typed-array": "^1.1.24"
+      },
+      "description": "traverse and transform objects by visiting every node on a recursive walk",
+      "devDependencies": {
+        "@ljharb/eslint-config": "^22.2.5",
+        "auto-changelog": "^2.7.0",
+        "es-value-fixtures": "^1.7.1",
+        "eslint": "^10.12.0",
+        "for-each": "^0.3.5",
+        "has-tostringtag": "^1.0.2",
+        "in-publish": "^2.0.1",
+        "is-typed-array": "^1.1.15",
+        "jiti": "^0.0.0",
+        "npmignore": "^0.3.5",
+        "safe-publish-latest": "^2.0.0",
+        "set-proto": "^1.0.0",
+        "tape": "^5.10.2"
+      },
+      "directories": {
+        "example": "example",
+        "test": "test"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "homepage": "https://github.com/ljharb/js-traverse",
+      "keywords": [
+        "traverse",
+        "walk",
+        "recursive",
+        "map",
+        "forEach",
+        "deep",
+        "clone"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "traverse",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows",
+          "eslint.config.mjs",
+          "examples/",
+          "test"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/ljharb/js-traverse.git"
+      },
+      "scripts": {
+        "lint": "eslint .",
+        "posttest": "npx npm@'>=10.2' audit --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only",
+        "tests-only": "tape 'test/**/*.js'",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "testling": {
+        "browsers": {
+          "chrome": [
+            "10.0",
+            "20.0"
+          ],
+          "firefox": [
+            "10.0",
+            "15.0"
+          ],
+          "iexplore": [
+            "6.0",
+            "7.0",
+            "8.0",
+            "9.0"
+          ],
+          "opera": [
+            "12.0"
+          ],
+          "safari": [
+            "5.1"
+          ]
+        },
+        "files": "test/*.js"
+      },
+      "version": "0.3.10"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 30636,
+      "sha256": "f01ec5f3dcfc5d667b53e824ee16768b95e972c84e03a93d72f1b384323de72c"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

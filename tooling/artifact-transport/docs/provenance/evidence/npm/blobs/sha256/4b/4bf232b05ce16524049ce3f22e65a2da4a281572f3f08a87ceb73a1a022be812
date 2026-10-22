@@ -1,0 +1,140 @@
+{
+  "artifactId": "1a5e5b3155b3aa3a66535bb127f4730804af5379aa60323c2c39e0563da0b00b",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 9972,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "c7cc929b57080f4b9d0c6cf57669f0463fc5b39906344dfc8d3bc43426b30eac",
+        "size": 1081,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "d301a850808775718ddb510d4bf2a922d9b0afa72894e67137daa20fbeafac05",
+        "size": 19555,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "5e379df3d61561c2ed7789b5995b9ba2143bbba21a905e2381e16efe7d1fa424",
+        "size": 8738,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "184d5c4a83512e3f49d4d5b52f7073f601f933bad11f1fbb3ad364ca5e6478e1",
+        "size": 1670,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "e4018fdbfe625433371f48274fee26f520bbe865e0d8c85bf3aa07424134b90c",
+        "size": 1057,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1081,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c7/c7cc929b57080f4b9d0c6cf57669f0463fc5b39906344dfc8d3bc43426b30eac",
+          "sha256": "c7cc929b57080f4b9d0c6cf57669f0463fc5b39906344dfc8d3bc43426b30eac"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "c7cc929b57080f4b9d0c6cf57669f0463fc5b39906344dfc8d3bc43426b30eac",
+        "size": 1081
+      },
+      {
+        "blob": {
+          "bytes": 19555,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d3/d301a850808775718ddb510d4bf2a922d9b0afa72894e67137daa20fbeafac05",
+          "sha256": "d301a850808775718ddb510d4bf2a922d9b0afa72894e67137daa20fbeafac05"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "d301a850808775718ddb510d4bf2a922d9b0afa72894e67137daa20fbeafac05",
+        "size": 19555
+      }
+    ],
+    "expandedBytes": 32101,
+    "packageIdentity": {
+      "author": {
+        "email": "feross@feross.org",
+        "name": "Feross Aboukhadijeh",
+        "url": "https://feross.org"
+      },
+      "homepage": "https://github.com/feross/safe-buffer",
+      "license": "MIT",
+      "name": "safe-buffer",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/feross/safe-buffer.git"
+      },
+      "version": "5.2.1"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "feross@feross.org",
+        "name": "Feross Aboukhadijeh",
+        "url": "https://feross.org"
+      },
+      "bugs": {
+        "url": "https://github.com/feross/safe-buffer/issues"
+      },
+      "description": "Safer Node.js Buffer API",
+      "devDependencies": {
+        "standard": "*",
+        "tape": "^5.0.0"
+      },
+      "funding": [
+        {
+          "type": "github",
+          "url": "https://github.com/sponsors/feross"
+        },
+        {
+          "type": "patreon",
+          "url": "https://www.patreon.com/feross"
+        },
+        {
+          "type": "consulting",
+          "url": "https://feross.org/support"
+        }
+      ],
+      "homepage": "https://github.com/feross/safe-buffer",
+      "keywords": [
+        "buffer",
+        "buffer allocate",
+        "node security",
+        "safe",
+        "safe-buffer",
+        "security",
+        "uninitialized"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "safe-buffer",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/feross/safe-buffer.git"
+      },
+      "scripts": {
+        "test": "standard && tape test/*.js"
+      },
+      "types": "index.d.ts",
+      "version": "5.2.1"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 9972,
+      "sha256": "5d181804516c4a693a384272a7bd0e42d17e0d4b301ccfbe408669ccafdcb3e8"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

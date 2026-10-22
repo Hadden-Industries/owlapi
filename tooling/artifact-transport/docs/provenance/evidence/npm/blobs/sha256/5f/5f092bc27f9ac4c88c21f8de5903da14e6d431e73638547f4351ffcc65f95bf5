@@ -1,0 +1,199 @@
+{
+  "artifactId": "025fcf37d34e670fe3ab20c0ca702072bb74992b1fbaa88e67cb831833fd556b",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6689,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.eslintrc",
+        "sha256": "0694050195fc694c5846b0a2a66b437ac775da988f0a779c55fb892597f7f641",
+        "size": 43,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "6bdaf7a7ed0fc2759e9c34ff8020cb532531edf44f66acb40bfde889bbda7f18",
+        "size": 580,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nycrc",
+        "sha256": "997785c50b0773e5e18bf15550fbf57823c634fefe623cd37b3c83696402ad0a",
+        "size": 139,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "36e236ce73ad64ac40290678628038383df823159a4270171914276657aeb5be",
+        "size": 9128,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "971e376febf7afbcceab6857e243f2ccb3ea88f520b68c324af15a28171f5de3",
+        "size": 1071,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "1b324bfa66ec4e4364f461289636613d6a4a9b051588e8de165540dbca33cd09",
+        "size": 1623,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "b683d511abd406dbdc0df373351b37e355e235062f52609136d7d68519813de3",
+        "size": 90,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "c36c46c16ccf10f43a945eb05cda6415cabcc3cecfe04255cb3efe52aae2c7f3",
+        "size": 844,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "079916fe1d9e42dd3ed230521911d4ffa718f3bbd7efcc53d4bd8803b0cd11d9",
+        "size": 2067,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "32194b8655df83fe854810e896adaeb4ab59bc021dd77e1048542e2be35ecf85",
+        "size": 2196,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "496e8783bf107e3416811badcfcc68d7a51c76283b399d4fd7ec028372c5915c",
+        "size": 114,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1071,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/97/971e376febf7afbcceab6857e243f2ccb3ea88f520b68c324af15a28171f5de3",
+          "sha256": "971e376febf7afbcceab6857e243f2ccb3ea88f520b68c324af15a28171f5de3"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "971e376febf7afbcceab6857e243f2ccb3ea88f520b68c324af15a28171f5de3",
+        "size": 1071
+      },
+      {
+        "blob": {
+          "bytes": 1623,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/1b/1b324bfa66ec4e4364f461289636613d6a4a9b051588e8de165540dbca33cd09",
+          "sha256": "1b324bfa66ec4e4364f461289636613d6a4a9b051588e8de165540dbca33cd09"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "1b324bfa66ec4e4364f461289636613d6a4a9b051588e8de165540dbca33cd09",
+        "size": 1623
+      }
+    ],
+    "expandedBytes": 17895,
+    "packageIdentity": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "homepage": "https://github.com/inspect-js/is-bigint#readme",
+      "license": "MIT",
+      "name": "is-bigint",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/is-bigint.git"
+      },
+      "version": "1.1.0"
+    },
+    "packageMetadata": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "bugs": {
+        "url": "https://github.com/inspect-js/is-bigint/issues"
+      },
+      "dependencies": {
+        "has-bigints": "^1.0.2"
+      },
+      "description": "Is this value an ES BigInt?",
+      "devDependencies": {
+        "@arethetypeswrong/cli": "^0.17.0",
+        "@ljharb/eslint-config": "^21.1.1",
+        "@ljharb/tsconfig": "^0.2.0",
+        "@types/for-each": "^0.3.3",
+        "@types/object-inspect": "^1.13.0",
+        "@types/tape": "^5.6.5",
+        "auto-changelog": "^2.5.0",
+        "encoding": "^0.1.13",
+        "es-value-fixtures": "^1.5.0",
+        "eslint": "=8.8.0",
+        "for-each": "^0.3.3",
+        "has-tostringtag": "^1.0.2",
+        "in-publish": "^2.0.1",
+        "npmignore": "^0.3.1",
+        "nyc": "^10.3.2",
+        "object-inspect": "^1.13.3",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.9.0",
+        "typescript": "next"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "homepage": "https://github.com/inspect-js/is-bigint#readme",
+      "keywords": [
+        "bigint",
+        "es",
+        "integer",
+        "is"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "is-bigint",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/is-bigint.git"
+      },
+      "scripts": {
+        "lint": "eslint .",
+        "postlint": "tsc -p . && attw -P",
+        "posttest": "npx npm@'>=10.2' audit --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only",
+        "tests-only": "nyc tape 'test/**/*.js'",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "version": "1.1.0"
+    },
+    "physicalEntryCount": 11,
+    "tarball": {
+      "bytes": 6689,
+      "sha256": "3380f7a296bcd1d9da6db3087f77a2553061e5d93a1ebe3758db3fe03072691e"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

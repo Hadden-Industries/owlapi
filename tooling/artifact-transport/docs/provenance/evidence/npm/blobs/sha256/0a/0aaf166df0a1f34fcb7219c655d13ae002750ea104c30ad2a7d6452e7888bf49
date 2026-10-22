@@ -1,0 +1,230 @@
+{
+  "artifactId": "5ba12b9c325e52c8058ba0f7d61fc8a4894d2aaaf43dc0250af7880ce4905f3a",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4820,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.eslintrc",
+        "sha256": "945b2b35c8d6dc3bb008e7a6391fb98f8d4103ca0dc64652b13dcbea0dd090e1",
+        "size": 229,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "3a6cc965019e4c28527969955cb0fe7b8f8e456bcf9c5557b2fdd6c6cea2f9b6",
+        "size": 555,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "a3b70f7caa0d82112311303675233cf100b600ea33c25f74fdbcd5dccc288321",
+        "size": 2622,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "5e325595b4ea8cfec3802f545b1def5d7b73e4a5b8e9ba63e32a320f67732292",
+        "size": 1071,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "7ed12f453b83efdb7ace289312b40ff3eaf810d548347636b8274f56b4af9244",
+        "size": 2603,
+        "type": "FILE"
+      },
+      {
+        "path": "package/RequireObjectCoercible.d.ts",
+        "sha256": "2045b0793cf40da407a831c1c70de9c091a9d628bec71bb47da7a21a714df2b1",
+        "size": 123,
+        "type": "FILE"
+      },
+      {
+        "path": "package/RequireObjectCoercible.js",
+        "sha256": "52db42daa35deb84c5301c7dc5cd274593d72ad3ce77c64d2f9d71b46784b0c5",
+        "size": 313,
+        "type": "FILE"
+      },
+      {
+        "path": "package/ToObject.d.ts",
+        "sha256": "a13501abcba87c7de858dfb38777ba334d1ffa02d2c8ef54a808fc4e6b9f6466",
+        "size": 352,
+        "type": "FILE"
+      },
+      {
+        "path": "package/ToObject.js",
+        "sha256": "deab7682047e003d3bdaa5c17ac4466783a6d4503aeb97724315936967ed860b",
+        "size": 250,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "82cfb73ba05567cb297bb8066b03cfa1364be56c3e46d29875b6eb087b5d0349",
+        "size": 59,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "44ee7a57ed1c50c4c5fd2a6fcaee8772f4b7d0869326eed0aadcef87bc305212",
+        "size": 67,
+        "type": "FILE"
+      },
+      {
+        "path": "package/isObject.d.ts",
+        "sha256": "9f1934de45bfb908c1daca737e1c9762d892a74b2f6b9c29f205f99de266f9c8",
+        "size": 104,
+        "type": "FILE"
+      },
+      {
+        "path": "package/isObject.js",
+        "sha256": "c253c90b894493019432019026378b8fc6e65ba2617da6792e2e6634212f56c2",
+        "size": 161,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "e4b7882975d10c68457945c883e1060d0b058af5b1216215c872263f42e12fc9",
+        "size": 2249,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "e0b98cb59959ac9e9aa0f056aa2a6a6afc637458caec77a4f9ff1a7cdbcf54b5",
+        "size": 1097,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "22c713482377f2492fcad1e7cb33ef479cf8c1151b0ea2c8c3a49d20d4369988",
+        "size": 112,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1071,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5e/5e325595b4ea8cfec3802f545b1def5d7b73e4a5b8e9ba63e32a320f67732292",
+          "sha256": "5e325595b4ea8cfec3802f545b1def5d7b73e4a5b8e9ba63e32a320f67732292"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "5e325595b4ea8cfec3802f545b1def5d7b73e4a5b8e9ba63e32a320f67732292",
+        "size": 1071
+      },
+      {
+        "blob": {
+          "bytes": 2603,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/7e/7ed12f453b83efdb7ace289312b40ff3eaf810d548347636b8274f56b4af9244",
+          "sha256": "7ed12f453b83efdb7ace289312b40ff3eaf810d548347636b8274f56b4af9244"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "7ed12f453b83efdb7ace289312b40ff3eaf810d548347636b8274f56b4af9244",
+        "size": 2603
+      }
+    ],
+    "expandedBytes": 11967,
+    "packageIdentity": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "homepage": "https://github.com/ljharb/es-object-atoms#readme",
+      "license": "MIT",
+      "name": "es-object-atoms",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ljharb/es-object-atoms.git"
+      },
+      "version": "1.1.2"
+    },
+    "packageMetadata": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "bugs": {
+        "url": "https://github.com/ljharb/es-object-atoms/issues"
+      },
+      "dependencies": {
+        "es-errors": "^1.3.0"
+      },
+      "description": "ES Object-related atoms: Object, ToObject, RequireObjectCoercible",
+      "devDependencies": {
+        "@ljharb/eslint-config": "^22.2.3",
+        "@ljharb/tsconfig": "^0.3.2",
+        "@types/tape": "^5.8.1",
+        "auto-changelog": "^2.5.1",
+        "eclint": "^2.8.1",
+        "eslint": "^8.57.1",
+        "evalmd": "^0.0.19",
+        "in-publish": "^2.0.1",
+        "npmignore": "^0.3.5",
+        "nyc": "^10.3.2",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.9.0",
+        "typescript": "next"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "exports": {
+        ".": "./index.js",
+        "./RequireObjectCoercible": "./RequireObjectCoercible.js",
+        "./ToObject": "./ToObject.js",
+        "./isObject": "./isObject.js",
+        "./package.json": "./package.json"
+      },
+      "homepage": "https://github.com/ljharb/es-object-atoms#readme",
+      "keywords": [
+        "javascript",
+        "ecmascript",
+        "object",
+        "toobject",
+        "coercible"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "es-object-atoms",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ljharb/es-object-atoms.git"
+      },
+      "scripts": {
+        "lint": "eslint --ext=js,mjs .",
+        "postlint": "tsc -p . && eclint check $(git ls-files | xargs find 2> /dev/null | grep -vE 'node_modules|\\.git' | grep -v dist/)",
+        "posttest": "npx npm@\">= 10.2\" audit --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prelint": "evalmd README.md",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only",
+        "tests-only": "nyc tape 'test/**/*.js'",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "sideEffects": false,
+      "version": "1.1.2"
+    },
+    "physicalEntryCount": 16,
+    "tarball": {
+      "bytes": 4820,
+      "sha256": "f295c5df6751c65b4b9492b03c88fab5e13419de28a51ecdf17e693b4a421af0"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

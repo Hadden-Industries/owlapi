@@ -1,0 +1,242 @@
+{
+  "artifactId": "e9b58302fe921342d904503ba253a5222d2a6d505cc59cc070000c6fae9b6810",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5434,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.eslintrc",
+        "sha256": "0694050195fc694c5846b0a2a66b437ac775da988f0a779c55fb892597f7f641",
+        "size": 43,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "e9176304ff0a6eefb1f367c6e817ec39120887a1c81a02b4070698469c5a05dc",
+        "size": 580,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "6193553e781ddcc6bef6e8bf1d050a326c29a2f48d59e6c3b4d3139f736e28de",
+        "size": 4292,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "0f0ca96f50793990031ebc488a38f7292ff70bce8ab6a8e5eeda674abc32ccdf",
+        "size": 1067,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "09d741f2b2b86de5a4813863db08bc40ba7fd72be8f2e69a06c051858ba49d92",
+        "size": 2052,
+        "type": "FILE"
+      },
+      {
+        "path": "package/accessor.d.ts",
+        "sha256": "4879dc674dac0607c10534a2a550dedb72a193e91df27c7e85905f8e2f502521",
+        "size": 57,
+        "type": "FILE"
+      },
+      {
+        "path": "package/accessor.js",
+        "sha256": "3a89387662cdc83feafd6eeec92c612e1b4312fbdbc9b3209875b469dac32089",
+        "size": 549,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "7ec004f32d8b6460d13c16cda29b7770fafbf7aeb4628c3f8462429454291c97",
+        "size": 58,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "87a1b9f2a514e2e10e66a4703a70d948a52bd6c6c901336013334ebb1779f317",
+        "size": 298,
+        "type": "FILE"
+      },
+      {
+        "path": "package/mutator.d.ts",
+        "sha256": "80b6701011c7d1dd4394df1c6a1ef621791261d0fa12a7652d1658eff756745f",
+        "size": 55,
+        "type": "FILE"
+      },
+      {
+        "path": "package/mutator.js",
+        "sha256": "48f3137980dd4b52bd6aa1ebd00b4c91b457703fdf899438939347d4fb786eac",
+        "size": 533,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "93dba5204e076effb4f66bb8c6f92ff57a80dd1bb0868bbc5864d45aa8ea86f6",
+        "size": 2377,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/accessor.js",
+        "sha256": "e38e4fd6442b3f2b61cfa9c7748c5d6cdf9b34d5b81d67359445bd13d0627534",
+        "size": 874,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "6fdb47eb2ca6dcf7cfe7c4c4e929e41b7fbc031abc540f91978d7ec6333c7eaa",
+        "size": 640,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/mutator.js",
+        "sha256": "c6115df74d1bfa9630e48540b0e5f06e10b2f2051ba2967d5563bcd1b59c5790",
+        "size": 870,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "5e8d1c56d45cb26c999499b4ffa56366b63555fc880636019a31d2a185b821fc",
+        "size": 128,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1067,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/0f/0f0ca96f50793990031ebc488a38f7292ff70bce8ab6a8e5eeda674abc32ccdf",
+          "sha256": "0f0ca96f50793990031ebc488a38f7292ff70bce8ab6a8e5eeda674abc32ccdf"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "0f0ca96f50793990031ebc488a38f7292ff70bce8ab6a8e5eeda674abc32ccdf",
+        "size": 1067
+      },
+      {
+        "blob": {
+          "bytes": 2052,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/09/09d741f2b2b86de5a4813863db08bc40ba7fd72be8f2e69a06c051858ba49d92",
+          "sha256": "09d741f2b2b86de5a4813863db08bc40ba7fd72be8f2e69a06c051858ba49d92"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "09d741f2b2b86de5a4813863db08bc40ba7fd72be8f2e69a06c051858ba49d92",
+        "size": 2052
+      }
+    ],
+    "expandedBytes": 14473,
+    "packageIdentity": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "homepage": "https://github.com/inspect-js/has-proto#readme",
+      "license": "MIT",
+      "name": "has-proto",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/has-proto.git"
+      },
+      "version": "1.2.0"
+    },
+    "packageMetadata": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "bugs": {
+        "url": "https://github.com/inspect-js/has-proto/issues"
+      },
+      "dependencies": {
+        "dunder-proto": "^1.0.0"
+      },
+      "description": "Does this environment have the ability to get the [[Prototype]] of an object on creation with `__proto__`?",
+      "devDependencies": {
+        "@arethetypeswrong/cli": "^0.17.0",
+        "@ljharb/eslint-config": "^21.1.1",
+        "@ljharb/tsconfig": "^0.2.2",
+        "@types/gopd": "^1.0.3",
+        "@types/tape": "^5.6.5",
+        "auto-changelog": "^2.5.0",
+        "encoding": "^0.1.13",
+        "eslint": "=8.8.0",
+        "evalmd": "^0.0.19",
+        "gopd": "^1.2.0",
+        "in-publish": "^2.0.1",
+        "npmignore": "^0.3.1",
+        "reflect.getprototypeof": "^1.0.7",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.9.0",
+        "typescript": "next"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "exports": {
+        ".": "./index.js",
+        "./accessor": "./accessor.js",
+        "./mutator": "./mutator.js",
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "homepage": "https://github.com/inspect-js/has-proto#readme",
+      "keywords": [
+        "prototype",
+        "proto",
+        "set",
+        "get",
+        "__proto__",
+        "getPrototypeOf",
+        "setPrototypeOf",
+        "has"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "has-proto",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows",
+          "types"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/has-proto.git"
+      },
+      "scripts": {
+        "lint": "eslint --ext=js,mjs .",
+        "postlint": "tsc -p . && attw -P",
+        "posttest": "npx npm@'>=10.2' audit --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prelint": "evalmd README.md",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only",
+        "tests-only": "tape 'test/**/*.js'",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "sideEffects": false,
+      "testling": {
+        "files": "test/index.js"
+      },
+      "version": "1.2.0"
+    },
+    "physicalEntryCount": 16,
+    "tarball": {
+      "bytes": 5434,
+      "sha256": "fade2c30ade4f39fb2293538e6f827ce08accf0f40cdc942a9c382cd2484a9df"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

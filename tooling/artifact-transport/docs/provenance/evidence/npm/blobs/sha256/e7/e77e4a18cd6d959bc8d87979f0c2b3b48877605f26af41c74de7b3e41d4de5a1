@@ -1,0 +1,263 @@
+{
+  "artifactId": "6c8ff4db30cc587d266ef89e35e7575590ba390b5e45ebf800a268d5b0136123",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6465,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.eslintrc",
+        "sha256": "0694050195fc694c5846b0a2a66b437ac775da988f0a779c55fb892597f7f641",
+        "size": 43,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "5af2fc8a34665542659d4ce1520f5df2054affc3754edc49001e65d0c200e2e5",
+        "size": 586,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nycrc",
+        "sha256": "948366fea3b423a46366326d0bb2e54b08abd1cf0b243678ba6625740c40da5a",
+        "size": 216,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "6c721d97055e8381694c7fa7a14f1bf2def9ea072488bcfe4b51073717b53810",
+        "size": 3543,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "e2560e002e13281578c75c850061d9255c33d16d732939e8c2db64c2506642fa",
+        "size": 1067,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "bcf8eec2c348d4509573a3b85c98705b5bdf1b59e903a9f621fb5a33be0532cb",
+        "size": 2190,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "365c4ff8b3415bed8253b793eb1dedec93fe9cb007dadb85ca2ba92774048a37",
+        "size": 70,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "14e192d4c15b0fc042629b25bc9c3f07aaf23b937ea46785f5e288a1a0f9beb9",
+        "size": 196,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "30ab773c52021a6b800ea48f251abeeb1f6e378300f819204dfbb38d6e43f3ad",
+        "size": 2838,
+        "type": "FILE"
+      },
+      {
+        "path": "package/shams.d.ts",
+        "sha256": "d038bb6f5519fbb044b9520b2c3ded20d7f47f884e056c6bad4962aa93dc2d9f",
+        "size": 80,
+        "type": "FILE"
+      },
+      {
+        "path": "package/shams.js",
+        "sha256": "e5e0b7bbca35fa5911487361da2bc00b880d62114be6f3be87a876a59037020b",
+        "size": 189,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "870b05394a7ac2daa373f50db4d6e0782587472f7442d15cdca42a2d7d2efbeb",
+        "size": 679,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/shams/core-js.js",
+        "sha256": "8ef6ccae4ddd5b8d6f918c66a3a358793b14dfd3f0f42fd1d305db92e9aec4e3",
+        "size": 935,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/shams/get-own-property-symbols.js",
+        "sha256": "f959db77cdc23a8a071158a76da43fe5f0da97f0b83b1dbf87fa4024a77c7219",
+        "size": 828,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/tests.js",
+        "sha256": "ab4ee069a833e5eb2f8bf58f7228c5a8fdc54cba37096b14ea6e68544e7875d2",
+        "size": 532,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "b772fc0e85fe374bb32302cdbc08c8854d6a679bcf7f4f7b8da28098e2979521",
+        "size": 3611,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1067,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/e2/e2560e002e13281578c75c850061d9255c33d16d732939e8c2db64c2506642fa",
+          "sha256": "e2560e002e13281578c75c850061d9255c33d16d732939e8c2db64c2506642fa"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "e2560e002e13281578c75c850061d9255c33d16d732939e8c2db64c2506642fa",
+        "size": 1067
+      },
+      {
+        "blob": {
+          "bytes": 2190,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/bc/bcf8eec2c348d4509573a3b85c98705b5bdf1b59e903a9f621fb5a33be0532cb",
+          "sha256": "bcf8eec2c348d4509573a3b85c98705b5bdf1b59e903a9f621fb5a33be0532cb"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "bcf8eec2c348d4509573a3b85c98705b5bdf1b59e903a9f621fb5a33be0532cb",
+        "size": 2190
+      }
+    ],
+    "expandedBytes": 17603,
+    "packageIdentity": {
+      "author": {
+        "email": "ljharb@gmail.com",
+        "name": "Jordan Harband",
+        "url": "http://ljharb.codes"
+      },
+      "homepage": "https://github.com/inspect-js/has-tostringtag#readme",
+      "license": "MIT",
+      "name": "has-tostringtag",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/has-tostringtag.git"
+      },
+      "version": "1.0.2"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "ljharb@gmail.com",
+        "name": "Jordan Harband",
+        "url": "http://ljharb.codes"
+      },
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "bugs": {
+        "url": "https://github.com/inspect-js/has-tostringtag/issues"
+      },
+      "contributors": [
+        {
+          "email": "ljharb@gmail.com",
+          "name": "Jordan Harband",
+          "url": "http://ljharb.codes"
+        }
+      ],
+      "dependencies": {
+        "has-symbols": "^1.0.3"
+      },
+      "description": "Determine if the JS environment has `Symbol.toStringTag` support. Supports spec, or shams.",
+      "devDependencies": {
+        "@ljharb/eslint-config": "^21.1.0",
+        "@types/has-symbols": "^1.0.2",
+        "@types/tape": "^5.6.4",
+        "aud": "^2.0.4",
+        "auto-changelog": "^2.4.0",
+        "core-js": "^2.6.12",
+        "eslint": "=8.8.0",
+        "get-own-property-symbols": "^0.9.5",
+        "in-publish": "^2.0.1",
+        "npmignore": "^0.3.1",
+        "nyc": "^10.3.2",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.7.4",
+        "typescript": "next"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "exports": {
+        ".": [
+          {
+            "default": "./index.js",
+            "types": "./index.d.ts"
+          },
+          "./index.js"
+        ],
+        "./package.json": "./package.json",
+        "./shams": [
+          {
+            "default": "./shams.js",
+            "types": "./shams.d.ts"
+          },
+          "./shams.js"
+        ]
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "homepage": "https://github.com/inspect-js/has-tostringtag#readme",
+      "keywords": [
+        "javascript",
+        "ecmascript",
+        "symbol",
+        "symbols",
+        "tostringtag",
+        "Symbol.toStringTag"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "has-tostringtag",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/has-tostringtag.git"
+      },
+      "scripts": {
+        "lint": "eslint --ext=js,mjs .",
+        "posttest": "aud --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run --silent lint",
+        "test": "npm run tests-only",
+        "test:shams": "npm run --silent test:shams:getownpropertysymbols && npm run --silent test:shams:corejs",
+        "test:shams:corejs": "nyc node test/shams/core-js.js",
+        "test:shams:getownpropertysymbols": "nyc node test/shams/get-own-property-symbols.js",
+        "test:staging": "nyc node --harmony --es-staging test",
+        "test:stock": "nyc node test",
+        "tests-only": "npm run test:stock && npm run test:shams",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "types": "./index.d.ts",
+      "version": "1.0.2"
+    },
+    "physicalEntryCount": 16,
+    "tarball": {
+      "bytes": 6465,
+      "sha256": "dc1c74e3f1179a6271f84747d72c89f258aa46ad3e6464fae0e41737a7f0ef7b"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

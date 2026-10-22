@@ -1,0 +1,227 @@
+{
+  "artifactId": "63cb7729a68aec77a861f04a3e3ea3743f34be0493bea21d060575dc97eccc6e",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5343,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.editorconfig",
+        "sha256": "0a73be687a86b6f0e5494b1be555fcfbb886108794948837170c28f18820aae2",
+        "size": 286,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.eslintrc",
+        "sha256": "c338069dd6f6c7b8dcf6e3c402f57a5777ef625064844956da13ebf5a931c5db",
+        "size": 183,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "6022ca681ed10d2ba69b38845a6f2edc94a44277f59b0a93b17414da00a0c7b0",
+        "size": 585,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nycrc",
+        "sha256": "997785c50b0773e5e18bf15550fbf57823c634fefe623cd37b3c83696402ad0a",
+        "size": 139,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "bd6dd3d78f267abeb1c36045ad03e6fade0fc0cfd965146f6b95412b23052c35",
+        "size": 2683,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "166ffde0aa2773f509ba6edb3d0716602e076eb1cb1b21ae50b8262641af13b3",
+        "size": 1067,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "04bb342e7d7d43a26f9641d808214c7f709320e3cd220f0ac92e74b718674459",
+        "size": 3129,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "db7876f2ea16425c2dbbad9e2c55831b7f9b2dd3ae2261e089c72b2f97ed07e5",
+        "size": 85,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "351fac541dce192901e23cc1476636359aa4fc6f753ecc97402ef0e7e9d67c23",
+        "size": 847,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "f85851eb278449e6d5b06943c4d48f97a10cad78977955e3591b76788103b19b",
+        "size": 2797,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "f10bd55bcaa4487e5db221b133d5c7794a3a2d9e060139b692dfd63762cf17de",
+        "size": 1542,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "5c01887c6c8539144c0fc5fae6f5115073b6e26ecbeae8434a0329f46f9169c6",
+        "size": 116,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1067,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/16/166ffde0aa2773f509ba6edb3d0716602e076eb1cb1b21ae50b8262641af13b3",
+          "sha256": "166ffde0aa2773f509ba6edb3d0716602e076eb1cb1b21ae50b8262641af13b3"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "166ffde0aa2773f509ba6edb3d0716602e076eb1cb1b21ae50b8262641af13b3",
+        "size": 1067
+      },
+      {
+        "blob": {
+          "bytes": 3129,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/04/04bb342e7d7d43a26f9641d808214c7f709320e3cd220f0ac92e74b718674459",
+          "sha256": "04bb342e7d7d43a26f9641d808214c7f709320e3cd220f0ac92e74b718674459"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "04bb342e7d7d43a26f9641d808214c7f709320e3cd220f0ac92e74b718674459",
+        "size": 3129
+      }
+    ],
+    "expandedBytes": 13459,
+    "packageIdentity": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "homepage": "https://github.com/inspect-js/is-data-view#readme",
+      "license": "MIT",
+      "name": "is-data-view",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/is-data-view.git"
+      },
+      "version": "1.0.2"
+    },
+    "packageMetadata": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "bugs": {
+        "url": "https://github.com/inspect-js/is-data-view/issues"
+      },
+      "dependencies": {
+        "call-bound": "^1.0.2",
+        "get-intrinsic": "^1.2.6",
+        "is-typed-array": "^1.1.13"
+      },
+      "description": "Is this value a JS DataView? This module works cross-realm/iframe, does not depend on `instanceof` or mutable properties, and despite ES6 Symbol.toStringTag.",
+      "devDependencies": {
+        "@ljharb/eslint-config": "^21.1.1",
+        "@ljharb/tsconfig": "^0.2.2",
+        "@types/call-bind": "^1.0.5",
+        "@types/es-value-fixtures": "^1.4.4",
+        "@types/for-each": "^0.3.3",
+        "@types/make-arrow-function": "^1.2.2",
+        "@types/make-generator-function": "^2.0.3",
+        "@types/node": "^20.17.10",
+        "@types/object-inspect": "^1.13.0",
+        "@types/tape": "^5.6.5",
+        "auto-changelog": "^2.5.0",
+        "available-typed-arrays": "^1.0.7",
+        "encoding": "^0.1.13",
+        "es-value-fixtures": "^1.5.0",
+        "eslint": "=8.8.0",
+        "evalmd": "^0.0.19",
+        "for-each": "^0.3.3",
+        "has-tostringtag": "^1.0.2",
+        "in-publish": "^2.0.1",
+        "make-arrow-function": "^1.2.0",
+        "make-generator-function": "^2.0.0",
+        "npmignore": "^0.3.1",
+        "nyc": "^10.3.2",
+        "object-inspect": "^1.13.3",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.9.0",
+        "typescript": "next"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "exports": {
+        ".": "./index.js",
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "homepage": "https://github.com/inspect-js/is-data-view#readme",
+      "keywords": [
+        "javascript",
+        "ecmascript",
+        "dataview",
+        "data",
+        "view",
+        "typedarray",
+        "typedarrays"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "is-data-view",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/is-data-view.git"
+      },
+      "scripts": {
+        "lint": "eslint --ext=js,mjs .",
+        "postlint": "tsc -p .",
+        "posttest": "npx npm@'>= 10.2' audit --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prelint": "evalmd README.md",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only",
+        "tests-only": "nyc tape 'test/**/*.js'",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "testling": {
+        "files": "test/index.js"
+      },
+      "types": "./index.d.ts",
+      "version": "1.0.2"
+    },
+    "physicalEntryCount": 12,
+    "tarball": {
+      "bytes": 5343,
+      "sha256": "da85f7e762877cd22d3c7da2c86371c9826cfcec2af57435b0924a36442fb080"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

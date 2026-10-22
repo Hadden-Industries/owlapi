@@ -1,0 +1,44 @@
+name: Require every frozen consumer lane
+description: Validate complete candidate-bound runtime reports and retain the qualification summary
+inputs:
+  matrix:
+    description: Frozen runtime matrix
+    required: true
+  lanes-result:
+    description: Result of the complete consumer matrix job
+    required: true
+  candidate-id:
+    description: Same-run candidate artifact ID
+    required: true
+  candidate-digest:
+    description: Same-run candidate artifact digest
+    required: true
+outputs:
+  coverage:
+    description: Candidate-bound matrix and report identity
+    value: ${{ steps.require.outputs.coverage }}
+  artifact-id:
+    description: Retained runtime qualification evidence
+    value: ${{ steps.upload.outputs.artifact-id }}
+runs:
+  using: composite
+  steps:
+    - uses: ./.github/actions/setup-producer
+    - uses: ./.github/actions/collect-artifacts
+      with:
+        pattern: consumer-runtime-*-attempt-${{ github.run_attempt }}
+        path: .release/runtime-reports
+    - id: require
+      shell: bash
+      env:
+        OWLAPI_RUNTIME_MATRIX: ${{ inputs.matrix }}
+        OWLAPI_RUNTIME_LANES_RESULT: ${{ inputs.lanes-result }}
+        OWLAPI_CANDIDATE_ID: ${{ inputs.candidate-id }}
+        OWLAPI_CANDIDATE_DIGEST: ${{ inputs.candidate-digest }}
+      run: node scripts/aggregate-consumer-runtimes.mjs
+    - id: upload
+      uses: ./.github/actions/retain-artifact
+      with:
+        name: runtime-qualification-${{ github.run_id }}-${{ github.run_attempt }}
+        path: .release/runtime-qualification/
+        retention-days: 90

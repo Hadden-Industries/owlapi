@@ -1,5 +1,6 @@
 import { readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { jsonEquals } from "./canonical-json.mjs";
+import { artifactProducingAttempt } from "../tooling/artifact-transport/identity.mjs";
 import { basename, join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
@@ -8,7 +9,7 @@ import {
   buildReleaseEvidence,
   SCOPED_RELEASE_JOB_NAMES,
 } from "./release-evidence.mjs";
-import { sha256File } from "./release-artifacts.mjs";
+import { sha256File } from "./release-file-utils.mjs";
 import { validateReleaseEvidence } from "./validate-release-evidence.mjs";
 import { resolveRetainedApprovals } from "./release-approvals.mjs";
 import {
@@ -29,9 +30,13 @@ const readJson = (path) => JSON.parse(readFileSync(path, "utf8"));
 
 export const matchesScopedCandidateArtifactName = (name, runId, runAttempt) => {
   const prefix = `${PACKAGE_FILE_STEM}-${PACKAGE_VERSION}-candidate-${runId}-`;
-  if (typeof name !== "string" || !name.startsWith(prefix)) return false;
-  const attempt = name.slice(prefix.length);
-  return /^[1-9][0-9]*$/u.test(attempt) && Number(attempt) <= runAttempt;
+  return (
+    artifactProducingAttempt(name, prefix, {
+      run: runId,
+      attempt: runAttempt,
+      legacy: true,
+    }) !== null
+  );
 };
 
 const candidateAsset = (directory, name) => {
@@ -441,10 +446,11 @@ const main = async () => {
     !/^[0-9a-f]{40}$/u.test(commit ?? "") ||
     !/^[1-9][0-9]*$/u.test(artifactId ?? "") ||
     !/^(?:sha256:)?[0-9a-f]{64}$/u.test(rawArtifactDigest ?? "") ||
-    !new RegExp(
-      `^owlapi-${version.replaceAll(".", "\\.")}-reconciled-candidate-${runId}-[1-9][0-9]*$`,
-      "u",
-    ).test(artifactName ?? "")
+    artifactProducingAttempt(
+      artifactName,
+      `owlapi-${version}-reconciled-candidate-${runId}-`,
+      { run: runId, attempt: runAttempt, legacy: true },
+    ) === null
   ) {
     throw new Error(
       "Release-evidence generation received incomplete workflow identity.",

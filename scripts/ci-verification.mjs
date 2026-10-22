@@ -1,4 +1,8 @@
 import { projectRuntimeText } from "./runtime-policy.mjs";
+import {
+  matchesLogicalArtifact,
+  artifactProducingAttempt,
+} from "../tooling/artifact-transport/identity.mjs";
 /** Evidence reuse is an optimization. Unprovable equivalence always requires full CI. */
 import { isDeepStrictEqual } from "node:util";
 import { captureConsumerSources } from "./consumer-source-snapshot.mjs";
@@ -9,6 +13,7 @@ import {
 } from "./require-job-success.mjs";
 import {
   CI_JOB_NAMES,
+  hostedCiJobNames,
   CHECK_JOBS,
   QUALIFICATION_POLICY_SHA256,
   assertQualificationRecord,
@@ -330,8 +335,12 @@ export const selectVerificationProof = async ({
       artifacts.total_count <= 100,
     "Artifact lookup is incomplete.",
   );
-  const proofs = artifacts.artifacts.filter(
-    (artifact) => artifact.name === receiptName(run),
+  const proofs = artifacts.artifacts.filter((artifact) =>
+    matchesLogicalArtifact(artifact.name, receiptName(run), {
+      run: run.id,
+      attempt: run.run_attempt,
+      legacy: true,
+    }),
   );
   requireFact(
     proofs.length === 1,
@@ -367,7 +376,12 @@ export const verifyIntegrationProof = async ({
   assertArtifact(currentArtifact, run, context, now);
   requireFact(
     currentArtifact.digest === artifact.digest &&
-      currentArtifact.name === receiptName(run),
+      currentArtifact.name === artifact.name &&
+      matchesLogicalArtifact(currentArtifact.name, receiptName(run), {
+        run: run.id,
+        attempt: run.run_attempt,
+        legacy: true,
+      }),
     "Receipt artifact identity changed.",
   );
   const recordedAt = Date.parse(receipt.recordedAt);
@@ -411,7 +425,7 @@ export const verifyIntegrationProof = async ({
   const observed = await read(
     `/actions/runs/${run.id}/jobs?filter=latest&per_page=100`,
   );
-  const names = Object.values(CI_JOB_NAMES);
+  const names = hostedCiJobNames();
   requireFact(
     observed.total_count === names.length &&
       observed.jobs?.length === names.length &&
@@ -442,16 +456,11 @@ export const verifyIntegrationProof = async ({
   assertArtifact(candidate, run, context, now);
   requireFact(
     candidate.digest === receipt.candidate.digest &&
-      candidate.name.startsWith(
+      artifactProducingAttempt(
+        candidate.name,
         `hadden-industries-owlapi-${context.version}-candidate-${run.id}-`,
-      ) &&
-      /^[1-9][0-9]*$/u.test(
-        candidate.name.slice(
-          `hadden-industries-owlapi-${context.version}-candidate-${run.id}-`
-            .length,
-        ),
-      ) &&
-      Number(candidate.name.split("-").at(-1)) <= run.run_attempt,
+        { run: run.id, attempt: run.run_attempt, legacy: true },
+      ) !== null,
     "Qualified candidate identity no longer matches.",
   );
   const finalRun = await read(`/actions/runs/${run.id}`);
@@ -489,7 +498,7 @@ const assertMainRun = (run, context, commit, now) =>
     "Latest exact-base main run is incomplete, unsuccessful or from another source.",
   );
 const assertClosedJobs = (observed, run, reused) => {
-  const names = Object.values(CI_JOB_NAMES);
+  const names = hostedCiJobNames();
   requireFact(
     observed.total_count === names.length &&
       observed.jobs?.length === names.length &&
@@ -504,9 +513,11 @@ const assertClosedJobs = (observed, run, reused) => {
           job.status === "completed" &&
           job.conclusion ===
             (reused &&
-            ![CI_JOB_NAMES.verification, CI_JOB_NAMES.required].includes(
-              job.name,
-            )
+            ![
+              CI_JOB_NAMES.runtime_matrix,
+              CI_JOB_NAMES.verification,
+              CI_JOB_NAMES.required,
+            ].includes(job.name)
               ? "skipped"
               : "success"),
       ),
@@ -585,9 +596,12 @@ export const selectBaseQualification = async ({
       inventory.total_count <= 100,
     "Base artifact lookup is incomplete.",
   );
-  const artifacts = inventory.artifacts.filter(
-    (artifact) =>
-      artifact.name === `ci-main-qualification-${run.id}-${run.run_attempt}`,
+  const artifacts = inventory.artifacts.filter((artifact) =>
+    matchesLogicalArtifact(
+      artifact.name,
+      `ci-main-qualification-${run.id}-${run.run_attempt}`,
+      { run: run.id, attempt: run.run_attempt, legacy: true },
+    ),
   );
   requireFact(
     artifacts.length === 1,
@@ -650,8 +664,12 @@ export const verifyBaseQualification = async ({
   assertArtifact(currentArtifact, run, context, now);
   requireFact(
     currentArtifact.digest === artifact.digest &&
-      currentArtifact.name ===
+      currentArtifact.name === artifact.name &&
+      matchesLogicalArtifact(
+        currentArtifact.name,
         `ci-main-qualification-${run.id}-${run.run_attempt}`,
+        { run: run.id, attempt: run.run_attempt, legacy: true },
+      ),
     "Main qualification artifact changed.",
   );
   const commit = await read(`/git/commits/${base}`);
@@ -735,11 +753,11 @@ export const verifyBaseQualification = async ({
     assertArtifact(candidate, run, context, now);
     requireFact(
       candidate.digest === record.candidate.digest &&
-        candidate.name.startsWith(
+        artifactProducingAttempt(
+          candidate.name,
           `hadden-industries-owlapi-${context.version}-candidate-${run.id}-`,
-        ) &&
-        /^[1-9][0-9]*$/u.test(candidate.name.split("-").at(-1)) &&
-        Number(candidate.name.split("-").at(-1)) <= run.run_attempt,
+          { run: run.id, attempt: run.run_attempt, legacy: true },
+        ) !== null,
       "Main FULL candidate identity changed.",
     );
   }

@@ -1,0 +1,152 @@
+{
+  "artifactId": "ec7a7bb52cf90c44885b4770e60622d7760349cf56230dbc7d4ced37872e3942",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4354,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.github/workflows/release.yml",
+        "sha256": "8f7b86ea91613bea270cf76cc5aff72ce11b9914ff8f012ac049aab7cac6aeb8",
+        "size": 732,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/workflows/test.yml",
+        "sha256": "fc061192152553bf1234a4bc7578bd77054dfc8bd18a25db83df573f0ddfa452",
+        "size": 1289,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/workflows/update-prettier.yml",
+        "sha256": "10cdd9cb2c2d41a2aeefaeee0c5ba6f5e0742d518877e98046efc1f0c83c0e8f",
+        "size": 666,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CODE_OF_CONDUCT.md",
+        "sha256": "8beb64009f69e927525b43d2923acbfcda6d71d48b7b5f8f6d5b0e7ff1d4c5bb",
+        "size": 3240,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "b9b3eeac9f4ae8ae50773f318ac29f2052bbf08ee33fb6bb024d90d86c7492d2",
+        "size": 813,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "6c62d18ff5fefbff31097eefacf71c858b5ee2cb50e9d3e5ebed2dd34914c5ee",
+        "size": 713,
+        "type": "FILE"
+      },
+      {
+        "path": "package/SECURITY.md",
+        "sha256": "994ea9cf579d2164b7736a6728ba48773ae78b0ae8f20290bee63fc62bb7362e",
+        "size": 193,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "14c5e267e7d5718493027f97b591f6710b484f451a0f0e2d28c0e569ff8a6285",
+        "size": 140,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "e0941c4eb18c96690c859afcbef482a128ea333cdbc4706c9f6399a6295bf21f",
+        "size": 355,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.test-d.ts",
+        "sha256": "32b75b10ceebb92c68ced40149f65bd3ba725a03d6bf9bea6bf8030e4a3a2b86",
+        "size": 115,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.test.js",
+        "sha256": "5287e7954d43b3c3162e6aae6002c1a54cc8cffa994c235e3594e091a4df915a",
+        "size": 1052,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "711a4829395621bf08f9bf4b1c1bbcda6e926bdcddbeb5b9f1b9bf7b2f04909e",
+        "size": 787,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 813,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/b9/b9b3eeac9f4ae8ae50773f318ac29f2052bbf08ee33fb6bb024d90d86c7492d2",
+          "sha256": "b9b3eeac9f4ae8ae50773f318ac29f2052bbf08ee33fb6bb024d90d86c7492d2"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "b9b3eeac9f4ae8ae50773f318ac29f2052bbf08ee33fb6bb024d90d86c7492d2",
+        "size": 813
+      },
+      {
+        "blob": {
+          "bytes": 713,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/6c/6c62d18ff5fefbff31097eefacf71c858b5ee2cb50e9d3e5ebed2dd34914c5ee",
+          "sha256": "6c62d18ff5fefbff31097eefacf71c858b5ee2cb50e9d3e5ebed2dd34914c5ee"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "6c62d18ff5fefbff31097eefacf71c858b5ee2cb50e9d3e5ebed2dd34914c5ee",
+        "size": 713
+      }
+    ],
+    "expandedBytes": 10095,
+    "packageIdentity": {
+      "author": "Gregor Martynus (https://github.com/gr2m)",
+      "homepage": null,
+      "license": "ISC",
+      "name": "universal-user-agent",
+      "repository": "github:gr2m/universal-user-agent",
+      "version": "7.0.3"
+    },
+    "packageMetadata": {
+      "author": "Gregor Martynus (https://github.com/gr2m)",
+      "description": "Get a user agent string across all JavaScript Runtime Environments",
+      "devDependencies": {
+        "prettier": "^2.0.0",
+        "tsd": "^0.17.0"
+      },
+      "exports": "./index.js",
+      "keywords": [],
+      "license": "ISC",
+      "name": "universal-user-agent",
+      "publishConfig": {
+        "provenance": true
+      },
+      "repository": "github:gr2m/universal-user-agent",
+      "scripts": {
+        "lint": "prettier --check '*.{js,json,md}'",
+        "lint:fix": "prettier --write '*.{js,json,md}'",
+        "test": "npm run test:node && npm run test:types",
+        "test:bun": "bun test",
+        "test:deno": "deno test",
+        "test:node": "node index.test.js",
+        "test:types": "tsd"
+      },
+      "type": "module",
+      "types": "index.d.ts",
+      "version": "7.0.3"
+    },
+    "physicalEntryCount": 12,
+    "tarball": {
+      "bytes": 4354,
+      "sha256": "fbcd90a2c231d06731ddc015a5213961bff28f224e0459ed986c26870cb18001"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

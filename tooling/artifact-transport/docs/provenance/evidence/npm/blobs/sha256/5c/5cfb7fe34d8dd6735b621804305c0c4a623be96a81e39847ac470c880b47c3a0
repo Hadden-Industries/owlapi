@@ -1,0 +1,219 @@
+{
+  "artifactId": "998a432332ff4053d838c9a04f521466c4c491ee2ef9bc92b8d2cf51b84144e8",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 9383,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.editorconfig",
+        "sha256": "9b9cb090619b4e9fd497c536ff8c90da0aa9e4384ab21f446008137abbaa1ff5",
+        "size": 129,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.eslintrc",
+        "sha256": "d3ae6317b62de8db3c1952144ca56bafcd1c95eb1caf80d0173148f0ce5946aa",
+        "size": 83,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "62dd0f25318a10370e2b30749892cc90fe5c1532fdfb272a99dbbca8c9e6b9aa",
+        "size": 585,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nycrc",
+        "sha256": "997785c50b0773e5e18bf15550fbf57823c634fefe623cd37b3c83696402ad0a",
+        "size": 139,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "4d8ef68fb2cd6409c671c607e2bd43b3f950b63dd0cbac0232cb386f45c67b2f",
+        "size": 15631,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "dc0fe5a22d9336f345ee984f9bf56f11f22877a3aa5fd16a1db9a8ca0e23a5d1",
+        "size": 1081,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "cad52774e6de9b5c1ab1d7106abf324155cccd6fecbfb405ebc479a0c6771f34",
+        "size": 2254,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "e604b3d3471b9bb781b485a6ba1bd7ee32d0aed34c70b74181bbdcf027d60a55",
+        "size": 89,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "da322511969305d81b983171a644749b08412f337e973cc03d5b50669062ecba",
+        "size": 149,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "e8725666b579386951a020478b03a5e1da2dbd07cdc34a8a3913a475f1142f10",
+        "size": 2271,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "170d2379662b48ef45583ed914482b117581750b3c6cd7e91fe078d3f9b104a1",
+        "size": 1102,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "b772fc0e85fe374bb32302cdbc08c8854d6a679bcf7f4f7b8da28098e2979521",
+        "size": 3611,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1081,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/dc/dc0fe5a22d9336f345ee984f9bf56f11f22877a3aa5fd16a1db9a8ca0e23a5d1",
+          "sha256": "dc0fe5a22d9336f345ee984f9bf56f11f22877a3aa5fd16a1db9a8ca0e23a5d1"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "dc0fe5a22d9336f345ee984f9bf56f11f22877a3aa5fd16a1db9a8ca0e23a5d1",
+        "size": 1081
+      },
+      {
+        "blob": {
+          "bytes": 2254,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ca/cad52774e6de9b5c1ab1d7106abf324155cccd6fecbfb405ebc479a0c6771f34",
+          "sha256": "cad52774e6de9b5c1ab1d7106abf324155cccd6fecbfb405ebc479a0c6771f34"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "cad52774e6de9b5c1ab1d7106abf324155cccd6fecbfb405ebc479a0c6771f34",
+        "size": 2254
+      }
+    ],
+    "expandedBytes": 27124,
+    "packageIdentity": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "homepage": "https://github.com/inspect-js/is-negative-zero",
+      "license": "MIT",
+      "name": "is-negative-zero",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/inspect-js/is-negative-zero.git"
+      },
+      "version": "2.0.3"
+    },
+    "packageMetadata": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "bugs": {
+        "url": "https://github.com/inspect-js/is-negative-zero/issues"
+      },
+      "description": "Is this value negative zero? === will lie to you",
+      "devDependencies": {
+        "@ljharb/eslint-config": "^21.1.0",
+        "@types/tape": "^5.6.4",
+        "aud": "^2.0.4",
+        "auto-changelog": "^2.4.0",
+        "eslint": "=8.8.0",
+        "in-publish": "^2.0.1",
+        "npmignore": "^0.3.1",
+        "nyc": "^10.3.2",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.7.5",
+        "typescript": "next"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "homepage": "https://github.com/inspect-js/is-negative-zero",
+      "keywords": [
+        "is",
+        "negative",
+        "zero",
+        "negative zero",
+        "number",
+        "positive",
+        "0",
+        "-0"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "is-negative-zero",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/inspect-js/is-negative-zero.git"
+      },
+      "scripts": {
+        "lint": "eslint --ext=js,mjs .",
+        "postlint": "tsc -p .",
+        "posttest": "aud --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only",
+        "tests-only": "nyc tape 'test/**/*.js'",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "sideEffects": false,
+      "testling": {
+        "browsers": [
+          "iexplore/6.0..latest",
+          "firefox/3.0..6.0",
+          "firefox/15.0..latest",
+          "firefox/nightly",
+          "chrome/4.0..10.0",
+          "chrome/20.0..latest",
+          "chrome/canary",
+          "opera/10.0..12.0",
+          "opera/15.0..latest",
+          "opera/next",
+          "safari/4.0..latest",
+          "ipad/6.0..latest",
+          "iphone/6.0..latest",
+          "android-browser/4.2"
+        ],
+        "files": "test/index.js"
+      },
+      "types": "./index.d.ts",
+      "version": "2.0.3"
+    },
+    "physicalEntryCount": 12,
+    "tarball": {
+      "bytes": 9383,
+      "sha256": "f9d424a84182460185f4e4a8ca11630148ed48e47e4c539e40686311625c1a3a"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

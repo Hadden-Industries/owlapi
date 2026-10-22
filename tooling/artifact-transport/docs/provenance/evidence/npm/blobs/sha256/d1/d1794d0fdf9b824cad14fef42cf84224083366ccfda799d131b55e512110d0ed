@@ -1,0 +1,3476 @@
+{
+  "artifactId": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 44,
+      "digestVerifiedFileCount": 44,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 44
+    },
+    "artifactId": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.84.1",
+        "for_package_purl": "pkg:npm/%40azure/core-xml@1.6.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/react-native",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.0.0",
+        "for_package_purl": "pkg:npm/%40azure/core-xml@1.6.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40azure/dev-tool",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.60.0",
+        "for_package_purl": "pkg:npm/%40azure/core-xml@1.6.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/playwright",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^10.1.0",
+        "for_package_purl": "pkg:npm/%40azure/core-xml@1.6.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/cross-env",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^19.2.14",
+        "for_package_purl": "pkg:npm/%40azure/core-xml@1.6.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40types/react",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.0.0",
+        "for_package_purl": "pkg:npm/%40azure/core-xml@1.6.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40types/trusted-types",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.8.1",
+        "for_package_purl": "pkg:npm/%40azure/core-xml@1.6.0",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/tslib",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^22.0.0",
+        "for_package_purl": "pkg:npm/%40azure/core-xml@1.6.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40types/node",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^3.0.0",
+        "for_package_purl": "pkg:npm/%40azure/core-xml@1.6.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40azure/eslint-plugin-azure-sdk",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^3.9.1",
+        "for_package_purl": "pkg:npm/%40azure/core-xml@1.6.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/prettier",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.1.2",
+        "for_package_purl": "pkg:npm/%40azure/core-xml@1.6.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40vitest/browser-playwright",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.1.2",
+        "for_package_purl": "pkg:npm/%40azure/core-xml@1.6.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40vitest/coverage-istanbul",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.1.2",
+        "for_package_purl": "pkg:npm/%40azure/core-xml@1.6.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/vitest",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^5.5.9",
+        "for_package_purl": "pkg:npm/%40azure/core-xml@1.6.0",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/fast-xml-parser",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^6.1.0",
+        "for_package_purl": "pkg:npm/%40azure/core-xml@1.6.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/rimraf",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^9.39.1",
+        "for_package_purl": "pkg:npm/%40azure/core-xml@1.6.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/eslint",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "~6.0.2",
+        "for_package_purl": "pkg:npm/%40azure/core-xml@1.6.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/typescript",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "Microsoft Corporation",
+            "end_line": 47,
+            "start_line": 47
+          }
+        ],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 48,
+                "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/package.json",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "  \"license\": \"MIT\",",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_30.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+                "score": 100,
+                "start_line": 48
+              }
+            ]
+          }
+        ],
+        "md5": "15b1f4a0e73ade7e58c2895dd2716862",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/@azure%2fcore-xml/1.6.0",
+            "bug_tracking_url": "https://github.com/Azure/azure-sdk-for-js/issues",
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "mit",
+            "declared_license_expression_spdx": "MIT",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.84.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/react-native",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40azure/dev-tool",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.60.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/playwright",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^10.1.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/cross-env",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^19.2.14",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40types/react",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40types/trusted-types",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.8.1",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/tslib",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^22.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40types/node",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^3.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40azure/eslint-plugin-azure-sdk",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^3.9.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/prettier",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.1.2",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40vitest/browser-playwright",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.1.2",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40vitest/coverage-istanbul",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.1.2",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/vitest",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^5.5.9",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/fast-xml-parser",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^6.1.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/rimraf",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^9.39.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/eslint",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "~6.0.2",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/typescript",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              }
+            ],
+            "description": "Core library for interacting with XML payloads",
+            "download_url": "https://registry.npmjs.org/@azure/core-xml/-/core-xml-1.6.0.tgz",
+            "extra_data": {
+              "engines": {
+                "node": ">=22.0.0"
+              }
+            },
+            "extracted_license_statement": "- MIT\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": "https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/core/core-xml/README.md",
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [
+              "azure",
+              "cloud"
+            ],
+            "license_detections": [
+              {
+                "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/package.json",
+                    "license_expression": "mit",
+                    "license_expression_spdx": "MIT",
+                    "match_coverage": 100,
+                    "matched_length": 1,
+                    "matched_text": "MIT",
+                    "matcher": "1-spdx-id",
+                    "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+                    "rule_relevance": 100,
+                    "rule_url": null,
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "core-xml",
+            "namespace": "@azure",
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": null,
+                "name": "Microsoft Corporation",
+                "role": "author",
+                "type": "person",
+                "url": null
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/%40azure/core-xml@1.6.0",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/@azure/core-xml/-/core-xml-1.6.0.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/@azure/core-xml",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "git+https://github.com/Azure/azure-sdk-for-js",
+            "version": "1.6.0"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 0.43,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "c79a78b0a58c806104d6b9666a46a5b6d12bb15a",
+        "sha1_git": "14640d2419f13cfb6ed1b1fd726d6edbd089aa91",
+        "sha256": "0bb713207c2aaa88102ac44f4672405a15a0f03545eea82772eefb21a9b3ba77",
+        "size": 3694,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": "",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-ac40beba-5702-f54d-755f-333441314bb0",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 21,
+                "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 161,
+                "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+                "score": 100,
+                "start_line": 5
+              },
+              {
+                "end_line": 3,
+                "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "MIT License",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 3
+              }
+            ]
+          }
+        ],
+        "md5": "e848d080178fb2d08b67acc5ba80b9fd",
+        "name": "LICENSE",
+        "package_data": [],
+        "path": "package/LICENSE",
+        "percentage_of_license_text": 97.6,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "7aea571d641549de89730da8e7ff5a6940c5526b",
+        "sha1_git": "b2f52a2bad4e27e2d9c68a755abb74cb8943f2fa",
+        "sha256": "7c77a44a8acd9b41fdc209864a8016b3d430b5d0e09309818d5b7444336df744",
+        "size": 1074,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": true,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "d6f96793e017c47b277787516bb95874",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "433af19d2f861515ab93d7c06bc69600653ffd25",
+        "sha1_git": "8b09dfa3161ce14ef8a5bf7f5b8391662ea49e0c",
+        "sha256": "5a84279310d3843a4baf997b969d07132fa806335e7a8341f5a97ab27c96e89c",
+        "size": 1352,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/dist/browser/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "4221b8d0ddf92aef03003e605e38808b",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/dist/browser/index.js",
+        "percentage_of_license_text": 17.24,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "a29250fe9e0dbb3b368d49a8d909b42a79cc8aa7",
+        "sha1_git": "f479e42a146fe91f607534e75928fd41224c53c5",
+        "sha256": "9284ebcebad58579d428b05a487547cfbfb8123d0afb7de51e79de1a529114d0",
+        "size": 228,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/dist/esm/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "302fd23757f17960f10cdbda49d42c6f",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/dist/esm/index.js",
+        "percentage_of_license_text": 17.86,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "9ce372562cd9b36db8f71cb18253289a30a86ac4",
+        "sha1_git": "8a4e15b7828ca3ddb0927f59d6408546a23cd5d9",
+        "sha256": "18fb2f61162002e663dd3b8e5139a5f6381e5a0af1c4cc96438a5859a8f06a34",
+        "size": 219,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/dist/react-native/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "302fd23757f17960f10cdbda49d42c6f",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/dist/react-native/index.js",
+        "percentage_of_license_text": 17.86,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "9ce372562cd9b36db8f71cb18253289a30a86ac4",
+        "sha1_git": "8a4e15b7828ca3ddb0927f59d6408546a23cd5d9",
+        "sha256": "18fb2f61162002e663dd3b8e5139a5f6381e5a0af1c4cc96438a5859a8f06a34",
+        "size": 219,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "0877c9c0a9882af7bd9de91d80b2a709",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/dist/commonjs/index.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "d8b38047dfa3323892edc82f45a210de53dfdb5e",
+        "sha1_git": "74a1df84b7ba5ca737cc7da9f0f51b41a2047344",
+        "sha256": "6f8e6658c2482b9fddee164239c7bc5139094f8ea460f71e3d28b29e630c6adf",
+        "size": 1340,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "1c5f6b29aefaa60d45c61bd4411dc4d8",
+        "name": "index.d.ts",
+        "package_data": [],
+        "path": "package/dist/browser/index.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "279f6a11c64e4c240a1d980b61b65fcb4cc7a1d6",
+        "sha1_git": "31c62fefaa04c0736a403314ee8482350c84ca84",
+        "sha256": "dba04ab3dde7980abe2457ffe628a81ec0a64e8e976dd159665654c72b60aad5",
+        "size": 172,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "23b7096b07bb10e107e4929975985d9a",
+        "name": "index.d.ts",
+        "package_data": [],
+        "path": "package/dist/commonjs/index.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "698fdbc0e7241ea8c66f2ea69d8c44db35a73f54",
+        "sha1_git": "ceacc6acaa756021d68222593a94d4d30610152e",
+        "sha256": "5a127c1ab79660f43a90333459be9839abb9b9e0e26a4f190fda78f16e5b21af",
+        "size": 163,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "23b7096b07bb10e107e4929975985d9a",
+        "name": "index.d.ts",
+        "package_data": [],
+        "path": "package/dist/esm/index.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "698fdbc0e7241ea8c66f2ea69d8c44db35a73f54",
+        "sha1_git": "ceacc6acaa756021d68222593a94d4d30610152e",
+        "sha256": "5a127c1ab79660f43a90333459be9839abb9b9e0e26a4f190fda78f16e5b21af",
+        "size": 163,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "23b7096b07bb10e107e4929975985d9a",
+        "name": "index.d.ts",
+        "package_data": [],
+        "path": "package/dist/react-native/index.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "698fdbc0e7241ea8c66f2ea69d8c44db35a73f54",
+        "sha1_git": "ceacc6acaa756021d68222593a94d4d30610152e",
+        "sha256": "5a127c1ab79660f43a90333459be9839abb9b9e0e26a4f190fda78f16e5b21af",
+        "size": 163,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index.js",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/dist/browser/index.js.map",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "864fe1baeb83d0e6b647d014ffe9f316",
+        "name": "index.js.map",
+        "package_data": [],
+        "path": "package/dist/browser/index.js.map",
+        "percentage_of_license_text": 19.23,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "5604702f2706fe27c9d240e7a8b4b16e1b428a01",
+        "sha1_git": "f460144a1e125de68871b9e34423087eda6f23c8",
+        "sha256": "3f1e81f07905c0926ab63d105a0f6a9c35705455a341612b9528c92d7e9d729d",
+        "size": 474,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index.js",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/dist/commonjs/index.js.map",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "d997ec9bd58ac437fc793281224ae9c5",
+        "name": "index.js.map",
+        "package_data": [],
+        "path": "package/dist/commonjs/index.js.map",
+        "percentage_of_license_text": 19.23,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "281511817acef85b5c6488e50cd7917a13e1dabf",
+        "sha1_git": "294fd1c5fbe5948e50656070c92c42462cbe3271",
+        "sha256": "4fff15d5f5d74d96d3b9813c651f5d457dc562e72bac86708ebddf3a10430166",
+        "size": 415,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index.js",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/dist/esm/index.js.map",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "864fe1baeb83d0e6b647d014ffe9f316",
+        "name": "index.js.map",
+        "package_data": [],
+        "path": "package/dist/esm/index.js.map",
+        "percentage_of_license_text": 19.23,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "5604702f2706fe27c9d240e7a8b4b16e1b428a01",
+        "sha1_git": "f460144a1e125de68871b9e34423087eda6f23c8",
+        "sha256": "3f1e81f07905c0926ab63d105a0f6a9c35705455a341612b9528c92d7e9d729d",
+        "size": 474,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index.js",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/dist/react-native/index.js.map",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "864fe1baeb83d0e6b647d014ffe9f316",
+        "name": "index.js.map",
+        "package_data": [],
+        "path": "package/dist/react-native/index.js.map",
+        "percentage_of_license_text": 19.23,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "5604702f2706fe27c9d240e7a8b4b16e1b428a01",
+        "sha1_git": "f460144a1e125de68871b9e34423087eda6f23c8",
+        "sha256": "3f1e81f07905c0926ab63d105a0f6a9c35705455a341612b9528c92d7e9d729d",
+        "size": 474,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "d0707362e90f00edd12435e9d3b9d71c",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": null,
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": null,
+            "declared_license_expression_spdx": null,
+            "dependencies": [],
+            "description": null,
+            "download_url": null,
+            "extra_data": {},
+            "extracted_license_statement": null,
+            "file_references": [],
+            "holder": null,
+            "homepage_url": null,
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [],
+            "license_detections": [],
+            "md5": null,
+            "name": null,
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [],
+            "primary_language": "JavaScript",
+            "purl": null,
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": null,
+            "repository_homepage_url": null,
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": null,
+            "version": null
+          }
+        ],
+        "path": "package/dist/browser/package.json",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "50faeb965b15dfc6854cb1235b06dbb5e79148d2",
+        "sha1_git": "3dbc1ca591c0557e35b6004aeba250e6a70b56e3",
+        "sha256": "3ca9d4afd21425087cf31893b8f9f63c81b0b8408db5e343ca76e5f8aa26ab9a",
+        "size": 23,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "d0707362e90f00edd12435e9d3b9d71c",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": null,
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": null,
+            "declared_license_expression_spdx": null,
+            "dependencies": [],
+            "description": null,
+            "download_url": null,
+            "extra_data": {},
+            "extracted_license_statement": null,
+            "file_references": [],
+            "holder": null,
+            "homepage_url": null,
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [],
+            "license_detections": [],
+            "md5": null,
+            "name": null,
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [],
+            "primary_language": "JavaScript",
+            "purl": null,
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": null,
+            "repository_homepage_url": null,
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": null,
+            "version": null
+          }
+        ],
+        "path": "package/dist/esm/package.json",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "50faeb965b15dfc6854cb1235b06dbb5e79148d2",
+        "sha1_git": "3dbc1ca591c0557e35b6004aeba250e6a70b56e3",
+        "sha256": "3ca9d4afd21425087cf31893b8f9f63c81b0b8408db5e343ca76e5f8aa26ab9a",
+        "size": 23,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "d0707362e90f00edd12435e9d3b9d71c",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": null,
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": null,
+            "declared_license_expression_spdx": null,
+            "dependencies": [],
+            "description": null,
+            "download_url": null,
+            "extra_data": {},
+            "extracted_license_statement": null,
+            "file_references": [],
+            "holder": null,
+            "homepage_url": null,
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [],
+            "license_detections": [],
+            "md5": null,
+            "name": null,
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [],
+            "primary_language": "JavaScript",
+            "purl": null,
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": null,
+            "repository_homepage_url": null,
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": null,
+            "version": null
+          }
+        ],
+        "path": "package/dist/react-native/package.json",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "50faeb965b15dfc6854cb1235b06dbb5e79148d2",
+        "sha1_git": "3dbc1ca591c0557e35b6004aeba250e6a70b56e3",
+        "sha256": "3ca9d4afd21425087cf31893b8f9f63c81b0b8408db5e343ca76e5f8aa26ab9a",
+        "size": 23,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "df9ffc6aa3f78a5491736d441c4258a8",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": null,
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": null,
+            "declared_license_expression_spdx": null,
+            "dependencies": [],
+            "description": null,
+            "download_url": null,
+            "extra_data": {},
+            "extracted_license_statement": null,
+            "file_references": [],
+            "holder": null,
+            "homepage_url": null,
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [],
+            "license_detections": [],
+            "md5": null,
+            "name": null,
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [],
+            "primary_language": "JavaScript",
+            "purl": null,
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": null,
+            "repository_homepage_url": null,
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": null,
+            "version": null
+          }
+        ],
+        "path": "package/dist/commonjs/package.json",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "9d0d83ae5d399d96b36d228e614a575fc209d488",
+        "sha1_git": "5bbefffbabee392d1855491b84dc0a716b6a3bf2",
+        "sha256": "8005a3491db7d92f36ac66369861589f9c47123d3a7c71e643fc2c06168cd45a",
+        "size": 25,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "tsdoc-metadata",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "5b4a11d346d0c008c63fa9c5311bece1",
+        "name": "tsdoc-metadata.json",
+        "package_data": [],
+        "path": "package/dist/commonjs/tsdoc-metadata.json",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "6a6ad89387e239d7e2c78c2ba157256e9107cca1",
+        "sha1_git": "9aa2c44accb65fabf4671cd75a3d9f648033de25",
+        "sha256": "92c8992a7bfbfc79f287d9647b176df3fe227129be4183c54d87924946fd85d2",
+        "size": 329,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "xml",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/dist/esm/xml.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "3b458f2ffc96bc1c0af8a74faac29cf7",
+        "name": "xml.js",
+        "package_data": [],
+        "path": "package/dist/esm/xml.js",
+        "percentage_of_license_text": 1.75,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "9a30d6d43cf62f28e4df6ec8efb9319d9b8eee1d",
+        "sha1_git": "6ed8b0ababea5f9eaf23cae9af7972c5c4d123ce",
+        "sha256": "9a955b91e6488e7bd81e8c204a79d31ad5ec755dc45be733cd2991322331f927",
+        "size": 2741,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "xml",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/dist/react-native/xml.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "3b458f2ffc96bc1c0af8a74faac29cf7",
+        "name": "xml.js",
+        "package_data": [],
+        "path": "package/dist/react-native/xml.js",
+        "percentage_of_license_text": 1.75,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "9a30d6d43cf62f28e4df6ec8efb9319d9b8eee1d",
+        "sha1_git": "6ed8b0ababea5f9eaf23cae9af7972c5c4d123ce",
+        "sha256": "9a955b91e6488e7bd81e8c204a79d31ad5ec755dc45be733cd2991322331f927",
+        "size": 2741,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "xml",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "ab464701c0a108bd894f29f79e819223",
+        "name": "xml.js",
+        "package_data": [],
+        "path": "package/dist/commonjs/xml.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "5f7299c45e0a3b2d772136c924a64ff444afca5c",
+        "sha1_git": "b75ecc7cec78ea3eb5212c534d9be4c47e84ec12",
+        "sha256": "20a20b8f2beea7559122507268331a3d2c650013f75ce347408b83873a10dc78",
+        "size": 2990,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "xml-browser",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".mjs",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/dist/browser/xml-browser.mjs",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "753df76cc514c56fabb234e8ab633a94",
+        "name": "xml-browser.mjs",
+        "package_data": [],
+        "path": "package/dist/browser/xml-browser.mjs",
+        "percentage_of_license_text": 0.59,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "8dd09a0242a125bcfd0b5e7e3887488f79b49cfa",
+        "sha1_git": "b65865d3ab33b76b07c6e9781ebdbf9f4935532e",
+        "sha256": "7efd312650e0f88fb09ae6e6a0fa178c6747f417afa9518205e70152646d3405",
+        "size": 8451,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "xml-browser.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".mts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "24c2e076be81316708cbc69e328e3186",
+        "name": "xml-browser.d.mts",
+        "package_data": [],
+        "path": "package/dist/browser/xml-browser.d.mts",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "97814ded3634187758487ee319de78d8fb96517b",
+        "sha1_git": "d52f92bfab45049b57ec61a849e3ef4826179f09",
+        "sha256": "8743ed500605b7f9f5625eeb633b66ab391e97fabe7b54905bfde25b6aa5a477",
+        "size": 793,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "xml-browser.mjs",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/dist/browser/xml-browser.mjs.map",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "{\"version\":3,\"file\":\"xml-browser.mjs\",\"sourceRoot\":\"\",\"sources\":[\"../../src/xml-browser.mts\"],\"names\":[],\"mappings\":\"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\",\"sourcesContent\":[\"// Copyright (c) Microsoft Corporation.\\n// Licensed under the MIT License.\\n\\nimport type { XmlOptions } from \\\"./xml.common.js\\\";\\nimport { XML_ATTRKEY, XML_CHARKEY } from \\\"./xml.common.js\\\";\\n\\nif (!document || !DOMParser || !Node || !XMLSerializer) {\\n  throw new Error(\\n    `This library depends on the following DOM objects: [\\\"document\\\", \\\"DOMParser\\\", \\\"Node\\\", \\\"XMLSerializer\\\"] to parse XML, but some of these are undefined. You may provide a polyfill to make these globally available in order to support your environment. For more information, please refer to https://aka.ms/azsdk/js/web-workers. `,\\n  );\\n}\\n\\n// Policy to make our code Trusted Types compliant at running time.\\n//   https://github.com/w3c/webappsec-trusted-types\\n// We are calling DOMParser.parseFromString() to parse XML payload from Azure services.\\n// The parsed DOM object is not exposed to outside. Scripts are disabled when parsing\\n// according to the spec.  There are no HTML/XSS security concerns on the usage of\\n// parseFromString() here.\\nlet ttPolicy: Pick<TrustedTypePolicy, \\\"createHTML\\\"> | undefined;\\ntry {\\n  if (typeof self.trustedTypes !== \\\"undefined\\\") {\\n    ttPolicy = self.trustedTypes.createPolicy(\\\"@azure/core-xml#xml.browser\\\", {\\n      createHTML: (s: string) => s,\\n    });\\n  }\\n} catch (e: any) {\\n  console.warn('Could not create trusted types policy \\\"@azure/core-xml#xml.browser\\\"');\\n}\\n\\nconst doc = document.implementation.createDocument(null, null, null);\\n\\nconst parser = new DOMParser();\\n/**\\n * Converts given XML string into JSON\\n * @param str - String containing the XML content to be parsed into JSON\\n * @param opts - Options that govern the parsing of given xml string\\n * `includeRoot` indicates whether the root element is to be included or not in the output\\n */\\nexport async function parseXML(str: string, opts: XmlOptions = {}): Promise<any> {\\n  const updatedOptions: Required<XmlOptions> = {\\n    rootName: opts.rootName ?? \\\"\\\",\\n    includeRoot: opts.includeRoot ?? false,\\n    xmlCharKey: opts.xmlCharKey ?? XML_CHARKEY,\\n    cdataPropName: opts.cdataPropName ?? \\\"__cdata\\\",\\n    stopNodes: opts.stopNodes ?? [],\\n  };\\n  const dom = parser.parseFromString(\\n    (ttPolicy?.createHTML(str) ?? str) as string,\\n    \\\"application/xml\\\",\\n  );\\n  throwIfError(dom);\\n\\n  if (updatedOptions.includeRoot) {\\n    return domToObject(dom, updatedOptions);\\n  } else {\\n    return domToObject(dom.childNodes[0], updatedOptions);\\n  }\\n}\\n\\nlet errorNS: string | undefined;\\n\\nfunction getErrorNamespace(): string {\\n  if (errorNS === undefined) {\\n    try {\\n      const invalidXML = (ttPolicy?.createHTML(\\\"INVALID\\\") ?? \\\"INVALID\\\") as string;\\n      errorNS =\\n        parser.parseFromString(invalidXML, \\\"text/xml\\\").getElementsByTagName(\\\"parsererror\\\")[0]\\n          .namespaceURI! ?? \\\"\\\";\\n    } catch {\\n      // Most browsers will return a document containing <parsererror>, but IE will throw.\\n      errorNS = \\\"\\\";\\n    }\\n  }\\n\\n  return errorNS;\\n}\\n\\nfunction throwIfError(dom: Document): void {\\n  const parserErrors = dom.getElementsByTagName(\\\"parsererror\\\");\\n  if (parserErrors.length > 0 && getErrorNamespace()) {\\n    for (let i = 0; i < parserErrors.length; i++) {\\n      if (parserErrors[i].namespaceURI === errorNS) {\\n        throw new Error(parserErrors[i].innerHTML);\\n      }\\n    }\\n  }\\n}\\n\\nfunction isElement(node: Node): node is Element {\\n  return !!(node as Element).attributes;\\n}\\n\\n/**\\n * Get the Element-typed version of the provided Node if the provided node is an element with\\n * attributes. If it isn't, then undefined is returned.\\n */\\nfunction asElementWithAttributes(node: Node): Element | undefined {\\n  return isElement(node) && node.hasAttributes() ? node : undefined;\\n}\\n\\nfunction domToObject(node: Node, options: Required<XmlOptions>): any {\\n  let result: any = {};\\n\\n  const childNodeCount: number = node.childNodes.length;\\n\\n  const firstChildNode: Node = node.childNodes[0];\\n  const onlyChildTextValue: string | undefined =\\n    (firstChildNode &&\\n      childNodeCount === 1 &&\\n      firstChildNode.nodeType === Node.TEXT_NODE &&\\n      firstChildNode.nodeValue) ||\\n    undefined;\\n\\n  const elementWithAttributes: Element | undefined = asElementWithAttributes(node);\\n  if (elementWithAttributes) {\\n    result[XML_ATTRKEY] = {};\\n\\n    for (let i = 0; i < elementWithAttributes.attributes.length; i++) {\\n      const attr = elementWithAttributes.attributes[i];\\n      result[XML_ATTRKEY][attr.nodeName] = attr.nodeValue;\\n    }\\n\\n    if (onlyChildTextValue) {\\n      result[options.xmlCharKey] = onlyChildTextValue;\\n    }\\n  } else if (childNodeCount === 0) {\\n    result = \\\"\\\";\\n  } else if (onlyChildTextValue) {\\n    result = onlyChildTextValue;\\n  }\\n\\n  if (!onlyChildTextValue) {\\n    for (let i = 0; i < childNodeCount; i++) {\\n      const child = node.childNodes[i];\\n\\n      // Check if CData\\n      if (child?.nodeType === Node.CDATA_SECTION_NODE) {\\n        // Already in the CDATA\\n        result = child.textContent;\\n      } else if (child?.firstChild?.nodeType === Node.CDATA_SECTION_NODE) {\\n        // Look if child is CDATA\\n        result[child.nodeName] = child.textContent;\\n      } else if (child.nodeType !== Node.TEXT_NODE) {\\n        // Ignore leading/trailing whitespace nodes\\n        const childObject: any = domToObject(child, options);\\n\\n        if (!result[child.nodeName]) {\\n          result[child.nodeName] = childObject;\\n        } else if (Array.isArray(result[child.nodeName])) {\\n          result[child.nodeName].push(childObject);\\n        } else {\\n          result[child.nodeName] = [result[child.nodeName], childObject];\\n        }\\n      }\\n    }\\n  }\\n\\n  return result;\\n}\\n\\nconst serializer = new XMLSerializer();\\n\\n/**\\n * Converts given JSON object to XML string\\n * @param obj - JSON object to be converted into XML string\\n * @param opts - Options that govern the XML building of given JSON object\\n * `rootName` indicates the name of the root element in the resulting XML\\n */\\nexport function stringifyXML(obj: unknown, opts: XmlOptions = {}): string {\\n  const updatedOptions: Required<XmlOptions> = {\\n    rootName: opts.rootName ?? \\\"root\\\",\\n    includeRoot: opts.includeRoot ?? false,\\n    xmlCharKey: opts.xmlCharKey ?? XML_CHARKEY,\\n    cdataPropName: opts.cdataPropName ?? \\\"__cdata\\\",\\n    stopNodes: opts.stopNodes ?? [],\\n  };\\n  const dom = buildNode(obj, updatedOptions.rootName, updatedOptions)[0];\\n  return (\\n    '<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\" standalone=\\\"yes\\\"?>' +\\n    serializer.serializeToString(dom).replace(/ xmlns=\\\"\\\"/g, \\\"\\\")\\n  );\\n}\\n\\nfunction buildAttributes(attrs: { [key: string]: { toString(): string } }): Attr[] {\\n  const result = [];\\n  for (const key of Object.keys(attrs)) {\\n    const attr = doc.createAttribute(key);\\n    attr.value = attrs[key].toString();\\n    result.push(attr);\\n  }\\n  return result;\\n}\\n\\nfunction buildNode(obj: any, elementName: string, options: Required<XmlOptions>): Node[] {\\n  if (\\n    obj === undefined ||\\n    obj === null ||\\n    typeof obj === \\\"string\\\" ||\\n    typeof obj === \\\"number\\\" ||\\n    typeof obj === \\\"boolean\\\"\\n  ) {\\n    const elem = doc.createElement(elementName);\\n    elem.textContent = obj === undefined || obj === null ? \\\"\\\" : obj.toString();\\n    return [elem];\\n  } else if (Array.isArray(obj)) {\\n    const result = [];\\n    for (const arrayElem of obj) {\\n      for (const child of buildNode(arrayElem, elementName, options)) {\\n        result.push(child);\\n      }\\n    }\\n    return result;\\n  } else if (typeof obj === \\\"object\\\") {\\n    let elem: HTMLElement;\\n    if (obj[XML_ATTRKEY]?.[\\\"xmlns\\\"]) {\\n      elem = doc.createElementNS(obj[XML_ATTRKEY][\\\"xmlns\\\"], elementName);\\n    } else {\\n      elem = doc.createElement(elementName);\\n    }\\n    for (const key of Object.keys(obj)) {\\n      if (key === XML_ATTRKEY) {\\n        for (const attr of buildAttributes(obj[key])) {\\n          elem.attributes.setNamedItem(attr);\\n        }\\n      } else if (key === options.xmlCharKey) {\\n        elem.textContent = obj[key].toString();\\n      } else if (key === options.cdataPropName) {\\n        const cdataElement = doc.createCDATASection(obj[key].toString());\\n        elem.appendChild(cdataElement);\\n      } else {\\n        for (const child of buildNode(obj[key], key, options)) {\\n          elem.appendChild(child);\\n        }\\n      }\\n    }\\n    return [elem];\\n  } else {\\n    throw new Error(`Illegal value passed to buildObject: ${obj}`);\\n  }\\n}\\n\"]}",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": "fec13318fcb92df42f725386dd53c510",
+        "name": "xml-browser.mjs.map",
+        "package_data": [],
+        "path": "package/dist/browser/xml-browser.mjs.map",
+        "percentage_of_license_text": 0.2,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "f79e9b8418b5a7898b57505d8013735cc5cad021",
+        "sha1_git": "245eb8ad5978041996a51d4026cdefe0d57a3297",
+        "sha256": "139203fdce0fe7028e0a12c393390b0e06b1c616472a9fa4ae494fdb2d2c7828",
+        "size": 15750,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "xml.common",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/dist/browser/xml.common.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "677f0be297964e4212ae2fc34e65f906",
+        "name": "xml.common.js",
+        "package_data": [],
+        "path": "package/dist/browser/xml.common.js",
+        "percentage_of_license_text": 12.82,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "7cecd33b0a2b5577e75eb7b7dedeb99f4624c6c4",
+        "sha1_git": "e556d91387e3b1cab05995abf936852e104b5f82",
+        "sha256": "6cb1fa7856eac853916a14c0c395e926c945fe8ccfe043a203460621ea119d47",
+        "size": 296,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "xml.common",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/dist/esm/xml.common.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "677f0be297964e4212ae2fc34e65f906",
+        "name": "xml.common.js",
+        "package_data": [],
+        "path": "package/dist/esm/xml.common.js",
+        "percentage_of_license_text": 12.82,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "7cecd33b0a2b5577e75eb7b7dedeb99f4624c6c4",
+        "sha1_git": "e556d91387e3b1cab05995abf936852e104b5f82",
+        "sha256": "6cb1fa7856eac853916a14c0c395e926c945fe8ccfe043a203460621ea119d47",
+        "size": 296,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "xml.common",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/dist/react-native/xml.common.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "677f0be297964e4212ae2fc34e65f906",
+        "name": "xml.common.js",
+        "package_data": [],
+        "path": "package/dist/react-native/xml.common.js",
+        "percentage_of_license_text": 12.82,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "7cecd33b0a2b5577e75eb7b7dedeb99f4624c6c4",
+        "sha1_git": "e556d91387e3b1cab05995abf936852e104b5f82",
+        "sha256": "6cb1fa7856eac853916a14c0c395e926c945fe8ccfe043a203460621ea119d47",
+        "size": 296,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "xml.common",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "091766465a46cbecd98720c52341751f",
+        "name": "xml.common.js",
+        "package_data": [],
+        "path": "package/dist/commonjs/xml.common.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "dccf0dffb0d1918c9f964acc49d4c8de4ab1edfa",
+        "sha1_git": "f6574bb2470f1c24416738e14b5095b96bbd31f8",
+        "sha256": "a06f7647420b3bd569f57bcf53f4b3324ec17c876e6c3e59c299ddbc335f8d1b",
+        "size": 1176,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "xml.common.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "f3d6b21625ea9295b0259a56709ba432",
+        "name": "xml.common.d.ts",
+        "package_data": [],
+        "path": "package/dist/browser/xml.common.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "e5a273504c7a2052ed9e23d21777261c56983f64",
+        "sha1_git": "94d97608b994f975b1c3760d80809cc5e59e5516",
+        "sha256": "81ce1b8c63f42f9306557923f562338865f3e00fe3156545991fa7539931fa76",
+        "size": 880,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "xml.common.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "f3d6b21625ea9295b0259a56709ba432",
+        "name": "xml.common.d.ts",
+        "package_data": [],
+        "path": "package/dist/commonjs/xml.common.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "e5a273504c7a2052ed9e23d21777261c56983f64",
+        "sha1_git": "94d97608b994f975b1c3760d80809cc5e59e5516",
+        "sha256": "81ce1b8c63f42f9306557923f562338865f3e00fe3156545991fa7539931fa76",
+        "size": 880,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "xml.common.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "f3d6b21625ea9295b0259a56709ba432",
+        "name": "xml.common.d.ts",
+        "package_data": [],
+        "path": "package/dist/esm/xml.common.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "e5a273504c7a2052ed9e23d21777261c56983f64",
+        "sha1_git": "94d97608b994f975b1c3760d80809cc5e59e5516",
+        "sha256": "81ce1b8c63f42f9306557923f562338865f3e00fe3156545991fa7539931fa76",
+        "size": 880,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "xml.common.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "f3d6b21625ea9295b0259a56709ba432",
+        "name": "xml.common.d.ts",
+        "package_data": [],
+        "path": "package/dist/react-native/xml.common.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "e5a273504c7a2052ed9e23d21777261c56983f64",
+        "sha1_git": "94d97608b994f975b1c3760d80809cc5e59e5516",
+        "sha256": "81ce1b8c63f42f9306557923f562338865f3e00fe3156545991fa7539931fa76",
+        "size": 880,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "xml.common.js",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/dist/browser/xml.common.js.map",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "33a1fa9e8ef640b864ef15033f264af9",
+        "name": "xml.common.js.map",
+        "package_data": [],
+        "path": "package/dist/browser/xml.common.js.map",
+        "percentage_of_license_text": 4.59,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "03d729155e0dce951b10d54b39ad5e5aa15b9978",
+        "sha1_git": "32de997342bb4b717ec58880b27610e79031575e",
+        "sha256": "29837c5e943cc085d92dd8faab25cabc1e48689bdc468c3d6fede480d657cbc2",
+        "size": 1171,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "xml.common.js",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/dist/commonjs/xml.common.js.map",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "3d6bf94fdcda693054786a564531da6f",
+        "name": "xml.common.js.map",
+        "package_data": [],
+        "path": "package/dist/commonjs/xml.common.js.map",
+        "percentage_of_license_text": 4.59,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "5c40ce55afbd048bdffbb60c803c0e934943a9c4",
+        "sha1_git": "8ef70f98ad69625c78e46e27f7c83eb929337440",
+        "sha256": "34ecfcc5f9823b054146087c0011c4f15ef98cb8380c18019e91bbe644df8001",
+        "size": 1104,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "xml.common.js",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/dist/esm/xml.common.js.map",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "33a1fa9e8ef640b864ef15033f264af9",
+        "name": "xml.common.js.map",
+        "package_data": [],
+        "path": "package/dist/esm/xml.common.js.map",
+        "percentage_of_license_text": 4.59,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "03d729155e0dce951b10d54b39ad5e5aa15b9978",
+        "sha1_git": "32de997342bb4b717ec58880b27610e79031575e",
+        "sha256": "29837c5e943cc085d92dd8faab25cabc1e48689bdc468c3d6fede480d657cbc2",
+        "size": 1171,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "xml.common.js",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/dist/react-native/xml.common.js.map",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "33a1fa9e8ef640b864ef15033f264af9",
+        "name": "xml.common.js.map",
+        "package_data": [],
+        "path": "package/dist/react-native/xml.common.js.map",
+        "percentage_of_license_text": 4.59,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "03d729155e0dce951b10d54b39ad5e5aa15b9978",
+        "sha1_git": "32de997342bb4b717ec58880b27610e79031575e",
+        "sha256": "29837c5e943cc085d92dd8faab25cabc1e48689bdc468c3d6fede480d657cbc2",
+        "size": 1171,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "xml.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "3e2c4835e58058d544514406a624b507",
+        "name": "xml.d.ts",
+        "package_data": [],
+        "path": "package/dist/commonjs/xml.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "0d3b4f6145d0cfb961e4e9feae1e03d0b3f9d1e0",
+        "sha1_git": "3e16d79d4ce08754fbbe6eb720aeb19aaee4bad2",
+        "sha256": "9c9883b14cb8a10107435891225c766925ea4894dc86407496e81fe7e54de1b4",
+        "size": 784,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "xml.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "3e2c4835e58058d544514406a624b507",
+        "name": "xml.d.ts",
+        "package_data": [],
+        "path": "package/dist/esm/xml.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "0d3b4f6145d0cfb961e4e9feae1e03d0b3f9d1e0",
+        "sha1_git": "3e16d79d4ce08754fbbe6eb720aeb19aaee4bad2",
+        "sha256": "9c9883b14cb8a10107435891225c766925ea4894dc86407496e81fe7e54de1b4",
+        "size": 784,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "xml.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "3e2c4835e58058d544514406a624b507",
+        "name": "xml.d.ts",
+        "package_data": [],
+        "path": "package/dist/react-native/xml.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "0d3b4f6145d0cfb961e4e9feae1e03d0b3f9d1e0",
+        "sha1_git": "3e16d79d4ce08754fbbe6eb720aeb19aaee4bad2",
+        "sha256": "9c9883b14cb8a10107435891225c766925ea4894dc86407496e81fe7e54de1b4",
+        "size": 784,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "xml.js",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/dist/commonjs/xml.js.map",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "bc8d0a3228a6fe9ad90d8f424fdbb1c0",
+        "name": "xml.js.map",
+        "package_data": [],
+        "path": "package/dist/commonjs/xml.js.map",
+        "percentage_of_license_text": 1.46,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "7321f660edbe3c7acc3606e8c3117ae9253f7ffe",
+        "sha1_git": "8cbf382cb94ce31bca49df836314bfee82119e0e",
+        "sha256": "b5f3db9f5671cbbddc7ce0aa61e5ef4c010c87681e926d702285e8b04a283be8",
+        "size": 4968,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "xml.js",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/dist/esm/xml.js.map",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "c571780a5e6f3f3edac3312970286ee9",
+        "name": "xml.js.map",
+        "package_data": [],
+        "path": "package/dist/esm/xml.js.map",
+        "percentage_of_license_text": 1.46,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "addc1d76d5ca5d549867b9e8f22a3ce57a3f6aca",
+        "sha1_git": "9507bd7a34b2528237cfa02a514d1335cef7b3be",
+        "sha256": "c4bce700073f19a7412d509345483c97809e80fd0b39cf572b8e837c95975993",
+        "size": 5684,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "xml.js",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-xml@1.6.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/dist/react-native/xml.js.map",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "c571780a5e6f3f3edac3312970286ee9",
+        "name": "xml.js.map",
+        "package_data": [],
+        "path": "package/dist/react-native/xml.js.map",
+        "percentage_of_license_text": 1.46,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "addc1d76d5ca5d549867b9e8f22a3ce57a3f6aca",
+        "sha1_git": "9507bd7a34b2528237cfa02a514d1335cef7b3be",
+        "sha256": "c4bce700073f19a7412d509345483c97809e80fd0b39cf572b8e837c95975993",
+        "size": 5684,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 48,
+            "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/package.json",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "  \"license\": \"MIT\",",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_30.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+            "score": 100,
+            "start_line": 48
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/package.json",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 1,
+            "matched_text": "MIT",
+            "matcher": "1-spdx-id",
+            "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+            "rule_relevance": 100,
+            "rule_url": null,
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-ac40beba-5702-f54d-755f-333441314bb0",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 21,
+            "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/LICENSE",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 161,
+            "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+            "matcher": "2-aho",
+            "rule_identifier": "mit.LICENSE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+            "score": 100,
+            "start_line": 5
+          },
+          {
+            "end_line": 3,
+            "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/LICENSE",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "MIT License",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_14.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+            "score": 100,
+            "start_line": 3
+          }
+        ]
+      },
+      {
+        "detection_count": 21,
+        "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 2,
+            "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/dist/browser/index.js",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 5,
+            "matched_text": "// Licensed under the MIT License.",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_12.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+            "score": 100,
+            "start_line": 2
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": "https://ieeexplore.ieee.org/document/9263265",
+        "homepage_url": "http://opensource.org/licenses/mit-license.php",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "mit",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/mit",
+        "minimum_coverage": 0,
+        "name": "MIT License",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": null,
+        "osi_url": "http://www.opensource.org/licenses/MIT",
+        "other_spdx_license_keys": [
+          "LicenseRef-MIT-Bootstrap",
+          "LicenseRef-MIT-Diehl",
+          "LicenseRef-MIT-Discord",
+          "LicenseRef-MIT-TC"
+        ],
+        "other_urls": [
+          "https://opensource.com/article/18/3/patent-grant-mit-license",
+          "https://opensource.com/article/19/4/history-mit-license",
+          "https://opensource.org/licenses/MIT"
+        ],
+        "owner": "MIT",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "short_name": "MIT License",
+        "spdx_license_key": "MIT",
+        "spdx_url": "https://spdx.org/licenses/MIT",
+        "standard_notice": null,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+        "text_urls": [
+          "http://opensource.org/licenses/mit-license.php"
+        ]
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "mit.LICENSE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": true,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 161,
+        "license_expression": "mit",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
+      },
+      {
+        "identifier": "mit_12.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": true,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 5,
+        "license_expression": "mit",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Licensed under the MIT  license."
+      },
+      {
+        "identifier": "mit_14.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "mit",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "MIT License"
+      },
+      {
+        "identifier": "mit_30.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "mit",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "License: MIT"
+      },
+      {
+        "identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": true,
+        "language": "en",
+        "length": 1,
+        "license_expression": "mit",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": null,
+        "skip_for_required_phrase_generation": false,
+        "text": "MIT"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/@azure%2fcore-xml/1.6.0",
+        "bug_tracking_url": "https://github.com/Azure/azure-sdk-for-js/issues",
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "mit",
+        "declared_license_expression_spdx": "MIT",
+        "description": "Core library for interacting with XML payloads",
+        "download_url": "https://registry.npmjs.org/@azure/core-xml/-/core-xml-1.6.0.tgz",
+        "extra_data": {
+          "engines": {
+            "node": ">=22.0.0"
+          }
+        },
+        "extracted_license_statement": "- MIT\n",
+        "holder": null,
+        "homepage_url": "https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/core/core-xml/README.md",
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [
+          "azure",
+          "cloud"
+        ],
+        "license_detections": [
+          {
+            "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "d7b57e7e87ca11e86cb1833a3fe03a522abf13463cfe763c47885311d2b03fd2/package/package.json",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 1,
+                "matched_text": "MIT",
+                "matcher": "1-spdx-id",
+                "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+                "rule_relevance": 100,
+                "rule_url": null,
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "core-xml",
+        "namespace": "@azure",
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": null,
+            "name": "Microsoft Corporation",
+            "role": "author",
+            "type": "person",
+            "url": null
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/%40azure/core-xml@1.6.0",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/@azure/core-xml/-/core-xml-1.6.0.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/@azure/core-xml",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "git+https://github.com/Azure/azure-sdk-for-js",
+        "version": "1.6.0"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

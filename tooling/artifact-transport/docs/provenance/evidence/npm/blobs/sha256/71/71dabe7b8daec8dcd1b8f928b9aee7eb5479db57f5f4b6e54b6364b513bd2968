@@ -1,0 +1,166 @@
+{
+  "artifactId": "f0da984c70a949f55d1f3e3d8d118a6c2e888b88431488a2984307fd8948d222",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7878,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "304e4a73f6212adaf242c78fcbe1dfcebd78d8bab53b007fe69b39fc968292b7",
+        "size": 1081,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "f38f9e6c81f0bf3e9b3340b8d9083c2ae9afdaa9a999530cd48d77304c0cb3b7",
+        "size": 12792,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist-src/index.js",
+        "sha256": "4936c61311076f2609e25450aebeedc1112b8b2a81a1823cc6ce2c354446c724",
+        "size": 4360,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist-src/version.js",
+        "sha256": "d5ea531b512854bd6ffedf197a61b6998288734d3157ecf04f631788596f32b3",
+        "size": 47,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist-types/index.d.ts",
+        "sha256": "64369f418f9b248b960b5b7c0e98001488e029b2b3a70add5439e0886d0694b5",
+        "size": 1384,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist-types/types.d.ts",
+        "sha256": "c80c5fa57f74841b3c266b12ac1b3e479f40fd9946df1bda6d467c81a57a996e",
+        "size": 1811,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist-types/version.d.ts",
+        "sha256": "0f948af50dfa227ea2764e7fae6140e8bdc940c57d30a7abd6c930b451e73bcb",
+        "size": 40,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "11f61ac8f35d818c7bfe568d5b221f99dc1d8aeb235839c2f4897d1ef99abc6d",
+        "size": 1642,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1081,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/30/304e4a73f6212adaf242c78fcbe1dfcebd78d8bab53b007fe69b39fc968292b7",
+          "sha256": "304e4a73f6212adaf242c78fcbe1dfcebd78d8bab53b007fe69b39fc968292b7"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "304e4a73f6212adaf242c78fcbe1dfcebd78d8bab53b007fe69b39fc968292b7",
+        "size": 1081
+      },
+      {
+        "blob": {
+          "bytes": 12792,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/f3/f38f9e6c81f0bf3e9b3340b8d9083c2ae9afdaa9a999530cd48d77304c0cb3b7",
+          "sha256": "f38f9e6c81f0bf3e9b3340b8d9083c2ae9afdaa9a999530cd48d77304c0cb3b7"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "f38f9e6c81f0bf3e9b3340b8d9083c2ae9afdaa9a999530cd48d77304c0cb3b7",
+        "size": 12792
+      }
+    ],
+    "expandedBytes": 23157,
+    "packageIdentity": {
+      "author": "Gregor Martynus (https://github.com/gr2m)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "@octokit/core",
+      "repository": "github:octokit/core.js",
+      "version": "7.0.8"
+    },
+    "packageMetadata": {
+      "author": "Gregor Martynus (https://github.com/gr2m)",
+      "dependencies": {
+        "@octokit/auth-token": "^6.0.0",
+        "@octokit/graphql": "^9.0.5",
+        "@octokit/request": "^10.0.16",
+        "@octokit/request-error": "^7.1.2",
+        "@octokit/types": "^18.0.0",
+        "before-after-hook": "^4.0.0",
+        "universal-user-agent": "^7.0.0"
+      },
+      "description": "Extendable client for GitHub's REST & GraphQL APIs",
+      "devDependencies": {
+        "@octokit/auth-action": "^6.0.3",
+        "@octokit/auth-app": "^8.0.0",
+        "@octokit/auth-oauth-app": "^9.0.0",
+        "@octokit/tsconfig": "^4.0.0",
+        "@sinonjs/fake-timers": "^15.0.0",
+        "@types/node": "^24.0.0",
+        "@types/sinonjs__fake-timers": "^15.0.0",
+        "@vitest/coverage-v8": "^4.0.0",
+        "esbuild": "^0.28.0",
+        "fetch-mock": "^12.0.0",
+        "prettier": "3.7.4",
+        "proxy": "^2.0.0",
+        "semantic-release-plugin-update-version-in-files": "^2.0.0",
+        "typescript": "^5.0.0",
+        "undici": "^7.0.0",
+        "vitest": "^4.0.0"
+      },
+      "engines": {
+        "node": ">= 20"
+      },
+      "exports": {
+        ".": {
+          "default": "./dist-src/index.js",
+          "import": "./dist-src/index.js",
+          "types": "./dist-types/index.d.ts"
+        },
+        "./types": {
+          "types": "./dist-types/types.d.ts"
+        }
+      },
+      "files": [
+        "dist-*/**",
+        "bin/**"
+      ],
+      "keywords": [
+        "octokit",
+        "github",
+        "api",
+        "sdk",
+        "toolkit"
+      ],
+      "license": "MIT",
+      "name": "@octokit/core",
+      "publishConfig": {
+        "access": "public",
+        "provenance": true
+      },
+      "repository": "github:octokit/core.js",
+      "sideEffects": false,
+      "type": "module",
+      "types": "./dist-types/index.d.ts",
+      "version": "7.0.8"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 7878,
+      "sha256": "c68222cfcc349ab51536237193b02665f503ec5b6aabad0cbdfc07d672764988"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,178 @@
+{
+  "artifactId": "7f2f58a79006025cf1b1dd5236b2cf13ea355c07d211149ce95bd5e56f920d4d",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 9868,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size": 11357,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "5ead5909ff3b639baedb65eec90f9bafab5d4e22de7636e792e359c66ece57af",
+        "size": 280,
+        "type": "FILE"
+      },
+      {
+        "path": "package/global.d.ts",
+        "sha256": "c5e18789f238fd7bb1215fcf9bb99e0968fe2c51fd4b8d33b0deec864c0223c0",
+        "size": 450,
+        "type": "FILE"
+      },
+      {
+        "path": "package/global.js",
+        "sha256": "28273e36dff7b0dea6e6b32c709e8d7d8e9fb3e9a523e3422a9a649a7d60b701",
+        "size": 141,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "47652206af2d2f41739e6acff238fe033ababf94d331baa6fe0a060ca5129d04",
+        "size": 2694,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "094856cb223ca9bc7982047ec4484d68b4a646232b2983ab2a40f619dba1dcb4",
+        "size": 8885,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/errors.js",
+        "sha256": "69e86432371416944a5abdc4e4beb95343b600430eb0d0972f940ea711882bcd",
+        "size": 634,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "90c61548ae5e1ea229a0b8199b82b80e2b99dadf50b07ffc66d96e75949e6ecb",
+        "size": 1504,
+        "type": "FILE"
+      },
+      {
+        "path": "package/web.d.ts",
+        "sha256": "ee3394545938cae1f3f84f7d203845ed3e3597d76ed088c4004bec32da9f5217",
+        "size": 1624,
+        "type": "FILE"
+      },
+      {
+        "path": "package/web.js",
+        "sha256": "d268c1999966e84243e38c908d7639da56aa11fe9ad7416af969fbd4cbbaadff",
+        "size": 9357,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 11357,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c7/c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size": 11357
+      },
+      {
+        "blob": {
+          "bytes": 280,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5e/5ead5909ff3b639baedb65eec90f9bafab5d4e22de7636e792e359c66ece57af",
+          "sha256": "5ead5909ff3b639baedb65eec90f9bafab5d4e22de7636e792e359c66ece57af"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "5ead5909ff3b639baedb65eec90f9bafab5d4e22de7636e792e359c66ece57af",
+        "size": 280
+      }
+    ],
+    "expandedBytes": 36926,
+    "packageIdentity": {
+      "author": "Holepunch",
+      "homepage": "https://github.com/holepunchto/bare-events#readme",
+      "license": "Apache-2.0",
+      "name": "bare-events",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/holepunchto/bare-events.git"
+      },
+      "version": "2.9.2"
+    },
+    "packageMetadata": {
+      "author": "Holepunch",
+      "bugs": {
+        "url": "https://github.com/holepunchto/bare-events/issues"
+      },
+      "description": "Event emitters for JavaScript",
+      "devDependencies": {
+        "bare-abort-controller": "^1.0.0",
+        "brittle": "^3.3.2",
+        "lunte": "^1.8.0",
+        "prettier": "^3.4.2",
+        "prettier-config-holepunch": "^2.0.0",
+        "uncaughts": "^1.1.1"
+      },
+      "exports": {
+        ".": {
+          "default": "./index.js",
+          "types": "./index.d.ts"
+        },
+        "./errors": "./lib/errors.js",
+        "./global": {
+          "default": "./global.js",
+          "types": "./global.d.ts"
+        },
+        "./package": "./package.json",
+        "./web": {
+          "default": "./web.js",
+          "types": "./web.d.ts"
+        }
+      },
+      "files": [
+        "index.js",
+        "index.d.ts",
+        "global.js",
+        "global.d.ts",
+        "web.js",
+        "web.d.ts",
+        "lib"
+      ],
+      "homepage": "https://github.com/holepunchto/bare-events#readme",
+      "license": "Apache-2.0",
+      "name": "bare-events",
+      "peerDependencies": {
+        "bare-abort-controller": "*"
+      },
+      "peerDependenciesMeta": {
+        "bare-abort-controller": {
+          "optional": true
+        }
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/holepunchto/bare-events.git"
+      },
+      "scripts": {
+        "format": "prettier --write . && lunte --fix",
+        "lint": "prettier --check . && lunte",
+        "test": "npm run test:bare && npm run test:node",
+        "test:bare": "brittle-bare --coverage test.js",
+        "test:node": "brittle-node --coverage test.js"
+      },
+      "version": "2.9.2"
+    },
+    "physicalEntryCount": 10,
+    "tarball": {
+      "bytes": 9868,
+      "sha256": "930075c896d610fe4f48f8178a33ffdca94263951ad5a9b9590fbf00c30594ae"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

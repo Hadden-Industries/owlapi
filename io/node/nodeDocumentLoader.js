@@ -464,7 +464,10 @@ export class NodeDocumentLoader {
       signal?.throwIfAborted();
       // The qualified JDK uses IPv4-first InetAddress selection. Pin that one
       // approved result so core HTTP cannot perform a second unchecked lookup.
-      destination = await lookup(hostname, { order: "ipv4first" });
+      // `order` was added in Node 22.1; `all` also works at our 22.0 floor.
+      const addresses = await lookup(hostname, { all: true });
+      destination =
+        addresses.find(({ family }) => family === 4) ?? addresses[0];
     }
     signal?.throwIfAborted();
     await assertDocumentLoaderAuthorization(this, iri, {

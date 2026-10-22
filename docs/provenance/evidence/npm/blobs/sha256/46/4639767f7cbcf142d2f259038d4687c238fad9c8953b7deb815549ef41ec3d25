@@ -1,0 +1,131 @@
+{
+  "artifactId": "1c713af365671b6a1b645b897dfeee4c67f93fbc99f97a3af72f6272f4219f82",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 16080,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "c3cf144c319b4d7986d33bb59f0f70ee66dc8a4b2348f56da14fae4c2fd9ea97",
+        "size": 22284,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "cc7f3717cef13b84dd673c6eea25346b6fbb047840b77ff835e718ed87adc3a4",
+        "size": 24257,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "1233b22d8e8051edb310b4cf9b179f06ed74d892a00ca06a4db24f1a68c7cd1c",
+        "size": 993,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "cc85cade20457a26371b0aa155b541cc11d11b9969da34ce56535d0621ac3446",
+        "size": 19262,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1117,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117
+      }
+    ],
+    "expandedBytes": 67913,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "p-map",
+      "repository": "sindresorhus/p-map",
+      "version": "7.1.1"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "description": "Map over promises concurrently",
+      "devDependencies": {
+        "ava": "^5.2.0",
+        "chalk": "^5.3.0",
+        "delay": "^6.0.0",
+        "in-range": "^3.0.0",
+        "random-int": "^3.0.0",
+        "time-span": "^5.1.0",
+        "tsd": "^0.29.0",
+        "xo": "^0.56.0"
+      },
+      "engines": {
+        "node": ">=18"
+      },
+      "exports": {
+        "default": "./index.js",
+        "types": "./index.d.ts"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "funding": "https://github.com/sponsors/sindresorhus",
+      "keywords": [
+        "promise",
+        "map",
+        "resolved",
+        "wait",
+        "collection",
+        "iterable",
+        "iterator",
+        "race",
+        "fulfilled",
+        "async",
+        "await",
+        "promises",
+        "concurrently",
+        "concurrency",
+        "parallel",
+        "bluebird"
+      ],
+      "license": "MIT",
+      "name": "p-map",
+      "repository": "sindresorhus/p-map",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "version": "7.1.1"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 16080,
+      "sha256": "f105d7bf031667d349d656fe2ca910954a771d47b98b98e8a9f07e62ee498b38"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

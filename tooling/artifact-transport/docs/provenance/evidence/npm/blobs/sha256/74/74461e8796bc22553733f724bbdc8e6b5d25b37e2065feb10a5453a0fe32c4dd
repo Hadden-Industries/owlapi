@@ -1,0 +1,256 @@
+{
+  "artifactId": "ef499b3a0ceb959f309da7f2324dfbe973b5b5c9f82c017ba8c2e2ccb8e6137c",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 8504,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.eslintrc",
+        "sha256": "cd5d0efdb0a3b3cdc62ee7f4802b65fc547c880b242f1ac8da656e9042a80b1b",
+        "size": 192,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nycrc",
+        "sha256": "a9f4d73a4f71c06a47fa07bf652938d90f174968f134d252fffd85dc0da60575",
+        "size": 149,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "3b2fbd23ff47d349303c7a15475b4bdedebc929467381347295060876d14e4e4",
+        "size": 11885,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "acfaf437865d82f0fa9b9cdcae8b550bed8d011adaa5b42d973191caf99f62a8",
+        "size": 1081,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "6eba9e109a6a14b36352a33adaf8eeaa037a836650c7649414d8f6edc1d7840a",
+        "size": 2716,
+        "type": "FILE"
+      },
+      {
+        "path": "package/auto.js",
+        "sha256": "8a28142fdc864763727d7cfe6a19b5dbcdf5e1861207bd2c122082336a6c3221",
+        "size": 36,
+        "type": "FILE"
+      },
+      {
+        "path": "package/implementation.browser.js",
+        "sha256": "7549e9f274d96f25bc20cbd098417124d87224bbc8cf47c431d018d3fec81c42",
+        "size": 254,
+        "type": "FILE"
+      },
+      {
+        "path": "package/implementation.js",
+        "sha256": "d8c28da71c97b9076a28c3a7afe277d85e36b73dc4ee65eadf34f7761855530d",
+        "size": 40,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "2fd9161dbac0c3c51417bf7b4efd33507d33c6be827a9f7104e03360957bce19",
+        "size": 408,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b0417292023b26946ddbfef45cba32974b744fd65297d37367a97649210493cb",
+        "size": 2463,
+        "type": "FILE"
+      },
+      {
+        "path": "package/polyfill.js",
+        "sha256": "5ee48a1156ad2b2e8e84def305aae470bf211becb4afff96d5a289484a7a0446",
+        "size": 251,
+        "type": "FILE"
+      },
+      {
+        "path": "package/shim.js",
+        "sha256": "b030d81c12f39da250deef6dfc823a7be10c2dfb09722cfc2bb097bc810d13ab",
+        "size": 715,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/implementation.js",
+        "sha256": "544295645bed89988d1ba030986ace19909c78a6cb8601c890c29a7873bf6a00",
+        "size": 213,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "f01f0fdcf6532410b85c69ce0770b3930a165b7f96ff5e949b123baaf8c9ff94",
+        "size": 196,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/native.js",
+        "sha256": "f71bb8fc978500746430e6e6636c93d5ad28c00e2cccf2f966f52d2fc3656411",
+        "size": 767,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/shimmed.js",
+        "sha256": "0b580af37db378d21c2d2886a33d0a6e6c6b397b326fb750d49dfc3011cd7e07",
+        "size": 900,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/tests.js",
+        "sha256": "d39863fe4ad1cedeff97fc24cf78a2f750d642cfa567e7901ed6110327fd7e96",
+        "size": 1399,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1081,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ac/acfaf437865d82f0fa9b9cdcae8b550bed8d011adaa5b42d973191caf99f62a8",
+          "sha256": "acfaf437865d82f0fa9b9cdcae8b550bed8d011adaa5b42d973191caf99f62a8"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "acfaf437865d82f0fa9b9cdcae8b550bed8d011adaa5b42d973191caf99f62a8",
+        "size": 1081
+      },
+      {
+        "blob": {
+          "bytes": 2716,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/6e/6eba9e109a6a14b36352a33adaf8eeaa037a836650c7649414d8f6edc1d7840a",
+          "sha256": "6eba9e109a6a14b36352a33adaf8eeaa037a836650c7649414d8f6edc1d7840a"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "6eba9e109a6a14b36352a33adaf8eeaa037a836650c7649414d8f6edc1d7840a",
+        "size": 2716
+      }
+    ],
+    "expandedBytes": 23665,
+    "packageIdentity": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "globalthis",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/ljharb/System.global.git"
+      },
+      "version": "1.0.4"
+    },
+    "packageMetadata": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "browser": {
+        "./implementation": "./implementation.browser.js"
+      },
+      "dependencies": {
+        "define-properties": "^1.2.1",
+        "gopd": "^1.0.1"
+      },
+      "description": "ECMAScript spec-compliant polyfill/shim for `globalThis`",
+      "devDependencies": {
+        "@es-shims/api": "^2.5.0",
+        "@ljharb/eslint-config": "^21.1.0",
+        "aud": "^2.0.4",
+        "auto-changelog": "^2.4.0",
+        "browserify": "^16.5.2",
+        "eslint": "=8.8.0",
+        "for-each": "^0.3.3",
+        "in-publish": "^2.0.1",
+        "is": "^3.3.0",
+        "npmignore": "^0.3.1",
+        "nyc": "^10.3.2",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.7.5"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "keywords": [
+        "window",
+        "self",
+        "global",
+        "globalThis",
+        "System.global",
+        "global object",
+        "global this value",
+        "ECMAScript",
+        "es-shim API",
+        "polyfill",
+        "shim"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "globalthis",
+      "publishConfig": {
+        "ignore": [
+          "browserShim.js",
+          ".github/workflows"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/ljharb/System.global.git"
+      },
+      "scripts": {
+        "build": "mkdir -p dist && browserify browserShim.js > dist/browser.js",
+        "lint": "eslint --ext=js,mjs .",
+        "postlint": "es-shim-api --bound --property",
+        "posttest": "aud --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest && npm run build",
+        "pretest": "npm run lint",
+        "test": "npm run --silent tests-only",
+        "tests-only": "nyc tape 'test/**/*.js'",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "testling": {
+        "browsers": [
+          "iexplore/6.0..latest",
+          "firefox/3.0..6.0",
+          "firefox/15.0..latest",
+          "firefox/nightly",
+          "chrome/4.0..10.0",
+          "chrome/20.0..latest",
+          "chrome/canary",
+          "opera/10.0..latest",
+          "opera/next",
+          "safari/4.0..latest",
+          "ipad/6.0..latest",
+          "iphone/6.0..latest",
+          "android-browser/4.2"
+        ],
+        "files": "test/index.js"
+      },
+      "version": "1.0.4"
+    },
+    "physicalEntryCount": 17,
+    "tarball": {
+      "bytes": 8504,
+      "sha256": "de98da383c6f5c2ae39c847cedd2a2e4fd4ba344312c4309d8cee6a3a07076eb"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

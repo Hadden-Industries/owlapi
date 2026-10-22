@@ -1,0 +1,100 @@
+{
+  "artifactId": "146542c2a97cadcde9eb26255b89cf2b80c27182584dd37bd97e7d196d69294e",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6196,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "2d4c3d00d67067461412a2d9a2f3f8b7b9cda62b3db501e4b6844ccf35c949aa",
+        "size": 1092,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "fbc3054ed9e51cce426c17344d2c0b9a3792e7f13828c2da2941e92032571650",
+        "size": 1661,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "baf17bd3015c83041abf256f35556baa293c7c8aa0d1992d3387a25ddc26fda2",
+        "size": 15711,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "9e555152aa0534bc434628aa2b7156cdac355fa536af6237ac249166cbf10a88",
+        "size": 704,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1092,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/2d/2d4c3d00d67067461412a2d9a2f3f8b7b9cda62b3db501e4b6844ccf35c949aa",
+          "sha256": "2d4c3d00d67067461412a2d9a2f3f8b7b9cda62b3db501e4b6844ccf35c949aa"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "2d4c3d00d67067461412a2d9a2f3f8b7b9cda62b3db501e4b6844ccf35c949aa",
+        "size": 1092
+      }
+    ],
+    "expandedBytes": 19168,
+    "packageIdentity": {
+      "author": "Wez Furlong <wez@fb.com> (http://wezfurlong.org)",
+      "homepage": "https://facebook.github.io/watchman/docs/bser.html",
+      "license": "MIT",
+      "name": "bser",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/facebook/watchman"
+      },
+      "version": "2.1.2"
+    },
+    "packageMetadata": {
+      "author": "Wez Furlong <wez@fb.com> (http://wezfurlong.org)",
+      "bugs": {
+        "url": "https://github.com/facebook/watchman/issues"
+      },
+      "dependencies": {
+        "node-int64": "^0.4.0"
+      },
+      "description": "JavaScript implementation of the BSER Binary Serialization",
+      "directories": {
+        "test": "test"
+      },
+      "files": [
+        "index.js"
+      ],
+      "homepage": "https://facebook.github.io/watchman/docs/bser.html",
+      "keywords": [
+        "bser",
+        "binary",
+        "protocol"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "bser",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/facebook/watchman"
+      },
+      "scripts": {
+        "test": "node test/bser.js"
+      },
+      "version": "2.1.2"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 6196,
+      "sha256": "15c3e847ec8a6c45e8313f0af133ca379070479822dd3e0d46c63787e5e7f576"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

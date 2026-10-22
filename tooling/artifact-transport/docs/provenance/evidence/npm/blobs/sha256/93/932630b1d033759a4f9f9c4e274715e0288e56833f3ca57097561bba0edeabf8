@@ -1,0 +1,160 @@
+{
+  "artifactId": "fc21df613b2f99d8745fe7ac935ad0efbd4224d6ee4101064712294c645b47f7",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 10380,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9e23899170d96e708b24a2afce11e96d169c8cebf1bd24ac60b675a400cb1cf1",
+        "size": 1079,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "48401a376854ff6acb26c6172b9584631349c364a66f0cc2b323eaf9d35d7af9",
+        "size": 2682,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "63e5d45a6b939146c5b43f0379214792acc44771608047b924de0924a788b1dc",
+        "size": 2184,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/core.js",
+        "sha256": "a8b28e116fef412d7503f7cc4a64b01d3d2f747a493b3d83dd97bd732ffc8b92",
+        "size": 24093,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/error.js",
+        "sha256": "566a8c25b1571444f3d13907af0a717193bde517a8e0af5ac3aee579e9390d7e",
+        "size": 1613,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/plugins/json.js",
+        "sha256": "630687900680a231ae0706ddcd492426b8f705ccee6a4257f1940f26923afcb3",
+        "size": 2070,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/plugins/tar.js",
+        "sha256": "dde2f2e3d0c72e092b0b286e46056582982963ed569456de6b3e35cb2462aecf",
+        "size": 3869,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/plugins/zip.js",
+        "sha256": "3bbf3d7ae284820ab28ff2ae105f75fa4436f4edb2778f664abb7b56ad4a7090",
+        "size": 4172,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "71f9d2abd62fc121c3f5c7ccb75a148cf1e8ce0b58ae6b86ea150cf719b86133",
+        "size": 1314,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1079,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9e/9e23899170d96e708b24a2afce11e96d169c8cebf1bd24ac60b675a400cb1cf1",
+          "sha256": "9e23899170d96e708b24a2afce11e96d169c8cebf1bd24ac60b675a400cb1cf1"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9e23899170d96e708b24a2afce11e96d169c8cebf1bd24ac60b675a400cb1cf1",
+        "size": 1079
+      }
+    ],
+    "expandedBytes": 43076,
+    "packageIdentity": {
+      "author": {
+        "name": "Chris Talkington",
+        "url": "http://christalkington.com/"
+      },
+      "homepage": "https://github.com/archiverjs/node-archiver",
+      "license": "MIT",
+      "name": "archiver",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/archiverjs/node-archiver.git"
+      },
+      "version": "7.0.1"
+    },
+    "packageMetadata": {
+      "author": {
+        "name": "Chris Talkington",
+        "url": "http://christalkington.com/"
+      },
+      "bugs": {
+        "url": "https://github.com/archiverjs/node-archiver/issues"
+      },
+      "dependencies": {
+        "archiver-utils": "^5.0.2",
+        "async": "^3.2.4",
+        "buffer-crc32": "^1.0.0",
+        "readable-stream": "^4.0.0",
+        "readdir-glob": "^1.1.2",
+        "tar-stream": "^3.0.0",
+        "zip-stream": "^6.0.1"
+      },
+      "description": "a streaming interface for archive generation",
+      "devDependencies": {
+        "archiver-jsdoc-theme": "1.1.3",
+        "chai": "4.4.1",
+        "jsdoc": "4.0.2",
+        "mkdirp": "3.0.1",
+        "mocha": "10.3.0",
+        "rimraf": "5.0.5",
+        "stream-bench": "0.1.2",
+        "tar": "6.2.0",
+        "yauzl": "3.1.2"
+      },
+      "engines": {
+        "node": ">= 14"
+      },
+      "files": [
+        "index.js",
+        "lib"
+      ],
+      "homepage": "https://github.com/archiverjs/node-archiver",
+      "keywords": [
+        "archive",
+        "archiver",
+        "stream",
+        "zip",
+        "tar"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "archiver",
+      "publishConfig": {
+        "registry": "https://registry.npmjs.org/"
+      },
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/archiverjs/node-archiver.git"
+      },
+      "scripts": {
+        "bench": "node benchmark/simple/pack-zip.js",
+        "test": "mocha --reporter dot"
+      },
+      "version": "7.0.1"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 10380,
+      "sha256": "eb1931599e2450f1969fc01798f0ee097b5afcbd47c67b32c23b7883a76c8035"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

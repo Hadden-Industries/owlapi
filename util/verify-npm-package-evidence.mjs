@@ -142,11 +142,15 @@ export const measureRepositoryEvidence = async ({
 
 export const verifyRepositoryEvidence = async ({
   repositoryRoot = DEFAULT_REPOSITORY_ROOT,
+  schemaPath = resolve(
+    DEFAULT_REPOSITORY_ROOT,
+    "docs/provenance/npm-package-evidence.schema.json",
+  ),
 } = {}) => {
   const provenanceRoot = resolve(repositoryRoot, "docs", "provenance");
   const [manifest, schema, lockfileBytes] = await Promise.all([
     readJson(resolve(provenanceRoot, EVIDENCE_MANIFEST_NAME)),
-    readJson(resolve(provenanceRoot, "npm-package-evidence.schema.json")),
+    readJson(schemaPath),
     readFile(resolve(repositoryRoot, "package-lock.json")),
   ]);
 

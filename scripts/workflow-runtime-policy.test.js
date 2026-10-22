@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { parse } from "yaml";
+import { CI_RUNTIME, projectRuntimeText } from "./runtime-policy.mjs";
 import {
   projectWorkflowRuntime,
   checkWorkflowRuntimeProjections,
@@ -26,8 +27,9 @@ describe("closed runtime projections", () => {
       write: true,
     });
     const expected = parse(source);
-    expected.jobs.test.steps[0].run =
-      "npm install --global npm@12.2.0\necho unchanged\n";
+    expected.jobs.test.steps[0].run = projectRuntimeText(
+      "npm install --global npm@{{runtime:npm}}\necho unchanged\n",
+    );
     expect(parse(written.source)).toEqual(expected);
     expect(projectWorkflowRuntime(written.source, projections).drift).toEqual(
       [],
@@ -50,15 +52,15 @@ describe("closed runtime projections", () => {
     ).toThrow("Unapproved runtime projection");
   });
 
-  it("rejects a substituted runtime in real workflow YAML", () => {
+  it("rejects a substituted generated runtime label in real workflow YAML", () => {
     const source = readFileSync(
       new URL("../.github/workflows/ci.yml", import.meta.url),
       "utf8",
     );
     const drift = checkWorkflowRuntimeProjections({
       "ci.yml": source.replace(
-        'node-version: "24.21.0"',
-        'node-version: "24.21.1"',
+        `name: CI / Ubuntu / Node ${CI_RUNTIME.node["24"]}`,
+        "name: CI / Ubuntu / Node 0.0.0",
       ),
     });
     expect(

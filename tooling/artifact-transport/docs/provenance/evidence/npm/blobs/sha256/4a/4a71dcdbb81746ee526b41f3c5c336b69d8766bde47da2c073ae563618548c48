@@ -1,0 +1,203 @@
+{
+  "artifactId": "940711a79dddffcd4bb167f6f6edea9706f9b453b1de9114310bbde79c2c9ede",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6265,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.eslintrc",
+        "sha256": "0694050195fc694c5846b0a2a66b437ac775da988f0a779c55fb892597f7f641",
+        "size": 43,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "c2a8c9a4121545c46eac5a3efbafc18f9d355a8dfc119a59d03c9c8b2c320818",
+        "size": 581,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nycrc",
+        "sha256": "997785c50b0773e5e18bf15550fbf57823c634fefe623cd37b3c83696402ad0a",
+        "size": 139,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "97dccd375c9b2406dd601509cf253e25163d1117f0a3f8a65ced89a846f30006",
+        "size": 8290,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "6d0917530cf3b3dca12c1ab7798e4d38ad0a6798ecc1bd27849a3048ba91d265",
+        "size": 1067,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "b570d7ea2d3224bbeb615703115ff5814ebd72682c0525fd781aa8a75091e4d1",
+        "size": 2012,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "9dd8e59eb9b8db3d818336e2dba43978361c0477c946f897944dfa68525dd46c",
+        "size": 104,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "8742ca1e3084feacfab0e818be1945572a7c9b46893fe40c237f25dc62c7d563",
+        "size": 599,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "94ee37a9d8cf4693e7ec54de4c1880db91a22711c4706ef74bcda85c053a4b7d",
+        "size": 2218,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "043fbc2fa7a2bddf965b0e3dc5e2954f6dc44a3acd6201877bdca7d82ce85ae7",
+        "size": 696,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "7903e692216770b0f59ea1f74ec691385b29fd142b11bc5ef25b2ef6cd58b59f",
+        "size": 123,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1067,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/6d/6d0917530cf3b3dca12c1ab7798e4d38ad0a6798ecc1bd27849a3048ba91d265",
+          "sha256": "6d0917530cf3b3dca12c1ab7798e4d38ad0a6798ecc1bd27849a3048ba91d265"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "6d0917530cf3b3dca12c1ab7798e4d38ad0a6798ecc1bd27849a3048ba91d265",
+        "size": 1067
+      },
+      {
+        "blob": {
+          "bytes": 2012,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/b5/b570d7ea2d3224bbeb615703115ff5814ebd72682c0525fd781aa8a75091e4d1",
+          "sha256": "b570d7ea2d3224bbeb615703115ff5814ebd72682c0525fd781aa8a75091e4d1"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "b570d7ea2d3224bbeb615703115ff5814ebd72682c0525fd781aa8a75091e4d1",
+        "size": 2012
+      }
+    ],
+    "expandedBytes": 15872,
+    "packageIdentity": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "homepage": "https://github.com/inspect-js/is-weakref#readme",
+      "license": "MIT",
+      "name": "is-weakref",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/is-weakref.git"
+      },
+      "version": "1.1.1"
+    },
+    "packageMetadata": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "bugs": {
+        "url": "https://github.com/inspect-js/is-weakref/issues"
+      },
+      "dependencies": {
+        "call-bound": "^1.0.3"
+      },
+      "description": "Is this value a JS WeakRef? This module works cross-realm/iframe, and despite ES6 @@toStringTag.",
+      "devDependencies": {
+        "@arethetypeswrong/cli": "^0.17.3",
+        "@ljharb/eslint-config": "^21.1.1",
+        "@ljharb/tsconfig": "^0.2.3",
+        "@types/for-each": "^0.3.3",
+        "@types/object-inspect": "^1.13.0",
+        "@types/tape": "^5.8.1",
+        "auto-changelog": "^2.5.0",
+        "encoding": "^0.1.13",
+        "eslint": "=8.8.0",
+        "for-each": "^0.3.4",
+        "in-publish": "^2.0.1",
+        "npmignore": "^0.3.1",
+        "nyc": "^10.3.2",
+        "object-inspect": "^1.13.3",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.9.0",
+        "typescript": "next"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "exports": {
+        ".": "./index.js",
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "homepage": "https://github.com/inspect-js/is-weakref#readme",
+      "keywords": [
+        "weakref",
+        "weak",
+        "ref",
+        "finalization",
+        "finalization registry"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "is-weakref",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/is-weakref.git"
+      },
+      "scripts": {
+        "lint": "eslint --ext=js,mjs .",
+        "postlint": "tsc && attw -P",
+        "posttest": "npx npm@'>=10.2' audit --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only",
+        "tests-only": "nyc tape 'test/**/*.js'",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "sideEffects": false,
+      "version": "1.1.1"
+    },
+    "physicalEntryCount": 11,
+    "tarball": {
+      "bytes": 6265,
+      "sha256": "86c24711a2424e7d5e9842d881ddb7b8cd1fab5a13a4a6eeb46869788d78678f"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

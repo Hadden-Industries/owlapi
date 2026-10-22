@@ -1,0 +1,212 @@
+{
+  "artifactId": "812c5d9a8689df73a25751a0f8f12d91dbb8e728979e95990ed766b231c6e5f9",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7928,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.editorconfig",
+        "sha256": "29f415a7134062e36faa312c9bf4a20dd48375c5895003b2ff0fc01cc21b7ab8",
+        "size": 231,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.eslintrc",
+        "sha256": "0694050195fc694c5846b0a2a66b437ac775da988f0a779c55fb892597f7f641",
+        "size": 43,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.gitattributes",
+        "sha256": "e753774a5c6c845d5b43db5e4e133c8b7308c233f036517be1e2ae01cb068790",
+        "size": 12,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "c90994dcd45603724d68c84cb2258770a996c749fae8126332a68826626a60b2",
+        "size": 577,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nycrc",
+        "sha256": "997785c50b0773e5e18bf15550fbf57823c634fefe623cd37b3c83696402ad0a",
+        "size": 139,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "4f07dbd428a201df34ea3f8fcdac60a6b901bf3fd8d3b9861fe9c45bb51c1a7f",
+        "size": 8390,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "5a26e47b9d7020848f061bcad66f8e73cab95f529dab5c02588b21e57c4f876c",
+        "size": 1067,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "19bba5dd2294e168b1e506bce8b2b39da0525888e84f5612a95136af31e7e2ed",
+        "size": 1793,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "dbec0400e6d2af1bb317ec742dcc89cd2f0a2771e21b3724b3b1907d34434397",
+        "size": 94,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "1cb1d37b920bd16d2cedaee79515b27a5873be0b4daa346f063600b4d6a05861",
+        "size": 1075,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b2d7c205058919c957fed69cbf8cdcd589dfc82c0aadc4c2e298f9ee3afd296a",
+        "size": 2278,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "3d12cae9f72b4384ba9535d56e97fda37d52d96bf8081877c535617448544073",
+        "size": 1102,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "b772fc0e85fe374bb32302cdbc08c8854d6a679bcf7f4f7b8da28098e2979521",
+        "size": 3611,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1067,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5a/5a26e47b9d7020848f061bcad66f8e73cab95f529dab5c02588b21e57c4f876c",
+          "sha256": "5a26e47b9d7020848f061bcad66f8e73cab95f529dab5c02588b21e57c4f876c"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "5a26e47b9d7020848f061bcad66f8e73cab95f529dab5c02588b21e57c4f876c",
+        "size": 1067
+      },
+      {
+        "blob": {
+          "bytes": 1793,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/19/19bba5dd2294e168b1e506bce8b2b39da0525888e84f5612a95136af31e7e2ed",
+          "sha256": "19bba5dd2294e168b1e506bce8b2b39da0525888e84f5612a95136af31e7e2ed"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "19bba5dd2294e168b1e506bce8b2b39da0525888e84f5612a95136af31e7e2ed",
+        "size": 1793
+      }
+    ],
+    "expandedBytes": 20412,
+    "packageIdentity": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "homepage": "https://github.com/inspect-js/is-map#readme",
+      "license": "MIT",
+      "name": "is-map",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/is-map.git"
+      },
+      "version": "2.0.3"
+    },
+    "packageMetadata": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "bugs": {
+        "url": "https://github.com/inspect-js/is-map/issues"
+      },
+      "description": "Is this value a JS Map? This module works cross-realm/iframe, and despite ES6 @@toStringTag.",
+      "devDependencies": {
+        "@arethetypeswrong/cli": "^0.15.0",
+        "@ljharb/eslint-config": "^21.1.0",
+        "@types/for-each": "^0.3.3",
+        "@types/object-inspect": "^1.8.4",
+        "@types/tape": "^5.6.4",
+        "aud": "^2.0.4",
+        "auto-changelog": "^2.4.0",
+        "core-js": "^2.6.12",
+        "es5-shim": "^4.6.7",
+        "es6-shim": "^0.35.8",
+        "eslint": "=8.8.0",
+        "for-each": "^0.3.3",
+        "in-publish": "^2.0.1",
+        "npmignore": "^0.3.1",
+        "nyc": "^10.3.2",
+        "object-inspect": "^1.13.1",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.7.5",
+        "typescript": "^5.5.0-dev.20240308"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "homepage": "https://github.com/inspect-js/is-map#readme",
+      "keywords": [
+        "map",
+        "set",
+        "collection",
+        "is",
+        "robust"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "is-map",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/is-map.git"
+      },
+      "scripts": {
+        "lint": "eslint --ext=js,mjs .",
+        "postlint": "tsc -p . && attw -P",
+        "posttest": "aud --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only && npm run tests:shims && npm run tests:corejs",
+        "tests-only": "nyc tape 'test/**/*.js'",
+        "tests:corejs": "nyc tape --require=core-js 'test/**/*.js'",
+        "tests:shims": "nyc tape --require=es5-shim --require=es5-shim 'test/**/*.js'",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "sideEffects": false,
+      "version": "2.0.3"
+    },
+    "physicalEntryCount": 13,
+    "tarball": {
+      "bytes": 7928,
+      "sha256": "9b981d8ca28db4343aa5b285d20342a175ef34ae25840a302c1e39d3fcb6e98f"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

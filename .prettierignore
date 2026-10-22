@@ -8,6 +8,8 @@ docs/release/producer-gates.json
 internal/parsing/jsonld/provider/jsonld.js
 internal/parsing/jsonld/provider/LICENSE.txt
 internal/parsing/jsonld/provider/licenses/
+# Reproducible artifact-action bundles retain upstream presentation and notices.
+.github/actions/retain-artifact/dist/
 # Upstream notice bytes are bound by the development inventory.
 LICENSES/development/scancode-runtime/**
 !LICENSES/development/scancode-runtime/inventory.json
@@ -17,6 +19,8 @@ docs/compatibility/java-api-surface.md
 util/owlapi-reference/fixtures/
 docs/Deep Review of Phase 19 and Phase 20 of the owlapi Implementation Plan \[2026-08-24T1130\].md
 docs/Deep Review of Phase 19 and Phase 20 of the owlapi Implementation Plan \[2026-08-25T0020\].md
+# Authored Markdown belongs to the isolated Markdown Quality CLI.
+**/*.md
 # JSON presentation and source repair belong to the isolated shared JSON writer.
 # These patterns do not affect JSON-quality discovery or checking.
 **/*.json
@@ -24,3 +28,5 @@ docs/Deep Review of Phase 19 and Phase 20 of the owlapi Implementation Plan \[20
 **/*.sarif
 **/*.jsonl
 **/*.ndjson
+**/*.jsonc
+**/*.json5

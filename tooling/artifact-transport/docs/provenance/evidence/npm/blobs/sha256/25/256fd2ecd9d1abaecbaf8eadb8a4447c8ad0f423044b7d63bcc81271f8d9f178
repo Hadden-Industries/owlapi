@@ -1,0 +1,146 @@
+{
+  "artifactId": "42236cdb6b4fc0ce7f33ab3d71dafcbcd9e9f70ef3c2aa94c8ecd725549db03b",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 10180,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "e7ceb6a6926e76a67981a440f4107d6152ac1fc2250c90a66460444518328b75",
+        "size": 1068,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "b73d5b1b40119d78c5e866be08c697819402f3bf1e157cd136ef2e14bbe8abcd",
+        "size": 1313,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/io-util.d.ts",
+        "sha256": "fa416cda410167ea9d721ea9c870740f982fe95858eea24a951b811297ec8806",
+        "size": 1952,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/io-util.js",
+        "sha256": "db02e06a5414f762f527a1a86ce1bce7c91fb56c3a3326d11b7ed82545f98dfd",
+        "size": 7121,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/io-util.js.map",
+        "sha256": "d9ccfd9d9b258a54fbd61d6d287825e3cfa8e2cd6c7644a529e9c595dd7b83ca",
+        "size": 4449,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/io.d.ts",
+        "sha256": "145e49f41b45532445def4a178f11d4e87b9abb3c7cd5143f866112c8a5066f0",
+        "size": 2301,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/io.js",
+        "sha256": "c5bc33b9c076e8d9c1c078b9dd5e479bdb2c93e646534f8453a728bdd35bf0bc",
+        "size": 10656,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/io.js.map",
+        "sha256": "450c6cdda8390390d602e4532fabb4e6a257b877295b88d4e220adbc62c80fd1",
+        "size": 7049,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "428738b01282f0ff15df66e09ca87dfb5ab2116959cc600c8a48469170a5ba89",
+        "size": 1044,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1068,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/e7/e7ceb6a6926e76a67981a440f4107d6152ac1fc2250c90a66460444518328b75",
+          "sha256": "e7ceb6a6926e76a67981a440f4107d6152ac1fc2250c90a66460444518328b75"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "e7ceb6a6926e76a67981a440f4107d6152ac1fc2250c90a66460444518328b75",
+        "size": 1068
+      }
+    ],
+    "expandedBytes": 36953,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/actions/toolkit/tree/main/packages/io",
+      "license": "MIT",
+      "name": "@actions/io",
+      "repository": {
+        "directory": "packages/io",
+        "type": "git",
+        "url": "git+https://github.com/actions/toolkit.git"
+      },
+      "version": "3.0.2"
+    },
+    "packageMetadata": {
+      "bugs": {
+        "url": "https://github.com/actions/toolkit/issues"
+      },
+      "description": "Actions io lib",
+      "directories": {
+        "lib": "lib",
+        "test": "__tests__"
+      },
+      "exports": {
+        ".": {
+          "import": "./lib/io.js",
+          "types": "./lib/io.d.ts"
+        },
+        "./lib/io-util": {
+          "import": "./lib/io-util.js",
+          "types": "./lib/io-util.d.ts"
+        }
+      },
+      "files": [
+        "lib"
+      ],
+      "homepage": "https://github.com/actions/toolkit/tree/main/packages/io",
+      "keywords": [
+        "github",
+        "actions",
+        "io"
+      ],
+      "license": "MIT",
+      "main": "lib/io.js",
+      "name": "@actions/io",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/io",
+        "type": "git",
+        "url": "git+https://github.com/actions/toolkit.git"
+      },
+      "scripts": {
+        "audit-moderate": "npm install && npm audit --json --audit-level=moderate > audit.json",
+        "test": "echo \"Error: run tests from root\" && exit 1",
+        "tsc": "tsc"
+      },
+      "type": "module",
+      "types": "lib/io.d.ts",
+      "version": "3.0.2"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 10180,
+      "sha256": "9ad0f5e5d1c6d48e495faabd97dd7cc2eb01008303a3c551c0a20c8583bacb44"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

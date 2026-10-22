@@ -1,0 +1,216 @@
+{
+  "artifactId": "307ccc9cf948ec1963cca9cf1ad8c53212b7eb0a91cc35217b92837f12f01fab",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 60073,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "80fc1081d9612e7c476c8244d2febbda786d87094e72b2f70db869514ee2a51e",
+        "size": 1433,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "8e75fc0e776c62ccadb8178ece8d3daa9ba7601fb0a49b2dfb0ea9a7a5c0aa07",
+        "size": 1077,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "b55a37d12169e4fcfa8718b132c446eba4fa067e22c3cafc5a4d6cf6054fce76",
+        "size": 4913,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/fxb.cjs",
+        "sha256": "987f2d413ff7c005f2aa8488c132e97204aaed1ae947b05c15c2517b86561408",
+        "size": 21985,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/fxb.d.cts",
+        "sha256": "bf00115bf4352db46e091290ff5e60b7f89e07b9a9df556bcd6201c206845476",
+        "size": 7096,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/fxb.min.js",
+        "sha256": "7bb5cf789808985b95cf4ad339633086bdec2423fcc76b1391f93304b8243147",
+        "size": 23661,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/fxb.min.js.map",
+        "sha256": "e6d41878c8127bda929e4ec2441b7715665443f27fd697edee03d8390a9dd2c9",
+        "size": 116030,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "304416f412412cd967ee1139f0eadfebaa263e92bfbfa264bedbb37055d5c27e",
+        "size": 1883,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/fxb.d.ts",
+        "sha256": "6a1352422b247af7058811bca5c0e159d03fad512e0eca38eb765a46154be045",
+        "size": 7161,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/fxb.js",
+        "sha256": "44d54aa1500d8b179b56c47003530ade9220c0daec31caeeeb1a59760eca6d88",
+        "size": 23479,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/ignoreAttributes.js",
+        "sha256": "40bdf3ab37f544b9f8ea7e474114f489a77ed3247e0be597b9e83e01688e8c80",
+        "size": 586,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/orderedJs2Xml.js",
+        "sha256": "4d5b4d0e3a8b3bfa4535e85a2182446f05f32e179dffba00e07422da84cbdb69",
+        "size": 13598,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/prettifyJs2Xml.js",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/util.js",
+        "sha256": "f585f26c6fa18af890c32d00fbb00fbfd05b9c7217419b6fe8675bdcee264140",
+        "size": 866,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1077,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/8e/8e75fc0e776c62ccadb8178ece8d3daa9ba7601fb0a49b2dfb0ea9a7a5c0aa07",
+          "sha256": "8e75fc0e776c62ccadb8178ece8d3daa9ba7601fb0a49b2dfb0ea9a7a5c0aa07"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "8e75fc0e776c62ccadb8178ece8d3daa9ba7601fb0a49b2dfb0ea9a7a5c0aa07",
+        "size": 1077
+      },
+      {
+        "blob": {
+          "bytes": 4913,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/b5/b55a37d12169e4fcfa8718b132c446eba4fa067e22c3cafc5a4d6cf6054fce76",
+          "sha256": "b55a37d12169e4fcfa8718b132c446eba4fa067e22c3cafc5a4d6cf6054fce76"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "b55a37d12169e4fcfa8718b132c446eba4fa067e22c3cafc5a4d6cf6054fce76",
+        "size": 4913
+      }
+    ],
+    "expandedBytes": 223768,
+    "packageIdentity": {
+      "author": "Amit Gupta (https://solothought.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "fast-xml-builder",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/NaturalIntelligence/fast-xml-builder.git"
+      },
+      "version": "1.3.1"
+    },
+    "packageMetadata": {
+      "author": "Amit Gupta (https://solothought.com)",
+      "dependencies": {
+        "path-expression-matcher": "^1.6.2",
+        "xml-naming": "^0.3.0"
+      },
+      "description": "Build XML from JSON without C/C++ based libraries",
+      "devDependencies": {
+        "@babel/core": "^7.13.10",
+        "@babel/plugin-transform-runtime": "^7.13.10",
+        "@babel/preset-env": "^7.13.10",
+        "@babel/register": "^7.13.8",
+        "@nodable/entities": "^2.1.0",
+        "@types/node": "20",
+        "babel-loader": "^8.2.2",
+        "c8": "^10.1.3",
+        "eslint": "^8.3.0",
+        "fast-xml-parser": "^5.3.9",
+        "jasmine": "^5.6.0",
+        "prettier": "^3.5.1",
+        "typescript": "5",
+        "webpack": "^5.64.4",
+        "webpack-cli": "^4.9.1"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "default": "./src/fxb.js",
+            "types": "./src/fxb.d.ts"
+          },
+          "require": {
+            "default": "./lib/fxb.cjs",
+            "types": "./lib/fxb.d.cts"
+          }
+        }
+      },
+      "files": [
+        "lib",
+        "src",
+        "CHANGELOG.md"
+      ],
+      "funding": [
+        {
+          "type": "github",
+          "url": "https://github.com/sponsors/NaturalIntelligence"
+        }
+      ],
+      "keywords": [
+        "xml",
+        "json",
+        "fast",
+        "builder",
+        "parser",
+        "js2xml",
+        "json2xml"
+      ],
+      "license": "MIT",
+      "main": "./lib/fxb.cjs",
+      "module": "./src/fxb.js",
+      "name": "fast-xml-builder",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/NaturalIntelligence/fast-xml-builder.git"
+      },
+      "scripts": {
+        "bundle": "webpack --config webpack.cjs.config.js",
+        "lint": "eslint src/**/*.js spec/**/*.js benchmark/**/*.js",
+        "prettier": "prettier --write src/**/*.js",
+        "test": "c8 --reporter=lcov --reporter=text jasmine spec/*spec.js",
+        "test-types": "tsc --noEmit spec/typings/typings-test.ts",
+        "unit": "jasmine"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "types": "./src/fxb.d.ts",
+      "version": "1.3.1"
+    },
+    "physicalEntryCount": 14,
+    "tarball": {
+      "bytes": 60073,
+      "sha256": "0e9583b397ee65ab8cfd32b2f78461bc7d9d4c2d398a03506f524d1973d7642a"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

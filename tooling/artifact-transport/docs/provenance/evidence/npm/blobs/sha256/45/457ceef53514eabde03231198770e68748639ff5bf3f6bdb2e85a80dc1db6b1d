@@ -1,0 +1,127 @@
+{
+  "artifactId": "edaccd52324aaa85cbf302cf02b8bf99ec289a0ae152a00e64396fb79d1fbb8c",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7804,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "8e75fc0e776c62ccadb8178ece8d3daa9ba7601fb0a49b2dfb0ea9a7a5c0aa07",
+        "size": 1077,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "1e88190ad99aa33ac5114a49f5661319938346d35fbc1babcaca0b4b47fbbb09",
+        "size": 4642,
+        "type": "FILE"
+      },
+      {
+        "path": "package/anynum.js",
+        "sha256": "f8c6a9b031489dfc1573e7a669e4860223ddeedc0007db5dbf5878a14249776d",
+        "size": 4309,
+        "type": "FILE"
+      },
+      {
+        "path": "package/digitTable.js",
+        "sha256": "c649d39c53ebe6817c71407de8105b6d8cbc2326867f90d59f49ab02d9271b44",
+        "size": 5126,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "41c5d60f0aa8b5f4133aeff56573a8c4130d4d1c19dc240398ff806b40a4470e",
+        "size": 896,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1077,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/8e/8e75fc0e776c62ccadb8178ece8d3daa9ba7601fb0a49b2dfb0ea9a7a5c0aa07",
+          "sha256": "8e75fc0e776c62ccadb8178ece8d3daa9ba7601fb0a49b2dfb0ea9a7a5c0aa07"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "8e75fc0e776c62ccadb8178ece8d3daa9ba7601fb0a49b2dfb0ea9a7a5c0aa07",
+        "size": 1077
+      },
+      {
+        "blob": {
+          "bytes": 4642,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/1e/1e88190ad99aa33ac5114a49f5661319938346d35fbc1babcaca0b4b47fbbb09",
+          "sha256": "1e88190ad99aa33ac5114a49f5661319938346d35fbc1babcaca0b4b47fbbb09"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "1e88190ad99aa33ac5114a49f5661319938346d35fbc1babcaca0b4b47fbbb09",
+        "size": 4642
+      }
+    ],
+    "expandedBytes": 16050,
+    "packageIdentity": {
+      "author": "Amit Gupta (https://solothought.work/)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "anynum",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/NaturalIntelligence/anynum"
+      },
+      "version": "1.0.1"
+    },
+    "packageMetadata": {
+      "author": "Amit Gupta (https://solothought.work/)",
+      "description": "Normalize all Unicode decimal digits (Devanagari, Arabic, Thai, etc.) to ASCII numerals. Zero dependencies, performance-first.",
+      "files": [
+        "anynum.js",
+        "digitTable.js",
+        "README.md"
+      ],
+      "funding": [
+        {
+          "type": "github",
+          "url": "https://github.com/sponsors/NaturalIntelligence"
+        }
+      ],
+      "keywords": [
+        "unicode",
+        "digits",
+        "normalize",
+        "devanagari",
+        "arabic",
+        "hindi",
+        "japanese",
+        "indic",
+        "asian",
+        "math",
+        "numerals",
+        "strnum"
+      ],
+      "license": "MIT",
+      "main": "./anynum.js",
+      "name": "anynum",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/NaturalIntelligence/anynum"
+      },
+      "scripts": {
+        "bench": "node test/bench.js",
+        "test": "jasmine tests/anynum.test.js"
+      },
+      "type": "module",
+      "version": "1.0.1"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 7804,
+      "sha256": "705d5c67f0438588aded995c6f88fee65495d0bf6a785a5fa2c448a2fb1f341a"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

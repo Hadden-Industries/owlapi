@@ -1,0 +1,216 @@
+{
+  "artifactId": "4f25faf269ca18c2496c001834e98adfba9e92eb2be292e885102ecf794f6e49",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 8542,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.eslintrc",
+        "sha256": "f1ed5864e82f3ddec5070d4a1a3783b52be87cd4733372a1479667403bc276b0",
+        "size": 87,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "0d779a8864bbb01c35283ea1289c8a161cab19296f46715e737befc7d7890b1b",
+        "size": 580,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nycrc",
+        "sha256": "a4766e182e1ce45be9f6f1658281846c3abc8684c1cf90d6c7ae1940c5dfe8bc",
+        "size": 159,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "01db1d2a290a71ebd9b45230caaaf6d54921228368879ad7f94bbc1dbf35ce96",
+        "size": 14532,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "c61652db3d2808f667b48af0a358f0d85fd07ad4a0d0b1a50882dec3b764c522",
+        "size": 1082,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "a0495af3b42fbbcace424c690331e7dca5da2c5b510bde6f5860d793ee567e02",
+        "size": 2216,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "5ff596eb78ea76e34afefaee8ebe84aa115d4559aeefaf602ab0ee27ee123aa2",
+        "size": 88,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "288745c9f4a47b111b256f99243d55120a85b1abcbac2b865d727e340a5546a3",
+        "size": 1056,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "e34f86b9cc8a1811587ca3eb5efdb7f158f3646693b5e657e7188c52b54a696c",
+        "size": 2554,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "ca0d16ba02c57a7c1616f41c862623cfb7985eb062bde788cf4bb2ccf6544222",
+        "size": 1524,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "7903e692216770b0f59ea1f74ec691385b29fd142b11bc5ef25b2ef6cd58b59f",
+        "size": 123,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1082,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c6/c61652db3d2808f667b48af0a358f0d85fd07ad4a0d0b1a50882dec3b764c522",
+          "sha256": "c61652db3d2808f667b48af0a358f0d85fd07ad4a0d0b1a50882dec3b764c522"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "c61652db3d2808f667b48af0a358f0d85fd07ad4a0d0b1a50882dec3b764c522",
+        "size": 1082
+      },
+      {
+        "blob": {
+          "bytes": 2216,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a0/a0495af3b42fbbcace424c690331e7dca5da2c5b510bde6f5860d793ee567e02",
+          "sha256": "a0495af3b42fbbcace424c690331e7dca5da2c5b510bde6f5860d793ee567e02"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "a0495af3b42fbbcace424c690331e7dca5da2c5b510bde6f5860d793ee567e02",
+        "size": 2216
+      }
+    ],
+    "expandedBytes": 24001,
+    "packageIdentity": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "is-string",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/inspect-js/is-string.git"
+      },
+      "version": "1.1.1"
+    },
+    "packageMetadata": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "dependencies": {
+        "call-bound": "^1.0.3",
+        "has-tostringtag": "^1.0.2"
+      },
+      "description": "Is this value a JS String object or primitive? This module works cross-realm/iframe, and despite ES6 @@toStringTag.",
+      "devDependencies": {
+        "@arethetypeswrong/cli": "^0.17.1",
+        "@ljharb/eslint-config": "^21.1.1",
+        "@ljharb/tsconfig": "^0.2.2",
+        "@types/core-js": "^2.5.8",
+        "@types/tape": "^5.7.0",
+        "auto-changelog": "^2.5.0",
+        "core-js": "^3.39.0",
+        "eclint": "^2.8.1",
+        "encoding": "^0.1.13",
+        "eslint": "=8.8.0",
+        "in-publish": "^2.0.1",
+        "is": "^3.3.0",
+        "npmignore": "^0.3.1",
+        "nyc": "^10.3.2",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.9.0",
+        "typescript": "next"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "keywords": [
+        "String",
+        "string",
+        "ES6",
+        "toStringTag",
+        "@@toStringTag",
+        "String object"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "is-string",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows",
+          "test-corejs.js"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/inspect-js/is-string.git"
+      },
+      "scripts": {
+        "lint": "eslint --ext=js,mjs .",
+        "postlint": "tsc -p . && attw -P",
+        "posttest": "npx npm@'>=10.2' audit --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prelint": "eclint check $(git ls-files | xargs find 2> /dev/null | grep -vE 'node_modules|\\.git')",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only && npm run test:corejs",
+        "test:corejs": "nyc tape test-corejs.js",
+        "tests-only": "nyc tape 'test/**/*.js'",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "testling": {
+        "browsers": [
+          "iexplore/6.0..latest",
+          "firefox/3.0..6.0",
+          "firefox/15.0..latest",
+          "firefox/nightly",
+          "chrome/4.0..10.0",
+          "chrome/20.0..latest",
+          "chrome/canary",
+          "opera/10.0..latest",
+          "opera/next",
+          "safari/4.0..latest",
+          "ipad/6.0..latest",
+          "iphone/6.0..latest",
+          "android-browser/4.2"
+        ],
+        "files": "test/index.js"
+      },
+      "version": "1.1.1"
+    },
+    "physicalEntryCount": 11,
+    "tarball": {
+      "bytes": 8542,
+      "sha256": "3e36bf072a5561d2440fe7cea5bc79754c3c8110650e94c960842f08d328023e"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

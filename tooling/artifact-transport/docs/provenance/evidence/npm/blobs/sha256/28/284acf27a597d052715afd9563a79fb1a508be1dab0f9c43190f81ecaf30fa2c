@@ -1,0 +1,168 @@
+{
+  "artifactId": "becd81632b2995f654a118caa08986d6152410c12c1b88ab40f02af8f1ca10ee",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6089,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.txt",
+        "sha256": "2dc0465729366c3a7890dfa9e972a1ba7048a26c02116fb8b419a6a1ac110149",
+        "size": 731,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "7091e97547a7309bd604458cb765580700268bd389c7f2e6422d46a782d095e1",
+        "size": 3055,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.cjs",
+        "sha256": "820aa357a7f6a022bfc3ac6ac19d1681921d0421cae898d5096423c0fb3b8607",
+        "size": 10398,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.d.cts",
+        "sha256": "385fceba2f49ee3f91cd436d3f84b389375e1e8f86906b23f47df2e1b9c2b17b",
+        "size": 1050,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/lib/index.js",
+        "sha256": "e67b3446f47d4a672339c99bea9e987979da9fc70f421701814cb9d52ba176ba",
+        "size": 10100,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.mjs",
+        "sha256": "b75d22297e1bd8992f86218f1749435d05921d2d765697e46a43f680b2edc859",
+        "size": 299,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b4f9cc8d09602a487dea1c227ce24777cda87e2ad8a29ab9f741214ab78dc065",
+        "size": 2164,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 731,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/2d/2dc0465729366c3a7890dfa9e972a1ba7048a26c02116fb8b419a6a1ac110149",
+          "sha256": "2dc0465729366c3a7890dfa9e972a1ba7048a26c02116fb8b419a6a1ac110149"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.txt",
+        "sha256": "2dc0465729366c3a7890dfa9e972a1ba7048a26c02116fb8b419a6a1ac110149",
+        "size": 731
+      }
+    ],
+    "expandedBytes": 27797,
+    "packageIdentity": {
+      "author": "Ben Coe <ben@npmjs.com>",
+      "homepage": null,
+      "license": "ISC",
+      "name": "@isaacs/cliui",
+      "repository": "yargs/cliui",
+      "version": "8.0.2"
+    },
+    "packageMetadata": {
+      "author": "Ben Coe <ben@npmjs.com>",
+      "dependencies": {
+        "string-width": "^5.1.2",
+        "string-width-cjs": "npm:string-width@^4.2.0",
+        "strip-ansi": "^7.0.1",
+        "strip-ansi-cjs": "npm:strip-ansi@^6.0.1",
+        "wrap-ansi": "^8.1.0",
+        "wrap-ansi-cjs": "npm:wrap-ansi@^7.0.0"
+      },
+      "description": "easily create complex multi-column command-line-interfaces",
+      "devDependencies": {
+        "@types/node": "^14.0.27",
+        "@typescript-eslint/eslint-plugin": "^4.0.0",
+        "@typescript-eslint/parser": "^4.0.0",
+        "c8": "^7.3.0",
+        "chai": "^4.2.0",
+        "chalk": "^4.1.0",
+        "cross-env": "^7.0.2",
+        "eslint": "^7.6.0",
+        "eslint-plugin-import": "^2.22.0",
+        "eslint-plugin-node": "^11.1.0",
+        "gts": "^3.0.0",
+        "mocha": "^10.0.0",
+        "rimraf": "^3.0.2",
+        "rollup": "^2.23.1",
+        "rollup-plugin-ts": "^3.0.2",
+        "standardx": "^7.0.0",
+        "typescript": "^4.0.0"
+      },
+      "engines": {
+        "node": ">=12"
+      },
+      "exports": {
+        ".": [
+          {
+            "import": "./index.mjs",
+            "require": "./build/index.cjs"
+          },
+          "./build/index.cjs"
+        ]
+      },
+      "files": [
+        "build",
+        "index.mjs",
+        "!*.d.ts"
+      ],
+      "keywords": [
+        "cli",
+        "command-line",
+        "layout",
+        "design",
+        "console",
+        "wrap",
+        "table"
+      ],
+      "license": "ISC",
+      "main": "build/index.cjs",
+      "module": "./index.mjs",
+      "name": "@isaacs/cliui",
+      "repository": "yargs/cliui",
+      "scripts": {
+        "build:cjs": "rollup -c",
+        "check": "standardx '**/*.ts' && standardx '**/*.js' && standardx '**/*.cjs'",
+        "compile": "tsc",
+        "coverage": "c8 report --check-coverage",
+        "fix": "standardx --fix '**/*.ts' && standardx --fix '**/*.js' && standardx --fix '**/*.cjs'",
+        "postcompile": "npm run build:cjs",
+        "postest": "check",
+        "precompile": "rimraf build",
+        "prepare": "npm run compile",
+        "pretest": "rimraf build && tsc -p tsconfig.test.json && cross-env NODE_ENV=test npm run build:cjs",
+        "test": "c8 mocha ./test/*.cjs",
+        "test:esm": "c8 mocha ./test/**/*.mjs"
+      },
+      "standard": {
+        "globals": [
+          "it"
+        ],
+        "ignore": [
+          "**/example/**"
+        ]
+      },
+      "type": "module",
+      "version": "8.0.2"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 6089,
+      "sha256": "35ae3c68fc09db09a73c223c9c96e742818a85cb3e9ae6574876b1577740e4c2"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

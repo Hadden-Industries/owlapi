@@ -9,7 +9,7 @@ import {
   assertReleaseAssets,
   GitHubReleaseClient,
 } from "./github-release.mjs";
-import { sha256File } from "./release-artifacts.mjs";
+import { sha256File } from "./release-file-utils.mjs";
 import { PACKAGE_VERSION, PACKAGE_FILE_STEM } from "./package-identity.mjs";
 import {
   verifyDownloadedCandidateBundle,

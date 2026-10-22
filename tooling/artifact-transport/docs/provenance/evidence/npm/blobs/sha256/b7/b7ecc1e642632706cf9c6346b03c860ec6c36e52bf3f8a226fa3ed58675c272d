@@ -1,0 +1,141 @@
+{
+  "artifactId": "274495dc230ba9be7d9bec1a227928439383fb5291d172c8d4fbaeb3df527a26",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2768,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "a902326b04490db2b99a85e58e0acb14a437ca7e2231e9adfb2fa91acdcc365c",
+        "size": 744,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "c92312790eb1f246b7c4c1fe9c1247b15441bbca3c6cb64d167beefc45302753",
+        "size": 350,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "8b2dc166f2b74d5098bad38bdd3dd2f4d4775c626199872f5e36dbb48c40931d",
+        "size": 841,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "3ebc0f845b1bab50600f823716040fbec355d3c356a3a76b8eb9eb593b6c7a3a",
+        "size": 2565,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1109,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/48/48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+          "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109
+      },
+      {
+        "blob": {
+          "bytes": 2565,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/3e/3ebc0f845b1bab50600f823716040fbec355d3c356a3a76b8eb9eb593b6c7a3a",
+          "sha256": "3ebc0f845b1bab50600f823716040fbec355d3c356a3a76b8eb9eb593b6c7a3a"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "3ebc0f845b1bab50600f823716040fbec355d3c356a3a76b8eb9eb593b6c7a3a",
+        "size": 2565
+      }
+    ],
+    "expandedBytes": 5609,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "ansi-regex",
+      "repository": "chalk/ansi-regex",
+      "version": "5.0.1"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "description": "Regular expression for matching ANSI escape codes",
+      "devDependencies": {
+        "ava": "^2.4.0",
+        "tsd": "^0.9.0",
+        "xo": "^0.25.3"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "keywords": [
+        "ansi",
+        "styles",
+        "color",
+        "colour",
+        "colors",
+        "terminal",
+        "console",
+        "cli",
+        "string",
+        "tty",
+        "escape",
+        "formatting",
+        "rgb",
+        "256",
+        "shell",
+        "xterm",
+        "command-line",
+        "text",
+        "regex",
+        "regexp",
+        "re",
+        "match",
+        "test",
+        "find",
+        "pattern"
+      ],
+      "license": "MIT",
+      "name": "ansi-regex",
+      "repository": "chalk/ansi-regex",
+      "scripts": {
+        "test": "xo && ava && tsd",
+        "view-supported": "node fixtures/view-codes.js"
+      },
+      "version": "5.0.1"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2768,
+      "sha256": "0e0eadcdaada805db5d85b53ad5cdca0760b996ee199ec9658e7b34aa6c8e0d9"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

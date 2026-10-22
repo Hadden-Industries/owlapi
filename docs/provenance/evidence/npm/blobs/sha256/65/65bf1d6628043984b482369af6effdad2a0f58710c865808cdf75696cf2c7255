@@ -1,0 +1,992 @@
+{
+  "artifactId": "4a9c3b2a04ba91fb1a8ef168bdb5442289d0c0d4028214a65e96b3bcddafa4c2",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 9,
+      "digestVerifiedFileCount": 9,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 9
+    },
+    "artifactId": "4a9c3b2a04ba91fb1a8ef168bdb5442289d0c0d4028214a65e96b3bcddafa4c2",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.13.0",
+        "for_package_purl": "pkg:npm/argparse@3.0.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/neostandard",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^11.0.0",
+        "for_package_purl": "pkg:npm/argparse@3.0.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/c8",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "Greg Ward <gward@python.net>",
+            "end_line": 13,
+            "start_line": 13
+          }
+        ],
+        "base_name": "textwrap",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 1999-2001 Gregory P. Ward",
+            "end_line": 10,
+            "start_line": 10
+          },
+          {
+            "copyright": "Copyright (c) 2002, 2003 Python Software Foundation",
+            "end_line": 11,
+            "start_line": 11
+          },
+          {
+            "copyright": "Copyright (c) 2020 argparse.js authors",
+            "end_line": 12,
+            "start_line": 12
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/argparse@3.0.3"
+        ],
+        "holders": [
+          {
+            "end_line": 10,
+            "holder": "Gregory P. Ward",
+            "start_line": 10
+          },
+          {
+            "end_line": 11,
+            "holder": "Python Software Foundation",
+            "start_line": 11
+          },
+          {
+            "end_line": 12,
+            "holder": "argparse.js authors",
+            "start_line": 12
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "e23816898cd38d22103ae6d997a4bced",
+        "name": "textwrap.js",
+        "package_data": [],
+        "path": "package/lib/textwrap.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "d612e633a6c8dd297ba5a47f0067476253306a69",
+        "sha1_git": "e3248f899ec3012fd7fce50518555c266e441b08",
+        "sha256": "b630c008c1845e5df3562176f381bb50bbecac4c5f4d4ad27b80cca3b57cad84",
+        "size": 17434,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019 Python Software Foundation",
+            "end_line": 14,
+            "start_line": 13
+          }
+        ],
+        "detected_license_expression": "python",
+        "detected_license_expression_spdx": "Python-2.0",
+        "dirs_count": 0,
+        "extension": "",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/argparse@3.0.3"
+        ],
+        "holders": [
+          {
+            "end_line": 14,
+            "holder": "Python Software Foundation",
+            "start_line": 14
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "python-5c90c5bd-cf0e-9752-c4f9-51f363e5aa71",
+            "license_expression": "python",
+            "license_expression_spdx": "Python-2.0",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "4a9c3b2a04ba91fb1a8ef168bdb5442289d0c0d4028214a65e96b3bcddafa4c2/package/LICENSE",
+                "license_expression": "python",
+                "license_expression_spdx": "Python-2.0",
+                "match_coverage": 100,
+                "matched_length": 6,
+                "matched_text": "PYTHON SOFTWARE FOUNDATION LICENSE VERSION 2",
+                "matcher": "2-aho",
+                "rule_identifier": "python_required_phrase_4.RULE",
+                "rule_relevance": 33,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/python_required_phrase_4.RULE",
+                "score": 33,
+                "start_line": 1
+              },
+              {
+                "end_line": 47,
+                "from_file": "4a9c3b2a04ba91fb1a8ef168bdb5442289d0c0d4028214a65e96b3bcddafa4c2/package/LICENSE",
+                "license_expression": "python",
+                "license_expression_spdx": "Python-2.0",
+                "match_coverage": 100,
+                "matched_length": 368,
+                "matched_text": "1. This LICENSE AGREEMENT is between the Python Software Foundation\n(\"PSF\"), and the Individual or Organization (\"Licensee\") accessing and\notherwise using this software (\"Python\") in source or binary form and\nits associated documentation.\n\n2. Subject to the terms and conditions of this License Agreement, PSF hereby\ngrants Licensee a nonexclusive, royalty-free, world-wide license to reproduce,\nanalyze, test, perform and/or display publicly, prepare derivative works,\ndistribute, and otherwise use Python alone or in any derivative version,\nprovided, however, that PSF's License Agreement and PSF's notice of copyright,\ni.e., \"Copyright (c) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010,\n2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019 Python Software Foundation;\nAll Rights Reserved\" are retained in Python alone or in any derivative version\nprepared by Licensee.\n\n3. In the event Licensee prepares a derivative work that is based on\nor incorporates Python or any part thereof, and wants to make\nthe derivative work available to others as provided herein, then\nLicensee hereby agrees to include in any such work a brief summary of\nthe changes made to Python.\n\n4. PSF is making Python available to Licensee on an \"AS IS\"\nbasis.  PSF MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR\nIMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, PSF MAKES NO AND\nDISCLAIMS ANY REPRESENTATION OR WARRANTY OF MERCHANTABILITY OR FITNESS\nFOR ANY PARTICULAR PURPOSE OR THAT THE USE OF PYTHON WILL NOT\nINFRINGE ANY THIRD PARTY RIGHTS.\n\n5. PSF SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF PYTHON\nFOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS AS\nA RESULT OF MODIFYING, DISTRIBUTING, OR OTHERWISE USING PYTHON,\nOR ANY DERIVATIVE THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.\n\n6. This License Agreement will automatically terminate upon a material\nbreach of its terms and conditions.\n\n7. Nothing in this License Agreement shall be deemed to create any\nrelationship of agency, partnership, or joint venture between PSF and\nLicensee.  This License Agreement does not grant permission to use PSF\ntrademarks or trade name in a trademark sense to endorse or promote\nproducts or services of Licensee, or any third party.\n\n8. By copying, installing or otherwise using Python, Licensee\nagrees to be bound by the terms and conditions of this License\nAgreement.",
+                "matcher": "3-seq",
+                "rule_identifier": "python_38.RULE",
+                "rule_relevance": 95,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/python_38.RULE",
+                "score": 93.48,
+                "start_line": 3
+              }
+            ]
+          }
+        ],
+        "md5": "85b6e9c6ddf7e8d6f9e65a923a4b9a76",
+        "name": "LICENSE",
+        "package_data": [],
+        "path": "package/LICENSE",
+        "percentage_of_license_text": 98.42,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "5f9293e0d3989f20ed121b8646431c44410e48eb",
+        "sha1_git": "8a38e525ca52c708f3e6be11a3ac63bb73170a2b",
+        "sha256": "ab745c5061d1dea43a3885e5b4b6befc7e983954954775c5736debeefcdfd89b",
+        "size": 2427,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/argparse@3.0.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "12ace0f577318922bfe4052037bd61f0",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "4beea4dd8fb7a455b25987c89425c60e0d6ad36d",
+        "sha1_git": "e3c7e50048fc326746a957dd40e84448c7d8eda4",
+        "sha256": "5e29325d9f128a1ef47d35e645fb10731845c04cc150f07b37d17bbab028d838",
+        "size": 3185,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "_colorize",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/argparse@3.0.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "f11ce9bb344c9ab7029635c92cd9619c",
+        "name": "_colorize.js",
+        "package_data": [],
+        "path": "package/lib/_colorize.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "5f491b43cbb0102c6db321507f2274640a977c1e",
+        "sha1_git": "cd1c43c3b0907b5cb07b705283439d80304bd19b",
+        "sha256": "3eda8fc89c9ee47e78c5e5eb00953c77314c5db4ba15365755fa625b66650981",
+        "size": 2029,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "argparse",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2010-2020 Python Software Foundation",
+            "end_line": 6,
+            "start_line": 6
+          },
+          {
+            "copyright": "Copyright (c) 2020 argparse.js authors",
+            "end_line": 7,
+            "start_line": 7
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/argparse@3.0.3"
+        ],
+        "holders": [
+          {
+            "end_line": 6,
+            "holder": "Python Software Foundation",
+            "start_line": 6
+          },
+          {
+            "end_line": 7,
+            "holder": "argparse.js authors",
+            "start_line": 7
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "23861d021c49efcb70382a13223f28e9",
+        "name": "argparse.js",
+        "package_data": [],
+        "path": "package/lib/argparse.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "d63c682edb6097f4c06a16ef505345fc41c5bbf5",
+        "sha1_git": "c13f9b7de23d901aa1f2a0703b8f8e42af6159a5",
+        "sha256": "79dc1e975cdbf69b44ea0873768f2bb3697dc93bc2d6113bf92a8bdf6b6c8408",
+        "size": 135389,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "argparse.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/argparse@3.0.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "4f5a33535dae42bc8ff98dc28b7e8345",
+        "name": "argparse.d.ts",
+        "package_data": [],
+        "path": "package/lib/argparse.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "efc4cc40b150f48b2218127a8664d270a909541b",
+        "sha1_git": "18f3fa75c06cea9ef0151abf73925e60fcae90ba",
+        "sha256": "bffad8ff33ec0ee24b813f39f9918d041fec9096b6458784107a5731f5e85d35",
+        "size": 8072,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "difflib",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/argparse@3.0.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "bc36cc9c14da7552ace721ef20ece1de",
+        "name": "difflib.js",
+        "package_data": [],
+        "path": "package/lib/difflib.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "43c8a99b09522b57271be49fdfdb1b5b88514627",
+        "sha1_git": "5afd8c6f3e758a8b677f9ca9f8053f3b76b4fc77",
+        "sha256": "a9bbb1747c91ac28a63b3f764fe89c19eb0a81d905dfe55c2200f5352e69fe64",
+        "size": 5691,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "psf-2.0",
+        "detected_license_expression_spdx": "PSF-2.0",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/argparse@3.0.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "psf_2_0-194f4781-95ce-7136-1326-315da5270725",
+            "license_expression": "psf-2.0",
+            "license_expression_spdx": "PSF-2.0",
+            "matches": [
+              {
+                "end_line": 17,
+                "from_file": "4a9c3b2a04ba91fb1a8ef168bdb5442289d0c0d4028214a65e96b3bcddafa4c2/package/package.json",
+                "license_expression": "psf-2.0",
+                "license_expression_spdx": "PSF-2.0",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "  \"license\": \"PSF-2.0\",",
+                "matcher": "2-aho",
+                "rule_identifier": "psf-2.0_6.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/psf-2.0_6.RULE",
+                "score": 100,
+                "start_line": 17
+              }
+            ]
+          }
+        ],
+        "md5": "28675c325d20a1a5543828e38dfe7de1",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/argparse/3.0.3",
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "psf-2.0",
+            "declared_license_expression_spdx": "PSF-2.0",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.13.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/neostandard",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^11.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/c8",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              }
+            ],
+            "description": "CLI arguments parser. Native port of python's argparse.",
+            "download_url": "https://registry.npmjs.org/argparse/-/argparse-3.0.3.tgz",
+            "extra_data": {},
+            "extracted_license_statement": "- PSF-2.0\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": null,
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [
+              "argparse",
+              "args",
+              "cli",
+              "option",
+              "parser"
+            ],
+            "license_detections": [
+              {
+                "identifier": "psf_2_0-e4608135-e9bf-8769-130d-6e0f7ee85120",
+                "license_expression": "psf-2.0",
+                "license_expression_spdx": "PSF-2.0",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "4a9c3b2a04ba91fb1a8ef168bdb5442289d0c0d4028214a65e96b3bcddafa4c2/package/package.json",
+                    "license_expression": "psf-2.0",
+                    "license_expression_spdx": "PSF-2.0",
+                    "match_coverage": 100,
+                    "matched_length": 3,
+                    "matched_text": "PSF-2.0",
+                    "matcher": "1-hash",
+                    "rule_identifier": "psf-2.0_9.RULE",
+                    "rule_relevance": 100,
+                    "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/psf-2.0_9.RULE",
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "argparse",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/argparse@3.0.3",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/argparse/-/argparse-3.0.3.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/argparse",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "https://github.com/nodeca/argparse",
+            "version": "3.0.3"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 4.94,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "371a23a82bb76357f03dcadfd6a4e81a8b93746b",
+        "sha1_git": "eab713675e89e94a16e68ef2181a836241dab250",
+        "sha256": "ee467b926c66c16f8a70288583b8e636c77e30a8c073293cb534c710c354f40d",
+        "size": 763,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "sub",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/argparse@3.0.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "6eb1d65990f09f333092f7c12703af27",
+        "name": "sub.js",
+        "package_data": [],
+        "path": "package/lib/sub.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "f92eec7b09d1110ac072ac8bda652ebb411b2db9",
+        "sha1_git": "e9c4b8a0fd044eb17d673a6c283ae04bfbdbdcdb",
+        "sha256": "5bfaea3c5e0b989bff50c8ac5935eeda1e4e2b559e02e1bf2507d74dd80fa708",
+        "size": 2259,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "psf_2_0-194f4781-95ce-7136-1326-315da5270725",
+        "license_expression": "psf-2.0",
+        "license_expression_spdx": "PSF-2.0",
+        "reference_matches": [
+          {
+            "end_line": 17,
+            "from_file": "4a9c3b2a04ba91fb1a8ef168bdb5442289d0c0d4028214a65e96b3bcddafa4c2/package/package.json",
+            "license_expression": "psf-2.0",
+            "license_expression_spdx": "PSF-2.0",
+            "match_coverage": 100,
+            "matched_length": 4,
+            "matched_text": "  \"license\": \"PSF-2.0\",",
+            "matcher": "2-aho",
+            "rule_identifier": "psf-2.0_6.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/psf-2.0_6.RULE",
+            "score": 100,
+            "start_line": 17
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "psf_2_0-e4608135-e9bf-8769-130d-6e0f7ee85120",
+        "license_expression": "psf-2.0",
+        "license_expression_spdx": "PSF-2.0",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "4a9c3b2a04ba91fb1a8ef168bdb5442289d0c0d4028214a65e96b3bcddafa4c2/package/package.json",
+            "license_expression": "psf-2.0",
+            "license_expression_spdx": "PSF-2.0",
+            "match_coverage": 100,
+            "matched_length": 3,
+            "matched_text": "PSF-2.0",
+            "matcher": "1-hash",
+            "rule_identifier": "psf-2.0_9.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/psf-2.0_9.RULE",
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "python-5c90c5bd-cf0e-9752-c4f9-51f363e5aa71",
+        "license_expression": "python",
+        "license_expression_spdx": "Python-2.0",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "4a9c3b2a04ba91fb1a8ef168bdb5442289d0c0d4028214a65e96b3bcddafa4c2/package/LICENSE",
+            "license_expression": "python",
+            "license_expression_spdx": "Python-2.0",
+            "match_coverage": 100,
+            "matched_length": 6,
+            "matched_text": "PYTHON SOFTWARE FOUNDATION LICENSE VERSION 2",
+            "matcher": "2-aho",
+            "rule_identifier": "python_required_phrase_4.RULE",
+            "rule_relevance": 33,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/python_required_phrase_4.RULE",
+            "score": 33,
+            "start_line": 1
+          },
+          {
+            "end_line": 47,
+            "from_file": "4a9c3b2a04ba91fb1a8ef168bdb5442289d0c0d4028214a65e96b3bcddafa4c2/package/LICENSE",
+            "license_expression": "python",
+            "license_expression_spdx": "Python-2.0",
+            "match_coverage": 100,
+            "matched_length": 368,
+            "matched_text": "1. This LICENSE AGREEMENT is between the Python Software Foundation\n(\"PSF\"), and the Individual or Organization (\"Licensee\") accessing and\notherwise using this software (\"Python\") in source or binary form and\nits associated documentation.\n\n2. Subject to the terms and conditions of this License Agreement, PSF hereby\ngrants Licensee a nonexclusive, royalty-free, world-wide license to reproduce,\nanalyze, test, perform and/or display publicly, prepare derivative works,\ndistribute, and otherwise use Python alone or in any derivative version,\nprovided, however, that PSF's License Agreement and PSF's notice of copyright,\ni.e., \"Copyright (c) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010,\n2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019 Python Software Foundation;\nAll Rights Reserved\" are retained in Python alone or in any derivative version\nprepared by Licensee.\n\n3. In the event Licensee prepares a derivative work that is based on\nor incorporates Python or any part thereof, and wants to make\nthe derivative work available to others as provided herein, then\nLicensee hereby agrees to include in any such work a brief summary of\nthe changes made to Python.\n\n4. PSF is making Python available to Licensee on an \"AS IS\"\nbasis.  PSF MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR\nIMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, PSF MAKES NO AND\nDISCLAIMS ANY REPRESENTATION OR WARRANTY OF MERCHANTABILITY OR FITNESS\nFOR ANY PARTICULAR PURPOSE OR THAT THE USE OF PYTHON WILL NOT\nINFRINGE ANY THIRD PARTY RIGHTS.\n\n5. PSF SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF PYTHON\nFOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS AS\nA RESULT OF MODIFYING, DISTRIBUTING, OR OTHERWISE USING PYTHON,\nOR ANY DERIVATIVE THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.\n\n6. This License Agreement will automatically terminate upon a material\nbreach of its terms and conditions.\n\n7. Nothing in this License Agreement shall be deemed to create any\nrelationship of agency, partnership, or joint venture between PSF and\nLicensee.  This License Agreement does not grant permission to use PSF\ntrademarks or trade name in a trademark sense to endorse or promote\nproducts or services of Licensee, or any third party.\n\n8. By copying, installing or otherwise using Python, Licensee\nagrees to be bound by the terms and conditions of this License\nAgreement.",
+            "matcher": "3-seq",
+            "rule_identifier": "python_38.RULE",
+            "rule_relevance": 95,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/python_38.RULE",
+            "score": 93.48,
+            "start_line": 3
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": null,
+        "homepage_url": "http://docs.python.org/license.html",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [
+          "Copyright (c) 1991 - 1995, Stichting Mathematisch Centrum Amsterdam, The Netherlands",
+          "Copyright (c) 1995-2001 Corporation for National Research Initiatives",
+          "Copyright (c) Python Software Foundation"
+        ],
+        "ignorable_emails": [],
+        "ignorable_holders": [
+          "Corporation for National Research Initiatives",
+          "Python Software Foundation",
+          "Stichting Mathematisch Centrum Amsterdam, The Netherlands"
+        ],
+        "ignorable_urls": [
+          "http://hdl.handle.net/1895.22/1013",
+          "http://www.pythonlabs.com/logos.html"
+        ],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "python",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/python",
+        "minimum_coverage": 0,
+        "name": "Python Software Foundation License v2",
+        "notes": null,
+        "osi_license_key": null,
+        "osi_url": "http://www.opensource.org/licenses/Python-2.0",
+        "other_spdx_license_keys": [],
+        "other_urls": [
+          "http://opensource.org/licenses/PythonSoftFoundation.php",
+          "http://www.gnu.org/licenses/license-list.html#PythonOld",
+          "https://opensource.org/licenses/Python-2.0"
+        ],
+        "owner": "Python Software Foundation (PSF)",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/python.LICENSE",
+        "short_name": "Python License 2.0",
+        "spdx_license_key": "Python-2.0",
+        "spdx_url": "https://spdx.org/licenses/Python-2.0",
+        "standard_notice": null,
+        "text": "PYTHON SOFTWARE FOUNDATION LICENSE VERSION 2\n--------------------------------------------\n\n1. This LICENSE AGREEMENT is between the Python Software Foundation\n(\"PSF\"), and the Individual or Organization (\"Licensee\") accessing and\notherwise using this software (\"Python\") in source or binary form and\nits associated documentation.\n\n2. Subject to the terms and conditions of this License Agreement, PSF hereby\ngrants Licensee a nonexclusive, royalty-free, world-wide license to reproduce,\nanalyze, test, perform and/or display publicly, prepare derivative works,\ndistribute, and otherwise use Python alone or in any derivative version,\nprovided, however, that PSF's License Agreement and PSF's notice of copyright,\ni.e., \"Copyright (c) Python Software Foundation;\nAll Rights Reserved\" are retained in Python alone or in any derivative version\nprepared by Licensee.\n\n3. In the event Licensee prepares a derivative work that is based on\nor incorporates Python or any part thereof, and wants to make\nthe derivative work available to others as provided herein, then\nLicensee hereby agrees to include in any such work a brief summary of\nthe changes made to Python.\n\n4. PSF is making Python available to Licensee on an \"AS IS\"\nbasis.  PSF MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR\nIMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, PSF MAKES NO AND\nDISCLAIMS ANY REPRESENTATION OR WARRANTY OF MERCHANTABILITY OR FITNESS\nFOR ANY PARTICULAR PURPOSE OR THAT THE USE OF PYTHON WILL NOT\nINFRINGE ANY THIRD PARTY RIGHTS.\n\n5. PSF SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF PYTHON\nFOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS AS\nA RESULT OF MODIFYING, DISTRIBUTING, OR OTHERWISE USING PYTHON,\nOR ANY DERIVATIVE THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.\n\n6. This License Agreement will automatically terminate upon a material\nbreach of its terms and conditions.\n\n7. Nothing in this License Agreement shall be deemed to create any\nrelationship of agency, partnership, or joint venture between PSF and\nLicensee.  This License Agreement does not grant permission to use PSF\ntrademarks or trade name in a trademark sense to endorse or promote\nproducts or services of Licensee, or any third party.\n\n8. By copying, installing or otherwise using Python, Licensee\nagrees to be bound by the terms and conditions of this License\nAgreement.\n\n\nBEOPEN.COM LICENSE AGREEMENT FOR PYTHON 2.0\n-------------------------------------------\n\nBEOPEN PYTHON OPEN SOURCE LICENSE AGREEMENT VERSION 1\n\n1. This LICENSE AGREEMENT is between BeOpen.com (\"BeOpen\"), having an\noffice at 160 Saratoga Avenue, Santa Clara, CA 95051, and the\nIndividual or Organization (\"Licensee\") accessing and otherwise using\nthis software in source or binary form and its associated\ndocumentation (\"the Software\").\n\n2. Subject to the terms and conditions of this BeOpen Python License\nAgreement, BeOpen hereby grants Licensee a non-exclusive,\nroyalty-free, world-wide license to reproduce, analyze, test, perform\nand/or display publicly, prepare derivative works, distribute, and\notherwise use the Software alone or in any derivative version,\nprovided, however, that the BeOpen Python License is retained in the\nSoftware, alone or in any derivative version prepared by Licensee.\n\n3. BeOpen is making the Software available to Licensee on an \"AS IS\"\nbasis.  BEOPEN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR\nIMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, BEOPEN MAKES NO AND\nDISCLAIMS ANY REPRESENTATION OR WARRANTY OF MERCHANTABILITY OR FITNESS\nFOR ANY PARTICULAR PURPOSE OR THAT THE USE OF THE SOFTWARE WILL NOT\nINFRINGE ANY THIRD PARTY RIGHTS.\n\n4. BEOPEN SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF THE\nSOFTWARE FOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS\nAS A RESULT OF USING, MODIFYING OR DISTRIBUTING THE SOFTWARE, OR ANY\nDERIVATIVE THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.\n\n5. This License Agreement will automatically terminate upon a material\nbreach of its terms and conditions.\n\n6. This License Agreement shall be governed by and interpreted in all\nrespects by the law of the State of California, excluding conflict of\nlaw provisions.  Nothing in this License Agreement shall be deemed to\ncreate any relationship of agency, partnership, or joint venture\nbetween BeOpen and Licensee.  This License Agreement does not grant\npermission to use BeOpen trademarks or trade names in a trademark\nsense to endorse or promote products or services of Licensee, or any\nthird party.  As an exception, the \"BeOpen Python\" logos available at\nhttp://www.pythonlabs.com/logos.html may be used according to the\npermissions granted on that web page.\n\n7. By copying, installing or otherwise using the software, Licensee\nagrees to be bound by the terms and conditions of this License\nAgreement.\n\n\nCNRI LICENSE AGREEMENT FOR PYTHON 1.6.1\n---------------------------------------\n\n1. This LICENSE AGREEMENT is between the Corporation for National\nResearch Initiatives, having an office at 1895 Preston White Drive,\nReston, VA 20191 (\"CNRI\"), and the Individual or Organization\n(\"Licensee\") accessing and otherwise using Python 1.6.1 software in\nsource or binary form and its associated documentation.\n\n2. Subject to the terms and conditions of this License Agreement, CNRI\nhereby grants Licensee a nonexclusive, royalty-free, world-wide\nlicense to reproduce, analyze, test, perform and/or display publicly,\nprepare derivative works, distribute, and otherwise use Python 1.6.1\nalone or in any derivative version, provided, however, that CNRI's\nLicense Agreement and CNRI's notice of copyright, i.e., \"Copyright (c)\n1995-2001 Corporation for National Research Initiatives; All Rights\nReserved\" are retained in Python 1.6.1 alone or in any derivative\nversion prepared by Licensee.  Alternately, in lieu of CNRI's License\nAgreement, Licensee may substitute the following text (omitting the\nquotes): \"Python 1.6.1 is made available subject to the terms and\nconditions in CNRI's License Agreement.  This Agreement together with\nPython 1.6.1 may be located on the Internet using the following\nunique, persistent identifier (known as a handle): 1895.22/1013.  This\nAgreement may also be obtained from a proxy server on the Internet\nusing the following URL: http://hdl.handle.net/1895.22/1013\".\n\n3. In the event Licensee prepares a derivative work that is based on\nor incorporates Python 1.6.1 or any part thereof, and wants to make\nthe derivative work available to others as provided herein, then\nLicensee hereby agrees to include in any such work a brief summary of\nthe changes made to Python 1.6.1.\n\n4. CNRI is making Python 1.6.1 available to Licensee on an \"AS IS\"\nbasis.  CNRI MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR\nIMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, CNRI MAKES NO AND\nDISCLAIMS ANY REPRESENTATION OR WARRANTY OF MERCHANTABILITY OR FITNESS\nFOR ANY PARTICULAR PURPOSE OR THAT THE USE OF PYTHON 1.6.1 WILL NOT\nINFRINGE ANY THIRD PARTY RIGHTS.\n\n5. CNRI SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF PYTHON\n1.6.1 FOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS AS\nA RESULT OF MODIFYING, DISTRIBUTING, OR OTHERWISE USING PYTHON 1.6.1,\nOR ANY DERIVATIVE THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.\n\n6. This License Agreement will automatically terminate upon a material\nbreach of its terms and conditions.\n\n7. This License Agreement shall be governed by the federal\nintellectual property law of the United States, including without\nlimitation the federal copyright law, and, to the extent such\nU.S. federal law does not apply, by the law of the Commonwealth of\nVirginia, excluding Virginia's conflict of law provisions.\nNotwithstanding the foregoing, with regard to derivative works based\non Python 1.6.1 that incorporate non-separable material that was\npreviously distributed under the GNU General Public License (GPL), the\nlaw of the Commonwealth of Virginia shall govern this License\nAgreement only as to issues arising under or with respect to\nParagraphs 4, 5, and 7 of this License Agreement.  Nothing in this\nLicense Agreement shall be deemed to create any relationship of\nagency, partnership, or joint venture between CNRI and Licensee.  This\nLicense Agreement does not grant permission to use CNRI trademarks or\ntrade name in a trademark sense to endorse or promote products or\nservices of Licensee, or any third party.\n\n8. By clicking on the \"ACCEPT\" button where indicated, or by copying,\ninstalling or otherwise using Python 1.6.1, Licensee agrees to be\nbound by the terms and conditions of this License Agreement.\n\n        ACCEPT\n\n\nCWI LICENSE AGREEMENT FOR PYTHON 0.9.0 THROUGH 1.2\n--------------------------------------------------\n\nCopyright (c) 1991 - 1995, Stichting Mathematisch Centrum Amsterdam,\nThe Netherlands.  All rights reserved.\n\nPermission to use, copy, modify, and distribute this software and its\ndocumentation for any purpose and without fee is hereby granted,\nprovided that the above copyright notice appear in all copies and that\nboth that copyright notice and this permission notice appear in\nsupporting documentation, and that the name of Stichting Mathematisch\nCentrum or CWI not be used in advertising or publicity pertaining to\ndistribution of the software without specific, written prior\npermission.\n\nSTICHTING MATHEMATISCH CENTRUM DISCLAIMS ALL WARRANTIES WITH REGARD TO\nTHIS SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND\nFITNESS, IN NO EVENT SHALL STICHTING MATHEMATISCH CENTRUM BE LIABLE\nFOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES\nWHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN\nACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT\nOF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
+        "text_urls": [
+          "http://spdx.org/licenses/Python-2.0"
+        ]
+      },
+      {
+        "category": "Permissive",
+        "faq_url": null,
+        "homepage_url": "https://opensource.org/licenses/Python-2.0",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [
+          "Copyright (c) 2001, 2002, 2003, 2004, 2005, 2006 Python Software Foundation"
+        ],
+        "ignorable_emails": [],
+        "ignorable_holders": [
+          "Python Software Foundation"
+        ],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "psf-2.0",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/psf-2.0",
+        "minimum_coverage": 0,
+        "name": "PSF-2.0",
+        "notes": null,
+        "osi_license_key": null,
+        "osi_url": null,
+        "other_spdx_license_keys": [],
+        "other_urls": [],
+        "owner": "Python Software Foundation (PSF)",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/psf-2.0.LICENSE",
+        "short_name": "PSF-2.0",
+        "spdx_license_key": "PSF-2.0",
+        "spdx_url": "https://spdx.org/licenses/PSF-2.0",
+        "standard_notice": null,
+        "text": "PYTHON SOFTWARE FOUNDATION LICENSE VERSION 2\n\n1. This LICENSE AGREEMENT is between the Python Software Foundation (\"PSF\"), and the Individual or Organization (\"Licensee\") accessing and otherwise using this software (\"Python\") in source or binary form and its associated documentation.\n2. Subject to the terms and conditions of this License Agreement, PSF hereby grants Licensee a nonexclusive, royalty-free, world-wide license to reproduce, analyze, test, perform and/or display publicly, prepare derivative works, distribute, and otherwise use Python alone or in any derivative version, provided, however, that PSF's License Agreement and PSF's notice of copyright, i.e., \"Copyright (c) 2001, 2002, 2003, 2004, 2005, 2006 Python Software Foundation; All Rights Reserved\" are retained in Python alone or in any derivative version prepared by Licensee.\n3. In the event Licensee prepares a derivative work that is based on or incorporates Python or any part thereof, and wants to make the derivative work available to others as provided herein, then Licensee hereby agrees to include in any such work a brief summary of the changes made to Python.\n4. PSF is making Python available to Licensee on an \"AS IS\" basis. PSF MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED. BY WAY OF EXAMPLE, BUT NOT LIMITATION, PSF MAKES NO AND DISCLAIMS ANY REPRESENTATION OR WARRANTY OF MERCHANTABILITY OR FITNESS FOR ANY PARTICULAR PURPOSE OR THAT THE USE OF PYTHON WILL NOT INFRINGE ANY THIRD PARTY RIGHTS.\n5. PSF SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF PYTHON FOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS AS A RESULT OF MODIFYING, DISTRIBUTING, OR OTHERWISE USING PYTHON, OR ANY DERIVATIVE THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.\n6. This License Agreement will automatically terminate upon a material breach of its terms and conditions.\n7. Nothing in this License Agreement shall be deemed to create any relationship of agency, partnership, or joint venture between PSF and Licensee. This License Agreement does not grant permission to use PSF trademarks or trade name in a trademark sense to endorse or promote products or services of Licensee, or any third party.\n8. By copying, installing or otherwise using Python, Licensee agrees to be bound by the terms and conditions of this License Agreement.",
+        "text_urls": []
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "psf-2.0_6.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": true,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 4,
+        "license_expression": "psf-2.0",
+        "minimum_coverage": 100,
+        "notes": "Rule based on an SPDX license identifier and name",
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/psf-2.0_6.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "license: PSF-2.0"
+      },
+      {
+        "identifier": "psf-2.0_9.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 3,
+        "license_expression": "psf-2.0",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/psf-2.0_9.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "PSF-2.0"
+      },
+      {
+        "identifier": "python_38.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [
+          "Copyright (c) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013 Python Software Foundation"
+        ],
+        "ignorable_emails": [],
+        "ignorable_holders": [
+          "Python Software Foundation"
+        ],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 368,
+        "license_expression": "python",
+        "minimum_coverage": 0,
+        "notes": "only the latest python license... not the history",
+        "referenced_filenames": [],
+        "relevance": 95,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/python_38.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "1. This LICENSE AGREEMENT is between the Python Software Foundation\n    (\"PSF\"), and the Individual or Organization (\"Licensee\") accessing and\n    otherwise using this software (\"Python\") in source or binary form and\n    its associated documentation.\n\n    2. Subject to the terms and conditions of this License Agreement, PSF hereby\n    grants Licensee a nonexclusive, royalty-free, world-wide license to reproduce,\n    analyze, test, perform and/or display publicly, prepare derivative works,\n    distribute, and otherwise use Python alone or in any derivative version,\n    provided, however, that PSF's License Agreement and PSF's notice of copyright,\n    i.e., \"Copyright (c) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010,\n    2011, 2012, 2013 Python Software Foundation; All Rights Reserved\" are retained\n    in Python alone or in any derivative version prepared by Licensee.\n\n    3. In the event Licensee prepares a derivative work that is based on\n    or incorporates Python or any part thereof, and wants to make\n    the derivative work available to others as provided herein, then\n    Licensee hereby agrees to include in any such work a brief summary of\n    the changes made to Python.\n\n    4. PSF is making Python available to Licensee on an \"AS IS\"\n    basis.  PSF MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR\n    IMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, PSF MAKES NO AND\n    DISCLAIMS ANY REPRESENTATION OR WARRANTY OF MERCHANTABILITY OR FITNESS\n    FOR ANY PARTICULAR PURPOSE OR THAT THE USE OF PYTHON WILL NOT\n    INFRINGE ANY THIRD PARTY RIGHTS.\n\n    5. PSF SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF PYTHON\n    FOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS AS\n    A RESULT OF MODIFYING, DISTRIBUTING, OR OTHERWISE USING PYTHON,\n    OR ANY DERIVATIVE THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.\n\n    6. This License Agreement will automatically terminate upon a material\n    breach of its terms and conditions.\n\n    7. Nothing in this License Agreement shall be deemed to create any\n    relationship of agency, partnership, or joint venture between PSF and\n    Licensee.  This License Agreement does not grant permission to use PSF\n    trademarks or trade name in a trademark sense to endorse or promote\n    products or services of Licensee, or any third party.\n\n    8. By copying, installing or otherwise using Python, Licensee\n    agrees to be bound by the terms and conditions of this License\n    Agreement."
+      },
+      {
+        "identifier": "python_required_phrase_4.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 6,
+        "license_expression": "python",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 33,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/python_required_phrase_4.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "python software foundation license version 2"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/argparse/3.0.3",
+        "bug_tracking_url": null,
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "psf-2.0",
+        "declared_license_expression_spdx": "PSF-2.0",
+        "description": "CLI arguments parser. Native port of python's argparse.",
+        "download_url": "https://registry.npmjs.org/argparse/-/argparse-3.0.3.tgz",
+        "extra_data": {},
+        "extracted_license_statement": "- PSF-2.0\n",
+        "holder": null,
+        "homepage_url": null,
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [
+          "argparse",
+          "args",
+          "cli",
+          "option",
+          "parser"
+        ],
+        "license_detections": [
+          {
+            "identifier": "psf_2_0-e4608135-e9bf-8769-130d-6e0f7ee85120",
+            "license_expression": "psf-2.0",
+            "license_expression_spdx": "PSF-2.0",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "4a9c3b2a04ba91fb1a8ef168bdb5442289d0c0d4028214a65e96b3bcddafa4c2/package/package.json",
+                "license_expression": "psf-2.0",
+                "license_expression_spdx": "PSF-2.0",
+                "match_coverage": 100,
+                "matched_length": 3,
+                "matched_text": "PSF-2.0",
+                "matcher": "1-hash",
+                "rule_identifier": "psf-2.0_9.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/psf-2.0_9.RULE",
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "argparse",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/argparse@3.0.3",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/argparse/-/argparse-3.0.3.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/argparse",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "https://github.com/nodeca/argparse",
+        "version": "3.0.3"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

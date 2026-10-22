@@ -6,23 +6,28 @@ import { sha256 } from "./digests.mjs";
 import { jsonEquals } from "../../scripts/canonical-json.mjs";
 
 const evidenceRoot = "docs/provenance/evidence/npm";
-const authorityPaths = [
-  "docs/provenance/npm-package-evidence.json",
-  "docs/provenance/npm-package-evidence.schema.json",
-  "package-lock.json",
-];
 
 /** Native ownership ends at an independently verified census and byte views.
  * JSON Quality owns checking, policy, budgets, reporting and write protection.
  */
-export async function provideNpmEvidenceJson({ root }) {
+async function provideEvidenceNamespace({ root, namespace = "" }) {
+  const prefix = (path) => (namespace ? `${namespace}/${path}` : path);
+  const sourceRoot = join(root, namespace);
+  const authorityPaths = [
+    prefix("docs/provenance/npm-package-evidence.json"),
+    "docs/provenance/npm-package-evidence.schema.json",
+    prefix("package-lock.json"),
+  ];
   const authorities = await Promise.all(
     authorityPaths.map(async (path) => ({
       path,
       bytes: await readFile(join(root, path)),
     })),
   );
-  await verifyRepositoryEvidence({ repositoryRoot: root });
+  await verifyRepositoryEvidence({
+    repositoryRoot: sourceRoot,
+    schemaPath: join(root, "docs/provenance/npm-package-evidence.schema.json"),
+  });
   const manifest = JSON.parse(authorities[0].bytes);
   const references = new Map();
   const add = (reference) => {
@@ -41,7 +46,7 @@ export async function provideNpmEvidenceJson({ root }) {
       add(artifact[section].evidence);
     const archive = JSON.parse(
       await readVerifiedBlob(
-        join(root, evidenceRoot),
+        join(sourceRoot, evidenceRoot),
         artifact.archive.evidence,
       ),
     );
@@ -51,7 +56,7 @@ export async function provideNpmEvidenceJson({ root }) {
   const inventory = [],
     documents = [];
   for (const reference of references.values()) {
-    const path = `${evidenceRoot}/${reference.path}`;
+    const path = prefix(`${evidenceRoot}/${reference.path}`);
     const identity = {
       path,
       sha256: reference.sha256,
@@ -63,7 +68,7 @@ export async function provideNpmEvidenceJson({ root }) {
     });
     documents.push({
       path,
-      bytes: await readVerifiedBlob(join(root, evidenceRoot), reference),
+      bytes: await readVerifiedBlob(join(sourceRoot, evidenceRoot), reference),
     });
   }
   for (const authority of authorities)
@@ -80,4 +85,19 @@ export async function provideNpmEvidenceJson({ root }) {
       byteLength: bytes.length,
     })),
   };
+}
+
+/** The product and isolated tools use one schema, verifier and byte-view owner. */
+export async function provideNpmEvidenceJson({ root }) {
+  return provideEvidenceNamespace({ root });
+}
+
+/** The isolated artifact SDK graph uses the same verifier and JSON admission;
+ * only its repository-relative namespace differs from the product graph.
+ */
+export async function provideArtifactToolEvidenceJson({ root }) {
+  return provideEvidenceNamespace({
+    root,
+    namespace: "tooling/artifact-transport",
+  });
 }

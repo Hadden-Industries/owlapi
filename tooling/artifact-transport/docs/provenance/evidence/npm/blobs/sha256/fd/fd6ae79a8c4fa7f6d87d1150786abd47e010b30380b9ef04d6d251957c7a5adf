@@ -1,0 +1,240 @@
+{
+  "artifactId": "69f22104a2bfadcdb133171a605e8e0ee57cef908c2e17a573a0b878060ba3b9",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 11594,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.eslintrc",
+        "sha256": "93321500d92c7c201c6ebaa36262cf375b20f22aad148a6de591a02408ccdd89",
+        "size": 80,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nvmrc",
+        "sha256": "389b46f0445738f6b517def165c3e490efa2eb8825c695b8ac8221565e78e4fa",
+        "size": 5,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nycrc",
+        "sha256": "997785c50b0773e5e18bf15550fbf57823c634fefe623cd37b3c83696402ad0a",
+        "size": 139,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "02f2f951c1e4ac9db865f3f4dc7d2f594b4ca93cbf6843e3a95de0b2742a00a8",
+        "size": 26155,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "dc0fe5a22d9336f345ee984f9bf56f11f22877a3aa5fd16a1db9a8ca0e23a5d1",
+        "size": 1081,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "68cd52b7ebce89edd92cb8bb3d34e4ae3fd494a8c6237e965f6c0b482ddbb17f",
+        "size": 1781,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "bf01f450fd0eef63e79cd841885b0a5a30ce02c72616cb8d57e75e8aa4dc26fa",
+        "size": 106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "eb029c0215501950880b36c492c321983d762384bc373969cb2da5b6e8f1c189",
+        "size": 860,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "03f415ea6031c1c9497892bf2b85fdc8d1d45e1d12787334d0d4da74836d8f6a",
+        "size": 2976,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/corejs.js",
+        "sha256": "efadaba2b616e07e5ee46956b16c2aa461b1e0dc3d3db5c959d3127a08eb7d4f",
+        "size": 65,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "2ccb424a74eb1d8aa76af80880aaec6e5de643211b21c300eae2c41d754decf5",
+        "size": 2653,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/uglified.js",
+        "sha256": "42d8520825cdb71b45bb941dea75e1474cd0dcaf7bbcc8c57b528b2a689e48a9",
+        "size": 161,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "c90b44baf940e33a846785b56b85ee7e332ae4d5d2493758f81ed3a5c62a29bb",
+        "size": 129,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1081,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/dc/dc0fe5a22d9336f345ee984f9bf56f11f22877a3aa5fd16a1db9a8ca0e23a5d1",
+          "sha256": "dc0fe5a22d9336f345ee984f9bf56f11f22877a3aa5fd16a1db9a8ca0e23a5d1"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "dc0fe5a22d9336f345ee984f9bf56f11f22877a3aa5fd16a1db9a8ca0e23a5d1",
+        "size": 1081
+      },
+      {
+        "blob": {
+          "bytes": 1781,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/68/68cd52b7ebce89edd92cb8bb3d34e4ae3fd494a8c6237e965f6c0b482ddbb17f",
+          "sha256": "68cd52b7ebce89edd92cb8bb3d34e4ae3fd494a8c6237e965f6c0b482ddbb17f"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "68cd52b7ebce89edd92cb8bb3d34e4ae3fd494a8c6237e965f6c0b482ddbb17f",
+        "size": 1781
+      }
+    ],
+    "expandedBytes": 36191,
+    "packageIdentity": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "is-generator-function",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/inspect-js/is-generator-function.git"
+      },
+      "version": "1.1.2"
+    },
+    "packageMetadata": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "bugs": {
+        "url": "https://github.com/inspect-js/is-generator-function/issues"
+      },
+      "dependencies": {
+        "call-bound": "^1.0.4",
+        "generator-function": "^2.0.0",
+        "get-proto": "^1.0.1",
+        "has-tostringtag": "^1.0.2",
+        "safe-regex-test": "^1.1.0"
+      },
+      "description": "Determine if a function is a native generator function.",
+      "devDependencies": {
+        "@arethetypeswrong/cli": "^0.18.2",
+        "@ljharb/eslint-config": "^21.2.0",
+        "@ljharb/tsconfig": "^0.3.2",
+        "@types/for-each": "^0.3.3",
+        "@types/make-generator-function": "^2.0.3",
+        "@types/tape": "^5.8.1",
+        "auto-changelog": "^2.5.0",
+        "core-js": "^2.6.5 || ^3.20.0",
+        "encoding": "^0.1.13",
+        "eslint": "=8.8.0",
+        "for-each": "^0.3.5",
+        "in-publish": "^2.0.1",
+        "make-generator-function": "^2.1.0",
+        "npmignore": "^0.3.1",
+        "nyc": "^10.3.2",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.9.0",
+        "typescript": "next",
+        "uglify-register": "^1.0.1"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "keywords": [
+        "generator",
+        "generator function",
+        "es6",
+        "es2015",
+        "yield",
+        "function",
+        "function*"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "is-generator-function",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/inspect-js/is-generator-function.git"
+      },
+      "scripts": {
+        "lint": "eslint --ext=js,mjs .",
+        "postlint": "tsc && attw -P",
+        "posttest": "npx npm@\">= 10.2\" audit --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only",
+        "test:all": "npm run test:index && npm run test:corejs && npm run test:uglified",
+        "test:corejs": "node test/corejs",
+        "test:harmony": "node  --es-staging --harmony test && node  --es-staging --harmony test/corejs && node --es-staging --harmony test/uglified",
+        "test:index": "node test",
+        "test:uglified": "node test/uglified",
+        "tests-only": "nyc npm run test:all",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "testling": {
+        "browsers": [
+          "iexplore/6.0..latest",
+          "firefox/3.0..6.0",
+          "firefox/15.0..latest",
+          "firefox/nightly",
+          "chrome/4.0..10.0",
+          "chrome/20.0..latest",
+          "chrome/canary",
+          "opera/10.0..latest",
+          "opera/next",
+          "safari/4.0..latest",
+          "ipad/6.0..latest",
+          "iphone/6.0..latest",
+          "android-browser/4.2"
+        ],
+        "files": "test/index.js"
+      },
+      "version": "1.1.2"
+    },
+    "physicalEntryCount": 13,
+    "tarball": {
+      "bytes": 11594,
+      "sha256": "11b6db078092427ac985003432e9ae1fad56d1df398ad87a02b8ce1b81d803d0"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

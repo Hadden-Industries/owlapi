@@ -1,0 +1,128 @@
+{
+  "artifactId": "71f8d85f5af9b880001bc9a8b2ca08c2e8f0a923ead97b49b90c4df612907f9e",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2222,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "9fcc71d282296e2ede8efbca5f0ef605358c1f956bb0d6b5906f646c0f27bfa5",
+        "size": 1778,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "14cddb2ce9959337b9f9f018ee57171ec8c4eacf1b27de9d5b5c268a2167288c",
+        "size": 677,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "07cf93d9490a2d7ed7731810b49b1c314c760291bb66cdfbc0279258ceb65ec9",
+        "size": 734,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "fc9d1b1c9e8e0775fb36b36f31c8e0db1537035d3be16bd150a0b43b15fb83b9",
+        "size": 1621,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1117,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117
+      },
+      {
+        "blob": {
+          "bytes": 1621,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/fc/fc9d1b1c9e8e0775fb36b36f31c8e0db1537035d3be16bd150a0b43b15fb83b9",
+          "sha256": "fc9d1b1c9e8e0775fb36b36f31c8e0db1537035d3be16bd150a0b43b15fb83b9"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "fc9d1b1c9e8e0775fb36b36f31c8e0db1537035d3be16bd150a0b43b15fb83b9",
+        "size": 1621
+      }
+    ],
+    "expandedBytes": 5927,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "is-stream",
+      "repository": "sindresorhus/is-stream",
+      "version": "2.0.1"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "description": "Check if something is a Node.js stream",
+      "devDependencies": {
+        "@types/node": "^11.13.6",
+        "ava": "^1.4.1",
+        "tempy": "^0.3.0",
+        "tsd": "^0.7.2",
+        "xo": "^0.24.0"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "funding": "https://github.com/sponsors/sindresorhus",
+      "keywords": [
+        "stream",
+        "type",
+        "streams",
+        "writable",
+        "readable",
+        "duplex",
+        "transform",
+        "check",
+        "detect",
+        "is"
+      ],
+      "license": "MIT",
+      "name": "is-stream",
+      "repository": "sindresorhus/is-stream",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "version": "2.0.1"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2222,
+      "sha256": "3501ff72a20b78f1a2170a4982d82d9a71d16b99a935bec9787f1c486d61b6d7"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,215 @@
+{
+  "artifactId": "b37398a947969eaaebf1d6d1e1b681c857c017a0fd440f0ca581c1915f1f1dba",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7370,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "e7ceb6a6926e76a67981a440f4107d6152ac1fc2250c90a66460444518328b75",
+        "size": 1068,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "5e1aed96601ccacb544c7d6ebe5a8051f6b816469d06e55d9c2330e674aeed1d",
+        "size": 3652,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/context.d.ts",
+        "sha256": "631c1394111fce685cf0862400de6affe8cf93056ac54bc7b18b4bedb9db92e8",
+        "size": 702,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/context.js",
+        "sha256": "e66a58fb9f5eea873abdebd53a0bc9959d949cac33e867d4795bfe84bc3044fc",
+        "size": 2296,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/context.js.map",
+        "sha256": "3efc8067fb27f6d2e0d01f223647267838fcd823586eb9005d9d443b23297338",
+        "size": 2206,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/github.d.ts",
+        "sha256": "7f6d24502c4ee260e360a445e4b010a186075add8cb3564e97b3125eb2f43b7f",
+        "size": 513,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/github.js",
+        "sha256": "96606139a139391944f24b7afb20ee30d7c2c99b3c8a4710f2e48b91989890b0",
+        "size": 551,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/github.js.map",
+        "sha256": "dd6f84f5087846f2f5260d596f0870324c81b9e73bee9acdf946a2d792ce5dbd",
+        "size": 473,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/interfaces.d.ts",
+        "sha256": "8a171e874d8422ea43e83fe02979cb63a38beccb1518d067940abe0574b601d9",
+        "size": 811,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/interfaces.js",
+        "sha256": "13eacfb2ae0674f8fb7141b3ee48af877377554ab8eab5df9ae542b31b5cc6bc",
+        "size": 105,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/interfaces.js.map",
+        "sha256": "8eed5d0c6eaaee745c0c93a501679140c646cac934ca516f9a68da57d18071f9",
+        "size": 123,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/utils.d.ts",
+        "sha256": "815f9bb92349891555251d54e615e3d0dddbd1b48dac139d76076e0fbd5d8280",
+        "size": 628,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/utils.js",
+        "sha256": "ef97993c1c3cb2fc52c516073b22d5c367f05108f7e372c36724dec5c25186ca",
+        "size": 2494,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/internal/utils.js.map",
+        "sha256": "07008e4fa5b607e1b59374f90bfa8056abaa1dd87df3ecf243bf51fddb70c42a",
+        "size": 1687,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/utils.d.ts",
+        "sha256": "5a26f7342c7aee918829f9f1118da1b9e74d711676aa8dca4ca5ba59f2c40fc7",
+        "size": 822,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/utils.js",
+        "sha256": "97b0491d00ff57bbfd4305fc15af867997acad5ef9d37ce75771883263a57d92",
+        "size": 1379,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/utils.js.map",
+        "sha256": "ee0e84331b827e72d87abc2f0403802ef5977815e5e139d9633332ec00edf852",
+        "size": 1216,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "c080b80b29771e67b9a7755fc25d23626ccc98be2cbaadc43649daf19bd1a03d",
+        "size": 1494,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1068,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/e7/e7ceb6a6926e76a67981a440f4107d6152ac1fc2250c90a66460444518328b75",
+          "sha256": "e7ceb6a6926e76a67981a440f4107d6152ac1fc2250c90a66460444518328b75"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "e7ceb6a6926e76a67981a440f4107d6152ac1fc2250c90a66460444518328b75",
+        "size": 1068
+      }
+    ],
+    "expandedBytes": 22220,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/actions/toolkit/tree/main/packages/github",
+      "license": "MIT",
+      "name": "@actions/github",
+      "repository": {
+        "directory": "packages/github",
+        "type": "git",
+        "url": "git+https://github.com/actions/toolkit.git"
+      },
+      "version": "9.1.1"
+    },
+    "packageMetadata": {
+      "bugs": {
+        "url": "https://github.com/actions/toolkit/issues"
+      },
+      "dependencies": {
+        "@actions/http-client": "^3.0.2",
+        "@octokit/core": "^7.0.6",
+        "@octokit/plugin-paginate-rest": "^14.0.0",
+        "@octokit/plugin-rest-endpoint-methods": "^17.0.0",
+        "@octokit/request": "^10.0.7",
+        "@octokit/request-error": "^7.1.0",
+        "undici": "^6.23.0"
+      },
+      "description": "Actions github lib",
+      "devDependencies": {
+        "proxy": "^2.1.1"
+      },
+      "directories": {
+        "lib": "lib",
+        "test": "__tests__"
+      },
+      "exports": {
+        ".": {
+          "import": "./lib/github.js",
+          "types": "./lib/github.d.ts"
+        },
+        "./lib/utils": {
+          "import": "./lib/utils.js",
+          "types": "./lib/utils.d.ts"
+        }
+      },
+      "files": [
+        "lib",
+        "!.DS_Store"
+      ],
+      "homepage": "https://github.com/actions/toolkit/tree/main/packages/github",
+      "keywords": [
+        "github",
+        "actions"
+      ],
+      "license": "MIT",
+      "main": "lib/github.js",
+      "name": "@actions/github",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/github",
+        "type": "git",
+        "url": "git+https://github.com/actions/toolkit.git"
+      },
+      "scripts": {
+        "audit-moderate": "npm install && npm audit --json --audit-level=moderate > audit.json",
+        "build": "tsc",
+        "format": "prettier --write **/*.ts",
+        "format-check": "prettier --check **/*.ts",
+        "test": "jest",
+        "tsc": "tsc"
+      },
+      "type": "module",
+      "types": "lib/github.d.ts",
+      "version": "9.1.1"
+    },
+    "physicalEntryCount": 18,
+    "tarball": {
+      "bytes": 7370,
+      "sha256": "415a7a042524c6e93ddff26530d2f4e94058428d37e1d062f619d1c0afdafcbf"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

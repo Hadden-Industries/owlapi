@@ -1,0 +1,165 @@
+{
+  "artifactId": "ddce1ec0a6231162ae562a2ea50752c2aac119eeaae414fbbcaed32c493a2c7d",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4851,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "e7f5d28405c9fe6580db684634bace66953055b436d7fbb6f860d0c800c44a9f",
+        "size": 1074,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "d0f361c396c0b1e55e85a867dcf7dac75b2111994cd7b598e6921c5586ab67db",
+        "size": 4187,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/lazystream.js",
+        "sha256": "ac1b2f0c240f75d410034f562e2a897a53c42deda4eeb4b9c3221179a636bbf6",
+        "size": 1319,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "cf0860e26be0d5c9098d1bd0ce5c5faf1e02d6c6b050a14bbb40c2fc1c087fec",
+        "size": 1044,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/data.md",
+        "sha256": "56ace85acda4f5e23ec05f17e354481022711f9a54c30b16a150c55ef9ec7f78",
+        "size": 571,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/fs_test.js",
+        "sha256": "d5decc0beee4d9f0f1943f58327f2c9634716c33a4d9b494b46698cd32003733",
+        "size": 1595,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/helper.js",
+        "sha256": "11c3cc2ee15a7c3c5749d135637e0b5ebb3348bd28503a46c3edf357753619d2",
+        "size": 849,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/pipe_test.js",
+        "sha256": "66e8af3088c515e61e2aec2bc94e4b0337b11d45f7befa4766fa92bf8c8e11e2",
+        "size": 1018,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/readable_test.js",
+        "sha256": "c3696c404c4b51f2dfdd1c41df00ddadf8d9f9b82cea434ac036484c2dbf3f21",
+        "size": 2466,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/writable_test.js",
+        "sha256": "badcf5dcee5bcf82d2f3b66c5a9a0c81739f5b8550dbb639f5cd17f9e0d72244",
+        "size": 1525,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1074,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/e7/e7f5d28405c9fe6580db684634bace66953055b436d7fbb6f860d0c800c44a9f",
+          "sha256": "e7f5d28405c9fe6580db684634bace66953055b436d7fbb6f860d0c800c44a9f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "e7f5d28405c9fe6580db684634bace66953055b436d7fbb6f860d0c800c44a9f",
+        "size": 1074
+      },
+      {
+        "blob": {
+          "bytes": 4187,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d0/d0f361c396c0b1e55e85a867dcf7dac75b2111994cd7b598e6921c5586ab67db",
+          "sha256": "d0f361c396c0b1e55e85a867dcf7dac75b2111994cd7b598e6921c5586ab67db"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "d0f361c396c0b1e55e85a867dcf7dac75b2111994cd7b598e6921c5586ab67db",
+        "size": 4187
+      }
+    ],
+    "expandedBytes": 15648,
+    "packageIdentity": {
+      "author": {
+        "email": "jonas.pommerening@gmail.com",
+        "name": "Jonas Pommerening",
+        "url": "https://npmjs.org/~jpommerening"
+      },
+      "homepage": "https://github.com/jpommerening/node-lazystream",
+      "license": "MIT",
+      "name": "lazystream",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/jpommerening/node-lazystream.git"
+      },
+      "version": "1.0.1"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "jonas.pommerening@gmail.com",
+        "name": "Jonas Pommerening",
+        "url": "https://npmjs.org/~jpommerening"
+      },
+      "bugs": {
+        "url": "https://github.com/jpommerening/node-lazystream/issues"
+      },
+      "contributors": [
+        "Mario Casciaro <mariocasciaro@gmail.com>"
+      ],
+      "dependencies": {
+        "readable-stream": "^2.0.5"
+      },
+      "description": "Open Node Streams on demand.",
+      "devDependencies": {
+        "nodeunit": "^0.9.1"
+      },
+      "engines": {
+        "node": ">= 0.6.3"
+      },
+      "files": [
+        "lib/lazystream.js",
+        "test/*.js",
+        "test/*.md"
+      ],
+      "homepage": "https://github.com/jpommerening/node-lazystream",
+      "keywords": [
+        "emfile",
+        "lazy",
+        "streams",
+        "stream"
+      ],
+      "license": "MIT",
+      "main": "lib/lazystream.js",
+      "name": "lazystream",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/jpommerening/node-lazystream.git"
+      },
+      "scripts": {
+        "test": "nodeunit test/readable_test.js test/writable_test.js test/pipe_test.js test/fs_test.js"
+      },
+      "version": "1.0.1"
+    },
+    "physicalEntryCount": 10,
+    "tarball": {
+      "bytes": 4851,
+      "sha256": "08522082d078e813e69e02fa9e91db875eee2ed6ca29d32f237afeb2dd7b6d9a"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

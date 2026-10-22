@@ -1,0 +1,136 @@
+{
+  "artifactId": "0402321d10085b54ac4d93fc3b9e615894e8b55ddbf682739621e7463d64701b",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4557,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9fe335fb097fbff0b7f709ee14a77b1d1cf739d3400cd0b0e19118946772ea56",
+        "size": 1060,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "ee8ff5334816e4d03eb627bdad793e3e61f38117d915f8ae5476f6ac3690b60a",
+        "size": 282,
+        "type": "FILE"
+      },
+      {
+        "path": "package/file.js",
+        "sha256": "e8336951ffb89a769d48821904408ed74a2d63e0ceec2e689fc38a171746759b",
+        "size": 6605,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "0da5eea8ddf18c910a7379a87a9d5587c544355c1b0b3d56fffd4babef775ede",
+        "size": 3581,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "98258d40eabc95cbd23718d5b4726a1e3cd496ee5725c8dc4eb693ee224a870e",
+        "size": 1024,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1060,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9f/9fe335fb097fbff0b7f709ee14a77b1d1cf739d3400cd0b0e19118946772ea56",
+          "sha256": "9fe335fb097fbff0b7f709ee14a77b1d1cf739d3400cd0b0e19118946772ea56"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9fe335fb097fbff0b7f709ee14a77b1d1cf739d3400cd0b0e19118946772ea56",
+        "size": 1060
+      },
+      {
+        "blob": {
+          "bytes": 282,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ee/ee8ff5334816e4d03eb627bdad793e3e61f38117d915f8ae5476f6ac3690b60a",
+          "sha256": "ee8ff5334816e4d03eb627bdad793e3e61f38117d915f8ae5476f6ac3690b60a"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "ee8ff5334816e4d03eb627bdad793e3e61f38117d915f8ae5476f6ac3690b60a",
+        "size": 282
+      }
+    ],
+    "expandedBytes": 12552,
+    "packageIdentity": {
+      "author": {
+        "name": "Chris Talkington",
+        "url": "http://christalkington.com/"
+      },
+      "homepage": "https://github.com/archiverjs/archiver-utils#readme",
+      "license": "MIT",
+      "name": "archiver-utils",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/archiverjs/archiver-utils.git"
+      },
+      "version": "5.0.2"
+    },
+    "packageMetadata": {
+      "author": {
+        "name": "Chris Talkington",
+        "url": "http://christalkington.com/"
+      },
+      "bugs": {
+        "url": "https://github.com/archiverjs/archiver-utils/issues"
+      },
+      "dependencies": {
+        "glob": "^10.0.0",
+        "graceful-fs": "^4.2.0",
+        "is-stream": "^2.0.1",
+        "lazystream": "^1.0.0",
+        "lodash": "^4.17.15",
+        "normalize-path": "^3.0.0",
+        "readable-stream": "^4.0.0"
+      },
+      "description": "utility functions for archiver",
+      "devDependencies": {
+        "chai": "4.4.1",
+        "mkdirp": "3.0.1",
+        "mocha": "10.3.0",
+        "rimraf": "5.0.5"
+      },
+      "engines": {
+        "node": ">= 14"
+      },
+      "files": [
+        "index.js",
+        "file.js"
+      ],
+      "homepage": "https://github.com/archiverjs/archiver-utils#readme",
+      "keywords": [
+        "archiver",
+        "utils"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "archiver-utils",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/archiverjs/archiver-utils.git"
+      },
+      "scripts": {
+        "test": "mocha --reporter dot"
+      },
+      "version": "5.0.2"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 4557,
+      "sha256": "360eeab4dade236caa62645dc9789dcaf0e43b4a8a562c1f050df8e859bb7a67"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

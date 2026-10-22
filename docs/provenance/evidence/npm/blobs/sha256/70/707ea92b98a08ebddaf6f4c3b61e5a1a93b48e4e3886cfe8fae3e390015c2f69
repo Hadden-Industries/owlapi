@@ -1,0 +1,210 @@
+{
+  "artifactId": "4f5342d881384d331706ae260ae8fb42529f1649710bce2f2f71aa57d465b6af",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 387491,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "a07bc24468b9654ce76a547d47a2db282d07733b715db4c73a98bd63961f9550",
+        "size": 1084,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "644e84cad15ae061e60c39c63099fd1efeca25eb6dfcf05801a3b01ef13efb2f",
+        "size": 917,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/js-yaml.mjs",
+        "sha256": "a4ed507c9e2840c251364aae5295b4ea23d756c8855eb69e3f819405a2834c70",
+        "size": 2440,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/browser/js-yaml.esm.min.mjs",
+        "sha256": "de0f5266d4312ab9cd564aba4217eb9cc98dcfd18bd59988aa7e0971e7c722b5",
+        "size": 79763,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/browser/js-yaml.esm.min.mjs.map",
+        "sha256": "40acb04bb5e91407173f186207e9e001b2c64a0c08a2f2faad79e10412b209e9",
+        "size": 299158,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/browser/js-yaml.umd.min.js",
+        "sha256": "02970a652376ad653ff069c606ee7440b0514f52ed94a98426cb52426c8e5a02",
+        "size": 62553,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/browser/js-yaml.umd.min.js.map",
+        "sha256": "0870ddbe0821ef1e496483f41c659ad0621ab422a0d224b6832f1dbf5686765e",
+        "size": 298271,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/js-yaml.cjs.js",
+        "sha256": "b9e4f9b63c9fc56b034f0b032127d57028d347070fdabdc33b3a28abc02bc5b0",
+        "size": 138183,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/js-yaml.cjs.js.map",
+        "sha256": "6210edeff7108b8bfd44cdf513b44a82e97cbd93db006f3f0e02424dfa46204e",
+        "size": 287880,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/js-yaml.d.ts",
+        "sha256": "4bdd04182f1fa53c0818caf3d3c602fc4b322188bc23a28bf357f5cb3049234b",
+        "size": 36463,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/js-yaml.mjs",
+        "sha256": "213470960d9c2ff1d01f9164e5017749bfc383d8a6ebb8683f35c76e8c6d052b",
+        "size": 130603,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/js-yaml.mjs.map",
+        "sha256": "b80d31d8ce0e041ea2843b516cce4ede7c749272b28b7708019c3c2d820541f5",
+        "size": 286313,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "3ad7fe3eba5cf97410524a34ae9638f9c711cf0f25b3239c2ff2b2a604ecea1d",
+        "size": 2951,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1084,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a0/a07bc24468b9654ce76a547d47a2db282d07733b715db4c73a98bd63961f9550",
+          "sha256": "a07bc24468b9654ce76a547d47a2db282d07733b715db4c73a98bd63961f9550"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "a07bc24468b9654ce76a547d47a2db282d07733b715db4c73a98bd63961f9550",
+        "size": 1084
+      }
+    ],
+    "expandedBytes": 1626579,
+    "packageIdentity": {
+      "author": "Vladimir Zapparov <dervus.grim@gmail.com>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "js-yaml",
+      "repository": "nodeca/js-yaml",
+      "version": "5.5.0"
+    },
+    "packageMetadata": {
+      "author": "Vladimir Zapparov <dervus.grim@gmail.com>",
+      "bin": {
+        "js-yaml": "bin/js-yaml.mjs"
+      },
+      "contributors": [
+        "Aleksey V Zapparov <ixti@member.fsf.org> (http://www.ixti.net/)",
+        "Vitaly Puzrin <vitaly@rcdesign.ru> (https://github.com/puzrin)",
+        "Martin Grenfell <martin.grenfell@gmail.com> (http://got-ravings.blogspot.com)"
+      ],
+      "dependencies": {
+        "argparse": "^3.0.3"
+      },
+      "description": "YAML 1.2 parser and serializer",
+      "devDependencies": {
+        "@streamparser/json": "^0.0.26",
+        "@types/node": "^26.6.5",
+        "c8": "^12.0.0",
+        "codemirror": "^5.65.21",
+        "eslint": "^10.12.0",
+        "fast-check": "^4.10.2",
+        "gh-pages": "^6.3.0",
+        "mitata": "^1.0.34",
+        "neostandard": "^0.14.1",
+        "rollup": "^4.64.7",
+        "rollup-plugin-dts": "^6.5.1",
+        "typedoc": "^0.28.20",
+        "typescript": "^6.0.3",
+        "vite": "^8.3.4",
+        "vite-plugin-node-polyfills": "^0.28.0",
+        "vite-plugin-singlefile": "^2.3.3",
+        "workerpool": "^10.0.3"
+      },
+      "exports": {
+        ".": {
+          "import": "./dist/js-yaml.mjs",
+          "require": "./dist/js-yaml.cjs.js",
+          "types": "./dist/js-yaml.d.ts"
+        },
+        "./browser": {
+          "default": "./dist/browser/js-yaml.umd.min.js",
+          "import": "./dist/browser/js-yaml.esm.min.mjs",
+          "require": "./dist/browser/js-yaml.umd.min.js",
+          "types": "./dist/js-yaml.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "files": [
+        "bin/",
+        "dist/"
+      ],
+      "funding": [
+        {
+          "type": "github",
+          "url": "https://github.com/sponsors/puzrin"
+        },
+        {
+          "type": "github",
+          "url": "https://github.com/sponsors/nodeca"
+        }
+      ],
+      "keywords": [
+        "yaml",
+        "parser",
+        "serializer",
+        "pyyaml"
+      ],
+      "license": "MIT",
+      "main": "./dist/js-yaml.cjs.js",
+      "module": "./dist/js-yaml.mjs",
+      "name": "js-yaml",
+      "repository": "nodeca/js-yaml",
+      "scripts": {
+        "benchmark:deps": "npm install --prefix benchmark/extra/",
+        "build": "node support/build-dist.mjs",
+        "coverage": "npm run build && npm run spec:get && c8 --include 'dist/js-yaml.mjs' --include 'src/**' -r text -r html -r lcov node --test 'test/core/**/*.test.mjs' 'test/spec/*.test.mjs'",
+        "demo": "npm run lint && node support/build_demo.mjs && npm run doc",
+        "demo:publish": "npm run demo && gh-pages -d demo -f",
+        "doc": "typedoc",
+        "lint": "eslint .",
+        "lint-fix": "eslint . --fix",
+        "postpublish": "npm run demo:publish",
+        "prepack": "npm test && npm run build && npm run demo",
+        "spec:get": "node support/get-yaml-test-suite.mjs",
+        "spec:update": "node support/get-yaml-test-suite.mjs update",
+        "test": "npm run lint && npm run build && npm run type-check && npm run spec:get && node --test 'test/core/**/*.test.mjs' 'test/spec/*.test.mjs'",
+        "test:spec": "npm run build && npm run spec:get && node test/spec/spec.test.mjs",
+        "type-check": "tsc --noEmit"
+      },
+      "types": "./dist/js-yaml.d.ts",
+      "version": "5.5.0"
+    },
+    "physicalEntryCount": 13,
+    "tarball": {
+      "bytes": 387491,
+      "sha256": "23cb2e121ad69acd15fc786b7a9265a81eeeaa9f684ee73e717d6ecdbd8b0c90"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,1676 @@
+{
+  "artifactId": "e1041f46a1280aac2360b0cbe7eba62b3567e6c7b8fc814c57e7aa547fd9d805",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 13,
+      "digestVerifiedFileCount": 13,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 13
+    },
+    "artifactId": "e1041f46a1280aac2360b0cbe7eba62b3567e6c7b8fc814c57e7aa547fd9d805",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "10.3.0",
+        "for_package_purl": "pkg:npm/compress-commons@6.0.2",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/mocha",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "3.0.1",
+        "for_package_purl": "pkg:npm/compress-commons@6.0.2",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/mkdirp",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "4.4.1",
+        "for_package_purl": "pkg:npm/compress-commons@6.0.2",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/chai",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "5.0.5",
+        "for_package_purl": "pkg:npm/compress-commons@6.0.2",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/rimraf",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.2.0",
+        "for_package_purl": "pkg:npm/compress-commons@6.0.2",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/crc-32",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.0.1",
+        "for_package_purl": "pkg:npm/compress-commons@6.0.2",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/is-stream",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^3.0.0",
+        "for_package_purl": "pkg:npm/compress-commons@6.0.2",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/normalize-path",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.0.0",
+        "for_package_purl": "pkg:npm/compress-commons@6.0.2",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/readable-stream",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^6.0.0",
+        "for_package_purl": "pkg:npm/compress-commons@6.0.2",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/crc32-stream",
+        "resolved_package": {},
+        "scope": "dependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "Chris Talkington url' http://christalkington.com",
+            "end_line": 8,
+            "start_line": 6
+          }
+        ],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/compress-commons@6.0.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 17,
+                "from_file": "e1041f46a1280aac2360b0cbe7eba62b3567e6c7b8fc814c57e7aa547fd9d805/package/package.json",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "  \"license\": \"MIT\",",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_30.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+                "score": 100,
+                "start_line": 17
+              }
+            ]
+          }
+        ],
+        "md5": "026aaa3b9377580e4f6f8245709f93c0",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/compress-commons/6.0.2",
+            "bug_tracking_url": "https://github.com/archiverjs/node-compress-commons/issues",
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "mit",
+            "declared_license_expression_spdx": "MIT",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "10.3.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/mocha",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "3.0.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/mkdirp",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "4.4.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/chai",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "5.0.5",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/rimraf",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.2.0",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/crc-32",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.0.1",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/is-stream",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^3.0.0",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/normalize-path",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.0.0",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/readable-stream",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^6.0.0",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/crc32-stream",
+                "resolved_package": {},
+                "scope": "dependencies"
+              }
+            ],
+            "description": "a library that defines a common interface for working with archive formats within node",
+            "download_url": "https://registry.npmjs.org/compress-commons/-/compress-commons-6.0.2.tgz",
+            "extra_data": {
+              "engines": {
+                "node": ">= 14"
+              }
+            },
+            "extracted_license_statement": "- MIT\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": "https://github.com/archiverjs/node-compress-commons",
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [
+              "archive",
+              "commons",
+              "compress"
+            ],
+            "license_detections": [
+              {
+                "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "e1041f46a1280aac2360b0cbe7eba62b3567e6c7b8fc814c57e7aa547fd9d805/package/package.json",
+                    "license_expression": "mit",
+                    "license_expression_spdx": "MIT",
+                    "match_coverage": 100,
+                    "matched_length": 1,
+                    "matched_text": "MIT",
+                    "matcher": "1-spdx-id",
+                    "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+                    "rule_relevance": 100,
+                    "rule_url": null,
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "compress-commons",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": null,
+                "name": "Chris Talkington",
+                "role": "author",
+                "type": "person",
+                "url": "http://christalkington.com/"
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/compress-commons@6.0.2",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/compress-commons/-/compress-commons-6.0.2.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/compress-commons",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "git+https://github.com/archiverjs/node-compress-commons.git",
+            "version": "6.0.2"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 1.64,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "da9bc39c9f447b0188364818e52ce2f53eade1c3",
+        "sha1_git": "d5c45b2d4bb3c22456a96fe2dab5564c4252a31f",
+        "sha256": "d405726826d0c72939d487c8b81b1a278741e825f7a7e2ea7748c9bd9cb5c57c",
+        "size": 1056,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2014 Chris Talkington, contributors",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": "",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/compress-commons@6.0.2"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Chris Talkington, contributors",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-cacd5c0c-204a-85c2-affc-e4c125b2492a",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 22,
+                "from_file": "e1041f46a1280aac2360b0cbe7eba62b3567e6c7b8fc814c57e7aa547fd9d805/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 161,
+                "matched_text": "Permission is hereby granted, free of charge, to any person\nobtaining a copy of this software and associated documentation\nfiles (the \"Software\"), to deal in the Software without\nrestriction, including without limitation the rights to use,\ncopy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the\nSoftware is furnished to do so, subject to the following\nconditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES\nOF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\nNONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT\nHOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\nWHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\nFROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR\nOTHER DEALINGS IN THE SOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+                "score": 100,
+                "start_line": 3
+              }
+            ]
+          }
+        ],
+        "md5": "51478cb9e7ab40d3d3616c3794ded96b",
+        "name": "LICENSE",
+        "package_data": [],
+        "path": "package/LICENSE",
+        "percentage_of_license_text": 96.41,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "97caa58bbe0c8dcd3bd857dca51ab034344a71c1",
+        "sha1_git": "56420a6a06bd156003ce69970b50c67176f2afe5",
+        "sha256": "79bad9f51738814f83251ae89460326b2ff2ea19ff5f71ab8f7636b2e17bb231",
+        "size": 1074,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/compress-commons@6.0.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-af211010-c212-b168-9f38-2ce41edae0da",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 19,
+                "from_file": "e1041f46a1280aac2360b0cbe7eba62b3567e6c7b8fc814c57e7aa547fd9d805/package/README.md",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "- [MIT License](https://github.com/archiverjs/node-compress-commons/blob/master/LICENSE-MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 19
+              },
+              {
+                "end_line": 19,
+                "from_file": "e1041f46a1280aac2360b0cbe7eba62b3567e6c7b8fc814c57e7aa547fd9d805/package/README.md",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "- [MIT License](https://github.com/archiverjs/node-compress-commons/blob/master/LICENSE-MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_30.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+                "score": 100,
+                "start_line": 19
+              }
+            ]
+          }
+        ],
+        "md5": "6fde416e1ad1159cfd8a7c5debbfbe97",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 3.01,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "8327bb0f05da6d9015f1bd6dd3d10f28de4c03ea",
+        "sha1_git": "6a74ce1480b347c94ccb40782a07f43740102186",
+        "sha256": "58d3d8966de44696577fc02fc34dda6da6839936b236b5b32cb77fd02e26040b",
+        "size": 977,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "archive-entry",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2014 Chris Talkington, contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/compress-commons@6.0.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "Chris Talkington, contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-8fc6a26b-38b8-a343-8487-0b22c5326122",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "e1041f46a1280aac2360b0cbe7eba62b3567e6c7b8fc814c57e7aa547fd9d805/package/lib/archivers/archive-entry.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 84.62,
+                "matched_length": 11,
+                "matched_text": " * Licensed under the MIT license.\n * https://github.com/archiverjs/node-compress-commons/blob/master/LICENSE-MIT",
+                "matcher": "3-seq",
+                "rule_identifier": "mit_986.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_986.RULE",
+                "score": 84.62,
+                "start_line": 5
+              }
+            ]
+          }
+        ],
+        "md5": "18391ade11174f064cbd80884a2de281",
+        "name": "archive-entry.js",
+        "package_data": [],
+        "path": "package/lib/archivers/archive-entry.js",
+        "percentage_of_license_text": 23.91,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "215cf6f2d48d50cd25effc8e00802d3a6b314e8e",
+        "sha1_git": "86bc59886a2392c35c759cad28325c61bfcd6b8e",
+        "sha256": "383cbf43e4de337e7f279574a4f62c79231c2724f5cd5c9cc9b89d4fb2fe4b70",
+        "size": 466,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "archive-output-stream",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2014 Chris Talkington, contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/compress-commons@6.0.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "Chris Talkington, contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-8fc6a26b-38b8-a343-8487-0b22c5326122",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "e1041f46a1280aac2360b0cbe7eba62b3567e6c7b8fc814c57e7aa547fd9d805/package/lib/archivers/archive-output-stream.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 84.62,
+                "matched_length": 11,
+                "matched_text": " * Licensed under the MIT license.\n * https://github.com/archiverjs/node-compress-commons/blob/master/LICENSE-MIT",
+                "matcher": "3-seq",
+                "rule_identifier": "mit_986.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_986.RULE",
+                "score": 84.62,
+                "start_line": 5
+              }
+            ]
+          }
+        ],
+        "md5": "e370fbaae17b6990b0b7ccd03812cbb3",
+        "name": "archive-output-stream.js",
+        "package_data": [],
+        "path": "package/lib/archivers/archive-output-stream.js",
+        "percentage_of_license_text": 3.82,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "ebebe151f90310b78cdf83d70dfe931614c50091",
+        "sha1_git": "d349b5e6c0a35ab3828078b0e59449b1642efe52",
+        "sha256": "f476d1a72b42502541043e8c144833953ecdb9dd0ed7df4ed24846eff6aea2c5",
+        "size": 2790,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "compress-commons",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2014 Chris Talkington, contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/compress-commons@6.0.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "Chris Talkington, contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-8fc6a26b-38b8-a343-8487-0b22c5326122",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "e1041f46a1280aac2360b0cbe7eba62b3567e6c7b8fc814c57e7aa547fd9d805/package/lib/compress-commons.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 84.62,
+                "matched_length": 11,
+                "matched_text": " * Licensed under the MIT license.\n * https://github.com/archiverjs/node-compress-commons/blob/master/LICENSE-MIT",
+                "matcher": "3-seq",
+                "rule_identifier": "mit_986.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_986.RULE",
+                "score": 84.62,
+                "start_line": 5
+              }
+            ]
+          }
+        ],
+        "md5": "4f4d4a9afed0e8b55aeea5562496e5bd",
+        "name": "compress-commons.js",
+        "package_data": [],
+        "path": "package/lib/compress-commons.js",
+        "percentage_of_license_text": 20.75,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "0f829d5ca596febe2c968f1a6fc572c7286b9505",
+        "sha1_git": "ef3bc1dbed1addba642eb382a9641d708eb9d884",
+        "sha256": "390e74d7761c0baec54ba02577d5e9d9bc6ea96ed9c44118e2e231fcf79f2357",
+        "size": 492,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "constants",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2014 Chris Talkington, contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/compress-commons@6.0.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "Chris Talkington, contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-8fc6a26b-38b8-a343-8487-0b22c5326122",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "e1041f46a1280aac2360b0cbe7eba62b3567e6c7b8fc814c57e7aa547fd9d805/package/lib/archivers/zip/constants.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 84.62,
+                "matched_length": 11,
+                "matched_text": " * Licensed under the MIT license.\n * https://github.com/archiverjs/node-compress-commons/blob/master/LICENSE-MIT",
+                "matcher": "3-seq",
+                "rule_identifier": "mit_986.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_986.RULE",
+                "score": 84.62,
+                "start_line": 5
+              }
+            ]
+          }
+        ],
+        "md5": "824046b4c5612eb19f0d1842849ee459",
+        "name": "constants.js",
+        "package_data": [],
+        "path": "package/lib/archivers/zip/constants.js",
+        "percentage_of_license_text": 3.7,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "becfda76d90375d6c2a02b35ad3fa868f254b0a4",
+        "sha1_git": "c30b3250b6ce7519ddd594b6a4bddbd395f04fe1",
+        "sha256": "ad592e7b3343ceb249da9ee546cd947158babbbcb8ab55fd65c4fb02f1acd77e",
+        "size": 1968,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "general-purpose-bit",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2014 Chris Talkington, contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/compress-commons@6.0.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "Chris Talkington, contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-8fc6a26b-38b8-a343-8487-0b22c5326122",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "e1041f46a1280aac2360b0cbe7eba62b3567e6c7b8fc814c57e7aa547fd9d805/package/lib/archivers/zip/general-purpose-bit.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 84.62,
+                "matched_length": 11,
+                "matched_text": " * Licensed under the MIT license.\n * https://github.com/archiverjs/node-compress-commons/blob/master/LICENSE-MIT",
+                "matcher": "3-seq",
+                "rule_identifier": "mit_986.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_986.RULE",
+                "score": 84.62,
+                "start_line": 5
+              }
+            ]
+          }
+        ],
+        "md5": "62ebc05485088ed00cebf24352ba9fb2",
+        "name": "general-purpose-bit.js",
+        "package_data": [],
+        "path": "package/lib/archivers/zip/general-purpose-bit.js",
+        "percentage_of_license_text": 3.83,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "d585f890489541bc025b611b0ceece1d507e7566",
+        "sha1_git": "62703996a1bae9c36ff137795a8100bde4aadc9f",
+        "sha256": "e27832b986cc56aca60d84677293777237911e16363186eda14ede3833524ef0",
+        "size": 2837,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2014 Chris Talkington, contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/compress-commons@6.0.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "Chris Talkington, contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-8fc6a26b-38b8-a343-8487-0b22c5326122",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "e1041f46a1280aac2360b0cbe7eba62b3567e6c7b8fc814c57e7aa547fd9d805/package/lib/util/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 84.62,
+                "matched_length": 11,
+                "matched_text": " * Licensed under the MIT license.\n * https://github.com/archiverjs/node-compress-commons/blob/master/LICENSE-MIT",
+                "matcher": "3-seq",
+                "rule_identifier": "mit_986.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_986.RULE",
+                "score": 84.62,
+                "start_line": 5
+              }
+            ]
+          }
+        ],
+        "md5": "5c3079b33e23909b7b4933eeb5d5822c",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/lib/util/index.js",
+        "percentage_of_license_text": 13.41,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "02c05181b9e74b0784f5ae176d241ad89b504b31",
+        "sha1_git": "0fcc60f963eec3778bb7b81fd5d776fd53b3dbcb",
+        "sha256": "36d5667fa0e645d420bc1429cc50edf580c6b979a0f454a35b34231042da45e8",
+        "size": 723,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "unix-stat",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2014 Chris Talkington, contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/compress-commons@6.0.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "Chris Talkington, contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-8fc6a26b-38b8-a343-8487-0b22c5326122",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "e1041f46a1280aac2360b0cbe7eba62b3567e6c7b8fc814c57e7aa547fd9d805/package/lib/archivers/zip/unix-stat.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 84.62,
+                "matched_length": 11,
+                "matched_text": " * Licensed under the MIT license.\n * https://github.com/archiverjs/node-compress-commons/blob/master/LICENSE-MIT",
+                "matcher": "3-seq",
+                "rule_identifier": "mit_986.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_986.RULE",
+                "score": 84.62,
+                "start_line": 5
+              }
+            ]
+          }
+        ],
+        "md5": "86b414ede02599c6947cb531848a871d",
+        "name": "unix-stat.js",
+        "package_data": [],
+        "path": "package/lib/archivers/zip/unix-stat.js",
+        "percentage_of_license_text": 10,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "2071b184f8f70e90293c10a1c69ef44761d09212",
+        "sha1_git": "1326cd1d836d483b31346e7cb0fc5c06ef7e731b",
+        "sha256": "96a8d7b78fe17146fb29823e834584850d6d9a2faa8215c2e02ccfd42ba36c37",
+        "size": 1188,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "util",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2014 Chris Talkington, contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/compress-commons@6.0.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "Chris Talkington, contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-8fc6a26b-38b8-a343-8487-0b22c5326122",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "e1041f46a1280aac2360b0cbe7eba62b3567e6c7b8fc814c57e7aa547fd9d805/package/lib/archivers/zip/util.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 84.62,
+                "matched_length": 11,
+                "matched_text": " * Licensed under the MIT license.\n * https://github.com/archiverjs/node-compress-commons/blob/master/LICENSE-MIT",
+                "matcher": "3-seq",
+                "rule_identifier": "mit_986.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_986.RULE",
+                "score": 84.62,
+                "start_line": 5
+              }
+            ]
+          }
+        ],
+        "md5": "09dc48b198ba6da279533186af170f1e",
+        "name": "util.js",
+        "package_data": [],
+        "path": "package/lib/archivers/zip/util.js",
+        "percentage_of_license_text": 4.53,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "0e2c947d64ce568bb62f22bbd592fdbb0047a9a3",
+        "sha1_git": "22055ae515bc98a86bb366cbef48e566f01e3727",
+        "sha256": "7002fb2ad3cfac7c52b65698ea1910a1928ef9639e033336dbc0c5bd234286ab",
+        "size": 1995,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "zip-archive-entry",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2014 Chris Talkington, contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/compress-commons@6.0.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "Chris Talkington, contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-8fc6a26b-38b8-a343-8487-0b22c5326122",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "e1041f46a1280aac2360b0cbe7eba62b3567e6c7b8fc814c57e7aa547fd9d805/package/lib/archivers/zip/zip-archive-entry.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 84.62,
+                "matched_length": 11,
+                "matched_text": " * Licensed under the MIT license.\n * https://github.com/archiverjs/node-compress-commons/blob/master/LICENSE-MIT",
+                "matcher": "3-seq",
+                "rule_identifier": "mit_986.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_986.RULE",
+                "score": 84.62,
+                "start_line": 5
+              }
+            ]
+          }
+        ],
+        "md5": "064ac23c7edc57d00c01a4b7f45a5248",
+        "name": "zip-archive-entry.js",
+        "package_data": [],
+        "path": "package/lib/archivers/zip/zip-archive-entry.js",
+        "percentage_of_license_text": 1.18,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "159ae695962aa9411b5fbb1c3e9983c08cc04074",
+        "sha1_git": "c53ad0ad8fe1b34f080e6138e8eba6bd4b87dfe1",
+        "sha256": "e6ffe10c21bad61c030491f9907ddb83ff18a842831d402747397a03aea88ed1",
+        "size": 8526,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "zip-archive-output-stream",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2014 Chris Talkington, contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/compress-commons@6.0.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "Chris Talkington, contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-8fc6a26b-38b8-a343-8487-0b22c5326122",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "e1041f46a1280aac2360b0cbe7eba62b3567e6c7b8fc814c57e7aa547fd9d805/package/lib/archivers/zip/zip-archive-output-stream.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 84.62,
+                "matched_length": 11,
+                "matched_text": " * Licensed under the MIT license.\n * https://github.com/archiverjs/node-compress-commons/blob/master/LICENSE-MIT",
+                "matcher": "3-seq",
+                "rule_identifier": "mit_986.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_986.RULE",
+                "score": 84.62,
+                "start_line": 5
+              }
+            ]
+          }
+        ],
+        "md5": "66f0392503ca9d20f2fb4c30137f60b3",
+        "name": "zip-archive-output-stream.js",
+        "package_data": [],
+        "path": "package/lib/archivers/zip/zip-archive-output-stream.js",
+        "percentage_of_license_text": 0.88,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "1a8ca5f8ed2a31224b46c78815d1c00f49d597ab",
+        "sha1_git": "f56cea93a76a78f382bc5989a4dfe8462c7d1eb8",
+        "sha256": "262cce586a8d182efb086e5be6b617958366851b53c1c95298377eec085274c4",
+        "size": 11634,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 17,
+            "from_file": "e1041f46a1280aac2360b0cbe7eba62b3567e6c7b8fc814c57e7aa547fd9d805/package/package.json",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "  \"license\": \"MIT\",",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_30.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+            "score": 100,
+            "start_line": 17
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "e1041f46a1280aac2360b0cbe7eba62b3567e6c7b8fc814c57e7aa547fd9d805/package/package.json",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 1,
+            "matched_text": "MIT",
+            "matcher": "1-spdx-id",
+            "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+            "rule_relevance": 100,
+            "rule_url": null,
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-af211010-c212-b168-9f38-2ce41edae0da",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 19,
+            "from_file": "e1041f46a1280aac2360b0cbe7eba62b3567e6c7b8fc814c57e7aa547fd9d805/package/README.md",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "- [MIT License](https://github.com/archiverjs/node-compress-commons/blob/master/LICENSE-MIT)",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_14.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+            "score": 100,
+            "start_line": 19
+          },
+          {
+            "end_line": 19,
+            "from_file": "e1041f46a1280aac2360b0cbe7eba62b3567e6c7b8fc814c57e7aa547fd9d805/package/README.md",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "- [MIT License](https://github.com/archiverjs/node-compress-commons/blob/master/LICENSE-MIT)",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_30.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+            "score": 100,
+            "start_line": 19
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-cacd5c0c-204a-85c2-affc-e4c125b2492a",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 22,
+            "from_file": "e1041f46a1280aac2360b0cbe7eba62b3567e6c7b8fc814c57e7aa547fd9d805/package/LICENSE",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 161,
+            "matched_text": "Permission is hereby granted, free of charge, to any person\nobtaining a copy of this software and associated documentation\nfiles (the \"Software\"), to deal in the Software without\nrestriction, including without limitation the rights to use,\ncopy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the\nSoftware is furnished to do so, subject to the following\nconditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES\nOF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\nNONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT\nHOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\nWHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\nFROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR\nOTHER DEALINGS IN THE SOFTWARE.",
+            "matcher": "2-aho",
+            "rule_identifier": "mit.LICENSE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+            "score": 100,
+            "start_line": 3
+          }
+        ]
+      },
+      {
+        "detection_count": 10,
+        "identifier": "mit-8fc6a26b-38b8-a343-8487-0b22c5326122",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 6,
+            "from_file": "e1041f46a1280aac2360b0cbe7eba62b3567e6c7b8fc814c57e7aa547fd9d805/package/lib/compress-commons.js",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 84.62,
+            "matched_length": 11,
+            "matched_text": " * Licensed under the MIT license.\n * https://github.com/archiverjs/node-compress-commons/blob/master/LICENSE-MIT",
+            "matcher": "3-seq",
+            "rule_identifier": "mit_986.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_986.RULE",
+            "score": 84.62,
+            "start_line": 5
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": "https://ieeexplore.ieee.org/document/9263265",
+        "homepage_url": "http://opensource.org/licenses/mit-license.php",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "mit",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/mit",
+        "minimum_coverage": 0,
+        "name": "MIT License",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": null,
+        "osi_url": "http://www.opensource.org/licenses/MIT",
+        "other_spdx_license_keys": [
+          "LicenseRef-MIT-Bootstrap",
+          "LicenseRef-MIT-Diehl",
+          "LicenseRef-MIT-Discord",
+          "LicenseRef-MIT-TC"
+        ],
+        "other_urls": [
+          "https://opensource.com/article/18/3/patent-grant-mit-license",
+          "https://opensource.com/article/19/4/history-mit-license",
+          "https://opensource.org/licenses/MIT"
+        ],
+        "owner": "MIT",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "short_name": "MIT License",
+        "spdx_license_key": "MIT",
+        "spdx_url": "https://spdx.org/licenses/MIT",
+        "standard_notice": null,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+        "text_urls": [
+          "http://opensource.org/licenses/mit-license.php"
+        ]
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "mit.LICENSE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": true,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 161,
+        "license_expression": "mit",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
+      },
+      {
+        "identifier": "mit_14.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "mit",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "MIT License"
+      },
+      {
+        "identifier": "mit_30.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "mit",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "License: MIT"
+      },
+      {
+        "identifier": "mit_986.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [
+          "https://github.com/blob/master/LICENSE"
+        ],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": true,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 13,
+        "license_expression": "mit",
+        "minimum_coverage": 50,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_986.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "## License\n is {{licensed under the [MIT}} License](https://github.com/blob/master/LICENSE)."
+      },
+      {
+        "identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": true,
+        "language": "en",
+        "length": 1,
+        "license_expression": "mit",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": null,
+        "skip_for_required_phrase_generation": false,
+        "text": "MIT"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/compress-commons/6.0.2",
+        "bug_tracking_url": "https://github.com/archiverjs/node-compress-commons/issues",
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "mit",
+        "declared_license_expression_spdx": "MIT",
+        "description": "a library that defines a common interface for working with archive formats within node",
+        "download_url": "https://registry.npmjs.org/compress-commons/-/compress-commons-6.0.2.tgz",
+        "extra_data": {
+          "engines": {
+            "node": ">= 14"
+          }
+        },
+        "extracted_license_statement": "- MIT\n",
+        "holder": null,
+        "homepage_url": "https://github.com/archiverjs/node-compress-commons",
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [
+          "archive",
+          "commons",
+          "compress"
+        ],
+        "license_detections": [
+          {
+            "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "e1041f46a1280aac2360b0cbe7eba62b3567e6c7b8fc814c57e7aa547fd9d805/package/package.json",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 1,
+                "matched_text": "MIT",
+                "matcher": "1-spdx-id",
+                "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+                "rule_relevance": 100,
+                "rule_url": null,
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "compress-commons",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": null,
+            "name": "Chris Talkington",
+            "role": "author",
+            "type": "person",
+            "url": "http://christalkington.com/"
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/compress-commons@6.0.2",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/compress-commons/-/compress-commons-6.0.2.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/compress-commons",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "git+https://github.com/archiverjs/node-compress-commons.git",
+        "version": "6.0.2"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

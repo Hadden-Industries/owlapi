@@ -1,0 +1,16 @@
+name: Freeze the consumer runtime matrix
+description: Resolve policy minimum, latest and reference versions once for a qualification run
+outputs:
+  matrix:
+    description: Complete frozen runtime selection and platform lanes
+    value: ${{ steps.freeze.outputs.matrix }}
+  sha256:
+    description: Semantic digest of the frozen matrix
+    value: ${{ steps.freeze.outputs.sha256 }}
+runs:
+  using: composite
+  steps:
+    - uses: ./.github/actions/setup-producer
+    - id: freeze
+      shell: bash
+      run: node scripts/consumer-runtime-matrix.mjs freeze

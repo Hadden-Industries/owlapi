@@ -1,0 +1,119 @@
+{
+  "artifactId": "d4cdb0fc6e3a81dcf8c68de09be9d941e4fb543010c6ec72677eccc9e158f002",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1859,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "68f12f6e2c33688699249c01d8f9623c534da20aa71989c57b061b7bc1676d14",
+        "size": 1096,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "a262a04ce7a41ff46a2dc873aa6b5c93e6397ebd7ee620d711b8d4e24467d5ac",
+        "size": 1211,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "9b8c691372802da788c9c5f4e1ca2f1ed0b88ab8722176c2aea15e38ec86d249",
+        "size": 132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b0802c09bce6bf067d3e5f52390ea26972e11c88bb6ae38991316ac83ca14127",
+        "size": 991,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1096,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/68/68f12f6e2c33688699249c01d8f9623c534da20aa71989c57b061b7bc1676d14",
+          "sha256": "68f12f6e2c33688699249c01d8f9623c534da20aa71989c57b061b7bc1676d14"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "68f12f6e2c33688699249c01d8f9623c534da20aa71989c57b061b7bc1676d14",
+        "size": 1096
+      }
+    ],
+    "expandedBytes": 3430,
+    "packageIdentity": {
+      "author": {
+        "email": "mail@juliangruber.com",
+        "name": "Julian Gruber",
+        "url": "http://juliangruber.com"
+      },
+      "homepage": "https://github.com/juliangruber/isarray",
+      "license": "MIT",
+      "name": "isarray",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/juliangruber/isarray.git"
+      },
+      "version": "2.0.5"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "mail@juliangruber.com",
+        "name": "Julian Gruber",
+        "url": "http://juliangruber.com"
+      },
+      "dependencies": {},
+      "description": "Array#isArray for older browsers",
+      "devDependencies": {
+        "tape": "~2.13.4"
+      },
+      "files": [
+        "index.js"
+      ],
+      "homepage": "https://github.com/juliangruber/isarray",
+      "keywords": [
+        "browser",
+        "isarray",
+        "array"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "isarray",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/juliangruber/isarray.git"
+      },
+      "scripts": {
+        "test": "tape test.js"
+      },
+      "testling": {
+        "browsers": [
+          "ie/8..latest",
+          "firefox/17..latest",
+          "firefox/nightly",
+          "chrome/22..latest",
+          "chrome/canary",
+          "opera/12..latest",
+          "opera/next",
+          "safari/5.1..latest",
+          "ipad/6.0..latest",
+          "iphone/6.0..latest",
+          "android-browser/4.2..latest"
+        ],
+        "files": "test.js"
+      },
+      "version": "2.0.5"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1859,
+      "sha256": "72bae463b81a604b4a118c00012c76ee9b8d155b9da62d1f362876c9f8b5f793"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

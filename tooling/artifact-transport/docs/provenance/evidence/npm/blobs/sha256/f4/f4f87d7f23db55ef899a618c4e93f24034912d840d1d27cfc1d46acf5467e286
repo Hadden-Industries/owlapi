@@ -1,0 +1,142 @@
+{
+  "artifactId": "bad7d92092ffe2f8a5724085c68123234f35364fb4f8352792b78ff1b5fe31ba",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 9985,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "a7ae9adc15354b280af770bf3bd99a336d0893333068bbd088e78215b228fec6",
+        "size": 1108,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "d46c661ad81ae676a381165a017058f595f3ffc87146c0b460ac7833106246af",
+        "size": 3713,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/entry.js",
+        "sha256": "a71a26270fd243953733365931f2aa0f30dcea06aad044d6e1ac57997ed56493",
+        "size": 488,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/extract.js",
+        "sha256": "3b9b892cf36554a0d70f6ceb52990f38871a2b053348fc5cb682fdae2d14ece8",
+        "size": 2524,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/matcher-stream.js",
+        "sha256": "740cfbd30a7424d9ff20855ec62e9298fa851906569116cd1e84908c10b7592d",
+        "size": 2552,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/parser-stream.js",
+        "sha256": "e00cd4dca81d2b43aed2707acd5b0005bb473453ff6fe4ecf947bea04672c84e",
+        "size": 1405,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/unzip-stream.js",
+        "sha256": "6436b1db8bad877c8d61782ef7879d2c4a5c2330de4d850d0f5e351b41a6124d",
+        "size": 27391,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "6a782ed54db3c6b5400254aa997b20cb2dd72a9306dac8b59f62aad712c6ef29",
+        "size": 922,
+        "type": "FILE"
+      },
+      {
+        "path": "package/unzip.js",
+        "sha256": "5ba70bbc325f560b6069423de6eed07d1a2692ad298502475471a5a0976eb824",
+        "size": 106,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1108,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a7/a7ae9adc15354b280af770bf3bd99a336d0893333068bbd088e78215b228fec6",
+          "sha256": "a7ae9adc15354b280af770bf3bd99a336d0893333068bbd088e78215b228fec6"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "a7ae9adc15354b280af770bf3bd99a336d0893333068bbd088e78215b228fec6",
+        "size": 1108
+      }
+    ],
+    "expandedBytes": 40209,
+    "packageIdentity": {
+      "author": "Michal Hruby <michal.mhr@gmail.com>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "unzip-stream",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/mhr3/unzip-stream.git"
+      },
+      "version": "0.3.4"
+    },
+    "packageMetadata": {
+      "author": "Michal Hruby <michal.mhr@gmail.com>",
+      "dependencies": {
+        "binary": "^0.3.0",
+        "mkdirp": "^0.5.1"
+      },
+      "description": "Process zip files using streaming API",
+      "devDependencies": {
+        "dirdiff": ">= 0.0.1 < 1",
+        "stream-buffers": ">= 0.2.5 < 1",
+        "tap": "^11.0.1",
+        "temp": ">= 0.4.0 < 1"
+      },
+      "directories": {
+        "example": "examples",
+        "test": "test"
+      },
+      "keywords": [
+        "zip",
+        "unzip",
+        "zlib",
+        "uncompress",
+        "archive",
+        "stream",
+        "extract"
+      ],
+      "license": "MIT",
+      "main": "unzip.js",
+      "maintainers": [
+        {
+          "email": "michal.mhr@gmail.com",
+          "name": "Michal Hruby"
+        }
+      ],
+      "name": "unzip-stream",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/mhr3/unzip-stream.git"
+      },
+      "scripts": {
+        "coverage": "tap ./test/*.js --cov --coverage-report=html",
+        "test": "tap ./test/*.js"
+      },
+      "version": "0.3.4"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 9985,
+      "sha256": "798da4aedea08655fc22fa1a44f678092686a230b9963310bb3015b6ae34a98b"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

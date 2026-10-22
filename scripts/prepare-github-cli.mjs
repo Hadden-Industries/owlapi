@@ -6,7 +6,7 @@ import { pathToFileURL } from "node:url";
 import { extract } from "tar";
 
 import { assertGitHubCliArchive, GITHUB_CLI_IDENTITY } from "./github-cli.mjs";
-import { sha256Buffer } from "./release-artifacts.mjs";
+import { sha256Buffer } from "./release-file-utils.mjs";
 
 const argumentValue = (name) => {
   const index = process.argv.indexOf(name);

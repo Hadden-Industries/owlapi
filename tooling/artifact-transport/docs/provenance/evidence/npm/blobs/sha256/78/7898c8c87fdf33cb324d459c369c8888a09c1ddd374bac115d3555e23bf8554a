@@ -1,0 +1,220 @@
+{
+  "artifactId": "dd444b7ff83ad5dd4c3098966cdf19c9dfaac09b0909157d13ce183cd42fa316",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6382,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.eslintrc",
+        "sha256": "74e902a86f8225f37ee223801bbf5ac11f9d0a330a9b04c8909ef21147ffa412",
+        "size": 138,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "c88d2ad0d92b2977876a4f81aa60c4151c5b3a9e12eefe0843c0fbb87997edc6",
+        "size": 581,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nycrc",
+        "sha256": "997785c50b0773e5e18bf15550fbf57823c634fefe623cd37b3c83696402ad0a",
+        "size": 139,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "333cf17d395a3c807ba1f568ca16aac057d40c7f3e6ef8b1e2e4967d1d0d12a2",
+        "size": 2880,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "5e325595b4ea8cfec3802f545b1def5d7b73e4a5b8e9ba63e32a320f67732292",
+        "size": 1071,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "8c1e445125b0119718896686b7c7015d1078fcc727327b6d1c4955df0b7b2d10",
+        "size": 1897,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "f8213a2dc5cb3a7b42d6708c68e36cbc2633552021ac89e618919cbecf6a2baa",
+        "size": 4651,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "aaf524d09b5a4f8f732a516aa1c81e6e8c5d65ae3d01bce392e8fc1ac55c14ff",
+        "size": 687,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "dcc8abb3c4ad3774234272149020cb36d7b1a3d377a419454d1e7adb368dd9c3",
+        "size": 2507,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "ff0e2917d84f9254d28466934577d67f0b00589d637bad08e637cb3278e43f22",
+        "size": 2418,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "97ce3d982a834f79a60b6c4b8dccc0e961711f2e74fac4c8c2e1b877f9bc8bb4",
+        "size": 137,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1071,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5e/5e325595b4ea8cfec3802f545b1def5d7b73e4a5b8e9ba63e32a320f67732292",
+          "sha256": "5e325595b4ea8cfec3802f545b1def5d7b73e4a5b8e9ba63e32a320f67732292"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "5e325595b4ea8cfec3802f545b1def5d7b73e4a5b8e9ba63e32a320f67732292",
+        "size": 1071
+      },
+      {
+        "blob": {
+          "bytes": 1897,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/8c/8c1e445125b0119718896686b7c7015d1078fcc727327b6d1c4955df0b7b2d10",
+          "sha256": "8c1e445125b0119718896686b7c7015d1078fcc727327b6d1c4955df0b7b2d10"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "8c1e445125b0119718896686b7c7015d1078fcc727327b6d1c4955df0b7b2d10",
+        "size": 1897
+      }
+    ],
+    "expandedBytes": 17106,
+    "packageIdentity": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "homepage": "https://github.com/ljharb/call-bound#readme",
+      "license": "MIT",
+      "name": "call-bound",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ljharb/call-bound.git"
+      },
+      "version": "1.0.4"
+    },
+    "packageMetadata": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "bugs": {
+        "url": "https://github.com/ljharb/call-bound/issues"
+      },
+      "dependencies": {
+        "call-bind-apply-helpers": "^1.0.2",
+        "get-intrinsic": "^1.3.0"
+      },
+      "description": "Robust call-bound JavaScript intrinsics, using `call-bind` and `get-intrinsic`.",
+      "devDependencies": {
+        "@arethetypeswrong/cli": "^0.17.4",
+        "@ljharb/eslint-config": "^21.1.1",
+        "@ljharb/tsconfig": "^0.3.0",
+        "@types/call-bind": "^1.0.5",
+        "@types/get-intrinsic": "^1.2.3",
+        "@types/tape": "^5.8.1",
+        "auto-changelog": "^2.5.0",
+        "encoding": "^0.1.13",
+        "es-value-fixtures": "^1.7.1",
+        "eslint": "=8.8.0",
+        "evalmd": "^0.0.19",
+        "for-each": "^0.3.5",
+        "gopd": "^1.2.0",
+        "has-strict-mode": "^1.1.0",
+        "in-publish": "^2.0.1",
+        "npmignore": "^0.3.1",
+        "nyc": "^10.3.2",
+        "object-inspect": "^1.13.4",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.9.0",
+        "typescript": "next"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "exports": {
+        ".": "./index.js",
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "homepage": "https://github.com/ljharb/call-bound#readme",
+      "keywords": [
+        "javascript",
+        "ecmascript",
+        "es",
+        "js",
+        "callbind",
+        "callbound",
+        "call",
+        "bind",
+        "bound",
+        "call-bind",
+        "call-bound",
+        "function",
+        "es-abstract"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "call-bound",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ljharb/call-bound.git"
+      },
+      "scripts": {
+        "lint": "eslint --ext=.js,.mjs .",
+        "postlint": "tsc -p . && attw -P",
+        "posttest": "npx npm@'>=10.2' audit --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prelint": "evalmd README.md",
+        "prepack": "npmignore --auto --commentLines=auto",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only",
+        "tests-only": "nyc tape 'test/**/*.js'",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "sideEffects": false,
+      "testling": {
+        "files": "test/index.js"
+      },
+      "version": "1.0.4"
+    },
+    "physicalEntryCount": 11,
+    "tarball": {
+      "bytes": 6382,
+      "sha256": "32086f492fedf1b9b34811f2ee50ca2cca53da5c783f7cd5f939d3f1e86bbd32"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

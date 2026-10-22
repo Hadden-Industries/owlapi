@@ -1,0 +1,188 @@
+{
+  "artifactId": "4410f82a40a3a41383eea5075ef5fbedd7665006547c4d460c00deaaf6626a9b",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 18485,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "a338a09e00418402e779e3ff372a2bca3be66259d6192e0a9fe2949969d648f3",
+        "size": 1119,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "08ce1c980b08d27ca6b61b1b29196569b87f8a0bcf72f712d610769b69d3d525",
+        "size": 1790,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/auth.d.ts",
+        "sha256": "771bbde34fb2ad14c30d5c966b85ad798eba51da890f2b8ce0a1f0438a637acc",
+        "size": 1020,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/auth.js",
+        "sha256": "43da8818cf904a134d83b6bf8aaa00321869c5a36191bd273d0fd0df6c6cc24a",
+        "size": 3128,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/auth.js.map",
+        "sha256": "331b62b9fe9d794746c55941538dc9b3c6d921af3445aea1667d6479ba370817",
+        "size": 1609,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.d.ts",
+        "sha256": "1ef25788039692f92bceeca44a08faaae9b7d821f06caf20abe3978988d3a532",
+        "size": 6374,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "ed74e39cda8ba8e4164894e185e49a31471f65f615003c87219c409dd8061950",
+        "size": 32567,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js.map",
+        "sha256": "24d8c63e516971b15b16c19cc2969fd6b079a40cfae00e78d2a38a60b55873ba",
+        "size": 20932,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/interfaces.d.ts",
+        "sha256": "08c561355af0d455b232430a2fa87f6c1e3eb9fb0e6611b9e085b8c9ec0f7428",
+        "size": 2298,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/interfaces.js",
+        "sha256": "de1e388b36685125a86a1b23bcde8d7ebd4abbf793a4d1298ac12fd07e94a552",
+        "size": 115,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/interfaces.js.map",
+        "sha256": "0f280255a151b57b8567a3128da97cd57bb74c6b7e828f259325a690cc860a5e",
+        "size": 112,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/proxy.d.ts",
+        "sha256": "2b5f94a1403fc26dc40b95a70b039a29329e145a206e0a05e35e26c94eee1737",
+        "size": 126,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/proxy.js",
+        "sha256": "92180447d8b978d5aa8e5592f8ff155c2a1e15d7b13e8879673ef65cfa70d983",
+        "size": 2815,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/proxy.js.map",
+        "sha256": "29f926eb5282285cfebef04a7786fe1cc81b5b5200e93e6a612903dac099204b",
+        "size": 2862,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "8a9ff7508123953d0d5ee681d71a9df058ef806233108e51aebf81ce7f6b6214",
+        "size": 1267,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1119,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a3/a338a09e00418402e779e3ff372a2bca3be66259d6192e0a9fe2949969d648f3",
+          "sha256": "a338a09e00418402e779e3ff372a2bca3be66259d6192e0a9fe2949969d648f3"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "a338a09e00418402e779e3ff372a2bca3be66259d6192e0a9fe2949969d648f3",
+        "size": 1119
+      }
+    ],
+    "expandedBytes": 78134,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/actions/toolkit/tree/main/packages/http-client",
+      "license": "MIT",
+      "name": "@actions/http-client",
+      "repository": {
+        "directory": "packages/http-client",
+        "type": "git",
+        "url": "git+https://github.com/actions/toolkit.git"
+      },
+      "version": "3.0.2"
+    },
+    "packageMetadata": {
+      "bugs": {
+        "url": "https://github.com/actions/toolkit/issues"
+      },
+      "dependencies": {
+        "tunnel": "^0.0.6",
+        "undici": "^6.23.0"
+      },
+      "description": "Actions Http Client",
+      "devDependencies": {
+        "@types/node": "24.1.0",
+        "@types/proxy": "^1.0.1",
+        "@types/tunnel": "0.0.3",
+        "proxy": "^2.1.1"
+      },
+      "directories": {
+        "lib": "lib",
+        "test": "__tests__"
+      },
+      "files": [
+        "lib",
+        "!.DS_Store"
+      ],
+      "homepage": "https://github.com/actions/toolkit/tree/main/packages/http-client",
+      "keywords": [
+        "github",
+        "actions",
+        "http"
+      ],
+      "license": "MIT",
+      "main": "lib/index.js",
+      "name": "@actions/http-client",
+      "overrides": {
+        "uri-js": "npm:uri-js-replace@^1.0.1"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/http-client",
+        "type": "git",
+        "url": "git+https://github.com/actions/toolkit.git"
+      },
+      "scripts": {
+        "audit-moderate": "npm install && npm audit --json --audit-level=moderate > audit.json",
+        "build": "tsc",
+        "format": "prettier --write **/*.ts",
+        "format-check": "prettier --check **/*.ts",
+        "test": "echo \"Error: run tests from root\" && exit 1",
+        "tsc": "tsc"
+      },
+      "types": "lib/index.d.ts",
+      "version": "3.0.2"
+    },
+    "physicalEntryCount": 15,
+    "tarball": {
+      "bytes": 18485,
+      "sha256": "aacdf3c8dbed7f41af60d1a6496bdd47e1ac9820ebc287c849c508d19862ca79"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

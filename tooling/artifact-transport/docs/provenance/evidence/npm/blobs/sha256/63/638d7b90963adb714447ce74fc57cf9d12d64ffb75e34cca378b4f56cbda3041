@@ -1,0 +1,104 @@
+{
+  "artifactId": "e2423e95ef93c7f4bbad1e9e6e6fb906224d7309a11182f3abad7607b0672c32",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4831,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.travis.yml",
+        "sha256": "5eb2942461b58b0dbc2cbdc6777f28888c20f41fa9c353916403bb280b64c691",
+        "size": 899,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "11f2aafb37d06b3ee5bdaf06e9811141d0da05263c316f3d627f45c20d43261b",
+        "size": 2338,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "64417fec74bed1e4160c792189c85e6f37f4232a179e2beb04f32d80df76c4cf",
+        "size": 1801,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/string_decoder.js",
+        "sha256": "f1d36d47b2c579063392c1a68963467f2d4f51a069af09eb068d974c63ee3b37",
+        "size": 9465,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "e278ca18803862a6d1b6bedc6a3394159ac86e5c4a162614fef006c79dcda3a2",
+        "size": 795,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 2338,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/11f2aafb37d06b3ee5bdaf06e9811141d0da05263c316f3d627f45c20d43261b",
+          "sha256": "11f2aafb37d06b3ee5bdaf06e9811141d0da05263c316f3d627f45c20d43261b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "11f2aafb37d06b3ee5bdaf06e9811141d0da05263c316f3d627f45c20d43261b",
+        "size": 2338
+      }
+    ],
+    "expandedBytes": 15298,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/nodejs/string_decoder",
+      "license": "MIT",
+      "name": "string_decoder",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/nodejs/string_decoder.git"
+      },
+      "version": "1.1.1"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "safe-buffer": "~5.1.0"
+      },
+      "description": "The string_decoder module from Node core",
+      "devDependencies": {
+        "babel-polyfill": "^6.23.0",
+        "core-util-is": "^1.0.2",
+        "inherits": "^2.0.3",
+        "tap": "~0.4.8"
+      },
+      "homepage": "https://github.com/nodejs/string_decoder",
+      "keywords": [
+        "string",
+        "decoder",
+        "browser",
+        "browserify"
+      ],
+      "license": "MIT",
+      "main": "lib/string_decoder.js",
+      "name": "string_decoder",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/nodejs/string_decoder.git"
+      },
+      "scripts": {
+        "ci": "tap test/parallel/*.js test/ours/*.js --tap | tee test.tap && node test/verify-dependencies.js",
+        "test": "tap test/parallel/*.js && node test/verify-dependencies"
+      },
+      "version": "1.1.1"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 4831,
+      "sha256": "af8262434508fa8292407f7fef4690d19eabb73387ca230b41f2a1155216963a"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

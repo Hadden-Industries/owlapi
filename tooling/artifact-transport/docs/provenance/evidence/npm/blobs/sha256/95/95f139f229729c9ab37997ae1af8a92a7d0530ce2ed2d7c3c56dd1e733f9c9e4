@@ -1,0 +1,149 @@
+{
+  "artifactId": "8b16596dec28540c29c76e020e4b687f32cf026db4dff39d9b39c3b5eb04d31d",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 8310,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "257aed98914108e91a337912727b6a802eef218248507f74b76faffaff517a38",
+        "size": 1089,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "3e6f44a873935afdf7c79c43c491f47559035652e7320661d89a179d110248e8",
+        "size": 2938,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.ts",
+        "sha256": "069816279e96b253c4347dfb8d4345277d659588b508d1c71626d3636aa903ac",
+        "size": 1404,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.js",
+        "sha256": "9ec0713bf4513ff9c01fe99b1d7c70b8ea2948008354fdc1f75c60abd582c832",
+        "size": 9827,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.js.map",
+        "sha256": "be2302024422810a5055ecae6385c7abf4c8f4ceb43a4dbe78444f9f622d297b",
+        "size": 19626,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "66255090e74b94d4fcd6114a47021d8a5cf8f1f0805874f4121338dc87889c44",
+        "size": 1335,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1089,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/25/257aed98914108e91a337912727b6a802eef218248507f74b76faffaff517a38",
+          "sha256": "257aed98914108e91a337912727b6a802eef218248507f74b76faffaff517a38"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "257aed98914108e91a337912727b6a802eef218248507f74b76faffaff517a38",
+        "size": 1089
+      },
+      {
+        "blob": {
+          "bytes": 2938,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/3e/3e6f44a873935afdf7c79c43c491f47559035652e7320661d89a179d110248e8",
+          "sha256": "3e6f44a873935afdf7c79c43c491f47559035652e7320661d89a179d110248e8"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "3e6f44a873935afdf7c79c43c491f47559035652e7320661d89a179d110248e8",
+        "size": 2938
+      }
+    ],
+    "expandedBytes": 36219,
+    "packageIdentity": {
+      "author": "Douglas Christopher Wilson <doug@somethingdoug.com>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "content-type",
+      "repository": "jshttp/content-type",
+      "version": "3.1.1"
+    },
+    "packageMetadata": {
+      "author": "Douglas Christopher Wilson <doug@somethingdoug.com>",
+      "description": "Create and parse HTTP Content-Type header",
+      "devDependencies": {
+        "@borderless/ts-scripts": "^0.15.0",
+        "@size-limit/preset-small-lib": "^13.0.3",
+        "@vitest/coverage-v8": "^4.1.11",
+        "size-limit": "^13.0.3",
+        "typescript": "^7.0.2",
+        "vitest": "^4.1.11"
+      },
+      "engines": {
+        "node": ">=22"
+      },
+      "exports": "./dist/index.js",
+      "files": [
+        "dist/"
+      ],
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/express"
+      },
+      "keywords": [
+        "content-type",
+        "http",
+        "req",
+        "res",
+        "rfc7231",
+        "rfc9110"
+      ],
+      "license": "MIT",
+      "main": "./dist/index.js",
+      "name": "content-type",
+      "repository": "jshttp/content-type",
+      "scripts": {
+        "bench": "vitest bench",
+        "build": "ts-scripts build",
+        "format": "ts-scripts format",
+        "prepare": "ts-scripts install && npm run build",
+        "size": "size-limit",
+        "specs": "ts-scripts specs",
+        "test": "ts-scripts test && npm run size"
+      },
+      "size-limit": [
+        {
+          "limit": "1.15 kB",
+          "path": "dist/index.js"
+        }
+      ],
+      "ts-scripts": {
+        "dist": [
+          "dist"
+        ],
+        "project": [
+          "tsconfig.build.json"
+        ]
+      },
+      "type": "module",
+      "typings": "./dist/index.d.ts",
+      "version": "3.1.1"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 8310,
+      "sha256": "555f4dc09d0b81838d5ed1027136cf81341c10ac9258f14fa76bd453da67aa5d"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

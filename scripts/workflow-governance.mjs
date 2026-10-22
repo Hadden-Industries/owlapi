@@ -1,5 +1,10 @@
-import { checkWorkflowRuntimeProjections } from "./workflow-runtime-policy.mjs";
-import { projectRuntimeText } from "./runtime-policy.mjs";
+import { checkNodeSupportProjections } from "./project-node-support.mjs";
+import { CI_RUNTIME, projectRuntimeText } from "./runtime-policy.mjs";
+import {
+  SETUP_DEFAULTS,
+  validateSetupInputs,
+  selectWorkflowReference,
+} from "./setup-workflow-runtime.mjs";
 /** Repository-owned workflow policy; YAML and GitHub grammar belong to yaml and actionlint. */
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
@@ -14,6 +19,20 @@ import { CI_JOB_NAMES } from "./ci-qualification.mjs";
 
 const REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
 const WORKFLOW_DIRECTORY = join(REPOSITORY_ROOT, ".github", "workflows");
+const SHARED_SETUP = "./.github/actions/setup-producer";
+const RETAIN_ARTIFACT = "./.github/actions/retain-artifact";
+const COLLECT_ARTIFACTS = "./.github/actions/collect-artifacts";
+const PUBLISHER_SETUP = "./approval-tools/.github/actions/setup-producer";
+const CONSUMER_ACTIONS = [
+  "freeze-runtime-matrix",
+  "qualify-consumer",
+  "setup-consumer",
+  "aggregate-consumer-runtimes",
+];
+const sharedSetupStep = (step) =>
+  [SHARED_SETUP, PUBLISHER_SETUP].includes(step?.uses);
+const setupInputs = (step) => ({ ...SETUP_DEFAULTS, ...step?.with });
+
 const ISSUE_FORM_DIRECTORY = join(REPOSITORY_ROOT, ".github", "ISSUE_TEMPLATE");
 const EXPECTED_WORKFLOWS = [
   "ci.yml",
@@ -33,11 +52,10 @@ const EXPECTED_ISSUE_FORMS = [
 ];
 const ACTIONS = Object.freeze({
   "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1": "v7.0.1",
-  "actions/setup-node@820762786026740c76f36085b0efc47a31fe5020": "v7.0.0",
-  "actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6": "v6.0.1",
-  "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a": "v7.0.1",
-  "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c":
-    "v8.0.1",
+  "actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1": "v7.1.0",
+  "actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad": "v6.1.0",
+  "actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333":
+    "v8.0.2",
   "actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294":
     "v5.0.0",
 });
@@ -45,12 +63,6 @@ const DOWNLOAD_INPUTS = {
   "merge-multiple": false,
   "skip-decompress": false,
   "digest-mismatch": "error",
-};
-const UPLOAD_INPUTS = {
-  "if-no-files-found": "error",
-  "compression-level": 0,
-  "include-hidden-files": false,
-  archive: true,
 };
 const SOURCE_DOWNLOAD_INPUTS = {
   "github-token": "${{ github.token }}",
@@ -105,6 +117,73 @@ const EVIDENCE_OS_MATRIX = [
 const add = (violations, condition, message) => {
   if (!condition) violations.push(message);
 };
+/** Transport mechanics are owned by the shared action; callers only select subjects. */
+const validateArtifactTransportStep = (
+  step,
+  file,
+  jobId,
+  before,
+  violations,
+) => {
+  const collect = step.uses === COLLECT_ARTIFACTS;
+  const inputs = step.with ?? {};
+  const publisher = step.uses.includes("approval-tools/");
+  const context = `${file}:${jobId}: shared artifact transport`;
+  add(
+    violations,
+    before.some(
+      (prior) =>
+        prior.uses?.startsWith("actions/checkout@") &&
+        (prior.with?.path ?? ".") === (publisher ? "approval-tools" : "."),
+    ),
+    `${context} requires its reviewed checkout`,
+  );
+  add(
+    violations,
+    !publisher || (file === "release.yml" && jobId === "npm_release"),
+    `${context} has an unexpected tooling checkout`,
+  );
+  const allowed = collect
+    ? ["name", "pattern", "path"]
+    : ["name", "path", "retention-days", "compression-level"];
+  add(
+    violations,
+    Object.keys(inputs).every((key) => allowed.includes(key)),
+    `${context} overrides centralized transport policy`,
+  );
+  add(
+    violations,
+    typeof inputs.path === "string" && inputs.path.trim() !== "",
+    `${context} requires an explicit payload path`,
+  );
+  add(
+    violations,
+    collect
+      ? Boolean(inputs.name) !== Boolean(inputs.pattern)
+      : Boolean(inputs.name) &&
+          Number.isInteger(inputs["retention-days"]) &&
+          inputs["retention-days"] > 0,
+    `${context} requires a closed logical selector and retention`,
+  );
+  if (!collect) {
+    add(
+      violations,
+      !/[*!?]/u.test(inputs.path ?? ""),
+      `${context} cannot broaden the payload with a glob`,
+    );
+    add(
+      violations,
+      [0, 6].includes(inputs["compression-level"] ?? 0),
+      `${context} has unapproved compression`,
+    );
+    add(
+      violations,
+      !step["timeout-minutes"] || step["timeout-minutes"] >= 5,
+      `${context} must allow its bounded recovery deadline`,
+    );
+  }
+};
+
 const sortedYamlFiles = (directory, { exclude = [] } = {}) =>
   existsSync(directory)
     ? readdirSync(directory)
@@ -116,7 +195,13 @@ const steps = (job) => (Array.isArray(job?.steps) ? job.steps : []);
 const jobs = (workflow) => Object.values(workflow?.jobs ?? {});
 const allSteps = (workflow) => jobs(workflow).flatMap(steps);
 const actionSteps = (job, action) =>
-  steps(job).filter((step) => step?.uses?.startsWith(`${action}@`));
+  steps(job).filter((step) =>
+    action.startsWith("./")
+      ? step?.uses === action ||
+        (action === RETAIN_ARTIFACT &&
+          step?.uses === "./approval-tools/.github/actions/retain-artifact")
+      : step?.uses?.startsWith(`${action}@`),
+  );
 const needs = (job) =>
   typeof job?.needs === "string" ? [job.needs] : (job?.needs ?? []);
 const sameInventory = (actual, expected) =>
@@ -172,10 +257,267 @@ const parseControlYaml = (fileName, source, violations) => {
   }
 };
 
+const validateSharedSetupMetadata = (metadata, document, violations) => {
+  const actionSteps = metadata.runs?.steps ?? [];
+  add(
+    violations,
+    sameInventory(Object.keys(metadata), [
+      "name",
+      "description",
+      "inputs",
+      "runs",
+    ]) && sameInventory(Object.keys(metadata.runs ?? {}), ["using", "steps"]),
+    "Shared runtime setup must retain its closed metadata envelope",
+  );
+  add(
+    violations,
+    metadata.runs?.using === "composite" && actionSteps.length === 5,
+    "Shared runtime setup must retain its closed composite action",
+  );
+  add(
+    violations,
+    sameInventory(
+      Object.keys(metadata.inputs ?? {}),
+      Object.keys(SETUP_DEFAULTS),
+    ) &&
+      Object.entries(SETUP_DEFAULTS).every(
+        ([key, value]) => metadata.inputs[key]?.default === value,
+      ),
+    "Shared runtime setup input defaults changed",
+  );
+  const commands = ["policy", null, "npm", "assert", "seed"];
+  const conditions = [
+    undefined,
+    "inputs.phase != 'npm'",
+    "inputs.phase != 'runtime'",
+    "inputs.phase != 'runtime' && inputs.verify-runtime == 'true'",
+    "inputs.install == 'locked-no-scripts'",
+  ];
+  for (const [index, operation] of commands.entries()) {
+    const step = actionSteps[index];
+    add(
+      violations,
+      sameInventory(
+        Object.keys(step ?? {}),
+        index === 0
+          ? ["name", "id", "shell", "env", "run"]
+          : index === 1
+            ? ["name", "if", "uses", "with"]
+            : ["name", "if", "shell", "env", "run"],
+      ),
+      `Shared runtime setup phase ${index} has unapproved controls`,
+    );
+    add(
+      violations,
+      step?.if === conditions[index] && !step?.["continue-on-error"],
+      `Shared runtime setup phase ${index} lost its guard`,
+    );
+    if (operation)
+      add(
+        violations,
+        step?.shell === "bash" &&
+          step.run ===
+            `node "$GITHUB_ACTION_PATH/../../../scripts/setup-workflow-runtime.mjs" ${operation}` &&
+          !step.uses,
+        `Shared runtime setup must use the native ${operation} operation`,
+      );
+  }
+  const node = actionSteps[1];
+  add(
+    violations,
+    node?.uses ===
+      Object.keys(ACTIONS).find((value) =>
+        value.startsWith("actions/setup-node@"),
+      ) &&
+      document.getIn(["runs", "steps", 1, "uses"], true)?.comment?.trim() ===
+        ACTIONS[node?.uses],
+    "Shared runtime setup must retain the approved setup-node pin",
+  );
+  requireFields(
+    node?.with,
+    {
+      "node-version": "${{ steps.policy.outputs.node-version }}",
+      "node-version-file": "${{ steps.policy.outputs.node-version-file }}",
+      "check-latest": false,
+      cache: "",
+      "package-manager-cache": false,
+    },
+    "Shared runtime setup",
+    violations,
+  );
+  add(
+    violations,
+    Object.keys(node?.with ?? {}).length === 5,
+    "Shared runtime setup must not configure registry authentication",
+  );
+  requireFields(
+    actionSteps[0],
+    {
+      id: "policy",
+      env: {
+        OWLAPI_NODE_FAMILY: "${{ inputs.node-family }}",
+        OWLAPI_BOOTSTRAP_PHASE: "${{ inputs.phase }}",
+        OWLAPI_VERIFY_RUNTIME: "${{ inputs.verify-runtime }}",
+        OWLAPI_SEED_INSTALL: "${{ inputs.install }}",
+        OWLAPI_NPM_TIMEOUT_MINUTES: "${{ inputs.npm-timeout-minutes }}",
+      },
+    },
+    "Shared runtime policy",
+    violations,
+  );
+  requireFields(
+    actionSteps[2]?.env,
+    {
+      OWLAPI_NODE_FAMILY: "${{ inputs.node-family }}",
+      OWLAPI_NPM_TIMEOUT_MINUTES: "${{ inputs.npm-timeout-minutes }}",
+    },
+    "Shared npm deadline",
+    violations,
+  );
+  for (const index of [3, 4])
+    requireFields(
+      actionSteps[index]?.env,
+      { OWLAPI_NODE_FAMILY: "${{ inputs.node-family }}" },
+      "Shared runtime assertion/seed",
+      violations,
+    );
+};
+
 const validateActionUses = (fileName, workflow, document, violations) => {
   for (const [jobId, job] of entries(workflow.jobs)) {
     for (const [index, step] of steps(job).entries()) {
       if (!step.uses) continue;
+      if (
+        CONSUMER_ACTIONS.some(
+          (name) => step.uses === `./.github/actions/${name}`,
+        )
+      ) {
+        add(
+          violations,
+          ["ci.yml", "release.yml", "maintenance.yml"].includes(fileName) &&
+            [
+              "runtime_matrix",
+              "consumer_runtime",
+              "consumer_runtimes",
+            ].includes(jobId),
+          `${fileName}:${jobId}: unexpected consumer action`,
+        );
+        add(
+          violations,
+          steps(job)
+            .slice(0, index)
+            .some(
+              (prior) =>
+                prior.uses?.startsWith("actions/checkout@") &&
+                !prior.with?.path,
+            ),
+          `${fileName}:${jobId}: consumer action needs its exact checkout`,
+        );
+        continue;
+      }
+      if (sharedSetupStep(step)) {
+        const context = `${fileName}:${jobId}: shared runtime setup`;
+        try {
+          const input = validateSetupInputs(step.with);
+          selectWorkflowReference(CI_RUNTIME, input["node-family"]);
+          const before = steps(job).slice(0, index);
+          const prefix =
+            step.uses === PUBLISHER_SETUP ? "approval-tools" : undefined;
+          add(
+            violations,
+            before.some(
+              (prior) =>
+                prior.uses?.startsWith("actions/checkout@") &&
+                prior.with?.path === prefix,
+            ),
+            `${context} requires its reviewed checkout first`,
+          );
+          add(
+            violations,
+            step.uses !== PUBLISHER_SETUP ||
+              (fileName === "release.yml" && jobId === "npm_release"),
+            `${context} has an unexpected tooling checkout`,
+          );
+          if (input.phase === "npm")
+            add(
+              violations,
+              before.some(
+                (prior) =>
+                  sharedSetupStep(prior) &&
+                  setupInputs(prior).phase === "runtime" &&
+                  setupInputs(prior)["node-family"] === input["node-family"],
+              ),
+              `${context} requires earlier runtime selection`,
+            );
+          const seed =
+            fileName === "ci.yml" &&
+            jobId === "verification" &&
+            step.id === "seed_tools";
+          add(
+            violations,
+            input.install === (seed ? "locked-no-scripts" : "none"),
+            `${context} cannot hide dependency installation`,
+          );
+          if (input["verify-runtime"] === "false") {
+            const allowed =
+              fileName === "release.yml"
+                ? [
+                    "required",
+                    "publication_preflight",
+                    "tag_accepted",
+                    "draft_release",
+                    "npm_release",
+                    "registry_verification",
+                    "release_evidence",
+                    "finalize_release",
+                    "immutable_verification",
+                  ]
+                : fileName === "release-reconciliation.yml"
+                  ? [
+                      "draft_release",
+                      "registry_verification",
+                      "release_evidence",
+                      "finalize_release",
+                      "immutable_verification",
+                    ]
+                  : [];
+            add(
+              violations,
+              allowed.includes(jobId),
+              `${context} must assert the exact runtime`,
+            );
+          }
+          const family = /_node_(\d+)$/u.exec(jobId)?.[1];
+          if (family)
+            add(
+              violations,
+              (input["node-family"] === "canonical"
+                ? CI_RUNTIME.canonicalNodeMajor
+                : input["node-family"]) === family &&
+                input.phase === "producer",
+              `${context} must retain Node ${family} reference selection`,
+            );
+        } catch (error) {
+          violations.push(`${context}: ${error.message}`);
+        }
+        continue;
+      }
+      if (
+        [
+          RETAIN_ARTIFACT,
+          "./approval-tools/.github/actions/retain-artifact",
+          COLLECT_ARTIFACTS,
+        ].includes(step.uses)
+      ) {
+        validateArtifactTransportStep(
+          step,
+          fileName,
+          jobId,
+          steps(job).slice(0, index),
+          violations,
+        );
+        continue;
+      }
       const expectedTag = ACTIONS[step.uses];
       add(
         violations,
@@ -200,6 +542,13 @@ const validateActionUses = (fileName, workflow, document, violations) => {
           `${fileName}: checkout must disable persisted credentials`,
         );
       if (step.uses.startsWith("actions/setup-node@")) {
+        add(
+          violations,
+          (fileName === "maintenance.yml" && jobId === "reporter") ||
+            (fileName === "release-reconciliation.yml" &&
+              jobId === "npm_release"),
+          `${fileName}:${jobId}: checkout-backed jobs must use shared runtime setup`,
+        );
         add(
           violations,
           [
@@ -243,24 +592,22 @@ const isOptionalCiEvidenceStep = (fileName, jobId, step) =>
   fileName === "ci.yml" &&
   ((jobId === "verification" &&
     step.id === "seed_tools" &&
-    typeof step.run === "string" &&
-    !step.uses) ||
+    step.uses === SHARED_SETUP &&
+    !step.run) ||
     (jobId === "verification" &&
       ["proof", "seed_download"].includes(step.id) &&
       step.uses ===
-        "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c") ||
+        "actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333") ||
     (jobId === "source_node_24" &&
       ["reference_download", "reference_index_download"].includes(step.id) &&
       step.uses ===
-        "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c") ||
+        "actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333") ||
     (jobId === "source_node_24" &&
       step.id === "reference_upload" &&
-      step.uses ===
-        "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a") ||
+      step.uses === RETAIN_ARTIFACT) ||
     (jobId === "required" &&
       ["receipt_upload", "main_receipt_upload"].includes(step.id) &&
-      step.uses ===
-        "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"));
+      step.uses === RETAIN_ARTIFACT));
 
 const validateJobs = (fileName, workflow, violations) => {
   // Commands can reach a script indirectly through env, matrix or action inputs.
@@ -276,11 +623,14 @@ const validateJobs = (fileName, workflow, violations) => {
     const runner = job?.["runs-on"];
     const isEvidenceMatrix =
       fileName === "extended-tests.yml" && id === "third_party_evidence_shard";
+    const isConsumerMatrix = id === "consumer_runtime";
     add(
       violations,
-      isEvidenceMatrix
-        ? runner === "${{ matrix.os.runner }}"
-        : ["ubuntu-24.04", "windows-2025", "macos-15"].includes(runner),
+      isConsumerMatrix
+        ? runner === "${{ matrix.runner }}"
+        : isEvidenceMatrix
+          ? runner === "${{ matrix.os.runner }}"
+          : ["ubuntu-24.04", "windows-2025", "macos-15"].includes(runner),
       `${fileName}:${id} must use an approved explicit runner or closed runner matrix`,
     );
     add(
@@ -295,11 +645,13 @@ const validateJobs = (fileName, workflow, violations) => {
         !Array.isArray(job.permissions),
       `${fileName}:${id} must declare job-minimal permissions`,
     );
-    const shell = isEvidenceMatrix
-      ? "${{ matrix.os.shell }}"
-      : runner === "windows-2025"
-        ? "pwsh"
-        : "bash";
+    const shell = isConsumerMatrix
+      ? "${{ matrix.shell }}"
+      : isEvidenceMatrix
+        ? "${{ matrix.os.shell }}"
+        : runner === "windows-2025"
+          ? "pwsh"
+          : "bash";
     add(
       violations,
       job?.defaults?.run?.shell === shell,
@@ -319,6 +671,14 @@ const validateJobs = (fileName, workflow, violations) => {
       `${fileName}:${id} queue is allowed only at the workflow release boundary`,
     );
     for (const step of steps(job)) {
+      add(
+        violations,
+        !/npm install --global npm@|assert-workflow-runtime\.mjs/u.test(
+          step.run ?? "",
+        ) ||
+          (fileName === "release-reconciliation.yml" && id === "npm_release"),
+        `${fileName}:${id}: bootstrap commands must use shared runtime setup`,
+      );
       add(
         violations,
         !Object.hasOwn(step, "continue-on-error") ||
@@ -357,7 +717,7 @@ const validateAggregate = (fileName, workflow, registry, violations) => {
 
 /** Require all candidate-upload settings on one actual upload step, not scattered in a job. */
 const validateCandidateUpload = (fileName, job, directory, violations) => {
-  const uploads = actionSteps(job, "actions/upload-artifact");
+  const uploads = actionSteps(job, RETAIN_ARTIFACT);
   const candidate = uploads.find(
     (step) =>
       typeof step.with?.path === "string" &&
@@ -365,7 +725,7 @@ const validateCandidateUpload = (fileName, job, directory, violations) => {
   );
   requireFields(
     candidate?.with,
-    { ...UPLOAD_INPUTS, "retention-days": 90, overwrite: false },
+    { "retention-days": 90 },
     `${fileName}: candidate upload`,
     violations,
   );
@@ -581,7 +941,7 @@ const validateJavaReferenceBoundary = (job, violations) => {
   requireFields(
     indexDownload[0],
     {
-      uses: "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
+      uses: "actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
       if: "steps.reference_index.outputs.available == 'true'",
       "continue-on-error": true,
       "timeout-minutes": 1,
@@ -611,19 +971,14 @@ const validateJavaReferenceBoundary = (job, violations) => {
   requireFields(
     upload[0],
     {
-      uses: "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+      uses: RETAIN_ARTIFACT,
       if: "github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.reference_package.outputs.publish == 'true'",
       "continue-on-error": true,
-      "timeout-minutes": 1,
+      "timeout-minutes": 5,
       with: {
         name: "${{ steps.reference_package.outputs.artifact_name }}",
         path: ".release/java-reference-reuse/publication",
         "retention-days": 90,
-        "if-no-files-found": "error",
-        "compression-level": 0,
-        "include-hidden-files": false,
-        overwrite: false,
-        archive: true,
       },
     },
     `${label}: main-only reference transport`,
@@ -643,7 +998,7 @@ const validateJavaReferenceBoundary = (job, violations) => {
   requireFields(
     download,
     {
-      uses: "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
+      uses: "actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
       if: "steps.reference_select.outputs.available == 'true'",
       "continue-on-error": true,
       "timeout-minutes": 1,
@@ -705,22 +1060,22 @@ const validateCiVerification = (workflow, violations) => {
     .filter(Boolean);
   add(
     violations,
-    jsonEquals(dependencyCommands, [
-      projectRuntimeText(
-        "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund",
-      ),
-      projectRuntimeText(
-        "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}",
-      ),
-      "npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash",
-      "npm run workflow:dependency-review-applicability",
-    ]),
+    steps(jobs.dependency_review).some(
+      (step) =>
+        sharedSetupStep(step) &&
+        setupInputs(step).phase === "producer" &&
+        setupInputs(step).install === "none",
+    ) &&
+      jsonEquals(dependencyCommands, [
+        "npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash",
+        "npm run report:dependency-review-applicability",
+      ]),
     `${label} dependency review must retain its no-installation npm entry points`,
   );
   add(
     violations,
     !Object.hasOwn(strategy ?? {}, "if") &&
-      !Object.hasOwn(strategy ?? {}, "needs"),
+      sameInventory(needs(strategy), ["runtime_matrix"]),
     `${label} strategy must always run`,
   );
   requireFields(
@@ -783,7 +1138,16 @@ const validateCiVerification = (workflow, violations) => {
     `${label} candidate dependency gate changed`,
   );
   for (const id of Object.keys(CI_JOB_NAMES).filter(
-    (id) => ![...roots, "verification", "candidate", "required"].includes(id),
+    (id) =>
+      ![
+        ...roots,
+        "verification",
+        "candidate",
+        "required",
+        "runtime_matrix",
+        "consumer_runtime",
+        "consumer_runtimes",
+      ].includes(id),
   )) {
     add(
       violations,
@@ -856,7 +1220,7 @@ const validateCiVerification = (workflow, violations) => {
   requireFields(
     seedDownload[0],
     {
-      uses: "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
+      uses: "actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
       if: "steps.seed_select.outputs.available == 'true'",
       "continue-on-error": true,
       "timeout-minutes": 1,
@@ -880,9 +1244,8 @@ const validateCiVerification = (workflow, violations) => {
       "continue-on-error": true,
       "timeout-minutes": 2,
       env: { npm_config_fetch_retries: "0", npm_config_fetch_timeout: "30000" },
-      run: projectRuntimeText(
-        "npm install --global npm@{{runtime:npm}} --ignore-scripts --no-audit --no-fund\nnode scripts/assert-workflow-runtime.mjs --node {{runtime:node.24}} --npm {{runtime:npm}}\nnpm ci --ignore-scripts --no-audit --no-fund\n",
-      ),
+      uses: SHARED_SETUP,
+      with: { phase: "npm", install: "locked-no-scripts" },
     },
     `${label}: conditional locked seed verifier`,
     violations,
@@ -936,7 +1299,7 @@ const validateCiVerification = (workflow, violations) => {
   requireFields(
     proof,
     {
-      uses: "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
+      uses: "actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
       if: "steps.select.outputs.available == 'true'",
       "continue-on-error": true,
       "timeout-minutes": 1,
@@ -1036,16 +1399,14 @@ const validateCiVerification = (workflow, violations) => {
   requireFields(
     upload,
     {
-      uses: "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+      uses: RETAIN_ARTIFACT,
       if: "steps.receipt.outputs.recorded == 'true'",
       "continue-on-error": true,
-      "timeout-minutes": 1,
+      "timeout-minutes": 5,
       with: {
-        ...UPLOAD_INPUTS,
         name: "ci-verification-${{ github.run_id }}-${{ github.run_attempt }}",
         path: ".release/ci-verification/verification.json",
         "retention-days": 90,
-        overwrite: false,
       },
     },
     label,
@@ -1068,16 +1429,14 @@ const validateCiVerification = (workflow, violations) => {
   requireFields(
     steps(jobs.required).find((step) => step.id === "main_receipt_upload"),
     {
-      uses: "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+      uses: RETAIN_ARTIFACT,
       if: "steps.main_receipt.outputs.recorded == 'true'",
       "continue-on-error": true,
-      "timeout-minutes": 1,
+      "timeout-minutes": 5,
       with: {
-        ...UPLOAD_INPUTS,
         name: "ci-main-qualification-${{ github.run_id }}-${{ github.run_attempt }}",
         path: ".release/ci-main-qualification/verification.json",
         "retention-days": 90,
-        overwrite: false,
       },
     },
     `${label} main qualification transport`,
@@ -1162,7 +1521,7 @@ const validateManualRelease = (fileName, workflow, violations) => {
         `${fileName}:${id} must be excluded from qualification-only dispatch`,
       );
     const preflight = steps(workflow.jobs?.release_preflight).find(
-      (step) => step.run === "npm run release:preflight",
+      (step) => step.run === "npm run check:release-preflight",
     );
     add(
       violations,
@@ -1211,7 +1570,7 @@ const validateReleaseMutationBoundary = (
     accepted,
     reconciliation
       ? "node scripts/verify-release-tag.mjs"
-      : "npm run release:verify-tag",
+      : "npm run verify:release-tag",
     `${fileName}:${acceptedId}`,
     violations,
   );
@@ -1224,7 +1583,7 @@ const validateReleaseMutationBoundary = (
   );
   requireRun(
     draft,
-    "npm run release:draft-github",
+    "npm run create:github-release-draft",
     `${fileName}:draft_release`,
     violations,
   );
@@ -1235,7 +1594,7 @@ const validateReleaseMutationBoundary = (
         (step) =>
           step.env?.SOURCE_COMMIT ===
             "${{ needs.source_verification.outputs.source_commit }}" &&
-          step.run?.includes("npm run release:draft-github"),
+          step.run?.includes("npm run create:github-release-draft"),
       ),
       `${fileName}:draft_release must bind the GitHub draft write to the source commit`,
     );
@@ -1271,12 +1630,23 @@ const validateReleaseMutationBoundary = (
   );
   add(
     violations,
-    actionSteps(publication, "actions/setup-node").some((step) =>
-      reconciliation
-        ? step.with?.["registry-url"] === "https://registry.npmjs.org/"
-        : step.with?.["registry-url"] === undefined &&
-          step.with?.scope === undefined,
-    ),
+    reconciliation
+      ? actionSteps(publication, "actions/setup-node").some(
+          (step) =>
+            step.with?.["registry-url"] === "https://registry.npmjs.org/",
+        )
+      : steps(publication).some(
+          (step) =>
+            step.uses === PUBLISHER_SETUP &&
+            setupInputs(step).phase === "producer" &&
+            setupInputs(step).install === "none" &&
+            lacksKeys(step.with, [
+              "registry-url",
+              "scope",
+              "always-auth",
+              "token",
+            ]),
+        ),
     `${fileName}:npm_release must ${reconciliation ? "use the public npm registry" : "omit setup-node npm authentication configuration"}`,
   );
   const publishCommand = reconciliation
@@ -1379,7 +1749,7 @@ const validateReleaseMutationBoundary = (
       );
       const effectIndex = gateSteps.findIndex((step) =>
         step.run?.includes(
-          id === "npm_release" ? PUBLISH_COMMAND : "npm run release:verify-tag",
+          id === "npm_release" ? PUBLISH_COMMAND : "npm run verify:release-tag",
         ),
       );
       add(
@@ -1392,15 +1762,17 @@ const validateReleaseMutationBoundary = (
           gateSteps[uploadIndex].if === "${{ github.run_attempt == 1 }}" &&
           gateSteps[uploadIndex].with?.path ===
             `.release/approval-${environment}.json` &&
-          gateSteps[uploadIndex].with?.overwrite === false &&
-          gateSteps[uploadIndex].with?.["if-no-files-found"] === "error" &&
+          [
+            RETAIN_ARTIFACT,
+            "./approval-tools/.github/actions/retain-artifact",
+          ].includes(gateSteps[uploadIndex].uses) &&
           gateSteps[uploadIndex].with?.["retention-days"] === 90,
         `${fileName}:${id} must durably capture approval before effects and preserve it across reruns`,
       );
     }
     const registryJob = workflowJobs.registry_verification;
     const qualify = steps(registryJob).find((step) =>
-      step.run?.startsWith("npm run release:qualify-registry"),
+      step.run?.startsWith("npm run qualify:public-registry"),
     );
     const upload = steps(registryJob).find((step) => step.id === "upload");
     add(
@@ -1420,7 +1792,7 @@ const validateReleaseMutationBoundary = (
   add(
     violations,
     isDeepStrictEqual(finalize?.permissions, { contents: "write" }) &&
-      hasRun(finalize, "npm run release:finalize-github") &&
+      hasRun(finalize, "npm run finalize:github-release") &&
       occurrences(finalize, "NPM_BOOTSTRAP_TOKEN") === 0 &&
       occurrences(finalize, "npm publish") === 0 &&
       (!reconciliation || hasRun(finalize, '--source-commit "$SOURCE_COMMIT"')),
@@ -1582,7 +1954,7 @@ const validateReleaseReconciliation = (workflow, violations) => {
     source?.outputs,
     {
       candidate_artifact_name:
-        "owlapi-${{ steps.metadata.outputs.version }}-reconciled-candidate-${{ github.run_id }}-${{ github.run_attempt }}",
+        "${{ steps.candidate_upload.outputs.artifact-name }}",
     },
     `${fileName}:source_verification outputs`,
     violations,
@@ -1643,7 +2015,7 @@ export const auditReleaseReconciliationMutationBoundary = (source) => {
 };
 
 const validateEvidenceUpload = (fileName, id, job, inputs, violations) => {
-  const uploads = actionSteps(job, "actions/upload-artifact");
+  const uploads = actionSteps(job, RETAIN_ARTIFACT);
   add(
     violations,
     uploads.length === 1,
@@ -1651,7 +2023,7 @@ const validateEvidenceUpload = (fileName, id, job, inputs, violations) => {
   );
   requireFields(
     uploads[0]?.with,
-    { ...UPLOAD_INPUTS, overwrite: true, "retention-days": 1, ...inputs },
+    { "retention-days": 1, ...inputs },
     `${fileName}:${id} evidence upload`,
     violations,
   );
@@ -1804,7 +2176,7 @@ const validateEvidenceWorkflows = (workflows, violations) => {
     );
     add(
       violations,
-      actionSteps(shard, "actions/download-artifact").some((step) =>
+      actionSteps(shard, COLLECT_ARTIFACTS).some((step) =>
         fieldsMatch(step.with, {
           name: "npm-evidence-registry-keys",
           path: ".release/registry-keys",
@@ -1842,7 +2214,7 @@ const validateEvidenceWorkflows = (workflows, violations) => {
       sameInventory(needs(aggregate), [shardId]),
       `${fileName}:${aggregateId} must wait for all shards`,
     );
-    const downloads = actionSteps(aggregate, "actions/download-artifact");
+    const downloads = actionSteps(aggregate, COLLECT_ARTIFACTS);
     add(
       violations,
       downloads.length === 1 &&
@@ -1904,7 +2276,7 @@ const validateEvidenceWorkflows = (workflows, violations) => {
         sameInventory(needs(parity), [aggregateId]),
         `${fileName}:${parityId} must wait for both aggregates`,
       );
-      const parityDownloads = actionSteps(parity, "actions/download-artifact");
+      const parityDownloads = actionSteps(parity, COLLECT_ARTIFACTS);
       add(
         violations,
         parityDownloads.length === 1 &&
@@ -1993,18 +2365,13 @@ const validateQualityTooling = (workflows, violations) => {
         add(
           violations,
           retention.length === 1 &&
-            retention[0]?.uses ===
-              "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a" &&
+            retention[0]?.uses === RETAIN_ARTIFACT &&
             retention[0]?.if === "${{ !cancelled() }}" &&
             isDeepStrictEqual(retention[0]?.with, {
               name: `scancode-qualification-${id}`,
               path: ".release/scancode-qualification/reports",
-              "if-no-files-found": "error",
+
               "retention-days": 14,
-              "compression-level": 0,
-              overwrite: false,
-              "include-hidden-files": false,
-              archive: true,
             }) &&
             steps(job).indexOf(retention[0]) >
               steps(job).indexOf(qualification),
@@ -2015,11 +2382,11 @@ const validateQualityTooling = (workflows, violations) => {
       const list = steps(job);
       const setupIndex = list.indexOf(python[0]);
       const sync = list.filter((step) =>
-        step.run?.startsWith("npm run tools:sync"),
+        step.run?.startsWith("npm run sync:python-tools"),
       );
       const syncIndex = list.indexOf(sync[0]);
       const checkIndexes = list.flatMap((step, index) =>
-        /^npm (test|run (format:check|format:source-python:check|lint|lint:source-python|test:quality|test:quality:source|tools:check))(?: |$)/u.test(
+        /^npm (test|run (format:check|format:source-python:check|lint|lint:source-python|test:quality|test:quality:source|check:python-tools))(?: |$)/u.test(
           step.run ?? "",
         )
           ? [index]
@@ -2039,7 +2406,8 @@ const validateQualityTooling = (workflows, violations) => {
       add(
         violations,
         sync.length === 1 &&
-          sync[0].run === "npm run tools:sync -- --python-env QUALITY_PYTHON" &&
+          sync[0].run ===
+            "npm run sync:python-tools -- --python-env QUALITY_PYTHON" &&
           isDeepStrictEqual(sync[0].env, {
             QUALITY_PYTHON: "${{ steps.quality_python.outputs.python-path }}",
           }) &&
@@ -2182,7 +2550,7 @@ const validateQualityTooling = (workflows, violations) => {
           violations,
         );
         for (const command of [
-          "npm run tools:check",
+          "npm run check:python-tools",
           "npm run format:check",
           "npm run lint",
           "npm run test:quality",
@@ -2210,8 +2578,14 @@ const validateQualityTooling = (workflows, violations) => {
 const validateMaintenanceReporter = (workflow, violations) => {
   add(
     violations,
-    sameInventory(Object.keys(workflow.jobs ?? {}), ["health", "reporter"]),
-    "maintenance.yml: expected exactly the read-only health and write-only reporter jobs",
+    sameInventory(Object.keys(workflow.jobs ?? {}), [
+      "health",
+      "reporter",
+      "runtime_matrix",
+      "consumer_runtime",
+      "consumer_runtimes",
+    ]),
+    "maintenance.yml: expected the health, isolated reporter and consumer qualification jobs",
   );
   const health = workflow.jobs?.health;
   requireFields(
@@ -2224,13 +2598,10 @@ const validateMaintenanceReporter = (workflow, violations) => {
   );
   add(
     violations,
-    actionSteps(health, "actions/upload-artifact").some((step) =>
+    actionSteps(health, RETAIN_ARTIFACT).some((step) =>
       fieldsMatch(step.with, {
-        "if-no-files-found": "error",
         "retention-days": 1,
-        "compression-level": 0,
-        overwrite: false,
-        "include-hidden-files": false,
+
         path: "scripts/report-maintenance-failure.mjs",
       }),
     ),
@@ -2441,7 +2812,7 @@ const validateTrustedMarkdownWorkflow = (workflow, violations) => {
     sameInventory(Object.keys(job ?? {}), ["permissions", "uses", "with"]) &&
       isDeepStrictEqual(job?.permissions, { contents: "read" }) &&
       job?.uses ===
-        "Hadden-Industries/markdown-quality/.github/workflows/markdown-quality.yml@d9736e6bb4f3bd83d421ea99f54431e8380e6ec1" &&
+        "Hadden-Industries/markdown-quality/.github/workflows/markdown-quality.yml@7765a8227318ddd997daf706bc195e615f9d74e1" &&
       isDeepStrictEqual(job?.with, {
         "trusted-repository": "Hadden-Industries/owlapi",
         "trusted-sha": "${{ inputs.trusted_sha }}",
@@ -2454,10 +2825,379 @@ const validateTrustedMarkdownWorkflow = (workflow, violations) => {
 };
 
 /** Report repository policy violations; overrides are source strings for mutation tests. */
+/** Consumer admission has separate tooling, but no separate version authority. */
+const validateConsumerRuntimeControls = (
+  workflows,
+  actionOverrides,
+  violations,
+) => {
+  const expectedSteps = {
+    "freeze-runtime-matrix": [
+      SHARED_SETUP,
+      "node scripts/consumer-runtime-matrix.mjs freeze",
+    ],
+    "setup-consumer": [
+      SHARED_SETUP,
+      "npm ci --ignore-scripts --no-audit --no-fund",
+      "node scripts/prepare-downloaded-candidate.mjs --candidate .release/runtime-candidate",
+      "node scripts/consumer-runtime-tools.mjs prepare",
+      "actions/setup-node",
+      "node scripts/consumer-runtime-tools.mjs assert",
+    ],
+    "qualify-consumer": [
+      "actions/download-artifact",
+      "./.github/actions/setup-consumer",
+      "node scripts/qualify-consumer-runtime.mjs",
+    ],
+    "aggregate-consumer-runtimes": [
+      SHARED_SETUP,
+      COLLECT_ARTIFACTS,
+      "node scripts/aggregate-consumer-runtimes.mjs",
+      RETAIN_ARTIFACT,
+    ],
+  };
+  for (const name of CONSUMER_ACTIONS) {
+    const source =
+      actionOverrides[name] ??
+      readFileSync(
+        join(REPOSITORY_ROOT, `.github/actions/${name}/action.yml`),
+        "utf8",
+      );
+    const { value: action, document } = parseControlYaml(
+      `actions/${name}/action.yml`,
+      source,
+      violations,
+    );
+    const body = action?.runs?.steps ?? [];
+    add(
+      violations,
+      action?.runs?.using === "composite" &&
+        body.length === expectedSteps[name].length,
+      `${name}: unexpected composite envelope`,
+    );
+    for (const [index, expected] of expectedSteps[name].entries()) {
+      const step = body[index];
+      add(
+        violations,
+        expected.startsWith("actions/")
+          ? step?.uses?.startsWith(`${expected}@`)
+          : (step?.uses ?? step?.run) === expected,
+        `${name}: changed qualification operation ${index}`,
+      );
+      add(
+        violations,
+        step &&
+          !step.if &&
+          !step["continue-on-error"] &&
+          (!step.run || step.shell === "bash"),
+        `${name}: qualification operations must run without bypasses`,
+      );
+      if (step?.uses?.startsWith("actions/")) {
+        add(
+          violations,
+          Object.hasOwn(ACTIONS, step.uses) &&
+            document
+              .getIn(["runs", "steps", index, "uses"], true)
+              ?.comment?.trim() === ACTIONS[step.uses],
+          `${name}: action must retain its reviewed pin`,
+        );
+      }
+    }
+    add(
+      violations,
+      occurrences(action, "registry-url") === 0 &&
+        occurrences(action, "github-token") === 0 &&
+        occurrences(action, "run-id") === 0 &&
+        occurrences(action, "permissions") === 0,
+      `${name}: consumer setup cannot gain publishing or cross-run authority`,
+    );
+    if (name === "setup-consumer") {
+      requireFields(
+        body[4]?.with,
+        {
+          "node-version": "${{ inputs.node }}",
+          "check-latest": false,
+          cache: "",
+          "package-manager-cache": false,
+        },
+        `${name}: exact consumer selection`,
+        violations,
+      );
+      for (const index of [3, 5])
+        requireFields(
+          body[index]?.env,
+          {
+            OWLAPI_RUNTIME_MATRIX: "${{ inputs.matrix }}",
+            OWLAPI_EXPECTED_NODE: "${{ inputs.node }}",
+          },
+          `${name}: frozen admission`,
+          violations,
+        );
+    }
+    if (name === "qualify-consumer") {
+      requireFields(
+        body[0]?.with,
+        {
+          ...DOWNLOAD_INPUTS,
+          "artifact-ids": "${{ inputs.candidate-id }}",
+          path: ".release/runtime-candidate",
+        },
+        `${name}: candidate transport`,
+        violations,
+      );
+      requireFields(
+        body[2]?.env,
+        {
+          OWLAPI_RUNTIME_MATRIX: "${{ inputs.matrix }}",
+          OWLAPI_EXPECTED_NODE: "${{ inputs.node }}",
+          OWLAPI_CANDIDATE_ID: "${{ inputs.candidate-id }}",
+          OWLAPI_CANDIDATE_DIGEST: "${{ inputs.candidate-digest }}",
+        },
+        `${name}: candidate binding`,
+        violations,
+      );
+    }
+    if (name === "aggregate-consumer-runtimes") {
+      requireFields(
+        body[1]?.with,
+        {
+          pattern: "consumer-runtime-*-attempt-${{ github.run_attempt }}",
+          path: ".release/runtime-reports",
+        },
+        `${name}: report transport`,
+        violations,
+      );
+      requireFields(
+        body[3]?.with,
+        {
+          path: ".release/runtime-qualification/",
+
+          "retention-days": 90,
+        },
+        `${name}: evidence retention`,
+        violations,
+      );
+    }
+  }
+  for (const [file, prefix, candidate] of [
+    ["ci.yml", "CI", "candidate"],
+    ["release.yml", "Release", "candidate"],
+    ["maintenance.yml", "Maintenance", "health"],
+  ]) {
+    const jobs = workflows[file]?.jobs ?? {};
+    const matrix = jobs.runtime_matrix,
+      consumer = jobs.consumer_runtime,
+      aggregate = jobs.consumer_runtimes;
+    add(
+      violations,
+      steps(matrix).length === 2 &&
+        steps(matrix)[1]?.uses === "./.github/actions/freeze-runtime-matrix",
+      `${file}: one shared matrix resolver is required`,
+    );
+    requireFields(
+      matrix?.outputs,
+      {
+        matrix: "${{ steps.freeze.outputs.matrix }}",
+        sha256: "${{ steps.freeze.outputs.sha256 }}",
+      },
+      `${file}: matrix outputs`,
+      violations,
+    );
+    add(
+      violations,
+      sameInventory(needs(consumer), ["runtime_matrix", candidate]) &&
+        consumer?.strategy?.["fail-fast"] === false &&
+        consumer.strategy.matrix?.include ===
+          "${{ fromJSON(needs.runtime_matrix.outputs.matrix).include }}",
+      `${file}: consumer must execute every frozen lane`,
+    );
+    requireFields(
+      consumer,
+      {
+        name: `${prefix} / consumer / \u0024{{ matrix.runner }} / Node \u0024{{ matrix.node }}`,
+        "runs-on": "${{ matrix.runner }}",
+      },
+      `${file}: consumer lane identity`,
+      violations,
+    );
+    const qualify = steps(consumer).find(
+      (step) => step.uses === "./.github/actions/qualify-consumer",
+    );
+    requireFields(
+      qualify?.with,
+      {
+        matrix: "${{ needs.runtime_matrix.outputs.matrix }}",
+        node: "${{ matrix.node }}",
+        "candidate-id": `\u0024{{ needs.${candidate}.outputs.artifact_id }}`,
+        "candidate-digest": `sha256:\u0024{{ needs.${candidate}.outputs.artifact_digest }}`,
+      },
+      `${file}: candidate/runtime binding`,
+      violations,
+    );
+    add(
+      violations,
+      !consumer?.if &&
+        !qualify?.if &&
+        sameInventory(needs(aggregate), [
+          "runtime_matrix",
+          candidate,
+          "consumer_runtime",
+        ]),
+      `${file}: qualification must not skip required lanes`,
+    );
+    const require = steps(aggregate).find(
+      (step) => step.uses === "./.github/actions/aggregate-consumer-runtimes",
+    );
+    requireFields(
+      require?.with,
+      {
+        matrix: "${{ needs.runtime_matrix.outputs.matrix }}",
+        "lanes-result": "${{ needs.consumer_runtime.result }}",
+        "candidate-id": `\u0024{{ needs.${candidate}.outputs.artifact_id }}`,
+        "candidate-digest": `sha256:\u0024{{ needs.${candidate}.outputs.artifact_digest }}`,
+      },
+      `${file}: complete runtime gate`,
+      violations,
+    );
+    if (file !== "maintenance.yml")
+      requireFields(
+        jobs.required?.env,
+        { OWLAPI_RUNTIME_MATRIX: "${{ needs.runtime_matrix.outputs.matrix }}" },
+        `${file}: aggregate matrix identity`,
+        violations,
+      );
+  }
+  requireFields(
+    workflows["ci.yml"]?.jobs?.verification,
+    {
+      needs: "runtime_matrix",
+      env: {
+        OWLAPI_RUNTIME_MATRIX: "${{ needs.runtime_matrix.outputs.matrix }}",
+      },
+    },
+    "CI proof reuse must bind the newly frozen matrix",
+    violations,
+  );
+};
+
+/** Both entry descriptors execute the same reviewed bundle and expose no network
+ * policy overrides. The complete static producer/collector census is deliberate.
+ */
+const validateArtifactTransportControls = (
+  workflows,
+  actionOverrides,
+  violations,
+) => {
+  const actions = {};
+  for (const name of ["retain-artifact", "collect-artifacts"]) {
+    const source =
+      actionOverrides[name] ??
+      readFileSync(
+        join(REPOSITORY_ROOT, `.github/actions/${name}/action.yml`),
+        "utf8",
+      );
+    const { value } = parseControlYaml(
+      `actions/${name}/action.yml`,
+      source,
+      violations,
+    );
+    actions[name] = value;
+    const retain = name === "retain-artifact";
+    add(
+      violations,
+      value.runs?.using === "node24" &&
+        value.runs?.main ===
+          (retain ? "dist/action.mjs" : "../retain-artifact/dist/action.mjs") &&
+        sameInventory(Object.keys(value.runs ?? {}), ["using", "main"]),
+      `${name}: must execute the one self-contained Node action bundle`,
+    );
+    add(
+      violations,
+      sameInventory(
+        Object.keys(value.inputs ?? {}),
+        retain
+          ? ["name", "path", "retention-days", "compression-level"]
+          : ["mode", "name", "pattern", "path"],
+      ),
+      `${name}: cannot expose transport policy overrides`,
+    );
+    if (retain) {
+      add(
+        violations,
+        ["name", "path", "retention-days"].every(
+          (key) => value.inputs?.[key]?.required === true,
+        ) &&
+          !value.inputs?.["compression-level"]?.default &&
+          sameInventory(Object.keys(value.outputs ?? {}), [
+            "artifact-id",
+            "artifact-digest",
+            "artifact-url",
+            "artifact-name",
+          ]),
+        `${name}: must retain exact required inputs and finalized outputs`,
+      );
+    } else {
+      add(
+        violations,
+        value.inputs?.mode?.default === "collect" &&
+          value.inputs?.path?.required === true,
+        `${name}: must select closed logical artifact collection`,
+      );
+    }
+  }
+  const aggregate = parseControlYaml(
+    "aggregate-consumer-runtimes",
+    actionOverrides["aggregate-consumer-runtimes"] ??
+      readFileSync(
+        join(
+          REPOSITORY_ROOT,
+          ".github/actions/aggregate-consumer-runtimes/action.yml",
+        ),
+        "utf8",
+      ),
+    violations,
+  ).value;
+  const operations = [
+    ...Object.values(workflows).flatMap(allSteps),
+    ...(aggregate.runs?.steps ?? []),
+  ];
+  add(
+    violations,
+    operations.filter((step) =>
+      [
+        RETAIN_ARTIFACT,
+        "./approval-tools/.github/actions/retain-artifact",
+      ].includes(step.uses),
+    ).length === 39,
+    "Artifact transport must cover the complete 39-producer inventory",
+  );
+  add(
+    violations,
+    operations.filter((step) => step.uses === COLLECT_ARTIFACTS).length === 6,
+    "Artifact transport must cover the complete six-collector inventory",
+  );
+};
 export const auditRepositoryControls = ({
   workflowSourceOverrides = {},
+  setupSourceOverride,
+  consumerActionOverrides = {},
+  artifactActionOverrides = {},
 } = {}) => {
-  const violations = checkWorkflowRuntimeProjections(workflowSourceOverrides);
+  const violations = checkNodeSupportProjections(workflowSourceOverrides);
+  const sharedSetup = parseControlYaml(
+    "actions/setup-producer/action.yml",
+    setupSourceOverride ??
+      readFileSync(
+        join(REPOSITORY_ROOT, ".github/actions/setup-producer/action.yml"),
+        "utf8",
+      ),
+    violations,
+  );
+  validateSharedSetupMetadata(
+    sharedSetup.value,
+    sharedSetup.document,
+    violations,
+  );
   const workflowFiles = sortedYamlFiles(WORKFLOW_DIRECTORY);
   const issueFormFiles = sortedYamlFiles(ISSUE_FORM_DIRECTORY, {
     exclude: ["config.yml"],
@@ -2488,6 +3228,16 @@ export const auditRepositoryControls = ({
     return { workflowFiles, issueFormFiles, violations };
   const workflows = Object.fromEntries(
     entries(parsed).map(([fileName, { value }]) => [fileName, value]),
+  );
+  validateConsumerRuntimeControls(
+    workflows,
+    consumerActionOverrides,
+    violations,
+  );
+  validateArtifactTransportControls(
+    workflows,
+    { ...consumerActionOverrides, ...artifactActionOverrides },
+    violations,
   );
   for (const [fileName, { value: workflow, document }] of entries(parsed)) {
     add(
@@ -2591,26 +3341,19 @@ export const auditRepositoryControls = ({
       const job = workflows[fileName]?.jobs?.[id];
       const context = `${fileName}:${id} Node 26 floor`;
       requireFields(job, { "runs-on": runner }, context, violations);
-      const setup = actionSteps(job, "actions/setup-node")[0];
-      requireFields(
-        setup?.with,
-        { "node-version": projectRuntimeText("{{runtime:node.26}}") },
-        context,
+      const setup = steps(job).find(sharedSetupStep);
+      requireFields(setup?.with, { "node-family": "26" }, context, violations);
+      add(
         violations,
-      );
-      requireRun(
-        job,
-        projectRuntimeText(
-          "node scripts/assert-workflow-runtime.mjs --node {{runtime:node.26}} --npm {{runtime:npm}}",
-        ),
-        context,
-        violations,
+        setupInputs(setup).phase === "producer" &&
+          setupInputs(setup)["verify-runtime"] === "true",
+        `${context} must assert its selected reference runtime`,
       );
       if (id.startsWith("portability_")) {
         requireFields(job, { needs: "candidate" }, context, violations);
         requireRun(
           job,
-          "npm run candidate:portable -- --candidate .release/download --output .release/download/portability.json",
+          "npm run qualify:installed-candidate -- --candidate .release/download --output .release/download/portability.json",
           context,
           violations,
         );

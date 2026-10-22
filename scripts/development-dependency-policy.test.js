@@ -2,6 +2,13 @@ import { readFileSync } from "node:fs";
 import { describe, expect, test } from "@jest/globals";
 import semver from "semver";
 import { parse } from "yaml";
+import {
+  CANONICAL_NODE,
+  CI_RUNTIME,
+  consumerNodeRange,
+  projectRuntimeText,
+  runtimeSemver,
+} from "./runtime-policy.mjs";
 
 const manifest = JSON.parse(readFileSync("package.json", "utf8"));
 const lock = JSON.parse(readFileSync("package-lock.json", "utf8"));
@@ -10,6 +17,7 @@ describe("development dependency and runtime eligibility", () => {
   test("floating minimums retain an exact reproducible root graph", () => {
     expect(Object.keys(manifest.devDependencies)).toHaveLength(23);
     expect(lock.packages[""].devDependencies).toEqual(manifest.devDependencies);
+    expect(lock.packages[""].engines).toEqual(manifest.engines);
     for (const [name, range] of Object.entries(manifest.devDependencies)) {
       expect(range).toMatch(/^>=\d+\.\d+\.\d+$/u);
       expect(
@@ -17,31 +25,49 @@ describe("development dependency and runtime eligibility", () => {
       ).toBe(true);
     }
   });
-  test.each([
-    ["22.23.2", false],
-    ["22.23.3", true],
-    ["23.0.0", false],
-    ["24.20.0", false],
-    ["24.21.0", true],
-    ["25.0.0", false],
-    ["26.11.0", false],
-    ["26.11.1", true],
-    ["26.12.0", true],
-    ["26.11.1-rc.1", false],
-    ["27.0.0", false],
-  ])("Node %s eligibility is %s", (version, eligible) => {
-    expect(semver.satisfies(version, manifest.engines.node)).toBe(eligible);
-  });
-  test.each([
-    ["12.1.0", false],
-    ["12.2.0", true],
-    ["12.3.0", true],
-    ["13.0.0", true],
-    ["13.0.0-rc.1", false],
-  ])("npm %s range eligibility is %s", (version, eligible) => {
+  test("consumer admission has one floor without restricting supported families", () => {
+    const minimum = semver.sort([...CI_RUNTIME.minimums])[0];
+    expect(manifest.engines.node).toBe(consumerNodeRange());
+    const latestFamily = Math.max(...CI_RUNTIME.minimums.map(semver.major));
+    for (
+      let major = semver.major(minimum);
+      major <= latestFamily + 2;
+      major++
+    ) {
+      for (const version of [`${major}.0.0`, `${major}.999.999`]) {
+        const admitted = semver.gte(version, minimum);
+        expect(semver.satisfies(version, manifest.engines.node)).toBe(admitted);
+        expect(runtimeSemver.satisfies(version, manifest.engines.node)).toBe(
+          admitted,
+        );
+      }
+      expect(semver.satisfies(`${major}.0.0-rc.1`, manifest.engines.node)).toBe(
+        false,
+      );
+    }
+    const { major, minor, patch } = semver.parse(minimum);
+    const below = patch
+      ? `${major}.${minor}.${patch - 1}`
+      : minor
+        ? `${major}.${minor - 1}.999`
+        : `${major - 1}.999.999`;
+    expect(semver.satisfies(below, manifest.engines.node)).toBe(false);
+    // Matrix order and higher-family floors cannot accidentally raise admission.
     expect(
-      semver.satisfies(version, manifest.devEngines.packageManager.version),
-    ).toBe(eligible);
+      consumerNodeRange({
+        ...CI_RUNTIME,
+        minimums: ["26.1.0", "22.1.0", "24.2.0"],
+      }),
+    ).toBe(">=22.1.0");
+  });
+  test("npm eligibility follows the local minimum independently of the reference", () => {
+    const range = manifest.devEngines.packageManager.version;
+    expect(range).toBe(projectRuntimeText("{{runtime:npmRange}}"));
+    expect(semver.satisfies(CI_RUNTIME.npmMinimum, range)).toBe(true);
+    expect(semver.satisfies(CI_RUNTIME.npm, range)).toBe(true);
+    expect(semver.satisfies(`${CI_RUNTIME.npmMinimum}-rc.1`, range)).toBe(
+      false,
+    );
   });
   test("native npm remains the sole versionless development runtime authority", () => {
     expect(manifest.devEngines.runtime).toEqual({
@@ -50,10 +76,10 @@ describe("development dependency and runtime eligibility", () => {
     });
     expect(manifest.devEngines.packageManager.onFail).toBe("error");
     expect(manifest).not.toHaveProperty("packageManager");
-    expect(readFileSync(".node-version", "utf8").trim()).toBe("24.21.0");
+    expect(readFileSync(".node-version", "utf8").trim()).toBe(CANONICAL_NODE);
   });
   test.each(["ci", "release"])(
-    "%s blocks on exact Node 26 source and retained-package platform floors",
+    "%s blocks on exact Node 26 source and retained-package reference runtimes",
     (workflowName) => {
       const workflow = parse(
         readFileSync(`.github/workflows/${workflowName}.yml`, "utf8"),
@@ -68,14 +94,15 @@ describe("development dependency and runtime eligibility", () => {
       ]) {
         const job = workflow.jobs[jobId];
         expect(
-          job.steps.find((step) => step.uses?.startsWith("actions/setup-node@"))
-            .with["node-version"],
-        ).toBe("26.11.1");
+          job.steps.find(
+            (step) => step.uses === "./.github/actions/setup-producer",
+          ).with["node-family"],
+        ).toBe("26");
         expect(
           job.steps.some(
             (step) =>
-              step.run ===
-              "node scripts/assert-workflow-runtime.mjs --node 26.11.1 --npm 12.2.0",
+              step.uses === "./.github/actions/setup-producer" &&
+              (step.with?.["verify-runtime"] ?? "true") === "true",
           ),
         ).toBe(true);
         expect(workflow.jobs.required.needs).toContain(jobId);

@@ -1,0 +1,118 @@
+{
+  "artifactId": "1b698a14cb4a972a1b6c63988af7ee089cd950ba415217ba2b40ba820d6b0ea9",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2246,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/History.md",
+        "sha256": "ab183ff93d075137547f9d96938185f2cd4b29ba1f4e28b29e6fbd573255968d",
+        "size": 282,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "0154425673db15cdfa80ecba2c9b1f1a867f7197a006764712849bfc3a93cbb7",
+        "size": 1102,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "d30a5eca847bc6edc7b9723884def8942a66f89d12a5735dc22d1ee1216ff2ea",
+        "size": 1666,
+        "type": "FILE"
+      },
+      {
+        "path": "package/browser.js",
+        "sha256": "abaef53ebcdc98f3655331f834986a2d11b6a824f58d670369669246d1b7b69b",
+        "size": 1614,
+        "type": "FILE"
+      },
+      {
+        "path": "package/node.js",
+        "sha256": "9a86a29fa34a99b861e707345fb1d1e2e55a6c23edb8f992bed57cc607f42d8e",
+        "size": 123,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "7bba467f049074957e693fc06672848b040c38fa071b6eed8690f5fbe090a8b2",
+        "size": 694,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1102,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/01/0154425673db15cdfa80ecba2c9b1f1a867f7197a006764712849bfc3a93cbb7",
+          "sha256": "0154425673db15cdfa80ecba2c9b1f1a867f7197a006764712849bfc3a93cbb7"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "0154425673db15cdfa80ecba2c9b1f1a867f7197a006764712849bfc3a93cbb7",
+        "size": 1102
+      },
+      {
+        "blob": {
+          "bytes": 1666,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d3/d30a5eca847bc6edc7b9723884def8942a66f89d12a5735dc22d1ee1216ff2ea",
+          "sha256": "d30a5eca847bc6edc7b9723884def8942a66f89d12a5735dc22d1ee1216ff2ea"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "d30a5eca847bc6edc7b9723884def8942a66f89d12a5735dc22d1ee1216ff2ea",
+        "size": 1666
+      }
+    ],
+    "expandedBytes": 5481,
+    "packageIdentity": {
+      "author": "Nathan Rajlich <nathan@tootallnate.net> (http://n8.io/)",
+      "homepage": "https://github.com/TooTallNate/util-deprecate",
+      "license": "MIT",
+      "name": "util-deprecate",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/TooTallNate/util-deprecate.git"
+      },
+      "version": "1.0.2"
+    },
+    "packageMetadata": {
+      "author": "Nathan Rajlich <nathan@tootallnate.net> (http://n8.io/)",
+      "browser": "browser.js",
+      "bugs": {
+        "url": "https://github.com/TooTallNate/util-deprecate/issues"
+      },
+      "description": "The Node.js `util.deprecate()` function with browser support",
+      "homepage": "https://github.com/TooTallNate/util-deprecate",
+      "keywords": [
+        "util",
+        "deprecate",
+        "browserify",
+        "browser",
+        "node"
+      ],
+      "license": "MIT",
+      "main": "node.js",
+      "name": "util-deprecate",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/TooTallNate/util-deprecate.git"
+      },
+      "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+      },
+      "version": "1.0.2"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 2246,
+      "sha256": "79a1de983c1b393180c47456d6b73caab278a00ea6e37d5c6675f2dcdec2a3e5"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

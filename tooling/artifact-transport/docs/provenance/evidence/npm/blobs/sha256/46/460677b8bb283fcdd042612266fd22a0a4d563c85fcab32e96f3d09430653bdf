@@ -1,0 +1,121 @@
+{
+  "artifactId": "4997a96f6e87527ee8bcc42e478bca783047435c81703fe0920d7a3fc872a808",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5047,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "fc1776a52b070bbc93aeaf9e193bae4c4bb18e5bab0ea8d573d6a11e4d6365eb",
+        "size": 1419,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "2aa16be0f4fad003a352a955a43314e9d1d8deef7034060a82ac9c49f32b81e2",
+        "size": 1077,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "6423769d4556b51fd966ed0cbf5d9bfd7813553560a1849966f48677ed674f83",
+        "size": 4652,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "7efcf7c2b83b9d0054dd637da0b15983a4f43b9aedb999ae895ff9c0b23c7170",
+        "size": 730,
+        "type": "FILE"
+      },
+      {
+        "path": "package/strnum.js",
+        "sha256": "629ac48bfc12de3bc04b36320e532423212804e04a5b7aa475e76d71de089db3",
+        "size": 7054,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1077,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/2a/2aa16be0f4fad003a352a955a43314e9d1d8deef7034060a82ac9c49f32b81e2",
+          "sha256": "2aa16be0f4fad003a352a955a43314e9d1d8deef7034060a82ac9c49f32b81e2"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "2aa16be0f4fad003a352a955a43314e9d1d8deef7034060a82ac9c49f32b81e2",
+        "size": 1077
+      },
+      {
+        "blob": {
+          "bytes": 4652,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/64/6423769d4556b51fd966ed0cbf5d9bfd7813553560a1849966f48677ed674f83",
+          "sha256": "6423769d4556b51fd966ed0cbf5d9bfd7813553560a1849966f48677ed674f83"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "6423769d4556b51fd966ed0cbf5d9bfd7813553560a1849966f48677ed674f83",
+        "size": 4652
+      }
+    ],
+    "expandedBytes": 14932,
+    "packageIdentity": {
+      "author": "Amit Gupta (https://solothought.work/)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "strnum",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/NaturalIntelligence/strnum"
+      },
+      "version": "2.5.1"
+    },
+    "packageMetadata": {
+      "author": "Amit Gupta (https://solothought.work/)",
+      "dependencies": {
+        "anynum": "^1.0.1"
+      },
+      "description": "Parse String to Number based on configuration",
+      "devDependencies": {
+        "@byspec/numbers": "^0.1.1",
+        "jasmine": "^5.6.0"
+      },
+      "funding": [
+        {
+          "type": "github",
+          "url": "https://github.com/sponsors/NaturalIntelligence"
+        }
+      ],
+      "keywords": [
+        "string",
+        "number",
+        "parse",
+        "convert",
+        "unicode"
+      ],
+      "license": "MIT",
+      "main": "strnum.js",
+      "name": "strnum",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/NaturalIntelligence/strnum"
+      },
+      "scripts": {
+        "test": "jasmine tests/*_test.js"
+      },
+      "type": "module",
+      "version": "2.5.1"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 5047,
+      "sha256": "ced67dded4b9d8122292bc5f41e0c5e65fee378c4fb902e3680790abcb1b90bd"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

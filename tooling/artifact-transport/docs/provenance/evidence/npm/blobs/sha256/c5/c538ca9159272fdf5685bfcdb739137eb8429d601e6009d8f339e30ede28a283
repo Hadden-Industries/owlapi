@@ -1,0 +1,225 @@
+{
+  "artifactId": "2f56dd999e7211e5fd66bf4e472eee0a98a830ef48e033cc84f3787add5347a2",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 9896,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.editorconfig",
+        "sha256": "2d3fea39605373a49de25407eafa74b1c02ca506108c33643e833d1943ac8676",
+        "size": 457,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.eslintrc",
+        "sha256": "9cbc8359954b9106241f2c6dfe84a0866f0b4fc8c3f4f7d50722f2e957847021",
+        "size": 126,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "ac97f78583380657d2414f4c053982206b48b86e42c7f3edfbbbc497f7a53580",
+        "size": 582,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nycrc",
+        "sha256": "997785c50b0773e5e18bf15550fbf57823c634fefe623cd37b3c83696402ad0a",
+        "size": 139,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "6e20c5da11c9ab04b3d6e79c560ba579dfb000c56c677c1163fdb37aa68f8471",
+        "size": 9148,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "c61652db3d2808f667b48af0a358f0d85fd07ad4a0d0b1a50882dec3b764c522",
+        "size": 1082,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "af48342c566c4c7e8e8074d0808ce8d829942b3c143a9fe0d730f05fa4439015",
+        "size": 3550,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "6364203119a7e9d75d9bc481406d9840c35ee914227278dae7cd4bfc1832f4c8",
+        "size": 3224,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "0d0981565f03ca488d263c94d038717ec4face8b129b8ff18e792dabae2af755",
+        "size": 2698,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "eb8dc2db5aea75b114dc1bf79ed3dbf6a14024ee21f37027a145a86bffaeb0f2",
+        "size": 7944,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1082,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c6/c61652db3d2808f667b48af0a358f0d85fd07ad4a0d0b1a50882dec3b764c522",
+          "sha256": "c61652db3d2808f667b48af0a358f0d85fd07ad4a0d0b1a50882dec3b764c522"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "c61652db3d2808f667b48af0a358f0d85fd07ad4a0d0b1a50882dec3b764c522",
+        "size": 1082
+      },
+      {
+        "blob": {
+          "bytes": 3550,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/af/af48342c566c4c7e8e8074d0808ce8d829942b3c143a9fe0d730f05fa4439015",
+          "sha256": "af48342c566c4c7e8e8074d0808ce8d829942b3c143a9fe0d730f05fa4439015"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "af48342c566c4c7e8e8074d0808ce8d829942b3c143a9fe0d730f05fa4439015",
+        "size": 3550
+      }
+    ],
+    "expandedBytes": 28950,
+    "packageIdentity": {
+      "author": {
+        "email": "ljharb@gmail.com",
+        "name": "Jordan Harband",
+        "url": "http://ljharb.codes"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "is-callable",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/inspect-js/is-callable.git"
+      },
+      "version": "1.2.7"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "ljharb@gmail.com",
+        "name": "Jordan Harband",
+        "url": "http://ljharb.codes"
+      },
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "startingVersion": "v1.2.5",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "contributors": [
+        {
+          "email": "ljharb@gmail.com",
+          "name": "Jordan Harband",
+          "url": "http://ljharb.codes"
+        }
+      ],
+      "description": "Is this JS value callable? Works with Functions and GeneratorFunctions, despite ES6 @@toStringTag.",
+      "devDependencies": {
+        "@ljharb/eslint-config": "^21.0.0",
+        "aud": "^2.0.0",
+        "auto-changelog": "^2.4.0",
+        "available-typed-arrays": "^1.0.5",
+        "eclint": "^2.8.1",
+        "es-value-fixtures": "^1.4.2",
+        "eslint": "=8.8.0",
+        "for-each": "^0.3.3",
+        "has-tostringtag": "^1.0.0",
+        "make-arrow-function": "^1.2.0",
+        "make-async-function": "^1.0.0",
+        "make-generator-function": "^2.0.0",
+        "npmignore": "^0.3.0",
+        "nyc": "^10.3.2",
+        "object-inspect": "^1.12.2",
+        "rimraf": "^2.7.1",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.6.0"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "keywords": [
+        "Function",
+        "function",
+        "callable",
+        "generator",
+        "generator function",
+        "arrow",
+        "arrow function",
+        "ES6",
+        "toStringTag",
+        "@@toStringTag"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "is-callable",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/inspect-js/is-callable.git"
+      },
+      "scripts": {
+        "lint": "eslint --ext=js,mjs .",
+        "posttest": "aud --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prelint": "eclint check $(git ls-files | xargs find 2> /dev/null | grep -vE 'node_modules|\\.git')",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run --silent lint",
+        "test": "npm run tests-only --",
+        "tests-only": "nyc tape 'test/**/*.js'",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "testling": {
+        "browsers": [
+          "iexplore/6.0..latest",
+          "firefox/3.0..6.0",
+          "firefox/15.0..latest",
+          "firefox/nightly",
+          "chrome/4.0..10.0",
+          "chrome/20.0..latest",
+          "chrome/canary",
+          "opera/10.0..latest",
+          "opera/next",
+          "safari/4.0..latest",
+          "ipad/6.0..latest",
+          "iphone/6.0..latest",
+          "android-browser/4.2"
+        ],
+        "files": "test/index.js"
+      },
+      "version": "1.2.7"
+    },
+    "physicalEntryCount": 10,
+    "tarball": {
+      "bytes": 9896,
+      "sha256": "1b5c6e4e8ab142a6857fca2fb79d880ba64f2c4ad87907b583934d04b503c3a1"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

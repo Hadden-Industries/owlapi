@@ -143,7 +143,7 @@ export const prepareScancode = async ({
           await readFile(join(repositoryRoot, ".python-version"), "utf8")
         ).trim() ||
       versions.scancodeVersion !== SCANCODE_TOOL.version ||
-      versions.beartypeVersion !== "0.23.0rc2"
+      versions.beartypeVersion !== "0.23.1"
     )
       throw new Error(
         "Configured ScanCode runtime does not match the approved locked identities",

@@ -1,0 +1,683 @@
+{
+  "artifactId": "1f222e400565b092cc8de7c18c990071152f0227eca268f5c881185524e296d7",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 122422,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.babelrc.es5",
+        "sha256": "213d5cc77f73c93bee9ec4b2a1922290f95ceb2585002eeae5aa709a23d8e274",
+        "size": 52,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.babelrc.lib",
+        "sha256": "506ebc8d581c06174886ee19b639efaffa4098a78c470c91fb5b70daadf0de1b",
+        "size": 106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.env",
+        "sha256": "9a71de52ef575866ca37dce0fe306c2571ed84f780ae2e8a263a6135fc42ac74",
+        "size": 37,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.travis.yml",
+        "sha256": "cbda108bab2adc0b1c86f66ea4ae732282d67c01363b29c8189b6502b2a9a140",
+        "size": 371,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "84a08edb16cc9ae161c31e76c9e593702f3d9192061abc6721398e0227bdb5e7",
+        "size": 1080,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "65c892bdc722cec56df01ff258cfb9b97d99d0b471dc0f0cc522293e8d9e2517",
+        "size": 43693,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bottleneck.d.ts",
+        "sha256": "5f808ff2bf2dcbd57cc17074ee1da5d958704be942b0a7ac126aae49aa453c14",
+        "size": 36317,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bottleneck.d.ts.ejs",
+        "sha256": "ae9ee74744fcc64e0f6affa8eb3c82aab42e1b65ac5ea55d19fe50d0fe821dd2",
+        "size": 25750,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bower.json",
+        "sha256": "8d36c80f6020b63ee3ecb808372d8170e6d2022cfe6474dac30f7c05e33caa9b",
+        "size": 537,
+        "type": "FILE"
+      },
+      {
+        "path": "package/es5.js",
+        "sha256": "b5c6a996db7855dfa54acaeca31be04195dc37335939c69f9797d6aff3dd306d",
+        "size": 172002,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/Batcher.js",
+        "sha256": "d06937024cee7e2a87b23e39723154ea15ca3928651a7b9fd4214ff7c2a5b1c2",
+        "size": 1282,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/Bottleneck.js",
+        "sha256": "de8237be93f5410e8519df631f10503d3be476625e1ddb66ee16d2424863b0fe",
+        "size": 18041,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/BottleneckError.js",
+        "sha256": "48c8bc02ce05737b05ace2642cf2ab21371d7753e10ffbaa5bc624d605f9f338",
+        "size": 127,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/DLList.js",
+        "sha256": "d9299c21246c4e5fc2371943a83fb1c86d8b6c4ca144f87b3bad394a5fe327a2",
+        "size": 1775,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/Events.js",
+        "sha256": "0aa58ea73ad3cb06ba43c126f3f4d4f28298a1a4a3510a364bdff19183ab39f4",
+        "size": 3471,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/Group.js",
+        "sha256": "909dacc587d7db4c2c5aae9f18a65761ba7f1453ac1e8d74892253aefbb54d37",
+        "size": 6132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/IORedisConnection.js",
+        "sha256": "17a63fc67e7e2d83c6a640358c6d75e4e1449002beb34ecd487445a06b9bcd58",
+        "size": 6036,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/Job.js",
+        "sha256": "74551429dbb056fa8b4341ea16006cd8a2a475330c4bfdbde8549e46daf18681",
+        "size": 5878,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/LocalDatastore.js",
+        "sha256": "20ede7b6b9e0fda828a7974364bbc99f3ec409463ee4567218c75dec1924c20d",
+        "size": 8422,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/Queues.js",
+        "sha256": "3658a22a7118d91a65b0c2060406bc465880259c0b1dc8a4adafe30763d7614f",
+        "size": 1473,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/RedisConnection.js",
+        "sha256": "c817fb70b497ccb85a66a5b4cfffc4f7eb2fd7ea83cc6a26ad8fe085b58be270",
+        "size": 5734,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/RedisDatastore.js",
+        "sha256": "7b7f80b53f526839b6c93ca45271a93bd1c8dbecce3554fbce25e49946780011",
+        "size": 11377,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/Scripts.js",
+        "sha256": "84a1af0b00a02ce890dc22e23392f368a296008cd28a262ad5bc6fe450e301ca",
+        "size": 3943,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/States.js",
+        "sha256": "e8f971cdf3154fa3f1e7c7a7dde149f39bae1fb6e3ed6b79325615cc77fb162c",
+        "size": 1668,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/Sync.js",
+        "sha256": "b5566ba0e56b7d9ef8bad08239600ed2d1c14cbcc1a4ee4d7caea5bc1f74df9a",
+        "size": 2282,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/es5.js",
+        "sha256": "9291da273aa40fff9dad764e1cef6d794922b0578c5a914bb677c812ad693a9d",
+        "size": 97,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "97aeb3f85b49d31792b83305d7275fed46e13ac38a1e4afb0dd80d3ca7160686",
+        "size": 56,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/lua.json",
+        "sha256": "8a2986b7f9b403dc33769b4e75d507ed8b6ec550786e2c85bdfd041c92267d67",
+        "size": 18619,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/parser.js",
+        "sha256": "78352ad0b8101ef43e6ba569627c7b0748466bc29af87838d0530d83e96a14f0",
+        "size": 416,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/version.json",
+        "sha256": "4337454d9d16be306f59503c287cb9647362ef694460f5b1322a77e6ca247ba0",
+        "size": 21,
+        "type": "FILE"
+      },
+      {
+        "path": "package/light.js",
+        "sha256": "799b24dab220c150eb1c9e173518ea9b55f27d6946b500ea854c222c8bb4a524",
+        "size": 43167,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "9e73efe094fc7802ce2288f1e342e9f28c2fe75f017002a96a35a478eb1df4d9",
+        "size": 1315,
+        "type": "FILE"
+      },
+      {
+        "path": "package/rollup.config.es5.js",
+        "sha256": "f39bf0a4312211f80fa73d659302dd400bf048d042f40565d097066822d5f2d3",
+        "size": 997,
+        "type": "FILE"
+      },
+      {
+        "path": "package/rollup.config.light.js",
+        "sha256": "c0f71d8d3b6642dde7a39f9cf1406330aebb72e8bbcefb830c2ec5cb040004cc",
+        "size": 1088,
+        "type": "FILE"
+      },
+      {
+        "path": "package/scripts/assemble_lua.js",
+        "sha256": "9b605b334a92b1f7880d88698cf6bca74e94274a7c957be8192687fd517cd2d7",
+        "size": 571,
+        "type": "FILE"
+      },
+      {
+        "path": "package/scripts/build.sh",
+        "sha256": "31bcd3e92cf2d93a9bf0452c5872c9042d22d699f95753615be562ae169e7493",
+        "size": 1421,
+        "type": "FILE"
+      },
+      {
+        "path": "package/scripts/test_all.sh",
+        "sha256": "934ee3e990e1770f813f0a37b14f39510424c42ec87ba26a3b59c46dee8cc397",
+        "size": 260,
+        "type": "FILE"
+      },
+      {
+        "path": "package/scripts/version.js",
+        "sha256": "e8c578e7e13cc166804c1738745a5c5fb71429d226eded678d19f82d8a12671d",
+        "size": 108,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/Batcher.coffee",
+        "sha256": "90e81c80d60a619962e53e5b81967e829d47de6dd989cb253dd96fb7ad9ff87c",
+        "size": 792,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/Bottleneck.coffee",
+        "sha256": "1c943ef11db72d5b1e214701ddfba77141afcf6d4b950eb3782677d070e7834e",
+        "size": 10255,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/BottleneckError.coffee",
+        "sha256": "cfa4ac306bd5330ed19298914ed6e10a9298cd745b5556251617e4f204632766",
+        "size": 70,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/DLList.coffee",
+        "sha256": "01d34691648b20d855b86b43391449298d05a24a840e4d9b29650a8e453a805b",
+        "size": 941,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/Events.coffee",
+        "sha256": "63ca975160f375fea8ea0ff277eba75cab90639c0a029e1e1fc7174592697315",
+        "size": 1444,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/Group.coffee",
+        "sha256": "3e9ced1e7ee9b8734196360f8f1b3b2dbbff4737bf4100977e19a7db268c8f25",
+        "size": 2440,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/IORedisConnection.coffee",
+        "sha256": "317082008eaef290c1572aaec80cafa9298be6f7742238262f650c2d1c8e74c6",
+        "size": 2719,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/Job.coffee",
+        "sha256": "1b3186d46f93c6fda9c1bb9299dd054b3ec853f645c26afa54971b3d9ff7da26",
+        "size": 3425,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/LocalDatastore.coffee",
+        "sha256": "e4046734edd57d341ae52f709588a0d4881d3f6609e19002274109d8feba5e36",
+        "size": 4712,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/Queues.coffee",
+        "sha256": "7c39b20599ee7b0dbc7096031bda02f4a8664e793717daa28265754c27013876",
+        "size": 765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/RedisConnection.coffee",
+        "sha256": "95d5a0fd6bf8112e956e36258a6bf168febbd6b9e32aa17d3e56fbca37f0e83a",
+        "size": 2985,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/RedisDatastore.coffee",
+        "sha256": "35836cbf0610119dc6c3000e28916b07e733168fe4ed3ef3d1381dbd7ff116be",
+        "size": 5934,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/Scripts.coffee",
+        "sha256": "b340d3b64de6f0f41c60a98ef441655c56eef00a9cd084a89a854fefa0235491",
+        "size": 3674,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/States.coffee",
+        "sha256": "aa69e18b7862d52080f6ba22839235d092cea05a26d85f77b8af00af7ba0c20a",
+        "size": 985,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/Sync.coffee",
+        "sha256": "98cfb09005d3408e4cfdd6ea3b8e4685d72bc9d7bb64c256a5ea75b3b0da25d9",
+        "size": 725,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/es5.coffee",
+        "sha256": "1706d47266a247cb96ba970366a4932966bf49d5751a9ad1e604fabdd428e00e",
+        "size": 80,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/index.coffee",
+        "sha256": "0b0ee124e226e607b3b351b58f0cf297b88742c47fecdaed8108727ac9f952af",
+        "size": 40,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/parser.coffee",
+        "sha256": "48d819e18102cd633c5a55041410c20c784be20fad428dd92a2941e99a6a0d1b",
+        "size": 242,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/redis/blacklist_client.lua",
+        "sha256": "be6209a3453f727bc9d5212facd1a9f8fa403248e54a64c947c0f01381d3929f",
+        "size": 180,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/redis/check.lua",
+        "sha256": "eaf0ad4b31aff437a96c6144a6f8be39b86b526cd2e6fb5b5a970959967e74c3",
+        "size": 254,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/redis/conditions_check.lua",
+        "sha256": "a8d122898ee28f08845567f376ab2402bed32444bfd6c91ed4adc9d54175a15d",
+        "size": 104,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/redis/current_reservoir.lua",
+        "sha256": "90a91600cebacfe0f4468a6fb55cb538e6ee632932d5463f80f59f2138024699",
+        "size": 45,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/redis/done.lua",
+        "sha256": "f25fb4d8fa02ead17b0ca7e4344db6c07ca7c62ed0f775ecc5bcaf43d49d1d42",
+        "size": 84,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/redis/free.lua",
+        "sha256": "276cea2def8f1566db84368fa58edb214f2fa410bbd00acbd6e8c69f3a3631e2",
+        "size": 135,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/redis/get_time.lua",
+        "sha256": "5959c1a3a22bedd44f632cebb3033e187f7f2a5c4d6aac7fd322e20b8bcda001",
+        "size": 150,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/redis/group_check.lua",
+        "sha256": "bd9797c8e0805accfe98913b2047a447206cd2b43e9c7b47aa9bce2bcaa9e010",
+        "size": 53,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/redis/heartbeat.lua",
+        "sha256": "62a13d39626d22d2d004588713a614bb74eee6946b246ea2256a356483832c3e",
+        "size": 24,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/redis/increment_reservoir.lua",
+        "sha256": "05315d727d80fab51d0c107bef5e23e64877962640d71aa009e597c6e884f5d1",
+        "size": 299,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/redis/init.lua",
+        "sha256": "dd3e9a35d755e18f3c15ac7fc04087bb3d631953f3305b85d5879d97db797563",
+        "size": 3195,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/redis/process_tick.lua",
+        "sha256": "d265934e7c26ea14aa7e128e330d2937432eab90630d5fc558ec766887467436",
+        "size": 7575,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/redis/queued.lua",
+        "sha256": "fc961a351f5e5517db8cd6796cdbf444ba23c1be1b08e37e46663f64c2077a69",
+        "size": 373,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/redis/refresh_expiration.lua",
+        "sha256": "ee0ea1af9b540e622247dd433ef64fbea9dd9e0fb0cf8f4e8c732cf583099812",
+        "size": 237,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/redis/refs.lua",
+        "sha256": "c925c57f4c84e05dccc1cce128ddd85cb5ef11f19ec12bcd8424fce4dedb5bfd",
+        "size": 363,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/redis/register.lua",
+        "sha256": "073aaf35f8473d1eabf6dd1a6c3e9867debd10339d3d46bb1710371c50757edd",
+        "size": 1450,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/redis/register_client.lua",
+        "sha256": "04926a53c2a0c053874769828dd79adee6b95bad87736516d466046f4d47e65b",
+        "size": 403,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/redis/running.lua",
+        "sha256": "6b6171dea5497c699336614dca36b87e2c35b4aa014dc5d87a14743095aba5db",
+        "size": 43,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/redis/submit.lua",
+        "sha256": "451322a6d87125e092cb94d644d70362e3f67c12cafcc2d47f92d7d13aad8cb0",
+        "size": 1979,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/redis/update_settings.lua",
+        "sha256": "d5fa05c090352d66687ead86a95353d01f962633c03b6df17afe07846062211b",
+        "size": 292,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/redis/validate_client.lua",
+        "sha256": "e9d6299238867d62db3b5f3592403f64078a7ddb4e57bd8a0a1ca2628aa06e0c",
+        "size": 167,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/redis/validate_keys.lua",
+        "sha256": "c9ed978619b1160598e1a8cd72bac0f71c829746d8749776022f60274f32ee2b",
+        "size": 111,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test.ts",
+        "sha256": "d35e612f1016c40a7c1db65d9d8b0b43ac196fa305e815266a839c3ed28b99c6",
+        "size": 7913,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/DLList.js",
+        "sha256": "5f2003d877db93eb5532d0da8230ac0d09573262b1e73e50be8dff64c372a3d0",
+        "size": 3978,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/batcher.js",
+        "sha256": "cc87e185aa5e63984de890320fe1e3d05fa554a266f909e20164aa211b706cd0",
+        "size": 5819,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/bottleneck.js",
+        "sha256": "f40a002e4376519645ef0fb55b22dc94c52dc73d92c81ca058382bbb41fbf72c",
+        "size": 218,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/cluster.js",
+        "sha256": "d3ea3e66cfbdc59be7e9f30093c2e3bdb62c9695435037028485fa6243640e29",
+        "size": 49655,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/context.js",
+        "sha256": "29a9483ba130dbfa05da944a92678a24bd54023ac19315aa7be6bb3803134320",
+        "size": 4630,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/general.js",
+        "sha256": "429cf203f49c42d3eccc402454503411f7e8c9dac14d66e507c77dc3536da4dc",
+        "size": 30147,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/group.js",
+        "sha256": "440137976baa093cda25ca645c5ccd1e9b6d43f31d0386e961beff3fa357284f",
+        "size": 6687,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/ioredis.js",
+        "sha256": "744359a19f22f2364d3cca264120a8834785fc375704491eb14a70caea35b631",
+        "size": 3964,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/node_redis.js",
+        "sha256": "de1cd3084716006eb14bff833d445c7f09496e7f78f15152aa3f3149f347455c",
+        "size": 2899,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/priority.js",
+        "sha256": "03cbdd137427f210331d40f776b8e48386f14e9a13c2a6f57d0f1197cf38a1e7",
+        "size": 5736,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/promises.js",
+        "sha256": "3c29e84472752212cea6bba568829d2edc7f5a51f2f9cccdace839547384c25f",
+        "size": 5752,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/retries.js",
+        "sha256": "f65474f2a6cd686fae8e7218cc572361af80ba658266c21c9cab6f2e52978f7b",
+        "size": 6475,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/spawn/increaseKeepAlive.js",
+        "sha256": "b30ae47b39a42588d4cd138ce59fa30cb0acbda51565f177d47220590edcfb5d",
+        "size": 526,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/spawn/refreshKeepAlive.js",
+        "sha256": "c089da4a203c96b6007e4d0627a5f693f3989f601d5e241a03cd54ebb8467b7b",
+        "size": 524,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/states.js",
+        "sha256": "b92f0e692b57466d64c09db20bce1b983cd2ab6bceb56d165365d5c2a06af9d3",
+        "size": 2764,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/stop.js",
+        "sha256": "377f0f2b9729fa9b5e31a473eea176a20b0ecce2576c9c862514855c3becb7d2",
+        "size": 5789,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1080,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/84/84a08edb16cc9ae161c31e76c9e593702f3d9192061abc6721398e0227bdb5e7",
+          "sha256": "84a08edb16cc9ae161c31e76c9e593702f3d9192061abc6721398e0227bdb5e7"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "84a08edb16cc9ae161c31e76c9e593702f3d9192061abc6721398e0227bdb5e7",
+        "size": 1080
+      },
+      {
+        "blob": {
+          "bytes": 43693,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/65/65c892bdc722cec56df01ff258cfb9b97d99d0b471dc0f0cc522293e8d9e2517",
+          "sha256": "65c892bdc722cec56df01ff258cfb9b97d99d0b471dc0f0cc522293e8d9e2517"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "65c892bdc722cec56df01ff258cfb9b97d99d0b471dc0f0cc522293e8d9e2517",
+        "size": 43693
+      }
+    ],
+    "expandedBytes": 628942,
+    "packageIdentity": {
+      "author": {
+        "name": "Simon Grondin"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "bottleneck",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/SGrondin/bottleneck"
+      },
+      "version": "2.19.5"
+    },
+    "packageMetadata": {
+      "author": {
+        "name": "Simon Grondin"
+      },
+      "bugs": {
+        "url": "https://github.com/SGrondin/bottleneck/issues"
+      },
+      "dependencies": {},
+      "description": "Distributed task scheduler and rate limiter",
+      "devDependencies": {
+        "@babel/core": "^7.5.0",
+        "@babel/preset-env": "^7.5.0",
+        "@types/es6-promise": "0.0.33",
+        "assert": "^1.5.0",
+        "coffeescript": "2.4.x",
+        "ejs-cli": "github:SGrondin/ejs-cli#master",
+        "ioredis": "^4.11.1",
+        "leakage": "^0.4.0",
+        "mocha": "^6.1.4",
+        "redis": "^2.8.0",
+        "regenerator-runtime": "^0.12.1",
+        "rollup": "^0.66.6",
+        "rollup-plugin-babel": "^4.3.3",
+        "rollup-plugin-commonjs": "^9.3.4",
+        "rollup-plugin-json": "^3.1.0",
+        "rollup-plugin-node-resolve": "^3.4.0",
+        "typescript": "^2.6.2"
+      },
+      "keywords": [
+        "async rate limiter",
+        "rate limiter",
+        "rate limiting",
+        "async",
+        "rate",
+        "limiting",
+        "limiter",
+        "throttle",
+        "throttling",
+        "throttler",
+        "load",
+        "clustering"
+      ],
+      "license": "MIT",
+      "main": "lib/index.js",
+      "name": "bottleneck",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/SGrondin/bottleneck"
+      },
+      "scripts": {
+        "test": "mocha test",
+        "test-all": "./scripts/test_all.sh"
+      },
+      "typings": "bottleneck.d.ts",
+      "version": "2.19.5"
+    },
+    "physicalEntryCount": 95,
+    "tarball": {
+      "bytes": 122422,
+      "sha256": "a62dcc8a1260148fde067d36acc601a20532a34626e3b862b5f9eea140d97060"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

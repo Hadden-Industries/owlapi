@@ -1,12 +1,16 @@
 import { pathToFileURL } from "node:url";
 import { isDeepStrictEqual } from "node:util";
 import { assertCheckCoverage } from "./ci-check-coverage.mjs";
+import { FROZEN_RUNTIME_MATRIX } from "./ci-qualification.mjs";
+import { runtimeDigest } from "./consumer-runtime-matrix.mjs";
 import {
   coverageFromNeeds,
   qualifiedSourceFromOutputs,
 } from "./ci-qualification.mjs";
 
 export const FULL_CI_JOB_IDS = Object.freeze([
+  "consumer_runtime",
+  "consumer_runtimes",
   "metadata",
   "source_node_22",
   "source_node_24",
@@ -28,8 +32,11 @@ export const FULL_CI_JOB_IDS = Object.freeze([
 ]);
 
 export const REQUIRED_JOB_IDS = Object.freeze({
-  ci: Object.freeze(["verification", ...FULL_CI_JOB_IDS]),
+  ci: Object.freeze(["runtime_matrix", "verification", ...FULL_CI_JOB_IDS]),
   release: Object.freeze([
+    "runtime_matrix",
+    "consumer_runtime",
+    "consumer_runtimes",
     "release_preflight",
     "metadata",
     "source_node_22",
@@ -88,6 +95,27 @@ const assertCandidateContractBinding = (needs, evidence) => {
     );
 };
 
+/** The live aggregate binds complete runtime reports to the admitted candidate. */
+const assertRuntimeCoverage = (needs) => {
+  if (!FROZEN_RUNTIME_MATRIX) return; // Synthetic non-hosted callers supply no live matrix.
+  const coverage = JSON.parse(
+    needs.consumer_runtimes?.outputs?.coverage ?? "null",
+  );
+  if (
+    !coverage ||
+    coverage.matrixSha256 !== runtimeDigest(FROZEN_RUNTIME_MATRIX) ||
+    coverage.lanes !== FROZEN_RUNTIME_MATRIX.include.length ||
+    !/^[a-f0-9]{64}$/u.test(coverage.reportsSha256) ||
+    !isDeepStrictEqual(coverage.candidateArtifact, {
+      id: Number(needs.candidate.outputs.artifact_id),
+      digest: `sha256:${needs.candidate.outputs.artifact_digest}`,
+    })
+  )
+    throw new Error(
+      "Consumer runtime coverage does not qualify the frozen matrix and candidate.",
+    );
+};
+
 export const requireCiJobs = (
   needs,
   { eventName, ref, runId, runAttempt, sha } = {},
@@ -101,6 +129,7 @@ export const requireCiJobs = (
       commit: sha,
     });
     assertCandidateContractBinding(needs, evidence.owl_contract);
+    assertRuntimeCoverage(needs);
     return { mode: "FULL", requiredJobs };
   }
   const source = needs.verification.outputs;
@@ -114,7 +143,8 @@ export const requireCiJobs = (
     !/^[1-9][0-9]*$/u.test(source.candidate_artifact_id ?? "") ||
     !/^sha256:[a-f0-9]{64}$/u.test(source.candidate_artifact_digest ?? "") ||
     Object.keys(needs).length !== REQUIRED_JOB_IDS.ci.length ||
-    FULL_CI_JOB_IDS.some((id) => needs[id]?.result !== "skipped")
+    FULL_CI_JOB_IDS.some((id) => needs[id]?.result !== "skipped") ||
+    needs.runtime_matrix?.result !== "success"
   ) {
     throw new Error(
       "CI reuse requires verified main-push evidence and the exact skipped full-job inventory.",
@@ -124,7 +154,7 @@ export const requireCiJobs = (
   return {
     mode: "REUSED",
     source,
-    requiredJobs: ["verification"],
+    requiredJobs: ["runtime_matrix", "verification"],
     reusedJobs: [...FULL_CI_JOB_IDS],
   };
 };
@@ -158,6 +188,7 @@ export const requireReleaseJobs = (needs, { runId, runAttempt, sha }) => {
     commit: sha,
   });
   assertCandidateContractBinding(needs, evidence);
+  assertRuntimeCoverage(needs);
   return { requiredJobs };
 };
 
@@ -170,6 +201,8 @@ const valueAfter = (name) => {
 };
 
 const main = () => {
+  if (!FROZEN_RUNTIME_MATRIX)
+    throw new Error("Hosted aggregation requires the frozen runtime matrix.");
   const workflow = valueAfter("--workflow");
   const rawNeeds = process.env.REQUIRED_JOB_RESULTS_JSON;
   if (!rawNeeds) {

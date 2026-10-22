@@ -22,10 +22,10 @@ describe("dependency review without repository installation", () => {
       .filter(Boolean);
     expect(commands).not.toContain("npm ci");
     expect(commands).toContain(
-      "npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash",
+      "npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash",
     );
     expect(commands).toContain(
-      "npm run workflow:dependency-review-applicability",
+      "npm run report:dependency-review-applicability",
     );
   });
 
@@ -79,7 +79,7 @@ describe("dependency review without repository installation", () => {
       const output = join(root, "runner.json");
       const runner = invoke([
         "run",
-        "workflow:runner-record",
+        "record:runner",
         "--",
         "--expected-os",
         "Linux",
@@ -107,7 +107,7 @@ describe("dependency review without repository installation", () => {
       });
       const applicability = invoke([
         "run",
-        "workflow:dependency-review-applicability",
+        "report:dependency-review-applicability",
       ]);
       expect(applicability.status).toBe(0);
       expect(applicability.stdout).toContain('"NOT_APPLICABLE_ON_PUSH"');
@@ -118,7 +118,7 @@ describe("dependency review without repository installation", () => {
       );
       const negative = invoke([
         "run",
-        "workflow:dependency-review-applicability",
+        "report:dependency-review-applicability",
       ]);
       expect(negative.status).not.toBe(0);
       expect(negative.stderr).toContain("ERR_MODULE_NOT_FOUND");

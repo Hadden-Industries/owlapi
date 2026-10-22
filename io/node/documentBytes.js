@@ -1,7 +1,8 @@
 import { PassThrough } from "node:stream";
 import { pipeline } from "node:stream/promises";
-import { createGunzip, createInflateRaw, crc32 } from "node:zlib";
+import { createGunzip, createInflateRaw } from "node:zlib";
 import lzma from "lzma-native";
+import { crc32 } from "./crc32.js";
 import { DocumentLoadError, ResourceLimitError } from "../errors.js";
 
 /** Count bytes at the specific resource boundary, including decoded output. */

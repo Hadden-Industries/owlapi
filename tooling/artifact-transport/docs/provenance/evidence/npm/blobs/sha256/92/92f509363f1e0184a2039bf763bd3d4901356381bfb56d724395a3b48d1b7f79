@@ -1,0 +1,201 @@
+{
+  "artifactId": "4ff61eb5e96310b2b661e7aa20be60c2d40da78989f00cac2010d0b052e16821",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 20809,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "8e75fc0e776c62ccadb8178ece8d3daa9ba7601fb0a49b2dfb0ea9a7a5c0aa07",
+        "size": 1077,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "037ee459a3870681c47d454eec265ead4822ab25724519b90e047cf2d4b2efad",
+        "size": 22085,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "0fb03fbe6e0df6090d778679929c7c34c9fca298bc72190468217171e8154943",
+        "size": 1193,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/contexts/html.js",
+        "sha256": "5f378567e5be461b0850876c91b8f1c8ffdc8d29201d87edd7aa666eecabb9f3",
+        "size": 3327,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/contexts/log.js",
+        "sha256": "fe1678ab1c98db7387bea6892ec10a90a06a8e2ed01efb1ee577c3d155e4a395",
+        "size": 4234,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/contexts/nosql.js",
+        "sha256": "e20a132033f105a29db1cfdb3d85bbadbb7206b9a7e3336bcb030a63d66b4ab2",
+        "size": 4255,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/contexts/redos.js",
+        "sha256": "59ceb09d3fd2402e81ed7e5992245f2b398c7ceeb80141138f4eab5da0244586",
+        "size": 2262,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/contexts/shell.js",
+        "sha256": "c26834ef2c968e8a4223a89b2d0e5653952bbf6f3eed95e5ba45465e1870eb65",
+        "size": 2981,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/contexts/sql-strict.js",
+        "sha256": "16d6522ee4ecf4a91c4d29357ebc874844c266f2ae89ef2a92ec2d391f3762e9",
+        "size": 1742,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/contexts/sql.js",
+        "sha256": "4de8a60302e6ab22ef5607ee88ab6dd6559221fb8620780fb874a1dcf3000d06",
+        "size": 3063,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/contexts/svg.js",
+        "sha256": "eb9e106e81226ab9547882079e7fd6a9d885d2c71ba78784f7edaa7db61bb941",
+        "size": 3053,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/contexts/xml.js",
+        "sha256": "2ae9cb95ada7140a80c1ad378f2c4c5f7360bc3f3f6480a96247712df8d8ab16",
+        "size": 2532,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/index.cjs",
+        "sha256": "827e7cc23034bdad2831dac7d8c5da9bcc966f259425107074064a42dff1230a",
+        "size": 809,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/index.d.ts",
+        "sha256": "75ecf95b575eaf2c9f84b541452fa9c9f6d97f4d914eedddc306329ce138127c",
+        "size": 3208,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/index.js",
+        "sha256": "24f5eb575e633b68771328cc12fa6fde751ecc5f2700a6f52ea325938dc94342",
+        "size": 8730,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1077,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/8e/8e75fc0e776c62ccadb8178ece8d3daa9ba7601fb0a49b2dfb0ea9a7a5c0aa07",
+          "sha256": "8e75fc0e776c62ccadb8178ece8d3daa9ba7601fb0a49b2dfb0ea9a7a5c0aa07"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "8e75fc0e776c62ccadb8178ece8d3daa9ba7601fb0a49b2dfb0ea9a7a5c0aa07",
+        "size": 1077
+      },
+      {
+        "blob": {
+          "bytes": 22085,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/03/037ee459a3870681c47d454eec265ead4822ab25724519b90e047cf2d4b2efad",
+          "sha256": "037ee459a3870681c47d454eec265ead4822ab25724519b90e047cf2d4b2efad"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "037ee459a3870681c47d454eec265ead4822ab25724519b90e047cf2d4b2efad",
+        "size": 22085
+      }
+    ],
+    "expandedBytes": 64551,
+    "packageIdentity": {
+      "author": "Amit Gupta (https://solothought.com/)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "is-unsafe",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/NaturalIntelligence/is-unsafe"
+      },
+      "version": "2.0.2"
+    },
+    "packageMetadata": {
+      "author": "Amit Gupta (https://solothought.com/)",
+      "description": "Zero-dependency, DOM-free, pure predicate for detecting unsafe strings across HTML, XML, SVG, SQL, SHELL, and REGEX contexts",
+      "devDependencies": {
+        "jasmine": "^6.3.0"
+      },
+      "exports": {
+        ".": {
+          "import": "./src/index.js",
+          "require": "./src/index.cjs"
+        }
+      },
+      "files": [
+        "src/",
+        "README.md"
+      ],
+      "funding": [
+        {
+          "type": "github",
+          "url": "https://github.com/sponsors/NaturalIntelligence"
+        }
+      ],
+      "keywords": [
+        "xss",
+        "sql-injection",
+        "security",
+        "safe",
+        "predicate",
+        "sanitizer",
+        "xml",
+        "svg",
+        "html",
+        "shell-injection",
+        "redos",
+        "unsafe",
+        "validator",
+        "log",
+        "nosql"
+      ],
+      "license": "MIT",
+      "main": "./src/index.js",
+      "module": "./src/index.js",
+      "name": "is-unsafe",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/NaturalIntelligence/is-unsafe"
+      },
+      "scripts": {
+        "test": "jasmine **/*.spec.js",
+        "test:watch": "nodemon --exec 'npm test' --watch src --watch specs"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "types": "./src/index.d.ts",
+      "version": "2.0.2"
+    },
+    "physicalEntryCount": 15,
+    "tarball": {
+      "bytes": 20809,
+      "sha256": "d1dd08942d20c78f5156911f77e60a173c87a4f575eca285fbecf2c6bc36db2b"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}
