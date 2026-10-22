@@ -26,9 +26,22 @@ Both accounting steps are unconditional and fail normally, and their outputs bin
 The schema-v2 PR receipt records the exact merge tree/parents/workflow, repository/run/attempt, host, job and candidate identities, policy fingerprint and two typed coverage records.
 Each current check has `REQUIRED`, `SUCCESS`, `CURRENT_EXECUTION` and a direct original execution identity.
 Partial reruns retain successful check outputs from earlier attempts of the same run and tested commit, preserving each producing attempt in its direct original identity.
-The aggregate admits only positive producing attempts no later than its current attempt; proof readers additionally match those attempts to GitHub's latest complete native job inventory.
+The aggregate admits only positive producing attempts no later than its current attempt.
+Proof readers require GitHub's latest complete native job inventory to succeed, then authenticate each coverage producer against its native attempt-specific inventory.
+GitHub can copy a retained successful job into a later attempt with a new job/check ID and attempt label while retaining its runner and execution timestamps.
+Those mutable labels therefore cannot establish the actual producing attempt.
+The shared execution comparison binds job name, run, head commit, runner ID, start time and completion time; missing or changed identity rejects reuse.
+The claimed attempt must contain that successful execution, and the preceding attempt must not already contain it.
+A present predecessor with unavailable execution identity is unproved; a complete inventory with no such job, or an explicitly completed/skipped job, establishes that the check did not execute there.
+Attempt inventories are complete, bounded and cached per lookup; this checks the declared direct provenance rather than searching for an older successful run.
 The receipt and artifact remain bound to the current aggregate attempt, and missing native jobs or mismatched producing attempts require fresh qualification.
 An isolated successful output cannot replace the complete inventory or its current execution binding.
+
+Release evidence uses the same execution comparison when its complete `filter=all` native inventory contains relabeled retained copies of `Release / qualified`.
+It records the earliest attempt of that exact execution while requiring the latest qualification job to succeed.
+Malformed historical execution identity or failed, incomplete or ambiguous matching origins reject the evidence.
+The original publisher attempt and retained approval job IDs remain independently authenticated; a genuinely rerun qualification receives its new producing attempt.
+This does not relax the separate current-fresh-producer requirement for Java product publication or enable shared Java reuse.
 
 Ordinary-main reuse still independently checks GitHub's PR association, latest successful attempt, tested Git commit, complete job inventory and immutable receipt/candidate identities, including mutable readback after transfer.
 Only an exact supported FULL PR receipt can authorize the existing whole-run reuse path.
