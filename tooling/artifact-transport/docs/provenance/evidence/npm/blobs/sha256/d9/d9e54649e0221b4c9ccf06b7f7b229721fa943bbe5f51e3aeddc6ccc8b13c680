@@ -1,0 +1,164 @@
+{
+  "artifactId": "a413aadb3cd5cfb2c04af6283c65d986a3d891dc14024da958248d48bef90c22",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 14111,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "e7ceb6a6926e76a67981a440f4107d6152ac1fc2250c90a66460444518328b75",
+        "size": 1068,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "cf000c3d14ac006819067106eec37711c63a82fa58720c9b09ca6bb90c4d1ec3",
+        "size": 1063,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/exec.d.ts",
+        "sha256": "a49ce0ce86c8c8a098c6daacf7a1a6fd0b073e4f05984c504a631a7f49e1f574",
+        "size": 1307,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/exec.js",
+        "sha256": "765161ae9db6b970b4d6e87bdfb9e349fa1e1d7b8daea39514f94482329e877b",
+        "size": 3947,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/exec.js.map",
+        "sha256": "95c8bdcb02e1be6ad07f918e157392d5072c0116349fbeed27b66285d2073259",
+        "size": 1820,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/interfaces.d.ts",
+        "sha256": "d22bafbc10461480b341cb4603643fb51b45402fa4d0c324968c993e1ff3d7a9",
+        "size": 2128,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/interfaces.js",
+        "sha256": "2917500edae04434675de07c4dbe5b09545465557231e2fb986f20ae5f1015e8",
+        "size": 49,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/interfaces.js.map",
+        "sha256": "0f280255a151b57b8567a3128da97cd57bb74c6b7e828f259325a690cc860a5e",
+        "size": 112,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/toolrunner.d.ts",
+        "sha256": "967da9a46466c01f7c19d86fdf3c825dd780a1fa3a4dad347db0e5c80687d7f6",
+        "size": 1124,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/toolrunner.js",
+        "sha256": "dd09f72607c5f4b937105e67c74ad115b008dcc135c8f842462701e90c55bf0c",
+        "size": 24050,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/toolrunner.js.map",
+        "sha256": "ed452a04c5a0fc8640432ba131884553fbdd1769cc3c13c9a35e4aacd2cebf2b",
+        "size": 16335,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "541c7935b1f384ee51cc04af2caffbb1ea7bf36c1be2682a9c89ddfd8f2a3941",
+        "size": 1031,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1068,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/e7/e7ceb6a6926e76a67981a440f4107d6152ac1fc2250c90a66460444518328b75",
+          "sha256": "e7ceb6a6926e76a67981a440f4107d6152ac1fc2250c90a66460444518328b75"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "e7ceb6a6926e76a67981a440f4107d6152ac1fc2250c90a66460444518328b75",
+        "size": 1068
+      }
+    ],
+    "expandedBytes": 54034,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/actions/toolkit/tree/main/packages/exec",
+      "license": "MIT",
+      "name": "@actions/exec",
+      "repository": {
+        "directory": "packages/exec",
+        "type": "git",
+        "url": "git+https://github.com/actions/toolkit.git"
+      },
+      "version": "3.0.0"
+    },
+    "packageMetadata": {
+      "bugs": {
+        "url": "https://github.com/actions/toolkit/issues"
+      },
+      "dependencies": {
+        "@actions/io": "^3.0.2"
+      },
+      "description": "Actions exec lib",
+      "directories": {
+        "lib": "lib",
+        "test": "__tests__"
+      },
+      "exports": {
+        ".": {
+          "import": "./lib/exec.js",
+          "types": "./lib/exec.d.ts"
+        }
+      },
+      "files": [
+        "lib",
+        "!.DS_Store"
+      ],
+      "homepage": "https://github.com/actions/toolkit/tree/main/packages/exec",
+      "keywords": [
+        "github",
+        "actions",
+        "exec"
+      ],
+      "license": "MIT",
+      "main": "lib/exec.js",
+      "name": "@actions/exec",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/exec",
+        "type": "git",
+        "url": "git+https://github.com/actions/toolkit.git"
+      },
+      "scripts": {
+        "audit-moderate": "npm install && npm audit --json --audit-level=moderate > audit.json",
+        "test": "echo \"Error: run tests from root\" && exit 1",
+        "tsc": "tsc"
+      },
+      "type": "module",
+      "types": "lib/exec.d.ts",
+      "version": "3.0.0"
+    },
+    "physicalEntryCount": 12,
+    "tarball": {
+      "bytes": 14111,
+      "sha256": "dbcadd151824dbffbd134fe59d2968aa063fa7c52dbb9515247e6eba9c09cc0e"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

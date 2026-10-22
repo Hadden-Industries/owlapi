@@ -1,0 +1,139 @@
+{
+  "artifactId": "5b4bca8b956e50c86443a3584ec3dfa5e98c17c51e080b9e3cc7b0009aefbbc6",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2461,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "79bad9f51738814f83251ae89460326b2ff2ea19ff5f71ab8f7636b2e17bb231",
+        "size": 1074,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "2acd68cda93f640a63b67b9e9ca05ad58fa4cd6649d7bbcd2244b68211de038e",
+        "size": 1980,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/crc32-stream.js",
+        "sha256": "52d473fce35b1983df63e7ddc769636c57ea1ecddd32be90626895a68af8bcce",
+        "size": 1000,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/deflate-crc32-stream.js",
+        "sha256": "3a81462592c0c0d84fc86cb6f5a00aa84d22875173f04d84524ea6c245344a8a",
+        "size": 1288,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "86546a9e3fea355822b3b2786031b1b8da67f80b0bcea226bf88920354794301",
+        "size": 331,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "3a03d023600c71370c046af5079ec3486b945457c95f7f795136780796b3e1e1",
+        "size": 925,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1074,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/79/79bad9f51738814f83251ae89460326b2ff2ea19ff5f71ab8f7636b2e17bb231",
+          "sha256": "79bad9f51738814f83251ae89460326b2ff2ea19ff5f71ab8f7636b2e17bb231"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "79bad9f51738814f83251ae89460326b2ff2ea19ff5f71ab8f7636b2e17bb231",
+        "size": 1074
+      },
+      {
+        "blob": {
+          "bytes": 1980,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/2a/2acd68cda93f640a63b67b9e9ca05ad58fa4cd6649d7bbcd2244b68211de038e",
+          "sha256": "2acd68cda93f640a63b67b9e9ca05ad58fa4cd6649d7bbcd2244b68211de038e"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "2acd68cda93f640a63b67b9e9ca05ad58fa4cd6649d7bbcd2244b68211de038e",
+        "size": 1980
+      }
+    ],
+    "expandedBytes": 6598,
+    "packageIdentity": {
+      "author": {
+        "name": "Chris Talkington",
+        "url": "http://christalkington.com/"
+      },
+      "homepage": "https://github.com/archiverjs/node-crc32-stream",
+      "license": "MIT",
+      "name": "crc32-stream",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/archiverjs/node-crc32-stream.git"
+      },
+      "version": "6.0.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "name": "Chris Talkington",
+        "url": "http://christalkington.com/"
+      },
+      "bugs": {
+        "url": "https://github.com/archiverjs/node-crc32-stream/issues"
+      },
+      "dependencies": {
+        "crc-32": "^1.2.0",
+        "readable-stream": "^4.0.0"
+      },
+      "description": "a streaming CRC32 checksumer",
+      "devDependencies": {
+        "chai": "4.4.1",
+        "mocha": "10.3.0"
+      },
+      "engines": {
+        "node": ">= 14"
+      },
+      "files": [
+        "lib"
+      ],
+      "homepage": "https://github.com/archiverjs/node-crc32-stream",
+      "keywords": [
+        "crc32-stream",
+        "crc32",
+        "stream",
+        "checksum"
+      ],
+      "license": "MIT",
+      "main": "lib/index.js",
+      "name": "crc32-stream",
+      "publishConfig": {
+        "registry": "https://registry.npmjs.org/"
+      },
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/archiverjs/node-crc32-stream.git"
+      },
+      "scripts": {
+        "test": "mocha --reporter dot"
+      },
+      "version": "6.0.0"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 2461,
+      "sha256": "7571aca35ed43f072096b23fb9b2e4da64f22932d90f17918ea0bda6799c6fc1"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,145 @@
+{
+  "artifactId": "c80e540d7abb1b2f0881957d23e0813d2d470d25dccfa0619233d4e6079e2c66",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2557,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "9e90c4797f14d5ad3349b1a9588d3b1c4da5e76a24f96724af5013388c3d237b",
+        "size": 823,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "4508758772b1f52850b576ca714bbfd6edb05f8d36492ceab573db47f5cd7d84",
+        "size": 1064,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "adbcb3b95ea29c1f2a91a0af600fd9136ce408a38622332848ba4630dc473659",
+        "size": 1044,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "7197d5bd6d009305ca500b2991b8041a709dae05bf930cdb37d8ef8ce6c28d25",
+        "size": 1733,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1117,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117
+      },
+      {
+        "blob": {
+          "bytes": 1733,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/71/7197d5bd6d009305ca500b2991b8041a709dae05bf930cdb37d8ef8ce6c28d25",
+          "sha256": "7197d5bd6d009305ca500b2991b8041a709dae05bf930cdb37d8ef8ce6c28d25"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "7197d5bd6d009305ca500b2991b8041a709dae05bf930cdb37d8ef8ce6c28d25",
+        "size": 1733
+      }
+    ],
+    "expandedBytes": 5781,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "string-width",
+      "repository": "sindresorhus/string-width",
+      "version": "5.1.2"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "dependencies": {
+        "eastasianwidth": "^0.2.0",
+        "emoji-regex": "^9.2.2",
+        "strip-ansi": "^7.0.1"
+      },
+      "description": "Get the visual width of a string - the number of columns required to display it",
+      "devDependencies": {
+        "ava": "^3.15.0",
+        "tsd": "^0.14.0",
+        "xo": "^0.38.2"
+      },
+      "engines": {
+        "node": ">=12"
+      },
+      "exports": "./index.js",
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "funding": "https://github.com/sponsors/sindresorhus",
+      "keywords": [
+        "string",
+        "character",
+        "unicode",
+        "width",
+        "visual",
+        "column",
+        "columns",
+        "fullwidth",
+        "full-width",
+        "full",
+        "ansi",
+        "escape",
+        "codes",
+        "cli",
+        "command-line",
+        "terminal",
+        "console",
+        "cjk",
+        "chinese",
+        "japanese",
+        "korean",
+        "fixed-width"
+      ],
+      "license": "MIT",
+      "name": "string-width",
+      "repository": "sindresorhus/string-width",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "type": "module",
+      "version": "5.1.2"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2557,
+      "sha256": "410911a1bdcb8aa0825dce92f74bf749fc08ddaa95b9be7dcbe795436014f437"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

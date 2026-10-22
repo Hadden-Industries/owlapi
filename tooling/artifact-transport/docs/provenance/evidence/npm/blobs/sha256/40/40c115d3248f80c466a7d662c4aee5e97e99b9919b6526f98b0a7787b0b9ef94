@@ -1,0 +1,101 @@
+{
+  "artifactId": "231109d107b8d6387670045121348ffc64844905a9f76b7af6a1b2b06e1ec236",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 547994,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "1a66adbb5a45806b7fe0b5ff3e78008b57e660f30e688286c0f16a6991f10fd1",
+        "size": 1069,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "91c4dc787f2f823a77b8004faea69d2627f393911652f7c7c3bb0bf8dcd914f6",
+        "size": 384,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "3bbf8b7c2c990766b00e7cc2447a512bf990850e5756f8365b4514a857137e69",
+        "size": 553,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types.d.ts",
+        "sha256": "1bb23000566fcf7a3d675bda39f32cc43848243a886a9c0377aff57cb310ab72",
+        "size": 5340053,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1069,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/1a/1a66adbb5a45806b7fe0b5ff3e78008b57e660f30e688286c0f16a6991f10fd1",
+          "sha256": "1a66adbb5a45806b7fe0b5ff3e78008b57e660f30e688286c0f16a6991f10fd1"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "1a66adbb5a45806b7fe0b5ff3e78008b57e660f30e688286c0f16a6991f10fd1",
+        "size": 1069
+      },
+      {
+        "blob": {
+          "bytes": 384,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/91/91c4dc787f2f823a77b8004faea69d2627f393911652f7c7c3bb0bf8dcd914f6",
+          "sha256": "91c4dc787f2f823a77b8004faea69d2627f393911652f7c7c3bb0bf8dcd914f6"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "91c4dc787f2f823a77b8004faea69d2627f393911652f7c7c3bb0bf8dcd914f6",
+        "size": 384
+      }
+    ],
+    "expandedBytes": 5342059,
+    "packageIdentity": {
+      "author": "Gregor Martynus (https://twitter.com/gr2m)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "@octokit/openapi-types",
+      "repository": {
+        "directory": "packages/openapi-types",
+        "type": "git",
+        "url": "https://github.com/octokit/openapi-types.ts.git"
+      },
+      "version": "29.0.1"
+    },
+    "packageMetadata": {
+      "author": "Gregor Martynus (https://twitter.com/gr2m)",
+      "description": "Generated TypeScript definitions based on GitHub's OpenAPI spec for api.github.com",
+      "license": "MIT",
+      "main": "",
+      "name": "@octokit/openapi-types",
+      "octokit": {
+        "openapi-version": "23.0.1"
+      },
+      "publishConfig": {
+        "access": "public",
+        "provenance": true
+      },
+      "repository": {
+        "directory": "packages/openapi-types",
+        "type": "git",
+        "url": "https://github.com/octokit/openapi-types.ts.git"
+      },
+      "types": "types.d.ts",
+      "version": "29.0.1"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 547994,
+      "sha256": "5cc331df4b7f75fb0a961236319498bfc3f2bc99fb2397c58d74eb87ce607ea2"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

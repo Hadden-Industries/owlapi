@@ -1,0 +1,206 @@
+{
+  "artifactId": "4cc4e55342378aa91c4959ccb5c984cc5708c28055b084a610cfbf0ad64e5b68",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7277,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.eslintrc",
+        "sha256": "0694050195fc694c5846b0a2a66b437ac775da988f0a779c55fb892597f7f641",
+        "size": 43,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "f6f162ac2eaa6eb0947a809e02630c866b3ed6063c703b67da6d410957d18a62",
+        "size": 587,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nycrc",
+        "sha256": "948366fea3b423a46366326d0bb2e54b08abd1cf0b243678ba6625740c40da5a",
+        "size": 216,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "71913a9e160ee0eb07be3839c3b8a3be78d7acdd31154547000014d6294a9d72",
+        "size": 6966,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "5a26e47b9d7020848f061bcad66f8e73cab95f529dab5c02588b21e57c4f876c",
+        "size": 1067,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "a91e6e1f73700426d33dbf15a46a06a7675a27a856cb43feed3d3476f3127ea0",
+        "size": 2903,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "08a0ed26edd3f871aa8d00e7e70842e85fa837032b2c599e502bdc542aca008c",
+        "size": 670,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "fb315f45211d4ec81a2453337b3e39f03d1deab621a18d83e2feef3881a0ab24",
+        "size": 509,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "bf95e02a88d5b89dbc6b544c334a317c234f3c4a237f9f1dcf611506990ed196",
+        "size": 2318,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "fbdc43a448d27b2abfae29c1a86effa68bac163635ab18c75f5f1e560436e29d",
+        "size": 1174,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "b772fc0e85fe374bb32302cdbc08c8854d6a679bcf7f4f7b8da28098e2979521",
+        "size": 3611,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1067,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5a/5a26e47b9d7020848f061bcad66f8e73cab95f529dab5c02588b21e57c4f876c",
+          "sha256": "5a26e47b9d7020848f061bcad66f8e73cab95f529dab5c02588b21e57c4f876c"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "5a26e47b9d7020848f061bcad66f8e73cab95f529dab5c02588b21e57c4f876c",
+        "size": 1067
+      },
+      {
+        "blob": {
+          "bytes": 2903,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a9/a91e6e1f73700426d33dbf15a46a06a7675a27a856cb43feed3d3476f3127ea0",
+          "sha256": "a91e6e1f73700426d33dbf15a46a06a7675a27a856cb43feed3d3476f3127ea0"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "a91e6e1f73700426d33dbf15a46a06a7675a27a856cb43feed3d3476f3127ea0",
+        "size": 2903
+      }
+    ],
+    "expandedBytes": 20064,
+    "packageIdentity": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "homepage": "https://github.com/inspect-js/which-collection#readme",
+      "license": "MIT",
+      "name": "which-collection",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/which-collection.git"
+      },
+      "version": "1.0.2"
+    },
+    "packageMetadata": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "bugs": {
+        "url": "https://github.com/inspect-js/which-collection/issues"
+      },
+      "dependencies": {
+        "is-map": "^2.0.3",
+        "is-set": "^2.0.3",
+        "is-weakmap": "^2.0.2",
+        "is-weakset": "^2.0.3"
+      },
+      "description": "Which kind of Collection (Map, Set, WeakMap, WeakSet) is this JavaScript value? Works cross-realm, without `instanceof`, and despite Symbol.toStringTag.",
+      "devDependencies": {
+        "@arethetypeswrong/cli": "^0.15.0",
+        "@ljharb/eslint-config": "^21.1.0",
+        "@types/for-each": "^0.3.3",
+        "@types/object-inspect": "^1.8.4",
+        "@types/tape": "^5.6.4",
+        "aud": "^2.0.4",
+        "auto-changelog": "^2.4.0",
+        "eslint": "=8.8.0",
+        "for-each": "^0.3.3",
+        "in-publish": "^2.0.1",
+        "npmignore": "^0.3.1",
+        "nyc": "^10.3.2",
+        "object-inspect": "^1.13.1",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.7.5",
+        "typescript": "next"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "exports": {
+        ".": "./index.js",
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "homepage": "https://github.com/inspect-js/which-collection#readme",
+      "keywords": [
+        "map",
+        "set",
+        "weakmap",
+        "weakset",
+        "collection.es6",
+        "es2015"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "which-collection",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/which-collection.git"
+      },
+      "scripts": {
+        "lint": "eslint --ext=js,mjs .",
+        "postlint": "tsc -p . && attw -P",
+        "posttest": "npx aud --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only",
+        "tests-only": "nyc tape 'test/**/*.js'",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "sideEffects": false,
+      "version": "1.0.2"
+    },
+    "physicalEntryCount": 11,
+    "tarball": {
+      "bytes": 7277,
+      "sha256": "79a4a124b0c8ce71bb1bf1572c1c4ade2af6c21a08db59109b545f7570724554"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

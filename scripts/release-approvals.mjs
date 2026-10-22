@@ -5,6 +5,13 @@ import { GitHubReleaseClient } from "./github-release.mjs";
 import { sha256Buffer } from "./release-file-utils.mjs";
 import { readZipArchiveFiles } from "./release-zip.mjs";
 
+import {
+  artifactProducingAttempt,
+  selectArtifactGroups,
+  parseArtifactName,
+} from "../tooling/artifact-transport/identity.mjs";
+import { isDeepStrictEqual } from "node:util";
+
 const repository = "Hadden-Industries/owlapi";
 const gateJobs = {
   "release-manual": "Release / tag accepted",
@@ -189,58 +196,108 @@ export const resolveRetainedApprovals = async ({
       .filter(({ name }) => name?.startsWith(prefix))
       .map((artifact) => ({
         artifact,
-        attempt: Number(artifact.name.slice(prefix.length)),
+        attempt: artifactProducingAttempt(artifact.name, prefix, {
+          run: runId,
+          attempt: runAttempt,
+          legacy: true,
+        }),
       }))
       .filter(
         ({ artifact, attempt }) =>
-          /^[1-9][0-9]*$/u.test(artifact.name.slice(prefix.length)) &&
+          attempt !== null &&
           Number.isSafeInteger(attempt) &&
           attempt <= runAttempt,
       );
     const latest = Math.max(...matches.map(({ attempt }) => attempt));
-    const selected = matches.filter(({ attempt }) => attempt === latest);
+    let selected = matches.filter(({ attempt }) => attempt === latest);
+    if (
+      selected.length > 1 &&
+      selected.every(
+        ({ artifact }) =>
+          !parseArtifactName(artifact.name, { legacy: true }).legacy,
+      )
+    ) {
+      const groups = selectArtifactGroups(
+        selected.map(({ artifact }) => artifact),
+        {
+          name: `${prefix}${latest}`,
+          run: runId,
+          attempt: runAttempt,
+        },
+      );
+      selected = [...groups.values()][0].map((artifact) => ({
+        artifact,
+        attempt: latest,
+      }));
+    }
     requireFact(
-      selected.length === 1,
+      selected.length >= 1 &&
+        (selected.length === 1 ||
+          selected.every(
+            ({ artifact }) =>
+              !parseArtifactName(artifact.name, { legacy: true }).legacy,
+          )),
       `Missing or ambiguous retained approval artifact for ${environment}.`,
     );
-    const artifact = await client.read(
-      `/actions/artifacts/${selected[0].artifact.id}`,
-    );
-    requireFact(
-      artifact.id === selected[0].artifact.id &&
-        artifact.name === selected[0].artifact.name &&
-        artifact.digest === selected[0].artifact.digest &&
-        /^sha256:[0-9a-f]{64}$/u.test(artifact.digest ?? "") &&
-        !artifact.expired &&
-        String(artifact.workflow_run?.id) === runId &&
-        artifact.workflow_run?.head_sha === commit,
-      "Retained approval artifact server identity differs.",
-    );
-    const { observation, approval } = decodeApprovalArchive(
-      await download(client, artifact),
-      artifact,
-      { environment, commit, runId, runAttempt, jobs },
-    );
-    requireFact(
-      observation.runAttempt === latest,
-      "Approval artifact name and observation attempt differ.",
-    );
-    requireFact(Array.isArray(liveHistory), "Malformed live approval history.");
-    const relevant = liveHistory.filter((review) =>
-      review.environments?.some(({ name }) => name === environment),
-    );
-    if (relevant.length) {
-      requireFact(
-        relevant.every(
-          (review) =>
-            review.state === "approved" &&
-            review.user?.login === approval.reviewer,
-        ),
-        "Live approval history contradicts the retained reviewer or state.",
+    let firstManifest;
+    let selectedApproval;
+    for (const choice of selected) {
+      const artifact = await client.read(
+        `/actions/artifacts/${choice.artifact.id}`,
       );
+      requireFact(
+        artifact.id === choice.artifact.id &&
+          artifact.name === choice.artifact.name &&
+          artifact.digest === choice.artifact.digest &&
+          /^sha256:[0-9a-f]{64}$/u.test(artifact.digest ?? "") &&
+          !artifact.expired &&
+          String(artifact.workflow_run?.id) === runId &&
+          artifact.workflow_run?.head_sha === commit,
+        "Retained approval artifact server identity differs.",
+      );
+      const archive = await download(client, artifact);
+      const { observation, approval } = decodeApprovalArchive(
+        archive,
+        artifact,
+        { environment, commit, runId, runAttempt, jobs },
+      );
+      requireFact(
+        observation.runAttempt === latest,
+        "Approval artifact name and observation attempt differ.",
+      );
+      requireFact(
+        Array.isArray(liveHistory),
+        "Malformed live approval history.",
+      );
+      const relevant = liveHistory.filter((review) =>
+        review.environments?.some(({ name }) => name === environment),
+      );
+      if (relevant.length) {
+        requireFact(
+          relevant.every(
+            (review) =>
+              review.state === "approved" &&
+              review.user?.login === approval.reviewer,
+          ),
+          "Live approval history contradicts the retained reviewer or state.",
+        );
+      }
+      const manifest = readZipArchiveFiles(archive)
+        .map((entry) => ({
+          path: entry.path,
+          bytes: entry.bytes,
+          sha256: sha256Buffer(entry.content),
+        }))
+        .sort((a, b) => a.path.localeCompare(b.path, "en"));
+      requireFact(
+        !firstManifest || isDeepStrictEqual(firstManifest, manifest),
+        "Conflicting retained approval transport copies.",
+      );
+      firstManifest ??= manifest;
+      selectedApproval ??= approval;
+      inputs.push({ name: artifact.name, sha256: artifact.digest.slice(7) });
     }
-    approvals.push(approval);
-    inputs.push({ name: artifact.name, sha256: artifact.digest.slice(7) });
+    approvals.push(selectedApproval);
   }
   return { approvals, inputs };
 };

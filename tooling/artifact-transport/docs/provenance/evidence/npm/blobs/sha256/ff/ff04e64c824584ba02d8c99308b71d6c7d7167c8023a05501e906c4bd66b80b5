@@ -1,0 +1,140 @@
+{
+  "artifactId": "e04c3ae3427e1207efe8de4718eaf89efb1d019ea430a288f2b162e2b81b74d7",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2021,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.npmignore",
+        "sha256": "16d30e4462189fb14dd611bdb708c510630c576a1f35b9383e89a4352da36c97",
+        "size": 13,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.travis.yml",
+        "sha256": "9b9a2cce2d8b28843a1a10647f82300c8403ccde268df5b6abc6c349e5167b34",
+        "size": 48,
+        "type": "FILE"
+      },
+      {
+        "path": "package/Makefile",
+        "sha256": "928dc8c1df0d6ff86d985f520278a4c83498aa6353ff3d942270aa117397a8d1",
+        "size": 55,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "ff138e683771b187f3629c383db72ee7d632009010a36d08e18e8d2a34222ec7",
+        "size": 1890,
+        "type": "FILE"
+      },
+      {
+        "path": "package/component.json",
+        "sha256": "f9e5ef95d8e8f65a5dcd3a200b38e5a13461ed95114dac053d908c391c12d731",
+        "size": 470,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "9b8c691372802da788c9c5f4e1ca2f1ed0b88ab8722176c2aea15e38ec86d249",
+        "size": 132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "93165ce56e458216c18240cd961a522af5b18e51da06f55d88ac552234455d95",
+        "size": 958,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test.js",
+        "sha256": "46997dc4554dd5a554b4883a9c13180c628bb36baadf8f89d2db5861f5239f44",
+        "size": 320,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1890,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ff/ff138e683771b187f3629c383db72ee7d632009010a36d08e18e8d2a34222ec7",
+          "sha256": "ff138e683771b187f3629c383db72ee7d632009010a36d08e18e8d2a34222ec7"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "ff138e683771b187f3629c383db72ee7d632009010a36d08e18e8d2a34222ec7",
+        "size": 1890
+      }
+    ],
+    "expandedBytes": 3886,
+    "packageIdentity": {
+      "author": {
+        "email": "mail@juliangruber.com",
+        "name": "Julian Gruber",
+        "url": "http://juliangruber.com"
+      },
+      "homepage": "https://github.com/juliangruber/isarray",
+      "license": "MIT",
+      "name": "isarray",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/juliangruber/isarray.git"
+      },
+      "version": "1.0.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "mail@juliangruber.com",
+        "name": "Julian Gruber",
+        "url": "http://juliangruber.com"
+      },
+      "dependencies": {},
+      "description": "Array#isArray for older browsers",
+      "devDependencies": {
+        "tape": "~2.13.4"
+      },
+      "homepage": "https://github.com/juliangruber/isarray",
+      "keywords": [
+        "browser",
+        "isarray",
+        "array"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "isarray",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/juliangruber/isarray.git"
+      },
+      "scripts": {
+        "test": "tape test.js"
+      },
+      "testling": {
+        "browsers": [
+          "ie/8..latest",
+          "firefox/17..latest",
+          "firefox/nightly",
+          "chrome/22..latest",
+          "chrome/canary",
+          "opera/12..latest",
+          "opera/next",
+          "safari/5.1..latest",
+          "ipad/6.0..latest",
+          "iphone/6.0..latest",
+          "android-browser/4.2..latest"
+        ],
+        "files": "test.js"
+      },
+      "version": "1.0.0"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 2021,
+      "sha256": "e23c76f14f5222e07e39d89858b61e8e33f96956de9e0df3659cbdf8db950c87"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

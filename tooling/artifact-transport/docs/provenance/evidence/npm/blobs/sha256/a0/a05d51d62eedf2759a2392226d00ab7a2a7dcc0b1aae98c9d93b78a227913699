@@ -1,0 +1,206 @@
+{
+  "artifactId": "dcb0e583ddfb50da14d90094a8319c9778d087c80a65cac2f6fb6619959bb9a6",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4608,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "4a8aadc5bb4e3fcb59ced104864f1440a8a0b82c57d7a69ef3845223590039cc",
+        "size": 552,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nycrc",
+        "sha256": "948366fea3b423a46366326d0bb2e54b08abd1cf0b243678ba6625740c40da5a",
+        "size": 216,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "dbb1b9d059ec30fa69b146d123969dbf8396cbcac3e725ecdaecd81220baad3c",
+        "size": 4078,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "bf9b0d665be2a689851eea667ca9f42066ea1d903b38349c51e6a44b2577680a",
+        "size": 1083,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "a922ab2a0abcdcbd99c1484c7bd83d69a04b5e11ab53064d2c9aa557df1c52b4",
+        "size": 1613,
+        "type": "FILE"
+      },
+      {
+        "path": "package/eslint.config.mjs",
+        "sha256": "d93d3e9ef95505eba19cb8d48506df45f4a4d6fda2efe0b9b1c0d7afaf8e1763",
+        "size": 136,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "19bcd679cc9cb312683bf10390a1aadb929af6439b33eb60f06119ee2d702761",
+        "size": 117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "8f875520f41a3d711566013882af290c840969316cc72cd6b35f7e81d7dfc6d2",
+        "size": 206,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "40b750c55a8bacf2c5ac316f5299dd44d48acc101c189a00cd59d39376b5eb89",
+        "size": 2258,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "29ef530207266f2859676c048073e7f746db37a0a20e2a75bc2ef2b3893fbf40",
+        "size": 73,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1083,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/bf/bf9b0d665be2a689851eea667ca9f42066ea1d903b38349c51e6a44b2577680a",
+          "sha256": "bf9b0d665be2a689851eea667ca9f42066ea1d903b38349c51e6a44b2577680a"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "bf9b0d665be2a689851eea667ca9f42066ea1d903b38349c51e6a44b2577680a",
+        "size": 1083
+      },
+      {
+        "blob": {
+          "bytes": 1613,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a9/a922ab2a0abcdcbd99c1484c7bd83d69a04b5e11ab53064d2c9aa557df1c52b4",
+          "sha256": "a922ab2a0abcdcbd99c1484c7bd83d69a04b5e11ab53064d2c9aa557df1c52b4"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "a922ab2a0abcdcbd99c1484c7bd83d69a04b5e11ab53064d2c9aa557df1c52b4",
+        "size": 1613
+      }
+    ],
+    "expandedBytes": 10332,
+    "packageIdentity": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "homepage": "https://github.com/inspect-js/hasOwn#readme",
+      "license": "MIT",
+      "name": "hasown",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/hasOwn.git"
+      },
+      "version": "2.0.4"
+    },
+    "packageMetadata": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "bugs": {
+        "url": "https://github.com/inspect-js/hasOwn/issues"
+      },
+      "dependencies": {
+        "function-bind": "^1.1.2"
+      },
+      "description": "A robust, ES3 compatible, \"has own property\" predicate.",
+      "devDependencies": {
+        "@arethetypeswrong/cli": "^0.18.2",
+        "@ljharb/eslint-config": "^22.2.3",
+        "@ljharb/tsconfig": "^0.3.2",
+        "@types/function-bind": "^1.1.10",
+        "@types/tape": "^5.8.1",
+        "auto-changelog": "^2.5.1",
+        "eslint": "^10.4.0",
+        "evalmd": "^0.0.19",
+        "in-publish": "^2.0.1",
+        "jiti": "^0.0.0",
+        "mock-property": "^1.1.0",
+        "npmignore": "^0.3.5",
+        "nyc": "^10.3.2",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.9.0",
+        "typescript": "next"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "exports": {
+        ".": "./index.js",
+        "./package.json": "./package.json"
+      },
+      "homepage": "https://github.com/inspect-js/hasOwn#readme",
+      "keywords": [
+        "has",
+        "hasOwnProperty",
+        "hasOwn",
+        "has-own",
+        "own",
+        "has",
+        "property",
+        "in",
+        "javascript",
+        "ecmascript"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "hasown",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows",
+          "test"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/hasOwn.git"
+      },
+      "scripts": {
+        "lint": "eslint .",
+        "postlint": "npm run tsc",
+        "posttest": "npx npm@\">= 10.2\" audit --production",
+        "posttsc": "attw -P",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prelint": "evalmd README.md",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only",
+        "tests-only": "nyc tape 'test/**/*.js'",
+        "tsc": "tsc -p .",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "sideEffects": false,
+      "testling": {
+        "files": "test/index.js"
+      },
+      "types": "index.d.ts",
+      "version": "2.0.4"
+    },
+    "physicalEntryCount": 10,
+    "tarball": {
+      "bytes": 4608,
+      "sha256": "e9d2b03f95573600e1c13124ce618e3142ed2c538d164595bedcd4408b8a4e4c"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

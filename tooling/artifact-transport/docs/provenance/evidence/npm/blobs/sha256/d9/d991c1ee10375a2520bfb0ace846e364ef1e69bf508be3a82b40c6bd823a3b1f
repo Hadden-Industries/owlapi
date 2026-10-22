@@ -1,0 +1,112 @@
+{
+  "artifactId": "81f88fff345216752cf8d918bc9500b3b6d5ae4da3d2187fcfc83a495071d5a3",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4669,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.eslintrc",
+        "sha256": "3c200368c8a56fdbc1b5c52eff1b8ef48b00ce36b5ef7dfc7a395ba306e8b930",
+        "size": 435,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "59a400d04c5078579acc27ddd6452c1bdf763f9506e01364700935fbb1a7c91b",
+        "size": 1098,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "f0d9aa902c0aa262b7443cede10b98b29244cbe4780dc6ba0343a404b9b4bebc",
+        "size": 1359,
+        "type": "FILE"
+      },
+      {
+        "path": "package/browser.js",
+        "sha256": "a199f9fdd8f0f94be4bfe5407c4969d261aa6f080c372c1a359815dc6187f32c",
+        "size": 5418,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "6d7fc57639a3deb4b7cbd55eafae4d9e7b377873b9ce5e6a689e47711965912a",
+        "size": 96,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "8501b4909630e60c9e9f68c4ca8ccb1964688500e61c60408a26d5480a9dd3d4",
+        "size": 609,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test.js",
+        "sha256": "22067afbb201ba00a54446214f07447cec8c5b2a7b9fb11f1a6e79c64b8fcd4f",
+        "size": 6310,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1098,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/59/59a400d04c5078579acc27ddd6452c1bdf763f9506e01364700935fbb1a7c91b",
+          "sha256": "59a400d04c5078579acc27ddd6452c1bdf763f9506e01364700935fbb1a7c91b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "59a400d04c5078579acc27ddd6452c1bdf763f9506e01364700935fbb1a7c91b",
+        "size": 1098
+      }
+    ],
+    "expandedBytes": 15325,
+    "packageIdentity": {
+      "author": "Roman Shtylman <shtylman@gmail.com>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "process",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/shtylman/node-process.git"
+      },
+      "version": "0.11.10"
+    },
+    "packageMetadata": {
+      "author": "Roman Shtylman <shtylman@gmail.com>",
+      "browser": "./browser.js",
+      "description": "process information for node.js and browsers",
+      "devDependencies": {
+        "mocha": "2.2.1",
+        "zuul": "^3.10.3"
+      },
+      "engines": {
+        "node": ">= 0.6.0"
+      },
+      "keywords": [
+        "process"
+      ],
+      "license": "MIT",
+      "main": "./index.js",
+      "name": "process",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/shtylman/node-process.git"
+      },
+      "scripts": {
+        "browser": "zuul --no-coverage --ui mocha-bdd --local 8080 -- test.js",
+        "test": "mocha test.js"
+      },
+      "version": "0.11.10"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 4669,
+      "sha256": "7c10569b3c9cb056152ad630d40f9f4fcc321a0013c2bb8384f036aaa674e6bb"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

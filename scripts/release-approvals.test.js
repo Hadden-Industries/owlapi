@@ -8,6 +8,7 @@ import {
   validateApprovalObservation,
 } from "./release-approvals.mjs";
 import { sha256Buffer } from "./release-file-utils.mjs";
+import { physicalName } from "../tooling/artifact-transport/identity.mjs";
 
 // A real stored ZIP models the external artifact format, including CRC and headers.
 const zip = (path, value) => {
@@ -209,6 +210,53 @@ test("recovers both original approvals when fresh authenticated history is empty
     h.client.read.mock.calls.every(([path]) => path.startsWith("/actions/")),
   ).toBe(true);
 });
+
+test.each([false, true])(
+  "retained approvals verify every transport copy; conflict=%s",
+  async (conflict) => {
+    const h = resolution();
+    const original = h.fixtures[0];
+    const identity = {
+      logical: original.artifact.name,
+      run: runId,
+      attempt: 1,
+      producer: "a".repeat(16),
+      invocation: "b".repeat(32),
+    };
+    original.artifact.name = physicalName({ ...identity, ordinal: 0 });
+    const archive = conflict
+      ? zip("approval-release-manual.json", {
+          ...original.observation,
+          observedAt: "2026-10-10T00:00:01Z",
+        })
+      : original.archive;
+    h.fixtures.push({
+      ...original,
+      archive,
+      artifact: {
+        ...original.artifact,
+        id: 999,
+        name: physicalName({ ...identity, ordinal: 1 }),
+        digest: `sha256:${sha256Buffer(archive)}`,
+      },
+    });
+    if (conflict)
+      await expect(h.run()).rejects.toThrow(
+        "Conflicting retained approval transport copies",
+      );
+    else {
+      const result = await h.run();
+      expect(result.approvals).toHaveLength(2);
+      expect(result.inputs).toHaveLength(3);
+      expect(h.download).toHaveBeenCalledTimes(3);
+      expect(result.inputs.map(({ name }) => name)).toEqual([
+        original.artifact.name,
+        h.fixtures[2].artifact.name,
+        h.fixtures[1].artifact.name,
+      ]);
+    }
+  },
+);
 
 test.each(
   [

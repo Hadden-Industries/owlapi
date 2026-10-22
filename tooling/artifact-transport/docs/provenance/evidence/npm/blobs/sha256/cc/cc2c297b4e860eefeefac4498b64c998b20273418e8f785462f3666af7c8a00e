@@ -1,0 +1,170 @@
+{
+  "artifactId": "c6d586847e5c206f85473f9c49a4b9d5c8a673c42139bdc4a3b7a665de98c1d5",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6003,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.editorconfig",
+        "sha256": "0a73be687a86b6f0e5494b1be555fcfbb886108794948837170c28f18820aae2",
+        "size": 286,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.eslintrc",
+        "sha256": "26734da6ae3f197079a589f2c1d85533cb26f71374a8fce6f82c18585162cc6e",
+        "size": 219,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "dd66f0410b561890e8689a67cfc7b82a02140917a0d27a65f8e66416d8815320",
+        "size": 591,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nycrc",
+        "sha256": "997785c50b0773e5e18bf15550fbf57823c634fefe623cd37b3c83696402ad0a",
+        "size": 139,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "3294da1f3e3b6119e609e94aabfa13d41f170ff2e4eaa121ade0f5345d55454d",
+        "size": 8229,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "cfc3f455254c0af0655cc3ff46a41ed644b67599f6043346169d285bf2b3cf3b",
+        "size": 1071,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "56b54bf206a4251b009972dafa1c8c5a9d0835d49f745b100aee9311062efd73",
+        "size": 1894,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "0c1ab55e5265d28997a37bd9c202a7aebe2dfaa370b96e4d95a974ceb3b878af",
+        "size": 774,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b821fe786f7afa6f8b2090ddbc053717528314ed39bdbff0e283a0b0103afee5",
+        "size": 1554,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "5b8fb542dcc54dd91a74b0214daa1db95c6f68d020e28329b63916e17618bf63",
+        "size": 1958,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1071,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/cf/cfc3f455254c0af0655cc3ff46a41ed644b67599f6043346169d285bf2b3cf3b",
+          "sha256": "cfc3f455254c0af0655cc3ff46a41ed644b67599f6043346169d285bf2b3cf3b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "cfc3f455254c0af0655cc3ff46a41ed644b67599f6043346169d285bf2b3cf3b",
+        "size": 1071
+      },
+      {
+        "blob": {
+          "bytes": 1894,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/56/56b54bf206a4251b009972dafa1c8c5a9d0835d49f745b100aee9311062efd73",
+          "sha256": "56b54bf206a4251b009972dafa1c8c5a9d0835d49f745b100aee9311062efd73"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "56b54bf206a4251b009972dafa1c8c5a9d0835d49f745b100aee9311062efd73",
+        "size": 1894
+      }
+    ],
+    "expandedBytes": 16715,
+    "packageIdentity": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "homepage": "https://github.com/inspect-js/functions-have-names#readme",
+      "license": "MIT",
+      "name": "functions-have-names",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/functions-have-names.git"
+      },
+      "version": "1.2.3"
+    },
+    "packageMetadata": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "bugs": {
+        "url": "https://github.com/inspect-js/functions-have-names/issues"
+      },
+      "description": "Does this JS environment support the `name` property on functions?",
+      "devDependencies": {
+        "@ljharb/eslint-config": "^21.0.0",
+        "aud": "^2.0.0",
+        "auto-changelog": "^2.4.0",
+        "eslint": "=8.8.0",
+        "nyc": "^10.3.2",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.5.3"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "homepage": "https://github.com/inspect-js/functions-have-names#readme",
+      "keywords": [
+        "function",
+        "name",
+        "es5",
+        "names",
+        "functions",
+        "ie"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "functions-have-names",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/functions-have-names.git"
+      },
+      "scripts": {
+        "lint": "eslint --ext=js,mjs .",
+        "posttest": "aud --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only",
+        "tests-only": "nyc tape 'test/**/*.js'",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "version": "1.2.3"
+    },
+    "physicalEntryCount": 10,
+    "tarball": {
+      "bytes": 6003,
+      "sha256": "3be0c99c006f7c53093e3f6a56a1128f1a72fec3b041ec585a4175b809fab1dc"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

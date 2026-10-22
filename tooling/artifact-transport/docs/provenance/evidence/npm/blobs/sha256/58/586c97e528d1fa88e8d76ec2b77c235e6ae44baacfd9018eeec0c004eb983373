@@ -1,0 +1,126 @@
+{
+  "artifactId": "d98989855fffb5769651e7e88d7afd97efcfbdfb108c434fb1c5f620564075b3",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 9822,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "c7cc929b57080f4b9d0c6cf57669f0463fc5b39906344dfc8d3bc43426b30eac",
+        "size": 1081,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "d301a850808775718ddb510d4bf2a922d9b0afa72894e67137daa20fbeafac05",
+        "size": 19555,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "5e379df3d61561c2ed7789b5995b9ba2143bbba21a905e2381e16efe7d1fa424",
+        "size": 8738,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "d58af21cb0518864d0c505742d1af71e5b5e1f142f4c0f27353aa0f431a616d4",
+        "size": 1529,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "3d8b6d944be9e931a178914afbb3d6b79bfa199c032872b687bed41ed996c747",
+        "size": 783,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1081,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c7/c7cc929b57080f4b9d0c6cf57669f0463fc5b39906344dfc8d3bc43426b30eac",
+          "sha256": "c7cc929b57080f4b9d0c6cf57669f0463fc5b39906344dfc8d3bc43426b30eac"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "c7cc929b57080f4b9d0c6cf57669f0463fc5b39906344dfc8d3bc43426b30eac",
+        "size": 1081
+      },
+      {
+        "blob": {
+          "bytes": 19555,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d3/d301a850808775718ddb510d4bf2a922d9b0afa72894e67137daa20fbeafac05",
+          "sha256": "d301a850808775718ddb510d4bf2a922d9b0afa72894e67137daa20fbeafac05"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "d301a850808775718ddb510d4bf2a922d9b0afa72894e67137daa20fbeafac05",
+        "size": 19555
+      }
+    ],
+    "expandedBytes": 31686,
+    "packageIdentity": {
+      "author": {
+        "email": "feross@feross.org",
+        "name": "Feross Aboukhadijeh",
+        "url": "http://feross.org"
+      },
+      "homepage": "https://github.com/feross/safe-buffer",
+      "license": "MIT",
+      "name": "safe-buffer",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/feross/safe-buffer.git"
+      },
+      "version": "5.1.2"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "feross@feross.org",
+        "name": "Feross Aboukhadijeh",
+        "url": "http://feross.org"
+      },
+      "bugs": {
+        "url": "https://github.com/feross/safe-buffer/issues"
+      },
+      "description": "Safer Node.js Buffer API",
+      "devDependencies": {
+        "standard": "*",
+        "tape": "^4.0.0"
+      },
+      "homepage": "https://github.com/feross/safe-buffer",
+      "keywords": [
+        "buffer",
+        "buffer allocate",
+        "node security",
+        "safe",
+        "safe-buffer",
+        "security",
+        "uninitialized"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "safe-buffer",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/feross/safe-buffer.git"
+      },
+      "scripts": {
+        "test": "standard && tape test/*.js"
+      },
+      "types": "index.d.ts",
+      "version": "5.1.2"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 9822,
+      "sha256": "e09206c60fccafb952c854af7629cbb031a98d6da2e143fb3aa3c8a48402aa22"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

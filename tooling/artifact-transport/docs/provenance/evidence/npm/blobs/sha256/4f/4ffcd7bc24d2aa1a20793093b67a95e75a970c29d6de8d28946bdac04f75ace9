@@ -1,0 +1,159 @@
+{
+  "artifactId": "3695fd02238671dd7f0201d2c4ff7ca46adc20944652837fe52147395cedcbc0",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 10375,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "3fe8d55a98dbf260eace67c00cf9bc53edb46234e840098a0b93df3096b97fb6",
+        "size": 1078,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "3fd8e2c916edc67945bb96f02218cfd8d40f3487b971a1565592ffab01852a4a",
+        "size": 5554,
+        "type": "FILE"
+      },
+      {
+        "path": "package/constants.js",
+        "sha256": "6dcd4aa7d4ab7876c54b28bc6bf281e9d6423787b17eae4353a87af34605972e",
+        "size": 258,
+        "type": "FILE"
+      },
+      {
+        "path": "package/extract.js",
+        "sha256": "dcdbac54ad8316508160b677e039da33698e57f5e193558899b8e040bc6325ff",
+        "size": 9595,
+        "type": "FILE"
+      },
+      {
+        "path": "package/headers.js",
+        "sha256": "c357da39df0205ad01b0861af153902586237c4e6e9ab0cddd12336ce4f03e79",
+        "size": 8621,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "97aeefcfe52b8aae7fb415c8aa7c11a69845c369dbe21296cc7442e939ad159c",
+        "size": 1341,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "0db9eceef5224dbc34c224c398b50eef4b99f937c80c81f660928615a248ed4f",
+        "size": 72,
+        "type": "FILE"
+      },
+      {
+        "path": "package/pack.js",
+        "sha256": "9885de07c3fc948aeebdec5e113f536c3e540230a3f0a24c82c3e80339bc8235",
+        "size": 6291,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "3a3449df0cb466c4b45481691ed385d07c7c1d616bafaa7c8cf71f8bd9203045",
+        "size": 1193,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1078,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/3f/3fe8d55a98dbf260eace67c00cf9bc53edb46234e840098a0b93df3096b97fb6",
+          "sha256": "3fe8d55a98dbf260eace67c00cf9bc53edb46234e840098a0b93df3096b97fb6"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "3fe8d55a98dbf260eace67c00cf9bc53edb46234e840098a0b93df3096b97fb6",
+        "size": 1078
+      },
+      {
+        "blob": {
+          "bytes": 5554,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/3f/3fd8e2c916edc67945bb96f02218cfd8d40f3487b971a1565592ffab01852a4a",
+          "sha256": "3fd8e2c916edc67945bb96f02218cfd8d40f3487b971a1565592ffab01852a4a"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "3fd8e2c916edc67945bb96f02218cfd8d40f3487b971a1565592ffab01852a4a",
+        "size": 5554
+      }
+    ],
+    "expandedBytes": 34003,
+    "packageIdentity": {
+      "author": "Mathias Buus <mathiasbuus@gmail.com>",
+      "homepage": "https://github.com/mafintosh/tar-stream",
+      "license": "MIT",
+      "name": "tar-stream",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/mafintosh/tar-stream.git"
+      },
+      "version": "3.2.2"
+    },
+    "packageMetadata": {
+      "author": "Mathias Buus <mathiasbuus@gmail.com>",
+      "browser": {
+        "fs": false
+      },
+      "bugs": {
+        "url": "https://github.com/mafintosh/tar-stream/issues"
+      },
+      "dependencies": {
+        "b4a": "^1.9.0",
+        "bare-fs": "^4.8.2",
+        "fast-fifo": "^1.3.2",
+        "streamx": "^2.28.1"
+      },
+      "description": "tar-stream is a streaming tar parser and generator and nothing else. It operates purely using streams which means you can easily extract/parse tarballs without ever hitting the file system.",
+      "devDependencies": {
+        "brittle": "^4.3.0",
+        "concat-stream": "^2.0.0",
+        "standard": "^17.0.1"
+      },
+      "exports": {
+        ".": {
+          "default": "./index.js",
+          "types": "./index.d.ts"
+        },
+        "./package": "./package.json"
+      },
+      "files": [
+        "*.js",
+        "index.d.ts"
+      ],
+      "homepage": "https://github.com/mafintosh/tar-stream",
+      "imports": {
+        "fs": {
+          "bare": "bare-fs",
+          "default": "fs"
+        }
+      },
+      "license": "MIT",
+      "main": "index.js",
+      "name": "tar-stream",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/mafintosh/tar-stream.git"
+      },
+      "scripts": {
+        "test": "standard && brittle-node test/*.js"
+      },
+      "version": "3.2.2"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 10375,
+      "sha256": "6adbf26440b42fb6dfcd8c837c5bd16331a64de325da11df751ced9a2c76ddf6"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -18,3 +18,8 @@ docs/compatibility/profiles/java-owlapi-5.5.1/evidence/active-profiles.txt -whit
 # Retain hash-bound native captures without Git newline conversion.
 docs/compatibility/profiles/java-owlapi-5.5.1/evidence/import-lookup-precedence-java.txt -text !eol -whitespace
 docs/provenance/history-reconstruction/control/signature-trust-source.txt -text !eol -whitespace
+
+# Reproduced upstream legal text inside the isolated Actions bundle.
+.github/actions/retain-artifact/dist/third-party-licenses.txt -text !eol -whitespace
+# SDK code is reproduced by Vite; its build record owns upstream presentation.
+.github/actions/retain-artifact/dist/*.mjs -whitespace

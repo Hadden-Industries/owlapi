@@ -1,0 +1,208 @@
+{
+  "artifactId": "50c7b57f748fa2bd6bbfd1d73f3a44ee6cc6b9f98c02bd06407db703699d4bd3",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5064,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.eslintrc",
+        "sha256": "7c3f768f2b1d7b87f366c823d11f61e9cde501540cc33972eb6810269c156f45",
+        "size": 122,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "59e98206a08b78091ad8a2141b723a9e86fd1c836fb8ec8b2776c41e8f116108",
+        "size": 586,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nycrc",
+        "sha256": "948366fea3b423a46366326d0bb2e54b08abd1cf0b243678ba6625740c40da5a",
+        "size": 216,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "11d211ca5db09f83a4caccf8e21b05e078b255030bc7fc28b3f5d72a477a6dfe",
+        "size": 4259,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "d90bf0a089da4cf43d644ed240a0b3825dcdb705e64e38371d56995a4cc9e4c5",
+        "size": 1071,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "8ac7b097e1e097c819d12d3f1e2cfc526d23e12895e34f94d764dc2086e98ed1",
+        "size": 1828,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "5e178588e12d94528fb03a766169368fc9ded46493755d17bd4bc17a4907668a",
+        "size": 96,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "2225bfdc0cd70b6cce80c966e8d431f1a36bc4a6d800ece43f548f12e667e81f",
+        "size": 405,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b9efdb318b7f4094e6d2605ba9fbef93570abe1119488a491a4e8f3216781030",
+        "size": 2280,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "cb5b7134a057eb4654edae57cc1faa633a1b78cd2ff3d015743ad673614e3771",
+        "size": 936,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "1f4fa83d9ea5ae0ef10d86bd8c68edfc6c5a5dfc8082dc194c281edfe94cc25a",
+        "size": 118,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1071,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d9/d90bf0a089da4cf43d644ed240a0b3825dcdb705e64e38371d56995a4cc9e4c5",
+          "sha256": "d90bf0a089da4cf43d644ed240a0b3825dcdb705e64e38371d56995a4cc9e4c5"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "d90bf0a089da4cf43d644ed240a0b3825dcdb705e64e38371d56995a4cc9e4c5",
+        "size": 1071
+      },
+      {
+        "blob": {
+          "bytes": 1828,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/8a/8ac7b097e1e097c819d12d3f1e2cfc526d23e12895e34f94d764dc2086e98ed1",
+          "sha256": "8ac7b097e1e097c819d12d3f1e2cfc526d23e12895e34f94d764dc2086e98ed1"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "8ac7b097e1e097c819d12d3f1e2cfc526d23e12895e34f94d764dc2086e98ed1",
+        "size": 1828
+      }
+    ],
+    "expandedBytes": 11917,
+    "packageIdentity": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "homepage": "https://github.com/ljharb/safe-regex-test#readme",
+      "license": "MIT",
+      "name": "safe-regex-test",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ljharb/safe-regex-test.git"
+      },
+      "version": "1.1.0"
+    },
+    "packageMetadata": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "bugs": {
+        "url": "https://github.com/ljharb/safe-regex-test/issues"
+      },
+      "dependencies": {
+        "call-bound": "^1.0.2",
+        "es-errors": "^1.3.0",
+        "is-regex": "^1.2.1"
+      },
+      "description": "Give a regex, get a robust predicate function that tests it against a string.",
+      "devDependencies": {
+        "@arethetypeswrong/cli": "^0.17.1",
+        "@ljharb/eslint-config": "^21.1.1",
+        "@ljharb/tsconfig": "^0.2.2",
+        "@types/for-each": "^0.3.3",
+        "@types/object-inspect": "^1.13.0",
+        "@types/tape": "^5.6.5",
+        "auto-changelog": "^2.5.0",
+        "encoding": "^0.1.13",
+        "es-value-fixtures": "^1.5.0",
+        "eslint": "=8.8.0",
+        "for-each": "^0.3.3",
+        "in-publish": "^2.0.1",
+        "npmignore": "^0.3.1",
+        "nyc": "^10.3.2",
+        "object-inspect": "^1.13.3",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.9.0",
+        "typescript": "next"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "exports": {
+        ".": "./index.js",
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "homepage": "https://github.com/ljharb/safe-regex-test#readme",
+      "keywords": [
+        "regex",
+        "regexp",
+        "test",
+        "tester",
+        "safe",
+        "robust",
+        "exec"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "safe-regex-test",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ljharb/safe-regex-test.git"
+      },
+      "scripts": {
+        "lint": "eslint --ext=js,mjs .",
+        "postlint": "tsc && attw -P",
+        "posttest": "npx npm@'>= 10.2' audit --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only",
+        "tests-only": "nyc tape test",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "sideEffects": false,
+      "version": "1.1.0"
+    },
+    "physicalEntryCount": 11,
+    "tarball": {
+      "bytes": 5064,
+      "sha256": "e92ad20e8549ef06adab664f8a6e9c0a349e38f34c9548ebb526f24f7d8cf12e"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

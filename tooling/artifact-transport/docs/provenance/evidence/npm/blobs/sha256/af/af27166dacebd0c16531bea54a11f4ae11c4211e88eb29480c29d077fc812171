@@ -1,0 +1,638 @@
+{
+  "artifactId": "f6769180ec03bd8ccec3b5cc52a3f985b3e28401c42d9ae5edf7edc0bb290007",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 54285,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "5e3400b93bbb099e83e52bab885e7441750673c21f97988ca3f1240639b63283",
+        "size": 10140,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "a546ac54adac2e90320b1c6baf6058042134d7b155f5a5b2d7b917931f9b5626",
+        "size": 1367,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/assert.js",
+        "sha256": "baeb9e53618c21036bc0bf878dcf1624604e5c17549304ce2283e45ec7eb5e85",
+        "size": 1657,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/base64.js",
+        "sha256": "852f50d2101ccc052f13d540a043ad3b6577f5380edc420dc12be31e9429d7af",
+        "size": 3840,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/binary-format-contract.js",
+        "sha256": "c1db2a1a35f112a29d1b89b0b7a9703a4cfed4146917df48feccfb02426eea1d",
+        "size": 3807,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/binary-reader.js",
+        "sha256": "ee4090f67cc33b85fec86525127e4f8d7a9c1908dd6667fb0445391aa9d06eb9",
+        "size": 5892,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/binary-writer.js",
+        "sha256": "9e72116f87b186a233184fe5e0d50c90ad5e32a372389650ab0b2a0ad695187f",
+        "size": 7078,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/enum-object.js",
+        "sha256": "310669a2c62ff9f5a885b1c83f5b0385d691f100c2e238afcbaf14d638d9d373",
+        "size": 2902,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/goog-varint.js",
+        "sha256": "8c5adc276a587ac290d1bf77648a992b025ea2bf02b3966bdb3f682a24f90f9a",
+        "size": 10090,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/index.js",
+        "sha256": "8dddbb2662852bdfe4fbd2b6b66dadcf0e31b2c3e9e3c690021a31e1259cc7f7",
+        "size": 9406,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/json-format-contract.js",
+        "sha256": "4e1ea0256521308c9d8eede57c1776f7d6695fb04e8a837ebb01bcf3451497bd",
+        "size": 1342,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/json-typings.js",
+        "sha256": "5542a2d95b8e7da9809328d3971dee24642f0cd6465321b403484c9be9da3e0c",
+        "size": 705,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/lower-camel-case.js",
+        "sha256": "c13855dcd6657c2315e45fd481b9371babc27d11e38cedf9fd36589505438604",
+        "size": 988,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/message-type-contract.js",
+        "sha256": "0b9fc7c973c0681437f6ba265262f80c65e2eece63473631addaf484bdd1acb3",
+        "size": 380,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/message-type.js",
+        "sha256": "fadcd36d004645e3ddc222d7bbc19b4f16446e9a6a68fdd7acd5c419c36e15f6",
+        "size": 7346,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/oneof.js",
+        "sha256": "1c2d4d3c641a667b390fa1515477f0071474b7aea1a30e07e18dc6e3080491ec",
+        "size": 3448,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/pb-long.js",
+        "sha256": "549fb9af272914f13b89627337f638fd1028fec5276f9c61fcfa55842c7306c8",
+        "size": 8147,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/protobufjs-utf8.js",
+        "sha256": "d2379d310a79047ab69a52110640897bc1d2541fd1e3363ad985e480d3ced1fc",
+        "size": 3310,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/reflection-binary-reader.js",
+        "sha256": "a5345c2bad6a1305a38b8d2b6b27ef01def6db25e9a0d7e0db736079ce698b28",
+        "size": 8646,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/reflection-binary-writer.js",
+        "sha256": "27e0a4c38f03887d1c003cfe1451d86e2493c17fe869df418ee53d812d265624",
+        "size": 9433,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/reflection-contains-message-type.js",
+        "sha256": "e08bb05701c5436913e877c6bb5f080b473f31641d387a5a50e608d5e88f94f3",
+        "size": 521,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/reflection-create.js",
+        "sha256": "e0257b0e9172335e65ced554966c14587af9a111f7c1568227df0a88bc367f11",
+        "size": 1932,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/reflection-equals.js",
+        "sha256": "fd916d2c962b1017e3c91710ff403ac1a55b2a55119d487e26a250ea68fede99",
+        "size": 2680,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/reflection-info.js",
+        "sha256": "3ca75a11ec2dad7a130d0715263f8922e72cbba185deded175155caab5ac77a2",
+        "size": 6365,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/reflection-json-reader.js",
+        "sha256": "563b57ff0b81ffecc8f9765b320a147d09c6bb874f0b2953a870df0190e187a8",
+        "size": 15105,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/reflection-json-writer.js",
+        "sha256": "dcb458ec2d01bc193ed8f6c586c0068cee9f90a82967986b7aab2fdc6b1f6f2d",
+        "size": 10992,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/reflection-long-convert.js",
+        "sha256": "59eb6979e3c3cb2f72ba12a062886606dba1a9c03d5ef67735362f9e25b16b8f",
+        "size": 785,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/reflection-merge-partial.js",
+        "sha256": "84b701fd97ed45c98d5e5df16da4f0c9d4377f46c51b2f140255b6b021ffa9e2",
+        "size": 4088,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/reflection-scalar-default.js",
+        "sha256": "7009bdbac420785ff323ed92c2fa19666ef4f71503fb414f4be2533810e97057",
+        "size": 1565,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/reflection-type-check.js",
+        "sha256": "5d3e876195f6da5321062e9a04ed1d2c47e505e7e3561984729af30b257e0c11",
+        "size": 9189,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/commonjs/unknown-types.js",
+        "sha256": "d43aa81f5bc89faa359e0f97c814ba25155591ff078fbb9bfd40f8c7c9683230",
+        "size": 77,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/assert.js",
+        "sha256": "e653579263a5a113fbd7b87ba8405da49753c91f35ef0c3216d1719a4788d55e",
+        "size": 1328,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/base64.js",
+        "sha256": "e9a9d026b4545cdacb0e8d2f6335678b6219dfd9d2faa0597883d952813468ba",
+        "size": 3649,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/binary-format-contract.js",
+        "sha256": "2d156c73316fc47d5090d8d20a648b3a5774de9a8a77b0dd2b3c0d097c0f5ac7",
+        "size": 3551,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/binary-reader.js",
+        "sha256": "9672ef23f97b2a2ff0ec299d2239a77a26a5964aefc79899e20e4b219a38bffb",
+        "size": 5458,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/binary-writer.js",
+        "sha256": "267037c8df20e8b90e22af946cc890a1c8faf31970879b514370a07248235fbc",
+        "size": 6745,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/enum-object.js",
+        "sha256": "f9b32b443e5fe19e570d7da3750456a168803ff201d893fc2f1506b5883ba2a5",
+        "size": 2587,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/goog-varint.js",
+        "sha256": "1d177e89d752c2721e05dfaf17cfc2f9d4bea613a52c2b62ada0d64d22c408ea",
+        "size": 9669,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/index.js",
+        "sha256": "645034ddd5ba8626317e148454c9800969e93b4df819f02a49e66f818ed48a7d",
+        "size": 2785,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/json-format-contract.js",
+        "sha256": "7d7bc8b2a65200690a2cb34814f5c793c849d5d7d1b896d5227cbabfde1a0ad3",
+        "size": 1065,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/json-typings.js",
+        "sha256": "0b4465200bf96503ddded375063213f84f4990b2680aa4df767f005010486e3e",
+        "size": 505,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/lower-camel-case.js",
+        "sha256": "1650bb8eaee89867cecc3d9f99d4e5fbdf43d3f446ae3f4b231c5c79f1f576bb",
+        "size": 844,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/message-type-contract.js",
+        "sha256": "2284b5aba7a7cdbb34df8b0e9c55c5038f530ec8df89fc445f829d2ef8f8f4bb",
+        "size": 277,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/message-type.js",
+        "sha256": "abe0fe88e233560c1283c4beaa47d4b9b2b1eff83e990acf1182d8b79b089b5a",
+        "size": 6791,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/oneof.js",
+        "sha256": "8cffa02e69a73b20feb41c3cc49c4cef68bc16e3a0062ed4c21a989a129346d8",
+        "size": 2979,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/pb-long.js",
+        "sha256": "916e7c3869baf1460eec3f5658a210bcc839fe23ea7507c484587e0063480378",
+        "size": 7894,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/protobufjs-utf8.js",
+        "sha256": "cefc299b891bf38ea3220ed5607a6ca285caf9a71d9c8dfc35dafa3237720b06",
+        "size": 3184,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/reflection-binary-reader.js",
+        "sha256": "51c4eac5006ac78ca6973d6331892df49542679ea38664cc330fa544dfb56e93",
+        "size": 7860,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/reflection-binary-writer.js",
+        "sha256": "98e761994f192df70e4adcd0b45b9a7730cd4d4d74d539d29721783500358186",
+        "size": 8378,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/reflection-contains-message-type.js",
+        "sha256": "f83f0f279b30131453a1e2c785878c952152a5b64ad4c3d193e4623538554a01",
+        "size": 326,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/reflection-create.js",
+        "sha256": "68cda991d2b60fdd39261923dc8a225233dec9ee7dbc346b0cdd46247f75b3c1",
+        "size": 1713,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/reflection-equals.js",
+        "sha256": "15b77e9f45e4f0c41564be6788724e2a80ee03f8f87cb283d1e10048a4a6643c",
+        "size": 2468,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/reflection-info.js",
+        "sha256": "a96d654b6bce27de8fd232e9d633962923406ef3697d31d8e8161fd290582c43",
+        "size": 5846,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/reflection-json-reader.js",
+        "sha256": "98c8aaafe3b9e35934f02cdc2aefd555cbda375a076923d5f1f3247a4dfcdc21",
+        "size": 14413,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/reflection-json-writer.js",
+        "sha256": "0db3bae036b827bff3e5cde94c73fbf03b92964c34b43519c43a9fb527216008",
+        "size": 10354,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/reflection-long-convert.js",
+        "sha256": "cd1c5c67d5292c8e82daba3a7553ef8ada39da3012b7e2e16378fc237ae8f164",
+        "size": 574,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/reflection-merge-partial.js",
+        "sha256": "bf376771902c78d43264a5a2adf0946ee8c555664572907dd3ae73f3f389ddf4",
+        "size": 3920,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/reflection-scalar-default.js",
+        "sha256": "7f9291e3614da2da1fb70964d734a273babec90e959f869927d4b989f9b6a8b0",
+        "size": 1126,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/reflection-type-check.js",
+        "sha256": "50b0b806153a029a2ee6b6be25f6e924a692f839040ca43c4781857550e6a064",
+        "size": 8632,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/es2015/unknown-types.js",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/assert.d.ts",
+        "sha256": "7cc6662d61a40f44aa8446b68de47a4633a5e8b24c1f5089c80284b6693303c1",
+        "size": 527,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/base64.d.ts",
+        "sha256": "d2288d07514c8b1007cd07f11e402d6cfc641c4f24cfd761494b22e72400223b",
+        "size": 555,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/binary-format-contract.d.ts",
+        "sha256": "34d77a3dda8829e072659383887c249db235d5d55071f9ab1bdd9a47fbe0b2e1",
+        "size": 9633,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/binary-reader.d.ts",
+        "sha256": "3fccd72f0755e1ed358f3a5408894b138a8d919d5ba8a23f74c83fb0145d9af1",
+        "size": 2863,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/binary-writer.d.ts",
+        "sha256": "12db12ca1e22c768881b4fa7af4b57e0c81674f64ab719a27f60380c160c6f82",
+        "size": 3941,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/enum-object.d.ts",
+        "sha256": "011a78ddb9ab7909ee80c1bffa706ac30e0abe152c4fd38fb1577c4cfba85e3d",
+        "size": 1503,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/goog-varint.d.ts",
+        "sha256": "2f91527938058b8c8201ad7508f9f4639b4f7dbe4e2b306c9b632311d1f1b711",
+        "size": 1957,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/index.d.ts",
+        "sha256": "d27e4fe0afa8e55acb02a057bd7cfe87c43f657c8113a72bfd9f05e205c6a687",
+        "size": 2165,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/json-format-contract.d.ts",
+        "sha256": "ec2e3381bfe61123fdcf8e81f242c65ccfa714dea4ad95650c14fd001f35ae76",
+        "size": 2618,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/json-typings.d.ts",
+        "sha256": "b9c2e963ceafd1244a49bbaa2ef751095994b38b642671bad77c794eba393303",
+        "size": 817,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/lower-camel-case.d.ts",
+        "sha256": "d41cf63d8ad12033cd3911b96eaa2567b259ba8bc6332d0624de8b57a7a6a6c2",
+        "size": 298,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/message-type-contract.d.ts",
+        "sha256": "531c4689922fe53152ccd2b6656c1d0a0b9b4da17c5ecd19ef3566c2ec5549ee",
+        "size": 6986,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/message-type.d.ts",
+        "sha256": "3d83fff340b527865fd0b5cb4d615302618dd51ce972cc9d622234b4b512caa7",
+        "size": 6319,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/oneof.d.ts",
+        "sha256": "4b5278ac3200a9a348f6adeca2750b94af86e6c9196e7441563c6d63b13e34ea",
+        "size": 3321,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/pb-long.d.ts",
+        "sha256": "510cff805b79c8daac02920a2af6d11b3546ce4ccc44408d9946454656183ccf",
+        "size": 1895,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/protobufjs-utf8.d.ts",
+        "sha256": "d1c3effc42c664bddefde512e7a587026a0846a1e5fa873116a5238214bb7a47",
+        "size": 560,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/reflection-binary-reader.d.ts",
+        "sha256": "4f5e1ef39c47a9bcabb48f2d0b95cc8d70775d5ca8baf734d01c83a05bcd35ef",
+        "size": 1387,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/reflection-binary-writer.d.ts",
+        "sha256": "e05534e945692c073e21669045bbd84fdaee56ac912c3e9ac33209c2b5ad0bf6",
+        "size": 2007,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/reflection-contains-message-type.d.ts",
+        "sha256": "40e5e457514dff6960c865b9281a1096f4c3dab429441b8c71fe02dd706f0eac",
+        "size": 662,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/reflection-create.d.ts",
+        "sha256": "bc6c3eea02aa460310a7a2457726138ed0f016e943a452c8a7d366ff068edff9",
+        "size": 234,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/reflection-equals.d.ts",
+        "sha256": "63cf34f9707e9e3faea53d8226150b801b56e037f9f88f49215f80a9315f7215",
+        "size": 492,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/reflection-info.d.ts",
+        "sha256": "d9e9086c27d769560e3eb26f71da89f246a45f8c8d65f71257a70c19ec8e8897",
+        "size": 11874,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/reflection-json-reader.d.ts",
+        "sha256": "70dc24c86d2b5d6e7a70ecd4eb10492959b8ba8535396ce78bb32e1ebde650ca",
+        "size": 1691,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/reflection-json-writer.d.ts",
+        "sha256": "8e3ace652adb2b5e18782b0df4cb73fec48129174242c4332e239420b717bbb3",
+        "size": 1470,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/reflection-long-convert.d.ts",
+        "sha256": "144f5356247f7a55d87709d0631f9c5229e67739e657efd8e7d85cb06a4b6e7d",
+        "size": 416,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/reflection-merge-partial.d.ts",
+        "sha256": "15155cb804d20453d0bda407e1e6dc4c2cf3d0a2278f69de9dd56eed0f69a20f",
+        "size": 1083,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/reflection-scalar-default.d.ts",
+        "sha256": "99f5b05d5a29cef51a5f77abbc3f8ee0a319042ecaaf1e7eb1ab602fedea3f40",
+        "size": 251,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/reflection-type-check.d.ts",
+        "sha256": "65b411940fdd26bbb4b97f593fd7d54cd078b13530694790103bd8dc53f656ae",
+        "size": 1075,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/types/unknown-types.d.ts",
+        "sha256": "156d5f51ff096b116bf3435b91c34952756c2875d4a8b913cbe5fc5c0410fac6",
+        "size": 819,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "c13058ff457b3692b2ed6c20110cf3ad67220cc26e5e10de5b50b54e20296237",
+        "size": 1444,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 10140,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5e/5e3400b93bbb099e83e52bab885e7441750673c21f97988ca3f1240639b63283",
+          "sha256": "5e3400b93bbb099e83e52bab885e7441750673c21f97988ca3f1240639b63283"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "5e3400b93bbb099e83e52bab885e7441750673c21f97988ca3f1240639b63283",
+        "size": 10140
+      },
+      {
+        "blob": {
+          "bytes": 1367,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a5/a546ac54adac2e90320b1c6baf6058042134d7b155f5a5b2d7b917931f9b5626",
+          "sha256": "a546ac54adac2e90320b1c6baf6058042134d7b155f5a5b2d7b917931f9b5626"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "a546ac54adac2e90320b1c6baf6058042134d7b155f5a5b2d7b917931f9b5626",
+        "size": 1367
+      }
+    ],
+    "expandedBytes": 349007,
+    "packageIdentity": {
+      "author": "Timo Stamm <ts@timostamm.com>",
+      "homepage": "https://github.com/timostamm/protobuf-ts",
+      "license": "(Apache-2.0 AND BSD-3-Clause)",
+      "name": "@protobuf-ts/runtime",
+      "repository": {
+        "directory": "packages/runtime",
+        "type": "git",
+        "url": "https://github.com/timostamm/protobuf-ts.git"
+      },
+      "version": "2.11.1"
+    },
+    "packageMetadata": {
+      "author": "Timo Stamm <ts@timostamm.com>",
+      "description": "Runtime library for code generated by the protoc plugin \"protobuf-ts\"",
+      "devDependencies": {
+        "@types/jasmine": "^3.5.10",
+        "jasmine": "^3.5.0",
+        "jasmine-spec-reporter": "^5.0.2",
+        "ts-node": "^8.10.2",
+        "tslib": ">=1.6.1",
+        "typescript": ">=3.8.3 <4"
+      },
+      "homepage": "https://github.com/timostamm/protobuf-ts",
+      "keywords": [
+        "Protocol Buffers",
+        "protobuf",
+        "TypeScript",
+        "bigint",
+        "Reflection"
+      ],
+      "license": "(Apache-2.0 AND BSD-3-Clause)",
+      "main": "./build/commonjs/index.js",
+      "module": "./build/es2015/index.js",
+      "name": "@protobuf-ts/runtime",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/runtime",
+        "type": "git",
+        "url": "https://github.com/timostamm/protobuf-ts.git"
+      },
+      "scripts": {
+        "build": "npm run build:es6 && npm run build:cjs",
+        "build:cjs": "tsc --project tsconfig.build.json --module commonjs --outDir build/commonjs --declaration --declarationDir build/types",
+        "build:es6": "tsc --project tsconfig.build.json --module es2015 --outDir build/es2015",
+        "clean": "rm -rf build/* *.descriptorset *.codegenreq",
+        "test": "ts-node --project tsconfig.test.json ../../node_modules/.bin/jasmine --helper=spec/jasmine-reporter.ts spec/*.spec.ts"
+      },
+      "sideEffects": false,
+      "typings": "./build/types/index.d.ts",
+      "version": "2.11.1"
+    },
+    "physicalEntryCount": 90,
+    "tarball": {
+      "bytes": 54285,
+      "sha256": "3bb18cb373565b5c95e466c1db76e4b1d8166b62276a15e3547c36f9e25b502b"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

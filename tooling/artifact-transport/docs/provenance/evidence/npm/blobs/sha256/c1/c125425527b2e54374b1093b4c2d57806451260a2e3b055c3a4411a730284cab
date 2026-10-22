@@ -1,0 +1,77 @@
+{
+  "artifactId": "03c2dfa2508fa2c0baee348d7632feefe42e6da1d78d86ec0002e73a229ff692",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4195,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/README.markdown",
+        "sha256": "99e8a68c4949c4cbe64b480c8717fb616d1d78ea7715c0e394a5186e6c3a5ace",
+        "size": 2757,
+        "type": "FILE"
+      },
+      {
+        "path": "package/examples/slice.js",
+        "sha256": "8bff15364cb53bc2c6523dbec1dea1017696eb8b59fdf4c8d7cd31eea3a3750b",
+        "size": 224,
+        "type": "FILE"
+      },
+      {
+        "path": "package/examples/splice.js",
+        "sha256": "edf9fc9a0cfab7ed73edfff9a1409e65918b8f2cd34eeef04b3c6a1838ffc1cb",
+        "size": 366,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "97801e296ba5f3c32242f647e1daac5917e300367fed7935ab1e62f40adb1b8a",
+        "size": 7057,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "7091616d3b687b0de9dfbc6a1f8ab61e01742a3ec87f977bef64d1f299e231b9",
+        "size": 424,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/buffers.js",
+        "sha256": "9d0d9671bde206620d50e08f9f855fe7898efd74727d4b6f0913650ea252997f",
+        "size": 6548,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [],
+    "expandedBytes": 17376,
+    "packageIdentity": {
+      "author": "James Halliday <mail@substack.net> (http://substack.net)",
+      "homepage": null,
+      "license": null,
+      "name": "buffers",
+      "repository": "http://github.com/substack/node-buffers.git",
+      "version": "0.1.1"
+    },
+    "packageMetadata": {
+      "author": "James Halliday <mail@substack.net> (http://substack.net)",
+      "description": "Treat a collection of Buffers as a single contiguous partially mutable Buffer.",
+      "engines": {
+        "node": ">=0.2.0"
+      },
+      "main": "./index",
+      "name": "buffers",
+      "repository": "http://github.com/substack/node-buffers.git",
+      "scripts": {
+        "test": "expresso"
+      },
+      "version": "0.1.1"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 4195,
+      "sha256": "f8de49c60e467005182d9687b5d87775bbcec6385ac63220b7741327441deb6d"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

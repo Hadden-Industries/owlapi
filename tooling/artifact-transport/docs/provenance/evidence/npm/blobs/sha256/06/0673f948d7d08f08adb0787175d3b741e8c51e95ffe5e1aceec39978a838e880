@@ -1,0 +1,99 @@
+{
+  "artifactId": "8d9b9af24f6e0aa84f8fc0624128624b02663d89970b5aca0cca219e71e83355",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2030,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "5ffe28e7ade7d8f10d85d5337a73fd793dac5c462fb9a28fbf8c5046c7fbca3b",
+        "size": 749,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "b33c8be1ca837d9e4c9b0e04a550feacbc101556164d3cdbb875aed6ccbb8a29",
+        "size": 1625,
+        "type": "FILE"
+      },
+      {
+        "path": "package/inherits.js",
+        "sha256": "bb380f32bef5feb18678f0f45f88073fed5d7a0069a309132cb2080cd553d5c7",
+        "size": 250,
+        "type": "FILE"
+      },
+      {
+        "path": "package/inherits_browser.js",
+        "sha256": "ad322a7b1dec60f3d2ebda2091816469efb55b567d241cf3cf0fa4c5a4afe500",
+        "size": 753,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "be645800bc94fd8de29c8ae91690549b316cc437100108aeea7b2f347693cc80",
+        "size": 581,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 749,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5f/5ffe28e7ade7d8f10d85d5337a73fd793dac5c462fb9a28fbf8c5046c7fbca3b",
+          "sha256": "5ffe28e7ade7d8f10d85d5337a73fd793dac5c462fb9a28fbf8c5046c7fbca3b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "5ffe28e7ade7d8f10d85d5337a73fd793dac5c462fb9a28fbf8c5046c7fbca3b",
+        "size": 749
+      }
+    ],
+    "expandedBytes": 3958,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "ISC",
+      "name": "inherits",
+      "repository": "git://github.com/isaacs/inherits",
+      "version": "2.0.4"
+    },
+    "packageMetadata": {
+      "browser": "./inherits_browser.js",
+      "description": "Browser-friendly inheritance fully compatible with standard node.js inherits()",
+      "devDependencies": {
+        "tap": "^14.2.4"
+      },
+      "files": [
+        "inherits.js",
+        "inherits_browser.js"
+      ],
+      "keywords": [
+        "inheritance",
+        "class",
+        "klass",
+        "oop",
+        "object-oriented",
+        "inherits",
+        "browser",
+        "browserify"
+      ],
+      "license": "ISC",
+      "main": "./inherits.js",
+      "name": "inherits",
+      "repository": "git://github.com/isaacs/inherits",
+      "scripts": {
+        "test": "tap"
+      },
+      "version": "2.0.4"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2030,
+      "sha256": "d94dbc6c1bb3c5ac0fb12a73ade187108fc60de273a1b754f55044eb5e24afaf"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

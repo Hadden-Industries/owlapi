@@ -62,16 +62,11 @@ jobs:
       # reviewed logic without checking out the repository or gaining contents access.
       - name: Retain the maintenance reporter for the write-only job
         id: reporter_bundle
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        uses: ./.github/actions/retain-artifact
         with:
           name: maintenance-reporter-${{ github.run_id }}-${{ github.run_attempt }}
           path: scripts/report-maintenance-failure.mjs
-          if-no-files-found: error
           retention-days: 1
-          compression-level: 0
-          overwrite: false
-          include-hidden-files: false
-          archive: true
       - name: Set up the policy-owned Node/npm runtime
         uses: ./.github/actions/setup-producer
       - name: Install the reviewed dependency graph
@@ -100,19 +95,14 @@ jobs:
         run: node scripts/workflow-metadata.mjs
       - name: Retain the weekly compatibility candidate
         id: runtime_candidate
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        uses: ./.github/actions/retain-artifact
         with:
           name: runtime-candidate-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             .release/candidate/${{ steps.runtime_metadata.outputs.version }}/hadden-industries-owlapi-${{ steps.runtime_metadata.outputs.version }}.tgz
             .release/candidate/${{ steps.runtime_metadata.outputs.version }}/hadden-industries-owlapi-${{ steps.runtime_metadata.outputs.version }}.cdx.json
             .release/candidate/${{ steps.runtime_metadata.outputs.version }}/SHA256SUMS
-          if-no-files-found: error
           retention-days: 90
-          compression-level: 0
-          overwrite: false
-          include-hidden-files: false
-          archive: true
       - name: Observe the active public production coordinate
         run: npm run check:published-coordinate
         timeout-minutes: 20
@@ -143,16 +133,11 @@ jobs:
           candidate-digest: sha256:${{ needs.health.outputs.artifact_digest }}
       - name: Retain the actual consumer lane evidence
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        uses: ./.github/actions/retain-artifact
         with:
           name: consumer-runtime-${{ matrix.runner }}-${{ matrix.node }}-attempt-${{ github.run_attempt }}
           path: .release/runtime-report/
-          if-no-files-found: error
           retention-days: 90
-          compression-level: 0
-          overwrite: false
-          include-hidden-files: false
-          archive: true
 
   consumer_runtimes:
     name: Maintenance / complete consumer qualification
@@ -195,7 +180,7 @@ jobs:
       - name: Select the reporter runtime
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: "24.22.0"
+          node-version: "24.22.1"
           check-latest: false
           cache: ""
           package-manager-cache: false

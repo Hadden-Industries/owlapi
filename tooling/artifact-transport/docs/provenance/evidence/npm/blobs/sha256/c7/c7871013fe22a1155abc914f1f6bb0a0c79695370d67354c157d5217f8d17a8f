@@ -1,0 +1,154 @@
+{
+  "artifactId": "2175f82608726862bbab8c8649375956408ebcc00839d3a5ca365efeb9f3259c",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 10255,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "ea5a8caa168f387ef2ccac8d7eea12d3be7e2e70a8b7125b68dbc8d1e7fa1998",
+        "size": 11369,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "2b9eb61a4bf9e5769c2ba9c049dbfa942904d6c9d90afcaf9ee6a395f0e52eaf",
+        "size": 15602,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "fb1853fc6e52955d4b8abad35a2de9929c6721ce9134a93880af9818ca2ae691",
+        "size": 4062,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "46d0fdd495290c8b0842523542a8139b1b753f11c29c63e1f69459423d3a008d",
+        "size": 1187,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/add.js",
+        "sha256": "30e8cbc884b1110f8a4c94b087f3b2da54884648beb34d0d7cd10a71a495aecb",
+        "size": 964,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/register.js",
+        "sha256": "15bb3d606092fe87bce1809021a13b2de7aa7198570db497048886d49ddaa1da",
+        "size": 653,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/remove.js",
+        "sha256": "d8460dac3d357684399529720ced95e7af2d40090941f2a442d9f852777cc933",
+        "size": 318,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "7f06c48f315901d20eb0696f522374123b304c239b70f0df7bfd1c10dc84ea16",
+        "size": 1407,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 11369,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ea/ea5a8caa168f387ef2ccac8d7eea12d3be7e2e70a8b7125b68dbc8d1e7fa1998",
+          "sha256": "ea5a8caa168f387ef2ccac8d7eea12d3be7e2e70a8b7125b68dbc8d1e7fa1998"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "ea5a8caa168f387ef2ccac8d7eea12d3be7e2e70a8b7125b68dbc8d1e7fa1998",
+        "size": 11369
+      },
+      {
+        "blob": {
+          "bytes": 15602,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/2b/2b9eb61a4bf9e5769c2ba9c049dbfa942904d6c9d90afcaf9ee6a395f0e52eaf",
+          "sha256": "2b9eb61a4bf9e5769c2ba9c049dbfa942904d6c9d90afcaf9ee6a395f0e52eaf"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "2b9eb61a4bf9e5769c2ba9c049dbfa942904d6c9d90afcaf9ee6a395f0e52eaf",
+        "size": 15602
+      }
+    ],
+    "expandedBytes": 35562,
+    "packageIdentity": {
+      "author": "Gregor Martynus",
+      "homepage": null,
+      "license": "Apache-2.0",
+      "name": "before-after-hook",
+      "repository": "github:gr2m/before-after-hook",
+      "version": "4.0.0"
+    },
+    "packageMetadata": {
+      "author": "Gregor Martynus",
+      "description": "asynchronous before/error/after hooks for internal functionality",
+      "devDependencies": {
+        "@types/node": "^22.15.17",
+        "c8": "^10.1.3",
+        "prettier": "^2.0.0",
+        "tsd": "^0.24.1",
+        "typescript": "^4.8.4"
+      },
+      "exports": "./index.js",
+      "files": [
+        "index.js",
+        "index.d.ts",
+        "lib"
+      ],
+      "keywords": [
+        "hook",
+        "hooks",
+        "api"
+      ],
+      "license": "Apache-2.0",
+      "name": "before-after-hook",
+      "release": {
+        "branches": [
+          "+([0-9]).x",
+          "main",
+          "next",
+          {
+            "name": "beta",
+            "prerelease": true
+          }
+        ]
+      },
+      "renovate": {
+        "extends": [
+          "github>gr2m/.github"
+        ]
+      },
+      "repository": "github:gr2m/before-after-hook",
+      "scripts": {
+        "lint": "prettier --check \"*.{js,json,ts,md}\" \"test//*.{js,json,ts,md}\" \".github/**/*.yml\"",
+        "lint:fix": "prettier --write \"*.{js,json,ts,md}\" \"test//*.{js,json,ts,md}\" \".github/**/*.yml\"",
+        "postcoverage": "open-cli coverage/index.html",
+        "test": "npm run test:code && npm run test:tsc && npm run test:tsd && npm run lint",
+        "test:code": "c8 --100 --clean node --test",
+        "test:deno": "deno test --no-check",
+        "test:tsc": "tsc --allowJs --noEmit --esModuleInterop --skipLibCheck --lib es2020 index.js",
+        "test:tsd": "tsd"
+      },
+      "type": "module",
+      "types": "./index.d.ts",
+      "version": "4.0.0"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 10255,
+      "sha256": "7546cc1a38c955c463617674d7b4f8bfea98b5e04cc468a501759a9ca9bad4f4"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

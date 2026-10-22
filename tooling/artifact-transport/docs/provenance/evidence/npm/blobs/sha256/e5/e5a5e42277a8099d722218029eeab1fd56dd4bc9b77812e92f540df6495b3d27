@@ -1,0 +1,198 @@
+{
+  "artifactId": "6c47c60f73bf26c8efac3cc5524cef4c98b7f1ac1baeaaab5b241444961505b7",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5335,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "41bd6d9ba4bb32c97f332bdf389dc07d8b61b600a9de2974b9ed4e4ac6cc3c03",
+        "size": 1077,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "d7dad385540cc08b6589681b9204a265699c713ed16ac2b759d4c727558302ae",
+        "size": 3059,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist-bundle/index.js",
+        "sha256": "1d74a45ee1922fbdfd04deaefbb2095aa46b8106f6f3e5126ad7fa8918109965",
+        "size": 2609,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist-bundle/index.js.map",
+        "sha256": "8d82f9ed0101b4a9b26d2757dc8050608e724a89fa7fd39e748e688222a13ae0",
+        "size": 4942,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist-src/bottleneck.d.js",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist-src/error-request.js",
+        "sha256": "90b0403461c9d80dc974ddfb2adc320f9b75f8ce9cc63a04315256dbda434a59",
+        "size": 616,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist-src/index.js",
+        "sha256": "f9405b5bc30abf012c8848c361b1c418e3817c1f8716990b8696b1bf60ff173d",
+        "size": 969,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist-src/types.js",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist-src/version.js",
+        "sha256": "21509abce459e545c12b3f119532671452568a4cc80636d3024d98c02cebfb30",
+        "size": 47,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist-src/wrap-request.js",
+        "sha256": "2a07f6c04cf821975750c4b14ab5818fc15348657b84b553d5984a77eafb9807",
+        "size": 1224,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist-types/error-request.d.ts",
+        "sha256": "1ef85e216ecbe0f77f9ba9ec44ea8892e9466f74c98e6ac7259b1e31ed9093b5",
+        "size": 432,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist-types/index.d.ts",
+        "sha256": "937ec411f3376881e9340e4ac9957c862bd50e0231c67b722065671907e26286",
+        "size": 468,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist-types/types.d.ts",
+        "sha256": "4964df2a628943bce547a2f1e1d8b63df44cfdf941ddfc25eb4ff344f8ed3287",
+        "size": 400,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist-types/version.d.ts",
+        "sha256": "6bcc43e7261c858761a8a2d30db9ce86a1cfd6a6bf18f58ecde0d772adece4ee",
+        "size": 40,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist-types/wrap-request.d.ts",
+        "sha256": "bb5deebe1eabb0dfc80048fa4dc791e86e2bc3cb687fc644904ae4483abeb274",
+        "size": 449,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "127be948a2ae3a4e954adb914b1c7134c2d2e3355d7d112771a27dd21789c053",
+        "size": 1217,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1077,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/41/41bd6d9ba4bb32c97f332bdf389dc07d8b61b600a9de2974b9ed4e4ac6cc3c03",
+          "sha256": "41bd6d9ba4bb32c97f332bdf389dc07d8b61b600a9de2974b9ed4e4ac6cc3c03"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "41bd6d9ba4bb32c97f332bdf389dc07d8b61b600a9de2974b9ed4e4ac6cc3c03",
+        "size": 1077
+      },
+      {
+        "blob": {
+          "bytes": 3059,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d7/d7dad385540cc08b6589681b9204a265699c713ed16ac2b759d4c727558302ae",
+          "sha256": "d7dad385540cc08b6589681b9204a265699c713ed16ac2b759d4c727558302ae"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "d7dad385540cc08b6589681b9204a265699c713ed16ac2b759d4c727558302ae",
+        "size": 3059
+      }
+    ],
+    "expandedBytes": 17549,
+    "packageIdentity": {
+      "author": "Simon Grondin (http://github.com/SGrondin)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "@octokit/plugin-retry",
+      "repository": "github:octokit/plugin-retry.js",
+      "version": "8.1.1"
+    },
+    "packageMetadata": {
+      "author": "Simon Grondin (http://github.com/SGrondin)",
+      "dependencies": {
+        "@octokit/request-error": "^7.1.1",
+        "@octokit/types": "^17.0.0",
+        "bottleneck": "^2.15.3"
+      },
+      "description": "Automatic retry plugin for octokit",
+      "devDependencies": {
+        "@octokit/core": "^7.0.7",
+        "@octokit/tsconfig": "^4.0.0",
+        "@types/node": "^24.0.0",
+        "@vitest/coverage-v8": "^4.0.0",
+        "esbuild": "^0.28.0",
+        "fetch-mock": "^12.0.0",
+        "prettier": "3.8.1",
+        "semantic-release-plugin-update-version-in-files": "^2.0.0",
+        "tinyglobby": "^0.2.15",
+        "typescript": "^5.0.0",
+        "vitest": "^4.0.0"
+      },
+      "engines": {
+        "node": ">= 20"
+      },
+      "exports": {
+        ".": {
+          "default": "./dist-bundle/index.js",
+          "import": "./dist-bundle/index.js",
+          "types": "./dist-types/index.d.ts"
+        }
+      },
+      "files": [
+        "dist-*/**",
+        "bin/**"
+      ],
+      "license": "MIT",
+      "name": "@octokit/plugin-retry",
+      "peerDependencies": {
+        "@octokit/core": ">=7"
+      },
+      "publishConfig": {
+        "access": "public",
+        "provenance": true
+      },
+      "repository": "github:octokit/plugin-retry.js",
+      "sideEffects": false,
+      "type": "module",
+      "types": "./dist-types/index.d.ts",
+      "version": "8.1.1"
+    },
+    "physicalEntryCount": 16,
+    "tarball": {
+      "bytes": 5335,
+      "sha256": "3fefd6b3892e730b099c331a1e57fde8abd990d29351d8e892be1820536c56f3"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

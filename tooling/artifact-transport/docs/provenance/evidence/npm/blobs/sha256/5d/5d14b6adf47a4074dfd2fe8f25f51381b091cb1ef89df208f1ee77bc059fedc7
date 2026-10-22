@@ -1,0 +1,125 @@
+{
+  "artifactId": "600827b32d71b6fadac1728b824a944260b0cae5cc80accf7761e6b8d563df23",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2258,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "804fb0c13d2ebd79f57cddfdda769f13217b423b2a7151e0c456cdecf635ae80",
+        "size": 1032,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "fdbafdc163f668fe325333d62387365c9b074e01253e32824a4dbf5cc552705d",
+        "size": 415,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "25594dab72681c910d9cc919263a4daf27d77a75e0d2c26a4d958d6d6b798f86",
+        "size": 650,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "dcd0d891bc1a13eefa64655c4601387daecbf5c93f96d868f9c0eaf97c723c1a",
+        "size": 1347,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1109,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/48/48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+          "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109
+      },
+      {
+        "blob": {
+          "bytes": 1347,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/dc/dcd0d891bc1a13eefa64655c4601387daecbf5c93f96d868f9c0eaf97c723c1a",
+          "sha256": "dcd0d891bc1a13eefa64655c4601387daecbf5c93f96d868f9c0eaf97c723c1a"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "dcd0d891bc1a13eefa64655c4601387daecbf5c93f96d868f9c0eaf97c723c1a",
+        "size": 1347
+      }
+    ],
+    "expandedBytes": 4553,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "path-key",
+      "repository": "sindresorhus/path-key",
+      "version": "3.1.1"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "description": "Get the PATH environment variable key cross-platform",
+      "devDependencies": {
+        "@types/node": "^11.13.0",
+        "ava": "^1.4.1",
+        "tsd": "^0.7.2",
+        "xo": "^0.24.0"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "keywords": [
+        "path",
+        "key",
+        "environment",
+        "env",
+        "variable",
+        "var",
+        "get",
+        "cross-platform",
+        "windows"
+      ],
+      "license": "MIT",
+      "name": "path-key",
+      "repository": "sindresorhus/path-key",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "version": "3.1.1"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2258,
+      "sha256": "4b8999acb914830edcd3c5b8fec632b32c6bc759ac3edc86336f5a9e08ba7b92"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

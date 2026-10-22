@@ -1,4 +1,6 @@
 import { projectRuntimeText } from "./runtime-policy.mjs";
+import artifactTransportPolicy from "../docs/release/artifact-transport-policy.json" with { type: "json" };
+import artifactTransportBuild from "../.github/actions/retain-artifact/dist/build.json" with { type: "json" };
 import {
   validateFrozenMatrix,
   runtimeDigest,
@@ -78,7 +80,11 @@ export const CHECK_JOBS = Object.freeze({
  * this policy cannot authorize an omitted integration.
  */
 export const QUALIFICATION_POLICY = Object.freeze({
-  version: 6,
+  version: 7,
+  artifactTransportSha256: evidenceFingerprint({
+    policy: artifactTransportPolicy,
+    build: artifactTransportBuild,
+  }),
   runtimeMatrixSha256: FROZEN_RUNTIME_MATRIX
     ? runtimeDigest(FROZEN_RUNTIME_MATRIX)
     : null,

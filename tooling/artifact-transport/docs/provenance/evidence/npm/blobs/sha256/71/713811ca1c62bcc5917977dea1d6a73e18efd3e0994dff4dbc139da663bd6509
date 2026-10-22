@@ -1,0 +1,171 @@
+{
+  "artifactId": "67550c4ab2a481eb1d4febafacfe69642f2fe9bf0d6a505f73e5e0171cf16848",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 20336,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.github/workflows/ci.yml",
+        "sha256": "dad4c977b98e11ed03ab5d3e4edf3af2d371a40711420be53342e21326fe6398",
+        "size": 550,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "bea8e581121934176676096d9745f71a67bc2f8fe1d5579ba0a977c78902beea",
+        "size": 1071,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "49d39e2dd91934349f0b8d44e75cb2c83a029f1f1728f4a0e6b8d7fcb44fd437",
+        "size": 4319,
+        "type": "FILE"
+      },
+      {
+        "path": "package/__tests__/helpers.cjs",
+        "sha256": "c8be210d21163c8c6c447888ef3b654c024b13b19f907451a2ac8eb613987a6a",
+        "size": 415,
+        "type": "FILE"
+      },
+      {
+        "path": "package/__tests__/performance.cjs",
+        "sha256": "5a0f2474e6ef4dd136a52c9a921b781fe5d1f72b3054f7ad0481996df4ea0ae4",
+        "size": 4208,
+        "type": "FILE"
+      },
+      {
+        "path": "package/__tests__/performance.mjs",
+        "sha256": "57fe9479feb8eadfe2b75256c945f07f60af3f3e4d6ee6cc787990305a3b1b91",
+        "size": 4189,
+        "type": "FILE"
+      },
+      {
+        "path": "package/__tests__/unit.cjs",
+        "sha256": "391097318a1769b4fe8cae49066d3b507eedb0e06afff6e0318e79ef13b937a4",
+        "size": 6537,
+        "type": "FILE"
+      },
+      {
+        "path": "package/__tests__/unit.mjs",
+        "sha256": "eb60ccc2d74983e9a503719b7d4023510bd91445cae03680d77d55e10675b76f",
+        "size": 6521,
+        "type": "FILE"
+      },
+      {
+        "path": "package/json-with-bigint.cjs",
+        "sha256": "b4e25b596f98423d71d1e306fe55d2078837debbd6de865ea89d5485c22b8ebd",
+        "size": 18446,
+        "type": "FILE"
+      },
+      {
+        "path": "package/json-with-bigint.d.cts",
+        "sha256": "7fbab0b1637a9ca9ccc883b1bda16dd8030b78199c820f1d57ac1a56ae39f039",
+        "size": 95,
+        "type": "FILE"
+      },
+      {
+        "path": "package/json-with-bigint.d.ts",
+        "sha256": "7fbab0b1637a9ca9ccc883b1bda16dd8030b78199c820f1d57ac1a56ae39f039",
+        "size": 95,
+        "type": "FILE"
+      },
+      {
+        "path": "package/json-with-bigint.js",
+        "sha256": "594a1439c70bdbd1d51a21866a7d84f0c3992ed667500ddf64a78868c42f4fd6",
+        "size": 18263,
+        "type": "FILE"
+      },
+      {
+        "path": "package/json-with-bigint.min.js",
+        "sha256": "278458c67b658edd1d6f10c5db638062a169c63b5b00bb440c370931f7b3d67d",
+        "size": 5567,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "0a55a1d4ab27899892beaab3b4f8dfd8f22678befcb060150636a288ab1e8dab",
+        "size": 900,
+        "type": "FILE"
+      },
+      {
+        "path": "package/scripts/build-cjs.js",
+        "sha256": "d0b0c7cf4c9c6d8d1d980aa39bf4fb8af4e853d493e40d1820b146ad75612444",
+        "size": 1704,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "1cff72a561d013410ca145832a199f67141779508ca3deb712924ad96354bf3a",
+        "size": 155,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1071,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/be/bea8e581121934176676096d9745f71a67bc2f8fe1d5579ba0a977c78902beea",
+          "sha256": "bea8e581121934176676096d9745f71a67bc2f8fe1d5579ba0a977c78902beea"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "bea8e581121934176676096d9745f71a67bc2f8fe1d5579ba0a977c78902beea",
+        "size": 1071
+      }
+    ],
+    "expandedBytes": 73035,
+    "packageIdentity": {
+      "author": "Ivan Korolenko <iam@ivankorolenko.com>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "json-with-bigint",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Ivan-Korolenko/json-with-bigint"
+      },
+      "version": "3.5.12"
+    },
+    "packageMetadata": {
+      "author": "Ivan Korolenko <iam@ivankorolenko.com>",
+      "description": "JS library that allows you to easily serialize and deserialize data with BigInt values",
+      "exports": {
+        "import": "./json-with-bigint.js",
+        "require": "./json-with-bigint.cjs"
+      },
+      "keywords": [
+        "JSON",
+        "BigInt",
+        "js",
+        "ts",
+        "library"
+      ],
+      "license": "MIT",
+      "name": "json-with-bigint",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Ivan-Korolenko/json-with-bigint"
+      },
+      "scripts": {
+        "build:cjs": "node ./scripts/build-cjs.js",
+        "performance:cjs": "node __tests__/performance.cjs",
+        "performance:esm": "node __tests__/performance.mjs",
+        "test": "npm run unit:cjs && npm run unit:esm",
+        "unit:cjs": "node __tests__/unit.cjs",
+        "unit:esm": "node __tests__/unit.mjs"
+      },
+      "type": "module",
+      "types": "./json-with-bigint.d.ts",
+      "version": "3.5.12"
+    },
+    "physicalEntryCount": 16,
+    "tarball": {
+      "bytes": 20336,
+      "sha256": "608af3ce68ceba88a6cec4cdbd2fb35f1ac219a3b038f995344d0881b73b86ae"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

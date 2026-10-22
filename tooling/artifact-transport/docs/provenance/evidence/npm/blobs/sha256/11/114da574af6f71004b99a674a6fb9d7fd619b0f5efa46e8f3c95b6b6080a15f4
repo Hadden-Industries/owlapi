@@ -1,0 +1,190 @@
+{
+  "artifactId": "3af97a7171bfc81e8bc6e2ad363ad450563f510250f09a55239700438bd0785d",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5837,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.eslintrc",
+        "sha256": "0694050195fc694c5846b0a2a66b437ac775da988f0a779c55fb892597f7f641",
+        "size": 43,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "1093cb6a97c6d2ad2529a700a26908619a3b06816afc2ad3d6646c90b696b5b0",
+        "size": 582,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nycrc",
+        "sha256": "997785c50b0773e5e18bf15550fbf57823c634fefe623cd37b3c83696402ad0a",
+        "size": 139,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "875c1b52c78dc70e2b897f0177ce16f14a86fa9e444ace38bf300f77eaf0fc48",
+        "size": 7799,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "cfc3f455254c0af0655cc3ff46a41ed644b67599f6043346169d285bf2b3cf3b",
+        "size": 1071,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "f9002e013b25009c9154f2ac50e7175bbfd8ff1fdfbc448a4030f165f0e7642a",
+        "size": 1729,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "d8fc5cfabcf2d90195bbc210d7145ea64381c978458ea5d56ec9855a60660905",
+        "size": 73,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "c88fadcc06b329b1f28d34145feedfee62013206530338f480dec563645bbf0a",
+        "size": 374,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b811e76ed3775f79abd7ea695c4407d800678a71703762f50bdde6f1f03098d4",
+        "size": 1867,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "01201d2c8a3871f47ffe8e9955bc6072b87fd9f82c856aed71a23fd4e5ba1047",
+        "size": 1002,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "7903e692216770b0f59ea1f74ec691385b29fd142b11bc5ef25b2ef6cd58b59f",
+        "size": 123,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1071,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/cf/cfc3f455254c0af0655cc3ff46a41ed644b67599f6043346169d285bf2b3cf3b",
+          "sha256": "cfc3f455254c0af0655cc3ff46a41ed644b67599f6043346169d285bf2b3cf3b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "cfc3f455254c0af0655cc3ff46a41ed644b67599f6043346169d285bf2b3cf3b",
+        "size": 1071
+      },
+      {
+        "blob": {
+          "bytes": 1729,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/f9/f9002e013b25009c9154f2ac50e7175bbfd8ff1fdfbc448a4030f165f0e7642a",
+          "sha256": "f9002e013b25009c9154f2ac50e7175bbfd8ff1fdfbc448a4030f165f0e7642a"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "f9002e013b25009c9154f2ac50e7175bbfd8ff1fdfbc448a4030f165f0e7642a",
+        "size": 1729
+      }
+    ],
+    "expandedBytes": 14802,
+    "packageIdentity": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "homepage": "https://github.com/ljharb/has-bigints#readme",
+      "license": "MIT",
+      "name": "has-bigints",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ljharb/has-bigints.git"
+      },
+      "version": "1.1.0"
+    },
+    "packageMetadata": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "bugs": {
+        "url": "https://github.com/ljharb/has-bigints/issues"
+      },
+      "description": "Determine if the JS environment has BigInt support.",
+      "devDependencies": {
+        "@arethetypeswrong/cli": "^0.17.1",
+        "@ljharb/eslint-config": "^21.1.1",
+        "@ljharb/tsconfig": "^0.2.2",
+        "@types/tape": "^5.8.0",
+        "auto-changelog": "^2.5.0",
+        "encoding": "^0.1.13",
+        "eslint": "=8.8.0",
+        "in-publish": "^2.0.1",
+        "npmignore": "^0.3.1",
+        "nyc": "^10.3.2",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.9.0",
+        "typescript": "next"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "homepage": "https://github.com/ljharb/has-bigints#readme",
+      "keywords": [
+        "BigInt",
+        "bigints",
+        "typeof",
+        "ES2020"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "has-bigints",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ljharb/has-bigints.git"
+      },
+      "scripts": {
+        "lint": "eslint --ext=js,mjs .",
+        "postlint": "tsc && attw -P",
+        "posttest": "npx npm@'>= 10.2' audit --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only",
+        "tests-only": "nyc tape 'test/**/*.js'",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "version": "1.1.0"
+    },
+    "physicalEntryCount": 11,
+    "tarball": {
+      "bytes": 5837,
+      "sha256": "4312b2ec05bff4cf50d8086bd79e429a9e2a81c660dd732e6dcda0cbd0b9d49b"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

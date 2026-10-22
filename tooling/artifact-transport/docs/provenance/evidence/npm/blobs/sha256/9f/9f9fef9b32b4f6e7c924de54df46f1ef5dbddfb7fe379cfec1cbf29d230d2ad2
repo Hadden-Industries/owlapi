@@ -1,0 +1,182 @@
+{
+  "artifactId": "e1041f46a1280aac2360b0cbe7eba62b3567e6c7b8fc814c57e7aa547fd9d805",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 8465,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "79bad9f51738814f83251ae89460326b2ff2ea19ff5f71ab8f7636b2e17bb231",
+        "size": 1074,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "58d3d8966de44696577fc02fc34dda6da6839936b236b5b32cb77fd02e26040b",
+        "size": 977,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/archivers/archive-entry.js",
+        "sha256": "383cbf43e4de337e7f279574a4f62c79231c2724f5cd5c9cc9b89d4fb2fe4b70",
+        "size": 466,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/archivers/archive-output-stream.js",
+        "sha256": "f476d1a72b42502541043e8c144833953ecdb9dd0ed7df4ed24846eff6aea2c5",
+        "size": 2790,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/archivers/zip/constants.js",
+        "sha256": "ad592e7b3343ceb249da9ee546cd947158babbbcb8ab55fd65c4fb02f1acd77e",
+        "size": 1968,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/archivers/zip/general-purpose-bit.js",
+        "sha256": "e27832b986cc56aca60d84677293777237911e16363186eda14ede3833524ef0",
+        "size": 2837,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/archivers/zip/unix-stat.js",
+        "sha256": "96a8d7b78fe17146fb29823e834584850d6d9a2faa8215c2e02ccfd42ba36c37",
+        "size": 1188,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/archivers/zip/util.js",
+        "sha256": "7002fb2ad3cfac7c52b65698ea1910a1928ef9639e033336dbc0c5bd234286ab",
+        "size": 1995,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/archivers/zip/zip-archive-entry.js",
+        "sha256": "e6ffe10c21bad61c030491f9907ddb83ff18a842831d402747397a03aea88ed1",
+        "size": 8526,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/archivers/zip/zip-archive-output-stream.js",
+        "sha256": "262cce586a8d182efb086e5be6b617958366851b53c1c95298377eec085274c4",
+        "size": 11634,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/compress-commons.js",
+        "sha256": "390e74d7761c0baec54ba02577d5e9d9bc6ea96ed9c44118e2e231fcf79f2357",
+        "size": 492,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/util/index.js",
+        "sha256": "36d5667fa0e645d420bc1429cc50edf580c6b979a0f454a35b34231042da45e8",
+        "size": 723,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "d405726826d0c72939d487c8b81b1a278741e825f7a7e2ea7748c9bd9cb5c57c",
+        "size": 1056,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1074,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/79/79bad9f51738814f83251ae89460326b2ff2ea19ff5f71ab8f7636b2e17bb231",
+          "sha256": "79bad9f51738814f83251ae89460326b2ff2ea19ff5f71ab8f7636b2e17bb231"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "79bad9f51738814f83251ae89460326b2ff2ea19ff5f71ab8f7636b2e17bb231",
+        "size": 1074
+      },
+      {
+        "blob": {
+          "bytes": 977,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/58/58d3d8966de44696577fc02fc34dda6da6839936b236b5b32cb77fd02e26040b",
+          "sha256": "58d3d8966de44696577fc02fc34dda6da6839936b236b5b32cb77fd02e26040b"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "58d3d8966de44696577fc02fc34dda6da6839936b236b5b32cb77fd02e26040b",
+        "size": 977
+      }
+    ],
+    "expandedBytes": 35726,
+    "packageIdentity": {
+      "author": {
+        "name": "Chris Talkington",
+        "url": "http://christalkington.com/"
+      },
+      "homepage": "https://github.com/archiverjs/node-compress-commons",
+      "license": "MIT",
+      "name": "compress-commons",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/archiverjs/node-compress-commons.git"
+      },
+      "version": "6.0.2"
+    },
+    "packageMetadata": {
+      "author": {
+        "name": "Chris Talkington",
+        "url": "http://christalkington.com/"
+      },
+      "bugs": {
+        "url": "https://github.com/archiverjs/node-compress-commons/issues"
+      },
+      "dependencies": {
+        "crc-32": "^1.2.0",
+        "crc32-stream": "^6.0.0",
+        "is-stream": "^2.0.1",
+        "normalize-path": "^3.0.0",
+        "readable-stream": "^4.0.0"
+      },
+      "description": "a library that defines a common interface for working with archive formats within node",
+      "devDependencies": {
+        "chai": "4.4.1",
+        "mkdirp": "3.0.1",
+        "mocha": "10.3.0",
+        "rimraf": "5.0.5"
+      },
+      "engines": {
+        "node": ">= 14"
+      },
+      "files": [
+        "lib"
+      ],
+      "homepage": "https://github.com/archiverjs/node-compress-commons",
+      "keywords": [
+        "compress",
+        "commons",
+        "archive"
+      ],
+      "license": "MIT",
+      "main": "lib/compress-commons.js",
+      "name": "compress-commons",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/archiverjs/node-compress-commons.git"
+      },
+      "scripts": {
+        "test": "mocha --reporter dot"
+      },
+      "version": "6.0.2"
+    },
+    "physicalEntryCount": 13,
+    "tarball": {
+      "bytes": 8465,
+      "sha256": "4faeb2e160cdbf60fdb7ad2449132854d326968827460110fd8f11f8b3036b74"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

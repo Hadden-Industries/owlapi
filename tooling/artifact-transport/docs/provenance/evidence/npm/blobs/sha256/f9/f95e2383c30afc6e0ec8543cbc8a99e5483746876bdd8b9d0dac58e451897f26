@@ -1,0 +1,161 @@
+{
+  "artifactId": "5d9ec6d90e0ff7968e0b05f59eba46dff2aded73464bd75338e0d316d287def5",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 9310,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.idea/encodings.xml",
+        "sha256": "35e068de75a499c0974585f01b4668c56f946dcba3a8238f4c1a5b6a467aa5aa",
+        "size": 159,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.idea/modules.xml",
+        "sha256": "2f3e36a8288066d7bcca48c5ae710326ef0e76d6a46c358162e2ea68d7874a57",
+        "size": 274,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.idea/node-tunnel.iml",
+        "sha256": "035fd8fa90a68984b9c6ae2b35599ec30c045be661882ab8bf638bedfa60e221",
+        "size": 458,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.idea/vcs.xml",
+        "sha256": "55768f1f84fb117f1d0fc383e180b5d0aa5e5e6584c8c4a2995c15b4237f0972",
+        "size": 180,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.idea/workspace.xml",
+        "sha256": "7af674d4148e32b3c8084aa01ea9f0b03a89d3e097bcba3b7c7e40a9e5326b27",
+        "size": 48965,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.travis.yml",
+        "sha256": "313963a1a6476ce2d8141f485738a5a9b55d235ae42aef2d0185a52d0a620dce",
+        "size": 60,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "f37a8ae38d10a0ea87fb49a67aabe299718891384e5671586536bfc61f7b6638",
+        "size": 518,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "a0932fa80b4c27a0dce36e606e8d755cb02511ff25b41622314882415cfd321b",
+        "size": 1083,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "9afc542dbf47853c2f04b725d372c24dcce4c2b5cfba6f89eb14c362756b4d2e",
+        "size": 4789,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "db8151a1f5f71c298bda92fef68f35dcdbfa4a1d5f03fb632532858d09d6344c",
+        "size": 42,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tunnel.js",
+        "sha256": "e60f3c68b621efdcad4a32b68752564def48aaa19e3a702fb1436eb0363d6890",
+        "size": 7628,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "8ad242b674c8fff892dfcca26f140c70c116b3cfcb59c2fe975c013ff7b0c173",
+        "size": 730,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1083,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a0/a0932fa80b4c27a0dce36e606e8d755cb02511ff25b41622314882415cfd321b",
+          "sha256": "a0932fa80b4c27a0dce36e606e8d755cb02511ff25b41622314882415cfd321b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "a0932fa80b4c27a0dce36e606e8d755cb02511ff25b41622314882415cfd321b",
+        "size": 1083
+      },
+      {
+        "blob": {
+          "bytes": 4789,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9a/9afc542dbf47853c2f04b725d372c24dcce4c2b5cfba6f89eb14c362756b4d2e",
+          "sha256": "9afc542dbf47853c2f04b725d372c24dcce4c2b5cfba6f89eb14c362756b4d2e"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "9afc542dbf47853c2f04b725d372c24dcce4c2b5cfba6f89eb14c362756b4d2e",
+        "size": 4789
+      }
+    ],
+    "expandedBytes": 64886,
+    "packageIdentity": {
+      "author": "Koichi Kobayashi <koichik@improvement.jp>",
+      "homepage": "https://github.com/koichik/node-tunnel/",
+      "license": "MIT",
+      "name": "tunnel",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/koichik/node-tunnel.git"
+      },
+      "version": "0.0.6"
+    },
+    "packageMetadata": {
+      "author": "Koichi Kobayashi <koichik@improvement.jp>",
+      "bugs": "https://github.com/koichik/node-tunnel/issues",
+      "description": "Node HTTP/HTTPS Agents for tunneling proxies",
+      "devDependencies": {
+        "mocha": "^5.2.0",
+        "should": "^13.2.3"
+      },
+      "directories": {
+        "lib": "./lib"
+      },
+      "engines": {
+        "node": ">=0.6.11 <=0.7.0 || >=0.7.3"
+      },
+      "homepage": "https://github.com/koichik/node-tunnel/",
+      "keywords": [
+        "http",
+        "https",
+        "agent",
+        "proxy",
+        "tunnel"
+      ],
+      "license": "MIT",
+      "main": "./index.js",
+      "name": "tunnel",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/koichik/node-tunnel.git"
+      },
+      "scripts": {
+        "test": "mocha"
+      },
+      "version": "0.0.6"
+    },
+    "physicalEntryCount": 12,
+    "tarball": {
+      "bytes": 9310,
+      "sha256": "24f765728141836f8c34f32997f0b3cf3cbab6cf382bb46501adc68355ba7d4d"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

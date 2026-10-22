@@ -11,6 +11,7 @@ import * as releaseEvidence from "./release-evidence.mjs";
 import { contractReport } from "./fixtures/owl-contract-report.mjs";
 import { validateReleaseEvidence } from "./validate-release-evidence.mjs";
 import { sourceFingerprint } from "./consumer-source-snapshot.mjs";
+import { physicalName } from "../tooling/artifact-transport/identity.mjs";
 
 const { buildReleaseEvidence } = releaseEvidence;
 
@@ -207,6 +208,26 @@ const scopedFacts = () => {
   ];
   return candidate;
 };
+
+test("strict release evidence retains each equivalent approval transport input", () => {
+  const candidate = scopedFacts();
+  const identity = {
+    logical: "release-approval-release-manual-12345-1",
+    run: "12345",
+    attempt: 1,
+    producer: "a".repeat(16),
+    invocation: "b".repeat(32),
+  };
+  candidate.inputEvidence.push(
+    ...[0, 1].map((ordinal) => ({
+      name: physicalName({ ...identity, ordinal }),
+      sha256: sha("f"),
+    })),
+  );
+  const evidence = buildReleaseEvidence(candidate);
+  expect(() => validateReleaseEvidence(evidence)).not.toThrow();
+  expect(evidence.inputEvidence).toEqual(candidate.inputEvidence);
+});
 
 test("fresh scoped RC evidence binds one source and run without borrowing alpha reconciliation", () => {
   const evidence = buildReleaseEvidence(scopedFacts());

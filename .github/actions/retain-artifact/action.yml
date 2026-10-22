@@ -1,0 +1,26 @@
+name: Retain an immutable artifact
+description: Freeze explicit payloads and recover bounded transient failures without overwriting evidence
+inputs:
+  name:
+    description: Logical artifact coordinate
+    required: true
+  path:
+    description: Literal payload files or directories, one per line
+    required: true
+  retention-days:
+    description: Retention period in days
+    required: true
+  compression-level:
+    description: Optional ZIP compression override; otherwise use the shared transport policy
+outputs:
+  artifact-id:
+    description: Selected finalized artifact ID
+  artifact-digest:
+    description: Selected server archive SHA256
+  artifact-url:
+    description: Selected artifact URL
+  artifact-name:
+    description: Immutable physical artifact name
+runs:
+  using: node24
+  main: dist/action.mjs

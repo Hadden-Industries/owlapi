@@ -24,13 +24,10 @@ runs:
   using: composite
   steps:
     - uses: ./.github/actions/setup-producer
-    - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+    - uses: ./.github/actions/collect-artifacts
       with:
         pattern: consumer-runtime-*-attempt-${{ github.run_attempt }}
         path: .release/runtime-reports
-        merge-multiple: false
-        skip-decompress: false
-        digest-mismatch: error
     - id: require
       shell: bash
       env:
@@ -40,13 +37,8 @@ runs:
         OWLAPI_CANDIDATE_DIGEST: ${{ inputs.candidate-digest }}
       run: node scripts/aggregate-consumer-runtimes.mjs
     - id: upload
-      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+      uses: ./.github/actions/retain-artifact
       with:
         name: runtime-qualification-${{ github.run_id }}-${{ github.run_attempt }}
         path: .release/runtime-qualification/
-        if-no-files-found: error
         retention-days: 90
-        compression-level: 0
-        overwrite: false
-        include-hidden-files: false
-        archive: true

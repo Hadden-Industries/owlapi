@@ -1,0 +1,16 @@
+name: Collect logical artifact coordinates
+description: Select and validate immutable transport copies before materializing one report per coordinate
+inputs:
+  mode:
+    description: Fixed collection operation
+    default: collect
+  name:
+    description: Exact logical coordinate
+  pattern:
+    description: Logical selector with one wildcard
+  path:
+    description: New destination directory within the workspace
+    required: true
+runs:
+  using: node24
+  main: ../retain-artifact/dist/action.mjs

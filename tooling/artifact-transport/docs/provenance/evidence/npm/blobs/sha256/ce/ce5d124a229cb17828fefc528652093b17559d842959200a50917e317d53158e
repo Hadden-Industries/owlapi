@@ -1,0 +1,157 @@
+{
+  "artifactId": "5dd8573a39821ade192d1ce9b6d540c5fc17dbb9910ba3c0832af6de90d65609",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4958,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "ddc9158fa20e427bc12fa8e1e6d07c642ed4d2c618607df768b30ae2986b3b7c",
+        "size": 1082,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "b7c102b14e9c5e063d7ff0276e17a372a4a5eeba2e7de007748d12a15b2be9cb",
+        "size": 1656,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.cjs",
+        "sha256": "f6f07fba44d572f4290a306300707ca0ca813199c97b81aa87e7b762bfcc721f",
+        "size": 4772,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.cts",
+        "sha256": "d26b5b4d52aca9b5628ab51556ad86e7f42d00e30d5a2bd3adc50dc09d6655cf",
+        "size": 1048,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.mts",
+        "sha256": "d26b5b4d52aca9b5628ab51556ad86e7f42d00e30d5a2bd3adc50dc09d6655cf",
+        "size": 1048,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.mjs",
+        "sha256": "48f61c4f14f74ca6d54fd69311c0edaa1d65d553efa134c4d43708263384ac6e",
+        "size": 4762,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "d26b5b4d52aca9b5628ab51556ad86e7f42d00e30d5a2bd3adc50dc09d6655cf",
+        "size": 1048,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "938f1de0f2ad17d651a4e6f981b3ba56ab47b3c1ec18378d1504dd63fadb70d0",
+        "size": 1385,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1082,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/dd/ddc9158fa20e427bc12fa8e1e6d07c642ed4d2c618607df768b30ae2986b3b7c",
+          "sha256": "ddc9158fa20e427bc12fa8e1e6d07c642ed4d2c618607df768b30ae2986b3b7c"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "ddc9158fa20e427bc12fa8e1e6d07c642ed4d2c618607df768b30ae2986b3b7c",
+        "size": 1082
+      },
+      {
+        "blob": {
+          "bytes": 1656,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/b7/b7c102b14e9c5e063d7ff0276e17a372a4a5eeba2e7de007748d12a15b2be9cb",
+          "sha256": "b7c102b14e9c5e063d7ff0276e17a372a4a5eeba2e7de007748d12a15b2be9cb"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "b7c102b14e9c5e063d7ff0276e17a372a4a5eeba2e7de007748d12a15b2be9cb",
+        "size": 1656
+      }
+    ],
+    "expandedBytes": 16801,
+    "packageIdentity": {
+      "author": "Brian J. Brennan <brianloveswords@gmail.com>",
+      "homepage": "https://github.com/brianloveswords/buffer-crc32",
+      "license": "MIT",
+      "name": "buffer-crc32",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/brianloveswords/buffer-crc32.git"
+      },
+      "version": "1.0.0"
+    },
+    "packageMetadata": {
+      "author": "Brian J. Brennan <brianloveswords@gmail.com>",
+      "contributors": [
+        {
+          "github": "mistakster",
+          "name": "Vladimir Kuznetsov"
+        }
+      ],
+      "dependencies": {},
+      "description": "A pure javascript CRC32 algorithm that plays nice with binary data",
+      "devDependencies": {
+        "prettier": "^3.2.4",
+        "tap": "~11.1.5"
+      },
+      "engines": {
+        "node": ">=8.0.0"
+      },
+      "exports": {
+        ".": {
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.cjs"
+        }
+      },
+      "files": [
+        "dist",
+        "index.d.ts",
+        "LICENSE",
+        "README.md"
+      ],
+      "homepage": "https://github.com/brianloveswords/buffer-crc32",
+      "license": "MIT",
+      "licenses": [
+        {
+          "type": "MIT",
+          "url": "https://github.com/brianloveswords/buffer-crc32/raw/master/LICENSE"
+        }
+      ],
+      "main": "./dist/index.cjs",
+      "name": "buffer-crc32",
+      "optionalDependencies": {},
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/brianloveswords/buffer-crc32.git"
+      },
+      "scripts": {
+        "build": "npx unbuild@2.0.0 && npx cpy-cli index.d.ts dist --rename=index.d.cts && npx cpy-cli index.d.ts dist --rename=index.d.mts",
+        "format": "prettier --write --log-level warn \"**/*.{json,md,js}\"",
+        "prepublishOnly": "npm run build",
+        "test": "tap tests/*.test.js --reporter classic"
+      },
+      "type": "commonjs",
+      "types": "./index.d.ts",
+      "version": "1.0.0"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 4958,
+      "sha256": "bbedaab7c94b9d392ea85da0a77c18c3a0bce3d47a1ca1685af11a747b2883ee"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

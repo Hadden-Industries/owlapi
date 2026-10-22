@@ -1,0 +1,3430 @@
+{
+  "artifactId": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 44,
+      "digestVerifiedFileCount": 44,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 44
+    },
+    "artifactId": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.84.1",
+        "for_package_purl": "pkg:npm/%40azure/core-paging@1.7.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/react-native",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.0.0",
+        "for_package_purl": "pkg:npm/%40azure/core-paging@1.7.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40azure/dev-tool",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.60.0",
+        "for_package_purl": "pkg:npm/%40azure/core-paging@1.7.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/playwright",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^10.1.0",
+        "for_package_purl": "pkg:npm/%40azure/core-paging@1.7.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/cross-env",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^19.2.14",
+        "for_package_purl": "pkg:npm/%40azure/core-paging@1.7.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40types/react",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.6.2",
+        "for_package_purl": "pkg:npm/%40azure/core-paging@1.7.0",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/tslib",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^22.0.0",
+        "for_package_purl": "pkg:npm/%40azure/core-paging@1.7.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40types/node",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^3.0.0",
+        "for_package_purl": "pkg:npm/%40azure/core-paging@1.7.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40azure/eslint-plugin-azure-sdk",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^3.9.1",
+        "for_package_purl": "pkg:npm/%40azure/core-paging@1.7.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/prettier",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.1.2",
+        "for_package_purl": "pkg:npm/%40azure/core-paging@1.7.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40vitest/browser-playwright",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.1.2",
+        "for_package_purl": "pkg:npm/%40azure/core-paging@1.7.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40vitest/coverage-istanbul",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.1.2",
+        "for_package_purl": "pkg:npm/%40azure/core-paging@1.7.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/vitest",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^6.1.0",
+        "for_package_purl": "pkg:npm/%40azure/core-paging@1.7.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/rimraf",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^9.39.1",
+        "for_package_purl": "pkg:npm/%40azure/core-paging@1.7.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/eslint",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "~6.0.2",
+        "for_package_purl": "pkg:npm/%40azure/core-paging@1.7.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/typescript",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "Microsoft Corporation",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 52,
+                "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/package.json",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "  \"license\": \"MIT\",",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_30.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+                "score": 100,
+                "start_line": 52
+              }
+            ]
+          }
+        ],
+        "md5": "2eec09b01b11d77930226efbe943fc7e",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/@azure%2fcore-paging/1.7.0",
+            "bug_tracking_url": "https://github.com/Azure/azure-sdk-for-js/issues",
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "mit",
+            "declared_license_expression_spdx": "MIT",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.84.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/react-native",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40azure/dev-tool",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.60.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/playwright",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^10.1.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/cross-env",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^19.2.14",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40types/react",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.6.2",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/tslib",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^22.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40types/node",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^3.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40azure/eslint-plugin-azure-sdk",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^3.9.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/prettier",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.1.2",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40vitest/browser-playwright",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.1.2",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40vitest/coverage-istanbul",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.1.2",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/vitest",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^6.1.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/rimraf",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^9.39.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/eslint",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "~6.0.2",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/typescript",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              }
+            ],
+            "description": "Core types for paging async iterable iterators",
+            "download_url": "https://registry.npmjs.org/@azure/core-paging/-/core-paging-1.7.0.tgz",
+            "extra_data": {
+              "engines": {
+                "node": ">=22.0.0"
+              }
+            },
+            "extracted_license_statement": "- MIT\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": "https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/core/core-paging/README.md",
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [
+              "azure",
+              "clientruntime",
+              "cloud",
+              "microsoft"
+            ],
+            "license_detections": [
+              {
+                "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/package.json",
+                    "license_expression": "mit",
+                    "license_expression_spdx": "MIT",
+                    "match_coverage": 100,
+                    "matched_length": 1,
+                    "matched_text": "MIT",
+                    "matcher": "1-spdx-id",
+                    "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+                    "rule_relevance": 100,
+                    "rule_url": null,
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "core-paging",
+            "namespace": "@azure",
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": null,
+                "name": "Microsoft Corporation",
+                "role": "author",
+                "type": "person",
+                "url": null
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/%40azure/core-paging@1.7.0",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/@azure/core-paging/-/core-paging-1.7.0.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/@azure/core-paging",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "git+https://github.com/Azure/azure-sdk-for-js",
+            "version": "1.7.0"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 0.46,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "3a35d643b7f73dda139ec3f861c41d1382763d43",
+        "sha1_git": "c7a14308cdabfb5ab8a088868752b26acea808a2",
+        "sha256": "37eb5c5c95840c00f6fb264346d2e4629c35537c4f288492db9ce2474d6c0fca",
+        "size": 3662,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": "",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-ac40beba-5702-f54d-755f-333441314bb0",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 21,
+                "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 161,
+                "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+                "score": 100,
+                "start_line": 5
+              },
+              {
+                "end_line": 3,
+                "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "MIT License",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 3
+              }
+            ]
+          }
+        ],
+        "md5": "e848d080178fb2d08b67acc5ba80b9fd",
+        "name": "LICENSE",
+        "package_data": [],
+        "path": "package/LICENSE",
+        "percentage_of_license_text": 97.6,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "7aea571d641549de89730da8e7ff5a6940c5526b",
+        "sha1_git": "b2f52a2bad4e27e2d9c68a755abb74cb8943f2fa",
+        "sha256": "7c77a44a8acd9b41fdc209864a8016b3d430b5d0e09309818d5b7444336df744",
+        "size": 1074,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "28409661280ba776381f243aabe5d235",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "c50793eff2f7efa6e150e51912ec9e7fc92af937",
+        "sha1_git": "12ba6e1bd0874e81f4472727cfdaf970b62c46c3",
+        "sha256": "796637ee3cb701a23e7ff53c3894be2716bd138f2c627cde3382d971ea424666",
+        "size": 1756,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "getPagedAsyncIterator",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/dist/browser/getPagedAsyncIterator.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "0646fbac975b14b75d0b1a9c206d5570",
+        "name": "getPagedAsyncIterator.js",
+        "package_data": [],
+        "path": "package/dist/browser/getPagedAsyncIterator.js",
+        "percentage_of_license_text": 2.12,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "8f96a11eb914af926ee7de36559cd923bf254c05",
+        "sha1_git": "c2935548d6819f0d28d841996023e9bae10070a8",
+        "sha256": "9d59e490ad63fbf3a2d512f5a74d522e6e52f9e7dec8c35117e94d7a4fecf162",
+        "size": 2506,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "getPagedAsyncIterator",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/dist/esm/getPagedAsyncIterator.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "0646fbac975b14b75d0b1a9c206d5570",
+        "name": "getPagedAsyncIterator.js",
+        "package_data": [],
+        "path": "package/dist/esm/getPagedAsyncIterator.js",
+        "percentage_of_license_text": 2.12,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "8f96a11eb914af926ee7de36559cd923bf254c05",
+        "sha1_git": "c2935548d6819f0d28d841996023e9bae10070a8",
+        "sha256": "9d59e490ad63fbf3a2d512f5a74d522e6e52f9e7dec8c35117e94d7a4fecf162",
+        "size": 2506,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "getPagedAsyncIterator",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/dist/react-native/getPagedAsyncIterator.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "0646fbac975b14b75d0b1a9c206d5570",
+        "name": "getPagedAsyncIterator.js",
+        "package_data": [],
+        "path": "package/dist/react-native/getPagedAsyncIterator.js",
+        "percentage_of_license_text": 2.12,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "8f96a11eb914af926ee7de36559cd923bf254c05",
+        "sha1_git": "c2935548d6819f0d28d841996023e9bae10070a8",
+        "sha256": "9d59e490ad63fbf3a2d512f5a74d522e6e52f9e7dec8c35117e94d7a4fecf162",
+        "size": 2506,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "getPagedAsyncIterator",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "0621423e13b47c3e01e092347747e969",
+        "name": "getPagedAsyncIterator.js",
+        "package_data": [],
+        "path": "package/dist/commonjs/getPagedAsyncIterator.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "796d2c0e683f290507b99ab837e83b3ba7cf5e30",
+        "sha1_git": "bf12cd8a3e28aeb3b32e2f52fb5f8ac8265a7d29",
+        "sha256": "b2a9f0c01a2079ad932b9f4c294ff504509c71041e14a48571ac01527a2338f5",
+        "size": 2596,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "getPagedAsyncIterator.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "7a35bc01ed5e3ed00ba1e80063fe2b5c",
+        "name": "getPagedAsyncIterator.d.ts",
+        "package_data": [],
+        "path": "package/dist/browser/getPagedAsyncIterator.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "9d9424b1029303a96313b553395c614f7c58d446",
+        "sha1_git": "b66f0be04c329e25c73fb687c3d04e953e3ecbc1",
+        "sha256": "6b79da57420877b43384c899c6a7d6bd0d7abbdb3a98e5da0d304921701dcb40",
+        "size": 647,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "getPagedAsyncIterator.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "7a35bc01ed5e3ed00ba1e80063fe2b5c",
+        "name": "getPagedAsyncIterator.d.ts",
+        "package_data": [],
+        "path": "package/dist/commonjs/getPagedAsyncIterator.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "9d9424b1029303a96313b553395c614f7c58d446",
+        "sha1_git": "b66f0be04c329e25c73fb687c3d04e953e3ecbc1",
+        "sha256": "6b79da57420877b43384c899c6a7d6bd0d7abbdb3a98e5da0d304921701dcb40",
+        "size": 647,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "getPagedAsyncIterator.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "7a35bc01ed5e3ed00ba1e80063fe2b5c",
+        "name": "getPagedAsyncIterator.d.ts",
+        "package_data": [],
+        "path": "package/dist/esm/getPagedAsyncIterator.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "9d9424b1029303a96313b553395c614f7c58d446",
+        "sha1_git": "b66f0be04c329e25c73fb687c3d04e953e3ecbc1",
+        "sha256": "6b79da57420877b43384c899c6a7d6bd0d7abbdb3a98e5da0d304921701dcb40",
+        "size": 647,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "getPagedAsyncIterator.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "7a35bc01ed5e3ed00ba1e80063fe2b5c",
+        "name": "getPagedAsyncIterator.d.ts",
+        "package_data": [],
+        "path": "package/dist/react-native/getPagedAsyncIterator.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "9d9424b1029303a96313b553395c614f7c58d446",
+        "sha1_git": "b66f0be04c329e25c73fb687c3d04e953e3ecbc1",
+        "sha256": "6b79da57420877b43384c899c6a7d6bd0d7abbdb3a98e5da0d304921701dcb40",
+        "size": 647,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "getPagedAsyncIterator.js",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/dist/browser/getPagedAsyncIterator.js.map",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "c6a2c71de6b5089ed8873244a7b6f749",
+        "name": "getPagedAsyncIterator.js.map",
+        "package_data": [],
+        "path": "package/dist/browser/getPagedAsyncIterator.js.map",
+        "percentage_of_license_text": 1.62,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "13a161ad518b38af8771328b33594afc146c0e73",
+        "sha1_git": "7295bfcd2dcf04fa5a04ace4cbc0d0cd66652650",
+        "sha256": "0012b3b6c84e0ae77e92a43c3ff9b31a3aa506b347487e142bf1f13bd000dcf4",
+        "size": 5062,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "getPagedAsyncIterator.js",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/dist/commonjs/getPagedAsyncIterator.js.map",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "cc2309ef1ea3b33bdad81089067aefc8",
+        "name": "getPagedAsyncIterator.js.map",
+        "package_data": [],
+        "path": "package/dist/commonjs/getPagedAsyncIterator.js.map",
+        "percentage_of_license_text": 1.62,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "9a4ef28f5782ef3e3930126bc918236f70743dc5",
+        "sha1_git": "cf1508d528e39693ff0b44a0935528b4a2e75a3b",
+        "sha256": "512ac018477a91022323561198bd4616981e71523e36ad657403747ac4d7f0b6",
+        "size": 4319,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "getPagedAsyncIterator.js",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/dist/esm/getPagedAsyncIterator.js.map",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "c6a2c71de6b5089ed8873244a7b6f749",
+        "name": "getPagedAsyncIterator.js.map",
+        "package_data": [],
+        "path": "package/dist/esm/getPagedAsyncIterator.js.map",
+        "percentage_of_license_text": 1.62,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "13a161ad518b38af8771328b33594afc146c0e73",
+        "sha1_git": "7295bfcd2dcf04fa5a04ace4cbc0d0cd66652650",
+        "sha256": "0012b3b6c84e0ae77e92a43c3ff9b31a3aa506b347487e142bf1f13bd000dcf4",
+        "size": 5062,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "getPagedAsyncIterator.js",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/dist/react-native/getPagedAsyncIterator.js.map",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "c6a2c71de6b5089ed8873244a7b6f749",
+        "name": "getPagedAsyncIterator.js.map",
+        "package_data": [],
+        "path": "package/dist/react-native/getPagedAsyncIterator.js.map",
+        "percentage_of_license_text": 1.62,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "13a161ad518b38af8771328b33594afc146c0e73",
+        "sha1_git": "7295bfcd2dcf04fa5a04ace4cbc0d0cd66652650",
+        "sha256": "0012b3b6c84e0ae77e92a43c3ff9b31a3aa506b347487e142bf1f13bd000dcf4",
+        "size": 5062,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/dist/browser/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "840193c9b5508fbeef86f4b563540927",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/dist/browser/index.js",
+        "percentage_of_license_text": 29.41,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "880031dccc415453e90bac0b7f5c4a67f0c8a964",
+        "sha1_git": "317e8782c9c62c536d0d9f4ee29f716624ef4059",
+        "sha256": "2f40b54a696f04e11b17dd6651cfcda39a99616b6d8405f4bdbbd908f00d89fa",
+        "size": 152,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/dist/esm/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "840193c9b5508fbeef86f4b563540927",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/dist/esm/index.js",
+        "percentage_of_license_text": 29.41,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "880031dccc415453e90bac0b7f5c4a67f0c8a964",
+        "sha1_git": "317e8782c9c62c536d0d9f4ee29f716624ef4059",
+        "sha256": "2f40b54a696f04e11b17dd6651cfcda39a99616b6d8405f4bdbbd908f00d89fa",
+        "size": 152,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/dist/react-native/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "840193c9b5508fbeef86f4b563540927",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/dist/react-native/index.js",
+        "percentage_of_license_text": 29.41,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "880031dccc415453e90bac0b7f5c4a67f0c8a964",
+        "sha1_git": "317e8782c9c62c536d0d9f4ee29f716624ef4059",
+        "sha256": "2f40b54a696f04e11b17dd6651cfcda39a99616b6d8405f4bdbbd908f00d89fa",
+        "size": 152,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "b75f2bd907dfbfc117bc6ab0203f2abe",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/dist/commonjs/index.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "1f1806e9b4f03a96434992d6f2450f5ce9d67834",
+        "sha1_git": "44df7c83078fa1ed9942f08222bac37164c741d9",
+        "sha256": "5b6aae4aadbf3b5594661037217abb1b42ff13db6d40b22ee2b96039cf55fb95",
+        "size": 1117,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "e25c8ad23199830fe6aa9534e62b0bf2",
+        "name": "index.d.ts",
+        "package_data": [],
+        "path": "package/dist/browser/index.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "7932e5db9dd25a983327548326320db7ad404f7a",
+        "sha1_git": "aa203e4130ed3315b5a79a1754c6d47a2a1b756b",
+        "sha256": "8fdc333621d51d6b02c80cd2f07ed7306aa5054b3f6494d6577bcb5a316d26b9",
+        "size": 113,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "e25c8ad23199830fe6aa9534e62b0bf2",
+        "name": "index.d.ts",
+        "package_data": [],
+        "path": "package/dist/commonjs/index.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "7932e5db9dd25a983327548326320db7ad404f7a",
+        "sha1_git": "aa203e4130ed3315b5a79a1754c6d47a2a1b756b",
+        "sha256": "8fdc333621d51d6b02c80cd2f07ed7306aa5054b3f6494d6577bcb5a316d26b9",
+        "size": 113,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "e25c8ad23199830fe6aa9534e62b0bf2",
+        "name": "index.d.ts",
+        "package_data": [],
+        "path": "package/dist/esm/index.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "7932e5db9dd25a983327548326320db7ad404f7a",
+        "sha1_git": "aa203e4130ed3315b5a79a1754c6d47a2a1b756b",
+        "sha256": "8fdc333621d51d6b02c80cd2f07ed7306aa5054b3f6494d6577bcb5a316d26b9",
+        "size": 113,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "e25c8ad23199830fe6aa9534e62b0bf2",
+        "name": "index.d.ts",
+        "package_data": [],
+        "path": "package/dist/react-native/index.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "7932e5db9dd25a983327548326320db7ad404f7a",
+        "sha1_git": "aa203e4130ed3315b5a79a1754c6d47a2a1b756b",
+        "sha256": "8fdc333621d51d6b02c80cd2f07ed7306aa5054b3f6494d6577bcb5a316d26b9",
+        "size": 113,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index.js",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/dist/browser/index.js.map",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "9b4505d1ec42734555f73bc583802022",
+        "name": "index.js.map",
+        "package_data": [],
+        "path": "package/dist/browser/index.js.map",
+        "percentage_of_license_text": 27.78,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "94ef7f25150e56b87e7c5f67fb797ed3b1bde9ac",
+        "sha1_git": "7c1dc33ea383e6f444d58859165000944852c9ed",
+        "sha256": "601265363936d489457c4ae29d8b28a6d7abad2baa5156991cb4902f3aa37b8c",
+        "size": 337,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index.js",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/dist/commonjs/index.js.map",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "08afeb0fb18206861dd3effc31a8438f",
+        "name": "index.js.map",
+        "package_data": [],
+        "path": "package/dist/commonjs/index.js.map",
+        "percentage_of_license_text": 27.78,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "119094d8a46fd817be2d35960faea7d11c070b1f",
+        "sha1_git": "3ed0cf026795d7f0d5389bd5f7569e764c626770",
+        "sha256": "bc2cb7ae5c1649ef26ea83ece2fe946bdb7b6099381711406733cfce88a46e7d",
+        "size": 319,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index.js",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/dist/esm/index.js.map",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "9b4505d1ec42734555f73bc583802022",
+        "name": "index.js.map",
+        "package_data": [],
+        "path": "package/dist/esm/index.js.map",
+        "percentage_of_license_text": 27.78,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "94ef7f25150e56b87e7c5f67fb797ed3b1bde9ac",
+        "sha1_git": "7c1dc33ea383e6f444d58859165000944852c9ed",
+        "sha256": "601265363936d489457c4ae29d8b28a6d7abad2baa5156991cb4902f3aa37b8c",
+        "size": 337,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index.js",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/dist/react-native/index.js.map",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "9b4505d1ec42734555f73bc583802022",
+        "name": "index.js.map",
+        "package_data": [],
+        "path": "package/dist/react-native/index.js.map",
+        "percentage_of_license_text": 27.78,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "94ef7f25150e56b87e7c5f67fb797ed3b1bde9ac",
+        "sha1_git": "7c1dc33ea383e6f444d58859165000944852c9ed",
+        "sha256": "601265363936d489457c4ae29d8b28a6d7abad2baa5156991cb4902f3aa37b8c",
+        "size": 337,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "models",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/dist/browser/models.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "7473ec07fc1a0b40439b6962c0b9475a",
+        "name": "models.js",
+        "package_data": [],
+        "path": "package/dist/browser/models.js",
+        "percentage_of_license_text": 35.71,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "eb0d097990645bad08584fbef37e6547737816af",
+        "sha1_git": "3e6a65adaa4c34d8ce97853027b3482cd04ccee8",
+        "sha256": "b76f240a194875700a393b6b63430e7281a060317c039e63de8bb6523c77fc7a",
+        "size": 120,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "models",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/dist/esm/models.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "7473ec07fc1a0b40439b6962c0b9475a",
+        "name": "models.js",
+        "package_data": [],
+        "path": "package/dist/esm/models.js",
+        "percentage_of_license_text": 35.71,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "eb0d097990645bad08584fbef37e6547737816af",
+        "sha1_git": "3e6a65adaa4c34d8ce97853027b3482cd04ccee8",
+        "sha256": "b76f240a194875700a393b6b63430e7281a060317c039e63de8bb6523c77fc7a",
+        "size": 120,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "models",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/dist/react-native/models.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "7473ec07fc1a0b40439b6962c0b9475a",
+        "name": "models.js",
+        "package_data": [],
+        "path": "package/dist/react-native/models.js",
+        "percentage_of_license_text": 35.71,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "eb0d097990645bad08584fbef37e6547737816af",
+        "sha1_git": "3e6a65adaa4c34d8ce97853027b3482cd04ccee8",
+        "sha256": "b76f240a194875700a393b6b63430e7281a060317c039e63de8bb6523c77fc7a",
+        "size": 120,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "models",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "5779ee9177f008dd7419996e37d34b05",
+        "name": "models.js",
+        "package_data": [],
+        "path": "package/dist/commonjs/models.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "e408a41ff4d0da7fdfac5e7fcb5c35c6264b1e10",
+        "sha1_git": "efe74907c13bdf80a14dc06ab28e8e503cccd722",
+        "sha256": "f90ac26ab1f33e6c0d2ae366090270ea7607c1059d7d936aa86301e72d5f6c8f",
+        "size": 764,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "models.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "2b314753ff7cd6ad83b914157589d5d4",
+        "name": "models.d.ts",
+        "package_data": [],
+        "path": "package/dist/browser/models.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "29a3a0659eed73bfe33ce57541f6dc349aff9018",
+        "sha1_git": "5cc85f2ea662730b1bca3449bec1a8f553de9c31",
+        "sha256": "4fa9a92c8e51c1662a6d7211479745cbb0dcac8517da88034f54d9a90044ba82",
+        "size": 2032,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "models.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "2b314753ff7cd6ad83b914157589d5d4",
+        "name": "models.d.ts",
+        "package_data": [],
+        "path": "package/dist/commonjs/models.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "29a3a0659eed73bfe33ce57541f6dc349aff9018",
+        "sha1_git": "5cc85f2ea662730b1bca3449bec1a8f553de9c31",
+        "sha256": "4fa9a92c8e51c1662a6d7211479745cbb0dcac8517da88034f54d9a90044ba82",
+        "size": 2032,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "models.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "2b314753ff7cd6ad83b914157589d5d4",
+        "name": "models.d.ts",
+        "package_data": [],
+        "path": "package/dist/esm/models.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "29a3a0659eed73bfe33ce57541f6dc349aff9018",
+        "sha1_git": "5cc85f2ea662730b1bca3449bec1a8f553de9c31",
+        "sha256": "4fa9a92c8e51c1662a6d7211479745cbb0dcac8517da88034f54d9a90044ba82",
+        "size": 2032,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "models.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "2b314753ff7cd6ad83b914157589d5d4",
+        "name": "models.d.ts",
+        "package_data": [],
+        "path": "package/dist/react-native/models.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "29a3a0659eed73bfe33ce57541f6dc349aff9018",
+        "sha1_git": "5cc85f2ea662730b1bca3449bec1a8f553de9c31",
+        "sha256": "4fa9a92c8e51c1662a6d7211479745cbb0dcac8517da88034f54d9a90044ba82",
+        "size": 2032,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "models.js",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/dist/browser/models.js.map",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "6c2dc80e1c35858569fddee5dd0fff0e",
+        "name": "models.js.map",
+        "package_data": [],
+        "path": "package/dist/browser/models.js.map",
+        "percentage_of_license_text": 2.33,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "cdac66fdb60832facf2bf7571f722ea731debd62",
+        "sha1_git": "ae1ee594c71a25e8d705a3c5391ad120c6596a31",
+        "sha256": "53c968f8e770fa68f1a756f206c14737fe395d6c268189baa1d9e9d27da68a86",
+        "size": 2217,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "models.js",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/dist/commonjs/models.js.map",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "f1bd28d4275c4163a93f30d16d2f0bc1",
+        "name": "models.js.map",
+        "package_data": [],
+        "path": "package/dist/commonjs/models.js.map",
+        "percentage_of_license_text": 2.33,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "a93c5f3631083e209e2a50c600d9a5093eaea140",
+        "sha1_git": "05106e677c6ffbb03ab825c5927889723de0a11e",
+        "sha256": "5a3170fd5ad23c3aadcb676cfbb5a475b9c9e0d043faeeba7b409fd0509fd017",
+        "size": 2203,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "models.js",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/dist/esm/models.js.map",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "6c2dc80e1c35858569fddee5dd0fff0e",
+        "name": "models.js.map",
+        "package_data": [],
+        "path": "package/dist/esm/models.js.map",
+        "percentage_of_license_text": 2.33,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "cdac66fdb60832facf2bf7571f722ea731debd62",
+        "sha1_git": "ae1ee594c71a25e8d705a3c5391ad120c6596a31",
+        "sha256": "53c968f8e770fa68f1a756f206c14737fe395d6c268189baa1d9e9d27da68a86",
+        "size": 2217,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "models.js",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 2,
+                "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/dist/react-native/models.js.map",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "// Licensed under the MIT License.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "6c2dc80e1c35858569fddee5dd0fff0e",
+        "name": "models.js.map",
+        "package_data": [],
+        "path": "package/dist/react-native/models.js.map",
+        "percentage_of_license_text": 2.33,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "cdac66fdb60832facf2bf7571f722ea731debd62",
+        "sha1_git": "ae1ee594c71a25e8d705a3c5391ad120c6596a31",
+        "sha256": "53c968f8e770fa68f1a756f206c14737fe395d6c268189baa1d9e9d27da68a86",
+        "size": 2217,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "d0707362e90f00edd12435e9d3b9d71c",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": null,
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": null,
+            "declared_license_expression_spdx": null,
+            "dependencies": [],
+            "description": null,
+            "download_url": null,
+            "extra_data": {},
+            "extracted_license_statement": null,
+            "file_references": [],
+            "holder": null,
+            "homepage_url": null,
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [],
+            "license_detections": [],
+            "md5": null,
+            "name": null,
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [],
+            "primary_language": "JavaScript",
+            "purl": null,
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": null,
+            "repository_homepage_url": null,
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": null,
+            "version": null
+          }
+        ],
+        "path": "package/dist/browser/package.json",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "50faeb965b15dfc6854cb1235b06dbb5e79148d2",
+        "sha1_git": "3dbc1ca591c0557e35b6004aeba250e6a70b56e3",
+        "sha256": "3ca9d4afd21425087cf31893b8f9f63c81b0b8408db5e343ca76e5f8aa26ab9a",
+        "size": 23,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "d0707362e90f00edd12435e9d3b9d71c",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": null,
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": null,
+            "declared_license_expression_spdx": null,
+            "dependencies": [],
+            "description": null,
+            "download_url": null,
+            "extra_data": {},
+            "extracted_license_statement": null,
+            "file_references": [],
+            "holder": null,
+            "homepage_url": null,
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [],
+            "license_detections": [],
+            "md5": null,
+            "name": null,
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [],
+            "primary_language": "JavaScript",
+            "purl": null,
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": null,
+            "repository_homepage_url": null,
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": null,
+            "version": null
+          }
+        ],
+        "path": "package/dist/esm/package.json",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "50faeb965b15dfc6854cb1235b06dbb5e79148d2",
+        "sha1_git": "3dbc1ca591c0557e35b6004aeba250e6a70b56e3",
+        "sha256": "3ca9d4afd21425087cf31893b8f9f63c81b0b8408db5e343ca76e5f8aa26ab9a",
+        "size": 23,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "d0707362e90f00edd12435e9d3b9d71c",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": null,
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": null,
+            "declared_license_expression_spdx": null,
+            "dependencies": [],
+            "description": null,
+            "download_url": null,
+            "extra_data": {},
+            "extracted_license_statement": null,
+            "file_references": [],
+            "holder": null,
+            "homepage_url": null,
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [],
+            "license_detections": [],
+            "md5": null,
+            "name": null,
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [],
+            "primary_language": "JavaScript",
+            "purl": null,
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": null,
+            "repository_homepage_url": null,
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": null,
+            "version": null
+          }
+        ],
+        "path": "package/dist/react-native/package.json",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "50faeb965b15dfc6854cb1235b06dbb5e79148d2",
+        "sha1_git": "3dbc1ca591c0557e35b6004aeba250e6a70b56e3",
+        "sha256": "3ca9d4afd21425087cf31893b8f9f63c81b0b8408db5e343ca76e5f8aa26ab9a",
+        "size": 23,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "df9ffc6aa3f78a5491736d441c4258a8",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": null,
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": null,
+            "declared_license_expression_spdx": null,
+            "dependencies": [],
+            "description": null,
+            "download_url": null,
+            "extra_data": {},
+            "extracted_license_statement": null,
+            "file_references": [],
+            "holder": null,
+            "homepage_url": null,
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [],
+            "license_detections": [],
+            "md5": null,
+            "name": null,
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [],
+            "primary_language": "JavaScript",
+            "purl": null,
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": null,
+            "repository_homepage_url": null,
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": null,
+            "version": null
+          }
+        ],
+        "path": "package/dist/commonjs/package.json",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "9d0d83ae5d399d96b36d228e614a575fc209d488",
+        "sha1_git": "5bbefffbabee392d1855491b84dc0a716b6a3bf2",
+        "sha256": "8005a3491db7d92f36ac66369861589f9c47123d3a7c71e643fc2c06168cd45a",
+        "size": 25,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "tsdoc-metadata",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40azure/core-paging@1.7.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "5b4a11d346d0c008c63fa9c5311bece1",
+        "name": "tsdoc-metadata.json",
+        "package_data": [],
+        "path": "package/dist/commonjs/tsdoc-metadata.json",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "6a6ad89387e239d7e2c78c2ba157256e9107cca1",
+        "sha1_git": "9aa2c44accb65fabf4671cd75a3d9f648033de25",
+        "sha256": "92c8992a7bfbfc79f287d9647b176df3fe227129be4183c54d87924946fd85d2",
+        "size": 329,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 52,
+            "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/package.json",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "  \"license\": \"MIT\",",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_30.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+            "score": 100,
+            "start_line": 52
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/package.json",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 1,
+            "matched_text": "MIT",
+            "matcher": "1-spdx-id",
+            "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+            "rule_relevance": 100,
+            "rule_url": null,
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-ac40beba-5702-f54d-755f-333441314bb0",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 21,
+            "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/LICENSE",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 161,
+            "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+            "matcher": "2-aho",
+            "rule_identifier": "mit.LICENSE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+            "score": 100,
+            "start_line": 5
+          },
+          {
+            "end_line": 3,
+            "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/LICENSE",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "MIT License",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_14.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+            "score": 100,
+            "start_line": 3
+          }
+        ]
+      },
+      {
+        "detection_count": 21,
+        "identifier": "mit-e634e936-0701-7555-bfaa-1fce0c174838",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 2,
+            "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/dist/browser/getPagedAsyncIterator.js",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 5,
+            "matched_text": "// Licensed under the MIT License.",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_12.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+            "score": 100,
+            "start_line": 2
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": "https://ieeexplore.ieee.org/document/9263265",
+        "homepage_url": "http://opensource.org/licenses/mit-license.php",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "mit",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/mit",
+        "minimum_coverage": 0,
+        "name": "MIT License",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": null,
+        "osi_url": "http://www.opensource.org/licenses/MIT",
+        "other_spdx_license_keys": [
+          "LicenseRef-MIT-Bootstrap",
+          "LicenseRef-MIT-Diehl",
+          "LicenseRef-MIT-Discord",
+          "LicenseRef-MIT-TC"
+        ],
+        "other_urls": [
+          "https://opensource.com/article/18/3/patent-grant-mit-license",
+          "https://opensource.com/article/19/4/history-mit-license",
+          "https://opensource.org/licenses/MIT"
+        ],
+        "owner": "MIT",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "short_name": "MIT License",
+        "spdx_license_key": "MIT",
+        "spdx_url": "https://spdx.org/licenses/MIT",
+        "standard_notice": null,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+        "text_urls": [
+          "http://opensource.org/licenses/mit-license.php"
+        ]
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "mit.LICENSE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": true,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 161,
+        "license_expression": "mit",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
+      },
+      {
+        "identifier": "mit_12.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": true,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 5,
+        "license_expression": "mit",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_12.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Licensed under the MIT  license."
+      },
+      {
+        "identifier": "mit_14.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "mit",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "MIT License"
+      },
+      {
+        "identifier": "mit_30.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "mit",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "License: MIT"
+      },
+      {
+        "identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": true,
+        "language": "en",
+        "length": 1,
+        "license_expression": "mit",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": null,
+        "skip_for_required_phrase_generation": false,
+        "text": "MIT"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/@azure%2fcore-paging/1.7.0",
+        "bug_tracking_url": "https://github.com/Azure/azure-sdk-for-js/issues",
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "mit",
+        "declared_license_expression_spdx": "MIT",
+        "description": "Core types for paging async iterable iterators",
+        "download_url": "https://registry.npmjs.org/@azure/core-paging/-/core-paging-1.7.0.tgz",
+        "extra_data": {
+          "engines": {
+            "node": ">=22.0.0"
+          }
+        },
+        "extracted_license_statement": "- MIT\n",
+        "holder": null,
+        "homepage_url": "https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/core/core-paging/README.md",
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [
+          "azure",
+          "clientruntime",
+          "cloud",
+          "microsoft"
+        ],
+        "license_detections": [
+          {
+            "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "ec7e17b2e39424efd2eaed5cb457f87c20b659710d24a9ef5478437e1fe825d2/package/package.json",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 1,
+                "matched_text": "MIT",
+                "matcher": "1-spdx-id",
+                "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+                "rule_relevance": 100,
+                "rule_url": null,
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "core-paging",
+        "namespace": "@azure",
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": null,
+            "name": "Microsoft Corporation",
+            "role": "author",
+            "type": "person",
+            "url": null
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/%40azure/core-paging@1.7.0",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/@azure/core-paging/-/core-paging-1.7.0.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/@azure/core-paging",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "git+https://github.com/Azure/azure-sdk-for-js",
+        "version": "1.7.0"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

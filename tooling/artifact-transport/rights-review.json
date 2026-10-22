@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "scope": "DEVELOPMENT_ACTION_TRANSPORT_ONLY",
+  "reviewStatus": "PENDING_HUMAN_REVIEW",
+  "automatedEvidence": {
+    "verifier": "util/verify-npm-package-evidence.mjs",
+    "summary": {
+      "occurrenceCount": 252,
+      "artifactCount": 244,
+      "blobCount": 1273,
+      "retainedBytes": 33271174,
+      "registrySignatureVerifiedCount": 244,
+      "provenanceVerifiedCount": 37,
+      "provenanceNotPublishedCount": 207,
+      "archiveVerifiedCount": 244,
+      "scanVerifiedCount": 244
+    },
+    "inputs": {
+      "tooling/artifact-transport/package.json": "c8c27c09506a7425c8d56701fe32c8910831ad46a716ff2a7e122aa5d90837bf",
+      "tooling/artifact-transport/package-lock.json": "4b783b6626d88db8bf7dbc6194207ce5316cf41a61095b1c4c85963e074e09cd",
+      "tooling/artifact-transport/docs/provenance/npm-package-evidence.json": "fbb8e5d2342364042821ea327b4c1692314d0464a5dfe7ab55b597fe2294c7be",
+      ".github/actions/retain-artifact/dist/third-party-licenses.txt": "a1fc5e5903f959a1d279a39105f28754a80b456f1ed704b6b7b18a4541c72d01"
+    }
+  },
+  "limitation": "Authenticated identities, retained legal text and scanner observations do not establish rights-owner approval or licensing compatibility."
+}

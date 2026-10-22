@@ -1,0 +1,227 @@
+{
+  "artifactId": "7549191bbb10a528c0c9d6fd4c4484da9a75f813c68cdb6fb7db653b7ea05ab4",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 8913,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.eslintrc",
+        "sha256": "500a324db044702f9df2aae5901a2bb474f31424a06c580373c9c766b3f897e1",
+        "size": 291,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "df75ed2445c3bd41cd33a86e496f4ec7e279dab92d1a01e0cf58c1ae2a675209",
+        "size": 591,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nycrc",
+        "sha256": "948366fea3b423a46366326d0bb2e54b08abd1cf0b243678ba6625740c40da5a",
+        "size": 216,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "505cff21a498c2186d643eba46dac80c6d71e25cefaff156e24dd2afe29e8924",
+        "size": 5390,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "b41d08bc3624d8c436fc80237d73ebb361985a67f4504bbcd703e5ca2b27254c",
+        "size": 1071,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "72ddfa32f732f61479cfb34852cb0f57162bc3037a97bf812c4e42679b3ff0b9",
+        "size": 2431,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "654404bef397f9614f656d78d09c36d3ef38e005900cea77c8beacf0ee1e8f07",
+        "size": 315,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "e34746e8c69bbf6ba2182b7362e9c4dc5fb3c19cace48091781ae967370bc065",
+        "size": 2336,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "bde7f1465b344a24da2b10d2ee99f87edf8e0ecd177c28370b60ad9595de730e",
+        "size": 2856,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "db68bc8e54487d027c9699f4b6df2df865386de6f2b738619c7c6431c919767d",
+        "size": 10471,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "df4b3b4bcc4f4a716f64eaa22530ad895e244489474d1583e866f5fd26efe462",
+        "size": 4883,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1071,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/b4/b41d08bc3624d8c436fc80237d73ebb361985a67f4504bbcd703e5ca2b27254c",
+          "sha256": "b41d08bc3624d8c436fc80237d73ebb361985a67f4504bbcd703e5ca2b27254c"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "b41d08bc3624d8c436fc80237d73ebb361985a67f4504bbcd703e5ca2b27254c",
+        "size": 1071
+      },
+      {
+        "blob": {
+          "bytes": 2431,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/72/72ddfa32f732f61479cfb34852cb0f57162bc3037a97bf812c4e42679b3ff0b9",
+          "sha256": "72ddfa32f732f61479cfb34852cb0f57162bc3037a97bf812c4e42679b3ff0b9"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "72ddfa32f732f61479cfb34852cb0f57162bc3037a97bf812c4e42679b3ff0b9",
+        "size": 2431
+      }
+    ],
+    "expandedBytes": 30851,
+    "packageIdentity": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "homepage": "https://github.com/ljharb/define-data-property#readme",
+      "license": "MIT",
+      "name": "define-data-property",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ljharb/define-data-property.git"
+      },
+      "version": "1.1.4"
+    },
+    "packageMetadata": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "bugs": {
+        "url": "https://github.com/ljharb/define-data-property/issues"
+      },
+      "dependencies": {
+        "es-define-property": "^1.0.0",
+        "es-errors": "^1.3.0",
+        "gopd": "^1.0.1"
+      },
+      "description": "Define a data property on an object. Will fall back to assignment in an engine without descriptors.",
+      "devDependencies": {
+        "@ljharb/eslint-config": "^21.1.0",
+        "@types/call-bind": "^1.0.5",
+        "@types/define-properties": "^1.1.5",
+        "@types/es-value-fixtures": "^1.4.4",
+        "@types/for-each": "^0.3.3",
+        "@types/get-intrinsic": "^1.2.2",
+        "@types/gopd": "^1.0.3",
+        "@types/has-property-descriptors": "^1.0.3",
+        "@types/object-inspect": "^1.8.4",
+        "@types/object.getownpropertydescriptors": "^2.1.4",
+        "@types/tape": "^5.6.4",
+        "aud": "^2.0.4",
+        "auto-changelog": "^2.4.0",
+        "es-value-fixtures": "^1.4.2",
+        "eslint": "=8.8.0",
+        "evalmd": "^0.0.19",
+        "for-each": "^0.3.3",
+        "hasown": "^2.0.1",
+        "in-publish": "^2.0.1",
+        "npmignore": "^0.3.1",
+        "nyc": "^10.3.2",
+        "object-inspect": "^1.13.1",
+        "object.getownpropertydescriptors": "^2.1.7",
+        "reflect.ownkeys": "^1.1.4",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.7.4",
+        "typescript": "next"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "exports": {
+        ".": "./index.js",
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "homepage": "https://github.com/ljharb/define-data-property#readme",
+      "keywords": [
+        "define",
+        "data",
+        "property",
+        "object",
+        "accessor",
+        "javascript",
+        "ecmascript",
+        "enumerable",
+        "configurable",
+        "writable"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "define-data-property",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows",
+          "types/reflect.ownkeys"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ljharb/define-data-property.git"
+      },
+      "scripts": {
+        "lint": "eslint --ext=js,mjs .",
+        "postlint": "npm run tsc",
+        "posttest": "aud --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prelint": "evalmd README.md",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only",
+        "tests-only": "nyc tape 'test/**/*.js'",
+        "tsc": "tsc -p .",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "sideEffects": false,
+      "testling": {
+        "files": "test/index.js"
+      },
+      "types": "./index.d.ts",
+      "version": "1.1.4"
+    },
+    "physicalEntryCount": 11,
+    "tarball": {
+      "bytes": 8913,
+      "sha256": "16304ad73df1364ca8623c28a8969de01cd7189b4f9b05668fadb598f110e4d2"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

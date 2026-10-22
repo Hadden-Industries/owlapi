@@ -1,0 +1,199 @@
+{
+  "artifactId": "4aec74def407fcac6d86639294f905f0987ab3ba0c8af120704c7aa204b7c02c",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4178,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.eslintrc",
+        "sha256": "0694050195fc694c5846b0a2a66b437ac775da988f0a779c55fb892597f7f641",
+        "size": 43,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "bdb08e519e61bd07c1acc03e2a103d60b6532b7a4243f1e66ada7aa44629bf9f",
+        "size": 572,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "1a03f7938ef67dd6c3c0902c5273f81b33cbfae2a9c1f461d5ffed332f1f10c7",
+        "size": 2439,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "5e325595b4ea8cfec3802f545b1def5d7b73e4a5b8e9ba63e32a320f67732292",
+        "size": 1071,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "48369b1d0e7dc23b73cd39514c99ecb5a8617441017b0c71466e083b068e5a1d",
+        "size": 2156,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "cf9cb501e9166ed163dc81dc383b96d3ff9ab0fbd78e4ce4be0f729101aef927",
+        "size": 242,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "62df611325b009f56810f26498ea91cfb5b2acae7021bd20231a5f41dc84307e",
+        "size": 264,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "0ff73753495cfff4556a5f8b7847ba1c06530341986e642a8637c6db74d87894",
+        "size": 2325,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "0475952876e720c1512d22a23accba57a9285eb3e2c413eafe279d2b4581fc12",
+        "size": 470,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "90a5061d8920dcef03fe1989e27da32588cbf475d235a3b3030f419f5ea02fe3",
+        "size": 116,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1071,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5e/5e325595b4ea8cfec3802f545b1def5d7b73e4a5b8e9ba63e32a320f67732292",
+          "sha256": "5e325595b4ea8cfec3802f545b1def5d7b73e4a5b8e9ba63e32a320f67732292"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "5e325595b4ea8cfec3802f545b1def5d7b73e4a5b8e9ba63e32a320f67732292",
+        "size": 1071
+      },
+      {
+        "blob": {
+          "bytes": 2156,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/48/48369b1d0e7dc23b73cd39514c99ecb5a8617441017b0c71466e083b068e5a1d",
+          "sha256": "48369b1d0e7dc23b73cd39514c99ecb5a8617441017b0c71466e083b068e5a1d"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "48369b1d0e7dc23b73cd39514c99ecb5a8617441017b0c71466e083b068e5a1d",
+        "size": 2156
+      }
+    ],
+    "expandedBytes": 9698,
+    "packageIdentity": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "homepage": "https://github.com/ljharb/possible-typed-array-names#readme",
+      "license": "MIT",
+      "name": "possible-typed-array-names",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ljharb/possible-typed-array-names.git"
+      },
+      "version": "1.1.0"
+    },
+    "packageMetadata": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "bugs": {
+        "url": "https://github.com/ljharb/possible-typed-array-names/issues"
+      },
+      "description": "A simple list of possible Typed Array names.",
+      "devDependencies": {
+        "@arethetypeswrong/cli": "^0.17.3",
+        "@ljharb/eslint-config": "^21.1.1",
+        "@ljharb/tsconfig": "^0.2.3",
+        "@types/tape": "^5.8.1",
+        "auto-changelog": "^2.5.0",
+        "eclint": "^2.8.1",
+        "eslint": "=8.8.0",
+        "evalmd": "^0.0.19",
+        "in-publish": "^2.0.1",
+        "npmignore": "^0.3.1",
+        "nyc": "^10.3.2",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.9.0",
+        "typescript": "next"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "exports": {
+        ".": "./index.js",
+        "./package.json": "./package.json"
+      },
+      "homepage": "https://github.com/ljharb/possible-typed-array-names#readme",
+      "keywords": [
+        "typed",
+        "array",
+        "typedarray",
+        "Float32Array",
+        "Float64Array",
+        "Int8Array",
+        "Int16Array",
+        "Int32Array",
+        "Uint8Array",
+        "Uint8ClampedArray",
+        "Uint16Array",
+        "Uint32Array",
+        "BigInt64Array",
+        "BigUint64Array"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "possible-typed-array-names",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ljharb/possible-typed-array-names.git"
+      },
+      "scripts": {
+        "lint": "eslint --ext=js,mjs .",
+        "postlint": "tsc && attw -P",
+        "posttest": "npx npm@'>= 10.2' audit --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prelint": "evalmd README.md && eclint check $(git ls-files | xargs find 2> /dev/null | grep -vE 'node_modules|\\.git' | grep -v dist/)",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only",
+        "tests-only": "nyc tape 'test/**/*.js'",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "sideEffects": false,
+      "types": "./index.d.ts",
+      "version": "1.1.0"
+    },
+    "physicalEntryCount": 10,
+    "tarball": {
+      "bytes": 4178,
+      "sha256": "c29791211b8e2f181c049247214843292380e4134c140c5105376b7c6ae3e3c7"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,124 @@
+{
+  "artifactId": "2fd698700eedc181edbc6e868114a1c9789821a03f7275be82b04dfbc21c31b9",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3018,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "05991c2e8f070b69ec5b656c2c12fd07cd0153dd157d39b050b82af59b319a01",
+        "size": 1141,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/cmd.js",
+        "sha256": "24b028bccb1773f02cf0d0fb3dca5468f1b5d22a06cbc5cbf351e1eb3accefb1",
+        "size": 731,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/usage.txt",
+        "sha256": "5575eeea7b83971ed81729048e24b8f5a56b902ab2e1bd43ed031a502eb84759",
+        "size": 315,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "df33312136061eee26701a34ca4f9be043b9675d359a115503dc2df909106432",
+        "size": 2825,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "8856bdf1f9b0f5d6b79fc8af4c5d23ca25a41c8cbce465d4b2f5a2852eab1859",
+        "size": 623,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.markdown",
+        "sha256": "2b7b3868cd24df4eb098fb3b2ab00e7be1fb33eb40b3e4de7046f97951c0824f",
+        "size": 2053,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1141,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/05/05991c2e8f070b69ec5b656c2c12fd07cd0153dd157d39b050b82af59b319a01",
+          "sha256": "05991c2e8f070b69ec5b656c2c12fd07cd0153dd157d39b050b82af59b319a01"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "05991c2e8f070b69ec5b656c2c12fd07cd0153dd157d39b050b82af59b319a01",
+        "size": 1141
+      },
+      {
+        "blob": {
+          "bytes": 2053,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/2b/2b7b3868cd24df4eb098fb3b2ab00e7be1fb33eb40b3e4de7046f97951c0824f",
+          "sha256": "2b7b3868cd24df4eb098fb3b2ab00e7be1fb33eb40b3e4de7046f97951c0824f"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.markdown",
+        "sha256": "2b7b3868cd24df4eb098fb3b2ab00e7be1fb33eb40b3e4de7046f97951c0824f",
+        "size": 2053
+      }
+    ],
+    "expandedBytes": 7688,
+    "packageIdentity": {
+      "author": "James Halliday <mail@substack.net> (http://substack.net)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "mkdirp",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/substack/node-mkdirp.git"
+      },
+      "version": "0.5.6"
+    },
+    "packageMetadata": {
+      "author": "James Halliday <mail@substack.net> (http://substack.net)",
+      "bin": "bin/cmd.js",
+      "dependencies": {
+        "minimist": "^1.2.6"
+      },
+      "description": "Recursively mkdir, like `mkdir -p`",
+      "devDependencies": {
+        "tap": "^16.0.1"
+      },
+      "files": [
+        "bin",
+        "index.js"
+      ],
+      "keywords": [
+        "mkdir",
+        "directory"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "mkdirp",
+      "publishConfig": {
+        "tag": "legacy"
+      },
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/substack/node-mkdirp.git"
+      },
+      "scripts": {
+        "test": "tap test/*.js"
+      },
+      "version": "0.5.6"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 3018,
+      "sha256": "1b29291a054b23ddc12f63cb0f563e486bc5866fb1855b5632d1a0ba88aab569"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

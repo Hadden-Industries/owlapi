@@ -1,0 +1,141 @@
+{
+  "artifactId": "33828edb87405c7be96e708cb5277712c80666a68d46bae460ae34264852b4d1",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6290,
+    "duplicateEntries": [
+      {
+        "occurrenceCount": 2,
+        "path": "package/dist/index.js",
+        "sha256": "fd33b43da34da60d4914780e13fae5d52a7faaa996d687eea5335128de148627",
+        "size": 6088,
+        "type": "FILE"
+      }
+    ],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "71368fd0f5b4129191e9afcd1e1ef2dc89a9090d3e4d80bbab92dafd032b3bef",
+        "size": 1102,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "c34be87fe9b9da003d53f739ea18192696a10c25b6d0f0b4173d75d9e621caa3",
+        "size": 1365,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.ts",
+        "sha256": "549f76596f8246ed1f027da416528405517d96103486577f38f59bcddddc3675",
+        "size": 1824,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.ts.map",
+        "sha256": "c24e15e36f381c316bbefa0fec612f93862a8b80dcc06539bfe6af2ae076f51c",
+        "size": 1666,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.js",
+        "sha256": "fd33b43da34da60d4914780e13fae5d52a7faaa996d687eea5335128de148627",
+        "size": 6088,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.js.map",
+        "sha256": "41a01b3ebea23285de436c64ae15bf3e6040ae17d20de638f2e1dd116327a489",
+        "size": 4131,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "38b61961aa0ba3028f2e120b3d883179281f6ba25fe22ff2214bf9f363161b65",
+        "size": 1084,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1102,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/71/71368fd0f5b4129191e9afcd1e1ef2dc89a9090d3e4d80bbab92dafd032b3bef",
+          "sha256": "71368fd0f5b4129191e9afcd1e1ef2dc89a9090d3e4d80bbab92dafd032b3bef"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "71368fd0f5b4129191e9afcd1e1ef2dc89a9090d3e4d80bbab92dafd032b3bef",
+        "size": 1102
+      }
+    ],
+    "expandedBytes": 23348,
+    "packageIdentity": {
+      "author": "Nathan Rajlich <nathan@tootallnate.net> (http://n8.io/)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "http-proxy-agent",
+      "repository": {
+        "directory": "packages/http-proxy-agent",
+        "type": "git",
+        "url": "https://github.com/TooTallNate/proxy-agents.git"
+      },
+      "version": "7.0.2"
+    },
+    "packageMetadata": {
+      "author": "Nathan Rajlich <nathan@tootallnate.net> (http://n8.io/)",
+      "dependencies": {
+        "agent-base": "^7.1.0",
+        "debug": "^4.3.4"
+      },
+      "description": "An HTTP(s) proxy `http.Agent` implementation for HTTP",
+      "devDependencies": {
+        "@types/debug": "^4.1.7",
+        "@types/jest": "^29.5.1",
+        "@types/node": "^14.18.45",
+        "async-listen": "^3.0.0",
+        "jest": "^29.5.0",
+        "proxy": "2.1.1",
+        "ts-jest": "^29.1.0",
+        "tsconfig": "0.0.0",
+        "typescript": "^5.0.4"
+      },
+      "engines": {
+        "node": ">= 14"
+      },
+      "files": [
+        "dist"
+      ],
+      "keywords": [
+        "http",
+        "proxy",
+        "endpoint",
+        "agent"
+      ],
+      "license": "MIT",
+      "main": "./dist/index.js",
+      "name": "http-proxy-agent",
+      "repository": {
+        "directory": "packages/http-proxy-agent",
+        "type": "git",
+        "url": "https://github.com/TooTallNate/proxy-agents.git"
+      },
+      "scripts": {
+        "build": "tsc",
+        "lint": "eslint . --ext .ts",
+        "pack": "node ../../scripts/pack.mjs",
+        "test": "jest --env node --verbose --bail"
+      },
+      "types": "./dist/index.d.ts",
+      "version": "7.0.2"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 6290,
+      "sha256": "785f73faa92bfba8d61da20bf59325ab2b3dca1bbc0bbac523406f404d8a6f02"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

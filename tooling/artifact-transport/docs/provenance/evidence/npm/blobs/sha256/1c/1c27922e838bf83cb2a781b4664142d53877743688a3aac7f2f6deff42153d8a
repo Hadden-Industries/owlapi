@@ -1,0 +1,257 @@
+{
+  "artifactId": "1afc0be5a144dc692d250ea52bf21b379f1e763aeec156567e8e01100c8a7ce7",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 11522,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.eslintrc",
+        "sha256": "15079d39a5b04a0afeec916c97af56522b59a88e028ae1fa10860e3c5697abce",
+        "size": 299,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nycrc",
+        "sha256": "997785c50b0773e5e18bf15550fbf57823c634fefe623cd37b3c83696402ad0a",
+        "size": 139,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "0c96b2a9a52202c32eaa6089f11aa91598813c4b29c4ca85b45c12bf7490b03c",
+        "size": 22749,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "c16d06f1808d8d8c6ec0f6b6fb7e951126c46730fbb67320863a81f8aa8ca033",
+        "size": 1081,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "6a505555afd905e7cd78dc722cdedaa0c66f5aba5b78faf8f943af0b4cc48c3b",
+        "size": 2214,
+        "type": "FILE"
+      },
+      {
+        "path": "package/auto.js",
+        "sha256": "8a28142fdc864763727d7cfe6a19b5dbcdf5e1861207bd2c122082336a6c3221",
+        "size": 36,
+        "type": "FILE"
+      },
+      {
+        "path": "package/implementation.js",
+        "sha256": "87f8e5612b2a98c3b548ddb70b6ddb1e2a8d5aa7d3bd3d5a6963c016341213c4",
+        "size": 1536,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "515a0585afeae72143fe6633f8453eebafa536325d19508ffcd276a0722abbb9",
+        "size": 572,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b152a39e333b265cb9963f3aba473aa82daf3eaa03cdb97a7ed4f5ee58ce1226",
+        "size": 2693,
+        "type": "FILE"
+      },
+      {
+        "path": "package/polyfill.js",
+        "sha256": "17f6a46524827379125f32753e6c5df2af1667d23d0476654b921d146098ff2a",
+        "size": 547,
+        "type": "FILE"
+      },
+      {
+        "path": "package/shim.js",
+        "sha256": "9eb70ec6fd8dea99daa569025f1a1fda277bc7695ceb917d5c4c30842c4775ba",
+        "size": 494,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/implementation.js",
+        "sha256": "d4db8b59f5d086ef9933183200abae279b7f862e0801005c55548999c6bc65d9",
+        "size": 608,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "ba04df2012c8b7aba6f1d7d866dbe423b3ada8bbfd72a2138015a36922891e54",
+        "size": 426,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/shimmed.js",
+        "sha256": "302e1744a576a5dfd4a8ad274e6450197c88da41dab42353715d6e80afb5c67a",
+        "size": 1274,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/tests.js",
+        "sha256": "6038530bc4b64b7840e97b728693cec0126e2de0a6b9dcd537aeb394bb5d9935",
+        "size": 2805,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1081,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c1/c16d06f1808d8d8c6ec0f6b6fb7e951126c46730fbb67320863a81f8aa8ca033",
+          "sha256": "c16d06f1808d8d8c6ec0f6b6fb7e951126c46730fbb67320863a81f8aa8ca033"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "c16d06f1808d8d8c6ec0f6b6fb7e951126c46730fbb67320863a81f8aa8ca033",
+        "size": 1081
+      },
+      {
+        "blob": {
+          "bytes": 2214,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/6a/6a505555afd905e7cd78dc722cdedaa0c66f5aba5b78faf8f943af0b4cc48c3b",
+          "sha256": "6a505555afd905e7cd78dc722cdedaa0c66f5aba5b78faf8f943af0b4cc48c3b"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "6a505555afd905e7cd78dc722cdedaa0c66f5aba5b78faf8f943af0b4cc48c3b",
+        "size": 2214
+      }
+    ],
+    "expandedBytes": 37473,
+    "packageIdentity": {
+      "author": {
+        "email": "ljharb@gmail.com",
+        "name": "Jordan Harband",
+        "url": "http://ljharb.codes"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "string.prototype.trim",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/es-shims/String.prototype.trim.git"
+      },
+      "version": "1.2.11"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "ljharb@gmail.com",
+        "name": "Jordan Harband",
+        "url": "http://ljharb.codes"
+      },
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "contributors": [
+        {
+          "email": "ljharb@gmail.com",
+          "name": "Jordan Harband",
+          "url": "http://ljharb.codes"
+        }
+      ],
+      "dependencies": {
+        "call-bind": "^1.0.9",
+        "call-bound": "^1.0.4",
+        "define-data-property": "^1.1.4",
+        "define-properties": "^1.2.1",
+        "es-abstract": "^1.24.2",
+        "es-object-atoms": "^1.1.2",
+        "has-property-descriptors": "^1.0.2",
+        "safe-regex-test": "^1.1.0"
+      },
+      "description": "ES5 spec-compliant shim for String.prototype.trim",
+      "devDependencies": {
+        "@ericcornelissen/assert-time": "^1.0.3",
+        "@es-shims/api": "^2.5.1",
+        "@ljharb/eslint-config": "^22.2.3",
+        "auto-changelog": "^2.6.0",
+        "eslint": "^8.57.1",
+        "for-each": "^0.3.5",
+        "functions-have-names": "^1.2.3",
+        "has-strict-mode": "^1.1.0",
+        "in-publish": "^2.0.1",
+        "npmignore": "^0.3.5",
+        "nyc": "^10.3.2",
+        "safe-publish-latest": "^2.0.0",
+        "string.prototype.repeat": "^1.0.0",
+        "tape": "^5.9.0"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "keywords": [
+        "String.prototype.trim",
+        "string",
+        "ES5",
+        "shim",
+        "trim",
+        "polyfill",
+        "es-shim API"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "string.prototype.trim",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/es-shims/String.prototype.trim.git"
+      },
+      "scripts": {
+        "lint": "eslint --ext=js,mjs .",
+        "postlint": "es-shim-api --bound",
+        "posttest": "npx npm@'>= 10.2' audit --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only",
+        "tests-only": "nyc tape 'test/**/*.js'",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "testling": {
+        "browsers": [
+          "iexplore/9.0..latest",
+          "firefox/4.0..6.0",
+          "firefox/15.0..latest",
+          "firefox/nightly",
+          "chrome/4.0..10.0",
+          "chrome/20.0..latest",
+          "chrome/canary",
+          "opera/11.6..latest",
+          "opera/next",
+          "safari/5.0..latest",
+          "ipad/6.0..latest",
+          "iphone/6.0..latest",
+          "android-browser/4.2"
+        ],
+        "files": "test/index.js"
+      },
+      "version": "1.2.11"
+    },
+    "physicalEntryCount": 15,
+    "tarball": {
+      "bytes": 11522,
+      "sha256": "6d3e41be32beca52452bda7cde32875c4a8bfa292c66a2e1a7d970eb47cf9517"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

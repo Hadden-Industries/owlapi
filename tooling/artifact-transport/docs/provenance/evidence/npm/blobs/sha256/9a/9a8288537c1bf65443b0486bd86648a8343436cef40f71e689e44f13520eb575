@@ -1,0 +1,221 @@
+{
+  "artifactId": "8d7e9715922c82ce1ece107ba86b73d4fb2cae46097845619dcaf517a1e94627",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6452,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.eslintrc",
+        "sha256": "1f981d3f0e69e2ecdc99e9e4feb9a97b524c9e0d30fb05e665766b9adeeba7e2",
+        "size": 156,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "cba54ada3f1e1a96b476e7d3ace4772e0f5c3334e4ba13078931bda328ee03f2",
+        "size": 593,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nycrc",
+        "sha256": "997785c50b0773e5e18bf15550fbf57823c634fefe623cd37b3c83696402ad0a",
+        "size": 139,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "725bdf0a62e7a490d1b1c7435ef75ed003eabcb4be2878328c2c822a03eae576",
+        "size": 6281,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "e2560e002e13281578c75c850061d9255c33d16d732939e8c2db64c2506642fa",
+        "size": 1067,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "81e4181b64da82f1ddbc3912a40ccf5bb55da212f1223b8bf06728964fab3ed2",
+        "size": 2039,
+        "type": "FILE"
+      },
+      {
+        "path": "package/getInferredName.d.ts",
+        "sha256": "f297182a5cce6f2df046a9d688f8685f39aac148a158ffb5076d9f64dc2c0d29",
+        "size": 133,
+        "type": "FILE"
+      },
+      {
+        "path": "package/getInferredName.js",
+        "sha256": "e3332811d4324b2785b222bc26dee86f18d951a3666bc5b7f61adfc167b52b59",
+        "size": 474,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "e2bc58f2162e0ec16c9b1294784b4e9cfa60751a79c17edc95cefa00b27018b6",
+        "size": 116,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "87a64cc4c7985f6cb30f30ba939e3367cbcf53fc969d875daea84fb6019772b5",
+        "size": 1563,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "2bc0449553b5e1bed1d8465283a5dc5b3c3bbfabc370aa4cfd7d721f6ef80120",
+        "size": 2489,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "a341e73b6f4d9fcdd6bd0204ad498ec390e250d59aae6f8d7a18fcb7c5b0d4d6",
+        "size": 1999,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "5c01887c6c8539144c0fc5fae6f5115073b6e26ecbeae8434a0329f46f9169c6",
+        "size": 116,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1067,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/e2/e2560e002e13281578c75c850061d9255c33d16d732939e8c2db64c2506642fa",
+          "sha256": "e2560e002e13281578c75c850061d9255c33d16d732939e8c2db64c2506642fa"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "e2560e002e13281578c75c850061d9255c33d16d732939e8c2db64c2506642fa",
+        "size": 1067
+      },
+      {
+        "blob": {
+          "bytes": 2039,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/81/81e4181b64da82f1ddbc3912a40ccf5bb55da212f1223b8bf06728964fab3ed2",
+          "sha256": "81e4181b64da82f1ddbc3912a40ccf5bb55da212f1223b8bf06728964fab3ed2"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "81e4181b64da82f1ddbc3912a40ccf5bb55da212f1223b8bf06728964fab3ed2",
+        "size": 2039
+      }
+    ],
+    "expandedBytes": 17165,
+    "packageIdentity": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "homepage": "https://github.com/inspect-js/get-symbol-description#readme",
+      "license": "MIT",
+      "name": "get-symbol-description",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/get-symbol-description.git"
+      },
+      "version": "1.1.0"
+    },
+    "packageMetadata": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "bugs": {
+        "url": "https://github.com/inspect-js/get-symbol-description/issues"
+      },
+      "dependencies": {
+        "call-bound": "^1.0.3",
+        "es-errors": "^1.3.0",
+        "get-intrinsic": "^1.2.6"
+      },
+      "description": "Gets the description of a Symbol. Handles `Symbol()` vs `Symbol('')` properly when possible.",
+      "devDependencies": {
+        "@arethetypeswrong/cli": "^0.17.1",
+        "@ljharb/eslint-config": "^21.1.1",
+        "@ljharb/tsconfig": "^0.2.2",
+        "@types/for-each": "^0.3.3",
+        "@types/get-intrinsic": "^1.2.3",
+        "@types/object-inspect": "^1.13.0",
+        "@types/tape": "^5.7.0",
+        "auto-changelog": "^2.5.0",
+        "encoding": "^0.1.13",
+        "es-value-fixtures": "^1.5.0",
+        "eslint": "=8.8.0",
+        "evalmd": "^0.0.19",
+        "for-each": "^0.3.3",
+        "hasown": "^2.0.2",
+        "in-publish": "^2.0.1",
+        "npmignore": "^0.3.1",
+        "nyc": "^10.3.2",
+        "object-inspect": "^1.13.3",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.9.0",
+        "typescript": "^5.8.0-dev.20241216"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "exports": {
+        ".": "./index.js",
+        "./getInferredName": "./getInferredName.js",
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "homepage": "https://github.com/inspect-js/get-symbol-description#readme",
+      "keywords": [
+        "symbol",
+        "ecmascript",
+        "javascript",
+        "description"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "get-symbol-description",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/get-symbol-description.git"
+      },
+      "scripts": {
+        "lint": "eslint --ext=.js,.mjs .",
+        "postlint": "tsc && attw -P",
+        "posttest": "npx npm@'>= 10.2' audit --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prelint": "evalmd README.md",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only",
+        "tests-only": "nyc tape 'test/**/*.js'",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "version": "1.1.0"
+    },
+    "physicalEntryCount": 13,
+    "tarball": {
+      "bytes": 6452,
+      "sha256": "c91174bcb11cfbd59deb0ccf06d08c470909a5600d3ebe9c1d971828d12cd8ce"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

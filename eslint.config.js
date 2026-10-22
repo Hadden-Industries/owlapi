@@ -58,6 +58,7 @@ export default [
       // Generated third-party source is checked by the provider build and
       // consumer contracts; repository style rules do not rewrite upstream.
       "internal/parsing/jsonld/provider/jsonld.js",
+      ".github/actions/retain-artifact/dist/**",
       "API.md",
       "docs/compatibility/java-api-surface.md",
       "docs/Deep Review of Phase 19 and Phase 20 of the owlapi Implementation Plan \\[2026-08-24T1130\\].md",
@@ -88,4 +89,10 @@ export default [
     },
   },
   prettier,
+  {
+    // Import attributes bind producer-only JSON authorities; consumer syntax
+    // retains its existing target.
+    files: ["tooling/artifact-transport/*.mjs", "scripts/ci-qualification.mjs"],
+    languageOptions: { ecmaVersion: 2025 },
+  },
 ];

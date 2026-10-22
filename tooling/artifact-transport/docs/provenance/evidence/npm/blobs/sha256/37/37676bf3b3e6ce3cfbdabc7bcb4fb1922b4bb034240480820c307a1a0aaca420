@@ -1,0 +1,197 @@
+{
+  "artifactId": "b90cb673c6f2f9ae84439d20a005dd0ba534765b3484f4c0378f43ee51f57aae",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5203,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.editorconfig",
+        "sha256": "ede54e8b6b96147c61efd0ddc56d3683508a26066a8baabd63673d2779a06f23",
+        "size": 276,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.eslintrc",
+        "sha256": "642b1b0f395fbbacbec0b28fb93c7bc47628403b188670592cf6b03ca3943a19",
+        "size": 235,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "f569ace05f62d6d711bc5ca55b8acaedd9cd075e5ad8b7357450a1b6dc6bf67e",
+        "size": 588,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nycrc",
+        "sha256": "997785c50b0773e5e18bf15550fbf57823c634fefe623cd37b3c83696402ad0a",
+        "size": 139,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "a339ad105da2f57037a406ccaa9f0683b54bee8b987d7e09076ec554846cb9a5",
+        "size": 4199,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "00d402c2bbe7c67369bd01ce2c16b8ed46ccc949a1ee2d6bb8f9606afa8c7434",
+        "size": 1080,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "c815695443811b1d5265a37e9415a62f120c2cfe12609afe5ceb5982a9a3ea13",
+        "size": 2824,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "4cdb9ccd20dc4ceb0709328cc68da842a334bafbf501543922c67e15a99901d4",
+        "size": 1268,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b61b15058833610f17197bfb60847926703e077b180de684ccc50866906f6fb1",
+        "size": 2281,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1080,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/00/00d402c2bbe7c67369bd01ce2c16b8ed46ccc949a1ee2d6bb8f9606afa8c7434",
+          "sha256": "00d402c2bbe7c67369bd01ce2c16b8ed46ccc949a1ee2d6bb8f9606afa8c7434"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "00d402c2bbe7c67369bd01ce2c16b8ed46ccc949a1ee2d6bb8f9606afa8c7434",
+        "size": 1080
+      },
+      {
+        "blob": {
+          "bytes": 2824,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c8/c815695443811b1d5265a37e9415a62f120c2cfe12609afe5ceb5982a9a3ea13",
+          "sha256": "c815695443811b1d5265a37e9415a62f120c2cfe12609afe5ceb5982a9a3ea13"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "c815695443811b1d5265a37e9415a62f120c2cfe12609afe5ceb5982a9a3ea13",
+        "size": 2824
+      }
+    ],
+    "expandedBytes": 12890,
+    "packageIdentity": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "define-properties",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/ljharb/define-properties.git"
+      },
+      "version": "1.2.1"
+    },
+    "packageMetadata": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "startingVersion": "1.1.5",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "dependencies": {
+        "define-data-property": "^1.0.1",
+        "has-property-descriptors": "^1.0.0",
+        "object-keys": "^1.1.1"
+      },
+      "description": "Define multiple non-enumerable properties at once. Uses `Object.defineProperty` when available; falls back to standard assignment in older engines.",
+      "devDependencies": {
+        "@ljharb/eslint-config": "^21.1.0",
+        "aud": "^2.0.3",
+        "auto-changelog": "^2.4.0",
+        "eslint": "=8.8.0",
+        "in-publish": "^2.0.1",
+        "npmignore": "^0.3.0",
+        "nyc": "^10.3.2",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.6.6"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "keywords": [
+        "Object.defineProperty",
+        "Object.defineProperties",
+        "object",
+        "property descriptor",
+        "descriptor",
+        "define",
+        "ES5"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "define-properties",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows",
+          "test/"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/ljharb/define-properties.git"
+      },
+      "scripts": {
+        "lint": "eslint --ext=js,mjs .",
+        "posttest": "aud --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only",
+        "tests-only": "nyc tape 'test/**/*.js'",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "testling": {
+        "browsers": [
+          "iexplore/6.0..latest",
+          "firefox/3.0..6.0",
+          "firefox/15.0..latest",
+          "firefox/nightly",
+          "chrome/4.0..10.0",
+          "chrome/20.0..latest",
+          "chrome/canary",
+          "opera/10.0..latest",
+          "opera/next",
+          "safari/4.0..latest",
+          "ipad/6.0..latest",
+          "iphone/6.0..latest",
+          "android-browser/4.2"
+        ],
+        "files": "test/index.js"
+      },
+      "version": "1.2.1"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 5203,
+      "sha256": "5de7e3804fadee9d773cd494b695e6efedfee8837e751fd9b9b77c3e9c6b40f4"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,205 @@
+{
+  "artifactId": "e84cf6951f5df937c36c1ffbeb8c427c1d9c7a580c24dac4bd09507d896f617e",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7653,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.editorconfig",
+        "sha256": "29f415a7134062e36faa312c9bf4a20dd48375c5895003b2ff0fc01cc21b7ab8",
+        "size": 231,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.eslintrc",
+        "sha256": "0694050195fc694c5846b0a2a66b437ac775da988f0a779c55fb892597f7f641",
+        "size": 43,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.gitattributes",
+        "sha256": "e753774a5c6c845d5b43db5e4e133c8b7308c233f036517be1e2ae01cb068790",
+        "size": 12,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "b9f2928df979347492b2cc9c8bc7eb476a60cb0715903fbb0571cec5082027da",
+        "size": 577,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nycrc",
+        "sha256": "997785c50b0773e5e18bf15550fbf57823c634fefe623cd37b3c83696402ad0a",
+        "size": 139,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "dbcd4e3fe7510513e5470edb1dae1111a951591fff2575d40f48e73b9cc9795f",
+        "size": 7821,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "5a26e47b9d7020848f061bcad66f8e73cab95f529dab5c02588b21e57c4f876c",
+        "size": 1067,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "d03c6e14efba923fe79bef118263d236038234a9524ba23d410d78aa57c9f7a5",
+        "size": 1847,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "b33ee1c81acb748d5526613b3044dec47e400c616dfaa20636a51a57ed6dbd1d",
+        "size": 79,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "9b9f642dbc0bf9fa76e943a2e22d916823d1585f32b26c8e9e9f182c4626195e",
+        "size": 1061,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "1e23457a11d7836233f8a98ee97dd7a2cfdde4381e46a92b160ffeffe2c3d001",
+        "size": 2117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "0df7c46a6152b4bfeef1e75d8b5812bb010d346e125b51788f1eb957a34cf9d8",
+        "size": 1102,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "b772fc0e85fe374bb32302cdbc08c8854d6a679bcf7f4f7b8da28098e2979521",
+        "size": 3611,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1067,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5a/5a26e47b9d7020848f061bcad66f8e73cab95f529dab5c02588b21e57c4f876c",
+          "sha256": "5a26e47b9d7020848f061bcad66f8e73cab95f529dab5c02588b21e57c4f876c"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "5a26e47b9d7020848f061bcad66f8e73cab95f529dab5c02588b21e57c4f876c",
+        "size": 1067
+      },
+      {
+        "blob": {
+          "bytes": 1847,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d0/d03c6e14efba923fe79bef118263d236038234a9524ba23d410d78aa57c9f7a5",
+          "sha256": "d03c6e14efba923fe79bef118263d236038234a9524ba23d410d78aa57c9f7a5"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "d03c6e14efba923fe79bef118263d236038234a9524ba23d410d78aa57c9f7a5",
+        "size": 1847
+      }
+    ],
+    "expandedBytes": 19707,
+    "packageIdentity": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "homepage": "https://github.com/inspect-js/is-set#readme",
+      "license": "MIT",
+      "name": "is-set",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/is-set.git"
+      },
+      "version": "2.0.3"
+    },
+    "packageMetadata": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "bugs": {
+        "url": "https://github.com/inspect-js/is-set/issues"
+      },
+      "description": "Is this value a JS Set? This module works cross-realm/iframe, and despite ES6 @@toStringTag.",
+      "devDependencies": {
+        "@arethetypeswrong/cli": "^0.15.0",
+        "@ljharb/eslint-config": "^21.1.0",
+        "@types/for-each": "^0.3.3",
+        "@types/object-inspect": "^1.8.4",
+        "@types/tape": "^5.6.4",
+        "aud": "^2.0.4",
+        "auto-changelog": "^2.4.0",
+        "core-js": "^2.6.12",
+        "es5-shim": "^4.6.7",
+        "es6-shim": "^0.35.8",
+        "eslint": "=8.8.0",
+        "for-each": "^0.3.3",
+        "in-publish": "^2.0.1",
+        "nyc": "^10.3.2",
+        "object-inspect": "^1.13.1",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.7.5",
+        "typescript": "next"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "homepage": "https://github.com/inspect-js/is-set#readme",
+      "keywords": [
+        "map",
+        "set",
+        "collection",
+        "is",
+        "robust"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "is-set",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/is-set.git"
+      },
+      "scripts": {
+        "lint": "eslint --ext=.js,.mjs .",
+        "postlint": "tsc -p . && attw -P",
+        "posttest": "npx aud --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only && npm run tests:shims && npm run tests:corejs",
+        "tests-only": "nyc tape 'test/**/*.js'",
+        "tests:corejs": "nyc tape --require=core-js 'test/**/*.js'",
+        "tests:shims": "nyc tape --require=es5-shim --require=es5-shim 'test/**/*.js'",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "sideEffects": false,
+      "version": "2.0.3"
+    },
+    "physicalEntryCount": 13,
+    "tarball": {
+      "bytes": 7653,
+      "sha256": "3ee20ceea3b279a42646c98df116e4534bc1bb4a5e6b9a395092e7029e9221d7"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

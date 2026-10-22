@@ -1,5 +1,6 @@
 /** Bounded service provenance for a build product. This never reuses oracle verdicts. */
 import { isDeepStrictEqual } from "node:util";
+import { matchesLogicalArtifact } from "../tooling/artifact-transport/identity.mjs";
 import {
   CI_JOB_NAMES,
   assertQualificationRecord,
@@ -68,10 +69,13 @@ function completeInventory(inventory, field) {
 function artifactIdentity(artifact, run, key, now, qualification = false) {
   fact(
     integer(artifact?.id) &&
-      artifact.name ===
-        (qualification
+      matchesLogicalArtifact(
+        artifact.name,
+        qualification
           ? `ci-main-qualification-${run.id}-${run.run_attempt}`
-          : referenceArtifactName(key, run.id, run.run_attempt)) &&
+          : referenceArtifactName(key, run.id, run.run_attempt),
+        { run: run.id, attempt: run.run_attempt, legacy: true },
+      ) &&
       artifact.expired === false &&
       serviceDigest(artifact.digest) &&
       Number.isSafeInteger(artifact.size_in_bytes) &&
@@ -133,9 +137,12 @@ export async function selectReferenceIndex({
     await read(`/actions/runs/${run.id}/artifacts?per_page=100`),
     "artifacts",
   );
-  const matches = artifacts.filter(
-    (artifact) =>
-      artifact.name === `ci-main-qualification-${run.id}-${run.run_attempt}`,
+  const matches = artifacts.filter((artifact) =>
+    matchesLogicalArtifact(
+      artifact.name,
+      `ci-main-qualification-${run.id}-${run.run_attempt}`,
+      { run: run.id, attempt: run.run_attempt, legacy: true },
+    ),
   );
   fact(matches.length === 1, "UNQUALIFIED_REFERENCE_INDEX");
   artifactIdentity(matches[0], run, null, now, true);
@@ -280,10 +287,12 @@ export async function discoverReferenceArtifact({
       await read(`/actions/runs/${current.id}/artifacts?per_page=100`),
       "artifacts",
     );
-    const matches = artifacts.filter(
-      (artifact) =>
-        artifact.name ===
+    const matches = artifacts.filter((artifact) =>
+      matchesLogicalArtifact(
+        artifact.name,
         referenceArtifactName(keySha256, current.id, current.run_attempt),
+        { run: current.id, attempt: current.run_attempt, legacy: true },
+      ),
     );
     if (!matches.length) continue;
     fact(matches.length === 1, "AMBIGUOUS_REFERENCE_ARTIFACT");
@@ -294,10 +303,12 @@ export async function discoverReferenceArtifact({
       ),
       current,
     );
-    const qualifications = artifacts.filter(
-      (artifact) =>
-        artifact.name ===
+    const qualifications = artifacts.filter((artifact) =>
+      matchesLogicalArtifact(
+        artifact.name,
         `ci-main-qualification-${current.id}-${current.run_attempt}`,
+        { run: current.id, attempt: current.run_attempt, legacy: true },
+      ),
     );
     fact(
       qualifications.length === 1 &&

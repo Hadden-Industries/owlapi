@@ -497,7 +497,7 @@ const createQualityToolingFacts = () =>
         "uv.lock",
         ".python-version",
         "scripts/repository-python-tools.mjs",
-        "LICENSES/development/uv-0.13.4-MIT.txt",
+        `LICENSES/development/uv-${UV_SELECTION.version}-MIT.txt`,
       ],
       attribution:
         "Copyright (c) 2025 Astral Software Inc. The MIT alternative is elected for development use; its complete release terms are retained. Windows/Linux x64 archive digests are pinned in the bootstrap and no binary is packed.",

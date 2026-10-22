@@ -25,7 +25,7 @@
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
     "digestAlgorithm": "sha256-sorted-json-v1",
-    "factsSha256": "0e88e057c4bef2b3497fb29a842866ebd1052f698ba052b9725c8f7c0df5aec8",
+    "factsSha256": "e4b9ebcff3c997acf1e08956ded93be4508689cef787a8ad4ca8f74f4c7a8782",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -44498,11 +44498,11 @@
       "evidenceFiles": [
         {
           "path": "util/scancode-runtime/pyproject.toml",
-          "sha256": "24b9ede55275781e7a26ab3cd0380523a0bc1bb405487dcdd00d7b703117edd3"
+          "sha256": "a9c10740d139e443b7923c80776c3d4546d80c6cabd6ddb6d49793ab853ad962"
         },
         {
           "path": "util/scancode-runtime/uv.lock",
-          "sha256": "7cd656bcc5a45134ef2509c210e0b203be1cd854eaf71a82dbc66cd39c15f006"
+          "sha256": "15333a34c9d5b05cc9ae8a644604add9d703ecba5ef17d42edca515439412ca4"
         },
         {
           "path": "LICENSES/development/scancode-runtime/beartype-0.23.1/licenses/LICENSE",
@@ -45115,11 +45115,11 @@
       "evidenceFiles": [
         {
           "path": "pyproject.toml",
-          "sha256": "eac7229f95e21c226409d579e85813445a5fb6c084b4ff284b3911753e984db8"
+          "sha256": "ae15df0acbd8c9b70d45e93aa1e3c0ba75111cf24a501b1011931a0d94ba6e32"
         },
         {
           "path": "uv.lock",
-          "sha256": "f17f68145de0bbbaba65f8af776b8f4e29a7fe2fbae60aea6d42f10924a9116e"
+          "sha256": "043bff0b1379998a2940f69c630beba00271863aeb2b967f1d934f179467410f"
         },
         {
           "path": "ruff.toml",
@@ -45157,11 +45157,11 @@
       "evidenceFiles": [
         {
           "path": "util/scancode-runtime/pyproject.toml",
-          "sha256": "24b9ede55275781e7a26ab3cd0380523a0bc1bb405487dcdd00d7b703117edd3"
+          "sha256": "a9c10740d139e443b7923c80776c3d4546d80c6cabd6ddb6d49793ab853ad962"
         },
         {
           "path": "util/scancode-runtime/uv.lock",
-          "sha256": "7cd656bcc5a45134ef2509c210e0b203be1cd854eaf71a82dbc66cd39c15f006"
+          "sha256": "15333a34c9d5b05cc9ae8a644604add9d703ecba5ef17d42edca515439412ca4"
         },
         {
           "path": "util/scancode-runtime/qualification-baseline.json",
@@ -45169,7 +45169,7 @@
         },
         {
           "path": "LICENSES/development/scancode-runtime/inventory.json",
-          "sha256": "de74fdc2987b07e019686a4b9fdc6e76e2153464c7151612ae97a1cf95b3cdf2"
+          "sha256": "967385bf4c87d89d968d44037106764c51b211d041ef544123a79bdfc9b3a2e7"
         },
         {
           "path": "LICENSES/development/scancode-runtime/attrs-26.1.0/licenses/LICENSE",
@@ -45911,7 +45911,7 @@
         },
         {
           "path": ".node-version",
-          "sha256": "a1c56e968c358e10872d64220b3ae759ffe7feaffc4da95fae425dbcca43fe44"
+          "sha256": "d9f318747a126ce2247661af67852b185def7789492eabfad7bba322be087c33"
         },
         {
           "path": "tooling/markdown/package.json",
@@ -45981,7 +45981,7 @@
       "id": "uv-development-bootstrap",
       "relationship": "DEVELOPMENT_ONLY",
       "name": "uv development-environment bootstrap",
-      "versionOrRevision": "0.13.4",
+      "versionOrRevision": "0.13.5",
       "licenseAssessments": [
         {
           "scope": "Development tooling or adapted test/configuration source",
@@ -45995,22 +45995,22 @@
       "evidenceFiles": [
         {
           "path": "pyproject.toml",
-          "sha256": "eac7229f95e21c226409d579e85813445a5fb6c084b4ff284b3911753e984db8"
+          "sha256": "ae15df0acbd8c9b70d45e93aa1e3c0ba75111cf24a501b1011931a0d94ba6e32"
         },
         {
           "path": "uv.lock",
-          "sha256": "f17f68145de0bbbaba65f8af776b8f4e29a7fe2fbae60aea6d42f10924a9116e"
+          "sha256": "043bff0b1379998a2940f69c630beba00271863aeb2b967f1d934f179467410f"
         },
         {
           "path": ".python-version",
-          "sha256": "8effb955f195345405c0cf4d0fb35f65165b59f444ad1a5fd9ff1ca9194fde29"
+          "sha256": "fd81c059718aeb990462ccbf0282b57d9488a7213420e8cc637d3182b6fa7697"
         },
         {
           "path": "scripts/repository-python-tools.mjs",
           "sha256": "247b21dae424896fe8892f544a0aa7f5482e643fb308e4219f4e2aa70ec43d9c"
         },
         {
-          "path": "LICENSES/development/uv-0.13.4-MIT.txt",
+          "path": "LICENSES/development/uv-0.13.5-MIT.txt",
           "sha256": "860e3d7a86b84e6a7012c7a635fc64df475cebc6cce34dfeb73a5982ec58176c"
         }
       ],

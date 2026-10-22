@@ -1,0 +1,92 @@
+{
+  "artifactId": "8dfc2272e9d8a33a3bbe387b271127984c11fa0ec67e62147fe75d06e4ec5d4d",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1654,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.js",
+        "sha256": "90ba524851f721e8aced79870d6d6a733cd3939b293a83e2d04417812a8ba330",
+        "size": 1083,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license.md",
+        "sha256": "ecdccbcf39024f624ded480c01c0b25458e1eca8f26ecf040933865ce56d9a4f",
+        "size": 1064,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "6d6d93d057f39bc3173d53e694b61833fd0ce89c1d669156169136d31a968131",
+        "size": 578,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "f659caaae9d9f4a860850b3229f6c261a09b86e3644dbc01128fe5d74b01aecd",
+        "size": 450,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1064,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ec/ecdccbcf39024f624ded480c01c0b25458e1eca8f26ecf040933865ce56d9a4f",
+          "sha256": "ecdccbcf39024f624ded480c01c0b25458e1eca8f26ecf040933865ce56d9a4f"
+        },
+        "kind": "LICENCE",
+        "path": "package/license.md",
+        "sha256": "ecdccbcf39024f624ded480c01c0b25458e1eca8f26ecf040933865ce56d9a4f",
+        "size": 1064
+      }
+    ],
+    "expandedBytes": 3175,
+    "packageIdentity": {
+      "author": "",
+      "homepage": "https://github.com/calvinmetcalf/process-nextick-args",
+      "license": "MIT",
+      "name": "process-nextick-args",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/calvinmetcalf/process-nextick-args.git"
+      },
+      "version": "2.0.1"
+    },
+    "packageMetadata": {
+      "author": "",
+      "bugs": {
+        "url": "https://github.com/calvinmetcalf/process-nextick-args/issues"
+      },
+      "description": "process.nextTick but always with args",
+      "devDependencies": {
+        "tap": "~0.2.6"
+      },
+      "files": [
+        "index.js"
+      ],
+      "homepage": "https://github.com/calvinmetcalf/process-nextick-args",
+      "license": "MIT",
+      "main": "index.js",
+      "name": "process-nextick-args",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/calvinmetcalf/process-nextick-args.git"
+      },
+      "scripts": {
+        "test": "node test.js"
+      },
+      "version": "2.0.1"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1654,
+      "sha256": "425bf8c725d23bc5ac76bcedd10d9cdbbd6354c7273dd7def44417cfbca8889b"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

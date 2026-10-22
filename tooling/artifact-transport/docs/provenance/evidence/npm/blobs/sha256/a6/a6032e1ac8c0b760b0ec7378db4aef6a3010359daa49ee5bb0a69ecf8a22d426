@@ -1,0 +1,1186 @@
+{
+  "artifactId": "10f91c3499a82aee8419eaf216776ec243f2be684d455313bdae714a5fb717a9",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 14,
+      "digestVerifiedFileCount": 14,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 14
+    },
+    "artifactId": "10f91c3499a82aee8419eaf216776ec243f2be684d455313bdae714a5fb717a9",
+    "dependencies": [],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "Microsoft Corp , homepage' https://www.typescriptlang.org",
+            "end_line": 4,
+            "start_line": 3
+          }
+        ],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "bsd-zero",
+        "detected_license_expression_spdx": "0BSD",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tslib@2.8.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_zero-04cc059a-b2b4-8ee9-61c8-6d6a8b69ece4",
+            "license_expression": "bsd-zero",
+            "license_expression_spdx": "0BSD",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "10f91c3499a82aee8419eaf216776ec243f2be684d455313bdae714a5fb717a9/package/package.json",
+                "license_expression": "bsd-zero",
+                "license_expression_spdx": "0BSD",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "    \"license\": \"0BSD\",",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-zero_4.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-zero_4.RULE",
+                "score": 100,
+                "start_line": 6
+              }
+            ]
+          }
+        ],
+        "md5": "86a1132dbda5cf6ad8d8d4eb7d68852c",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/tslib/2.8.1",
+            "bug_tracking_url": "https://github.com/Microsoft/TypeScript/issues",
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "bsd-zero",
+            "declared_license_expression_spdx": "0BSD",
+            "dependencies": [],
+            "description": "Runtime library for TypeScript helper functions",
+            "download_url": "https://registry.npmjs.org/tslib/-/tslib-2.8.1.tgz",
+            "extra_data": {},
+            "extracted_license_statement": "- 0BSD\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": "https://www.typescriptlang.org/",
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [
+              "Microsoft",
+              "TypeScript",
+              "compiler",
+              "javascript",
+              "language",
+              "runtime",
+              "tslib"
+            ],
+            "license_detections": [
+              {
+                "identifier": "bsd_zero-94f793fe-b0c6-5095-96ca-b5866fe4cdae",
+                "license_expression": "bsd-zero",
+                "license_expression_spdx": "0BSD",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "10f91c3499a82aee8419eaf216776ec243f2be684d455313bdae714a5fb717a9/package/package.json",
+                    "license_expression": "bsd-zero",
+                    "license_expression_spdx": "0BSD",
+                    "match_coverage": 100,
+                    "matched_length": 1,
+                    "matched_text": "0BSD",
+                    "matcher": "1-hash",
+                    "rule_identifier": "spdx_license_id_0bsd_for_bsd-zero.RULE",
+                    "rule_relevance": 50,
+                    "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_0bsd_for_bsd-zero.RULE",
+                    "score": 50,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "tslib",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": null,
+                "name": "Microsoft Corp.",
+                "role": "author",
+                "type": "person",
+                "url": null
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/tslib@2.8.1",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/tslib/-/tslib-2.8.1.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/tslib",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "git+https://github.com/Microsoft/tslib.git",
+            "version": "2.8.1"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 2.08,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "f93ab67ca3a73525ba1b243fdecab48fdd427d9f",
+        "sha1_git": "57d05787665b23adae49ad9d1c4fcc1b183481e6",
+        "sha256": "f02b4851df316f29bdfcd404aa1eb41e4e216b5859015f81fcd3e91caf8be931",
+        "size": 1219,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "CopyrightNotice",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": "bsd-zero",
+        "detected_license_expression_spdx": "0BSD",
+        "dirs_count": 0,
+        "extension": ".txt",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tslib@2.8.1"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Microsoft Corporation",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_zero-a803c6e7-ea8d-ad87-3808-9d19755894c5",
+            "license_expression": "bsd-zero",
+            "license_expression_spdx": "0BSD",
+            "matches": [
+              {
+                "end_line": 13,
+                "from_file": "10f91c3499a82aee8419eaf216776ec243f2be684d455313bdae714a5fb717a9/package/CopyrightNotice.txt",
+                "license_expression": "bsd-zero",
+                "license_expression_spdx": "0BSD",
+                "match_coverage": 100,
+                "matched_length": 98,
+                "matched_text": "Permission to use, copy, modify, and/or distribute this software for any\r\npurpose with or without fee is hereby granted.\r\n\r\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH\r\nREGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY\r\nAND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,\r\nINDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM\r\nLOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR\r\nOTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR\r\nPERFORMANCE OF THIS SOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-zero.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/bsd-zero.LICENSE",
+                "score": 100,
+                "start_line": 4
+              }
+            ]
+          }
+        ],
+        "md5": "cb391e9e435b114c07bee8f6754c4f98",
+        "name": "CopyrightNotice.txt",
+        "package_data": [],
+        "path": "package/CopyrightNotice.txt",
+        "percentage_of_license_text": 96.08,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "2bd9d1e6cf5c3af8e9000c4183e7d43b80e222e0",
+        "sha1_git": "0e42542369729ec05635e54491d177e86ccea100",
+        "sha256": "da16ddb65f8ca390998fb99223d0112498b56b45784d00afd77ff8ce1ac4de8b",
+        "size": 822,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "bsd-zero",
+        "detected_license_expression_spdx": "0BSD",
+        "dirs_count": 0,
+        "extension": ".txt",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tslib@2.8.1"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Microsoft Corporation",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_zero-a803c6e7-ea8d-ad87-3808-9d19755894c5",
+            "license_expression": "bsd-zero",
+            "license_expression_spdx": "0BSD",
+            "matches": [
+              {
+                "end_line": 12,
+                "from_file": "10f91c3499a82aee8419eaf216776ec243f2be684d455313bdae714a5fb717a9/package/LICENSE.txt",
+                "license_expression": "bsd-zero",
+                "license_expression_spdx": "0BSD",
+                "match_coverage": 100,
+                "matched_length": 98,
+                "matched_text": "Permission to use, copy, modify, and/or distribute this software for any\r\npurpose with or without fee is hereby granted.\r\n\r\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH\r\nREGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY\r\nAND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,\r\nINDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM\r\nLOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR\r\nOTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR\r\nPERFORMANCE OF THIS SOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-zero.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/bsd-zero.LICENSE",
+                "score": 100,
+                "start_line": 3
+              }
+            ]
+          }
+        ],
+        "md5": "f938d99cba29007eeae26d80a9a4cfa6",
+        "name": "LICENSE.txt",
+        "package_data": [],
+        "path": "package/LICENSE.txt",
+        "percentage_of_license_text": 96.08,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "d655707032a04e02467eedb4c977ec1e52132ab8",
+        "sha1_git": "bfe6430cb0d83f34f5ed859d118dd3dc8ec1f7e8",
+        "sha256": "210b19e543130388c68654b7497e967119ce17145f66ab7d85688fbd70f08751",
+        "size": 655,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tslib@2.8.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "6feaf98c04772fbd0cb4ab500ad3c703",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "7aa5c6a6ed7ccb4fd3e22e6f5aa6636e6c91af0a",
+        "sha1_git": "290cc618fba09dc5e93cb6c6b2364835d474f205",
+        "sha256": "d2e199aa7eafd807ba6c3c31edaf06cc06712f30ef965687e22d315b9e8f0543",
+        "size": 4033,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "SECURITY",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tslib@2.8.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "a583f49d359c7ebba61433e4dfcd05a9",
+        "name": "SECURITY.md",
+        "package_data": [],
+        "path": "package/SECURITY.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "56cea4315ced27989bf4993b5ebb6f5123222c3b",
+        "sha1_git": "869fdfe2b246991a053fab9cfec1bed3ab532ab1",
+        "sha256": "89c4e4b9ba7ec705482e2de05135d0626d33bf8c2c66119c65d7a306dd83459c",
+        "size": 2757,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tslib@2.8.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "2724089b42100e9a6d5782b26b9cd43a",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/modules/index.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "f6a1d51250df1267da67e163469d33580e62cb93",
+        "sha1_git": "c91f61864fead99b3085eed82ae0aa8a098d83a8",
+        "sha256": "b3a4765da2bc019c79f2c2c12b36f860e946119d976897f1ce945caf227d0468",
+        "size": 1416,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tslib@2.8.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "07ec94155095794186f7791e67af1ada",
+        "name": "index.d.ts",
+        "package_data": [],
+        "path": "package/modules/index.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "32c43ebd6223fe34e553f1353fa2ad82928bed49",
+        "sha1_git": "3244fabeec060d55c47f0a981adb9d629fd0678f",
+        "sha256": "b8f34dd1757f68e03262b1ca3ddfa668a855b872f8bdd5224d6f993a7b37dc2c",
+        "size": 801,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tslib@2.8.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "b89c5f2a8f8cfdd98f96655509d63440",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": null,
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": null,
+            "declared_license_expression_spdx": null,
+            "dependencies": [],
+            "description": null,
+            "download_url": null,
+            "extra_data": {},
+            "extracted_license_statement": null,
+            "file_references": [],
+            "holder": null,
+            "homepage_url": null,
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [],
+            "license_detections": [],
+            "md5": null,
+            "name": null,
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [],
+            "primary_language": "JavaScript",
+            "purl": null,
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": null,
+            "repository_homepage_url": null,
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": null,
+            "version": null
+          }
+        ],
+        "path": "package/modules/package.json",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "fce8a3c677d5023fad0231c9be109e622ff199f8",
+        "sha1_git": "aafa0e4b45ab8f65ed28c0d0b389ae9587aa3d80",
+        "sha256": "f2a77d1fa2e7ee710b2835b2933d75d9c7f5dad4f1bab69e1679876e32b5e9eb",
+        "size": 26,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "tslib",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": "bsd-zero",
+        "detected_license_expression_spdx": "0BSD",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tslib@2.8.1"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Microsoft Corporation",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_zero-a803c6e7-ea8d-ad87-3808-9d19755894c5",
+            "license_expression": "bsd-zero",
+            "license_expression_spdx": "0BSD",
+            "matches": [
+              {
+                "end_line": 13,
+                "from_file": "10f91c3499a82aee8419eaf216776ec243f2be684d455313bdae714a5fb717a9/package/tslib.js",
+                "license_expression": "bsd-zero",
+                "license_expression_spdx": "0BSD",
+                "match_coverage": 100,
+                "matched_length": 98,
+                "matched_text": "Permission to use, copy, modify, and/or distribute this software for any\r\npurpose with or without fee is hereby granted.\r\n\r\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH\r\nREGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY\r\nAND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,\r\nINDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM\r\nLOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR\r\nOTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR\r\nPERFORMANCE OF THIS SOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-zero.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/bsd-zero.LICENSE",
+                "score": 100,
+                "start_line": 4
+              }
+            ]
+          }
+        ],
+        "md5": "2cca5871214c882cf30da3181a7d5927",
+        "name": "tslib.js",
+        "package_data": [],
+        "path": "package/tslib.js",
+        "percentage_of_license_text": 3.98,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "55e3584ab90ffc463a8e76d8a11b89c23b11b6a5",
+        "sha1_git": "5e12ace6db8ac89cf15b3106d8d6ab8271ffd3a4",
+        "sha256": "8855865a058bc0a6df8f5db45347be041a2d6bbe1654216c51a805648c1b6e8a",
+        "size": 23382,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "tslib",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".html",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tslib@2.8.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "442aa09e10281318cdf6be9e026232b0",
+        "name": "tslib.html",
+        "package_data": [],
+        "path": "package/tslib.html",
+        "percentage_of_license_text": 0,
+        "programming_language": "HTML",
+        "scan_errors": [],
+        "sha1": "d1cfb0e2db3f8d42decab1311d104b923b4ad384",
+        "sha1_git": "44c9ba51e3547ad1b7a9244f14703ab681519619",
+        "sha256": "e14179f388a9690437165289d45ff7747f0f839538b5abec63d2dcfe21c2a5f4",
+        "size": 32,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "tslib.d",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": "bsd-zero",
+        "detected_license_expression_spdx": "0BSD",
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tslib@2.8.1"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Microsoft Corporation",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": true,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_zero-a803c6e7-ea8d-ad87-3808-9d19755894c5",
+            "license_expression": "bsd-zero",
+            "license_expression_spdx": "0BSD",
+            "matches": [
+              {
+                "end_line": 13,
+                "from_file": "10f91c3499a82aee8419eaf216776ec243f2be684d455313bdae714a5fb717a9/package/tslib.d.ts",
+                "license_expression": "bsd-zero",
+                "license_expression_spdx": "0BSD",
+                "match_coverage": 100,
+                "matched_length": 98,
+                "matched_text": "Permission to use, copy, modify, and/or distribute this software for any\r\npurpose with or without fee is hereby granted.\r\n\r\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH\r\nREGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY\r\nAND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,\r\nINDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM\r\nLOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR\r\nOTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR\r\nPERFORMANCE OF THIS SOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-zero.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/bsd-zero.LICENSE",
+                "score": 100,
+                "start_line": 4
+              }
+            ]
+          }
+        ],
+        "md5": "2c5d086dfd84d8a521582cc7f5715108",
+        "name": "tslib.d.ts",
+        "package_data": [],
+        "path": "package/tslib.d.ts",
+        "percentage_of_license_text": 4.19,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "b94033ea7c97c465192dd982b9379124325d48d3",
+        "sha1_git": "f23df5596e4c82c702ef1fcf8f8be68d650e3988",
+        "sha256": "a6a5253138c5432c68a1510c70fe78a644fe2e632111ba778e1978010d6edfec",
+        "size": 18317,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "tslib.es6",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": "bsd-zero",
+        "detected_license_expression_spdx": "0BSD",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tslib@2.8.1"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Microsoft Corporation",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_zero-a803c6e7-ea8d-ad87-3808-9d19755894c5",
+            "license_expression": "bsd-zero",
+            "license_expression_spdx": "0BSD",
+            "matches": [
+              {
+                "end_line": 13,
+                "from_file": "10f91c3499a82aee8419eaf216776ec243f2be684d455313bdae714a5fb717a9/package/tslib.es6.js",
+                "license_expression": "bsd-zero",
+                "license_expression_spdx": "0BSD",
+                "match_coverage": 100,
+                "matched_length": 98,
+                "matched_text": "Permission to use, copy, modify, and/or distribute this software for any\r\npurpose with or without fee is hereby granted.\r\n\r\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH\r\nREGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY\r\nAND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,\r\nINDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM\r\nLOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR\r\nOTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR\r\nPERFORMANCE OF THIS SOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-zero.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/bsd-zero.LICENSE",
+                "score": 100,
+                "start_line": 4
+              }
+            ]
+          }
+        ],
+        "md5": "664c230caec36a8131e92083f5090e6f",
+        "name": "tslib.es6.js",
+        "package_data": [],
+        "path": "package/tslib.es6.js",
+        "percentage_of_license_text": 4.33,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "d377353ad1ef752624c661222a4b318b064f98a1",
+        "sha1_git": "6c1739b34112104923fb7f1f1f119da40ef38ba9",
+        "sha256": "480042d65f5abdacdcf9d9ade38f9d484455be82aa34bd472bf6ab87ea0e3620",
+        "size": 19215,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "tslib.es6",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Microsoft Corporation",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": "bsd-zero",
+        "detected_license_expression_spdx": "0BSD",
+        "dirs_count": 0,
+        "extension": ".mjs",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tslib@2.8.1"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Microsoft Corporation",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_zero-a803c6e7-ea8d-ad87-3808-9d19755894c5",
+            "license_expression": "bsd-zero",
+            "license_expression_spdx": "0BSD",
+            "matches": [
+              {
+                "end_line": 13,
+                "from_file": "10f91c3499a82aee8419eaf216776ec243f2be684d455313bdae714a5fb717a9/package/tslib.es6.mjs",
+                "license_expression": "bsd-zero",
+                "license_expression_spdx": "0BSD",
+                "match_coverage": 100,
+                "matched_length": 98,
+                "matched_text": "Permission to use, copy, modify, and/or distribute this software for any\npurpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH\nREGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY\nAND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,\nINDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM\nLOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR\nOTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR\nPERFORMANCE OF THIS SOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-zero.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/bsd-zero.LICENSE",
+                "score": 100,
+                "start_line": 4
+              }
+            ]
+          }
+        ],
+        "md5": "af49088d758bd258e129a6c36b74fd01",
+        "name": "tslib.es6.mjs",
+        "package_data": [],
+        "path": "package/tslib.es6.mjs",
+        "percentage_of_license_text": 4.4,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "16f2c088b828b2cfb8d1a42707122a2f8e68d07b",
+        "sha1_git": "c17990a13acce3c462871f37caae96b112850771",
+        "sha256": "0929993220938091ede542d688b0fdb87dad99a7e77678e1983c32d18a503339",
+        "size": 17648,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "tslib.es6",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".html",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/tslib@2.8.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "5b9030beaa547926ac803bc3e7626b63",
+        "name": "tslib.es6.html",
+        "package_data": [],
+        "path": "package/tslib.es6.html",
+        "percentage_of_license_text": 0,
+        "programming_language": "HTML",
+        "scan_errors": [],
+        "sha1": "2fbd8d667ac4b49b23033f82a32dc7b6708c1d9b",
+        "sha1_git": "b122e41b06af8034aca824c9563053cf501eba2a",
+        "sha256": "759c26504a9ccbbfcd730269c9c5ef15512cf16ba617e61a92212365e57c9f5d",
+        "size": 36,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "bsd_zero-04cc059a-b2b4-8ee9-61c8-6d6a8b69ece4",
+        "license_expression": "bsd-zero",
+        "license_expression_spdx": "0BSD",
+        "reference_matches": [
+          {
+            "end_line": 6,
+            "from_file": "10f91c3499a82aee8419eaf216776ec243f2be684d455313bdae714a5fb717a9/package/package.json",
+            "license_expression": "bsd-zero",
+            "license_expression_spdx": "0BSD",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "    \"license\": \"0BSD\",",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-zero_4.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-zero_4.RULE",
+            "score": 100,
+            "start_line": 6
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "bsd_zero-94f793fe-b0c6-5095-96ca-b5866fe4cdae",
+        "license_expression": "bsd-zero",
+        "license_expression_spdx": "0BSD",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "10f91c3499a82aee8419eaf216776ec243f2be684d455313bdae714a5fb717a9/package/package.json",
+            "license_expression": "bsd-zero",
+            "license_expression_spdx": "0BSD",
+            "match_coverage": 100,
+            "matched_length": 1,
+            "matched_text": "0BSD",
+            "matcher": "1-hash",
+            "rule_identifier": "spdx_license_id_0bsd_for_bsd-zero.RULE",
+            "rule_relevance": 50,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_0bsd_for_bsd-zero.RULE",
+            "score": 50,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 6,
+        "identifier": "bsd_zero-a803c6e7-ea8d-ad87-3808-9d19755894c5",
+        "license_expression": "bsd-zero",
+        "license_expression_spdx": "0BSD",
+        "reference_matches": [
+          {
+            "end_line": 13,
+            "from_file": "10f91c3499a82aee8419eaf216776ec243f2be684d455313bdae714a5fb717a9/package/CopyrightNotice.txt",
+            "license_expression": "bsd-zero",
+            "license_expression_spdx": "0BSD",
+            "match_coverage": 100,
+            "matched_length": 98,
+            "matched_text": "Permission to use, copy, modify, and/or distribute this software for any\r\npurpose with or without fee is hereby granted.\r\n\r\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH\r\nREGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY\r\nAND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,\r\nINDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM\r\nLOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR\r\nOTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR\r\nPERFORMANCE OF THIS SOFTWARE.",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-zero.LICENSE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/bsd-zero.LICENSE",
+            "score": 100,
+            "start_line": 4
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": null,
+        "homepage_url": "http://landley.net/toybox/license.html",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "bsd-zero",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/bsd-zero",
+        "minimum_coverage": 70,
+        "name": "BSD Zero Clause License",
+        "notes": null,
+        "osi_license_key": null,
+        "osi_url": null,
+        "other_spdx_license_keys": [],
+        "other_urls": [
+          "https://opensource.org/licenses/0BSD"
+        ],
+        "owner": "Rob Landley",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/bsd-zero.LICENSE",
+        "short_name": "BSD Zero Clause License",
+        "spdx_license_key": "0BSD",
+        "spdx_url": "https://spdx.org/licenses/0BSD",
+        "standard_notice": null,
+        "text": "Permission to use, copy, modify, and/or distribute this software for any\npurpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES\nWITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF\nMERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR\nANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES\nWHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN\nACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF\nOR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
+        "text_urls": []
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "bsd-zero.LICENSE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": true,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 98,
+        "license_expression": "bsd-zero",
+        "minimum_coverage": 70,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/bsd-zero.LICENSE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Permission to use, copy, modify, and/or distribute this software for any\npurpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES\nWITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF\nMERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR\nANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES\nWHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN\nACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF\nOR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."
+      },
+      {
+        "identifier": "bsd-zero_4.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "bsd-zero",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-zero_4.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "license=\"0BSD\","
+      },
+      {
+        "identifier": "spdx_license_id_0bsd_for_bsd-zero.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": true,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 1,
+        "license_expression": "bsd-zero",
+        "minimum_coverage": 100,
+        "notes": "Used to detect a bare SPDX license id",
+        "referenced_filenames": [],
+        "relevance": 50,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_0bsd_for_bsd-zero.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "0bsd"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/tslib/2.8.1",
+        "bug_tracking_url": "https://github.com/Microsoft/TypeScript/issues",
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "bsd-zero",
+        "declared_license_expression_spdx": "0BSD",
+        "description": "Runtime library for TypeScript helper functions",
+        "download_url": "https://registry.npmjs.org/tslib/-/tslib-2.8.1.tgz",
+        "extra_data": {},
+        "extracted_license_statement": "- 0BSD\n",
+        "holder": null,
+        "homepage_url": "https://www.typescriptlang.org/",
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [
+          "Microsoft",
+          "TypeScript",
+          "compiler",
+          "javascript",
+          "language",
+          "runtime",
+          "tslib"
+        ],
+        "license_detections": [
+          {
+            "identifier": "bsd_zero-94f793fe-b0c6-5095-96ca-b5866fe4cdae",
+            "license_expression": "bsd-zero",
+            "license_expression_spdx": "0BSD",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "10f91c3499a82aee8419eaf216776ec243f2be684d455313bdae714a5fb717a9/package/package.json",
+                "license_expression": "bsd-zero",
+                "license_expression_spdx": "0BSD",
+                "match_coverage": 100,
+                "matched_length": 1,
+                "matched_text": "0BSD",
+                "matcher": "1-hash",
+                "rule_identifier": "spdx_license_id_0bsd_for_bsd-zero.RULE",
+                "rule_relevance": 50,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_0bsd_for_bsd-zero.RULE",
+                "score": 50,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "tslib",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": null,
+            "name": "Microsoft Corp.",
+            "role": "author",
+            "type": "person",
+            "url": null
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/tslib@2.8.1",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/tslib/-/tslib-2.8.1.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/tslib",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "git+https://github.com/Microsoft/tslib.git",
+        "version": "2.8.1"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

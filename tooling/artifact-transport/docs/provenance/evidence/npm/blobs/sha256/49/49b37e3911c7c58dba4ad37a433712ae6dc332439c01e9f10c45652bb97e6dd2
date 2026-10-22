@@ -1,0 +1,233 @@
+{
+  "artifactId": "c4adb1da567295e145dcbf48e546129112f0b878eccf3fd68263fbc011437f35",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7820,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.editorconfig",
+        "sha256": "0a73be687a86b6f0e5494b1be555fcfbb886108794948837170c28f18820aae2",
+        "size": 286,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.eslintrc",
+        "sha256": "629f5429525d564418704f25dd9b7d7955d09896ebddccbac9763732ca9a97db",
+        "size": 295,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nycrc",
+        "sha256": "997785c50b0773e5e18bf15550fbf57823c634fefe623cd37b3c83696402ad0a",
+        "size": 139,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "141e05c95b0fba54331153704ac8cf3484378421e6c7cf90a9cbc2b98db2f580",
+        "size": 10822,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "a5e49293b629194f16e08c965807b34a4a8f45aa2735658a3b0e3c1478a34b30",
+        "size": 1073,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "4ac7fa0ada02ef61a3551a7c253f706d0978683c6495bb50e81ba4e3de393d1b",
+        "size": 2404,
+        "type": "FILE"
+      },
+      {
+        "path": "package/auto.js",
+        "sha256": "8a28142fdc864763727d7cfe6a19b5dbcdf5e1861207bd2c122082336a6c3221",
+        "size": 36,
+        "type": "FILE"
+      },
+      {
+        "path": "package/implementation.js",
+        "sha256": "2176b41e6d057516a25daef1e5d1625099d4d815b32ea6f4039206911daffa91",
+        "size": 650,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "515a0585afeae72143fe6633f8453eebafa536325d19508ffcd276a0722abbb9",
+        "size": 572,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "a867b974bc282a6e11680d045ecc66ddb9630c31d381e9e1e35dc3e8b02b5754",
+        "size": 2052,
+        "type": "FILE"
+      },
+      {
+        "path": "package/polyfill.js",
+        "sha256": "cca8bb5b4547b6325f08ca7a3e8f7bd97468a41c55fb7e20072d077fbfdb3838",
+        "size": 463,
+        "type": "FILE"
+      },
+      {
+        "path": "package/shim.js",
+        "sha256": "9137912ba405be18ec1efbf454c397efe156adfd0610f7344716aa75117455af",
+        "size": 337,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/implementation.js",
+        "sha256": "1382f6175ec2292a872992cc39a0637f6310543ecc0dfbf1c543e6aff16007ca",
+        "size": 637,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "d404d55b3d40947e16a588eff2583bcf728093fa7f143e657eb52a61faf28fd5",
+        "size": 447,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/shimmed.js",
+        "sha256": "18a574be0ecc20bd47f7739f30ea22f4af74b6bb44c05e2c9caf11847f57aad7",
+        "size": 1371,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/tests.js",
+        "sha256": "b3fda226c458cfabfe6972133308f631f16358bc2c50a84327c740d4d3d3ca41",
+        "size": 1305,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1073,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a5/a5e49293b629194f16e08c965807b34a4a8f45aa2735658a3b0e3c1478a34b30",
+          "sha256": "a5e49293b629194f16e08c965807b34a4a8f45aa2735658a3b0e3c1478a34b30"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "a5e49293b629194f16e08c965807b34a4a8f45aa2735658a3b0e3c1478a34b30",
+        "size": 1073
+      },
+      {
+        "blob": {
+          "bytes": 2404,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4a/4ac7fa0ada02ef61a3551a7c253f706d0978683c6495bb50e81ba4e3de393d1b",
+          "sha256": "4ac7fa0ada02ef61a3551a7c253f706d0978683c6495bb50e81ba4e3de393d1b"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "4ac7fa0ada02ef61a3551a7c253f706d0978683c6495bb50e81ba4e3de393d1b",
+        "size": 2404
+      }
+    ],
+    "expandedBytes": 22889,
+    "packageIdentity": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "string.prototype.trimstart",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/es-shims/String.prototype.trimStart.git"
+      },
+      "version": "1.0.8"
+    },
+    "packageMetadata": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "contributors": [
+        "Jordan Harband <ljharb@gmail.com>",
+        "Khaled Al-Ansari <khaledelansari@gmail.com>"
+      ],
+      "dependencies": {
+        "call-bind": "^1.0.7",
+        "define-properties": "^1.2.1",
+        "es-object-atoms": "^1.0.0"
+      },
+      "description": "ES2019 spec-compliant String.prototype.trimStart shim.",
+      "devDependencies": {
+        "@es-shims/api": "^2.4.2",
+        "@ljharb/eslint-config": "^21.1.0",
+        "aud": "^2.0.4",
+        "auto-changelog": "^2.4.0",
+        "eslint": "=8.8.0",
+        "functions-have-names": "^1.2.3",
+        "has-strict-mode": "^1.0.1",
+        "in-publish": "^2.0.1",
+        "npmignore": "^0.3.1",
+        "nyc": "^10.3.2",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.7.5"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "keywords": [
+        "es6",
+        "es7",
+        "es8",
+        "javascript",
+        "prototype",
+        "polyfill",
+        "utility",
+        "trim",
+        "trimLeft",
+        "trimRight",
+        "trimStart",
+        "trimEnd",
+        "tc39"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "string.prototype.trimstart",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/es-shims/String.prototype.trimStart.git"
+      },
+      "scripts": {
+        "lint": "eslint --ext=js,mjs .",
+        "postlint": "es-shim-api --bound",
+        "posttest": "aud --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only",
+        "tests-only": "nyc tape 'test/**/*.js'",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "version": "1.0.8"
+    },
+    "physicalEntryCount": 16,
+    "tarball": {
+      "bytes": 7820,
+      "sha256": "bcc9cb52ebf0175ee1c79904516ea8a287e1e3de6dc3d3a77e92f8d76b82fb0e"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

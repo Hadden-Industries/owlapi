@@ -10,7 +10,9 @@ updates:
     open-pull-requests-limit: 10
 
   - package-ecosystem: npm
-    directory: /
+    directories:
+      - /
+      - /tooling/artifact-transport
     schedule:
       interval: weekly
       day: monday

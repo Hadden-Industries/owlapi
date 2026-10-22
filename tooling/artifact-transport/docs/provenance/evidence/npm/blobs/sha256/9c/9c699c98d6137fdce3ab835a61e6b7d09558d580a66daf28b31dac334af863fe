@@ -1,0 +1,105 @@
+{
+  "artifactId": "73994f3008064d723dd15fe3c10abe6db17f831c5d499d50546f6a8a0583dd40",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1897,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "33b734d60042d0fe0c92dd1fc1e874193a1c899ec3e276a2eb935d2d0bf5b710",
+        "size": 1077,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "57072548a79553ec5a930b370f5f37f2b86f57ab39357dc63e097c7e8ba7412a",
+        "size": 67,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/util.js",
+        "sha256": "7427f16d9bd9185e409baff3e4b1ed6e3d8dfca84d367f4b8b351eb921618652",
+        "size": 3039,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "0067bcd4ef1c86da02a45ad770883b39a9d14aa0b00113071609d5fb3dce0bc0",
+        "size": 799,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1077,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/33/33b734d60042d0fe0c92dd1fc1e874193a1c899ec3e276a2eb935d2d0bf5b710",
+          "sha256": "33b734d60042d0fe0c92dd1fc1e874193a1c899ec3e276a2eb935d2d0bf5b710"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "33b734d60042d0fe0c92dd1fc1e874193a1c899ec3e276a2eb935d2d0bf5b710",
+        "size": 1077
+      }
+    ],
+    "expandedBytes": 4982,
+    "packageIdentity": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "core-util-is",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/isaacs/core-util-is"
+      },
+      "version": "1.0.3"
+    },
+    "packageMetadata": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+      "bugs": {
+        "url": "https://github.com/isaacs/core-util-is/issues"
+      },
+      "description": "The `util.is*` functions introduced in Node v0.12.",
+      "devDependencies": {
+        "tap": "^15.0.9"
+      },
+      "files": [
+        "lib"
+      ],
+      "keywords": [
+        "util",
+        "isBuffer",
+        "isArray",
+        "isNumber",
+        "isString",
+        "isRegExp",
+        "isThis",
+        "isThat",
+        "polyfill"
+      ],
+      "license": "MIT",
+      "main": "lib/util.js",
+      "name": "core-util-is",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/isaacs/core-util-is"
+      },
+      "scripts": {
+        "postversion": "npm publish",
+        "prepublishOnly": "git push origin --follow-tags",
+        "preversion": "npm test",
+        "test": "tap test.js"
+      },
+      "version": "1.0.3"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1897,
+      "sha256": "4430fdc71f2cf3b5e297113b9a692da2d6cff96cf84da00f0ecef5e5a6e74d0c"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,184 @@
+{
+  "artifactId": "58e30812e985f525ccebaa7d5d554c5066f197db11c63a290280600df7a3310f",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5004,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "2144eb6894cb440fde6b2b3aaae3b617c8f1dc9bb19813079dcf62ec6c517042",
+        "size": 1121,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "b5d4c970aa5423abae8594d4150356d342aa3a0c66bf598c771cceb826564827",
+        "size": 5533,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/cjs/index.d.ts",
+        "sha256": "6d575d93896c413b308c3726eed99ddd17e821a00bdd2cc5929510b46fe64de4",
+        "size": 587,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/cjs/index.js",
+        "sha256": "00c73a8f471d530b034d6337db03a0667ab8047a37bbd32e8130b9c49647bc42",
+        "size": 1894,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/cjs/package.json",
+        "sha256": "e78adbbbe5741f27e8d900be349911234c1ae45c20a3f2fa293e2c8e5abf3c31",
+        "size": 21,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/esm/index.d.ts",
+        "sha256": "6d575d93896c413b308c3726eed99ddd17e821a00bdd2cc5929510b46fe64de4",
+        "size": 587,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/esm/index.js",
+        "sha256": "ed3e96056fb676bbdebd1cb2b082f7f87bc6d2262401d18adfa65a5f820f6837",
+        "size": 1697,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "15cc76bd7effa3c5ce634c178e22cbfa76de58fa8ab7bef96d6ca2f53912df37",
+        "size": 2498,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1121,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/21/2144eb6894cb440fde6b2b3aaae3b617c8f1dc9bb19813079dcf62ec6c517042",
+          "sha256": "2144eb6894cb440fde6b2b3aaae3b617c8f1dc9bb19813079dcf62ec6c517042"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "2144eb6894cb440fde6b2b3aaae3b617c8f1dc9bb19813079dcf62ec6c517042",
+        "size": 1121
+      },
+      {
+        "blob": {
+          "bytes": 5533,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/b5/b5d4c970aa5423abae8594d4150356d342aa3a0c66bf598c771cceb826564827",
+          "sha256": "b5d4c970aa5423abae8594d4150356d342aa3a0c66bf598c771cceb826564827"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "b5d4c970aa5423abae8594d4150356d342aa3a0c66bf598c771cceb826564827",
+        "size": 5533
+      }
+    ],
+    "expandedBytes": 13938,
+    "packageIdentity": {
+      "author": "Jose F. Romaniello <jfromaniello@gmail.com>",
+      "homepage": "https://github.com/auth0/jwt-decode#readme",
+      "license": "MIT",
+      "name": "jwt-decode",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/auth0/jwt-decode"
+      },
+      "version": "4.0.0"
+    },
+    "packageMetadata": {
+      "author": "Jose F. Romaniello <jfromaniello@gmail.com>",
+      "contributors": [
+        "Sam Bellen <sam.bellen@auth0.com>"
+      ],
+      "description": "Decode JWT tokens, mostly useful for browser applications.",
+      "devDependencies": {
+        "@babel/core": "7.23.2",
+        "@typescript-eslint/eslint-plugin": "^6.4.1",
+        "@typescript-eslint/parser": "^6.4.1",
+        "browser-sync": "^2.29.3",
+        "concurrently": "^8.2.0",
+        "eslint": "^8.48.0",
+        "eslint-config-prettier": "^9.0.0",
+        "eslint-import-resolver-typescript": "^3.6.0",
+        "eslint-plugin-import": "^2.28.1",
+        "eslint-plugin-prettier": "^5.0.0",
+        "husky": "^8.0.3",
+        "jest": "^29.7.0",
+        "jest-environment-jsdom": "^29.6.2",
+        "lint-staged": "^15.0.2",
+        "prettier": "^3.0.2",
+        "publint": "^0.2.2",
+        "shx": "^0.3.4",
+        "ts-jest": "^29.1.1",
+        "ts-node": "^10.9.1",
+        "typescript": "^5.1.6"
+      },
+      "engines": {
+        "node": ">=18"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "default": "./build/esm/index.js",
+            "types": "./build/esm/index.d.ts"
+          },
+          "require": {
+            "default": "./build/cjs/index.js",
+            "types": "./build/cjs/index.d.ts"
+          }
+        }
+      },
+      "files": [
+        "build"
+      ],
+      "homepage": "https://github.com/auth0/jwt-decode#readme",
+      "keywords": [
+        "jwt",
+        "browser"
+      ],
+      "license": "MIT",
+      "lint-staged": {
+        "*.{js,ts}": "eslint --fix"
+      },
+      "main": "build/cjs/index.js",
+      "module": "build/esm/index.js",
+      "name": "jwt-decode",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/auth0/jwt-decode"
+      },
+      "scripts": {
+        "build": "tsc -b ./tsconfig.cjs.json ./tsconfig.esm.json",
+        "build:watch": "npm run build -- --watch",
+        "dev": "concurrently --kill-others \"npm run build:watch\" \"npm run dev:server\"",
+        "dev:server": "browser-sync start --config bs-config.json",
+        "lint": "eslint .",
+        "lint:package": "publint",
+        "prebuild": "shx rm -rf ./build && shx mkdir -p ./build/cjs && shx echo '{\"type\": \"commonjs\"}'> build/cjs/package.json",
+        "prepack": "npm run build",
+        "prepare": "husky install",
+        "test": "npm run test:node && npm run test:browser",
+        "test:browser": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' jest --coverage --testEnvironment=jsdom",
+        "test:node": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' jest --coverage"
+      },
+      "type": "module",
+      "types": "build/cjs/index.d.ts",
+      "url": "https://github.com/auth0/jwt-decode/issues",
+      "version": "4.0.0"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 5004,
+      "sha256": "d16dfbf80fa1f084be989d790e89c496cb71ec3f96c278fbbe4801a5ccb4e6eb"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

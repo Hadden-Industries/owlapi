@@ -8,6 +8,8 @@ docs/release/producer-gates.json
 internal/parsing/jsonld/provider/jsonld.js
 internal/parsing/jsonld/provider/LICENSE.txt
 internal/parsing/jsonld/provider/licenses/
+# Reproducible artifact-action bundles retain upstream presentation and notices.
+.github/actions/retain-artifact/dist/
 # Upstream notice bytes are bound by the development inventory.
 LICENSES/development/scancode-runtime/**
 !LICENSES/development/scancode-runtime/inventory.json

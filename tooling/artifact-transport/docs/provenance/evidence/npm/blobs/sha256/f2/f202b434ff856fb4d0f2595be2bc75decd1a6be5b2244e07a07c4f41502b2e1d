@@ -1,0 +1,138 @@
+{
+  "artifactId": "9b264b3234cf83ed6110cd86e406e34ddfadfb153b08d4f9a8500df541708d01",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4109,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "5b37224c080cdcc97c871ada971c224e9926370fe74f11b539aa1cf9f3b1aca1",
+        "size": 1081,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "057ef3ae4f4b4c9d3dcd257d3b2f38632de3c3a2ff068e5be14cb56a61d6daba",
+        "size": 1143,
+        "type": "FILE"
+      },
+      {
+        "path": "package/base64js.min.js",
+        "sha256": "d2e82495607abf54f16e21de04d90ba9ce1605451667d88425babece988f148b",
+        "size": 2192,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "96da6c81cd788939a7cf6546ea1f65ab5ca38952e5bd7d8c284bfe1f3c22dce7",
+        "size": 161,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "829eadd8a1a441d25be0cb93b00e16a0d0c20fd294db95d8f2ed87e6954b7182",
+        "size": 3932,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "9758f3ab8c45e07bb9a368e32f9a8b3729623bbf47cbbb205b32d674ab2a91f0",
+        "size": 1115,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1081,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5b/5b37224c080cdcc97c871ada971c224e9926370fe74f11b539aa1cf9f3b1aca1",
+          "sha256": "5b37224c080cdcc97c871ada971c224e9926370fe74f11b539aa1cf9f3b1aca1"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "5b37224c080cdcc97c871ada971c224e9926370fe74f11b539aa1cf9f3b1aca1",
+        "size": 1081
+      },
+      {
+        "blob": {
+          "bytes": 1143,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/05/057ef3ae4f4b4c9d3dcd257d3b2f38632de3c3a2ff068e5be14cb56a61d6daba",
+          "sha256": "057ef3ae4f4b4c9d3dcd257d3b2f38632de3c3a2ff068e5be14cb56a61d6daba"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "057ef3ae4f4b4c9d3dcd257d3b2f38632de3c3a2ff068e5be14cb56a61d6daba",
+        "size": 1143
+      }
+    ],
+    "expandedBytes": 9624,
+    "packageIdentity": {
+      "author": "T. Jameson Little <t.jameson.little@gmail.com>",
+      "homepage": "https://github.com/beatgammit/base64-js",
+      "license": "MIT",
+      "name": "base64-js",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/beatgammit/base64-js.git"
+      },
+      "version": "1.5.1"
+    },
+    "packageMetadata": {
+      "author": "T. Jameson Little <t.jameson.little@gmail.com>",
+      "bugs": {
+        "url": "https://github.com/beatgammit/base64-js/issues"
+      },
+      "description": "Base64 encoding/decoding in pure JS",
+      "devDependencies": {
+        "babel-minify": "^0.5.1",
+        "benchmark": "^2.1.4",
+        "browserify": "^16.3.0",
+        "standard": "*",
+        "tape": "4.x"
+      },
+      "funding": [
+        {
+          "type": "github",
+          "url": "https://github.com/sponsors/feross"
+        },
+        {
+          "type": "patreon",
+          "url": "https://www.patreon.com/feross"
+        },
+        {
+          "type": "consulting",
+          "url": "https://feross.org/support"
+        }
+      ],
+      "homepage": "https://github.com/beatgammit/base64-js",
+      "keywords": [
+        "base64"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "base64-js",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/beatgammit/base64-js.git"
+      },
+      "scripts": {
+        "build": "browserify -s base64js -r ./ | minify > base64js.min.js",
+        "lint": "standard",
+        "test": "npm run lint && npm run unit",
+        "unit": "tape test/*.js"
+      },
+      "typings": "index.d.ts",
+      "version": "1.5.1"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 4109,
+      "sha256": "b1b7a945b52685269083425216d6597e33d97bf21699d656e92fdb3eb5210a85"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

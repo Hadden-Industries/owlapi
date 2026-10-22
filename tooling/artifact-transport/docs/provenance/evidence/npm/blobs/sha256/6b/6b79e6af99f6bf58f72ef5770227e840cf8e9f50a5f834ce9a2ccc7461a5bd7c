@@ -1,0 +1,234 @@
+{
+  "artifactId": "e060c4aa4826c5f8540ab22a56506dabe2536902f608a788de2943248114734c",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6319,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.eslintrc",
+        "sha256": "ecc24a95dd70998a26a6d816c948bbebf9ec0815277d9a3de92864e2fc99c520",
+        "size": 102,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "c9a78e5da5a9e44670f363b129b062cacad04aab5411eecace16a3cf9152d30d",
+        "size": 589,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nycrc",
+        "sha256": "948366fea3b423a46366326d0bb2e54b08abd1cf0b243678ba6625740c40da5a",
+        "size": 216,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "8cc62bf64fa11141b14fdb8a70f7d7ae0e4a244049f93687ecc66ba06730aebd",
+        "size": 3599,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "6d0917530cf3b3dca12c1ab7798e4d38ad0a6798ecc1bd27849a3048ba91d265",
+        "size": 1067,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "e745ee337e494db625c4fb2bfe5accff131d407fa46cc0ac5b3ce3a4fbb9261d",
+        "size": 3671,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "3e291e0dcf1afc2933205a5989f71e3c8a755328782d7092bda18851da90f258",
+        "size": 283,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "f0344ff1fdc037a28b77185425df88cb1d30365a83a2842ce47b09433f9b2a09",
+        "size": 2746,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "43b754cc1b28510d905f2190cd1120ec779cfc71989907e05e70ca08943ef63a",
+        "size": 2946,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "711d46cb5bba2e2412197918ad7c8e2f8b3ff9e5397c4ad28166d97a2ea1a343",
+        "size": 3108,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "5c01887c6c8539144c0fc5fae6f5115073b6e26ecbeae8434a0329f46f9169c6",
+        "size": 116,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1067,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/6d/6d0917530cf3b3dca12c1ab7798e4d38ad0a6798ecc1bd27849a3048ba91d265",
+          "sha256": "6d0917530cf3b3dca12c1ab7798e4d38ad0a6798ecc1bd27849a3048ba91d265"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "6d0917530cf3b3dca12c1ab7798e4d38ad0a6798ecc1bd27849a3048ba91d265",
+        "size": 1067
+      },
+      {
+        "blob": {
+          "bytes": 3671,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/e7/e745ee337e494db625c4fb2bfe5accff131d407fa46cc0ac5b3ce3a4fbb9261d",
+          "sha256": "e745ee337e494db625c4fb2bfe5accff131d407fa46cc0ac5b3ce3a4fbb9261d"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "e745ee337e494db625c4fb2bfe5accff131d407fa46cc0ac5b3ce3a4fbb9261d",
+        "size": 3671
+      }
+    ],
+    "expandedBytes": 18443,
+    "packageIdentity": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "homepage": "https://github.com/inspect-js/typed-array-byte-length#readme",
+      "license": "MIT",
+      "name": "typed-array-byte-length",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/typed-array-byte-length.git"
+      },
+      "version": "1.0.3"
+    },
+    "packageMetadata": {
+      "author": "Jordan Harband <ljharb@gmail.com>",
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "bugs": {
+        "url": "https://github.com/inspect-js/typed-array-byte-length/issues"
+      },
+      "dependencies": {
+        "call-bind": "^1.0.8",
+        "for-each": "^0.3.3",
+        "gopd": "^1.2.0",
+        "has-proto": "^1.2.0",
+        "is-typed-array": "^1.1.14"
+      },
+      "description": "Robustly get the byte length of a Typed Array",
+      "devDependencies": {
+        "@arethetypeswrong/cli": "^0.17.1",
+        "@ljharb/eslint-config": "^21.1.1",
+        "@ljharb/tsconfig": "^0.2.2",
+        "@types/call-bind": "^1.0.5",
+        "@types/for-each": "^0.3.3",
+        "@types/gopd": "^1.0.3",
+        "@types/is-callable": "^1.1.2",
+        "@types/make-arrow-function": "^1.2.2",
+        "@types/make-generator-function": "^2.0.3",
+        "@types/object-inspect": "^1.13.0",
+        "@types/tape": "^5.7.0",
+        "auto-changelog": "^2.5.0",
+        "available-typed-arrays": "^1.0.7",
+        "encoding": "^0.1.13",
+        "eslint": "=8.8.0",
+        "evalmd": "^0.0.19",
+        "in-publish": "^2.0.1",
+        "is-callable": "^1.2.7",
+        "make-arrow-function": "^1.2.0",
+        "make-generator-function": "^2.0.0",
+        "npmignore": "^0.3.1",
+        "nyc": "^10.3.2",
+        "object-inspect": "^1.13.3",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.9.0",
+        "typescript": "next"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "exports": {
+        ".": "./index.js",
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "homepage": "https://github.com/inspect-js/typed-array-byte-length#readme",
+      "keywords": [
+        "typed",
+        "array",
+        "byteLength",
+        "byte",
+        "length",
+        "robust",
+        "es",
+        "Int8Array",
+        "Uint8Array",
+        "Uint8ClampedArray",
+        "Int16Array",
+        "Uint16Array",
+        "Int32Array",
+        "Uint32Array",
+        "Float32Array",
+        "Float64Array",
+        "BigInt64Array",
+        "BigUint64Array"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "typed-array-byte-length",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/typed-array-byte-length.git"
+      },
+      "scripts": {
+        "lint": "eslint --ext=js,mjs .",
+        "postlint": "tsc -p . && attw -P",
+        "posttest": "npx npm@'>= 10.2' audit --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prelint": "evalmd README.md",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only",
+        "tests-only": "nyc tape 'test/**/*.js'",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "sideEffects": false,
+      "testling": {
+        "files": "test/index.js"
+      },
+      "types": "./index.d.ts",
+      "version": "1.0.3"
+    },
+    "physicalEntryCount": 11,
+    "tarball": {
+      "bytes": 6319,
+      "sha256": "87d365ce179ad49d093c33a3ddb7c52b371a1bc27f11428e01e46f7f5bafc3d4"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

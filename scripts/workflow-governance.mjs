@@ -20,6 +20,8 @@ import { CI_JOB_NAMES } from "./ci-qualification.mjs";
 const REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
 const WORKFLOW_DIRECTORY = join(REPOSITORY_ROOT, ".github", "workflows");
 const SHARED_SETUP = "./.github/actions/setup-producer";
+const RETAIN_ARTIFACT = "./.github/actions/retain-artifact";
+const COLLECT_ARTIFACTS = "./.github/actions/collect-artifacts";
 const PUBLISHER_SETUP = "./approval-tools/.github/actions/setup-producer";
 const CONSUMER_ACTIONS = [
   "freeze-runtime-matrix",
@@ -52,7 +54,6 @@ const ACTIONS = Object.freeze({
   "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1": "v7.0.1",
   "actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1": "v7.1.0",
   "actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad": "v6.1.0",
-  "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9": "v7.0.2",
   "actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333":
     "v8.0.2",
   "actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294":
@@ -62,12 +63,6 @@ const DOWNLOAD_INPUTS = {
   "merge-multiple": false,
   "skip-decompress": false,
   "digest-mismatch": "error",
-};
-const UPLOAD_INPUTS = {
-  "if-no-files-found": "error",
-  "compression-level": 0,
-  "include-hidden-files": false,
-  archive: true,
 };
 const SOURCE_DOWNLOAD_INPUTS = {
   "github-token": "${{ github.token }}",
@@ -122,6 +117,73 @@ const EVIDENCE_OS_MATRIX = [
 const add = (violations, condition, message) => {
   if (!condition) violations.push(message);
 };
+/** Transport mechanics are owned by the shared action; callers only select subjects. */
+const validateArtifactTransportStep = (
+  step,
+  file,
+  jobId,
+  before,
+  violations,
+) => {
+  const collect = step.uses === COLLECT_ARTIFACTS;
+  const inputs = step.with ?? {};
+  const publisher = step.uses.includes("approval-tools/");
+  const context = `${file}:${jobId}: shared artifact transport`;
+  add(
+    violations,
+    before.some(
+      (prior) =>
+        prior.uses?.startsWith("actions/checkout@") &&
+        (prior.with?.path ?? ".") === (publisher ? "approval-tools" : "."),
+    ),
+    `${context} requires its reviewed checkout`,
+  );
+  add(
+    violations,
+    !publisher || (file === "release.yml" && jobId === "npm_release"),
+    `${context} has an unexpected tooling checkout`,
+  );
+  const allowed = collect
+    ? ["name", "pattern", "path"]
+    : ["name", "path", "retention-days", "compression-level"];
+  add(
+    violations,
+    Object.keys(inputs).every((key) => allowed.includes(key)),
+    `${context} overrides centralized transport policy`,
+  );
+  add(
+    violations,
+    typeof inputs.path === "string" && inputs.path.trim() !== "",
+    `${context} requires an explicit payload path`,
+  );
+  add(
+    violations,
+    collect
+      ? Boolean(inputs.name) !== Boolean(inputs.pattern)
+      : Boolean(inputs.name) &&
+          Number.isInteger(inputs["retention-days"]) &&
+          inputs["retention-days"] > 0,
+    `${context} requires a closed logical selector and retention`,
+  );
+  if (!collect) {
+    add(
+      violations,
+      !/[*!?]/u.test(inputs.path ?? ""),
+      `${context} cannot broaden the payload with a glob`,
+    );
+    add(
+      violations,
+      [0, 6].includes(inputs["compression-level"] ?? 0),
+      `${context} has unapproved compression`,
+    );
+    add(
+      violations,
+      !step["timeout-minutes"] || step["timeout-minutes"] >= 5,
+      `${context} must allow its bounded recovery deadline`,
+    );
+  }
+};
+
 const sortedYamlFiles = (directory, { exclude = [] } = {}) =>
   existsSync(directory)
     ? readdirSync(directory)
@@ -133,7 +195,13 @@ const steps = (job) => (Array.isArray(job?.steps) ? job.steps : []);
 const jobs = (workflow) => Object.values(workflow?.jobs ?? {});
 const allSteps = (workflow) => jobs(workflow).flatMap(steps);
 const actionSteps = (job, action) =>
-  steps(job).filter((step) => step?.uses?.startsWith(`${action}@`));
+  steps(job).filter((step) =>
+    action.startsWith("./")
+      ? step?.uses === action ||
+        (action === RETAIN_ARTIFACT &&
+          step?.uses === "./approval-tools/.github/actions/retain-artifact")
+      : step?.uses?.startsWith(`${action}@`),
+  );
 const needs = (job) =>
   typeof job?.needs === "string" ? [job.needs] : (job?.needs ?? []);
 const sameInventory = (actual, expected) =>
@@ -434,6 +502,22 @@ const validateActionUses = (fileName, workflow, document, violations) => {
         }
         continue;
       }
+      if (
+        [
+          RETAIN_ARTIFACT,
+          "./approval-tools/.github/actions/retain-artifact",
+          COLLECT_ARTIFACTS,
+        ].includes(step.uses)
+      ) {
+        validateArtifactTransportStep(
+          step,
+          fileName,
+          jobId,
+          steps(job).slice(0, index),
+          violations,
+        );
+        continue;
+      }
       const expectedTag = ACTIONS[step.uses];
       add(
         violations,
@@ -520,12 +604,10 @@ const isOptionalCiEvidenceStep = (fileName, jobId, step) =>
         "actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333") ||
     (jobId === "source_node_24" &&
       step.id === "reference_upload" &&
-      step.uses ===
-        "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9") ||
+      step.uses === RETAIN_ARTIFACT) ||
     (jobId === "required" &&
       ["receipt_upload", "main_receipt_upload"].includes(step.id) &&
-      step.uses ===
-        "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9"));
+      step.uses === RETAIN_ARTIFACT));
 
 const validateJobs = (fileName, workflow, violations) => {
   // Commands can reach a script indirectly through env, matrix or action inputs.
@@ -635,7 +717,7 @@ const validateAggregate = (fileName, workflow, registry, violations) => {
 
 /** Require all candidate-upload settings on one actual upload step, not scattered in a job. */
 const validateCandidateUpload = (fileName, job, directory, violations) => {
-  const uploads = actionSteps(job, "actions/upload-artifact");
+  const uploads = actionSteps(job, RETAIN_ARTIFACT);
   const candidate = uploads.find(
     (step) =>
       typeof step.with?.path === "string" &&
@@ -643,7 +725,7 @@ const validateCandidateUpload = (fileName, job, directory, violations) => {
   );
   requireFields(
     candidate?.with,
-    { ...UPLOAD_INPUTS, "retention-days": 90, overwrite: false },
+    { "retention-days": 90 },
     `${fileName}: candidate upload`,
     violations,
   );
@@ -889,19 +971,14 @@ const validateJavaReferenceBoundary = (job, violations) => {
   requireFields(
     upload[0],
     {
-      uses: "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+      uses: RETAIN_ARTIFACT,
       if: "github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.reference_package.outputs.publish == 'true'",
       "continue-on-error": true,
-      "timeout-minutes": 1,
+      "timeout-minutes": 5,
       with: {
         name: "${{ steps.reference_package.outputs.artifact_name }}",
         path: ".release/java-reference-reuse/publication",
         "retention-days": 90,
-        "if-no-files-found": "error",
-        "compression-level": 0,
-        "include-hidden-files": false,
-        overwrite: false,
-        archive: true,
       },
     },
     `${label}: main-only reference transport`,
@@ -1322,16 +1399,14 @@ const validateCiVerification = (workflow, violations) => {
   requireFields(
     upload,
     {
-      uses: "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+      uses: RETAIN_ARTIFACT,
       if: "steps.receipt.outputs.recorded == 'true'",
       "continue-on-error": true,
-      "timeout-minutes": 1,
+      "timeout-minutes": 5,
       with: {
-        ...UPLOAD_INPUTS,
         name: "ci-verification-${{ github.run_id }}-${{ github.run_attempt }}",
         path: ".release/ci-verification/verification.json",
         "retention-days": 90,
-        overwrite: false,
       },
     },
     label,
@@ -1354,16 +1429,14 @@ const validateCiVerification = (workflow, violations) => {
   requireFields(
     steps(jobs.required).find((step) => step.id === "main_receipt_upload"),
     {
-      uses: "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+      uses: RETAIN_ARTIFACT,
       if: "steps.main_receipt.outputs.recorded == 'true'",
       "continue-on-error": true,
-      "timeout-minutes": 1,
+      "timeout-minutes": 5,
       with: {
-        ...UPLOAD_INPUTS,
         name: "ci-main-qualification-${{ github.run_id }}-${{ github.run_attempt }}",
         path: ".release/ci-main-qualification/verification.json",
         "retention-days": 90,
-        overwrite: false,
       },
     },
     `${label} main qualification transport`,
@@ -1689,8 +1762,10 @@ const validateReleaseMutationBoundary = (
           gateSteps[uploadIndex].if === "${{ github.run_attempt == 1 }}" &&
           gateSteps[uploadIndex].with?.path ===
             `.release/approval-${environment}.json` &&
-          gateSteps[uploadIndex].with?.overwrite === false &&
-          gateSteps[uploadIndex].with?.["if-no-files-found"] === "error" &&
+          [
+            RETAIN_ARTIFACT,
+            "./approval-tools/.github/actions/retain-artifact",
+          ].includes(gateSteps[uploadIndex].uses) &&
           gateSteps[uploadIndex].with?.["retention-days"] === 90,
         `${fileName}:${id} must durably capture approval before effects and preserve it across reruns`,
       );
@@ -1879,7 +1954,7 @@ const validateReleaseReconciliation = (workflow, violations) => {
     source?.outputs,
     {
       candidate_artifact_name:
-        "owlapi-${{ steps.metadata.outputs.version }}-reconciled-candidate-${{ github.run_id }}-${{ github.run_attempt }}",
+        "${{ steps.candidate_upload.outputs.artifact-name }}",
     },
     `${fileName}:source_verification outputs`,
     violations,
@@ -1940,7 +2015,7 @@ export const auditReleaseReconciliationMutationBoundary = (source) => {
 };
 
 const validateEvidenceUpload = (fileName, id, job, inputs, violations) => {
-  const uploads = actionSteps(job, "actions/upload-artifact");
+  const uploads = actionSteps(job, RETAIN_ARTIFACT);
   add(
     violations,
     uploads.length === 1,
@@ -1948,7 +2023,7 @@ const validateEvidenceUpload = (fileName, id, job, inputs, violations) => {
   );
   requireFields(
     uploads[0]?.with,
-    { ...UPLOAD_INPUTS, overwrite: true, "retention-days": 1, ...inputs },
+    { "retention-days": 1, ...inputs },
     `${fileName}:${id} evidence upload`,
     violations,
   );
@@ -2101,7 +2176,7 @@ const validateEvidenceWorkflows = (workflows, violations) => {
     );
     add(
       violations,
-      actionSteps(shard, "actions/download-artifact").some((step) =>
+      actionSteps(shard, COLLECT_ARTIFACTS).some((step) =>
         fieldsMatch(step.with, {
           name: "npm-evidence-registry-keys",
           path: ".release/registry-keys",
@@ -2139,7 +2214,7 @@ const validateEvidenceWorkflows = (workflows, violations) => {
       sameInventory(needs(aggregate), [shardId]),
       `${fileName}:${aggregateId} must wait for all shards`,
     );
-    const downloads = actionSteps(aggregate, "actions/download-artifact");
+    const downloads = actionSteps(aggregate, COLLECT_ARTIFACTS);
     add(
       violations,
       downloads.length === 1 &&
@@ -2201,7 +2276,7 @@ const validateEvidenceWorkflows = (workflows, violations) => {
         sameInventory(needs(parity), [aggregateId]),
         `${fileName}:${parityId} must wait for both aggregates`,
       );
-      const parityDownloads = actionSteps(parity, "actions/download-artifact");
+      const parityDownloads = actionSteps(parity, COLLECT_ARTIFACTS);
       add(
         violations,
         parityDownloads.length === 1 &&
@@ -2290,18 +2365,13 @@ const validateQualityTooling = (workflows, violations) => {
         add(
           violations,
           retention.length === 1 &&
-            retention[0]?.uses ===
-              "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9" &&
+            retention[0]?.uses === RETAIN_ARTIFACT &&
             retention[0]?.if === "${{ !cancelled() }}" &&
             isDeepStrictEqual(retention[0]?.with, {
               name: `scancode-qualification-${id}`,
               path: ".release/scancode-qualification/reports",
-              "if-no-files-found": "error",
+
               "retention-days": 14,
-              "compression-level": 0,
-              overwrite: false,
-              "include-hidden-files": false,
-              archive: true,
             }) &&
             steps(job).indexOf(retention[0]) >
               steps(job).indexOf(qualification),
@@ -2528,13 +2598,10 @@ const validateMaintenanceReporter = (workflow, violations) => {
   );
   add(
     violations,
-    actionSteps(health, "actions/upload-artifact").some((step) =>
+    actionSteps(health, RETAIN_ARTIFACT).some((step) =>
       fieldsMatch(step.with, {
-        "if-no-files-found": "error",
         "retention-days": 1,
-        "compression-level": 0,
-        overwrite: false,
-        "include-hidden-files": false,
+
         path: "scripts/report-maintenance-failure.mjs",
       }),
     ),
@@ -2784,9 +2851,9 @@ const validateConsumerRuntimeControls = (
     ],
     "aggregate-consumer-runtimes": [
       SHARED_SETUP,
-      "actions/download-artifact",
+      COLLECT_ARTIFACTS,
       "node scripts/aggregate-consumer-runtimes.mjs",
-      "actions/upload-artifact",
+      RETAIN_ARTIFACT,
     ],
   };
   for (const name of CONSUMER_ACTIONS) {
@@ -2894,7 +2961,6 @@ const validateConsumerRuntimeControls = (
       requireFields(
         body[1]?.with,
         {
-          ...DOWNLOAD_INPUTS,
           pattern: "consumer-runtime-*-attempt-${{ github.run_attempt }}",
           path: ".release/runtime-reports",
         },
@@ -2904,9 +2970,8 @@ const validateConsumerRuntimeControls = (
       requireFields(
         body[3]?.with,
         {
-          ...UPLOAD_INPUTS,
           path: ".release/runtime-qualification/",
-          overwrite: false,
+
           "retention-days": 90,
         },
         `${name}: evidence retention`,
@@ -3015,10 +3080,108 @@ const validateConsumerRuntimeControls = (
   );
 };
 
+/** Both entry descriptors execute the same reviewed bundle and expose no network
+ * policy overrides. The complete static producer/collector census is deliberate.
+ */
+const validateArtifactTransportControls = (
+  workflows,
+  actionOverrides,
+  violations,
+) => {
+  const actions = {};
+  for (const name of ["retain-artifact", "collect-artifacts"]) {
+    const source =
+      actionOverrides[name] ??
+      readFileSync(
+        join(REPOSITORY_ROOT, `.github/actions/${name}/action.yml`),
+        "utf8",
+      );
+    const { value } = parseControlYaml(
+      `actions/${name}/action.yml`,
+      source,
+      violations,
+    );
+    actions[name] = value;
+    const retain = name === "retain-artifact";
+    add(
+      violations,
+      value.runs?.using === "node24" &&
+        value.runs?.main ===
+          (retain ? "dist/action.mjs" : "../retain-artifact/dist/action.mjs") &&
+        sameInventory(Object.keys(value.runs ?? {}), ["using", "main"]),
+      `${name}: must execute the one self-contained Node action bundle`,
+    );
+    add(
+      violations,
+      sameInventory(
+        Object.keys(value.inputs ?? {}),
+        retain
+          ? ["name", "path", "retention-days", "compression-level"]
+          : ["mode", "name", "pattern", "path"],
+      ),
+      `${name}: cannot expose transport policy overrides`,
+    );
+    if (retain) {
+      add(
+        violations,
+        ["name", "path", "retention-days"].every(
+          (key) => value.inputs?.[key]?.required === true,
+        ) &&
+          !value.inputs?.["compression-level"]?.default &&
+          sameInventory(Object.keys(value.outputs ?? {}), [
+            "artifact-id",
+            "artifact-digest",
+            "artifact-url",
+            "artifact-name",
+          ]),
+        `${name}: must retain exact required inputs and finalized outputs`,
+      );
+    } else {
+      add(
+        violations,
+        value.inputs?.mode?.default === "collect" &&
+          value.inputs?.path?.required === true,
+        `${name}: must select closed logical artifact collection`,
+      );
+    }
+  }
+  const aggregate = parseControlYaml(
+    "aggregate-consumer-runtimes",
+    actionOverrides["aggregate-consumer-runtimes"] ??
+      readFileSync(
+        join(
+          REPOSITORY_ROOT,
+          ".github/actions/aggregate-consumer-runtimes/action.yml",
+        ),
+        "utf8",
+      ),
+    violations,
+  ).value;
+  const operations = [
+    ...Object.values(workflows).flatMap(allSteps),
+    ...(aggregate.runs?.steps ?? []),
+  ];
+  add(
+    violations,
+    operations.filter((step) =>
+      [
+        RETAIN_ARTIFACT,
+        "./approval-tools/.github/actions/retain-artifact",
+      ].includes(step.uses),
+    ).length === 39,
+    "Artifact transport must cover the complete 39-producer inventory",
+  );
+  add(
+    violations,
+    operations.filter((step) => step.uses === COLLECT_ARTIFACTS).length === 6,
+    "Artifact transport must cover the complete six-collector inventory",
+  );
+};
 export const auditRepositoryControls = ({
   workflowSourceOverrides = {},
   setupSourceOverride,
   consumerActionOverrides = {},
+  artifactActionOverrides = {},
 } = {}) => {
   const violations = checkNodeSupportProjections(workflowSourceOverrides);
   const sharedSetup = parseControlYaml(
@@ -3069,6 +3232,11 @@ export const auditRepositoryControls = ({
   validateConsumerRuntimeControls(
     workflows,
     consumerActionOverrides,
+    violations,
+  );
+  validateArtifactTransportControls(
+    workflows,
+    { ...consumerActionOverrides, ...artifactActionOverrides },
     violations,
   );
   for (const [fileName, { value: workflow, document }] of entries(parsed)) {

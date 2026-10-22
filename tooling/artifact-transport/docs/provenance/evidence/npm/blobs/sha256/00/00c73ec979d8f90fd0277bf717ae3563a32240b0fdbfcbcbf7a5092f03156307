@@ -1,0 +1,154 @@
+{
+  "artifactId": "3005033e06a2a9924df2c10b456784ef0073f734b0e66145042587400fb54967",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 22363,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/README.md",
+        "sha256": "7e3484a07c208b5c5813290a993244c6841efc3d4241c29a07ef948e8129a758",
+        "size": 3485,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "81fc13661f9431f9f72ae5a1723482a1bcb473af463b93ca0b27c42461a6c6c9",
+        "size": 1271,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/EntityDecoder.js",
+        "sha256": "a56cf2bf8174e0adf94970d70e003afcfc3923a53d0cf973f92d374cfe684544",
+        "size": 25816,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/EntityEncoder.js",
+        "sha256": "812a2077e073564d6470b8fda8ac0d20ecaaf75ddb1594d55d28acc2da8a1a71",
+        "size": 8479,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/all-entities.js",
+        "sha256": "2f1340ab32dce314f41638b7ee6d0368b974e3302983154b815a6d49a6dfb63b",
+        "size": 1497,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/entities.js",
+        "sha256": "96ec5d127a4e8cd77bdc678422f0d57c8ff9e37bcec999983da71a7b72ce9a0e",
+        "size": 18791,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/entityTries.js",
+        "sha256": "fa2838d141fba0e8ee5bd2197956c3f6b1d23668be2c8841a585614ea7051f99",
+        "size": 2359,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/index.d.ts",
+        "sha256": "f66cce05456e7b56b60d6356e8b42910abc1ae7dacf3cf37e17b05bf67d55304",
+        "size": 12326,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/index.js",
+        "sha256": "79a65ddeda08664d00b7b82f5a903ea437de1dff54a02ed469e9cb1067cb568b",
+        "size": 515,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 3485,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/7e/7e3484a07c208b5c5813290a993244c6841efc3d4241c29a07ef948e8129a758",
+          "sha256": "7e3484a07c208b5c5813290a993244c6841efc3d4241c29a07ef948e8129a758"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "7e3484a07c208b5c5813290a993244c6841efc3d4241c29a07ef948e8129a758",
+        "size": 3485
+      }
+    ],
+    "expandedBytes": 74539,
+    "packageIdentity": {
+      "author": "Amit Gupta (https://solothought.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "@nodable/entities",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nodable/val-parsers.git"
+      },
+      "version": "3.1.0"
+    },
+    "packageMetadata": {
+      "author": "Amit Gupta (https://solothought.com)",
+      "description": "Entity parser for XML, HTML, External entites with security and NCR control",
+      "devDependencies": {
+        "jest": "^29.7.0"
+      },
+      "files": [
+        "src",
+        "README.md"
+      ],
+      "funding": [
+        {
+          "type": "github",
+          "url": "https://github.com/sponsors/nodable"
+        }
+      ],
+      "jest": {
+        "testMatch": [
+          "**/?(*.)+(spec|test).[jt]s?(x)",
+          "**/*_spec.[jt]s?(x)"
+        ]
+      },
+      "keywords": [
+        "fast",
+        "xml",
+        "html",
+        "entity",
+        "entities",
+        "stringify",
+        "encode",
+        "decode",
+        "ncr",
+        "security",
+        "safe",
+        "performance"
+      ],
+      "license": "MIT",
+      "main": "./src/index.js",
+      "name": "@nodable/entities",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nodable/val-parsers.git"
+      },
+      "scripts": {
+        "lint": "eslint src/ test/",
+        "test": "node --experimental-vm-modules node_modules/.bin/jest",
+        "test:coverage": "node --experimental-vm-modules node_modules/.bin/jest --coverage",
+        "test:watch": "node --experimental-vm-modules node_modules/.bin/jest --watch"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "types": "./src/index.d.ts",
+      "version": "3.1.0"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 22363,
+      "sha256": "3b7cbfe696f570ada57df3eb6981f6c668737a2158ec88a53134f243f9f1db8e"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

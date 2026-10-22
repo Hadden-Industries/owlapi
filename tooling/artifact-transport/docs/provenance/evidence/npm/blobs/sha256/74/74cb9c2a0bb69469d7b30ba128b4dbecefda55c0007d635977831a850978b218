@@ -1,0 +1,153 @@
+{
+  "artifactId": "4b5d39ac1b5fac8c44466f23b1e0e5e16f5ac729c1cd192b734bcbd5abf19b64",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3566,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "e70ff771504ba41f2be55de812a017ff46433d7a250c862e38fc419159e44500",
+        "size": 1088,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "af3e56f394e970e17051724817e0b8b0c6b98f3376681cf48973180074a9e83b",
+        "size": 5441,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "202cf63677ddcac13e71d66d2e98c8f07aad10789845ade028e5be755b7abf3a",
+        "size": 1024,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "284ea445a01a454ab1235a08101445fe16592303167090815f4a75b54d6fba04",
+        "size": 1666,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1088,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/e7/e70ff771504ba41f2be55de812a017ff46433d7a250c862e38fc419159e44500",
+          "sha256": "e70ff771504ba41f2be55de812a017ff46433d7a250c862e38fc419159e44500"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "e70ff771504ba41f2be55de812a017ff46433d7a250c862e38fc419159e44500",
+        "size": 1088
+      },
+      {
+        "blob": {
+          "bytes": 5441,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/af/af3e56f394e970e17051724817e0b8b0c6b98f3376681cf48973180074a9e83b",
+          "sha256": "af3e56f394e970e17051724817e0b8b0c6b98f3376681cf48973180074a9e83b"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "af3e56f394e970e17051724817e0b8b0c6b98f3376681cf48973180074a9e83b",
+        "size": 5441
+      }
+    ],
+    "expandedBytes": 9219,
+    "packageIdentity": {
+      "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+      "homepage": "https://github.com/jonschlinkert/normalize-path",
+      "license": "MIT",
+      "name": "normalize-path",
+      "repository": "jonschlinkert/normalize-path",
+      "version": "3.0.0"
+    },
+    "packageMetadata": {
+      "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+      "bugs": {
+        "url": "https://github.com/jonschlinkert/normalize-path/issues"
+      },
+      "contributors": [
+        "Blaine Bublitz (https://twitter.com/BlaineBublitz)",
+        "Jon Schlinkert (http://twitter.com/jonschlinkert)"
+      ],
+      "description": "Normalize slashes in a file path to be posix/unix-like forward slashes. Also condenses repeat slashes to a single slash and removes and trailing slashes, unless disabled.",
+      "devDependencies": {
+        "gulp-format-md": "^1.0.0",
+        "minimist": "^1.2.0",
+        "mocha": "^3.5.3"
+      },
+      "engines": {
+        "node": ">=0.10.0"
+      },
+      "files": [
+        "index.js"
+      ],
+      "homepage": "https://github.com/jonschlinkert/normalize-path",
+      "keywords": [
+        "absolute",
+        "backslash",
+        "delimiter",
+        "file",
+        "file-path",
+        "filepath",
+        "fix",
+        "forward",
+        "fp",
+        "fs",
+        "normalize",
+        "path",
+        "relative",
+        "separator",
+        "slash",
+        "slashes",
+        "trailing",
+        "unix",
+        "urix"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "normalize-path",
+      "repository": "jonschlinkert/normalize-path",
+      "scripts": {
+        "test": "mocha"
+      },
+      "verb": {
+        "layout": "default",
+        "lint": {
+          "reflinks": true
+        },
+        "plugins": [
+          "gulp-format-md"
+        ],
+        "related": {
+          "description": "Other useful path-related libraries:",
+          "list": [
+            "contains-path",
+            "is-absolute",
+            "is-relative",
+            "parse-filepath",
+            "path-ends-with",
+            "path-ends-with",
+            "unixify"
+          ]
+        },
+        "tasks": [
+          "readme"
+        ],
+        "toc": false
+      },
+      "version": "3.0.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 3566,
+      "sha256": "0b983cca55c555cdc0e919ed5ecd0e4648f6e303f9dffeb449f1ad760d4f84fe"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

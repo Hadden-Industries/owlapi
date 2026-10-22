@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "defaultCompressionLevel": 0,
+  "maximumUploads": 3,
+  "recoveryWaitMilliseconds": [
+    [
+      5000,
+      10000
+    ],
+    [
+      15000,
+      30000
+    ]
+  ],
+  "visibilityProbes": 3,
+  "visibilityWaitMilliseconds": 2000,
+  "deadlineMilliseconds": 240000,
+  "collectionDeadlineMilliseconds": 900000,
+  "maximumFiles": 10000,
+  "maximumVisitedEntries": 20000,
+  "maximumPayloadBytes": 1073741824,
+  "maximumArchiveBytes": 1075838976,
+  "maximumCollectionDownloadBytes": 4294967296,
+  "maximumInventory": 5000,
+  "nameMarker": "--owlart-v1--"
+}

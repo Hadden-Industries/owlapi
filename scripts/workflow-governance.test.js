@@ -35,6 +35,73 @@ const mutateWorkflow = (fileName, mutate) => {
 };
 
 describe("repository workflow governance", () => {
+  test("rejects reconciliation evidence that substitutes a logical name for the uploaded identity", () => {
+    const violations = mutateWorkflow(
+      "release-reconciliation.yml",
+      (document) => {
+        document.setIn(
+          ["jobs", "source_verification", "outputs", "candidate_artifact_name"],
+          "owlapi-${{ steps.metadata.outputs.version }}-reconciled-candidate-${{ github.run_id }}-${{ github.run_attempt }}",
+        );
+      },
+    );
+    expect(violations.join("\n")).toContain("source_verification outputs");
+  });
+  test.each(["overwrite", "deadline", "hidden-files", "cross-run"])(
+    "rejects caller transport-policy override: %s",
+    (mutation) => {
+      const violations = mutateWorkflow("ci.yml", (document) => {
+        const upload = document
+          .getIn(["jobs", "candidate", "steps"])
+          .items.find(
+            (step) => step.get("uses") === "./.github/actions/retain-artifact",
+          );
+        const key = {
+          overwrite: "overwrite",
+          deadline: "maximum-attempts",
+          "hidden-files": "include-hidden-files",
+          "cross-run": "github-token",
+        }[mutation];
+        upload.setIn(["with", key], "unapproved");
+      });
+      expect(violations.join("\n")).toContain(
+        "overrides centralized transport policy",
+      );
+    },
+  );
+  test.each(["runtime", "extra-input", "post-hook"])(
+    "rejects a shared action contract drift: %s",
+    (mutation) => {
+      const action = parseDocument(
+        readFileSync(".github/actions/retain-artifact/action.yml", "utf8"),
+      );
+      if (mutation === "runtime") action.setIn(["runs", "using"], "node20");
+      if (mutation === "extra-input")
+        action.setIn(["inputs", "overwrite"], { default: "true" });
+      if (mutation === "post-hook")
+        action.setIn(["runs", "post"], "unreviewed.mjs");
+      expect(
+        auditRepositoryControls({
+          artifactActionOverrides: { "retain-artifact": action.toString() },
+        }).violations.join("\n"),
+      ).toMatch(/retain-artifact/u);
+    },
+  );
+  test("rejects a direct upload bypass of the shared implementation", () => {
+    expect(
+      mutateWorkflow("ci.yml", (document) => {
+        const upload = document
+          .getIn(["jobs", "candidate", "steps"])
+          .items.find(
+            (step) => step.get("uses") === "./.github/actions/retain-artifact",
+          );
+        upload.set(
+          "uses",
+          "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+        );
+      }).join("\n"),
+    ).toMatch(/39-producer|unapproved Action/u);
+  });
   test.each(["cache", "skip", "command"])(
     "rejects consumer setup bypass: %s",
     (mutation) => {
@@ -258,7 +325,9 @@ describe("repository workflow governance", () => {
         if (mutation === "overwrite") upload.setIn(["with", "overwrite"], true);
       }).join("\n"),
     ).toContain(
-      `release.yml:${id} must durably capture approval before effects and preserve it across reruns`,
+      mutation === "overwrite"
+        ? "overrides centralized transport policy"
+        : `release.yml:${id} must durably capture approval before effects and preserve it across reruns`,
     );
   });
   test.each([

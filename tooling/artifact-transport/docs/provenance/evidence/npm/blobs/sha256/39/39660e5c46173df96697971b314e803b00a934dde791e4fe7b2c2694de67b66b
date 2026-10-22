@@ -1,0 +1,250 @@
+{
+  "artifactId": "54fac8b6c3b661c06c6a7ff30e6edc995ab4516f978e82d9d631da8f2e06b17b",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 17005,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.editorconfig",
+        "sha256": "0a73be687a86b6f0e5494b1be555fcfbb886108794948837170c28f18820aae2",
+        "size": 286,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "31291dc68bc074258d0a3ecb268d3c710c31dd4df505f5f07f303186fd1b4448",
+        "size": 588,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.nycrc",
+        "sha256": "948366fea3b423a46366326d0bb2e54b08abd1cf0b243678ba6625740c40da5a",
+        "size": 216,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "f37cdd8aa5142245ea9e39148aeae6114fdccb985a456a5326e2d242acaf0479",
+        "size": 28445,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "c61652db3d2808f667b48af0a358f0d85fd07ad4a0d0b1a50882dec3b764c522",
+        "size": 1082,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "cd83d175bd940032c386f80a2e811b2539bfcd48c4dfc1119e7effa523f99c64",
+        "size": 3328,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "f841a6f15a93abaa6257ad23fc27ce387f92787fb2fd6670ecc66cb12f26a6c0",
+        "size": 12928,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "3c8d063b41eb891a92dff22ee81647ff83b4c0e3752fa6dd60f76a3b9f7ffe92",
+        "size": 3774,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "e175b4177a92cd5f7ae31bc7954edd57369dd059d6faf5f1100f1ab962c6ef01",
+        "size": 3370,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "74335c59b7422e48251031621e7ec380e43d066de9a29b1b9af305aa4f124694",
+        "size": 123,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1082,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c6/c61652db3d2808f667b48af0a358f0d85fd07ad4a0d0b1a50882dec3b764c522",
+          "sha256": "c61652db3d2808f667b48af0a358f0d85fd07ad4a0d0b1a50882dec3b764c522"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "c61652db3d2808f667b48af0a358f0d85fd07ad4a0d0b1a50882dec3b764c522",
+        "size": 1082
+      },
+      {
+        "blob": {
+          "bytes": 3328,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/cd/cd83d175bd940032c386f80a2e811b2539bfcd48c4dfc1119e7effa523f99c64",
+          "sha256": "cd83d175bd940032c386f80a2e811b2539bfcd48c4dfc1119e7effa523f99c64"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "cd83d175bd940032c386f80a2e811b2539bfcd48c4dfc1119e7effa523f99c64",
+        "size": 3328
+      }
+    ],
+    "expandedBytes": 54140,
+    "packageIdentity": {
+      "author": {
+        "email": "ljharb@gmail.com",
+        "name": "Jordan Harband",
+        "url": "http://ljharb.codes"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "which-typed-array",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/inspect-js/which-typed-array.git"
+      },
+      "version": "1.1.24"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "ljharb@gmail.com",
+        "name": "Jordan Harband",
+        "url": "http://ljharb.codes"
+      },
+      "auto-changelog": {
+        "backfillLimit": false,
+        "commitLimit": false,
+        "hideCredit": true,
+        "output": "CHANGELOG.md",
+        "template": "keepachangelog",
+        "unreleased": false
+      },
+      "contributors": [
+        {
+          "email": "ljharb@gmail.com",
+          "name": "Jordan Harband",
+          "url": "http://ljharb.codes"
+        }
+      ],
+      "dependencies": {
+        "available-typed-arrays": "^1.0.7",
+        "call-bind": "^1.0.9",
+        "call-bound": "^1.0.4",
+        "for-each": "^0.3.5",
+        "get-proto": "^1.0.1",
+        "gopd": "^1.2.0",
+        "has-tostringtag": "^1.0.2"
+      },
+      "description": "Which kind of Typed Array is this JavaScript value? Works cross-realm, without `instanceof`, and despite Symbol.toStringTag.",
+      "devDependencies": {
+        "@arethetypeswrong/cli": "^0.18.5",
+        "@ljharb/eslint-config": "^22.2.4",
+        "@ljharb/tsconfig": "^0.3.2",
+        "@types/call-bind": "^1.0.5",
+        "@types/is-callable": "^1.1.2",
+        "@types/make-arrow-function": "^1.2.2",
+        "@types/make-generator-function": "^2.0.3",
+        "@types/node": "^22.20.3",
+        "auto-changelog": "^2.6.1",
+        "eslint": "^10.10.0",
+        "in-publish": "^2.0.1",
+        "is-callable": "^1.2.7",
+        "jiti": "^0.0.0",
+        "make-arrow-function": "^1.2.0",
+        "make-generator-function": "^2.1.0",
+        "npmignore": "^0.3.5",
+        "nyc": "^10.3.2",
+        "safe-publish-latest": "^2.0.0",
+        "tape": "^5.10.2",
+        "typescript": "next"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      },
+      "keywords": [
+        "array",
+        "TypedArray",
+        "typed array",
+        "which",
+        "typed",
+        "Int8Array",
+        "Uint8Array",
+        "Uint8ClampedArray",
+        "Int16Array",
+        "Uint16Array",
+        "Int32Array",
+        "Uint32Array",
+        "Float32Array",
+        "Float64Array",
+        "ES6",
+        "toStringTag",
+        "Symbol.toStringTag",
+        "@@toStringTag"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "which-typed-array",
+      "publishConfig": {
+        "ignore": [
+          ".github/workflows",
+          "eslint.config.mjs",
+          "test",
+          "types.d.ts"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/inspect-js/which-typed-array.git"
+      },
+      "scripts": {
+        "dependencies": "node -p \"process.env.npm_command\" | npx \"dt-clean@^1.2.2\" --auto",
+        "lint": "eslint .",
+        "postlint": "tsc -p . && tsc -p test/es2020 && attw -P",
+        "posttest": "npx npm@'>=10.2' audit --production",
+        "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\"",
+        "prepack": "npmignore --auto --commentLines=autogenerated",
+        "prepublish": "not-in-publish || npm run prepublishOnly",
+        "prepublishOnly": "safe-publish-latest",
+        "pretest": "npm run --silent lint",
+        "test": "npm run tests-only && npm run test:harmony",
+        "test:harmony": "nyc node --harmony --es-staging test",
+        "tests-only": "nyc tape test",
+        "version": "auto-changelog && git add CHANGELOG.md"
+      },
+      "sideEffects": false,
+      "testling": {
+        "browsers": [
+          "iexplore/6.0..latest",
+          "firefox/3.0..6.0",
+          "firefox/15.0..latest",
+          "firefox/nightly",
+          "chrome/4.0..10.0",
+          "chrome/20.0..latest",
+          "chrome/canary",
+          "opera/10.0..latest",
+          "opera/next",
+          "safari/4.0..latest",
+          "ipad/6.0..latest",
+          "iphone/6.0..latest",
+          "android-browser/4.2"
+        ],
+        "files": "test/index.js"
+      },
+      "types": "./index.d.ts",
+      "version": "1.1.24"
+    },
+    "physicalEntryCount": 10,
+    "tarball": {
+      "bytes": 17005,
+      "sha256": "3e402092eb6a3415a2744c2da78fdbfaec7cbbe8159aaf16b2d743daf516c4f7"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

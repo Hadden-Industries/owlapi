@@ -1,0 +1,189 @@
+{
+  "artifactId": "a5c375838816984314ad8e350b33468bc32721021dc7afa4e0cf5b4c78aeb605",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5750,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "a49c9ba464796f65b59fca3f1e6ca40912df1e859f575383223f7ec6c5baae09",
+        "size": 1764,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "4c5daff6bf243549cfe8681b817e5975064d8536d94829054839a4aa0b046a4d",
+        "size": 3122,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.d.ts",
+        "sha256": "2f1b1ee53002c8999213e45e6a2ceb872eacdd978132ae6c9cb9e37cacee9040",
+        "size": 2996,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.d.ts.map",
+        "sha256": "0ad263be08d499f0a7dca49a1fb25a4c440c63c8482991cfbaf1da9d5edc7246",
+        "size": 342,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.js",
+        "sha256": "84db96be9c325a3085a5ec58105a338e6f2f046ea6ef192476cc3c7404702695",
+        "size": 5017,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.js.map",
+        "sha256": "42c2f448adbe6b1e65d0d7550731351baccea17466dcd4f64cca63e32dd83a3c",
+        "size": 6769,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/package.json",
+        "sha256": "8005a3491db7d92f36ac66369861589f9c47123d3a7c71e643fc2c06168cd45a",
+        "size": 25,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.d.ts",
+        "sha256": "2f1b1ee53002c8999213e45e6a2ceb872eacdd978132ae6c9cb9e37cacee9040",
+        "size": 2996,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.d.ts.map",
+        "sha256": "0ad263be08d499f0a7dca49a1fb25a4c440c63c8482991cfbaf1da9d5edc7246",
+        "size": 342,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.js",
+        "sha256": "e1b4ee254186aa85dd9261bf85b2e2cba11a2b93169d705e2cf9c78e9fa1297e",
+        "size": 4572,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.js.map",
+        "sha256": "766dfa6e277b7605df2c0bdb99e97186fa960f190d0bdf3619baee88aca543ce",
+        "size": 6795,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/package.json",
+        "sha256": "3ca9d4afd21425087cf31893b8f9f63c81b0b8408db5e343ca76e5f8aa26ab9a",
+        "size": 23,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "38fdaf168bc63a6422a7dbe7e41a7b52b02326edef8b14019e0333ef60b37b47",
+        "size": 1690,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1764,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a4/a49c9ba464796f65b59fca3f1e6ca40912df1e859f575383223f7ec6c5baae09",
+          "sha256": "a49c9ba464796f65b59fca3f1e6ca40912df1e859f575383223f7ec6c5baae09"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "a49c9ba464796f65b59fca3f1e6ca40912df1e859f575383223f7ec6c5baae09",
+        "size": 1764
+      }
+    ],
+    "expandedBytes": 36453,
+    "packageIdentity": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (https://izs.me)",
+      "homepage": null,
+      "license": "BlueOak-1.0.0",
+      "name": "package-json-from-dist",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/isaacs/package-json-from-dist.git"
+      },
+      "version": "1.0.1"
+    },
+    "packageMetadata": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (https://izs.me)",
+      "description": "Load the local package.json from either src or dist folder",
+      "devDependencies": {
+        "@types/node": "^20.12.12",
+        "prettier": "^3.2.5",
+        "tap": "^18.5.3",
+        "tshy": "^1.14.0",
+        "typedoc": "^0.24.8",
+        "typescript": "^5.1.6"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "default": "./dist/esm/index.js",
+            "types": "./dist/esm/index.d.ts"
+          },
+          "require": {
+            "default": "./dist/commonjs/index.js",
+            "types": "./dist/commonjs/index.d.ts"
+          }
+        },
+        "./package.json": "./package.json"
+      },
+      "files": [
+        "dist"
+      ],
+      "license": "BlueOak-1.0.0",
+      "main": "./dist/commonjs/index.js",
+      "name": "package-json-from-dist",
+      "prettier": {
+        "arrowParens": "avoid",
+        "bracketSameLine": true,
+        "endOfLine": "lf",
+        "experimentalTernaries": true,
+        "jsxSingleQuote": false,
+        "printWidth": 70,
+        "semi": false,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "useTabs": false
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/isaacs/package-json-from-dist.git"
+      },
+      "scripts": {
+        "format": "prettier --write . --log-level warn",
+        "postversion": "npm publish",
+        "prepare": "tshy",
+        "prepublishOnly": "git push origin --follow-tags",
+        "presnap": "npm run prepare",
+        "pretest": "npm run prepare",
+        "preversion": "npm test",
+        "snap": "tap",
+        "test": "tap",
+        "typedoc": "typedoc"
+      },
+      "tshy": {
+        "exports": {
+          ".": "./src/index.ts",
+          "./package.json": "./package.json"
+        }
+      },
+      "type": "module",
+      "types": "./dist/commonjs/index.d.ts",
+      "version": "1.0.1"
+    },
+    "physicalEntryCount": 13,
+    "tarball": {
+      "bytes": 5750,
+      "sha256": "135c483e43689d0e17b1c56dd5e2dfea63a4d4afc749dc7ed6b66b97f7bc4e20"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

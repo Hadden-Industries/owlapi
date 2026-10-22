@@ -1,0 +1,114 @@
+{
+  "artifactId": "6daf1c1489c19f98bc923ca984c1ceb2cba718701e5d26fb4a160ef37cd2ce01",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 14405,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "d11323827fa4edeaafc437cc5b91b6971b335f0127efeeb42bf5122fe8657e8f",
+        "size": 775,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "f4339395dd5384a2940150b4af8d30b254f48148d8d8e3b3ec02a3f530520482",
+        "size": 10036,
+        "type": "FILE"
+      },
+      {
+        "path": "package/changelog.md",
+        "sha256": "be0ef5f8b1a844c0e6e4fb028c946d741ff1bd7fda8570ecf2be7e459fcbe991",
+        "size": 754,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/path.js",
+        "sha256": "ac5d377288c45e5c5ea8b2deb593a5083a71d672099b52a9bf4a75d35de69e54",
+        "size": 151,
+        "type": "FILE"
+      },
+      {
+        "path": "package/minimatch.js",
+        "sha256": "1339bca8b70e33847860daa8fc3ccfa62487e143670da01a3b718d40d5fd424f",
+        "size": 29931,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "dc1b9424c2ec4c845ba05e7402f7d22807f4ac85d31725892fd3dcafaa08f800",
+        "size": 720,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 775,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d1/d11323827fa4edeaafc437cc5b91b6971b335f0127efeeb42bf5122fe8657e8f",
+          "sha256": "d11323827fa4edeaafc437cc5b91b6971b335f0127efeeb42bf5122fe8657e8f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "d11323827fa4edeaafc437cc5b91b6971b335f0127efeeb42bf5122fe8657e8f",
+        "size": 775
+      }
+    ],
+    "expandedBytes": 42367,
+    "packageIdentity": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me)",
+      "homepage": null,
+      "license": "ISC",
+      "name": "minimatch",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/isaacs/minimatch.git"
+      },
+      "version": "5.1.9"
+    },
+    "packageMetadata": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me)",
+      "dependencies": {
+        "brace-expansion": "^2.0.1"
+      },
+      "description": "a glob matcher in javascript",
+      "devDependencies": {
+        "tap": "^16.3.2"
+      },
+      "engines": {
+        "node": ">=10"
+      },
+      "files": [
+        "minimatch.js",
+        "lib"
+      ],
+      "license": "ISC",
+      "main": "minimatch.js",
+      "name": "minimatch",
+      "publishConfig": {
+        "tag": "legacy-v5"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/isaacs/minimatch.git"
+      },
+      "scripts": {
+        "postversion": "npm publish",
+        "prepublishOnly": "git push origin --follow-tags",
+        "preversion": "npm test",
+        "snap": "tap",
+        "test": "tap"
+      },
+      "version": "5.1.9"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 14405,
+      "sha256": "67e7dacfba9fcabb6ac661620b67e6c22600b4aa56ffa14431cbdfdeebbd4cfe"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

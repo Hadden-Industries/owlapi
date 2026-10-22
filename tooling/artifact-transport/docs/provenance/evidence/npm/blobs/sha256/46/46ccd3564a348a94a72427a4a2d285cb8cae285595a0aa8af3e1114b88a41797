@@ -1,0 +1,141 @@
+{
+  "artifactId": "88930a4434647f11d4f7d96501a3da3ac8e8f5d425656ebd804bc52b9989c773",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 9362,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "8e75fc0e776c62ccadb8178ece8d3daa9ba7601fb0a49b2dfb0ea9a7a5c0aa07",
+        "size": 1077,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "aa6f359e935296f26e878a119528daa37b9755391ecb701dd1a1330477440423",
+        "size": 9749,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "e6ff1758837bca3ca6877308c0d51f9e3e47efd07497fa62c8291fd88ab8216f",
+        "size": 1160,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/index.d.ts",
+        "sha256": "0f3bd36772edf86964a85459ebe5e910bf85b2fc9e5e871e83785549fc9a9f5d",
+        "size": 4039,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/index.js",
+        "sha256": "1a5d9fd32360e2cec4adbee9e56221fb26def66bb9d122e0b5745cebc963d92e",
+        "size": 15370,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1077,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/8e/8e75fc0e776c62ccadb8178ece8d3daa9ba7601fb0a49b2dfb0ea9a7a5c0aa07",
+          "sha256": "8e75fc0e776c62ccadb8178ece8d3daa9ba7601fb0a49b2dfb0ea9a7a5c0aa07"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "8e75fc0e776c62ccadb8178ece8d3daa9ba7601fb0a49b2dfb0ea9a7a5c0aa07",
+        "size": 1077
+      },
+      {
+        "blob": {
+          "bytes": 9749,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/aa/aa6f359e935296f26e878a119528daa37b9755391ecb701dd1a1330477440423",
+          "sha256": "aa6f359e935296f26e878a119528daa37b9755391ecb701dd1a1330477440423"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "aa6f359e935296f26e878a119528daa37b9755391ecb701dd1a1330477440423",
+        "size": 9749
+      }
+    ],
+    "expandedBytes": 31395,
+    "packageIdentity": {
+      "author": "Amit Gupta (https://solothought.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "xml-naming",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/NaturalIntelligence/xml-naming"
+      },
+      "version": "0.3.0"
+    },
+    "packageMetadata": {
+      "author": "Amit Gupta (https://solothought.com)",
+      "bugs": {
+        "url": "https://github.com/NaturalIntelligence/xml-naming/issues"
+      },
+      "description": "Validates XML name productions — Name, NCName, QName, NMToken, NMTokens — for XML 1.0 and 1.1",
+      "devDependencies": {
+        "jasmine": "^5.0.0"
+      },
+      "engines": {
+        "node": ">=16.0.0"
+      },
+      "exports": {
+        ".": {
+          "import": "./src/index.js",
+          "types": "./src/index.d.ts"
+        }
+      },
+      "files": [
+        "src",
+        "README.md"
+      ],
+      "funding": [
+        {
+          "type": "github",
+          "url": "https://github.com/sponsors/NaturalIntelligence"
+        }
+      ],
+      "keywords": [
+        "fast",
+        "xml",
+        "xml-name",
+        "ncname",
+        "qname",
+        "nmtoken",
+        "xml-validation",
+        "xml-namespace",
+        "name-validator",
+        "xml-1.0",
+        "xml-1.1"
+      ],
+      "license": "MIT",
+      "main": "./src/index.js",
+      "name": "xml-naming",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/NaturalIntelligence/xml-naming"
+      },
+      "scripts": {
+        "perf": "node specs/perf.js",
+        "test": "jasmine specs/*spec.js"
+      },
+      "type": "module",
+      "types": "./src/index.d.ts",
+      "version": "0.3.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 9362,
+      "sha256": "da0925864bd4c04ef3384e89ef5d4774d82ed6d9fa241519b003ddbcc0effac8"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

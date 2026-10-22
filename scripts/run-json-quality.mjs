@@ -1,6 +1,9 @@
 import { fileURLToPath } from "node:url";
 import { runJsonQualityCli } from "../tooling/json/public-api.mjs";
-import { provideNpmEvidenceJson } from "../util/third-party-evidence/json-documents.mjs";
+import {
+  provideNpmEvidenceJson,
+  provideArtifactToolEvidenceJson,
+} from "../util/third-party-evidence/json-documents.mjs";
 import { provideMarkdownArchiveJson } from "../util/third-party-evidence/markdown-json-documents.mjs";
 import { provideJsonLdLogicalJson } from "../util/conformance/jsonldJsonDocuments.mjs";
 import { readRepositoryJsonPolicy } from "./json-quality-policy.mjs";
@@ -32,6 +35,7 @@ process.exitCode = await runJsonQualityCli(process.argv.slice(2), async () => {
     ...logical,
     nativeProviders: {
       npmEvidence: provideNpmEvidenceJson,
+      artifactToolEvidence: provideArtifactToolEvidenceJson,
       markdownArchives: provideMarkdownArchiveJson,
     },
   };

@@ -1,0 +1,63 @@
+{
+  "artifactId": "6f7dcbd99efb48f2be416e16d65b7c3e1d25fd527f3692a1a870ca7a0c2f9710",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2893,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/README.md",
+        "sha256": "5a20e0a3c5f1a6b449dd3fee8e3f0c7dc0a6e508c93fa5703d7c8823d35aed54",
+        "size": 1183,
+        "type": "FILE"
+      },
+      {
+        "path": "package/eastasianwidth.js",
+        "sha256": "2672ae17e3d91c246546bf3d56e78c95570eec79381ec143f41d45ec498bccab",
+        "size": 12067,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "51db62f97656d02d4bc9670393cae42930dbd1ed89f5837056851807e602867a",
+        "size": 390,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [],
+    "expandedBytes": 13640,
+    "packageIdentity": {
+      "author": "Masaki Komagata",
+      "homepage": null,
+      "license": "MIT",
+      "name": "eastasianwidth",
+      "repository": "git://github.com/komagata/eastasianwidth.git",
+      "version": "0.2.0"
+    },
+    "packageMetadata": {
+      "author": "Masaki Komagata",
+      "description": "Get East Asian Width from a character.",
+      "devDependencies": {
+        "mocha": "~1.9.0"
+      },
+      "files": [
+        "eastasianwidth.js"
+      ],
+      "license": "MIT",
+      "main": "eastasianwidth.js",
+      "name": "eastasianwidth",
+      "repository": "git://github.com/komagata/eastasianwidth.git",
+      "scripts": {
+        "test": "mocha"
+      },
+      "version": "0.2.0"
+    },
+    "physicalEntryCount": 3,
+    "tarball": {
+      "bytes": 2893,
+      "sha256": "eccfa12bbda71f9f8e09de7ad1a4e554369a6b4d43d7f86085e85055a8694c27"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}
