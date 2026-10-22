@@ -10,6 +10,7 @@ import {
 } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
+import { setTimeout as delay } from "node:timers/promises";
 import {
   CI_WORKFLOW,
   createVerificationReceipt,
@@ -88,17 +89,76 @@ const contextFromEnvironment = (env) => ({
   version: readJson("package.json").version,
 });
 
+const transientReadCodes = new Set([
+  "ECONNRESET",
+  "ECONNREFUSED",
+  "EAI_AGAIN",
+  "ETIMEDOUT",
+  "UND_ERR_CONNECT_TIMEOUT",
+  "UND_ERR_HEADERS_TIMEOUT",
+  "UND_ERR_BODY_TIMEOUT",
+  "UND_ERR_SOCKET",
+]);
+
+const transientReadError = (error) =>
+  error?.name === "TimeoutError" ||
+  transientReadCodes.has(error?.code) ||
+  transientReadCodes.has(error?.cause?.code);
+
+const rateLimitedRead = (response) =>
+  response?.status === 429 ||
+  (response?.status === 403 &&
+    (response.headers.has("retry-after") ||
+      response.headers.get("x-ratelimit-remaining") === "0"));
+
+/** Server wait hints are lower bounds: never shorten them to fit our budget. */
+const evidenceRetryDelay = (response, attempt, now, random) => {
+  const headers = response?.headers;
+  const retryAfter = headers?.get("retry-after");
+  const seconds = retryAfter?.trim() ? Number(retryAfter) : NaN;
+  const retryAfterMs = Number.isFinite(seconds)
+    ? seconds * 1000
+    : Date.parse(retryAfter) - now;
+  const reset = headers?.get("x-ratelimit-reset");
+  const resetMs = reset?.trim() ? Number(reset) * 1000 - now : NaN;
+  const exhausted = headers?.get("x-ratelimit-remaining") === "0";
+  const rateLimited = rateLimitedRead(response);
+  const serverWait = Math.max(
+    0,
+    Number.isFinite(retryAfterMs) ? retryAfterMs : 0,
+    exhausted && Number.isFinite(resetMs) ? resetMs : 0,
+    rateLimited &&
+      !Number.isFinite(retryAfterMs) &&
+      !(exhausted && Number.isFinite(resetMs))
+      ? 60000
+      : 0,
+  );
+  return Math.max(serverWait, 1000 * 2 ** attempt * (1 + random() * 0.25));
+};
+
+/** Shared read-only evidence boundary for CI and Java-reference consumers.
+ * At most three GET attempts share the reader's 32-request/60-second budget.
+ * Only transient transport/HTTP failures are retried; JSON and proof validation
+ * stay outside recovery, so unavailable or invalid evidence still selects FULL.
+ */
 export const createRepositoryReader = ({
   repository,
   token,
   fetchImpl = fetch,
-  deadline = Date.now() + 60_000,
+  now = Date.now,
+  sleep = delay,
+  random = Math.random,
+  deadline = now() + 60_000,
 }) => {
   if (!/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u.test(repository ?? "") || !token) {
     throw new Error("Read-only GitHub evidence access is unavailable.");
   }
-  const requestDeadline = Math.min(deadline, Date.now() + 60_000);
+  const requestDeadline = Math.min(deadline, now() + 60_000);
   let requests = 0;
+  const limit = () =>
+    Object.assign(new Error("GitHub evidence lookup budget exhausted."), {
+      code: "LOOKUP_LIMIT_EXCEEDED",
+    });
   return async (path) => {
     if (
       !/^\/(?:commits|actions|git)\/[A-Za-z0-9_./?=&%-]+$/u.test(path) ||
@@ -106,43 +166,69 @@ export const createRepositoryReader = ({
     ) {
       throw new Error("Unexpected GitHub evidence path.");
     }
-    const remaining = requestDeadline - Date.now();
-    if (++requests > 32 || remaining <= 0)
-      throw Object.assign(
-        new Error("GitHub evidence lookup budget exhausted."),
-        { code: "LOOKUP_LIMIT_EXCEEDED" },
-      );
-    const response = await fetchImpl(
-      `https://api.github.com/repos/${repository}${path}`,
-      {
-        redirect: "error",
-        cache: "no-store",
-        signal: AbortSignal.timeout(Math.min(10_000, remaining)),
-        headers: {
-          Accept: "application/vnd.github+json",
-          Authorization: `Bearer ${token}`,
-          "X-GitHub-Api-Version": "2026-03-10",
-        },
-      },
-    );
-    if (!response.ok)
-      throw new Error(`GitHub evidence read returned HTTP ${response.status}.`);
-    const chunks = [];
-    let bytes = 0;
-    if (!response.body)
-      throw new Error("GitHub evidence response has no JSON body.");
-    for await (const chunk of response.body) {
-      bytes += chunk.byteLength;
-      if (bytes > 2 * 1024 * 1024 || Date.now() > requestDeadline)
-        throw Object.assign(
-          new Error("GitHub evidence response exceeded its budget."),
-          { code: "LOOKUP_LIMIT_EXCEEDED" },
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const remaining = requestDeadline - now();
+      if (requests >= 32 || remaining <= 0) throw limit();
+      requests++;
+      let response;
+      let bytes;
+      try {
+        response = await fetchImpl(
+          `https://api.github.com/repos/${repository}${path}`,
+          {
+            redirect: "error",
+            cache: "no-store",
+            signal: AbortSignal.timeout(Math.min(10_000, remaining)),
+            headers: {
+              Accept: "application/vnd.github+json",
+              Authorization: `Bearer ${token}`,
+              "X-GitHub-Api-Version": "2026-03-10",
+            },
+          },
         );
-      chunks.push(chunk);
+        if (!response.ok) {
+          const retryable =
+            [408, 500, 502, 503, 504].includes(response.status) ||
+            rateLimitedRead(response);
+          throw Object.assign(
+            new Error(`GitHub evidence read returned HTTP ${response.status}.`),
+            { retryable },
+          );
+        }
+        const chunks = [];
+        let size = 0;
+        if (!response.body)
+          throw new Error("GitHub evidence response has no JSON body.");
+        for await (const chunk of response.body) {
+          size += chunk.byteLength;
+          if (size > 2 * 1024 * 1024 || now() >= requestDeadline)
+            throw Object.assign(
+              new Error("GitHub evidence response exceeded its budget."),
+              { code: "LOOKUP_LIMIT_EXCEEDED" },
+            );
+          chunks.push(chunk);
+        }
+        bytes = Buffer.concat(chunks);
+      } catch (error) {
+        if (attempt === 2 || !(error?.retryable || transientReadError(error))) {
+          throw error;
+        }
+      } finally {
+        // Discard incomplete/error responses before retrying another GET.
+        if (response?.body && !response.bodyUsed)
+          await response.body.cancel().catch(() => {});
+      }
+      if (bytes !== undefined) {
+        if (now() >= requestDeadline) throw limit();
+        return JSON.parse(
+          new TextDecoder("utf-8", { fatal: true }).decode(bytes),
+        );
+      }
+      const milliseconds = evidenceRetryDelay(response, attempt, now(), random);
+      if (requests >= 32 || milliseconds >= requestDeadline - now())
+        throw limit();
+      await sleep(milliseconds);
     }
-    return JSON.parse(
-      new TextDecoder("utf-8", { fatal: true }).decode(Buffer.concat(chunks)),
-    );
   };
 };
 

@@ -1186,6 +1186,239 @@ describe("reuse of complete PR integration", () => {
 });
 
 describe("native evidence boundaries", () => {
+  const evidenceReader = (responses, overrides = {}) => {
+    let time = 1000;
+    const calls = [];
+    const waits = [];
+    const read = createRepositoryReader({
+      repository: repository.full_name,
+      token: "test-token",
+      now: () => time,
+      random: () => 0,
+      sleep: async (milliseconds) => {
+        waits.push(milliseconds);
+        time += milliseconds;
+      },
+      fetchImpl: async (...args) => {
+        const response = responses[calls.length];
+        calls.push(args);
+        if (!response) throw new Error("Unexpected evidence request.");
+        if (!(response instanceof Response)) throw response;
+        return response;
+      },
+      ...overrides,
+    });
+    return { read, calls, waits };
+  };
+
+  test.each([408, 502, 503, 504])(
+    "recovers transient HTTP %i",
+    async (status) => {
+      const { read, calls, waits } = evidenceReader([
+        new Response(null, { status }),
+        new Response('{"id":1}'),
+      ]);
+      await expect(read("/actions/runs/1")).resolves.toEqual({ id: 1 });
+      expect(calls).toHaveLength(2);
+      expect(waits).toEqual([1000]);
+    },
+  );
+
+  test("exhausts three GET attempts without manufacturing evidence", async () => {
+    const { read, calls, waits } = evidenceReader(
+      Array.from({ length: 3 }, () => new Response(null, { status: 500 })),
+    );
+    await expect(read("/actions/runs/1")).rejects.toThrow("HTTP 500");
+    expect(calls).toHaveLength(3);
+    expect(waits).toEqual([1000, 2000]);
+  });
+
+  test.each([401, 403, 404, 422, 501, 505])(
+    "does not retry permanent HTTP %i",
+    async (status) => {
+      const { read, calls, waits } = evidenceReader([
+        new Response(null, { status }),
+      ]);
+      await expect(read("/actions/runs/1")).rejects.toThrow(`HTTP ${status}`);
+      expect(calls).toHaveLength(1);
+      expect(waits).toEqual([]);
+    },
+  );
+
+  test.each([
+    { "retry-after": "4" },
+    { "retry-after": new Date(5000).toUTCString() },
+    {
+      "retry-after": "2",
+      "x-ratelimit-remaining": "0",
+      "x-ratelimit-reset": "5",
+    },
+  ])("honors server wait lower bounds %j", async (headers) => {
+    const { read, waits } = evidenceReader([
+      new Response(null, { status: 403, headers }),
+      new Response('{"id":1}'),
+    ]);
+    await expect(read("/actions/runs/1")).resolves.toEqual({ id: 1 });
+    expect(waits).toEqual([4000]);
+  });
+
+  test.each([
+    [429, {}],
+    [503, { "retry-after": "90" }],
+    [403, { "x-ratelimit-remaining": "0", "x-ratelimit-reset": "90" }],
+  ])(
+    "falls back rather than shortening HTTP %i server waits",
+    async (status, headers) => {
+      const { read, calls, waits } = evidenceReader([
+        new Response(null, { status, headers }),
+      ]);
+      await expect(read("/actions/runs/1")).rejects.toMatchObject({
+        code: "LOOKUP_LIMIT_EXCEEDED",
+      });
+      expect(calls).toHaveLength(1);
+      expect(waits).toEqual([]);
+    },
+  );
+
+  test("shares the request cap between successful reads and retries", async () => {
+    const { read, calls, waits } = evidenceReader([
+      ...Array.from({ length: 31 }, () => new Response("{}")),
+      new Response(null, { status: 500 }),
+    ]);
+    for (let i = 0; i < 31; i++) await read("/actions/runs/1");
+    await expect(read("/actions/runs/2")).rejects.toMatchObject({
+      code: "LOOKUP_LIMIT_EXCEEDED",
+    });
+    expect(calls).toHaveLength(32);
+    expect(waits).toEqual([]);
+  });
+
+  test("discards partial bytes and recovers a stream reset", async () => {
+    const reset = new Error("socket reset", {
+      cause: { code: "UND_ERR_SOCKET" },
+    });
+    let pulls = 0;
+    const body = new ReadableStream(
+      {
+        pull(controller) {
+          if (++pulls === 1)
+            controller.enqueue(new TextEncoder().encode('{"wrong":'));
+          else controller.error(reset);
+        },
+        // Disable prefetch: the second pull requires consumption of the partial
+        // first read, so this detects accidentally retaining bytes across attempts.
+      },
+      { highWaterMark: 0 },
+    );
+    const { read, calls, waits } = evidenceReader([
+      new Response(body),
+      new Response('{"id":1}'),
+    ]);
+    await expect(read("/actions/runs/1")).resolves.toEqual({ id: 1 });
+    expect(calls).toHaveLength(2);
+    expect(waits).toEqual([1000]);
+    expect(pulls).toBe(2);
+  });
+
+  test.each([
+    new TypeError("fetch failed", { cause: { code: "ECONNRESET" } }),
+    new DOMException("request timed out", "TimeoutError"),
+  ])("recovers a recognized transport failure", async (error) => {
+    const { read, waits } = evidenceReader([error, new Response("{}")]);
+    await expect(read("/actions/runs/1")).resolves.toEqual({});
+    expect(waits).toEqual([1000]);
+  });
+
+  test.each([
+    new Error("Unknown failure"),
+    new TypeError("redirect forbidden", { cause: { code: "INVALID_URL" } }),
+    new Response("{malformed"),
+    new Response(Uint8Array.of(0xff)),
+    new Response("x".repeat(2 * 1024 * 1024 + 1)),
+  ])(
+    "does not retry unknown, malformed or oversized evidence",
+    async (response) => {
+      const { read, calls, waits } = evidenceReader([response]);
+      await expect(read("/actions/runs/1")).rejects.toThrow();
+      expect(calls).toHaveLength(1);
+      expect(waits).toEqual([]);
+    },
+  );
+
+  test("recovers an HTTP 500 evidence read with bounded backoff", async () => {
+    const { read, calls, waits } = evidenceReader([
+      new Response(null, { status: 500 }),
+      new Response(null, { status: 500 }),
+      new Response('{"id":1}'),
+    ]);
+    await expect(read("/actions/runs/1")).resolves.toEqual({ id: 1 });
+    expect(calls).toHaveLength(3);
+    expect(waits).toEqual([1000, 2000]);
+  });
+
+  test.each([false, true])(
+    "transport recovery preserves proof validation (mismatched tree: %s)",
+    async (mismatch) => {
+      const f = fixture();
+      const originalRead = f.read;
+      let calls = 0;
+      const { read } = evidenceReader([], {
+        fetchImpl: async (url) => {
+          if (++calls === 1) return new Response(null, { status: 500 });
+          const parsed = new URL(url);
+          const path =
+            parsed.pathname.replace(`/repos/${repository.full_name}`, "") +
+            parsed.search;
+          return new Response(JSON.stringify(await originalRead(path)));
+        },
+      });
+      f.read = read;
+      if (mismatch) f.receipt.snapshot.tree = hash("0");
+      if (mismatch) await expect(verify(f)).rejects.toThrow();
+      else await expect(verify(f)).resolves.toMatchObject({ reuse: "true" });
+      expect(calls).toBeGreaterThan(1);
+    },
+  );
+
+  test("disposes failed response bodies before waiting and bounds jitter", async () => {
+    let disposed = false;
+    const body = new ReadableStream({
+      cancel() {
+        disposed = true;
+      },
+    });
+    const { read, waits } = evidenceReader(
+      [new Response(body, { status: 503 }), new Response("{}")],
+      {
+        random: () => 0.8,
+        sleep: async (milliseconds) => {
+          expect(disposed).toBe(true);
+          waits.push(milliseconds);
+        },
+      },
+    );
+    await expect(read("/actions/runs/1")).resolves.toEqual({});
+    expect(waits).toEqual([1200]);
+  });
+
+  test("rechecks the shared deadline after backoff before another GET", async () => {
+    let time = 0;
+    const { read, calls } = evidenceReader(
+      [new Response(null, { status: 500 }), new Response("{}")],
+      {
+        now: () => time,
+        deadline: 2000,
+        sleep: async () => {
+          time = 2000;
+        },
+      },
+    );
+    await expect(read("/actions/runs/1")).rejects.toMatchObject({
+      code: "LOOKUP_LIMIT_EXCEEDED",
+    });
+    expect(calls).toHaveLength(1);
+  });
+
   test("bounds total API requests and deadline without issuing an expired read", async () => {
     let calls = 0;
     const fetchImpl = async () => {
