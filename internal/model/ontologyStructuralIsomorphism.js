@@ -1,5 +1,5 @@
 import { OWLObjectKind } from "../../model/kinds.js";
-import { OWLOntology } from "../../model/owlOntology.js";
+import { readOntologySnapshot } from "../../model/owlOntology.js";
 import { isCanonicalStructuralObject } from "../../model/structural.js";
 
 const DEFAULT_MAXIMUM_SEARCH_STATES = 1_000_000;
@@ -488,11 +488,12 @@ const compareStructuralCollections = (leftValues, rightValues, context) =>
 
 const createOntologySnapshot = (value, name) => {
   try {
+    const snapshot = readOntologySnapshot(value);
     return {
-      annotations: [...OWLOntology.prototype.getAnnotations.call(value)],
-      axioms: [...OWLOntology.prototype.getAxioms.call(value)],
-      imports: [...OWLOntology.prototype.getImportsDeclarations.call(value)],
-      ontologyID: OWLOntology.prototype.getOntologyID.call(value),
+      annotations: snapshot.directOntologyAnnotations,
+      axioms: snapshot.directAxioms,
+      imports: snapshot.authoredImportDeclarations,
+      ontologyID: snapshot.ontologyID,
     };
   } catch {
     throw new TypeError(`${name} must be an OWLOntology`);

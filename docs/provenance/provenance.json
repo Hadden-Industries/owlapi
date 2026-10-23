@@ -44,7 +44,8 @@
     "RC2-JAVA-PARITY-2026-10-09": "Owner-approved docs/plans/0.1.0-rc.2-java-parity-baseline.md, all nine implementation slices, and exact profile/storage/locality decisions. Native Java is a black-box behavioral authority and source research input; no implementation text is copied.",
     "DRY-REMEDIATION-2026-10-11": "Owner instruction to implement docs/plans/dry-principle-remediation.md via HISEW on current local main, preserving observable behavior, historical evidence and source rights.",
     "JAVA-BEHAVIOR-2026-10-13": "Owner instruction to implement docs/plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md using HISEW, including required configuration changes. Separate explicit approvals admit the narrowly scoped jsonld provider build and caller-authorized NodeDocumentLoader public adapter with the stated browser transport boundary. Historical decisions and measured hashes retain their original subjects.",
-    "NODE-COMPRESSION-2026-10-21": "Owner authorization on 21 October 2026 to replace Node zlib.crc32 with the existing lzma-native public incremental CRC32 through one shared bounded Buffer adapter, preserve ZIP integrity and consumer runtime floors, and reconcile source provenance. Existing Java phase-25 references remain behavioral context rather than implementation sources."
+    "NODE-COMPRESSION-2026-10-21": "Owner authorization on 21 October 2026 to replace Node zlib.crc32 with the existing lzma-native public incremental CRC32 through one shared bounded Buffer adapter, preserve ZIP integrity and consumer runtime floors, and reconcile source provenance. Existing Java phase-25 references remain behavioral context rather than implementation sources.",
+    "BOUNDED-READS-2026-10-23": "Owner authorization on 23 October 2026 for PERF-DEC-014 Option A, followed by implementation of the OWLAPI read-path audit recommendations and separate private comparison snapshot cleanup; exact implementation and metadata scope in docs/adr/0013-bounded-private-read-models.md."
   },
   "provenanceCategories": {
     "A_PROJECT_ORIGINAL": "Project-authored implementation with no identified upstream-derived semantic implementation",
@@ -330,11 +331,14 @@
         "docs/implementation-plan.md sections 10.1-10.2"
       ],
       "compatibilityReferences": [
-        "OWLAPI 5.5.1 public OWLOntology and OWLOntologyID interfaces plus pinned black-box reference harness"
+        "OWLAPI 5.5.1 public OWLOntology and OWLOntologyID interfaces plus pinned black-box reference harness",
+        "BOUNDED-READS-2026-10-23: original private read-path refinement; existing public semantics, ordering and ownership preserved. See docs/adr/0013-bounded-private-read-models.md."
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "model/model.test.js"
+        "model/model.test.js",
+        "docs/adr/0013-bounded-private-read-models.md",
+        "internal/model/ontologyReadModel.test.js"
       ],
       "laterPhaseChanges": [
         {
@@ -1356,12 +1360,15 @@
         "docs/ontology-lifecycle-capability-implementation-plan.md sections 2, 3.1, and Task 8"
       ],
       "compatibilityReferences": [
-        "OWLAPI 5.5.1 OWLOntology component-access and OWLObject structural-equality responsibilities, with package-private anonymous-individual renaming accommodation for storage round-trip verification, at pinned revision d7e997a53b470e32700de89cc610d9daf01ea769"
+        "OWLAPI 5.5.1 OWLOntology component-access and OWLObject structural-equality responsibilities, with package-private anonymous-individual renaming accommodation for storage round-trip verification, at pinned revision d7e997a53b470e32700de89cc610d9daf01ea769",
+        "BOUNDED-READS-2026-10-23: original private read-path refinement; existing public semantics, ordering and ownership preserved. See docs/adr/0013-bounded-private-read-models.md."
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
         "internal/model/ontologyStructuralIsomorphism.test.js",
-        "internal/rdfjs/datasetIsomorphism.test.js"
+        "internal/rdfjs/datasetIsomorphism.test.js",
+        "docs/adr/0013-bounded-private-read-models.md",
+        "internal/model/ontologyReadModel.test.js"
       ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
@@ -2155,7 +2162,8 @@
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 pinned Phase 5 Java structural snapshot and malformed-list black-box probe",
-        "Pinned 338-case W3C OWL 2 test manifest with 233 applicable tests and 312 constructed RDF/JS documents"
+        "Pinned 338-case W3C OWL 2 test manifest with 233 applicable tests and 312 constructed RDF/JS documents",
+        "BOUNDED-READS-2026-10-23: original private read-path refinement; existing public semantics, ordering and ownership preserved. See docs/adr/0013-bounded-private-read-models.md."
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
@@ -2165,7 +2173,9 @@
         "internal/mapping/rdfToOwlTranslator.axioms.test.js",
         "internal/mapping/rdfToOwlTranslator.resource.test.js",
         "internal/mapping/rdfToOwlTranslator.conformance.test.js",
-        "internal/mapping/rdfToOwlTranslator.differential.test.js"
+        "internal/mapping/rdfToOwlTranslator.differential.test.js",
+        "docs/adr/0013-bounded-private-read-models.md",
+        "internal/mapping/rdfReadView.test.js"
       ],
       "laterPhaseChanges": [
         {
@@ -4924,12 +4934,15 @@
         "https://www.w3.org/TR/owl2-syntax/"
       ],
       "compatibilityReferences": [
-        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation."
+        "Pinned native Java OWLAPI b61ebe2da black-box operation/fixture results and exact owner-accepted differences; independent JavaScript implementation.",
+        "BOUNDED-READS-2026-10-23: original private read-path refinement; existing public semantics, ordering and ownership preserved. See docs/adr/0013-bounded-private-read-models.md."
       ],
       "referenceOwlapiRevision": "b61ebe2da83daceebb3e7ba7afbd2582c9240c33",
       "focusedEvidence": [
         "test/import-closure/rc2-public-contract.js",
-        "util/owlapi-reference/fixtures/rc2/"
+        "util/owlapi-reference/fixtures/rc2/",
+        "docs/adr/0013-bounded-private-read-models.md",
+        "internal/model/ontologyReadModel.test.js"
       ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
@@ -5924,6 +5937,56 @@
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "JAVA-BEHAVIOR-2026-10-13",
       "recordedOn": "2026-10-14"
+    },
+    {
+      "id": "BOUNDED-RDF-READ-VIEW",
+      "path": "internal/mapping/rdfReadView.js",
+      "phase": 5,
+      "scope": "Private prepared-input RDF read view preserving native direct and matched iteration orders, term identity and execution checks across reconstruction passes.",
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://rdf.js.org/dataset-spec/",
+        "https://rdf.js.org/data-model-spec/"
+      ],
+      "compatibilityReferences": [
+        "docs/adr/0013-bounded-private-read-models.md",
+        "Existing public contracts and native RDF/JS ordering are the implementation inputs. The retained Java pin below is historical layer context, not a new source consultation or fresh native qualification."
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "internal/mapping/rdfReadView.test.js",
+        "internal/mapping/rdfToOwlTranslator.conformance.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "BOUNDED-READS-2026-10-23",
+      "recordedOn": "2026-10-23"
+    },
+    {
+      "id": "SNAPSHOT-ONTOLOGY-READ-MODEL",
+      "path": "internal/model/ontologyReadModel.js",
+      "phase": 1,
+      "scope": "Private immutable-snapshot axiom, annotation and ordered signature indexes. Loaded import scope and public defensive collections remain owned by existing callers.",
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap"
+      ],
+      "compatibilityReferences": [
+        "docs/adr/0013-bounded-private-read-models.md",
+        "Existing public contracts and native RDF/JS ordering are the implementation inputs. The retained Java pin below is historical layer context, not a new source consultation or fresh native qualification."
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "internal/model/ontologyReadModel.test.js",
+        "model/rc2Queries.test.js",
+        "model/rc2NativeQueries.test.js",
+        "util/shortFormProviders.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "BOUNDED-READS-2026-10-23",
+      "recordedOn": "2026-10-23"
     }
   ],
   "compatibilityResearch": [
