@@ -13,6 +13,7 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
+  OWLAPI_BROWSER_INSTALL_TIMEOUT_MINUTES: "30"
   npm_config_fetch_retries: "2"
   npm_config_fetch_retry_factor: "10"
   npm_config_fetch_retry_mintimeout: "10000"
@@ -995,7 +996,7 @@ jobs:
         timeout-minutes: 20
       - name: Install only the managed Chromium revision
         run: npm run install:playwright-browsers -- --with-deps chromium
-        timeout-minutes: 20
+        timeout-minutes: ${{ fromJSON(env.OWLAPI_BROWSER_INSTALL_TIMEOUT_MINUTES) }}
       - name: Record the hosted runner and browser identity
         run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash --browser-project chromium
         timeout-minutes: 5
@@ -1040,7 +1041,7 @@ jobs:
         timeout-minutes: 20
       - name: Install only the managed Firefox revision
         run: npm run install:playwright-browsers -- --with-deps firefox
-        timeout-minutes: 20
+        timeout-minutes: ${{ fromJSON(env.OWLAPI_BROWSER_INSTALL_TIMEOUT_MINUTES) }}
       - name: Record the hosted runner and browser identity
         run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash --browser-project firefox
         timeout-minutes: 5
@@ -1085,7 +1086,7 @@ jobs:
         timeout-minutes: 20
       - name: Install only the managed WebKit revision
         run: npm run install:playwright-browsers -- --with-deps webkit
-        timeout-minutes: 20
+        timeout-minutes: ${{ fromJSON(env.OWLAPI_BROWSER_INSTALL_TIMEOUT_MINUTES) }}
       - name: Record the hosted runner and browser identity
         run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash --browser-project webkit
         timeout-minutes: 5
