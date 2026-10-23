@@ -40,7 +40,9 @@ Names follow the implementation's contract, rather than merely reversing the pre
 `run:prettier` is the internal raw-tool entry point shared by `format:source` and `format:source:check`.
 It owns the generic source selection once and receives the write/check mode from its caller.
 Its tool name is intentional because it exposes that exact CLI; ordinary task names describe their subject instead.
-`graph:dependencies` and `inventory:json` already use valid action verbs and retain their names.
+`graph:dependencies` retains its name.
+JSON checking uses `check:json` for complete coverage and `inspect:json` for the same check's typed event stream; the former `inventory:json` and `lint:json` commands are retired.
+`format:json:check` also invokes complete checking, so it includes protected and native sources.
 `install:json` and `install:markdown` also remain action-first; their names are embedded in the shared quality acquisition bootstrap's diagnostic text.
 That bootstrap must retain the original producer bytes for independent installation verification, so this naming refactor does not fork it.
 Script ordering does not establish execution order: composite command bodies and workflow dependencies continue to control execution.

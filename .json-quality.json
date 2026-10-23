@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "defaults": {
     "formatContract": "prettier-json",
     "allowFormatWrites": true,
@@ -29,24 +29,8 @@
       "id": "markdown-archives",
       "provider": "markdownArchives",
       "owner": "native Markdown lock/archive verifier",
-      "reason": "Independently admit every tracked frozen Markdown archive and original JSON member, including visible exact report exclusions.",
-      "minimumDocuments": 1,
-      "parameters": {
-        "temporaryReports": [
-          {
-            "packageName": "@hadden-industries/markdown-quality-win32-x64",
-            "version": "1.0.3",
-            "memberPath": "package/cargo-notices.json",
-            "sha256": "f5459fbdcf02354f87e1caf051238493f097be172b5af3e4f5e74b359146c29e"
-          },
-          {
-            "packageName": "@hadden-industries/markdown-quality-linux-x64",
-            "version": "1.0.3",
-            "memberPath": "package/cargo-notices.json",
-            "sha256": "22473eb073afc5d9f451888f96ab31dffc9bf3a55c50650f6fad058ba726df85"
-          }
-        ]
-      }
+      "reason": "Admit the complete clean-source Markdown package tuple against its producer inventory and native npm lock; repaired cargo reports receive ordinary semantic checking without legacy report exclusions.",
+      "minimumDocuments": 1
     }
   ],
   "preserveSourcePresentation": [
@@ -68,10 +52,13 @@
   "exceptions": [
     {
       "paths": [
-        "**/node_modules/**"
+        "node_modules/**",
+        "tooling/json/node_modules/**",
+        "tooling/markdown/node_modules/**",
+        "tooling/artifact-transport/node_modules/**"
       ],
       "owner": "native npm dependency installers",
-      "reason": "Owner-approved exclusion of every node_modules installation from JSON quality, including root and isolated tooling trees. Native acquisition/payload, locks, package/evidence and domain checks remain mandatory; tracked JSON remains independently checked.",
+      "reason": "Exclude these physical npm installation trees and their nested dependencies; independently admitted archived bundled members remain mandatory JSON obligations. Tracked repository-owned JSON remains checked.",
       "exclude": true
     },
     {
@@ -117,7 +104,7 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "4f74b64139ef87a509d062fb7dc57a39286078d091574ff3c45a6d0939491ab9",
-        "byteLength": 3391,
+        "byteLength": "3391",
         "diagnostics": []
       }
     },
@@ -131,7 +118,7 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "92cbd477f555b7601651334f9d2cc77efa7e11ee3973a18ca44d3bad4d9a45e0",
-        "byteLength": 16529,
+        "byteLength": "16529",
         "diagnostics": []
       }
     },
@@ -145,7 +132,7 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "63c075ce2ebc95413823e45b9ebd4ec1db633205e0097651702f0184cba2438a",
-        "byteLength": 18670,
+        "byteLength": "18670",
         "diagnostics": []
       }
     },
@@ -159,7 +146,7 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "227acf2f1008f050f37f47bf8dca9e265c6aaea271a4c0b1dc28551ed4310fbf",
-        "byteLength": 15183,
+        "byteLength": "15183",
         "diagnostics": []
       }
     },
@@ -173,7 +160,7 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "7c276b4016ac927b18e0eacb02bd72874f6bbe5181fb5e25c8cb0e2abe60b5c9",
-        "byteLength": 3707,
+        "byteLength": "3707",
         "diagnostics": []
       }
     },
@@ -187,7 +174,7 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "95607b62bdb1dc8be67f13abf319f9a621bd6e7437421812420c969683eb45bd",
-        "byteLength": 4147,
+        "byteLength": "4147",
         "diagnostics": []
       }
     },
@@ -201,7 +188,7 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "a1fd05a4335615f5d666b82b31ecaff206e601f1d6e3afa5af89c515efabc776",
-        "byteLength": 3746,
+        "byteLength": "3746",
         "diagnostics": []
       }
     },
@@ -215,7 +202,7 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "85bf32eabfc0c55fb0b054663aa5f91519aba630bb65b1be4eb073e96e696963",
-        "byteLength": 14265,
+        "byteLength": "14265",
         "diagnostics": []
       }
     },
@@ -229,7 +216,7 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "0bbcc4847cdd4f43537f00cc1a2dff166e833752cb3e8faaf9212e59a266b9cb",
-        "byteLength": 2787,
+        "byteLength": "2787",
         "diagnostics": []
       }
     },
@@ -243,7 +230,7 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "8c172dd25b53143ffece5e4676bf4532cbf56d4292e52ef110f4503c80746650",
-        "byteLength": 3744,
+        "byteLength": "3744",
         "diagnostics": []
       }
     },
@@ -290,7 +277,7 @@
         {
           "pointer": "/tests/318/expected",
           "sha256": "21b1321e21b2e3ecbf7111e7e52b80cd2e5d20f3f196a5129ee47fcde2396c08",
-          "byteLength": 126
+          "byteLength": "126"
         }
       ]
     },
@@ -305,27 +292,27 @@
         {
           "pointer": "/tests/21/source",
           "sha256": "b715cc6b51d7e9d4910aae0fc9470695e3b83a02dd517e4f0a8045d7228947e2",
-          "byteLength": 356
+          "byteLength": "356"
         },
         {
           "pointer": "/tests/31/source",
           "sha256": "af2e6a0fcb910d5ee86f9b959246b0dd1eb4cb38e9b4fc0759dfb13e7cea0bfa",
-          "byteLength": 292
+          "byteLength": "292"
         },
         {
           "pointer": "/tests/31/expectedQuads/0/2/1",
           "sha256": "30c4619a65d7a3425508a9f38c239543b3a1cfa7a6953c8b7c904e7d0dbc0a6f",
-          "byteLength": 86
+          "byteLength": "86"
         },
         {
           "pointer": "/tests/31/expectedQuads/1/2/1",
           "sha256": "30c4619a65d7a3425508a9f38c239543b3a1cfa7a6953c8b7c904e7d0dbc0a6f",
-          "byteLength": 86
+          "byteLength": "86"
         },
         {
           "pointer": "/tests/40/source",
           "sha256": "9b4629c7eca38d7a2d258183afcc8a217c33c5337396ad603c99ea6ab8d1b3ad",
-          "byteLength": 259
+          "byteLength": "259"
         }
       ]
     },
@@ -340,22 +327,22 @@
         {
           "pointer": "/tests/10/source",
           "sha256": "4a8d00163cabad0cb711c8b165331355ed69d1f5eb1dbb76479a9c774e35b1ea",
-          "byteLength": 217
+          "byteLength": "217"
         },
         {
           "pointer": "/tests/20/source",
           "sha256": "eebddbc2f871db039d42692f1100b48e978d18a52e13fd40859971b37f748ee8",
-          "byteLength": 149
+          "byteLength": "149"
         },
         {
           "pointer": "/tests/20/expectedQuads/0/2/1",
           "sha256": "30c4619a65d7a3425508a9f38c239543b3a1cfa7a6953c8b7c904e7d0dbc0a6f",
-          "byteLength": 86
+          "byteLength": "86"
         },
         {
           "pointer": "/tests/29/source",
           "sha256": "64a9f2ff0fe3a610633a69e2890c206cfe52325d83e389d4c60226de694e9c5c",
-          "byteLength": 116
+          "byteLength": "116"
         }
       ]
     },
@@ -369,7 +356,7 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "c0bcca085187a15c0b869c3902ea130922f837634486724cec38f16bab26b283",
-        "byteLength": 19727,
+        "byteLength": "19727",
         "diagnostics": []
       }
     },
@@ -383,7 +370,7 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "2b8b602eef56b0c307422bcf644477c11a299b3d0188be265e097ad64eb843af",
-        "byteLength": 157402,
+        "byteLength": "157402",
         "diagnostics": []
       }
     },
@@ -398,12 +385,12 @@
         {
           "pointer": "/evidence/files/1/package_data/0/parties/30/name",
           "sha256": "71399d5093873f6414aa555768fd658da8b721eff8902ffaa661f78815a2d2a3",
-          "byteLength": 17
+          "byteLength": "17"
         },
         {
           "pointer": "/evidence/packages/0/parties/30/name",
           "sha256": "71399d5093873f6414aa555768fd658da8b721eff8902ffaa661f78815a2d2a3",
-          "byteLength": 17
+          "byteLength": "17"
         }
       ]
     },
@@ -429,7 +416,7 @@
         {
           "pointer": "/evidence/packageMetadata/contributors/36",
           "sha256": "684eb0b0ae2d00f9d2830f20c393e4b9e3e5d9ed4e675070d3d310abe36cd7c1",
-          "byteLength": 46
+          "byteLength": "46"
         }
       ]
     },
@@ -443,7 +430,7 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "801937a810719568dd73d6888e3766fabcbab2e2c96af18fb48c2db897c17bce",
-        "byteLength": 3969,
+        "byteLength": "3969",
         "diagnostics": []
       }
     },
@@ -457,7 +444,7 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "62e06acfed06d2b54b384aef05ed0f416f37e03f3c696c1c4d29a9f681e3af0b",
-        "byteLength": 2936,
+        "byteLength": "2936",
         "diagnostics": []
       }
     },
@@ -471,7 +458,7 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "a5d6d4634998b583331ecdcd1b9bd0c880942d8536982846b90e5d08108f801b",
-        "byteLength": 6155,
+        "byteLength": "6155",
         "diagnostics": []
       }
     },
@@ -485,7 +472,7 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "9d1f0d8895c796e70a970221515925c8788579938a9dedf0dccfb28b6abec6cd",
-        "byteLength": 5184,
+        "byteLength": "5184",
         "diagnostics": []
       }
     },
@@ -499,7 +486,7 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "3b5da4f16bf77bc3264741d63fc1e06738793d1735af9f6861ec8af5c635926d",
-        "byteLength": 4718,
+        "byteLength": "4718",
         "diagnostics": []
       }
     },
@@ -513,7 +500,7 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "de920b76470530d664f44396de25bf17b1785e1d7837560b790747b48ad805b2",
-        "byteLength": 3376,
+        "byteLength": "3376",
         "diagnostics": []
       }
     },
@@ -527,7 +514,7 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "333153a636c26d1c44ba89364da13b7c00bfec34ed3ef16cc9b8843a44cd8395",
-        "byteLength": 2815,
+        "byteLength": "2815",
         "diagnostics": []
       }
     },
@@ -541,7 +528,7 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "e769289919d73ae202ddfbd14702aaec292c83dc795b8c0656f74ab18fd7266e",
-        "byteLength": 1986,
+        "byteLength": "1986",
         "diagnostics": []
       }
     },
@@ -555,7 +542,7 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "0dc66f5bd0a275d41e8e600d5cc3780428d9ebb1aa46be07b96c9c4de1ede3ee",
-        "byteLength": 7183,
+        "byteLength": "7183",
         "diagnostics": []
       }
     },
@@ -569,7 +556,7 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "b212eb63726fceb9cfe927cdee3274ab14acb061e722cc597be45d846e667c6f",
-        "byteLength": 11091,
+        "byteLength": "11091",
         "diagnostics": []
       }
     },
@@ -583,7 +570,7 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "8c26c92ffb2cc4f882444bea8f50b01ea7ec31249afb15153f1cf3cef73b2724",
-        "byteLength": 2725,
+        "byteLength": "2725",
         "diagnostics": []
       }
     },
@@ -597,16 +584,17 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "b192dd3c5dbb00041e3b49d12b69bc6a181875fee008f50a089a5f9695faaefc",
-        "byteLength": 155,
+        "byteLength": "155",
         "diagnostics": [
           {
             "phase": "lint",
             "ruleId": "json/no-empty-keys",
             "messageId": "emptyKey",
-            "line": 4,
-            "column": 5,
-            "endLine": 4,
-            "endColumn": 7
+            "line": "4",
+            "column": "5",
+            "endLine": "4",
+            "endColumn": "7",
+            "severity": "error"
           }
         ]
       }
@@ -621,25 +609,27 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "53cef3ae8ddf3e65d7330c7f048b8800b6a69cb0029bb2472236f1d5ad9e92ee",
-        "byteLength": 272,
+        "byteLength": "272",
         "diagnostics": [
           {
             "phase": "lint",
             "ruleId": "json/no-empty-keys",
             "messageId": "emptyKey",
-            "line": 7,
-            "column": 36,
-            "endLine": 7,
-            "endColumn": 39
+            "line": "7",
+            "column": "36",
+            "endLine": "7",
+            "endColumn": "39",
+            "severity": "error"
           },
           {
             "phase": "lint",
             "ruleId": "json/no-empty-keys",
             "messageId": "emptyKey",
-            "line": 9,
-            "column": 5,
-            "endLine": 9,
-            "endColumn": 7
+            "line": "9",
+            "column": "5",
+            "endLine": "9",
+            "endColumn": "7",
+            "severity": "error"
           }
         ]
       }
@@ -654,16 +644,17 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "caf39adb20f75ca8ddcdb80199387ca5040da26b19b3b588cd7d4d44468938e8",
-        "byteLength": 163,
+        "byteLength": "163",
         "diagnostics": [
           {
             "phase": "lint",
             "ruleId": "json-quality/normalized-strings",
             "messageId": "unnormalized",
-            "line": 7,
-            "column": 28,
-            "endLine": 7,
-            "endColumn": 37
+            "line": "7",
+            "column": "28",
+            "endLine": "7",
+            "endColumn": "37",
+            "severity": "error"
           }
         ]
       }
@@ -678,16 +669,17 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "10373347f4012d23011ae5ebda75b53912f3c7193881e57dc52ba7a899bde0b6",
-        "byteLength": 311,
+        "byteLength": "311",
         "diagnostics": [
           {
             "phase": "lint",
             "ruleId": "json-quality/interoperability",
             "messageId": "integer",
-            "line": 7,
-            "column": 37,
-            "endLine": 7,
-            "endColumn": 41
+            "line": "7",
+            "column": "37",
+            "endLine": "7",
+            "endColumn": "41",
+            "severity": "error"
           }
         ]
       }
@@ -702,25 +694,27 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "86f114e49ecf01eb931e66a9e973d39cc2fe383cb4a7b25153e0baf194854850",
-        "byteLength": 374,
+        "byteLength": "374",
         "diagnostics": [
           {
             "phase": "lint",
             "ruleId": "json/no-empty-keys",
             "messageId": "emptyKey",
-            "line": 8,
-            "column": 5,
-            "endLine": 8,
-            "endColumn": 9
+            "line": "8",
+            "column": "5",
+            "endLine": "8",
+            "endColumn": "9",
+            "severity": "error"
           },
           {
             "phase": "lint",
             "ruleId": "json/no-empty-keys",
             "messageId": "emptyKey",
-            "line": 9,
-            "column": 5,
-            "endLine": 9,
-            "endColumn": 13
+            "line": "9",
+            "column": "5",
+            "endLine": "9",
+            "endColumn": "13",
+            "severity": "error"
           }
         ]
       }
@@ -735,16 +729,17 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "a9c087d5579d1bab867357d27d14e479c988c8a958839013ffd3646a64399be1",
-        "byteLength": 110,
+        "byteLength": "110",
         "diagnostics": [
           {
             "phase": "lint",
             "ruleId": "json-quality/interoperability",
             "messageId": "integer",
-            "line": 5,
-            "column": 28,
-            "endLine": 5,
-            "endColumn": 32
+            "line": "5",
+            "column": "28",
+            "endLine": "5",
+            "endColumn": "32",
+            "severity": "error"
           }
         ]
       }
@@ -759,16 +754,17 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "b192dd3c5dbb00041e3b49d12b69bc6a181875fee008f50a089a5f9695faaefc",
-        "byteLength": 155,
+        "byteLength": "155",
         "diagnostics": [
           {
             "phase": "lint",
             "ruleId": "json/no-empty-keys",
             "messageId": "emptyKey",
-            "line": 4,
-            "column": 5,
-            "endLine": 4,
-            "endColumn": 7
+            "line": "4",
+            "column": "5",
+            "endLine": "4",
+            "endColumn": "7",
+            "severity": "error"
           }
         ]
       }
@@ -783,25 +779,27 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "53cef3ae8ddf3e65d7330c7f048b8800b6a69cb0029bb2472236f1d5ad9e92ee",
-        "byteLength": 272,
+        "byteLength": "272",
         "diagnostics": [
           {
             "phase": "lint",
             "ruleId": "json/no-empty-keys",
             "messageId": "emptyKey",
-            "line": 7,
-            "column": 36,
-            "endLine": 7,
-            "endColumn": 39
+            "line": "7",
+            "column": "36",
+            "endLine": "7",
+            "endColumn": "39",
+            "severity": "error"
           },
           {
             "phase": "lint",
             "ruleId": "json/no-empty-keys",
             "messageId": "emptyKey",
-            "line": 9,
-            "column": 5,
-            "endLine": 9,
-            "endColumn": 7
+            "line": "9",
+            "column": "5",
+            "endLine": "9",
+            "endColumn": "7",
+            "severity": "error"
           }
         ]
       }
@@ -816,16 +814,17 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "caf39adb20f75ca8ddcdb80199387ca5040da26b19b3b588cd7d4d44468938e8",
-        "byteLength": 163,
+        "byteLength": "163",
         "diagnostics": [
           {
             "phase": "lint",
             "ruleId": "json-quality/normalized-strings",
             "messageId": "unnormalized",
-            "line": 7,
-            "column": 28,
-            "endLine": 7,
-            "endColumn": 37
+            "line": "7",
+            "column": "28",
+            "endLine": "7",
+            "endColumn": "37",
+            "severity": "error"
           }
         ]
       }
@@ -840,16 +839,17 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "10373347f4012d23011ae5ebda75b53912f3c7193881e57dc52ba7a899bde0b6",
-        "byteLength": 311,
+        "byteLength": "311",
         "diagnostics": [
           {
             "phase": "lint",
             "ruleId": "json-quality/interoperability",
             "messageId": "integer",
-            "line": 7,
-            "column": 37,
-            "endLine": 7,
-            "endColumn": 41
+            "line": "7",
+            "column": "37",
+            "endLine": "7",
+            "endColumn": "41",
+            "severity": "error"
           }
         ]
       }
@@ -864,25 +864,27 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "86f114e49ecf01eb931e66a9e973d39cc2fe383cb4a7b25153e0baf194854850",
-        "byteLength": 374,
+        "byteLength": "374",
         "diagnostics": [
           {
             "phase": "lint",
             "ruleId": "json/no-empty-keys",
             "messageId": "emptyKey",
-            "line": 8,
-            "column": 5,
-            "endLine": 8,
-            "endColumn": 9
+            "line": "8",
+            "column": "5",
+            "endLine": "8",
+            "endColumn": "9",
+            "severity": "error"
           },
           {
             "phase": "lint",
             "ruleId": "json/no-empty-keys",
             "messageId": "emptyKey",
-            "line": 9,
-            "column": 5,
-            "endLine": 9,
-            "endColumn": 13
+            "line": "9",
+            "column": "5",
+            "endLine": "9",
+            "endColumn": "13",
+            "severity": "error"
           }
         ]
       }
@@ -897,16 +899,17 @@
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "a9c087d5579d1bab867357d27d14e479c988c8a958839013ffd3646a64399be1",
-        "byteLength": 110,
+        "byteLength": "110",
         "diagnostics": [
           {
             "phase": "lint",
             "ruleId": "json-quality/interoperability",
             "messageId": "integer",
-            "line": 5,
-            "column": 28,
-            "endLine": 5,
-            "endColumn": 32
+            "line": "5",
+            "column": "28",
+            "endLine": "5",
+            "endColumn": "32",
+            "severity": "error"
           }
         ]
       }
@@ -927,19 +930,32 @@
     },
     {
       "paths": [
-        "tooling/markdown/archives/hadden-industries-markdown-quality-linux-x64-1.0.3.tgz!/package/cargo-notices.json"
+        "tooling/markdown/release-manifest.json"
       ],
-      "owner": "Markdown Quality native cargo-about report producer",
-      "reason": "Owner-approved temporary exact original archive-report exclusion. Native owner checks locked package version and original report SHA-256; remove after qualified producer update. Full member census and unchanged archive integrity remain mandatory.",
-      "exclude": true
+      "owner": "Clean-source Markdown package producer",
+      "reason": "Retain the actual producer manifest and complete staged-member identities without regenerating its provenance.",
+      "formatContract": "producer-json-indent",
+      "allowFormatWrites": false
     },
     {
       "paths": [
-        "tooling/markdown/archives/hadden-industries-markdown-quality-win32-x64-1.0.3.tgz!/package/cargo-notices.json"
+        "tooling/markdown/archives/hadden-industries-markdown-quality-linux-x64-1.0.3-5712d153079bfc840a918c7dd250afef820d9e07.tgz!/package/cargo-notices.json"
       ],
-      "owner": "Markdown Quality native cargo-about report producer",
-      "reason": "Owner-approved temporary exact original archive-report exclusion. Native owner checks locked package version and original report SHA-256; remove after qualified producer update. Full member census and unchanged archive integrity remain mandatory.",
-      "exclude": true
+      "owner": "Original crate attribution owners",
+      "reason": "The repaired, completely inventoried native package retains the same two independently pinned original author strings. Every key and unselected value receives ordinary NFC checking; this grants no report exclusion.",
+      "allowFormatWrites": false,
+      "preserveNfcValues": [
+        {
+          "pointer": "/licenses/25/used_by/0/crate/authors/1",
+          "sha256": "f7a46979f4c152096032b17774ded243fdb9cfe324a381e8a8a4a2a8e32a2cc5",
+          "byteLength": "35"
+        },
+        {
+          "pointer": "/crates/92/package/authors/1",
+          "sha256": "f7a46979f4c152096032b17774ded243fdb9cfe324a381e8a8a4a2a8e32a2cc5",
+          "byteLength": "35"
+        }
+      ]
     }
   ]
 }

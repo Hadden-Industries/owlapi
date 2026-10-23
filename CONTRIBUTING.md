@@ -151,19 +151,27 @@ The `run:prettier` package script declares the generic source formatting scope o
 Generic Prettier excludes Markdown and JSON-family files so their dedicated tools retain presentation and guarded-write ownership; Python remains owned by Ruff.
 Repository npm scripts use action-first names and alphabetical action groups; see the [naming rationale, ordering rule and command migration table](docs/development/npm-scripts.md).
 Use `check:markdown` for full read-only Markdown checking, including formatting drift, linting and local links; both `lint` and `format:check` retain that check.
-Use `lint:js` and `lint:py` for separate static checks, and the source/Python/JSON `:check` formatting scripts for read-only presentation checks.
+Use `lint:js` and `lint:py` for separate static checks, and the source/Python `:check` formatting scripts for read-only presentation checks.
 For selected Markdown files, use `npm run check:markdown -- -- "docs/guide.md"` or `npm run check:markdown -- --files-json "[\"docs/guide.md\"]"`; the canonical CLI requires a literal `--` boundary or JSON selection.
 `lint:files` remains available for existing JavaScript callers.
 
 JSON tooling is installed separately with `npm run install:json`; its exact source selector lives in `tooling/json/package.json`, with a native npm lock and producer-generated acquisition bootstrap.
-`npm run format:json:check` delegates to `format --check`; protected checking is `npm run check:json -- --scope protected`.
-The API equivalents are `runJsonQuality("format", { check: true })` and `runJsonQuality("check", { scope: "protected" })`, with result schema 4.
-JSON file selection uses literal paths after `--` or `--files '["path.json"]'`, corresponding to API `files`; normalization requires a nonempty selection.
-Supplied-document formatting uses `format --request - --json` or `formatJsonDocument(request, options)`; `--check` / `check: true` retains original bytes.
-Policy and API resource overrides use `capacityLimits`; CLI `--no-capacity-limits` / API `false` disables every shared capacity check while retaining semantic and writer safeguards.
-Individual numeric overrides cannot be combined with that bypass.
-The generated bootstrap accepts `JSON_QUALITY_CAPACITY_LIMITS` and independent `JSON_QUALITY_CLEANUP` retry options.
-The JSON API names `check-format` / `check-protected`, `sourcePaths`, JSON CLI `--files-json` / `--stdin-request` / `--no-limits`, and export `processJsonDocument` are retired without aliases; Markdown's own CLI grammar is unchanged.
+`npm run check:json` performs complete read-only checking of owned files, required generated outputs, pinned native evidence and linked JSON-LD sources.
+`npm run format:json:check` invokes that same complete check; `npm run inspect:json` emits its typed event stream as newline-delimited JSON.
+Checking has no file-selection or protected-only mode: source findings remain provisional until the execution terminal confirms complete inventory and linkage.
+The adapter exports `openRepositoryJsonSession()`; consume `session.events()` and always await `session.close()`.
+Independent source analysis uses `openJsonSourceSession()` and an asynchronous byte opener; it does not establish repository completeness.
+Formatting and normalization select physical paths after a literal `--`, for example `npm run format:json -- -- package.json`; normalization requires a nonempty selection.
+Both operations preflight the complete repository before guarded writes, and protected evidence remains under its native producer's ownership.
+Finite producer operations use `formatJsonSource`, `formatJsonValue` and `normalizeJsonSource`; their declared writer capabilities are separate from read-only checking.
+`capacityLimits: false` / `--no-capacity-limits` removes admission ceilings while retaining finite runtime memory, scratch, depth, concurrency and time controls.
+It does not expand writer capabilities.
+The policy uses schema version 2; the package's contract cohort binds source contracts, event schemas and native protocol together.
+The former aggregate checking APIs and Base64 document request envelopes are retired; Markdown's own CLI grammar is unchanged.
+
+Markdown tooling uses a source-specific, clean-source core/Linux/Windows archive tuple, its unmodified producer manifest and a native npm lock.
+The Markdown archive owner verifies complete member identities before JSON checking, including bundled dependencies and both repaired cargo reports.
+Only two exact original Linux author-name values retain pinned NFC preservation; neither report is excluded from semantic checking.
 
 On Node 22, use `format:source-python:check`, `lint:source-python`, and `test:quality:source` for the complete source/Python floor; Markdown checks require Node 24.
 The shared Markdown selector includes `.github/` and eligible untracked files, honours repository ignore rules, and rejects symlink and outside paths.

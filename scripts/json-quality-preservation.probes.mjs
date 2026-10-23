@@ -1,41 +1,112 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
 import {
-  checkJsonDocument,
   jsonContract,
+  openJsonSourceSession,
 } from "../tooling/json/public-api.mjs";
-import { readJsonPolicy } from "../tooling/json/public-api.mjs";
+import { provideMarkdownArchiveJson } from "../util/third-party-evidence/markdown-json-documents.mjs";
+import {
+  readPolicyFixture,
+  sourceFixtureContract,
+  collectSourceEvents,
+  collectOpenedSourceEvents,
+} from "./json-quality-probe-support.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
-const policy = await readJsonPolicy(root);
+const policy = await readPolicyFixture(root);
 const rule = "json-quality/normalized-strings";
+const exceptions = policy.exceptions.filter(
+  ({ preserveNfcValues }) => preserveNfcValues?.length,
+);
 
-test("all 13 owner-approved values retain exact protected NFC contracts", async () => {
-  const exceptions = policy.exceptions.filter(
-    ({ preserveNfcValues }) => preserveNfcValues?.length,
-  );
+test("all 13 physical owner-approved values retain exact protected NFC contracts", async () => {
   assert.equal(
     exceptions.reduce(
       (count, entry) => count + entry.preserveNfcValues.length,
       0,
     ),
-    13,
+    15,
   );
-  for (const entry of exceptions) {
-    assert.equal(entry.paths.length, 1);
-    const path = entry.paths[0];
-    const contract = jsonContract(path, policy);
-    assert.equal(contract.allowFormatWrites, false);
-    assert.equal(contract.normalization, "NFC");
-    const result = await checkJsonDocument(
-      await readFile(join(root, path)),
-      contract,
-    );
-    assert.equal(result.syntaxValid, true);
-    assert(!result.findings.some(({ ruleId }) => ruleId === rule), path);
+  let physicalPins = 0;
+  const session = await openJsonSourceSession();
+  try {
+    for (const entry of exceptions.filter(
+      ({ paths }) => !paths[0].includes("!/"),
+    )) {
+      assert.equal(entry.paths.length, 1);
+      const path = entry.paths[0];
+      const contract = jsonContract(path, policy);
+      assert.equal(contract.allowFormatWrites, false);
+      assert.equal(contract.normalization, "NFC");
+      physicalPins += entry.preserveNfcValues.length;
+      const events = await collectSourceEvents(
+        session,
+        await readFile(join(root, path)),
+        sourceFixtureContract(path, policy),
+      );
+      assert.equal(events.at(-1).parserComplete, true, path);
+      assert(!events.some(({ ruleId }) => ruleId === rule), path);
+    }
+    assert.equal(physicalPins, 13);
+  } finally {
+    await session.close();
+  }
+});
+
+test("the repaired Linux report retains its two exact original author values under complete native admission", async () => {
+  const native = exceptions.filter(({ paths }) => paths[0].includes("!/"));
+  assert.equal(native.length, 1);
+  const [entry] = native;
+  assert.equal(entry.preserveNfcValues.length, 2);
+  const path = entry.paths[0],
+    supplied = await provideMarkdownArchiveJson({ root });
+  let pin;
+  for await (const candidate of supplied.inventory)
+    if (candidate.path === path) {
+      assert.equal(pin, undefined);
+      pin = candidate;
+    }
+  assert.ok(pin, "The native inventory must contain the preserved report");
+  const contract = sourceFixtureContract(path, policy);
+  assert.equal(contract.normalization, "NFC");
+  assert.equal(contract.allowFormatWrites, false);
+  const session = await openJsonSourceSession();
+  let checked = 0;
+  try {
+    for await (const document of supplied.documents) {
+      if (document.path !== path) {
+        for await (const bytes of document.chunks)
+          assert.ok(bytes.length <= 65536);
+        continue;
+      }
+      checked++;
+      const hash = createHash("sha256");
+      let length = 0n;
+      const events = await collectOpenedSourceEvents(
+        session,
+        {
+          async *open() {
+            for await (const bytes of document.chunks) {
+              hash.update(bytes);
+              length += BigInt(bytes.length);
+              yield bytes;
+            }
+          },
+        },
+        contract,
+      );
+      assert.equal(hash.digest("hex"), pin.sha256);
+      assert.equal(String(length), pin.byteLength);
+      assert.equal(events.at(-1).parserComplete, true);
+      assert(!events.some(({ ruleId }) => ruleId === rule), path);
+    }
+    assert.equal(checked, 1);
+  } finally {
+    await session.close();
   }
 });
 
@@ -84,9 +155,16 @@ for (const [name, mutate] of mutations)
   test(`NFC preservation rejects ${name}`, async () => {
     const value = structuredClone(original);
     mutate(value);
-    const result = await checkJsonDocument(
-      Buffer.from(JSON.stringify(value)),
-      jsonContract(path, policy),
-    );
-    assert(result.findings.some(({ ruleId }) => ruleId === rule));
+    const session = await openJsonSourceSession();
+    try {
+      const events = await collectSourceEvents(
+        session,
+        Buffer.from(JSON.stringify(value)),
+        sourceFixtureContract(path, policy),
+      );
+      assert.equal(events.at(-1).parserComplete, true);
+      assert(events.some(({ ruleId }) => ruleId === rule));
+    } finally {
+      await session.close();
+    }
   });

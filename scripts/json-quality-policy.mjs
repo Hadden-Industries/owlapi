@@ -1,21 +1,22 @@
-import { readJsonPolicy } from "../tooling/json/public-api.mjs";
+import { admitJsonPolicy } from "../tooling/json/public-api.mjs";
 import { verifyPinnedIntegrationCheckout } from "../util/owlapi-reference/pinned-integration-checkout.mjs";
 
 const approvedExclusions = new Set([
-  "**/node_modules/**",
+  "node_modules/**",
+  "tooling/json/node_modules/**",
+  "tooling/markdown/node_modules/**",
+  "tooling/artifact-transport/node_modules/**",
   ".development-tools/python/**",
   ".development-tools/uv-cache/**",
   ".venv/**",
   ".release/universal-ontology/**",
-  "tooling/markdown/archives/hadden-industries-markdown-quality-linux-x64-1.0.3.tgz!/package/cargo-notices.json",
-  "tooling/markdown/archives/hadden-industries-markdown-quality-win32-x64-1.0.3.tgz!/package/cargo-notices.json",
 ]);
 
 /** Repository approval authority only; the package owns schema and checking.
- * Report version/bytes are independently admitted by the native archive owner.
+ * The complete clean-source package tuple is admitted by its native archive owner.
  */
-export async function readRepositoryJsonPolicy(root) {
-  const policy = await readJsonPolicy(root);
+export async function validateRepositoryJsonPolicy(policy, root) {
+  admitJsonPolicy(policy);
   for (const entry of policy.exceptions.filter((entry) => entry.exclude))
     for (const path of entry.paths)
       if (!approvedExclusions.has(path))
@@ -30,4 +31,25 @@ export async function readRepositoryJsonPolicy(root) {
   )
     await verifyPinnedIntegrationCheckout(root);
   return policy;
+}
+
+/** Approve the same immutable policy used by this execution. No second read or
+ * unaccounted parse can authorize different exclusions before guarded writes.
+ * This zero-member inventory is a domain gate, not a JSON source collection.
+ */
+export async function* capturedRepositoryPolicy(access, { root }) {
+  const lease = await access.materializeControl(
+    await access.select(await access.capturedSource(".json-quality.json")),
+    "262144",
+    (policy) => {
+      admitJsonPolicy(policy);
+      return true;
+    },
+  );
+  try {
+    await validateRepositoryJsonPolicy(lease.value, root);
+  } finally {
+    await lease.release();
+  }
+  yield* [];
 }

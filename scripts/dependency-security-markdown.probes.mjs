@@ -4,8 +4,13 @@ import { createRequire } from "node:module";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 
-const require = createRequire(
+const tooling = createRequire(
   new URL("../tooling/markdown/package.json", import.meta.url),
+);
+// Resolve from the installed producer: bundled transitive dependencies need
+// not be hoisted into the consumer tooling graph.
+const require = createRequire(
+  tooling.resolve("@hadden-industries/markdown-quality"),
 );
 const katexPath = require.resolve("katex");
 const root = fileURLToPath(new URL("../", import.meta.url));

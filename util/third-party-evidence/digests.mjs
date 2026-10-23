@@ -22,11 +22,16 @@ export const parseExactSha512Sri = (integrity) => {
   return digest;
 };
 
-export const verifySha512Sri = (bytes, integrity) => {
+/** Admit a streaming owner's complete digest through the same exact SRI rule. */
+export const verifySha512Digest = (actual, integrity) => {
   const expected = parseExactSha512Sri(integrity);
-  const actual = createHash("sha512").update(bytes).digest();
+  if (!Buffer.isBuffer(actual) || actual.length !== expected.length)
+    throw new TypeError("Invalid complete SHA-512 digest");
   if (!timingSafeEqual(actual, expected)) {
     throw new Error("Package integrity mismatch");
   }
   return true;
 };
+
+export const verifySha512Sri = (bytes, integrity) =>
+  verifySha512Digest(createHash("sha512").update(bytes).digest(), integrity);

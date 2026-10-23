@@ -3,18 +3,24 @@ import { readFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 
 const identities = new Map();
+const inventories = new Map();
 for (const [name, repository, prefix] of [
   ["rdf", "rdf-tests", "rdf/"],
   ["jsonld", "json-ld-api", "tests/"],
 ]) {
-  const inventory = JSON.parse(
-    readFileSync(
-      new URL(
-        `../../docs/conformance/upstream/w3c-${name}-source-identities.json`,
-        import.meta.url,
-      ),
-      "utf8",
+  const original = readFileSync(
+    new URL(
+      `../../docs/conformance/upstream/w3c-${name}-source-identities.json`,
+      import.meta.url,
     ),
+  );
+  const inventory = JSON.parse(original);
+  inventories.set(
+    repository,
+    Object.freeze({
+      sha256: createHash("sha256").update(original).digest("hex"),
+      byteLength: String(original.length),
+    }),
   );
   if (
     inventory.schemaVersion !== 1 ||
@@ -38,14 +44,12 @@ for (const [name, repository, prefix] of [
     const key = `${repository}:${entry.revision}:${entry.path}`;
     if (identities.has(key))
       throw new Error("Duplicate original W3C source identity");
-    identities.set(key, entry);
+    identities.set(key, Object.freeze(entry));
   }
 }
 
-/** Native fixture provenance: accept original pinned Git bytes, including any
- * intentional CRLF or BOM. Never infer original bytes from a converted checkout.
- */
-export function assertW3cSource(bytes, sourceIRI, revision) {
+/** Resolve the native owner's original pin without copying its source body. */
+export function w3cSourceIdentity(sourceIRI, revision) {
   const url = new URL(sourceIRI);
   const reference = /^\/(rdf-tests\/rdf\/|json-ld-api\/tests\/)/u.exec(
     url.pathname,
@@ -60,18 +64,42 @@ export function assertW3cSource(bytes, sourceIRI, revision) {
   const repository = reference[1].split("/")[0];
   const path = decodeURIComponent(url.pathname.slice(repository.length + 2));
   const expected = identities.get(`${repository}:${revision}:${path}`);
+  if (!expected)
+    throw new Error(
+      `Missing pinned original W3C source identity: ${revision}:${path}`,
+    );
+  return expected;
+}
+
+/** Enumerate the existing native provenance census without copying source bodies. */
+export function* w3cSourceIdentities(repository, revision) {
+  for (const [key, entry] of identities)
+    if (key.startsWith(`${repository}:${revision}:`)) yield entry;
+}
+
+/** Exact bytes underlying this owner's admitted metadata, distinct from a generated corpus. */
+export function w3cInventoryIdentity(repository) {
+  const identity = inventories.get(repository);
+  if (!identity) throw new Error("Unknown W3C inventory");
+  return identity;
+}
+
+/** Admit original pinned Git bytes, including intentional CRLF or BOM; never
+ * infer original bytes from a converted checkout.
+ */
+export function assertW3cSource(bytes, sourceIRI, revision) {
+  const expected = w3cSourceIdentity(sourceIRI, revision);
   const blob = createHash("sha1")
     .update(`blob ${bytes.length}\0`)
     .update(bytes)
     .digest("hex");
   if (
-    !expected ||
     bytes.length !== expected.byteLength ||
     blob !== expected.gitBlob ||
     createHash("sha256").update(bytes).digest("hex") !== expected.sha256
   )
     throw new Error(
-      `W3C source does not match its pinned original Git bytes: ${revision}:${path}`,
+      `W3C source does not match its pinned original Git bytes: ${revision}:${expected.path}`,
     );
   return new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(
     bytes,
