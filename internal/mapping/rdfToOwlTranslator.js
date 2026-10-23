@@ -18,6 +18,7 @@ import { IRI, StructuralSet } from "../../model/structural.js";
 import { normalizeCardinality } from "../model/cardinality.js";
 import { OntologyBehaviorContext } from "../behavior/ontologyBehaviorContext.js";
 import { readSourceStatementCount } from "../rdfjs/sourceStatementCount.js";
+import { createRdfReadView } from "./rdfReadView.js";
 import { selectOntologyGraph } from "../rdfjs/graphPolicy.js";
 import {
   BUILT_IN_ANNOTATION_PROPERTIES,
@@ -526,6 +527,7 @@ class RdfGraphInterpreter {
   #dataRangeStack = new Set();
   #dataFactory;
   #dataset;
+  #read;
   #datatypeIris = new Set([
     RDF_VOCABULARY.langString,
     RDF_VOCABULARY.xmlLiteral,
@@ -567,6 +569,7 @@ class RdfGraphInterpreter {
     configuration,
     dataFactory,
     dataset,
+    read,
     declarationEntities = [],
     sourceRoles = [],
     diagnostics,
@@ -590,6 +593,7 @@ class RdfGraphInterpreter {
     this.#sourceStatementCount = sourceStatementCount;
     this.#dataFactory = dataFactory;
     this.#dataset = dataset;
+    this.#read = read;
     this.#diagnostics = diagnostics;
     this.#documentScope = documentScope;
     this.#execution = execution;
@@ -819,7 +823,7 @@ class RdfGraphInterpreter {
     if (stage === "complete") {
       // Generic roles have reached closure before applying the ordinary OWL
       // reading of otherwise untyped subclass endpoints and class assertions.
-      for (const quad of this.#dataset) {
+      for (const quad of this.#read.quads) {
         if (
           quad.predicate.value === RDFS_VOCABULARY.subClassOf &&
           ![quad.subject, quad.object].some((term) =>
@@ -921,7 +925,7 @@ class RdfGraphInterpreter {
     do {
       previousState = this.#roleProofState();
       if (resolveConditional) this.#inferImplicitPropertyCategories();
-      for (const sourceQuad of this.#dataset) {
+      for (const sourceQuad of this.#read.quads) {
         const { subject, predicate, object } = sourceQuad;
         const p = predicate.value;
         if (object.termType === "Literal") mark(object.datatype, D);
@@ -1136,7 +1140,7 @@ class RdfGraphInterpreter {
 
   #discoverRdfsRoles() {
     if (this.#configuration.parsingMode !== "preserve") return;
-    for (const quad of this.#dataset) {
+    for (const quad of this.#read.quads) {
       if (
         quad.predicate.value !== RDF_VOCABULARY.type ||
         quad.object.termType !== "NamedNode"
@@ -1216,7 +1220,7 @@ class RdfGraphInterpreter {
       // statement dispatch. Discovery does not reject endpoints: imports may
       // supply a more specific role before reconstruction validates the use.
       if (type === RDFS_VOCABULARY.Class) {
-        for (const quad of this.#dataset) {
+        for (const quad of this.#read.quads) {
           if (
             quad.predicate.value === RDFS_VOCABULARY.domain &&
             this.#isRdfsPropertyOnly(quad.subject) &&
@@ -1231,7 +1235,7 @@ class RdfGraphInterpreter {
       const adjacent = new Map();
       const pending = [],
         seen = new Set();
-      for (const quad of this.#dataset) {
+      for (const quad of this.#read.quads) {
         if (quad.predicate.value !== predicate) continue;
         for (const [left, right] of [
           [quad.subject, quad.object],
@@ -1277,7 +1281,7 @@ class RdfGraphInterpreter {
 
   async #readRetainedRdfs() {
     if (this.#configuration.parsingMode !== "preserve") return;
-    for (const quad of this.#dataset) {
+    for (const quad of this.#read.quads) {
       if (this.#isConsumed(quad)) continue;
       const predicate = quad.predicate.value;
       if (
@@ -1376,7 +1380,7 @@ class RdfGraphInterpreter {
 
   async #readExpressionDefinitions() {
     let visited = 0;
-    for (const currentQuad of this.#dataset) {
+    for (const currentQuad of this.#read.quads) {
       if (
         this.#isConsumed(currentQuad) ||
         currentQuad.subject.termType !== "BlankNode"
@@ -1420,7 +1424,7 @@ class RdfGraphInterpreter {
     // the same datatype extension as a DatatypeDefinition with that restriction.
     // The OWL 2 DL RDF mapping instead requires an anonymous expression; this
     // is an explicit compatible-mode recovery, never a strict mapping rule.
-    for (const currentQuad of this.#dataset) {
+    for (const currentQuad of this.#read.quads) {
       if (
         currentQuad.subject.termType !== "NamedNode" ||
         currentQuad.predicate.value !== OWL_VOCABULARY.onDatatype ||
@@ -1469,7 +1473,7 @@ class RdfGraphInterpreter {
       OWL_VOCABULARY.TransitiveProperty,
     ]);
     const inferredObjectPropertyIris = new Set();
-    for (const currentQuad of this.#dataset) {
+    for (const currentQuad of this.#read.quads) {
       if (
         currentQuad.subject.termType === "NamedNode" &&
         currentQuad.predicate.value === RDF_VOCABULARY.type &&
@@ -1483,7 +1487,7 @@ class RdfGraphInterpreter {
     const declarations = [];
     const explicitObjectPropertyIris = new Set();
     let visited = 0;
-    for (const currentQuad of this.#dataset) {
+    for (const currentQuad of this.#read.quads) {
       if (
         currentQuad.predicate.value !== RDF_VOCABULARY.type ||
         currentQuad.object.termType !== "NamedNode"
@@ -1656,7 +1660,7 @@ class RdfGraphInterpreter {
       ...this.#objectPropertyIris,
     ]);
     const annotationCarriers = new Set();
-    for (const quad of this.#dataset.match(null, null, null, null)) {
+    for (const quad of this.#read.matchedQuads()) {
       if (
         quad.predicate.value === RDF_VOCABULARY.type &&
         (quad.object.value === OWL_VOCABULARY.Ontology ||
@@ -1669,7 +1673,7 @@ class RdfGraphInterpreter {
     }
     const recovered = new Set();
 
-    for (const quad of this.#dataset.match(null, null, null, null)) {
+    for (const quad of this.#read.matchedQuads()) {
       const iri = quad.predicate.value;
       if (
         recovered.has(iri) ||
@@ -1713,7 +1717,7 @@ class RdfGraphInterpreter {
       return;
     }
 
-    for (const quad of this.#dataset.match(null, null, null, null)) {
+    for (const quad of this.#read.matchedQuads()) {
       if (
         quad.predicate.value !== RDF_VOCABULARY.type ||
         quad.object.value !== RDFS_VOCABULARY.Class ||
@@ -1770,7 +1774,7 @@ class RdfGraphInterpreter {
       this.#dataPropertyIris.has(iri) ||
       this.#annotationPropertyIris.has(iri);
 
-    for (const quad of this.#dataset.match(null, null, null, null)) {
+    for (const quad of this.#read.matchedQuads()) {
       if (
         quad.predicate.value !== RDF_VOCABULARY.type ||
         quad.object.value !== RDF_VOCABULARY.Property ||
@@ -1836,7 +1840,7 @@ class RdfGraphInterpreter {
       OWL_VOCABULARY.SymmetricProperty,
       OWL_VOCABULARY.TransitiveProperty,
     ]);
-    for (const currentQuad of this.#dataset) {
+    for (const currentQuad of this.#read.quads) {
       if (
         currentQuad.predicate.value !== RDF_VOCABULARY.type ||
         currentQuad.object.termType !== "NamedNode"
@@ -1874,7 +1878,7 @@ class RdfGraphInterpreter {
       // Java's imports handler processes every owl:imports statement. Header
       // selection determines ontology identity, never which imports are fetched.
       // Use the same discovery pass and manager policy/budgets as ordinary imports.
-      for (const quad of this.#dataset) {
+      for (const quad of this.#read.quads) {
         if (
           quad.predicate.value === OWL_VOCABULARY.imports &&
           quad.object.termType === "NamedNode"
@@ -1889,9 +1893,7 @@ class RdfGraphInterpreter {
         await this.#execution.cooperate();
       }
     }
-    const allOntologyTypeQuads = [
-      ...this.#dataset.match(null, undefined, undefined, undefined),
-    ].filter(
+    const allOntologyTypeQuads = [...this.#read.matchedQuads()].filter(
       (currentQuad) =>
         currentQuad.predicate.value === RDF_VOCABULARY.type &&
         currentQuad.object.termType === "NamedNode" &&
@@ -1910,7 +1912,7 @@ class RdfGraphInterpreter {
     // OWL 2 RDF mapping Table 4 excludes references through owl:OntologyProperty,
     // not arbitrary annotation properties. Keep the legacy OWL 1 versioning
     // properties and explicit ontology-property declarations in this category.
-    for (const currentQuad of this.#dataset) {
+    for (const currentQuad of this.#read.quads) {
       if (
         !ontologyNodeKeys.has(termKey(currentQuad.subject)) ||
         !ontologyNodeKeys.has(termKey(currentQuad.object)) ||
@@ -2064,7 +2066,7 @@ class RdfGraphInterpreter {
   }
 
   #indexReifications() {
-    for (const currentQuad of this.#dataset) {
+    for (const currentQuad of this.#read.quads) {
       if (
         currentQuad.predicate.value !== RDF_VOCABULARY.type ||
         currentQuad.object.termType !== "NamedNode" ||
@@ -2169,7 +2171,7 @@ class RdfGraphInterpreter {
 
   async #readClassAxioms() {
     let visited = 0;
-    for (const currentQuad of this.#dataset) {
+    for (const currentQuad of this.#read.quads) {
       if (this.#isConsumed(currentQuad)) continue;
       if (
         ![
@@ -2370,7 +2372,7 @@ class RdfGraphInterpreter {
 
   async #readPropertyAxioms() {
     let visited = 0;
-    for (const currentQuad of this.#dataset) {
+    for (const currentQuad of this.#read.quads) {
       if (this.#isConsumed(currentQuad)) continue;
       const predicate = currentQuad.predicate.value;
       if (
@@ -2629,7 +2631,7 @@ class RdfGraphInterpreter {
         "getOWLTransitiveObjectPropertyAxiom",
       ],
     ]);
-    for (const currentQuad of this.#dataset) {
+    for (const currentQuad of this.#read.quads) {
       if (
         currentQuad.predicate.value !== RDF_VOCABULARY.type ||
         currentQuad.object.termType !== "NamedNode"
@@ -2680,7 +2682,7 @@ class RdfGraphInterpreter {
   }
 
   async #readNaryAxioms() {
-    for (const currentQuad of this.#dataset) {
+    for (const currentQuad of this.#read.quads) {
       if (
         currentQuad.predicate.value !== RDF_VOCABULARY.type ||
         currentQuad.object.termType !== "NamedNode"
@@ -2765,7 +2767,7 @@ class RdfGraphInterpreter {
     await this.#readNegativeAssertions();
 
     let visited = 0;
-    for (const currentQuad of this.#dataset) {
+    for (const currentQuad of this.#read.quads) {
       if (this.#isConsumed(currentQuad)) {
         continue;
       }
@@ -3072,7 +3074,7 @@ class RdfGraphInterpreter {
       }
       relatedByIri.get(left).add(right);
     };
-    for (const quad of this.#dataset) {
+    for (const quad of this.#read.quads) {
       if (
         quad.subject.termType !== "NamedNode" ||
         quad.object.termType !== "NamedNode" ||
@@ -3172,7 +3174,7 @@ class RdfGraphInterpreter {
     // Inverse links and object-only characteristics constrain their properties.
     // Seed all such uses before connected-property propagation and axiom parsing,
     // so an earlier domain/range cannot be lost merely due to traversal order.
-    for (const quad of this.#dataset) {
+    for (const quad of this.#read.quads) {
       if (quad.predicate.value === OWL_VOCABULARY.inverseOf) {
         mark(quad.subject, "object");
         mark(quad.object, "object");
@@ -3299,7 +3301,7 @@ class RdfGraphInterpreter {
         }
     }
     let visited = 0;
-    for (const currentQuad of this.#dataset) {
+    for (const currentQuad of this.#read.quads) {
       if (this.#isConsumed(currentQuad)) {
         continue;
       }
@@ -3399,7 +3401,7 @@ class RdfGraphInterpreter {
   }
 
   async #readKeys() {
-    for (const currentQuad of this.#dataset) {
+    for (const currentQuad of this.#read.quads) {
       if (currentQuad.predicate.value !== OWL_VOCABULARY.hasKey) {
         continue;
       }
@@ -3440,7 +3442,7 @@ class RdfGraphInterpreter {
   }
 
   async #readDifferentIndividuals() {
-    for (const currentQuad of this.#dataset) {
+    for (const currentQuad of this.#read.quads) {
       if (
         currentQuad.predicate.value !== RDF_VOCABULARY.type ||
         currentQuad.object.termType !== "NamedNode" ||
@@ -3482,7 +3484,7 @@ class RdfGraphInterpreter {
   }
 
   async #readNegativeAssertions() {
-    for (const currentQuad of this.#dataset) {
+    for (const currentQuad of this.#read.quads) {
       if (
         currentQuad.predicate.value !== RDF_VOCABULARY.type ||
         currentQuad.object.termType !== "NamedNode" ||
@@ -4661,7 +4663,7 @@ class RdfGraphInterpreter {
       return entry;
     };
 
-    for (const quad of this.#dataset.match(null, null, null, null)) {
+    for (const quad of this.#read.matchedQuads()) {
       const subject = quad.subject.value;
       const object = quad.object.value;
       switch (quad.predicate.value) {
@@ -4692,7 +4694,7 @@ class RdfGraphInterpreter {
     }
 
     // `owl:inverseOf` only relates object properties, on either side.
-    for (const quad of this.#dataset.match(null, null, null, null)) {
+    for (const quad of this.#read.matchedQuads()) {
       if (quad.predicate.value === OWL_VOCABULARY.inverseOf) {
         entryFor(quad.subject.value).objectOnlyCharacteristic = true;
         entryFor(quad.object.value).objectOnlyCharacteristic = true;
@@ -4704,10 +4706,7 @@ class RdfGraphInterpreter {
   }
 
   #outgoing(subject, predicate) {
-    return [...this.#dataset.match(subject, null, null, null)].filter(
-      (currentQuad) =>
-        predicate === undefined || currentQuad.predicate.value === predicate,
-    );
+    return this.#read.outgoing(subject, predicate);
   }
 }
 
@@ -4842,6 +4841,7 @@ export class RdfToOwlTranslator {
           ? createSourcePreservingDataFactory(this.#dataFactory)
           : this.#dataFactory,
       dataset: graphSelection.dataset,
+      read: createRdfReadView(graphSelection.dataset, execution),
       diagnostics,
       documentIRI: normalizedDocumentIRI,
       documentScope: documentScopeFor(normalizedDocumentIRI),

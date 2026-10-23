@@ -1632,6 +1632,7 @@ describe("owlapi governance artifacts", () => {
         .map(({ path }) => path)
         .sort(),
     ).toEqual([
+      "internal/mapping/rdfReadView.js",
       "internal/mapping/rdfToOwlTranslator.js",
       "internal/rdfjs/vocabulary.js",
     ]);

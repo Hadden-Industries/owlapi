@@ -1,5 +1,6 @@
 import { ENTITY_KINDS, OWLObjectKind as K } from "../model/kinds.js";
 import { readOntologySnapshot } from "../model/owlOntology.js";
+import { readOntologyModel } from "../internal/model/ontologyReadModel.js";
 import { readLoadedImportsClosure } from "../model/owlOntology.js";
 import {
   iriShortForm,
@@ -75,20 +76,20 @@ export class AnnotationValueShortFormProvider {
     if (!provided || typeof provided[Symbol.iterator] !== "function")
       throw new TypeError("ontologies() must return an iterable");
     const snapshots = [...provided].map((ontology) =>
-      readLoadedImportsClosure(ontology).flatMap(
-        (member) => readOntologySnapshot(member).directAxioms,
+      readLoadedImportsClosure(ontology).map((member) =>
+        readOntologyModel(readOntologySnapshot(member)),
       ),
     );
     for (const property of this.#properties) {
       const preferences =
         this.#languages.get(property.structuralKey())?.languages ?? [];
-      const candidates = snapshots.flatMap((axioms) =>
-        axioms
-          .filter(
-            (axiom) =>
-              axiom.kind === K.ANNOTATION_ASSERTION_AXIOM &&
-              axiom.subject.equals(entity.iri) &&
-              axiom.property.equals(property),
+      const candidates = snapshots.flatMap((members) =>
+        members
+          .flatMap((member) =>
+            member.annotationAssertions(
+              entity.iri.structuralKey(),
+              property.structuralKey(),
+            ),
           )
           .map((axiom) => axiom.value)
           .sort(compareDisplayObjects),

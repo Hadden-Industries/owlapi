@@ -14,6 +14,10 @@ import {
   requireAxiom,
 } from "../internal/model/axiomSemantics.js";
 import { AxiomAnnotations, Imports } from "./parameters/index.js";
+import {
+  readOntologyModel,
+  visitStructuralValues,
+} from "../internal/model/ontologyReadModel.js";
 
 const managerOwnedOntologyStatesByInitializer = new WeakMap();
 const ontologySnapshotReaders = new WeakMap();
@@ -94,24 +98,6 @@ const createOntologyState = ({
     ontologyID,
   });
 
-const visitStructuralValues = (root, visitor) => {
-  const pending = [root];
-  const visited = new Set();
-  while (pending.length) {
-    const value = pending.pop();
-    if (!value || typeof value !== "object" || visited.has(value)) continue;
-    visited.add(value);
-    if (visitor(value) === true) return;
-    if (Array.isArray(value)) {
-      for (const child of value) pending.push(child);
-      continue;
-    }
-    for (const field of Object.keys(value)) {
-      if (field !== "kind") pending.push(value[field]);
-    }
-  }
-};
-
 const references = (container, targetKey) => {
   let found = false;
   visitStructuralValues(container, (value) => {
@@ -168,15 +154,13 @@ export class OWLOntology {
 
   getAxiomsByType(type, imports = Imports.EXCLUDED) {
     if (imports === Imports.EXCLUDED)
-      return new Set(
-        this.#readStateSnapshot().directAxioms.filter(
-          (axiom) => axiom.kind === type,
-        ),
-      );
+      return new Set(readOntologyModel(this.#readStateSnapshot()).axioms(type));
     const axioms = new StructuralSet();
     for (const ontology of this.#scope(imports))
-      for (const axiom of readOntologySnapshot(ontology).directAxioms)
-        if (axiom.kind === type) axioms.add(axiom);
+      for (const axiom of readOntologyModel(
+        readOntologySnapshot(ontology),
+      ).axioms(type))
+        axioms.add(axiom);
     return axioms.toSet();
   }
 
@@ -234,8 +218,13 @@ export class OWLOntology {
       mode === AxiomAnnotations.IGNORE_AXIOM_ANNOTATIONS
         ? "structuralKeyWithoutAnnotations"
         : "structuralKey";
-    return [...this.getAxioms(imports)].some(
-      (stored) => stored[key]() === axiom[key](),
+    const target = axiom[key]();
+    return this.#scope(imports).some(
+      (ontology) =>
+        readOntologyModel(readOntologySnapshot(ontology)).equivalentAxioms(
+          target,
+          mode === AxiomAnnotations.IGNORE_AXIOM_ANNOTATIONS,
+        ).length > 0,
     );
   }
 
@@ -249,23 +238,23 @@ export class OWLOntology {
 
   getAxiomsIgnoreAnnotations(axiom, imports = Imports.EXCLUDED) {
     requireAxiom(axiom);
-    return new Set(
-      [...this.getAxioms(imports)].filter((stored) =>
-        stored.equalsIgnoreAnnotations(axiom),
-      ),
-    );
+    const result = new StructuralSet();
+    const key = axiom.structuralKeyWithoutAnnotations();
+    for (const ontology of this.#scope(imports))
+      for (const stored of readOntologyModel(
+        readOntologySnapshot(ontology),
+      ).equivalentAxioms(key, true))
+        result.add(stored);
+    return result.toSet();
   }
 
-  #position(kind, fields, target, kinds) {
+  #position(kind, field, target, kinds) {
     requireKind(target, kinds, "query target");
     return new Set(
-      [...this.getAxiomsByType(kind)].filter((axiom) =>
-        fields.some((field) => {
-          const values = Array.isArray(axiom[field])
-            ? axiom[field]
-            : [axiom[field]];
-          return values.some((value) => value?.equals(target));
-        }),
+      readOntologyModel(this.#readStateSnapshot()).position(
+        kind,
+        field,
+        target.structuralKey(),
       ),
     );
   }
@@ -274,7 +263,7 @@ export class OWLOntology {
   getDeclarationAxioms(entity) {
     return this.#position(
       OWLObjectKind.DECLARATION_AXIOM,
-      ["entity"],
+      "entity",
       entity,
       ENTITY_KINDS,
     );
@@ -284,7 +273,7 @@ export class OWLOntology {
   getSubClassAxiomsForSubClass(owlClass) {
     return this.#position(
       OWLObjectKind.SUBCLASS_OF_AXIOM,
-      ["subClass"],
+      "subClass",
       owlClass,
       [OWLObjectKind.CLASS],
     );
@@ -293,7 +282,7 @@ export class OWLOntology {
   getSubClassAxiomsForSuperClass(owlClass) {
     return this.#position(
       OWLObjectKind.SUBCLASS_OF_AXIOM,
-      ["superClass"],
+      "superClass",
       owlClass,
       [OWLObjectKind.CLASS],
     );
@@ -302,7 +291,7 @@ export class OWLOntology {
   getEquivalentClassesAxioms(owlClass) {
     return this.#position(
       OWLObjectKind.EQUIVALENT_CLASSES_AXIOM,
-      ["classExpressions"],
+      "classExpressions",
       owlClass,
       [OWLObjectKind.CLASS],
     );
@@ -311,7 +300,7 @@ export class OWLOntology {
   getDisjointClassesAxioms(owlClass) {
     return this.#position(
       OWLObjectKind.DISJOINT_CLASSES_AXIOM,
-      ["classExpressions"],
+      "classExpressions",
       owlClass,
       [OWLObjectKind.CLASS],
     );
@@ -320,7 +309,7 @@ export class OWLOntology {
   getObjectSubPropertyAxiomsForSubProperty(property) {
     return this.#position(
       OWLObjectKind.SUB_OBJECT_PROPERTY_AXIOM,
-      ["subProperty"],
+      "subProperty",
       property,
       OBJECT_PROPERTY_EXPRESSION_KINDS,
     );
@@ -329,7 +318,7 @@ export class OWLOntology {
   getObjectSubPropertyAxiomsForSuperProperty(property) {
     return this.#position(
       OWLObjectKind.SUB_OBJECT_PROPERTY_AXIOM,
-      ["superProperty"],
+      "superProperty",
       property,
       OBJECT_PROPERTY_EXPRESSION_KINDS,
     );
@@ -338,7 +327,7 @@ export class OWLOntology {
   getObjectPropertyDomainAxioms(property) {
     return this.#position(
       OWLObjectKind.OBJECT_PROPERTY_DOMAIN_AXIOM,
-      ["property"],
+      "property",
       property,
       OBJECT_PROPERTY_EXPRESSION_KINDS,
     );
@@ -347,7 +336,7 @@ export class OWLOntology {
   getObjectPropertyRangeAxioms(property) {
     return this.#position(
       OWLObjectKind.OBJECT_PROPERTY_RANGE_AXIOM,
-      ["property"],
+      "property",
       property,
       OBJECT_PROPERTY_EXPRESSION_KINDS,
     );
@@ -356,7 +345,7 @@ export class OWLOntology {
   getInverseObjectPropertyAxioms(property) {
     return this.#position(
       OWLObjectKind.INVERSE_OBJECT_PROPERTIES_AXIOM,
-      ["properties"],
+      "properties",
       property,
       OBJECT_PROPERTY_EXPRESSION_KINDS,
     );
@@ -365,7 +354,7 @@ export class OWLOntology {
   getDataSubPropertyAxiomsForSubProperty(property) {
     return this.#position(
       OWLObjectKind.SUB_DATA_PROPERTY_AXIOM,
-      ["subProperty"],
+      "subProperty",
       property,
       [OWLObjectKind.DATA_PROPERTY],
     );
@@ -374,7 +363,7 @@ export class OWLOntology {
   getDataSubPropertyAxiomsForSuperProperty(property) {
     return this.#position(
       OWLObjectKind.SUB_DATA_PROPERTY_AXIOM,
-      ["superProperty"],
+      "superProperty",
       property,
       [OWLObjectKind.DATA_PROPERTY],
     );
@@ -383,7 +372,7 @@ export class OWLOntology {
   getDataPropertyDomainAxioms(property) {
     return this.#position(
       OWLObjectKind.DATA_PROPERTY_DOMAIN_AXIOM,
-      ["property"],
+      "property",
       property,
       [OWLObjectKind.DATA_PROPERTY],
     );
@@ -392,7 +381,7 @@ export class OWLOntology {
   getDataPropertyRangeAxioms(property) {
     return this.#position(
       OWLObjectKind.DATA_PROPERTY_RANGE_AXIOM,
-      ["property"],
+      "property",
       property,
       [OWLObjectKind.DATA_PROPERTY],
     );
@@ -401,7 +390,7 @@ export class OWLOntology {
   getSubAnnotationPropertyOfAxioms(property) {
     return this.#position(
       OWLObjectKind.SUB_ANNOTATION_PROPERTY_AXIOM,
-      ["subProperty"],
+      "subProperty",
       property,
       [OWLObjectKind.ANNOTATION_PROPERTY],
     );
@@ -410,7 +399,7 @@ export class OWLOntology {
   getAnnotationPropertyDomainAxioms(property) {
     return this.#position(
       OWLObjectKind.ANNOTATION_PROPERTY_DOMAIN_AXIOM,
-      ["property"],
+      "property",
       property,
       [OWLObjectKind.ANNOTATION_PROPERTY],
     );
@@ -419,7 +408,7 @@ export class OWLOntology {
   getAnnotationPropertyRangeAxioms(property) {
     return this.#position(
       OWLObjectKind.ANNOTATION_PROPERTY_RANGE_AXIOM,
-      ["property"],
+      "property",
       property,
       [OWLObjectKind.ANNOTATION_PROPERTY],
     );
@@ -428,7 +417,7 @@ export class OWLOntology {
   getFunctionalObjectPropertyAxioms(property) {
     return this.#position(
       OWLObjectKind.FUNCTIONAL_OBJECT_PROPERTY_AXIOM,
-      ["property"],
+      "property",
       property,
       OBJECT_PROPERTY_EXPRESSION_KINDS,
     );
@@ -437,7 +426,7 @@ export class OWLOntology {
   getInverseFunctionalObjectPropertyAxioms(property) {
     return this.#position(
       OWLObjectKind.INVERSE_FUNCTIONAL_OBJECT_PROPERTY_AXIOM,
-      ["property"],
+      "property",
       property,
       OBJECT_PROPERTY_EXPRESSION_KINDS,
     );
@@ -446,7 +435,7 @@ export class OWLOntology {
   getSymmetricObjectPropertyAxioms(property) {
     return this.#position(
       OWLObjectKind.SYMMETRIC_OBJECT_PROPERTY_AXIOM,
-      ["property"],
+      "property",
       property,
       OBJECT_PROPERTY_EXPRESSION_KINDS,
     );
@@ -455,7 +444,7 @@ export class OWLOntology {
   getAsymmetricObjectPropertyAxioms(property) {
     return this.#position(
       OWLObjectKind.ASYMMETRIC_OBJECT_PROPERTY_AXIOM,
-      ["property"],
+      "property",
       property,
       OBJECT_PROPERTY_EXPRESSION_KINDS,
     );
@@ -464,7 +453,7 @@ export class OWLOntology {
   getReflexiveObjectPropertyAxioms(property) {
     return this.#position(
       OWLObjectKind.REFLEXIVE_OBJECT_PROPERTY_AXIOM,
-      ["property"],
+      "property",
       property,
       OBJECT_PROPERTY_EXPRESSION_KINDS,
     );
@@ -473,7 +462,7 @@ export class OWLOntology {
   getIrreflexiveObjectPropertyAxioms(property) {
     return this.#position(
       OWLObjectKind.IRREFLEXIVE_OBJECT_PROPERTY_AXIOM,
-      ["property"],
+      "property",
       property,
       OBJECT_PROPERTY_EXPRESSION_KINDS,
     );
@@ -482,7 +471,7 @@ export class OWLOntology {
   getTransitiveObjectPropertyAxioms(property) {
     return this.#position(
       OWLObjectKind.TRANSITIVE_OBJECT_PROPERTY_AXIOM,
-      ["property"],
+      "property",
       property,
       OBJECT_PROPERTY_EXPRESSION_KINDS,
     );
@@ -491,7 +480,7 @@ export class OWLOntology {
   getFunctionalDataPropertyAxioms(property) {
     return this.#position(
       OWLObjectKind.FUNCTIONAL_DATA_PROPERTY_AXIOM,
-      ["property"],
+      "property",
       property,
       [OWLObjectKind.DATA_PROPERTY],
     );
@@ -501,7 +490,7 @@ export class OWLOntology {
     const field = INDIVIDUAL_KINDS.includes(value?.kind)
       ? "individual"
       : "classExpression";
-    return this.#position(OWLObjectKind.CLASS_ASSERTION_AXIOM, [field], value, [
+    return this.#position(OWLObjectKind.CLASS_ASSERTION_AXIOM, field, value, [
       ...INDIVIDUAL_KINDS,
       ...CLASS_EXPRESSION_KINDS,
     ]);
@@ -510,7 +499,7 @@ export class OWLOntology {
   getObjectPropertyAssertionAxioms(individual) {
     return this.#position(
       OWLObjectKind.OBJECT_PROPERTY_ASSERTION_AXIOM,
-      ["subject"],
+      "subject",
       individual,
       INDIVIDUAL_KINDS,
     );
@@ -519,7 +508,7 @@ export class OWLOntology {
   getDataPropertyAssertionAxioms(individual) {
     return this.#position(
       OWLObjectKind.DATA_PROPERTY_ASSERTION_AXIOM,
-      ["subject"],
+      "subject",
       individual,
       INDIVIDUAL_KINDS,
     );
@@ -528,7 +517,7 @@ export class OWLOntology {
   getNegativeObjectPropertyAssertionAxioms(individual) {
     return this.#position(
       OWLObjectKind.NEGATIVE_OBJECT_PROPERTY_ASSERTION_AXIOM,
-      ["subject"],
+      "subject",
       individual,
       INDIVIDUAL_KINDS,
     );
@@ -537,7 +526,7 @@ export class OWLOntology {
   getNegativeDataPropertyAssertionAxioms(individual) {
     return this.#position(
       OWLObjectKind.NEGATIVE_DATA_PROPERTY_ASSERTION_AXIOM,
-      ["subject"],
+      "subject",
       individual,
       INDIVIDUAL_KINDS,
     );
@@ -546,7 +535,7 @@ export class OWLOntology {
   getSameIndividualAxioms(individual) {
     return this.#position(
       OWLObjectKind.SAME_INDIVIDUAL_AXIOM,
-      ["individuals"],
+      "individuals",
       individual,
       INDIVIDUAL_KINDS,
     );
@@ -555,7 +544,7 @@ export class OWLOntology {
   getDifferentIndividualAxioms(individual) {
     return this.#position(
       OWLObjectKind.DIFFERENT_INDIVIDUALS_AXIOM,
-      ["individuals"],
+      "individuals",
       individual,
       INDIVIDUAL_KINDS,
     );
@@ -567,14 +556,13 @@ export class OWLOntology {
       [OWLObjectKind.IRI, OWLObjectKind.ANONYMOUS_INDIVIDUAL],
       "subject",
     );
-    return new Set(
-      [
-        ...this.getAxiomsByType(
-          OWLObjectKind.ANNOTATION_ASSERTION_AXIOM,
-          imports,
-        ),
-      ].filter((axiom) => axiom.subject.equals(subject)),
-    );
+    const result = new StructuralSet();
+    for (const ontology of this.#scope(imports))
+      for (const axiom of readOntologyModel(
+        readOntologySnapshot(ontology),
+      ).annotationAssertions(subject.structuralKey()))
+        result.add(axiom);
+    return result.toSet();
   }
 
   getImportsDeclarations() {
@@ -610,44 +598,38 @@ export class OWLOntology {
   }
 
   #getSignatureByKind(kind, imports = Imports.EXCLUDED) {
-    return this.#signatureMatching((value) => value.kind === kind, imports);
+    return this.#signatureMatching(kind, imports);
   }
 
-  #signatureMatching(matches, imports) {
+  #signatureMatching(kind, imports) {
+    if (imports === Imports.EXCLUDED)
+      return new Set(
+        readOntologyModel(this.#readStateSnapshot()).signature(kind),
+      );
     const entities = new StructuralSet();
     for (const ontology of this.#scope(imports)) {
-      const snapshot = readOntologySnapshot(ontology);
-      for (const values of [
-        snapshot.directAxioms,
-        snapshot.directOntologyAnnotations,
-      ]) {
-        for (const value of values) {
-          visitStructuralValues(value, (nestedValue) => {
-            if (matches(nestedValue)) {
-              entities.add(nestedValue);
-            }
-          });
-        }
-      }
+      for (const entity of readOntologyModel(
+        readOntologySnapshot(ontology),
+      ).signature(kind))
+        entities.add(entity);
     }
     return entities.toSet();
   }
 
   /** All named kinds in the selected current loaded scope, without declarations inferred. */
   getSignature(imports = Imports.EXCLUDED) {
-    return this.#signatureMatching(
-      (value) => ENTITY_KINDS.includes(value.kind),
-      imports,
-    );
+    return this.#signatureMatching(undefined, imports);
   }
 
   getEntitiesInSignature(iri, imports = Imports.EXCLUDED) {
     requireKind(iri, [OWLObjectKind.IRI], "iri");
-    return new Set(
-      [...this.getSignature(imports)].filter((entity) =>
-        entity.iri.equals(iri),
-      ),
-    );
+    const result = new StructuralSet();
+    for (const ontology of this.#scope(imports))
+      for (const entity of readOntologyModel(
+        readOntologySnapshot(ontology),
+      ).entities(iri.structuralKey()))
+        result.add(entity);
+    return result.toSet();
   }
 
   containsEntityInSignature(entityOrIRI, imports = Imports.EXCLUDED) {
@@ -658,8 +640,8 @@ export class OWLOntology {
     );
     return entityOrIRI.kind === OWLObjectKind.IRI
       ? this.getEntitiesInSignature(entityOrIRI, imports).size > 0
-      : [...this.getSignature(imports)].some((entity) =>
-          entity.equals(entityOrIRI),
+      : [...this.getEntitiesInSignature(entityOrIRI.iri, imports)].some(
+          (entity) => entity.equals(entityOrIRI),
         );
   }
 
