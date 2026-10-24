@@ -8,6 +8,9 @@
   "capacityLimits": {
     "maxTotalBytes": 536870912
   },
+  "runtimeControls": {
+    "maxCheckTimeMs": 240000
+  },
   "nativeSources": [
     {
       "id": "artifact-tool-evidence",

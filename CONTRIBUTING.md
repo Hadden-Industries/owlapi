@@ -166,6 +166,7 @@ Both operations preflight the complete repository before guarded writes, and pro
 Finite producer operations use `formatJsonSource`, `formatJsonValue` and `normalizeJsonSource`; their declared writer capabilities are separate from read-only checking.
 `capacityLimits: false` / `--no-capacity-limits` removes admission ceilings while retaining finite runtime memory, scratch, depth, concurrency and time controls.
 It does not expand writer capabilities.
+The repository allows four minutes for a complete JSON check, including native Maven and Jest outputs produced by CI; the five-minute CI step leaves time for startup and cleanup.
 The policy uses schema version 2; the package's contract cohort binds source contracts, event schemas and native protocol together.
 The former aggregate checking APIs and Base64 document request envelopes are retired; Markdown's own CLI grammar is unchanged.
 
