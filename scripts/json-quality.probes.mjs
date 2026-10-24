@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+// Captured-source session regressions belong to the isolated JSON-tool graph.
+import "./json-quality-jsonld.probes.mjs";
 import { mkdir, readFile, readdir, symlink, writeFile } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
 import { join } from "node:path";
