@@ -25,7 +25,7 @@
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
     "digestAlgorithm": "sha256-sorted-json-v1",
-    "factsSha256": "e4b9ebcff3c997acf1e08956ded93be4508689cef787a8ad4ca8f74f4c7a8782",
+    "factsSha256": "a766d6a818775749da4742e49f2ac5e2afa524586e5b0640ad5f38c71869a1ee",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -45885,7 +45885,7 @@
       "id": "shared-markdown-quality-development-tool",
       "relationship": "DEVELOPMENT_ONLY",
       "name": "Shared Markdown quality development capability",
-      "versionOrRevision": "47febbe1b6f3282814e77db7ea13eac72b4928ed",
+      "versionOrRevision": "5712d153079bfc840a918c7dd250afef820d9e07",
       "licenseAssessments": [
         {
           "scope": "Development tooling or adapted test/configuration source",
@@ -45915,23 +45915,27 @@
         },
         {
           "path": "tooling/markdown/package.json",
-          "sha256": "090e4c9195b3aab9c6ffb12be7b493a4895bef44a0a253d6afd5504cd8d32ade"
+          "sha256": "788fb63b645372646f46f76762310a15c035fae81cec8ae8b8df463a2346a8fd"
         },
         {
           "path": "tooling/markdown/package-lock.json",
-          "sha256": "80a269e68533d8b88305a0c9db622cbdd257054481dbeaf347614fb188fe3b8c"
+          "sha256": "ee2ef4bc4837c0459cb4ab99c5a883e1439beea58bbbbe8c852967b2eb4f2462"
         },
         {
-          "path": "tooling/markdown/archives/hadden-industries-markdown-quality-1.0.3.tgz",
-          "sha256": "ccea947adce3d84d8d45d6973b64cd3fa9716488f8a99b365df31a1992afe352"
+          "path": "tooling/markdown/release-manifest.json",
+          "sha256": "cdcb61144653265c1481a1d8965079c4cfab3cbb05da319c5fb845623a186271"
         },
         {
-          "path": "tooling/markdown/archives/hadden-industries-markdown-quality-win32-x64-1.0.3.tgz",
-          "sha256": "1207f1c49b0f73d8d7bf5c6a74dfdc928daffd132a5adf7d2dbc488f0d2d617d"
+          "path": "tooling/markdown/archives/hadden-industries-markdown-quality-1.0.3-5712d153079bfc840a918c7dd250afef820d9e07.tgz",
+          "sha256": "255d5b64c3cbefd857ec5251fd408e0faaa309428f8b780bf4c39ed34106f913"
         },
         {
-          "path": "tooling/markdown/archives/hadden-industries-markdown-quality-linux-x64-1.0.3.tgz",
-          "sha256": "92cfb0b12db601d89bfcae93fb80901cdf7bda713f162b75d3aba32c0a34f8b5"
+          "path": "tooling/markdown/archives/hadden-industries-markdown-quality-win32-x64-1.0.3-5712d153079bfc840a918c7dd250afef820d9e07.tgz",
+          "sha256": "5660e39295c840ddcd4cdab7770bf0c618ed2b770c039bdaf187ea10799b6062"
+        },
+        {
+          "path": "tooling/markdown/archives/hadden-industries-markdown-quality-linux-x64-1.0.3-5712d153079bfc840a918c7dd250afef820d9e07.tgz",
+          "sha256": "060a2ca587f95d96feec4936201a6f78cfe2974ecf630b31fcd359f6773cb353"
         }
       ],
       "treeEvidence": null,

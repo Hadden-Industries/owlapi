@@ -161,7 +161,12 @@ describe("third-party-material prospective generation", () => {
       );
       expect(shared).toMatchObject({
         relationship: "DEVELOPMENT_ONLY",
-        versionOrRevision: "47febbe1b6f3282814e77db7ea13eac72b4928ed",
+        versionOrRevision: JSON.parse(
+          readFileSync(
+            join(repositoryRoot, "tooling/markdown/release-manifest.json"),
+            "utf8",
+          ),
+        ).source.head,
         sourceUrl: "https://github.com/Hadden-Industries/markdown-quality",
         packageTarballScope: false,
       });
@@ -179,6 +184,27 @@ describe("third-party-material prospective generation", () => {
       expect(shared.licenseAssessments[0].concludedLicenseExpression).toBe(
         "AGPL-3.0-only",
       );
+      const declaredMarkdown = JSON.parse(
+        readFileSync(
+          join(repositoryRoot, "tooling/markdown/package.json"),
+          "utf8",
+        ),
+      );
+      expect(shared.evidenceFiles.map(({ path }) => path)).toEqual(
+        expect.arrayContaining([
+          "tooling/markdown/release-manifest.json",
+          ...Object.values({
+            ...declaredMarkdown.devDependencies,
+            ...declaredMarkdown.optionalDependencies,
+          }).map(
+            (specifier) =>
+              `tooling/markdown/${specifier.slice("file:".length)}`,
+          ),
+        ]),
+      );
+      expect(
+        shared.evidenceFiles.filter(({ path }) => path.endsWith(".tgz")),
+      ).toHaveLength(3);
     } finally {
       rmSync(prospectivePath, { force: true });
     }

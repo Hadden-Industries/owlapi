@@ -2607,7 +2607,8 @@ Neither this NOTICE nor the package licence replaces those upstream terms.
     );
     expect(markdownTool).toMatchObject({
       relationship: "DEVELOPMENT_ONLY",
-      versionOrRevision: "47febbe1b6f3282814e77db7ea13eac72b4928ed",
+      versionOrRevision: readJson("./tooling/markdown/release-manifest.json")
+        .source.head,
       packageTarballScope: false,
       deployedApplicationScope: "NOT_APPLICABLE",
     });
