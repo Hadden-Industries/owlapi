@@ -205,6 +205,29 @@ describe("third-party-material prospective generation", () => {
       expect(
         shared.evidenceFiles.filter(({ path }) => path.endsWith(".tgz")),
       ).toHaveLength(3);
+      const executionProfile = JSON.parse(
+        readFileSync(
+          join(repositoryRoot, ".markdown-quality-execution.json"),
+          "utf8",
+        ),
+      );
+      const archivePath = (specifier) =>
+        `tooling/markdown/${specifier.slice("file:".length)}`;
+      expect(executionProfile.toolchain.coreArchive).toBe(
+        archivePath(
+          declaredMarkdown.devDependencies[
+            "@hadden-industries/markdown-quality"
+          ],
+        ),
+      );
+      for (const platform of ["win32-x64", "linux-x64"])
+        expect(executionProfile.toolchain.nativeArchives[platform]).toBe(
+          archivePath(
+            declaredMarkdown.optionalDependencies[
+              `@hadden-industries/markdown-quality-${platform}`
+            ],
+          ),
+        );
     } finally {
       rmSync(prospectivePath, { force: true });
     }
