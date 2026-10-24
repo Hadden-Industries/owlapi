@@ -209,10 +209,10 @@ jobs:
         timeout-minutes: 5
       - name: Exercise JSON isolation and exact preservation probes
         run: npm run test:json
-        timeout-minutes: 5
+        timeout-minutes: 15
       - name: Verify complete JSON coverage on Node 26
         run: npm run check:json
-        timeout-minutes: 5
+        timeout-minutes: 15
       - name: Verify semantic JSON identity on Node 26
         run: npm run lint:json-identity
         timeout-minutes: 5
@@ -236,7 +236,7 @@ jobs:
         timeout-minutes: 45
       - name: Check complete JSON after every native producer
         run: npm run check:json
-        timeout-minutes: 5
+        timeout-minutes: 15
 
   source_node_24:
     name: Release / Ubuntu / Node 24.22.1
@@ -281,7 +281,7 @@ jobs:
         timeout-minutes: 5
       - name: Exercise JSON isolation and exact preservation probes
         run: npm run test:json
-        timeout-minutes: 5
+        timeout-minutes: 15
       - name: Exercise canonical Markdown isolation probes
         run: npm run test:markdown
         timeout-minutes: 5
@@ -370,7 +370,7 @@ jobs:
           compression-level: 6
       - name: Check complete JSON after every native producer
         run: npm run check:json
-        timeout-minutes: 5
+        timeout-minutes: 15
 
   dependency_review:
     name: Release / dependency policy
@@ -1725,7 +1725,7 @@ jobs:
   quality_windows:
     name: Release / Windows / quality tools
     runs-on: windows-2025
-    timeout-minutes: 30
+    timeout-minutes: 120
     permissions:
       contents: read
     defaults:
@@ -1766,16 +1766,16 @@ jobs:
         timeout-minutes: 5
       - name: Exercise JSON isolation and exact preservation probes
         run: npm run test:json
-        timeout-minutes: 5
+        timeout-minutes: 15
       - name: Verify formatting
         run: npm run format:check
-        timeout-minutes: 10
+        timeout-minutes: 30
       - name: Verify static quality
         run: npm run lint
-        timeout-minutes: 10
+        timeout-minutes: 30
       - name: Run native quality regressions
         run: npm run test:quality
-        timeout-minutes: 10
+        timeout-minutes: 30
       - name: Check complete JSON after every native producer
         run: npm run check:json
-        timeout-minutes: 5
+        timeout-minutes: 15

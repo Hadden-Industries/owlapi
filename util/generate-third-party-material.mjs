@@ -428,8 +428,22 @@ const scannerNoticePaths = () => {
     notices.map(({ path }) => path),
   );
 };
-const createQualityToolingFacts = () =>
-  [
+const createQualityToolingFacts = () => {
+  const markdownManifest = readJson(
+    resolve(repositoryRoot, "tooling/markdown/release-manifest.json"),
+  );
+  const markdownPackage = readJson(
+    resolve(repositoryRoot, "tooling/markdown/package.json"),
+  );
+  const markdownArchives = Object.values({
+    ...markdownPackage.devDependencies,
+    ...markdownPackage.optionalDependencies,
+  }).map((specifier) => {
+    if (!/^file:archives\/[^/\\]+\.tgz$/u.test(specifier))
+      throw new Error("Markdown evidence requires declared local archives");
+    return `tooling/markdown/${specifier.slice("file:".length)}`;
+  });
+  return [
     {
       id: "universal-ontology-documentation-tooling",
       name: "Universal Ontology Ruff configuration adaptation",
@@ -443,7 +457,7 @@ const createQualityToolingFacts = () =>
     {
       id: "shared-markdown-quality-development-tool",
       name: "Shared Markdown quality development capability",
-      versionOrRevision: "47febbe1b6f3282814e77db7ea13eac72b4928ed",
+      versionOrRevision: markdownManifest.source.head,
       license: "AGPL-3.0-only",
       source: "Hadden-Industries/markdown-quality",
       files: [
@@ -453,9 +467,8 @@ const createQualityToolingFacts = () =>
         ".node-version",
         "tooling/markdown/package.json",
         "tooling/markdown/package-lock.json",
-        "tooling/markdown/archives/hadden-industries-markdown-quality-1.0.3.tgz",
-        "tooling/markdown/archives/hadden-industries-markdown-quality-win32-x64-1.0.3.tgz",
-        "tooling/markdown/archives/hadden-industries-markdown-quality-linux-x64-1.0.3.tgz",
+        "tooling/markdown/release-manifest.json",
+        ...markdownArchives,
       ],
       attribution:
         "Copyright (c) 2026 Hadden Industries Ltd. The isolated AGPL-3.0-only capability is bound to the exact clean producer source commit through retained core/native archives and their npm lock integrities. The reusable workflow is independently pinned in .github/workflows/markdown-quality.yml. Manifest version 1.0.3 alone does not identify these development bytes. Its distribution retains native Snapper/Rust source and component notices; no tool binary or dependency graph is packed into the OwlAPI application. Former WebVOWL-derived prose examples and copied qualification mechanics are retired.",
@@ -570,6 +583,7 @@ const createQualityToolingFacts = () =>
         "Development tooling is isolated from the published JavaScript runtime; native locked setup/checks qualify the selected Python graphs, while this record binds the exact retained inputs and terms.",
     }),
   );
+};
 
 // Embedded processor code is packed even when npm classifies its build tools as
 // development dependencies. The reproducible provider manifest owns that scope.
