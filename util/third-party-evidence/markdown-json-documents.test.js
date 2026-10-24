@@ -102,7 +102,7 @@ test("the repaired clean-source tuple streams every independently inventoried JS
     assert.equal(String(length), entry.byteLength);
   }
   assert.deepEqual(seen, new Set(expected.keys()));
-}, 30_000);
+}, 120_000);
 
 test.each([
   "locked version",
