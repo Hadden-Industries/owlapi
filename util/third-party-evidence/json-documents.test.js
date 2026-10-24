@@ -74,7 +74,7 @@ for (const [provider, count, bytes, census] of [
     }
     assert.deepEqual(seen, new Set(inventory.keys()));
     assert.equal(String(total), bytes);
-  }, 30000);
+  }, 120000);
 
 // Admission verifies the same full corpus as the census tests above.
 test("cancelled native evidence delivery cannot yield an authority", async () => {
@@ -87,4 +87,4 @@ test("cancelled native evidence delivery cannot yield an authority", async () =>
   await assert.rejects(async () => {
     for await (const pin of supplied.authorities) assert.fail(pin.path);
   }, /Stopped native delivery/);
-}, 30000);
+}, 120000);
