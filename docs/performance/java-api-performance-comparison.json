@@ -1,0 +1,2616 @@
+{
+  "schemaVersion": 1,
+  "fixtureGeneratorVersion": "owlapi-benchmark-corpus-v1",
+  "javaBaselinePath": "docs/performance/java-owlapi-5.5.1-baseline.json",
+  "parameters": {
+    "warmupCount": 2,
+    "runCount": 5,
+    "profiles": [
+      "java-owlapi-5.5.1",
+      "normative-v1"
+    ]
+  },
+  "environment": {
+    "nodeVersion": "v24.22.1",
+    "platform": "win32-x64",
+    "javaVersion": "25.0.4.1",
+    "javaVmName": "OpenJDK 64-Bit Server VM",
+    "javaOwlapiVersion": "5.5.1.2026-08-10T00:04:10Z"
+  },
+  "summary": {
+    "totalBenchmarks": 70,
+    "slowerInJsCount": 22,
+    "fasterOrParityInJsCount": 48,
+    "slowerInCompatProfileCount": 12,
+    "slowerInNormativeProfileCount": 20
+  },
+  "comparisons": [
+    {
+      "id": "manager.createOWLOntologyManager",
+      "category": "Manager & Configuration",
+      "apiSymbols": [
+        "OWLManager.createOWLOntologyManager",
+        "OWLOntologyManager"
+      ],
+      "description": "Instantiate 100 OWLOntologyManager instances and read their data factory.",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 32.139,
+        "medianWallMs": 10.78,
+        "medianRetainedHeapDeltaBytes": 5238776
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 0.819,
+        "medianWallMs": 0.4,
+        "medianRetainedHeapDeltaBytes": 1137816,
+        "ratioVsJava": 0.04,
+        "deltaMsVsJava": -10.38
+      },
+      "jsNormativeV1": {
+        "verificationCount": 100,
+        "firstUseWallMs": 0.471,
+        "medianWallMs": 0.468,
+        "medianRetainedHeapDeltaBytes": 1162640,
+        "ratioVsJava": 0.04,
+        "deltaMsVsJava": -10.312
+      },
+      "maxJsVsJavaRatio": 0.04,
+      "slowerInJs": false
+    },
+    {
+      "id": "config.OWLOntologyLoaderConfiguration",
+      "category": "Manager & Configuration",
+      "apiSymbols": [
+        "OWLOntologyLoaderConfiguration"
+      ],
+      "description": "Chain 8 immutable loader configuration setters and getters 500 times.",
+      "java551": {
+        "verificationCount": 500,
+        "firstUseWallMs": 3.788,
+        "medianWallMs": 1.13,
+        "medianRetainedHeapDeltaBytes": 2088896
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 500,
+        "firstUseWallMs": 3.612,
+        "medianWallMs": 2.35,
+        "medianRetainedHeapDeltaBytes": 7890064,
+        "ratioVsJava": 2.08,
+        "deltaMsVsJava": 1.22
+      },
+      "jsNormativeV1": {
+        "verificationCount": 500,
+        "firstUseWallMs": 2.444,
+        "medianWallMs": 2.346,
+        "medianRetainedHeapDeltaBytes": 7353224,
+        "ratioVsJava": 2.08,
+        "deltaMsVsJava": 1.216
+      },
+      "maxJsVsJavaRatio": 2.08,
+      "slowerInJs": true
+    },
+    {
+      "id": "config.OWLOntologyWriterConfiguration",
+      "category": "Manager & Configuration",
+      "apiSymbols": [
+        "OWLOntologyWriterConfiguration"
+      ],
+      "description": "Chain 5 immutable writer configuration setters and getters 500 times.",
+      "java551": {
+        "verificationCount": 3500,
+        "firstUseWallMs": 0.982,
+        "medianWallMs": 0.155,
+        "medianRetainedHeapDeltaBytes": 522200
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 3000,
+        "firstUseWallMs": 1.14,
+        "medianWallMs": 0.457,
+        "medianRetainedHeapDeltaBytes": 445752,
+        "ratioVsJava": 2.95,
+        "deltaMsVsJava": 0.302
+      },
+      "jsNormativeV1": {
+        "verificationCount": 2750,
+        "firstUseWallMs": 0.685,
+        "medianWallMs": 0.305,
+        "medianRetainedHeapDeltaBytes": 464512,
+        "ratioVsJava": 1.97,
+        "deltaMsVsJava": 0.15
+      },
+      "maxJsVsJavaRatio": 2.95,
+      "slowerInJs": true
+    },
+    {
+      "id": "formats.RDFXMLDocumentFormat.prefixes",
+      "category": "Manager & Configuration",
+      "apiSymbols": [
+        "RDFXMLDocumentFormat"
+      ],
+      "description": "Exercise prefix registration, default prefix, copyPrefixesFrom, lookup, and clear 200 times.",
+      "java551": {
+        "verificationCount": 3200,
+        "firstUseWallMs": 5.184,
+        "medianWallMs": 0.69,
+        "medianRetainedHeapDeltaBytes": 522208
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 3200,
+        "firstUseWallMs": 6.005,
+        "medianWallMs": 0.945,
+        "medianRetainedHeapDeltaBytes": 3342536,
+        "ratioVsJava": 1.37,
+        "deltaMsVsJava": 0.255
+      },
+      "jsNormativeV1": {
+        "verificationCount": 3200,
+        "firstUseWallMs": 1.394,
+        "medianWallMs": 1.098,
+        "medianRetainedHeapDeltaBytes": 3342640,
+        "ratioVsJava": 1.59,
+        "deltaMsVsJava": 0.408
+      },
+      "maxJsVsJavaRatio": 1.59,
+      "slowerInJs": true
+    },
+    {
+      "id": "model.IRI.create",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "IRI.create"
+      ],
+      "description": "Construct and validate 2,000 IRIs.",
+      "java551": {
+        "verificationCount": 64890,
+        "firstUseWallMs": 1.887,
+        "medianWallMs": 0.709,
+        "medianRetainedHeapDeltaBytes": 1801584
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 64890,
+        "firstUseWallMs": 0.612,
+        "medianWallMs": 0.345,
+        "medianRetainedHeapDeltaBytes": 1312976,
+        "ratioVsJava": 0.49,
+        "deltaMsVsJava": -0.364
+      },
+      "jsNormativeV1": {
+        "verificationCount": 64890,
+        "firstUseWallMs": 1.738,
+        "medianWallMs": 0.244,
+        "medianRetainedHeapDeltaBytes": 1056696,
+        "ratioVsJava": 0.34,
+        "deltaMsVsJava": -0.465
+      },
+      "maxJsVsJavaRatio": 0.49,
+      "slowerInJs": false
+    },
+    {
+      "id": "factory.entities",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLDataFactory.getOWLClass",
+        "OWLDataFactory.getOWLObjectProperty",
+        "OWLDataFactory.getOWLDataProperty",
+        "OWLDataFactory.getOWLAnnotationProperty",
+        "OWLDataFactory.getOWLDatatype",
+        "OWLDataFactory.getOWLNamedIndividual",
+        "OWLDataFactory.getOWLAnonymousIndividual",
+        "OWLDataFactory.getOWLOntologyID",
+        "OWLDataFactory.getOWLImportsDeclaration"
+      ],
+      "description": "Construct 500 sets of all 10 entity, ontology-ID, and import-declaration types.",
+      "java551": {
+        "verificationCount": 5000,
+        "firstUseWallMs": 9.148,
+        "medianWallMs": 2.912,
+        "medianRetainedHeapDeltaBytes": 2925744
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 5000,
+        "firstUseWallMs": 2.201,
+        "medianWallMs": 1.538,
+        "medianRetainedHeapDeltaBytes": 3077536,
+        "ratioVsJava": 0.53,
+        "deltaMsVsJava": -1.374
+      },
+      "jsNormativeV1": {
+        "verificationCount": 5000,
+        "firstUseWallMs": 1.744,
+        "medianWallMs": 1.587,
+        "medianRetainedHeapDeltaBytes": 3145272,
+        "ratioVsJava": 0.54,
+        "deltaMsVsJava": -1.325
+      },
+      "maxJsVsJavaRatio": 0.54,
+      "slowerInJs": false
+    },
+    {
+      "id": "factory.literals",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLDataFactory.getOWLLiteral"
+      ],
+      "description": "Construct 500 sets of plain, language-tagged, integer, decimal, float, and boolean literals.",
+      "java551": {
+        "verificationCount": 16310,
+        "firstUseWallMs": 5.421,
+        "medianWallMs": 1.426,
+        "medianRetainedHeapDeltaBytes": 522192
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 16310,
+        "firstUseWallMs": 4.562,
+        "medianWallMs": 3.279,
+        "medianRetainedHeapDeltaBytes": 4508080,
+        "ratioVsJava": 2.3,
+        "deltaMsVsJava": 1.853
+      },
+      "jsNormativeV1": {
+        "verificationCount": 17310,
+        "firstUseWallMs": 1.248,
+        "medianWallMs": 0.933,
+        "medianRetainedHeapDeltaBytes": 1998872,
+        "ratioVsJava": 0.65,
+        "deltaMsVsJava": -0.493
+      },
+      "maxJsVsJavaRatio": 2.3,
+      "slowerInJs": true
+    },
+    {
+      "id": "factory.classExpressions",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLDataFactory"
+      ],
+      "description": "Construct 200 sets of all 18 OWL 2 class expression and property inverse kinds.",
+      "java551": {
+        "verificationCount": 3600,
+        "firstUseWallMs": 11.133,
+        "medianWallMs": 1.287,
+        "medianRetainedHeapDeltaBytes": 1044432
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 3600,
+        "firstUseWallMs": 2.377,
+        "medianWallMs": 1.976,
+        "medianRetainedHeapDeltaBytes": 3275928,
+        "ratioVsJava": 1.54,
+        "deltaMsVsJava": 0.689
+      },
+      "jsNormativeV1": {
+        "verificationCount": 3600,
+        "firstUseWallMs": 2.2,
+        "medianWallMs": 1.668,
+        "medianRetainedHeapDeltaBytes": 3275416,
+        "ratioVsJava": 1.3,
+        "deltaMsVsJava": 0.381
+      },
+      "maxJsVsJavaRatio": 1.54,
+      "slowerInJs": true
+    },
+    {
+      "id": "factory.dataRanges",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLDataFactory"
+      ],
+      "description": "Construct 200 sets of all 6 OWL 2 data range and facet restriction kinds.",
+      "java551": {
+        "verificationCount": 1200,
+        "firstUseWallMs": 2.718,
+        "medianWallMs": 0.565,
+        "medianRetainedHeapDeltaBytes": 1044432
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 1200,
+        "firstUseWallMs": 1.144,
+        "medianWallMs": 0.858,
+        "medianRetainedHeapDeltaBytes": 2031440,
+        "ratioVsJava": 1.52,
+        "deltaMsVsJava": 0.293
+      },
+      "jsNormativeV1": {
+        "verificationCount": 1200,
+        "firstUseWallMs": 0.766,
+        "medianWallMs": 0.682,
+        "medianRetainedHeapDeltaBytes": 1912944,
+        "ratioVsJava": 1.21,
+        "deltaMsVsJava": 0.117
+      },
+      "maxJsVsJavaRatio": 1.52,
+      "slowerInJs": true
+    },
+    {
+      "id": "factory.axioms",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLDataFactory"
+      ],
+      "description": "Construct ~1,500 axioms spanning all 38 OWL 2 axiom types.",
+      "java551": {
+        "verificationCount": 1490,
+        "firstUseWallMs": 3.269,
+        "medianWallMs": 2.211,
+        "medianRetainedHeapDeltaBytes": 2630224
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 1490,
+        "firstUseWallMs": 1.875,
+        "medianWallMs": 1.945,
+        "medianRetainedHeapDeltaBytes": 3347032,
+        "ratioVsJava": 0.88,
+        "deltaMsVsJava": -0.266
+      },
+      "jsNormativeV1": {
+        "verificationCount": 1490,
+        "firstUseWallMs": 2.021,
+        "medianWallMs": 1.773,
+        "medianRetainedHeapDeltaBytes": 2849296,
+        "ratioVsJava": 0.8,
+        "deltaMsVsJava": -0.438
+      },
+      "maxJsVsJavaRatio": 0.88,
+      "slowerInJs": false
+    },
+    {
+      "id": "model.structuralEqualityAndSet",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLStructuralObject.equals",
+        "OWLStructuralObject.equalsIgnoreAnnotations",
+        "StructuralSet"
+      ],
+      "description": "Insert and query 1,000 axioms in a structural set and test structural equality.",
+      "java551": {
+        "verificationCount": 4000,
+        "firstUseWallMs": 1.501,
+        "medianWallMs": 0.914,
+        "medianRetainedHeapDeltaBytes": 522192
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 4000,
+        "firstUseWallMs": 0.478,
+        "medianWallMs": 0.186,
+        "medianRetainedHeapDeltaBytes": 58520,
+        "ratioVsJava": 0.2,
+        "deltaMsVsJava": -0.728
+      },
+      "jsNormativeV1": {
+        "verificationCount": 4000,
+        "firstUseWallMs": 0.289,
+        "medianWallMs": 0.189,
+        "medianRetainedHeapDeltaBytes": 68696,
+        "ratioVsJava": 0.21,
+        "deltaMsVsJava": -0.725
+      },
+      "maxJsVsJavaRatio": 0.21,
+      "slowerInJs": false
+    },
+    {
+      "id": "model.axiomAnnotationsTransform",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLStructuralObject.getAnnotatedAxiom",
+        "OWLStructuralObject.getAxiomWithoutAnnotations"
+      ],
+      "description": "Annotate and strip annotations on 500 axioms.",
+      "java551": {
+        "verificationCount": 500,
+        "firstUseWallMs": 4.244,
+        "medianWallMs": 1.31,
+        "medianRetainedHeapDeltaBytes": 1044392
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 500,
+        "firstUseWallMs": 3.196,
+        "medianWallMs": 1.438,
+        "medianRetainedHeapDeltaBytes": 1072696,
+        "ratioVsJava": 1.1,
+        "deltaMsVsJava": 0.128
+      },
+      "jsNormativeV1": {
+        "verificationCount": 500,
+        "firstUseWallMs": 2.709,
+        "medianWallMs": 1.55,
+        "medianRetainedHeapDeltaBytes": 1068440,
+        "ratioVsJava": 1.18,
+        "deltaMsVsJava": 0.24
+      },
+      "maxJsVsJavaRatio": 1.18,
+      "slowerInJs": true
+    },
+    {
+      "id": "model.dispatch",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "dispatchOwlObject",
+        "dispatchAxiom",
+        "dispatchClassExpression"
+      ],
+      "description": "Dispatch 500 axioms (object + axiom visitors) and 120 complex class expressions.",
+      "java551": {
+        "verificationCount": 1120,
+        "firstUseWallMs": 0.965,
+        "medianWallMs": 0.198,
+        "medianRetainedHeapDeltaBytes": 522192
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 1120,
+        "firstUseWallMs": 0.595,
+        "medianWallMs": 0.149,
+        "medianRetainedHeapDeltaBytes": 5616,
+        "ratioVsJava": 0.75,
+        "deltaMsVsJava": -0.049
+      },
+      "jsNormativeV1": {
+        "verificationCount": 1120,
+        "firstUseWallMs": 0.203,
+        "medianWallMs": 0.142,
+        "medianRetainedHeapDeltaBytes": 5376,
+        "ratioVsJava": 0.72,
+        "deltaMsVsJava": -0.056
+      },
+      "maxJsVsJavaRatio": 0.75,
+      "slowerInJs": false
+    },
+    {
+      "id": "load.functional",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class Functional Syntax ontology document.",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 5.463,
+        "medianWallMs": 2.355,
+        "medianRetainedHeapDeltaBytes": 1279352
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 1.823,
+        "medianWallMs": 1.872,
+        "medianRetainedHeapDeltaBytes": 1720144,
+        "ratioVsJava": 0.79,
+        "deltaMsVsJava": -0.483
+      },
+      "jsNormativeV1": {
+        "verificationCount": 100,
+        "firstUseWallMs": 0.854,
+        "medianWallMs": 0.628,
+        "medianRetainedHeapDeltaBytes": 574232,
+        "ratioVsJava": 0.27,
+        "deltaMsVsJava": -1.727
+      },
+      "maxJsVsJavaRatio": 0.79,
+      "slowerInJs": false
+    },
+    {
+      "id": "load.manchester",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class Manchester OWL Syntax ontology document.",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 24.129,
+        "medianWallMs": 2.607,
+        "medianRetainedHeapDeltaBytes": 1338368
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 2.998,
+        "medianWallMs": 1.481,
+        "medianRetainedHeapDeltaBytes": 1848464,
+        "ratioVsJava": 0.57,
+        "deltaMsVsJava": -1.126
+      },
+      "jsNormativeV1": {
+        "verificationCount": 100,
+        "firstUseWallMs": 0.858,
+        "medianWallMs": 0.783,
+        "medianRetainedHeapDeltaBytes": 725928,
+        "ratioVsJava": 0.3,
+        "deltaMsVsJava": -1.824
+      },
+      "maxJsVsJavaRatio": 0.57,
+      "slowerInJs": false
+    },
+    {
+      "id": "load.owlxml",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class OWL/XML ontology document.",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 21.339,
+        "medianWallMs": 4.947,
+        "medianRetainedHeapDeltaBytes": 1455528
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 5.493,
+        "medianWallMs": 2.288,
+        "medianRetainedHeapDeltaBytes": 2413680,
+        "ratioVsJava": 0.46,
+        "deltaMsVsJava": -2.659
+      },
+      "jsNormativeV1": {
+        "verificationCount": 100,
+        "firstUseWallMs": 2.607,
+        "medianWallMs": 1.431,
+        "medianRetainedHeapDeltaBytes": 1450904,
+        "ratioVsJava": 0.29,
+        "deltaMsVsJava": -3.516
+      },
+      "maxJsVsJavaRatio": 0.46,
+      "slowerInJs": false
+    },
+    {
+      "id": "load.rdfxml",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class RDF/XML ontology document.",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 13.253,
+        "medianWallMs": 6.253,
+        "medianRetainedHeapDeltaBytes": 1763880
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 27.32,
+        "medianWallMs": 4.855,
+        "medianRetainedHeapDeltaBytes": 6554720,
+        "ratioVsJava": 0.78,
+        "deltaMsVsJava": -1.398
+      },
+      "jsNormativeV1": {
+        "verificationCount": 100,
+        "firstUseWallMs": 4.27,
+        "medianWallMs": 3.583,
+        "medianRetainedHeapDeltaBytes": 5254104,
+        "ratioVsJava": 0.57,
+        "deltaMsVsJava": -2.67
+      },
+      "maxJsVsJavaRatio": 0.78,
+      "slowerInJs": false
+    },
+    {
+      "id": "load.turtle",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class Turtle ontology document.",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 8.673,
+        "medianWallMs": 4.039,
+        "medianRetainedHeapDeltaBytes": 1808032
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 4.526,
+        "medianWallMs": 4.02,
+        "medianRetainedHeapDeltaBytes": 6183280,
+        "ratioVsJava": 1,
+        "deltaMsVsJava": -0.019
+      },
+      "jsNormativeV1": {
+        "verificationCount": 100,
+        "firstUseWallMs": 3.441,
+        "medianWallMs": 3.403,
+        "medianRetainedHeapDeltaBytes": 4976392,
+        "ratioVsJava": 0.84,
+        "deltaMsVsJava": -0.636
+      },
+      "maxJsVsJavaRatio": 1,
+      "slowerInJs": false
+    },
+    {
+      "id": "load.ntriples",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class N-Triples ontology document.",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 33.86,
+        "medianWallMs": 3.915,
+        "medianRetainedHeapDeltaBytes": 1690568
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 4.428,
+        "medianWallMs": 3.872,
+        "medianRetainedHeapDeltaBytes": 6157528,
+        "ratioVsJava": 0.99,
+        "deltaMsVsJava": -0.043
+      },
+      "jsNormativeV1": {
+        "verificationCount": 100,
+        "firstUseWallMs": 3.616,
+        "medianWallMs": 3.472,
+        "medianRetainedHeapDeltaBytes": 5011136,
+        "ratioVsJava": 0.89,
+        "deltaMsVsJava": -0.443
+      },
+      "maxJsVsJavaRatio": 0.99,
+      "slowerInJs": false
+    },
+    {
+      "id": "load.nquads",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class N-Quads ontology document.",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 4.728,
+        "medianWallMs": 3.114,
+        "medianRetainedHeapDeltaBytes": 2042888
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 6.258,
+        "medianWallMs": 3.81,
+        "medianRetainedHeapDeltaBytes": 6275424,
+        "ratioVsJava": 1.22,
+        "deltaMsVsJava": 0.696
+      },
+      "jsNormativeV1": {
+        "verificationCount": 100,
+        "firstUseWallMs": 3.806,
+        "medianWallMs": 4.031,
+        "medianRetainedHeapDeltaBytes": 5107776,
+        "ratioVsJava": 1.29,
+        "deltaMsVsJava": 0.917
+      },
+      "maxJsVsJavaRatio": 1.29,
+      "slowerInJs": true
+    },
+    {
+      "id": "load.trig",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class TriG ontology document.",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 12.866,
+        "medianWallMs": 3.391,
+        "medianRetainedHeapDeltaBytes": 1866648
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 5.458,
+        "medianWallMs": 5.029,
+        "medianRetainedHeapDeltaBytes": 6150880,
+        "ratioVsJava": 1.48,
+        "deltaMsVsJava": 1.638
+      },
+      "jsNormativeV1": {
+        "verificationCount": 100,
+        "firstUseWallMs": 3.752,
+        "medianWallMs": 3.623,
+        "medianRetainedHeapDeltaBytes": 4978416,
+        "ratioVsJava": 1.07,
+        "deltaMsVsJava": 0.232
+      },
+      "maxJsVsJavaRatio": 1.48,
+      "slowerInJs": true
+    },
+    {
+      "id": "load.jsonld",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class JSON-LD ontology document.",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 224.629,
+        "medianWallMs": 7.632,
+        "medianRetainedHeapDeltaBytes": 1571568
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 6.887,
+        "medianWallMs": 3.704,
+        "medianRetainedHeapDeltaBytes": 6849712,
+        "ratioVsJava": 0.49,
+        "deltaMsVsJava": -3.928
+      },
+      "jsNormativeV1": {
+        "verificationCount": 100,
+        "firstUseWallMs": 3.988,
+        "medianWallMs": 3.372,
+        "medianRetainedHeapDeltaBytes": 5648456,
+        "ratioVsJava": 0.44,
+        "deltaMsVsJava": -4.26
+      },
+      "maxJsVsJavaRatio": 0.49,
+      "slowerInJs": false
+    },
+    {
+      "id": "load.dl",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class DL Syntax ontology document.",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 11.436,
+        "medianWallMs": 3.505,
+        "medianRetainedHeapDeltaBytes": 1694336
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 3.336,
+        "medianWallMs": 1.63,
+        "medianRetainedHeapDeltaBytes": 3908920,
+        "ratioVsJava": 0.47,
+        "deltaMsVsJava": -1.875
+      },
+      "jsNormativeV1": {
+        "verificationCount": 100,
+        "firstUseWallMs": 1.772,
+        "medianWallMs": 1.486,
+        "medianRetainedHeapDeltaBytes": 2853816,
+        "ratioVsJava": 0.42,
+        "deltaMsVsJava": -2.019
+      },
+      "maxJsVsJavaRatio": 0.47,
+      "slowerInJs": false
+    },
+    {
+      "id": "load.krss2",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class KRSS2 ontology document.",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 12.295,
+        "medianWallMs": 2.998,
+        "medianRetainedHeapDeltaBytes": 1792680
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 2.295,
+        "medianWallMs": 0.953,
+        "medianRetainedHeapDeltaBytes": 1712000,
+        "ratioVsJava": 0.32,
+        "deltaMsVsJava": -2.045
+      },
+      "jsNormativeV1": {
+        "verificationCount": 100,
+        "firstUseWallMs": 0.614,
+        "medianWallMs": 0.517,
+        "medianRetainedHeapDeltaBytes": 664968,
+        "ratioVsJava": 0.17,
+        "deltaMsVsJava": -2.481
+      },
+      "maxJsVsJavaRatio": 0.32,
+      "slowerInJs": false
+    },
+    {
+      "id": "load.krss1",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class KRSS1 ontology document.",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 10.27,
+        "medianWallMs": 2.819,
+        "medianRetainedHeapDeltaBytes": 2296024
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 1.414,
+        "medianWallMs": 0.918,
+        "medianRetainedHeapDeltaBytes": 1769568,
+        "ratioVsJava": 0.33,
+        "deltaMsVsJava": -1.901
+      },
+      "jsNormativeV1": {
+        "verificationCount": 100,
+        "firstUseWallMs": 0.555,
+        "medianWallMs": 0.592,
+        "medianRetainedHeapDeltaBytes": 722312,
+        "ratioVsJava": 0.21,
+        "deltaMsVsJava": -2.227
+      },
+      "maxJsVsJavaRatio": 0.33,
+      "slowerInJs": false
+    },
+    {
+      "id": "load.importsClosure",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "NodeDocumentLoader"
+      ],
+      "description": "Load an 8-ontology cyclic import closure mapped to local file documents.",
+      "java551": {
+        "verificationCount": 8,
+        "firstUseWallMs": 70.716,
+        "medianWallMs": 48.077,
+        "medianRetainedHeapDeltaBytes": 8388608
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 8,
+        "firstUseWallMs": 16.804,
+        "medianWallMs": 11.268,
+        "medianRetainedHeapDeltaBytes": 5290304,
+        "ratioVsJava": 0.23,
+        "deltaMsVsJava": -36.809
+      },
+      "jsNormativeV1": {
+        "verificationCount": 8,
+        "firstUseWallMs": 9.688,
+        "medianWallMs": 10.714,
+        "medianRetainedHeapDeltaBytes": 2874600,
+        "ratioVsJava": 0.22,
+        "deltaMsVsJava": -37.363
+      },
+      "maxJsVsJavaRatio": 0.23,
+      "slowerInJs": false
+    },
+    {
+      "id": "load.rdfParserMetaData",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "RDFParserMetaData"
+      ],
+      "description": "Read RDFParserMetaData (triple count, header state, unparsed triples, guessed declarations) 500 times.",
+      "java551": {
+        "verificationCount": 51000,
+        "firstUseWallMs": 4.403,
+        "medianWallMs": 0.218,
+        "medianRetainedHeapDeltaBytes": 437872
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 76000,
+        "firstUseWallMs": 0.271,
+        "medianWallMs": 0.014,
+        "medianRetainedHeapDeltaBytes": 28728,
+        "ratioVsJava": 0.06,
+        "deltaMsVsJava": -0.204
+      },
+      "jsNormativeV1": {
+        "verificationCount": 76000,
+        "firstUseWallMs": 0.114,
+        "medianWallMs": 0.052,
+        "medianRetainedHeapDeltaBytes": 28472,
+        "ratioVsJava": 0.24,
+        "deltaMsVsJava": -0.166
+      },
+      "maxJsVsJavaRatio": 0.24,
+      "slowerInJs": false
+    },
+    {
+      "id": "manager.createAndGetOntology",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.createOntology",
+        "OWLOntologyManager.getOntology"
+      ],
+      "description": "Create and look up 100 ontologies by IRI in a manager.",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 4.665,
+        "medianWallMs": 2.952,
+        "medianRetainedHeapDeltaBytes": 11064848
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 1.584,
+        "medianWallMs": 0.652,
+        "medianRetainedHeapDeltaBytes": 2504296,
+        "ratioVsJava": 0.22,
+        "deltaMsVsJava": -2.3
+      },
+      "jsNormativeV1": {
+        "verificationCount": 100,
+        "firstUseWallMs": 1.4,
+        "medianWallMs": 0.65,
+        "medianRetainedHeapDeltaBytes": 2432552,
+        "ratioVsJava": 0.22,
+        "deltaMsVsJava": -2.302
+      },
+      "maxJsVsJavaRatio": 0.22,
+      "slowerInJs": false
+    },
+    {
+      "id": "manager.addAxioms.bulk",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.addAxioms"
+      ],
+      "description": "Bulk-add 500 axioms to a managed ontology via addAxioms.",
+      "java551": {
+        "verificationCount": 500,
+        "firstUseWallMs": 2.75,
+        "medianWallMs": 2.534,
+        "medianRetainedHeapDeltaBytes": 1702496
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 500,
+        "firstUseWallMs": 0.836,
+        "medianWallMs": 0.424,
+        "medianRetainedHeapDeltaBytes": 442664,
+        "ratioVsJava": 0.17,
+        "deltaMsVsJava": -2.11
+      },
+      "jsNormativeV1": {
+        "verificationCount": 500,
+        "firstUseWallMs": 0.169,
+        "medianWallMs": 0.095,
+        "medianRetainedHeapDeltaBytes": 160568,
+        "ratioVsJava": 0.04,
+        "deltaMsVsJava": -2.439
+      },
+      "maxJsVsJavaRatio": 0.17,
+      "slowerInJs": false
+    },
+    {
+      "id": "manager.addAxiom.singleLoop",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.addAxiom"
+      ],
+      "description": "Sequentially add 200 axioms one-by-one via addAxiom.",
+      "java551": {
+        "verificationCount": 200,
+        "firstUseWallMs": 2.376,
+        "medianWallMs": 1.995,
+        "medianRetainedHeapDeltaBytes": 1167280
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 200,
+        "firstUseWallMs": 3.973,
+        "medianWallMs": 1.007,
+        "medianRetainedHeapDeltaBytes": 4683352,
+        "ratioVsJava": 0.5,
+        "deltaMsVsJava": -0.988
+      },
+      "jsNormativeV1": {
+        "verificationCount": 200,
+        "firstUseWallMs": 0.889,
+        "medianWallMs": 0.872,
+        "medianRetainedHeapDeltaBytes": 4242104,
+        "ratioVsJava": 0.44,
+        "deltaMsVsJava": -1.123
+      },
+      "maxJsVsJavaRatio": 0.5,
+      "slowerInJs": false
+    },
+    {
+      "id": "manager.removeAxioms.bulk",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.removeAxioms"
+      ],
+      "description": "Bulk-add and bulk-remove 500 axioms via removeAxioms.",
+      "java551": {
+        "verificationCount": 0,
+        "firstUseWallMs": 12.117,
+        "medianWallMs": 5.363,
+        "medianRetainedHeapDeltaBytes": 2237728
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 0,
+        "firstUseWallMs": 1.146,
+        "medianWallMs": 0.861,
+        "medianRetainedHeapDeltaBytes": 963880,
+        "ratioVsJava": 0.16,
+        "deltaMsVsJava": -4.502
+      },
+      "jsNormativeV1": {
+        "verificationCount": 0,
+        "firstUseWallMs": 5.093,
+        "medianWallMs": 0.584,
+        "medianRetainedHeapDeltaBytes": 720208,
+        "ratioVsJava": 0.11,
+        "deltaMsVsJava": -4.779
+      },
+      "maxJsVsJavaRatio": 0.16,
+      "slowerInJs": false
+    },
+    {
+      "id": "manager.removeAxiom.singleLoop",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.removeAxiom"
+      ],
+      "description": "Bulk-add 200 axioms and remove them one-by-one via removeAxiom.",
+      "java551": {
+        "verificationCount": 0,
+        "firstUseWallMs": 2.814,
+        "medianWallMs": 2.758,
+        "medianRetainedHeapDeltaBytes": 1167264
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 0,
+        "firstUseWallMs": 1.288,
+        "medianWallMs": 1.174,
+        "medianRetainedHeapDeltaBytes": 4747728,
+        "ratioVsJava": 0.43,
+        "deltaMsVsJava": -1.584
+      },
+      "jsNormativeV1": {
+        "verificationCount": 0,
+        "firstUseWallMs": 1.238,
+        "medianWallMs": 1.158,
+        "medianRetainedHeapDeltaBytes": 4800560,
+        "ratioVsJava": 0.42,
+        "deltaMsVsJava": -1.6
+      },
+      "maxJsVsJavaRatio": 0.43,
+      "slowerInJs": false
+    },
+    {
+      "id": "manager.applyChanges.mixed",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.applyChanges",
+        "AddAxiom",
+        "RemoveAxiom",
+        "AddOntologyAnnotation",
+        "RemoveOntologyAnnotation",
+        "AddImport",
+        "RemoveImport",
+        "SetOntologyID"
+      ],
+      "description": "Apply a mixed batch of 125 ontology change objects via applyChanges.",
+      "java551": {
+        "verificationCount": 40,
+        "firstUseWallMs": 3.341,
+        "medianWallMs": 1.91,
+        "medianRetainedHeapDeltaBytes": 632048
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 40,
+        "firstUseWallMs": 0.723,
+        "medianWallMs": 0.224,
+        "medianRetainedHeapDeltaBytes": 181056,
+        "ratioVsJava": 0.12,
+        "deltaMsVsJava": -1.686
+      },
+      "jsNormativeV1": {
+        "verificationCount": 40,
+        "firstUseWallMs": 0.297,
+        "medianWallMs": 0.166,
+        "medianRetainedHeapDeltaBytes": 152576,
+        "ratioVsJava": 0.09,
+        "deltaMsVsJava": -1.744
+      },
+      "maxJsVsJavaRatio": 0.12,
+      "slowerInJs": false
+    },
+    {
+      "id": "manager.getImportsClosure",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.getImportsClosure"
+      ],
+      "description": "Query getImportsClosure 1,000 times on an 8-ontology closure.",
+      "java551": {
+        "verificationCount": 8000,
+        "firstUseWallMs": 1.552,
+        "medianWallMs": 0.748,
+        "medianRetainedHeapDeltaBytes": 1070440
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 8000,
+        "firstUseWallMs": 0.762,
+        "medianWallMs": 0.474,
+        "medianRetainedHeapDeltaBytes": 857072,
+        "ratioVsJava": 0.63,
+        "deltaMsVsJava": -0.274
+      },
+      "jsNormativeV1": {
+        "verificationCount": 8000,
+        "firstUseWallMs": 0.407,
+        "medianWallMs": 0.295,
+        "medianRetainedHeapDeltaBytes": 896648,
+        "ratioVsJava": 0.39,
+        "deltaMsVsJava": -0.453
+      },
+      "maxJsVsJavaRatio": 0.63,
+      "slowerInJs": false
+    },
+    {
+      "id": "ontology.getAxioms.excluded",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getAxioms",
+        "OWLOntology.getAxiomCount",
+        "OWLOntology.getAnnotations",
+        "OWLOntology.getImportsDeclarations",
+        "OWLOntology.getOntologyID"
+      ],
+      "description": "Query direct axioms, axiom count, annotations, imports, and ontology ID 200 times.",
+      "java551": {
+        "verificationCount": 937400,
+        "firstUseWallMs": 37.136,
+        "medianWallMs": 28.297,
+        "medianRetainedHeapDeltaBytes": 38778656
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 937400,
+        "firstUseWallMs": 18.59,
+        "medianWallMs": 16.778,
+        "medianRetainedHeapDeltaBytes": 0,
+        "ratioVsJava": 0.59,
+        "deltaMsVsJava": -11.519
+      },
+      "jsNormativeV1": {
+        "verificationCount": 937400,
+        "firstUseWallMs": 18.532,
+        "medianWallMs": 17.029,
+        "medianRetainedHeapDeltaBytes": 0,
+        "ratioVsJava": 0.6,
+        "deltaMsVsJava": -11.268
+      },
+      "maxJsVsJavaRatio": 0.6,
+      "slowerInJs": false
+    },
+    {
+      "id": "ontology.getAxioms.included",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getAxioms",
+        "OWLOntology.getAxiomCount"
+      ],
+      "description": "Query closure-included axioms and axiom count 200 times.",
+      "java551": {
+        "verificationCount": 1304000,
+        "firstUseWallMs": 37.886,
+        "medianWallMs": 44.337,
+        "medianRetainedHeapDeltaBytes": 55652544
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 1304000,
+        "firstUseWallMs": 22.677,
+        "medianWallMs": 21.536,
+        "medianRetainedHeapDeltaBytes": 0,
+        "ratioVsJava": 0.49,
+        "deltaMsVsJava": -22.801
+      },
+      "jsNormativeV1": {
+        "verificationCount": 1304000,
+        "firstUseWallMs": 22.998,
+        "medianWallMs": 22.73,
+        "medianRetainedHeapDeltaBytes": 0,
+        "ratioVsJava": 0.51,
+        "deltaMsVsJava": -21.607
+      },
+      "maxJsVsJavaRatio": 0.51,
+      "slowerInJs": false
+    },
+    {
+      "id": "ontology.getLogicalAxioms",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getLogicalAxioms",
+        "OWLOntology.getLogicalAxiomCount"
+      ],
+      "description": "Query logical axioms and counts (Imports.EXCLUDED and INCLUDED) 100 times.",
+      "java551": {
+        "verificationCount": 696000,
+        "firstUseWallMs": 18.944,
+        "medianWallMs": 20.477,
+        "medianRetainedHeapDeltaBytes": 24357216
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 696000,
+        "firstUseWallMs": 12.226,
+        "medianWallMs": 11.541,
+        "medianRetainedHeapDeltaBytes": 0,
+        "ratioVsJava": 0.56,
+        "deltaMsVsJava": -8.936
+      },
+      "jsNormativeV1": {
+        "verificationCount": 696000,
+        "firstUseWallMs": 12.554,
+        "medianWallMs": 11.695,
+        "medianRetainedHeapDeltaBytes": 31455096,
+        "ratioVsJava": 0.57,
+        "deltaMsVsJava": -8.782
+      },
+      "maxJsVsJavaRatio": 0.57,
+      "slowerInJs": false
+    },
+    {
+      "id": "ontology.getAxiomsByType",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getAxiomsByType",
+        "OWLOntology.getAxiomCount"
+      ],
+      "description": "Query axioms and counts across all 38 axiom types (EXCLUDED and INCLUDED) for 20 passes.",
+      "java551": {
+        "verificationCount": 224000,
+        "firstUseWallMs": 18.985,
+        "medianWallMs": 9.883,
+        "medianRetainedHeapDeltaBytes": 9511672
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 224000,
+        "firstUseWallMs": 5.406,
+        "medianWallMs": 4.355,
+        "medianRetainedHeapDeltaBytes": 13146984,
+        "ratioVsJava": 0.44,
+        "deltaMsVsJava": -5.528
+      },
+      "jsNormativeV1": {
+        "verificationCount": 224000,
+        "firstUseWallMs": 5.067,
+        "medianWallMs": 4.26,
+        "medianRetainedHeapDeltaBytes": 13163920,
+        "ratioVsJava": 0.43,
+        "deltaMsVsJava": -5.623
+      },
+      "maxJsVsJavaRatio": 0.44,
+      "slowerInJs": false
+    },
+    {
+      "id": "ontology.containsAxiom",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.containsAxiom",
+        "OWLOntology.containsAxiomIgnoreAnnotations",
+        "OWLOntology.getAxiomsIgnoreAnnotations"
+      ],
+      "description": "Test exact and annotation-ignoring axiom containment and retrieval for 200 axioms.",
+      "java551": {
+        "verificationCount": 1200,
+        "firstUseWallMs": 31.62,
+        "medianWallMs": 18.172,
+        "medianRetainedHeapDeltaBytes": 28493064
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 1200,
+        "firstUseWallMs": 4.913,
+        "medianWallMs": 0.504,
+        "medianRetainedHeapDeltaBytes": 1295688,
+        "ratioVsJava": 0.03,
+        "deltaMsVsJava": -17.668
+      },
+      "jsNormativeV1": {
+        "verificationCount": 1200,
+        "firstUseWallMs": 3.756,
+        "medianWallMs": 0.433,
+        "medianRetainedHeapDeltaBytes": 1300360,
+        "ratioVsJava": 0.02,
+        "deltaMsVsJava": -17.739
+      },
+      "maxJsVsJavaRatio": 0.03,
+      "slowerInJs": false
+    },
+    {
+      "id": "ontology.getSignature",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getSignature",
+        "OWLOntology.getClassesInSignature",
+        "OWLOntology.getObjectPropertiesInSignature",
+        "OWLOntology.getDataPropertiesInSignature",
+        "OWLOntology.getAnnotationPropertiesInSignature",
+        "OWLOntology.getIndividualsInSignature",
+        "OWLOntology.getDatatypesInSignature"
+      ],
+      "description": "Query full and kind-partitioned signatures (EXCLUDED and INCLUDED) 100 times.",
+      "java551": {
+        "verificationCount": 286000,
+        "firstUseWallMs": 55.371,
+        "medianWallMs": 36.986,
+        "medianRetainedHeapDeltaBytes": 61314976
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 286000,
+        "firstUseWallMs": 11.595,
+        "medianWallMs": 8.274,
+        "medianRetainedHeapDeltaBytes": 29121976,
+        "ratioVsJava": 0.22,
+        "deltaMsVsJava": -28.712
+      },
+      "jsNormativeV1": {
+        "verificationCount": 286000,
+        "firstUseWallMs": 12.532,
+        "medianWallMs": 8.84,
+        "medianRetainedHeapDeltaBytes": 0,
+        "ratioVsJava": 0.24,
+        "deltaMsVsJava": -28.146
+      },
+      "maxJsVsJavaRatio": 0.24,
+      "slowerInJs": false
+    },
+    {
+      "id": "ontology.entitySignatureLookups",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getEntitiesInSignature",
+        "OWLOntology.containsEntityInSignature",
+        "OWLOntology.getPunnedIRIs",
+        "OWLOntology.getReferencedAnonymousIndividuals"
+      ],
+      "description": "Query entity-by-IRI signature lookups, punned IRIs, and anonymous individuals for 5 passes.",
+      "java551": {
+        "verificationCount": 1580,
+        "firstUseWallMs": 49.654,
+        "medianWallMs": 28.095,
+        "medianRetainedHeapDeltaBytes": 24888008
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 1550,
+        "firstUseWallMs": 1.791,
+        "medianWallMs": 0.737,
+        "medianRetainedHeapDeltaBytes": 2950112,
+        "ratioVsJava": 0.03,
+        "deltaMsVsJava": -27.358
+      },
+      "jsNormativeV1": {
+        "verificationCount": 1550,
+        "firstUseWallMs": 1.448,
+        "medianWallMs": 0.758,
+        "medianRetainedHeapDeltaBytes": 2988672,
+        "ratioVsJava": 0.03,
+        "deltaMsVsJava": -27.337
+      },
+      "maxJsVsJavaRatio": 0.03,
+      "slowerInJs": false
+    },
+    {
+      "id": "ontology.getReferencingAxioms",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getReferencingAxioms"
+      ],
+      "description": "Query referencing axioms (EXCLUDED and INCLUDED) for 50 entities.",
+      "java551": {
+        "verificationCount": 880,
+        "firstUseWallMs": 1.495,
+        "medianWallMs": 0.326,
+        "medianRetainedHeapDeltaBytes": 1305408
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 880,
+        "firstUseWallMs": 4.052,
+        "medianWallMs": 0.12,
+        "medianRetainedHeapDeltaBytes": 272904,
+        "ratioVsJava": 0.37,
+        "deltaMsVsJava": -0.206
+      },
+      "jsNormativeV1": {
+        "verificationCount": 880,
+        "firstUseWallMs": 2.812,
+        "medianWallMs": 0.094,
+        "medianRetainedHeapDeltaBytes": 273288,
+        "ratioVsJava": 0.29,
+        "deltaMsVsJava": -0.232
+      },
+      "maxJsVsJavaRatio": 0.37,
+      "slowerInJs": false
+    },
+    {
+      "id": "ontology.classAxiomIndexes",
+      "category": "Ontology Queries - Specific Axiom Indexes",
+      "apiSymbols": [
+        "OWLOntology.getSubClassAxiomsForSubClass",
+        "OWLOntology.getSubClassAxiomsForSuperClass",
+        "OWLOntology.getEquivalentClassesAxioms",
+        "OWLOntology.getDisjointClassesAxioms"
+      ],
+      "description": "Query all 4 class-axiom index getters across 60 classes for 10 passes.",
+      "java551": {
+        "verificationCount": 3000,
+        "firstUseWallMs": 18.496,
+        "medianWallMs": 2.125,
+        "medianRetainedHeapDeltaBytes": 2610872
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 3000,
+        "firstUseWallMs": 1.206,
+        "medianWallMs": 0.427,
+        "medianRetainedHeapDeltaBytes": 1868720,
+        "ratioVsJava": 0.2,
+        "deltaMsVsJava": -1.698
+      },
+      "jsNormativeV1": {
+        "verificationCount": 3000,
+        "firstUseWallMs": 1.276,
+        "medianWallMs": 0.413,
+        "medianRetainedHeapDeltaBytes": 1868344,
+        "ratioVsJava": 0.19,
+        "deltaMsVsJava": -1.712
+      },
+      "maxJsVsJavaRatio": 0.2,
+      "slowerInJs": false
+    },
+    {
+      "id": "ontology.objectPropertyAxiomIndexes",
+      "category": "Ontology Queries - Specific Axiom Indexes",
+      "apiSymbols": [
+        "OWLOntology.getObjectSubPropertyAxiomsForSubProperty",
+        "OWLOntology.getObjectSubPropertyAxiomsForSuperProperty",
+        "OWLOntology.getObjectPropertyDomainAxioms",
+        "OWLOntology.getObjectPropertyRangeAxioms",
+        "OWLOntology.getInverseObjectPropertyAxioms",
+        "OWLOntology.getFunctionalObjectPropertyAxioms",
+        "OWLOntology.getInverseFunctionalObjectPropertyAxioms",
+        "OWLOntology.getSymmetricObjectPropertyAxioms",
+        "OWLOntology.getAsymmetricObjectPropertyAxioms",
+        "OWLOntology.getReflexiveObjectPropertyAxioms",
+        "OWLOntology.getIrreflexiveObjectPropertyAxioms",
+        "OWLOntology.getTransitiveObjectPropertyAxioms"
+      ],
+      "description": "Query all 12 object-property axiom index getters across 60 properties for 10 passes.",
+      "java551": {
+        "verificationCount": 4800,
+        "firstUseWallMs": 17.063,
+        "medianWallMs": 4.907,
+        "medianRetainedHeapDeltaBytes": 3916304
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 4800,
+        "firstUseWallMs": 1.896,
+        "medianWallMs": 1.094,
+        "medianRetainedHeapDeltaBytes": 5034112,
+        "ratioVsJava": 0.22,
+        "deltaMsVsJava": -3.813
+      },
+      "jsNormativeV1": {
+        "verificationCount": 4800,
+        "firstUseWallMs": 2.054,
+        "medianWallMs": 1.26,
+        "medianRetainedHeapDeltaBytes": 5034360,
+        "ratioVsJava": 0.26,
+        "deltaMsVsJava": -3.647
+      },
+      "maxJsVsJavaRatio": 0.26,
+      "slowerInJs": false
+    },
+    {
+      "id": "ontology.dataPropertyAxiomIndexes",
+      "category": "Ontology Queries - Specific Axiom Indexes",
+      "apiSymbols": [
+        "OWLOntology.getDataSubPropertyAxiomsForSubProperty",
+        "OWLOntology.getDataSubPropertyAxiomsForSuperProperty",
+        "OWLOntology.getDataPropertyDomainAxioms",
+        "OWLOntology.getDataPropertyRangeAxioms",
+        "OWLOntology.getFunctionalDataPropertyAxioms"
+      ],
+      "description": "Query all 5 data-property index getters across 60 properties for 10 passes.",
+      "java551": {
+        "verificationCount": 3000,
+        "firstUseWallMs": 8.773,
+        "medianWallMs": 2.133,
+        "medianRetainedHeapDeltaBytes": 2610824
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 3000,
+        "firstUseWallMs": 1.313,
+        "medianWallMs": 0.447,
+        "medianRetainedHeapDeltaBytes": 2306568,
+        "ratioVsJava": 0.21,
+        "deltaMsVsJava": -1.686
+      },
+      "jsNormativeV1": {
+        "verificationCount": 3000,
+        "firstUseWallMs": 0.788,
+        "medianWallMs": 0.493,
+        "medianRetainedHeapDeltaBytes": 2306424,
+        "ratioVsJava": 0.23,
+        "deltaMsVsJava": -1.64
+      },
+      "maxJsVsJavaRatio": 0.23,
+      "slowerInJs": false
+    },
+    {
+      "id": "ontology.annotationAndDeclarationIndexes",
+      "category": "Ontology Queries - Specific Axiom Indexes",
+      "apiSymbols": [
+        "OWLOntology.getDeclarationAxioms",
+        "OWLOntology.getAnnotationAssertionAxioms",
+        "OWLOntology.getSubAnnotationPropertyOfAxioms",
+        "OWLOntology.getAnnotationPropertyDomainAxioms",
+        "OWLOntology.getAnnotationPropertyRangeAxioms"
+      ],
+      "description": "Query declaration and annotation-property index getters across 60 entities for 10 passes.",
+      "java551": {
+        "verificationCount": 4800,
+        "firstUseWallMs": 32.063,
+        "medianWallMs": 9.869,
+        "medianRetainedHeapDeltaBytes": 5499904
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 4800,
+        "firstUseWallMs": 1.956,
+        "medianWallMs": 0.984,
+        "medianRetainedHeapDeltaBytes": 3966784,
+        "ratioVsJava": 0.1,
+        "deltaMsVsJava": -8.885
+      },
+      "jsNormativeV1": {
+        "verificationCount": 4800,
+        "firstUseWallMs": 1.97,
+        "medianWallMs": 1.023,
+        "medianRetainedHeapDeltaBytes": 3972112,
+        "ratioVsJava": 0.1,
+        "deltaMsVsJava": -8.846
+      },
+      "maxJsVsJavaRatio": 0.1,
+      "slowerInJs": false
+    },
+    {
+      "id": "ontology.individualAssertionIndexes",
+      "category": "Ontology Queries - Specific Axiom Indexes",
+      "apiSymbols": [
+        "OWLOntology.getClassAssertionAxioms",
+        "OWLOntology.getObjectPropertyAssertionAxioms",
+        "OWLOntology.getDataPropertyAssertionAxioms",
+        "OWLOntology.getNegativeObjectPropertyAssertionAxioms",
+        "OWLOntology.getNegativeDataPropertyAssertionAxioms",
+        "OWLOntology.getSameIndividualAxioms",
+        "OWLOntology.getDifferentIndividualAxioms"
+      ],
+      "description": "Query all 8 individual and class assertion index getters across 60 entities for 10 passes.",
+      "java551": {
+        "verificationCount": 4500,
+        "firstUseWallMs": 15.449,
+        "medianWallMs": 4.025,
+        "medianRetainedHeapDeltaBytes": 3916288
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 4500,
+        "firstUseWallMs": 1.614,
+        "medianWallMs": 0.961,
+        "medianRetainedHeapDeltaBytes": 4665936,
+        "ratioVsJava": 0.24,
+        "deltaMsVsJava": -3.064
+      },
+      "jsNormativeV1": {
+        "verificationCount": 4500,
+        "firstUseWallMs": 1.691,
+        "medianWallMs": 1.007,
+        "medianRetainedHeapDeltaBytes": 4665968,
+        "ratioVsJava": 0.25,
+        "deltaMsVsJava": -3.018
+      },
+      "maxJsVsJavaRatio": 0.25,
+      "slowerInJs": false
+    },
+    {
+      "id": "save.functional",
+      "category": "Storage / Serialization",
+      "apiSymbols": [
+        "OWLOntologyManager.saveOntology",
+        "StringDocumentTarget"
+      ],
+      "description": "Serialize a 100-class ontology to Functional Syntax.",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 13.853,
+        "medianWallMs": 1.784,
+        "medianRetainedHeapDeltaBytes": 1305400
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 0.569,
+        "medianWallMs": 0.081,
+        "medianRetainedHeapDeltaBytes": 147848,
+        "ratioVsJava": 0.05,
+        "deltaMsVsJava": -1.703
+      },
+      "jsNormativeV1": {
+        "verificationCount": 100,
+        "firstUseWallMs": 0.198,
+        "medianWallMs": 0.058,
+        "medianRetainedHeapDeltaBytes": 142704,
+        "ratioVsJava": 0.03,
+        "deltaMsVsJava": -1.726
+      },
+      "maxJsVsJavaRatio": 0.05,
+      "slowerInJs": false
+    },
+    {
+      "id": "save.owlxml",
+      "category": "Storage / Serialization",
+      "apiSymbols": [
+        "OWLOntologyManager.saveOntology",
+        "StringDocumentTarget"
+      ],
+      "description": "Serialize a 100-class ontology to OWL/XML.",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 9.303,
+        "medianWallMs": 1.428,
+        "medianRetainedHeapDeltaBytes": 1305400
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 4.231,
+        "medianWallMs": 1.109,
+        "medianRetainedHeapDeltaBytes": 1494016,
+        "ratioVsJava": 0.78,
+        "deltaMsVsJava": -0.319
+      },
+      "jsNormativeV1": {
+        "verificationCount": 100,
+        "firstUseWallMs": 1.633,
+        "medianWallMs": 0.747,
+        "medianRetainedHeapDeltaBytes": 1121560,
+        "ratioVsJava": 0.52,
+        "deltaMsVsJava": -0.681
+      },
+      "maxJsVsJavaRatio": 0.78,
+      "slowerInJs": false
+    },
+    {
+      "id": "save.rdfxml",
+      "category": "Storage / Serialization",
+      "apiSymbols": [
+        "OWLOntologyManager.saveOntology",
+        "StringDocumentTarget"
+      ],
+      "description": "Serialize a 100-class ontology to RDF/XML.",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 34.993,
+        "medianWallMs": 5.507,
+        "medianRetainedHeapDeltaBytes": 1309832
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 7.412,
+        "medianWallMs": 3.038,
+        "medianRetainedHeapDeltaBytes": 3348488,
+        "ratioVsJava": 0.55,
+        "deltaMsVsJava": -2.469
+      },
+      "jsNormativeV1": {
+        "verificationCount": 100,
+        "firstUseWallMs": 16.034,
+        "medianWallMs": 15.637,
+        "medianRetainedHeapDeltaBytes": 9272728,
+        "ratioVsJava": 2.84,
+        "deltaMsVsJava": 10.13
+      },
+      "maxJsVsJavaRatio": 2.84,
+      "slowerInJs": true
+    },
+    {
+      "id": "save.turtle",
+      "category": "Storage / Serialization",
+      "apiSymbols": [
+        "OWLOntologyManager.saveOntology",
+        "StringDocumentTarget"
+      ],
+      "description": "Serialize a 100-class ontology to Turtle.",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 4.88,
+        "medianWallMs": 2.725,
+        "medianRetainedHeapDeltaBytes": 1305400
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 2.17,
+        "medianWallMs": 0.56,
+        "medianRetainedHeapDeltaBytes": 691536,
+        "ratioVsJava": 0.21,
+        "deltaMsVsJava": -2.165
+      },
+      "jsNormativeV1": {
+        "verificationCount": 100,
+        "firstUseWallMs": 8.651,
+        "medianWallMs": 7.6,
+        "medianRetainedHeapDeltaBytes": 6164912,
+        "ratioVsJava": 2.79,
+        "deltaMsVsJava": 4.875
+      },
+      "maxJsVsJavaRatio": 2.79,
+      "slowerInJs": true
+    },
+    {
+      "id": "search.classHierarchyAndRelations",
+      "category": "EntitySearcher",
+      "apiSymbols": [
+        "EntitySearcher.getSuperClasses",
+        "EntitySearcher.getSubClasses",
+        "EntitySearcher.getEquivalentClasses",
+        "EntitySearcher.getDisjointClasses"
+      ],
+      "description": "Search class hierarchy and disjoint/equivalent relations across 2 ontologies for 5 passes.",
+      "java551": {
+        "verificationCount": 1800,
+        "firstUseWallMs": 14.348,
+        "medianWallMs": 2.743,
+        "medianRetainedHeapDeltaBytes": 2610856
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 1800,
+        "firstUseWallMs": 3.467,
+        "medianWallMs": 2.288,
+        "medianRetainedHeapDeltaBytes": 3680640,
+        "ratioVsJava": 0.83,
+        "deltaMsVsJava": -0.455
+      },
+      "jsNormativeV1": {
+        "verificationCount": 1800,
+        "firstUseWallMs": 6.279,
+        "medianWallMs": 5.786,
+        "medianRetainedHeapDeltaBytes": 3628128,
+        "ratioVsJava": 2.11,
+        "deltaMsVsJava": 3.043
+      },
+      "maxJsVsJavaRatio": 2.11,
+      "slowerInJs": true
+    },
+    {
+      "id": "search.propertyHierarchyAndDomainsRanges",
+      "category": "EntitySearcher",
+      "apiSymbols": [
+        "EntitySearcher.getSuperProperties",
+        "EntitySearcher.getSubProperties",
+        "EntitySearcher.getDomains",
+        "EntitySearcher.getRanges",
+        "EntitySearcher.getInverses"
+      ],
+      "description": "Search object/data property hierarchy, domains, ranges, and inverses across 2 ontologies for 5 passes.",
+      "java551": {
+        "verificationCount": 2100,
+        "firstUseWallMs": 23.307,
+        "medianWallMs": 6.47,
+        "medianRetainedHeapDeltaBytes": 3916432
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 2100,
+        "firstUseWallMs": 4.009,
+        "medianWallMs": 3.288,
+        "medianRetainedHeapDeltaBytes": 6131720,
+        "ratioVsJava": 0.51,
+        "deltaMsVsJava": -3.182
+      },
+      "jsNormativeV1": {
+        "verificationCount": 2100,
+        "firstUseWallMs": 9.629,
+        "medianWallMs": 9.276,
+        "medianRetainedHeapDeltaBytes": 6102776,
+        "ratioVsJava": 1.43,
+        "deltaMsVsJava": 2.806
+      },
+      "maxJsVsJavaRatio": 1.43,
+      "slowerInJs": true
+    },
+    {
+      "id": "search.annotations",
+      "category": "EntitySearcher",
+      "apiSymbols": [
+        "EntitySearcher.getAnnotationAssertionAxioms",
+        "EntitySearcher.getAnnotations",
+        "EntitySearcher.getAnnotationObjects"
+      ],
+      "description": "Search entity annotation assertions, annotations, and annotation objects across 2 ontologies for 5 passes.",
+      "java551": {
+        "verificationCount": 2400,
+        "firstUseWallMs": 10.091,
+        "medianWallMs": 3.313,
+        "medianRetainedHeapDeltaBytes": 3916256
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 2400,
+        "firstUseWallMs": 6.715,
+        "medianWallMs": 6.427,
+        "medianRetainedHeapDeltaBytes": 7439392,
+        "ratioVsJava": 1.94,
+        "deltaMsVsJava": 3.114
+      },
+      "jsNormativeV1": {
+        "verificationCount": 2400,
+        "firstUseWallMs": 20.266,
+        "medianWallMs": 14.073,
+        "medianRetainedHeapDeltaBytes": 7422904,
+        "ratioVsJava": 4.25,
+        "deltaMsVsJava": 10.76
+      },
+      "maxJsVsJavaRatio": 4.25,
+      "slowerInJs": true
+    },
+    {
+      "id": "search.propertyCharacteristics",
+      "category": "EntitySearcher",
+      "apiSymbols": [
+        "EntitySearcher.isFunctional",
+        "EntitySearcher.isInverseFunctional",
+        "EntitySearcher.isTransitive",
+        "EntitySearcher.isSymmetric",
+        "EntitySearcher.isAsymmetric",
+        "EntitySearcher.isReflexive",
+        "EntitySearcher.isIrreflexive"
+      ],
+      "description": "Test all 8 property characteristic predicates across 60 properties for 10 passes.",
+      "java551": {
+        "verificationCount": 2400,
+        "firstUseWallMs": 17.675,
+        "medianWallMs": 6.576,
+        "medianRetainedHeapDeltaBytes": 3916264
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 2400,
+        "firstUseWallMs": 1.782,
+        "medianWallMs": 1.139,
+        "medianRetainedHeapDeltaBytes": 4054904,
+        "ratioVsJava": 0.17,
+        "deltaMsVsJava": -5.437
+      },
+      "jsNormativeV1": {
+        "verificationCount": 2400,
+        "firstUseWallMs": 2.329,
+        "medianWallMs": 2.054,
+        "medianRetainedHeapDeltaBytes": 4054248,
+        "ratioVsJava": 0.31,
+        "deltaMsVsJava": -4.522
+      },
+      "maxJsVsJavaRatio": 0.31,
+      "slowerInJs": false
+    },
+    {
+      "id": "util.SimpleShortFormProvider",
+      "category": "Utilities",
+      "apiSymbols": [
+        "SimpleShortFormProvider"
+      ],
+      "description": "Compute short forms for 180 entities across 20 passes.",
+      "java551": {
+        "verificationCount": 13800,
+        "firstUseWallMs": 1.32,
+        "medianWallMs": 0.434,
+        "medianRetainedHeapDeltaBytes": 1305400
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 13800,
+        "firstUseWallMs": 1.557,
+        "medianWallMs": 0.541,
+        "medianRetainedHeapDeltaBytes": 87184,
+        "ratioVsJava": 1.25,
+        "deltaMsVsJava": 0.107
+      },
+      "jsNormativeV1": {
+        "verificationCount": 13800,
+        "firstUseWallMs": 1.036,
+        "medianWallMs": 0.979,
+        "medianRetainedHeapDeltaBytes": 86944,
+        "ratioVsJava": 2.26,
+        "deltaMsVsJava": 0.545
+      },
+      "maxJsVsJavaRatio": 2.26,
+      "slowerInJs": true
+    },
+    {
+      "id": "util.AnnotationValueShortFormProvider",
+      "category": "Utilities",
+      "apiSymbols": [
+        "AnnotationValueShortFormProvider"
+      ],
+      "description": "Compute annotation-value short forms with language fallback across 60 classes for 5 passes.",
+      "java551": {
+        "verificationCount": 2350,
+        "firstUseWallMs": 4.855,
+        "medianWallMs": 1.264,
+        "medianRetainedHeapDeltaBytes": 1305448
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 2350,
+        "firstUseWallMs": 1.35,
+        "medianWallMs": 0.48,
+        "medianRetainedHeapDeltaBytes": 1201240,
+        "ratioVsJava": 0.38,
+        "deltaMsVsJava": -0.784
+      },
+      "jsNormativeV1": {
+        "verificationCount": 2350,
+        "firstUseWallMs": 3.966,
+        "medianWallMs": 1.554,
+        "medianRetainedHeapDeltaBytes": 1140528,
+        "ratioVsJava": 1.23,
+        "deltaMsVsJava": 0.29
+      },
+      "maxJsVsJavaRatio": 1.23,
+      "slowerInJs": true
+    },
+    {
+      "id": "util.OWLOntologyImportsClosureSetProvider",
+      "category": "Utilities",
+      "apiSymbols": [
+        "OWLOntologyImportsClosureSetProvider"
+      ],
+      "description": "Materialize ontology closure sets 1,000 times via OWLOntologyImportsClosureSetProvider.",
+      "java551": {
+        "verificationCount": 8000,
+        "firstUseWallMs": 0.125,
+        "medianWallMs": 0.099,
+        "medianRetainedHeapDeltaBytes": 1305408
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 8000,
+        "firstUseWallMs": 0.991,
+        "medianWallMs": 0.742,
+        "medianRetainedHeapDeltaBytes": 1475832,
+        "ratioVsJava": 7.49,
+        "deltaMsVsJava": 0.643
+      },
+      "jsNormativeV1": {
+        "verificationCount": 8000,
+        "firstUseWallMs": 1.091,
+        "medianWallMs": 0.907,
+        "medianRetainedHeapDeltaBytes": 1473056,
+        "ratioVsJava": 9.16,
+        "deltaMsVsJava": 0.808
+      },
+      "maxJsVsJavaRatio": 9.16,
+      "slowerInJs": true
+    },
+    {
+      "id": "util.OWLOntologyMerger",
+      "category": "Utilities",
+      "apiSymbols": [
+        "OWLOntologyMerger"
+      ],
+      "description": "Merge an 8-ontology import closure in both all-axioms and logical-axioms-only modes.",
+      "java551": {
+        "verificationCount": 480,
+        "firstUseWallMs": 7.392,
+        "medianWallMs": 1.631,
+        "medianRetainedHeapDeltaBytes": 2615280
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 480,
+        "firstUseWallMs": 3.644,
+        "medianWallMs": 0.64,
+        "medianRetainedHeapDeltaBytes": 1006776,
+        "ratioVsJava": 0.39,
+        "deltaMsVsJava": -0.991
+      },
+      "jsNormativeV1": {
+        "verificationCount": 480,
+        "firstUseWallMs": 1.967,
+        "medianWallMs": 0.541,
+        "medianRetainedHeapDeltaBytes": 378784,
+        "ratioVsJava": 0.33,
+        "deltaMsVsJava": -1.09
+      },
+      "maxJsVsJavaRatio": 0.39,
+      "slowerInJs": false
+    },
+    {
+      "id": "util.OWLObjectDuplicator",
+      "category": "Utilities",
+      "apiSymbols": [
+        "OWLObjectDuplicator"
+      ],
+      "description": "Duplicate 500 axioms with IRI replacement via OWLObjectDuplicator.",
+      "java551": {
+        "verificationCount": 500,
+        "firstUseWallMs": 9.504,
+        "medianWallMs": 2.371,
+        "medianRetainedHeapDeltaBytes": 1490496
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 500,
+        "firstUseWallMs": 1.525,
+        "medianWallMs": 0.428,
+        "medianRetainedHeapDeltaBytes": 844312,
+        "ratioVsJava": 0.18,
+        "deltaMsVsJava": -1.943
+      },
+      "jsNormativeV1": {
+        "verificationCount": 500,
+        "firstUseWallMs": 1.558,
+        "medianWallMs": 1.432,
+        "medianRetainedHeapDeltaBytes": 833504,
+        "ratioVsJava": 0.6,
+        "deltaMsVsJava": -0.939
+      },
+      "maxJsVsJavaRatio": 0.6,
+      "slowerInJs": false
+    },
+    {
+      "id": "util.OWLEntityRenamer",
+      "category": "Utilities",
+      "apiSymbols": [
+        "OWLEntityRenamer"
+      ],
+      "description": "Compute entity and IRI rename change sets for 10 entities across a 500-axiom ontology.",
+      "java551": {
+        "verificationCount": 520,
+        "firstUseWallMs": 15.862,
+        "medianWallMs": 3.383,
+        "medianRetainedHeapDeltaBytes": 1745088
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 520,
+        "firstUseWallMs": 6.38,
+        "medianWallMs": 3.792,
+        "medianRetainedHeapDeltaBytes": 4107256,
+        "ratioVsJava": 1.12,
+        "deltaMsVsJava": 0.409
+      },
+      "jsNormativeV1": {
+        "verificationCount": 520,
+        "firstUseWallMs": 25.511,
+        "medianWallMs": 9.49,
+        "medianRetainedHeapDeltaBytes": 4125320,
+        "ratioVsJava": 2.81,
+        "deltaMsVsJava": 6.107
+      },
+      "maxJsVsJavaRatio": 2.81,
+      "slowerInJs": true
+    },
+    {
+      "id": "util.OWLEntityRemover",
+      "category": "Utilities",
+      "apiSymbols": [
+        "OWLEntityRemover"
+      ],
+      "description": "Visit 40 entities (20 classes + 20 object properties) and collect removal changes across a 500-axiom ontology.",
+      "java551": {
+        "verificationCount": 580,
+        "firstUseWallMs": 3.418,
+        "medianWallMs": 0.413,
+        "medianRetainedHeapDeltaBytes": 1460216
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 580,
+        "firstUseWallMs": 0.792,
+        "medianWallMs": 0.392,
+        "medianRetainedHeapDeltaBytes": 168600,
+        "ratioVsJava": 0.95,
+        "deltaMsVsJava": -0.021
+      },
+      "jsNormativeV1": {
+        "verificationCount": 580,
+        "firstUseWallMs": 10.094,
+        "medianWallMs": 0.715,
+        "medianRetainedHeapDeltaBytes": 143864,
+        "ratioVsJava": 1.73,
+        "deltaMsVsJava": 0.302
+      },
+      "maxJsVsJavaRatio": 1.73,
+      "slowerInJs": true
+    },
+    {
+      "id": "renderer.ManchesterOWLSyntaxOWLObjectRendererImpl",
+      "category": "Manchester Object Renderer",
+      "apiSymbols": [
+        "ManchesterOWLSyntaxOWLObjectRendererImpl"
+      ],
+      "description": "Render 300 axioms and 120 complex class expressions to Manchester OWL Syntax.",
+      "java551": {
+        "verificationCount": 7747,
+        "firstUseWallMs": 13.224,
+        "medianWallMs": 0.904,
+        "medianRetainedHeapDeltaBytes": 1142232
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 7807,
+        "firstUseWallMs": 1.685,
+        "medianWallMs": 0.374,
+        "medianRetainedHeapDeltaBytes": 477824,
+        "ratioVsJava": 0.41,
+        "deltaMsVsJava": -0.53
+      },
+      "jsNormativeV1": {
+        "verificationCount": 7807,
+        "firstUseWallMs": 3.722,
+        "medianWallMs": 0.662,
+        "medianRetainedHeapDeltaBytes": 461456,
+        "ratioVsJava": 0.73,
+        "deltaMsVsJava": -0.242
+      },
+      "maxJsVsJavaRatio": 0.73,
+      "slowerInJs": false
+    },
+    {
+      "id": "locality.extract.BOTTOM",
+      "category": "Modularity / Locality",
+      "apiSymbols": [
+        "SyntacticLocalityModuleExtractor",
+        "LocalityClass.BOTTOM"
+      ],
+      "description": "Extract a BOTTOM syntactic locality module from a ~500-axiom base for 20 seed entities.",
+      "java551": {
+        "verificationCount": 1481,
+        "firstUseWallMs": 8.366,
+        "medianWallMs": 2.319,
+        "medianRetainedHeapDeltaBytes": 1142232
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 1481,
+        "firstUseWallMs": 5.268,
+        "medianWallMs": 2.528,
+        "medianRetainedHeapDeltaBytes": 4163552,
+        "ratioVsJava": 1.09,
+        "deltaMsVsJava": 0.209
+      },
+      "jsNormativeV1": {
+        "verificationCount": 1481,
+        "firstUseWallMs": 11.859,
+        "medianWallMs": 3.445,
+        "medianRetainedHeapDeltaBytes": 4152128,
+        "ratioVsJava": 1.49,
+        "deltaMsVsJava": 1.126
+      },
+      "maxJsVsJavaRatio": 1.49,
+      "slowerInJs": true
+    },
+    {
+      "id": "locality.extract.TOP",
+      "category": "Modularity / Locality",
+      "apiSymbols": [
+        "SyntacticLocalityModuleExtractor",
+        "LocalityClass.TOP"
+      ],
+      "description": "Extract a TOP syntactic locality module from a ~500-axiom base for 20 seed entities.",
+      "java551": {
+        "verificationCount": 1481,
+        "firstUseWallMs": 4.892,
+        "medianWallMs": 2.238,
+        "medianRetainedHeapDeltaBytes": 1142232
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 1481,
+        "firstUseWallMs": 2.537,
+        "medianWallMs": 1.895,
+        "medianRetainedHeapDeltaBytes": 4190040,
+        "ratioVsJava": 0.85,
+        "deltaMsVsJava": -0.343
+      },
+      "jsNormativeV1": {
+        "verificationCount": 1481,
+        "firstUseWallMs": 3.396,
+        "medianWallMs": 2.367,
+        "medianRetainedHeapDeltaBytes": 3965664,
+        "ratioVsJava": 1.06,
+        "deltaMsVsJava": 0.129
+      },
+      "maxJsVsJavaRatio": 1.06,
+      "slowerInJs": false
+    },
+    {
+      "id": "locality.extract.STAR",
+      "category": "Modularity / Locality",
+      "apiSymbols": [
+        "SyntacticLocalityModuleExtractor",
+        "LocalityClass.STAR"
+      ],
+      "description": "Extract a STAR syntactic locality module from a ~500-axiom base for 20 seed entities.",
+      "java551": {
+        "verificationCount": 1481,
+        "firstUseWallMs": 5.693,
+        "medianWallMs": 3.287,
+        "medianRetainedHeapDeltaBytes": 2405776
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 1481,
+        "firstUseWallMs": 2.232,
+        "medianWallMs": 1.761,
+        "medianRetainedHeapDeltaBytes": 4552864,
+        "ratioVsJava": 0.54,
+        "deltaMsVsJava": -1.526
+      },
+      "jsNormativeV1": {
+        "verificationCount": 1481,
+        "firstUseWallMs": 2.931,
+        "medianWallMs": 3.381,
+        "medianRetainedHeapDeltaBytes": 4539504,
+        "ratioVsJava": 1.03,
+        "deltaMsVsJava": 0.094
+      },
+      "maxJsVsJavaRatio": 1.03,
+      "slowerInJs": false
+    },
+    {
+      "id": "profiles.OWL2DLProfile.checkOntology",
+      "category": "OWL 2 Language Profiles",
+      "apiSymbols": [
+        "OWL2DLProfile.checkOntology"
+      ],
+      "description": "Validate a 520-axiom ontology against the OWL 2 DL profile.",
+      "java551": {
+        "verificationCount": 1008,
+        "firstUseWallMs": 26.621,
+        "medianWallMs": 4.017,
+        "medianRetainedHeapDeltaBytes": 1729480
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 1008,
+        "firstUseWallMs": 5.887,
+        "medianWallMs": 1.857,
+        "medianRetainedHeapDeltaBytes": 3138752,
+        "ratioVsJava": 0.46,
+        "deltaMsVsJava": -2.16
+      },
+      "jsNormativeV1": {
+        "verificationCount": 1008,
+        "firstUseWallMs": 9.556,
+        "medianWallMs": 2.826,
+        "medianRetainedHeapDeltaBytes": 3168272,
+        "ratioVsJava": 0.7,
+        "deltaMsVsJava": -1.191
+      },
+      "maxJsVsJavaRatio": 0.7,
+      "slowerInJs": false
+    },
+    {
+      "id": "profiles.OWL2ELProfile.checkOntology",
+      "category": "OWL 2 Language Profiles",
+      "apiSymbols": [
+        "OWL2ELProfile.checkOntology"
+      ],
+      "description": "Validate a 520-axiom ontology against the OWL 2 EL profile.",
+      "java551": {
+        "verificationCount": 1008,
+        "firstUseWallMs": 2.521,
+        "medianWallMs": 2.226,
+        "medianRetainedHeapDeltaBytes": 1729480
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 1008,
+        "firstUseWallMs": 2.945,
+        "medianWallMs": 1.392,
+        "medianRetainedHeapDeltaBytes": 3569736,
+        "ratioVsJava": 0.63,
+        "deltaMsVsJava": -0.834
+      },
+      "jsNormativeV1": {
+        "verificationCount": 1008,
+        "firstUseWallMs": 2.74,
+        "medianWallMs": 2.756,
+        "medianRetainedHeapDeltaBytes": 3635968,
+        "ratioVsJava": 1.24,
+        "deltaMsVsJava": 0.53
+      },
+      "maxJsVsJavaRatio": 1.24,
+      "slowerInJs": true
+    },
+    {
+      "id": "profiles.OWL2QLProfile.checkOntology",
+      "category": "OWL 2 Language Profiles",
+      "apiSymbols": [
+        "OWL2QLProfile.checkOntology"
+      ],
+      "description": "Validate a 520-axiom ontology against the OWL 2 QL profile.",
+      "java551": {
+        "verificationCount": 1008,
+        "firstUseWallMs": 2.94,
+        "medianWallMs": 2.147,
+        "medianRetainedHeapDeltaBytes": 1729480
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 1008,
+        "firstUseWallMs": 1.931,
+        "medianWallMs": 1.239,
+        "medianRetainedHeapDeltaBytes": 3597280,
+        "ratioVsJava": 0.58,
+        "deltaMsVsJava": -0.908
+      },
+      "jsNormativeV1": {
+        "verificationCount": 1008,
+        "firstUseWallMs": 3.766,
+        "medianWallMs": 2.284,
+        "medianRetainedHeapDeltaBytes": 3662712,
+        "ratioVsJava": 1.06,
+        "deltaMsVsJava": 0.137
+      },
+      "maxJsVsJavaRatio": 1.06,
+      "slowerInJs": false
+    },
+    {
+      "id": "profiles.OWL2RLProfile.checkOntology",
+      "category": "OWL 2 Language Profiles",
+      "apiSymbols": [
+        "OWL2RLProfile.checkOntology"
+      ],
+      "description": "Validate a 520-axiom ontology against the OWL 2 RL profile.",
+      "java551": {
+        "verificationCount": 48,
+        "firstUseWallMs": 2.808,
+        "medianWallMs": 1.607,
+        "medianRetainedHeapDeltaBytes": 1729480
+      },
+      "jsJavaOwlapi551": {
+        "verificationCount": 48,
+        "firstUseWallMs": 1.892,
+        "medianWallMs": 1.661,
+        "medianRetainedHeapDeltaBytes": 3636048,
+        "ratioVsJava": 1.03,
+        "deltaMsVsJava": 0.054
+      },
+      "jsNormativeV1": {
+        "verificationCount": 48,
+        "firstUseWallMs": 3.024,
+        "medianWallMs": 2.394,
+        "medianRetainedHeapDeltaBytes": 3741464,
+        "ratioVsJava": 1.49,
+        "deltaMsVsJava": 0.787
+      },
+      "maxJsVsJavaRatio": 1.49,
+      "slowerInJs": true
+    }
+  ],
+  "slowerApisRanked": [
+    {
+      "rank": 1,
+      "id": "util.OWLOntologyImportsClosureSetProvider",
+      "category": "Utilities",
+      "javaMedianWallMs": 0.099,
+      "jsCompatMedianWallMs": 0.742,
+      "jsCompatVsJavaRatio": 7.49,
+      "jsNormativeMedianWallMs": 0.907,
+      "jsNormativeVsJavaRatio": 9.16,
+      "maxJsVsJavaRatio": 9.16
+    },
+    {
+      "rank": 2,
+      "id": "search.annotations",
+      "category": "EntitySearcher",
+      "javaMedianWallMs": 3.313,
+      "jsCompatMedianWallMs": 6.427,
+      "jsCompatVsJavaRatio": 1.94,
+      "jsNormativeMedianWallMs": 14.073,
+      "jsNormativeVsJavaRatio": 4.25,
+      "maxJsVsJavaRatio": 4.25
+    },
+    {
+      "rank": 3,
+      "id": "config.OWLOntologyWriterConfiguration",
+      "category": "Manager & Configuration",
+      "javaMedianWallMs": 0.155,
+      "jsCompatMedianWallMs": 0.457,
+      "jsCompatVsJavaRatio": 2.95,
+      "jsNormativeMedianWallMs": 0.305,
+      "jsNormativeVsJavaRatio": 1.97,
+      "maxJsVsJavaRatio": 2.95
+    },
+    {
+      "rank": 4,
+      "id": "save.rdfxml",
+      "category": "Storage / Serialization",
+      "javaMedianWallMs": 5.507,
+      "jsCompatMedianWallMs": 3.038,
+      "jsCompatVsJavaRatio": 0.55,
+      "jsNormativeMedianWallMs": 15.637,
+      "jsNormativeVsJavaRatio": 2.84,
+      "maxJsVsJavaRatio": 2.84
+    },
+    {
+      "rank": 5,
+      "id": "util.OWLEntityRenamer",
+      "category": "Utilities",
+      "javaMedianWallMs": 3.383,
+      "jsCompatMedianWallMs": 3.792,
+      "jsCompatVsJavaRatio": 1.12,
+      "jsNormativeMedianWallMs": 9.49,
+      "jsNormativeVsJavaRatio": 2.81,
+      "maxJsVsJavaRatio": 2.81
+    },
+    {
+      "rank": 6,
+      "id": "save.turtle",
+      "category": "Storage / Serialization",
+      "javaMedianWallMs": 2.725,
+      "jsCompatMedianWallMs": 0.56,
+      "jsCompatVsJavaRatio": 0.21,
+      "jsNormativeMedianWallMs": 7.6,
+      "jsNormativeVsJavaRatio": 2.79,
+      "maxJsVsJavaRatio": 2.79
+    },
+    {
+      "rank": 7,
+      "id": "factory.literals",
+      "category": "DataFactory & Structural Model",
+      "javaMedianWallMs": 1.426,
+      "jsCompatMedianWallMs": 3.279,
+      "jsCompatVsJavaRatio": 2.3,
+      "jsNormativeMedianWallMs": 0.933,
+      "jsNormativeVsJavaRatio": 0.65,
+      "maxJsVsJavaRatio": 2.3
+    },
+    {
+      "rank": 8,
+      "id": "util.SimpleShortFormProvider",
+      "category": "Utilities",
+      "javaMedianWallMs": 0.434,
+      "jsCompatMedianWallMs": 0.541,
+      "jsCompatVsJavaRatio": 1.25,
+      "jsNormativeMedianWallMs": 0.979,
+      "jsNormativeVsJavaRatio": 2.26,
+      "maxJsVsJavaRatio": 2.26
+    },
+    {
+      "rank": 9,
+      "id": "search.classHierarchyAndRelations",
+      "category": "EntitySearcher",
+      "javaMedianWallMs": 2.743,
+      "jsCompatMedianWallMs": 2.288,
+      "jsCompatVsJavaRatio": 0.83,
+      "jsNormativeMedianWallMs": 5.786,
+      "jsNormativeVsJavaRatio": 2.11,
+      "maxJsVsJavaRatio": 2.11
+    },
+    {
+      "rank": 10,
+      "id": "config.OWLOntologyLoaderConfiguration",
+      "category": "Manager & Configuration",
+      "javaMedianWallMs": 1.13,
+      "jsCompatMedianWallMs": 2.35,
+      "jsCompatVsJavaRatio": 2.08,
+      "jsNormativeMedianWallMs": 2.346,
+      "jsNormativeVsJavaRatio": 2.08,
+      "maxJsVsJavaRatio": 2.08
+    },
+    {
+      "rank": 11,
+      "id": "util.OWLEntityRemover",
+      "category": "Utilities",
+      "javaMedianWallMs": 0.413,
+      "jsCompatMedianWallMs": 0.392,
+      "jsCompatVsJavaRatio": 0.95,
+      "jsNormativeMedianWallMs": 0.715,
+      "jsNormativeVsJavaRatio": 1.73,
+      "maxJsVsJavaRatio": 1.73
+    },
+    {
+      "rank": 12,
+      "id": "formats.RDFXMLDocumentFormat.prefixes",
+      "category": "Manager & Configuration",
+      "javaMedianWallMs": 0.69,
+      "jsCompatMedianWallMs": 0.945,
+      "jsCompatVsJavaRatio": 1.37,
+      "jsNormativeMedianWallMs": 1.098,
+      "jsNormativeVsJavaRatio": 1.59,
+      "maxJsVsJavaRatio": 1.59
+    },
+    {
+      "rank": 13,
+      "id": "factory.classExpressions",
+      "category": "DataFactory & Structural Model",
+      "javaMedianWallMs": 1.287,
+      "jsCompatMedianWallMs": 1.976,
+      "jsCompatVsJavaRatio": 1.54,
+      "jsNormativeMedianWallMs": 1.668,
+      "jsNormativeVsJavaRatio": 1.3,
+      "maxJsVsJavaRatio": 1.54
+    },
+    {
+      "rank": 14,
+      "id": "factory.dataRanges",
+      "category": "DataFactory & Structural Model",
+      "javaMedianWallMs": 0.565,
+      "jsCompatMedianWallMs": 0.858,
+      "jsCompatVsJavaRatio": 1.52,
+      "jsNormativeMedianWallMs": 0.682,
+      "jsNormativeVsJavaRatio": 1.21,
+      "maxJsVsJavaRatio": 1.52
+    },
+    {
+      "rank": 15,
+      "id": "locality.extract.BOTTOM",
+      "category": "Modularity / Locality",
+      "javaMedianWallMs": 2.319,
+      "jsCompatMedianWallMs": 2.528,
+      "jsCompatVsJavaRatio": 1.09,
+      "jsNormativeMedianWallMs": 3.445,
+      "jsNormativeVsJavaRatio": 1.49,
+      "maxJsVsJavaRatio": 1.49
+    },
+    {
+      "rank": 16,
+      "id": "profiles.OWL2RLProfile.checkOntology",
+      "category": "OWL 2 Language Profiles",
+      "javaMedianWallMs": 1.607,
+      "jsCompatMedianWallMs": 1.661,
+      "jsCompatVsJavaRatio": 1.03,
+      "jsNormativeMedianWallMs": 2.394,
+      "jsNormativeVsJavaRatio": 1.49,
+      "maxJsVsJavaRatio": 1.49
+    },
+    {
+      "rank": 17,
+      "id": "load.trig",
+      "category": "Parsing & Loading",
+      "javaMedianWallMs": 3.391,
+      "jsCompatMedianWallMs": 5.029,
+      "jsCompatVsJavaRatio": 1.48,
+      "jsNormativeMedianWallMs": 3.623,
+      "jsNormativeVsJavaRatio": 1.07,
+      "maxJsVsJavaRatio": 1.48
+    },
+    {
+      "rank": 18,
+      "id": "search.propertyHierarchyAndDomainsRanges",
+      "category": "EntitySearcher",
+      "javaMedianWallMs": 6.47,
+      "jsCompatMedianWallMs": 3.288,
+      "jsCompatVsJavaRatio": 0.51,
+      "jsNormativeMedianWallMs": 9.276,
+      "jsNormativeVsJavaRatio": 1.43,
+      "maxJsVsJavaRatio": 1.43
+    },
+    {
+      "rank": 19,
+      "id": "load.nquads",
+      "category": "Parsing & Loading",
+      "javaMedianWallMs": 3.114,
+      "jsCompatMedianWallMs": 3.81,
+      "jsCompatVsJavaRatio": 1.22,
+      "jsNormativeMedianWallMs": 4.031,
+      "jsNormativeVsJavaRatio": 1.29,
+      "maxJsVsJavaRatio": 1.29
+    },
+    {
+      "rank": 20,
+      "id": "profiles.OWL2ELProfile.checkOntology",
+      "category": "OWL 2 Language Profiles",
+      "javaMedianWallMs": 2.226,
+      "jsCompatMedianWallMs": 1.392,
+      "jsCompatVsJavaRatio": 0.63,
+      "jsNormativeMedianWallMs": 2.756,
+      "jsNormativeVsJavaRatio": 1.24,
+      "maxJsVsJavaRatio": 1.24
+    },
+    {
+      "rank": 21,
+      "id": "util.AnnotationValueShortFormProvider",
+      "category": "Utilities",
+      "javaMedianWallMs": 1.264,
+      "jsCompatMedianWallMs": 0.48,
+      "jsCompatVsJavaRatio": 0.38,
+      "jsNormativeMedianWallMs": 1.554,
+      "jsNormativeVsJavaRatio": 1.23,
+      "maxJsVsJavaRatio": 1.23
+    },
+    {
+      "rank": 22,
+      "id": "model.axiomAnnotationsTransform",
+      "category": "DataFactory & Structural Model",
+      "javaMedianWallMs": 1.31,
+      "jsCompatMedianWallMs": 1.438,
+      "jsCompatVsJavaRatio": 1.1,
+      "jsNormativeMedianWallMs": 1.55,
+      "jsNormativeVsJavaRatio": 1.18,
+      "maxJsVsJavaRatio": 1.18
+    }
+  ]
+}

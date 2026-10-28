@@ -234,6 +234,8 @@ const renderers = Object.freeze({
 });
 
 const supportedKinds = new Set([...ENTITY_KINDS, ...Object.keys(renderers)]);
+const entityKindsSet = new Set(ENTITY_KINDS);
+const sharedEncoder = new TextEncoder();
 
 /** Render the finite approved inventory as plain text. Provider and anonymous
  * display allocation are captured per call; no document or network is read.
@@ -290,9 +292,8 @@ export class ManchesterOWLSyntaxOWLObjectRendererImpl {
         return `_:${labels.get(key)}`;
       },
     };
-    const encoder = new TextEncoder();
     const render = (value) => {
-      const text = ENTITY_KINDS.includes(value.kind)
+      const text = entityKindsSet.has(value.kind)
         ? getShortForm.call(provider, value)
         : renderers[value.kind](value, render, context);
       if (typeof text !== "string")
@@ -301,7 +302,8 @@ export class ManchesterOWLSyntaxOWLObjectRendererImpl {
         );
       if (
         text.length > limits.maxOutputBytes ||
-        encoder.encode(text).byteLength > limits.maxOutputBytes
+        (text.length * 3 > limits.maxOutputBytes &&
+          sharedEncoder.encode(text).byteLength > limits.maxOutputBytes)
       )
         throw new ResourceLimitError("Manchester output byte limit exceeded", {
           resource: "outputBytes",

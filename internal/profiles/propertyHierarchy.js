@@ -16,7 +16,8 @@ export const reachable = async (graph, start, budget, reflexive = true) => {
   while (pending.length) {
     const current = pending.pop();
     for (const next of graph.get(current) ?? []) {
-      await budget.checkpoint();
+      budget.check();
+      if (budget.shouldYield()) await budget.yieldTurn();
       if (!seen.has(next)) {
         seen.add(next);
         pending.push(next);
@@ -48,7 +49,8 @@ export const inspectPropertyHierarchy = async (axioms, budget, violation) => {
   };
   const chains = [];
   for (const entry of axioms) {
-    await budget.checkpoint();
+    budget.check();
+    if (budget.shouldYield()) await budget.yieldTurn();
     const axiom = entry.value;
     switch (axiom.kind) {
       case K.SUB_OBJECT_PROPERTY_AXIOM:

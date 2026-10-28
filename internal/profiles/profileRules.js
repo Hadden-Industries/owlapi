@@ -105,10 +105,10 @@ const thing = (value) =>
  * state grammar, not a list of globally forbidden expression kinds. The shared
  * assessment budget bounds every expansion, including repeated DAG paths.
  */
-const expressionAllowed = async (root, profile, position, budget) => {
+const expressionAllowed = (root, profile, position, budget) => {
   const pending = [{ value: root, position, depth: 0 }];
   while (pending.length) {
-    await budget.checkpoint();
+    budget.check();
     const { value, position: at, depth } = pending.pop();
     budget.depth(depth);
     const push = (child, next = at) =>
@@ -196,14 +196,16 @@ const inspectELRanges = async (axioms, budget, violate, validationPolicy) => {
     parents.get(key).add(sup.structuralKey());
   };
   for (const { value } of axioms) {
-    await budget.checkpoint();
+    budget.check();
+    if (budget.shouldYield()) await budget.yieldTurn();
     if (value.kind === K.SUB_OBJECT_PROPERTY_AXIOM)
       edge(value.subProperty, value.superProperty);
     if (value.kind === K.EQUIVALENT_OBJECT_PROPERTIES_AXIOM) {
       // A bidirectional star represents the same transitive equivalence closure
       // with linear storage instead of a quadratic complete edge inventory.
       for (const property of value.properties) {
-        await budget.checkpoint();
+        budget.check();
+        if (budget.shouldYield()) await budget.yieldTurn();
         edge(property, value.properties[0]);
         edge(value.properties[0], property);
       }
@@ -220,16 +222,19 @@ const inspectELRanges = async (axioms, budget, violate, validationPolicy) => {
       visited = new Set(),
       pending = [key];
     while (pending.length) {
-      await budget.checkpoint();
+      budget.check();
+      if (budget.shouldYield()) await budget.yieldTurn();
       const current = pending.pop();
       if (visited.has(current)) continue;
       visited.add(current);
       for (const range of ranges.get(current) ?? []) {
-        await budget.checkpoint();
+        budget.check();
+        if (budget.shouldYield()) await budget.yieldTurn();
         result.add(range);
       }
       for (const parent of parents.get(current) ?? []) {
-        await budget.checkpoint();
+        budget.check();
+        if (budget.shouldYield()) await budget.yieldTurn();
         pending.push(parent);
       }
     }
@@ -237,14 +242,16 @@ const inspectELRanges = async (axioms, budget, violate, validationPolicy) => {
     return result;
   };
   for (const { value, scope } of axioms) {
-    await budget.checkpoint();
+    budget.check();
+    if (budget.shouldYield()) await budget.yieldTurn();
     if (value.kind !== K.SUB_PROPERTY_CHAIN_AXIOM) continue;
     const headRanges = await imposedRanges(value.superProperty);
     const lastRanges = validationPolicy.elLastChainPropertyInheritsRanges
       ? await imposedRanges(value.chain.at(-1))
       : (ranges.get(value.chain.at(-1).structuralKey()) ?? new Set());
     for (const range of headRanges) {
-      await budget.checkpoint();
+      budget.check();
+      if (budget.shouldYield()) await budget.yieldTurn();
       if (!lastRanges.has(range))
         violate("EL_CHAIN_RANGE_NOT_IMPOSED_ON_LAST_PROPERTY", {
           profile: "EL",
@@ -268,7 +275,8 @@ export const inspectProfileRules = async (
 ) => {
   const datatypes = profile === "RL" ? rlDatatypes : elqlDatatypes;
   for (const { value, scope, annotationContext } of nodes) {
-    await budget.checkpoint();
+    budget.check();
+    if (budget.shouldYield()) await budget.yieldTurn();
     // Annotation values retain the common lexical/structural checks, but are
     // outside the logical profile's data-range and individual productions.
     if (annotationContext) continue;
@@ -329,13 +337,14 @@ export const inspectProfileRules = async (
     }
   }
   for (const { value, scope } of axioms) {
-    await budget.checkpoint();
+    budget.check();
+    if (budget.shouldYield()) await budget.yieldTurn();
     const detail = { profile, scope, kind: value.kind };
     if (forbiddenAxioms[profile].has(value.kind))
       violate("PROFILE_AXIOM_NOT_ALLOWED", detail);
     if (profile === "EL") continue;
-    const check = async (expression, position) => {
-      if (!(await expressionAllowed(expression, profile, position, budget)))
+    const check = (expression, position) => {
+      if (!expressionAllowed(expression, profile, position, budget))
         violate("PROFILE_CLASS_POSITION_NOT_ALLOWED", {
           ...detail,
           position,
@@ -344,16 +353,16 @@ export const inspectProfileRules = async (
     };
     switch (value.kind) {
       case K.SUBCLASS_OF_AXIOM:
-        await check(value.subClass, "sub");
-        await check(value.superClass, "super");
+        check(value.subClass, "sub");
+        check(value.superClass, "super");
         break;
       case K.EQUIVALENT_CLASSES_AXIOM:
         for (const expression of value.classExpressions)
-          await check(expression, profile === "RL" ? "equiv" : "sub");
+          check(expression, profile === "RL" ? "equiv" : "sub");
         break;
       case K.DISJOINT_CLASSES_AXIOM:
         for (const expression of value.classExpressions)
-          await check(
+          check(
             expression,
             profile === "RL"
               ? validationPolicy.rlDisjointOperandPosition
@@ -362,21 +371,22 @@ export const inspectProfileRules = async (
         break;
       case K.OBJECT_PROPERTY_DOMAIN_AXIOM:
       case K.DATA_PROPERTY_DOMAIN_AXIOM:
-        await check(value.domain, "super");
+        check(value.domain, "super");
         break;
       case K.OBJECT_PROPERTY_RANGE_AXIOM:
-        await check(value.range, "super");
+        check(value.range, "super");
         break;
       case K.CLASS_ASSERTION_AXIOM:
         if (profile === "QL") {
           if (value.classExpression.kind !== K.CLASS)
             violate("PROFILE_CLASS_ASSERTION_NOT_ATOMIC", detail);
-        } else await check(value.classExpression, "super");
+        } else check(value.classExpression, "super");
         break;
       case K.HAS_KEY_AXIOM:
-        if (profile === "RL") await check(value.classExpression, "sub");
+        if (profile === "RL") check(value.classExpression, "sub");
         break;
     }
+    if (budget.shouldYield()) await budget.yieldTurn();
   }
   if (profile === "EL")
     await inspectELRanges(axioms, budget, violate, validationPolicy);

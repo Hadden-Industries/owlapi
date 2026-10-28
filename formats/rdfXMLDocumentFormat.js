@@ -6,11 +6,15 @@ import {
   XSD_NAMESPACE,
 } from "../internal/rdfjs/vocabulary.js";
 import { parseIri } from "@hyperjump/uri";
-import { DOMImplementation, XMLSerializer } from "@xmldom/xmldom";
+import { isNcName } from "../internal/parsing/xml/xmlNames.js";
 import {
   OWLDocumentFormat,
   copyDocumentFormatState,
 } from "../model/owlDocumentFormat.js";
+
+const XMLNS_NAMESPACE = "http://www.w3.org/2000/xmlns/";
+const xmlCharPattern =
+  /^[\t\n\r\u0020-\uD7FF\uE000-\uFFFD\u{10000}-\u{10FFFF}]*$/u;
 
 const validatePrefix = (name, namespace) => {
   if (
@@ -24,18 +28,15 @@ const validatePrefix = (name, namespace) => {
     );
   parseIri(namespace);
   const prefix = name.slice(0, -1);
-  if (prefix === "xmlns" || (prefix === "xml" && namespace !== XML_NAMESPACE))
+  if (
+    prefix === "xmlns" ||
+    namespace === XMLNS_NAMESPACE ||
+    (prefix === "xml" && namespace !== XML_NAMESPACE) ||
+    (prefix && namespace === XML_NAMESPACE && prefix !== "xml")
+  )
     throw new TypeError("Reserved XML prefix binding");
-  const document = new DOMImplementation().createDocument(null, null);
-  const serializer = new XMLSerializer();
-  serializer.serializeToString(document.createTextNode(namespace), {
-    requireWellFormed: true,
-  });
-  if (prefix)
-    serializer.serializeToString(
-      document.createElementNS(namespace, `${prefix}:name`),
-      { requireWellFormed: true },
-    );
+  if (!xmlCharPattern.test(namespace) || (prefix && !isNcName(prefix)))
+    throw new TypeError("Invalid XML prefix or namespace");
 };
 
 // Native friend captures prefix state without consulting caller-overridden methods.

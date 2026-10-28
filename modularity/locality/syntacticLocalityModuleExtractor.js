@@ -54,10 +54,13 @@ export class SyntacticLocalityModuleExtractor {
       if (this.#base.has(key)) continue;
       const signature = new Set(),
         heights = new Map();
+      let nodeAndSignatureWork = 0;
       for (const value of order) {
         let depth = 0,
           annotations = 0;
-        for (const child of children(value)) {
+        const childValues = children(value);
+        nodeAndSignatureWork += 1 + childValues.length;
+        for (const child of childValues) {
           const height = heights.get(child);
           if (!height) continue;
           depth = Math.max(depth, height.depth + 1);
@@ -67,8 +70,16 @@ export class SyntacticLocalityModuleExtractor {
         heights.set(value, { depth, annotations });
         if (entities.has(value.kind)) signature.add(keyOf(value));
       }
+      nodeAndSignatureWork += signature.size;
       const height = heights.get(axiom);
-      const entry = { axiom, key, order, signature, ...height };
+      const entry = {
+        axiom,
+        key,
+        order,
+        signature,
+        nodeAndSignatureWork,
+        ...height,
+      };
       this.#base.set(key, entry);
       for (const entity of signature) {
         if (!this.#index.has(entity)) this.#index.set(entity, new Set());
@@ -108,12 +119,11 @@ export class SyntacticLocalityModuleExtractor {
     budget.limit("maxAxioms", this.#base.size);
     const seed = new Set();
     for (const entity of seedIterable) {
-      await budget.checkpoint();
+      budget.check();
       if (!entities.has(entity?.kind))
         throw new TypeError("Seed must contain typed OWL entities");
       const order = validatedOrder(entity);
-      for (let index = 0; index < order.length; index++)
-        await budget.checkpoint();
+      budget.check(order.length);
       const key = keyOf(entity);
       // Java dereferences a missing signature index entry. Adapt that failure to
       // TypeError, rather than silently return a misleading empty module.
@@ -122,26 +132,21 @@ export class SyntacticLocalityModuleExtractor {
           "Seed entity is absent from the captured axiom base",
         );
       seed.add(key);
+      if (budget.shouldYield()) await budget.yieldTurn();
     }
     if (seed.size === 0) return [];
     // All admission precedes callbacks, including optional limits on the full
     // original base. Count edges as well as unique DAG nodes, never just roots.
     for (const entry of this.#base.values()) {
-      await budget.checkpoint();
+      budget.check();
       budget.limit("maxDepth", entry.depth);
       budget.limit("maxAnnotationDepth", entry.annotations);
-      for (const value of entry.order) {
-        await budget.checkpoint();
-        const values = children(value);
-        for (let index = 0; index < values.length; index++)
-          await budget.checkpoint();
-      }
-      for (let index = 0; index < entry.signature.size; index++)
-        await budget.checkpoint();
+      budget.check(entry.nodeAndSignatureWork);
+      if (budget.shouldYield()) await budget.yieldTurn();
     }
     let active = new Set();
     for (const entry of this.#base.values()) {
-      await budget.checkpoint();
+      budget.check();
       const selected = filter === undefined ? true : filter(entry.axiom);
       budget.check(0);
       if (typeof selected !== "boolean")
@@ -149,18 +154,20 @@ export class SyntacticLocalityModuleExtractor {
           "Locality filter must return a synchronous boolean",
         );
       if (selected) active.add(entry.key);
+      if (budget.shouldYield()) await budget.yieldTurn();
     }
     const pass = async (mode, base) => {
       const signature = new Set(seed),
         queue = [...seed],
         module = new Set();
       for (let cursor = 0; cursor < queue.length; cursor++) {
-        await budget.checkpoint();
+        budget.check();
         for (const entry of this.#index.get(queue[cursor])) {
-          await budget.checkpoint();
+          budget.check();
+          if (budget.shouldYield()) await budget.yieldTurn();
           if (!base.has(entry.key) || module.has(entry.key)) continue;
           if (
-            await isSyntacticallyLocal(
+            isSyntacticallyLocal(
               entry.axiom,
               entry.order,
               signature,
@@ -171,7 +178,7 @@ export class SyntacticLocalityModuleExtractor {
             continue;
           module.add(entry.key);
           for (const entity of entry.signature) {
-            await budget.checkpoint();
+            budget.check();
             if (!signature.has(entity)) {
               signature.add(entity);
               queue.push(entity);
@@ -187,7 +194,8 @@ export class SyntacticLocalityModuleExtractor {
       active = await pass(LocalityClass.BOTTOM, active);
       let mode = LocalityClass.TOP;
       while (true) {
-        await budget.checkpoint();
+        budget.check();
+        if (budget.shouldYield()) await budget.yieldTurn();
         const next = await pass(mode, active);
         if (next.size === active.size) {
           active = next;
@@ -200,7 +208,7 @@ export class SyntacticLocalityModuleExtractor {
     }
     const result = [];
     for (const key of active) {
-      await budget.checkpoint();
+      budget.check();
       result.push(this.#base.get(key).axiom);
     }
     budget.check(0);

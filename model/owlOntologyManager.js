@@ -450,6 +450,7 @@ export class OWLOntologyManager {
   #loaderConfigurationsByOntologyID = new Map();
   #requestedImportIRIs = new Set();
   #importedOntologyIDsByImportIRI = new Map();
+  #javaClosureCache = new WeakMap();
   #externalDocumentIRIsByOntology = new WeakMap();
   #rdfXmlFormats = new WeakMap();
 
@@ -772,6 +773,19 @@ export class OWLOntologyManager {
       this.#behaviorContext.behaviorProfileDefinition.ontologyLoadingPolicy
         .importResolution === "retained-id"
     ) {
+      const indexRevision = this.#managedOntologyIndex.revision;
+      const importedCount = this.#importedOntologyIDsByImportIRI.size;
+      const cached = this.#javaClosureCache.get(ontology);
+      if (
+        cached &&
+        cached.indexRevision === indexRevision &&
+        cached.importedCount === importedCount &&
+        cached.closure.every(
+          (member, i) => readOntologySnapshot(member) === cached.snapshots[i],
+        )
+      ) {
+        return cached.closure;
+      }
       const result = new Set();
       const pending = [ontology];
       while (pending.length) {
@@ -789,7 +803,14 @@ export class OWLOntologyManager {
           if (imported) pending.push(imported);
         }
       }
-      return Object.freeze([...result]);
+      const closure = Object.freeze([...result]);
+      this.#javaClosureCache.set(ontology, {
+        closure,
+        importedCount,
+        indexRevision,
+        snapshots: closure.map(readOntologySnapshot),
+      });
+      return closure;
     }
     return this.#managedOntologyIndex.createImportsClosureSnapshot(ontology, {
       operation,
@@ -1607,29 +1628,105 @@ export class OWLOntologyManager {
     );
   }
 
+  /** Java sequential publication. Consecutive axiom/annotation edits share one
+   * draft per ontology so a batch is not O(N^2) in snapshot copies; every
+   * staged edit is published before any identity/import change, rollback, or
+   * rethrown exception, so observable partial-application semantics match
+   * one-commit-per-change publication.
+   */
   #applySequentialChanges(descriptors, operation) {
     const enacted = [];
-    for (const descriptor of descriptors) {
-      this.#requireManagedOntologyState(descriptor.ontology, operation, {
-        change: descriptor.change,
-        index: descriptor.index,
-      });
-      if (this.#isAnnotationAdditionFiltered(descriptor)) {
-        // Recorded Java outcome: inverses are enacted in encounter order.
-        // Exceptions, unlike an unsuccessful result, retain prior publication.
-        for (const previous of enacted) {
-          const inverse = reverseChangeDescriptor(previous);
-          if (this.#isAnnotationAdditionFiltered(inverse))
-            throw new OWLOntologyStateError(
-              "An inverse ontology change was rejected",
-              { ontology: inverse.ontology, operation },
-            );
-          this.#commitAtomicChanges([inverse], operation, true);
-        }
-        return ChangeApplied.UNSUCCESSFULLY;
+    const stagedDrafts = new Map();
+    const flushStagedDrafts = () => {
+      if (stagedDrafts.size === 0) return;
+      const drafts = [...stagedDrafts.values()];
+      stagedDrafts.clear();
+      for (const { mutationDraft, ontologyState } of drafts)
+        ontologyState.preflightMutation(mutationDraft);
+      for (const { mutationDraft, ontologyState } of drafts)
+        ontologyState.assertPreparedMutationIsCurrent(mutationDraft);
+      for (const { mutationDraft, ontologyState } of drafts)
+        ontologyState.commitMutation(mutationDraft);
+    };
+    const stageSimpleDescriptor = (descriptor, ontologyState) => {
+      let entry = stagedDrafts.get(descriptor.ontology);
+      if (!entry) {
+        entry = {
+          mutationDraft: ontologyState.createMutationDraft(),
+          ontologyState,
+        };
+        stagedDrafts.set(descriptor.ontology, entry);
       }
-      if (this.#commitAtomicChanges([descriptor], operation, true))
-        enacted.push(descriptor);
+      const { mutationDraft } = entry;
+      switch (descriptor.kind) {
+        case "ADD_AXIOM":
+          return mutationDraft.stageAxiomAddition(descriptor.value);
+        case "REMOVE_AXIOM":
+          return mutationDraft.stageAxiomRemoval(descriptor.value);
+        case "ADD_ONTOLOGY_ANNOTATION":
+          return mutationDraft.stageOntologyAnnotationAddition(
+            descriptor.annotation,
+          );
+        case "REMOVE_ONTOLOGY_ANNOTATION":
+          return mutationDraft.stageOntologyAnnotationRemoval(descriptor.value);
+        default:
+          return undefined;
+      }
+    };
+    const isSimple = ({ kind }) =>
+      kind === "ADD_AXIOM" ||
+      kind === "REMOVE_AXIOM" ||
+      kind === "ADD_ONTOLOGY_ANNOTATION" ||
+      kind === "REMOVE_ONTOLOGY_ANNOTATION";
+
+    try {
+      for (const descriptor of descriptors) {
+        const ontologyState = this.#requireManagedOntologyState(
+          descriptor.ontology,
+          operation,
+          { change: descriptor.change, index: descriptor.index },
+        );
+        if (this.#isAnnotationAdditionFiltered(descriptor)) {
+          flushStagedDrafts();
+          // Recorded Java outcome: inverses are enacted in encounter order.
+          // Exceptions, unlike an unsuccessful result, retain prior publication.
+          for (const previous of enacted) {
+            const inverse = reverseChangeDescriptor(previous);
+            if (this.#isAnnotationAdditionFiltered(inverse))
+              throw new OWLOntologyStateError(
+                "An inverse ontology change was rejected",
+                { ontology: inverse.ontology, operation },
+              );
+            if (isSimple(inverse)) {
+              stageSimpleDescriptor(
+                inverse,
+                this.#requireManagedOntologyState(inverse.ontology, operation, {
+                  change: inverse.change,
+                  index: inverse.index,
+                }),
+              );
+            } else {
+              flushStagedDrafts();
+              this.#commitAtomicChanges([inverse], operation, true);
+            }
+          }
+          flushStagedDrafts();
+          return ChangeApplied.UNSUCCESSFULLY;
+        }
+        if (isSimple(descriptor)) {
+          if (stageSimpleDescriptor(descriptor, ontologyState))
+            enacted.push(descriptor);
+          continue;
+        }
+        flushStagedDrafts();
+        if (this.#commitAtomicChanges([descriptor], operation, true))
+          enacted.push(descriptor);
+      }
+      flushStagedDrafts();
+    } catch (error) {
+      // Java retains every change enacted before the exception.
+      flushStagedDrafts();
+      throw error;
     }
     return enacted.length
       ? ChangeApplied.SUCCESSFULLY

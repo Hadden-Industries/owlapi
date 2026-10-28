@@ -98,6 +98,19 @@ const statusOf = (violations, unresolved) =>
   violations.length ? "invalid" : unresolved.length ? "unverified" : "valid";
 const frozen = (entries) =>
   Object.freeze(entries.map((entry) => Object.freeze(entry)));
+const validIriStrings = new Set();
+
+const isValidProfileIri = (iriString) => {
+  if (validIriStrings.has(iriString)) return true;
+  try {
+    if (!iriString.isWellFormed()) return false;
+    parseIri(iriString);
+    if (validIriStrings.size < 50000) validIriStrings.add(iriString);
+    return true;
+  } catch {
+    return false;
+  }
+};
 
 const checkModel = async (
   ontology,
@@ -127,13 +140,15 @@ const checkModel = async (
     definitions = new Map(),
     datatypeDependencies = new Map();
   try {
+    await budget.checkpoint(0);
     const sourceRoots = includeSource
       ? await inspectSourceStructure(members, budget, violate)
       : new Map();
     for (const member of members) {
       const { snapshot, scope } = member;
       for (const axiom of snapshot.directAxioms) {
-        await budget.checkpoint();
+        budget.check();
+        if (budget.shouldYield()) await budget.yieldTurn();
         axioms.push({ value: axiom, scope });
       }
       const pending = [
@@ -144,7 +159,8 @@ const checkModel = async (
         ...(sourceRoots.get(scope) ?? []),
       ].map((value) => ({ value, depth: 0 }));
       while (pending.length) {
-        await budget.checkpoint();
+        budget.check();
+        if (budget.shouldYield()) await budget.yieldTurn();
         const entry = pending.pop(),
           value = entry.value;
         if (!value || typeof value !== "object") continue;
@@ -208,7 +224,8 @@ const checkModel = async (
     }
     const validateStructure = createStructuralValidator();
     for (let index = nodes.length - 1; index >= 0; index -= 1) {
-      await budget.checkpoint();
+      budget.check();
+      if (budget.shouldYield()) await budget.yieldTurn();
       validateStructure(nodes[index].value);
     }
     if (profile !== "DL")
@@ -221,7 +238,8 @@ const checkModel = async (
         validationPolicy,
       );
     for (const { value: axiom } of axioms) {
-      await budget.checkpoint();
+      budget.check();
+      if (budget.shouldYield()) await budget.yieldTurn();
       if (axiom.kind === K.DECLARATION_AXIOM)
         declarations.add(axiom.entity.structuralKey());
       if (axiom.kind === K.DATATYPE_DEFINITION_AXIOM) {
@@ -231,20 +249,16 @@ const checkModel = async (
       }
     }
     for (const node of nodes) {
-      await budget.checkpoint();
+      budget.check();
+      if (budget.shouldYield()) await budget.yieldTurn();
       const { value, scope } = node;
       if (value.kind === K.ONTOLOGY_ID)
         for (const iri of [value.ontologyIRI, value.versionIRI]) {
           if (iri && reserved(iri.value))
             violate("RESERVED_ONTOLOGY_IRI", { scope, iri: iri.value });
         }
-      if (value.kind === K.IRI) {
-        try {
-          if (!value.value.isWellFormed()) throw new Error();
-          parseIri(value.value);
-        } catch {
-          violate("IRI_INVALID", { scope });
-        }
+      if (value.kind === K.IRI && !isValidProfileIri(value.value)) {
+        violate("IRI_INVALID", { scope });
       }
       if (entityKinds.has(value.kind)) {
         const iri = value.iri.value;
@@ -312,7 +326,8 @@ const checkModel = async (
         violate("DATA_RANGE_ARITY", { scope, kind: value.kind });
     }
     for (const [iri, kinds] of entities) {
-      await budget.checkpoint();
+      budget.check();
+      if (budget.shouldYield()) await budget.yieldTurn();
       if (propertyKinds.filter((kind) => kinds.has(kind)).length > 1)
         violate("PROPERTY_CATEGORY_COLLISION", { iri });
       if (kinds.has(K.CLASS) && kinds.has(K.DATATYPE))
@@ -338,7 +353,8 @@ const checkModel = async (
     const checkedLiterals = new Set(),
       checkedEntities = new Set();
     for (const node of nodes) {
-      await budget.checkpoint();
+      budget.check();
+      if (budget.shouldYield()) await budget.yieldTurn();
       const { value, scope } = node;
       if (
         entityKinds.has(value.kind) &&
@@ -404,7 +420,8 @@ const checkModel = async (
           });
         else
           for (const facet of value.facetRestrictions) {
-            await budget.checkpoint();
+            budget.check();
+            if (budget.shouldYield()) await budget.yieldTurn();
             const result = validationPolicy.checksFacetValueSpace
               ? await inspectFacet(
                   value.datatype,
@@ -430,6 +447,7 @@ const checkModel = async (
     }
     if (validationPolicy.checksAnonymousStructure)
       await inspectAnonymousGraph(axioms, anonymous, budget, violate);
+    await budget.checkpoint(0);
   } catch (error) {
     if (error instanceof StructuralValidationError)
       violate("STRUCTURAL_OBJECT_INVALID");

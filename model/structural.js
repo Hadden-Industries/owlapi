@@ -1,17 +1,25 @@
 import { AXIOM_KINDS, OWLObjectKind } from "./kinds.js";
 
 let nextAnonymousOntologyID = 0;
+const AXIOM_KIND_SET = new Set(AXIOM_KINDS);
+const EMPTY_STRUCTURAL_SET = Object.freeze([]);
+let readPackageTuple;
+let copyWithAxiomAnnotations;
 
 const structuralTuple = (value) => {
-  if (value && typeof value.toStructuralTuple === "function") {
-    const tuple = value.toStructuralTuple();
-    if (!Array.isArray(tuple)) {
-      throw new TypeError("OWL structural tuples must be arrays");
+  if (value && typeof value === "object") {
+    const pkgTuple = readPackageTuple(value);
+    if (pkgTuple !== undefined) return pkgTuple;
+    if (typeof value.toStructuralTuple === "function") {
+      const tuple = value.toStructuralTuple();
+      if (!Array.isArray(tuple)) {
+        throw new TypeError("OWL structural tuples must be arrays");
+      }
+      return Object.freeze(tuple.map(structuralTuple));
     }
-    return Object.freeze(tuple.map(structuralTuple));
-  }
-  if (Array.isArray(value)) {
-    return Object.freeze(value.map(structuralTuple));
+    if (Array.isArray(value)) {
+      return Object.freeze(value.map(structuralTuple));
+    }
   }
   return value;
 };
@@ -36,6 +44,16 @@ export const normalizeStructuralSet = (values, name) => {
   if (!values || typeof values[Symbol.iterator] !== "function") {
     throw new TypeError(`${name} must be iterable`);
   }
+  if (Array.isArray(values)) {
+    if (values.length === 0) return EMPTY_STRUCTURAL_SET;
+    if (values.length === 1) {
+      const single = values[0];
+      if (!isCanonicalStructuralObject(single)) {
+        throw new TypeError(`${name} must contain OWL structural objects`);
+      }
+      return Object.freeze([single]);
+    }
+  }
 
   const unique = new Map();
   for (const value of values) {
@@ -44,6 +62,8 @@ export const normalizeStructuralSet = (values, name) => {
     }
     unique.set(value.structuralKey(), value);
   }
+  if (unique.size === 0) return EMPTY_STRUCTURAL_SET;
+  if (unique.size === 1) return Object.freeze([unique.values().next().value]);
 
   return Object.freeze(
     [...unique.entries()]
@@ -98,6 +118,8 @@ export class StructuralSet {
   }
 }
 
+const AXIOM_CLONE_TOKEN = Symbol("OWLStructuralObject.axiomClone");
+
 export class OWLStructuralObject {
   // UNSUPPORTED(OWLAPI parity): Java OWLAPI exposes a concrete interface/class
   // hierarchy for each structural type. The initial 0.1 package deliberately exposes
@@ -109,38 +131,59 @@ export class OWLStructuralObject {
   // API decision and updates to `model.*` capability rows and dispatch tests.
   #key;
   #keyWithoutAnnotations;
+  #componentsWithoutAnnotations;
   #tuple;
 
+  static {
+    readPackageTuple = (value) => (#tuple in value ? value.#tuple : undefined);
+    copyWithAxiomAnnotations = (axiom, normalizedAnnotations) =>
+      new OWLStructuralObject(axiom, normalizedAnnotations, AXIOM_CLONE_TOKEN);
+  }
+
   constructor(kind, fields, components, { componentsWithoutAnnotations } = {}) {
-    Object.defineProperty(this, "kind", {
-      configurable: false,
-      enumerable: true,
-      value: kind,
-      writable: false,
-    });
+    if (components === AXIOM_CLONE_TOKEN) {
+      const axiom = kind;
+      const normalizedAnnotations = fields;
+      const bodyTuple = axiom.#tuple.slice(1, -1);
+      Object.assign(this, axiom, { annotations: normalizedAnnotations });
+      this.#tuple = Object.freeze([
+        axiom.kind,
+        ...bodyTuple,
+        Object.freeze(normalizedAnnotations.map(structuralTuple)),
+      ]);
+      this.#componentsWithoutAnnotations =
+        axiom.#componentsWithoutAnnotations ?? Object.freeze(bodyTuple);
+      this.#keyWithoutAnnotations = axiom.#keyWithoutAnnotations;
+      Object.freeze(this);
+      return;
+    }
+    this.kind = kind;
     Object.assign(this, fields);
     this.#tuple = Object.freeze([kind, ...components.map(structuralTuple)]);
-    this.#key = JSON.stringify(this.#tuple);
-    this.#keyWithoutAnnotations = structuralKey(
-      kind,
-      componentsWithoutAnnotations || components,
-    );
+    if (componentsWithoutAnnotations) {
+      this.#componentsWithoutAnnotations = Object.freeze(
+        componentsWithoutAnnotations.map(structuralTuple),
+      );
+    }
     Object.freeze(this);
   }
 
   // Keep the exact data-field shape used by storage/source/profile validation.
   // Non-axiom structural values do not expose callable axiom-copy operations.
   get getAxiomWithoutAnnotations() {
-    return AXIOM_KINDS.includes(this.kind)
+    return AXIOM_KIND_SET.has(this.kind)
       ? getAxiomWithoutAnnotations
       : undefined;
   }
 
   get getAnnotatedAxiom() {
-    return AXIOM_KINDS.includes(this.kind) ? getAnnotatedAxiom : undefined;
+    return AXIOM_KIND_SET.has(this.kind) ? getAnnotatedAxiom : undefined;
   }
 
   structuralKey() {
+    if (this.#key === undefined) {
+      this.#key = JSON.stringify(this.#tuple);
+    }
     return this.#key;
   }
 
@@ -149,22 +192,31 @@ export class OWLStructuralObject {
   }
 
   equals(other) {
+    if (this === other) return true;
     return (
       Boolean(other) &&
       typeof other.structuralKey === "function" &&
-      this.#key === other.structuralKey()
+      this.structuralKey() === other.structuralKey()
     );
   }
 
   structuralKeyWithoutAnnotations() {
+    if (this.#keyWithoutAnnotations === undefined) {
+      this.#keyWithoutAnnotations =
+        this.#componentsWithoutAnnotations === undefined
+          ? this.structuralKey()
+          : JSON.stringify([this.kind, ...this.#componentsWithoutAnnotations]);
+    }
     return this.#keyWithoutAnnotations;
   }
 
   equalsIgnoreAnnotations(other) {
+    if (this === other) return true;
     return (
       Boolean(other) &&
       typeof other.structuralKeyWithoutAnnotations === "function" &&
-      this.#keyWithoutAnnotations === other.structuralKeyWithoutAnnotations()
+      this.structuralKeyWithoutAnnotations() ===
+        other.structuralKeyWithoutAnnotations()
     );
   }
 }
@@ -173,37 +225,24 @@ export class OWLStructuralObject {
 // validated body verbatim, retaining nested annotation objects and lexical data.
 const copyAxiomAnnotations = (axiom, annotations) => {
   if (
-    !AXIOM_KINDS.includes(axiom?.kind) ||
+    !AXIOM_KIND_SET.has(axiom?.kind) ||
     !(axiom instanceof OWLStructuralObject)
   ) {
     throw new TypeError("receiver must be a package OWL axiom");
   }
   const normalized = normalizeStructuralSet(annotations, "annotations");
-  if (
-    normalized.some(
-      (annotation) => annotation.kind !== OWLObjectKind.ANNOTATION,
-    )
-  ) {
-    throw new TypeError("annotations must contain OWL annotations");
+  for (let i = 0; i < normalized.length; i += 1) {
+    if (normalized[i].kind !== OWLObjectKind.ANNOTATION) {
+      throw new TypeError("annotations must contain OWL annotations");
+    }
   }
-  const components = axiom.toStructuralTuple().slice(1, -1);
-  const fields = Object.fromEntries(
-    Object.entries(axiom).filter(
-      ([key]) => key !== "kind" && key !== "annotations",
-    ),
-  );
-  return new OWLStructuralObject(
-    axiom.kind,
-    { ...fields, annotations: normalized },
-    [...components, normalized],
-    { componentsWithoutAnnotations: components },
-  );
+  return copyWithAxiomAnnotations(axiom, normalized);
 };
 
 /** Return the same structural body without this axiom's annotations. */
 function getAxiomWithoutAnnotations() {
   OWLStructuralObject.prototype.structuralKey.call(this);
-  if (!AXIOM_KINDS.includes(this.kind))
+  if (!AXIOM_KIND_SET.has(this.kind))
     throw new TypeError("receiver must be an OWL axiom");
   return this.annotations.length === 0 ? this : copyAxiomAnnotations(this, []);
 }
@@ -211,7 +250,7 @@ function getAxiomWithoutAnnotations() {
 /** Merge supplied annotations with the existing structural annotation set. */
 function getAnnotatedAxiom(annotations) {
   OWLStructuralObject.prototype.structuralKey.call(this);
-  if (!AXIOM_KINDS.includes(this.kind))
+  if (!AXIOM_KIND_SET.has(this.kind))
     throw new TypeError("receiver must be an OWL axiom");
   if (!annotations || typeof annotations[Symbol.iterator] !== "function") {
     throw new TypeError("annotations must be iterable");

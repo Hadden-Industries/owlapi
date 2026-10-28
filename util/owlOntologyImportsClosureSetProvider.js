@@ -1,6 +1,7 @@
-import { OWLOntology } from "../model/owlOntology.js";
+import { isPackageOntology, OWLOntology } from "../model/owlOntology.js";
 
 const requireOntology = (ontology, name) => {
+  if (isPackageOntology(ontology)) return ontology;
   try {
     OWLOntology.prototype.getOntologyID.call(ontology);
     return ontology;
@@ -21,15 +22,15 @@ const captureClosureSnapshot = (manager, rootOntology) => {
   if (!closure || typeof closure[Symbol.iterator] !== "function") {
     throw new TypeError("manager.getImportsClosure() must return an iterable");
   }
-  const capturedOntologies = [];
+  const capturedOntologies = new Set();
   let index = 0;
   for (const ontology of closure) {
-    capturedOntologies.push(
+    capturedOntologies.add(
       requireOntology(ontology, `importsClosure[${index}]`),
     );
     index += 1;
   }
-  return Object.freeze([...new Set(capturedOntologies)]);
+  return capturedOntologies;
 };
 
 export class OWLOntologyImportsClosureSetProvider {
@@ -46,6 +47,6 @@ export class OWLOntologyImportsClosureSetProvider {
    * independently of later manager changes, matching Java's stream creation.
    */
   ontologies() {
-    return new Set(captureClosureSnapshot(this.#manager, this.#rootOntology));
+    return captureClosureSnapshot(this.#manager, this.#rootOntology);
   }
 }

@@ -4,20 +4,31 @@ import {
   OWLObjectKind as K,
 } from "../../model/kinds.js";
 import { OWLOntologyManager } from "../../model/owlOntologyManager.js";
-import { readOntologySnapshot } from "../../model/owlOntology.js";
+import {
+  isPackageOntology,
+  readOntologySnapshot,
+} from "../../model/owlOntology.js";
 import {
   createSourcePreservingDataFactory,
   readDataFactoryBehaviorDefinition,
 } from "../../model/owlDataFactory.js";
-import { IRI, OWLStructuralObject } from "../../model/structural.js";
+import { OWLStructuralObject } from "../../model/structural.js";
 import { validateStructuralGraph } from "./structuralValidation.js";
 import { structuralFields } from "./structuralFields.js";
 import { minimumTwoSetFields, repeatSingleton } from "./setConstructs.js";
 
+const ALL_OWL_OBJECT_KINDS_SET = new Set(OWL_OBJECT_KINDS);
+const TRANSFORMABLE_KINDS_SET = new Set(
+  OWL_OBJECT_KINDS.filter(
+    (kind) => ![K.ONTOLOGY_ID, K.IMPORTS_DECLARATION].includes(kind),
+  ),
+);
+const ENTITY_KINDS_SET = new Set(ENTITY_KINDS);
+
 export const requireTransformKind = (value, kinds) => {
   if (!value || !kinds.includes(value.kind))
     throw new TypeError("unsupported transform kind");
-  validateStructuralGraph(value, new Set(OWL_OBJECT_KINDS));
+  validateStructuralGraph(value, ALL_OWL_OBJECT_KINDS_SET);
   OWLStructuralObject.prototype.structuralKey.call(value);
   return value;
 };
@@ -29,11 +40,8 @@ export const transformFactory = (manager) =>
 
 /** Capture genuine ontology members once; query their current revisions on each call. */
 export const captureOntologies = (input) => {
-  try {
-    readOntologySnapshot(input);
+  if (isPackageOntology(input)) {
     return Object.freeze([input]);
-  } catch {
-    /* try the selected iterable overload */
   }
   if (!input || typeof input[Symbol.iterator] !== "function")
     throw new TypeError("ontologies must be iterable");
@@ -62,11 +70,7 @@ export const captureReplacements = (map, keyKinds, valueKinds) => {
 export const transformObject = (root, factory, resolve) => {
   const order = validateStructuralGraph(
     root,
-    new Set(
-      OWL_OBJECT_KINDS.filter(
-        (kind) => ![K.ONTOLOGY_ID, K.IMPORTS_DECLARATION].includes(kind),
-      ),
-    ),
+    TRANSFORMABLE_KINDS_SET,
     readDataFactoryBehaviorDefinition(factory).computationResourcePolicy
       .maxTransformDepth,
   );
@@ -75,7 +79,14 @@ export const transformObject = (root, factory, resolve) => {
     value && typeof value === "object" ? done.get(value) : value;
   for (const value of order) {
     if (Array.isArray(value)) {
-      done.set(value, Object.freeze(value.map(get)));
+      let arrayChanged = false;
+      for (let i = 0; i < value.length; i += 1) {
+        if (get(value[i]) !== value[i]) {
+          arrayChanged = true;
+          break;
+        }
+      }
+      done.set(value, arrayChanged ? Object.freeze(value.map(get)) : value);
       continue;
     }
     const resolved = resolve(value);
@@ -84,27 +95,47 @@ export const transformObject = (root, factory, resolve) => {
       continue;
     }
     let rebuilt;
-    if (value.kind === K.IRI) rebuilt = IRI.create(value.value);
-    else if (value.kind === K.LITERAL)
-      rebuilt = factory.getOWLLiteral(
-        value.lexicalForm,
-        value.language || get(value.datatype),
-      );
-    else if (value.kind === K.INVERSE_OBJECT_PROPERTIES_AXIOM)
-      rebuilt = factory.getOWLInverseObjectPropertiesAxiom(
-        ...get(value.properties),
-        get(value.annotations),
-      );
-    else {
-      const setField = minimumTwoSetFields.get(value.kind);
-      const args = structuralFields
-        .get(value.kind)
-        .map((field) =>
+    if (value.kind === K.IRI) rebuilt = value;
+    else if (value.kind === K.LITERAL) {
+      const nextDatatype = get(value.datatype);
+      rebuilt =
+        nextDatatype === value.datatype
+          ? value
+          : factory.getOWLLiteral(
+              value.lexicalForm,
+              value.language || nextDatatype,
+            );
+    } else if (value.kind === K.INVERSE_OBJECT_PROPERTIES_AXIOM) {
+      const nextProps = get(value.properties);
+      const nextAnnotations = get(value.annotations);
+      rebuilt =
+        nextProps === value.properties && nextAnnotations === value.annotations
+          ? value
+          : factory.getOWLInverseObjectPropertiesAxiom(
+              ...nextProps,
+              nextAnnotations,
+            );
+    } else {
+      const fieldNames = structuralFields.get(value.kind);
+      let anyFieldChanged = false;
+      for (let i = 0; i < fieldNames.length; i += 1) {
+        const field = fieldNames[i];
+        if (get(value[field]) !== value[field]) {
+          anyFieldChanged = true;
+          break;
+        }
+      }
+      if (!anyFieldChanged) {
+        rebuilt = value;
+      } else {
+        const setField = minimumTwoSetFields.get(value.kind);
+        const args = fieldNames.map((field) =>
           field === setField
             ? repeatSingleton(get(value[field]))
             : get(value[field]),
         );
-      rebuilt = factory[`get${value.kind}`](...args);
+        rebuilt = factory[`get${value.kind}`](...args);
+      }
     }
     done.set(value, rebuilt);
   }
@@ -134,10 +165,12 @@ export const iriReplacementsForEntities = (entities) => {
 };
 
 export const entityResolver = (factory, entities, iris) => (value) => {
-  if (ENTITY_KINDS.includes(value.kind))
-    return factory[`get${value.kind}`](
-      entities.get(value.structuralKey())?.value ?? value.iri,
-    );
-  if (value.kind === K.IRI) return iris.get(value.structuralKey()) ?? value;
+  if (ENTITY_KINDS_SET.has(value.kind)) {
+    if (entities.size === 0) return value;
+    const replacement = entities.get(value.structuralKey());
+    return replacement ? factory[`get${value.kind}`](replacement.value) : value;
+  }
+  if (value.kind === K.IRI)
+    return iris.size === 0 ? value : (iris.get(value.structuralKey()) ?? value);
   return undefined;
 };

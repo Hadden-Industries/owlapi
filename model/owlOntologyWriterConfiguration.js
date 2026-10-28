@@ -10,6 +10,12 @@ const DEFAULTS = Object.freeze({
   labelsAsBanner: false,
   saveIds: false,
 });
+const CLONE_TOKEN = Symbol("OWLOntologyWriterConfiguration.clone");
+const JAVA_RESET_DEFAULTS = Object.freeze({
+  indentSize: DEFAULTS.indentSize,
+  banners: DEFAULTS.banners,
+  labelsAsBanner: DEFAULTS.labelsAsBanner,
+});
 
 /** Immutable bounded Java OWLAPI adaptation for RDF/XML presentation. */
 export class OWLOntologyWriterConfiguration {
@@ -20,7 +26,13 @@ export class OWLOntologyWriterConfiguration {
     readOntologyWriterConfiguration = (configuration) => configuration.#values;
   }
 
-  constructor(options) {
+  constructor(options, cloneValues = undefined) {
+    if (options === CLONE_TOKEN) {
+      this.#behaviorContext = cloneValues.behaviorContext;
+      this.#values = cloneValues.values;
+      Object.freeze(this);
+      return;
+    }
     if (
       options !== undefined &&
       (!options ||
@@ -66,18 +78,22 @@ export class OWLOntologyWriterConfiguration {
       this.#behaviorContext.behaviorProfileDefinition.configurationPolicy;
     if (policy.preservesNoOpWriterIdentity && this.#values[name] === value)
       return this;
-    const copy = new OWLOntologyWriterConfiguration({
-      behaviorProfileId:
-        this.#behaviorContext.behaviorProfileDefinition.behaviorProfileId,
+    const nextValues = Object.freeze(
+      policy.writerCopyResetFields.length > 0
+        ? {
+            ...this.#values,
+            ...JAVA_RESET_DEFAULTS,
+            [name]: value,
+          }
+        : {
+            ...this.#values,
+            [name]: value,
+          },
+    );
+    return new OWLOntologyWriterConfiguration(CLONE_TOKEN, {
+      behaviorContext: this.#behaviorContext,
+      values: nextValues,
     });
-    copy.#values = Object.freeze({
-      ...this.#values,
-      ...Object.fromEntries(
-        policy.writerCopyResetFields.map((field) => [field, DEFAULTS[field]]),
-      ),
-      [name]: value,
-    });
-    return copy;
   }
 
   #withBoolean(name, value) {

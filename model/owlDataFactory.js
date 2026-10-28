@@ -37,6 +37,16 @@ import {
 
 const OWL_THING_IRI = OWL_NAMESPACE + "Thing";
 const RDFS_LITERAL_IRI = RDFS_NAMESPACE + "Literal";
+const XSD_STRING_IRI_OBJECT = IRI.create(XSD_NAMESPACE + "string");
+const RDF_LANG_STRING_IRI_OBJECT = IRI.create(RDF_NAMESPACE + "langString");
+const RDFS_LABEL_IRI_OBJECT = IRI.create(RDFS_NAMESPACE + "label");
+const EMPTY_ANNOTATIONS = Object.freeze([]);
+const IRI_KINDS = Object.freeze([OWLObjectKind.IRI]);
+const DATATYPE_KINDS = Object.freeze([OWLObjectKind.DATATYPE]);
+const ANNOTATION_KINDS = Object.freeze([OWLObjectKind.ANNOTATION]);
+const ANNOTATION_PROPERTY_KINDS = Object.freeze([
+  OWLObjectKind.ANNOTATION_PROPERTY,
+]);
 
 const requireStructural = (value, name) => {
   if (!isCanonicalStructuralObject(value)) {
@@ -53,8 +63,7 @@ const requireKind = (value, kinds, name) => {
   return normalized;
 };
 
-const requireIri = (value, name) =>
-  requireKind(value, [OWLObjectKind.IRI], name);
+const requireIri = (value, name) => requireKind(value, IRI_KINDS, name);
 
 const requireStructuralSet = (values, name, minimum) => {
   const normalized = normalizeStructuralSet(values, name);
@@ -66,8 +75,8 @@ const requireStructuralSet = (values, name, minimum) => {
 
 const requireKindSet = (values, kinds, name, minimum) => {
   const normalized = requireStructuralSet(values, name, minimum);
-  for (const value of normalized) {
-    requireKind(value, kinds, name);
+  for (let i = 0; i < normalized.length; i += 1) {
+    requireKind(normalized[i], kinds, name);
   }
   return normalized;
 };
@@ -142,10 +151,20 @@ const normalizeUnorderedKindsWithRepetitions = (
 };
 
 const normalizeAnnotations = (annotations) =>
-  requireKindSet(annotations, [OWLObjectKind.ANNOTATION], "annotations", 0);
+  Array.isArray(annotations) && annotations.length === 0
+    ? EMPTY_ANNOTATIONS
+    : requireKindSet(annotations, ANNOTATION_KINDS, "annotations", 0);
 
-const createAnnotatedAxiom = (kind, fields, components, annotations = []) => {
-  const normalizedAnnotations = normalizeAnnotations(annotations);
+const createAnnotatedAxiom = (
+  kind,
+  fields,
+  components,
+  annotations = EMPTY_ANNOTATIONS,
+) => {
+  const normalizedAnnotations =
+    annotations === EMPTY_ANNOTATIONS
+      ? EMPTY_ANNOTATIONS
+      : normalizeAnnotations(annotations);
   return new OWLStructuralObject(
     kind,
     { ...fields, annotations: normalizedAnnotations },
@@ -369,7 +388,7 @@ export class OWLDataFactory {
   }
 
   getRDFSLabel() {
-    return this.getOWLAnnotationProperty(IRI.create(RDFS_NAMESPACE + "label"));
+    return this.getOWLAnnotationProperty(RDFS_LABEL_IRI_OBJECT);
   }
 
   getOWLLiteral(lexicalForm, languageOrDatatype) {
@@ -381,7 +400,7 @@ export class OWLDataFactory {
     const constructionPolicy =
       readDataFactoryBehaviorDefinition(this).literalConstructionPolicy;
     if (languageOrDatatype === undefined) {
-      datatype = this.getOWLDatatype(IRI.create(XSD_NAMESPACE + "string"));
+      datatype = this.getOWLDatatype(XSD_STRING_IRI_OBJECT);
     } else if (typeof languageOrDatatype === "string") {
       language = (
         constructionPolicy.trimsLanguageArgument
@@ -389,9 +408,7 @@ export class OWLDataFactory {
           : languageOrDatatype
       ).toLowerCase();
       datatype = this.getOWLDatatype(
-        IRI.create(
-          language ? RDF_NAMESPACE + "langString" : XSD_NAMESPACE + "string",
-        ),
+        language ? RDF_LANG_STRING_IRI_OBJECT : XSD_STRING_IRI_OBJECT,
       );
     } else if (languageOrDatatype?.kind === OWLObjectKind.IRI) {
       datatype = this.getOWLDatatype(
@@ -400,7 +417,7 @@ export class OWLDataFactory {
     } else {
       datatype = requireKind(
         languageOrDatatype,
-        [OWLObjectKind.DATATYPE],
+        DATATYPE_KINDS,
         "languageOrDatatype",
       );
     }
@@ -414,7 +431,15 @@ export class OWLDataFactory {
       );
       lexicalForm = normalized.lexicalForm;
       language = normalized.language;
-      datatype = this.getOWLDatatype(IRI.create(normalized.datatypeIRI));
+      if (normalized.datatypeIRI !== datatype.iri.value) {
+        datatype = this.getOWLDatatype(
+          normalized.datatypeIRI === XSD_NAMESPACE + "string"
+            ? XSD_STRING_IRI_OBJECT
+            : normalized.datatypeIRI === RDF_NAMESPACE + "langString"
+              ? RDF_LANG_STRING_IRI_OBJECT
+              : IRI.create(normalized.datatypeIRI),
+        );
+      }
     }
     return new OWLStructuralObject(
       OWLObjectKind.LITERAL,
@@ -423,11 +448,14 @@ export class OWLDataFactory {
     );
   }
 
-  getOWLAnnotation(property, value, annotations = []) {
-    const normalizedAnnotations = normalizeAnnotations(annotations);
+  getOWLAnnotation(property, value, annotations = EMPTY_ANNOTATIONS) {
+    const normalizedAnnotations =
+      annotations === EMPTY_ANNOTATIONS
+        ? EMPTY_ANNOTATIONS
+        : normalizeAnnotations(annotations);
     const normalizedProperty = requireKind(
       property,
-      [OWLObjectKind.ANNOTATION_PROPERTY],
+      ANNOTATION_PROPERTY_KINDS,
       "property",
     );
     const normalizedValue = requireKind(value, ANNOTATION_VALUE_KINDS, "value");

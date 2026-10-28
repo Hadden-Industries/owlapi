@@ -1,5 +1,6 @@
 import { ENTITY_KINDS, OWLObjectKind as K } from "../model/kinds.js";
-import { OWLOntology, readOntologySnapshot } from "../model/owlOntology.js";
+import { readOntologySnapshot } from "../model/owlOntology.js";
+import { readOntologyModel } from "../internal/model/ontologyReadModel.js";
 import { AddAxiom } from "../model/addAxiom.js";
 import { RemoveAxiom } from "../model/removeAxiom.js";
 import { AddOntologyAnnotation } from "../model/addOntologyAnnotation.js";
@@ -54,22 +55,17 @@ export class OWLEntityRenamer {
     const changes = [];
     for (const ontology of this.#ontologies) {
       const snapshot = readOntologySnapshot(ontology);
+      const model = readOntologyModel(snapshot);
       const batches = iriChange
-        ? [
-            [
-              ...OWLOntology.prototype.getReferencingAxioms.call(
-                ontology,
-                first,
-              ),
-            ],
-          ]
+        ? [model.referencingAxioms(first.structuralKey())]
         : [...entities.values()].map(({ key }) => [
-            ...OWLOntology.prototype.getReferencingAxioms.call(ontology, key),
-            ...OWLOntology.prototype.getDeclarationAxioms.call(ontology, key),
-            ...OWLOntology.prototype.getAnnotationAssertionAxioms.call(
-              ontology,
-              key.iri,
+            ...model.referencingAxioms(key.structuralKey()),
+            ...model.position(
+              K.DECLARATION_AXIOM,
+              "entity",
+              key.structuralKey(),
             ),
+            ...model.annotationAssertions(key.iri.structuralKey()),
           ]);
       for (const candidates of batches) {
         for (const axiom of candidates) {

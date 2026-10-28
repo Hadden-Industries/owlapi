@@ -101,10 +101,17 @@ export const materializeAxiomIterable = (
   return Object.freeze(materializedAxioms);
 };
 
-export class StructuralAxiomSet {
-  #axiomsByStructuralKey = new Map();
+const CLONE_AXIOM_SET_TOKEN = Symbol("StructuralAxiomSet.clone");
 
-  constructor(axioms = []) {
+export class StructuralAxiomSet {
+  #axiomsByStructuralKey;
+
+  constructor(axioms = [], cloneToken = undefined) {
+    if (cloneToken === CLONE_AXIOM_SET_TOKEN) {
+      this.#axiomsByStructuralKey = new Map(axioms);
+      return;
+    }
+    this.#axiomsByStructuralKey = new Map();
     if (!axioms || typeof axioms[Symbol.iterator] !== "function") {
       throw new TypeError("axioms must be iterable");
     }
@@ -142,7 +149,10 @@ export class StructuralAxiomSet {
   }
 
   clone() {
-    return new StructuralAxiomSet(this);
+    return new StructuralAxiomSet(
+      this.#axiomsByStructuralKey,
+      CLONE_AXIOM_SET_TOKEN,
+    );
   }
 
   values() {

@@ -5,14 +5,19 @@ import {
 } from "../model/kinds.js";
 import { OWLDataFactory } from "../model/owlDataFactory.js";
 import {
+  isPackageOntology,
   readOntologySnapshot,
   readOntologyBehaviorDefinition,
 } from "../model/owlOntology.js";
+import { readOntologyModel } from "../internal/model/ontologyReadModel.js";
 import { deferredQuery } from "../internal/model/deferredQuery.js";
 import {
   isCanonicalStructuralObject,
   StructuralSet,
 } from "../model/structural.js";
+
+const sharedFactory = new OWLDataFactory();
+const entityKindsSet = new Set(ENTITY_KINDS);
 
 const requireKind = (entity, kinds) => {
   if (!isCanonicalStructuralObject(entity) || !kinds.includes(entity.kind))
@@ -20,42 +25,60 @@ const requireKind = (entity, kinds) => {
 };
 
 const readOntologies = (input) => {
-  try {
-    readOntologySnapshot(input);
+  if (isPackageOntology(input)) {
     return [input];
-  } catch {
-    if (!input || typeof input[Symbol.iterator] !== "function")
-      throw new TypeError(
-        "ontology must be a package ontology or ontology iterable",
-      );
   }
-  const result = [...input];
-  for (const ontology of result) readOntologySnapshot(ontology);
-  const behaviorDefinitions = new Set(
-    result.map(readOntologyBehaviorDefinition).filter(Boolean),
-  );
-  if (behaviorDefinitions.size > 1)
-    throw new TypeError("Search ontologies must use the same behavior profile");
+  if (!input || typeof input[Symbol.iterator] !== "function")
+    throw new TypeError(
+      "ontology must be a package ontology or ontology iterable",
+    );
+  const result = Array.isArray(input) ? input : [...input];
+  let firstBehavior;
+  for (let i = 0; i < result.length; i += 1) {
+    const ontology = result[i];
+    if (!isPackageOntology(ontology)) readOntologySnapshot(ontology);
+    const behavior = readOntologyBehaviorDefinition(ontology);
+    if (behavior) {
+      if (firstBehavior === undefined) firstBehavior = behavior;
+      else if (firstBehavior !== behavior)
+        throw new TypeError(
+          "Search ontologies must use the same behavior profile",
+        );
+    }
+  }
   return result;
 };
 
-const classValues = (entity, input, method, field, excludeSelf = true) => {
+const classValues = (
+  entity,
+  input,
+  kind,
+  matchField,
+  outputField,
+  excludeSelf = true,
+) => {
   requireKind(entity, [K.CLASS]);
+  const entityKey = entity.structuralKey();
   return deferredQuery(() =>
     readOntologies(input).flatMap((ontology) =>
-      [...ontology[method](entity)].flatMap((axiom) => {
-        const value = axiom[field];
-        return Array.isArray(value)
-          ? value.filter((member) => !excludeSelf || !member.equals(entity))
-          : [value];
-      }),
+      readOntologyModel(readOntologySnapshot(ontology))
+        .position(kind, matchField, entityKey)
+        .flatMap((axiom) => {
+          const value = axiom[outputField];
+          return Array.isArray(value)
+            ? value.filter(
+                (member) =>
+                  !excludeSelf || member.structuralKey() !== entityKey,
+              )
+            : [value];
+        }),
     ),
   );
 };
 
 const annotationSubject = (entity) => {
   requireKind(entity, [...ENTITY_KINDS, K.IRI, K.ANONYMOUS_INDIVIDUAL]);
-  return ENTITY_KINDS.includes(entity.kind) ? entity.iri : entity;
+  return entityKindsSet.has(entity.kind) ? entity.iri : entity;
 };
 
 const annotationValues = (
@@ -67,23 +90,29 @@ const annotationValues = (
   const subject = annotationSubject(entity);
   if (property !== undefined && property !== null)
     requireKind(property, [K.ANNOTATION_PROPERTY]);
-  const factory = new OWLDataFactory();
+  const subjectKey = subject.structuralKey();
+  const propertyKey =
+    property !== undefined && property !== null
+      ? property.structuralKey()
+      : undefined;
   return deferredQuery(() =>
     readOntologies(input).flatMap((ontology) => [
       ...new StructuralSet(
-        [...ontology.getAnnotationAssertionAxioms(subject)].flatMap((axiom) => {
-          const annotations = [
-            factory.getOWLAnnotation(axiom.property, axiom.value),
-          ];
-          if (includeAssertionAnnotations)
-            annotations.push(...axiom.annotations);
-          return annotations.filter(
-            (annotation) =>
-              property === undefined ||
-              property === null ||
-              annotation.property.equals(property),
-          );
-        }),
+        readOntologyModel(readOntologySnapshot(ontology))
+          .annotationAssertions(subjectKey)
+          .flatMap((axiom) => {
+            const annotations = [
+              sharedFactory.getOWLAnnotation(axiom.property, axiom.value),
+            ];
+            if (includeAssertionAnnotations)
+              annotations.push(...axiom.annotations);
+            return propertyKey === undefined
+              ? annotations
+              : annotations.filter(
+                  (annotation) =>
+                    annotation.property.structuralKey() === propertyKey,
+                );
+          }),
       ),
     ]),
   );
@@ -113,14 +142,26 @@ const propertyValues = (property, input, relation) => {
       : "subProperty"
     : "property";
   const output = hierarchy ? (sub ? "subProperty" : "superProperty") : relation;
+  const propertyKey = property.structuralKey();
   return deferredQuery(() =>
     readOntologies(input).flatMap((ontology) =>
-      [...ontology.getAxiomsByType(kind)]
-        .filter((axiom) => axiom[match].equals(property))
+      readOntologyModel(readOntologySnapshot(ontology))
+        .position(kind, match, propertyKey)
         .map((axiom) => axiom[output]),
     ),
   );
 };
+
+const CHARACTERISTIC_AXIOM_KINDS = Object.freeze({
+  FunctionalObject: K.FUNCTIONAL_OBJECT_PROPERTY_AXIOM,
+  FunctionalData: K.FUNCTIONAL_DATA_PROPERTY_AXIOM,
+  InverseFunctionalObject: K.INVERSE_FUNCTIONAL_OBJECT_PROPERTY_AXIOM,
+  TransitiveObject: K.TRANSITIVE_OBJECT_PROPERTY_AXIOM,
+  SymmetricObject: K.SYMMETRIC_OBJECT_PROPERTY_AXIOM,
+  AsymmetricObject: K.ASYMMETRIC_OBJECT_PROPERTY_AXIOM,
+  ReflexiveObject: K.REFLEXIVE_OBJECT_PROPERTY_AXIOM,
+  IrreflexiveObject: K.IRREFLEXIVE_OBJECT_PROPERTY_AXIOM,
+});
 
 const characteristic = (property, input, name, allowData = false) => {
   requireKind(
@@ -130,9 +171,15 @@ const characteristic = (property, input, name, allowData = false) => {
       : OBJECT_PROPERTY_EXPRESSION_KINDS,
   );
   const family = property.kind === K.DATA_PROPERTY ? "Data" : "Object";
+  const kind = CHARACTERISTIC_AXIOM_KINDS[`${name}${family}`];
+  const propertyKey = property.structuralKey();
   return readOntologies(input).some(
     (ontology) =>
-      ontology[`get${name}${family}PropertyAxioms`](property).size > 0,
+      readOntologyModel(readOntologySnapshot(ontology)).position(
+        kind,
+        "property",
+        propertyKey,
+      ).length > 0,
   );
 };
 
@@ -142,9 +189,11 @@ const characteristic = (property, input, name, allowData = false) => {
 export class EntitySearcher {
   static getAnnotationAssertionAxioms(entity, ontology) {
     readOntologySnapshot(ontology);
-    const subject = annotationSubject(entity);
+    const subjectKey = annotationSubject(entity).structuralKey();
     return deferredQuery(() => [
-      ...ontology.getAnnotationAssertionAxioms(subject),
+      ...readOntologyModel(readOntologySnapshot(ontology)).annotationAssertions(
+        subjectKey,
+      ),
     ]);
   }
 
@@ -166,7 +215,8 @@ export class EntitySearcher {
     return classValues(
       entity,
       ontologies,
-      "getSubClassAxiomsForSubClass",
+      K.SUBCLASS_OF_AXIOM,
+      "subClass",
       "superClass",
     );
   }
@@ -175,7 +225,8 @@ export class EntitySearcher {
     return classValues(
       entity,
       ontologies,
-      "getSubClassAxiomsForSuperClass",
+      K.SUBCLASS_OF_AXIOM,
+      "superClass",
       "subClass",
     );
   }
@@ -184,7 +235,8 @@ export class EntitySearcher {
     return classValues(
       entity,
       ontologies,
-      "getEquivalentClassesAxioms",
+      K.EQUIVALENT_CLASSES_AXIOM,
+      "classExpressions",
       "classExpressions",
     );
   }
@@ -194,7 +246,8 @@ export class EntitySearcher {
     return classValues(
       entity,
       ontologies,
-      "getDisjointClassesAxioms",
+      K.DISJOINT_CLASSES_AXIOM,
+      "classExpressions",
       "classExpressions",
       false,
     );
@@ -217,12 +270,21 @@ export class EntitySearcher {
   /** Return the other endpoint of each directly asserted inverse axiom. */
   static getInverses(property, ontologies) {
     requireKind(property, OBJECT_PROPERTY_EXPRESSION_KINDS);
+    const propertyKey = property.structuralKey();
     return deferredQuery(() =>
       readOntologies(ontologies).flatMap((ontology) =>
-        [...ontology.getInverseObjectPropertyAxioms(property)].map(
-          (axiom) =>
-            axiom.properties[axiom.properties[0].equals(property) ? 1 : 0],
-        ),
+        readOntologyModel(readOntologySnapshot(ontology))
+          .position(
+            K.INVERSE_OBJECT_PROPERTIES_AXIOM,
+            "properties",
+            propertyKey,
+          )
+          .map(
+            (axiom) =>
+              axiom.properties[
+                axiom.properties[0].structuralKey() === propertyKey ? 1 : 0
+              ],
+          ),
       ),
     );
   }
