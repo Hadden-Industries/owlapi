@@ -64,33 +64,33 @@ describe("RDF/XML default-graph writer", () => {
     },
   );
 
-  it.each(["\x01", "\ud800"])(
-    "rejects invalid native comment characters %p",
-    (label) => {
-      expect(() =>
-        writeRdfXmlGraph(
-          dataset([
-            quad(
-              subject,
-              named(`${RDF_NAMESPACE}type`),
-              named("http://www.w3.org/2002/07/owl#Class"),
-            ),
-            quad(
-              subject,
-              named("http://www.w3.org/2000/01/rdf-schema#label"),
-              literal(label),
-            ),
-          ]),
-          {
-            indenting: false,
-            indentSize: 0,
-            banners: true,
-            labelsAsBanner: true,
-          },
-        ),
-      ).toThrow(OWLOntologyStorageError);
-    },
-  );
+  it.each([
+    ["control U+0001", "\x01"],
+    ["unpaired high surrogate U+D800", "\ud800"],
+  ])("rejects invalid native comment characters: %s", (_description, label) => {
+    expect(() =>
+      writeRdfXmlGraph(
+        dataset([
+          quad(
+            subject,
+            named(`${RDF_NAMESPACE}type`),
+            named("http://www.w3.org/2002/07/owl#Class"),
+          ),
+          quad(
+            subject,
+            named("http://www.w3.org/2000/01/rdf-schema#label"),
+            literal(label),
+          ),
+        ]),
+        {
+          indenting: false,
+          indentSize: 0,
+          banners: true,
+          labelsAsBanner: true,
+        },
+      ),
+    ).toThrow(OWLOntologyStorageError);
+  });
 
   it("round-trips a delimiter-heavy predicate without quadratic split selection", async () => {
     await roundTrip([
