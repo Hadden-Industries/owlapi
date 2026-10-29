@@ -106,7 +106,7 @@ node scripts/build-artifact-action.mjs --check
 
 The build record binds source, policy, both dependency locks and generated outputs.
 Workflow governance rejects direct upload bypasses, changed action contracts and caller policy overrides, and closes the producer/collector census.
-CI qualification policy version 7 binds the transport policy and build record; older green receipts cannot automatically qualify this protocol.
+The current CI qualification policy binds the transport policy and build record; older green receipts cannot automatically qualify this protocol.
 
 Recovery fault injection covers lost acknowledgements, delayed visibility, conflicting copies, failed lookups/downloads, bounded retries, deadlines, cancellation, unsafe ZIPs and a standalone SDK bundle.
 Hosted Linux, Windows and macOS execution remains required for the exact published candidate.

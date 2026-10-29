@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import {
   mkdtempSync,
   mkdirSync,
@@ -16,24 +16,30 @@ import {
   verifyIntegrationProof,
   selectBaseQualification,
   verifyBaseQualification,
+  readJobInventory,
 } from "./ci-verification.mjs";
 import {
   createRepositoryReader,
   readDownloadedReceipt,
   readGitSnapshot,
+  emit,
 } from "./ci-verification-command.mjs";
 import {
   REQUIRED_JOB_IDS,
   FULL_CI_JOB_IDS,
   requireCiJobs,
 } from "./require-job-success.mjs";
-import { summarizeJavaExecution } from "./ci-check-coverage.mjs";
+import {
+  summarizeJavaExecution,
+  evidenceFingerprint,
+} from "./ci-check-coverage.mjs";
 import {
   summarizeOwlContractExecution,
   REVIEWED_CONSUMER_SOURCES,
 } from "./owl-contract-evidence.mjs";
 import { contractReport } from "./fixtures/owl-contract-report.mjs";
 import { CI_JOB_NAMES, hostedCiJobNames } from "./ci-qualification.mjs";
+import { assertQualificationRecord } from "./ci-qualification.mjs";
 import { CANONICAL_NODE } from "./runtime-policy.mjs";
 import {
   JAVA_REFERENCE_POLICY,
@@ -262,6 +268,7 @@ const verify = async (
     now,
   });
   return verifyIntegrationProof({
+    jobObservation: { sleep: async () => {}, maxObservations: 2 },
     captureSources,
     context: f.context,
     selection,
@@ -443,6 +450,7 @@ const validateBase = async (
     now,
   });
   return verifyBaseQualification({
+    jobObservation: { sleep: async () => {}, maxObservations: 2 },
     captureSources,
     context: f.context,
     selection,
@@ -452,6 +460,235 @@ const validateBase = async (
     now,
   });
 };
+
+test.each(["integration", "base"])(
+  "%s waits for a missing or pending native job without changing its proof",
+  async (route) => {
+    const f = route === "integration" ? fixture() : await mainFixture();
+    const path = `/actions/runs/${route === "integration" ? 100 : 200}/jobs?filter=latest&per_page=100`;
+    const read = f.read;
+    let observations = 0;
+    f.read = async (requested) => {
+      const value = await read(requested);
+      if (requested === path && observations++ === 0) {
+        value.jobs.pop();
+        value.total_count--;
+        value.jobs[0].status = "queued";
+        value.jobs[0].conclusion = null;
+      }
+      return value;
+    };
+    await expect(
+      route === "integration" ? verify(f) : validateBase(f),
+    ).resolves.toBeDefined();
+    expect(observations).toBe(2);
+  },
+);
+
+test("waits for a delayed required producing-attempt job", async () => {
+  const f = partialPrFixture();
+  const path = "/actions/runs/100/attempts/1/jobs?per_page=100";
+  const read = f.read;
+  let observations = 0;
+  f.read = async (requested) => {
+    const value = await read(requested);
+    if (requested === path && observations++ === 0) {
+      value.jobs = value.jobs.filter(
+        (job) => job.name !== CI_JOB_NAMES.source_node_24,
+      );
+      value.total_count--;
+    }
+    return value;
+  };
+  await expect(verify(f)).resolves.toMatchObject({ reuse: "true" });
+  expect(observations).toBe(2);
+});
+
+test.each([
+  "failure",
+  "duplicate",
+  "foreign",
+  "missing conclusion",
+  "unknown status",
+  "truncated",
+])(
+  "rejects %s job inventory immediately despite pending registration elsewhere",
+  async (fault) => {
+    const f = fixture();
+    const jobs = jsonClone(f.jobs);
+    jobs[1].status = "queued";
+    jobs[1].conclusion = null;
+    if (fault === "failure") jobs[0].conclusion = "failure";
+    if (fault === "duplicate") jobs[0] = { ...jobs[1] };
+    if (fault === "foreign") jobs[0].run_id++;
+    if (fault === "missing conclusion") delete jobs[1].conclusion;
+    if (fault === "unknown status") jobs[1].status = "unknown";
+    let reads = 0,
+      waits = 0;
+    await expect(
+      readJobInventory({
+        run: f.run,
+        read: async () => {
+          reads++;
+          return {
+            jobs,
+            total_count: jobs.length + (fault === "truncated" ? 1 : 0),
+          };
+        },
+        observation: {
+          sleep: async () => {
+            waits++;
+          },
+        },
+      }),
+    ).rejects.toThrow();
+    expect(reads).toBe(1);
+    expect(waits).toBe(0);
+  },
+);
+
+test.each(["read", "sleep"])(
+  "job registration retains its deadline across %s",
+  async (phase) => {
+    const f = fixture();
+    let time = 0,
+      reads = 0;
+    await expect(
+      readJobInventory({
+        run: f.run,
+        read: async () => {
+          reads++;
+          if (phase === "read") time = 30_000;
+          return { jobs: [], total_count: 0 };
+        },
+        observation: {
+          now: () => time,
+          sleep: async () => {
+            time = 30_000;
+          },
+        },
+      }),
+    ).rejects.toThrow(/deadline/u);
+    expect(reads).toBe(1);
+  },
+);
+
+test("bounded pending registration never becomes proof", async () => {
+  const f = fixture();
+  let reads = 0;
+  await expect(
+    readJobInventory({
+      run: f.run,
+      read: async () => {
+        reads++;
+        return { jobs: [], total_count: 0 };
+      },
+      observation: { now: () => 0, sleep: async () => {}, maxObservations: 2 },
+    }),
+  ).rejects.toThrow(/incomplete/u);
+  expect(reads).toBe(2);
+});
+
+test("job registration deadline bounds the repository reader's backoff", async () => {
+  let elapsed = 0,
+    waits = 0;
+  const read = createRepositoryReader({
+    repository: repository.full_name,
+    token: "token",
+    now: () => elapsed,
+    sleep: async (ms) => {
+      elapsed += ms;
+      waits++;
+    },
+    random: () => 0,
+    fetchImpl: async () =>
+      new Response(null, { status: 503, headers: { "retry-after": "40" } }),
+  });
+  await expect(
+    readJobInventory({
+      run: fixture().run,
+      read,
+      observation: { now: () => elapsed },
+    }),
+  ).rejects.toThrow();
+  expect(waits).toBe(0);
+  expect(elapsed).toBe(0);
+});
+
+test("workflow output retains verified source, attempts, artifact and summary", async () => {
+  const values = await verify(fixture());
+  const writes = [];
+  emit(values, "Verified original FULL proof.", {
+    env: {
+      GITHUB_ACTIONS: "true",
+      GITHUB_OUTPUT: "output",
+      GITHUB_STEP_SUMMARY: "summary",
+    },
+    append: (path, bytes) => writes.push([path, bytes]),
+    stdout: { write: (bytes) => writes.push(["stdout", bytes]) },
+  });
+  const outputs = Object.fromEntries(
+    writes[0][1]
+      .trimEnd()
+      .split("\n")
+      .map((line) => {
+        const at = line.indexOf("=");
+        return [line.slice(0, at), line.slice(at + 1)];
+      }),
+  );
+  expect(outputs).toEqual(values);
+  expect(writes[1]).toEqual(["summary", "Verified original FULL proof.\n"]);
+  expect(JSON.parse(writes[2][1])).toEqual({
+    ...values,
+    summary: "Verified original FULL proof.",
+  });
+});
+
+test.each(["output", "summary", "stdout"])(
+  "%s emission failure is terminal",
+  (sink) => {
+    const writes = [];
+    const write = (path, bytes) => {
+      writes.push([path, bytes]);
+      if (path === sink) throw new Error("broken sink");
+    };
+    expect(() =>
+      emit({ reuse: "true", source_run_id: "100" }, "Verified.", {
+        env: {
+          GITHUB_ACTIONS: "true",
+          GITHUB_OUTPUT: "output",
+          GITHUB_STEP_SUMMARY: "summary",
+        },
+        append: write,
+        stdout: { write: (bytes) => write("stdout", bytes) },
+      }),
+    ).toThrow("broken sink");
+    expect(writes.some(([, bytes]) => bytes.includes("reuse=false"))).toBe(
+      false,
+    );
+    expect(writes.filter(([path]) => path === sink)).toHaveLength(1);
+  },
+);
+
+test("hosted native command requires its output sink even on FULL fallback", () => {
+  const result = spawnSync(
+    process.execPath,
+    [resolve("scripts/ci-verification-command.mjs"), "verify"],
+    {
+      windowsHide: true,
+      encoding: "utf8",
+      env: {
+        ...process.env,
+        GITHUB_ACTIONS: "true",
+        GITHUB_OUTPUT: "",
+        PROOF_DOWNLOAD_OUTCOME: "failure",
+      },
+    },
+  );
+  expect(result.status).not.toBe(0);
+  expect(result.stderr).toContain("Hosted command requires GITHUB_OUTPUT");
+  expect(result.stdout).toBe("");
+});
 
 test.each(["integration", "base"])(
   "%s reuse requires the selected source pins and their availability",
@@ -475,6 +712,15 @@ test.each(["integration", "base"])(
 );
 
 describe("exact landed-main qualification and direct original execution", () => {
+  test("rejects a rewritten original collector even when its local fingerprints agree", async () => {
+    const f = await mainFixture(true);
+    f.record.source.host.imageVersion = "20260929.315.1";
+    for (const check of Object.values(f.record.checks))
+      check.inputs.hostSha256 = evidenceFingerprint(f.record.source.host);
+    // The local envelope is consistent; only original readback exposes the forgery.
+    expect(() => assertQualificationRecord(f.record)).not.toThrow();
+    await expect(validateBase(f)).rejects.toThrow(/original/u);
+  });
   test("reused main keeps direct check-producing attempts from a partial PR rerun", async () => {
     const f = await mainFixture(true, true);
     expect(f.record.source.runAttempt).toBe(2);
@@ -943,7 +1189,7 @@ describe("reuse of complete PR integration", () => {
   test("records typed FULL coverage rather than inferring live tests from job success", () => {
     const f = fixture();
     expect(f.receipt).toMatchObject({
-      schemaVersion: 5,
+      schemaVersion: 6,
       role: "PR",
       mode: "FULL",
       checks: {
@@ -972,7 +1218,7 @@ describe("reuse of complete PR integration", () => {
       now,
     });
     expect(record).toMatchObject({
-      schemaVersion: 5,
+      schemaVersion: 6,
       role: "MAIN",
       mode: "REUSED",
       sourceMode: "FULL",
@@ -989,6 +1235,43 @@ describe("reuse of complete PR integration", () => {
         },
       },
     });
+  });
+  test("reuses equal inputs across collector image builds without rebinding original proof", async () => {
+    const f = fixture();
+    const originalHost = jsonClone(f.receipt.host);
+    f.context.host = { ...f.context.host, imageVersion: "20260929.315.1" };
+    const outputs = await verify(f);
+    expect(outputs.reuse).toBe("true");
+    const needs = successfulNeeds();
+    for (const jobId of FULL_CI_JOB_IDS) needs[jobId].result = "skipped";
+    needs.verification = { result: "success", outputs };
+    const record = createMainQualification({
+      context: { ...f.context, runId: 200, runAttempt: 1 },
+      needs,
+      now,
+    });
+    expect(record.host).toEqual(f.context.host);
+    expect(record.source.host).toEqual(originalHost);
+    expect(record.checks.java.inputs).toEqual(f.receipt.checks.java.inputs);
+    expect(record.checks.owl_contract.inputs).toEqual(
+      f.receipt.checks.owl_contract.inputs,
+    );
+    expect(record.javaReference).toEqual(f.receipt.javaReference);
+    delete record.source.host;
+    expect(() => assertQualificationRecord(record)).toThrow(
+      /original PR proof/u,
+    );
+  });
+  test.each([
+    ["os", "Windows"],
+    ["architecture", "ARM64"],
+    ["image", "ubuntu26"],
+    ["node", "v24.0.0"],
+    ["imageVersion", ""],
+  ])("rejects unsupported or missing collector %s", async (field, value) => {
+    const f = fixture();
+    f.context.host = { ...f.context.host, [field]: value };
+    await expect(verify(f)).rejects.toThrow();
   });
   test("reuses a current-API PR with identical parents and files, retaining the original candidate after a partial rerun", async () => {
     const f = fixture();
@@ -1385,6 +1668,7 @@ describe("native evidence boundaries", () => {
       repository: repository.full_name,
       token: "test-token",
       now: () => time,
+      wallNow: () => time,
       random: () => 0,
       sleep: async (milliseconds) => {
         waits.push(milliseconds);

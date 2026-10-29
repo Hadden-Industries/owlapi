@@ -204,7 +204,7 @@ jobs:
         timeout-minutes: 5
         env:
           QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
-      - name: Exercise root JSON installation and exact preservation probes
+      - name: Exercise JSON behavior and source preservation probes
         run: npm run test:json
         timeout-minutes: 15
       - name: Verify complete JSON coverage on Node 26
@@ -273,7 +273,7 @@ jobs:
       - name: Acquire the exact isolated Markdown graph
         run: npm run install:markdown
         timeout-minutes: 5
-      - name: Exercise root JSON installation and exact preservation probes
+      - name: Exercise JSON behavior and source preservation probes
         run: npm run test:json
         timeout-minutes: 15
       - name: Exercise canonical Markdown isolation probes
@@ -1755,7 +1755,7 @@ jobs:
       - name: Acquire the exact isolated Markdown graph
         run: npm run install:markdown
         timeout-minutes: 5
-      - name: Exercise root JSON installation and exact preservation probes
+      - name: Exercise JSON behavior and source preservation probes
         run: npm run test:json
         timeout-minutes: 15
       - name: Verify formatting

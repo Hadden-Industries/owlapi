@@ -8,6 +8,10 @@ The historical schema-v2 milestone and its verification retain their original me
 The [9 October reconciliation](../plans/0.1.0-rc.2-java-parity.md#11-delivered-changes-from-rc1-through-9-october) records active qualification policy/schema 5, installed OWL contract coverage, Node 26 lanes and the later disabling of shared Java reuse after its pin changed.
 WebVOWL application reports and schema-v2 receipts below describe this historical milestone, not the current producer inventory.
 
+The [29 October reconciliation](../plans/2026-10-29-release-and-ci-evidence-reuse.md#5-local-implementation-disposition-29-october) advances the current receipt to schema 6 and policy 8.
+It permits compatible collector image-build churn while retaining the original collector host, bounds native job-registration observation, and makes failed workflow-output emission terminal.
+The historical milestones below are unchanged; current proof must satisfy the active source policy and direct-original provenance checks.
+
 ## Decision
 
 Deliver the plan's coordinated FULL-only schema-v2 milestone before enabling any omission.
