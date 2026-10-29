@@ -35,6 +35,22 @@ const mutateWorkflow = (fileName, mutate) => {
 };
 
 describe("repository workflow governance", () => {
+  test.each(["ci.yml", "release.yml"])(
+    "%s rejects a competing inline Java version",
+    (fileName) => {
+      const violations = mutateWorkflow(fileName, (document) => {
+        visit(document, {
+          Map(_key, node) {
+            if (node.get("uses")?.startsWith?.("actions/setup-java@"))
+              node.setIn(["with", "java-version"], "99");
+          },
+        });
+      });
+      expect(violations.join("\n")).toContain(
+        "JDK must use the single version file",
+      );
+    },
+  );
   test("rejects reconciliation evidence that substitutes a logical name for the uploaded identity", () => {
     const violations = mutateWorkflow(
       "release-reconciliation.yml",

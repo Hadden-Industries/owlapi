@@ -261,6 +261,9 @@ export const referenceRecipeIdentity = () =>
     javaPolicySha256: sha256(
       readFileSync(join(here, "../../scripts/java-toolchain.mjs")),
     ),
+    javaSelectionSha256: sha256(
+      readFileSync(join(here, "../../.java-version")),
+    ),
     jvmOptions: REFERENCE_JVM_OPTIONS,
     settingsSha256: sha256(readFileSync(settings)),
     toolchainsSha256: sha256(readFileSync(toolchains)),

@@ -6,15 +6,31 @@ import { join } from "node:path";
 /** Current execution policy. Historical oracle receipts and timings keep their
  * original identities and cannot be admitted by changing this declaration.
  */
-export const JAVA_TOOLCHAIN = Object.freeze({
-  vendor: "Eclipse Adoptium",
-  distribution: "temurin",
-  version: "25.0.5",
-  runtime: "25.0.5+8-LTS",
-  setupJavaVersion: "25.0.5+8.0.LTS",
-  windowsPackage: "EclipseAdoptium.Temurin.25.JDK",
-  windowsVersion: "25.0.5.8",
-});
+export function javaToolchainSelection(selection) {
+  const match =
+    /^(?<version>[1-9]\d*\.\d+\.\d+)\+(?<build>[1-9]\d*)\.0\.LTS$/u.exec(
+      selection.trim(),
+    );
+  if (!match)
+    throw new Error(
+      ".java-version must select an exact Temurin LTS patch and build",
+    );
+  const { version, build } = match.groups;
+  const feature = version.split(".")[0];
+  return Object.freeze({
+    vendor: "Eclipse Adoptium",
+    distribution: "temurin",
+    version,
+    runtime: `${version}+${build}-LTS`,
+    setupJavaVersion: selection.trim(),
+    windowsPackage: `EclipseAdoptium.Temurin.${feature}.JDK`,
+    windowsVersion: `${version}.${build}`,
+  });
+}
+
+export const JAVA_TOOLCHAIN = javaToolchainSelection(
+  readFileSync(new URL("../.java-version", import.meta.url), "utf8"),
+);
 
 export function isCurrentJavaEnvironment(environment) {
   return (

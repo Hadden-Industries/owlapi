@@ -924,8 +924,8 @@ const validateJavaReferenceBoundary = (job, violations) => {
     jdks[0],
     {
       with: {
-        distribution: "temurin",
-        "java-version": JAVA_TOOLCHAIN.setupJavaVersion,
+        distribution: JAVA_TOOLCHAIN.distribution,
+        "java-version-file": ".java-version",
         "check-latest": false,
         "overwrite-settings": false,
         cache: "",
@@ -3256,6 +3256,17 @@ export const auditRepositoryControls = ({
         `${fileName}: forbidden workflow construct ${event}`,
       );
     validateActionUses(fileName, workflow, document, violations);
+    for (const [jobId, job] of entries(workflow.jobs)) {
+      for (const step of actionSteps(job, "actions/setup-java")) {
+        add(
+          violations,
+          step.with?.["java-version-file"] === ".java-version" &&
+            step.with?.distribution === JAVA_TOOLCHAIN.distribution &&
+            !Object.hasOwn(step.with ?? {}, "java-version"),
+          `${fileName}:${jobId}: reference JDK must use the single version file`,
+        );
+      }
+    }
     validateJobs(fileName, workflow, violations);
     validateCandidateTransport(fileName, workflow, violations);
   }

@@ -12,7 +12,6 @@ import {
   jsonContract,
   openJsonSourceSession,
   openJsonRepositorySession,
-  verifyJsonQualityInstallation,
   validateJsonQualityEvent,
 } from "@hadden-industries/json-quality";
 import jsonQualityEslint from "@hadden-industries/json-quality/eslint";
@@ -30,7 +29,6 @@ import {
 } from "./json-quality-probe-support.mjs";
 
 const repository = fileURLToPath(new URL("../", import.meta.url));
-const toolingRoot = repository;
 const exclusion = (paths) => ({
   paths,
   owner: "Native installer",
@@ -132,25 +130,6 @@ test("owned release documents and every Java profile JSON receive ordinary stric
   } finally {
     await session.close();
   }
-});
-
-test("root registry installation rejects changed package bytes", async () => {
-  await verifyJsonQualityInstallation({ toolingRoot });
-  const target = new URL(
-    "../node_modules/@hadden-industries/json-quality/docs/consumer-guide.md",
-    import.meta.url,
-  );
-  const original = await readFile(target);
-  try {
-    await writeFile(
-      target,
-      Buffer.concat([original, Buffer.from("\nchanged\n")]),
-    );
-    await assert.rejects(verifyJsonQualityInstallation({ toolingRoot }));
-  } finally {
-    await writeFile(target, original);
-  }
-  await verifyJsonQualityInstallation({ toolingRoot });
 });
 
 test("the public source path rejects escaped duplicate keys and unsafe exponent integers without parsing embedded payload strings", async () => {

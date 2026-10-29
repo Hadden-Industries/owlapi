@@ -352,7 +352,7 @@ jobs:
         timeout-minutes: 5
         env:
           QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
-      - name: Qualify the locked Python 3.15 scanner
+      - name: Qualify the locked Python scanner
         id: scanner_qualification
         run: node util/qualify-scancode-runtime.mjs --python-env=SCANCODE_PYTHON --work-root-env=SCANCODE_WORK_ROOT
         timeout-minutes: 45
@@ -426,7 +426,7 @@ jobs:
         uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
         with:
           distribution: temurin
-          java-version: "25.0.5+8.0.LTS"
+          java-version-file: .java-version
           check-latest: false
           overwrite-settings: false
           cache: ""
@@ -1335,7 +1335,7 @@ jobs:
         timeout-minutes: 5
         env:
           QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
-      - name: Qualify the locked Python 3.15 scanner
+      - name: Qualify the locked Python scanner
         id: scanner_qualification
         run: node util/qualify-scancode-runtime.mjs --python-env=SCANCODE_PYTHON --work-root-env=SCANCODE_WORK_ROOT
         timeout-minutes: 45

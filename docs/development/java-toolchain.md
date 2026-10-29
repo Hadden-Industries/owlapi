@@ -4,11 +4,11 @@
 **Scope:** New Java compilation, oracle execution and qualification for the continued 0.1.0 implementation.
 
 The repository owner selected the latest applicable Eclipse Temurin 25 LTS patch already installed on the development machine.
-The declared target is **Eclipse Temurin 25.0.5+8**, HotSpot JDK, with runtime build **25.0.5+8-LTS**.
+At that selection, the target was **Eclipse Temurin 25.0.5+8**, HotSpot JDK, with runtime build **25.0.5+8-LTS**.
 The official [Temurin 25 release catalogue](https://github.com/adoptium/temurin25-binaries/releases) identifies `jdk-25.0.5+8` as its latest release at this selection; [Adoptium's support policy](https://adoptium.net/support/) identifies Java 25 as an LTS line.
 Recheck the authoritative release and platform assets at future adoption; a rolling web-page example is not a frozen tool identity.
 
-## Exact declaration and local observation
+## Selection and local observation on 29 October
 
 | Field                            | Selected or observed value                               |
 | -------------------------------- | -------------------------------------------------------- |
@@ -36,11 +36,13 @@ For continued local Java work, select this installation explicitly instead of tr
 
 ## Current executable policy
 
-`scripts/java-toolchain.mjs` owns the current exact vendor, runtime, Windows package and setup-java version spellings.
-Workflow governance validates both workflow projections against that declaration, and the native build collector and input-record validator share its strict environment admission.
-The recipe fingerprint includes the policy module, so changing it invalidates affected build reuse.
+The root [`.java-version`](../../.java-version) is the single editable Java patch/build declaration, using setup-java's exact Temurin LTS spelling.
+`scripts/java-toolchain.mjs` derives the runtime, Windows package and native version spellings from that file.
+Workflow governance requires both setup-java consumers to use `java-version-file: .java-version` and rejects a competing inline version.
+The native build collector and input-record validator share strict admission derived from the same file.
+The recipe fingerprint includes both the policy module and version file, so changing either invalidates affected build reuse.
 
-- `.github/workflows/ci.yml` and `release.yml` request `25.0.5+8.0.LTS` through setup-java.
+- `.github/workflows/ci.yml` and `release.yml` read the same version file directly through setup-java.
 - Released-oracle semantic replay observes exact native properties and records the Java executable and JDK release-file digests; unchanged-probe reuse rejects missing or changed JDK identity.
 - New evidence recording rejects old runtime observations.
   Retained qualified observations and frozen timings keep their original identities.
@@ -49,6 +51,12 @@ SLICE-003 of the [release roadmap](../plans/2026-10-29-0.1.0-release-reconciliat
 The local executable and native properties have been observed on the selected JDK; hosted setup-java acquisition and exact platform assets still require their hosted execution evidence.
 Do not relax a strict environment validator to accept any Java 25 merely to make the new version run.
 Changed JDK inputs invalidate incompatible build-product or qualification reuse.
+
+Python follows the same ownership principle: [`.python-version`](../../.python-version) is its single editable selection.
+`scripts/development-tool-policy.mjs` derives the interpreter version, minor line and Ruff target; both native bootstraps consume that reader.
+After changing the Python pin, run `node scripts/sync-python-target.mjs --write` to project `requires-python` into both native projects and `target-version` into Ruff, then regenerate the two locks with uv.
+`npm run check:python-tools` and the projection tests reject drift; generated TOML constraints and historical scanner observations are not independent version declarations.
+The file-based pattern follows the local Universal Ontology Java setup and JSON Quality/Markdown Quality Python readers; no runtime controller is imported from those repositories.
 
 ## Historical evidence and semantic authority
 

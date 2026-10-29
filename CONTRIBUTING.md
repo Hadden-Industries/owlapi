@@ -156,7 +156,8 @@ For selected Markdown files, use `npm run check:markdown -- -- "docs/guide.md"` 
 `lint:files` remains available for existing JavaScript callers.
 
 JSON Quality is a normal root registry devDependency, installed by `npm ci` and imported from its public package exports.
-Its exact prerelease selector and native optional cohort live in the root manifest and lock; `npm run test:json` independently verifies cached registry bytes and rejects installed-file tampering.
+Its `>=` minimum declaration follows the other registry devDependencies, with exact resolved packages retained in the root lockfile and governed by ordinary npm and repository-wide dependency checks.
+`npm run test:json` checks JSON behavior, source preservation and coverage without a package-specific installation verifier.
 The old isolated JSON manifest, import bridge and `install:json` bootstrap are retired; Markdown and artifact transport retain their separate graphs.
 `npm run check:json` performs complete read-only checking of owned files, required generated outputs, pinned native evidence and linked JSON-LD sources.
 `npm run format:json:check` invokes that same complete check; `npm run inspect:json` emits its typed event stream as newline-delimited JSON.
