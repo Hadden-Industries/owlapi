@@ -16,35 +16,35 @@
     "version": "0.1.0-rc.2",
     "lockfile": "package-lock.json",
     "lockfileVersion": 3,
-    "lockfileSha256": "da0cb7eeb8de534db1be15edc3b2b76c718ef8447e639c83bdd294771efb9070",
+    "lockfileSha256": "823685bb63c9440d802981cbabcb8d1d29a8f902361e01bc64b0f9660c230536",
     "evidenceManifest": "docs/provenance/npm-package-evidence.json",
-    "evidenceManifestSha256": "ae54cd464b494bfa92eb54d7af19df0691fd3ae1b50402db13598bb090bee797",
-    "evidenceCorpusRoot": "6d2c3af414a458df80b57dd61fe153180bbf4c2a26bd00fe83b420d37d0a0af4",
+    "evidenceManifestSha256": "8271f6e2eae7b4c2e12216d4bf99c2e67bad86966da50831e7d20d2d8854ea39",
+    "evidenceCorpusRoot": "fd4c1115a8e0d9b693dc1d732c7986a1774981fe2c65b2fb4b2f8dd9bd259737",
     "tarballDependenciesBundled": false
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
     "digestAlgorithm": "sha256-sorted-json-v1",
-    "factsSha256": "66e7cd99baed0cf011bbf175229af2a9df103d5172fd6a5431f409c5d8e4fafa",
+    "factsSha256": "fbb73f41404dad7a05303851db7936c850d3400a78a0cc195f76829318e26ff1",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
     "conclusion": null
   },
   "summary": {
-    "componentCount": 744,
-    "artifactCount": 686,
+    "componentCount": 747,
+    "artifactCount": 689,
     "productionComponentCount": 47,
-    "developmentComponentCount": 697,
-    "authenticatedTarballArtifactCount": 686,
-    "registrySignatureVerifiedArtifactCount": 686,
-    "provenanceVerifiedArtifactCount": 204,
-    "provenanceNotPublishedArtifactCount": 482,
-    "scanVerifiedArtifactCount": 686,
-    "evidenceBlobCount": 3358,
-    "evidenceRetainedBytes": 69681963,
-    "inspectedLicenceFileCount": 656,
-    "inspectedNoticeFileCount": 318,
+    "developmentComponentCount": 700,
+    "authenticatedTarballArtifactCount": 689,
+    "registrySignatureVerifiedArtifactCount": 689,
+    "provenanceVerifiedArtifactCount": 208,
+    "provenanceNotPublishedArtifactCount": 481,
+    "scanVerifiedArtifactCount": 689,
+    "evidenceBlobCount": 3383,
+    "evidenceRetainedBytes": 74709706,
+    "inspectedLicenceFileCount": 673,
+    "inspectedNoticeFileCount": 323,
     "productionInspectedLicenceFileCount": 47,
     "productionInspectedNoticeFileCount": 23,
     "productionComponentsWithoutInspectedLicence": [
@@ -59,6 +59,7 @@
       "(MIT OR CC0-1.0)": 1,
       "(MIT OR WTFPL)": 1,
       "0BSD": 1,
+      "AGPL-3.0-only": 3,
       "Apache-2.0": 42,
       "BSD-2-Clause": 9,
       "BSD-3-Clause": 16,
@@ -84,6 +85,7 @@
       "(MIT OR CC0-1.0)": 1,
       "(MIT OR WTFPL)": 1,
       "0BSD": 1,
+      "AGPL-3.0-only": 3,
       "Apache-2.0": 41,
       "BSD-2-Clause": 9,
       "BSD-3-Clause": 12,
@@ -4112,6 +4114,399 @@
       }
     },
     {
+      "dependencyPath": "node_modules/@hadden-industries/json-quality",
+      "artifactId": "c3ae7127ab2e71453732eb5df89904f7f4ae7b1052c7571a1d3c531153e1fc51",
+      "name": "@hadden-industries/json-quality",
+      "version": "1.0.0-rc.2",
+      "relationship": "DEVELOPMENT_ONLY",
+      "lockfileDeclaredLicenseExpressions": [
+        "AGPL-3.0-only"
+      ],
+      "tarballDeclaredLicenseExpression": "AGPL-3.0-only",
+      "scanObservedLicenseExpressions": [
+        "(CC-BY-SA-4.0 AND AGPL-3.0-only) AND Apache-2.0 AND (BSL-1.0 AND LicenseRef-scancode-public-domain AND BSD-3-Clause AND MIT)",
+        "AGPL-3.0-only",
+        "AGPL-3.0-only AND CC-BY-SA-4.0",
+        "AGPL-3.0-only AND JSON",
+        "Apache-2.0",
+        "BSL-1.0 AND LicenseRef-scancode-public-domain AND BSD-3-Clause AND MIT",
+        "CC-BY-SA-2.5 AND CC-BY-SA-4.0 AND AGPL-3.0-only",
+        "CC-BY-SA-4.0",
+        "CC-BY-SA-4.0 AND (CC-BY-SA-2.5 AND CC-BY-SA-4.0 AND AGPL-3.0-only)",
+        "CC-BY-SA-4.0 AND AGPL-3.0-only",
+        "JSON"
+      ],
+      "declaredLicenseExpression": "AGPL-3.0-only",
+      "concludedLicenseExpression": "AGPL-3.0-only",
+      "licenseQualification": "LOCKFILE_TARBALL_DECLARATIONS_CONSISTENT",
+      "licenseConclusionRationale": "The concluded SPDX expression preserves an equivalent prior recorded conclusion when present; otherwise it selects the first SPDX-valid lockfile declaration, then authenticated package.json declaration, and only then ScanCode evidence. The distribution disposition likewise preserves an equivalent prior decision when present; otherwise it follows development/runtime scope and the concluded-licence policy. The lockfile and authenticated package.json declarations are consistent where present. ScanCode's additional file-level observations remain separately recorded and do not silently redefine the package declaration.",
+      "distributionDisposition": "DEVELOPMENT_ONLY_NOT_DISTRIBUTED",
+      "inspectionBasis": "LOCKED_REGISTRY_TARBALL",
+      "licenseFilePresence": "PRESENT",
+      "inspectedFiles": [
+        {
+          "path": "package/LICENSE",
+          "kind": "LICENCE",
+          "sha256": "8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef",
+          "blobSha256": "8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef",
+          "blobPath": "blobs/sha256/84/8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef"
+        },
+        {
+          "path": "package/README.md",
+          "kind": "README_ATTRIBUTION",
+          "sha256": "babc14d16c90abe4381f58b00cb12ba0166d920b398833a8e27b064dea63fbab",
+          "blobSha256": "babc14d16c90abe4381f58b00cb12ba0166d920b398833a8e27b064dea63fbab",
+          "blobPath": "blobs/sha256/ba/babc14d16c90abe4381f58b00cb12ba0166d920b398833a8e27b064dea63fbab"
+        },
+        {
+          "path": "package/THIRD-PARTY-NOTICES.md",
+          "kind": "THIRD_PARTY_LICENCE",
+          "sha256": "25ba44f650fa05f32d4732ffe6d52f575ccc110f5616cb16b677859acafe529b",
+          "blobSha256": "25ba44f650fa05f32d4732ffe6d52f575ccc110f5616cb16b677859acafe529b",
+          "blobPath": "blobs/sha256/25/25ba44f650fa05f32d4732ffe6d52f575ccc110f5616cb16b677859acafe529b"
+        }
+      ],
+      "externalLicenseEvidence": [],
+      "authentication": {
+        "registrySignature": "VERIFIED",
+        "provenance": "VERIFIED",
+        "archive": "VERIFIED",
+        "scan": "VERIFIED"
+      },
+      "artifactEvidence": {
+        "archiveSha256": "7c44ea46a4214dfd155109df75cedea5b29b2769c71a5f39a6891262d162e967",
+        "provenanceSha256": "aca1f8f9f69f49db5ddcb2db4722614868e71fb26fcbd0acabfacdeb99a88b95",
+        "registrySignatureSha256": "21b47700d7f1254b44c265321b48d0c530109f8131d048a9d85827dd61963ffa",
+        "scanSha256": "c23834869419b862fd3afca31c1e8e53e5434a4478bc9c7c1251549e7945df5e"
+      },
+      "registryUrl": "https://registry.npmjs.org/@hadden-industries/json-quality/-/json-quality-1.0.0-rc.2.tgz",
+      "sourceReference": "https://github.com/Hadden-Industries/json-quality.git",
+      "sourceUrl": "https://github.com/Hadden-Industries/json-quality",
+      "packageAuthor": null,
+      "packageTarballScope": false,
+      "noticeDisposition": "DEVELOPMENT_ONLY_RECORDED_NOT_PACKED",
+      "rationale": "This authenticated component belongs to the repository test, evidence, documentation, or release toolchain and is excluded from the owlapi tarball.",
+      "optional": false,
+      "platformSelectors": {
+        "cpu": [],
+        "libc": [],
+        "os": []
+      }
+    },
+    {
+      "dependencyPath": "node_modules/@hadden-industries/json-quality-linux-x64",
+      "artifactId": "36516ff07316c833e99dff416284b365dc4929c39a76d9494622dc2a0503dee7",
+      "name": "@hadden-industries/json-quality-linux-x64",
+      "version": "1.0.0-rc.2",
+      "relationship": "DEVELOPMENT_ONLY",
+      "lockfileDeclaredLicenseExpressions": [
+        "AGPL-3.0-only"
+      ],
+      "tarballDeclaredLicenseExpression": "AGPL-3.0-only",
+      "scanObservedLicenseExpressions": [
+        "(LicenseRef-scancode-unknown AND Unicode-3.0) AND ICU AND BSD-3-Clause AND (BSD-3-Clause AND NAIST-2003) AND NAIST-2003 AND LicenseRef-scancode-unicode AND BSD-2-Clause AND LicenseRef-scancode-public-domain AND MIT AND GPL-2.0-or-later WITH Autoconf-exception-generic AND GPL-3.0-or-later WITH Autoconf-exception-generic-3.0 AND NTP AND MIT-0",
+        "AGPL-3.0-only",
+        "Apache-2.0",
+        "Artistic-2.0",
+        "Artistic-2.0 AND LicenseRef-scancode-unknown-license-reference",
+        "BSD-2-Clause",
+        "BSD-2-Clause AND ISC",
+        "BSD-3-Clause",
+        "BSD-3-Clause AND Apache-2.0",
+        "BSD-3-Clause AND NAIST-2003",
+        "BSL-1.0",
+        "BSL-1.0 AND (BSL-1.0 AND LicenseRef-scancode-unicode) AND (LicenseRef-scancode-unknown AND Unicode-3.0) AND ICU AND BSD-3-Clause AND (BSD-3-Clause AND NAIST-2003) AND NAIST-2003 AND LicenseRef-scancode-unicode AND BSD-2-Clause AND LicenseRef-scancode-public-domain AND MIT AND GPL-2.0-or-later WITH Autoconf-exception-generic AND GPL-3.0-or-later WITH Autoconf-exception-generic-3.0 AND NTP AND MIT-0 AND Apache-2.0 AND LicenseRef-scancode-unknown AND Unicode-3.0 AND (GPL-3.0-or-later AND GPL-1.0-or-later AND Autoconf-exception-generic-3.0) AND (BSD-2-Clause AND ISC) AND (MIT AND LicenseRef-scancode-unknown AND BSD-3-Clause) AND (BSD-3-Clause AND Apache-2.0) AND LicenseRef-scancode-public-domain-disclaimer AND Zlib AND BlueOak-1.0.0 AND (Artistic-2.0 AND LicenseRef-scancode-unknown-license-reference) AND Artistic-2.0 AND (LicenseRef-scancode-unknown AND BSD-3-Clause) AND (CC0-1.0 OR BSD-2-Clause) AND ISC",
+        "BSL-1.0 AND LicenseRef-scancode-unicode",
+        "BlueOak-1.0.0",
+        "CC0-1.0 OR BSD-2-Clause",
+        "GPL-2.0-or-later WITH Autoconf-exception-generic",
+        "GPL-3.0-or-later AND GPL-1.0-or-later AND Autoconf-exception-generic-3.0",
+        "GPL-3.0-or-later WITH Autoconf-exception-generic-3.0",
+        "ICU",
+        "ISC",
+        "LicenseRef-scancode-public-domain",
+        "LicenseRef-scancode-public-domain-disclaimer",
+        "LicenseRef-scancode-unicode",
+        "LicenseRef-scancode-unicode AND NGPL",
+        "LicenseRef-scancode-unknown",
+        "LicenseRef-scancode-unknown AND BSD-3-Clause",
+        "LicenseRef-scancode-unknown AND Unicode-3.0",
+        "MIT",
+        "MIT AND BSD-3-Clause AND Apache-2.0 AND (LicenseRef-scancode-unknown AND Unicode-3.0) AND ICU AND (BSD-3-Clause AND NAIST-2003) AND NAIST-2003 AND LicenseRef-scancode-unicode AND BSD-2-Clause AND LicenseRef-scancode-public-domain AND GPL-2.0-or-later WITH Autoconf-exception-generic AND (GPL-3.0-or-later AND GPL-1.0-or-later AND Autoconf-exception-generic-3.0) AND NTP AND MIT-0 AND (BSD-2-Clause AND ISC) AND (MIT AND LicenseRef-scancode-unknown AND BSD-3-Clause) AND (BSD-3-Clause AND Apache-2.0) AND LicenseRef-scancode-public-domain-disclaimer AND Zlib AND BlueOak-1.0.0 AND (Artistic-2.0 AND LicenseRef-scancode-unknown-license-reference) AND Artistic-2.0 AND (LicenseRef-scancode-unknown AND BSD-3-Clause) AND (CC0-1.0 OR BSD-2-Clause) AND ISC",
+        "MIT AND LicenseRef-scancode-unknown AND BSD-3-Clause",
+        "MIT-0",
+        "NAIST-2003",
+        "NGPL",
+        "NTP",
+        "Unicode-3.0",
+        "Zlib"
+      ],
+      "declaredLicenseExpression": "AGPL-3.0-only",
+      "concludedLicenseExpression": "AGPL-3.0-only",
+      "licenseQualification": "LOCKFILE_TARBALL_DECLARATIONS_CONSISTENT",
+      "licenseConclusionRationale": "The concluded SPDX expression preserves an equivalent prior recorded conclusion when present; otherwise it selects the first SPDX-valid lockfile declaration, then authenticated package.json declaration, and only then ScanCode evidence. The distribution disposition likewise preserves an equivalent prior decision when present; otherwise it follows development/runtime scope and the concluded-licence policy. The lockfile and authenticated package.json declarations are consistent where present. ScanCode's additional file-level observations remain separately recorded and do not silently redefine the package declaration.",
+      "distributionDisposition": "DEVELOPMENT_ONLY_NOT_DISTRIBUTED",
+      "inspectionBasis": "LOCKED_REGISTRY_TARBALL",
+      "licenseFilePresence": "PRESENT",
+      "inspectedFiles": [
+        {
+          "path": "package/LICENSE",
+          "kind": "LICENCE",
+          "sha256": "8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef",
+          "blobSha256": "8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef",
+          "blobPath": "blobs/sha256/84/8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef"
+        },
+        {
+          "path": "package/THIRD-PARTY-NOTICES.txt",
+          "kind": "THIRD_PARTY_LICENCE",
+          "sha256": "0eb3cbd86a354cfee4d3c031ec1f4cd8f3195313ecf3eca41d835030dc20af5d",
+          "blobSha256": "0eb3cbd86a354cfee4d3c031ec1f4cd8f3195313ecf3eca41d835030dc20af5d",
+          "blobPath": "blobs/sha256/0e/0eb3cbd86a354cfee4d3c031ec1f4cd8f3195313ecf3eca41d835030dc20af5d"
+        },
+        {
+          "path": "package/notice-inventory.json",
+          "kind": "NOTICE",
+          "sha256": "7186b1c9eb3741cadadd53219dd4ad4d5e485fdba0ce479c0627fd140d6743fb",
+          "blobSha256": "7186b1c9eb3741cadadd53219dd4ad4d5e485fdba0ce479c0627fd140d6743fb",
+          "blobPath": "blobs/sha256/71/7186b1c9eb3741cadadd53219dd4ad4d5e485fdba0ce479c0627fd140d6743fb"
+        },
+        {
+          "path": "package/notices/boost/LICENSE_1_0.txt",
+          "kind": "LICENCE",
+          "sha256": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+          "blobSha256": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+          "blobPath": "blobs/sha256/c9/c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566"
+        },
+        {
+          "path": "package/notices/doubleConversion/AUTHORS",
+          "kind": "AUTHORS",
+          "sha256": "02f8e5babc63a87d460219a74b97e15046d198ed3bab061e3d46b4f44ea77a9d",
+          "blobSha256": "02f8e5babc63a87d460219a74b97e15046d198ed3bab061e3d46b4f44ea77a9d",
+          "blobPath": "blobs/sha256/02/02f8e5babc63a87d460219a74b97e15046d198ed3bab061e3d46b4f44ea77a9d"
+        },
+        {
+          "path": "package/notices/doubleConversion/COPYING",
+          "kind": "LICENCE",
+          "sha256": "4af93c12062c58058378de2397dc1c92bbff9ddfb1d583a01c84127557ce97ca",
+          "blobSha256": "4af93c12062c58058378de2397dc1c92bbff9ddfb1d583a01c84127557ce97ca",
+          "blobPath": "blobs/sha256/4a/4af93c12062c58058378de2397dc1c92bbff9ddfb1d583a01c84127557ce97ca"
+        },
+        {
+          "path": "package/notices/doubleConversion/LICENSE",
+          "kind": "LICENCE",
+          "sha256": "4af93c12062c58058378de2397dc1c92bbff9ddfb1d583a01c84127557ce97ca",
+          "blobSha256": "4af93c12062c58058378de2397dc1c92bbff9ddfb1d583a01c84127557ce97ca",
+          "blobPath": "blobs/sha256/4a/4af93c12062c58058378de2397dc1c92bbff9ddfb1d583a01c84127557ce97ca"
+        },
+        {
+          "path": "package/notices/icuLinux/LICENSE",
+          "kind": "LICENCE",
+          "sha256": "e09827667e0bb3c808b2a463548ba814a5e6249b67353234d70c8dfc2bcc417d",
+          "blobSha256": "e09827667e0bb3c808b2a463548ba814a5e6249b67353234d70c8dfc2bcc417d",
+          "blobPath": "blobs/sha256/e0/e09827667e0bb3c808b2a463548ba814a5e6249b67353234d70c8dfc2bcc417d"
+        },
+        {
+          "path": "package/notices/nodeLicense/LICENSE",
+          "kind": "LICENCE",
+          "sha256": "5888dbb9a1d2b18f2c3e6c5f6af1b39de658372b402a0577b002777f14c62ace",
+          "blobSha256": "5888dbb9a1d2b18f2c3e6c5f6af1b39de658372b402a0577b002777f14c62ace",
+          "blobPath": "blobs/sha256/58/5888dbb9a1d2b18f2c3e6c5f6af1b39de658372b402a0577b002777f14c62ace"
+        }
+      ],
+      "externalLicenseEvidence": [],
+      "authentication": {
+        "registrySignature": "VERIFIED",
+        "provenance": "VERIFIED",
+        "archive": "VERIFIED",
+        "scan": "VERIFIED"
+      },
+      "artifactEvidence": {
+        "archiveSha256": "62263121afde856200ab8b6fe93f6b8d6898ea3427b2941e52c6d08b844e9a4a",
+        "provenanceSha256": "6df030aef6bcff3c628c83d09f180f38fd6a0494007dc101b26b127207faddfa",
+        "registrySignatureSha256": "a02643814cc17f22f2317d171a59a1c407e3eafd8a2f77e5aeeb4d51167a391e",
+        "scanSha256": "d5592f4529a1814fc3b3a0bab078cb654bb208c8f481b93f912e3af179dbeaf8"
+      },
+      "registryUrl": "https://registry.npmjs.org/@hadden-industries/json-quality-linux-x64/-/json-quality-linux-x64-1.0.0-rc.2.tgz",
+      "sourceReference": "https://github.com/Hadden-Industries/json-quality.git",
+      "sourceUrl": "https://github.com/Hadden-Industries/json-quality",
+      "packageAuthor": null,
+      "packageTarballScope": false,
+      "noticeDisposition": "DEVELOPMENT_ONLY_RECORDED_NOT_PACKED",
+      "rationale": "This authenticated component belongs to the repository test, evidence, documentation, or release toolchain and is excluded from the owlapi tarball.",
+      "optional": true,
+      "platformSelectors": {
+        "cpu": [
+          "x64"
+        ],
+        "libc": [
+          "glibc"
+        ],
+        "os": [
+          "linux"
+        ]
+      }
+    },
+    {
+      "dependencyPath": "node_modules/@hadden-industries/json-quality-win32-x64",
+      "artifactId": "692e3a6469c7723df1d045b45d622088b6468e06b7bcd4490b99f807b81b3380",
+      "name": "@hadden-industries/json-quality-win32-x64",
+      "version": "1.0.0-rc.2",
+      "relationship": "DEVELOPMENT_ONLY",
+      "lockfileDeclaredLicenseExpressions": [
+        "AGPL-3.0-only"
+      ],
+      "tarballDeclaredLicenseExpression": "AGPL-3.0-only",
+      "scanObservedLicenseExpressions": [
+        "(LicenseRef-scancode-unknown AND Unicode-3.0) AND ICU AND BSD-3-Clause AND (BSD-3-Clause AND NAIST-2003) AND NAIST-2003 AND LicenseRef-scancode-unicode AND BSD-2-Clause AND LicenseRef-scancode-public-domain AND MIT AND GPL-2.0-or-later WITH Autoconf-exception-generic AND GPL-3.0-or-later WITH Autoconf-exception-generic-3.0 AND NTP AND MIT-0",
+        "AGPL-3.0-only",
+        "Apache-2.0",
+        "Artistic-2.0",
+        "Artistic-2.0 AND LicenseRef-scancode-unknown-license-reference",
+        "BSD-2-Clause",
+        "BSD-2-Clause AND ISC",
+        "BSD-3-Clause",
+        "BSD-3-Clause AND Apache-2.0",
+        "BSD-3-Clause AND NAIST-2003",
+        "BSL-1.0",
+        "BSL-1.0 AND (BSL-1.0 AND ICU AND LicenseRef-scancode-unicode) AND (LicenseRef-scancode-unknown AND Unicode-3.0) AND ICU AND BSD-3-Clause AND (BSD-3-Clause AND NAIST-2003) AND NAIST-2003 AND LicenseRef-scancode-unicode AND BSD-2-Clause AND LicenseRef-scancode-public-domain AND MIT AND GPL-2.0-or-later WITH Autoconf-exception-generic AND GPL-3.0-or-later WITH Autoconf-exception-generic-3.0 AND NTP AND (MIT-0 AND LicenseRef-scancode-unicode) AND LicenseRef-scancode-unknown AND Unicode-3.0 AND MIT-0 AND Apache-2.0 AND (GPL-3.0-or-later AND GPL-1.0-or-later AND Autoconf-exception-generic-3.0) AND (BSD-2-Clause AND ISC) AND (MIT AND LicenseRef-scancode-unknown AND BSD-3-Clause) AND (BSD-3-Clause AND Apache-2.0) AND LicenseRef-scancode-public-domain-disclaimer AND Zlib AND BlueOak-1.0.0 AND (Artistic-2.0 AND LicenseRef-scancode-unknown-license-reference) AND Artistic-2.0 AND (LicenseRef-scancode-unknown AND BSD-3-Clause) AND (CC0-1.0 OR BSD-2-Clause) AND ISC",
+        "BSL-1.0 AND ICU",
+        "BSL-1.0 AND ICU AND LicenseRef-scancode-unicode",
+        "BlueOak-1.0.0",
+        "CC0-1.0 OR BSD-2-Clause",
+        "GPL-2.0-or-later WITH Autoconf-exception-generic",
+        "GPL-3.0-or-later AND GPL-1.0-or-later AND Autoconf-exception-generic-3.0",
+        "GPL-3.0-or-later WITH Autoconf-exception-generic-3.0",
+        "ICU",
+        "ISC",
+        "LicenseRef-scancode-public-domain",
+        "LicenseRef-scancode-public-domain-disclaimer",
+        "LicenseRef-scancode-unicode",
+        "LicenseRef-scancode-unicode AND NGPL",
+        "LicenseRef-scancode-unknown",
+        "LicenseRef-scancode-unknown AND BSD-3-Clause",
+        "LicenseRef-scancode-unknown AND Unicode-3.0",
+        "MIT",
+        "MIT AND BSD-3-Clause AND Apache-2.0 AND (LicenseRef-scancode-unknown AND Unicode-3.0) AND ICU AND (BSD-3-Clause AND NAIST-2003) AND NAIST-2003 AND LicenseRef-scancode-unicode AND BSD-2-Clause AND LicenseRef-scancode-public-domain AND GPL-2.0-or-later WITH Autoconf-exception-generic AND (GPL-3.0-or-later AND GPL-1.0-or-later AND Autoconf-exception-generic-3.0) AND NTP AND MIT-0 AND (BSD-2-Clause AND ISC) AND (MIT AND LicenseRef-scancode-unknown AND BSD-3-Clause) AND (BSD-3-Clause AND Apache-2.0) AND LicenseRef-scancode-public-domain-disclaimer AND Zlib AND BlueOak-1.0.0 AND (Artistic-2.0 AND LicenseRef-scancode-unknown-license-reference) AND Artistic-2.0 AND (LicenseRef-scancode-unknown AND BSD-3-Clause) AND (CC0-1.0 OR BSD-2-Clause) AND ISC",
+        "MIT AND LicenseRef-scancode-unknown AND BSD-3-Clause",
+        "MIT-0",
+        "MIT-0 AND LicenseRef-scancode-unicode",
+        "NAIST-2003",
+        "NGPL",
+        "NTP",
+        "Unicode-3.0",
+        "Zlib"
+      ],
+      "declaredLicenseExpression": "AGPL-3.0-only",
+      "concludedLicenseExpression": "AGPL-3.0-only",
+      "licenseQualification": "LOCKFILE_TARBALL_DECLARATIONS_CONSISTENT",
+      "licenseConclusionRationale": "The concluded SPDX expression preserves an equivalent prior recorded conclusion when present; otherwise it selects the first SPDX-valid lockfile declaration, then authenticated package.json declaration, and only then ScanCode evidence. The distribution disposition likewise preserves an equivalent prior decision when present; otherwise it follows development/runtime scope and the concluded-licence policy. The lockfile and authenticated package.json declarations are consistent where present. ScanCode's additional file-level observations remain separately recorded and do not silently redefine the package declaration.",
+      "distributionDisposition": "DEVELOPMENT_ONLY_NOT_DISTRIBUTED",
+      "inspectionBasis": "LOCKED_REGISTRY_TARBALL",
+      "licenseFilePresence": "PRESENT",
+      "inspectedFiles": [
+        {
+          "path": "package/LICENSE",
+          "kind": "LICENCE",
+          "sha256": "8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef",
+          "blobSha256": "8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef",
+          "blobPath": "blobs/sha256/84/8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef"
+        },
+        {
+          "path": "package/THIRD-PARTY-NOTICES.txt",
+          "kind": "THIRD_PARTY_LICENCE",
+          "sha256": "4422384a5a794e51d35ba65c3717e8c139820cd1ec25f3bf95370c0476208c87",
+          "blobSha256": "4422384a5a794e51d35ba65c3717e8c139820cd1ec25f3bf95370c0476208c87",
+          "blobPath": "blobs/sha256/44/4422384a5a794e51d35ba65c3717e8c139820cd1ec25f3bf95370c0476208c87"
+        },
+        {
+          "path": "package/notice-inventory.json",
+          "kind": "NOTICE",
+          "sha256": "cb9bd3641bc03aedb6c4dbefe84baf3bd2deda7c938f88415dbae80f87c94a83",
+          "blobSha256": "cb9bd3641bc03aedb6c4dbefe84baf3bd2deda7c938f88415dbae80f87c94a83",
+          "blobPath": "blobs/sha256/cb/cb9bd3641bc03aedb6c4dbefe84baf3bd2deda7c938f88415dbae80f87c94a83"
+        },
+        {
+          "path": "package/notices/boost/LICENSE_1_0.txt",
+          "kind": "LICENCE",
+          "sha256": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+          "blobSha256": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+          "blobPath": "blobs/sha256/c9/c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566"
+        },
+        {
+          "path": "package/notices/doubleConversion/AUTHORS",
+          "kind": "AUTHORS",
+          "sha256": "02f8e5babc63a87d460219a74b97e15046d198ed3bab061e3d46b4f44ea77a9d",
+          "blobSha256": "02f8e5babc63a87d460219a74b97e15046d198ed3bab061e3d46b4f44ea77a9d",
+          "blobPath": "blobs/sha256/02/02f8e5babc63a87d460219a74b97e15046d198ed3bab061e3d46b4f44ea77a9d"
+        },
+        {
+          "path": "package/notices/doubleConversion/COPYING",
+          "kind": "LICENCE",
+          "sha256": "4af93c12062c58058378de2397dc1c92bbff9ddfb1d583a01c84127557ce97ca",
+          "blobSha256": "4af93c12062c58058378de2397dc1c92bbff9ddfb1d583a01c84127557ce97ca",
+          "blobPath": "blobs/sha256/4a/4af93c12062c58058378de2397dc1c92bbff9ddfb1d583a01c84127557ce97ca"
+        },
+        {
+          "path": "package/notices/doubleConversion/LICENSE",
+          "kind": "LICENCE",
+          "sha256": "4af93c12062c58058378de2397dc1c92bbff9ddfb1d583a01c84127557ce97ca",
+          "blobSha256": "4af93c12062c58058378de2397dc1c92bbff9ddfb1d583a01c84127557ce97ca",
+          "blobPath": "blobs/sha256/4a/4af93c12062c58058378de2397dc1c92bbff9ddfb1d583a01c84127557ce97ca"
+        },
+        {
+          "path": "package/notices/icu/LICENSE",
+          "kind": "LICENCE",
+          "sha256": "2eb5ef4da31e542030455e2d149feca8d8f1217e69ef98ea7e379067043b79ab",
+          "blobSha256": "2eb5ef4da31e542030455e2d149feca8d8f1217e69ef98ea7e379067043b79ab",
+          "blobPath": "blobs/sha256/2e/2eb5ef4da31e542030455e2d149feca8d8f1217e69ef98ea7e379067043b79ab"
+        },
+        {
+          "path": "package/notices/icuWindowsTools/LICENSE",
+          "kind": "LICENCE",
+          "sha256": "2eb5ef4da31e542030455e2d149feca8d8f1217e69ef98ea7e379067043b79ab",
+          "blobSha256": "2eb5ef4da31e542030455e2d149feca8d8f1217e69ef98ea7e379067043b79ab",
+          "blobPath": "blobs/sha256/2e/2eb5ef4da31e542030455e2d149feca8d8f1217e69ef98ea7e379067043b79ab"
+        },
+        {
+          "path": "package/notices/nodeLicense/LICENSE",
+          "kind": "LICENCE",
+          "sha256": "5888dbb9a1d2b18f2c3e6c5f6af1b39de658372b402a0577b002777f14c62ace",
+          "blobSha256": "5888dbb9a1d2b18f2c3e6c5f6af1b39de658372b402a0577b002777f14c62ace",
+          "blobPath": "blobs/sha256/58/5888dbb9a1d2b18f2c3e6c5f6af1b39de658372b402a0577b002777f14c62ace"
+        }
+      ],
+      "externalLicenseEvidence": [],
+      "authentication": {
+        "registrySignature": "VERIFIED",
+        "provenance": "VERIFIED",
+        "archive": "VERIFIED",
+        "scan": "VERIFIED"
+      },
+      "artifactEvidence": {
+        "archiveSha256": "a2e96fc1940f5c63c028038a866f3132d6e10ad9649eb501b4a3c59393c450e0",
+        "provenanceSha256": "82e9ea4e889ce7558d40dcbd3b5e0d3491efefd9d315fd278d4ffb0521e1efd1",
+        "registrySignatureSha256": "a9b9a02ebd194d556f5ded89385942a8094fdb45a85d5a188def2a2d7d65ef52",
+        "scanSha256": "bd3262af14cd9a2af18e6fb6c1adac00bad91395d34c9d832caa3c1a0532adea"
+      },
+      "registryUrl": "https://registry.npmjs.org/@hadden-industries/json-quality-win32-x64/-/json-quality-win32-x64-1.0.0-rc.2.tgz",
+      "sourceReference": "https://github.com/Hadden-Industries/json-quality.git",
+      "sourceUrl": "https://github.com/Hadden-Industries/json-quality",
+      "packageAuthor": null,
+      "packageTarballScope": false,
+      "noticeDisposition": "DEVELOPMENT_ONLY_RECORDED_NOT_PACKED",
+      "rationale": "This authenticated component belongs to the repository test, evidence, documentation, or release toolchain and is excluded from the owlapi tarball.",
+      "optional": true,
+      "platformSelectors": {
+        "cpu": [
+          "x64"
+        ],
+        "libc": [],
+        "os": [
+          "win32"
+        ]
+      }
+    },
+    {
       "dependencyPath": "node_modules/@humanfs/core",
       "artifactId": "ef667d8677d66c78608ba65e16b1df8f7293ddb7878a99c947cf46b4c6df6742",
       "name": "@humanfs/core",
@@ -6780,9 +7175,9 @@
     },
     {
       "dependencyPath": "node_modules/@jspm/generator",
-      "artifactId": "776ec993b3572249653f5a3127a14eb7a7daa6f1d18c5812d7ad5d3611b25522",
+      "artifactId": "c25ba73a2c6255b59565877e7874c3400e2e0bb38d716275e7d74ecc5aa2e581",
       "name": "@jspm/generator",
-      "version": "2.17.0",
+      "version": "2.18.0",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": [
         "Apache-2.0"
@@ -6817,17 +7212,17 @@
       "externalLicenseEvidence": [],
       "authentication": {
         "registrySignature": "VERIFIED",
-        "provenance": "NOT_PUBLISHED",
+        "provenance": "VERIFIED",
         "archive": "VERIFIED",
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "f6f29ab92702f0f1a07bb509a1d1cf784e1576301c1f7e7fc36b92c66914f15f",
-        "provenanceSha256": "79ac6d1bac09261109a48473211af9c4d05d04fee01b1a6fd1904ba766b17c30",
-        "registrySignatureSha256": "fb4c98a05af91ca6a1ff6ea5d41c18e1e85326ba44edc87d80f894b9090d5983",
-        "scanSha256": "d8b063046f1e1d884c57fe11385dde826427abf55806bcba1980c2700a7209b7"
+        "archiveSha256": "0ce8b609c70131b79dc48947b9d376284e5d9de299a3ff5c06d0e4ef77d18f67",
+        "provenanceSha256": "11dc1402a90469f4cd841d0b8824892a1324ec642806df831b012a1b12b726d4",
+        "registrySignatureSha256": "708e8821dc6e3cfad5b86e342dbabf975dc411b2a74726f5cb5c7f8f48b9c457",
+        "scanSha256": "47c9cdb2436cfdf2e4dbbb37c668a85daaeb15901815bfad1a7ccd3982aa9b9a"
       },
-      "registryUrl": "https://registry.npmjs.org/@jspm/generator/-/generator-2.17.0.tgz",
+      "registryUrl": "https://registry.npmjs.org/@jspm/generator/-/generator-2.18.0.tgz",
       "sourceReference": "git+https://github.com/jspm/jspm.git",
       "sourceUrl": "https://github.com/jspm/jspm",
       "packageAuthor": "Guy Bedford",
@@ -16781,9 +17176,9 @@
     },
     {
       "dependencyPath": "node_modules/bcp-47",
-      "artifactId": "b1dc95cdca33335d77d3c3d8fb94b0488205c74ef9246e9e3154b44c02b5674f",
+      "artifactId": "3d422b18d63d85b9f10864537af0fad6e26860a3fd842ab90599c9e8fdeb8baa",
       "name": "bcp-47",
-      "version": "2.1.1",
+      "version": "2.1.2",
       "relationship": "EXTERNAL_RUNTIME_DEPENDENCY",
       "lockfileDeclaredLicenseExpressions": [
         "MIT"
@@ -16810,9 +17205,9 @@
         {
           "path": "package/readme.md",
           "kind": "README_ATTRIBUTION",
-          "sha256": "7a48d28601909f5065727c3c087f31ecc891509f266629b9d8b74ea73b63fd4a",
-          "blobSha256": "7a48d28601909f5065727c3c087f31ecc891509f266629b9d8b74ea73b63fd4a",
-          "blobPath": "blobs/sha256/7a/7a48d28601909f5065727c3c087f31ecc891509f266629b9d8b74ea73b63fd4a"
+          "sha256": "19acbb6f776030043df4243ffbe3785af943378663a4dcd92898c857c8b57e3f",
+          "blobSha256": "19acbb6f776030043df4243ffbe3785af943378663a4dcd92898c857c8b57e3f",
+          "blobPath": "blobs/sha256/19/19acbb6f776030043df4243ffbe3785af943378663a4dcd92898c857c8b57e3f"
         }
       ],
       "externalLicenseEvidence": [],
@@ -16823,12 +17218,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "e67c1dcd770f9cffd696454cec076f5d0159d7a649b5d19a38056240dc686646",
-        "provenanceSha256": "6679726b85649edf7b120df0f2f6dd29ab005ad5971cae4dc312da46eb5b2895",
-        "registrySignatureSha256": "c55c46aa00d35c32128b5ef7aaf774d310d41cff93ca0ab49ad289b63be795be",
-        "scanSha256": "e8e4dfe45b42bdd8bbf575cb47f65daa64770c55d574d43d38cd25ca76f26e67"
+        "archiveSha256": "7d0bdba1c8b8c8d73e4450240d2cb9aeee3365c3f0032b2a4272d7eff1e63ba4",
+        "provenanceSha256": "dea8a195563407a3975b5e7d0cca48f4b9a21c18380de9b26cdfedee64fca42f",
+        "registrySignatureSha256": "3ad96570dd85eab88d1b0bdd4c9a75cd9c244d2935a993499d8d3cea3b0834f1",
+        "scanSha256": "2a93d79be7331c2f403cbaa450903ad7622a92b5ebc16bb037b3a194b02f8d3e"
       },
-      "registryUrl": "https://registry.npmjs.org/bcp-47/-/bcp-47-2.1.1.tgz",
+      "registryUrl": "https://registry.npmjs.org/bcp-47/-/bcp-47-2.1.2.tgz",
       "sourceReference": "wooorm/bcp-47",
       "sourceUrl": "https://github.com/wooorm/bcp-47",
       "packageAuthor": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
@@ -34484,9 +34879,9 @@
     },
     {
       "dependencyPath": "node_modules/pacote",
-      "artifactId": "424a45880e9067423457942a7970260a8c8448f3a09208484ccc629711538577",
+      "artifactId": "e9fcc78bfcb92d618dea136cb5f7914a5620355996a25f1131c146a3eb6c678c",
       "name": "pacote",
-      "version": "22.0.0",
+      "version": "22.0.1",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": [
         "ISC"
@@ -34519,12 +34914,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "43c51407301daf0912477a5b85d980e39722483eb85b32c59e04d9351af2f20e",
-        "provenanceSha256": "dd7eb5cd7af674ac50f258ad325e7e3fe544ad8efeb574d7a11e5e586c827e2c",
-        "registrySignatureSha256": "d3d7c26fe1d1206f53181d3d2eae5ccf00d0fc9539854969f8fac199739faf13",
-        "scanSha256": "8a5f74b4bb25fdbbfe8acc0595430e4d879a849ff0d077f3cae6d60abef7a68b"
+        "archiveSha256": "f0cc3453003ef727f8dccabc2fd460d062a09ad721b46de33c232055e7b59e44",
+        "provenanceSha256": "4da0af772b38ed3dc589045ede3db436ca06e79ff465c331903778cd2890404e",
+        "registrySignatureSha256": "7cfd4e9a822c161d2e247598562042da36f848e0322dc7f2be8185171fd0f01b",
+        "scanSha256": "d73b098601a79bdba43c6df36513b8137d6f74874b57bae4c9d01cf78b0edbc2"
       },
-      "registryUrl": "https://registry.npmjs.org/pacote/-/pacote-22.0.0.tgz",
+      "registryUrl": "https://registry.npmjs.org/pacote/-/pacote-22.0.1.tgz",
       "sourceReference": "git+https://github.com/npm/pacote.git",
       "sourceUrl": "https://github.com/npm/pacote",
       "packageAuthor": "GitHub Inc.",
@@ -43327,23 +43722,22 @@
     },
     {
       "dependencyPath": "node_modules/vite",
-      "artifactId": "9d4cf043f9848e1fef80074642ba4121a014fa92b7a5cc005d9bd10cbc31902b",
+      "artifactId": "295cd9a2cbc486fcd0f45e494fb0cc5d5f8461d88b3a469beb61b0e2fc3d7982",
       "name": "vite",
-      "version": "8.3.4",
+      "version": "8.3.5",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": [
         "MIT"
       ],
       "tarballDeclaredLicenseExpression": "MIT",
       "scanObservedLicenseExpressions": [
-        "(MIT AND Apache-2.0 AND BSD-2-Clause AND CC0-1.0) AND MIT AND Apache-2.0 AND ISC AND BSD-2-Clause AND (LicenseRef-scancode-unknown AND BSD-2-Clause AND MIT) AND (MIT AND CC0-1.0) AND CC0-1.0",
-        "Apache-2.0",
+        "(MIT AND BSD-2-Clause AND CC0-1.0) AND MIT AND ISC AND BSD-2-Clause AND (LicenseRef-scancode-unknown AND BSD-2-Clause AND MIT) AND (MIT AND CC0-1.0) AND CC0-1.0",
         "BSD-2-Clause",
         "CC0-1.0",
         "ISC",
         "LicenseRef-scancode-unknown AND BSD-2-Clause AND MIT",
         "MIT",
-        "MIT AND Apache-2.0 AND BSD-2-Clause AND CC0-1.0",
+        "MIT AND BSD-2-Clause AND CC0-1.0",
         "MIT AND CC0-1.0"
       ],
       "declaredLicenseExpression": "MIT",
@@ -43357,9 +43751,9 @@
         {
           "path": "package/LICENSE.md",
           "kind": "LICENCE",
-          "sha256": "a47172e44a86a7e2cd1c16282341f7726ec60caafe3a6166fe3e0602005b6fa6",
-          "blobSha256": "a47172e44a86a7e2cd1c16282341f7726ec60caafe3a6166fe3e0602005b6fa6",
-          "blobPath": "blobs/sha256/a4/a47172e44a86a7e2cd1c16282341f7726ec60caafe3a6166fe3e0602005b6fa6"
+          "sha256": "a22152baa1aef74402443008e767e7c689a524c0909d19b0431d97f5ab066a13",
+          "blobSha256": "a22152baa1aef74402443008e767e7c689a524c0909d19b0431d97f5ab066a13",
+          "blobPath": "blobs/sha256/a2/a22152baa1aef74402443008e767e7c689a524c0909d19b0431d97f5ab066a13"
         }
       ],
       "externalLicenseEvidence": [],
@@ -43370,12 +43764,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "769870dfd34068bc6ee4b8fbdce1596a860f891ca9e764282a07998c709b9c85",
-        "provenanceSha256": "7495ea2b35c7fe2b40f8a8f362920128fc18b550d0896e48deb8944493e795cb",
-        "registrySignatureSha256": "5590395ddb71b694fc955bcd3893d3c5e6132a5e12a760754269f6633a2f4936",
-        "scanSha256": "3ef26e10ec560f6b58c6050227eaaed6f1a76fe1883db4f54e9e18eb949dfd8a"
+        "archiveSha256": "6dd2733b089471f8f5becc50c70aab371ba88c75161fcd5acc383cec01da9814",
+        "provenanceSha256": "3314a5cef85822cfd4c633a5881160a7aa3e3ddfc474d5d3eef8486ff45e2af1",
+        "registrySignatureSha256": "155b063e40db11c75808b26cfacf9524cee70a050dcf1d902447c6fe1ab3c15e",
+        "scanSha256": "fef98c63528e7d99547c3b93bd17060c9465743378fab0a59c4b1353f96dbfad"
       },
-      "registryUrl": "https://registry.npmjs.org/vite/-/vite-8.3.4.tgz",
+      "registryUrl": "https://registry.npmjs.org/vite/-/vite-8.3.5.tgz",
       "sourceReference": "git+https://github.com/vitejs/vite.git",
       "sourceUrl": "https://github.com/vitejs/vite",
       "packageAuthor": "Evan You",

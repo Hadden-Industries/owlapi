@@ -7,7 +7,7 @@ import test from "node:test";
 import {
   jsonContract,
   openJsonSourceSession,
-} from "../tooling/json/public-api.mjs";
+} from "@hadden-industries/json-quality";
 import { provideMarkdownArchiveJson } from "../util/third-party-evidence/markdown-json-documents.mjs";
 import {
   readPolicyFixture,

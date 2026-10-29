@@ -20,7 +20,7 @@ import {
   openJsonRepositorySession,
   formatJsonSource,
   validateJsonQualityEvent,
-} from "../tooling/json/public-api.mjs";
+} from "@hadden-industries/json-quality";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const [corpusPath, manifestPath, identitiesPath] = jsonLdContainerPaths;

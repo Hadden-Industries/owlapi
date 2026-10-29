@@ -155,7 +155,9 @@ Use `lint:js` and `lint:py` for separate static checks, and the source/Python `:
 For selected Markdown files, use `npm run check:markdown -- -- "docs/guide.md"` or `npm run check:markdown -- --files-json "[\"docs/guide.md\"]"`; the canonical CLI requires a literal `--` boundary or JSON selection.
 `lint:files` remains available for existing JavaScript callers.
 
-JSON tooling is installed separately with `npm run install:json`; its exact source selector lives in `tooling/json/package.json`, with a native npm lock and producer-generated acquisition bootstrap.
+JSON Quality is a normal root registry devDependency, installed by `npm ci` and imported from its public package exports.
+Its exact prerelease selector and native optional cohort live in the root manifest and lock; `npm run test:json` independently verifies cached registry bytes and rejects installed-file tampering.
+The old isolated JSON manifest, import bridge and `install:json` bootstrap are retired; Markdown and artifact transport retain their separate graphs.
 `npm run check:json` performs complete read-only checking of owned files, required generated outputs, pinned native evidence and linked JSON-LD sources.
 `npm run format:json:check` invokes that same complete check; `npm run inspect:json` emits its typed event stream as newline-delimited JSON.
 Checking has no file-selection or protected-only mode: source findings remain provisional until the execution terminal confirms complete inventory and linkage.

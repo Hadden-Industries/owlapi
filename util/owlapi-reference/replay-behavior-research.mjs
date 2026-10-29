@@ -4,6 +4,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { basename, delimiter, dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { runJavaObservation } from "./run-java-observation.mjs";
+import { observeCurrentJavaToolchain } from "../../scripts/java-toolchain.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const researchDirectory = join(
@@ -43,6 +44,7 @@ export function replayBehaviorResearch({
   java = "java",
   reuseUnchangedProbes = false,
 }) {
+  const javaToolchain = observeCurrentJavaToolchain(java);
   const output = resolve(outputDirectory);
   mkdirSync(output, { recursive: true });
   const classpath = readFileSync(classpathFile, "utf8").trim();
@@ -56,6 +58,10 @@ export function replayBehaviorResearch({
     : undefined;
   if (retained && !jsonEquals(retained.classpathEntries, classpathEntries))
     throw new Error("Cannot reuse Java observations from a changed classpath");
+  if (retained && !jsonEquals(retained.javaToolchain ?? null, javaToolchain))
+    throw new Error(
+      "Cannot reuse Java observations from a changed or unrecorded JDK",
+    );
   const inputs = [
     ...researchFiles.map((file) => {
       const bytes = readFileSync(join(researchDirectory, file));
@@ -165,6 +171,7 @@ export function replayBehaviorResearch({
           JSON.stringify(
             {
               schemaVersion: 1,
+              javaToolchain,
               classpathEntries,
               observations,
             },
@@ -180,7 +187,12 @@ export function replayBehaviorResearch({
       }
     }
   }
-  const captured = { schemaVersion: 1, classpathEntries, observations };
+  const captured = {
+    schemaVersion: 1,
+    javaToolchain,
+    classpathEntries,
+    observations,
+  };
   writeFileSync(
     join(output, "observations.json"),
     JSON.stringify(captured, null, 2) + "\n",

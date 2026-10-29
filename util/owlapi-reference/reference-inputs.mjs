@@ -4,6 +4,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { evidenceFingerprint } from "../../scripts/ci-check-coverage.mjs";
 import Ajv from "ajv";
+import { isCurrentJavaEnvironment } from "../../scripts/java-toolchain.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const pin = JSON.parse(readFileSync(join(here, "pinned-version.json"), "utf8"));
@@ -257,6 +258,9 @@ export function assertNativeBuildClosure(preparedBytes, builtBytes) {
 export const referenceRecipeIdentity = () =>
   evidenceFingerprint({
     recipe: REFERENCE_RECIPE,
+    javaPolicySha256: sha256(
+      readFileSync(join(here, "../../scripts/java-toolchain.mjs")),
+    ),
     jvmOptions: REFERENCE_JVM_OPTIONS,
     settingsSha256: sha256(readFileSync(settings)),
     toolchainsSha256: sha256(readFileSync(toolchains)),
@@ -308,10 +312,7 @@ export const referenceRecipeIdentity = () =>
 export function createReferenceInputRecord(inputs) {
   if (
     !validateInputs(inputs) ||
-    inputs.environment.runtime !== "25.0.4.1+1-LTS" ||
-    inputs.environment["java.version"] !== "25.0.4.1" ||
-    inputs.environment["java.vendor"] !== "Eclipse Adoptium" ||
-    inputs.environment["java.vm.version"] !== "25.0.4.1+1-LTS" ||
+    !isCurrentJavaEnvironment(inputs.environment) ||
     inputs.environment["file.encoding"] !== "UTF-8" ||
     inputs.environment["stdout.encoding"] !== "UTF-8" ||
     inputs.environment["stderr.encoding"] !== "UTF-8" ||

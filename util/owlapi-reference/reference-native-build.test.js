@@ -77,9 +77,10 @@ describe("optional preparation timeout recovery", () => {
         if (executable.endsWith("java"))
           return success(
             JSON.stringify({
-              "java.version": "25.0.4.1",
+              "java.version": "25.0.5",
               "java.vendor": "Eclipse Adoptium",
-              runtime: "25.0.4.1+1-LTS",
+              runtime: "25.0.5+8-LTS",
+              "java.vm.version": "25.0.5+8-LTS",
             }),
           );
         if (args.includes("package")) {

@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-// Captured-source session regressions belong to the isolated JSON-tool graph.
+// Captured-source session regressions use the root development graph.
 import "./json-quality-jsonld.probes.mjs";
 import { mkdir, readFile, readdir, symlink, writeFile } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
@@ -9,13 +9,13 @@ import test from "node:test";
 import { ESLint } from "eslint";
 import {
   formatJsonValue,
-  jsonQualityEslint,
   jsonContract,
   openJsonSourceSession,
   openJsonRepositorySession,
   verifyJsonQualityInstallation,
   validateJsonQualityEvent,
-} from "../tooling/json/public-api.mjs";
+} from "@hadden-industries/json-quality";
+import jsonQualityEslint from "@hadden-industries/json-quality/eslint";
 import {
   validateRepositoryJsonPolicy,
   capturedRepositoryPolicy,
@@ -30,10 +30,7 @@ import {
 } from "./json-quality-probe-support.mjs";
 
 const repository = fileURLToPath(new URL("../", import.meta.url));
-const toolingRoot = fileURLToPath(new URL("../tooling/json/", import.meta.url));
-const bootstrapPath = fileURLToPath(
-  new URL("./install-json-quality.mjs", import.meta.url),
-);
+const toolingRoot = repository;
 const exclusion = (paths) => ({
   paths,
   owner: "Native installer",
@@ -137,10 +134,10 @@ test("owned release documents and every Java profile JSON receive ordinary stric
   }
 });
 
-test("installed source identity and generated bootstrap reject changed package bytes", async () => {
-  await verifyJsonQualityInstallation({ toolingRoot, bootstrapPath });
+test("root registry installation rejects changed package bytes", async () => {
+  await verifyJsonQualityInstallation({ toolingRoot });
   const target = new URL(
-    "../tooling/json/node_modules/@hadden-industries/json-quality/docs/consumer-guide.md",
+    "../node_modules/@hadden-industries/json-quality/docs/consumer-guide.md",
     import.meta.url,
   );
   const original = await readFile(target);
@@ -149,13 +146,11 @@ test("installed source identity and generated bootstrap reject changed package b
       target,
       Buffer.concat([original, Buffer.from("\nchanged\n")]),
     );
-    await assert.rejects(
-      verifyJsonQualityInstallation({ toolingRoot, bootstrapPath }),
-    );
+    await assert.rejects(verifyJsonQualityInstallation({ toolingRoot }));
   } finally {
     await writeFile(target, original);
   }
-  await verifyJsonQualityInstallation({ toolingRoot, bootstrapPath });
+  await verifyJsonQualityInstallation({ toolingRoot });
 });
 
 test("the public source path rejects escaped duplicate keys and unsafe exponent integers without parsing embedded payload strings", async () => {
@@ -250,7 +245,7 @@ test("ignored and hidden bad peers block an eligible guarded batch and unapprove
   );
 });
 
-test("only eight approved physical boundaries remain; repaired cargo reports cannot be excluded", async () => {
+test("only seven approved physical boundaries remain; repaired cargo reports cannot be excluded", async () => {
   const policy = await readPolicyFixture(repository);
   await validateRepositoryJsonPolicy(policy, repository);
   assert.deepEqual(
@@ -260,7 +255,6 @@ test("only eight approved physical boundaries remain; repaired cargo reports can
       .sort(),
     [
       "node_modules/**",
-      "tooling/json/node_modules/**",
       "tooling/markdown/node_modules/**",
       "tooling/artifact-transport/node_modules/**",
       ".development-tools/python/**",
@@ -357,7 +351,6 @@ test("a root installation boundary leaves sibling tooling and tracked source vis
 test("declared isolated installation boundaries rescue tracked JSON and do not hide archived dependency members", async (t) => {
   const paths = [
     "node_modules/**",
-    "tooling/json/node_modules/**",
     "tooling/markdown/node_modules/**",
     "tooling/artifact-transport/node_modules/**",
   ];
@@ -368,19 +361,25 @@ test("declared isolated installation boundaries rescue tracked JSON and do not h
   }
   assert.equal((await checkedFixture(root)).at(-1).contractSatisfied, true);
   await writeFile(
-    join(root, "tooling/json/node_modules/tracked.json"),
+    join(root, "tooling/markdown/node_modules/tracked.json"),
     '{"bad":}\n',
   );
   execFileSync(
     "git",
-    ["-C", root, "add", "--force", "tooling/json/node_modules/tracked.json"],
+    [
+      "-C",
+      root,
+      "add",
+      "--force",
+      "tooling/markdown/node_modules/tracked.json",
+    ],
     { windowsHide: true },
   );
   await mkdir(join(root, "tooling/neighbor"));
   await writeFile(join(root, "tooling/neighbor/bad.json"), '{"bad":}\n');
   const events = await checkedFixture(root);
   for (const path of [
-    "tooling/json/node_modules/tracked.json",
+    "tooling/markdown/node_modules/tracked.json",
     "tooling/neighbor/bad.json",
   ])
     assert.ok(

@@ -43,8 +43,13 @@ Its tool name is intentional because it exposes that exact CLI; ordinary task na
 `graph:dependencies` retains its name.
 JSON checking uses `check:json` for complete coverage and `inspect:json` for the same check's typed event stream; the former `inventory:json` and `lint:json` commands are retired.
 `format:json:check` also invokes complete checking, so it includes protected and native sources.
-`install:json` and `install:markdown` also remain action-first; their names are embedded in the shared quality acquisition bootstrap's diagnostic text.
-That bootstrap must retain the original producer bytes for independent installation verification, so this naming refactor does not fork it.
+JSON Quality is a registry devDependency in the root manifest, installed by ordinary `npm ci`; the former `install:json` command and isolated bootstrap are retired.
+`test:json` independently verifies the installed package against registry lock integrity and cached archive bytes, including a tamper rejection probe.
+Its exact prerelease selector is required by that installation verifier; other registry devDependencies retain stable minimum ranges.
+The complete JSON corpus uses finite limits of 256 MiB managed memory, 8 GiB temporary storage and ten minutes.
+The default 2 GiB temporary limit was exhausted while indexing retained package evidence; the larger limit preserves all source coverage and semantic checks.
+Use a temporary volume with sufficient free space for complete checking; per-source checks alone do not establish repository closure.
+`install:markdown` still installs the separately maintained Markdown tool graph.
 Script ordering does not establish execution order: composite command bodies and workflow dependencies continue to control execution.
 
 ## Renamed commands

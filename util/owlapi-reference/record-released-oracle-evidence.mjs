@@ -3,6 +3,7 @@ import path from "node:path";
 import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { format, resolveConfig } from "prettier";
+import { JAVA_TOOLCHAIN } from "../../scripts/java-toolchain.mjs";
 const workspace = process.argv[2];
 if (workspace === "--refresh-presentation") {
   const { refreshReleasedOraclePresentation } =
@@ -14,6 +15,20 @@ if (workspace === "--refresh-presentation") {
 if (!workspace)
   throw new Error(
     "Usage: record-released-oracle-evidence.mjs QUALIFICATION_WORKSPACE",
+  );
+const tools = JSON.parse(
+  fs.readFileSync(workspace + "/oracle/tool-identities.json"),
+);
+if (
+  !tools.javaVersion?.startsWith(
+    `openjdk version "${JAVA_TOOLCHAIN.version}" `,
+  ) ||
+  !tools.javaVersion.includes(
+    `Temurin-${JAVA_TOOLCHAIN.runtime.replace(/-LTS$/u, "")} (build ${JAVA_TOOLCHAIN.runtime})`,
+  )
+)
+  throw new Error(
+    "New oracle evidence must record the selected Temurin runtime; historical observations stay unchanged",
   );
 const root = path
   .resolve(path.dirname(fileURLToPath(import.meta.url)), "../..")
@@ -98,9 +113,6 @@ for (const [source, target] of [
   ["oracle/runtime-tree.json", "evidence/runtime-tree.json"],
 ])
   await preserve(source, target);
-const tools = JSON.parse(
-  fs.readFileSync(workspace + "/oracle/tool-identities.json"),
-);
 const comparison = JSON.parse(
   fs.readFileSync(workspace + "/oracle/jar-comparison.json"),
 );
@@ -134,7 +146,7 @@ provenance.mavenCentral.dependencyLock.sourceBuildClosureStatus = "complete";
 provenance.toolchain = {
   jdk: {
     distributionName: "Eclipse Temurin",
-    version: "25.0.4.1+1-LTS",
+    version: JAVA_TOOLCHAIN.runtime,
     distributionArchiveSha256: null,
     installationIdentityEvidencePath: "evidence/tool-identities.json",
   },

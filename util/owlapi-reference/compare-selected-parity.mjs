@@ -27,7 +27,23 @@ const invocationKey = (row) =>
   });
 
 /** Compare selected API results without sorting callbacks or result streams. */
-export function compareSelectedParity(central, source) {
+export function compareSelectedParity(
+  central,
+  source,
+  { sameRelease = false } = {},
+) {
+  if (typeof sameRelease !== "boolean")
+    throw new TypeError("sameRelease must be a boolean");
+  if (
+    sameRelease &&
+    (!Array.isArray(central.classpathEntries) ||
+      central.classpathEntries.length === 0 ||
+      canonicalJson(central.classpathEntries) !==
+        canonicalJson(source.classpathEntries))
+  )
+    throw new Error(
+      "Same-release comparison requires the same nonempty ordered classpath",
+    );
   if (
     central.observations.length !== source.observations.length ||
     central.ontologyInputSha256 !== source.ontologyInputSha256
@@ -64,7 +80,9 @@ export function compareSelectedParity(central, source) {
           }
           return { name, content: canonicalJson(parsed) };
         }
-        if (observation.probeId === "RunRC2Storage")
+        // Cross-build reconstruction admits only its recorded build comments.
+        // A JDK replay of the same released bytes must preserve those comments.
+        if (observation.probeId === "RunRC2Storage" && !sameRelease)
           return { name, content: normalizeKnownBuildComment(content, build) };
         return { name, content };
       });
@@ -86,12 +104,22 @@ if (
   process.argv[1] &&
   import.meta.url === pathToFileURL(resolve(process.argv[1])).href
 ) {
-  const [centralPath, sourcePath, outputPath] = process.argv.slice(2);
-  if (!centralPath || !sourcePath || !outputPath)
-    throw new Error("Expected Central/source observations and output paths");
+  const [centralPath, sourcePath, outputPath, mode, ...extra] =
+    process.argv.slice(2);
+  if (
+    !centralPath ||
+    !sourcePath ||
+    !outputPath ||
+    extra.length ||
+    (mode !== undefined && mode !== "--same-release")
+  )
+    throw new Error(
+      "Expected Central/source observations and output paths, optionally --same-release",
+    );
   const rows = compareSelectedParity(
     JSON.parse(readFileSync(centralPath)),
     JSON.parse(readFileSync(sourcePath)),
+    { sameRelease: mode === "--same-release" },
   );
   writeFileSync(outputPath, JSON.stringify(rows, null, 2) + "\n");
   process.stdout.write(

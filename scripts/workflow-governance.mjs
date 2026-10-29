@@ -1,5 +1,6 @@
 import { checkNodeSupportProjections } from "./project-node-support.mjs";
 import { CI_RUNTIME, projectRuntimeText } from "./runtime-policy.mjs";
+import { JAVA_TOOLCHAIN } from "./java-toolchain.mjs";
 import {
   SETUP_DEFAULTS,
   validateSetupInputs,
@@ -924,7 +925,7 @@ const validateJavaReferenceBoundary = (job, violations) => {
     {
       with: {
         distribution: "temurin",
-        "java-version": "25.0.4+101.0.LTS",
+        "java-version": JAVA_TOOLCHAIN.setupJavaVersion,
         "check-latest": false,
         "overwrite-settings": false,
         cache: "",
@@ -2424,6 +2425,7 @@ const validateQualityTooling = (workflows, violations) => {
         const jsonInstalls = list.filter(
           (step) => step.run === "npm run install:json",
         );
+        const rootInstalls = list.filter((step) => step.run === "npm ci");
         const jsonProbes = list.filter(
           (step) => step.run === "npm run test:json",
         );
@@ -2437,21 +2439,23 @@ const validateQualityTooling = (workflows, violations) => {
                   step.run ?? "",
                 ),
               ),
-            `${context} Node 22 must not load the isolated JSON graph`,
+            `${context} Node 22 must not execute the native JSON tool`,
           );
         } else {
-          const installIndex = list.indexOf(jsonInstalls[0]);
+          const installIndex = list.indexOf(rootInstalls[0]);
           add(
             violations,
-            jsonInstalls.length === 1 &&
+            jsonInstalls.length === 0 &&
+              rootInstalls.length === 1 &&
               jsonProbes.length === 1 &&
-              !jsonInstalls[0]?.if &&
-              !jsonInstalls[0]?.["continue-on-error"] &&
+              !rootInstalls[0]?.if &&
+              !rootInstalls[0]?.["continue-on-error"] &&
               !jsonProbes[0]?.if &&
               !jsonProbes[0]?.["continue-on-error"] &&
-              installIndex > syncIndex &&
-              list.indexOf(jsonProbes[0]) > installIndex,
-            `${context} requires unconditional isolated JSON acquisition and probes`,
+              installIndex >= 0 &&
+              installIndex < syncIndex &&
+              list.indexOf(jsonProbes[0]) > syncIndex,
+            `${context} requires unconditional root JSON installation and probes`,
           );
           const jsonConsumers = list.flatMap((step, index) =>
             [

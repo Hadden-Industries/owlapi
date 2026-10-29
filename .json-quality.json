@@ -9,6 +9,8 @@
     "maxTotalBytes": 536870912
   },
   "runtimeControls": {
+    "managedMemoryTargetBytes": 268435456,
+    "maxTemporaryBytes": 8589934592,
     "maxCheckTimeMs": 600000
   },
   "nativeSources": [
@@ -56,7 +58,6 @@
     {
       "paths": [
         "node_modules/**",
-        "tooling/json/node_modules/**",
         "tooling/markdown/node_modules/**",
         "tooling/artifact-transport/node_modules/**"
       ],
@@ -921,7 +922,6 @@
       "paths": [
         "package-lock.json",
         "tooling/artifact-transport/package-lock.json",
-        "tooling/json/package-lock.json",
         "tooling/markdown/package-lock.json"
       ],
       "owner": "native npm lockfile producer",

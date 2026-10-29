@@ -40,10 +40,10 @@ test("native input admission accepts serialized member permutations but rejects 
     jdkDistributionSha256: "4".repeat(64),
     environment: {
       ...environment,
-      runtime: "25.0.4.1+1-LTS",
-      "java.version": "25.0.4.1",
+      runtime: "25.0.5+8-LTS",
+      "java.version": "25.0.5",
       "java.vendor": "Eclipse Adoptium",
-      "java.vm.version": "25.0.4.1+1-LTS",
+      "java.vm.version": "25.0.5+8-LTS",
       "file.encoding": "UTF-8",
       "stdout.encoding": "UTF-8",
       "stderr.encoding": "UTF-8",

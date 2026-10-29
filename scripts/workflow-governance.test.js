@@ -220,14 +220,12 @@ describe("repository workflow governance", () => {
   )("requires complete JSON setup in %s:%s", (file, id) => {
     const violations = mutateWorkflow(file, (doc) => {
       const steps = doc.getIn(["jobs", id, "steps"]);
-      const setup = steps.items.find(
-        (step) => step.get("run") === "npm run install:json",
-      );
+      const setup = steps.items.find((step) => step.get("run") === "npm ci");
       expect(setup).toBeDefined();
       steps.items.splice(steps.items.indexOf(setup), 1);
     });
     expect(violations.join("\n")).toContain(
-      "requires unconditional isolated JSON acquisition and probes",
+      "requires unconditional root JSON installation and probes",
     );
   });
   test.each(["if", "continue-on-error"])(
@@ -255,7 +253,7 @@ describe("repository workflow governance", () => {
         .add({ name: "Unqualified tool graph", run: command });
     });
     expect(violations.join("\n")).toContain(
-      "Node 22 must not load the isolated JSON graph",
+      "Node 22 must not execute the native JSON tool",
     );
   });
   test("keeps the scanner work root out of retained repository reports", () => {

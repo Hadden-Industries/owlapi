@@ -282,10 +282,7 @@ jobs:
         timeout-minutes: 5
         env:
           QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
-      - name: Acquire the exact isolated JSON graph
-        run: npm run install:json
-        timeout-minutes: 5
-      - name: Exercise JSON isolation and exact preservation probes
+      - name: Exercise root JSON installation and exact preservation probes
         run: npm run test:json
         timeout-minutes: 15
       - name: Verify complete JSON coverage on Node 26
@@ -372,10 +369,7 @@ jobs:
       - name: Acquire the exact isolated Markdown graph
         run: npm run install:markdown
         timeout-minutes: 5
-      - name: Acquire the exact isolated JSON graph
-        run: npm run install:json
-        timeout-minutes: 5
-      - name: Exercise JSON isolation and exact preservation probes
+      - name: Exercise root JSON installation and exact preservation probes
         run: npm run test:json
         timeout-minutes: 15
       - name: Exercise canonical Markdown isolation probes
@@ -432,7 +426,7 @@ jobs:
         uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
         with:
           distribution: temurin
-          java-version: "25.0.4+101.0.LTS"
+          java-version: "25.0.5+8.0.LTS"
           check-latest: false
           overwrite-settings: false
           cache: ""
@@ -1361,10 +1355,7 @@ jobs:
       - name: Acquire the exact isolated Markdown graph
         run: npm run install:markdown
         timeout-minutes: 5
-      - name: Acquire the exact isolated JSON graph
-        run: npm run install:json
-        timeout-minutes: 5
-      - name: Exercise JSON isolation and exact preservation probes
+      - name: Exercise root JSON installation and exact preservation probes
         run: npm run test:json
         timeout-minutes: 15
       - name: Verify formatting

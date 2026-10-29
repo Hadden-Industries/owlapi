@@ -17,6 +17,7 @@ import {
 import { dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { isDeepStrictEqual } from "node:util";
+import { isCurrentJavaEnvironment } from "../../scripts/java-toolchain.mjs";
 import {
   assertNativeBuildClosure,
   createReferenceInputRecord,
@@ -355,12 +356,7 @@ export function prepareReferenceBuild({
       30_000,
     ),
   );
-  if (
-    environment["java.version"] !== "25.0.4.1" ||
-    environment["java.vendor"] !== "Eclipse Adoptium" ||
-    environment.runtime !== "25.0.4.1+1-LTS"
-  )
-    fail("unqualified JDK version");
+  if (!isCurrentJavaEnvironment(environment)) fail("unqualified JDK version");
   const recipeOptions = {
     localRepository: locations.repository,
     userHome: locations.home,

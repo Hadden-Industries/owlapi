@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 import {
   openJsonRepositorySession,
   runJsonQualityCli,
-} from "../tooling/json/public-api.mjs";
+} from "@hadden-industries/json-quality";
 import {
   provideNpmEvidenceJson,
   provideArtifactToolEvidenceJson,

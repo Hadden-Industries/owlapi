@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 import {
   formatJsonSource,
   formatJsonValue,
-} from "../../tooling/json/public-api.mjs";
+} from "@hadden-industries/json-quality";
 import { validateReleasedOracle } from "./validate-released-oracle.mjs";
 
 const directory = fileURLToPath(

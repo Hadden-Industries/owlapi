@@ -9,6 +9,7 @@ import {
 import { basename, delimiter, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { runJavaObservation } from "./run-java-observation.mjs";
+import { observeCurrentJavaToolchain } from "../../scripts/java-toolchain.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const [classpathFile, outputDirectory] = process.argv.slice(2);
@@ -17,6 +18,7 @@ if (!classpathFile || !outputDirectory)
     "Usage: replay-selected-parity.mjs CLASSPATH_FILE OUTPUT_DIRECTORY",
   );
 const output = resolve(outputDirectory);
+const javaToolchain = observeCurrentJavaToolchain();
 mkdirSync(output, { recursive: true });
 const classpath = readFileSync(classpathFile, "utf8").trim();
 const hash = (value) => createHash("sha256").update(value).digest("hex");
@@ -138,6 +140,7 @@ for (const [name, args, files] of jobs) {
     JSON.stringify(
       {
         schemaVersion: 1,
+        javaToolchain,
         authorityNote:
           "Legacy sourceRevision/javaCommit strings emitted by retained probes are historical labels. The recorded runtime classpath identifies this execution.",
         ontologyInputSha256: hash(fixture.input),

@@ -15,11 +15,18 @@ const lock = JSON.parse(readFileSync("package-lock.json", "utf8"));
 
 describe("development dependency and runtime eligibility", () => {
   test("floating minimums retain an exact reproducible root graph", () => {
-    expect(Object.keys(manifest.devDependencies)).toHaveLength(23);
+    expect(Object.keys(manifest.devDependencies)).toHaveLength(24);
     expect(lock.packages[""].devDependencies).toEqual(manifest.devDependencies);
     expect(lock.packages[""].engines).toEqual(manifest.engines);
     for (const [name, range] of Object.entries(manifest.devDependencies)) {
-      expect(range).toMatch(/^>=\d+\.\d+\.\d+$/u);
+      // The JSON tool verifies an exact registry coordinate against cached SRI
+      // bytes; the prerelease exception does not relax other development floors.
+      if (name === "@hadden-industries/json-quality") {
+        expect(range).toBe("1.0.0-rc.2");
+        expect(lock.packages[`node_modules/${name}`].resolved).toBe(
+          "https://registry.npmjs.org/@hadden-industries/json-quality/-/json-quality-1.0.0-rc.2.tgz",
+        );
+      } else expect(range).toMatch(/^>=\d+\.\d+\.\d+$/u);
       expect(
         semver.satisfies(lock.packages[`node_modules/${name}`].version, range),
       ).toBe(true);
