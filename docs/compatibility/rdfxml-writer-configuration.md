@@ -4,6 +4,9 @@ The current [behavior profile contract](behavior-profiles.md) owns profile selec
 The guarantees and example in the next section describe `normative-v1`.
 The historical compatibility decisions below retain their original revision and are not current Java-profile exceptions.
 Java selects native writer behavior explicitly and appends output.
+Java copies preserve `labelsAsBanner` when other fields change, including anonymous-ID saving.
+They reset indentation size and banner enablement to their defaults; no-op setters preserve native identity.
+The independent released-jar probe and observations are retained in `util/owlapi-reference/RunWriterCopySemantics.java` and its `fixtures/writer-copy-semantics-java551.json` fixture.
 
 ## Normative v1 writer contract
 

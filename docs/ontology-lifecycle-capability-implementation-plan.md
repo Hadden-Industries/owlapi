@@ -1,5 +1,10 @@
 # `owlapi` Import-Closure Lifecycle Implementation Plan
 
+> **29 October 2026 reconciliation:** this plan's Phase 21/22 foundations shipped in rc.1; the selected successor APIs shipped in rc.2.
+> Use the [current 0.1.0 roadmap](plans/2026-10-29-0.1.0-release-reconciliation.md) for remaining work and its explicit Java-compatible/normative profile, performance, toolchain and qualification obligations.
+> The older exact-Java invariant below is historical: the current [behavior-profile contract](compatibility/behavior-profiles.md) and its decision ledger distinguish released Java behavior from normative behavior.
+> Historical tasks, receipts and machine-parsed gate catalogues are preserved; this pointer does not mark incomplete source assessment complete or change an executable release gate.
+
 > **9 October 2026 delivery reconciliation:** the Phase 21/22 foundations shipped in rc.1 and remain the regression baseline for the [current rc.2 programme](plans/0.1.0-rc.2-java-parity.md#11-delivered-changes-from-rc1-through-9-october).
 > Subsequent source delivery adds RDF/XML writer configuration/refinements and the profile scheduling/deadline repair; it does not complete rc.2's new storers, profile families or other selected features.
 > PR 47 delivered the [installed OWL contract](compatibility/installed-owl-contract.md) and [active producer gate policy](release/producer-release-policy.json), including `P22-OWL-CONTRACT-001` and `P22-PRODUCER-CORPUS-001`.

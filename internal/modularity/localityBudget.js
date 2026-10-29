@@ -42,7 +42,8 @@ export const createLocalityBudget = (options = {}) => {
   Object.freeze(configuration);
   const started = performance.now();
   let work = 0,
-    yielded = started;
+    yielded = started,
+    yieldChecks = 0;
   const limit = (option, observed) => {
     if (configuration[option] !== null && observed > configuration[option])
       throw new ResourceLimitError(`Locality ${option} exceeded`, {
@@ -64,13 +65,21 @@ export const createLocalityBudget = (options = {}) => {
     if (configuration.timeoutMs !== null)
       limit("timeoutMs", performance.now() - started);
   };
+  // Sample the clock once per 256 synchronous steps; yielding is time-based.
+  const shouldYield = () => {
+    yieldChecks = (yieldChecks + 1) % 256;
+    return yieldChecks === 0 && performance.now() - yielded >= 50;
+  };
+  const yieldTurn = async () => {
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    yielded = performance.now();
+    check(0);
+  };
   const checkpoint = async (amount = 1) => {
     check(amount);
     if (performance.now() - yielded >= 50) {
-      await new Promise((resolve) => setTimeout(resolve, 0));
-      yielded = performance.now();
-      check(0);
+      await yieldTurn();
     }
   };
-  return { configuration, checkpoint, check, limit };
+  return { configuration, checkpoint, check, limit, shouldYield, yieldTurn };
 };

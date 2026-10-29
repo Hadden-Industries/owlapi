@@ -124,6 +124,7 @@ class ExecutionController {
     if (signal?.aborted) {
       throw abortError(signal, this.#syntaxName);
     }
+    if (timeoutMs === Infinity) return;
     const elapsed = this.elapsedMs();
     if (elapsed >= timeoutMs) {
       resourceLimit(
@@ -152,15 +153,20 @@ class ExecutionController {
   }
 }
 
-const tokenByteLength = (token) => {
-  const valueBytes = textEncoder.encode(
-    `${token?.prefix || ""}${token?.value || ""}`,
-  ).byteLength;
+const tokenBytesAboveLimit = (token, limit) => {
+  const prefix = token?.prefix || "";
+  const value = token?.value || "";
   const lexicalWidth =
     Number.isSafeInteger(token?.start) && Number.isSafeInteger(token?.end)
       ? Math.max(0, token.end - token.start)
       : 0;
-  return Math.max(valueBytes, lexicalWidth);
+  // UTF-8 uses at most three bytes per UTF-16 code unit. Only encode when
+  // admission is uncertain; reported violations still carry the exact size.
+  if (lexicalWidth <= limit && (prefix.length + value.length) * 3 <= limit)
+    return undefined;
+  const valueBytes = textEncoder.encode(`${prefix}${value}`).byteLength;
+  const observed = Math.max(valueBytes, lexicalWidth);
+  return observed > limit ? observed : undefined;
 };
 
 const createBudgetedLexer = (
@@ -203,8 +209,11 @@ const createBudgetedLexer = (
               tokenCount,
             );
           }
-          const observed = tokenByteLength(token);
-          if (observed > configuration.maxTokenLength) {
+          const observed = tokenBytesAboveLimit(
+            token,
+            configuration.maxTokenLength,
+          );
+          if (observed !== undefined) {
             resourceLimit(
               `An ${syntaxName} token exceeded the token byte limit`,
               "maxTokenLength",
@@ -278,7 +287,11 @@ const validateTermLength = (term, configuration, syntaxName) => {
     validateTermLength(term.graph, configuration, syntaxName);
     return;
   }
-  const observed = textEncoder.encode(term.value || "").byteLength;
+  const value = term.value || "";
+  const observed =
+    value.length * 3 <= configuration.maxTokenLength
+      ? 0
+      : textEncoder.encode(value).byteLength;
   if (observed > configuration.maxTokenLength) {
     resourceLimit(
       `An RDF term produced from ${syntaxName} exceeded the token byte limit`,
@@ -294,7 +307,11 @@ const validateTermLength = (term, configuration, syntaxName) => {
       ["LanguageTag", term.language],
       ["BaseDirection", term.direction],
     ]) {
-      const componentBytes = textEncoder.encode(value || "").byteLength;
+      const component = value || "";
+      const componentBytes =
+        component.length * 3 <= configuration.maxTokenLength
+          ? 0
+          : textEncoder.encode(component).byteLength;
       if (componentBytes > configuration.maxTokenLength) {
         resourceLimit(
           `A ${syntaxName} literal component exceeded the token byte limit`,
@@ -308,12 +325,12 @@ const validateTermLength = (term, configuration, syntaxName) => {
   }
 };
 
-const canonicalTerm = (term, syntaxName) => {
+const canonicalTerm = (term, syntaxName, nativeTerms = false) => {
   switch (term?.termType) {
     case "NamedNode":
-      return rdfDataFactory.namedNode(term.value);
+      return nativeTerms ? term : rdfDataFactory.namedNode(term.value);
     case "BlankNode":
-      return rdfDataFactory.blankNode(term.value);
+      return nativeTerms ? term : rdfDataFactory.blankNode(term.value);
     case "Literal":
       return rdfDataFactory.literal(
         term.value,
@@ -322,16 +339,18 @@ const canonicalTerm = (term, syntaxName) => {
               direction: term.direction?.toLowerCase() || undefined,
               language: term.language.toLowerCase(),
             }
-          : rdfDataFactory.namedNode(term.datatype.value),
+          : nativeTerms
+            ? term.datatype
+            : rdfDataFactory.namedNode(term.datatype.value),
       );
     case "DefaultGraph":
       return rdfDataFactory.defaultGraph();
     case "Quad":
       return rdfDataFactory.quad(
-        canonicalTerm(term.subject, syntaxName),
-        canonicalTerm(term.predicate, syntaxName),
-        canonicalTerm(term.object, syntaxName),
-        canonicalTerm(term.graph, syntaxName),
+        canonicalTerm(term.subject, syntaxName, nativeTerms),
+        canonicalTerm(term.predicate, syntaxName, nativeTerms),
+        canonicalTerm(term.object, syntaxName, nativeTerms),
+        canonicalTerm(term.graph, syntaxName, nativeTerms),
       );
     default:
       throw new TypeError(
@@ -340,11 +359,11 @@ const canonicalTerm = (term, syntaxName) => {
   }
 };
 
-const canonicalQuad = (quad, syntaxName) => {
+const canonicalQuad = (quad, syntaxName, nativeTerms) => {
   if (quad?.termType !== "Quad") {
     throw new TypeError(`The ${syntaxName} parser emitted a non-quad value`);
   }
-  return canonicalTerm(quad, syntaxName);
+  return canonicalTerm(quad, syntaxName, nativeTerms);
 };
 
 export class N3SyntaxAdapter {
@@ -402,14 +421,18 @@ export class N3SyntaxAdapter {
     if (typeof sourceText !== "string") {
       throw new TypeError(`${this.#syntaxName} source text must be a string`);
     }
-    const inputBytes = textEncoder.encode(sourceText).byteLength;
-    if (inputBytes > normalizedConfiguration.maxInputBytes) {
-      resourceLimit(
-        `The ${this.#syntaxName} input byte limit was exceeded`,
-        "maxInputBytes",
-        normalizedConfiguration.maxInputBytes,
-        inputBytes,
-      );
+    // A UTF-16 code unit occupies at most three UTF-8 bytes. Only allocate an
+    // encoding when that conservative bound cannot prove input admission.
+    if (sourceText.length * 3 > normalizedConfiguration.maxInputBytes) {
+      const inputBytes = textEncoder.encode(sourceText).byteLength;
+      if (inputBytes > normalizedConfiguration.maxInputBytes) {
+        resourceLimit(
+          `The ${this.#syntaxName} input byte limit was exceeded`,
+          "maxInputBytes",
+          normalizedConfiguration.maxInputBytes,
+          inputBytes,
+        );
+      }
     }
 
     const implementation = await this.#loadImplementation();
@@ -467,7 +490,15 @@ export class N3SyntaxAdapter {
               emittedQuads,
             );
           }
-          let normalizedQuad = canonicalQuad(quad, this.#syntaxName);
+          // The locked provider already creates terms with this factory.
+          // RDF/JS terms are immutable; retain native nodes while still copying
+          // quads, normalizing literals recursively and admitting term kinds.
+          // Replacement providers keep the complete copying boundary.
+          let normalizedQuad = canonicalQuad(
+            quad,
+            this.#syntaxName,
+            this.#loadImplementation === defaultImplementationLoader,
+          );
           if (this.#mediaType === N_TRIPLES_MEDIA_TYPE) {
             // N-Triples is an RDF graph syntax: dependency-specific stream
             // behavior must not introduce dataset membership at this seam.
@@ -535,7 +566,7 @@ export class N3SyntaxAdapter {
         parser.destroy(adapterFailure);
       }, delay);
     };
-    scheduleWatchdog();
+    if (normalizedConfiguration.timeoutMs !== Infinity) scheduleWatchdog();
     const onAbort = () => {
       if (!adapterFailure) {
         adapterFailure = abortError(signal, this.#syntaxName);

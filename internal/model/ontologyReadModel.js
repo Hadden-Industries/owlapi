@@ -1,8 +1,18 @@
 import { ENTITY_KINDS, OWLObjectKind } from "../../model/kinds.js";
-import { StructuralSet } from "../../model/structural.js";
+import { structuralKey, StructuralSet } from "../../model/structural.js";
+import { isLogicalAxiom } from "./axiomSemantics.js";
+import { XSD_NAMESPACE } from "../rdfjs/vocabulary.js";
+import { OWLDataFactory } from "../../model/owlDataFactory.js";
 
 const empty = Object.freeze([]);
 const readers = new WeakMap();
+const annotationFactory = new OWLDataFactory();
+const referencingKinds = new Set([
+  ...ENTITY_KINDS,
+  OWLObjectKind.IRI,
+  OWLObjectKind.LITERAL,
+  OWLObjectKind.ANONYMOUS_INDIVIDUAL,
+]);
 
 export const visitStructuralValues = (root, visitor) => {
   const pending = [root];
@@ -40,9 +50,14 @@ const freezeBuckets = (index) => {
 export function readOntologyModel(snapshot) {
   let reader = readers.get(snapshot);
   if (reader) return reader;
-  let kinds, annotations, signature;
+  let kinds, logical, annotations, signature, referencing;
   const positions = new Map();
   const equivalences = new Map();
+  const annotationViews = new Map();
+
+  function allAxioms() {
+    return snapshot.directAxioms;
+  }
 
   function axioms(kind) {
     if (!kinds) {
@@ -52,6 +67,40 @@ export function readOntologyModel(snapshot) {
       kinds = freezeBuckets(index);
     }
     return kinds.get(kind) ?? empty;
+  }
+
+  function logicalAxioms() {
+    if (!logical) {
+      logical = Object.freeze(snapshot.directAxioms.filter(isLogicalAxiom));
+    }
+    return logical;
+  }
+
+  function referencingAxioms(targetKey) {
+    if (!referencing) {
+      const index = new Map();
+      for (const axiom of snapshot.directAxioms) {
+        const keys = new Set();
+        visitStructuralValues(axiom, (value) => {
+          if (referencingKinds.has(value.kind)) {
+            keys.add(value.structuralKey());
+          }
+        });
+        if (
+          (axiom.kind === OWLObjectKind.DATA_PROPERTY_ASSERTION_AXIOM ||
+            axiom.kind === OWLObjectKind.ANNOTATION_ASSERTION_AXIOM) &&
+          axiom.value?.kind === OWLObjectKind.LITERAL &&
+          axiom.value.datatype.iri.value === `${XSD_NAMESPACE}anyURI`
+        ) {
+          keys.add(structuralKey(OWLObjectKind.IRI, [axiom.value.lexicalForm]));
+        }
+        for (const key of keys) {
+          append(index, key, axiom);
+        }
+      }
+      referencing = freezeBuckets(index);
+    }
+    return referencing.get(targetKey) ?? empty;
   }
 
   function discoverSignature() {
@@ -89,7 +138,10 @@ export function readOntologyModel(snapshot) {
   }
 
   reader = Object.freeze({
+    allAxioms,
     axioms,
+    logicalAxioms,
+    referencingAxioms,
     position(kind, field, key) {
       let queries = positions.get(kind);
       if (!queries) positions.set(kind, (queries = new Map()));
@@ -144,6 +196,30 @@ export function readOntologyModel(snapshot) {
           ? entry?.all
           : entry?.properties.get(propertyKey)) ?? empty
       );
+    },
+    /** Snapshot-owned views retain only stored subjects and two inclusion modes.
+     * Property filtering happens after merging assertion annotations: a nested
+     * annotation can match even when its assertion's property does not.
+     */
+    annotationValues(subjectKey, includeAssertionAnnotations) {
+      let views = annotationViews.get(includeAssertionAnnotations);
+      if (!views)
+        annotationViews.set(includeAssertionAnnotations, (views = new Map()));
+      let values = views.get(subjectKey);
+      if (values) return values;
+      const assertions = reader.annotationAssertions(subjectKey);
+      if (!assertions.length) return empty;
+      const unique = new StructuralSet();
+      for (const axiom of assertions) {
+        unique.add(
+          annotationFactory.getOWLAnnotation(axiom.property, axiom.value),
+        );
+        if (includeAssertionAnnotations)
+          for (const annotation of axiom.annotations) unique.add(annotation);
+      }
+      values = Object.freeze([...unique]);
+      views.set(subjectKey, values);
+      return values;
     },
     signature(kind) {
       const found = discoverSignature();

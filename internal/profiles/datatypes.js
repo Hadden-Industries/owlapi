@@ -38,8 +38,20 @@ export const owlDatatypeMap = new Set(OWL_BUILT_IN_DATATYPES);
 export const isBuiltinDatatype = (iri) =>
   owlDatatypeMap.has(iri) || iri === RDFS + "Literal";
 
+const validLiteral = Object.freeze({
+  status: "valid",
+  rule: "LITERAL_LEXICAL_SPACE",
+});
+const invalidLiteral = Object.freeze({
+  status: "invalid",
+  rule: "LITERAL_LEXICAL_SPACE",
+});
 const result = (valid, rule = "LITERAL_LEXICAL_SPACE") =>
-  Object.freeze({ status: valid ? "valid" : "invalid", rule });
+  rule === "LITERAL_LEXICAL_SPACE"
+    ? valid
+      ? validLiteral
+      : invalidLiteral
+    : Object.freeze({ status: valid ? "valid" : "invalid", rule });
 const unverified = (rule) => Object.freeze({ status: "unverified", rule });
 const xmlCharacters = (value) => {
   if (!value.isWellFormed()) return false;
@@ -126,8 +138,30 @@ const validDateTime = (lexical, timezoneRequired) => {
   );
 };
 
-/** Validate value-space membership without changing a parsed lexical form. */
-export const inspectLiteral = async (literal, configuration = {}, budget) => {
+const inspectXmlLiteral = async (lexical, configuration, budget) => {
+  budget?.check(Math.ceil(lexical.length / 256));
+  if (!xmlCharacters(lexical)) return result(false);
+  try {
+    const document = await xmlParserAdapter.parseXml(
+      `<owlapi-fragment>${lexical}</owlapi-fragment>`,
+      configuration,
+    );
+    return result(
+      await isCanonicalXmlContent(document.documentElement, lexical, budget),
+      "XML_LITERAL_NOT_CANONICAL",
+    );
+  } catch (error) {
+    if (!(error instanceof XmlParseError)) throw error;
+    if (error.message.startsWith("No XML parser implementation"))
+      return unverified("XML_VALIDATOR_UNAVAILABLE");
+    return result(false, "XML_LITERAL_NOT_WELL_FORMED");
+  }
+};
+
+/** Validate value-space membership without changing lexical form. Pure checks
+ * return immediately; XML validation returns a promise for its native parser.
+ */
+export const inspectLiteral = (literal, configuration = {}, budget) => {
   const { lexicalForm: lexical, language, datatype } = literal;
   if (
     typeof lexical !== "string" ||
@@ -158,23 +192,7 @@ export const inspectLiteral = async (literal, configuration = {}, budget) => {
     return result(Boolean(match && /[1-9]/u.test(match[2])));
   }
   if (iri === RDF + "XMLLiteral") {
-    budget?.check(Math.ceil(lexical.length / 256));
-    if (!xmlCharacters(lexical)) return result(false);
-    try {
-      const document = await xmlParserAdapter.parseXml(
-        `<owlapi-fragment>${lexical}</owlapi-fragment>`,
-        configuration,
-      );
-      return result(
-        await isCanonicalXmlContent(document.documentElement, lexical, budget),
-        "XML_LITERAL_NOT_CANONICAL",
-      );
-    } catch (error) {
-      if (!(error instanceof XmlParseError)) throw error;
-      if (error.message.startsWith("No XML parser implementation"))
-        return unverified("XML_VALIDATOR_UNAVAILABLE");
-      return result(false, "XML_LITERAL_NOT_WELL_FORMED");
-    }
+    return inspectXmlLiteral(lexical, configuration, budget);
   }
   if (!owlDatatypeMap.has(iri))
     return unverified("DATATYPE_NOT_IN_SUPPORTED_MAP");

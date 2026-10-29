@@ -9,7 +9,7 @@ import { ncNameSuffix } from "../internal/parsing/xml/xmlNames.js";
 export const iriShortForm = (iri) => {
   if (!isCanonicalStructuralObject(iri) || iri.kind !== K.IRI)
     throw new TypeError("iri must be an IRI");
-  OWLStructuralObject.prototype.structuralKey.call(iri);
+  OWLStructuralObject.prototype.toStructuralTuple.call(iri);
   return ncNameSuffix(iri.value) ?? `<${iri.value}>`;
 };
 
@@ -21,7 +21,8 @@ export class SimpleShortFormProvider {
       !ENTITY_KINDS.includes(entity.kind)
     )
       throw new TypeError("entity must be a named OWL entity");
-    OWLStructuralObject.prototype.structuralKey.call(entity);
+    // Authenticate the private brand without forcing a display-only key string.
+    OWLStructuralObject.prototype.toStructuralTuple.call(entity);
     return iriShortForm(entity.iri);
   }
   /** This stateless provider owns no disposable resources. */

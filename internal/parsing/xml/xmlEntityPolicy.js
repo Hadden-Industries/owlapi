@@ -89,6 +89,11 @@ const findDoctype = (text) => {
   let doctype;
   let seenRootElement = false;
   for (let offset = 0; offset < text.length;) {
+    if (typeof text === "string" && text[offset] !== "<") {
+      const next = text.indexOf("<", offset);
+      if (next < 0) break;
+      offset = next;
+    }
     if (text.startsWith("<!--", offset)) {
       offset = findDelimitedEnd(text, offset + 4, "-->");
     } else if (text.startsWith("<![CDATA[", offset)) {
@@ -581,7 +586,14 @@ const expandDocumentEntities = (
   let chunkStart = 0;
   let insideTag = false;
   let quote;
+  const markers = /[<&>"\x27]/gu;
   for (let offset = 0; offset < text.length;) {
+    if (typeof text === "string") {
+      markers.lastIndex = offset;
+      const next = markers.exec(text);
+      if (!next) break;
+      offset = next.index;
+    }
     if (!insideTag && text.startsWith("<!--", offset)) {
       const end = findDelimitedEnd(text, offset + 4, "-->");
       append(text.slice(chunkStart, end));

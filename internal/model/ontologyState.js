@@ -284,15 +284,18 @@ const calculateMutationDraftChangeStatus = (record) => {
   // edits need the full comparison that detects remove/add cancellation.
   if (!record.changesState) return;
   record.changesState =
-    !equalStructuralSets(record.directAxioms, record.baseDirectAxioms) ||
-    !equalStructuralSets(
-      record.directOntologyAnnotations,
-      record.baseDirectOntologyAnnotations,
-    ) ||
-    !equalStructuralSets(
-      record.authoredImportDeclarations,
-      record.baseAuthoredImportDeclarations,
-    ) ||
+    (record.axiomsTouched &&
+      !equalStructuralSets(record.directAxioms, record.baseDirectAxioms)) ||
+    (record.annotationsTouched &&
+      !equalStructuralSets(
+        record.directOntologyAnnotations,
+        record.baseDirectOntologyAnnotations,
+      )) ||
+    (record.importsTouched &&
+      !equalStructuralSets(
+        record.authoredImportDeclarations,
+        record.baseAuthoredImportDeclarations,
+      )) ||
     record.documentMetadata !== record.baseDocumentMetadata ||
     record.ontologyID.structuralKey() !== record.baseOntologyID.structuralKey();
 };
@@ -308,6 +311,10 @@ class OntologyStateMutationDraft {
     if (!record.open) {
       throw new Error("The ontology state mutation draft is closed");
     }
+    if (!record.axiomsTouched) {
+      record.directAxioms = record.baseDirectAxioms.cloneForAddition();
+      record.axiomsTouched = true;
+    }
     const changed = record.directAxioms.add(axiom);
     if (changed) {
       refreshMutationDraftChangeStatus(record);
@@ -321,6 +328,10 @@ class OntologyStateMutationDraft {
     const record = mutationDraftRecords.get(this);
     if (!record.open)
       throw new Error("The ontology state mutation draft is closed");
+    if (!record.axiomsTouched) {
+      record.directAxioms = record.baseDirectAxioms.clone();
+      record.axiomsTouched = true;
+    }
     const changed = record.directAxioms.delete(axiom);
     if (changed) {
       refreshMutationDraftChangeStatus(record);
@@ -332,6 +343,7 @@ class OntologyStateMutationDraft {
   stageOntologyAnnotationRemoval(annotation) {
     return this.#stageStructuralSetEdit(
       "directOntologyAnnotations",
+      "annotationsTouched",
       annotation,
       ONTOLOGY_ANNOTATION_KINDS,
       false,
@@ -341,6 +353,7 @@ class OntologyStateMutationDraft {
   stageImportAddition(declaration) {
     return this.#stageStructuralSetEdit(
       "authoredImportDeclarations",
+      "importsTouched",
       declaration,
       IMPORT_DECLARATION_KINDS,
       true,
@@ -350,6 +363,7 @@ class OntologyStateMutationDraft {
   stageImportRemoval(declaration) {
     return this.#stageStructuralSetEdit(
       "authoredImportDeclarations",
+      "importsTouched",
       declaration,
       IMPORT_DECLARATION_KINDS,
       false,
@@ -363,7 +377,7 @@ class OntologyStateMutationDraft {
     return Object.freeze([...record.authoredImportDeclarations]);
   }
 
-  #stageStructuralSetEdit(field, value, kinds, addition) {
+  #stageStructuralSetEdit(field, touchedField, value, kinds, addition) {
     const record = mutationDraftRecords.get(this);
     if (!record.open)
       throw new Error("The ontology state mutation draft is closed");
@@ -374,6 +388,7 @@ class OntologyStateMutationDraft {
       : new StructuralSet(
           [...record[field]].filter((member) => !member.equals(value)),
         );
+    record[touchedField] = true;
     refreshMutationDraftChangeStatus(record);
     record.preparedSnapshot = undefined;
     return true;
@@ -420,6 +435,12 @@ class OntologyStateMutationDraft {
     );
     if (record.directOntologyAnnotations.has(normalizedAnnotation)) {
       return false;
+    }
+    if (!record.annotationsTouched) {
+      record.directOntologyAnnotations = new StructuralSet(
+        record.baseDirectOntologyAnnotations,
+      );
+      record.annotationsTouched = true;
     }
     record.directOntologyAnnotations.add(normalizedAnnotation);
     refreshMutationDraftChangeStatus(record);
@@ -487,10 +508,10 @@ export class OntologyState {
 
   createMutationDraft() {
     return new OntologyStateMutationDraft({
-      authoredImportDeclarations: new StructuralSet(
-        this.#authoredImportDeclarations,
-      ),
+      annotationsTouched: false,
+      authoredImportDeclarations: this.#authoredImportDeclarations,
       authorityIdentity: this.#mutationAuthorityIdentity,
+      axiomsTouched: false,
       baseDirectAxioms: this.#directAxioms,
       baseDirectOntologyAnnotations: this.#directOntologyAnnotations,
       baseAuthoredImportDeclarations: this.#authoredImportDeclarations,
@@ -498,11 +519,10 @@ export class OntologyState {
       baseOntologyID: this.#ontologyID,
       baseRevision: this.#revision,
       changesState: false,
-      directAxioms: this.#directAxioms.clone(),
-      directOntologyAnnotations: new StructuralSet(
-        this.#directOntologyAnnotations,
-      ),
+      directAxioms: this.#directAxioms,
+      directOntologyAnnotations: this.#directOntologyAnnotations,
       documentMetadata: this.#documentMetadata,
+      importsTouched: false,
       ontologyID: this.#ontologyID,
       open: true,
       preparedSnapshot: undefined,

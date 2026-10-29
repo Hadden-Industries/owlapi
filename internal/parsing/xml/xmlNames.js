@@ -31,10 +31,22 @@ const inRanges = (codePoint, ranges) => {
   return false;
 };
 export const isNcNameStartCodePoint = (codePoint) =>
-  inRanges(codePoint, startRanges);
+  codePoint < 0x80
+    ? (codePoint >= 0x61 && codePoint <= 0x7a) ||
+      (codePoint >= 0x41 && codePoint <= 0x5a) ||
+      codePoint === 0x5f
+    : inRanges(codePoint, startRanges);
 
 export const isNcNameCodePoint = (codePoint) =>
-  isNcNameStartCodePoint(codePoint) || inRanges(codePoint, additionalRanges);
+  codePoint < 0x80
+    ? (codePoint >= 0x61 && codePoint <= 0x7a) ||
+      (codePoint >= 0x41 && codePoint <= 0x5a) ||
+      (codePoint >= 0x30 && codePoint <= 0x39) ||
+      codePoint === 0x5f ||
+      codePoint === 0x2d ||
+      codePoint === 0x2e
+    : isNcNameStartCodePoint(codePoint) ||
+      inRanges(codePoint, additionalRanges);
 
 // Derive native string scans from the same ranges; profile literals can be 1 MiB.
 const characterClass = (ranges) =>
@@ -60,11 +72,22 @@ export const isNcName = (value) => ncNamePattern.test(value);
 
 /** Longest trailing NCName, skipping leading digits after the last separator. */
 export const ncNameSuffix = (value) => {
-  let start = 0;
-  let offset = 0;
-  for (const character of value) {
-    offset += character.length;
-    if (!isNcNameCodePoint(character.codePointAt(0))) start = offset;
+  // Only the trailing name can contribute. Scan backwards so a long namespace
+  // is not revisited for every display lookup. Rejoin surrogate pairs before
+  // applying the same XML code-point rules used by forward validation.
+  let start = value.length;
+  while (start > 0) {
+    let offset = start - 1;
+    let codePoint = value.codePointAt(offset);
+    if (codePoint >= 0xdc00 && codePoint <= 0xdfff && offset > 0) {
+      const previous = value.codePointAt(offset - 1);
+      if (previous > 0xffff) {
+        offset -= 1;
+        codePoint = previous;
+      }
+    }
+    if (!isNcNameCodePoint(codePoint)) break;
+    start = offset;
   }
   while (
     start < value.length &&

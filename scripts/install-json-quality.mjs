@@ -27,6 +27,22 @@ export const ACQUISITION_RESOURCE_DEFAULTS = Object.freeze({
 });
 // END GENERATED RESOURCE DEFAULTS
 
+// BEGIN GENERATED VERIFICATION DEFAULTS
+export const VERIFICATION_RESOURCE_DEFAULTS = Object.freeze({
+  maximumArchiveBytes: 134217728,
+  maximumMemberBytes: 134217728,
+  maximumExpandedBytes: 536870912,
+  maximumMembers: 8192,
+  maximumIndexBytes: 4194304,
+  maximumMetadataBytes: 1048576,
+  maximumArchiveMetadataBytes: 4096,
+  maximumPathBytes: 32768,
+  maximumDepth: 64,
+  maximumVerificationTimeMs: 120000,
+  maximumDecompressionRatio: 128,
+});
+// END GENERATED VERIFICATION DEFAULTS
+
 /** Only the explicitly scoped capacity environment contract is admitted. */
 export function capacityLimitsEnvironment() {
   if (process.env.JSON_QUALITY_LIMITS !== undefined)
@@ -62,13 +78,16 @@ export function acquisitionCleanupOptions(
 export function acquisitionResourceLimits(
   overrides = JSON.parse(capacityLimitsEnvironment() ?? "{}"),
 ) {
-  if (overrides === true) return { ...ACQUISITION_RESOURCE_DEFAULTS };
+  return coldResourceLimits(ACQUISITION_RESOURCE_DEFAULTS, overrides);
+}
+function coldResourceLimits(
+  /** @type {Record<string, number>} */ defaults,
+  /** @type {*} */ overrides,
+) {
+  if (overrides === true) return { ...defaults };
   if (overrides === false)
     return Object.fromEntries(
-      Object.keys(ACQUISITION_RESOURCE_DEFAULTS).map((name) => [
-        name,
-        Infinity,
-      ]),
+      Object.keys(defaults).map((name) => [name, Infinity]),
     );
   if (
     !overrides ||
@@ -76,17 +95,28 @@ export function acquisitionResourceLimits(
     Array.isArray(overrides) ||
     Object.entries(overrides).some(
       ([name, value]) =>
-        !Object.hasOwn(ACQUISITION_RESOURCE_DEFAULTS, name) ||
-        !Number.isSafeInteger(value) ||
-        value < 1,
+        !Object.hasOwn(defaults, name) ||
+        (value !== null && (!Number.isSafeInteger(value) || value < 1)),
     )
   )
     throw new TypeError("Invalid JSON resource-limit overrides.");
-  return { ...ACQUISITION_RESOURCE_DEFAULTS, ...overrides };
+  return {
+    ...defaults,
+    ...Object.fromEntries(
+      Object.entries(overrides).map(([name, value]) => [
+        name,
+        value === null ? Infinity : value,
+      ]),
+    ),
+  };
 }
 
 /** Resolve native cache policy once for acquisition and payload checking. */
-export function nativeQualityCachePath(toolingRoot, npmExecutable, overrides) {
+export function nativeQualityCachePath(
+  /** @type {*} */ toolingRoot,
+  /** @type {*} */ npmExecutable,
+  /** @type {*} */ overrides,
+) {
   const capacityLimits = acquisitionResourceLimits(overrides);
   return execFileSync(
     process.execPath,
@@ -95,14 +125,10 @@ export function nativeQualityCachePath(toolingRoot, npmExecutable, overrides) {
       cwd: toolingRoot,
       encoding: "utf8",
       windowsHide: true,
-      timeout: Math.min(
-        capacityLimits.maxCacheLookupTimeMs,
-        ACQUISITION_RESOURCE_DEFAULTS.maxCacheLookupTimeMs,
-      ),
-      maxBuffer: Math.min(
-        capacityLimits.maxCacheOutputBytes,
-        ACQUISITION_RESOURCE_DEFAULTS.maxCacheOutputBytes,
-      ),
+      timeout: Number.isFinite(capacityLimits.maxCacheLookupTimeMs)
+        ? capacityLimits.maxCacheLookupTimeMs
+        : 0,
+      maxBuffer: capacityLimits.maxCacheOutputBytes,
     },
   ).trim();
 }
@@ -117,6 +143,10 @@ async function acquire() {
   const overrides = JSON.parse(capacityLimitsEnvironment() ?? "{}");
   const capacityLimits = acquisitionResourceLimits(overrides);
   const cleanup = acquisitionCleanupOptions();
+  const verificationControls = JSON.parse(
+    process.env.JSON_QUALITY_VERIFICATION_CONTROLS ?? "{}",
+  );
+  coldResourceLimits(VERIFICATION_RESOURCE_DEFAULTS, verificationControls);
   const toolingRoot = fileURLToPath(
     new URL(`../tooling/${kind}/`, import.meta.url),
   );
@@ -127,7 +157,7 @@ async function acquire() {
   const scratch = mkdtempSync(join(tmpdir(), "repository-quality-install-"));
   const cachePath = jsonCache ?? join(scratch, "cache");
   /** Remove only the task-owned real temporary acquisition workspace. */
-  function removeAcquisitionWorkspace(path) {
+  function removeAcquisitionWorkspace(/** @type {*} */ path) {
     const target = realpathSync(path);
     const contained = relative(realpathSync(tmpdir()), target);
     if (
@@ -150,7 +180,7 @@ async function acquire() {
       global = join(scratch, "global.npmrc");
     writeFileSync(user, "");
     writeFileSync(global, "");
-    const env = {};
+    const /** @type {Record<string, any>} */ env = {};
     for (const name of [
       "PATH",
       "Path",
@@ -183,10 +213,9 @@ async function acquire() {
         env,
         stdio: "inherit",
         windowsHide: true,
-        timeout: Math.min(
-          capacityLimits.maxAcquisitionTimeMs,
-          ACQUISITION_RESOURCE_DEFAULTS.maxAcquisitionTimeMs,
-        ),
+        timeout: Number.isFinite(capacityLimits.maxAcquisitionTimeMs)
+          ? capacityLimits.maxAcquisitionTimeMs
+          : 0,
       },
     );
     if (result.error || result.signal || result.status === null)
@@ -194,7 +223,7 @@ async function acquire() {
     process.exitCode = result.status;
     if (kind === "json" && result.status === 0) {
       const { verifyJsonQualityInstallation } = await import(
-        new URL("../tooling/json/public-api.mjs", import.meta.url)
+        new URL("../tooling/json/public-api.mjs", import.meta.url).href
       );
       await verifyJsonQualityInstallation({
         toolingRoot: fileURLToPath(
@@ -203,6 +232,7 @@ async function acquire() {
         cachePath,
         bootstrapPath: fileURLToPath(import.meta.url),
         capacityLimits: overrides,
+        verificationControls,
       });
     }
   } finally {

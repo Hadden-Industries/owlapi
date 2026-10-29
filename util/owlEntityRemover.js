@@ -1,5 +1,6 @@
 import { ENTITY_KINDS } from "../model/kinds.js";
-import { OWLOntology } from "../model/owlOntology.js";
+import { readOntologySnapshot } from "../model/owlOntology.js";
+import { readOntologyModel } from "../internal/model/ontologyReadModel.js";
 import { RemoveAxiom } from "../model/removeAxiom.js";
 import {
   captureOntologies,
@@ -18,19 +19,15 @@ export class OWLEntityRemover {
   }
   visit(entity) {
     requireTransformKind(entity, ENTITY_KINDS);
-    const changes = [];
+    const entityKey = entity.structuralKey();
+    const iriKey = entity.iri.structuralKey();
     for (const ontology of this.#ontologies) {
-      const axioms = [
-        ...OWLOntology.prototype.getReferencingAxioms.call(ontology, entity),
-        ...OWLOntology.prototype.getAnnotationAssertionAxioms.call(
-          ontology,
-          entity.iri,
-        ),
-      ];
-      for (const axiom of axioms)
-        changes.push(new RemoveAxiom(ontology, axiom));
+      const model = readOntologyModel(readOntologySnapshot(ontology));
+      for (const axiom of model.referencingAxioms(entityKey))
+        this.#changes.push(new RemoveAxiom(ontology, axiom));
+      for (const axiom of model.annotationAssertions(iriKey))
+        this.#changes.push(new RemoveAxiom(ontology, axiom));
     }
-    this.#changes.push(...changes);
   }
   getChanges() {
     return [...this.#changes];

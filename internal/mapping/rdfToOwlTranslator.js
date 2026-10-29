@@ -34,6 +34,7 @@ import {
 
 const COOPERATIVE_YIELD_INTERVAL_MS = 50;
 const CHECK_INTERVAL = 512;
+const UNCONDITIONAL_ROLE_SUPPORT = Object.freeze([Object.freeze([])]);
 const DECLARATION_CONSTRUCTORS = new Map([
   [OWL_VOCABULARY.AnnotationProperty, "getOWLAnnotationProperty"],
   [OWL_VOCABULARY.Class, "getOWLClass"],
@@ -45,6 +46,7 @@ const DECLARATION_CONSTRUCTORS = new Map([
   [RDFS_VOCABULARY.Datatype, "getOWLDatatype"],
 ]);
 const SUBJECT_TERM_TYPES = new Set(["BlankNode", "NamedNode"]);
+const NAMED_NODE_TERM_TYPES = new Set(["NamedNode"]);
 import { ENTITY_DECLARATION_TYPES } from "./entityDeclarations.js";
 const ENTITY_KIND_BY_ROLE = new Map(
   Object.entries(ENTITY_DECLARATION_TYPES).map(([kind, role]) => [role, kind]),
@@ -187,22 +189,35 @@ const normalizeConfiguration = (configuration) =>
     ? configuration
     : new OWLOntologyLoaderConfiguration(configuration);
 
-const termKey = (term) => {
+const termKeyParts = (term) => {
   if (!term || typeof term.termType !== "string") {
     throw new TypeError("RDF values must implement the RDF/JS Term contract");
   }
   if (term.termType === "Literal") {
-    return JSON.stringify([
+    return [
       term.termType,
       term.value,
       term.language,
       term.direction ?? "",
       term.datatype?.termType,
       term.datatype?.value,
-    ]);
+    ];
   }
-  return JSON.stringify([term.termType, term.value]);
+  return [term.termType, term.value];
 };
+
+const termKey = (term) => JSON.stringify(termKeyParts(term));
+
+// Consumption is private value equality. Encode the four admitted term tuples
+// once, rather than JSON-encoding four keys and then escaping those keys again.
+// Public source handles and role-proof identifiers retain quadKey's encoding.
+const consumptionKey = (quad) =>
+  JSON.stringify([
+    termKeyParts(quad.subject),
+    termKeyParts(quad.predicate),
+    termKeyParts(quad.object),
+    termKeyParts(quad.graph),
+  ]);
 
 const quadKey = (quad) =>
   JSON.stringify([
@@ -293,7 +308,10 @@ const reconstructionInputSourceLocations = async (
     }
     observed += 1;
     if (observed % CHECK_INTERVAL === 0) {
-      await execution.cooperate();
+      {
+        const yielded = execution.cooperate();
+        if (yielded) await yielded;
+      }
     }
   }
   if (!graphSelection.merged || locationsByTriple.size === 0) {
@@ -313,7 +331,10 @@ const reconstructionInputSourceLocations = async (
     }
     observed += 1;
     if (observed % CHECK_INTERVAL === 0) {
-      await execution.cooperate();
+      {
+        const yielded = execution.cooperate();
+        if (yielded) await yielded;
+      }
     }
   }
   observed = 0;
@@ -323,7 +344,10 @@ const reconstructionInputSourceLocations = async (
     }
     observed += 1;
     if (observed % CHECK_INTERVAL === 0) {
-      await execution.cooperate();
+      {
+        const yielded = execution.cooperate();
+        if (yielded) await yielded;
+      }
     }
   }
   execution.check();
@@ -352,13 +376,13 @@ const requireQuad = (quad) => {
     );
   }
   requireTerm(quad.subject, SUBJECT_TERM_TYPES, "quad.subject");
-  requireTerm(quad.predicate, new Set(["NamedNode"]), "quad.predicate");
+  requireTerm(quad.predicate, NAMED_NODE_TERM_TYPES, "quad.predicate");
   requireTerm(quad.object, OBJECT_TERM_TYPES, "quad.object");
   requireTerm(quad.graph, GRAPH_TERM_TYPES, "quad.graph");
   if (quad.object.termType === "Literal") {
     requireTerm(
       quad.object.datatype,
-      new Set(["NamedNode"]),
+      NAMED_NODE_TERM_TYPES,
       "literal.datatype",
     );
     if (typeof quad.object.language !== "string") {
@@ -398,6 +422,9 @@ class ExecutionController {
       error.name = "AbortError";
       throw error;
     }
+    // An unbounded Java-provider deadline needs no clock read. Cancellation
+    // above and the independent cooperative-yield clock still run normally.
+    if (timeoutMs === Infinity) return;
     const elapsed = (this.#pausedAt ?? monotonicNow()) - this.#startedAt;
     if (elapsed > timeoutMs) {
       throw new ResourceLimitError(
@@ -425,19 +452,20 @@ class ExecutionController {
     this.check();
   }
 
-  async cooperate() {
+  cooperate() {
     this.check();
     if (monotonicNow() - this.#lastYieldAt < COOPERATIVE_YIELD_INTERVAL_MS) {
-      return;
+      return undefined;
     }
     const scheduler = Reflect.get(globalThis, "scheduler");
-    if (typeof scheduler?.yield === "function") {
-      await scheduler.yield();
-    } else {
-      await new Promise((resolve) => globalThis.setTimeout(resolve, 0));
-    }
-    this.#lastYieldAt = monotonicNow();
-    this.check();
+    const yielded =
+      typeof scheduler?.yield === "function"
+        ? scheduler.yield()
+        : new Promise((resolve) => globalThis.setTimeout(resolve, 0));
+    return Promise.resolve(yielded).then(() => {
+      this.#lastYieldAt = monotonicNow();
+      this.check();
+    });
   }
 }
 
@@ -505,7 +533,7 @@ class RdfGraphInterpreter {
   #sourceStatementCount;
   #unparsedTriples = [];
   #headerState = RDFOntologyHeaderStatus.PARSED_ZERO_HEADERS;
-  #knownRoles = new Set();
+  #knownRoles = new Map();
   #anonymousClassNodes = new Set();
   #anonymousDataRangeNodes = new Set();
   #annotationReifications = new Map();
@@ -519,6 +547,7 @@ class RdfGraphInterpreter {
   #classIris = new Set([OWL_VOCABULARY.Nothing, OWL_VOCABULARY.Thing]);
   #configuration;
   #consumed = new Set();
+  #consumptionKeys = new WeakMap();
   #dataPropertyIris = new Set([
     OWL_VOCABULARY.bottomDataProperty,
     OWL_VOCABULARY.topDataProperty,
@@ -561,6 +590,7 @@ class RdfGraphInterpreter {
   #discoveredRoleUses = new Map();
   #discoveredDefaultRoles = new Map();
   #roleProofs = new Map();
+  #namedRoles;
   #roleProofScope;
   #retainedStatements = [];
   #transaction;
@@ -608,7 +638,7 @@ class RdfGraphInterpreter {
           this.#roleProofs,
           { termType: "NamedNode", value },
           type,
-          [[]],
+          UNCONDITIONAL_ROLE_SUPPORT,
         );
     for (const entity of declarationEntities) {
       this.#recordDeclarationEntity(entity);
@@ -616,10 +646,9 @@ class RdfGraphInterpreter {
     // Built-ins and explicit declarations supplied by the managed closure are
     // known inputs. Inferred role propagation is not an authored declaration.
     for (const [type, values] of this.#namedRoleSets())
-      for (const iri of values)
-        this.#knownRoles.add(JSON.stringify([type, iri]));
+      this.#knownRoles.set(type, new Set(values));
     for (const iri of OWL_BUILT_IN_DATATYPES)
-      this.#knownRoles.add(JSON.stringify([RDFS_VOCABULARY.Datatype, iri]));
+      this.#knownRoles.get(RDFS_VOCABULARY.Datatype).add(iri);
     for (const role of sourceRoles) {
       if (role.iri === undefined) continue; // Anonymous identity is document local.
       this.#namedRoleSets().get(role.type)?.add(role.iri);
@@ -627,7 +656,7 @@ class RdfGraphInterpreter {
         this.#roleProofs,
         { termType: "NamedNode", value: role.iri },
         role.type,
-        role.supports ?? [[]],
+        role.supports ?? UNCONDITIONAL_ROLE_SUPPORT,
       );
       if (role.type === RDFS_VOCABULARY.Class)
         this.#rdfsClassTerms.set(
@@ -640,34 +669,26 @@ class RdfGraphInterpreter {
   }
 
   #recordDeclarationEntity(entity) {
-    const declarationsByKind = new Map([
-      [OWLObjectKind.ANNOTATION_PROPERTY, this.#annotationPropertyIris],
-      [OWLObjectKind.CLASS, this.#classIris],
-      [OWLObjectKind.DATA_PROPERTY, this.#dataPropertyIris],
-      [OWLObjectKind.DATATYPE, this.#datatypeIris],
-      [OWLObjectKind.NAMED_INDIVIDUAL, this.#individualIris],
-      [OWLObjectKind.OBJECT_PROPERTY, this.#objectPropertyIris],
-    ]);
-    declarationsByKind.get(entity.kind)?.add(entity.iri.value);
-    for (const [type, values] of this.#namedRoleSets())
-      if (values === declarationsByKind.get(entity.kind))
-        this.#mergeRoleProofs(
-          this.#roleProofs,
-          { termType: "NamedNode", value: entity.iri.value },
-          type,
-          [[]],
-        );
+    const type = RDF_ROLE_BY_ENTITY_KIND.get(entity.kind);
+    this.#namedRoleSets().get(type)?.add(entity.iri.value);
+    if (type)
+      this.#mergeRoleProofs(
+        this.#roleProofs,
+        { termType: "NamedNode", value: entity.iri.value },
+        type,
+        UNCONDITIONAL_ROLE_SUPPORT,
+      );
   }
 
   #namedRoleSets() {
-    return new Map([
+    return (this.#namedRoles ??= new Map([
       [OWL_VOCABULARY.Class, this.#classIris],
       [RDFS_VOCABULARY.Datatype, this.#datatypeIris],
       [OWL_VOCABULARY.ObjectProperty, this.#objectPropertyIris],
       [OWL_VOCABULARY.DatatypeProperty, this.#dataPropertyIris],
       [OWL_VOCABULARY.AnnotationProperty, this.#annotationPropertyIris],
       [OWL_VOCABULARY.NamedIndividual, this.#individualIris],
-    ]);
+    ]));
   }
 
   async parserMetaData() {
@@ -679,14 +700,14 @@ class RdfGraphInterpreter {
       if (value && typeof value === "object" && !visited.has(value)) {
         visited.add(value);
         const type = RDF_ROLE_BY_ENTITY_KIND.get(value.kind);
-        if (
-          type &&
-          !this.#knownRoles.has(JSON.stringify([type, value.iri.value]))
-        )
+        if (type && !this.#knownRoles.get(type)?.has(value.iri.value))
           guessedDeclarations.push({ iri: value.iri, entityType: value.kind });
         for (const child of Object.values(value)) pending.push(child);
       }
-      await this.#execution.cooperate();
+      {
+        const yielded = this.#execution.cooperate();
+        if (yielded) await yielded;
+      }
     }
     return new RDFParserMetaData({
       tripleCount:
@@ -718,8 +739,30 @@ class RdfGraphInterpreter {
   // travelled through several imported documents and other restrictions.
   #mergeRoleProofs(target, term, type, supports) {
     const key = `${type}\u0000${termKey(term)}`;
-    let proofs = target.get(key) ?? [];
-    let changed = false;
+    const previous = target.get(key) ?? [];
+    const proofs = this.#mergeRoleSupports(previous, supports);
+    if (proofs === previous) return false;
+    target.set(key, proofs);
+    return true;
+  }
+
+  // The same minimal supporting-rule antichain is used by the internal role
+  // index and emitted role records. A new array also signals changed evidence.
+  #mergeRoleSupports(proofs, supports) {
+    // Native unconditional evidence has one empty rule set. It subsumes every
+    // conditional proof, but is already present if an empty proof exists.
+    // Preserve the original support/some/filter deadline checks in that order.
+    // Arbitrary supplied iterables retain their full normalization below.
+    if (supports === UNCONDITIONAL_ROLE_SUPPORT) {
+      this.#execution.check();
+      for (const proof of proofs) {
+        this.#execution.check();
+        if (proof.length === 0) return proofs;
+      }
+      for (let index = 0; index < proofs.length; index += 1)
+        this.#execution.check();
+      return UNCONDITIONAL_ROLE_SUPPORT;
+    }
     for (const support of supports) {
       this.#execution.check();
       const candidate = [...new Set(support)].sort();
@@ -735,10 +778,8 @@ class RdfGraphInterpreter {
         return !candidate.every((step) => proof.includes(step));
       });
       proofs.push(candidate);
-      changed = true;
     }
-    if (changed) target.set(key, proofs);
-    return changed;
+    return proofs;
   }
 
   #proofsFor(term, type, excluded) {
@@ -792,7 +833,7 @@ class RdfGraphInterpreter {
     );
   }
 
-  #recordDiscoveredRole(term, type, supports = [[]]) {
+  #recordDiscoveredRole(term, type, supports = UNCONDITIONAL_ROLE_SUPPORT) {
     const changed = this.#mergeRoleProofs(
       this.#roleProofs,
       term,
@@ -802,14 +843,24 @@ class RdfGraphInterpreter {
     if (term.termType === "NamedNode") {
       const key = `${type}\u0000${term.value}`;
       const existing = this.#discoveredRoleUses.get(key);
-      const proofs = new Map();
-      this.#mergeRoleProofs(proofs, term, type, existing?.supports ?? []);
-      this.#mergeRoleProofs(proofs, term, type, supports);
+      if (
+        existing?.supports.length === 1 &&
+        existing.supports[0].length === 0
+      ) {
+        // A private normalized unconditional record already subsumes every
+        // further rule set. Replay its original one-support admission check,
+        // then fully consume/check incoming supports before reusing it.
+        this.#execution.check();
+        this.#mergeRoleSupports(existing.supports, supports);
+        return changed;
+      }
+      const previous = this.#mergeRoleSupports([], existing?.supports ?? []);
+      const proofs = this.#mergeRoleSupports(previous, supports);
       this.#discoveredRoleUses.set(key, {
         iri: term.value,
         type,
         origin: "use",
-        supports: proofs.get(`${type}\u0000${termKey(term)}`) ?? [],
+        supports: proofs,
       });
     }
     return changed;
@@ -860,7 +911,10 @@ class RdfGraphInterpreter {
             origin: "use",
           });
         }
-        await this.#execution.cooperate();
+        {
+          const yielded = this.#execution.cooperate();
+          if (yielded) await yielded;
+        }
       }
       await this.#discoverOwlUseRoles();
     }
@@ -878,7 +932,7 @@ class RdfGraphInterpreter {
       NI = OWL_VOCABULARY.NamedIndividual;
     const roleSets = this.#namedRoleSets();
     let previousState;
-    const mark = (term, type, supports = [[]]) => {
+    const mark = (term, type, supports = UNCONDITIONAL_ROLE_SUPPORT) => {
       const values =
         term.termType === "NamedNode"
           ? roleSets.get(type)
@@ -917,7 +971,10 @@ class RdfGraphInterpreter {
         seen.add(id);
         terms.push(first[0].object);
         current = rest[0].object;
-        await this.#execution.cooperate();
+        {
+          const yielded = this.#execution.cooperate();
+          if (yielded) await yielded;
+        }
       }
       listCache.set(key, terms);
       return terms;
@@ -1089,7 +1146,10 @@ class RdfGraphInterpreter {
               roles[0].proofs.map((proof) => [...proof, rule]),
             );
         }
-        await this.#execution.cooperate();
+        {
+          const yielded = this.#execution.cooperate();
+          if (yielded) await yielded;
+        }
       }
     } while (previousState !== this.#roleProofState());
   }
@@ -1229,7 +1289,10 @@ class RdfGraphInterpreter {
             !this.#isDataRangeTerm(quad.object)
           )
             this.#recordRdfsRole(quad.object, RDFS_VOCABULARY.Class);
-          await this.#execution.cooperate();
+          {
+            const yielded = this.#execution.cooperate();
+            if (yielded) await yielded;
+          }
         }
       }
       const adjacent = new Map();
@@ -1255,7 +1318,10 @@ class RdfGraphInterpreter {
             pending.push(id);
           }
         }
-        await this.#execution.cooperate();
+        {
+          const yielded = this.#execution.cooperate();
+          if (yielded) await yielded;
+        }
       }
       while (pending.length) {
         const id = pending.pop();
@@ -1274,7 +1340,10 @@ class RdfGraphInterpreter {
           seen.add(next);
           pending.push(next);
         }
-        await this.#execution.cooperate();
+        {
+          const yielded = this.#execution.cooperate();
+          if (yielded) await yielded;
+        }
       }
     }
   }
@@ -1362,7 +1431,10 @@ class RdfGraphInterpreter {
           await this.#retainedClassTerm(quad.object),
         );
       }
-      await this.#execution.cooperate();
+      {
+        const yielded = this.#execution.cooperate();
+        if (yielded) await yielded;
+      }
     }
   }
 
@@ -1409,7 +1481,10 @@ class RdfGraphInterpreter {
       }
       visited += 1;
       if (visited % CHECK_INTERVAL === 0) {
-        await this.#execution.cooperate();
+        {
+          const yielded = this.#execution.cooperate();
+          if (yielded) await yielded;
+        }
       }
     }
   }
@@ -1462,7 +1537,10 @@ class RdfGraphInterpreter {
           severity: "warning",
         });
       }
-      await this.#execution.cooperate();
+      {
+        const yielded = this.#execution.cooperate();
+        if (yielded) await yielded;
+      }
     }
   }
 
@@ -1550,7 +1628,10 @@ class RdfGraphInterpreter {
       }
       visited += 1;
       if (visited % CHECK_INTERVAL === 0) {
-        await this.#execution.cooperate();
+        {
+          const yielded = this.#execution.cooperate();
+          if (yielded) await yielded;
+        }
       }
     }
 
@@ -1571,7 +1652,7 @@ class RdfGraphInterpreter {
         IRI.create(subject.value),
       );
       const role = RDF_ROLE_BY_ENTITY_KIND.get(entity.kind);
-      if (role) this.#knownRoles.add(JSON.stringify([role, subject.value]));
+      if (role) this.#knownRoles.get(role).add(subject.value);
       this.#transaction.addAxiom(
         this.#dataFactory.getOWLDeclarationAxiom(
           entity,
@@ -1853,16 +1934,19 @@ class RdfGraphInterpreter {
         [RDFS_VOCABULARY.Class, RDF_VOCABULARY.Property].includes(object)
       )
         continue; // The authored statement still owns its annotations.
-      const subjectTypes = new Set(
-        this.#outgoing(currentQuad.subject, RDF_VOCABULARY.type)
-          .filter(({ object: type }) => type.termType === "NamedNode")
-          .map(({ object: type }) => type.value),
-      );
+      const subjectTypes = this.#outgoing(
+        currentQuad.subject,
+        RDF_VOCABULARY.type,
+      )
+        .filter(({ object: type }) => type.termType === "NamedNode")
+        .map(({ object: type }) => type.value);
       if (
         (object === RDFS_VOCABULARY.Class &&
-          [...rdfsClassSubjects].some((type) => subjectTypes.has(type))) ||
+          [...rdfsClassSubjects].some((type) => subjectTypes.includes(type))) ||
         (object === RDF_VOCABULARY.Property &&
-          [...rdfPropertySubjects].some((type) => subjectTypes.has(type))) ||
+          [...rdfPropertySubjects].some((type) =>
+            subjectTypes.includes(type),
+          )) ||
         (object === RDF_VOCABULARY.List &&
           this.#outgoing(currentQuad.subject, RDF_VOCABULARY.first).length ===
             1 &&
@@ -1890,7 +1974,10 @@ class RdfGraphInterpreter {
           );
           this.#consume(quad);
         }
-        await this.#execution.cooperate();
+        {
+          const yielded = this.#execution.cooperate();
+          if (yielded) await yielded;
+        }
       }
     }
     const allOntologyTypeQuads = [...this.#read.matchedQuads()].filter(
@@ -2062,7 +2149,10 @@ class RdfGraphInterpreter {
         this.#transaction.addAnnotation(annotation);
       }
     }
-    await this.#execution.cooperate();
+    {
+      const yielded = this.#execution.cooperate();
+      if (yielded) await yielded;
+    }
   }
 
   #indexReifications() {
@@ -2109,7 +2199,10 @@ class RdfGraphInterpreter {
   }
 
   async #axiomAnnotations(baseQuad) {
-    if (!this.#configuration.loadAnnotationAxioms) {
+    if (
+      !this.#configuration.loadAnnotationAxioms ||
+      this.#axiomReifications.size === 0
+    ) {
       return [];
     }
     const key = tripleKey(
@@ -2147,17 +2240,16 @@ class RdfGraphInterpreter {
     if (!this.#configuration.loadAnnotationAxioms) {
       return undefined;
     }
-    this.#retainedAnnotationBases.add(
-      tripleKey(currentQuad.subject, currentQuad.predicate, currentQuad.object),
-    );
-    const nestedNodes =
-      this.#annotationReifications.get(
-        tripleKey(
-          currentQuad.subject,
-          currentQuad.predicate,
-          currentQuad.object,
-        ),
-      ) || [];
+    let nestedNodes = [];
+    if (this.#annotationReifications.size > 0) {
+      const key = tripleKey(
+        currentQuad.subject,
+        currentQuad.predicate,
+        currentQuad.object,
+      );
+      this.#retainedAnnotationBases.add(key);
+      nestedNodes = this.#annotationReifications.get(key) || [];
+    }
     const nested = [];
     for (const node of nestedNodes) {
       nested.push(...(await this.#nodeAnnotations(node, depth + 1)));
@@ -2293,7 +2385,10 @@ class RdfGraphInterpreter {
       this.#consume(currentQuad);
       visited += 1;
       if (visited % CHECK_INTERVAL === 0) {
-        await this.#execution.cooperate();
+        {
+          const yielded = this.#execution.cooperate();
+          if (yielded) await yielded;
+        }
       }
     }
   }
@@ -2607,7 +2702,10 @@ class RdfGraphInterpreter {
       this.#consume(currentQuad);
       visited += 1;
       if (visited % CHECK_INTERVAL === 0) {
-        await this.#execution.cooperate();
+        {
+          const yielded = this.#execution.cooperate();
+          if (yielded) await yielded;
+        }
       }
     }
 
@@ -2936,7 +3034,10 @@ class RdfGraphInterpreter {
       this.#consume(currentQuad);
       visited += 1;
       if (visited % CHECK_INTERVAL === 0) {
-        await this.#execution.cooperate();
+        {
+          const yielded = this.#execution.cooperate();
+          if (yielded) await yielded;
+        }
       }
     }
   }
@@ -3184,7 +3285,10 @@ class RdfGraphInterpreter {
       ) {
         mark(quad.subject, "object");
       }
-      await this.#execution.cooperate();
+      {
+        const yielded = this.#execution.cooperate();
+        if (yielded) await yielded;
+      }
     }
     return changed;
   }
@@ -3297,7 +3401,10 @@ class RdfGraphInterpreter {
               "An RDF annotation has no retained owning axiom or annotation",
               { reason: "RDF_ANNOTATION_ANCHOR_UNSUPPORTED" },
             );
-          await this.#execution.cooperate();
+          {
+            const yielded = this.#execution.cooperate();
+            if (yielded) await yielded;
+          }
         }
     }
     let visited = 0;
@@ -3344,7 +3451,10 @@ class RdfGraphInterpreter {
       }
       visited += 1;
       if (visited % CHECK_INTERVAL === 0) {
-        await this.#execution.cooperate();
+        {
+          const yielded = this.#execution.cooperate();
+          if (yielded) await yielded;
+        }
       }
     }
   }
@@ -4361,7 +4471,10 @@ class RdfGraphInterpreter {
       result.push(await decodeItem(first.object));
       node = rest.object;
       if (result.length % CHECK_INTERVAL === 0) {
-        await this.#execution.cooperate();
+        {
+          const yielded = this.#execution.cooperate();
+          if (yielded) await yielded;
+        }
       }
     }
     return result;
@@ -4562,11 +4675,24 @@ class RdfGraphInterpreter {
   }
 
   #consume(quad) {
-    this.#consumed.add(quadKey(quad));
+    this.#consumed.add(this.#consumptionKey(quad));
   }
 
   #isConsumed(quad) {
-    return this.#consumed.has(quadKey(quad));
+    return this.#consumed.has(this.#consumptionKey(quad));
+  }
+
+  #consumptionKey(quad) {
+    let key = this.#consumptionKeys.get(quad);
+    if (key === undefined) {
+      // The projected dataset is private and read-only. RDF/JS requires Term
+      // and Quad fields to be treated as immutable, as the prepared read view
+      // already assumes. Cache encodings, not equality: distinct equal quads
+      // still reach the same value-keyed consumed Set. Nothing escapes a pass.
+      key = consumptionKey(quad);
+      this.#consumptionKeys.set(quad, key);
+    }
+    return key;
   }
 
   // Evidence about one punned IRI, gathered from the document in a single pass.
@@ -4771,7 +4897,10 @@ const validateDataset = async (dataset, configuration, execution) => {
       });
     }
     if (observed % CHECK_INTERVAL === 0) {
-      await execution.cooperate();
+      {
+        const yielded = execution.cooperate();
+        if (yielded) await yielded;
+      }
     }
   }
   if (observed !== dataset.size) {
@@ -4841,7 +4970,7 @@ export class RdfToOwlTranslator {
           ? createSourcePreservingDataFactory(this.#dataFactory)
           : this.#dataFactory,
       dataset: graphSelection.dataset,
-      read: createRdfReadView(graphSelection.dataset, execution),
+      read: createRdfReadView(graphSelection.dataset, execution, true),
       diagnostics,
       documentIRI: normalizedDocumentIRI,
       documentScope: documentScopeFor(normalizedDocumentIRI),

@@ -1,8 +1,10 @@
+import { jest } from "@jest/globals";
 import {
   IRI,
   OWLDataFactory,
   OWLObjectKind,
   OWLOntology,
+  OWLStructuralObject,
 } from "../../model/index.js";
 
 import {
@@ -11,6 +13,89 @@ import {
 } from "./ontologyStructuralIsomorphism.js";
 
 const dataFactory = new OWLDataFactory();
+
+test("late-loaded comparison does not bless an earlier structural-key override", async () => {
+  await jest.isolateModulesAsync(async () => {
+    const { OWLStructuralObject: Structural, IRI: NativeIRI } =
+      await import("../../model/structural.js");
+    const { OWLDataFactory: Factory } =
+      await import("../../model/owlDataFactory.js");
+    const { OWLOntology: Ontology } =
+      await import("../../model/owlOntology.js");
+    const factory = new Factory();
+    const make = (iri) =>
+      new Ontology({
+        axioms: [
+          factory.getOWLDeclarationAxiom(
+            factory.getOWLClass(NativeIRI.create(iri)),
+          ),
+        ],
+      });
+    const left = make("urn:late-comparison:left");
+    const right = make("urn:late-comparison:right");
+    const original = Structural.prototype.structuralKey;
+    try {
+      Structural.prototype.structuralKey = () => "patched-key";
+      const { compareOntologies: compare } =
+        await import("./ontologyStructuralIsomorphism.js");
+      expect(compare(left, right).equal).toBe(false);
+    } finally {
+      Structural.prototype.structuralKey = original;
+    }
+  });
+});
+
+test("declaration construction retains foreign entity tuple conversion order", () => {
+  let calls = 0;
+  const entity = Object.freeze({
+    kind: OWLObjectKind.CLASS,
+    iri: IRI.create("urn:foreign:stateful"),
+    structuralKey: () => "foreign:entity",
+    toStructuralTuple: () => [OWLObjectKind.CLASS, ++calls],
+  });
+  const declaration = dataFactory.getOWLDeclarationAxiom(entity);
+  expect(calls).toBe(2);
+  expect(declaration.toStructuralTuple()).toEqual([
+    OWLObjectKind.DECLARATION_AXIOM,
+    [OWLObjectKind.CLASS, 1],
+    [],
+  ]);
+  expect(JSON.parse(declaration.structuralKeyWithoutAnnotations())).toEqual([
+    OWLObjectKind.DECLARATION_AXIOM,
+    [OWLObjectKind.CLASS, 2],
+  ]);
+});
+
+test("declaration construction retains the array tuple protocol and its comparison fallback", () => {
+  const previous = Object.getOwnPropertyDescriptor(
+    Array.prototype,
+    "toStructuralTuple",
+  );
+  let declaration;
+  try {
+    Object.defineProperty(Array.prototype, "toStructuralTuple", {
+      configurable: true,
+      value() {
+        return ["array-protocol"];
+      },
+    });
+    declaration = dataFactory.getOWLDeclarationAxiom(
+      dataFactory.getOWLClass(IRI.create("urn:array:protocol")),
+    );
+  } finally {
+    if (previous)
+      Object.defineProperty(Array.prototype, "toStructuralTuple", previous);
+    else delete Array.prototype.toStructuralTuple;
+  }
+  expect(declaration.toStructuralTuple().at(-1)).toEqual(["array-protocol"]);
+  const ordinary = dataFactory.getOWLDeclarationAxiom(declaration.entity);
+  expect(
+    compareOntologies(
+      new OWLOntology({ axioms: [declaration] }),
+      new OWLOntology({ axioms: [ordinary] }),
+    ).equal,
+  ).toBe(false);
+});
 const objectProperty = dataFactory.getOWLObjectProperty(
   IRI.create("urn:ontology-isomorphism:related"),
 );
@@ -573,4 +658,114 @@ describe("ontology structural isomorphism", () => {
       compareOntologies(ontology(), ontology(), { compareMetadata: true }),
     ).toThrow(/Unknown ontology comparison option compareMetadata/u);
   });
+
+  it.each(["normative-v1", "java-owlapi-5.5.1"])(
+    "%s preserves exact declaration search-state charges and zero-state mismatches",
+    (behaviorProfileId) => {
+      const factory = new OWLDataFactory({ behaviorProfileId });
+      const declaration = (name) =>
+        factory.getOWLDeclarationAxiom(
+          factory.getOWLClass(IRI.create(`urn:declaration-budget:${name}`)),
+        );
+      const axioms = Array.from({ length: 64 }, (_, index) =>
+        declaration(index),
+      );
+      const left = ontology({ axioms });
+      const equal = ontology({ axioms: [...axioms].reverse() });
+      expect(() =>
+        compareOntologies(left, equal, { maximumSearchStates: 63 }),
+      ).toThrow(
+        expect.objectContaining({
+          code: "ONTOLOGY_STRUCTURAL_COMPARISON_LIMIT_EXCEEDED",
+          maximumSearchStates: 63,
+          searchStatesExamined: 64,
+        }),
+      );
+      expect(
+        compareOntologies(left, equal, { maximumSearchStates: 64 }),
+      ).toEqual({ equal: true, mismatch: null });
+      expect(
+        compareOntologies(
+          left,
+          ontology({ axioms: [...axioms.slice(0, 63), declaration("other")] }),
+          { maximumSearchStates: 1 },
+        ).equal,
+      ).toBe(false);
+    },
+  );
+
+  it("retains full matching and state charges for generic field/tuple disagreement", () => {
+    const first = dataFactory.getOWLDeclarationAxiom(
+      dataFactory.getOWLClass(IRI.create("urn:generic-ground:a")),
+    );
+    const entity = dataFactory.getOWLClass(IRI.create("urn:generic-ground:z"));
+    const generic = new OWLStructuralObject(
+      OWLObjectKind.DECLARATION_AXIOM,
+      { annotations: Object.freeze([]), entity },
+      ["a different stored body", []],
+    );
+    const left = ontology({ axioms: [first, generic] });
+    const right = ontology({
+      axioms: [first, dataFactory.getOWLDeclarationAxiom(entity)],
+    });
+    expect(() =>
+      compareOntologies(left, right, { maximumSearchStates: 1 }),
+    ).toThrow(
+      expect.objectContaining({
+        code: "ONTOLOGY_STRUCTURAL_COMPARISON_LIMIT_EXCEEDED",
+        searchStatesExamined: 2,
+      }),
+    );
+    expect(
+      compareOntologies(left, right, { maximumSearchStates: 2 }).equal,
+    ).toBe(false);
+  });
+
+  it.each(["kind", "iri", "annotations", "value"])(
+    "compares fields introduced by an inherited %s setter",
+    (field) => {
+      const descriptor = Object.getOwnPropertyDescriptor(
+        OWLStructuralObject.prototype,
+        field,
+      );
+      let intercepted;
+      try {
+        Object.defineProperty(OWLStructuralObject.prototype, field, {
+          configurable: true,
+          set(value) {
+            Object.defineProperty(this, field, {
+              value,
+              enumerable: true,
+              configurable: true,
+              writable: true,
+            });
+            this.injected = "extra structural field";
+          },
+        });
+        const factory = new OWLDataFactory();
+        intercepted = factory.getOWLDeclarationAxiom(
+          factory.getOWLClass(IRI.create(`urn:intercepted-field:${field}`)),
+        );
+      } finally {
+        if (descriptor)
+          Object.defineProperty(
+            OWLStructuralObject.prototype,
+            field,
+            descriptor,
+          );
+        else delete OWLStructuralObject.prototype[field];
+      }
+      const factory = new OWLDataFactory();
+      const ordinary = factory.getOWLDeclarationAxiom(
+        factory.getOWLClass(IRI.create(`urn:intercepted-field:${field}`)),
+      );
+      expect(
+        compareOntologies(
+          ontology({ axioms: [intercepted] }),
+          ontology({ axioms: [ordinary] }),
+          { maximumSearchStates: 1 },
+        ).equal,
+      ).toBe(false);
+    },
+  );
 });

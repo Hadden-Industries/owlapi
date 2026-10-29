@@ -55,6 +55,7 @@ export const createProfileBudget = (
   const started = performance.now();
   let lastYieldAt = started;
   let work = 0;
+  let yieldChecks = 0;
   const check = (amount = 1) => {
     work += amount;
     if (
@@ -76,16 +77,27 @@ export const createProfileBudget = (
         limit: configuration.timeoutMs,
       });
   };
-  const checkpoint = async () => {
-    check();
+  // Sample the clock once per 256 synchronous steps; yielding is time-based.
+  const shouldYield = () => {
+    yieldChecks = (yieldChecks + 1) % 256;
+    return (
+      yieldChecks === 0 &&
+      performance.now() - lastYieldAt >= COOPERATIVE_YIELD_INTERVAL_MS
+    );
+  };
+  const yieldTurn = async () => {
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    lastYieldAt = performance.now();
+    check(0);
+  };
+  const checkpoint = async (amount = 1) => {
+    check(amount);
     // Yield for elapsed work, not every small batch: timer clamping otherwise
     // dominates large assessments. Keep all work/depth and deadline checks.
     if (performance.now() - lastYieldAt >= COOPERATIVE_YIELD_INTERVAL_MS) {
       // scheduler.yield continuations can outrun an already queued timer in
       // Chromium. A timer turn also admits caller-scheduled cancellation.
-      await new Promise((resolve) => setTimeout(resolve, 0));
-      lastYieldAt = performance.now();
-      check(0);
+      await yieldTurn();
     }
   };
   const depth = (observed) => {
@@ -96,5 +108,5 @@ export const createProfileBudget = (
         limit: configuration.maxDepth,
       });
   };
-  return { configuration, check, checkpoint, depth };
+  return { configuration, check, checkpoint, depth, shouldYield, yieldTurn };
 };

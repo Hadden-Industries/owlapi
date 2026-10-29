@@ -1,0 +1,1102 @@
+{
+  "schemaVersion": 1,
+  "owlapiRelease": "5.5.1",
+  "fixtureGeneratorVersion": "owlapi-benchmark-corpus-v1",
+  "parameters": {
+    "warmupCount": 2,
+    "runCount": 5,
+    "syntaxCount": 100,
+    "importClosureCount": 8
+  },
+  "environment": {
+    "platform": "win32-x64",
+    "javaVersion": "25.0.4.1",
+    "javaVmName": "OpenJDK 64-Bit Server VM",
+    "owlapiVersion": "5.5.1.2026-08-10T00:04:10Z"
+  },
+  "results": [
+    {
+      "id": "manager.createOWLOntologyManager",
+      "category": "Manager & Configuration",
+      "apiSymbols": [
+        "OWLManager.createOWLOntologyManager",
+        "OWLOntologyManager"
+      ],
+      "description": "Instantiate 100 OWLOntologyManager instances and read their data factory.",
+      "verificationCount": 100,
+      "firstUseWallMs": 32.139,
+      "median": {
+        "wallMs": 10.78,
+        "retainedHeapDeltaBytes": 5238776
+      }
+    },
+    {
+      "id": "config.OWLOntologyLoaderConfiguration",
+      "category": "Manager & Configuration",
+      "apiSymbols": [
+        "OWLOntologyLoaderConfiguration"
+      ],
+      "description": "Chain 8 immutable loader configuration setters and getters 500 times.",
+      "verificationCount": 500,
+      "firstUseWallMs": 3.788,
+      "median": {
+        "wallMs": 1.13,
+        "retainedHeapDeltaBytes": 2088896
+      }
+    },
+    {
+      "id": "config.OWLOntologyWriterConfiguration",
+      "category": "Manager & Configuration",
+      "apiSymbols": [
+        "OWLOntologyWriterConfiguration"
+      ],
+      "description": "Chain 5 immutable writer configuration setters and getters 500 times.",
+      "verificationCount": 3500,
+      "firstUseWallMs": 0.982,
+      "median": {
+        "wallMs": 0.155,
+        "retainedHeapDeltaBytes": 522200
+      }
+    },
+    {
+      "id": "formats.RDFXMLDocumentFormat.prefixes",
+      "category": "Manager & Configuration",
+      "apiSymbols": [
+        "RDFXMLDocumentFormat"
+      ],
+      "description": "Exercise prefix registration, default prefix, copyPrefixesFrom, lookup, and clear 200 times.",
+      "verificationCount": 3200,
+      "firstUseWallMs": 5.184,
+      "median": {
+        "wallMs": 0.69,
+        "retainedHeapDeltaBytes": 522208
+      }
+    },
+    {
+      "id": "model.IRI.create",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "IRI.create"
+      ],
+      "description": "Construct and validate 2,000 IRIs.",
+      "verificationCount": 64890,
+      "firstUseWallMs": 1.887,
+      "median": {
+        "wallMs": 0.709,
+        "retainedHeapDeltaBytes": 1801584
+      }
+    },
+    {
+      "id": "factory.entities",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLDataFactory.getOWLClass",
+        "OWLDataFactory.getOWLObjectProperty",
+        "OWLDataFactory.getOWLDataProperty",
+        "OWLDataFactory.getOWLAnnotationProperty",
+        "OWLDataFactory.getOWLDatatype",
+        "OWLDataFactory.getOWLNamedIndividual",
+        "OWLDataFactory.getOWLAnonymousIndividual",
+        "OWLDataFactory.getOWLOntologyID",
+        "OWLDataFactory.getOWLImportsDeclaration"
+      ],
+      "description": "Construct 500 sets of all 10 entity, ontology-ID, and import-declaration types.",
+      "verificationCount": 5000,
+      "firstUseWallMs": 9.148,
+      "median": {
+        "wallMs": 2.912,
+        "retainedHeapDeltaBytes": 2925744
+      }
+    },
+    {
+      "id": "factory.literals",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLDataFactory.getOWLLiteral"
+      ],
+      "description": "Construct 500 sets of plain, language-tagged, integer, decimal, float, and boolean literals.",
+      "verificationCount": 16310,
+      "firstUseWallMs": 5.421,
+      "median": {
+        "wallMs": 1.426,
+        "retainedHeapDeltaBytes": 522192
+      }
+    },
+    {
+      "id": "factory.classExpressions",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLDataFactory"
+      ],
+      "description": "Construct 200 sets of all 18 OWL 2 class expression and property inverse kinds.",
+      "verificationCount": 3600,
+      "firstUseWallMs": 11.133,
+      "median": {
+        "wallMs": 1.287,
+        "retainedHeapDeltaBytes": 1044432
+      }
+    },
+    {
+      "id": "factory.dataRanges",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLDataFactory"
+      ],
+      "description": "Construct 200 sets of all 6 OWL 2 data range and facet restriction kinds.",
+      "verificationCount": 1200,
+      "firstUseWallMs": 2.718,
+      "median": {
+        "wallMs": 0.565,
+        "retainedHeapDeltaBytes": 1044432
+      }
+    },
+    {
+      "id": "factory.axioms",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLDataFactory"
+      ],
+      "description": "Construct ~1,500 axioms spanning all 38 OWL 2 axiom types.",
+      "verificationCount": 1490,
+      "firstUseWallMs": 3.269,
+      "median": {
+        "wallMs": 2.211,
+        "retainedHeapDeltaBytes": 2630224
+      }
+    },
+    {
+      "id": "model.structuralEqualityAndSet",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLStructuralObject.equals",
+        "OWLStructuralObject.equalsIgnoreAnnotations",
+        "StructuralSet"
+      ],
+      "description": "Insert and query 1,000 axioms in a structural set and test structural equality.",
+      "verificationCount": 4000,
+      "firstUseWallMs": 1.501,
+      "median": {
+        "wallMs": 0.914,
+        "retainedHeapDeltaBytes": 522192
+      }
+    },
+    {
+      "id": "model.axiomAnnotationsTransform",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLStructuralObject.getAnnotatedAxiom",
+        "OWLStructuralObject.getAxiomWithoutAnnotations"
+      ],
+      "description": "Annotate and strip annotations on 500 axioms.",
+      "verificationCount": 500,
+      "firstUseWallMs": 4.244,
+      "median": {
+        "wallMs": 1.31,
+        "retainedHeapDeltaBytes": 1044392
+      }
+    },
+    {
+      "id": "model.dispatch",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "dispatchOwlObject",
+        "dispatchAxiom",
+        "dispatchClassExpression"
+      ],
+      "description": "Dispatch 500 axioms (object + axiom visitors) and 120 complex class expressions.",
+      "verificationCount": 1120,
+      "firstUseWallMs": 0.965,
+      "median": {
+        "wallMs": 0.198,
+        "retainedHeapDeltaBytes": 522192
+      }
+    },
+    {
+      "id": "load.functional",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class Functional Syntax ontology document.",
+      "verificationCount": 100,
+      "firstUseWallMs": 5.463,
+      "median": {
+        "wallMs": 2.355,
+        "retainedHeapDeltaBytes": 1279352
+      }
+    },
+    {
+      "id": "load.manchester",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class Manchester OWL Syntax ontology document.",
+      "verificationCount": 100,
+      "firstUseWallMs": 24.129,
+      "median": {
+        "wallMs": 2.607,
+        "retainedHeapDeltaBytes": 1338368
+      }
+    },
+    {
+      "id": "load.owlxml",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class OWL/XML ontology document.",
+      "verificationCount": 100,
+      "firstUseWallMs": 21.339,
+      "median": {
+        "wallMs": 4.947,
+        "retainedHeapDeltaBytes": 1455528
+      }
+    },
+    {
+      "id": "load.rdfxml",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class RDF/XML ontology document.",
+      "verificationCount": 100,
+      "firstUseWallMs": 13.253,
+      "median": {
+        "wallMs": 6.253,
+        "retainedHeapDeltaBytes": 1763880
+      }
+    },
+    {
+      "id": "load.turtle",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class Turtle ontology document.",
+      "verificationCount": 100,
+      "firstUseWallMs": 8.673,
+      "median": {
+        "wallMs": 4.039,
+        "retainedHeapDeltaBytes": 1808032
+      }
+    },
+    {
+      "id": "load.ntriples",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class N-Triples ontology document.",
+      "verificationCount": 100,
+      "firstUseWallMs": 33.86,
+      "median": {
+        "wallMs": 3.915,
+        "retainedHeapDeltaBytes": 1690568
+      }
+    },
+    {
+      "id": "load.nquads",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class N-Quads ontology document.",
+      "verificationCount": 100,
+      "firstUseWallMs": 4.728,
+      "median": {
+        "wallMs": 3.114,
+        "retainedHeapDeltaBytes": 2042888
+      }
+    },
+    {
+      "id": "load.trig",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class TriG ontology document.",
+      "verificationCount": 100,
+      "firstUseWallMs": 12.866,
+      "median": {
+        "wallMs": 3.391,
+        "retainedHeapDeltaBytes": 1866648
+      }
+    },
+    {
+      "id": "load.jsonld",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class JSON-LD ontology document.",
+      "verificationCount": 100,
+      "firstUseWallMs": 224.629,
+      "median": {
+        "wallMs": 7.632,
+        "retainedHeapDeltaBytes": 1571568
+      }
+    },
+    {
+      "id": "load.dl",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class DL Syntax ontology document.",
+      "verificationCount": 100,
+      "firstUseWallMs": 11.436,
+      "median": {
+        "wallMs": 3.505,
+        "retainedHeapDeltaBytes": 1694336
+      }
+    },
+    {
+      "id": "load.krss2",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class KRSS2 ontology document.",
+      "verificationCount": 100,
+      "firstUseWallMs": 12.295,
+      "median": {
+        "wallMs": 2.998,
+        "retainedHeapDeltaBytes": 1792680
+      }
+    },
+    {
+      "id": "load.krss1",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class KRSS1 ontology document.",
+      "verificationCount": 100,
+      "firstUseWallMs": 10.27,
+      "median": {
+        "wallMs": 2.819,
+        "retainedHeapDeltaBytes": 2296024
+      }
+    },
+    {
+      "id": "load.importsClosure",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "NodeDocumentLoader"
+      ],
+      "description": "Load an 8-ontology cyclic import closure mapped to local file documents.",
+      "verificationCount": 8,
+      "firstUseWallMs": 70.716,
+      "median": {
+        "wallMs": 48.077,
+        "retainedHeapDeltaBytes": 8388608
+      }
+    },
+    {
+      "id": "load.rdfParserMetaData",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "RDFParserMetaData"
+      ],
+      "description": "Read RDFParserMetaData (triple count, header state, unparsed triples, guessed declarations) 500 times.",
+      "verificationCount": 51000,
+      "firstUseWallMs": 4.403,
+      "median": {
+        "wallMs": 0.218,
+        "retainedHeapDeltaBytes": 437872
+      }
+    },
+    {
+      "id": "manager.createAndGetOntology",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.createOntology",
+        "OWLOntologyManager.getOntology"
+      ],
+      "description": "Create and look up 100 ontologies by IRI in a manager.",
+      "verificationCount": 100,
+      "firstUseWallMs": 4.665,
+      "median": {
+        "wallMs": 2.952,
+        "retainedHeapDeltaBytes": 11064848
+      }
+    },
+    {
+      "id": "manager.addAxioms.bulk",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.addAxioms"
+      ],
+      "description": "Bulk-add 500 axioms to a managed ontology via addAxioms.",
+      "verificationCount": 500,
+      "firstUseWallMs": 2.75,
+      "median": {
+        "wallMs": 2.534,
+        "retainedHeapDeltaBytes": 1702496
+      }
+    },
+    {
+      "id": "manager.addAxiom.singleLoop",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.addAxiom"
+      ],
+      "description": "Sequentially add 200 axioms one-by-one via addAxiom.",
+      "verificationCount": 200,
+      "firstUseWallMs": 2.376,
+      "median": {
+        "wallMs": 1.995,
+        "retainedHeapDeltaBytes": 1167280
+      }
+    },
+    {
+      "id": "manager.removeAxioms.bulk",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.removeAxioms"
+      ],
+      "description": "Bulk-add and bulk-remove 500 axioms via removeAxioms.",
+      "verificationCount": 0,
+      "firstUseWallMs": 12.117,
+      "median": {
+        "wallMs": 5.363,
+        "retainedHeapDeltaBytes": 2237728
+      }
+    },
+    {
+      "id": "manager.removeAxiom.singleLoop",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.removeAxiom"
+      ],
+      "description": "Bulk-add 200 axioms and remove them one-by-one via removeAxiom.",
+      "verificationCount": 0,
+      "firstUseWallMs": 2.814,
+      "median": {
+        "wallMs": 2.758,
+        "retainedHeapDeltaBytes": 1167264
+      }
+    },
+    {
+      "id": "manager.applyChanges.mixed",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.applyChanges",
+        "AddAxiom",
+        "RemoveAxiom",
+        "AddOntologyAnnotation",
+        "RemoveOntologyAnnotation",
+        "AddImport",
+        "RemoveImport",
+        "SetOntologyID"
+      ],
+      "description": "Apply a mixed batch of 125 ontology change objects via applyChanges.",
+      "verificationCount": 40,
+      "firstUseWallMs": 3.341,
+      "median": {
+        "wallMs": 1.91,
+        "retainedHeapDeltaBytes": 632048
+      }
+    },
+    {
+      "id": "manager.getImportsClosure",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.getImportsClosure"
+      ],
+      "description": "Query getImportsClosure 1,000 times on an 8-ontology closure.",
+      "verificationCount": 8000,
+      "firstUseWallMs": 1.552,
+      "median": {
+        "wallMs": 0.748,
+        "retainedHeapDeltaBytes": 1070440
+      }
+    },
+    {
+      "id": "ontology.getAxioms.excluded",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getAxioms",
+        "OWLOntology.getAxiomCount",
+        "OWLOntology.getAnnotations",
+        "OWLOntology.getImportsDeclarations",
+        "OWLOntology.getOntologyID"
+      ],
+      "description": "Query direct axioms, axiom count, annotations, imports, and ontology ID 200 times.",
+      "verificationCount": 937400,
+      "firstUseWallMs": 37.136,
+      "median": {
+        "wallMs": 28.297,
+        "retainedHeapDeltaBytes": 38778656
+      }
+    },
+    {
+      "id": "ontology.getAxioms.included",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getAxioms",
+        "OWLOntology.getAxiomCount"
+      ],
+      "description": "Query closure-included axioms and axiom count 200 times.",
+      "verificationCount": 1304000,
+      "firstUseWallMs": 37.886,
+      "median": {
+        "wallMs": 44.337,
+        "retainedHeapDeltaBytes": 55652544
+      }
+    },
+    {
+      "id": "ontology.getLogicalAxioms",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getLogicalAxioms",
+        "OWLOntology.getLogicalAxiomCount"
+      ],
+      "description": "Query logical axioms and counts (Imports.EXCLUDED and INCLUDED) 100 times.",
+      "verificationCount": 696000,
+      "firstUseWallMs": 18.944,
+      "median": {
+        "wallMs": 20.477,
+        "retainedHeapDeltaBytes": 24357216
+      }
+    },
+    {
+      "id": "ontology.getAxiomsByType",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getAxiomsByType",
+        "OWLOntology.getAxiomCount"
+      ],
+      "description": "Query axioms and counts across all 38 axiom types (EXCLUDED and INCLUDED) for 20 passes.",
+      "verificationCount": 224000,
+      "firstUseWallMs": 18.985,
+      "median": {
+        "wallMs": 9.883,
+        "retainedHeapDeltaBytes": 9511672
+      }
+    },
+    {
+      "id": "ontology.containsAxiom",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.containsAxiom",
+        "OWLOntology.containsAxiomIgnoreAnnotations",
+        "OWLOntology.getAxiomsIgnoreAnnotations"
+      ],
+      "description": "Test exact and annotation-ignoring axiom containment and retrieval for 200 axioms.",
+      "verificationCount": 1200,
+      "firstUseWallMs": 31.62,
+      "median": {
+        "wallMs": 18.172,
+        "retainedHeapDeltaBytes": 28493064
+      }
+    },
+    {
+      "id": "ontology.getSignature",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getSignature",
+        "OWLOntology.getClassesInSignature",
+        "OWLOntology.getObjectPropertiesInSignature",
+        "OWLOntology.getDataPropertiesInSignature",
+        "OWLOntology.getAnnotationPropertiesInSignature",
+        "OWLOntology.getIndividualsInSignature",
+        "OWLOntology.getDatatypesInSignature"
+      ],
+      "description": "Query full and kind-partitioned signatures (EXCLUDED and INCLUDED) 100 times.",
+      "verificationCount": 286000,
+      "firstUseWallMs": 55.371,
+      "median": {
+        "wallMs": 36.986,
+        "retainedHeapDeltaBytes": 61314976
+      }
+    },
+    {
+      "id": "ontology.entitySignatureLookups",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getEntitiesInSignature",
+        "OWLOntology.containsEntityInSignature",
+        "OWLOntology.getPunnedIRIs",
+        "OWLOntology.getReferencedAnonymousIndividuals"
+      ],
+      "description": "Query entity-by-IRI signature lookups, punned IRIs, and anonymous individuals for 5 passes.",
+      "verificationCount": 1580,
+      "firstUseWallMs": 49.654,
+      "median": {
+        "wallMs": 28.095,
+        "retainedHeapDeltaBytes": 24888008
+      }
+    },
+    {
+      "id": "ontology.getReferencingAxioms",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getReferencingAxioms"
+      ],
+      "description": "Query referencing axioms (EXCLUDED and INCLUDED) for 50 entities.",
+      "verificationCount": 880,
+      "firstUseWallMs": 1.495,
+      "median": {
+        "wallMs": 0.326,
+        "retainedHeapDeltaBytes": 1305408
+      }
+    },
+    {
+      "id": "ontology.classAxiomIndexes",
+      "category": "Ontology Queries - Specific Axiom Indexes",
+      "apiSymbols": [
+        "OWLOntology.getSubClassAxiomsForSubClass",
+        "OWLOntology.getSubClassAxiomsForSuperClass",
+        "OWLOntology.getEquivalentClassesAxioms",
+        "OWLOntology.getDisjointClassesAxioms"
+      ],
+      "description": "Query all 4 class-axiom index getters across 60 classes for 10 passes.",
+      "verificationCount": 3000,
+      "firstUseWallMs": 18.496,
+      "median": {
+        "wallMs": 2.125,
+        "retainedHeapDeltaBytes": 2610872
+      }
+    },
+    {
+      "id": "ontology.objectPropertyAxiomIndexes",
+      "category": "Ontology Queries - Specific Axiom Indexes",
+      "apiSymbols": [
+        "OWLOntology.getObjectSubPropertyAxiomsForSubProperty",
+        "OWLOntology.getObjectSubPropertyAxiomsForSuperProperty",
+        "OWLOntology.getObjectPropertyDomainAxioms",
+        "OWLOntology.getObjectPropertyRangeAxioms",
+        "OWLOntology.getInverseObjectPropertyAxioms",
+        "OWLOntology.getFunctionalObjectPropertyAxioms",
+        "OWLOntology.getInverseFunctionalObjectPropertyAxioms",
+        "OWLOntology.getSymmetricObjectPropertyAxioms",
+        "OWLOntology.getAsymmetricObjectPropertyAxioms",
+        "OWLOntology.getReflexiveObjectPropertyAxioms",
+        "OWLOntology.getIrreflexiveObjectPropertyAxioms",
+        "OWLOntology.getTransitiveObjectPropertyAxioms"
+      ],
+      "description": "Query all 12 object-property axiom index getters across 60 properties for 10 passes.",
+      "verificationCount": 4800,
+      "firstUseWallMs": 17.063,
+      "median": {
+        "wallMs": 4.907,
+        "retainedHeapDeltaBytes": 3916304
+      }
+    },
+    {
+      "id": "ontology.dataPropertyAxiomIndexes",
+      "category": "Ontology Queries - Specific Axiom Indexes",
+      "apiSymbols": [
+        "OWLOntology.getDataSubPropertyAxiomsForSubProperty",
+        "OWLOntology.getDataSubPropertyAxiomsForSuperProperty",
+        "OWLOntology.getDataPropertyDomainAxioms",
+        "OWLOntology.getDataPropertyRangeAxioms",
+        "OWLOntology.getFunctionalDataPropertyAxioms"
+      ],
+      "description": "Query all 5 data-property index getters across 60 properties for 10 passes.",
+      "verificationCount": 3000,
+      "firstUseWallMs": 8.773,
+      "median": {
+        "wallMs": 2.133,
+        "retainedHeapDeltaBytes": 2610824
+      }
+    },
+    {
+      "id": "ontology.annotationAndDeclarationIndexes",
+      "category": "Ontology Queries - Specific Axiom Indexes",
+      "apiSymbols": [
+        "OWLOntology.getDeclarationAxioms",
+        "OWLOntology.getAnnotationAssertionAxioms",
+        "OWLOntology.getSubAnnotationPropertyOfAxioms",
+        "OWLOntology.getAnnotationPropertyDomainAxioms",
+        "OWLOntology.getAnnotationPropertyRangeAxioms"
+      ],
+      "description": "Query declaration and annotation-property index getters across 60 entities for 10 passes.",
+      "verificationCount": 4800,
+      "firstUseWallMs": 32.063,
+      "median": {
+        "wallMs": 9.869,
+        "retainedHeapDeltaBytes": 5499904
+      }
+    },
+    {
+      "id": "ontology.individualAssertionIndexes",
+      "category": "Ontology Queries - Specific Axiom Indexes",
+      "apiSymbols": [
+        "OWLOntology.getClassAssertionAxioms",
+        "OWLOntology.getObjectPropertyAssertionAxioms",
+        "OWLOntology.getDataPropertyAssertionAxioms",
+        "OWLOntology.getNegativeObjectPropertyAssertionAxioms",
+        "OWLOntology.getNegativeDataPropertyAssertionAxioms",
+        "OWLOntology.getSameIndividualAxioms",
+        "OWLOntology.getDifferentIndividualAxioms"
+      ],
+      "description": "Query all 8 individual and class assertion index getters across 60 entities for 10 passes.",
+      "verificationCount": 4500,
+      "firstUseWallMs": 15.449,
+      "median": {
+        "wallMs": 4.025,
+        "retainedHeapDeltaBytes": 3916288
+      }
+    },
+    {
+      "id": "save.functional",
+      "category": "Storage / Serialization",
+      "apiSymbols": [
+        "OWLOntologyManager.saveOntology",
+        "StringDocumentTarget"
+      ],
+      "description": "Serialize a 100-class ontology to Functional Syntax.",
+      "verificationCount": 100,
+      "firstUseWallMs": 13.853,
+      "median": {
+        "wallMs": 1.784,
+        "retainedHeapDeltaBytes": 1305400
+      }
+    },
+    {
+      "id": "save.owlxml",
+      "category": "Storage / Serialization",
+      "apiSymbols": [
+        "OWLOntologyManager.saveOntology",
+        "StringDocumentTarget"
+      ],
+      "description": "Serialize a 100-class ontology to OWL/XML.",
+      "verificationCount": 100,
+      "firstUseWallMs": 9.303,
+      "median": {
+        "wallMs": 1.428,
+        "retainedHeapDeltaBytes": 1305400
+      }
+    },
+    {
+      "id": "save.rdfxml",
+      "category": "Storage / Serialization",
+      "apiSymbols": [
+        "OWLOntologyManager.saveOntology",
+        "StringDocumentTarget"
+      ],
+      "description": "Serialize a 100-class ontology to RDF/XML.",
+      "verificationCount": 100,
+      "firstUseWallMs": 34.993,
+      "median": {
+        "wallMs": 5.507,
+        "retainedHeapDeltaBytes": 1309832
+      }
+    },
+    {
+      "id": "save.turtle",
+      "category": "Storage / Serialization",
+      "apiSymbols": [
+        "OWLOntologyManager.saveOntology",
+        "StringDocumentTarget"
+      ],
+      "description": "Serialize a 100-class ontology to Turtle.",
+      "verificationCount": 100,
+      "firstUseWallMs": 4.88,
+      "median": {
+        "wallMs": 2.725,
+        "retainedHeapDeltaBytes": 1305400
+      }
+    },
+    {
+      "id": "search.classHierarchyAndRelations",
+      "category": "EntitySearcher",
+      "apiSymbols": [
+        "EntitySearcher.getSuperClasses",
+        "EntitySearcher.getSubClasses",
+        "EntitySearcher.getEquivalentClasses",
+        "EntitySearcher.getDisjointClasses"
+      ],
+      "description": "Search class hierarchy and disjoint/equivalent relations across 2 ontologies for 5 passes.",
+      "verificationCount": 1800,
+      "firstUseWallMs": 14.348,
+      "median": {
+        "wallMs": 2.743,
+        "retainedHeapDeltaBytes": 2610856
+      }
+    },
+    {
+      "id": "search.propertyHierarchyAndDomainsRanges",
+      "category": "EntitySearcher",
+      "apiSymbols": [
+        "EntitySearcher.getSuperProperties",
+        "EntitySearcher.getSubProperties",
+        "EntitySearcher.getDomains",
+        "EntitySearcher.getRanges",
+        "EntitySearcher.getInverses"
+      ],
+      "description": "Search object/data property hierarchy, domains, ranges, and inverses across 2 ontologies for 5 passes.",
+      "verificationCount": 2100,
+      "firstUseWallMs": 23.307,
+      "median": {
+        "wallMs": 6.47,
+        "retainedHeapDeltaBytes": 3916432
+      }
+    },
+    {
+      "id": "search.annotations",
+      "category": "EntitySearcher",
+      "apiSymbols": [
+        "EntitySearcher.getAnnotationAssertionAxioms",
+        "EntitySearcher.getAnnotations",
+        "EntitySearcher.getAnnotationObjects"
+      ],
+      "description": "Search entity annotation assertions, annotations, and annotation objects across 2 ontologies for 5 passes.",
+      "verificationCount": 2400,
+      "firstUseWallMs": 10.091,
+      "median": {
+        "wallMs": 3.313,
+        "retainedHeapDeltaBytes": 3916256
+      }
+    },
+    {
+      "id": "search.propertyCharacteristics",
+      "category": "EntitySearcher",
+      "apiSymbols": [
+        "EntitySearcher.isFunctional",
+        "EntitySearcher.isInverseFunctional",
+        "EntitySearcher.isTransitive",
+        "EntitySearcher.isSymmetric",
+        "EntitySearcher.isAsymmetric",
+        "EntitySearcher.isReflexive",
+        "EntitySearcher.isIrreflexive"
+      ],
+      "description": "Test all 8 property characteristic predicates across 60 properties for 10 passes.",
+      "verificationCount": 2400,
+      "firstUseWallMs": 17.675,
+      "median": {
+        "wallMs": 6.576,
+        "retainedHeapDeltaBytes": 3916264
+      }
+    },
+    {
+      "id": "util.SimpleShortFormProvider",
+      "category": "Utilities",
+      "apiSymbols": [
+        "SimpleShortFormProvider"
+      ],
+      "description": "Compute short forms for 180 entities across 20 passes.",
+      "verificationCount": 13800,
+      "firstUseWallMs": 1.32,
+      "median": {
+        "wallMs": 0.434,
+        "retainedHeapDeltaBytes": 1305400
+      }
+    },
+    {
+      "id": "util.AnnotationValueShortFormProvider",
+      "category": "Utilities",
+      "apiSymbols": [
+        "AnnotationValueShortFormProvider"
+      ],
+      "description": "Compute annotation-value short forms with language fallback across 60 classes for 5 passes.",
+      "verificationCount": 2350,
+      "firstUseWallMs": 4.855,
+      "median": {
+        "wallMs": 1.264,
+        "retainedHeapDeltaBytes": 1305448
+      }
+    },
+    {
+      "id": "util.OWLOntologyImportsClosureSetProvider",
+      "category": "Utilities",
+      "apiSymbols": [
+        "OWLOntologyImportsClosureSetProvider"
+      ],
+      "description": "Materialize ontology closure sets 1,000 times via OWLOntologyImportsClosureSetProvider.",
+      "verificationCount": 8000,
+      "firstUseWallMs": 0.125,
+      "median": {
+        "wallMs": 0.099,
+        "retainedHeapDeltaBytes": 1305408
+      }
+    },
+    {
+      "id": "util.OWLOntologyMerger",
+      "category": "Utilities",
+      "apiSymbols": [
+        "OWLOntologyMerger"
+      ],
+      "description": "Merge an 8-ontology import closure in both all-axioms and logical-axioms-only modes.",
+      "verificationCount": 480,
+      "firstUseWallMs": 7.392,
+      "median": {
+        "wallMs": 1.631,
+        "retainedHeapDeltaBytes": 2615280
+      }
+    },
+    {
+      "id": "util.OWLObjectDuplicator",
+      "category": "Utilities",
+      "apiSymbols": [
+        "OWLObjectDuplicator"
+      ],
+      "description": "Duplicate 500 axioms with IRI replacement via OWLObjectDuplicator.",
+      "verificationCount": 500,
+      "firstUseWallMs": 9.504,
+      "median": {
+        "wallMs": 2.371,
+        "retainedHeapDeltaBytes": 1490496
+      }
+    },
+    {
+      "id": "util.OWLEntityRenamer",
+      "category": "Utilities",
+      "apiSymbols": [
+        "OWLEntityRenamer"
+      ],
+      "description": "Compute entity and IRI rename change sets for 10 entities across a 500-axiom ontology.",
+      "verificationCount": 520,
+      "firstUseWallMs": 15.862,
+      "median": {
+        "wallMs": 3.383,
+        "retainedHeapDeltaBytes": 1745088
+      }
+    },
+    {
+      "id": "util.OWLEntityRemover",
+      "category": "Utilities",
+      "apiSymbols": [
+        "OWLEntityRemover"
+      ],
+      "description": "Visit 40 entities (20 classes + 20 object properties) and collect removal changes across a 500-axiom ontology.",
+      "verificationCount": 580,
+      "firstUseWallMs": 3.418,
+      "median": {
+        "wallMs": 0.413,
+        "retainedHeapDeltaBytes": 1460216
+      }
+    },
+    {
+      "id": "renderer.ManchesterOWLSyntaxOWLObjectRendererImpl",
+      "category": "Manchester Object Renderer",
+      "apiSymbols": [
+        "ManchesterOWLSyntaxOWLObjectRendererImpl"
+      ],
+      "description": "Render 300 axioms and 120 complex class expressions to Manchester OWL Syntax.",
+      "verificationCount": 7747,
+      "firstUseWallMs": 13.224,
+      "median": {
+        "wallMs": 0.904,
+        "retainedHeapDeltaBytes": 1142232
+      }
+    },
+    {
+      "id": "locality.extract.BOTTOM",
+      "category": "Modularity / Locality",
+      "apiSymbols": [
+        "SyntacticLocalityModuleExtractor",
+        "LocalityClass.BOTTOM"
+      ],
+      "description": "Extract a BOTTOM syntactic locality module from a ~500-axiom base for 20 seed entities.",
+      "verificationCount": 1481,
+      "firstUseWallMs": 8.366,
+      "median": {
+        "wallMs": 2.319,
+        "retainedHeapDeltaBytes": 1142232
+      }
+    },
+    {
+      "id": "locality.extract.TOP",
+      "category": "Modularity / Locality",
+      "apiSymbols": [
+        "SyntacticLocalityModuleExtractor",
+        "LocalityClass.TOP"
+      ],
+      "description": "Extract a TOP syntactic locality module from a ~500-axiom base for 20 seed entities.",
+      "verificationCount": 1481,
+      "firstUseWallMs": 4.892,
+      "median": {
+        "wallMs": 2.238,
+        "retainedHeapDeltaBytes": 1142232
+      }
+    },
+    {
+      "id": "locality.extract.STAR",
+      "category": "Modularity / Locality",
+      "apiSymbols": [
+        "SyntacticLocalityModuleExtractor",
+        "LocalityClass.STAR"
+      ],
+      "description": "Extract a STAR syntactic locality module from a ~500-axiom base for 20 seed entities.",
+      "verificationCount": 1481,
+      "firstUseWallMs": 5.693,
+      "median": {
+        "wallMs": 3.287,
+        "retainedHeapDeltaBytes": 2405776
+      }
+    },
+    {
+      "id": "profiles.OWL2DLProfile.checkOntology",
+      "category": "OWL 2 Language Profiles",
+      "apiSymbols": [
+        "OWL2DLProfile.checkOntology"
+      ],
+      "description": "Validate a 520-axiom ontology against the OWL 2 DL profile.",
+      "verificationCount": 1008,
+      "firstUseWallMs": 26.621,
+      "median": {
+        "wallMs": 4.017,
+        "retainedHeapDeltaBytes": 1729480
+      }
+    },
+    {
+      "id": "profiles.OWL2ELProfile.checkOntology",
+      "category": "OWL 2 Language Profiles",
+      "apiSymbols": [
+        "OWL2ELProfile.checkOntology"
+      ],
+      "description": "Validate a 520-axiom ontology against the OWL 2 EL profile.",
+      "verificationCount": 1008,
+      "firstUseWallMs": 2.521,
+      "median": {
+        "wallMs": 2.226,
+        "retainedHeapDeltaBytes": 1729480
+      }
+    },
+    {
+      "id": "profiles.OWL2QLProfile.checkOntology",
+      "category": "OWL 2 Language Profiles",
+      "apiSymbols": [
+        "OWL2QLProfile.checkOntology"
+      ],
+      "description": "Validate a 520-axiom ontology against the OWL 2 QL profile.",
+      "verificationCount": 1008,
+      "firstUseWallMs": 2.94,
+      "median": {
+        "wallMs": 2.147,
+        "retainedHeapDeltaBytes": 1729480
+      }
+    },
+    {
+      "id": "profiles.OWL2RLProfile.checkOntology",
+      "category": "OWL 2 Language Profiles",
+      "apiSymbols": [
+        "OWL2RLProfile.checkOntology"
+      ],
+      "description": "Validate a 520-axiom ontology against the OWL 2 RL profile.",
+      "verificationCount": 48,
+      "firstUseWallMs": 2.808,
+      "median": {
+        "wallMs": 1.607,
+        "retainedHeapDeltaBytes": 1729480
+      }
+    }
+  ]
+}

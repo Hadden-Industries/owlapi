@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "oracle": "Public JDK Float/Double.toHexString and toString",
+  "semanticOnly": true,
+  "javaPerformanceBaselineRefreshed": false,
+  "javaVersion": "openjdk 25.0.4.1 2026-08-18 LTS\r\nOpenJDK Runtime Environment Temurin-25.0.4.1+1 (build 25.0.4.1+1-LTS)\r\nOpenJDK 64-Bit Server VM Temurin-25.0.4.1+1 (build 25.0.4.1+1-LTS, mixed mode, sharing)",
+  "probeSource": "util/owlapi-reference/FloatingPointRenderingProbe.java",
+  "probeSourceSha256": "a91f917d2f1eba423eb984cbd54864d988ed356515b66cb00246783d23c1d9ef",
+  "inputFormat": "One precision (24 or 53), TAB, unsigned hexadecimal raw bits per line on stdin",
+  "observations": [
+    {
+      "precision": 53,
+      "bits": "1",
+      "lexical": "0x0.0000000000001p-1022",
+      "expected": "4.9E-324"
+    },
+    {
+      "precision": 53,
+      "bits": "8000000000000001",
+      "lexical": "-0x0.0000000000001p-1022",
+      "expected": "-4.9E-324"
+    },
+    {
+      "precision": 53,
+      "bits": "2",
+      "lexical": "0x0.0000000000002p-1022",
+      "expected": "9.9E-324"
+    },
+    {
+      "precision": 53,
+      "bits": "8000000000000002",
+      "lexical": "-0x0.0000000000002p-1022",
+      "expected": "-9.9E-324"
+    },
+    {
+      "precision": 53,
+      "bits": "3",
+      "lexical": "0x0.0000000000003p-1022",
+      "expected": "1.5E-323"
+    },
+    {
+      "precision": 53,
+      "bits": "8000000000000003",
+      "lexical": "-0x0.0000000000003p-1022",
+      "expected": "-1.5E-323"
+    },
+    {
+      "precision": 53,
+      "bits": "13",
+      "lexical": "0x0.0000000000013p-1022",
+      "expected": "9.4E-323"
+    },
+    {
+      "precision": 53,
+      "bits": "8000000000000013",
+      "lexical": "-0x0.0000000000013p-1022",
+      "expected": "-9.4E-323"
+    },
+    {
+      "precision": 53,
+      "bits": "14",
+      "lexical": "0x0.0000000000014p-1022",
+      "expected": "9.9E-323"
+    },
+    {
+      "precision": 53,
+      "bits": "8000000000000014",
+      "lexical": "-0x0.0000000000014p-1022",
+      "expected": "-9.9E-323"
+    },
+    {
+      "precision": 53,
+      "bits": "15",
+      "lexical": "0x0.0000000000015p-1022",
+      "expected": "1.04E-322"
+    },
+    {
+      "precision": 53,
+      "bits": "8000000000000015",
+      "lexical": "-0x0.0000000000015p-1022",
+      "expected": "-1.04E-322"
+    },
+    {
+      "precision": 53,
+      "bits": "1e",
+      "lexical": "0x0.000000000001ep-1022",
+      "expected": "1.5E-322"
+    },
+    {
+      "precision": 53,
+      "bits": "800000000000001e",
+      "lexical": "-0x0.000000000001ep-1022",
+      "expected": "-1.5E-322"
+    }
+  ]
+}

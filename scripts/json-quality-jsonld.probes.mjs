@@ -64,7 +64,7 @@ async function fixture() {
       for (const finding of rule.expected?.diagnostics ?? [])
         finding.severity ??= "error";
     const policy = {
-      schemaVersion: 2,
+      schemaVersion: 3,
       defaults: baselinePolicy.defaults,
       exceptions,
       preserveSourcePresentation: [

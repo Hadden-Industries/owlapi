@@ -20,6 +20,13 @@ const save = async (manager, ontology, format = OWLDocumentFormats.RDF_XML) => {
 };
 
 describe("Java-backed RDF/XML prefix and presentation refinement", () => {
+  it("retains future-IP IRI namespaces admitted by the native parser", () => {
+    const format = new RDFXMLDocumentFormat();
+    for (const namespace of ["http://[v1.ab]/path", "http://[v7.a]/#"]) {
+      format.setPrefix("future:", namespace);
+      expect(format.getPrefix("future:")).toBe(namespace);
+    }
+  });
   it("treats a cleared source default namespace as absent without discarding valid named preferences", async () => {
     const manager = OWLManager.createOWLOntologyManager();
     const ontology = await load(

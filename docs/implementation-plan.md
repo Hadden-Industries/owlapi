@@ -1,4 +1,19 @@
-# Extract and Publish the `owlapi` Core Module from WebVOWL
+# OwlAPI 0.1.0 programme and historical implementation blueprint
+
+> **29 October 2026 substantive reconciliation:** use the [current 0.1.0 release roadmap](plans/2026-10-29-0.1.0-release-reconciliation.md) for remaining work, sequencing, scope and evidence disposition.
+> rc.2 is already published; stable 0.1.0 is not.
+> Current source includes later behavior-profile, transport, tooling and performance changes that are not part of that published artifact.
+> The roadmap distinguishes published APIs, implemented but unpublished APIs, unresolved required work and deferred capabilities.
+> Both `java-owlapi-5.5.1` and `normative-v1`, semantic/performance admission, latest applicable dependencies and the selected [Temurin 25.0.5+8 toolchain](development/java-toolchain.md) are explicit continuation obligations.
+> The [release and CI evidence reconciliation](plans/2026-10-29-release-and-ci-evidence-reuse.md) records source-grounded lessons from JSON Quality and maps them to existing OwlAPI controls.
+> This file retains historical decisions, acceptance IDs and catalogues consumed by release tooling.
+> Old checkbox states, runtime versions, root counts, next-release wording and WebVOWL pipeline descriptions are not a current backlog or release approval.
+> The roadmap requires coordinated migration of stale executable requirements and generated gates before release; this planning amendment does not silently change those controls or mark them passed.
+
+## Historical amendments and original blueprint
+
+The dated amendments below describe their own checkpoints.
+For current release status and remaining implementation, the 29 October roadmap above takes precedence over their progress prose; immutable historical evidence keeps its original meaning.
 
 > **9 October 2026 delivered corrective track:** the [profile performance and default-behavior repair plan](plans/2026-10-05-profile-performance-and-default-behavior-repair-plan.md) records the library-owned repair delivered through PR 58.
 > WebVOWL's companion repair can proceed with installed RC.1; it is not a producer release prerequisite.
@@ -31,7 +46,7 @@ These additions require fresh candidate qualification and do not enable publicat
 > No runtime, validator, schema or workflow change is part of this documentation amendment.
 > The original failed workflow and pre-finalization observations remain explicit beside the later finalization readback in the [publication record](provenance/releases/0.1.0-rc.1/publication-status.md).
 
-> **Status:** Final architecture and implementation blueprint\
+> **Status:** Historical architecture and implementation blueprint; current remaining work is governed by the 29 October reconciliation above.\
 > **Research baseline:** 8 August 2026\
 > **Package identity and versioning decision, amended 30 September 2026:** publish `@hadden-industries/owlapi@0.1.0-rc.1` under `next`; recommend the exact native npm alias `owlapi`; permit UO and WebVOWL production after artifact verification and each application's full consumer acceptance; retain later stable `0.1.0` under `latest` as a separate library release.
 > See §2.10, [ADR 0009](adr/0009-scoped-npm-publication-and-uo-rc-acceptance.md) and [the scoped implementation plan](plans/scoped-npm-publication.md).
@@ -3399,6 +3414,9 @@ Successor qualification must extend the delivered graph for the new contracts an
 Documentation alone neither changes validators nor makes an old failed result pass.
 
 ## 3. Current Architecture (What Exists Today)
+
+This section's heading and pipeline are retained as the original WebVOWL extraction baseline, not a description of the 29 October OwlAPI repository.
+Today's public Java-shaped namespaces and private `internal/` engines, published lifecycle/rc.2 APIs, later behavior profiles and remaining work are reconciled in the [current roadmap](plans/2026-10-29-0.1.0-release-reconciliation.md#2-evidence-baseline-and-reconciliation).
 
 ### 3.1 Current pipeline
 
@@ -7460,6 +7478,10 @@ Promotion to the normal production `@hadden-industries/owlapi@0.1.0` target is a
 
 ### 17.27 Phase 20 — qualify and publish production-recommended `@hadden-industries/owlapi@0.1.0`
 
+**29 October continuation:** the [current roadmap](plans/2026-10-29-0.1.0-release-reconciliation.md) reconciles this phase with published rc.2, later source additions, both profiles, performance qualification, the selected JDK and dependency refresh.
+The catalogue below retains its machine-consumed identities until SLICE-002 migrates its stale public-surface/runtime requirements with their active policies and generated gates.
+Do not execute old version literals or infer that current source is an unchanged rc.2-to-stable metadata promotion.
+
 Phase 20 begins after the selected `@hadden-industries/owlapi@0.1.0-rc.2` programme and producer release checkpoint have been implemented, qualified and verified; the accepted source checkpoints must also have completed their authorized Git delivery.
 It runs producer release work in `Hadden-Industries/owlapi`.
 WebVOWL and Universal Ontology need not consume or accept that RC before Phase 20 begins or completes; their optional verification and adoption remain separate under §2.70.
@@ -7805,17 +7827,17 @@ No required producer release work remains after that checkpoint; each applicatio
 
 ### 17.28 Selected pre-stable programme — Java parity in `0.1.0-rc.2`
 
-Execute the [integrated rc.2 implementation plan](plans/0.1.0-rc.2-java-parity.md) before Phase 20's stable-contract freeze.
+The [integrated rc.2 implementation plan](plans/0.1.0-rc.2-java-parity.md) is delivered source history, and rc.2 was published on 10 October 2026 in the owner's timezone.
+Use the [29 October roadmap](plans/2026-10-29-0.1.0-release-reconciliation.md) for the later source delta and remaining stable qualification; do not repeat these completed feature slices.
 It preserves the existing R2 assurance level, independent Java/spec oracles, test-first implementation, substantial-work-package reviews and full frozen-candidate verification.
 Its nine slices cover contract/gate reconciliation, direct queries, closure/search, transactions, transformations, Manchester rendering, Turtle/OWL/XML storage, EL/QL/RL profiles and locality/integrated qualification.
 All selected families target rc.2; any reduction needs an explicit scope revision.
 The plan's IDs are local to that programme and do not repurpose existing phase 23 capability state or historical Phase 19–22 gate identities.
 
 Use the already implemented lifecycle APIs as foundations and regression obligations.
-Resolve the remaining exact Java members, adaptations, new public namespaces and dependency reuse before their dependent implementation.
-Producer/application gate separation is delivered through the shared installed OWL contract; the [rc.2 reconciliation](plans/0.1.0-rc.2-java-parity.md#12-remaining-slice-and-release-work) records its partial SLICE-001 credit and the remaining feature and release work.
-RDF/XML additions and the existing DL profile repair are supporting changes, not completion of the planned Turtle/OWL/XML or EL/QL/RL families.
-No package version, public API completion flag, release tag or consumer pin changes during this documentation reconciliation.
+The exact selected members, adaptations and namespaces were implemented; producer/application gate separation remains delivered through the shared installed OWL contract.
+The [rc.2 slice disposition](plans/0.1.0-rc.2-java-parity.md#12-slice-and-release-disposition) records all nine source slices, including Turtle/OWL/XML and EL/QL/RL.
+Later source work must preserve those capabilities while reconciling the current member/profile contracts and independent qualification requirements.
 
 Library qualification, release approval, registry verification and immutable-release closure must all be attributable to exact rc.2 inputs and artifacts.
 Optional consumer pilots can provide feedback at any slice without becoming release dependencies.

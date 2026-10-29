@@ -26,7 +26,8 @@ export const inspectAnonymousGraph = async (
     return current;
   };
   for (const { value, scope } of axioms) {
-    await budget.checkpoint();
+    budget.check();
+    if (budget.shouldYield()) await budget.yieldTurn();
     if (value.kind !== K.OBJECT_PROPERTY_ASSERTION_AXIOM) continue;
     const leftAnonymous = value.subject.kind === K.ANONYMOUS_INDIVIDUAL;
     const rightAnonymous = value.value.kind === K.ANONYMOUS_INDIVIDUAL;
@@ -49,7 +50,8 @@ export const inspectAnonymousGraph = async (
   const trees = new Set(),
     withRoot = new Set();
   for (const item of parents.keys()) {
-    await budget.checkpoint();
+    budget.check();
+    if (budget.shouldYield()) await budget.yieldTurn();
     const tree = root(item);
     trees.add(tree);
     if ((namedEdges.get(item) ?? 0) <= 1) withRoot.add(tree);

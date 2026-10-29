@@ -1,5 +1,6 @@
 import { ENTITY_KINDS, OWLObjectKind as K } from "../model/kinds.js";
-import { OWLOntology, readOntologySnapshot } from "../model/owlOntology.js";
+import { readOntologySnapshot } from "../model/owlOntology.js";
+import { readOntologyModel } from "../internal/model/ontologyReadModel.js";
 import { AddAxiom } from "../model/addAxiom.js";
 import { RemoveAxiom } from "../model/removeAxiom.js";
 import { AddOntologyAnnotation } from "../model/addOntologyAnnotation.js";
@@ -52,28 +53,31 @@ export class OWLEntityRenamer {
     const resolve = (value) =>
       value.kind === K.ANONYMOUS_INDIVIDUAL ? value : resolveEntity(value);
     const changes = [];
+    // One immutable replacement environment owns this memo. Repeated candidates
+    // still produce repeated proposals in Java order; only reconstruction is shared.
+    const transformed = new Map();
     for (const ontology of this.#ontologies) {
       const snapshot = readOntologySnapshot(ontology);
+      const model = readOntologyModel(snapshot);
       const batches = iriChange
-        ? [
-            [
-              ...OWLOntology.prototype.getReferencingAxioms.call(
-                ontology,
-                first,
-              ),
-            ],
-          ]
+        ? [model.referencingAxioms(first.structuralKey())]
         : [...entities.values()].map(({ key }) => [
-            ...OWLOntology.prototype.getReferencingAxioms.call(ontology, key),
-            ...OWLOntology.prototype.getDeclarationAxioms.call(ontology, key),
-            ...OWLOntology.prototype.getAnnotationAssertionAxioms.call(
-              ontology,
-              key.iri,
+            ...model.referencingAxioms(key.structuralKey()),
+            ...model.position(
+              K.DECLARATION_AXIOM,
+              "entity",
+              key.structuralKey(),
             ),
+            ...model.annotationAssertions(key.iri.structuralKey()),
           ]);
       for (const candidates of batches) {
         for (const axiom of candidates) {
-          const replacement = transformObject(axiom, this.#factory, resolve);
+          const replacement = transformObject(
+            axiom,
+            this.#factory,
+            resolve,
+            transformed,
+          );
           if (!replacement.equals(axiom))
             changes.push(
               new RemoveAxiom(ontology, axiom),
@@ -85,6 +89,7 @@ export class OWLEntityRenamer {
             annotation,
             this.#factory,
             resolve,
+            transformed,
           );
           if (!replacement.equals(annotation))
             changes.push(

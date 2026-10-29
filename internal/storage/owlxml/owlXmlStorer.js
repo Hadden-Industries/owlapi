@@ -87,6 +87,10 @@ export const owlXmlStorer = Object.freeze({
     const labels = new Map();
     let constructionBytes = 0;
     const encoder = new TextEncoder();
+    const byteLength = (value) =>
+      /^\p{ASCII}*$/u.test(value)
+        ? value.length
+        : encoder.encode(value).byteLength;
     const admit = (value) => {
       if (typeof value !== "string" || !value.isWellFormed())
         fail("OWL/XML requires well-formed Unicode");
@@ -97,17 +101,15 @@ export const owlXmlStorer = Object.freeze({
         /[\u0000-\u0008\u000B\u000C\u000E-\u001F\uFFFE\uFFFF]/u.test(value)
       )
         fail("OWL/XML requires XML 1.0-compatible characters");
-      constructionBytes += encoder.encode(value).byteLength;
+      constructionBytes += byteLength(value);
       if (constructionBytes > documentStoragePolicy.maxOutputBytes)
         throw new ResourceLimitError("OWL/XML output byte limit exceeded", {
           resource: "outputBytes",
           limit: documentStoragePolicy.maxOutputBytes,
         });
-      try {
-        serializer.serializeToString(document.createTextNode(value));
-      } catch {
-        fail("OWL/XML requires XML-compatible characters");
-      }
+      // Character admission is complete above. The native serializer's
+      // non-strict Text path only escapes <, > and &, so serializing a throwaway
+      // Text node here adds no validation. Serialize the actual document below.
       return value;
     };
     const iri = (value) => {
@@ -320,7 +322,7 @@ export const owlXmlStorer = Object.freeze({
     const text = usesJavaPresentation
       ? serializeJavaOwlXmlDocument(document, valueSerializer, writerContext)
       : `<?xml version="1.0" encoding="UTF-8"?>\n${serializer.serializeToString(document).replaceAll("\r", "&#13;").replaceAll("\n", "&#10;").replaceAll("\t", "&#9;")}\n`;
-    if (encoder.encode(text).byteLength > documentStoragePolicy.maxOutputBytes)
+    if (byteLength(text) > documentStoragePolicy.maxOutputBytes)
       throw new ResourceLimitError("OWL/XML output byte limit exceeded", {
         resource: "outputBytes",
         limit: documentStoragePolicy.maxOutputBytes,

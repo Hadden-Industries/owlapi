@@ -31,6 +31,37 @@ const save = async (manager, ontology, format = OWLDocumentFormats.RDF_XML) => {
 };
 
 describe("immutable manager-owned ontology writer configuration", () => {
+  it.each([
+    ["normative-v1", [0, 1, 67108863, 67108864, 2147483647]],
+    [
+      "java-owlapi-5.5.1",
+      [-2147483648, -134217729, -1, 0, 67108864, 2147483647],
+    ],
+  ])(
+    "preserves signed integer indentation and unrelated flags for %s",
+    (behaviorProfileId, sizes) => {
+      const initial = new OWLOntologyWriterConfiguration({ behaviorProfileId });
+      for (const size of sizes) {
+        const configured = initial
+          .withLabelsAsBanner(true)
+          .withSaveIdsForAllAnonymousIndividuals(true)
+          .withIndentSize(size);
+        expect(configured.getIndentSize()).toBe(size);
+        expect(configured.isLabelsAsBanner()).toBe(true);
+        expect(configured.shouldSaveIdsForAllAnonymousIndividuals()).toBe(true);
+        const changed = configured.withIndenting(false);
+        expect(changed.getIndentSize()).toBe(
+          behaviorProfileId === "normative-v1" ? size : 4,
+        );
+        expect(changed.isIndenting()).toBe(false);
+        expect(changed.isLabelsAsBanner()).toBe(true);
+        expect(changed.shouldSaveIdsForAllAnonymousIndividuals()).toBe(true);
+        expect(configured.getIndentSize()).toBe(size);
+        expect(Object.isFrozen(changed)).toBe(true);
+      }
+    },
+  );
+
   it("has native immutable defaults and preserves every unrelated field in both chaining orders", () => {
     const defaults = new OWLOntologyWriterConfiguration();
     expect(Object.isFrozen(defaults)).toBe(true);

@@ -40,6 +40,22 @@ describe("distinct XML name domains", () => {
     expect(ncNameSuffix("urn:example:12name")).toBe("name");
     expect(ncNameSuffix("urn:example:12")).toBeUndefined();
   });
+  test.each([
+    ["leading digits", "https://example.org/123Class_42", "Class_42"],
+    ["leading combining mark", "urn:example:12\u0301name", "name"],
+    ["astral start", "urn:example:\u{10000}name", "\u{10000}name"],
+    ["unpaired high surrogate", "urn:example:ab\ud800cd", "cd"],
+    ["unpaired low surrogate", "urn:example:ab\udc00cd", "cd"],
+    ["invalid trailing astral value", "urn:example:valid\u{f0000}", undefined],
+    ["trailing combining mark", "urn:example:a\u0301", "a\u0301"],
+    [
+      "long namespace",
+      "https://" + "namespace".repeat(10000) + "/Local",
+      "Local",
+    ],
+  ])("retains the XML suffix boundary for %s", (_label, value, expected) => {
+    expect(ncNameSuffix(value)).toBe(expected);
+  });
   it("validates admitted large lexical values without changing name domains", () => {
     const name = "a".repeat(1_048_576);
     expect(isXmlName(name)).toBe(true);

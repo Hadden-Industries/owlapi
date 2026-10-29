@@ -9,6 +9,8 @@ import { rdfDataFactory } from "../../rdfjs/environment.js";
 
 import {
   createNQuadsSyntaxAdapter,
+  createNTriplesSyntaxAdapter,
+  createTriGSyntaxAdapter,
   createTurtleSyntaxAdapter,
   N3SyntaxAdapter,
 } from "./n3SyntaxAdapter.js";
@@ -17,6 +19,75 @@ const XSD_STRING = "http://www.w3.org/2001/XMLSchema#string";
 
 const configuration = (values = {}) =>
   new OWLOntologyLoaderConfiguration(values);
+
+test.each([
+  [createTurtleSyntaxAdapter, '<urn:s> <urn:p> "value"@EN-gB .', undefined],
+  [createNTriplesSyntaxAdapter, '<urn:s> <urn:p> "value"@EN-gB .', undefined],
+  [
+    createNQuadsSyntaxAdapter,
+    '<urn:s> <urn:p> "value"@EN-gB <urn:g> .',
+    "urn:g",
+  ],
+  [
+    createTriGSyntaxAdapter,
+    '<urn:g> { <urn:s> <urn:p> "value"@EN-gB . }',
+    "urn:g",
+  ],
+])(
+  "native provider retains canonical language and graph identity (%#)",
+  async (create, text, graph) => {
+    const { dataset } = await create().parse(
+      new StringDocumentSource(text),
+      configuration(),
+    );
+    expect([...dataset]).toEqual([
+      rdfDataFactory.quad(
+        rdfDataFactory.namedNode("urn:s"),
+        rdfDataFactory.namedNode("urn:p"),
+        rdfDataFactory.literal("value", "en-gb"),
+        graph ? rdfDataFactory.namedNode(graph) : rdfDataFactory.defaultGraph(),
+      ),
+    ]);
+  },
+);
+
+test("replacement providers retain their copying boundary even when using the native factory", async () => {
+  const emitted = rdfDataFactory.quad(
+    rdfDataFactory.namedNode("urn:s"),
+    rdfDataFactory.namedNode("urn:p"),
+    rdfDataFactory.literal("value", "EN"),
+  );
+  class Replacement extends Transform {
+    constructor() {
+      super({ readableObjectMode: true });
+    }
+    _transform(_chunk, _encoding, done) {
+      done();
+    }
+    _flush(done) {
+      this.push(emitted);
+      done();
+    }
+  }
+  const adapter = createTurtleSyntaxAdapter({
+    loadImplementation: async () => ({
+      Lexer: class {
+        tokenize() {}
+      },
+      StreamParser: Replacement,
+    }),
+  });
+  const { dataset } = await adapter.parse(
+    new StringDocumentSource("replacement input"),
+    configuration(),
+  );
+  const [quad] = dataset;
+  expect(quad.subject).toEqual(emitted.subject);
+  expect(quad.subject).not.toBe(emitted.subject);
+  expect(quad.predicate).not.toBe(emitted.predicate);
+  expect(quad.object.language).toBe("en");
+  expect(quad).not.toBe(emitted);
+});
 
 describe("N3SyntaxAdapter replacement boundary", () => {
   it("accepts only the independently governed exact-format policies", () => {

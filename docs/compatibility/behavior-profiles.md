@@ -98,7 +98,7 @@ An exhausted assessment is unverified; `isInProfile()` cannot turn that into a v
 Physical memory, runtime stack limits and unsupported host capabilities are not promises of unlimited execution.
 
 Writer setters also preserve native behavior.
-Changed Java copies reset indent size, banners and labels-as-banner to 4, true and false; native no-op setters retain object identity.
+Changed Java copies reset indent size and banners to 4 and true while preserving labels-as-banner; native no-op setters retain object identity.
 The normative copy preserves unrelated settings.
 Each storer reads only the settings its contract consumes.
 

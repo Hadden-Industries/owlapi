@@ -1,5 +1,4 @@
 import { OntologyState } from "../internal/model/ontologyState.js";
-import { XSD_NAMESPACE } from "../internal/rdfjs/vocabulary.js";
 import {
   AXIOM_KINDS,
   CLASS_EXPRESSION_KINDS,
@@ -9,19 +8,62 @@ import {
   OWLObjectKind,
 } from "./kinds.js";
 import { isCanonicalStructuralObject, StructuralSet } from "./structural.js";
-import {
-  isLogicalAxiom,
-  requireAxiom,
-} from "../internal/model/axiomSemantics.js";
+import { requireAxiom } from "../internal/model/axiomSemantics.js";
 import { AxiomAnnotations, Imports } from "./parameters/index.js";
-import {
-  readOntologyModel,
-  visitStructuralValues,
-} from "../internal/model/ontologyReadModel.js";
+import { readOntologyModel } from "../internal/model/ontologyReadModel.js";
 
 const managerOwnedOntologyStatesByInitializer = new WeakMap();
 const ontologySnapshotReaders = new WeakMap();
 const managers = new WeakMap();
+const closureReaders = new WeakMap();
+
+const createClosureReader = (snapshots) => {
+  const models = snapshots.map(readOntologyModel);
+  let all, logical;
+  const byKind = new Map();
+  const sigByKind = new Map();
+  return Object.freeze({
+    allAxioms() {
+      if (!all) {
+        const set = new StructuralSet();
+        for (const s of snapshots) for (const ax of s.directAxioms) set.add(ax);
+        all = Object.freeze([...set]);
+      }
+      return all;
+    },
+    logicalAxioms() {
+      if (!logical) {
+        const set = new StructuralSet();
+        for (const m of models) for (const ax of m.logicalAxioms()) set.add(ax);
+        logical = Object.freeze([...set]);
+      }
+      return logical;
+    },
+    axioms(type) {
+      let bucket = byKind.get(type);
+      if (!bucket) {
+        const set = new StructuralSet();
+        for (const m of models) for (const ax of m.axioms(type)) set.add(ax);
+        bucket = Object.freeze([...set]);
+        byKind.set(type, bucket);
+      }
+      return bucket;
+    },
+    signature(kind) {
+      let bucket = sigByKind.get(kind);
+      if (!bucket) {
+        const set = new StructuralSet();
+        for (const m of models) for (const e of m.signature(kind)) set.add(e);
+        bucket = Object.freeze([...set]);
+        sigByKind.set(kind, bucket);
+      }
+      return bucket;
+    },
+  });
+};
+
+export const isPackageOntology = (ontology) =>
+  ontologySnapshotReaders.has(ontology);
 
 export const readOntologySnapshot = (ontology) => {
   const read = ontologySnapshotReaders.get(ontology);
@@ -98,20 +140,6 @@ const createOntologyState = ({
     ontologyID,
   });
 
-const references = (container, targetKey) => {
-  let found = false;
-  visitStructuralValues(container, (value) => {
-    if (
-      typeof value.structuralKey === "function" &&
-      value.structuralKey() === targetKey
-    ) {
-      found = true;
-      return true;
-    }
-  });
-  return found;
-};
-
 export class OWLOntology {
   // Query results are fresh structural sets over a committed revision. Named
   // position getters are direct-only; explicit Imports arguments select the
@@ -138,30 +166,35 @@ export class OWLOntology {
     return this.#readStateSnapshot().ontologyID;
   }
 
+  #reader(imports = Imports.EXCLUDED) {
+    if (imports === Imports.EXCLUDED)
+      return readOntologyModel(this.#readStateSnapshot());
+    const scope = this.#scope(imports);
+    if (scope.length === 1)
+      return readOntologyModel(readOntologySnapshot(scope[0]));
+    const snapshots = scope.map(readOntologySnapshot);
+    const cached = closureReaders.get(this);
+    if (
+      cached &&
+      cached.snapshots.length === snapshots.length &&
+      cached.snapshots.every((s, i) => s === snapshots[i])
+    ) {
+      return cached.reader;
+    }
+    const reader = createClosureReader(snapshots);
+    closureReaders.set(this, { snapshots, reader });
+    return reader;
+  }
+
   /** Defensive structural set in direct or explicitly selected loaded scope. */
   getAxioms(imports = Imports.EXCLUDED) {
     // Committed direct storage is already structurally unique. Cross-ontology
     // aggregation still needs structural deduplication across object identities.
-    if (imports === Imports.EXCLUDED)
-      return new Set(this.#readStateSnapshot().directAxioms);
-    const axioms = new StructuralSet();
-    for (const ontology of this.#scope(imports)) {
-      for (const axiom of readOntologySnapshot(ontology).directAxioms)
-        axioms.add(axiom);
-    }
-    return axioms.toSet();
+    return new Set(this.#reader(imports).allAxioms());
   }
 
   getAxiomsByType(type, imports = Imports.EXCLUDED) {
-    if (imports === Imports.EXCLUDED)
-      return new Set(readOntologyModel(this.#readStateSnapshot()).axioms(type));
-    const axioms = new StructuralSet();
-    for (const ontology of this.#scope(imports))
-      for (const axiom of readOntologyModel(
-        readOntologySnapshot(ontology),
-      ).axioms(type))
-        axioms.add(axiom);
-    return axioms.toSet();
+    return new Set(this.#reader(imports).axioms(type));
   }
 
   #scope(imports) {
@@ -180,27 +213,30 @@ export class OWLOntology {
       throw new TypeError("type must be an axiom kind or Imports value");
     if (typeOrImports === Imports.EXCLUDED)
       return this.#readStateSnapshot().directAxioms.length;
-    const scope = typeOrImports === Imports.INCLUDED ? typeOrImports : imports;
-    return this.#scope(scope).reduce(
+    if (typeOrImports === Imports.INCLUDED)
+      return this.#scope(Imports.INCLUDED).reduce(
+        (count, ontology) =>
+          count + readOntologySnapshot(ontology).directAxioms.length,
+        0,
+      );
+    return this.#scope(imports).reduce(
       (count, ontology) =>
         count +
-        readOntologySnapshot(ontology).directAxioms.filter(
-          (axiom) =>
-            typeOrImports === Imports.INCLUDED || axiom.kind === typeOrImports,
-        ).length,
+        readOntologyModel(readOntologySnapshot(ontology)).axioms(typeOrImports)
+          .length,
       0,
     );
   }
 
   getLogicalAxioms(imports = Imports.EXCLUDED) {
-    return new Set([...this.getAxioms(imports)].filter(isLogicalAxiom));
+    return new Set(this.#reader(imports).logicalAxioms());
   }
 
   getLogicalAxiomCount(imports = Imports.EXCLUDED) {
     return this.#scope(imports).reduce(
       (count, ontology) =>
         count +
-        readOntologySnapshot(ontology).directAxioms.filter(isLogicalAxiom)
+        readOntologyModel(readOntologySnapshot(ontology)).logicalAxioms()
           .length,
       0,
     );
@@ -602,18 +638,7 @@ export class OWLOntology {
   }
 
   #signatureMatching(kind, imports) {
-    if (imports === Imports.EXCLUDED)
-      return new Set(
-        readOntologyModel(this.#readStateSnapshot()).signature(kind),
-      );
-    const entities = new StructuralSet();
-    for (const ontology of this.#scope(imports)) {
-      for (const entity of readOntologyModel(
-        readOntologySnapshot(ontology),
-      ).signature(kind))
-        entities.add(entity);
-    }
-    return entities.toSet();
+    return new Set(this.#reader(imports).signature(kind));
   }
 
   /** All named kinds in the selected current loaded scope, without declarations inferred. */
@@ -623,11 +648,17 @@ export class OWLOntology {
 
   getEntitiesInSignature(iri, imports = Imports.EXCLUDED) {
     requireKind(iri, [OWLObjectKind.IRI], "iri");
+    const key = iri.structuralKey();
+    const scope = this.#scope(imports);
+    if (scope.length === 1)
+      return new Set(
+        readOntologyModel(readOntologySnapshot(scope[0])).entities(key),
+      );
     const result = new StructuralSet();
-    for (const ontology of this.#scope(imports))
+    for (const ontology of scope)
       for (const entity of readOntologyModel(
         readOntologySnapshot(ontology),
-      ).entities(iri.structuralKey()))
+      ).entities(key))
         result.add(entity);
     return result.toSet();
   }
@@ -648,7 +679,7 @@ export class OWLOntology {
   getPunnedIRIs(imports = Imports.EXCLUDED) {
     const kindsByIRI = new Map();
     const result = new StructuralSet();
-    for (const entity of this.getSignature(imports)) {
+    for (const entity of this.#reader(imports).signature(undefined)) {
       const previous = kindsByIRI.get(entity.iri.value);
       if (previous !== undefined && previous !== entity.kind)
         result.add(entity.iri);
@@ -675,22 +706,20 @@ export class OWLOntology {
       ],
       "entity",
     );
-    const result = new StructuralSet();
     const key = entity.structuralKey();
-    for (const ontology of this.#scope(imports))
-      for (const axiom of readOntologySnapshot(ontology).directAxioms)
-        if (
-          references(axiom, key) ||
-          (entity.kind === OWLObjectKind.IRI &&
-            [
-              OWLObjectKind.DATA_PROPERTY_ASSERTION_AXIOM,
-              OWLObjectKind.ANNOTATION_ASSERTION_AXIOM,
-            ].includes(axiom.kind) &&
-            axiom.value?.kind === OWLObjectKind.LITERAL &&
-            axiom.value.datatype.iri.value === `${XSD_NAMESPACE}anyURI` &&
-            axiom.value.lexicalForm === entity.value)
-        )
-          result.add(axiom);
+    const scope = this.#scope(imports);
+    if (scope.length === 1)
+      return new Set(
+        readOntologyModel(readOntologySnapshot(scope[0])).referencingAxioms(
+          key,
+        ),
+      );
+    const result = new StructuralSet();
+    for (const ontology of scope)
+      for (const axiom of readOntologyModel(
+        readOntologySnapshot(ontology),
+      ).referencingAxioms(key))
+        result.add(axiom);
     return result.toSet();
   }
 }

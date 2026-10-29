@@ -1,0 +1,2605 @@
+{
+  "schemaVersion": 1,
+  "baselineSha256": "b6a229de2a5798063888144eeda60d4399f9c8c2a6377d706dcd9b54956751a4",
+  "scope": "70 workload groups, not exhaustive methods or overloads; Java timings remain frozen.",
+  "semanticAdmission": "Checksum equality is necessary but insufficient. Existing independently authored behavior fixtures guard implementation preservation; unresolved observations below block full parity acceptance.",
+  "cases": [
+    {
+      "id": "manager.createOWLOntologyManager",
+      "category": "Manager & Configuration",
+      "apiSymbols": [
+        "OWLManager.createOWLOntologyManager",
+        "OWLOntologyManager"
+      ],
+      "description": "Instantiate 100 OWLOntologyManager instances and read their data factory.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "config.OWLOntologyLoaderConfiguration",
+      "category": "Manager & Configuration",
+      "apiSymbols": [
+        "OWLOntologyLoaderConfiguration"
+      ],
+      "description": "Chain 8 immutable loader configuration setters and getters 500 times.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "config.OWLOntologyWriterConfiguration",
+      "category": "Manager & Configuration",
+      "apiSymbols": [
+        "OWLOntologyWriterConfiguration"
+      ],
+      "description": "Chain 5 immutable writer configuration setters and getters 500 times.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "intentional-profile-difference-after-authorized-repair",
+        "reason": "The released Java jar, SHA-256 747b1a5269fee2992487dcde946f16dfbc14aa458d50854994a0485cf263ce07, preserves labelsAsBanner on copies. The owner authorized correcting the Java-profile policy. Java and corrected compatible JS checksum 3500; normative JS checksum 2750 retains its own copy contract. See util/owlapi-reference/RunWriterCopySemantics.java and fixtures/writer-copy-semantics-java551.json. No Java timing refresh occurred."
+      }
+    },
+    {
+      "id": "formats.RDFXMLDocumentFormat.prefixes",
+      "category": "Manager & Configuration",
+      "apiSymbols": [
+        "RDFXMLDocumentFormat"
+      ],
+      "description": "Exercise prefix registration, default prefix, copyPrefixesFrom, lookup, and clear 200 times.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "model.IRI.create",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "IRI.create"
+      ],
+      "description": "Construct and validate 2,000 IRIs.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "factory.entities",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLDataFactory.getOWLClass",
+        "OWLDataFactory.getOWLObjectProperty",
+        "OWLDataFactory.getOWLDataProperty",
+        "OWLDataFactory.getOWLAnnotationProperty",
+        "OWLDataFactory.getOWLDatatype",
+        "OWLDataFactory.getOWLNamedIndividual",
+        "OWLDataFactory.getOWLAnonymousIndividual",
+        "OWLDataFactory.getOWLOntologyID",
+        "OWLDataFactory.getOWLImportsDeclaration"
+      ],
+      "description": "Construct 500 sets of all 10 entity, ontology-ID, and import-declaration types.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "factory.literals",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLDataFactory.getOWLLiteral"
+      ],
+      "description": "Construct 500 sets of plain, language-tagged, integer, decimal, float, and boolean literals.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "intentional-profile-difference",
+        "reason": "Java and compatible JS checksum 16310; normative JS checksum 17310. Language-argument trimming produces five versus seven characters for the 500 en-GB cases. Keep the normative language contract."
+      }
+    },
+    {
+      "id": "factory.classExpressions",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLDataFactory"
+      ],
+      "description": "Construct 200 sets of all 18 OWL 2 class expression and property inverse kinds.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "factory.dataRanges",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLDataFactory"
+      ],
+      "description": "Construct 200 sets of all 6 OWL 2 data range and facet restriction kinds.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "factory.axioms",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLDataFactory"
+      ],
+      "description": "Construct ~1,500 axioms spanning all 38 OWL 2 axiom types.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "model.structuralEqualityAndSet",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLStructuralObject.equals",
+        "OWLStructuralObject.equalsIgnoreAnnotations",
+        "StructuralSet"
+      ],
+      "description": "Insert and query 1,000 axioms in a structural set and test structural equality.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "model.axiomAnnotationsTransform",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLStructuralObject.getAnnotatedAxiom",
+        "OWLStructuralObject.getAxiomWithoutAnnotations"
+      ],
+      "description": "Annotate and strip annotations on 500 axioms.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "model.dispatch",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "dispatchOwlObject",
+        "dispatchAxiom",
+        "dispatchClassExpression"
+      ],
+      "description": "Dispatch 500 axioms (object + axiom visitors) and 120 complex class expressions.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "load.functional",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class Functional Syntax ontology document.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "load.manchester",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class Manchester OWL Syntax ontology document.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "load.owlxml",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class OWL/XML ontology document.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "load.rdfxml",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class RDF/XML ontology document.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "load.turtle",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class Turtle ontology document.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "load.ntriples",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class N-Triples ontology document.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "load.nquads",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class N-Quads ontology document.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "load.trig",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class TriG ontology document.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "load.jsonld",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class JSON-LD ontology document.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "load.dl",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class DL Syntax ontology document.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "load.krss2",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class KRSS2 ontology document.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "load.krss1",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class KRSS1 ontology document.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "load.importsClosure",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "NodeDocumentLoader"
+      ],
+      "description": "Load an 8-ontology cyclic import closure mapped to local file documents.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "load.rdfParserMetaData",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "RDFParserMetaData"
+      ],
+      "description": "Read RDFParserMetaData (triple count, header state, unparsed triples, guessed declarations) 500 times.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "explained-semantic-difference-unqualified",
+        "reason": "Semantic-only observations of the hash-verified released 5.5.1 jar and identical JS fixtures find 101 triples, one parsed header and zero unparsed triples in both. JS additionally reports 50 guessed class declarations. Over 500 reads this explains 51000 versus 76000. Preserve the current metadata contract; exclude timings from parity qualification. The released jar build differs from the retained timing build."
+      }
+    },
+    {
+      "id": "manager.createAndGetOntology",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.createOntology",
+        "OWLOntologyManager.getOntology"
+      ],
+      "description": "Create and look up 100 ontologies by IRI in a manager.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "manager.addAxioms.bulk",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.addAxioms"
+      ],
+      "description": "Bulk-add 500 axioms to a managed ontology via addAxioms.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "manager.addAxiom.singleLoop",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.addAxiom"
+      ],
+      "description": "Sequentially add 200 axioms one-by-one via addAxiom.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "manager.removeAxioms.bulk",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.removeAxioms"
+      ],
+      "description": "Bulk-add and bulk-remove 500 axioms via removeAxioms.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "manager.removeAxiom.singleLoop",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.removeAxiom"
+      ],
+      "description": "Bulk-add 200 axioms and remove them one-by-one via removeAxiom.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "manager.applyChanges.mixed",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.applyChanges",
+        "AddAxiom",
+        "RemoveAxiom",
+        "AddOntologyAnnotation",
+        "RemoveOntologyAnnotation",
+        "AddImport",
+        "RemoveImport",
+        "SetOntologyID"
+      ],
+      "description": "Apply a mixed batch of 125 ontology change objects via applyChanges.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "manager.getImportsClosure",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.getImportsClosure"
+      ],
+      "description": "Query getImportsClosure 1,000 times on an 8-ontology closure.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "ontology.getAxioms.excluded",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getAxioms",
+        "OWLOntology.getAxiomCount",
+        "OWLOntology.getAnnotations",
+        "OWLOntology.getImportsDeclarations",
+        "OWLOntology.getOntologyID"
+      ],
+      "description": "Query direct axioms, axiom count, annotations, imports, and ontology ID 200 times.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "ontology.getAxioms.included",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getAxioms",
+        "OWLOntology.getAxiomCount"
+      ],
+      "description": "Query closure-included axioms and axiom count 200 times.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "ontology.getLogicalAxioms",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getLogicalAxioms",
+        "OWLOntology.getLogicalAxiomCount"
+      ],
+      "description": "Query logical axioms and counts (Imports.EXCLUDED and INCLUDED) 100 times.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "ontology.getAxiomsByType",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getAxiomsByType",
+        "OWLOntology.getAxiomCount"
+      ],
+      "description": "Query axioms and counts across all 38 axiom types (EXCLUDED and INCLUDED) for 20 passes.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "ontology.containsAxiom",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.containsAxiom",
+        "OWLOntology.containsAxiomIgnoreAnnotations",
+        "OWLOntology.getAxiomsIgnoreAnnotations"
+      ],
+      "description": "Test exact and annotation-ignoring axiom containment and retrieval for 200 axioms.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "ontology.getSignature",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getSignature",
+        "OWLOntology.getClassesInSignature",
+        "OWLOntology.getObjectPropertiesInSignature",
+        "OWLOntology.getDataPropertiesInSignature",
+        "OWLOntology.getAnnotationPropertiesInSignature",
+        "OWLOntology.getIndividualsInSignature",
+        "OWLOntology.getDatatypesInSignature"
+      ],
+      "description": "Query full and kind-partitioned signatures (EXCLUDED and INCLUDED) 100 times.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "ontology.entitySignatureLookups",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getEntitiesInSignature",
+        "OWLOntology.containsEntityInSignature",
+        "OWLOntology.getPunnedIRIs",
+        "OWLOntology.getReferencedAnonymousIndividuals"
+      ],
+      "description": "Query entity-by-IRI signature lookups, punned IRIs, and anonymous individuals for 5 passes.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "explained-semantic-difference-unqualified",
+        "reason": "Released-jar semantic observations agree on all 60 class lookups and both 20-member anonymous-individual counts. Java punning additionally includes rdfs:label directly, and rdf:langString, rdfs:label, xsd:decimal, xsd:integer, xsd:string with imports. Six additional entries across five repetitions explain 1580 versus 1550. Preserve JS typed-punning semantics and exclude parity claims; the released jar is not the exact timing build."
+      }
+    },
+    {
+      "id": "ontology.getReferencingAxioms",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getReferencingAxioms"
+      ],
+      "description": "Query referencing axioms (EXCLUDED and INCLUDED) for 50 entities.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "ontology.classAxiomIndexes",
+      "category": "Ontology Queries - Specific Axiom Indexes",
+      "apiSymbols": [
+        "OWLOntology.getSubClassAxiomsForSubClass",
+        "OWLOntology.getSubClassAxiomsForSuperClass",
+        "OWLOntology.getEquivalentClassesAxioms",
+        "OWLOntology.getDisjointClassesAxioms"
+      ],
+      "description": "Query all 4 class-axiom index getters across 60 classes for 10 passes.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "ontology.objectPropertyAxiomIndexes",
+      "category": "Ontology Queries - Specific Axiom Indexes",
+      "apiSymbols": [
+        "OWLOntology.getObjectSubPropertyAxiomsForSubProperty",
+        "OWLOntology.getObjectSubPropertyAxiomsForSuperProperty",
+        "OWLOntology.getObjectPropertyDomainAxioms",
+        "OWLOntology.getObjectPropertyRangeAxioms",
+        "OWLOntology.getInverseObjectPropertyAxioms",
+        "OWLOntology.getFunctionalObjectPropertyAxioms",
+        "OWLOntology.getInverseFunctionalObjectPropertyAxioms",
+        "OWLOntology.getSymmetricObjectPropertyAxioms",
+        "OWLOntology.getAsymmetricObjectPropertyAxioms",
+        "OWLOntology.getReflexiveObjectPropertyAxioms",
+        "OWLOntology.getIrreflexiveObjectPropertyAxioms",
+        "OWLOntology.getTransitiveObjectPropertyAxioms"
+      ],
+      "description": "Query all 12 object-property axiom index getters across 60 properties for 10 passes.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "ontology.dataPropertyAxiomIndexes",
+      "category": "Ontology Queries - Specific Axiom Indexes",
+      "apiSymbols": [
+        "OWLOntology.getDataSubPropertyAxiomsForSubProperty",
+        "OWLOntology.getDataSubPropertyAxiomsForSuperProperty",
+        "OWLOntology.getDataPropertyDomainAxioms",
+        "OWLOntology.getDataPropertyRangeAxioms",
+        "OWLOntology.getFunctionalDataPropertyAxioms"
+      ],
+      "description": "Query all 5 data-property index getters across 60 properties for 10 passes.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "ontology.annotationAndDeclarationIndexes",
+      "category": "Ontology Queries - Specific Axiom Indexes",
+      "apiSymbols": [
+        "OWLOntology.getDeclarationAxioms",
+        "OWLOntology.getAnnotationAssertionAxioms",
+        "OWLOntology.getSubAnnotationPropertyOfAxioms",
+        "OWLOntology.getAnnotationPropertyDomainAxioms",
+        "OWLOntology.getAnnotationPropertyRangeAxioms"
+      ],
+      "description": "Query declaration and annotation-property index getters across 60 entities for 10 passes.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "ontology.individualAssertionIndexes",
+      "category": "Ontology Queries - Specific Axiom Indexes",
+      "apiSymbols": [
+        "OWLOntology.getClassAssertionAxioms",
+        "OWLOntology.getObjectPropertyAssertionAxioms",
+        "OWLOntology.getDataPropertyAssertionAxioms",
+        "OWLOntology.getNegativeObjectPropertyAssertionAxioms",
+        "OWLOntology.getNegativeDataPropertyAssertionAxioms",
+        "OWLOntology.getSameIndividualAxioms",
+        "OWLOntology.getDifferentIndividualAxioms"
+      ],
+      "description": "Query all 8 individual and class assertion index getters across 60 entities for 10 passes.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "save.functional",
+      "category": "Storage / Serialization",
+      "apiSymbols": [
+        "OWLOntologyManager.saveOntology",
+        "StringDocumentTarget"
+      ],
+      "description": "Serialize a 100-class ontology to Functional Syntax.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "save.owlxml",
+      "category": "Storage / Serialization",
+      "apiSymbols": [
+        "OWLOntologyManager.saveOntology",
+        "StringDocumentTarget"
+      ],
+      "description": "Serialize a 100-class ontology to OWL/XML.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "save.rdfxml",
+      "category": "Storage / Serialization",
+      "apiSymbols": [
+        "OWLOntologyManager.saveOntology",
+        "StringDocumentTarget"
+      ],
+      "description": "Serialize a 100-class ontology to RDF/XML.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "save.turtle",
+      "category": "Storage / Serialization",
+      "apiSymbols": [
+        "OWLOntologyManager.saveOntology",
+        "StringDocumentTarget"
+      ],
+      "description": "Serialize a 100-class ontology to Turtle.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "search.classHierarchyAndRelations",
+      "category": "EntitySearcher",
+      "apiSymbols": [
+        "EntitySearcher.getSuperClasses",
+        "EntitySearcher.getSubClasses",
+        "EntitySearcher.getEquivalentClasses",
+        "EntitySearcher.getDisjointClasses"
+      ],
+      "description": "Search class hierarchy and disjoint/equivalent relations across 2 ontologies for 5 passes.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "search.propertyHierarchyAndDomainsRanges",
+      "category": "EntitySearcher",
+      "apiSymbols": [
+        "EntitySearcher.getSuperProperties",
+        "EntitySearcher.getSubProperties",
+        "EntitySearcher.getDomains",
+        "EntitySearcher.getRanges",
+        "EntitySearcher.getInverses"
+      ],
+      "description": "Search object/data property hierarchy, domains, ranges, and inverses across 2 ontologies for 5 passes.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "search.annotations",
+      "category": "EntitySearcher",
+      "apiSymbols": [
+        "EntitySearcher.getAnnotationAssertionAxioms",
+        "EntitySearcher.getAnnotations",
+        "EntitySearcher.getAnnotationObjects"
+      ],
+      "description": "Search entity annotation assertions, annotations, and annotation objects across 2 ontologies for 5 passes.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "search.propertyCharacteristics",
+      "category": "EntitySearcher",
+      "apiSymbols": [
+        "EntitySearcher.isFunctional",
+        "EntitySearcher.isInverseFunctional",
+        "EntitySearcher.isTransitive",
+        "EntitySearcher.isSymmetric",
+        "EntitySearcher.isAsymmetric",
+        "EntitySearcher.isReflexive",
+        "EntitySearcher.isIrreflexive"
+      ],
+      "description": "Test all 8 property characteristic predicates across 60 properties for 10 passes.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "util.SimpleShortFormProvider",
+      "category": "Utilities",
+      "apiSymbols": [
+        "SimpleShortFormProvider"
+      ],
+      "description": "Compute short forms for 180 entities across 20 passes.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "util.AnnotationValueShortFormProvider",
+      "category": "Utilities",
+      "apiSymbols": [
+        "AnnotationValueShortFormProvider"
+      ],
+      "description": "Compute annotation-value short forms with language fallback across 60 classes for 5 passes.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "util.OWLOntologyImportsClosureSetProvider",
+      "category": "Utilities",
+      "apiSymbols": [
+        "OWLOntologyImportsClosureSetProvider"
+      ],
+      "description": "Materialize ontology closure sets 1,000 times via OWLOntologyImportsClosureSetProvider.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "unequal-result-representation",
+        "reason": "Java stream count can use a known size without element traversal. JS returns a fresh defensive Set. Compare public call cost provisionally; do not claim a matched materialization boundary."
+      }
+    },
+    {
+      "id": "util.OWLOntologyMerger",
+      "category": "Utilities",
+      "apiSymbols": [
+        "OWLOntologyMerger"
+      ],
+      "description": "Merge an 8-ontology import closure in both all-axioms and logical-axioms-only modes.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "util.OWLObjectDuplicator",
+      "category": "Utilities",
+      "apiSymbols": [
+        "OWLObjectDuplicator"
+      ],
+      "description": "Duplicate 500 axioms with IRI replacement via OWLObjectDuplicator.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "util.OWLEntityRenamer",
+      "category": "Utilities",
+      "apiSymbols": [
+        "OWLEntityRenamer"
+      ],
+      "description": "Compute entity and IRI rename change sets for 10 entities across a 500-axiom ontology.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "util.OWLEntityRemover",
+      "category": "Utilities",
+      "apiSymbols": [
+        "OWLEntityRemover"
+      ],
+      "description": "Visit 40 entities (20 classes + 20 object properties) and collect removal changes across a 500-axiom ontology.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "renderer.ManchesterOWLSyntaxOWLObjectRendererImpl",
+      "category": "Manchester Object Renderer",
+      "apiSymbols": [
+        "ManchesterOWLSyntaxOWLObjectRendererImpl"
+      ],
+      "description": "Render 300 axioms and 120 complex class expressions to Manchester OWL Syntax.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "explained-presentation-difference-unqualified",
+        "reason": "Exact released-jar output observations identify 60 JS newlines before \" and \"; removing those newlines makes every differing rendered value byte-identical. They explain 7747 versus 7807. Preserve the current renderer presentation contract and exclude timing parity claims; the released jar is not the exact timing build."
+      }
+    },
+    {
+      "id": "locality.extract.BOTTOM",
+      "category": "Modularity / Locality",
+      "apiSymbols": [
+        "SyntacticLocalityModuleExtractor",
+        "LocalityClass.BOTTOM"
+      ],
+      "description": "Extract a BOTTOM syntactic locality module from a ~500-axiom base for 20 seed entities.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "locality.extract.TOP",
+      "category": "Modularity / Locality",
+      "apiSymbols": [
+        "SyntacticLocalityModuleExtractor",
+        "LocalityClass.TOP"
+      ],
+      "description": "Extract a TOP syntactic locality module from a ~500-axiom base for 20 seed entities.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "locality.extract.STAR",
+      "category": "Modularity / Locality",
+      "apiSymbols": [
+        "SyntacticLocalityModuleExtractor",
+        "LocalityClass.STAR"
+      ],
+      "description": "Extract a STAR syntactic locality module from a ~500-axiom base for 20 seed entities.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "profiles.OWL2DLProfile.checkOntology",
+      "category": "OWL 2 Language Profiles",
+      "apiSymbols": [
+        "OWL2DLProfile.checkOntology"
+      ],
+      "description": "Validate a 520-axiom ontology against the OWL 2 DL profile.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "profiles.OWL2ELProfile.checkOntology",
+      "category": "OWL 2 Language Profiles",
+      "apiSymbols": [
+        "OWL2ELProfile.checkOntology"
+      ],
+      "description": "Validate a 520-axiom ontology against the OWL 2 EL profile.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "profiles.OWL2QLProfile.checkOntology",
+      "category": "OWL 2 Language Profiles",
+      "apiSymbols": [
+        "OWL2QLProfile.checkOntology"
+      ],
+      "description": "Validate a 520-axiom ontology against the OWL 2 QL profile.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    },
+    {
+      "id": "profiles.OWL2RLProfile.checkOntology",
+      "category": "OWL 2 Language Profiles",
+      "apiSymbols": [
+        "OWL2RLProfile.checkOntology"
+      ],
+      "description": "Validate a 520-axiom ontology against the OWL 2 RL profile.",
+      "profiles": [
+        "java-owlapi-5.5.1",
+        "normative-v1"
+      ],
+      "comparability": {
+        "status": "checksum-only",
+        "reason": "No component-wise cross-language structural qualification is claimed by this report."
+      }
+    }
+  ],
+  "publicInventory": [
+    {
+      "name": "ANNOTATION_VALUE_KINDS",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "AXIOM_KINDS",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "AddAxiom",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [
+        "AddAxiom()",
+        "AddAxiom#getOntology()",
+        "AddAxiom#getAxiom()"
+      ],
+      "benchmarkGroups": [
+        "manager.applyChanges.mixed"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "AddImport",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [
+        "AddImport()",
+        "AddImport#getOntology()",
+        "AddImport#getImportDeclaration()"
+      ],
+      "benchmarkGroups": [
+        "manager.applyChanges.mixed"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "AddOntologyAnnotation",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [
+        "AddOntologyAnnotation()",
+        "AddOntologyAnnotation#getOntology()",
+        "AddOntologyAnnotation#getAnnotation()"
+      ],
+      "benchmarkGroups": [
+        "manager.applyChanges.mixed"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "AmbiguousRdfDatasetError",
+      "subpaths": [
+        ".",
+        "./io"
+      ],
+      "callables": [
+        "AmbiguousRdfDatasetError()"
+      ],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "AnnotationValueShortFormProvider",
+      "subpaths": [
+        ".",
+        "./util"
+      ],
+      "callables": [
+        "AnnotationValueShortFormProvider()",
+        "AnnotationValueShortFormProvider#getShortForm()",
+        "AnnotationValueShortFormProvider#getAnnotationProperties()",
+        "AnnotationValueShortFormProvider#getPreferredLanguageMap()",
+        "AnnotationValueShortFormProvider#dispose()"
+      ],
+      "benchmarkGroups": [
+        "util.AnnotationValueShortFormProvider"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "AxiomAnnotations",
+      "subpaths": [
+        ".",
+        "./model/parameters"
+      ],
+      "callables": [],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "CLASS_EXPRESSION_KINDS",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "ChangeApplied",
+      "subpaths": [
+        ".",
+        "./model/parameters"
+      ],
+      "callables": [],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "DATA_PROPERTY_EXPRESSION_KINDS",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "DATA_RANGE_KINDS",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "DocumentLoadError",
+      "subpaths": [
+        ".",
+        "./io"
+      ],
+      "callables": [
+        "DocumentLoadError()"
+      ],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "ENTITY_KINDS",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "EntitySearcher",
+      "subpaths": [
+        ".",
+        "./search"
+      ],
+      "callables": [
+        "EntitySearcher()",
+        "EntitySearcher.getAnnotationAssertionAxioms()",
+        "EntitySearcher.getAnnotations()",
+        "EntitySearcher.getAnnotationObjects()",
+        "EntitySearcher.getSuperClasses()",
+        "EntitySearcher.getSubClasses()",
+        "EntitySearcher.getEquivalentClasses()",
+        "EntitySearcher.getDisjointClasses()",
+        "EntitySearcher.getSubProperties()",
+        "EntitySearcher.getSuperProperties()",
+        "EntitySearcher.getDomains()",
+        "EntitySearcher.getRanges()",
+        "EntitySearcher.getInverses()",
+        "EntitySearcher.isFunctional()",
+        "EntitySearcher.isInverseFunctional()",
+        "EntitySearcher.isTransitive()",
+        "EntitySearcher.isSymmetric()",
+        "EntitySearcher.isAsymmetric()",
+        "EntitySearcher.isReflexive()",
+        "EntitySearcher.isIrreflexive()"
+      ],
+      "benchmarkGroups": [
+        "search.classHierarchyAndRelations",
+        "search.propertyHierarchyAndDomainsRanges",
+        "search.annotations",
+        "search.propertyCharacteristics"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "GraphSelectionError",
+      "subpaths": [
+        ".",
+        "./io"
+      ],
+      "callables": [
+        "GraphSelectionError()"
+      ],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "INDIVIDUAL_KINDS",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "IRI",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [
+        "IRI()",
+        "IRI.create()",
+        "IRI#toString()"
+      ],
+      "benchmarkGroups": [
+        "model.IRI.create"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "Imports",
+      "subpaths": [
+        ".",
+        "./model/parameters"
+      ],
+      "callables": [],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "LocalityClass",
+      "subpaths": [
+        ".",
+        "./modularity/locality"
+      ],
+      "callables": [],
+      "benchmarkGroups": [
+        "locality.extract.BOTTOM",
+        "locality.extract.TOP",
+        "locality.extract.STAR"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "ManchesterOWLSyntaxOWLObjectRendererImpl",
+      "subpaths": [
+        ".",
+        "./manchestersyntax/renderer"
+      ],
+      "callables": [
+        "ManchesterOWLSyntaxOWLObjectRendererImpl()",
+        "ManchesterOWLSyntaxOWLObjectRendererImpl#getBehaviorProfileId()",
+        "ManchesterOWLSyntaxOWLObjectRendererImpl#setShortFormProvider()",
+        "ManchesterOWLSyntaxOWLObjectRendererImpl#render()"
+      ],
+      "benchmarkGroups": [
+        "renderer.ManchesterOWLSyntaxOWLObjectRendererImpl"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "MissingImportError",
+      "subpaths": [
+        ".",
+        "./io"
+      ],
+      "callables": [
+        "MissingImportError()"
+      ],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OBJECT_PROPERTY_EXPRESSION_KINDS",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWL2DLProfile",
+      "subpaths": [
+        ".",
+        "./profiles"
+      ],
+      "callables": [
+        "OWL2DLProfile()",
+        "OWL2DLProfile#getName()",
+        "OWL2DLProfile#getIRI()",
+        "OWL2DLProfile#checkOntology()"
+      ],
+      "benchmarkGroups": [
+        "profiles.OWL2DLProfile.checkOntology"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWL2ELProfile",
+      "subpaths": [
+        ".",
+        "./profiles"
+      ],
+      "callables": [
+        "OWL2ELProfile()",
+        "OWL2ELProfile#getName()",
+        "OWL2ELProfile#getIRI()",
+        "OWL2ELProfile#checkOntology()"
+      ],
+      "benchmarkGroups": [
+        "profiles.OWL2ELProfile.checkOntology"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWL2QLProfile",
+      "subpaths": [
+        ".",
+        "./profiles"
+      ],
+      "callables": [
+        "OWL2QLProfile()",
+        "OWL2QLProfile#getName()",
+        "OWL2QLProfile#getIRI()",
+        "OWL2QLProfile#checkOntology()"
+      ],
+      "benchmarkGroups": [
+        "profiles.OWL2QLProfile.checkOntology"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWL2RLProfile",
+      "subpaths": [
+        ".",
+        "./profiles"
+      ],
+      "callables": [
+        "OWL2RLProfile()",
+        "OWL2RLProfile#getName()",
+        "OWL2RLProfile#getIRI()",
+        "OWL2RLProfile#checkOntology()"
+      ],
+      "benchmarkGroups": [
+        "profiles.OWL2RLProfile.checkOntology"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWLAPIError",
+      "subpaths": [
+        ".",
+        "./io"
+      ],
+      "callables": [
+        "OWLAPIError()"
+      ],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWLDataFactory",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [
+        "OWLDataFactory()",
+        "OWLDataFactory#getBehaviorProfileId()",
+        "OWLDataFactory#getOWLClass()",
+        "OWLDataFactory#getOWLAnnotationProperty()",
+        "OWLDataFactory#getOWLDatatype()",
+        "OWLDataFactory#getOWLObjectProperty()",
+        "OWLDataFactory#getOWLDataProperty()",
+        "OWLDataFactory#getOWLNamedIndividual()",
+        "OWLDataFactory#getOWLAnonymousIndividual()",
+        "OWLDataFactory#getOWLOntologyID()",
+        "OWLDataFactory#getOWLImportsDeclaration()",
+        "OWLDataFactory#getRDFSLabel()",
+        "OWLDataFactory#getOWLLiteral()",
+        "OWLDataFactory#getOWLAnnotation()",
+        "OWLDataFactory#getOWLSubClassOfAxiom()",
+        "OWLDataFactory#getOWLDeclarationAxiom()",
+        "OWLDataFactory#getOWLObjectIntersectionOf()",
+        "OWLDataFactory#getOWLObjectInverseOf()",
+        "OWLDataFactory#getOWLObjectUnionOf()",
+        "OWLDataFactory#getOWLObjectComplementOf()",
+        "OWLDataFactory#getOWLObjectOneOf()",
+        "OWLDataFactory#getOWLObjectSomeValuesFrom()",
+        "OWLDataFactory#getOWLObjectAllValuesFrom()",
+        "OWLDataFactory#getOWLObjectHasValue()",
+        "OWLDataFactory#getOWLObjectHasSelf()",
+        "OWLDataFactory#getOWLObjectMinCardinality()",
+        "OWLDataFactory#getOWLObjectMaxCardinality()",
+        "OWLDataFactory#getOWLObjectExactCardinality()",
+        "OWLDataFactory#getOWLDataSomeValuesFrom()",
+        "OWLDataFactory#getOWLDataAllValuesFrom()",
+        "OWLDataFactory#getOWLDataHasValue()",
+        "OWLDataFactory#getOWLDataMinCardinality()",
+        "OWLDataFactory#getOWLDataMaxCardinality()",
+        "OWLDataFactory#getOWLDataExactCardinality()",
+        "OWLDataFactory#getOWLDataIntersectionOf()",
+        "OWLDataFactory#getOWLDataUnionOf()",
+        "OWLDataFactory#getOWLDataComplementOf()",
+        "OWLDataFactory#getOWLDataOneOf()",
+        "OWLDataFactory#getOWLFacetRestriction()",
+        "OWLDataFactory#getOWLDatatypeRestriction()",
+        "OWLDataFactory#getOWLEquivalentClassesAxiom()",
+        "OWLDataFactory#getOWLDisjointClassesAxiom()",
+        "OWLDataFactory#getOWLDisjointUnionAxiom()",
+        "OWLDataFactory#getOWLSubObjectPropertyOfAxiom()",
+        "OWLDataFactory#getOWLSubPropertyChainOfAxiom()",
+        "OWLDataFactory#getOWLEquivalentObjectPropertiesAxiom()",
+        "OWLDataFactory#getOWLDisjointObjectPropertiesAxiom()",
+        "OWLDataFactory#getOWLObjectPropertyDomainAxiom()",
+        "OWLDataFactory#getOWLObjectPropertyRangeAxiom()",
+        "OWLDataFactory#getOWLInverseObjectPropertiesAxiom()",
+        "OWLDataFactory#getOWLFunctionalObjectPropertyAxiom()",
+        "OWLDataFactory#getOWLInverseFunctionalObjectPropertyAxiom()",
+        "OWLDataFactory#getOWLReflexiveObjectPropertyAxiom()",
+        "OWLDataFactory#getOWLIrreflexiveObjectPropertyAxiom()",
+        "OWLDataFactory#getOWLSymmetricObjectPropertyAxiom()",
+        "OWLDataFactory#getOWLAsymmetricObjectPropertyAxiom()",
+        "OWLDataFactory#getOWLTransitiveObjectPropertyAxiom()",
+        "OWLDataFactory#getOWLSubDataPropertyOfAxiom()",
+        "OWLDataFactory#getOWLEquivalentDataPropertiesAxiom()",
+        "OWLDataFactory#getOWLDisjointDataPropertiesAxiom()",
+        "OWLDataFactory#getOWLDataPropertyDomainAxiom()",
+        "OWLDataFactory#getOWLDataPropertyRangeAxiom()",
+        "OWLDataFactory#getOWLFunctionalDataPropertyAxiom()",
+        "OWLDataFactory#getOWLDatatypeDefinitionAxiom()",
+        "OWLDataFactory#getOWLHasKeyAxiom()",
+        "OWLDataFactory#getOWLSameIndividualAxiom()",
+        "OWLDataFactory#getOWLDifferentIndividualsAxiom()",
+        "OWLDataFactory#getOWLClassAssertionAxiom()",
+        "OWLDataFactory#getOWLObjectPropertyAssertionAxiom()",
+        "OWLDataFactory#getOWLNegativeObjectPropertyAssertionAxiom()",
+        "OWLDataFactory#getOWLDataPropertyAssertionAxiom()",
+        "OWLDataFactory#getOWLNegativeDataPropertyAssertionAxiom()",
+        "OWLDataFactory#getOWLAnnotationAssertionAxiom()",
+        "OWLDataFactory#getOWLSubAnnotationPropertyOfAxiom()",
+        "OWLDataFactory#getOWLAnnotationPropertyDomainAxiom()",
+        "OWLDataFactory#getOWLAnnotationPropertyRangeAxiom()"
+      ],
+      "benchmarkGroups": [
+        "factory.entities",
+        "factory.literals",
+        "factory.classExpressions",
+        "factory.dataRanges",
+        "factory.axioms"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWLDocumentFormat",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [
+        "OWLDocumentFormat()",
+        "OWLDocumentFormat#getParameter()",
+        "OWLDocumentFormat#getOntologyLoaderMetaData()",
+        "OWLDocumentFormat#withOntologyLoaderMetaData()",
+        "OWLDocumentFormat#withParameter()"
+      ],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWLDocumentFormats",
+      "subpaths": [
+        ".",
+        "./formats"
+      ],
+      "callables": [],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWLEntityRemover",
+      "subpaths": [
+        ".",
+        "./util"
+      ],
+      "callables": [
+        "OWLEntityRemover()",
+        "OWLEntityRemover#visit()",
+        "OWLEntityRemover#getChanges()",
+        "OWLEntityRemover#reset()"
+      ],
+      "benchmarkGroups": [
+        "util.OWLEntityRemover"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWLEntityRenamer",
+      "subpaths": [
+        ".",
+        "./util"
+      ],
+      "callables": [
+        "OWLEntityRenamer()",
+        "OWLEntityRenamer#changeIRI()"
+      ],
+      "benchmarkGroups": [
+        "util.OWLEntityRenamer"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWLManager",
+      "subpaths": [
+        ".",
+        "./apibinding"
+      ],
+      "callables": [
+        "OWLManager()",
+        "OWLManager.createOWLOntologyManager()"
+      ],
+      "benchmarkGroups": [
+        "manager.createOWLOntologyManager"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWLObjectDuplicator",
+      "subpaths": [
+        ".",
+        "./util"
+      ],
+      "callables": [
+        "OWLObjectDuplicator()",
+        "OWLObjectDuplicator#duplicateObject()"
+      ],
+      "benchmarkGroups": [
+        "util.OWLObjectDuplicator"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWLObjectKind",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWLOntology",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [
+        "OWLOntology()",
+        "OWLOntology#getOntologyID()",
+        "OWLOntology#getAxioms()",
+        "OWLOntology#getAxiomsByType()",
+        "OWLOntology#getAxiomCount()",
+        "OWLOntology#getLogicalAxioms()",
+        "OWLOntology#getLogicalAxiomCount()",
+        "OWLOntology#containsAxiom()",
+        "OWLOntology#containsAxiomIgnoreAnnotations()",
+        "OWLOntology#getAxiomsIgnoreAnnotations()",
+        "OWLOntology#getDeclarationAxioms()",
+        "OWLOntology#getSubClassAxiomsForSubClass()",
+        "OWLOntology#getSubClassAxiomsForSuperClass()",
+        "OWLOntology#getEquivalentClassesAxioms()",
+        "OWLOntology#getDisjointClassesAxioms()",
+        "OWLOntology#getObjectSubPropertyAxiomsForSubProperty()",
+        "OWLOntology#getObjectSubPropertyAxiomsForSuperProperty()",
+        "OWLOntology#getObjectPropertyDomainAxioms()",
+        "OWLOntology#getObjectPropertyRangeAxioms()",
+        "OWLOntology#getInverseObjectPropertyAxioms()",
+        "OWLOntology#getDataSubPropertyAxiomsForSubProperty()",
+        "OWLOntology#getDataSubPropertyAxiomsForSuperProperty()",
+        "OWLOntology#getDataPropertyDomainAxioms()",
+        "OWLOntology#getDataPropertyRangeAxioms()",
+        "OWLOntology#getSubAnnotationPropertyOfAxioms()",
+        "OWLOntology#getAnnotationPropertyDomainAxioms()",
+        "OWLOntology#getAnnotationPropertyRangeAxioms()",
+        "OWLOntology#getFunctionalObjectPropertyAxioms()",
+        "OWLOntology#getInverseFunctionalObjectPropertyAxioms()",
+        "OWLOntology#getSymmetricObjectPropertyAxioms()",
+        "OWLOntology#getAsymmetricObjectPropertyAxioms()",
+        "OWLOntology#getReflexiveObjectPropertyAxioms()",
+        "OWLOntology#getIrreflexiveObjectPropertyAxioms()",
+        "OWLOntology#getTransitiveObjectPropertyAxioms()",
+        "OWLOntology#getFunctionalDataPropertyAxioms()",
+        "OWLOntology#getClassAssertionAxioms()",
+        "OWLOntology#getObjectPropertyAssertionAxioms()",
+        "OWLOntology#getDataPropertyAssertionAxioms()",
+        "OWLOntology#getNegativeObjectPropertyAssertionAxioms()",
+        "OWLOntology#getNegativeDataPropertyAssertionAxioms()",
+        "OWLOntology#getSameIndividualAxioms()",
+        "OWLOntology#getDifferentIndividualAxioms()",
+        "OWLOntology#getAnnotationAssertionAxioms()",
+        "OWLOntology#getImportsDeclarations()",
+        "OWLOntology#getAnnotations()",
+        "OWLOntology#getClassesInSignature()",
+        "OWLOntology#getObjectPropertiesInSignature()",
+        "OWLOntology#getDataPropertiesInSignature()",
+        "OWLOntology#getAnnotationPropertiesInSignature()",
+        "OWLOntology#getIndividualsInSignature()",
+        "OWLOntology#getDatatypesInSignature()",
+        "OWLOntology#getSignature()",
+        "OWLOntology#getEntitiesInSignature()",
+        "OWLOntology#containsEntityInSignature()",
+        "OWLOntology#getPunnedIRIs()",
+        "OWLOntology#getReferencedAnonymousIndividuals()",
+        "OWLOntology#getReferencingAxioms()"
+      ],
+      "benchmarkGroups": [
+        "ontology.getAxioms.excluded",
+        "ontology.getAxioms.included",
+        "ontology.getLogicalAxioms",
+        "ontology.getAxiomsByType",
+        "ontology.containsAxiom",
+        "ontology.getSignature",
+        "ontology.entitySignatureLookups",
+        "ontology.getReferencingAxioms",
+        "ontology.classAxiomIndexes",
+        "ontology.objectPropertyAxiomIndexes",
+        "ontology.dataPropertyAxiomIndexes",
+        "ontology.annotationAndDeclarationIndexes",
+        "ontology.individualAssertionIndexes"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWLOntologyCreationError",
+      "subpaths": [
+        ".",
+        "./io"
+      ],
+      "callables": [
+        "OWLOntologyCreationError()"
+      ],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWLOntologyImportsClosureSetProvider",
+      "subpaths": [
+        ".",
+        "./util"
+      ],
+      "callables": [
+        "OWLOntologyImportsClosureSetProvider()",
+        "OWLOntologyImportsClosureSetProvider#ontologies()"
+      ],
+      "benchmarkGroups": [
+        "util.OWLOntologyImportsClosureSetProvider"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWLOntologyLoaderConfiguration",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [
+        "OWLOntologyLoaderConfiguration()",
+        "OWLOntologyLoaderConfiguration.defaults()",
+        "OWLOntologyLoaderConfiguration#with()",
+        "OWLOntologyLoaderConfiguration#getBehaviorProfileId()",
+        "OWLOntologyLoaderConfiguration#getConnectionTimeout()",
+        "OWLOntologyLoaderConfiguration#getRetriesToAttempt()",
+        "OWLOntologyLoaderConfiguration#isFollowRedirects()",
+        "OWLOntologyLoaderConfiguration#getEntityExpansionLimit()",
+        "OWLOntologyLoaderConfiguration#getAuthorizationValue()",
+        "OWLOntologyLoaderConfiguration#isAcceptingHTTPCompression()",
+        "OWLOntologyLoaderConfiguration#setAuthorizationValue()",
+        "OWLOntologyLoaderConfiguration#setAcceptingHTTPCompression()",
+        "OWLOntologyLoaderConfiguration#isStrict()",
+        "OWLOntologyLoaderConfiguration#isLoadAnnotationAxioms()",
+        "OWLOntologyLoaderConfiguration#setConnectionTimeout()",
+        "OWLOntologyLoaderConfiguration#setRetriesToAttempt()",
+        "OWLOntologyLoaderConfiguration#setFollowRedirects()",
+        "OWLOntologyLoaderConfiguration#setEntityExpansionLimit()",
+        "OWLOntologyLoaderConfiguration#setStrict()",
+        "OWLOntologyLoaderConfiguration#setLoadAnnotationAxioms()",
+        "OWLOntologyLoaderConfiguration#withParsingMode()",
+        "OWLOntologyLoaderConfiguration#withMissingImportHandling()",
+        "OWLOntologyLoaderConfiguration#withRemoteImports()",
+        "OWLOntologyLoaderConfiguration#withRemoteJsonLdContexts()",
+        "OWLOntologyLoaderConfiguration#withRdfDatasetGraphPolicy()",
+        "OWLOntologyLoaderConfiguration#withFormat()"
+      ],
+      "benchmarkGroups": [
+        "config.OWLOntologyLoaderConfiguration"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWLOntologyManager",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [
+        "OWLOntologyManager()",
+        "OWLOntologyManager#getOWLDataFactory()",
+        "OWLOntologyManager#getBehaviorProfileId()",
+        "OWLOntologyManager#getOntologyWriterConfiguration()",
+        "OWLOntologyManager#getOntologyLoaderConfiguration()",
+        "OWLOntologyManager#setOntologyLoaderConfiguration()",
+        "OWLOntologyManager#setOntologyWriterConfiguration()",
+        "OWLOntologyManager#createOntology()",
+        "OWLOntologyManager#getOntology()",
+        "OWLOntologyManager#getOntologyFormat()",
+        "OWLOntologyManager#addAxiom()",
+        "OWLOntologyManager#addAxioms()",
+        "OWLOntologyManager#removeAxiom()",
+        "OWLOntologyManager#removeAxioms()",
+        "OWLOntologyManager#applyChange()",
+        "OWLOntologyManager#applyChanges()",
+        "OWLOntologyManager#saveOntology()",
+        "OWLOntologyManager#importsClosure()",
+        "OWLOntologyManager#getImportsClosure()",
+        "OWLOntologyManager#loadOntologyFromOntologyDocument()",
+        "OWLOntologyManager#loadOntologyGraphFromOntologyDocument()"
+      ],
+      "benchmarkGroups": [
+        "manager.createOWLOntologyManager",
+        "load.functional",
+        "load.manchester",
+        "load.owlxml",
+        "load.rdfxml",
+        "load.turtle",
+        "load.ntriples",
+        "load.nquads",
+        "load.trig",
+        "load.jsonld",
+        "load.dl",
+        "load.krss2",
+        "load.krss1",
+        "load.importsClosure",
+        "manager.createAndGetOntology",
+        "manager.addAxioms.bulk",
+        "manager.addAxiom.singleLoop",
+        "manager.removeAxioms.bulk",
+        "manager.removeAxiom.singleLoop",
+        "manager.applyChanges.mixed",
+        "manager.getImportsClosure",
+        "save.functional",
+        "save.owlxml",
+        "save.rdfxml",
+        "save.turtle"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWLOntologyMerger",
+      "subpaths": [
+        ".",
+        "./util"
+      ],
+      "callables": [
+        "OWLOntologyMerger()",
+        "OWLOntologyMerger#createMergedOntology()"
+      ],
+      "benchmarkGroups": [
+        "util.OWLOntologyMerger"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWLOntologyStateError",
+      "subpaths": [
+        ".",
+        "./io"
+      ],
+      "callables": [
+        "OWLOntologyStateError()"
+      ],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWLOntologyStorageError",
+      "subpaths": [
+        ".",
+        "./io"
+      ],
+      "callables": [
+        "OWLOntologyStorageError()"
+      ],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWLParserError",
+      "subpaths": [
+        ".",
+        "./io"
+      ],
+      "callables": [
+        "OWLParserError()"
+      ],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWLProfileReport",
+      "subpaths": [
+        ".",
+        "./profiles"
+      ],
+      "callables": [
+        "OWLProfileReport()",
+        "OWLProfileReport#isInProfile()",
+        "OWLProfileReport#getViolations()",
+        "OWLProfileReport#getOntology()",
+        "OWLProfileReport#getProfile()",
+        "OWLProfileReport#getSourceAssessment()"
+      ],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWLStorerNotFoundError",
+      "subpaths": [
+        ".",
+        "./io"
+      ],
+      "callables": [
+        "OWLStorerNotFoundError()"
+      ],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWLStructuralObject",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [
+        "OWLStructuralObject()",
+        "OWLStructuralObject#structuralKey()",
+        "OWLStructuralObject#toStructuralTuple()",
+        "OWLStructuralObject#equals()",
+        "OWLStructuralObject#structuralKeyWithoutAnnotations()",
+        "OWLStructuralObject#equalsIgnoreAnnotations()"
+      ],
+      "benchmarkGroups": [
+        "model.structuralEqualityAndSet",
+        "model.axiomAnnotationsTransform"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWLSyntaxError",
+      "subpaths": [
+        ".",
+        "./io"
+      ],
+      "callables": [
+        "OWLSyntaxError()"
+      ],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWL_OBJECT_KINDS",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "ParserMismatchError",
+      "subpaths": [
+        ".",
+        "./io"
+      ],
+      "callables": [
+        "ParserMismatchError()"
+      ],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "RDFOntologyHeaderStatus",
+      "subpaths": [
+        ".",
+        "./io"
+      ],
+      "callables": [],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "RDFParserMetaData",
+      "subpaths": [
+        ".",
+        "./io"
+      ],
+      "callables": [
+        "RDFParserMetaData()",
+        "RDFParserMetaData#getTripleCount()",
+        "RDFParserMetaData#getHeaderState()",
+        "RDFParserMetaData#getUnparsedTriples()",
+        "RDFParserMetaData#getGuessedDeclarations()"
+      ],
+      "benchmarkGroups": [
+        "load.rdfParserMetaData"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "RemoveAxiom",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [
+        "RemoveAxiom()",
+        "RemoveAxiom#getOntology()",
+        "RemoveAxiom#getAxiom()"
+      ],
+      "benchmarkGroups": [
+        "manager.applyChanges.mixed"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "RemoveImport",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [
+        "RemoveImport()",
+        "RemoveImport#getOntology()",
+        "RemoveImport#getImportDeclaration()"
+      ],
+      "benchmarkGroups": [
+        "manager.applyChanges.mixed"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "RemoveOntologyAnnotation",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [
+        "RemoveOntologyAnnotation()",
+        "RemoveOntologyAnnotation#getOntology()",
+        "RemoveOntologyAnnotation#getAnnotation()"
+      ],
+      "benchmarkGroups": [
+        "manager.applyChanges.mixed"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "ResourceLimitError",
+      "subpaths": [
+        ".",
+        "./io"
+      ],
+      "callables": [
+        "ResourceLimitError()"
+      ],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "SecurityPolicyError",
+      "subpaths": [
+        ".",
+        "./io"
+      ],
+      "callables": [
+        "SecurityPolicyError()"
+      ],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "SetOntologyID",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [
+        "SetOntologyID()",
+        "SetOntologyID#getOntology()",
+        "SetOntologyID#getOriginalOntologyID()",
+        "SetOntologyID#getNewOntologyID()"
+      ],
+      "benchmarkGroups": [
+        "manager.applyChanges.mixed"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "SimpleShortFormProvider",
+      "subpaths": [
+        ".",
+        "./util"
+      ],
+      "callables": [
+        "SimpleShortFormProvider()",
+        "SimpleShortFormProvider#getShortForm()",
+        "SimpleShortFormProvider#dispose()"
+      ],
+      "benchmarkGroups": [
+        "util.SimpleShortFormProvider"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "StringDocumentSource",
+      "subpaths": [
+        ".",
+        "./io"
+      ],
+      "callables": [
+        "StringDocumentSource()",
+        "StringDocumentSource#getText()",
+        "StringDocumentSource#getDocumentIRI()",
+        "StringDocumentSource#getContentType()",
+        "StringDocumentSource#getFileName()",
+        "StringDocumentSource#getFormat()"
+      ],
+      "benchmarkGroups": [
+        "load.functional",
+        "load.manchester",
+        "load.owlxml",
+        "load.rdfxml",
+        "load.turtle",
+        "load.ntriples",
+        "load.nquads",
+        "load.trig",
+        "load.jsonld",
+        "load.dl",
+        "load.krss2",
+        "load.krss1"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "StringDocumentTarget",
+      "subpaths": [
+        ".",
+        "./io"
+      ],
+      "callables": [
+        "StringDocumentTarget()",
+        "StringDocumentTarget#toString()"
+      ],
+      "benchmarkGroups": [
+        "save.functional",
+        "save.owlxml",
+        "save.rdfxml",
+        "save.turtle"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "StructuralSet",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [
+        "StructuralSet()",
+        "StructuralSet#add()",
+        "StructuralSet#has()",
+        "StructuralSet#values()",
+        "StructuralSet#toSet()"
+      ],
+      "benchmarkGroups": [
+        "model.structuralEqualityAndSet"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "SyntacticLocalityModuleExtractor",
+      "subpaths": [
+        ".",
+        "./modularity/locality"
+      ],
+      "callables": [
+        "SyntacticLocalityModuleExtractor()",
+        "SyntacticLocalityModuleExtractor#axiomBase()",
+        "SyntacticLocalityModuleExtractor#containsAxiom()",
+        "SyntacticLocalityModuleExtractor#getLocalityClass()",
+        "SyntacticLocalityModuleExtractor#extract()"
+      ],
+      "benchmarkGroups": [
+        "locality.extract.BOTTOM",
+        "locality.extract.TOP",
+        "locality.extract.STAR"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "UnloadableImportError",
+      "subpaths": [
+        ".",
+        "./io"
+      ],
+      "callables": [
+        "UnloadableImportError()"
+      ],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "UnparsableOntologyException",
+      "subpaths": [
+        ".",
+        "./io"
+      ],
+      "callables": [
+        "UnparsableOntologyException()"
+      ],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "UnsupportedConstructError",
+      "subpaths": [
+        ".",
+        "./io"
+      ],
+      "callables": [
+        "UnsupportedConstructError()"
+      ],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "XmlParseError",
+      "subpaths": [
+        ".",
+        "./io"
+      ],
+      "callables": [
+        "XmlParseError()"
+      ],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "dispatchAnnotationValue",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [
+        "dispatchAnnotationValue()"
+      ],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "dispatchAxiom",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [
+        "dispatchAxiom()"
+      ],
+      "benchmarkGroups": [
+        "model.dispatch"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "dispatchClassExpression",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [
+        "dispatchClassExpression()"
+      ],
+      "benchmarkGroups": [
+        "model.dispatch"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "dispatchDataPropertyExpression",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [
+        "dispatchDataPropertyExpression()"
+      ],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "dispatchDataRange",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [
+        "dispatchDataRange()"
+      ],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "dispatchIndividual",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [
+        "dispatchIndividual()"
+      ],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "dispatchObjectPropertyExpression",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [
+        "dispatchObjectPropertyExpression()"
+      ],
+      "benchmarkGroups": [],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "dispatchOwlObject",
+      "subpaths": [
+        ".",
+        "./model"
+      ],
+      "callables": [
+        "dispatchOwlObject()"
+      ],
+      "benchmarkGroups": [
+        "model.dispatch"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "OWLOntologyWriterConfiguration",
+      "subpaths": [
+        "./model"
+      ],
+      "callables": [
+        "OWLOntologyWriterConfiguration()",
+        "OWLOntologyWriterConfiguration#getBehaviorProfileId()",
+        "OWLOntologyWriterConfiguration#isIndenting()",
+        "OWLOntologyWriterConfiguration#getIndentSize()",
+        "OWLOntologyWriterConfiguration#shouldUseBanners()",
+        "OWLOntologyWriterConfiguration#isLabelsAsBanner()",
+        "OWLOntologyWriterConfiguration#shouldSaveIdsForAllAnonymousIndividuals()",
+        "OWLOntologyWriterConfiguration#withSaveIdsForAllAnonymousIndividuals()",
+        "OWLOntologyWriterConfiguration#withIndenting()",
+        "OWLOntologyWriterConfiguration#withBannersEnabled()",
+        "OWLOntologyWriterConfiguration#withLabelsAsBanner()",
+        "OWLOntologyWriterConfiguration#withIndentSize()"
+      ],
+      "benchmarkGroups": [
+        "config.OWLOntologyWriterConfiguration"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "NodeDocumentLoader",
+      "subpaths": [
+        "./io/node"
+      ],
+      "callables": [
+        "NodeDocumentLoader()",
+        "NodeDocumentLoader#authorize()",
+        "NodeDocumentLoader#load()"
+      ],
+      "benchmarkGroups": [
+        "load.importsClosure"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    },
+    {
+      "name": "RDFXMLDocumentFormat",
+      "subpaths": [
+        "./formats"
+      ],
+      "callables": [
+        "RDFXMLDocumentFormat()",
+        "RDFXMLDocumentFormat#isPrefixOWLDocumentFormat()",
+        "RDFXMLDocumentFormat#asPrefixOWLDocumentFormat()",
+        "RDFXMLDocumentFormat#getDefaultPrefix()",
+        "RDFXMLDocumentFormat#setDefaultPrefix()",
+        "RDFXMLDocumentFormat#setPrefix()",
+        "RDFXMLDocumentFormat#getPrefix()",
+        "RDFXMLDocumentFormat#containsPrefixMapping()",
+        "RDFXMLDocumentFormat#getPrefixName2PrefixMap()",
+        "RDFXMLDocumentFormat#getPrefixNames()",
+        "RDFXMLDocumentFormat#copyPrefixesFrom()",
+        "RDFXMLDocumentFormat#clear()",
+        "RDFXMLDocumentFormat#unregisterNamespace()",
+        "RDFXMLDocumentFormat#withParameter()",
+        "RDFXMLDocumentFormat#withOntologyLoaderMetaData()"
+      ],
+      "benchmarkGroups": [
+        "formats.RDFXMLDocumentFormat.prefixes"
+      ],
+      "overloadDisposition": "Grouped timing does not establish individual overload coverage; independently retained semantic tests remain authoritative."
+    }
+  ],
+  "finalTargetedMeasurement": {
+    "record": "java-api-performance-focused-followups.json#postReviewCorrectnessFollowup",
+    "selectedGroups": 31,
+    "groupsWithComparableMedianAboveTarget": 6,
+    "openGroups": [
+      "load.turtle",
+      "load.nquads",
+      "load.trig",
+      "save.owlxml",
+      "save.rdfxml",
+      "save.turtle"
+    ],
+    "interpretation": "Earlier 31-group passing table is historical. Latest affected RDF/source-family epoch still exceeds the strict target in the listed groups; no waiver or performance completion claimed. Other families retain their explicitly identified earlier source epochs. Checksums alone do not establish semantic equivalence; explained profile differences and unequal closure forcing remain unqualified. No exhaustive method/overload or all-case rerun claim.",
+    "ownerDisposition": {
+      "recordedOn": "2026-10-29",
+      "decision": "Commit improvements; leave parity acceptance open",
+      "effect": "Local reviewed optimization increment authorized; strict 1.10x target and six open groups retained. No waiver, plan-completion or release claim."
+    }
+  }
+}

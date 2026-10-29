@@ -259,11 +259,7 @@ const definitions = new Map([
         elLastChainPropertyInheritsRanges: false,
       }),
       configurationPolicy: Object.freeze({
-        writerCopyResetFields: Object.freeze([
-          "indentSize",
-          "banners",
-          "labelsAsBanner",
-        ]),
+        writerCopyResetFields: Object.freeze(["indentSize", "banners"]),
         preservesNoOpWriterIdentity: true,
         acceptsNegativeIndentSize: true,
       }),
@@ -302,17 +298,27 @@ const definitions = new Map([
 export const defaultDocumentStoragePolicy = normativeDocumentStoragePolicy;
 export const defaultBehaviorProfileDefinition = definitions.get("normative-v1");
 
+/** Resolve the immutable native definition without allocating a context wrapper.
+ * Contexts and value-only consumers share this one profile admission rule.
+ */
+export const resolveOntologyBehaviorDefinition = (
+  behaviorProfileId = "normative-v1",
+) => {
+  const definition = definitions.get(behaviorProfileId);
+  if (!definition)
+    throw new RangeError(
+      `Unknown behaviorProfileId: ${String(behaviorProfileId)}`,
+    );
+  return definition;
+};
+
 /** Manager/standalone-operation binding; definitions contain no mutable state. */
 export class OntologyBehaviorContext {
   #behaviorProfileDefinition;
 
   constructor(behaviorProfileId = "normative-v1") {
-    const definition = definitions.get(behaviorProfileId);
-    if (!definition)
-      throw new RangeError(
-        `Unknown behaviorProfileId: ${String(behaviorProfileId)}`,
-      );
-    this.#behaviorProfileDefinition = definition;
+    this.#behaviorProfileDefinition =
+      resolveOntologyBehaviorDefinition(behaviorProfileId);
     Object.freeze(this);
   }
 

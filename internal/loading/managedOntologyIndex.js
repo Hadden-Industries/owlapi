@@ -756,6 +756,12 @@ class ManagedOntologyMutation {
 
 export class ManagedOntologyIndex {
   #state = createEmptyState();
+  #closureCacheRevision = -1;
+  #closureCache = new WeakMap();
+
+  get revision() {
+    return this.#state.revision;
+  }
 
   hasOntology(ontology) {
     return this.#state.ontologies.has(ontology);
@@ -803,6 +809,12 @@ export class ManagedOntologyIndex {
 
   createImportsClosureSnapshot(ontology, { operation } = {}) {
     requireManagedOntology(this.#state, ontology, operation);
+    if (this.#closureCacheRevision !== this.#state.revision) {
+      this.#closureCache = new WeakMap();
+      this.#closureCacheRevision = this.#state.revision;
+    }
+    const cached = this.#closureCache.get(ontology);
+    if (cached) return cached;
     const closure = [];
     const visited = new Set([ontology]);
     const pending = [ontology];
@@ -822,7 +834,9 @@ export class ManagedOntologyIndex {
         }
       }
     }
-    return Object.freeze(closure);
+    const frozen = Object.freeze(closure);
+    this.#closureCache.set(ontology, frozen);
+    return frozen;
   }
 
   registerOntology(ontology, options = {}) {

@@ -41,13 +41,7 @@ const named = (property) =>
  * both equivalence tests; preserve these observed rules rather than substitute
  * a different literature evaluator. No recursive visitor or depth cap is used.
  */
-export const isSyntacticallyLocal = async (
-  axiom,
-  order,
-  signature,
-  mode,
-  budget,
-) => {
+export const isSyntacticallyLocal = (axiom, order, signature, mode, budget) => {
   if (!isLogicalAxiom(axiom)) return true;
   const bottomMode = mode === "BOTTOM",
     results = new Map();
@@ -55,7 +49,7 @@ export const isSyntacticallyLocal = async (
   const bottom = (value) => results.get(value)?.bottom ?? false;
   const top = (value) => results.get(value)?.top ?? false;
   for (const value of order) {
-    await budget.checkpoint();
+    budget.check();
     if (!classes.has(value.kind)) continue;
     let b = false,
       t = false;
@@ -153,7 +147,7 @@ export const isSyntacticallyLocal = async (
     }
     results.set(value, { bottom: b, top: t });
   }
-  await budget.checkpoint();
+  budget.check();
   switch (axiom.kind) {
     case K.DATATYPE_DEFINITION_AXIOM:
     case K.HAS_KEY_AXIOM:

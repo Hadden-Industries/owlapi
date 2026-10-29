@@ -1,0 +1,1928 @@
+{
+  "schemaVersion": 1,
+  "method": "Median of three sequential independent JS process medians, 2 warmup/5 measured calls, frozen Java unchanged. This is checksum-only screening, not full parity qualification.",
+  "observations": [
+    {
+      "file": "C:/Users/maksy/.hi/w/e/operator/owlapi-performance-20261028-01a181fa/control-1.json",
+      "sha256": "fa0ff05a8203da17f218401d4bbfde894ba9358f04763ddf3e0ec80ed9c055a6"
+    },
+    {
+      "file": "C:/Users/maksy/.hi/w/e/operator/owlapi-performance-20261028-01a181fa/control-2.json",
+      "sha256": "cc3f90e833057a72e00386c4824516351bcfb4d92f95854b1f77ba47d4160ed5"
+    },
+    {
+      "file": "C:/Users/maksy/.hi/w/e/operator/owlapi-performance-20261028-01a181fa/control-3.json",
+      "sha256": "a7f734976b5557ffb0b36b3fc0bdb431ffbad21bd66d815770ddb9ab03d8cd7e"
+    },
+    {
+      "file": "C:/Users/maksy/.hi/w/e/operator/owlapi-performance-20261028-01a181fa/final-candidate-1.json",
+      "sha256": "ab012c46e9fa84353126cbe5e67acab1ab323d39e28ef5aca39f00ea625184b3"
+    },
+    {
+      "file": "C:/Users/maksy/.hi/w/e/operator/owlapi-performance-20261028-01a181fa/final-candidate-2.json",
+      "sha256": "523fc859a4248e5a4f012cfe579e0ff232811b1bedf699173dca98ddc51b210f"
+    },
+    {
+      "file": "C:/Users/maksy/GitHub/owlapi/docs/performance/java-api-performance-comparison-v2.json",
+      "sha256": "8cc04cc673b14647a746fa80cde21131429ad90b9108f4694c6f4be9240794b6"
+    }
+  ],
+  "rows": [
+    {
+      "id": "manager.createOWLOntologyManager",
+      "java": 10.78,
+      "control": [
+        0.468,
+        0.447
+      ],
+      "candidate": [
+        0.379,
+        0.37
+      ],
+      "range": [
+        [
+          0.369,
+          0.398
+        ],
+        [
+          0.338,
+          0.373
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "config.OWLOntologyLoaderConfiguration",
+      "java": 1.13,
+      "control": [
+        2.409,
+        2.251
+      ],
+      "candidate": [
+        0.894,
+        0.746
+      ],
+      "range": [
+        [
+          0.82,
+          0.913
+        ],
+        [
+          0.736,
+          0.861
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "config.OWLOntologyWriterConfiguration",
+      "java": 0.155,
+      "control": [
+        0.507,
+        0.372
+      ],
+      "candidate": [
+        0.249,
+        0.155
+      ],
+      "range": [
+        [
+          0.233,
+          0.305
+        ],
+        [
+          0.154,
+          0.164
+        ]
+      ],
+      "comparability": "checksum-mismatch",
+      "admissions": [
+        "checksum-only",
+        "checksum-mismatch"
+      ]
+    },
+    {
+      "id": "formats.RDFXMLDocumentFormat.prefixes",
+      "java": 0.69,
+      "control": [
+        1.445,
+        1.407
+      ],
+      "candidate": [
+        0.862,
+        0.887
+      ],
+      "range": [
+        [
+          0.86,
+          0.891
+        ],
+        [
+          0.869,
+          0.9
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "model.IRI.create",
+      "java": 0.709,
+      "control": [
+        0.383,
+        0.248
+      ],
+      "candidate": [
+        0.396,
+        0.265
+      ],
+      "range": [
+        [
+          0.362,
+          0.449
+        ],
+        [
+          0.26,
+          0.271
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "factory.entities",
+      "java": 2.912,
+      "control": [
+        1.593,
+        1.532
+      ],
+      "candidate": [
+        1.514,
+        1.521
+      ],
+      "range": [
+        [
+          1.486,
+          1.581
+        ],
+        [
+          1.482,
+          1.535
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "factory.literals",
+      "java": 1.426,
+      "control": [
+        3.367,
+        0.986
+      ],
+      "candidate": [
+        2.455,
+        0.963
+      ],
+      "range": [
+        [
+          2.37,
+          2.465
+        ],
+        [
+          0.949,
+          0.978
+        ]
+      ],
+      "comparability": "checksum-mismatch",
+      "admissions": [
+        "checksum-only",
+        "checksum-mismatch"
+      ]
+    },
+    {
+      "id": "factory.classExpressions",
+      "java": 1.287,
+      "control": [
+        1.725,
+        1.744
+      ],
+      "candidate": [
+        1.619,
+        1.495
+      ],
+      "range": [
+        [
+          1.508,
+          1.65
+        ],
+        [
+          1.453,
+          1.552
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "factory.dataRanges",
+      "java": 0.565,
+      "control": [
+        1.005,
+        0.798
+      ],
+      "candidate": [
+        0.78,
+        0.625
+      ],
+      "range": [
+        [
+          0.776,
+          0.789
+        ],
+        [
+          0.614,
+          0.628
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "factory.axioms",
+      "java": 2.211,
+      "control": [
+        2.159,
+        1.872
+      ],
+      "candidate": [
+        1.851,
+        1.788
+      ],
+      "range": [
+        [
+          1.803,
+          1.913
+        ],
+        [
+          1.731,
+          1.844
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "model.structuralEqualityAndSet",
+      "java": 0.914,
+      "control": [
+        0.278,
+        0.232
+      ],
+      "candidate": [
+        0.283,
+        0.227
+      ],
+      "range": [
+        [
+          0.272,
+          0.29
+        ],
+        [
+          0.22,
+          0.23
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "model.axiomAnnotationsTransform",
+      "java": 1.31,
+      "control": [
+        1.615,
+        1.538
+      ],
+      "candidate": [
+        1.605,
+        1.498
+      ],
+      "range": [
+        [
+          1.563,
+          1.724
+        ],
+        [
+          1.497,
+          1.544
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "model.dispatch",
+      "java": 0.198,
+      "control": [
+        0.2,
+        0.199
+      ],
+      "candidate": [
+        0.192,
+        0.204
+      ],
+      "range": [
+        [
+          0.185,
+          0.205
+        ],
+        [
+          0.201,
+          0.221
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "load.functional",
+      "java": 2.355,
+      "control": [
+        2.221,
+        1.835
+      ],
+      "candidate": [
+        2.161,
+        1.728
+      ],
+      "range": [
+        [
+          2.131,
+          2.172
+        ],
+        [
+          1.711,
+          1.782
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "load.manchester",
+      "java": 2.607,
+      "control": [
+        2.196,
+        1.818
+      ],
+      "candidate": [
+        2.16,
+        1.771
+      ],
+      "range": [
+        [
+          2.053,
+          2.179
+        ],
+        [
+          1.727,
+          1.783
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "load.owlxml",
+      "java": 4.947,
+      "control": [
+        3.053,
+        2.721
+      ],
+      "candidate": [
+        2.877,
+        2.486
+      ],
+      "range": [
+        [
+          2.867,
+          2.918
+        ],
+        [
+          2.409,
+          2.51
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "load.rdfxml",
+      "java": 6.253,
+      "control": [
+        5.876,
+        5.197
+      ],
+      "candidate": [
+        5.402,
+        4.97
+      ],
+      "range": [
+        [
+          5.396,
+          5.644
+        ],
+        [
+          4.95,
+          5.16
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "load.turtle",
+      "java": 4.039,
+      "control": [
+        5.449,
+        4.655
+      ],
+      "candidate": [
+        4.748,
+        4.226
+      ],
+      "range": [
+        [
+          4.651,
+          4.95
+        ],
+        [
+          4.226,
+          4.292
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "load.ntriples",
+      "java": 3.915,
+      "control": [
+        4.998,
+        4.706
+      ],
+      "candidate": [
+        4.492,
+        4.305
+      ],
+      "range": [
+        [
+          4.48,
+          4.71
+        ],
+        [
+          4.281,
+          4.481
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "load.nquads",
+      "java": 3.114,
+      "control": [
+        5.195,
+        4.853
+      ],
+      "candidate": [
+        4.552,
+        4.388
+      ],
+      "range": [
+        [
+          4.455,
+          4.71
+        ],
+        [
+          4.265,
+          4.411
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "load.trig",
+      "java": 3.391,
+      "control": [
+        5.159,
+        4.91
+      ],
+      "candidate": [
+        4.534,
+        4.21
+      ],
+      "range": [
+        [
+          4.523,
+          4.581
+        ],
+        [
+          4.19,
+          4.488
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "load.jsonld",
+      "java": 7.632,
+      "control": [
+        5.4,
+        4.669
+      ],
+      "candidate": [
+        4.933,
+        4.353
+      ],
+      "range": [
+        [
+          4.852,
+          4.955
+        ],
+        [
+          4.328,
+          4.459
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "load.dl",
+      "java": 3.505,
+      "control": [
+        2.826,
+        2.571
+      ],
+      "candidate": [
+        2.618,
+        2.433
+      ],
+      "range": [
+        [
+          2.618,
+          2.658
+        ],
+        [
+          2.4,
+          2.507
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "load.krss2",
+      "java": 2.998,
+      "control": [
+        1.915,
+        1.665
+      ],
+      "candidate": [
+        1.792,
+        1.599
+      ],
+      "range": [
+        [
+          1.789,
+          1.797
+        ],
+        [
+          1.546,
+          1.605
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "load.krss1",
+      "java": 2.819,
+      "control": [
+        2.381,
+        2.038
+      ],
+      "candidate": [
+        2.222,
+        1.949
+      ],
+      "range": [
+        [
+          2.219,
+          2.231
+        ],
+        [
+          1.906,
+          1.957
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "load.importsClosure",
+      "java": 48.077,
+      "control": [
+        13.778,
+        12.206
+      ],
+      "candidate": [
+        15.393,
+        14.457
+      ],
+      "range": [
+        [
+          14.83,
+          15.566
+        ],
+        [
+          14.269,
+          14.634
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "load.rdfParserMetaData",
+      "java": 0.218,
+      "control": [
+        0.021,
+        0.019
+      ],
+      "candidate": [
+        0.022,
+        0.02
+      ],
+      "range": [
+        [
+          0.02,
+          0.022
+        ],
+        [
+          0.018,
+          0.021
+        ]
+      ],
+      "comparability": "checksum-mismatch",
+      "admissions": [
+        "checksum-mismatch",
+        "checksum-mismatch"
+      ]
+    },
+    {
+      "id": "manager.createAndGetOntology",
+      "java": 2.952,
+      "control": [
+        1.547,
+        1.631
+      ],
+      "candidate": [
+        1.507,
+        1.577
+      ],
+      "range": [
+        [
+          1.492,
+          1.548
+        ],
+        [
+          1.484,
+          1.599
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "manager.addAxioms.bulk",
+      "java": 2.534,
+      "control": [
+        0.722,
+        0.237
+      ],
+      "candidate": [
+        0.632,
+        0.227
+      ],
+      "range": [
+        [
+          0.623,
+          0.686
+        ],
+        [
+          0.211,
+          0.229
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "manager.addAxiom.singleLoop",
+      "java": 1.995,
+      "control": [
+        1.359,
+        0.927
+      ],
+      "candidate": [
+        1.284,
+        0.9
+      ],
+      "range": [
+        [
+          1.276,
+          1.305
+        ],
+        [
+          0.892,
+          1.339
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "manager.removeAxioms.bulk",
+      "java": 5.363,
+      "control": [
+        1.281,
+        0.78
+      ],
+      "candidate": [
+        1.178,
+        0.749
+      ],
+      "range": [
+        [
+          1.121,
+          1.217
+        ],
+        [
+          0.712,
+          1.102
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "manager.removeAxiom.singleLoop",
+      "java": 2.758,
+      "control": [
+        1.481,
+        1.445
+      ],
+      "candidate": [
+        1.423,
+        1.435
+      ],
+      "range": [
+        [
+          1.391,
+          1.533
+        ],
+        [
+          1.41,
+          1.651
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "manager.applyChanges.mixed",
+      "java": 1.91,
+      "control": [
+        0.516,
+        0.416
+      ],
+      "candidate": [
+        0.523,
+        0.396
+      ],
+      "range": [
+        [
+          0.461,
+          0.553
+        ],
+        [
+          0.39,
+          0.42
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "manager.getImportsClosure",
+      "java": 0.748,
+      "control": [
+        0.62,
+        0.332
+      ],
+      "candidate": [
+        0.61,
+        0.327
+      ],
+      "range": [
+        [
+          0.564,
+          0.661
+        ],
+        [
+          0.316,
+          0.342
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "ontology.getAxioms.excluded",
+      "java": 28.297,
+      "control": [
+        17.047,
+        17.662
+      ],
+      "candidate": [
+        16.417,
+        17.332
+      ],
+      "range": [
+        [
+          16.067,
+          16.96
+        ],
+        [
+          16.792,
+          17.365
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "ontology.getAxioms.included",
+      "java": 44.337,
+      "control": [
+        21.549,
+        22.149
+      ],
+      "candidate": [
+        20.526,
+        21.627
+      ],
+      "range": [
+        [
+          20.175,
+          20.863
+        ],
+        [
+          21.624,
+          21.726
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "ontology.getLogicalAxioms",
+      "java": 20.477,
+      "control": [
+        11.647,
+        11.48
+      ],
+      "candidate": [
+        10.994,
+        11.257
+      ],
+      "range": [
+        [
+          10.545,
+          11.163
+        ],
+        [
+          11.008,
+          11.474
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "ontology.getAxiomsByType",
+      "java": 9.883,
+      "control": [
+        4.487,
+        4.215
+      ],
+      "candidate": [
+        4.21,
+        4.19
+      ],
+      "range": [
+        [
+          4.177,
+          4.406
+        ],
+        [
+          3.966,
+          4.199
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "ontology.containsAxiom",
+      "java": 18.172,
+      "control": [
+        0.622,
+        0.573
+      ],
+      "candidate": [
+        0.617,
+        0.516
+      ],
+      "range": [
+        [
+          0.581,
+          0.767
+        ],
+        [
+          0.512,
+          0.525
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "ontology.getSignature",
+      "java": 36.986,
+      "control": [
+        8.026,
+        8.367
+      ],
+      "candidate": [
+        7.981,
+        8.071
+      ],
+      "range": [
+        [
+          7.662,
+          8.004
+        ],
+        [
+          8.018,
+          8.299
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "ontology.entitySignatureLookups",
+      "java": 28.095,
+      "control": [
+        0.936,
+        0.862
+      ],
+      "candidate": [
+        0.848,
+        0.819
+      ],
+      "range": [
+        [
+          0.832,
+          0.862
+        ],
+        [
+          0.807,
+          0.837
+        ]
+      ],
+      "comparability": "checksum-mismatch",
+      "admissions": [
+        "checksum-mismatch",
+        "checksum-mismatch"
+      ]
+    },
+    {
+      "id": "ontology.getReferencingAxioms",
+      "java": 0.326,
+      "control": [
+        0.186,
+        0.162
+      ],
+      "candidate": [
+        0.166,
+        0.162
+      ],
+      "range": [
+        [
+          0.151,
+          0.181
+        ],
+        [
+          0.155,
+          0.164
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "ontology.classAxiomIndexes",
+      "java": 2.125,
+      "control": [
+        0.47,
+        0.486
+      ],
+      "candidate": [
+        0.459,
+        0.478
+      ],
+      "range": [
+        [
+          0.446,
+          0.464
+        ],
+        [
+          0.477,
+          0.528
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "ontology.objectPropertyAxiomIndexes",
+      "java": 4.907,
+      "control": [
+        1.15,
+        1.205
+      ],
+      "candidate": [
+        1.155,
+        1.197
+      ],
+      "range": [
+        [
+          1.13,
+          1.161
+        ],
+        [
+          1.177,
+          1.253
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "ontology.dataPropertyAxiomIndexes",
+      "java": 2.133,
+      "control": [
+        0.529,
+        0.6
+      ],
+      "candidate": [
+        0.494,
+        0.55
+      ],
+      "range": [
+        [
+          0.493,
+          0.516
+        ],
+        [
+          0.549,
+          0.577
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "ontology.annotationAndDeclarationIndexes",
+      "java": 9.869,
+      "control": [
+        1.1,
+        1.09
+      ],
+      "candidate": [
+        1.077,
+        1.02
+      ],
+      "range": [
+        [
+          1.07,
+          1.085
+        ],
+        [
+          1.02,
+          1.029
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "ontology.individualAssertionIndexes",
+      "java": 4.025,
+      "control": [
+        1.021,
+        1.108
+      ],
+      "candidate": [
+        0.994,
+        1.023
+      ],
+      "range": [
+        [
+          0.987,
+          1.003
+        ],
+        [
+          1,
+          1.032
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "save.functional",
+      "java": 1.784,
+      "control": [
+        0.184,
+        0.152
+      ],
+      "candidate": [
+        0.176,
+        0.141
+      ],
+      "range": [
+        [
+          0.171,
+          0.177
+        ],
+        [
+          0.131,
+          0.15
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "save.owlxml",
+      "java": 1.428,
+      "control": [
+        1.911,
+        1.257
+      ],
+      "candidate": [
+        1.804,
+        1.135
+      ],
+      "range": [
+        [
+          1.773,
+          1.856
+        ],
+        [
+          1.134,
+          1.237
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "save.rdfxml",
+      "java": 5.507,
+      "control": [
+        4.758,
+        10.455
+      ],
+      "candidate": [
+        4.124,
+        9.582
+      ],
+      "range": [
+        [
+          4.069,
+          4.148
+        ],
+        [
+          9.241,
+          9.648
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "save.turtle",
+      "java": 2.725,
+      "control": [
+        0.897,
+        4.979
+      ],
+      "candidate": [
+        0.765,
+        4.565
+      ],
+      "range": [
+        [
+          0.737,
+          0.827
+        ],
+        [
+          4.461,
+          4.57
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "search.classHierarchyAndRelations",
+      "java": 2.743,
+      "control": [
+        2.59,
+        2.594
+      ],
+      "candidate": [
+        2.545,
+        2.586
+      ],
+      "range": [
+        [
+          2.4,
+          2.588
+        ],
+        [
+          2.4,
+          2.639
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "search.propertyHierarchyAndDomainsRanges",
+      "java": 6.47,
+      "control": [
+        3.681,
+        3.682
+      ],
+      "candidate": [
+        3.656,
+        3.657
+      ],
+      "range": [
+        [
+          3.423,
+          3.793
+        ],
+        [
+          3.364,
+          3.73
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "search.annotations",
+      "java": 3.313,
+      "control": [
+        6.218,
+        6
+      ],
+      "candidate": [
+        2.595,
+        2.521
+      ],
+      "range": [
+        [
+          2.351,
+          2.599
+        ],
+        [
+          2.443,
+          3.043
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "search.propertyCharacteristics",
+      "java": 6.576,
+      "control": [
+        1.14,
+        1.147
+      ],
+      "candidate": [
+        1.131,
+        1.15
+      ],
+      "range": [
+        [
+          1.096,
+          1.176
+        ],
+        [
+          1.134,
+          1.155
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "util.SimpleShortFormProvider",
+      "java": 0.434,
+      "control": [
+        0.675,
+        0.624
+      ],
+      "candidate": [
+        0.464,
+        0.392
+      ],
+      "range": [
+        [
+          0.431,
+          0.469
+        ],
+        [
+          0.39,
+          0.399
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "util.AnnotationValueShortFormProvider",
+      "java": 1.264,
+      "control": [
+        0.68,
+        0.638
+      ],
+      "candidate": [
+        0.669,
+        0.61
+      ],
+      "range": [
+        [
+          0.656,
+          0.683
+        ],
+        [
+          0.581,
+          0.628
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "util.OWLOntologyImportsClosureSetProvider",
+      "java": 0.099,
+      "control": [
+        0.869,
+        0.523
+      ],
+      "candidate": [
+        0.7,
+        0.36
+      ],
+      "range": [
+        [
+          0.69,
+          0.727
+        ],
+        [
+          0.351,
+          0.371
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "util.OWLOntologyMerger",
+      "java": 1.631,
+      "control": [
+        0.863,
+        0.363
+      ],
+      "candidate": [
+        0.812,
+        0.348
+      ],
+      "range": [
+        [
+          0.798,
+          0.852
+        ],
+        [
+          0.346,
+          0.361
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "util.OWLObjectDuplicator",
+      "java": 2.371,
+      "control": [
+        0.775,
+        0.75
+      ],
+      "candidate": [
+        0.774,
+        0.765
+      ],
+      "range": [
+        [
+          0.753,
+          0.79
+        ],
+        [
+          0.764,
+          0.783
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "util.OWLEntityRenamer",
+      "java": 3.383,
+      "control": [
+        3.632,
+        3.764
+      ],
+      "candidate": [
+        3.197,
+        3.244
+      ],
+      "range": [
+        [
+          3.123,
+          3.35
+        ],
+        [
+          3.162,
+          3.395
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "util.OWLEntityRemover",
+      "java": 0.413,
+      "control": [
+        0.465,
+        0.433
+      ],
+      "candidate": [
+        0.521,
+        0.434
+      ],
+      "range": [
+        [
+          0.492,
+          0.535
+        ],
+        [
+          0.431,
+          0.469
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "renderer.ManchesterOWLSyntaxOWLObjectRendererImpl",
+      "java": 0.904,
+      "control": [
+        0.647,
+        0.557
+      ],
+      "candidate": [
+        0.524,
+        0.471
+      ],
+      "range": [
+        [
+          0.51,
+          0.53
+        ],
+        [
+          0.468,
+          0.527
+        ]
+      ],
+      "comparability": "checksum-mismatch",
+      "admissions": [
+        "checksum-mismatch",
+        "checksum-mismatch"
+      ]
+    },
+    {
+      "id": "locality.extract.BOTTOM",
+      "java": 2.319,
+      "control": [
+        3.036,
+        3.029
+      ],
+      "candidate": [
+        1.451,
+        1.415
+      ],
+      "range": [
+        [
+          1.3,
+          1.511
+        ],
+        [
+          1.346,
+          1.455
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "locality.extract.TOP",
+      "java": 2.238,
+      "control": [
+        3.124,
+        2.946
+      ],
+      "candidate": [
+        1.284,
+        1.267
+      ],
+      "range": [
+        [
+          1.27,
+          1.413
+        ],
+        [
+          1.238,
+          1.508
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "locality.extract.STAR",
+      "java": 3.287,
+      "control": [
+        3.285,
+        3.26
+      ],
+      "candidate": [
+        1.792,
+        1.759
+      ],
+      "range": [
+        [
+          1.776,
+          1.822
+        ],
+        [
+          1.73,
+          2.063
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "profiles.OWL2DLProfile.checkOntology",
+      "java": 4.017,
+      "control": [
+        3.008,
+        2.884
+      ],
+      "candidate": [
+        2.659,
+        2.591
+      ],
+      "range": [
+        [
+          2.524,
+          2.895
+        ],
+        [
+          2.444,
+          2.767
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "profiles.OWL2ELProfile.checkOntology",
+      "java": 2.226,
+      "control": [
+        3.036,
+        3.098
+      ],
+      "candidate": [
+        1.718,
+        2.822
+      ],
+      "range": [
+        [
+          1.67,
+          1.902
+        ],
+        [
+          2.161,
+          3.11
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "profiles.OWL2QLProfile.checkOntology",
+      "java": 2.147,
+      "control": [
+        3.479,
+        3.121
+      ],
+      "candidate": [
+        1.795,
+        1.799
+      ],
+      "range": [
+        [
+          1.583,
+          2.565
+        ],
+        [
+          1.64,
+          2.727
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    },
+    {
+      "id": "profiles.OWL2RLProfile.checkOntology",
+      "java": 1.607,
+      "control": [
+        1.897,
+        3.439
+      ],
+      "candidate": [
+        1.81,
+        2.889
+      ],
+      "range": [
+        [
+          1.612,
+          2.936
+        ],
+        [
+          1.65,
+          3.024
+        ]
+      ],
+      "comparability": "checksum-only",
+      "admissions": [
+        "checksum-only",
+        "checksum-only"
+      ]
+    }
+  ],
+  "summary": {
+    "groups": 70,
+    "slower": 17,
+    "unqualified": 3,
+    "incompleteComparability": 5
+  }
+}
