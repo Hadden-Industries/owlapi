@@ -217,6 +217,39 @@ To apply the canonical formatter locally, run:
 npm run format
 ```
 
+## Selecting a candidate version
+
+`package.json.version` is the single declaration of the current source candidate.
+Release tooling reads it directly; versioned filenames and coordinates are derived from it.
+To select another version without creating a Git tag or running lifecycle scripts:
+
+```shell
+npm version <version> --no-git-tag-version --ignore-scripts
+npm run sync:version
+npm run check:version
+```
+
+For a stable version, explicitly select `publishConfig.tag: latest` before synchronization; prereleases use `next`.
+Additional npm tag changes still need their own release decision.
+`sync:version` updates the lockfile's root version, current compatibility metadata, generated API views and digests, current release coordinates and schema constraints.
+It uses the retained Java API inventory and does not need a Java source checkout for a version-only change.
+Structural API changes still require the full Java API generator.
+`check:version` is read-only and also runs through `format:check` in CI.
+
+Changing the coordinate or primary channel disables publication and clears the previous publication decision.
+Synchronizing an unchanged coordinate preserves its decision.
+The shared release-evidence schema retains exact version, tag, coordinate, filename and registry URL constraints for historical identities and the selected candidate.
+It does not copy a complete schema for each release.
+General instructions link to the manifest instead of repeating a mutable version.
+
+Versions in changelogs, dated plans, provenance inventories, qualification reports and approved artifact/digest pins are recorded facts, not current-version declarations.
+Synchronization does not rewrite them or transfer their approvals to new bytes.
+Refresh candidate evidence through its existing generators and qualification procedures, and obtain any required approval for changed facts.
+The availability policy's `previousVersion` remains an explicit published-predecessor choice; review it when selecting a successor.
+The frozen publisher artifact/digest pins require the separately approved artifact and remain outside this metadata command.
+`firstPublicReleaseTarget` is an independent API-introduction target: advancing the package version does not move it.
+Retarget still-unpublished additions deliberately in the Java API generator when their intended first release changes, then regenerate that inventory.
+
 ## CI verification after merging
 
 Every pull request runs the full required application checks.

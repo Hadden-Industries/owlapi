@@ -2,7 +2,7 @@ import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { readFile, readdir, writeFile } from "node:fs/promises";
 import { basename, dirname, join, relative, resolve, sep } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { format as formatWithPrettier } from "prettier";
 import { publicMembers } from "./public-api-members.mjs";
@@ -1666,7 +1666,7 @@ const buildRegistry = async (javaRoot) => {
   };
 };
 
-const renderApiView = (registry, digest) => {
+export const renderApiView = (registry, digest) => {
   const sections = registry.bindings.map((binding) => {
     const javaAuthority = binding.javaType ?? binding.closestJavaAuthority;
     return [
@@ -1707,7 +1707,7 @@ const renderApiView = (registry, digest) => {
   ].join("\n");
 };
 
-const renderCompatibilityView = (registry, digest) => {
+export const renderCompatibilityView = (registry, digest) => {
   const bindingRows = registry.bindings.map((binding) =>
     [
       `| \`${binding.jsExport}\``,
@@ -1818,4 +1818,8 @@ const main = async () => {
   );
 };
 
-await main();
+if (
+  process.argv[1] &&
+  pathToFileURL(resolve(process.argv[1])).href === import.meta.url
+)
+  await main();

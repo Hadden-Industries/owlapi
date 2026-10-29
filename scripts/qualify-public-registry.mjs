@@ -16,6 +16,7 @@ import { sha256Buffer } from "./release-file-utils.mjs";
 import {
   PACKAGE_NAME,
   PACKAGE_VERSION,
+  releaseChannel,
   assertRegistryTarballUrl,
 } from "./package-identity.mjs";
 import { installRegistryConsumer } from "./public-registry-consumer.mjs";
@@ -135,7 +136,7 @@ const assertVersionedPublicRegistryFacts = (
   }
   return {
     coordinate: `${PACKAGE_NAME}@${expectedVersion}`,
-    channel: "next",
+    channel: releaseChannel(expectedVersion),
     next: expectedVersion,
     latest: expectedVersion,
     integrity: metadata.dist.integrity,

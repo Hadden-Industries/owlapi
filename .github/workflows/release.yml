@@ -1545,15 +1545,16 @@ jobs:
         env:
           CANDIDATE_ARTIFACT_ID: ${{ needs.candidate.outputs.artifact_id }}
           CANDIDATE_ARTIFACT_DIGEST: ${{ needs.candidate.outputs.artifact_digest }}
+          RELEASE_EVIDENCE_PATH: .release/hadden-industries-owlapi-${{ needs.metadata.outputs.version }}.release-evidence.json
           GITHUB_TOKEN: ${{ github.token }}
-        run: npm run generate:release-evidence -- --candidate .release/download --publication-preflight .release/evidence-input/publication/publication-preflight.json --tag-verification .release/evidence-input/tag/tag-verification.json --draft-release .release/evidence-input/draft/draft-release.json --registry-verification .release/evidence-input/registry/registry-verification.json --output .release/hadden-industries-owlapi-0.1.0-rc.2.release-evidence.json
+        run: npm run generate:release-evidence -- --candidate .release/download --publication-preflight .release/evidence-input/publication/publication-preflight.json --tag-verification .release/evidence-input/tag/tag-verification.json --draft-release .release/evidence-input/draft/draft-release.json --registry-verification .release/evidence-input/registry/registry-verification.json --output "$RELEASE_EVIDENCE_PATH"
         timeout-minutes: 5
       - name: Retain the strict release-evidence asset
         id: upload
         uses: ./.github/actions/retain-artifact
         with:
           name: release-evidence-${{ github.run_id }}-${{ github.run_attempt }}
-          path: .release/hadden-industries-owlapi-0.1.0-rc.2.release-evidence.json
+          path: .release/hadden-industries-owlapi-${{ needs.metadata.outputs.version }}.release-evidence.json
           retention-days: 90
 
   finalize_release:
@@ -1594,8 +1595,9 @@ jobs:
           digest-mismatch: error
       - name: Attach the fourth asset and publish the immutable prerelease
         env:
+          RELEASE_EVIDENCE_PATH: .release/evidence/hadden-industries-owlapi-${{ needs.metadata.outputs.version }}.release-evidence.json
           GITHUB_TOKEN: ${{ github.token }}
-        run: npm run finalize:github-release -- --evidence .release/evidence/hadden-industries-owlapi-0.1.0-rc.2.release-evidence.json --output .release/finalization.json
+        run: npm run finalize:github-release -- --evidence "$RELEASE_EVIDENCE_PATH" --output .release/finalization.json
         timeout-minutes: 5
 
   immutable_verification:

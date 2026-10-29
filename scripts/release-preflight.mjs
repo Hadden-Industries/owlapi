@@ -178,7 +178,7 @@ export const assertReleasePreflight = ({
   if (
     !publication.enabled ||
     publication.mode !==
-      (manifest.version === "0.1.0-rc.2" ? "DIRECT_OIDC" : "DIRECT_BOOTSTRAP")
+      (manifest.version === "0.1.0-rc.1" ? "DIRECT_BOOTSTRAP" : "DIRECT_OIDC")
   ) {
     throw new Error(
       "This release workflow requires the reviewed version-specific direct publication boundary.",

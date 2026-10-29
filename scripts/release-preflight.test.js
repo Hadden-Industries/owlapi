@@ -41,6 +41,40 @@ const accepted = {
 };
 
 describe("release preflight", () => {
+  test.each(["0.1.0-rc.3", "0.1.0-rc.9"])(
+    "later candidate %s requires its own OIDC approval rather than another bootstrap exception",
+    (version) => {
+      const selected = {
+        ...accepted,
+        manifest: { ...manifest, version },
+        publication: {
+          ...publication,
+          mode: "DIRECT_OIDC",
+          coordinate: `@hadden-industries/owlapi@${version}`,
+        },
+      };
+      expect(assertReleasePreflight(selected).publicationMode).toBe(
+        "DIRECT_OIDC",
+      );
+      expect(() =>
+        assertReleasePreflight({
+          ...selected,
+          publication: { ...selected.publication, mode: "DIRECT_BOOTSTRAP" },
+        }),
+      ).toThrow(/boundary/);
+      expect(() =>
+        assertReleasePreflight({
+          ...selected,
+          publication: {
+            ...selected.publication,
+            enabled: false,
+            mode: "UNRESOLVED",
+            reviewedOn: null,
+          },
+        }),
+      ).toThrow(/boundary/);
+    },
+  );
   test("source qualification does not grant publication for an unassigned public release", () => {
     expect(() =>
       assertSelectedPublicReleases({

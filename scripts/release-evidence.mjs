@@ -3,6 +3,7 @@ import {
   PACKAGE_VERSION,
   PACKAGE_FILE_STEM,
   assertRegistryTarballUrl,
+  releaseChannel,
 } from "./package-identity.mjs";
 import {
   assertArchivedOwlContractReport,
@@ -87,6 +88,7 @@ export const assertReleaseExecutionIdentity = ({
 const buildVersionedReleaseEvidence = (facts, scopedVersion) => {
   const scoped = facts.reconciliation === null;
   const version = scoped ? scopedVersion : alphaVersion;
+  const channel = releaseChannel(version);
   const packageName = scoped ? PACKAGE_NAME : "owlapi";
   const workflowName = scoped ? "Release" : "Release reconciliation";
   const workflowPath = scoped
@@ -125,7 +127,7 @@ const buildVersionedReleaseEvidence = (facts, scopedVersion) => {
   if (
     facts.publication?.mode !== (scoped ? "DIRECT_OIDC" : "DIRECT_BOOTSTRAP") ||
     facts.publication.coordinate !== `${packageName}@${version}` ||
-    facts.publication.channel !== "next" ||
+    facts.publication.channel !== channel ||
     facts.publication.next !== version ||
     facts.publication.latestPresent !== scoped ||
     (scoped && facts.publication.latest !== version) ||
@@ -258,7 +260,7 @@ const buildVersionedReleaseEvidence = (facts, scopedVersion) => {
       name: packageName,
       version,
       coordinate: `${packageName}@${version}`,
-      channel: "next",
+      channel,
       registry: "https://registry.npmjs.org/",
     },
     generatedAt: facts.generatedAt,

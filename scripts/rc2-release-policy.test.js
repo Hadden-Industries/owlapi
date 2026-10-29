@@ -57,12 +57,11 @@ test("candidate registry acceptance requires next and latest to identify the exa
     expect(() => assertPublicRegistryFacts(facts(tags))).toThrow();
 });
 
-test("rc.3 selects all twelve paths without inheriting historical publication approval", () => {
+test("the current candidate selects all twelve paths without inheriting historical publication approval", () => {
   const manifest = JSON.parse(readFileSync("package.json", "utf8"));
   const control = JSON.parse(
     readFileSync("docs/release/publication-control.json", "utf8"),
   );
-  expect(PACKAGE_VERSION).toBe("0.1.0-rc.3");
   expect(manifest.version).toBe(PACKAGE_VERSION);
   expect(PUBLIC_SUBPATHS).toHaveLength(12);
   expect(control).toMatchObject({

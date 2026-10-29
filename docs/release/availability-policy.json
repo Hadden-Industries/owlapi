@@ -14,5 +14,5 @@
   "onTimeout": "AVAILABILITY_INCOMPLETE_READ_ONLY_RECOVERY",
   "publicationReplay": false,
   "basis": "Retain the owner-accepted bounded read-only availability policy for the selected rc.3 coordinate and published rc.2 predecessor. This policy authorizes no publication or channel mutation.",
-  "reassessment": "Review measured availability delays after any timeout or changed npm guidance. A later release must explicitly update the exact coordinate and accepted previous version."
+  "reassessment": "Review measured availability delays after any timeout or changed npm guidance. sync:version projects the current coordinate; the accepted published previousVersion remains an explicit release decision and must be reassessed for each successor."
 }

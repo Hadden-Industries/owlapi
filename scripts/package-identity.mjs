@@ -1,6 +1,21 @@
-/** Closed identity of the accepted scoped candidate; consumer aliases are not identities. */
+import { readFileSync } from "node:fs";
+import { npmSemver as semver } from "./npm-semver.mjs";
+
+/** Closed package name; the checked-out manifest selects the current candidate. */
 export const PACKAGE_NAME = "@hadden-industries/owlapi";
-export const PACKAGE_VERSION = "0.1.0-rc.3";
+const manifest = JSON.parse(
+  readFileSync(new URL("../package.json", import.meta.url), "utf8"),
+);
+if (
+  manifest.name !== PACKAGE_NAME ||
+  typeof manifest.version !== "string" ||
+  semver.valid(manifest.version) !== manifest.version
+)
+  throw new Error("The repository manifest has an invalid package identity.");
+export const PACKAGE_VERSION = manifest.version;
+/** Primary publish channel; additional tag approvals are separate release decisions. */
+export const releaseChannel = (version = PACKAGE_VERSION) =>
+  semver.prerelease(version) ? "next" : "latest";
 export const PACKAGE_PURL = `pkg:npm/%40hadden-industries/owlapi@${PACKAGE_VERSION}`;
 // The pinned CycloneDX generator retains the canonical package repository qualifier.
 export const PACKAGE_SBOM_PURL = `${PACKAGE_PURL}?vcs_url=${encodeURIComponent("git+https://github.com/Hadden-Industries/owlapi.git")}`;

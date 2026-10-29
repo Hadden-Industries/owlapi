@@ -3,7 +3,11 @@ import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import semver from "semver";
-import { PACKAGE_NAME, PACKAGE_FILE_STEM } from "./package-identity.mjs";
+import {
+  PACKAGE_NAME,
+  PACKAGE_FILE_STEM,
+  releaseChannel,
+} from "./package-identity.mjs";
 
 const REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
 export const deriveWorkflowMetadata = ({
@@ -15,8 +19,7 @@ export const deriveWorkflowMetadata = ({
   if (manifest.name !== PACKAGE_NAME || !semver.valid(manifest.version)) {
     throw new Error("The workflow manifest coordinate is invalid.");
   }
-  const prerelease = semver.prerelease(manifest.version);
-  const channel = prerelease ? "next" : "latest";
+  const channel = releaseChannel(manifest.version);
   if (manifest.publishConfig?.tag !== channel) {
     throw new Error(
       `publishConfig.tag ${manifest.publishConfig?.tag} disagrees with SemVer channel ${channel}.`,
