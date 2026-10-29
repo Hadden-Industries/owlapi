@@ -98,7 +98,7 @@ export async function repositoryFixture(t, exceptions = []) {
   });
   execFileSync("git", ["init", "--quiet", root], { windowsHide: true });
   const policy = {
-    schemaVersion: 2,
+    schemaVersion: 3,
     defaults: {
       formatContract: "prettier-json",
       allowFormatWrites: true,

@@ -3,9 +3,10 @@
 `owlapi` is a native-ESM JavaScript library for loading OWL 2 ontologies into a structural object model in Node.js and modern browsers.
 Its public concepts deliberately resemble the Java OWLAPI where that makes the API familiar, while its I/O, asynchronous loading, module packaging, and RDF/JS integration follow JavaScript conventions.
 
-> **Published release candidate:** `@hadden-industries/owlapi@0.1.0-rc.1` is available on npm under `next` and `latest`, including the approved import-closure lifecycle capabilities.
-> The manifest and release tooling select this scoped identity; qualification and publication follow the [scoped-publication plan](./docs/plans/scoped-npm-publication.md).
-> Registry bytes, installations, signatures and provenance are verified; the [publication record](./docs/provenance/releases/0.1.0-rc.1/publication-status.md) records the later published immutable GitHub prerelease and final evidence asset.
+> **Published release candidate, checked 29 October 2026:** `@hadden-industries/owlapi@0.1.0-rc.2` is available on npm under `next` and `latest`; [its GitHub prerelease](https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.2) is published.
+> Stable 0.1.0 remains unpublished.
+> The [current 0.1.0 roadmap](./docs/plans/2026-10-29-0.1.0-release-reconciliation.md) separates that published artifact from newer source, both behavior profiles and remaining implementation/qualification.
+> The [rc.2 finalization record](./docs/release/rc2-finalization-recovery.json) preserves its exact release identity; the older [rc.1 publication record](./docs/provenance/releases/0.1.0-rc.1/publication-status.md) remains historical evidence.
 > `latest` is npm's default installation target and does not imply a stable version or consumer acceptance.
 > UO and WebVOWL may each use this exact RC in production after artifact verification and their own full consumer acceptance; `0.1.0` is not a prerequisite for either application.
 > A version in `main` is not a published or accepted package.
@@ -14,12 +15,15 @@ Its public concepts deliberately resemble the Java OWLAPI where that makes the A
 This project is an independently maintained JavaScript implementation.
 It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project.
 
-The current source candidate is `0.1.0-rc.2`, adding the selected ontology queries, changes, transforms, short-form providers, Manchester rendering, Turtle and OWL/XML storage, EL/QL/RL profiles, and syntactic locality extraction described in the [rc.2 plan](./docs/plans/0.1.0-rc.2-java-parity.md).
-Its integrated qualification and publication are separate from the published rc.1 release.
+The published rc.2 includes the selected ontology queries, changes, transforms, short-form providers, Manchester rendering, Turtle and OWL/XML storage, EL/QL/RL profiles, and syntactic locality extraction described in the [rc.2 plan](./docs/plans/0.1.0-rc.2-java-parity.md).
+Current source has advanced beyond that artifact while retaining rc.2 development metadata; a successor must use its own unused version and qualification.
 The current profile-aware source also implements explicit `normative-v1` and `java-owlapi-5.5.1` selection under the [behavior profile contract](docs/compatibility/behavior-profiles.md).
-These options describe this candidate, not the published rc.1 tarball.
+These options describe the later source candidate and are not part of the published rc.1 or rc.2 tarballs.
 Qualification is still in progress; the current ledger and provenance do not claim admission.
 Java migrations must select `java-owlapi-5.5.1`; omitted selection remains normative.
+
+The rc.1-pinned installation and import-map examples below remain examples of that historical release; they do not demonstrate the newer source APIs.
+The release roadmap includes reconciling the complete installed examples and migration guidance against the accepted successor artifact.
 To test a retained rc.2 candidate, substitute its actual absolute tarball path:
 
 ```shell

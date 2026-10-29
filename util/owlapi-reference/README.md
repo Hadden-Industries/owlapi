@@ -1,5 +1,12 @@
 # Java OWLAPI reference harness
 
+## Current Java execution target
+
+New Java work for continued OwlAPI implementation selects [Eclipse Temurin 25.0.5+8 LTS](../../docs/development/java-toolchain.md), installed locally as `EclipseAdoptium.Temurin.25.JDK` version `25.0.5.8`.
+That declaration records the exact runtime and the coordinated CI/native-validator migration still required; this planning change has not requalified the older build protocol below.
+The official released Java OWLAPI 5.5.1 oracle, historical source-build pins and frozen performance timings retain their distinct identities.
+Use [the 0.1.0 roadmap](../../docs/plans/2026-10-29-0.1.0-release-reconciliation.md#4-java-toolchain-and-oracle-migration) to select the appropriate oracle and preserve old evidence.
+
 The `java-owlapi-5.5.1` behavior work uses the released `f760b3a4` authority,
 Central/source paired captures and the current
 [provenance manifest](../../docs/compatibility/profiles/java-owlapi-5.5.1/provenance.json).
