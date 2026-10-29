@@ -67,17 +67,17 @@ export const captureReplacements = (map, keyKinds, valueKinds) => {
  * resolve() handles entities atomically so raw IRI maps cannot rename a punned
  * entity that is absent from a typed map.
  */
-export const transformObject = (root, factory, resolve) => {
+export const transformObject = (root, factory, resolve, done = new Map()) => {
   const order = validateStructuralGraph(
     root,
     TRANSFORMABLE_KINDS_SET,
     readDataFactoryBehaviorDefinition(factory).computationResourcePolicy
       .maxTransformDepth,
   );
-  const done = new Map();
   const get = (value) =>
     value && typeof value === "object" ? done.get(value) : value;
   for (const value of order) {
+    if (done.has(value)) continue;
     if (Array.isArray(value)) {
       let arrayChanged = false;
       for (let i = 0; i < value.length; i += 1) {

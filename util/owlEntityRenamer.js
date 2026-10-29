@@ -53,6 +53,9 @@ export class OWLEntityRenamer {
     const resolve = (value) =>
       value.kind === K.ANONYMOUS_INDIVIDUAL ? value : resolveEntity(value);
     const changes = [];
+    // One immutable replacement environment owns this memo. Repeated candidates
+    // still produce repeated proposals in Java order; only reconstruction is shared.
+    const transformed = new Map();
     for (const ontology of this.#ontologies) {
       const snapshot = readOntologySnapshot(ontology);
       const model = readOntologyModel(snapshot);
@@ -69,7 +72,12 @@ export class OWLEntityRenamer {
           ]);
       for (const candidates of batches) {
         for (const axiom of candidates) {
-          const replacement = transformObject(axiom, this.#factory, resolve);
+          const replacement = transformObject(
+            axiom,
+            this.#factory,
+            resolve,
+            transformed,
+          );
           if (!replacement.equals(axiom))
             changes.push(
               new RemoveAxiom(ontology, axiom),
@@ -81,6 +89,7 @@ export class OWLEntityRenamer {
             annotation,
             this.#factory,
             resolve,
+            transformed,
           );
           if (!replacement.equals(annotation))
             changes.push(

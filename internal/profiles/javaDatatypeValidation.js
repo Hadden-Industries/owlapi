@@ -12,23 +12,42 @@ const literalPatterns = new Map(
   ]),
 );
 
+const validLiteral = Object.freeze({
+  status: "valid",
+  rule: "LITERAL_LEXICAL_SPACE",
+});
+const invalidLiteral = Object.freeze({
+  status: "invalid",
+  rule: "LITERAL_LEXICAL_SPACE",
+});
+const definedDatatypeLiteral = Object.freeze({
+  status: "invalid",
+  rule: "DEFINED_DATATYPE_LITERAL",
+});
+const validFacet = Object.freeze({
+  status: "valid",
+  rule: "FACET_NOT_IN_DATATYPE_MAP",
+});
+const invalidFacet = Object.freeze({
+  status: "invalid",
+  rule: "FACET_NOT_IN_DATATYPE_MAP",
+});
+
 /** Apply the released Java lexical admission rule; it does not check value bounds. */
 export function inspectJavaLiteral(literal) {
   const pattern = literalPatterns.get(literal.datatype.iri.value);
-  return Object.freeze({
-    status: pattern?.test(literal.lexicalForm) ? "valid" : "invalid",
-    rule: pattern ? "LITERAL_LEXICAL_SPACE" : "DEFINED_DATATYPE_LITERAL",
-  });
+  return pattern
+    ? pattern.test(literal.lexicalForm)
+      ? validLiteral
+      : invalidLiteral
+    : definedDatatypeLiteral;
 }
 
 /** Java checks facet membership; each facet literal is visited independently. */
 export function inspectJavaFacet(datatype, restriction) {
-  return Object.freeze({
-    status: javaDatatypeDefinitions[datatype.iri.value]?.facets.includes(
-      restriction.facet.value,
-    )
-      ? "valid"
-      : "invalid",
-    rule: "FACET_NOT_IN_DATATYPE_MAP",
-  });
+  return javaDatatypeDefinitions[datatype.iri.value]?.facets.includes(
+    restriction.facet.value,
+  )
+    ? validFacet
+    : invalidFacet;
 }

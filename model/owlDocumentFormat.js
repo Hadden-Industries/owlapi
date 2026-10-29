@@ -78,6 +78,9 @@ const snapshotParameters = (parameters) => {
 // without adding an enumeration method to the agreed public format surface.
 export let readDocumentFormatParameters;
 export let copyDocumentFormatState;
+// Native format subclasses can copy already admitted default metadata. This
+// token is private to package modules and is not a public constructor option.
+export const nativeDocumentFormatCopyToken = Symbol("OWLDocumentFormat.copy");
 
 export class OWLDocumentFormat {
   #parameters;
@@ -92,16 +95,31 @@ export class OWLDocumentFormat {
     };
   }
 
-  constructor({
-    extensions = [],
-    isDataset = false,
-    isRdf = false,
-    key,
-    mediaTypes = [],
-    parameters = {},
-    ontologyLoaderMetaData,
-    supportsPrefixes = false,
-  }) {
+  constructor(options, nativeSource = undefined) {
+    if (options === nativeDocumentFormatCopyToken) {
+      this.key = nativeSource.key;
+      // Native descriptor arrays are already frozen snapshots; callers cannot
+      // mutate their contents. Mutable prefix maps remain instance-owned.
+      this.mediaTypes = nativeSource.mediaTypes;
+      this.extensions = nativeSource.extensions;
+      this.supportsPrefixes = nativeSource.supportsPrefixes;
+      this.isRdf = nativeSource.isRdf;
+      this.isDataset = nativeSource.isDataset;
+      this.#parameters = nativeSource.#parameters;
+      this.#ontologyLoaderMetaData = nativeSource.#ontologyLoaderMetaData;
+      Object.freeze(this);
+      return;
+    }
+    const {
+      extensions = [],
+      isDataset = false,
+      isRdf = false,
+      key,
+      mediaTypes = [],
+      parameters = {},
+      ontologyLoaderMetaData,
+      supportsPrefixes = false,
+    } = options;
     if (typeof key !== "string" || key.length === 0) {
       throw new TypeError("format key must be a non-empty string");
     }

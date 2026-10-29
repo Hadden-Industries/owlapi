@@ -34,6 +34,64 @@ const roundTrip = async (quads) => {
 };
 
 describe("RDF/XML default-graph writer", () => {
+  it.each([
+    ["ASCII--dash-", "ASCII- -dash-"],
+    ["éΩ😀", "éΩ😀"],
+    ["line\r\n\t", "line\r\n\t"],
+  ])(
+    "retains native comment admission and label round trips for %s",
+    async (label, sanitized) => {
+      const input = dataset([
+        quad(
+          subject,
+          named(`${RDF_NAMESPACE}type`),
+          named("http://www.w3.org/2002/07/owl#Class"),
+        ),
+        quad(
+          subject,
+          named("http://www.w3.org/2000/01/rdf-schema#label"),
+          literal(label),
+        ),
+      ]);
+      const text = writeRdfXmlGraph(input, {
+        indenting: true,
+        indentSize: 4,
+        banners: true,
+        labelsAsBanner: true,
+      });
+      expect(text).toContain(`<!-- ${sanitized} -->`);
+      expect(datasetsAreIsomorphic(input, await parse(text))).toBe(true);
+    },
+  );
+
+  it.each(["\x01", "\ud800"])(
+    "rejects invalid native comment characters %p",
+    (label) => {
+      expect(() =>
+        writeRdfXmlGraph(
+          dataset([
+            quad(
+              subject,
+              named(`${RDF_NAMESPACE}type`),
+              named("http://www.w3.org/2002/07/owl#Class"),
+            ),
+            quad(
+              subject,
+              named("http://www.w3.org/2000/01/rdf-schema#label"),
+              literal(label),
+            ),
+          ]),
+          {
+            indenting: false,
+            indentSize: 0,
+            banners: true,
+            labelsAsBanner: true,
+          },
+        ),
+      ).toThrow(OWLOntologyStorageError);
+    },
+  );
+
   it("round-trips a delimiter-heavy predicate without quadratic split selection", async () => {
     await roundTrip([
       quad(subject, named(`urn:p:${"/".repeat(100000)}x`), literal("value")),

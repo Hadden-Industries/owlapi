@@ -1,7 +1,7 @@
 # Remaining Java API performance parity implementation plan
 
 **Date:** 2026-10-28\
-**Status:** DRAFT for owner review; implementation is not authorized by this document.\
+**Status:** Implementation authorized by the owner on 2026-10-28; qualification is in progress.\
 **Decision owner:** Maksym Shostak.\
 **Inspected source baseline:** `0efb284089b8238b14a163c129a099e5edd831d0`, local `main`, commit subject `perf: Optimize public APIs against a pinned Java OWLAPI baseline`.\
 **Profiles:** `java-owlapi-5.5.1` and `normative-v1`.\
@@ -13,10 +13,20 @@ Make the existing public JavaScript APIs more economical for Node.js and browser
 The outcome is lower cost for equivalent useful work, with an auditable disposition of the remaining performance gaps.
 A smaller ratio obtained by doing less work, excluding an expensive profile, changing the semantic oracle, hiding first-use cost, or retaining unbounded caches does not meet that outcome.
 
-The user requested this detailed HISEW implementation plan and its saved Markdown artifact.
-That authorizes planning and source inspection.
-It does not approve this draft design, product implementation, new dependencies, a commit, publication, consumer adoption, or release.
-The proposed requirements, acceptance criteria, quality scenarios, decisions and risk route below are local **DRAFT** identifiers until the owner accepts their exact scope.
+The user subsequently authorized implementation on local `main`, configuration changes required by this plan, commit messages and a final fast-forward push retaining the two existing local commits.
+Consolidate changes before full tests and external reviews.
+The owner's subsequent direction replaces further full-suite runs with targeted tests and filtered measurements for each performance disparity.
+Earlier full-suite evidence remains attributed to its tested snapshot; it does not qualify later edits.
+Resolve full-test issues before Claude Opus 5.5 at Max reviews, allowing 60 minutes per run and narrowing follow-up review scope.
+The owner initially authorized AGY with Flash 3.8 at High when needed, with the same test-first review ordering.
+The completed AGY follow-up produced no actionable changes; the owner subsequently instructed that AGY no longer be used here under that condition.
+The running subsequent AGY review was stopped and retained as incomplete.
+Future internal reviews use GPT-6 Astra at Extra High reasoning, per the owner's subsequent instruction.
+Security reviews use the Codex Security plugin; general code-review model settings do not substitute for that assessment.
+Use primary-source online research where it can resolve a concrete performance obstacle, and verify proposed techniques against this implementation's contracts and measurements.
+This authorization does not approve new dependencies, weaker behavior contracts, consumer adoption or release.
+Acceptance criteria below remain the outcome contract; an optimization increment does not itself close unresolved parity or semantic qualifications.
+The owner additionally authorized correcting Java-profile writer copies to preserve `labelsAsBanner`, after a semantic probe of the hash-verified released Java 5.5.1 jar established the discrepancy.
 Existing behavior contracts remain authoritative; this plan does not reopen their accepted decisions by labeling new proposals as accepted.
 
 The plan uses the structure and engineering principles of the installed HISEW planning skill, `hisew-dev 0.1.0-dev.29`.
@@ -674,3 +684,24 @@ There is no accepted assurance that every residual can reach Java timing while r
 This document was produced from read-only inspection of the stated source baseline, retained Antigravity requirements, current benchmark JSON/harnesses, relevant runtime owners and existing contract plans.
 No product implementation, benchmark run, dependency change, commit, push, release, security scan or HISEW lifecycle action was performed to create it.
 The draft is ready for owner review of implementation scope and consequential decisions; proposed checks are not passing results.
+
+## Accepted implementation decisions
+
+The owner authorized implementation on local `main`, retaining both existing signed local commits for later fast-forward delivery.
+The strict 1.10x target applies to every comparable workload, including sub-millisecond differences; no absolute materiality floor was accepted.
+The owner also authorized correcting the Java writer-copy policy to preserve `labelsAsBanner`, as observed in the independently probed released Java 5.5.1 jar.
+That semantic jar is not claimed identical to the historical timing build, and the Java timing baseline remains unchanged.
+
+During implementation, the owner limited further testing to targeted checks for each performance disparity.
+External review follows resolution of known test failures, uses Claude Opus 5.5 at Max with 60 minutes allowed per run, and uses narrow follow-ups for later changes.
+Future internal reviews use GPT-6 Astra at Extra High; security review uses the Codex Security plugin.
+After the final Claude follow-up hit its session limit, the owner authorized GPT-6 Astra at Extra High to finish general review without another external review.
+The owner subsequently permitted one diagnostic execution of only Java N-Quads load, RDF/XML save and Turtle save, retaining the original baseline and excluding the diagnostic from parity qualification.
+That diagnostic resolved to a different JVM version and does not establish a replacement comparison authority.
+On 2026-10-29, after the latest measurements left six RDF groups above target, the owner chose to commit the verified improvements while leaving parity acceptance open.
+This is an optimization increment, not closure of AC-003 or acceptance of an irreducible-performance waiver.
+AGY produced no actionable review in this implementation and was discontinued at the owner's request.
+JSON Quality repairs and upgrades remain held.
+
+The [implementation results](../performance/remaining-java-performance-implementation-results.md) and [retained process records](../performance/java-api-performance-focused-followups.json) distinguish historical screens, final affected-family measurements, explained comparability limits and review coverage.
+These records do not establish exhaustive public-method parity or authorize a release.

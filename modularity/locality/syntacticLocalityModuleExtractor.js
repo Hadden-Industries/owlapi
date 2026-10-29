@@ -31,6 +31,11 @@ const validatedOrder = (value) => {
   }
 };
 
+// Immutable graph metadata is independent of locality mode and call options.
+// Weak ownership follows each admitted axiom; work/limit checks are still charged
+// on every extraction, even when constructor preparation can be reused.
+const preparedAxioms = new WeakMap();
+
 /** Captured syntactic-locality axiom base with structural set equality.
  * Constructor and query methods are synchronous; extract returns a fresh eager
  * axiom array asynchronously. Input capture never acquires ontology documents.
@@ -52,36 +57,40 @@ export class SyntacticLocalityModuleExtractor {
       const order = validatedOrder(axiom),
         key = keyOf(axiom);
       if (this.#base.has(key)) continue;
-      const signature = new Set(),
-        heights = new Map();
-      let nodeAndSignatureWork = 0;
-      for (const value of order) {
-        let depth = 0,
-          annotations = 0;
-        const childValues = children(value);
-        nodeAndSignatureWork += 1 + childValues.length;
-        for (const child of childValues) {
-          const height = heights.get(child);
-          if (!height) continue;
-          depth = Math.max(depth, height.depth + 1);
-          annotations = Math.max(annotations, height.annotations);
+      let entry = preparedAxioms.get(axiom);
+      if (!entry) {
+        const signature = new Set(),
+          heights = new Map();
+        let nodeAndSignatureWork = 0;
+        for (const value of order) {
+          let depth = 0,
+            annotations = 0;
+          const childValues = children(value);
+          nodeAndSignatureWork += 1 + childValues.length;
+          for (const child of childValues) {
+            const height = heights.get(child);
+            if (!height) continue;
+            depth = Math.max(depth, height.depth + 1);
+            annotations = Math.max(annotations, height.annotations);
+          }
+          annotations += value.kind === K.ANNOTATION ? 1 : 0;
+          heights.set(value, { depth, annotations });
+          if (entities.has(value.kind)) signature.add(keyOf(value));
         }
-        annotations += value.kind === K.ANNOTATION ? 1 : 0;
-        heights.set(value, { depth, annotations });
-        if (entities.has(value.kind)) signature.add(keyOf(value));
+        nodeAndSignatureWork += signature.size;
+        const height = heights.get(axiom);
+        entry = Object.freeze({
+          axiom,
+          key,
+          order,
+          signature,
+          nodeAndSignatureWork,
+          ...height,
+        });
+        preparedAxioms.set(axiom, entry);
       }
-      nodeAndSignatureWork += signature.size;
-      const height = heights.get(axiom);
-      const entry = {
-        axiom,
-        key,
-        order,
-        signature,
-        nodeAndSignatureWork,
-        ...height,
-      };
       this.#base.set(key, entry);
-      for (const entity of signature) {
+      for (const entity of entry.signature) {
         if (!this.#index.has(entity)) this.#index.set(entity, new Set());
         this.#index.get(entity).add(entry);
       }

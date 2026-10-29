@@ -24,6 +24,9 @@ const key = (object) =>
   OWLStructuralObject.prototype.structuralKey.call(object);
 
 const validatedShapes = new WeakSet();
+/** Read an existing data-only shape proof without attempting new admission. */
+export const hasValidatedStructuralShape = (value) =>
+  validatedShapes.has(value);
 const validatedStructureNodes = new WeakSet();
 const validatedGraphs = new WeakMap();
 

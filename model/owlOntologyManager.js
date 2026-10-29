@@ -436,7 +436,19 @@ const isHttpIRI = (iri) => {
   }
 };
 
+/** Native friend: returns a private closure only for the original public method.
+ * Overrides and foreign managers continue through the public iterable contract.
+ */
+export let readNativeManagerImportsClosure;
+
 export class OWLOntologyManager {
+  static {
+    const nativeMethod = this.prototype.getImportsClosure;
+    readNativeManagerImportsClosure = (manager, method, ontology) =>
+      method === nativeMethod && #managedOntologyIndex in manager
+        ? manager.#readImportsClosure(ontology, "getImportsClosure")
+        : undefined;
+  }
   #behaviorContext;
   #dataFactory;
   #documentLoader;

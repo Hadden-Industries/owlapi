@@ -72,11 +72,22 @@ export const isNcName = (value) => ncNamePattern.test(value);
 
 /** Longest trailing NCName, skipping leading digits after the last separator. */
 export const ncNameSuffix = (value) => {
-  let start = 0;
-  for (let offset = 0; offset < value.length;) {
-    const codePoint = value.codePointAt(offset);
-    offset += codePoint > 0xffff ? 2 : 1;
-    if (!isNcNameCodePoint(codePoint)) start = offset;
+  // Only the trailing name can contribute. Scan backwards so a long namespace
+  // is not revisited for every display lookup. Rejoin surrogate pairs before
+  // applying the same XML code-point rules used by forward validation.
+  let start = value.length;
+  while (start > 0) {
+    let offset = start - 1;
+    let codePoint = value.codePointAt(offset);
+    if (codePoint >= 0xdc00 && codePoint <= 0xdfff && offset > 0) {
+      const previous = value.codePointAt(offset - 1);
+      if (previous > 0xffff) {
+        offset -= 1;
+        codePoint = previous;
+      }
+    }
+    if (!isNcNameCodePoint(codePoint)) break;
+    start = offset;
   }
   while (
     start < value.length &&

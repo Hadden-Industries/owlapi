@@ -77,7 +77,9 @@ export const turtleStorer = Object.freeze({
     const encoder = new TextEncoder();
     let bytes = 0;
     const append = (chunk) => {
-      bytes += encoder.encode(chunk).byteLength;
+      bytes += /^\p{ASCII}*$/u.test(chunk)
+        ? chunk.length
+        : encoder.encode(chunk).byteLength;
       if (bytes > documentStoragePolicy.maxOutputBytes)
         throw new ResourceLimitError("Turtle output byte limit exceeded", {
           resource: "outputBytes",
@@ -102,14 +104,6 @@ export const turtleStorer = Object.freeze({
     const subjectSections = new Map();
     const anonymousIndividuals = readAnonymousIndividualRdfNodes(dataset);
     const blankOccurrences = new Map();
-    for (const quad of dataset)
-      for (const term of [quad.subject, quad.object]) {
-        if (term.termType === "BlankNode")
-          blankOccurrences.set(
-            term.value,
-            (blankOccurrences.get(term.value) ?? 0) + 1,
-          );
-      }
     const renderTerm = (term) =>
       documentStoragePolicy.inlinesEmptyAnonymousIndividuals &&
       !writerContext.saveIds &&
@@ -131,6 +125,15 @@ export const turtleStorer = Object.freeze({
       }
     const groups = new Map();
     for (const quad of dataset) {
+      // Both preparations consume the same unchanged private graph. One native
+      // One DatasetCore pass avoids allocating a second iteration array.
+      for (const term of [quad.subject, quad.object]) {
+        if (term.termType === "BlankNode")
+          blankOccurrences.set(
+            term.value,
+            (blankOccurrences.get(term.value) ?? 0) + 1,
+          );
+      }
       const section = subjectSections.get(
         `${quad.subject.termType}:${quad.subject.value}`,
       );

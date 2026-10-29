@@ -3,7 +3,6 @@ import {
   OBJECT_PROPERTY_EXPRESSION_KINDS,
   OWLObjectKind as K,
 } from "../model/kinds.js";
-import { OWLDataFactory } from "../model/owlDataFactory.js";
 import {
   isPackageOntology,
   readOntologySnapshot,
@@ -11,12 +10,8 @@ import {
 } from "../model/owlOntology.js";
 import { readOntologyModel } from "../internal/model/ontologyReadModel.js";
 import { deferredQuery } from "../internal/model/deferredQuery.js";
-import {
-  isCanonicalStructuralObject,
-  StructuralSet,
-} from "../model/structural.js";
+import { isCanonicalStructuralObject } from "../model/structural.js";
 
-const sharedFactory = new OWLDataFactory();
 const entityKindsSet = new Set(ENTITY_KINDS);
 
 const requireKind = (entity, kinds) => {
@@ -96,25 +91,16 @@ const annotationValues = (
       ? property.structuralKey()
       : undefined;
   return deferredQuery(() =>
-    readOntologies(input).flatMap((ontology) => [
-      ...new StructuralSet(
-        readOntologyModel(readOntologySnapshot(ontology))
-          .annotationAssertions(subjectKey)
-          .flatMap((axiom) => {
-            const annotations = [
-              sharedFactory.getOWLAnnotation(axiom.property, axiom.value),
-            ];
-            if (includeAssertionAnnotations)
-              annotations.push(...axiom.annotations);
-            return propertyKey === undefined
-              ? annotations
-              : annotations.filter(
-                  (annotation) =>
-                    annotation.property.structuralKey() === propertyKey,
-                );
-          }),
-      ),
-    ]),
+    readOntologies(input).flatMap((ontology) => {
+      const values = readOntologyModel(
+        readOntologySnapshot(ontology),
+      ).annotationValues(subjectKey, includeAssertionAnnotations);
+      return propertyKey === undefined
+        ? values
+        : values.filter(
+            (annotation) => annotation.property.structuralKey() === propertyKey,
+          );
+    }),
   );
 };
 

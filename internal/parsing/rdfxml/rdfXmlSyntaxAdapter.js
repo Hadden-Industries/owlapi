@@ -558,6 +558,7 @@ const parseTypeAttributeRanges = (text, startTags) => {
 };
 
 const normalizeOtherParseTypes = (text, startTags, parseTypeAttributes) => {
+  if (!text.includes("parseType")) return text;
   const ranges = parseTypeAttributeRanges(text, startTags);
   if (ranges.length !== parseTypeAttributes.length) {
     throw new XmlParseError(
@@ -703,12 +704,30 @@ class ExecutionController {
   }
 }
 
-const xmlLiteralNormalizer = (classifications) => {
+const xmlLiteralNormalizer = (classifications, nativeTerms = false) => {
   const seenTerms = new WeakMap();
   let classificationIndex = 0;
 
   return (quad) => {
-    const normalized = rdfDataFactory.fromQuad(quad);
+    const normalized =
+      nativeTerms &&
+      quad?.termType === "Quad" &&
+      (quad.subject.termType === "NamedNode" ||
+        quad.subject.termType === "BlankNode") &&
+      quad.predicate.termType === "NamedNode" &&
+      quad.graph.termType === "DefaultGraph" &&
+      (quad.object.termType === "NamedNode" ||
+        quad.object.termType === "BlankNode" ||
+        quad.object.termType === "Literal")
+        ? rdfDataFactory.quad(
+            quad.subject,
+            quad.predicate,
+            quad.object.termType === "Literal"
+              ? rdfDataFactory.fromTerm(quad.object)
+              : quad.object,
+            quad.graph,
+          )
+        : rdfDataFactory.fromQuad(quad);
     if (
       quad.object?.termType !== "Literal" ||
       quad.object.datatype?.value !== RDF_XML_LITERAL
@@ -745,7 +764,10 @@ const xmlLiteralNormalizer = (classifications) => {
 };
 
 const validateTokenLength = (value, termType, configuration) => {
-  if (!value) {
+  // UTF-8 needs at most three bytes per UTF-16 code unit (a surrogate pair
+  // needs four bytes for two units). Only encode terms near the byte limit;
+  // admission and the exact observed byte count still use the native encoder.
+  if (!value || value.length <= configuration.maxTokenLength / 3) {
     return;
   }
   const observed = textEncoder.encode(value).byteLength;
@@ -860,14 +882,15 @@ export class RdfXmlSyntaxAdapter {
     if (typeof sourceText !== "string") {
       throw new TypeError("RDF/XML source text must be a string");
     }
-    const inputBytes = textEncoder.encode(sourceText).byteLength;
-    if (inputBytes > normalizedConfiguration.maxInputBytes) {
-      resourceLimit(
-        "The RDF/XML input byte limit was exceeded",
-        "maxInputBytes",
-        normalizedConfiguration.maxInputBytes,
-        inputBytes,
-      );
+    if (sourceText.length * 3 > normalizedConfiguration.maxInputBytes) {
+      const inputBytes = textEncoder.encode(sourceText).byteLength;
+      if (inputBytes > normalizedConfiguration.maxInputBytes)
+        resourceLimit(
+          "The RDF/XML input byte limit was exceeded",
+          "maxInputBytes",
+          normalizedConfiguration.maxInputBytes,
+          inputBytes,
+        );
     }
 
     const preparedText = prepareXml(sourceText, normalizedConfiguration);
@@ -895,7 +918,10 @@ export class RdfXmlSyntaxAdapter {
       parseTypeNormalizedText,
       identity.localName === "RDF" && identity.namespaceURI === RDF_NAMESPACE,
     );
-    const normalizeQuad = xmlLiteralNormalizer(classifications);
+    const normalizeQuad = xmlLiteralNormalizer(
+      classifications,
+      this.#loadImplementation === defaultImplementationLoader,
+    );
 
     const implementation = await this.#loadImplementation();
     execution.check();

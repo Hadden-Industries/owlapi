@@ -1,4 +1,7 @@
-import { defaultDocumentStoragePolicy } from "../../behavior/ontologyBehaviorContext.js";
+import {
+  defaultDocumentStoragePolicy,
+  resolveOntologyBehaviorDefinition,
+} from "../../behavior/ontologyBehaviorContext.js";
 import {
   XML_NAMESPACE,
   XMLNS_NAMESPACE,
@@ -24,6 +27,13 @@ import { RDF_NAMESPACE } from "../../rdfjs/vocabulary.js";
 
 const TEXT_NODE = 3;
 const LANG_STRING = `${RDF_NAMESPACE}langString`;
+const nativeCommentPolicies = new Map(
+  [
+    defaultDocumentStoragePolicy,
+    resolveOntologyBehaviorDefinition("java-owlapi-5.5.1")
+      .documentStoragePolicy,
+  ].map((policy) => [policy, policy.requiresXml10Characters]),
+);
 
 const TYPE_IRI = `${RDF_NAMESPACE}type`;
 const FIRST_IRI = `${RDF_NAMESPACE}first`;
@@ -157,8 +167,28 @@ const serializeGraph = (dataset, policy, context) => {
       requireWellFormed: documentStoragePolicy.requiresXml10Characters,
     });
   const utf8 = new TextEncoder();
+  const asciiCharacters = /^\p{ASCII}*$/u;
+  const xmlAsciiCharacters = /^[\t\n\r\x20-\x7E]*$/u;
+  const unchangedXmlText = /^[\t\n\x20-\x7E]*$/u;
+  const escapedXmlText = /[&<>\x22\x27]/u;
+  const nativeCommentPolicy = nativeCommentPolicies.get(documentStoragePolicy);
+  // ASCII output has exactly one UTF-8 byte per code unit. Non-ASCII text still
+  // uses the encoder, including its treatment of any admitted lone surrogate.
+  const byteLength = (text) =>
+    asciiCharacters.test(text) ? text.length : utf8.encode(text).length;
+  // Construction already serializes each admitted node for its byte charge.
+  // Its attributes/text are final at admission; only element children may be
+  // appended later. Reuse that exact native serialization during formatting,
+  // releasing each string as it is consumed. Nothing survives this write.
+  const admittedSerializations = new WeakMap();
   let constructionBytes = 0;
   const requireTextBudget = (value) => {
+    // The existing escaped-text counter charges at most six bytes per UTF-16 unit.
+    if (
+      typeof value === "string" &&
+      value.length * 6 <= documentStoragePolicy.maxOutputBytes
+    )
+      return;
     let bytes = 0;
     for (const character of value) {
       const code = character.codePointAt(0);
@@ -183,7 +213,16 @@ const serializeGraph = (dataset, policy, context) => {
     }
   };
   const admitNode = (node) => {
-    constructionBytes += utf8.encode(serialize(node.cloneNode(false))).length;
+    // Detached leaf nodes already have the shallow shape we serialize here.
+    // Retain cloning for any attached/non-leaf input so namespace scope and
+    // construction-byte charging keep their original meaning.
+    const text = serialize(
+      node.parentNode === null && node.firstChild === null
+        ? node
+        : node.cloneNode(false),
+    );
+    admittedSerializations.set(node, text);
+    constructionBytes += byteLength(text);
     if (constructionBytes > documentStoragePolicy.maxOutputBytes)
       throw new ResourceLimitError("RDF/XML construction budget exceeded", {
         limit: documentStoragePolicy.maxOutputBytes,
@@ -356,7 +395,14 @@ const serializeGraph = (dataset, policy, context) => {
     // xmldom validates characters of text nodes, but not attribute values.
     // Reuse its XML Char validator before its native attribute escaping.
     requireTextBudget(value);
-    serialize(document.createTextNode(value));
+    // W3C XML 1.0 Char includes these ASCII characters. Other strings still
+    // use the native validator; non-string inputs preserve native coercion.
+    if (
+      typeof value !== "string" ||
+      (documentStoragePolicy.requiresXml10Characters &&
+        !xmlAsciiCharacters.test(value))
+    )
+      serialize(document.createTextNode(value));
     element.setAttributeNS(
       namespace,
       namespace === RDF_NAMESPACE
@@ -592,7 +638,9 @@ const serializeGraph = (dataset, policy, context) => {
         property.appendChild(literalText);
         if (embedsXmlLiteral)
           embeddedXmlLiterals.set(literalText, quad.object.value);
-        constructionBytes += utf8.encode(serialize(property)).length;
+        const text = serialize(property);
+        admittedSerializations.set(property, text);
+        constructionBytes += byteLength(text);
         if (constructionBytes > documentStoragePolicy.maxOutputBytes)
           throw new ResourceLimitError("RDF/XML construction budget exceeded", {
             limit: documentStoragePolicy.maxOutputBytes,
@@ -651,8 +699,14 @@ const serializeGraph = (dataset, policy, context) => {
     const content = text
       .replace(/--+/gu, (match) => [...match].join(" "))
       .replace(/-$/u, "- ");
-    // Validate XML Char before admitting a comment; sanitize presentation only.
-    serialize(document.createTextNode(content));
+    // Native immutable policies and safe ASCII need no discarded Text node.
+    // Foreign policies retain the original flag reads and native validation.
+    // The actual Comment still receives native validation and byte admission.
+    if (
+      nativeCommentPolicy === undefined ||
+      (nativeCommentPolicy && !xmlAsciiCharacters.test(content))
+    )
+      serialize(document.createTextNode(content));
     const comment = document.createComment(content);
     admitNode(comment);
     return comment;
@@ -752,18 +806,41 @@ const serializeGraph = (dataset, policy, context) => {
       throw new ResourceLimitError("RDF/XML output budget exceeded", {
         limit: documentStoragePolicy.maxOutputBytes,
       });
-    predictedBytes += utf8.encode(text).length;
+    predictedBytes += byteLength(text);
     if (predictedBytes > documentStoragePolicy.maxOutputBytes)
       throw new ResourceLimitError("RDF/XML output budget exceeded", {
         limit: documentStoragePolicy.maxOutputBytes,
       });
   };
+  const copyElementHeader = (element) => {
+    // Renderer-owned elements have only their namespace/name and admitted
+    // attributes to copy. Use native constructors without copying unrelated
+    // generic DOM bookkeeping; source children stay attached until disposal.
+    const copy = document.createElementNS(
+      element.namespaceURI,
+      element.tagName,
+    );
+    for (const attribute of Array.from(element.attributes))
+      copy.setAttributeNS(
+        attribute.namespaceURI,
+        attribute.name,
+        attribute.value,
+      );
+    return copy;
+  };
   const formatElement = (element, depth) => {
     const children = [...element.childNodes];
+    const admitted = admittedSerializations.get(element);
+    admittedSerializations.delete(element);
     // A literal leaf is indivisible: never inject or normalize its whitespace.
     if (children.some((child) => child.nodeType === TEXT_NODE)) {
-      charge(serialize(element));
-      const copy = element.cloneNode(true);
+      charge(admitted ?? serialize(element));
+      const copy = children.every((child) => child.nodeType === TEXT_NODE)
+        ? copyElementHeader(element)
+        : element.cloneNode(true);
+      if (!copy.firstChild)
+        for (const child of children)
+          copy.appendChild(document.createTextNode(child.data));
       children.forEach((child, index) => {
         if (embeddedXmlLiterals.has(child))
           embeddedXmlLiterals.set(
@@ -773,8 +850,8 @@ const serializeGraph = (dataset, policy, context) => {
       });
       return copy;
     }
-    const formatted = element.cloneNode(false);
-    charge(serialize(formatted));
+    const formatted = copyElementHeader(element);
+    charge(admitted ?? serialize(formatted));
     if (!children.length) return formatted;
     const indentation = policy.indenting ? depth * indentationSize : 0;
     if (
@@ -812,7 +889,8 @@ const serializeGraph = (dataset, policy, context) => {
       if (child.nodeType === 1)
         formatted.appendChild(formatElement(child, depth + 1));
       else {
-        charge(serialize(child));
+        charge(admittedSerializations.get(child) ?? serialize(child));
+        admittedSerializations.delete(child);
         formatted.appendChild(child.cloneNode(true));
       }
       previousChild = child;
@@ -838,6 +916,13 @@ const serializeGraph = (dataset, policy, context) => {
         // XML end-of-line normalization would turn literal CR into LF. Native
         // serialization still validates and escapes each intervening segment.
         if (node.nodeType === TEXT_NODE) {
+          // Safe ASCII text is unchanged by native XML serialization and by
+          // the quote/CR preservation below; other text uses the native path.
+          if (
+            unchangedXmlText.test(node.data) &&
+            !escapedXmlText.test(node.data)
+          )
+            return node.data;
           return node.data
             .split("\r")
             .map((part) =>
@@ -951,7 +1036,7 @@ const serializeGraph = (dataset, policy, context) => {
   const output = `${declaration}\n${opening}${text.slice(rootEnd)}\n\n\n\n<!-- Generated by @hadden-industries/owlapi (JavaScript implementation; version 0.1.0-rc.1) https://github.com/Hadden-Industries/owlapi -->\n\n\n`;
   if (
     output.length > documentStoragePolicy.maxOutputBytes ||
-    utf8.encode(output).length > documentStoragePolicy.maxOutputBytes
+    byteLength(output) > documentStoragePolicy.maxOutputBytes
   )
     throw new ResourceLimitError("RDF/XML output budget exceeded", {
       limit: documentStoragePolicy.maxOutputBytes,

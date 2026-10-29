@@ -21,6 +21,36 @@ const document = (body = "") => `
 `;
 
 describe("RdfXmlSyntaxAdapter security and finite resources", () => {
+  it.each(["ascii", "éΩ", "😀"])(
+    "preserves exact UTF-8 input admission for %s",
+    async (value) => {
+      const text = document(
+        `<rdf:Description rdf:about="urn:test:subject"><ex:p>${value}</ex:p></rdf:Description>`,
+      );
+      const observed = new TextEncoder().encode(text).byteLength;
+      const adapter = new RdfXmlSyntaxAdapter();
+      for (const maxInputBytes of [observed, text.length * 3]) {
+        const dataset = await adapter.parse(
+          source(text),
+          configuration({ maxInputBytes }),
+        );
+        expect(dataset.size).toBe(1);
+        expect([...dataset][0].object.value).toBe(value);
+      }
+      await expect(
+        adapter.parse(
+          source(text),
+          configuration({ maxInputBytes: observed - 1 }),
+        ),
+      ).rejects.toMatchObject({
+        code: "RESOURCE_LIMIT_EXCEEDED",
+        resource: "maxInputBytes",
+        limit: observed - 1,
+        observed,
+      });
+    },
+  );
+
   it("expands bounded internal entities under the shared XML policy", async () => {
     const adapter = new RdfXmlSyntaxAdapter();
     const dataset = await adapter.parse(
@@ -168,6 +198,32 @@ describe("RdfXmlSyntaxAdapter security and finite resources", () => {
       code: "RESOURCE_LIMIT_EXCEEDED",
       resource: "maxTokenLength",
       termType: "NamedNode",
+    });
+  });
+
+  it.each([
+    ["é".repeat(64), 128],
+    ["Ω".repeat(64), 128],
+    ["😀".repeat(64), 256],
+  ])("enforces the exact UTF-8 token boundary for %s", async (value, bytes) => {
+    const adapter = new RdfXmlSyntaxAdapter();
+    const xml = source(
+      document(
+        `<rdf:Description rdf:about="urn:s"><ex:p>${value}</ex:p></rdf:Description>`,
+      ),
+    );
+    const dataset = await adapter.parse(
+      xml,
+      configuration({ maxTokenLength: bytes }),
+    );
+    expect([...dataset][0].object.value).toBe(value);
+    await expect(
+      adapter.parse(xml, configuration({ maxTokenLength: bytes - 1 })),
+    ).rejects.toMatchObject({
+      code: "RESOURCE_LIMIT_EXCEEDED",
+      resource: "maxTokenLength",
+      termType: "Literal",
+      observed: bytes,
     });
   });
 

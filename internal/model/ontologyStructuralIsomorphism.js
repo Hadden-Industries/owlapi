@@ -1,7 +1,14 @@
 import { OWLObjectKind } from "../../model/kinds.js";
 import { readOntologySnapshot } from "../../model/owlOntology.js";
-import { isCanonicalStructuralObject } from "../../model/structural.js";
+import {
+  isCanonicalStructuralObject,
+  OWLStructuralObject,
+  isNativeGroundStructuralObject,
+  nativeStructuralMethods,
+} from "../../model/structural.js";
 
+const nativeStructuralKey = nativeStructuralMethods.structuralKey;
+const nativeStructuralTuple = nativeStructuralMethods.toStructuralTuple;
 const DEFAULT_MAXIMUM_SEARCH_STATES = 1_000_000;
 const COMPARISON_OPTION_NAMES = Object.freeze([
   "compareAnnotations",
@@ -375,6 +382,22 @@ const matchFingerprintGroup = (
   success,
   failure,
 ) => {
+  // A singleton has no sibling candidate to memoize or remove. Keep the same
+  // one search-state charge and recursive value/anonymous-mapping comparison,
+  // including its resume continuation for choices inside that value.
+  if (leftValues.length === 1) {
+    return () => {
+      consumeSearchState(context);
+      return matchStructuralValue(
+        leftValues[0],
+        rightValues[0],
+        mapping,
+        context,
+        success,
+        failure,
+      );
+    };
+  }
   const failedStates = new Set();
   const availableRightIndexes = rightValues.map((_, index) => index);
 
@@ -474,8 +497,31 @@ const runStructuralMatch = (initialTask) => {
   return task;
 };
 
-const compareStructuralCollections = (leftValues, rightValues, context) =>
-  runStructuralMatch(
+const compareStructuralCollections = (leftValues, rightValues, context) => {
+  if (leftValues.length !== rightValues.length) return null;
+  if (
+    Object.getOwnPropertyDescriptor(
+      OWLStructuralObject.prototype,
+      "structuralKey",
+    )?.value === nativeStructuralKey &&
+    Object.getOwnPropertyDescriptor(
+      OWLStructuralObject.prototype,
+      "toStructuralTuple",
+    )?.value === nativeStructuralTuple &&
+    leftValues.every(isNativeGroundStructuralObject) &&
+    rightValues.every(isNativeGroundStructuralObject)
+  ) {
+    const keys = new Set(
+      leftValues.map((value) => nativeStructuralKey.call(value)),
+    );
+    if (keys.size === leftValues.length) {
+      for (const value of rightValues)
+        if (!keys.delete(nativeStructuralKey.call(value))) return null;
+      for (let i = 0; i < leftValues.length; i++) consumeSearchState(context);
+      return createEmptyAnonymousIndividualMapping();
+    }
+  }
+  return runStructuralMatch(
     matchUnorderedStructuralValues(
       leftValues,
       rightValues,
@@ -485,6 +531,7 @@ const compareStructuralCollections = (leftValues, rightValues, context) =>
       () => null,
     ),
   );
+};
 
 const createOntologySnapshot = (value, name) => {
   try {

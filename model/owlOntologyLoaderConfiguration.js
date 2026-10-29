@@ -1,6 +1,6 @@
 import { XML_ENTITY_DEFAULTS } from "../internal/parsing/xml/xmlEntityDefaults.js";
 import { validateFormatSelection } from "../internal/parsing/formatSelection.js";
-import { OntologyBehaviorContext } from "../internal/behavior/ontologyBehaviorContext.js";
+import { resolveOntologyBehaviorDefinition } from "../internal/behavior/ontologyBehaviorContext.js";
 
 const PARSING_MODES = new Set(["strict", "compatible", "preserve"]);
 const IMPORT_HANDLING = new Set(["throw", "diagnostic"]);
@@ -88,6 +88,42 @@ const JAVA_PROVIDER_DEFAULTS = Object.freeze({
   remoteJsonLdContexts: true,
 });
 
+// Copy the native fixed public layout without changing its own-field order.
+const copyPublicSettings = (target, values) => {
+  target.collectWarnings = values.collectWarnings;
+  target.format = values.format;
+  target.loadAnnotationAxioms = values.loadAnnotationAxioms;
+  target.maxAnnotationDepth = values.maxAnnotationDepth;
+  target.maxAxioms = values.maxAxioms;
+  target.maxBlankNodes = values.maxBlankNodes;
+  target.maxEntityDeclarations = values.maxEntityDeclarations;
+  target.maxEntityExpansionDepth = values.maxEntityExpansionDepth;
+  target.maxEntityReplacementLength = values.maxEntityReplacementLength;
+  target.maxExpandedXmlBytes = values.maxExpandedXmlBytes;
+  target.maxExpressionDepth = values.maxExpressionDepth;
+  target.maxImportCount = values.maxImportCount;
+  target.maxImportDepth = values.maxImportDepth;
+  target.maxInputBytes = values.maxInputBytes;
+  target.maxQuads = values.maxQuads;
+  target.maxRdfListLength = values.maxRdfListLength;
+  target.maxRedirects = values.maxRedirects;
+  target.maxRemoteDocumentBytes = values.maxRemoteDocumentBytes;
+  target.maxRetries = values.maxRetries;
+  target.maxSniffBytes = values.maxSniffBytes;
+  target.maxTokenCount = values.maxTokenCount;
+  target.maxTokenLength = values.maxTokenLength;
+  target.maxXmlNestingDepth = values.maxXmlNestingDepth;
+  target.missingImportHandling = values.missingImportHandling;
+  target.parsingMode = values.parsingMode;
+  target.rdfDatasetGraphPolicy = values.rdfDatasetGraphPolicy;
+  target.remoteImports = values.remoteImports;
+  target.remoteJsonLdContexts = values.remoteJsonLdContexts;
+  target.selectedGraph = values.selectedGraph;
+  target.signal = values.signal;
+  target.sourceLocations = values.sourceLocations;
+  target.timeoutMs = values.timeoutMs;
+};
+
 const snapshotRdfTerm = (term) => {
   if (
     !term ||
@@ -160,13 +196,14 @@ const requireBoolean = (value, name) => {
 };
 
 export class OWLOntologyLoaderConfiguration {
-  #behaviorContext;
+  #behaviorProfileDefinition;
   #connectionTimeoutMilliseconds = 20000;
   #configuredConnectionAttempts = 5;
   #shouldFollowRedirects = true;
   #entityExpansionLimit = "100000000";
   #authorizationHeaderValue = "";
   #acceptsHttpCompression = true;
+  #hasPublicSymbols = false;
 
   constructor(
     values = {},
@@ -174,7 +211,7 @@ export class OWLOntologyLoaderConfiguration {
     publicOverrides = undefined,
   ) {
     if (values === CLONE_TOKEN) {
-      this.#behaviorContext = cloneSource.#behaviorContext;
+      this.#behaviorProfileDefinition = cloneSource.#behaviorProfileDefinition;
       this.#connectionTimeoutMilliseconds =
         cloneSource.#connectionTimeoutMilliseconds;
       this.#configuredConnectionAttempts =
@@ -183,11 +220,16 @@ export class OWLOntologyLoaderConfiguration {
       this.#entityExpansionLimit = cloneSource.#entityExpansionLimit;
       this.#authorizationHeaderValue = cloneSource.#authorizationHeaderValue;
       this.#acceptsHttpCompression = cloneSource.#acceptsHttpCompression;
-      if (publicOverrides) {
-        Object.assign(this, cloneSource, publicOverrides);
-      } else {
+      this.#hasPublicSymbols =
+        cloneSource.#hasPublicSymbols ||
+        (publicOverrides !== undefined &&
+          Object.getOwnPropertySymbols(publicOverrides).length > 0);
+      // The historical options boundary also admits enumerable symbol fields.
+      // Preserve those uncommon extensions with the generic copy path.
+      if (this.#hasPublicSymbols) {
         Object.assign(this, cloneSource);
-      }
+      } else copyPublicSettings(this, cloneSource);
+      if (publicOverrides) Object.assign(this, publicOverrides);
       Object.freeze(this);
       return;
     }
@@ -195,11 +237,25 @@ export class OWLOntologyLoaderConfiguration {
       throw new TypeError("loader configuration values must be an object");
     }
     const { behaviorProfileId, ...settings } = values;
-    this.#behaviorContext = new OntologyBehaviorContext(behaviorProfileId);
+    this.#behaviorProfileDefinition =
+      resolveOntologyBehaviorDefinition(behaviorProfileId);
     for (const name of Object.keys(settings)) {
       if (!ALLOWED_SETTINGS.has(name)) {
         throw new TypeError(`Unknown loader configuration setting: ${name}`);
       }
+    }
+    const usesJavaProviderDefaults =
+      this.#behaviorProfileDefinition.computationResourcePolicy
+        .usesJavaProviderDefaults;
+    const profileDefaults = usesJavaProviderDefaults
+      ? JAVA_PROVIDER_DEFAULTS
+      : DEFAULTS;
+    // The two native default records contain no caller-owned values and are
+    // already valid. Explicit options still pass the complete validator below.
+    if (Reflect.ownKeys(settings).length === 0) {
+      copyPublicSettings(this, profileDefaults);
+      Object.freeze(this);
+      return;
     }
     const normalizedValues = { ...settings };
     if (normalizedValues.selectedGraph !== undefined) {
@@ -207,15 +263,10 @@ export class OWLOntologyLoaderConfiguration {
         normalizedValues.selectedGraph,
       );
     }
-    const usesJavaProviderDefaults =
-      this.#behaviorContext.behaviorProfileDefinition.computationResourcePolicy
-        .usesJavaProviderDefaults;
-    const profileDefaults = usesJavaProviderDefaults
-      ? JAVA_PROVIDER_DEFAULTS
-      : DEFAULTS;
     const merged = { ...profileDefaults, ...normalizedValues };
     validate(merged, usesJavaProviderDefaults);
     Object.assign(this, merged);
+    this.#hasPublicSymbols = Object.getOwnPropertySymbols(merged).length > 0;
     Object.freeze(this);
   }
 
@@ -249,14 +300,18 @@ export class OWLOntologyLoaderConfiguration {
     const merged = { ...this, ...normalizedValues };
     validate(
       merged,
-      this.#behaviorContext.behaviorProfileDefinition.computationResourcePolicy
+      this.#behaviorProfileDefinition.computationResourcePolicy
         .usesJavaProviderDefaults,
     );
-    return new OWLOntologyLoaderConfiguration(CLONE_TOKEN, this, merged);
+    return new OWLOntologyLoaderConfiguration(
+      CLONE_TOKEN,
+      this,
+      normalizedValues,
+    );
   }
 
   getBehaviorProfileId() {
-    return this.#behaviorContext.behaviorProfileDefinition.behaviorProfileId;
+    return this.#behaviorProfileDefinition.behaviorProfileId;
   }
   getConnectionTimeout() {
     return this.#connectionTimeoutMilliseconds;

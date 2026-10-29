@@ -312,7 +312,7 @@ class OntologyStateMutationDraft {
       throw new Error("The ontology state mutation draft is closed");
     }
     if (!record.axiomsTouched) {
-      record.directAxioms = record.baseDirectAxioms.clone();
+      record.directAxioms = record.baseDirectAxioms.cloneForAddition();
       record.axiomsTouched = true;
     }
     const changed = record.directAxioms.add(axiom);

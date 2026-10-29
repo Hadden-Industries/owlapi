@@ -4,6 +4,8 @@ import path from "node:path";
 import { createRequire } from "node:module";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { performance } from "node:perf_hooks";
+import { parseArgs } from "node:util";
+import { createHash } from "node:crypto";
 import { format as prettierFormat, resolveConfig } from "prettier";
 import { OWLManager } from "../apibinding/index.js";
 import { OWLDocumentFormats, RDFXMLDocumentFormat } from "../formats/index.js";
@@ -628,6 +630,8 @@ export const BENCHMARK_DEFINITIONS = Object.freeze([
     apiSymbols: ["OWLOntologyImportsClosureSetProvider"],
     description:
       "Materialize ontology closure sets 1,000 times via OWLOntologyImportsClosureSetProvider.",
+    comparisonLimitation:
+      "Java times Stream.count(), which may elide traversal; JS constructs a fresh defensive Set. Equal counts do not qualify equivalent materialization work.",
   },
   {
     id: "util.OWLOntologyMerger",
@@ -717,7 +721,7 @@ const median = (values) => {
   const sorted = [...values].sort((left, right) => left - right);
   const middle = Math.floor(sorted.length / 2);
   return sorted.length % 2 === 0
-    ? roundMs((sorted[middle - 1] + sorted[middle]) / 2)
+    ? (sorted[middle - 1] + sorted[middle]) / 2
     : sorted[middle];
 };
 
@@ -2179,9 +2183,9 @@ export const runJsProfileBenchmarks = async (
         throw new Error(`Missing JS benchmark implementation for ${def.id}`);
       }
       maybeGc();
-      const coldStart = performance.now();
+      const firstUseStarted = performance.now();
       const verificationCount = await op();
-      const firstUseWallMs = roundMs(performance.now() - coldStart);
+      const firstUseWallMs = performance.now() - firstUseStarted;
 
       for (let w = 0; w < warmupCount; w += 1) {
         await op();
@@ -2196,19 +2200,19 @@ export const runJsProfileBenchmarks = async (
         const beforeHeap = process.memoryUsage().heapUsed;
         const start = performance.now();
         const count = await op();
-        const wallMs = roundMs(performance.now() - start);
-        const afterHeap = Math.max(beforeHeap, process.memoryUsage().heapUsed);
+        const wallMs = performance.now() - start;
+        const afterHeap = process.memoryUsage().heapUsed;
         if (count !== verificationCount) {
           throw new Error(
             `Non-deterministic verification count for ${def.id} (${behaviorProfileId}): ${count} !== ${verificationCount}`,
           );
         }
-        const retainedHeapDeltaBytes = afterHeap - beforeHeap;
+        const sampledHeapDeltaBytes = afterHeap - beforeHeap;
         wallSamples.push(wallMs);
-        heapSamples.push(retainedHeapDeltaBytes);
+        heapSamples.push(sampledHeapDeltaBytes);
         measurements.push({
           wallMs,
-          retainedHeapDeltaBytes,
+          sampledHeapDeltaBytes,
         });
       }
 
@@ -2220,7 +2224,7 @@ export const runJsProfileBenchmarks = async (
         measurements,
         median: {
           wallMs: median(wallSamples),
-          retainedHeapDeltaBytes: medianInteger(heapSamples),
+          sampledHeapDeltaBytes: medianInteger(heapSamples),
         },
       });
     }
@@ -2508,72 +2512,187 @@ export const resolveJavaBaselineSuite = async ({
 };
 
 const safeRatio = (numerator, denominator) => {
-  const effectiveDenominator = Math.max(denominator, 0.001);
-  return Math.round((numerator / effectiveDenominator) * 100) / 100;
+  return denominator === 0 ? null : numerator / denominator;
 };
+
+/** A comparison must account for every requested case exactly once. */
+const selectedDefinitions = (filterIds) => {
+  if (filterIds === null) return BENCHMARK_DEFINITIONS;
+  if (!Array.isArray(filterIds) || !filterIds.length)
+    throw new TypeError("Benchmark filter must contain case IDs");
+  const known = new Set(BENCHMARK_DEFINITIONS.map(({ id }) => id));
+  const seen = new Set();
+  for (const id of filterIds) {
+    if (!known.has(id)) throw new TypeError(`Unknown benchmark ID: ${id}`);
+    if (seen.has(id)) throw new TypeError(`Duplicate benchmark ID: ${id}`);
+    seen.add(id);
+  }
+  return BENCHMARK_DEFINITIONS.filter(({ id }) => seen.has(id));
+};
+
+const admittedRows = (suite, definitions, label, runCount) => {
+  const rows = new Map();
+  const known = new Set(BENCHMARK_DEFINITIONS.map(({ id }) => id));
+  for (const row of suite?.results ?? []) {
+    if (!known.has(row.id))
+      throw new TypeError(`Unknown ${label} benchmark ID: ${row.id}`);
+    if (rows.has(row.id))
+      throw new TypeError(`Duplicate ${label} benchmark ID: ${row.id}`);
+    rows.set(row.id, row);
+  }
+  if (runCount !== undefined && rows.size > definitions.length)
+    throw new TypeError(`Unexpected ${label} rows outside the requested cases`);
+  for (const { id } of definitions) {
+    const row = rows.get(id);
+    if (!row) throw new TypeError(`Missing ${label} benchmark ID: ${id}`);
+    for (const value of [
+      row.median?.wallMs,
+      row.firstUseWallMs,
+      row.verificationCount,
+    ])
+      if (!Number.isFinite(value) || value < 0)
+        throw new TypeError(
+          `${label} ${id} requires finite nonnegative measurements`,
+        );
+    if (
+      runCount !== undefined &&
+      (!Array.isArray(row.measurements) || row.measurements.length !== runCount)
+    )
+      throw new TypeError(`${label} ${id} requires ${runCount} raw samples`);
+    const heapField =
+      runCount === undefined
+        ? "retainedHeapDeltaBytes"
+        : "sampledHeapDeltaBytes";
+    if (!Number.isFinite(row.median[heapField]))
+      throw new TypeError(
+        `${label} ${id} requires a finite ${heapField} median`,
+      );
+    for (const sample of row.measurements ?? []) {
+      if (
+        !Number.isFinite(sample.wallMs) ||
+        sample.wallMs < 0 ||
+        !Number.isFinite(
+          runCount === undefined
+            ? sample.retainedHeapDeltaBytes
+            : sample.sampledHeapDeltaBytes,
+        )
+      )
+        throw new TypeError(`${label} ${id} requires finite raw samples`);
+    }
+  }
+  return rows;
+};
+
+const reportedJsRow = (row, javaMedianMs, comparability) => ({
+  comparability,
+  verificationCount: row.verificationCount,
+  firstUseWallMs: row.firstUseWallMs,
+  medianWallMs: row.median.wallMs,
+  medianSampledHeapDeltaBytes: row.median.sampledHeapDeltaBytes,
+  measurements: row.measurements.map((sample) => ({
+    wallMs: sample.wallMs,
+    sampledHeapDeltaBytes: sample.sampledHeapDeltaBytes,
+  })),
+  ratioVsJava: safeRatio(row.median.wallMs, javaMedianMs),
+  deltaMsVsJava: roundMs(row.median.wallMs - javaMedianMs),
+});
 
 export const compareBenchmarkSuites = ({
   javaSuite,
   jsSuites,
   warmupCount,
   runCount,
+  filterIds = null,
+  syntaxCount = 100,
+  importClosureCount = 8,
   javaBaselinePath = "docs/performance/java-owlapi-5.5.1-baseline.json",
 }) => {
-  const javaById = new Map(javaSuite.results.map((row) => [row.id, row]));
-  const jsCompatById = new Map(
-    (jsSuites["java-owlapi-5.5.1"]?.results ?? []).map((row) => [row.id, row]),
+  const definitions = selectedDefinitions(filterIds);
+  const javaById = admittedRows(javaSuite, definitions, "Java");
+  const jsCompatById = admittedRows(
+    jsSuites["java-owlapi-5.5.1"],
+    definitions,
+    "compatible JS",
+    runCount,
   );
-  const jsNormativeById = new Map(
-    (jsSuites["normative-v1"]?.results ?? []).map((row) => [row.id, row]),
+  const jsNormativeById = admittedRows(
+    jsSuites["normative-v1"],
+    definitions,
+    "normative JS",
+    runCount,
   );
 
   const comparisons = [];
-  for (const def of BENCHMARK_DEFINITIONS) {
+  const fixtureMismatch =
+    javaSuite.parameters &&
+    (javaSuite.fixtureGeneratorVersion !== GENERATOR_VERSION ||
+      javaSuite.parameters.syntaxCount !== syntaxCount ||
+      javaSuite.parameters.importClosureCount !== importClosureCount);
+  const measurementMismatch =
+    javaSuite.parameters &&
+    (javaSuite.parameters.warmupCount !== warmupCount ||
+      javaSuite.parameters.runCount !== runCount);
+  for (const def of definitions) {
     const javaRow = javaById.get(def.id);
     const compatRow = jsCompatById.get(def.id);
     const normativeRow = jsNormativeById.get(def.id);
-    if (!javaRow || !compatRow || !normativeRow) {
-      continue;
-    }
     const javaMedianMs = javaRow.median.wallMs;
     const compatMedianMs = compatRow.median.wallMs;
     const normativeMedianMs = normativeRow.median.wallMs;
     const compatVsJavaRatio = safeRatio(compatMedianMs, javaMedianMs);
     const normativeVsJavaRatio = safeRatio(normativeMedianMs, javaMedianMs);
-    const maxJsVsJavaRatio = Math.max(compatVsJavaRatio, normativeVsJavaRatio);
+    const admission = (row) =>
+      fixtureMismatch
+        ? "fixture-mismatch"
+        : measurementMismatch
+          ? "measurement-parameters-mismatch"
+          : javaMedianMs === 0
+            ? "resolution-limited"
+            : javaRow.verificationCount !== row.verificationCount
+              ? "checksum-mismatch"
+              : def.comparisonLimitation
+                ? "workload-mismatch"
+                : "checksum-only";
+    const compatAdmission = admission(compatRow);
+    const normativeAdmission = admission(normativeRow);
+    const comparability =
+      compatAdmission === normativeAdmission
+        ? compatAdmission
+        : "checksum-mismatch";
+    const admittedRatios = [];
+    // A different profile's checksum must neither qualify nor conceal this
+    // profile's timing. Rank only ratios admitted for their own profile.
+    if (compatAdmission === "checksum-only")
+      admittedRatios.push(compatVsJavaRatio);
+    if (normativeAdmission === "checksum-only")
+      admittedRatios.push(normativeVsJavaRatio);
+    const maxJsVsJavaRatio = admittedRatios.length
+      ? Math.max(...admittedRatios)
+      : null;
 
     comparisons.push({
       id: def.id,
       category: def.category,
       apiSymbols: def.apiSymbols,
       description: def.description,
+      ...(def.comparisonLimitation
+        ? { comparisonLimitation: def.comparisonLimitation }
+        : {}),
+      comparability,
       java551: {
         verificationCount: javaRow.verificationCount,
         firstUseWallMs: javaRow.firstUseWallMs,
         medianWallMs: javaMedianMs,
         medianRetainedHeapDeltaBytes: javaRow.median.retainedHeapDeltaBytes,
       },
-      jsJavaOwlapi551: {
-        verificationCount: compatRow.verificationCount,
-        firstUseWallMs: compatRow.firstUseWallMs,
-        medianWallMs: compatMedianMs,
-        medianRetainedHeapDeltaBytes: compatRow.median.retainedHeapDeltaBytes,
-        ratioVsJava: compatVsJavaRatio,
-        deltaMsVsJava: roundMs(compatMedianMs - javaMedianMs),
-      },
-      jsNormativeV1: {
-        verificationCount: normativeRow.verificationCount,
-        firstUseWallMs: normativeRow.firstUseWallMs,
-        medianWallMs: normativeMedianMs,
-        medianRetainedHeapDeltaBytes:
-          normativeRow.median.retainedHeapDeltaBytes,
-        ratioVsJava: normativeVsJavaRatio,
-        deltaMsVsJava: roundMs(normativeMedianMs - javaMedianMs),
-      },
+      jsJavaOwlapi551: reportedJsRow(compatRow, javaMedianMs, compatAdmission),
+      jsNormativeV1: reportedJsRow(
+        normativeRow,
+        javaMedianMs,
+        normativeAdmission,
+      ),
       maxJsVsJavaRatio,
-      slowerInJs:
-        (compatMedianMs > javaMedianMs && compatVsJavaRatio > 1.1) ||
-        (normativeMedianMs > javaMedianMs && normativeVsJavaRatio > 1.1),
+      slowerInJs: maxJsVsJavaRatio !== null && maxJsVsJavaRatio > 1.1,
     });
   }
 
@@ -2582,22 +2701,30 @@ export const compareBenchmarkSuites = ({
     .sort((left, right) => right.maxJsVsJavaRatio - left.maxJsVsJavaRatio);
 
   const fasterOrParityApis = [...comparisons]
-    .filter((entry) => !entry.slowerInJs)
+    .filter(
+      (entry) => entry.comparability === "checksum-only" && !entry.slowerInJs,
+    )
     .sort((left, right) => left.maxJsVsJavaRatio - right.maxJsVsJavaRatio);
 
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     fixtureGeneratorVersion: GENERATOR_VERSION,
     javaBaselinePath,
     parameters: {
       warmupCount,
       runCount,
+      syntaxCount,
+      importClosureCount,
       profiles: [...BEHAVIOR_PROFILES],
     },
     environment: {
       nodeVersion:
         jsSuites["java-owlapi-5.5.1"]?.nodeVersion ?? process.version,
       platform: `${process.platform}-${process.arch}`,
+      v8Version: process.versions.v8,
+      cpuModel: os.cpus()[0]?.model,
+      osRelease: os.release(),
+      explicitGc: typeof globalThis.gc === "function",
       javaVersion: javaSuite.javaVersion,
       javaVmName: javaSuite.javaVmName,
       javaOwlapiVersion: javaSuite.owlapiVersion,
@@ -2606,13 +2733,21 @@ export const compareBenchmarkSuites = ({
       totalBenchmarks: comparisons.length,
       slowerInJsCount: slowerApisRanked.length,
       fasterOrParityInJsCount: fasterOrParityApis.length,
+      unqualifiedCount: comparisons.filter(
+        (entry) => !entry.slowerInJs && entry.comparability !== "checksum-only",
+      ).length,
+      incompleteComparabilityCount: comparisons.filter(
+        (entry) => entry.comparability !== "checksum-only",
+      ).length,
       slowerInCompatProfileCount: comparisons.filter(
         (c) =>
+          c.jsJavaOwlapi551.comparability === "checksum-only" &&
           c.jsJavaOwlapi551.medianWallMs > c.java551.medianWallMs &&
           c.jsJavaOwlapi551.ratioVsJava > 1.1,
       ).length,
       slowerInNormativeProfileCount: comparisons.filter(
         (c) =>
+          c.jsNormativeV1.comparability === "checksum-only" &&
           c.jsNormativeV1.medianWallMs > c.java551.medianWallMs &&
           c.jsNormativeV1.ratioVsJava > 1.1,
       ).length,
@@ -2625,120 +2760,77 @@ export const compareBenchmarkSuites = ({
       javaMedianWallMs: entry.java551.medianWallMs,
       jsCompatMedianWallMs: entry.jsJavaOwlapi551.medianWallMs,
       jsCompatVsJavaRatio: entry.jsJavaOwlapi551.ratioVsJava,
+      jsCompatAdmission: entry.jsJavaOwlapi551.comparability,
       jsNormativeMedianWallMs: entry.jsNormativeV1.medianWallMs,
       jsNormativeVsJavaRatio: entry.jsNormativeV1.ratioVsJava,
+      jsNormativeAdmission: entry.jsNormativeV1.comparability,
       maxJsVsJavaRatio: entry.maxJsVsJavaRatio,
     })),
   };
 };
 
+/** Render current observations; historical P1–P9 prose stays in the schema-1 report. */
 export const formatComparisonMarkdown = (report) => {
-  const baselinePathText =
-    report.javaBaselinePath ??
-    "docs/performance/java-owlapi-5.5.1-baseline.json";
+  const ratio = (row) =>
+    row.comparability !== "checksum-only"
+      ? "unqualified"
+      : row.ratioVsJava.toFixed(2) + "x";
   const lines = [
     "# Public API Performance Comparison: JS OWLAPI vs. Java OWLAPI 5.5.1",
     "",
-    "Durable benchmark comparison across the entire `@hadden-industries/owlapi` public API surface against `net.sourceforge.owlapi:owlapi-distribution:5.5.1` on identical deterministic inputs across both immutable behavior profiles (`java-owlapi-5.5.1` and `normative-v1`).",
+    "These grouped workloads do not exhaustively cover public methods or overloads.",
+    "Counts are checksums, not structural equivalence proofs; checksum-only rows remain provisional.",
+    "Unqualified rows retain measured times and raw JSON ratios; known unequal work is excluded from parity ranking.",
     "",
-    "## Execution Environment and Methodology",
+    "- Node: " +
+      report.environment.nodeVersion +
+      "; V8: " +
+      report.environment.v8Version,
+    "- Warmup/measured calls: " +
+      report.parameters.warmupCount +
+      "/" +
+      report.parameters.runCount,
+    "- First-use timing measures a case call inside an initialized suite, not process startup.",
+    "- Heap samples measure before/after heap use without post-call GC; they are neither retained nor peak memory.",
+    "- Qualified-by-checksum slower groups: " + report.summary.slowerInJsCount,
+    "- Qualified-by-checksum parity/faster groups: " +
+      report.summary.fasterOrParityInJsCount,
+    "- Unqualified groups: " + report.summary.unqualifiedCount,
     "",
-    `- **Node.js Runtime**: \`${report.environment.nodeVersion}\` (\`${report.environment.platform}\`)`,
-    `- **Java Runtime (Pinned Release Baseline)**: \`${report.environment.javaVersion}\` (\`${report.environment.javaVmName}\`)`,
-    `- **Reference Library**: \`owlapi-distribution:${report.environment.javaOwlapiVersion}\` (pinned baseline in \`${baselinePathText}\`)`,
-    `- **Warmup / Measured Runs**: ${report.parameters.warmupCount} warmup + ${report.parameters.runCount} measured iterations per benchmark (after 1 cold-start verification run) in a single warm process/JVM`,
-    `- **Total Public API Benchmarks**: ${report.summary.totalBenchmarks}`,
-    `- **APIs Demonstrably Slower in JS (>1.10x Java median)**: ${report.summary.slowerInJsCount} (${report.summary.slowerInCompatProfileCount} in \`java-owlapi-5.5.1\`, ${report.summary.slowerInNormativeProfileCount} in \`normative-v1\`)`,
-    `- **APIs at Parity or Faster in JS (<=1.10x Java median)**: ${report.summary.fasterOrParityInJsCount}`,
-    "",
-    "## APIs Demonstrably Slower in JS than Java (Ranked by Worst-Case Slowdown Ratio)",
-    "",
-    "| Rank | Benchmark ID | Category | Java 5.5.1 (ms) | JS `java-owlapi-5.5.1` (ms) | JS Compat / Java | JS `normative-v1` (ms) | JS Normative / Java |",
-    "| ---: | --- | --- | ---: | ---: | ---: | ---: | ---: |",
+    "| Benchmark ID | Java ms | Compatible JS ms | Ratio | Normative JS ms | Ratio | Admission |",
+    "| --- | ---: | ---: | ---: | ---: | ---: | --- |",
   ];
-
-  for (const row of report.slowerApisRanked) {
+  for (const entry of report.comparisons)
     lines.push(
-      `| ${row.rank} | \`${row.id}\` | ${row.category} | ${row.javaMedianWallMs.toFixed(3)} | ${row.jsCompatMedianWallMs.toFixed(3)} | ${row.jsCompatVsJavaRatio.toFixed(2)}x | ${row.jsNormativeMedianWallMs.toFixed(3)} | ${row.jsNormativeVsJavaRatio.toFixed(2)}x |`,
+      "| \x60" +
+        entry.id +
+        "\x60 | " +
+        entry.java551.medianWallMs.toFixed(3) +
+        " | " +
+        entry.jsJavaOwlapi551.medianWallMs.toFixed(3) +
+        " | " +
+        ratio(entry.jsJavaOwlapi551) +
+        " | " +
+        entry.jsNormativeV1.medianWallMs.toFixed(3) +
+        " | " +
+        ratio(entry.jsNormativeV1) +
+        " | " +
+        entry.comparability +
+        " |",
     );
-  }
-
-  lines.push(
-    "",
-    "## Complete Public API Benchmark Table (All Categories)",
-    "",
-    "| Benchmark ID | Category | Java 5.5.1 Median (ms) | JS `java-owlapi-5.5.1` Median (ms) | Compat / Java | JS `normative-v1` Median (ms) | Normative / Java | Verification Count (Java / Compat / Norm) |",
-    "| --- | --- | ---: | ---: | ---: | ---: | ---: | --- |",
+  const limitations = report.comparisons.filter(
+    (entry) => entry.comparisonLimitation,
   );
-
-  for (const entry of report.comparisons) {
+  if (limitations.length)
     lines.push(
-      `| \`${entry.id}\` | ${entry.category} | ${entry.java551.medianWallMs.toFixed(3)} | ${entry.jsJavaOwlapi551.medianWallMs.toFixed(3)} | ${entry.jsJavaOwlapi551.ratioVsJava.toFixed(2)}x | ${entry.jsNormativeV1.medianWallMs.toFixed(3)} | ${entry.jsNormativeV1.ratioVsJava.toFixed(2)}x | ${entry.java551.verificationCount} / ${entry.jsJavaOwlapi551.verificationCount} / ${entry.jsNormativeV1.verificationCount} |`,
+      "",
+      "Comparison limits:",
+      "",
+      ...limitations.map(
+        (entry) => "- `" + entry.id + "`: " + entry.comparisonLimitation,
+      ),
     );
-  }
-
-  lines.push(
-    "",
-    "## Implemented Optimizations (P1–P9) and Measured Before / After Impact",
-    "",
-    "All nine prioritized recommendations from the initial baseline comparison have been implemented in order of severity, improving overall public API parity from **18 / 70** APIs at parity or faster (52 slower, up to **585.4x** slower) to **51 / 70** APIs at parity or faster than Java 5.5.1:",
-    "",
-    "### P1. Index `OWLOntology.getReferencingAxioms` in `readOntologyModel` (Implemented)",
-    "",
-    "- **Before**: `ontology.getReferencingAxioms` took **186.7 ms** (`java-owlapi-5.5.1`, **572.7x**) and **190.8 ms** (`normative-v1`, **585.4x**) vs **0.326 ms** in Java 5.5.1; `util.OWLEntityRemover` took **58.9 ms / 49.3 ms** (**142.6x / 119.4x**); `util.OWLEntityRenamer` took **56.1 ms / 52.8 ms** (**16.6x / 15.6x**).",
-    "- **After**: `ontology.getReferencingAxioms` is **0.122 ms / 0.102 ms** (**0.37x / 0.31x of Java — ~3x faster than Java!**); `util.OWLEntityRemover` is **0.420 ms / 0.381 ms** (**1.02x / 0.92x — at parity / faster than Java!**); `util.OWLEntityRenamer` is **3.942 ms / 4.312 ms** (**1.17x / 1.27x**).",
-    "- **Changes**: Added a lazy `byReferencedTargetKey` multimap in `readOntologyModel(snapshot)` (`internal/model/ontologyReadModel.js`) indexing entities, IRIs, literals, anonymous individuals, and `xsd:anyURI` literal lexical forms, plus closure-cached `referencingAxioms` in `model/owlOntology.js` and direct read-model queries in `util/owlEntityRemover.js` and `util/owlEntityRenamer.js`.",
-    "",
-    "### P2. Fast-Clone `OWLOntologyLoaderConfiguration` and `OWLOntologyWriterConfiguration` (Implemented)",
-    "",
-    "- **Before**: `config.OWLOntologyLoaderConfiguration` took **77.2 ms / 56.1 ms** (**68.3x / 49.7x** vs **1.13 ms**); `config.OWLOntologyWriterConfiguration` took **2.26 ms / 0.83 ms** (**14.6x / 5.4x** vs **0.155 ms**).",
-    "- **After**: `config.OWLOntologyLoaderConfiguration` is **2.661 ms / 2.437 ms** (**2.35x / 2.16x** — a **29x / 23x speedup**); `config.OWLOntologyWriterConfiguration` is **0.482 ms / 0.349 ms** (**3.11x / 2.25x** — a **4.7x / 2.4x speedup**).",
-    "- **Changes**: Precomputed default configuration maps and added a `CLONE_TOKEN` fast-clone constructor path in `model/owlOntologyLoaderConfiguration.js` and `model/owlOntologyWriterConfiguration.js` that shares `#behaviorContext` and skips redundant full-settings re-validation on immutable single-field updates.",
-    "",
-    "### P3. Cache Closure Read Models for `getAxiomsByType`, `getLogicalAxioms`, `getAxioms`, `getSignature`, and `getImportsClosure` (Implemented)",
-    "",
-    "- **Before**: `ontology.getAxiomsByType` took **251.0 ms / 278.8 ms** (**25.4x / 28.2x** vs **9.88 ms**); `ontology.getLogicalAxioms` took **219.7 ms / 221.6 ms** (**10.7x / 10.8x** vs **20.5 ms**); `ontology.getAxioms.included` took **163.8 ms / 167.3 ms** (**3.7x / 3.8x** vs **44.3 ms**); `util.OWLOntologyImportsClosureSetProvider` took **3.92 ms / 2.26 ms** (**39.6x / 22.8x** vs **0.099 ms**).",
-    "- **After**: `ontology.getAxiomsByType` is **4.521 ms / 4.888 ms** (**0.46x / 0.49x — 2x faster than Java!**); `ontology.getLogicalAxioms` is **12.190 ms / 12.618 ms** (**0.60x / 0.62x — faster than Java!**); `ontology.getAxioms.included` is **23.425 ms / 23.211 ms** (**0.53x / 0.52x — almost 2x faster than Java!**); `manager.getImportsClosure` is **0.514 ms / 0.361 ms** (**0.69x / 0.48x — faster than Java!**); `util.OWLOntologyImportsClosureSetProvider` dropped to **0.725 ms / 0.924 ms**.",
-    "- **Changes**: Cached closure-deduplicated axiom/signature views in `createClosureReader` (`model/owlOntology.js`), added revision-keyed closure snapshot caching in `internal/loading/managedOntologyIndex.js` and `model/owlOntologyManager.js`, and used `isPackageOntology` brand checking in `util/owlOntologyImportsClosureSetProvider.js`.",
-    "",
-    "### P4. Brand-Check Validated Structural Graphs and Eliminate O(depth * length) UTF-8 Re-Encoding in `ManchesterOWLSyntaxOWLObjectRendererImpl` (Implemented)",
-    "",
-    "- **Before**: `renderer.ManchesterOWLSyntaxOWLObjectRendererImpl` took **19.29 ms / 17.75 ms** (**21.3x / 19.6x** vs **0.904 ms**); `util.OWLObjectDuplicator` took **29.92 ms / 28.54 ms** (**12.6x / 12.0x** vs **2.371 ms**).",
-    "- **After**: `renderer.ManchesterOWLSyntaxOWLObjectRendererImpl` is **0.393 ms / 0.311 ms** (**0.43x / 0.34x — ~3x faster than Java!**); `util.OWLObjectDuplicator` is **0.488 ms / 0.422 ms** (**0.21x / 0.18x — 5x faster than Java!**).",
-    "- **Changes**: Cached validated frozen structural nodes and graph limit budgets in `internal/model/structuralValidation.js`, guarded `TextEncoder.encode` in `manchestersyntax/renderer/manchesterOWLSyntaxOWLObjectRendererImpl.js` with `text.length * 3 > limits.maxOutputBytes`, and reused unchanged subtrees in `internal/model/objectTransform.js`.",
-    "",
-    "### P5. Coalesce Microtask Checkpoints in `SyntacticLocalityModuleExtractor` and `OWL2*Profile.checkOntology` (Implemented)",
-    "",
-    "- **Before**: `locality.extract.{BOTTOM,TOP,STAR}` took **45.2–48.3 ms** (**14.1x–20.7x** vs **2.24–3.29 ms**); `profiles.OWL2{DL,EL,QL,RL}Profile.checkOntology` took **21.7–23.0 ms** (**5.6x–14.2x** vs **1.61–4.02 ms**).",
-    "- **After**: `locality.extract.BOTTOM` is **2.082 ms / 2.647 ms** (**0.90x / 1.14x**), `locality.extract.TOP` is **1.981 ms / 1.919 ms** (**0.89x / 0.86x**), and `locality.extract.STAR` is **2.084 ms / 1.978 ms** (**0.63x / 0.60x**); `profiles.OWL2DLProfile` is **2.447 ms / 1.303 ms** (**0.61x / 0.32x**), `OWL2ELProfile` is **1.851 ms / 1.524 ms** (**0.83x / 0.68x**), `OWL2QLProfile` is **1.777 ms / 1.319 ms** (**0.83x / 0.61x**), and `OWL2RLProfile` is **1.790 ms / 1.634 ms** (**1.11x / 1.02x**).",
-    "- **Changes**: Replaced per-node `await budget.checkpoint()` microtask suspensions in inner traversal loops with synchronous `budget.check()` + conditional `if (budget.shouldYield()) await budget.yieldTurn()` every 256 checks in `internal/modularity/localityBudget.js`, `internal/modularity/syntacticLocality.js`, `modularity/locality/syntacticLocalityModuleExtractor.js`, and `internal/profiles/*`.",
-    "",
-    "### P6. Batch Sequential Change Commits & Copy-on-Write `OntologyStateMutationDraft` (Implemented)",
-    "",
-    "- **Before**: In `java-owlapi-5.5.1`, `manager.addAxioms.bulk` took **36.935 ms** (**14.6x** vs **2.534 ms**), `manager.removeAxioms.bulk` took **73.799 ms / 21.662 ms** (**13.8x / 4.0x** vs **5.363 ms**), and `util.OWLOntologyMerger` took **27.029 ms** (**16.6x** vs **1.631 ms**).",
-    "- **After**: `manager.addAxioms.bulk` is **0.538 ms / 0.098 ms** (**0.21x / 0.04x — 4.7x–25x faster than Java!**); `manager.removeAxioms.bulk` is **1.129 ms / 0.627 ms** (**0.21x / 0.12x — 4.8x–8.5x faster than Java!**); `util.OWLOntologyMerger` is **0.572 ms / 0.197 ms** (**0.35x / 0.12x — 2.9x–8.3x faster than Java!**).",
-    "- **Changes**: Added `CLONE_AXIOM_SET_TOKEN` fast `Map` cloning to `StructuralAxiomSet` (`internal/model/axiomSemantics.js`), made `OntologyStateMutationDraft` copy-on-write per touched collection (`internal/model/ontologyState.js`), and staged consecutive axiom/annotation changes in `#applySequentialChanges` (`model/owlOntologyManager.js`) before flushing on identity/import boundaries or errors.",
-    "",
-    "### P7. Use Indexed Position Lookups and Non-Throwing Iterable Checks in `EntitySearcher` (Implemented)",
-    "",
-    "- **Before**: `search.propertyCharacteristics` took **91.4 ms / 96.6 ms** (**13.9x / 14.7x** vs **6.58 ms**); `search.propertyHierarchyAndDomainsRanges` took **76.5 ms / 71.7 ms** (**11.8x / 11.1x** vs **6.47 ms**); `search.classHierarchyAndRelations` took **29.5 ms / 32.3 ms** (**10.7x / 11.8x** vs **2.74 ms**); `search.annotations` took **40.9 ms / 43.0 ms** (**12.3x / 13.0x** vs **3.31 ms**).",
-    "- **After**: `search.propertyCharacteristics` is **1.082 ms / 1.273 ms** (**0.16x / 0.19x — 5x–6x faster than Java!**); `search.propertyHierarchyAndDomainsRanges` is **3.421 ms / 3.341 ms** (**0.53x / 0.52x — almost 2x faster than Java!**); `search.classHierarchyAndRelations` is **2.269 ms / 2.426 ms** (**0.83x / 0.88x — faster than Java!**); `search.annotations` dropped to **6.839 ms / 6.339 ms** (**2.06x / 1.91x** — a **6x–6.8x speedup**).",
-    "- **Changes**: Replaced exception-driven `readOntologySnapshot(input)` probing on ontology collections with `isPackageOntology(input)` in `search/entitySearcher.js`, delegated hierarchy/domain/range/characteristic/annotation queries directly to `readOntologyModel`'s $O(1)$ position indexes, and shared a module-level `OWLDataFactory`.",
-    "",
-    "### P8. Replace DOM Document + XMLSerializer Instantiation in `RDFXMLDocumentFormat` Prefix Validation (Implemented)",
-    "",
-    "- **Before**: `formats.RDFXMLDocumentFormat.prefixes` took **10.42 ms / 10.59 ms** (**15.1x / 15.4x** vs **0.690 ms**); `util.SimpleShortFormProvider` took **2.32 ms / 2.69 ms** (**5.3x / 6.2x** vs **0.434 ms**).",
-    "- **After**: `formats.RDFXMLDocumentFormat.prefixes` is **1.271 ms / 1.155 ms** (**1.84x / 1.67x** — an **8.2x–9.2x speedup**); `util.SimpleShortFormProvider` is **0.548 ms / 0.555 ms** (**1.26x / 1.28x**); `util.AnnotationValueShortFormProvider` is **0.442 ms / 0.445 ms** (**0.35x — nearly 3x faster than Java!**).",
-    "- **Changes**: Replaced `DOMImplementation` + `XMLSerializer` round-tripping in `formats/rdfXMLDocumentFormat.js` with pure-JS `isNcName` and XML character validation in `internal/parsing/xml/xmlNames.js`.",
-    "",
-    "### P9. Defer Structural Key Stringification, Reuse Frozen Tuples, and Cache Dispatch Visitor Tables (Implemented)",
-    "",
-    "- **Before**: `model.dispatch` took **2.78 ms** (**14.0x** vs **0.198 ms**); `model.IRI.create` took **2.68 ms / 1.65 ms** (**3.8x / 2.3x** vs **0.709 ms**); `factory.entities` took **13.5 ms / 11.4 ms** (**4.6x / 3.9x** vs **2.912 ms**); `factory.axioms` took **13.4 ms / 14.3 ms** (**6.1x / 6.5x** vs **2.211 ms**); `factory.literals` took **25.7 ms / 12.2 ms** (**18.0x / 8.6x** vs **1.426 ms**); `factory.classExpressions` took **16.9 ms** (**13.1x** vs **1.287 ms**); `factory.dataRanges` took **8.6 ms / 7.2 ms** (**15.3x / 12.7x** vs **0.565 ms**).",
-    "- **After**: `model.dispatch` is **0.153 ms / 0.145 ms** (**0.77x / 0.73x — faster than Java!**); `model.IRI.create` is **0.492 ms / 0.295 ms** (**0.69x / 0.42x — faster than Java!**); `factory.entities` is **1.698 ms / 1.535 ms** (**0.58x / 0.53x — almost 2x faster than Java!**); `factory.axioms` is **2.314 ms / 2.401 ms** (**1.05x / 1.09x — at parity with Java!**); `factory.literals` in `normative-v1` is **0.964 ms** (**0.68x — faster than Java!**); `factory.classExpressions` dropped **8x–9.5x** to **2.134 ms / 1.769 ms** (**1.66x / 1.37x**); `factory.dataRanges` dropped **9.2x–10x** to **0.937 ms / 0.723 ms** (**1.66x / 1.28x**).",
-    "- **Changes**: Deferred `this.#key` and `this.#keyWithoutAnnotations` `JSON.stringify` until first access, added private-field brand checking (`readPackageTuple`) so `structuralTuple` reuses frozen child tuples in $O(1)$, added `AXIOM_CLONE_TOKEN` for annotation transforms in `model/structural.js`, precomputed constant datatype/annotation IRIs in `model/owlDataFactory.js`, and cached validated frozen visitor tables in `model/dispatch.js`.",
-    "",
-  );
-  return lines.join("\n");
+  return lines.join("\n") + "\n";
 };
 
 export const runPublicApiParityBenchmarkSuite = async ({
@@ -2752,6 +2844,15 @@ export const runPublicApiParityBenchmarkSuite = async ({
   refreshJavaBaseline = false,
   runJava = runJavaBenchmarks,
 } = {}) => {
+  selectedDefinitions(filterIds);
+  for (const [name, value, minimum] of [
+    ["warmupCount", warmupCount, 0],
+    ["runCount", runCount, 1],
+    ["syntaxCount", syntaxCount, 1],
+    ["importClosureCount", importClosureCount, 1],
+  ])
+    if (!Number.isSafeInteger(value) || value < minimum)
+      throw new TypeError(name + " is invalid");
   const sharedFixtures = prepareSharedFixtureDirectory({
     syntaxCount,
     importClosureCount,
@@ -2781,59 +2882,142 @@ export const runPublicApiParityBenchmarkSuite = async ({
     const relativeBaselinePath = path
       .relative(REPO_ROOT, javaBaselinePath)
       .replaceAll("\\", "/");
-    return compareBenchmarkSuites({
+    const report = compareBenchmarkSuites({
       javaSuite,
       jsSuites,
       warmupCount,
       runCount,
       javaBaselinePath: relativeBaselinePath,
+      filterIds,
+      syntaxCount,
+      importClosureCount,
     });
+    const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
+    const baselineBytes = fs.readFileSync(javaBaselinePath);
+    const fixtureBytes = JSON.stringify({
+      syntaxTexts: sharedFixtures.syntaxTexts,
+      closure: Object.entries(sharedFixtures.importClosure.files).map(
+        ([iri, filename]) => [iri, fs.readFileSync(filename, "utf8")],
+      ),
+    });
+    const runtimeSources = [];
+    const visit = (relative) => {
+      const absolute = path.join(REPO_ROOT, relative);
+      for (const entry of fs.readdirSync(absolute, { withFileTypes: true })) {
+        const filename = `${relative}/${entry.name}`;
+        if (entry.isDirectory()) visit(filename);
+        else if (entry.name.endsWith(".js") && !entry.name.endsWith(".test.js"))
+          runtimeSources.push([
+            filename,
+            digest(fs.readFileSync(path.join(REPO_ROOT, filename))),
+          ]);
+      }
+    };
+    for (const directory of [
+      "apibinding",
+      "formats",
+      "internal",
+      "io",
+      "model",
+      "search",
+      "profiles",
+      "util",
+      "modularity",
+      "manchestersyntax",
+    ])
+      visit(directory);
+    runtimeSources.sort(([left], [right]) =>
+      left < right ? -1 : left > right ? 1 : 0,
+    );
+    report.provenance = {
+      javaBaselineSha256: digest(baselineBytes),
+      javascriptHarnessSha256: digest(
+        fs.readFileSync(fileURLToPath(import.meta.url)),
+      ),
+      javaHarnessSha256: digest(fs.readFileSync(DEFAULT_JAVA_SOURCE_PATH)),
+      fixtureGeneratorSha256: digest(
+        fs.readFileSync(
+          path.join(MODULE_DIR, "generate-owlapi-benchmark-fixtures.cjs"),
+        ),
+      ),
+      fixtureSha256: digest(fixtureBytes),
+      runtimeSourcesSha256: digest(JSON.stringify(runtimeSources)),
+      recordedAt: new Date().toISOString(),
+      semanticQualification:
+        "Counts alone cannot qualify structural equivalence; see the coverage and comparability manifest.",
+      legacyJavaMemoryMeaning:
+        "Historical schema-1 heap delta; no peak or retained-memory claim is admitted.",
+      javascriptTimingMeaning:
+        "Raw performance.now() differences and medians retain API precision; Markdown display rounding is separate. Earlier recordings may have rounded samples to three decimal milliseconds.",
+    };
+    return report;
   } finally {
     sharedFixtures.cleanup();
   }
 };
 
-const parseCliArgs = (argv) => {
-  const options = {
-    warmupCount: 2,
-    runCount: 5,
-    filterIds: null,
-    javaBaselinePath: DEFAULT_JAVA_BASELINE_PATH,
-    updateMissingJavaBaseline: false,
-    refreshJavaBaseline: false,
-    outputPath: null,
-    markdownOutputPath: null,
+/** Strict native argument parsing prevents accidental all-case or invalid runs. */
+export const parseCliArgs = (argv) => {
+  const types = {
+    warmup: "string",
+    runs: "string",
+    filter: "string",
+    "java-baseline": "string",
+    "update-missing-java-baseline": "boolean",
+    "refresh-java-baseline": "boolean",
+    output: "string",
+    "markdown-output": "string",
   };
-  for (let i = 0; i < argv.length; i += 1) {
-    const arg = argv[i];
-    if (arg === "--warmup" && argv[i + 1]) {
-      options.warmupCount = Number.parseInt(argv[i + 1], 10);
-      i += 1;
-    } else if (arg === "--runs" && argv[i + 1]) {
-      options.runCount = Number.parseInt(argv[i + 1], 10);
-      i += 1;
-    } else if (arg === "--filter" && argv[i + 1]) {
-      options.filterIds = argv[i + 1]
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean);
-      i += 1;
-    } else if (arg === "--java-baseline" && argv[i + 1]) {
-      options.javaBaselinePath = path.resolve(REPO_ROOT, argv[i + 1]);
-      i += 1;
-    } else if (arg === "--update-missing-java-baseline") {
-      options.updateMissingJavaBaseline = true;
-    } else if (arg === "--refresh-java-baseline") {
-      options.refreshJavaBaseline = true;
-    } else if (arg === "--output" && argv[i + 1]) {
-      options.outputPath = path.resolve(REPO_ROOT, argv[i + 1]);
-      i += 1;
-    } else if (arg === "--markdown-output" && argv[i + 1]) {
-      options.markdownOutputPath = path.resolve(REPO_ROOT, argv[i + 1]);
-      i += 1;
-    }
+  const { values, tokens } = parseArgs({
+    args: argv,
+    strict: true,
+    allowPositionals: false,
+    tokens: true,
+    options: Object.fromEntries(
+      Object.entries(types).map(([name, type]) => [name, { type }]),
+    ),
+  });
+  const seen = new Set();
+  for (const { name } of tokens) {
+    if (seen.has(name)) throw new TypeError("Duplicate option: --" + name);
+    seen.add(name);
   }
-  return options;
+  const integer = (name, fallback, minimum) => {
+    const value = values[name];
+    if (value === undefined) return fallback;
+    if (
+      !/^\d+$/.test(value) ||
+      !Number.isSafeInteger(Number(value)) ||
+      Number(value) < minimum
+    )
+      throw new TypeError(name + " must be a safe integer >= " + minimum);
+    return Number(value);
+  };
+  const filterIds =
+    values.filter === undefined
+      ? null
+      : values.filter.split(",").map((value) => value.trim());
+  selectedDefinitions(filterIds);
+  if (values["refresh-java-baseline"] && values["update-missing-java-baseline"])
+    throw new TypeError(
+      "Java refresh and missing-only update are mutually exclusive",
+    );
+  const output = (name, fallback = null) => {
+    if (values[name] === undefined) return fallback;
+    if (!values[name].trim())
+      throw new TypeError(name + " requires a nonempty path");
+    return path.resolve(REPO_ROOT, values[name]);
+  };
+  return {
+    warmupCount: integer("warmup", 2, 0),
+    runCount: integer("runs", 5, 1),
+    filterIds,
+    javaBaselinePath: output("java-baseline", DEFAULT_JAVA_BASELINE_PATH),
+    updateMissingJavaBaseline: values["update-missing-java-baseline"] ?? false,
+    refreshJavaBaseline: values["refresh-java-baseline"] ?? false,
+    outputPath: output("output"),
+    markdownOutputPath: output("markdown-output"),
+  };
 };
 
 if (

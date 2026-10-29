@@ -2,6 +2,8 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { performance } from "node:perf_hooks";
+import { jest } from "@jest/globals";
 import {
   BEHAVIOR_PROFILES,
   BENCHMARK_DEFINITIONS,
@@ -21,6 +23,34 @@ const MODULE_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(MODULE_DIR, "..");
 
 describe("Public API performance parity harness (JS vs Java OWLAPI 5.5.1)", () => {
+  test("retains unrounded wall samples, first use and even-sample median", async () => {
+    const sharedFixtures = prepareSharedFixtureDirectory({
+      syntaxCount: 2,
+      importClosureCount: 2,
+    });
+    let clock = 0;
+    const now = jest.spyOn(performance, "now").mockImplementation(() => {
+      clock += 0.000123;
+      return clock;
+    });
+    try {
+      const suite = await runJsProfileBenchmarks("normative-v1", {
+        warmupCount: 0,
+        runCount: 2,
+        filterIds: ["model.dispatch"],
+        sharedFixtures,
+      });
+      const measured = suite.results[0];
+      expect(measured.firstUseWallMs).toBeCloseTo(0.000123, 12);
+      for (const sample of measured.measurements)
+        expect(sample.wallMs).toBeCloseTo(0.000123, 12);
+      expect(measured.median.wallMs).toBeCloseTo(0.000123, 12);
+    } finally {
+      now.mockRestore();
+      sharedFixtures.cleanup();
+    }
+  });
+
   test("defines 70 unique public API benchmarks across all 12 API categories and both behavior profiles", () => {
     expect(BEHAVIOR_PROFILES).toEqual(["java-owlapi-5.5.1", "normative-v1"]);
     expect(BENCHMARK_DEFINITIONS).toHaveLength(70);
@@ -102,6 +132,7 @@ describe("Public API performance parity harness (JS vs Java OWLAPI 5.5.1)", () =
         jsSuites,
         warmupCount: 0,
         runCount: 1,
+        filterIds: sampleIds,
       });
 
       expect(comparison.summary.totalBenchmarks).toBe(sampleIds.length);
@@ -141,6 +172,7 @@ describe("Public API performance parity harness (JS vs Java OWLAPI 5.5.1)", () =
       "formats.RDFXMLDocumentFormat.prefixes",
     ];
     let javaCallCount = 0;
+    const baselineBefore = fs.readFileSync(DEFAULT_JAVA_BASELINE_PATH);
     const neverCallJava = () => {
       javaCallCount += 1;
       throw new Error("Java should not be executed when baseline is complete");
@@ -156,6 +188,7 @@ describe("Public API performance parity harness (JS vs Java OWLAPI 5.5.1)", () =
       runJava: neverCallJava,
     });
     expect(javaCallCount).toBe(0);
+    expect(fs.readFileSync(DEFAULT_JAVA_BASELINE_PATH)).toEqual(baselineBefore);
     expect(report.javaBaselinePath).toBe(
       "docs/performance/java-owlapi-5.5.1-baseline.json",
     );

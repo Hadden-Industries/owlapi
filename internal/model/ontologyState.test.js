@@ -9,6 +9,44 @@ import { rdfDataFactory } from "../rdfjs/environment.js";
 import { OntologyState } from "./ontologyState.js";
 
 describe("OntologyState", () => {
+  it("preserves every published revision and the base of an older draft during incremental additions", () => {
+    const factory = new OWLDataFactory();
+    const axioms = Array.from({ length: 96 }, (_, index) =>
+      factory.getOWLDeclarationAxiom(
+        factory.getOWLClass(IRI.create("urn:revision:" + index)),
+      ),
+    );
+    const state = new OntologyState({ directAxioms: axioms.slice(0, 32) });
+    const stale = state.createMutationDraft();
+    const retained = [];
+    for (let index = 32; index < axioms.length; index++) {
+      retained.push(state.createSnapshot());
+      const draft = state.createMutationDraft();
+      expect(draft.stageAxiomAddition(axioms[index])).toBe(true);
+      expect(state.preflightMutation(draft).changesState).toBe(true);
+      expect(state.commitMutation(draft)).toBe(true);
+      expect(state.createSnapshot().revision).toBe(index - 31);
+      expect(state.createSnapshot().directAxioms).toEqual(
+        axioms.slice(0, index + 1),
+      );
+    }
+    for (let index = 0; index < retained.length; index++) {
+      expect(retained[index].revision).toBe(index);
+      expect(retained[index].directAxioms).toEqual(axioms.slice(0, index + 32));
+      expect(Object.isFrozen(retained[index].directAxioms)).toBe(true);
+    }
+    // Its original base still lacks this axiom, although the live state has it.
+    expect(stale.stageAxiomAddition(axioms[32])).toBe(true);
+    expect(() => state.preflightMutation(stale)).toThrow(
+      /revision 0.*revision 64/u,
+    );
+    const removal = state.createMutationDraft();
+    expect(removal.stageAxiomRemoval(axioms[0])).toBe(true);
+    state.preflightMutation(removal);
+    expect(state.commitMutation(removal)).toBe(true);
+    expect(state.createSnapshot().directAxioms).toEqual(axioms.slice(1));
+    expect(retained[0].directAxioms).toEqual(axioms.slice(0, 32));
+  });
   const dataFactory = new OWLDataFactory();
   const ontologyID = dataFactory.getOWLOntologyID(
     IRI.create("urn:ontology-state:ontology"),

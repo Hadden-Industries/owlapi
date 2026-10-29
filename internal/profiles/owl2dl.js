@@ -34,17 +34,16 @@ import { inspectSourceStructure } from "./sourceStructure.js";
 import {
   createStructuralValidator,
   validateStructuralShape,
+  hasValidatedStructuralShape,
   StructuralValidationError,
 } from "../model/structuralValidation.js";
 
 const entityKinds = new Set(ENTITY_KINDS);
-const propertyKinds = [
-  K.OBJECT_PROPERTY,
-  K.DATA_PROPERTY,
-  K.ANNOTATION_PROPERTY,
-];
 const reserved = (iri) =>
-  [OWL, RDF, RDFS, XSD].some((namespace) => iri.startsWith(namespace));
+  iri.startsWith(OWL) ||
+  iri.startsWith(RDF) ||
+  iri.startsWith(RDFS) ||
+  iri.startsWith(XSD);
 const permitted = new Map([
   [K.CLASS, new Set([OWL + "Thing", OWL + "Nothing"])],
   [
@@ -99,6 +98,9 @@ const statusOf = (violations, unresolved) =>
 const frozen = (entries) =>
   Object.freeze(entries.map((entry) => Object.freeze(entry)));
 const validIriStrings = new Set();
+// Two annotation-inspection modes per immutable snapshot, retaining only the
+// latest scope/source binding. Reports, limits and rule results are never cached.
+const preparedTraversals = new WeakMap();
 
 const isValidProfileIri = (iriString) => {
   if (validIriStrings.has(iriString)) return true;
@@ -111,6 +113,27 @@ const isValidProfileIri = (iriString) => {
     return false;
   }
 };
+
+const checkPreparedStep = (steps, index, budget) => {
+  const depth = steps[index];
+  if (depth < 0) return;
+  budget.depth(depth);
+  if (steps[index + 1] > budget.configuration.maxLiteralLength)
+    throw new ResourceLimitError("Literal validation size limit exceeded", {
+      resource: "profileLiteralLength",
+      limit: budget.configuration.maxLiteralLength,
+    });
+  for (let edges = steps[index + 2]; edges > 0; edges--) budget.check();
+};
+// Return an interrupted step without introducing a new promise continuation.
+function replayPreparedTraversal(steps, budget, start = 0) {
+  for (let index = start; index < steps.length; index += 3) {
+    budget.check();
+    if (budget.shouldYield()) return index;
+    checkPreparedStep(steps, index, budget);
+  }
+  return -1;
+}
 
 const checkModel = async (
   ontology,
@@ -139,6 +162,8 @@ const checkModel = async (
     entities = new Map(),
     definitions = new Map(),
     datatypeDependencies = new Map();
+  const pendingTraversals = [];
+  let allStructuresPrepared = true;
   try {
     await budget.checkpoint(0);
     const sourceRoots = includeSource
@@ -146,11 +171,45 @@ const checkModel = async (
       : new Map();
     for (const member of members) {
       const { snapshot, scope } = member;
+      const mode = validationPolicy.inspectsAnnotationValues ? 1 : 0;
+      const sourceVerified = member.status === "verified";
+      const previous = includeSource
+        ? undefined
+        : preparedTraversals.get(snapshot)?.[mode];
+      const cached =
+        previous?.scope === scope && previous.sourceVerified === sourceVerified
+          ? previous
+          : undefined;
+      const memberAxioms = [];
+      let axiomIndex = 0;
       for (const axiom of snapshot.directAxioms) {
         budget.check();
         if (budget.shouldYield()) await budget.yieldTurn();
-        axioms.push({ value: axiom, scope });
+        const entry = cached
+          ? cached.axioms[axiomIndex++]
+          : { value: axiom, scope };
+        axioms.push(entry);
+        if (!cached) memberAxioms.push(entry);
       }
+      if (cached) {
+        // Replay each original visit/depth/array-edge charge in order. No
+        // aggregate charge can move an explicit exhaustion or abort boundary.
+        let replayIndex = replayPreparedTraversal(cached.steps, budget);
+        while (replayIndex >= 0) {
+          await budget.yieldTurn();
+          checkPreparedStep(cached.steps, replayIndex, budget);
+          replayIndex = replayPreparedTraversal(
+            cached.steps,
+            budget,
+            replayIndex + 3,
+          );
+        }
+        for (const node of cached.nodes) nodes.push(node);
+        continue;
+      }
+      allStructuresPrepared = false;
+      let steps = includeSource ? null : [];
+      const memberNodes = [];
       const pending = [
         snapshot.ontologyID,
         snapshot.authoredImportDeclarations,
@@ -163,18 +222,35 @@ const checkModel = async (
         if (budget.shouldYield()) await budget.yieldTurn();
         const entry = pending.pop(),
           value = entry.value;
-        if (!value || typeof value !== "object") continue;
+        if (!value || typeof value !== "object") {
+          steps?.push(-1, -1, 0);
+          continue;
+        }
         if (
           !validationPolicy.inspectsAnnotationValues &&
           entry.annotationContext &&
           [K.LITERAL, K.ANONYMOUS_INDIVIDUAL].includes(value.kind)
-        )
+        ) {
+          // Skipped values need a pre-existing stable kind proof. Do not inspect
+          // or admit a value the Java profile intentionally leaves unchecked.
+          if (!hasValidatedStructuralShape(value)) steps = null;
+          steps?.push(-1, -1, 0);
           continue;
+        }
         budget.depth(entry.depth);
         validateStructuralShape(value);
+        const stepIndex = steps?.length;
+        steps?.push(
+          entry.depth,
+          value.kind === K.LITERAL && typeof value.lexicalForm === "string"
+            ? value.lexicalForm.length
+            : -1,
+          0,
+        );
         if (Array.isArray(value)) {
           for (const child of value) {
             budget.check();
+            if (steps) steps[stepIndex + 2] += 1;
             pending.push({ ...entry, value: child, depth: entry.depth + 1 });
           }
           continue;
@@ -186,6 +262,7 @@ const checkModel = async (
           sourceVerified: member.status === "verified",
         };
         nodes.push(node);
+        if (steps) memberNodes.push(node);
         if (
           value.kind === K.LITERAL &&
           typeof value.lexicalForm === "string" &&
@@ -198,7 +275,10 @@ const checkModel = async (
               limit: budget.configuration.maxLiteralLength,
             },
           );
-        for (const [field, child] of Object.entries(value)) {
+        // Shape admission above guarantees own data fields. Keep their native
+        // order while avoiding a temporary [key, value] pair for every edge.
+        for (const field of Object.keys(value)) {
+          const child = value[field];
           if (!child || typeof child !== "object") continue;
           pending.push({
             value: child,
@@ -221,12 +301,35 @@ const checkModel = async (
           });
         }
       }
+      if (steps)
+        pendingTraversals.push({
+          snapshot,
+          mode,
+          scope,
+          sourceVerified,
+          axioms: memberAxioms,
+          nodes: memberNodes,
+          steps,
+        });
     }
     const validateStructure = createStructuralValidator();
     for (let index = nodes.length - 1; index >= 0; index -= 1) {
       budget.check();
       if (budget.shouldYield()) await budget.yieldTurn();
-      validateStructure(nodes[index].value);
+      if (!allStructuresPrepared) validateStructure(nodes[index].value);
+    }
+    // Publish only after complete immutable shape/structure admission. Source
+    // assessment retains its own uncached traversal and provenance checks.
+    for (const entry of pendingTraversals) {
+      const variants = preparedTraversals.get(entry.snapshot) ?? [];
+      variants[entry.mode] = Object.freeze({
+        scope: entry.scope,
+        sourceVerified: entry.sourceVerified,
+        axioms: Object.freeze(entry.axioms.map(Object.freeze)),
+        nodes: Object.freeze(entry.nodes.map(Object.freeze)),
+        steps: Object.freeze(entry.steps),
+      });
+      preparedTraversals.set(entry.snapshot, variants);
     }
     if (profile !== "DL")
       await inspectProfileRules(
@@ -257,8 +360,9 @@ const checkModel = async (
           if (iri && reserved(iri.value))
             violate("RESERVED_ONTOLOGY_IRI", { scope, iri: iri.value });
         }
-      if (value.kind === K.IRI && !isValidProfileIri(value.value)) {
-        violate("IRI_INVALID", { scope });
+      if (value.kind === K.IRI) {
+        if (!isValidProfileIri(value.value)) violate("IRI_INVALID", { scope });
+        continue;
       }
       if (entityKinds.has(value.kind)) {
         const iri = value.iri.value;
@@ -328,7 +432,12 @@ const checkModel = async (
     for (const [iri, kinds] of entities) {
       budget.check();
       if (budget.shouldYield()) await budget.yieldTurn();
-      if (propertyKinds.filter((kind) => kinds.has(kind)).length > 1)
+      if (
+        Number(kinds.has(K.OBJECT_PROPERTY)) +
+          Number(kinds.has(K.DATA_PROPERTY)) +
+          Number(kinds.has(K.ANNOTATION_PROPERTY)) >
+        1
+      )
         violate("PROPERTY_CATEGORY_COLLISION", { iri });
       if (kinds.has(K.CLASS) && kinds.has(K.DATATYPE))
         violate("CLASS_DATATYPE_COLLISION", { iri });
@@ -356,6 +465,7 @@ const checkModel = async (
       budget.check();
       if (budget.shouldYield()) await budget.yieldTurn();
       const { value, scope } = node;
+      if (value.kind === K.IRI) continue;
       if (
         entityKinds.has(value.kind) &&
         value.kind !== K.NAMED_INDIVIDUAL &&
@@ -392,10 +502,13 @@ const checkModel = async (
             datatype: value.datatype.iri.value,
           });
         else {
-          const result =
+          let result =
             validationPolicy.literalValidation === "java-pattern"
               ? inspectJavaLiteral(value)
-              : await inspectLiteral(value, budget.configuration, budget);
+              : inspectLiteral(value, budget.configuration, budget);
+          // Inspectors return an own status record or asynchronous XML work.
+          // The global Promise constructor can be replaced by instrumentation.
+          if (!Object.hasOwn(result, "status")) result = await result;
           if (result.status === "invalid")
             violate(result.rule, { scope, datatype: value.datatype.iri.value });
           if (result.status === "unverified")
