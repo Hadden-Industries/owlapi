@@ -1,4 +1,4 @@
-<!-- registry-sha256: 327b2f4cd1c1edc83fe4559d52c801bbd24ed3f77c41b8cc29cff3ba83494e13 -->
+<!-- registry-sha256: 83d03090e1d9a5684492e5b4edb03bfc971c4d387ddcb8b60d5f6ee95f9a3417 -->
 
 # Java OWLAPI compatibility surface
 

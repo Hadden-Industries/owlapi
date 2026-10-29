@@ -5,6 +5,7 @@ import { basename, dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { format as formatWithPrettier } from "prettier";
+import { publicMembers } from "./public-api-members.mjs";
 
 import * as apibinding from "../apibinding/index.js";
 import * as formats from "../formats/index.js";
@@ -18,6 +19,9 @@ import * as search from "../search/index.js";
 import * as renderer from "../manchestersyntax/renderer/index.js";
 import * as locality from "../modularity/locality/index.js";
 
+// Planned first-public-release target for additions since published rc.2.
+// This is neither a publication claim nor selection/approval of a candidate.
+const ROADMAP_PUBLIC_RELEASE_TARGET = "0.1.0";
 const PACKAGE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const EXPECTED_JAVA_REVISION = JSON.parse(
   await readFile(
@@ -74,7 +78,7 @@ const rc2Binding = (
   sourceModule,
   capabilityIds: [capabilityId],
   relationship: "JS_ADAPTATION",
-  firstPublicRelease: "0.1.0-rc.2",
+  firstPublicReleaseTarget: "0.1.0-rc.2",
   callShapes,
   summary,
   omittedMembers,
@@ -334,7 +338,7 @@ const PARITY_BINDING_METADATA = Object.freeze({
     callShapes: ["new RDFXMLDocumentFormat()"],
     summary:
       "Java-backed RDF/XML format with bounded inherited prefix operations and captured save-time preferences.",
-    firstPublicRelease: "0.1.0-rc.2",
+    firstPublicReleaseTarget: "0.1.0-rc.2",
     omittedMembers: [
       "Prefix comparator, prefix IRI conversion and Stream overloads",
       "setPrefixManager and standalone PrefixManager/PrefixDocumentFormat exports",
@@ -358,14 +362,14 @@ const PARITY_BINDING_METADATA = Object.freeze({
     callShapes: ["new OWLOntologyWriterConfiguration()"],
     summary:
       "Immutable native writer settings with profile-specific copy behavior and format-specific consumers.",
-    firstPublicRelease: "0.1.0-rc.2",
+    firstPublicReleaseTarget: "0.1.0-rc.2",
     omittedMembers: [
       "shouldRemapAllAnonymousIndividualsIds / withRemapAllAnonymousIndividualsIds",
       "isUseNamespaceEntities / withUseNamespaceEntities",
       "shouldOutputNamedGraphIRI / withNamedGraphIRIEnabled",
     ],
     semanticQualifications: [
-      "Defaults: isIndenting true, getIndentSize 4, shouldUseBanners true, isLabelsAsBanner false, shouldSaveIdsForAllAnonymousIndividuals false. normative-v1 copies preserve unrelated fields. Java no-op setters retain identity; changed copies reproduce the released reset of indent size, banners and label selection before applying the requested value.",
+      "Defaults: isIndenting true, getIndentSize 4, shouldUseBanners true, isLabelsAsBanner false, shouldSaveIdsForAllAnonymousIndividuals false. normative-v1 copies preserve unrelated fields. Java no-op setters retain identity; changed copies reset indent size and banners while preserving labels-as-banner before applying the requested value.",
       "withIndentSize accepts Java int values in java-owlapi-5.5.1, including negative values, and nonnegative Java int values in normative-v1. The setting is consumed by the selected format at save time.",
       "Java RDF/XML consumes indentation, banners, labels and anonymous ID settings; OWL/XML consumes indentation, Turtle consumes banners and anonymous ID settings, and Functional Syntax ignores the presentation controls. Each selected behavior is tested at the real save boundary.",
       "Labels use lexical ordering of language, label text, then datatype, with IRI fallback. XML comment sanitization affects presentation only; labels remain unchanged RDF literals. No-language labels sort first.",
@@ -554,7 +558,7 @@ const MODULES = Object.freeze([
     javaPackage: "org.semanticweb.owlapi.io",
     npmSpecifier: "@hadden-industries/owlapi/io/node",
     module: nodeIo,
-    firstPublicRelease: "0.1.0-rc.2",
+    firstPublicReleaseTarget: ROADMAP_PUBLIC_RELEASE_TARGET,
     rationale:
       "Explicit Node HTTP, HTTPS and local-file capability. Every access requires caller authorization; this entry is unavailable in browsers and is absent from the bare aggregate.",
   },
@@ -563,7 +567,7 @@ const MODULES = Object.freeze([
     javaPackage: "org.semanticweb.owlapi.util",
     npmSpecifier: "@hadden-industries/owlapi/util",
     module: util,
-    firstPublicRelease: "0.1.0-rc.1",
+    firstPublicReleaseTarget: "0.1.0-rc.1",
     rationale:
       "Mirrors the Java OWLAPI util namespace for the exact approved closure, merger, transform, and short-form provider entry points.",
   },
@@ -572,7 +576,7 @@ const MODULES = Object.freeze([
     javaPackage: "org.semanticweb.owlapi.profiles",
     npmSpecifier: "@hadden-industries/owlapi/profiles",
     module: profiles,
-    firstPublicRelease: "0.1.0-rc.1",
+    firstPublicReleaseTarget: "0.1.0-rc.1",
     rationale:
       "Owns the approved asynchronous OWL 2 DL checker and immutable report; source-qualified evidence is separate from the formal Java-shaped verdict.",
   },
@@ -581,7 +585,7 @@ const MODULES = Object.freeze([
     javaPackage: "org.semanticweb.owlapi.model.parameters",
     npmSpecifier: "@hadden-industries/owlapi/model/parameters",
     module: parameters,
-    firstPublicRelease: "0.1.0-rc.2",
+    firstPublicReleaseTarget: "0.1.0-rc.2",
     rationale: "Owns the approved explicit query enums.",
   },
   {
@@ -589,7 +593,7 @@ const MODULES = Object.freeze([
     javaPackage: "org.semanticweb.owlapi.search",
     npmSpecifier: "@hadden-industries/owlapi/search",
     module: search,
-    firstPublicRelease: "0.1.0-rc.2",
+    firstPublicReleaseTarget: "0.1.0-rc.2",
     rationale: "Owns the selected asserted EntitySearcher operations.",
   },
   {
@@ -597,7 +601,7 @@ const MODULES = Object.freeze([
     javaPackage: "org.semanticweb.owlapi.manchestersyntax.renderer",
     npmSpecifier: "@hadden-industries/owlapi/manchestersyntax/renderer",
     module: renderer,
-    firstPublicRelease: "0.1.0-rc.2",
+    firstPublicReleaseTarget: "0.1.0-rc.2",
     rationale: "Owns the selected plain-text Manchester object renderer.",
   },
   {
@@ -605,7 +609,7 @@ const MODULES = Object.freeze([
     javaPackage: "org.semanticweb.owlapi.modularity.locality",
     npmSpecifier: "@hadden-industries/owlapi/modularity/locality",
     module: locality,
-    firstPublicRelease: "0.1.0-rc.2",
+    firstPublicReleaseTarget: "0.1.0-rc.2",
     rationale:
       "Owns the selected syntactic-locality modes and module extractor.",
   },
@@ -663,9 +667,9 @@ const JAVA_TYPES_BY_EXPORT = Object.freeze({
     "org.semanticweb.owlapi.io.UnparsableOntologyException",
 });
 
-const FIRST_PUBLIC_RELEASE_BY_EXPORT = Object.freeze({
-  ChangeApplied: "0.1.0-rc.2",
-  NodeDocumentLoader: "0.1.0-rc.2",
+const FIRST_PUBLIC_RELEASE_TARGET_BY_EXPORT = Object.freeze({
+  ChangeApplied: ROADMAP_PUBLIC_RELEASE_TARGET,
+  NodeDocumentLoader: ROADMAP_PUBLIC_RELEASE_TARGET,
   RDFParserMetaData: "0.1.0-rc.1",
   RDFOntologyHeaderStatus: "0.1.0-rc.1",
   AddOntologyAnnotation: "0.1.0-rc.1",
@@ -921,6 +925,13 @@ const OMITTED_MEMBERS = Object.freeze({
 });
 
 const PUBLIC_ERRORS_BY_EXPORT = Object.freeze({
+  NodeDocumentLoader: [
+    "DocumentLoadError",
+    "ResourceLimitError",
+    "SecurityPolicyError",
+    "TypeError",
+    "RangeError",
+  ],
   AddOntologyAnnotation: ["TypeError"],
   OWLManager: ["OWLOntologyCreationError", "UnparsableOntologyException"],
   OWLOntologyManager: [
@@ -1088,31 +1099,6 @@ const readJavaTypes = async (javaRoot) => {
   return types;
 };
 
-const ownMembers = (binding) => {
-  if (typeof binding === "function") {
-    const staticMembers = Object.getOwnPropertyNames(binding).filter(
-      (name) => !["length", "name", "prototype"].includes(name),
-    );
-    const prototypeMembers = binding.prototype
-      ? Object.getOwnPropertyNames(binding.prototype).filter(
-          (name) => name !== "constructor",
-        )
-      : [];
-    const members = [
-      ...staticMembers.map((name) => `static ${name}`),
-      ...prototypeMembers.map((name) => `prototype.${name}`),
-    ];
-    return members.length > 0 ? members.sort() : ["constructor"];
-  }
-  if (Array.isArray(binding)) {
-    return binding.map(String);
-  }
-  if (binding !== null && typeof binding === "object") {
-    return Object.keys(binding).sort();
-  }
-  return [typeof binding];
-};
-
 const kindOfBinding = (binding, exportName) => {
   if (typeof binding !== "function") {
     return "CONSTANT";
@@ -1274,11 +1260,13 @@ const buildBindings = (capabilityById) => {
             : "COMPLETE",
         exposure: "PUBLIC",
         stability: "PRERELEASE",
-        firstPublicRelease: parityMetadata
-          ? Object.hasOwn(parityMetadata, "firstPublicRelease")
-            ? parityMetadata.firstPublicRelease
+        firstPublicReleaseTarget: parityMetadata
+          ? Object.hasOwn(parityMetadata, "firstPublicReleaseTarget")
+            ? parityMetadata.firstPublicReleaseTarget
             : "0.1.0-rc.1"
-          : (FIRST_PUBLIC_RELEASE_BY_EXPORT[exportName] ?? "0.1.0-alpha.0"),
+          : Object.hasOwn(FIRST_PUBLIC_RELEASE_TARGET_BY_EXPORT, exportName)
+            ? FIRST_PUBLIC_RELEASE_TARGET_BY_EXPORT[exportName]
+            : "0.1.0-alpha.0",
         publicSpecifier: namespace.npmSpecifier,
         sourceModule:
           parityMetadata?.sourceModule ?? sourceModuleFor(exportName),
@@ -1294,7 +1282,16 @@ const buildBindings = (capabilityById) => {
         callShapes:
           parityMetadata?.callShapes ??
           callShapesFor(binding, exportName, namespace.npmSpecifier),
-        supportedMembers: ownMembers(binding),
+        supportedMembers: publicMembers(binding).filter(
+          (member) =>
+            // These base implementations serve axiom instances only; their
+            // presence on IRI's prototype chain does not make them IRI APIs.
+            exportName !== "IRI" ||
+            ![
+              "prototype.getAnnotatedAxiom",
+              "prototype.getAxiomWithoutAnnotations",
+            ].includes(member),
+        ),
         omittedMembers:
           parityMetadata?.omittedMembers ?? OMITTED_MEMBERS[exportName] ?? [],
         publicErrors: PUBLIC_ERRORS_BY_EXPORT[exportName] ?? [],
@@ -1578,8 +1575,11 @@ const buildRegistry = async (javaRoot) => {
     javaPackage: namespace.javaPackage,
     npmSpecifier: namespace.npmSpecifier,
     exposure: "PUBLIC",
-    firstPublicRelease: Object.hasOwn(namespace, "firstPublicRelease")
-      ? namespace.firstPublicRelease
+    firstPublicReleaseTarget: Object.hasOwn(
+      namespace,
+      "firstPublicReleaseTarget",
+    )
+      ? namespace.firstPublicReleaseTarget
       : "0.1.0-alpha.0",
     rationale: namespace.rationale,
     ownedBindingIds:
@@ -1615,7 +1615,7 @@ const buildRegistry = async (javaRoot) => {
 
   return {
     $schema: "./java-api-surface.schema.json",
-    schemaVersion: 1,
+    schemaVersion: 2,
     packageName: packageJson.name,
     packageVersion: packageJson.version,
     javaReference: {
@@ -1678,7 +1678,7 @@ const renderApiView = (registry, digest) => {
       `- Kind: ${binding.kind}`,
       `- Java authority: ${javaAuthority}`,
       `- Relationship: ${binding.relationship}; compatibility: ${binding.compatibility}`,
-      `- Release status: ${binding.stability}; ${binding.firstPublicRelease === null ? "first public release not selected" : `from ${binding.firstPublicRelease}`}`,
+      `- Release status: ${binding.stability}; ${binding.firstPublicReleaseTarget === null ? "first public release target unassigned" : `first public release target ${binding.firstPublicReleaseTarget}`}`,
       `- Call shape: ${binding.callShapes.join("; ")}`,
       `- Supported members: ${binding.supportedMembers.join("; ")}`,
       `- Omitted Java members: ${binding.omittedMembers.join("; ") || "none recorded"}`,
@@ -1699,6 +1699,8 @@ const renderApiView = (registry, digest) => {
     "This is an independently maintained JavaScript implementation. It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project; Java names identify compatibility authorities, not organizational continuity or complete parity.",
     "",
     `The package exposes one convenience aggregate and ${registry.namespaces.length - 1} Java-recognizable namespace entry points. Import from declared package specifiers only; paths below \`internal/\` are intentionally outside the public contract.`,
+    "",
+    "First public release targets are planning metadata, not evidence of availability. Public includes versioned npm and GitHub releases, including prereleases; a moving source branch alone is not a release. Existing targets remain unchanged when publication succeeds; null means no target has been assigned.",
     "",
     ...sections,
     "",

@@ -14,15 +14,17 @@ import { parseSshVerification } from "./verify-release-tag.mjs";
 
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
 
-/** Source qualification may precede immutable version selection; publication may not. */
+/** Require an assigned target before publication; a target proves neither approval nor publication. */
 export const assertSelectedPublicReleases = (registry) => {
   const pending = registry.bindings.filter(
     (binding) =>
-      binding.exposure === "PUBLIC" && binding.firstPublicRelease === null,
+      binding.exposure === "PUBLIC" &&
+      (binding.firstPublicReleaseTarget === null ||
+        binding.firstPublicReleaseTarget === undefined),
   );
   if (pending.length)
     throw new Error(
-      `Public bindings require an immutable first release selection: ${pending.map(({ id }) => id).join(", ")}`,
+      `Public bindings require an assigned first public release target: ${pending.map(({ id }) => id).join(", ")}`,
     );
 };
 

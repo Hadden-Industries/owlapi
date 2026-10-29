@@ -22,7 +22,7 @@
       "minLength": 1
     },
     "schemaVersion": {
-      "const": 1
+      "const": 2
     },
     "packageName": {
       "const": "@hadden-industries/owlapi"
@@ -187,7 +187,7 @@
         "javaPackage",
         "npmSpecifier",
         "exposure",
-        "firstPublicRelease",
+        "firstPublicReleaseTarget",
         "rationale",
         "ownedBindingIds"
       ],
@@ -204,8 +204,16 @@
         "exposure": {
           "const": "PUBLIC"
         },
-        "firstPublicRelease": {
-          "$ref": "#/$defs/publicReleaseVersion"
+        "firstPublicReleaseTarget": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/publicReleaseVersion"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Version targeted for the first public release of this namespace or binding, including prereleases. Planning metadata, not evidence that publication occurred; null means no target assigned. Keep the value when publication succeeds and retarget only before first publication."
         },
         "rationale": {
           "$ref": "#/$defs/nonEmptyString"
@@ -228,7 +236,7 @@
         "progress",
         "exposure",
         "stability",
-        "firstPublicRelease",
+        "firstPublicReleaseTarget",
         "publicSpecifier",
         "sourceModule",
         "javaPackage",
@@ -285,7 +293,7 @@
         "stability": {
           "const": "PRERELEASE"
         },
-        "firstPublicRelease": {
+        "firstPublicReleaseTarget": {
           "anyOf": [
             {
               "$ref": "#/$defs/publicReleaseVersion"
@@ -293,7 +301,8 @@
             {
               "type": "null"
             }
-          ]
+          ],
+          "description": "Version targeted for the first public release of this namespace or binding, including prereleases. Planning metadata, not evidence that publication occurred; null means no target assigned. Keep the value when publication succeeds and retarget only before first publication."
         },
         "publicSpecifier": {
           "$ref": "#/$defs/nonEmptyString"
