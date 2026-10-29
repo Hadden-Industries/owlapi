@@ -194,6 +194,7 @@ test("root policy accounts for every tracked Markdown path and preserves the rev
     ),
     "docs/Deep Review of Phase 19 and Phase 20 of the owlapi Implementation Plan [2026-08-24T1130].md",
     "docs/Deep Review of Phase 19 and Phase 20 of the owlapi Implementation Plan [2026-08-25T0020].md",
+    "docs/compatibility/0.1.0-api-delta.md",
     "docs/compatibility/java-api-surface.md",
     "docs/conformance/upstream/w3c-json-ld-api/tests/LICENSE.md",
     "docs/conformance/upstream/w3c-owl2/README.md",

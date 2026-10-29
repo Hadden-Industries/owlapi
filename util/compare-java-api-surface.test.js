@@ -49,3 +49,30 @@ test("historical target naming does not invent a semantic API change", () => {
     ).changed,
   ).toEqual([]);
 });
+
+test("structured field comparison ignores object key order but preserves array order and values", () => {
+  const binding = { id: "retained", supportedMembers: ["constructor"] };
+  const compare = (before, after) =>
+    compareSurface(
+      { bindings: [{ ...binding, metadata: before }] },
+      { bindings: [{ ...binding, metadata: after }] },
+    ).changed;
+  expect(
+    compare(
+      { profile: { name: "normative", enabled: true }, order: ["a", "b"] },
+      { order: ["a", "b"], profile: { enabled: true, name: "normative" } },
+    ),
+  ).toEqual([]);
+  for (const [before, after] of [
+    [
+      ["a", "b"],
+      ["b", "a"],
+    ],
+    [{ enabled: true }, { enabled: false }],
+    ["1", 1],
+  ]) {
+    expect(compare(before, after).map(({ fields }) => fields)).toEqual([
+      ["metadata"],
+    ]);
+  }
+});

@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { resolve } from "node:path";
+import { isDeepStrictEqual } from "node:util";
 import { format } from "prettier";
 import { publicMembers } from "./public-api-members.mjs";
 
@@ -34,7 +35,7 @@ export const compareSurface = (before, after) => {
       const prior = previous.get(binding.id);
       if (!prior) return [];
       const fields = Object.keys(binding).filter(
-        (key) => JSON.stringify(binding[key]) !== JSON.stringify(prior[key]),
+        (key) => !isDeepStrictEqual(binding[key], prior[key]),
       );
       return fields.length
         ? [
