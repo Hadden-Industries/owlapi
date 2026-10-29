@@ -29,9 +29,15 @@ export const CI_JOB_NAMES = Object.freeze({
   consumer_runtimes: "CI / complete consumer qualification",
   verification: "CI / verification strategy",
   metadata: "CI / metadata",
-  source_node_22: projectRuntimeText("CI / Ubuntu / Node {{runtime:node.22}}"),
-  source_node_24: projectRuntimeText("CI / Ubuntu / Node {{runtime:node.24}}"),
-  source_node_26: projectRuntimeText("CI / Ubuntu / Node {{runtime:node.26}}"),
+  source_portable: projectRuntimeText(
+    "CI / Ubuntu / portable source / Node {{runtime:canonicalNode}}",
+  ),
+  source_canonical: projectRuntimeText(
+    "CI / Ubuntu / canonical source / Node {{runtime:canonicalNode}}",
+  ),
+  source_json: projectRuntimeText(
+    "CI / Ubuntu / JSON source / Node {{runtime:canonicalNode}}",
+  ),
   quality_windows: "CI / Windows / quality tools",
   dependency_review: "CI / dependency review",
   candidate: "CI / retained candidate",
@@ -72,7 +78,7 @@ export const hostedCiJobNames = () =>
       : [name],
   );
 export const CHECK_JOBS = Object.freeze({
-  java: "source_node_24",
+  java: "source_canonical",
   owl_contract: "owl_contract",
 });
 /** All tracked bytes and supported collector inputs bind FULL coverage. External input
@@ -80,7 +86,7 @@ export const CHECK_JOBS = Object.freeze({
  * this policy cannot authorize an omitted integration.
  */
 export const QUALIFICATION_POLICY = Object.freeze({
-  version: 8,
+  version: 9,
   collectorImageCompatibility: "SUPPORTED_OS_ARCH_RUNTIME_RETAINED_BUILD",
   artifactTransportSha256: evidenceFingerprint({
     policy: artifactTransportPolicy,
@@ -122,7 +128,7 @@ export const validQualificationHost = (host) =>
   host.architecture === "X64" &&
   host.image === "ubuntu24" &&
   /^\d{8}\.\d+(?:\.\d+)?$/u.test(host.imageVersion ?? "") &&
-  host.node === projectRuntimeText("v{{runtime:node.24}}");
+  host.node === projectRuntimeText("v{{runtime:canonicalNode}}");
 
 /** Only an incidental collector image build may differ; retain both observations. */
 export const compatibleQualificationHosts = (original, current) =>

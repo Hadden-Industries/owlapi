@@ -59,7 +59,7 @@ describe("closed runtime projections", () => {
     );
     const drift = checkWorkflowRuntimeProjections({
       "ci.yml": source.replace(
-        `name: CI / Ubuntu / Node ${CI_RUNTIME.node["24"]}`,
+        `name: CI / Ubuntu / canonical source / Node ${CI_RUNTIME.node[CI_RUNTIME.canonicalNodeMajor]}`,
         "name: CI / Ubuntu / Node 0.0.0",
       ),
     });

@@ -41,7 +41,7 @@ describe("required workflow aggregation", () => {
       artifact_digest: "f".repeat(64),
     };
     needs.owl_contract.outputs.coverage = JSON.stringify(owl);
-    needs.source_node_24.outputs.coverage = JSON.stringify(java);
+    needs.source_canonical.outputs.coverage = JSON.stringify(java);
     const execution = {
       runId: identity.runId,
       runAttempt: identity.runAttempt,
@@ -55,7 +55,7 @@ describe("required workflow aggregation", () => {
       if (fault === "stale") changed.commit = "a".repeat(40);
       if (fault === "partial") changed.tests.passed -= 1;
       if (fault === "future") changed.runAttempt = 3;
-      needs.source_node_24.outputs.coverage =
+      needs.source_canonical.outputs.coverage =
         fault === "missing" ? undefined : JSON.stringify(changed);
       expect(() => requireReleaseJobs(needs, execution)).toThrow();
     }

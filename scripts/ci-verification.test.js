@@ -77,7 +77,7 @@ const successfulNeeds = (
         outputs:
           job === "candidate"
             ? { artifact_id: "702", artifact_digest: "f".repeat(64) }
-            : job === "source_node_24"
+            : job === "source_canonical"
               ? {
                   coverage: JSON.stringify(java),
                   reference: JSON.stringify(
@@ -301,7 +301,7 @@ const partialPrFixture = () => {
     now: now - 20 * 60_000,
   });
   retainExecution(f, 100, 1, [
-    CI_JOB_NAMES.source_node_24,
+    CI_JOB_NAMES.source_canonical,
     CI_JOB_NAMES.owl_contract,
   ]);
   return f;
@@ -316,7 +316,7 @@ const mainFixture = async (reused, partialOrigin = false) => {
       now: now - 20 * 60_000,
     });
     retainExecution(f, 100, 1, [
-      CI_JOB_NAMES.source_node_24,
+      CI_JOB_NAMES.source_canonical,
       CI_JOB_NAMES.owl_contract,
     ]);
   }
@@ -494,7 +494,7 @@ test("waits for a delayed required producing-attempt job", async () => {
     const value = await read(requested);
     if (requested === path && observations++ === 0) {
       value.jobs = value.jobs.filter(
-        (job) => job.name !== CI_JOB_NAMES.source_node_24,
+        (job) => job.name !== CI_JOB_NAMES.source_canonical,
       );
       value.total_count--;
     }
@@ -865,7 +865,7 @@ describe("exact landed-main qualification and direct original execution", () => 
   test("FULL receipts require current explicit coverage; job SUCCESS cannot hide unset Java", () => {
     const f = fixture();
     const needs = successfulNeeds();
-    delete needs.source_node_24.outputs.coverage;
+    delete needs.source_canonical.outputs.coverage;
     expect(() =>
       createVerificationReceipt({ context: f.prContext, needs, now }),
     ).toThrow(/coverage/u);
@@ -897,11 +897,11 @@ describe("reuse of complete PR integration", () => {
         seedRequested: false,
         publication: null,
       };
-      if (fault === "missing") delete needs.source_node_24.outputs.reference;
+      if (fault === "missing") delete needs.source_canonical.outputs.reference;
       else {
         if (fault === "old policy") state.policySha256 = "0".repeat(64);
         if (fault === "another execution") state.execution.runId++;
-        needs.source_node_24.outputs.reference = JSON.stringify(state);
+        needs.source_canonical.outputs.reference = JSON.stringify(state);
       }
       if (fault === "missing" && !JAVA_REFERENCE_POLICY.enabled) {
         expect(
@@ -948,7 +948,7 @@ describe("reuse of complete PR integration", () => {
         qualificationDigest: `sha256:${"6".repeat(64)}`,
       },
     });
-    needs.source_node_24.outputs.reference = JSON.stringify(state);
+    needs.source_canonical.outputs.reference = JSON.stringify(state);
     if (!JAVA_REFERENCE_POLICY.enabled) {
       expect(() =>
         createVerificationReceipt({ context: f.prContext, needs, now }),
@@ -958,7 +958,7 @@ describe("reuse of complete PR integration", () => {
     f.receipt = createVerificationReceipt({ context: f.prContext, needs, now });
     expect(f.receipt.checks.java.execution).toBe("SUCCESS");
     const incomplete = jsonClone(needs);
-    delete incomplete.source_node_24.outputs.coverage;
+    delete incomplete.source_canonical.outputs.coverage;
     expect(() =>
       createVerificationReceipt({
         context: f.prContext,
@@ -987,7 +987,7 @@ describe("reuse of complete PR integration", () => {
       now: now - 20 * 60_000,
     });
     retainExecution(f, 100, 1, [
-      CI_JOB_NAMES.source_node_24,
+      CI_JOB_NAMES.source_canonical,
       CI_JOB_NAMES.owl_contract,
       CI_JOB_NAMES.metadata,
     ]);
@@ -1005,10 +1005,10 @@ describe("reuse of complete PR integration", () => {
     // the attempt-specific endpoint preserves their actual attempt-1 execution.
     expect(f.jobs.every((job) => job.run_attempt === 2)).toBe(true);
     expect(
-      f.jobs.find((job) => job.name === CI_JOB_NAMES.source_node_24).id,
+      f.jobs.find((job) => job.name === CI_JOB_NAMES.source_canonical).id,
     ).not.toBe(
       f.responses["/actions/runs/100/attempts/1/jobs?per_page=100"].jobs.find(
-        (job) => job.name === CI_JOB_NAMES.source_node_24,
+        (job) => job.name === CI_JOB_NAMES.source_canonical,
       ).id,
     );
     await expect(verify(f)).resolves.toMatchObject({ reuse: "true" });
@@ -1027,7 +1027,7 @@ describe("reuse of complete PR integration", () => {
     async (fault) => {
       const f = partialPrFixture();
       const latest = f.jobs.find(
-        (job) => job.name === CI_JOB_NAMES.source_node_24,
+        (job) => job.name === CI_JOB_NAMES.source_canonical,
       );
       if (fault === "runner") latest.runner_id++;
       if (fault === "start") latest.started_at = "2026-09-29T17:00:01Z";
@@ -1056,7 +1056,7 @@ describe("reuse of complete PR integration", () => {
       const inventory =
         f.responses["/actions/runs/100/attempts/1/jobs?per_page=100"];
       const producer = inventory.jobs.find(
-        (job) => job.name === CI_JOB_NAMES.source_node_24,
+        (job) => job.name === CI_JOB_NAMES.source_canonical,
       );
       if (fault === "truncated") inventory.total_count++;
       if (fault === "duplicate") {
@@ -1077,7 +1077,7 @@ describe("reuse of complete PR integration", () => {
 
   test("rejects relabeling a retained execution as a new producing attempt", async () => {
     const f = fixture();
-    retainExecution(f, 100, 1, [CI_JOB_NAMES.source_node_24]);
+    retainExecution(f, 100, 1, [CI_JOB_NAMES.source_canonical]);
     expect(f.receipt.checks.java.original.runAttempt).toBe(2);
     await expect(verify(f)).rejects.toThrow(/retained earlier execution/u);
   });
@@ -1086,10 +1086,10 @@ describe("reuse of complete PR integration", () => {
     "cannot prove a new producer when predecessor %s is unavailable",
     async (field) => {
       const f = fixture();
-      retainExecution(f, 100, 1, [CI_JOB_NAMES.source_node_24]);
+      retainExecution(f, 100, 1, [CI_JOB_NAMES.source_canonical]);
       const previous = f.responses[
         "/actions/runs/100/attempts/1/jobs?per_page=100"
-      ].jobs.find((job) => job.name === CI_JOB_NAMES.source_node_24);
+      ].jobs.find((job) => job.name === CI_JOB_NAMES.source_canonical);
       delete previous[field];
       await expect(verify(f)).rejects.toThrow(
         /execution identity is unavailable/u,
@@ -1104,7 +1104,7 @@ describe("reuse of complete PR integration", () => {
       const inventory =
         f.responses["/actions/runs/100/attempts/1/jobs?per_page=100"];
       const previous = inventory.jobs.find(
-        (job) => job.name === CI_JOB_NAMES.source_node_24,
+        (job) => job.name === CI_JOB_NAMES.source_canonical,
       );
       if (state === "absent") {
         inventory.jobs = inventory.jobs.filter((job) => job !== previous);

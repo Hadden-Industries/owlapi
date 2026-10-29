@@ -218,7 +218,7 @@ export const assertJavaReferenceState = createJavaReferenceStateValidator(
 export function javaReferenceFromNeeds(needs, identity) {
   let state;
   try {
-    state = JSON.parse(needs.source_node_24?.outputs?.reference ?? "null");
+    state = JSON.parse(needs.source_canonical?.outputs?.reference ?? "null");
   } catch {
     throw new Error("Java materialization output is malformed.");
   }

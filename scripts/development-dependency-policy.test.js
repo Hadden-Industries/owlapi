@@ -69,11 +69,17 @@ describe("development dependency and runtime eligibility", () => {
       false,
     );
   });
-  test("native npm remains the sole versionless development runtime authority", () => {
+  test("development runtime admission is independent of consumer support", () => {
+    const range = projectRuntimeText("{{runtime:developmentNodeRange}}");
     expect(manifest.devEngines.runtime).toEqual({
       name: "node",
+      version: range,
       onFail: "error",
     });
+    for (const version of ["22.23.4", "24.22.2", "26.12.99", "26.13.0-rc.1"])
+      expect(semver.satisfies(version, range)).toBe(false);
+    for (const version of [CANONICAL_NODE, "27.0.0"])
+      expect(semver.satisfies(version, range)).toBe(true);
     expect(manifest.devEngines.packageManager.onFail).toBe("error");
     expect(manifest).not.toHaveProperty("packageManager");
     expect(readFileSync(".node-version", "utf8").trim()).toBe(CANONICAL_NODE);
@@ -84,10 +90,10 @@ describe("development dependency and runtime eligibility", () => {
       const workflow = parse(
         readFileSync(`.github/workflows/${workflowName}.yml`, "utf8"),
       );
-      const source = workflow.jobs.source_node_26;
+      const source = workflow.jobs.source_json;
       expect(source).toBeDefined();
       for (const jobId of [
-        "source_node_26",
+        "source_json",
         "portability_ubuntu_node_26",
         "portability_windows_node_26",
         "portability_macos_node_26",
@@ -96,8 +102,8 @@ describe("development dependency and runtime eligibility", () => {
         expect(
           job.steps.find(
             (step) => step.uses === "./.github/actions/setup-producer",
-          ).with["node-family"],
-        ).toBe("26");
+          ).with?.["node-family"] ?? "canonical",
+        ).toBe(jobId === "source_json" ? "canonical" : "26");
         expect(
           job.steps.some(
             (step) =>
@@ -107,7 +113,7 @@ describe("development dependency and runtime eligibility", () => {
         ).toBe(true);
         expect(workflow.jobs.required.needs).toContain(jobId);
       }
-      expect(workflow.jobs.candidate.needs).toContain("source_node_26");
+      expect(workflow.jobs.candidate.needs).toContain("source_json");
       expect(
         source.steps.some((step) => step.run === "npm run lint:source-python"),
       ).toBe(true);

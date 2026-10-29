@@ -12,6 +12,14 @@
       {
         "path": [
           "devEngines",
+          "runtime",
+          "version"
+        ],
+        "template": "{{runtime:developmentNodeRange}}"
+      },
+      {
+        "path": [
+          "devEngines",
           "packageManager",
           "version"
         ],
@@ -26,7 +34,7 @@
           "obligation"
         ],
         "requirementId": "P19-NODE-FLOORS-001",
-        "template": "Consumer admission is projected from the lowest minimum in docs/release/runtime-policy.json into package.json engines.node as {{runtime:consumerRange}}. Official support covers the maintained policy families, with minimums of Node {{runtime:minimums}}; other releases receive best-effort support. Freeze the minimum, latest released patch and distinct reference for each policy family once per hosted qualification; require the same retained-tarball scoped/alias consumer contracts on every declared platform and product source behavior on Linux. Producer tools use exact reference runtimes {{runtime:referenceRange}} and npm {{runtime:npm}}; consumer qualification uses separately admitted npm {{runtime:consumerNpm}}. Each report binds actual Node/npm, OS/architecture, source, run/attempt, matrix digest and candidate bytes. Passing hosted evidence supporting the open-ended admission policy is recorded in docs/release/node-consumer-qualification.md; every release candidate still requires its own qualification. Preserve Node {{runtime:canonicalNode}} canonical production and Markdown/Java authority and upstream-support distinctions."
+        "template": "Consumer admission is projected from the lowest minimum in docs/release/runtime-policy.json into package.json engines.node as {{runtime:consumerRange}}. Official support covers the maintained policy families, with minimums of Node {{runtime:minimums}}; other releases receive best-effort support. Freeze the minimum, latest released patch and distinct reference for each policy family once per hosted qualification; require the same retained-tarball scoped/alias consumer contracts on every declared platform and product source behavior on Linux. Producer tools use exact Node {{runtime:canonicalNode}} and npm {{runtime:npm}}; consumer qualification uses separately admitted npm {{runtime:consumerNpm}}. Each report binds actual Node/npm, OS/architecture, source, run/attempt, matrix digest and candidate bytes. Passing hosted evidence supporting the open-ended admission policy is recorded in docs/release/node-consumer-qualification.md; every release candidate still requires its own qualification. Preserve Node {{runtime:canonicalNode}} canonical production and Markdown/Java authority and upstream-support distinctions."
       },
       {
         "path": [
@@ -35,7 +43,7 @@
           "obligation"
         ],
         "requirementId": "P19-LOCKED-TOOLCHAIN-001",
-        "template": "All registry development declarations use >= minimums, including the accepted JSON Quality prerelease; the exact qualified graph, integrity, authenticated legal evidence and install-script decisions remain locked and reviewed. Local npm eligibility is {{runtime:npmRange}} with versionless devEngines.runtime; producer CI, release and governed verification bootstrap exact npm {{runtime:npm}} before project commands or cache probes. Consumer lanes retain producer-installed tools, then select the frozen Node and separately admitted npm {{runtime:consumerNpm}} without installing the development graph at consumer floors. Preserve production pins, canonical Node {{runtime:canonicalNode}}, denied scripts, Markdown file archives/lock, Python and Actions pins. Deliberate resolution and frozen npm ci are distinct operations."
+        "template": "All registry development declarations use >= minimums, including the accepted JSON Quality prerelease; the exact qualified graph, integrity, authenticated legal evidence and install-script decisions remain locked and reviewed. Local development requires Node {{runtime:developmentNodeRange}} and npm {{runtime:npmRange}}; producer CI, release and governed verification bootstrap exact npm {{runtime:npm}} before project commands or cache probes. Consumer lanes retain producer-installed tools, then select the frozen Node and separately admitted npm {{runtime:consumerNpm}} without installing the development graph at consumer floors. Preserve production pins, canonical Node {{runtime:canonicalNode}}, denied scripts, Markdown file archives/lock, Python and Actions pins. Deliberate resolution and frozen npm ci are distinct operations."
       }
     ]
   },
@@ -66,8 +74,8 @@
       "",
       "Local npm eligibility is `{{runtime:npmRange}}`; producer CI, release construction, and governed qualification select exact npm {{runtime:npm}} before project commands or cache probes.",
       "Consumer runtime qualification separately selects exact npm {{runtime:consumerNpm}}, whose declared engines admit every consumer minimum; it does not lower the producer toolchain requirement.",
-      "The development runtime remains versionless in `devEngines`; consumer admission is derived from the lowest maintained-family minimum, independently of producer toolchain requirements.",
-      "The exact CI reference runtimes remain Node {{runtime:references}}; Node {{runtime:canonicalNode}} is canonical."
+      "The development runtime requires Node `{{runtime:developmentNodeRange}}` in `devEngines`; consumer admission is derived from the lowest maintained-family minimum, independently of producer toolchain requirements.",
+      "Producer tooling uses Node {{runtime:canonicalNode}}; consumer references remain Node {{runtime:references}}."
     ]
   },
   "workflows": {
@@ -75,26 +83,26 @@
       {
         "path": [
           "jobs",
-          "source_node_22",
+          "source_portable",
           "name"
         ],
-        "template": "CI / Ubuntu / Node {{runtime:node.22}}"
+        "template": "CI / Ubuntu / portable source / Node {{runtime:canonicalNode}}"
       },
       {
         "path": [
           "jobs",
-          "source_node_26",
+          "source_json",
           "name"
         ],
-        "template": "CI / Ubuntu / Node {{runtime:node.26}}"
+        "template": "CI / Ubuntu / JSON source / Node {{runtime:canonicalNode}}"
       },
       {
         "path": [
           "jobs",
-          "source_node_24",
+          "source_canonical",
           "name"
         ],
-        "template": "CI / Ubuntu / Node {{runtime:node.24}}"
+        "template": "CI / Ubuntu / canonical source / Node {{runtime:canonicalNode}}"
       },
       {
         "path": [
@@ -151,6 +159,50 @@
           "name"
         ],
         "template": "CI / macOS / Node {{runtime:node.26}}"
+      },
+      {
+        "path": [
+          "jobs",
+          "portability_windows_node_22",
+          "steps",
+          1,
+          "with",
+          "node"
+        ],
+        "template": "{{runtime:node.22}}"
+      },
+      {
+        "path": [
+          "jobs",
+          "portability_windows_node_24",
+          "steps",
+          1,
+          "with",
+          "node"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": [
+          "jobs",
+          "portability_macos_node_22",
+          "steps",
+          1,
+          "with",
+          "node"
+        ],
+        "template": "{{runtime:node.22}}"
+      },
+      {
+        "path": [
+          "jobs",
+          "portability_macos_node_24",
+          "steps",
+          1,
+          "with",
+          "node"
+        ],
+        "template": "{{runtime:node.24}}"
       }
     ],
     "extended-tests.yml": [],
@@ -164,7 +216,7 @@
           "with",
           "node-version"
         ],
-        "template": "{{runtime:node.24}}"
+        "template": "{{runtime:canonicalNode}}"
       }
     ],
     "release-reconciliation.yml": [
@@ -176,7 +228,7 @@
           0,
           "name"
         ],
-        "template": "Select Node {{runtime:node.24}} and the exact public npm registry"
+        "template": "Select Node {{runtime:canonicalNode}} and the exact public npm registry"
       },
       {
         "path": [
@@ -187,7 +239,7 @@
           "with",
           "node-version"
         ],
-        "template": "{{runtime:node.24}}"
+        "template": "{{runtime:canonicalNode}}"
       },
       {
         "path": [
@@ -204,26 +256,26 @@
       {
         "path": [
           "jobs",
-          "source_node_22",
+          "source_portable",
           "name"
         ],
-        "template": "Release / Ubuntu / Node {{runtime:node.22}}"
+        "template": "Release / Ubuntu / portable source / Node {{runtime:canonicalNode}}"
       },
       {
         "path": [
           "jobs",
-          "source_node_26",
+          "source_json",
           "name"
         ],
-        "template": "Release / Ubuntu / Node {{runtime:node.26}}"
+        "template": "Release / Ubuntu / JSON source / Node {{runtime:canonicalNode}}"
       },
       {
         "path": [
           "jobs",
-          "source_node_24",
+          "source_canonical",
           "name"
         ],
-        "template": "Release / Ubuntu / Node {{runtime:node.24}}"
+        "template": "Release / Ubuntu / canonical source / Node {{runtime:canonicalNode}}"
       },
       {
         "path": [
@@ -280,6 +332,50 @@
           "name"
         ],
         "template": "Release / macOS / Node {{runtime:node.26}}"
+      },
+      {
+        "path": [
+          "jobs",
+          "portability_windows_node_22",
+          "steps",
+          1,
+          "with",
+          "node"
+        ],
+        "template": "{{runtime:node.22}}"
+      },
+      {
+        "path": [
+          "jobs",
+          "portability_windows_node_24",
+          "steps",
+          1,
+          "with",
+          "node"
+        ],
+        "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": [
+          "jobs",
+          "portability_macos_node_22",
+          "steps",
+          1,
+          "with",
+          "node"
+        ],
+        "template": "{{runtime:node.22}}"
+      },
+      {
+        "path": [
+          "jobs",
+          "portability_macos_node_24",
+          "steps",
+          1,
+          "with",
+          "node"
+        ],
+        "template": "{{runtime:node.24}}"
       }
     ]
   }

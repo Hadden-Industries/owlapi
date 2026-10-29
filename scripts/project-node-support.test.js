@@ -31,21 +31,22 @@ describe("one runtime version authority", () => {
     const policy = {
       ...CI_RUNTIME,
       minimums: ["22.1.0", "24.1.0", "26.0.0"],
-      node: { 22: "22.24.0", 24: "24.23.0", 26: "26.13.0" },
+      node: { 22: "22.24.0", 24: "24.23.0", 26: "26.14.0" },
       npm: "12.3.0",
     };
     const projected = projectNodeSupport(files, policy);
     const before = JSON.parse(files["package.json"]),
       after = JSON.parse(projected["package.json"]);
     expect(after.engines.node).toBe(">=22.1.0");
+    expect(after.devEngines.runtime.version).toBe(">=26.14.0");
     expect(after.dependencies).toEqual(before.dependencies);
     expect(after.devDependencies).toEqual(before.devDependencies);
     expect(after.devEngines.packageManager).toEqual(
       before.devEngines.packageManager,
     );
-    expect(projected[".node-version"]).toBe("24.23.0\n");
+    expect(projected[".node-version"]).toBe("26.14.0\n");
     expect(projected["README.md"]).toContain(
-      "Node 24.23.0 is the selected canonical package producer.",
+      "Node 26.14.0 is the selected canonical package producer.",
     );
     // A frozen historical observation must not be rewritten as a current declaration.
     expect(projected["README.md"]).toContain(
@@ -53,10 +54,10 @@ describe("one runtime version authority", () => {
     );
     expect(projected["CONTRIBUTING.md"]).toContain("select exact npm 12.3.0");
     expect(projected[".github/workflows/ci.yml"]).toContain(
-      "name: CI / Ubuntu / Node 24.23.0",
+      "name: CI / Ubuntu / canonical source / Node 26.14.0",
     );
     expect(projected["docs/release/producer-release-policy.json"]).toContain(
-      "canonical Node 24.23.0",
+      "canonical Node 26.14.0",
     );
     expect(projectNodeSupport(projected, policy)).toEqual(projected);
   });

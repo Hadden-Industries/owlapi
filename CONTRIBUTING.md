@@ -53,8 +53,8 @@ Every release candidate still requires qualification of its own bytes and human 
 
 Local npm eligibility is `>=12.2.1`; producer CI, release construction, and governed qualification select exact npm 12.2.1 before project commands or cache probes.
 Consumer runtime qualification separately selects exact npm 10.9.9, whose declared engines admit every consumer minimum; it does not lower the producer toolchain requirement.
-The development runtime remains versionless in `devEngines`; consumer admission is derived from the lowest maintained-family minimum, independently of producer toolchain requirements.
-The exact CI reference runtimes remain Node 22.23.4, 24.22.2 and 26.13.0; Node 24.22.2 is canonical.
+The development runtime requires Node `>=26.13.0` in `devEngines`; consumer admission is derived from the lowest maintained-family minimum, independently of producer toolchain requirements.
+Producer tooling uses Node 26.13.0; consumer references remain Node 22.23.4, 24.22.2 and 26.13.0.
 
 <!-- runtime-policy:end -->
 

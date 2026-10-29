@@ -116,6 +116,7 @@ export function projectRuntimeText(text, policy = CI_RUNTIME) {
     npm: policy.npm,
     consumerNpm: policy.consumerNpm,
     npmRange: `>=${policy.npmMinimum}`,
+    developmentNodeRange: `>=${policy.node[policy.canonicalNodeMajor]}`,
     canonicalNode: policy.node[policy.canonicalNodeMajor],
     consumerRange: consumerNodeRange(policy),
     minimumNodeMajor: String(

@@ -12,9 +12,9 @@ export const FULL_CI_JOB_IDS = Object.freeze([
   "consumer_runtime",
   "consumer_runtimes",
   "metadata",
-  "source_node_22",
-  "source_node_24",
-  "source_node_26",
+  "source_portable",
+  "source_canonical",
+  "source_json",
   "quality_windows",
   "dependency_review",
   "candidate",
@@ -39,9 +39,9 @@ export const REQUIRED_JOB_IDS = Object.freeze({
     "consumer_runtimes",
     "release_preflight",
     "metadata",
-    "source_node_22",
-    "source_node_24",
-    "source_node_26",
+    "source_portable",
+    "source_canonical",
+    "source_json",
     "quality_windows",
     "dependency_review",
     "third_party_evidence",
@@ -161,7 +161,7 @@ export const requireCiJobs = (
 
 export const requireReleaseJobs = (needs, { runId, runAttempt, sha }) => {
   const requiredJobs = requireSuccessfulJobs("release", needs);
-  const java = JSON.parse(needs.source_node_24.outputs.coverage);
+  const java = JSON.parse(needs.source_canonical.outputs.coverage);
   if (
     !Number.isSafeInteger(java.runAttempt) ||
     java.runAttempt < 1 ||

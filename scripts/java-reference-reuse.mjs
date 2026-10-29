@@ -102,7 +102,7 @@ function artifactIdentity(artifact, run, key, now, qualification = false) {
 
 function fullProducerJobs(inventory, run) {
   const jobs = completeInventory(inventory, "jobs");
-  for (const name of [CI_JOB_NAMES.source_node_24, CI_JOB_NAMES.required]) {
+  for (const name of [CI_JOB_NAMES.source_canonical, CI_JOB_NAMES.required]) {
     const matches = jobs.filter((job) => job.name === name);
     fact(
       matches.length === 1 &&

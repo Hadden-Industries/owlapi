@@ -30,6 +30,8 @@ const CONSUMER_ACTIONS = [
   "setup-consumer",
   "aggregate-consumer-runtimes",
 ];
+const referenceConsumerFamily = (id) =>
+  /^portability_(?:windows|macos)_node_(22|24)$/u.exec(id)?.[1];
 const sharedSetupStep = (step) =>
   [SHARED_SETUP, PUBLISHER_SETUP].includes(step?.uses);
 const setupInputs = (step) => ({ ...SETUP_DEFAULTS, ...step?.with });
@@ -395,12 +397,15 @@ const validateActionUses = (fileName, workflow, document, violations) => {
       ) {
         add(
           violations,
-          ["ci.yml", "release.yml", "maintenance.yml"].includes(fileName) &&
+          (["ci.yml", "release.yml", "maintenance.yml"].includes(fileName) &&
             [
               "runtime_matrix",
               "consumer_runtime",
               "consumer_runtimes",
-            ].includes(jobId),
+            ].includes(jobId)) ||
+            (["ci.yml", "release.yml"].includes(fileName) &&
+              Boolean(referenceConsumerFamily(jobId)) &&
+              step.uses === "./.github/actions/qualify-consumer"),
           `${fileName}:${jobId}: unexpected consumer action`,
         );
         add(
@@ -497,6 +502,13 @@ const validateActionUses = (fileName, workflow, document, violations) => {
                 : input["node-family"]) === family &&
                 input.phase === "producer",
               `${context} must retain Node ${family} reference selection`,
+            );
+          if (input.phase !== "runtime")
+            add(
+              violations,
+              selectWorkflowReference(CI_RUNTIME, input["node-family"]).node ===
+                CI_RUNTIME.node[CI_RUNTIME.canonicalNodeMajor],
+              `${context} must use the canonical development runtime for tools`,
             );
         } catch (error) {
           violations.push(`${context}: ${error.message}`);
@@ -599,11 +611,11 @@ const isOptionalCiEvidenceStep = (fileName, jobId, step) =>
       ["proof", "seed_download"].includes(step.id) &&
       step.uses ===
         "actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333") ||
-    (jobId === "source_node_24" &&
+    (jobId === "source_canonical" &&
       ["reference_download", "reference_index_download"].includes(step.id) &&
       step.uses ===
         "actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333") ||
-    (jobId === "source_node_24" &&
+    (jobId === "source_canonical" &&
       step.id === "reference_upload" &&
       step.uses === RETAIN_ARTIFACT) ||
     (jobId === "required" &&
@@ -773,7 +785,7 @@ const validateCandidateTransport = (fileName, workflow, violations) => {
     }
     if (
       fileName === "ci.yml" &&
-      steps(workflow.jobs?.source_node_24).includes(step) &&
+      steps(workflow.jobs?.source_canonical).includes(step) &&
       ["reference_download", "reference_index_download"].includes(step.id)
     )
       continue;
@@ -1033,7 +1045,7 @@ const validateJavaReferenceBoundary = (job, violations) => {
 const validateCiVerification = (workflow, violations) => {
   const label = "ci.yml: CI verification";
   const jobs = workflow.jobs ?? {};
-  validateJavaReferenceBoundary(jobs.source_node_24, violations);
+  validateJavaReferenceBoundary(jobs.source_canonical, violations);
   add(
     violations,
     sameInventory(Object.keys(jobs), Object.keys(CI_JOB_NAMES)) &&
@@ -1043,7 +1055,7 @@ const validateCiVerification = (workflow, violations) => {
     `${label} job identities changed`,
   );
   const strategy = jobs.verification;
-  const observation = steps(jobs.source_node_24).find(
+  const observation = steps(jobs.source_canonical).find(
     (step) =>
       step.name ===
       "Observe integration applicability while retaining full qualification",
@@ -1118,9 +1130,9 @@ const validateCiVerification = (workflow, violations) => {
   );
   const roots = [
     "metadata",
-    "source_node_22",
-    "source_node_24",
-    "source_node_26",
+    "source_portable",
+    "source_canonical",
+    "source_json",
     "quality_windows",
     "dependency_review",
   ];
@@ -1152,8 +1164,12 @@ const validateCiVerification = (workflow, violations) => {
   )) {
     add(
       violations,
-      sameInventory(needs(jobs[id]), ["candidate"]) &&
-        !Object.hasOwn(jobs[id] ?? {}, "if"),
+      sameInventory(
+        needs(jobs[id]),
+        referenceConsumerFamily(id)
+          ? ["runtime_matrix", "candidate"]
+          : ["candidate"],
+      ) && !Object.hasOwn(jobs[id] ?? {}, "if"),
       `${label} consumer gate changed: ${id}`,
     );
   }
@@ -1333,7 +1349,7 @@ const validateCiVerification = (workflow, violations) => {
   const receipt = steps(jobs.required).find((step) => step.id === "receipt");
   for (const [id, command] of [
     [
-      "source_node_24",
+      "source_canonical",
       "node scripts/ci-check-coverage-command.mjs java .release/java-qualification/jest.json",
     ],
     [
@@ -1362,7 +1378,7 @@ const validateCiVerification = (workflow, violations) => {
       `${label}:${id} native coverage cannot be skipped or ignored`,
     );
   }
-  const liveSuite = steps(jobs.source_node_24).find(
+  const liveSuite = steps(jobs.source_canonical).find(
     (step) => step.name === "Run the full package suite",
   );
   requireFields(
@@ -2298,15 +2314,15 @@ const validateEvidenceWorkflows = (workflows, violations) => {
 // A new caller of npm test/lint/format must explicitly adopt the locked tools.
 const QUALITY_CONSUMERS = {
   "ci.yml": [
-    "source_node_22",
-    "source_node_24",
-    "source_node_26",
+    "source_portable",
+    "source_canonical",
+    "source_json",
     "quality_windows",
   ],
   "release.yml": [
-    "source_node_22",
-    "source_node_24",
-    "source_node_26",
+    "source_portable",
+    "source_canonical",
+    "source_json",
     "quality_windows",
   ],
   "extended-tests.yml": ["extended_evidence"],
@@ -2329,7 +2345,8 @@ const validateQualityTooling = (workflows, violations) => {
         `${context} has an unexpected Python setup inventory`,
       );
       const scannerConsumer =
-        file === "ci.yml" && ["source_node_24", "quality_windows"].includes(id);
+        file === "ci.yml" &&
+        ["source_canonical", "quality_windows"].includes(id);
       const qualifications = steps(job).filter((step) =>
         step.run?.includes("qualify-scancode-runtime.mjs"),
       );
@@ -2429,7 +2446,7 @@ const validateQualityTooling = (workflows, violations) => {
         const jsonProbes = list.filter(
           (step) => step.run === "npm run test:json",
         );
-        if (id === "source_node_22") {
+        if (id === "source_portable") {
           add(
             violations,
             jsonInstalls.length === 0 &&
@@ -2439,7 +2456,7 @@ const validateQualityTooling = (workflows, violations) => {
                   step.run ?? "",
                 ),
               ),
-            `${context} Node 22 must not execute the native JSON tool`,
+            `${context} portable source lane must not execute the native JSON tool`,
           );
         } else {
           const installIndex = list.indexOf(rootInstalls[0]);
@@ -2479,7 +2496,7 @@ const validateQualityTooling = (workflows, violations) => {
               ),
             `${context} requires JSON acquisition before every canonical consumer`,
           );
-          if (id === "source_node_26")
+          if (id === "source_json")
             for (const command of [
               "npm run check:json",
               "npm run lint:json-identity",
@@ -2502,11 +2519,11 @@ const validateQualityTooling = (workflows, violations) => {
         const markdownInstalls = list.filter(
           (step) => step.run === "npm run install:markdown",
         );
-        if (["source_node_22", "source_node_26"].includes(id)) {
+        if (["source_portable", "source_json"].includes(id)) {
           add(
             violations,
             markdownInstalls.length === 0,
-            `${context} noncanonical Node must retain its source-only floor`,
+            `${context} must retain its source-only checks`,
           );
           for (const command of [
             "npm run format:source-python:check",
@@ -2538,7 +2555,7 @@ const validateQualityTooling = (workflows, violations) => {
               consumers.every((index) => index > markdownIndex),
             `${context} requires Markdown setup before all canonical consumers`,
           );
-          if (id === "source_node_24")
+          if (id === "source_canonical")
             requireRun(job, "npm run test:markdown", context, violations);
         }
       }
@@ -2651,12 +2668,12 @@ const validateMaintenanceReporter = (workflow, violations) => {
 
 const validateSourceGovernanceHistory = (workflows, violations) => {
   for (const [fileName, id, name] of [
-    ["ci.yml", "source_node_22", "Check out the proposed source"],
-    ["ci.yml", "source_node_24", "Check out the proposed source"],
-    ["ci.yml", "source_node_26", "Check out the proposed source"],
-    ["release.yml", "source_node_22", "Check out the proposed source"],
-    ["release.yml", "source_node_24", "Check out the proposed source"],
-    ["release.yml", "source_node_26", "Check out the proposed source"],
+    ["ci.yml", "source_portable", "Check out the proposed source"],
+    ["ci.yml", "source_canonical", "Check out the proposed source"],
+    ["ci.yml", "source_json", "Check out the proposed source"],
+    ["release.yml", "source_portable", "Check out the proposed source"],
+    ["release.yml", "source_canonical", "Check out the proposed source"],
+    ["release.yml", "source_json", "Check out the proposed source"],
     ["maintenance.yml", "health", "Check out the default branch"],
     ["extended-tests.yml", "extended_evidence", "Check out the default branch"],
   ])
@@ -2989,6 +3006,36 @@ const validateConsumerRuntimeControls = (
     ["maintenance.yml", "Maintenance", "health"],
   ]) {
     const jobs = workflows[file]?.jobs ?? {};
+    if (file !== "maintenance.yml")
+      for (const id of Object.keys(CI_JOB_NAMES).filter(
+        referenceConsumerFamily,
+      )) {
+        const family = referenceConsumerFamily(id);
+        const job = jobs[id];
+        const qualify = steps(job)[1];
+        const context = `${file}:${id} reference consumer binding`;
+        add(
+          violations,
+          steps(job).length === 2 &&
+            qualify?.uses === "./.github/actions/qualify-consumer" &&
+            !qualify?.if &&
+            !job?.if &&
+            sameInventory(needs(job), ["runtime_matrix", "candidate"]),
+          `${context} must retain unconditional shared consumer qualification`,
+        );
+        requireFields(
+          qualify?.with,
+          {
+            matrix: "${{ needs.runtime_matrix.outputs.matrix }}",
+            node: CI_RUNTIME.node[family],
+            "candidate-id": "${{ needs.candidate.outputs.artifact_id }}",
+            "candidate-digest":
+              "sha256:${{ needs.candidate.outputs.artifact_digest }}",
+          },
+          context,
+          violations,
+        );
+      }
     const matrix = jobs.runtime_matrix,
       consumer = jobs.consumer_runtime,
       aggregate = jobs.consumer_runtimes;
@@ -3348,7 +3395,7 @@ export const auditRepositoryControls = ({
   // The Ubuntu package consumer follows candidate creation, separate from source.
   for (const fileName of ["ci.yml", "release.yml"]) {
     for (const [id, runner] of [
-      ["source_node_26", "ubuntu-24.04"],
+      ["source_json", "ubuntu-24.04"],
       ["portability_ubuntu_node_26", "ubuntu-24.04"],
       ["portability_windows_node_26", "windows-2025"],
       ["portability_macos_node_26", "macos-15"],
@@ -3357,7 +3404,13 @@ export const auditRepositoryControls = ({
       const context = `${fileName}:${id} Node 26 floor`;
       requireFields(job, { "runs-on": runner }, context, violations);
       const setup = steps(job).find(sharedSetupStep);
-      requireFields(setup?.with, { "node-family": "26" }, context, violations);
+      if (id !== "source_json")
+        requireFields(
+          setup?.with,
+          { "node-family": "26" },
+          context,
+          violations,
+        );
       add(
         violations,
         setupInputs(setup).phase === "producer" &&
@@ -3376,7 +3429,7 @@ export const auditRepositoryControls = ({
     }
     add(
       violations,
-      needs(workflows[fileName]?.jobs?.candidate).includes("source_node_26"),
+      needs(workflows[fileName]?.jobs?.candidate).includes("source_json"),
       `${fileName}: candidate requires Node 26 source qualification`,
     );
   }

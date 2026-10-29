@@ -17,8 +17,8 @@ test("required Node 24 CI builds the pinned Java reference and reconciles all Ju
   const java = JSON.parse(
     await readFile(new URL("./pinned-version.json", import.meta.url), "utf8"),
   );
-  expect(workflow.jobs.required.needs).toContain("source_node_24");
-  const steps = workflow.jobs.source_node_24.steps;
+  expect(workflow.jobs.required.needs).toContain("source_canonical");
+  const steps = workflow.jobs.source_canonical.steps;
   const checkout = (repository) =>
     steps.find((step) => step.with?.repository === repository);
   expect(checkout("Hadden-Industries/universal-ontology")).toMatchObject({
