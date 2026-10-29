@@ -17,7 +17,7 @@ for (const [provider, count, bytes, census] of [
     provideNpmEvidenceJson,
     2760,
     "70560566",
-    "2fe6613682d5b7a174ccaf2bfdee817d8d074e650dd6502644cd0f337d26a70d",
+    "b5560d3a80850d61c045d6d1cc42c2c746a2e25a8d075844e7e9bfa82a422bd1",
   ],
   [
     provideArtifactToolEvidenceJson,

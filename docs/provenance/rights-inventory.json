@@ -8,16 +8,16 @@
     "scopeAuthority": {
       "method": "npm pack --dry-run --json plus local source-byte hashing",
       "fileCount": 198,
-      "sourceManifestSha256": "830bb7faaae1d1ed31c671adef0e66a273f48e91b681a3fad756ee43278ccd16"
+      "sourceManifestSha256": "9c4fd8c77892a4bd238e729deb75b8ddb167c0109fa1bbb689ef5d316eb095d1"
     }
   },
   "review": {
     "status": "REVIEWED",
-    "factsSha256": "4f4c850e7ea13246f76fab1c8934fe2490e951f8a0ce34df8bbcf0cff047e420",
+    "factsSha256": "f77ccdf1c6d60895e67071937e03e3ef6ce940b63e72cf9dda0eb17efb60b7bf",
     "reviewer": "Maksym Shostak",
-    "reviewedOn": "2026-10-29",
-    "capacity": "Author and copyright holder of the project-owned contributions",
-    "conclusion": "Explicitly approved the exact rc.3 rights inventory as accurate to the best of his knowledge in this capacity. This attestation does not authorize publication or push, or waive security requirements.",
+    "reviewedOn": "2026-10-30",
+    "capacity": "Project author and repository owner",
+    "conclusion": "Explicitly approved the refreshed rights facts for the rebuilt rc.3 package. Its 198-file scope changes only README.md and package manifest scripts; the other 196 files and all ownership/licence classifications remain unchanged. This attestation binds the new source packlist and the separately approved refreshed third-party facts. It grants no push or release authority and no security exception.",
     "digestAlgorithm": "sha256-sorted-json-v1"
   },
   "contributors": [
@@ -152,7 +152,7 @@
   "externalDependencies": {
     "bundled": true,
     "authority": "docs/provenance/third-party-material.json",
-    "inventoryFactsSha256": "094e6fa08f324f9acf9558c6a8a0a1625c5499d4b3e5710582aa7d1c9341d2a1",
+    "inventoryFactsSha256": "d17605b77b68051177545c3d8a94272cd7cfa8f58b578e743d0fd24397f54068",
     "noticeRule": "Ordinary npm dependencies are installed separately under their own licences. The generated JSON-LD provider embeds seven separately inventoried components and retains their complete original licences and notices under internal/parsing/jsonld/provider/licenses/. The provider manifest binds the incorporated source, approved modifications, generated runtime and output."
   },
   "unresolvedExternalContributions": [],

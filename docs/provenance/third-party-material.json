@@ -16,20 +16,20 @@
     "version": "0.1.0-rc.3",
     "lockfile": "package-lock.json",
     "lockfileVersion": 3,
-    "lockfileSha256": "aabbb9b0f5d01c3791602c0a955c9d8ec12560a39edc7f543a69eeb4e5b85876",
+    "lockfileSha256": "1208fffd659799b83cf6e41d3ed55c491bde453cb4006daf1839d378fc66e1ef",
     "evidenceManifest": "docs/provenance/npm-package-evidence.json",
-    "evidenceManifestSha256": "48289a1f00080aa9ecd83e783920a2f09974d4f93bea79b3377d43d1f75096c9",
-    "evidenceCorpusRoot": "fe7a71f02fa053c8cbb062bdc7642fd63339ace10b7b9e9b4daa94c284e31f65",
+    "evidenceManifestSha256": "459eb3e7553af820a34674f1f86151cc349ec45931ba4788bfd40d4ad960af3b",
+    "evidenceCorpusRoot": "ffd2049dc064323a3d87bab5f8b121d1c5de3c8559b16184ebfa908a40f9eb78",
     "tarballDependenciesBundled": false
   },
   "review": {
     "status": "REVIEWED",
     "digestAlgorithm": "sha256-sorted-json-v1",
-    "factsSha256": "094e6fa08f324f9acf9558c6a8a0a1625c5499d4b3e5710582aa7d1c9341d2a1",
+    "factsSha256": "d17605b77b68051177545c3d8a94272cd7cfa8f58b578e743d0fd24397f54068",
     "reviewer": "Maksym Shostak",
-    "reviewedOn": "2026-10-29",
+    "reviewedOn": "2026-10-30",
     "capacity": "Project author and repository owner",
-    "conclusion": "Explicitly approved the exact rc.3 inventory's licence conclusions and notice arrangements, including the retained upstream ISC licence evidence for @rubensworks/saxes@6.0.1 whose npm archive omits a licence file. The presented evidence distinguishes 209 published provenance attestations from 480 artifacts without published attestations. This approval does not authorize publication or push, or waive security requirements."
+    "conclusion": "Explicitly approved the refreshed licence facts for rc.3. The sole changed artifact is @types/node 26.6.5 to 26.6.6: its registry signature, archive and licence scan verify, its MIT licence is present, and npm provenance is not published. Evidence for the other 688 artifacts is reused. This attestation approves the bound facts only; it grants no push or release authority and no security exception."
   },
   "summary": {
     "componentCount": 747,
@@ -13635,9 +13635,9 @@
     },
     {
       "dependencyPath": "node_modules/@types/node",
-      "artifactId": "d1db35f10e963049b8885d550117b7d2578aada7b5264d0b5602db7b10b8019c",
+      "artifactId": "12d9bfa50b40236581fc2bd49b0536a10909856417b4fa324f00fc1dc73a5714",
       "name": "@types/node",
-      "version": "26.6.5",
+      "version": "26.6.6",
       "relationship": "EXTERNAL_RUNTIME_DEPENDENCY",
       "lockfileDeclaredLicenseExpressions": [
         "MIT"
@@ -13670,12 +13670,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "103d19c70953c1b3b5dfcbd6a1560aab843e18cca6e67b374bc2c7360d68cbcb",
-        "provenanceSha256": "8c79348705b93e6d321eea82162666fd17b649bf3b9f7a687b2e5ffe512b015a",
-        "registrySignatureSha256": "5fbbe20923440ba621c67256048699fb55b9757e5726039baaf3893dd771a874",
-        "scanSha256": "dd2c39c378b4bf5ff775398f7cd8924e11cd997cdc750811be9163b2e89d8a41"
+        "archiveSha256": "b944135ec89f47fdacd429d1a3b2cfa781a8a239d30d4dbdc5dd34ef22666728",
+        "provenanceSha256": "ba1bcfe27a13bd82d1aeb591a1b549c11530888b09c69523179cb76716764565",
+        "registrySignatureSha256": "21d23ec4788bb6439151a5da57aab2130899224d808594db3c7516eb59dad4da",
+        "scanSha256": "7bdf26c84d2a5e35f69d69c6ced7928029a4ce28ff172c2e5c79407c5e3973c0"
       },
-      "registryUrl": "https://registry.npmjs.org/@types/node/-/node-26.6.5.tgz",
+      "registryUrl": "https://registry.npmjs.org/@types/node/-/node-26.6.6.tgz",
       "sourceReference": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
       "sourceUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped",
       "packageAuthor": null,

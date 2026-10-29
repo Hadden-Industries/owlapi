@@ -12,6 +12,7 @@ import { tmpdir } from "node:os";
 import { basename, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
+import { flattenNpmGraph } from "./npm-production-graph.mjs";
 import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
 import {
   PACKAGE_NAME,
@@ -115,20 +116,6 @@ const sortedPackEntries = (entries) =>
   entries
     .map(({ path, size }) => ({ path, size }))
     .sort((left, right) => compareCodeUnits(left.path, right.path));
-
-const flattenNpmGraph = (root) => {
-  const identities = new Set();
-  const visit = (node) => {
-    if (node?.name && node?.version) {
-      identities.add(`${node.name}@${node.version}`);
-    }
-    for (const dependency of Object.values(node?.dependencies ?? {})) {
-      visit(dependency);
-    }
-  };
-  visit(root);
-  return [...identities].sort(compareCodeUnits);
-};
 
 const writeJson = (fileName, value) =>
   writeFileSync(join(outputDirectory, fileName), stableJson(value), "utf8");
@@ -383,14 +370,7 @@ try {
       `Lockless consumer installed owlapi@${installedOwlapi.version ?? "unknown"}, expected ${VERSION}.`,
     );
   }
-  const locklessIdentities = [
-    `${packageJson.name}@${VERSION}`,
-    ...flattenNpmGraph(installedOwlapi),
-  ]
-    .filter(
-      (identity, index, identities) => identities.indexOf(identity) === index,
-    )
-    .sort(compareCodeUnits);
+  const locklessIdentities = flattenNpmGraph(installedOwlapi, packageJson.name);
   if (stableJson(lockedIdentities) !== stableJson(locklessIdentities)) {
     const missing = lockedIdentities.filter(
       (identity) => !locklessIdentities.includes(identity),
