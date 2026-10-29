@@ -9,6 +9,34 @@ Completed general and security reviews cover the source epochs recorded below.
 Earlier passing and above-target screens remain historical observations; they do not qualify a later source epoch.
 Checksums alone do not prove semantic equivalence, and explained profile differences and unequal closure forcing remain unqualified.
 
+## 0.1.0 roadmap I/O follow-up, 29 October
+
+The [implementation observations](2026-10-29-io-implementation-observations.json) retain all raw control/candidate samples and the rejected experiments for the six remaining I/O groups on Node 24.22.2.
+RDF metadata discovery now schedules only object children, preserving traversal order and every visited node's cancellation/deadline check.
+RDF/XML caches encoded named/blank resource identities within one write while preserving field reads and the complete literal path.
+The attempted structural-validation projection cache was reverted after it failed to provide a reliable improvement.
+The initial exploratory runs omitted `--expose-gc` and are explicitly excluded from protocol comparisons.
+
+Independent untimed Java and JavaScript sinks check the exact 100-class declarations, ontology/version identity, absence of annotations/imports and logical axioms, and source preservation after saving.
+The released Java classpath's 64 ordered artifacts are hash checked; 34 structural observations pass on the declared Temurin build and both profiles, including Java reading JavaScript output and both profiles reading Java output.
+Same-count wrong-IRI and wrong-ontology controls reject; count equality alone cannot satisfy the sink.
+The 124 focused and 51 resource/storage checks pass, including metadata, lexical values, resource identities, cancellation, finite limits and partial-target behavior.
+
+| Group       | Compatible process median / Java | Normative process median / Java |
+| ----------- | -------------------------------- | ------------------------------- |
+| load.turtle | 0.879                            | 0.770                           |
+| load.nquads | 1.082                            | 1.025                           |
+| load.trig   | 0.961                            | 0.914                           |
+| save.owlxml | 0.841                            | 0.542                           |
+| save.rdfxml | 0.465                            | 1.058                           |
+| save.turtle | 0.232                            | 1.025                           |
+
+These are medians of three independent process medians, with two warmups and five measured calls in each process against the unchanged historical Java baseline.
+The individual N-Quads process range still reaches 1.145 compatible and 1.118 normative, so robust parity acceptance remains open despite the improved central estimates.
+The owner directed this implementation to stop further tuning at these sub-20% millisecond outliers; this does not relabel them as satisfying the retained 1.10 release target.
+First use is measured inside an initialized suite, and sampled heap deltas do not establish retained or peak memory.
+The six structural fixture checks do not admit every method, metadata field or overload in the 70-group inventory, and do not replace the future frozen-candidate campaign.
+
 ## Implemented changes
 
 - Snapshot-owned annotation views preserve deferred reads, nested annotations, order and repeated ontology multiplicity.

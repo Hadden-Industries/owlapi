@@ -110,14 +110,6 @@ const RESERVED_PREDICATES = new Set(
 );
 const compareCodeUnits = (left, right) =>
   left < right ? -1 : left > right ? 1 : 0;
-const termKey = (term) =>
-  JSON.stringify([
-    term.termType,
-    term.value,
-    ...(term.termType === "Literal"
-      ? [term.language, term.datatype.value]
-      : []),
-  ]);
 const notRepresentable = (message, details = {}) => {
   throw new OWLOntologyStorageError(message, {
     ...details,
@@ -153,6 +145,34 @@ const requireLanguageTag = (language) => {
 };
 
 const serializeGraph = (dataset, policy, context) => {
+  // Only cache encoded primitive identities, within this write. Read the term
+  // fields in their original order on every call, including foreign getters.
+  // Literal lexical/language/datatype metadata retains its full encoding path.
+  const resourceKeys = new Map([
+    ["NamedNode", new Map()],
+    ["BlankNode", new Map()],
+  ]);
+  const termKey = (term) => {
+    const type = term.termType;
+    const value = term.value;
+    const literal = term.termType === "Literal";
+    const cache =
+      !literal && typeof value === "string" && resourceKeys.get(type);
+    if (cache) {
+      let key = cache.get(value);
+      if (key === undefined) {
+        // json-identity-contract: ordered-tuple; owner: RDF/XML graph writer; reason: Preserve the existing ordered RDF term type/value encoding used for deterministic graph order.
+        key = JSON.stringify([type, value]);
+        cache.set(value, key);
+      }
+      return key;
+    }
+    return JSON.stringify([
+      type,
+      value,
+      ...(literal ? [term.language, term.datatype.value] : []),
+    ]);
+  };
   const documentStoragePolicy =
     context.documentStoragePolicy ?? defaultDocumentStoragePolicy;
   const embeddedXmlLiterals = new WeakMap();

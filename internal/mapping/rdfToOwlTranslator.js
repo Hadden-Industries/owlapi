@@ -702,7 +702,11 @@ class RdfGraphInterpreter {
         const type = RDF_ROLE_BY_ENTITY_KIND.get(value.kind);
         if (type && !this.#knownRoles.get(type)?.has(value.iri.value))
           guessedDeclarations.push({ iri: value.iri, entityType: value.kind });
-        for (const child of Object.values(value)) pending.push(child);
+        // Scalars cannot contain entity declarations. Preserve object/array
+        // traversal order and the checkpoint on every visited graph node,
+        // without scheduling a second visit for each immutable scalar field.
+        for (const child of Object.values(value))
+          if (child && typeof child === "object") pending.push(child);
       }
       {
         const yielded = this.#execution.cooperate();

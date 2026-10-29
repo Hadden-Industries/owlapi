@@ -16,6 +16,37 @@ const load = async (manager, document, config) =>
     .documents[0];
 
 describe("Java-compatible RDF loader metadata", () => {
+  it.each(["java-owlapi-5.5.1", "normative-v1"])(
+    "retains nested inferred datatype metadata and scalar lexical values for %s",
+    async (behaviorProfileId) => {
+      const manager = owlapi.OWLManager.createOWLOntologyManager({
+        behaviorProfileId,
+      });
+      const parsed = await load(
+        manager,
+        source(`
+        :root a owl:Ontology; rdfs:label "0001"^^:Custom, "second"^^:Other .
+        :C a owl:Class; rdfs:label "third"^^:Custom .
+      `),
+        { parsingMode: "compatible" },
+      );
+      const metadata = parsed.context.format.getOntologyLoaderMetaData();
+      expect(
+        metadata
+          .getGuessedDeclarations()
+          .map(({ iri, entityType }) => [iri.value, entityType])
+          .sort(),
+      ).toEqual([
+        ["urn:metadata:Custom", owlapi.OWLObjectKind.DATATYPE],
+        ["urn:metadata:Other", owlapi.OWLObjectKind.DATATYPE],
+      ]);
+      expect(
+        [...parsed.ontology.getAnnotations()]
+          .map((annotation) => annotation.value.lexicalForm)
+          .sort(),
+      ).toEqual(["0001", "second"]);
+    },
+  );
   it("excludes built-in datatypes while retaining undeclared custom datatype roles", async () => {
     const manager = owlapi.OWLManager.createOWLOntologyManager();
     const parsed = await load(

@@ -34,6 +34,22 @@ const roundTrip = async (quads) => {
 };
 
 describe("RDF/XML default-graph writer", () => {
+  it("keeps resource identity distinct across kinds and literal metadata", async () => {
+    const quads = [
+      quad(named("urn:same"), predicate, named("urn:repeated")),
+      quad(blank("urn:same"), predicate, named("urn:repeated")),
+      quad(named("urn:other"), predicate, literal("same", "en")),
+      quad(named("urn:other"), predicate, literal("same", "fr")),
+      quad(
+        named("urn:other"),
+        predicate,
+        literal("same", named("urn:datatype")),
+      ),
+    ];
+    await roundTrip(quads);
+    // A later call has its own encoding lifetime and observes changed input.
+    await roundTrip([quad(named("urn:same"), predicate, named("urn:changed"))]);
+  });
   it.each([
     ["ASCII--dash-", "ASCII- -dash-"],
     ["éΩ😀", "éΩ😀"],
