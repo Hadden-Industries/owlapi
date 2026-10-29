@@ -3,15 +3,63 @@
   "jarSha256": "747b1a5269fee2992487dcde946f16dfbc14aa458d50854994a0485cf263ce07",
   "probe": "../RunWriterCopySemantics.java",
   "timingsCollected": false,
-  "columns": ["indenting", "indentSize", "banners", "labelsAsBanner", "saveIds"],
+  "columns": [
+    "indenting",
+    "indentSize",
+    "banners",
+    "labelsAsBanner",
+    "saveIds"
+  ],
   "observations": {
-    "defaults": [true, 4, true, false, false],
-    "indenting": [false, 4, true, false, false],
-    "indentSize": [false, 2, true, false, false],
-    "banners": [false, 4, false, false, false],
-    "labels": [false, 4, true, true, false],
-    "saveIds": [false, 4, true, true, true],
-    "labelsThenIndent": [false, 3, true, true, true]
+    "defaults": [
+      true,
+      4,
+      true,
+      false,
+      false
+    ],
+    "indenting": [
+      false,
+      4,
+      true,
+      false,
+      false
+    ],
+    "indentSize": [
+      false,
+      2,
+      true,
+      false,
+      false
+    ],
+    "banners": [
+      false,
+      4,
+      false,
+      false,
+      false
+    ],
+    "labels": [
+      false,
+      4,
+      true,
+      true,
+      false
+    ],
+    "saveIds": [
+      false,
+      4,
+      true,
+      true,
+      true
+    ],
+    "labelsThenIndent": [
+      false,
+      3,
+      true,
+      true,
+      true
+    ]
   },
   "labelsNoOpIdentity": true
 }

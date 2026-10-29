@@ -38,6 +38,7 @@ See the exact return types and qualifications in [the API reference](./API.md).
 
 The desired unscoped name `owlapi` was formerly used for an unrelated, now-unpublished Overwatch package and is blocked by npm's name-similarity protection.
 The selected scoped package is a separate registry identity with no code, API, ownership, or provenance relationship to that package.
+The manifest and release tooling select this scoped identity.
 The retained [package-name review](https://github.com/Hadden-Industries/owlapi/blob/main/docs/provenance/package-name-review.json) describes the historical unscoped proposal; the separate [scoped-identity review](./docs/provenance/scoped-package-name-review.json) records the accepted scoped identity.
 Its original tag restriction is superseded by the documented amendment in [ADR 0009](./docs/adr/0009-scoped-npm-publication-and-uo-rc-acceptance.md).
 
