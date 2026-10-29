@@ -8,9 +8,23 @@ Prerelease identifiers do not create a stability promise.
 
 ## Unreleased
 
-Delivered source changes after `0.1.0-rc.1`, reconciled through `ccace6afe201c6e2cc6a49e53b2d50bd6617916f` on 9 October 2026.
-The next selected candidate is `0.1.0-rc.2`; its [Java-parity programme](docs/plans/0.1.0-rc.2-java-parity.md) adds the selected source APIs below.
-Publication still requires separate exact-artifact qualification and approval.
+Current development source targets the [0.1.0 roadmap](docs/plans/2026-10-29-0.1.0-release-reconciliation.md).
+No successor candidate has been frozen, qualified or published by this implementation.
+
+- Add explicit immutable `normative-v1` and `java-owlapi-5.5.1` behavior profiles, including profile accessors, Java loader settings and `ChangeApplied` results; omitted selection remains normative.
+- Add the explicitly authorized Node document loader under `io/node`, with per-operation access decisions and bounded transport behavior.
+- Reconcile inherited public members and rename registry metadata to `firstPublicReleaseTarget`, which records intended first-release versions rather than publication facts.
+  The [API delta](docs/compatibility/0.1.0-api-delta.md) and [contract scope](docs/compatibility/0.1.0-contract-scope.md) distinguish supported additions from unfinished source-assessment promises.
+- Reduce repeated structural, parser, serializer, query and profile work; preserve profile differences and explicit performance limits.
+  The [performance results](docs/performance/remaining-java-performance-implementation-results.md) retain raw observations and the remaining millisecond N-Quads outliers.
+- Refresh dependency/tool graphs, address the vulnerable Jest transitive dependency, and use JSON Quality as an ordinary root registry devDependency with the repository's `>=` declaration policy.
+- Centralize Java and Python selections in `.java-version` and `.python-version`; derive native checks and workflow projections from those declarations.
+- Bound CI job registration and immutable-release observation, preserve original producing-attempt provenance across compatible runner image updates, and fail terminally when required workflow output cannot be written.
+
+## 0.1.0-rc.2 — published 10 October 2026 (Europe/Bucharest)
+
+The [published prerelease](https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.2) and [finalization record](docs/release/rc2-finalization-recovery.json) identify the immutable artifact.
+Its [Java-parity programme](docs/plans/0.1.0-rc.2-java-parity.md) delivered the selected APIs below; later development source must use a new version and separate qualification.
 
 - Add direct ontology axiom indexes, explicit imports/annotation query enums and asserted `EntitySearcher` queries with fresh structural sets or multiplicity-preserving eager arrays.
 - Add five immutable change records and atomic manager batches spanning axioms, imports and ontology annotations; reconcile only loaded import state.
@@ -19,8 +33,8 @@ Publication still requires separate exact-artifact qualification and approval.
 - Add EL, QL and RL profile checking over captured import closures, retaining common DL checks and separate source assessment; apply the four accepted W3C profile differences.
 - Add asynchronous BOTTOM, TOP and STAR syntactic-locality extraction over a captured axiom base.
   Numerical limits default to unlimited, matching Java; callers may set work, axiom, depth, annotation-depth or elapsed-time limits, with cancellation and no partial modules.
-- Expose the four approved new package paths and require both `next` and `latest` to identify the same exact rc.2 version during future registry qualification.
-  Preserve historical release evidence and disable publication until rc.2 receives its own approval.
+- Expose the four approved new package paths and qualify both `next` and `latest` against the same exact rc.2 version.
+  Preserve its original qualification, approval and publication evidence.
 
 - Yield profile assessment after elapsed work rather than every 256 checkpoints, reducing timer overhead while admitting queued cancellation.
 - Default profile `timeoutMs` to `null`; omission and explicit null disable only its elapsed deadline.

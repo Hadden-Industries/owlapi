@@ -21,6 +21,9 @@ The current profile-aware source also implements explicit `normative-v1` and `ja
 These options describe the later source candidate and are not part of the published rc.1 or rc.2 tarballs.
 Qualification is still in progress; the current ledger and provenance do not claim admission.
 Java migrations must select `java-owlapi-5.5.1`; omitted selection remains normative.
+The [published-to-current API delta](docs/compatibility/0.1.0-api-delta.md) lists the new exports, enlarged member surfaces and exact performance-coverage limits.
+The [contract reconciliation](docs/compatibility/0.1.0-contract-scope.md) explains the bounded source assessment and the registry's `firstPublicReleaseTarget` planning field.
+That target does not establish availability, and successful publication does not require rewriting every target or generated document.
 
 The rc.1-pinned installation and import-map examples below remain examples of that historical release; they do not demonstrate the newer source APIs.
 The release roadmap includes reconciling the complete installed examples and migration guidance against the accepted successor artifact.
