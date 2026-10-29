@@ -986,7 +986,8 @@ describe("owlapi governance artifacts", () => {
       lifecycleCapabilities.every(
         ({ phase, progress }) =>
           progress !== "COMPLETE" ||
-          (phase === 22 && matrix.release === "0.1.0-rc.2"),
+          (phase === 22 &&
+            matrix.release === readJson("./package.json").version),
       ),
     ).toBe(true);
 
@@ -2041,11 +2042,11 @@ describe("owlapi governance artifacts", () => {
       expect(
         registry.bindings.find((binding) => binding.id === id)
           .firstPublicReleaseTarget,
-      ).toBe("0.1.0");
+      ).toBe(packageJson.version);
     expect(
       registry.namespaces.find((namespace) => namespace.id === "io/node")
         .firstPublicReleaseTarget,
-    ).toBe("0.1.0");
+    ).toBe(packageJson.version);
     for (const forbidden of [
       "prototype.getAnnotatedAxiom",
       "prototype.getAxiomWithoutAnnotations",

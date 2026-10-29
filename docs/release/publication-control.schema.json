@@ -37,7 +37,8 @@
       "enum": [
         "owlapi@0.1.0-alpha.0",
         "@hadden-industries/owlapi@0.1.0-rc.1",
-        "@hadden-industries/owlapi@0.1.0-rc.2"
+        "@hadden-industries/owlapi@0.1.0-rc.2",
+        "@hadden-industries/owlapi@0.1.0-rc.3"
       ]
     },
     "channel": {
@@ -263,7 +264,10 @@
       "if": {
         "properties": {
           "coordinate": {
-            "const": "@hadden-industries/owlapi@0.1.0-rc.2"
+            "enum": [
+              "@hadden-industries/owlapi@0.1.0-rc.2",
+              "@hadden-industries/owlapi@0.1.0-rc.3"
+            ]
           }
         },
         "type": "object"

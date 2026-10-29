@@ -6,7 +6,7 @@
     "reviewedOn": null,
     "reviewer": null,
     "authority": null,
-    "factsSha256": "75635579b8c1b4f638af18c2b759775baa08aceb7e3661f0c5fba34d916a49ca",
+    "factsSha256": "03009e395daed0104b4013108e951b0037aacf24c3acec98d81045eb403bf1cb",
     "digestAlgorithm": "sha256-sorted-json-v1"
   },
   "identity": "@hadden-industries/owlapi",
@@ -28,7 +28,7 @@
   ],
   "mitigations": [
     "Retain explicit independent-implementation and non-affiliation wording.",
-    "Use only @hadden-industries/owlapi@0.1.0-rc.1 under next, leave latest unset, and require exact pins for consumer acceptance.",
+    "Use only the scoped identity, retain explicit candidate/publication distinctions and exact consumer pins, and select version/channel effects through the separate exact-artifact release approval. Published rc.2 already owns next and latest; candidate selection grants no channel-write authority.",
     "Verify both direct scoped and native-alias installations against the actual package, registry integrity and provenance.",
     "Recheck organization permissions and exact coordinate availability immediately before the separately approved publication."
   ],

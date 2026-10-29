@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "coordinate": "@hadden-industries/owlapi@0.1.0-rc.2",
+  "previousVersion": "0.1.0-rc.1",
+  "deadlineMs": 1800000,
+  "intervalMs": 60000,
+  "requestTimeoutMs": 60000,
+  "states": [
+    "PUBLICATION_ACCEPTED",
+    "AVAILABILITY_PENDING",
+    "REGISTRY_AVAILABLE",
+    "VERIFICATION_PASSED"
+  ],
+  "onTimeout": "AVAILABILITY_INCOMPLETE_READ_ONLY_RECOVERY",
+  "publicationReplay": false,
+  "basis": "Owner accepted the rc.2 availability-policy recommendations on 2026-10-10; npm publish-time scanning has no guaranteed completion time.",
+  "reassessment": "Review measured availability delays after any timeout or changed npm guidance. A later release must explicitly update the exact coordinate and accepted previous version."
+}

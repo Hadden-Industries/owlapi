@@ -4,7 +4,6 @@ import {
   PACKAGE_NAME,
   PACKAGE_VERSION,
   PACKAGE_FILE_STEM,
-  PACKAGE_SBOM_PURL,
 } from "./package-identity.mjs";
 
 import { sha256Buffer } from "./release-file-utils.mjs";
@@ -16,13 +15,15 @@ const compareCodeUnits = (left, right) =>
 const verifyCandidateBundle = (
   { checksumText, fileNames, sbomText, tarball },
   historicalAlpha = false,
+  scopedVersion = PACKAGE_VERSION,
 ) => {
   const packageManifest = JSON.parse(
     readGzipTarFile(tarball, "package.json").toString("utf8"),
   );
   const { name, version } = packageManifest;
   const expectedName = historicalAlpha ? "owlapi" : PACKAGE_NAME;
-  const expectedVersion = historicalAlpha ? "0.1.0-alpha.0" : PACKAGE_VERSION;
+  const expectedVersion = historicalAlpha ? "0.1.0-alpha.0" : scopedVersion;
+  const expectedPurl = `pkg:npm/%40hadden-industries/owlapi@${expectedVersion}?vcs_url=${encodeURIComponent("git+https://github.com/Hadden-Industries/owlapi.git")}`;
   const fileStem = historicalAlpha ? "owlapi" : PACKAGE_FILE_STEM;
   if (name !== expectedName || version !== expectedVersion) {
     throw new Error(
@@ -52,7 +53,7 @@ const verifyCandidateBundle = (
       ? `${sbom.metadata.component.group}/${sbom.metadata.component.name}`
       : sbom.metadata?.component?.name) !== name ||
     sbom.metadata?.component?.version !== version ||
-    (!historicalAlpha && sbom.metadata?.component?.purl !== PACKAGE_SBOM_PURL)
+    (!historicalAlpha && sbom.metadata?.component?.purl !== expectedPurl)
   ) {
     throw new Error("Downloaded candidate SBOM identity is invalid.");
   }
@@ -93,3 +94,7 @@ export const verifyDownloadedCandidateBundle = (input) =>
 /** Read-only historical replay; callers additionally bind the retained alpha source/run. */
 export const verifyHistoricalAlphaCandidateBundle = (input) =>
   verifyCandidateBundle(input, true);
+
+/** Closed historical reader for the retained rc.2 recovery artifacts. */
+export const verifyHistoricalRc2CandidateBundle = (input) =>
+  verifyCandidateBundle(input, false, "0.1.0-rc.2");

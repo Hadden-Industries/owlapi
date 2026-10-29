@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "scope": "Six 100-class declaration I/O groups only; not full API, metadata, malformed-input or byte-for-byte serializer parity. Untimed sinks do not replace historical Java timings.",
+  "java": {
+    "vendor": "Eclipse Adoptium",
+    "version": "25.0.5",
+    "runtime": "25.0.5+8-LTS",
+    "executableSha256": "f961fb8db73c7c546821bc6d30fdaa8ce2458da460a5e75e2c39189cd107e6ba",
+    "releaseSha256": "0901bfa0f4a7675de11c8a2f518272a4698624073f074e32a0393c3f0fb3b3d1"
+  },
+  "classpathLockSha256": "53caf8d60ad073dc9485df59d67abd250c61a56a35cab7851c9ab1c88ab26374",
+  "harnessSha256": "466516bb4966c01510ed951a09c9546df529c0a66f733468e125357f9b9e4dbc",
+  "sinkSha256": "b9021215381f7334b5c852a0cd64a02a80c48b666894c4cce579c23eb243c7fb",
+  "fixtureGeneratorSha256": "f3f91f37c9cf6df7a88bed5a77077ca2c09094852a6fece9d05e70026808591a",
+  "observations": {
+    "java:load.turtle": {
+      "structuralSha256": "218f9cd22482598f2466c7c61c9c3a03113a72c2783f8befd2ff81ed1af831d3",
+      "classDeclarations": 100
+    },
+    "java:load.nquads": {
+      "structuralSha256": "97d3743b90977c319c6d0dd7f2c910bd1c32aecbc8d4d44de377574b92e022b4",
+      "classDeclarations": 100
+    },
+    "java:load.trig": {
+      "structuralSha256": "30fbb49b850ee8199de2d61fe47543e6c70fd903bb8c7579ad33ba410c78fcb4",
+      "classDeclarations": 100
+    },
+    "java:save.input": {
+      "structuralSha256": "a7fe0c2246241199849a4ff63b012f0005e6770eeb7e8cf8a5ccfa657ac7724b",
+      "classDeclarations": 100
+    },
+    "java:save.input:after-save": {
+      "structuralSha256": "a7fe0c2246241199849a4ff63b012f0005e6770eeb7e8cf8a5ccfa657ac7724b",
+      "classDeclarations": 100
+    },
+    "java-owlapi-5.5.1:load.turtle": {
+      "structuralSha256": "218f9cd22482598f2466c7c61c9c3a03113a72c2783f8befd2ff81ed1af831d3",
+      "classDeclarations": 100
+    },
+    "java-owlapi-5.5.1:load.nquads": {
+      "structuralSha256": "97d3743b90977c319c6d0dd7f2c910bd1c32aecbc8d4d44de377574b92e022b4",
+      "classDeclarations": 100
+    },
+    "java-owlapi-5.5.1:load.trig": {
+      "structuralSha256": "30fbb49b850ee8199de2d61fe47543e6c70fd903bb8c7579ad33ba410c78fcb4",
+      "classDeclarations": 100
+    },
+    "java-owlapi-5.5.1:save.input": {
+      "structuralSha256": "a7fe0c2246241199849a4ff63b012f0005e6770eeb7e8cf8a5ccfa657ac7724b",
+      "classDeclarations": 100
+    },
+    "java-owlapi-5.5.1:own-save.owlxml": {
+      "structuralSha256": "a7fe0c2246241199849a4ff63b012f0005e6770eeb7e8cf8a5ccfa657ac7724b",
+      "classDeclarations": 100
+    },
+    "java-owlapi-5.5.1:java-save.owlxml": {
+      "structuralSha256": "a7fe0c2246241199849a4ff63b012f0005e6770eeb7e8cf8a5ccfa657ac7724b",
+      "classDeclarations": 100
+    },
+    "java-owlapi-5.5.1:own-save.rdfxml": {
+      "structuralSha256": "a7fe0c2246241199849a4ff63b012f0005e6770eeb7e8cf8a5ccfa657ac7724b",
+      "classDeclarations": 100
+    },
+    "java-owlapi-5.5.1:java-save.rdfxml": {
+      "structuralSha256": "a7fe0c2246241199849a4ff63b012f0005e6770eeb7e8cf8a5ccfa657ac7724b",
+      "classDeclarations": 100
+    },
+    "java-owlapi-5.5.1:own-save.turtle": {
+      "structuralSha256": "a7fe0c2246241199849a4ff63b012f0005e6770eeb7e8cf8a5ccfa657ac7724b",
+      "classDeclarations": 100
+    },
+    "java-owlapi-5.5.1:java-save.turtle": {
+      "structuralSha256": "a7fe0c2246241199849a4ff63b012f0005e6770eeb7e8cf8a5ccfa657ac7724b",
+      "classDeclarations": 100
+    },
+    "normative-v1:load.turtle": {
+      "structuralSha256": "218f9cd22482598f2466c7c61c9c3a03113a72c2783f8befd2ff81ed1af831d3",
+      "classDeclarations": 100
+    },
+    "normative-v1:load.nquads": {
+      "structuralSha256": "97d3743b90977c319c6d0dd7f2c910bd1c32aecbc8d4d44de377574b92e022b4",
+      "classDeclarations": 100
+    },
+    "normative-v1:load.trig": {
+      "structuralSha256": "30fbb49b850ee8199de2d61fe47543e6c70fd903bb8c7579ad33ba410c78fcb4",
+      "classDeclarations": 100
+    },
+    "normative-v1:save.input": {
+      "structuralSha256": "a7fe0c2246241199849a4ff63b012f0005e6770eeb7e8cf8a5ccfa657ac7724b",
+      "classDeclarations": 100
+    },
+    "normative-v1:own-save.owlxml": {
+      "structuralSha256": "a7fe0c2246241199849a4ff63b012f0005e6770eeb7e8cf8a5ccfa657ac7724b",
+      "classDeclarations": 100
+    },
+    "normative-v1:java-save.owlxml": {
+      "structuralSha256": "a7fe0c2246241199849a4ff63b012f0005e6770eeb7e8cf8a5ccfa657ac7724b",
+      "classDeclarations": 100
+    },
+    "normative-v1:own-save.rdfxml": {
+      "structuralSha256": "a7fe0c2246241199849a4ff63b012f0005e6770eeb7e8cf8a5ccfa657ac7724b",
+      "classDeclarations": 100
+    },
+    "normative-v1:java-save.rdfxml": {
+      "structuralSha256": "a7fe0c2246241199849a4ff63b012f0005e6770eeb7e8cf8a5ccfa657ac7724b",
+      "classDeclarations": 100
+    },
+    "normative-v1:own-save.turtle": {
+      "structuralSha256": "a7fe0c2246241199849a4ff63b012f0005e6770eeb7e8cf8a5ccfa657ac7724b",
+      "classDeclarations": 100
+    },
+    "normative-v1:java-save.turtle": {
+      "structuralSha256": "a7fe0c2246241199849a4ff63b012f0005e6770eeb7e8cf8a5ccfa657ac7724b",
+      "classDeclarations": 100
+    },
+    "java:java-save.owlxml": {
+      "structuralSha256": "a7fe0c2246241199849a4ff63b012f0005e6770eeb7e8cf8a5ccfa657ac7724b",
+      "classDeclarations": 100
+    },
+    "java:java-save.rdfxml": {
+      "structuralSha256": "a7fe0c2246241199849a4ff63b012f0005e6770eeb7e8cf8a5ccfa657ac7724b",
+      "classDeclarations": 100
+    },
+    "java:java-save.turtle": {
+      "structuralSha256": "a7fe0c2246241199849a4ff63b012f0005e6770eeb7e8cf8a5ccfa657ac7724b",
+      "classDeclarations": 100
+    },
+    "java:java-owlapi-5.5.1-save.owlxml": {
+      "structuralSha256": "a7fe0c2246241199849a4ff63b012f0005e6770eeb7e8cf8a5ccfa657ac7724b",
+      "classDeclarations": 100
+    },
+    "java:java-owlapi-5.5.1-save.rdfxml": {
+      "structuralSha256": "a7fe0c2246241199849a4ff63b012f0005e6770eeb7e8cf8a5ccfa657ac7724b",
+      "classDeclarations": 100
+    },
+    "java:java-owlapi-5.5.1-save.turtle": {
+      "structuralSha256": "a7fe0c2246241199849a4ff63b012f0005e6770eeb7e8cf8a5ccfa657ac7724b",
+      "classDeclarations": 100
+    },
+    "java:normative-v1-save.owlxml": {
+      "structuralSha256": "a7fe0c2246241199849a4ff63b012f0005e6770eeb7e8cf8a5ccfa657ac7724b",
+      "classDeclarations": 100
+    },
+    "java:normative-v1-save.rdfxml": {
+      "structuralSha256": "a7fe0c2246241199849a4ff63b012f0005e6770eeb7e8cf8a5ccfa657ac7724b",
+      "classDeclarations": 100
+    },
+    "java:normative-v1-save.turtle": {
+      "structuralSha256": "a7fe0c2246241199849a4ff63b012f0005e6770eeb7e8cf8a5ccfa657ac7724b",
+      "classDeclarations": 100
+    }
+  },
+  "inputSha256": {
+    "load.turtle": "803bcba102837cd7852bc419d89752875adfda7650e62b3e574a3053a2dd47d6",
+    "load.nquads": "6bcc563fbef96fb466d9094e7d1a35063fdfdfd9259299c3ba9947c69d56eced",
+    "load.trig": "2d4546d940b91a4c34117ebbfd6869f9437b6305a41a432217d2602924b89176",
+    "save.input": "acab90ca652b8d84789c8192b5d1bbd3d601acaba8493b5306eca67c49fc33d9",
+    "java-save.owlxml": "09c982401d4127de1fbef92166bebe6f4f54e1660f6b3014687481ce3678c412",
+    "java-save.rdfxml": "8cb3cd364fd88e42c8a3a371eed6777823c61a875c69882c689a9f2e489a0e71",
+    "java-save.turtle": "533c3591cd0d00dab566f79961fede07b93adbb2ab4ac708f5e10c99fe916ca7",
+    "java-owlapi-5.5.1-save.owlxml": "7d2bb3dec9649f39309bf324d0fa56ed3800080835e44b80bbe40d5414d460a8",
+    "java-owlapi-5.5.1-save.rdfxml": "1ece4a92d65094290e22f74cf34dc7cbf10be30dec1c4a37b9eda22f4ac68d71",
+    "java-owlapi-5.5.1-save.turtle": "b7cbf321b9b1aa2106daad1287450b55496e7d6910fcc8df6390dac449386443",
+    "normative-v1-save.owlxml": "1cf8da50eb40b31d65595c767689b4b5355823e822dc298d39d367ed4738b850",
+    "normative-v1-save.rdfxml": "08f56b33efa3eb4c7dd5cfe5f968cf45d963c8b3aa193f972d9e8ff96724a9ed",
+    "normative-v1-save.turtle": "1204ef0806de8144fd95202c888f8292dcf0e1aa0ef08ecaf176e71810611805"
+  }
+}

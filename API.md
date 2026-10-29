@@ -1,8 +1,8 @@
-<!-- registry-sha256: 83d03090e1d9a5684492e5b4edb03bfc971c4d387ddcb8b60d5f6ee95f9a3417 -->
+<!-- registry-sha256: c3e16a8fd58e735a8842cb84b84da801bb400261c60767f198d3c3cff803055d -->
 
 # owlapi API reference
 
-This reference is generated from the authoritative compatibility registry for `@hadden-industries/owlapi` 0.1.0-rc.2. Edit the generator or registry inputs, not this file.
+This reference is generated from the authoritative compatibility registry for `@hadden-industries/owlapi` 0.1.0-rc.3. Edit the generator or registry inputs, not this file.
 
 This is an independently maintained JavaScript implementation. It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project; Java names identify compatibility authorities, not organizational continuity or complete parity.
 
@@ -1080,7 +1080,7 @@ A JavaScript adaptation supporting the initial public OWLAPI workflow.
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.io
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; first public release target 0.1.0
+- Release status: PRERELEASE; first public release target 0.1.0-rc.3
 - Call shape: new NodeDocumentLoader(...arguments)
 - Supported members: prototype.authorize; prototype.load
 - Omitted Java members: none recorded
@@ -1332,7 +1332,7 @@ A JavaScript-specific helper at an approved Java OWLAPI namespace boundary.
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.parameters.ChangeApplied
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; first public release target 0.1.0
+- Release status: PRERELEASE; first public release target 0.1.0-rc.3
 - Call shape: import { ChangeApplied } from "@hadden-industries/owlapi/model/parameters"
 - Supported members: NO_OPERATION; SUCCESSFULLY; UNSUCCESSFULLY
 - Omitted Java members: none recorded

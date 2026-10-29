@@ -28,11 +28,15 @@ export function qualificationMatrix(releases, policy = CI_RUNTIME) {
   assert.ok(
     Array.isArray(releases) && releases.length > 0 && releases.length <= 10000,
   );
-  const versions = releases.map(({ version }) => {
-    assert.match(version, /^v\d+\.\d+\.\d+$/u);
-    assert.equal(semver.valid(version.slice(1)), version.slice(1));
-    return version.slice(1);
-  });
+  const versions = releases
+    .map(({ version }) => {
+      assert.equal(typeof version, "string");
+      assert.equal(version[0], "v");
+      const parsed = semver.valid(version.slice(1));
+      assert.equal(parsed, version.slice(1));
+      return parsed;
+    })
+    .filter((version) => semver.prerelease(version) === null);
   const selections = policy.minimums.map((minimum) => {
     const reference = policy.node[semver.major(minimum)];
     assert.ok(

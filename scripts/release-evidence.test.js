@@ -1,3 +1,4 @@
+import { PACKAGE_VERSION } from "./package-identity.mjs";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -150,7 +151,7 @@ const facts = {
 
 const scopedFacts = () => {
   const candidate = structuredClone(facts);
-  const rc = "0.1.0-rc.2";
+  const rc = PACKAGE_VERSION;
   candidate.source.ref = `refs/tags/v${rc}`;
   candidate.source.tag = `v${rc}`;
   candidate.workflow = { ...candidate.qualificationWorkflow };
@@ -233,8 +234,8 @@ test("fresh scoped RC evidence binds one source and run without borrowing alpha 
   const evidence = buildReleaseEvidence(scopedFacts());
   expect(evidence.package).toEqual({
     name: "@hadden-industries/owlapi",
-    version: "0.1.0-rc.2",
-    coordinate: "@hadden-industries/owlapi@0.1.0-rc.2",
+    version: PACKAGE_VERSION,
+    coordinate: `@hadden-industries/owlapi@${PACKAGE_VERSION}`,
     channel: "next",
     registry: "https://registry.npmjs.org/",
   });
@@ -295,7 +296,7 @@ test("historical schema-4 evidence remains readable after oracle changes but can
     evidence.candidate.sbom,
     ...evidence.githubRelease.assets,
   ])
-    asset.name = asset.name.replace("0.1.0-rc.2", "0.1.0-rc.1");
+    asset.name = asset.name.replace(PACKAGE_VERSION, "0.1.0-rc.1");
   const report = evidence.producerContract;
   report.candidate.package.version = "0.1.0-rc.1";
   report.fixtureSha256 = "0".repeat(64);

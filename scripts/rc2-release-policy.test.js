@@ -6,12 +6,12 @@ import { deriveWorkflowMetadata } from "./workflow-metadata.mjs";
 import { PACKAGE_VERSION, PUBLIC_SUBPATHS } from "./package-identity.mjs";
 import { matchesScopedCandidateArtifactName } from "./generate-release-evidence.mjs";
 
-test("rc.2 evidence accepts only its exact candidate coordinate and an existing run attempt", () => {
-  const name = "hadden-industries-owlapi-0.1.0-rc.2-candidate-123-1";
+test("candidate evidence accepts only its selected coordinate and an existing run attempt", () => {
+  const name = `hadden-industries-owlapi-${PACKAGE_VERSION}-candidate-123-1`;
   expect(matchesScopedCandidateArtifactName(name, "123", 1)).toBe(true);
   expect(matchesScopedCandidateArtifactName(name, "123", 2)).toBe(true);
   for (const invalid of [
-    name.replace("rc.2", "rc.1"),
+    name.replace(PACKAGE_VERSION, "0.1.0-rc.1"),
     name.replace("candidate-123", "candidate-124"),
     name.replace(/-1$/u, "-0"),
     name.replace(/-1$/u, "-01"),
@@ -23,7 +23,7 @@ test("rc.2 evidence accepts only its exact candidate coordinate and an existing 
     expect(matchesScopedCandidateArtifactName(invalid, "123", 1)).toBe(false);
 });
 
-const version = "0.1.0-rc.2",
+const version = PACKAGE_VERSION,
   sha256 = "a".repeat(64);
 const facts = (tags) => ({
   expectedVersion: version,
@@ -40,7 +40,7 @@ const facts = (tags) => ({
   registryTarballSha256: sha256,
 });
 
-test("rc.2 registry acceptance requires next and latest to identify the exact qualified version", () => {
+test("candidate registry acceptance requires next and latest to identify the exact qualified version", () => {
   expect(
     assertPublicRegistryFacts(facts({ next: version, latest: version })),
   ).toMatchObject({
@@ -57,27 +57,24 @@ test("rc.2 registry acceptance requires next and latest to identify the exact qu
     expect(() => assertPublicRegistryFacts(facts(tags))).toThrow();
 });
 
-test("rc.2 configuration selects all eleven paths without inheriting rc.1 publication approval", () => {
+test("rc.3 selects all twelve paths without inheriting historical publication approval", () => {
   const manifest = JSON.parse(readFileSync("package.json", "utf8"));
   const control = JSON.parse(
     readFileSync("docs/release/publication-control.json", "utf8"),
   );
-  expect(PACKAGE_VERSION).toBe(version);
-  expect(manifest.version).toBe(version);
+  expect(PACKAGE_VERSION).toBe("0.1.0-rc.3");
+  expect(manifest.version).toBe(PACKAGE_VERSION);
   expect(PUBLIC_SUBPATHS).toHaveLength(12);
   expect(control).toMatchObject({
-    enabled: true,
-    mode: "DIRECT_OIDC",
-    coordinate: `@hadden-industries/owlapi@${version}`,
-    reviewedOn: "2026-10-10",
+    enabled: false,
+    mode: "UNRESOLVED",
+    coordinate: `@hadden-industries/owlapi@${PACKAGE_VERSION}`,
+    reviewedOn: null,
   });
   expect(
     deriveWorkflowMetadata({ manifest, publication: control })
       .publication_enabled,
-  ).toBe("true");
-  expect(control.reason).toContain(
-    "4f04d1456519fb75f23da51fce5174af0d4909ec7ea647cae2f4c9f4dc77b441",
-  );
+  ).toBe("false");
   const ajv = new Ajv2020({ strict: true, allErrors: true });
   addFormats(ajv);
   const schema = JSON.parse(
@@ -85,6 +82,20 @@ test("rc.2 configuration selects all eleven paths without inheriting rc.1 public
   );
   const validate = ajv.compile(schema);
   expect(validate(control)).toBe(true);
+  for (const invalid of [
+    { enabled: true, mode: "DIRECT_BOOTSTRAP", reviewedOn: "2026-10-29" },
+    { enabled: true, mode: "DIRECT_OIDC", reviewedOn: null },
+    { enabled: false, mode: "DIRECT_OIDC", reviewedOn: "2026-10-29" },
+  ])
+    expect(validate({ ...control, ...invalid })).toBe(false);
+  expect(
+    validate({
+      ...control,
+      enabled: true,
+      mode: "DIRECT_OIDC",
+      reviewedOn: "2026-10-29",
+    }),
+  ).toBe(true);
   const historical = JSON.parse(
     readFileSync(
       "docs/release/history/0.1.0-rc.1-publication-control.json",
@@ -99,5 +110,20 @@ test("rc.2 configuration selects all eleven paths without inheriting rc.1 public
   expect(validate(historical)).toBe(true);
   expect(() =>
     deriveWorkflowMetadata({ manifest, publication: historical }),
+  ).toThrow();
+  const publishedRc2 = JSON.parse(
+    readFileSync(
+      "docs/release/history/0.1.0-rc.2-publication-control.json",
+      "utf8",
+    ),
+  );
+  expect(publishedRc2).toMatchObject({
+    coordinate: "@hadden-industries/owlapi@0.1.0-rc.2",
+    enabled: true,
+    reviewedOn: "2026-10-10",
+  });
+  expect(validate(publishedRc2)).toBe(true);
+  expect(() =>
+    deriveWorkflowMetadata({ manifest, publication: publishedRc2 }),
   ).toThrow();
 });

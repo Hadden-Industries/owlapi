@@ -23,7 +23,10 @@ import {
   canonicalExternalOutput,
   freshRecoveryOutputs,
   readVerifiedArchive,
+  publicReadback,
 } from "./recover-rc2-finalization.mjs";
+import { assertPublicRegistryFacts } from "./qualify-public-registry.mjs";
+import { PACKAGE_VERSION } from "./package-identity.mjs";
 import { SCOPED_RELEASE_JOB_NAMES } from "./release-evidence.mjs";
 import { contractReport } from "./fixtures/owl-contract-report.mjs";
 
@@ -34,6 +37,52 @@ const originalControl = JSON.parse(
   ),
 );
 const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
+
+test("recovery registry orchestration accepts only the retained rc.2 coordinate", async () => {
+  const tarball = Buffer.from("retained rc.2 bytes");
+  const metadata = {
+    name: "@hadden-industries/owlapi",
+    version: "0.1.0-rc.2",
+    dist: {
+      tarball:
+        "https://registry.npmjs.org/@hadden-industries/owlapi/-/owlapi-0.1.0-rc.2.tgz",
+      integrity: `sha512-${createHash("sha512").update(tarball).digest("base64")}`,
+    },
+  };
+  const tags = { next: "0.1.0-rc.2", latest: "0.1.0-rc.2" };
+  const read = jest.fn(async (url) => {
+    if (url.href === metadata.dist.tarball) return tarball;
+    if (url.pathname.endsWith("/dist-tags"))
+      return Buffer.from(JSON.stringify(tags));
+    expect(url.pathname).toBe("/%40hadden-industries%2Fowlapi/0.1.0-rc.2");
+    return Buffer.from(JSON.stringify(metadata));
+  });
+  const control = { tarballSha256: digest(tarball) };
+  await expect(publicReadback(control, read)).resolves.toMatchObject({
+    ...tags,
+    sha256: control.tarballSha256,
+  });
+  expect(() =>
+    assertPublicRegistryFacts({
+      expectedVersion: "0.1.0-rc.2",
+      metadata,
+      distTags: tags,
+      retainedSha256: control.tarballSha256,
+      registryTarballSha256: control.tarballSha256,
+    }),
+  ).toThrow(/coordinate/u);
+  metadata.version = PACKAGE_VERSION;
+  await expect(publicReadback(control, read)).rejects.toThrow(/coordinate/u);
+  metadata.version = "0.1.0-rc.2";
+  tags.latest = PACKAGE_VERSION;
+  await expect(publicReadback(control, read)).rejects.toThrow(
+    /exact qualified version/u,
+  );
+  tags.latest = "0.1.0-rc.2";
+  await expect(
+    publicReadback({ tarballSha256: "0".repeat(64) }, read),
+  ).rejects.toThrow(/bytes differ/u);
+});
 
 test("archive decoding consumes the authenticated buffer without reopening a pathname", () => {
   const bytes = Buffer.from(
@@ -268,6 +317,7 @@ const fixture = () => {
         },
         {
           workflow: "Release",
+          packageVersion: "0.1.0-rc.2",
           tarballSha256: control.tarballSha256,
           artifact: {
             id: Number(candidate.artifactId),

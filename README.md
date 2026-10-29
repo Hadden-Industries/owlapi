@@ -16,7 +16,7 @@ This project is an independently maintained JavaScript implementation.
 It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project.
 
 The published rc.2 includes the selected ontology queries, changes, transforms, short-form providers, Manchester rendering, Turtle and OWL/XML storage, EL/QL/RL profiles, and syntactic locality extraction described in the [rc.2 plan](./docs/plans/0.1.0-rc.2-java-parity.md).
-Current source has advanced beyond that artifact while retaining rc.2 development metadata; a successor must use its own unused version and qualification.
+Current source selects `0.1.0-rc.3` for local qualification; that version is unpublished and has no publication approval.
 The current profile-aware source also implements explicit `normative-v1` and `java-owlapi-5.5.1` selection under the [behavior profile contract](docs/compatibility/behavior-profiles.md).
 These options describe the later source candidate and are not part of the published rc.1 or rc.2 tarballs.
 Qualification is still in progress; the current ledger and provenance do not claim admission.
@@ -27,10 +27,10 @@ That target does not establish availability, and successful publication does not
 
 The rc.1-pinned installation and import-map examples below remain examples of that historical release; they do not demonstrate the newer source APIs.
 The release roadmap includes reconciling the complete installed examples and migration guidance against the accepted successor artifact.
-To test a retained rc.2 candidate, substitute its actual absolute tarball path:
+To test the retained local rc.3 candidate, substitute its actual absolute tarball path:
 
 ```shell
-npm install --save-exact "owlapi@file:/absolute/path/hadden-industries-owlapi-0.1.0-rc.2.tgz"
+npm install --save-exact "owlapi@file:/absolute/path/hadden-industries-owlapi-0.1.0-rc.3.tgz"
 ```
 
 RDF loads expose Java-style `RDFParserMetaData` through `manager.getOntologyFormat(ontology).getOntologyLoaderMetaData()`.

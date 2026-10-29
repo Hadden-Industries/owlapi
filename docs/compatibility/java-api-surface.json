@@ -2,7 +2,7 @@
   "$schema": "./java-api-surface.schema.json",
   "schemaVersion": 2,
   "packageName": "@hadden-industries/owlapi",
-  "packageVersion": "0.1.0-rc.2",
+  "packageVersion": "0.1.0-rc.3",
   "javaReference": {
     "version": "5.5.1",
     "revision": "f760b3a4c107c6d5f90f856e5680c39b18af646f",
@@ -245,7 +245,7 @@
       "javaPackage": "org.semanticweb.owlapi.io",
       "npmSpecifier": "@hadden-industries/owlapi/io/node",
       "exposure": "PUBLIC",
-      "firstPublicReleaseTarget": "0.1.0",
+      "firstPublicReleaseTarget": "0.1.0-rc.3",
       "rationale": "Explicit Node HTTP, HTTPS and local-file capability. Every access requires caller authorization; this entry is unavailable in browsers and is absent from the bare aggregate.",
       "ownedBindingIds": [
         "io/node.NodeDocumentLoader"
@@ -3156,7 +3156,7 @@
       "progress": "COMPLETE",
       "exposure": "PUBLIC",
       "stability": "PRERELEASE",
-      "firstPublicReleaseTarget": "0.1.0",
+      "firstPublicReleaseTarget": "0.1.0-rc.3",
       "publicSpecifier": "@hadden-industries/owlapi/io/node",
       "sourceModule": "io/node/nodeDocumentLoader.js",
       "javaPackage": "org.semanticweb.owlapi.io",
@@ -3517,7 +3517,7 @@
         "profiles.owl2-dl-source-assessment"
       ],
       "capabilityStatus": "REQUIRED_V1",
-      "progress": "IN_PROGRESS",
+      "progress": "COMPLETE",
       "exposure": "PUBLIC",
       "stability": "PRERELEASE",
       "firstPublicReleaseTarget": "0.1.0-rc.1",
@@ -3702,7 +3702,7 @@
         "profiles.owl2-dl-source-assessment"
       ],
       "capabilityStatus": "REQUIRED_V1",
-      "progress": "IN_PROGRESS",
+      "progress": "COMPLETE",
       "exposure": "PUBLIC",
       "stability": "PRERELEASE",
       "firstPublicReleaseTarget": "0.1.0-rc.1",
@@ -3793,7 +3793,7 @@
       "progress": "COMPLETE",
       "exposure": "PUBLIC",
       "stability": "PRERELEASE",
-      "firstPublicReleaseTarget": "0.1.0",
+      "firstPublicReleaseTarget": "0.1.0-rc.3",
       "publicSpecifier": "@hadden-industries/owlapi/model/parameters",
       "sourceModule": "model/parameters/index.js",
       "javaPackage": "org.semanticweb.owlapi.model.parameters",
@@ -20190,7 +20190,7 @@
       "capabilityIds": [
         "profiles.owl2-dl-source-assessment"
       ],
-      "progress": "IN_PROGRESS",
+      "progress": "COMPLETE",
       "exposure": "PUBLIC",
       "stability": "PRERELEASE",
       "jsExport": "OWL2DLProfile",
@@ -20413,7 +20413,7 @@
       "capabilityIds": [
         "profiles.owl2-dl-source-assessment"
       ],
-      "progress": "IN_PROGRESS",
+      "progress": "COMPLETE",
       "exposure": "PUBLIC",
       "stability": "PRERELEASE",
       "jsExport": "OWLProfileReport",

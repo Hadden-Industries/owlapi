@@ -1,3 +1,4 @@
+import { PACKAGE_VERSION } from "./package-identity.mjs";
 import { jest } from "@jest/globals";
 import { createHash } from "node:crypto";
 import {
@@ -9,7 +10,7 @@ import { RegistryReadError } from "./public-registry-read.mjs";
 
 const tarball = Buffer.from("exact approved tarball");
 const retainedSha256 = createHash("sha256").update(tarball).digest("hex");
-const version = "0.1.0-rc.2";
+const version = PACKAGE_VERSION;
 const metadata = {
   name: "@hadden-industries/owlapi",
   version,
@@ -134,7 +135,7 @@ test.each([401, 403, 400])(
 test("waits for absent and explicitly accepted prior channels only", async () => {
   const h = harness((url, _options, clock) =>
     url.includes("dist-tags") && clock === 0
-      ? encode({ next: "0.1.0-rc.1" })
+      ? encode({ next: availabilityPolicy.previousVersion })
       : available(url),
   );
   await h.run();

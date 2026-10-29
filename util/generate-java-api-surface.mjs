@@ -21,7 +21,7 @@ import * as locality from "../modularity/locality/index.js";
 
 // Planned first-public-release target for additions since published rc.2.
 // This is neither a publication claim nor selection/approval of a candidate.
-const ROADMAP_PUBLIC_RELEASE_TARGET = "0.1.0";
+const ROADMAP_PUBLIC_RELEASE_TARGET = "0.1.0-rc.3";
 const PACKAGE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const EXPECTED_JAVA_REVISION = JSON.parse(
   await readFile(
