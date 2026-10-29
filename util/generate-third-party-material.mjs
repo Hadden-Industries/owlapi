@@ -486,14 +486,14 @@ const createQualityToolingFacts = () => {
     {
       id: "ruff-development-tool",
       name: "Ruff development formatter and linter",
-      versionOrRevision: "0.17.1",
+      versionOrRevision: "0.17.3",
       license: "MIT",
       source: "astral-sh/ruff",
       files: [
         "pyproject.toml",
         "uv.lock",
         "ruff.toml",
-        "LICENSES/development/ruff-0.17.1.txt",
+        "LICENSES/development/ruff-0.17.3.txt",
       ],
       attribution:
         "Copyright (c) 2022 Charles Marsh. The complete wheel licence, including its embedded third-party notices, is retained. The tool and its distributions are not packed.",

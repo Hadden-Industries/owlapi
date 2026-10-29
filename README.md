@@ -78,7 +78,7 @@ The package declares the engine admission range `>=22.0.0`.
 The maintained-family minimums of Node 22.0.0, 24.0.0 and 26.0.0 passed hosted installed-package and native-platform qualification; see the [qualification record](docs/release/node-consumer-qualification.md).
 Every release candidate still requires qualification of its own bytes and human release acceptance.
 Hosted qualification selects each family's exact minimum and latest released version, plus distinct reference versions, using one frozen matrix and one retained package archive.
-Node 24.22.1 is the selected canonical package producer.
+Node 24.22.2 is the selected canonical package producer.
 
 <!-- runtime-policy:end -->
 

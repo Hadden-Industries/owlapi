@@ -16,16 +16,16 @@
     "version": "0.1.0-rc.2",
     "lockfile": "package-lock.json",
     "lockfileVersion": 3,
-    "lockfileSha256": "823685bb63c9440d802981cbabcb8d1d29a8f902361e01bc64b0f9660c230536",
+    "lockfileSha256": "c56a6e75368a3604e3127bf22ece9ad763f801b5e3b6e7e82a46289823f16ca8",
     "evidenceManifest": "docs/provenance/npm-package-evidence.json",
-    "evidenceManifestSha256": "8271f6e2eae7b4c2e12216d4bf99c2e67bad86966da50831e7d20d2d8854ea39",
-    "evidenceCorpusRoot": "fd4c1115a8e0d9b693dc1d732c7986a1774981fe2c65b2fb4b2f8dd9bd259737",
+    "evidenceManifestSha256": "2460113a18a636febee396793707e716ea9bd9c79cd015937e3a278f453573cb",
+    "evidenceCorpusRoot": "fe7a71f02fa053c8cbb062bdc7642fd63339ace10b7b9e9b4daa94c284e31f65",
     "tarballDependenciesBundled": false
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
     "digestAlgorithm": "sha256-sorted-json-v1",
-    "factsSha256": "fbb73f41404dad7a05303851db7936c850d3400a78a0cc195f76829318e26ff1",
+    "factsSha256": "1bbed94d76e3df5b4a909a87a9a48cb8b625ccf8d838ccb1cb26c590530730d2",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -38,13 +38,13 @@
     "developmentComponentCount": 700,
     "authenticatedTarballArtifactCount": 689,
     "registrySignatureVerifiedArtifactCount": 689,
-    "provenanceVerifiedArtifactCount": 208,
-    "provenanceNotPublishedArtifactCount": 481,
+    "provenanceVerifiedArtifactCount": 209,
+    "provenanceNotPublishedArtifactCount": 480,
     "scanVerifiedArtifactCount": 689,
-    "evidenceBlobCount": 3383,
-    "evidenceRetainedBytes": 74709706,
+    "evidenceBlobCount": 3384,
+    "evidenceRetainedBytes": 74778086,
     "inspectedLicenceFileCount": 673,
-    "inspectedNoticeFileCount": 323,
+    "inspectedNoticeFileCount": 324,
     "productionInspectedLicenceFileCount": 47,
     "productionInspectedNoticeFileCount": 23,
     "productionComponentsWithoutInspectedLicence": [
@@ -19616,69 +19616,6 @@
       }
     },
     {
-      "dependencyPath": "node_modules/deepmerge",
-      "artifactId": "110b5545606256303168abd627bbe733bd485742832d3d6714c6f04aaacabd80",
-      "name": "deepmerge",
-      "version": "4.3.1",
-      "relationship": "DEVELOPMENT_ONLY",
-      "lockfileDeclaredLicenseExpressions": [
-        "MIT"
-      ],
-      "tarballDeclaredLicenseExpression": "MIT",
-      "scanObservedLicenseExpressions": [
-        "MIT"
-      ],
-      "declaredLicenseExpression": "MIT",
-      "concludedLicenseExpression": "MIT",
-      "licenseQualification": "LOCKFILE_TARBALL_DECLARATIONS_CONSISTENT",
-      "licenseConclusionRationale": "The concluded SPDX expression preserves an equivalent prior recorded conclusion when present; otherwise it selects the first SPDX-valid lockfile declaration, then authenticated package.json declaration, and only then ScanCode evidence. The distribution disposition likewise preserves an equivalent prior decision when present; otherwise it follows development/runtime scope and the concluded-licence policy. The lockfile and authenticated package.json declarations are consistent where present. ScanCode's additional file-level observations remain separately recorded and do not silently redefine the package declaration.",
-      "distributionDisposition": "DEVELOPMENT_ONLY_NOT_DISTRIBUTED",
-      "inspectionBasis": "LOCKED_REGISTRY_TARBALL",
-      "licenseFilePresence": "PRESENT",
-      "inspectedFiles": [
-        {
-          "path": "package/license.txt",
-          "kind": "LICENCE",
-          "sha256": "6cfc4687cb2f2d86f4a77e6b526290d3878e5e512f3fec2f4cb36a9cb36f798b",
-          "blobSha256": "6cfc4687cb2f2d86f4a77e6b526290d3878e5e512f3fec2f4cb36a9cb36f798b",
-          "blobPath": "blobs/sha256/6c/6cfc4687cb2f2d86f4a77e6b526290d3878e5e512f3fec2f4cb36a9cb36f798b"
-        },
-        {
-          "path": "package/readme.md",
-          "kind": "README_ATTRIBUTION",
-          "sha256": "202430923abee498512b2f9cbab686a1e7d64759314a503ca0d5aaa29007fc0f",
-          "blobSha256": "202430923abee498512b2f9cbab686a1e7d64759314a503ca0d5aaa29007fc0f",
-          "blobPath": "blobs/sha256/20/202430923abee498512b2f9cbab686a1e7d64759314a503ca0d5aaa29007fc0f"
-        }
-      ],
-      "externalLicenseEvidence": [],
-      "authentication": {
-        "registrySignature": "VERIFIED",
-        "provenance": "NOT_PUBLISHED",
-        "archive": "VERIFIED",
-        "scan": "VERIFIED"
-      },
-      "artifactEvidence": {
-        "archiveSha256": "c29eb9837fceacd31c10da6566d91a3f68adbdfee8d48fd5abf95f5bee7bd0a9",
-        "provenanceSha256": "7b90b441b5f7bb1e488c1f5dba3702bae6f97752e8d990165cb06f22d7b74ec7",
-        "registrySignatureSha256": "a863c191513fc917d663bc50fbfa7a5b465a275c1a93b0aea578819e348f240e",
-        "scanSha256": "736dc0fdfff81b34efb879636c042138a170cdbf8d4250060f96896b567d8c86"
-      },
-      "registryUrl": "https://registry.npmjs.org/deepmerge/-/deepmerge-4.3.1.tgz",
-      "sourceReference": "git://github.com/TehShrike/deepmerge.git",
-      "sourceUrl": "https://github.com/TehShrike/deepmerge",
-      "packageAuthor": null,
-      "packageTarballScope": false,
-      "noticeDisposition": "DEVELOPMENT_ONLY_RECORDED_NOT_PACKED",
-      "rationale": "This authenticated component belongs to the repository test, evidence, documentation, or release toolchain and is excluded from the owlapi tarball.",
-      "optional": false,
-      "platformSelectors": {
-        "cpu": [],
-        "libc": [],
-        "os": []
-      }
-    },
-    {
       "dependencyPath": "node_modules/dependency-cruiser",
       "artifactId": "f6f1cb99eee9031e7d7a0025874b1af5ad89cad0c3a1641bef4191651fb1baa9",
       "name": "dependency-cruiser",
@@ -26648,6 +26585,76 @@
       "sourceReference": "https://github.com/jestjs/jest.git",
       "sourceUrl": "https://github.com/jestjs/jest",
       "packageAuthor": null,
+      "packageTarballScope": false,
+      "noticeDisposition": "DEVELOPMENT_ONLY_RECORDED_NOT_PACKED",
+      "rationale": "This authenticated component belongs to the repository test, evidence, documentation, or release toolchain and is excluded from the owlapi tarball.",
+      "optional": false,
+      "platformSelectors": {
+        "cpu": [],
+        "libc": [],
+        "os": []
+      }
+    },
+    {
+      "dependencyPath": "node_modules/jest-config/node_modules/deepmerge",
+      "artifactId": "661ee13e1ab96fab8dc9a2e1f69f8ef0cc13b398dca327cce7f44dfdf325ad84",
+      "name": "@stackline/deepmerge",
+      "version": "1.1.0",
+      "relationship": "DEVELOPMENT_ONLY",
+      "lockfileDeclaredLicenseExpressions": [
+        "MIT"
+      ],
+      "tarballDeclaredLicenseExpression": "MIT",
+      "scanObservedLicenseExpressions": [
+        "MIT"
+      ],
+      "declaredLicenseExpression": "MIT",
+      "concludedLicenseExpression": "MIT",
+      "licenseQualification": "LOCKFILE_TARBALL_DECLARATIONS_CONSISTENT",
+      "licenseConclusionRationale": "The concluded SPDX expression preserves an equivalent prior recorded conclusion when present; otherwise it selects the first SPDX-valid lockfile declaration, then authenticated package.json declaration, and only then ScanCode evidence. The distribution disposition likewise preserves an equivalent prior decision when present; otherwise it follows development/runtime scope and the concluded-licence policy. The lockfile and authenticated package.json declarations are consistent where present. ScanCode's additional file-level observations remain separately recorded and do not silently redefine the package declaration.",
+      "distributionDisposition": "DEVELOPMENT_ONLY_NOT_DISTRIBUTED",
+      "inspectionBasis": "LOCKED_REGISTRY_TARBALL",
+      "licenseFilePresence": "PRESENT",
+      "inspectedFiles": [
+        {
+          "path": "package/LICENSE",
+          "kind": "LICENCE",
+          "sha256": "a0c02bc804b9712284ed4047f865a6d5439ab05d5612575db77a077a5a919ffe",
+          "blobSha256": "a0c02bc804b9712284ed4047f865a6d5439ab05d5612575db77a077a5a919ffe",
+          "blobPath": "blobs/sha256/a0/a0c02bc804b9712284ed4047f865a6d5439ab05d5612575db77a077a5a919ffe"
+        },
+        {
+          "path": "package/NOTICE",
+          "kind": "NOTICE",
+          "sha256": "8328a4e80cfe9f0e6ca18748aee98c343fb473a8f157902d25064d6e26855b35",
+          "blobSha256": "8328a4e80cfe9f0e6ca18748aee98c343fb473a8f157902d25064d6e26855b35",
+          "blobPath": "blobs/sha256/83/8328a4e80cfe9f0e6ca18748aee98c343fb473a8f157902d25064d6e26855b35"
+        },
+        {
+          "path": "package/README.md",
+          "kind": "README_ATTRIBUTION",
+          "sha256": "bbeec7bff63f1e42a2a69bce61a1ea9f333f5734fb0477ff5e8184a83d76b1c3",
+          "blobSha256": "bbeec7bff63f1e42a2a69bce61a1ea9f333f5734fb0477ff5e8184a83d76b1c3",
+          "blobPath": "blobs/sha256/bb/bbeec7bff63f1e42a2a69bce61a1ea9f333f5734fb0477ff5e8184a83d76b1c3"
+        }
+      ],
+      "externalLicenseEvidence": [],
+      "authentication": {
+        "registrySignature": "VERIFIED",
+        "provenance": "VERIFIED",
+        "archive": "VERIFIED",
+        "scan": "VERIFIED"
+      },
+      "artifactEvidence": {
+        "archiveSha256": "1e63d34089047e7057b55a6c8be9bd114c7f4d97399ed758168478e8eca4928c",
+        "provenanceSha256": "852ebda73e556e8bff26850efda22d4838a69ad68f6dd08e5e614b78f8820172",
+        "registrySignatureSha256": "8ad5e619fdabd29b5793632dec92bb3c96f683ef843b1264604bf7d1e1b4b507",
+        "scanSha256": "4fb56f6d797f72b53a4d444ee8b64674f87801af3ac8f29285c161e6837abf42"
+      },
+      "registryUrl": "https://registry.npmjs.org/@stackline/deepmerge/-/deepmerge-1.1.0.tgz",
+      "sourceReference": "git+https://github.com/alexandroit/stackline-deepmerge.git",
+      "sourceUrl": "https://github.com/alexandroit/stackline-deepmerge",
+      "packageAuthor": "Alexandro Paixao Marques | https://github.com/alexandroit",
       "packageTarballScope": false,
       "noticeDisposition": "DEVELOPMENT_ONLY_RECORDED_NOT_PACKED",
       "rationale": "This authenticated component belongs to the repository test, evidence, documentation, or release toolchain and is excluded from the owlapi tarball.",
@@ -44892,11 +44899,11 @@
       "evidenceFiles": [
         {
           "path": "util/scancode-runtime/pyproject.toml",
-          "sha256": "a9c10740d139e443b7923c80776c3d4546d80c6cabd6ddb6d49793ab853ad962"
+          "sha256": "4260c97e96066997af4a5d79ebd0548a3dd0ca36fb918dfe9bfc583b8c4c2eab"
         },
         {
           "path": "util/scancode-runtime/uv.lock",
-          "sha256": "15333a34c9d5b05cc9ae8a644604add9d703ecba5ef17d42edca515439412ca4"
+          "sha256": "a1a2a0fcf93cc5b6aab9c6acbd0590c39c19d7598282699addf93d4eabe0758b"
         },
         {
           "path": "LICENSES/development/scancode-runtime/beartype-0.23.1/licenses/LICENSE",
@@ -45495,7 +45502,7 @@
       "id": "ruff-development-tool",
       "relationship": "DEVELOPMENT_ONLY",
       "name": "Ruff development formatter and linter",
-      "versionOrRevision": "0.17.1",
+      "versionOrRevision": "0.17.3",
       "licenseAssessments": [
         {
           "scope": "Development tooling or adapted test/configuration source",
@@ -45509,18 +45516,18 @@
       "evidenceFiles": [
         {
           "path": "pyproject.toml",
-          "sha256": "ae15df0acbd8c9b70d45e93aa1e3c0ba75111cf24a501b1011931a0d94ba6e32"
+          "sha256": "1dbb1b385c831958b801d99054006e1583313abf97151338d293e92ca6ea49a0"
         },
         {
           "path": "uv.lock",
-          "sha256": "043bff0b1379998a2940f69c630beba00271863aeb2b967f1d934f179467410f"
+          "sha256": "294fa71ab1af2d9683bf4e7ab43823739fa4d55af6b2e609c9fc33371c3acad7"
         },
         {
           "path": "ruff.toml",
           "sha256": "18d80841b9b205e331f539db87edfc47bbd1db52e81847f29df7384474326d21"
         },
         {
-          "path": "LICENSES/development/ruff-0.17.1.txt",
+          "path": "LICENSES/development/ruff-0.17.3.txt",
           "sha256": "2597d854122b77ddc71971564ca2350a37608575ce324adc5650a2b2051c8f18"
         }
       ],
@@ -45551,11 +45558,11 @@
       "evidenceFiles": [
         {
           "path": "util/scancode-runtime/pyproject.toml",
-          "sha256": "a9c10740d139e443b7923c80776c3d4546d80c6cabd6ddb6d49793ab853ad962"
+          "sha256": "4260c97e96066997af4a5d79ebd0548a3dd0ca36fb918dfe9bfc583b8c4c2eab"
         },
         {
           "path": "util/scancode-runtime/uv.lock",
-          "sha256": "15333a34c9d5b05cc9ae8a644604add9d703ecba5ef17d42edca515439412ca4"
+          "sha256": "a1a2a0fcf93cc5b6aab9c6acbd0590c39c19d7598282699addf93d4eabe0758b"
         },
         {
           "path": "util/scancode-runtime/qualification-baseline.json",
@@ -45563,7 +45570,7 @@
         },
         {
           "path": "LICENSES/development/scancode-runtime/inventory.json",
-          "sha256": "967385bf4c87d89d968d44037106764c51b211d041ef544123a79bdfc9b3a2e7"
+          "sha256": "c2ff4faeb86c76edb0aae819e9e4d7845a20c6776a2906b2886b8fe1d53a4e0d"
         },
         {
           "path": "LICENSES/development/scancode-runtime/attrs-26.1.0/licenses/LICENSE",
@@ -45602,7 +45609,7 @@
           "sha256": "c159099ed4ae91ff7e1ba43e52f7bef5fab963deeae47e4d6a2ec6fd73ea4cbb"
         },
         {
-          "path": "LICENSES/development/scancode-runtime/certifi-2026.10.19/licenses/LICENSE",
+          "path": "LICENSES/development/scancode-runtime/certifi-2026.10.23/licenses/LICENSE",
           "sha256": "e93716da6b9c0d5a4a1df60fe695b370f0695603d21f6f83f053e42cfc10caf7"
         },
         {
@@ -45802,7 +45809,7 @@
           "sha256": "1a9a4f0e3d479a27240ddd59a9137a66ab4a0f9dfdc8ca6188cc0bfd85187f04"
         },
         {
-          "path": "LICENSES/development/scancode-runtime/importlib-metadata-9.0.1/licenses/LICENSE",
+          "path": "LICENSES/development/scancode-runtime/importlib-metadata-10.1.0/licenses/LICENSE",
           "sha256": "e2f7bb0557e7a381499f15baa7c1d776d83d6616599179d71d3109b8e39f7b25"
         },
         {
@@ -45970,7 +45977,7 @@
           "sha256": "2a7f4000fcb22199112e682ae44400f8836b9ff2500c46a8bed7d0edc93b2185"
         },
         {
-          "path": "LICENSES/development/scancode-runtime/pycparser-3.11/licenses/LICENSE",
+          "path": "LICENSES/development/scancode-runtime/pycparser-3.12/licenses/LICENSE",
           "sha256": "0a9e78156ae8b96caf1b4f11ac2df424b83de29736f9e757630548a6272fdf90"
         },
         {
@@ -46150,7 +46157,7 @@
           "sha256": "4375ba20e2b9c6c4e7cad2940a628fd90e95cc3d50ee92aae755715d8ba1fbd0"
         },
         {
-          "path": "LICENSES/development/scancode-runtime/soupsieve-3.0.3/licenses/LICENSE.md",
+          "path": "LICENSES/development/scancode-runtime/soupsieve-3.0.4/licenses/LICENSE.md",
           "sha256": "76a0acdb98c3a63681e20b6f096699ef8cad5fb35d56eef8387e0fa71d797a9a"
         },
         {
@@ -46246,7 +46253,7 @@
           "sha256": "f52f6085a2f4acdb7f425fac78d4bb013b2d723616792fb173a9f8aea191d8f0"
         },
         {
-          "path": "LICENSES/development/scancode-runtime/wcwidth-0.9.3/licenses/LICENSE",
+          "path": "LICENSES/development/scancode-runtime/wcwidth-0.9.4/licenses/LICENSE",
           "sha256": "dff08668b8cfca00ec90011eb318e450c3719fcd40893bf375781a6beef7143a"
         },
         {
@@ -46262,7 +46269,7 @@
           "sha256": "d66d5eb8f83a0ba21d3dd04318b8817588e8764daabea852d1035e3f07ffda55"
         },
         {
-          "path": "LICENSES/development/scancode-runtime/zipp-4.1.1/licenses/LICENSE",
+          "path": "LICENSES/development/scancode-runtime/zipp-4.1.2/licenses/LICENSE",
           "sha256": "9755a18519666e5f0f4cae3daad3d7012bcae48a600b31237d75e9fe134e6683"
         }
       ],
@@ -46305,7 +46312,7 @@
         },
         {
           "path": ".node-version",
-          "sha256": "d9f318747a126ce2247661af67852b185def7789492eabfad7bba322be087c33"
+          "sha256": "9185b9f67843cabfa8054f65ce47ce0b52036b0bfe07ae5a6b834d97cc127140"
         },
         {
           "path": "tooling/markdown/package.json",
@@ -46379,7 +46386,7 @@
       "id": "uv-development-bootstrap",
       "relationship": "DEVELOPMENT_ONLY",
       "name": "uv development-environment bootstrap",
-      "versionOrRevision": "0.13.5",
+      "versionOrRevision": "0.13.6",
       "licenseAssessments": [
         {
           "scope": "Development tooling or adapted test/configuration source",
@@ -46393,22 +46400,22 @@
       "evidenceFiles": [
         {
           "path": "pyproject.toml",
-          "sha256": "ae15df0acbd8c9b70d45e93aa1e3c0ba75111cf24a501b1011931a0d94ba6e32"
+          "sha256": "1dbb1b385c831958b801d99054006e1583313abf97151338d293e92ca6ea49a0"
         },
         {
           "path": "uv.lock",
-          "sha256": "043bff0b1379998a2940f69c630beba00271863aeb2b967f1d934f179467410f"
+          "sha256": "294fa71ab1af2d9683bf4e7ab43823739fa4d55af6b2e609c9fc33371c3acad7"
         },
         {
           "path": ".python-version",
-          "sha256": "fd81c059718aeb990462ccbf0282b57d9488a7213420e8cc637d3182b6fa7697"
+          "sha256": "673e2ba07f95bfcfe0a543258b8e267954e403d1f466481c546f467f86b31d46"
         },
         {
           "path": "scripts/repository-python-tools.mjs",
           "sha256": "247b21dae424896fe8892f544a0aa7f5482e643fb308e4219f4e2aa70ec43d9c"
         },
         {
-          "path": "LICENSES/development/uv-0.13.5-MIT.txt",
+          "path": "LICENSES/development/uv-0.13.6-MIT.txt",
           "sha256": "860e3d7a86b84e6a7012c7a635fc64df475cebc6cce34dfeb73a5982ec58176c"
         }
       ],

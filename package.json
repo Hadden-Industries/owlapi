@@ -211,6 +211,9 @@
     "@istanbuljs/load-nyc-config@1.1.0": {
       "js-yaml": ">=5.5.0 <6"
     },
+    "jest-config@30.5.2": {
+      "deepmerge": "npm:@stackline/deepmerge@1.1.0"
+    },
     "source-map-js": ">=1.2.2 <2"
   },
   "repository": {

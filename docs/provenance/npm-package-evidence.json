@@ -2620,66 +2620,6 @@
     {
       "archive": {
         "evidence": {
-          "bytes": 5145,
-          "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/c2/c29eb9837fceacd31c10da6566d91a3f68adbdfee8d48fd5abf95f5bee7bd0a9",
-          "sha256": "c29eb9837fceacd31c10da6566d91a3f68adbdfee8d48fd5abf95f5bee7bd0a9"
-        },
-        "state": "VERIFIED"
-      },
-      "artifactId": "110b5545606256303168abd627bbe733bd485742832d3d6714c6f04aaacabd80",
-      "integrity": "sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==",
-      "lockfileLicenses": [
-        "MIT"
-      ],
-      "name": "deepmerge",
-      "occurrencePaths": [
-        "node_modules/deepmerge"
-      ],
-      "provenance": {
-        "evidence": {
-          "bytes": 238,
-          "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/7b/7b90b441b5f7bb1e488c1f5dba3702bae6f97752e8d990165cb06f22d7b74ec7",
-          "sha256": "7b90b441b5f7bb1e488c1f5dba3702bae6f97752e8d990165cb06f22d7b74ec7"
-        },
-        "state": "NOT_PUBLISHED"
-      },
-      "registrySignature": {
-        "evidence": {
-          "bytes": 518,
-          "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/a8/a863c191513fc917d663bc50fbfa7a5b465a275c1a93b0aea578819e348f240e",
-          "sha256": "a863c191513fc917d663bc50fbfa7a5b465a275c1a93b0aea578819e348f240e"
-        },
-        "publishedAt": "2023-03-16T22:58:56.511Z",
-        "signatures": [
-          {
-            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
-            "sig": "MEUCIQDN993WZ4bZkA9ji9rC0yXDb/eFJLDqMXftQaUQp3hA9AIgOqjV7vLLdNtIfYCLlcugHmhK6t3rgYR+AbGZf0GzGPI="
-          }
-        ],
-        "state": "VERIFIED"
-      },
-      "resolved": "https://registry.npmjs.org/deepmerge/-/deepmerge-4.3.1.tgz",
-      "scan": {
-        "evidence": {
-          "bytes": 45933,
-          "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/73/736dc0fdfff81b34efb879636c042138a170cdbf8d4250060f96896b567d8c86",
-          "sha256": "736dc0fdfff81b34efb879636c042138a170cdbf8d4250060f96896b567d8c86"
-        },
-        "state": "VERIFIED"
-      },
-      "tarball": {
-        "bytes": 8452,
-        "sha256": "4003a0a348276a95543fa969f561f6b5968629acbbb59d66018dd23e7b8f1d5c"
-      },
-      "version": "4.3.1"
-    },
-    {
-      "archive": {
-        "evidence": {
           "bytes": 3708,
           "kind": "ARCHIVE_INVENTORY",
           "path": "blobs/sha256/0e/0e3c9e78310bc438648f8c528f38b374b89853446759c9d30ed30052483080ee",
@@ -17141,6 +17081,70 @@
         "sha256": "fd485dfd57082c4ef864dd867fa87fd8e1a9b5d58ee85c2b76e28e42c8f3e1d3"
       },
       "version": "1.33.0"
+    },
+    {
+      "archive": {
+        "evidence": {
+          "bytes": 11751,
+          "kind": "ARCHIVE_INVENTORY",
+          "path": "blobs/sha256/1e/1e63d34089047e7057b55a6c8be9bd114c7f4d97399ed758168478e8eca4928c",
+          "sha256": "1e63d34089047e7057b55a6c8be9bd114c7f4d97399ed758168478e8eca4928c"
+        },
+        "state": "VERIFIED"
+      },
+      "artifactId": "661ee13e1ab96fab8dc9a2e1f69f8ef0cc13b398dca327cce7f44dfdf325ad84",
+      "integrity": "sha512-bEQ1EpXrlu9PTTgKD9z85MWYGjDMv79fF2qn2LYdmukpuj6onkn5kZlRAu0PaZvUv9ZQerwtDVgIEn2LYtsE7w==",
+      "lockfileLicenses": [
+        "MIT"
+      ],
+      "name": "@stackline/deepmerge",
+      "occurrencePaths": [
+        "node_modules/jest-config/node_modules/deepmerge"
+      ],
+      "provenance": {
+        "evidence": {
+          "bytes": 17948,
+          "kind": "NPM_PROVENANCE",
+          "path": "blobs/sha256/85/852ebda73e556e8bff26850efda22d4838a69ad68f6dd08e5e614b78f8820172",
+          "sha256": "852ebda73e556e8bff26850efda22d4838a69ad68f6dd08e5e614b78f8820172"
+        },
+        "state": "VERIFIED"
+      },
+      "registrySignature": {
+        "evidence": {
+          "bytes": 780,
+          "kind": "REGISTRY_SIGNATURE",
+          "path": "blobs/sha256/8a/8ad5e619fdabd29b5793632dec92bb3c96f683ef843b1264604bf7d1e1b4b507",
+          "sha256": "8ad5e619fdabd29b5793632dec92bb3c96f683ef843b1264604bf7d1e1b4b507"
+        },
+        "publishedAt": "2026-10-13T16:49:50.456Z",
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEYCIQDS6uEsSnGvIz42YJTpgap9vcyq6+7bOKSv9zbmTfCIzQIhAL8w3fBVv1UaGC/aLuy5HKID8mnGGqfI+XOsS8lCMeTC"
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIDB38rROJm3VFyg4QKVsXsDBzanwILF3yvlWXvaOuPrrAiEAiNmadPkLT7bsnc+NWSPJjdsxZTak0JNM8PCsupNi3i0="
+          }
+        ],
+        "state": "VERIFIED"
+      },
+      "resolved": "https://registry.npmjs.org/@stackline/deepmerge/-/deepmerge-1.1.0.tgz",
+      "scan": {
+        "evidence": {
+          "bytes": 76838,
+          "kind": "SCANCODE_FINDINGS",
+          "path": "blobs/sha256/4f/4fb56f6d797f72b53a4d444ee8b64674f87801af3ac8f29285c161e6837abf42",
+          "sha256": "4fb56f6d797f72b53a4d444ee8b64674f87801af3ac8f29285c161e6837abf42"
+        },
+        "state": "VERIFIED"
+      },
+      "tarball": {
+        "bytes": 64641,
+        "sha256": "06240b676d0166880711e2b4c8c267ea9c6417b6404fe82895edd7b6acf19889"
+      },
+      "version": "1.1.0"
     },
     {
       "archive": {
@@ -42526,6 +42530,12 @@
       "sha256": "1e4f42e4fbee614d1b8e2d0b4e16cfdcf0bb29d40e6fafafb24a1524d3054ffa"
     },
     {
+      "bytes": 11751,
+      "kind": "ARCHIVE_INVENTORY",
+      "path": "blobs/sha256/1e/1e63d34089047e7057b55a6c8be9bd114c7f4d97399ed758168478e8eca4928c",
+      "sha256": "1e63d34089047e7057b55a6c8be9bd114c7f4d97399ed758168478e8eca4928c"
+    },
+    {
       "bytes": 4082,
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/1e/1e9ceb1f423696772f72d313e762b081bcbcb66e7f71632aa6200d2b60399a92",
@@ -45194,12 +45204,6 @@
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/c1/c18966ffa8adca29965a3bc719ae16f4e102763dfd97b5dd54351cb3fc42b62f",
       "sha256": "c18966ffa8adca29965a3bc719ae16f4e102763dfd97b5dd54351cb3fc42b62f"
-    },
-    {
-      "bytes": 5145,
-      "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/c2/c29eb9837fceacd31c10da6566d91a3f68adbdfee8d48fd5abf95f5bee7bd0a9",
-      "sha256": "c29eb9837fceacd31c10da6566d91a3f68adbdfee8d48fd5abf95f5bee7bd0a9"
     },
     {
       "bytes": 3812,
@@ -48096,12 +48100,6 @@
     {
       "bytes": 238,
       "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/7b/7b90b441b5f7bb1e488c1f5dba3702bae6f97752e8d990165cb06f22d7b74ec7",
-      "sha256": "7b90b441b5f7bb1e488c1f5dba3702bae6f97752e8d990165cb06f22d7b74ec7"
-    },
-    {
-      "bytes": 238,
-      "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/7c/7c012078080d0d864fa93165b9a3a549c73334c5dcc5372ad53c1543d2f6190b",
       "sha256": "7c012078080d0d864fa93165b9a3a549c73334c5dcc5372ad53c1543d2f6190b"
     },
@@ -48284,6 +48282,12 @@
       "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/84/84bb759e7560ad19a76a31dd366458666b90121314b8341b5c1bc06b275420dc",
       "sha256": "84bb759e7560ad19a76a31dd366458666b90121314b8341b5c1bc06b275420dc"
+    },
+    {
+      "bytes": 17948,
+      "kind": "NPM_PROVENANCE",
+      "path": "blobs/sha256/85/852ebda73e556e8bff26850efda22d4838a69ad68f6dd08e5e614b78f8820172",
+      "sha256": "852ebda73e556e8bff26850efda22d4838a69ad68f6dd08e5e614b78f8820172"
     },
     {
       "bytes": 16097,
@@ -50662,12 +50666,6 @@
       "sha256": "1fa6ee8bb95a81ae3d73a5bd074a3ac380ffec13697051063ca1a601921b91db"
     },
     {
-      "bytes": 5682,
-      "kind": "PACKAGE_EVIDENCE_FILE",
-      "path": "blobs/sha256/20/202430923abee498512b2f9cbab686a1e7d64759314a503ca0d5aaa29007fc0f",
-      "sha256": "202430923abee498512b2f9cbab686a1e7d64759314a503ca0d5aaa29007fc0f"
-    },
-    {
       "bytes": 731,
       "kind": "PACKAGE_EVIDENCE_FILE",
       "path": "blobs/sha256/20/2034cce3b6fafcddd642c4175e01d3ddfc332a53b9f20fdc46b1466dc89ac469",
@@ -51862,12 +51860,6 @@
       "sha256": "6cb0631f71c7749763fd3dd1d5bee52dd1070ec17f2edc1710079ad070bd2fbd"
     },
     {
-      "bytes": 1116,
-      "kind": "PACKAGE_EVIDENCE_FILE",
-      "path": "blobs/sha256/6c/6cfc4687cb2f2d86f4a77e6b526290d3878e5e512f3fec2f4cb36a9cb36f798b",
-      "sha256": "6cfc4687cb2f2d86f4a77e6b526290d3878e5e512f3fec2f4cb36a9cb36f798b"
-    },
-    {
       "bytes": 254,
       "kind": "PACKAGE_EVIDENCE_FILE",
       "path": "blobs/sha256/6d/6d602191187b35b9b01d2cffa01c8469c2c8d9de8a96f1bf868e0f264f51c81d",
@@ -52136,6 +52128,12 @@
       "kind": "PACKAGE_EVIDENCE_FILE",
       "path": "blobs/sha256/83/830fccd0d0e78b1607c2018c774bc2e857521035d5f481a59af9249c52fce532",
       "sha256": "830fccd0d0e78b1607c2018c774bc2e857521035d5f481a59af9249c52fce532"
+    },
+    {
+      "bytes": 637,
+      "kind": "PACKAGE_EVIDENCE_FILE",
+      "path": "blobs/sha256/83/8328a4e80cfe9f0e6ca18748aee98c343fb473a8f157902d25064d6e26855b35",
+      "sha256": "8328a4e80cfe9f0e6ca18748aee98c343fb473a8f157902d25064d6e26855b35"
     },
     {
       "bytes": 2566,
@@ -52574,6 +52572,12 @@
       "kind": "PACKAGE_EVIDENCE_FILE",
       "path": "blobs/sha256/a0/a07bc24468b9654ce76a547d47a2db282d07733b715db4c73a98bd63961f9550",
       "sha256": "a07bc24468b9654ce76a547d47a2db282d07733b715db4c73a98bd63961f9550"
+    },
+    {
+      "bytes": 1098,
+      "kind": "PACKAGE_EVIDENCE_FILE",
+      "path": "blobs/sha256/a0/a0c02bc804b9712284ed4047f865a6d5439ab05d5612575db77a077a5a919ffe",
+      "sha256": "a0c02bc804b9712284ed4047f865a6d5439ab05d5612575db77a077a5a919ffe"
     },
     {
       "bytes": 533,
@@ -53018,6 +53022,12 @@
       "kind": "PACKAGE_EVIDENCE_FILE",
       "path": "blobs/sha256/bb/bbe21a391d3fe8c02ac7602b50dd6645a192cd36514fc5efa43a121cebc83c16",
       "sha256": "bbe21a391d3fe8c02ac7602b50dd6645a192cd36514fc5efa43a121cebc83c16"
+    },
+    {
+      "bytes": 17960,
+      "kind": "PACKAGE_EVIDENCE_FILE",
+      "path": "blobs/sha256/bb/bbeec7bff63f1e42a2a69bce61a1ea9f333f5734fb0477ff5e8184a83d76b1c3",
+      "sha256": "bbeec7bff63f1e42a2a69bce61a1ea9f333f5734fb0477ff5e8184a83d76b1c3"
     },
     {
       "bytes": 860,
@@ -56200,6 +56210,12 @@
       "sha256": "8a8771a73dd3f610400bbf4ffe9b2b1b581d606219c6d9c646c43c0d725c2d09"
     },
     {
+      "bytes": 780,
+      "kind": "REGISTRY_SIGNATURE",
+      "path": "blobs/sha256/8a/8ad5e619fdabd29b5793632dec92bb3c96f683ef843b1264604bf7d1e1b4b507",
+      "sha256": "8ad5e619fdabd29b5793632dec92bb3c96f683ef843b1264604bf7d1e1b4b507"
+    },
+    {
       "bytes": 518,
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/8a/8af1c9d8965cd70003350df4e0ff70664a1bcf984d32911c2b4981c180bf90b4",
@@ -56720,12 +56736,6 @@
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/a7/a7e572dd32826206033df1b9e42d9a64ce937859ca422c5ebec03863447c1f99",
       "sha256": "a7e572dd32826206033df1b9e42d9a64ce937859ca422c5ebec03863447c1f99"
-    },
-    {
-      "bytes": 518,
-      "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/a8/a863c191513fc917d663bc50fbfa7a5b465a275c1a93b0aea578819e348f240e",
-      "sha256": "a863c191513fc917d663bc50fbfa7a5b465a275c1a93b0aea578819e348f240e"
     },
     {
       "bytes": 780,
@@ -59524,6 +59534,12 @@
       "sha256": "4f7461a00cb33606e6a263d274ae61b980ecd07e109ffdb768e9f246e7e560ae"
     },
     {
+      "bytes": 76838,
+      "kind": "SCANCODE_FINDINGS",
+      "path": "blobs/sha256/4f/4fb56f6d797f72b53a4d444ee8b64674f87801af3ac8f29285c161e6837abf42",
+      "sha256": "4fb56f6d797f72b53a4d444ee8b64674f87801af3ac8f29285c161e6837abf42"
+    },
+    {
       "bytes": 42055,
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/4f/4ffab39b2bfabbeee0cb9d7f2bafb4eed667c1c3b2844300ae479988881153ec",
@@ -59984,12 +60000,6 @@
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/72/72e81915d90b48e28c8294933041203066e4ed6fb5f4b8ef176b0792300eddfc",
       "sha256": "72e81915d90b48e28c8294933041203066e4ed6fb5f4b8ef176b0792300eddfc"
-    },
-    {
-      "bytes": 45933,
-      "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/73/736dc0fdfff81b34efb879636c042138a170cdbf8d4250060f96896b567d8c86",
-      "sha256": "736dc0fdfff81b34efb879636c042138a170cdbf8d4250060f96896b567d8c86"
     },
     {
       "bytes": 76926,
@@ -62284,14 +62294,14 @@
       "sha256": "ff2f62576b30719d7dbf0d1232c4a52fea847a2adb60659b8fa4c30bd90968c1"
     }
   ],
-  "corpusRoot": "fd4c1115a8e0d9b693dc1d732c7986a1774981fe2c65b2fb4b2f8dd9bd259737",
+  "corpusRoot": "fe7a71f02fa053c8cbb062bdc7642fd63339ace10b7b9e9b4daa94c284e31f65",
   "generatedBy": {
     "path": "util/acquire-npm-package-evidence.mjs",
     "version": "1.0.0"
   },
   "lockfile": {
     "path": "package-lock.json",
-    "sha256": "823685bb63c9440d802981cbabcb8d1d29a8f902361e01bc64b0f9660c230536",
+    "sha256": "c56a6e75368a3604e3127bf22ece9ad763f801b5e3b6e7e82a46289823f16ca8",
     "version": 3
   },
   "occurrences": [
@@ -66492,18 +66502,6 @@
       }
     },
     {
-      "artifactId": "110b5545606256303168abd627bbe733bd485742832d3d6714c6f04aaacabd80",
-      "dependencyName": "deepmerge",
-      "dependencyPath": "node_modules/deepmerge",
-      "development": true,
-      "optional": false,
-      "platformSelectors": {
-        "cpu": [],
-        "libc": [],
-        "os": []
-      }
-    },
-    {
       "artifactId": "f6f1cb99eee9031e7d7a0025874b1af5ad89cad0c3a1641bef4191651fb1baa9",
       "dependencyName": "dependency-cruiser",
       "dependencyPath": "node_modules/dependency-cruiser",
@@ -67889,6 +67887,18 @@
       "artifactId": "b8630654a78ff43a16dcb8f584aaf98c511d9305030d0a5cf33a348e3eb45ecd",
       "dependencyName": "jest-config",
       "dependencyPath": "node_modules/jest-config",
+      "development": true,
+      "optional": false,
+      "platformSelectors": {
+        "cpu": [],
+        "libc": [],
+        "os": []
+      }
+    },
+    {
+      "artifactId": "661ee13e1ab96fab8dc9a2e1f69f8ef0cc13b398dca327cce7f44dfdf325ad84",
+      "dependencyName": "deepmerge",
+      "dependencyPath": "node_modules/jest-config/node_modules/deepmerge",
       "development": true,
       "optional": false,
       "platformSelectors": {
@@ -71614,12 +71624,12 @@
   "summary": {
     "archiveVerifiedCount": 689,
     "artifactCount": 689,
-    "blobCount": 3383,
+    "blobCount": 3384,
     "occurrenceCount": 747,
-    "provenanceNotPublishedCount": 481,
-    "provenanceVerifiedCount": 208,
+    "provenanceNotPublishedCount": 480,
+    "provenanceVerifiedCount": 209,
     "registrySignatureVerifiedCount": 689,
-    "retainedBytes": 74709706,
+    "retainedBytes": 74778086,
     "scanVerifiedCount": 689
   }
 }
