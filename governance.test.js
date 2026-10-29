@@ -21,6 +21,7 @@ import {
 } from "./model/index.js";
 import { verifyLocalReleaseTag } from "./scripts/verify-release-tag.mjs";
 import { stableJson } from "./scripts/canonical-json.mjs";
+import { refreshReviewFacts } from "./util/refresh-review-facts.mjs";
 
 const require = createRequire(import.meta.url);
 const {
@@ -2799,19 +2800,34 @@ Neither this NOTICE nor the package licence replaces those upstream terms.
 
   it("requires a fresh human review after the canonical digest migration", () => {
     const governance = readJson("./docs/dependency-governance.json");
-
+    const currentReview = structuredClone(governance.review);
+    refreshReviewFacts("dependencies", governance, { write: true });
+    expect(governance.review).toEqual(currentReview);
+    const legacyDigest =
+      "60ccbac9295657fcdd69120ba77e2fc1838c022ceeab9bb60256d772d75708eb";
+    expect(governance.review.factsSha256).not.toBe(legacyDigest);
+    Object.assign(governance.review, {
+      status: "REVIEWED",
+      digestAlgorithm: "old-insertion-order",
+      factsSha256: legacyDigest,
+      reviewer: "Synthetic historical reviewer",
+      reviewedOn: "2026-10-12",
+      capacity: "Synthetic migration fixture",
+      conclusion: "Historical facts only",
+    });
+    expect(() => refreshReviewFacts("dependencies", governance)).toThrow(
+      "Review digest migration or facts refresh required",
+    );
+    refreshReviewFacts("dependencies", governance, { write: true });
     expect(governance.review).toEqual({
       status: "PENDING_HUMAN_REVIEW",
       digestAlgorithm: "sha256-sorted-json-v1",
-      factsSha256: expect.stringMatching(/^[a-f0-9]{64}$/u),
+      factsSha256: currentReview.factsSha256,
       reviewer: null,
       reviewedOn: null,
       capacity: null,
       conclusion: null,
     });
-    expect(governance.review.factsSha256).not.toBe(
-      "60ccbac9295657fcdd69120ba77e2fc1838c022ceeab9bb60256d772d75708eb",
-    );
   });
 
   it("schema-validates structured dependency governance against the package and inventory", () => {

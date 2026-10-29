@@ -2,11 +2,11 @@
   "$schema": "./scoped-package-name-review.schema.json",
   "schemaVersion": 2,
   "review": {
-    "status": "PENDING_HUMAN_REVIEW",
-    "reviewedOn": null,
-    "reviewer": null,
-    "authority": null,
-    "factsSha256": "03009e395daed0104b4013108e951b0037aacf24c3acec98d81045eb403bf1cb",
+    "status": "REVIEWED",
+    "reviewedOn": "2026-10-29",
+    "reviewer": "Maksym Shostak",
+    "authority": "Repository owner explicitly approving the scoped-name review for rc.3",
+    "factsSha256": "b8946feae2180302193a619ecb43fc252ae0233070e9c0f28354fb5a988ec5af",
     "digestAlgorithm": "sha256-sorted-json-v1"
   },
   "identity": "@hadden-industries/owlapi",
@@ -35,10 +35,10 @@
   "publicWording": "This project is an independently maintained JavaScript implementation. It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project. The selected scoped package is separate from the unrelated historical unscoped Overwatch package and has no code, API, ownership, or provenance relationship with it.",
   "externalLegalAdviceObtained": false,
   "decision": {
-    "outcome": "PENDING_HUMAN_REVIEW",
-    "rationale": "Maksym Shostak approved the scoped identity, non-affiliation wording and recorded mitigations on 2026-10-03 as part of his explicit authorization for all manual npm publication controls. This is a fresh scoped review and does not reuse the historical unscoped attestation.",
+    "outcome": "APPROVED_WITH_MITIGATIONS",
+    "rationale": "Maksym Shostak explicitly agreed on 2026-10-29 to continued use of @hadden-industries/owlapi for rc.3, the independent-implementation and non-affiliation wording, the stated mitigations and residual naming risk. No external legal clearance is claimed. Publication permissions and exact version availability remain separate preflight obligations; release and push remain prohibited.",
     "conditions": [
-      "Complete the fresh scoped-name review and remaining exact-fact release reviews before publication.",
+      "Complete the remaining exact-fact release reviews before publication.",
       "Keep publication disabled until the fully qualified artifact and supported publication mode receive the existing exact-artifact approval.",
       "UO and WebVOWL each accept the exact RC independently before production; stable 0.1.0 is not required.",
       "Any future migration to the bare owlapi name is a separate implementation."

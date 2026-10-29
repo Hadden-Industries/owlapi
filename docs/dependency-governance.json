@@ -7,12 +7,12 @@
   },
   "recordedOn": "2026-10-21",
   "review": {
-    "status": "PENDING_HUMAN_REVIEW",
+    "status": "REVIEWED",
     "factsSha256": "5cbb101a981c2e858c75a0cba47b27523f9b09739e594bb3fb8adebbf29ddfd1",
-    "reviewer": null,
-    "reviewedOn": null,
-    "capacity": null,
-    "conclusion": null,
+    "reviewer": "Maksym Shostak",
+    "reviewedOn": "2026-10-29",
+    "capacity": "Project maintainer and repository owner",
+    "conclusion": "Explicitly approved the selected rc.3 dependency graph and documented install-script, prebuilt-binary, inventory and upgrade controls for continued qualification. Required Linux/macOS qualification remains pending, and historical audit and size measurements retain their original dates. This approval grants no additional installation, publication or push authority and does not waive outstanding checks.",
     "digestAlgorithm": "sha256-sorted-json-v1"
   },
   "productionAudit": {
