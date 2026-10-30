@@ -1,6 +1,5 @@
-import { readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
-import { jsonEquals } from "./canonical-json.mjs";
-import { join, resolve } from "node:path";
+import { writeFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 import {
@@ -9,12 +8,8 @@ import {
   assertReleaseAssets,
   GitHubReleaseClient,
 } from "./github-release.mjs";
-import { sha256File } from "./release-file-utils.mjs";
-import { PACKAGE_VERSION, PACKAGE_FILE_STEM } from "./package-identity.mjs";
-import {
-  verifyDownloadedCandidateBundle,
-  verifyHistoricalAlphaCandidateBundle,
-} from "./candidate-bundle.mjs";
+import { PACKAGE_VERSION } from "./package-identity.mjs";
+import { readCandidateBundleSnapshot } from "./candidate-bundle.mjs";
 
 const argumentValue = (name) => {
   const index = process.argv.indexOf(name);
@@ -30,38 +25,16 @@ const contentType = (name) => {
 const readCandidateAssets = (candidateDirectory, version) => {
   if (![PACKAGE_VERSION, "0.1.0-alpha.0"].includes(version))
     throw new Error("Unexpected draft release version.");
-  const stem = version === PACKAGE_VERSION ? PACKAGE_FILE_STEM : "owlapi";
-  const expectedNames = [
-    "SHA256SUMS",
-    `${stem}-${version}.cdx.json`,
-    `${stem}-${version}.tgz`,
-  ].sort();
-  const observedNames = readdirSync(candidateDirectory).sort();
-  if (!jsonEquals(observedNames, expectedNames)) {
-    throw new Error(
-      "The draft release input is not the closed candidate bundle.",
-    );
-  }
-  (version === PACKAGE_VERSION
-    ? verifyDownloadedCandidateBundle
-    : verifyHistoricalAlphaCandidateBundle)({
-    checksumText: readFileSync(join(candidateDirectory, "SHA256SUMS"), "utf8"),
-    fileNames: observedNames,
-    sbomText: readFileSync(
-      join(candidateDirectory, `${stem}-${version}.cdx.json`),
-      "utf8",
-    ),
-    tarball: readFileSync(join(candidateDirectory, `${stem}-${version}.tgz`)),
-  });
-  return expectedNames.map((name) => {
-    const path = join(candidateDirectory, name);
-    return {
-      name,
-      path,
-      bytes: statSync(path).size,
-      sha256: sha256File(path),
-    };
-  });
+  const { candidate, contents } = readCandidateBundleSnapshot(
+    candidateDirectory,
+    {
+      historicalAlpha: version === "0.1.0-alpha.0",
+    },
+  );
+  return Object.values(candidate.assets).map((asset) => ({
+    ...asset,
+    content: contents[asset.name],
+  }));
 };
 
 const releaseBody = (version) => `# owlapi ${version}
@@ -152,7 +125,7 @@ const main = async () => {
           "Content-Type": contentType(asset.name),
           "Content-Length": String(asset.bytes),
         },
-        body: readFileSync(asset.path),
+        body: asset.content,
       },
     );
     if (result.state === "CONFIRMED") {
@@ -177,7 +150,7 @@ const main = async () => {
     sourceCommit: commit,
     draft: true,
     creation,
-    assets: assets.map(({ path: _path, ...asset }) => asset),
+    assets: assets.map(({ content: _content, ...asset }) => asset),
   };
   writeFileSync(
     resolve(output),

@@ -139,8 +139,8 @@ export async function readSource({
   const candidate = verifyDownloadedCandidateBundle({
     fileNames: Object.keys(records.candidate),
     tarball: records.candidate[`${stem}.tgz`],
-    sbomText: records.candidate[`${stem}.cdx.json`].toString("utf8"),
-    checksumText: records.candidate.SHA256SUMS.toString("utf8"),
+    sbomText: records.candidate[`${stem}.cdx.json`],
+    checksumText: records.candidate.SHA256SUMS,
   });
   const reports = Object.fromEntries(
     ["preflight", "tag", "draft"].map((key) => [
@@ -158,11 +158,7 @@ export async function readSource({
     artifact: artifacts.candidate,
     tag,
   });
-  const expected = Object.entries(records.candidate).map(([name, bytes]) => ({
-    name,
-    bytes: bytes.length,
-    sha256: sha256Buffer(bytes),
-  }));
+  const expected = Object.values(candidate.assets);
   const byName = (a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
   assert.deepEqual(
     [...reports.draft.assets].sort(byName),
@@ -299,12 +295,7 @@ const generateEvidence = async (client, directory, env) => {
     recovery: true,
   });
   const { preflight, tag, draft } = source.reports;
-  const assets = Object.fromEntries(
-    Object.entries(source.records.candidate).map(([name, bytes]) => [
-      name,
-      { name, bytes: bytes.length, sha256: sha256Buffer(bytes) },
-    ]),
-  );
+  const assets = source.candidate.assets;
   const workflow = {
     name: "Release",
     commit: env.GITHUB_SHA,
@@ -334,9 +325,7 @@ const generateEvidence = async (client, directory, env) => {
     candidate: {
       artifactId: String(control.artifacts.candidate),
       artifactDigest: source.artifacts.candidate.digest,
-      tarball: assets[`${stem}.tgz`],
-      sbom: assets[`${stem}.cdx.json`],
-      checksums: assets.SHA256SUMS,
+      ...assets,
     },
     publication: {
       mode: "DIRECT_OIDC",

@@ -1,8 +1,7 @@
-import { readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
-import { jsonEquals } from "./canonical-json.mjs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { sameJobExecution } from "./github-job-execution.mjs";
 import { artifactProducingAttempt } from "../tooling/artifact-transport/identity.mjs";
-import { basename, join, resolve } from "node:path";
+import { basename, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 import { GitHubReleaseClient } from "./github-release.mjs";
@@ -10,7 +9,7 @@ import {
   buildReleaseEvidence,
   SCOPED_RELEASE_JOB_NAMES,
 } from "./release-evidence.mjs";
-import { sha256File } from "./release-file-utils.mjs";
+import { sha256Buffer } from "./release-file-utils.mjs";
 import { validateReleaseEvidence } from "./validate-release-evidence.mjs";
 import { resolveRetainedApprovals } from "./release-approvals.mjs";
 import {
@@ -19,7 +18,7 @@ import {
   releaseChannel,
   PACKAGE_FILE_STEM,
 } from "./package-identity.mjs";
-import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
+import { readCandidateBundleSnapshot } from "./candidate-bundle.mjs";
 
 const version = "0.1.0-alpha.0";
 
@@ -28,7 +27,13 @@ const argumentValue = (name) => {
   return index === -1 ? undefined : process.argv[index + 1];
 };
 
-const readJson = (path) => JSON.parse(readFileSync(path, "utf8"));
+const readJsonSnapshot = (path) => {
+  const bytes = readFileSync(path);
+  return {
+    report: JSON.parse(bytes.toString("utf8")),
+    evidence: { name: basename(path), sha256: sha256Buffer(bytes) },
+  };
+};
 
 export const matchesScopedCandidateArtifactName = (name, runId, runAttempt) => {
   const prefix = `${PACKAGE_FILE_STEM}-${PACKAGE_VERSION}-candidate-${runId}-`;
@@ -41,30 +46,10 @@ export const matchesScopedCandidateArtifactName = (name, runId, runAttempt) => {
   );
 };
 
-const candidateAsset = (directory, name) => {
-  const path = join(directory, name);
-  return { name, bytes: statSync(path).size, sha256: sha256File(path) };
-};
-
-const readCandidate = (directory, selectedVersion = version) => {
-  const stem =
-    selectedVersion === PACKAGE_VERSION ? PACKAGE_FILE_STEM : "owlapi";
-  const names = [
-    "SHA256SUMS",
-    `${stem}-${selectedVersion}.cdx.json`,
-    `${stem}-${selectedVersion}.tgz`,
-  ];
-  if (!jsonEquals(readdirSync(directory).sort(), [...names].sort())) {
-    throw new Error(
-      "Release-evidence generation requires the closed candidate bundle.",
-    );
-  }
-  return {
-    tarball: candidateAsset(directory, `${stem}-${selectedVersion}.tgz`),
-    sbom: candidateAsset(directory, `${stem}-${selectedVersion}.cdx.json`),
-    checksums: candidateAsset(directory, "SHA256SUMS"),
-  };
-};
+const readCandidate = (directory, selectedVersion = version) =>
+  readCandidateBundleSnapshot(directory, {
+    historicalAlpha: selectedVersion === version,
+  }).candidate.assets;
 
 const flattenApprovals = (history, observedAt) =>
   history.flatMap((review) =>
@@ -295,21 +280,20 @@ const generateScopedEvidence = async () => {
     throw new Error(
       "Scoped artifact or workflow server identity differs from the current run.",
     );
-  const preflight = readJson(paths["publication-preflight"]);
+  const snapshots = Object.fromEntries(
+    names
+      .filter((name) => name !== "candidate" && name !== "output")
+      .map((name) => [name, readJsonSnapshot(paths[name])]),
+  );
+  const preflight = snapshots["publication-preflight"].report;
   if (preflight.schemaVersion !== 2)
     throw new Error(
       "Current release evidence requires producer-contract preflight version 2.",
     );
-  const tag = readJson(paths["tag-verification"]);
-  const draft = readJson(paths["draft-release"]);
-  const registry = readJson(paths["registry-verification"]);
+  const tag = snapshots["tag-verification"].report;
+  const draft = snapshots["draft-release"].report;
+  const registry = snapshots["registry-verification"].report;
   const candidate = readCandidate(paths.candidate, PACKAGE_VERSION);
-  verifyDownloadedCandidateBundle({
-    fileNames: readdirSync(paths.candidate),
-    checksumText: readFileSync(join(paths.candidate, "SHA256SUMS"), "utf8"),
-    sbomText: readFileSync(join(paths.candidate, candidate.sbom.name), "utf8"),
-    tarball: readFileSync(join(paths.candidate, candidate.tarball.name)),
-  });
   const coordinate = `${PACKAGE_NAME}@${PACKAGE_VERSION}`;
   if (
     [preflight, tag, draft, registry].some(
@@ -431,12 +415,7 @@ const generateScopedEvidence = async () => {
     ],
     inputEvidence: [
       ...retainedApprovals.inputs,
-      ...names
-        .filter((name) => name !== "candidate" && name !== "output")
-        .map((name) => ({
-          name: basename(paths[name]),
-          sha256: sha256File(paths[name]),
-        })),
+      ...Object.values(snapshots).map(({ evidence }) => evidence),
     ],
   });
   validateReleaseEvidence(evidence);
@@ -487,8 +466,14 @@ const main = async () => {
     client.read(`/actions/runs/${runId}/approvals`),
     client.read(`/actions/runs/${runId}/jobs?filter=latest&per_page=100`),
   ]);
+  const snapshots = Object.fromEntries(
+    Object.entries(reportPaths).map(([name, path]) => [
+      name,
+      readJsonSnapshot(path),
+    ]),
+  );
   const reports = Object.fromEntries(
-    Object.entries(reportPaths).map(([name, path]) => [name, readJson(path)]),
+    Object.entries(snapshots).map(([name, { report }]) => [name, report]),
   );
   if (
     reports.reconciliation.result !== "PASS" ||
@@ -611,10 +596,7 @@ const main = async () => {
         reason: "NO_DEVICE_LAB_CONFIGURED",
       },
     ],
-    inputEvidence: Object.values(reportPaths).map((path) => ({
-      name: basename(path),
-      sha256: sha256File(path),
-    })),
+    inputEvidence: Object.values(snapshots).map(({ evidence }) => evidence),
   });
   validateReleaseEvidence(evidence);
   writeFileSync(

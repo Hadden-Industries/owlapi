@@ -44,9 +44,4 @@ writeFileSync(
   `${JSON.stringify(candidateManifest, null, 2)}\n`,
   "utf8",
 );
-writeFileSync(
-  join(candidateDirectory, "bundle-verification.json"),
-  `${JSON.stringify({ ...result, packageManifest: undefined }, null, 2)}\n`,
-  "utf8",
-);
 process.stdout.write(`${candidateDirectory}\n`);

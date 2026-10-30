@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   provideNpmEvidenceJson,
@@ -8,25 +10,68 @@ import {
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
 
-// Independent frozen census from authenticated manifest/archive references and
-// raw bodies, without this adapter. The root census includes the reviewed
-// dependency refresh; the isolated artifact-tool census retains its original
-// e113c3f5 baseline. Each corpus update requires independent byte verification.
-for (const [provider, count, bytes, census] of [
-  [
-    provideNpmEvidenceJson,
-    2760,
-    "70561448",
-    "2a1b96684f00862525ce03ece3c5f1aee7ba248aeb7c2359de117ceeb8e9788f",
-  ],
-  [
-    provideArtifactToolEvidenceJson,
-    976,
-    "32327222",
-    "4341806e6b3ada1de54ae48532996baa9f8a253533ccc7f64a3aeb867475b395",
-  ],
+// Use the native blob registry as an independent membership oracle. The adapter
+// traverses artifact references instead; no hand-maintained aggregate hash is needed.
+const expectedCorpus = async (namespace) => {
+  const prefix = (path) => (namespace ? `${namespace}/${path}` : path);
+  const manifestPath = prefix("docs/provenance/npm-package-evidence.json");
+  const manifestBytes = await readFile(join(root, manifestPath));
+  const manifest = JSON.parse(manifestBytes);
+  const blobs = new Map(manifest.blobs.map((blob) => [blob.path, blob]));
+  assert.equal(blobs.size, manifest.blobs.length);
+  const envelopeKinds = new Set([
+    "ARCHIVE_INVENTORY",
+    "NPM_PROVENANCE",
+    "REGISTRY_SIGNATURE",
+    "SCANCODE_FINDINGS",
+  ]);
+  const selected = new Map(
+    [...blobs].filter(([, blob]) => envelopeKinds.has(blob.kind)),
+  );
+  const evidenceRoot = prefix("docs/provenance/evidence/npm");
+  for (const blob of blobs.values()) {
+    if (blob.kind !== "ARCHIVE_INVENTORY") continue;
+    const archive = JSON.parse(
+      await readFile(join(root, evidenceRoot, blob.path)),
+    );
+    for (const file of archive.evidence.evidenceFiles) {
+      if (!file.path.endsWith(".map")) continue;
+      assert.deepEqual(file.blob, blobs.get(file.blob.path));
+      selected.set(file.blob.path, file.blob);
+    }
+  }
+  const members = new Map(
+    [...selected.values()].map((blob) => {
+      const path = `${evidenceRoot}/${blob.path}`;
+      return [
+        path,
+        { path, sha256: blob.sha256, byteLength: String(blob.bytes) },
+      ];
+    }),
+  );
+  const authorities = new Map(members);
+  for (const path of [
+    manifestPath,
+    "docs/provenance/npm-package-evidence.schema.json",
+    prefix("package-lock.json"),
+  ]) {
+    const bytes =
+      path === manifestPath ? manifestBytes : await readFile(join(root, path));
+    authorities.set(path, {
+      path,
+      sha256: createHash("sha256").update(bytes).digest("hex"),
+      byteLength: String(bytes.length),
+    });
+  }
+  return { members, authorities };
+};
+
+for (const [provider, namespace] of [
+  [provideNpmEvidenceJson, ""],
+  [provideArtifactToolEvidenceJson, "tooling/artifact-transport"],
 ])
   test(`${provider.name} streams the complete reviewed census and exact bodies`, async () => {
+    const expected = await expectedCorpus(namespace);
     const supplied = await provider({ root }),
       authorities = new Map(),
       inventory = new Map();
@@ -36,7 +81,7 @@ for (const [provider, count, bytes, census] of [
       assert.equal(authorities.has(pin.path), false);
       authorities.set(pin.path, pin);
     }
-    assert.equal(authorities.size, count + 3);
+    assert.deepEqual(authorities, expected.authorities);
     for await (const member of supplied.inventory) {
       assert.equal(inventory.has(member.path), false);
       assert.equal(member.source.kind, "content-addressed");
@@ -44,23 +89,24 @@ for (const [provider, count, bytes, census] of [
       assert.ok(authority);
       assert.equal(member.source.sha256, authority.sha256);
       assert.equal(member.source.byteLength, authority.byteLength);
+      const expectedMember = expected.members.get(member.path);
+      assert.ok(expectedMember);
+      assert.deepEqual(member, {
+        ...expectedMember,
+        source: { ...expectedMember, kind: "content-addressed" },
+      });
       inventory.set(member.path, member);
     }
-    assert.equal(inventory.size, count);
-    const fingerprint = createHash("sha256");
-    for (const member of [...inventory.values()].sort((a, b) =>
-      a.path < b.path ? -1 : a.path > b.path ? 1 : 0,
-    ))
-      fingerprint.update(
-        member.path + "\0" + member.sha256 + "\0" + member.byteLength + "\n",
-      );
-    assert.equal(fingerprint.digest("hex"), census);
+    assert.deepEqual(
+      new Set(inventory.keys()),
+      new Set(expected.members.keys()),
+    );
     const seen = new Set();
     let total = 0n;
     for await (const document of supplied.documents) {
       assert.equal(seen.has(document.path), false);
       seen.add(document.path);
-      const member = inventory.get(document.path),
+      const member = expected.members.get(document.path),
         hash = createHash("sha256");
       assert.ok(member);
       let length = 0n;
@@ -74,7 +120,13 @@ for (const [provider, count, bytes, census] of [
       total += length;
     }
     assert.deepEqual(seen, new Set(inventory.keys()));
-    assert.equal(String(total), bytes);
+    assert.equal(
+      total,
+      [...expected.members.values()].reduce(
+        (sum, member) => sum + BigInt(member.byteLength),
+        0n,
+      ),
+    );
   }, 120000);
 
 // Admission verifies the same full corpus as the census tests above.

@@ -1,4 +1,5 @@
-import { basename } from "node:path";
+import { readFileSync, readdirSync } from "node:fs";
+import { basename, join } from "node:path";
 import { jsonEquals } from "./canonical-json.mjs";
 import {
   PACKAGE_NAME,
@@ -17,6 +18,8 @@ const verifyCandidateBundle = (
   historicalAlpha = false,
   scopedVersion = PACKAGE_VERSION,
 ) => {
+  const sbomBytes = Buffer.from(sbomText);
+  const checksumBytes = Buffer.from(checksumText);
   const packageManifest = JSON.parse(
     readGzipTarFile(tarball, "package.json").toString("utf8"),
   );
@@ -44,7 +47,7 @@ const verifyCandidateBundle = (
     );
   }
 
-  const sbom = JSON.parse(sbomText);
+  const sbom = JSON.parse(sbomBytes.toString("utf8"));
   if (
     sbom.bomFormat !== "CycloneDX" ||
     sbom.specVersion !== "1.6" ||
@@ -59,12 +62,12 @@ const verifyCandidateBundle = (
   }
 
   const tarballSha256 = sha256Buffer(tarball);
-  const sbomSha256 = sha256Buffer(Buffer.from(sbomText));
+  const sbomSha256 = sha256Buffer(sbomBytes);
   const expectedChecksums = formatSha256Sums([
     { fileName: tarballFileName, sha256: tarballSha256 },
     { fileName: sbomFileName, sha256: sbomSha256 },
   ]);
-  if (checksumText !== expectedChecksums) {
+  if (!checksumBytes.equals(Buffer.from(expectedChecksums))) {
     throw new Error(
       "Downloaded candidate SHA256SUMS is not the exact verified two-entry form.",
     );
@@ -73,6 +76,19 @@ const verifyCandidateBundle = (
   return {
     package: { name, version },
     packageManifest,
+    assets: {
+      tarball: {
+        name: tarballFileName,
+        sha256: tarballSha256,
+        bytes: tarball.length,
+      },
+      sbom: { name: sbomFileName, sha256: sbomSha256, bytes: sbomBytes.length },
+      checksums: {
+        name: "SHA256SUMS",
+        sha256: sha256Buffer(checksumBytes),
+        bytes: checksumBytes.length,
+      },
+    },
     sbom: {
       fileName: sbomFileName,
       sha256: sbomSha256,
@@ -98,3 +114,27 @@ export const verifyHistoricalAlphaCandidateBundle = (input) =>
 /** Closed historical reader for the retained rc.2 recovery artifacts. */
 export const verifyHistoricalRc2CandidateBundle = (input) =>
   verifyCandidateBundle(input, false, "0.1.0-rc.2");
+
+/** Capture once so metadata and uploads describe the same verified bytes. */
+export const readCandidateBundleSnapshot = (
+  directory,
+  { historicalAlpha = false } = {},
+) => {
+  const stem = historicalAlpha ? "owlapi" : PACKAGE_FILE_STEM;
+  const version = historicalAlpha ? "0.1.0-alpha.0" : PACKAGE_VERSION;
+  const contents = Object.fromEntries(
+    ["SHA256SUMS", `${stem}-${version}.cdx.json`, `${stem}-${version}.tgz`].map(
+      (name) => [name, readFileSync(join(directory, name))],
+    ),
+  );
+  const candidate = verifyCandidateBundle(
+    {
+      fileNames: readdirSync(directory),
+      checksumText: contents.SHA256SUMS,
+      sbomText: contents[`${stem}-${version}.cdx.json`],
+      tarball: contents[`${stem}-${version}.tgz`],
+    },
+    historicalAlpha,
+  );
+  return { candidate, contents };
+};
