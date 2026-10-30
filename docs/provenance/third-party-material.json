@@ -18,18 +18,18 @@
     "lockfileVersion": 3,
     "lockfileSha256": "1208fffd659799b83cf6e41d3ed55c491bde453cb4006daf1839d378fc66e1ef",
     "evidenceManifest": "docs/provenance/npm-package-evidence.json",
-    "evidenceManifestSha256": "459eb3e7553af820a34674f1f86151cc349ec45931ba4788bfd40d4ad960af3b",
-    "evidenceCorpusRoot": "ffd2049dc064323a3d87bab5f8b121d1c5de3c8559b16184ebfa908a40f9eb78",
+    "evidenceManifestSha256": "43b418fc61b57e956e7dd239f21e5020aef75b886412978abe72bd4205897cd3",
+    "evidenceCorpusRoot": "c2b2e864fea032825a453f2834992c003db8798b35e793b7d5eeab9d1f2477ea",
     "tarballDependenciesBundled": false
   },
   "review": {
     "status": "REVIEWED",
     "digestAlgorithm": "sha256-sorted-json-v1",
-    "factsSha256": "d17605b77b68051177545c3d8a94272cd7cfa8f58b578e743d0fd24397f54068",
+    "factsSha256": "b60f2ab515d8a85d0e84337aaf4ac0c8c39c719100441309967956d313bdf924",
     "reviewer": "Maksym Shostak",
     "reviewedOn": "2026-10-30",
     "capacity": "Project author and repository owner",
-    "conclusion": "Explicitly approved the refreshed licence facts for rc.3. The sole changed artifact is @types/node 26.6.5 to 26.6.6: its registry signature, archive and licence scan verify, its MIT licence is present, and npm provenance is not published. Evidence for the other 688 artifacts is reused. This attestation approves the bound facts only; it grants no push or release authority and no security exception."
+    "conclusion": "Explicitly approved the bounded rc.3 evidence refresh from release run 40985125041. Only the ScanCode observation for development-only @parcel/watcher-win32-x64@2.6.0 changes: the unchanged licence text is recognized as MIT instead of an unknown match. Its concluded MIT licence, dependency bytes, authentication and the other 688 artifact records remain unchanged. This attestation binds the refreshed facts without converting the original failed aggregation into a pass or expanding the separate rc.3 publication and security-exception authority."
   },
   "summary": {
     "componentCount": 747,
@@ -42,7 +42,7 @@
     "provenanceNotPublishedArtifactCount": 480,
     "scanVerifiedArtifactCount": 689,
     "evidenceBlobCount": 3384,
-    "evidenceRetainedBytes": 74778086,
+    "evidenceRetainedBytes": 74778968,
     "inspectedLicenceFileCount": 673,
     "inspectedNoticeFileCount": 324,
     "productionInspectedLicenceFileCount": 47,
@@ -10276,7 +10276,6 @@
       ],
       "tarballDeclaredLicenseExpression": "MIT",
       "scanObservedLicenseExpressions": [
-        "LicenseRef-scancode-unknown",
         "MIT"
       ],
       "declaredLicenseExpression": "MIT",
@@ -10306,7 +10305,7 @@
         "archiveSha256": "c70db0b07cca2cab33faf1e11a6bf0cb61d0700103da90b74da8048793c2f84e",
         "provenanceSha256": "f3ee350c054832cebebd1b1b9f1eca00e05604bed5a1c2abbf025dc125a39eeb",
         "registrySignatureSha256": "1cb5ad98f5e4ce90bf40c41fa73e7bf866c3f20bf1ee898786e1fada458f7edb",
-        "scanSha256": "8b0c4d46e441b3a5193cc324be8c81e186b64d923cca2265444d14d41cd6e80e"
+        "scanSha256": "ffbc20b0fff385f75b337760bd14b7fd66380c9e0ff5b0186a65f08255c279e9"
       },
       "registryUrl": "https://registry.npmjs.org/@parcel/watcher-win32-x64/-/watcher-win32-x64-2.6.0.tgz",
       "sourceReference": "https://github.com/parcel-bundler/watcher.git",
