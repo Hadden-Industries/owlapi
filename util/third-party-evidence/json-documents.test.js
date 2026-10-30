@@ -8,15 +8,16 @@ import {
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
 
-// Independent frozen census from the original e113c3f5 provider, compared
-// byte-for-byte before migration. Updating native evidence requires reviewing
-// this expectation with its owner, rather than deriving it from this adapter.
+// Independent frozen census from authenticated manifest/archive references and
+// raw bodies, without this adapter. The root census includes the reviewed
+// dependency refresh; the isolated artifact-tool census retains its original
+// e113c3f5 baseline. Each corpus update requires independent byte verification.
 for (const [provider, count, bytes, census] of [
   [
     provideNpmEvidenceJson,
-    2748,
-    "66139414",
-    "cc666e0dc2f9caca742161b1a30f83ba58c5c2a31cdc4085701a606d8bc5df1d",
+    2760,
+    "70560566",
+    "b5560d3a80850d61c045d6d1cc42c2c746a2e25a8d075844e7e9bfa82a422bd1",
   ],
   [
     provideArtifactToolEvidenceJson,
@@ -25,7 +26,7 @@ for (const [provider, count, bytes, census] of [
     "4341806e6b3ada1de54ae48532996baa9f8a253533ccc7f64a3aeb867475b395",
   ],
 ])
-  test(`${provider.name} streams the complete original census and exact bodies`, async () => {
+  test(`${provider.name} streams the complete reviewed census and exact bodies`, async () => {
     const supplied = await provider({ root }),
       authorities = new Map(),
       inventory = new Map();

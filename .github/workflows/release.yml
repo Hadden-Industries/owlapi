@@ -115,8 +115,8 @@ jobs:
         run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
         timeout-minutes: 5
 
-  source_node_22:
-    name: Release / Ubuntu / Node 22.23.3
+  source_portable:
+    name: Release / Ubuntu / portable source / Node 26.13.0
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     permissions:
@@ -133,8 +133,6 @@ jobs:
           persist-credentials: false
       - name: Set up the policy-owned Node/npm runtime
         uses: ./.github/actions/setup-producer
-        with:
-          node-family: "22"
       - name: Install the reviewed dependency graph
         run: npm ci
         timeout-minutes: 20
@@ -169,8 +167,8 @@ jobs:
         run: npm run verify:workflow-governance
         timeout-minutes: 45
 
-  source_node_26:
-    name: Release / Ubuntu / Node 26.12.0
+  source_json:
+    name: Release / Ubuntu / JSON source / Node 26.13.0
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     permissions:
@@ -187,8 +185,6 @@ jobs:
           persist-credentials: false
       - name: Set up the policy-owned Node/npm runtime
         uses: ./.github/actions/setup-producer
-        with:
-          node-family: "26"
       - name: Install the reviewed dependency graph
         run: npm ci
         timeout-minutes: 20
@@ -204,10 +200,7 @@ jobs:
         timeout-minutes: 5
         env:
           QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
-      - name: Acquire the exact isolated JSON graph
-        run: npm run install:json
-        timeout-minutes: 5
-      - name: Exercise JSON isolation and exact preservation probes
+      - name: Exercise JSON behavior and source preservation probes
         run: npm run test:json
         timeout-minutes: 15
       - name: Verify complete JSON coverage on Node 26
@@ -238,8 +231,8 @@ jobs:
         run: npm run check:json
         timeout-minutes: 15
 
-  source_node_24:
-    name: Release / Ubuntu / Node 24.22.1
+  source_canonical:
+    name: Release / Ubuntu / canonical source / Node 26.13.0
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     permissions:
@@ -276,10 +269,7 @@ jobs:
       - name: Acquire the exact isolated Markdown graph
         run: npm run install:markdown
         timeout-minutes: 5
-      - name: Acquire the exact isolated JSON graph
-        run: npm run install:json
-        timeout-minutes: 5
-      - name: Exercise JSON isolation and exact preservation probes
+      - name: Exercise JSON behavior and source preservation probes
         run: npm run test:json
         timeout-minutes: 15
       - name: Exercise canonical Markdown isolation probes
@@ -309,7 +299,7 @@ jobs:
         uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
         with:
           distribution: temurin
-          java-version: "25.0.4+101.0.LTS"
+          java-version-file: .java-version
           check-latest: false
           overwrite-settings: false
           cache: ""
@@ -577,9 +567,9 @@ jobs:
     needs:
       - release_preflight
       - metadata
-      - source_node_22
-      - source_node_24
-      - source_node_26
+      - source_portable
+      - source_canonical
+      - source_json
       - dependency_review
       - third_party_evidence
       - quality_windows
@@ -622,8 +612,8 @@ jobs:
           retention-days: 90
 
   portability_windows_node_22:
-    name: Release / Windows / Node 22.23.3
-    needs: candidate
+    name: Release / Windows / Node 22.23.4
+    needs: [runtime_matrix, candidate]
     runs-on: windows-2025
     timeout-minutes: 30
     permissions:
@@ -637,34 +627,17 @@ jobs:
         with:
           fetch-depth: 1
           persist-credentials: false
-      - name: Set up the policy-owned Node/npm runtime
-        uses: ./.github/actions/setup-producer
+      - name: Qualify the reference consumer with producer-owned tools
+        uses: ./.github/actions/qualify-consumer
         with:
-          node-family: "22"
-      - name: Install the reviewed qualification tools
-        run: npm ci
-        timeout-minutes: 20
-      - name: Record the hosted runner identity
-        run: npm run record:runner -- --expected-os Windows --expected-arch X64 --label windows-2025 --shell pwsh
-        timeout-minutes: 5
-      - name: Download the exact same-run candidate by artifact ID
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
-        with:
-          artifact-ids: ${{ needs.candidate.outputs.artifact_id }}
-          path: .release/download
-          merge-multiple: false
-          skip-decompress: false
-          digest-mismatch: error
-      - name: Verify the closed candidate inventory and checksums
-        run: npm run prepare:downloaded-candidate -- --candidate .release/download
-        timeout-minutes: 5
-      - name: Qualify the installed public package boundary
-        run: npm run qualify:installed-candidate -- --candidate .release/download --output .release/download/portability.json
-        timeout-minutes: 20
+          matrix: ${{ needs.runtime_matrix.outputs.matrix }}
+          node: "22.23.4"
+          candidate-id: ${{ needs.candidate.outputs.artifact_id }}
+          candidate-digest: sha256:${{ needs.candidate.outputs.artifact_digest }}
 
   portability_windows_node_24:
-    name: Release / Windows / Node 24.22.1
-    needs: candidate
+    name: Release / Windows / Node 24.22.2
+    needs: [runtime_matrix, candidate]
     runs-on: windows-2025
     timeout-minutes: 30
     permissions:
@@ -678,31 +651,16 @@ jobs:
         with:
           fetch-depth: 1
           persist-credentials: false
-      - name: Set up the policy-owned Node/npm runtime
-        uses: ./.github/actions/setup-producer
-      - name: Install the reviewed qualification tools
-        run: npm ci
-        timeout-minutes: 20
-      - name: Record the hosted runner identity
-        run: npm run record:runner -- --expected-os Windows --expected-arch X64 --label windows-2025 --shell pwsh
-        timeout-minutes: 5
-      - name: Download the exact same-run candidate by artifact ID
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+      - name: Qualify the reference consumer with producer-owned tools
+        uses: ./.github/actions/qualify-consumer
         with:
-          artifact-ids: ${{ needs.candidate.outputs.artifact_id }}
-          path: .release/download
-          merge-multiple: false
-          skip-decompress: false
-          digest-mismatch: error
-      - name: Verify the closed candidate inventory and checksums
-        run: npm run prepare:downloaded-candidate -- --candidate .release/download
-        timeout-minutes: 5
-      - name: Qualify the installed public package boundary
-        run: npm run qualify:installed-candidate -- --candidate .release/download --output .release/download/portability.json
-        timeout-minutes: 20
+          matrix: ${{ needs.runtime_matrix.outputs.matrix }}
+          node: "24.22.2"
+          candidate-id: ${{ needs.candidate.outputs.artifact_id }}
+          candidate-digest: sha256:${{ needs.candidate.outputs.artifact_digest }}
 
   portability_ubuntu_node_26:
-    name: Release / Ubuntu / retained package / Node 26.12.0
+    name: Release / Ubuntu / retained package / Node 26.13.0
     needs: candidate
     runs-on: ubuntu-24.04
     timeout-minutes: 30
@@ -743,7 +701,7 @@ jobs:
         timeout-minutes: 20
 
   portability_windows_node_26:
-    name: Release / Windows / Node 26.12.0
+    name: Release / Windows / Node 26.13.0
     needs: candidate
     runs-on: windows-2025
     timeout-minutes: 30
@@ -784,8 +742,8 @@ jobs:
         timeout-minutes: 20
 
   portability_macos_node_22:
-    name: Release / macOS / Node 22.23.3
-    needs: candidate
+    name: Release / macOS / Node 22.23.4
+    needs: [runtime_matrix, candidate]
     runs-on: macos-15
     timeout-minutes: 30
     permissions:
@@ -799,34 +757,17 @@ jobs:
         with:
           fetch-depth: 1
           persist-credentials: false
-      - name: Set up the policy-owned Node/npm runtime
-        uses: ./.github/actions/setup-producer
+      - name: Qualify the reference consumer with producer-owned tools
+        uses: ./.github/actions/qualify-consumer
         with:
-          node-family: "22"
-      - name: Install the reviewed qualification tools
-        run: npm ci
-        timeout-minutes: 20
-      - name: Record the hosted runner identity
-        run: npm run record:runner -- --expected-os macOS --expected-arch ARM64 --label macos-15 --shell bash
-        timeout-minutes: 5
-      - name: Download the exact same-run candidate by artifact ID
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
-        with:
-          artifact-ids: ${{ needs.candidate.outputs.artifact_id }}
-          path: .release/download
-          merge-multiple: false
-          skip-decompress: false
-          digest-mismatch: error
-      - name: Verify the closed candidate inventory and checksums
-        run: npm run prepare:downloaded-candidate -- --candidate .release/download
-        timeout-minutes: 5
-      - name: Qualify the installed public package boundary
-        run: npm run qualify:installed-candidate -- --candidate .release/download --output .release/download/portability.json
-        timeout-minutes: 20
+          matrix: ${{ needs.runtime_matrix.outputs.matrix }}
+          node: "22.23.4"
+          candidate-id: ${{ needs.candidate.outputs.artifact_id }}
+          candidate-digest: sha256:${{ needs.candidate.outputs.artifact_digest }}
 
   portability_macos_node_24:
-    name: Release / macOS / Node 24.22.1
-    needs: candidate
+    name: Release / macOS / Node 24.22.2
+    needs: [runtime_matrix, candidate]
     runs-on: macos-15
     timeout-minutes: 30
     permissions:
@@ -840,31 +781,16 @@ jobs:
         with:
           fetch-depth: 1
           persist-credentials: false
-      - name: Set up the policy-owned Node/npm runtime
-        uses: ./.github/actions/setup-producer
-      - name: Install the reviewed qualification tools
-        run: npm ci
-        timeout-minutes: 20
-      - name: Record the hosted runner identity
-        run: npm run record:runner -- --expected-os macOS --expected-arch ARM64 --label macos-15 --shell bash
-        timeout-minutes: 5
-      - name: Download the exact same-run candidate by artifact ID
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+      - name: Qualify the reference consumer with producer-owned tools
+        uses: ./.github/actions/qualify-consumer
         with:
-          artifact-ids: ${{ needs.candidate.outputs.artifact_id }}
-          path: .release/download
-          merge-multiple: false
-          skip-decompress: false
-          digest-mismatch: error
-      - name: Verify the closed candidate inventory and checksums
-        run: npm run prepare:downloaded-candidate -- --candidate .release/download
-        timeout-minutes: 5
-      - name: Qualify the installed public package boundary
-        run: npm run qualify:installed-candidate -- --candidate .release/download --output .release/download/portability.json
-        timeout-minutes: 20
+          matrix: ${{ needs.runtime_matrix.outputs.matrix }}
+          node: "24.22.2"
+          candidate-id: ${{ needs.candidate.outputs.artifact_id }}
+          candidate-digest: sha256:${{ needs.candidate.outputs.artifact_digest }}
 
   portability_macos_node_26:
-    name: Release / macOS / Node 26.12.0
+    name: Release / macOS / Node 26.13.0
     needs: candidate
     runs-on: macos-15
     timeout-minutes: 30
@@ -1176,9 +1102,9 @@ jobs:
       - consumer_runtime
       - consumer_runtimes
       - metadata
-      - source_node_22
-      - source_node_24
-      - source_node_26
+      - source_portable
+      - source_canonical
+      - source_json
       - dependency_review
       - third_party_evidence
       - candidate
@@ -1619,15 +1545,16 @@ jobs:
         env:
           CANDIDATE_ARTIFACT_ID: ${{ needs.candidate.outputs.artifact_id }}
           CANDIDATE_ARTIFACT_DIGEST: ${{ needs.candidate.outputs.artifact_digest }}
+          RELEASE_EVIDENCE_PATH: .release/hadden-industries-owlapi-${{ needs.metadata.outputs.version }}.release-evidence.json
           GITHUB_TOKEN: ${{ github.token }}
-        run: npm run generate:release-evidence -- --candidate .release/download --publication-preflight .release/evidence-input/publication/publication-preflight.json --tag-verification .release/evidence-input/tag/tag-verification.json --draft-release .release/evidence-input/draft/draft-release.json --registry-verification .release/evidence-input/registry/registry-verification.json --output .release/hadden-industries-owlapi-0.1.0-rc.2.release-evidence.json
+        run: npm run generate:release-evidence -- --candidate .release/download --publication-preflight .release/evidence-input/publication/publication-preflight.json --tag-verification .release/evidence-input/tag/tag-verification.json --draft-release .release/evidence-input/draft/draft-release.json --registry-verification .release/evidence-input/registry/registry-verification.json --output "$RELEASE_EVIDENCE_PATH"
         timeout-minutes: 5
       - name: Retain the strict release-evidence asset
         id: upload
         uses: ./.github/actions/retain-artifact
         with:
           name: release-evidence-${{ github.run_id }}-${{ github.run_attempt }}
-          path: .release/hadden-industries-owlapi-0.1.0-rc.2.release-evidence.json
+          path: .release/hadden-industries-owlapi-${{ needs.metadata.outputs.version }}.release-evidence.json
           retention-days: 90
 
   finalize_release:
@@ -1668,8 +1595,9 @@ jobs:
           digest-mismatch: error
       - name: Attach the fourth asset and publish the immutable prerelease
         env:
+          RELEASE_EVIDENCE_PATH: .release/evidence/hadden-industries-owlapi-${{ needs.metadata.outputs.version }}.release-evidence.json
           GITHUB_TOKEN: ${{ github.token }}
-        run: npm run finalize:github-release -- --evidence .release/evidence/hadden-industries-owlapi-0.1.0-rc.2.release-evidence.json --output .release/finalization.json
+        run: npm run finalize:github-release -- --evidence "$RELEASE_EVIDENCE_PATH" --output .release/finalization.json
         timeout-minutes: 5
 
   immutable_verification:
@@ -1700,7 +1628,7 @@ jobs:
       - name: Install the reviewed immutable-verification tools
         run: npm ci
         timeout-minutes: 15
-      - name: Download and checksum-verify GitHub CLI 2.102.1
+      - name: Download and checksum-verify GitHub CLI 2.103.3
         run: npm run prepare:github-cli -- --output .release/tools/github-cli
         timeout-minutes: 5
       - name: Reverify the independent signed tag
@@ -1713,7 +1641,7 @@ jobs:
       - name: Verify release immutability and all four release attestations
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: npm run verify:immutable-release -- --gh .release/tools/github-cli/gh_2.102.1_linux_amd64/bin/gh --output-directory .release/immutable-assets --report .release/immutable-verification.json
+        run: npm run verify:immutable-release -- --gh .release/tools/github-cli/gh_2.103.3_linux_amd64/bin/gh --output-directory .release/immutable-assets --report .release/immutable-verification.json
         timeout-minutes: 10
       - name: Retain the final immutable-verification report
         uses: ./.github/actions/retain-artifact
@@ -1761,10 +1689,7 @@ jobs:
       - name: Acquire the exact isolated Markdown graph
         run: npm run install:markdown
         timeout-minutes: 5
-      - name: Acquire the exact isolated JSON graph
-        run: npm run install:json
-        timeout-minutes: 5
-      - name: Exercise JSON isolation and exact preservation probes
+      - name: Exercise JSON behavior and source preservation probes
         run: npm run test:json
         timeout-minutes: 15
       - name: Verify formatting

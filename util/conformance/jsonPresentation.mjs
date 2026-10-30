@@ -1,4 +1,4 @@
-import { formatJsonValue } from "../../tooling/json/public-api.mjs";
+import { formatJsonValue } from "@hadden-industries/json-quality";
 
 /** Native fixture producers use the adopted ordinary JSON presentation.
  * This printer changes presentation only; corpus source strings and domain

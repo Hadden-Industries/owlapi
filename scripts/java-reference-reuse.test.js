@@ -50,7 +50,7 @@ function fixture() {
     name: "ci-main-qualification-100-2",
     size_in_bytes: 4000,
   };
-  const jobs = [CI_JOB_NAMES.source_node_24, CI_JOB_NAMES.required].map(
+  const jobs = [CI_JOB_NAMES.source_canonical, CI_JOB_NAMES.required].map(
     (name, index) => ({
       id: 1000 + index,
       name,

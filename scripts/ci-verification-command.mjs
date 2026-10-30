@@ -146,29 +146,55 @@ export const createRepositoryReader = ({
   token,
   fetchImpl = fetch,
   now = Date.now,
+  wallNow = Date.now,
   sleep = delay,
   random = Math.random,
-  deadline = now() + 60_000,
+  budgetMs = 60_000,
+  requestLimit = 32,
+  deadline = now() + budgetMs,
 }) => {
   if (!/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u.test(repository ?? "") || !token) {
     throw new Error("Read-only GitHub evidence access is unavailable.");
   }
-  const requestDeadline = Math.min(deadline, now() + 60_000);
+  if (
+    !Number.isSafeInteger(budgetMs) ||
+    budgetMs <= 0 ||
+    budgetMs > 600_000 ||
+    !Number.isSafeInteger(requestLimit) ||
+    requestLimit <= 0 ||
+    requestLimit > 256 ||
+    !Number.isFinite(deadline)
+  )
+    throw new Error("Invalid GitHub evidence budget.");
+  const requestDeadline = Math.min(deadline, now() + budgetMs);
   let requests = 0;
   const limit = () =>
     Object.assign(new Error("GitHub evidence lookup budget exhausted."), {
       code: "LOOKUP_LIMIT_EXCEEDED",
     });
-  return async (path) => {
+  return async (path, { budgetMs: operationBudget } = {}) => {
     if (
-      !/^\/(?:commits|actions|git)\/[A-Za-z0-9_./?=&%-]+$/u.test(path) ||
+      operationBudget !== undefined &&
+      (!Number.isFinite(operationBudget) ||
+        operationBudget <= 0 ||
+        operationBudget > 600_000)
+    )
+      throw limit();
+    const operationDeadline = Math.min(
+      requestDeadline,
+      now() + (operationBudget ?? Infinity),
+    );
+    if (
+      !/^(?:\/immutable-releases|\/(?:commits|actions|git|attestations|releases|deployments)(?:\/|\?)[A-Za-z0-9_./?=&%-]+)$/u.test(
+        path,
+      ) ||
       path.includes("..")
     ) {
       throw new Error("Unexpected GitHub evidence path.");
     }
     for (let attempt = 0; attempt < 3; attempt++) {
-      const remaining = requestDeadline - now();
-      if (requests >= 32 || remaining <= 0) throw limit();
+      const remaining = operationDeadline - now();
+      if (requests >= requestLimit || remaining <= 0) throw limit();
       requests++;
       let response;
       let bytes;
@@ -178,7 +204,9 @@ export const createRepositoryReader = ({
           {
             redirect: "error",
             cache: "no-store",
-            signal: AbortSignal.timeout(Math.min(10_000, remaining)),
+            signal: AbortSignal.timeout(
+              Math.max(1, Math.ceil(Math.min(10_000, remaining))),
+            ),
             headers: {
               Accept: "application/vnd.github+json",
               Authorization: `Bearer ${token}`,
@@ -192,7 +220,7 @@ export const createRepositoryReader = ({
             rateLimitedRead(response);
           throw Object.assign(
             new Error(`GitHub evidence read returned HTTP ${response.status}.`),
-            { retryable },
+            { retryable, httpStatus: response.status },
           );
         }
         const chunks = [];
@@ -201,7 +229,7 @@ export const createRepositoryReader = ({
           throw new Error("GitHub evidence response has no JSON body.");
         for await (const chunk of response.body) {
           size += chunk.byteLength;
-          if (size > 2 * 1024 * 1024 || now() >= requestDeadline)
+          if (size > 2 * 1024 * 1024 || now() >= operationDeadline)
             throw Object.assign(
               new Error("GitHub evidence response exceeded its budget."),
               { code: "LOOKUP_LIMIT_EXCEEDED" },
@@ -219,13 +247,18 @@ export const createRepositoryReader = ({
           await response.body.cancel().catch(() => {});
       }
       if (bytes !== undefined) {
-        if (now() >= requestDeadline) throw limit();
+        if (now() >= operationDeadline) throw limit();
         return JSON.parse(
           new TextDecoder("utf-8", { fatal: true }).decode(bytes),
         );
       }
-      const milliseconds = evidenceRetryDelay(response, attempt, now(), random);
-      if (requests >= 32 || milliseconds >= requestDeadline - now())
+      const milliseconds = evidenceRetryDelay(
+        response,
+        attempt,
+        wallNow(),
+        random,
+      );
+      if (requests >= requestLimit || milliseconds >= operationDeadline - now())
         throw limit();
       await sleep(milliseconds);
     }
@@ -258,16 +291,25 @@ const writeJson = (path, value) => {
   writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`, "utf8");
 };
 
-const emit = (values, summary) => {
-  for (const [key, value] of Object.entries(values)) {
+export const emit = (
+  values,
+  summary,
+  { env = process.env, append = appendFileSync, stdout = process.stdout } = {},
+) => {
+  const entries = Object.entries(values);
+  for (const [key, value] of entries) {
     if (!/^[a-z_]+$/u.test(key) || /[\r\n]/u.test(String(value)))
       throw new Error("Unsafe action output.");
-    if (process.env.GITHUB_OUTPUT)
-      appendFileSync(process.env.GITHUB_OUTPUT, `${key}=${value}\n`);
   }
-  process.stdout.write(`${JSON.stringify({ ...values, summary })}\n`);
-  if (process.env.GITHUB_STEP_SUMMARY)
-    appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${summary}\n`);
+  if (env.GITHUB_ACTIONS === "true" && !env.GITHUB_OUTPUT)
+    throw new Error("Hosted command requires GITHUB_OUTPUT.");
+  if (env.GITHUB_OUTPUT)
+    append(
+      env.GITHUB_OUTPUT,
+      entries.map(([key, value]) => `${key}=${value}\n`).join(""),
+    );
+  if (env.GITHUB_STEP_SUMMARY) append(env.GITHUB_STEP_SUMMARY, `${summary}\n`);
+  stdout.write(`${JSON.stringify({ ...values, summary })}\n`);
 };
 
 const main = async () => {
@@ -278,7 +320,7 @@ const main = async () => {
     emit({ available: "false" }, "Full PR qualification is required.");
     return;
   }
-  try {
+  const execute = async () => {
     if (
       mode === "verify" &&
       (process.env.PROOF_DOWNLOAD_OUTCOME !== "success" || !existsSync(STATE))
@@ -294,13 +336,12 @@ const main = async () => {
         needs: JSON.parse(process.env.REQUIRED_JOB_RESULTS_JSON ?? "null"),
       });
       writeJson(mode === "record" ? RECEIPT : MAIN_RECEIPT, receipt);
-      emit(
+      return [
         { recorded: "true" },
         mode === "record"
           ? "Retained typed FULL PR qualification and original executed coverage."
           : `Retained landed-main ${receipt.mode} qualification with direct original executed coverage.`,
-      );
-      return;
+      ];
     }
     const read = createRepositoryReader({
       repository: context.repository,
@@ -309,15 +350,14 @@ const main = async () => {
     if (mode === "select") {
       const selection = await selectVerificationProof({ context, read });
       writeJson(STATE, selection);
-      emit(
+      return [
         {
           available: "true",
           run_id: selection.run.id,
           artifact_id: selection.artifact.id,
         },
         "A candidate PR receipt is available; reuse is not yet verified.",
-      );
-      return;
+      ];
     }
     const selection = readJson(STATE);
     const receipt = readDownloadedReceipt(DOWNLOAD, selection.artifact.name);
@@ -327,10 +367,14 @@ const main = async () => {
       receipt,
       read,
     });
-    emit(
+    return [
       result,
       `Reused complete PR qualification: https://github.com/${context.repository}/actions/runs/${result.source_run_id}/attempts/${result.source_run_attempt}. Original candidate artifact: ${result.candidate_artifact_id} (${result.candidate_artifact_digest}). No application tests were represented as freshly executed.`,
-    );
+    ];
+  };
+  let result;
+  try {
+    result = await execute();
   } catch (error) {
     // Optimization failure selects the ordinary gate, never a successful test result.
     const reason =
@@ -338,13 +382,19 @@ const main = async () => {
         ? error.message.replaceAll(/[\r\n]/gu, " ").slice(0, 300)
         : "Evidence could not be verified.";
     if (mode === "record" || mode === "record-main")
-      emit({ recorded: "false" }, `No reusable receipt retained: ${reason}`);
+      result = [
+        { recorded: "false" },
+        `No reusable receipt retained: ${reason}`,
+      ];
     else
-      emit(
+      result = [
         mode === "select" ? { available: "false" } : { reuse: "false" },
         `Full qualification required: ${reason}`,
-      );
+      ];
   }
+  // Reporting is outside the evidence fallback: a broken output sink fails the
+  // command and can never rewrite verified reuse as an ordinary cache miss.
+  emit(...result);
 };
 
 if (process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url)

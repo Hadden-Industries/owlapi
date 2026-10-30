@@ -60,4 +60,25 @@ describe("frozen consumer runtime admission", () => {
     ]);
     expect(runtimeDigest(next)).not.toBe(runtimeDigest(previous));
   });
+  test("ignores valid prereleases without admitting them as supported stable lanes", () => {
+    expect(
+      qualificationMatrix([
+        ...releases(),
+        { version: "v27.0.0-alpha.0.0.0" },
+        { version: "v26.99.0-rc.1" },
+      ]),
+    ).toEqual(qualificationMatrix(releases()));
+    expect(() =>
+      qualificationMatrix([
+        ...releases().filter(({ version }) => version !== "v26.0.0"),
+        { version: "v26.0.0-rc.1" },
+      ]),
+    ).toThrow("Missing minimum/reference release");
+  });
+  test.each(["26.13.0", "v26.13", "v26.13.0-", "v26.13.0-alpha.01"])(
+    "rejects malformed release identity %s",
+    (version) => {
+      expect(() => qualificationMatrix([...releases(), { version }])).toThrow();
+    },
+  );
 });

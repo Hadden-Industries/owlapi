@@ -1,10 +1,10 @@
-import { projectRuntimeText } from "./runtime-policy.mjs";
 import {
   matchesLogicalArtifact,
   artifactProducingAttempt,
 } from "../tooling/artifact-transport/identity.mjs";
 /** Evidence reuse is an optimization. Unprovable equivalence always requires full CI. */
 import { isDeepStrictEqual } from "node:util";
+import { setTimeout as delay } from "node:timers/promises";
 import { sameJobExecution } from "./github-job-execution.mjs";
 import { captureConsumerSources } from "./consumer-source-snapshot.mjs";
 import { javaReferenceFromNeeds } from "./java-reference-state.mjs";
@@ -21,6 +21,8 @@ import {
   createQualificationChecks,
   coverageFromNeeds,
   qualifiedSourceFromOutputs,
+  validQualificationHost,
+  compatibleQualificationHosts,
 } from "./ci-qualification.mjs";
 
 export const CI_WORKFLOW = ".github/workflows/ci.yml";
@@ -46,12 +48,94 @@ export const hostedIdentity = (environment, nodeVersion) => ({
   node: nodeVersion,
 });
 
-const validHost = (host) =>
-  host?.os === "Linux" &&
-  host.architecture === "X64" &&
-  host.image === "ubuntu24" &&
-  /^\d{8}\.\d+(?:\.\d+)?$/u.test(host.imageVersion ?? "") &&
-  host.node === projectRuntimeText("v{{runtime:node.24}}");
+const validHost = validQualificationHost;
+
+/** Only native registration lag is waitable. The repository reader also owns
+ * the shared request/deadline budget for the entire proof operation.
+ */
+export const readJobInventory = async ({
+  read,
+  run,
+  attempt,
+  required = hostedCiJobNames(),
+  conclusion = () => "success",
+  label = "Source job inventory",
+  observation: { now = Date.now, sleep = delay, maxObservations = 16 } = {},
+}) => {
+  requireFact(
+    Number.isSafeInteger(maxObservations) &&
+      maxObservations > 0 &&
+      maxObservations <= 16,
+    "Invalid job observation budget.",
+  );
+  const deadline = now() + 30_000;
+  const names = hostedCiJobNames();
+  const pendingStatuses = [
+    "queued",
+    "in_progress",
+    "waiting",
+    "pending",
+    "requested",
+  ];
+  const conclusions = [
+    "success",
+    "failure",
+    "cancelled",
+    "skipped",
+    "neutral",
+    "timed_out",
+    "action_required",
+    "stale",
+  ];
+  const path =
+    attempt === undefined
+      ? `/actions/runs/${run.id}/jobs?filter=latest&per_page=100`
+      : `/actions/runs/${run.id}/attempts/${attempt}/jobs?per_page=100`;
+  for (let count = 0; count < maxObservations; count++) {
+    requireFact(now() < deadline, `${label} registration deadline elapsed.`);
+    const value = await read(path, { budgetMs: deadline - now() });
+    requireFact(now() < deadline, `${label} registration deadline elapsed.`);
+    requireFact(
+      Array.isArray(value?.jobs) &&
+        value.jobs.length <= names.length &&
+        value.total_count === value.jobs.length &&
+        new Set(value.jobs.map((job) => job?.name)).size ===
+          value.jobs.length &&
+        value.jobs.every(
+          (job) =>
+            job &&
+            names.includes(job.name) &&
+            job.run_id === run.id &&
+            job.head_sha === run.head_sha &&
+            id(job.run_attempt) &&
+            (attempt === undefined
+              ? job.run_attempt <= run.run_attempt
+              : job.run_attempt === attempt) &&
+            (job.status === "completed"
+              ? conclusions.includes(job.conclusion)
+              : pendingStatuses.includes(job.status) &&
+                job.conclusion === null),
+        ),
+      `${label} is malformed, duplicated or foreign.`,
+    );
+    let pending = false;
+    for (const name of required) {
+      const job = value.jobs.find((item) => item.name === name);
+      if (!job || job.status !== "completed") pending = true;
+      else
+        requireFact(
+          job.conclusion === conclusion(name),
+          `${label} contains a failed or skipped required check.`,
+        );
+    }
+    if (!pending) return value;
+    requireFact(
+      count + 1 < maxObservations && now() + 2000 < deadline,
+      `${label} remains incomplete after bounded registration observation.`,
+    );
+    await sleep(2000);
+  }
+};
 
 export const createVerificationReceipt = ({
   context,
@@ -94,7 +178,7 @@ export const createVerificationReceipt = ({
     commit: snapshot.commit,
   });
   return assertQualificationRecord({
-    schemaVersion: 5,
+    schemaVersion: 6,
     role: "PR",
     mode: "FULL",
     sourceMode: "FULL",
@@ -153,7 +237,7 @@ export const createMainQualification = ({
       : null;
   if (origin)
     requireFact(
-      isDeepStrictEqual(origin.host, context.host) &&
+      compatibleQualificationHosts(origin.host, context.host) &&
         origin.snapshot.tree === context.snapshot.tree &&
         origin.snapshot.workflow === context.snapshot.workflow &&
         isDeepStrictEqual(origin.snapshot.parents, context.snapshot.parents),
@@ -177,6 +261,7 @@ export const createMainQualification = ({
         runId: origin.runId,
         runAttempt: origin.runAttempt,
         commit: origin.snapshot.commit,
+        host: origin.host,
         receipt: {
           id: Number(accepted.source.source_receipt_id),
           digest: accepted.source.source_receipt_digest,
@@ -188,7 +273,7 @@ export const createMainQualification = ({
     digest: `sha256:${needs.candidate.outputs.artifact_digest}`,
   };
   return assertQualificationRecord({
-    schemaVersion: 5,
+    schemaVersion: 6,
     role: "MAIN",
     mode: accepted.mode,
     sourceMode: "FULL",
@@ -363,6 +448,7 @@ export const verifyIntegrationProof = async ({
   read,
   now = Date.now(),
   captureSources = captureConsumerSources,
+  jobObservation,
 }) => {
   assertPush(context);
   const { pr, artifact } = selection;
@@ -395,7 +481,7 @@ export const verifyIntegrationProof = async ({
     "Consumer source pins differ; fresh qualification is required.",
   );
   requireFact(
-    receipt.schemaVersion === 5 &&
+    receipt.schemaVersion === 6 &&
       receipt.role === "PR" &&
       receipt.mode === "FULL" &&
       receipt.repository === context.repository &&
@@ -405,7 +491,7 @@ export const verifyIntegrationProof = async ({
       receipt.pullRequest === pr.number &&
       recordedAt <= now &&
       recordedAt >= Date.parse(run.run_started_at) &&
-      isDeepStrictEqual(receipt.host, context.host) &&
+      compatibleQualificationHosts(receipt.host, context.host) &&
       isDeepStrictEqual(receipt.jobs, CI_JOB_NAMES) &&
       receipt.snapshot?.tree === context.snapshot.tree &&
       receipt.snapshot.workflow === context.snapshot.workflow &&
@@ -423,31 +509,17 @@ export const verifyIntegrationProof = async ({
       ),
     "GitHub's tested commit does not match the landed tree and parents.",
   );
-  const observed = await read(
-    `/actions/runs/${run.id}/jobs?filter=latest&per_page=100`,
-  );
-  const names = hostedCiJobNames();
-  requireFact(
-    observed.total_count === names.length &&
-      observed.jobs?.length === names.length &&
-      new Set(observed.jobs.map((job) => job.name)).size === names.length &&
-      observed.jobs.every(
-        (job) =>
-          names.includes(job.name) &&
-          job.run_id === run.id &&
-          id(job.run_attempt) &&
-          job.run_attempt <= run.run_attempt &&
-          job.head_sha === run.head_sha &&
-          job.status === "completed" &&
-          job.conclusion === "success",
-      ),
-    "The latest source job inventory is incomplete, failed or contains skipped checks.",
-  );
+  const observed = await readJobInventory({
+    read,
+    run,
+    observation: jobObservation,
+  });
   await verifyCheckProducingAttempts({
     run,
     checks: receipt.checks,
     observed,
     read,
+    jobObservation,
   });
   requireFact(
     id(receipt.candidate?.id) && digest(receipt.candidate.digest),
@@ -498,40 +570,19 @@ const assertMainRun = (run, context, commit, now) =>
       Date.parse(run.created_at) <= now,
     "Latest exact-base main run is incomplete, unsuccessful or from another source.",
   );
-const assertClosedJobs = (observed, run, reused) => {
-  const names = hostedCiJobNames();
-  requireFact(
-    observed.total_count === names.length &&
-      observed.jobs?.length === names.length &&
-      new Set(observed.jobs.map((job) => job.name)).size === names.length &&
-      observed.jobs.every(
-        (job) =>
-          names.includes(job.name) &&
-          job.run_id === run.id &&
-          id(job.run_attempt) &&
-          job.run_attempt <= run.run_attempt &&
-          job.head_sha === run.head_sha &&
-          job.status === "completed" &&
-          job.conclusion ===
-            (reused &&
-            ![
-              CI_JOB_NAMES.runtime_matrix,
-              CI_JOB_NAMES.verification,
-              CI_JOB_NAMES.required,
-            ].includes(job.name)
-              ? "skipped"
-              : "success"),
-      ),
-    "Main qualification does not match its complete native job inventory.",
-  );
-};
 
 /** GitHub can copy a retained job into a later attempt with a new job/check ID.
  * Runner and execution timestamps identify the retained execution, while native
  * attempt inventories authenticate where it first ran. Never equate the latest
  * inventory's attempt label with the producing attempt in typed coverage.
  */
-async function verifyCheckProducingAttempts({ run, checks, observed, read }) {
+async function verifyCheckProducingAttempts({
+  run,
+  checks,
+  observed,
+  read,
+  jobObservation,
+}) {
   const inventories = new Map([[run.run_attempt, observed]]);
   const inventory = async (attempt) => {
     requireFact(
@@ -539,23 +590,16 @@ async function verifyCheckProducingAttempts({ run, checks, observed, read }) {
       "Coverage producing attempt is outside its authenticated run.",
     );
     if (!inventories.has(attempt)) {
-      const value = await read(
-        `/actions/runs/${run.id}/attempts/${attempt}/jobs?per_page=100`,
-      );
-      requireFact(
-        Array.isArray(value.jobs) &&
-          value.jobs.length <= 100 &&
-          value.total_count === value.jobs.length &&
-          new Set(value.jobs.map((job) => job.name)).size ===
-            value.jobs.length &&
-          value.jobs.every(
-            (job) =>
-              job.run_id === run.id &&
-              job.head_sha === run.head_sha &&
-              job.run_attempt === attempt,
-          ),
-        "Coverage producing attempt has an incomplete or foreign native inventory.",
-      );
+      const value = await readJobInventory({
+        read,
+        run,
+        attempt,
+        observation: jobObservation,
+        label: "Coverage producing attempt",
+        required: Object.entries(CHECK_JOBS)
+          .filter(([check]) => checks[check].original.runAttempt === attempt)
+          .map(([, jobId]) => CI_JOB_NAMES[jobId]),
+      });
       inventories.set(attempt, value);
     }
     return inventories.get(attempt).jobs;
@@ -692,6 +736,7 @@ export const verifyBaseQualification = async ({
   downloadOriginal,
   now = Date.now(),
   captureSources = captureConsumerSources,
+  jobObservation,
 }) => {
   const { base, artifact } = selection;
   requireFact(
@@ -747,16 +792,28 @@ export const verifyBaseQualification = async ({
     "Main qualification's Git identity is unproved.",
   );
   await verifyWorkflowBlob(record.snapshot, read);
-  const jobs = await read(
-    `/actions/runs/${run.id}/jobs?filter=latest&per_page=100`,
-  );
-  assertClosedJobs(jobs, run, record.mode === "REUSED");
+  const jobs = await readJobInventory({
+    read,
+    run,
+    observation: jobObservation,
+    label: "Main qualification job inventory",
+    conclusion: (name) =>
+      record.mode === "REUSED" &&
+      ![
+        CI_JOB_NAMES.runtime_matrix,
+        CI_JOB_NAMES.verification,
+        CI_JOB_NAMES.required,
+      ].includes(name)
+        ? "skipped"
+        : "success",
+  });
   if (record.mode === "FULL")
     await verifyCheckProducingAttempts({
       run,
       checks: record.checks,
       observed: jobs,
       read,
+      jobObservation,
     });
   if (record.mode === "REUSED") {
     const originalContext = {
@@ -798,16 +855,20 @@ export const verifyBaseQualification = async ({
       selection: originalSelection,
       receipt: originalReceipt,
       captureSources: async () => pinnedConsumerSources,
+      jobObservation,
       read,
       now,
     });
     requireFact(
       validated.source_commit === record.source.commit &&
+        isDeepStrictEqual(originalReceipt.host, record.source.host) &&
         isDeepStrictEqual(originalReceipt.candidate, record.candidate) &&
         Object.keys(record.checks).every((check) =>
-          isDeepStrictEqual(
-            originalReceipt.checks[check].evidence,
-            record.checks[check].evidence,
+          ["evidence", "inputs"].every((field) =>
+            isDeepStrictEqual(
+              originalReceipt.checks[check][field],
+              record.checks[check][field],
+            ),
           ),
         ),
       "Main qualification inherited different original execution or candidate evidence.",

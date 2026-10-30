@@ -1,6 +1,10 @@
+import { PACKAGE_VERSION } from "./package-identity.mjs";
 import { gzipSync } from "node:zlib";
 
-import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
+import {
+  verifyDownloadedCandidateBundle,
+  verifyHistoricalRc2CandidateBundle,
+} from "./candidate-bundle.mjs";
 import { sha256Buffer } from "./release-file-utils.mjs";
 import { formatSha256Sums } from "./release-artifacts.mjs";
 
@@ -19,8 +23,7 @@ const tarEntry = (name, content) => {
   return Buffer.concat([header, body, padding]);
 };
 
-const fixture = () => {
-  const version = "0.1.0-rc.2";
+const fixture = (version = PACKAGE_VERSION) => {
   const tarballFileName = `hadden-industries-owlapi-${version}.tgz`;
   const sbomFileName = `hadden-industries-owlapi-${version}.cdx.json`;
   const tarball = gzipSync(
@@ -60,6 +63,29 @@ const fixture = () => {
 };
 
 describe("downloaded release-candidate bundle", () => {
+  test("historical rc.2 verification is isolated from the current candidate", () => {
+    const historical = fixture("0.1.0-rc.2");
+    expect(verifyHistoricalRc2CandidateBundle(historical).package.version).toBe(
+      "0.1.0-rc.2",
+    );
+    expect(() => verifyDownloadedCandidateBundle(historical)).toThrow(
+      /identity/u,
+    );
+    for (const version of [PACKAGE_VERSION, "0.1.0-rc.1", "0.1.0"])
+      expect(() =>
+        verifyHistoricalRc2CandidateBundle(fixture(version)),
+      ).toThrow(/identity/u);
+    const wrongPurl = {
+      ...historical,
+      sbomText: historical.sbomText.replace(
+        "pkg:npm/%40hadden-industries/owlapi@0.1.0-rc.2?",
+        `pkg:npm/%40hadden-industries/owlapi@${PACKAGE_VERSION}?`,
+      ),
+    };
+    expect(() => verifyHistoricalRc2CandidateBundle(wrongPurl)).toThrow(
+      /SBOM identity/u,
+    );
+  });
   test("rejects an unscoped SBOM PURL despite matching labels and checksums", () => {
     const input = fixture();
     input.sbomText = input.sbomText.replace(
@@ -68,11 +94,11 @@ describe("downloaded release-candidate bundle", () => {
     );
     input.checksumText = formatSha256Sums([
       {
-        fileName: "hadden-industries-owlapi-0.1.0-rc.2.tgz",
+        fileName: `hadden-industries-owlapi-${PACKAGE_VERSION}.tgz`,
         sha256: sha256Buffer(input.tarball),
       },
       {
-        fileName: "hadden-industries-owlapi-0.1.0-rc.2.cdx.json",
+        fileName: `hadden-industries-owlapi-${PACKAGE_VERSION}.cdx.json`,
         sha256: sha256Buffer(Buffer.from(input.sbomText)),
       },
     ]);
@@ -85,7 +111,7 @@ describe("downloaded release-candidate bundle", () => {
 
     expect(result.package).toEqual({
       name: "@hadden-industries/owlapi",
-      version: "0.1.0-rc.2",
+      version: PACKAGE_VERSION,
     });
     expect(result.sbom.specVersion).toBe("1.6");
     expect(result.tarball.sha256).toHaveLength(64);

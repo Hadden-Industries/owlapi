@@ -14,15 +14,17 @@ import { parseSshVerification } from "./verify-release-tag.mjs";
 
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
 
-/** Source qualification may precede immutable version selection; publication may not. */
+/** Require an assigned target before publication; a target proves neither approval nor publication. */
 export const assertSelectedPublicReleases = (registry) => {
   const pending = registry.bindings.filter(
     (binding) =>
-      binding.exposure === "PUBLIC" && binding.firstPublicRelease === null,
+      binding.exposure === "PUBLIC" &&
+      (binding.firstPublicReleaseTarget === null ||
+        binding.firstPublicReleaseTarget === undefined),
   );
   if (pending.length)
     throw new Error(
-      `Public bindings require an immutable first release selection: ${pending.map(({ id }) => id).join(", ")}`,
+      `Public bindings require an assigned first public release target: ${pending.map(({ id }) => id).join(", ")}`,
     );
 };
 
@@ -176,7 +178,7 @@ export const assertReleasePreflight = ({
   if (
     !publication.enabled ||
     publication.mode !==
-      (manifest.version === "0.1.0-rc.2" ? "DIRECT_OIDC" : "DIRECT_BOOTSTRAP")
+      (manifest.version === "0.1.0-rc.1" ? "DIRECT_BOOTSTRAP" : "DIRECT_OIDC")
   ) {
     throw new Error(
       "This release workflow requires the reviewed version-specific direct publication boundary.",

@@ -4,7 +4,7 @@
 > rc.2 is already published; stable 0.1.0 is not.
 > Current source includes later behavior-profile, transport, tooling and performance changes that are not part of that published artifact.
 > The roadmap distinguishes published APIs, implemented but unpublished APIs, unresolved required work and deferred capabilities.
-> Both `java-owlapi-5.5.1` and `normative-v1`, semantic/performance admission, latest applicable dependencies and the selected [Temurin 25.0.5+8 toolchain](development/java-toolchain.md) are explicit continuation obligations.
+> Both `java-owlapi-5.5.1` and `normative-v1`, semantic/performance admission, latest applicable dependencies and the selected [Java toolchain](development/java-toolchain.md) are explicit continuation obligations.
 > The [release and CI evidence reconciliation](plans/2026-10-29-release-and-ci-evidence-reuse.md) records source-grounded lessons from JSON Quality and maps them to existing OwlAPI controls.
 > This file retains historical decisions, acceptance IDs and catalogues consumed by release tooling.
 > Old checkbox states, runtime versions, root counts, next-release wording and WebVOWL pipeline descriptions are not a current backlog or release approval.

@@ -1679,7 +1679,401 @@
       }
     },
     {
-      "title": "rc.2 producer release evidence with exact next and latest channels",
+      "allOf": [
+        {
+          "$ref": "#/$defs/scopedRelease"
+        },
+        {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "package": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "const": "0.1.0-rc.2"
+                    },
+                    "coordinate": {
+                      "const": "@hadden-industries/owlapi@0.1.0-rc.2"
+                    },
+                    "channel": {
+                      "const": "next"
+                    }
+                  }
+                },
+                "source": {
+                  "type": "object",
+                  "properties": {
+                    "ref": {
+                      "const": "refs/tags/v0.1.0-rc.2"
+                    },
+                    "tag": {
+                      "const": "v0.1.0-rc.2"
+                    }
+                  }
+                },
+                "candidate": {
+                  "type": "object",
+                  "properties": {
+                    "tarball": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "const": "hadden-industries-owlapi-0.1.0-rc.2.tgz"
+                        }
+                      }
+                    },
+                    "sbom": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "const": "hadden-industries-owlapi-0.1.0-rc.2.cdx.json"
+                        }
+                      }
+                    }
+                  }
+                },
+                "publication": {
+                  "type": "object",
+                  "properties": {
+                    "coordinate": {
+                      "const": "@hadden-industries/owlapi@0.1.0-rc.2"
+                    },
+                    "channel": {
+                      "const": "next"
+                    },
+                    "tarballUrl": {
+                      "const": "https://registry.npmjs.org/@hadden-industries/owlapi/-/owlapi-0.1.0-rc.2.tgz"
+                    },
+                    "next": {
+                      "const": "0.1.0-rc.2"
+                    },
+                    "latest": {
+                      "const": "0.1.0-rc.2"
+                    }
+                  }
+                },
+                "githubRelease": {
+                  "type": "object",
+                  "properties": {
+                    "assets": {
+                      "type": "array",
+                      "allOf": [
+                        {
+                          "contains": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "const": "hadden-industries-owlapi-0.1.0-rc.2.tgz"
+                              }
+                            },
+                            "required": [
+                              "name"
+                            ]
+                          }
+                        },
+                        {
+                          "contains": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "const": "hadden-industries-owlapi-0.1.0-rc.2.cdx.json"
+                              }
+                            },
+                            "required": [
+                              "name"
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "type": "object",
+              "properties": {
+                "package": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "const": "0.1.0-rc.3"
+                    },
+                    "coordinate": {
+                      "const": "@hadden-industries/owlapi@0.1.0-rc.3"
+                    },
+                    "channel": {
+                      "const": "next"
+                    }
+                  }
+                },
+                "source": {
+                  "type": "object",
+                  "properties": {
+                    "ref": {
+                      "const": "refs/tags/v0.1.0-rc.3"
+                    },
+                    "tag": {
+                      "const": "v0.1.0-rc.3"
+                    }
+                  }
+                },
+                "candidate": {
+                  "type": "object",
+                  "properties": {
+                    "tarball": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "const": "hadden-industries-owlapi-0.1.0-rc.3.tgz"
+                        }
+                      }
+                    },
+                    "sbom": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "const": "hadden-industries-owlapi-0.1.0-rc.3.cdx.json"
+                        }
+                      }
+                    }
+                  }
+                },
+                "publication": {
+                  "type": "object",
+                  "properties": {
+                    "coordinate": {
+                      "const": "@hadden-industries/owlapi@0.1.0-rc.3"
+                    },
+                    "channel": {
+                      "const": "next"
+                    },
+                    "tarballUrl": {
+                      "const": "https://registry.npmjs.org/@hadden-industries/owlapi/-/owlapi-0.1.0-rc.3.tgz"
+                    },
+                    "next": {
+                      "const": "0.1.0-rc.3"
+                    },
+                    "latest": {
+                      "const": "0.1.0-rc.3"
+                    }
+                  }
+                },
+                "githubRelease": {
+                  "type": "object",
+                  "properties": {
+                    "assets": {
+                      "type": "array",
+                      "allOf": [
+                        {
+                          "contains": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "const": "hadden-industries-owlapi-0.1.0-rc.3.tgz"
+                              }
+                            },
+                            "required": [
+                              "name"
+                            ]
+                          }
+                        },
+                        {
+                          "contains": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "const": "hadden-industries-owlapi-0.1.0-rc.3.cdx.json"
+                              }
+                            },
+                            "required": [
+                              "name"
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "bytes",
+        "sha256"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "artifactReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "digest"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "failedJob": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "conclusion",
+        "url"
+      ],
+      "properties": {
+        "name": {
+          "const": "Release / tag accepted"
+        },
+        "conclusion": {
+          "const": "failure"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "environment",
+        "reviewer",
+        "state",
+        "observedAt"
+      ],
+      "properties": {
+        "environment": {
+          "enum": [
+            "release-manual",
+            "npm-release"
+          ]
+        },
+        "reviewer": {
+          "const": "MaksymShostak"
+        },
+        "state": {
+          "const": "approved"
+        },
+        "observedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "job": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "conclusion",
+        "url"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "conclusion": {
+          "const": "success"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "extendedTest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "environment",
+        "result",
+        "reason"
+      ],
+      "properties": {
+        "environment": {
+          "type": "string",
+          "minLength": 1
+        },
+        "result": {
+          "enum": [
+            "PASS",
+            "FAIL",
+            "NOT_RUN"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "inputEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "sha256"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "scopedRelease": {
+      "title": "Scoped producer release evidence with exact next and latest channels",
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -1724,13 +2118,13 @@
               "const": "@hadden-industries/owlapi"
             },
             "version": {
-              "const": "0.1.0-rc.2"
+              "type": "string"
             },
             "coordinate": {
-              "const": "@hadden-industries/owlapi@0.1.0-rc.2"
+              "type": "string"
             },
             "channel": {
-              "const": "next"
+              "type": "string"
             },
             "registry": {
               "const": "https://registry.npmjs.org/"
@@ -1755,13 +2149,13 @@
               "const": "Hadden-Industries/owlapi"
             },
             "ref": {
-              "const": "refs/tags/v0.1.0-rc.2"
+              "type": "string"
             },
             "commit": {
               "$ref": "#/$defs/commit"
             },
             "tag": {
-              "const": "v0.1.0-rc.2"
+              "type": "string"
             }
           }
         },
@@ -1861,7 +2255,7 @@
               "type": "object",
               "properties": {
                 "name": {
-                  "const": "hadden-industries-owlapi-0.1.0-rc.2.tgz"
+                  "type": "string"
                 }
               }
             },
@@ -1870,7 +2264,7 @@
               "type": "object",
               "properties": {
                 "name": {
-                  "const": "hadden-industries-owlapi-0.1.0-rc.2.cdx.json"
+                  "type": "string"
                 }
               }
             },
@@ -1911,26 +2305,24 @@
               "const": "https://registry.npmjs.org/"
             },
             "coordinate": {
-              "const": "@hadden-industries/owlapi@0.1.0-rc.2"
+              "type": "string"
             },
             "channel": {
-              "const": "next"
+              "type": "string"
             },
             "integrity": {
               "type": "string",
               "pattern": "^sha512-[A-Za-z0-9+/]+={0,2}$"
             },
             "tarballUrl": {
-              "type": "string",
-              "format": "uri",
-              "pattern": "^https://registry\\.npmjs\\.org/@hadden-industries/owlapi/-/owlapi-0\\.1\\.0-rc\\.2\\.tgz$"
+              "type": "string"
             },
             "verifiedAt": {
               "type": "string",
               "format": "date-time"
             },
             "next": {
-              "const": "0.1.0-rc.2"
+              "type": "string"
             },
             "latestPresent": {
               "const": true
@@ -1998,7 +2390,7 @@
               }
             },
             "latest": {
-              "const": "0.1.0-rc.2"
+              "type": "string"
             }
           }
         },
@@ -2065,17 +2457,17 @@
               "allOf": [
                 {
                   "contains": {
-                    "$ref": "#/oneOf/3/properties/candidate/properties/tarball"
+                    "$ref": "#/$defs/scopedRelease/properties/candidate/properties/tarball"
                   }
                 },
                 {
                   "contains": {
-                    "$ref": "#/oneOf/3/properties/candidate/properties/sbom"
+                    "$ref": "#/$defs/scopedRelease/properties/candidate/properties/sbom"
                   }
                 },
                 {
                   "contains": {
-                    "$ref": "#/oneOf/3/properties/candidate/properties/checksums"
+                    "$ref": "#/$defs/scopedRelease/properties/candidate/properties/checksums"
                   }
                 }
               ]
@@ -2309,175 +2701,6 @@
               "pattern": "^[a-f0-9]{64}$"
             }
           }
-        }
-      }
-    }
-  ],
-  "$defs": {
-    "sha256": {
-      "type": "string",
-      "pattern": "^[0-9a-f]{64}$"
-    },
-    "commit": {
-      "type": "string",
-      "pattern": "^[0-9a-f]{40}$"
-    },
-    "asset": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "name",
-        "bytes",
-        "sha256"
-      ],
-      "properties": {
-        "name": {
-          "type": "string",
-          "minLength": 1
-        },
-        "bytes": {
-          "type": "integer",
-          "minimum": 1
-        },
-        "sha256": {
-          "$ref": "#/$defs/sha256"
-        }
-      }
-    },
-    "artifactReference": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "id",
-        "name",
-        "digest"
-      ],
-      "properties": {
-        "id": {
-          "type": "string",
-          "pattern": "^[1-9][0-9]*$"
-        },
-        "name": {
-          "type": "string",
-          "minLength": 1
-        },
-        "digest": {
-          "type": "string",
-          "pattern": "^sha256:[0-9a-f]{64}$"
-        }
-      }
-    },
-    "failedJob": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "name",
-        "conclusion",
-        "url"
-      ],
-      "properties": {
-        "name": {
-          "const": "Release / tag accepted"
-        },
-        "conclusion": {
-          "const": "failure"
-        },
-        "url": {
-          "type": "string",
-          "format": "uri"
-        }
-      }
-    },
-    "approval": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "environment",
-        "reviewer",
-        "state",
-        "observedAt"
-      ],
-      "properties": {
-        "environment": {
-          "enum": [
-            "release-manual",
-            "npm-release"
-          ]
-        },
-        "reviewer": {
-          "const": "MaksymShostak"
-        },
-        "state": {
-          "const": "approved"
-        },
-        "observedAt": {
-          "type": "string",
-          "format": "date-time"
-        }
-      }
-    },
-    "job": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "name",
-        "conclusion",
-        "url"
-      ],
-      "properties": {
-        "name": {
-          "type": "string",
-          "minLength": 1
-        },
-        "conclusion": {
-          "const": "success"
-        },
-        "url": {
-          "type": "string",
-          "format": "uri"
-        }
-      }
-    },
-    "extendedTest": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "environment",
-        "result",
-        "reason"
-      ],
-      "properties": {
-        "environment": {
-          "type": "string",
-          "minLength": 1
-        },
-        "result": {
-          "enum": [
-            "PASS",
-            "FAIL",
-            "NOT_RUN"
-          ]
-        },
-        "reason": {
-          "type": "string",
-          "minLength": 1
-        }
-      }
-    },
-    "inputEvidence": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "name",
-        "sha256"
-      ],
-      "properties": {
-        "name": {
-          "type": "string",
-          "minLength": 1
-        },
-        "sha256": {
-          "$ref": "#/$defs/sha256"
         }
       }
     }

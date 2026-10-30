@@ -3,16 +3,16 @@
   "schemaVersion": 2,
   "package": {
     "name": "@hadden-industries/owlapi",
-    "version": "0.1.0-rc.2"
+    "version": "0.1.0-rc.3"
   },
   "recordedOn": "2026-10-21",
   "review": {
-    "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "5d371fe1356a3d29b6759a9ebcd232258d08786652e0cb240848c9d8a57bfa7b",
-    "reviewer": null,
-    "reviewedOn": null,
-    "capacity": null,
-    "conclusion": null,
+    "status": "REVIEWED",
+    "factsSha256": "5cbb101a981c2e858c75a0cba47b27523f9b09739e594bb3fb8adebbf29ddfd1",
+    "reviewer": "Maksym Shostak",
+    "reviewedOn": "2026-10-29",
+    "capacity": "Project maintainer and repository owner",
+    "conclusion": "Explicitly approved the selected rc.3 dependency graph and documented install-script, prebuilt-binary, inventory and upgrade controls for continued qualification. Required Linux/macOS qualification remains pending, and historical audit and size measurements retain their original dates. This approval grants no additional installation, publication or push authority and does not waive outstanding checks.",
     "digestAlgorithm": "sha256-sorted-json-v1"
   },
   "productionAudit": {
@@ -166,7 +166,7 @@
     },
     {
       "name": "bcp-47",
-      "version": "2.1.1",
+      "version": "2.1.2",
       "role": "BCP 47 language-tag parsing for lossless Functional Syntax literal storage",
       "standardsGrounding": [
         "https://www.rfc-editor.org/rfc/rfc5646",
@@ -187,14 +187,14 @@
       "browserCost": {
         "disposition": "MEASURED_BROWSER_GRAPH",
         "initialStaticClosureIncluded": true,
-        "measurementReference": "2026-09-29 Node 24.21.0, Vite 8.3.1/Oxc ES2022 build with write=false and preserveEntrySignatures=strict; isolated parse export",
-        "minifiedBytes": 3173,
-        "gzipBytes": 1268,
+        "measurementReference": "2026-10-29 Node 24.22.1, Vite 8.3.5/Oxc ES2022 build with write=false and preserveEntrySignatures=strict; isolated parse export",
+        "minifiedBytes": 3270,
+        "gzipBytes": 1294,
         "fileCount": 1,
         "comparisonContext": "Isolated selected API including reachable dependency code; not an incremental whole-package size. Initial inclusion is checked against the complete public-entry browser build."
       },
       "securityDisposition": {
-        "assessedOn": "2026-09-25",
+        "assessedOn": "2026-10-29",
         "riskClass": "LEXICAL_GRAMMAR_VALIDATOR",
         "controls": [
           "Normalization and forgiving recovery are disabled",

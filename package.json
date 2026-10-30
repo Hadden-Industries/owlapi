@@ -1,6 +1,6 @@
 {
   "name": "@hadden-industries/owlapi",
-  "version": "0.1.0-rc.2",
+  "version": "0.1.0-rc.3",
   "description": "OWL 2 ontology parsing and structural APIs for Node.js and browsers, designed for practical compatibility with Java OWLAPI concepts.",
   "keywords": [
     "owl",
@@ -79,6 +79,7 @@
   "devEngines": {
     "runtime": {
       "name": "node",
+      "version": ">=26.13.0",
       "onFail": "error"
     },
     "packageManager": {
@@ -101,13 +102,14 @@
     "check:json": "node scripts/run-json-quality.mjs check",
     "check:markdown": "npm --prefix tooling/markdown run check --",
     "check:node": "node scripts/project-node-support.mjs --check",
+    "check:version": "node scripts/project-package-version.mjs --check",
     "check:published-coordinate": "node scripts/maintenance-published-health.mjs",
     "check:python-tools": "node scripts/repository-python-tools.mjs check",
     "check:release-preflight": "node scripts/release-preflight.mjs",
     "create:github-release-draft": "node scripts/create-github-release-draft.mjs",
     "finalize:github-release": "node scripts/finalize-github-release.mjs",
     "format": "npm run check:python-tools && npm run format:source && npm run format:markdown && npm run format:py && npm run format:json",
-    "format:check": "npm run check:node && npm run check:python-tools && npm run format:source:check && npm run check:markdown && npm run format:py:check && npm run format:json:check",
+    "format:check": "npm run check:node && npm run check:version && npm run check:python-tools && npm run format:source:check && npm run check:markdown && npm run format:py:check && npm run format:json:check",
     "format:json": "node scripts/run-json-quality.mjs format",
     "format:json:check": "node scripts/run-json-quality.mjs check",
     "format:markdown": "npm --prefix tooling/markdown run format --",
@@ -124,7 +126,6 @@
     "inspect:json": "node scripts/run-json-quality.mjs check --json",
     "inspect:markdown": "npm --prefix tooling/markdown run inspect --",
     "inspect:markdown:profile": "npm --prefix tooling/markdown run inspect:profile --",
-    "install:json": "node scripts/install-json-quality.mjs json",
     "install:markdown": "npm ci --prefix tooling/markdown --ignore-scripts --no-audit --no-fund",
     "install:playwright-browsers": "playwright install",
     "lint": "npm run check:python-tools && npm run lint:js && npm run check:markdown && npm run lint:py && npm run check:json && npm run lint:json-identity",
@@ -162,6 +163,7 @@
     "test:quality:source": "npm test -- --runInBand --runTestsByPath scripts/repository-python-tools.test.js scripts/source-policy.test.js",
     "test:universal-ontology": "node util/owlapi-reference/qualify-universal-ontology.mjs",
     "validate:release-evidence": "node scripts/validate-release-evidence.mjs",
+    "sync:version": "node scripts/project-package-version.mjs --write",
     "verify:architecture": "node scripts/dependency-graph.mjs --check-architecture",
     "verify:immutable-release": "node scripts/verify-immutable-release.mjs",
     "verify:npm-evidence": "node util/verify-npm-package-evidence.mjs",
@@ -175,7 +177,7 @@
     "@rdfjs/data-model": "2.1.2",
     "@rdfjs/dataset": "2.0.3",
     "@xmldom/xmldom": "0.9.12",
-    "bcp-47": "2.1.1",
+    "bcp-47": "2.1.2",
     "iconv-lite": "0.7.3",
     "jsonld": "9.0.0",
     "lzma-native": "8.0.6",
@@ -186,7 +188,8 @@
     "@cyclonedx/cyclonedx-library": ">=10.3.0",
     "@cyclonedx/cyclonedx-npm": ">=6.0.1",
     "@eslint/js": ">=10.0.1",
-    "@jspm/generator": ">=2.17.0",
+    "@hadden-industries/json-quality": ">=1.0.0-rc.2",
+    "@jspm/generator": ">=2.18.0",
     "@playwright/test": ">=1.64.1",
     "ajv": ">=8.20.0",
     "ajv-formats": ">=3.0.1",
@@ -198,18 +201,21 @@
     "globals": ">=17.13.0",
     "jest": ">=30.5.2",
     "jsonpath-rfc9535": ">=1.3.0",
-    "pacote": ">=22.0.0",
+    "pacote": ">=22.0.1",
     "prettier": ">=3.9.10",
     "publint": ">=0.3.25",
     "semver": ">=7.8.5",
     "spdx-expression-parse": ">=5.0.0",
     "tar": ">=7.5.22",
-    "vite": ">=8.3.4",
+    "vite": ">=8.3.5",
     "yaml": ">=2.9.1"
   },
   "overrides": {
     "@istanbuljs/load-nyc-config@1.1.0": {
       "js-yaml": ">=5.5.0 <6"
+    },
+    "jest-config@30.5.2": {
+      "deepmerge": "npm:@stackline/deepmerge@1.1.0"
     },
     "source-map-js": ">=1.2.2 <2"
   },

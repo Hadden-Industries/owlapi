@@ -1,3 +1,4 @@
+import { JAVA_TOOLCHAIN } from "../../scripts/java-toolchain.mjs";
 import { createHash } from "node:crypto";
 import { canonicalJson } from "../../scripts/canonical-json.mjs";
 import {
@@ -62,11 +63,11 @@ beforeEach(() => {
     mavenDistributionSha256: "1".repeat(64),
     jdkDistributionSha256: "2".repeat(64),
     environment: {
-      runtime: "25.0.4.1+1-LTS",
-      "java.version": "25.0.4.1",
+      runtime: JAVA_TOOLCHAIN.runtime,
+      "java.version": JAVA_TOOLCHAIN.version,
       "java.vendor": "Eclipse Adoptium",
       "java.vm.name": "OpenJDK 64-Bit Server VM",
-      "java.vm.version": "25.0.4.1+1-LTS",
+      "java.vm.version": JAVA_TOOLCHAIN.runtime,
       "os.name": "Linux",
       "os.version": "6.8.0",
       "os.arch": "amd64",

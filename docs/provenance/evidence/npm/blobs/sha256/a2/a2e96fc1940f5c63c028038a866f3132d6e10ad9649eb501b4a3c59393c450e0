@@ -1,0 +1,284 @@
+{
+  "artifactId": "692e3a6469c7723df1d045b45d622088b6468e06b7bcd4490b99f807b81b3380",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 29605429,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef",
+        "size": 34523,
+        "type": "FILE"
+      },
+      {
+        "path": "package/THIRD-PARTY-NOTICES.txt",
+        "sha256": "4422384a5a794e51d35ba65c3717e8c139820cd1ec25f3bf95370c0476208c87",
+        "size": 219592,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build-evidence.json",
+        "sha256": "a0ce40bf119d200b0a0de2d5421ca1a2512383ee47bbf4fe1ecc2a8b0a8fa7ae",
+        "size": 8671,
+        "type": "FILE"
+      },
+      {
+        "path": "package/component.json",
+        "sha256": "55685810a1ebf56fb40bc1b847379a018d1ec624648f37b9bfb93cb6738379a6",
+        "size": 1501,
+        "type": "FILE"
+      },
+      {
+        "path": "package/json-quality-native.exe",
+        "sha256": "2d5224ef7a36bc53d51cb1dbe5474608d4e78366c17d26af749b1b5d571de0de",
+        "size": 36261888,
+        "type": "FILE"
+      },
+      {
+        "path": "package/json-quality.node",
+        "sha256": "4df5ce2e4b9591cb3a84afcf075bcb855efe8e6fe0899737aa79dbf81862a8d6",
+        "size": 36273152,
+        "type": "FILE"
+      },
+      {
+        "path": "package/notice-inventory.json",
+        "sha256": "cb9bd3641bc03aedb6c4dbefe84baf3bd2deda7c938f88415dbae80f87c94a83",
+        "size": 1300,
+        "type": "FILE"
+      },
+      {
+        "path": "package/notices/boost/LICENSE_1_0.txt",
+        "sha256": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+        "size": 1338,
+        "type": "FILE"
+      },
+      {
+        "path": "package/notices/doubleConversion/AUTHORS",
+        "sha256": "02f8e5babc63a87d460219a74b97e15046d198ed3bab061e3d46b4f44ea77a9d",
+        "size": 476,
+        "type": "FILE"
+      },
+      {
+        "path": "package/notices/doubleConversion/COPYING",
+        "sha256": "4af93c12062c58058378de2397dc1c92bbff9ddfb1d583a01c84127557ce97ca",
+        "size": 1527,
+        "type": "FILE"
+      },
+      {
+        "path": "package/notices/doubleConversion/LICENSE",
+        "sha256": "4af93c12062c58058378de2397dc1c92bbff9ddfb1d583a01c84127557ce97ca",
+        "size": 1527,
+        "type": "FILE"
+      },
+      {
+        "path": "package/notices/icu/LICENSE",
+        "sha256": "2eb5ef4da31e542030455e2d149feca8d8f1217e69ef98ea7e379067043b79ab",
+        "size": 28286,
+        "type": "FILE"
+      },
+      {
+        "path": "package/notices/icuWindowsTools/LICENSE",
+        "sha256": "2eb5ef4da31e542030455e2d149feca8d8f1217e69ef98ea7e379067043b79ab",
+        "size": 28286,
+        "type": "FILE"
+      },
+      {
+        "path": "package/notices/nodeLicense/LICENSE",
+        "sha256": "5888dbb9a1d2b18f2c3e6c5f6af1b39de658372b402a0577b002777f14c62ace",
+        "size": 157609,
+        "type": "FILE"
+      },
+      {
+        "path": "package/notices/sqlite-dedication.txt",
+        "sha256": "7bb55c35242a9576e378d53227fd863fe7f2eab6a6bf54cf6052e6a4491f48a5",
+        "size": 1380,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "8ae4fbd32fdced5e3dfa70373ecaad9968083442444ac81a7e7c8f840d37330f",
+        "size": 832,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 34523,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/84/8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef",
+          "sha256": "8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef",
+        "size": 34523
+      },
+      {
+        "blob": {
+          "bytes": 219592,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/44/4422384a5a794e51d35ba65c3717e8c139820cd1ec25f3bf95370c0476208c87",
+          "sha256": "4422384a5a794e51d35ba65c3717e8c139820cd1ec25f3bf95370c0476208c87"
+        },
+        "kind": "THIRD_PARTY_LICENCE",
+        "path": "package/THIRD-PARTY-NOTICES.txt",
+        "sha256": "4422384a5a794e51d35ba65c3717e8c139820cd1ec25f3bf95370c0476208c87",
+        "size": 219592
+      },
+      {
+        "blob": {
+          "bytes": 1300,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/cb/cb9bd3641bc03aedb6c4dbefe84baf3bd2deda7c938f88415dbae80f87c94a83",
+          "sha256": "cb9bd3641bc03aedb6c4dbefe84baf3bd2deda7c938f88415dbae80f87c94a83"
+        },
+        "kind": "NOTICE",
+        "path": "package/notice-inventory.json",
+        "sha256": "cb9bd3641bc03aedb6c4dbefe84baf3bd2deda7c938f88415dbae80f87c94a83",
+        "size": 1300
+      },
+      {
+        "blob": {
+          "bytes": 1338,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c9/c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+          "sha256": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566"
+        },
+        "kind": "LICENCE",
+        "path": "package/notices/boost/LICENSE_1_0.txt",
+        "sha256": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+        "size": 1338
+      },
+      {
+        "blob": {
+          "bytes": 476,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/02/02f8e5babc63a87d460219a74b97e15046d198ed3bab061e3d46b4f44ea77a9d",
+          "sha256": "02f8e5babc63a87d460219a74b97e15046d198ed3bab061e3d46b4f44ea77a9d"
+        },
+        "kind": "AUTHORS",
+        "path": "package/notices/doubleConversion/AUTHORS",
+        "sha256": "02f8e5babc63a87d460219a74b97e15046d198ed3bab061e3d46b4f44ea77a9d",
+        "size": 476
+      },
+      {
+        "blob": {
+          "bytes": 1527,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4a/4af93c12062c58058378de2397dc1c92bbff9ddfb1d583a01c84127557ce97ca",
+          "sha256": "4af93c12062c58058378de2397dc1c92bbff9ddfb1d583a01c84127557ce97ca"
+        },
+        "kind": "LICENCE",
+        "path": "package/notices/doubleConversion/COPYING",
+        "sha256": "4af93c12062c58058378de2397dc1c92bbff9ddfb1d583a01c84127557ce97ca",
+        "size": 1527
+      },
+      {
+        "blob": {
+          "bytes": 1527,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4a/4af93c12062c58058378de2397dc1c92bbff9ddfb1d583a01c84127557ce97ca",
+          "sha256": "4af93c12062c58058378de2397dc1c92bbff9ddfb1d583a01c84127557ce97ca"
+        },
+        "kind": "LICENCE",
+        "path": "package/notices/doubleConversion/LICENSE",
+        "sha256": "4af93c12062c58058378de2397dc1c92bbff9ddfb1d583a01c84127557ce97ca",
+        "size": 1527
+      },
+      {
+        "blob": {
+          "bytes": 28286,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/2e/2eb5ef4da31e542030455e2d149feca8d8f1217e69ef98ea7e379067043b79ab",
+          "sha256": "2eb5ef4da31e542030455e2d149feca8d8f1217e69ef98ea7e379067043b79ab"
+        },
+        "kind": "LICENCE",
+        "path": "package/notices/icu/LICENSE",
+        "sha256": "2eb5ef4da31e542030455e2d149feca8d8f1217e69ef98ea7e379067043b79ab",
+        "size": 28286
+      },
+      {
+        "blob": {
+          "bytes": 28286,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/2e/2eb5ef4da31e542030455e2d149feca8d8f1217e69ef98ea7e379067043b79ab",
+          "sha256": "2eb5ef4da31e542030455e2d149feca8d8f1217e69ef98ea7e379067043b79ab"
+        },
+        "kind": "LICENCE",
+        "path": "package/notices/icuWindowsTools/LICENSE",
+        "sha256": "2eb5ef4da31e542030455e2d149feca8d8f1217e69ef98ea7e379067043b79ab",
+        "size": 28286
+      },
+      {
+        "blob": {
+          "bytes": 157609,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/58/5888dbb9a1d2b18f2c3e6c5f6af1b39de658372b402a0577b002777f14c62ace",
+          "sha256": "5888dbb9a1d2b18f2c3e6c5f6af1b39de658372b402a0577b002777f14c62ace"
+        },
+        "kind": "LICENCE",
+        "path": "package/notices/nodeLicense/LICENSE",
+        "sha256": "5888dbb9a1d2b18f2c3e6c5f6af1b39de658372b402a0577b002777f14c62ace",
+        "size": 157609
+      }
+    ],
+    "expandedBytes": 73021888,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "AGPL-3.0-only",
+      "name": "@hadden-industries/json-quality-win32-x64",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hadden-Industries/json-quality.git"
+      },
+      "version": "1.0.0-rc.2"
+    },
+    "packageMetadata": {
+      "bin": {
+        "json-quality-native": "json-quality-native.exe"
+      },
+      "cpu": [
+        "x64"
+      ],
+      "description": "Verified win32-x64 native component for JSON Quality",
+      "exports": {
+        "./component.json": "./component.json",
+        "./executable": "./json-quality-native.exe",
+        "./package.json": "./package.json"
+      },
+      "files": [
+        "json-quality.node",
+        "json-quality-native.exe",
+        "component.json",
+        "build-evidence.json",
+        "notice-inventory.json",
+        "THIRD-PARTY-NOTICES.txt",
+        "notices",
+        "LICENSE"
+      ],
+      "license": "AGPL-3.0-only",
+      "name": "@hadden-industries/json-quality-win32-x64",
+      "os": [
+        "win32"
+      ],
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hadden-Industries/json-quality.git"
+      },
+      "version": "1.0.0-rc.2"
+    },
+    "physicalEntryCount": 16,
+    "tarball": {
+      "bytes": 29605429,
+      "sha256": "ac913e5ef2face629f97630bd8907d7449a49535d7d761c0c5336d62a87623ad"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -3,21 +3,21 @@
   "schemaVersion": 2,
   "package": {
     "name": "@hadden-industries/owlapi",
-    "version": "0.1.0-rc.2",
+    "version": "0.1.0-rc.3",
     "repository": "https://github.com/Hadden-Industries/owlapi",
     "scopeAuthority": {
       "method": "npm pack --dry-run --json plus local source-byte hashing",
       "fileCount": 198,
-      "sourceManifestSha256": "40a40a25bf66c3a68122f983149ef214c33c678fdf49041c7dbe59d540cb1bcb"
+      "sourceManifestSha256": "9c4fd8c77892a4bd238e729deb75b8ddb167c0109fa1bbb689ef5d316eb095d1"
     }
   },
   "review": {
-    "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "8886fa3096a77e32812e8cbffe9604d51334cbeac829d504f7ac27fa12192d95",
-    "reviewer": null,
-    "reviewedOn": null,
-    "capacity": null,
-    "conclusion": null,
+    "status": "REVIEWED",
+    "factsSha256": "f77ccdf1c6d60895e67071937e03e3ef6ce940b63e72cf9dda0eb17efb60b7bf",
+    "reviewer": "Maksym Shostak",
+    "reviewedOn": "2026-10-30",
+    "capacity": "Project author and repository owner",
+    "conclusion": "Explicitly approved the refreshed rights facts for the rebuilt rc.3 package. Its 198-file scope changes only README.md and package manifest scripts; the other 196 files and all ownership/licence classifications remain unchanged. This attestation binds the new source packlist and the separately approved refreshed third-party facts. It grants no push or release authority and no security exception.",
     "digestAlgorithm": "sha256-sorted-json-v1"
   },
   "contributors": [
@@ -152,9 +152,9 @@
   "externalDependencies": {
     "bundled": true,
     "authority": "docs/provenance/third-party-material.json",
-    "inventoryFactsSha256": "66e7cd99baed0cf011bbf175229af2a9df103d5172fd6a5431f409c5d8e4fafa",
+    "inventoryFactsSha256": "d17605b77b68051177545c3d8a94272cd7cfa8f58b578e743d0fd24397f54068",
     "noticeRule": "Ordinary npm dependencies are installed separately under their own licences. The generated JSON-LD provider embeds seven separately inventoried components and retains their complete original licences and notices under internal/parsing/jsonld/provider/licenses/. The provider manifest binds the incorporated source, approved modifications, generated runtime and output."
   },
   "unresolvedExternalContributions": [],
-  "conclusion": "Every material class in the machine-defined 0.1.0-rc.2 tarball scope has an identified distribution basis, the bound third-party-material inventory records no unresolved production licence conclusion, and no unresolved external copyrightable contribution is recorded."
+  "conclusion": "Every material class in the machine-defined 0.1.0-rc.3 tarball scope has an identified distribution basis, the bound third-party-material inventory records no unresolved production licence conclusion, and no unresolved external copyrightable contribution is recorded."
 }

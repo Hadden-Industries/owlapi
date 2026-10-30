@@ -1,3 +1,4 @@
+import { JAVA_TOOLCHAIN } from "../../scripts/java-toolchain.mjs";
 import { afterEach, describe, expect, jest, test } from "@jest/globals";
 import {
   chmodSync,
@@ -77,9 +78,10 @@ describe("optional preparation timeout recovery", () => {
         if (executable.endsWith("java"))
           return success(
             JSON.stringify({
-              "java.version": "25.0.4.1",
+              "java.version": JAVA_TOOLCHAIN.version,
               "java.vendor": "Eclipse Adoptium",
-              runtime: "25.0.4.1+1-LTS",
+              runtime: JAVA_TOOLCHAIN.runtime,
+              "java.vm.version": JAVA_TOOLCHAIN.runtime,
             }),
           );
         if (args.includes("package")) {

@@ -41,30 +41,75 @@ const accepted = {
 };
 
 describe("release preflight", () => {
+  test.each(["0.1.0-rc.3", "0.1.0-rc.9"])(
+    "later candidate %s requires its own OIDC approval rather than another bootstrap exception",
+    (version) => {
+      const selected = {
+        ...accepted,
+        manifest: { ...manifest, version },
+        publication: {
+          ...publication,
+          mode: "DIRECT_OIDC",
+          coordinate: `@hadden-industries/owlapi@${version}`,
+        },
+      };
+      expect(assertReleasePreflight(selected).publicationMode).toBe(
+        "DIRECT_OIDC",
+      );
+      expect(() =>
+        assertReleasePreflight({
+          ...selected,
+          publication: { ...selected.publication, mode: "DIRECT_BOOTSTRAP" },
+        }),
+      ).toThrow(/boundary/);
+      expect(() =>
+        assertReleasePreflight({
+          ...selected,
+          publication: {
+            ...selected.publication,
+            enabled: false,
+            mode: "UNRESOLVED",
+            reviewedOn: null,
+          },
+        }),
+      ).toThrow(/boundary/);
+    },
+  );
   test("source qualification does not grant publication for an unassigned public release", () => {
     expect(() =>
       assertSelectedPublicReleases({
         bindings: [
           {
-            id: "model.Configuration",
+            id: "legacy",
             exposure: "PUBLIC",
-            firstPublicRelease: null,
+            firstPublicRelease: "0.1.0-rc.2",
           },
         ],
       }),
-    ).toThrow(/immutable first release/u);
+    ).toThrow(/assigned first public release target/u);
     expect(() =>
       assertSelectedPublicReleases({
         bindings: [
           {
             id: "model.Configuration",
             exposure: "PUBLIC",
-            firstPublicRelease: "0.1.0-rc.2",
+            firstPublicReleaseTarget: null,
+          },
+        ],
+      }),
+    ).toThrow(/assigned first public release target/u);
+    expect(() =>
+      assertSelectedPublicReleases({
+        bindings: [
+          {
+            id: "model.Configuration",
+            exposure: "PUBLIC",
+            firstPublicReleaseTarget: "0.1.0-rc.2",
           },
           {
             id: "internal.Helper",
             exposure: "INTERNAL",
-            firstPublicRelease: null,
+            firstPublicReleaseTarget: null,
           },
         ],
       }),
@@ -106,7 +151,7 @@ describe("release preflight", () => {
       expect(publication.error).toBeUndefined();
       expect(publication.status).not.toBe(0);
       expect(publication.stderr).toMatch(
-        /human fact review|must target refs\/heads\/main|immutable first release/u,
+        /human fact review|must target refs\/heads\/main|assigned first public release target/u,
       );
     }
   });

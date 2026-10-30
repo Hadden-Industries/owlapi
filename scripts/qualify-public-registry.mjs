@@ -16,6 +16,7 @@ import { sha256Buffer } from "./release-file-utils.mjs";
 import {
   PACKAGE_NAME,
   PACKAGE_VERSION,
+  releaseChannel,
   assertRegistryTarballUrl,
 } from "./package-identity.mjs";
 import { installRegistryConsumer } from "./public-registry-consumer.mjs";
@@ -95,16 +96,19 @@ export const readPublicationAttempt = async ({ client, env = process.env }) => {
   };
 };
 
-export const assertPublicRegistryFacts = ({
-  expectedVersion,
-  retainedSha256,
-  metadata,
-  distTags,
-  registryTarballSha256,
-}) => {
+const assertVersionedPublicRegistryFacts = (
+  {
+    expectedVersion,
+    retainedSha256,
+    metadata,
+    distTags,
+    registryTarballSha256,
+  },
+  version,
+) => {
   if (
     metadata?.name !== PACKAGE_NAME ||
-    expectedVersion !== PACKAGE_VERSION ||
+    expectedVersion !== version ||
     metadata.version !== expectedVersion
   ) {
     throw new Error(
@@ -116,7 +120,7 @@ export const assertPublicRegistryFacts = ({
     distTags?.latest !== expectedVersion
   ) {
     throw new Error(
-      "Both next and latest must identify the exact qualified rc.2 version.",
+      "Both next and latest must identify the exact qualified version.",
     );
   }
   if (registryTarballSha256 !== retainedSha256) {
@@ -132,13 +136,21 @@ export const assertPublicRegistryFacts = ({
   }
   return {
     coordinate: `${PACKAGE_NAME}@${expectedVersion}`,
-    channel: "next",
+    channel: releaseChannel(expectedVersion),
     next: expectedVersion,
     latest: expectedVersion,
     integrity: metadata.dist.integrity,
     tarballSha256: registryTarballSha256,
   };
 };
+
+/** Current acceptance stays closed to the owner-selected candidate. */
+export const assertPublicRegistryFacts = (facts) =>
+  assertVersionedPublicRegistryFacts(facts, PACKAGE_VERSION);
+
+/** Read-only historical recovery; never authorizes a current publication. */
+export const assertHistoricalRc2PublicRegistryFacts = (facts) =>
+  assertVersionedPublicRegistryFacts(facts, "0.1.0-rc.2");
 
 const verifyIntegrity = (buffer, integrity) => {
   const match = /^sha512-(?<digest>[A-Za-z0-9+/]+={0,2})$/u.exec(integrity);

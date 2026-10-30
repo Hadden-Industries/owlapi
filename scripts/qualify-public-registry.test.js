@@ -1,3 +1,4 @@
+import { PACKAGE_VERSION } from "./package-identity.mjs";
 import { jest } from "@jest/globals";
 import { createHash } from "node:crypto";
 import { mkdtempSync, readFileSync, rmSync } from "node:fs";
@@ -9,7 +10,7 @@ import {
   readPublicationAttempt,
 } from "./qualify-public-registry.mjs";
 
-const version = "0.1.0-rc.2";
+const version = PACKAGE_VERSION;
 const retainedSha256 = "a".repeat(64);
 
 describe("fresh public-registry qualification", () => {

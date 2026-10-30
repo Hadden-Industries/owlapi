@@ -8,6 +8,7 @@ import { promisify } from "node:util";
 import { ensureRepositoryUv } from "../scripts/repository-python-tools.mjs";
 import { stableJson } from "./third-party-evidence/digests.mjs";
 import { SCANCODE_TOOL } from "./third-party-evidence/scancode.mjs";
+import { pythonTarget } from "../scripts/development-tool-policy.mjs";
 
 const executeFile = promisify(execFile);
 const DEFAULT_REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
@@ -138,10 +139,7 @@ export const prepareScancode = async ({
     );
     const versions = JSON.parse(identity.stdout);
     if (
-      versions.pythonVersion !==
-        (
-          await readFile(join(repositoryRoot, ".python-version"), "utf8")
-        ).trim() ||
+      versions.pythonVersion !== pythonTarget(repositoryRoot).version ||
       versions.scancodeVersion !== SCANCODE_TOOL.version ||
       versions.beartypeVersion !== "0.23.1"
     )

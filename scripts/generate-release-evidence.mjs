@@ -16,6 +16,7 @@ import { resolveRetainedApprovals } from "./release-approvals.mjs";
 import {
   PACKAGE_NAME,
   PACKAGE_VERSION,
+  releaseChannel,
   PACKAGE_FILE_STEM,
 } from "./package-identity.mjs";
 import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
@@ -380,7 +381,7 @@ const generateScopedEvidence = async () => {
       mode: "DIRECT_OIDC",
       registry: "https://registry.npmjs.org/",
       coordinate,
-      channel: "next",
+      channel: releaseChannel(),
       integrity: registry.integrity,
       tarballUrl: registry.tarballUrl,
       verifiedAt: registry.verifiedAt,

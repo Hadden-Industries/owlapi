@@ -8,6 +8,8 @@ import { fileURLToPath } from "node:url";
 const require = createRequire(import.meta.url);
 const root = fileURLToPath(new URL("../", import.meta.url));
 const { SourceMapConsumer, SourceNode } = require("source-map-js");
+const requireJestConfig = createRequire(require.resolve("jest-config"));
+const mergeJestConfig = requireJestConfig("deepmerge");
 const leafMap = {
   version: 3,
   sources: ["original.js"],
@@ -21,6 +23,84 @@ const indexedMap = (line, map = leafMap) => ({
 });
 
 describe("development dependency security boundaries", () => {
+  test("Jest resolves the registry replacement and no original deepmerge remains locked", () => {
+    const lock = JSON.parse(readFileSync(join(root, "package-lock.json")));
+    const entries = Object.entries(lock.packages).filter(
+      ([path, entry]) =>
+        entry.name === "deepmerge" || path.endsWith("/deepmerge"),
+    );
+    expect(entries).toHaveLength(1);
+    expect(entries[0][1]).toMatchObject({
+      name: "@stackline/deepmerge",
+      version: "1.1.0",
+      dev: true,
+    });
+    expect(requireJestConfig("deepmerge/package.json").name).toBe(
+      "@stackline/deepmerge",
+    );
+  });
+
+  test.each([
+    ["null", () => null],
+    ["primitive", () => false],
+    ["null prototype", () => Object.create(null)],
+    ["own proto key", () => JSON.parse('{"__proto__":{}}')],
+  ])(
+    "Jest globals cannot inherit source payload properties with a %s target",
+    (_, target) => {
+      const source = JSON.parse(
+        '{"session":{"__proto__":{"admin":true},"name":"ordinary"}}',
+      );
+      const result = mergeJestConfig({ session: target() }, source);
+      expect(result.session.name).toBe("ordinary");
+      expect(result.session.admin).toBeUndefined();
+      expect(Object.getPrototypeOf(result.session)).toBe(Object.prototype);
+      expect(Object.hasOwn(result.session, "__proto__")).toBe(false);
+      expect(Object.prototype.admin).toBeUndefined();
+    },
+  );
+
+  test("Jest merging cannot inherit target payload properties or invoke proto getters", () => {
+    const target = JSON.parse(
+      '{"session":{"__proto__":{"admin":true},"name":"ordinary"}}',
+    );
+    const result = mergeJestConfig(target, { session: { enabled: true } });
+    expect(result.session).toEqual({ name: "ordinary", enabled: true });
+    expect(result.session.admin).toBeUndefined();
+    const poison = Object.defineProperty({}, "__proto__", {
+      enumerable: true,
+      get() {
+        throw new Error("unsafe key was read");
+      },
+    });
+    expect(mergeJestConfig(poison, {})).toEqual({});
+    expect(mergeJestConfig(Object.create(null), poison)).toEqual({});
+  });
+
+  test("Jest's public mergeConfig preserves nested settings, arrays, symbols and input values", () => {
+    const { mergeConfig } = require("jest-config");
+    const marker = Symbol("setting");
+    const defaults = {
+      globals: { config: { enabled: false, retries: 2 } },
+      testMatch: ["**/a.test.js"],
+      [marker]: { base: true },
+    };
+    const overrides = {
+      globals: { config: { enabled: true } },
+      testMatch: ["**/b.test.js"],
+      [marker]: { extra: true },
+    };
+    const result = mergeConfig(defaults, overrides);
+    expect(result).toEqual({
+      globals: { config: { enabled: true, retries: 2 } },
+      testMatch: ["**/a.test.js", "**/b.test.js"],
+      [marker]: { base: true, extra: true },
+    });
+    result.globals.config.retries = 10;
+    expect(defaults.globals.config).toEqual({ enabled: false, retries: 2 });
+    expect(overrides.globals.config).toEqual({ enabled: true });
+  });
+
   test("no locked dependency retains the unpatched sprintf-js package", () => {
     const lock = JSON.parse(readFileSync(join(root, "package-lock.json")));
     expect(

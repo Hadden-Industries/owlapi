@@ -21,6 +21,7 @@ import {
 } from "./model/index.js";
 import { verifyLocalReleaseTag } from "./scripts/verify-release-tag.mjs";
 import { stableJson } from "./scripts/canonical-json.mjs";
+import { refreshReviewFacts } from "./util/refresh-review-facts.mjs";
 
 const require = createRequire(import.meta.url);
 const {
@@ -687,7 +688,7 @@ describe("owlapi governance artifacts", () => {
         supportedMembers,
         relationship: "JS_ADAPTATION",
         compatibility: "ADAPTED",
-        firstPublicRelease: "0.1.0-rc.1",
+        firstPublicReleaseTarget: "0.1.0-rc.1",
         progress: "COMPLETE",
       });
       expect(typeof io[jsExport]).toBe("function");
@@ -740,13 +741,15 @@ describe("owlapi governance artifacts", () => {
         const current = registry.bindings.find(({ id }) => id === prior.id);
         const mappedPrior = {
           ...prior,
+          firstPublicReleaseTarget: prior.firstPublicRelease,
           publicSpecifier: `@hadden-industries/${prior.publicSpecifier}`,
           callShapes: prior.callShapes.map((shape) =>
             shape.replaceAll('"owlapi', '"@hadden-industries/owlapi'),
           ),
         };
+        delete mappedPrior.firstPublicRelease;
         let expected = firstReleaseRetargetedBindings.has(prior.id)
-          ? { ...mappedPrior, firstPublicRelease: "0.1.0-rc.1" }
+          ? { ...mappedPrior, firstPublicReleaseTarget: "0.1.0-rc.1" }
           : mappedPrior;
         // The separate Canonical VOWL prerequisite authorization adds exactly
         // this source reader; it does not amend the historical Phase 21 set.
@@ -761,6 +764,22 @@ describe("owlapi governance artifacts", () => {
         if (firstReleaseRetargetedBindings.has(prior.id)) {
           expect(prior.firstPublicRelease).toBe("0.2.0");
         }
+        // IRI already inherited these methods in the historical source. The
+        // current generator now records them instead of silently omitting them.
+        if (prior.id === "model.IRI")
+          expected = {
+            ...expected,
+            supportedMembers: [
+              ...new Set([
+                ...prior.supportedMembers,
+                ...baseline.bindings
+                  .find((binding) => binding.id === "model.OWLStructuralObject")
+                  .supportedMembers.filter((member) =>
+                    member.startsWith("prototype."),
+                  ),
+              ]),
+            ].sort(),
+          };
         if (prior.id === "model.OWLDocumentFormat") {
           expected = {
             ...expected,
@@ -968,7 +987,8 @@ describe("owlapi governance artifacts", () => {
       lifecycleCapabilities.every(
         ({ phase, progress }) =>
           progress !== "COMPLETE" ||
-          (phase === 22 && matrix.release === "0.1.0-rc.2"),
+          (phase === 22 &&
+            matrix.release === readJson("./package.json").version),
       ),
     ).toBe(true);
 
@@ -1116,7 +1136,7 @@ describe("owlapi governance artifacts", () => {
       callShapes: ["new AddOntologyAnnotation(ontology, annotation)"],
       capabilityIds: ["compatibility.owlapi-5.5.1"],
       compatibility: "ADAPTED",
-      firstPublicRelease: "0.1.0-rc.1",
+      firstPublicReleaseTarget: "0.1.0-rc.1",
       javaType: "org.semanticweb.owlapi.model.AddOntologyAnnotation",
       omittedMembers: ["Change-data, reverse-change, and visitor APIs"],
       relationship: "JAVA_ANALOGUE",
@@ -1126,7 +1146,7 @@ describe("owlapi governance artifacts", () => {
       callShapes: ["new SetOntologyID(ontology, ontologyID)"],
       capabilityIds: ["compatibility.owlapi-5.5.1"],
       compatibility: "ADAPTED",
-      firstPublicRelease: "0.1.0-rc.1",
+      firstPublicReleaseTarget: "0.1.0-rc.1",
       javaType: "org.semanticweb.owlapi.model.SetOntologyID",
       omittedMembers: [
         "Java IRI constructor overload",
@@ -1183,7 +1203,7 @@ describe("owlapi governance artifacts", () => {
       javaPackage: "org.semanticweb.owlapi.util",
       npmSpecifier: "@hadden-industries/owlapi/util",
       exposure: "PUBLIC",
-      firstPublicRelease: "0.1.0-rc.1",
+      firstPublicReleaseTarget: "0.1.0-rc.1",
       rationale:
         "Mirrors the Java OWLAPI util namespace for the exact approved closure, merger, transform, and short-form provider entry points.",
       ownedBindingIds: [
@@ -1211,7 +1231,7 @@ describe("owlapi governance artifacts", () => {
       ],
       capabilityIds: ["compatibility.owlapi-5.5.1"],
       compatibility: "ADAPTED",
-      firstPublicRelease: "0.1.0-rc.1",
+      firstPublicReleaseTarget: "0.1.0-rc.1",
       javaType:
         "org.semanticweb.owlapi.util.OWLOntologyImportsClosureSetProvider",
       omittedMembers: [],
@@ -1237,7 +1257,7 @@ describe("owlapi governance artifacts", () => {
       ],
       capabilityIds: ["compatibility.owlapi-5.5.1"],
       compatibility: "ADAPTED",
-      firstPublicRelease: "0.1.0-rc.1",
+      firstPublicReleaseTarget: "0.1.0-rc.1",
       javaType: "org.semanticweb.owlapi.util.OWLOntologyMerger",
       omittedMembers: [
         "OWLAxiomFilter constructor overload and passes(axiom) surface",
@@ -2016,6 +2036,26 @@ describe("owlapi governance artifacts", () => {
         .sort();
       expect(registeredExports).toEqual(Object.keys(moduleNamespace).sort());
     }
+    for (const id of [
+      "io/node.NodeDocumentLoader",
+      "model/parameters.ChangeApplied",
+    ])
+      expect(
+        registry.bindings.find((binding) => binding.id === id)
+          .firstPublicReleaseTarget,
+      ).toBe(packageJson.version);
+    expect(
+      registry.namespaces.find((namespace) => namespace.id === "io/node")
+        .firstPublicReleaseTarget,
+    ).toBe(packageJson.version);
+    for (const forbidden of [
+      "prototype.getAnnotatedAxiom",
+      "prototype.getAxiomWithoutAnnotations",
+    ])
+      expect(
+        registry.bindings.find((binding) => binding.id === "model.IRI")
+          .supportedMembers,
+      ).not.toContain(forbidden);
 
     const javaTypeByName = new Map(
       registry.javaTypes.map((type) => [type.javaName, type]),
@@ -2072,6 +2112,14 @@ describe("owlapi governance artifacts", () => {
         ),
       )
       .digest("hex");
+    const delta = readFileSync(
+      new URL("./docs/compatibility/0.1.0-api-delta.md", import.meta.url),
+      "utf8",
+    );
+    expect(delta).toContain(`Current registry SHA-256: \`${digest}\``);
+    expect(delta).toContain(
+      `Performance coverage SHA-256: \`${sha256(readFileSync(new URL("./docs/performance/java-api-benchmark-coverage.json", import.meta.url)))}\``,
+    );
     for (const path of ["API.md", "docs/compatibility/java-api-surface.md"]) {
       const view = readFileSync(new URL(`./${path}`, import.meta.url), "utf8");
       expect(view).toContain(`registry-sha256: ${digest}`);
@@ -2146,9 +2194,9 @@ Neither this NOTICE nor the package licence replaces those upstream terms.
 
     for (const requiredText of [
       "## Why `owlapi` exists",
-      packageJson.version,
+      "The current source candidate's version is declared in [package.json](package.json); its publication authority is recorded separately in [publication control](docs/release/publication-control.json).",
       'npm install --save-exact "owlapi@npm:@hadden-industries/owlapi@0.1.0-rc.1"',
-      `owlapi@file:/absolute/path/hadden-industries-owlapi-${packageJson.version}.tgz`,
+      "owlapi@file:/absolute/path/hadden-industries-owlapi-<version>.tgz",
       "The manifest and release tooling select this scoped identity",
       "A version in `main` is not a published or accepted package",
       "UO and WebVOWL may each use this exact RC in production",
@@ -2752,19 +2800,34 @@ Neither this NOTICE nor the package licence replaces those upstream terms.
 
   it("requires a fresh human review after the canonical digest migration", () => {
     const governance = readJson("./docs/dependency-governance.json");
-
+    const currentReview = structuredClone(governance.review);
+    refreshReviewFacts("dependencies", governance, { write: true });
+    expect(governance.review).toEqual(currentReview);
+    const legacyDigest =
+      "60ccbac9295657fcdd69120ba77e2fc1838c022ceeab9bb60256d772d75708eb";
+    expect(governance.review.factsSha256).not.toBe(legacyDigest);
+    Object.assign(governance.review, {
+      status: "REVIEWED",
+      digestAlgorithm: "old-insertion-order",
+      factsSha256: legacyDigest,
+      reviewer: "Synthetic historical reviewer",
+      reviewedOn: "2026-10-12",
+      capacity: "Synthetic migration fixture",
+      conclusion: "Historical facts only",
+    });
+    expect(() => refreshReviewFacts("dependencies", governance)).toThrow(
+      "Review digest migration or facts refresh required",
+    );
+    refreshReviewFacts("dependencies", governance, { write: true });
     expect(governance.review).toEqual({
       status: "PENDING_HUMAN_REVIEW",
       digestAlgorithm: "sha256-sorted-json-v1",
-      factsSha256: expect.stringMatching(/^[a-f0-9]{64}$/u),
+      factsSha256: currentReview.factsSha256,
       reviewer: null,
       reviewedOn: null,
       capacity: null,
       conclusion: null,
     });
-    expect(governance.review.factsSha256).not.toBe(
-      "60ccbac9295657fcdd69120ba77e2fc1838c022ceeab9bb60256d772d75708eb",
-    );
   });
 
   it("schema-validates structured dependency governance against the package and inventory", () => {
@@ -3012,8 +3075,12 @@ Neither this NOTICE nor the package licence replaces those upstream terms.
     // npm does not apply dependency overrides from a consumed package manifest.
     expect(Object.keys(packageJson.overrides).sort()).toEqual([
       "@istanbuljs/load-nyc-config@1.1.0",
+      "jest-config@30.5.2",
       "source-map-js",
     ]);
+    expect(packageJson.overrides["jest-config@30.5.2"]).toEqual({
+      deepmerge: "npm:@stackline/deepmerge@1.1.0",
+    });
     const lock = readJson("./package-lock.json");
     for (const name of [
       "@istanbuljs/load-nyc-config",

@@ -1,3 +1,4 @@
+import { JAVA_TOOLCHAIN } from "./java-toolchain.mjs";
 import { expect, test } from "@jest/globals";
 import { assertNativeReferenceInputs } from "./java-reference-command.mjs";
 import { createReferenceInputRecord } from "../util/owlapi-reference/reference-inputs.mjs";
@@ -40,10 +41,10 @@ test("native input admission accepts serialized member permutations but rejects 
     jdkDistributionSha256: "4".repeat(64),
     environment: {
       ...environment,
-      runtime: "25.0.4.1+1-LTS",
-      "java.version": "25.0.4.1",
+      runtime: JAVA_TOOLCHAIN.runtime,
+      "java.version": JAVA_TOOLCHAIN.version,
       "java.vendor": "Eclipse Adoptium",
-      "java.vm.version": "25.0.4.1+1-LTS",
+      "java.vm.version": JAVA_TOOLCHAIN.runtime,
       "file.encoding": "UTF-8",
       "stdout.encoding": "UTF-8",
       "stderr.encoding": "UTF-8",

@@ -11,7 +11,7 @@ import {
   jsonContract,
   openJsonRepositorySession,
   validateJsonQualityEvent,
-} from "../tooling/json/public-api.mjs";
+} from "@hadden-industries/json-quality";
 
 export async function readPolicyFixture(root) {
   const bytes = await readFile(join(root, ".json-quality.json"));

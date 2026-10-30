@@ -29,9 +29,15 @@ export const CI_JOB_NAMES = Object.freeze({
   consumer_runtimes: "CI / complete consumer qualification",
   verification: "CI / verification strategy",
   metadata: "CI / metadata",
-  source_node_22: projectRuntimeText("CI / Ubuntu / Node {{runtime:node.22}}"),
-  source_node_24: projectRuntimeText("CI / Ubuntu / Node {{runtime:node.24}}"),
-  source_node_26: projectRuntimeText("CI / Ubuntu / Node {{runtime:node.26}}"),
+  source_portable: projectRuntimeText(
+    "CI / Ubuntu / portable source / Node {{runtime:canonicalNode}}",
+  ),
+  source_canonical: projectRuntimeText(
+    "CI / Ubuntu / canonical source / Node {{runtime:canonicalNode}}",
+  ),
+  source_json: projectRuntimeText(
+    "CI / Ubuntu / JSON source / Node {{runtime:canonicalNode}}",
+  ),
   quality_windows: "CI / Windows / quality tools",
   dependency_review: "CI / dependency review",
   candidate: "CI / retained candidate",
@@ -72,15 +78,16 @@ export const hostedCiJobNames = () =>
       : [name],
   );
 export const CHECK_JOBS = Object.freeze({
-  java: "source_node_24",
+  java: "source_canonical",
   owl_contract: "owl_contract",
 });
-/** All tracked bytes and exact hosted identity bind FULL coverage. External input
+/** All tracked bytes and supported collector inputs bind FULL coverage. External input
  * equivalence and independent selection authority are deliberately unproved;
  * this policy cannot authorize an omitted integration.
  */
 export const QUALIFICATION_POLICY = Object.freeze({
-  version: 7,
+  version: 9,
+  collectorImageCompatibility: "SUPPORTED_OS_ARCH_RUNTIME_RETAINED_BUILD",
   artifactTransportSha256: evidenceFingerprint({
     policy: artifactTransportPolicy,
     build: artifactTransportBuild,
@@ -114,6 +121,23 @@ const closed = (value, keys) =>
   !Array.isArray(value) &&
   isDeepStrictEqual(Object.keys(value).sort(), [...keys].sort());
 
+/** Collector provenance is separate from the environments of the producing jobs. */
+export const validQualificationHost = (host) =>
+  closed(host, ["os", "architecture", "image", "imageVersion", "node"]) &&
+  host.os === "Linux" &&
+  host.architecture === "X64" &&
+  host.image === "ubuntu24" &&
+  /^\d{8}\.\d+(?:\.\d+)?$/u.test(host.imageVersion ?? "") &&
+  host.node === projectRuntimeText("v{{runtime:canonicalNode}}");
+
+/** Only an incidental collector image build may differ; retain both observations. */
+export const compatibleQualificationHosts = (original, current) =>
+  validQualificationHost(original) &&
+  validQualificationHost(current) &&
+  ["os", "architecture", "image", "node"].every(
+    (field) => original[field] === current[field],
+  );
+
 /** Reconstruct expected typed states and identities rather than trust SUCCESS alone. */
 export const createQualificationChecks = ({
   context,
@@ -144,7 +168,7 @@ export const createQualificationChecks = ({
       policySha256: QUALIFICATION_POLICY_SHA256,
       inputs: {
         trackedTree: context.snapshot.tree,
-        hostSha256: evidenceFingerprint(context.host),
+        hostSha256: evidenceFingerprint(original?.host ?? context.host),
         externalEquivalence: "UNPROVEN",
       },
       evidence: observed,
@@ -160,7 +184,7 @@ export const createQualificationChecks = ({
   return result;
 };
 
-/** Strict v5 FULL/reused envelope. Unsupported versions/modes require fresh CI. */
+/** Strict v6 envelope retains the original collector for reused proof. */
 export const assertQualificationRecord = (record) => {
   fact(
     closed(record, [
@@ -186,7 +210,7 @@ export const assertQualificationRecord = (record) => {
     "Qualification record has an invalid closed schema.",
   );
   fact(
-    record.schemaVersion === 5 &&
+    record.schemaVersion === 6 &&
       ["PR", "MAIN"].includes(record.role) &&
       ["FULL", "REUSED"].includes(record.mode) &&
       record.sourceMode === "FULL" &&
@@ -211,18 +235,7 @@ export const assertQualificationRecord = (record) => {
       record.snapshot.parents.length <= 2 &&
       record.snapshot.parents.every(sha) &&
       (record.role !== "PR" || record.snapshot.parents.length === 2) &&
-      closed(record.host, [
-        "os",
-        "architecture",
-        "image",
-        "imageVersion",
-        "node",
-      ]) &&
-      record.host.os === "Linux" &&
-      record.host.architecture === "X64" &&
-      record.host.image === "ubuntu24" &&
-      /^\d{8}\.\d+(?:\.\d+)?$/u.test(record.host.imageVersion ?? "") &&
-      record.host.node === projectRuntimeText("v{{runtime:node.24}}") &&
+      validQualificationHost(record.host) &&
       closed(record.candidate, ["id", "digest"]) &&
       id(record.candidate.id) &&
       digest(record.candidate.digest),
@@ -244,11 +257,13 @@ export const assertQualificationRecord = (record) => {
         "runAttempt",
         "commit",
         "receipt",
+        "host",
       ]) &&
         record.source.role === "PR" &&
         id(record.source.runId) &&
         id(record.source.runAttempt) &&
         sha(record.source.commit) &&
+        compatibleQualificationHosts(record.source.host, record.host) &&
         closed(record.source.receipt, ["id", "digest"]) &&
         id(record.source.receipt.id) &&
         digest(record.source.receipt.digest),

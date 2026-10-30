@@ -1,9 +1,8 @@
-import { admitJsonPolicy } from "../tooling/json/public-api.mjs";
+import { admitJsonPolicy } from "@hadden-industries/json-quality";
 import { verifyPinnedIntegrationCheckout } from "../util/owlapi-reference/pinned-integration-checkout.mjs";
 
 const approvedExclusions = new Set([
   "node_modules/**",
-  "tooling/json/node_modules/**",
   "tooling/markdown/node_modules/**",
   "tooling/artifact-transport/node_modules/**",
   ".development-tools/python/**",

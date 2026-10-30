@@ -1,4 +1,5 @@
 import { jsonEquals } from "./canonical-json.mjs";
+import { createRepositoryReader } from "./ci-verification-command.mjs";
 
 const compareCodeUnits = (left, right) =>
   left < right ? -1 : left > right ? 1 : 0;
@@ -98,11 +99,8 @@ export const classifyWriteReconciliation = ({ writeResult, observed }) => {
     : "FAIL_CLOSED";
 };
 
-const sleep = (milliseconds) =>
-  new Promise((resolvePromise) => setTimeout(resolvePromise, milliseconds));
-
 export class GitHubReleaseClient {
-  constructor({ repository, token }) {
+  constructor({ repository, token, reader, ...readOptions }) {
     if (
       !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u.test(repository ?? "") ||
       !token
@@ -115,6 +113,8 @@ export class GitHubReleaseClient {
     this.token = token;
     this.apiRoot = `https://api.github.com/repos/${repository}`;
     this.uploadRoot = `https://uploads.github.com/repos/${repository}`;
+    this.reader = reader;
+    this.readOptions = readOptions;
   }
 
   headers(extra = {}) {
@@ -127,35 +127,19 @@ export class GitHubReleaseClient {
   }
 
   async read(path, { accept404 = false } = {}) {
-    if (!path.startsWith("/")) {
-      throw new Error("GitHub reads must use a repository-relative API path.");
+    const read =
+      this.reader ??
+      createRepositoryReader({
+        ...this.readOptions,
+        repository: this.repository,
+        token: this.token,
+      });
+    try {
+      return await read(path);
+    } catch (error) {
+      if (accept404 && error.httpStatus === 404) return null;
+      throw error;
     }
-    const url = `${this.apiRoot}${path}`;
-    let lastError;
-    for (let attempt = 1; attempt <= 3; attempt += 1) {
-      try {
-        const response = await fetch(url, {
-          cache: "no-store",
-          headers: this.headers({ "Cache-Control": "no-cache" }),
-        });
-        if (accept404 && response.status === 404) {
-          return null;
-        }
-        if (response.ok) {
-          return response.json();
-        }
-        if (response.status < 500 && response.status !== 429) {
-          throw new Error(`GitHub read returned HTTP ${response.status}.`);
-        }
-        lastError = new Error(`GitHub read returned HTTP ${response.status}.`);
-      } catch (error) {
-        lastError = error;
-      }
-      if (attempt < 3) {
-        await sleep(attempt * 1000);
-      }
-    }
-    throw lastError;
   }
 
   /**

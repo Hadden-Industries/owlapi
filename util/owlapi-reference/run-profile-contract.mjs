@@ -20,6 +20,7 @@ import {
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { verifyProfileAuthorityAmendments } from "./profile-authority-amendments.mjs";
+import { observeCurrentJavaToolchain } from "../../scripts/java-toolchain.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repository = resolve(here, "../..");
@@ -132,6 +133,7 @@ assert.ok(
 const javaRoot = realpathSync(resolve(options.get("--java-root")));
 const java = realpathSync(resolve(options.get("--java")));
 const javac = realpathSync(resolve(options.get("--javac")));
+observeCurrentJavaToolchain(java);
 const priorRunner = options.has("--prior-runner")
   ? fileEvidence(options.get("--prior-runner"))
   : null;

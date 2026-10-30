@@ -18,6 +18,7 @@ export const contractReport = (
     workflow = "CI",
     artifact = { id: 702, digest: `sha256:${"f".repeat(64)}` },
     tarballSha256 = "e".repeat(64),
+    packageVersion = PACKAGE_VERSION,
   } = {},
 ) => ({
   schemaVersion: 1,
@@ -25,7 +26,7 @@ export const contractReport = (
   result: "PASS",
   identity: { workflow, ...identity },
   candidate: {
-    package: { name: PACKAGE_NAME, version: PACKAGE_VERSION },
+    package: { name: PACKAGE_NAME, version: packageVersion },
     tarballSha256,
     artifact,
   },

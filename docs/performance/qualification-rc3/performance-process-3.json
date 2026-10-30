@@ -1,0 +1,5684 @@
+{
+  "schemaVersion": 2,
+  "fixtureGeneratorVersion": "owlapi-benchmark-corpus-v1",
+  "javaBaselinePath": "docs/performance/java-owlapi-5.5.1-baseline.json",
+  "parameters": {
+    "warmupCount": 2,
+    "runCount": 5,
+    "syntaxCount": 100,
+    "importClosureCount": 8,
+    "profiles": [
+      "java-owlapi-5.5.1",
+      "normative-v1"
+    ]
+  },
+  "environment": {
+    "nodeVersion": "v26.13.0",
+    "platform": "win32-x64",
+    "v8Version": "14.6.202.34-node.40",
+    "cpuModel": "12th Gen Intel(R) Core(TM) i9-12900K",
+    "osRelease": "10.0.26300",
+    "explicitGc": true,
+    "javaVersion": "25.0.4.1",
+    "javaVmName": "OpenJDK 64-Bit Server VM",
+    "javaOwlapiVersion": "5.5.1.2026-08-10T00:04:10Z"
+  },
+  "summary": {
+    "totalBenchmarks": 70,
+    "slowerInJsCount": 0,
+    "fasterOrParityInJsCount": 64,
+    "unqualifiedCount": 6,
+    "incompleteComparabilityCount": 6,
+    "slowerInCompatProfileCount": 0,
+    "slowerInNormativeProfileCount": 0
+  },
+  "comparisons": [
+    {
+      "id": "manager.createOWLOntologyManager",
+      "category": "Manager & Configuration",
+      "apiSymbols": [
+        "OWLManager.createOWLOntologyManager",
+        "OWLOntologyManager"
+      ],
+      "description": "Instantiate 100 OWLOntologyManager instances and read their data factory.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 32.139,
+        "medianWallMs": 10.78,
+        "medianRetainedHeapDeltaBytes": 5238776
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 0.6434999999999604,
+        "medianWallMs": 0.32620000000002847,
+        "medianSampledHeapDeltaBytes": 879608,
+        "measurements": [
+          {
+            "wallMs": 0.353999999999985,
+            "sampledHeapDeltaBytes": 879608
+          },
+          {
+            "wallMs": 0.32620000000002847,
+            "sampledHeapDeltaBytes": 879608
+          },
+          {
+            "wallMs": 0.39430000000004384,
+            "sampledHeapDeltaBytes": 1166168
+          },
+          {
+            "wallMs": 0.20900000000000318,
+            "sampledHeapDeltaBytes": 834680
+          },
+          {
+            "wallMs": 0.20099999999996498,
+            "sampledHeapDeltaBytes": 1098056
+          }
+        ],
+        "ratioVsJava": 0.0302597402597429,
+        "deltaMsVsJava": -10.454
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 0.2780000000002474,
+        "medianWallMs": 0.24319999999988795,
+        "medianSampledHeapDeltaBytes": 870880,
+        "measurements": [
+          {
+            "wallMs": 0.24319999999988795,
+            "sampledHeapDeltaBytes": 870880
+          },
+          {
+            "wallMs": 0.25300000000015643,
+            "sampledHeapDeltaBytes": 870880
+          },
+          {
+            "wallMs": 0.25720000000001164,
+            "sampledHeapDeltaBytes": 870880
+          },
+          {
+            "wallMs": 0.22899999999981446,
+            "sampledHeapDeltaBytes": 849024
+          },
+          {
+            "wallMs": 0.2062999999998283,
+            "sampledHeapDeltaBytes": 837376
+          }
+        ],
+        "ratioVsJava": 0.02256029684600074,
+        "deltaMsVsJava": -10.537
+      },
+      "maxJsVsJavaRatio": 0.0302597402597429,
+      "slowerInJs": false
+    },
+    {
+      "id": "config.OWLOntologyLoaderConfiguration",
+      "category": "Manager & Configuration",
+      "apiSymbols": [
+        "OWLOntologyLoaderConfiguration"
+      ],
+      "description": "Chain 8 immutable loader configuration setters and getters 500 times.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 500,
+        "firstUseWallMs": 3.788,
+        "medianWallMs": 1.13,
+        "medianRetainedHeapDeltaBytes": 2088896
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 500,
+        "firstUseWallMs": 1.553200000000004,
+        "medianWallMs": 0.5392999999999688,
+        "medianSampledHeapDeltaBytes": 4721184,
+        "measurements": [
+          {
+            "wallMs": 0.6005999999999858,
+            "sampledHeapDeltaBytes": 4746968
+          },
+          {
+            "wallMs": 0.5380000000000109,
+            "sampledHeapDeltaBytes": 4721184
+          },
+          {
+            "wallMs": 0.5045000000000073,
+            "sampledHeapDeltaBytes": 4721184
+          },
+          {
+            "wallMs": 0.5392999999999688,
+            "sampledHeapDeltaBytes": 4721184
+          },
+          {
+            "wallMs": 0.6444000000000187,
+            "sampledHeapDeltaBytes": 4735936
+          }
+        ],
+        "ratioVsJava": 0.477256637168114,
+        "deltaMsVsJava": -0.591
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 500,
+        "firstUseWallMs": 0.5620000000003529,
+        "medianWallMs": 0.47139999999990323,
+        "medianSampledHeapDeltaBytes": 4185056,
+        "measurements": [
+          {
+            "wallMs": 0.47139999999990323,
+            "sampledHeapDeltaBytes": 4185056
+          },
+          {
+            "wallMs": 0.5077000000001135,
+            "sampledHeapDeltaBytes": 4185056
+          },
+          {
+            "wallMs": 0.4682999999999993,
+            "sampledHeapDeltaBytes": 4185056
+          },
+          {
+            "wallMs": 0.7861000000002605,
+            "sampledHeapDeltaBytes": 4206392
+          },
+          {
+            "wallMs": 0.4511999999999716,
+            "sampledHeapDeltaBytes": 4185056
+          }
+        ],
+        "ratioVsJava": 0.4171681415928348,
+        "deltaMsVsJava": -0.659
+      },
+      "maxJsVsJavaRatio": 0.477256637168114,
+      "slowerInJs": false
+    },
+    {
+      "id": "config.OWLOntologyWriterConfiguration",
+      "category": "Manager & Configuration",
+      "apiSymbols": [
+        "OWLOntologyWriterConfiguration"
+      ],
+      "description": "Chain 5 immutable writer configuration setters and getters 500 times.",
+      "comparability": "checksum-mismatch",
+      "java551": {
+        "verificationCount": 3500,
+        "firstUseWallMs": 0.982,
+        "medianWallMs": 0.155,
+        "medianRetainedHeapDeltaBytes": 522200
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 3500,
+        "firstUseWallMs": 0.6861999999999853,
+        "medianWallMs": 0.11430000000001428,
+        "medianSampledHeapDeltaBytes": 136496,
+        "measurements": [
+          {
+            "wallMs": 0.16589999999996508,
+            "sampledHeapDeltaBytes": 144496
+          },
+          {
+            "wallMs": 0.09510000000000218,
+            "sampledHeapDeltaBytes": 136496
+          },
+          {
+            "wallMs": 0.11459999999999582,
+            "sampledHeapDeltaBytes": 136496
+          },
+          {
+            "wallMs": 0.11430000000001428,
+            "sampledHeapDeltaBytes": 136496
+          },
+          {
+            "wallMs": 0.11309999999997444,
+            "sampledHeapDeltaBytes": 136496
+          }
+        ],
+        "ratioVsJava": 0.7374193548388018,
+        "deltaMsVsJava": -0.041
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-mismatch",
+        "verificationCount": 2750,
+        "firstUseWallMs": 0.3287000000000262,
+        "medianWallMs": 0.11310000000003129,
+        "medianSampledHeapDeltaBytes": 140256,
+        "measurements": [
+          {
+            "wallMs": 0.28330000000005384,
+            "sampledHeapDeltaBytes": 153920
+          },
+          {
+            "wallMs": 0.11310000000003129,
+            "sampledHeapDeltaBytes": 140256
+          },
+          {
+            "wallMs": 0.12159999999994398,
+            "sampledHeapDeltaBytes": 145264
+          },
+          {
+            "wallMs": 0.07950000000028012,
+            "sampledHeapDeltaBytes": 140256
+          },
+          {
+            "wallMs": 0.10230000000001382,
+            "sampledHeapDeltaBytes": 140256
+          }
+        ],
+        "ratioVsJava": 0.7296774193550406,
+        "deltaMsVsJava": -0.042
+      },
+      "maxJsVsJavaRatio": 0.7374193548388018,
+      "slowerInJs": false
+    },
+    {
+      "id": "formats.RDFXMLDocumentFormat.prefixes",
+      "category": "Manager & Configuration",
+      "apiSymbols": [
+        "RDFXMLDocumentFormat"
+      ],
+      "description": "Exercise prefix registration, default prefix, copyPrefixesFrom, lookup, and clear 200 times.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 3200,
+        "firstUseWallMs": 5.184,
+        "medianWallMs": 0.69,
+        "medianRetainedHeapDeltaBytes": 522208
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 3200,
+        "firstUseWallMs": 9.597500000000025,
+        "medianWallMs": 0.5011000000000081,
+        "medianSampledHeapDeltaBytes": 1009008,
+        "measurements": [
+          {
+            "wallMs": 0.5011000000000081,
+            "sampledHeapDeltaBytes": 1009008
+          },
+          {
+            "wallMs": 0.5024999999999977,
+            "sampledHeapDeltaBytes": 1009008
+          },
+          {
+            "wallMs": 0.550200000000018,
+            "sampledHeapDeltaBytes": 1009008
+          },
+          {
+            "wallMs": 0.49759999999997717,
+            "sampledHeapDeltaBytes": 1009008
+          },
+          {
+            "wallMs": 0.4892000000000394,
+            "sampledHeapDeltaBytes": 1009008
+          }
+        ],
+        "ratioVsJava": 0.7262318840579828,
+        "deltaMsVsJava": -0.189
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 3200,
+        "firstUseWallMs": 0.5153000000000247,
+        "medianWallMs": 0.5290999999997439,
+        "medianSampledHeapDeltaBytes": 1008656,
+        "measurements": [
+          {
+            "wallMs": 0.5461999999997715,
+            "sampledHeapDeltaBytes": 1185360
+          },
+          {
+            "wallMs": 0.42139999999972133,
+            "sampledHeapDeltaBytes": 1005272
+          },
+          {
+            "wallMs": 0.5290999999997439,
+            "sampledHeapDeltaBytes": 1008656
+          },
+          {
+            "wallMs": 0.5041999999998552,
+            "sampledHeapDeltaBytes": 829464
+          },
+          {
+            "wallMs": 0.5420000000003711,
+            "sampledHeapDeltaBytes": 1008656
+          }
+        ],
+        "ratioVsJava": 0.7668115942025274,
+        "deltaMsVsJava": -0.161
+      },
+      "maxJsVsJavaRatio": 0.7668115942025274,
+      "slowerInJs": false
+    },
+    {
+      "id": "model.IRI.create",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "IRI.create"
+      ],
+      "description": "Construct and validate 2,000 IRIs.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 64890,
+        "firstUseWallMs": 1.887,
+        "medianWallMs": 0.709,
+        "medianRetainedHeapDeltaBytes": 1801584
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 64890,
+        "firstUseWallMs": 0.5556000000000267,
+        "medianWallMs": 0.3982000000000312,
+        "medianSampledHeapDeltaBytes": 526168,
+        "measurements": [
+          {
+            "wallMs": 0.3242999999999938,
+            "sampledHeapDeltaBytes": 526168
+          },
+          {
+            "wallMs": 0.4248999999999796,
+            "sampledHeapDeltaBytes": 526168
+          },
+          {
+            "wallMs": 0.43870000000003984,
+            "sampledHeapDeltaBytes": 531416
+          },
+          {
+            "wallMs": 0.3982000000000312,
+            "sampledHeapDeltaBytes": 531656
+          },
+          {
+            "wallMs": 0.37770000000000437,
+            "sampledHeapDeltaBytes": 526168
+          }
+        ],
+        "ratioVsJava": 0.561636107193274,
+        "deltaMsVsJava": -0.311
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 64890,
+        "firstUseWallMs": 0.2764999999999418,
+        "medianWallMs": 0.21189999999978681,
+        "medianSampledHeapDeltaBytes": 525896,
+        "measurements": [
+          {
+            "wallMs": 0.2432000000003427,
+            "sampledHeapDeltaBytes": 525896
+          },
+          {
+            "wallMs": 0.28330000000005384,
+            "sampledHeapDeltaBytes": 531024
+          },
+          {
+            "wallMs": 0.21189999999978681,
+            "sampledHeapDeltaBytes": 531296
+          },
+          {
+            "wallMs": 0.1956000000000131,
+            "sampledHeapDeltaBytes": 525896
+          },
+          {
+            "wallMs": 0.19770000000016807,
+            "sampledHeapDeltaBytes": 525896
+          }
+        ],
+        "ratioVsJava": 0.29887165021126494,
+        "deltaMsVsJava": -0.497
+      },
+      "maxJsVsJavaRatio": 0.561636107193274,
+      "slowerInJs": false
+    },
+    {
+      "id": "factory.entities",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLDataFactory.getOWLClass",
+        "OWLDataFactory.getOWLObjectProperty",
+        "OWLDataFactory.getOWLDataProperty",
+        "OWLDataFactory.getOWLAnnotationProperty",
+        "OWLDataFactory.getOWLDatatype",
+        "OWLDataFactory.getOWLNamedIndividual",
+        "OWLDataFactory.getOWLAnonymousIndividual",
+        "OWLDataFactory.getOWLOntologyID",
+        "OWLDataFactory.getOWLImportsDeclaration"
+      ],
+      "description": "Construct 500 sets of all 10 entity, ontology-ID, and import-declaration types.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 5000,
+        "firstUseWallMs": 9.148,
+        "medianWallMs": 2.912,
+        "medianRetainedHeapDeltaBytes": 2925744
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 5000,
+        "firstUseWallMs": 2.427400000000034,
+        "medianWallMs": 1.7769999999999868,
+        "medianSampledHeapDeltaBytes": 2567336,
+        "measurements": [
+          {
+            "wallMs": 1.8938999999999737,
+            "sampledHeapDeltaBytes": 2572288
+          },
+          {
+            "wallMs": 1.8331000000000017,
+            "sampledHeapDeltaBytes": 2587848
+          },
+          {
+            "wallMs": 1.7769999999999868,
+            "sampledHeapDeltaBytes": 2567336
+          },
+          {
+            "wallMs": 1.684500000000014,
+            "sampledHeapDeltaBytes": 2558656
+          },
+          {
+            "wallMs": 1.6607999999999947,
+            "sampledHeapDeltaBytes": 2558656
+          }
+        ],
+        "ratioVsJava": 0.610233516483512,
+        "deltaMsVsJava": -1.135
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 5000,
+        "firstUseWallMs": 1.7685999999998785,
+        "medianWallMs": 1.564600000000155,
+        "medianSampledHeapDeltaBytes": 2435864,
+        "measurements": [
+          {
+            "wallMs": 1.6585000000000036,
+            "sampledHeapDeltaBytes": 2558584
+          },
+          {
+            "wallMs": 1.663300000000163,
+            "sampledHeapDeltaBytes": 2463960
+          },
+          {
+            "wallMs": 1.564600000000155,
+            "sampledHeapDeltaBytes": 2435864
+          },
+          {
+            "wallMs": 1.5349999999998545,
+            "sampledHeapDeltaBytes": 2435864
+          },
+          {
+            "wallMs": 1.5481999999997242,
+            "sampledHeapDeltaBytes": 2435864
+          }
+        ],
+        "ratioVsJava": 0.5372939560440093,
+        "deltaMsVsJava": -1.347
+      },
+      "maxJsVsJavaRatio": 0.610233516483512,
+      "slowerInJs": false
+    },
+    {
+      "id": "factory.literals",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLDataFactory.getOWLLiteral"
+      ],
+      "description": "Construct 500 sets of plain, language-tagged, integer, decimal, float, and boolean literals.",
+      "comparability": "checksum-mismatch",
+      "java551": {
+        "verificationCount": 16310,
+        "firstUseWallMs": 5.421,
+        "medianWallMs": 1.426,
+        "medianRetainedHeapDeltaBytes": 522192
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 16310,
+        "firstUseWallMs": 2.121399999999994,
+        "medianWallMs": 0.8956000000000017,
+        "medianSampledHeapDeltaBytes": 1543592,
+        "measurements": [
+          {
+            "wallMs": 1.0407999999999902,
+            "sampledHeapDeltaBytes": 1588976
+          },
+          {
+            "wallMs": 0.8956000000000017,
+            "sampledHeapDeltaBytes": 1546752
+          },
+          {
+            "wallMs": 0.8695000000000164,
+            "sampledHeapDeltaBytes": 1543592
+          },
+          {
+            "wallMs": 0.8879999999999768,
+            "sampledHeapDeltaBytes": 1543592
+          },
+          {
+            "wallMs": 0.9175000000000182,
+            "sampledHeapDeltaBytes": 1543592
+          }
+        ],
+        "ratioVsJava": 0.6280504908835917,
+        "deltaMsVsJava": -0.53
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-mismatch",
+        "verificationCount": 17310,
+        "firstUseWallMs": 0.5711999999998625,
+        "medianWallMs": 0.5055999999999585,
+        "medianSampledHeapDeltaBytes": 875536,
+        "measurements": [
+          {
+            "wallMs": 0.5203999999998814,
+            "sampledHeapDeltaBytes": 887672
+          },
+          {
+            "wallMs": 0.6734000000001288,
+            "sampledHeapDeltaBytes": 875536
+          },
+          {
+            "wallMs": 0.4980000000000473,
+            "sampledHeapDeltaBytes": 875536
+          },
+          {
+            "wallMs": 0.5055999999999585,
+            "sampledHeapDeltaBytes": 875536
+          },
+          {
+            "wallMs": 0.47579999999970823,
+            "sampledHeapDeltaBytes": 875536
+          }
+        ],
+        "ratioVsJava": 0.3545582047685544,
+        "deltaMsVsJava": -0.92
+      },
+      "maxJsVsJavaRatio": 0.6280504908835917,
+      "slowerInJs": false
+    },
+    {
+      "id": "factory.classExpressions",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLDataFactory"
+      ],
+      "description": "Construct 200 sets of all 18 OWL 2 class expression and property inverse kinds.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 3600,
+        "firstUseWallMs": 11.133,
+        "medianWallMs": 1.287,
+        "medianRetainedHeapDeltaBytes": 1044432
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 3600,
+        "firstUseWallMs": 1.7434999999999832,
+        "medianWallMs": 1.0723999999999592,
+        "medianSampledHeapDeltaBytes": 1542200,
+        "measurements": [
+          {
+            "wallMs": 1.1118000000000166,
+            "sampledHeapDeltaBytes": 1542200
+          },
+          {
+            "wallMs": 1.0790000000000077,
+            "sampledHeapDeltaBytes": 1548792
+          },
+          {
+            "wallMs": 1.0723999999999592,
+            "sampledHeapDeltaBytes": 1563088
+          },
+          {
+            "wallMs": 1.032699999999977,
+            "sampledHeapDeltaBytes": 1532800
+          },
+          {
+            "wallMs": 1.0054999999999836,
+            "sampledHeapDeltaBytes": 1532800
+          }
+        ],
+        "ratioVsJava": 0.8332556332556016,
+        "deltaMsVsJava": -0.215
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 3600,
+        "firstUseWallMs": 2.0285000000003492,
+        "medianWallMs": 1.0583999999998923,
+        "medianSampledHeapDeltaBytes": 1532728,
+        "measurements": [
+          {
+            "wallMs": 1.4184000000000196,
+            "sampledHeapDeltaBytes": 1532728
+          },
+          {
+            "wallMs": 1.0583999999998923,
+            "sampledHeapDeltaBytes": 1532728
+          },
+          {
+            "wallMs": 1.080500000000029,
+            "sampledHeapDeltaBytes": 1532728
+          },
+          {
+            "wallMs": 1.043699999999717,
+            "sampledHeapDeltaBytes": 1521576
+          },
+          {
+            "wallMs": 1.0578999999997905,
+            "sampledHeapDeltaBytes": 1532728
+          }
+        ],
+        "ratioVsJava": 0.8223776223775388,
+        "deltaMsVsJava": -0.229
+      },
+      "maxJsVsJavaRatio": 0.8332556332556016,
+      "slowerInJs": false
+    },
+    {
+      "id": "factory.dataRanges",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLDataFactory"
+      ],
+      "description": "Construct 200 sets of all 6 OWL 2 data range and facet restriction kinds.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 1200,
+        "firstUseWallMs": 2.718,
+        "medianWallMs": 0.565,
+        "medianRetainedHeapDeltaBytes": 1044432
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 1200,
+        "firstUseWallMs": 0.6847000000000207,
+        "medianWallMs": 0.4879999999999427,
+        "medianSampledHeapDeltaBytes": 864424,
+        "measurements": [
+          {
+            "wallMs": 0.5340999999999667,
+            "sampledHeapDeltaBytes": 864424
+          },
+          {
+            "wallMs": 0.4879999999999427,
+            "sampledHeapDeltaBytes": 864424
+          },
+          {
+            "wallMs": 0.4882999999999811,
+            "sampledHeapDeltaBytes": 869408
+          },
+          {
+            "wallMs": 0.4696999999999889,
+            "sampledHeapDeltaBytes": 866400
+          },
+          {
+            "wallMs": 0.47840000000007876,
+            "sampledHeapDeltaBytes": 851696
+          }
+        ],
+        "ratioVsJava": 0.8637168141591907,
+        "deltaMsVsJava": -0.077
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 1200,
+        "firstUseWallMs": 0.5579999999999927,
+        "medianWallMs": 0.43429999999989377,
+        "medianSampledHeapDeltaBytes": 817960,
+        "measurements": [
+          {
+            "wallMs": 0.4277999999999338,
+            "sampledHeapDeltaBytes": 817960
+          },
+          {
+            "wallMs": 0.4313000000001921,
+            "sampledHeapDeltaBytes": 817960
+          },
+          {
+            "wallMs": 0.4378999999998996,
+            "sampledHeapDeltaBytes": 817960
+          },
+          {
+            "wallMs": 0.43429999999989377,
+            "sampledHeapDeltaBytes": 817960
+          },
+          {
+            "wallMs": 0.43429999999989377,
+            "sampledHeapDeltaBytes": 817960
+          }
+        ],
+        "ratioVsJava": 0.7686725663714935,
+        "deltaMsVsJava": -0.131
+      },
+      "maxJsVsJavaRatio": 0.8637168141591907,
+      "slowerInJs": false
+    },
+    {
+      "id": "factory.axioms",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLDataFactory"
+      ],
+      "description": "Construct ~1,500 axioms spanning all 38 OWL 2 axiom types.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 1490,
+        "firstUseWallMs": 3.269,
+        "medianWallMs": 2.211,
+        "medianRetainedHeapDeltaBytes": 2630224
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 1490,
+        "firstUseWallMs": 1.6741000000000668,
+        "medianWallMs": 1.6082999999999856,
+        "medianSampledHeapDeltaBytes": 2356880,
+        "measurements": [
+          {
+            "wallMs": 1.6009000000000242,
+            "sampledHeapDeltaBytes": 2359256
+          },
+          {
+            "wallMs": 1.6623999999999342,
+            "sampledHeapDeltaBytes": 2356880
+          },
+          {
+            "wallMs": 1.6082999999999856,
+            "sampledHeapDeltaBytes": 2356880
+          },
+          {
+            "wallMs": 1.6710000000000491,
+            "sampledHeapDeltaBytes": 2368120
+          },
+          {
+            "wallMs": 1.5901000000000067,
+            "sampledHeapDeltaBytes": 2352840
+          }
+        ],
+        "ratioVsJava": 0.7274084124830329,
+        "deltaMsVsJava": -0.603
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 1490,
+        "firstUseWallMs": 1.5970000000002074,
+        "medianWallMs": 1.6000000000003638,
+        "medianSampledHeapDeltaBytes": 2338512,
+        "measurements": [
+          {
+            "wallMs": 1.561200000000099,
+            "sampledHeapDeltaBytes": 2338512
+          },
+          {
+            "wallMs": 1.6948999999999614,
+            "sampledHeapDeltaBytes": 2338512
+          },
+          {
+            "wallMs": 1.5781000000001768,
+            "sampledHeapDeltaBytes": 2338512
+          },
+          {
+            "wallMs": 1.6000000000003638,
+            "sampledHeapDeltaBytes": 2338512
+          },
+          {
+            "wallMs": 1.6490999999996347,
+            "sampledHeapDeltaBytes": 2338512
+          }
+        ],
+        "ratioVsJava": 0.7236544549979032,
+        "deltaMsVsJava": -0.611
+      },
+      "maxJsVsJavaRatio": 0.7274084124830329,
+      "slowerInJs": false
+    },
+    {
+      "id": "model.structuralEqualityAndSet",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLStructuralObject.equals",
+        "OWLStructuralObject.equalsIgnoreAnnotations",
+        "StructuralSet"
+      ],
+      "description": "Insert and query 1,000 axioms in a structural set and test structural equality.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 4000,
+        "firstUseWallMs": 1.501,
+        "medianWallMs": 0.914,
+        "medianRetainedHeapDeltaBytes": 522192
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 4000,
+        "firstUseWallMs": 0.5151999999999362,
+        "medianWallMs": 0.22329999999999472,
+        "medianSampledHeapDeltaBytes": 60208,
+        "measurements": [
+          {
+            "wallMs": 0.22329999999999472,
+            "sampledHeapDeltaBytes": 79848
+          },
+          {
+            "wallMs": 0.2683000000000675,
+            "sampledHeapDeltaBytes": 60208
+          },
+          {
+            "wallMs": 0.2442999999999529,
+            "sampledHeapDeltaBytes": 60208
+          },
+          {
+            "wallMs": 0.19809999999995398,
+            "sampledHeapDeltaBytes": 73984
+          },
+          {
+            "wallMs": 0.18629999999996016,
+            "sampledHeapDeltaBytes": 60208
+          }
+        ],
+        "ratioVsJava": 0.24431072210065066,
+        "deltaMsVsJava": -0.691
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 4000,
+        "firstUseWallMs": 0.29970000000002983,
+        "medianWallMs": 0.19970000000012078,
+        "medianSampledHeapDeltaBytes": 60000,
+        "measurements": [
+          {
+            "wallMs": 0.26030000000037035,
+            "sampledHeapDeltaBytes": 60000
+          },
+          {
+            "wallMs": 0.19470000000001164,
+            "sampledHeapDeltaBytes": 60000
+          },
+          {
+            "wallMs": 0.1896999999999025,
+            "sampledHeapDeltaBytes": 60000
+          },
+          {
+            "wallMs": 0.19970000000012078,
+            "sampledHeapDeltaBytes": 60000
+          },
+          {
+            "wallMs": 0.3297000000002299,
+            "sampledHeapDeltaBytes": 60000
+          }
+        ],
+        "ratioVsJava": 0.21849015317299866,
+        "deltaMsVsJava": -0.714
+      },
+      "maxJsVsJavaRatio": 0.24431072210065066,
+      "slowerInJs": false
+    },
+    {
+      "id": "model.axiomAnnotationsTransform",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "OWLStructuralObject.getAnnotatedAxiom",
+        "OWLStructuralObject.getAxiomWithoutAnnotations"
+      ],
+      "description": "Annotate and strip annotations on 500 axioms.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 500,
+        "firstUseWallMs": 4.244,
+        "medianWallMs": 1.31,
+        "medianRetainedHeapDeltaBytes": 1044392
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 500,
+        "firstUseWallMs": 2.6825000000000045,
+        "medianWallMs": 1.0106000000000677,
+        "medianSampledHeapDeltaBytes": 981680,
+        "measurements": [
+          {
+            "wallMs": 1.110400000000027,
+            "sampledHeapDeltaBytes": 989712
+          },
+          {
+            "wallMs": 1.137399999999957,
+            "sampledHeapDeltaBytes": 1014200
+          },
+          {
+            "wallMs": 0.9986000000000104,
+            "sampledHeapDeltaBytes": 981680
+          },
+          {
+            "wallMs": 1.0106000000000677,
+            "sampledHeapDeltaBytes": 981680
+          },
+          {
+            "wallMs": 0.9901999999999589,
+            "sampledHeapDeltaBytes": 981680
+          }
+        ],
+        "ratioVsJava": 0.7714503816794409,
+        "deltaMsVsJava": -0.299
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 500,
+        "firstUseWallMs": 2.0625999999997475,
+        "medianWallMs": 1.0434000000000196,
+        "medianSampledHeapDeltaBytes": 981040,
+        "measurements": [
+          {
+            "wallMs": 1.0434000000000196,
+            "sampledHeapDeltaBytes": 981040
+          },
+          {
+            "wallMs": 1.03650000000016,
+            "sampledHeapDeltaBytes": 981040
+          },
+          {
+            "wallMs": 1.0695999999998094,
+            "sampledHeapDeltaBytes": 981040
+          },
+          {
+            "wallMs": 1.042699999999968,
+            "sampledHeapDeltaBytes": 981040
+          },
+          {
+            "wallMs": 1.092200000000048,
+            "sampledHeapDeltaBytes": 985472
+          }
+        ],
+        "ratioVsJava": 0.7964885496183356,
+        "deltaMsVsJava": -0.267
+      },
+      "maxJsVsJavaRatio": 0.7964885496183356,
+      "slowerInJs": false
+    },
+    {
+      "id": "model.dispatch",
+      "category": "DataFactory & Structural Model",
+      "apiSymbols": [
+        "dispatchOwlObject",
+        "dispatchAxiom",
+        "dispatchClassExpression"
+      ],
+      "description": "Dispatch 500 axioms (object + axiom visitors) and 120 complex class expressions.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 1120,
+        "firstUseWallMs": 0.965,
+        "medianWallMs": 0.198,
+        "medianRetainedHeapDeltaBytes": 522192
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 1120,
+        "firstUseWallMs": 0.5211000000000467,
+        "medianWallMs": 0.1716000000000122,
+        "medianSampledHeapDeltaBytes": 6472,
+        "measurements": [
+          {
+            "wallMs": 0.1937000000000353,
+            "sampledHeapDeltaBytes": 6472
+          },
+          {
+            "wallMs": 0.21939999999995052,
+            "sampledHeapDeltaBytes": 6472
+          },
+          {
+            "wallMs": 0.1672999999999547,
+            "sampledHeapDeltaBytes": 6472
+          },
+          {
+            "wallMs": 0.1716000000000122,
+            "sampledHeapDeltaBytes": 6472
+          },
+          {
+            "wallMs": 0.155399999999986,
+            "sampledHeapDeltaBytes": 6472
+          }
+        ],
+        "ratioVsJava": 0.8666666666667282,
+        "deltaMsVsJava": -0.026
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 1120,
+        "firstUseWallMs": 0.18200000000024374,
+        "medianWallMs": 0.17830000000003565,
+        "medianSampledHeapDeltaBytes": 6232,
+        "measurements": [
+          {
+            "wallMs": 0.16580000000021755,
+            "sampledHeapDeltaBytes": 6232
+          },
+          {
+            "wallMs": 0.16689999999971405,
+            "sampledHeapDeltaBytes": 6232
+          },
+          {
+            "wallMs": 0.2155999999999949,
+            "sampledHeapDeltaBytes": 6232
+          },
+          {
+            "wallMs": 0.17830000000003565,
+            "sampledHeapDeltaBytes": 6232
+          },
+          {
+            "wallMs": 0.2132000000001426,
+            "sampledHeapDeltaBytes": 6232
+          }
+        ],
+        "ratioVsJava": 0.9005050505052306,
+        "deltaMsVsJava": -0.02
+      },
+      "maxJsVsJavaRatio": 0.9005050505052306,
+      "slowerInJs": false
+    },
+    {
+      "id": "load.functional",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class Functional Syntax ontology document.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 5.463,
+        "medianWallMs": 2.355,
+        "medianRetainedHeapDeltaBytes": 1279352
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 2.2346999999999753,
+        "medianWallMs": 1.8640000000000327,
+        "medianSampledHeapDeltaBytes": 1105528,
+        "measurements": [
+          {
+            "wallMs": 1.8640000000000327,
+            "sampledHeapDeltaBytes": 1105480
+          },
+          {
+            "wallMs": 1.8985999999999876,
+            "sampledHeapDeltaBytes": 1112672
+          },
+          {
+            "wallMs": 2.0948999999999387,
+            "sampledHeapDeltaBytes": 1120576
+          },
+          {
+            "wallMs": 1.807299999999941,
+            "sampledHeapDeltaBytes": 1105528
+          },
+          {
+            "wallMs": 1.792599999999993,
+            "sampledHeapDeltaBytes": 652752
+          }
+        ],
+        "ratioVsJava": 0.7915074309978908,
+        "deltaMsVsJava": -0.491
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 1.6527000000000953,
+        "medianWallMs": 1.5936000000001513,
+        "medianSampledHeapDeltaBytes": 609424,
+        "measurements": [
+          {
+            "wallMs": 1.5947000000001026,
+            "sampledHeapDeltaBytes": 603896
+          },
+          {
+            "wallMs": 1.5724999999997635,
+            "sampledHeapDeltaBytes": 609016
+          },
+          {
+            "wallMs": 1.581000000000131,
+            "sampledHeapDeltaBytes": 611888
+          },
+          {
+            "wallMs": 1.5936000000001513,
+            "sampledHeapDeltaBytes": 609424
+          },
+          {
+            "wallMs": 1.6232999999997446,
+            "sampledHeapDeltaBytes": 622376
+          }
+        ],
+        "ratioVsJava": 0.6766878980892362,
+        "deltaMsVsJava": -0.761
+      },
+      "maxJsVsJavaRatio": 0.7915074309978908,
+      "slowerInJs": false
+    },
+    {
+      "id": "load.manchester",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class Manchester OWL Syntax ontology document.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 24.129,
+        "medianWallMs": 2.607,
+        "medianRetainedHeapDeltaBytes": 1338368
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 2.987600000000043,
+        "medianWallMs": 1.9510999999999967,
+        "medianSampledHeapDeltaBytes": 1146672,
+        "measurements": [
+          {
+            "wallMs": 1.913599999999974,
+            "sampledHeapDeltaBytes": 1159248
+          },
+          {
+            "wallMs": 1.9743000000000848,
+            "sampledHeapDeltaBytes": 1160872
+          },
+          {
+            "wallMs": 1.974299999999971,
+            "sampledHeapDeltaBytes": 1146672
+          },
+          {
+            "wallMs": 1.9510999999999967,
+            "sampledHeapDeltaBytes": 1091320
+          },
+          {
+            "wallMs": 1.9214000000000624,
+            "sampledHeapDeltaBytes": 1091144
+          }
+        ],
+        "ratioVsJava": 0.7484081319524344,
+        "deltaMsVsJava": -0.656
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 1.7687999999998283,
+        "medianWallMs": 1.7900000000004184,
+        "medianSampledHeapDeltaBytes": 665112,
+        "measurements": [
+          {
+            "wallMs": 1.8700000000003456,
+            "sampledHeapDeltaBytes": 666416
+          },
+          {
+            "wallMs": 1.7842000000000553,
+            "sampledHeapDeltaBytes": 679416
+          },
+          {
+            "wallMs": 1.815599999999904,
+            "sampledHeapDeltaBytes": 665112
+          },
+          {
+            "wallMs": 1.7303000000001703,
+            "sampledHeapDeltaBytes": 663552
+          },
+          {
+            "wallMs": 1.7900000000004184,
+            "sampledHeapDeltaBytes": 664656
+          }
+        ],
+        "ratioVsJava": 0.6866129650941382,
+        "deltaMsVsJava": -0.817
+      },
+      "maxJsVsJavaRatio": 0.7484081319524344,
+      "slowerInJs": false
+    },
+    {
+      "id": "load.owlxml",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class OWL/XML ontology document.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 21.339,
+        "medianWallMs": 4.947,
+        "medianRetainedHeapDeltaBytes": 1455528
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 4.241399999999999,
+        "medianWallMs": 2.0049999999999955,
+        "medianSampledHeapDeltaBytes": 1899736,
+        "measurements": [
+          {
+            "wallMs": 1.8083999999998923,
+            "sampledHeapDeltaBytes": 1858568
+          },
+          {
+            "wallMs": 1.9083000000000538,
+            "sampledHeapDeltaBytes": 1930248
+          },
+          {
+            "wallMs": 2.086999999999989,
+            "sampledHeapDeltaBytes": 1924712
+          },
+          {
+            "wallMs": 2.0049999999999955,
+            "sampledHeapDeltaBytes": 1891168
+          },
+          {
+            "wallMs": 2.0166000000000395,
+            "sampledHeapDeltaBytes": 1899736
+          }
+        ],
+        "ratioVsJava": 0.40529613907418544,
+        "deltaMsVsJava": -2.942
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 2.100500000000011,
+        "medianWallMs": 2.07549999999992,
+        "medianSampledHeapDeltaBytes": 1583688,
+        "measurements": [
+          {
+            "wallMs": 2.1610999999998057,
+            "sampledHeapDeltaBytes": 1591368
+          },
+          {
+            "wallMs": 2.07549999999992,
+            "sampledHeapDeltaBytes": 1614304
+          },
+          {
+            "wallMs": 2.1327000000001135,
+            "sampledHeapDeltaBytes": 1573240
+          },
+          {
+            "wallMs": 1.9355000000000473,
+            "sampledHeapDeltaBytes": 1574016
+          },
+          {
+            "wallMs": 1.9308999999998377,
+            "sampledHeapDeltaBytes": 1583688
+          }
+        ],
+        "ratioVsJava": 0.41954720032341214,
+        "deltaMsVsJava": -2.872
+      },
+      "maxJsVsJavaRatio": 0.41954720032341214,
+      "slowerInJs": false
+    },
+    {
+      "id": "load.rdfxml",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class RDF/XML ontology document.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 13.253,
+        "medianWallMs": 6.253,
+        "medianRetainedHeapDeltaBytes": 1763880
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 21.414999999999964,
+        "medianWallMs": 3.143100000000004,
+        "medianSampledHeapDeltaBytes": 3582304,
+        "measurements": [
+          {
+            "wallMs": 3.143100000000004,
+            "sampledHeapDeltaBytes": 4115320
+          },
+          {
+            "wallMs": 3.0790000000000646,
+            "sampledHeapDeltaBytes": 3582304
+          },
+          {
+            "wallMs": 3.312400000000025,
+            "sampledHeapDeltaBytes": 3408664
+          },
+          {
+            "wallMs": 3.127299999999991,
+            "sampledHeapDeltaBytes": 3696368
+          },
+          {
+            "wallMs": 3.248199999999997,
+            "sampledHeapDeltaBytes": 3425136
+          }
+        ],
+        "ratioVsJava": 0.5026547257316495,
+        "deltaMsVsJava": -3.11
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 6.630899999999656,
+        "medianWallMs": 4.072999999999865,
+        "medianSampledHeapDeltaBytes": 2997848,
+        "measurements": [
+          {
+            "wallMs": 4.037299999999959,
+            "sampledHeapDeltaBytes": 2996456
+          },
+          {
+            "wallMs": 4.072999999999865,
+            "sampledHeapDeltaBytes": 3022944
+          },
+          {
+            "wallMs": 3.382300000000214,
+            "sampledHeapDeltaBytes": 3037568
+          },
+          {
+            "wallMs": 4.39449999999988,
+            "sampledHeapDeltaBytes": 2972752
+          },
+          {
+            "wallMs": 5.272699999999986,
+            "sampledHeapDeltaBytes": 2997848
+          }
+        ],
+        "ratioVsJava": 0.6513673436750145,
+        "deltaMsVsJava": -2.18
+      },
+      "maxJsVsJavaRatio": 0.6513673436750145,
+      "slowerInJs": false
+    },
+    {
+      "id": "load.turtle",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class Turtle ontology document.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 8.673,
+        "medianWallMs": 4.039,
+        "medianRetainedHeapDeltaBytes": 1808032
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 3.4812999999999192,
+        "medianWallMs": 2.9840000000000373,
+        "medianSampledHeapDeltaBytes": 3055304,
+        "measurements": [
+          {
+            "wallMs": 3.2180000000000746,
+            "sampledHeapDeltaBytes": 3055304
+          },
+          {
+            "wallMs": 2.9840000000000373,
+            "sampledHeapDeltaBytes": 3019664
+          },
+          {
+            "wallMs": 3.1663999999999533,
+            "sampledHeapDeltaBytes": 3062608
+          },
+          {
+            "wallMs": 2.6591999999999416,
+            "sampledHeapDeltaBytes": 2975984
+          },
+          {
+            "wallMs": 2.8292999999999893,
+            "sampledHeapDeltaBytes": 3086528
+          }
+        ],
+        "ratioVsJava": 0.7387967318643321,
+        "deltaMsVsJava": -1.055
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 3.8760999999999513,
+        "medianWallMs": 2.7708999999999833,
+        "medianSampledHeapDeltaBytes": 2660768,
+        "measurements": [
+          {
+            "wallMs": 2.778799999999592,
+            "sampledHeapDeltaBytes": 2660680
+          },
+          {
+            "wallMs": 2.7355999999999767,
+            "sampledHeapDeltaBytes": 2667256
+          },
+          {
+            "wallMs": 2.7588000000000648,
+            "sampledHeapDeltaBytes": 2682328
+          },
+          {
+            "wallMs": 2.8524999999999636,
+            "sampledHeapDeltaBytes": 2660536
+          },
+          {
+            "wallMs": 2.7708999999999833,
+            "sampledHeapDeltaBytes": 2660768
+          }
+        ],
+        "ratioVsJava": 0.6860361475612734,
+        "deltaMsVsJava": -1.268
+      },
+      "maxJsVsJavaRatio": 0.7387967318643321,
+      "slowerInJs": false
+    },
+    {
+      "id": "load.ntriples",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class N-Triples ontology document.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 33.86,
+        "medianWallMs": 3.915,
+        "medianRetainedHeapDeltaBytes": 1690568
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 3.1823000000000548,
+        "medianWallMs": 2.706199999999967,
+        "medianSampledHeapDeltaBytes": 3063904,
+        "measurements": [
+          {
+            "wallMs": 2.706199999999967,
+            "sampledHeapDeltaBytes": 3066144
+          },
+          {
+            "wallMs": 2.7497999999999365,
+            "sampledHeapDeltaBytes": 3057272
+          },
+          {
+            "wallMs": 2.693899999999985,
+            "sampledHeapDeltaBytes": 3058856
+          },
+          {
+            "wallMs": 2.72079999999994,
+            "sampledHeapDeltaBytes": 3074000
+          },
+          {
+            "wallMs": 2.626800000000003,
+            "sampledHeapDeltaBytes": 3063904
+          }
+        ],
+        "ratioVsJava": 0.69123882503192,
+        "deltaMsVsJava": -1.209
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 3.0950000000002547,
+        "medianWallMs": 2.777799999999843,
+        "medianSampledHeapDeltaBytes": 2760736,
+        "measurements": [
+          {
+            "wallMs": 2.9033000000003995,
+            "sampledHeapDeltaBytes": 2758704
+          },
+          {
+            "wallMs": 2.5936000000001513,
+            "sampledHeapDeltaBytes": 2754776
+          },
+          {
+            "wallMs": 2.7190999999997985,
+            "sampledHeapDeltaBytes": 2762176
+          },
+          {
+            "wallMs": 2.7988000000000284,
+            "sampledHeapDeltaBytes": 2760736
+          },
+          {
+            "wallMs": 2.777799999999843,
+            "sampledHeapDeltaBytes": 2766392
+          }
+        ],
+        "ratioVsJava": 0.7095274584929356,
+        "deltaMsVsJava": -1.137
+      },
+      "maxJsVsJavaRatio": 0.7095274584929356,
+      "slowerInJs": false
+    },
+    {
+      "id": "load.nquads",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class N-Quads ontology document.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 4.728,
+        "medianWallMs": 3.114,
+        "medianRetainedHeapDeltaBytes": 2042888
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 3.1474000000000615,
+        "medianWallMs": 2.7107999999999493,
+        "medianSampledHeapDeltaBytes": 3140616,
+        "measurements": [
+          {
+            "wallMs": 2.7375999999999294,
+            "sampledHeapDeltaBytes": 3147632
+          },
+          {
+            "wallMs": 2.6369999999999436,
+            "sampledHeapDeltaBytes": 3139408
+          },
+          {
+            "wallMs": 2.7128999999999905,
+            "sampledHeapDeltaBytes": 3140064
+          },
+          {
+            "wallMs": 2.6668999999999414,
+            "sampledHeapDeltaBytes": 3142928
+          },
+          {
+            "wallMs": 2.7107999999999493,
+            "sampledHeapDeltaBytes": 3140616
+          }
+        ],
+        "ratioVsJava": 0.8705202312138566,
+        "deltaMsVsJava": -0.403
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 2.935399999999845,
+        "medianWallMs": 2.728800000000774,
+        "medianSampledHeapDeltaBytes": 2855688,
+        "measurements": [
+          {
+            "wallMs": 2.894999999999527,
+            "sampledHeapDeltaBytes": 2864864
+          },
+          {
+            "wallMs": 2.6539999999995416,
+            "sampledHeapDeltaBytes": 2848296
+          },
+          {
+            "wallMs": 2.8141999999998006,
+            "sampledHeapDeltaBytes": 2858592
+          },
+          {
+            "wallMs": 2.728800000000774,
+            "sampledHeapDeltaBytes": 2855672
+          },
+          {
+            "wallMs": 2.7268000000003667,
+            "sampledHeapDeltaBytes": 2855688
+          }
+        ],
+        "ratioVsJava": 0.8763005780349308,
+        "deltaMsVsJava": -0.385
+      },
+      "maxJsVsJavaRatio": 0.8763005780349308,
+      "slowerInJs": false
+    },
+    {
+      "id": "load.trig",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class TriG ontology document.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 12.866,
+        "medianWallMs": 3.391,
+        "medianRetainedHeapDeltaBytes": 1866648
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 3.032299999999964,
+        "medianWallMs": 2.708699999999908,
+        "medianSampledHeapDeltaBytes": 3000264,
+        "measurements": [
+          {
+            "wallMs": 3.060200000000009,
+            "sampledHeapDeltaBytes": 3103304
+          },
+          {
+            "wallMs": 2.708699999999908,
+            "sampledHeapDeltaBytes": 3000264
+          },
+          {
+            "wallMs": 2.754599999999982,
+            "sampledHeapDeltaBytes": 3023944
+          },
+          {
+            "wallMs": 2.596900000000005,
+            "sampledHeapDeltaBytes": 2994592
+          },
+          {
+            "wallMs": 2.6703999999999724,
+            "sampledHeapDeltaBytes": 2994592
+          }
+        ],
+        "ratioVsJava": 0.7987909171335618,
+        "deltaMsVsJava": -0.682
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 3.121399999999994,
+        "medianWallMs": 2.511000000000422,
+        "medianSampledHeapDeltaBytes": 2737784,
+        "measurements": [
+          {
+            "wallMs": 2.3773000000001048,
+            "sampledHeapDeltaBytes": 2692592
+          },
+          {
+            "wallMs": 2.454899999999725,
+            "sampledHeapDeltaBytes": 2722728
+          },
+          {
+            "wallMs": 2.511000000000422,
+            "sampledHeapDeltaBytes": 2737784
+          },
+          {
+            "wallMs": 2.59270000000015,
+            "sampledHeapDeltaBytes": 2737912
+          },
+          {
+            "wallMs": 2.7188999999998487,
+            "sampledHeapDeltaBytes": 2748320
+          }
+        ],
+        "ratioVsJava": 0.7404895311118909,
+        "deltaMsVsJava": -0.88
+      },
+      "maxJsVsJavaRatio": 0.7987909171335618,
+      "slowerInJs": false
+    },
+    {
+      "id": "load.jsonld",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class JSON-LD ontology document.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 224.629,
+        "medianWallMs": 7.632,
+        "medianRetainedHeapDeltaBytes": 1571568
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 5.654499999999871,
+        "medianWallMs": 3.151200000000017,
+        "medianSampledHeapDeltaBytes": 3916264,
+        "measurements": [
+          {
+            "wallMs": 3.151200000000017,
+            "sampledHeapDeltaBytes": 3916264
+          },
+          {
+            "wallMs": 3.123299999999972,
+            "sampledHeapDeltaBytes": 3887248
+          },
+          {
+            "wallMs": 3.2623000000000957,
+            "sampledHeapDeltaBytes": 3939480
+          },
+          {
+            "wallMs": 3.1521000000000186,
+            "sampledHeapDeltaBytes": 3921480
+          },
+          {
+            "wallMs": 3.1274000000000797,
+            "sampledHeapDeltaBytes": 3911312
+          }
+        ],
+        "ratioVsJava": 0.41289308176100853,
+        "deltaMsVsJava": -4.481
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 2.6594999999997526,
+        "medianWallMs": 2.5909999999994398,
+        "medianSampledHeapDeltaBytes": 3618656,
+        "measurements": [
+          {
+            "wallMs": 2.5909999999994398,
+            "sampledHeapDeltaBytes": 3610288
+          },
+          {
+            "wallMs": 2.4690999999993437,
+            "sampledHeapDeltaBytes": 3565752
+          },
+          {
+            "wallMs": 2.663300000000163,
+            "sampledHeapDeltaBytes": 3619408
+          },
+          {
+            "wallMs": 2.5725000000002183,
+            "sampledHeapDeltaBytes": 3618656
+          },
+          {
+            "wallMs": 2.6433999999999287,
+            "sampledHeapDeltaBytes": 3622368
+          }
+        ],
+        "ratioVsJava": 0.3394916142556918,
+        "deltaMsVsJava": -5.041
+      },
+      "maxJsVsJavaRatio": 0.41289308176100853,
+      "slowerInJs": false
+    },
+    {
+      "id": "load.dl",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class DL Syntax ontology document.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 11.436,
+        "medianWallMs": 3.505,
+        "medianRetainedHeapDeltaBytes": 1694336
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 2.8329000000001088,
+        "medianWallMs": 2.4378999999998996,
+        "medianSampledHeapDeltaBytes": 3235504,
+        "measurements": [
+          {
+            "wallMs": 2.866599999999835,
+            "sampledHeapDeltaBytes": 3229424
+          },
+          {
+            "wallMs": 2.4103000000000065,
+            "sampledHeapDeltaBytes": 3235256
+          },
+          {
+            "wallMs": 2.4579999999998563,
+            "sampledHeapDeltaBytes": 3238736
+          },
+          {
+            "wallMs": 2.361799999999903,
+            "sampledHeapDeltaBytes": 3235504
+          },
+          {
+            "wallMs": 2.4378999999998996,
+            "sampledHeapDeltaBytes": 3238512
+          }
+        ],
+        "ratioVsJava": 0.6955492154065335,
+        "deltaMsVsJava": -1.067
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 2.305199999999786,
+        "medianWallMs": 2.2807000000002517,
+        "medianSampledHeapDeltaBytes": 2858992,
+        "measurements": [
+          {
+            "wallMs": 2.669799999999668,
+            "sampledHeapDeltaBytes": 2850632
+          },
+          {
+            "wallMs": 2.2310999999999694,
+            "sampledHeapDeltaBytes": 2858952
+          },
+          {
+            "wallMs": 2.2554999999993015,
+            "sampledHeapDeltaBytes": 2858992
+          },
+          {
+            "wallMs": 2.2807000000002517,
+            "sampledHeapDeltaBytes": 2865800
+          },
+          {
+            "wallMs": 2.3017999999992753,
+            "sampledHeapDeltaBytes": 2861560
+          }
+        ],
+        "ratioVsJava": 0.6506990014266054,
+        "deltaMsVsJava": -1.224
+      },
+      "maxJsVsJavaRatio": 0.6955492154065335,
+      "slowerInJs": false
+    },
+    {
+      "id": "load.krss2",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class KRSS2 ontology document.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 12.295,
+        "medianWallMs": 2.998,
+        "medianRetainedHeapDeltaBytes": 1792680
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 2.144800000000032,
+        "medianWallMs": 1.675799999999981,
+        "medianSampledHeapDeltaBytes": 1036296,
+        "measurements": [
+          {
+            "wallMs": 1.634800000000041,
+            "sampledHeapDeltaBytes": 1034864
+          },
+          {
+            "wallMs": 1.6528000000000702,
+            "sampledHeapDeltaBytes": 1038344
+          },
+          {
+            "wallMs": 1.675799999999981,
+            "sampledHeapDeltaBytes": 1036192
+          },
+          {
+            "wallMs": 1.6967999999999392,
+            "sampledHeapDeltaBytes": 1036296
+          },
+          {
+            "wallMs": 1.7139999999999418,
+            "sampledHeapDeltaBytes": 1036296
+          }
+        ],
+        "ratioVsJava": 0.5589726484322819,
+        "deltaMsVsJava": -1.322
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 1.5178999999998268,
+        "medianWallMs": 1.4533000000001266,
+        "medianSampledHeapDeltaBytes": 659432,
+        "measurements": [
+          {
+            "wallMs": 1.5015999999995984,
+            "sampledHeapDeltaBytes": 662368
+          },
+          {
+            "wallMs": 1.4156000000002678,
+            "sampledHeapDeltaBytes": 663448
+          },
+          {
+            "wallMs": 1.4349999999994907,
+            "sampledHeapDeltaBytes": 659432
+          },
+          {
+            "wallMs": 1.4533000000001266,
+            "sampledHeapDeltaBytes": 659432
+          },
+          {
+            "wallMs": 1.5091000000002168,
+            "sampledHeapDeltaBytes": 659432
+          }
+        ],
+        "ratioVsJava": 0.4847565043362663,
+        "deltaMsVsJava": -1.545
+      },
+      "maxJsVsJavaRatio": 0.5589726484322819,
+      "slowerInJs": false
+    },
+    {
+      "id": "load.krss1",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "StringDocumentSource"
+      ],
+      "description": "Parse a 100-class KRSS1 ontology document.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 10.27,
+        "medianWallMs": 2.819,
+        "medianRetainedHeapDeltaBytes": 2296024
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 2.1619000000000597,
+        "medianWallMs": 2.0753000000001975,
+        "medianSampledHeapDeltaBytes": 1121456,
+        "measurements": [
+          {
+            "wallMs": 2.0679999999999836,
+            "sampledHeapDeltaBytes": 1121200
+          },
+          {
+            "wallMs": 2.2019000000000233,
+            "sampledHeapDeltaBytes": 1122016
+          },
+          {
+            "wallMs": 2.128300000000081,
+            "sampledHeapDeltaBytes": 1120080
+          },
+          {
+            "wallMs": 2.0650000000000546,
+            "sampledHeapDeltaBytes": 1124232
+          },
+          {
+            "wallMs": 2.0753000000001975,
+            "sampledHeapDeltaBytes": 1121456
+          }
+        ],
+        "ratioVsJava": 0.7361830436325639,
+        "deltaMsVsJava": -0.744
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 1.8333999999995285,
+        "medianWallMs": 1.8458999999993466,
+        "medianSampledHeapDeltaBytes": 744176,
+        "measurements": [
+          {
+            "wallMs": 1.854799999999159,
+            "sampledHeapDeltaBytes": 744176
+          },
+          {
+            "wallMs": 1.918100000000777,
+            "sampledHeapDeltaBytes": 753320
+          },
+          {
+            "wallMs": 1.8356000000003405,
+            "sampledHeapDeltaBytes": 744176
+          },
+          {
+            "wallMs": 1.7622000000001208,
+            "sampledHeapDeltaBytes": 751160
+          },
+          {
+            "wallMs": 1.8458999999993466,
+            "sampledHeapDeltaBytes": 744176
+          }
+        ],
+        "ratioVsJava": 0.6548066690313397,
+        "deltaMsVsJava": -0.973
+      },
+      "maxJsVsJavaRatio": 0.7361830436325639,
+      "slowerInJs": false
+    },
+    {
+      "id": "load.importsClosure",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "OWLOntologyManager.loadOntologyFromOntologyDocument",
+        "NodeDocumentLoader"
+      ],
+      "description": "Load an 8-ontology cyclic import closure mapped to local file documents.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 8,
+        "firstUseWallMs": 70.716,
+        "medianWallMs": 48.077,
+        "medianRetainedHeapDeltaBytes": 8388608
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 8,
+        "firstUseWallMs": 13.514300000000048,
+        "medianWallMs": 12.492200000000139,
+        "medianSampledHeapDeltaBytes": 4952016,
+        "measurements": [
+          {
+            "wallMs": 13.693899999999985,
+            "sampledHeapDeltaBytes": 5062592
+          },
+          {
+            "wallMs": 11.964300000000094,
+            "sampledHeapDeltaBytes": 4896432
+          },
+          {
+            "wallMs": 12.492200000000139,
+            "sampledHeapDeltaBytes": 4952016
+          },
+          {
+            "wallMs": 12.982799999999997,
+            "sampledHeapDeltaBytes": 5006160
+          },
+          {
+            "wallMs": 9.577600000000075,
+            "sampledHeapDeltaBytes": 4700720
+          }
+        ],
+        "ratioVsJava": 0.25983734426025207,
+        "deltaMsVsJava": -35.585
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 8,
+        "firstUseWallMs": 12.542899999999463,
+        "medianWallMs": 12.439300000000003,
+        "medianSampledHeapDeltaBytes": 3225272,
+        "measurements": [
+          {
+            "wallMs": 12.78020000000015,
+            "sampledHeapDeltaBytes": 3296248
+          },
+          {
+            "wallMs": 10.433500000000095,
+            "sampledHeapDeltaBytes": 3118336
+          },
+          {
+            "wallMs": 10.4992000000002,
+            "sampledHeapDeltaBytes": 3141648
+          },
+          {
+            "wallMs": 12.439300000000003,
+            "sampledHeapDeltaBytes": 3225272
+          },
+          {
+            "wallMs": 12.493800000000192,
+            "sampledHeapDeltaBytes": 3328984
+          }
+        ],
+        "ratioVsJava": 0.25873702602075843,
+        "deltaMsVsJava": -35.638
+      },
+      "maxJsVsJavaRatio": 0.25983734426025207,
+      "slowerInJs": false
+    },
+    {
+      "id": "load.rdfParserMetaData",
+      "category": "Parsing & Loading",
+      "apiSymbols": [
+        "RDFParserMetaData"
+      ],
+      "description": "Read RDFParserMetaData (triple count, header state, unparsed triples, guessed declarations) 500 times.",
+      "comparability": "checksum-mismatch",
+      "java551": {
+        "verificationCount": 51000,
+        "firstUseWallMs": 4.403,
+        "medianWallMs": 0.218,
+        "medianRetainedHeapDeltaBytes": 437872
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-mismatch",
+        "verificationCount": 76000,
+        "firstUseWallMs": 0.25710000000003674,
+        "medianWallMs": 0.01890000000003056,
+        "medianSampledHeapDeltaBytes": 28352,
+        "measurements": [
+          {
+            "wallMs": 0.08400000000006003,
+            "sampledHeapDeltaBytes": 206120
+          },
+          {
+            "wallMs": 0.014599999999973079,
+            "sampledHeapDeltaBytes": 28352
+          },
+          {
+            "wallMs": 0.01689999999985048,
+            "sampledHeapDeltaBytes": 28352
+          },
+          {
+            "wallMs": 0.019300000000157524,
+            "sampledHeapDeltaBytes": 28352
+          },
+          {
+            "wallMs": 0.01890000000003056,
+            "sampledHeapDeltaBytes": 28352
+          }
+        ],
+        "ratioVsJava": 0.0866972477065622,
+        "deltaMsVsJava": -0.199
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-mismatch",
+        "verificationCount": 76000,
+        "firstUseWallMs": 0.13360000000011496,
+        "medianWallMs": 0.018000000000029104,
+        "medianSampledHeapDeltaBytes": 28256,
+        "measurements": [
+          {
+            "wallMs": 0.12049999999999272,
+            "sampledHeapDeltaBytes": 38888
+          },
+          {
+            "wallMs": 0.013699999999516876,
+            "sampledHeapDeltaBytes": 28256
+          },
+          {
+            "wallMs": 0.018000000000029104,
+            "sampledHeapDeltaBytes": 28256
+          },
+          {
+            "wallMs": 0.023899999999230204,
+            "sampledHeapDeltaBytes": 28256
+          },
+          {
+            "wallMs": 0.013299999999617285,
+            "sampledHeapDeltaBytes": 28256
+          }
+        ],
+        "ratioVsJava": 0.08256880733958305,
+        "deltaMsVsJava": -0.2
+      },
+      "maxJsVsJavaRatio": null,
+      "slowerInJs": false
+    },
+    {
+      "id": "manager.createAndGetOntology",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.createOntology",
+        "OWLOntologyManager.getOntology"
+      ],
+      "description": "Create and look up 100 ontologies by IRI in a manager.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 4.665,
+        "medianWallMs": 2.952,
+        "medianRetainedHeapDeltaBytes": 11064848
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 1.6259000000000015,
+        "medianWallMs": 1.3481999999999061,
+        "medianSampledHeapDeltaBytes": 3158336,
+        "measurements": [
+          {
+            "wallMs": 1.1180000000001655,
+            "sampledHeapDeltaBytes": 3402744
+          },
+          {
+            "wallMs": 1.172800000000052,
+            "sampledHeapDeltaBytes": 3111000
+          },
+          {
+            "wallMs": 1.494799999999941,
+            "sampledHeapDeltaBytes": 3165992
+          },
+          {
+            "wallMs": 1.4692999999999756,
+            "sampledHeapDeltaBytes": 3158336
+          },
+          {
+            "wallMs": 1.3481999999999061,
+            "sampledHeapDeltaBytes": 3121832
+          }
+        ],
+        "ratioVsJava": 0.45670731707313894,
+        "deltaMsVsJava": -1.604
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 1.5219999999999345,
+        "medianWallMs": 1.4808000000002721,
+        "medianSampledHeapDeltaBytes": 3136896,
+        "measurements": [
+          {
+            "wallMs": 1.2588999999998123,
+            "sampledHeapDeltaBytes": 3127072
+          },
+          {
+            "wallMs": 1.4902000000001863,
+            "sampledHeapDeltaBytes": 3136896
+          },
+          {
+            "wallMs": 1.4808000000002721,
+            "sampledHeapDeltaBytes": 3136896
+          },
+          {
+            "wallMs": 1.392399999999725,
+            "sampledHeapDeltaBytes": 3110608
+          },
+          {
+            "wallMs": 1.5016999999998006,
+            "sampledHeapDeltaBytes": 3137088
+          }
+        ],
+        "ratioVsJava": 0.5016260162602548,
+        "deltaMsVsJava": -1.471
+      },
+      "maxJsVsJavaRatio": 0.5016260162602548,
+      "slowerInJs": false
+    },
+    {
+      "id": "manager.addAxioms.bulk",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.addAxioms"
+      ],
+      "description": "Bulk-add 500 axioms to a managed ontology via addAxioms.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 500,
+        "firstUseWallMs": 2.75,
+        "medianWallMs": 2.534,
+        "medianRetainedHeapDeltaBytes": 1702496
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 500,
+        "firstUseWallMs": 0.7212999999999283,
+        "medianWallMs": 0.48840000000018335,
+        "medianSampledHeapDeltaBytes": 479800,
+        "measurements": [
+          {
+            "wallMs": 0.5809000000001561,
+            "sampledHeapDeltaBytes": 479800
+          },
+          {
+            "wallMs": 0.51299999999992,
+            "sampledHeapDeltaBytes": 654656
+          },
+          {
+            "wallMs": 0.4874999999999545,
+            "sampledHeapDeltaBytes": 479832
+          },
+          {
+            "wallMs": 0.48840000000018335,
+            "sampledHeapDeltaBytes": 479800
+          },
+          {
+            "wallMs": 0.47849999999994,
+            "sampledHeapDeltaBytes": 479800
+          }
+        ],
+        "ratioVsJava": 0.19273875295981982,
+        "deltaMsVsJava": -2.046
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 500,
+        "firstUseWallMs": 0.23800000000028376,
+        "medianWallMs": 0.22629999999935535,
+        "medianSampledHeapDeltaBytes": 192192,
+        "measurements": [
+          {
+            "wallMs": 0.23520000000007713,
+            "sampledHeapDeltaBytes": 192192
+          },
+          {
+            "wallMs": 0.22629999999935535,
+            "sampledHeapDeltaBytes": 192192
+          },
+          {
+            "wallMs": 0.22620000000006257,
+            "sampledHeapDeltaBytes": 192192
+          },
+          {
+            "wallMs": 0.21880000000055588,
+            "sampledHeapDeltaBytes": 192192
+          },
+          {
+            "wallMs": 0.240099999999984,
+            "sampledHeapDeltaBytes": 192192
+          }
+        ],
+        "ratioVsJava": 0.08930544593502579,
+        "deltaMsVsJava": -2.308
+      },
+      "maxJsVsJavaRatio": 0.19273875295981982,
+      "slowerInJs": false
+    },
+    {
+      "id": "manager.addAxiom.singleLoop",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.addAxiom"
+      ],
+      "description": "Sequentially add 200 axioms one-by-one via addAxiom.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 200,
+        "firstUseWallMs": 2.376,
+        "medianWallMs": 1.995,
+        "medianRetainedHeapDeltaBytes": 1167280
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 200,
+        "firstUseWallMs": 0.8987000000001899,
+        "medianWallMs": 0.6811999999999898,
+        "medianSampledHeapDeltaBytes": 1730256,
+        "measurements": [
+          {
+            "wallMs": 0.6871999999998479,
+            "sampledHeapDeltaBytes": 1722136
+          },
+          {
+            "wallMs": 0.6790999999998348,
+            "sampledHeapDeltaBytes": 1732816
+          },
+          {
+            "wallMs": 0.6811999999999898,
+            "sampledHeapDeltaBytes": 1730256
+          },
+          {
+            "wallMs": 0.6733999999999014,
+            "sampledHeapDeltaBytes": 1730256
+          },
+          {
+            "wallMs": 0.705600000000004,
+            "sampledHeapDeltaBytes": 1730256
+          }
+        ],
+        "ratioVsJava": 0.3414536340852079,
+        "deltaMsVsJava": -1.314
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 200,
+        "firstUseWallMs": 0.641299999999319,
+        "medianWallMs": 0.5751000000000204,
+        "medianSampledHeapDeltaBytes": 1366032,
+        "measurements": [
+          {
+            "wallMs": 0.5576000000000931,
+            "sampledHeapDeltaBytes": 1290144
+          },
+          {
+            "wallMs": 0.5842000000002372,
+            "sampledHeapDeltaBytes": 1366032
+          },
+          {
+            "wallMs": 0.5929999999998472,
+            "sampledHeapDeltaBytes": 1373728
+          },
+          {
+            "wallMs": 0.48919999999998254,
+            "sampledHeapDeltaBytes": 1287408
+          },
+          {
+            "wallMs": 0.5751000000000204,
+            "sampledHeapDeltaBytes": 1366032
+          }
+        ],
+        "ratioVsJava": 0.2882706766917395,
+        "deltaMsVsJava": -1.42
+      },
+      "maxJsVsJavaRatio": 0.3414536340852079,
+      "slowerInJs": false
+    },
+    {
+      "id": "manager.removeAxioms.bulk",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.removeAxioms"
+      ],
+      "description": "Bulk-add and bulk-remove 500 axioms via removeAxioms.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 0,
+        "firstUseWallMs": 12.117,
+        "medianWallMs": 5.363,
+        "medianRetainedHeapDeltaBytes": 2237728
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 0,
+        "firstUseWallMs": 1.1424999999999272,
+        "medianWallMs": 0.9352999999998701,
+        "medianSampledHeapDeltaBytes": 1030576,
+        "measurements": [
+          {
+            "wallMs": 0.9475999999999658,
+            "sampledHeapDeltaBytes": 1030576
+          },
+          {
+            "wallMs": 0.9075000000000273,
+            "sampledHeapDeltaBytes": 1030576
+          },
+          {
+            "wallMs": 0.9078000000001794,
+            "sampledHeapDeltaBytes": 1030576
+          },
+          {
+            "wallMs": 0.9557999999999538,
+            "sampledHeapDeltaBytes": 1030576
+          },
+          {
+            "wallMs": 0.9352999999998701,
+            "sampledHeapDeltaBytes": 1030576
+          }
+        ],
+        "ratioVsJava": 0.17439865746781094,
+        "deltaMsVsJava": -4.428
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 0,
+        "firstUseWallMs": 4.957400000000234,
+        "medianWallMs": 0.6109999999998763,
+        "medianSampledHeapDeltaBytes": 752784,
+        "measurements": [
+          {
+            "wallMs": 0.6109999999998763,
+            "sampledHeapDeltaBytes": 752784
+          },
+          {
+            "wallMs": 0.6024999999999636,
+            "sampledHeapDeltaBytes": 752752
+          },
+          {
+            "wallMs": 0.6358000000000175,
+            "sampledHeapDeltaBytes": 928704
+          },
+          {
+            "wallMs": 0.6075000000000728,
+            "sampledHeapDeltaBytes": 745608
+          },
+          {
+            "wallMs": 0.6450999999997293,
+            "sampledHeapDeltaBytes": 753872
+          }
+        ],
+        "ratioVsJava": 0.1139287712101205,
+        "deltaMsVsJava": -4.752
+      },
+      "maxJsVsJavaRatio": 0.17439865746781094,
+      "slowerInJs": false
+    },
+    {
+      "id": "manager.removeAxiom.singleLoop",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.removeAxiom"
+      ],
+      "description": "Bulk-add 200 axioms and remove them one-by-one via removeAxiom.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 0,
+        "firstUseWallMs": 2.814,
+        "medianWallMs": 2.758,
+        "medianRetainedHeapDeltaBytes": 1167264
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 0,
+        "firstUseWallMs": 1.3119999999998981,
+        "medianWallMs": 1.2596000000000913,
+        "medianSampledHeapDeltaBytes": 4790920,
+        "measurements": [
+          {
+            "wallMs": 1.2596000000000913,
+            "sampledHeapDeltaBytes": 4790920
+          },
+          {
+            "wallMs": 1.546199999999999,
+            "sampledHeapDeltaBytes": 4790920
+          },
+          {
+            "wallMs": 1.2415999999998348,
+            "sampledHeapDeltaBytes": 4797664
+          },
+          {
+            "wallMs": 1.2528999999999542,
+            "sampledHeapDeltaBytes": 4790920
+          },
+          {
+            "wallMs": 1.2951000000000477,
+            "sampledHeapDeltaBytes": 4795328
+          }
+        ],
+        "ratioVsJava": 0.45670775924586343,
+        "deltaMsVsJava": -1.498
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 0,
+        "firstUseWallMs": 1.1987999999992098,
+        "medianWallMs": 1.2145000000000437,
+        "medianSampledHeapDeltaBytes": 4844680,
+        "measurements": [
+          {
+            "wallMs": 1.2214999999996508,
+            "sampledHeapDeltaBytes": 4832864
+          },
+          {
+            "wallMs": 1.153599999999642,
+            "sampledHeapDeltaBytes": 4864688
+          },
+          {
+            "wallMs": 1.2711000000008426,
+            "sampledHeapDeltaBytes": 4844680
+          },
+          {
+            "wallMs": 1.1390000000001237,
+            "sampledHeapDeltaBytes": 4862360
+          },
+          {
+            "wallMs": 1.2145000000000437,
+            "sampledHeapDeltaBytes": 4832864
+          }
+        ],
+        "ratioVsJava": 0.4403553299492544,
+        "deltaMsVsJava": -1.543
+      },
+      "maxJsVsJavaRatio": 0.45670775924586343,
+      "slowerInJs": false
+    },
+    {
+      "id": "manager.applyChanges.mixed",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.applyChanges",
+        "AddAxiom",
+        "RemoveAxiom",
+        "AddOntologyAnnotation",
+        "RemoveOntologyAnnotation",
+        "AddImport",
+        "RemoveImport",
+        "SetOntologyID"
+      ],
+      "description": "Apply a mixed batch of 125 ontology change objects via applyChanges.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 40,
+        "firstUseWallMs": 3.341,
+        "medianWallMs": 1.91,
+        "medianRetainedHeapDeltaBytes": 632048
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 40,
+        "firstUseWallMs": 0.6746000000000549,
+        "medianWallMs": 0.38570000000004256,
+        "medianSampledHeapDeltaBytes": 198848,
+        "measurements": [
+          {
+            "wallMs": 0.37360000000012406,
+            "sampledHeapDeltaBytes": 213808
+          },
+          {
+            "wallMs": 0.38570000000004256,
+            "sampledHeapDeltaBytes": 200088
+          },
+          {
+            "wallMs": 0.3605000000000018,
+            "sampledHeapDeltaBytes": 198848
+          },
+          {
+            "wallMs": 0.47849999999994,
+            "sampledHeapDeltaBytes": 196488
+          },
+          {
+            "wallMs": 0.46289999999999054,
+            "sampledHeapDeltaBytes": 196592
+          }
+        ],
+        "ratioVsJava": 0.2019371727748914,
+        "deltaMsVsJava": -1.524
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 40,
+        "firstUseWallMs": 0.32920000000012806,
+        "medianWallMs": 0.32300000000032014,
+        "medianSampledHeapDeltaBytes": 166368,
+        "measurements": [
+          {
+            "wallMs": 0.3789999999999054,
+            "sampledHeapDeltaBytes": 165448
+          },
+          {
+            "wallMs": 0.29609999999956926,
+            "sampledHeapDeltaBytes": 164808
+          },
+          {
+            "wallMs": 0.3474000000005617,
+            "sampledHeapDeltaBytes": 166400
+          },
+          {
+            "wallMs": 0.3209999999999127,
+            "sampledHeapDeltaBytes": 167168
+          },
+          {
+            "wallMs": 0.32300000000032014,
+            "sampledHeapDeltaBytes": 166368
+          }
+        ],
+        "ratioVsJava": 0.1691099476441467,
+        "deltaMsVsJava": -1.587
+      },
+      "maxJsVsJavaRatio": 0.2019371727748914,
+      "slowerInJs": false
+    },
+    {
+      "id": "manager.getImportsClosure",
+      "category": "Ontology Lifecycle & Mutations",
+      "apiSymbols": [
+        "OWLOntologyManager.getImportsClosure"
+      ],
+      "description": "Query getImportsClosure 1,000 times on an 8-ontology closure.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 8000,
+        "firstUseWallMs": 1.552,
+        "medianWallMs": 0.748,
+        "medianRetainedHeapDeltaBytes": 1070440
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 8000,
+        "firstUseWallMs": 0.7690000000000055,
+        "medianWallMs": 0.5058999999998832,
+        "medianSampledHeapDeltaBytes": 858304,
+        "measurements": [
+          {
+            "wallMs": 0.5172000000000025,
+            "sampledHeapDeltaBytes": 858304
+          },
+          {
+            "wallMs": 0.43630000000007385,
+            "sampledHeapDeltaBytes": 858416
+          },
+          {
+            "wallMs": 0.5224000000000615,
+            "sampledHeapDeltaBytes": 856408
+          },
+          {
+            "wallMs": 0.5058999999998832,
+            "sampledHeapDeltaBytes": 856408
+          },
+          {
+            "wallMs": 0.4214000000001761,
+            "sampledHeapDeltaBytes": 858416
+          }
+        ],
+        "ratioVsJava": 0.6763368983955658,
+        "deltaMsVsJava": -0.242
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 8000,
+        "firstUseWallMs": 0.417699999999968,
+        "medianWallMs": 0.29020000000036816,
+        "medianSampledHeapDeltaBytes": 896360,
+        "measurements": [
+          {
+            "wallMs": 0.3433999999997468,
+            "sampledHeapDeltaBytes": 914640
+          },
+          {
+            "wallMs": 0.3059000000002925,
+            "sampledHeapDeltaBytes": 901256
+          },
+          {
+            "wallMs": 0.2901000000001659,
+            "sampledHeapDeltaBytes": 896360
+          },
+          {
+            "wallMs": 0.2569999999996071,
+            "sampledHeapDeltaBytes": 896360
+          },
+          {
+            "wallMs": 0.29020000000036816,
+            "sampledHeapDeltaBytes": 896360
+          }
+        ],
+        "ratioVsJava": 0.38796791443899487,
+        "deltaMsVsJava": -0.458
+      },
+      "maxJsVsJavaRatio": 0.6763368983955658,
+      "slowerInJs": false
+    },
+    {
+      "id": "ontology.getAxioms.excluded",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getAxioms",
+        "OWLOntology.getAxiomCount",
+        "OWLOntology.getAnnotations",
+        "OWLOntology.getImportsDeclarations",
+        "OWLOntology.getOntologyID"
+      ],
+      "description": "Query direct axioms, axiom count, annotations, imports, and ontology ID 200 times.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 937400,
+        "firstUseWallMs": 37.136,
+        "medianWallMs": 28.297,
+        "medianRetainedHeapDeltaBytes": 38778656
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 937400,
+        "firstUseWallMs": 16.536699999999882,
+        "medianWallMs": 13.585399999999936,
+        "medianSampledHeapDeltaBytes": 18859592,
+        "measurements": [
+          {
+            "wallMs": 14.215399999999818,
+            "sampledHeapDeltaBytes": 18982736
+          },
+          {
+            "wallMs": 13.583200000000033,
+            "sampledHeapDeltaBytes": 18859592
+          },
+          {
+            "wallMs": 13.5791999999999,
+            "sampledHeapDeltaBytes": 18864488
+          },
+          {
+            "wallMs": 13.585399999999936,
+            "sampledHeapDeltaBytes": 18859592
+          },
+          {
+            "wallMs": 13.596399999999903,
+            "sampledHeapDeltaBytes": 18859592
+          }
+        ],
+        "ratioVsJava": 0.48010036399618106,
+        "deltaMsVsJava": -14.712
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 937400,
+        "firstUseWallMs": 14.987699999999677,
+        "medianWallMs": 14.53229999999985,
+        "medianSampledHeapDeltaBytes": 18859592,
+        "measurements": [
+          {
+            "wallMs": 14.622800000000097,
+            "sampledHeapDeltaBytes": 18859592
+          },
+          {
+            "wallMs": 14.53229999999985,
+            "sampledHeapDeltaBytes": 18859592
+          },
+          {
+            "wallMs": 14.848500000000058,
+            "sampledHeapDeltaBytes": 18859592
+          },
+          {
+            "wallMs": 14.431399999999485,
+            "sampledHeapDeltaBytes": 18859592
+          },
+          {
+            "wallMs": 14.386199999999917,
+            "sampledHeapDeltaBytes": 18859592
+          }
+        ],
+        "ratioVsJava": 0.513563275258856,
+        "deltaMsVsJava": -13.765
+      },
+      "maxJsVsJavaRatio": 0.513563275258856,
+      "slowerInJs": false
+    },
+    {
+      "id": "ontology.getAxioms.included",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getAxioms",
+        "OWLOntology.getAxiomCount"
+      ],
+      "description": "Query closure-included axioms and axiom count 200 times.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 1304000,
+        "firstUseWallMs": 37.886,
+        "medianWallMs": 44.337,
+        "medianRetainedHeapDeltaBytes": 55652544
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 1304000,
+        "firstUseWallMs": 19.09770000000003,
+        "medianWallMs": 17.98180000000002,
+        "medianSampledHeapDeltaBytes": 29383072,
+        "measurements": [
+          {
+            "wallMs": 17.98180000000002,
+            "sampledHeapDeltaBytes": 29394080
+          },
+          {
+            "wallMs": 18.044900000000098,
+            "sampledHeapDeltaBytes": 29383072
+          },
+          {
+            "wallMs": 18.08439999999996,
+            "sampledHeapDeltaBytes": 29383072
+          },
+          {
+            "wallMs": 17.957100000000082,
+            "sampledHeapDeltaBytes": 29387624
+          },
+          {
+            "wallMs": 17.95309999999995,
+            "sampledHeapDeltaBytes": 29383072
+          }
+        ],
+        "ratioVsJava": 0.4055709678146925,
+        "deltaMsVsJava": -26.355
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 1304000,
+        "firstUseWallMs": 19.862700000000586,
+        "medianWallMs": 19.147100000000137,
+        "medianSampledHeapDeltaBytes": 29383256,
+        "measurements": [
+          {
+            "wallMs": 19.232500000000073,
+            "sampledHeapDeltaBytes": 29393960
+          },
+          {
+            "wallMs": 19.086999999999534,
+            "sampledHeapDeltaBytes": 29383256
+          },
+          {
+            "wallMs": 19.147100000000137,
+            "sampledHeapDeltaBytes": 29383256
+          },
+          {
+            "wallMs": 19.293800000000374,
+            "sampledHeapDeltaBytes": 29383256
+          },
+          {
+            "wallMs": 18.99120000000039,
+            "sampledHeapDeltaBytes": 29383256
+          }
+        ],
+        "ratioVsJava": 0.43185375645623597,
+        "deltaMsVsJava": -25.19
+      },
+      "maxJsVsJavaRatio": 0.43185375645623597,
+      "slowerInJs": false
+    },
+    {
+      "id": "ontology.getLogicalAxioms",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getLogicalAxioms",
+        "OWLOntology.getLogicalAxiomCount"
+      ],
+      "description": "Query logical axioms and counts (Imports.EXCLUDED and INCLUDED) 100 times.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 696000,
+        "firstUseWallMs": 18.944,
+        "medianWallMs": 20.477,
+        "medianRetainedHeapDeltaBytes": 24357216
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 696000,
+        "firstUseWallMs": 10.441100000000006,
+        "medianWallMs": 11.607899999999972,
+        "medianSampledHeapDeltaBytes": 31462232,
+        "measurements": [
+          {
+            "wallMs": 11.650700000000143,
+            "sampledHeapDeltaBytes": 31460968
+          },
+          {
+            "wallMs": 11.417199999999866,
+            "sampledHeapDeltaBytes": 31460968
+          },
+          {
+            "wallMs": 10.232899999999972,
+            "sampledHeapDeltaBytes": 31462232
+          },
+          {
+            "wallMs": 11.607899999999972,
+            "sampledHeapDeltaBytes": 31471088
+          },
+          {
+            "wallMs": 11.974699999999984,
+            "sampledHeapDeltaBytes": 31462976
+          }
+        ],
+        "ratioVsJava": 0.5668750305220478,
+        "deltaMsVsJava": -8.869
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 696000,
+        "firstUseWallMs": 10.602199999999357,
+        "medianWallMs": 10.029900000000453,
+        "medianSampledHeapDeltaBytes": 31461192,
+        "measurements": [
+          {
+            "wallMs": 10.105599999999868,
+            "sampledHeapDeltaBytes": 31461192
+          },
+          {
+            "wallMs": 9.921799999999166,
+            "sampledHeapDeltaBytes": 31457448
+          },
+          {
+            "wallMs": 10.02679999999964,
+            "sampledHeapDeltaBytes": 31462672
+          },
+          {
+            "wallMs": 10.09439999999995,
+            "sampledHeapDeltaBytes": 31461192
+          },
+          {
+            "wallMs": 10.029900000000453,
+            "sampledHeapDeltaBytes": 31461192
+          }
+        ],
+        "ratioVsJava": 0.48981296088296394,
+        "deltaMsVsJava": -10.447
+      },
+      "maxJsVsJavaRatio": 0.5668750305220478,
+      "slowerInJs": false
+    },
+    {
+      "id": "ontology.getAxiomsByType",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getAxiomsByType",
+        "OWLOntology.getAxiomCount"
+      ],
+      "description": "Query axioms and counts across all 38 axiom types (EXCLUDED and INCLUDED) for 20 passes.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 224000,
+        "firstUseWallMs": 18.985,
+        "medianWallMs": 9.883,
+        "medianRetainedHeapDeltaBytes": 9511672
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 224000,
+        "firstUseWallMs": 5.12070000000017,
+        "medianWallMs": 3.744100000000117,
+        "medianSampledHeapDeltaBytes": 13226264,
+        "measurements": [
+          {
+            "wallMs": 3.744100000000117,
+            "sampledHeapDeltaBytes": 13219528
+          },
+          {
+            "wallMs": 3.774599999999964,
+            "sampledHeapDeltaBytes": 13239936
+          },
+          {
+            "wallMs": 3.764599999999973,
+            "sampledHeapDeltaBytes": 13226264
+          },
+          {
+            "wallMs": 3.6376999999999953,
+            "sampledHeapDeltaBytes": 13218728
+          },
+          {
+            "wallMs": 3.6156999999998334,
+            "sampledHeapDeltaBytes": 13232912
+          }
+        ],
+        "ratioVsJava": 0.37884245674391553,
+        "deltaMsVsJava": -6.139
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 224000,
+        "firstUseWallMs": 5.284700000000157,
+        "medianWallMs": 3.7712000000001353,
+        "medianSampledHeapDeltaBytes": 13309256,
+        "measurements": [
+          {
+            "wallMs": 3.675799999999981,
+            "sampledHeapDeltaBytes": 13309256
+          },
+          {
+            "wallMs": 3.7750999999998385,
+            "sampledHeapDeltaBytes": 13313016
+          },
+          {
+            "wallMs": 4.449300000000221,
+            "sampledHeapDeltaBytes": 13345368
+          },
+          {
+            "wallMs": 3.763600000000224,
+            "sampledHeapDeltaBytes": 13232128
+          },
+          {
+            "wallMs": 3.7712000000001353,
+            "sampledHeapDeltaBytes": 13229648
+          }
+        ],
+        "ratioVsJava": 0.3815845391075722,
+        "deltaMsVsJava": -6.112
+      },
+      "maxJsVsJavaRatio": 0.3815845391075722,
+      "slowerInJs": false
+    },
+    {
+      "id": "ontology.containsAxiom",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.containsAxiom",
+        "OWLOntology.containsAxiomIgnoreAnnotations",
+        "OWLOntology.getAxiomsIgnoreAnnotations"
+      ],
+      "description": "Test exact and annotation-ignoring axiom containment and retrieval for 200 axioms.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 1200,
+        "firstUseWallMs": 31.62,
+        "medianWallMs": 18.172,
+        "medianRetainedHeapDeltaBytes": 28493064
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 1200,
+        "firstUseWallMs": 3.8903999999999996,
+        "medianWallMs": 0.4993000000001757,
+        "medianSampledHeapDeltaBytes": 1318680,
+        "measurements": [
+          {
+            "wallMs": 0.5096000000000913,
+            "sampledHeapDeltaBytes": 1318608
+          },
+          {
+            "wallMs": 0.5865999999998621,
+            "sampledHeapDeltaBytes": 1329368
+          },
+          {
+            "wallMs": 0.4993000000001757,
+            "sampledHeapDeltaBytes": 1318608
+          },
+          {
+            "wallMs": 0.49499999999989086,
+            "sampledHeapDeltaBytes": 1318680
+          },
+          {
+            "wallMs": 0.48549999999977445,
+            "sampledHeapDeltaBytes": 1320616
+          }
+        ],
+        "ratioVsJava": 0.0274763372221096,
+        "deltaMsVsJava": -17.673
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 1200,
+        "firstUseWallMs": 3.088999999999942,
+        "medianWallMs": 0.4359999999996944,
+        "medianSampledHeapDeltaBytes": 1324352,
+        "measurements": [
+          {
+            "wallMs": 0.4359999999996944,
+            "sampledHeapDeltaBytes": 1324352
+          },
+          {
+            "wallMs": 0.4117999999998574,
+            "sampledHeapDeltaBytes": 1324352
+          },
+          {
+            "wallMs": 0.44139999999970314,
+            "sampledHeapDeltaBytes": 1324352
+          },
+          {
+            "wallMs": 0.4069999999992433,
+            "sampledHeapDeltaBytes": 1324352
+          },
+          {
+            "wallMs": 0.44030000000020664,
+            "sampledHeapDeltaBytes": 1329160
+          }
+        ],
+        "ratioVsJava": 0.02399295619632921,
+        "deltaMsVsJava": -17.736
+      },
+      "maxJsVsJavaRatio": 0.0274763372221096,
+      "slowerInJs": false
+    },
+    {
+      "id": "ontology.getSignature",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getSignature",
+        "OWLOntology.getClassesInSignature",
+        "OWLOntology.getObjectPropertiesInSignature",
+        "OWLOntology.getDataPropertiesInSignature",
+        "OWLOntology.getAnnotationPropertiesInSignature",
+        "OWLOntology.getIndividualsInSignature",
+        "OWLOntology.getDatatypesInSignature"
+      ],
+      "description": "Query full and kind-partitioned signatures (EXCLUDED and INCLUDED) 100 times.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 286000,
+        "firstUseWallMs": 55.371,
+        "medianWallMs": 36.986,
+        "medianRetainedHeapDeltaBytes": 61314976
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 286000,
+        "firstUseWallMs": 11.158500000000004,
+        "medianWallMs": 6.807800000000043,
+        "medianSampledHeapDeltaBytes": 29138296,
+        "measurements": [
+          {
+            "wallMs": 6.927999999999884,
+            "sampledHeapDeltaBytes": 29163568
+          },
+          {
+            "wallMs": 6.755300000000261,
+            "sampledHeapDeltaBytes": 29138296
+          },
+          {
+            "wallMs": 6.7979999999997744,
+            "sampledHeapDeltaBytes": 29138296
+          },
+          {
+            "wallMs": 6.8103000000000975,
+            "sampledHeapDeltaBytes": 29138296
+          },
+          {
+            "wallMs": 6.807800000000043,
+            "sampledHeapDeltaBytes": 29139272
+          }
+        ],
+        "ratioVsJava": 0.18406424052344247,
+        "deltaMsVsJava": -30.178
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 286000,
+        "firstUseWallMs": 10.417699999999968,
+        "medianWallMs": 7.04109999999946,
+        "medianSampledHeapDeltaBytes": 29138464,
+        "measurements": [
+          {
+            "wallMs": 7.102600000000166,
+            "sampledHeapDeltaBytes": 29138464
+          },
+          {
+            "wallMs": 7.04109999999946,
+            "sampledHeapDeltaBytes": 29138464
+          },
+          {
+            "wallMs": 6.938999999999396,
+            "sampledHeapDeltaBytes": 29143192
+          },
+          {
+            "wallMs": 6.994400000000496,
+            "sampledHeapDeltaBytes": 29138464
+          },
+          {
+            "wallMs": 7.724800000000869,
+            "sampledHeapDeltaBytes": 29138464
+          }
+        ],
+        "ratioVsJava": 0.19037203266099229,
+        "deltaMsVsJava": -29.945
+      },
+      "maxJsVsJavaRatio": 0.19037203266099229,
+      "slowerInJs": false
+    },
+    {
+      "id": "ontology.entitySignatureLookups",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getEntitiesInSignature",
+        "OWLOntology.containsEntityInSignature",
+        "OWLOntology.getPunnedIRIs",
+        "OWLOntology.getReferencedAnonymousIndividuals"
+      ],
+      "description": "Query entity-by-IRI signature lookups, punned IRIs, and anonymous individuals for 5 passes.",
+      "comparability": "checksum-mismatch",
+      "java551": {
+        "verificationCount": 1580,
+        "firstUseWallMs": 49.654,
+        "medianWallMs": 28.095,
+        "medianRetainedHeapDeltaBytes": 24888008
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-mismatch",
+        "verificationCount": 1550,
+        "firstUseWallMs": 1.6302999999998065,
+        "medianWallMs": 0.7600999999999658,
+        "medianSampledHeapDeltaBytes": 3017448,
+        "measurements": [
+          {
+            "wallMs": 0.7850000000003092,
+            "sampledHeapDeltaBytes": 3017448
+          },
+          {
+            "wallMs": 0.7755999999999403,
+            "sampledHeapDeltaBytes": 3031360
+          },
+          {
+            "wallMs": 0.7242999999998574,
+            "sampledHeapDeltaBytes": 3017448
+          },
+          {
+            "wallMs": 0.7600999999999658,
+            "sampledHeapDeltaBytes": 3017448
+          },
+          {
+            "wallMs": 0.7078000000001339,
+            "sampledHeapDeltaBytes": 3017448
+          }
+        ],
+        "ratioVsJava": 0.02705463605623655,
+        "deltaMsVsJava": -27.335
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-mismatch",
+        "verificationCount": 1550,
+        "firstUseWallMs": 1.6011000000007698,
+        "medianWallMs": 0.7430000000003929,
+        "medianSampledHeapDeltaBytes": 3017560,
+        "measurements": [
+          {
+            "wallMs": 0.6849999999994907,
+            "sampledHeapDeltaBytes": 3017560
+          },
+          {
+            "wallMs": 1.0990999999994528,
+            "sampledHeapDeltaBytes": 3017560
+          },
+          {
+            "wallMs": 1.1085000000002765,
+            "sampledHeapDeltaBytes": 3017560
+          },
+          {
+            "wallMs": 0.7430000000003929,
+            "sampledHeapDeltaBytes": 3017560
+          },
+          {
+            "wallMs": 0.6640999999999622,
+            "sampledHeapDeltaBytes": 3017560
+          }
+        ],
+        "ratioVsJava": 0.026445986830410852,
+        "deltaMsVsJava": -27.352
+      },
+      "maxJsVsJavaRatio": null,
+      "slowerInJs": false
+    },
+    {
+      "id": "ontology.getReferencingAxioms",
+      "category": "Ontology Queries - General & Signature",
+      "apiSymbols": [
+        "OWLOntology.getReferencingAxioms"
+      ],
+      "description": "Query referencing axioms (EXCLUDED and INCLUDED) for 50 entities.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 880,
+        "firstUseWallMs": 1.495,
+        "medianWallMs": 0.326,
+        "medianRetainedHeapDeltaBytes": 1305408
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 880,
+        "firstUseWallMs": 4.070699999999761,
+        "medianWallMs": 0.12840000000005602,
+        "medianSampledHeapDeltaBytes": 275712,
+        "measurements": [
+          {
+            "wallMs": 0.20620000000008076,
+            "sampledHeapDeltaBytes": 283656
+          },
+          {
+            "wallMs": 0.176499999999578,
+            "sampledHeapDeltaBytes": 283784
+          },
+          {
+            "wallMs": 0.12840000000005602,
+            "sampledHeapDeltaBytes": 275712
+          },
+          {
+            "wallMs": 0.12620000000015352,
+            "sampledHeapDeltaBytes": 275584
+          },
+          {
+            "wallMs": 0.1281000000003587,
+            "sampledHeapDeltaBytes": 275424
+          }
+        ],
+        "ratioVsJava": 0.3938650306750185,
+        "deltaMsVsJava": -0.198
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 880,
+        "firstUseWallMs": 3.0486000000000786,
+        "medianWallMs": 0.1279000000004089,
+        "medianSampledHeapDeltaBytes": 275896,
+        "measurements": [
+          {
+            "wallMs": 0.1279000000004089,
+            "sampledHeapDeltaBytes": 275896
+          },
+          {
+            "wallMs": 0.13880000000062864,
+            "sampledHeapDeltaBytes": 275896
+          },
+          {
+            "wallMs": 0.12089999999989232,
+            "sampledHeapDeltaBytes": 275848
+          },
+          {
+            "wallMs": 0.11200000000008004,
+            "sampledHeapDeltaBytes": 275896
+          },
+          {
+            "wallMs": 0.14090000000032887,
+            "sampledHeapDeltaBytes": 275896
+          }
+        ],
+        "ratioVsJava": 0.39233128834481257,
+        "deltaMsVsJava": -0.198
+      },
+      "maxJsVsJavaRatio": 0.3938650306750185,
+      "slowerInJs": false
+    },
+    {
+      "id": "ontology.classAxiomIndexes",
+      "category": "Ontology Queries - Specific Axiom Indexes",
+      "apiSymbols": [
+        "OWLOntology.getSubClassAxiomsForSubClass",
+        "OWLOntology.getSubClassAxiomsForSuperClass",
+        "OWLOntology.getEquivalentClassesAxioms",
+        "OWLOntology.getDisjointClassesAxioms"
+      ],
+      "description": "Query all 4 class-axiom index getters across 60 classes for 10 passes.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 3000,
+        "firstUseWallMs": 18.496,
+        "medianWallMs": 2.125,
+        "medianRetainedHeapDeltaBytes": 2610872
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 3000,
+        "firstUseWallMs": 1.1556000000000495,
+        "medianWallMs": 0.39249999999992724,
+        "medianSampledHeapDeltaBytes": 1906424,
+        "measurements": [
+          {
+            "wallMs": 0.39249999999992724,
+            "sampledHeapDeltaBytes": 1906736
+          },
+          {
+            "wallMs": 0.3708999999998923,
+            "sampledHeapDeltaBytes": 1906424
+          },
+          {
+            "wallMs": 0.40360000000009677,
+            "sampledHeapDeltaBytes": 1906424
+          },
+          {
+            "wallMs": 0.3463000000001557,
+            "sampledHeapDeltaBytes": 1906704
+          },
+          {
+            "wallMs": 0.3930000000000291,
+            "sampledHeapDeltaBytes": 1906424
+          }
+        ],
+        "ratioVsJava": 0.18470588235290694,
+        "deltaMsVsJava": -1.733
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 3000,
+        "firstUseWallMs": 0.7665999999999258,
+        "medianWallMs": 0.44210000000020955,
+        "medianSampledHeapDeltaBytes": 1906424,
+        "measurements": [
+          {
+            "wallMs": 0.5635999999994965,
+            "sampledHeapDeltaBytes": 1942760
+          },
+          {
+            "wallMs": 0.44210000000020955,
+            "sampledHeapDeltaBytes": 1906424
+          },
+          {
+            "wallMs": 0.41740000000027067,
+            "sampledHeapDeltaBytes": 1906424
+          },
+          {
+            "wallMs": 0.41349999999965803,
+            "sampledHeapDeltaBytes": 1906424
+          },
+          {
+            "wallMs": 0.4444000000003143,
+            "sampledHeapDeltaBytes": 1906424
+          }
+        ],
+        "ratioVsJava": 0.20804705882362803,
+        "deltaMsVsJava": -1.683
+      },
+      "maxJsVsJavaRatio": 0.20804705882362803,
+      "slowerInJs": false
+    },
+    {
+      "id": "ontology.objectPropertyAxiomIndexes",
+      "category": "Ontology Queries - Specific Axiom Indexes",
+      "apiSymbols": [
+        "OWLOntology.getObjectSubPropertyAxiomsForSubProperty",
+        "OWLOntology.getObjectSubPropertyAxiomsForSuperProperty",
+        "OWLOntology.getObjectPropertyDomainAxioms",
+        "OWLOntology.getObjectPropertyRangeAxioms",
+        "OWLOntology.getInverseObjectPropertyAxioms",
+        "OWLOntology.getFunctionalObjectPropertyAxioms",
+        "OWLOntology.getInverseFunctionalObjectPropertyAxioms",
+        "OWLOntology.getSymmetricObjectPropertyAxioms",
+        "OWLOntology.getAsymmetricObjectPropertyAxioms",
+        "OWLOntology.getReflexiveObjectPropertyAxioms",
+        "OWLOntology.getIrreflexiveObjectPropertyAxioms",
+        "OWLOntology.getTransitiveObjectPropertyAxioms"
+      ],
+      "description": "Query all 12 object-property axiom index getters across 60 properties for 10 passes.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 4800,
+        "firstUseWallMs": 17.063,
+        "medianWallMs": 4.907,
+        "medianRetainedHeapDeltaBytes": 3916304
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 4800,
+        "firstUseWallMs": 1.9100000000003092,
+        "medianWallMs": 0.9954999999999927,
+        "medianSampledHeapDeltaBytes": 5149768,
+        "measurements": [
+          {
+            "wallMs": 0.9810999999999694,
+            "sampledHeapDeltaBytes": 5149768
+          },
+          {
+            "wallMs": 1.1330000000002656,
+            "sampledHeapDeltaBytes": 5168208
+          },
+          {
+            "wallMs": 0.9954999999999927,
+            "sampledHeapDeltaBytes": 5152488
+          },
+          {
+            "wallMs": 1.0127999999999702,
+            "sampledHeapDeltaBytes": 5149768
+          },
+          {
+            "wallMs": 0.9703999999996995,
+            "sampledHeapDeltaBytes": 5149768
+          }
+        ],
+        "ratioVsJava": 0.20287344609741037,
+        "deltaMsVsJava": -3.912
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 4800,
+        "firstUseWallMs": 1.6010000000005675,
+        "medianWallMs": 1.1207000000003973,
+        "medianSampledHeapDeltaBytes": 5149768,
+        "measurements": [
+          {
+            "wallMs": 1.1225000000004002,
+            "sampledHeapDeltaBytes": 5164688
+          },
+          {
+            "wallMs": 1.1207000000003973,
+            "sampledHeapDeltaBytes": 5149768
+          },
+          {
+            "wallMs": 1.0757999999996173,
+            "sampledHeapDeltaBytes": 5158144
+          },
+          {
+            "wallMs": 1.069300000000112,
+            "sampledHeapDeltaBytes": 5149768
+          },
+          {
+            "wallMs": 1.1244000000006054,
+            "sampledHeapDeltaBytes": 5149768
+          }
+        ],
+        "ratioVsJava": 0.22838801711848325,
+        "deltaMsVsJava": -3.786
+      },
+      "maxJsVsJavaRatio": 0.22838801711848325,
+      "slowerInJs": false
+    },
+    {
+      "id": "ontology.dataPropertyAxiomIndexes",
+      "category": "Ontology Queries - Specific Axiom Indexes",
+      "apiSymbols": [
+        "OWLOntology.getDataSubPropertyAxiomsForSubProperty",
+        "OWLOntology.getDataSubPropertyAxiomsForSuperProperty",
+        "OWLOntology.getDataPropertyDomainAxioms",
+        "OWLOntology.getDataPropertyRangeAxioms",
+        "OWLOntology.getFunctionalDataPropertyAxioms"
+      ],
+      "description": "Query all 5 data-property index getters across 60 properties for 10 passes.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 3000,
+        "firstUseWallMs": 8.773,
+        "medianWallMs": 2.133,
+        "medianRetainedHeapDeltaBytes": 2610824
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 3000,
+        "firstUseWallMs": 0.8015000000000327,
+        "medianWallMs": 0.44079999999985375,
+        "medianSampledHeapDeltaBytes": 2354264,
+        "measurements": [
+          {
+            "wallMs": 0.5630999999998494,
+            "sampledHeapDeltaBytes": 2370672
+          },
+          {
+            "wallMs": 0.40980000000035943,
+            "sampledHeapDeltaBytes": 2354264
+          },
+          {
+            "wallMs": 0.44079999999985375,
+            "sampledHeapDeltaBytes": 2354264
+          },
+          {
+            "wallMs": 0.4406000000003587,
+            "sampledHeapDeltaBytes": 2354264
+          },
+          {
+            "wallMs": 0.464799999999741,
+            "sampledHeapDeltaBytes": 2354264
+          }
+        ],
+        "ratioVsJava": 0.20665729020152543,
+        "deltaMsVsJava": -1.692
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 3000,
+        "firstUseWallMs": 0.5432000000000698,
+        "medianWallMs": 0.4125999999996566,
+        "medianSampledHeapDeltaBytes": 2354264,
+        "measurements": [
+          {
+            "wallMs": 0.4106000000001586,
+            "sampledHeapDeltaBytes": 2354048
+          },
+          {
+            "wallMs": 0.46090000000003783,
+            "sampledHeapDeltaBytes": 2354264
+          },
+          {
+            "wallMs": 0.4692000000004555,
+            "sampledHeapDeltaBytes": 2354264
+          },
+          {
+            "wallMs": 0.4125999999996566,
+            "sampledHeapDeltaBytes": 2354264
+          },
+          {
+            "wallMs": 0.4058999999997468,
+            "sampledHeapDeltaBytes": 2354264
+          }
+        ],
+        "ratioVsJava": 0.19343647444897166,
+        "deltaMsVsJava": -1.72
+      },
+      "maxJsVsJavaRatio": 0.20665729020152543,
+      "slowerInJs": false
+    },
+    {
+      "id": "ontology.annotationAndDeclarationIndexes",
+      "category": "Ontology Queries - Specific Axiom Indexes",
+      "apiSymbols": [
+        "OWLOntology.getDeclarationAxioms",
+        "OWLOntology.getAnnotationAssertionAxioms",
+        "OWLOntology.getSubAnnotationPropertyOfAxioms",
+        "OWLOntology.getAnnotationPropertyDomainAxioms",
+        "OWLOntology.getAnnotationPropertyRangeAxioms"
+      ],
+      "description": "Query declaration and annotation-property index getters across 60 entities for 10 passes.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 4800,
+        "firstUseWallMs": 32.063,
+        "medianWallMs": 9.869,
+        "medianRetainedHeapDeltaBytes": 5499904
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 4800,
+        "firstUseWallMs": 1.8617000000003827,
+        "medianWallMs": 0.9580000000000837,
+        "medianSampledHeapDeltaBytes": 4033240,
+        "measurements": [
+          {
+            "wallMs": 0.939900000000307,
+            "sampledHeapDeltaBytes": 4033240
+          },
+          {
+            "wallMs": 0.9731000000001586,
+            "sampledHeapDeltaBytes": 4033240
+          },
+          {
+            "wallMs": 0.936500000000251,
+            "sampledHeapDeltaBytes": 4033240
+          },
+          {
+            "wallMs": 0.9580000000000837,
+            "sampledHeapDeltaBytes": 4033240
+          },
+          {
+            "wallMs": 1.018800000000283,
+            "sampledHeapDeltaBytes": 4038104
+          }
+        ],
+        "ratioVsJava": 0.09707163846388527,
+        "deltaMsVsJava": -8.911
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 4800,
+        "firstUseWallMs": 1.6188999999994849,
+        "medianWallMs": 0.9495999999999185,
+        "medianSampledHeapDeltaBytes": 4039488,
+        "measurements": [
+          {
+            "wallMs": 0.9495999999999185,
+            "sampledHeapDeltaBytes": 4039488
+          },
+          {
+            "wallMs": 0.9551999999994223,
+            "sampledHeapDeltaBytes": 4039488
+          },
+          {
+            "wallMs": 0.9576999999999316,
+            "sampledHeapDeltaBytes": 4042888
+          },
+          {
+            "wallMs": 0.9016999999994368,
+            "sampledHeapDeltaBytes": 4039488
+          },
+          {
+            "wallMs": 0.9324999999998909,
+            "sampledHeapDeltaBytes": 4039488
+          }
+        ],
+        "ratioVsJava": 0.09622048839800573,
+        "deltaMsVsJava": -8.919
+      },
+      "maxJsVsJavaRatio": 0.09707163846388527,
+      "slowerInJs": false
+    },
+    {
+      "id": "ontology.individualAssertionIndexes",
+      "category": "Ontology Queries - Specific Axiom Indexes",
+      "apiSymbols": [
+        "OWLOntology.getClassAssertionAxioms",
+        "OWLOntology.getObjectPropertyAssertionAxioms",
+        "OWLOntology.getDataPropertyAssertionAxioms",
+        "OWLOntology.getNegativeObjectPropertyAssertionAxioms",
+        "OWLOntology.getNegativeDataPropertyAssertionAxioms",
+        "OWLOntology.getSameIndividualAxioms",
+        "OWLOntology.getDifferentIndividualAxioms"
+      ],
+      "description": "Query all 8 individual and class assertion index getters across 60 entities for 10 passes.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 4500,
+        "firstUseWallMs": 15.449,
+        "medianWallMs": 4.025,
+        "medianRetainedHeapDeltaBytes": 3916288
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 4500,
+        "firstUseWallMs": 1.6906000000003587,
+        "medianWallMs": 0.9566999999997279,
+        "medianSampledHeapDeltaBytes": 4744232,
+        "measurements": [
+          {
+            "wallMs": 0.9926000000000386,
+            "sampledHeapDeltaBytes": 4744232
+          },
+          {
+            "wallMs": 0.9566999999997279,
+            "sampledHeapDeltaBytes": 4771272
+          },
+          {
+            "wallMs": 0.8823999999999614,
+            "sampledHeapDeltaBytes": 4744232
+          },
+          {
+            "wallMs": 1.0907999999999447,
+            "sampledHeapDeltaBytes": 4759248
+          },
+          {
+            "wallMs": 0.8906999999999243,
+            "sampledHeapDeltaBytes": 4744232
+          }
+        ],
+        "ratioVsJava": 0.2376894409937212,
+        "deltaMsVsJava": -3.068
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 4500,
+        "firstUseWallMs": 1.3586999999997715,
+        "medianWallMs": 0.8777000000000044,
+        "medianSampledHeapDeltaBytes": 4744232,
+        "measurements": [
+          {
+            "wallMs": 0.8942999999999302,
+            "sampledHeapDeltaBytes": 4744232
+          },
+          {
+            "wallMs": 0.8690999999998894,
+            "sampledHeapDeltaBytes": 4744232
+          },
+          {
+            "wallMs": 0.8777000000000044,
+            "sampledHeapDeltaBytes": 4744232
+          },
+          {
+            "wallMs": 0.8834000000006199,
+            "sampledHeapDeltaBytes": 4744232
+          },
+          {
+            "wallMs": 0.850800000000163,
+            "sampledHeapDeltaBytes": 4744232
+          }
+        ],
+        "ratioVsJava": 0.2180621118012433,
+        "deltaMsVsJava": -3.147
+      },
+      "maxJsVsJavaRatio": 0.2376894409937212,
+      "slowerInJs": false
+    },
+    {
+      "id": "save.functional",
+      "category": "Storage / Serialization",
+      "apiSymbols": [
+        "OWLOntologyManager.saveOntology",
+        "StringDocumentTarget"
+      ],
+      "description": "Serialize a 100-class ontology to Functional Syntax.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 13.853,
+        "medianWallMs": 1.784,
+        "medianRetainedHeapDeltaBytes": 1305400
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 0.5147000000001754,
+        "medianWallMs": 0.1449999999999818,
+        "medianSampledHeapDeltaBytes": 148528,
+        "measurements": [
+          {
+            "wallMs": 0.15459999999984575,
+            "sampledHeapDeltaBytes": 159104
+          },
+          {
+            "wallMs": 0.1449999999999818,
+            "sampledHeapDeltaBytes": 148528
+          },
+          {
+            "wallMs": 0.13659999999981665,
+            "sampledHeapDeltaBytes": 148328
+          },
+          {
+            "wallMs": 0.15659999999979846,
+            "sampledHeapDeltaBytes": 354688
+          },
+          {
+            "wallMs": 0.10649999999986903,
+            "sampledHeapDeltaBytes": 145848
+          }
+        ],
+        "ratioVsJava": 0.0812780269058194,
+        "deltaMsVsJava": -1.639
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 0.17510000000038417,
+        "medianWallMs": 0.13069999999970605,
+        "medianSampledHeapDeltaBytes": 145952,
+        "measurements": [
+          {
+            "wallMs": 0.13690000000042346,
+            "sampledHeapDeltaBytes": 145952
+          },
+          {
+            "wallMs": 0.11209999999937281,
+            "sampledHeapDeltaBytes": 145952
+          },
+          {
+            "wallMs": 0.13799999999991996,
+            "sampledHeapDeltaBytes": 145952
+          },
+          {
+            "wallMs": 0.13069999999970605,
+            "sampledHeapDeltaBytes": 145952
+          },
+          {
+            "wallMs": 0.10459999999966385,
+            "sampledHeapDeltaBytes": 145952
+          }
+        ],
+        "ratioVsJava": 0.07326233183840025,
+        "deltaMsVsJava": -1.653
+      },
+      "maxJsVsJavaRatio": 0.0812780269058194,
+      "slowerInJs": false
+    },
+    {
+      "id": "save.owlxml",
+      "category": "Storage / Serialization",
+      "apiSymbols": [
+        "OWLOntologyManager.saveOntology",
+        "StringDocumentTarget"
+      ],
+      "description": "Serialize a 100-class ontology to OWL/XML.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 9.303,
+        "medianWallMs": 1.428,
+        "medianRetainedHeapDeltaBytes": 1305400
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 3.1759000000001834,
+        "medianWallMs": 1.262499999999818,
+        "medianSampledHeapDeltaBytes": 1124376,
+        "measurements": [
+          {
+            "wallMs": 1.267699999999877,
+            "sampledHeapDeltaBytes": 1469960
+          },
+          {
+            "wallMs": 1.1742999999996755,
+            "sampledHeapDeltaBytes": 1102072
+          },
+          {
+            "wallMs": 1.297099999999773,
+            "sampledHeapDeltaBytes": 1185120
+          },
+          {
+            "wallMs": 1.262499999999818,
+            "sampledHeapDeltaBytes": 1124376
+          },
+          {
+            "wallMs": 1.0747999999998683,
+            "sampledHeapDeltaBytes": 1123480
+          }
+        ],
+        "ratioVsJava": 0.8841036414564553,
+        "deltaMsVsJava": -0.166
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 1.2844000000004598,
+        "medianWallMs": 0.7018000000007305,
+        "medianSampledHeapDeltaBytes": 706168,
+        "measurements": [
+          {
+            "wallMs": 0.6985999999997148,
+            "sampledHeapDeltaBytes": 706168
+          },
+          {
+            "wallMs": 0.7018000000007305,
+            "sampledHeapDeltaBytes": 706168
+          },
+          {
+            "wallMs": 0.7853000000004613,
+            "sampledHeapDeltaBytes": 706168
+          },
+          {
+            "wallMs": 0.7043999999996231,
+            "sampledHeapDeltaBytes": 706168
+          },
+          {
+            "wallMs": 0.6909999999998035,
+            "sampledHeapDeltaBytes": 706168
+          }
+        ],
+        "ratioVsJava": 0.4914565826335648,
+        "deltaMsVsJava": -0.726
+      },
+      "maxJsVsJavaRatio": 0.8841036414564553,
+      "slowerInJs": false
+    },
+    {
+      "id": "save.rdfxml",
+      "category": "Storage / Serialization",
+      "apiSymbols": [
+        "OWLOntologyManager.saveOntology",
+        "StringDocumentTarget"
+      ],
+      "description": "Serialize a 100-class ontology to RDF/XML.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 34.993,
+        "medianWallMs": 5.507,
+        "medianRetainedHeapDeltaBytes": 1309832
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 4.794000000000324,
+        "medianWallMs": 2.1894999999999527,
+        "medianSampledHeapDeltaBytes": 2066328,
+        "measurements": [
+          {
+            "wallMs": 2.0486000000000786,
+            "sampledHeapDeltaBytes": 2062808
+          },
+          {
+            "wallMs": 2.209100000000035,
+            "sampledHeapDeltaBytes": 2072120
+          },
+          {
+            "wallMs": 2.1894999999999527,
+            "sampledHeapDeltaBytes": 2071384
+          },
+          {
+            "wallMs": 2.19170000000031,
+            "sampledHeapDeltaBytes": 2065072
+          },
+          {
+            "wallMs": 2.171299999999974,
+            "sampledHeapDeltaBytes": 2066328
+          }
+        ],
+        "ratioVsJava": 0.3975848919556842,
+        "deltaMsVsJava": -3.318
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 6.743099999999686,
+        "medianWallMs": 4.874899999999798,
+        "medianSampledHeapDeltaBytes": 4732312,
+        "measurements": [
+          {
+            "wallMs": 4.9210000000002765,
+            "sampledHeapDeltaBytes": 4686792
+          },
+          {
+            "wallMs": 4.980800000000272,
+            "sampledHeapDeltaBytes": 4732408
+          },
+          {
+            "wallMs": 4.8015000000004875,
+            "sampledHeapDeltaBytes": 5211672
+          },
+          {
+            "wallMs": 4.874899999999798,
+            "sampledHeapDeltaBytes": 4732312
+          },
+          {
+            "wallMs": 4.798099999999977,
+            "sampledHeapDeltaBytes": 4725544
+          }
+        ],
+        "ratioVsJava": 0.885218812420519,
+        "deltaMsVsJava": -0.632
+      },
+      "maxJsVsJavaRatio": 0.885218812420519,
+      "slowerInJs": false
+    },
+    {
+      "id": "save.turtle",
+      "category": "Storage / Serialization",
+      "apiSymbols": [
+        "OWLOntologyManager.saveOntology",
+        "StringDocumentTarget"
+      ],
+      "description": "Serialize a 100-class ontology to Turtle.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 100,
+        "firstUseWallMs": 4.88,
+        "medianWallMs": 2.725,
+        "medianRetainedHeapDeltaBytes": 1305400
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 1.8123000000000502,
+        "medianWallMs": 0.5635999999999513,
+        "medianSampledHeapDeltaBytes": 531568,
+        "measurements": [
+          {
+            "wallMs": 0.5182000000004336,
+            "sampledHeapDeltaBytes": 530312
+          },
+          {
+            "wallMs": 0.5497000000000298,
+            "sampledHeapDeltaBytes": 532264
+          },
+          {
+            "wallMs": 0.6089999999999236,
+            "sampledHeapDeltaBytes": 531568
+          },
+          {
+            "wallMs": 0.5635999999999513,
+            "sampledHeapDeltaBytes": 531688
+          },
+          {
+            "wallMs": 0.6530000000002474,
+            "sampledHeapDeltaBytes": 531544
+          }
+        ],
+        "ratioVsJava": 0.2068256880733766,
+        "deltaMsVsJava": -2.161
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 100,
+        "firstUseWallMs": 3.0401999999994587,
+        "medianWallMs": 2.4554000000007363,
+        "medianSampledHeapDeltaBytes": 2693488,
+        "measurements": [
+          {
+            "wallMs": 2.4554000000007363,
+            "sampledHeapDeltaBytes": 2679048
+          },
+          {
+            "wallMs": 2.490600000000086,
+            "sampledHeapDeltaBytes": 2700992
+          },
+          {
+            "wallMs": 2.455399999999827,
+            "sampledHeapDeltaBytes": 2693488
+          },
+          {
+            "wallMs": 2.4002000000000407,
+            "sampledHeapDeltaBytes": 2684176
+          },
+          {
+            "wallMs": 2.514999999999418,
+            "sampledHeapDeltaBytes": 2703696
+          }
+        ],
+        "ratioVsJava": 0.9010642201837564,
+        "deltaMsVsJava": -0.27
+      },
+      "maxJsVsJavaRatio": 0.9010642201837564,
+      "slowerInJs": false
+    },
+    {
+      "id": "search.classHierarchyAndRelations",
+      "category": "EntitySearcher",
+      "apiSymbols": [
+        "EntitySearcher.getSuperClasses",
+        "EntitySearcher.getSubClasses",
+        "EntitySearcher.getEquivalentClasses",
+        "EntitySearcher.getDisjointClasses"
+      ],
+      "description": "Search class hierarchy and disjoint/equivalent relations across 2 ontologies for 5 passes.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 1800,
+        "firstUseWallMs": 14.348,
+        "medianWallMs": 2.743,
+        "medianRetainedHeapDeltaBytes": 2610856
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 1800,
+        "firstUseWallMs": 2.6278000000002066,
+        "medianWallMs": 1.8240999999998166,
+        "medianSampledHeapDeltaBytes": 3713208,
+        "measurements": [
+          {
+            "wallMs": 1.7527000000000044,
+            "sampledHeapDeltaBytes": 3710264
+          },
+          {
+            "wallMs": 1.7476999999998952,
+            "sampledHeapDeltaBytes": 3711992
+          },
+          {
+            "wallMs": 1.8240999999998166,
+            "sampledHeapDeltaBytes": 3713208
+          },
+          {
+            "wallMs": 1.8382999999998901,
+            "sampledHeapDeltaBytes": 3713896
+          },
+          {
+            "wallMs": 1.8249000000000706,
+            "sampledHeapDeltaBytes": 3720992
+          }
+        ],
+        "ratioVsJava": 0.6650018228216612,
+        "deltaMsVsJava": -0.919
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 1800,
+        "firstUseWallMs": 2.079200000000128,
+        "medianWallMs": 1.853900000000067,
+        "medianSampledHeapDeltaBytes": 3718248,
+        "measurements": [
+          {
+            "wallMs": 1.8315000000002328,
+            "sampledHeapDeltaBytes": 3708040
+          },
+          {
+            "wallMs": 1.8283000000001266,
+            "sampledHeapDeltaBytes": 3713960
+          },
+          {
+            "wallMs": 1.910899999999856,
+            "sampledHeapDeltaBytes": 3718248
+          },
+          {
+            "wallMs": 1.853900000000067,
+            "sampledHeapDeltaBytes": 3719792
+          },
+          {
+            "wallMs": 2.13130000000001,
+            "sampledHeapDeltaBytes": 3719720
+          }
+        ],
+        "ratioVsJava": 0.6758658403208411,
+        "deltaMsVsJava": -0.889
+      },
+      "maxJsVsJavaRatio": 0.6758658403208411,
+      "slowerInJs": false
+    },
+    {
+      "id": "search.propertyHierarchyAndDomainsRanges",
+      "category": "EntitySearcher",
+      "apiSymbols": [
+        "EntitySearcher.getSuperProperties",
+        "EntitySearcher.getSubProperties",
+        "EntitySearcher.getDomains",
+        "EntitySearcher.getRanges",
+        "EntitySearcher.getInverses"
+      ],
+      "description": "Search object/data property hierarchy, domains, ranges, and inverses across 2 ontologies for 5 passes.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 2100,
+        "firstUseWallMs": 23.307,
+        "medianWallMs": 6.47,
+        "medianRetainedHeapDeltaBytes": 3916432
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 2100,
+        "firstUseWallMs": 3.802400000000034,
+        "medianWallMs": 2.675699999999779,
+        "medianSampledHeapDeltaBytes": 6252968,
+        "measurements": [
+          {
+            "wallMs": 2.5925999999999476,
+            "sampledHeapDeltaBytes": 6249304
+          },
+          {
+            "wallMs": 2.6338000000000648,
+            "sampledHeapDeltaBytes": 6256032
+          },
+          {
+            "wallMs": 2.6878999999998996,
+            "sampledHeapDeltaBytes": 6252280
+          },
+          {
+            "wallMs": 2.675699999999779,
+            "sampledHeapDeltaBytes": 6252968
+          },
+          {
+            "wallMs": 2.6873999999997977,
+            "sampledHeapDeltaBytes": 6258048
+          }
+        ],
+        "ratioVsJava": 0.41355486862438623,
+        "deltaMsVsJava": -3.794
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 2100,
+        "firstUseWallMs": 2.895499999999629,
+        "medianWallMs": 2.492699999999786,
+        "medianSampledHeapDeltaBytes": 6225560,
+        "measurements": [
+          {
+            "wallMs": 2.492699999999786,
+            "sampledHeapDeltaBytes": 6221480
+          },
+          {
+            "wallMs": 2.4898000000002867,
+            "sampledHeapDeltaBytes": 6225560
+          },
+          {
+            "wallMs": 2.6132000000006883,
+            "sampledHeapDeltaBytes": 6227184
+          },
+          {
+            "wallMs": 2.6147000000000844,
+            "sampledHeapDeltaBytes": 6230408
+          },
+          {
+            "wallMs": 2.4804999999996653,
+            "sampledHeapDeltaBytes": 6221448
+          }
+        ],
+        "ratioVsJava": 0.38527047913443374,
+        "deltaMsVsJava": -3.977
+      },
+      "maxJsVsJavaRatio": 0.41355486862438623,
+      "slowerInJs": false
+    },
+    {
+      "id": "search.annotations",
+      "category": "EntitySearcher",
+      "apiSymbols": [
+        "EntitySearcher.getAnnotationAssertionAxioms",
+        "EntitySearcher.getAnnotations",
+        "EntitySearcher.getAnnotationObjects"
+      ],
+      "description": "Search entity annotation assertions, annotations, and annotation objects across 2 ontologies for 5 passes.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 2400,
+        "firstUseWallMs": 10.091,
+        "medianWallMs": 3.313,
+        "medianRetainedHeapDeltaBytes": 3916256
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 2400,
+        "firstUseWallMs": 2.808899999999994,
+        "medianWallMs": 1.8623999999999796,
+        "medianSampledHeapDeltaBytes": 4031304,
+        "measurements": [
+          {
+            "wallMs": 1.9398999999998523,
+            "sampledHeapDeltaBytes": 4031304
+          },
+          {
+            "wallMs": 1.99770000000035,
+            "sampledHeapDeltaBytes": 4031784
+          },
+          {
+            "wallMs": 1.8494999999998072,
+            "sampledHeapDeltaBytes": 4020376
+          },
+          {
+            "wallMs": 1.8623999999999796,
+            "sampledHeapDeltaBytes": 4022080
+          },
+          {
+            "wallMs": 1.8548000000000684,
+            "sampledHeapDeltaBytes": 4032728
+          }
+        ],
+        "ratioVsJava": 0.5621491095683608,
+        "deltaMsVsJava": -1.451
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 2400,
+        "firstUseWallMs": 2.269499999999425,
+        "medianWallMs": 1.881199999999808,
+        "medianSampledHeapDeltaBytes": 4026168,
+        "measurements": [
+          {
+            "wallMs": 1.881199999999808,
+            "sampledHeapDeltaBytes": 4019736
+          },
+          {
+            "wallMs": 1.8485000000000582,
+            "sampledHeapDeltaBytes": 4019736
+          },
+          {
+            "wallMs": 1.9071999999996478,
+            "sampledHeapDeltaBytes": 4034928
+          },
+          {
+            "wallMs": 1.8835999999992055,
+            "sampledHeapDeltaBytes": 4026168
+          },
+          {
+            "wallMs": 1.794699999999466,
+            "sampledHeapDeltaBytes": 4032128
+          }
+        ],
+        "ratioVsJava": 0.5678237247207388,
+        "deltaMsVsJava": -1.432
+      },
+      "maxJsVsJavaRatio": 0.5678237247207388,
+      "slowerInJs": false
+    },
+    {
+      "id": "search.propertyCharacteristics",
+      "category": "EntitySearcher",
+      "apiSymbols": [
+        "EntitySearcher.isFunctional",
+        "EntitySearcher.isInverseFunctional",
+        "EntitySearcher.isTransitive",
+        "EntitySearcher.isSymmetric",
+        "EntitySearcher.isAsymmetric",
+        "EntitySearcher.isReflexive",
+        "EntitySearcher.isIrreflexive"
+      ],
+      "description": "Test all 8 property characteristic predicates across 60 properties for 10 passes.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 2400,
+        "firstUseWallMs": 17.675,
+        "medianWallMs": 6.576,
+        "medianRetainedHeapDeltaBytes": 3916264
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 2400,
+        "firstUseWallMs": 1.6685999999999694,
+        "medianWallMs": 0.9061000000001513,
+        "medianSampledHeapDeltaBytes": 4169376,
+        "measurements": [
+          {
+            "wallMs": 0.9061000000001513,
+            "sampledHeapDeltaBytes": 4169376
+          },
+          {
+            "wallMs": 1.0060000000003129,
+            "sampledHeapDeltaBytes": 4177656
+          },
+          {
+            "wallMs": 0.9715000000001055,
+            "sampledHeapDeltaBytes": 4169376
+          },
+          {
+            "wallMs": 0.9052999999998974,
+            "sampledHeapDeltaBytes": 4188504
+          },
+          {
+            "wallMs": 0.8459000000002561,
+            "sampledHeapDeltaBytes": 4169376
+          }
+        ],
+        "ratioVsJava": 0.13778892944041232,
+        "deltaMsVsJava": -5.67
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 2400,
+        "firstUseWallMs": 1.4047999999993408,
+        "medianWallMs": 0.9879000000000815,
+        "medianSampledHeapDeltaBytes": 4169376,
+        "measurements": [
+          {
+            "wallMs": 0.9879000000000815,
+            "sampledHeapDeltaBytes": 4169376
+          },
+          {
+            "wallMs": 0.9513000000006286,
+            "sampledHeapDeltaBytes": 4169488
+          },
+          {
+            "wallMs": 1.0024999999995998,
+            "sampledHeapDeltaBytes": 4169376
+          },
+          {
+            "wallMs": 1.0267000000003463,
+            "sampledHeapDeltaBytes": 4169376
+          },
+          {
+            "wallMs": 0.941899999999805,
+            "sampledHeapDeltaBytes": 4171816
+          }
+        ],
+        "ratioVsJava": 0.15022810218979343,
+        "deltaMsVsJava": -5.588
+      },
+      "maxJsVsJavaRatio": 0.15022810218979343,
+      "slowerInJs": false
+    },
+    {
+      "id": "util.SimpleShortFormProvider",
+      "category": "Utilities",
+      "apiSymbols": [
+        "SimpleShortFormProvider"
+      ],
+      "description": "Compute short forms for 180 entities across 20 passes.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 13800,
+        "firstUseWallMs": 1.32,
+        "medianWallMs": 0.434,
+        "medianRetainedHeapDeltaBytes": 1305400
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 13800,
+        "firstUseWallMs": 1.3706999999999425,
+        "medianWallMs": 0.4558999999999287,
+        "medianSampledHeapDeltaBytes": 95888,
+        "measurements": [
+          {
+            "wallMs": 0.4558999999999287,
+            "sampledHeapDeltaBytes": 86936
+          },
+          {
+            "wallMs": 0.6187000000004446,
+            "sampledHeapDeltaBytes": 95888
+          },
+          {
+            "wallMs": 0.483600000000024,
+            "sampledHeapDeltaBytes": 113448
+          },
+          {
+            "wallMs": 0.33150000000023283,
+            "sampledHeapDeltaBytes": 94848
+          },
+          {
+            "wallMs": 0.4000999999998385,
+            "sampledHeapDeltaBytes": 111024
+          }
+        ],
+        "ratioVsJava": 1.0504608294929232,
+        "deltaMsVsJava": 0.022
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 13800,
+        "firstUseWallMs": 0.44059999999990396,
+        "medianWallMs": 0.3517999999994572,
+        "medianSampledHeapDeltaBytes": 86856,
+        "measurements": [
+          {
+            "wallMs": 0.3517999999994572,
+            "sampledHeapDeltaBytes": 86856
+          },
+          {
+            "wallMs": 0.3670000000001892,
+            "sampledHeapDeltaBytes": 86856
+          },
+          {
+            "wallMs": 0.43540000000029977,
+            "sampledHeapDeltaBytes": 105440
+          },
+          {
+            "wallMs": 0.3122000000003027,
+            "sampledHeapDeltaBytes": 94736
+          },
+          {
+            "wallMs": 0.34940000000005966,
+            "sampledHeapDeltaBytes": 86808
+          }
+        ],
+        "ratioVsJava": 0.8105990783397632,
+        "deltaMsVsJava": -0.082
+      },
+      "maxJsVsJavaRatio": 1.0504608294929232,
+      "slowerInJs": false
+    },
+    {
+      "id": "util.AnnotationValueShortFormProvider",
+      "category": "Utilities",
+      "apiSymbols": [
+        "AnnotationValueShortFormProvider"
+      ],
+      "description": "Compute annotation-value short forms with language fallback across 60 classes for 5 passes.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 2350,
+        "firstUseWallMs": 4.855,
+        "medianWallMs": 1.264,
+        "medianRetainedHeapDeltaBytes": 1305448
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 2350,
+        "firstUseWallMs": 1.1815999999998894,
+        "medianWallMs": 0.572400000000016,
+        "medianSampledHeapDeltaBytes": 1078440,
+        "measurements": [
+          {
+            "wallMs": 0.5679000000000087,
+            "sampledHeapDeltaBytes": 1100656
+          },
+          {
+            "wallMs": 0.5753999999997177,
+            "sampledHeapDeltaBytes": 1075008
+          },
+          {
+            "wallMs": 0.572400000000016,
+            "sampledHeapDeltaBytes": 1075952
+          },
+          {
+            "wallMs": 0.6180000000003929,
+            "sampledHeapDeltaBytes": 1084488
+          },
+          {
+            "wallMs": 0.5599000000001979,
+            "sampledHeapDeltaBytes": 1078440
+          }
+        ],
+        "ratioVsJava": 0.45284810126583547,
+        "deltaMsVsJava": -0.692
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 2350,
+        "firstUseWallMs": 0.6838999999999942,
+        "medianWallMs": 0.5156999999999243,
+        "medianSampledHeapDeltaBytes": 1082296,
+        "measurements": [
+          {
+            "wallMs": 0.5156999999999243,
+            "sampledHeapDeltaBytes": 1082296
+          },
+          {
+            "wallMs": 0.5406000000002678,
+            "sampledHeapDeltaBytes": 1082296
+          },
+          {
+            "wallMs": 0.4978000000000975,
+            "sampledHeapDeltaBytes": 1082296
+          },
+          {
+            "wallMs": 0.5122000000001208,
+            "sampledHeapDeltaBytes": 1082296
+          },
+          {
+            "wallMs": 0.5260999999991327,
+            "sampledHeapDeltaBytes": 1082296
+          }
+        ],
+        "ratioVsJava": 0.40799050632905404,
+        "deltaMsVsJava": -0.748
+      },
+      "maxJsVsJavaRatio": 0.45284810126583547,
+      "slowerInJs": false
+    },
+    {
+      "id": "util.OWLOntologyImportsClosureSetProvider",
+      "category": "Utilities",
+      "apiSymbols": [
+        "OWLOntologyImportsClosureSetProvider"
+      ],
+      "description": "Materialize ontology closure sets 1,000 times via OWLOntologyImportsClosureSetProvider.",
+      "comparisonLimitation": "Java times Stream.count(), which may elide traversal; JS constructs a fresh defensive Set. Equal counts do not qualify equivalent materialization work.",
+      "comparability": "workload-mismatch",
+      "java551": {
+        "verificationCount": 8000,
+        "firstUseWallMs": 0.125,
+        "medianWallMs": 0.099,
+        "medianRetainedHeapDeltaBytes": 1305408
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "workload-mismatch",
+        "verificationCount": 8000,
+        "firstUseWallMs": 0.6685999999999694,
+        "medianWallMs": 0.5781999999999243,
+        "medianSampledHeapDeltaBytes": 859328,
+        "measurements": [
+          {
+            "wallMs": 0.5870999999997366,
+            "sampledHeapDeltaBytes": 859880
+          },
+          {
+            "wallMs": 0.5608000000001994,
+            "sampledHeapDeltaBytes": 859328
+          },
+          {
+            "wallMs": 0.5781999999999243,
+            "sampledHeapDeltaBytes": 857320
+          },
+          {
+            "wallMs": 0.636199999999917,
+            "sampledHeapDeltaBytes": 857320
+          },
+          {
+            "wallMs": 0.5197999999995773,
+            "sampledHeapDeltaBytes": 859328
+          }
+        ],
+        "ratioVsJava": 5.840404040403276,
+        "deltaMsVsJava": 0.479
+      },
+      "jsNormativeV1": {
+        "comparability": "workload-mismatch",
+        "verificationCount": 8000,
+        "firstUseWallMs": 0.3004000000000815,
+        "medianWallMs": 0.30280000000038854,
+        "medianSampledHeapDeltaBytes": 865200,
+        "measurements": [
+          {
+            "wallMs": 0.33209999999962747,
+            "sampledHeapDeltaBytes": 865200
+          },
+          {
+            "wallMs": 0.30090000000018335,
+            "sampledHeapDeltaBytes": 865200
+          },
+          {
+            "wallMs": 0.30239999999957945,
+            "sampledHeapDeltaBytes": 865368
+          },
+          {
+            "wallMs": 0.3114000000005035,
+            "sampledHeapDeltaBytes": 865200
+          },
+          {
+            "wallMs": 0.30280000000038854,
+            "sampledHeapDeltaBytes": 709264
+          }
+        ],
+        "ratioVsJava": 3.058585858589783,
+        "deltaMsVsJava": 0.204
+      },
+      "maxJsVsJavaRatio": null,
+      "slowerInJs": false
+    },
+    {
+      "id": "util.OWLOntologyMerger",
+      "category": "Utilities",
+      "apiSymbols": [
+        "OWLOntologyMerger"
+      ],
+      "description": "Merge an 8-ontology import closure in both all-axioms and logical-axioms-only modes.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 480,
+        "firstUseWallMs": 7.392,
+        "medianWallMs": 1.631,
+        "medianRetainedHeapDeltaBytes": 2615280
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 480,
+        "firstUseWallMs": 2.9402000000000044,
+        "medianWallMs": 0.6916000000001077,
+        "medianSampledHeapDeltaBytes": 1058352,
+        "measurements": [
+          {
+            "wallMs": 0.7010000000000218,
+            "sampledHeapDeltaBytes": 1063280
+          },
+          {
+            "wallMs": 0.6916000000001077,
+            "sampledHeapDeltaBytes": 1058352
+          },
+          {
+            "wallMs": 0.6617999999998574,
+            "sampledHeapDeltaBytes": 1053088
+          },
+          {
+            "wallMs": 0.9112999999997555,
+            "sampledHeapDeltaBytes": 1059544
+          },
+          {
+            "wallMs": 0.6544000000003507,
+            "sampledHeapDeltaBytes": 1052976
+          }
+        ],
+        "ratioVsJava": 0.42403433476401453,
+        "deltaMsVsJava": -0.939
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 480,
+        "firstUseWallMs": 0.3999000000003434,
+        "medianWallMs": 0.2920000000003711,
+        "medianSampledHeapDeltaBytes": 360016,
+        "measurements": [
+          {
+            "wallMs": 0.33839999999963766,
+            "sampledHeapDeltaBytes": 372304
+          },
+          {
+            "wallMs": 0.28800000000046566,
+            "sampledHeapDeltaBytes": 360016
+          },
+          {
+            "wallMs": 0.3279999999995198,
+            "sampledHeapDeltaBytes": 360016
+          },
+          {
+            "wallMs": 0.2920000000003711,
+            "sampledHeapDeltaBytes": 360016
+          },
+          {
+            "wallMs": 0.29140000000006694,
+            "sampledHeapDeltaBytes": 360016
+          }
+        ],
+        "ratioVsJava": 0.17903126916025203,
+        "deltaMsVsJava": -1.339
+      },
+      "maxJsVsJavaRatio": 0.42403433476401453,
+      "slowerInJs": false
+    },
+    {
+      "id": "util.OWLObjectDuplicator",
+      "category": "Utilities",
+      "apiSymbols": [
+        "OWLObjectDuplicator"
+      ],
+      "description": "Duplicate 500 axioms with IRI replacement via OWLObjectDuplicator.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 500,
+        "firstUseWallMs": 9.504,
+        "medianWallMs": 2.371,
+        "medianRetainedHeapDeltaBytes": 1490496
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 500,
+        "firstUseWallMs": 1.4390000000003056,
+        "medianWallMs": 0.6603000000000065,
+        "medianSampledHeapDeltaBytes": 870968,
+        "measurements": [
+          {
+            "wallMs": 0.6554000000000997,
+            "sampledHeapDeltaBytes": 870968
+          },
+          {
+            "wallMs": 0.6478000000001884,
+            "sampledHeapDeltaBytes": 869152
+          },
+          {
+            "wallMs": 0.6626999999998588,
+            "sampledHeapDeltaBytes": 871304
+          },
+          {
+            "wallMs": 0.6603000000000065,
+            "sampledHeapDeltaBytes": 868968
+          },
+          {
+            "wallMs": 0.6756000000000313,
+            "sampledHeapDeltaBytes": 875544
+          }
+        ],
+        "ratioVsJava": 0.2784900885702263,
+        "deltaMsVsJava": -1.711
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 500,
+        "firstUseWallMs": 0.9185999999999694,
+        "medianWallMs": 0.6468999999997322,
+        "medianSampledHeapDeltaBytes": 863944,
+        "measurements": [
+          {
+            "wallMs": 0.6707999999998719,
+            "sampledHeapDeltaBytes": 863944
+          },
+          {
+            "wallMs": 0.6468999999997322,
+            "sampledHeapDeltaBytes": 863944
+          },
+          {
+            "wallMs": 0.6588999999994485,
+            "sampledHeapDeltaBytes": 863944
+          },
+          {
+            "wallMs": 0.5968999999995503,
+            "sampledHeapDeltaBytes": 868648
+          },
+          {
+            "wallMs": 0.5275000000001455,
+            "sampledHeapDeltaBytes": 867600
+          }
+        ],
+        "ratioVsJava": 0.27283846478267915,
+        "deltaMsVsJava": -1.724
+      },
+      "maxJsVsJavaRatio": 0.2784900885702263,
+      "slowerInJs": false
+    },
+    {
+      "id": "util.OWLEntityRenamer",
+      "category": "Utilities",
+      "apiSymbols": [
+        "OWLEntityRenamer"
+      ],
+      "description": "Compute entity and IRI rename change sets for 10 entities across a 500-axiom ontology.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 520,
+        "firstUseWallMs": 15.862,
+        "medianWallMs": 3.383,
+        "medianRetainedHeapDeltaBytes": 1745088
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 520,
+        "firstUseWallMs": 5.216499999999996,
+        "medianWallMs": 2.8404999999997926,
+        "medianSampledHeapDeltaBytes": 3873104,
+        "measurements": [
+          {
+            "wallMs": 2.995400000000245,
+            "sampledHeapDeltaBytes": 3979448
+          },
+          {
+            "wallMs": 3.836300000000392,
+            "sampledHeapDeltaBytes": 4096696
+          },
+          {
+            "wallMs": 2.8404999999997926,
+            "sampledHeapDeltaBytes": 3873104
+          },
+          {
+            "wallMs": 2.699000000000069,
+            "sampledHeapDeltaBytes": 3857704
+          },
+          {
+            "wallMs": 2.675699999999779,
+            "sampledHeapDeltaBytes": 3857704
+          }
+        ],
+        "ratioVsJava": 0.8396393733372133,
+        "deltaMsVsJava": -0.543
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 520,
+        "firstUseWallMs": 4.447999999999411,
+        "medianWallMs": 2.769100000000435,
+        "medianSampledHeapDeltaBytes": 3830792,
+        "measurements": [
+          {
+            "wallMs": 2.6791000000002896,
+            "sampledHeapDeltaBytes": 3979944
+          },
+          {
+            "wallMs": 2.828599999999824,
+            "sampledHeapDeltaBytes": 3884992
+          },
+          {
+            "wallMs": 2.769100000000435,
+            "sampledHeapDeltaBytes": 3830792
+          },
+          {
+            "wallMs": 2.770499999999629,
+            "sampledHeapDeltaBytes": 3830792
+          },
+          {
+            "wallMs": 2.494100000000799,
+            "sampledHeapDeltaBytes": 3830792
+          }
+        ],
+        "ratioVsJava": 0.8185338456992123,
+        "deltaMsVsJava": -0.614
+      },
+      "maxJsVsJavaRatio": 0.8396393733372133,
+      "slowerInJs": false
+    },
+    {
+      "id": "util.OWLEntityRemover",
+      "category": "Utilities",
+      "apiSymbols": [
+        "OWLEntityRemover"
+      ],
+      "description": "Visit 40 entities (20 classes + 20 object properties) and collect removal changes across a 500-axiom ontology.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 580,
+        "firstUseWallMs": 3.418,
+        "medianWallMs": 0.413,
+        "medianRetainedHeapDeltaBytes": 1460216
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 580,
+        "firstUseWallMs": 0.4458999999997104,
+        "medianWallMs": 0.3007999999999811,
+        "medianSampledHeapDeltaBytes": 289320,
+        "measurements": [
+          {
+            "wallMs": 0.3346000000001368,
+            "sampledHeapDeltaBytes": 290080
+          },
+          {
+            "wallMs": 0.3007999999999811,
+            "sampledHeapDeltaBytes": 289280
+          },
+          {
+            "wallMs": 0.28339999999980137,
+            "sampledHeapDeltaBytes": 295584
+          },
+          {
+            "wallMs": 0.26230000000032305,
+            "sampledHeapDeltaBytes": 289320
+          },
+          {
+            "wallMs": 0.3152999999997519,
+            "sampledHeapDeltaBytes": 289232
+          }
+        ],
+        "ratioVsJava": 0.7283292978207775,
+        "deltaMsVsJava": -0.112
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 580,
+        "firstUseWallMs": 2.1612999999997555,
+        "medianWallMs": 0.29460000000017317,
+        "medianSampledHeapDeltaBytes": 139824,
+        "measurements": [
+          {
+            "wallMs": 0.23729999999977736,
+            "sampledHeapDeltaBytes": 139824
+          },
+          {
+            "wallMs": 0.2952000000004773,
+            "sampledHeapDeltaBytes": 139824
+          },
+          {
+            "wallMs": 0.29460000000017317,
+            "sampledHeapDeltaBytes": 139824
+          },
+          {
+            "wallMs": 0.2853000000004613,
+            "sampledHeapDeltaBytes": 139824
+          },
+          {
+            "wallMs": 0.3312999999998283,
+            "sampledHeapDeltaBytes": 139824
+          }
+        ],
+        "ratioVsJava": 0.7133171912837123,
+        "deltaMsVsJava": -0.118
+      },
+      "maxJsVsJavaRatio": 0.7283292978207775,
+      "slowerInJs": false
+    },
+    {
+      "id": "renderer.ManchesterOWLSyntaxOWLObjectRendererImpl",
+      "category": "Manchester Object Renderer",
+      "apiSymbols": [
+        "ManchesterOWLSyntaxOWLObjectRendererImpl"
+      ],
+      "description": "Render 300 axioms and 120 complex class expressions to Manchester OWL Syntax.",
+      "comparability": "checksum-mismatch",
+      "java551": {
+        "verificationCount": 7747,
+        "firstUseWallMs": 13.224,
+        "medianWallMs": 0.904,
+        "medianRetainedHeapDeltaBytes": 1142232
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-mismatch",
+        "verificationCount": 7807,
+        "firstUseWallMs": 1.2838999999999032,
+        "medianWallMs": 0.44620000000031723,
+        "medianSampledHeapDeltaBytes": 627344,
+        "measurements": [
+          {
+            "wallMs": 0.4478999999996631,
+            "sampledHeapDeltaBytes": 627344
+          },
+          {
+            "wallMs": 0.44620000000031723,
+            "sampledHeapDeltaBytes": 633632
+          },
+          {
+            "wallMs": 0.4313999999999396,
+            "sampledHeapDeltaBytes": 627344
+          },
+          {
+            "wallMs": 0.4778999999998632,
+            "sampledHeapDeltaBytes": 798720
+          },
+          {
+            "wallMs": 0.4131999999999607,
+            "sampledHeapDeltaBytes": 625952
+          }
+        ],
+        "ratioVsJava": 0.4935840707968111,
+        "deltaMsVsJava": -0.458
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-mismatch",
+        "verificationCount": 7807,
+        "firstUseWallMs": 1.1715999999996711,
+        "medianWallMs": 0.4194000000006781,
+        "medianSampledHeapDeltaBytes": 526552,
+        "measurements": [
+          {
+            "wallMs": 0.43879999999990105,
+            "sampledHeapDeltaBytes": 526552
+          },
+          {
+            "wallMs": 0.44129999999950087,
+            "sampledHeapDeltaBytes": 529336
+          },
+          {
+            "wallMs": 0.38429999999971187,
+            "sampledHeapDeltaBytes": 499512
+          },
+          {
+            "wallMs": 0.4194000000006781,
+            "sampledHeapDeltaBytes": 526552
+          },
+          {
+            "wallMs": 0.4025000000001455,
+            "sampledHeapDeltaBytes": 528168
+          }
+        ],
+        "ratioVsJava": 0.46393805309809527,
+        "deltaMsVsJava": -0.485
+      },
+      "maxJsVsJavaRatio": null,
+      "slowerInJs": false
+    },
+    {
+      "id": "locality.extract.BOTTOM",
+      "category": "Modularity / Locality",
+      "apiSymbols": [
+        "SyntacticLocalityModuleExtractor",
+        "LocalityClass.BOTTOM"
+      ],
+      "description": "Extract a BOTTOM syntactic locality module from a ~500-axiom base for 20 seed entities.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 1481,
+        "firstUseWallMs": 8.366,
+        "medianWallMs": 2.319,
+        "medianRetainedHeapDeltaBytes": 1142232
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 1481,
+        "firstUseWallMs": 3.963000000000193,
+        "medianWallMs": 1.1533999999996922,
+        "medianSampledHeapDeltaBytes": 1647264,
+        "measurements": [
+          {
+            "wallMs": 1.1533999999996922,
+            "sampledHeapDeltaBytes": 1673592
+          },
+          {
+            "wallMs": 1.3047999999998865,
+            "sampledHeapDeltaBytes": 2234896
+          },
+          {
+            "wallMs": 1.0262000000002445,
+            "sampledHeapDeltaBytes": 1633288
+          },
+          {
+            "wallMs": 1.0748999999996158,
+            "sampledHeapDeltaBytes": 1634936
+          },
+          {
+            "wallMs": 1.2628999999997177,
+            "sampledHeapDeltaBytes": 1647264
+          }
+        ],
+        "ratioVsJava": 0.4973695558429031,
+        "deltaMsVsJava": -1.166
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 1481,
+        "firstUseWallMs": 4.755099999999402,
+        "medianWallMs": 1.1826000000000931,
+        "medianSampledHeapDeltaBytes": 1422312,
+        "measurements": [
+          {
+            "wallMs": 1.1372000000001208,
+            "sampledHeapDeltaBytes": 1444408
+          },
+          {
+            "wallMs": 1.1567000000004555,
+            "sampledHeapDeltaBytes": 1422312
+          },
+          {
+            "wallMs": 1.2561000000005151,
+            "sampledHeapDeltaBytes": 1420544
+          },
+          {
+            "wallMs": 1.1826000000000931,
+            "sampledHeapDeltaBytes": 1424032
+          },
+          {
+            "wallMs": 1.2830000000003565,
+            "sampledHeapDeltaBytes": 1421584
+          }
+        ],
+        "ratioVsJava": 0.5099611901682161,
+        "deltaMsVsJava": -1.136
+      },
+      "maxJsVsJavaRatio": 0.5099611901682161,
+      "slowerInJs": false
+    },
+    {
+      "id": "locality.extract.TOP",
+      "category": "Modularity / Locality",
+      "apiSymbols": [
+        "SyntacticLocalityModuleExtractor",
+        "LocalityClass.TOP"
+      ],
+      "description": "Extract a TOP syntactic locality module from a ~500-axiom base for 20 seed entities.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 1481,
+        "firstUseWallMs": 4.892,
+        "medianWallMs": 2.238,
+        "medianRetainedHeapDeltaBytes": 1142232
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 1481,
+        "firstUseWallMs": 1.557800000000043,
+        "medianWallMs": 1.2436999999999898,
+        "medianSampledHeapDeltaBytes": 1460200,
+        "measurements": [
+          {
+            "wallMs": 1.2436999999999898,
+            "sampledHeapDeltaBytes": 1458160
+          },
+          {
+            "wallMs": 1.1485999999999876,
+            "sampledHeapDeltaBytes": 1459928
+          },
+          {
+            "wallMs": 1.3173999999999069,
+            "sampledHeapDeltaBytes": 1460968
+          },
+          {
+            "wallMs": 1.2490999999999985,
+            "sampledHeapDeltaBytes": 1460200
+          },
+          {
+            "wallMs": 1.1894999999999527,
+            "sampledHeapDeltaBytes": 1460504
+          }
+        ],
+        "ratioVsJava": 0.555719392314562,
+        "deltaMsVsJava": -0.994
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 1481,
+        "firstUseWallMs": 1.1740000000008877,
+        "medianWallMs": 1.1659999999992579,
+        "medianSampledHeapDeltaBytes": 1424000,
+        "measurements": [
+          {
+            "wallMs": 1.2830999999996493,
+            "sampledHeapDeltaBytes": 1458160
+          },
+          {
+            "wallMs": 1.337100000000646,
+            "sampledHeapDeltaBytes": 1451744
+          },
+          {
+            "wallMs": 1.1659999999992579,
+            "sampledHeapDeltaBytes": 1406800
+          },
+          {
+            "wallMs": 0.9819000000006781,
+            "sampledHeapDeltaBytes": 1424000
+          },
+          {
+            "wallMs": 0.9689000000007582,
+            "sampledHeapDeltaBytes": 1422600
+          }
+        ],
+        "ratioVsJava": 0.5210008936547176,
+        "deltaMsVsJava": -1.072
+      },
+      "maxJsVsJavaRatio": 0.555719392314562,
+      "slowerInJs": false
+    },
+    {
+      "id": "locality.extract.STAR",
+      "category": "Modularity / Locality",
+      "apiSymbols": [
+        "SyntacticLocalityModuleExtractor",
+        "LocalityClass.STAR"
+      ],
+      "description": "Extract a STAR syntactic locality module from a ~500-axiom base for 20 seed entities.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 1481,
+        "firstUseWallMs": 5.693,
+        "medianWallMs": 3.287,
+        "medianRetainedHeapDeltaBytes": 2405776
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 1481,
+        "firstUseWallMs": 1.8027000000001863,
+        "medianWallMs": 1.5984000000003107,
+        "medianSampledHeapDeltaBytes": 2173640,
+        "measurements": [
+          {
+            "wallMs": 1.668999999999869,
+            "sampledHeapDeltaBytes": 2221288
+          },
+          {
+            "wallMs": 1.574999999999818,
+            "sampledHeapDeltaBytes": 2173160
+          },
+          {
+            "wallMs": 1.6050999999997657,
+            "sampledHeapDeltaBytes": 2173640
+          },
+          {
+            "wallMs": 1.5984000000003107,
+            "sampledHeapDeltaBytes": 2173448
+          },
+          {
+            "wallMs": 1.5774000000001251,
+            "sampledHeapDeltaBytes": 2174448
+          }
+        ],
+        "ratioVsJava": 0.4862792820201736,
+        "deltaMsVsJava": -1.689
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 1481,
+        "firstUseWallMs": 1.5995999999995547,
+        "medianWallMs": 1.6085000000002765,
+        "medianSampledHeapDeltaBytes": 2173912,
+        "measurements": [
+          {
+            "wallMs": 1.6585999999997512,
+            "sampledHeapDeltaBytes": 2172408
+          },
+          {
+            "wallMs": 1.5967000000000553,
+            "sampledHeapDeltaBytes": 2228672
+          },
+          {
+            "wallMs": 1.7761000000000422,
+            "sampledHeapDeltaBytes": 2173736
+          },
+          {
+            "wallMs": 1.5982000000003609,
+            "sampledHeapDeltaBytes": 2189520
+          },
+          {
+            "wallMs": 1.6085000000002765,
+            "sampledHeapDeltaBytes": 2173912
+          }
+        ],
+        "ratioVsJava": 0.4893519926985934,
+        "deltaMsVsJava": -1.678
+      },
+      "maxJsVsJavaRatio": 0.4893519926985934,
+      "slowerInJs": false
+    },
+    {
+      "id": "profiles.OWL2DLProfile.checkOntology",
+      "category": "OWL 2 Language Profiles",
+      "apiSymbols": [
+        "OWL2DLProfile.checkOntology"
+      ],
+      "description": "Validate a 520-axiom ontology against the OWL 2 DL profile.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 1008,
+        "firstUseWallMs": 26.621,
+        "medianWallMs": 4.017,
+        "medianRetainedHeapDeltaBytes": 1729480
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 1008,
+        "firstUseWallMs": 4.080200000000332,
+        "medianWallMs": 1.0848000000000866,
+        "medianSampledHeapDeltaBytes": 737352,
+        "measurements": [
+          {
+            "wallMs": 1.0740000000000691,
+            "sampledHeapDeltaBytes": 568128
+          },
+          {
+            "wallMs": 1.103900000000067,
+            "sampledHeapDeltaBytes": 579760
+          },
+          {
+            "wallMs": 1.1784999999999854,
+            "sampledHeapDeltaBytes": 813584
+          },
+          {
+            "wallMs": 0.9947000000001935,
+            "sampledHeapDeltaBytes": 737352
+          },
+          {
+            "wallMs": 1.0848000000000866,
+            "sampledHeapDeltaBytes": 815752
+          }
+        ],
+        "ratioVsJava": 0.27005227781928964,
+        "deltaMsVsJava": -2.932
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 1008,
+        "firstUseWallMs": 4.706900000000132,
+        "medianWallMs": 1.3124000000007072,
+        "medianSampledHeapDeltaBytes": 768328,
+        "measurements": [
+          {
+            "wallMs": 1.3124000000007072,
+            "sampledHeapDeltaBytes": 772816
+          },
+          {
+            "wallMs": 1.343499999999949,
+            "sampledHeapDeltaBytes": 768328
+          },
+          {
+            "wallMs": 1.1854000000002998,
+            "sampledHeapDeltaBytes": 649048
+          },
+          {
+            "wallMs": 1.5065999999997075,
+            "sampledHeapDeltaBytes": 773232
+          },
+          {
+            "wallMs": 1.1266000000005079,
+            "sampledHeapDeltaBytes": 616728
+          }
+        ],
+        "ratioVsJava": 0.3267114762262154,
+        "deltaMsVsJava": -2.705
+      },
+      "maxJsVsJavaRatio": 0.3267114762262154,
+      "slowerInJs": false
+    },
+    {
+      "id": "profiles.OWL2ELProfile.checkOntology",
+      "category": "OWL 2 Language Profiles",
+      "apiSymbols": [
+        "OWL2ELProfile.checkOntology"
+      ],
+      "description": "Validate a 520-axiom ontology against the OWL 2 EL profile.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 1008,
+        "firstUseWallMs": 2.521,
+        "medianWallMs": 2.226,
+        "medianRetainedHeapDeltaBytes": 1729480
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 1008,
+        "firstUseWallMs": 2.071799999999712,
+        "medianWallMs": 1.3195999999998094,
+        "medianSampledHeapDeltaBytes": 881232,
+        "measurements": [
+          {
+            "wallMs": 1.455500000000029,
+            "sampledHeapDeltaBytes": 993640
+          },
+          {
+            "wallMs": 1.3195999999998094,
+            "sampledHeapDeltaBytes": 881232
+          },
+          {
+            "wallMs": 1.1323999999999614,
+            "sampledHeapDeltaBytes": 736936
+          },
+          {
+            "wallMs": 0.9085000000000036,
+            "sampledHeapDeltaBytes": 806680
+          },
+          {
+            "wallMs": 1.3870999999999185,
+            "sampledHeapDeltaBytes": 1001592
+          }
+        ],
+        "ratioVsJava": 0.5928122192272279,
+        "deltaMsVsJava": -0.906
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 1008,
+        "firstUseWallMs": 1.697200000000521,
+        "medianWallMs": 1.7150000000001455,
+        "medianSampledHeapDeltaBytes": 971184,
+        "measurements": [
+          {
+            "wallMs": 1.7150000000001455,
+            "sampledHeapDeltaBytes": 967032
+          },
+          {
+            "wallMs": 1.6838999999999942,
+            "sampledHeapDeltaBytes": 971184
+          },
+          {
+            "wallMs": 1.7449999999998909,
+            "sampledHeapDeltaBytes": 985768
+          },
+          {
+            "wallMs": 1.6959999999999127,
+            "sampledHeapDeltaBytes": 970136
+          },
+          {
+            "wallMs": 1.7563000000000102,
+            "sampledHeapDeltaBytes": 1006608
+          }
+        ],
+        "ratioVsJava": 0.7704402515723924,
+        "deltaMsVsJava": -0.511
+      },
+      "maxJsVsJavaRatio": 0.7704402515723924,
+      "slowerInJs": false
+    },
+    {
+      "id": "profiles.OWL2QLProfile.checkOntology",
+      "category": "OWL 2 Language Profiles",
+      "apiSymbols": [
+        "OWL2QLProfile.checkOntology"
+      ],
+      "description": "Validate a 520-axiom ontology against the OWL 2 QL profile.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 1008,
+        "firstUseWallMs": 2.94,
+        "medianWallMs": 2.147,
+        "medianRetainedHeapDeltaBytes": 1729480
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 1008,
+        "firstUseWallMs": 1.741700000000037,
+        "medianWallMs": 1.0909999999998945,
+        "medianSampledHeapDeltaBytes": 730512,
+        "measurements": [
+          {
+            "wallMs": 1.5322999999998501,
+            "sampledHeapDeltaBytes": 1188200
+          },
+          {
+            "wallMs": 1.0909999999998945,
+            "sampledHeapDeltaBytes": 708968
+          },
+          {
+            "wallMs": 0.8443999999999505,
+            "sampledHeapDeltaBytes": 711128
+          },
+          {
+            "wallMs": 0.9338999999999942,
+            "sampledHeapDeltaBytes": 730512
+          },
+          {
+            "wallMs": 1.4000999999998385,
+            "sampledHeapDeltaBytes": 1157968
+          }
+        ],
+        "ratioVsJava": 0.5081509082440124,
+        "deltaMsVsJava": -1.056
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 1008,
+        "firstUseWallMs": 1.4890999999997803,
+        "medianWallMs": 1.0448999999998705,
+        "medianSampledHeapDeltaBytes": 967904,
+        "measurements": [
+          {
+            "wallMs": 1.0448999999998705,
+            "sampledHeapDeltaBytes": 1017272
+          },
+          {
+            "wallMs": 0.7998999999999796,
+            "sampledHeapDeltaBytes": 912776
+          },
+          {
+            "wallMs": 0.7908999999999651,
+            "sampledHeapDeltaBytes": 967904
+          },
+          {
+            "wallMs": 1.360700000000179,
+            "sampledHeapDeltaBytes": 869640
+          },
+          {
+            "wallMs": 1.4083000000000538,
+            "sampledHeapDeltaBytes": 980376
+          }
+        ],
+        "ratioVsJava": 0.4866790870982164,
+        "deltaMsVsJava": -1.102
+      },
+      "maxJsVsJavaRatio": 0.5081509082440124,
+      "slowerInJs": false
+    },
+    {
+      "id": "profiles.OWL2RLProfile.checkOntology",
+      "category": "OWL 2 Language Profiles",
+      "apiSymbols": [
+        "OWL2RLProfile.checkOntology"
+      ],
+      "description": "Validate a 520-axiom ontology against the OWL 2 RL profile.",
+      "comparability": "checksum-only",
+      "java551": {
+        "verificationCount": 48,
+        "firstUseWallMs": 2.808,
+        "medianWallMs": 1.607,
+        "medianRetainedHeapDeltaBytes": 1729480
+      },
+      "jsJavaOwlapi551": {
+        "comparability": "checksum-only",
+        "verificationCount": 48,
+        "firstUseWallMs": 1.1760999999996784,
+        "medianWallMs": 1.2696999999998297,
+        "medianSampledHeapDeltaBytes": 912224,
+        "measurements": [
+          {
+            "wallMs": 1.2973000000001775,
+            "sampledHeapDeltaBytes": 925984
+          },
+          {
+            "wallMs": 0.9746000000000095,
+            "sampledHeapDeltaBytes": 912224
+          },
+          {
+            "wallMs": 1.3215000000000146,
+            "sampledHeapDeltaBytes": 925984
+          },
+          {
+            "wallMs": 1.2696999999998297,
+            "sampledHeapDeltaBytes": 783480
+          },
+          {
+            "wallMs": 0.7323999999998705,
+            "sampledHeapDeltaBytes": 727048
+          }
+        ],
+        "ratioVsJava": 0.7901057871809768,
+        "deltaMsVsJava": -0.337
+      },
+      "jsNormativeV1": {
+        "comparability": "checksum-only",
+        "verificationCount": 48,
+        "firstUseWallMs": 1.7622999999994136,
+        "medianWallMs": 1.4930999999996857,
+        "medianSampledHeapDeltaBytes": 774384,
+        "measurements": [
+          {
+            "wallMs": 1.1958999999997104,
+            "sampledHeapDeltaBytes": 772736
+          },
+          {
+            "wallMs": 1.6592000000000553,
+            "sampledHeapDeltaBytes": 983280
+          },
+          {
+            "wallMs": 1.2919999999994616,
+            "sampledHeapDeltaBytes": 774384
+          },
+          {
+            "wallMs": 1.6182000000007974,
+            "sampledHeapDeltaBytes": 982528
+          },
+          {
+            "wallMs": 1.4930999999996857,
+            "sampledHeapDeltaBytes": 773320
+          }
+        ],
+        "ratioVsJava": 0.9291225886743533,
+        "deltaMsVsJava": -0.114
+      },
+      "maxJsVsJavaRatio": 0.9291225886743533,
+      "slowerInJs": false
+    }
+  ],
+  "slowerApisRanked": [],
+  "provenance": {
+    "javaBaselineSha256": "b6a229de2a5798063888144eeda60d4399f9c8c2a6377d706dcd9b54956751a4",
+    "javascriptHarnessSha256": "a07dcc2066eeb3a9efc3eac1e49054743a9c121b7f7c027a7f1fc9295f7c8f06",
+    "javaHarnessSha256": "dc1edc89aaa814f97b667d105cbf66eafb490a7351d282ba4809a86a1297224f",
+    "fixtureGeneratorSha256": "f3f91f37c9cf6df7a88bed5a77077ca2c09094852a6fece9d05e70026808591a",
+    "fixtureSha256": "1498099b1368a0d262dcfae86b8091de63e4da51aa5088db5ae6482e2a46a5de",
+    "runtimeSourcesSha256": "5189115c7ad321bc0fe7fffa6765232edd8a4b69cd9cbe66eb8a2bd8f3c3f3c8",
+    "recordedAt": "2026-10-29T18:47:52.790Z",
+    "semanticQualification": "Counts alone cannot qualify structural equivalence; see the coverage and comparability manifest.",
+    "legacyJavaMemoryMeaning": "Historical schema-1 heap delta; no peak or retained-memory claim is admitted.",
+    "javascriptTimingMeaning": "Raw performance.now() differences and medians retain API precision; Markdown display rounding is separate. Earlier recordings may have rounded samples to three decimal milliseconds."
+  }
+}

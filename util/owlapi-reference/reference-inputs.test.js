@@ -1,3 +1,4 @@
+import { JAVA_TOOLCHAIN } from "../../scripts/java-toolchain.mjs";
 import { describe, expect, test } from "@jest/globals";
 import {
   assertNativeBuildClosure,
@@ -19,11 +20,11 @@ const inputs = () => ({
   mavenDistributionSha256: "3".repeat(64),
   jdkDistributionSha256: "4".repeat(64),
   environment: {
-    runtime: "25.0.4.1+1-LTS",
-    "java.version": "25.0.4.1",
+    runtime: JAVA_TOOLCHAIN.runtime,
+    "java.version": JAVA_TOOLCHAIN.version,
     "java.vendor": "Eclipse Adoptium",
     "java.vm.name": "OpenJDK 64-Bit Server VM",
-    "java.vm.version": "25.0.4.1+1-LTS",
+    "java.vm.version": JAVA_TOOLCHAIN.runtime,
     "os.name": "Linux",
     "os.version": "6.8.0",
     "os.arch": "amd64",
@@ -199,6 +200,9 @@ describe("native reference preparation boundary", () => {
 
   test.each([
     ["runtime", "25.0.4.1"],
+    ["runtime", "25.0.4.1+1-LTS"],
+    ["java.version", "25.0.4.1"],
+    ["java.vm.version", "25.0.4.1+1-LTS"],
     ["java.vendor", "Unknown"],
     ["locale", "en-US"],
     ["timezone", "Europe/Bucharest"],

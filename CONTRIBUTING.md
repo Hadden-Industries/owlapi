@@ -53,8 +53,8 @@ Every release candidate still requires qualification of its own bytes and human 
 
 Local npm eligibility is `>=12.2.1`; producer CI, release construction, and governed qualification select exact npm 12.2.1 before project commands or cache probes.
 Consumer runtime qualification separately selects exact npm 10.9.9, whose declared engines admit every consumer minimum; it does not lower the producer toolchain requirement.
-The development runtime remains versionless in `devEngines`; consumer admission is derived from the lowest maintained-family minimum, independently of producer toolchain requirements.
-The exact CI reference runtimes remain Node 22.23.3, 24.22.1 and 26.12.0; Node 24.22.1 is canonical.
+The development runtime requires Node `>=26.13.0` in `devEngines`; consumer admission is derived from the lowest maintained-family minimum, independently of producer toolchain requirements.
+Producer tooling uses Node 26.13.0; consumer references remain Node 22.23.4, 24.22.2 and 26.13.0.
 
 <!-- runtime-policy:end -->
 
@@ -155,7 +155,10 @@ Use `lint:js` and `lint:py` for separate static checks, and the source/Python `:
 For selected Markdown files, use `npm run check:markdown -- -- "docs/guide.md"` or `npm run check:markdown -- --files-json "[\"docs/guide.md\"]"`; the canonical CLI requires a literal `--` boundary or JSON selection.
 `lint:files` remains available for existing JavaScript callers.
 
-JSON tooling is installed separately with `npm run install:json`; its exact source selector lives in `tooling/json/package.json`, with a native npm lock and producer-generated acquisition bootstrap.
+JSON Quality is a normal root registry devDependency, installed by `npm ci` and imported from its public package exports.
+Its `>=` minimum declaration follows the other registry devDependencies, with exact resolved packages retained in the root lockfile and governed by ordinary npm and repository-wide dependency checks.
+`npm run test:json` checks JSON behavior, source preservation and coverage without a package-specific installation verifier.
+The old isolated JSON manifest, import bridge and `install:json` bootstrap are retired; Markdown and artifact transport retain their separate graphs.
 `npm run check:json` performs complete read-only checking of owned files, required generated outputs, pinned native evidence and linked JSON-LD sources.
 `npm run format:json:check` invokes that same complete check; `npm run inspect:json` emits its typed event stream as newline-delimited JSON.
 Checking has no file-selection or protected-only mode: source findings remain provisional until the execution terminal confirms complete inventory and linkage.
@@ -213,6 +216,39 @@ To apply the canonical formatter locally, run:
 ```shell
 npm run format
 ```
+
+## Selecting a candidate version
+
+`package.json.version` is the single declaration of the current source candidate.
+Release tooling reads it directly; versioned filenames and coordinates are derived from it.
+To select another version without creating a Git tag or running lifecycle scripts:
+
+```shell
+npm version <version> --no-git-tag-version --ignore-scripts
+npm run sync:version
+npm run check:version
+```
+
+For a stable version, explicitly select `publishConfig.tag: latest` before synchronization; prereleases use `next`.
+Additional npm tag changes still need their own release decision.
+`sync:version` updates the lockfile's root version, current compatibility metadata, generated API views and digests, current release coordinates and schema constraints.
+It uses the retained Java API inventory and does not need a Java source checkout for a version-only change.
+Structural API changes still require the full Java API generator.
+`check:version` is read-only and also runs through `format:check` in CI.
+
+Changing the coordinate or primary channel disables publication and clears the previous publication decision.
+Synchronizing an unchanged coordinate preserves its decision.
+The shared release-evidence schema retains exact version, tag, coordinate, filename and registry URL constraints for historical identities and the selected candidate.
+It does not copy a complete schema for each release.
+General instructions link to the manifest instead of repeating a mutable version.
+
+Versions in changelogs, dated plans, provenance inventories, qualification reports and approved artifact/digest pins are recorded facts, not current-version declarations.
+Synchronization does not rewrite them or transfer their approvals to new bytes.
+Refresh candidate evidence through its existing generators and qualification procedures, and obtain any required approval for changed facts.
+The availability policy's `previousVersion` remains an explicit published-predecessor choice; review it when selecting a successor.
+The frozen publisher artifact/digest pins require the separately approved artifact and remain outside this metadata command.
+`firstPublicReleaseTarget` is an independent API-introduction target: advancing the package version does not move it.
+Retarget still-unpublished additions deliberately in the Java API generator when their intended first release changes, then regenerate that inventory.
 
 ## CI verification after merging
 

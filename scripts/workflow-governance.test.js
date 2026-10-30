@@ -35,6 +35,58 @@ const mutateWorkflow = (fileName, mutate) => {
 };
 
 describe("repository workflow governance", () => {
+  test.each(["source_portable", "source_canonical", "source_json"])(
+    "rejects pre-development runtimes for %s tooling",
+    (jobId) => {
+      const violations = mutateWorkflow("ci.yml", (document) => {
+        const setup = document
+          .getIn(["jobs", jobId, "steps"])
+          .items.find(
+            (step) => step.get("uses") === "./.github/actions/setup-producer",
+          );
+        setup.setIn(["with", "node-family"], "24");
+      });
+      expect(violations.join("\n")).toContain("canonical development runtime");
+    },
+  );
+  test.each(["node", "candidate-digest", "if"])(
+    "rejects altered %s in retained Node 22/24 consumer coverage",
+    (field) => {
+      for (const file of ["ci.yml", "release.yml"])
+        for (const platform of ["windows", "macos"])
+          for (const family of ["22", "24"]) {
+            const violations = mutateWorkflow(file, (document) => {
+              const step = document.getIn([
+                "jobs",
+                `portability_${platform}_node_${family}`,
+                "steps",
+                1,
+              ]);
+              if (field === "if") step.set("if", "false");
+              else step.setIn(["with", field], "substituted");
+            });
+            expect(violations.join("\n")).toContain(
+              "reference consumer binding",
+            );
+          }
+    },
+  );
+  test.each(["ci.yml", "release.yml"])(
+    "%s rejects a competing inline Java version",
+    (fileName) => {
+      const violations = mutateWorkflow(fileName, (document) => {
+        visit(document, {
+          Map(_key, node) {
+            if (node.get("uses")?.startsWith?.("actions/setup-java@"))
+              node.setIn(["with", "java-version"], "99");
+          },
+        });
+      });
+      expect(violations.join("\n")).toContain(
+        "JDK must use the single version file",
+      );
+    },
+  );
   test("rejects reconciliation evidence that substitutes a logical name for the uploaded identity", () => {
     const violations = mutateWorkflow(
       "release-reconciliation.yml",
@@ -176,7 +228,7 @@ describe("repository workflow governance", () => {
   });
   test.each(
     ["ci.yml", "release.yml"].flatMap((file) =>
-      ["source_node_24", "source_node_26", "quality_windows"].flatMap((id) =>
+      ["source_canonical", "source_json", "quality_windows"].flatMap((id) =>
         [
           "removed",
           "conditional",
@@ -212,7 +264,7 @@ describe("repository workflow governance", () => {
   });
   test.each(
     ["ci.yml", "release.yml"].flatMap((file) =>
-      ["source_node_24", "source_node_26", "quality_windows"].map((id) => [
+      ["source_canonical", "source_json", "quality_windows"].map((id) => [
         file,
         id,
       ]),
@@ -220,14 +272,12 @@ describe("repository workflow governance", () => {
   )("requires complete JSON setup in %s:%s", (file, id) => {
     const violations = mutateWorkflow(file, (doc) => {
       const steps = doc.getIn(["jobs", id, "steps"]);
-      const setup = steps.items.find(
-        (step) => step.get("run") === "npm run install:json",
-      );
+      const setup = steps.items.find((step) => step.get("run") === "npm ci");
       expect(setup).toBeDefined();
       steps.items.splice(steps.items.indexOf(setup), 1);
     });
     expect(violations.join("\n")).toContain(
-      "requires unconditional isolated JSON acquisition and probes",
+      "requires unconditional root JSON installation and probes",
     );
   });
   test.each(["if", "continue-on-error"])(
@@ -235,7 +285,7 @@ describe("repository workflow governance", () => {
     (field) => {
       const violations = mutateWorkflow("ci.yml", (doc) => {
         const gate = doc
-          .getIn(["jobs", "source_node_26", "steps"])
+          .getIn(["jobs", "source_json", "steps"])
           .items.find((step) => step.get("run") === "npm run check:json");
         gate.set(field, field === "if" ? "false" : true);
       });
@@ -248,20 +298,20 @@ describe("repository workflow governance", () => {
     "npm run install:json",
     "npm run lint:json-identity",
     "npm run format:check",
-  ])("keeps Node 22 independent of %s", (command) => {
+  ])("keeps the portable source lane independent of %s", (command) => {
     const violations = mutateWorkflow("ci.yml", (doc) => {
       doc
-        .getIn(["jobs", "source_node_22", "steps"])
+        .getIn(["jobs", "source_portable", "steps"])
         .add({ name: "Unqualified tool graph", run: command });
     });
     expect(violations.join("\n")).toContain(
-      "Node 22 must not load the isolated JSON graph",
+      "portable source lane must not execute the native JSON tool",
     );
   });
   test("keeps the scanner work root out of retained repository reports", () => {
     const violations = mutateWorkflow("ci.yml", (doc) => {
       const step = doc
-        .getIn(["jobs", "source_node_24", "steps"])
+        .getIn(["jobs", "source_canonical", "steps"])
         .items.find((step) => step.get("id") === "scanner_qualification");
       step.setIn(
         ["env", "SCANCODE_WORK_ROOT"],
@@ -272,7 +322,7 @@ describe("repository workflow governance", () => {
       "requires unconditional locked scanner qualification",
     );
   });
-  test.each(["source_node_24", "quality_windows"])(
+  test.each(["source_canonical", "quality_windows"])(
     "requires real scanner qualification in %s",
     (id) => {
       expect(
@@ -287,7 +337,7 @@ describe("repository workflow governance", () => {
       ).toContain("requires unconditional locked scanner qualification");
     },
   );
-  test.each(["source_node_24", "quality_windows"])(
+  test.each(["source_canonical", "quality_windows"])(
     "rejects a scanner job budget without existing-work headroom in %s",
     (id) => {
       expect(
@@ -396,7 +446,7 @@ describe("repository workflow governance", () => {
     (mutation) => {
       expect(
         mutateWorkflow("ci.yml", (document) => {
-          const steps = document.getIn(["jobs", "source_node_24", "steps"]);
+          const steps = document.getIn(["jobs", "source_canonical", "steps"]);
           const index = steps.items.findIndex(
             (step) => step.get("run") === "npm run install:markdown",
           );
@@ -411,7 +461,7 @@ describe("repository workflow governance", () => {
       ).toMatch(/isolated Markdown acquisition|Markdown setup before/u);
     },
   );
-  test.each(["source_node_22", "source_node_26"])(
+  test.each(["source_portable", "source_json"])(
     "retains the %s source and Python floor",
     (jobId) => {
       expect(
@@ -460,7 +510,7 @@ describe("repository workflow governance", () => {
     (mutation) => {
       expect(
         mutateWorkflow("ci.yml", (doc) => {
-          const steps = doc.getIn(["jobs", "source_node_24", "steps"]);
+          const steps = doc.getIn(["jobs", "source_canonical", "steps"]);
           const index = steps.items.findIndex(
             (step) => step.get("id") === "reference_upload",
           );
@@ -482,7 +532,7 @@ describe("repository workflow governance", () => {
     (mutation) => {
       expect(
         mutateWorkflow("ci.yml", (doc) => {
-          const steps = doc.getIn(["jobs", "source_node_24", "steps"]);
+          const steps = doc.getIn(["jobs", "source_canonical", "steps"]);
           const index = steps.items.findIndex(
             (step) =>
               step.get("run") ===
@@ -501,7 +551,7 @@ describe("repository workflow governance", () => {
       ).toMatch(/isolated cost screen/u);
     },
   );
-  test.each(["source_node_24", "owl_contract"])(
+  test.each(["source_canonical", "owl_contract"])(
     "requires unconditional native coverage in %s",
     (job) => {
       for (const mutation of ["remove", "skip", "ignore", "command"]) {
@@ -551,7 +601,7 @@ describe("repository workflow governance", () => {
     (mutation) => {
       expect(
         mutateWorkflow("ci.yml", (doc) => {
-          const steps = doc.getIn(["jobs", "source_node_24", "steps"]);
+          const steps = doc.getIn(["jobs", "source_canonical", "steps"]);
           const index = steps.items.findIndex(
             (step) =>
               step.get("run") === "node scripts/ci-check-applicability.mjs",
@@ -581,8 +631,8 @@ describe("repository workflow governance", () => {
 
   test.each([
     ["ci.yml", "quality_windows"],
-    ["ci.yml", "source_node_22"],
-    ["release.yml", "source_node_24"],
+    ["ci.yml", "source_portable"],
+    ["release.yml", "source_canonical"],
     ["release.yml", "quality_windows"],
     ["extended-tests.yml", "extended_evidence"],
     ["maintenance.yml", "health"],
@@ -622,7 +672,7 @@ describe("repository workflow governance", () => {
   test.each([
     [
       "a bypassed PR gate",
-      (doc) => doc.setIn(["jobs", "source_node_24", "if"], "false"),
+      (doc) => doc.setIn(["jobs", "source_canonical", "if"], "false"),
     ],
     [
       "receipt permissions",
@@ -786,31 +836,31 @@ describe("repository workflow governance", () => {
     ],
     [
       "job continue-on-error",
-      ["jobs", "source_node_24", "continue-on-error"],
+      ["jobs", "source_canonical", "continue-on-error"],
       true,
       /continue-on-error/u,
     ],
     [
       "job container",
-      ["jobs", "source_node_24", "container"],
+      ["jobs", "source_canonical", "container"],
       "node:24",
       /container/u,
     ],
     [
       "multiline script interpolation",
-      ["jobs", "source_node_24", "steps", 2, "run"],
+      ["jobs", "source_canonical", "steps", 2, "run"],
       "echo safe\necho '${{ github.event.pull_request.title }}'\n",
       /not run text/u,
     ],
     [
       "unapproved action",
-      ["jobs", "source_node_24", "steps", 0, "uses"],
+      ["jobs", "source_canonical", "steps", 0, "uses"],
       "actions/checkout@main",
       /unapproved Action/u,
     ],
     [
       "persisted credentials",
-      ["jobs", "source_node_24", "steps", 0, "with", "persist-credentials"],
+      ["jobs", "source_canonical", "steps", 0, "with", "persist-credentials"],
       true,
       /disable persisted credentials/u,
     ],
@@ -825,7 +875,7 @@ describe("repository workflow governance", () => {
 
   test("an action step cannot borrow checkout policy from the following step", () => {
     const violations = mutateWorkflow("ci.yml", (document) => {
-      const steps = document.getIn(["jobs", "source_node_24", "steps"]);
+      const steps = document.getIn(["jobs", "source_canonical", "steps"]);
       steps.items[0].deleteIn(["with", "persist-credentials"]);
       steps.items[1].setIn(["with", "persist-credentials"], false);
       steps.items[1].delete("name");
@@ -839,8 +889,8 @@ describe("repository workflow governance", () => {
 
   describe.each([
     ["workflow", ["env"]],
-    ["job", ["jobs", "source_node_24", "env"]],
-    ["step", ["jobs", "source_node_24", "steps", 2, "env"]],
+    ["job", ["jobs", "source_canonical", "env"]],
+    ["step", ["jobs", "source_canonical", "steps", 2, "env"]],
   ])("command policy in %s environment values", (_scope, path) => {
     test.each([
       ["npx --yes unreviewed-tool", "npx "],
@@ -850,7 +900,7 @@ describe("repository workflow governance", () => {
       const violations = mutateWorkflow("ci.yml", (document) => {
         document.setIn([...path, "INSTALL_COMMAND"], command);
         document.setIn(
-          ["jobs", "source_node_24", "steps", 2, "run"],
+          ["jobs", "source_canonical", "steps", 2, "run"],
           "$INSTALL_COMMAND",
         );
       });
@@ -870,10 +920,10 @@ describe("repository workflow governance", () => {
 
   test("native workflow validation is a non-optional required CI step", () => {
     const workflow = parseDocument(workflowSource("ci.yml")).toJS();
-    const validation = workflow.jobs.source_node_24.steps.find(
+    const validation = workflow.jobs.source_canonical.steps.find(
       (step) => step.run === "npm run verify:workflow-syntax",
     );
-    expect(workflow.jobs.required.needs).toContain("source_node_24");
+    expect(workflow.jobs.required.needs).toContain("source_canonical");
     expect(validation).toBeDefined();
     expect(validation).not.toHaveProperty("if");
     expect(validation).not.toHaveProperty("continue-on-error");
@@ -999,10 +1049,10 @@ describe("repository workflow governance", () => {
   });
 
   test.each([
-    ["ci.yml", "source_node_22"],
-    ["ci.yml", "source_node_24"],
-    ["release.yml", "source_node_22"],
-    ["release.yml", "source_node_24"],
+    ["ci.yml", "source_portable"],
+    ["ci.yml", "source_canonical"],
+    ["release.yml", "source_portable"],
+    ["release.yml", "source_canonical"],
     ["maintenance.yml", "health"],
     ["extended-tests.yml", "extended_evidence"],
   ])(

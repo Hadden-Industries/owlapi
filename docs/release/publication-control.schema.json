@@ -37,11 +37,15 @@
       "enum": [
         "owlapi@0.1.0-alpha.0",
         "@hadden-industries/owlapi@0.1.0-rc.1",
-        "@hadden-industries/owlapi@0.1.0-rc.2"
+        "@hadden-industries/owlapi@0.1.0-rc.2",
+        "@hadden-industries/owlapi@0.1.0-rc.3"
       ]
     },
     "channel": {
-      "const": "next"
+      "enum": [
+        "next",
+        "latest"
+      ]
     },
     "reconciliation": {
       "anyOf": [
@@ -263,7 +267,10 @@
       "if": {
         "properties": {
           "coordinate": {
-            "const": "@hadden-industries/owlapi@0.1.0-rc.2"
+            "enum": [
+              "@hadden-industries/owlapi@0.1.0-rc.2",
+              "@hadden-industries/owlapi@0.1.0-rc.3"
+            ]
           }
         },
         "type": "object"
@@ -301,6 +308,30 @@
           }
         ],
         "type": "object"
+      }
+    },
+    {
+      "$comment": "Generated SemVer channel projection",
+      "if": {
+        "type": "object",
+        "properties": {
+          "coordinate": {
+            "enum": [
+              "owlapi@0.1.0-alpha.0",
+              "@hadden-industries/owlapi@0.1.0-rc.1",
+              "@hadden-industries/owlapi@0.1.0-rc.2",
+              "@hadden-industries/owlapi@0.1.0-rc.3"
+            ]
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "channel": {
+            "const": "next"
+          }
+        }
       }
     }
   ]

@@ -1,3 +1,4 @@
+import { PACKAGE_VERSION } from "./package-identity.mjs";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -12,6 +13,7 @@ import { contractReport } from "./fixtures/owl-contract-report.mjs";
 import { validateReleaseEvidence } from "./validate-release-evidence.mjs";
 import { sourceFingerprint } from "./consumer-source-snapshot.mjs";
 import { physicalName } from "../tooling/artifact-transport/identity.mjs";
+import { projectReleaseEvidenceSchema } from "./release-version-schema.mjs";
 
 const { buildReleaseEvidence } = releaseEvidence;
 
@@ -150,7 +152,7 @@ const facts = {
 
 const scopedFacts = () => {
   const candidate = structuredClone(facts);
-  const rc = "0.1.0-rc.2";
+  const rc = PACKAGE_VERSION;
   candidate.source.ref = `refs/tags/v${rc}`;
   candidate.source.tag = `v${rc}`;
   candidate.workflow = { ...candidate.qualificationWorkflow };
@@ -209,6 +211,70 @@ const scopedFacts = () => {
   return candidate;
 };
 
+test("one release schema structure preserves exact identities for historical, current and projected candidates", () => {
+  const schema = JSON.parse(
+    readFileSync("docs/release/release-evidence.schema.json", "utf8"),
+  );
+  const projected = projectReleaseEvidenceSchema(schema, "0.1.0-rc.9");
+  const ajv = new Ajv2020({ allErrors: true, strict: true });
+  addFormats(ajv);
+  const validate = ajv.compile(projected);
+  const current = buildReleaseEvidence(scopedFacts());
+  for (const version of ["0.1.0-rc.2", PACKAGE_VERSION, "0.1.0-rc.9"]) {
+    const record = JSON.parse(
+      JSON.stringify(current).replaceAll(PACKAGE_VERSION, version),
+    );
+    expect(validate(record)).toBe(true);
+    for (const mutate of [
+      (value) => {
+        value.package.coordinate = "@hadden-industries/owlapi@9.9.9";
+      },
+      (value) => {
+        value.source.tag = "v9.9.9";
+      },
+      (value) => {
+        value.source.ref = "refs/tags/v9.9.9";
+      },
+      (value) => {
+        value.candidate.tarball.name = "hadden-industries-owlapi-9.9.9.tgz";
+      },
+      (value) => {
+        value.candidate.sbom.name = "hadden-industries-owlapi-9.9.9.cdx.json";
+      },
+      (value) => {
+        value.publication.coordinate = "@hadden-industries/owlapi@9.9.9";
+      },
+      (value) => {
+        value.publication.tarballUrl += "?extra=1";
+      },
+      (value) => {
+        value.publication.next = "9.9.9";
+      },
+      (value) => {
+        value.publication.latest = "9.9.9";
+      },
+      (value) => {
+        value.githubRelease.assets.find((asset) =>
+          asset.name.endsWith(".tgz"),
+        ).name = "wrong.tgz";
+      },
+      (value) => {
+        value.candidate.tarball.sha256 = "not-a-digest";
+      },
+      (value) => {
+        value.publication.mode = "DIRECT_BOOTSTRAP";
+      },
+      (value) => {
+        delete value.producerContract;
+      },
+    ]) {
+      const invalid = structuredClone(record);
+      mutate(invalid);
+      expect(validate(invalid)).toBe(false);
+    }
+  }
+});
+
 test("strict release evidence retains each equivalent approval transport input", () => {
   const candidate = scopedFacts();
   const identity = {
@@ -233,8 +299,8 @@ test("fresh scoped RC evidence binds one source and run without borrowing alpha 
   const evidence = buildReleaseEvidence(scopedFacts());
   expect(evidence.package).toEqual({
     name: "@hadden-industries/owlapi",
-    version: "0.1.0-rc.2",
-    coordinate: "@hadden-industries/owlapi@0.1.0-rc.2",
+    version: PACKAGE_VERSION,
+    coordinate: `@hadden-industries/owlapi@${PACKAGE_VERSION}`,
     channel: "next",
     registry: "https://registry.npmjs.org/",
   });
@@ -295,7 +361,7 @@ test("historical schema-4 evidence remains readable after oracle changes but can
     evidence.candidate.sbom,
     ...evidence.githubRelease.assets,
   ])
-    asset.name = asset.name.replace("0.1.0-rc.2", "0.1.0-rc.1");
+    asset.name = asset.name.replace(PACKAGE_VERSION, "0.1.0-rc.1");
   const report = evidence.producerContract;
   report.candidate.package.version = "0.1.0-rc.1";
   report.fixtureSha256 = "0".repeat(64);

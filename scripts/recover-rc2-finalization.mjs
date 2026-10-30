@@ -12,16 +12,16 @@ import {
 import { basename, dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
-import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
+import { verifyHistoricalRc2CandidateBundle } from "./candidate-bundle.mjs";
 import { scopedWorkflowJobs } from "./generate-release-evidence.mjs";
 import {
   assertDraftRelease,
   assertReleaseAssets,
   GitHubReleaseClient,
 } from "./github-release.mjs";
-import { assertPublicRegistryFacts } from "./qualify-public-registry.mjs";
+import { assertHistoricalRc2PublicRegistryFacts } from "./qualify-public-registry.mjs";
 import { readPublicRegistry } from "./public-registry-read.mjs";
-import { buildReleaseEvidence } from "./release-evidence.mjs";
+import { buildHistoricalRc2ReleaseEvidence } from "./release-evidence.mjs";
 import { validateReleaseEvidence } from "./validate-release-evidence.mjs";
 
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
@@ -231,17 +231,17 @@ const liveState = async (client, control) => {
   return { run, jobs, approvals, release, deployment, statuses };
 };
 
-const publicReadback = async (control) => {
+export const publicReadback = async (control, read = readPublicRegistry) => {
   const registry = "https://registry.npmjs.org";
   const coordinate = encodeURIComponent("@hadden-industries/owlapi");
   const json = async (url) =>
-    JSON.parse((await readPublicRegistry(new URL(url))).toString("utf8"));
+    JSON.parse((await read(new URL(url))).toString("utf8"));
   const [metadata, tags] = await Promise.all([
     json(`${registry}/${coordinate}/0.1.0-rc.2`),
     json(`${registry}/-/package/${coordinate}/dist-tags`),
   ]);
-  const tarball = await readPublicRegistry(new URL(metadata.dist.tarball));
-  assertPublicRegistryFacts({
+  const tarball = await read(new URL(metadata.dist.tarball));
+  assertHistoricalRc2PublicRegistryFacts({
     expectedVersion: "0.1.0-rc.2",
     retainedSha256: control.tarballSha256,
     metadata,
@@ -442,7 +442,7 @@ export const buildRecoveryEvidence = ({
     url: `https://github.com/${control.repository}/actions/runs/${control.runId}`,
     actor: run.actor.login,
   };
-  const evidence = buildReleaseEvidence({
+  const evidence = buildHistoricalRc2ReleaseEvidence({
     generatedAt,
     producerContract: publication.producerContract,
     source: {
@@ -538,7 +538,7 @@ const evidenceFromArchives = ({
       ]),
   );
   const content = files.candidate;
-  verifyDownloadedCandidateBundle({
+  verifyHistoricalRc2CandidateBundle({
     fileNames: Object.keys(content),
     checksumText: content.SHA256SUMS.toString("utf8"),
     sbomText:

@@ -2,8 +2,8 @@
 
 ## Current Java execution target
 
-New Java work for continued OwlAPI implementation selects [Eclipse Temurin 25.0.5+8 LTS](../../docs/development/java-toolchain.md), installed locally as `EclipseAdoptium.Temurin.25.JDK` version `25.0.5.8`.
-That declaration records the exact runtime and the coordinated CI/native-validator migration still required; this planning change has not requalified the older build protocol below.
+New Java work reads the single [`.java-version`](../../.java-version) selection through the [Java toolchain policy](../../docs/development/java-toolchain.md), which derives native and Windows package spellings.
+That declaration records the exact runtime and shared executable policy used by CI and native validation; historical build observations below retain their original JDK identity.
 The official released Java OWLAPI 5.5.1 oracle, historical source-build pins and frozen performance timings retain their distinct identities.
 Use [the 0.1.0 roadmap](../../docs/plans/2026-10-29-0.1.0-release-reconciliation.md#4-java-toolchain-and-oracle-migration) to select the appropriate oracle and preserve old evidence.
 

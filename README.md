@@ -16,18 +16,21 @@ This project is an independently maintained JavaScript implementation.
 It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project.
 
 The published rc.2 includes the selected ontology queries, changes, transforms, short-form providers, Manchester rendering, Turtle and OWL/XML storage, EL/QL/RL profiles, and syntactic locality extraction described in the [rc.2 plan](./docs/plans/0.1.0-rc.2-java-parity.md).
-Current source has advanced beyond that artifact while retaining rc.2 development metadata; a successor must use its own unused version and qualification.
+The current source candidate's version is declared in [package.json](package.json); its publication authority is recorded separately in [publication control](docs/release/publication-control.json).
 The current profile-aware source also implements explicit `normative-v1` and `java-owlapi-5.5.1` selection under the [behavior profile contract](docs/compatibility/behavior-profiles.md).
 These options describe the later source candidate and are not part of the published rc.1 or rc.2 tarballs.
 Qualification is still in progress; the current ledger and provenance do not claim admission.
 Java migrations must select `java-owlapi-5.5.1`; omitted selection remains normative.
+The [published-to-current API delta](docs/compatibility/0.1.0-api-delta.md) lists the new exports, enlarged member surfaces and exact performance-coverage limits.
+The [contract reconciliation](docs/compatibility/0.1.0-contract-scope.md) explains the bounded source assessment and the registry's `firstPublicReleaseTarget` planning field.
+That target does not establish availability, and successful publication does not require rewriting every target or generated document.
 
 The rc.1-pinned installation and import-map examples below remain examples of that historical release; they do not demonstrate the newer source APIs.
 The release roadmap includes reconciling the complete installed examples and migration guidance against the accepted successor artifact.
-To test a retained rc.2 candidate, substitute its actual absolute tarball path:
+To test a retained local candidate, substitute its actual absolute tarball path and version:
 
 ```shell
-npm install --save-exact "owlapi@file:/absolute/path/hadden-industries-owlapi-0.1.0-rc.2.tgz"
+npm install --save-exact "owlapi@file:/absolute/path/hadden-industries-owlapi-<version>.tgz"
 ```
 
 RDF loads expose Java-style `RDFParserMetaData` through `manager.getOntologyFormat(ontology).getOntologyLoaderMetaData()`.
@@ -78,7 +81,7 @@ The package declares the engine admission range `>=22.0.0`.
 The maintained-family minimums of Node 22.0.0, 24.0.0 and 26.0.0 passed hosted installed-package and native-platform qualification; see the [qualification record](docs/release/node-consumer-qualification.md).
 Every release candidate still requires qualification of its own bytes and human release acceptance.
 Hosted qualification selects each family's exact minimum and latest released version, plus distinct reference versions, using one frozen matrix and one retained package archive.
-Node 24.22.1 is the selected canonical package producer.
+Node 26.13.0 is the selected canonical package producer.
 
 <!-- runtime-policy:end -->
 

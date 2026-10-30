@@ -3,8 +3,12 @@ import {
   PACKAGE_VERSION,
   PACKAGE_FILE_STEM,
   assertRegistryTarballUrl,
+  releaseChannel,
 } from "./package-identity.mjs";
-import { assertOwlContractReport } from "./owl-contract-evidence.mjs";
+import {
+  assertArchivedOwlContractReport,
+  assertOwlContractReport,
+} from "./owl-contract-evidence.mjs";
 import { isDeepStrictEqual } from "node:util";
 import { jsonEquals } from "./canonical-json.mjs";
 const alphaVersion = "0.1.0-alpha.0";
@@ -81,9 +85,10 @@ export const assertReleaseExecutionIdentity = ({
   return { promotionCommit, sourceCommit, tag };
 };
 
-export const buildReleaseEvidence = (facts) => {
+const buildVersionedReleaseEvidence = (facts, scopedVersion) => {
   const scoped = facts.reconciliation === null;
-  const version = scoped ? PACKAGE_VERSION : alphaVersion;
+  const version = scoped ? scopedVersion : alphaVersion;
+  const channel = releaseChannel(version);
   const packageName = scoped ? PACKAGE_NAME : "owlapi";
   const workflowName = scoped ? "Release" : "Release reconciliation";
   const workflowPath = scoped
@@ -122,7 +127,7 @@ export const buildReleaseEvidence = (facts) => {
   if (
     facts.publication?.mode !== (scoped ? "DIRECT_OIDC" : "DIRECT_BOOTSTRAP") ||
     facts.publication.coordinate !== `${packageName}@${version}` ||
-    facts.publication.channel !== "next" ||
+    facts.publication.channel !== channel ||
     facts.publication.next !== version ||
     facts.publication.latestPresent !== scoped ||
     (scoped && facts.publication.latest !== version) ||
@@ -137,13 +142,21 @@ export const buildReleaseEvidence = (facts) => {
     );
   }
   if (scoped) {
-    assertOwlContractReport(facts.producerContract, {
+    const contractOptions = {
       candidateSha256: facts.candidate.tarball.sha256,
       artifact: {
         id: Number(facts.candidate.artifactId),
         digest: facts.candidate.artifactDigest,
       },
-    });
+    };
+    if (version === PACKAGE_VERSION) {
+      assertOwlContractReport(facts.producerContract, contractOptions);
+    } else {
+      assertArchivedOwlContractReport(facts.producerContract, {
+        ...contractOptions,
+        package: { name: PACKAGE_NAME, version },
+      });
+    }
     const contractIdentity = facts.producerContract.identity;
     if (
       contractIdentity.workflow !== "Release" ||
@@ -247,7 +260,7 @@ export const buildReleaseEvidence = (facts) => {
       name: packageName,
       version,
       coordinate: `${packageName}@${version}`,
-      channel: "next",
+      channel,
       registry: "https://registry.npmjs.org/",
     },
     generatedAt: facts.generatedAt,
@@ -270,3 +283,11 @@ export const buildReleaseEvidence = (facts) => {
     inputEvidence: normalizeBy(facts.inputEvidence, "name"),
   };
 };
+
+/** Current candidate construction never inherits a historical release coordinate. */
+export const buildReleaseEvidence = (facts) =>
+  buildVersionedReleaseEvidence(facts, PACKAGE_VERSION);
+
+/** The closed rc.2 recovery route retains its immutable published identity. */
+export const buildHistoricalRc2ReleaseEvidence = (facts) =>
+  buildVersionedReleaseEvidence(facts, "0.1.0-rc.2");

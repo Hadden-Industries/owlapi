@@ -31,7 +31,8 @@ export function projectWorkflowRuntime(
         (path[2] === "steps" &&
           Number.isInteger(path[3]) &&
           (["name", "run"].includes(path[4]) ||
-            (path[4] === "with" && path[5] === "node-version"))) ||
+            (path[4] === "with" &&
+              ["node-version", "node"].includes(path[5])))) ||
         (path[2] === "strategy" && path[3] === "matrix"));
     if (!permitted)
       throw new Error(`Unapproved runtime projection path: ${path.join(".")}`);

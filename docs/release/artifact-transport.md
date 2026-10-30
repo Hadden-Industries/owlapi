@@ -73,7 +73,10 @@ Retained release approvals additionally verify every equivalent transport copy.
 
 The qualified predecessor's largest retained artifact was approximately 3.3 MB; the root authenticated npm corpus was approximately 69 MB.
 The initial policy caps frozen/expanded payloads at 1 GiB, file count at 10,000, filesystem census at 20,000 entries and the raw ZIP at 1 GiB plus 2 MiB.
-Collection additionally caps cumulative downloaded archive bytes at 4 GiB, including equivalent copies, with metadata checked before each download.
+Collection additionally caps cumulative admitted archive bytes at 4 GiB, including equivalent copies, with metadata checked before each download.
+This is not an exact network-transfer counter: the public SDK can retry partial downloads internally without exposing their consumed wire bytes.
+The parent deadline bounds the complete operation, including those retries; raw disk growth and final archive size are checked independently.
+Do not claim a 4 GiB cumulative wire limit from this admitted-payload bound.
 Temporary collection storage holds at most the bounded selected payload and one bounded raw archive at a time; ZIP parsing holds one archive and its expanded contents in memory.
 Larger subjects require a reviewed policy change.
 The SDK download worker checks metadata and monitors raw disk growth; no archive is admitted or materialized before size, digest and content validation.
@@ -106,7 +109,7 @@ node scripts/build-artifact-action.mjs --check
 
 The build record binds source, policy, both dependency locks and generated outputs.
 Workflow governance rejects direct upload bypasses, changed action contracts and caller policy overrides, and closes the producer/collector census.
-CI qualification policy version 7 binds the transport policy and build record; older green receipts cannot automatically qualify this protocol.
+The current CI qualification policy binds the transport policy and build record; older green receipts cannot automatically qualify this protocol.
 
 Recovery fault injection covers lost acknowledgements, delayed visibility, conflicting copies, failed lookups/downloads, bounded retries, deadlines, cancellation, unsafe ZIPs and a standalone SDK bundle.
 Hosted Linux, Windows and macOS execution remains required for the exact published candidate.

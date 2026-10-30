@@ -1,17 +1,8 @@
 /** One editable version policy; consumer admission and supported reference lanes are distinct. */
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { createRequire } from "node:module";
-import { findNpmCliCandidates } from "./assert-workflow-runtime.mjs";
-
-// Receipt admission precedes project installation. Reuse npm's native semver
-// without importing the development graph or executing npm on a consumer floor.
-const nativeNpm =
-  process.env.OWLAPI_CONSUMER_NPM ??
-  process.env.npm_execpath ??
-  findNpmCliCandidates()[0];
-assert.ok(nativeNpm, "A native npm CLI is required to read runtime policy");
-export const runtimeSemver = createRequire(nativeNpm)("semver");
+import { npmSemver } from "./npm-semver.mjs";
+export const runtimeSemver = npmSemver;
 const semver = runtimeSemver;
 
 const assertStableVersion = (version) => {
@@ -116,6 +107,7 @@ export function projectRuntimeText(text, policy = CI_RUNTIME) {
     npm: policy.npm,
     consumerNpm: policy.consumerNpm,
     npmRange: `>=${policy.npmMinimum}`,
+    developmentNodeRange: `>=${policy.node[policy.canonicalNodeMajor]}`,
     canonicalNode: policy.node[policy.canonicalNodeMajor],
     consumerRange: consumerNodeRange(policy),
     minimumNodeMajor: String(

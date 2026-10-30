@@ -16,10 +16,10 @@ version-output streams, hashes every classpath JAR, records JVM class-load origi
 and rechecks the candidate, tools, inputs and reference artifacts afterward.
 It does not rebuild the Java reference or establish the provenance of that build.
 
-Run from the repository root in PowerShell (no receipt is written by default):
+Run from the repository root in PowerShell with `JAVA_HOME` selecting the JDK in [`.java-version`](../../../../.java-version) (no receipt is written by default):
 
 ```powershell
-node util/owlapi-reference/run-profile-contract.mjs --java-root 'C:/Users/maksy/GitHub/owlcs/owlapi-worktrees/import-closure-reference-d7e997a5' --java 'C:/Program Files/Eclipse Adoptium/jdk-25.0.4.101-hotspot/bin/java.exe' --javac 'C:/Program Files/Eclipse Adoptium/jdk-25.0.4.101-hotspot/bin/javac.exe'
+node util/owlapi-reference/run-profile-contract.mjs --java-root 'C:/Users/maksy/GitHub/owlcs/owlapi-worktrees/import-closure-reference-d7e997a5' --java "$env:JAVA_HOME/bin/java.exe" --javac "$env:JAVA_HOME/bin/javac.exe"
 ```
 
 `--java-only` observes Java without loading the JavaScript public API.

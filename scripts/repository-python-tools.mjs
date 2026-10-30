@@ -9,7 +9,6 @@ import {
   appendFileSync,
   existsSync,
   mkdirSync,
-  readFileSync,
   writeFileSync,
 } from "node:fs";
 import { isAbsolute, join, resolve } from "node:path";
@@ -21,6 +20,7 @@ import {
   UV_SELECTION,
   checkUvProjections,
   syncPythonProjections,
+  pythonTarget,
 } from "./development-tool-policy.mjs";
 const { version: uvVersion, assets: uvAssets } = UV_SELECTION;
 // Exact official release assets, verified against GitHub's release asset digests.
@@ -119,10 +119,7 @@ function pythonVersion(python, tools) {
     ),
     "Python version check",
   );
-  const expected = readFileSync(
-    join(tools.root, ".python-version"),
-    "utf8",
-  ).trim();
+  const expected = pythonTarget(tools.root).version;
   if (version !== expected)
     throw new Error(`Python ${expected} is required; found ${version}.`);
 }
@@ -295,10 +292,7 @@ export async function prepareWorkflowPython({ root = repositoryRoot } = {}) {
       "Pinned Python setup is qualified for Windows/Linux x64 only.",
     );
   const tools = await ensureRepositoryUv({ root });
-  const version = readFileSync(
-    join(tools.root, ".python-version"),
-    "utf8",
-  ).trim();
+  const version = pythonTarget(tools.root).version;
   const request = workflowPythonRequest(version);
   const options = {
     ...tools,

@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
+import { parse } from "yaml";
 
 import { deriveWorkflowMetadata } from "./workflow-metadata.mjs";
 
@@ -21,6 +22,39 @@ const disabledPublication = {
 };
 
 describe("workflow metadata", () => {
+  test("evidence generation, retention and finalization use the selected metadata version", () => {
+    const workflow = parse(
+      readFileSync(".github/workflows/release.yml", "utf8"),
+    );
+    const steps = workflow.jobs.release_evidence.steps;
+    const generate = steps.find((step) =>
+      step.run?.startsWith("npm run generate:release-evidence"),
+    );
+    const retain = steps.find((step) => step.id === "upload");
+    const finalize = workflow.jobs.finalize_release.steps.find((step) =>
+      step.run?.startsWith("npm run finalize:github-release"),
+    );
+    const { version } = deriveWorkflowMetadata({
+      manifest: { ...manifest, version: "0.1.0-rc.9" },
+      publication: {
+        ...disabledPublication,
+        coordinate: "@hadden-industries/owlapi@0.1.0-rc.9",
+      },
+    });
+    const resolve = (value) =>
+      value.replace("${{ needs.metadata.outputs.version }}", version);
+    expect(resolve(generate.env.RELEASE_EVIDENCE_PATH)).toBe(
+      ".release/hadden-industries-owlapi-0.1.0-rc.9.release-evidence.json",
+    );
+    expect(resolve(retain.with.path)).toBe(
+      resolve(generate.env.RELEASE_EVIDENCE_PATH),
+    );
+    expect(resolve(finalize.env.RELEASE_EVIDENCE_PATH)).toBe(
+      ".release/evidence/hadden-industries-owlapi-0.1.0-rc.9.release-evidence.json",
+    );
+    expect(generate.run).toContain('--output "$RELEASE_EVIDENCE_PATH"');
+    expect(finalize.run).toContain('--evidence "$RELEASE_EVIDENCE_PATH"');
+  });
   test("selects the scoped RC and rejects the blocked bare identity or another scope", () => {
     const scopedManifest = {
       ...manifest,

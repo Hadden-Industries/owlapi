@@ -1,12 +1,14 @@
-<!-- registry-sha256: 327b2f4cd1c1edc83fe4559d52c801bbd24ed3f77c41b8cc29cff3ba83494e13 -->
+<!-- registry-sha256: c3e16a8fd58e735a8842cb84b84da801bb400261c60767f198d3c3cff803055d -->
 
 # owlapi API reference
 
-This reference is generated from the authoritative compatibility registry for `@hadden-industries/owlapi` 0.1.0-rc.2. Edit the generator or registry inputs, not this file.
+This reference is generated from the authoritative compatibility registry for `@hadden-industries/owlapi` 0.1.0-rc.3. Edit the generator or registry inputs, not this file.
 
 This is an independently maintained JavaScript implementation. It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project; Java names identify compatibility authorities, not organizational continuity or complete parity.
 
 The package exposes one convenience aggregate and 11 Java-recognizable namespace entry points. Import from declared package specifiers only; paths below `internal/` are intentionally outside the public contract.
+
+First public release targets are planning metadata, not evidence of availability. Public includes versioned npm and GitHub releases, including prereleases; a moving source branch alone is not a release. Existing targets remain unchanged when publication succeeds; null means no target has been assigned.
 
 ## `OWLManager`
 
@@ -16,7 +18,7 @@ A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to 
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.apibinding.OWLManager
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: OWLManager.createOWLOntologyManager(options?)
 - Supported members: static createOWLOntologyManager
 - Omitted Java members: Java service-loader and injector overloads; Ontology-data factory creation overloads
@@ -34,7 +36,7 @@ An immutable vocabulary used to classify supported OWL structural values.
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.OWLObject
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: import { ANNOTATION_VALUE_KINDS } from "@hadden-industries/owlapi/model"
 - Supported members: IRI; OWLAnonymousIndividual; OWLLiteral
 - Omitted Java members: none recorded
@@ -52,7 +54,7 @@ An immutable vocabulary used to classify supported OWL structural values.
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.OWLObject
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: import { AXIOM_KINDS } from "@hadden-industries/owlapi/model"
 - Supported members: OWLDeclarationAxiom; OWLSubClassOfAxiom; OWLEquivalentClassesAxiom; OWLDisjointClassesAxiom; OWLDisjointUnionAxiom; OWLSubObjectPropertyOfAxiom; OWLSubPropertyChainOfAxiom; OWLEquivalentObjectPropertiesAxiom; OWLDisjointObjectPropertiesAxiom; OWLObjectPropertyDomainAxiom; OWLObjectPropertyRangeAxiom; OWLInverseObjectPropertiesAxiom; OWLFunctionalObjectPropertyAxiom; OWLInverseFunctionalObjectPropertyAxiom; OWLReflexiveObjectPropertyAxiom; OWLIrreflexiveObjectPropertyAxiom; OWLSymmetricObjectPropertyAxiom; OWLAsymmetricObjectPropertyAxiom; OWLTransitiveObjectPropertyAxiom; OWLSubDataPropertyOfAxiom; OWLEquivalentDataPropertiesAxiom; OWLDisjointDataPropertiesAxiom; OWLDataPropertyDomainAxiom; OWLDataPropertyRangeAxiom; OWLFunctionalDataPropertyAxiom; OWLDatatypeDefinitionAxiom; OWLHasKeyAxiom; OWLSameIndividualAxiom; OWLDifferentIndividualsAxiom; OWLClassAssertionAxiom; OWLObjectPropertyAssertionAxiom; OWLNegativeObjectPropertyAssertionAxiom; OWLDataPropertyAssertionAxiom; OWLNegativeDataPropertyAssertionAxiom; OWLAnnotationAssertionAxiom; OWLSubAnnotationPropertyOfAxiom; OWLAnnotationPropertyDomainAxiom; OWLAnnotationPropertyRangeAxiom
 - Omitted Java members: none recorded
@@ -70,7 +72,7 @@ An immutable nominal change record consumed by the manager's selected behavior p
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.AddAxiom
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.2
+- Release status: PRERELEASE; first public release target 0.1.0-rc.2
 - Call shape: new AddAxiom(ontology, axiom)
 - Supported members: prototype.getAxiom; prototype.getOntology
 - Omitted Java members: Change-data serialization, visitors and inverse-change protocols
@@ -88,7 +90,7 @@ An immutable nominal change record consumed by the manager's selected behavior p
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.AddImport
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.2
+- Release status: PRERELEASE; first public release target 0.1.0-rc.2
 - Call shape: new AddImport(ontology, importsDeclaration)
 - Supported members: prototype.getImportDeclaration; prototype.getOntology
 - Omitted Java members: Change-data serialization, visitors and inverse-change protocols
@@ -106,7 +108,7 @@ A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to 
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.AddOntologyAnnotation
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.1
+- Release status: PRERELEASE; first public release target 0.1.0-rc.1
 - Call shape: new AddOntologyAnnotation(ontology, annotation)
 - Supported members: prototype.getAnnotation; prototype.getOntology
 - Omitted Java members: Change-data, reverse-change, and visitor APIs
@@ -124,7 +126,7 @@ An immutable vocabulary used to classify supported OWL structural values.
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.OWLObject
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: import { CLASS_EXPRESSION_KINDS } from "@hadden-industries/owlapi/model"
 - Supported members: OWLClass; OWLObjectIntersectionOf; OWLObjectUnionOf; OWLObjectComplementOf; OWLObjectOneOf; OWLObjectSomeValuesFrom; OWLObjectAllValuesFrom; OWLObjectHasValue; OWLObjectHasSelf; OWLObjectMinCardinality; OWLObjectMaxCardinality; OWLObjectExactCardinality; OWLDataSomeValuesFrom; OWLDataAllValuesFrom; OWLDataHasValue; OWLDataMinCardinality; OWLDataMaxCardinality; OWLDataExactCardinality
 - Omitted Java members: none recorded
@@ -142,7 +144,7 @@ An immutable vocabulary used to classify supported OWL structural values.
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.OWLObject
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: import { DATA_PROPERTY_EXPRESSION_KINDS } from "@hadden-industries/owlapi/model"
 - Supported members: OWLDataProperty
 - Omitted Java members: none recorded
@@ -160,7 +162,7 @@ An immutable vocabulary used to classify supported OWL structural values.
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.OWLObject
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: import { DATA_RANGE_KINDS } from "@hadden-industries/owlapi/model"
 - Supported members: OWLDatatype; OWLDataIntersectionOf; OWLDataUnionOf; OWLDataComplementOf; OWLDataOneOf; OWLDatatypeRestriction
 - Omitted Java members: none recorded
@@ -178,7 +180,7 @@ An immutable vocabulary used to classify supported OWL structural values.
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.OWLObject
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: import { ENTITY_KINDS } from "@hadden-industries/owlapi/model"
 - Supported members: OWLClass; OWLDatatype; OWLObjectProperty; OWLDataProperty; OWLAnnotationProperty; OWLNamedIndividual
 - Omitted Java members: none recorded
@@ -196,7 +198,7 @@ An immutable vocabulary used to classify supported OWL structural values.
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.OWLObject
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: import { INDIVIDUAL_KINDS } from "@hadden-industries/owlapi/model"
 - Supported members: OWLNamedIndividual; OWLAnonymousIndividual
 - Omitted Java members: none recorded
@@ -214,9 +216,9 @@ A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to 
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.IRI
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: new IRI(...arguments)
-- Supported members: prototype.toString; static create
+- Supported members: prototype.equals; prototype.equalsIgnoreAnnotations; prototype.structuralKey; prototype.structuralKeyWithoutAnnotations; prototype.toString; prototype.toStructuralTuple; static create
 - Omitted Java members: Java URI/File overloads and scheme helpers; Java Comparable ordering contract
 - Public errors: none specific
 - Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.
@@ -232,7 +234,7 @@ An immutable vocabulary used to classify supported OWL structural values.
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.OWLObject
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: import { OBJECT_PROPERTY_EXPRESSION_KINDS } from "@hadden-industries/owlapi/model"
 - Supported members: OWLObjectProperty; OWLObjectInverseOf
 - Omitted Java members: none recorded
@@ -250,7 +252,7 @@ A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to 
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLDataFactory
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: new OWLDataFactory(...arguments)
 - Supported members: prototype.getBehaviorProfileId; prototype.getOWLAnnotation; prototype.getOWLAnnotationAssertionAxiom; prototype.getOWLAnnotationProperty; prototype.getOWLAnnotationPropertyDomainAxiom; prototype.getOWLAnnotationPropertyRangeAxiom; prototype.getOWLAnonymousIndividual; prototype.getOWLAsymmetricObjectPropertyAxiom; prototype.getOWLClass; prototype.getOWLClassAssertionAxiom; prototype.getOWLDataAllValuesFrom; prototype.getOWLDataComplementOf; prototype.getOWLDataExactCardinality; prototype.getOWLDataHasValue; prototype.getOWLDataIntersectionOf; prototype.getOWLDataMaxCardinality; prototype.getOWLDataMinCardinality; prototype.getOWLDataOneOf; prototype.getOWLDataProperty; prototype.getOWLDataPropertyAssertionAxiom; prototype.getOWLDataPropertyDomainAxiom; prototype.getOWLDataPropertyRangeAxiom; prototype.getOWLDataSomeValuesFrom; prototype.getOWLDataUnionOf; prototype.getOWLDatatype; prototype.getOWLDatatypeDefinitionAxiom; prototype.getOWLDatatypeRestriction; prototype.getOWLDeclarationAxiom; prototype.getOWLDifferentIndividualsAxiom; prototype.getOWLDisjointClassesAxiom; prototype.getOWLDisjointDataPropertiesAxiom; prototype.getOWLDisjointObjectPropertiesAxiom; prototype.getOWLDisjointUnionAxiom; prototype.getOWLEquivalentClassesAxiom; prototype.getOWLEquivalentDataPropertiesAxiom; prototype.getOWLEquivalentObjectPropertiesAxiom; prototype.getOWLFacetRestriction; prototype.getOWLFunctionalDataPropertyAxiom; prototype.getOWLFunctionalObjectPropertyAxiom; prototype.getOWLHasKeyAxiom; prototype.getOWLImportsDeclaration; prototype.getOWLInverseFunctionalObjectPropertyAxiom; prototype.getOWLInverseObjectPropertiesAxiom; prototype.getOWLIrreflexiveObjectPropertyAxiom; prototype.getOWLLiteral; prototype.getOWLNamedIndividual; prototype.getOWLNegativeDataPropertyAssertionAxiom; prototype.getOWLNegativeObjectPropertyAssertionAxiom; prototype.getOWLObjectAllValuesFrom; prototype.getOWLObjectComplementOf; prototype.getOWLObjectExactCardinality; prototype.getOWLObjectHasSelf; prototype.getOWLObjectHasValue; prototype.getOWLObjectIntersectionOf; prototype.getOWLObjectInverseOf; prototype.getOWLObjectMaxCardinality; prototype.getOWLObjectMinCardinality; prototype.getOWLObjectOneOf; prototype.getOWLObjectProperty; prototype.getOWLObjectPropertyAssertionAxiom; prototype.getOWLObjectPropertyDomainAxiom; prototype.getOWLObjectPropertyRangeAxiom; prototype.getOWLObjectSomeValuesFrom; prototype.getOWLObjectUnionOf; prototype.getOWLOntologyID; prototype.getOWLReflexiveObjectPropertyAxiom; prototype.getOWLSameIndividualAxiom; prototype.getOWLSubAnnotationPropertyOfAxiom; prototype.getOWLSubClassOfAxiom; prototype.getOWLSubDataPropertyOfAxiom; prototype.getOWLSubObjectPropertyOfAxiom; prototype.getOWLSubPropertyChainOfAxiom; prototype.getOWLSymmetricObjectPropertyAxiom; prototype.getOWLTransitiveObjectPropertyAxiom; prototype.getRDFSLabel
 - Omitted Java members: SWRL object construction
@@ -268,7 +270,7 @@ A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to 
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLDocumentFormat
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: new OWLDocumentFormat(...arguments)
 - Supported members: prototype.getOntologyLoaderMetaData; prototype.getParameter; prototype.withOntologyLoaderMetaData; prototype.withParameter
 - Omitted Java members: setOntologyLoaderMetaData (use immutable withOntologyLoaderMetaData); Java parameter-map and prefix-format mutation APIs; Java document-format factory identity
@@ -286,7 +288,7 @@ An immutable vocabulary used to classify supported OWL structural values.
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.OWLObject
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: import { OWLObjectKind } from "@hadden-industries/owlapi/model"
 - Supported members: ANNOTATION; ANNOTATION_ASSERTION_AXIOM; ANNOTATION_PROPERTY; ANNOTATION_PROPERTY_DOMAIN_AXIOM; ANNOTATION_PROPERTY_RANGE_AXIOM; ANONYMOUS_INDIVIDUAL; ASYMMETRIC_OBJECT_PROPERTY_AXIOM; CLASS; CLASS_ASSERTION_AXIOM; DATATYPE; DATATYPE_DEFINITION_AXIOM; DATATYPE_RESTRICTION; DATA_ALL_VALUES_FROM; DATA_COMPLEMENT_OF; DATA_EXACT_CARDINALITY; DATA_HAS_VALUE; DATA_INTERSECTION_OF; DATA_MAX_CARDINALITY; DATA_MIN_CARDINALITY; DATA_ONE_OF; DATA_PROPERTY; DATA_PROPERTY_ASSERTION_AXIOM; DATA_PROPERTY_DOMAIN_AXIOM; DATA_PROPERTY_RANGE_AXIOM; DATA_SOME_VALUES_FROM; DATA_UNION_OF; DECLARATION_AXIOM; DIFFERENT_INDIVIDUALS_AXIOM; DISJOINT_CLASSES_AXIOM; DISJOINT_DATA_PROPERTIES_AXIOM; DISJOINT_OBJECT_PROPERTIES_AXIOM; DISJOINT_UNION_AXIOM; EQUIVALENT_CLASSES_AXIOM; EQUIVALENT_DATA_PROPERTIES_AXIOM; EQUIVALENT_OBJECT_PROPERTIES_AXIOM; FACET_RESTRICTION; FUNCTIONAL_DATA_PROPERTY_AXIOM; FUNCTIONAL_OBJECT_PROPERTY_AXIOM; HAS_KEY_AXIOM; IMPORTS_DECLARATION; INVERSE_FUNCTIONAL_OBJECT_PROPERTY_AXIOM; INVERSE_OBJECT_PROPERTIES_AXIOM; IRI; IRREFLEXIVE_OBJECT_PROPERTY_AXIOM; LITERAL; NAMED_INDIVIDUAL; NEGATIVE_DATA_PROPERTY_ASSERTION_AXIOM; NEGATIVE_OBJECT_PROPERTY_ASSERTION_AXIOM; OBJECT_ALL_VALUES_FROM; OBJECT_COMPLEMENT_OF; OBJECT_EXACT_CARDINALITY; OBJECT_HAS_SELF; OBJECT_HAS_VALUE; OBJECT_INTERSECTION_OF; OBJECT_INVERSE_OF; OBJECT_MAX_CARDINALITY; OBJECT_MIN_CARDINALITY; OBJECT_ONE_OF; OBJECT_PROPERTY; OBJECT_PROPERTY_ASSERTION_AXIOM; OBJECT_PROPERTY_DOMAIN_AXIOM; OBJECT_PROPERTY_RANGE_AXIOM; OBJECT_SOME_VALUES_FROM; OBJECT_UNION_OF; ONTOLOGY_ID; REFLEXIVE_OBJECT_PROPERTY_AXIOM; SAME_INDIVIDUAL_AXIOM; SUBCLASS_OF_AXIOM; SUB_ANNOTATION_PROPERTY_AXIOM; SUB_DATA_PROPERTY_AXIOM; SUB_OBJECT_PROPERTY_AXIOM; SUB_PROPERTY_CHAIN_AXIOM; SYMMETRIC_OBJECT_PROPERTY_AXIOM; TRANSITIVE_OBJECT_PROPERTY_AXIOM
 - Omitted Java members: none recorded
@@ -304,7 +306,7 @@ A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to 
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLOntology
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: new OWLOntology(...arguments)
 - Supported members: prototype.containsAxiom; prototype.containsAxiomIgnoreAnnotations; prototype.containsEntityInSignature; prototype.getAnnotationAssertionAxioms; prototype.getAnnotationPropertiesInSignature; prototype.getAnnotationPropertyDomainAxioms; prototype.getAnnotationPropertyRangeAxioms; prototype.getAnnotations; prototype.getAsymmetricObjectPropertyAxioms; prototype.getAxiomCount; prototype.getAxioms; prototype.getAxiomsByType; prototype.getAxiomsIgnoreAnnotations; prototype.getClassAssertionAxioms; prototype.getClassesInSignature; prototype.getDataPropertiesInSignature; prototype.getDataPropertyAssertionAxioms; prototype.getDataPropertyDomainAxioms; prototype.getDataPropertyRangeAxioms; prototype.getDataSubPropertyAxiomsForSubProperty; prototype.getDataSubPropertyAxiomsForSuperProperty; prototype.getDatatypesInSignature; prototype.getDeclarationAxioms; prototype.getDifferentIndividualAxioms; prototype.getDisjointClassesAxioms; prototype.getEntitiesInSignature; prototype.getEquivalentClassesAxioms; prototype.getFunctionalDataPropertyAxioms; prototype.getFunctionalObjectPropertyAxioms; prototype.getImportsDeclarations; prototype.getIndividualsInSignature; prototype.getInverseFunctionalObjectPropertyAxioms; prototype.getInverseObjectPropertyAxioms; prototype.getIrreflexiveObjectPropertyAxioms; prototype.getLogicalAxiomCount; prototype.getLogicalAxioms; prototype.getNegativeDataPropertyAssertionAxioms; prototype.getNegativeObjectPropertyAssertionAxioms; prototype.getObjectPropertiesInSignature; prototype.getObjectPropertyAssertionAxioms; prototype.getObjectPropertyDomainAxioms; prototype.getObjectPropertyRangeAxioms; prototype.getObjectSubPropertyAxiomsForSubProperty; prototype.getObjectSubPropertyAxiomsForSuperProperty; prototype.getOntologyID; prototype.getPunnedIRIs; prototype.getReferencedAnonymousIndividuals; prototype.getReferencingAxioms; prototype.getReflexiveObjectPropertyAxioms; prototype.getSameIndividualAxioms; prototype.getSignature; prototype.getSubAnnotationPropertyOfAxioms; prototype.getSubClassAxiomsForSubClass; prototype.getSubClassAxiomsForSuperClass; prototype.getSymmetricObjectPropertyAxioms; prototype.getTransitiveObjectPropertyAxioms
 - Omitted Java members: Java stream-returning query overloads; Java visitor overloads
@@ -322,7 +324,7 @@ A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to 
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: new OWLOntologyLoaderConfiguration(...arguments)
 - Supported members: prototype.getAuthorizationValue; prototype.getBehaviorProfileId; prototype.getConnectionTimeout; prototype.getEntityExpansionLimit; prototype.getRetriesToAttempt; prototype.isAcceptingHTTPCompression; prototype.isFollowRedirects; prototype.isLoadAnnotationAxioms; prototype.isStrict; prototype.setAcceptingHTTPCompression; prototype.setAuthorizationValue; prototype.setConnectionTimeout; prototype.setEntityExpansionLimit; prototype.setFollowRedirects; prototype.setLoadAnnotationAxioms; prototype.setRetriesToAttempt; prototype.setStrict; prototype.with; prototype.withFormat; prototype.withMissingImportHandling; prototype.withParsingMode; prototype.withRdfDatasetGraphPolicy; prototype.withRemoteImports; prototype.withRemoteJsonLdContexts; static defaults
 - Omitted Java members: Java parser-factory and priority-collection settings; Java fluent setter for every Java-only loading option
@@ -340,7 +342,7 @@ A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to 
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLOntologyManager
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: new OWLOntologyManager(...arguments)
 - Supported members: prototype.addAxiom; prototype.addAxioms; prototype.applyChange; prototype.applyChanges; prototype.createOntology; prototype.getBehaviorProfileId; prototype.getImportsClosure; prototype.getOWLDataFactory; prototype.getOntology; prototype.getOntologyFormat; prototype.getOntologyLoaderConfiguration; prototype.getOntologyWriterConfiguration; prototype.importsClosure; prototype.loadOntologyFromOntologyDocument; prototype.loadOntologyGraphFromOntologyDocument; prototype.removeAxiom; prototype.removeAxioms; prototype.saveOntology; prototype.setOntologyLoaderConfiguration; prototype.setOntologyWriterConfiguration
 - Omitted Java members: Change and progress listeners; Storer and ontology-factory registration; IRI, stream, implicit-format, and default-document saveOntology overloads
@@ -358,12 +360,12 @@ Immutable native writer settings with profile-specific copy behavior and format-
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLOntologyWriterConfiguration
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.2
+- Release status: PRERELEASE; first public release target 0.1.0-rc.2
 - Call shape: new OWLOntologyWriterConfiguration()
 - Supported members: prototype.getBehaviorProfileId; prototype.getIndentSize; prototype.isIndenting; prototype.isLabelsAsBanner; prototype.shouldSaveIdsForAllAnonymousIndividuals; prototype.shouldUseBanners; prototype.withBannersEnabled; prototype.withIndentSize; prototype.withIndenting; prototype.withLabelsAsBanner; prototype.withSaveIdsForAllAnonymousIndividuals
 - Omitted Java members: shouldRemapAllAnonymousIndividualsIds / withRemapAllAnonymousIndividualsIds; isUseNamespaceEntities / withUseNamespaceEntities; shouldOutputNamedGraphIRI / withNamedGraphIRIEnabled
 - Public errors: none specific
-- Qualification: Defaults: isIndenting true, getIndentSize 4, shouldUseBanners true, isLabelsAsBanner false, shouldSaveIdsForAllAnonymousIndividuals false. normative-v1 copies preserve unrelated fields. Java no-op setters retain identity; changed copies reproduce the released reset of indent size, banners and label selection before applying the requested value. withIndentSize accepts Java int values in java-owlapi-5.5.1, including negative values, and nonnegative Java int values in normative-v1. The setting is consumed by the selected format at save time. Java RDF/XML consumes indentation, banners, labels and anonymous ID settings; OWL/XML consumes indentation, Turtle consumes banners and anonymous ID settings, and Functional Syntax ignores the presentation controls. Each selected behavior is tested at the real save boundary. Labels use lexical ordering of language, label text, then datatype, with IRI fallback. XML comment sanitization affects presentation only; labels remain unchanged RDF literals. No-language labels sort first. normative-v1 retains the documented 32 MiB UTF-8 output and depth budgets. java-owlapi-5.5.1 adds no finite output or structure-depth defaults. Resource exhaustion is a distinct error rather than malformed ontology output. Attach to the actual output manager using setOntologyWriterConfiguration, which returns undefined. Each save captures private immutable state before suspension; no live getter or global preferences are read.
+- Qualification: Defaults: isIndenting true, getIndentSize 4, shouldUseBanners true, isLabelsAsBanner false, shouldSaveIdsForAllAnonymousIndividuals false. normative-v1 copies preserve unrelated fields. Java no-op setters retain identity; changed copies reset indent size and banners while preserving labels-as-banner before applying the requested value. withIndentSize accepts Java int values in java-owlapi-5.5.1, including negative values, and nonnegative Java int values in normative-v1. The setting is consumed by the selected format at save time. Java RDF/XML consumes indentation, banners, labels and anonymous ID settings; OWL/XML consumes indentation, Turtle consumes banners and anonymous ID settings, and Functional Syntax ignores the presentation controls. Each selected behavior is tested at the real save boundary. Labels use lexical ordering of language, label text, then datatype, with IRI fallback. XML comment sanitization affects presentation only; labels remain unchanged RDF literals. No-language labels sort first. normative-v1 retains the documented 32 MiB UTF-8 output and depth budgets. java-owlapi-5.5.1 adds no finite output or structure-depth defaults. Resource exhaustion is a distinct error rather than malformed ontology output. Attach to the actual output manager using setOntologyWriterConfiguration, which returns undefined. Each save captures private immutable state before suspension; no live getter or global preferences are read.
 - Evidence: model/owlOntologyWriterConfiguration.test.js, internal/storage/rdfxml/rdfXmlGraphWriter.test.js, test/package-boundary.test.mjs
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
@@ -376,7 +378,7 @@ A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to 
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLObject
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: new OWLStructuralObject(...arguments)
 - Supported members: prototype.equals; prototype.equalsIgnoreAnnotations; prototype.getAnnotatedAxiom; prototype.getAxiomWithoutAnnotations; prototype.structuralKey; prototype.structuralKeyWithoutAnnotations; prototype.toStructuralTuple
 - Omitted Java members: Java concrete OWLObject subtype hierarchy; Java visitor and Comparable contracts
@@ -394,7 +396,7 @@ An immutable vocabulary used to classify supported OWL structural values.
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.OWLObject
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: import { OWL_OBJECT_KINDS } from "@hadden-industries/owlapi/model"
 - Supported members: IRI; OWLLiteral; OWLAnonymousIndividual; OWLAnnotation; OWLImportsDeclaration; OWLOntologyID; OWLClass; OWLDatatype; OWLObjectProperty; OWLDataProperty; OWLAnnotationProperty; OWLNamedIndividual; OWLObjectInverseOf; OWLObjectIntersectionOf; OWLObjectUnionOf; OWLObjectComplementOf; OWLObjectOneOf; OWLObjectSomeValuesFrom; OWLObjectAllValuesFrom; OWLObjectHasValue; OWLObjectHasSelf; OWLObjectMinCardinality; OWLObjectMaxCardinality; OWLObjectExactCardinality; OWLDataSomeValuesFrom; OWLDataAllValuesFrom; OWLDataHasValue; OWLDataMinCardinality; OWLDataMaxCardinality; OWLDataExactCardinality; OWLDataIntersectionOf; OWLDataUnionOf; OWLDataComplementOf; OWLDataOneOf; OWLDatatypeRestriction; OWLFacetRestriction; OWLDeclarationAxiom; OWLSubClassOfAxiom; OWLEquivalentClassesAxiom; OWLDisjointClassesAxiom; OWLDisjointUnionAxiom; OWLSubObjectPropertyOfAxiom; OWLSubPropertyChainOfAxiom; OWLEquivalentObjectPropertiesAxiom; OWLDisjointObjectPropertiesAxiom; OWLObjectPropertyDomainAxiom; OWLObjectPropertyRangeAxiom; OWLInverseObjectPropertiesAxiom; OWLFunctionalObjectPropertyAxiom; OWLInverseFunctionalObjectPropertyAxiom; OWLReflexiveObjectPropertyAxiom; OWLIrreflexiveObjectPropertyAxiom; OWLSymmetricObjectPropertyAxiom; OWLAsymmetricObjectPropertyAxiom; OWLTransitiveObjectPropertyAxiom; OWLSubDataPropertyOfAxiom; OWLEquivalentDataPropertiesAxiom; OWLDisjointDataPropertiesAxiom; OWLDataPropertyDomainAxiom; OWLDataPropertyRangeAxiom; OWLFunctionalDataPropertyAxiom; OWLDatatypeDefinitionAxiom; OWLHasKeyAxiom; OWLSameIndividualAxiom; OWLDifferentIndividualsAxiom; OWLClassAssertionAxiom; OWLObjectPropertyAssertionAxiom; OWLNegativeObjectPropertyAssertionAxiom; OWLDataPropertyAssertionAxiom; OWLNegativeDataPropertyAssertionAxiom; OWLAnnotationAssertionAxiom; OWLSubAnnotationPropertyOfAxiom; OWLAnnotationPropertyDomainAxiom; OWLAnnotationPropertyRangeAxiom
 - Omitted Java members: none recorded
@@ -412,7 +414,7 @@ An immutable nominal change record consumed by the manager's selected behavior p
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.RemoveAxiom
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.2
+- Release status: PRERELEASE; first public release target 0.1.0-rc.2
 - Call shape: new RemoveAxiom(ontology, axiom)
 - Supported members: prototype.getAxiom; prototype.getOntology
 - Omitted Java members: Change-data serialization, visitors and inverse-change protocols
@@ -430,7 +432,7 @@ An immutable nominal change record consumed by the manager's selected behavior p
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.RemoveImport
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.2
+- Release status: PRERELEASE; first public release target 0.1.0-rc.2
 - Call shape: new RemoveImport(ontology, importsDeclaration)
 - Supported members: prototype.getImportDeclaration; prototype.getOntology
 - Omitted Java members: Change-data serialization, visitors and inverse-change protocols
@@ -448,7 +450,7 @@ An immutable nominal change record consumed by the manager's selected behavior p
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.RemoveOntologyAnnotation
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.2
+- Release status: PRERELEASE; first public release target 0.1.0-rc.2
 - Call shape: new RemoveOntologyAnnotation(ontology, annotation)
 - Supported members: prototype.getAnnotation; prototype.getOntology
 - Omitted Java members: Change-data serialization, visitors and inverse-change protocols
@@ -466,7 +468,7 @@ A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to 
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.SetOntologyID
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.1
+- Release status: PRERELEASE; first public release target 0.1.0-rc.1
 - Call shape: new SetOntologyID(ontology, ontologyID)
 - Supported members: prototype.getNewOntologyID; prototype.getOntology; prototype.getOriginalOntologyID
 - Omitted Java members: Java IRI constructor overload; Change-data, reverse-change, and visitor APIs
@@ -484,7 +486,7 @@ A JavaScript adaptation supporting the initial public OWLAPI workflow.
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLObject
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: new StructuralSet(...arguments)
 - Supported members: prototype.add; prototype.has; prototype.size; prototype.toSet; prototype.values
 - Omitted Java members: none recorded
@@ -502,7 +504,7 @@ Exhaustive kind-checked dispatch for one Java OWLAPI structural model family.
 - Kind: FUNCTION
 - Java authority: org.semanticweb.owlapi.model.OWLObjectVisitorEx
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: dispatchAnnotationValue(...arguments)
 - Supported members: constructor
 - Omitted Java members: none recorded
@@ -520,7 +522,7 @@ Exhaustive kind-checked dispatch for one Java OWLAPI structural model family.
 - Kind: FUNCTION
 - Java authority: org.semanticweb.owlapi.model.OWLObjectVisitorEx
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: dispatchAxiom(...arguments)
 - Supported members: constructor
 - Omitted Java members: none recorded
@@ -538,7 +540,7 @@ Exhaustive kind-checked dispatch for one Java OWLAPI structural model family.
 - Kind: FUNCTION
 - Java authority: org.semanticweb.owlapi.model.OWLObjectVisitorEx
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: dispatchClassExpression(...arguments)
 - Supported members: constructor
 - Omitted Java members: none recorded
@@ -556,7 +558,7 @@ Exhaustive kind-checked dispatch for one Java OWLAPI structural model family.
 - Kind: FUNCTION
 - Java authority: org.semanticweb.owlapi.model.OWLObjectVisitorEx
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: dispatchDataPropertyExpression(...arguments)
 - Supported members: constructor
 - Omitted Java members: none recorded
@@ -574,7 +576,7 @@ Exhaustive kind-checked dispatch for one Java OWLAPI structural model family.
 - Kind: FUNCTION
 - Java authority: org.semanticweb.owlapi.model.OWLObjectVisitorEx
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: dispatchDataRange(...arguments)
 - Supported members: constructor
 - Omitted Java members: none recorded
@@ -592,7 +594,7 @@ Exhaustive kind-checked dispatch for one Java OWLAPI structural model family.
 - Kind: FUNCTION
 - Java authority: org.semanticweb.owlapi.model.OWLObjectVisitorEx
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: dispatchIndividual(...arguments)
 - Supported members: constructor
 - Omitted Java members: none recorded
@@ -610,7 +612,7 @@ Exhaustive kind-checked dispatch for one Java OWLAPI structural model family.
 - Kind: FUNCTION
 - Java authority: org.semanticweb.owlapi.model.OWLObjectVisitorEx
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: dispatchObjectPropertyExpression(...arguments)
 - Supported members: constructor
 - Omitted Java members: none recorded
@@ -628,7 +630,7 @@ Exhaustive kind-checked dispatch for one Java OWLAPI structural model family.
 - Kind: FUNCTION
 - Java authority: org.semanticweb.owlapi.model.OWLObjectVisitorEx
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: dispatchOwlObject(...arguments)
 - Supported members: constructor
 - Omitted Java members: none recorded
@@ -646,7 +648,7 @@ A stable public error category used by ontology loading, parsing, or policy enfo
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLOntologyCreationException
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: new AmbiguousRdfDatasetError(...arguments)
 - Supported members: constructor
 - Omitted Java members: none recorded
@@ -664,7 +666,7 @@ A stable public error category used by ontology loading, parsing, or policy enfo
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLOntologyCreationException
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: new DocumentLoadError(...arguments)
 - Supported members: constructor
 - Omitted Java members: none recorded
@@ -682,7 +684,7 @@ A stable public error category used by ontology loading, parsing, or policy enfo
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLOntologyCreationException
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: new GraphSelectionError(...arguments)
 - Supported members: constructor
 - Omitted Java members: none recorded
@@ -700,7 +702,7 @@ A stable public error category used by ontology loading, parsing, or policy enfo
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.UnloadableImportException
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: new MissingImportError(...arguments)
 - Supported members: constructor
 - Omitted Java members: none recorded
@@ -718,7 +720,7 @@ A stable public error category used by ontology loading, parsing, or policy enfo
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLRuntimeException
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: new OWLAPIError(...arguments)
 - Supported members: constructor
 - Omitted Java members: Java exception serialization and constructor overloads
@@ -736,7 +738,7 @@ A stable public error category used by ontology loading, parsing, or policy enfo
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLOntologyCreationException
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: new OWLOntologyCreationError(...arguments)
 - Supported members: constructor
 - Omitted Java members: Java exception constructor and serialization overloads
@@ -754,7 +756,7 @@ A stable public error category used by ontology loading, parsing, or policy enfo
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLRuntimeException
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: new OWLOntologyStateError(...arguments)
 - Supported members: constructor
 - Omitted Java members: none recorded
@@ -772,7 +774,7 @@ The canonical storage error, including lossless-representation failures identifi
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLOntologyStorageException
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.1
+- Release status: PRERELEASE; first public release target 0.1.0-rc.1
 - Call shape: new OWLOntologyStorageError(message?, details?)
 - Supported members: constructor
 - Omitted Java members: Java Throwable-only and serialization constructor forms
@@ -790,7 +792,7 @@ A stable public error category used by ontology loading, parsing, or policy enfo
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.io.OWLParserException
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: new OWLParserError(...arguments)
 - Supported members: constructor
 - Omitted Java members: Java exception constructor and line/column overloads
@@ -808,7 +810,7 @@ A storage-error subtype for an OWLDocumentFormat with no matching storer.
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLStorerNotFoundException
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.1
+- Release status: PRERELEASE; first public release target 0.1.0-rc.1
 - Call shape: new OWLStorerNotFoundError(format)
 - Supported members: constructor
 - Omitted Java members: Java exception serialization
@@ -826,7 +828,7 @@ A stable public error category used by ontology loading, parsing, or policy enfo
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.io.OWLParserException
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: new OWLSyntaxError(...arguments)
 - Supported members: constructor
 - Omitted Java members: none recorded
@@ -844,7 +846,7 @@ A stable public error category used by ontology loading, parsing, or policy enfo
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.io.OWLParserException
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: new ParserMismatchError(...arguments)
 - Supported members: constructor
 - Omitted Java members: none recorded
@@ -862,7 +864,7 @@ A JavaScript-specific helper at an approved Java OWLAPI namespace boundary.
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.io.RDFOntologyHeaderStatus
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.1
+- Release status: PRERELEASE; first public release target 0.1.0-rc.1
 - Call shape: import { RDFOntologyHeaderStatus } from "@hadden-industries/owlapi/io"
 - Supported members: PARSED_MULTIPLE_HEADERS; PARSED_ONE_HEADER; PARSED_ZERO_HEADERS
 - Omitted Java members: Java enum methods
@@ -880,7 +882,7 @@ A JavaScript adaptation supporting the initial public OWLAPI workflow.
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.io.RDFParserMetaData
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.1
+- Release status: PRERELEASE; first public release target 0.1.0-rc.1
 - Call shape: new RDFParserMetaData(...arguments)
 - Supported members: prototype.getGuessedDeclarations; prototype.getHeaderState; prototype.getTripleCount; prototype.getUnparsedTriples
 - Omitted Java members: Java RDFTriple/RDFNode wrapper hierarchy, Java Stream and Class-valued Multimap APIs, serialization and positional constructor overload
@@ -898,7 +900,7 @@ A stable public error category used by ontology loading, parsing, or policy enfo
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLRuntimeException
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: new ResourceLimitError(...arguments)
 - Supported members: constructor
 - Omitted Java members: none recorded
@@ -916,7 +918,7 @@ A stable public error category used by ontology loading, parsing, or policy enfo
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: new SecurityPolicyError(...arguments)
 - Supported members: constructor
 - Omitted Java members: none recorded
@@ -934,7 +936,7 @@ A JavaScript adaptation supporting the initial public OWLAPI workflow.
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.io.StringDocumentSource
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: new StringDocumentSource(...arguments)
 - Supported members: prototype.getContentType; prototype.getDocumentIRI; prototype.getFileName; prototype.getFormat; prototype.getText
 - Omitted Java members: Java Reader/InputStream accessors; Java constructor overloads using OWLDocumentFormat and MIME metadata
@@ -952,7 +954,7 @@ An in-memory ontology document target with Java's toString() text reader; the ma
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.io.StringDocumentTarget
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.1
+- Release status: PRERELEASE; first public release target 0.1.0-rc.1
 - Call shape: new StringDocumentTarget()
 - Supported members: prototype.toString
 - Omitted Java members: getWriter() and the Java Writer protocol (PARITY-TARGET-WRITER-OMISSION)
@@ -970,7 +972,7 @@ A stable public error category used by ontology loading, parsing, or policy enfo
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.UnloadableImportException
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: new UnloadableImportError(...arguments)
 - Supported members: constructor
 - Omitted Java members: Java import-declaration and creation-exception accessors
@@ -988,7 +990,7 @@ A stable public error category used by ontology loading, parsing, or policy enfo
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.io.UnparsableOntologyException
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: new UnparsableOntologyException(...arguments)
 - Supported members: constructor
 - Omitted Java members: Java parser-to-exception map and document-IRI constructor overloads
@@ -1006,7 +1008,7 @@ A stable public error category used by ontology loading, parsing, or policy enfo
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.io.OWLParserException
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: new UnsupportedConstructError(...arguments)
 - Supported members: constructor
 - Omitted Java members: none recorded
@@ -1024,7 +1026,7 @@ A stable public error category used by ontology loading, parsing, or policy enfo
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.io.OWLParserException
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: new XmlParseError(...arguments)
 - Supported members: constructor
 - Omitted Java members: none recorded
@@ -1042,7 +1044,7 @@ Immutable identities for every ontology document format supported by the initial
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.formats
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-alpha.0
+- Release status: PRERELEASE; first public release target 0.1.0-alpha.0
 - Call shape: import { OWLDocumentFormats } from "@hadden-industries/owlapi/formats"
 - Supported members: DL; FUNCTIONAL; JSON_LD; KRSS1; KRSS2; MANCHESTER; N_QUADS; N_TRIPLES; OWL_XML; RDF_XML; TRIG; TURTLE
 - Omitted Java members: none recorded
@@ -1060,9 +1062,9 @@ Java-backed RDF/XML format with bounded inherited prefix operations and captured
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.formats.RDFXMLDocumentFormat
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.2
+- Release status: PRERELEASE; first public release target 0.1.0-rc.2
 - Call shape: new RDFXMLDocumentFormat()
-- Supported members: prototype.asPrefixOWLDocumentFormat; prototype.clear; prototype.containsPrefixMapping; prototype.copyPrefixesFrom; prototype.getDefaultPrefix; prototype.getPrefix; prototype.getPrefixName2PrefixMap; prototype.getPrefixNames; prototype.isPrefixOWLDocumentFormat; prototype.setDefaultPrefix; prototype.setPrefix; prototype.unregisterNamespace; prototype.withOntologyLoaderMetaData; prototype.withParameter
+- Supported members: prototype.asPrefixOWLDocumentFormat; prototype.clear; prototype.containsPrefixMapping; prototype.copyPrefixesFrom; prototype.getDefaultPrefix; prototype.getOntologyLoaderMetaData; prototype.getParameter; prototype.getPrefix; prototype.getPrefixName2PrefixMap; prototype.getPrefixNames; prototype.isPrefixOWLDocumentFormat; prototype.setDefaultPrefix; prototype.setPrefix; prototype.unregisterNamespace; prototype.withOntologyLoaderMetaData; prototype.withParameter
 - Omitted Java members: Prefix comparator, prefix IRI conversion and Stream overloads; setPrefixManager and standalone PrefixManager/PrefixDocumentFormat exports
 - Public errors: none specific
 - Qualification: Prefix methods use Java names. getPrefixName2PrefixMap and getPrefixNames return defensive Map/Set copies. copyPrefixesFrom accepts a native RDFXMLDocumentFormat or Map and validates the complete copy before mutation. Missing prefixes return null. Instances have frozen public identity and mutable private prefixes. Shared OWLDocumentFormats constants remain immutable. Loaded RDF/XML prefixes are retained in immutable source metadata; getOntologyFormat returns a cached independently mutable format without altering historical parse evidence. Existing withParameter and withOntologyLoaderMetaData adaptations preserve concrete format type and copy prefixes. RDF/XML honors only the Java parameter force xsd:string on literals, accepting booleans with false default. Each save captures private prefix/parameter values before suspension. Default namespaces determine xml:base following Java's trailing-hash rule. Explicit unused mappings are retained; declarations sort by prefix length then lexical order. No Java runtime renderer class or custom formatting profile is exported.
@@ -1078,11 +1080,11 @@ A JavaScript adaptation supporting the initial public OWLAPI workflow.
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.io
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
-- Release status: PRERELEASE; from 0.1.0-rc.2
+- Release status: PRERELEASE; first public release target 0.1.0-rc.3
 - Call shape: new NodeDocumentLoader(...arguments)
 - Supported members: prototype.authorize; prototype.load
 - Omitted Java members: none recorded
-- Public errors: none specific
+- Public errors: DocumentLoadError; ResourceLimitError; SecurityPolicyError; TypeError; RangeError
 - Qualification: This helper is public because it makes the supported structural API practical in JavaScript; it is not claimed as a Java type translation. Construct with { authorize(resourceIRI, context) }. The callback must return true for each requested operation; receiving a loader never silently grants access to a new destination. load(IRI, { config, purpose, signal }) returns a Promise for a StringDocumentSource. The configuration fixes each operation's behavior profile. Native ontology-document settings and the separate Java JSON-LD context provider settings are consumed by their actual transport boundaries. The Node-only adapter authorizes hostname resolution, the pinned IP address, redirects, credentials, resolved local file paths and file reads. It does not use ambient URL credentials or automatically enable network access in a manager. The read-file context requiresStablePathAncestors=true means its grant also guarantees trusted, stable parent directories throughout acquisition. Attacker-writable directory trees require a caller-owned loader with platform-specific file-handle authorization; portable Node pathname checks cannot provide that containment. Java ontology documents retain the requested parsing base; contexts use the final document URL. Gzip, raw DEFLATE, XZ and first-entry ZIP input follow the qualified Java provider. Native dependencies, permission decisions and caller cancellation remain host capabilities. Browser document parsing remains supported; browser external transport parity is not qualified. See docs/compatibility/profiles/java-owlapi-5.5.1/transport-decision.md and its live qualification status.
 - Evidence: io/node/nodeDocumentLoader.test.js
 
@@ -1096,7 +1098,7 @@ Uses captured annotation and language preferences with explicitly supplied live 
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.util.AnnotationValueShortFormProvider
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.2
+- Release status: PRERELEASE; first public release target 0.1.0-rc.2
 - Call shape: new AnnotationValueShortFormProvider(properties, preferredLanguageMap, ontologySetProvider, alternateProvider?); provider.getShortForm(entity)
 - Supported members: prototype.dispose; prototype.getAnnotationProperties; prototype.getPreferredLanguageMap; prototype.getShortForm
 - Omitted Java members: Custom IRIShortFormProvider constructor; setLiteralRenderer(StringAnnotationVisitor)
@@ -1114,7 +1116,7 @@ Collects direct removal proposals for the six named entity kinds.
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.util.OWLEntityRemover
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.2
+- Release status: PRERELEASE; first public release target 0.1.0-rc.2
 - Call shape: new OWLEntityRemover(ontologyOrIterable); remover.visit(entity); remover.getChanges(); remover.reset()
 - Supported members: prototype.getChanges; prototype.reset; prototype.visit
 - Omitted Java members: Structural accept(visitor) protocol; Implicit application and recursive deletion
@@ -1132,7 +1134,7 @@ Proposes changes from captured ontologies and current committed snapshots withou
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.util.OWLEntityRenamer
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.2
+- Release status: PRERELEASE; first public release target 0.1.0-rc.2
 - Call shape: new OWLEntityRenamer(manager, ontologyIterable); renamer.changeIRI(entityOrIRI, iri); renamer.changeIRI(entityIRIMap)
 - Supported members: prototype.changeIRI
 - Omitted Java members: Unselected visitor and Stream overloads
@@ -1150,7 +1152,7 @@ Canonical factory reconstruction with captured structural maps and instance-owne
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.util.OWLObjectDuplicator
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.2
+- Release status: PRERELEASE; first public release target 0.1.0-rc.2
 - Call shape: new OWLObjectDuplicator(manager); new OWLObjectDuplicator(entityIRIMap, manager); new OWLObjectDuplicator(entityIRIMap, literalMap, manager); new OWLObjectDuplicator(manager, iriMap); duplicator.duplicateObject(object)
 - Supported members: prototype.duplicateObject
 - Omitted Java members: Explicit RemappingIndividualProvider constructors; Public visitor methods; Ontology, ID, import-declaration and SWRL duplication
@@ -1168,7 +1170,7 @@ A provider that queries the current imports closure on each call and returns tha
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.util.OWLOntologyImportsClosureSetProvider
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.1
+- Release status: PRERELEASE; first public release target 0.1.0-rc.1
 - Call shape: new OWLOntologyImportsClosureSetProvider(manager, rootOntology)
 - Supported members: prototype.ontologies
 - Omitted Java members: none recorded
@@ -1186,7 +1188,7 @@ A Java-shaped ontology merger that materializes the structural union of supplied
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.util.OWLOntologyMerger
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.1
+- Release status: PRERELEASE; first public release target 0.1.0-rc.1
 - Call shape: new OWLOntologyMerger(provider); new OWLOntologyMerger(provider, mergeOnlyLogicalAxioms)
 - Supported members: prototype.createMergedOntology
 - Omitted Java members: OWLAxiomFilter constructor overload and passes(axiom) surface
@@ -1204,7 +1206,7 @@ A synchronous Java-shaped entity short form provider.
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.util.SimpleShortFormProvider
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.2
+- Release status: PRERELEASE; first public release target 0.1.0-rc.2
 - Call shape: new SimpleShortFormProvider(); provider.getShortForm(entity); provider.dispose()
 - Supported members: prototype.dispose; prototype.getShortForm
 - Omitted Java members: Java serialization
@@ -1222,7 +1224,7 @@ An asynchronous OWL 2 DL checker over the managed import closure, with profile-o
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.profiles.OWL2DLProfile
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.1
+- Release status: PRERELEASE; first public release target 0.1.0-rc.1
 - Call shape: new OWL2DLProfile(); await profile.checkOntology(ontology, options?)
 - Supported members: prototype.checkOntology; prototype.getIRI; prototype.getName
 - Omitted Java members: Java visitor implementation classes; getDatatypeIRIs(); Stream and Collection overloads
@@ -1240,7 +1242,7 @@ An asynchronous bounded OWL 2 EL structural checker over the managed import clos
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.profiles.OWL2ELProfile
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.2
+- Release status: PRERELEASE; first public release target 0.1.0-rc.2
 - Call shape: new OWL2ELProfile(); await profile.checkOntology(ontology, options?)
 - Supported members: prototype.checkOntology; prototype.getIRI; prototype.getName
 - Omitted Java members: Java visitor classes; getDatatypeIRIs(); Stream and Collection overloads
@@ -1258,7 +1260,7 @@ An asynchronous bounded OWL 2 QL structural checker over the managed import clos
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.profiles.OWL2QLProfile
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.2
+- Release status: PRERELEASE; first public release target 0.1.0-rc.2
 - Call shape: new OWL2QLProfile(); await profile.checkOntology(ontology, options?)
 - Supported members: prototype.checkOntology; prototype.getIRI; prototype.getName
 - Omitted Java members: Java visitor classes; getDatatypeIRIs(); Stream and Collection overloads
@@ -1276,7 +1278,7 @@ An asynchronous bounded OWL 2 RL structural checker over the managed import clos
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.profiles.OWL2RLProfile
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.2
+- Release status: PRERELEASE; first public release target 0.1.0-rc.2
 - Call shape: new OWL2RLProfile(); await profile.checkOntology(ontology, options?)
 - Supported members: prototype.checkOntology; prototype.getIRI; prototype.getName
 - Omitted Java members: Java visitor classes; getDatatypeIRIs(); Stream and Collection overloads
@@ -1294,7 +1296,7 @@ An immutable checker result separating valid, invalid and unverified outcomes, w
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.profiles.OWLProfileReport
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.1
+- Release status: PRERELEASE; first public release target 0.1.0-rc.1
 - Call shape: await new OWL2DLProfile().checkOntology(ontology, options?)
 - Supported members: prototype.getOntology; prototype.getProfile; prototype.getSourceAssessment; prototype.getViolations; prototype.isInProfile
 - Omitted Java members: Java violation class hierarchy; Java stream/visitor overloads; Java constructor overloads
@@ -1312,7 +1314,7 @@ Frozen explicit query policy values with Java-shaped names.
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.parameters.AxiomAnnotations
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.2
+- Release status: PRERELEASE; first public release target 0.1.0-rc.2
 - Call shape: AxiomAnnotations.CONSIDER_AXIOM_ANNOTATIONS / AxiomAnnotations.IGNORE_AXIOM_ANNOTATIONS
 - Supported members: CONSIDER_AXIOM_ANNOTATIONS; IGNORE_AXIOM_ANNOTATIONS
 - Omitted Java members: Java enum instance methods
@@ -1330,7 +1332,7 @@ A JavaScript-specific helper at an approved Java OWLAPI namespace boundary.
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.parameters.ChangeApplied
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.2
+- Release status: PRERELEASE; first public release target 0.1.0-rc.3
 - Call shape: import { ChangeApplied } from "@hadden-industries/owlapi/model/parameters"
 - Supported members: NO_OPERATION; SUCCESSFULLY; UNSUCCESSFULLY
 - Omitted Java members: none recorded
@@ -1348,7 +1350,7 @@ Frozen explicit query policy values with Java-shaped names.
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.parameters.Imports
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.2
+- Release status: PRERELEASE; first public release target 0.1.0-rc.2
 - Call shape: Imports.EXCLUDED / Imports.INCLUDED
 - Supported members: EXCLUDED; INCLUDED
 - Omitted Java members: Java enum instance methods
@@ -1366,7 +1368,7 @@ Asserted entity and annotation searches over explicitly supplied ontologies.
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.search.EntitySearcher
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.2
+- Release status: PRERELEASE; first public release target 0.1.0-rc.2
 - Call shape: EntitySearcher.getSuperClasses(entity, ontologyOrIterable); EntitySearcher.getAnnotations(subject, ontology, property?); Selected static methods documented in the baseline
 - Supported members: static getAnnotationAssertionAxioms; static getAnnotationObjects; static getAnnotations; static getDisjointClasses; static getDomains; static getEquivalentClasses; static getInverses; static getRanges; static getSubClasses; static getSubProperties; static getSuperClasses; static getSuperProperties; static isAsymmetric; static isFunctional; static isInverseFunctional; static isIrreflexive; static isReflexive; static isSymmetric; static isTransitive
 - Omitted Java members: All unselected search methods and Java Stream protocols
@@ -1384,7 +1386,7 @@ Plain Manchester text for the selected complete structural-kind inventory.
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxOWLObjectRendererImpl
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.2
+- Release status: PRERELEASE; first public release target 0.1.0-rc.2
 - Call shape: new ManchesterOWLSyntaxOWLObjectRendererImpl(); renderer.render(object); renderer.setShortFormProvider(provider)
 - Supported members: prototype.getBehaviorProfileId; prototype.render; prototype.setShortFormProvider
 - Omitted Java members: Short aliases; Ontology storage; HTML and DOM rendering
@@ -1402,7 +1404,7 @@ Frozen selected syntactic-locality modes.
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.modularity.locality.LocalityClass
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.2
+- Release status: PRERELEASE; first public release target 0.1.0-rc.2
 - Call shape: LocalityClass.BOTTOM / LocalityClass.TOP / LocalityClass.STAR
 - Supported members: BOTTOM; STAR; TOP
 - Omitted Java members: Java enum reflection helpers
@@ -1420,7 +1422,7 @@ Captured structural axiom base and asynchronous eager syntactic-locality modules
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.modularity.locality.SyntacticLocalityModuleExtractor
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE; from 0.1.0-rc.2
+- Release status: PRERELEASE; first public release target 0.1.0-rc.2
 - Call shape: new SyntacticLocalityModuleExtractor(localityClass, axiomIterable); extractor.axiomBase(); extractor.containsAxiom(axiom); extractor.getLocalityClass(); await extractor.extract(seedIterable, filter?, options?)
 - Supported members: prototype.axiomBase; prototype.containsAxiom; prototype.extract; prototype.getLocalityClass
 - Omitted Java members: extractAsOntology; globals / tautologies / everyModuleContains / noModuleContains; Reasoner-backed and legacy extractors
