@@ -403,13 +403,6 @@ try {
     commandExitStatus: consumerAuditObservation.status,
     report: consumerAudit,
   });
-  writeJson("dependency-graph-reconciliation.json", {
-    lockedIdentities,
-    sbomSubjectIdentities: subjectIdentities,
-    locklessConsumerIdentities: locklessIdentities,
-    differences: [],
-  });
-
   const tarballFileName = basename(tarballPath);
   const checksumEntries = [
     { fileName: tarballFileName, sha256: sha256File(tarballPath) },
@@ -421,7 +414,7 @@ try {
     "utf8",
   );
   // Validate the real generator output through the same closed reader used by later jobs.
-  verifyDownloadedCandidateBundle({
+  const verified = verifyDownloadedCandidateBundle({
     fileNames: ["SHA256SUMS", tarballFileName, sbomFileName],
     checksumText: readFileSync(join(outputDirectory, "SHA256SUMS"), "utf8"),
     sbomText: readFileSync(sbomPath, "utf8"),
@@ -434,19 +427,11 @@ try {
     nodeVersion: process.version,
     npmVersion: runNpm(["--version"]).trim(),
     tarball: {
-      fileName: tarballFileName,
-      sha256: checksumEntries.find(
-        ({ fileName }) => fileName === tarballFileName,
-      ).sha256,
-      bytes: readFileSync(tarballPath).length,
+      ...verified.tarball,
       fileCount: archiveEntries.length,
     },
     sbom: {
-      fileName: sbomFileName,
-      sha256: checksumEntries.find(({ fileName }) => fileName === sbomFileName)
-        .sha256,
-      specVersion: "1.6",
-      componentType: "library",
+      ...verified.sbom,
       reproducible: true,
     },
     checksumFile: "SHA256SUMS",

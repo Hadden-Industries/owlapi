@@ -43,8 +43,7 @@ export const readOwlContractCandidate = (directory) => {
   const tarballName = `${PACKAGE_FILE_STEM}-${PACKAGE_VERSION}.tgz`;
   const sbomName = `${PACKAGE_FILE_STEM}-${PACKAGE_VERSION}.cdx.json`;
   const names = readdirSync(directory).filter(
-    (name) =>
-      !["candidate-manifest.json", "bundle-verification.json"].includes(name),
+    (name) => name !== "candidate-manifest.json",
   );
   const candidate = verifyDownloadedCandidateBundle({
     fileNames: names,

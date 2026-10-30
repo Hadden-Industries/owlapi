@@ -1,9 +1,13 @@
 import { PACKAGE_VERSION } from "./package-identity.mjs";
 import { gzipSync } from "node:zlib";
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 
 import {
   verifyDownloadedCandidateBundle,
   verifyHistoricalRc2CandidateBundle,
+  readCandidateBundleSnapshot,
 } from "./candidate-bundle.mjs";
 import { sha256Buffer } from "./release-file-utils.mjs";
 import { formatSha256Sums } from "./release-artifacts.mjs";
@@ -107,7 +111,8 @@ describe("downloaded release-candidate bundle", () => {
     );
   });
   test("derives and verifies identity from the tarball itself", () => {
-    const result = verifyDownloadedCandidateBundle(fixture());
+    const input = fixture();
+    const result = verifyDownloadedCandidateBundle(input);
 
     expect(result.package).toEqual({
       name: "@hadden-industries/owlapi",
@@ -115,6 +120,45 @@ describe("downloaded release-candidate bundle", () => {
     });
     expect(result.sbom.specVersion).toBe("1.6");
     expect(result.tarball.sha256).toHaveLength(64);
+    for (const [key, bytes] of Object.entries({
+      tarball: input.tarball,
+      sbom: Buffer.from(input.sbomText),
+      checksums: Buffer.from(input.checksumText),
+    })) {
+      expect(result.assets[key]).toEqual({
+        name: key === "checksums" ? "SHA256SUMS" : result[key].fileName,
+        sha256: sha256Buffer(bytes),
+        bytes: bytes.length,
+      });
+    }
+  });
+
+  test("uploads can use the verified snapshot even if disk changes afterwards", () => {
+    const directory = mkdtempSync(join(tmpdir(), "owlapi-bundle-snapshot-"));
+    try {
+      const input = fixture();
+      const contents = {
+        SHA256SUMS: Buffer.from(input.checksumText),
+        [`hadden-industries-owlapi-${PACKAGE_VERSION}.cdx.json`]: Buffer.from(
+          input.sbomText,
+        ),
+        [`hadden-industries-owlapi-${PACKAGE_VERSION}.tgz`]: input.tarball,
+      };
+      for (const [name, bytes] of Object.entries(contents))
+        writeFileSync(join(directory, name), bytes);
+      const snapshot = readCandidateBundleSnapshot(directory);
+      writeFileSync(join(directory, "SHA256SUMS"), "changed after admission");
+      for (const asset of Object.values(snapshot.candidate.assets)) {
+        expect(snapshot.contents[asset.name]).toEqual(contents[asset.name]);
+        expect(sha256Buffer(snapshot.contents[asset.name])).toBe(asset.sha256);
+        expect(snapshot.contents[asset.name].length).toBe(asset.bytes);
+      }
+      expect(() => readCandidateBundleSnapshot(directory)).toThrow(
+        /SHA256SUMS/u,
+      );
+    } finally {
+      rmSync(directory, { recursive: true, force: true });
+    }
   });
 
   test("rejects extra files before producing any derived evidence", () => {
