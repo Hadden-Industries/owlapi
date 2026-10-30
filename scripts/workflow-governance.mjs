@@ -2838,7 +2838,7 @@ const validateTrustedMarkdownWorkflow = (workflow, violations) => {
     sameInventory(Object.keys(job ?? {}), ["permissions", "uses", "with"]) &&
       isDeepStrictEqual(job?.permissions, { contents: "read" }) &&
       job?.uses ===
-        "Hadden-Industries/markdown-quality/.github/workflows/markdown-quality.yml@7765a8227318ddd997daf706bc195e615f9d74e1" &&
+        "Hadden-Industries/markdown-quality/.github/workflows/markdown-quality.yml@fa1188a867b29bddd0b972a080b7fcd0261bdec3" &&
       isDeepStrictEqual(job?.with, {
         "trusted-repository": "Hadden-Industries/owlapi",
         "trusted-sha": "${{ inputs.trusted_sha }}",

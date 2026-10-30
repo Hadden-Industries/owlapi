@@ -20,6 +20,7 @@ import {
   RC3_RECOVERY as control,
   RECOVERY_JOBS,
   RECOVERY_SOURCE_JOBS,
+  RECOVERY_REQUIRED_JOBS,
   assertRecoverySource,
   assertRecoveryRegistryUnused,
 } from "./rc3-recovery-policy.mjs";
@@ -56,13 +57,7 @@ const jobFact = (job) => ({
   url: job.html_url,
 });
 
-export function verifySourceReports({
-  reports,
-  candidate,
-  artifact,
-  release,
-  tag,
-}) {
+export function verifySourceReports({ reports, candidate, artifact, tag }) {
   const preflight = reports.preflight;
   assert.equal(preflight.result, "PASS");
   assert.equal(preflight.schemaVersion, 2);
@@ -96,6 +91,14 @@ export function verifySourceReports({
   assert.equal(tag.verification.verified, true);
   assert.equal(reports.draft.result, "PASS");
   assert.equal(reports.draft.releaseId, control.releaseId);
+  assert.equal(reports.draft.sourceCommit, control.sourceCommit);
+  assert.equal(reports.draft.tag, control.tag);
+  assert.equal(reports.draft.draft, true);
+}
+
+/** Draft visibility requires GitHub write permission. Only the isolated draft
+ * job performs this live read; source/evidence jobs consume authenticated reports. */
+export function assertRecoveryDraft(release, expectedAssets) {
   assert.equal(release.id, control.releaseId);
   assert.equal(release.tag_name, control.tag);
   assert.equal(release.draft, true);
@@ -103,7 +106,7 @@ export function verifySourceReports({
   assert.equal(release.immutable, false);
   assertReleaseAssets({
     assets: release.assets,
-    expected: reports.draft.assets,
+    expected: expectedAssets,
   });
 }
 
@@ -149,12 +152,10 @@ export async function readSource({
   assert.equal(ref.object.type, "tag");
   assert.equal(ref.object.sha, control.tagObject);
   const tag = await client.read(`/git/tags/${control.tagObject}`);
-  const release = await client.read(`/releases/${control.releaseId}`);
   verifySourceReports({
     reports,
     candidate,
     artifact: artifacts.candidate,
-    release,
     tag,
   });
   const expected = Object.entries(records.candidate).map(([name, bytes]) => ({
@@ -162,7 +163,11 @@ export async function readSource({
     bytes: bytes.length,
     sha256: sha256Buffer(bytes),
   }));
-  assertReleaseAssets({ assets: release.assets, expected });
+  const byName = (a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+  assert.deepEqual(
+    [...reports.draft.assets].sort(byName),
+    expected.sort(byName),
+  );
   return {
     run,
     jobs,
@@ -171,7 +176,6 @@ export async function readSource({
     artifacts,
     reports,
     candidate,
-    release,
   };
 }
 
@@ -197,7 +201,8 @@ export function assertControllerPackageUnchanged(root, commit) {
       path.startsWith("scripts/") ||
         path.startsWith("docs/release/") ||
         path.startsWith("docs/plans/") ||
-        path === ".github/workflows/release.yml",
+        path === ".github/workflows/release.yml" ||
+        path === ".github/workflows/markdown-quality.yml",
       `Recovery changes package or unrelated source: ${path}`,
     );
 }
@@ -248,18 +253,18 @@ const generateEvidence = async (client, directory, env) => {
   const run = await assertController(client, env);
   const source = await readSource({ client });
   const jobs = await allJobs(client, env.GITHUB_RUN_ID);
-  const required = Object.values(RECOVERY_JOBS)
-    .slice(0, 4)
-    .map((name) => {
-      const matches = jobs.filter((j) => j.name === name);
-      assert.equal(matches.length, 1);
-      const job = matches[0];
-      assert.equal(job.head_sha, env.GITHUB_SHA);
-      assert.equal(String(job.run_id), env.GITHUB_RUN_ID);
-      assert.equal(job.run_attempt, 1);
-      assert.equal(job.conclusion, "success");
-      return jobFact(job);
-    });
+  const required = RECOVERY_REQUIRED_JOBS.filter(
+    (name) => !RECOVERY_SOURCE_JOBS.includes(name),
+  ).map((name) => {
+    const matches = jobs.filter((j) => j.name === name);
+    assert.equal(matches.length, 1);
+    const job = matches[0];
+    assert.equal(job.head_sha, env.GITHUB_SHA);
+    assert.equal(String(job.run_id), env.GITHUB_RUN_ID);
+    assert.equal(job.run_attempt, 1);
+    assert.equal(job.conclusion, "success");
+    return jobFact(job);
+  });
   const registry = JSON.parse(
     readFileSync(join(directory, "registry-verification.json"), "utf8"),
   );
@@ -413,9 +418,18 @@ const main = async () => {
     token: process.env.GITHUB_TOKEN,
   });
   if (mode === "source") await verifySource(client, directory, process.env);
-  else if (mode === "evidence")
+  else if (mode === "draft") {
+    assert.equal(process.env.GITHUB_JOB, "recovery_draft");
+    await assertController(client, process.env);
+    const source = await readSource({ client });
+    const release = await client.read(`/releases/${control.releaseId}`);
+    assertRecoveryDraft(release, source.reports.draft.assets);
+    process.stdout.write(
+      `${JSON.stringify({ result: "PASS", releaseId: release.id, tag: release.tag_name, assets: source.reports.draft.assets })}\n`,
+    );
+  } else if (mode === "evidence")
     await generateEvidence(client, directory, process.env);
-  else throw new Error("Expected source or evidence recovery operation");
+  else throw new Error("Expected source, draft or evidence recovery operation");
 };
 if (process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url)
   await main();

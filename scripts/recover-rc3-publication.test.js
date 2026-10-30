@@ -46,7 +46,10 @@ test.each([
     assertRecoveryRegistryUnused(async () => responses.shift()),
   ).rejects.toThrow();
 });
-import { verifySourceReports } from "./recover-rc3-publication.mjs";
+import {
+  verifySourceReports,
+  assertRecoveryDraft,
+} from "./recover-rc3-publication.mjs";
 import { contractReport } from "./fixtures/owl-contract-report.mjs";
 
 const source = () => {
@@ -154,7 +157,14 @@ const reports = () => {
         ),
       },
       tag: { result: "PASS", sourceCommit: c.sourceCommit, tag: c.tag },
-      draft: { result: "PASS", releaseId: c.releaseId, assets },
+      draft: {
+        result: "PASS",
+        releaseId: c.releaseId,
+        sourceCommit: c.sourceCommit,
+        tag: c.tag,
+        draft: true,
+        assets,
+      },
     },
     release: {
       id: c.releaseId,
@@ -176,7 +186,7 @@ const reports = () => {
     },
   };
 };
-test("original report admission binds the tag, draft assets, preflight and OWL proof", () =>
+test("read-only admission binds retained draft identity, tag, preflight and OWL proof", () =>
   expect(() => verifySourceReports(reports())).not.toThrow());
 test.each([
   "candidate",
@@ -185,7 +195,7 @@ test.each([
   "tag",
   "signature",
   "draft",
-  "asset",
+  "draft source",
 ])("original report admission rejects changed %s", (fault) => {
   const input = reports();
   if (fault === "candidate") input.candidate.tarball.sha256 = "e".repeat(64);
@@ -194,7 +204,41 @@ test.each([
   if (fault === "preflight") input.reports.preflight.result = "FAIL";
   if (fault === "tag") input.tag.object.sha = "e".repeat(40);
   if (fault === "signature") input.tag.verification.verified = false;
-  if (fault === "draft") input.release.draft = false;
-  if (fault === "asset") input.release.assets[0].size++;
+  if (fault === "draft") input.reports.draft.draft = false;
+  if (fault === "draft source")
+    input.reports.draft.sourceCommit = "e".repeat(40);
   expect(() => verifySourceReports(input)).toThrow();
 });
+
+test("the isolated GitHub release job verifies the live draft and its exact assets", () => {
+  const input = reports();
+  expect(() =>
+    assertRecoveryDraft(input.release, input.reports.draft.assets),
+  ).not.toThrow();
+});
+
+test.each([
+  "id",
+  "tag",
+  "published",
+  "stable",
+  "immutable",
+  "asset",
+  "missing asset",
+  "extra asset",
+])(
+  "live draft verification refuses %s before registry publication",
+  (fault) => {
+    const { release, reports: retained } = reports();
+    if (fault === "id") release.id++;
+    if (fault === "tag") release.tag_name = "v0.1.0";
+    if (fault === "published") release.draft = false;
+    if (fault === "stable") release.prerelease = false;
+    if (fault === "immutable") release.immutable = true;
+    if (fault === "asset") release.assets[0].size++;
+    if (fault === "missing asset") release.assets.pop();
+    if (fault === "extra asset")
+      release.assets.push({ ...release.assets[0], name: "unexpected" });
+    expect(() => assertRecoveryDraft(release, retained.draft.assets)).toThrow();
+  },
+);

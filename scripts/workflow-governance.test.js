@@ -88,6 +88,42 @@ describe("repository workflow governance", () => {
     });
     expect(violations.join("\n")).toContain("rc.3 recovery");
   });
+  test.each([
+    "draft visibility",
+    "draft manual gate",
+    "publisher draft gate",
+    "source writes",
+    "evidence writes",
+  ])("rejects the rc.3 draft permission separation violation: %s", (fault) => {
+    const violations = mutateWorkflow("release.yml", (document) => {
+      if (fault === "draft visibility")
+        document.setIn(
+          ["jobs", "recovery_draft", "permissions", "contents"],
+          "read",
+        );
+      if (fault === "draft manual gate")
+        document.setIn(
+          ["jobs", "recovery_draft", "needs"],
+          document.createNode(["recovery_source"]),
+        );
+      if (fault === "publisher draft gate")
+        document.setIn(
+          ["jobs", "recovery_publish", "needs"],
+          document.createNode(["recovery_source", "recovery_accepted"]),
+        );
+      if (fault === "source writes")
+        document.setIn(
+          ["jobs", "recovery_source", "permissions", "contents"],
+          "write",
+        );
+      if (fault === "evidence writes")
+        document.setIn(
+          ["jobs", "recovery_evidence", "permissions", "contents"],
+          "write",
+        );
+    });
+    expect(violations.join("\n")).toContain("rc.3 recovery");
+  });
   test.each(["source_portable", "source_canonical", "source_json"])(
     "rejects pre-development runtimes for %s tooling",
     (jobId) => {
