@@ -32,7 +32,7 @@ const contracts = {
     ],
   },
   recovery_publish: {
-    needs: ["recovery_source", "recovery_accepted"],
+    needs: ["recovery_source", "recovery_accepted", "recovery_draft"],
     commands: [
       "sha256sum --check --strict SHA256SUMS",
       "node approval-tools/scripts/release-approvals.mjs --environment npm-release --output .release/approval-npm-release.json --rc3-recovery",
@@ -47,10 +47,15 @@ const contracts = {
       "npm run qualify:public-registry -- --candidate .release/download --output .release/registry-verification.json --rc3-recovery",
     ],
   },
+  recovery_draft: {
+    needs: ["recovery_source", "recovery_accepted"],
+    commands: ["npm ci", "node scripts/recover-rc3-publication.mjs draft"],
+  },
   recovery_evidence: {
     needs: [
       "recovery_source",
       "recovery_accepted",
+      "recovery_draft",
       "recovery_publish",
       "recovery_registry",
     ],
@@ -99,6 +104,7 @@ const uploadContracts = {
     ],
   ],
   recovery_finalize: [],
+  recovery_draft: [],
   recovery_immutable: [
     ["release-immutable-verification", ".release/immutable-verification.json"],
   ],
@@ -173,11 +179,13 @@ export function ordinaryReleaseWorkflow(workflow, violations) {
     const permissions =
       id === "recovery_publish"
         ? { actions: "read", contents: "read", "id-token": "write" }
-        : id === "recovery_finalize"
-          ? { contents: "write" }
-          : id === "recovery_immutable"
-            ? { contents: "read" }
-            : { actions: "read", contents: "read" };
+        : id === "recovery_draft"
+          ? { actions: "read", contents: "write" }
+          : id === "recovery_finalize"
+            ? { contents: "write" }
+            : id === "recovery_immutable"
+              ? { contents: "read" }
+              : { actions: "read", contents: "read" };
     check(
       isDeepStrictEqual(j.permissions, permissions),
       `${id} permissions differ`,

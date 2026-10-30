@@ -1841,12 +1841,47 @@ jobs:
           name: release-tag-verification-${{ github.run_id }}-${{ github.run_attempt }}
           path: .release/tag-verification.json
           retention-days: 90
+  recovery_draft:
+    if: ${{ inputs.rc3_recovery && !inputs.qualification_only }}
+    name: Release recovery / GitHub draft verified
+    needs:
+      - recovery_source
+      - recovery_accepted
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      actions: read
+      contents: write
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the accepted draft-verification implementation
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Set up the policy-owned Node/npm runtime
+        uses: ./.github/actions/setup-producer
+        with:
+          npm-timeout-minutes: "10"
+          verify-runtime: "false"
+      - name: Install the reviewed draft-verification tools
+        run: npm ci
+        timeout-minutes: 15
+      - name: Verify the unchanged draft with GitHub release visibility
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/recover-rc3-publication.mjs draft
+        timeout-minutes: 10
   recovery_publish:
     if: ${{ inputs.rc3_recovery && !inputs.qualification_only }}
     name: Release recovery / npm trusted publisher
     needs:
       - recovery_source
       - recovery_accepted
+      - recovery_draft
     environment:
       name: npm-release
     runs-on: ubuntu-24.04
@@ -1977,6 +2012,7 @@ jobs:
     needs:
       - recovery_source
       - recovery_accepted
+      - recovery_draft
       - recovery_publish
       - recovery_registry
     runs-on: ubuntu-24.04

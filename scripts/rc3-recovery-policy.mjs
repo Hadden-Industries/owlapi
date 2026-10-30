@@ -12,6 +12,7 @@ export const RC3_RECOVERY = Object.freeze(control);
 export const RECOVERY_JOBS = Object.freeze({
   recovery_source: "Release recovery / source verified",
   recovery_accepted: "Release recovery / accepted",
+  recovery_draft: "Release recovery / GitHub draft verified",
   recovery_publish: "Release recovery / npm trusted publisher",
   recovery_registry: "Release recovery / fresh public registry",
   recovery_evidence: "Release recovery / evidence",
@@ -29,7 +30,7 @@ export const RECOVERY_SOURCE_JOBS = Object.freeze([
   "Release / GitHub draft",
 ]);
 export const RECOVERY_REQUIRED_JOBS = Object.freeze(
-  [...RECOVERY_SOURCE_JOBS, ...Object.values(RECOVERY_JOBS).slice(0, 4)].sort(),
+  [...RECOVERY_SOURCE_JOBS, ...Object.values(RECOVERY_JOBS).slice(0, 5)].sort(),
 );
 
 export function assertRecoverySource(run, jobs) {

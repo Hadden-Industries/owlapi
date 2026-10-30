@@ -23,7 +23,7 @@ jobs:
   markdown:
     permissions:
       contents: read
-    uses: Hadden-Industries/markdown-quality/.github/workflows/markdown-quality.yml@7765a8227318ddd997daf706bc195e615f9d74e1
+    uses: Hadden-Industries/markdown-quality/.github/workflows/markdown-quality.yml@fa1188a867b29bddd0b972a080b7fcd0261bdec3
     with:
       trusted-repository: Hadden-Industries/owlapi
       trusted-sha: ${{ inputs.trusted_sha }}
