@@ -8,6 +8,11 @@ on:
         type: boolean
         required: true
         default: false
+      rc3_recovery:
+        description: Resume the fixed, qualified rc.3 artifact after its pre-publication failure
+        type: boolean
+        required: true
+        default: false
 
 permissions: {}
 
@@ -42,6 +47,7 @@ jobs:
           persist-credentials: false
       - id: freeze
         uses: ./.github/actions/freeze-runtime-matrix
+    if: ${{ !inputs.rc3_recovery }}
 
   release_preflight:
     name: Release / protected-main preflight
@@ -76,6 +82,7 @@ jobs:
       - name: Record the hosted runner identity
         run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
         timeout-minutes: 5
+    if: ${{ !inputs.rc3_recovery }}
 
   metadata:
     name: Release / metadata
@@ -114,6 +121,7 @@ jobs:
       - name: Record the hosted runner identity
         run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
         timeout-minutes: 5
+    if: ${{ !inputs.rc3_recovery }}
 
   source_portable:
     name: Release / Ubuntu / portable source / Node 26.13.0
@@ -166,6 +174,7 @@ jobs:
       - name: Verify repository workflow governance
         run: npm run verify:workflow-governance
         timeout-minutes: 45
+    if: ${{ !inputs.rc3_recovery }}
 
   source_json:
     name: Release / Ubuntu / JSON source / Node 26.13.0
@@ -230,6 +239,7 @@ jobs:
       - name: Check complete JSON after every native producer
         run: npm run check:json
         timeout-minutes: 15
+    if: ${{ !inputs.rc3_recovery }}
 
   source_canonical:
     name: Release / Ubuntu / canonical source / Node 26.13.0
@@ -361,6 +371,7 @@ jobs:
       - name: Check complete JSON after every native producer
         run: npm run check:json
         timeout-minutes: 15
+    if: ${{ !inputs.rc3_recovery }}
 
   dependency_review:
     name: Release / dependency policy
@@ -390,6 +401,7 @@ jobs:
       - name: Record dependency-review applicability for the fixed release commit
         run: npm run report:dependency-review-applicability
         timeout-minutes: 5
+    if: ${{ !inputs.rc3_recovery }}
 
   third_party_evidence_registry_keys:
     name: Release / third-party evidence / npm registry signing keys
@@ -426,6 +438,7 @@ jobs:
           name: npm-evidence-registry-keys
           path: .release/registry-keys/npm-registry-keys.json
           retention-days: 1
+    if: ${{ !inputs.rc3_recovery }}
 
   third_party_evidence_shard:
     name: Release / third-party evidence / shard ${{ matrix.shard }}
@@ -525,10 +538,11 @@ jobs:
           name: npm-evidence-release-${{ matrix.shard }}
           path: .release/evidence-shard
           retention-days: 1
+    if: ${{ !inputs.rc3_recovery }}
 
   third_party_evidence:
     name: Release / third-party evidence
-    if: ${{ !cancelled() }}
+    if: ${{ !inputs.rc3_recovery && (!cancelled()) }}
     needs: third_party_evidence_shard
     runs-on: ubuntu-24.04
     timeout-minutes: 30
@@ -610,6 +624,7 @@ jobs:
             .release/candidate/${{ needs.metadata.outputs.version }}/hadden-industries-owlapi-${{ needs.metadata.outputs.version }}.cdx.json
             .release/candidate/${{ needs.metadata.outputs.version }}/SHA256SUMS
           retention-days: 90
+    if: ${{ !inputs.rc3_recovery }}
 
   portability_windows_node_22:
     name: Release / Windows / Node 22.23.4
@@ -634,6 +649,7 @@ jobs:
           node: "22.23.4"
           candidate-id: ${{ needs.candidate.outputs.artifact_id }}
           candidate-digest: sha256:${{ needs.candidate.outputs.artifact_digest }}
+    if: ${{ !inputs.rc3_recovery }}
 
   portability_windows_node_24:
     name: Release / Windows / Node 24.22.2
@@ -658,6 +674,7 @@ jobs:
           node: "24.22.2"
           candidate-id: ${{ needs.candidate.outputs.artifact_id }}
           candidate-digest: sha256:${{ needs.candidate.outputs.artifact_digest }}
+    if: ${{ !inputs.rc3_recovery }}
 
   portability_ubuntu_node_26:
     name: Release / Ubuntu / retained package / Node 26.13.0
@@ -699,6 +716,7 @@ jobs:
       - name: Qualify the installed public package boundary
         run: npm run qualify:installed-candidate -- --candidate .release/download --output .release/download/portability.json
         timeout-minutes: 20
+    if: ${{ !inputs.rc3_recovery }}
 
   portability_windows_node_26:
     name: Release / Windows / Node 26.13.0
@@ -740,6 +758,7 @@ jobs:
       - name: Qualify the installed public package boundary
         run: npm run qualify:installed-candidate -- --candidate .release/download --output .release/download/portability.json
         timeout-minutes: 20
+    if: ${{ !inputs.rc3_recovery }}
 
   portability_macos_node_22:
     name: Release / macOS / Node 22.23.4
@@ -764,6 +783,7 @@ jobs:
           node: "22.23.4"
           candidate-id: ${{ needs.candidate.outputs.artifact_id }}
           candidate-digest: sha256:${{ needs.candidate.outputs.artifact_digest }}
+    if: ${{ !inputs.rc3_recovery }}
 
   portability_macos_node_24:
     name: Release / macOS / Node 24.22.2
@@ -788,6 +808,7 @@ jobs:
           node: "24.22.2"
           candidate-id: ${{ needs.candidate.outputs.artifact_id }}
           candidate-digest: sha256:${{ needs.candidate.outputs.artifact_digest }}
+    if: ${{ !inputs.rc3_recovery }}
 
   portability_macos_node_26:
     name: Release / macOS / Node 26.13.0
@@ -829,6 +850,7 @@ jobs:
       - name: Qualify the installed public package boundary
         run: npm run qualify:installed-candidate -- --candidate .release/download --output .release/download/portability.json
         timeout-minutes: 20
+    if: ${{ !inputs.rc3_recovery }}
 
   browser_chromium:
     name: Release / browser / Chromium
@@ -874,6 +896,7 @@ jobs:
       - name: Exercise all browser consumer modes in Chromium
         run: npm run test:browser -- --fixture-root .release/browser/qualified --project chromium
         timeout-minutes: 45
+    if: ${{ !inputs.rc3_recovery }}
 
   browser_firefox:
     name: Release / browser / Firefox
@@ -919,6 +942,7 @@ jobs:
       - name: Exercise all browser consumer modes in Firefox
         run: npm run test:browser -- --fixture-root .release/browser/qualified --project firefox
         timeout-minutes: 45
+    if: ${{ !inputs.rc3_recovery }}
 
   browser_webkit:
     name: Release / browser / WebKit
@@ -964,6 +988,7 @@ jobs:
       - name: Exercise all browser consumer modes in WebKit
         run: npm run test:browser -- --fixture-root .release/browser/qualified --project webkit
         timeout-minutes: 45
+    if: ${{ !inputs.rc3_recovery }}
 
   owl_contract:
     name: Release / installed OWL contract
@@ -1032,6 +1057,7 @@ jobs:
             .release/owl-contract/qualification.json
             .release/owl-contract/native.ndjson
           retention-days: 90
+    if: ${{ !inputs.rc3_recovery }}
 
   consumer_runtime:
     name: Release / consumer / ${{ matrix.runner }} / Node ${{ matrix.node }}
@@ -1064,11 +1090,12 @@ jobs:
           name: consumer-runtime-${{ matrix.runner }}-${{ matrix.node }}-attempt-${{ github.run_attempt }}
           path: .release/runtime-report/
           retention-days: 90
+    if: ${{ !inputs.rc3_recovery }}
 
   consumer_runtimes:
     name: Release / complete consumer qualification
     needs: [runtime_matrix, candidate, consumer_runtime]
-    if: ${{ !cancelled() }}
+    if: ${{ !inputs.rc3_recovery && (!cancelled()) }}
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     permissions:
@@ -1095,7 +1122,7 @@ jobs:
     name: Release / qualified
     env:
       OWLAPI_RUNTIME_MATRIX: ${{ needs.runtime_matrix.outputs.matrix }}
-    if: ${{ !cancelled() }}
+    if: ${{ !inputs.rc3_recovery && (!cancelled()) }}
     needs:
       - release_preflight
       - runtime_matrix
@@ -1148,7 +1175,7 @@ jobs:
         timeout-minutes: 5
 
   publication_preflight:
-    if: ${{ !inputs.qualification_only }}
+    if: ${{ !inputs.rc3_recovery && (!inputs.qualification_only) }}
     name: Release / publication preflight
     needs:
       - candidate
@@ -1215,7 +1242,7 @@ jobs:
           retention-days: 90
 
   tag_accepted:
-    if: ${{ !inputs.qualification_only }}
+    if: ${{ !inputs.rc3_recovery && (!inputs.qualification_only) }}
     name: Release / tag accepted
     needs:
       - metadata
@@ -1279,7 +1306,7 @@ jobs:
           retention-days: 90
 
   draft_release:
-    if: ${{ !inputs.qualification_only }}
+    if: ${{ !inputs.rc3_recovery && (!inputs.qualification_only) }}
     name: Release / GitHub draft
     needs:
       - candidate
@@ -1334,7 +1361,7 @@ jobs:
           retention-days: 90
 
   npm_release:
-    if: ${{ !inputs.qualification_only }}
+    if: ${{ !inputs.rc3_recovery && (!inputs.qualification_only) }}
     name: Release / npm trusted publisher
     needs:
       - candidate
@@ -1411,7 +1438,7 @@ jobs:
         timeout-minutes: 5
 
   registry_verification:
-    if: ${{ !inputs.qualification_only }}
+    if: ${{ !inputs.rc3_recovery && (!inputs.qualification_only) }}
     name: Release / fresh public registry
     needs:
       - candidate
@@ -1465,7 +1492,7 @@ jobs:
           retention-days: 90
 
   release_evidence:
-    if: ${{ !inputs.qualification_only }}
+    if: ${{ !inputs.rc3_recovery && (!inputs.qualification_only) }}
     name: Release / evidence
     needs:
       - candidate
@@ -1558,7 +1585,7 @@ jobs:
           retention-days: 90
 
   finalize_release:
-    if: ${{ !inputs.qualification_only }}
+    if: ${{ !inputs.rc3_recovery && (!inputs.qualification_only) }}
     name: Release / finalize immutable GitHub release
     needs:
       - metadata
@@ -1650,6 +1677,7 @@ jobs:
           path: .release/immutable-verification.json
           retention-days: 90
         timeout-minutes: 5
+    if: ${{ !inputs.rc3_recovery }}
   quality_windows:
     name: Release / Windows / quality tools
     runs-on: windows-2025
@@ -1704,3 +1732,390 @@ jobs:
       - name: Check complete JSON after every native producer
         run: npm run check:json
         timeout-minutes: 15
+    if: ${{ !inputs.rc3_recovery }}
+  recovery_source:
+    if: ${{ inputs.rc3_recovery && !inputs.qualification_only }}
+    name: Release recovery / source verified
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      actions: read
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the accepted registry-verification implementation
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+          fetch-tags: true
+      - name: Set up the policy-owned Node/npm runtime
+        uses: ./.github/actions/setup-producer
+        with:
+          npm-timeout-minutes: "10"
+          verify-runtime: "false"
+      - name: Install the reviewed public-verification tools
+        run: npm ci
+        timeout-minutes: 15
+      - name: Select the closed original release identity
+        id: identity
+        run: node scripts/rc3-recovery-policy.mjs outputs
+        timeout-minutes: 2
+      - name: Authenticate original qualification and the unattempted publication
+        run: node scripts/recover-rc3-publication.mjs source
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        timeout-minutes: 10
+      - name: Retain the native recovery result
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: release-recovery-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/recovery/source-verification.json
+          retention-days: 90
+    outputs:
+      source_commit: ${{ steps.identity.outputs.source_commit }}
+      source_run_id: ${{ steps.identity.outputs.source_run_id }}
+      candidate_artifact_id: ${{ steps.identity.outputs.candidate_artifact_id }}
+      tag: ${{ steps.identity.outputs.tag }}
+      version: ${{ steps.identity.outputs.version }}
+  recovery_accepted:
+    if: ${{ inputs.rc3_recovery && !inputs.qualification_only }}
+    name: Release recovery / accepted
+    needs: recovery_source
+    environment:
+      name: release-manual
+      deployment: false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      actions: read
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
+    steps:
+      - name: Check out the accepted commit and human-created tag
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          fetch-tags: true
+          persist-credentials: false
+      - name: Set up the policy-owned Node/npm runtime
+        uses: ./.github/actions/setup-producer
+        with:
+          npm-timeout-minutes: "10"
+          verify-runtime: "false"
+      - name: Install the reviewed tag-verification tools
+        run: npm ci
+        timeout-minutes: 15
+      - name: Capture the authenticated manual-gate approval
+        if: ${{ github.run_attempt == 1 }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/release-approvals.mjs --environment release-manual --output .release/approval-release-manual.json --rc3-recovery
+        timeout-minutes: 3
+      - name: Retain the manual-gate approval before publication
+        if: ${{ github.run_attempt == 1 }}
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: release-approval-release-manual-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/approval-release-manual.json
+          retention-days: 90
+      - name: Verify the annotated tag, registered SSH signer, target, and GitHub result
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ needs.recovery_source.outputs.tag }}
+          SOURCE_COMMIT: ${{ needs.recovery_source.outputs.source_commit }}
+        run: npm run verify:release-tag -- --tag "$RELEASE_TAG" --commit "$SOURCE_COMMIT" --output .release/tag-verification.json
+        timeout-minutes: 5
+      - name: Retain the accepted-tag evidence
+        id: upload
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: release-tag-verification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/tag-verification.json
+          retention-days: 90
+  recovery_publish:
+    if: ${{ inputs.rc3_recovery && !inputs.qualification_only }}
+    name: Release recovery / npm trusted publisher
+    needs:
+      - recovery_source
+      - recovery_accepted
+    environment:
+      name: npm-release
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      actions: read
+      contents: read
+      id-token: write
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the accepted approval-capture implementation
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+          path: approval-tools
+      - name: Set up the policy-owned Node/npm runtime
+        uses: ./approval-tools/.github/actions/setup-producer
+        with:
+          npm-timeout-minutes: "10"
+          verify-runtime: "false"
+      - name: Download the exact original qualified candidate
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          artifact-ids: ${{ needs.recovery_source.outputs.candidate_artifact_id }}
+          path: .release/download
+          merge-multiple: false
+          skip-decompress: false
+          digest-mismatch: error
+          github-token: ${{ github.token }}
+          repository: Hadden-Industries/owlapi
+          run-id: ${{ needs.recovery_source.outputs.source_run_id }}
+      - name: Verify the retained candidate checksums without executing package code
+        working-directory: .release/download
+        run: sha256sum --check --strict SHA256SUMS
+        timeout-minutes: 5
+      - name: Capture the authenticated publisher-gate approval
+        if: ${{ github.run_attempt == 1 }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node approval-tools/scripts/release-approvals.mjs --environment npm-release --output .release/approval-npm-release.json --rc3-recovery
+        timeout-minutes: 3
+      - name: Retain the publisher-gate approval before publication
+        if: ${{ github.run_attempt == 1 }}
+        uses: ./approval-tools/.github/actions/retain-artifact
+        with:
+          name: release-approval-npm-release-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/approval-npm-release.json
+          retention-days: 90
+      - name: Reconcile the still-unused coordinate and prior channel guards
+        if: ${{ github.run_attempt == 1 }}
+        run: node approval-tools/scripts/rc3-recovery-policy.mjs guard-publication
+        timeout-minutes: 2
+      - name: Perform the authorized publication and exact-version channel writes
+        if: ${{ github.run_attempt == 1 }}
+        working-directory: .release/download
+        run: |
+          if [[ -z "${ACTIONS_ID_TOKEN_REQUEST_URL:-}" || -z "${ACTIONS_ID_TOKEN_REQUEST_TOKEN:-}" ]]; then
+            echo "::error::The protected npm-release job has no GitHub OIDC identity."
+            exit 1
+          fi
+          echo "f7ef57825eb0edc9d08f32a93c891d605757a4408c4b51a53d20b3be6290b0df  hadden-industries-owlapi-0.1.0-rc.3.tgz" | sha256sum --check --strict
+          npm publish hadden-industries-owlapi-0.1.0-rc.3.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/
+          npm dist-tag add @hadden-industries/owlapi@0.1.0-rc.3 latest --registry=https://registry.npmjs.org/
+          echo '{"state":"PUBLICATION_ACCEPTED","availability":"PENDING","publicationReplay":false}'
+        timeout-minutes: 5
+  recovery_registry:
+    if: ${{ inputs.rc3_recovery && !inputs.qualification_only }}
+    name: Release recovery / fresh public registry
+    needs:
+      - recovery_source
+      - recovery_publish
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    permissions:
+      actions: read
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
+    steps:
+      - name: Check out the accepted registry-verification implementation
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Set up the policy-owned Node/npm runtime
+        uses: ./.github/actions/setup-producer
+        with:
+          npm-timeout-minutes: "10"
+          verify-runtime: "false"
+      - name: Install the reviewed public-verification tools
+        run: npm ci
+        timeout-minutes: 15
+      - name: Download the exact original qualified candidate
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          artifact-ids: ${{ needs.recovery_source.outputs.candidate_artifact_id }}
+          path: .release/download
+          merge-multiple: false
+          skip-decompress: false
+          digest-mismatch: error
+          github-token: ${{ github.token }}
+          repository: Hadden-Industries/owlapi
+          run-id: ${{ needs.recovery_source.outputs.source_run_id }}
+      - name: Verify the fresh public coordinate, bytes, channel, signatures, and exports
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: npm run qualify:public-registry -- --candidate .release/download --output .release/registry-verification.json --rc3-recovery
+        timeout-minutes: 50
+      - name: Retain the public-registry evidence
+        id: upload
+        if: ${{ always() }}
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: release-registry-verification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/registry-verification.json
+          retention-days: 90
+  recovery_evidence:
+    if: ${{ inputs.rc3_recovery && !inputs.qualification_only }}
+    name: Release recovery / evidence
+    needs:
+      - recovery_source
+      - recovery_accepted
+      - recovery_publish
+      - recovery_registry
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      actions: read
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the accepted registry-verification implementation
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Set up the policy-owned Node/npm runtime
+        uses: ./.github/actions/setup-producer
+        with:
+          npm-timeout-minutes: "10"
+          verify-runtime: "false"
+      - name: Install the reviewed public-verification tools
+        run: npm ci
+        timeout-minutes: 15
+      - name: Download the native public-registry verification
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          artifact-ids: ${{ needs.recovery_registry.outputs.artifact_id }}
+          path: .release/recovery
+          merge-multiple: false
+          skip-decompress: false
+          digest-mismatch: error
+      - name: Bind original qualification to the recovered publication
+        run: node scripts/recover-rc3-publication.mjs evidence
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        timeout-minutes: 10
+      - name: Retain the native recovery result
+        id: upload
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: release-recovery-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/recovery/hadden-industries-owlapi-${{ needs.recovery_source.outputs.version }}.release-evidence.json
+          retention-days: 90
+    outputs:
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
+  recovery_finalize:
+    if: ${{ inputs.rc3_recovery && !inputs.qualification_only }}
+    name: Release recovery / finalize immutable GitHub release
+    needs:
+      - recovery_source
+      - recovery_evidence
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the accepted finalization implementation
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Set up the policy-owned Node/npm runtime
+        uses: ./.github/actions/setup-producer
+        with:
+          npm-timeout-minutes: "10"
+          verify-runtime: "false"
+      - name: Install the reviewed finalization tools
+        run: npm ci
+        timeout-minutes: 15
+      - name: Download the exact same-run release evidence by artifact ID
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          artifact-ids: ${{ needs.recovery_evidence.outputs.artifact_id }}
+          path: .release/evidence
+          merge-multiple: false
+          skip-decompress: false
+          digest-mismatch: error
+      - name: Attach the fourth asset and publish the immutable prerelease
+        env:
+          RELEASE_EVIDENCE_PATH: .release/evidence/hadden-industries-owlapi-${{ needs.recovery_source.outputs.version }}.release-evidence.json
+          GITHUB_TOKEN: ${{ github.token }}
+          SOURCE_COMMIT: ${{ needs.recovery_source.outputs.source_commit }}
+        run: npm run finalize:github-release -- --evidence "$RELEASE_EVIDENCE_PATH" --output .release/finalization.json --source-commit "$SOURCE_COMMIT"
+        timeout-minutes: 5
+  recovery_immutable:
+    name: Release recovery / immutable verification
+    needs:
+      - recovery_source
+      - recovery_finalize
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the accepted source and signed tag
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          fetch-tags: true
+          persist-credentials: false
+      - name: Set up the policy-owned Node/npm runtime
+        uses: ./.github/actions/setup-producer
+        with:
+          npm-timeout-minutes: "10"
+          verify-runtime: "false"
+      - name: Install the reviewed immutable-verification tools
+        run: npm ci
+        timeout-minutes: 15
+      - name: Download and checksum-verify GitHub CLI 2.103.3
+        run: npm run prepare:github-cli -- --output .release/tools/github-cli
+        timeout-minutes: 5
+      - name: Reverify the independent signed tag
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ needs.recovery_source.outputs.tag }}
+          SOURCE_COMMIT: ${{ needs.recovery_source.outputs.source_commit }}
+        run: npm run verify:release-tag -- --tag "$RELEASE_TAG" --commit "$SOURCE_COMMIT" --output .release/final-tag-verification.json
+        timeout-minutes: 5
+      - name: Verify release immutability and all four release attestations
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          SOURCE_COMMIT: ${{ needs.recovery_source.outputs.source_commit }}
+        run: npm run verify:immutable-release -- --gh .release/tools/github-cli/gh_2.103.3_linux_amd64/bin/gh --output-directory .release/immutable-assets --report .release/immutable-verification.json --source-commit "$SOURCE_COMMIT"
+        timeout-minutes: 10
+      - name: Retain the final immutable-verification report
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: release-immutable-verification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/immutable-verification.json
+          retention-days: 90
+        timeout-minutes: 5
+    if: ${{ inputs.rc3_recovery && !inputs.qualification_only }}

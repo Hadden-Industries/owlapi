@@ -3,7 +3,8 @@ import { dirname } from "node:path";
 import { pathToFileURL } from "node:url";
 import { GitHubReleaseClient } from "./github-release.mjs";
 import { sha256Buffer } from "./release-file-utils.mjs";
-import { readZipArchiveFiles } from "./release-zip.mjs";
+import { crc32 } from "node:zlib";
+import { readZipArchiveFilesWith } from "./release-zip-core.mjs";
 
 import {
   artifactProducingAttempt,
@@ -11,8 +12,13 @@ import {
   parseArtifactName,
 } from "../tooling/artifact-transport/identity.mjs";
 import { isDeepStrictEqual } from "node:util";
+import { RECOVERY_JOBS } from "./rc3-recovery-policy.mjs";
 
 const repository = "Hadden-Industries/owlapi";
+// Producer tooling runs on the policy-owned Node, including the dependency-free
+// publisher. The consumer ZIP adapter intentionally supports older Node versions.
+const readZipArchiveFiles = (archive) =>
+  readZipArchiveFilesWith(archive, { crc32 });
 const gateJobs = {
   "release-manual": "Release / tag accepted",
   "npm-release": "Release / npm trusted publisher",
@@ -45,8 +51,15 @@ export const approvalFromHistory = (history, environment, observedAt) => {
 
 export const validateApprovalObservation = (
   observation,
-  { environment, commit, runId, runAttempt, jobs },
+  { environment, commit, runId, runAttempt, jobs, recovery = false },
 ) => {
+  const jobName = recovery
+    ? RECOVERY_JOBS[
+        environment === "release-manual"
+          ? "recovery_accepted"
+          : "recovery_publish"
+      ]
+    : gateJobs[environment];
   requireFact(
     observation.schemaVersion === 1 &&
       observation.repository === repository &&
@@ -60,21 +73,15 @@ export const validateApprovalObservation = (
     "Retained approval observation identity differs.",
   );
   const matching = jobs.filter(
-    (job) =>
-      job.name === gateJobs[environment] &&
-      job.run_attempt === observation.runAttempt,
+    (job) => job.name === jobName && job.run_attempt === observation.runAttempt,
   );
   const latestAttempt = Math.max(
     ...jobs
-      .filter(
-        (job) =>
-          job.name === gateJobs[environment] && job.run_attempt <= runAttempt,
-      )
+      .filter((job) => job.name === jobName && job.run_attempt <= runAttempt)
       .map((job) => job.run_attempt),
   );
   const latest = jobs.filter(
-    (job) =>
-      job.name === gateJobs[environment] && job.run_attempt === latestAttempt,
+    (job) => job.name === jobName && job.run_attempt === latestAttempt,
   );
   requireFact(
     matching.length === 1 &&
@@ -137,7 +144,7 @@ const limitedBytes = async (response, limit) => {
   return Buffer.concat(chunks);
 };
 
-const downloadApprovalArchive = async (client, artifact) => {
+export const downloadReleaseArtifact = async (client, artifact) => {
   const signal = AbortSignal.timeout(60000);
   const redirect = await fetch(
     `${client.apiRoot}/actions/artifacts/${artifact.id}/zip`,
@@ -170,7 +177,8 @@ export const resolveRetainedApprovals = async ({
   runAttempt,
   jobs,
   liveHistory,
-  download = downloadApprovalArchive,
+  recovery = false,
+  download = downloadReleaseArtifact,
 }) => {
   const artifacts = [];
   for (let page = 1; page <= 5; page++) {
@@ -259,7 +267,7 @@ export const resolveRetainedApprovals = async ({
       const { observation, approval } = decodeApprovalArchive(
         archive,
         artifact,
-        { environment, commit, runId, runAttempt, jobs },
+        { environment, commit, runId, runAttempt, jobs, recovery },
       );
       requireFact(
         observation.runAttempt === latest,
@@ -306,6 +314,7 @@ export const captureApprovalObservation = async ({
   environment,
   env = process.env,
   client,
+  recovery = false,
 }) => {
   const commit = env.GITHUB_SHA,
     runId = env.GITHUB_RUN_ID,
@@ -334,18 +343,24 @@ export const captureApprovalObservation = async ({
       jobResult.jobs.length < 100,
     "Approval capture workflow identity differs or jobs are incomplete.",
   );
+  const jobId = recovery
+    ? environment === "release-manual"
+      ? "recovery_accepted"
+      : "recovery_publish"
+    : environment === "release-manual"
+      ? "tag_accepted"
+      : "npm_release";
+  const jobName = recovery ? RECOVERY_JOBS[jobId] : gateJobs[environment];
   const matches = jobResult.jobs.filter(
     (job) =>
-      job.name === gateJobs[environment] &&
+      job.name === jobName &&
       String(job.run_id) === runId &&
       job.run_attempt === runAttempt &&
       job.head_sha === commit &&
       job.status === "in_progress",
   );
   requireFact(
-    matches.length === 1 &&
-      env.GITHUB_JOB ===
-        (environment === "release-manual" ? "tag_accepted" : "npm_release"),
+    matches.length === 1 && env.GITHUB_JOB === jobId,
     "Approval capture is outside its exact running protected gate.",
   );
   const observedAt = new Date().toISOString();
@@ -374,6 +389,7 @@ const main = async () => {
   requireFact(output, "Approval capture requires an output path.");
   const observation = await captureApprovalObservation({
     environment: value("--environment"),
+    recovery: process.argv.includes("--rc3-recovery"),
     client: new GitHubReleaseClient({
       repository,
       token: process.env.GITHUB_TOKEN,

@@ -1,5 +1,5 @@
 import { jsonEquals } from "./canonical-json.mjs";
-import { createRepositoryReader } from "./ci-verification-command.mjs";
+import { createRepositoryReader } from "./github-evidence-reader.mjs";
 
 const compareCodeUnits = (left, right) =>
   left < right ? -1 : left > right ? 1 : 0;
