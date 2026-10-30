@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "repository": "Hadden-Industries/owlapi",
+  "sourceCommit": "17cdb60b3a2920b7cb4da0000e87b374dedb578a",
+  "runId": "40993123452",
+  "runAttempt": 1,
+  "tag": "v0.1.0-rc.3",
+  "tagObject": "ce92b4820910b079b98c402aa03032ff18a4b923",
+  "releaseId": 428624178,
+  "artifacts": {
+    "candidate": 12950814040,
+    "preflight": 12951403203,
+    "tag": 12952176806,
+    "draft": 12952126867
+  },
+  "priorChannels": {
+    "next": "0.1.0-rc.2",
+    "latest": "0.1.0-rc.2"
+  },
+  "reason": "Owner-authorized continuation of rc.3 publication after approval capture failed before the registry-write step. Reuse the original qualified package, signed tag and draft; preserve the failed source run and distinguish the repaired publishing controller. No tag movement, package rebuild, token fallback or repeated publication is permitted. The protected npm-release approval authorizes the first registry write."
+}

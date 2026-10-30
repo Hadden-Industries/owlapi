@@ -5,6 +5,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
 import { assertArchivedOwlContractReport } from "./owl-contract-evidence.mjs";
+import { assertRc3RecoveryEvidence } from "./rc3-recovery-policy.mjs";
 
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
 
@@ -23,7 +24,8 @@ export const validateReleaseEvidence = (record) => {
       `Release evidence violates its strict schema: ${ajv.errorsText(validate.errors)}`,
     );
   }
-  if ([4, 5].includes(record.schemaVersion)) {
+  if (record.schemaVersion === 6) assertRc3RecoveryEvidence(record);
+  if ([4, 5, 6].includes(record.schemaVersion)) {
     assertArchivedOwlContractReport(record.producerContract, {
       package: { name: record.package.name, version: record.package.version },
       candidateSha256: record.candidate.tarball.sha256,
@@ -36,7 +38,7 @@ export const validateReleaseEvidence = (record) => {
     if (
       execution.workflow !== "Release" ||
       execution.commit !== record.source.commit ||
-      execution.runId !== Number(record.workflow.runId) ||
+      execution.runId !== Number(record.qualificationWorkflow.runId) ||
       execution.runAttempt > record.qualificationWorkflow.runAttempt
     )
       throw new Error(

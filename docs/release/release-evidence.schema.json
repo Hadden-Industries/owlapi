@@ -2101,7 +2101,10 @@
           "pattern": "^https://raw\\.githubusercontent\\.com/Hadden-Industries/owlapi/[0-9a-f]{40}/docs/release/release-evidence\\.schema\\.json$"
         },
         "schemaVersion": {
-          "const": 5
+          "enum": [
+            5,
+            6
+          ]
         },
         "package": {
           "type": "object",
@@ -2395,7 +2398,58 @@
           }
         },
         "reconciliation": {
-          "type": "null"
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "failureClass",
+                "sourceFailureJob",
+                "publicationWrite",
+                "tagObject",
+                "packageReproduction"
+              ],
+              "properties": {
+                "failureClass": {
+                  "const": "PRE_PUBLICATION_APPROVAL_CAPTURE_IMPORT_FAILURE"
+                },
+                "sourceFailureJob": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "name",
+                    "conclusion",
+                    "url"
+                  ],
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "conclusion": {
+                      "const": "failure"
+                    },
+                    "url": {
+                      "type": "string",
+                      "format": "uri"
+                    }
+                  }
+                },
+                "publicationWrite": {
+                  "const": "NOT_ATTEMPTED"
+                },
+                "tagObject": {
+                  "$ref": "#/$defs/commit"
+                },
+                "packageReproduction": {
+                  "const": "ORIGINAL_QUALIFIED_ARTIFACT"
+                }
+              }
+            }
+          ]
         },
         "signing": {
           "type": "object",
@@ -2483,132 +2537,7 @@
           }
         },
         "requiredJobs": {
-          "type": "array",
-          "minItems": 8,
-          "maxItems": 8,
-          "prefixItems": [
-            {
-              "allOf": [
-                {
-                  "$ref": "#/$defs/job"
-                },
-                {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "const": "Release / GitHub draft"
-                    }
-                  }
-                }
-              ]
-            },
-            {
-              "allOf": [
-                {
-                  "$ref": "#/$defs/job"
-                },
-                {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "const": "Release / fresh public registry"
-                    }
-                  }
-                }
-              ]
-            },
-            {
-              "allOf": [
-                {
-                  "$ref": "#/$defs/job"
-                },
-                {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "const": "Release / installed OWL contract"
-                    }
-                  }
-                }
-              ]
-            },
-            {
-              "allOf": [
-                {
-                  "$ref": "#/$defs/job"
-                },
-                {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "const": "Release / npm trusted publisher"
-                    }
-                  }
-                }
-              ]
-            },
-            {
-              "allOf": [
-                {
-                  "$ref": "#/$defs/job"
-                },
-                {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "const": "Release / protected-main preflight"
-                    }
-                  }
-                }
-              ]
-            },
-            {
-              "allOf": [
-                {
-                  "$ref": "#/$defs/job"
-                },
-                {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "const": "Release / publication preflight"
-                    }
-                  }
-                }
-              ]
-            },
-            {
-              "allOf": [
-                {
-                  "$ref": "#/$defs/job"
-                },
-                {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "const": "Release / qualified"
-                    }
-                  }
-                }
-              ]
-            },
-            {
-              "allOf": [
-                {
-                  "$ref": "#/$defs/job"
-                },
-                {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "const": "Release / tag accepted"
-                    }
-                  }
-                }
-              ]
-            }
-          ],
-          "items": false
+          "type": "array"
         },
         "extendedTests": {
           "type": "array",
@@ -2702,7 +2631,365 @@
             }
           }
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "schemaVersion": {
+                "const": 5
+              }
+            },
+            "required": [
+              "schemaVersion"
+            ]
+          },
+          "then": {
+            "properties": {
+              "reconciliation": {
+                "type": "null"
+              },
+              "requiredJobs": {
+                "type": "array",
+                "minItems": 8,
+                "maxItems": 8,
+                "prefixItems": [
+                  {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/job"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "const": "Release / GitHub draft"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/job"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "const": "Release / fresh public registry"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/job"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "const": "Release / installed OWL contract"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/job"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "const": "Release / npm trusted publisher"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/job"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "const": "Release / protected-main preflight"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/job"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "const": "Release / publication preflight"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/job"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "const": "Release / qualified"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/job"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "const": "Release / tag accepted"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "items": false
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "reconciliation": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "failureClass",
+                  "sourceFailureJob",
+                  "publicationWrite",
+                  "tagObject",
+                  "packageReproduction"
+                ],
+                "properties": {
+                  "failureClass": {
+                    "const": "PRE_PUBLICATION_APPROVAL_CAPTURE_IMPORT_FAILURE"
+                  },
+                  "sourceFailureJob": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "name",
+                      "conclusion",
+                      "url"
+                    ],
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "conclusion": {
+                        "const": "failure"
+                      },
+                      "url": {
+                        "type": "string",
+                        "format": "uri"
+                      }
+                    }
+                  },
+                  "publicationWrite": {
+                    "const": "NOT_ATTEMPTED"
+                  },
+                  "tagObject": {
+                    "$ref": "#/$defs/commit"
+                  },
+                  "packageReproduction": {
+                    "const": "ORIGINAL_QUALIFIED_ARTIFACT"
+                  }
+                }
+              },
+              "requiredJobs": {
+                "type": "array",
+                "minItems": 10,
+                "maxItems": 10,
+                "prefixItems": [
+                  {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/job"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "const": "Release / GitHub draft"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/job"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "const": "Release / installed OWL contract"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/job"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "const": "Release / protected-main preflight"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/job"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "const": "Release / publication preflight"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/job"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "const": "Release / qualified"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/job"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "const": "Release / tag accepted"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/job"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "const": "Release recovery / accepted"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/job"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "const": "Release recovery / fresh public registry"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/job"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "const": "Release recovery / npm trusted publisher"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/job"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "const": "Release recovery / source verified"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "items": false
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }

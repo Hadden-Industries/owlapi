@@ -17,6 +17,7 @@ import addFormats from "ajv-formats";
 import { parseDocument } from "yaml";
 import { REQUIRED_JOB_IDS } from "./require-job-success.mjs";
 import { CI_JOB_NAMES } from "./ci-qualification.mjs";
+import { ordinaryReleaseWorkflow } from "./rc3-recovery-workflow.mjs";
 
 const REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
 const WORKFLOW_DIRECTORY = join(REPOSITORY_ROOT, ".github", "workflows");
@@ -2016,7 +2017,11 @@ export const auditReleaseMutationBoundary = (source) => {
   const violations = [];
   const { value } = parseControlYaml("release.yml", source, violations);
   if (!violations.length)
-    validateReleaseMutationBoundary("release.yml", value, violations);
+    validateReleaseMutationBoundary(
+      "release.yml",
+      ordinaryReleaseWorkflow(value, violations),
+      violations,
+    );
   return violations;
 };
 /** Audit the recovery publication boundary without running or publishing it. */
@@ -3277,6 +3282,10 @@ export const auditRepositoryControls = ({
   // Invalid syntax is a complete failure, not a partial policy pass or an exception in a later accessor.
   if (violations.some((message) => message.includes(": invalid YAML:")))
     return { workflowFiles, issueFormFiles, violations };
+  parsed["release.yml"].value = ordinaryReleaseWorkflow(
+    parsed["release.yml"].value,
+    violations,
+  );
   const workflows = Object.fromEntries(
     entries(parsed).map(([fileName, { value }]) => [fileName, value]),
   );

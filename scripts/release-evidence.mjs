@@ -11,6 +11,10 @@ import {
 } from "./owl-contract-evidence.mjs";
 import { isDeepStrictEqual } from "node:util";
 import { jsonEquals } from "./canonical-json.mjs";
+import {
+  assertRc3RecoveryEvidence,
+  RECOVERY_REQUIRED_JOBS,
+} from "./rc3-recovery-policy.mjs";
 const alphaVersion = "0.1.0-alpha.0";
 const compareCodeUnits = (left, right) =>
   left < right ? -1 : left > right ? 1 : 0;
@@ -51,11 +55,13 @@ export const assertReleaseExecutionIdentity = ({
   sourceCommit,
   tag,
 }) => {
+  const recovery = evidence?.schemaVersion === 6;
+  if (recovery) assertRc3RecoveryEvidence(evidence);
   if (evidence?.reconciliation === null && evidence.schemaVersion !== 5)
     throw new Error(
       "Current producer release finalization requires schema-5 OWL contract proof.",
     );
-  if (evidence?.reconciliation === null) {
+  if (evidence?.reconciliation === null || recovery) {
     // Archive readability never grants authority to finalize a new release.
     assertOwlContractReport(evidence.producerContract, {
       candidateSha256: evidence.candidate.tarball.sha256,
@@ -86,7 +92,11 @@ export const assertReleaseExecutionIdentity = ({
 };
 
 const buildVersionedReleaseEvidence = (facts, scopedVersion) => {
-  const scoped = facts.reconciliation === null;
+  const recovery =
+    facts.reconciliation?.failureClass ===
+    "PRE_PUBLICATION_APPROVAL_CAPTURE_IMPORT_FAILURE";
+  if (recovery) assertRc3RecoveryEvidence(facts);
+  const scoped = facts.reconciliation === null || recovery;
   const version = scoped ? scopedVersion : alphaVersion;
   const channel = releaseChannel(version);
   const packageName = scoped ? PACKAGE_NAME : "owlapi";
@@ -113,6 +123,7 @@ const buildVersionedReleaseEvidence = (facts, scopedVersion) => {
   }
   if (
     scoped &&
+    !recovery &&
     (facts.workflow.commit !== facts.source.commit ||
       ["name", "commit", "runId", "url"].some(
         (key) => facts.workflow[key] !== facts.qualificationWorkflow[key],
@@ -161,7 +172,7 @@ const buildVersionedReleaseEvidence = (facts, scopedVersion) => {
     if (
       contractIdentity.workflow !== "Release" ||
       contractIdentity.commit !== facts.source.commit ||
-      contractIdentity.runId !== Number(facts.workflow.runId) ||
+      contractIdentity.runId !== Number(facts.qualificationWorkflow.runId) ||
       contractIdentity.runAttempt > facts.qualificationWorkflow.runAttempt
     )
       throw new Error(
@@ -246,7 +257,11 @@ const buildVersionedReleaseEvidence = (facts, scopedVersion) => {
   if (
     !jsonEquals(
       requiredJobs.map(({ name }) => name),
-      scoped ? SCOPED_RELEASE_JOB_NAMES : REQUIRED_JOB_NAMES,
+      recovery
+        ? RECOVERY_REQUIRED_JOBS
+        : scoped
+          ? SCOPED_RELEASE_JOB_NAMES
+          : REQUIRED_JOB_NAMES,
     ) ||
     requiredJobs.some(({ conclusion, url }) => conclusion !== "success" || !url)
   ) {
@@ -254,7 +269,7 @@ const buildVersionedReleaseEvidence = (facts, scopedVersion) => {
   }
   return {
     $schema: `https://raw.githubusercontent.com/Hadden-Industries/owlapi/${facts.workflow.commit}/docs/release/release-evidence.schema.json`,
-    schemaVersion: scoped ? 5 : 2,
+    schemaVersion: recovery ? 6 : scoped ? 5 : 2,
     ...(scoped ? { producerContract: facts.producerContract } : {}),
     package: {
       name: packageName,

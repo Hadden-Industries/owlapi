@@ -14,6 +14,11 @@ import { validateReleaseEvidence } from "./validate-release-evidence.mjs";
 import { sourceFingerprint } from "./consumer-source-snapshot.mjs";
 import { physicalName } from "../tooling/artifact-transport/identity.mjs";
 import { projectReleaseEvidenceSchema } from "./release-version-schema.mjs";
+import {
+  RC3_RECOVERY,
+  RECOVERY_REQUIRED_JOBS,
+  RECOVERY_SOURCE_JOBS,
+} from "./rc3-recovery-policy.mjs";
 
 const { buildReleaseEvidence } = releaseEvidence;
 
@@ -210,6 +215,115 @@ const scopedFacts = () => {
   ];
   return candidate;
 };
+
+const recoveredFacts = () => {
+  const result = scopedFacts(),
+    c = RC3_RECOVERY;
+  result.source.commit = c.sourceCommit;
+  result.qualificationWorkflow = {
+    ...result.qualificationWorkflow,
+    commit: c.sourceCommit,
+    runId: c.runId,
+    runAttempt: 1,
+    url: `https://github.com/${c.repository}/actions/runs/${c.runId}`,
+  };
+  result.workflow = {
+    ...result.workflow,
+    commit: "b".repeat(40),
+    runId: "50000000000",
+    runAttempt: 1,
+    url: `https://github.com/${c.repository}/actions/runs/50000000000`,
+  };
+  result.candidate.artifactId = String(c.artifacts.candidate);
+  result.producerContract = contractReport(
+    { commit: c.sourceCommit, runId: Number(c.runId), runAttempt: 1 },
+    {
+      workflow: "Release",
+      tarballSha256: result.candidate.tarball.sha256,
+      artifact: {
+        id: c.artifacts.candidate,
+        digest: result.candidate.artifactDigest,
+      },
+    },
+  );
+  Object.assign(result.publication.provenance, {
+    sourceCommit: result.workflow.commit,
+    runId: result.workflow.runId,
+    runAttempt: 1,
+  });
+  result.publication.publisherJob = {
+    url: `${result.workflow.url}/job/99`,
+    runAttempt: 1,
+    conclusion: "success",
+  };
+  result.githubRelease.id = c.releaseId;
+  result.reconciliation = {
+    failureClass: "PRE_PUBLICATION_APPROVAL_CAPTURE_IMPORT_FAILURE",
+    sourceFailureJob: {
+      name: "Release / npm trusted publisher",
+      conclusion: "failure",
+      url: `${result.qualificationWorkflow.url}/job/123874274391`,
+    },
+    publicationWrite: "NOT_ATTEMPTED",
+    tagObject: c.tagObject,
+    packageReproduction: "ORIGINAL_QUALIFIED_ARTIFACT",
+  };
+  result.requiredJobs = RECOVERY_REQUIRED_JOBS.map((name, index) => ({
+    name,
+    conclusion: "success",
+    url: `${RECOVERY_SOURCE_JOBS.includes(name) ? result.qualificationWorkflow.url : result.workflow.url}/job/${index + 1}`,
+  }));
+  return result;
+};
+
+test("recovery records preserve original qualification, failed publication and the distinct OIDC controller", () => {
+  const input = recoveredFacts();
+  const record = validateReleaseEvidence(buildReleaseEvidence(input));
+  expect(record.schemaVersion).toBe(6);
+  expect(record.source.commit).toBe(RC3_RECOVERY.sourceCommit);
+  expect(record.workflow.commit).not.toBe(record.source.commit);
+  expect(record.producerContract.identity.runId).toBe(
+    Number(RC3_RECOVERY.runId),
+  );
+  expect(record.reconciliation.sourceFailureJob.conclusion).toBe("failure");
+  expect(() =>
+    releaseEvidence.assertReleaseExecutionIdentity({
+      evidence: record,
+      promotionCommit: input.workflow.commit,
+      sourceCommit: input.source.commit,
+      tag: input.source.tag,
+    }),
+  ).not.toThrow();
+});
+
+test.each([
+  "artifact",
+  "source",
+  "original run",
+  "tag",
+  "draft",
+  "write",
+  "failed status",
+  "current run",
+  "proof origin",
+  "job origin",
+])("recovery refuses changed %s", (change) => {
+  const input = recoveredFacts();
+  if (change === "artifact") input.candidate.artifactId = "1";
+  if (change === "source") input.source.commit = "f".repeat(40);
+  if (change === "original run") input.qualificationWorkflow.runId = "1";
+  if (change === "tag") input.reconciliation.tagObject = "f".repeat(40);
+  if (change === "draft") input.githubRelease.id++;
+  if (change === "write") input.reconciliation.publicationWrite = "ATTEMPTED";
+  if (change === "failed status")
+    input.reconciliation.sourceFailureJob.conclusion = "success";
+  if (change === "current run") input.workflow.runId = RC3_RECOVERY.runId;
+  if (change === "proof origin")
+    input.producerContract.identity.runId = Number(input.workflow.runId);
+  if (change === "job origin")
+    input.requiredJobs[0].url = `${input.workflow.url}/job/1`;
+  expect(() => buildReleaseEvidence(input)).toThrow();
+});
 
 test("one release schema structure preserves exact identities for historical, current and projected candidates", () => {
   const schema = JSON.parse(

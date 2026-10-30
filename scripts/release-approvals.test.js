@@ -1,4 +1,5 @@
 import { jest } from "@jest/globals";
+import { spawnSync } from "node:child_process";
 import { crc32 } from "node:zlib";
 import {
   approvalFromHistory,
@@ -9,6 +10,30 @@ import {
 } from "./release-approvals.mjs";
 import { sha256Buffer } from "./release-file-utils.mjs";
 import { physicalName } from "../tooling/artifact-transport/identity.mjs";
+import { RECOVERY_JOBS } from "./rc3-recovery-policy.mjs";
+
+test("publisher approval capture loads with all project dependencies unavailable", () => {
+  const result = spawnSync(
+    process.execPath,
+    [
+      "--input-type=module",
+      "-e",
+      `import { registerHooks } from "node:module";
+       registerHooks({ resolve(specifier, context, next) {
+         if (!["node:", "file:", "."].some(prefix => specifier.startsWith(prefix)))
+           throw new Error("Publisher dependency: " + specifier);
+         return next(specifier, context);
+       }});
+       const { captureApprovalObservation } = await import(${JSON.stringify(new URL("./release-approvals.mjs", import.meta.url).href)});
+       if (typeof captureApprovalObservation !== "function") throw new Error("Missing capture entry point");`,
+    ],
+    { encoding: "utf8", timeout: 30000, windowsHide: true },
+  );
+  expect({ status: result.status, stderr: result.stderr }).toEqual({
+    status: 0,
+    stderr: "",
+  });
+});
 
 // A real stored ZIP models the external artifact format, including CRC and headers.
 const zip = (path, value) => {
@@ -402,15 +427,23 @@ test.each([
   },
 );
 
-const capture = () => {
-  const f = fixture();
+const capture = (recovery = false, environment = "release-manual") => {
+  const f = fixture(environment);
+  const job = recovery
+    ? environment === "release-manual"
+      ? "recovery_accepted"
+      : "recovery_publish"
+    : environment === "release-manual"
+      ? "tag_accepted"
+      : "npm_release";
+  if (recovery) f.jobs[0].name = RECOVERY_JOBS[job];
   const env = {
     GITHUB_SHA: commit,
     GITHUB_RUN_ID: runId,
     GITHUB_RUN_ATTEMPT: "1",
     GITHUB_REPOSITORY: "Hadden-Industries/owlapi",
     GITHUB_REF: "refs/heads/main",
-    GITHUB_JOB: "tag_accepted",
+    GITHUB_JOB: job,
   };
   const run = {
     head_sha: commit,
@@ -434,12 +467,41 @@ const capture = () => {
     client,
     capture: () =>
       captureApprovalObservation({
-        environment: "release-manual",
+        environment,
         env,
         client,
+        recovery,
       }),
   };
 };
+
+test.each(["release-manual", "npm-release"])(
+  "captures and validates the actual %s recovery gate",
+  async (environment) => {
+    const h = capture(true, environment);
+    const observation = await h.capture();
+    h.f.jobs[0].status = "completed";
+    expect(
+      validateApprovalObservation(observation, {
+        environment,
+        commit,
+        runId,
+        runAttempt: 1,
+        jobs: h.f.jobs,
+        recovery: true,
+      }).reviewer,
+    ).toBe("Owner");
+    expect(() =>
+      validateApprovalObservation(observation, {
+        environment,
+        commit,
+        runId,
+        runAttempt: 1,
+        jobs: h.f.jobs,
+      }),
+    ).toThrow();
+  },
+);
 
 test("captures authenticated approval in the exact running gate before later evidence reuse", async () => {
   const h = capture();

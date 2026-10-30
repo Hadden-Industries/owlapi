@@ -23,6 +23,7 @@ import { installRegistryConsumer } from "./public-registry-consumer.mjs";
 import { verifyRegistryProvenance } from "./registry-provenance.mjs";
 import { waitForReleaseAvailability } from "./release-availability.mjs";
 import { GitHubReleaseClient } from "./github-release.mjs";
+import { RECOVERY_JOBS } from "./rc3-recovery-policy.mjs";
 import {
   INSTALLED_TEST_SCRIPTS,
   writeInstalledConsumerFixtures,
@@ -31,7 +32,11 @@ import {
 import { NPM_REGISTRY as registry } from "./package-identity.mjs";
 
 /** A successful read-only rerun must not hide an original pre-publication failure. */
-export const readPublicationAttempt = async ({ client, env = process.env }) => {
+export const readPublicationAttempt = async ({
+  client,
+  env = process.env,
+  publisherName = "Release / npm trusted publisher",
+}) => {
   const runId = env.GITHUB_RUN_ID,
     commit = env.GITHUB_SHA;
   if (
@@ -56,9 +61,7 @@ export const readPublicationAttempt = async ({ client, env = process.env }) => {
     throw new Error(
       "Publication observation workflow identity differs or jobs are incomplete.",
     );
-  const publishers = result.jobs.filter(
-    (job) => job.name === "Release / npm trusted publisher",
-  );
+  const publishers = result.jobs.filter((job) => job.name === publisherName);
   const publisher = publishers[0];
   const writes =
     publisher?.steps?.filter(
@@ -394,6 +397,18 @@ const main = async () => {
   await qualifyPublicRegistry({
     candidate: readCandidate(resolve(candidatePath)),
     outputPath,
+    ...(process.argv.includes("--rc3-recovery")
+      ? {
+          publication: () =>
+            readPublicationAttempt({
+              client: new GitHubReleaseClient({
+                repository: "Hadden-Industries/owlapi",
+                token: process.env.GITHUB_TOKEN,
+              }),
+              publisherName: RECOVERY_JOBS.recovery_publish,
+            }),
+        }
+      : {}),
   });
 };
 

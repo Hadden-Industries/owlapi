@@ -35,6 +35,59 @@ const mutateWorkflow = (fileName, mutate) => {
 };
 
 describe("repository workflow governance", () => {
+  test.each([
+    "ordinary guard",
+    "recovery guard",
+    "permission",
+    "environment",
+    "prerequisite",
+    "command",
+    "artifact",
+    "output",
+    "upload",
+    "rerun",
+    "credential",
+    "approval order",
+  ])("rejects rc.3 recovery mutation: %s", (field) => {
+    const violations = mutateWorkflow("release.yml", (document) => {
+      const publisher = document.getIn(["jobs", "recovery_publish"]);
+      const steps = publisher.get("steps");
+      const write = steps.items.find((s) =>
+        s.get("run")?.includes("npm publish "),
+      );
+      if (field === "ordinary guard")
+        document.deleteIn(["jobs", "candidate", "if"]);
+      if (field === "recovery guard") publisher.delete("if");
+      if (field === "permission")
+        publisher.setIn(["permissions", "contents"], "write");
+      if (field === "environment") publisher.delete("environment");
+      if (field === "prerequisite")
+        publisher.set("needs", document.createNode(["recovery_source"]));
+      if (field === "command")
+        write.set("run", write.get("run") + "\nnpm publish other.tgz");
+      if (field === "artifact")
+        steps.items
+          .find((s) => s.get("uses")?.startsWith("actions/download-artifact@"))
+          .setIn(["with", "run-id"], "1");
+      if (field === "output")
+        document.setIn(
+          ["jobs", "recovery_source", "outputs", "source_commit"],
+          "${{ github.sha }}",
+        );
+      const approval = steps.items.find((s) =>
+        s.get("uses")?.endsWith("retain-artifact"),
+      );
+      if (field === "upload") approval.setIn(["with", "path"], ".");
+      if (field === "rerun") write.delete("if");
+      if (field === "credential")
+        write.setIn(["env", "NODE_AUTH_TOKEN"], "${{ secrets.NPM_TOKEN }}");
+      if (field === "approval order") {
+        steps.items.splice(steps.items.indexOf(approval), 1);
+        steps.items.push(approval);
+      }
+    });
+    expect(violations.join("\n")).toContain("rc.3 recovery");
+  });
   test.each(["source_portable", "source_canonical", "source_json"])(
     "rejects pre-development runtimes for %s tooling",
     (jobId) => {
