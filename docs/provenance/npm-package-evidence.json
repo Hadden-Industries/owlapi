@@ -13727,10 +13727,10 @@
       "resolved": "https://registry.npmjs.org/@parcel/watcher-win32-x64/-/watcher-win32-x64-2.6.0.tgz",
       "scan": {
         "evidence": {
-          "bytes": 25748,
+          "bytes": 26630,
           "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/8b/8b0c4d46e441b3a5193cc324be8c81e186b64d923cca2265444d14d41cd6e80e",
-          "sha256": "8b0c4d46e441b3a5193cc324be8c81e186b64d923cca2265444d14d41cd6e80e"
+          "path": "blobs/sha256/ff/ffbc20b0fff385f75b337760bd14b7fd66380c9e0ff5b0186a65f08255c279e9",
+          "sha256": "ffbc20b0fff385f75b337760bd14b7fd66380c9e0ff5b0186a65f08255c279e9"
         },
         "state": "VERIFIED"
       },
@@ -60374,12 +60374,6 @@
       "sha256": "8b03a46c3cd1cb29753d4d46fb1dae9314b430c63fa38862d5bfe03248c2134a"
     },
     {
-      "bytes": 25748,
-      "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/8b/8b0c4d46e441b3a5193cc324be8c81e186b64d923cca2265444d14d41cd6e80e",
-      "sha256": "8b0c4d46e441b3a5193cc324be8c81e186b64d923cca2265444d14d41cd6e80e"
-    },
-    {
       "bytes": 41797,
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/8b/8b625ee4b5d97072ecef7e1f6e08ba6a55d2f318afb44e7098e28e884aadf13a",
@@ -62292,9 +62286,15 @@
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/ff/ff2f62576b30719d7dbf0d1232c4a52fea847a2adb60659b8fa4c30bd90968c1",
       "sha256": "ff2f62576b30719d7dbf0d1232c4a52fea847a2adb60659b8fa4c30bd90968c1"
+    },
+    {
+      "bytes": 26630,
+      "kind": "SCANCODE_FINDINGS",
+      "path": "blobs/sha256/ff/ffbc20b0fff385f75b337760bd14b7fd66380c9e0ff5b0186a65f08255c279e9",
+      "sha256": "ffbc20b0fff385f75b337760bd14b7fd66380c9e0ff5b0186a65f08255c279e9"
     }
   ],
-  "corpusRoot": "ffd2049dc064323a3d87bab5f8b121d1c5de3c8559b16184ebfa908a40f9eb78",
+  "corpusRoot": "c2b2e864fea032825a453f2834992c003db8798b35e793b7d5eeab9d1f2477ea",
   "generatedBy": {
     "path": "util/acquire-npm-package-evidence.mjs",
     "version": "1.0.0"
@@ -71629,7 +71629,7 @@
     "provenanceNotPublishedCount": 480,
     "provenanceVerifiedCount": 209,
     "registrySignatureVerifiedCount": 689,
-    "retainedBytes": 74778086,
+    "retainedBytes": 74778968,
     "scanVerifiedCount": 689
   }
 }

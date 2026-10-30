@@ -13,11 +13,11 @@
   },
   "review": {
     "status": "REVIEWED",
-    "factsSha256": "f77ccdf1c6d60895e67071937e03e3ef6ce940b63e72cf9dda0eb17efb60b7bf",
+    "factsSha256": "6f3500bb4e69244e39f8b75753fe9b27365b078cdeddd6a13b978f12f99db81b",
     "reviewer": "Maksym Shostak",
     "reviewedOn": "2026-10-30",
     "capacity": "Project author and repository owner",
-    "conclusion": "Explicitly approved the refreshed rights facts for the rebuilt rc.3 package. Its 198-file scope changes only README.md and package manifest scripts; the other 196 files and all ownership/licence classifications remain unchanged. This attestation binds the new source packlist and the separately approved refreshed third-party facts. It grants no push or release authority and no security exception.",
+    "conclusion": "Explicitly approved the dependent rights binding for the bounded rc.3 licence-evidence refresh from release run 40985125041. The 198-file package, source packlist, ownership and licence classifications remain unchanged; only the separately approved third-party facts digest changes for the corrected development-only @parcel/watcher-win32-x64@2.6.0 scan observation. This attestation does not expand the separate publication or security-exception authority.",
     "digestAlgorithm": "sha256-sorted-json-v1"
   },
   "contributors": [
@@ -152,7 +152,7 @@
   "externalDependencies": {
     "bundled": true,
     "authority": "docs/provenance/third-party-material.json",
-    "inventoryFactsSha256": "d17605b77b68051177545c3d8a94272cd7cfa8f58b578e743d0fd24397f54068",
+    "inventoryFactsSha256": "b60f2ab515d8a85d0e84337aaf4ac0c8c39c719100441309967956d313bdf924",
     "noticeRule": "Ordinary npm dependencies are installed separately under their own licences. The generated JSON-LD provider embeds seven separately inventoried components and retains their complete original licences and notices under internal/parsing/jsonld/provider/licenses/. The provider manifest binds the incorporated source, approved modifications, generated runtime and output."
   },
   "unresolvedExternalContributions": [],
