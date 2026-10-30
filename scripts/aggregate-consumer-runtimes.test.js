@@ -1,18 +1,12 @@
 import { describe, expect, test } from "@jest/globals";
 import { validateRuntimeReports } from "./aggregate-consumer-runtimes.mjs";
-import {
-  qualificationMatrix,
-  runtimeDigest,
-} from "./consumer-runtime-matrix.mjs";
+import { runtimeDigest } from "./consumer-runtime-matrix.mjs";
 import { CI_RUNTIME } from "./runtime-policy.mjs";
 import { INSTALLED_TEST_SCRIPTS } from "./installed-consumer-fixtures.mjs";
+import { consumerRuntimeFixture } from "./consumer-runtime-fixture.mjs";
 
 const fixture = () => {
-  const matrix = qualificationMatrix(
-    [
-      ...new Set([...CI_RUNTIME.minimums, ...Object.values(CI_RUNTIME.node)]),
-    ].map((version) => ({ version: `v${version}` })),
-  );
+  const { matrix } = consumerRuntimeFixture({ newerPatches: false });
   const identity = {
     candidateArtifact: { id: 123, digest: `sha256:${"a".repeat(64)}` },
     commit: "b".repeat(40),
