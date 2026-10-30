@@ -1091,7 +1091,7 @@ describe("repository workflow governance", () => {
   });
 
   test.each(["missing", "stale version", "before publish", "duplicate"])(
-    "rejects an invalid rc.2 latest mutation: %s",
+    "rejects an invalid rc.3 latest mutation: %s",
     (mutation) => {
       const document = parseDocument(workflowSource("release.yml"));
       const step = document
@@ -1106,7 +1106,7 @@ describe("repository workflow governance", () => {
       let changed;
       if (mutation === "missing") changed = source.replace(`${latest}\n`, "");
       if (mutation === "stale version")
-        changed = source.replace(latest, latest.replace("rc.2", "rc.1"));
+        changed = source.replace(latest, latest.replace("rc.3", "rc.2"));
       if (mutation === "before publish") {
         const publish = lines.findIndex((line) =>
           line.startsWith("npm publish "),
@@ -1158,7 +1158,7 @@ describe("repository workflow governance", () => {
       publish.set(
         "run",
         source.replace(
-          "4f04d1456519fb75f23da51fce5174af0d4909ec7ea647cae2f4c9f4dc77b441",
+          "f7ef57825eb0edc9d08f32a93c891d605757a4408c4b51a53d20b3be6290b0df",
           "a".repeat(64),
         ),
       );
