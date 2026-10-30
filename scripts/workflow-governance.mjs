@@ -83,9 +83,9 @@ const RECONCILIATION_JOB_IDS = [
   "immutable_verification",
 ];
 const PUBLISH_COMMAND =
-  "npm publish hadden-industries-owlapi-0.1.0-rc.2.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/";
+  "npm publish hadden-industries-owlapi-0.1.0-rc.3.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/";
 const LATEST_COMMAND =
-  "npm dist-tag add @hadden-industries/owlapi@0.1.0-rc.2 latest --registry=https://registry.npmjs.org/";
+  "npm dist-tag add @hadden-industries/owlapi@0.1.0-rc.3 latest --registry=https://registry.npmjs.org/";
 const ALPHA_RECONCILIATION_PUBLISH_COMMAND =
   "npm publish owlapi-0.1.0-alpha.0.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/";
 const REGISTRY_KEYS_COMMAND =
@@ -1730,7 +1730,7 @@ const validateReleaseMutationBoundary = (
     const guard =
       'if [[ -z "${ACTIONS_ID_TOKEN_REQUEST_URL:-}" || -z "${ACTIONS_ID_TOKEN_REQUEST_TOKEN:-}" ]]; then';
     const approvedDigest =
-      'echo "4f04d1456519fb75f23da51fce5174af0d4909ec7ea647cae2f4c9f4dc77b441  hadden-industries-owlapi-0.1.0-rc.2.tgz" | sha256sum --check --strict';
+      'echo "f7ef57825eb0edc9d08f32a93c891d605757a4408c4b51a53d20b3be6290b0df  hadden-industries-owlapi-0.1.0-rc.3.tgz" | sha256sum --check --strict';
     add(
       violations,
       publish?.run?.includes(guard) &&

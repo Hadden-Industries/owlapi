@@ -57,7 +57,7 @@ test("candidate registry acceptance requires next and latest to identify the exa
     expect(() => assertPublicRegistryFacts(facts(tags))).toThrow();
 });
 
-test("the current candidate selects all twelve paths without inheriting historical publication approval", () => {
+test("the current candidate selects all twelve paths with its own dated OIDC publication approval", () => {
   const manifest = JSON.parse(readFileSync("package.json", "utf8"));
   const control = JSON.parse(
     readFileSync("docs/release/publication-control.json", "utf8"),
@@ -65,15 +65,15 @@ test("the current candidate selects all twelve paths without inheriting historic
   expect(manifest.version).toBe(PACKAGE_VERSION);
   expect(PUBLIC_SUBPATHS).toHaveLength(12);
   expect(control).toMatchObject({
-    enabled: false,
-    mode: "UNRESOLVED",
+    enabled: true,
+    mode: "DIRECT_OIDC",
     coordinate: `@hadden-industries/owlapi@${PACKAGE_VERSION}`,
-    reviewedOn: null,
+    reviewedOn: "2026-10-30",
   });
   expect(
     deriveWorkflowMetadata({ manifest, publication: control })
       .publication_enabled,
-  ).toBe("false");
+  ).toBe("true");
   const ajv = new Ajv2020({ strict: true, allErrors: true });
   addFormats(ajv);
   const schema = JSON.parse(
