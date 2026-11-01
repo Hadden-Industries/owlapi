@@ -1,3 +1,7 @@
+import {
+  PUBLICATION_WRITE_IF,
+  PUBLICATION_GUARD_COMMAND,
+} from "./release-publication-history.mjs";
 import { isDeepStrictEqual } from "node:util";
 import { RECOVERY_JOBS } from "./rc3-recovery-policy.mjs";
 
@@ -35,6 +39,7 @@ const contracts = {
     needs: ["recovery_source", "recovery_accepted", "recovery_draft"],
     commands: [
       "sha256sum --check --strict SHA256SUMS",
+      PUBLICATION_GUARD_COMMAND,
       "node approval-tools/scripts/verify-publication-documentation.mjs --candidate .release/download --preflight .release/publication/publication-preflight.json",
       "node approval-tools/scripts/release-approvals.mjs --environment npm-release --output .release/approval-npm-release.json --rc3-recovery",
       "node approval-tools/scripts/rc3-recovery-policy.mjs guard-publication",
@@ -306,8 +311,11 @@ export function ordinaryReleaseWorkflow(workflow, violations) {
       );
       if (step.if)
         check(
-          (["recovery_publish", "recovery_accepted"].includes(id) &&
-            step.if === "${{ github.run_attempt == 1 }}") ||
+          (id === "recovery_publish" && step.if === PUBLICATION_WRITE_IF) ||
+            (id === "recovery_accepted" &&
+              step.with?.name?.startsWith("release-approval-release-manual-") &&
+              step.if ===
+                "${{ steps.manual_approval.outputs.captured == 'true' }}") ||
             (id === "recovery_registry" &&
               step.id === "upload" &&
               step.if === "${{ always() }}"),
@@ -413,7 +421,48 @@ export function ordinaryReleaseWorkflow(workflow, violations) {
         );
       }
     }
+    if (id === "recovery_accepted") {
+      const capture = j.steps.find((s) =>
+        s.run?.includes("release-approvals.mjs"),
+      );
+      const retained = j.steps.find((s) =>
+        s.with?.name?.startsWith("release-approval-release-manual-"),
+      );
+      check(
+        capture?.id === "manual_approval" &&
+          !capture.if &&
+          retained?.if ===
+            "${{ steps.manual_approval.outputs.captured == 'true' }}",
+        "manual approval must be captured or authenticated from retained history",
+      );
+    }
     if (id === "recovery_publish") {
+      const admissions = j.steps.filter((s) => s.id === "publication_history");
+      check(
+        admissions.length === 1 &&
+          admissions[0].run === PUBLICATION_GUARD_COMMAND &&
+          !admissions[0].if &&
+          !admissions[0]["working-directory"] &&
+          isDeepStrictEqual(admissions[0].env, {
+            GITHUB_TOKEN: "${{ github.token }}",
+          }) &&
+          j.steps.indexOf(admissions[0]) <
+            j.steps.findIndex((s) =>
+              s.run?.includes("verify-publication-documentation.mjs"),
+            ),
+        "publisher requires unconditional authenticated publication history",
+      );
+      for (const step of j.steps.filter(
+        (s) =>
+          s.run?.includes("verify-publication-documentation.mjs") ||
+          s.run?.includes("release-approvals.mjs") ||
+          s.run?.includes("guard-publication") ||
+          s.uses?.endsWith("retain-artifact"),
+      ))
+        check(
+          step.if === PUBLICATION_WRITE_IF,
+          "publisher prerequisites differ from its write admission",
+        );
       const writes = j.steps.filter((s) => s.run?.includes("npm publish "));
       const guards = j.steps.filter((s) =>
         s.run?.startsWith(
@@ -422,7 +471,7 @@ export function ordinaryReleaseWorkflow(workflow, violations) {
       );
       check(
         guards.length === 1 &&
-          guards[0].if === "${{ github.run_attempt == 1 }}" &&
+          guards[0].if === PUBLICATION_WRITE_IF &&
           !guards[0]["working-directory"] &&
           isDeepStrictEqual(guards[0].env, {
             DOCUMENTATION_SOURCE_COMMIT:
@@ -436,10 +485,10 @@ export function ordinaryReleaseWorkflow(workflow, violations) {
       );
       check(
         writes.length === 1 &&
-          writes[0].if === "${{ github.run_attempt == 1 }}" &&
+          writes[0].if === PUBLICATION_WRITE_IF &&
           writes[0]["working-directory"] === ".release/download" &&
           !writes[0].env,
-        "publisher write escapes its first-attempt credential boundary",
+        "publisher write escapes its history-admitted credential boundary",
       );
       check(
         uploads.length === 1 &&

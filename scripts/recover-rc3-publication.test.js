@@ -49,6 +49,8 @@ test.each([
 import {
   verifySourceReports,
   assertRecoveryDraft,
+  assertController,
+  recoveryWorkflowJobs,
 } from "./recover-rc3-publication.mjs";
 import { contractReport } from "./fixtures/owl-contract-report.mjs";
 
@@ -94,6 +96,49 @@ const source = () => {
   ];
   return { run, jobs };
 };
+
+test("the recovery controller can first run on a later workflow attempt", async () => {
+  const run = { ...source().run, run_attempt: 3, id: 456 };
+  const env = {
+    GITHUB_REPOSITORY: c.repository,
+    GITHUB_REF: "refs/heads/main",
+    GITHUB_RUN_ID: "456",
+    GITHUB_RUN_ATTEMPT: "3",
+    GITHUB_SHA: run.head_sha,
+  };
+  await expect(assertController({ read: async () => run }, env)).resolves.toBe(
+    run,
+  );
+  await expect(
+    assertController(
+      { read: async () => run },
+      { ...env, GITHUB_RUN_ATTEMPT: "2" },
+    ),
+  ).rejects.toThrow();
+});
+
+test("recovery evidence accepts mixed successful attempts without masking a latest failure", () => {
+  const names = [
+    "source verified",
+    "accepted",
+    "GitHub draft verified",
+    "npm trusted publisher",
+    "fresh public registry",
+  ];
+  const jobs = names.map((name, i) => ({
+    name: `Release recovery / ${name}`,
+    run_id: 456,
+    run_attempt: i < 2 ? 1 : 2,
+    head_sha: c.sourceCommit,
+    status: "completed",
+    conclusion: "success",
+    html_url: `https://github.com/${c.repository}/actions/runs/456/job/${i + 1}`,
+  }));
+  const args = { jobs, runId: "456", runAttempt: 3, commit: c.sourceCommit };
+  expect(recoveryWorkflowJobs(args)).toHaveLength(5);
+  jobs.push({ ...jobs[4], run_attempt: 3, conclusion: "failure" });
+  expect(() => recoveryWorkflowJobs(args)).toThrow();
+});
 
 test("recovery admits complete native qualification and proves the original write never ran", () => {
   const { run, jobs } = source();

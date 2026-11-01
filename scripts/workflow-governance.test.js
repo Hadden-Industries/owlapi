@@ -39,6 +39,41 @@ describe("repository workflow governance", () => {
     ["npm_release", "recovery_publish"].flatMap((job) =>
       [
         "missing",
+        "conditional",
+        "soft failure",
+        "late",
+        "spoofed token",
+        "attempt counter",
+      ].map((fault) => [job, fault]),
+    ),
+  )("rejects publication-history admission bypass in %s: %s", (job, fault) => {
+    const violations = mutateWorkflow("release.yml", (document) => {
+      const steps = document.getIn(["jobs", job, "steps"]);
+      const guard = steps.items.find(
+        (step) => step.get("id") === "publication_history",
+      );
+      if (fault === "missing")
+        steps.items.splice(steps.items.indexOf(guard), 1);
+      if (fault === "conditional")
+        guard.set("if", "${{ github.run_attempt == 1 }}");
+      if (fault === "soft failure") guard.set("continue-on-error", true);
+      if (fault === "late") {
+        steps.items.splice(steps.items.indexOf(guard), 1);
+        steps.items.push(guard);
+      }
+      if (fault === "spoofed token")
+        guard.setIn(["env", "GITHUB_TOKEN"], "untrusted");
+      if (fault === "attempt counter")
+        steps.items
+          .find((s) => s.get("run")?.includes("npm publish "))
+          .set("if", "${{ github.run_attempt == 1 }}");
+    });
+    expect(violations.length).toBeGreaterThan(0);
+  });
+  test.each(
+    ["npm_release", "recovery_publish"].flatMap((job) =>
+      [
+        "missing",
         "skipped",
         "soft failure",
         "after write",
@@ -501,7 +536,8 @@ describe("repository workflow governance", () => {
           gate.items.splice(gate.items.indexOf(upload), 1);
           gate.items.push(upload);
         }
-        if (mutation === "rerun-capture") capture.delete("if");
+        if (mutation === "rerun-capture")
+          capture.set("if", "${{ github.run_attempt == 1 }}");
         if (mutation === "overwrite") upload.setIn(["with", "overwrite"], true);
       }).join("\n"),
     ).toContain(
@@ -1355,7 +1391,7 @@ describe("repository workflow governance", () => {
       .items.find((step) => step.get("run")?.includes("npm publish "));
     publish.delete("if");
     expect(auditReleaseMutationBoundary(document.toString())).toContain(
-      "release.yml:npm_release must restrict the sole write to the first run attempt",
+      "release.yml:npm_release must restrict the sole write to authenticated publication admission",
     );
   });
 

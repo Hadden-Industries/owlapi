@@ -1,3 +1,7 @@
+import {
+  PUBLICATION_WRITE_IF,
+  PUBLICATION_GUARD_COMMAND,
+} from "./release-publication-history.mjs";
 import { checkNodeSupportProjections } from "./project-node-support.mjs";
 import { CI_RUNTIME, projectRuntimeText } from "./runtime-policy.mjs";
 import { JAVA_TOOLCHAIN } from "./java-toolchain.mjs";
@@ -1674,8 +1678,8 @@ const validateReleaseMutationBoundary = (
     add(
       violations,
       steps(publication).find((step) => step.run?.includes(publishCommand))
-        ?.if === "${{ github.run_attempt == 1 }}",
-      `${fileName}:npm_release must restrict the sole write to the first run attempt`,
+        ?.if === PUBLICATION_WRITE_IF,
+      `${fileName}:npm_release must restrict the sole write to authenticated publication admission`,
     );
   requireRun(
     publication,
@@ -1686,6 +1690,25 @@ const validateReleaseMutationBoundary = (
   if (!reconciliation) {
     const step = steps(publication).find((item) =>
       item.run?.includes(publishCommand),
+    );
+    const admissions = steps(publication).filter(
+      (item) => item.id === "publication_history",
+    );
+    add(
+      violations,
+      admissions.length === 1 &&
+        admissions[0].run === PUBLICATION_GUARD_COMMAND &&
+        !admissions[0].if &&
+        !admissions[0]["continue-on-error"] &&
+        !admissions[0]["working-directory"] &&
+        isDeepStrictEqual(admissions[0].env, {
+          GITHUB_TOKEN: "${{ github.token }}",
+        }) &&
+        steps(publication).indexOf(admissions[0]) <
+          steps(publication).findIndex((item) =>
+            item.run?.includes("verify-publication-documentation.mjs"),
+          ),
+      `${fileName}:npm_release requires unconditional authenticated publication history before admission`,
     );
     const guardCommand =
       "node approval-tools/scripts/verify-publication-documentation.mjs --candidate .release/download --preflight .release/publication/publication-preflight.json";
@@ -1720,10 +1743,10 @@ const validateReleaseMutationBoundary = (
     );
     add(
       violations,
-      step?.if === "${{ github.run_attempt == 1 }}" &&
+      step?.if === PUBLICATION_WRITE_IF &&
         step.run.includes(`${publishCommand}\n${LATEST_COMMAND}`) &&
         occurrences(workflow, "npm dist-tag add ") === 1,
-      `${fileName}: the exact latest write must follow publication once in the first-attempt credential step`,
+      `${fileName}: the exact latest write must follow publication once in the history-admitted credential step`,
     );
   } else
     add(
@@ -1806,9 +1829,15 @@ const validateReleaseMutationBoundary = (
         captureIndex >= 0 &&
           uploadIndex > captureIndex &&
           effectIndex > uploadIndex &&
-          gateSteps[captureIndex].if === "${{ github.run_attempt == 1 }}" &&
+          gateSteps[captureIndex].if ===
+            (id === "npm_release" ? PUBLICATION_WRITE_IF : undefined) &&
           gateSteps[captureIndex].env?.GITHUB_TOKEN === "${{ github.token }}" &&
-          gateSteps[uploadIndex].if === "${{ github.run_attempt == 1 }}" &&
+          gateSteps[uploadIndex].if ===
+            (id === "npm_release"
+              ? PUBLICATION_WRITE_IF
+              : "${{ steps.manual_approval.outputs.captured == 'true' }}") &&
+          (id === "npm_release" ||
+            gateSteps[captureIndex].id === "manual_approval") &&
           gateSteps[uploadIndex].with?.path ===
             `.release/approval-${environment}.json` &&
           [

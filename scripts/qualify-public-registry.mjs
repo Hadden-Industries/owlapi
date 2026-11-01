@@ -1,3 +1,7 @@
+import {
+  readPublicationHistory,
+  publicationObservation,
+} from "./release-publication-history.mjs";
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import {
@@ -33,72 +37,18 @@ import {
 
 import { NPM_REGISTRY as registry } from "./package-identity.mjs";
 
-/** A successful read-only rerun must not hide an original pre-publication failure. */
+/** Read the authenticated write origin, even after upstream or verifier reruns. */
 export const readPublicationAttempt = async ({
   client,
   env = process.env,
   publisherName = "Release / npm trusted publisher",
 }) => {
-  const runId = env.GITHUB_RUN_ID,
-    commit = env.GITHUB_SHA;
-  if (
-    env.GITHUB_REPOSITORY !== "Hadden-Industries/owlapi" ||
-    env.GITHUB_REF !== "refs/heads/main" ||
-    !/^[1-9][0-9]*$/u.test(runId ?? "") ||
-    !/^[0-9a-f]{40}$/u.test(commit ?? "")
-  )
+  const { writes } = await readPublicationHistory({ client, env });
+  if (writes.length !== 1 || writes[0].job.name !== publisherName)
     throw new Error(
-      "Publication observation requires the canonical workflow identity.",
+      "No completed publication attempt is established in this run. Inspect the publisher history; do not replay possible writes.",
     );
-  const [run, result] = await Promise.all([
-    client.read(`/actions/runs/${runId}`),
-    client.read(`/actions/runs/${runId}/attempts/1/jobs?per_page=100`),
-  ]);
-  if (
-    run.head_sha !== commit ||
-    run.path !== ".github/workflows/release.yml" ||
-    !Array.isArray(result.jobs) ||
-    result.jobs.length >= 100
-  )
-    throw new Error(
-      "Publication observation workflow identity differs or jobs are incomplete.",
-    );
-  const publishers = result.jobs.filter((job) => job.name === publisherName);
-  const publisher = publishers[0];
-  const writes =
-    publisher?.steps?.filter(
-      (step) =>
-        step.name ===
-        "Perform the authorized publication and exact-version channel writes",
-    ) ?? [];
-  const write = writes[0];
-  if (
-    publishers.length !== 1 ||
-    String(publisher.run_id) !== runId ||
-    publisher.head_sha !== commit ||
-    publisher.run_attempt !== 1 ||
-    publisher.status !== "completed" ||
-    !["success", "failure"].includes(publisher.conclusion) ||
-    writes.length !== 1 ||
-    write.status !== "completed" ||
-    !["success", "failure"].includes(write.conclusion) ||
-    !Number.isFinite(Date.parse(write.completed_at))
-  )
-    throw new Error(
-      "No completed publication attempt is established in this run. Inspect the original publisher job; do not replay possible writes.",
-    );
-  return {
-    state:
-      write.conclusion === "success"
-        ? "PUBLICATION_ACCEPTED"
-        : "PUBLICATION_ATTEMPTED",
-    runId,
-    runAttempt: 1,
-    jobId: publisher.id,
-    conclusion: write.conclusion,
-    completedAt: write.completed_at,
-    acceptedAt: write.conclusion === "success" ? write.completed_at : null,
-  };
+  return publicationObservation(writes[0]);
 };
 
 const assertVersionedPublicRegistryFacts = (

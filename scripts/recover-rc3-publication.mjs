@@ -15,7 +15,11 @@ import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
 import { assertOwlContractReport } from "./owl-contract-evidence.mjs";
 import { buildReleaseEvidence } from "./release-evidence.mjs";
 import { validateReleaseEvidence } from "./validate-release-evidence.mjs";
-import { readPublicationAttempt } from "./qualify-public-registry.mjs";
+import {
+  assertPublicationRun,
+  readPublicationHistory,
+  publicationObservation,
+} from "./release-publication-history.mjs";
 import {
   RC3_RECOVERY as control,
   RECOVERY_JOBS,
@@ -203,18 +207,11 @@ export function assertControllerPackageUnchanged(root, commit) {
     );
 }
 
-const assertController = async (client, env) => {
-  assert.equal(env.GITHUB_REPOSITORY, control.repository);
-  assert.equal(env.GITHUB_REF, "refs/heads/main");
-  assert.equal(env.GITHUB_RUN_ATTEMPT, "1");
-  assert.match(env.GITHUB_SHA ?? "", /^[a-f0-9]{40}$/u);
+export const assertController = async (client, env) => {
+  const attempt = Number(env.GITHUB_RUN_ATTEMPT);
+  assert.ok(Number.isSafeInteger(attempt) && attempt >= 1);
   const run = await client.read(`/actions/runs/${env.GITHUB_RUN_ID}`);
-  assert.equal(run.head_sha, env.GITHUB_SHA);
-  assert.equal(run.head_branch, "main");
-  assert.equal(run.event, "workflow_dispatch");
-  assert.equal(run.path, ".github/workflows/release.yml");
-  assert.equal(run.run_attempt, 1);
-  assert.equal(run.head_repository.full_name, control.repository);
+  assertPublicationRun(run, env, attempt);
   return run;
 };
 
@@ -224,7 +221,12 @@ const verifySource = async (client, directory, env) => {
   assert.equal(current.object.sha, env.GITHUB_SHA);
   assertControllerPackageUnchanged(process.cwd(), env.GITHUB_SHA);
   const source = await readSource({ client });
-  await assertRecoveryRegistryUnused();
+  const history = await readPublicationHistory({
+    client,
+    env,
+    beforePublisher: true,
+  });
+  if (!history.writes.length) await assertRecoveryRegistryUnused();
   mkdirSync(directory, { recursive: true });
   const report = {
     result: "PASS",
@@ -234,6 +236,9 @@ const verifySource = async (client, directory, env) => {
     controllerRunId: env.GITHUB_RUN_ID,
     originalPublisher: jobFact(source.failedJob),
     publicationWrite: "NOT_ATTEMPTED",
+    controllerPublication: history.writes.length
+      ? publicationObservation(history.writes[0])
+      : null,
     candidateArtifactId: control.artifacts.candidate,
     candidateSha256: source.candidate.tarball.sha256,
   };
@@ -245,36 +250,47 @@ const verifySource = async (client, directory, env) => {
   process.stdout.write(`${JSON.stringify(report)}\n`);
 };
 
-const generateEvidence = async (client, directory, env) => {
-  const run = await assertController(client, env);
-  const source = await readSource({ client });
-  const jobs = await allJobs(client, env.GITHUB_RUN_ID);
-  const required = RECOVERY_REQUIRED_JOBS.filter(
+export const recoveryWorkflowJobs = ({ jobs, runId, commit, runAttempt }) =>
+  RECOVERY_REQUIRED_JOBS.filter(
     (name) => !RECOVERY_SOURCE_JOBS.includes(name),
   ).map((name) => {
     const matches = jobs.filter((j) => j.name === name);
-    assert.equal(matches.length, 1);
-    const job = matches[0];
-    assert.equal(job.head_sha, env.GITHUB_SHA);
-    assert.equal(String(job.run_id), env.GITHUB_RUN_ID);
-    assert.equal(job.run_attempt, 1);
+    const latest = Math.max(...matches.map((j) => j.run_attempt));
+    const selected = matches.filter((j) => j.run_attempt === latest);
+    assert.equal(selected.length, 1);
+    const job = selected[0];
+    assert.equal(job.head_sha, commit);
+    assert.equal(String(job.run_id), runId);
+    assert.ok(
+      Number.isSafeInteger(latest) && latest >= 1 && latest <= runAttempt,
+    );
+    assert.equal(job.status, "completed");
     assert.equal(job.conclusion, "success");
     return jobFact(job);
+  });
+
+const generateEvidence = async (client, directory, env) => {
+  const run = await assertController(client, env);
+  const source = await readSource({ client });
+  const { jobs, writes } = await readPublicationHistory({ client, env });
+  const runAttempt = Number(env.GITHUB_RUN_ATTEMPT);
+  const required = recoveryWorkflowJobs({
+    jobs,
+    runId: env.GITHUB_RUN_ID,
+    commit: env.GITHUB_SHA,
+    runAttempt,
   });
   const registry = JSON.parse(
     readFileSync(join(directory, "registry-verification.json"), "utf8"),
   );
   assert.equal(registry.result, "PASS");
   assert.equal(registry.tarballSha256, source.candidate.tarball.sha256);
-  const publication = await readPublicationAttempt({
-    client,
-    env,
-    publisherName: RECOVERY_JOBS.recovery_publish,
-  });
-  assert.equal(publication.state, "PUBLICATION_ACCEPTED");
+  assert.equal(writes.length, 1);
+  assert.equal(writes[0].job.name, RECOVERY_JOBS.recovery_publish);
+  const publication = publicationObservation(writes[0]);
   assert.equal(registry.provenance.runId, env.GITHUB_RUN_ID);
   assert.equal(registry.provenance.sourceCommit, env.GITHUB_SHA);
-  assert.equal(registry.provenance.runAttempt, 1);
+  assert.equal(registry.provenance.runAttempt, publication.runAttempt);
   for (const mode of ["alias", "scoped"]) {
     assert.equal(
       registry.consumer[mode].package.name,
@@ -287,7 +303,7 @@ const generateEvidence = async (client, directory, env) => {
     client,
     commit: env.GITHUB_SHA,
     runId: env.GITHUB_RUN_ID,
-    runAttempt: 1,
+    runAttempt,
     jobs,
     liveHistory: await client.read(
       `/actions/runs/${env.GITHUB_RUN_ID}/approvals`,
@@ -300,7 +316,7 @@ const generateEvidence = async (client, directory, env) => {
     name: "Release",
     commit: env.GITHUB_SHA,
     runId: env.GITHUB_RUN_ID,
-    runAttempt: 1,
+    runAttempt,
     url: run.html_url,
     actor: run.actor.login,
   };
@@ -341,10 +357,9 @@ const generateEvidence = async (client, directory, env) => {
       signatureAuditResult: "PASS",
       provenance: registry.provenance,
       publisherJob: {
-        url: jobs.find((j) => j.name === RECOVERY_JOBS.recovery_publish)
-          .html_url,
-        runAttempt: 1,
-        conclusion: "success",
+        url: writes[0].job.html_url,
+        runAttempt: publication.runAttempt,
+        conclusion: writes[0].job.conclusion,
       },
     },
     reconciliation: {

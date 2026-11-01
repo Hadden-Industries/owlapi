@@ -1278,13 +1278,13 @@ jobs:
         run: npm ci
         timeout-minutes: 15
       - name: Capture the authenticated manual-gate approval
-        if: ${{ github.run_attempt == 1 }}
+        id: manual_approval
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: node scripts/release-approvals.mjs --environment release-manual --output .release/approval-release-manual.json
         timeout-minutes: 3
       - name: Retain the manual-gate approval before publication
-        if: ${{ github.run_attempt == 1 }}
+        if: ${{ steps.manual_approval.outputs.captured == 'true' }}
         uses: ./.github/actions/retain-artifact
         with:
           name: release-approval-release-manual-${{ github.run_id }}-${{ github.run_attempt }}
@@ -1414,27 +1414,33 @@ jobs:
           merge-multiple: false
           skip-decompress: false
           digest-mismatch: error
+      - name: Authenticate publication history before permitting a first write
+        id: publication_history
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node approval-tools/scripts/release-publication-history.mjs
+        timeout-minutes: 5
       - name: Admit the exact packed documentation before any registry write
-        if: ${{ github.run_attempt == 1 }}
+        if: ${{ steps.publication_history.outputs.publish == 'true' }}
         run: node approval-tools/scripts/verify-publication-documentation.mjs --candidate .release/download --preflight .release/publication/publication-preflight.json
         timeout-minutes: 2
       - name: Capture the authenticated publisher-gate approval
-        if: ${{ github.run_attempt == 1 }}
+        if: ${{ steps.publication_history.outputs.publish == 'true' }}
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: node approval-tools/scripts/release-approvals.mjs --environment npm-release --output .release/approval-npm-release.json
         timeout-minutes: 3
       - name: Retain the publisher-gate approval before publication
-        if: ${{ github.run_attempt == 1 }}
+        if: ${{ steps.publication_history.outputs.publish == 'true' }}
         uses: ./approval-tools/.github/actions/retain-artifact
         with:
           name: release-approval-npm-release-${{ github.run_id }}-${{ github.run_attempt }}
           path: .release/approval-npm-release.json
           retention-days: 90
       - name: Perform the authorized publication and exact-version channel writes
-        # Failed-job reruns only resume registry verification of the first attempt.
-        # An absent or mismatching publication fails there; it never authorizes another write.
-        if: ${{ github.run_attempt == 1 }}
+        # A later workflow attempt may make the first write after upstream failure.
+        # Any prior possible write permits verification only, never publication replay.
+        if: ${{ steps.publication_history.outputs.publish == 'true' }}
         working-directory: .release/download
         # npm exchanges the protected job's GitHub OIDC identity. No persistent
         # npm credential or authentication fallback belongs in this job.
@@ -1828,13 +1834,13 @@ jobs:
         run: npm ci
         timeout-minutes: 15
       - name: Capture the authenticated manual-gate approval
-        if: ${{ github.run_attempt == 1 }}
+        id: manual_approval
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: node scripts/release-approvals.mjs --environment release-manual --output .release/approval-release-manual.json --rc3-recovery
         timeout-minutes: 3
       - name: Retain the manual-gate approval before publication
-        if: ${{ github.run_attempt == 1 }}
+        if: ${{ steps.manual_approval.outputs.captured == 'true' }}
         uses: ./.github/actions/retain-artifact
         with:
           name: release-approval-release-manual-${{ github.run_id }}-${{ github.run_attempt }}
@@ -1945,8 +1951,14 @@ jobs:
           github-token: ${{ github.token }}
           repository: Hadden-Industries/owlapi
           run-id: ${{ needs.recovery_source.outputs.source_run_id }}
+      - name: Authenticate publication history before permitting a first write
+        id: publication_history
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node approval-tools/scripts/release-publication-history.mjs
+        timeout-minutes: 5
       - name: Admit the exact packed documentation before any registry write
-        if: ${{ github.run_attempt == 1 }}
+        if: ${{ steps.publication_history.outputs.publish == 'true' }}
         env:
           DOCUMENTATION_SOURCE_COMMIT: ${{ needs.recovery_source.outputs.source_commit }}
           DOCUMENTATION_SOURCE_RUN_ID: ${{ needs.recovery_source.outputs.source_run_id }}
@@ -1954,24 +1966,24 @@ jobs:
         run: node approval-tools/scripts/verify-publication-documentation.mjs --candidate .release/download --preflight .release/publication/publication-preflight.json
         timeout-minutes: 2
       - name: Capture the authenticated publisher-gate approval
-        if: ${{ github.run_attempt == 1 }}
+        if: ${{ steps.publication_history.outputs.publish == 'true' }}
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: node approval-tools/scripts/release-approvals.mjs --environment npm-release --output .release/approval-npm-release.json --rc3-recovery
         timeout-minutes: 3
       - name: Retain the publisher-gate approval before publication
-        if: ${{ github.run_attempt == 1 }}
+        if: ${{ steps.publication_history.outputs.publish == 'true' }}
         uses: ./approval-tools/.github/actions/retain-artifact
         with:
           name: release-approval-npm-release-${{ github.run_id }}-${{ github.run_attempt }}
           path: .release/approval-npm-release.json
           retention-days: 90
       - name: Reconcile the still-unused coordinate and prior channel guards
-        if: ${{ github.run_attempt == 1 }}
+        if: ${{ steps.publication_history.outputs.publish == 'true' }}
         run: node approval-tools/scripts/rc3-recovery-policy.mjs guard-publication
         timeout-minutes: 2
       - name: Perform the authorized publication and exact-version channel writes
-        if: ${{ github.run_attempt == 1 }}
+        if: ${{ steps.publication_history.outputs.publish == 'true' }}
         working-directory: .release/download
         run: |
           if [[ -z "${ACTIONS_ID_TOKEN_REQUEST_URL:-}" || -z "${ACTIONS_ID_TOKEN_REQUEST_TOKEN:-}" ]]; then
