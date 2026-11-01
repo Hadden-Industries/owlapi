@@ -6,10 +6,17 @@ This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 While the major version is zero, the public API remains in initial development: incompatible changes advance the minor version, compatible additions advance the minor version by policy, and compatible corrections advance the patch version.
 Prerelease identifiers do not create a stability promise.
 
-## 0.1.0-rc.3 — unpublished qualification candidate
+## Unreleased
 
-Current development source targets the [0.1.0 roadmap](docs/plans/2026-10-29-0.1.0-release-reconciliation.md).
-No successor candidate has been frozen, qualified or published by this implementation.
+- Refresh package documentation for the published rc.3 APIs, installation, browser deployment and behavior-profile boundaries.
+- Add a release-note index and rc.3 migration guidance; correct stale claims that rc.3 and its behavior profiles are unpublished.
+
+## 0.1.0-rc.3 — published 30 October 2026 (Europe/Bucharest)
+
+The [immutable GitHub prerelease](https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.3) contains the qualified package and release evidence; npm `next` and `latest` both selected this version at publication.
+The [publication workflow](https://github.com/Hadden-Industries/owlapi/actions/runs/41007902342) verifies public bytes, signatures, provenance, installed consumers and immutable assets.
+The [0.1.0 roadmap](docs/plans/2026-10-29-0.1.0-release-reconciliation.md#rc3-publication-and-evidence-simplification-30-october) retains the bounded performance acceptance and the owner's exception for the incomplete historical Java-profile security review.
+This release does not claim complete Java parity or stable 0.1.0 acceptance.
 
 - Add explicit immutable `normative-v1` and `java-owlapi-5.5.1` behavior profiles, including profile accessors, Java loader settings and `ChangeApplied` results; omitted selection remains normative.
 - Add the explicitly authorized Node document loader under `io/node`, with per-operation access decisions and bounded transport behavior.
@@ -21,6 +28,27 @@ No successor candidate has been frozen, qualified or published by this implement
 - Centralize Java and Python selections in `.java-version` and `.python-version`; derive native checks and workflow projections from those declarations.
   Derive the Node development minimum and exact producer reference from the runtime policy; tooling uses Node 26.13 while consumer coverage retains Node 22, 24 and 26.
 - Bound CI job registration and immutable-release observation, preserve original producing-attempt provenance across compatible runner image updates, and fail terminally when required workflow output cannot be written.
+
+### Upgrading from rc.2
+
+- Omitted profile selection remains `normative-v1`; select `java-owlapi-5.5.1` explicitly for the released Java behavior.
+  Managers, factories and configurations retain immutable profile identities; mixing configurations from different profiles rejects.
+- Java-profile changes apply sequentially and return `ChangeApplied` values.
+  Normative changes retain atomic batches and boolean results.
+  Java loading or mutation can retain completed work when a later step fails.
+- Java-profile storage appends to a reused target and can retain a failure prefix.
+  Normative storage replaces complete output atomically; applications must account for the selected profile before retrying or reusing a target.
+- `EntitySearcher` results are deferred and single-use; materialize them with `Array.from()` when a reusable snapshot is needed.
+  Closure providers query current managed state on each call.
+- Java-profile literal normalization and RDF metadata follow the released Java observations.
+  Normative lexical preservation, statement counting and header semantics retain their separate contract.
+- The normative profile keeps bounded loading defaults.
+  The Java profile adds no JavaScript-only finite default budgets; native provider limits and explicitly selected host restrictions still apply.
+  Neither profile grants network or file access.
+- Consumer admission is Node.js `>=22.0.0`, with Node 22, 24 and 26 qualified separately from the Node 26.13 development-tool minimum.
+  Browser parsing remains supported; the Node document loader is not a browser transport.
+
+See the [migration guide](docs/migration/0.1.0-java-api-parity.md) and [behavior-profile contract](docs/compatibility/behavior-profiles.md) for exact differences and supported boundaries.
 
 ## 0.1.0-rc.2 — published 10 October 2026 (Europe/Bucharest)
 

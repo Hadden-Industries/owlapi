@@ -2,7 +2,8 @@
 
 The current default authority is the [behavior profile contract](behavior-profiles.md) and the typed `currentBehaviorContracts` section of the [owning parity ledger](java-api-parity-decisions.json).
 Configuration names alone do not prove their consumer behavior.
-Profile admission remains in progress.
+Both profiles shipped in [rc.3](https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.3), under its bounded RC acceptance and historical security-review exception.
+The [release-readiness record](profiles/java-owlapi-5.5.1/implementation-qualification.md) preserves the incomplete review coverage; publication does not establish stable-release acceptance.
 
 The current Java authority is the formal release commit `f760b3a4c107c6d5f90f856e5680c39b18af646f`, Central artifact and recorded runtime in the [provenance manifest](profiles/java-owlapi-5.5.1/provenance.json).
 The original `d7e997a5` and `b61ebe2d` research pins and historical receipts remain unchanged.

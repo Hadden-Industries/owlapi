@@ -86,10 +86,11 @@ CI proof identity includes the frozen matrix digest, so a new latest patch or ch
 Reused main qualification preserves the original successful runtime evidence; it cannot add coverage for a new endpoint.
 A failed-lane-only rerun cannot combine old-attempt reports into a new aggregate: rerun the complete qualification workflow when a fresh aggregate is required.
 Minimum/latest endpoint checks are practical coverage of a supported line, rather than exhaustive execution of every intervening patch.
-The declared minimums remain unqualified until those hosted gates actually pass; broadening the published engine range remains a separate decision after qualification.
+The [latest published release](README.md#release-status) passed its hosted runtime gates; every successor candidate needs evidence for its own bytes and frozen matrix.
+Broadening the published engine range remains a separate decision after qualification.
 Installing development dependencies and running repository qualification additionally requires a Node version supported by the selected npm and tool graph; consumer eligibility alone does not establish development-tool eligibility.
 Canonical production includes the separate Markdown archive graph; its `file:` archives and lock have an independent update scope from the root registry graph.
-The refreshed dependency graph and reference runtime selections await qualification.
+The latest release's refreshed dependency graph and reference runtimes are covered by its release evidence; later dependency or runtime changes require the affected qualification.
 
 Repository text is UTF-8 with LF line endings and a final newline.
 The root `.gitattributes` makes that representation independent of a contributor's Git settings, while the nested override under `docs/conformance/upstream/` preserves pinned third-party fixtures byte for byte.

@@ -3,8 +3,10 @@
 The implementation reduces repeated immutable preparation and allocation while retaining both behavior profiles.
 The pinned Java baseline and original schema-1 measurements remain unchanged.
 
-**Qualification remains in progress: the latest RDF measurements exceed the strict 1.10x target in some selected groups.**
-The owner approved committing this reviewed implementation increment on 2026-10-29, explicitly leaving parity acceptance open.
+**The [latest published release](../../README.md#release-status) has bounded RC performance acceptance, not complete Java performance parity.**
+For rc.3, the owner accepted the three Node 26 measurements in which all six independently checked I/O groups were below 1.00, retaining the strict 1.10 target for admitted equivalent workloads.
+The six non-comparable groups and broader checksum-only, individual-member, cold-start and memory gaps remain unqualified, as recorded in the [release roadmap](../plans/2026-10-29-0.1.0-release-reconciliation.md).
+The 29 October source-integration decision and earlier above-target RDF measurements below retain their original scope; the later release decision does not rewrite them.
 Completed general and security reviews cover the source epochs recorded below.
 Earlier passing and above-target screens remain historical observations; they do not qualify a later source epoch.
 Checksums alone do not prove semantic equivalence, and explained profile differences and unequal closure forcing remain unqualified.

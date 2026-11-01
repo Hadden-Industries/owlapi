@@ -1,11 +1,13 @@
 # Implementation and release-readiness evidence
 
-The selected Java-compatible API implementation is complete and merged into `main` through [PR #76](https://github.com/Hadden-Industries/owlapi/pull/76) on 2026-10-14; public profile admission remains **NOT READY**.
+The selected Java-compatible API implementation merged through [PR #76](https://github.com/Hadden-Industries/owlapi/pull/76) on 2026-10-14 and later shipped in the [latest published release](../../../../README.md#release-status).
+On 30 October, Maksym Shostak approved the bounded rc.3 exception documented in the [release roadmap](../../../plans/2026-10-29-0.1.0-release-reconciliation.md#authorized-rc3-publication-30-october).
+That later release decision is distinct from the source-integration exception and preserves the missing historical security coverage.
 The designated Codex Security scan was interrupted by an automated content check before completing coverage.
 Its partial findings are retained and remediated as described below; neither zero findings nor a completed security scan is claimed.
-The repository owner must resolve that evidence gap before admitting or publishing a qualified profile.
+At source integration, the evidence gap still required an accountable release decision.
 The owner explicitly accepted the incomplete security coverage for source integration after the ordinary review findings were resolved.
-That exception authorized the protected PR merge only; public profile admission and npm publication remain held.
+That original exception authorized the protected PR merge only; publication remained held until the later rc.3 decision.
 
 ## Scope and authority
 
@@ -74,14 +76,14 @@ Abort promotion on a behavioral mismatch outside the ledger, failed authorizatio
 Retain the previous package and application checkpoint, restore them under the application's recovery policy, and prepare a forward fix.
 A source rollback does not rewrite native observations, historical receipts or prior package identities.
 
-## Release hold and retained resources
+## Historical release hold and retained resources
 
-Public profile admission and npm publication remain held for complete designated security evidence and an accountable release decision.
-The source-integration exception does not waive these release gates or make the partial scan complete.
-The implementation and supported host boundaries are reviewable independently of that hold.
+The historical release hold was resolved for rc.3 by the separate owner-approved exception and successful publication linked above.
+Neither the source-integration exception nor the later release exception makes the partial scan complete.
+A stable release must reassess the missing coverage independently.
 
 PR #76 records the exact external working-directory locator, owner and retention checkpoint.
-The isolated oracle/review/package working group remains required for release and recovery reproduction until the release decision or review on 2026-10-21.
+The original retention checkpoint required the isolated oracle/review/package working group through the release decision or review on 2026-10-21; this historical record does not establish its present filesystem state.
 The native recursive resource observation exceeded its cooperative time bound and remains unknown; a separate byte measurement is not a native preservation receipt.
 No cleanup or reclaimed-capacity claim is made.
 Review findings, raw captures, failed attempts and historical evidence remain retained.

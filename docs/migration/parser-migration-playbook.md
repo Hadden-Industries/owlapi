@@ -322,7 +322,10 @@ Java parser work must preserve the released acceptance, provider limits, fallbac
   It still requires the complete test/lint/build gates and the real production static/lazy-closure verifier.
 - Keep deletion changes separate from Phase 19 extraction/publication work so a repository review can distinguish removal from release-surface expansion.
 
-## Next repository gates: Phase 19 alpha, then Phase 20 production
+## Historical repository handoff: Phase 19 and Phase 20
+
+The sequence below preserves the migration programme's original plan and later integration amendment.
+The scoped RCs have since shipped; use the [latest release status](../../README.md#release-status) and [current roadmap](../plans/2026-10-29-0.1.0-release-reconciliation.md) for publication and remaining stable-release work.
 
 - Phase 18 is fixed by accepted checkpoint `b5902e98da94a1ed99da174acea906aa42f9a46b`.
   Build the package from those current `owlapi-js` modules; no retired WebVOWL parser, converter, exporter, or bridge path may be recreated as a packaging shim.

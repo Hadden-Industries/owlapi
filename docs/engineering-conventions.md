@@ -19,9 +19,9 @@ The accepted Python/Markdown quality plan adds locked development tooling: Prett
 See [contributor setup and commands](../CONTRIBUTING.md#source-text-syntax-and-formatting).
 A phase does not add a competing formatter, linter, test runner, module convention, or build system.
 
-Consumers may declare the exact native npm alias `"owlapi": "npm:@hadden-industries/owlapi@0.1.0-rc.1"` and retain `owlapi/*` imports.
+Consumers may install the [latest published release](../README.md#install) through npm's native `owlapi` alias with `--save-exact`, retaining `owlapi/*` imports and an exact resolved dependency pin.
 This dependency-name mapping is permitted; it creates no API wrapper, duplicate binding, forwarding module or source resolver alias.
-Canonical package metadata and generated API specifiers must identify the real scope when the scoped-publication implementation is applied.
+Canonical package metadata and generated API specifiers identify the real scope.
 
 The publication-specific namespace and source-ownership rules in implementation plan §2.10.4 supersede the earlier staging barrels at extraction.
 In particular, `src/owlapi-js/rdf/index.js` does not authorize a public `owlapi/rdf` export.

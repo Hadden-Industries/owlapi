@@ -5,7 +5,8 @@ The released Java oracle is qualified against frozen harness commit `31638db1e27
 Admission verifies all measured fixture bytes in that commit, 28 Central/source observations, 15 selected-surface replays and the 2,146 acquired dependency artifacts.
 The JavaScript implementation is complete and merged through [PR #76](https://github.com/Hadden-Industries/owlapi/pull/76).
 The [implementation and release-readiness record](implementation-qualification.md) records completed ordinary review and installed Node/browser qualification for their measured candidates.
-Public JavaScript profile admission remains held for complete designated security evidence and an accountable release decision; oracle qualification does not remove that hold.
+The JavaScript profile ships in the [latest published release](../../../../README.md#release-status).
+Its rc.3 admission includes the owner's explicit exception for the incomplete historical security scan, recorded in the implementation and release-readiness record; oracle qualification does not replace that missing review.
 
 On 15 October 2026 the owner authorized regenerating this unreleased evidence's JSON presentation under shared JSON Quality.
 The native recorder's `--refresh-presentation ABSOLUTE_FRESH_BACKUP_DIRECTORY` mode preserves the previous copies, verifies the candidate, and rebinds the evidence, observation and dependency-lock hashes.

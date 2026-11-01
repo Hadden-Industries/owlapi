@@ -4,10 +4,12 @@ This directory contains the executable governance and delivery records for the `
 `owlapi-js` remains the historical WebVOWL staging/path name; the selected public npm package is `@hadden-industries/owlapi`, maintained only in `https://github.com/Hadden-Industries/owlapi` after extraction.
 The implementation plan remains the highest-authority normative document.
 
-The [rc.1 publication record](provenance/releases/0.1.0-rc.1/publication-status.md) records the published package, registry verification and immutable GitHub prerelease.
+The [release-status section](../README.md#release-status) identifies the latest published package, its channels and verified immutable GitHub prerelease; [installation instructions](../README.md#install) resolve that release to an exact consumer pin.
+The [rc.1 publication record](provenance/releases/0.1.0-rc.1/publication-status.md) retains the first scoped release's historical evidence.
 The [scoped npm publication plan](plans/scoped-npm-publication.md) retains the exact native alias, original release sequence and independently owned UO/WebVOWL adoption handoffs.
 The [identity decision](adr/0009-scoped-npm-publication-and-uo-rc-acceptance.md) records the approved rationale.
-The active [rc.2 Java-parity programme](plans/0.1.0-rc.2-java-parity.md) separates delivered source changes from remaining features and successor qualification; it does not authorize publication.
+The active [0.1.0 roadmap](plans/2026-10-29-0.1.0-release-reconciliation.md) records rc.3 publication and its accepted limits while separating remaining stable-release work.
+The [rc.2 Java-parity programme](plans/0.1.0-rc.2-java-parity.md) remains the earlier delivery record.
 
 Current supporting contracts and delivery records:
 
@@ -35,8 +37,8 @@ Authoritative machine-readable records:
 - `compatibility/expected-differences.json`: exact Java/JavaScript differential exceptions.
 - `dependency-governance.json`: selected dependency authority, risk, licence, and replacement records.
 - `release/producer-release-policy.json` and generated `release/producer-gates.json`: active producer obligations; historical gate records retain their original identities.
-- `ontology-lifecycle-capability-implementation-plan.md`: imports-closure, mutation, merger, and storage included in the selected public `@hadden-industries/owlapi@0.1.0-rc.1` release under `next`.
-  Those foundations shipped in rc.1; later candidates need fresh qualification.
+- `ontology-lifecycle-capability-implementation-plan.md`: imports-closure, mutation, merger, and storage foundations first shipped in rc.1 and retained in the latest release.
+  The current behavior profiles govern their return values, ownership and atomic/partial effects; historical qualification stays bound to its original package.
   UO and WebVOWL retain their own production acceptance, without a prerequisite stable `0.1.0` release.
 - `plans/w3c-test-conformance-reporting.md`: the independent post-release programme for complete versioned W3C result ledgers, EARL generation, and appropriately disclosed upstream implementation-report submissions; it is not a gate for the public scoped RC, later `@hadden-industries/owlapi@0.1.0`, its recorded cutover patch, or WebVOWL's package cutover.
 - `compatibility/standalone-import-closure-prerequisites.md`: the bounded Java-compatible library surface required by the external consumer contract.
@@ -83,7 +85,7 @@ The production corpus gate, pinned Java OWL2VOWL fixtures, and all current `owla
 Provenance schema v4 retains deleted-artifact history and approved revision-bounded reuse decisions while distinguishing them from the live source inventory.
 
 Phase 19 extracted the accepted Phase 18 source into the sole canonical `Hadden-Industries/owlapi` repository; its original unscoped alpha remains historical evidence.
-The amended publication work freshly qualifies and publishes `@hadden-industries/owlapi@0.1.0-rc.1` under `next`, including Phase 21/22 lifecycle capabilities.
+The amended publication work first shipped the scoped rc.1 package with Phase 21/22 lifecycle capabilities; the release-status link above identifies the current successor.
 Phase 20 retains the later stable `0.1.0` library release and WebVOWL's later adoption of that stable version.
 UO and WebVOWL may each use the public RC in production after their own full acceptance without waiting for Phase 20; normal deployment authorization still applies.
 The Public API Surface Registry created during extraction is the package/type gap map against pinned Java OWLAPI.
