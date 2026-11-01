@@ -35,6 +35,7 @@ const contracts = {
     needs: ["recovery_source", "recovery_accepted", "recovery_draft"],
     commands: [
       "sha256sum --check --strict SHA256SUMS",
+      "node approval-tools/scripts/verify-publication-documentation.mjs --candidate .release/download --preflight .release/publication/publication-preflight.json",
       "node approval-tools/scripts/release-approvals.mjs --environment npm-release --output .release/approval-npm-release.json --rc3-recovery",
       "node approval-tools/scripts/rc3-recovery-policy.mjs guard-publication",
       publish,
@@ -230,6 +231,7 @@ export function ordinaryReleaseWorkflow(workflow, violations) {
               "source_commit",
               "source_run_id",
               "candidate_artifact_id",
+              "preflight_artifact_id",
               "tag",
               "version",
             ].map((key) => [key, `\${{ steps.identity.outputs.${key} }}`]),
@@ -272,14 +274,16 @@ export function ordinaryReleaseWorkflow(workflow, violations) {
     );
     check(
       j.steps.filter((s) => s.uses === download).length ===
-        ([
-          "recovery_publish",
-          "recovery_registry",
-          "recovery_evidence",
-          "recovery_finalize",
-        ].includes(id)
-          ? 1
-          : 0),
+        (id === "recovery_publish"
+          ? 2
+          : [
+                "recovery_publish",
+                "recovery_registry",
+                "recovery_evidence",
+                "recovery_finalize",
+              ].includes(id)
+            ? 1
+            : 0),
       `${id} artifact download count differs`,
     );
     for (const step of j.steps) {
@@ -354,11 +358,17 @@ export function ordinaryReleaseWorkflow(workflow, violations) {
         );
       if (step.uses === download) {
         const original = ["recovery_publish", "recovery_registry"].includes(id);
+        const preflightDownload =
+          id === "recovery_publish" &&
+          step.name === "Download the accepted documentation preflight";
         const expected = original
           ? {
-              "artifact-ids":
-                "${{ needs.recovery_source.outputs.candidate_artifact_id }}",
-              path: ".release/download",
+              "artifact-ids": preflightDownload
+                ? "${{ needs.recovery_source.outputs.preflight_artifact_id }}"
+                : "${{ needs.recovery_source.outputs.candidate_artifact_id }}",
+              path: preflightDownload
+                ? ".release/publication"
+                : ".release/download",
               "merge-multiple": false,
               "skip-decompress": false,
               "digest-mismatch": "error",
@@ -389,6 +399,11 @@ export function ordinaryReleaseWorkflow(workflow, violations) {
           GITHUB_TOKEN: "${{ github.token }}",
           RELEASE_TAG: "${{ needs.recovery_source.outputs.tag }}",
           SOURCE_COMMIT: "${{ needs.recovery_source.outputs.source_commit }}",
+          DOCUMENTATION_SOURCE_COMMIT:
+            "${{ needs.recovery_source.outputs.source_commit }}",
+          DOCUMENTATION_SOURCE_RUN_ID:
+            "${{ needs.recovery_source.outputs.source_run_id }}",
+          DOCUMENTATION_SOURCE_RUN_ATTEMPT: "1",
           RELEASE_EVIDENCE_PATH:
             ".release/evidence/hadden-industries-owlapi-${{ needs.recovery_source.outputs.version }}.release-evidence.json",
         }[key];
@@ -400,6 +415,25 @@ export function ordinaryReleaseWorkflow(workflow, violations) {
     }
     if (id === "recovery_publish") {
       const writes = j.steps.filter((s) => s.run?.includes("npm publish "));
+      const guards = j.steps.filter((s) =>
+        s.run?.startsWith(
+          "node approval-tools/scripts/verify-publication-documentation.mjs ",
+        ),
+      );
+      check(
+        guards.length === 1 &&
+          guards[0].if === "${{ github.run_attempt == 1 }}" &&
+          !guards[0]["working-directory"] &&
+          isDeepStrictEqual(guards[0].env, {
+            DOCUMENTATION_SOURCE_COMMIT:
+              "${{ needs.recovery_source.outputs.source_commit }}",
+            DOCUMENTATION_SOURCE_RUN_ID:
+              "${{ needs.recovery_source.outputs.source_run_id }}",
+            DOCUMENTATION_SOURCE_RUN_ATTEMPT: "1",
+          }) &&
+          j.steps.indexOf(guards[0]) < j.steps.indexOf(writes[0]),
+        "publisher requires original-source artifact-bound documentation admission before writing",
+      );
       check(
         writes.length === 1 &&
           writes[0].if === "${{ github.run_attempt == 1 }}" &&

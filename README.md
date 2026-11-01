@@ -5,27 +5,29 @@ Its public concepts deliberately resemble the Java OWLAPI where that makes the A
 
 ## Release status
 
-> **Latest published release, checked 31 October 2026:** `@hadden-industries/owlapi@0.1.0-rc.3` is available on npm under both `next` and `latest`; [its GitHub prerelease](https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.3) is immutable.
-> Stable 0.1.0 remains unpublished.
-> The [successful publication workflow](https://github.com/Hadden-Industries/owlapi/actions/runs/41007902342) and release-evidence asset on the GitHub release record the qualified package, registry verification and immutable assets.
-> The [current 0.1.0 roadmap](./docs/plans/2026-10-29-0.1.0-release-reconciliation.md#rc3-publication-and-evidence-simplification-30-october) records the bounded performance acceptance and the owner's rc.3 exception for the incomplete historical Java-profile security review; that review is not claimed as completed.
-> `latest` is npm's default installation target and does not imply a stable version or consumer acceptance.
-> UO and WebVOWL may each use this exact RC in production after artifact verification and their own full consumer acceptance; `0.1.0` is not a prerequisite for either application.
-> A version in `main` is not a published or accepted package.
-> Full Java OWLAPI parity is not claimed; the exact implemented surface and every known gap are recorded in [the compatibility registry](./docs/compatibility/java-api-surface.md).
+<!-- release-documentation:identity:start -->
+
+This package: `@hadden-industries/owlapi@0.1.0-rc.3`.
+These instructions describe this exact version; they do not assert registry availability.
+Consumer engine admission: Node.js `>=22.0.0`.
+
+<!-- release-documentation:identity:end -->
+
+Full Java OWLAPI parity is not claimed; the [compatibility registry](./docs/compatibility/java-api-surface.md) records the implemented surface and known gaps.
+Publication and each application's acceptance remain separate decisions.
 
 This project is an independently maintained JavaScript implementation.
 It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project.
 
-The latest release includes ontology queries, changes, transforms, short-form providers, Manchester rendering, Turtle and OWL/XML storage, EL/QL/RL profiles, and syntactic locality extraction.
+This package includes ontology queries, changes, transforms, short-form providers, Manchester rendering, Turtle and OWL/XML storage, EL/QL/RL profiles, and syntactic locality extraction.
 The current source candidate's version is declared in [package.json](package.json); its publication authority is recorded separately in [publication control](docs/release/publication-control.json).
-The release adds explicit `normative-v1` and `java-owlapi-5.5.1` selection under the [behavior profile contract](docs/compatibility/behavior-profiles.md), the authorized Node document loader and the other additions in the [changelog](CHANGELOG.md).
+This package implements explicit `normative-v1` and `java-owlapi-5.5.1` selection under the [behavior profile contract](docs/compatibility/behavior-profiles.md), the authorized Node document loader and the other additions in the [changelog](CHANGELOG.md).
 Java migrations must select `java-owlapi-5.5.1`; omitted selection remains normative.
 The [API delta from the rc.2 baseline](docs/compatibility/0.1.0-api-delta.md) lists the new exports, enlarged member surfaces and exact performance-coverage limits.
 The [contract reconciliation](docs/compatibility/0.1.0-contract-scope.md) explains the bounded source assessment and the registry's `firstPublicReleaseTarget` planning field.
 That target does not establish availability, and successful publication does not require rewriting every target or generated document.
 
-The installation and API examples below apply to the latest published release.
+The installation and API examples below apply to this package version.
 For development testing of a retained local candidate, substitute its actual absolute tarball path and version:
 
 ```shell
@@ -45,7 +47,7 @@ The manifest and release tooling select this scoped identity.
 The retained [package-name review](https://github.com/Hadden-Industries/owlapi/blob/main/docs/provenance/package-name-review.json) describes the historical unscoped proposal; the separate [scoped-identity review](./docs/provenance/scoped-package-name-review.json) records the accepted scoped identity.
 Its original tag restriction is superseded by the documented amendment in [ADR 0009](./docs/adr/0009-scoped-npm-publication-and-uo-rc-acceptance.md).
 
-## Release notes
+## Release history
 
 - [0.1.0-rc.3](https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.3), published 30 October: immutable Java-compatible and normative behavior profiles, an explicitly authorized Node document loader, `ChangeApplied` results, broader Node support and performance improvements.
   Upgrading from rc.2 requires reviewing profile-specific mutation, query, storage and resource defaults in the [migration guide](https://github.com/Hadden-Industries/owlapi/blob/main/docs/migration/0.1.0-java-api-parity.md).
@@ -56,6 +58,19 @@ See the [complete changelog](https://github.com/Hadden-Industries/owlapi/blob/ma
 These are prereleases; stable `0.1.0` remains unpublished.
 
 ## Install
+
+<!-- release-documentation:install:start -->
+
+Install this exact version after it is published:
+
+```shell
+npm install --save-exact "owlapi@npm:@hadden-industries/owlapi@0.1.0-rc.3"
+npm install --save-exact @hadden-industries/owlapi@0.1.0-rc.3
+```
+
+<!-- release-documentation:install:end -->
+
+The following moving-tag convenience commands select the registry tag at installation time, which may still identify an earlier version before this candidate is published.
 
 Use npm's native dependency alias to install the published RC and retain the imports shown below.
 Production use remains subject to the verification and consumer acceptance described above:
@@ -98,12 +113,60 @@ Node 26.13.0 is the selected canonical package producer.
 
 Node 26.11.1 passed blocking source and retained-package qualification on Ubuntu x64, Windows x64, and macOS arm64 in [CI run 37875950984](https://github.com/Hadden-Industries/owlapi/actions/runs/37875950984).
 Its admission does not imply upstream LTS status.
-The latest release's dependency graph and runtime matrix passed the hosted qualification recorded in its release evidence.
+The release evidence records qualification for each published artifact; source changes require their own qualification.
 CI reference runtimes and development-tool requirements are separate from the consumer minimums.
 Browser applications can consume the same native ESM through a package-aware bundler or an application-owned import map.
 No official TypeScript declarations are included in the initial release.
 
+## Public imports and behavior profiles
+
+<!-- release-documentation:exports:start -->
+
+Public import paths (native alias):
+
+- `owlapi`
+- `owlapi/apibinding`
+- `owlapi/model`
+- `owlapi/io`
+- `owlapi/io/node`
+- `owlapi/formats`
+- `owlapi/profiles`
+- `owlapi/util`
+- `owlapi/model/parameters`
+- `owlapi/search`
+- `owlapi/manchestersyntax/renderer`
+- `owlapi/modularity/locality`
+
+For a scoped installation, replace `owlapi` with `@hadden-industries/owlapi`.
+
+<!-- release-documentation:exports:end -->
+
+<!-- release-documentation:profiles:start -->
+
+Both `normative-v1` and `java-owlapi-5.5.1` are implemented in this package.
+Omitting `behaviorProfileId` selects `normative-v1`.
+Select `java-owlapi-5.5.1` explicitly for the documented Java behavior; neither profile grants host I/O authority.
+
+<!-- release-documentation:profiles:end -->
+
+<!-- release-documentation:example-behavior-profiles:start -->
+
+```js
+import { OWLManager } from "owlapi/apibinding";
+
+const defaultManager = OWLManager.createOWLOntologyManager();
+const javaManager = OWLManager.createOWLOntologyManager({
+  behaviorProfileId: "java-owlapi-5.5.1",
+});
+console.log(defaultManager.getBehaviorProfileId()); // normative-v1
+console.log(javaManager.getBehaviorProfileId()); // java-owlapi-5.5.1
+```
+
+<!-- release-documentation:example-behavior-profiles:end -->
+
 ## Load an ontology
+
+<!-- release-documentation:example-load-ontology:start -->
 
 ```js
 import { OWLManager } from "owlapi/apibinding";
@@ -122,12 +185,16 @@ const source = new StringDocumentSource(
   },
 );
 
-const manager = OWLManager.createOWLOntologyManager({ behaviorProfileId: "normative-v1" });
+const manager = OWLManager.createOWLOntologyManager({
+  behaviorProfileId: "normative-v1",
+});
 const ontology = await manager.loadOntologyFromOntologyDocument(source);
 
 console.log(ontology.getOntologyID());
 console.log(ontology.getAxioms().size);
 ```
+
+<!-- release-documentation:example-load-ontology:end -->
 
 ## Java OWLAPI and JavaScript call shapes
 
@@ -142,7 +209,9 @@ OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 ```js
 import { OWLManager } from "owlapi/apibinding";
 
-const manager = OWLManager.createOWLOntologyManager({ behaviorProfileId: "normative-v1" });
+const manager = OWLManager.createOWLOntologyManager({
+  behaviorProfileId: "normative-v1",
+});
 ```
 
 Create an IRI and a structural class through the manager's data factory:
@@ -241,7 +310,9 @@ A package-aware browser bundler can resolve the ordinary public specifiers:
 import { OWLManager } from "owlapi/apibinding";
 import { StringDocumentSource } from "owlapi/io";
 
-const manager = OWLManager.createOWLOntologyManager({ behaviorProfileId: "normative-v1" });
+const manager = OWLManager.createOWLOntologyManager({
+  behaviorProfileId: "normative-v1",
+});
 const ontology = await manager.loadOntologyFromOntologyDocument(
   new StringDocumentSource(documentText, {
     contentType: "text/turtle",
@@ -256,28 +327,32 @@ The application—not `owlapi`—owns import-map URLs, content security policy, 
 A complete map must cover the browser-compatible public roots used by the application and their external static and literal-dynamic dependency closure; `io/node` is Node-only.
 The alias keys below must resolve to files from the exact verified distribution installed above.
 The application-local URL spelling does not claim an unscoped npm publication.
-The application deploys that pinned distribution under `/vendor/owlapi/` as part of one immutable application release; these paths must not track a mutable CDN tag.
-This abbreviated shape illustrates application-local URLs; it is not a complete hand-maintained dependency map:
+<!-- release-documentation:import-map:start -->
+
+Deploy the verified `@hadden-industries/owlapi@0.1.0-rc.3` distribution under `/vendor/owlapi/0.1.0-rc.3/`.
+This abbreviated map shows application-owned URLs, not a complete dependency map:
 
 ```html
 <script type="importmap">
-  {
-    "imports": {
-      "owlapi": "/vendor/owlapi/index.js",
-      "owlapi/apibinding": "/vendor/owlapi/apibinding/index.js",
-      "owlapi/model": "/vendor/owlapi/model/index.js",
-      "owlapi/io": "/vendor/owlapi/io/index.js",
-      "owlapi/formats": "/vendor/owlapi/formats/index.js",
-      "owlapi/profiles": "/vendor/owlapi/profiles/index.js",
-      "owlapi/util": "/vendor/owlapi/util/index.js"
-    }
+{
+  "imports": {
+    "owlapi": "/vendor/owlapi/0.1.0-rc.3/index.js",
+    "owlapi/apibinding": "/vendor/owlapi/0.1.0-rc.3/apibinding/index.js",
+    "owlapi/model": "/vendor/owlapi/0.1.0-rc.3/model/index.js",
+    "owlapi/io": "/vendor/owlapi/0.1.0-rc.3/io/index.js",
+    "owlapi/formats": "/vendor/owlapi/0.1.0-rc.3/formats/index.js",
+    "owlapi/profiles": "/vendor/owlapi/0.1.0-rc.3/profiles/index.js",
+    "owlapi/util": "/vendor/owlapi/0.1.0-rc.3/util/index.js",
+    "owlapi/model/parameters": "/vendor/owlapi/0.1.0-rc.3/model/parameters/index.js",
+    "owlapi/search": "/vendor/owlapi/0.1.0-rc.3/search/index.js",
+    "owlapi/manchestersyntax/renderer": "/vendor/owlapi/0.1.0-rc.3/manchestersyntax/renderer/index.js",
+    "owlapi/modularity/locality": "/vendor/owlapi/0.1.0-rc.3/modularity/locality/index.js"
   }
-</script>
-<script type="module">
-  import { OWLManager } from "owlapi/apibinding";
-  // Application code uses the same public API as the bundler example.
+}
 </script>
 ```
+
+<!-- release-documentation:import-map:end -->
 
 The release suite generates the complete reference map with the pinned JSPM tooling, verifies provider integrity, hydrates a content-addressed local mirror, and tests that mirror in the required engines.
 `jspm.io` is a replaceable reference provider, not a runtime dependency or availability guarantee.
@@ -299,7 +374,9 @@ import { OWLManager } from "owlapi/apibinding";
 import { StringDocumentSource } from "owlapi/io";
 
 self.onmessage = async ({ data: { documentText, contentType } }) => {
-  const manager = OWLManager.createOWLOntologyManager({ behaviorProfileId: "normative-v1" });
+  const manager = OWLManager.createOWLOntologyManager({
+    behaviorProfileId: "normative-v1",
+  });
   const ontology = await manager.loadOntologyFromOntologyDocument(
     new StringDocumentSource(documentText, { contentType }),
   );
@@ -356,7 +433,7 @@ The initial package does **not** provide a reasoner, SWRL support, OBO parsing, 
 N3.js supports the four listed RDF syntaxes; support for the broader N3 language is not claimed.
 The [capability matrix](./docs/compatibility/capabilities.json), [Java API gap view](./docs/compatibility/java-api-surface.md), and [recorded expected differences](https://github.com/Hadden-Industries/owlapi/blob/main/docs/compatibility/expected-differences.json) are the authorities for the exact boundary.
 
-The latest release includes the [ontology-lifecycle capabilities](https://github.com/Hadden-Industries/owlapi/blob/main/docs/ontology-lifecycle-capability-implementation-plan.md): closure queries, profile-specific changes, the merger, and manager-selected Functional Syntax and RDF/XML storage through `saveOntology` and `StringDocumentTarget.toString()`.
+This package includes the [ontology-lifecycle capabilities](https://github.com/Hadden-Industries/owlapi/blob/main/docs/ontology-lifecycle-capability-implementation-plan.md): closure queries, profile-specific changes, the merger, and manager-selected Functional Syntax and RDF/XML storage through `saveOntology` and `StringDocumentTarget.toString()`.
 
 The latest release also provides [immutable RDF/XML writer configuration](docs/compatibility/rdfxml-writer-configuration.md) through `owlapi/model`, with manager-local indentation, banner and anonymous-ID settings, plus `RDFXMLDocumentFormat` prefix operations through `owlapi/formats`.
 The behavior profile selects atomic normative updates or Java-compatible sequential and partial effects; see the profile contract before migrating Java callers.

@@ -55,6 +55,7 @@ const runConsumer = async (page, mode) => {
   });
 
   const result = await page.evaluate(() => globalThis.__OWLAPI_RESULT);
+  expect(result.documentation).toEqual({ examples: 2 });
   expect(result.bindingIdentity).toEqual({
     apibinding: true,
     formats: true,

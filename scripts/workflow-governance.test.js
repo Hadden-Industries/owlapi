@@ -35,6 +35,47 @@ const mutateWorkflow = (fileName, mutate) => {
 };
 
 describe("repository workflow governance", () => {
+  test.each(
+    ["npm_release", "recovery_publish"].flatMap((job) =>
+      [
+        "missing",
+        "skipped",
+        "soft failure",
+        "after write",
+        "wrong artifact",
+        "missing dependency",
+      ].map((fault) => [job, fault]),
+    ),
+  )("rejects documentation admission bypass in %s: %s", (job, fault) => {
+    const violations = mutateWorkflow("release.yml", (document) => {
+      const publisher = document.getIn(["jobs", job]);
+      const steps = publisher.get("steps");
+      const guard = steps.items.find((step) =>
+        step.get("run")?.includes("verify-publication-documentation.mjs"),
+      );
+      expect(guard).toBeDefined();
+      if (fault === "missing")
+        steps.items.splice(steps.items.indexOf(guard), 1);
+      if (fault === "skipped") guard.set("if", "${{ false }}");
+      if (fault === "soft failure") guard.set("continue-on-error", true);
+      if (fault === "after write") {
+        steps.items.splice(steps.items.indexOf(guard), 1);
+        steps.items.push(guard);
+      }
+      if (fault === "wrong artifact")
+        steps.items
+          .find(
+            (step) =>
+              step.get("name") ===
+              "Download the accepted documentation preflight",
+          )
+          .setIn(["with", "artifact-ids"], "1");
+      if (fault === "missing dependency")
+        publisher.set("needs", document.createNode([]));
+    });
+    expect(violations.length).toBeGreaterThan(0);
+    expect(violations.join("\n")).toMatch(/documentation|recovery/u);
+  });
   test.each([
     "ordinary guard",
     "recovery guard",

@@ -25,8 +25,13 @@ export class RegistryReadError extends Error {
 /** Complete GET bytes, retrying only transport/408/429/5xx. Application validation remains outside this boundary. */
 export const readPublicRegistry = async (
   url,
-  { attempts = 3, timeoutMs = 120000 } = {},
+  { attempts = 3, timeoutMs = 120000, maxBytes } = {},
 ) => {
+  if (
+    maxBytes !== undefined &&
+    (!Number.isSafeInteger(maxBytes) || maxBytes < 1)
+  )
+    throw new Error("Invalid registry read byte limit");
   let lastError;
   for (let attempt = 1; attempt <= attempts; attempt += 1) {
     let response;
@@ -38,8 +43,24 @@ export const readPublicRegistry = async (
         signal: AbortSignal.timeout(Math.max(1, Math.ceil(timeoutMs))),
         headers: { Accept: "application/json", "Cache-Control": "no-cache" },
       });
-      if (response.ok) return Buffer.from(await response.arrayBuffer());
+      if (response.ok) {
+        if (maxBytes === undefined)
+          return Buffer.from(await response.arrayBuffer());
+        const chunks = [];
+        let length = 0;
+        for await (const chunk of response.body) {
+          length += chunk.byteLength;
+          if (length > maxBytes)
+            throw new RegistryReadError(
+              "Registry response exceeds its byte limit",
+              { status: 413 },
+            );
+          chunks.push(chunk);
+        }
+        return Buffer.concat(chunks);
+      }
     } catch (error) {
+      if (error instanceof RegistryReadError && !error.transient) throw error;
       lastError = new RegistryReadError(error.message, { cause: error });
     }
     if (

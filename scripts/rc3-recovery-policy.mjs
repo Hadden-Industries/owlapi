@@ -196,6 +196,7 @@ if (
       source_commit: control.sourceCommit,
       source_run_id: control.runId,
       candidate_artifact_id: control.artifacts.candidate,
+      preflight_artifact_id: control.artifacts.preflight,
       tag: control.tag,
       version: control.tag.slice(1),
     };

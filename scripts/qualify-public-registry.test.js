@@ -1,3 +1,4 @@
+import { documentationArchive } from "./fixtures/documentation-candidate.mjs";
 import { PACKAGE_VERSION } from "./package-identity.mjs";
 import { jest } from "@jest/globals";
 import { createHash } from "node:crypto";
@@ -145,7 +146,7 @@ test.each(["skipped", "missing", "source", "attempt", "workflow"])(
 const reportFixture = () => {
   const directory = mkdtempSync(join(tmpdir(), "owlapi-registry-report-test-"));
   const outputPath = join(directory, "report.json");
-  const tarball = Buffer.from("approved test artifact");
+  const tarball = documentationArchive();
   const metadata = {
     name: "@hadden-industries/owlapi",
     version,
@@ -160,6 +161,8 @@ const reportFixture = () => {
       tarball: { sha256: createHash("sha256").update(tarball).digest("hex") },
     },
     outputPath,
+    readMetadata: async () =>
+      Buffer.from(JSON.stringify({ name: "@hadden-industries/owlapi" })),
     publication: async () => ({
       state: "PUBLICATION_ACCEPTED",
       acceptedAt: "2026-10-10T00:00:00Z",

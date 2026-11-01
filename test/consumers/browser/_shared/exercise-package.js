@@ -1,4 +1,5 @@
 import * as root from "owlapi";
+import { exerciseDocumentation } from "./exercise-documentation.js";
 import * as apibinding from "owlapi/apibinding";
 import * as formats from "owlapi/formats";
 import * as io from "owlapi/io";
@@ -288,6 +289,7 @@ export const exerciseInstalledPackage = async () => {
     await exerciseImportClosureStorage(closureDocuments);
   return {
     bindingIdentity,
+    documentation: await exerciseDocumentation(),
     rc2: await exerciseRC2PublicContract(root),
     documents,
     writerConfiguration: await exerciseWriterConfiguration(

@@ -15,6 +15,10 @@ import { spawnSync } from "node:child_process";
 import { flattenNpmGraph } from "./npm-production-graph.mjs";
 import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
 import {
+  DOCUMENTATION_PATHS,
+  inspectReleaseDocumentation,
+} from "./release-documentation.mjs";
+import {
   PACKAGE_NAME,
   PACKAGE_FILE_STEM,
   assertPackageIdentity,
@@ -203,6 +207,16 @@ try {
     throw new Error("npm pack manifest and actual tarball contents differ.");
   }
   assertReleasePacklist(archiveEntries.map(({ path }) => path));
+  inspectReleaseDocumentation(
+    readFileSync(tarballPath),
+    packageJson,
+    Object.fromEntries(
+      DOCUMENTATION_PATHS.map((path) => [
+        path,
+        readFileSync(join(REPOSITORY_ROOT, path), "utf8"),
+      ]),
+    ),
+  );
   writeJson("pack-dry-run.json", dryRun);
   writeJson("pack-actual.json", actualPack);
 

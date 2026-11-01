@@ -7,6 +7,7 @@ import { format } from "prettier";
 import semver from "semver";
 import { PACKAGE_NAME, releaseChannel } from "./package-identity.mjs";
 import { projectReleaseEvidenceSchema } from "./release-version-schema.mjs";
+import { projectReadmeDocumentation } from "./release-documentation.mjs";
 import {
   renderApiView,
   renderCompatibilityView,
@@ -14,6 +15,7 @@ import {
 
 const root = new URL("../", import.meta.url);
 export const VERSION_PROJECTION_PATHS = Object.freeze([
+  "README.md",
   "package-lock.json",
   "docs/compatibility/capabilities.json",
   "docs/compatibility/dependency-seams.json",
@@ -46,6 +48,15 @@ export async function projectPackageVersion(files, manifest) {
     "Select publishConfig.tag for this release channel before synchronization",
   );
   const output = { ...files };
+  output["README.md"] = await format(
+    projectReadmeDocumentation(files["README.md"], manifest),
+    {
+      parser: "markdown",
+      endOfLine: "lf",
+      proseWrap: "preserve",
+      embeddedLanguageFormatting: "off",
+    },
+  );
   const read = (path) => JSON.parse(files[path]);
   const put = async (path, value) => {
     output[path] = await format(JSON.stringify(value), {

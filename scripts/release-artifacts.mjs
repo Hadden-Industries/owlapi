@@ -1,6 +1,13 @@
 import { gunzipSync } from "node:zlib";
 
 const TAR_BLOCK_SIZE = 512;
+// The rc.3 archive is under 2 MiB compressed / 10 MiB expanded. These ceilings
+// leave headroom without allowing an untrusted release input to exhaust memory.
+export const RELEASE_ARCHIVE_LIMITS = Object.freeze({
+  compressedBytes: 16 * 1024 * 1024,
+  expandedBytes: 64 * 1024 * 1024,
+  members: 10000,
+});
 const readNullTerminatedText = (buffer, start, length) => {
   const field = buffer.subarray(start, start + length);
   const terminator = field.indexOf(0);
@@ -107,24 +114,47 @@ export const assertReleasePacklist = (paths) => {
  * emits the portable ustar subset handled here; unsupported entry types fail
  * closed in the caller rather than being silently accepted.
  */
-const readGzipTarEntries = (archive) => {
-  const tar = gunzipSync(archive);
+export const readGzipTarEntries = (archive) => {
+  if (archive.length > RELEASE_ARCHIVE_LIMITS.compressedBytes)
+    throw new Error("Release archive exceeds the compressed byte limit.");
+  const tar = gunzipSync(archive, {
+    maxOutputLength: RELEASE_ARCHIVE_LIMITS.expandedBytes,
+  });
   const entries = [];
+  let memberCount = 0;
 
-  for (let offset = 0; offset + TAR_BLOCK_SIZE <= tar.length;) {
+  for (let offset = 0; offset < tar.length;) {
+    if (offset + TAR_BLOCK_SIZE > tar.length)
+      throw new Error("Release archive has a truncated header.");
     const header = tar.subarray(offset, offset + TAR_BLOCK_SIZE);
     if (header.every((byte) => byte === 0)) {
+      if (tar.subarray(offset).some((byte) => byte !== 0))
+        throw new Error("Release archive has data after its end marker.");
       break;
     }
+    if (++memberCount > RELEASE_ARCHIVE_LIMITS.members)
+      throw new Error("Release archive exceeds the member limit.");
 
     const name = readNullTerminatedText(header, 0, 100);
     const prefix = readNullTerminatedText(header, 345, 155);
     const archivePath = prefix ? `${prefix}/${name}` : name;
     const sizeText = readNullTerminatedText(header, 124, 12).trim();
     const size = Number.parseInt(sizeText || "0", 8);
-    if (!Number.isSafeInteger(size) || size < 0) {
+    if (
+      !/^[0-7]+$/u.test(sizeText) ||
+      !Number.isSafeInteger(size) ||
+      size < 0
+    ) {
       throw new Error(`Invalid tar entry size for ${archivePath}.`);
     }
+    const nextOffset =
+      offset +
+      TAR_BLOCK_SIZE +
+      Math.ceil(size / TAR_BLOCK_SIZE) * TAR_BLOCK_SIZE;
+    if (nextOffset > tar.length)
+      throw new Error(
+        `Release archive has a truncated member: ${archivePath}.`,
+      );
 
     const type = readNullTerminatedText(header, 156, 1) || "0";
     if (type === "0") {
@@ -134,7 +164,11 @@ const readGzipTarEntries = (archive) => {
         );
       }
       const path = archivePath.slice("package/".length);
-      if (!path || path.split("/").includes("..")) {
+      if (
+        !path ||
+        path.includes("\\") ||
+        path.split("/").some((part) => ["", ".", ".."].includes(part))
+      ) {
         throw new Error(`Packed file has an unsafe path: ${archivePath}`);
       }
       const contentOffset = offset + TAR_BLOCK_SIZE;
@@ -147,8 +181,7 @@ const readGzipTarEntries = (archive) => {
       throw new Error(`Unsupported tar entry type ${type} for ${archivePath}.`);
     }
 
-    offset +=
-      TAR_BLOCK_SIZE + Math.ceil(size / TAR_BLOCK_SIZE) * TAR_BLOCK_SIZE;
+    offset = nextOffset;
   }
 
   return entries;

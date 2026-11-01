@@ -1,6 +1,6 @@
 # Release documentation freshness implementation plan
 
-**Status: DRAFT for owner review; no implementation, approval, baseline, or publication is recorded by this document.**
+**Status: implemented locally; final Codex Security review remains a commit gate. No publication is authorized.**
 Prepared 1 November 2026 using the HISEW thin implementation plan method, by the requested GPT-6 Astra subagent at Extra High reasoning.
 
 ## Purpose and admission
@@ -9,19 +9,36 @@ Package users must receive installation instructions, API examples, release stat
 Catch contradictions before an immutable package version is published, while preserving truthful historical statements and independently owned consumer acceptance.
 The success measure is that the observed stale-document defects fail the real release path before its first registry write; a new checker that release never calls is insufficient.
 
-The inspected source baseline is `e4bc48de00f1e50f38fd3bbbc02c044197df6fc0` on `main`, one commit ahead of `origin/main`, with 21 pre-existing documentation edits owned by the parent task.
-Those edits are context, not an accepted implementation baseline; this planning task owns only this file.
-`package.json` and publication control still select `0.1.0-rc.3`; no successor version, tag, release dispatch, commit, push, or registry mutation is authorized.
+The planning baseline was `e4bc48de00f1e50f38fd3bbbc02c044197df6fc0`.
+The owner subsequently authorized implementation and first committed the existing documentation scope in signed commit `dcad5ff2`, the implementation baseline.
+The owner accepted the R2 functional scope, local signed commits and necessary configuration changes, selected GPT-6 Astra at Extra High for Review Agent and final Codex Security review, and prohibited pushes and external reviews.
+The owner's later instructions replace duplicate HISEW administrative prerequisites, helper-witnessed evidence and additional campaigns; native tests and reviews remain authoritative.
+`package.json` still selects `0.1.0-rc.3`; a successor coordinate and publication need a separate decision.
 
 The parent task's read-only HISEW applicability result is `personal`, `active: true`.
 The loaded release `78d10f49862633eff7fb157c6709af0b11470209c5dfad9858b837ae402dfa06` differs from selected release `a69680c5fa7d47f2ffb7a56d75747d7696e102ac61d3998a1481f66e5fb176fb`, generation 14, with primary failure `HOOK_SELECTION_MISMATCH`; diagnostic retention reports `RETENTION_UNAVAILABLE`, and current hook activation is not established.
-This draft does not establish engine admission, create an execution, change engine selection, or substitute for retained HISEW evidence.
+Despite repository selection, native execution admission returned “A repository baseline requires selected repository authority”.
+Per the owner's explicit process instruction, implementation continues using the HISEW method and native product proof; no admitted execution or substitute engine receipt is claimed.
 
-Missing prerequisites: an accepted change dossier, risk route, protected design baseline, accepted quality scenarios, native verification-profile selection, and assigned independent verification/security ownership.
-The REQ/AC/QA/DEC records below are proposals to make those decisions reviewable, not evidence of their acceptance.
-**Proposed R2 route:** release admission, archive input, privileged publication, and recovery are affected; mistakes can permanently publish incorrect documentation despite a small source diff.
-Before implementation, the repository owner must accept or revise that route and these contracts, resolve the engine mismatch through supported management, establish an admitted execution, and assign the verifier.
-If any missing decision materially changes the design, revise this draft before implementation rather than inferring approval.
+### Concise implementation record
+
+- One dependency-free packed-document evaluator owns governed claims, exact-version change/migration/limitations selection and artifact admission.
+  Existing version projections, runtime ownership, candidate bundle hashes and preflight artifacts remain the authorities.
+- Real README fences execute through the existing alias/scoped consumers and browser modes.
+  Current notes render from the accepted artifact; channel wording uses observed evidence.
+  Finalized releases are never silently overwritten.
+- Ordinary and recovery publishers require the matching source/run preflight and inspect retained bytes without installing or executing the package.
+  Current producer gates and CI proof policy change; historical gate definitions and evidence are unchanged.
+  This does not create a general documentation-only CI skip or new evidence-reuse authority.
+- Exact public tarball verification is separate from bounded moving README metadata observations.
+  Archive/member/document bounds and negative fixtures cover malformed, stale, missing and mismatched inputs.
+- Original failing test and browser output remains in native tool records.
+  Local qualification is not hosted CI, release acceptance or publication.
+  Reviews and final verification are recorded by their native tools and the final implementation commit.
+
+Local retained-package qualification and all Chromium/WebKit modes pass.
+Firefox fails at host process launch with `spawn UNKNOWN`, before assertions; its lane and hosted release qualification remain unverified.
+Review Agent resolved one shell-whitespace defect through a narrow repair review; the final security result belongs to the native Codex Security record.
 
 ## Verified gap and existing architecture
 
@@ -51,7 +68,7 @@ Include source-to-package documentation projection/validation; actual retained R
 Preserve existing API/behavior, package naming/native aliases, production dependencies, runtime support authority, release security/rights gates, consumer ownership, and immutable historical evidence.
 Exclude publishing a documentation repair release now, altering old npm artifacts, mass rewriting historical prose, adding a general natural-language truth engine, package-page HTML scraping, new release automation services, or rebuilding the complete archive subsystem.
 
-## Draft requirements and acceptance
+## Requirements and acceptance
 
 | ID               | Requirement                                                        | Acceptance criterion                                                                                                                                                                                                                                                                                                                                                                  |
 | ---------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -64,7 +81,7 @@ Exclude publishing a documentation repair release now, altering old npm artifact
 | REQ-006 / AC-007 | Moving metadata is not the immutable-artifact oracle.              | Registry metadata absence, bounded availability delay, truncated README, legitimate newer publication, and changed tags have distinct results; none authorizes a repeated publish or a claim about npm HTML cache freshness.                                                                                                                                                          |
 | REQ-007 / AC-008 | Tests and review establish a bounded claim.                        | Independent mutation fixtures prove each governed contract; limits reject malformed/oversized inputs; a human reviews factual prose and migration completeness for the exact candidate. No regex or schema pass is called complete editorial truth.                                                                                                                                   |
 
-## Draft design decisions and DRY ownership
+## Design decisions and DRY ownership
 
 **DEC-001 — Candidate identity and publication observation have different authorities.**
 Derive candidate name/version/exports from its manifest and source expectations from the existing package identity/version projection.

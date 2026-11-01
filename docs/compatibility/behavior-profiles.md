@@ -1,7 +1,7 @@
 # API behavior profiles
 
-This is the behavior-profile contract shipped in the [latest published release](../../README.md#release-status).
-The release includes both profiles under the approved bounded RC scope.
+This is the behavior-profile contract for [this package version](../../README.md#release-status).
+Both profiles are implemented within the documented compatibility scope.
 The [implementation and release-readiness record](profiles/java-owlapi-5.5.1/implementation-qualification.md) preserves the interrupted historical security scan and records the owner's later rc.3 release exception; the missing coverage is not represented as a completed scan.
 The [current decision ledger](java-api-parity-decisions.json) records paired expectations, native probes, tests and accepted-plan traceability.
 Its `currentBehaviorContracts` section is separate from the retained phase 21/22 receipts and their historical Java revision.

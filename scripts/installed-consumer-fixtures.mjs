@@ -16,6 +16,7 @@ export const INSTALLED_TEST_SCRIPTS = Object.freeze([
   "installed-package-no-network.mjs",
   "installed-package-import-closure.mjs",
   "installed-node-transport.mjs",
+  "installed-documentation.mjs",
 ]);
 const testRoot = fileURLToPath(new URL("../test/", import.meta.url));
 
@@ -53,6 +54,16 @@ export const writeInstalledConsumerFixtures = (
 ) => {
   if (!["owlapi", PACKAGE_NAME].includes(dependencyName))
     throw new Error("Unexpected fixture dependency name.");
+  mkdirSync(join(directory, "documentation"));
+  for (const name of [
+    "documentation-examples.mjs",
+    "release-documentation.mjs",
+    "release-artifacts.mjs",
+  ])
+    copyFileSync(
+      new URL(name, import.meta.url),
+      join(directory, "documentation", name),
+    );
   mkdirSync(join(directory, "import-closure"));
   // Transport independently captured Java archive vectors, never a decoder-built oracle.
   const observations = JSON.parse(

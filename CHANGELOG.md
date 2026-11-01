@@ -11,12 +11,9 @@ Prerelease identifiers do not create a stability promise.
 - Refresh package documentation for the published rc.3 APIs, installation, browser deployment and behavior-profile boundaries.
 - Add a release-note index and rc.3 migration guidance; correct stale claims that rc.3 and its behavior profiles are unpublished.
 
-## 0.1.0-rc.3 — published 30 October 2026 (Europe/Bucharest)
+## 0.1.0-rc.3
 
-The [immutable GitHub prerelease](https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.3) contains the qualified package and release evidence; npm `next` and `latest` both selected this version at publication.
-The [publication workflow](https://github.com/Hadden-Industries/owlapi/actions/runs/41007902342) verifies public bytes, signatures, provenance, installed consumers and immutable assets.
-The [0.1.0 roadmap](docs/plans/2026-10-29-0.1.0-release-reconciliation.md#rc3-publication-and-evidence-simplification-30-october) retains the bounded performance acceptance and the owner's exception for the incomplete historical Java-profile security review.
-This release does not claim complete Java parity or stable 0.1.0 acceptance.
+### Changes
 
 - Add explicit immutable `normative-v1` and `java-owlapi-5.5.1` behavior profiles, including profile accessors, Java loader settings and `ChangeApplied` results; omitted selection remains normative.
 - Add the explicitly authorized Node document loader under `io/node`, with per-operation access decisions and bounded transport behavior.
@@ -29,7 +26,7 @@ This release does not claim complete Java parity or stable 0.1.0 acceptance.
   Derive the Node development minimum and exact producer reference from the runtime policy; tooling uses Node 26.13 while consumer coverage retains Node 22, 24 and 26.
 - Bound CI job registration and immutable-release observation, preserve original producing-attempt provenance across compatible runner image updates, and fail terminally when required workflow output cannot be written.
 
-### Upgrading from rc.2
+### Migration
 
 - Omitted profile selection remains `normative-v1`; select `java-owlapi-5.5.1` explicitly for the released Java behavior.
   Managers, factories and configurations retain immutable profile identities; mixing configurations from different profiles rejects.
@@ -49,6 +46,14 @@ This release does not claim complete Java parity or stable 0.1.0 acceptance.
   Browser parsing remains supported; the Node document loader is not a browser transport.
 
 See the [migration guide](docs/migration/0.1.0-java-api-parity.md) and [behavior-profile contract](docs/compatibility/behavior-profiles.md) for exact differences and supported boundaries.
+
+### Limitations
+
+Full Java OWLAPI parity is not claimed.
+The compatibility registry records unsupported members and bounded source assessment; millisecond N-Quads performance outliers remain documented in the performance results.
+The original rc.3 publication had an owner-approved exception for an incomplete historical Java-profile security review; that review is not represented as complete by this documentation refresh.
+The original immutable npm artifact retains its original documentation.
+Corrections in source require a separately authorized new package version; the release history records publication observations.
 
 ## 0.1.0-rc.2 — published 10 October 2026 (Europe/Bucharest)
 

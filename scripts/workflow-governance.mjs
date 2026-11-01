@@ -1687,6 +1687,37 @@ const validateReleaseMutationBoundary = (
     const step = steps(publication).find((item) =>
       item.run?.includes(publishCommand),
     );
+    const guardCommand =
+      "node approval-tools/scripts/verify-publication-documentation.mjs --candidate .release/download --preflight .release/publication/publication-preflight.json";
+    const guards = steps(publication).filter(
+      (item) => item.run === guardCommand,
+    );
+    const downloads = actionSteps(
+      publication,
+      "actions/download-artifact",
+    ).filter(
+      (item) =>
+        item.with?.["artifact-ids"] ===
+          "${{ needs.publication_preflight.outputs.artifact_id }}" &&
+        item.with.path === ".release/publication",
+    );
+    add(
+      violations,
+      guards.length === 1 &&
+        guards[0].if === step?.if &&
+        !guards[0]["continue-on-error"] &&
+        !guards[0].env &&
+        !guards[0]["working-directory"] &&
+        steps(publication).indexOf(guards[0]) <
+          steps(publication).indexOf(step) &&
+        downloads.length === 1 &&
+        !downloads[0].if &&
+        !downloads[0]["continue-on-error"] &&
+        steps(publication).indexOf(downloads[0]) <
+          steps(publication).indexOf(guards[0]) &&
+        needs(publication).includes("publication_preflight"),
+      `${fileName}:npm_release requires bound documentation admission before every write`,
+    );
     add(
       violations,
       step?.if === "${{ github.run_attempt == 1 }}" &&

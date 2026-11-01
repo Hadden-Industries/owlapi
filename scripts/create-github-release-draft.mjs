@@ -8,8 +8,12 @@ import {
   assertReleaseAssets,
   GitHubReleaseClient,
 } from "./github-release.mjs";
-import { PACKAGE_VERSION } from "./package-identity.mjs";
+import { PACKAGE_VERSION, releaseChannel } from "./package-identity.mjs";
 import { readCandidateBundleSnapshot } from "./candidate-bundle.mjs";
+import {
+  candidateReleaseNotes,
+  assertReleaseNoteReadback,
+} from "./release-notes.mjs";
 
 const argumentValue = (name) => {
   const index = process.argv.indexOf(name);
@@ -31,13 +35,26 @@ const readCandidateAssets = (candidateDirectory, version) => {
       historicalAlpha: version === "0.1.0-alpha.0",
     },
   );
-  return Object.values(candidate.assets).map((asset) => ({
-    ...asset,
-    content: contents[asset.name],
-  }));
+  const notes =
+    version === "0.1.0-alpha.0"
+      ? ""
+      : candidateReleaseNotes({
+          tarball: contents[candidate.assets.tarball.name],
+          manifest: candidate.packageManifest,
+          expectedSha256: candidate.tarball.sha256,
+        });
+  return {
+    notes,
+    assets: Object.values(candidate.assets).map((asset) => ({
+      ...asset,
+      content: contents[asset.name],
+    })),
+  };
 };
 
-const releaseBody = (version) => `# owlapi ${version}
+const releaseBody = (version, notes) => `# owlapi ${version}
+
+${notes}
 
 This draft contains the exact retained candidate that passed the required pre-publication qualification recorded for this release identity. It remains unpublished until npm registry verification and the fourth machine-readable release-evidence asset pass.
 
@@ -78,7 +95,8 @@ const main = async () => {
       "GitHub draft creation received an invalid release identity.",
     );
   }
-  const assets = readCandidateAssets(candidateDirectory, version);
+  const { assets, notes } = readCandidateAssets(candidateDirectory, version);
+  const body = releaseBody(version, notes);
   const client = new GitHubReleaseClient({ repository, token });
   let release = await client.getReleaseByTag(tag);
   let creation = "OBSERVED_EXISTING_DRAFT";
@@ -90,9 +108,9 @@ const main = async () => {
         tag_name: tag,
         target_commitish: commit,
         name: `owlapi ${version}`,
-        body: releaseBody(version),
+        body,
         draft: true,
-        prerelease: true,
+        prerelease: releaseChannel(version) === "next",
         generate_release_notes: false,
         make_latest: "false",
       }),
@@ -111,6 +129,7 @@ const main = async () => {
     }
   }
   const accepted = assertDraftRelease(release, { tag, commit });
+  if (version !== "0.1.0-alpha.0") assertReleaseNoteReadback(release, body);
 
   for (const asset of assets) {
     const existingAssets = await client.listAssets(accepted.id);

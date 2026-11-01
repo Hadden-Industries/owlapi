@@ -13,7 +13,18 @@ import {
 import { assertReleaseExecutionIdentity } from "./release-evidence.mjs";
 import { validateReleaseEvidence } from "./validate-release-evidence.mjs";
 
-import { PACKAGE_VERSION } from "./package-identity.mjs";
+import {
+  PACKAGE_VERSION,
+  assertRegistryTarballUrl,
+  releaseChannel,
+} from "./package-identity.mjs";
+import {
+  candidateReleaseNotes,
+  observedChannelNotes,
+  assertReleaseNoteReadback,
+} from "./release-notes.mjs";
+import { readPublicRegistry } from "./public-registry-read.mjs";
+import { RELEASE_ARCHIVE_LIMITS } from "./release-artifacts.mjs";
 
 const argumentValue = (name) => {
   const index = process.argv.indexOf(name);
@@ -42,7 +53,7 @@ export const readFinalizationEvidence = (path, expectedSha256) => {
   return { bytes, sha256 };
 };
 
-const finalReleaseBody = (evidence) => {
+export const finalReleaseBody = (evidence, notes) => {
   const version = evidence.package.version;
   const required = evidence.requiredJobs
     .map(({ name }) => `- ${name}: PASS`)
@@ -53,13 +64,16 @@ const finalReleaseBody = (evidence) => {
         `- ${environment}: ${result} (${reason})`,
     )
     .join("\n");
-  const channels =
-    evidence.package.version === PACKAGE_VERSION
-      ? `Both \`next\` and \`latest\` identify \`${version}\`.`
-      : "The historical publication remained exclusively on the `next` channel.";
+  const channels = observedChannelNotes(evidence.publication);
+  if (evidence.package.version !== "0.1.0-alpha.0" && !notes)
+    throw new Error(
+      "Final release notes require exact candidate changes, migration and limitations",
+    );
   return `# owlapi ${version}
 
-Initial-development prerelease of the native-ESM \`${evidence.package.name}\` package. It implements a documented subset of Java OWLAPI concepts; \`API.md\` and the compatibility registry enumerate the exact surface and gaps.
+${notes ?? ""}
+
+Initial-development ${releaseChannel(version) === "next" ? "prerelease" : "release"} of the native-ESM \`${evidence.package.name}\` package. It implements a documented subset of Java OWLAPI concepts; \`API.md\` and the compatibility registry enumerate the exact surface and gaps.
 
 ## Required release qualification
 
@@ -122,6 +136,20 @@ const main = async () => {
     assets: release.assets,
     expected: evidence.githubRelease.assets,
   });
+  let notes;
+  if (version !== "0.1.0-alpha.0") {
+    assertRegistryTarballUrl(evidence.publication.tarballUrl);
+    notes = candidateReleaseNotes({
+      tarball: await readPublicRegistry(evidence.publication.tarballUrl, {
+        maxBytes: RELEASE_ARCHIVE_LIMITS.compressedBytes,
+      }),
+      manifest: JSON.parse(
+        readFileSync(new URL("../package.json", import.meta.url), "utf8"),
+      ),
+      expectedSha256: evidence.candidate.tarball.sha256,
+    });
+  }
+  const body = finalReleaseBody(evidence, notes);
 
   const evidenceAsset = {
     name: basename(evidencePath),
@@ -159,9 +187,9 @@ const main = async () => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       name: `owlapi ${version}`,
-      body: finalReleaseBody(evidence),
+      body,
       draft: false,
-      prerelease: true,
+      prerelease: releaseChannel(version) === "next",
       make_latest: "false",
     }),
   });
@@ -177,8 +205,10 @@ const main = async () => {
   const accepted = assertPublishedRelease(published, {
     tag,
     commit: sourceCommit,
+    prerelease: releaseChannel(version) === "next",
   });
   assertReleaseId(accepted, evidence.githubRelease.id);
+  assertReleaseNoteReadback(published, body);
   assertReleaseAssets({ assets: published.assets, expected: expectedAssets });
   const report = {
     schemaVersion: 1,

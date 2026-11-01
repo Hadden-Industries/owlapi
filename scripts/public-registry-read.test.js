@@ -3,6 +3,16 @@ import { readPublicRegistry } from "./public-registry-read.mjs";
 
 afterEach(() => jest.restoreAllMocks());
 
+test("bounds successful bytes during streaming and never retries an oversized response", async () => {
+  const request = jest
+    .spyOn(globalThis, "fetch")
+    .mockResolvedValue(new Response("12345"));
+  await expect(
+    readPublicRegistry("https://registry.npmjs.org/example", { maxBytes: 4 }),
+  ).rejects.toThrow(/byte limit/u);
+  expect(request).toHaveBeenCalledTimes(1);
+});
+
 test.each([401, 403, 404])(
   "does not retry ordinary HTTP %i",
   async (status) => {

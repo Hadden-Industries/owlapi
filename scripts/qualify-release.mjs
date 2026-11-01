@@ -14,6 +14,7 @@ import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
 
 import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
+import { inspectReleaseDocumentation } from "./release-documentation.mjs";
 import { sha256Buffer } from "./release-file-utils.mjs";
 import { inspectGzipTar } from "./release-artifacts.mjs";
 import { classifyReleaseState } from "./release-state.mjs";
@@ -318,6 +319,10 @@ const readCandidate = (candidateDirectory) => {
   });
   return {
     ...verified,
+    documentation: inspectReleaseDocumentation(
+      tarball,
+      JSON.parse(readFileSync(join(repositoryRoot, "package.json"), "utf8")),
+    ),
     packedPaths: inspectGzipTar(tarball).map(({ path }) => path),
     tarballPath: join(candidateDirectory, tarballFileName),
   };
@@ -447,12 +452,18 @@ const main = async () => {
   const report = {
     schemaVersion: 2,
     result: "PASS",
+    identity: {
+      commit: process.env.GITHUB_SHA,
+      runId: process.env.GITHUB_RUN_ID,
+      runAttempt: Number(process.env.GITHUB_RUN_ATTEMPT),
+    },
     checkedAt: new Date().toISOString(),
     registry,
     channel: "next",
     canonicalTag,
     registryState: state.action,
     producerContract,
+    documentation: candidate.documentation,
     candidate: {
       coordinate: dryRunResult.coordinate,
       fileName: candidate.tarball.fileName,

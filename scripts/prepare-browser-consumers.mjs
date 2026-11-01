@@ -15,6 +15,8 @@ import { basename, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { build } from "vite";
+import { documentationExampleModules } from "./documentation-examples.mjs";
+import { README_EXAMPLE_IDS } from "./release-documentation.mjs";
 
 import {
   hydrateReferenceImportMap,
@@ -192,6 +194,29 @@ const installFixture = (mode) => {
       `The ${mode} fixture installed an unexpected package identity`,
     );
   }
+  const examples = documentationExampleModules(
+    readFileSync(
+      join(fixtureDirectory, "node_modules", "owlapi", "README.md"),
+      "utf8",
+    ),
+  );
+  for (const [id, source] of Object.entries(examples))
+    writeFileSync(join(fixtureDirectory, `readme-${id}.js`), source);
+  writeFileSync(
+    join(fixtureDirectory, "exercise-documentation.js"),
+    `${Object.keys(examples)
+      .map(
+        (id, index) =>
+          `import { exercise as example${index} } from "./readme-${id}.js";`,
+      )
+      .join(
+        "\n",
+      )}\nexport async function exerciseDocumentation() { ${Object.keys(
+      examples,
+    )
+      .map((_, index) => `await example${index}();`)
+      .join(" ")} return { examples: ${Object.keys(examples).length} }; }\n`,
+  );
   return fixtureDirectory;
 };
 
@@ -241,6 +266,8 @@ try {
     join(runtimeDirectory, "exercise-package.js"),
   );
   for (const fileName of [
+    "exercise-documentation.js",
+    ...README_EXAMPLE_IDS.map((id) => `readme-${id}.js`),
     "json-identity.mjs",
     "public-contract.js",
     "rc2-public-contract.js",

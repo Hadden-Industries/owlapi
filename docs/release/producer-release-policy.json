@@ -36,7 +36,7 @@
     {
       "historicalRequirementId": "P19-DOCUMENTATION-001",
       "requirementId": "P19-PRODUCER-DOCUMENTATION-001",
-      "obligation": "README, API, changelog and compatibility records match public exports and supported environments, explain the prerelease boundary and exact scoped native alias, distinguish next from exact acceptance pins, and retain non-affiliation and bounded standards claims. Consumer deployments remain independently owned.",
+      "obligation": "README, API, changelog and compatibility records match public exports and supported environments, explain the prerelease boundary and exact scoped native alias, distinguish next from exact acceptance pins, and retain non-affiliation and bounded standards claims. The owlapi-release-documentation-v1 contract validates the exact retained tarball, governed identity/install/import-map/profile claims, authored Changes/Migration/Limitations, and actual README examples. Builder, preflight and every current publisher/recovery write require artifact-bound proof from the same source/run before registry effects. Notes come from those bytes; exact-version readback and moving metadata observations remain distinct. Editorial factual review and consumer deployments remain independently owned.",
       "downstreamOwner": "Application production acceptance is recorded by its owner."
     },
     {

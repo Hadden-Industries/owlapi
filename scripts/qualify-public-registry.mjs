@@ -12,6 +12,8 @@ import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
+import { inspectReleaseDocumentation } from "./release-documentation.mjs";
+import { observeRegistryDocumentation } from "./registry-documentation.mjs";
 import { sha256Buffer } from "./release-file-utils.mjs";
 import {
   PACKAGE_NAME,
@@ -287,6 +289,7 @@ export const qualifyPublicRegistry = async ({
     }),
   wait = waitForReleaseAvailability,
   verifyConsumers = exerciseFreshConsumers,
+  readMetadata,
   now = () => new Date().toISOString(),
   log = (value) => process.stdout.write(`${JSON.stringify(value)}\n`),
 }) => {
@@ -343,6 +346,13 @@ export const qualifyPublicRegistry = async ({
       distTags,
       registryTarballSha256: sha256Buffer(registryTarball),
     });
+    const manifest = JSON.parse(
+      readFileSync(new URL("../package.json", import.meta.url), "utf8"),
+    );
+    const documentation = inspectReleaseDocumentation(
+      registryTarball,
+      manifest,
+    );
     const { consumer, provenance } = await verifyConsumers(
       metadata,
       registryTarball,
@@ -357,6 +367,12 @@ export const qualifyPublicRegistry = async ({
       verifiedAt: now(),
       registry,
       ...facts,
+      documentation,
+      packageReadmeObservation: await observeRegistryDocumentation({
+        manifest,
+        tarball: registryTarball,
+        read: readMetadata,
+      }),
       tarballUrl: metadata.dist.tarball,
       npmPublishedAt: metadata.time ?? null,
       consumer,
