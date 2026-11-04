@@ -14,7 +14,9 @@ Consumer engine admission: Node.js `>=22.0.0`.
 <!-- release-documentation:identity:end -->
 
 Full Java OWLAPI parity is not claimed; the [compatibility registry](./docs/compatibility/java-api-surface.md) records the implemented surface and known gaps.
+A version in `main` is not a published or accepted package.
 Publication and each application's acceptance remain separate decisions.
+UO and WebVOWL may each use this exact RC in production after artifact verification and their own full consumer acceptance; `0.1.0` is not a prerequisite for either application.
 
 This project is an independently maintained JavaScript implementation.
 It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project.
@@ -71,6 +73,7 @@ npm install --save-exact @hadden-industries/owlapi@0.1.0-rc.3
 <!-- release-documentation:install:end -->
 
 The following moving-tag convenience commands select the registry tag at installation time, which may still identify an earlier version before this candidate is published.
+`latest` is npm's default installation target and does not imply a stable version or consumer acceptance.
 
 Use npm's native dependency alias to install the published RC and retain the imports shown below.
 Production use remains subject to the verification and consumer acceptance described above:
@@ -81,7 +84,7 @@ npm install --save-exact "owlapi@npm:@hadden-industries/owlapi@latest"
 
 This resolves `latest` once and records the resolved exact version in the native `owlapi` alias and lockfile.
 WebVOWL uses a `dependencies` entry and qualifies its chosen version for production under the [scoped publication plan](./docs/plans/scoped-npm-publication.md).
-Universal Ontology uses the same command with `--save-dev` because the package is ontology-generation tooling.
+Universal Ontology uses the package to generate its ontology import closures, and it may pin a source commit rather than a registry version.
 The installed package's real name remains `@hadden-industries/owlapi`; the alias names it `owlapi` only in the declaring consumer and does not rewrite other packages' transitive or peer dependencies.
 
 Consumers that prefer scoped imports may install it directly:

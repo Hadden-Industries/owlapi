@@ -8,16 +8,16 @@
     "scopeAuthority": {
       "method": "npm pack --dry-run --json plus local source-byte hashing",
       "fileCount": 198,
-      "sourceManifestSha256": "9c4fd8c77892a4bd238e729deb75b8ddb167c0109fa1bbb689ef5d316eb095d1"
+      "sourceManifestSha256": "01a0ce7875842427c96b05eab148d2498d6b3f6c5429a1e31f4a5e19c28df795"
     }
   },
   "review": {
     "status": "REVIEWED",
-    "factsSha256": "6f3500bb4e69244e39f8b75753fe9b27365b078cdeddd6a13b978f12f99db81b",
+    "factsSha256": "c1d67edbc4c0b1b02d2b89f105e3b2d062f787d131257937929c88c701a2b148",
     "reviewer": "Maksym Shostak",
-    "reviewedOn": "2026-10-30",
+    "reviewedOn": "2026-11-04",
     "capacity": "Project author and repository owner",
-    "conclusion": "Explicitly approved the dependent rights binding for the bounded rc.3 licence-evidence refresh from release run 40985125041. The 198-file package, source packlist, ownership and licence classifications remain unchanged; only the separately approved third-party facts digest changes for the corrected development-only @parcel/watcher-win32-x64@2.6.0 scan observation. This attestation does not expand the separate publication or security-exception authority.",
+    "conclusion": "Explicitly accepted the documentation changes made to the source packlist since the rc.3 binding. Its 198-file scope changes only CHANGELOG.md, README.md, docs/compatibility/behavior-profiles.md and docs/compatibility/default-behavior-inventory.md; the other 194 files and all ownership/licence classifications remain unchanged. This attestation binds the new source packlist. It grants no push or release authority and no security exception.",
     "digestAlgorithm": "sha256-sorted-json-v1"
   },
   "contributors": [

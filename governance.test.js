@@ -2195,7 +2195,7 @@ Neither this NOTICE nor the package licence replaces those upstream terms.
     for (const requiredText of [
       "## Why `owlapi` exists",
       "The current source candidate's version is declared in [package.json](package.json); its publication authority is recorded separately in [publication control](docs/release/publication-control.json).",
-      'npm install --save-exact "owlapi@npm:@hadden-industries/owlapi@0.1.0-rc.1"',
+      `npm install --save-exact "owlapi@npm:@hadden-industries/owlapi@${packageJson.version}"`,
       "owlapi@file:/absolute/path/hadden-industries-owlapi-<version>.tgz",
       "The manifest and release tooling select this scoped identity",
       "A version in `main` is not a published or accepted package",
