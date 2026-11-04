@@ -6,6 +6,7 @@ import {
   mkdirSync,
   mkdtempSync,
   readFileSync,
+  realpathSync,
   rmSync,
   symlinkSync,
   writeFileSync,
@@ -39,7 +40,10 @@ const materialize = (destination = join(scratch, "restored")) =>
   });
 
 beforeEach(() => {
-  scratch = mkdtempSync(join(tmpdir(), "owlapi-reference-bundle-test-"));
+  // Alias guards refuse 8.3 temp spellings such as RUNNER~1.
+  scratch = realpathSync.native(
+    mkdtempSync(join(tmpdir(), "owlapi-reference-bundle-test-")),
+  );
   bundle = join(scratch, "bundle");
   mkdirSync(bundle);
   mkdirSync(join(bundle, "runtime"));

@@ -6,6 +6,7 @@ import {
   mkdirSync,
   mkdtempSync,
   readFileSync,
+  realpathSync,
   rmSync,
   symlinkSync,
   writeFileSync,
@@ -40,7 +41,10 @@ function git(...args) {
   return result.stdout.trim();
 }
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), "owlapi-native-observation-"));
+  // Alias guards refuse 8.3 temp spellings such as RUNNER~1.
+  root = realpathSync.native(
+    mkdtempSync(join(tmpdir(), "owlapi-native-observation-")),
+  );
   options = {
     sourceDirectory: join(root, "source"),
     reportsDirectory: join(root, "reports"),

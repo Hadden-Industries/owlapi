@@ -6,6 +6,7 @@ import {
   mkdirSync,
   mkdtempSync,
   readFileSync,
+  realpathSync,
   rmSync,
   writeFileSync,
 } from "node:fs";
@@ -46,7 +47,10 @@ const materialize = () =>
   });
 
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), "reference-publication-"));
+  // Alias guards refuse 8.3 temp spellings such as RUNNER~1.
+  root = realpathSync.native(
+    mkdtempSync(join(tmpdir(), "reference-publication-")),
+  );
   bundle = join(root, "bundle");
   mkdirSync(bundle);
   for (const path of ["runtime", "notices", "sources"])
