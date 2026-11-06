@@ -43,6 +43,44 @@ export const SCANCODE_PRE_SCAN_EXCLUDED_FILE_SUFFIXES = Object.freeze([
 // regression when it fans out across many workers. A single worker also makes
 // release-evidence acquisition resource-bounded and repeatable across hosts.
 export const SCANCODE_EXECUTION_OPTIONS = Object.freeze(["--processes", "1"]);
+export const SCANCODE_MAX_PER_FILE_TIMEOUT_SECONDS = 600;
+
+export function validateScanExecutionObservation(execution) {
+  if (execution === undefined) return;
+  if (
+    !execution ||
+    typeof execution !== "object" ||
+    Array.isArray(execution) ||
+    Object.keys(execution).length !== 1 ||
+    !Object.hasOwn(execution, "perFileTimeoutSeconds") ||
+    !Number.isSafeInteger(execution.perFileTimeoutSeconds) ||
+    execution.perFileTimeoutSeconds < 1 ||
+    execution.perFileTimeoutSeconds > SCANCODE_MAX_PER_FILE_TIMEOUT_SECONDS
+  )
+    throw new TypeError(
+      "ScanCode execution requires a finite per-file timeout from 1 to 600 seconds",
+    );
+}
+
+/** Omission means no historical observation, not a fabricated implicit budget. */
+export function scanExecutionObservation(report) {
+  const timeout = report?.headers?.[0]?.options?.["--timeout"];
+  if (timeout === undefined) return undefined;
+  let perFileTimeoutSeconds = timeout;
+  if (typeof timeout === "string") {
+    const matched = /^[1-9][0-9]*(?:\.0+)?$/u.exec(timeout);
+    // JavaScript's $ can match before a final newline; require the entire
+    // original wire string. Only this raw-header boundary accepts text.
+    if (!matched || matched[0] !== timeout)
+      throw new TypeError(
+        "ScanCode raw timeout must be canonical positive integer decimal text",
+      );
+    perFileTimeoutSeconds = Number(timeout);
+  }
+  const execution = { perFileTimeoutSeconds };
+  validateScanExecutionObservation(execution);
+  return execution;
+}
 
 export const SCANCODE_TOOL = Object.freeze({
   name: "scancode-toolkit",
@@ -60,12 +98,21 @@ const assertString = (value, name) => {
   }
 };
 
-export const buildScancodeArguments = ({ outputPath, inputRoot } = {}) => {
+export const buildScancodeArguments = ({
+  outputPath,
+  inputRoot,
+  perFileTimeoutSeconds,
+} = {}) => {
   assertString(outputPath, "outputPath");
   assertString(inputRoot, "inputRoot");
+  if (perFileTimeoutSeconds !== undefined)
+    validateScanExecutionObservation({ perFileTimeoutSeconds });
   return [
     ...SCANCODE_SEMANTIC_OPTIONS,
     ...SCANCODE_EXECUTION_OPTIONS,
+    ...(perFileTimeoutSeconds === undefined
+      ? []
+      : ["--timeout", String(perFileTimeoutSeconds)]),
     "--json-pp",
     outputPath,
     inputRoot,

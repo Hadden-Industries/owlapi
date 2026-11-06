@@ -2,6 +2,7 @@ import { createHash, generateKeyPairSync, sign } from "node:crypto";
 import { createServer } from "node:http";
 import {
   mkdir,
+  cp,
   mkdtemp,
   readFile,
   readdir,
@@ -9,7 +10,7 @@ import {
   writeFile,
 } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { basename, join } from "node:path";
+import { basename, dirname, join } from "node:path";
 import { once } from "node:events";
 import { gzipSync } from "node:zlib";
 
@@ -17,6 +18,7 @@ import {
   AcquisitionError,
   acquireEvidence,
   compareCommittedEvidence,
+  collectNativeScancodeReport,
   fetchJsonWithRetry,
   parseAcquisitionArguments,
 } from "../acquire-npm-package-evidence.mjs";
@@ -34,6 +36,8 @@ import {
 } from "./evidence-manifest.mjs";
 import { computeCorpusRoot, retainBlob } from "./blob-store.mjs";
 import { stableJson } from "./digests.mjs";
+import { normalizeLockedRegistryGraph } from "./lock-graph.mjs";
+import { mergeEvidenceShardDocuments } from "./evidence-shards.mjs";
 import {
   npmRegistryKeyId,
   registrySignaturePayload,
@@ -108,6 +112,8 @@ const makeRegistryFixture = ({
   name = "alpha",
   archiveRoot = "package",
   additionalEntries = [],
+  bundled = false,
+  resolved = "https://registry.npmjs.org/alpha/-/alpha-1.0.0.tgz",
 } = {}) => {
   const tarball = makeTarball([
     {
@@ -116,14 +122,26 @@ const makeRegistryFixture = ({
         name,
         version: "1.0.0",
         license: "MIT",
+        ...(bundled ? { bundleDependencies: ["@scope/child"] } : {}),
       })}\n`,
     },
     { path: `${archiveRoot}/LICENSE`, body: "MIT licence fixture\n" },
     { path: `${archiveRoot}/index.js`, body: "export default 1;\n" },
     ...additionalEntries,
+    ...(bundled
+      ? [
+          {
+            path: `${archiveRoot}/node_modules/@scope/child/package.json`,
+            body: JSON.stringify({
+              name: "@scope/child",
+              version: "2.0.0",
+              license: "ISC",
+            }),
+          },
+        ]
+      : []),
   ]);
   const lockedIntegrity = integrity(tarball);
-  const resolved = "https://registry.npmjs.org/alpha/-/alpha-1.0.0.tgz";
   const publishedAt = "2024-01-01T00:00:00.000Z";
   const { privateKey, publicKey } = generateKeyPairSync("ec", {
     namedCurve: "prime256v1",
@@ -171,7 +189,17 @@ const makeRegistryFixture = ({
           resolved,
           integrity: lockedIntegrity,
           license: "MIT",
+          ...(bundled ? { bundleDependencies: ["@scope/child"] } : {}),
         },
+        ...(bundled
+          ? {
+              "node_modules/alpha/node_modules/@scope/child": {
+                version: "2.0.0",
+                inBundle: true,
+                license: "ISC",
+              },
+            }
+          : {}),
       },
     })}\n`,
   );
@@ -325,7 +353,267 @@ const fixtureScanWithoutDigest =
     return report;
   };
 
+const retainedNativeFixture = async ({
+  perFileTimeoutSeconds,
+  changeReport = () => {},
+  rawText,
+} = {}) => {
+  const fixture = makeRegistryFixture();
+  const registry = await startRegistryServer(fixture);
+  const repositoryRoot = await mkdtemp(
+    join(tmpdir(), "owlapi-original-native-report-"),
+  );
+  temporaryRoots.push(repositoryRoot);
+  await writeFile(
+    join(repositoryRoot, "package-lock.json"),
+    fixture.lockfileBytes,
+  );
+  let reportPath, report, diagnostic;
+  const options = {
+    repositoryRoot,
+    fetchImpl: mappedFetch(registry.origin),
+    downloadTarball: fixtureDownload,
+    verifyPackageMetadata: fixtureMetadataVerification,
+    sleep: async () => {},
+  };
+  try {
+    await acquireEvidence({
+      ...options,
+      scanArtifact: async (input) => {
+        report = await fixtureScan(input);
+        if (perFileTimeoutSeconds !== undefined)
+          report.headers[0].options["--timeout"] = perFileTimeoutSeconds;
+        changeReport(report);
+        reportPath = input.outputPath;
+        await writeFile(reportPath, rawText ?? JSON.stringify(report));
+        return report;
+      },
+    });
+  } catch (error) {
+    diagnostic = error;
+  }
+  expect(diagnostic).toBeInstanceOf(AcquisitionError);
+  expect(diagnostic.retainedScanReportsSha256).toMatch(/^[a-f0-9]{64}$/u);
+  return {
+    fixture,
+    options,
+    reportPath,
+    report,
+    diagnostic,
+    reuse: {
+      reuseScanReports: diagnostic.retainedWorkingRoot,
+      reuseScanReportsSha256: diagnostic.retainedScanReportsSha256,
+    },
+  };
+};
+
 describe("acquireEvidence", () => {
+  it("passes the measured 600s native cap while keeping the 1h artifact deadline and checking the actual header", async () => {
+    const root = await mkdtemp(join(tmpdir(), "owlapi-native-budget-"));
+    temporaryRoots.push(root);
+    const outputPath = join(root, "native.json");
+    const inputRoot = join(root, "input");
+    const report = await fixtureScan({
+      inputRoot,
+      artifactId: "fixture",
+      inventory: { entries: [] },
+    });
+    const execute = async (_command, args, options) => {
+      expect(args).toEqual(expect.arrayContaining(["--timeout", "600"]));
+      expect(options.timeout).toBe(3600000);
+      report.headers[0].options["--timeout"] = "600.0";
+      await writeFile(outputPath, JSON.stringify(report));
+    };
+    await expect(
+      collectNativeScancodeReport(
+        { scancode: "scanner.exe", inputRoot, outputPath },
+        { execute },
+      ),
+    ).resolves.toEqual(report);
+    expect(
+      JSON.parse(await readFile(outputPath, "utf8")).headers[0].options[
+        "--timeout"
+      ],
+    ).toBe("600.0");
+    await expect(
+      collectNativeScancodeReport(
+        { scancode: "scanner.exe", inputRoot, outputPath },
+        {
+          execute: async () => {
+            report.headers[0].options["--timeout"] = "120.0";
+            await writeFile(outputPath, JSON.stringify(report));
+          },
+        },
+      ),
+    ).rejects.toMatchObject({ code: "SCANCODE_EXECUTION_FAILED" });
+  });
+
+  it.each([
+    [undefined, undefined],
+    [120, 120],
+    [600, 600],
+    ["120.0", 120],
+    ["600.0", 600],
+  ])(
+    "reuses only complete originally bound native wire budget %j as stored budget %s",
+    async (rawTimeout, expectedBudget) => {
+      const cached = await retainedNativeFixture({
+        perFileTimeoutSeconds: rawTimeout,
+      });
+      const original = await readFile(cached.reportPath);
+      let scans = 0;
+      const result = await acquireEvidence({
+        ...cached.options,
+        ...cached.reuse,
+        write: true,
+        scanArtifact: async () => {
+          scans++;
+          throw new Error("must reuse");
+        },
+      });
+      expect(scans).toBe(0);
+      expect(await readFile(cached.reportPath)).toEqual(original);
+      if (expectedBudget === undefined)
+        expect(result.manifest.artifacts[0].scan).not.toHaveProperty(
+          "execution",
+        );
+      else
+        expect(result.manifest.artifacts[0].scan.execution).toEqual({
+          perFileTimeoutSeconds: expectedBudget,
+        });
+    },
+  );
+
+  it.each([
+    [
+      "scanner errors",
+      (report) => {
+        report.files.find(({ type }) => type === "file").scan_errors = [
+          "original scanner timeout",
+        ];
+      },
+    ],
+    [
+      "incomplete native coverage",
+      (report) => {
+        report.files = report.files.filter(({ name }) => name !== "index.js");
+      },
+    ],
+  ])(
+    "retains original %s and collects fresh complete native findings",
+    async (_name, changeReport) => {
+      const cached = await retainedNativeFixture({ changeReport });
+      const original = await readFile(cached.reportPath);
+      let scans = 0;
+      const result = await acquireEvidence({
+        ...cached.options,
+        ...cached.reuse,
+        write: true,
+        scanArtifact: async (input) => {
+          scans++;
+          const report = await fixtureScan(input);
+          report.headers[0].options["--timeout"] = "600.0";
+          return report;
+        },
+      });
+      expect(scans).toBe(1);
+      expect(result.manifest.artifacts[0].scan.execution).toEqual({
+        perFileTimeoutSeconds: 600,
+      });
+      expect(await readFile(cached.reportPath)).toEqual(original);
+    },
+  );
+
+  it.each([
+    [
+      "licensing text",
+      (report) => {
+        report.files.find(({ type }) => type === "file").copyrights = [
+          { copyright: "tampered" },
+        ];
+      },
+    ],
+    [
+      "timeout header",
+      (report) => {
+        report.headers[0].options["--timeout"] = "600.0";
+      },
+    ],
+  ])(
+    "refuses post-diagnostic %s edits even with unchanged body coverage",
+    async (_name, tamper) => {
+      const cached = await retainedNativeFixture({
+        perFileTimeoutSeconds: "120.0",
+      });
+      tamper(cached.report);
+      await writeFile(cached.reportPath, JSON.stringify(cached.report));
+      await expect(
+        acquireEvidence({ ...cached.options, ...cached.reuse, write: true }),
+      ).rejects.toMatchObject({ code: "REUSED_SCAN_REPORT_BINDING_MISMATCH" });
+    },
+  );
+
+  it.each([
+    [
+      "partial one-file input root",
+      (report) => {
+        report.headers[0].options.input[0] += "/package/LICENSE";
+      },
+    ],
+    [
+      "changed body digest",
+      (report) => {
+        report.files.find(({ type }) => type === "file").sha256 = "0".repeat(
+          64,
+        );
+      },
+    ],
+    [
+      "invalid semantic options",
+      (report) => {
+        report.headers[0].options["--license"] = false;
+      },
+    ],
+  ])(
+    "refuses bound %s instead of treating it as a fresh scan cache miss",
+    async (_name, changeReport) => {
+      const cached = await retainedNativeFixture({ changeReport });
+      let scans = 0;
+      await expect(
+        acquireEvidence({
+          ...cached.options,
+          ...cached.reuse,
+          write: true,
+          scanArtifact: async () => {
+            scans++;
+          },
+        }),
+      ).rejects.toMatchObject({ code: "REUSED_SCAN_REPORT_INVALID" });
+      expect(scans).toBe(0);
+    },
+  );
+
+  it("refuses malformed bound native JSON and changed original tar bytes", async () => {
+    const malformed = await retainedNativeFixture({ rawText: "{malformed" });
+    await expect(
+      acquireEvidence({
+        ...malformed.options,
+        ...malformed.reuse,
+        write: true,
+      }),
+    ).rejects.toMatchObject({ code: "REUSED_SCAN_REPORT_INVALID" });
+    const cached = await retainedNativeFixture();
+    const [tar] = await readdir(
+      join(cached.diagnostic.retainedWorkingRoot, "tarballs"),
+    );
+    await writeFile(
+      join(cached.diagnostic.retainedWorkingRoot, "tarballs", tar),
+      "changed tar",
+    );
+    await expect(
+      acquireEvidence({ ...cached.options, ...cached.reuse, write: true }),
+    ).rejects.toMatchObject({ code: "REUSED_SCAN_REPORT_INVALID" });
+  });
   it.each([
     "alpha",
     "@scope/alpha",
@@ -404,117 +692,130 @@ describe("acquireEvidence", () => {
     },
   );
 
-  it("reuses only fully verified immutable evidence without downloading or rescanning unchanged artifacts", async () => {
-    const fixture = makeRegistryFixture();
-    const registry = await startRegistryServer(fixture);
-    const baselineRoot = await mkdtemp(
-      join(tmpdir(), "owlapi-evidence-baseline-"),
-    );
-    const repositoryRoot = await mkdtemp(
-      join(tmpdir(), "owlapi-evidence-update-"),
-    );
-    temporaryRoots.push(baselineRoot, repositoryRoot);
-    await writeFile(
-      join(baselineRoot, "package-lock.json"),
-      fixture.lockfileBytes,
-    );
-    const options = {
-      fetchImpl: mappedFetch(registry.origin),
-      downloadTarball: fixtureDownload,
-      verifyPackageMetadata: fixtureMetadataVerification,
-      scanArtifact: fixtureScan,
-      write: true,
-      sleep: async () => {},
-    };
-    const baseline = await acquireEvidence({
-      ...options,
-      repositoryRoot: baselineRoot,
-    });
-    const changedLock = JSON.parse(fixture.lockfileBytes);
-    changedLock.packages[""].version = "1.1.0";
-    changedLock.packages["node_modules/nested/node_modules/alpha"] = {
-      ...changedLock.packages["node_modules/alpha"],
-      dev: true,
-    };
-    await writeFile(
-      join(repositoryRoot, "package-lock.json"),
-      stableJson(changedLock),
-    );
-    await mkdir(join(repositoryRoot, "docs/provenance/evidence/npm"), {
-      recursive: true,
-    });
-    await writeFile(
-      join(repositoryRoot, "docs/provenance/evidence/npm/README.md"),
-      "Repository-owned corpus documentation\n",
-    );
-    let downloads = 0;
-    let scans = 0;
-    const updated = await acquireEvidence({
-      ...options,
-      repositoryRoot,
-      reuseEvidenceFrom: baselineRoot,
-      downloadTarball: async (...args) => {
-        downloads += 1;
-        return fixtureDownload(...args);
-      },
-      scanArtifact: async (...args) => {
-        scans += 1;
-        return fixtureScan(...args);
-      },
-    });
-    expect(downloads).toBe(0);
-    expect(scans).toBe(0);
-    expect(
-      await readFile(
-        join(repositoryRoot, "docs/provenance/evidence/npm/README.md"),
-        "utf8",
-      ),
-    ).toBe("Repository-owned corpus documentation\n");
-    for (const field of [
-      "archive",
-      "scan",
-      "registrySignature",
-      "provenance",
-      "tarball",
-    ]) {
-      expect(updated.manifest.artifacts[0][field]).toEqual(
-        baseline.manifest.artifacts[0][field],
+  it.each([false, true])(
+    "reuses only fully verified immutable evidence without downloading or rescanning unchanged artifacts (bundled=%s)",
+    async (bundled) => {
+      const fixture = makeRegistryFixture({ bundled });
+      const registry = await startRegistryServer(fixture);
+      const baselineRoot = await mkdtemp(
+        join(tmpdir(), "owlapi-evidence-baseline-"),
       );
-    }
-    expect(updated.manifest.artifacts[0].occurrencePaths).toHaveLength(2);
-    expect(updated.manifest.occurrences).toHaveLength(2);
-    expect(updated.manifest.lockfile.sha256).not.toBe(
-      baseline.manifest.lockfile.sha256,
-    );
-    await expect(
-      verifyEvidenceManifest({
-        manifest: updated.manifest,
-        lockfileBytes: Buffer.from(stableJson(changedLock)),
-        blobRoot: join(repositoryRoot, "docs/provenance/evidence/npm"),
-      }),
-    ).resolves.toBeDefined();
-
-    const damaged = baseline.manifest.blobs[0];
-    await writeFile(
-      join(baselineRoot, "docs/provenance/evidence/npm", damaged.path),
-      "corrupt evidence",
-    );
-    await expect(
-      acquireEvidence({
+      const repositoryRoot = await mkdtemp(
+        join(tmpdir(), "owlapi-evidence-update-"),
+      );
+      temporaryRoots.push(baselineRoot, repositoryRoot);
+      await writeFile(
+        join(baselineRoot, "package-lock.json"),
+        fixture.lockfileBytes,
+      );
+      const options = {
+        fetchImpl: mappedFetch(registry.origin),
+        downloadTarball: fixtureDownload,
+        verifyPackageMetadata: fixtureMetadataVerification,
+        scanArtifact: async (input) => {
+          const report = await fixtureScan(input);
+          if (bundled) report.headers[0].options["--timeout"] = 120;
+          return report;
+        },
+        write: true,
+        sleep: async () => {},
+      };
+      const baseline = await acquireEvidence({
+        ...options,
+        repositoryRoot: baselineRoot,
+      });
+      const changedLock = JSON.parse(fixture.lockfileBytes);
+      changedLock.packages[""].version = "1.1.0";
+      changedLock.packages["node_modules/nested/node_modules/alpha"] = {
+        ...changedLock.packages["node_modules/alpha"],
+        dev: true,
+      };
+      await writeFile(
+        join(repositoryRoot, "package-lock.json"),
+        stableJson(changedLock),
+      );
+      await mkdir(join(repositoryRoot, "docs/provenance/evidence/npm"), {
+        recursive: true,
+      });
+      await writeFile(
+        join(repositoryRoot, "docs/provenance/evidence/npm/README.md"),
+        "Repository-owned corpus documentation\n",
+      );
+      let downloads = 0;
+      let scans = 0;
+      const updated = await acquireEvidence({
         ...options,
         repositoryRoot,
         reuseEvidenceFrom: baselineRoot,
-      }),
-    ).rejects.toThrow(/evidence|blob/i);
-    expect(
-      JSON.parse(
+        downloadTarball: async (...args) => {
+          downloads += 1;
+          return fixtureDownload(...args);
+        },
+        scanArtifact: async (...args) => {
+          scans += 1;
+          return fixtureScan(...args);
+        },
+      });
+      expect(downloads).toBe(0);
+      expect(scans).toBe(0);
+      if (bundled)
+        expect(updated.manifest.artifacts[0].scan.execution).toEqual({
+          perFileTimeoutSeconds: 120,
+        });
+      expect(
         await readFile(
-          join(repositoryRoot, "docs/provenance/npm-package-evidence.json"),
+          join(repositoryRoot, "docs/provenance/evidence/npm/README.md"),
           "utf8",
         ),
-      ),
-    ).toEqual(updated.manifest);
-  });
+      ).toBe("Repository-owned corpus documentation\n");
+      for (const field of [
+        "archive",
+        "scan",
+        "registrySignature",
+        "provenance",
+        "tarball",
+      ]) {
+        expect(updated.manifest.artifacts[0][field]).toEqual(
+          baseline.manifest.artifacts[0][field],
+        );
+      }
+      expect(updated.manifest.artifacts[0].occurrencePaths).toHaveLength(
+        bundled ? 3 : 2,
+      );
+      expect(updated.manifest.occurrences).toHaveLength(bundled ? 3 : 2);
+      expect(updated.manifest.lockfile.sha256).not.toBe(
+        baseline.manifest.lockfile.sha256,
+      );
+      await expect(
+        verifyEvidenceManifest({
+          manifest: updated.manifest,
+          lockfileBytes: Buffer.from(stableJson(changedLock)),
+          blobRoot: join(repositoryRoot, "docs/provenance/evidence/npm"),
+        }),
+      ).resolves.toBeDefined();
+
+      const damaged = baseline.manifest.blobs[0];
+      await writeFile(
+        join(baselineRoot, "docs/provenance/evidence/npm", damaged.path),
+        "corrupt evidence",
+      );
+      await expect(
+        acquireEvidence({
+          ...options,
+          repositoryRoot,
+          reuseEvidenceFrom: baselineRoot,
+        }),
+      ).rejects.toThrow(/evidence|blob/i);
+      expect(
+        JSON.parse(
+          await readFile(
+            join(repositoryRoot, "docs/provenance/npm-package-evidence.json"),
+            "utf8",
+          ),
+        ),
+      ).toEqual(updated.manifest);
+    },
+  );
 
   it("parses explicit baseline reuse without changing the default fresh-acquisition route", () => {
     expect(
@@ -523,14 +824,144 @@ describe("acquireEvidence", () => {
     expect(() =>
       parseAcquisitionArguments(["--reuse-evidence=a", "--reuse-evidence=b"]),
     ).toThrow(/Duplicate/);
-    expect(() =>
+    expect(
       parseAcquisitionArguments([
         "--reuse-evidence=old",
         "--shard-count=2",
         "--shard-index=0",
         "--output=out",
       ]),
-    ).toThrow(/reuse.*shard|shard.*reuse/i);
+    ).toMatchObject({
+      reuseEvidenceFrom: "old",
+      shard: { count: 2, index: 0, outputRoot: "out" },
+    });
+    expect(() =>
+      parseAcquisitionArguments([
+        "--reuse-evidence=old",
+        "--shard-count=2",
+        "--shard-index=0",
+        "--output=out",
+        "--write",
+      ]),
+    ).toThrow(/write.*shard/iu);
+  });
+
+  it("reuses only exact selected current IDs into distinct shards and rejects incomplete overlapping or stale merges", async () => {
+    const alpha = makeRegistryFixture();
+    const beta = makeRegistryFixture({
+      name: "beta",
+      resolved: "https://registry.npmjs.org/beta/-/beta-1.0.0.tgz",
+    });
+    const registry = await startRegistryServer(alpha, {
+      handle: ({ request, response }) => {
+        if (request.url === "/-/npm/v1/keys") {
+          response.end(JSON.stringify({ keys: [alpha.key, beta.key] }));
+          return true;
+        }
+        if (request.url === "/beta") {
+          response.end(JSON.stringify(beta.packument));
+          return true;
+        }
+        if (request.url === "/beta/-/beta-1.0.0.tgz") {
+          response.end(beta.tarball);
+          return true;
+        }
+        return false;
+      },
+    });
+    const baselineRoot = await mkdtemp(
+      join(tmpdir(), "owlapi-shard-reuse-baseline-"),
+    );
+    const repositoryRoot = await mkdtemp(
+      join(tmpdir(), "owlapi-shard-reuse-candidate-"),
+    );
+    temporaryRoots.push(baselineRoot, repositoryRoot);
+    const lock = JSON.parse(alpha.lockfileBytes);
+    lock.packages["node_modules/beta"] = JSON.parse(
+      beta.lockfileBytes,
+    ).packages["node_modules/alpha"];
+    await writeFile(join(baselineRoot, "package-lock.json"), stableJson(lock));
+    const options = {
+      fetchImpl: mappedFetch(registry.origin),
+      downloadTarball: fixtureDownload,
+      verifyPackageMetadata: fixtureMetadataVerification,
+      sleep: async () => {},
+    };
+    const baseline = await acquireEvidence({
+      ...options,
+      repositoryRoot: baselineRoot,
+      write: true,
+      scanArtifact: async (input) => {
+        const report = await fixtureScan(input);
+        report.headers[0].options["--timeout"] = 120;
+        return report;
+      },
+    });
+    lock.packages[""].version = "1.1.0";
+    const lockfileBytes = Buffer.from(stableJson(lock));
+    await writeFile(join(repositoryRoot, "package-lock.json"), lockfileBytes);
+    const graph = normalizeLockedRegistryGraph(lockfileBytes);
+    const inputRoot = join(repositoryRoot, "shards");
+    const results = [];
+    for (let index = 0; index < 2; index++) {
+      const outputRoot = join(inputRoot, `shard-${index}`);
+      const result = await acquireEvidence({
+        ...options,
+        repositoryRoot,
+        reuseEvidenceFrom: baselineRoot,
+        shard: { count: 2, index, outputRoot },
+        downloadTarball: async () => {
+          throw new Error("unchanged selected artifacts must not download");
+        },
+        scanArtifact: async () => {
+          throw new Error("unchanged selected artifacts must not rescan");
+        },
+      });
+      const expectedIds = graph.artifacts
+        .filter(
+          ({ artifactId }) =>
+            Number.parseInt(artifactId.slice(0, 8), 16) % 2 === index,
+        )
+        .map(({ artifactId }) => artifactId);
+      expect(
+        result.shard.artifacts.map(({ artifactId }) => artifactId),
+      ).toEqual(expectedIds);
+      expect(
+        result.shard.occurrences.every(({ artifactId }) =>
+          expectedIds.includes(artifactId),
+        ),
+      ).toBe(true);
+      for (const artifact of result.shard.artifacts) {
+        const original = baseline.manifest.artifacts.find(
+          ({ artifactId }) => artifactId === artifact.artifactId,
+        );
+        expect(artifact.scan).toEqual(original.scan);
+        expect(artifact.scan.execution).toEqual({ perFileTimeoutSeconds: 120 });
+      }
+      await expect(
+        verifyEvidenceShard({
+          shard: result.shard,
+          lockfileBytes,
+          blobRoot: outputRoot,
+        }),
+      ).resolves.toBeDefined();
+      results.push(result.shard);
+    }
+    const merged = await mergeEvidenceShardDirectories({
+      repositoryRoot,
+      inputRoot,
+      outputRoot: join(repositoryRoot, "aggregate"),
+    });
+    expect(
+      merged.manifest.artifacts.map(({ artifactId }) => artifactId),
+    ).toEqual(graph.artifacts.map(({ artifactId }) => artifactId));
+    for (const shards of [results.slice(0, 1), [results[0], results[0]]])
+      expect(() => mergeEvidenceShardDocuments({ graph, shards })).toThrow();
+    const stale = structuredClone(results);
+    stale[0].lockfile.sha256 = "0".repeat(64);
+    expect(() =>
+      mergeEvidenceShardDocuments({ graph, shards: stale }),
+    ).toThrow();
   });
 
   it("compares identical findings across recorded Python runtimes without accepting semantic policy changes", async () => {
@@ -560,6 +991,10 @@ describe("acquireEvidence", () => {
       "docs/provenance/npm-package-evidence.json",
     );
     await writeFile(manifestPath, stableJson(historical));
+    result.manifest.artifacts[0].scan.execution = {
+      perFileTimeoutSeconds: 600,
+    };
+    expect(historical.artifacts[0].scan).not.toHaveProperty("execution");
     await expect(
       compareCommittedEvidence({
         repositoryRoot,
@@ -568,6 +1003,15 @@ describe("acquireEvidence", () => {
       }),
     ).resolves.toMatchObject({ artifactCount: 1 });
     expect(await readFile(manifestPath, "utf8")).toBe(stableJson(historical));
+    const invalidObservation = structuredClone(result.manifest);
+    invalidObservation.artifacts[0].scan.execution.perFileTimeoutSeconds = 601;
+    await expect(
+      compareCommittedEvidence({
+        repositoryRoot,
+        manifest: invalidObservation,
+        lockfileBytes: fixture.lockfileBytes,
+      }),
+    ).rejects.toThrow();
     const changed = structuredClone(result.manifest);
     changed.policy.scanner.executionOptions = ["--processes", "2"];
     await expect(
@@ -586,6 +1030,79 @@ describe("acquireEvidence", () => {
         lockfileBytes: fixture.lockfileBytes,
       }),
     ).rejects.toThrow();
+  });
+
+  it("retains original scanner diagnostics and working files on failure without publishing evidence", async () => {
+    const fixture = makeRegistryFixture();
+    const registry = await startRegistryServer(fixture);
+    const repositoryRoot = await mkdtemp(
+      join(tmpdir(), "owlapi-retained-acquisition-"),
+    );
+    temporaryRoots.push(repositoryRoot);
+    await writeFile(
+      join(repositoryRoot, "package-lock.json"),
+      fixture.lockfileBytes,
+    );
+    const provenanceRoot = join(repositoryRoot, "docs/provenance");
+    await mkdir(join(provenanceRoot, "evidence/npm"), { recursive: true });
+    const previousManifest = "original committed evidence manifest\n";
+    await writeFile(
+      join(provenanceRoot, "npm-package-evidence.json"),
+      previousManifest,
+    );
+    await writeFile(
+      join(provenanceRoot, "evidence/npm/original"),
+      "original evidence bytes\n",
+    );
+    const rawDiagnostic =
+      '{"errors":["original scanner failure"],"files":[]}\n';
+    let reportPath, scanRoot, failure;
+    try {
+      await acquireEvidence({
+        repositoryRoot,
+        fetchImpl: mappedFetch(registry.origin),
+        downloadTarball: fixtureDownload,
+        verifyPackageMetadata: fixtureMetadataVerification,
+        scanArtifact: async ({ inputRoot, outputPath }) => {
+          scanRoot = inputRoot;
+          reportPath = outputPath;
+          await writeFile(outputPath, rawDiagnostic);
+          throw new Error("original scanner failure");
+        },
+        write: true,
+        sleep: async () => {},
+      });
+    } catch (error) {
+      failure = error;
+    }
+    expect(failure).toBeInstanceOf(AcquisitionError);
+    expect(failure).toMatchObject({
+      classification: "CONTROL_FAILURE",
+      code: "SCANCODE_EXECUTION_FAILED",
+    });
+    expect(failure.retainedWorkingRoot).toBe(dirname(dirname(reportPath)));
+    expect(failure.message).toContain(failure.retainedWorkingRoot);
+    expect(failure.retainedScanReportsSha256).toMatch(/^[a-f0-9]{64}$/u);
+    expect(failure.message).toContain(failure.retainedScanReportsSha256);
+    expect(failure.message).toContain("original scanner failure");
+    expect(await readFile(reportPath, "utf8")).toBe(rawDiagnostic);
+    expect(
+      JSON.parse(
+        await readFile(join(scanRoot, "package/package.json"), "utf8"),
+      ),
+    ).toMatchObject({ name: "alpha", version: "1.0.0" });
+    expect(
+      await readdir(join(failure.retainedWorkingRoot, "tarballs")),
+    ).toHaveLength(1);
+    expect(
+      await readdir(join(failure.retainedWorkingRoot, "corpus/blobs/sha256")),
+    ).not.toHaveLength(0);
+    expect(
+      await readFile(join(provenanceRoot, "npm-package-evidence.json"), "utf8"),
+    ).toBe(previousManifest);
+    expect(
+      await readFile(join(provenanceRoot, "evidence/npm/original"), "utf8"),
+    ).toBe("original evidence bytes\n");
   });
 
   it("acquires, authenticates, scans and writes a platform-neutral fixture corpus", async () => {
@@ -609,6 +1126,12 @@ describe("acquireEvidence", () => {
       write: true,
       sleep: async () => {},
     });
+
+    expect(
+      (await readdir(join(repositoryRoot, ".release"))).some((name) =>
+        name.startsWith("npm-evidence-"),
+      ),
+    ).toBe(false);
 
     expect(result.manifest).toMatchObject({
       package: { name: "fixture", version: "1.0.0" },
@@ -1111,6 +1634,34 @@ describe("acquireEvidence", () => {
       corpusRoot: merged.manifest.corpusRoot,
       summary: { artifactCount: 1 },
     });
+    const observedRoot = join(repositoryRoot, "observed-aggregate");
+    await cp(aggregateRoot, observedRoot, { recursive: true });
+    const observed = structuredClone(merged.manifest);
+    observed.policy.scanner.pythonVersion = "3.14";
+    observed.artifacts[0].scan.execution = { perFileTimeoutSeconds: 600 };
+    await writeFile(
+      join(observedRoot, "npm-package-evidence.json"),
+      stableJson(observed),
+    );
+    await expect(
+      verifyEvidenceAggregateParity({
+        repositoryRoot,
+        leftRoot: aggregateRoot,
+        rightRoot: observedRoot,
+      }),
+    ).resolves.toMatchObject({ corpusRoot: merged.manifest.corpusRoot });
+    observed.artifacts[0].scan.execution.perFileTimeoutSeconds = -1;
+    await writeFile(
+      join(observedRoot, "npm-package-evidence.json"),
+      stableJson(observed),
+    );
+    await expect(
+      verifyEvidenceAggregateParity({
+        repositoryRoot,
+        leftRoot: aggregateRoot,
+        rightRoot: observedRoot,
+      }),
+    ).rejects.toThrow();
   });
 
   it("recanonicalizes a verified legacy aggregate without registry or scanner access", async () => {
@@ -1525,6 +2076,26 @@ describe("registry-key snapshot CLI", () => {
 });
 
 describe("acquisition CLI", () => {
+  it("requires the original native diagnostic binding for explicit raw-report reuse", () => {
+    const binding = "a".repeat(64);
+    expect(
+      parseAcquisitionArguments([
+        "--reuse-scan-reports=C:/original",
+        `--reuse-scan-reports-sha256=${binding}`,
+      ]),
+    ).toMatchObject({
+      reuseScanReports: "C:/original",
+      reuseScanReportsSha256: binding,
+    });
+    for (const arguments_ of [
+      ["--reuse-scan-reports=C:/original"],
+      [`--reuse-scan-reports-sha256=${binding}`],
+      ["--reuse-scan-reports=x", "--reuse-scan-reports-sha256=invalid"],
+    ])
+      expect(() => parseAcquisitionArguments(arguments_)).toThrow(
+        /original diagnostic SHA-256/u,
+      );
+  });
   it("requires an explicit write switch to replace committed evidence", () => {
     expect(parseAcquisitionArguments([])).toEqual({
       write: false,

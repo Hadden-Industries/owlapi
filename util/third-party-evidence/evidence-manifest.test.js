@@ -30,7 +30,7 @@ afterEach(async () => {
 const sri = (value) =>
   `sha512-${createHash("sha512").update(value).digest("base64")}`;
 
-const makeLockfile = () => {
+const makeLockfile = ({ bundled = false } = {}) => {
   const packages = {
     "": { name: "fixture", version: "1.0.0" },
   };
@@ -41,6 +41,15 @@ const makeLockfile = () => {
       integrity: sri(`${name}-tarball`),
       license: "MIT",
       dev: name === "beta",
+    };
+  }
+  if (bundled) {
+    packages["node_modules/beta"].bundleDependencies = ["@scope/child"];
+    packages["node_modules/beta/node_modules/@scope/child"] = {
+      version: "2.0.0",
+      inBundle: true,
+      dev: true,
+      license: "ISC",
     };
   }
   return Buffer.from(`${JSON.stringify({ lockfileVersion: 3, packages })}\n`);
@@ -72,11 +81,11 @@ const retainEvidence = async (root, kind, artifactId, evidence) => ({
   kind,
 });
 
-const makeFixture = async () => {
+const makeFixture = async ({ bundled = false } = {}) => {
   const repositoryRoot = await mkdtemp(join(tmpdir(), "owlapi-evidence-"));
   temporaryRoots.push(repositoryRoot);
   const blobRoot = join(repositoryRoot, "evidence");
-  const lockfileBytes = makeLockfile();
+  const lockfileBytes = makeLockfile({ bundled });
   const graph = normalizeLockedRegistryGraph(lockfileBytes);
   const { privateKey, key } = makeRegistryKey();
   const blobs = [];
@@ -117,6 +126,36 @@ const makeFixture = async () => {
       name: identity.name,
       version: identity.version,
     };
+    const bundledPackages = [];
+    if (bundled && identity.name === "beta") {
+      packageMetadata.bundleDependencies = ["@scope/child"];
+      const metadata = {
+        name: "@scope/child",
+        version: "2.0.0",
+        license: "ISC",
+      };
+      const bytes = Buffer.from(JSON.stringify(metadata));
+      const blob = {
+        ...(await retainBlob(blobRoot, bytes)),
+        kind: "PACKAGE_EVIDENCE_FILE",
+      };
+      blobs.push(blob);
+      bundledPackages.push({
+        path: "package/node_modules/@scope/child/package.json",
+        size: bytes.length,
+        sha256: sha256(bytes),
+        packageMetadata: metadata,
+        blob,
+      });
+    }
+    const bundledEntries = bundledPackages.map(
+      ({ path, size, sha256: digest }) => ({
+        path,
+        type: "FILE",
+        size,
+        sha256: digest,
+      }),
+    );
     const packageMetadataBytes = Buffer.from(
       `${JSON.stringify(packageMetadata)}\n`,
     );
@@ -140,17 +179,20 @@ const makeFixture = async () => {
         },
         packageMetadata,
         tarball,
-        entries: legalEvidence
-          ? [
-              packageEntry,
-              {
-                path: "package/LICENSE",
-                type: "FILE",
-                size: legalEvidence.bytes,
-                sha256: legalEvidence.sha256,
-              },
-            ]
-          : [packageEntry],
+        entries: [
+          packageEntry,
+          ...(legalEvidence
+            ? [
+                {
+                  path: "package/LICENSE",
+                  type: "FILE",
+                  size: legalEvidence.bytes,
+                  sha256: legalEvidence.sha256,
+                },
+              ]
+            : []),
+          ...bundledEntries,
+        ],
         evidenceFiles: legalEvidence
           ? [
               {
@@ -163,8 +205,11 @@ const makeFixture = async () => {
             ]
           : [],
         expandedBytes:
-          packageEntry.size + (legalEvidence ? legalEvidence.bytes : 0),
-        physicalEntryCount: legalEvidence ? 2 : 1,
+          packageEntry.size +
+          (legalEvidence ? legalEvidence.bytes : 0) +
+          bundledPackages.reduce((total, member) => total + member.size, 0),
+        physicalEntryCount: (legalEvidence ? 2 : 1) + bundledPackages.length,
+        ...(bundledPackages.length ? { bundledPackages } : {}),
       },
     );
     const signatureEvidence = await retainEvidence(
@@ -257,6 +302,105 @@ const expectClassifiedFailure = async (promise, classification) => {
 };
 
 describe("npm package evidence manifest", () => {
+  it.each([0, -1, 601, 1.5, null, "600"])(
+    "rejects invalid recorded scan resource observation %s",
+    async (perFileTimeoutSeconds) => {
+      const fixture = await makeFixture();
+      fixture.manifest.artifacts[0].scan.execution = { perFileTimeoutSeconds };
+      await expect(verifyEvidenceManifest(fixture)).rejects.toMatchObject({
+        code: "SCANCODE_EXECUTION_OBSERVATION_INVALID",
+      });
+    },
+  );
+  it("verifies bundled original manifest blobs and schema while retaining one owning registry artifact", async () => {
+    const fixture = await makeFixture({ bundled: true });
+    await expect(verifyEvidenceManifest(fixture)).resolves.toMatchObject({
+      occurrenceCount: 3,
+      artifactCount: 2,
+    });
+    const schema = JSON.parse(
+      await readFile(
+        new URL(
+          "../../docs/provenance/npm-package-evidence.schema.json",
+          import.meta.url,
+        ),
+        "utf8",
+      ),
+    );
+    const ajv = new Ajv2020({ allErrors: true, strict: true });
+    addFormats(ajv);
+    const validate = ajv.compile(schema);
+    expect(validate(fixture.manifest)).toBe(true);
+    const bundled = fixture.manifest.occurrences.find((entry) => entry.bundled);
+    bundled.bundled.packageJsonPath = "../outside/package.json";
+    expect(validate(fixture.manifest)).toBe(false);
+  });
+
+  it.each([
+    [
+      "lock identity mismatch",
+      (archive) => {
+        archive.bundledPackages[0].packageMetadata.version = "9.0.0";
+      },
+    ],
+    [
+      "missing physical manifest",
+      (archive) => {
+        archive.entries = archive.entries.filter(
+          ({ path }) => !path.includes("node_modules"),
+        );
+      },
+    ],
+    [
+      "missing original blob",
+      (archive) => {
+        archive.bundledPackages[0].blob.sha256 = "0".repeat(64);
+      },
+    ],
+    [
+      "false bundle declaration",
+      (archive) => {
+        delete archive.packageMetadata.bundleDependencies;
+      },
+    ],
+    [
+      "omitted bundle metadata",
+      (archive) => {
+        delete archive.bundledPackages;
+      },
+    ],
+  ])("refuses %s under offline bundle admission", async (_name, mutate) => {
+    const fixture = await makeFixture({ bundled: true });
+    const artifact = fixture.manifest.artifacts.find(
+      ({ name }) => name === "beta",
+    );
+    const previous = artifact.archive.evidence;
+    const envelope = JSON.parse(
+      await readFile(join(fixture.blobRoot, previous.path), "utf8"),
+    );
+    mutate(envelope.evidence);
+    const reference = await retainEvidence(
+      fixture.blobRoot,
+      "ARCHIVE_INVENTORY",
+      artifact.artifactId,
+      envelope.evidence,
+    );
+    artifact.archive.evidence = reference;
+    fixture.manifest = createEvidenceManifest({
+      graph: normalizeLockedRegistryGraph(fixture.lockfileBytes),
+      policy: fixture.manifest.policy,
+      registryKeys: fixture.manifest.registryKeys,
+      artifacts: fixture.manifest.artifacts,
+      blobs: [
+        ...fixture.manifest.blobs.filter(({ path }) => path !== previous.path),
+        reference,
+      ],
+    });
+    await expect(verifyEvidenceManifest(fixture)).rejects.toMatchObject({
+      classification: "CONTROL_FAILURE",
+    });
+  });
+
   it("creates a closed schema-valid two-artifact corpus and verifies it offline", async () => {
     const fixture = await makeFixture();
     const schema = JSON.parse(

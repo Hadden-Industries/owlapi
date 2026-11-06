@@ -1,7 +1,13 @@
 # npm package evidence corpus
 
-This directory is the content-addressed evidence store for every unique public- registry artifact selected by the repository's exact `package-lock.json`.
+This directory is the content-addressed evidence store for every unique public registry artifact selected by the repository's exact `package-lock.json`.
 It supports reproducible supply-chain and licensing review; it is not package source, an npm cache, or part of the published `owlapi` tarball.
+
+Lockfile occurrences and independently acquired registry artifacts are distinct inventories.
+A package shipped inside another package's tarball is authenticated through that owning archive, which is acquired and scanned once; it does not require a separate registry tarball or a fabricated lockfile row.
+The archive inventory retains each bundled package's complete original `package.json` bytes in the content-addressed store and binds their physical entry hashes to the authenticated archive.
+When the lockfile declares bundled occurrences, those claims bind to the nearest independently acquired archive owner and must agree with its retained manifests.
+An npm lockfile can omit bundled package rows, so the owning archive's actual bundled manifests remain evidence even without corresponding lockfile occurrences.
 
 The authoritative index is [`../../npm-package-evidence.json`](../../npm-package-evidence.json).
 Every `blobs/sha256/<prefix>/<sha256>` path is derived from the SHA-256 of its exact bytes.
@@ -88,8 +94,26 @@ For a dependency-only update, pass `--reuse-evidence=<prior-repository>` to the 
 The prior repository supplies its own lockfile, manifest, and content-addressed corpus.
 Its complete schema, graph binding, signatures, blob closure, and scanner policy are verified before any artifact is reused.
 Current occurrence identities are rebuilt, only missing artifact identities are acquired and scanned, and the whole output is verified before publication.
-Reuse cannot be combined with shard acquisition; the hosted fresh-acquisition route and `--write` requirement are unchanged.
+Optional baseline reuse also works with explicit deterministic shard acquisition.
+Each shard copies only its exact selected current-lock artifact identities, and the ordinary complete-set merge checks still apply.
+Reused artifacts keep their original scan records and execution observations.
+The existing hosted acquisition routes omit reuse options and perform fresh native scans; shard acquisition continues to reject `--write`.
 Corrupt evidence is an error, not a reason to silently trust or skip an artifact.
+
+The native acquisition collector explicitly uses a finite 600-second per-file, per-scanner ScanCode timeout and the existing one-hour artifact deadline.
+Optional `artifact.scan.execution.perFileTimeoutSeconds` records the actual raw report header value.
+Legacy records retain their original observation presence or absence, while normalized licensing findings and their independent hashes retain the existing contract.
+The generic ScanCode argument builder retains its legacy arguments unless a budget is explicitly requested.
+
+Each ScanCode invocation uses one worker; concurrent shard processes each need their own memory headroom.
+Run acquisition serially on hosts with limited memory.
+
+Failed acquisition retains its original working directory, including raw reports, authenticated tarballs, materialized inputs and completed corpus blobs.
+Its native error diagnostic supplies `retainedWorkingRoot` and `retainedScanReportsSha256`, binding the sorted relative report paths and original raw report bytes.
+Explicit recovery uses `--reuse-scan-reports=<retained-working-root>` together with `--reuse-scan-reports-sha256=<original-diagnostic-sha256>` and the ordinary acquisition options.
+Both values must come from the same original native failure diagnostic; a later rehash cannot replace that original source binding.
+The consumer independently verifies the report tree, artifact integrity, original input root, semantic options and complete authenticated body coverage before replay.
+Recognizable failed or incomplete reports remain unchanged while a fresh scan is collected; malformed, changed or mismatched cached records are refused.
 
 Run the ordinary offline check from the repository root:
 

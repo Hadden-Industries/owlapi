@@ -4,12 +4,14 @@ import {
   EVIDENCE_MANIFEST_NAME,
 } from "./third-party-evidence/format.mjs";
 import { execFile } from "node:child_process";
-import { createPublicKey, randomUUID } from "node:crypto";
+import { createHash, createPublicKey, randomUUID } from "node:crypto";
+import { createReadStream } from "node:fs";
 import {
   access,
   cp,
   mkdir,
   readFile,
+  readdir,
   rename,
   rm,
   stat,
@@ -25,6 +27,7 @@ import {
   ARCHIVE_LIMITS,
   inspectPackageTarball,
   materializePackageForScan,
+  validateBundledPackageClaims,
 } from "./third-party-evidence/archive-evidence.mjs";
 import { retainBlob } from "./third-party-evidence/blob-store.mjs";
 import {
@@ -37,6 +40,7 @@ import {
   createEvidenceManifest,
   verifyEvidenceShard,
   verifyEvidenceManifest,
+  comparableEvidenceFacts,
 } from "./third-party-evidence/evidence-manifest.mjs";
 import {
   createEvidenceShard,
@@ -55,6 +59,7 @@ import {
   SCANCODE_TOOL,
   buildScancodeArguments,
   normalizeScancodeReport,
+  scanExecutionObservation,
 } from "./third-party-evidence/scancode.mjs";
 
 const executeFile = promisify(execFile);
@@ -120,6 +125,10 @@ export class AcquisitionError extends Error {
     this.name = "AcquisitionError";
     this.classification = classification;
     this.code = code;
+    if (options?.retainedWorkingRoot !== undefined)
+      this.retainedWorkingRoot = options.retainedWorkingRoot;
+    if (options?.retainedScanReportsSha256 !== undefined)
+      this.retainedScanReportsSha256 = options.retainedScanReportsSha256;
   }
 }
 
@@ -146,6 +155,49 @@ const exists = async (path) => {
     }
     throw error;
   }
+};
+
+/** Bind existing original native reports in typed failure diagnostics, not in
+ * another journal. Callers must retain that originally observed binding. */
+const nativeScanReportsDigest = async (workingRoot) => {
+  const directory = join(workingRoot, "reports");
+  const members = (await exists(directory))
+    ? await readdir(directory, { withFileTypes: true })
+    : [];
+  if (members.length > ARCHIVE_LIMITS.entries)
+    throw new Error("Too many retained native reports");
+  const records = [];
+  for (const entry of members.sort((left, right) =>
+    compareCodeUnits(left.name, right.name),
+  )) {
+    if (!entry.isFile() || !/^[a-f0-9]{64}\.json$/u.test(entry.name))
+      throw new Error("Unexpected retained native report member");
+    const path = join(directory, entry.name);
+    const before = await stat(path);
+    const hash = createHash("sha256");
+    let length = 0;
+    for await (const chunk of createReadStream(path)) {
+      length += chunk.length;
+      if (length > before.size)
+        throw new Error("Native report changed during diagnostic binding");
+      hash.update(chunk);
+    }
+    const after = await stat(path);
+    if (
+      length !== before.size ||
+      after.size !== before.size ||
+      after.mtimeMs !== before.mtimeMs ||
+      after.ctimeMs !== before.ctimeMs
+    )
+      throw new Error("Native report changed during diagnostic binding");
+    records.push({ path: `reports/${entry.name}`, sha256: hash.digest("hex") });
+  }
+  return {
+    sha256: sha256(stableJson(records)),
+    reportHashes: new Map(
+      records.map((record) => [record.path, record.sha256]),
+    ),
+  };
 };
 
 const delay = (milliseconds) =>
@@ -502,7 +554,10 @@ export const downloadLockedRegistryTarball = async ({
   );
 };
 
-const defaultScanArtifact = async ({ scancode, inputRoot, outputPath }) => {
+export const collectNativeScancodeReport = async (
+  { scancode, inputRoot, outputPath },
+  { execute = executeFile } = {},
+) => {
   if (typeof scancode !== "string" || scancode.length === 0) {
     controlFailure(
       "SCANCODE_COMMAND_REQUIRED",
@@ -515,15 +570,24 @@ const defaultScanArtifact = async ({ scancode, inputRoot, outputPath }) => {
       "ScanCode must be invoked through a native executable without a command shell",
     );
   }
-  const arguments_ = buildScancodeArguments({ outputPath, inputRoot });
+  const arguments_ = buildScancodeArguments({
+    outputPath,
+    inputRoot,
+    perFileTimeoutSeconds: 600,
+  });
   try {
-    await executeFile(scancode, arguments_, {
+    await execute(scancode, arguments_, {
       timeout: 60 * 60 * 1_000,
       maxBuffer: 8 * 1024 * 1024,
       windowsHide: true,
       shell: false,
     });
-    return JSON.parse(await readFile(outputPath, "utf8"));
+    const report = JSON.parse(await readFile(outputPath, "utf8"));
+    if (scanExecutionObservation(report)?.perFileTimeoutSeconds !== 600)
+      throw new Error(
+        "Native ScanCode report does not confirm the requested 600-second per-file budget",
+      );
+    return report;
   } catch (error) {
     controlFailure(
       "SCANCODE_EXECUTION_FAILED",
@@ -748,8 +812,156 @@ const validatePacoteVerification = ({
   }
 };
 
+/** Raw-report replay uses the original input root and the current authenticated
+ * archive census. It never upgrades a failed/partial report into scan evidence. */
+const reusableScanReport = async ({
+  reuseScanReports,
+  reuseScanReportHashes,
+  identity,
+  inventory,
+}) => {
+  if (reuseScanReports === null) return null;
+  const reportPath = join(
+    reuseScanReports,
+    "reports",
+    `${identity.artifactId}.json`,
+  );
+  const expectedReportHash = reuseScanReportHashes.get(
+    `reports/${identity.artifactId}.json`,
+  );
+  const reportExists = await exists(reportPath);
+  if (expectedReportHash === undefined && !reportExists) return null;
+  if (expectedReportHash === undefined || !reportExists)
+    controlFailure(
+      "REUSED_SCAN_REPORT_INVALID",
+      "Retained native report membership changed after its original binding",
+    );
+  const originalInputRoot = join(reuseScanReports, "scan", identity.artifactId);
+  const tarballPath = join(
+    reuseScanReports,
+    "tarballs",
+    `${identity.artifactId}.tgz`,
+  );
+  try {
+    const [reportStat, tarStat, inputStat] = await Promise.all([
+      stat(reportPath),
+      stat(tarballPath),
+      stat(originalInputRoot),
+    ]);
+    if (
+      !reportStat.isFile() ||
+      reportStat.size > MAX_JSON_BYTES ||
+      !tarStat.isFile() ||
+      tarStat.size > ARCHIVE_LIMITS.compressedBytes ||
+      !inputStat.isDirectory()
+    )
+      throw new Error(
+        "Retained native scan inputs exceed their existing file bounds",
+      );
+    verifySha512Sri(await readFile(tarballPath), identity.integrity);
+    const reportBytes = await readFile(reportPath);
+    if (sha256(reportBytes) !== expectedReportHash)
+      throw new Error(
+        "Retained native report changed after its original diagnostic binding",
+      );
+    const report = JSON.parse(UTF8_DECODER.decode(reportBytes));
+    const header = report?.headers?.length === 1 && report.headers[0];
+    const input = header?.options?.input;
+    const comparedPath = (path) =>
+      process.platform === "win32"
+        ? resolve(path).toLowerCase()
+        : resolve(path);
+    if (
+      !Array.isArray(input) ||
+      input.length !== 1 ||
+      typeof input[0] !== "string" ||
+      comparedPath(input[0]) !== comparedPath(originalInputRoot)
+    )
+      throw new Error(
+        "Retained native report does not name its exact original input root",
+      );
+    const execution = scanExecutionObservation(report);
+    let failed = false;
+    const inspectErrors = (value) => {
+      if (!value || typeof value !== "object") return;
+      for (const [key, child] of Object.entries(value)) {
+        if (key === "errors" || key === "scan_errors") {
+          if (
+            !Array.isArray(child) ||
+            child.some((entry) => typeof entry !== "string")
+          )
+            throw new Error("Malformed retained native scanner errors");
+          failed ||= child.length > 0;
+        }
+        inspectErrors(child);
+      }
+    };
+    inspectErrors(report);
+    if (
+      !Array.isArray(header.errors) ||
+      !Array.isArray(report.files) ||
+      report.files.some(
+        (file) =>
+          !file || typeof file !== "object" || !Array.isArray(file.scan_errors),
+      )
+    )
+      throw new Error(
+        "Retained native report is missing its original resource/error inventory",
+      );
+    // This information-only projection validates the actual reported byte
+    // identities even for a recognizable failed native scan. It is never kept
+    // as findings; successful replay normalizes the untouched original below.
+    const information = normalizeScancodeReport(
+      {
+        headers: [{ ...header, errors: [] }],
+        files: report.files.map(
+          ({ path, type, name, size, sha256: digest }) => ({
+            path,
+            type,
+            name,
+            size,
+            sha256: digest,
+            scan_errors: [],
+          }),
+        ),
+      },
+      { artifactId: identity.artifactId, inputRoot: originalInputRoot },
+    );
+    try {
+      bindScanCoverage(information, inventory, identity.artifactId);
+    } catch (error) {
+      if (
+        error instanceof AcquisitionError &&
+        error.code === "SCANCODE_FILE_INVENTORY_INVALID" &&
+        error.message.startsWith(
+          "ScanCode did not cover required authenticated archive path",
+        )
+      )
+        return null;
+      throw error;
+    }
+    if (failed) return null;
+    const normalized = bindScanCoverage(
+      normalizeScancodeReport(report, {
+        artifactId: identity.artifactId,
+        inputRoot: originalInputRoot,
+      }),
+      inventory,
+      identity.artifactId,
+    );
+    return { report, normalized, execution };
+  } catch (error) {
+    controlFailure(
+      "REUSED_SCAN_REPORT_INVALID",
+      `Retained native report cannot be reused for ${identity.artifactId}`,
+      error,
+    );
+  }
+};
+
 const acquireArtifact = async ({
   identity,
+  occurrences = [],
   stagingRoot,
   corpusRoot,
   cache,
@@ -762,6 +974,8 @@ const acquireArtifact = async ({
   scanArtifact,
   pacoteClient,
   scancode,
+  reuseScanReports = null,
+  reuseScanReportHashes = null,
 }) => {
   const packument = await fetchJsonWithRetry(packumentUrl(identity.name), {
     fetchImpl,
@@ -816,210 +1030,236 @@ const acquireArtifact = async ({
   );
   await mkdir(dirname(tarballPath), { recursive: true });
   await mkdir(dirname(reportPath), { recursive: true });
+  let downloadResult;
   try {
-    let downloadResult;
-    try {
-      downloadResult = await downloadTarball({
-        identity,
-        destination: tarballPath,
-        cache,
-        pacoteClient,
-        fetchImpl,
-      });
-    } catch (error) {
-      if (isTransientRegistryError(error)) {
-        externalBlocked(
-          "TARBALL_DOWNLOAD_UNAVAILABLE",
-          `Tarball download was externally blocked for ${identity.artifactId}`,
-          error,
-        );
-      }
-      productFailure(
-        "TARBALL_DOWNLOAD_FAILED",
-        `Tarball download failed for ${identity.artifactId}`,
+    downloadResult = await downloadTarball({
+      identity,
+      destination: tarballPath,
+      cache,
+      pacoteClient,
+      fetchImpl,
+    });
+  } catch (error) {
+    if (isTransientRegistryError(error)) {
+      externalBlocked(
+        "TARBALL_DOWNLOAD_UNAVAILABLE",
+        `Tarball download was externally blocked for ${identity.artifactId}`,
         error,
       );
     }
-    if (
-      downloadResult?.resolved !== identity.resolved ||
-      String(downloadResult?.integrity) !== identity.integrity
-    ) {
-      productFailure(
-        "TARBALL_DOWNLOAD_IDENTITY_MISMATCH",
-        `Downloaded tarball identity changed for ${identity.artifactId}`,
-      );
-    }
-    const compressed = await stat(tarballPath);
-    if (compressed.size > ARCHIVE_LIMITS.compressedBytes) {
-      productFailure(
-        "TARBALL_LIMIT_EXCEEDED",
-        `Tarball exceeds the compressed-byte safety limit for ${identity.artifactId}`,
-      );
-    }
-    const tarballBytes = await readFile(tarballPath);
-    try {
-      verifySha512Sri(tarballBytes, identity.integrity);
-    } catch (error) {
-      productFailure(
-        "TARBALL_AUTHENTICATION_FAILED",
-        `Tarball SRI mismatch for ${identity.artifactId}`,
-        error,
-      );
-    }
-    const tarball = {
-      sha256: sha256(tarballBytes),
-      bytes: tarballBytes.length,
-    };
-    let inventory;
-    try {
-      inventory = await inspectPackageTarball(tarballPath, identity);
-    } catch (error) {
-      productFailure(
-        "ARCHIVE_INSPECTION_FAILED",
-        `Archive inspection failed for ${identity.artifactId}`,
-        error,
-      );
-    }
+    productFailure(
+      "TARBALL_DOWNLOAD_FAILED",
+      `Tarball download failed for ${identity.artifactId}`,
+      error,
+    );
+  }
+  if (
+    downloadResult?.resolved !== identity.resolved ||
+    String(downloadResult?.integrity) !== identity.integrity
+  ) {
+    productFailure(
+      "TARBALL_DOWNLOAD_IDENTITY_MISMATCH",
+      `Downloaded tarball identity changed for ${identity.artifactId}`,
+    );
+  }
+  const compressed = await stat(tarballPath);
+  if (compressed.size > ARCHIVE_LIMITS.compressedBytes) {
+    productFailure(
+      "TARBALL_LIMIT_EXCEEDED",
+      `Tarball exceeds the compressed-byte safety limit for ${identity.artifactId}`,
+    );
+  }
+  const tarballBytes = await readFile(tarballPath);
+  try {
+    verifySha512Sri(tarballBytes, identity.integrity);
+  } catch (error) {
+    productFailure(
+      "TARBALL_AUTHENTICATION_FAILED",
+      `Tarball SRI mismatch for ${identity.artifactId}`,
+      error,
+    );
+  }
+  const tarball = {
+    sha256: sha256(tarballBytes),
+    bytes: tarballBytes.length,
+  };
+  let inventory;
+  try {
+    inventory = await inspectPackageTarball(tarballPath, identity);
+    validateBundledPackageClaims(inventory, occurrences);
+  } catch (error) {
+    productFailure(
+      "ARCHIVE_INSPECTION_FAILED",
+      `Archive inspection failed for ${identity.artifactId}`,
+      error,
+    );
+  }
 
-    const blobs = [];
-    const evidenceFiles = [];
-    for (const evidenceFile of inventory.evidenceFiles) {
-      const { bytes, ...facts } = evidenceFile;
+  const blobs = [];
+  const evidenceFiles = [];
+  for (const evidenceFile of inventory.evidenceFiles) {
+    const { bytes, ...facts } = evidenceFile;
+    const blob = {
+      ...(await retainBlob(corpusRoot, bytes)),
+      kind: "PACKAGE_EVIDENCE_FILE",
+    };
+    blobs.push(blob);
+    evidenceFiles.push({ ...facts, blob });
+  }
+  const archiveEvidence = {
+    archiveRoot: inventory.archiveRoot,
+    compressedBytes: inventory.compressedBytes,
+    duplicateEntries: inventory.duplicateEntries,
+    expandedBytes: inventory.expandedBytes,
+    physicalEntryCount: inventory.physicalEntryCount,
+    packageIdentity: inventory.packageIdentity,
+    packageMetadata: inventory.packageMetadata,
+    tarball,
+    entries: inventory.entries,
+    evidenceFiles,
+  };
+  if (inventory.bundledPackages?.length) {
+    archiveEvidence.bundledPackages = [];
+    for (const { bytes, ...member } of inventory.bundledPackages) {
       const blob = {
         ...(await retainBlob(corpusRoot, bytes)),
         kind: "PACKAGE_EVIDENCE_FILE",
       };
       blobs.push(blob);
-      evidenceFiles.push({ ...facts, blob });
+      archiveEvidence.bundledPackages.push({ ...member, blob });
     }
-    const archiveEvidence = {
-      archiveRoot: inventory.archiveRoot,
-      compressedBytes: inventory.compressedBytes,
-      duplicateEntries: inventory.duplicateEntries,
-      expandedBytes: inventory.expandedBytes,
-      physicalEntryCount: inventory.physicalEntryCount,
-      packageIdentity: inventory.packageIdentity,
-      packageMetadata: inventory.packageMetadata,
-      tarball,
-      entries: inventory.entries,
-      evidenceFiles,
-    };
-    const archiveBlob = await retainEnvelope(
-      corpusRoot,
-      "ARCHIVE_INVENTORY",
-      identity.artifactId,
-      archiveEvidence,
-    );
-    blobs.push(archiveBlob);
+  }
+  const archiveBlob = await retainEnvelope(
+    corpusRoot,
+    "ARCHIVE_INVENTORY",
+    identity.artifactId,
+    archiveEvidence,
+  );
+  blobs.push(archiveBlob);
 
-    const signatures = versionManifest.dist.signatures;
-    const signatureBlob = await retainEnvelope(
-      corpusRoot,
-      "REGISTRY_SIGNATURE",
-      identity.artifactId,
-      {
-        publishedAt,
-        signatures,
-        keyids: signatures.map(({ keyid }) => keyid),
-      },
-    );
-    blobs.push(signatureBlob);
+  const signatures = versionManifest.dist.signatures;
+  const signatureBlob = await retainEnvelope(
+    corpusRoot,
+    "REGISTRY_SIGNATURE",
+    identity.artifactId,
+    {
+      publishedAt,
+      signatures,
+      keyids: signatures.map(({ keyid }) => keyid),
+    },
+  );
+  blobs.push(signatureBlob);
 
-    const attestations = metadata._attestationBundles || [];
-    const provenanceState = versionManifest.dist.attestations
-      ? "VERIFIED"
-      : "NOT_PUBLISHED";
-    const provenanceBlob = await retainEnvelope(
-      corpusRoot,
-      "NPM_PROVENANCE",
-      identity.artifactId,
-      {
-        state: provenanceState,
-        advertisement: versionManifest.dist.attestations || null,
-        attestations,
-      },
-    );
-    blobs.push(provenanceBlob);
+  const attestations = metadata._attestationBundles || [];
+  const provenanceState = versionManifest.dist.attestations
+    ? "VERIFIED"
+    : "NOT_PUBLISHED";
+  const provenanceBlob = await retainEnvelope(
+    corpusRoot,
+    "NPM_PROVENANCE",
+    identity.artifactId,
+    {
+      state: provenanceState,
+      advertisement: versionManifest.dist.attestations || null,
+      attestations,
+    },
+  );
+  blobs.push(provenanceBlob);
 
-    try {
-      await mkdir(dirname(scanRoot), { recursive: true });
-      await materializePackageForScan(tarballPath, inventory, scanRoot, {
-        excludedFileSuffixes: SCANCODE_PRE_SCAN_EXCLUDED_FILE_SUFFIXES,
-      });
-    } catch (error) {
-      controlFailure(
-        "SCAN_MATERIALIZATION_FAILED",
-        `Authenticated package could not be materialized for ${identity.artifactId}`,
-        error,
-      );
+  try {
+    await mkdir(dirname(scanRoot), { recursive: true });
+    await materializePackageForScan(tarballPath, inventory, scanRoot, {
+      excludedFileSuffixes: SCANCODE_PRE_SCAN_EXCLUDED_FILE_SUFFIXES,
+    });
+  } catch (error) {
+    controlFailure(
+      "SCAN_MATERIALIZATION_FAILED",
+      `Authenticated package could not be materialized for ${identity.artifactId}`,
+      error,
+    );
+  }
+  let rawScan;
+  const reusedScan = await reusableScanReport({
+    reuseScanReports,
+    reuseScanReportHashes,
+    identity,
+    inventory,
+  });
+  try {
+    rawScan = reusedScan
+      ? reusedScan.report
+      : await scanArtifact({
+          artifactId: identity.artifactId,
+          inputRoot: scanRoot,
+          outputPath: reportPath,
+          inventory,
+          scancode,
+        });
+  } catch (error) {
+    if (error instanceof AcquisitionError) {
+      throw error;
     }
-    let rawScan;
-    try {
-      rawScan = await scanArtifact({
-        artifactId: identity.artifactId,
-        inputRoot: scanRoot,
-        outputPath: reportPath,
-        inventory,
-        scancode,
-      });
-    } catch (error) {
-      if (error instanceof AcquisitionError) {
-        throw error;
-      }
-      controlFailure(
-        "SCANCODE_EXECUTION_FAILED",
-        `ScanCode execution failed for ${identity.artifactId}`,
-        error,
-      );
-    }
-    let normalizedScan;
-    try {
-      normalizedScan = normalizeScancodeReport(rawScan, {
-        artifactId: identity.artifactId,
-        inputRoot: scanRoot,
-      });
+    controlFailure(
+      "SCANCODE_EXECUTION_FAILED",
+      `ScanCode execution failed for ${identity.artifactId}`,
+      error,
+    );
+  }
+  let normalizedScan;
+  let execution;
+  try {
+    execution = scanExecutionObservation(rawScan);
+    normalizedScan = reusedScan
+      ? reusedScan.normalized
+      : normalizeScancodeReport(rawScan, {
+          artifactId: identity.artifactId,
+          inputRoot: scanRoot,
+        });
+    if (!reusedScan)
       normalizedScan = bindScanCoverage(
         normalizedScan,
         inventory,
         identity.artifactId,
       );
-    } catch (error) {
-      productFailure(
-        "SCANCODE_FINDINGS_INVALID",
-        `ScanCode findings are incomplete for ${identity.artifactId}`,
-        error,
-      );
-    }
-    const scanBlob = await retainEnvelope(
-      corpusRoot,
-      "SCANCODE_FINDINGS",
-      identity.artifactId,
-      normalizedScan,
+  } catch (error) {
+    productFailure(
+      "SCANCODE_FINDINGS_INVALID",
+      `ScanCode findings are incomplete for ${identity.artifactId}`,
+      error,
     );
-    blobs.push(scanBlob);
-
-    return {
-      evidence: {
-        artifactId: identity.artifactId,
-        tarball,
-        archive: { state: "VERIFIED", evidence: archiveBlob },
-        registrySignature: {
-          state: "VERIFIED",
-          publishedAt,
-          signatures,
-          evidence: signatureBlob,
-        },
-        provenance: { state: provenanceState, evidence: provenanceBlob },
-        scan: { state: "VERIFIED", evidence: scanBlob },
-      },
-      blobs,
-      keyids: signatures.map(({ keyid }) => keyid),
-    };
-  } finally {
-    await rm(tarballPath, { force: true });
-    await rm(scanRoot, { recursive: true, force: true });
-    await rm(reportPath, { force: true });
   }
+  const scanBlob = await retainEnvelope(
+    corpusRoot,
+    "SCANCODE_FINDINGS",
+    identity.artifactId,
+    normalizedScan,
+  );
+  blobs.push(scanBlob);
+
+  const acquired = {
+    evidence: {
+      artifactId: identity.artifactId,
+      tarball,
+      archive: { state: "VERIFIED", evidence: archiveBlob },
+      registrySignature: {
+        state: "VERIFIED",
+        publishedAt,
+        signatures,
+        evidence: signatureBlob,
+      },
+      provenance: { state: provenanceState, evidence: provenanceBlob },
+      scan: {
+        state: "VERIFIED",
+        evidence: scanBlob,
+        ...(execution === undefined ? {} : { execution }),
+      },
+    },
+    blobs,
+    keyids: signatures.map(({ keyid }) => keyid),
+  };
+  // The enclosing acquisition owns cleanup after the complete corpus succeeds.
+  // A later failure must retain every original report and native input tree.
+  return acquired;
 };
 
 export const publishEvidence = async ({
@@ -1211,6 +1451,9 @@ const retainReusableArtifact = async (
     await readFile(join(sourceRoot, artifact.archive.evidence.path), "utf8"),
   );
   references.push(...archive.evidence.evidenceFiles.map(({ blob }) => blob));
+  references.push(
+    ...(archive.evidence.bundledPackages ?? []).map(({ blob }) => blob),
+  );
   for (const reference of references) {
     const retained = await retainBlob(
       destinationRoot,
@@ -1272,15 +1515,12 @@ export const compareCommittedEvidence = async ({
         `Evidence comparison requires valid runtime and semantic policy records: ${stableJson(validate.errors)}`,
       );
   }
-  // Python is an execution observation, not a scan finding. Do not rewrite the
-  // published 3.14 corpus to claim a 3.15 run. Every other field, including all
-  // normalized scan digests and semantic/execution options, must remain exact.
-  const comparable = (document) => {
-    const copy = structuredClone(document);
-    delete copy.policy.scanner.pythonVersion;
-    return copy;
-  };
-  if (stableJson(comparable(committed)) !== stableJson(comparable(manifest))) {
+  // Original Python and per-file budget observations stay in their source
+  // documents. Every normalized finding, digest and policy field remains exact.
+  if (
+    stableJson(comparableEvidenceFacts(committed)) !==
+    stableJson(comparableEvidenceFacts(manifest))
+  ) {
     controlFailure(
       "COMMITTED_EVIDENCE_DIFFERENT",
       "Fresh npm package evidence differs from the committed corpus",
@@ -1299,7 +1539,7 @@ export const acquireEvidence = async ({
   sleep = delay,
   downloadTarball = downloadLockedRegistryTarball,
   verifyPackageMetadata = defaultVerifyPackageMetadata,
-  scanArtifact = defaultScanArtifact,
+  scanArtifact = collectNativeScancodeReport,
   pacoteClient = null,
   scancode = null,
   registryKeySnapshot = null,
@@ -1307,16 +1547,43 @@ export const acquireEvidence = async ({
   write = false,
   shard = null,
   reuseEvidenceFrom = null,
+  reuseScanReports = null,
+  reuseScanReportsSha256 = null,
 } = {}) => {
-  if (reuseEvidenceFrom !== null && shard !== null) {
-    throw new TypeError(
-      "Evidence reuse cannot be combined with fresh shard acquisition",
-    );
-  }
   const reusable =
     reuseEvidenceFrom === null
       ? null
       : await readReusableEvidence(resolve(repositoryRoot, reuseEvidenceFrom));
+  let reuseScanReportHashes = null;
+  if ((reuseScanReports === null) !== (reuseScanReportsSha256 === null))
+    throw new TypeError(
+      "Retained native report reuse requires its original diagnostic SHA-256 binding",
+    );
+  if (reuseScanReports !== null) {
+    if (typeof reuseScanReports !== "string" || !reuseScanReports.length)
+      throw new TypeError(
+        "Retained scan report reuse requires an explicit working root",
+      );
+    reuseScanReports = resolve(repositoryRoot, reuseScanReports);
+    if (!(await stat(reuseScanReports)).isDirectory())
+      throw new TypeError(
+        "Retained scan report working root must be a directory",
+      );
+    if (
+      typeof reuseScanReportsSha256 !== "string" ||
+      !/^[a-f0-9]{64}$/u.test(reuseScanReportsSha256)
+    )
+      throw new TypeError(
+        "Retained native report binding must be an original SHA-256 diagnostic",
+      );
+    const binding = await nativeScanReportsDigest(reuseScanReports);
+    if (binding.sha256 !== reuseScanReportsSha256)
+      controlFailure(
+        "REUSED_SCAN_REPORT_BINDING_MISMATCH",
+        "Retained native reports differ from their original failure diagnostic binding",
+      );
+    reuseScanReportHashes = binding.reportHashes;
+  }
   const lockfileBytes = await readFile(
     join(repositoryRoot, "package-lock.json"),
   );
@@ -1326,6 +1593,7 @@ export const acquireEvidence = async ({
   const corpusRoot = join(stagingRoot, "corpus");
   const cache = join(stagingRoot, "cache");
   await mkdir(corpusRoot, { recursive: true });
+  let completed = false;
   try {
     if (registryKeySnapshot !== null && registryKeysPath !== null) {
       throw new TypeError(
@@ -1380,6 +1648,9 @@ export const acquireEvidence = async ({
         ? await retainReusableArtifact(previous, reusable.blobRoot, corpusRoot)
         : await acquireArtifact({
             identity,
+            occurrences: graph.occurrences.filter(
+              ({ artifactId }) => artifactId === identity.artifactId,
+            ),
             stagingRoot,
             corpusRoot,
             cache,
@@ -1392,6 +1663,8 @@ export const acquireEvidence = async ({
             scanArtifact,
             pacoteClient,
             scancode,
+            reuseScanReports,
+            reuseScanReportHashes,
           });
       artifacts.push(acquired.evidence);
       blobs.push(...acquired.blobs);
@@ -1419,6 +1692,7 @@ export const acquireEvidence = async ({
         stagingCorpus: corpusRoot,
         shard: shardDocument,
       });
+      completed = true;
       return { shard: shardDocument, summary, wrote: false };
     }
 
@@ -1448,9 +1722,31 @@ export const acquireEvidence = async ({
         lockfileBytes,
       });
     }
+    completed = true;
     return { manifest, summary, wrote: write };
+  } catch (error) {
+    let reportBinding;
+    let bindingDiagnostic;
+    try {
+      reportBinding = (await nativeScanReportsDigest(stagingRoot)).sha256;
+      bindingDiagnostic = `; original native reports SHA-256 ${reportBinding}`;
+    } catch (bindingError) {
+      bindingDiagnostic = `; native report binding unavailable: ${bindingError.message}`;
+    }
+    throw new AcquisitionError(
+      error instanceof AcquisitionError
+        ? error.classification
+        : "CONTROL_FAILURE",
+      error instanceof AcquisitionError ? error.code : "ACQUISITION_FAILED",
+      `Original acquisition working files retained at ${stagingRoot}${bindingDiagnostic}`,
+      {
+        cause: error,
+        retainedWorkingRoot: stagingRoot,
+        retainedScanReportsSha256: reportBinding,
+      },
+    );
   } finally {
-    await rm(stagingRoot, { recursive: true, force: true });
+    if (completed) await rm(stagingRoot, { recursive: true, force: true });
   }
 };
 
@@ -1468,6 +1764,8 @@ export const parseAcquisitionArguments = (
   let outputRoot = null;
   let registryKeysPath = null;
   let reuseEvidenceFrom = null;
+  let reuseScanReports = null;
+  let reuseScanReportsSha256 = null;
   const seen = new Set();
   for (const argument of arguments_) {
     const key = argument === "--write" ? "--write" : argument.split("=", 1)[0];
@@ -1478,6 +1776,16 @@ export const parseAcquisitionArguments = (
     seen.add(semanticKey);
     if (argument.startsWith("--reuse-evidence=") && argument.length > 17) {
       reuseEvidenceFrom = argument.slice(17);
+    } else if (
+      argument.startsWith("--reuse-scan-reports=") &&
+      argument.length > 21
+    ) {
+      reuseScanReports = argument.slice(21);
+    } else if (
+      argument.startsWith("--reuse-scan-reports-sha256=") &&
+      argument.length > 28
+    ) {
+      reuseScanReportsSha256 = argument.slice(28);
     } else if (argument === "--write") {
       write = true;
     } else if (argument.startsWith("--scancode=") && argument.length > 11) {
@@ -1550,17 +1858,22 @@ export const parseAcquisitionArguments = (
       throw new TypeError("--write cannot be combined with shard acquisition");
     }
   }
-  if (reuseEvidenceFrom !== null && shard !== null) {
+  if (
+    (reuseScanReports === null) !== (reuseScanReportsSha256 === null) ||
+    (reuseScanReportsSha256 !== null &&
+      !/^[a-f0-9]{64}$/u.test(reuseScanReportsSha256))
+  )
     throw new TypeError(
-      "Evidence reuse cannot be combined with fresh shard acquisition",
+      "Retained scan report reuse requires its original diagnostic SHA-256 binding",
     );
-  }
   return {
     write,
     scancode,
     shard,
     registryKeysPath,
     ...(reuseEvidenceFrom === null ? {} : { reuseEvidenceFrom }),
+    ...(reuseScanReports === null ? {} : { reuseScanReports }),
+    ...(reuseScanReportsSha256 === null ? {} : { reuseScanReportsSha256 }),
   };
 };
 

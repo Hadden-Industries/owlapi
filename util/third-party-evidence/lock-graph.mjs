@@ -29,6 +29,18 @@ const packageNameFromDependencyPath = (dependencyPath) => {
   }
   const markerIndex = dependencyPath.lastIndexOf(NODE_MODULES_MARKER);
   const suffix = dependencyPath.slice(markerIndex + NODE_MODULES_MARKER.length);
+  // Every intermediate package slot must be a package, not an arbitrary
+  // filesystem directory disguised by a valid final node_modules segment.
+  for (const slot of dependencyPath
+    .slice(NODE_MODULES_MARKER.length)
+    .split("/node_modules/")) {
+    const parts = slot.split("/");
+    if (
+      !/^(?:@[^/@\s]+\/)?[^/@\s]+$/u.test(slot) ||
+      parts.some((part) => part === "." || part === "..")
+    )
+      throw new TypeError(`Invalid package path: ${dependencyPath}`);
+  }
   const segments = suffix.split("/");
   const valid = suffix.startsWith("@")
     ? segments.length === 2 && segments.every(Boolean)
@@ -118,6 +130,7 @@ export const normalizeLockedRegistryGraph = (lockfileBytes) => {
 
   const artifactsByCoordinate = new Map();
   const occurrences = [];
+  const bundledOccurrences = [];
   const dependencyEntries = Object.entries(lockfile.packages)
     .filter(([dependencyPath]) => dependencyPath !== "")
     .sort(([left], [right]) => compareCodeUnits(left, right));
@@ -141,6 +154,25 @@ export const normalizeLockedRegistryGraph = (lockfileBytes) => {
       lockEntry.version,
       `exact version for ${dependencyPath}`,
     );
+    if (
+      lockEntry.inBundle !== undefined &&
+      typeof lockEntry.inBundle !== "boolean"
+    )
+      throw new TypeError(`Invalid inBundle claim for ${dependencyPath}`);
+    if (lockEntry.inBundle === true) {
+      if (lockEntry.resolved !== undefined || lockEntry.integrity !== undefined)
+        throw new TypeError(
+          `Bundled package cannot claim an independent tarball: ${dependencyPath}`,
+        );
+      bundledOccurrences.push({
+        dependencyPath,
+        dependencyName,
+        name,
+        version,
+        lockEntry,
+      });
+      continue;
+    }
     const resolved = validatePublicRegistryTarball(
       lockEntry.resolved,
       dependencyPath,
@@ -184,6 +216,90 @@ export const normalizeLockedRegistryGraph = (lockfileBytes) => {
       },
     });
   }
+
+  const occurrenceByPath = new Map(
+    occurrences.map((entry) => [entry.dependencyPath, entry]),
+  );
+  for (const {
+    dependencyPath,
+    dependencyName,
+    name,
+    version,
+    lockEntry,
+  } of bundledOccurrences) {
+    let ownerDependencyPath = dependencyPath;
+    do {
+      const marker = ownerDependencyPath.lastIndexOf("/node_modules/");
+      if (marker < 0)
+        throw new TypeError(`Orphan bundled package: ${dependencyPath}`);
+      ownerDependencyPath = ownerDependencyPath.slice(0, marker);
+      if (!lockfile.packages[ownerDependencyPath])
+        throw new TypeError(
+          `Missing bundled package ancestor: ${ownerDependencyPath}`,
+        );
+    } while (lockfile.packages[ownerDependencyPath].inBundle === true);
+    const owner = occurrenceByPath.get(ownerDependencyPath);
+    const declaration =
+      lockfile.packages[ownerDependencyPath].bundleDependencies ??
+      lockfile.packages[ownerDependencyPath].bundledDependencies;
+    const ownerEntry = lockfile.packages[ownerDependencyPath];
+    if (
+      ownerEntry.bundleDependencies !== undefined &&
+      ownerEntry.bundledDependencies !== undefined &&
+      stableJson(ownerEntry.bundleDependencies) !==
+        stableJson(ownerEntry.bundledDependencies)
+    )
+      throw new TypeError(
+        `Conflicting bundle declarations: ${ownerDependencyPath}`,
+      );
+    if (
+      !owner ||
+      !(
+        declaration === true ||
+        (Array.isArray(declaration) &&
+          declaration.length > 0 &&
+          new Set(declaration).size === declaration.length &&
+          declaration.every(
+            (value) =>
+              typeof value === "string" &&
+              /^(?:@[^/@\s]+\/)?[^/@\s]+$/u.test(value),
+          ))
+      )
+    )
+      throw new TypeError(
+        `Bundled package lacks a declared archive owner: ${dependencyPath}`,
+      );
+    const artifact = [...artifactsByCoordinate.values()].find(
+      ({ artifactId }) => artifactId === owner.artifactId,
+    );
+    artifact.occurrencePaths.push(dependencyPath);
+    artifact.occurrencePaths.sort(compareCodeUnits);
+    occurrences.push({
+      dependencyPath,
+      dependencyName,
+      artifactId: owner.artifactId,
+      development: lockEntry.dev === true,
+      optional: lockEntry.optional === true,
+      platformSelectors: {
+        cpu: normalizeSelector(lockEntry.cpu, "cpu", dependencyPath),
+        os: normalizeSelector(lockEntry.os, "os", dependencyPath),
+        libc: normalizeSelector(lockEntry.libc, "libc", dependencyPath),
+      },
+      bundled: {
+        ownerDependencyPath,
+        name,
+        version,
+        packageJsonPath: `${dependencyPath.slice(ownerDependencyPath.length + 1)}/package.json`,
+        ownerBundleDependencies:
+          declaration === true ? true : [...declaration].sort(compareCodeUnits),
+        lockfileLicense:
+          typeof lockEntry.license === "string" ? lockEntry.license : null,
+      },
+    });
+  }
+  occurrences.sort((left, right) =>
+    compareCodeUnits(left.dependencyPath, right.dependencyPath),
+  );
 
   return {
     lockfileSha256: sha256(Buffer.from(lockfileBytes)),

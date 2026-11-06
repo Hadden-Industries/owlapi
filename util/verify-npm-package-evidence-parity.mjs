@@ -4,7 +4,10 @@ import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { stableJson } from "./third-party-evidence/digests.mjs";
-import { verifyEvidenceManifest } from "./third-party-evidence/evidence-manifest.mjs";
+import {
+  comparableEvidenceFacts,
+  verifyEvidenceManifest,
+} from "./third-party-evidence/evidence-manifest.mjs";
 
 const DEFAULT_REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
 
@@ -13,9 +16,10 @@ const readManifest = async (root) =>
 
 /**
  * Cross-host parity is deliberately stricter than comparing the blob Merkle
- * root alone. Equal canonical manifests prove that package identities,
- * signatures, provenance states, normalized findings, summaries, and retained
- * bytes all agree between operating systems.
+ * root alone. Equal canonical licensing facts prove that package identities,
+ * signatures, provenance states, normalized findings, summaries and retained
+ * bytes agree. Validated Python/per-file-budget observations stay in each
+ * original manifest and can legitimately differ between operating systems.
  */
 export const verifyEvidenceAggregateParity = async ({
   repositoryRoot = DEFAULT_REPOSITORY_ROOT,
@@ -51,7 +55,10 @@ export const verifyEvidenceAggregateParity = async ({
       allowLegacyScancodeNormalization,
     }),
   ]);
-  if (stableJson(leftManifest) !== stableJson(rightManifest)) {
+  if (
+    stableJson(comparableEvidenceFacts(leftManifest)) !==
+    stableJson(comparableEvidenceFacts(rightManifest))
+  ) {
     throw new Error(
       "Windows and Ubuntu npm evidence manifests are not canonically identical",
     );

@@ -39,6 +39,10 @@ const expectedCorpus = async (namespace) => {
       assert.deepEqual(file.blob, blobs.get(file.blob.path));
       selected.set(file.blob.path, file.blob);
     }
+    for (const member of archive.evidence.bundledPackages ?? []) {
+      assert.deepEqual(member.blob, blobs.get(member.blob.path));
+      selected.set(member.blob.path, member.blob);
+    }
   }
   const members = new Map(
     [...selected.values()].map((blob) => {
