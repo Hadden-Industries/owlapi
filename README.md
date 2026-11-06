@@ -1,7 +1,9 @@
 # owlapi
 
-`owlapi` is a native-ESM JavaScript library for loading OWL 2 ontologies into a structural object model in Node.js and modern browsers.
-Its public concepts deliberately resemble the Java OWLAPI where that makes the API familiar, while its I/O, asynchronous loading, module packaging, and RDF/JS integration follow JavaScript conventions.
+Load an OWL 2 ontology in Node.js or a modern browser, then query its axioms through a JavaScript object model.
+The library uses native ES modules and provides Java OWLAPI-style concepts alongside JavaScript I/O and RDF/JS integration.
+
+[Install the library](#install) · [Load an ontology](#load-an-ontology) · [Check Java compatibility](./docs/compatibility/java-api-surface.md)
 
 ## Release status
 
@@ -20,44 +22,6 @@ UO and WebVOWL may each use this exact RC in production after artifact verificat
 
 This project is an independently maintained JavaScript implementation.
 It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project.
-
-This package includes ontology queries, changes, transforms, short-form providers, Manchester rendering, Turtle and OWL/XML storage, EL/QL/RL profiles, and syntactic locality extraction.
-The current source candidate's version is declared in [package.json](package.json); its publication authority is recorded separately in [publication control](docs/release/publication-control.json).
-This package implements explicit `normative-v1` and `java-owlapi-5.5.1` selection under the [behavior profile contract](docs/compatibility/behavior-profiles.md), the authorized Node document loader and the other additions in the [changelog](CHANGELOG.md).
-Java migrations must select `java-owlapi-5.5.1`; omitted selection remains normative.
-The [API delta from the rc.2 baseline](docs/compatibility/0.1.0-api-delta.md) lists the new exports, enlarged member surfaces and exact performance-coverage limits.
-The [contract reconciliation](docs/compatibility/0.1.0-contract-scope.md) explains the bounded source assessment and the registry's `firstPublicReleaseTarget` planning field.
-That target does not establish availability, and successful publication does not require rewriting every target or generated document.
-
-The installation and API examples below apply to this package version.
-For development testing of a retained local candidate, substitute its actual absolute tarball path and version:
-
-```shell
-npm install --save-exact "owlapi@file:/absolute/path/hadden-industries-owlapi-<version>.tgz"
-```
-
-RDF loads expose Java-style `RDFParserMetaData` through `manager.getOntologyFormat(ontology).getOntologyLoaderMetaData()`.
-See the [RDF parser metadata contract](./docs/compatibility/rdf-parser-metadata.md) for exact return types, lifetime and Java differences.
-It retains unparsed triples and inferred entity roles, including when warnings are disabled; statement counts and header status follow the selected behavior profile.
-It describes the original parse rather than proving lossless source accounting after edits.
-Loaded RDF formats are per-document copies, so identify their syntax through `format.key`.
-See the exact return types and qualifications in [the API reference](./API.md).
-
-The desired unscoped name `owlapi` was formerly used for an unrelated, now-unpublished Overwatch package and is blocked by npm's name-similarity protection.
-The selected scoped package is a separate registry identity with no code, API, ownership, or provenance relationship to that package.
-The manifest and release tooling select this scoped identity.
-The retained [package-name review](https://github.com/Hadden-Industries/owlapi/blob/main/docs/provenance/package-name-review.json) describes the historical unscoped proposal; the separate [scoped-identity review](./docs/provenance/scoped-package-name-review.json) records the accepted scoped identity.
-Its original tag restriction is superseded by the documented amendment in [ADR 0009](./docs/adr/0009-scoped-npm-publication-and-uo-rc-acceptance.md).
-
-## Release history
-
-- [0.1.0-rc.3](https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.3), published 30 October: immutable Java-compatible and normative behavior profiles, an explicitly authorized Node document loader, `ChangeApplied` results, broader Node support and performance improvements.
-  Upgrading from rc.2 requires reviewing profile-specific mutation, query, storage and resource defaults in the [migration guide](https://github.com/Hadden-Industries/owlapi/blob/main/docs/migration/0.1.0-java-api-parity.md).
-- [0.1.0-rc.2](https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.2), published 10 October (Europe/Bucharest): ontology indexes and changes, transforms, short-form providers, Manchester rendering, Turtle and OWL/XML storage, EL/QL/RL checks and syntactic locality extraction.
-- [0.1.0-rc.1](https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.1), published 3 October: the first public scoped package, with ontology loading, RDF parser metadata, import closures, ontology merging, Functional Syntax/RDF/XML storage and DL checking.
-
-See the [complete changelog](https://github.com/Hadden-Industries/owlapi/blob/main/CHANGELOG.md) for fixes, migration details and release limitations.
-These are prereleases; stable `0.1.0` remains unpublished.
 
 ## Install
 
@@ -97,6 +61,91 @@ That form uses `@hadden-industries/owlapi` and `@hadden-industries/owlapi/<subpa
 Commit the resulting exact dependency and lockfile, then use `npm ci` for reproducible installations.
 Installing a later `latest` is an explicit dependency update requiring consumer acceptance; a moving tag does not replace the saved pin.
 Neither a bare `npm install owlapi` nor a future move to that registry name is part of this release.
+
+## Load an ontology
+
+Run this example as an ES module.
+It loads an RDF/XML ontology declaration from a string and prints its identifier and axiom count.
+
+<!-- release-documentation:example-load-ontology:start -->
+
+```js
+import { OWLManager } from "owlapi/apibinding";
+import { StringDocumentSource } from "owlapi/io";
+
+const source = new StringDocumentSource(
+  `<?xml version="1.0"?>
+   <rdf:RDF
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#">
+     <owl:Ontology rdf:about="https://example.com/my-ontology" />
+   </rdf:RDF>`,
+  {
+    contentType: "application/rdf+xml",
+    documentIRI: "https://example.com/my-ontology.owl",
+  },
+);
+
+const manager = OWLManager.createOWLOntologyManager({
+  behaviorProfileId: "normative-v1",
+});
+const ontology = await manager.loadOntologyFromOntologyDocument(source);
+
+console.log(ontology.getOntologyID());
+console.log(ontology.getAxioms().size);
+```
+
+<!-- release-documentation:example-load-ontology:end -->
+
+The ontology ID contains `https://example.com/my-ontology`.
+The axiom count is `0` because the document declares the ontology but adds no axioms.
+
+## Release and source compatibility
+
+This package includes ontology queries, changes, transforms, short-form providers, Manchester rendering, Turtle and OWL/XML storage, EL/QL/RL profiles, and syntactic locality extraction.
+The current source candidate's version is declared in [package.json](package.json); its publication authority is recorded separately in [publication control](docs/release/publication-control.json).
+This package implements explicit `normative-v1` and `java-owlapi-5.5.1` selection under the [behavior profile contract](docs/compatibility/behavior-profiles.md), the authorized Node document loader and the other additions in the [changelog](CHANGELOG.md).
+Java migrations must select `java-owlapi-5.5.1`; omitted selection remains normative.
+The [API delta from the rc.2 baseline](docs/compatibility/0.1.0-api-delta.md) lists the new exports, enlarged member surfaces and exact performance-coverage limits.
+The [contract reconciliation](docs/compatibility/0.1.0-contract-scope.md) explains the bounded source assessment and the registry's `firstPublicReleaseTarget` planning field.
+That target does not establish availability, and successful publication does not require rewriting every target or generated document.
+
+The installation and API examples apply to this package version.
+For development testing of a retained local candidate, substitute its actual absolute tarball path and version:
+
+```shell
+npm install --save-exact "owlapi@file:/absolute/path/hadden-industries-owlapi-<version>.tgz"
+```
+
+### Inspect parse metadata
+
+RDF loads expose Java-style `RDFParserMetaData` through `manager.getOntologyFormat(ontology).getOntologyLoaderMetaData()`.
+See the [RDF parser metadata contract](./docs/compatibility/rdf-parser-metadata.md) for exact return types, lifetime and Java differences.
+It retains unparsed triples and inferred entity roles, including when warnings are disabled; statement counts and header status follow the selected behavior profile.
+It describes the original parse rather than proving lossless source accounting after edits.
+Loaded RDF formats are per-document copies, so identify their syntax through `format.key`.
+See the exact return types and qualifications in [the API reference](./API.md).
+
+### Package identity
+
+The desired unscoped name `owlapi` was formerly used for an unrelated, now-unpublished Overwatch package and is blocked by npm's name-similarity protection.
+The selected scoped package is a separate registry identity with no code, API, ownership, or provenance relationship to that package.
+
+The manifest and release tooling select this scoped identity.
+The retained [package-name review](https://github.com/Hadden-Industries/owlapi/blob/main/docs/provenance/package-name-review.json) describes the historical unscoped proposal; the separate [scoped-identity review](./docs/provenance/scoped-package-name-review.json) records the accepted scoped identity.
+Its original tag restriction is superseded by the documented amendment in [ADR 0009](./docs/adr/0009-scoped-npm-publication-and-uo-rc-acceptance.md).
+
+## Release history
+
+- [0.1.0-rc.3](https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.3), published 30 October: immutable Java-compatible and normative behavior profiles, an explicitly authorized Node document loader, `ChangeApplied` results, broader Node support and performance improvements.
+  Upgrading from rc.2 requires reviewing profile-specific mutation, query, storage and resource defaults in the [migration guide](https://github.com/Hadden-Industries/owlapi/blob/main/docs/migration/0.1.0-java-api-parity.md).
+- [0.1.0-rc.2](https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.2), published 10 October (Europe/Bucharest): ontology indexes and changes, transforms, short-form providers, Manchester rendering, Turtle and OWL/XML storage, EL/QL/RL checks and syntactic locality extraction.
+- [0.1.0-rc.1](https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.1), published 3 October: the first public scoped package, with ontology loading, RDF parser metadata, import closures, ontology merging, Functional Syntax/RDF/XML storage and DL checking.
+
+See the [complete changelog](https://github.com/Hadden-Industries/owlapi/blob/main/CHANGELOG.md) for fixes, migration details and release limitations.
+These are prereleases; stable `0.1.0` remains unpublished.
+
+## Node and browser support
 
 <!-- runtime-policy:start -->
 
@@ -166,38 +215,6 @@ console.log(javaManager.getBehaviorProfileId()); // java-owlapi-5.5.1
 ```
 
 <!-- release-documentation:example-behavior-profiles:end -->
-
-## Load an ontology
-
-<!-- release-documentation:example-load-ontology:start -->
-
-```js
-import { OWLManager } from "owlapi/apibinding";
-import { StringDocumentSource } from "owlapi/io";
-
-const source = new StringDocumentSource(
-  `<?xml version="1.0"?>
-   <rdf:RDF
-     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-     xmlns:owl="http://www.w3.org/2002/07/owl#">
-     <owl:Ontology rdf:about="https://example.com/my-ontology" />
-   </rdf:RDF>`,
-  {
-    contentType: "application/rdf+xml",
-    documentIRI: "https://example.com/my-ontology.owl",
-  },
-);
-
-const manager = OWLManager.createOWLOntologyManager({
-  behaviorProfileId: "normative-v1",
-});
-const ontology = await manager.loadOntologyFromOntologyDocument(source);
-
-console.log(ontology.getOntologyID());
-console.log(ontology.getAxioms().size);
-```
-
-<!-- release-documentation:example-load-ontology:end -->
 
 ## Java OWLAPI and JavaScript call shapes
 
@@ -279,6 +296,7 @@ Use `checkOntology(ontology, {sourceAssessment: true})` after loading with `pars
 The checker reports `valid`, `invalid` or `unverified`; resource exhaustion and stale source evidence cannot certify validity.
 In the latest release, omitted or null profile `timeoutMs` disables only its elapsed deadline; pass `{ timeoutMs: 30000 }` to retain the historical rc.1 default cutoff.
 Explicit deadlines and cancellation remain available.
+
 The behavior profile now owns default resource bounds: Java adds no JS-only finite ceiling; normative loading retains its separate default.
 See the [profile default-policy inventory](docs/compatibility/default-behavior-inventory.md) for the source change and its migration boundary.
 The [Canonical VOWL prerequisite contract](docs/compatibility/canonical-vowl-prerequisites.md) specifies source preservation, exact per-document formats, import-parent context, lossless cardinalities, budgets and bounded compatibility differences.
@@ -442,6 +460,7 @@ The latest release also provides [immutable RDF/XML writer configuration](docs/c
 The behavior profile selects atomic normative updates or Java-compatible sequential and partial effects; see the profile contract before migrating Java callers.
 The [parity migration guide](https://github.com/Hadden-Industries/owlapi/blob/main/docs/migration/0.1.0-java-api-parity.md) gives the exact imports, target/error changes and consumer-owned closure composition.
 New candidates remain subject to producer parity, losslessness and installed-package gates; application acceptance and adoption are independently owned.
+
 UO owns catalog/network resolution, retries, redirects and materialization policy; downloading the npm dependency does not itself enable remote ontology loading.
 UO qualifies connected generation separately from the mandatory offline reload of its completed standalone outputs.
 
@@ -458,10 +477,12 @@ Adjacent projects solve valuable but different parts of the problem.
 [`owljs`](https://github.com/cmungall/owljs) scripts Java OWLAPI through a JVM-backed JavaScript environment.
 [`owlish`](https://github.com/field33/owlish) exposes a Rust OWL model through WebAssembly.
 [OntoLogos](https://github.com/eddiethedean/ontologos) supplies a Rust ontology and reasoning stack with language bindings, while [HyLAR](https://github.com/ucbl/HyLAR-Reasoner) focuses on rule-based reasoning.
+
 None was treated as defective for having a different boundary; none was a slot-in native-JavaScript structural API for the complete WebVOWL ingestion requirements this project had to satisfy.
 
 The hard part was not merely turning RDF/XML or Turtle into triples.
 An OWL loader has to preserve structural distinctions across native OWL syntaxes, reconstruct OWL objects from RDF graphs under the normative mapping, handle imports and diagnostics predictably, and expose stable ontology values rather than leaking syntax-specific parse trees.
+
 WebVOWL supplied the first demanding production consumer and a valuable differential oracle, but this package contains no VOWL model or rendering concepts.
 
 The implementation was authored specifications-first.

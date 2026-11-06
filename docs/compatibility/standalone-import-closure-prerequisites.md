@@ -22,9 +22,11 @@ The branch sequence and exact rc.1 identities below are historical implementatio
 
 The capability slice originated on `feature/ontology-import-closure-lifecycle` and is included in the selected first public `@hadden-industries/owlapi@0.1.0-rc.1` under `next`.
 The owner approved first-release integration on 2026-09-28 and scoped publication with UO RC production eligibility in the [current amendment](../plans/scoped-npm-publication.md).
+
 The target coordinate is not evidence of publication or acceptance.
 UO may use this exact RC in production after artifact verification and complete consumer acceptance; it need not wait for `0.1.0`.
 The signed Phase 21 checkpoint is `c45f07719e0d846be354c818d281a38281913c38`, following integration baseline `19cf43d4288d20a737ecac0a39ccd1c53f9a3e77`.
+
 The eight lifecycle capabilities and their exact-candidate prepublication qualification are complete under Phase 22.
 The [qualification record](../provenance/releases/0.1.0-rc.1/qualification.md) binds the producer, WebVOWL and UO results to the retained tarball.
 Publication, public-registry verification and consumer production acceptance remain separate gates.
@@ -36,6 +38,7 @@ Use those same canonical bindings throughout; no temporary target, error class, 
 The reviewed lifecycle task commits are merged into a branch containing the pinned `main` integration baseline, preserving their original commit identities.
 Phase 21 must complete before Phase 22 release acceptance; neither requires an earlier public `0.1.0` release.
 Record the baseline commit and API-registry digest.
+
 All affected tests, generated API views, installed-package checks, and consumer checks are rerun against that accepted baseline.
 Conflicts are resolved in the canonical implementation; no shim, forwarding module, compatibility alias, duplicate binding, or fallback export is permitted.
 A bounded amount of alignment rework is expected.
@@ -48,15 +51,18 @@ Pre-integration evidence is development evidence and is never copied forward as 
 
 UO declares `"owlapi": "npm:@hadden-industries/owlapi@0.1.0-rc.1"` in `devDependencies` and retains its five `owlapi/*` namespace imports.
 The installed package and registry evidence must identify the real scoped name, exact version and verified integrity.
+
 The package exports six public subpaths plus its root aggregate; UO's composition uses five of those subpaths.
 Native npm dependency aliasing is permitted and does not create an API shim or rewrite transitive/peer dependencies.
 Preserve the source repository and Java package mappings.
 
 Qualify the retained scoped artifact through UO's actual adapter, complete contract matrix, remote-fetch policy and real ontology cases before publication.
 After publication, independently fetch and verify the actual public registry artifact, compare its bytes with the accepted candidate, and complete UO's registry/provenance and production gates.
+
 The existing source/local-tarball harness is not public-registry proof; add the isolated registry mode described in the scoped-publication plan.
 Record source commit/tag, tarball digest, registry integrity, API evidence, UO revision/input hashes and actual results.
 The pinned-Java qualification report labels its package source as `DEVELOPMENT`, `PREPUBLICATION` or `REGISTRY_ACCEPTANCE`.
+
 Those stage labels apply to both passing and failing runs; the separate result and evidence determine which gate, if any, has passed.
 A later RC or stable version requires a new exact pin and requalification.
 Do not implement migration to the bare package name in this work.

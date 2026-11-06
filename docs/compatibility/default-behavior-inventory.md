@@ -52,6 +52,7 @@ It does not provide an unbounded loader or establish Java parity for the remaini
 
 The scheduling repair reuses elapsed-work cooperative yielding from the existing parsers.
 It uses a zero-delay timer after approximately 50 ms of work, with budget and abort checks after resumption.
+
 The [scheduling specification](https://wicg.github.io/scheduling-apis/) describes timer-clamping overhead and boosted scheduler continuation priority.
 The initial scheduler-capable prototype failed the real Chromium timer-cancellation scenario in both windows and workers: successive continuations outran the pending abort timer.
 The selected timer turn admits timer-based caller cancellation in scheduler-capable and scheduler-absent runtimes alike.
@@ -67,7 +68,9 @@ Neither checkout checks nor consumer success constitute publication of a new imm
 Five serial cold Node 24.21.0 runs on the current 2,298,206-byte UO input reduced median profile assessment from 49,920.07 ms to 935.55 ms (1.87% of baseline).
 Each assessment used the same explicit `timeoutMs: 180000`, `maxWork: 10000000` and source-assessment options; full reports matched and each load contained 14,989 axioms.
 Timer pauses fell from 3,505 per run to 15–17.
+
 Five real timer-cancellation trials on 100,000 declaration axioms rejected in 50.84–61.61 ms.
+
 CPU and memory observations and full reports are retained under the execution's external evidence directory, `operator/owlapi-profile-repair-01a11ff5`, in `before-current-*.json`, `after-approved-*.json` and `approved-comparison.json`.
 These are foreground measurements with other machine activity present, and do not reproduce the historical input hash.
 

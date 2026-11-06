@@ -4,6 +4,7 @@ The current [behavior profile contract](behavior-profiles.md) owns profile selec
 The guarantees and example in the next section describe `normative-v1`.
 The historical compatibility decisions below retain their original revision and are not current Java-profile exceptions.
 Java selects native writer behavior explicitly and appends output.
+
 Java copies preserve `labelsAsBanner` when other fields change, including anonymous-ID saving.
 They reset indentation size and banner enablement to their defaults; no-op setters preserve native identity.
 The independent released-jar probe and observations are retained in `util/owlapi-reference/RunWriterCopySemantics.java` and its `fixtures/writer-copy-semantics-java551.json` fixture.
@@ -41,6 +42,7 @@ await manager.saveOntology(ontology, OWLDocumentFormats.RDF_XML, target);
 All builders return fresh frozen values and retain every unrelated setting, including no-op calls.
 Boolean arguments must be actual booleans.
 Indentation must be a finite integer from zero through `2147483647`: other numeric values raise `RangeError` and other types raise `TypeError`.
+
 Negative zero is normalized to ordinary zero.
 The constructor accepts the optional immutable `behaviorProfileId` selection.
 The manager setter returns `undefined` and accepts genuine configurations, rejecting null, lookalikes and proxies.
@@ -50,6 +52,7 @@ Indentation counts spaces per structural level.
 Zero spaces and disabled indentation retain structural newlines; literal whitespace is never reformatted.
 Banners are group and named-entity XML comments.
 Disabling banners also disables label banners.
+
 Label mode selects an `rdfs:label` by language, lexical value and datatype in code-unit order, with the empty language first, then falls back to the entity IRI.
 Comment-only sanitization separates repeated hyphens and pads a terminal hyphen.
 Original RDF labels are unchanged.
@@ -65,8 +68,10 @@ Namespace entities, authored prefix-map mutation, anonymous-individual remapping
 
 Rendering admits at most 32 MiB of UTF-8 output and 128 nested resource levels, aligned with the existing storer's reparse budget.
 Owned chains and literal lists exceeding the abbreviation depth retain flat `rdf:nodeID` references; graph depth alone does not cause rejection.
+
 Terms and DOM construction are checked before unbounded serialization, and indentation is charged before allocating padding.
 Native QName candidate validation admits at most 32 MiB of total UTF-16 candidate characters per render, including namespace and local-name work, and repeated predicates reuse their validated names.
+
 Construction accounting is conservative because independently serialized elements can repeat namespace declarations.
 Excessive output or QName work raises a storage error caused by `ResourceLimitError`; the target retains its previous complete text.
 A legal integer setting is not a promise that any ontology can be rendered within the budget.
@@ -75,6 +80,7 @@ A legal integer setting is not a promise that any ontology can be rendered withi
 
 The owner accepted the implementation plan and its proposed adaptations on 2026-10-08, then selected npm 12.2.0 and the current upstream default-branch Java pin.
 The actual Java checkout and upstream `version5` tip were both `b61ebe2da83daceebb3e7ba7afbd2582c9240c33` (`owlapi-parent-5.5.1-9-gb61ebe2da`).
+
 The Java tree was `b8dad5241dae6ff3bd3b755b9a1c605623eeb2c2`.
 The native Maven reactor was built at that exact revision and the public-call harness `util/owlapi-reference/RunWriterConfigurationContract.java` ran against its built module jars and resolved runtime dependencies.
 Java is development-only.
@@ -94,6 +100,7 @@ Shared Java bundle reuse and publication are disabled because their approved cat
 This is a supported partial JavaScript adaptation.
 The generated Java inventory lists implemented and omitted members separately.
 The first immutable package release is not selected by this change; source delivery does not assert npm publication or Universal Ontology adoption.
+
 Publication preflight rejects public bindings with an unassigned first release; source-only qualification remains available.
 The companion default-output plan's producer renderer prerequisite is implemented here; its consumer upgrade and deployment retain their own qualification.
 
@@ -112,6 +119,7 @@ The compact baseline was OwlAPI commit `ffbb3f3910ce945e315ed624e46c961ef332eea4
 
 Readability adds roughly 20% output size and measured renderer work.
 Default heap deltas after rendering were 92–157 MiB, versus 66–72 MiB for the compact baseline; these deltas are not peak-memory measurements.
+
 The finite byte, nesting and pre-allocation guards bound publication, while full save validation retains its existing independent reparse and OWL structural comparison.
 Excessive indentation fixtures verify typed failure, long-chain and literal-enumeration fixtures verify bounded flat fallback, and public-save tests verify unchanged targets after failed rendering.
 
@@ -127,12 +135,14 @@ Enabling this setting retains IDs for anonymous individuals and axiom nodes, wit
 `RDFXMLDocumentFormat`, exported from `owlapi/formats`, supports the bounded Java prefix subset recorded in the generated API inventory.
 `PrefixDocumentFormat` and `PrefixManager` are structurally supported through this class, without standalone JavaScript exports.
 Its prefix map is mutable through the supported Java setters; map and set getters return defensive copies.
+
 The existing immutable `withParameter` adaptation preserves the concrete RDF/XML format and its prefixes. Loaded RDF/XML root declarations are preserved as format preferences without making the ontology's immutable loader metadata mutable.
 A save captures these preferences before its first asynchronous operation.
 
 Only the exact Java format parameter `force xsd:string on literals` is supported, with a boolean value.
 Ordinary xsd:string literals omit the datatype attribute by default.
 Other output parameters remain unsupported.
+
 Root attributes wrap using the existing indentation setting; namespace declarations, sections, predicates, comments and adjacent annotated axioms use the refined deterministic renderer.
 Label-banner mode falls back to the IRI's short name when there is no label; the existing accepted deterministic choice among multiple labels is unchanged.
 
@@ -141,6 +151,7 @@ The footer identifies the JavaScript producer truthfully and is independent of e
 The existing `RunWriterConfigurationContract.java` now also accepts an input fixture and output directory, preserving its original one-argument characterization.
 `run-writer-configuration-contract.mjs` reuses the pinned reference-environment resolver, classpath launcher, compilation controls and native structural comparator.
 Both implementations read identical fixture bytes for defaults, disabled banners, two-space indentation, disabled indentation, label banners, retained anonymous IDs and forced string datatypes.
+
 The comparison checks the remaining serialized layout byte for byte after only the listed bounded distinctions and anonymous-ID renaming; native Java independently verifies complete ontology structure.
 Unknown formatting differences fail.
 Fresh outputs and reports remain external evidence, rather than committed expectations.

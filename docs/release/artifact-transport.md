@@ -34,9 +34,11 @@ It supplies the remaining recovery protocol without patching the SDK's private R
 
 The initial policy permits at most three uploads with failure-only backoff windows of 5–10 and 15–30 seconds.
 All snapshot, upload, lookup and recovery work shares a four-minute deadline.
+
 Collection has a separate fifteen-minute budget for up to 32 evidence shards or the frozen consumer matrix, including sequential verification of equivalent transport copies.
 This is a finite availability allowance; exact hosted timing and release collector qualification remain pending.
 SDK calls run in child processes so cancellation or deadline expiry can terminate an otherwise uncancellable operation.
+
 Handle closure precedes temporary-file retirement.
 Callers with formerly shorter receipt steps now allow five minutes.
 Safe diagnostics retain physical names, ordinal, elapsed and remaining budget, and terminal upload disposition, including cancellation and deadline expiry.
@@ -56,8 +58,10 @@ The ordinal never replaces the workflow attempt.
 Collectors admit current-run physical names through that codec, group them by logical coordinate and select the latest producing workflow attempt for a temporary coordinate.
 Within that attempt, different producers or invocations are contradictions.
 Equivalent transport copies must have identical verified file manifests; the earliest ordinal is selected deterministically.
+
 A pattern collector materializes one directory per logical coordinate, preserving the existing matrix/shard report layout.
 The complete selected collection also shares the payload byte and file-count bounds.
+
 Each verified download is retired before inspecting the next copy, and the selected archive is checked again against the worker's verified manifest before materialization.
 Collection rejects symlinks and junctions in destination ancestors, using the same workspace path guard as uploads.
 An exact-name collector materializes the payload directly in its new destination directory.
@@ -66,6 +70,7 @@ This replaces the five former `overwrite: true` temporary-artifact sites with im
 Closed candidate and OWL proof payloads receive no transport metadata files.
 Explicit artifact-ID downloads retain their existing server-digest checks.
 Historical evidence IDs remain unchanged.
+
 Historical proof readers explicitly admit legacy names, preserve the selected physical identity on readback and reject ambiguity; optional reuse falls back to full qualification when it cannot prove a unique source.
 Retained release approvals additionally verify every equivalent transport copy.
 
@@ -73,11 +78,14 @@ Retained release approvals additionally verify every equivalent transport copy.
 
 The qualified predecessor's largest retained artifact was approximately 3.3 MB; the root authenticated npm corpus was approximately 69 MB.
 The initial policy caps frozen/expanded payloads at 1 GiB, file count at 10,000, filesystem census at 20,000 entries and the raw ZIP at 1 GiB plus 2 MiB.
+
 Collection additionally caps cumulative admitted archive bytes at 4 GiB, including equivalent copies, with metadata checked before each download.
 This is not an exact network-transfer counter: the public SDK can retry partial downloads internally without exposing their consumed wire bytes.
+
 The parent deadline bounds the complete operation, including those retries; raw disk growth and final archive size are checked independently.
 Do not claim a 4 GiB cumulative wire limit from this admitted-payload bound.
 Temporary collection storage holds at most the bounded selected payload and one bounded raw archive at a time; ZIP parsing holds one archive and its expanded contents in memory.
+
 Larger subjects require a reviewed policy change.
 The SDK download worker checks metadata and monitors raw disk growth; no archive is admitted or materialized before size, digest and content validation.
 Recovery temporarily retains frozen and downloaded bytes, so temporary storage must allow both.
@@ -94,8 +102,10 @@ These provider choices belong to their different runtime boundaries; they share 
 
 The SDK and Actions core dependencies have an exact isolated lock under `tooling/artifact-transport`.
 The build reuses the repository's Vite toolchain; an offline comparison proved that Vite and ncc could load the SDK, so no second bundler dependency was adopted.
+
 Vite retains bundled third-party legal text.
 The isolated graph uses the existing authenticated npm evidence acquisition, scanner, offline verifier and JSON admission under a separate namespace, sharing the product graph's schema and implementation.
+
 The JSON checking byte budget is 512 MiB to include both graphs' independently admitted source snapshots and document views; every document remains checked and per-file bounds remain unchanged.
 Retained licence declarations and automated evidence do not complete review by the rights owner.
 

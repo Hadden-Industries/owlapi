@@ -4,6 +4,7 @@
 
 New Java work reads the single [`.java-version`](../../.java-version) selection through the [Java toolchain policy](../../docs/development/java-toolchain.md), which derives native and Windows package spellings.
 That declaration records the exact runtime and shared executable policy used by CI and native validation; historical build observations below retain their original JDK identity.
+
 The official released Java OWLAPI 5.5.1 oracle, historical source-build pins and frozen performance timings retain their distinct identities.
 Use [the 0.1.0 roadmap](../../docs/plans/2026-10-29-0.1.0-release-reconciliation.md#4-java-toolchain-and-oracle-migration) to select the appropriate oracle and preserve old evidence.
 
@@ -18,13 +19,16 @@ Historical harness sections below keep their original pins; they do not qualify 
 
 The older executable source pin is defined by `pinned-version.json`; as reconciled on 9 October 2026 it is `b61ebe2da83daceebb3e7ba7afbd2582c9240c33` (`owlapi-parent-5.5.1-9-gb61ebe2da`).
 Historical fixtures and observations retain their recorded Java revisions; changing the current pin does not relabel their evidence.
+
 Native bundle transport and hosted qualification were delivered at the earlier pin, but shared reuse is currently disabled because its accepted publication catalogue covers `d7e997a53b470e32700de89cc610d9daf01ea769`.
 Use fresh native preparation and live comparisons for the current pin; see [ADR 0012](../../docs/adr/0012-gated-native-java-reference-reuse.md) for the implementation and operating history.
 
 `RunRdfConsumerContract.java` is an offline Java 5.5.1 characterization of the 2 October RDF consumer repairs.
 Compile and run with the pinned runtime classpath, using the Windows long-classpath launcher below if needed.
+
 It preloads the two imported ontologies in memory, refuses unexpected import acquisition, and prints the actual native axioms, annotations, imports and metadata for six project-authored cases.
 Two optional positional arguments identify the matched OntoViBe root and module paths; verify their manifest hashes before running and retain the observation outside the repository.
+
 The observations justify the tests for inverse properties and imports.
 The [metadata contract](../../docs/compatibility/rdf-parser-metadata.md) records retained JavaScript policies and deliberate differences.
 Raw observations belong in external qualification evidence rather than being regenerated as test expectations.
@@ -36,6 +40,7 @@ Maven's native `mdep.localRepoProperty` replaces repository prefixes but leaves 
 This module admits a bounded directory payload and produces the existing consumer's classpath format; it does not resolve Maven dependencies, parse archives or execute Java classes.
 
 The closed schema requires a local experiment purpose, `NOT_CLEARED` redistribution, exact upstream commit/tree, an input-observation record digest, ordered ordinal JAR paths and notice files with byte counts and SHA-256 digests.
+
 The caller separately supplies the expected manifest, inventory, source and input-record identities.
 Those expectations must come from retained independent observations, never be derived from the downloaded manifest during admission.
 The observation digest is not a deployable compatibility key: complete native plugin/build inputs and the hosted environment policy still require qualification.
@@ -43,11 +48,13 @@ The observation digest is not a deployable compatibility key: complete native pl
 `verifyReferenceBundle({ bundleDirectory, expected })` verifies without writing.
 `materializeReferenceBundle({ bundleDirectory, destination, expected })` verifies all bytes first, then copies those same in-memory bytes to a newly created private directory.
 Its return value names `owlapi-runtime-classpath.txt`; the experiment operator places that file at the pinned checkout's existing consumer location.
+
 No original absolute classpath, Git checkout, Maven cache, harness classes or comparison verdict belongs in the payload.
 Current harnesses still compile and the selected comparisons still run.
 
 Manifest bytes are limited to 256 KiB, individual files to 64 MiB, total payload to 128 MiB, inventory to 512 files and runtime to 256 JARs.
 Admission rejects missing/extra files, reordered or duplicate runtime paths, escaping or aliased paths, links including Windows junctions, hard-linked files and content mismatches.
+
 The caller owns a private, quiescent namespace and an existing private destination parent; filesystem checks are not a sandbox against a concurrent local writer.
 An existing destination is preserved and refused.
 A write failure may leave a new partial destination; the caller retains diagnostics and disposes of that task-owned directory before starting a fresh attempt.
@@ -88,6 +95,7 @@ Regenerate it only from the pinned source revision and review any structural cha
 The lifecycle storage pair is `fixtures/storage/functional-all-kinds.ofn` and `fixtures/storage/functional-all-kinds.java.json`.
 It covers every current structural kind except import declarations, which have separate counting-loader tests.
 Its Java snapshot is produced by the same pinned harness; set Java's `-Dstdout.encoding=UTF-8` and `-Dstderr.encoding=UTF-8` explicitly when capturing Unicode output on Windows.
+
 For the independent full-structure storage check, run `run-import-closure-contract.mjs` with this root, an empty OASIS catalog, and the Functional text emitted by `manager.saveOntology`.
 No import is dereferenced, and the existing native oracle compares all structure modulo one anonymous-node bijection rather than comparing prefixes or serialized bytes.
 
@@ -107,11 +115,13 @@ The Phase 5 RDF reference set is under `fixtures/rdf/`:
 
 The Phase 5 differential deliberately does not parse the `.rdf` file in JavaScript: syntax parsing belongs to Phase 6.
 It compares the constructed dataset translation with the Functional ontology in full, then compares ontology identity, imports, counts and signature categories with the Java snapshot.
+
 `phase5-malformed-list.rdf` is a separate black-box probe recording that OWLAPI 5.5.1 accepts the two pinned W3C Rational fixtures' malformed non-`rdf:nil` collection terminal.
 It is not a general compatibility fixture and does not authorize silent list repair.
 
 The Phase 10 DL reference set is under `fixtures/dl/`.
 The `.dl`, `.ofn`, `.rdf`, and `.ttl` documents are project-owned encodings of the same structural ontology; `phase10-structural.java.json` is the pinned Java result for the DL document.
+
 `GenerateDLSyntaxSnapshot.java` calls the pinned DL parser directly, because generic manager selection can choose an unrelated parser for this headerless syntax, and supplies the explicit default namespace required by a format with no ontology header.
 It reuses only the structural JSON serializer from `GenerateStructuralSnapshot.java`.
 
@@ -124,12 +134,14 @@ java -cp "util/owlapi-reference/target;<owlapi-runtime-classpath>" GenerateDLSyn
 
 The specialized harness removes only terminal CR/LF characters before the oracle call.
 OWLAPI 5.5.1 otherwise rejects an ordinary final line ending; the normalization is recorded in the snapshot provenance and does not remove an axiom.
+
 The shared differential fixture is deliberately restricted to the subset accepted through the pinned parser's whole-document entry point.
 Focused JavaScript tests separately cover assertion, inverse-property, numeric data-one-of, attached-colon, trailing-whitespace, and unmatched-subclass cases where that entry point is internally inconsistent.
 Those are controlled compatibility corrections, not undocumented expected differences.
 
 The Phase 11 KRSS2 reference set is under `fixtures/krss2/`.
 Its `.krss2`, `.omn`, and `.owx` files plus the Phase 10 `.dl`, `.ofn`, `.rdf`, and `.ttl` siblings encode one 12-axiom subset across every implemented syntax that can express it; `phase11-structural.java.json` is the pinned KRSS2 result.
+
 The specialized `GenerateKRSS2SyntaxSnapshot` harness invokes `KRSS2OWLParser` directly so generic manager detection cannot select another headerless syntax.
 Its fixture uses absolute names because OWLAPI 5.5.1 constructs malformed `Optional[...]` bases for bare names in this oracle setup; JavaScript's document-relative name policy is governed separately by focused tests.
 
@@ -144,6 +156,7 @@ java -cp util/owlapi-reference/target RunWithClasspath <classpath-file> util/owl
 The Phase 17 original-KRSS reference set is under `fixtures/krss1/`.
 `GenerateKRSS1SyntaxSnapshot` invokes `KRSSOWLParser` directly against a named ontology so its bare-name behavior is deterministic and observable.
 The main fixture pins the Java-reachable TBox subset; its accepted ABox statements are absent from the Java snapshot because OWLAPI 5.5.1 discards their returned axioms.
+
 Separate project-owned probes preserve evidence for cardinality token shadowing, singleton Boolean objects, and the unreachable full-IRI token.
 Every preserved behavior and controlled correction is enumerated in `docs/compatibility/krss1-behavioral-oracle.json`.
 
@@ -188,8 +201,11 @@ The launcher delegates each format to its owning implementation:
 - Java OWLAPI loads the root and imports, computes the complete closure, merges direct axioms through `OWLOntologyMerger` with `mergeOnlyLogicalAxioms = false`, and supplies structural OWL-object equality.
 
 Repository code enforces only the acceptance invariants those authorities do not know: the supported catalog subset is exactly OASIS XML Catalog `catalog`/`group` containers with exact `uri` entries; mappings are unique and local; unsupported rewrite, delegate, chained-catalog, and extension constructs fail closed; the root full ontology ID and only its direct ontology annotations are restored; output imports are empty; and all axioms plus ontology annotations must agree under one injective anonymous-individual mapping and its reverse.
+
 HTTP, HTTPS, and FTP URL handlers are denied in the oracle JVM, and a missing authored-import mapping fails before fallback resolution.
+
 JSON-LD HTTP clients can bypass those handlers, so the oracle also enables RDF4J's secure mode with an empty context-resource allowlist and jsonld-java's remote-context prohibition before constructing parsers.
+
 These are the libraries' supported controls ([RDF4J settings](https://rdf4j.org/javadoc/latest/org/eclipse/rdf4j/rio/jsonld/JSONLDSettings.html), [jsonld-java network policy](https://github.com/jsonld-java/jsonld-java#controlling-network-traffic)).
 Inline contexts remain supported; external contexts fail closed.
 Regression tests route an otherwise default-allowed context URL through a loopback HTTP proxy and require that the proxy receives no request.
@@ -222,6 +238,7 @@ Without it, the portable launcher tests still run and Java integration tests are
 
 Standard output contains exactly one JSON object.
 It identifies the pinned revision and loaded OWLAPI version; lists closure member ontology/version IDs; reports expected and actual direct counts; records the anonymous-individual bijection size; classifies the comparison outcome and mismatch path; and includes catalog-resolution and zero-network evidence.
+
 Compiler, JVM, parser, and diagnostic text is confined to standard error.
 Compilation is accepted only when `javac` returns zero and emits no diagnostic on either stream, so an internal compiler failure cannot be mistaken for usable evidence solely because a partial class file was written.
 
@@ -230,6 +247,7 @@ Anonymous-individual matching uses a bounded explicit work stack, so the JVM cal
 Structural equality and anonymous-individual substitution remain delegated to Java OWLAPI.
 
 The synthetic fixture under `fixtures/import-closure/` deliberately combines a cycle, root version IRI, a duplicate declaration, an imported annotation that must not be copied, within-document anonymous sharing, and the same authored anonymous label in two different source documents.
+
 Synthetic and real-family runs are permitted as provisional Task 14 development evidence before baseline reconciliation.
 Neither constitutes final release acceptance: fresh evidence from the reconciled candidate remains required after the pinned source-integration baseline and accepted Phase 21 commits are ancestors.
 
@@ -247,27 +265,33 @@ All resolution remains offline.
 Native Java OWLAPI owns structural equality and the independent merge of the compared JavaScript document models.
 Exact specification-grounded differences use the one expected-difference ledger; unknown, ambiguous or stale rules fail.
 Raw Java outcomes remain visible alongside reconciliation outcomes.
+
 The [named OWL-Time restriction decision](../../docs/compatibility/july-ontology-reconciliation.md) explains why a reconciled pass for core/extended is not raw Java equality.
 July ledger rules apply to direct document differences, not to the closure root.
 Closure reconciliation instead requires `propagationEvidence` to match with no allowed differences after Java merges those reconciled document models.
+
 The standalone Java oracle exits with code 1 for unparsed source RDF and retains `SOURCE_UNPARSED_RDF`; only the qualification command adjudicates that evidence against the exact ledger.
 Do not treat a raw oracle exit as the reconciled result.
 
 Source mode records actual source bytes, including dirty changes.
 Optional `--candidate <directory>` installs the retained tarball with scripts disabled and verifies its digest before testing the public package.
 This existing source/local-candidate mode does not fetch or qualify a public npm release.
+
 After publication, run the same command with `--registry-version 0.1.0-rc.1` to exercise the public-registry package.
 Place its `--output` directory outside the owlapi checkout; registry mode rejects an output under the repository, including ignored folders.
 The registry option cannot be combined with `--candidate` and rejects tags or version ranges.
 It creates an isolated consumer and empty cache, installs the exact native alias `npm:@hadden-industries/owlapi@0.1.0-rc.1`, verifies actual scoped identity/integrity and resolves only its installed public roots.
+
 The package has seven entry points; UO uses the five Java-shaped subpaths.
 After artifact publication and verification, UO tests authorized remote import retrieval and its complete contract, then verifies the generated standalone ontology offline with zero loader calls.
+
 A fully accepted RC may serve UO production without stable `0.1.0`; the source/local-tarball modes alone cannot.
 Generated documents and source blobs are rechecked for changes at the end.
 Reports, individual oracle JSON, parser diagnostics and native logs remain in the new output directory.
 
 The qualification unit suite delegates public-package composition to a fixed test driver running in the current Node executable.
 Node resolves and executes the real public modules; Jest asserts the returned evidence and generated files.
+
 This preserves concurrent imports and the exact production qualification path without depending on Jest's experimental VM module linker, which can reject shared concurrent imports on Node 22.
 Both supported Node lines run these same assertions; native failures and missing import mappings remain test failures.
 
@@ -278,6 +302,7 @@ This adds development evidence only; it does not change the release workflow or 
 
 `nativeReferenceRecipe` and `captureNativeReferenceObservation` in `reference-build-observation.mjs` support the next local reference experiment.
 The recipe returns argument arrays for Maven's exact Help 3.5.2 and Dependency 3.11.0 goals; it does not execute a command or construct a shell command string.
+
 Supply a task-owned Maven repository, empty user home and fresh report directory.
 Both user and global settings scopes use the included credential-free offline `reference-build-settings.xml`.
 Clear inherited Maven/JVM option injections and disable Maven startup scripts in the native orchestration.
@@ -286,16 +311,20 @@ A missing offline input is a failed experiment, with no automatic download or ve
 Retain native Maven and Java version output as `maven-version.txt` and `java-version.txt`; redirect active-profile output to `active-profiles.txt`.
 The exact goals produce `effective-pom.xml` and `runtime-tree.json`; copy the native distribution classpath to `runtime-classpath.txt`.
 The tree report may contain appended native reactor JSON objects; this module does not parse or normalize them.
+
 `plugins.txt` is the native project/report-plugin superset, including unexecuted goals.
 An already retained report may be used with its original provenance stated explicitly; do not claim it ran under a new recipe.
+
 The seal does not establish any report's correspondence to the declared recipe; carry retained-report provenance alongside it and inspect both records together.
 Keep command exit statuses and raw logs outside the seven-file report directory.
 Never use `help:system` or unreviewed effective settings/environment dumps here.
 
 The sealer observes clean native Git commit/tree identity, hashes the seven raw reports, recipe and settings, retains the expanded recipe as a **caller declaration**, and creates an exclusive output file outside the report directory.
 It defaults to the established upstream pin; an explicit expected revision may be used for a separately identified local fixture.
+
 Each report must be nonempty, regular, unlinked and at most 8 MiB; the total is bounded at 32 MiB.
 Input aliases and unexpected files are rejected.
+
 The caller owns a private, quiescent namespace; these checks do not sandbox a malicious concurrent local writer.
 Git-ignored files and retained `target/` outputs are outside that source identity.
 A warm local package run therefore does not prove a fresh compilation cost.
@@ -304,5 +333,6 @@ The record expressly marks report origins and recipe execution as unauthenticate
 Sealing does not validate report semantics, successful native execution, dependency/plugin byte closure, exact JDK build identity or environment equivalence.
 Its digest identifies this **local observation**, with a null semantic compatibility key, uncleared redistribution and disabled shared reuse.
 It cannot authorize a public bundle or replace fresh CI qualification.
+
 The local Maven version is recorded as observed; this experiment neither upgrades the environment nor represents that version as the current stable production selection.
 The recipe does not control Maven toolchains files or JVM startup home; those remain explicit environment-policy gaps despite the declared Maven user home.

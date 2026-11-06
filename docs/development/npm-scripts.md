@@ -9,6 +9,7 @@ Bare aggregate commands such as `lint`, `format`, and `test` remain convenient e
 Sort the complete script keys in ascending ASCII order.
 This gives a predetermined grouping by action, then by subject and modifier, with each bare command before its scoped children.
 For example, `format` precedes `format:check`, `format:json`, and `format:json:check`.
+
 There is no separately maintained category list, custom sort dependency, or executable separator script.
 JSON formatting preserves this deliberate member order; it does not perform the sort.
 Keep the script order when adding commands, and update active callers whenever a name changes.
@@ -17,12 +18,14 @@ Keep the script order when adding commands, and update active callers whenever a
 
 [npm's script documentation](https://docs.npmjs.com/cli/v11/using-npm/scripts/) permits arbitrary user-defined names alongside exact lifecycle events.
 Consequently, verb-first naming and key ordering are repository conventions, rather than requirements imposed by npm.
+
 Keep scoped setup commands such as `prepare:downloaded-candidate` distinct from the exact `prepare` lifecycle event, which npm runs during installation and packing.
 Renaming a command also requires checking its corresponding `pre` and `post` hooks; this repository currently has no such hooks for the renamed scripts.
 
 [ESLint's published package conventions](https://eslint.org/docs/latest/contribute/package-json-conventions) combine action-first names, targets and modifiers with alphabetical order to produce logical groups.
 OwlAPI adopts those structural ideas while retaining verbs that distinguish its setup, evidence, qualification and publication operations.
 It retains `format` rather than adopting ESLint's `fmt` abbreviation.
+
 Existing read-only variants such as `format:source:check` remain valid: the first part is the action, `source` is its subject, and `check` is a mode modifier.
 The ordering rule also works with [sort-package-json's documented alphabetical script sorting](https://github.com/keithamus/sort-package-json/blob/main/defaultRules.md#scripts), without installing another tool.
 
@@ -48,11 +51,14 @@ It retains the Node-policy preflight before that combined pass and the existing 
 `graph:dependencies` retains its name.
 JSON checking uses `check:json` for complete coverage and `inspect:json` for the same check's typed event stream; the former `inventory:json` and `lint:json` commands are retired.
 `format:json:check` also invokes complete checking, so it includes protected and native sources.
+
 JSON Quality is a registry devDependency in the root manifest, installed by ordinary `npm ci`; the former `install:json` command and isolated bootstrap are retired.
 Its `>=` minimum declaration follows the other registry devDependencies; normal npm installation, the lockfile and the repository-wide dependency checks govern its resolved package graph.
 `test:json` checks JSON behavior, source preservation and repository coverage without a package-specific installation verifier.
+
 The complete JSON corpus uses finite limits of 256 MiB managed memory, 8 GiB temporary storage and ten minutes.
 The default 2 GiB temporary limit was exhausted while indexing retained package evidence; the larger limit preserves all source coverage and semantic checks.
+
 Use a temporary volume with sufficient free space for complete checking; per-source checks alone do not establish repository closure.
 Markdown Quality is also a normal root registry devDependency, declared as `>=3.0.0` with exact root-lock resolutions.
 Run `npm ci --ignore-scripts` under the development Node/npm runtime; npm installs the matching optional native package.

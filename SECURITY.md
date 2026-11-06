@@ -13,6 +13,7 @@ The project name and recommended consumer dependency alias remain `owlapi`; the 
 
 UO and WebVOWL may each accept an exactly pinned RC for production after complete artifact verification and their own consumer qualification, without waiting for stable `0.1.0`.
 That acceptance does not extend the security-support window or make a prerelease a stable release.
+
 If `next` moves or stable `0.1.0` supersedes it, each consumer must explicitly qualify and pin a supported replacement; installations do not automatically follow either tag.
 
 Old versions may remain downloadable because npm releases are immutable.
