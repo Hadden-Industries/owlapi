@@ -1,0 +1,209 @@
+{
+  "artifactId": "b1d756df785c15ed74b810389d2a77a815e5666fae213d640c7880e735b4becc",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7628,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "587d1eae1651738f8949926b88aa9a7622d81cb2fb61c5e17e38ada1ff09df3a",
+        "size": 249,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts.map",
+        "sha256": "f34f15b78a5b63e39dfd62fe3983ac43c90d45876cfc5b79278e0316db07adf0",
+        "size": 182,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "037c062d404356c6bbb8dad28d39445165d23e84ac35a63496a98d40aaa8d645",
+        "size": 217,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.d.ts",
+        "sha256": "6a952ef415122995fc8bdd784402e0960ffc34ff3b6d4d9994f13f127f1e1340",
+        "size": 5743,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.d.ts.map",
+        "sha256": "4a68c23c411b44440800822065cdc71674bdca0b8e036a562a00ab87fd596adf",
+        "size": 3489,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "ce90bad6b772a7e1115d76e4cc53bfade1ee1fe8ac1b8880f48b0e1512ffba44",
+        "size": 8989,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "82974dbf2639d13edab95c32ed9cb6c0867ede272cd2e07ce47ce8548fe55c05",
+        "size": 1099,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "0838fa706c4cbda37f47ac4c915fab0b6be3c99aeeb81060d22ec6532fae6272",
+        "size": 2640,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "2f634a5199704ccef938d2f7015a135da2dcbb1c06f52d4d893faaea32cc6304",
+        "size": 8881,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1099,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/82/82974dbf2639d13edab95c32ed9cb6c0867ede272cd2e07ce47ce8548fe55c05",
+          "sha256": "82974dbf2639d13edab95c32ed9cb6c0867ede272cd2e07ce47ce8548fe55c05"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "82974dbf2639d13edab95c32ed9cb6c0867ede272cd2e07ce47ce8548fe55c05",
+        "size": 1099
+      },
+      {
+        "blob": {
+          "bytes": 8881,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/2f/2f634a5199704ccef938d2f7015a135da2dcbb1c06f52d4d893faaea32cc6304",
+          "sha256": "2f634a5199704ccef938d2f7015a135da2dcbb1c06f52d4d893faaea32cc6304"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "2f634a5199704ccef938d2f7015a135da2dcbb1c06f52d4d893faaea32cc6304",
+        "size": 8881
+      }
+    ],
+    "expandedBytes": 31489,
+    "packageIdentity": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "unist-util-is",
+      "repository": "syntax-tree/unist-util-is",
+      "version": "6.0.1"
+    },
+    "packageMetadata": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "bugs": "https://github.com/syntax-tree/unist-util-is/issues",
+      "contributors": [
+        "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+        "Christian Murphy <christian.murphy.42@gmail.com>",
+        "Lucas Brandstaetter <lucas@brandstaetter.tech> (https://github.com/Roang-zero1)"
+      ],
+      "dependencies": {
+        "@types/unist": "^3.0.0"
+      },
+      "description": "unist utility to check if a node passes a test",
+      "devDependencies": {
+        "@types/mdast": "^4.0.0",
+        "@types/node": "^24.0.0",
+        "c8": "^10.0.0",
+        "prettier": "^3.0.0",
+        "remark-cli": "^12.0.0",
+        "remark-preset-wooorm": "^11.0.0",
+        "tsd": "^0.33.0",
+        "type-coverage": "^2.0.0",
+        "typescript": "^5.0.0",
+        "xo": "^0.58.0"
+      },
+      "exports": "./index.js",
+      "files": [
+        "lib/",
+        "index.d.ts.map",
+        "index.d.ts",
+        "index.js"
+      ],
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/unified"
+      },
+      "keywords": [
+        "unist",
+        "unist-util",
+        "util",
+        "utility",
+        "tree",
+        "node",
+        "is",
+        "equal",
+        "check",
+        "test",
+        "type"
+      ],
+      "license": "MIT",
+      "name": "unist-util-is",
+      "prettier": {
+        "bracketSpacing": false,
+        "semi": false,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "trailingComma": "none",
+        "useTabs": false
+      },
+      "remarkConfig": {
+        "plugins": [
+          "remark-preset-wooorm"
+        ]
+      },
+      "repository": "syntax-tree/unist-util-is",
+      "scripts": {
+        "build": "tsc --build --clean && tsc --build && tsd && type-coverage",
+        "format": "remark . -qfo && prettier . -w --log-level warn && xo --fix",
+        "prepack": "npm run build && npm run format",
+        "test": "npm run build && npm run format && npm run test-coverage",
+        "test-api": "node --conditions development test/index.js",
+        "test-coverage": "c8 --100 --reporter lcov npm run test-api"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "typeCoverage": {
+        "#": "needed `any`s",
+        "atLeast": 100,
+        "detail": true,
+        "ignoreCatch": true,
+        "ignoreFiles": [
+          "lib/index.d.ts"
+        ],
+        "strict": true
+      },
+      "version": "6.0.1",
+      "xo": {
+        "overrides": [
+          {
+            "files": [
+              "**/*.ts"
+            ],
+            "rules": {
+              "@typescript-eslint/consistent-type-definitions": "off",
+              "@typescript-eslint/no-unnecessary-type-arguments": "off",
+              "@typescript-eslint/no-unsafe-argument": "off",
+              "@typescript-eslint/no-unsafe-assignment": "off",
+              "import/no-extraneous-dependencies": "off"
+            }
+          }
+        ],
+        "prettier": true
+      }
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 7628,
+      "sha256": "6d406238b6e281d38d30c30f77287ce8d70f6d9c4503612f979333865aaafff5"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

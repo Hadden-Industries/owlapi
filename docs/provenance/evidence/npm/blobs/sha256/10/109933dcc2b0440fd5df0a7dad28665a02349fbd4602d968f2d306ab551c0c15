@@ -1,0 +1,172 @@
+{
+  "artifactId": "41d55e1ea6f1488706ad0522b1836039070e1e1f5d17fa754672fa653f40e6b5",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4551,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "87f45900e657071ede09193a640840449cbbd84f442fa110ff6ad48258a79960",
+        "size": 95,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "46fb60d03aacb0a3f66c7be7f7c93e85013076f59d595c7220554b05027d8ada",
+        "size": 104,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.d.ts",
+        "sha256": "63a443e34be20e3005b7496edd6ed5f6039adba119c1d2499fc446c2620537de",
+        "size": 833,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "53015b2b0b7a72aed1c2d880d3c2aaed73972241f968d4a206a18d92fbe57b21",
+        "size": 2626,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "63cb98b3f6abfb3c3592c16f88253c1bdc834087bf52671e8ce5609e4eb693cf",
+        "size": 1099,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "0acb725dee2ee1c9d374b240c7a972da04cc94d13663b58fa52be009c3271a13",
+        "size": 1918,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "c06c4f7690947bb027204050c31e380e8cb84fe4e50dc2c4b7e9d94181d7f595",
+        "size": 6017,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1099,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/63/63cb98b3f6abfb3c3592c16f88253c1bdc834087bf52671e8ce5609e4eb693cf",
+          "sha256": "63cb98b3f6abfb3c3592c16f88253c1bdc834087bf52671e8ce5609e4eb693cf"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "63cb98b3f6abfb3c3592c16f88253c1bdc834087bf52671e8ce5609e4eb693cf",
+        "size": 1099
+      },
+      {
+        "blob": {
+          "bytes": 6017,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c0/c06c4f7690947bb027204050c31e380e8cb84fe4e50dc2c4b7e9d94181d7f595",
+          "sha256": "c06c4f7690947bb027204050c31e380e8cb84fe4e50dc2c4b7e9d94181d7f595"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "c06c4f7690947bb027204050c31e380e8cb84fe4e50dc2c4b7e9d94181d7f595",
+        "size": 6017
+      }
+    ],
+    "expandedBytes": 12692,
+    "packageIdentity": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "mdast-util-to-string",
+      "repository": "syntax-tree/mdast-util-to-string",
+      "version": "4.0.0"
+    },
+    "packageMetadata": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "bugs": "https://github.com/syntax-tree/mdast-util-to-string/issues",
+      "contributors": [
+        "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+      ],
+      "dependencies": {
+        "@types/mdast": "^4.0.0"
+      },
+      "description": "mdast utility to get the plain text content of a node",
+      "devDependencies": {
+        "@types/node": "^20.0.0",
+        "c8": "^8.0.0",
+        "prettier": "^2.0.0",
+        "remark-cli": "^11.0.0",
+        "remark-preset-wooorm": "^9.0.0",
+        "type-coverage": "^2.0.0",
+        "typescript": "^5.0.0",
+        "xo": "^0.54.0"
+      },
+      "exports": "./index.js",
+      "files": [
+        "lib/",
+        "index.d.ts",
+        "index.js"
+      ],
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/unified"
+      },
+      "keywords": [
+        "unist",
+        "mdast",
+        "mdast-util",
+        "util",
+        "utility",
+        "markdown",
+        "node",
+        "string",
+        "serialize"
+      ],
+      "license": "MIT",
+      "name": "mdast-util-to-string",
+      "prettier": {
+        "bracketSpacing": false,
+        "semi": false,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "trailingComma": "none",
+        "useTabs": false
+      },
+      "remarkConfig": {
+        "plugins": [
+          "remark-preset-wooorm"
+        ]
+      },
+      "repository": "syntax-tree/mdast-util-to-string",
+      "scripts": {
+        "build": "tsc --build --clean && tsc --build && type-coverage",
+        "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
+        "prepack": "npm run build && npm run format",
+        "test": "npm run build && npm run format && npm run test-coverage",
+        "test-api": "node --conditions development test.js",
+        "test-coverage": "c8 --100 --reporter lcov npm run test-api"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "typeCoverage": {
+        "atLeast": 100,
+        "detail": true,
+        "ignoreCatch": true,
+        "strict": true
+      },
+      "version": "4.0.0",
+      "xo": {
+        "prettier": true
+      }
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 4551,
+      "sha256": "bbfe70a5652305df7e8e484f674975c69bddbbad048ced52dc71835e64bba37a"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}
