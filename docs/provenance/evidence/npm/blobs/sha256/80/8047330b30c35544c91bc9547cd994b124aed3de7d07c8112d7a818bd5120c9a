@@ -1,0 +1,188 @@
+{
+  "artifactId": "e61a8331a87b37c78a6c30a625124003091ad0bae11fed269b46757e9f3a30f2",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 9899,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "7c99839c518dcf5ab8a741a97c190f0703c0a71e30c6d44f0b7921b0deec9f67",
+        "size": 999,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "9cc7b5b80a5b94d6c0803936b9a120c272e32a63f802cb960de7c6c59907ee65",
+        "size": 114,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.d.ts",
+        "sha256": "209f33ec9ea259631115ea05ff2242270ec9285aaaec5010f449e3a74433bea1",
+        "size": 1459,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.d.ts.map",
+        "sha256": "9b62bed56d2d9edb0c07c4cad35693a51ca5429ed59e21387deb95dc71300019",
+        "size": 383,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "a91357326d1f183143c00013b944918ee69ae8cf05decb0ef0c4d4d84004d683",
+        "size": 11331,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "22e0ae8016c649403f0f9ff3dce7b6bbee02099e55eaa283c2754020943e87c2",
+        "size": 2377,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "7d48ef76665cc410e135f0e11b634729d9771e6dac8ea6dfe8e00153d38d5e72",
+        "size": 16048,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1094,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/dd/dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+          "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094
+      },
+      {
+        "blob": {
+          "bytes": 16048,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/7d/7d48ef76665cc410e135f0e11b634729d9771e6dac8ea6dfe8e00153d38d5e72",
+          "sha256": "7d48ef76665cc410e135f0e11b634729d9771e6dac8ea6dfe8e00153d38d5e72"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "7d48ef76665cc410e135f0e11b634729d9771e6dac8ea6dfe8e00153d38d5e72",
+        "size": 16048
+      }
+    ],
+    "expandedBytes": 33805,
+    "packageIdentity": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "mdast-util-gfm-table",
+      "repository": "syntax-tree/mdast-util-gfm-table",
+      "version": "2.0.1"
+    },
+    "packageMetadata": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "bugs": "https://github.com/syntax-tree/mdast-util-gfm-table/issues",
+      "contributors": [
+        "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+      ],
+      "dependencies": {
+        "@types/mdast": "^4.0.0",
+        "devlop": "^1.0.0",
+        "markdown-table": "^3.0.0",
+        "mdast-util-from-markdown": "^2.0.0",
+        "mdast-util-to-markdown": "^2.0.0",
+        "mdast-util-to-string": "^4.0.0",
+        "unist-util-visit": "^5.0.0"
+      },
+      "description": "mdast extension to parse and serialize GFM tables",
+      "devDependencies": {
+        "@types/node": "^26.0.0",
+        "c8": "^12.0.0",
+        "micromark-extension-gfm-table": "^2.0.0",
+        "prettier": "^3.0.0",
+        "remark-cli": "^12.0.0",
+        "remark-preset-wooorm": "^11.0.0",
+        "string-width": "^8.0.0",
+        "type-coverage": "^2.0.0",
+        "typescript": "^6.0.0",
+        "unist-util-remove-position": "^5.0.0",
+        "xo": "^5.0.0"
+      },
+      "exports": "./index.js",
+      "files": [
+        "lib/",
+        "index.d.ts",
+        "index.js"
+      ],
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/unified"
+      },
+      "keywords": [
+        "cell",
+        "column",
+        "gfm",
+        "markdown",
+        "markup",
+        "mdast-util",
+        "mdast",
+        "row",
+        "table",
+        "tabular",
+        "unist",
+        "utility",
+        "util"
+      ],
+      "license": "MIT",
+      "name": "mdast-util-gfm-table",
+      "prettier": {
+        "bracketSpacing": false,
+        "semi": false,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "trailingComma": "none",
+        "useTabs": false
+      },
+      "remarkConfig": {
+        "plugins": [
+          "remark-preset-wooorm"
+        ]
+      },
+      "repository": "syntax-tree/mdast-util-gfm-table",
+      "scripts": {
+        "build": "tsc --build --clean && tsc --build && type-coverage",
+        "format": "remark --frail --output --quiet -- . && prettier --log-level warn --write -- . && xo --fix",
+        "prepack": "npm run build && npm run format",
+        "test": "npm run build && npm run format && npm run test-coverage",
+        "test-api": "npm run test-api-dev && npm run test-api-prod",
+        "test-api-dev": "node --conditions development test.js",
+        "test-api-prod": "node --conditions production test.js",
+        "test-coverage": "c8 --100 --reporter lcov -- npm run test-api"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "typeCoverage": {
+        "atLeast": 100,
+        "strict": true
+      },
+      "version": "2.0.1"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 9899,
+      "sha256": "23942e7674e325858e90928d2e6c1c84f7b6fac3d4d1accd682af8542a5b7f9f"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}
