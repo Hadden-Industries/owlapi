@@ -3,9 +3,8 @@ import { createHash } from "node:crypto";
 
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 
-// These byte transitions are deliberately closed: fc74a553's factual additions,
-// f07ec976's documented deadline policy, and b361bedf's reference-source update.
-// The expectation manifest retains its original authority hashes.
+// Each amendment identifies exact bytes. The expectation manifest retains
+// the original authority hashes for reproducing historical qualifications.
 const factualAmendment = {
   path: "docs/compatibility/canonical-vowl-prerequisites.md",
   previousSha256:
@@ -84,8 +83,30 @@ const behaviorProfileAmendment = {
     "Owner-authorized behavior-profile implementation: distinguish native and normative contracts and stop treating incomplete assessment as a Boolean verdict. Original authority and every earlier amendment retain their exact hashes.",
 };
 
+const presentationAmendment = {
+  path: factualAmendment.path,
+  previousSha256: behaviorProfileAmendment.currentSha256,
+  currentSha256:
+    "044429e863d009b7cdbec3a80a85cc66db528184078d1ba4fad8abff36fc1169",
+  replacements: [
+    "`getViolations()` returns immutable records with stable `code` identifiers and contextual fields.",
+    "Only package-owned original arity and unambiguous typed use qualify the formal normalized-arity and redundant-declaration differences.",
+    "Anonymous identity stays local to its source ontology.",
+    "Each prepared document has a private proof identity, so shared base IRIs and blank-node labels cannot suppress another document's independent evidence.",
+    "Every supported reader and storer uses the shared normalizer.",
+    "An explicit nonnegative safe integer retains its elapsed deadline, including `0`; zero is not an unlimited sentinel.",
+    "XML traversal consumes the same work/depth budget; literal input size bounds the parser allocation.",
+  ].map((line) => ({ previous: line + "\n", current: line + "\n\n" })),
+  scope: "Seven paragraph breaks in the reader-facing prerequisite guide.",
+};
+
 const approvedChains = [
-  [factualAmendment, deadlineAmendment, behaviorProfileAmendment],
+  [
+    factualAmendment,
+    deadlineAmendment,
+    behaviorProfileAmendment,
+    presentationAmendment,
+  ],
   [referenceAmendment],
 ];
 

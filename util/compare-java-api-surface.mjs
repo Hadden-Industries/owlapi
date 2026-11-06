@@ -5,7 +5,10 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { resolve } from "node:path";
 import { isDeepStrictEqual } from "node:util";
 import { format } from "prettier";
-import { publicMembers } from "./public-api-members.mjs";
+import {
+  publicMembers,
+  withDocumentedImportAlias,
+} from "./public-api-members.mjs";
 
 export const PUBLISHED_RC2_SOURCE = "d3f9fdba5ac1409346bf0c59512e3cf23a3c1517";
 const root = fileURLToPath(new URL("../", import.meta.url));
@@ -97,8 +100,11 @@ const main = async () => {
     "",
     "## Added exports",
     "",
+    "Import paths use the [documented npm alias](../../README.md#install).",
+    "",
   ];
-  for (const binding of delta.added)
+  for (const entry of delta.added) {
+    const binding = withDocumentedImportAlias(entry, after.packageName);
     lines.push(
       `### ${binding.id}`,
       "",
@@ -111,6 +117,7 @@ const main = async () => {
       `Functional evidence owners: ${codeList(binding.verification)}.`,
       "",
     );
+  }
   lines.push("## Existing export changes", "");
   for (const { binding, fields, added, removed } of delta.changed) {
     const module = await import(

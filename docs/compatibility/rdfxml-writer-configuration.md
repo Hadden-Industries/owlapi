@@ -1,17 +1,15 @@
 # RDF/XML writer configuration
 
-The current [behavior profile contract](behavior-profiles.md) owns profile selection, native copy/reset behavior and target publication.
-The guarantees and example in the next section describe `normative-v1`.
-The historical compatibility decisions below retain their original revision and are not current Java-profile exceptions.
-Java selects native writer behavior explicitly and appends output.
+Use the [normative writer example](#normative-v1-writer-contract) to set indentation and banners for future saves.
+If you are porting Java code, check the [Java profile copy behavior](#java-profile-copy-behavior) before chaining setters.
 
-Java copies preserve `labelsAsBanner` when other fields change, including anonymous-ID saving.
-They reset indentation size and banner enablement to their defaults; no-op setters preserve native identity.
-The independent released-jar probe and observations are retained in `util/owlapi-reference/RunWriterCopySemantics.java` and its `fixtures/writer-copy-semantics-java551.json` fixture.
+The [behavior profile contract](behavior-profiles.md) governs profile selection and target publication.
+The historical observations later in this document describe their recorded revisions.
 
 ## Normative v1 writer contract
 
-`OWLOntologyWriterConfiguration` is an immutable value exported only from `owlapi/model`.
+With the [npm alias installed](../../README.md#install), import `OWLOntologyWriterConfiguration` from `owlapi/model`.
+The configuration is immutable.
 Managers own independent configuration values.
 Every save captures both the ontology and the settings before its first asynchronous operation, so changing the manager affects subsequent saves without changing one already in progress.
 
@@ -27,10 +25,13 @@ manager.setOntologyWriterConfiguration(
     .withIndentSize(2)
     .withBannersEnabled(false),
 );
+const ontology = manager.createOntology();
 const target = new StringDocumentTarget();
-// ontology must be managed by this manager.
 await manager.saveOntology(ontology, OWLDocumentFormats.RDF_XML, target);
+console.log(target.toString());
 ```
+
+### Normative settings and defaults
 
 | Getter               | Builder                       | Default |
 | -------------------- | ----------------------------- | ------- |
@@ -75,6 +76,14 @@ Native QName candidate validation admits at most 32 MiB of total UTF-16 candidat
 Construction accounting is conservative because independently serialized elements can repeat namespace declarations.
 Excessive output or QName work raises a storage error caused by `ResourceLimitError`; the target retains its previous complete text.
 A legal integer setting is not a promise that any ontology can be rendered within the budget.
+
+## Java profile copy behavior
+
+The Java profile appends output.
+When you change a different field, including anonymous-ID saving, a Java configuration copy preserves `labelsAsBanner` and resets indentation size and banner enablement to their defaults.
+A no-op setter preserves native identity.
+
+See `util/owlapi-reference/RunWriterCopySemantics.java` and `fixtures/writer-copy-semantics-java551.json` for the released-jar observations.
 
 ## Historical compatibility decisions and observations
 

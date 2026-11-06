@@ -2,6 +2,14 @@
 
 # owlapi API reference
 
+Import paths use the [npm alias from the installation guide](README.md#install).
+
+- [Create an ontology manager](#owlmanager) or [load and save an ontology](#owlontologymanager).
+- [Construct OWL entities and axioms](#owldatafactory).
+- [Choose a document format](#owldocumentformats) or [configure RDF/XML output](docs/compatibility/rdfxml-writer-configuration.md).
+- [Check an OWL 2 DL profile](#owl2dlprofile).
+- [Find the JavaScript equivalent of a Java type](docs/compatibility/java-api-surface.md#public-bindings).
+
 This reference is generated from the authoritative compatibility registry for `@hadden-industries/owlapi` 0.1.0-rc.3. Edit the generator or registry inputs, not this file.
 
 This is an independently maintained JavaScript implementation. It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project; Java names identify compatibility authorities, not organizational continuity or complete parity.
@@ -14,7 +22,7 @@ First public release targets are planning metadata, not evidence of availability
 
 A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to the documented initial surface.
 
-- Import: `@hadden-industries/owlapi/apibinding`
+- Import: `owlapi/apibinding`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.apibinding.OWLManager
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
@@ -32,12 +40,12 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 An immutable vocabulary used to classify supported OWL structural values.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.OWLObject
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
 - Release status: PRERELEASE; first public release target 0.1.0-alpha.0
-- Call shape: import { ANNOTATION_VALUE_KINDS } from "@hadden-industries/owlapi/model"
+- Call shape: import { ANNOTATION_VALUE_KINDS } from "owlapi/model"
 - Supported members: IRI; OWLAnonymousIndividual; OWLLiteral
 - Omitted Java members: none recorded
 - Public errors: none specific
@@ -50,12 +58,12 @@ Use this export only through its documented package specifier; do not infer addi
 
 An immutable vocabulary used to classify supported OWL structural values.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.OWLObject
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
 - Release status: PRERELEASE; first public release target 0.1.0-alpha.0
-- Call shape: import { AXIOM_KINDS } from "@hadden-industries/owlapi/model"
+- Call shape: import { AXIOM_KINDS } from "owlapi/model"
 - Supported members: OWLDeclarationAxiom; OWLSubClassOfAxiom; OWLEquivalentClassesAxiom; OWLDisjointClassesAxiom; OWLDisjointUnionAxiom; OWLSubObjectPropertyOfAxiom; OWLSubPropertyChainOfAxiom; OWLEquivalentObjectPropertiesAxiom; OWLDisjointObjectPropertiesAxiom; OWLObjectPropertyDomainAxiom; OWLObjectPropertyRangeAxiom; OWLInverseObjectPropertiesAxiom; OWLFunctionalObjectPropertyAxiom; OWLInverseFunctionalObjectPropertyAxiom; OWLReflexiveObjectPropertyAxiom; OWLIrreflexiveObjectPropertyAxiom; OWLSymmetricObjectPropertyAxiom; OWLAsymmetricObjectPropertyAxiom; OWLTransitiveObjectPropertyAxiom; OWLSubDataPropertyOfAxiom; OWLEquivalentDataPropertiesAxiom; OWLDisjointDataPropertiesAxiom; OWLDataPropertyDomainAxiom; OWLDataPropertyRangeAxiom; OWLFunctionalDataPropertyAxiom; OWLDatatypeDefinitionAxiom; OWLHasKeyAxiom; OWLSameIndividualAxiom; OWLDifferentIndividualsAxiom; OWLClassAssertionAxiom; OWLObjectPropertyAssertionAxiom; OWLNegativeObjectPropertyAssertionAxiom; OWLDataPropertyAssertionAxiom; OWLNegativeDataPropertyAssertionAxiom; OWLAnnotationAssertionAxiom; OWLSubAnnotationPropertyOfAxiom; OWLAnnotationPropertyDomainAxiom; OWLAnnotationPropertyRangeAxiom
 - Omitted Java members: none recorded
 - Public errors: none specific
@@ -68,7 +76,7 @@ Use this export only through its documented package specifier; do not infer addi
 
 An immutable nominal change record consumed by the manager's selected behavior profile.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.AddAxiom
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -86,7 +94,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 An immutable nominal change record consumed by the manager's selected behavior profile.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.AddImport
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -104,7 +112,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to the documented initial surface.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.AddOntologyAnnotation
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
@@ -122,12 +130,12 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 An immutable vocabulary used to classify supported OWL structural values.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.OWLObject
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
 - Release status: PRERELEASE; first public release target 0.1.0-alpha.0
-- Call shape: import { CLASS_EXPRESSION_KINDS } from "@hadden-industries/owlapi/model"
+- Call shape: import { CLASS_EXPRESSION_KINDS } from "owlapi/model"
 - Supported members: OWLClass; OWLObjectIntersectionOf; OWLObjectUnionOf; OWLObjectComplementOf; OWLObjectOneOf; OWLObjectSomeValuesFrom; OWLObjectAllValuesFrom; OWLObjectHasValue; OWLObjectHasSelf; OWLObjectMinCardinality; OWLObjectMaxCardinality; OWLObjectExactCardinality; OWLDataSomeValuesFrom; OWLDataAllValuesFrom; OWLDataHasValue; OWLDataMinCardinality; OWLDataMaxCardinality; OWLDataExactCardinality
 - Omitted Java members: none recorded
 - Public errors: none specific
@@ -140,12 +148,12 @@ Use this export only through its documented package specifier; do not infer addi
 
 An immutable vocabulary used to classify supported OWL structural values.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.OWLObject
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
 - Release status: PRERELEASE; first public release target 0.1.0-alpha.0
-- Call shape: import { DATA_PROPERTY_EXPRESSION_KINDS } from "@hadden-industries/owlapi/model"
+- Call shape: import { DATA_PROPERTY_EXPRESSION_KINDS } from "owlapi/model"
 - Supported members: OWLDataProperty
 - Omitted Java members: none recorded
 - Public errors: none specific
@@ -158,12 +166,12 @@ Use this export only through its documented package specifier; do not infer addi
 
 An immutable vocabulary used to classify supported OWL structural values.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.OWLObject
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
 - Release status: PRERELEASE; first public release target 0.1.0-alpha.0
-- Call shape: import { DATA_RANGE_KINDS } from "@hadden-industries/owlapi/model"
+- Call shape: import { DATA_RANGE_KINDS } from "owlapi/model"
 - Supported members: OWLDatatype; OWLDataIntersectionOf; OWLDataUnionOf; OWLDataComplementOf; OWLDataOneOf; OWLDatatypeRestriction
 - Omitted Java members: none recorded
 - Public errors: none specific
@@ -176,12 +184,12 @@ Use this export only through its documented package specifier; do not infer addi
 
 An immutable vocabulary used to classify supported OWL structural values.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.OWLObject
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
 - Release status: PRERELEASE; first public release target 0.1.0-alpha.0
-- Call shape: import { ENTITY_KINDS } from "@hadden-industries/owlapi/model"
+- Call shape: import { ENTITY_KINDS } from "owlapi/model"
 - Supported members: OWLClass; OWLDatatype; OWLObjectProperty; OWLDataProperty; OWLAnnotationProperty; OWLNamedIndividual
 - Omitted Java members: none recorded
 - Public errors: none specific
@@ -194,12 +202,12 @@ Use this export only through its documented package specifier; do not infer addi
 
 An immutable vocabulary used to classify supported OWL structural values.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.OWLObject
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
 - Release status: PRERELEASE; first public release target 0.1.0-alpha.0
-- Call shape: import { INDIVIDUAL_KINDS } from "@hadden-industries/owlapi/model"
+- Call shape: import { INDIVIDUAL_KINDS } from "owlapi/model"
 - Supported members: OWLNamedIndividual; OWLAnonymousIndividual
 - Omitted Java members: none recorded
 - Public errors: none specific
@@ -212,7 +220,7 @@ Use this export only through its documented package specifier; do not infer addi
 
 A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to the documented initial surface.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.IRI
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
@@ -230,12 +238,12 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 An immutable vocabulary used to classify supported OWL structural values.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.OWLObject
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
 - Release status: PRERELEASE; first public release target 0.1.0-alpha.0
-- Call shape: import { OBJECT_PROPERTY_EXPRESSION_KINDS } from "@hadden-industries/owlapi/model"
+- Call shape: import { OBJECT_PROPERTY_EXPRESSION_KINDS } from "owlapi/model"
 - Supported members: OWLObjectProperty; OWLObjectInverseOf
 - Omitted Java members: none recorded
 - Public errors: none specific
@@ -248,7 +256,7 @@ Use this export only through its documented package specifier; do not infer addi
 
 A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to the documented initial surface.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLDataFactory
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
@@ -266,7 +274,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to the documented initial surface.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLDocumentFormat
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
@@ -284,12 +292,12 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 An immutable vocabulary used to classify supported OWL structural values.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.OWLObject
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
 - Release status: PRERELEASE; first public release target 0.1.0-alpha.0
-- Call shape: import { OWLObjectKind } from "@hadden-industries/owlapi/model"
+- Call shape: import { OWLObjectKind } from "owlapi/model"
 - Supported members: ANNOTATION; ANNOTATION_ASSERTION_AXIOM; ANNOTATION_PROPERTY; ANNOTATION_PROPERTY_DOMAIN_AXIOM; ANNOTATION_PROPERTY_RANGE_AXIOM; ANONYMOUS_INDIVIDUAL; ASYMMETRIC_OBJECT_PROPERTY_AXIOM; CLASS; CLASS_ASSERTION_AXIOM; DATATYPE; DATATYPE_DEFINITION_AXIOM; DATATYPE_RESTRICTION; DATA_ALL_VALUES_FROM; DATA_COMPLEMENT_OF; DATA_EXACT_CARDINALITY; DATA_HAS_VALUE; DATA_INTERSECTION_OF; DATA_MAX_CARDINALITY; DATA_MIN_CARDINALITY; DATA_ONE_OF; DATA_PROPERTY; DATA_PROPERTY_ASSERTION_AXIOM; DATA_PROPERTY_DOMAIN_AXIOM; DATA_PROPERTY_RANGE_AXIOM; DATA_SOME_VALUES_FROM; DATA_UNION_OF; DECLARATION_AXIOM; DIFFERENT_INDIVIDUALS_AXIOM; DISJOINT_CLASSES_AXIOM; DISJOINT_DATA_PROPERTIES_AXIOM; DISJOINT_OBJECT_PROPERTIES_AXIOM; DISJOINT_UNION_AXIOM; EQUIVALENT_CLASSES_AXIOM; EQUIVALENT_DATA_PROPERTIES_AXIOM; EQUIVALENT_OBJECT_PROPERTIES_AXIOM; FACET_RESTRICTION; FUNCTIONAL_DATA_PROPERTY_AXIOM; FUNCTIONAL_OBJECT_PROPERTY_AXIOM; HAS_KEY_AXIOM; IMPORTS_DECLARATION; INVERSE_FUNCTIONAL_OBJECT_PROPERTY_AXIOM; INVERSE_OBJECT_PROPERTIES_AXIOM; IRI; IRREFLEXIVE_OBJECT_PROPERTY_AXIOM; LITERAL; NAMED_INDIVIDUAL; NEGATIVE_DATA_PROPERTY_ASSERTION_AXIOM; NEGATIVE_OBJECT_PROPERTY_ASSERTION_AXIOM; OBJECT_ALL_VALUES_FROM; OBJECT_COMPLEMENT_OF; OBJECT_EXACT_CARDINALITY; OBJECT_HAS_SELF; OBJECT_HAS_VALUE; OBJECT_INTERSECTION_OF; OBJECT_INVERSE_OF; OBJECT_MAX_CARDINALITY; OBJECT_MIN_CARDINALITY; OBJECT_ONE_OF; OBJECT_PROPERTY; OBJECT_PROPERTY_ASSERTION_AXIOM; OBJECT_PROPERTY_DOMAIN_AXIOM; OBJECT_PROPERTY_RANGE_AXIOM; OBJECT_SOME_VALUES_FROM; OBJECT_UNION_OF; ONTOLOGY_ID; REFLEXIVE_OBJECT_PROPERTY_AXIOM; SAME_INDIVIDUAL_AXIOM; SUBCLASS_OF_AXIOM; SUB_ANNOTATION_PROPERTY_AXIOM; SUB_DATA_PROPERTY_AXIOM; SUB_OBJECT_PROPERTY_AXIOM; SUB_PROPERTY_CHAIN_AXIOM; SYMMETRIC_OBJECT_PROPERTY_AXIOM; TRANSITIVE_OBJECT_PROPERTY_AXIOM
 - Omitted Java members: none recorded
 - Public errors: none specific
@@ -302,7 +310,7 @@ Use this export only through its documented package specifier; do not infer addi
 
 A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to the documented initial surface.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLOntology
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
@@ -320,7 +328,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to the documented initial surface.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
@@ -338,7 +346,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to the documented initial surface.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLOntologyManager
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
@@ -356,7 +364,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 Immutable native writer settings with profile-specific copy behavior and format-specific consumers.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLOntologyWriterConfiguration
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -374,7 +382,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to the documented initial surface.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLObject
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
@@ -392,12 +400,12 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 An immutable vocabulary used to classify supported OWL structural values.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.OWLObject
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
 - Release status: PRERELEASE; first public release target 0.1.0-alpha.0
-- Call shape: import { OWL_OBJECT_KINDS } from "@hadden-industries/owlapi/model"
+- Call shape: import { OWL_OBJECT_KINDS } from "owlapi/model"
 - Supported members: IRI; OWLLiteral; OWLAnonymousIndividual; OWLAnnotation; OWLImportsDeclaration; OWLOntologyID; OWLClass; OWLDatatype; OWLObjectProperty; OWLDataProperty; OWLAnnotationProperty; OWLNamedIndividual; OWLObjectInverseOf; OWLObjectIntersectionOf; OWLObjectUnionOf; OWLObjectComplementOf; OWLObjectOneOf; OWLObjectSomeValuesFrom; OWLObjectAllValuesFrom; OWLObjectHasValue; OWLObjectHasSelf; OWLObjectMinCardinality; OWLObjectMaxCardinality; OWLObjectExactCardinality; OWLDataSomeValuesFrom; OWLDataAllValuesFrom; OWLDataHasValue; OWLDataMinCardinality; OWLDataMaxCardinality; OWLDataExactCardinality; OWLDataIntersectionOf; OWLDataUnionOf; OWLDataComplementOf; OWLDataOneOf; OWLDatatypeRestriction; OWLFacetRestriction; OWLDeclarationAxiom; OWLSubClassOfAxiom; OWLEquivalentClassesAxiom; OWLDisjointClassesAxiom; OWLDisjointUnionAxiom; OWLSubObjectPropertyOfAxiom; OWLSubPropertyChainOfAxiom; OWLEquivalentObjectPropertiesAxiom; OWLDisjointObjectPropertiesAxiom; OWLObjectPropertyDomainAxiom; OWLObjectPropertyRangeAxiom; OWLInverseObjectPropertiesAxiom; OWLFunctionalObjectPropertyAxiom; OWLInverseFunctionalObjectPropertyAxiom; OWLReflexiveObjectPropertyAxiom; OWLIrreflexiveObjectPropertyAxiom; OWLSymmetricObjectPropertyAxiom; OWLAsymmetricObjectPropertyAxiom; OWLTransitiveObjectPropertyAxiom; OWLSubDataPropertyOfAxiom; OWLEquivalentDataPropertiesAxiom; OWLDisjointDataPropertiesAxiom; OWLDataPropertyDomainAxiom; OWLDataPropertyRangeAxiom; OWLFunctionalDataPropertyAxiom; OWLDatatypeDefinitionAxiom; OWLHasKeyAxiom; OWLSameIndividualAxiom; OWLDifferentIndividualsAxiom; OWLClassAssertionAxiom; OWLObjectPropertyAssertionAxiom; OWLNegativeObjectPropertyAssertionAxiom; OWLDataPropertyAssertionAxiom; OWLNegativeDataPropertyAssertionAxiom; OWLAnnotationAssertionAxiom; OWLSubAnnotationPropertyOfAxiom; OWLAnnotationPropertyDomainAxiom; OWLAnnotationPropertyRangeAxiom
 - Omitted Java members: none recorded
 - Public errors: none specific
@@ -410,7 +418,7 @@ Use this export only through its documented package specifier; do not infer addi
 
 An immutable nominal change record consumed by the manager's selected behavior profile.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.RemoveAxiom
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -428,7 +436,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 An immutable nominal change record consumed by the manager's selected behavior profile.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.RemoveImport
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -446,7 +454,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 An immutable nominal change record consumed by the manager's selected behavior profile.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.RemoveOntologyAnnotation
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -464,7 +472,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to the documented initial surface.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.SetOntologyID
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
@@ -482,7 +490,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 A JavaScript adaptation supporting the initial public OWLAPI workflow.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLObject
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
@@ -500,7 +508,7 @@ Use this export only through its documented package specifier; do not infer addi
 
 Exhaustive kind-checked dispatch for one Java OWLAPI structural model family.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: FUNCTION
 - Java authority: org.semanticweb.owlapi.model.OWLObjectVisitorEx
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
@@ -518,7 +526,7 @@ Use this export only through its documented package specifier; do not infer addi
 
 Exhaustive kind-checked dispatch for one Java OWLAPI structural model family.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: FUNCTION
 - Java authority: org.semanticweb.owlapi.model.OWLObjectVisitorEx
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
@@ -536,7 +544,7 @@ Use this export only through its documented package specifier; do not infer addi
 
 Exhaustive kind-checked dispatch for one Java OWLAPI structural model family.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: FUNCTION
 - Java authority: org.semanticweb.owlapi.model.OWLObjectVisitorEx
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
@@ -554,7 +562,7 @@ Use this export only through its documented package specifier; do not infer addi
 
 Exhaustive kind-checked dispatch for one Java OWLAPI structural model family.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: FUNCTION
 - Java authority: org.semanticweb.owlapi.model.OWLObjectVisitorEx
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
@@ -572,7 +580,7 @@ Use this export only through its documented package specifier; do not infer addi
 
 Exhaustive kind-checked dispatch for one Java OWLAPI structural model family.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: FUNCTION
 - Java authority: org.semanticweb.owlapi.model.OWLObjectVisitorEx
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
@@ -590,7 +598,7 @@ Use this export only through its documented package specifier; do not infer addi
 
 Exhaustive kind-checked dispatch for one Java OWLAPI structural model family.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: FUNCTION
 - Java authority: org.semanticweb.owlapi.model.OWLObjectVisitorEx
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
@@ -608,7 +616,7 @@ Use this export only through its documented package specifier; do not infer addi
 
 Exhaustive kind-checked dispatch for one Java OWLAPI structural model family.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: FUNCTION
 - Java authority: org.semanticweb.owlapi.model.OWLObjectVisitorEx
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
@@ -626,7 +634,7 @@ Use this export only through its documented package specifier; do not infer addi
 
 Exhaustive kind-checked dispatch for one Java OWLAPI structural model family.
 
-- Import: `@hadden-industries/owlapi/model`
+- Import: `owlapi/model`
 - Kind: FUNCTION
 - Java authority: org.semanticweb.owlapi.model.OWLObjectVisitorEx
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
@@ -644,7 +652,7 @@ Use this export only through its documented package specifier; do not infer addi
 
 A stable public error category used by ontology loading, parsing, or policy enforcement.
 
-- Import: `@hadden-industries/owlapi/io`
+- Import: `owlapi/io`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLOntologyCreationException
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
@@ -662,7 +670,7 @@ Use this export only through its documented package specifier; do not infer addi
 
 A stable public error category used by ontology loading, parsing, or policy enforcement.
 
-- Import: `@hadden-industries/owlapi/io`
+- Import: `owlapi/io`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLOntologyCreationException
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
@@ -680,7 +688,7 @@ Use this export only through its documented package specifier; do not infer addi
 
 A stable public error category used by ontology loading, parsing, or policy enforcement.
 
-- Import: `@hadden-industries/owlapi/io`
+- Import: `owlapi/io`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLOntologyCreationException
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
@@ -698,7 +706,7 @@ Use this export only through its documented package specifier; do not infer addi
 
 A stable public error category used by ontology loading, parsing, or policy enforcement.
 
-- Import: `@hadden-industries/owlapi/io`
+- Import: `owlapi/io`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.UnloadableImportException
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
@@ -716,7 +724,7 @@ Use this export only through its documented package specifier; do not infer addi
 
 A stable public error category used by ontology loading, parsing, or policy enforcement.
 
-- Import: `@hadden-industries/owlapi/io`
+- Import: `owlapi/io`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLRuntimeException
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
@@ -734,7 +742,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 A stable public error category used by ontology loading, parsing, or policy enforcement.
 
-- Import: `@hadden-industries/owlapi/io`
+- Import: `owlapi/io`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLOntologyCreationException
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
@@ -752,7 +760,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 A stable public error category used by ontology loading, parsing, or policy enforcement.
 
-- Import: `@hadden-industries/owlapi/io`
+- Import: `owlapi/io`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLRuntimeException
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
@@ -770,7 +778,7 @@ Use this export only through its documented package specifier; do not infer addi
 
 The canonical storage error, including lossless-representation failures identified by a safe reason field.
 
-- Import: `@hadden-industries/owlapi/io`
+- Import: `owlapi/io`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLOntologyStorageException
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -788,7 +796,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 A stable public error category used by ontology loading, parsing, or policy enforcement.
 
-- Import: `@hadden-industries/owlapi/io`
+- Import: `owlapi/io`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.io.OWLParserException
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
@@ -806,7 +814,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 A storage-error subtype for an OWLDocumentFormat with no matching storer.
 
-- Import: `@hadden-industries/owlapi/io`
+- Import: `owlapi/io`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLStorerNotFoundException
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -824,7 +832,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 A stable public error category used by ontology loading, parsing, or policy enforcement.
 
-- Import: `@hadden-industries/owlapi/io`
+- Import: `owlapi/io`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.io.OWLParserException
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
@@ -842,7 +850,7 @@ Use this export only through its documented package specifier; do not infer addi
 
 A stable public error category used by ontology loading, parsing, or policy enforcement.
 
-- Import: `@hadden-industries/owlapi/io`
+- Import: `owlapi/io`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.io.OWLParserException
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
@@ -860,12 +868,12 @@ Use this export only through its documented package specifier; do not infer addi
 
 A JavaScript-specific helper at an approved Java OWLAPI namespace boundary.
 
-- Import: `@hadden-industries/owlapi/io`
+- Import: `owlapi/io`
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.io.RDFOntologyHeaderStatus
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
 - Release status: PRERELEASE; first public release target 0.1.0-rc.1
-- Call shape: import { RDFOntologyHeaderStatus } from "@hadden-industries/owlapi/io"
+- Call shape: import { RDFOntologyHeaderStatus } from "owlapi/io"
 - Supported members: PARSED_MULTIPLE_HEADERS; PARSED_ONE_HEADER; PARSED_ZERO_HEADERS
 - Omitted Java members: Java enum methods
 - Public errors: none specific
@@ -878,7 +886,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 A JavaScript adaptation supporting the initial public OWLAPI workflow.
 
-- Import: `@hadden-industries/owlapi/io`
+- Import: `owlapi/io`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.io.RDFParserMetaData
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -896,7 +904,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 A stable public error category used by ontology loading, parsing, or policy enforcement.
 
-- Import: `@hadden-industries/owlapi/io`
+- Import: `owlapi/io`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLRuntimeException
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
@@ -914,7 +922,7 @@ Use this export only through its documented package specifier; do not infer addi
 
 A stable public error category used by ontology loading, parsing, or policy enforcement.
 
-- Import: `@hadden-industries/owlapi/io`
+- Import: `owlapi/io`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
@@ -932,7 +940,7 @@ Use this export only through its documented package specifier; do not infer addi
 
 A JavaScript adaptation supporting the initial public OWLAPI workflow.
 
-- Import: `@hadden-industries/owlapi/io`
+- Import: `owlapi/io`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.io.StringDocumentSource
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -950,7 +958,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 An in-memory ontology document target with Java's toString() text reader; the manager's behavior profile selects append or complete replacement.
 
-- Import: `@hadden-industries/owlapi/io`
+- Import: `owlapi/io`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.io.StringDocumentTarget
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -968,7 +976,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 A stable public error category used by ontology loading, parsing, or policy enforcement.
 
-- Import: `@hadden-industries/owlapi/io`
+- Import: `owlapi/io`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.UnloadableImportException
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -986,7 +994,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 A stable public error category used by ontology loading, parsing, or policy enforcement.
 
-- Import: `@hadden-industries/owlapi/io`
+- Import: `owlapi/io`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.io.UnparsableOntologyException
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -1004,7 +1012,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 A stable public error category used by ontology loading, parsing, or policy enforcement.
 
-- Import: `@hadden-industries/owlapi/io`
+- Import: `owlapi/io`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.io.OWLParserException
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
@@ -1022,7 +1030,7 @@ Use this export only through its documented package specifier; do not infer addi
 
 A stable public error category used by ontology loading, parsing, or policy enforcement.
 
-- Import: `@hadden-industries/owlapi/io`
+- Import: `owlapi/io`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.io.OWLParserException
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
@@ -1040,12 +1048,12 @@ Use this export only through its documented package specifier; do not infer addi
 
 Immutable identities for every ontology document format supported by the initial parser set.
 
-- Import: `@hadden-industries/owlapi/formats`
+- Import: `owlapi/formats`
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.formats
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
 - Release status: PRERELEASE; first public release target 0.1.0-alpha.0
-- Call shape: import { OWLDocumentFormats } from "@hadden-industries/owlapi/formats"
+- Call shape: import { OWLDocumentFormats } from "owlapi/formats"
 - Supported members: DL; FUNCTIONAL; JSON_LD; KRSS1; KRSS2; MANCHESTER; N_QUADS; N_TRIPLES; OWL_XML; RDF_XML; TRIG; TURTLE
 - Omitted Java members: none recorded
 - Public errors: none specific
@@ -1058,7 +1066,7 @@ Use this export only through its documented package specifier; do not infer addi
 
 Java-backed RDF/XML format with bounded inherited prefix operations and captured save-time preferences.
 
-- Import: `@hadden-industries/owlapi/formats`
+- Import: `owlapi/formats`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.formats.RDFXMLDocumentFormat
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
@@ -1076,7 +1084,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 A JavaScript adaptation supporting the initial public OWLAPI workflow.
 
-- Import: `@hadden-industries/owlapi/io/node`
+- Import: `owlapi/io/node`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.io
 - Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
@@ -1094,7 +1102,7 @@ Use this export only through its documented package specifier; do not infer addi
 
 Uses captured annotation and language preferences with explicitly supplied live ontology snapshots.
 
-- Import: `@hadden-industries/owlapi/util`
+- Import: `owlapi/util`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.util.AnnotationValueShortFormProvider
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -1112,7 +1120,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 Collects direct removal proposals for the six named entity kinds.
 
-- Import: `@hadden-industries/owlapi/util`
+- Import: `owlapi/util`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.util.OWLEntityRemover
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -1130,7 +1138,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 Proposes changes from captured ontologies and current committed snapshots without applying them.
 
-- Import: `@hadden-industries/owlapi/util`
+- Import: `owlapi/util`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.util.OWLEntityRenamer
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -1148,7 +1156,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 Canonical factory reconstruction with captured structural maps and instance-owned anonymous remapping.
 
-- Import: `@hadden-industries/owlapi/util`
+- Import: `owlapi/util`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.util.OWLObjectDuplicator
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -1166,7 +1174,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 A provider that queries the current imports closure on each call and returns that call's defensive JavaScript Set snapshot.
 
-- Import: `@hadden-industries/owlapi/util`
+- Import: `owlapi/util`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.util.OWLOntologyImportsClosureSetProvider
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -1184,7 +1192,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 A Java-shaped ontology merger that materializes the structural union of supplied direct axioms.
 
-- Import: `@hadden-industries/owlapi/util`
+- Import: `owlapi/util`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.util.OWLOntologyMerger
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
@@ -1202,7 +1210,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 A synchronous Java-shaped entity short form provider.
 
-- Import: `@hadden-industries/owlapi/util`
+- Import: `owlapi/util`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.util.SimpleShortFormProvider
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -1220,7 +1228,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 An asynchronous OWL 2 DL checker over the managed import closure, with profile-owned defaults and a separate source-qualified assessment.
 
-- Import: `@hadden-industries/owlapi/profiles`
+- Import: `owlapi/profiles`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.profiles.OWL2DLProfile
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -1238,7 +1246,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 An asynchronous bounded OWL 2 EL structural checker over the managed import closure.
 
-- Import: `@hadden-industries/owlapi/profiles`
+- Import: `owlapi/profiles`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.profiles.OWL2ELProfile
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -1256,7 +1264,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 An asynchronous bounded OWL 2 QL structural checker over the managed import closure.
 
-- Import: `@hadden-industries/owlapi/profiles`
+- Import: `owlapi/profiles`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.profiles.OWL2QLProfile
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -1274,7 +1282,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 An asynchronous bounded OWL 2 RL structural checker over the managed import closure.
 
-- Import: `@hadden-industries/owlapi/profiles`
+- Import: `owlapi/profiles`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.profiles.OWL2RLProfile
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -1292,7 +1300,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 An immutable checker result separating valid, invalid and unverified outcomes, with stable violation records and optional source assessment.
 
-- Import: `@hadden-industries/owlapi/profiles`
+- Import: `owlapi/profiles`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.profiles.OWLProfileReport
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -1310,7 +1318,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 Frozen explicit query policy values with Java-shaped names.
 
-- Import: `@hadden-industries/owlapi/model/parameters`
+- Import: `owlapi/model/parameters`
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.parameters.AxiomAnnotations
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -1328,12 +1336,12 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 A JavaScript-specific helper at an approved Java OWLAPI namespace boundary.
 
-- Import: `@hadden-industries/owlapi/model/parameters`
+- Import: `owlapi/model/parameters`
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.parameters.ChangeApplied
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
 - Release status: PRERELEASE; first public release target 0.1.0-rc.3
-- Call shape: import { ChangeApplied } from "@hadden-industries/owlapi/model/parameters"
+- Call shape: import { ChangeApplied } from "owlapi/model/parameters"
 - Supported members: NO_OPERATION; SUCCESSFULLY; UNSUCCESSFULLY
 - Omitted Java members: none recorded
 - Public errors: none specific
@@ -1346,7 +1354,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 Frozen explicit query policy values with Java-shaped names.
 
-- Import: `@hadden-industries/owlapi/model/parameters`
+- Import: `owlapi/model/parameters`
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.model.parameters.Imports
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -1364,7 +1372,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 Asserted entity and annotation searches over explicitly supplied ontologies.
 
-- Import: `@hadden-industries/owlapi/search`
+- Import: `owlapi/search`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.search.EntitySearcher
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -1382,7 +1390,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 Plain Manchester text for the selected complete structural-kind inventory.
 
-- Import: `@hadden-industries/owlapi/manchestersyntax/renderer`
+- Import: `owlapi/manchestersyntax/renderer`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxOWLObjectRendererImpl
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -1400,7 +1408,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 Frozen selected syntactic-locality modes.
 
-- Import: `@hadden-industries/owlapi/modularity/locality`
+- Import: `owlapi/modularity/locality`
 - Kind: CONSTANT
 - Java authority: org.semanticweb.owlapi.modularity.locality.LocalityClass
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
@@ -1418,7 +1426,7 @@ Use the documented JavaScript call shapes and treat unlisted Java overloads or m
 
 Captured structural axiom base and asynchronous eager syntactic-locality modules.
 
-- Import: `@hadden-industries/owlapi/modularity/locality`
+- Import: `owlapi/modularity/locality`
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.modularity.locality.SyntacticLocalityModuleExtractor
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED

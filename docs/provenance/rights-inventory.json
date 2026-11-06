@@ -8,16 +8,16 @@
     "scopeAuthority": {
       "method": "npm pack --dry-run --json plus local source-byte hashing",
       "fileCount": 198,
-      "sourceManifestSha256": "01a0ce7875842427c96b05eab148d2498d6b3f6c5429a1e31f4a5e19c28df795"
+      "sourceManifestSha256": "58829781bd5763d6785887a03da81f542852eda53b0f99e5caa354c1f266dca4"
     }
   },
   "review": {
-    "status": "REVIEWED",
-    "factsSha256": "c1d67edbc4c0b1b02d2b89f105e3b2d062f787d131257937929c88c701a2b148",
-    "reviewer": "Maksym Shostak",
-    "reviewedOn": "2026-11-04",
-    "capacity": "Project author and repository owner",
-    "conclusion": "Explicitly accepted the documentation changes made to the source packlist since the rc.3 binding. Its 198-file scope changes only CHANGELOG.md, README.md, docs/compatibility/behavior-profiles.md and docs/compatibility/default-behavior-inventory.md; the other 194 files and all ownership/licence classifications remain unchanged. This attestation binds the new source packlist. It grants no push or release authority and no security exception.",
+    "status": "PENDING_HUMAN_REVIEW",
+    "factsSha256": "99f765c4c5f7593ed0a91495e9010645dfd020cbbfafd46abbbff76abe6e0667",
+    "reviewer": null,
+    "reviewedOn": null,
+    "capacity": null,
+    "conclusion": null,
     "digestAlgorithm": "sha256-sorted-json-v1"
   },
   "contributors": [
@@ -152,7 +152,7 @@
   "externalDependencies": {
     "bundled": true,
     "authority": "docs/provenance/third-party-material.json",
-    "inventoryFactsSha256": "b60f2ab515d8a85d0e84337aaf4ac0c8c39c719100441309967956d313bdf924",
+    "inventoryFactsSha256": "c730f90d9aa1d0204705f47c584abeca794fbc321b5040f44268e3c52f7b47dd",
     "noticeRule": "Ordinary npm dependencies are installed separately under their own licences. The generated JSON-LD provider embeds seven separately inventoried components and retains their complete original licences and notices under internal/parsing/jsonld/provider/licenses/. The provider manifest binds the incorporated source, approved modifications, generated runtime and output."
   },
   "unresolvedExternalContributions": [],

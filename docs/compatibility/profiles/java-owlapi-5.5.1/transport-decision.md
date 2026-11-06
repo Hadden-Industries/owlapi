@@ -11,7 +11,7 @@ See [the plan's resource boundary](../../../plans/2026-10-13-java-compatible-api
 
 ## Approved boundary
 
-The explicit Node adapter, `NodeDocumentLoader`, is exported only from `@hadden-industries/owlapi/io/node`.
+With the [npm alias installed](../../../../README.md#install), import `NodeDocumentLoader` from the Node-only entry point `owlapi/io/node`.
 A caller constructs it with an authorization callback and passes it through the existing manager `documentLoader` option.
 There is no automatic network or filesystem access.
 Browser imports remain free of Node dependencies.

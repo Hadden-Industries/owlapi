@@ -1,6 +1,14 @@
 # API behavior profiles
 
-Use the [API delta from the rc.2 baseline](0.1.0-api-delta.md) to identify the additions in this package version.
+Choose the behavior when you create the ontology manager.
+The manager keeps that choice for its lifetime.
+
+| If your application needs                                                                                       | Choose                                                                      |
+| --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| The project's normative OWL behavior                                                                            | `normative-v1`. This is also the default when you omit `behaviorProfileId`. |
+| Compatibility with the released Java OWLAPI 5.5.1 on its documented public surface, including observable quirks | `java-owlapi-5.5.1`. Pass the identifier explicitly.                        |
+
+See [selection and authority](#selection-and-authority) for a working example, or the [API delta from the rc.2 baseline](0.1.0-api-delta.md) for additions in this package version.
 
 This is the behavior-profile contract for [this package version](../../README.md#release-status).
 Both profiles are implemented within the documented compatibility scope.
@@ -10,8 +18,10 @@ Its `currentBehaviorContracts` section is separate from the retained phase 21/22
 
 ## Selection and authority
 
+The examples use the [npm alias from the installation guide](../../README.md#install).
+
 ```js
-import { OWLManager } from "@hadden-industries/owlapi/apibinding";
+import { OWLManager } from "owlapi/apibinding";
 
 const manager = OWLManager.createOWLOntologyManager({
   behaviorProfileId: "java-owlapi-5.5.1",
@@ -110,8 +120,8 @@ A host supplies the document loader and authorizes its resources.
 The approved concrete Node adapter is an explicit subpath:
 
 ```js
-import { NodeDocumentLoader } from "@hadden-industries/owlapi/io/node";
-import { OWLManager } from "@hadden-industries/owlapi/apibinding";
+import { NodeDocumentLoader } from "owlapi/io/node";
+import { OWLManager } from "owlapi/apibinding";
 
 const documentLoader = new NodeDocumentLoader({
   authorize: (resourceIRI, context) => applicationAccessPolicy.permits(resourceIRI, context),
