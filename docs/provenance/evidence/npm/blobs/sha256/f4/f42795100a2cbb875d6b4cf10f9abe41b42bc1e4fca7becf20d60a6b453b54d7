@@ -1,0 +1,121 @@
+{
+  "artifactId": "68e615d3579959db4ed1c9d87e2250afcd60bc738ea9428f66594a3f0958b85e",
+  "evidence": {
+    "archiveRoot": "mdast",
+    "compressedBytes": 6109,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "mdast",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "DIRECTORY"
+      },
+      {
+        "path": "mdast/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141,
+        "type": "FILE"
+      },
+      {
+        "path": "mdast/README.md",
+        "sha256": "7184da5e880de0de1dc43eb88d210ca52a8a4d6bbe8c9263b678629df77669ce",
+        "size": 706,
+        "type": "FILE"
+      },
+      {
+        "path": "mdast/index.d.ts",
+        "sha256": "d4a22007b481fe2a2e6bfd3a42c00cd62d41edb36d30fc4697df2692e9891fc8",
+        "size": 26160,
+        "type": "FILE"
+      },
+      {
+        "path": "mdast/package.json",
+        "sha256": "5a41865d64d4cedba58313fad775cf56bd0474d724343172bcea9f8ad24db563",
+        "size": 1425,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1141,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c2/c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        "kind": "LICENCE",
+        "path": "mdast/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141
+      }
+    ],
+    "expandedBytes": 29432,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/mdast",
+      "license": "MIT",
+      "name": "@types/mdast",
+      "repository": {
+        "directory": "types/mdast",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "version": "4.0.4"
+    },
+    "packageMetadata": {
+      "contributors": [
+        {
+          "githubUsername": "ChristianMurphy",
+          "name": "Christian Murphy",
+          "url": "https://github.com/ChristianMurphy"
+        },
+        {
+          "githubUsername": "lujun2",
+          "name": "Jun Lu",
+          "url": "https://github.com/lujun2"
+        },
+        {
+          "githubUsername": "remcohaszing",
+          "name": "Remco Haszing",
+          "url": "https://github.com/remcohaszing"
+        },
+        {
+          "githubUsername": "wooorm",
+          "name": "Titus Wormer",
+          "url": "https://github.com/wooorm"
+        },
+        {
+          "githubUsername": "remcohaszing",
+          "name": "Remco Haszing",
+          "url": "https://github.com/remcohaszing"
+        }
+      ],
+      "dependencies": {
+        "@types/unist": "*"
+      },
+      "description": "TypeScript definitions for mdast",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/mdast",
+      "license": "MIT",
+      "main": "",
+      "name": "@types/mdast",
+      "repository": {
+        "directory": "types/mdast",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "scripts": {},
+      "typeScriptVersion": "4.7",
+      "types": "index.d.ts",
+      "typesPublisherContentHash": "1599d3ca45533e9d9248231c90843306b49c07fe13ad94ebf7345da44d8fd4bd",
+      "version": "4.0.4"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 6109,
+      "sha256": "ca9d3f571a96c57b9412fa9ccc009a356990e5334ce2c56587218a2fa2d57ef3"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

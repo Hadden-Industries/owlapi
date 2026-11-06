@@ -1,0 +1,160 @@
+{
+  "artifactId": "278c9d38dacb2ddbe9e7a46b8cdd150106d135ce9e6024c860f56ecedaa56977",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 15047,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "0f9977091bdf477bada79d5bc1f7e71d76003e98994664df5a460c3cedb4eb0e",
+        "size": 138,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "a5f982520e46458dd306fe9320ac62665cc611117dda7f3d074ec27cec63ba60",
+        "size": 37342,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "63cb98b3f6abfb3c3592c16f88253c1bdc834087bf52671e8ce5609e4eb693cf",
+        "size": 1099,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "3eaa974f1a9ede7187797d85eb1c799616144cd5ff75d094d30a44bec7d07d88",
+        "size": 2014,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "6535352c58f5e86db1df3f9d08a0b2386ff40352c4fe74b9a1c3b6a63c081cfb",
+        "size": 4041,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1099,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/63/63cb98b3f6abfb3c3592c16f88253c1bdc834087bf52671e8ce5609e4eb693cf",
+          "sha256": "63cb98b3f6abfb3c3592c16f88253c1bdc834087bf52671e8ce5609e4eb693cf"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "63cb98b3f6abfb3c3592c16f88253c1bdc834087bf52671e8ce5609e4eb693cf",
+        "size": 1099
+      },
+      {
+        "blob": {
+          "bytes": 4041,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/65/6535352c58f5e86db1df3f9d08a0b2386ff40352c4fe74b9a1c3b6a63c081cfb",
+          "sha256": "6535352c58f5e86db1df3f9d08a0b2386ff40352c4fe74b9a1c3b6a63c081cfb"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "6535352c58f5e86db1df3f9d08a0b2386ff40352c4fe74b9a1c3b6a63c081cfb",
+        "size": 4041
+      }
+    ],
+    "expandedBytes": 44634,
+    "packageIdentity": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "character-entities",
+      "repository": "wooorm/character-entities",
+      "version": "2.0.2"
+    },
+    "packageMetadata": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "bugs": "https://github.com/wooorm/character-entities/issues",
+      "contributors": [
+        "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+      ],
+      "description": "Map of named character references",
+      "devDependencies": {
+        "@types/tape": "^4.0.0",
+        "bail": "^2.0.0",
+        "c8": "^7.0.0",
+        "concat-stream": "^2.0.0",
+        "prettier": "^2.0.0",
+        "remark-cli": "^10.0.0",
+        "remark-preset-wooorm": "^9.0.0",
+        "rimraf": "^3.0.0",
+        "tape": "^5.0.0",
+        "type-coverage": "^2.0.0",
+        "typescript": "^4.0.0",
+        "xo": "^0.50.0"
+      },
+      "files": [
+        "index.d.ts",
+        "index.js"
+      ],
+      "funding": {
+        "type": "github",
+        "url": "https://github.com/sponsors/wooorm"
+      },
+      "keywords": [
+        "html",
+        "entity",
+        "entities",
+        "character",
+        "reference",
+        "name",
+        "replacement"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "character-entities",
+      "prettier": {
+        "bracketSpacing": false,
+        "semi": false,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "trailingComma": "none",
+        "useTabs": false
+      },
+      "remarkConfig": {
+        "plugins": [
+          "preset-wooorm"
+        ]
+      },
+      "repository": "wooorm/character-entities",
+      "scripts": {
+        "build": "rimraf \"*.d.ts\" && tsc && type-coverage",
+        "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
+        "generate": "node build",
+        "prepublishOnly": "npm run build && npm run format",
+        "test": "npm run generate && npm run build && npm run format && npm run test-coverage",
+        "test-api": "node --conditions development test.js",
+        "test-coverage": "c8 --check-coverage --branches 100 --functions 100 --lines 100 --statements 100 --reporter lcov npm run test-api"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "typeCoverage": {
+        "atLeast": 100,
+        "detail": true,
+        "ignoreCatch": true,
+        "strict": true
+      },
+      "types": "index.d.ts",
+      "version": "2.0.2",
+      "xo": {
+        "prettier": true
+      }
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 15047,
+      "sha256": "0805c120e1147a250a87ed8752265b3bce7a76c44e9728dec1d11380e21fbc3d"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}
