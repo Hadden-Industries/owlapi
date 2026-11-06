@@ -127,7 +127,7 @@
     "inspect:markdown": "markdown-quality inspect --root . --json",
     "inspect:markdown:profile": "markdown-quality inspect-profile --root . --json",
     "install:playwright-browsers": "playwright install",
-    "lint": "npm run check:python-tools && npm run lint:js && npm run check:markdown && npm run lint:py && npm run check:json && npm run lint:json-identity",
+    "lint": "npm run check:python-tools && npm run check:node && npm run lint:json-identity && npm run check:markdown && npm run lint:py && npm run check:json",
     "lint:files": "eslint",
     "lint:js": "npm run check:node && eslint \"**/*.{js,mjs,cjs}\"",
     "lint:json-identity": "eslint --config eslint.json-identity.config.mjs \"**/*.{js,mjs,cjs}\"",

@@ -40,6 +40,11 @@ Names follow the implementation's contract, rather than merely reversing the pre
 `run:prettier` is the internal raw-tool entry point shared by `format:source` and `format:source:check`.
 It owns the generic source selection once and receives the write/check mode from its caller.
 Its tool name is intentional because it exposes that exact CLI; ordinary task names describe their subject instead.
+
+The aggregate `lint` command runs source ESLint once through `lint:json-identity`, whose configuration extends the ordinary source policy with the JSON identity rule.
+It retains the Node-policy preflight before that combined pass and the existing Python, Markdown and JSON checks.
+`lint:js` and `lint:source-python` keep their standalone source-only roles; the separate ordinary ESLint configuration remains loadable without the canonical runtime's native JSON developer tool.
+
 `graph:dependencies` retains its name.
 JSON checking uses `check:json` for complete coverage and `inspect:json` for the same check's typed event stream; the former `inventory:json` and `lint:json` commands are retired.
 `format:json:check` also invokes complete checking, so it includes protected and native sources.
