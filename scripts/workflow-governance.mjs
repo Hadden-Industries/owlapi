@@ -46,7 +46,6 @@ const EXPECTED_WORKFLOWS = [
   "ci.yml",
   "extended-tests.yml",
   "maintenance.yml",
-  "markdown-quality.yml",
   "release-reconciliation.yml",
   "release.yml",
 ];
@@ -637,7 +636,6 @@ const validateJobs = (fileName, workflow, violations) => {
       `${fileName}: forbidden workflow construct ${forbidden}`,
     );
   for (const [id, job] of entries(workflow.jobs)) {
-    if (fileName === "markdown-quality.yml" && id === "markdown") continue;
     const runner = job?.["runs-on"];
     const isEvidenceMatrix =
       fileName === "extended-tests.yml" && id === "third_party_evidence_shard";
@@ -2507,7 +2505,13 @@ const validateQualityTooling = (workflows, violations) => {
         const jsonInstalls = list.filter(
           (step) => step.run === "npm run install:json",
         );
-        const rootInstalls = list.filter((step) => step.run === "npm ci");
+        const rootInstalls = list.filter(
+          (step) =>
+            step.run ===
+            (["source_canonical", "quality_windows"].includes(id)
+              ? "npm ci --ignore-scripts"
+              : "npm ci"),
+        );
         const jsonProbes = list.filter(
           (step) => step.run === "npm run test:json",
         );
@@ -2581,47 +2585,51 @@ const validateQualityTooling = (workflows, violations) => {
             `${context} requires one unconditional final JSON producer gate after all producers`,
           );
         }
-        const markdownInstalls = list.filter(
-          (step) => step.run === "npm run install:markdown",
+        add(
+          violations,
+          !list.some((step) =>
+            /(?:install:markdown|--prefix[ =]+tooling\/markdown)/u.test(
+              step.run ?? "",
+            ),
+          ),
+          `${context} must use the root Markdown development graph`,
         );
         if (["source_portable", "source_json"].includes(id)) {
-          add(
-            violations,
-            markdownInstalls.length === 0,
-            `${context} must retain its source-only checks`,
-          );
           for (const command of [
             "npm run format:source-python:check",
             "npm run lint:source-python",
           ])
             requireRun(job, command, context, violations);
         } else {
-          const markdownIndex = list.indexOf(markdownInstalls[0]);
-          add(
-            violations,
-            markdownInstalls.length === 1 &&
-              !markdownInstalls[0].if &&
-              !markdownInstalls[0]["continue-on-error"] &&
-              markdownIndex > syncIndex,
-            `${context} requires unconditional isolated Markdown acquisition`,
-          );
-          const consumers = list.flatMap((step, index) =>
-            [
-              "npm run format:check",
-              "npm run lint",
-              "npm run test:quality",
-            ].includes(step.run)
-              ? [index]
-              : [],
-          );
-          add(
-            violations,
-            consumers.length >= 2 &&
-              consumers.every((index) => index > markdownIndex),
-            `${context} requires Markdown setup before all canonical consumers`,
-          );
-          if (id === "source_canonical")
+          const installIndex = list.indexOf(rootInstalls[0]);
+          for (const command of ["npm run format:check", "npm run lint"]) {
+            requireRun(job, command, context, violations);
+            const consumers = list.filter((step) => step.run === command);
+            add(
+              violations,
+              consumers.length === 1 &&
+                !consumers[0]?.if &&
+                !consumers[0]?.["continue-on-error"] &&
+                list.indexOf(consumers[0]) > installIndex,
+              `${context} requires unconditional full Markdown checking after root acquisition`,
+            );
+          }
+          if (id === "source_canonical") {
             requireRun(job, "npm run test:markdown", context, violations);
+            const probes = list.filter(
+              (step) => step.run === "npm run test:markdown",
+            );
+            add(
+              violations,
+              probes.length === 1 &&
+                !probes[0]?.if &&
+                !probes[0]?.["continue-on-error"] &&
+                list.indexOf(probes[0]) > installIndex &&
+                list.indexOf(probes[0]) <
+                  list.findIndex((step) => step.run === "npm run format:check"),
+              `${context} requires unconditional Markdown probes before canonical checking`,
+            );
+          }
         }
       }
       if (id === "quality_windows") {
@@ -2840,73 +2848,6 @@ const validateJsonRecord = (schemaName, recordName, violations) => {
     violations,
     validate(record),
     `${recordName}: ${ajv.errorsText(validate.errors)}`,
-  );
-};
-
-/** Accept only the reviewed producer caller; the producer owns runners and observation. */
-const validateTrustedMarkdownWorkflow = (workflow, violations) => {
-  const label = "markdown-quality.yml: trusted data checker";
-  add(
-    violations,
-    sameInventory(Object.keys(workflow ?? {}), [
-      "name",
-      "on",
-      "permissions",
-      "jobs",
-    ]) &&
-      workflow.name === "Trusted Markdown qualification" &&
-      sameInventory(Object.keys(workflow.on ?? {}), ["workflow_dispatch"]) &&
-      sameInventory(Object.keys(workflow.on?.workflow_dispatch ?? {}), [
-        "inputs",
-      ]),
-    `${label}: only closed owner dispatch is accepted`,
-  );
-  const inputs = workflow.on?.workflow_dispatch?.inputs;
-  add(
-    violations,
-    sameInventory(Object.keys(inputs ?? {}), [
-      "trusted_sha",
-      "candidate_repository",
-      "candidate_sha",
-    ]),
-    `${label}: exact trusted and candidate inputs required`,
-  );
-  for (const id of ["trusted_sha", "candidate_repository", "candidate_sha"])
-    add(
-      violations,
-      sameInventory(
-        Object.keys(inputs?.[id] ?? {}),
-        id === "candidate_repository"
-          ? ["description", "required", "type", "default"]
-          : ["description", "required", "type"],
-      ) &&
-        typeof inputs?.[id]?.description === "string" &&
-        inputs[id].required === true &&
-        inputs[id].type === "string" &&
-        (id !== "candidate_repository" ||
-          inputs[id].default === "Hadden-Industries/owlapi"),
-      `${label}: closed required string input ${id}`,
-    );
-  add(
-    violations,
-    sameInventory(Object.keys(workflow.jobs ?? {}), ["markdown"]),
-    `${label}: one shared qualification caller required`,
-  );
-  const job = workflow.jobs?.markdown;
-  add(
-    violations,
-    sameInventory(Object.keys(job ?? {}), ["permissions", "uses", "with"]) &&
-      isDeepStrictEqual(job?.permissions, { contents: "read" }) &&
-      job?.uses ===
-        "Hadden-Industries/markdown-quality/.github/workflows/markdown-quality.yml@fa1188a867b29bddd0b972a080b7fcd0261bdec3" &&
-      isDeepStrictEqual(job?.with, {
-        "trusted-repository": "Hadden-Industries/owlapi",
-        "trusted-sha": "${{ inputs.trusted_sha }}",
-        "candidate-repository": "${{ inputs.candidate_repository }}",
-        "candidate-sha": "${{ inputs.candidate_sha }}",
-        profile: ".markdown-quality-execution.json",
-      }),
-    `${label}: closed pinned read-only caller and separate identities required`,
   );
 };
 
@@ -3387,10 +3328,6 @@ export const auditRepositoryControls = ({
     validateCandidateTransport(fileName, workflow, violations);
   }
   validateEvidenceWorkflows(workflows, violations);
-  validateTrustedMarkdownWorkflow(
-    workflows["markdown-quality.yml"] ?? {},
-    violations,
-  );
   validateQualityTooling(workflows, violations);
   const ci = workflows["ci.yml"] ?? {};
   add(violations, ci.name === "CI", "ci.yml: wrong workflow name");

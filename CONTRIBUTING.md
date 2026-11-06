@@ -89,8 +89,9 @@ Minimum/latest endpoint checks are practical coverage of a supported line, rathe
 The [latest published release](README.md#release-status) passed its hosted runtime gates; every successor candidate needs evidence for its own bytes and frozen matrix.
 Broadening the published engine range remains a separate decision after qualification.
 Installing development dependencies and running repository qualification additionally requires a Node version supported by the selected npm and tool graph; consumer eligibility alone does not establish development-tool eligibility.
-Canonical production includes the separate Markdown archive graph; its `file:` archives and lock have an independent update scope from the root registry graph.
+Markdown Quality is part of the ordinary root development dependency graph, with exact resolutions recorded in the root lockfile.
 The latest release's refreshed dependency graph and reference runtimes are covered by its release evidence; later dependency or runtime changes require the affected qualification.
+The Markdown development dependency change awaits its affected qualification.
 
 Repository text is UTF-8 with LF line endings and a final newline.
 The root `.gitattributes` makes that representation independent of a contributor's Git settings, while the nested override under `docs/conformance/upstream/` preserves pinned third-party fixtures byte for byte.
@@ -100,14 +101,14 @@ The root `.editorconfig` defines the shared editor baseline: spaces, two-space i
 Native ESM and supported JavaScript syntax are defined separately by `package.json` and `eslint.config.js`.
 
 Prettier retains its defaults for ordinary source files.
-Authored Markdown uses the exactly pinned shared Markdown-quality package, with independent prose diagnostics, native GFM content rules, literal-preserving formatting, and local-link checking.
-Its isolated Node 24 tool graph leaves application Node 22 support unchanged.
+Authored Markdown uses the shared Markdown Quality package, declared as `>=3.0.0` and resolved exactly in the root lockfile, with independent prose diagnostics, native GFM content rules, literal-preserving formatting, and local-link checking.
+Repository development requires Node >=26.13.0 and npm >=12.2.1; the published application retains Node >=22.0.0 support.
 Fenced examples are preserved rather than executed or formatted as programs.
 Ruff checks and formats Python development files with stable rules and a 79-column target.
 Generated API views, upstream fixtures, and historical evidence retain their owning generators and byte checks.
 
-Install the Node/npm versions declared in `package.json`, then run `npm ci`.
-For Markdown work, select the canonical Node reference above and explicitly run `npm run install:markdown`; canonical checks never install dependencies.
+Install the development Node/npm versions declared in `package.json`, then run `npm ci --ignore-scripts`.
+This root installation includes Markdown Quality and its matching optional native package; canonical checks never install dependencies.
 Install the CPython version selected in `.python-version` and provide its absolute executable path during the explicit development-tool setup; for example, in PowerShell:
 
 ```powershell
@@ -154,12 +155,17 @@ Repository npm scripts use action-first names and alphabetical action groups; se
 Use `check:markdown` for full read-only Markdown checking, including formatting drift, linting and local links; both `lint` and `format:check` retain that check.
 Use `lint:js` and `lint:py` for separate static checks, and the source/Python `:check` formatting scripts for read-only presentation checks.
 For selected Markdown files, use `npm run check:markdown -- -- "docs/guide.md"` or `npm run check:markdown -- --files-json "[\"docs/guide.md\"]"`; the canonical CLI requires a literal `--` boundary or JSON selection.
+`npm run format:markdown -- -- "docs/guide.md"` explicitly writes repairs; preview with `npm exec -- markdown-quality format --dry-run --root . -- docs/guide.md`.
+Do not append `--dry-run` to the write wrapper: physical repairs require exactly one of `--write` or `--dry-run`.
+For machine-readable output, use `npm run --silent check:markdown -- --json -- README.md`; diagnostics for people use stderr.
+From another directory, use `npm --prefix <absolute-repository-root> run check:markdown`; each root script declares `--root .`.
+`inspect:markdown` reports selection and `inspect:markdown:profile` reports effective limits; complete `check:markdown` establishes the repository check verdict.
 `lint:files` remains available for existing JavaScript callers.
 
 JSON Quality is a normal root registry devDependency, installed by `npm ci` and imported from its public package exports.
 Its `>=` minimum declaration follows the other registry devDependencies, with exact resolved packages retained in the root lockfile and governed by ordinary npm and repository-wide dependency checks.
 `npm run test:json` checks JSON behavior, source preservation and coverage without a package-specific installation verifier.
-The old isolated JSON manifest, import bridge and `install:json` bootstrap are retired; Markdown and artifact transport retain their separate graphs.
+The old isolated JSON manifest, import bridge and `install:json` bootstrap are retired; artifact transport retains its separate graph.
 `npm run check:json` performs complete read-only checking of owned files, required generated outputs, pinned native evidence and linked JSON-LD sources.
 `npm run format:json:check` invokes that same complete check; `npm run inspect:json` emits its typed event stream as newline-delimited JSON.
 Checking has no file-selection or protected-only mode: source findings remain provisional until the execution terminal confirms complete inventory and linkage.
@@ -173,13 +179,12 @@ It does not expand writer capabilities.
 The repository allows ten minutes for a complete JSON check, including native Maven and Jest outputs produced by CI; the fifteen-minute CI step leaves time for startup and cleanup.
 Native corpus tests allow two minutes per case, and aggregate Windows quality steps allow thirty minutes within a two-hour job.
 The policy uses schema version 2; the package's contract cohort binds source contracts, event schemas and native protocol together.
-The former aggregate checking APIs and Base64 document request envelopes are retired; Markdown's own CLI grammar is unchanged.
+The former JSON aggregate checking APIs and Base64 document request envelopes are retired.
 
-Markdown tooling uses a source-specific, clean-source core/Linux/Windows archive tuple, its unmodified producer manifest and a native npm lock.
-The Markdown archive owner verifies complete member identities before JSON checking, including bundled dependencies and both repaired cargo reports.
-Only two exact original Linux author-name values retain pinned NFC preservation; neither report is excluded from semantic checking.
+Markdown tooling uses the root registry dependency and npm-owned optional native packages.
+Historical archive evidence and its original author values retain their provenance ownership; the current development inventory is generated from the installed root graph.
 
-On Node 22, use `format:source-python:check`, `lint:source-python`, and `test:quality:source` for the complete source/Python floor; Markdown checks require Node 24.
+Consumer runtime qualification remains separate from repository development tooling; run repository quality commands under the declared development runtime.
 The shared Markdown selector includes `.github/` and eligible untracked files, honours repository ignore rules, and rejects symlink and outside paths.
 
 Trailing whitespace is trimmed in every authored file, including Markdown.
@@ -188,10 +193,10 @@ Represent significant trailing spaces in examples as escaped strings or annotate
 Do not add a Markdown trimming exception.
 
 For tool updates, review pins in `package.json`, `pyproject.toml`, `.python-version`, and `scripts/repository-python-tools.mjs`, including uv archive digests; regenerate `uv.lock` with the selected uv version, then synchronize and run the full gates on Windows and Linux.
-The package owns the bounded Snapper 0.11.9 list workaround; requalify it with each package/native upgrade and remove it when upstream diagnostics are corrected.
-Trusted hosted Markdown runs inspect separately checked-out candidate data using the accepted workflow source, graph, policy, and ignores.
-Before merge, the owner accepts the exact candidate and attributable passing trusted run, alongside every existing required status.
-Full six-check pilot windows must meet the accepted 30-second timing and separate Windows committed-memory/Linux process-tree RSS budgets; the observer retains individual receipts and fails closed on any unexpected error or input drift.
+The shared package owns Markdown formatter compatibility; verify the consumer CLI and SDK behavior when updating its core and native packages.
+Existing CI and release source lanes run complete authored Markdown checks from the root development graph alongside their required status checks.
+The archive-specific manual trusted Markdown dispatch is retired because no downstream receipt consumer remains.
+`npm run inspect:markdown:profile` reports the effective ordinary resource policy; it does not produce a hosted immutable qualification receipt.
 Refresh current dependency/provenance records through their owning tools while preserving historical evidence and pending human-review decisions.
 
 For workflow changes, also run:

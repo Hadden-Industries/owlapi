@@ -3,7 +3,6 @@ import { verifyPinnedIntegrationCheckout } from "../util/owlapi-reference/pinned
 
 const approvedExclusions = new Set([
   "node_modules/**",
-  "tooling/markdown/node_modules/**",
   "tooling/artifact-transport/node_modules/**",
   ".development-tools/python/**",
   ".development-tools/uv-cache/**",
@@ -12,7 +11,7 @@ const approvedExclusions = new Set([
 ]);
 
 /** Repository approval authority only; the package owns schema and checking.
- * The complete clean-source package tuple is admitted by its native archive owner.
+ * Retained original provenance values remain protected by their physical owner.
  */
 export async function validateRepositoryJsonPolicy(policy, root) {
   admitJsonPolicy(policy);

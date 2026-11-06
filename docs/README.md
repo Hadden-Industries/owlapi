@@ -47,7 +47,8 @@ Repository implementation conventions are frozen in `engineering-conventions.md`
 The isolated Java structural reference harness lives under `util/owlapi-reference/`; it is development evidence, never a production runtime dependency.
 
 The original [Python and Markdown quality tooling plan](plans/2026-09-29-python-markdown-quality-tooling.md) retains its baseline and preservation requirements.
-Current Markdown commands, archive isolation and shared qualification are documented in the [delivered centralization plan](plans/markdown-quality-centralization.md) and [contributor guide](../CONTRIBUTING.md).
+Current root-installed Markdown commands and ordinary checking are documented in the [contributor guide](../CONTRIBUTING.md) and [npm script guide](development/npm-scripts.md).
+The [delivered centralization plan](plans/markdown-quality-centralization.md) retains the historical archive-isolation and shared-qualification design.
 
 Delivery records live under `migration/`.
 Historical lesson records preserve evidence; `migration/parser-migration-playbook.md` is the concise current method.

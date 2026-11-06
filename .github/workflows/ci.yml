@@ -334,7 +334,7 @@ jobs:
       - name: Set up the policy-owned Node/npm runtime
         uses: ./.github/actions/setup-producer
       - name: Install the reviewed dependency graph
-        run: npm ci
+        run: npm ci --ignore-scripts
         timeout-minutes: 20
       - name: Record the hosted runner identity
         run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
@@ -362,13 +362,10 @@ jobs:
           name: scancode-qualification-source_canonical
           path: .release/scancode-qualification/reports
           retention-days: 14
-      - name: Acquire the exact isolated Markdown graph
-        run: npm run install:markdown
-        timeout-minutes: 5
       - name: Exercise JSON behavior and source preservation probes
         run: npm run test:json
         timeout-minutes: 15
-      - name: Exercise canonical Markdown isolation probes
+      - name: Exercise root Markdown CLI and SDK probes
         run: npm run test:markdown
         timeout-minutes: 5
       - name: Verify formatting
@@ -1253,7 +1250,7 @@ jobs:
       - name: Set up the policy-owned Node/npm runtime
         uses: ./.github/actions/setup-producer
       - name: Install the reviewed dependency graph
-        run: npm ci
+        run: npm ci --ignore-scripts
         timeout-minutes: 20
       - name: Record the hosted runner identity
         run: npm run record:runner -- --expected-os Windows --expected-arch X64 --label windows-2025 --shell pwsh
@@ -1284,9 +1281,6 @@ jobs:
       - name: Verify the locked environment
         run: npm run check:python-tools
         timeout-minutes: 10
-      - name: Acquire the exact isolated Markdown graph
-        run: npm run install:markdown
-        timeout-minutes: 5
       - name: Exercise JSON behavior and source preservation probes
         run: npm run test:json
         timeout-minutes: 15

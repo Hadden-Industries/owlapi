@@ -31,7 +31,6 @@ export const EXCLUDED_DOMAINS = [
   "docs/conformance/upstream/",
   "docs/conformance/generated/",
   "util/owlapi-reference/fixtures/",
-  "tooling/markdown/archives/",
 ];
 const slash = (value) => value.replaceAll("\\", "/");
 const json = (value) => `${JSON.stringify(value, null, 2)}\n`;

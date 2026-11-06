@@ -201,8 +201,7 @@ export function assertControllerPackageUnchanged(root, commit) {
       path.startsWith("scripts/") ||
         path.startsWith("docs/release/") ||
         path.startsWith("docs/plans/") ||
-        path === ".github/workflows/release.yml" ||
-        path === ".github/workflows/markdown-quality.yml",
+        path === ".github/workflows/release.yml",
       `Recovery changes package or unrelated source: ${path}`,
     );
 }

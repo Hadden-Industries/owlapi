@@ -437,7 +437,11 @@ describe("repository workflow governance", () => {
   )("requires complete JSON setup in %s:%s", (file, id) => {
     const violations = mutateWorkflow(file, (doc) => {
       const steps = doc.getIn(["jobs", id, "steps"]);
-      const setup = steps.items.find((step) => step.get("run") === "npm ci");
+      const setup = steps.items.find(
+        (step) =>
+          step.get("run") ===
+          (id === "source_json" ? "npm ci" : "npm ci --ignore-scripts"),
+      );
       expect(setup).toBeDefined();
       steps.items.splice(steps.items.indexOf(setup), 1);
     });
@@ -607,26 +611,59 @@ describe("repository workflow governance", () => {
       ).toMatch(/Node 26 floor/u);
     },
   );
-  test.each(["skip", "ignore", "late"])(
-    "rejects ineffective isolated Markdown acquisition: %s",
-    (mutation) => {
-      expect(
-        mutateWorkflow("ci.yml", (document) => {
-          const steps = document.getIn(["jobs", "source_canonical", "steps"]);
-          const index = steps.items.findIndex(
-            (step) => step.get("run") === "npm run install:markdown",
-          );
-          const install = steps.items[index];
-          if (mutation === "skip") install.set("if", "false");
-          if (mutation === "ignore") install.set("continue-on-error", true);
-          if (mutation === "late") {
-            steps.items.splice(index, 1);
-            steps.items.push(install);
-          }
-        }).join("\n"),
-      ).toMatch(/isolated Markdown acquisition|Markdown setup before/u);
+  test.each(["ci.yml", "release.yml"])(
+    "rejects ineffective root Markdown acquisition in %s",
+    (fileName) => {
+      for (const mutation of ["skip", "ignore", "late", "scripts"]) {
+        expect(
+          mutateWorkflow(fileName, (document) => {
+            const steps = document.getIn(["jobs", "source_canonical", "steps"]);
+            const index = steps.items.findIndex(
+              (step) => step.get("run") === "npm ci --ignore-scripts",
+            );
+            const install = steps.items[index];
+            if (mutation === "skip") install.set("if", "false");
+            if (mutation === "ignore") install.set("continue-on-error", true);
+            if (mutation === "scripts") install.set("run", "npm ci");
+            if (mutation === "late") {
+              steps.items.splice(index, 1);
+              steps.items.push(install);
+            }
+          }).join("\n"),
+        ).toMatch(/root JSON installation|Markdown checking|Markdown probes/u);
+      }
     },
   );
+  test.each(["ci.yml", "release.yml"])(
+    "rejects weakened complete Markdown checking in %s",
+    (fileName) => {
+      for (const jobId of ["source_canonical", "quality_windows"])
+        for (const command of ["npm run format:check", "npm run lint"])
+          for (const mutation of ["skip", "ignore", "selected"]) {
+            expect(
+              mutateWorkflow(fileName, (document) => {
+                const step = document
+                  .getIn(["jobs", jobId, "steps"])
+                  .items.find((item) => item.get("run") === command);
+                if (mutation === "skip") step.set("if", "false");
+                if (mutation === "ignore") step.set("continue-on-error", true);
+                if (mutation === "selected")
+                  step.set("run", "npm run check:markdown -- -- README.md");
+              }).join("\n"),
+            ).toMatch(/Markdown checking|requires npm run/u);
+          }
+    },
+  );
+  test("rejects a separate Markdown installation", () => {
+    expect(
+      mutateWorkflow("ci.yml", (document) => {
+        document.getIn(["jobs", "source_canonical", "steps"]).add({
+          run: "npm run install:markdown",
+          "timeout-minutes": 5,
+        });
+      }).join("\n"),
+    ).toMatch(/root Markdown development graph/u);
+  });
   test.each(["source_portable", "source_json"])(
     "retains the %s source and Python floor",
     (jobId) => {
@@ -913,7 +950,6 @@ describe("repository workflow governance", () => {
       "ci.yml",
       "extended-tests.yml",
       "maintenance.yml",
-      "markdown-quality.yml",
       "release-reconciliation.yml",
       "release.yml",
     ]);
@@ -1457,52 +1493,5 @@ describe("repository workflow governance", () => {
         expect.stringMatching(/closed source-run selector/u),
       ]),
     );
-  });
-});
-
-describe("trusted Markdown dispatch", () => {
-  test.each([
-    "floating producer",
-    "wrong producer revision",
-    "write token",
-    "candidate trust",
-    "inherited secrets",
-    "candidate execution",
-    "skipped qualification",
-    "profile override",
-    "privileged trigger",
-    "optional trusted input",
-    "extra input",
-  ])("rejects %s", (mutation) => {
-    const violations = mutateWorkflow("markdown-quality.yml", (document) => {
-      const job = document.getIn(["jobs", "markdown"]);
-      if (mutation === "floating producer")
-        job.set("uses", job.get("uses").replace(/@[a-f0-9]{40}$/u, "@main"));
-      if (mutation === "wrong producer revision")
-        job.set(
-          "uses",
-          job.get("uses").replace(/@[a-f0-9]{40}$/u, "@" + "0".repeat(40)),
-        );
-      if (mutation === "write token")
-        job.setIn(["permissions", "contents"], "write");
-      if (mutation === "candidate trust")
-        job.setIn(["with", "trusted-sha"], "${{ inputs.candidate_sha }}");
-      if (mutation === "inherited secrets") job.set("secrets", "inherit");
-      if (mutation === "candidate execution")
-        job.set("steps", [{ run: "node candidate/evil.js" }]);
-      if (mutation === "skipped qualification") job.set("if", "false");
-      if (mutation === "profile override")
-        job.setIn(["with", "profile"], "candidate/evil.json");
-      if (mutation === "privileged trigger")
-        document.setIn(["on", "pull_request_target"], {});
-      if (mutation === "optional trusted input")
-        document.setIn(
-          ["on", "workflow_dispatch", "inputs", "trusted_sha", "required"],
-          false,
-        );
-      if (mutation === "extra input")
-        job.setIn(["with", "memoryBytes"], 9999999999);
-    });
-    expect(violations.join("\n")).toMatch(/trusted data checker/u);
   });
 });

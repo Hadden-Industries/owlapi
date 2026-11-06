@@ -2641,6 +2641,7 @@ Neither this NOTICE nor the package licence replaces those upstream terms.
       "jsonld-provider-rolldown",
       "jsonld-provider-setimmediate",
       "jsonld-provider-yallist",
+      "markdown-quality-retained-native-attribution",
       "ruff-development-tool",
       "scancode-development-source-build",
       "shared-markdown-quality-development-tool",
@@ -2655,8 +2656,9 @@ Neither this NOTICE nor the package licence replaces those upstream terms.
     );
     expect(markdownTool).toMatchObject({
       relationship: "DEVELOPMENT_ONLY",
-      versionOrRevision: readJson("./tooling/markdown/release-manifest.json")
-        .source.head,
+      versionOrRevision: readJson("./package-lock.json").packages[
+        "node_modules/@hadden-industries/markdown-quality"
+      ].version,
       packageTarballScope: false,
       deployedApplicationScope: "NOT_APPLICABLE",
     });

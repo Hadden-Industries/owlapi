@@ -29,13 +29,6 @@
       "reason": "Independently verify manifest, schemas, locked acquisition and each original envelope/source-map blob before shared checking.",
       "formatContract": "producer-json-indent",
       "minimumDocuments": 1
-    },
-    {
-      "id": "markdown-archives",
-      "provider": "markdownArchives",
-      "owner": "native Markdown lock/archive verifier",
-      "reason": "Admit the complete clean-source Markdown package tuple against its producer inventory and native npm lock; repaired cargo reports receive ordinary semantic checking without legacy report exclusions.",
-      "minimumDocuments": 1
     }
   ],
   "preserveSourcePresentation": [
@@ -48,17 +41,16 @@
     },
     {
       "paths": [
-        "tooling/markdown/archives/*.tgz!/**"
+        "docs/provenance/evidence/npm/blobs/sha256/**"
       ],
-      "owner": "Native locked Markdown archive owner",
-      "reason": "Retain original installed-member presentation only after independent SRI and full native archive census admission; every included member retains semantic checks."
+      "owner": "Native authenticated npm evidence owner",
+      "reason": "Retain original bundled package manifests and existing content-addressed evidence presentation only after exact lock/archive/member/blob admission; all parser and semantic checks remain mandatory."
     }
   ],
   "exceptions": [
     {
       "paths": [
         "node_modules/**",
-        "tooling/markdown/node_modules/**",
         "tooling/artifact-transport/node_modules/**"
       ],
       "owner": "native npm dependency installers",
@@ -921,8 +913,7 @@
     {
       "paths": [
         "package-lock.json",
-        "tooling/artifact-transport/package-lock.json",
-        "tooling/markdown/package-lock.json"
+        "tooling/artifact-transport/package-lock.json"
       ],
       "owner": "native npm lockfile producer",
       "reason": "Only the actual packages root key is empty; locked identities remain protected from generic writers.",
@@ -933,19 +924,10 @@
     },
     {
       "paths": [
-        "tooling/markdown/release-manifest.json"
-      ],
-      "owner": "Clean-source Markdown package producer",
-      "reason": "Retain the actual producer manifest and complete staged-member identities without regenerating its provenance.",
-      "formatContract": "producer-json-indent",
-      "allowFormatWrites": false
-    },
-    {
-      "paths": [
-        "tooling/markdown/archives/hadden-industries-markdown-quality-linux-x64-1.0.3-5712d153079bfc840a918c7dd250afef820d9e07.tgz!/package/cargo-notices.json"
+        "docs/provenance/markdown-quality-1.0.3-linux-cargo-notices.json"
       ],
       "owner": "Original crate attribution owners",
-      "reason": "The repaired, completely inventoried native package retains the same two independently pinned original author strings. Every key and unselected value receives ordinary NFC checking; this grants no report exclusion.",
+      "reason": "The byte-frozen historical Linux report preserves both independently pinned original author strings and its complete original licence notices after the active archive supplier retires; every key and unselected value retains ordinary NFC checking.",
       "allowFormatWrites": false,
       "preserveNfcValues": [
         {
@@ -958,7 +940,13 @@
           "sha256": "f7a46979f4c152096032b17774ded243fdb9cfe324a381e8a8a4a2a8e32a2cc5",
           "byteLength": "35"
         }
-      ]
+      ],
+      "formatContract": "preserved-bytes",
+      "expected": {
+        "sha256": "86147599f977088a3690c5eb2954a84ea14d5f91a7b6afc6a082e6e4e2bcd88e",
+        "byteLength": "4875725",
+        "diagnostics": []
+      }
     }
   ]
 }

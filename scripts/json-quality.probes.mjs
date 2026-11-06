@@ -224,7 +224,7 @@ test("ignored and hidden bad peers block an eligible guarded batch and unapprove
   );
 });
 
-test("only seven approved physical boundaries remain; repaired cargo reports cannot be excluded", async () => {
+test("only six approved physical boundaries remain; retained cargo provenance cannot be excluded", async () => {
   const policy = await readPolicyFixture(repository);
   await validateRepositoryJsonPolicy(policy, repository);
   assert.deepEqual(
@@ -234,7 +234,6 @@ test("only seven approved physical boundaries remain; repaired cargo reports can
       .sort(),
     [
       "node_modules/**",
-      "tooling/markdown/node_modules/**",
       "tooling/artifact-transport/node_modules/**",
       ".development-tools/python/**",
       ".development-tools/uv-cache/**",
@@ -242,17 +241,14 @@ test("only seven approved physical boundaries remain; repaired cargo reports can
       ".release/universal-ontology/**",
     ].sort(),
   );
-  const report = JSON.parse(
-    await readFile(join(repository, "tooling/markdown/release-manifest.json")),
-  );
-  for (const archive of report.archives) {
-    const path = `tooling/markdown/archives/${archive.filename.slice(0, -4)}-${report.source.head}.tgz!/package/cargo-notices.json`;
-    assert.equal(jsonContract(path, policy).exclude, false, path);
-  }
+  const path =
+    "docs/provenance/markdown-quality-1.0.3-linux-cargo-notices.json";
+  assert.equal(jsonContract(path, policy).exclude, false, path);
+  assert.equal(jsonContract(path, policy).allowFormatWrites, false, path);
   const altered = structuredClone(policy);
   altered.exceptions.push(
     exclusion([
-      "tooling/markdown/archives/old.tgz!/package/cargo-notices.json",
+      "docs/provenance/markdown-quality-1.0.3-linux-cargo-notices.json",
     ]),
   );
   await assert.rejects(
@@ -330,7 +326,6 @@ test("a root installation boundary leaves sibling tooling and tracked source vis
 test("declared isolated installation boundaries rescue tracked JSON and do not hide archived dependency members", async (t) => {
   const paths = [
     "node_modules/**",
-    "tooling/markdown/node_modules/**",
     "tooling/artifact-transport/node_modules/**",
   ];
   const root = await repositoryFixture(t, [exclusion(paths)]);
@@ -340,7 +335,7 @@ test("declared isolated installation boundaries rescue tracked JSON and do not h
   }
   assert.equal((await checkedFixture(root)).at(-1).contractSatisfied, true);
   await writeFile(
-    join(root, "tooling/markdown/node_modules/tracked.json"),
+    join(root, "tooling/artifact-transport/node_modules/tracked.json"),
     '{"bad":}\n',
   );
   execFileSync(
@@ -350,7 +345,7 @@ test("declared isolated installation boundaries rescue tracked JSON and do not h
       root,
       "add",
       "--force",
-      "tooling/markdown/node_modules/tracked.json",
+      "tooling/artifact-transport/node_modules/tracked.json",
     ],
     { windowsHide: true },
   );
@@ -358,7 +353,7 @@ test("declared isolated installation boundaries rescue tracked JSON and do not h
   await writeFile(join(root, "tooling/neighbor/bad.json"), '{"bad":}\n');
   const events = await checkedFixture(root);
   for (const path of [
-    "tooling/markdown/node_modules/tracked.json",
+    "tooling/artifact-transport/node_modules/tracked.json",
     "tooling/neighbor/bad.json",
   ])
     assert.ok(

@@ -8,7 +8,6 @@ import {
   provideNpmEvidenceJson,
   provideArtifactToolEvidenceJson,
 } from "../util/third-party-evidence/json-documents.mjs";
-import { provideMarkdownArchiveJson } from "../util/third-party-evidence/markdown-json-documents.mjs";
 import {
   capturedJsonLdInventory,
   jsonLdContainerPaths,
@@ -57,7 +56,6 @@ const context = () => ({
   nativeProviders: {
     npmEvidence: provideNpmEvidenceJson,
     artifactToolEvidence: provideArtifactToolEvidenceJson,
-    markdownArchives: provideMarkdownArchiveJson,
   },
 });
 

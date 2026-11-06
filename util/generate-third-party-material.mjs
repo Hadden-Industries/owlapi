@@ -12,7 +12,7 @@ import {
   REVIEW_DIGEST_ALGORITHM,
 } from "../scripts/review-facts.mjs";
 
-export const GENERATOR_VERSION = "3.3.0";
+export const GENERATOR_VERSION = "3.4.0";
 
 // Legal evidence must be byte-for-byte reproducible on every platform. JavaScript
 // code-unit ordering avoids host locale and ICU-version differences.
@@ -208,18 +208,55 @@ const artifactContext = (artifact) => ({
 });
 
 const createComponentFacts = ({ occurrence, context, existingComponent }) => {
-  const { artifact, archive, scan } = context;
-  const packageJson = archive.packageMetadata;
-  const lockfileDeclaredLicenseExpressions = artifact.lockfileLicenses;
+  const { artifact: ownerArtifact, archive, scan: ownerScan } = context;
+  const bundledMember =
+    occurrence.bundled &&
+    archive.bundledPackages.find(
+      ({ path }) =>
+        path === `${archive.archiveRoot}/${occurrence.bundled.packageJsonPath}`,
+    );
+  if (occurrence.bundled && !bundledMember)
+    throw new Error(
+      `Missing authenticated bundled manifest: ${occurrence.dependencyPath}`,
+    );
+  const packageJson = bundledMember
+    ? bundledMember.packageMetadata
+    : archive.packageMetadata;
+  const artifact = bundledMember
+    ? { ...ownerArtifact, name: packageJson.name, version: packageJson.version }
+    : ownerArtifact;
+  const memberRoot = bundledMember?.path.slice(0, -"package.json".length);
+  const belongsToMember = (path) =>
+    !memberRoot ||
+    (path.startsWith(memberRoot) &&
+      !path.slice(memberRoot.length).includes("node_modules/"));
+  const scan = bundledMember
+    ? {
+        files: (ownerScan.files ?? []).filter(({ path }) =>
+          belongsToMember(path),
+        ),
+      }
+    : ownerScan;
+  const lockfileDeclaredLicenseExpressions = occurrence.bundled
+    ? [occurrence.bundled.lockfileLicense].filter(Boolean)
+    : artifact.lockfileLicenses;
   const rawTarballLicence = normalizeLicence(packageJson?.license);
   const tarballDeclaredLicenseExpression =
     rawTarballLicence === "NOASSERTION" ? null : rawTarballLicence;
   const scanObservedLicenseExpressions = scanObservedLicences(scan);
-  const candidates = [
-    ...lockfileDeclaredLicenseExpressions,
-    tarballDeclaredLicenseExpression,
-    ...scanObservedLicenseExpressions,
-  ].filter(Boolean);
+  const candidates = (
+    bundledMember
+      ? [
+          tarballDeclaredLicenseExpression,
+          ...lockfileDeclaredLicenseExpressions,
+          ...scanObservedLicenseExpressions,
+        ]
+      : [
+          ...lockfileDeclaredLicenseExpressions,
+          tarballDeclaredLicenseExpression,
+          ...scanObservedLicenseExpressions,
+        ]
+  ).filter(Boolean);
   const declaredLicenseExpression =
     candidates.find(isSpdxExpression) || "NOASSERTION";
   if (declaredLicenseExpression !== "NOASSERTION") {
@@ -267,22 +304,24 @@ const createComponentFacts = ({ occurrence, context, existingComponent }) => {
         ? "ALLOWED_SEPARATELY_INSTALLED_EXTERNAL_RUNTIME"
         : "REQUIRES_HUMAN_REVIEW";
   const licenseConclusionRationale = [
-    "The concluded SPDX expression preserves an equivalent prior recorded conclusion when present; otherwise it selects the first SPDX-valid lockfile declaration, then authenticated package.json declaration, and only then ScanCode evidence.",
+    bundledMember
+      ? "The bundled component's original authenticated package.json supplies its source licence declaration; differing lock claims remain explicit. The concluded SPDX expression preserves an equivalent prior recorded conclusion when present, then selects an SPDX-valid source declaration, lock declaration, or scoped ScanCode observation."
+      : "The concluded SPDX expression preserves an equivalent prior recorded conclusion when present; otherwise it selects the first SPDX-valid lockfile declaration, then authenticated package.json declaration, and only then ScanCode evidence.",
     "The distribution disposition likewise preserves an equivalent prior decision when present; otherwise it follows development/runtime scope and the concluded-licence policy.",
     distinctDeclarations.length <= 1
       ? "The lockfile and authenticated package.json declarations are consistent where present."
       : "Every differing lockfile or authenticated package.json declaration remains explicit for human review.",
     "ScanCode's additional file-level observations remain separately recorded and do not silently redefine the package declaration.",
   ].join(" ");
-  const inspectedFiles = archive.evidenceFiles.map(
-    ({ path, kind, sha256: digest, blob }) => ({
+  const inspectedFiles = archive.evidenceFiles
+    .filter(({ path }) => belongsToMember(path))
+    .map(({ path, kind, sha256: digest, blob }) => ({
       path,
       kind,
       sha256: digest,
       blobSha256: blob.sha256,
       blobPath: blob.path,
-    }),
-  );
+    }));
   const externalLicenseEvidence =
     EXTERNAL_LICENSE_EVIDENCE.get(occurrence.dependencyPath) || [];
   const hasLicenceFile = inspectedFiles.some(({ kind }) =>
@@ -332,12 +371,14 @@ const createComponentFacts = ({ occurrence, context, existingComponent }) => {
       relationship === "EXTERNAL_RUNTIME_DEPENDENCY"
         ? "EXTERNAL_DEPENDENCY_RECORDED_NOT_PACKED"
         : "DEVELOPMENT_ONLY_RECORDED_NOT_PACKED",
-    rationale:
-      relationship === "EXTERNAL_RUNTIME_DEPENDENCY"
+    rationale: bundledMember
+      ? `This component is physically bundled inside ${ownerArtifact.name}@${ownerArtifact.version}. Its original manifest and legal files are authenticated through that owning registry archive; signature, provenance and ScanCode evidence refer to the owner artifact, not to an independent tarball for this nested component.`
+      : relationship === "EXTERNAL_RUNTIME_DEPENDENCY"
         ? "npm installs this authenticated component outside the owlapi tarball. Its own licence remains authoritative, while every downstream physical bundle must perform a separate distribution-scope review."
         : "This authenticated component belongs to the repository test, evidence, documentation, or release toolchain and is excluded from the owlapi tarball.",
     optional: occurrence.optional,
     platformSelectors: occurrence.platformSelectors,
+    ...(occurrence.bundled ? { bundled: occurrence.bundled } : {}),
   };
 };
 
@@ -429,20 +470,38 @@ const scannerNoticePaths = () => {
   );
 };
 const createQualityToolingFacts = () => {
-  const markdownManifest = readJson(
-    resolve(repositoryRoot, "tooling/markdown/release-manifest.json"),
+  const markdownName = "@hadden-industries/markdown-quality";
+  const manifest = readJson(packageJsonPath);
+  const lock = readJson(lockfilePath);
+  const markdown = lock.packages[`node_modules/${markdownName}`];
+  const installed = readJson(
+    resolve(repositoryRoot, "node_modules", markdownName, "package.json"),
   );
-  const markdownPackage = readJson(
-    resolve(repositoryRoot, "tooling/markdown/package.json"),
-  );
-  const markdownArchives = Object.values({
-    ...markdownPackage.devDependencies,
-    ...markdownPackage.optionalDependencies,
-  }).map((specifier) => {
-    if (!/^file:archives\/[^/\\]+\.tgz$/u.test(specifier))
-      throw new Error("Markdown evidence requires declared local archives");
-    return `tooling/markdown/${specifier.slice("file:".length)}`;
-  });
+  if (
+    manifest.devDependencies?.[markdownName] !== ">=3.0.0" ||
+    lock.packages[""].devDependencies?.[markdownName] !== ">=3.0.0" ||
+    installed.name !== markdownName ||
+    installed.version !== markdown?.version ||
+    !markdown.resolved?.startsWith("https://registry.npmjs.org/") ||
+    !markdown.integrity?.startsWith("sha512-")
+  )
+    throw new Error(
+      "Markdown inventory requires the installed root registry dependency and frozen lock",
+    );
+  for (const platform of ["linux-x64", "win32-x64"]) {
+    const name = `${markdownName}-${platform}`;
+    const native = lock.packages[`node_modules/${name}`];
+    if (
+      markdown.optionalDependencies?.[name] !== markdown.version ||
+      native?.version !== markdown.version ||
+      native.optional !== true ||
+      !native.resolved?.startsWith("https://registry.npmjs.org/") ||
+      !native.integrity?.startsWith("sha512-")
+    )
+      throw new Error(
+        `Markdown inventory requires the matching locked optional native package: ${name}`,
+      );
+  }
   return [
     {
       id: "universal-ontology-documentation-tooling",
@@ -457,7 +516,7 @@ const createQualityToolingFacts = () => {
     {
       id: "shared-markdown-quality-development-tool",
       name: "Shared Markdown quality development capability",
-      versionOrRevision: markdownManifest.source.head,
+      versionOrRevision: markdown.version,
       license: "AGPL-3.0-only",
       source: "Hadden-Industries/markdown-quality",
       files: [
@@ -465,13 +524,23 @@ const createQualityToolingFacts = () => {
         ".markdown-quality.json",
         ".markdown-quality-execution.json",
         ".node-version",
-        "tooling/markdown/package.json",
-        "tooling/markdown/package-lock.json",
-        "tooling/markdown/release-manifest.json",
-        ...markdownArchives,
+        "package.json",
+        "package-lock.json",
       ],
       attribution:
-        "Copyright (c) 2026 Hadden Industries Ltd. The isolated AGPL-3.0-only capability is bound to the exact clean producer source commit through retained core/native archives and their npm lock integrities. The reusable workflow is independently pinned in .github/workflows/markdown-quality.yml. Manifest version 1.0.3 alone does not identify these development bytes. Its distribution retains native Snapper/Rust source and component notices; no tool binary or dependency graph is packed into the OwlAPI application. Former WebVOWL-derived prose examples and copied qualification mechanics are retired.",
+        "Copyright (c) 2026 Hadden Industries Ltd. The installed root registry development dependency and matching optional native packages are identified by package-lock.json versions, registry URLs and npm integrities. Their complete current dependency and legal evidence belongs to the authenticated root npm inventory. No tool binary or dependency graph is packed into the OwlAPI application. Former isolated archives, WebVOWL-derived prose examples and copied qualification mechanics are retired.",
+    },
+    {
+      id: "markdown-quality-retained-native-attribution",
+      name: "Historical Markdown Quality Linux native attribution report",
+      versionOrRevision: "1.0.3 at 5712d153079bfc840a918c7dd250afef820d9e07",
+      license: "AGPL-3.0-only",
+      source: "Hadden-Industries/markdown-quality",
+      files: [
+        "docs/provenance/markdown-quality-1.0.3-linux-cargo-notices.json",
+      ],
+      attribution:
+        "The exact original package/cargo-notices.json from the former Linux native archive is retained byte for byte, including all component licence texts and original author values. SHA-256: 86147599f977088a3690c5eb2954a84ea14d5f91a7b6afc6a082e6e4e2bcd88e. The aggregate report preserves each component's own recorded rights; the development tool licence does not replace those terms. This historical evidence is not the current installed dependency graph and is not packed into OwlAPI.",
     },
     {
       id: "hisew-checkout-environment-isolation",
@@ -1063,10 +1132,6 @@ const createInventory = async ({ preserveReview }) => {
   const manifestRequestsBundling =
     bundledDeclaration === true ||
     (Array.isArray(bundledDeclaration) && bundledDeclaration.length > 0);
-  const lockfileMarksBundledContent = Object.entries(lockfile.packages).some(
-    ([dependencyPath, lockEntry]) =>
-      dependencyPath.length > 0 && lockEntry.inBundle === true,
-  );
   const packageFacts = {
     name: rootPackage.name,
     version: rootPackage.version,
@@ -1076,8 +1141,9 @@ const createInventory = async ({ preserveReview }) => {
     evidenceManifest: `docs/provenance/${EVIDENCE_MANIFEST_NAME}`,
     evidenceManifestSha256: sha256(evidenceManifestBytes),
     evidenceCorpusRoot: evidenceManifest.corpusRoot,
-    tarballDependenciesBundled:
-      manifestRequestsBundling || lockfileMarksBundledContent,
+    // Nested development-tool bundles belong to their own registry archives.
+    // Only this package's declaration authorizes bundling in the OwlAPI tarball.
+    tarballDependenciesBundled: manifestRequestsBundling,
   };
   const productionComponents = componentFacts.filter(
     ({ relationship }) => relationship === "EXTERNAL_RUNTIME_DEPENDENCY",
