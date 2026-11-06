@@ -365,11 +365,11 @@ jobs:
       - name: Exercise JSON behavior and source preservation probes
         run: npm run test:json
         timeout-minutes: 15
-      - name: Exercise root Markdown CLI and SDK probes
+      - name: Exercise root Markdown CLI consumer checks
         run: npm run test:markdown
         timeout-minutes: 5
       - name: Verify formatting
-        run: npm run format:check
+        run: npm run check:node && npm run check:version && npm run format:source-python:check && npm run format:json:check
         timeout-minutes: 45
       - name: Install the exact isolated artifact-action build tools
         run: npm ci --prefix tooling/artifact-transport --ignore-scripts --no-audit --no-fund
@@ -1285,7 +1285,7 @@ jobs:
         run: npm run test:json
         timeout-minutes: 15
       - name: Verify formatting
-        run: npm run format:check
+        run: npm run check:node && npm run check:version && npm run format:source-python:check && npm run format:json:check
         timeout-minutes: 30
       - name: Install the exact isolated artifact-action build tools
         run: npm ci --prefix tooling/artifact-transport --ignore-scripts --no-audit --no-fund

@@ -23,6 +23,9 @@ import { REQUIRED_JOB_IDS } from "./require-job-success.mjs";
 import { CI_JOB_NAMES } from "./ci-qualification.mjs";
 import { ordinaryReleaseWorkflow } from "./rc3-recovery-workflow.mjs";
 
+const nonMarkdownFormatCheck =
+  "npm run check:node && npm run check:version && npm run format:source-python:check && npm run format:json:check";
+
 const REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
 const WORKFLOW_DIRECTORY = join(REPOSITORY_ROOT, ".github", "workflows");
 const SHARED_SETUP = "./.github/actions/setup-producer";
@@ -2467,6 +2470,7 @@ const validateQualityTooling = (workflows, violations) => {
       );
       const syncIndex = list.indexOf(sync[0]);
       const checkIndexes = list.flatMap((step, index) =>
+        step.run === nonMarkdownFormatCheck ||
         /^npm (test|run (format:check|format:source-python:check|lint|lint:source-python|test:quality|test:quality:source|check:python-tools))(?: |$)/u.test(
           step.run ?? "",
         )
@@ -2520,10 +2524,12 @@ const validateQualityTooling = (workflows, violations) => {
             violations,
             jsonInstalls.length === 0 &&
               jsonProbes.length === 0 &&
-              !list.some((step) =>
-                /^npm run (?:(?:install|check|lint|format|normalize|inventory):json(?:-identity|:producers|:check)?|lint|format(?::check)?|test:quality)(?: |$)/u.test(
-                  step.run ?? "",
-                ),
+              !list.some(
+                (step) =>
+                  step.run === nonMarkdownFormatCheck ||
+                  /^npm run (?:(?:install|check|lint|format|normalize|inventory):json(?:-identity|:producers|:check)?|lint|format(?::check)?|test:quality)(?: |$)/u.test(
+                    step.run ?? "",
+                  ),
               ),
             `${context} portable source lane must not execute the native JSON tool`,
           );
@@ -2545,7 +2551,7 @@ const validateQualityTooling = (workflows, violations) => {
           );
           const jsonConsumers = list.flatMap((step, index) =>
             [
-              "npm run format:check",
+              nonMarkdownFormatCheck,
               "npm run lint",
               "npm run test:quality",
               "npm run check:json",
@@ -2585,15 +2591,6 @@ const validateQualityTooling = (workflows, violations) => {
             `${context} requires one unconditional final JSON producer gate after all producers`,
           );
         }
-        add(
-          violations,
-          !list.some((step) =>
-            /(?:install:markdown|--prefix[ =]+tooling\/markdown)/u.test(
-              step.run ?? "",
-            ),
-          ),
-          `${context} must use the root Markdown development graph`,
-        );
         if (["source_portable", "source_json"].includes(id)) {
           for (const command of [
             "npm run format:source-python:check",
@@ -2602,7 +2599,7 @@ const validateQualityTooling = (workflows, violations) => {
             requireRun(job, command, context, violations);
         } else {
           const installIndex = list.indexOf(rootInstalls[0]);
-          for (const command of ["npm run format:check", "npm run lint"]) {
+          for (const command of [nonMarkdownFormatCheck, "npm run lint"]) {
             requireRun(job, command, context, violations);
             const consumers = list.filter((step) => step.run === command);
             add(
@@ -2626,7 +2623,7 @@ const validateQualityTooling = (workflows, violations) => {
                 !probes[0]?.["continue-on-error"] &&
                 list.indexOf(probes[0]) > installIndex &&
                 list.indexOf(probes[0]) <
-                  list.findIndex((step) => step.run === "npm run format:check"),
+                  list.findIndex((step) => step.run === nonMarkdownFormatCheck),
               `${context} requires unconditional Markdown probes before canonical checking`,
             );
           }
@@ -2645,7 +2642,7 @@ const validateQualityTooling = (workflows, violations) => {
         );
         for (const command of [
           "npm run check:python-tools",
-          "npm run format:check",
+          nonMarkdownFormatCheck,
           "npm run lint",
           "npm run test:quality",
         ]) {

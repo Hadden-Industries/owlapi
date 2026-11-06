@@ -99,3 +99,7 @@ This is a coordinated development-command rename; downstream automation calling 
 | `workflow:dependency-review-applicability` | `report:dependency-review-applicability` |
 | `workflow:metadata`                        | `generate:workflow-metadata`             |
 | `workflow:runner-record`                   | `record:runner`                          |
+
+Markdown consumer checks exercise root npm commands for maintained selection, independently expected historical exclusions, literal bytes, read-only checking and native exit propagation.
+CI composes non-Markdown formatting checks from `check:node`, `check:version`, `format:source-python:check` and `format:json:check`; the following `lint` command owns the single full Markdown check in each quality job.
+The public `format:check` command continues to include Markdown for standalone contributor use.

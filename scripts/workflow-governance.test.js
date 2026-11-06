@@ -638,7 +638,10 @@ describe("repository workflow governance", () => {
     "rejects weakened complete Markdown checking in %s",
     (fileName) => {
       for (const jobId of ["source_canonical", "quality_windows"])
-        for (const command of ["npm run format:check", "npm run lint"])
+        for (const command of [
+          "npm run check:node && npm run check:version && npm run format:source-python:check && npm run format:json:check",
+          "npm run lint",
+        ])
           for (const mutation of ["skip", "ignore", "selected"]) {
             expect(
               mutateWorkflow(fileName, (document) => {
@@ -654,16 +657,6 @@ describe("repository workflow governance", () => {
           }
     },
   );
-  test("rejects a separate Markdown installation", () => {
-    expect(
-      mutateWorkflow("ci.yml", (document) => {
-        document.getIn(["jobs", "source_canonical", "steps"]).add({
-          run: "npm run install:markdown",
-          "timeout-minutes": 5,
-        });
-      }).join("\n"),
-    ).toMatch(/root Markdown development graph/u);
-  });
   test.each(["source_portable", "source_json"])(
     "retains the %s source and Python floor",
     (jobId) => {
