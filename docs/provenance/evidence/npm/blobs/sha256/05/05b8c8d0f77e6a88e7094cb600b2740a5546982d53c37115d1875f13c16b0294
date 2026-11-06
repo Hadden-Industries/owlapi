@@ -1,0 +1,154 @@
+{
+  "artifactId": "36e1f08ccb964a43dfaa1e90ddc68624a035609d8d0f76d1f3f19bab93c13e06",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5754,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/dev/index.d.ts",
+        "sha256": "835af72d4e82aa1783b7ac1a64d5d152646a71329dfec8795182d64c20ac3a62",
+        "size": 2465,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dev/index.d.ts.map",
+        "sha256": "866b55f8a37c3a263d8c904b4e20d6855db1e1f2a06baf5666b3fe67930728ef",
+        "size": 611,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dev/index.js",
+        "sha256": "98048a86eeaf5d5b9c85715c124bd5865685a964cabe2a77e5039bf11d987017",
+        "size": 5877,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "835af72d4e82aa1783b7ac1a64d5d152646a71329dfec8795182d64c20ac3a62",
+        "size": 2465,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts.map",
+        "sha256": "866b55f8a37c3a263d8c904b4e20d6855db1e1f2a06baf5666b3fe67930728ef",
+        "size": 611,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "0a29b60e6299a7b17e57e3c185014ad9bfe5a0ad6fd1365ce14605d6d299cbf0",
+        "size": 5872,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "cb3c2769b1f0184de725e04b83b000bc111601b1572bcf25fe2558ac6ff4199d",
+        "size": 1119,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "d28dfcccd8223ccfc656a5fd21ba13ee19f37c26130499b432b4d2449eb8b791",
+        "size": 5789,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1094,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/dd/dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+          "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094
+      },
+      {
+        "blob": {
+          "bytes": 5789,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d2/d28dfcccd8223ccfc656a5fd21ba13ee19f37c26130499b432b4d2449eb8b791",
+          "sha256": "d28dfcccd8223ccfc656a5fd21ba13ee19f37c26130499b432b4d2449eb8b791"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "d28dfcccd8223ccfc656a5fd21ba13ee19f37c26130499b432b4d2449eb8b791",
+        "size": 5789
+      }
+    ],
+    "expandedBytes": 25903,
+    "packageIdentity": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "micromark-util-edit-map",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-edit-map",
+      "version": "1.0.0"
+    },
+    "packageMetadata": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "bugs": "https://github.com/micromark/micromark/issues",
+      "contributors": [
+        "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+      ],
+      "dependencies": {
+        "micromark-util-types": "^2.0.0"
+      },
+      "description": "micromark utility to batch changes to lists of events",
+      "exports": {
+        "default": "./index.js",
+        "development": "./dev/index.js"
+      },
+      "files": [
+        "dev/",
+        "index.d.ts.map",
+        "index.d.ts",
+        "index.js"
+      ],
+      "funding": [
+        {
+          "type": "GitHub Sponsors",
+          "url": "https://github.com/sponsors/unifiedjs"
+        },
+        {
+          "type": "OpenCollective",
+          "url": "https://opencollective.com/unified"
+        }
+      ],
+      "keywords": [
+        "micromark",
+        "util",
+        "utility",
+        "edit",
+        "map",
+        "splice"
+      ],
+      "license": "MIT",
+      "name": "micromark-util-edit-map",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-edit-map",
+      "scripts": {
+        "build": "micromark-build"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "version": "1.0.0"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 5754,
+      "sha256": "da60526f11a9853fdc86c18ceaa8eb7b5058c2537433e66b6ba7cf9d24cac334"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}
