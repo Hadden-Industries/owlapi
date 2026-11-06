@@ -635,6 +635,27 @@ describe("repository workflow governance", () => {
     },
   );
   test.each(["ci.yml", "release.yml"])(
+    "allows cheap probes before formatting within source admission in %s",
+    (fileName) => {
+      const violations = mutateWorkflow(fileName, (document) => {
+        const steps = document.getIn(["jobs", "source_canonical", "steps"]);
+        for (const command of ["npm run test:json", "npm run test:markdown"]) {
+          const index = steps.items.findIndex(
+            (step) => step.get("run") === command,
+          );
+          const [probe] = steps.items.splice(index, 1);
+          const format = steps.items.findIndex(
+            (step) =>
+              step.get("run") ===
+              "npm run check:node && npm run check:version && npm run format:source-python:check && npm run format:json:check",
+          );
+          steps.items.splice(format, 0, probe);
+        }
+      });
+      expect(violations).toEqual([]);
+    },
+  );
+  test.each(["ci.yml", "release.yml"])(
     "rejects weakened complete Markdown checking in %s",
     (fileName) => {
       for (const jobId of ["source_canonical", "quality_windows"])
@@ -642,7 +663,7 @@ describe("repository workflow governance", () => {
           "npm run check:node && npm run check:version && npm run format:source-python:check && npm run format:json:check",
           "npm run lint",
         ])
-          for (const mutation of ["skip", "ignore", "selected"]) {
+          for (const mutation of ["skip", "ignore", "selected", "late"]) {
             expect(
               mutateWorkflow(fileName, (document) => {
                 const step = document
@@ -652,8 +673,15 @@ describe("repository workflow governance", () => {
                 if (mutation === "ignore") step.set("continue-on-error", true);
                 if (mutation === "selected")
                   step.set("run", "npm run check:markdown -- -- README.md");
+                if (mutation === "late") {
+                  const steps = document.getIn(["jobs", jobId, "steps"]);
+                  steps.items.splice(steps.items.indexOf(step), 1);
+                  steps.items.splice(steps.items.length - 1, 0, step);
+                }
               }).join("\n"),
-            ).toMatch(/Markdown checking|requires npm run/u);
+            ).toMatch(
+              /Markdown checking|Markdown probes|source formatting|requires npm run/u,
+            );
           }
     },
   );

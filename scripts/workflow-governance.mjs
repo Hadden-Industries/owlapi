@@ -2611,6 +2611,27 @@ const validateQualityTooling = (workflows, violations) => {
               `${context} requires unconditional full Markdown checking after root acquisition`,
             );
           }
+          const nativeQualificationIndex = list.findIndex((step) =>
+            [
+              "Qualify the locked Python scanner",
+              "Install the exact isolated artifact-action build tools",
+              "Install the checksum-pinned native Maven reference tool",
+              "Run native quality regressions",
+            ].includes(step.name),
+          );
+          add(
+            violations,
+            nativeQualificationIndex >= 0 &&
+              [
+                nonMarkdownFormatCheck,
+                "npm run lint",
+                "npm run test:json",
+              ].every((command) => {
+                const index = list.findIndex((step) => step.run === command);
+                return index >= 0 && index < nativeQualificationIndex;
+              }),
+            `${context} requires source formatting, lint and JSON probes before native qualification`,
+          );
           if (id === "source_canonical") {
             requireRun(job, "npm run test:markdown", context, violations);
             const probes = list.filter(
@@ -2622,9 +2643,8 @@ const validateQualityTooling = (workflows, violations) => {
                 !probes[0]?.if &&
                 !probes[0]?.["continue-on-error"] &&
                 list.indexOf(probes[0]) > installIndex &&
-                list.indexOf(probes[0]) <
-                  list.findIndex((step) => step.run === nonMarkdownFormatCheck),
-              `${context} requires unconditional Markdown probes before canonical checking`,
+                list.indexOf(probes[0]) < nativeQualificationIndex,
+              `${context} requires unconditional Markdown probes before native qualification`,
             );
           }
         }

@@ -209,21 +209,21 @@ jobs:
         timeout-minutes: 5
         env:
           QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
-      - name: Exercise JSON behavior and source preservation probes
-        run: npm run test:json
-        timeout-minutes: 15
-      - name: Verify complete JSON coverage on Node 26
-        run: npm run check:json
-        timeout-minutes: 15
-      - name: Verify semantic JSON identity on Node 26
-        run: npm run lint:json-identity
-        timeout-minutes: 5
       - name: Verify formatting
         run: npm run format:source-python:check
         timeout-minutes: 45
       - name: Verify static quality
         run: npm run lint:source-python
         timeout-minutes: 45
+      - name: Verify semantic JSON identity on Node 26
+        run: npm run lint:json-identity
+        timeout-minutes: 5
+      - name: Exercise JSON behavior and source preservation probes
+        run: npm run test:json
+        timeout-minutes: 15
+      - name: Verify complete JSON coverage on Node 26
+        run: npm run check:json
+        timeout-minutes: 15
       - name: Run the full package suite
         run: npm test -- --runInBand
         timeout-minutes: 45
@@ -276,18 +276,18 @@ jobs:
         timeout-minutes: 5
         env:
           QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
-      - name: Exercise JSON behavior and source preservation probes
-        run: npm run test:json
-        timeout-minutes: 15
-      - name: Exercise root Markdown CLI consumer checks
-        run: npm run test:markdown
-        timeout-minutes: 5
       - name: Verify formatting
         run: npm run check:node && npm run check:version && npm run format:source-python:check && npm run format:json:check
         timeout-minutes: 45
       - name: Verify static quality
         run: npm run lint
         timeout-minutes: 45
+      - name: Exercise JSON behavior and source preservation probes
+        run: npm run test:json
+        timeout-minutes: 15
+      - name: Exercise root Markdown CLI consumer checks
+        run: npm run test:markdown
+        timeout-minutes: 5
       - name: Check out the immutable original July ontology sources
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -1729,15 +1729,15 @@ jobs:
       - name: Verify the locked environment
         run: npm run check:python-tools
         timeout-minutes: 10
-      - name: Exercise JSON behavior and source preservation probes
-        run: npm run test:json
-        timeout-minutes: 15
       - name: Verify formatting
         run: npm run check:node && npm run check:version && npm run format:source-python:check && npm run format:json:check
         timeout-minutes: 30
       - name: Verify static quality
         run: npm run lint
         timeout-minutes: 30
+      - name: Exercise JSON behavior and source preservation probes
+        run: npm run test:json
+        timeout-minutes: 15
       - name: Run native quality regressions
         run: npm run test:quality
         timeout-minutes: 30
