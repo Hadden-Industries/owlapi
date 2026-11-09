@@ -1,6 +1,35 @@
-# npm script naming and ordering
+# npm commands for OwlAPI
 
-The root `package.json` is the executable authority for repository commands.
+Run these commands from the checkout root after [setting up the development tools](../../CONTRIBUTING.md#set-up-the-development-tools).
+The [package manifest](../../package.json) defines each command.
+
+## Check and format files
+
+| To do this                       | Run this                                                              |
+| -------------------------------- | --------------------------------------------------------------------- |
+| Check all authored Markdown      | `npm run check:markdown`                                              |
+| Check one Markdown file          | `npm run check:markdown -- -- README.md`                              |
+| Preview Markdown formatting      | `npm exec -- markdown-quality format --dry-run --root . -- README.md` |
+| Apply Markdown formatting        | `npm run format:markdown -- -- README.md`                             |
+| Check the complete JSON corpus   | `npm run check:json`                                                  |
+| Read JSON check events as NDJSON | `npm run --silent inspect:json`                                       |
+| Preview JSON formatting          | `node scripts/run-json-quality.mjs format --dry-run -- package.json`  |
+| Apply JSON formatting            | `npm run format:json -- -- package.json`                              |
+| Apply JSON normalization         | `npm run normalize:json -- -- path/to/file.json`                      |
+
+Replace example paths with literal paths relative to the checkout root.
+JSON normalization requires an explicit, nonempty file selection.
+JSON formatting and normalization preflight the complete repository before applying changes to writable files.
+Use formatting to preserve string values.
+Use normalization when you intend to convert strings to Unicode NFC.
+The normalizer rejects key collisions.
+
+The root lockfile selects Markdown Quality 3.0.1 and JSON Quality 1.0.0.
+`npm ci --ignore-scripts` also installs the matching Markdown Quality native package.
+See the [contributor checks](../../CONTRIBUTING.md#check-your-changes) for the full gates and workflow-specific checks.
+
+## Name and order scripts
+
 Use `verb:subject[:modifier]` names that describe the command's actual operation and target.
 Use lowercase words, colons between semantic parts, and hyphens within a part.
 Established language abbreviations such as `js`, `py`, and `json` remain appropriate targets.
@@ -60,16 +89,11 @@ The complete JSON corpus uses finite limits of 256 MiB managed memory, 8 GiB tem
 The default 2 GiB temporary limit was exhausted while indexing retained package evidence; the larger limit preserves all source coverage and semantic checks.
 
 Use a temporary volume with sufficient free space for complete checking; per-source checks alone do not establish repository closure.
-Markdown Quality is also a normal root registry devDependency, declared as `>=3.0.1` with exact root-lock resolutions.
-Run `npm ci --ignore-scripts` under the development Node/npm runtime; npm installs the matching optional native package.
-`check:markdown` runs complete read-only checking; `format:markdown` explicitly writes repairs with `--write`.
-Both commands declare `--root .` and accept literal paths after `--`, for example `npm run format:markdown -- -- README.md`.
-Preview with `npm exec -- markdown-quality format --dry-run --root . -- README.md`; do not append `--dry-run` to the write wrapper.
+`check:markdown` and `format:markdown` both declare `--root .` and accept literal paths after `--`.
 Use `npm run --silent check:markdown -- --json -- README.md` for one JSON stdout document.
 `inspect:markdown` reports selection; `inspect:markdown:profile` reports the effective ordinary execution limits.
 Neither inspection nor selected-file checking establishes a complete repository check or a hosted trusted qualification receipt.
 External-directory callers use `npm --prefix <absolute-repository-root> run check:markdown` to retain the intended root.
-Development requires Node >=26.13.0 and npm >=12.2.2; published OwlAPI runtime support remains Node >=22.0.0.
 Script ordering does not establish execution order: composite command bodies and workflow dependencies continue to control execution.
 
 ## Renamed commands

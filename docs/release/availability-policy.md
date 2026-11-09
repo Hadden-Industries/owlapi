@@ -3,6 +3,21 @@
 Publication acceptance, registry availability and completed verification are separate states. npm scans newly submitted packages before making them installable; its documented delay can exceed 15 minutes and is not a service guarantee.
 See [npm's publication guidance](https://github.blog/changelog/2026-07-28-npm-publish-time-malware-scanning-and-dual-use-metadata/).
 
+## Check the candidate before publishing
+
+Candidate construction checks the documentation inside the retained tarball against the reviewed source, manifest, public exports and versioned release notes.
+Qualification exercises the README examples against the installed candidate.
+The protected publisher checks the retained documentation before the authorized write.
+Registry qualification checks the published documentation against the retained candidate.
+
+## Establish the publication attempt
+
+The publisher authenticates GitHub's job and write-step history for the workflow run.
+A later workflow attempt can perform the first write if the history establishes that no write ran and npm returns 404 for the exact coordinate.
+If a write already ran, use read-only registry verification against that original job and attempt.
+Incomplete or ambiguous history stops recovery.
+Keep the existing reports so the release owner can reconcile the write.
+
 ## Observe registry availability
 
 The executable policy is [availability-policy.json](availability-policy.json).
@@ -22,10 +37,8 @@ Registry availability is never a successful verification result by itself.
 
 The registry job reserves 30 minutes for availability within a 50-minute verification step and a 90-minute job budget, leaving time for setup and the existing strict consumer/cryptographic qualification. The report records pending stage, attempts and measured delay, then distinguishes registry available from verification passed. Its artifact uploads even after failure. On timeout it reports `AVAILABILITY_INCOMPLETE`, retains exact coordinate/source/run/attempt/digest and observations, and fails the workflow without repeating publication or channel writes.
 
-Failed-job recovery reads the original publication; it does not submit another one.
-Before waiting, authenticate the original attempt's publisher job and completed write step.
-
-A skipped or missing write fails immediately as an unestablished publication attempt, retaining its report instead of attributing the problem to npm.
+Before waiting, registry verification requires one authenticated completed write step across the workflow attempts.
+If no write ran, verification stops and retains the report before starting the availability wait.
 
 A failed write may have completed remotely and permits read-only reconciliation without claiming acceptance.
 The report retains the original write step's completion time.

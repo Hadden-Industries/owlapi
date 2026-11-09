@@ -3,9 +3,12 @@
 Load an OWL 2 ontology in Node.js or a modern browser, then query its axioms through a JavaScript object model.
 The library uses native ES modules and provides Java OWLAPI-style concepts alongside JavaScript I/O and RDF/JS integration.
 
-[Install the library](#install) · [Load an ontology](#load-an-ontology) · [Check Java compatibility](./docs/compatibility/java-api-surface.md)
+[Install the library](#install) · [Load an ontology](#load-an-ontology) · [Browse the API](./API.md) · [Check Java compatibility](./docs/compatibility/java-api-surface.md)
 
 ## Release status
+
+As of 9 November 2026, **0.1.0-rc.3** is the newest published release. npm's `next` and `latest` tags both select this prerelease.
+[View the immutable GitHub release](https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.3) or [see the changes since rc.3](./CHANGELOG.md#unreleased).
 
 <!-- release-documentation:identity:start -->
 
@@ -15,15 +18,18 @@ Consumer engine admission: Node.js `>=22.0.0`.
 
 <!-- release-documentation:identity:end -->
 
-Full Java OWLAPI parity is not claimed; the [compatibility registry](./docs/compatibility/java-api-surface.md) records the implemented surface and known gaps.
 A version in `main` is not a published or accepted package.
-Publication and each application's acceptance remain separate decisions.
-UO and WebVOWL may each use this exact RC in production after artifact verification and their own full consumer acceptance; `0.1.0` is not a prerequisite for either application.
+For production use, verify the published artifact and qualify it for your application.
+UO and WebVOWL may each use this exact RC in production after artifact verification and their own full consumer acceptance.
 
 This project is an independently maintained JavaScript implementation.
 It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project.
+The [compatibility registry](./docs/compatibility/java-api-surface.md) lists the implemented Java APIs and known gaps.
 
 ## Install
+
+Choose one command.
+Use the first to follow the `owlapi` imports in the examples, or the second to import from `@hadden-industries/owlapi` and its subpaths.
 
 <!-- release-documentation:install:start -->
 
@@ -36,31 +42,22 @@ npm install --save-exact @hadden-industries/owlapi@0.1.0-rc.3
 
 <!-- release-documentation:install:end -->
 
-The following moving-tag convenience commands select the registry tag at installation time, which may still identify an earlier version before this candidate is published.
-`latest` is npm's default installation target and does not imply a stable version or consumer acceptance.
+Commit the exact dependency and lockfile, then run `npm ci` for reproducible installations.
 
-Use npm's native dependency alias to install the published RC and retain the imports shown below.
-Production use remains subject to the verification and consumer acceptance described above:
+### Install from the current npm tag
+
+Choose the corresponding command to resolve npm's `latest` tag at installation time.
+The tag can select a prerelease.
 
 ```shell
 npm install --save-exact "owlapi@npm:@hadden-industries/owlapi@latest"
-```
-
-This resolves `latest` once and records the resolved exact version in the native `owlapi` alias and lockfile.
-WebVOWL uses a `dependencies` entry and qualifies its chosen version for production under the [scoped publication plan](./docs/plans/scoped-npm-publication.md).
-Universal Ontology uses the package to generate its ontology import closures, and it may pin a source commit rather than a registry version.
-The installed package's real name remains `@hadden-industries/owlapi`; the alias names it `owlapi` only in the declaring consumer and does not rewrite other packages' transitive or peer dependencies.
-
-Consumers that prefer scoped imports may install it directly:
-
-```shell
 npm install --save-exact @hadden-industries/owlapi@latest
 ```
 
-That form uses `@hadden-industries/owlapi` and `@hadden-industries/owlapi/<subpath>` in imports.
-Commit the resulting exact dependency and lockfile, then use `npm ci` for reproducible installations.
-Installing a later `latest` is an explicit dependency update requiring consumer acceptance; a moving tag does not replace the saved pin.
-Neither a bare `npm install owlapi` nor a future move to that registry name is part of this release.
+Both commands save the version resolved at install time.
+Run one again when you are ready to qualify a dependency update.
+The alias applies only to your project's imports. npm still uses the scoped name for the package's registry identity.
+Use the scoped name or its explicit alias in the commands above.
 
 ## Load an ontology
 
@@ -500,8 +497,8 @@ Project communication channels can process information that a reporter chooses t
 
 ## Contributing and security
 
-See [CONTRIBUTING.md](https://github.com/Hadden-Industries/owlapi/blob/main/CONTRIBUTING.md) for development guidance and the `AGPL-3.0-only` inbound=outbound contribution terms.
-Do not report suspected vulnerabilities in public issues or pull requests; follow [SECURITY.md](https://github.com/Hadden-Industries/owlapi/blob/main/SECURITY.md) instead.
+Read [how to contribute](https://github.com/Hadden-Industries/owlapi/blob/main/CONTRIBUTING.md) for development setup and the `AGPL-3.0-only` inbound=outbound contribution terms.
+Follow the [private vulnerability reporting process](https://github.com/Hadden-Industries/owlapi/blob/main/SECURITY.md#privately-report-a-vulnerability) to report a suspected security issue.
 
 ## Authorship, stewardship, and licence
 

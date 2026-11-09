@@ -3,6 +3,8 @@
 Thank you for helping improve `owlapi`.
 Issues, focused proposals, tests, documentation, and pull requests are welcome when they respect the package's public compatibility boundary and clean implementation provenance.
 
+[Set up the development tools](#set-up-the-development-tools) · [Run quality checks](docs/development/npm-scripts.md#check-and-format-files) · [Prepare a pull request](#preparing-a-pull-request)
+
 ## Before opening a change
 
 - Use an issue or draft pull request to discuss a material public-API or compatibility change before investing in a large implementation.
@@ -103,7 +105,6 @@ Broadening the published engine range remains a separate decision after qualific
 Installing development dependencies and running repository qualification additionally requires a Node version supported by the selected npm and tool graph; consumer eligibility alone does not establish development-tool eligibility.
 Markdown Quality is part of the ordinary root development dependency graph, with exact resolutions recorded in the root lockfile.
 The latest release's refreshed dependency graph and reference runtimes are covered by its release evidence; later dependency or runtime changes require the affected qualification.
-The Markdown development dependency change awaits its affected qualification.
 
 Repository text is UTF-8 with LF line endings and a final newline.
 The root `.gitattributes` makes that representation independent of a contributor's Git settings, while the nested override under `docs/conformance/upstream/` preserves pinned third-party fixtures byte for byte.
@@ -113,13 +114,15 @@ The root `.editorconfig` defines the shared editor baseline: spaces, two-space i
 Native ESM and supported JavaScript syntax are defined separately by `package.json` and `eslint.config.js`.
 
 Prettier retains its defaults for ordinary source files.
-Authored Markdown uses the shared Markdown Quality package, declared as `>=3.0.0` and resolved exactly in the root lockfile, with independent prose diagnostics, native GFM content rules, literal-preserving formatting, and local-link checking.
-Repository development requires Node >=26.13.0 and npm >=12.2.2; the published application retains Node >=22.0.0 support.
+Authored Markdown uses Markdown Quality for prose diagnostics, GFM content rules, literal-preserving formatting, and local-link checking.
 Fenced examples are preserved rather than executed or formatted as programs.
 Ruff checks and formats Python development files with stable rules and a 79-column target.
 Generated API views, upstream fixtures, and historical evidence retain their owning generators and byte checks.
 
-Install the development Node/npm versions declared in `package.json`, then run `npm ci --ignore-scripts`.
+### Set up the development tools
+
+Use the Node and npm development versions declared in [the package manifest](package.json).
+Install the locked tools with `npm ci --ignore-scripts`.
 This root installation includes Markdown Quality and its matching optional native package; canonical checks never install dependencies.
 Install the CPython version selected in `.python-version` and provide its absolute executable path during the explicit development-tool setup; for example, in PowerShell:
 
@@ -153,7 +156,9 @@ The locked source builds include cyseq, intbitset, pyahocorasick and PyYAML as w
 Installation receipts record observed compiler configuration and PyYAML's optional accelerator state; Python's build compiler does not identify the compiler of rebuilt extensions.
 Keep compilation and scanner failure logs with the compatibility reports.
 
-Run the gates before opening or updating a pull request:
+### Check your changes
+
+Run the gates before opening or updating a pull request.
 
 ```shell
 npm run check:python-tools
@@ -180,22 +185,23 @@ From another directory, use `npm --prefix <absolute-repository-root> run check:m
 `inspect:markdown` reports selection and `inspect:markdown:profile` reports effective limits; complete `check:markdown` establishes the repository check verdict.
 `lint:files` remains available for existing JavaScript callers.
 
-JSON Quality is a normal root registry devDependency, installed by `npm ci` and imported from its public package exports.
-Its `>=` minimum declaration follows the other registry devDependencies, with exact resolved packages retained in the root lockfile and governed by ordinary npm and repository-wide dependency checks.
+The root lockfile installs JSON Quality 1.0.0.
+Use its public package exports in repository tooling.
 
 `npm run test:json` checks JSON behavior, source preservation and coverage without a package-specific installation verifier.
 The old isolated JSON manifest, import bridge and `install:json` bootstrap are retired; artifact transport retains its separate graph.
 `npm run check:json` performs complete read-only checking of owned files, required generated outputs, pinned native evidence and linked JSON-LD sources.
 
-`npm run format:json:check` invokes that same complete check; `npm run inspect:json` emits its typed event stream as newline-delimited JSON.
-Checking has no file-selection or protected-only mode: source findings remain provisional until the execution terminal confirms complete inventory and linkage.
+`npm run format:json:check` invokes the same complete check.
+Use `npm run --silent inspect:json` to consume its typed newline-delimited JSON events on stdout.
+Wait for the terminal event to confirm complete inventory and linkage before interpreting source findings as a repository verdict.
 JSON Quality excludes untracked installation files under any `node_modules` directory.
 Tracked JSON and authenticated archive members remain in scope.
 
 The adapter exports `openRepositoryJsonSession()`.
 Consume `session.check()` and always await `session.close()`.
 Independent source analysis uses `openJsonSourceSession()` and an asynchronous byte opener; it does not establish repository completeness.
-Formatting and normalization select physical paths after a literal `--`, for example `npm run format:json -- -- package.json`; normalization requires a nonempty selection.
+See [how to preview and write JSON changes](docs/development/npm-scripts.md#check-and-format-files) for the file-selection syntax and write commands.
 
 Both operations preflight the complete repository before guarded writes, and protected evidence remains under its native producer's ownership.
 Finite producer operations use `formatJsonSource`, `formatJsonValue` and `normalizeJsonSource`; their declared writer capabilities are separate from read-only checking.
@@ -220,7 +226,8 @@ Write a hard line break with a backslash at the end of the source line.
 Represent significant trailing spaces in examples as escaped strings or annotated notation.
 Do not add a Markdown trimming exception.
 
-For tool updates, review pins in `package.json`, `pyproject.toml`, `.python-version`, and `scripts/repository-python-tools.mjs`, including uv archive digests; regenerate `uv.lock` with the selected uv version, then synchronize and run the full gates on Windows and Linux.
+For tool updates, review the manifest, `pyproject.toml`, `.python-version`, and the [uv version and archive digests](docs/release/development-tools.json).
+Regenerate the affected `uv.lock` files with the selected uv version, then synchronize and run the full gates on Windows and Linux.
 The shared package owns Markdown formatter compatibility; verify the consumer CLI and SDK behavior when updating its core and native packages.
 Existing CI and release source lanes run complete authored Markdown checks from the root development graph alongside their required status checks.
 The archive-specific manual trusted Markdown dispatch is retired because no downstream receipt consumer remains.
@@ -235,7 +242,7 @@ npm run verify:workflow-governance
 ```
 
 Install the native [actionlint 1.7.12 release](https://github.com/rhysd/actionlint/releases/tag/v1.7.12) for your platform on `PATH`; follow its [installation and attestation verification](https://github.com/rhysd/actionlint/blob/v1.7.12/docs/install.md) instructions.
-CI installs the checksum-pinned Linux release in the required Node 24 source job.
+CI installs the checksum-pinned Linux release in the canonical Ubuntu source job using the producer Node version.
 The binary is a development tool under its MIT licence, not an npm dependency or part of the distributed package.
 Reassess the release, checksum and known diagnostic filter together when updating it.
 
@@ -282,6 +289,8 @@ Versions in changelogs, dated plans, provenance inventories, qualification repor
 Synchronization does not rewrite them or transfer their approvals to new bytes.
 
 Refresh candidate evidence through its existing generators and qualification procedures, and obtain any required approval for changed facts.
+Add the version's release notes to [the changelog](CHANGELOG.md).
+The release workflow checks the retained tarball's documentation, including the package identity, imports, examples and release notes.
 The availability policy's `previousVersion` remains an explicit published-predecessor choice; review it when selecting a successor.
 The frozen publisher artifact/digest pins require the separately approved artifact and remain outside this metadata command.
 
@@ -291,6 +300,8 @@ Retarget still-unpublished additions deliberately in the Java API generator when
 ## CI verification after merging
 
 Every pull request runs the full required application checks.
+The retained-candidate job waits for the portable, JSON and canonical source checks, dependency review and Windows quality.
+Jobs that qualify the candidate depend on that retained artifact.
 A successful run retains a versioned verification receipt and its original candidate artifact identity.
 After a normal merge into `main`, `CI / verification strategy` checks the receipt against GitHub's workflow, job, commit and artifact records.
 

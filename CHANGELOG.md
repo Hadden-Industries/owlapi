@@ -8,8 +8,30 @@ Prerelease identifiers do not create a stability promise.
 
 ## Unreleased
 
-- Refresh package documentation for the published rc.3 APIs, installation, browser deployment and behavior-profile boundaries.
-- Add a release-note index and rc.3 migration guidance; correct stale claims that rc.3 and its behavior profiles are unpublished.
+### Documentation
+
+- Explain how to install the published rc.3, choose an import style and load a first ontology.
+  Align the API reference examples with the documented `owlapi` alias.
+- Update the browser deployment, behavior-profile and rc.3 migration guides.
+  Separate published release details from changes in the source checkout.
+
+### Contributor tooling
+
+- Use npm 12.2.2 for package production and require npm 12.2.2 or newer for development.
+  Refresh the locked dependencies, including Markdown Quality 3.0.1, JSON Quality 1.0.0, uv 0.13.7 and Ruff 0.17.4.
+- Install Markdown Quality and its matching native package from the root npm lockfile.
+  Keep read-only Markdown checks and previews separate from explicit formatting writes.
+- Use JSON Quality's complete repository check and newline-delimited JSON diagnostics.
+  Formatting and normalization preflight the full corpus before writing selected files.
+- Authenticate packages bundled inside dependency archives through the owning archive.
+  Reuse verified evidence for unchanged artifacts and bound recovery from native scanner failures.
+- Run the early source checks before native candidate qualification.
+  The aggregate lint command runs the combined source and JSON identity ESLint checks once.
+
+### Release checks
+
+- Verify the documentation inside the candidate tarball against the package identity, exports, runnable examples and versioned release notes before publication.
+- Recover registry verification from the authenticated npm write attempt, including a first write on a later attempt after an upstream job failure.
 
 ## 0.1.0-rc.3
 

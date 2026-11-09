@@ -117,6 +117,19 @@ node scripts/build-artifact-action.mjs
 node scripts/build-artifact-action.mjs --check
 ```
 
+When the isolated lockfile or generated licence text changes, refresh the isolated npm evidence for that lockfile before regenerating the automated rights record.
+Run the bundle build once to generate the current licence text, then run the following commands.
+
+```sh
+node scripts/artifact-tool-evidence.mjs --write
+node scripts/build-artifact-action.mjs
+node scripts/build-artifact-action.mjs --check
+node scripts/artifact-tool-evidence.mjs
+```
+
+The second build binds the refreshed rights record to the action bundle.
+Any existing human rights decision requires explicit reassessment before the record can be regenerated.
+
 The build record binds source, policy, both dependency locks and generated outputs.
 Workflow governance rejects direct upload bypasses, changed action contracts and caller policy overrides, and closes the producer/collector census.
 The current CI qualification policy binds the transport policy and build record; older green receipts cannot automatically qualify this protocol.

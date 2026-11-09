@@ -1,7 +1,9 @@
-# `owlapi` engineering records
+# OwlAPI documentation
 
-For library usage, start with [loading an ontology](../README.md#load-an-ontology) and the [API reference](../API.md).
-For a port from Java, check the [compatibility registry](compatibility/java-api-surface.md) and [behavior profiles](compatibility/behavior-profiles.md).
+- [Install OwlAPI](../README.md#install), [load an ontology](../README.md#load-an-ontology), or [browse the API](../API.md).
+- [Migrate from rc.2 or Java OWLAPI](migration/0.1.0-java-api-parity.md) and [choose a behavior profile](compatibility/behavior-profiles.md).
+- [Set up a development checkout](../CONTRIBUTING.md#set-up-the-development-tools) and [run Markdown and JSON checks](development/npm-scripts.md#check-and-format-files).
+- [Check what's published](../README.md#release-status) and [see what's changed since the last release](../CHANGELOG.md#unreleased).
 
 ## Engineering records
 
@@ -9,7 +11,6 @@ This directory contains the executable governance and delivery records for the `
 `owlapi-js` remains the historical WebVOWL staging/path name; the selected public npm package is `@hadden-industries/owlapi`, maintained only in `https://github.com/Hadden-Industries/owlapi` after extraction.
 The implementation plan remains the highest-authority normative document.
 
-The [release-status section](../README.md#release-status) identifies the latest published package, its channels and verified immutable GitHub prerelease; [installation instructions](../README.md#install) resolve that release to an exact consumer pin.
 The [rc.1 publication record](provenance/releases/0.1.0-rc.1/publication-status.md) retains the first scoped release's historical evidence.
 The [scoped npm publication plan](plans/scoped-npm-publication.md) retains the exact native alias, original release sequence and independently owned UO/WebVOWL adoption handoffs.
 The [identity decision](adr/0009-scoped-npm-publication-and-uo-rc-acceptance.md) records the approved rationale.
@@ -59,19 +60,24 @@ Repository implementation conventions are frozen in `engineering-conventions.md`
 The isolated Java structural reference harness lives under `util/owlapi-reference/`; it is development evidence, never a production runtime dependency.
 
 The original [Python and Markdown quality tooling plan](plans/2026-09-29-python-markdown-quality-tooling.md) retains its baseline and preservation requirements.
-Current root-installed Markdown commands and ordinary checking are documented in the [contributor guide](../CONTRIBUTING.md) and [npm script guide](development/npm-scripts.md).
+Follow the [contributor guide](../CONTRIBUTING.md) and [npm command guide](development/npm-scripts.md) for the current root-installed Markdown and JSON tools.
 The [delivered centralization plan](plans/markdown-quality-centralization.md) retains the historical archive-isolation and shared-qualification design.
 
 Delivery records live under `migration/`.
 Historical lesson records preserve evidence; `migration/parser-migration-playbook.md` is the concise current method.
+
+## WebVOWL implementation history
+
+These phases record work in the original WebVOWL staging tree.
+Use the [installation guide](../README.md#install) for the standalone package.
 
 Phases 1 through 5 provide the independently authored structural model, factory, ontology, manager/loading foundation, source/configuration/error contracts, parser-selection infrastructure, RDF/JS dataset boundary, and the complete Functional Syntax, Manchester Syntax, OWL/XML, dataset graph-policy, and shared RDF-to-OWL migrations with their conformance, differential, resource/performance, provenance, and learning-gate evidence.
 
 Phase 6 adds the RDF/XML adapter and the first-real-adapter hardening.
 Phase 7 adds `VOWLBuilder`, the WebVOWL import resolver, and an explicitly development-only invocation seam, with exact Java and legacy differential evidence.
 
-Phase 8 performed the production cutover and closed at `136a62a`.
-WebVOWL ingests ontologies only through `owlapi-js`, the development seam is removed, and there is no runtime legacy fallback.
+Phase 8 switched production WebVOWL ontology loading to the `owlapi-js` staging tree and closed at `136a62a`.
+The cutover removed the development seam and runtime legacy fallback.
 The legacy parsers, `ontologyConverter.js` and `jsonExporter.js` remained unmoved through Phase 17 for finite characterization work and were proven unreachable from production by `src/productionGraph.architecture.test.js` and bundle inspection.
 
 All 44 advertised corpus documents load through the production entry, and the corpus differential required by sections 17.15 and 18.8 now runs that entry rather than the pre-cutover pipeline, with every remaining difference justified per dimension in `compatibility/production-corpus-differences.json`.
