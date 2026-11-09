@@ -1,15 +1,15 @@
 {
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "defaults": {
     "formatContract": "prettier-json",
-    "allowFormatWrites": true,
+    "allowSourceRewrites": true,
     "normalization": "NFC"
   },
   "capacityLimits": {
-    "maxTotalBytes": 536870912
+    "maxTotalSourceBytes": 536870912
   },
   "runtimeControls": {
-    "managedMemoryTargetBytes": 268435456,
+    "maxManagedMemoryBytes": 268435456,
     "maxTemporaryBytes": 8589934592,
     "maxCheckTimeMs": 600000
   },
@@ -55,7 +55,7 @@
       ],
       "owner": "native npm dependency installers",
       "reason": "Exclude these physical npm installation trees and their nested dependencies; independently admitted archived bundled members remain mandatory JSON obligations. Tracked repository-owned JSON remains checked.",
-      "exclude": true
+      "excludeUntrackedSources": true
     },
     {
       "paths": [
@@ -71,7 +71,7 @@
       ],
       "owner": "native dependency, evidence, fixture, generator and administrative producers",
       "reason": "Analysis remains mandatory; these bytes can only be changed by their owning producer after an accepted decision.",
-      "allowFormatWrites": false
+      "allowSourceRewrites": false
     },
     {
       "paths": [
@@ -79,7 +79,7 @@
       ],
       "owner": "repository Python toolchain installer",
       "reason": "Owner-approved temporary exclusion of the ignored installed Python tree, including its directory aliases. Reassess during JSON gate qualification; Python version and locked environment checks remain mandatory, and tracked JSON stays checked.",
-      "exclude": true
+      "excludeUntrackedSources": true
     },
     {
       "paths": [
@@ -88,7 +88,7 @@
       ],
       "owner": "Native locked Python environment/cache installer",
       "reason": "Owner-approved temporary exclusion of ignored uv cache and installed virtual environment from JSON quality. Tracked JSON is independently rescued; native Python versions, locked offline environment checks and Python tests remain mandatory.",
-      "exclude": true
+      "excludeUntrackedSources": true
     },
     {
       "paths": [
@@ -96,7 +96,7 @@
       ],
       "owner": "Pinned native Maven dependency-plugin runtime graph producer",
       "reason": "Owner-approved exact Maven dependency-plugin 3.11.0 output preservation. Retain the independently captured native graph byte identity and every semantic rule without rewriting the original serializer presentation.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "4f74b64139ef87a509d062fb7dc57a39286078d091574ff3c45a6d0939491ab9",
@@ -110,7 +110,7 @@
       ],
       "owner": "Pinned native Maven dependency-plugin runtime graph producer",
       "reason": "Owner-approved exact Maven dependency-plugin 3.11.0 output preservation. Retain the independently captured native graph byte identity and every semantic rule without rewriting the original serializer presentation.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "92cbd477f555b7601651334f9d2cc77efa7e11ee3973a18ca44d3bad4d9a45e0",
@@ -124,7 +124,7 @@
       ],
       "owner": "Pinned native Maven dependency-plugin runtime graph producer",
       "reason": "Owner-approved exact Maven dependency-plugin 3.11.0 output preservation. Retain the independently captured native graph byte identity and every semantic rule without rewriting the original serializer presentation.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "63c075ce2ebc95413823e45b9ebd4ec1db633205e0097651702f0184cba2438a",
@@ -138,7 +138,7 @@
       ],
       "owner": "Pinned native Maven dependency-plugin runtime graph producer",
       "reason": "Owner-approved exact Maven dependency-plugin 3.11.0 output preservation. Retain the independently captured native graph byte identity and every semantic rule without rewriting the original serializer presentation.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "227acf2f1008f050f37f47bf8dca9e265c6aaea271a4c0b1dc28551ed4310fbf",
@@ -152,7 +152,7 @@
       ],
       "owner": "Pinned native Maven dependency-plugin runtime graph producer",
       "reason": "Owner-approved exact Maven dependency-plugin 3.11.0 output preservation. Retain the independently captured native graph byte identity and every semantic rule without rewriting the original serializer presentation.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "7c276b4016ac927b18e0eacb02bd72874f6bbe5181fb5e25c8cb0e2abe60b5c9",
@@ -166,7 +166,7 @@
       ],
       "owner": "Pinned native Maven dependency-plugin runtime graph producer",
       "reason": "Owner-approved exact Maven dependency-plugin 3.11.0 output preservation. Retain the independently captured native graph byte identity and every semantic rule without rewriting the original serializer presentation.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "95607b62bdb1dc8be67f13abf319f9a621bd6e7437421812420c969683eb45bd",
@@ -180,7 +180,7 @@
       ],
       "owner": "Pinned native Maven dependency-plugin runtime graph producer",
       "reason": "Owner-approved exact Maven dependency-plugin 3.11.0 output preservation. Retain the independently captured native graph byte identity and every semantic rule without rewriting the original serializer presentation.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "a1fd05a4335615f5d666b82b31ecaff206e601f1d6e3afa5af89c515efabc776",
@@ -194,7 +194,7 @@
       ],
       "owner": "Pinned native Maven dependency-plugin runtime graph producer",
       "reason": "Owner-approved exact Maven dependency-plugin 3.11.0 output preservation. Retain the independently captured native graph byte identity and every semantic rule without rewriting the original serializer presentation.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "85bf32eabfc0c55fb0b054663aa5f91519aba630bb65b1be4eb073e96e696963",
@@ -208,7 +208,7 @@
       ],
       "owner": "Pinned native Maven dependency-plugin runtime graph producer",
       "reason": "Owner-approved exact Maven dependency-plugin 3.11.0 output preservation. Retain the independently captured native graph byte identity and every semantic rule without rewriting the original serializer presentation.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "0bbcc4847cdd4f43537f00cc1a2dff166e833752cb3e8faaf9212e59a266b9cb",
@@ -222,7 +222,7 @@
       ],
       "owner": "Pinned native Maven dependency-plugin runtime graph producer",
       "reason": "Owner-approved exact Maven dependency-plugin 3.11.0 output preservation. Retain the independently captured native graph byte identity and every semantic rule without rewriting the original serializer presentation.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "8c172dd25b53143ffece5e4676bf4532cbf56d4292e52ef110f4503c80746650",
@@ -260,7 +260,7 @@
       ],
       "owner": "pinned Universal Ontology integration checkout",
       "reason": "Owner-approved separately owned checkout boundary, guarded by its real contained Git root and the frozen July input revision. Full native ontology reconciliation and every OwlAPI JSON report remain checked; tracked OwlAPI JSON remains independently checked.",
-      "exclude": true
+      "excludeUntrackedSources": true
     },
     {
       "paths": [
@@ -268,8 +268,8 @@
       ],
       "owner": "W3C conformance fixture generators",
       "reason": "Owner-approved exact W3C Unicode value preservation; source strings bind pinned original Git bytes, while derived expected RDF terms retain separately verified value identities. Every key and unselected value retains NFC enforcement.",
-      "allowFormatWrites": false,
-      "preserveNfcValues": [
+      "allowSourceRewrites": false,
+      "nfcExemptStringValues": [
         {
           "pointer": "/tests/318/expected",
           "sha256": "21b1321e21b2e3ecbf7111e7e52b80cd2e5d20f3f196a5129ee47fcde2396c08",
@@ -283,8 +283,8 @@
       ],
       "owner": "W3C conformance fixture generators",
       "reason": "Owner-approved exact W3C Unicode value preservation; source strings bind pinned original Git bytes, while derived expected RDF terms retain separately verified value identities. Every key and unselected value retains NFC enforcement.",
-      "allowFormatWrites": false,
-      "preserveNfcValues": [
+      "allowSourceRewrites": false,
+      "nfcExemptStringValues": [
         {
           "pointer": "/tests/21/source",
           "sha256": "b715cc6b51d7e9d4910aae0fc9470695e3b83a02dd517e4f0a8045d7228947e2",
@@ -318,8 +318,8 @@
       ],
       "owner": "W3C conformance fixture generators",
       "reason": "Owner-approved exact W3C Unicode value preservation; source strings bind pinned original Git bytes, while derived expected RDF terms retain separately verified value identities. Every key and unselected value retains NFC enforcement.",
-      "allowFormatWrites": false,
-      "preserveNfcValues": [
+      "allowSourceRewrites": false,
+      "nfcExemptStringValues": [
         {
           "pointer": "/tests/10/source",
           "sha256": "4a8d00163cabad0cb711c8b165331355ed69d1f5eb1dbb76479a9c774e35b1ea",
@@ -348,7 +348,7 @@
       ],
       "owner": "Pinned W3C JSON-LD manifests",
       "reason": "Retain the exact original Git bytes at ffdb326121ea89b7b8280e76a5caea923834bcef; original presentation is source evidence and all semantic diagnostics remain checked.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "c0bcca085187a15c0b869c3902ea130922f837634486724cec38f16bab26b283",
@@ -362,7 +362,7 @@
       ],
       "owner": "Pinned W3C JSON-LD manifests",
       "reason": "Retain the exact original Git bytes at ffdb326121ea89b7b8280e76a5caea923834bcef; original presentation is source evidence and all semantic diagnostics remain checked.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "2b8b602eef56b0c307422bcf644477c11a299b3d0188be265e097ad64eb843af",
@@ -376,8 +376,8 @@
       ],
       "owner": "native npm evidence verifier",
       "reason": "Owner-approved DEC-004 preservation of the two exact captured source-map-js contributor-name values. The native manifest independently binds original envelope bytes.",
-      "allowFormatWrites": false,
-      "preserveNfcValues": [
+      "allowSourceRewrites": false,
+      "nfcExemptStringValues": [
         {
           "pointer": "/evidence/files/1/package_data/0/parties/30/name",
           "sha256": "71399d5093873f6414aa555768fd658da8b721eff8902ffaa661f78815a2d2a3",
@@ -407,8 +407,8 @@
       ],
       "owner": "native npm evidence verifier",
       "reason": "Owner-approved DEC-004 preservation of the exact captured source-map-js contributor value. The native manifest independently binds original envelope bytes.",
-      "allowFormatWrites": false,
-      "preserveNfcValues": [
+      "allowSourceRewrites": false,
+      "nfcExemptStringValues": [
         {
           "pointer": "/evidence/packageMetadata/contributors/36",
           "sha256": "684eb0b0ae2d00f9d2830f20c393e4b9e3e5d9ed4e675070d3d310abe36cd7c1",
@@ -422,7 +422,7 @@
       ],
       "owner": "Historical reconstruction evidence owner",
       "reason": "Retain unchanged original committed bytes (ef266fc36dd725466833da3179aceb5bb0b0e020); changing retained qualification/history presentation would replace original evidence. All semantic rules remain checked.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "801937a810719568dd73d6888e3766fabcbab2e2c96af18fb48c2db897c17bce",
@@ -436,7 +436,7 @@
       ],
       "owner": "Historical reconstruction evidence owner",
       "reason": "Retain unchanged original committed bytes (26009dd1016e3aba907b9d03c45382ffae8db347); changing retained qualification/history presentation would replace original evidence. All semantic rules remain checked.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "62e06acfed06d2b54b384aef05ed0f416f37e03f3c696c1c4d29a9f681e3af0b",
@@ -450,7 +450,7 @@
       ],
       "owner": "Historical reconstruction evidence owner",
       "reason": "Retain unchanged original committed bytes (be4f898f63131090b5c18f2eeb8db4095357036d); changing retained qualification/history presentation would replace original evidence. All semantic rules remain checked.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "a5d6d4634998b583331ecdcd1b9bd0c880942d8536982846b90e5d08108f801b",
@@ -464,7 +464,7 @@
       ],
       "owner": "Historical reconstruction evidence owner",
       "reason": "Retain unchanged original committed bytes (49b8c1697c76ea8ccb99ae1caf6953770bbae470); changing retained qualification/history presentation would replace original evidence. All semantic rules remain checked.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "9d1f0d8895c796e70a970221515925c8788579938a9dedf0dccfb28b6abec6cd",
@@ -478,7 +478,7 @@
       ],
       "owner": "Historical reconstruction evidence owner",
       "reason": "Retain unchanged original committed bytes (8206161b0ef02fb0ba93a50b54b1d1a004c52440); changing retained qualification/history presentation would replace original evidence. All semantic rules remain checked.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "3b5da4f16bf77bc3264741d63fc1e06738793d1735af9f6861ec8af5c635926d",
@@ -492,7 +492,7 @@
       ],
       "owner": "Historical reconstruction evidence owner",
       "reason": "Retain unchanged original committed bytes (bbbdf5d6b50a03b5f0db6363750aa2ac69721549); changing retained qualification/history presentation would replace original evidence. All semantic rules remain checked.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "de920b76470530d664f44396de25bf17b1785e1d7837560b790747b48ad805b2",
@@ -506,7 +506,7 @@
       ],
       "owner": "Historical reconstruction evidence owner",
       "reason": "Retain unchanged original committed bytes (fd15ca7e3c09f55f5be9471b6b2ee6122ec1ffd0); changing retained qualification/history presentation would replace original evidence. All semantic rules remain checked.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "333153a636c26d1c44ba89364da13b7c00bfec34ed3ef16cc9b8843a44cd8395",
@@ -520,7 +520,7 @@
       ],
       "owner": "Historical reconstruction evidence owner",
       "reason": "Retain unchanged original committed bytes (c566e51fc15c5abc19e21ef8f76964a901c663a0); changing retained qualification/history presentation would replace original evidence. All semantic rules remain checked.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "e769289919d73ae202ddfbd14702aaec292c83dc795b8c0656f74ab18fd7266e",
@@ -534,7 +534,7 @@
       ],
       "owner": "Historical reconstruction evidence owner",
       "reason": "Retain unchanged original committed bytes (fbf6af3354b258fb06816030c6daab842db6a1a5); changing retained qualification/history presentation would replace original evidence. All semantic rules remain checked.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "0dc66f5bd0a275d41e8e600d5cc3780428d9ebb1aa46be07b96c9c4de1ede3ee",
@@ -548,7 +548,7 @@
       ],
       "owner": "Historical reconstruction evidence owner",
       "reason": "Retain unchanged original committed bytes (14b516efd56a85f7ffe4c32407dfc9f058f8a6af); changing retained qualification/history presentation would replace original evidence. All semantic rules remain checked.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "b212eb63726fceb9cfe927cdee3274ab14acb061e722cc597be45d846e667c6f",
@@ -562,7 +562,7 @@
       ],
       "owner": "Historical reconstruction evidence owner",
       "reason": "Retain unchanged original committed bytes (c05ba7a75bc3f2b797d201901dd8b9981429c822); changing retained qualification/history presentation would replace original evidence. All semantic rules remain checked.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "8c26c92ffb2cc4f882444bea8f50b01ea7ec31249afb15153f1cf3cef73b2724",
@@ -576,7 +576,7 @@
       ],
       "owner": "Pinned W3C JSON-LD conformance owner",
       "reason": "Retain the exact original jld:NegativeEvaluationTest, jld:ToRDFTest fixture er52 at ffdb326121ea89b7b8280e76a5caea923834bcef. Original standard conformance data differs from strict repository rules; every unlisted diagnostic and changed byte remains a failure.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "b192dd3c5dbb00041e3b49d12b69bc6a181875fee008f50a089a5f9695faaefc",
@@ -584,7 +584,7 @@
         "diagnostics": [
           {
             "phase": "lint",
-            "ruleId": "json/no-empty-keys",
+            "ruleId": "json-quality/no-empty-keys",
             "messageId": "emptyKey",
             "line": "4",
             "column": "5",
@@ -601,7 +601,7 @@
       ],
       "owner": "Pinned W3C JSON-LD conformance owner",
       "reason": "Retain the exact original jld:PositiveEvaluationTest, jld:ToRDFTest fixture js10 at ffdb326121ea89b7b8280e76a5caea923834bcef. Original standard conformance data differs from strict repository rules; every unlisted diagnostic and changed byte remains a failure.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "53cef3ae8ddf3e65d7330c7f048b8800b6a69cb0029bb2472236f1d5ad9e92ee",
@@ -609,7 +609,7 @@
         "diagnostics": [
           {
             "phase": "lint",
-            "ruleId": "json/no-empty-keys",
+            "ruleId": "json-quality/no-empty-keys",
             "messageId": "emptyKey",
             "line": "7",
             "column": "36",
@@ -619,7 +619,7 @@
           },
           {
             "phase": "lint",
-            "ruleId": "json/no-empty-keys",
+            "ruleId": "json-quality/no-empty-keys",
             "messageId": "emptyKey",
             "line": "9",
             "column": "5",
@@ -636,7 +636,7 @@
       ],
       "owner": "Pinned W3C JSON-LD conformance owner",
       "reason": "Retain the exact original jld:PositiveEvaluationTest, jld:ToRDFTest fixture js11 at ffdb326121ea89b7b8280e76a5caea923834bcef. Original standard conformance data differs from strict repository rules; every unlisted diagnostic and changed byte remains a failure.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "caf39adb20f75ca8ddcdb80199387ca5040da26b19b3b588cd7d4d44468938e8",
@@ -644,7 +644,7 @@
         "diagnostics": [
           {
             "phase": "lint",
-            "ruleId": "json-quality/normalized-strings",
+            "ruleId": "json-quality/nfc-strings",
             "messageId": "unnormalized",
             "line": "7",
             "column": "28",
@@ -661,7 +661,7 @@
       ],
       "owner": "Pinned W3C JSON-LD conformance owner",
       "reason": "Retain the exact original jld:PositiveEvaluationTest, jld:ToRDFTest fixture js12 at ffdb326121ea89b7b8280e76a5caea923834bcef. Original standard conformance data differs from strict repository rules; every unlisted diagnostic and changed byte remains a failure.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "10373347f4012d23011ae5ebda75b53912f3c7193881e57dc52ba7a899bde0b6",
@@ -669,7 +669,7 @@
         "diagnostics": [
           {
             "phase": "lint",
-            "ruleId": "json-quality/interoperability",
+            "ruleId": "json-quality/no-unsafe-integers",
             "messageId": "integer",
             "line": "7",
             "column": "37",
@@ -686,7 +686,7 @@
       ],
       "owner": "Pinned W3C JSON-LD conformance owner",
       "reason": "Retain the exact original jld:PositiveEvaluationTest, jld:ToRDFTest fixture js13 at ffdb326121ea89b7b8280e76a5caea923834bcef. Original standard conformance data differs from strict repository rules; every unlisted diagnostic and changed byte remains a failure.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "86f114e49ecf01eb931e66a9e973d39cc2fe383cb4a7b25153e0baf194854850",
@@ -694,7 +694,7 @@
         "diagnostics": [
           {
             "phase": "lint",
-            "ruleId": "json/no-empty-keys",
+            "ruleId": "json-quality/no-empty-keys",
             "messageId": "emptyKey",
             "line": "8",
             "column": "5",
@@ -704,7 +704,7 @@
           },
           {
             "phase": "lint",
-            "ruleId": "json/no-empty-keys",
+            "ruleId": "json-quality/no-empty-keys",
             "messageId": "emptyKey",
             "line": "9",
             "column": "5",
@@ -721,7 +721,7 @@
       ],
       "owner": "Pinned W3C JSON-LD conformance owner",
       "reason": "Retain the exact original jld:PositiveEvaluationTest, jld:ToRDFTest fixture rt01 at ffdb326121ea89b7b8280e76a5caea923834bcef. Original standard conformance data differs from strict repository rules; every unlisted diagnostic and changed byte remains a failure.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "a9c087d5579d1bab867357d27d14e479c988c8a958839013ffd3646a64399be1",
@@ -729,7 +729,7 @@
         "diagnostics": [
           {
             "phase": "lint",
-            "ruleId": "json-quality/interoperability",
+            "ruleId": "json-quality/no-unsafe-integers",
             "messageId": "integer",
             "line": "5",
             "column": "28",
@@ -746,7 +746,7 @@
       ],
       "owner": "Pinned W3C JSON-LD conformance owner",
       "reason": "Retain the exact original jld:NegativeEvaluationTest, jld:ToRDFTest fixture er52 at ffdb326121ea89b7b8280e76a5caea923834bcef. Original standard conformance data differs from strict repository rules; every unlisted diagnostic and changed byte remains a failure.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "b192dd3c5dbb00041e3b49d12b69bc6a181875fee008f50a089a5f9695faaefc",
@@ -754,7 +754,7 @@
         "diagnostics": [
           {
             "phase": "lint",
-            "ruleId": "json/no-empty-keys",
+            "ruleId": "json-quality/no-empty-keys",
             "messageId": "emptyKey",
             "line": "4",
             "column": "5",
@@ -771,7 +771,7 @@
       ],
       "owner": "Pinned W3C JSON-LD conformance owner",
       "reason": "Retain the exact original jld:PositiveEvaluationTest, jld:ToRDFTest fixture js10 at ffdb326121ea89b7b8280e76a5caea923834bcef. Original standard conformance data differs from strict repository rules; every unlisted diagnostic and changed byte remains a failure.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "53cef3ae8ddf3e65d7330c7f048b8800b6a69cb0029bb2472236f1d5ad9e92ee",
@@ -779,7 +779,7 @@
         "diagnostics": [
           {
             "phase": "lint",
-            "ruleId": "json/no-empty-keys",
+            "ruleId": "json-quality/no-empty-keys",
             "messageId": "emptyKey",
             "line": "7",
             "column": "36",
@@ -789,7 +789,7 @@
           },
           {
             "phase": "lint",
-            "ruleId": "json/no-empty-keys",
+            "ruleId": "json-quality/no-empty-keys",
             "messageId": "emptyKey",
             "line": "9",
             "column": "5",
@@ -806,7 +806,7 @@
       ],
       "owner": "Pinned W3C JSON-LD conformance owner",
       "reason": "Retain the exact original jld:PositiveEvaluationTest, jld:ToRDFTest fixture js11 at ffdb326121ea89b7b8280e76a5caea923834bcef. Original standard conformance data differs from strict repository rules; every unlisted diagnostic and changed byte remains a failure.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "caf39adb20f75ca8ddcdb80199387ca5040da26b19b3b588cd7d4d44468938e8",
@@ -814,7 +814,7 @@
         "diagnostics": [
           {
             "phase": "lint",
-            "ruleId": "json-quality/normalized-strings",
+            "ruleId": "json-quality/nfc-strings",
             "messageId": "unnormalized",
             "line": "7",
             "column": "28",
@@ -831,7 +831,7 @@
       ],
       "owner": "Pinned W3C JSON-LD conformance owner",
       "reason": "Retain the exact original jld:PositiveEvaluationTest, jld:ToRDFTest fixture js12 at ffdb326121ea89b7b8280e76a5caea923834bcef. Original standard conformance data differs from strict repository rules; every unlisted diagnostic and changed byte remains a failure.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "10373347f4012d23011ae5ebda75b53912f3c7193881e57dc52ba7a899bde0b6",
@@ -839,7 +839,7 @@
         "diagnostics": [
           {
             "phase": "lint",
-            "ruleId": "json-quality/interoperability",
+            "ruleId": "json-quality/no-unsafe-integers",
             "messageId": "integer",
             "line": "7",
             "column": "37",
@@ -856,7 +856,7 @@
       ],
       "owner": "Pinned W3C JSON-LD conformance owner",
       "reason": "Retain the exact original jld:PositiveEvaluationTest, jld:ToRDFTest fixture js13 at ffdb326121ea89b7b8280e76a5caea923834bcef. Original standard conformance data differs from strict repository rules; every unlisted diagnostic and changed byte remains a failure.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "86f114e49ecf01eb931e66a9e973d39cc2fe383cb4a7b25153e0baf194854850",
@@ -864,7 +864,7 @@
         "diagnostics": [
           {
             "phase": "lint",
-            "ruleId": "json/no-empty-keys",
+            "ruleId": "json-quality/no-empty-keys",
             "messageId": "emptyKey",
             "line": "8",
             "column": "5",
@@ -874,7 +874,7 @@
           },
           {
             "phase": "lint",
-            "ruleId": "json/no-empty-keys",
+            "ruleId": "json-quality/no-empty-keys",
             "messageId": "emptyKey",
             "line": "9",
             "column": "5",
@@ -891,7 +891,7 @@
       ],
       "owner": "Pinned W3C JSON-LD conformance owner",
       "reason": "Retain the exact original jld:PositiveEvaluationTest, jld:ToRDFTest fixture rt01 at ffdb326121ea89b7b8280e76a5caea923834bcef. Original standard conformance data differs from strict repository rules; every unlisted diagnostic and changed byte remains a failure.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "formatContract": "preserved-bytes",
       "expected": {
         "sha256": "a9c087d5579d1bab867357d27d14e479c988c8a958839013ffd3646a64399be1",
@@ -899,7 +899,7 @@
         "diagnostics": [
           {
             "phase": "lint",
-            "ruleId": "json-quality/interoperability",
+            "ruleId": "json-quality/no-unsafe-integers",
             "messageId": "integer",
             "line": "5",
             "column": "28",
@@ -917,7 +917,7 @@
       ],
       "owner": "native npm lockfile producer",
       "reason": "Only the actual packages root key is empty; locked identities remain protected from generic writers.",
-      "allowFormatWrites": false,
+      "allowSourceRewrites": false,
       "allowEmptyKeys": [
         "/packages/"
       ]
@@ -928,8 +928,8 @@
       ],
       "owner": "Original crate attribution owners",
       "reason": "The byte-frozen historical Linux report preserves both independently pinned original author strings and its complete original licence notices after the active archive supplier retires; every key and unselected value retains ordinary NFC checking.",
-      "allowFormatWrites": false,
-      "preserveNfcValues": [
+      "allowSourceRewrites": false,
+      "nfcExemptStringValues": [
         {
           "pointer": "/licenses/25/used_by/0/crate/authors/1",
           "sha256": "f7a46979f4c152096032b17774ded243fdb9cfe324a381e8a8a4a2a8e32a2cc5",

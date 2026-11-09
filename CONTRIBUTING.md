@@ -52,8 +52,8 @@ The package declares the engine admission range `>=22.0.0`.
 The maintained-family minimums of Node 22.0.0, 24.0.0 and 26.0.0 passed hosted installed-package and native-platform qualification; see the [qualification record](docs/release/node-consumer-qualification.md).
 Every release candidate still requires qualification of its own bytes and human release acceptance.
 
-Local npm eligibility is `>=12.2.1`; producer CI, release construction, and governed qualification select exact npm 12.2.1 before project commands or cache probes.
-Consumer runtime qualification separately selects exact npm 10.9.9, whose declared engines admit every consumer minimum; it does not lower the producer toolchain requirement.
+Local npm eligibility is `>=12.2.2`; producer CI, release construction, and governed qualification select exact npm 12.2.2 before project commands or cache probes.
+Consumer runtime qualification separately selects exact npm 10.9.10, whose declared engines admit every consumer minimum; it does not lower the producer toolchain requirement.
 The development runtime requires Node `>=26.13.0` in `devEngines`; consumer admission is derived from the lowest maintained-family minimum, independently of producer toolchain requirements.
 Producer tooling uses Node 26.13.0; consumer references remain Node 22.23.4, 24.22.2 and 26.13.0.
 
@@ -114,7 +114,7 @@ Native ESM and supported JavaScript syntax are defined separately by `package.js
 
 Prettier retains its defaults for ordinary source files.
 Authored Markdown uses the shared Markdown Quality package, declared as `>=3.0.0` and resolved exactly in the root lockfile, with independent prose diagnostics, native GFM content rules, literal-preserving formatting, and local-link checking.
-Repository development requires Node >=26.13.0 and npm >=12.2.1; the published application retains Node >=22.0.0 support.
+Repository development requires Node >=26.13.0 and npm >=12.2.2; the published application retains Node >=22.0.0 support.
 Fenced examples are preserved rather than executed or formatted as programs.
 Ruff checks and formats Python development files with stable rules and a 79-column target.
 Generated API views, upstream fixtures, and historical evidence retain their owning generators and byte checks.
@@ -189,8 +189,11 @@ The old isolated JSON manifest, import bridge and `install:json` bootstrap are r
 
 `npm run format:json:check` invokes that same complete check; `npm run inspect:json` emits its typed event stream as newline-delimited JSON.
 Checking has no file-selection or protected-only mode: source findings remain provisional until the execution terminal confirms complete inventory and linkage.
+JSON Quality excludes untracked installation files under any `node_modules` directory.
+Tracked JSON and authenticated archive members remain in scope.
 
-The adapter exports `openRepositoryJsonSession()`; consume `session.events()` and always await `session.close()`.
+The adapter exports `openRepositoryJsonSession()`.
+Consume `session.check()` and always await `session.close()`.
 Independent source analysis uses `openJsonSourceSession()` and an asynchronous byte opener; it does not establish repository completeness.
 Formatting and normalization select physical paths after a literal `--`, for example `npm run format:json -- -- package.json`; normalization requires a nonempty selection.
 
@@ -202,7 +205,8 @@ It does not expand writer capabilities.
 The repository allows ten minutes for a complete JSON check, including native Maven and Jest outputs produced by CI; the fifteen-minute CI step leaves time for startup and cleanup.
 
 Native corpus tests allow two minutes per case, and aggregate Windows quality steps allow thirty minutes within a two-hour job.
-The policy uses schema version 2; the package's contract cohort binds source contracts, event schemas and native protocol together.
+The policy uses schema version 4.
+The package's contract cohort binds source contracts, event schemas and the native protocol together.
 The former JSON aggregate checking APIs and Base64 document request envelopes are retired.
 
 Markdown tooling uses the root registry dependency and npm-owned optional native packages.

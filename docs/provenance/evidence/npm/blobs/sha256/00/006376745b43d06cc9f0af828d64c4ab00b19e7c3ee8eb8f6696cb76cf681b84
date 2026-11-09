@@ -1,0 +1,148 @@
+{
+  "artifactId": "7fc33c7c8af47bc08846b8e41ce46eb135532e9fdb8cb11015dc8fd861cc8171",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 8342,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "45a418bef20fae35e67d08d73b655490af0347c472438a253620f8afbc138bb5",
+        "size": 6785,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "f58943cb354fb2707fea2f7b26b04e6014ddb56835cdfd414c9d2c6c59165b64",
+        "size": 1086,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "cebdd0ad6edfee8555f653871c39c2351a68367258d5d0c53e31cc43db18222c",
+        "size": 8934,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "9ea4f195b2056a771338f8ea7fd001ba655d7da7fe2ca35dcb2441608a33d749",
+        "size": 3085,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "dcdd2ddd393547354501d8f6dc6ab593b037d6ea6ebd1bc54c5b72b5cd97e7b2",
+        "size": 2885,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b726085354faf980aa269051be0c15b34fd1c16a2a9ff692a8447d43943b5d14",
+        "size": 1232,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendors.json",
+        "sha256": "5838f6a790c819423c9556e9eb323b3438a7b3b74995a25dae618372db4c4ae8",
+        "size": 6678,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1086,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/f5/f58943cb354fb2707fea2f7b26b04e6014ddb56835cdfd414c9d2c6c59165b64",
+          "sha256": "f58943cb354fb2707fea2f7b26b04e6014ddb56835cdfd414c9d2c6c59165b64"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "f58943cb354fb2707fea2f7b26b04e6014ddb56835cdfd414c9d2c6c59165b64",
+        "size": 1086
+      },
+      {
+        "blob": {
+          "bytes": 8934,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ce/cebdd0ad6edfee8555f653871c39c2351a68367258d5d0c53e31cc43db18222c",
+          "sha256": "cebdd0ad6edfee8555f653871c39c2351a68367258d5d0c53e31cc43db18222c"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "cebdd0ad6edfee8555f653871c39c2351a68367258d5d0c53e31cc43db18222c",
+        "size": 8934
+      }
+    ],
+    "expandedBytes": 30685,
+    "packageIdentity": {
+      "author": "Thomas Watson Steen <w@tson.dk> (https://twitter.com/wa7son)",
+      "homepage": "https://github.com/watson/ci-info",
+      "license": "MIT",
+      "name": "ci-info",
+      "repository": "github:watson/ci-info",
+      "version": "4.5.0"
+    },
+    "packageMetadata": {
+      "author": "Thomas Watson Steen <w@tson.dk> (https://twitter.com/wa7son)",
+      "bugs": "https://github.com/watson/ci-info/issues",
+      "contributors": [
+        {
+          "name": "Sibiraj",
+          "url": "https://github.com/sibiraj-s"
+        }
+      ],
+      "description": "Get details about the current Continuous Integration environment",
+      "devDependencies": {
+        "clear-module": "^4.1.2",
+        "husky": "^9.1.7",
+        "publint": "^0.3.12",
+        "standard": "^17.1.2",
+        "tape": "^5.9.0"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "files": [
+        "vendors.json",
+        "index.js",
+        "index.d.ts",
+        "CHANGELOG.md"
+      ],
+      "funding": [
+        {
+          "type": "github",
+          "url": "https://github.com/sponsors/sibiraj-s"
+        }
+      ],
+      "homepage": "https://github.com/watson/ci-info",
+      "keywords": [
+        "ci",
+        "continuous",
+        "integration",
+        "test",
+        "detect"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "ci-info",
+      "repository": "github:watson/ci-info",
+      "scripts": {
+        "build": "node sort-vendors.js && node create-typings.js",
+        "lint:fix": "standard --fix",
+        "prepare": "husky install || true",
+        "test": "standard && node test.js"
+      },
+      "type": "commonjs",
+      "typings": "index.d.ts",
+      "version": "4.5.0"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 8342,
+      "sha256": "b4586dea7cee5b9d296b2116dde3aa9ceffeec856e7dd911df5c82241e2f9034"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

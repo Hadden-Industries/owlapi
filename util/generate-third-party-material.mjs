@@ -478,8 +478,8 @@ const createQualityToolingFacts = () => {
     resolve(repositoryRoot, "node_modules", markdownName, "package.json"),
   );
   if (
-    manifest.devDependencies?.[markdownName] !== ">=3.0.0" ||
-    lock.packages[""].devDependencies?.[markdownName] !== ">=3.0.0" ||
+    manifest.devDependencies?.[markdownName] !== ">=3.0.1" ||
+    lock.packages[""].devDependencies?.[markdownName] !== ">=3.0.1" ||
     installed.name !== markdownName ||
     installed.version !== markdown?.version ||
     !markdown.resolved?.startsWith("https://registry.npmjs.org/") ||
@@ -555,14 +555,14 @@ const createQualityToolingFacts = () => {
     {
       id: "ruff-development-tool",
       name: "Ruff development formatter and linter",
-      versionOrRevision: "0.17.3",
+      versionOrRevision: "0.17.4",
       license: "MIT",
       source: "astral-sh/ruff",
       files: [
         "pyproject.toml",
         "uv.lock",
         "ruff.toml",
-        "LICENSES/development/ruff-0.17.3.txt",
+        "LICENSES/development/ruff-0.17.4.txt",
       ],
       attribution:
         "Copyright (c) 2022 Charles Marsh. The complete wheel licence, including its embedded third-party notices, is retained. The tool and its distributions are not packed.",

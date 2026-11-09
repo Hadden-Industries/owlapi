@@ -6,9 +6,9 @@ import { execFileSync } from "node:child_process";
 import { tmpdir } from "node:os";
 import { join, dirname, resolve, basename } from "node:path";
 import {
-  admitJsonPolicy,
+  resolveJsonQualityPolicy,
   formatJsonValue,
-  jsonContract,
+  resolveJsonSourceContract,
   openJsonRepositorySession,
   validateJsonQualityEvent,
 } from "@hadden-industries/json-quality";
@@ -16,13 +16,14 @@ import {
 export async function readPolicyFixture(root) {
   const bytes = await readFile(join(root, ".json-quality.json"));
   assert.ok(bytes.length <= 262144, "Finite policy fixture metadata");
-  return admitJsonPolicy(JSON.parse(bytes));
+  return resolveJsonQualityPolicy(JSON.parse(bytes));
 }
 
 /** Source checks cannot discharge complete repository or linked-source closure. */
 export function sourceFixtureContract(path, policy) {
-  const { exclude, exceptions, ...contract } = jsonContract(path, policy);
-  assert.equal(exclude, false, path);
+  const { excludeUntrackedSources, exceptions, ...contract } =
+    resolveJsonSourceContract(path, policy);
+  assert.equal(excludeUntrackedSources, false, path);
   const owner = exceptions[0] ?? {
     owner: "Finite source fixture",
     reason:
@@ -30,7 +31,7 @@ export function sourceFixtureContract(path, policy) {
   };
   contract.owner = owner.owner;
   contract.reason = owner.reason;
-  contract.allowFormatWrites = false;
+  contract.allowSourceRewrites = false;
   if (contract.expected?.linkedDocuments) {
     contract.expected = { ...contract.expected };
     delete contract.expected.linkedDocuments;
@@ -71,7 +72,7 @@ export async function collectOpenedSourceEvents(
 
 export async function collectRepositoryEvents(session) {
   const events = [];
-  for await (const event of session.events()) {
+  for await (const event of session.check()) {
     assert.equal(validateJsonQualityEvent(event), true);
     assert.ok(events.length < 20000, "Finite repository fixture metadata");
     events.push(event);
@@ -98,10 +99,10 @@ export async function repositoryFixture(t, exceptions = []) {
   });
   execFileSync("git", ["init", "--quiet", root], { windowsHide: true });
   const policy = {
-    schemaVersion: 3,
+    schemaVersion: 4,
     defaults: {
       formatContract: "prettier-json",
-      allowFormatWrites: true,
+      allowSourceRewrites: true,
       normalization: "NFC",
     },
     exceptions,

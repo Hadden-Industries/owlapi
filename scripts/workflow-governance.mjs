@@ -63,7 +63,7 @@ const EXPECTED_ISSUE_FORMS = [
 const ACTIONS = Object.freeze({
   "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1": "v7.0.1",
   "actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1": "v7.1.0",
-  "actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad": "v6.1.0",
+  "actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78": "v6.2.0",
   "actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333":
     "v8.0.2",
   "actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294":

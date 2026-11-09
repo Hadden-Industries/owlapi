@@ -8,12 +8,12 @@
     "scopeAuthority": {
       "method": "npm pack --dry-run --json plus local source-byte hashing",
       "fileCount": 198,
-      "sourceManifestSha256": "58829781bd5763d6785887a03da81f542852eda53b0f99e5caa354c1f266dca4"
+      "sourceManifestSha256": "4dd4c9714a9230454d2faa48100cf3c9aa020f7cd61c64e3deaa4b045cea69dc"
     }
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "99f765c4c5f7593ed0a91495e9010645dfd020cbbfafd46abbbff76abe6e0667",
+    "factsSha256": "bdd73c58f158a686076a6547c853584328ae0c90da01087fc1d4b4a39366183f",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -152,7 +152,7 @@
   "externalDependencies": {
     "bundled": true,
     "authority": "docs/provenance/third-party-material.json",
-    "inventoryFactsSha256": "c730f90d9aa1d0204705f47c584abeca794fbc321b5040f44268e3c52f7b47dd",
+    "inventoryFactsSha256": "211e208fe84072e033954e9ba176d2794ba952a129b8cbe400bf38e721a840f2",
     "noticeRule": "Ordinary npm dependencies are installed separately under their own licences. The generated JSON-LD provider embeds seven separately inventoried components and retains their complete original licences and notices under internal/parsing/jsonld/provider/licenses/. The provider manifest binds the incorporated source, approved modifications, generated runtime and output."
   },
   "unresolvedExternalContributions": [],

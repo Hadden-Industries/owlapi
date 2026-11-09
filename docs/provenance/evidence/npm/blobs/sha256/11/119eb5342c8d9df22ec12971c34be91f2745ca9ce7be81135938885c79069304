@@ -1,0 +1,76 @@
+{
+  "artifactId": "7a44931608a706670fc7bcad45a5bb4266e36a5ad8915576c8e6761f0ec81719",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 792598,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/README.md",
+        "sha256": "aa34bbb63fd9a3c3ec4a5f19cc41eaf6e449de54e34486f7c621ee99291685d0",
+        "size": 124,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "af322452703237ba1c0de8e01b6556eea662f3161fcd98db086fbf66024270a3",
+        "size": 576,
+        "type": "FILE"
+      },
+      {
+        "path": "package/resolver.linux-arm64-musl.node",
+        "sha256": "00f878d6edf3c43817db89755ad6114a9a557f6afb32e84d198387c985df5de6",
+        "size": 1931432,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [],
+    "expandedBytes": 1932132,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/unrs/unrs-resolver",
+      "license": "MIT",
+      "name": "@unrs/resolver-binding-linux-arm64-musl",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/unrs/unrs-resolver.git"
+      },
+      "version": "1.13.0"
+    },
+    "packageMetadata": {
+      "cpu": [
+        "arm64"
+      ],
+      "description": "UnRS Resolver Node API",
+      "files": [
+        "resolver.linux-arm64-musl.node"
+      ],
+      "homepage": "https://github.com/unrs/unrs-resolver",
+      "libc": [
+        "musl"
+      ],
+      "license": "MIT",
+      "main": "resolver.linux-arm64-musl.node",
+      "name": "@unrs/resolver-binding-linux-arm64-musl",
+      "os": [
+        "linux"
+      ],
+      "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/unrs/unrs-resolver.git"
+      },
+      "version": "1.13.0"
+    },
+    "physicalEntryCount": 3,
+    "tarball": {
+      "bytes": 792598,
+      "sha256": "7878d4764865439d3d65fb98ba4e905fa742f8b8907046dc9f9dff7c0acfbe69"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

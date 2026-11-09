@@ -1,11 +1,11 @@
-import { a as freezePayload, c as hashBytes, g as setOutput, h as setFailed, i as assertWorkspacePath, l as selectArtifactGroups, m as info, n as retainArtifact, o as inspectArchive, p as getInput, r as assertSameManifest, s as materializeArchive, u as artifact_transport_policy_default } from "./transport-CaMJ0f3m.mjs";
+import { a as freezePayload, c as hashBytes, g as setOutput, h as setFailed, i as assertWorkspacePath, l as selectArtifactGroups, m as info, n as retainArtifact, o as inspectArchive, p as getInput, r as assertSameManifest, s as materializeArchive, u as artifact_transport_policy_default } from "./transport-IzJs0naq.mjs";
 import { crc32 } from "node:zlib";
 import { randomUUID } from "node:crypto";
 import { cp, mkdir, mkdtemp, readFile, readdir, realpath, rm } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { setTimeout as setTimeout$1 } from "node:timers/promises";
 import { fork } from "node:child_process";
-//#region tooling/artifact-transport/collection.mjs
+// tooling/artifact-transport/collection.mjs
 /** Collect verified copies with bounded downloads and newly owned output. */
 async function collectArtifacts({ adapter, groups, workspace, path, temporary, exact, controls, report = () => {}, onPhase = () => {}, now = () => performance.now() }) {
 	const guard = () => {
@@ -70,8 +70,7 @@ async function collectArtifacts({ adapter, groups, workspace, path, temporary, e
 	}
 	guard();
 }
-//#endregion
-//#region tooling/artifact-transport/sdk-adapter.mjs
+// tooling/artifact-transport/sdk-adapter.mjs
 /** Supported SDK operations execute in a cancellable, deadline-bound child process. */
 function createSdkAdapter({ worker, temporary }) {
 	const call = (operation, args, { deadline, signal }) => new Promise((resolve, reject) => {
@@ -160,8 +159,7 @@ function createSdkAdapter({ worker, temporary }) {
 		probe: () => call("probe", {}, { deadline: performance.now() + artifact_transport_policy_default.deadlineMilliseconds })
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/action.mjs
+// tooling/artifact-transport/action.mjs
 /** Shared action entry for immutable uploads and logical-coordinate collection. */
 var controller = new AbortController();
 process.once("SIGINT", () => controller.abort());
@@ -250,5 +248,4 @@ try {
 		force: true
 	});
 }
-//#endregion
 export {};

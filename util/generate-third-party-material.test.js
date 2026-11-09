@@ -194,7 +194,7 @@ describe("third-party-material prospective generation", () => {
         readFileSync(join(repositoryRoot, "package-lock.json"), "utf8"),
       );
       const name = "@hadden-industries/markdown-quality";
-      expect(manifest.devDependencies[name]).toBe(">=3.0.0");
+      expect(manifest.devDependencies[name]).toBe(">=3.0.1");
       expect(lock.packages[`node_modules/${name}`].bundleDependencies).toEqual(
         expect.arrayContaining(["@eslint/markdown", "eslint"]),
       );

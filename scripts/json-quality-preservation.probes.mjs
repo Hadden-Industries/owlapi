@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
 import {
-  jsonContract,
+  resolveJsonSourceContract,
   openJsonSourceSession,
 } from "@hadden-industries/json-quality";
 import {
@@ -16,15 +16,15 @@ import {
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const policy = await readPolicyFixture(root);
-const rule = "json-quality/normalized-strings";
+const rule = "json-quality/nfc-strings";
 const exceptions = policy.exceptions.filter(
-  ({ preserveNfcValues }) => preserveNfcValues?.length,
+  ({ nfcExemptStringValues }) => nfcExemptStringValues?.length,
 );
 
 test("all 15 physical owner-approved values retain exact protected NFC contracts", async () => {
   assert.equal(
     exceptions.reduce(
-      (count, entry) => count + entry.preserveNfcValues.length,
+      (count, entry) => count + entry.nfcExemptStringValues.length,
       0,
     ),
     15,
@@ -37,10 +37,10 @@ test("all 15 physical owner-approved values retain exact protected NFC contracts
     )) {
       assert.equal(entry.paths.length, 1);
       const path = entry.paths[0];
-      const contract = jsonContract(path, policy);
-      assert.equal(contract.allowFormatWrites, false);
+      const contract = resolveJsonSourceContract(path, policy);
+      assert.equal(contract.allowSourceRewrites, false);
       assert.equal(contract.normalization, "NFC");
-      physicalPins += entry.preserveNfcValues.length;
+      physicalPins += entry.nfcExemptStringValues.length;
       const events = await collectSourceEvents(
         session,
         await readFile(join(root, path)),
@@ -72,12 +72,12 @@ test("the retained Linux provenance report preserves both independent original a
   assert.equal(report.crates[92].package.authors[1], expected);
   assert.notEqual(expected.normalize("NFC"), expected);
   const entry = exceptions.find(({ paths }) => paths.includes(path));
-  assert.equal(entry.preserveNfcValues.length, 2);
+  assert.equal(entry.nfcExemptStringValues.length, 2);
   assert.deepEqual(
-    entry.preserveNfcValues.map(({ pointer }) => pointer),
+    entry.nfcExemptStringValues.map(({ pointer }) => pointer),
     ["/licenses/25/used_by/0/crate/authors/1", "/crates/92/package/authors/1"],
   );
-  for (const pin of entry.preserveNfcValues) {
+  for (const pin of entry.nfcExemptStringValues) {
     assert.equal(
       pin.sha256,
       "f7a46979f4c152096032b17774ded243fdb9cfe324a381e8a8a4a2a8e32a2cc5",

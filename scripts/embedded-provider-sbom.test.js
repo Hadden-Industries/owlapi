@@ -42,7 +42,7 @@ test("the SBOM includes all executable provider contributors and retains ordinar
     "jsonld@9.0.0",
     "lru-cache@6.0.0",
     "rdf-canonize@5.0.0",
-    "rolldown@1.2.13",
+    "rolldown@1.2.18",
     "setimmediate@1.0.5",
     "yallist@4.0.0",
   ]);

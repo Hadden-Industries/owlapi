@@ -1,0 +1,189 @@
+{
+  "artifactId": "1a2b031ebbdd09a97337a83e8d71b768a56faccfa0c62d2d7114843a6feec130",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 95920,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "fda365a08e51529e3b61f6d7c7fa171b83d261b20e8c2b4d81fd234df73e3376",
+        "size": 454,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/decorators-2018-09.js",
+        "sha256": "1cefbfdbac5527baedb82404f4fe6fd22716b9088368ffd3912381dbd5ca89fc",
+        "size": 4755,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/decorators-2018-09.js.map",
+        "sha256": "68351b9fbeb2c08b6ecd0a0591dc40a794e2053446ae2502efa71e10773dc28d",
+        "size": 13010,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/decorators.js",
+        "sha256": "f4d9be8dac147899aeb5f0648a15ef28506283274edcf0d25db08770d0fcc15c",
+        "size": 56510,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/decorators.js.map",
+        "sha256": "3e48ea167a0fdf06f25f132bf09f345aae1e4b743013a02a70837b64c70cdb2c",
+        "size": 146893,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/features.js",
+        "sha256": "8a441ee816d918fca48a9f67d7445d3aa49d15a3fc44afa5acf4e1f9cd1a8138",
+        "size": 6965,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/features.js.map",
+        "sha256": "300677ea16e8d4b0ded4c091357dc09e159097d2bb5e280a3840f656b8d7d838",
+        "size": 16287,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/fields.js",
+        "sha256": "9bace987bc883bd061b756af32210e4c234487ba6da71c4276de1bf68e62c3a2",
+        "size": 40998,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/fields.js.map",
+        "sha256": "17517dbe21fa3a722b5058d54f073cbf6cc8f388e0d0c7fbd1e3cc8f0e4064f7",
+        "size": 102898,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "cb88a5e637948c3186795670d87ce658f3678f8d174cccc73794c87cd1073915",
+        "size": 10388,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js.map",
+        "sha256": "595c03f597a5c5a0d1dd007cc9527fe9847d4b25cd64890c90eb1529ba7d6ce4",
+        "size": 23795,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/misc.js",
+        "sha256": "b60ceb69ba1019b7d314a1742b155e50eb1cf50e11d64418bbe48f72a53ebb59",
+        "size": 4417,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/misc.js.map",
+        "sha256": "b50700e8d36e4f5a9fdfcff938153306a994235bb63fa3f64c14ed0636103ff2",
+        "size": 12115,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/typescript.js",
+        "sha256": "9872278b5bf810d0ce403ac5c6b258ed40d1e5bfe38b9f013105b2b312fb21e3",
+        "size": 701,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/typescript.js.map",
+        "sha256": "c5c2248e1daa78e7fcaacb9c0aecf337bee70477dd21507d766b90ab50078990",
+        "size": 1242,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "fbe237379ee6696d790a395259c6d8c210f0408d7e39c8df0547981385a2c0ee",
+        "size": 1243,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 443777,
+    "packageIdentity": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "@babel/helper-create-class-features-plugin",
+      "repository": {
+        "directory": "packages/babel-helper-create-class-features-plugin",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.29.13"
+    },
+    "packageMetadata": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "dependencies": {
+        "@babel/helper-annotate-as-pure": "^7.29.7",
+        "@babel/helper-member-expression-to-functions": "^7.29.7",
+        "@babel/helper-optimise-call-expression": "^7.29.7",
+        "@babel/helper-replace-supers": "^7.29.7",
+        "@babel/helper-skip-transparent-expression-wrappers": "^7.29.13",
+        "@babel/traverse": "^7.29.13",
+        "semver": "^6.3.1"
+      },
+      "description": "Compile class public and private fields, private methods and decorators to ES6",
+      "devDependencies": {
+        "@babel/core": "^7.29.13",
+        "@babel/helper-plugin-test-runner": "^7.29.7",
+        "@babel/preset-env": "^7.29.7",
+        "@types/charcodes": "^0.2.0",
+        "charcodes": "^0.2.0"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "keywords": [
+        "babel",
+        "babel-plugin"
+      ],
+      "license": "MIT",
+      "main": "./lib/index.js",
+      "name": "@babel/helper-create-class-features-plugin",
+      "peerDependencies": {
+        "@babel/core": "^7.0.0"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-helper-create-class-features-plugin",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "type": "commonjs",
+      "version": "7.29.13"
+    },
+    "physicalEntryCount": 17,
+    "tarball": {
+      "bytes": 95920,
+      "sha256": "51b2d9625f624cf787c5acbcc1bf17e0a24b1b3494f2035b977fdb46860fada3"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

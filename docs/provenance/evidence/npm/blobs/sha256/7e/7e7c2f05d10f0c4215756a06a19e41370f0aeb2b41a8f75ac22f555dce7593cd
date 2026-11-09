@@ -1,0 +1,799 @@
+{
+  "artifactId": "3b8ee19ca2da3c0585aaed63a3c653b3e5f4ee5dd590fc107bfc67d28aa31969",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3232467,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "45873d00a0dd243596deb4aa23b2493b3d1f0671921bf2538ea431d7380220eb",
+        "size": 11601,
+        "type": "FILE"
+      },
+      {
+        "path": "package/NOTICE",
+        "sha256": "6d602191187b35b9b01d2cffa01c8469c2c8d9de8a96f1bf868e0f264f51c81d",
+        "size": 254,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "d16ff7f8e38fa1fc954f695ad551cdc118d9c9bdd5f3d83203901f4c317d7d7e",
+        "size": 120,
+        "type": "FILE"
+      },
+      {
+        "path": "package/ThirdPartyNotices.txt",
+        "sha256": "a549d329bad8806fe279f0ecae0fc0270dec7e7c2dc8ec10f90e394f7c32b144",
+        "size": 676,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/install_media_pack.ps1",
+        "sha256": "bc20f049badf021e3a53bdb4156603caa5ef482c9a9a251f927605e676a44171",
+        "size": 174,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/install_webkit_wsl.ps1",
+        "sha256": "bc61beda37a808eef27d39ce684baa792f6d17737a25a432b1a84d3b591ab815",
+        "size": 1464,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/reinstall_chrome_beta_linux.sh",
+        "sha256": "dc8c22b9dde76583cece2857575b88094299615f3136a3c598149710c45dee3a",
+        "size": 1217,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/reinstall_chrome_beta_mac.sh",
+        "sha256": "a92eaeb4ebcf5633a4e9c981481e14c80764fc81b6fcbc0565398e50ff319433",
+        "size": 563,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/reinstall_chrome_beta_win.ps1",
+        "sha256": "b6d9e44742feafb98d5edc56fa20042949973cf30d141a1c5b4fb384096967c5",
+        "size": 957,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/reinstall_chrome_stable_linux.sh",
+        "sha256": "dc72ab3567a4ce43bd8353d4ecf41f1d9c03e870169367cd3ed9043aabf67dd1",
+        "size": 1212,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/reinstall_chrome_stable_mac.sh",
+        "sha256": "bb43a96c192a6cc81524ade0264686fff7809c019a89f7db0a9849635879c3be",
+        "size": 519,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/reinstall_chrome_stable_win.ps1",
+        "sha256": "3d96c4e2f4ebbb3fad44cf3ba58d9cf90af1c9fb3073e3b27d45a74cf005515b",
+        "size": 923,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/reinstall_msedge_beta_linux.sh",
+        "sha256": "10b26f35dbc2000b94edf1172d803a29c5873a4eb8d523afbc687997b642767e",
+        "size": 1494,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/reinstall_msedge_beta_mac.sh",
+        "sha256": "0036d738bc90d686100d81f328ba0003bf07863f5500b792c8da391d149750fa",
+        "size": 377,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/reinstall_msedge_beta_win.ps1",
+        "sha256": "b173c378a59f0cc38033cee702de1f44f09276c9b2270d1a650ebe66ee312433",
+        "size": 874,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/reinstall_msedge_dev_linux.sh",
+        "sha256": "00e4947e7a4f8339c6db09c87976d808583c07f9179e4aa7694d88614b82fe95",
+        "size": 1489,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/reinstall_msedge_dev_mac.sh",
+        "sha256": "6f899e3b311f742c24ca37ff9e32298e8290514ffc14bf588cc51556a29da4c0",
+        "size": 372,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/reinstall_msedge_dev_win.ps1",
+        "sha256": "46f7f98c81cb0abe687d7f4a5afea9b897a38d2a6dd6f6662fbd847f7a22bd51",
+        "size": 869,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/reinstall_msedge_stable_linux.sh",
+        "sha256": "ec0a31a5f09c565e108473a1850895a4458ab00c713ac1de3aa2001912e4668f",
+        "size": 1507,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/reinstall_msedge_stable_mac.sh",
+        "sha256": "3af1e893527ff2257aa2dbc3b259a053b92f45c3eadb13e38eba46e87902655d",
+        "size": 371,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/reinstall_msedge_stable_win.ps1",
+        "sha256": "40bb5fcbfcebbbe2ce43c6e736e7c5deefc5be03b6e9c6914423c06ec1f591be",
+        "size": 856,
+        "type": "FILE"
+      },
+      {
+        "path": "package/browsers.json",
+        "sha256": "8058cd0e5bf0e9e20511a7052de42c1a89a8b9b36fa1b13da6d08b83d0c7f8b9",
+        "size": 1137,
+        "type": "FILE"
+      },
+      {
+        "path": "package/cli.js",
+        "sha256": "7c46f799363eee3e0bb7a7d7c870a92316a1601bf6fda780b656df4209542aa9",
+        "size": 867,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "7a8ec10b0834eb7183e4bfcd929838ac77583828e343211bb73676d1e47f6f01",
+        "size": 634,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "a58fb2cec4293e7dcf73c58a179898a4f3986666451a19da4e731fa3af63265b",
+        "size": 697,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.mjs",
+        "sha256": "3d36e2132d3c8b62397d23f0bb4177336aaee503203ae2a2c90fbeb5bf3317dd",
+        "size": 1063,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/bootstrap.js",
+        "sha256": "39dd64cc9472275d1b25c170fefa2a98353bcca598b741788faac2e6e15fc737",
+        "size": 5739,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/coreBundle.js",
+        "sha256": "4ef8330594818d8f464de939e32bca62b758099e0d0e94a56095406da963f7f1",
+        "size": 3627040,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/entry/cliDaemon.js",
+        "sha256": "062f256fb29a7bf91793a014b9c3f1f9cf2dc6b12e40a8a2ebba88a630ae16a0",
+        "size": 197,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/entry/dashboardApp.js",
+        "sha256": "209962c6eaeef11629f226d6a2ab33ec7a2480754242b6e19590a9e6eb71d126",
+        "size": 108,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/entry/mcp.js",
+        "sha256": "cc87dc0020cb41caebbf04f50e42bc7835b033a6d80e9c3f0a3d0b3dbdf341c7",
+        "size": 442,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/entry/oopBrowserDownload.js",
+        "sha256": "87567cdbd67dd2f50bb232d47d3784701ece7c81e39c0287bb7d1b466b68cf06",
+        "size": 120,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/package.js",
+        "sha256": "9f938e1d44a0dd231b1660ca62f7dae964859b79cbdc370b8542c5d375ca3c05",
+        "size": 2112,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/server/chromium/appIcon.png",
+        "sha256": "6ba994f05c5cf18e22d9b6bef9898fbdec6ad4d4d77f5187d0609cb42d72d01e",
+        "size": 16565,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/server/electron/loader.js",
+        "sha256": "552f6096d53d0c29c815c1cd342ea898f250199ec3eab83fac3b826d4df1f3ca",
+        "size": 5962,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/serverRegistry.js",
+        "sha256": "38025f08f335705b099b9f188bf45b5908a56a722825fe895b1e90f56d5595b6",
+        "size": 57039,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/serverRegistry.js.LICENSE",
+        "sha256": "3098a6efcbc11752cbdf6075fa65480f5470f78c8d981fab9c0796dc9a41cefe",
+        "size": 2982,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/cli-client/channelSessions.js",
+        "sha256": "c1c54c5ad64d0107b21312a91ce165489651646ac9dd88a2d9f47b12265b4f88",
+        "size": 6984,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/cli-client/cli.js",
+        "sha256": "3f9694e461ef0d6ebab068fdf3da98e1f3bce7cd4d2c32e667f2d0fb218c6472",
+        "size": 225,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/cli-client/help.json",
+        "sha256": "fb7a0d46c08d5a2856a5ceb1d33f39425c9094f2769465ddfa0094747fadfaff",
+        "size": 44809,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/cli-client/minimist.js",
+        "sha256": "9430489ebc06fd02231dccfe844516f743e812a9ac4fe8e6748a67718738851c",
+        "size": 4109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/cli-client/output.js",
+        "sha256": "de5701d6dba77b3c77471c3e81ad901dfd1a9122d38f25f5c06fa1356dc002b6",
+        "size": 12359,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/cli-client/program.js",
+        "sha256": "c22d2d11c862df198228d9612e6bf6d42d86079d0445f151f0efa9a26d034189",
+        "size": 16554,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/cli-client/registry.js",
+        "sha256": "4976cd5b2b3a25572cc1a4b5f055a756dacd4cc1b19d48987ee3253428e759b8",
+        "size": 6768,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/cli-client/session.js",
+        "sha256": "8c3f9aff3fab537771cb560e1bad3e417e16b3315b7a3dc10a305faeca3f6024",
+        "size": 9650,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/dashboard/appIcon.png",
+        "sha256": "38037bcf18c7f9b950da2e1a2d8800d38fb27637ccda293d38368a3704b67f18",
+        "size": 18945,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/skills/playwright-cli/SKILL.md",
+        "sha256": "b07a6cbe4e5b638046fe0b9df0e84783cb9899f0aed3db1eef915601c3260a64",
+        "size": 15702,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/skills/playwright-cli/references/element-attributes.md",
+        "sha256": "bf19aa4671e0a50a0fefa9c790f39124e803060eefe395042b723c29fcb7faa2",
+        "size": 665,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/skills/playwright-cli/references/playwright-tests.md",
+        "sha256": "c5b0719fef2cfdff50bd744051b2f9afc119775db4b48e9b2882c1cf3886797c",
+        "size": 1690,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/skills/playwright-cli/references/pr-attachments.md",
+        "sha256": "24b118e74598be72e73e24fe223d295b9099c85b1860a7c8f6e5690c9038fa2a",
+        "size": 2830,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/skills/playwright-cli/references/request-mocking.md",
+        "sha256": "54e801c9663fc2b6d68ceb058cb1c360724c2499f42acc7852a68e83e5b5f37c",
+        "size": 2182,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/skills/playwright-cli/references/running-code.md",
+        "sha256": "eac97e0b77e723f8b1d7b64f276f92efa72f74453f45a805352d27ea1853a495",
+        "size": 5968,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/skills/playwright-cli/references/session-management.md",
+        "sha256": "a4f16271f95d3eec7bc56e659d8adbb8f6ad7d603a6fa15efdcdd071a50c6ce3",
+        "size": 5929,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/skills/playwright-cli/references/storage-state.md",
+        "sha256": "71e90f774b5a7d61367f2336940f30be7c5693d43197b63d1154634b99ae5045",
+        "size": 5318,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/skills/playwright-cli/references/test-generation.md",
+        "sha256": "b9c5dda349a469b9abf9f10f3787135e6521f433f5743de399a164e14e76f7ce",
+        "size": 16072,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/skills/playwright-cli/references/tracing.md",
+        "sha256": "4e397e16e6bd92d8696cb815c4ee6dc4ce0be1da9e760e261a9c30b44c7857c7",
+        "size": 3608,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/skills/playwright-cli/references/video-recording.md",
+        "sha256": "1c800b897824cb54394c34265d8ebffdbb530adfc8d612c5d798b667a1799f48",
+        "size": 9388,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/skills/playwright-component-testing/SKILL.md",
+        "sha256": "60f57b31767d562c30cc5332081418c2945f4d9c998efa6e09191333654dd429",
+        "size": 10404,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/skills/playwright-component-testing/references/gallery-spec.md",
+        "sha256": "0ca25dde6112eb379f56eb618585b64dc2dfd13c2f7f956ac7eabbd76a68912b",
+        "size": 6199,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/skills/playwright-component-testing/references/migration.md",
+        "sha256": "bc3a336f7970bb7455fa5a38f937e45b35fb0c18d6c3b9f37916a4ff757b7acc",
+        "size": 5031,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/skills/playwright-component-testing/references/react.md",
+        "sha256": "54af9cc1cdb6d4ccdb8e811c0abb29b960d5c9304f4df7d1dcf9b8df3f973102",
+        "size": 3115,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/skills/playwright-component-testing/references/typing.md",
+        "sha256": "c511025b5c9b02d7f49034a5613c8b478193bf60c90ea6dddb3faf9c6985c82b",
+        "size": 6883,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/skills/playwright-component-testing/references/vue.md",
+        "sha256": "d1b129f126c700702a3c00ad8eb6c86898bc941c29a656c1191eb7230650bf8b",
+        "size": 3374,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/skills/playwright-trace/SKILL.md",
+        "sha256": "c76d28244c05a6474f6030213127cd62253208b06430ea2378576f0669db2c9a",
+        "size": 4862,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/utils/extension.js",
+        "sha256": "404ae19e57a7c7c5ed3e6ecf9df26a3fcf95867250732f954823078ccb879e63",
+        "size": 4689,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tools/utils/socketConnection.js",
+        "sha256": "973c2bea70a1f1445f4673f99e9fa351e50a2ec9fd93d7381b2c41bb4de764dd",
+        "size": 3317,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/utilsBundle.js",
+        "sha256": "897440163be29ea4c73c6203ce2fc244aebb2916839d37b8591a94b72d929a0a",
+        "size": 3349180,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/utilsBundle.js.LICENSE",
+        "sha256": "0b85cf59012e8a11c869ed21b61724e934f10222dfb29e95412bf0b8a8d341b1",
+        "size": 107917,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/dashboard/assets/codeMirrorModule--QdMvsKi.css",
+        "sha256": "20be824a82832b62cc04642d31da3c609fd280b23f1cdcb1e622c4f40aac5ab8",
+        "size": 6251,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/dashboard/assets/codeMirrorModule-D5SeAdMv.js",
+        "sha256": "e1d0184cfef64d586db5a8760def0fe21eac11d751e59aaa2bf9d45616faf669",
+        "size": 307372,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/dashboard/assets/codicon-DCmgc-ay.ttf",
+        "sha256": "0f1d5219934e96e83b8db162d60b4d8c09b5de1e7d38031cbafe4a3c0f2889c9",
+        "size": 80340,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/dashboard/assets/firefox-1bWoP6pv.svg",
+        "sha256": "3f3742d1e78c0db6c2d3531250f70c30675ee5310de32fa89befaf738c54efd0",
+        "size": 7488,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/dashboard/assets/firefox-beta-k3eOH_eK.svg",
+        "sha256": "7eab5ffdc25903ba33a7202f7fffa1999f119c7be45a39e9e703c118904f917a",
+        "size": 9280,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/dashboard/assets/firefox-nightly-Cp5nfeDT.svg",
+        "sha256": "f311c074b0fa999fcd6b73441301fb54ee87a48ff3bf05f318647928110476da",
+        "size": 9143,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/dashboard/assets/index-BnQkOdFO.css",
+        "sha256": "61e4f8a0250f9570461c644a44269170d20d7e0c09f8fb2cfc3f172ef1528d7a",
+        "size": 139105,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/dashboard/assets/index-C_gcIYdA.js",
+        "sha256": "cef8856224daffb1872d6510eaca5ef6e9dc4f24c8dcff24e9dc00d592d8b4d8",
+        "size": 336597,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/dashboard/assets/safari-na3_-uQk.svg",
+        "sha256": "80fd72ca5eb8545f1981277b31f4f92951d469d4efebd078e4086b676fe517dc",
+        "size": 5254,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/dashboard/index.html",
+        "sha256": "5648d7b798176f9ea70f1d644e0097f04a27403ca1ca32e247aaea20857bdb42",
+        "size": 1081,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/dashboard/playwright-logo.svg",
+        "sha256": "511524a1c145819303a18fb71870a4307c3e740f9e9722f7686a2b42b0995b6c",
+        "size": 5645,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/htmlReport/index.html",
+        "sha256": "ce7c098020a0eb9ce10edd416245ea6da50dfeaab18dfd0a2176979d22643be6",
+        "size": 464,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/htmlReport/report.css",
+        "sha256": "d98a244bf950333ade383b109e97d396f970f650b20f2e5ef5ecc2740205dff7",
+        "size": 100452,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/htmlReport/report.js",
+        "sha256": "1b5c5d6a5a192d029bb78f9d4fb9b06daf3625a6ffb1d9f87ac10faf03132843",
+        "size": 415923,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/recorder/assets/codeMirrorModule--QdMvsKi.css",
+        "sha256": "20be824a82832b62cc04642d31da3c609fd280b23f1cdcb1e622c4f40aac5ab8",
+        "size": 6251,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/recorder/assets/codeMirrorModule-ClnuDfLq.js",
+        "sha256": "c9d222c4bf9a25448dba761fd72c3fd205b2a99a09649316476e3e912d6f887b",
+        "size": 307372,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/recorder/assets/codicon-DCmgc-ay.ttf",
+        "sha256": "0f1d5219934e96e83b8db162d60b4d8c09b5de1e7d38031cbafe4a3c0f2889c9",
+        "size": 80340,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/recorder/assets/index-BZpYJZ-P.css",
+        "sha256": "cc24563b96f286614b88f74da413e9984de263227971c4cdfabe1f73be095514",
+        "size": 85502,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/recorder/assets/index-BwOPSdeb.js",
+        "sha256": "94d99ae4c0e60394fba226160f02e59940eed2cef6e5bdb189719d3e51a09b45",
+        "size": 358654,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/recorder/index.html",
+        "sha256": "97f49b8d3a03d7ad4129bcbd1f7f3fb5a7a5dea1837b16b9a3c1baab075e42af",
+        "size": 1078,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/recorder/playwright-logo.svg",
+        "sha256": "6b0a4367bdeab10995bc239278f04c68c10e48adbec15e799e01909a0d66dcb9",
+        "size": 5033,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/traceViewer/assets/codeMirrorModule-DNqxPF-E.js",
+        "sha256": "53102e1a7795f44c51b4f4172f9493d94922892a1f5cefe31edf50278e0b89cd",
+        "size": 307383,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/traceViewer/assets/defaultSettingsView-BQT9Z6FV.js",
+        "sha256": "807a114bcf1e58a0f46a931b42ae3b94b1ba049d3d6a308f869dea12e9d15034",
+        "size": 669380,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/traceViewer/assets/rolldown-runtime-QTnfLwEv.js",
+        "sha256": "5db5ba82eef00d1dee7e86e663098c9427d01183a88d357437daff295aec3e75",
+        "size": 694,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/traceViewer/assets/urlMatch-Cgl6axSs.js",
+        "sha256": "2d35d162cc21790c6adc218fbd1c3ef77865646b50f60157e04715f48974d182",
+        "size": 806,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/traceViewer/assets/xtermModule-Cv6bi7od.js",
+        "sha256": "d9711a3d5b304fccf3252a2e6b7d471b5a9903ab61ae265a7afec9166e17991c",
+        "size": 288727,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/traceViewer/codeMirrorModule.-QdMvsKi.css",
+        "sha256": "20be824a82832b62cc04642d31da3c609fd280b23f1cdcb1e622c4f40aac5ab8",
+        "size": 6251,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/traceViewer/codicon.DCmgc-ay.ttf",
+        "sha256": "0f1d5219934e96e83b8db162d60b4d8c09b5de1e7d38031cbafe4a3c0f2889c9",
+        "size": 80340,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/traceViewer/defaultSettingsView.C8BeHuxd.css",
+        "sha256": "278101b68ab48ee6323a6afbf4e0e629324e10e96902a62a0875643a1bba3d94",
+        "size": 107270,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/traceViewer/index.B5WWZ7O0.js",
+        "sha256": "9789a9a4d7ed850d2bd20d420f404c1eda41a99d2547f556a182b7f8e18216d5",
+        "size": 6642,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/traceViewer/index.B_TqY17P.css",
+        "sha256": "08a212fcacae1866f44f065654afcc4c7d03409c68c74b3315c5bda17a0ca003",
+        "size": 2055,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/traceViewer/index.html",
+        "sha256": "91ca3298b7beaf6fb7ed8448de516870fe7b625e57af10eba574fe009cc12157",
+        "size": 2451,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/traceViewer/manifest.webmanifest",
+        "sha256": "d8540500603a32a39fe7e5a0375dc0f9ebafd11118e06a846db7efc608223ab9",
+        "size": 429,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/traceViewer/playwright-logo.svg",
+        "sha256": "6b0a4367bdeab10995bc239278f04c68c10e48adbec15e799e01909a0d66dcb9",
+        "size": 5033,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/traceViewer/snapshot.-ChLTbql.js",
+        "sha256": "339b2b5c67ef769f60fe959f78a3cfa42b2b8833e30f19cd32bf5194efe833b6",
+        "size": 650,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/traceViewer/snapshot.html",
+        "sha256": "7b889f89c715eadd359d10462e3d8b6292cc632a7a86de75b07e8fc9934d1972",
+        "size": 389,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/traceViewer/sw.bundle.js",
+        "sha256": "f2a3172345fbf372075d51204139002fe80dc573714a5c7508b581c049f94aca",
+        "size": 96720,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/traceViewer/uiMode.CyMfwkXJ.css",
+        "sha256": "fb403cf0b07007bc1d771e29737f7408924da300e2fab8b289a3ef2e8fc08d7b",
+        "size": 54590,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/traceViewer/uiMode.DuLwZHRf.js",
+        "sha256": "185efd95559d290f77cb5bb7c4efd58aeb8f0f74a5ae0b31d40d7a5413f0314c",
+        "size": 37909,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/traceViewer/uiMode.html",
+        "sha256": "777b88825dacada77675168a4b44e17406992b85c7245cdde8588012cc42ba8b",
+        "size": 815,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/vite/traceViewer/xtermModule.kHJ-D0s7.css",
+        "sha256": "0dd60056134e6a2994a86b59a1e9789b9f04e92924da109aef8c923acaf08ce5",
+        "size": 2853,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/webp_codec.LICENSE",
+        "sha256": "995c7ee35aceb7666829b7a501ca89c0864e12b493c1174b155774ab1e03d831",
+        "size": 8841,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/webp_codec.wasm",
+        "sha256": "164cd9583a3e4d081f767d3b41ff0a730443dc7535fcc5caff83561463384b79",
+        "size": 565369,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/xdg-open",
+        "sha256": "7d759d54f0d4ce1beeb34ee62c587985b5042374e8de237b0dcb8cd47aa698cf",
+        "size": 32416,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "f5c29da29c2f96b8f77a58d93250b3ea60dbe3d8325491fb7519956f7f1d2d28",
+        "size": 876,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/protocol.d.ts",
+        "sha256": "b554eac8994913f46c4b619458e088922f417d693c38730230fd071395977275",
+        "size": 822157,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/structs.d.ts",
+        "sha256": "c9b9179b7291c8562eb0fb781219ddbdcf36149ebd7bd355e5b4a553d6b60b81",
+        "size": 2455,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/types.d.ts",
+        "sha256": "345bf3cb397fafe89a44a170c0eac639ed620a2e3fde3f09fbad8c6dd29022ce",
+        "size": 1152533,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 11601,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/45/45873d00a0dd243596deb4aa23b2493b3d1f0671921bf2538ea431d7380220eb",
+          "sha256": "45873d00a0dd243596deb4aa23b2493b3d1f0671921bf2538ea431d7380220eb"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "45873d00a0dd243596deb4aa23b2493b3d1f0671921bf2538ea431d7380220eb",
+        "size": 11601
+      },
+      {
+        "blob": {
+          "bytes": 254,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/6d/6d602191187b35b9b01d2cffa01c8469c2c8d9de8a96f1bf868e0f264f51c81d",
+          "sha256": "6d602191187b35b9b01d2cffa01c8469c2c8d9de8a96f1bf868e0f264f51c81d"
+        },
+        "kind": "NOTICE",
+        "path": "package/NOTICE",
+        "sha256": "6d602191187b35b9b01d2cffa01c8469c2c8d9de8a96f1bf868e0f264f51c81d",
+        "size": 254
+      },
+      {
+        "blob": {
+          "bytes": 676,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a5/a549d329bad8806fe279f0ecae0fc0270dec7e7c2dc8ec10f90e394f7c32b144",
+          "sha256": "a549d329bad8806fe279f0ecae0fc0270dec7e7c2dc8ec10f90e394f7c32b144"
+        },
+        "kind": "THIRD_PARTY_LICENCE",
+        "path": "package/ThirdPartyNotices.txt",
+        "sha256": "a549d329bad8806fe279f0ecae0fc0270dec7e7c2dc8ec10f90e394f7c32b144",
+        "size": 676
+      }
+    ],
+    "expandedBytes": 13969978,
+    "packageIdentity": {
+      "author": {
+        "name": "Microsoft Corporation"
+      },
+      "homepage": "https://playwright.dev",
+      "license": "Apache-2.0",
+      "name": "playwright-core",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/microsoft/playwright.git"
+      },
+      "version": "1.65.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "name": "Microsoft Corporation"
+      },
+      "bin": {
+        "playwright-core": "cli.js"
+      },
+      "description": "A high-level API to automate web browsers",
+      "engines": {
+        "node": ">=20"
+      },
+      "exports": {
+        ".": {
+          "default": "./index.js",
+          "import": "./index.mjs",
+          "require": "./index.js",
+          "types": "./index.d.ts"
+        },
+        "./lib/bootstrap": "./lib/bootstrap.js",
+        "./lib/coreBundle": "./lib/coreBundle.js",
+        "./lib/tools/cli-client/program": "./lib/tools/cli-client/program.js",
+        "./lib/utilsBundle": "./lib/utilsBundle.js",
+        "./package.json": "./package.json"
+      },
+      "homepage": "https://playwright.dev",
+      "license": "Apache-2.0",
+      "name": "playwright-core",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/microsoft/playwright.git"
+      },
+      "types": "types/types.d.ts",
+      "version": "1.65.0"
+    },
+    "physicalEntryCount": 116,
+    "tarball": {
+      "bytes": 3232467,
+      "sha256": "315247c55a793ca760b2f05bdcee0e6a53fd65b1f22d1d3de8323c8c9395add3"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

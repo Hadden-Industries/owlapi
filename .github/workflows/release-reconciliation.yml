@@ -224,7 +224,7 @@ jobs:
           package-manager-cache: false
           registry-url: https://registry.npmjs.org/
       - name: Establish the exact publication npm
-        run: npm install --global npm@12.2.1 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.2.2 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 10
       - name: Download the exact same-run promotion candidate by artifact ID
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2

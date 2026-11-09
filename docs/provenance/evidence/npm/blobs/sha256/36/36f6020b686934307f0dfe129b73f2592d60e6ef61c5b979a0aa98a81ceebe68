@@ -1,0 +1,76 @@
+{
+  "artifactId": "6b1b141680c8a35b16aaf777de0f971a0f265d8778b5b6170348c6ddc2ae7710",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 816340,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/README.md",
+        "sha256": "660b6aa52f8dd26dbe92fcc0a08a3e8103f26ca95c3e37160b3a51a2a0961e18",
+        "size": 130,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "10d43c17ef94088e8f59aeadf01fb69f8519c495b72bdf7d0a904b9cd1898580",
+        "size": 584,
+        "type": "FILE"
+      },
+      {
+        "path": "package/resolver.linux-loong64-musl.node",
+        "sha256": "1509ec884ca71e0025acc1a8e62dac97306dee85fedbf2e331d48595972ad672",
+        "size": 2054632,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [],
+    "expandedBytes": 2055346,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/unrs/unrs-resolver",
+      "license": "MIT",
+      "name": "@unrs/resolver-binding-linux-loong64-musl",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/unrs/unrs-resolver.git"
+      },
+      "version": "1.13.0"
+    },
+    "packageMetadata": {
+      "cpu": [
+        "loong64"
+      ],
+      "description": "UnRS Resolver Node API",
+      "files": [
+        "resolver.linux-loong64-musl.node"
+      ],
+      "homepage": "https://github.com/unrs/unrs-resolver",
+      "libc": [
+        "musl"
+      ],
+      "license": "MIT",
+      "main": "resolver.linux-loong64-musl.node",
+      "name": "@unrs/resolver-binding-linux-loong64-musl",
+      "os": [
+        "linux"
+      ],
+      "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/unrs/unrs-resolver.git"
+      },
+      "version": "1.13.0"
+    },
+    "physicalEntryCount": 3,
+    "tarball": {
+      "bytes": 816340,
+      "sha256": "c30049f8996dd2f4da9b3d75ee026176b0840acd91c0ec93c081e51978c98092"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -64,7 +64,7 @@ async function fixture() {
       for (const finding of rule.expected?.diagnostics ?? [])
         finding.severity ??= "error";
     const policy = {
-      schemaVersion: 3,
+      schemaVersion: baselinePolicy.schemaVersion,
       defaults: baselinePolicy.defaults,
       exceptions,
       preserveSourcePresentation: [
@@ -110,7 +110,7 @@ async function inventory(directory) {
   let terminal,
     sources = 0;
   try {
-    for await (const event of session.events()) {
+    for await (const event of session.check()) {
       assert.equal(validateJsonQualityEvent(event), true);
       if (
         event.type === "source" &&

@@ -2,15 +2,15 @@
   "schemaVersion": 1,
   "inputs": {
     "docs/release/artifact-transport-policy.json": "73f942dc1dfd93beab2131c3506e4b320fb217c514b8490ba641b3dbd2714fc4",
-    "tooling/artifact-transport/package-lock.json": "4b783b6626d88db8bf7dbc6194207ce5316cf41a61095b1c4c85963e074e09cd",
+    "tooling/artifact-transport/package-lock.json": "2db9046587519ed56f0b1a04a6ab6daf5dbf571f8f2bf68b87e6c21676e5bfc2",
     "tooling/artifact-transport/package.json": "c8c27c09506a7425c8d56701fe32c8910831ad46a716ff2a7e122aa5d90837bf",
-    "tooling/artifact-transport/rights-review.json": "60798fdb1b2a66c7fbb7c4c054d23dcbfc0f739377e069cead5b9cab18a1ec72",
-    "tooling/artifact-transport/docs/provenance/npm-package-evidence.json": "fbb8e5d2342364042821ea327b4c1692314d0464a5dfe7ab55b597fe2294c7be",
+    "tooling/artifact-transport/rights-review.json": "cdf1aae99591d0511d259f5d65696dc7f193cd6cf4eb2d06e910a4496d01106f",
+    "tooling/artifact-transport/docs/provenance/npm-package-evidence.json": "94cde72197c02e87af7a9f739549736349f917296fe81784026352d75073242b",
     "tooling/artifact-transport/docs/provenance/npm-package-evidence.schema.json": "ef7d6409fd2d501944b13f46571ed0cc632bf7fae7adb06bd77c85e6b9fee38d",
-    "docs/provenance/npm-package-evidence.schema.json": "2fed340a0ac925b115d7a2db6de6eb6bca7ab30301fc81bd28ed5d6030f60db2",
+    "docs/provenance/npm-package-evidence.schema.json": "7c2139121c7e1fa33dc8e59440459951a1082ccb864cfc9b1f9c758a0fabed74",
     ".github/actions/retain-artifact/action.yml": "a5e7adc8efa443f8438409068d889ff0e0de3f1245872115a59ffea4c72734f9",
     ".github/actions/collect-artifacts/action.yml": "a9cf39f65db3adadbb9c6fce40717e97df0753deda9273e4964156a81d77ea66",
-    "package-lock.json": "1208fffd659799b83cf6e41d3ed55c491bde453cb4006daf1839d378fc66e1ef",
+    "package-lock.json": "094e975e25b23f2ad2248ef1c9ae893cbff43d3a45d8741ce24b1a47cda54a12",
     "scripts/release-zip-core.mjs": "948f5a40ee0eada1305261433277fce4d64ef683894ff6182c16a8923eb2eedd",
     "scripts/build-artifact-action.mjs": "9ea5323d5916eebba3f599e25529f743501778736d87883460cb9ba33c738f3c",
     "scripts/artifact-tool-evidence.mjs": "9a3539c1ad20a8018337024a31e04497fd66477f85301973b2018c4d05cf9800",
@@ -24,9 +24,10 @@
     "tooling/artifact-transport/transport.mjs": "cd82a46d995a72b08666caa82b94c18165456b76131d82490e8914916a748a56"
   },
   "outputs": {
-    "action.mjs": "bcab9766f30fb5137ecadfb1f1ab0e70fb06e56a281fcc09bdcd83fbb5b7aad8",
-    "sdk-worker.mjs": "8fb482610d9071655f6e0c75922f95b1324236ed8d13371ad41ac5f29e352b02",
-    "transport-CaMJ0f3m.mjs": "c55bd6283030a88376720c91d96ce51f087f6e5c073524faf1703b2b3e246dcd",
-    "third-party-licenses.txt": "a1fc5e5903f959a1d279a39105f28754a80b456f1ed704b6b7b18a4541c72d01"
+    "action.mjs": "fbc35973fed019a071300a65417cfcb66186689f174126b78f817aa9ad116c96",
+    "sdk-worker.mjs": "7516838625392c9ccc51bc0e52a4e6c97d054448ef291dd98adc62e0612498a5",
+    "__vite-optional-peer-dep_kerberos_proxy-agent-negotiate-eJ-BzrX2.mjs": "d81aef96081e7dcc59ce972a61976d3503e4b9f164143d5a48c2bedaabb4227e",
+    "transport-IzJs0naq.mjs": "a8f864246eac7ec29e1156ceaddfa390981530848e819e83e61476faf046d1ac",
+    "third-party-licenses.txt": "abeb0de4975233a75a3d764b8e0a61f238e162b391f7c0b8e3d5f31cd302dbc0"
   }
 }

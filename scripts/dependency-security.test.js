@@ -32,7 +32,7 @@ describe("development dependency security boundaries", () => {
     expect(entries).toHaveLength(1);
     expect(entries[0][1]).toMatchObject({
       name: "@stackline/deepmerge",
-      version: "1.1.0",
+      version: "1.1.2",
       dev: true,
     });
     expect(requireJestConfig("deepmerge/package.json").name).toBe(
