@@ -15,6 +15,10 @@ Prerelease identifiers do not create a stability promise.
 - Update the browser deployment, behavior-profile and rc.3 migration guides.
   Separate published release details from changes in the source checkout.
 
+### Runtime compatibility
+
+- Avoid a Node 24.0.0 stack overflow when saving large OWL/XML and Turtle documents.
+
 ### Contributor tooling
 
 - Use npm 12.2.2 for package production and require npm 12.2.2 or newer for development.
