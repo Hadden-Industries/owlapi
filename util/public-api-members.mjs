@@ -38,3 +38,15 @@ export const publicMembers = (binding, { inherited = true } = {}) => {
   collect(binding.prototype, "prototype.", ["constructor"]);
   return members.size ? [...members].sort() : ["constructor"];
 };
+
+/** Use the README's npm alias for reader-facing imports. Registry entries retain their npm identity. */
+export const withDocumentedImportAlias = (binding, packageName) => {
+  const specifier = binding.publicSpecifier.replace(packageName, "owlapi");
+  return {
+    ...binding,
+    publicSpecifier: specifier,
+    callShapes: binding.callShapes.map((shape) =>
+      shape.replaceAll(`"${binding.publicSpecifier}"`, `"${specifier}"`),
+    ),
+  };
+};

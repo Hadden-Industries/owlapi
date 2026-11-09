@@ -26,11 +26,11 @@ export const assertDraftRelease = (release, { tag }) => {
 
 export const assertPublishedRelease = (
   release,
-  { tag, requireImmutable = false },
+  { tag, requireImmutable = false, prerelease = true },
 ) => {
   if (
     release?.draft !== false ||
-    release.prerelease !== true ||
+    release.prerelease !== prerelease ||
     release.tag_name !== tag ||
     !release.published_at ||
     (requireImmutable && release.immutable !== true)

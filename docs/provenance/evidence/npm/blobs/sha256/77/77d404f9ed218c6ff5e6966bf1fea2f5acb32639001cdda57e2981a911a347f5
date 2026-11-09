@@ -1,0 +1,198 @@
+{
+  "artifactId": "dfffaa37836580c54a05c8bcf5dd15f4dce52846d695bb249d58865857bce469",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 8429,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "734ee073065187232b5aacc9dbacb040c9efd0d73c9cb52d42c7cd663ed2f5f7",
+        "size": 326,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "0bd7a392932d4578d13e0ab49705ba1488ecaad56fa4cf865f85dac64d34de91",
+        "size": 101,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.d.ts",
+        "sha256": "da04598aa72a72dc4a316a3f94acfd50faba168dab148e59e63788dfb841f807",
+        "size": 9646,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.d.ts.map",
+        "sha256": "a599a2a3d8572faa5fa41c611b289cec9a1c2cfe965949c1db72ccceb742a158",
+        "size": 2112,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "ec6b08a291864f9ad9021582f4502c2a84ddfa4b9bdad027ace30d50e08d7fb4",
+        "size": 9952,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "6f544a847f95a9fcb7d8c1475e97998153fb933b72ee7a9dd60cb5f2abc845dd",
+        "size": 2398,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "8aafb958569013ba87a4d5eb8cb5f4a48b086571b141d1233b7acfeef0743278",
+        "size": 10356,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1094,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/dd/dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+          "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094
+      },
+      {
+        "blob": {
+          "bytes": 10356,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/8a/8aafb958569013ba87a4d5eb8cb5f4a48b086571b141d1233b7acfeef0743278",
+          "sha256": "8aafb958569013ba87a4d5eb8cb5f4a48b086571b141d1233b7acfeef0743278"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "8aafb958569013ba87a4d5eb8cb5f4a48b086571b141d1233b7acfeef0743278",
+        "size": 10356
+      }
+    ],
+    "expandedBytes": 35985,
+    "packageIdentity": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "unist-util-visit",
+      "repository": "syntax-tree/unist-util-visit",
+      "version": "5.2.0"
+    },
+    "packageMetadata": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "bugs": "https://github.com/syntax-tree/unist-util-visit/issues",
+      "contributors": [
+        "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+        "Eugene Sharygin <eush77@gmail.com>",
+        "Richard Gibson <richard.gibson@gmail.com>"
+      ],
+      "dependencies": {
+        "@types/unist": "^3.0.0",
+        "unist-util-is": "^6.0.0",
+        "unist-util-visit-parents": "^6.1.0"
+      },
+      "description": "unist utility to visit nodes",
+      "devDependencies": {
+        "@types/mdast": "^4.0.0",
+        "@types/node": "^26.0.0",
+        "c8": "^12.0.0",
+        "mdast-util-from-markdown": "^2.0.0",
+        "mdast-util-gfm": "^3.0.0",
+        "micromark-extension-gfm": "^3.0.0",
+        "prettier": "^3.0.0",
+        "remark-cli": "^12.0.0",
+        "remark-preset-wooorm": "^11.0.0",
+        "tsd": "^0.33.0",
+        "type-coverage": "^2.0.0",
+        "typescript": "^6.0.0",
+        "xo": "^5.0.0"
+      },
+      "exports": "./index.js",
+      "files": [
+        "lib/",
+        "index.d.ts",
+        "index.js"
+      ],
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/unified"
+      },
+      "keywords": [
+        "ast",
+        "hast",
+        "html",
+        "language",
+        "markdown",
+        "mdast",
+        "natural",
+        "nlcst",
+        "node",
+        "rehype",
+        "remark",
+        "retext",
+        "tree",
+        "unist-util",
+        "unist",
+        "utility",
+        "util",
+        "visit",
+        "walk",
+        "xast",
+        "xml"
+      ],
+      "license": "MIT",
+      "name": "unist-util-visit",
+      "prettier": {
+        "bracketSpacing": false,
+        "semi": false,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "trailingComma": "none",
+        "useTabs": false
+      },
+      "remarkConfig": {
+        "plugins": [
+          "remark-preset-wooorm"
+        ]
+      },
+      "repository": "syntax-tree/unist-util-visit",
+      "scripts": {
+        "build": "tsc --build --clean && tsc --build && tsd && type-coverage",
+        "format": "remark --frail --output --quiet -- . && prettier --log-level warn --write -- . && xo --fix",
+        "prepack": "npm run build && npm run format",
+        "test": "npm run build && npm run format && npm run test-coverage",
+        "test-api": "node --conditions development test.js",
+        "test-coverage": "c8 --100 --reporter lcov npm run test-api"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "typeCoverage": {
+        "#": "needed `any`s",
+        "atLeast": 100,
+        "ignoreFiles": [
+          "lib/index.d.ts"
+        ],
+        "strict": true
+      },
+      "version": "5.2.0"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 8429,
+      "sha256": "d11174ce27d62827bd8e1f573756ff4e8b601d466041ddaa693755a37ac917fc"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

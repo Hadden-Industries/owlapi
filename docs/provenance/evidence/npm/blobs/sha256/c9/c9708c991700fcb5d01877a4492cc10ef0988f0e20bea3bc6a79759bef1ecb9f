@@ -1,0 +1,200 @@
+{
+  "artifactId": "8907f688b5c5683f90919f77e4213ef6ce7487cd6941248df8d4731140c29a22",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 10331323,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/COPYRIGHT-library.html",
+        "sha256": "68129500b616d5838629e68f55ff3aed5e096dacf60ce9eb41bbe599a563afa6",
+        "size": 1512520,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef",
+        "size": 34523,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE.snapper",
+        "sha256": "fa4d98afdb9f06e6b57032bdb35010a97eb25044b54b7c7d5e01bd7c92c6507c",
+        "size": 1070,
+        "type": "FILE"
+      },
+      {
+        "path": "package/MPL-SOURCE.tar.xz",
+        "sha256": "252156d485d814a0b00d4ae9a6ea1a8dc704c8dcd5f0e4a8398f971ac616f371",
+        "size": 221796,
+        "type": "FILE"
+      },
+      {
+        "path": "package/SUPPLEMENTAL-NOTICES.txt",
+        "sha256": "f49f1558c32755f0599f39b5bace5587c003573a84810871ead841f478d0349d",
+        "size": 281406,
+        "type": "FILE"
+      },
+      {
+        "path": "package/THIRD-PARTY-NOTICES.txt",
+        "sha256": "743cd3e4e14afb11b9943546ac53f94fe861c2ee6837ddb04faf5ca3b68ab576",
+        "size": 2871135,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/snapper-fmt.exe",
+        "sha256": "11f8a035c85a3df479b07338b52b438e9e0160c3c0e7c1f3558bb4579230a9d2",
+        "size": 30734336,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build-evidence.json",
+        "sha256": "5a668b8277e1f6a1043bd6ee90a6a870c89cc18116e14a32f6782948a743e37f",
+        "size": 3816,
+        "type": "FILE"
+      },
+      {
+        "path": "package/cargo-notices.json",
+        "sha256": "3b8a0f63dbc341403bc077d685d5a58b8355ee9e21a0ea649264f5078e48c65a",
+        "size": 5042759,
+        "type": "FILE"
+      },
+      {
+        "path": "package/component-inventory.json",
+        "sha256": "dcb5100a3b3c20a1af50957537489f6e4144112d45780769ca8d7b3f6fed0437",
+        "size": 4287188,
+        "type": "FILE"
+      },
+      {
+        "path": "package/component.json",
+        "sha256": "edc5f2da85d7cd8032ec2b6877de09fb4efc042015fbfb98acbce433c8060779",
+        "size": 367170,
+        "type": "FILE"
+      },
+      {
+        "path": "package/embedded-dependencies.json",
+        "sha256": "cd4a559e73830639d3b52ba4221462b88e3d57141aa9c50d5b14507c850cbdf7",
+        "size": 40485,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "adc9c9fef82cfd5719e9b7515e78620962b95ab040d3d6e9571373c61da95ade",
+        "size": 803,
+        "type": "FILE"
+      },
+      {
+        "path": "package/rights-evidence.json",
+        "sha256": "b8b25eeb3db6d3a3630f4626b2854265855b32bf5a8112048438854cea3cd8ee",
+        "size": 355294,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1512520,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/68/68129500b616d5838629e68f55ff3aed5e096dacf60ce9eb41bbe599a563afa6",
+          "sha256": "68129500b616d5838629e68f55ff3aed5e096dacf60ce9eb41bbe599a563afa6"
+        },
+        "kind": "COPYRIGHT",
+        "path": "package/COPYRIGHT-library.html",
+        "sha256": "68129500b616d5838629e68f55ff3aed5e096dacf60ce9eb41bbe599a563afa6",
+        "size": 1512520
+      },
+      {
+        "blob": {
+          "bytes": 34523,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/84/8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef",
+          "sha256": "8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef",
+        "size": 34523
+      },
+      {
+        "blob": {
+          "bytes": 1070,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/fa/fa4d98afdb9f06e6b57032bdb35010a97eb25044b54b7c7d5e01bd7c92c6507c",
+          "sha256": "fa4d98afdb9f06e6b57032bdb35010a97eb25044b54b7c7d5e01bd7c92c6507c"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.snapper",
+        "sha256": "fa4d98afdb9f06e6b57032bdb35010a97eb25044b54b7c7d5e01bd7c92c6507c",
+        "size": 1070
+      },
+      {
+        "blob": {
+          "bytes": 2871135,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/74/743cd3e4e14afb11b9943546ac53f94fe861c2ee6837ddb04faf5ca3b68ab576",
+          "sha256": "743cd3e4e14afb11b9943546ac53f94fe861c2ee6837ddb04faf5ca3b68ab576"
+        },
+        "kind": "THIRD_PARTY_LICENCE",
+        "path": "package/THIRD-PARTY-NOTICES.txt",
+        "sha256": "743cd3e4e14afb11b9943546ac53f94fe861c2ee6837ddb04faf5ca3b68ab576",
+        "size": 2871135
+      }
+    ],
+    "expandedBytes": 45754301,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "AGPL-3.0-only",
+      "name": "@hadden-industries/markdown-quality-win32-x64",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hadden-Industries/markdown-quality.git"
+      },
+      "version": "3.0.1"
+    },
+    "packageMetadata": {
+      "cpu": [
+        "x64"
+      ],
+      "description": "Pinned Snapper asset for Markdown quality",
+      "exports": {
+        "./package.json": "./package.json"
+      },
+      "files": [
+        "bin",
+        "LICENSE",
+        "LICENSE.snapper",
+        "component.json",
+        "COPYRIGHT-library.html",
+        "THIRD-PARTY-NOTICES.txt",
+        "SUPPLEMENTAL-NOTICES.txt",
+        "rights-evidence.json",
+        "embedded-dependencies.json",
+        "component-inventory.json",
+        "cargo-notices.json",
+        "build-evidence.json",
+        "MPL-SOURCE.tar.xz"
+      ],
+      "license": "AGPL-3.0-only",
+      "name": "@hadden-industries/markdown-quality-win32-x64",
+      "os": [
+        "win32"
+      ],
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hadden-Industries/markdown-quality.git"
+      },
+      "version": "3.0.1"
+    },
+    "physicalEntryCount": 14,
+    "tarball": {
+      "bytes": 10331323,
+      "sha256": "3f699fd55258d63930ff26ff291c162eb25b12ab68db0199287ed20fb9d67533"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

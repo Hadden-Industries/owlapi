@@ -1,0 +1,273 @@
+{
+  "artifactId": "360c111938b389fb0cfe195e9c932756718161de644583fa821d262cad078b51",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6593,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/dev/index.d.ts",
+        "sha256": "420781370eec41861658955d537e82e04146b6d419c73137973f4445d9408bac",
+        "size": 432,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dev/index.js",
+        "sha256": "831733a3e5bdf4de21b8f3baf7e6ef84c7f6a9c856ee99d5f751cce134a97340",
+        "size": 98,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dev/lib/html.d.ts",
+        "sha256": "1cee327d472dbe0645c32088f36b827496abed9e1fbba2827d5c05f0b424097c",
+        "size": 451,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dev/lib/html.js",
+        "sha256": "973851aa94b6e5c2f93e3db44593a6ca224892df3aabc3f27768158be3b78471",
+        "size": 654,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dev/lib/syntax.d.ts",
+        "sha256": "bd4c6008a0aa6c28ba0015c77fbef83c4a629a0596d9c072a8c8d861f4570fd2",
+        "size": 354,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dev/lib/syntax.js",
+        "sha256": "6e9f7152ffd8cd2019982ec374ab4810789a0aa9c0ec9bfd22006bdd5fab53ed",
+        "size": 3756,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "420781370eec41861658955d537e82e04146b6d419c73137973f4445d9408bac",
+        "size": 432,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "9642f1c0386a40107895796c2207e55f981c762614887835e56ad18849f24788",
+        "size": 103,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/html.d.ts",
+        "sha256": "1cee327d472dbe0645c32088f36b827496abed9e1fbba2827d5c05f0b424097c",
+        "size": 451,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/html.js",
+        "sha256": "8a90e3c2badc4eb1f640f7ae84d9ec5c6835c17c39aaec9a08c0014fdcad1623",
+        "size": 657,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/syntax.d.ts",
+        "sha256": "bd4c6008a0aa6c28ba0015c77fbef83c4a629a0596d9c072a8c8d861f4570fd2",
+        "size": 354,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/syntax.js",
+        "sha256": "b819eb327b98387d58b3c254df11324b9291420e7b59306cc41d8a25b0820385",
+        "size": 3563,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "536804b3adbff17dbbb9ed0d2bf9655b78f07640278581e37e3d7475282d5e61",
+        "size": 1099,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "2497c18c449db1459392e6e70bca781256cab6a69b3a35fc55acbd0360ceb85c",
+        "size": 3295,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "da5ebc991c00766467c278576da57e1e67382ccd92a390e78f9640c05237816d",
+        "size": 8711,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1099,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/53/536804b3adbff17dbbb9ed0d2bf9655b78f07640278581e37e3d7475282d5e61",
+          "sha256": "536804b3adbff17dbbb9ed0d2bf9655b78f07640278581e37e3d7475282d5e61"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "536804b3adbff17dbbb9ed0d2bf9655b78f07640278581e37e3d7475282d5e61",
+        "size": 1099
+      },
+      {
+        "blob": {
+          "bytes": 8711,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/da/da5ebc991c00766467c278576da57e1e67382ccd92a390e78f9640c05237816d",
+          "sha256": "da5ebc991c00766467c278576da57e1e67382ccd92a390e78f9640c05237816d"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "da5ebc991c00766467c278576da57e1e67382ccd92a390e78f9640c05237816d",
+        "size": 8711
+      }
+    ],
+    "expandedBytes": 24410,
+    "packageIdentity": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "micromark-extension-gfm-task-list-item",
+      "repository": "micromark/micromark-extension-gfm-task-list-item",
+      "version": "2.1.0"
+    },
+    "packageMetadata": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "bugs": "https://github.com/micromark/micromark-extension-gfm-task-list-item/issues",
+      "contributors": [
+        "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+      ],
+      "dependencies": {
+        "devlop": "^1.0.0",
+        "micromark-factory-space": "^2.0.0",
+        "micromark-util-character": "^2.0.0",
+        "micromark-util-symbol": "^2.0.0",
+        "micromark-util-types": "^2.0.0"
+      },
+      "description": "micromark extension to support GFM task list items",
+      "devDependencies": {
+        "@types/node": "^20.0.0",
+        "c8": "^10.0.0",
+        "control-pictures": "^2.0.0",
+        "create-gfm-fixtures": "^1.0.0",
+        "micromark": "^4.0.0",
+        "micromark-build": "^2.0.0",
+        "prettier": "^3.0.0",
+        "remark-cli": "^12.0.0",
+        "remark-preset-wooorm": "^10.0.0",
+        "type-coverage": "^2.0.0",
+        "typescript": "^5.0.0",
+        "xo": "^0.58.0"
+      },
+      "exports": {
+        "default": "./index.js",
+        "development": "./dev/index.js"
+      },
+      "files": [
+        "dev/",
+        "lib/",
+        "index.d.ts",
+        "index.js"
+      ],
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/unified"
+      },
+      "keywords": [
+        "micromark",
+        "micromark-extension",
+        "task",
+        "list",
+        "item",
+        "check",
+        "checkbox",
+        "todo",
+        "gfm",
+        "markdown",
+        "unified"
+      ],
+      "license": "MIT",
+      "name": "micromark-extension-gfm-task-list-item",
+      "prettier": {
+        "bracketSpacing": false,
+        "semi": false,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "trailingComma": "none",
+        "useTabs": false
+      },
+      "remarkConfig": {
+        "plugins": [
+          "remark-preset-wooorm"
+        ]
+      },
+      "repository": "micromark/micromark-extension-gfm-task-list-item",
+      "scripts": {
+        "build": "tsc --build --clean && tsc --build && type-coverage && micromark-build",
+        "format": "remark . -qfo && prettier . -w --log-level warn && xo --fix",
+        "prepack": "npm run build && npm run format",
+        "test": "npm run build && npm run format && npm run test-coverage",
+        "test-api": "npm run test-api-dev && npm run test-api-prod",
+        "test-api-dev": "node --conditions development test/index.js",
+        "test-api-prod": "node --conditions production test/index.js",
+        "test-coverage": "c8 --100 --reporter lcov npm run test-api"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "typeCoverage": {
+        "atLeast": 100,
+        "detail": true,
+        "ignoreCatch": true,
+        "strict": true
+      },
+      "version": "2.1.0",
+      "xo": {
+        "overrides": [
+          {
+            "files": [
+              "**/*.d.ts"
+            ],
+            "rules": {
+              "@typescript-eslint/array-type": [
+                "error",
+                {
+                  "default": "generic"
+                }
+              ],
+              "@typescript-eslint/ban-types": [
+                "error",
+                {
+                  "extendDefaults": true
+                }
+              ],
+              "@typescript-eslint/consistent-type-definitions": [
+                "error",
+                "interface"
+              ]
+            }
+          },
+          {
+            "files": [
+              "test/**/*.js"
+            ],
+            "rules": {
+              "no-await-in-loop": "off"
+            }
+          }
+        ],
+        "prettier": true,
+        "rules": {
+          "unicorn/no-this-assignment": "off",
+          "unicorn/prefer-string-replace-all": "off"
+        }
+      }
+    },
+    "physicalEntryCount": 15,
+    "tarball": {
+      "bytes": 6593,
+      "sha256": "2af93a84aca7141d88f8967be748a2f84d5ac6dc7cdb14a62edcbbd8a27b11af"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,76 @@
+{
+  "artifactId": "e8e299bafe496513df908b7b1fc585b0b7564a869c3513819a38ceeee306bb59",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 819846,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/README.md",
+        "sha256": "9e98c55a6904696ea0d4e53604d2e47d44fa1ea355bb800028cff79983c57bcf",
+        "size": 126,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "6069ab561875cae965b1d7873f9da316e14bf125090afff9e0c834220db9decb",
+        "size": 582,
+        "type": "FILE"
+      },
+      {
+        "path": "package/resolver.linux-riscv64-gnu.node",
+        "sha256": "6f701d2b60f2c68949e528d2653acb5c481b2dbba23e34feb0d54712120fd26f",
+        "size": 1876520,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [],
+    "expandedBytes": 1877228,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/unrs/unrs-resolver",
+      "license": "MIT",
+      "name": "@unrs/resolver-binding-linux-riscv64-gnu",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/unrs/unrs-resolver.git"
+      },
+      "version": "1.13.0"
+    },
+    "packageMetadata": {
+      "cpu": [
+        "riscv64"
+      ],
+      "description": "UnRS Resolver Node API",
+      "files": [
+        "resolver.linux-riscv64-gnu.node"
+      ],
+      "homepage": "https://github.com/unrs/unrs-resolver",
+      "libc": [
+        "glibc"
+      ],
+      "license": "MIT",
+      "main": "resolver.linux-riscv64-gnu.node",
+      "name": "@unrs/resolver-binding-linux-riscv64-gnu",
+      "os": [
+        "linux"
+      ],
+      "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/unrs/unrs-resolver.git"
+      },
+      "version": "1.13.0"
+    },
+    "physicalEntryCount": 3,
+    "tarball": {
+      "bytes": 819846,
+      "sha256": "793bf715909b52b377d8026a010e281b39ca20a398e052b8db26eb3616a3b2e4"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

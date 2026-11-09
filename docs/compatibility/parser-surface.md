@@ -1,7 +1,11 @@
 # OWLAPI parser and format surface
 
-Reference source: local OWLAPI checkout `d7e997a53b470e32700de89cc610d9daf01ea769` (`owlapi-parent-5.5.1-7-gd7e997a53`).
-This inventory records public identities; the Java implementation is not a JavaScript implementation template.
+Look up a format in the table to find its Java parser or factory, JavaScript capability ID and v1 status.
+For ambiguous input, see [RDF filename hints](#rdf-filename-hints) or [KRSS dialect selection](#krss-dialect-selection).
+
+## Parser and factory reference
+
+The Java identities come from OWLAPI checkout `d7e997a53b470e32700de89cc610d9daf01ea769` (`owlapi-parent-5.5.1-7-gd7e997a53`).
 
 | OWLAPI identity                                                               | owlapi-js capability         | v1 status                                 |
 | ----------------------------------------------------------------------------- | ---------------------------- | ----------------------------------------- |
@@ -21,21 +25,31 @@ This inventory records public identities; the Java implementation is not a JavaS
 | OBO/OBO 1.2                                                                   | `parser.obo`                 | `UNSUPPORTED_BY_DESIGN` for v1            |
 | RDFa, RDF/JSON, TriX, Binary RDF, HDT                                         | corresponding matrix entries | deferred or unsupported as classified     |
 
+## DL namespaces and numeric tokens
+
 The Phase 10 DL parser implements the characterized OWLAPI 5.5.1 DL grammar directly to structural objects.
 Because the syntax has no ontology header, a supplied document IRI defines its entity namespace and anonymous loads receive isolated per-load namespaces.
 The pinned Java whole-document differential uses only productions reachable through that entry point.
+
 Focused project tests also preserve inventoried assertion, inverse-property and numeric-data productions that the Java dispatcher can misroute, accept ordinary terminal whitespace and attached property colons, and retain unmatched general subclass axioms rather than silently dropping them.
 These controlled corrections are recorded in the Phase 10 provenance research and lesson record; the shared oracle fixture itself has no expected structural difference.
+
 The 2026-10-01 source-preservation correction retains each accepted integer or double token's exact lexical string in every parsing mode, including leading/trailing zeros and integers beyond JavaScript's safe range.
 Cardinality normalization and the existing numeric token grammar are unchanged; datatype assessment remains separate from parsing.
+
+## RDF filename hints
 
 Distinct format descriptors are retained even when one dependency implements several formats.
 Phase 9 registers only exact `text/turtle`; N-Triples, N-Quads, TriG, and the broader N3 language remain unsupported until their separate governed scopes say otherwise.
 `.owl` is only a filename hint and never decides OWL/XML vs RDF/XML.
 
+## KRSS dialect selection
+
 Phase 17 implements original KRSS through its own descriptor and adapter over the bounded KRSS-family core.
 Shared top-level syntax stays ambiguous: generic `.krss` selects the narrower KRSS1 dialect first, exact `.krss2` selects KRSS2, and definite KRSS2-only vocabulary excludes KRSS1.
+
 The finite Java-oracle inventory records five controlled corrections: discarded ABox axioms, unreachable integer cardinalities, malformed bare-name bases, singleton Boolean objects outside the OWL 2 structural invariant, and explicit rejection of unsupported right-identity clauses.
+
 The 2026-10-01 decision supersedes earlier no-effect acceptance: well-formed KRSS1 `:right-identity` fails with `UNSUPPORTED_CONSTRUCT` in every mode; malformed local clauses retain syntax errors.
 Full-IRI rejection and KRSS2's ordered identity chains remain unchanged.
 No KRSS1 path called the pre-cutover KRSS2 parser, which Phase 18 subsequently deleted.

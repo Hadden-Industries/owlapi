@@ -1,0 +1,132 @@
+{
+  "artifactId": "c9118542c00376d3f7189d0c4f4eeba33d3b78e4ce2874c9191a6ba56757c47f",
+  "evidence": {
+    "archiveRoot": "debug",
+    "compressedBytes": 2180,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "debug",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "DIRECTORY"
+      },
+      {
+        "path": "debug/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141,
+        "type": "FILE"
+      },
+      {
+        "path": "debug/README.md",
+        "sha256": "08701be73153c2555900347dcf4c603dec7493950849669f2ce3e3efedd86f05",
+        "size": 2253,
+        "type": "FILE"
+      },
+      {
+        "path": "debug/index.d.ts",
+        "sha256": "89e326922cadcc2331d7e851011cf9f0456a681aaf3c95b48b81f8d80e8cdfba",
+        "size": 1346,
+        "type": "FILE"
+      },
+      {
+        "path": "debug/package.json",
+        "sha256": "3593dbd35512e263c1a4ed9e30545e7f8ffb2f7efabc4e536dddc0868be4e872",
+        "size": 1738,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1141,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c2/c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        "kind": "LICENCE",
+        "path": "debug/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141
+      }
+    ],
+    "expandedBytes": 6478,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/debug",
+      "license": "MIT",
+      "name": "@types/debug",
+      "repository": {
+        "directory": "types/debug",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "version": "4.1.13"
+    },
+    "packageMetadata": {
+      "contributors": [
+        {
+          "githubUsername": "swook",
+          "name": "Seon-Wook Park",
+          "url": "https://github.com/swook"
+        },
+        {
+          "githubUsername": "galtalmor",
+          "name": "Gal Talmor",
+          "url": "https://github.com/galtalmor"
+        },
+        {
+          "githubUsername": "zamb3zi",
+          "name": "John McLaughlin",
+          "url": "https://github.com/zamb3zi"
+        },
+        {
+          "githubUsername": "brasten",
+          "name": "Brasten Sager",
+          "url": "https://github.com/brasten"
+        },
+        {
+          "githubUsername": "npenin",
+          "name": "Nicolas Penin",
+          "url": "https://github.com/npenin"
+        },
+        {
+          "githubUsername": "kristianmitk",
+          "name": "Kristian Brünn",
+          "url": "https://github.com/kristianmitk"
+        },
+        {
+          "githubUsername": "calebgregory",
+          "name": "Caleb Gregory",
+          "url": "https://github.com/calebgregory"
+        }
+      ],
+      "dependencies": {
+        "@types/ms": "*"
+      },
+      "description": "TypeScript definitions for debug",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/debug",
+      "license": "MIT",
+      "main": "",
+      "name": "@types/debug",
+      "peerDependencies": {},
+      "repository": {
+        "directory": "types/debug",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "scripts": {},
+      "typeScriptVersion": "5.2",
+      "types": "index.d.ts",
+      "typesPublisherContentHash": "1c506e100366b85350ff1c28c9cf4cc09e9a07275546bb050993c241c9821cd9",
+      "version": "4.1.13"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2180,
+      "sha256": "19bb8d72e15e4fd407fb1d416aba3c42dde61fc9d50cdfdd313b85d351e56388"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

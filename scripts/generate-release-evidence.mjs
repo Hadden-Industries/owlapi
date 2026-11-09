@@ -19,6 +19,7 @@ import {
   PACKAGE_FILE_STEM,
 } from "./package-identity.mjs";
 import { readCandidateBundleSnapshot } from "./candidate-bundle.mjs";
+import { verifyPublicationDocumentation } from "./verify-publication-documentation.mjs";
 
 const version = "0.1.0-alpha.0";
 
@@ -294,6 +295,15 @@ const generateScopedEvidence = async () => {
   const draft = snapshots["draft-release"].report;
   const registry = snapshots["registry-verification"].report;
   const candidate = readCandidate(paths.candidate, PACKAGE_VERSION);
+  const retained = readCandidateBundleSnapshot(paths.candidate);
+  verifyPublicationDocumentation({
+    tarball: retained.contents[retained.candidate.assets.tarball.name],
+    manifest: JSON.parse(
+      readFileSync(new URL("../package.json", import.meta.url), "utf8"),
+    ),
+    preflight,
+    identity: { commit, runId, runAttempt },
+  });
   const coordinate = `${PACKAGE_NAME}@${PACKAGE_VERSION}`;
   if (
     [preflight, tag, draft, registry].some(

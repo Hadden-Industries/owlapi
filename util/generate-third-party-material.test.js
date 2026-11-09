@@ -163,10 +163,13 @@ describe("third-party-material prospective generation", () => {
         relationship: "DEVELOPMENT_ONLY",
         versionOrRevision: JSON.parse(
           readFileSync(
-            join(repositoryRoot, "tooling/markdown/release-manifest.json"),
+            join(
+              repositoryRoot,
+              "node_modules/@hadden-industries/markdown-quality/package.json",
+            ),
             "utf8",
           ),
-        ).source.head,
+        ).version,
         sourceUrl: "https://github.com/Hadden-Industries/markdown-quality",
         packageTarballScope: false,
       });
@@ -184,50 +187,82 @@ describe("third-party-material prospective generation", () => {
       expect(shared.licenseAssessments[0].concludedLicenseExpression).toBe(
         "AGPL-3.0-only",
       );
-      const declaredMarkdown = JSON.parse(
-        readFileSync(
-          join(repositoryRoot, "tooling/markdown/package.json"),
-          "utf8",
-        ),
+      const manifest = JSON.parse(
+        readFileSync(join(repositoryRoot, "package.json"), "utf8"),
+      );
+      const lock = JSON.parse(
+        readFileSync(join(repositoryRoot, "package-lock.json"), "utf8"),
+      );
+      const name = "@hadden-industries/markdown-quality";
+      expect(manifest.devDependencies[name]).toBe(">=3.0.1");
+      expect(lock.packages[`node_modules/${name}`].bundleDependencies).toEqual(
+        expect.arrayContaining(["@eslint/markdown", "eslint"]),
+      );
+      expect(prospective.package.tarballDependenciesBundled).toBe(false);
+      expect(shared.versionOrRevision).toBe(
+        lock.packages[`node_modules/${name}`].version,
       );
       expect(shared.evidenceFiles.map(({ path }) => path)).toEqual(
         expect.arrayContaining([
-          "tooling/markdown/release-manifest.json",
-          ...Object.values({
-            ...declaredMarkdown.devDependencies,
-            ...declaredMarkdown.optionalDependencies,
-          }).map(
-            (specifier) =>
-              `tooling/markdown/${specifier.slice("file:".length)}`,
-          ),
+          "package.json",
+          "package-lock.json",
+          ".markdown-quality-execution.json",
         ]),
       );
       expect(
-        shared.evidenceFiles.filter(({ path }) => path.endsWith(".tgz")),
-      ).toHaveLength(3);
-      const executionProfile = JSON.parse(
-        readFileSync(
-          join(repositoryRoot, ".markdown-quality-execution.json"),
-          "utf8",
+        shared.evidenceFiles.some(({ path }) =>
+          path.startsWith("tooling/markdown/"),
         ),
-      );
-      const archivePath = (specifier) =>
-        `tooling/markdown/${specifier.slice("file:".length)}`;
-      expect(executionProfile.toolchain.coreArchive).toBe(
-        archivePath(
-          declaredMarkdown.devDependencies[
-            "@hadden-industries/markdown-quality"
-          ],
-        ),
-      );
-      for (const platform of ["win32-x64", "linux-x64"])
-        expect(executionProfile.toolchain.nativeArchives[platform]).toBe(
-          archivePath(
-            declaredMarkdown.optionalDependencies[
-              `@hadden-industries/markdown-quality-${platform}`
-            ],
-          ),
+      ).toBe(false);
+      for (const packageName of [
+        name,
+        `${name}-win32-x64`,
+        `${name}-linux-x64`,
+      ]) {
+        const locked = lock.packages[`node_modules/${packageName}`];
+        expect(locked.version).toBe(shared.versionOrRevision);
+        expect(locked.resolved).toMatch(/^https:\/\/registry\.npmjs\.org\//u);
+        expect(locked.integrity).toMatch(/^sha512-/u);
+        const component = prospective.components.find(
+          ({ dependencyPath }) =>
+            dependencyPath === `node_modules/${packageName}`,
         );
+        expect(component).toMatchObject({
+          relationship: "DEVELOPMENT_ONLY",
+          version: locked.version,
+        });
+      }
+      for (const [dependencyPath, locked] of Object.entries(
+        lock.packages,
+      ).filter(([, entry]) => entry.inBundle)) {
+        const component = prospective.components.find(
+          (entry) => entry.dependencyPath === dependencyPath,
+        );
+        expect(component.version).toBe(locked.version);
+        expect(component.bundled).toBeDefined();
+        expect(component.registryUrl).toBe(
+          lock.packages[component.bundled.ownerDependencyPath].resolved,
+        );
+        if (component.name === "eslint") {
+          expect(component.tarballDeclaredLicenseExpression).toBe("MIT");
+          expect(component.bundled.ownerDependencyPath).toBe(
+            `node_modules/${name}`,
+          );
+        }
+      }
+      const historical = prospective.materials.find(
+        ({ id }) => id === "markdown-quality-retained-native-attribution",
+      );
+      expect(historical.versionOrRevision).toBe(
+        "1.0.3 at 5712d153079bfc840a918c7dd250afef820d9e07",
+      );
+      expect(historical.evidenceFiles).toEqual([
+        expect.objectContaining({
+          path: "docs/provenance/markdown-quality-1.0.3-linux-cargo-notices.json",
+          sha256:
+            "86147599f977088a3690c5eb2954a84ea14d5f91a7b6afc6a082e6e4e2bcd88e",
+        }),
+      ]);
     } finally {
       rmSync(prospectivePath, { force: true });
     }

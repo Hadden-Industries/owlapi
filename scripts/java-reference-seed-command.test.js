@@ -1,5 +1,5 @@
 import { expect, jest, test } from "@jest/globals";
-import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { mkdtempSync, readFileSync, realpathSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { parse } from "yaml";
@@ -38,7 +38,10 @@ test.each(["failure", "cancelled", "skipped"])(
     const qualification = await import("./ci-qualification.mjs");
     const state = await import("./java-reference-state.mjs");
     const originalDirectory = process.cwd();
-    const directory = mkdtempSync(join(tmpdir(), "seed-recovery-"));
+    // Alias guards refuse 8.3 temp spellings such as RUNNER~1.
+    const directory = realpathSync.native(
+      mkdtempSync(join(tmpdir(), "seed-recovery-")),
+    );
     const keys = [
       "VERIFICATION_OUTPUTS_JSON",
       "REFERENCE_SEED_DOWNLOAD_OUTCOME",

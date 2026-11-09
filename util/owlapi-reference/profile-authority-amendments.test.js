@@ -11,8 +11,20 @@ const current = read(
   "../../docs/compatibility/canonical-vowl-prerequisites.md",
 );
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
-const historicalDeadlineBytes = Buffer.from(
+// These are the seven empty lines added in the published presentation diff.
+// Use their positions to check the verifier's text-based reconstruction independently.
+const addedParagraphBreaks = new Set([21, 43, 76, 80, 95, 134, 139]);
+const historicalProfileBytes = Buffer.from(
   current
+    .toString()
+    .split("\n")
+    .filter(
+      (line, index) => line !== "" || !addedParagraphBreaks.has(index + 1),
+    )
+    .join("\n"),
+);
+const historicalDeadlineBytes = Buffer.from(
+  historicalProfileBytes
     .toString()
     .replace(
       "The [behavior profile contract](behavior-profiles.md) now governs explicit Java versus normative selection and resource defaults.\n" +
@@ -34,6 +46,9 @@ describe("profile authority amendment verification", () => {
       "742ba46a79ef1c6f51c1aaad765c2292a30c07ca707955c5ff6191c9564b9d2b",
     );
     expect(sha256(current)).toBe(
+      "044429e863d009b7cdbec3a80a85cc66db528184078d1ba4fad8abff36fc1169",
+    );
+    expect(sha256(historicalProfileBytes)).toBe(
       "f4be6e8aa2625f8ef1c2a144598ce608c4012142c88624ea18d1b2873ae80f4e",
     );
     expect(sha256(historicalDeadlineBytes)).toBe(
@@ -61,10 +76,18 @@ describe("profile authority amendment verification", () => {
       ],
       [
         sha256(historicalDeadlineBytes),
-        sha256(current),
+        sha256(historicalProfileBytes),
         sha256(historicalDeadlineBytes),
       ],
+      [
+        sha256(historicalProfileBytes),
+        sha256(current),
+        sha256(historicalProfileBytes),
+      ],
     ]);
+    expect(
+      verifyProfileAuthorityAmendments(authority, historicalProfileBytes),
+    ).toEqual(amendments.slice(0, 3));
   });
 
   it.each([

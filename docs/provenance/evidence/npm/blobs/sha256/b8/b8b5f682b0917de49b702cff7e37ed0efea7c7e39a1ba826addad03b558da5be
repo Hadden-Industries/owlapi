@@ -1,0 +1,158 @@
+{
+  "artifactId": "cea731a4c4d49af3631572ea14facb821943dfad54ed65918b5f0ec948adc3ca",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7531,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "6a68398f023a58651daeb0f42aa35ff4864902cea93a68ae9d3f43767f835cee",
+        "size": 5622,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts.map",
+        "sha256": "72f7921eda74049a1a39def227a6a63030ea61eb19894cba15217de50c7645bd",
+        "size": 740,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "76c05326680d01d50347e6f7d07d1eecc3707b56e25574971e158fbc34f72035",
+        "size": 11187,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "9189d5db078ff825e222997b61725ece89f64b91a892a17eb0ae931e3aab0134",
+        "size": 1784,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "121ce7067207592a8bd290f1c890987c9fdc01a8d3c77bf885f599ae9db1dd7a",
+        "size": 8122,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1094,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/dd/dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+          "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094
+      },
+      {
+        "blob": {
+          "bytes": 8122,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/12/121ce7067207592a8bd290f1c890987c9fdc01a8d3c77bf885f599ae9db1dd7a",
+          "sha256": "121ce7067207592a8bd290f1c890987c9fdc01a8d3c77bf885f599ae9db1dd7a"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "121ce7067207592a8bd290f1c890987c9fdc01a8d3c77bf885f599ae9db1dd7a",
+        "size": 8122
+      }
+    ],
+    "expandedBytes": 28549,
+    "packageIdentity": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "markdown-table",
+      "repository": "wooorm/markdown-table",
+      "version": "3.1.0"
+    },
+    "packageMetadata": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "bugs": "https://github.com/wooorm/markdown-table/issues",
+      "contributors": [
+        "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+      ],
+      "description": "Generate a markdown (GFM) table",
+      "devDependencies": {
+        "@types/node": "^26.0.0",
+        "c8": "^12.0.0",
+        "chalk": "^5.0.0",
+        "prettier": "^3.0.0",
+        "remark-cli": "^12.0.0",
+        "remark-preset-wooorm": "^11.0.0",
+        "strip-ansi": "^7.0.0",
+        "type-coverage": "^2.0.0",
+        "typescript": "^6.0.0",
+        "xo": "^5.0.0"
+      },
+      "files": [
+        "index.d.ts.map",
+        "index.d.ts",
+        "index.js"
+      ],
+      "funding": {
+        "type": "github",
+        "url": "https://github.com/sponsors/wooorm"
+      },
+      "keywords": [
+        "align",
+        "markdown",
+        "rows",
+        "table",
+        "tabular",
+        "text"
+      ],
+      "license": "MIT",
+      "main": "./index.js",
+      "name": "markdown-table",
+      "prettier": {
+        "bracketSpacing": false,
+        "semi": false,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "trailingComma": "none",
+        "useTabs": false
+      },
+      "remarkConfig": {
+        "plugins": [
+          "remark-preset-wooorm"
+        ]
+      },
+      "repository": "wooorm/markdown-table",
+      "scripts": {
+        "build": "tsc --build --clean && tsc --build && type-coverage",
+        "format": "remark --frail --output --quiet -- . && prettier --log-level warn --write -- . && xo --fix",
+        "test": "npm run build && npm run format && npm run test-coverage",
+        "test-api": "node --conditions development test.js",
+        "test-coverage": "c8 --100 --check-coverage --reporter lcov -- npm run test-api"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "typeCoverage": {
+        "atLeast": 100,
+        "detail": true,
+        "strict": true
+      },
+      "types": "./index.d.ts",
+      "version": "3.1.0"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 7531,
+      "sha256": "da4361f20f3d772e763bb38896e4d42b5e89c9aa1a75a490af30ef29a526e910"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,9 +1,8 @@
-import { admitJsonPolicy } from "@hadden-industries/json-quality";
+import { resolveJsonQualityPolicy } from "@hadden-industries/json-quality";
 import { verifyPinnedIntegrationCheckout } from "../util/owlapi-reference/pinned-integration-checkout.mjs";
 
 const approvedExclusions = new Set([
   "node_modules/**",
-  "tooling/markdown/node_modules/**",
   "tooling/artifact-transport/node_modules/**",
   ".development-tools/python/**",
   ".development-tools/uv-cache/**",
@@ -12,11 +11,13 @@ const approvedExclusions = new Set([
 ]);
 
 /** Repository approval authority only; the package owns schema and checking.
- * The complete clean-source package tuple is admitted by its native archive owner.
+ * Retained original provenance values remain protected by their physical owner.
  */
 export async function validateRepositoryJsonPolicy(policy, root) {
-  admitJsonPolicy(policy);
-  for (const entry of policy.exceptions.filter((entry) => entry.exclude))
+  policy = resolveJsonQualityPolicy(policy);
+  for (const entry of policy.exceptions.filter(
+    (entry) => entry.excludeUntrackedSources,
+  ))
     for (const path of entry.paths)
       if (!approvedExclusions.has(path))
         throw new Error(
@@ -25,7 +26,8 @@ export async function validateRepositoryJsonPolicy(policy, root) {
   if (
     policy.exceptions.some(
       (entry) =>
-        entry.exclude && entry.paths.includes(".release/universal-ontology/**"),
+        entry.excludeUntrackedSources &&
+        entry.paths.includes(".release/universal-ontology/**"),
     )
   )
     await verifyPinnedIntegrationCheckout(root);
@@ -41,7 +43,7 @@ export async function* capturedRepositoryPolicy(access, { root }) {
     await access.select(await access.capturedSource(".json-quality.json")),
     "262144",
     (policy) => {
-      admitJsonPolicy(policy);
+      resolveJsonQualityPolicy(policy);
       return true;
     },
   );

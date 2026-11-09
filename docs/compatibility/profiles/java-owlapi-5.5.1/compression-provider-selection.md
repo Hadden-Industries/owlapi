@@ -46,7 +46,7 @@ The 2026-10-21 source review selected the existing `lzma-native` 8.0.6 [public C
 The shared implementation is `io/node/crc32.js`; it accepts raw Buffers and returns unsigned IEEE CRC32 with an initial checksum of zero, including zero for empty input.
 It does not use CRC32C or convert bytes into text.
 This removes the operational dependency on `node:zlib`'s CRC32 export, introduced in Node 22.2.0, without adding a package or native binary.
-The declared consumer minimums are owned by [the runtime policy](../../../release/runtime-policy.json); installed-package and native-platform qualification at those minimums remains outstanding.
+The declared consumer minimums are owned by [the runtime policy](../../../release/runtime-policy.json); the [latest published release](../../../../README.md#release-status) passed hosted installed-package and native-platform qualification at its frozen minimums and reference versions.
 
 The binding copies each input into native memory before calculating its CRC32.
 The helper therefore passes Buffer views in 64 KiB chunks and carries the previous checksum through the binding's incremental interface.

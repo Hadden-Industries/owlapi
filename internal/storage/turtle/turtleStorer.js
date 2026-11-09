@@ -77,9 +77,9 @@ export const turtleStorer = Object.freeze({
     const encoder = new TextEncoder();
     let bytes = 0;
     const append = (chunk) => {
-      bytes += /^\p{ASCII}*$/u.test(chunk)
-        ? chunk.length
-        : encoder.encode(chunk).byteLength;
+      bytes += /[^\p{ASCII}]/u.test(chunk)
+        ? encoder.encode(chunk).byteLength
+        : chunk.length;
       if (bytes > documentStoragePolicy.maxOutputBytes)
         throw new ResourceLimitError("Turtle output byte limit exceeded", {
           resource: "outputBytes",

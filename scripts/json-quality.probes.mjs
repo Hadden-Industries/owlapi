@@ -9,7 +9,7 @@ import test from "node:test";
 import { ESLint } from "eslint";
 import {
   formatJsonValue,
-  jsonContract,
+  resolveJsonSourceContract,
   openJsonSourceSession,
   openJsonRepositorySession,
   validateJsonQualityEvent,
@@ -33,7 +33,7 @@ const exclusion = (paths) => ({
   paths,
   owner: "Native installer",
   reason: "Finite external installation boundary; tracked files stay checked.",
-  exclude: true,
+  excludeUntrackedSources: true,
 });
 
 test("empty arrays remain valid at the root and in ordinary object members", async () => {
@@ -108,9 +108,9 @@ test("owned release documents and every Java profile JSON receive ordinary stric
     session = await openJsonSourceSession();
   try {
     for (const path of paths) {
-      const contract = jsonContract(path, policy);
-      assert.equal(contract.exclude, false, path);
-      assert.equal(contract.allowFormatWrites, true, path);
+      const contract = resolveJsonSourceContract(path, policy);
+      assert.equal(contract.excludeUntrackedSources, false, path);
+      assert.equal(contract.allowSourceRewrites, true, path);
       assert.equal(contract.formatContract, "prettier-json", path);
       const events = await collectSourceEvents(
         session,
@@ -148,7 +148,9 @@ test("the public source path rejects escaped duplicate keys and unsafe exponent 
       Buffer.from('{"n":9007199254740992e0}\n'),
     );
     assert.ok(
-      unsafe.some((event) => event.ruleId === "json-quality/interoperability"),
+      unsafe.some(
+        (event) => event.ruleId === "json-quality/no-unsafe-integers",
+      ),
     );
     const valid = await collectSourceEvents(
       session,
@@ -210,31 +212,32 @@ test("ignored and hidden bad peers block an eligible guarded batch and unapprove
       terminal = event;
     }
     assert.equal(terminal.type, "write-failure");
-    assert.equal(terminal.written, "0");
+    assert.equal(terminal.writtenPathCount, "0");
     assert.equal(terminal.preflightComplete, false);
     assert.deepEqual(await readFile(join(root, "source.json")), original);
   } finally {
     await session.close();
   }
   const policy = await readPolicyFixture(root);
-  policy.exceptions = [exclusion(["generated/**"])];
   await assert.rejects(
-    validateRepositoryJsonPolicy(policy, root),
+    validateRepositoryJsonPolicy(
+      { ...policy, exceptions: [exclusion(["generated/**"])] },
+      root,
+    ),
     /new owner decision/u,
   );
 });
 
-test("only seven approved physical boundaries remain; repaired cargo reports cannot be excluded", async () => {
+test("only six explicit physical exclusions are approved and retained cargo provenance remains in scope", async () => {
   const policy = await readPolicyFixture(repository);
   await validateRepositoryJsonPolicy(policy, repository);
   assert.deepEqual(
     policy.exceptions
-      .filter((entry) => entry.exclude)
+      .filter((entry) => entry.excludeUntrackedSources)
       .flatMap((entry) => entry.paths)
       .sort(),
     [
       "node_modules/**",
-      "tooling/markdown/node_modules/**",
       "tooling/artifact-transport/node_modules/**",
       ".development-tools/python/**",
       ".development-tools/uv-cache/**",
@@ -242,17 +245,22 @@ test("only seven approved physical boundaries remain; repaired cargo reports can
       ".release/universal-ontology/**",
     ].sort(),
   );
-  const report = JSON.parse(
-    await readFile(join(repository, "tooling/markdown/release-manifest.json")),
+  const path =
+    "docs/provenance/markdown-quality-1.0.3-linux-cargo-notices.json";
+  assert.equal(
+    resolveJsonSourceContract(path, policy).excludeUntrackedSources,
+    false,
+    path,
   );
-  for (const archive of report.archives) {
-    const path = `tooling/markdown/archives/${archive.filename.slice(0, -4)}-${report.source.head}.tgz!/package/cargo-notices.json`;
-    assert.equal(jsonContract(path, policy).exclude, false, path);
-  }
+  assert.equal(
+    resolveJsonSourceContract(path, policy).allowSourceRewrites,
+    false,
+    path,
+  );
   const altered = structuredClone(policy);
   altered.exceptions.push(
     exclusion([
-      "tooling/markdown/archives/old.tgz!/package/cargo-notices.json",
+      "docs/provenance/markdown-quality-1.0.3-linux-cargo-notices.json",
     ]),
   );
   await assert.rejects(
@@ -300,7 +308,7 @@ test("Python installation junctions remain pruned while siblings and tracked JSO
   );
 });
 
-test("a root installation boundary leaves sibling tooling and tracked source visible", async (t) => {
+test("untracked installation trees leave sibling tooling and tracked source visible", async (t) => {
   const root = await repositoryFixture(t, [exclusion(["node_modules/**"])]);
   await mkdir(join(root, "node_modules"));
   await writeFile(join(root, "node_modules/bad.json"), '{"bad":}\n');
@@ -313,24 +321,22 @@ test("a root installation boundary leaves sibling tooling and tracked source vis
   );
   await mkdir(join(root, "tooling/node_modules"), { recursive: true });
   await writeFile(join(root, "tooling/node_modules/bad.json"), '{"bad":}\n');
+  await writeFile(join(root, "tooling/bad.json"), '{"bad":}\n');
   const events = await checkedFixture(root);
-  for (const path of [
-    "node_modules/tracked.json",
-    "tooling/node_modules/bad.json",
-  ])
+  for (const path of ["node_modules/tracked.json", "tooling/bad.json"])
     assert.ok(
       events.some((event) => event.type === "finding" && event.path === path),
     );
-  assert.equal(
-    events.some((event) => event.path === "node_modules/bad.json"),
-    false,
-  );
+  for (const path of ["node_modules/bad.json", "tooling/node_modules/bad.json"])
+    assert.equal(
+      events.some((event) => event.path === path),
+      false,
+    );
 });
 
-test("declared isolated installation boundaries rescue tracked JSON and do not hide archived dependency members", async (t) => {
+test("the isolated installation boundary leaves tracked JSON and neighboring tooling visible", async (t) => {
   const paths = [
     "node_modules/**",
-    "tooling/markdown/node_modules/**",
     "tooling/artifact-transport/node_modules/**",
   ];
   const root = await repositoryFixture(t, [exclusion(paths)]);
@@ -340,7 +346,7 @@ test("declared isolated installation boundaries rescue tracked JSON and do not h
   }
   assert.equal((await checkedFixture(root)).at(-1).contractSatisfied, true);
   await writeFile(
-    join(root, "tooling/markdown/node_modules/tracked.json"),
+    join(root, "tooling/artifact-transport/node_modules/tracked.json"),
     '{"bad":}\n',
   );
   execFileSync(
@@ -350,7 +356,7 @@ test("declared isolated installation boundaries rescue tracked JSON and do not h
       root,
       "add",
       "--force",
-      "tooling/markdown/node_modules/tracked.json",
+      "tooling/artifact-transport/node_modules/tracked.json",
     ],
     { windowsHide: true },
   );
@@ -358,7 +364,7 @@ test("declared isolated installation boundaries rescue tracked JSON and do not h
   await writeFile(join(root, "tooling/neighbor/bad.json"), '{"bad":}\n');
   const events = await checkedFixture(root);
   for (const path of [
-    "tooling/markdown/node_modules/tracked.json",
+    "tooling/artifact-transport/node_modules/tracked.json",
     "tooling/neighbor/bad.json",
   ])
     assert.ok(
@@ -366,14 +372,6 @@ test("declared isolated installation boundaries rescue tracked JSON and do not h
     );
   assert.equal(
     events.some((event) => event.path === "node_modules/bad.json"),
-    false,
-  );
-  const policy = await readPolicyFixture(root);
-  assert.equal(
-    jsonContract(
-      "archives/core.tgz!/package/node_modules/a/package.json",
-      policy,
-    ).exclude,
     false,
   );
 });

@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync } from "node:fs";
+import { appendFileSync, mkdirSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { pathToFileURL } from "node:url";
 import { GitHubReleaseClient } from "./github-release.mjs";
@@ -36,8 +36,12 @@ export const approvalFromHistory = (history, environment, observedAt) => {
     review.environments?.some(({ name }) => name === environment),
   );
   requireFact(
-    reviews.length === 1 &&
-      reviews[0].state === "approved" &&
+    reviews.length >= 1 &&
+      reviews.every(
+        (review) =>
+          review.state === "approved" &&
+          review.user?.login === reviews[0].user?.login,
+      ) &&
       /^[A-Za-z0-9-]+$/u.test(reviews[0].user?.login ?? ""),
     `Approval history does not establish one unambiguous approved reviewer for ${environment}.`,
   );
@@ -179,6 +183,7 @@ export const resolveRetainedApprovals = async ({
   liveHistory,
   recovery = false,
   download = downloadReleaseArtifact,
+  environments = Object.keys(gateJobs),
 }) => {
   const artifacts = [];
   for (let page = 1; page <= 5; page++) {
@@ -198,7 +203,7 @@ export const resolveRetainedApprovals = async ({
   }
   const approvals = [],
     inputs = [];
-  for (const environment of Object.keys(gateJobs)) {
+  for (const environment of environments) {
     const prefix = `release-approval-${environment}-${runId}-`;
     const matches = artifacts
       .filter(({ name }) => name?.startsWith(prefix))
@@ -315,6 +320,8 @@ export const captureApprovalObservation = async ({
   env = process.env,
   client,
   recovery = false,
+  reuseRetainedManual = false,
+  download = downloadReleaseArtifact,
 }) => {
   const commit = env.GITHUB_SHA,
     runId = env.GITHUB_RUN_ID,
@@ -364,6 +371,48 @@ export const captureApprovalObservation = async ({
     "Approval capture is outside its exact running protected gate.",
   );
   const observedAt = new Date().toISOString();
+  // GitHub can discard live review history on a rerun. A completed manual
+  // gate's authenticated artifact can still authorize read-only tag verification;
+  // a publisher making its first write must capture a live approval instead.
+  if (
+    reuseRetainedManual &&
+    environment === "release-manual" &&
+    Array.isArray(history) &&
+    !history.some((review) =>
+      review.environments?.some(({ name }) => name === environment),
+    ) &&
+    runAttempt > 1
+  ) {
+    requireFact(
+      runAttempt <= 50,
+      "Approval history exceeds its bounded attempt inventory.",
+    );
+    const jobs = [];
+    for (let attempt = 1; attempt < runAttempt; attempt++) {
+      const inventory = await client.read(
+        `/actions/runs/${runId}/attempts/${attempt}/jobs?per_page=100`,
+      );
+      requireFact(
+        Array.isArray(inventory.jobs) &&
+          inventory.jobs.length < 100 &&
+          inventory.total_count === inventory.jobs.length,
+        "Retained manual approval job inventory is incomplete.",
+      );
+      jobs.push(...inventory.jobs);
+    }
+    await resolveRetainedApprovals({
+      client,
+      commit,
+      runId,
+      runAttempt,
+      jobs,
+      liveHistory: history,
+      recovery,
+      download,
+      environments: [environment],
+    });
+    return null;
+  }
   approvalFromHistory(history, environment, observedAt);
   return {
     schemaVersion: 1,
@@ -390,11 +439,18 @@ const main = async () => {
   const observation = await captureApprovalObservation({
     environment: value("--environment"),
     recovery: process.argv.includes("--rc3-recovery"),
+    reuseRetainedManual: true,
     client: new GitHubReleaseClient({
       repository,
       token: process.env.GITHUB_TOKEN,
     }),
   });
+  if (process.env.GITHUB_OUTPUT)
+    appendFileSync(
+      process.env.GITHUB_OUTPUT,
+      `captured=${observation !== null}\n`,
+    );
+  if (observation === null) return;
   mkdirSync(dirname(output), { recursive: true });
   writeFileSync(output, `${JSON.stringify(observation, null, 2)}\n`, {
     flag: "wx",

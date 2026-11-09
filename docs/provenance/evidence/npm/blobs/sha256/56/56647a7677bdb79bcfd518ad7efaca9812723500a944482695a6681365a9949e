@@ -1,0 +1,192 @@
+{
+  "artifactId": "443190d7d51b1db64a7bb06620cc6903d3bfb9eeeebbeeb09ba8b1d23b23ae86",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6089,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "50e77cb4f2f01856a0695ce51be6d2ead54269feff152e1b44aff884687513e4",
+        "size": 124,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts.map",
+        "sha256": "151b505bc60bfd3da44e1c20c80e71422368993cd125cb4e59b1474861ca8754",
+        "size": 97,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "38e8209a8b251e633588fd16ad1152c33daced7ff21be821827c29be7bf37d3f",
+        "size": 92,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.d.ts",
+        "sha256": "955f2b004fe0eaad6094b6649c025c15439e52ce3e333113f3979a4d965ef494",
+        "size": 775,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.d.ts.map",
+        "sha256": "1b76feef1c87714e1a6094ed37238df02f0812e48cf5603ec71b67c243a724dc",
+        "size": 203,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "d07a739ed77ee23a0944797f9bb0c0a98bd6a3af3aa2552765f97ecf3e11334e",
+        "size": 4871,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "9327b2496938f69daa3009c57343dd161b425853e64437c055066c3659e41ed4",
+        "size": 2322,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "29eff2a149ff2e9b4f3874351bb7e7acc8f3c3d4f58045810f246bb39d44fae3",
+        "size": 9835,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1094,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/dd/dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+          "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094
+      },
+      {
+        "blob": {
+          "bytes": 9835,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/29/29eff2a149ff2e9b4f3874351bb7e7acc8f3c3d4f58045810f246bb39d44fae3",
+          "sha256": "29eff2a149ff2e9b4f3874351bb7e7acc8f3c3d4f58045810f246bb39d44fae3"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "29eff2a149ff2e9b4f3874351bb7e7acc8f3c3d4f58045810f246bb39d44fae3",
+        "size": 9835
+      }
+    ],
+    "expandedBytes": 19413,
+    "packageIdentity": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "mdast-util-gfm-task-list-item",
+      "repository": "syntax-tree/mdast-util-gfm-task-list-item",
+      "version": "2.0.1"
+    },
+    "packageMetadata": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "bugs": "https://github.com/syntax-tree/mdast-util-gfm-task-list-item/issues",
+      "contributors": [
+        "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+      ],
+      "dependencies": {
+        "@types/mdast": "^4.0.0",
+        "devlop": "^1.0.0",
+        "mdast-util-from-markdown": "^2.0.0",
+        "mdast-util-to-markdown": "^2.0.0"
+      },
+      "description": "mdast extension to parse and serialize GFM task list items",
+      "devDependencies": {
+        "@types/node": "^26.0.0",
+        "c8": "^12.0.0",
+        "micromark-extension-gfm-task-list-item": "^2.0.0",
+        "prettier": "^3.0.0",
+        "remark-cli": "^12.0.0",
+        "remark-preset-wooorm": "^11.0.0",
+        "type-coverage": "^2.0.0",
+        "typescript": "^6.0.0",
+        "unist-util-remove-position": "^5.0.0",
+        "xo": "^5.0.0"
+      },
+      "exports": "./index.js",
+      "files": [
+        "lib/",
+        "index.d.ts.map",
+        "index.d.ts",
+        "index.js"
+      ],
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/unified"
+      },
+      "keywords": [
+        "checkbox",
+        "check",
+        "gfm",
+        "item",
+        "list",
+        "markdown",
+        "markup",
+        "mdast-util",
+        "mdast",
+        "task",
+        "todo",
+        "unist",
+        "utility",
+        "util"
+      ],
+      "license": "MIT",
+      "name": "mdast-util-gfm-task-list-item",
+      "prettier": {
+        "bracketSpacing": false,
+        "semi": false,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "trailingComma": "none",
+        "useTabs": false
+      },
+      "remarkConfig": {
+        "plugins": [
+          "remark-preset-wooorm"
+        ]
+      },
+      "repository": "syntax-tree/mdast-util-gfm-task-list-item",
+      "scripts": {
+        "build": "tsc --build --clean && tsc --build && type-coverage",
+        "format": "remark --frail --output --quiet -- . && prettier --log-level warn --write -- . && xo --fix",
+        "prepack": "npm run build && npm run format",
+        "test": "npm run build && npm run format && npm run test-coverage",
+        "test-api": "npm run test-api-dev && npm run test-api-prod",
+        "test-api-dev": "node --conditions development test.js",
+        "test-api-prod": "node --conditions production test.js",
+        "test-coverage": "c8 --100 --reporter lcov -- npm run test-api"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "typeCoverage": {
+        "atLeast": 100,
+        "strict": true
+      },
+      "version": "2.0.1"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 6089,
+      "sha256": "fe233f6425828acfdde196d6ebb5ebe272e34bed5c95972226362824ba515ff7"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

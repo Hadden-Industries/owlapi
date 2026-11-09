@@ -15,7 +15,12 @@ const lock = JSON.parse(readFileSync("package-lock.json", "utf8"));
 
 describe("development dependency and runtime eligibility", () => {
   test("floating minimums retain an exact reproducible root graph", () => {
-    expect(Object.keys(manifest.devDependencies)).toHaveLength(24);
+    expect(Object.keys(manifest.devDependencies)).toHaveLength(26);
+    expect(
+      manifest.devDependencies["@hadden-industries/markdown-quality"],
+    ).toBe(">=3.0.1");
+    expect(manifest.scripts).not.toHaveProperty("install:markdown");
+    expect(manifest.scripts).not.toHaveProperty("qualify:markdown");
     expect(lock.packages[""].devDependencies).toEqual(manifest.devDependencies);
     expect(lock.packages[""].engines).toEqual(manifest.engines);
     for (const [name, range] of Object.entries(manifest.devDependencies)) {

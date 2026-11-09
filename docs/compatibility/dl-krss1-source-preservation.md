@@ -17,15 +17,20 @@ The two production repairs were committed before candidate construction.
 The package bytes were built from that KRSS1 revision; the source packlist digest is `8f72dbe97c64842acacdbcc98b8b2000f93d9f6103b585f12eb1a8b01592c5a4`.
 The candidate manifest records `UNCOMMITTED_QUALIFICATION_SNAPSHOT` because the public consumer harness was uncommitted at construction time.
 That exact harness was subsequently committed as `1e27077221aecfb282a6229fa189ed22cf73170d` and supplied both construction and initial portable/browser qualification.
+
 Subsequent test exercises and this record are outside the package packlist.
 The corrected harness was qualified against the same tarball after review; its `test/import-closure/public-contract.js` SHA-256 is `41a3a8c732684ef2d2f9db96d313c6d1a72b087713fa3a2aed494a73b412bb07`.
+
 The final qualification commit contains that harness and this record; the content digest identifies it without a circular reference to its own commit SHA.
 Fresh outputs are `.release/dl-krss1-source-preservation-02/portable.json`, `chromium.log` and `webkit.log` (portable PASS and six browser tests passed).
+
 PR 26's first CI run qualified this identical tarball on both supported Node majors and all three browsers, but its isolated WebVOWL job rejected one unbraced preserve-mode assertion under the consumer's `curly` lint rule.
 A syntax-only follow-up added braces, passed that exact lint rule locally, and refreshed the already approved `public-contract.js` integrity entry.
+
 The resulting harness SHA-256 is `aa471f302c5f0d72c02f5704f7b822d6497b86e0e0fbf04f8c92794f4a48134a`; fresh portable qualification and six Chromium/WebKit tests passed under `.release/dl-krss1-source-preservation-03/`.
 The local launcher still could not start Firefox; the final PR revision must supply fresh CI coverage.
 Earlier full-profile and review evidence remains tied to its original revision.
+
 The final brace-only delta was reviewed directly; final governed and remote checks are refreshed for the new snapshot, while unchanged package bytes reuse the original candidate.
 The package-content manifest and rights facts were refreshed without changing the pending human rights-review status or asserting release approval.
 
@@ -33,6 +38,7 @@ The package-content manifest and rights facts were refreshed without changing th
 
 DL integer and double tokens retain their original lexical string and existing datatype in strict, compatible and preserve modes.
 Eight assertion cases per mode cover zero, leading/trailing zeros, fractional precision, a terminal decimal point, an unsafe-range integer, a 400-digit integer and a long fraction.
+
 Two data-nominal cases per mode distinguish equal values with different strings from exact duplicate set entries.
 Expected axioms come from explicit factory calls, never parser-generated snapshots.
 Negative-number, exponent and quoted spellings remain identifier tokens; malformed decimal input remains separate tokens.
@@ -41,6 +47,7 @@ No new numeric grammar or cardinality behavior is introduced.
 Well-formed KRSS1 `:right-identity` throws `UNSUPPORTED_CONSTRUCT`, with `format: "krss1"`, `construct: ":right-identity"` and `reason: "UNSUPPORTED_KRSS1_RIGHT_IDENTITY"`.
 Two attribute spellings and four malformed productions are checked in all three modes.
 The required role and closing delimiter are validated first; malformed local clauses retain syntax errors.
+
 The existing attribute location is one-based column 28, offset 27, in the compact regression input, and is omitted when locations are disabled.
 The whole document is not validated after this fatal error.
 Earlier resource exhaustion and cancellation retain their existing behavior.
@@ -48,6 +55,7 @@ Earlier resource exhaustion and cancellation retain their existing behavior.
 The historical `phase17-structural.krss` and `phase17-structural.java.json` remain byte-for-byte unchanged.
 The former now tests explicit rejection.
 The project-authored `source-preservation-supported.krss` omits only the unsupported identity clause and has eleven independently constructed expected axioms plus its complete typed signature, imports and annotations.
+
 The existing Java 5.5.1 observation at `d7e997a53b470e32700de89cc610d9daf01ea769` is reused as historical evidence, not reported as a new Java run.
 Its no-effect behavior is an explicit controlled compatibility correction in the existing ledger.
 No qualifying historical strict-KRSS corpus is claimed.
@@ -59,6 +67,7 @@ The [original-KRSS decision](../adr/0008-promote-original-krss1-into-v1.md), ame
 
 The production audit followed all DL axiom/expression branches and every top-level keyword admitted by the KRSS1 adapter through the shared core.
 Each semantic production constructs an axiom/expression or fails; delimiters, comments and whitespace are grammar control.
+
 The only two DL literal consumers are atomic data assertions and data nominals, both routed through the repaired literal method.
 No additional silent semantic-discard path was found within this finite audit.
 KRSS2-only branches remain gated by its adapter and covered by its existing suite.
@@ -84,7 +93,9 @@ KRSS2-only branches remain gated by its adapter and covered by its existing suit
 
 `exerciseParserPreservation` uses only public package subpaths and runs in the source-tree suite, installed Node smoke test and shared browser/worker exercise.
 For every mode it loads a Functional Syntax root importing explicitly selected DL and KRSS1 documents, with declarations supplied by the root.
+
 It checks exact axioms, typed signatures, format identities, root/import identity, frozen import-parent context and fatal imported rejection under a tolerant missing-import policy.
+
 An immediate public lookup confirms the failed root was never published; a successful retry with the same manager and document identities, two fresh import-loader calls and exactly three documents proves rollback.
 Preserve mode separately checks formal and source validity, forged metadata rejection, a closure-wide property collision and stale evidence after mutation.
 
@@ -118,8 +129,10 @@ No checker defaults or policies were changed.
 
 Raw logs and manifests were created under `.release/dl-krss1-source-preservation-01/` and `-02/`, with the original durable copy at `C:/Users/maksy/.hi/w/e/task-evidence/2026-10-01-owlapi-dl-krss1`.
 The 2026-10-07 cleanup recycled attempts `-01/`, `-02/` and `-03/` after verifying preservation of their raw results, candidate bytes, reproduction inputs and review-clone history.
+
 All former attempt paths in this record map to retained content through `preservation-manifest.json.gz` under `C:/Users/maksy/.hi/w/e/task-artifacts/owlapi-release-residue-20261007-cleanup`; supplemental content is in `supplemental-evidence.zip` there.
 The completed cleanup and evidence readback are recorded in [HISEW issue #131](https://github.com/Hadden-Industries/software-engineering-workflow/issues/131).
+
 The reviews were static, read-only inspections, not independent executions of the reported tests.
 The required final profile contains Jest, boundary, lint, format, release-gate and workflow-governance checks; it is scheduled through HISEW rather than repeated solely for a receipt.
 
@@ -127,6 +140,7 @@ The required final profile contains Jest, boundary, lint, format, release-gate a
 
 DL baseline completed; KRSS1 baseline completed on its one bounded retry.
 KRSS2 baseline and all three candidate benchmarks were blocked by the unchanged idle-machine guard; each failed command was attempted at most twice.
+
 The owner separately approved proceeding with the KRSS2 baseline limitation and with all three blocked candidate measurements.
 There is no measured no-regression claim for blocked comparisons.
 Resource ceilings remain unchanged and deterministic resource tests pass.

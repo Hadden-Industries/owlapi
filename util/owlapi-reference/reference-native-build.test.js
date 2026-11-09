@@ -6,6 +6,7 @@ import {
   mkdirSync,
   mkdtempSync,
   readFileSync,
+  realpathSync,
   rmSync,
   symlinkSync,
   utimesSync,
@@ -22,7 +23,10 @@ import { REFERENCE_RECIPE } from "./reference-inputs.mjs";
 
 const roots = [];
 const fixture = () => {
-  const root = mkdtempSync(join(tmpdir(), "reference-tools-"));
+  // Alias guards refuse 8.3 temp spellings such as RUNNER~1.
+  const root = realpathSync.native(
+    mkdtempSync(join(tmpdir(), "reference-tools-")),
+  );
   roots.push(root);
   const tool = join(root, "tool");
   mkdirSync(join(tool, "bin"), { recursive: true });

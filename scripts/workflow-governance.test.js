@@ -35,6 +35,82 @@ const mutateWorkflow = (fileName, mutate) => {
 };
 
 describe("repository workflow governance", () => {
+  test.each(
+    ["npm_release", "recovery_publish"].flatMap((job) =>
+      [
+        "missing",
+        "conditional",
+        "soft failure",
+        "late",
+        "spoofed token",
+        "attempt counter",
+      ].map((fault) => [job, fault]),
+    ),
+  )("rejects publication-history admission bypass in %s: %s", (job, fault) => {
+    const violations = mutateWorkflow("release.yml", (document) => {
+      const steps = document.getIn(["jobs", job, "steps"]);
+      const guard = steps.items.find(
+        (step) => step.get("id") === "publication_history",
+      );
+      if (fault === "missing")
+        steps.items.splice(steps.items.indexOf(guard), 1);
+      if (fault === "conditional")
+        guard.set("if", "${{ github.run_attempt == 1 }}");
+      if (fault === "soft failure") guard.set("continue-on-error", true);
+      if (fault === "late") {
+        steps.items.splice(steps.items.indexOf(guard), 1);
+        steps.items.push(guard);
+      }
+      if (fault === "spoofed token")
+        guard.setIn(["env", "GITHUB_TOKEN"], "untrusted");
+      if (fault === "attempt counter")
+        steps.items
+          .find((s) => s.get("run")?.includes("npm publish "))
+          .set("if", "${{ github.run_attempt == 1 }}");
+    });
+    expect(violations.length).toBeGreaterThan(0);
+  });
+  test.each(
+    ["npm_release", "recovery_publish"].flatMap((job) =>
+      [
+        "missing",
+        "skipped",
+        "soft failure",
+        "after write",
+        "wrong artifact",
+        "missing dependency",
+      ].map((fault) => [job, fault]),
+    ),
+  )("rejects documentation admission bypass in %s: %s", (job, fault) => {
+    const violations = mutateWorkflow("release.yml", (document) => {
+      const publisher = document.getIn(["jobs", job]);
+      const steps = publisher.get("steps");
+      const guard = steps.items.find((step) =>
+        step.get("run")?.includes("verify-publication-documentation.mjs"),
+      );
+      expect(guard).toBeDefined();
+      if (fault === "missing")
+        steps.items.splice(steps.items.indexOf(guard), 1);
+      if (fault === "skipped") guard.set("if", "${{ false }}");
+      if (fault === "soft failure") guard.set("continue-on-error", true);
+      if (fault === "after write") {
+        steps.items.splice(steps.items.indexOf(guard), 1);
+        steps.items.push(guard);
+      }
+      if (fault === "wrong artifact")
+        steps.items
+          .find(
+            (step) =>
+              step.get("name") ===
+              "Download the accepted documentation preflight",
+          )
+          .setIn(["with", "artifact-ids"], "1");
+      if (fault === "missing dependency")
+        publisher.set("needs", document.createNode([]));
+    });
+    expect(violations.length).toBeGreaterThan(0);
+    expect(violations.join("\n")).toMatch(/documentation|recovery/u);
+  });
   test.each([
     "ordinary guard",
     "recovery guard",
@@ -361,7 +437,11 @@ describe("repository workflow governance", () => {
   )("requires complete JSON setup in %s:%s", (file, id) => {
     const violations = mutateWorkflow(file, (doc) => {
       const steps = doc.getIn(["jobs", id, "steps"]);
-      const setup = steps.items.find((step) => step.get("run") === "npm ci");
+      const setup = steps.items.find(
+        (step) =>
+          step.get("run") ===
+          (id === "source_json" ? "npm ci" : "npm ci --ignore-scripts"),
+      );
       expect(setup).toBeDefined();
       steps.items.splice(steps.items.indexOf(setup), 1);
     });
@@ -460,7 +540,8 @@ describe("repository workflow governance", () => {
           gate.items.splice(gate.items.indexOf(upload), 1);
           gate.items.push(upload);
         }
-        if (mutation === "rerun-capture") capture.delete("if");
+        if (mutation === "rerun-capture")
+          capture.set("if", "${{ github.run_attempt == 1 }}");
         if (mutation === "overwrite") upload.setIn(["with", "overwrite"], true);
       }).join("\n"),
     ).toContain(
@@ -530,24 +611,78 @@ describe("repository workflow governance", () => {
       ).toMatch(/Node 26 floor/u);
     },
   );
-  test.each(["skip", "ignore", "late"])(
-    "rejects ineffective isolated Markdown acquisition: %s",
-    (mutation) => {
-      expect(
-        mutateWorkflow("ci.yml", (document) => {
-          const steps = document.getIn(["jobs", "source_canonical", "steps"]);
+  test.each(["ci.yml", "release.yml"])(
+    "rejects ineffective root Markdown acquisition in %s",
+    (fileName) => {
+      for (const mutation of ["skip", "ignore", "late", "scripts"]) {
+        expect(
+          mutateWorkflow(fileName, (document) => {
+            const steps = document.getIn(["jobs", "source_canonical", "steps"]);
+            const index = steps.items.findIndex(
+              (step) => step.get("run") === "npm ci --ignore-scripts",
+            );
+            const install = steps.items[index];
+            if (mutation === "skip") install.set("if", "false");
+            if (mutation === "ignore") install.set("continue-on-error", true);
+            if (mutation === "scripts") install.set("run", "npm ci");
+            if (mutation === "late") {
+              steps.items.splice(index, 1);
+              steps.items.push(install);
+            }
+          }).join("\n"),
+        ).toMatch(/root JSON installation|Markdown checking|Markdown probes/u);
+      }
+    },
+  );
+  test.each(["ci.yml", "release.yml"])(
+    "allows cheap probes before formatting within source admission in %s",
+    (fileName) => {
+      const violations = mutateWorkflow(fileName, (document) => {
+        const steps = document.getIn(["jobs", "source_canonical", "steps"]);
+        for (const command of ["npm run test:json", "npm run test:markdown"]) {
           const index = steps.items.findIndex(
-            (step) => step.get("run") === "npm run install:markdown",
+            (step) => step.get("run") === command,
           );
-          const install = steps.items[index];
-          if (mutation === "skip") install.set("if", "false");
-          if (mutation === "ignore") install.set("continue-on-error", true);
-          if (mutation === "late") {
-            steps.items.splice(index, 1);
-            steps.items.push(install);
+          const [probe] = steps.items.splice(index, 1);
+          const format = steps.items.findIndex(
+            (step) =>
+              step.get("run") ===
+              "npm run check:node && npm run check:version && npm run format:source-python:check && npm run format:json:check",
+          );
+          steps.items.splice(format, 0, probe);
+        }
+      });
+      expect(violations).toEqual([]);
+    },
+  );
+  test.each(["ci.yml", "release.yml"])(
+    "rejects weakened complete Markdown checking in %s",
+    (fileName) => {
+      for (const jobId of ["source_canonical", "quality_windows"])
+        for (const command of [
+          "npm run check:node && npm run check:version && npm run format:source-python:check && npm run format:json:check",
+          "npm run lint",
+        ])
+          for (const mutation of ["skip", "ignore", "selected", "late"]) {
+            expect(
+              mutateWorkflow(fileName, (document) => {
+                const step = document
+                  .getIn(["jobs", jobId, "steps"])
+                  .items.find((item) => item.get("run") === command);
+                if (mutation === "skip") step.set("if", "false");
+                if (mutation === "ignore") step.set("continue-on-error", true);
+                if (mutation === "selected")
+                  step.set("run", "npm run check:markdown -- -- README.md");
+                if (mutation === "late") {
+                  const steps = document.getIn(["jobs", jobId, "steps"]);
+                  steps.items.splice(steps.items.indexOf(step), 1);
+                  steps.items.splice(steps.items.length - 1, 0, step);
+                }
+              }).join("\n"),
+            ).toMatch(
+              /Markdown checking|Markdown probes|source formatting|requires npm run/u,
+            );
           }
-        }).join("\n"),
-      ).toMatch(/isolated Markdown acquisition|Markdown setup before/u);
     },
   );
   test.each(["source_portable", "source_json"])(
@@ -836,7 +971,6 @@ describe("repository workflow governance", () => {
       "ci.yml",
       "extended-tests.yml",
       "maintenance.yml",
-      "markdown-quality.yml",
       "release-reconciliation.yml",
       "release.yml",
     ]);
@@ -1314,7 +1448,7 @@ describe("repository workflow governance", () => {
       .items.find((step) => step.get("run")?.includes("npm publish "));
     publish.delete("if");
     expect(auditReleaseMutationBoundary(document.toString())).toContain(
-      "release.yml:npm_release must restrict the sole write to the first run attempt",
+      "release.yml:npm_release must restrict the sole write to authenticated publication admission",
     );
   });
 
@@ -1380,52 +1514,5 @@ describe("repository workflow governance", () => {
         expect.stringMatching(/closed source-run selector/u),
       ]),
     );
-  });
-});
-
-describe("trusted Markdown dispatch", () => {
-  test.each([
-    "floating producer",
-    "wrong producer revision",
-    "write token",
-    "candidate trust",
-    "inherited secrets",
-    "candidate execution",
-    "skipped qualification",
-    "profile override",
-    "privileged trigger",
-    "optional trusted input",
-    "extra input",
-  ])("rejects %s", (mutation) => {
-    const violations = mutateWorkflow("markdown-quality.yml", (document) => {
-      const job = document.getIn(["jobs", "markdown"]);
-      if (mutation === "floating producer")
-        job.set("uses", job.get("uses").replace(/@[a-f0-9]{40}$/u, "@main"));
-      if (mutation === "wrong producer revision")
-        job.set(
-          "uses",
-          job.get("uses").replace(/@[a-f0-9]{40}$/u, "@" + "0".repeat(40)),
-        );
-      if (mutation === "write token")
-        job.setIn(["permissions", "contents"], "write");
-      if (mutation === "candidate trust")
-        job.setIn(["with", "trusted-sha"], "${{ inputs.candidate_sha }}");
-      if (mutation === "inherited secrets") job.set("secrets", "inherit");
-      if (mutation === "candidate execution")
-        job.set("steps", [{ run: "node candidate/evil.js" }]);
-      if (mutation === "skipped qualification") job.set("if", "false");
-      if (mutation === "profile override")
-        job.setIn(["with", "profile"], "candidate/evil.json");
-      if (mutation === "privileged trigger")
-        document.setIn(["on", "pull_request_target"], {});
-      if (mutation === "optional trusted input")
-        document.setIn(
-          ["on", "workflow_dispatch", "inputs", "trusted_sha", "required"],
-          false,
-        );
-      if (mutation === "extra input")
-        job.setIn(["with", "memoryBytes"], 9999999999);
-    });
-    expect(violations.join("\n")).toMatch(/trusted data checker/u);
   });
 });

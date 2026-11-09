@@ -1,7 +1,6 @@
-//#region \0rolldown/runtime.js
-var __commonJSMin = (cb, mod) => () => (mod || (cb((mod = { exports: {} }).exports, mod), cb = null), mod.exports);
-//#endregion
-//#region node_modules/rdf-canonize/lib/IdentifierIssuer.js
+// \0rolldown/runtime.js
+var __commonJSMin = (cb, mod) => () => (mod || (cb((mod = { exports: {} }).exports, mod, mod.exports), cb = null), mod.exports);
+// node_modules/rdf-canonize/lib/IdentifierIssuer.js
 var require_IdentifierIssuer = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = class IdentifierIssuer {
 		/**
@@ -66,8 +65,7 @@ var require_IdentifierIssuer = /* @__PURE__ */ __commonJSMin(((exports, module) 
 		}
 	};
 }));
-//#endregion
-//#region node_modules/setimmediate/setImmediate.js
+// node_modules/setimmediate/setImmediate.js
 var require_setImmediate = /* @__PURE__ */ __commonJSMin((() => {
 	(function(global, undefined) {
 		"use strict";
@@ -194,8 +192,7 @@ var require_setImmediate = /* @__PURE__ */ __commonJSMin((() => {
 		attachTo.clearImmediate = clearImmediate;
 	})(typeof self === "undefined" ? typeof global === "undefined" ? void 0 : global : self);
 }));
-//#endregion
-//#region node_modules/rdf-canonize/lib/platform-browser.js
+// node_modules/rdf-canonize/lib/platform-browser.js
 /*!
 * Copyright (c) 2023 Digital Bazaar, Inc. All rights reserved.
 */
@@ -212,8 +209,7 @@ var require_platform_browser$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 		return hex;
 	};
 }));
-//#endregion
-//#region node_modules/rdf-canonize/lib/MessageDigest-webcrypto.js
+// node_modules/rdf-canonize/lib/MessageDigest-webcrypto.js
 /*!
 * Copyright (c) 2016-2023 Digital Bazaar, Inc. All rights reserved.
 */
@@ -251,8 +247,7 @@ var require_MessageDigest_webcrypto = /* @__PURE__ */ __commonJSMin(((exports, m
 		}
 	};
 }));
-//#endregion
-//#region node_modules/rdf-canonize/lib/Permuter.js
+// node_modules/rdf-canonize/lib/Permuter.js
 /*!
 * Copyright (c) 2016-2022 Digital Bazaar, Inc. All rights reserved.
 */
@@ -309,8 +304,7 @@ var require_Permuter = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		}
 	};
 }));
-//#endregion
-//#region node_modules/rdf-canonize/lib/NQuads.js
+// node_modules/rdf-canonize/lib/NQuads.js
 /*!
 * Copyright (c) 2016-2022 Digital Bazaar, Inc. All rights reserved.
 */
@@ -579,8 +573,7 @@ var require_NQuads$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		});
 	}
 }));
-//#endregion
-//#region node_modules/rdf-canonize/lib/RDFC10.js
+// node_modules/rdf-canonize/lib/RDFC10.js
 /*!
 * Copyright (c) 2016-2023 Digital Bazaar, Inc. All rights reserved.
 */
@@ -836,8 +829,7 @@ var require_RDFC10 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return a.hash < b.hash ? -1 : a.hash > b.hash ? 1 : 0;
 	}
 }));
-//#endregion
-//#region node_modules/rdf-canonize/lib/RDFC10Sync.js
+// node_modules/rdf-canonize/lib/RDFC10Sync.js
 /*!
 * Copyright (c) 2016-2023 Digital Bazaar, Inc. All rights reserved.
 */
@@ -1081,8 +1073,7 @@ var require_RDFC10Sync = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return a.hash < b.hash ? -1 : a.hash > b.hash ? 1 : 0;
 	}
 }));
-//#endregion
-//#region node_modules/rdf-canonize/lib/index.js
+// node_modules/rdf-canonize/lib/index.js
 /**
 * An implementation of the RDF Dataset Normalization specification.
 * This library works in the browser and node.js.
@@ -1267,8 +1258,7 @@ var require_lib = /* @__PURE__ */ __commonJSMin(((exports) => {
 		throw new Error("Invalid RDF Dataset Canonicalization algorithm: " + options.algorithm);
 	};
 }));
-//#endregion
-//#region node_modules/rdf-canonize/index.js
+// node_modules/rdf-canonize/index.js
 var require_rdf_canonize = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* An implementation of the RDF Dataset Normalization specification.
@@ -1279,8 +1269,7 @@ var require_rdf_canonize = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	*/
 	module.exports = require_lib();
 }));
-//#endregion
-//#region node_modules/jsonld/lib/types.js
+// node_modules/jsonld/lib/types.js
 var require_types = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var api = {};
 	module.exports = api;
@@ -1357,8 +1346,7 @@ var require_types = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	*/
 	api.isUndefined = (v) => typeof v === "undefined";
 }));
-//#endregion
-//#region node_modules/jsonld/lib/graphTypes.js
+// node_modules/jsonld/lib/graphTypes.js
 var require_graphTypes = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var types = require_types();
 	var api = {};
@@ -1432,8 +1420,7 @@ var require_graphTypes = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return false;
 	};
 }));
-//#endregion
-//#region node_modules/jsonld/lib/JsonLdError.js
+// node_modules/jsonld/lib/JsonLdError.js
 var require_JsonLdError = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = class JsonLdError extends Error {
 		/**
@@ -1451,8 +1438,7 @@ var require_JsonLdError = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		}
 	};
 }));
-//#endregion
-//#region node_modules/jsonld/lib/util.js
+// node_modules/jsonld/lib/util.js
 var require_util = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var graphTypes = require_graphTypes();
 	var types = require_types();
@@ -1750,8 +1736,7 @@ var require_util = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return element;
 	}
 }));
-//#endregion
-//#region node_modules/jsonld/lib/constants.js
+// node_modules/jsonld/lib/constants.js
 var require_constants = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 	var XSD = "http://www.w3.org/2001/XMLSchema#";
@@ -1776,8 +1761,7 @@ var require_constants = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		XSD_STRING: XSD + "string"
 	};
 }));
-//#endregion
-//#region node_modules/jsonld/lib/RequestQueue.js
+// node_modules/jsonld/lib/RequestQueue.js
 var require_RequestQueue = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = class RequestQueue {
 		/**
@@ -1805,8 +1789,7 @@ var require_RequestQueue = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		}
 	};
 }));
-//#endregion
-//#region node_modules/jsonld/lib/url.js
+// node_modules/jsonld/lib/url.js
 var require_url = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var types = require_types();
 	var api = {};
@@ -1985,8 +1968,7 @@ var require_url = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	*/
 	api.isRelative = (v) => types.isString(v);
 }));
-//#endregion
-//#region node_modules/jsonld/lib/documentLoaders/xhr.js
+// node_modules/jsonld/lib/documentLoaders/xhr.js
 var require_xhr = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var { parseLinkHeader, buildHeaders } = require_util();
 	var { LINK_HEADER_CONTEXT } = require_constants();
@@ -2067,8 +2049,7 @@ var require_xhr = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		});
 	}
 }));
-//#endregion
-//#region node_modules/jsonld/lib/platform-browser.js
+// node_modules/jsonld/lib/platform-browser.js
 var require_platform_browser = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var xhrLoader = require_xhr();
 	var api = {};
@@ -2098,8 +2079,7 @@ var require_platform_browser = /* @__PURE__ */ __commonJSMin(((exports, module) 
 		});
 	};
 }));
-//#endregion
-//#region node_modules/jsonld/node_modules/yallist/iterator.js
+// node_modules/jsonld/node_modules/yallist/iterator.js
 var require_iterator = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = function(Yallist) {
 		Yallist.prototype[Symbol.iterator] = function* () {
@@ -2107,8 +2087,7 @@ var require_iterator = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		};
 	};
 }));
-//#endregion
-//#region node_modules/jsonld/node_modules/yallist/yallist.js
+// node_modules/jsonld/node_modules/yallist/yallist.js
 var require_yallist = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = Yallist;
 	Yallist.Node = Node;
@@ -2357,8 +2336,7 @@ var require_yallist = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		require_iterator()(Yallist);
 	} catch (er) {}
 }));
-//#endregion
-//#region node_modules/jsonld/node_modules/lru-cache/index.js
+// node_modules/jsonld/node_modules/lru-cache/index.js
 var require_lru_cache = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Yallist = require_yallist();
 	var MAX = Symbol("max");
@@ -2594,8 +2572,7 @@ var require_lru_cache = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	};
 	module.exports = LRUCache;
 }));
-//#endregion
-//#region node_modules/jsonld/lib/ResolvedContext.js
+// node_modules/jsonld/lib/ResolvedContext.js
 var require_ResolvedContext = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var LRU = require_lru_cache();
 	var MAX_ACTIVE_CONTEXTS = 10;
@@ -2617,8 +2594,7 @@ var require_ResolvedContext = /* @__PURE__ */ __commonJSMin(((exports, module) =
 		}
 	};
 }));
-//#endregion
-//#region node_modules/jsonld/lib/ContextResolver.js
+// node_modules/jsonld/lib/ContextResolver.js
 var require_ContextResolver = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var { isArray: _isArray, isObject: _isObject, isString: _isString } = require_types();
 	var { asArray: _asArray } = require_util();
@@ -2804,13 +2780,11 @@ var require_ContextResolver = /* @__PURE__ */ __commonJSMin(((exports, module) =
 		});
 	}
 }));
-//#endregion
-//#region node_modules/jsonld/lib/NQuads.js
+// node_modules/jsonld/lib/NQuads.js
 var require_NQuads = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = require_rdf_canonize().NQuads;
 }));
-//#endregion
-//#region node_modules/jsonld/lib/events.js
+// node_modules/jsonld/lib/events.js
 var require_events = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var JsonLdError = require_JsonLdError();
 	var { isArray: _isArray } = require_types();
@@ -2942,8 +2916,7 @@ var require_events = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		api.defaultEventHandler = eventHandler ? _asArray(eventHandler) : null;
 	};
 }));
-//#endregion
-//#region node_modules/jsonld/lib/context.js
+// node_modules/jsonld/lib/context.js
 var require_context = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var util = require_util();
 	var JsonLdError = require_JsonLdError();
@@ -3888,8 +3861,7 @@ var require_context = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return true;
 	}
 }));
-//#endregion
-//#region node_modules/jsonld/lib/expand.js
+// node_modules/jsonld/lib/expand.js
 var require_expand = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var JsonLdError = require_JsonLdError();
 	var { isArray: _isArray, isObject: _isObject, isEmptyObject: _isEmptyObject, isString: _isString, isUndefined: _isUndefined } = require_types();
@@ -4680,8 +4652,7 @@ var require_expand = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return rval;
 	}
 }));
-//#endregion
-//#region node_modules/jsonld/lib/nodeMap.js
+// node_modules/jsonld/lib/nodeMap.js
 var require_nodeMap = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var { isKeyword } = require_context();
 	var graphTypes = require_graphTypes();
@@ -4866,8 +4837,7 @@ var require_nodeMap = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return defaultGraph;
 	};
 }));
-//#endregion
-//#region node_modules/jsonld/lib/flatten.js
+// node_modules/jsonld/lib/flatten.js
 var require_flatten = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var { isSubjectReference: _isSubjectReference } = require_graphTypes();
 	var { createMergedNodeMap: _createMergedNodeMap } = require_nodeMap();
@@ -4891,8 +4861,7 @@ var require_flatten = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return flattened;
 	};
 }));
-//#endregion
-//#region node_modules/jsonld/lib/fromRdf.js
+// node_modules/jsonld/lib/fromRdf.js
 var require_fromRdf = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var JsonLdError = require_JsonLdError();
 	var graphTypes = require_graphTypes();
@@ -5093,8 +5062,7 @@ var require_fromRdf = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return null;
 	}
 }));
-//#endregion
-//#region node_modules/canonicalize/lib/canonicalize.js
+// node_modules/canonicalize/lib/canonicalize.js
 var require_canonicalize = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = function serialize(object) {
 		if (typeof object === "number" && isNaN(object)) throw new Error("NaN is not allowed");
@@ -5110,8 +5078,7 @@ var require_canonicalize = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		}, "")}}`;
 	};
 }));
-//#endregion
-//#region node_modules/jsonld/lib/toRdf.js
+// node_modules/jsonld/lib/toRdf.js
 var require_toRdf = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var { createNodeMap } = require_nodeMap();
 	var { isKeyword } = require_context();
@@ -5418,8 +5385,7 @@ var require_toRdf = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		};
 	}
 }));
-//#endregion
-//#region node_modules/jsonld/lib/frame.js
+// node_modules/jsonld/lib/frame.js
 var require_frame = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var { isKeyword } = require_context();
 	var graphTypes = require_graphTypes();
@@ -5901,8 +5867,7 @@ var require_frame = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return true;
 	}
 }));
-//#endregion
-//#region node_modules/jsonld/lib/compact.js
+// node_modules/jsonld/lib/compact.js
 var require_compact = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var JsonLdError = require_JsonLdError();
 	var { isArray: _isArray, isObject: _isObject, isString: _isString, isUndefined: _isUndefined } = require_types();
@@ -6538,8 +6503,7 @@ var require_compact = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		if (_expandIri(activeCtx, nestProperty, { vocab: true }, options) !== "@nest") throw new JsonLdError("JSON-LD compact error; nested property must have an @nest value resolving to @nest.", "jsonld.SyntaxError", { code: "invalid @nest value" });
 	}
 }));
-//#endregion
-//#region node_modules/jsonld/lib/JsonLdProcessor.js
+// node_modules/jsonld/lib/JsonLdProcessor.js
 var require_JsonLdProcessor = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = (jsonld) => {
 		class JsonLdProcessor {
@@ -6572,8 +6536,7 @@ var require_JsonLdProcessor = /* @__PURE__ */ __commonJSMin(((exports, module) =
 		return JsonLdProcessor;
 	};
 }));
-//#endregion
-//#region node_modules/jsonld/lib/jsonld.js
+// node_modules/jsonld/lib/jsonld.js
 var require_jsonld = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* A JavaScript implementation of the JSON-LD API.
@@ -7258,5 +7221,4 @@ var require_jsonld = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	wrapper(factory);
 	module.exports = factory;
 }));
-//#endregion
 export default require_jsonld();

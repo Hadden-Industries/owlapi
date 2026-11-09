@@ -12,12 +12,14 @@ Both behavior profiles use this provider.
 
 Rebuild with `node scripts/build-jsonld-provider.mjs` after installing the repository lockfile.
 `build-manifest.json` retains every build input digest, the complete two-file source change, builder identity and tool versions, the lockfile digest, bundled package identities and the output digest.
+
 Verify exact reproduction with `node scripts/build-jsonld-provider.mjs --check`.
 An upstream update must requalify that change and the JSON-LD consumer tests before rebuilding.
 Remove this source change when upstream exposes an equivalent supported option.
 
 The JSON-LD implementation is reused under its BSD-3-Clause license, retained in `LICENSE.txt`.
 Original license and notice files for every bundled package and the bundler runtime are retained under `licenses/` and hashed in the build manifest.
+
 Generated output retains upstream legal comments.
 This is a maintained provider build, with an explicit source change at the limit owner.
 It is not a second JSON-LD algorithm or a new OWLAPI configuration default.

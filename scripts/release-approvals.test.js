@@ -130,7 +130,10 @@ test.each(
   [
     [],
     history("release-manual", "rejected"),
-    [...history("release-manual"), ...history("release-manual")],
+    [
+      ...history("release-manual"),
+      ...history("release-manual", "approved", "AnotherOwner"),
+    ],
     history("release-manual", "approved", ""),
   ].map((reviews) => [reviews]),
 )(
@@ -141,6 +144,16 @@ test.each(
     ).toThrow();
   },
 );
+
+test("accepts repeated approvals by the same reviewer across reruns", () => {
+  expect(
+    approvalFromHistory(
+      [...history("release-manual"), ...history("release-manual")],
+      "release-manual",
+      observedAt,
+    ).reviewer,
+  ).toBe("Owner");
+});
 
 test.each([
   ["source", { commit: "b".repeat(40) }],
@@ -235,6 +248,55 @@ test("recovers both original approvals when fresh authenticated history is empty
     h.client.read.mock.calls.every(([path]) => path.startsWith("/actions/")),
   ).toBe(true);
 });
+
+test.each(["success", "failure"])(
+  "a manual-gate rerun reuses only an authenticated previously successful gate: %s",
+  async (conclusion) => {
+    const h = resolution();
+    const old = h.fixtures[0].jobs[0];
+    old.conclusion = conclusion;
+    const current = {
+      ...old,
+      id: 99,
+      run_attempt: 2,
+      status: "in_progress",
+      conclusion: null,
+    };
+    const originalRead = h.client.read;
+    const client = {
+      read: async (path) => {
+        if (path.endsWith("/approvals")) return [];
+        if (path.includes("/attempts/1/jobs"))
+          return { jobs: [old], total_count: 1 };
+        if (path.includes("/attempts/2/jobs"))
+          return { jobs: [current], total_count: 1 };
+        if (path.endsWith(`/runs/${runId}`))
+          return {
+            head_sha: commit,
+            run_attempt: 2,
+            path: ".github/workflows/release.yml",
+          };
+        return originalRead(path);
+      },
+    };
+    const request = captureApprovalObservation({
+      environment: "release-manual",
+      reuseRetainedManual: true,
+      client,
+      download: h.download,
+      env: {
+        GITHUB_SHA: commit,
+        GITHUB_RUN_ID: runId,
+        GITHUB_RUN_ATTEMPT: "2",
+        GITHUB_REPOSITORY: "Hadden-Industries/owlapi",
+        GITHUB_REF: "refs/heads/main",
+        GITHUB_JOB: "tag_accepted",
+      },
+    });
+    if (conclusion === "success") await expect(request).resolves.toBeNull();
+    else await expect(request).rejects.toThrow();
+  },
+);
 
 test.each([false, true])(
   "retained approvals verify every transport copy; conflict=%s",

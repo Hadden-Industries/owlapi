@@ -6,21 +6,11 @@ import {
   runtimeDigest,
   validateFrozenMatrix,
 } from "./consumer-runtime-matrix.mjs";
-
-const releases = () =>
-  [
-    ...new Set([
-      ...CI_RUNTIME.minimums,
-      ...Object.values(CI_RUNTIME.node).flatMap((reference) => [
-        reference,
-        semver.inc(reference, "patch"),
-      ]),
-    ]),
-  ].map((version) => ({ version: `v${version}` }));
+import { consumerRuntimeFixture } from "./consumer-runtime-fixture.mjs";
 
 describe("frozen consumer runtime admission", () => {
   test("includes every floor, fresh latest patch and distinct reference on every declared platform", () => {
-    const matrix = qualificationMatrix(releases());
+    const { matrix } = consumerRuntimeFixture();
     for (const minimum of CI_RUNTIME.minimums) {
       const reference = CI_RUNTIME.node[semver.major(minimum)];
       expect(matrix.selections).toContainEqual({
@@ -43,7 +33,7 @@ describe("frozen consumer runtime admission", () => {
   ])(
     "rejects %s lane evidence instead of accepting a smaller matrix",
     (mutation) => {
-      const matrix = qualificationMatrix(releases());
+      const { matrix } = consumerRuntimeFixture();
       if (mutation === "missing") matrix.include.pop();
       if (mutation === "duplicate") matrix.include.push(matrix.include[0]);
       if (mutation === "unexpected-platform") matrix.include[0].arch = "other";
@@ -53,32 +43,35 @@ describe("frozen consumer runtime admission", () => {
     },
   );
   test("a newly released patch changes the exact proof identity", () => {
-    const previous = qualificationMatrix(releases());
+    const { matrix: previous, releases } = consumerRuntimeFixture();
     const next = qualificationMatrix([
-      ...releases(),
+      ...releases,
       { version: `v${semver.inc(previous.selections[0].latest, "patch")}` },
     ]);
     expect(runtimeDigest(next)).not.toBe(runtimeDigest(previous));
   });
   test("ignores valid prereleases without admitting them as supported stable lanes", () => {
+    const { matrix, releases } = consumerRuntimeFixture();
+    const missingMinimum = CI_RUNTIME.minimums.at(-1);
     expect(
       qualificationMatrix([
-        ...releases(),
+        ...releases,
         { version: "v27.0.0-alpha.0.0.0" },
         { version: "v26.99.0-rc.1" },
       ]),
-    ).toEqual(qualificationMatrix(releases()));
+    ).toEqual(matrix);
     expect(() =>
       qualificationMatrix([
-        ...releases().filter(({ version }) => version !== "v26.0.0"),
-        { version: "v26.0.0-rc.1" },
+        ...releases.filter(({ version }) => version !== `v${missingMinimum}`),
+        { version: `v${missingMinimum}-rc.1` },
       ]),
     ).toThrow("Missing minimum/reference release");
   });
   test.each(["26.13.0", "v26.13", "v26.13.0-", "v26.13.0-alpha.01"])(
     "rejects malformed release identity %s",
     (version) => {
-      expect(() => qualificationMatrix([...releases(), { version }])).toThrow();
+      const { releases } = consumerRuntimeFixture();
+      expect(() => qualificationMatrix([...releases, { version }])).toThrow();
     },
   );
 });

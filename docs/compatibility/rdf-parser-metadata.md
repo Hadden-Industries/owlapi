@@ -4,6 +4,7 @@ This contract implements the [bounded consumer plan](../plans/2026-10-02-rdf-con
 The [behavior profiles](behavior-profiles.md) now distinguish released Java metadata from the retained normative reconstruction metadata.
 The table below describes `normative-v1`.
 For `java-owlapi-5.5.1`, `getTripleCount()` counts source statement occurrences before dataset deduplication, and `getHeaderState()` keeps the released Java consumer's constant `PARSED_ONE_HEADER`, even for zero or multiple explicit ontology headers.
+
 The independently replayed `ObserveParserSelection` rows and `model/behaviorParserSelection.test.js` bind these results.
 Record the manager's profile alongside metadata when comparing it.
 It adds no VOWL model, second OWL interpreter or `compatible-view` parsing mode.
@@ -31,6 +32,7 @@ for (const { ontology, context } of graph.documents) {
 `getOntologyFormat` accepts only an ontology owned by that manager, returning its loaded format or `undefined` for a programmatically created ontology.
 Non-RDF formats normally have no loader metadata.
 Loaded RDF formats are immutable per-document copies.
+
 Compare `format.key` to a registry format's key; reference equality with the shared `OWLDocumentFormats` constants is no longer a format-selection test.
 Selected format parameters remain available.
 `withOntologyLoaderMetaData(metadata)` is the copying counterpart to Java's mutating setter; `withParameter` retains historical loader metadata.
@@ -51,10 +53,12 @@ Metadata survives `collectWarnings: false`; optional explanatory diagnostics do 
 
 Compatible mode retains the existing deterministic header selection and its `RDF_MULTIPLE_ONTOLOGY_HEADERS` diagnostic: `candidateOntologyIRIs`, `selectedOntologyIRI`, `observed` and `severity`.
 All IRI-valued `owl:imports` statements participate in ordinary manager discovery and recursive loading, including secondary headers and headerless import statements, as in Java's imports handler.
+
 The same resolver authorization, graph selection, import limits, cancellation and atomic publication apply.
 Selected-header annotations belong to the ontology; declared secondary-header annotations remain annotation assertions with their subject.
 This preserves the existing JavaScript association policy.
 The pinned Java parser can instead combine annotations from multiple headers; this change does not copy that behavior.
+
 Non-IRI imports outside the selected header remain unparsed, preserving existing compatible behavior; malformed selected-header imports still fail.
 The Java oracle treats a secondary-header literal import as an annotation, not an import declaration; that annotation recovery is outside this change.
 
@@ -62,6 +66,7 @@ Compatible property-category selection retains its existing diagnostics, includi
 Explicit declarations remain structural axioms even when interpretation selects a role for a use.
 Preserve mode still rejects unresolved multi-role uses.
 Inverse links and object-only characteristics now seed otherwise untyped compatible properties before connected-property propagation and axiom reconstruction.
+
 This repairs missed ordinary inverse, functional, domain and range axioms without inventing a neutral axiom kind or manufacturing declarations for those uses.
 Existing recovery of explicit `rdf:Property` remains unchanged.
 Range-only predicates retain existing annotation recovery or remain unparsed; a range alone does not trigger new property inference.
@@ -74,9 +79,11 @@ Use the existing private-authority-backed `OWL2DLProfile.checkOntology(ontology,
 Caller-constructed metadata confers no source-evidence authority.
 
 An empty unparsed-triple array does not prove losslessness: consumed statements may have undergone a documented compatibility interpretation, annotations may have been disabled, graph selection may exclude content, and RDF dataset parsing deduplicates identical statements.
+
 There is no assertion-to-axiom provenance ledger, duplicate-occurrence record, raw byte archive or automatic edit qualification in this API.
 VOWL owns acquired source retention, source-to-view accounting, projection, edit/admission policy and canonical artifacts.
 It must qualify or withhold stronger claims where its evidence is incomplete.
+
 A strict OWL 2 DL violation is not a universal visualization failure: `xsd:time` and custom datatype literals can parse while the profile or lexical-space assessment remains invalid or unverified.
 Known ill-typed supported literals remain distinguishable from unsupported lexical validation.
 
@@ -86,9 +93,11 @@ The project-owned `util/owlapi-reference/RunRdfConsumerContract.java` runs offli
 For its minimized inverse/functional case, Java emits exactly the inverse, functional, domain and range object-property axioms tested through the JavaScript public manager.
 For its two-header case, Java records both imports.
 These expectations are independently specified in `model/rdfConsumerCompatibility.test.js`.
+
 The oracle also reports `PARSED_ONE_HEADER` for zero- and multiple-header documents.
 The normative profile deliberately reports the observed explicit-header state; the Java profile now preserves the released constant value.
 Java's handling of an unknown blank-node predicate and multi-header annotations differs from the existing JavaScript policy; those observations do not authorize a broad parser reinterpretation.
+
 `io/rdfParserMetaData.test.js` covers exact literal terms, immutable defensive copies, disabled warnings, per-document metadata, selected graphs, foreign-manager rejection and historical lifetime.
 Existing parser and profile suites continue to define strict/preserve, datatype and resource boundaries.
 These library results do not replace the consumer's full-closure application qualification or authorize an npm release.

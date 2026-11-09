@@ -1,8 +1,15 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
-import { computeCorpusRoot, verifyBlob } from "./blob-store.mjs";
-import { validateArchiveInventory } from "./archive-evidence.mjs";
+import {
+  computeCorpusRoot,
+  readVerifiedBlob,
+  verifyBlob,
+} from "./blob-store.mjs";
+import {
+  validateArchiveInventory,
+  validateBundledPackageClaims,
+} from "./archive-evidence.mjs";
 import { compareCodeUnits, stableJson } from "./digests.mjs";
 import {
   canonicalizeEvidenceBlobs,
@@ -11,6 +18,21 @@ import {
 } from "./evidence-shards.mjs";
 import { normalizeLockedRegistryGraph } from "./lock-graph.mjs";
 import { verifyRegistrySignature } from "./registry-signatures.mjs";
+import { validateScanExecutionObservation } from "./scancode.mjs";
+
+/** Compare licensing facts, retaining original resource observations in source.
+ * Only the two validated observation surfaces may differ across native runs. */
+export function comparableEvidenceFacts(document) {
+  if (!["3.14", "3.15"].includes(document?.policy?.scanner?.pythonVersion))
+    throw new TypeError("Unsupported recorded ScanCode Python observation");
+  const copy = structuredClone(document);
+  delete copy.policy.scanner.pythonVersion;
+  for (const artifact of copy.artifacts) {
+    validateScanExecutionObservation(artifact.scan?.execution);
+    delete artifact.scan.execution;
+  }
+  return copy;
+}
 
 const EVIDENCE_KINDS = Object.freeze([
   "ARCHIVE_INVENTORY",
@@ -225,6 +247,7 @@ const verifyCompletionStates = (artifact) => {
 
 const verifyArtifactEvidence = async ({
   artifact,
+  occurrences,
   keyById,
   blobRoot,
   blobByReference,
@@ -233,6 +256,15 @@ const verifyArtifactEvidence = async ({
   allowLegacyScancodeNormalization,
 }) => {
   verifyCompletionStates(artifact);
+  try {
+    validateScanExecutionObservation(artifact.scan.execution);
+  } catch (error) {
+    controlFailure(
+      "SCANCODE_EXECUTION_OBSERVATION_INVALID",
+      "Invalid recorded ScanCode execution observation",
+      error,
+    );
+  }
   const expectedKinds = new Set(EVIDENCE_KINDS);
   for (const reference of evidenceReferencesFor(artifact)) {
     if (!reference || !expectedKinds.delete(reference.kind)) {
@@ -355,6 +387,52 @@ const verifyArtifactEvidence = async ({
       );
     }
     referencedBlobs.add(key);
+  }
+  for (const member of archive.bundledPackages ?? []) {
+    const reference = member.blob;
+    const key = referenceKey(reference ?? {});
+    const retained = blobByReference.get(key);
+    if (
+      reference?.kind !== "PACKAGE_EVIDENCE_FILE" ||
+      !retained ||
+      reference.sha256 !== member.sha256 ||
+      reference.bytes !== member.size
+    )
+      controlFailure(
+        "BUNDLED_MANIFEST_BINDING_MISMATCH",
+        `Bundled manifest blob is not bound: ${member.path}`,
+      );
+    assertExact(reference, retained, "BLOB_REFERENCE_MISMATCH", key);
+    let metadata;
+    try {
+      metadata = JSON.parse(
+        new TextDecoder("utf-8", { fatal: true }).decode(
+          await readVerifiedBlob(blobRoot, reference),
+        ),
+      );
+    } catch (error) {
+      controlFailure(
+        "BUNDLED_MANIFEST_INVALID_JSON",
+        `Invalid original bundled manifest: ${member.path}`,
+        error,
+      );
+    }
+    assertExact(
+      member.packageMetadata,
+      metadata,
+      "BUNDLED_MANIFEST_METADATA_MISMATCH",
+      member.path,
+    );
+    referencedBlobs.add(key);
+  }
+  try {
+    validateBundledPackageClaims(archive, occurrences);
+  } catch (error) {
+    controlFailure(
+      "BUNDLED_OCCURRENCE_MISMATCH",
+      "Bundled occurrences do not match the owning archive",
+      error,
+    );
   }
 
   const signatureEvidence = await readEvidenceEnvelope(
@@ -559,6 +637,9 @@ const verifyEvidenceDocument = async ({
       );
       await verifyArtifactEvidence({
         artifact,
+        occurrences: graph.occurrences.filter(
+          ({ artifactId }) => artifactId === identity.artifactId,
+        ),
         keyById,
         blobRoot,
         blobByReference,

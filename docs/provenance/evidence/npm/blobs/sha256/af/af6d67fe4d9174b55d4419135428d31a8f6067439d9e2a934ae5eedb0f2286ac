@@ -1,0 +1,132 @@
+{
+  "artifactId": "81054fb93d7606a0e1cd9d166bb6a729962ce94f76d5376d8691b8d7301b87b2",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 39772,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "ab745c5061d1dea43a3885e5b4b6befc7e983954954775c5736debeefcdfd89b",
+        "size": 2427,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "5e29325d9f128a1ef47d35e645fb10731845c04cc150f07b37d17bbab028d838",
+        "size": 3185,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/_colorize.js",
+        "sha256": "3eda8fc89c9ee47e78c5e5eb00953c77314c5db4ba15365755fa625b66650981",
+        "size": 2029,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/argparse.d.ts",
+        "sha256": "bffad8ff33ec0ee24b813f39f9918d041fec9096b6458784107a5731f5e85d35",
+        "size": 8072,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/argparse.js",
+        "sha256": "79dc1e975cdbf69b44ea0873768f2bb3697dc93bc2d6113bf92a8bdf6b6c8408",
+        "size": 135389,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/difflib.js",
+        "sha256": "a9bbb1747c91ac28a63b3f764fe89c19eb0a81d905dfe55c2200f5352e69fe64",
+        "size": 5691,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/sub.js",
+        "sha256": "5bfaea3c5e0b989bff50c8ac5935eeda1e4e2b559e02e1bf2507d74dd80fa708",
+        "size": 2259,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/textwrap.js",
+        "sha256": "017ecc11c9d2d31f32009f3c5b09ec4f0387dde4a8d633d042f686b70eac2ca3",
+        "size": 18028,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "6e5ae0549039f5b58b97529b1e4fdf7f23bbfd2e9145bbfc711bf1f9ee2d43f4",
+        "size": 763,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 2427,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ab/ab745c5061d1dea43a3885e5b4b6befc7e983954954775c5736debeefcdfd89b",
+          "sha256": "ab745c5061d1dea43a3885e5b4b6befc7e983954954775c5736debeefcdfd89b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "ab745c5061d1dea43a3885e5b4b6befc7e983954954775c5736debeefcdfd89b",
+        "size": 2427
+      }
+    ],
+    "expandedBytes": 177843,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "PSF-2.0",
+      "name": "argparse",
+      "repository": "nodeca/argparse",
+      "version": "3.0.4"
+    },
+    "packageMetadata": {
+      "description": "CLI arguments parser. Native port of python's argparse.",
+      "devDependencies": {
+        "c8": "^11.0.0",
+        "neostandard": "^0.13.0"
+      },
+      "files": [
+        "lib/"
+      ],
+      "funding": [
+        {
+          "type": "github",
+          "url": "https://github.com/sponsors/puzrin"
+        },
+        {
+          "type": "github",
+          "url": "https://github.com/sponsors/nodeca"
+        }
+      ],
+      "keywords": [
+        "cli",
+        "parser",
+        "argparse",
+        "option",
+        "args"
+      ],
+      "license": "PSF-2.0",
+      "main": "lib/argparse.js",
+      "name": "argparse",
+      "repository": "nodeca/argparse",
+      "scripts": {
+        "coverage": "c8 --reporter html npm test",
+        "lint": "eslint .",
+        "test": "npm run lint && node --test"
+      },
+      "types": "lib/argparse.d.ts",
+      "version": "3.0.4"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 39772,
+      "sha256": "564125ffdf5f0f8ef934e89d725b0cf564b45add3f310276fd35a10a996a81e2"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -6,10 +6,40 @@ This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 While the major version is zero, the public API remains in initial development: incompatible changes advance the minor version, compatible additions advance the minor version by policy, and compatible corrections advance the patch version.
 Prerelease identifiers do not create a stability promise.
 
-## 0.1.0-rc.3 — unpublished qualification candidate
+## Unreleased
 
-Current development source targets the [0.1.0 roadmap](docs/plans/2026-10-29-0.1.0-release-reconciliation.md).
-No successor candidate has been frozen, qualified or published by this implementation.
+### Documentation
+
+- Explain how to install the published rc.3, choose an import style and load a first ontology.
+  Align the API reference examples with the documented `owlapi` alias.
+- Update the browser deployment, behavior-profile and rc.3 migration guides.
+  Separate published release details from changes in the source checkout.
+
+### Runtime compatibility
+
+- Avoid a Node 24.0.0 stack overflow when saving large OWL/XML and Turtle documents.
+
+### Contributor tooling
+
+- Use npm 12.2.2 for package production and require npm 12.2.2 or newer for development.
+  Refresh the locked dependencies, including Markdown Quality 3.0.1, JSON Quality 1.0.0, uv 0.13.7 and Ruff 0.17.4.
+- Install Markdown Quality and its matching native package from the root npm lockfile.
+  Keep read-only Markdown checks and previews separate from explicit formatting writes.
+- Use JSON Quality's complete repository check and newline-delimited JSON diagnostics.
+  Formatting and normalization preflight the full corpus before writing selected files.
+- Authenticate packages bundled inside dependency archives through the owning archive.
+  Reuse verified evidence for unchanged artifacts and bound recovery from native scanner failures.
+- Run the early source checks before native candidate qualification.
+  The aggregate lint command runs the combined source and JSON identity ESLint checks once.
+
+### Release checks
+
+- Verify the documentation inside the candidate tarball against the package identity, exports, runnable examples and versioned release notes before publication.
+- Recover registry verification from the authenticated npm write attempt, including a first write on a later attempt after an upstream job failure.
+
+## 0.1.0-rc.3
+
+### Changes
 
 - Add explicit immutable `normative-v1` and `java-owlapi-5.5.1` behavior profiles, including profile accessors, Java loader settings and `ChangeApplied` results; omitted selection remains normative.
 - Add the explicitly authorized Node document loader under `io/node`, with per-operation access decisions and bounded transport behavior.
@@ -21,6 +51,35 @@ No successor candidate has been frozen, qualified or published by this implement
 - Centralize Java and Python selections in `.java-version` and `.python-version`; derive native checks and workflow projections from those declarations.
   Derive the Node development minimum and exact producer reference from the runtime policy; tooling uses Node 26.13 while consumer coverage retains Node 22, 24 and 26.
 - Bound CI job registration and immutable-release observation, preserve original producing-attempt provenance across compatible runner image updates, and fail terminally when required workflow output cannot be written.
+
+### Migration
+
+- Omitted profile selection remains `normative-v1`; select `java-owlapi-5.5.1` explicitly for the released Java behavior.
+  Managers, factories and configurations retain immutable profile identities; mixing configurations from different profiles rejects.
+- Java-profile changes apply sequentially and return `ChangeApplied` values.
+  Normative changes retain atomic batches and boolean results.
+  Java loading or mutation can retain completed work when a later step fails.
+- Java-profile storage appends to a reused target and can retain a failure prefix.
+  Normative storage replaces complete output atomically; applications must account for the selected profile before retrying or reusing a target.
+- `EntitySearcher` results are deferred and single-use; materialize them with `Array.from()` when a reusable snapshot is needed.
+  Closure providers query current managed state on each call.
+- Java-profile literal normalization and RDF metadata follow the released Java observations.
+  Normative lexical preservation, statement counting and header semantics retain their separate contract.
+- The normative profile keeps bounded loading defaults.
+  The Java profile adds no JavaScript-only finite default budgets; native provider limits and explicitly selected host restrictions still apply.
+  Neither profile grants network or file access.
+- Consumer admission is Node.js `>=22.0.0`, with Node 22, 24 and 26 qualified separately from the Node 26.13 development-tool minimum.
+  Browser parsing remains supported; the Node document loader is not a browser transport.
+
+See the [migration guide](docs/migration/0.1.0-java-api-parity.md) and [behavior-profile contract](docs/compatibility/behavior-profiles.md) for exact differences and supported boundaries.
+
+### Limitations
+
+Full Java OWLAPI parity is not claimed.
+The compatibility registry records unsupported members and bounded source assessment; millisecond N-Quads performance outliers remain documented in the performance results.
+The original rc.3 publication had an owner-approved exception for an incomplete historical Java-profile security review; that review is not represented as complete by this documentation refresh.
+The original immutable npm artifact retains its original documentation.
+Corrections in source require a separately authorized new package version; the release history records publication observations.
 
 ## 0.1.0-rc.2 — published 10 October 2026 (Europe/Bucharest)
 

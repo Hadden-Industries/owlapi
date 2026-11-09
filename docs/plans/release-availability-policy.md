@@ -19,7 +19,10 @@ This follow-up changes future workflow behavior; the immutable rc.2 release and 
   Channels may temporarily be absent or point to the explicitly accepted prior release; an unrelated version is a conflict.
 - REQ-004 / AC-004 / QA-003: On deadline, retain an availability-incomplete report and observations, identify the pending stage and direct the owner to read-only recovery or npm support.
   Never repeat publication or channel writes.
-  Failed-job reruns remain verification-only.
+  After a possible write, failed-job reruns remain verification-only.
+  A rerun after an upstream or approval-capture failure may make the first write only when complete authenticated attempt history proves every earlier write was skipped or its publisher never ran, and a fresh registry read confirms the coordinate is unused.
+  Missing, contradictory, cancelled or incomplete write history cannot authorize publication.
+  The same admission applies to normal and recovery publishers; documentation and approval checks run before every admitted write, and evidence retains the actual publishing attempt.
 - REQ-005 / AC-005 / QA-004: Capture authenticated environment approvals while each protected gate runs, bind them to repository/source/run/attempt/environment, retain immutable workflow artifacts and validate their server identity/digest before later use.
   Evidence generation may use those retained observations when live history is empty; contradictory live history fails.
   A successful job alone never proves reviewer approval.

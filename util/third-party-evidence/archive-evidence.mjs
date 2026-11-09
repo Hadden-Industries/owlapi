@@ -3,7 +3,7 @@ import { mkdir, rm, stat, writeFile } from "node:fs/promises";
 import { createReadStream } from "node:fs";
 import { dirname, join, resolve, sep } from "node:path";
 import { basename } from "node:path/posix";
-import { TextDecoder } from "node:util";
+import { isDeepStrictEqual, TextDecoder } from "node:util";
 import { list } from "tar";
 import { compareCodeUnits } from "./digests.mjs";
 
@@ -137,6 +137,111 @@ const normalizePackageIdentity = (packageMetadata) => ({
   homepage: packageMetadata.homepage ?? null,
 });
 
+const bundledManifestPath = (path, root) =>
+  path.startsWith(`${root}/`) &&
+  /^node_modules\/(?:@[^/\s]+\/)?[^/\s]+(?:\/node_modules\/(?:@[^/\s]+\/)?[^/\s]+)*\/package\.json$/u.test(
+    path.slice(root.length + 1),
+  );
+
+/** Claims are lock-derived; identities and manifests come only from the
+ * authenticated owning archive, including transitive hoisted bundles. */
+export function validateBundledPackageClaims(inventory, occurrences = []) {
+  const packages = inventory.bundledPackages ?? [];
+  if (!Array.isArray(packages))
+    throw new TypeError("Invalid bundled package inventory");
+  const byPath = new Map();
+  const entries = new Map(
+    inventory.entries.map((entry) => [entry.path, entry]),
+  );
+  for (const member of packages) {
+    const entry = entries.get(member.path);
+    if (
+      !bundledManifestPath(member.path, inventory.archiveRoot) ||
+      byPath.has(member.path) ||
+      entry?.type !== "FILE" ||
+      entry.sha256 !== member.sha256 ||
+      entry.size !== member.size ||
+      !member.packageMetadata ||
+      typeof member.packageMetadata !== "object" ||
+      Array.isArray(member.packageMetadata) ||
+      typeof member.packageMetadata.name !== "string" ||
+      !member.packageMetadata.name ||
+      typeof member.packageMetadata.version !== "string" ||
+      !member.packageMetadata.version
+    )
+      throw new TypeError(`Invalid bundled package manifest: ${member.path}`);
+    byPath.set(member.path, member);
+  }
+  const physicalManifests = inventory.entries.filter(
+    ({ path, type }) =>
+      type === "FILE" && bundledManifestPath(path, inventory.archiveRoot),
+  );
+  if (
+    physicalManifests.length !== byPath.size ||
+    physicalManifests.some(({ path }) => !byPath.has(path))
+  )
+    throw new TypeError("Bundled package manifest census is incomplete");
+  const claims = occurrences.filter(({ bundled }) => bundled);
+  if (!packages.length && !claims.length) return;
+  const declaration =
+    inventory.packageMetadata.bundleDependencies ??
+    inventory.packageMetadata.bundledDependencies;
+  if (
+    inventory.packageMetadata.bundleDependencies !== undefined &&
+    inventory.packageMetadata.bundledDependencies !== undefined &&
+    !isDeepStrictEqual(
+      inventory.packageMetadata.bundleDependencies,
+      inventory.packageMetadata.bundledDependencies,
+    )
+  )
+    throw new TypeError("Conflicting owning package bundle declarations");
+  const names =
+    declaration === true
+      ? Object.keys({
+          ...inventory.packageMetadata.dependencies,
+          ...inventory.packageMetadata.optionalDependencies,
+        })
+      : declaration;
+  if (
+    !Array.isArray(names) ||
+    !names.length ||
+    new Set(names).size !== names.length ||
+    names.some(
+      (name) =>
+        typeof name !== "string" || !/^(?:@[^/@\s]+\/)?[^/@\s]+$/u.test(name),
+    )
+  )
+    throw new TypeError(
+      "Bundled manifests require an owning package bundle declaration",
+    );
+  for (const name of names)
+    if (
+      !byPath.has(`${inventory.archiveRoot}/node_modules/${name}/package.json`)
+    )
+      throw new TypeError(`Missing declared bundled package manifest: ${name}`);
+  for (const { bundled } of claims) {
+    const actualDeclaration =
+      declaration === true ? true : [...declaration].sort(compareCodeUnits);
+    if (
+      bundled.ownerBundleDependencies !== undefined &&
+      !isDeepStrictEqual(bundled.ownerBundleDependencies, actualDeclaration)
+    )
+      throw new TypeError(
+        "Locked and owning archive bundle declarations disagree",
+      );
+    const path = `${inventory.archiveRoot}/${bundled.packageJsonPath}`;
+    const member = byPath.get(path);
+    if (
+      !member ||
+      member.packageMetadata.name !== bundled.name ||
+      member.packageMetadata.version !== bundled.version
+    )
+      throw new TypeError(
+        `Bundled package identity mismatch or missing manifest: ${path}`,
+      );
+  }
+}
+
 /** Native tar can ignore unsupported metadata without emitting an entry. Such
  * omissions cannot qualify a complete inventory or materialized evidence tree.
  * The filtered metadata identity pass below has a separate, deliberate purpose.
@@ -181,6 +286,7 @@ export const inspectPackageTarball = async (
   const entries = [];
   const physicalEntries = [];
   const evidenceFiles = [];
+  const bundledPackages = new Map();
   const pendingEntries = [];
   const exactPaths = new Set();
   const foldedPaths = new Map();
@@ -297,6 +403,29 @@ export const inspectPackageTarball = async (
                     });
                   }
                   const kind = classifyEvidence(path, bytes);
+                  if (bundledManifestPath(path, archiveRoot)) {
+                    retainedEvidenceBytes += bytes.length;
+                    assertLimit(
+                      retainedEvidenceBytes,
+                      limits.retainedEvidenceBytes,
+                      "retained evidence byte limit",
+                    );
+                    let packageMetadata;
+                    try {
+                      packageMetadata = JSON.parse(UTF8_DECODER.decode(bytes));
+                    } catch (error) {
+                      throw new Error(`Invalid bundled package JSON: ${path}`, {
+                        cause: error,
+                      });
+                    }
+                    bundledPackages.set(path, {
+                      path,
+                      size,
+                      sha256: digest,
+                      packageMetadata,
+                      bytes,
+                    });
+                  }
                   if (kind) {
                     retainedEvidenceBytes += bytes.length;
                     assertLimit(
@@ -434,7 +563,7 @@ export const inspectPackageTarball = async (
     throw new Error("Missing retained regular archive member");
   }
 
-  return {
+  const result = {
     archiveRoot,
     compressedBytes: compressed.size,
     expandedBytes,
@@ -444,6 +573,13 @@ export const inspectPackageTarball = async (
     packageMetadata,
     entries,
     evidenceFiles,
+    ...(bundledPackages.size
+      ? {
+          bundledPackages: [...bundledPackages.values()].sort((left, right) =>
+            compareCodeUnits(left.path, right.path),
+          ),
+        }
+      : {}),
     ...(retainMembers === undefined
       ? {}
       : {
@@ -452,6 +588,8 @@ export const inspectPackageTarball = async (
           ),
         }),
   };
+  validateBundledPackageClaims(result);
+  return result;
 };
 
 const materializedPath = (destinationRoot, archivePath) => {
@@ -618,6 +756,14 @@ const analyzeArchiveInventory = (inventory, limits) => {
     limits.retainedEvidenceBytes,
     "retained evidence byte limit",
   );
+  for (const member of inventory.bundledPackages ?? [])
+    retainedEvidenceBytes += member.size;
+  assertLimit(
+    retainedEvidenceBytes,
+    limits.retainedEvidenceBytes,
+    "retained evidence byte limit",
+  );
+  validateBundledPackageClaims(inventory);
 
   return {
     expectedByPath,

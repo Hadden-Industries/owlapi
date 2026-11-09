@@ -1,6 +1,6 @@
 import { createServer } from "node:http";
 import { readFileSync } from "node:fs";
-import { mkdtemp, writeFile, unlink, rmdir } from "node:fs/promises";
+import { mkdtemp, realpath, writeFile, unlink, rmdir } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -62,7 +62,10 @@ const compressionVectors = javaObservations
     };
   });
 beforeAll(async () => {
-  fileDirectory = await mkdtemp(join(tmpdir(), "owlapi-node-document-"));
+  // Alias guards refuse 8.3 temp spellings such as RUNNER~1.
+  fileDirectory = await realpath(
+    await mkdtemp(join(tmpdir(), "owlapi-node-document-")),
+  );
   ownedFile = join(fileDirectory, "owned.txt");
   await writeFile(ownedFile, "owned-file");
   ownedFileURL = pathToFileURL(ownedFile).href;

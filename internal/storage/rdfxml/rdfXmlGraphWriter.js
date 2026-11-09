@@ -187,15 +187,15 @@ const serializeGraph = (dataset, policy, context) => {
       requireWellFormed: documentStoragePolicy.requiresXml10Characters,
     });
   const utf8 = new TextEncoder();
-  const asciiCharacters = /^\p{ASCII}*$/u;
-  const xmlAsciiCharacters = /^[\t\n\r\x20-\x7E]*$/u;
-  const unchangedXmlText = /^[\t\n\x20-\x7E]*$/u;
+  const nonAsciiCharacter = /[^\p{ASCII}]/u;
+  const nonXmlAsciiCharacter = /[^\t\n\r\x20-\x7E]/u;
+  const changedXmlCharacter = /[^\t\n\x20-\x7E]/u;
   const escapedXmlText = /[&<>\x22\x27]/u;
   const nativeCommentPolicy = nativeCommentPolicies.get(documentStoragePolicy);
   // ASCII output has exactly one UTF-8 byte per code unit. Non-ASCII text still
   // uses the encoder, including its treatment of any admitted lone surrogate.
   const byteLength = (text) =>
-    asciiCharacters.test(text) ? text.length : utf8.encode(text).length;
+    nonAsciiCharacter.test(text) ? utf8.encode(text).length : text.length;
   // Construction already serializes each admitted node for its byte charge.
   // Its attributes/text are final at admission; only element children may be
   // appended later. Reuse that exact native serialization during formatting,
@@ -420,7 +420,7 @@ const serializeGraph = (dataset, policy, context) => {
     if (
       typeof value !== "string" ||
       (documentStoragePolicy.requiresXml10Characters &&
-        !xmlAsciiCharacters.test(value))
+        nonXmlAsciiCharacter.test(value))
     )
       serialize(document.createTextNode(value));
     element.setAttributeNS(
@@ -724,7 +724,7 @@ const serializeGraph = (dataset, policy, context) => {
     // The actual Comment still receives native validation and byte admission.
     if (
       nativeCommentPolicy === undefined ||
-      (nativeCommentPolicy && !xmlAsciiCharacters.test(content))
+      (nativeCommentPolicy && nonXmlAsciiCharacter.test(content))
     )
       serialize(document.createTextNode(content));
     const comment = document.createComment(content);
@@ -939,7 +939,7 @@ const serializeGraph = (dataset, policy, context) => {
           // Safe ASCII text is unchanged by native XML serialization and by
           // the quote/CR preservation below; other text uses the native path.
           if (
-            unchangedXmlText.test(node.data) &&
+            !changedXmlCharacter.test(node.data) &&
             !escapedXmlText.test(node.data)
           )
             return node.data;

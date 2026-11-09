@@ -1,0 +1,202 @@
+{
+  "artifactId": "cc095155a856bc5bc017c2907ef19ea6b2f1c94a6b501fed99b7ae90de6e8f00",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 9611,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/dev/index.d.ts",
+        "sha256": "31ad959e92c9fe1c654bbd34f25d2e4159b3528703d0fdbcc08de4d0d517a66c",
+        "size": 356,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dev/index.d.ts.map",
+        "sha256": "c82e87c2dca139811b9df64721c5acc1ecce0660c8fb6af9a61c8c1281bc65ff",
+        "size": 176,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dev/index.js",
+        "sha256": "a63cb1552428d205157690b7c052b9a8bd011f94a7420e5b2c8f4765d5d67603",
+        "size": 7564,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dev/lib/splice-buffer.d.ts",
+        "sha256": "62bd1e17a420a31288fa243a377515a20232b7b9fa5d470e2f75d63b047d8a94",
+        "size": 5485,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dev/lib/splice-buffer.d.ts.map",
+        "sha256": "5054fa8e55fb91f3840ed0def1fec2cd2851142ad61ed570ec3fc819dfb003d2",
+        "size": 1031,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dev/lib/splice-buffer.js",
+        "sha256": "a544e39f46dad3119e8c8b83bdcd50a42c9b21c518314f67b4d1bb2fcfd620e4",
+        "size": 7938,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "31ad959e92c9fe1c654bbd34f25d2e4159b3528703d0fdbcc08de4d0d517a66c",
+        "size": 356,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts.map",
+        "sha256": "c82e87c2dca139811b9df64721c5acc1ecce0660c8fb6af9a61c8c1281bc65ff",
+        "size": 176,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "a70e48d4652be4f956606dcda3e4c13707952dc74b86f6f71990eba88d4a1e79",
+        "size": 6851,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/splice-buffer.d.ts",
+        "sha256": "62bd1e17a420a31288fa243a377515a20232b7b9fa5d470e2f75d63b047d8a94",
+        "size": 5485,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/splice-buffer.d.ts.map",
+        "sha256": "5054fa8e55fb91f3840ed0def1fec2cd2851142ad61ed570ec3fc819dfb003d2",
+        "size": 1031,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/splice-buffer.js",
+        "sha256": "addce56cc7eccc0cb0ba10f7f8eab4c902f5ddf55ff43e0fb2907815ea63440e",
+        "size": 7617,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "8dd7a96c44ac602941d16b0078cef059821871b047a6f6309ffd61bb470cd420",
+        "size": 1379,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "ad85d8441ad44948b4cd1e13fa2c1a251bc61721da6a4c185e84a950be2586ce",
+        "size": 4623,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1094,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/dd/dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+          "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094
+      },
+      {
+        "blob": {
+          "bytes": 4623,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ad/ad85d8441ad44948b4cd1e13fa2c1a251bc61721da6a4c185e84a950be2586ce",
+          "sha256": "ad85d8441ad44948b4cd1e13fa2c1a251bc61721da6a4c185e84a950be2586ce"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "ad85d8441ad44948b4cd1e13fa2c1a251bc61721da6a4c185e84a950be2586ce",
+        "size": 4623
+      }
+    ],
+    "expandedBytes": 51162,
+    "packageIdentity": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "micromark-util-subtokenize",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-subtokenize",
+      "version": "2.1.0"
+    },
+    "packageMetadata": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "bugs": "https://github.com/micromark/micromark/issues",
+      "contributors": [
+        "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+      ],
+      "dependencies": {
+        "devlop": "^1.0.0",
+        "micromark-util-chunked": "^2.0.0",
+        "micromark-util-symbol": "^2.0.0",
+        "micromark-util-types": "^2.0.0"
+      },
+      "description": "micromark utility to tokenize subtokens",
+      "exports": {
+        "default": "./index.js",
+        "development": "./dev/index.js"
+      },
+      "files": [
+        "dev/",
+        "lib/",
+        "index.d.ts.map",
+        "index.d.ts",
+        "index.js"
+      ],
+      "funding": [
+        {
+          "type": "GitHub Sponsors",
+          "url": "https://github.com/sponsors/unifiedjs"
+        },
+        {
+          "type": "OpenCollective",
+          "url": "https://opencollective.com/unified"
+        }
+      ],
+      "keywords": [
+        "micromark",
+        "util",
+        "utility",
+        "tokenize"
+      ],
+      "license": "MIT",
+      "name": "micromark-util-subtokenize",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-subtokenize",
+      "scripts": {
+        "build": "micromark-build"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "version": "2.1.0",
+      "xo": {
+        "envs": [
+          "shared-node-browser"
+        ],
+        "prettier": true,
+        "rules": {
+          "max-depth": "off",
+          "unicorn/prefer-code-point": "off"
+        }
+      }
+    },
+    "physicalEntryCount": 15,
+    "tarball": {
+      "bytes": 9611,
+      "sha256": "10aca3d9ae4d1776f029fa6dbf5d9706291cbafc55ff39ba88141e65b7c59a8b"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

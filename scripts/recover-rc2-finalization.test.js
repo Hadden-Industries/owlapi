@@ -3,6 +3,7 @@ import {
   mkdirSync,
   mkdtempSync,
   readFileSync,
+  realpathSync,
   rmSync,
   symlinkSync,
   writeFileSync,
@@ -113,7 +114,10 @@ test("archive decoding consumes the authenticated buffer without reopening a pat
 });
 
 test("canonicalizes output ancestry and rejects junction aliases into the checkout", () => {
-  const root = mkdtempSync(join(tmpdir(), "owlapi-output-boundary-"));
+  // Alias guards refuse 8.3 temp spellings such as RUNNER~1.
+  const root = realpathSync.native(
+    mkdtempSync(join(tmpdir(), "owlapi-output-boundary-")),
+  );
   try {
     const checkout = join(root, "checkout");
     mkdirSync(checkout);
@@ -137,7 +141,9 @@ test("canonicalizes output ancestry and rejects junction aliases into the checko
 });
 
 test("child reports use a fresh directory instead of preplanted fixed-path links", () => {
-  const root = mkdtempSync(join(tmpdir(), "owlapi-report-destination-"));
+  const root = realpathSync.native(
+    mkdtempSync(join(tmpdir(), "owlapi-report-destination-")),
+  );
   try {
     const target = join(root, "unrelated.txt");
     writeFileSync(target, "preserve");
@@ -167,7 +173,9 @@ test("child reports use a fresh directory instead of preplanted fixed-path links
 test.each(["ambiguous finalization", "verification failure", "success"])(
   "never replays writes after %s",
   async (outcome) => {
-    const root = mkdtempSync(join(tmpdir(), "owlapi-recovery-test-"));
+    const root = realpathSync.native(
+      mkdtempSync(join(tmpdir(), "owlapi-recovery-test-")),
+    );
     let writes = 0;
     let reads = 0;
     const request = {
@@ -433,7 +441,9 @@ test("rejects hidden duplicate keys and noncanonical prepared bytes", () => {
 });
 
 test("authenticates through the checked executable and refuses a changed binary", () => {
-  const root = mkdtempSync(join(tmpdir(), "owlapi-pinned-cli-"));
+  const root = realpathSync.native(
+    mkdtempSync(join(tmpdir(), "owlapi-pinned-cli-")),
+  );
   try {
     const path = join(root, "gh.exe");
     writeFileSync(path, "pinned executable fixture");
@@ -454,7 +464,9 @@ test("authenticates through the checked executable and refuses a changed binary"
 });
 
 test("binds actual operator and Windows CLI identity to child report bytes", () => {
-  const root = mkdtempSync(join(tmpdir(), "owlapi-recovery-receipt-"));
+  const root = realpathSync.native(
+    mkdtempSync(join(tmpdir(), "owlapi-recovery-receipt-")),
+  );
   try {
     for (const name of ["finalization.json", "immutable-verification.json"])
       writeFileSync(
@@ -519,7 +531,9 @@ test("binds actual operator and Windows CLI identity to child report bytes", () 
 });
 
 test("observes CLI bytes before and after the actual verification callback", () => {
-  const root = mkdtempSync(join(tmpdir(), "owlapi-verified-cli-"));
+  const root = realpathSync.native(
+    mkdtempSync(join(tmpdir(), "owlapi-verified-cli-")),
+  );
   try {
     const gh = join(root, "gh.exe");
     writeFileSync(gh, "reviewed binary");

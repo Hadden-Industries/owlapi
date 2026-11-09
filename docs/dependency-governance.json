@@ -5,20 +5,20 @@
     "name": "@hadden-industries/owlapi",
     "version": "0.1.0-rc.3"
   },
-  "recordedOn": "2026-10-21",
+  "recordedOn": "2026-11-09",
   "review": {
-    "status": "REVIEWED",
-    "factsSha256": "5cbb101a981c2e858c75a0cba47b27523f9b09739e594bb3fb8adebbf29ddfd1",
-    "reviewer": "Maksym Shostak",
-    "reviewedOn": "2026-10-29",
-    "capacity": "Project maintainer and repository owner",
-    "conclusion": "Explicitly approved the selected rc.3 dependency graph and documented install-script, prebuilt-binary, inventory and upgrade controls for continued qualification. Required Linux/macOS qualification remains pending, and historical audit and size measurements retain their original dates. This approval grants no additional installation, publication or push authority and does not waive outstanding checks.",
+    "status": "PENDING_HUMAN_REVIEW",
+    "factsSha256": "4474251db9a9108d7071adbf7783785b4f727c64fcf45b7ca3059a50b0008cbc",
+    "reviewer": null,
+    "reviewedOn": null,
+    "capacity": null,
+    "conclusion": null,
     "digestAlgorithm": "sha256-sorted-json-v1"
   },
   "productionAudit": {
-    "performedOn": "2026-10-21",
+    "performedOn": "2026-11-09",
     "command": "npm audit --omit=dev --json",
-    "npmVersion": "12.2.0",
+    "npmVersion": "12.2.2",
     "productionPackageCount": 48,
     "vulnerabilityCounts": {
       "info": 0,
@@ -30,7 +30,7 @@
     }
   },
   "installScriptPolicy": {
-    "npmVersion": "12.2.0",
+    "npmVersion": "12.2.2",
     "mode": "STRICT_EXPLICIT_DECISIONS",
     "projectConfig": ".npmrc",
     "decisions": [
@@ -63,34 +63,6 @@
         ]
       },
       {
-        "name": "libxmljs2",
-        "version": "0.37.0",
-        "allowed": false,
-        "dependencyScope": "DEVELOPMENT_OPTIONAL_SBOM_XML_VALIDATOR",
-        "lifecycleScript": "install: prebuild-install || node-gyp rebuild",
-        "requiredForBlockingWorkflows": false,
-        "rationale": "The release emits and validates CycloneDX 1.6 JSON with Ajv; libxmljs2 is an optional XML-validation dependency and is not required by that governed path. The exact generator successfully produced and validated the required JSON library SBOM while this script remained blocked.",
-        "evidence": [
-          "package-lock.json#node_modules/libxmljs2",
-          "node_modules/@cyclonedx/cyclonedx-npm/package.json#optionalDependencies",
-          "Phase 19B validated CycloneDX 1.6 JSON library SBOM smoke test on 2026-08-26"
-        ]
-      },
-      {
-        "name": "unrs-resolver",
-        "version": "1.12.2",
-        "allowed": false,
-        "dependencyScope": "DEVELOPMENT_TEST_RESOLVER",
-        "lifecycleScript": "postinstall: node postinstall.js",
-        "requiredForBlockingWorkflows": false,
-        "rationale": "The lockfile installs the supported platform bindings directly; the postinstall is a fallback binding check/retrieval rather than required package construction. Denial prevents ambient install-time retrieval, and the complete blocking Jest suite passed through the installed resolver graph with the script blocked.",
-        "evidence": [
-          "package-lock.json#node_modules/unrs-resolver",
-          "Phase 19B strict-policy full Jest suite: 103 suites, 2645 passed, 1 skipped",
-          "governance.test.js"
-        ]
-      },
-      {
         "name": "lzma-native",
         "version": "8.0.6",
         "allowed": false,
@@ -120,7 +92,7 @@
   "dependencies": [
     {
       "name": "@hyperjump/uri",
-      "version": "1.3.9",
+      "version": "1.4.0",
       "role": "RFC 3987 full-IRI lexical validation without normalization for ontology storage",
       "standardsGrounding": [
         "https://www.rfc-editor.org/rfc/rfc3987",

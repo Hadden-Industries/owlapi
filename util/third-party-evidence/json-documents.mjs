@@ -53,6 +53,8 @@ async function provideEvidenceNamespace({ root, namespace = "", signal }) {
     );
     for (const file of archive.evidence.evidenceFiles)
       if (file.path.endsWith(".map")) add(file.blob);
+    for (const member of archive.evidence.bundledPackages ?? [])
+      add(member.blob);
   }
   for (const authority of authorities)
     if (!authority.bytes.equals(await readFile(join(root, authority.path))))

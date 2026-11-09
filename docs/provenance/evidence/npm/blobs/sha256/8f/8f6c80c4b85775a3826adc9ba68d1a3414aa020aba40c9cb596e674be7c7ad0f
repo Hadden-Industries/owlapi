@@ -1,0 +1,73 @@
+{
+  "artifactId": "1588f3ac8ba21216e03a902d62113664ae02c7dc0b4a335599bd736b780d733c",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 800564,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/README.md",
+        "sha256": "f837bb3d32b1a5eb329d203fe0ccf9bca8ff3c05bf51997d1d52a4867ac5a12f",
+        "size": 116,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "947528fa39c4a1941623ced9e44ccb67fe64b75bb1be64b8773dcde642579d8d",
+        "size": 541,
+        "type": "FILE"
+      },
+      {
+        "path": "package/resolver.android-arm64.node",
+        "sha256": "a38d30f79a51067630d0214c7e4ebd88daf028bba27f1e765acfdee2de1b9821",
+        "size": 1953224,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [],
+    "expandedBytes": 1953881,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/unrs/unrs-resolver",
+      "license": "MIT",
+      "name": "@unrs/resolver-binding-android-arm64",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/unrs/unrs-resolver.git"
+      },
+      "version": "1.13.0"
+    },
+    "packageMetadata": {
+      "cpu": [
+        "arm64"
+      ],
+      "description": "UnRS Resolver Node API",
+      "files": [
+        "resolver.android-arm64.node"
+      ],
+      "homepage": "https://github.com/unrs/unrs-resolver",
+      "license": "MIT",
+      "main": "resolver.android-arm64.node",
+      "name": "@unrs/resolver-binding-android-arm64",
+      "os": [
+        "android"
+      ],
+      "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/unrs/unrs-resolver.git"
+      },
+      "version": "1.13.0"
+    },
+    "physicalEntryCount": 3,
+    "tarball": {
+      "bytes": 800564,
+      "sha256": "d940c335bbea64ea53cdd530832ada0e784ff4696b9ca5c04c8a7a8d029b5eeb"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

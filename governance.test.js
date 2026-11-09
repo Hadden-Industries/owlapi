@@ -2195,7 +2195,7 @@ Neither this NOTICE nor the package licence replaces those upstream terms.
     for (const requiredText of [
       "## Why `owlapi` exists",
       "The current source candidate's version is declared in [package.json](package.json); its publication authority is recorded separately in [publication control](docs/release/publication-control.json).",
-      'npm install --save-exact "owlapi@npm:@hadden-industries/owlapi@0.1.0-rc.1"',
+      `npm install --save-exact "owlapi@npm:@hadden-industries/owlapi@${packageJson.version}"`,
       "owlapi@file:/absolute/path/hadden-industries-owlapi-<version>.tgz",
       "The manifest and release tooling select this scoped identity",
       "A version in `main` is not a published or accepted package",
@@ -2641,6 +2641,7 @@ Neither this NOTICE nor the package licence replaces those upstream terms.
       "jsonld-provider-rolldown",
       "jsonld-provider-setimmediate",
       "jsonld-provider-yallist",
+      "markdown-quality-retained-native-attribution",
       "ruff-development-tool",
       "scancode-development-source-build",
       "shared-markdown-quality-development-tool",
@@ -2655,8 +2656,9 @@ Neither this NOTICE nor the package licence replaces those upstream terms.
     );
     expect(markdownTool).toMatchObject({
       relationship: "DEVELOPMENT_ONLY",
-      versionOrRevision: readJson("./tooling/markdown/release-manifest.json")
-        .source.head,
+      versionOrRevision: readJson("./package-lock.json").packages[
+        "node_modules/@hadden-industries/markdown-quality"
+      ].version,
       packageTarballScope: false,
       deployedApplicationScope: "NOT_APPLICABLE",
     });
@@ -2953,9 +2955,7 @@ Neither this NOTICE nor the package licence replaces those upstream terms.
     expect(packageJson.allowScripts).toEqual({
       "@parcel/watcher@2.6.0": false,
       "fsevents@2.3.3": false,
-      "libxmljs2@0.37.0": false,
       "lzma-native@8.0.6": false,
-      "unrs-resolver@1.12.2": false,
     });
     expect(
       Object.keys(packageJson.allowScripts).sort(compareCodeUnits),
@@ -2965,7 +2965,7 @@ Neither this NOTICE nor the package licence replaces those upstream terms.
     expect(dependencyGovernance.installScriptPolicy).toEqual(
       expect.objectContaining({
         mode: "STRICT_EXPLICIT_DECISIONS",
-        npmVersion: "12.2.0",
+        npmVersion: "12.2.2",
         projectConfig: ".npmrc",
       }),
     );
@@ -3079,7 +3079,7 @@ Neither this NOTICE nor the package licence replaces those upstream terms.
       "source-map-js",
     ]);
     expect(packageJson.overrides["jest-config@30.5.2"]).toEqual({
-      deepmerge: "npm:@stackline/deepmerge@1.1.0",
+      deepmerge: "npm:@stackline/deepmerge@1.1.2",
     });
     const lock = readJson("./package-lock.json");
     for (const name of [

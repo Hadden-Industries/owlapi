@@ -1,16 +1,27 @@
 # API behavior profiles
 
-This is the current contract for the profile-aware source candidate.
-The selected API implementation is complete; public profile admission is held for complete designated security evidence and a release decision.
-The [implementation and release-readiness record](profiles/java-owlapi-5.5.1/implementation-qualification.md) distinguishes passed checks, retained review findings and the interrupted security scan.
-No new npm publication is claimed here.
+Choose the behavior when you create the ontology manager.
+The manager keeps that choice for its lifetime.
+
+| If your application needs                                                                                       | Choose                                                                      |
+| --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| The project's normative OWL behavior                                                                            | `normative-v1`. This is also the default when you omit `behaviorProfileId`. |
+| Compatibility with the released Java OWLAPI 5.5.1 on its documented public surface, including observable quirks | `java-owlapi-5.5.1`. Pass the identifier explicitly.                        |
+
+See [selection and authority](#selection-and-authority) for a working example, or the [API delta from the rc.2 baseline](0.1.0-api-delta.md) for additions in this package version.
+
+This is the behavior-profile contract for [this package version](../../README.md#release-status).
+Both profiles are implemented within the documented compatibility scope.
+The [implementation and release-readiness record](profiles/java-owlapi-5.5.1/implementation-qualification.md) preserves the interrupted historical security scan and records the owner's later rc.3 release exception; the missing coverage is not represented as a completed scan.
 The [current decision ledger](java-api-parity-decisions.json) records paired expectations, native probes, tests and accepted-plan traceability.
 Its `currentBehaviorContracts` section is separate from the retained phase 21/22 receipts and their historical Java revision.
 
 ## Selection and authority
 
+The examples use the [npm alias from the installation guide](../../README.md#install).
+
 ```js
-import { OWLManager } from "@hadden-industries/owlapi/apibinding";
+import { OWLManager } from "owlapi/apibinding";
 
 const manager = OWLManager.createOWLOntologyManager({
   behaviorProfileId: "java-owlapi-5.5.1",
@@ -109,8 +120,8 @@ A host supplies the document loader and authorizes its resources.
 The approved concrete Node adapter is an explicit subpath:
 
 ```js
-import { NodeDocumentLoader } from "@hadden-industries/owlapi/io/node";
-import { OWLManager } from "@hadden-industries/owlapi/apibinding";
+import { NodeDocumentLoader } from "owlapi/io/node";
+import { OWLManager } from "owlapi/apibinding";
 
 const documentLoader = new NodeDocumentLoader({
   authorize: (resourceIRI, context) => applicationAccessPolicy.permits(resourceIRI, context),
@@ -123,9 +134,11 @@ const manager = OWLManager.createOWLOntologyManager({
 
 `applicationAccessPolicy` is supplied by the consuming application.
 The callback must return `true` for each concrete operation; omission/false rejects it. Its context exposes the purpose, configuration, credential headers, redirect origin, requested file path or resolved address/path as appropriate.
+
 Operations include `use-document`, `request-document`, `resolve-hostname`, `connect-http`, `resolve-file` and `read-file`.
 For `read-file`, `requiresStablePathAncestors: true` requires the host to guarantee trusted, stable ancestor directories throughout acquisition.
 The portable adapter cannot contain concurrent replacement of parent directories by an untrusted actor; hosts with that trust model must use a caller-owned loader with platform-specific file-handle authorization.
+
 See the [approved local-file boundary](profiles/java-owlapi-5.5.1/file-transport-boundary.md).
 Resolved addresses are pinned for the authorized connection.
 Cache reuse requires current authority; distinct loader authorities never share context contents.
@@ -133,11 +146,13 @@ Cache reuse requires current authority; distinct loader authorities never share 
 The adapter implements HTTP, HTTPS and local files.
 It uses Node's native gzip and raw DEFLATE, the selected `lzma-native` binding for XZ and CRC32, and a first-entry ZIP envelope reader.
 Consumers enforcing npm's strict install-script policy must explicitly deny `lzma-native@8.0.6` in their own `allowScripts` map.
+
 The tested Windows hosts use the package's prebuilt native binding, with no install script or compiler invocation.
 It retains Java's original ontology document IRI after redirects.
 Cancellation terminates active response/decoder work. The [transport approval](profiles/java-owlapi-5.5.1/transport-decision.md) and [provider selection](profiles/java-owlapi-5.5.1/compression-provider-selection.md) define the exact host boundary and remaining qualification requirements.
 
 RDF4J's Hasmac JSON-LD context client is a separate consumer: it ignores ontology loader timeout/attempt/auth/compression settings, allows ten total requests, accepts status 200, follows the native redirect/alternate-Link rules, and uses the final URL as context base.
+
 It autodetects JSON Unicode encoding and does not decompress HTTP/filename envelopes.
 It consumes the first complete JSON structure; trailing content is not a new Java rejection.
 Multiple context Link headers fail, but a context Link on a remote context does not trigger an extra context fetch.
@@ -160,6 +175,7 @@ Changing a security default must not silently change the meaning of an already q
 
 Java mutation is sequential and returns `ChangeApplied`; normative mutation is atomic and returns boolean.
 Java loading publishes per document and can retain successful imports after root failure; normative loading publishes a complete graph.
+
 Java target reuse appends and can retain a failed writer prefix; normative storage replaces only complete output.
 An error is not a promise that no state changed, and in-memory rollback cannot undo authorized external requests.
 
@@ -168,6 +184,7 @@ Normative metadata reports actual distinct header count and selected unique trip
 Both describe the original parse, not later edits or complete source preservation.
 
 Java OWL/XML preserves the released parser's omission of anonymous individuals inside `ObjectOneOf`, including its empty result, and the Java factory accepts an empty enumeration. Normative OWL/XML includes anonymous operands and requires at least one individual, as specified by the [OWL 2 XML serialization schema](https://www.w3.org/TR/owl2-xml-serialization/#sec-xml-schema).
+
 These contracts have paired tests; the older expected-difference receipt retains its original Java revision and is not used as a Java-profile exemption.
 
 Compatible RDF parsing also distinguishes named datatype restrictions.
@@ -188,5 +205,6 @@ Current native observations compare Central with an unmodified source reconstruc
 Pin exact package bytes and select the profile explicitly during migration.
 Keep the previously accepted package for rollback.
 Abort promotion on an unclassified behavioral mismatch, missing authorization enforcement, stale oracle identity or a failed required lane.
+
 Recovery restores the prior package and application state under its own policy; it does not erase remote requests already authorized by a failed operation.
 Historical release and research records keep their original identities and hashes.

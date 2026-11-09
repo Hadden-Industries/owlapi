@@ -1,3 +1,7 @@
+import {
+  PUBLICATION_WRITE_IF,
+  PUBLICATION_GUARD_COMMAND,
+} from "./release-publication-history.mjs";
 import { checkNodeSupportProjections } from "./project-node-support.mjs";
 import { CI_RUNTIME, projectRuntimeText } from "./runtime-policy.mjs";
 import { JAVA_TOOLCHAIN } from "./java-toolchain.mjs";
@@ -18,6 +22,9 @@ import { parseDocument } from "yaml";
 import { REQUIRED_JOB_IDS } from "./require-job-success.mjs";
 import { CI_JOB_NAMES } from "./ci-qualification.mjs";
 import { ordinaryReleaseWorkflow } from "./rc3-recovery-workflow.mjs";
+
+const nonMarkdownFormatCheck =
+  "npm run check:node && npm run check:version && npm run format:source-python:check && npm run format:json:check";
 
 const REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
 const WORKFLOW_DIRECTORY = join(REPOSITORY_ROOT, ".github", "workflows");
@@ -42,7 +49,6 @@ const EXPECTED_WORKFLOWS = [
   "ci.yml",
   "extended-tests.yml",
   "maintenance.yml",
-  "markdown-quality.yml",
   "release-reconciliation.yml",
   "release.yml",
 ];
@@ -57,7 +63,7 @@ const EXPECTED_ISSUE_FORMS = [
 const ACTIONS = Object.freeze({
   "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1": "v7.0.1",
   "actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1": "v7.1.0",
-  "actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad": "v6.1.0",
+  "actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78": "v6.2.0",
   "actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333":
     "v8.0.2",
   "actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294":
@@ -633,7 +639,6 @@ const validateJobs = (fileName, workflow, violations) => {
       `${fileName}: forbidden workflow construct ${forbidden}`,
     );
   for (const [id, job] of entries(workflow.jobs)) {
-    if (fileName === "markdown-quality.yml" && id === "markdown") continue;
     const runner = job?.["runs-on"];
     const isEvidenceMatrix =
       fileName === "extended-tests.yml" && id === "third_party_evidence_shard";
@@ -1674,8 +1679,8 @@ const validateReleaseMutationBoundary = (
     add(
       violations,
       steps(publication).find((step) => step.run?.includes(publishCommand))
-        ?.if === "${{ github.run_attempt == 1 }}",
-      `${fileName}:npm_release must restrict the sole write to the first run attempt`,
+        ?.if === PUBLICATION_WRITE_IF,
+      `${fileName}:npm_release must restrict the sole write to authenticated publication admission`,
     );
   requireRun(
     publication,
@@ -1687,12 +1692,62 @@ const validateReleaseMutationBoundary = (
     const step = steps(publication).find((item) =>
       item.run?.includes(publishCommand),
     );
+    const admissions = steps(publication).filter(
+      (item) => item.id === "publication_history",
+    );
     add(
       violations,
-      step?.if === "${{ github.run_attempt == 1 }}" &&
+      admissions.length === 1 &&
+        admissions[0].run === PUBLICATION_GUARD_COMMAND &&
+        !admissions[0].if &&
+        !admissions[0]["continue-on-error"] &&
+        !admissions[0]["working-directory"] &&
+        isDeepStrictEqual(admissions[0].env, {
+          GITHUB_TOKEN: "${{ github.token }}",
+        }) &&
+        steps(publication).indexOf(admissions[0]) <
+          steps(publication).findIndex((item) =>
+            item.run?.includes("verify-publication-documentation.mjs"),
+          ),
+      `${fileName}:npm_release requires unconditional authenticated publication history before admission`,
+    );
+    const guardCommand =
+      "node approval-tools/scripts/verify-publication-documentation.mjs --candidate .release/download --preflight .release/publication/publication-preflight.json";
+    const guards = steps(publication).filter(
+      (item) => item.run === guardCommand,
+    );
+    const downloads = actionSteps(
+      publication,
+      "actions/download-artifact",
+    ).filter(
+      (item) =>
+        item.with?.["artifact-ids"] ===
+          "${{ needs.publication_preflight.outputs.artifact_id }}" &&
+        item.with.path === ".release/publication",
+    );
+    add(
+      violations,
+      guards.length === 1 &&
+        guards[0].if === step?.if &&
+        !guards[0]["continue-on-error"] &&
+        !guards[0].env &&
+        !guards[0]["working-directory"] &&
+        steps(publication).indexOf(guards[0]) <
+          steps(publication).indexOf(step) &&
+        downloads.length === 1 &&
+        !downloads[0].if &&
+        !downloads[0]["continue-on-error"] &&
+        steps(publication).indexOf(downloads[0]) <
+          steps(publication).indexOf(guards[0]) &&
+        needs(publication).includes("publication_preflight"),
+      `${fileName}:npm_release requires bound documentation admission before every write`,
+    );
+    add(
+      violations,
+      step?.if === PUBLICATION_WRITE_IF &&
         step.run.includes(`${publishCommand}\n${LATEST_COMMAND}`) &&
         occurrences(workflow, "npm dist-tag add ") === 1,
-      `${fileName}: the exact latest write must follow publication once in the first-attempt credential step`,
+      `${fileName}: the exact latest write must follow publication once in the history-admitted credential step`,
     );
   } else
     add(
@@ -1775,9 +1830,15 @@ const validateReleaseMutationBoundary = (
         captureIndex >= 0 &&
           uploadIndex > captureIndex &&
           effectIndex > uploadIndex &&
-          gateSteps[captureIndex].if === "${{ github.run_attempt == 1 }}" &&
+          gateSteps[captureIndex].if ===
+            (id === "npm_release" ? PUBLICATION_WRITE_IF : undefined) &&
           gateSteps[captureIndex].env?.GITHUB_TOKEN === "${{ github.token }}" &&
-          gateSteps[uploadIndex].if === "${{ github.run_attempt == 1 }}" &&
+          gateSteps[uploadIndex].if ===
+            (id === "npm_release"
+              ? PUBLICATION_WRITE_IF
+              : "${{ steps.manual_approval.outputs.captured == 'true' }}") &&
+          (id === "npm_release" ||
+            gateSteps[captureIndex].id === "manual_approval") &&
           gateSteps[uploadIndex].with?.path ===
             `.release/approval-${environment}.json` &&
           [
@@ -2409,6 +2470,7 @@ const validateQualityTooling = (workflows, violations) => {
       );
       const syncIndex = list.indexOf(sync[0]);
       const checkIndexes = list.flatMap((step, index) =>
+        step.run === nonMarkdownFormatCheck ||
         /^npm (test|run (format:check|format:source-python:check|lint|lint:source-python|test:quality|test:quality:source|check:python-tools))(?: |$)/u.test(
           step.run ?? "",
         )
@@ -2447,7 +2509,13 @@ const validateQualityTooling = (workflows, violations) => {
         const jsonInstalls = list.filter(
           (step) => step.run === "npm run install:json",
         );
-        const rootInstalls = list.filter((step) => step.run === "npm ci");
+        const rootInstalls = list.filter(
+          (step) =>
+            step.run ===
+            (["source_canonical", "quality_windows"].includes(id)
+              ? "npm ci --ignore-scripts"
+              : "npm ci"),
+        );
         const jsonProbes = list.filter(
           (step) => step.run === "npm run test:json",
         );
@@ -2456,10 +2524,12 @@ const validateQualityTooling = (workflows, violations) => {
             violations,
             jsonInstalls.length === 0 &&
               jsonProbes.length === 0 &&
-              !list.some((step) =>
-                /^npm run (?:(?:install|check|lint|format|normalize|inventory):json(?:-identity|:producers|:check)?|lint|format(?::check)?|test:quality)(?: |$)/u.test(
-                  step.run ?? "",
-                ),
+              !list.some(
+                (step) =>
+                  step.run === nonMarkdownFormatCheck ||
+                  /^npm run (?:(?:install|check|lint|format|normalize|inventory):json(?:-identity|:producers|:check)?|lint|format(?::check)?|test:quality)(?: |$)/u.test(
+                    step.run ?? "",
+                  ),
               ),
             `${context} portable source lane must not execute the native JSON tool`,
           );
@@ -2481,7 +2551,7 @@ const validateQualityTooling = (workflows, violations) => {
           );
           const jsonConsumers = list.flatMap((step, index) =>
             [
-              "npm run format:check",
+              nonMarkdownFormatCheck,
               "npm run lint",
               "npm run test:quality",
               "npm run check:json",
@@ -2521,47 +2591,62 @@ const validateQualityTooling = (workflows, violations) => {
             `${context} requires one unconditional final JSON producer gate after all producers`,
           );
         }
-        const markdownInstalls = list.filter(
-          (step) => step.run === "npm run install:markdown",
-        );
         if (["source_portable", "source_json"].includes(id)) {
-          add(
-            violations,
-            markdownInstalls.length === 0,
-            `${context} must retain its source-only checks`,
-          );
           for (const command of [
             "npm run format:source-python:check",
             "npm run lint:source-python",
           ])
             requireRun(job, command, context, violations);
         } else {
-          const markdownIndex = list.indexOf(markdownInstalls[0]);
-          add(
-            violations,
-            markdownInstalls.length === 1 &&
-              !markdownInstalls[0].if &&
-              !markdownInstalls[0]["continue-on-error"] &&
-              markdownIndex > syncIndex,
-            `${context} requires unconditional isolated Markdown acquisition`,
-          );
-          const consumers = list.flatMap((step, index) =>
+          const installIndex = list.indexOf(rootInstalls[0]);
+          for (const command of [nonMarkdownFormatCheck, "npm run lint"]) {
+            requireRun(job, command, context, violations);
+            const consumers = list.filter((step) => step.run === command);
+            add(
+              violations,
+              consumers.length === 1 &&
+                !consumers[0]?.if &&
+                !consumers[0]?.["continue-on-error"] &&
+                list.indexOf(consumers[0]) > installIndex,
+              `${context} requires unconditional full Markdown checking after root acquisition`,
+            );
+          }
+          const nativeQualificationIndex = list.findIndex((step) =>
             [
-              "npm run format:check",
-              "npm run lint",
-              "npm run test:quality",
-            ].includes(step.run)
-              ? [index]
-              : [],
+              "Qualify the locked Python scanner",
+              "Install the exact isolated artifact-action build tools",
+              "Install the checksum-pinned native Maven reference tool",
+              "Run native quality regressions",
+            ].includes(step.name),
           );
           add(
             violations,
-            consumers.length >= 2 &&
-              consumers.every((index) => index > markdownIndex),
-            `${context} requires Markdown setup before all canonical consumers`,
+            nativeQualificationIndex >= 0 &&
+              [
+                nonMarkdownFormatCheck,
+                "npm run lint",
+                "npm run test:json",
+              ].every((command) => {
+                const index = list.findIndex((step) => step.run === command);
+                return index >= 0 && index < nativeQualificationIndex;
+              }),
+            `${context} requires source formatting, lint and JSON probes before native qualification`,
           );
-          if (id === "source_canonical")
+          if (id === "source_canonical") {
             requireRun(job, "npm run test:markdown", context, violations);
+            const probes = list.filter(
+              (step) => step.run === "npm run test:markdown",
+            );
+            add(
+              violations,
+              probes.length === 1 &&
+                !probes[0]?.if &&
+                !probes[0]?.["continue-on-error"] &&
+                list.indexOf(probes[0]) > installIndex &&
+                list.indexOf(probes[0]) < nativeQualificationIndex,
+              `${context} requires unconditional Markdown probes before native qualification`,
+            );
+          }
         }
       }
       if (id === "quality_windows") {
@@ -2577,7 +2662,7 @@ const validateQualityTooling = (workflows, violations) => {
         );
         for (const command of [
           "npm run check:python-tools",
-          "npm run format:check",
+          nonMarkdownFormatCheck,
           "npm run lint",
           "npm run test:quality",
         ]) {
@@ -2780,73 +2865,6 @@ const validateJsonRecord = (schemaName, recordName, violations) => {
     violations,
     validate(record),
     `${recordName}: ${ajv.errorsText(validate.errors)}`,
-  );
-};
-
-/** Accept only the reviewed producer caller; the producer owns runners and observation. */
-const validateTrustedMarkdownWorkflow = (workflow, violations) => {
-  const label = "markdown-quality.yml: trusted data checker";
-  add(
-    violations,
-    sameInventory(Object.keys(workflow ?? {}), [
-      "name",
-      "on",
-      "permissions",
-      "jobs",
-    ]) &&
-      workflow.name === "Trusted Markdown qualification" &&
-      sameInventory(Object.keys(workflow.on ?? {}), ["workflow_dispatch"]) &&
-      sameInventory(Object.keys(workflow.on?.workflow_dispatch ?? {}), [
-        "inputs",
-      ]),
-    `${label}: only closed owner dispatch is accepted`,
-  );
-  const inputs = workflow.on?.workflow_dispatch?.inputs;
-  add(
-    violations,
-    sameInventory(Object.keys(inputs ?? {}), [
-      "trusted_sha",
-      "candidate_repository",
-      "candidate_sha",
-    ]),
-    `${label}: exact trusted and candidate inputs required`,
-  );
-  for (const id of ["trusted_sha", "candidate_repository", "candidate_sha"])
-    add(
-      violations,
-      sameInventory(
-        Object.keys(inputs?.[id] ?? {}),
-        id === "candidate_repository"
-          ? ["description", "required", "type", "default"]
-          : ["description", "required", "type"],
-      ) &&
-        typeof inputs?.[id]?.description === "string" &&
-        inputs[id].required === true &&
-        inputs[id].type === "string" &&
-        (id !== "candidate_repository" ||
-          inputs[id].default === "Hadden-Industries/owlapi"),
-      `${label}: closed required string input ${id}`,
-    );
-  add(
-    violations,
-    sameInventory(Object.keys(workflow.jobs ?? {}), ["markdown"]),
-    `${label}: one shared qualification caller required`,
-  );
-  const job = workflow.jobs?.markdown;
-  add(
-    violations,
-    sameInventory(Object.keys(job ?? {}), ["permissions", "uses", "with"]) &&
-      isDeepStrictEqual(job?.permissions, { contents: "read" }) &&
-      job?.uses ===
-        "Hadden-Industries/markdown-quality/.github/workflows/markdown-quality.yml@fa1188a867b29bddd0b972a080b7fcd0261bdec3" &&
-      isDeepStrictEqual(job?.with, {
-        "trusted-repository": "Hadden-Industries/owlapi",
-        "trusted-sha": "${{ inputs.trusted_sha }}",
-        "candidate-repository": "${{ inputs.candidate_repository }}",
-        "candidate-sha": "${{ inputs.candidate_sha }}",
-        profile: ".markdown-quality-execution.json",
-      }),
-    `${label}: closed pinned read-only caller and separate identities required`,
   );
 };
 
@@ -3327,10 +3345,6 @@ export const auditRepositoryControls = ({
     validateCandidateTransport(fileName, workflow, violations);
   }
   validateEvidenceWorkflows(workflows, violations);
-  validateTrustedMarkdownWorkflow(
-    workflows["markdown-quality.yml"] ?? {},
-    violations,
-  );
   validateQualityTooling(workflows, violations);
   const ci = workflows["ci.yml"] ?? {};
   add(violations, ci.name === "CI", "ci.yml: wrong workflow name");

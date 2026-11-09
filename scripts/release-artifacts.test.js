@@ -27,6 +27,21 @@ const tarEntry = (name, content) => {
 };
 
 describe("release artifact primitives", () => {
+  it("rejects a truncated member rather than accepting a prefix as its contents", () => {
+    const entry = tarEntry("package/README.md", "complete document");
+    const archive = gzipSync(entry.subarray(0, 516));
+    expect(() => readGzipTarFile(archive, "README.md")).toThrow(/truncated/iu);
+  });
+
+  it("rejects a partial trailing header and an oversized expanded archive", () => {
+    expect(() => inspectGzipTar(gzipSync(Buffer.alloc(17, 1)))).toThrow(
+      /truncated/iu,
+    );
+    expect(() =>
+      inspectGzipTar(gzipSync(Buffer.alloc(64 * 1024 * 1024 + 1))),
+    ).toThrow();
+  });
+
   it("inspects the real paths and bytes in a gzip-compressed tar archive", () => {
     const archive = gzipSync(
       Buffer.concat([

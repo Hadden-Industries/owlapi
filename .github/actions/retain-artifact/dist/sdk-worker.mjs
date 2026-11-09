@@ -1,15 +1,20 @@
-import { C as require_tunnel, D as __require, E as __exportAll, O as __toCommonJS, S as require_undici, T as __esmMin, _ as setSecret, b as HttpClient, c as hashBytes, d as debug, f as error, k as __toESM, m as info, o as inspectArchive, t as classifyUploadError, u as artifact_transport_policy_default, v as warning, w as __commonJSMin, x as HttpCodes, y as BearerCredentialHandler } from "./transport-CaMJ0f3m.mjs";
+import { C as require_tunnel, D as __require, E as __exportAll, O as __toCommonJS, S as require_undici, T as __esmMin, _ as setSecret, b as HttpClient, c as hashBytes, d as debug$3, f as error, k as __toESM, m as info, o as inspectArchive, t as classifyUploadError, u as artifact_transport_policy_default, v as warning, w as __commonJSMin, x as HttpCodes, y as BearerCredentialHandler } from "./transport-IzJs0naq.mjs";
 import os, { EOL } from "os";
 import * as crypto from "crypto";
 import * as fs$2 from "fs";
 import { existsSync, readFileSync } from "fs";
 import * as path from "path";
 import { normalize, resolve } from "path";
-import { EventEmitter } from "events";
+import * as http$1 from "http";
+import { Agent } from "https";
+import * as net from "net";
+import * as tls from "tls";
+import { EventEmitter, once } from "events";
+import assert from "assert";
 import http from "node:http";
-import Stream, { Readable, Transform } from "node:stream";
+import Stream, { Readable, Transform, finished } from "node:stream";
 import buffer from "node:buffer";
-import util, { inspect } from "node:util";
+import util, { inspect, types } from "node:util";
 import zlib, { crc32 } from "node:zlib";
 import { createHmac } from "node:crypto";
 import { readFile, readdir, stat } from "node:fs/promises";
@@ -17,12 +22,13 @@ import { resolve as resolve$1 } from "node:path";
 import os$1, { EOL as EOL$1 } from "node:os";
 import process$1 from "node:process";
 import https from "node:https";
+import { URL as URL$1 } from "url";
 import * as stream from "stream";
 import { Readable as Readable$1 } from "stream";
 import { Buffer as Buffer$1 } from "buffer";
 import fs from "node:fs";
 import fs$1, { realpath as realpath$1 } from "fs/promises";
-//#region tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/shared/config.js
+// tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/shared/config.js
 function getUploadChunkSize() {
 	return 8388608;
 }
@@ -81,8 +87,7 @@ function getMaxArtifactListCount() {
 	if (isNaN(maxCount) || maxCount < 1) throw new Error("Invalid value set for ACTIONS_ARTIFACT_MAX_ARTIFACT_COUNT env variable");
 	return maxCount;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/json-typings.js
+// tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/json-typings.js
 /**
 * Get the type of a JSON value.
 * Distinguishes between array, null and object.
@@ -101,8 +106,7 @@ function typeofJsonValue(value) {
 function isJsonObject(value) {
 	return value !== null && typeof value == "object" && !Array.isArray(value);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/base64.js
+// tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/base64.js
 var encTable = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".split("");
 var decTable = [];
 for (let i = 0; i < encTable.length; i++) decTable[encTable[i].charCodeAt(0)] = i;
@@ -190,8 +194,7 @@ function base64encode$1(bytes) {
 	}
 	return base64;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/binary-format-contract.js
+// tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/binary-format-contract.js
 /**
 * This handler implements the default behaviour for unknown fields.
 * When reading data, unknown fields are stored on the message, in a
@@ -284,8 +287,7 @@ var WireType;
 	*/
 	WireType[WireType["Bit32"] = 5] = "Bit32";
 })(WireType || (WireType = {}));
-//#endregion
-//#region tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/goog-varint.js
+// tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/goog-varint.js
 /**
 * Read a 64 bit varint as two JS numbers.
 *
@@ -477,8 +479,7 @@ function varint32read() {
 	this.assertBounds();
 	return result >>> 0;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/pb-long.js
+// tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/pb-long.js
 var BI;
 function detectBi() {
 	const dv = /* @__PURE__ */ new DataView(/* @__PURE__ */ new ArrayBuffer(8));
@@ -664,8 +665,7 @@ var PbLong = class PbLong extends SharedPbLong {
 * long 0 singleton.
 */
 PbLong.ZERO = new PbLong(0, 0);
-//#endregion
-//#region tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/binary-reader.js
+// tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/binary-reader.js
 var defaultsRead$1 = {
 	readUnknownField: true,
 	readerFactory: (bytes) => new BinaryReader(bytes)
@@ -828,12 +828,11 @@ var BinaryReader = class {
 		return this.textDecoder.decode(this.bytes());
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/assert.js
+// tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/assert.js
 /**
 * assert that condition is true or throw error (with message)
 */
-function assert(condition, msg) {
+function assert$1(condition, msg) {
 	if (!condition) throw new Error(msg);
 }
 var FLOAT32_MAX = 34028234663852886e22;
@@ -854,8 +853,7 @@ function assertFloat32(arg) {
 	if (!Number.isFinite(arg)) return;
 	if (arg > FLOAT32_MAX || arg < FLOAT32_MIN) throw new Error("invalid float 32: " + arg);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/binary-writer.js
+// tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/binary-writer.js
 var defaultsWrite$1 = {
 	writeUnknownFields: true,
 	writerFactory: () => new BinaryWriter()
@@ -1074,8 +1072,7 @@ var BinaryWriter = class {
 		return this;
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/json-format-contract.js
+// tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/json-format-contract.js
 var defaultsWrite = {
 	emitDefaultValues: false,
 	enumAsInteger: false,
@@ -1095,8 +1092,7 @@ function jsonReadOptions(options) {
 function jsonWriteOptions(options) {
 	return options ? Object.assign(Object.assign({}, defaultsWrite), options) : defaultsWrite;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/message-type-contract.js
+// tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/message-type-contract.js
 /**
 * The symbol used as a key on message objects to store the message type.
 *
@@ -1104,8 +1100,7 @@ function jsonWriteOptions(options) {
 * implementation details may change without notice.
 */
 var MESSAGE_TYPE = Symbol.for("protobuf-ts/message-type");
-//#endregion
-//#region tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/lower-camel-case.js
+// tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/lower-camel-case.js
 /**
 * Converts snake_case to lowerCamelCase.
 *
@@ -1129,8 +1124,7 @@ function lowerCamelCase(snakeCase) {
 	}
 	return sb.join("");
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/reflection-info.js
+// tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/reflection-info.js
 /**
 * Scalar value types. This is a subset of field types declared by protobuf
 * enum google.protobuf.FieldDescriptorProto.Type The types GROUP and MESSAGE
@@ -1237,8 +1231,7 @@ function normalizeFieldInfo(field) {
 	field.opt = (_d = field.opt) !== null && _d !== void 0 ? _d : field.repeat ? false : field.oneof ? false : field.kind == "message";
 	return field;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/oneof.js
+// tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/oneof.js
 /**
 * Is the given value a valid oneof group?
 *
@@ -1276,8 +1269,7 @@ function isOneofGroup(any) {
 		default: return false;
 	}
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/reflection-type-check.js
+// tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/reflection-type-check.js
 var ReflectionTypeCheck = class {
 	constructor(info) {
 		var _a;
@@ -1435,8 +1427,7 @@ var ReflectionTypeCheck = class {
 		}
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/reflection-long-convert.js
+// tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/reflection-long-convert.js
 /**
 * Utility method to convert a PbLong or PbUlong to a JavaScript
 * representation during runtime.
@@ -1451,8 +1442,7 @@ function reflectionLongConvert(long, type) {
 		default: return long.toString();
 	}
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/reflection-json-reader.js
+// tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/reflection-json-reader.js
 /**
 * Reads proto3 messages in canonical JSON format using reflection information.
 *
@@ -1576,21 +1566,21 @@ var ReflectionJsonReader = class {
 	* google.protobuf.NullValue accepts only JSON `null` (or the old `"NULL_VALUE"`).
 	*/
 	enum(type, json, fieldName, ignoreUnknownFields) {
-		if (type[0] == "google.protobuf.NullValue") assert(json === null || json === "NULL_VALUE", `Unable to parse field ${this.info.typeName}#${fieldName}, enum ${type[0]} only accepts null.`);
+		if (type[0] == "google.protobuf.NullValue") assert$1(json === null || json === "NULL_VALUE", `Unable to parse field ${this.info.typeName}#${fieldName}, enum ${type[0]} only accepts null.`);
 		if (json === null) return 0;
 		switch (typeof json) {
 			case "number":
-				assert(Number.isInteger(json), `Unable to parse field ${this.info.typeName}#${fieldName}, enum can only be integral number, got ${json}.`);
+				assert$1(Number.isInteger(json), `Unable to parse field ${this.info.typeName}#${fieldName}, enum can only be integral number, got ${json}.`);
 				return json;
 			case "string":
 				let localEnumName = json;
 				if (type[2] && json.substring(0, type[2].length) === type[2]) localEnumName = json.substring(type[2].length);
 				let enumNumber = type[1][localEnumName];
 				if (typeof enumNumber === "undefined" && ignoreUnknownFields) return false;
-				assert(typeof enumNumber == "number", `Unable to parse field ${this.info.typeName}#${fieldName}, enum ${type[0]} has no value for "${json}".`);
+				assert$1(typeof enumNumber == "number", `Unable to parse field ${this.info.typeName}#${fieldName}, enum ${type[0]} has no value for "${json}".`);
 				return enumNumber;
 		}
-		assert(false, `Unable to parse field ${this.info.typeName}#${fieldName}, cannot parse enum value from ${typeof json}".`);
+		assert$1(false, `Unable to parse field ${this.info.typeName}#${fieldName}, cannot parse enum value from ${typeof json}".`);
 	}
 	scalar(json, type, longType, fieldName) {
 		let e;
@@ -1672,8 +1662,7 @@ var ReflectionJsonReader = class {
 		this.assert(false, fieldName + (e ? " - " + e : ""), json);
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/reflection-json-writer.js
+// tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/reflection-json-writer.js
 /**
 * Writes proto3 messages in canonical JSON format using reflection
 * information.
@@ -1700,7 +1689,7 @@ var ReflectionJsonWriter = class {
 			if (group.oneofKind !== field.localName) continue;
 			const opt = field.kind == "scalar" || field.kind == "enum" ? Object.assign(Object.assign({}, options), { emitDefaultValues: true }) : options;
 			let jsonValue = this.field(field, group[field.localName], opt);
-			assert(jsonValue !== void 0);
+			assert$1(jsonValue !== void 0);
 			json[options.useProtoFieldName ? field.name : field.jsonName] = jsonValue;
 		}
 		return json;
@@ -1708,13 +1697,13 @@ var ReflectionJsonWriter = class {
 	field(field, value, options) {
 		let jsonValue = void 0;
 		if (field.kind == "map") {
-			assert(typeof value == "object" && value !== null);
+			assert$1(typeof value == "object" && value !== null);
 			const jsonObj = {};
 			switch (field.V.kind) {
 				case "scalar":
 					for (const [entryKey, entryValue] of Object.entries(value)) {
 						const val = this.scalar(field.V.T, entryValue, field.name, false, true);
-						assert(val !== void 0);
+						assert$1(val !== void 0);
 						jsonObj[entryKey.toString()] = val;
 					}
 					break;
@@ -1722,37 +1711,37 @@ var ReflectionJsonWriter = class {
 					const messageType = field.V.T();
 					for (const [entryKey, entryValue] of Object.entries(value)) {
 						const val = this.message(messageType, entryValue, field.name, options);
-						assert(val !== void 0);
+						assert$1(val !== void 0);
 						jsonObj[entryKey.toString()] = val;
 					}
 					break;
 				case "enum":
 					const enumInfo = field.V.T();
 					for (const [entryKey, entryValue] of Object.entries(value)) {
-						assert(entryValue === void 0 || typeof entryValue == "number");
+						assert$1(entryValue === void 0 || typeof entryValue == "number");
 						const val = this.enum(enumInfo, entryValue, field.name, false, true, options.enumAsInteger);
-						assert(val !== void 0);
+						assert$1(val !== void 0);
 						jsonObj[entryKey.toString()] = val;
 					}
 			}
 			if (options.emitDefaultValues || Object.keys(jsonObj).length > 0) jsonValue = jsonObj;
 		} else if (field.repeat) {
-			assert(Array.isArray(value));
+			assert$1(Array.isArray(value));
 			const jsonArr = [];
 			switch (field.kind) {
 				case "scalar":
 					for (let i = 0; i < value.length; i++) {
 						const val = this.scalar(field.T, value[i], field.name, field.opt, true);
-						assert(val !== void 0);
+						assert$1(val !== void 0);
 						jsonArr.push(val);
 					}
 					break;
 				case "enum":
 					const enumInfo = field.T();
 					for (let i = 0; i < value.length; i++) {
-						assert(value[i] === void 0 || typeof value[i] == "number");
+						assert$1(value[i] === void 0 || typeof value[i] == "number");
 						const val = this.enum(enumInfo, value[i], field.name, field.opt, true, options.enumAsInteger);
-						assert(val !== void 0);
+						assert$1(val !== void 0);
 						jsonArr.push(val);
 					}
 					break;
@@ -1760,7 +1749,7 @@ var ReflectionJsonWriter = class {
 					const messageType = field.T();
 					for (let i = 0; i < value.length; i++) {
 						const val = this.message(messageType, value[i], field.name, options);
-						assert(val !== void 0);
+						assert$1(val !== void 0);
 						jsonArr.push(val);
 					}
 			}
@@ -1782,12 +1771,12 @@ var ReflectionJsonWriter = class {
 	enum(type, value, fieldName, optional, emitDefaultValues, enumAsInteger) {
 		if (type[0] == "google.protobuf.NullValue") return !emitDefaultValues && !optional ? void 0 : null;
 		if (value === void 0) {
-			assert(optional);
+			assert$1(optional);
 			return;
 		}
 		if (value === 0 && !emitDefaultValues && !optional) return void 0;
-		assert(typeof value == "number");
-		assert(Number.isInteger(value));
+		assert$1(typeof value == "number");
+		assert$1(Number.isInteger(value));
 		if (enumAsInteger || !type[1].hasOwnProperty(value)) return value;
 		if (type[2]) return type[2] + type[1][value];
 		return type[1][value];
@@ -1798,7 +1787,7 @@ var ReflectionJsonWriter = class {
 	}
 	scalar(type, value, fieldName, optional, emitDefaultValues) {
 		if (value === void 0) {
-			assert(optional);
+			assert$1(optional);
 			return;
 		}
 		const ed = emitDefaultValues || optional;
@@ -1817,41 +1806,40 @@ var ReflectionJsonWriter = class {
 			case ScalarType.FLOAT: assertFloat32(value);
 			case ScalarType.DOUBLE:
 				if (value === 0) return ed ? 0 : void 0;
-				assert(typeof value == "number");
+				assert$1(typeof value == "number");
 				if (Number.isNaN(value)) return "NaN";
 				if (value === Number.POSITIVE_INFINITY) return "Infinity";
 				if (value === Number.NEGATIVE_INFINITY) return "-Infinity";
 				return value;
 			case ScalarType.STRING:
 				if (value === "") return ed ? "" : void 0;
-				assert(typeof value == "string");
+				assert$1(typeof value == "string");
 				return value;
 			case ScalarType.BOOL:
 				if (value === false) return ed ? false : void 0;
-				assert(typeof value == "boolean");
+				assert$1(typeof value == "boolean");
 				return value;
 			case ScalarType.UINT64:
 			case ScalarType.FIXED64:
-				assert(typeof value == "number" || typeof value == "string" || typeof value == "bigint");
+				assert$1(typeof value == "number" || typeof value == "string" || typeof value == "bigint");
 				let ulong = PbULong.from(value);
 				if (ulong.isZero() && !ed) return void 0;
 				return ulong.toString();
 			case ScalarType.INT64:
 			case ScalarType.SFIXED64:
 			case ScalarType.SINT64:
-				assert(typeof value == "number" || typeof value == "string" || typeof value == "bigint");
+				assert$1(typeof value == "number" || typeof value == "string" || typeof value == "bigint");
 				let long = PbLong.from(value);
 				if (long.isZero() && !ed) return void 0;
 				return long.toString();
 			case ScalarType.BYTES:
-				assert(value instanceof Uint8Array);
+				assert$1(value instanceof Uint8Array);
 				if (!value.byteLength) return ed ? "" : void 0;
 				return base64encode$1(value);
 		}
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/reflection-scalar-default.js
+// tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/reflection-scalar-default.js
 /**
 * Creates the default value for a scalar type.
 */
@@ -1870,8 +1858,7 @@ function reflectionScalarDefault(type, longType = LongType.STRING) {
 		default: return 0;
 	}
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/reflection-binary-reader.js
+// tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/reflection-binary-reader.js
 /**
 * Reads proto3 messages in binary format using reflection information.
 *
@@ -2004,8 +1991,7 @@ var ReflectionBinaryReader = class {
 		}
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/reflection-binary-writer.js
+// tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/reflection-binary-writer.js
 /**
 * Writes proto3 messages in binary format using reflection information.
 *
@@ -2042,20 +2028,20 @@ var ReflectionBinaryWriter = class {
 				case "enum":
 					let T = field.kind == "enum" ? ScalarType.INT32 : field.T;
 					if (repeated) {
-						assert(Array.isArray(value));
+						assert$1(Array.isArray(value));
 						if (repeated == RepeatType.PACKED) this.packed(writer, T, field.no, value);
 						else for (const item of value) this.scalar(writer, T, field.no, item, true);
-					} else if (value === void 0) assert(field.opt);
+					} else if (value === void 0) assert$1(field.opt);
 					else this.scalar(writer, T, field.no, value, emitDefault || field.opt);
 					break;
 				case "message":
 					if (repeated) {
-						assert(Array.isArray(value));
+						assert$1(Array.isArray(value));
 						for (const item of value) this.message(writer, options, field.T(), field.no, item);
 					} else this.message(writer, options, field.T(), field.no, value);
 					break;
 				case "map":
-					assert(typeof value == "object" && value !== null);
+					assert$1(typeof value == "object" && value !== null);
 					for (const [key, val] of Object.entries(value)) this.mapEntry(writer, options, field, key, val);
 			}
 		}
@@ -2075,7 +2061,7 @@ var ReflectionBinaryWriter = class {
 				keyValue = Number.parseInt(key);
 				break;
 			case ScalarType.BOOL:
-				assert(key == "true" || key == "false");
+				assert$1(key == "true" || key == "false");
 				keyValue = key == "true";
 		}
 		this.scalar(writer, field.K, 1, keyValue, true);
@@ -2110,7 +2096,7 @@ var ReflectionBinaryWriter = class {
 	*/
 	packed(writer, type, fieldNo, value) {
 		if (!value.length) return;
-		assert(type !== ScalarType.BYTES && type !== ScalarType.STRING);
+		assert$1(type !== ScalarType.BYTES && type !== ScalarType.STRING);
 		writer.tag(fieldNo, WireType.LengthDelimited);
 		writer.fork();
 		let [, method] = this.scalarInfo(type);
@@ -2201,8 +2187,7 @@ var ReflectionBinaryWriter = class {
 		];
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/reflection-create.js
+// tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/reflection-create.js
 /**
 * Creates an instance of the generic message, using the field
 * information.
@@ -2236,8 +2221,7 @@ function reflectionCreate(type) {
 	}
 	return msg;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/reflection-merge-partial.js
+// tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/reflection-merge-partial.js
 /**
 * Copy partial data into the target message.
 *
@@ -2304,8 +2288,7 @@ function reflectionMergePartial(info, target, source) {
 		}
 	}
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/reflection-equals.js
+// tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/reflection-equals.js
 /**
 * Determines whether two message of the same type have the same field values.
 * Checks for deep equality, traversing repeated fields, oneof groups, maps
@@ -2355,8 +2338,7 @@ function repeatedMsgEq(type, a, b) {
 	for (let i = 0; i < a.length; i++) if (!type.equals(a[i], b[i])) return false;
 	return true;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/message-type.js
+// tooling/artifact-transport/node_modules/@protobuf-ts/runtime/build/es2015/message-type.js
 var baseDescriptors = Object.getOwnPropertyDescriptors(Object.getPrototypeOf({}));
 var messageTypeDescriptor = baseDescriptors[MESSAGE_TYPE] = {};
 /**
@@ -2514,8 +2496,7 @@ var MessageType = class {
 		return message;
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@actions/artifact/lib/generated/google/protobuf/timestamp.js
+// tooling/artifact-transport/node_modules/@actions/artifact/lib/generated/google/protobuf/timestamp.js
 var Timestamp$Type = class extends MessageType {
 	constructor() {
 		super("google.protobuf.Timestamp", [{
@@ -2634,8 +2615,7 @@ var Timestamp$Type = class extends MessageType {
 * @generated MessageType for protobuf message google.protobuf.Timestamp
 */
 var Timestamp = new Timestamp$Type();
-//#endregion
-//#region tooling/artifact-transport/node_modules/@actions/artifact/lib/generated/google/protobuf/wrappers.js
+// tooling/artifact-transport/node_modules/@actions/artifact/lib/generated/google/protobuf/wrappers.js
 var DoubleValue$Type = class extends MessageType {
 	constructor() {
 		super("google.protobuf.DoubleValue", [{
@@ -3155,8 +3135,7 @@ var BytesValue$Type = class extends MessageType {
 	}
 };
 new BytesValue$Type();
-//#endregion
-//#region tooling/artifact-transport/node_modules/@protobuf-ts/runtime-rpc/build/es2015/reflection-info.js
+// tooling/artifact-transport/node_modules/@protobuf-ts/runtime-rpc/build/es2015/reflection-info.js
 /**
 * Turns PartialMethodInfo into MethodInfo.
 */
@@ -3171,8 +3150,7 @@ function normalizeMethodInfo(method, service) {
 	m.idempotency = (_c = m.idempotency) !== null && _c !== void 0 ? _c : void 0;
 	return m;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@protobuf-ts/runtime-rpc/build/es2015/service-type.js
+// tooling/artifact-transport/node_modules/@protobuf-ts/runtime-rpc/build/es2015/service-type.js
 var ServiceType = class {
 	constructor(typeName, methods, options) {
 		this.typeName = typeName;
@@ -3180,8 +3158,7 @@ var ServiceType = class {
 		this.options = options !== null && options !== void 0 ? options : {};
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@actions/artifact/lib/generated/results/api/v1/artifact.js
+// tooling/artifact-transport/node_modules/@actions/artifact/lib/generated/results/api/v1/artifact.js
 var CreateArtifactRequest$Type = class extends MessageType {
 	constructor() {
 		super("github.actions.results.api.v1.CreateArtifactRequest", [
@@ -4016,8 +3993,7 @@ new ServiceType("github.actions.results.api.v1.ArtifactService", [
 		O: DeleteArtifactResponse
 	}
 ]);
-//#endregion
-//#region tooling/artifact-transport/node_modules/@actions/artifact/lib/generated/results/api/v1/artifact.twirp-client.js
+// tooling/artifact-transport/node_modules/@actions/artifact/lib/generated/results/api/v1/artifact.twirp-client.js
 var ArtifactServiceClientJSON = class {
 	constructor(rpc) {
 		this.rpc = rpc;
@@ -4063,8 +4039,7 @@ var ArtifactServiceClientJSON = class {
 		return this.rpc.request("github.actions.results.api.v1.ArtifactService", "DeleteArtifact", "application/json", data).then((data) => DeleteArtifactResponse.fromJson(data, { ignoreUnknownFields: true }));
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/upload/retention.js
+// tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/upload/retention.js
 function getExpiration(retentionDays) {
 	if (!retentionDays) return;
 	const maxRetentionDays = getRetentionDays();
@@ -4083,8 +4058,7 @@ function getRetentionDays() {
 	if (isNaN(days)) return;
 	return days;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/upload/path-and-artifact-name-validation.js
+// tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/upload/path-and-artifact-name-validation.js
 /**
 * Invalid characters that cannot be in the artifact name or an uploaded file. Will be rejected
 * from the server if attempted to be sent over. These characters are not allowed due to limitations with certain
@@ -4133,8 +4107,7 @@ Invalid characters include: ${Array.from(invalidArtifactFilePathCharacters.value
 The following characters are not allowed in files that are uploaded due to limitations with certain file systems such as NTFS. To maintain file system agnostic behavior, these characters are intentionally not allowed to prevent potential problems with downloads on different file systems.
           `);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@actions/artifact/package.json
+// tooling/artifact-transport/node_modules/@actions/artifact/package.json
 var package_exports = /* @__PURE__ */ __exportAll({
 	bugs: () => bugs,
 	default: () => package_default,
@@ -4155,9 +4128,9 @@ var package_exports = /* @__PURE__ */ __exportAll({
 	repository: () => repository,
 	scripts: () => scripts,
 	type: () => type,
-	types: () => types,
+	types: () => types$1,
 	version: () => version$2
-}), name, version$2, description, keywords, homepage, type, main, types, exports$1, directories, files, publishConfig, repository, scripts, bugs, dependencies, devDependencies, overrides, package_default;
+}), name, version$2, description, keywords, homepage, type, main, types$1, exports$1, directories, files, publishConfig, repository, scripts, bugs, dependencies, devDependencies, overrides, package_default;
 var init_package = __esmMin((() => {
 	name = "@actions/artifact";
 	version$2 = "6.3.1";
@@ -4170,7 +4143,7 @@ var init_package = __esmMin((() => {
 	homepage = "https://github.com/actions/toolkit/tree/main/packages/artifact";
 	type = "module";
 	main = "lib/artifact.js";
-	types = "lib/artifact.d.ts";
+	types$1 = "lib/artifact.d.ts";
 	exports$1 = { ".": {
 		"types": "./lib/artifact.d.ts",
 		"import": "./lib/artifact.js"
@@ -4233,7 +4206,7 @@ var init_package = __esmMin((() => {
 		license: "MIT",
 		type,
 		main,
-		types,
+		types: types$1,
 		exports: exports$1,
 		directories,
 		files,
@@ -4246,8 +4219,7 @@ var init_package = __esmMin((() => {
 		overrides
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/shared/user-agent.js
+// tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/shared/user-agent.js
 var import_package_version = (/* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = { version: (init_package(), __toCommonJS(package_exports).default).version };
 })))();
@@ -4257,8 +4229,7 @@ var import_package_version = (/* @__PURE__ */ __commonJSMin(((exports, module) =
 function getUserAgentString$1() {
 	return `@actions/artifact-${import_package_version.version}`;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/shared/errors.js
+// tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/shared/errors.js
 var FilesNotFoundError = class extends Error {
 	constructor(files = []) {
 		let message = "No files were found to upload";
@@ -4314,8 +4285,7 @@ UsageError.isUsageErrorMessage = (msg) => {
 	if (!msg) return false;
 	return msg.includes("insufficient usage");
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/jwt-decode/build/esm/index.js
+// tooling/artifact-transport/node_modules/jwt-decode/build/esm/index.js
 var InvalidTokenError = class extends Error {};
 InvalidTokenError.prototype.name = "InvalidTokenError";
 function b64DecodeUnicode(str) {
@@ -4361,8 +4331,7 @@ function jwtDecode(token, options) {
 		throw new InvalidTokenError(`Invalid token specified: invalid json for part #${pos + 1} (${e.message})`);
 	}
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/shared/util.js
+// tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/shared/util.js
 var InvalidJwtError = /* @__PURE__ */ new Error("Failed to get backend IDs: The provided JWT token is invalid and/or missing claims");
 function getBackendIdsFromToken() {
 	const decoded = jwtDecode(getRuntimeToken());
@@ -4377,8 +4346,8 @@ function getBackendIdsFromToken() {
 			workflowRunBackendId: scopeParts[1],
 			workflowJobRunBackendId: scopeParts[2]
 		};
-		debug(`Workflow Run Backend ID: ${ids.workflowRunBackendId}`);
-		debug(`Workflow Job Run Backend ID: ${ids.workflowJobRunBackendId}`);
+		debug$3(`Workflow Run Backend ID: ${ids.workflowRunBackendId}`);
+		debug$3(`Workflow Job Run Backend ID: ${ids.workflowJobRunBackendId}`);
 		return ids;
 	}
 	throw InvalidJwtError;
@@ -4409,7 +4378,7 @@ function maskSigUrl(url) {
 			setSecret(encodeURIComponent(signature));
 		}
 	} catch (error) {
-		debug(`Failed to parse URL: ${url} ${error instanceof Error ? error.message : String(error)}`);
+		debug$3(`Failed to parse URL: ${url} ${error instanceof Error ? error.message : String(error)}`);
 	}
 }
 /**
@@ -4435,14 +4404,13 @@ function maskSigUrl(url) {
 */
 function maskSecretUrls(body) {
 	if (typeof body !== "object" || body === null) {
-		debug("body is not an object or is null");
+		debug$3("body is not an object or is null");
 		return;
 	}
 	if ("signed_upload_url" in body && typeof body.signed_upload_url === "string") maskSigUrl(body.signed_upload_url);
 	if ("signed_url" in body && typeof body.signed_url === "string") maskSigUrl(body.signed_url);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/shared/artifact-twirp-client.js
+// tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/shared/artifact-twirp-client.js
 var __awaiter$10 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
@@ -4486,7 +4454,7 @@ var ArtifactHttpClient = class {
 	request(service, method, contentType, data) {
 		return __awaiter$10(this, void 0, void 0, function* () {
 			const url = new URL(`/twirp/${service}/${method}`, this.baseUrl).href;
-			debug(`[Request] ${method} ${url}`);
+			debug$3(`[Request] ${method} ${url}`);
 			const headers = { "Content-Type": contentType };
 			try {
 				const { body } = yield this.retryableRequest(() => __awaiter$10(this, void 0, void 0, function* () {
@@ -4512,11 +4480,11 @@ var ArtifactHttpClient = class {
 					const statusCode = response.message.statusCode;
 					if (statusCode === HttpCodes.TooManyRequests) retryAfterSeconds = this.getRetryAfterSeconds(response);
 					rawBody = yield response.readBody();
-					debug(`[Response] - ${response.message.statusCode}`);
-					debug(`Headers: ${JSON.stringify(response.message.headers, null, 2)}`);
+					debug$3(`[Response] - ${response.message.statusCode}`);
+					debug$3(`Headers: ${JSON.stringify(response.message.headers, null, 2)}`);
 					const body = JSON.parse(rawBody);
 					maskSecretUrls(body);
-					debug(`Body: ${JSON.stringify(body, null, 2)}`);
+					debug$3(`Body: ${JSON.stringify(body, null, 2)}`);
 					if (this.isSuccessStatusCode(statusCode)) return {
 						response,
 						body
@@ -4528,7 +4496,7 @@ var ArtifactHttpClient = class {
 						errorMessage = `${errorMessage}: ${body.msg}`;
 					}
 				} catch (error) {
-					if (error instanceof SyntaxError) debug(`Raw Body: ${rawBody}`);
+					if (error instanceof SyntaxError) debug$3(`Raw Body: ${rawBody}`);
 					if (error instanceof UsageError) throw error;
 					if (NetworkError.isNetworkErrorCode(error === null || error === void 0 ? void 0 : error.code)) throw new NetworkError(error === null || error === void 0 ? void 0 : error.code);
 					isRetryable = true;
@@ -4584,8 +4552,7 @@ var ArtifactHttpClient = class {
 function internalArtifactTwirpClient(options) {
 	return new ArtifactServiceClientJSON(new ArtifactHttpClient(getUserAgentString$1(), options === null || options === void 0 ? void 0 : options.maxAttempts, options === null || options === void 0 ? void 0 : options.retryIntervalMs, options === null || options === void 0 ? void 0 : options.retryMultiplier));
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/upload/upload-zip-specification.js
+// tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/upload/upload-zip-specification.js
 /**
 * Checks if a root directory exists and is valid
 * @param rootDirectory an absolute root directory path common to all input files that that will be trimmed from the final zip structure
@@ -4630,8 +4597,7 @@ function getUploadZipSpecification(filesToZip, rootDirectory) {
 	}
 	return specification;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/abort-controller/AbortError.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/abort-controller/AbortError.js
 /**
 * This error is thrown when an asynchronous operation has been aborted.
 * Check for this error by testing the `name` that the name property of the
@@ -4667,13 +4633,11 @@ var AbortError$1 = class extends Error {
 		this.name = "AbortError";
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/logger/log.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/logger/log.js
 function log$1(message, ...args) {
 	process$1.stderr.write(`${util.format(message, ...args)}${EOL$1}`);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/env.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/env.js
 /**
 * Returns the value of the specified environment variable.
 *
@@ -4684,8 +4648,7 @@ function getEnvironmentVariable(name) {
 }
 typeof process$1.versions.deno === "string" && process$1.versions.deno.length;
 typeof process$1.versions.bun === "string" && process$1.versions.bun.length;
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/logger/debug.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/logger/debug.js
 var debugEnvVariable = getEnvironmentVariable("DEBUG");
 var enabledString;
 var enabledNamespaces = [];
@@ -4806,8 +4769,7 @@ function extend(namespace) {
 	newDebugger.log = this.log;
 	return newDebugger;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/logger/logger.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/logger/logger.js
 var TYPESPEC_RUNTIME_LOG_LEVELS = [
 	"verbose",
 	"info",
@@ -4898,8 +4860,7 @@ context$3.logger;
 function createClientLogger$1(namespace) {
 	return context$3.createClientLogger(namespace);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/httpHeaders.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/httpHeaders.js
 function normalizeName(name) {
 	return name.toLowerCase();
 }
@@ -4983,8 +4944,7 @@ var HttpHeadersImpl = class {
 function createHttpHeaders$1(rawHeaders) {
 	return new HttpHeadersImpl(rawHeaders);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/util/uuidUtils.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/util/uuidUtils.js
 /**
 * Generated Universally Unique Identifier
 *
@@ -4993,8 +4953,7 @@ function createHttpHeaders$1(rawHeaders) {
 function randomUUID$2() {
 	return globalThis.crypto.randomUUID();
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/pipelineRequest.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/pipelineRequest.js
 var PipelineRequestImpl = class {
 	url;
 	method;
@@ -5045,8 +5004,7 @@ var PipelineRequestImpl = class {
 function createPipelineRequest$1(options) {
 	return new PipelineRequestImpl(options);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/pipeline.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/pipeline.js
 var ValidPhaseNames = /* @__PURE__ */ new Set([
 	"Deserialize",
 	"Serialize",
@@ -5244,8 +5202,7 @@ var HttpPipeline = class HttpPipeline {
 function createEmptyPipeline$1() {
 	return HttpPipeline.create();
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/util/object.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/util/object.js
 /**
 * Helper to determine when an input is a generic JS object.
 * @returns true when input is an object type that is not null, Array, RegExp, or Date.
@@ -5253,8 +5210,7 @@ function createEmptyPipeline$1() {
 function isObject$1(input) {
 	return typeof input === "object" && input !== null && !Array.isArray(input) && !(input instanceof RegExp) && !(input instanceof Date);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/util/error.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/util/error.js
 /**
 * Typeguard for an error object shape (has name and message)
 * @param e - Something caught by a catch clause.
@@ -5267,11 +5223,9 @@ function isError$1(e) {
 	}
 	return false;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/util/inspect.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/util/inspect.js
 var custom = inspect.custom;
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/util/sanitizer.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/util/sanitizer.js
 var RedactedString = "REDACTED";
 var defaultAllowedHeaderNames = [
 	"x-ms-client-request-id",
@@ -5283,6 +5237,7 @@ var defaultAllowedHeaderNames = [
 	"ms-cv",
 	"return-client-request-id",
 	"traceparent",
+	"azure-deprecating",
 	"Access-Control-Allow-Credentials",
 	"Access-Control-Allow-Headers",
 	"Access-Control-Allow-Methods",
@@ -5379,8 +5334,7 @@ var Sanitizer = class {
 		return sanitized;
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/restError.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/restError.js
 var errorSanitizer = new Sanitizer();
 /**
 * A custom error type for failed pipeline requests.
@@ -5460,8 +5414,7 @@ function isRestError$1(e) {
 	if (e instanceof RestError$1) return true;
 	return isError$1(e) && e.name === "RestError";
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/util/bytesEncoding.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/util/bytesEncoding.js
 /**
 * The helper that transforms bytes with specific character encoding into string
 * @param bytes - the uint8array bytes
@@ -5480,14 +5433,368 @@ function uint8ArrayToString$1(bytes, format) {
 function stringToUint8Array$1(value, format) {
 	return Buffer.from(value, format);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/log.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/log.js
 var logger$4 = createClientLogger$1("ts-http-runtime");
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/nodeHttpClient.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/util/requestBodyHeaders.js
+/**
+* Converts a flat `[name, value, ...]` raw header array to `[name, value]` pairs,
+* or returns an existing pair array unchanged, preserving order and duplicates.
+*
+* @param headers - Header names and values in either array format.
+* @returns The header pairs in their original order.
+* @see https://nodejs.org/api/http.html#messagerawheaders
+*/
+function getHeaderPairs(headers) {
+	return Array.isArray(headers[0]) ? headers : Array.from({ length: Math.ceil(headers.length / 2) }, (_, index) => [headers[index * 2], headers[index * 2 + 1]]);
+}
+function isIterable(value) {
+	return Symbol.iterator in value && typeof value[Symbol.iterator] === "function";
+}
+function removeContinueToken(value) {
+	if (typeof value === "string") {
+		const tokens = value.split(",");
+		const remaining = tokens.filter((token) => token.trim().toLowerCase() !== "100-continue");
+		if (remaining.length === tokens.length) return value;
+		return remaining.map((token) => token.trim()).filter(Boolean).join(", ") || void 0;
+	}
+	if (Array.isArray(value)) {
+		const remaining = value.map(removeContinueToken).filter((entry) => entry !== void 0);
+		return remaining.length > 0 ? remaining : void 0;
+	}
+	return value;
+}
+function stripRequestBodyHeaders(request, removeFraming) {
+	const stripHeaderValue = (name, value) => {
+		const lowerName = name.toLowerCase();
+		if (removeFraming && (lowerName === "content-length" || lowerName === "transfer-encoding" || lowerName === "trailer")) return;
+		return lowerName === "expect" ? removeContinueToken(value) : value;
+	};
+	const stripHeaderPairs = (pairs) => pairs.flatMap(([name, value]) => {
+		const updated = typeof name === "string" ? stripHeaderValue(name, value) : value;
+		return updated === void 0 ? [] : [[name, updated]];
+	});
+	for (const [name, value] of request.headers) {
+		const updated = stripHeaderValue(name, value);
+		if (updated === void 0) request.headers.delete(name);
+		else if (typeof updated === "string" && updated !== value) request.headers.set(name, updated);
+	}
+	const overrides = request.requestOverrides;
+	if (!overrides || !("headers" in overrides)) return;
+	const headers = overrides.headers;
+	if (Array.isArray(headers)) {
+		const updatedPairs = stripHeaderPairs(getHeaderPairs(headers));
+		request.requestOverrides = {
+			...overrides,
+			headers: Array.isArray(headers[0]) ? updatedPairs : updatedPairs.flat()
+		};
+	} else if (headers && typeof headers === "object" && isIterable(headers)) {
+		const pairs = Array.from(headers, (entry) => {
+			if (!Array.isArray(entry) || entry.length !== 2) throw new TypeError("Header entry must be a name/value pair");
+			return entry;
+		});
+		request.requestOverrides = {
+			...overrides,
+			headers: stripHeaderPairs(pairs)
+		};
+	} else if (headers && typeof headers === "object") {
+		const updatedHeaders = {};
+		for (const [name, value] of Object.entries(headers)) {
+			const updated = stripHeaderValue(name, value);
+			if (updated !== void 0) updatedHeaders[name] = updated;
+		}
+		request.requestOverrides = {
+			...overrides,
+			headers: updatedHeaders
+		};
+	}
+}
+/**
+* Removes only the 100-continue expectation from pipeline and replacement headers.
+* Raw header arrays retain their shape, and caller-supplied override headers are not mutated.
+* Iterable override collections are materialized as reusable name/value pairs.
+*
+* @param request - The request whose body is known to be empty.
+*/
+function removeExpectContinueHeader(request) {
+	stripRequestBodyHeaders(request, false);
+}
+/**
+* Removes obsolete body framing, trailer declarations, and the 100-continue expectation
+* after discarding a body.
+*
+* @param request - The request whose body has been discarded.
+*/
+function removeRequestBodyHeaders(request) {
+	stripRequestBodyHeaders(request, true);
+}
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/util/nodeExpectContinue.js
+var EXPECT_CONTINUE_TIMEOUT_IN_MS = 1e3;
+function getHeaderValues(headers, name) {
+	if (Array.isArray(headers)) return getHeaderPairs(headers).filter(([key]) => typeof key === "string" && key.toLowerCase() === name).flatMap(([, value]) => Array.isArray(value) ? value : [value]);
+	if (headers && typeof headers === "object") {
+		if ("get" in headers && typeof headers.get === "function") {
+			const value = headers.get(name);
+			return value === void 0 || value === null ? [] : [value];
+		}
+		let value;
+		for (const [key, entry] of Object.entries(headers)) if (key.toLowerCase() === name) value = entry;
+		return value === void 0 ? [] : Array.isArray(value) ? value : [value];
+	}
+	return [];
+}
+function getEffectiveHeaderValues(request, name) {
+	return getHeaderValues(request.requestOverrides && "headers" in request.requestOverrides ? request.requestOverrides.headers : request.headers, name.toLowerCase());
+}
+function hasExpectContinue(request) {
+	return getEffectiveHeaderValues(request, "expect").some((value) => typeof value === "string" && value.split(",").some((token) => token.trim().toLowerCase() === "100-continue"));
+}
+function addHeader(headers, name, value) {
+	if (!Array.isArray(headers)) return {
+		...headers,
+		[name]: value
+	};
+	return Array.isArray(headers[0]) ? [...headers, [name, value]] : [
+		...headers,
+		name,
+		value
+	];
+}
+function hasHeader(headers, name) {
+	if (Array.isArray(headers)) return getHeaderPairs(headers).some(([key]) => typeof key === "string" && key.toLowerCase() === name);
+	return Object.keys(headers ?? {}).some((key) => key.toLowerCase() === name);
+}
+function addExpectContinueFraming(options, bodyLength) {
+	if (hasHeader(options.headers, "content-length") || hasHeader(options.headers, "transfer-encoding")) return;
+	options.headers = addHeader(options.headers, bodyLength === null ? "Transfer-Encoding" : "Content-Length", bodyLength === null ? "chunked" : String(bodyLength));
+}
+function createExpectContinueRequest(options) {
+	let fallback;
+	let waiting = true;
+	let bodyStarted = false;
+	let errorReported = false;
+	let request;
+	let bodyError;
+	const bodyStream = options.bodyStream;
+	bodyStream?.once("error", onBodyError);
+	if (bodyStream && "errored" in bodyStream && bodyStream.errored instanceof Error) {
+		process.nextTick(onBodyError, bodyStream.errored);
+		return;
+	}
+	try {
+		request = options.createRequest(onResponse);
+	} catch (error) {
+		onError(error);
+		return;
+	}
+	function stopWaiting(keepBodyObserved = false) {
+		waiting = false;
+		if (fallback !== void 0) {
+			clearTimeout(fallback);
+			fallback = void 0;
+		}
+		request?.removeListener("continue", sendBody);
+		request?.removeListener("socket", onSocket);
+		if (!keepBodyObserved) bodyStream?.removeListener("error", onBodyError);
+	}
+	function onError(error) {
+		const requestError = error instanceof Error ? error : new Error(String(error));
+		if (!errorReported) {
+			errorReported = true;
+			stopWaiting();
+			options.onError(requestError);
+		}
+		return requestError;
+	}
+	function onBodyError(error) {
+		if (errorReported || !waiting && !bodyStarted) return;
+		errorReported = true;
+		bodyError = error instanceof Error ? error : new Error(String(error));
+		stopWaiting();
+		options.onBodyError(error);
+		request?.destroy(bodyError);
+	}
+	function sendBody() {
+		if (!waiting) return;
+		bodyStarted = true;
+		stopWaiting(true);
+		try {
+			options.sendBody(request);
+		} catch (error) {
+			onBodyError(error);
+		} finally {
+			bodyStream?.removeListener("error", onBodyError);
+		}
+	}
+	function onAbort() {
+		stopWaiting();
+		options.onAbort(request);
+	}
+	function onSocket() {
+		if (!waiting) return;
+		try {
+			request.flushHeaders();
+			if (!waiting) return;
+			request.write("", (error) => {
+				if (error) request.destroy(onError(error));
+				else if (waiting) fallback = setTimeout(sendBody, EXPECT_CONTINUE_TIMEOUT_IN_MS);
+			});
+		} catch (error) {
+			request.destroy(onError(error));
+		}
+	}
+	function onResponse(response) {
+		stopWaiting();
+		if (!bodyStarted) {
+			request.shouldKeepAlive = false;
+			const destroyRequest = () => {
+				response.removeListener("end", destroyRequest);
+				response.removeListener("close", destroyRequest);
+				request.destroy();
+			};
+			response.once("end", destroyRequest);
+			response.once("close", destroyRequest);
+			if (response.readableEnded || response.destroyed) destroyRequest();
+		}
+		options.onResponse(response);
+	}
+	request.once("error", onError);
+	if (bodyError) {
+		request.destroy(bodyError);
+		return;
+	}
+	if (options.abortSignal.aborted) {
+		onAbort();
+		return;
+	}
+	options.abortSignal.addEventListener("abort", onAbort, { once: true });
+	request.once("close", () => stopWaiting());
+	if (request.destroyed || request.closed) stopWaiting();
+	if (!waiting) return;
+	request.once("continue", sendBody);
+	if (request.socket) onSocket();
+	else request.once("socket", onSocket);
+}
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/util/responseBody.js
+var responseBodySources = /* @__PURE__ */ new WeakMap();
+var responseBodyDisposers = /* @__PURE__ */ new WeakMap();
+var requestCompletions = /* @__PURE__ */ new WeakMap();
+var responseBodyCompletions = /* @__PURE__ */ new WeakMap();
+function setRequestCompletion(response, completion) {
+	requestCompletions.set(response, completion);
+	completion.then(() => requestCompletions.get(response) === completion && requestCompletions.delete(response)).catch((error) => {
+		logger$4.warning("Error tracking request completion", error);
+	});
+}
+/**
+* Returns a promise that resolves when the response's outgoing request has completed.
+*
+* @param response - The response whose request completion should be observed.
+* @returns The request completion promise, if the transport provides one.
+*/
+function getRequestCompletion(response) {
+	return requestCompletions.get(response);
+}
+/**
+* Returns a promise that resolves when the response body has completed, errored, or been canceled.
+*
+* @param response - The response whose body completion should be observed.
+* @returns The response body completion promise, if the transport provides one.
+*/
+function getResponseBodyCompletion(response) {
+	return responseBodyCompletions.get(response);
+}
+function isNodeResponseBody(value) {
+	return typeof value === "object" && value !== null && "resume" in value && typeof value.resume === "function";
+}
+function isNodeEventEmitterBody(value) {
+	return "on" in value && typeof value.on === "function" && "once" in value && typeof value.once === "function" && "removeListener" in value && typeof value.removeListener === "function";
+}
+function isBrowserResponseBody(value) {
+	return typeof value === "object" && value !== null && "cancel" in value && typeof value.cancel === "function";
+}
+function setResponseBodySource(body, source) {
+	if (isNodeResponseBody(body) && isNodeResponseBody(source)) responseBodySources.set(body, source);
+}
+function setResponseBodyDisposer(response, dispose) {
+	responseBodyDisposers.set(response, dispose);
+	return () => {
+		if (responseBodyDisposers.get(response) === dispose) responseBodyDisposers.delete(response);
+	};
+}
+/**
+* Destroys a Node stream, or drains it if destruction is unavailable,
+* and recursively disposes its tracked upstream sources.
+*/
+function disposeNodeResponseBody(readableStream, disposed = /* @__PURE__ */ new Set()) {
+	if (disposed.has(readableStream)) return;
+	disposed.add(readableStream);
+	const source = responseBodySources.get(readableStream);
+	responseBodySources.delete(readableStream);
+	if (readableStream.closed !== true) {
+		if (readableStream.destroy) {
+			if (isNodeEventEmitterBody(readableStream)) {
+				const onError = (error) => {
+					logger$4.warning("Error disposing Node stream", error);
+				};
+				const onClose = () => {
+					readableStream.removeListener("error", onError);
+				};
+				readableStream.on("error", onError);
+				readableStream.once("close", onClose);
+				try {
+					readableStream.destroy();
+				} catch (error) {
+					readableStream.removeListener("error", onError);
+					readableStream.removeListener("close", onClose);
+					throw error;
+				}
+			} else readableStream.destroy();
+		} else readableStream.resume();
+	}
+	if (source) disposeNodeResponseBody(source, disposed);
+}
+/**
+* Disposes a raw Node stream and its tracked upstream sources without throwing.
+*
+* @param stream - The stream to destroy, or drain if destruction is unavailable.
+*/
+function disposeNodeStream(stream) {
+	try {
+		disposeNodeResponseBody(stream);
+	} catch (error) {
+		logger$4.warning("Error disposing Node stream", error);
+	}
+}
+/**
+* Releases the body of a response that will not be read, so the underlying connection can be
+* reused or closed. Handles Node readable streams and browser web streams, and never throws:
+* disposal failures are logged as warnings.
+*
+* @param response - The response whose `readableStreamBody` or `browserStreamBody` should be disposed.
+*/
+async function disposeResponseBody(response) {
+	try {
+		const dispose = responseBodyDisposers.get(response);
+		responseBodyDisposers.delete(response);
+		try {
+			const readableStream = response.readableStreamBody;
+			if (isNodeResponseBody(readableStream)) {
+				disposeNodeStream(readableStream);
+				return;
+			}
+			const browserStream = response.browserStreamBody;
+			if (isBrowserResponseBody(browserStream)) await browserStream.cancel();
+		} finally {
+			dispose?.();
+		}
+	} catch (error) {
+		logger$4.warning("Error disposing response body", error);
+	}
+}
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/nodeHttpClient.js
 var DEFAULT_TLS_SETTINGS = {};
 function isReadableStream(body) {
-	return body && typeof body.pipe === "function";
+	return typeof body === "object" && body !== null && "pipe" in body && typeof body.pipe === "function";
 }
 function isStreamComplete(stream) {
 	if (stream.readable === false) return Promise.resolve();
@@ -5504,7 +5811,11 @@ function isStreamComplete(stream) {
 	});
 }
 function isArrayBuffer(body) {
-	return body && typeof body.byteLength === "number";
+	return types.isArrayBuffer(body) || ArrayBuffer.isView(body);
+}
+function arrayBufferToBuffer(body) {
+	if (Buffer.isBuffer(body)) return body;
+	return ArrayBuffer.isView(body) ? Buffer.from(body.buffer, body.byteOffset, body.byteLength) : Buffer.from(body);
 }
 var ReportTransform = class extends Transform {
 	loadedBytes = 0;
@@ -5524,6 +5835,85 @@ var ReportTransform = class extends Transform {
 		this.progressCallback = progressCallback;
 	}
 };
+function createRequestLifecycle(request, options, isInsecure, resolve, reject) {
+	let clientRequest;
+	let response;
+	let requestDone = false;
+	let resolveRequestComplete;
+	const requestComplete = new Promise((_resolve) => {
+		resolveRequestComplete = _resolve;
+	});
+	const onComplete = () => {
+		requestDone = true;
+		clientRequest.removeListener("finish", onComplete);
+		clientRequest.removeListener("close", onComplete);
+		resolveRequestComplete();
+	};
+	const onResponse = (incomingResponse) => {
+		response = incomingResponse;
+		resolve({
+			response: incomingResponse,
+			requestComplete,
+			isRequestComplete: () => requestDone,
+			disposeRequest: () => {
+				if (!requestDone) clientRequest.destroy();
+			}
+		});
+	};
+	return {
+		createRequest: (onResponseCallback = onResponse) => {
+			clientRequest = isInsecure ? http.request(options, onResponseCallback) : https.request(options, onResponseCallback);
+			clientRequest.once("finish", onComplete);
+			clientRequest.once("close", onComplete);
+			return clientRequest;
+		},
+		onResponse,
+		rejectRequest: (error) => {
+			reject(toRequestSendError(error, request));
+		},
+		abortRequest: (req) => {
+			const abortError = new AbortError$1("The operation was aborted. Rejecting from abort signal callback while making request.");
+			response?.destroy(abortError);
+			req.destroy(abortError);
+			reject(abortError);
+		}
+	};
+}
+function toRequestSendError(error, request) {
+	if (isRestError$1(error)) return error;
+	const prematureClose = error.code === "ERR_STREAM_PREMATURE_CLOSE";
+	return new RestError$1(prematureClose ? "Request body stream closed before ending" : error.message, {
+		code: prematureClose ? RestError$1.REQUEST_SEND_ERROR : error.code ?? RestError$1.REQUEST_SEND_ERROR,
+		request
+	});
+}
+function sendRequestBody(clientRequest, body, request, onError) {
+	if (body && isReadableStream(body)) pipeUploadStream(body, clientRequest, request, onError);
+	else if (body) {
+		if (typeof body === "string" || Buffer.isBuffer(body)) clientRequest.end(body);
+		else {
+			logger$4.error("Unrecognized body type", body);
+			throw new RestError$1("Unrecognized body type", { request });
+		}
+	} else clientRequest.end();
+}
+function prepareRequestBody(request, useExpectContinue) {
+	const requestBody = request.body;
+	const resolvedBody = typeof requestBody === "function" ? requestBody() : requestBody;
+	const body = resolvedBody && isArrayBuffer(resolvedBody) ? arrayBufferToBuffer(resolvedBody) : resolvedBody;
+	if (!useExpectContinue && body && !request.headers.has("Content-Length")) {
+		const bodyLength = getBodyLength(body);
+		if (bodyLength !== null) request.headers.set("Content-Length", bodyLength);
+	}
+	if (!body || !request.onUploadProgress) return body;
+	const uploadReportStream = new ReportTransform(request.onUploadProgress);
+	uploadReportStream.on("error", (e) => {
+		logger$4.error("Error in upload progress", e);
+	});
+	if (isReadableStream(body)) pipeUploadStream(body, uploadReportStream, request);
+	else uploadReportStream.end(body);
+	return uploadReportStream;
+}
 /**
 * A HttpClient implementation that uses Node's "https" module to send HTTPS requests.
 * @internal
@@ -5536,14 +5926,16 @@ var NodeHttpClient = class {
 	* @param request - The request to be made.
 	*/
 	async sendRequest(request) {
+		const requestBody = request.body;
 		const abortController = new AbortController();
 		let abortListener;
-		if (request.abortSignal) {
-			if (request.abortSignal.aborted) throw new AbortError$1("The operation was aborted. Request has already been canceled.");
+		const requestAbortSignal = request.abortSignal;
+		if (requestAbortSignal) {
+			if (requestAbortSignal.aborted) throw new AbortError$1("The operation was aborted. Request has already been canceled.");
 			abortListener = (event) => {
 				if (event.type === "abort") abortController.abort();
 			};
-			request.abortSignal.addEventListener("abort", abortListener);
+			requestAbortSignal.addEventListener("abort", abortListener);
 		}
 		let timeoutId;
 		if (request.timeout > 0) timeoutId = setTimeout(() => {
@@ -5553,56 +5945,69 @@ var NodeHttpClient = class {
 		}, request.timeout);
 		const acceptEncoding = request.headers.get("Accept-Encoding");
 		const shouldDecompress = acceptEncoding?.includes("gzip") || acceptEncoding?.includes("deflate");
-		let body = typeof request.body === "function" ? request.body() : request.body;
-		if (body && !request.headers.has("Content-Length")) {
-			const bodyLength = getBodyLength(body);
-			if (bodyLength !== null) request.headers.set("Content-Length", bodyLength);
-		}
+		let body;
 		let responseStream;
+		let requestComplete = Promise.resolve();
 		try {
-			if (body && request.onUploadProgress) {
-				const onUploadProgress = request.onUploadProgress;
-				const uploadReportStream = new ReportTransform(onUploadProgress);
-				uploadReportStream.on("error", (e) => {
-					logger$4.error("Error in upload progress", e);
-				});
-				if (isReadableStream(body)) body.pipe(uploadReportStream);
-				else uploadReportStream.end(body);
-				body = uploadReportStream;
+			let useExpectContinue = hasExpectContinue(request);
+			const knownBodyLength = useExpectContinue && typeof requestBody !== "function" ? getBodyLength(requestBody ?? null) : null;
+			if (knownBodyLength === 0) {
+				removeExpectContinueHeader(request);
+				useExpectContinue = false;
 			}
-			const res = await this.makeRequest(request, abortController, body);
+			if (!useExpectContinue) body = prepareRequestBody(request, false);
+			const result = useExpectContinue ? await this.makeRequestWithExpectContinue(request, abortController, () => {
+				body = prepareRequestBody(request, true);
+				return body;
+			}, knownBodyLength) : await this.makeRequest(request, abortController, body);
+			requestComplete = result.requestComplete;
+			const res = result.response;
 			const headers = getResponseHeaders(res);
 			const response = {
 				status: res.statusCode ?? 0,
 				headers,
 				request
 			};
-			if (request.method === "HEAD") {
+			if (!result.isRequestComplete()) {
+				setRequestCompletion(response, result.requestComplete);
+				const clearDisposer = setResponseBodyDisposer(response, result.disposeRequest);
+				result.requestComplete.then(clearDisposer).catch((error) => {
+					logger$4.warning("Error disposing request", error);
+				});
+			}
+			if ((typeof request.requestOverrides?.method === "string" ? request.requestOverrides.method.toUpperCase() : request.method) === "HEAD") {
 				res.resume();
 				return response;
 			}
-			responseStream = shouldDecompress ? getDecodedResponseStream(res, headers) : res;
+			responseStream = shouldDecompress ? getDecodedResponseStream(res, headers, abortController.signal) : res;
 			const onDownloadProgress = request.onDownloadProgress;
 			if (onDownloadProgress) {
 				const downloadReportStream = new ReportTransform(onDownloadProgress);
 				downloadReportStream.on("error", (e) => {
 					logger$4.error("Error in download progress", e);
 				});
-				responseStream.pipe(downloadReportStream);
-				responseStream = downloadReportStream;
+				responseStream = pipeResponseStream(responseStream, downloadReportStream, abortController.signal);
 			}
 			if (request.streamResponseStatusCodes?.has(Number.POSITIVE_INFINITY) || request.streamResponseStatusCodes?.has(response.status)) response.readableStreamBody = responseStream;
 			else response.bodyAsText = await streamToText(responseStream);
 			return response;
+		} catch (error) {
+			if (isReadableStream(body)) disposeNodeStream(body);
+			if (responseStream) disposeNodeStream(responseStream);
+			throw error;
 		} finally {
 			if (timeoutId !== void 0) clearTimeout(timeoutId);
-			if (request.abortSignal && abortListener) {
+			if (requestAbortSignal && abortListener) {
 				let uploadStreamDone = Promise.resolve();
 				if (isReadableStream(body)) uploadStreamDone = isStreamComplete(body);
 				let downloadStreamDone = Promise.resolve();
 				if (isReadableStream(responseStream)) downloadStreamDone = isStreamComplete(responseStream);
-				Promise.all([uploadStreamDone, downloadStreamDone]).then(() => {
-					if (abortListener) request.abortSignal?.removeEventListener("abort", abortListener);
+				Promise.all([
+					requestComplete,
+					uploadStreamDone,
+					downloadStreamDone
+				]).then(() => {
+					if (abortListener) requestAbortSignal.removeEventListener("abort", abortListener);
 				}).catch((e) => {
 					logger$4.warning("Error when cleaning up abortListener on httpRequest", e);
 				});
@@ -5610,41 +6015,50 @@ var NodeHttpClient = class {
 		}
 	}
 	makeRequest(request, abortController, body) {
+		const { options, isInsecure } = this.getRequestOptions(request);
+		return new Promise((resolve, reject) => {
+			const { createRequest, rejectRequest, abortRequest } = createRequestLifecycle(request, options, isInsecure, resolve, reject);
+			const req = createRequest();
+			req.once("error", rejectRequest);
+			abortController.signal.addEventListener("abort", () => abortRequest(req));
+			sendRequestBody(req, body, request, rejectRequest);
+		});
+	}
+	makeRequestWithExpectContinue(request, abortController, prepareBody, knownBodyLength) {
+		const { options, isInsecure } = this.getRequestOptions(request);
+		addExpectContinueFraming(options, knownBodyLength);
+		return new Promise((resolve, reject) => {
+			const { createRequest, onResponse, rejectRequest, abortRequest } = createRequestLifecycle(request, options, isInsecure, resolve, reject);
+			createExpectContinueRequest({
+				abortSignal: abortController.signal,
+				bodyStream: isReadableStream(request.body) ? request.body : void 0,
+				createRequest,
+				onAbort: abortRequest,
+				onError: rejectRequest,
+				onBodyError: reject,
+				onResponse,
+				sendBody: (clientRequest) => {
+					sendRequestBody(clientRequest, prepareBody(), request, rejectRequest);
+				}
+			});
+		});
+	}
+	getRequestOptions(request) {
 		const url = new URL(request.url);
 		const isInsecure = url.protocol !== "https:";
 		if (isInsecure && !request.allowInsecureConnection) throw new Error(`Cannot connect to ${request.url} while allowInsecureConnection is false.`);
-		const options = {
-			agent: request.agent ?? this.getOrCreateAgent(request, isInsecure),
-			hostname: url.hostname,
-			path: `${url.pathname}${url.search}`,
-			port: url.port,
-			method: request.method,
-			headers: request.headers.toJSON({ preserveCase: true }),
-			...request.requestOverrides
+		return {
+			isInsecure,
+			options: {
+				agent: request.agent ?? this.getOrCreateAgent(request, isInsecure),
+				hostname: url.hostname,
+				path: `${url.pathname}${url.search}`,
+				port: url.port,
+				method: request.method,
+				headers: request.headers.toJSON({ preserveCase: true }),
+				...request.requestOverrides
+			}
 		};
-		return new Promise((resolve, reject) => {
-			const req = isInsecure ? http.request(options, resolve) : https.request(options, resolve);
-			req.once("error", (err) => {
-				reject(new RestError$1(err.message, {
-					code: err.code ?? RestError$1.REQUEST_SEND_ERROR,
-					request
-				}));
-			});
-			abortController.signal.addEventListener("abort", () => {
-				const abortError = new AbortError$1("The operation was aborted. Rejecting from abort signal callback while making request.");
-				req.destroy(abortError);
-				reject(abortError);
-			});
-			if (body && isReadableStream(body)) body.pipe(req);
-			else if (body) {
-				if (typeof body === "string" || Buffer.isBuffer(body)) req.end(body);
-				else if (isArrayBuffer(body)) req.end(ArrayBuffer.isView(body) ? Buffer.from(body.buffer, body.byteOffset, body.byteLength) : Buffer.from(body));
-				else {
-					logger$4.error("Unrecognized body type", body);
-					reject(new RestError$1("Unrecognized body type"));
-				}
-			} else req.end();
-		});
 	}
 	getOrCreateAgent(request, isInsecure) {
 		const disableKeepAlive = request.disableKeepAlive;
@@ -5677,33 +6091,63 @@ function getResponseHeaders(res) {
 	}
 	return headers;
 }
-function getDecodedResponseStream(stream, headers) {
+function getDecodedResponseStream(stream, headers, abortSignal) {
 	const contentEncoding = headers.get("Content-Encoding");
-	if (contentEncoding === "gzip") {
-		const unzip = zlib.createGunzip();
-		stream.pipe(unzip);
-		return unzip;
-	} else if (contentEncoding === "deflate") {
-		const inflate = zlib.createInflate();
-		stream.pipe(inflate);
-		return inflate;
-	}
+	if (contentEncoding === "gzip") return pipeResponseStream(stream, zlib.createGunzip(), abortSignal);
+	else if (contentEncoding === "deflate") return pipeResponseStream(stream, zlib.createInflate(), abortSignal);
 	return stream;
+}
+function pipeUploadStream(source, destination, request, onError) {
+	let tearingDown = false;
+	const cleanupFinished = finished(source, { writable: false }, onSourceComplete);
+	function onSourceComplete(error) {
+		cleanupFinished();
+		destination.removeListener("close", onDestinationClose);
+		if (error && !tearingDown) {
+			const requestError = toRequestSendError(error, request);
+			destination.destroy(requestError);
+			onError?.(requestError);
+		}
+	}
+	function onDestinationClose() {
+		tearingDown = true;
+		source.unpipe(destination);
+		disposeNodeStream(source);
+	}
+	destination.once("close", onDestinationClose);
+	source.pipe(destination);
+}
+function pipeResponseStream(source, destination, abortSignal) {
+	setResponseBodySource(destination, source);
+	let cleanupSource = () => {};
+	let cleanupDestination = () => {};
+	cleanupSource = finished(source, { writable: false }, (error) => {
+		cleanupSource();
+		if (error) destination.destroy(abortSignal.aborted ? new AbortError$1() : error);
+	});
+	cleanupDestination = finished(destination, { writable: false }, () => {
+		cleanupDestination();
+		source.unpipe(destination);
+		if (source.readable) disposeNodeStream(source);
+	});
+	return source.pipe(destination);
 }
 function streamToText(stream) {
 	return new Promise((resolve, reject) => {
 		const buffer = [];
-		stream.on("data", (chunk) => {
+		const cleanupFinished = finished(stream, { writable: false }, onComplete);
+		function onData(chunk) {
 			if (Buffer.isBuffer(chunk)) buffer.push(chunk);
 			else buffer.push(Buffer.from(chunk));
-		});
-		stream.on("end", () => {
-			resolve(Buffer.concat(buffer).toString("utf8"));
-		});
-		stream.on("error", (e) => {
-			if (e && e?.name === "AbortError") reject(e);
-			else reject(new RestError$1(`Error reading response as text: ${e.message}`, { code: RestError$1.PARSE_ERROR }));
-		});
+		}
+		function onComplete(error) {
+			cleanupFinished();
+			stream.removeListener("data", onData);
+			if (error?.name === "AbortError") reject(error);
+			else if (error) reject(new RestError$1(`Error reading response as text: ${error.message}`, { code: RestError$1.PARSE_ERROR }));
+			else resolve(Buffer.concat(buffer).toString("utf8"));
+		}
+		stream.on("data", onData);
 	});
 }
 /** @internal */
@@ -5712,7 +6156,7 @@ function getBodyLength(body) {
 	else if (Buffer.isBuffer(body)) return body.length;
 	else if (isReadableStream(body)) return null;
 	else if (isArrayBuffer(body)) return body.byteLength;
-	else if (typeof body === "string") return Buffer.from(body).length;
+	else if (typeof body === "string") return Buffer.byteLength(body);
 	else return null;
 }
 /**
@@ -5722,16 +6166,14 @@ function getBodyLength(body) {
 function createNodeHttpClient() {
 	return new NodeHttpClient();
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/defaultHttpClient.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/defaultHttpClient.js
 /**
 * Create the correct HttpClient for the current environment.
 */
 function createDefaultHttpClient$1() {
 	return createNodeHttpClient();
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/policies/logPolicy.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/policies/logPolicy.js
 /**
 * The programmatic identifier of the logPolicy.
 */
@@ -5758,8 +6200,7 @@ function logPolicy$1(options = {}) {
 		}
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/util/random.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/util/random.js
 /**
 * Returns a random integer value between a lower and upper bound,
 * inclusive of both bounds.
@@ -5773,8 +6214,7 @@ function getRandomIntegerInclusive(min, max) {
 	max = Math.floor(max);
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/util/delay.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/util/delay.js
 /**
 * Calculates the delay interval for retry attempts using exponential delay with jitter.
 * @param retryAttempt - The current retry attempt number.
@@ -5786,8 +6226,7 @@ function calculateRetryDelay(retryAttempt, config) {
 	const clampedDelay = Math.min(config.maxRetryDelayInMs, exponentialDelay);
 	return { retryAfterInMs: clampedDelay / 2 + getRandomIntegerInclusive(0, clampedDelay / 2) };
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/util/helpers.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/util/helpers.js
 var StandardAbortMessage$1 = "The operation was aborted.";
 /**
 * A wrapper for setTimeout that resolves a promise after delayInMs milliseconds.
@@ -5832,8 +6271,7 @@ function parseHeaderValueAsNumber(response, headerName) {
 	if (Number.isNaN(valueAsNum)) return;
 	return valueAsNum;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/retryStrategies/throttlingRetryStrategy.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/retryStrategies/throttlingRetryStrategy.js
 /**
 * The header that comes back from services representing
 * the amount of time (minimum) to wait to retry (in seconds or timestamp after which we can retry).
@@ -5892,8 +6330,7 @@ function throttlingRetryStrategy() {
 		}
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/retryStrategies/exponentialRetryStrategy.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/retryStrategies/exponentialRetryStrategy.js
 var DEFAULT_CLIENT_RETRY_INTERVAL = 1e3;
 var DEFAULT_CLIENT_MAX_RETRY_INTERVAL = 64e3;
 /**
@@ -5935,8 +6372,7 @@ function isSystemError(err) {
 	if (!err) return false;
 	return err.code === "ETIMEDOUT" || err.code === "ESOCKETTIMEDOUT" || err.code === "ECONNREFUSED" || err.code === "ECONNRESET" || err.code === "ENOENT" || err.code === "ENOTFOUND";
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/policies/retryPolicy.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/policies/retryPolicy.js
 var retryPolicyLogger = createClientLogger$1("ts-http-runtime retryPolicy");
 /**
 * The programmatic identifier of the retryPolicy.
@@ -5996,11 +6432,13 @@ function retryPolicy(strategies, options = { maxRetries: 3 }) {
 					}
 					if (retryAfterInMs || retryAfterInMs === 0) {
 						strategyLogger.info(`Retry ${retryCount}: Retry strategy ${strategy.name} retries after ${retryAfterInMs}`);
+						if (response) await disposeResponseBody(response);
 						await delay$2(retryAfterInMs, void 0, { abortSignal: request.abortSignal });
 						continue retryRequest;
 					}
 					if (redirectTo) {
 						strategyLogger.info(`Retry ${retryCount}: Retry strategy ${strategy.name} redirects to ${redirectTo}`);
+						if (response) await disposeResponseBody(response);
 						request.url = redirectTo;
 						continue retryRequest;
 					}
@@ -6017,8 +6455,7 @@ function retryPolicy(strategies, options = { maxRetries: 3 }) {
 		}
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/policies/defaultRetryPolicy.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/policies/defaultRetryPolicy.js
 /**
 * Name of the {@link defaultRetryPolicy}
 */
@@ -6035,8 +6472,7 @@ function defaultRetryPolicy$1(options = {}) {
 		sendRequest: retryPolicy([throttlingRetryStrategy(), exponentialRetryStrategy(options)], { maxRetries: options.maxRetries ?? 3 }).sendRequest
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/formData.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/formData.js
 /**
 * If the request body is a native FormData, convert it to our FormDataMap
 * representation and clear the body. Node.js's HTTP stack doesn't handle
@@ -6055,8 +6491,7 @@ function convertBodyToFormDataMap(body) {
 		return formDataMap;
 	}
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/policies/formDataPolicy.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/policies/formDataPolicy.js
 /**
 * The programmatic identifier of the formDataPolicy.
 */
@@ -6111,8 +6546,7 @@ async function prepareFormData(formData, request) {
 	}
 	request.multipartBody = { parts };
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/policies/agentPolicy.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/policies/agentPolicy.js
 /**
 * Name of the Agent Policy
 */
@@ -6129,8 +6563,7 @@ function agentPolicy$1(agent) {
 		}
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/policies/tlsPolicy.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/policies/tlsPolicy.js
 /**
 * Name of the TLS Policy
 */
@@ -6147,8 +6580,7 @@ function tlsPolicy$1(tlsSettings) {
 		}
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/ms/index.js
+// tooling/artifact-transport/node_modules/ms/index.js
 var require_ms = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* Helpers.
@@ -6265,8 +6697,7 @@ var require_ms = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return Math.round(ms / n) + " " + name + (isPlural ? "s" : "");
 	}
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/debug/src/common.js
+// tooling/artifact-transport/node_modules/debug/src/common.js
 var require_common = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* This is the common logic for both the Node.js and web browser
@@ -6468,8 +6899,7 @@ var require_common = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = setup;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/debug/src/browser.js
+// tooling/artifact-transport/node_modules/debug/src/browser.js
 var require_browser = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* This is the web browser implementation of `debug()`.
@@ -6664,8 +7094,7 @@ var require_browser = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		}
 	};
 }));
-//#endregion
-//#region node_modules/has-flag/index.js
+// node_modules/has-flag/index.js
 var require_has_flag = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = (flag, argv = process.argv) => {
 		const prefix = flag.startsWith("-") ? "" : flag.length === 1 ? "-" : "--";
@@ -6674,8 +7103,7 @@ var require_has_flag = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return position !== -1 && (terminatorPosition === -1 || position < terminatorPosition);
 	};
 }));
-//#endregion
-//#region node_modules/supports-color/index.js
+// node_modules/supports-color/index.js
 var require_supports_color = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var os = __require("os");
 	var tty = __require("tty");
@@ -6744,8 +7172,7 @@ var require_supports_color = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		stderr: translateLevel(supportsColor(true, tty.isatty(2)))
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/debug/src/node.js
+// tooling/artifact-transport/node_modules/debug/src/node.js
 var require_node$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* Module dependencies.
@@ -6951,8 +7378,7 @@ var require_node$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return util.inspect(v, this.inspectOpts);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/debug/src/index.js
+// tooling/artifact-transport/node_modules/debug/src/index.js
 var require_src = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* Detect Electron renderer / nwjs process, which is node, but we should
@@ -6961,557 +7387,424 @@ var require_src = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	if (typeof process === "undefined" || process.type === "renderer" || process.browser === true || process.__nwjs) module.exports = require_browser();
 	else module.exports = require_node$1();
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/agent-base/dist/helpers.js
-var require_helpers$1 = /* @__PURE__ */ __commonJSMin(((exports, module, this$10) => {
-	var __createBinding = this$10 && this$10.__createBinding || (Object.create ? (function(o, m, k, k2) {
-		if (k2 === void 0) k2 = k;
-		var desc = Object.getOwnPropertyDescriptor(m, k);
-		if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) desc = {
-			enumerable: true,
-			get: function() {
-				return m[k];
-			}
+// tooling/artifact-transport/node_modules/agent-base/dist/index.js
+var INTERNAL = Symbol("AgentBaseInternalState");
+var Agent$1 = class extends http$1.Agent {
+	constructor(opts) {
+		super(opts);
+		this[INTERNAL] = {};
+	}
+	/**
+	* Determine whether this is an `http` or `https` request.
+	*/
+	isSecureEndpoint(options) {
+		if (options) {
+			if (typeof options.secureEndpoint === "boolean") return options.secureEndpoint;
+			if (typeof options.protocol === "string") return options.protocol === "https:";
+		}
+		const { stack } = /* @__PURE__ */ new Error();
+		if (typeof stack !== "string") return false;
+		return stack.split("\n").some((l) => l.indexOf("(https.js:") !== -1 || l.indexOf("node:https:") !== -1);
+	}
+	incrementSockets(name) {
+		if (this.maxSockets === Infinity && this.maxTotalSockets === Infinity) return null;
+		if (!this.sockets[name]) this.sockets[name] = [];
+		const fakeSocket = new net.Socket({ writable: false });
+		this.sockets[name].push(fakeSocket);
+		this.totalSocketCount++;
+		return fakeSocket;
+	}
+	decrementSockets(name, socket) {
+		if (!this.sockets[name] || socket === null) return;
+		const sockets = this.sockets[name];
+		const index = sockets.indexOf(socket);
+		if (index !== -1) {
+			sockets.splice(index, 1);
+			this.totalSocketCount--;
+			if (sockets.length === 0) delete this.sockets[name];
+		}
+	}
+	getName(options) {
+		if (this.isSecureEndpoint(options)) return Agent.prototype.getName.call(this, options);
+		return super.getName(options);
+	}
+	createSocket(req, options, cb) {
+		const connectOpts = {
+			...options,
+			secureEndpoint: this.isSecureEndpoint(options)
 		};
-		Object.defineProperty(o, k2, desc);
-	}) : (function(o, m, k, k2) {
-		if (k2 === void 0) k2 = k;
-		o[k2] = m[k];
-	}));
-	var __setModuleDefault = this$10 && this$10.__setModuleDefault || (Object.create ? (function(o, v) {
-		Object.defineProperty(o, "default", {
-			enumerable: true,
-			value: v
-		});
-	}) : function(o, v) {
-		o["default"] = v;
-	});
-	var __importStar = this$10 && this$10.__importStar || function(mod) {
-		if (mod && mod.__esModule) return mod;
-		var result = {};
-		if (mod != null) {
-			for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-		}
-		__setModuleDefault(result, mod);
-		return result;
-	};
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.req = exports.json = exports.toBuffer = void 0;
-	var http = __importStar(__require("http"));
-	var https = __importStar(__require("https"));
-	async function toBuffer(stream) {
-		let length = 0;
-		const chunks = [];
-		for await (const chunk of stream) {
-			length += chunk.length;
-			chunks.push(chunk);
-		}
-		return Buffer.concat(chunks, length);
-	}
-	exports.toBuffer = toBuffer;
-	async function json(stream) {
-		const str = (await toBuffer(stream)).toString("utf8");
-		try {
-			return JSON.parse(str);
-		} catch (_err) {
-			const err = _err;
-			err.message += ` (input: ${str})`;
-			throw err;
-		}
-	}
-	exports.json = json;
-	function req(url, opts = {}) {
-		const req = ((typeof url === "string" ? url : url.href).startsWith("https:") ? https : http).request(url, opts);
-		const promise = new Promise((resolve, reject) => {
-			req.once("response", resolve).once("error", reject).end();
-		});
-		req.then = promise.then.bind(promise);
-		return req;
-	}
-	exports.req = req;
-}));
-//#endregion
-//#region tooling/artifact-transport/node_modules/agent-base/dist/index.js
-var require_dist$3 = /* @__PURE__ */ __commonJSMin(((exports, module, this$9) => {
-	var __createBinding = this$9 && this$9.__createBinding || (Object.create ? (function(o, m, k, k2) {
-		if (k2 === void 0) k2 = k;
-		var desc = Object.getOwnPropertyDescriptor(m, k);
-		if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) desc = {
-			enumerable: true,
-			get: function() {
-				return m[k];
+		const name = this.getName(connectOpts);
+		const fakeSocket = this.incrementSockets(name);
+		Promise.resolve().then(() => this.connect(req, connectOpts)).then((socket) => {
+			this.decrementSockets(name, fakeSocket);
+			if (typeof socket.addRequest === "function") try {
+				return socket.addRequest(req, connectOpts);
+			} catch (err) {
+				return cb(err);
 			}
-		};
-		Object.defineProperty(o, k2, desc);
-	}) : (function(o, m, k, k2) {
-		if (k2 === void 0) k2 = k;
-		o[k2] = m[k];
-	}));
-	var __setModuleDefault = this$9 && this$9.__setModuleDefault || (Object.create ? (function(o, v) {
-		Object.defineProperty(o, "default", {
-			enumerable: true,
-			value: v
+			this[INTERNAL].currentSocket = socket;
+			super.createSocket(req, options, cb);
+		}, (err) => {
+			this.decrementSockets(name, fakeSocket);
+			cb(err);
 		});
-	}) : function(o, v) {
-		o["default"] = v;
-	});
-	var __importStar = this$9 && this$9.__importStar || function(mod) {
-		if (mod && mod.__esModule) return mod;
-		var result = {};
-		if (mod != null) {
-			for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+	}
+	createConnection() {
+		const socket = this[INTERNAL].currentSocket;
+		this[INTERNAL].currentSocket = void 0;
+		if (!socket) throw new Error("No socket was returned in the `connect()` function");
+		return socket;
+	}
+	get defaultPort() {
+		return this[INTERNAL].defaultPort ?? (this.protocol === "https:" ? 443 : 80);
+	}
+	set defaultPort(v) {
+		if (this[INTERNAL]) this[INTERNAL].defaultPort = v;
+	}
+	get protocol() {
+		return this[INTERNAL].protocol ?? (this.isSecureEndpoint() ? "https:" : "http:");
+	}
+	set protocol(v) {
+		if (this[INTERNAL]) this[INTERNAL].protocol = v;
+	}
+};
+// tooling/artifact-transport/node_modules/https-proxy-agent/dist/parse-proxy-response.js
+var import_src = /* @__PURE__ */ __toESM(require_src(), 1);
+var debug$2 = (0, import_src.default)("https-proxy-agent:parse-proxy-response");
+function parseProxyResponse(socket) {
+	return new Promise((resolve, reject) => {
+		let buffersLength = 0;
+		const buffers = [];
+		function read() {
+			const b = socket.read();
+			if (b) ondata(b);
+			else socket.once("readable", read);
 		}
-		__setModuleDefault(result, mod);
-		return result;
-	};
-	var __exportStar = this$9 && this$9.__exportStar || function(m, exports) {
-		for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
-	};
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.Agent = void 0;
-	var net = __importStar(__require("net"));
-	var http = __importStar(__require("http"));
-	var https_1 = __require("https");
-	__exportStar(require_helpers$1(), exports);
-	var INTERNAL = Symbol("AgentBaseInternalState");
-	var Agent = class extends http.Agent {
-		constructor(opts) {
-			super(opts);
-			this[INTERNAL] = {};
+		function cleanup() {
+			socket.removeListener("end", onend);
+			socket.removeListener("error", onerror);
+			socket.removeListener("readable", read);
 		}
-		/**
-		* Determine whether this is an `http` or `https` request.
-		*/
-		isSecureEndpoint(options) {
-			if (options) {
-				if (typeof options.secureEndpoint === "boolean") return options.secureEndpoint;
-				if (typeof options.protocol === "string") return options.protocol === "https:";
+		function onend() {
+			cleanup();
+			debug$2("onend");
+			reject(/* @__PURE__ */ new Error("Proxy connection ended before receiving CONNECT response"));
+		}
+		function onerror(err) {
+			cleanup();
+			debug$2("onerror %o", err);
+			reject(err);
+		}
+		function ondata(b) {
+			buffers.push(b);
+			buffersLength += b.length;
+			const buffered = Buffer.concat(buffers, buffersLength);
+			const endOfHeaders = buffered.indexOf("\r\n\r\n");
+			if (endOfHeaders === -1) {
+				debug$2("have not received end of HTTP headers yet...");
+				read();
+				return;
 			}
-			const { stack } = /* @__PURE__ */ new Error();
-			if (typeof stack !== "string") return false;
-			return stack.split("\n").some((l) => l.indexOf("(https.js:") !== -1 || l.indexOf("node:https:") !== -1);
-		}
-		incrementSockets(name) {
-			if (this.maxSockets === Infinity && this.maxTotalSockets === Infinity) return null;
-			if (!this.sockets[name]) this.sockets[name] = [];
-			const fakeSocket = new net.Socket({ writable: false });
-			this.sockets[name].push(fakeSocket);
-			this.totalSocketCount++;
-			return fakeSocket;
-		}
-		decrementSockets(name, socket) {
-			if (!this.sockets[name] || socket === null) return;
-			const sockets = this.sockets[name];
-			const index = sockets.indexOf(socket);
-			if (index !== -1) {
-				sockets.splice(index, 1);
-				this.totalSocketCount--;
-				if (sockets.length === 0) delete this.sockets[name];
+			const headerParts = buffered.slice(0, endOfHeaders).toString("ascii").split("\r\n");
+			const firstLine = headerParts.shift();
+			if (!firstLine) {
+				socket.destroy();
+				return reject(/* @__PURE__ */ new Error("No header received from proxy CONNECT response"));
 			}
-		}
-		getName(options) {
-			if (this.isSecureEndpoint(options)) return https_1.Agent.prototype.getName.call(this, options);
-			return super.getName(options);
-		}
-		createSocket(req, options, cb) {
-			const connectOpts = {
-				...options,
-				secureEndpoint: this.isSecureEndpoint(options)
-			};
-			const name = this.getName(connectOpts);
-			const fakeSocket = this.incrementSockets(name);
-			Promise.resolve().then(() => this.connect(req, connectOpts)).then((socket) => {
-				this.decrementSockets(name, fakeSocket);
-				if (socket instanceof http.Agent) try {
-					return socket.addRequest(req, connectOpts);
-				} catch (err) {
-					return cb(err);
+			const firstLineParts = firstLine.split(" ");
+			const statusCode = +firstLineParts[1];
+			const statusText = firstLineParts.slice(2).join(" ");
+			const headers = {};
+			for (const header of headerParts) {
+				if (!header) continue;
+				const firstColon = header.indexOf(":");
+				if (firstColon === -1) {
+					socket.destroy();
+					return reject(/* @__PURE__ */ new Error(`Invalid header from proxy CONNECT response: "${header}"`));
 				}
-				this[INTERNAL].currentSocket = socket;
-				super.createSocket(req, options, cb);
-			}, (err) => {
-				this.decrementSockets(name, fakeSocket);
-				cb(err);
+				const key = header.slice(0, firstColon).toLowerCase();
+				const value = header.slice(firstColon + 1).trimStart();
+				const current = headers[key];
+				if (typeof current === "string") headers[key] = [current, value];
+				else if (Array.isArray(current)) current.push(value);
+				else headers[key] = value;
+			}
+			debug$2("got proxy server response: %o %o", firstLine, headers);
+			cleanup();
+			resolve({
+				connect: {
+					statusCode,
+					statusText,
+					headers
+				},
+				buffered
 			});
 		}
-		createConnection() {
-			const socket = this[INTERNAL].currentSocket;
-			this[INTERNAL].currentSocket = void 0;
-			if (!socket) throw new Error("No socket was returned in the `connect()` function");
-			return socket;
+		socket.on("error", onerror);
+		socket.on("end", onend);
+		read();
+	});
+}
+// tooling/artifact-transport/node_modules/proxy-agent-negotiate/dist/index.js
+function createNegotiateAuth() {
+	return async ({ response, scheme }) => {
+		if (scheme.toLowerCase() !== "negotiate") throw new Error(`Expected Negotiate scheme but got "${scheme}"`);
+		let kerberos;
+		try {
+			kerberos = await import("./__vite-optional-peer-dep_kerberos_proxy-agent-negotiate-eJ-BzrX2.mjs");
+		} catch {
+			throw new Error("The \"kerberos\" package is required for Negotiate proxy authentication. Install it with: npm install kerberos");
 		}
-		get defaultPort() {
-			return this[INTERNAL].defaultPort ?? (this.protocol === "https:" ? 443 : 80);
-		}
-		set defaultPort(v) {
-			if (this[INTERNAL]) this[INTERNAL].defaultPort = v;
-		}
-		get protocol() {
-			return this[INTERNAL].protocol ?? (this.isSecureEndpoint() ? "https:" : "http:");
-		}
-		set protocol(v) {
-			if (this[INTERNAL]) this[INTERNAL].protocol = v;
-		}
+		const proxyAuthenticate = response.headers["proxy-authenticate"] || "";
+		const challengeHeader = Array.isArray(proxyAuthenticate) ? proxyAuthenticate[0] : proxyAuthenticate;
+		const serverToken = typeof challengeHeader === "string" && challengeHeader.includes(" ") ? challengeHeader.split(" ").slice(1).join(" ") : void 0;
+		const token = await (await kerberos.initializeClient("HTTP@proxy", { mechOID: kerberos.GSS_MECH_OID_SPNEGO })).step(serverToken || "");
+		if (!token) throw new Error("Kerberos client.step() returned no token");
+		return { headers: { "Proxy-Authorization": `Negotiate ${token}` } };
 	};
-	exports.Agent = Agent;
-}));
-//#endregion
-//#region tooling/artifact-transport/node_modules/https-proxy-agent/dist/parse-proxy-response.js
-var require_parse_proxy_response = /* @__PURE__ */ __commonJSMin(((exports, module, this$8) => {
-	var __importDefault = this$8 && this$8.__importDefault || function(mod) {
-		return mod && mod.__esModule ? mod : { "default": mod };
+}
+// tooling/artifact-transport/node_modules/https-proxy-agent/dist/index.js
+var debug$1 = (0, import_src.default)("https-proxy-agent");
+var setServernameFromNonIpHost = (options) => {
+	if (options.servername === void 0 && options.host && !net.isIP(options.host)) return {
+		...options,
+		servername: options.host
 	};
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.parseProxyResponse = void 0;
-	var debug = (0, __importDefault(require_src()).default)("https-proxy-agent:parse-proxy-response");
-	function parseProxyResponse(socket) {
-		return new Promise((resolve, reject) => {
-			let buffersLength = 0;
-			const buffers = [];
-			function read() {
-				const b = socket.read();
-				if (b) ondata(b);
-				else socket.once("readable", read);
-			}
-			function cleanup() {
-				socket.removeListener("end", onend);
-				socket.removeListener("error", onerror);
-				socket.removeListener("readable", read);
-			}
-			function onend() {
-				cleanup();
-				debug("onend");
-				reject(/* @__PURE__ */ new Error("Proxy connection ended before receiving CONNECT response"));
-			}
-			function onerror(err) {
-				cleanup();
-				debug("onerror %o", err);
-				reject(err);
-			}
-			function ondata(b) {
-				buffers.push(b);
-				buffersLength += b.length;
-				const buffered = Buffer.concat(buffers, buffersLength);
-				const endOfHeaders = buffered.indexOf("\r\n\r\n");
-				if (endOfHeaders === -1) {
-					debug("have not received end of HTTP headers yet...");
-					read();
-					return;
-				}
-				const headerParts = buffered.slice(0, endOfHeaders).toString("ascii").split("\r\n");
-				const firstLine = headerParts.shift();
-				if (!firstLine) {
-					socket.destroy();
-					return reject(/* @__PURE__ */ new Error("No header received from proxy CONNECT response"));
-				}
-				const firstLineParts = firstLine.split(" ");
-				const statusCode = +firstLineParts[1];
-				const statusText = firstLineParts.slice(2).join(" ");
-				const headers = {};
-				for (const header of headerParts) {
-					if (!header) continue;
-					const firstColon = header.indexOf(":");
-					if (firstColon === -1) {
-						socket.destroy();
-						return reject(/* @__PURE__ */ new Error(`Invalid header from proxy CONNECT response: "${header}"`));
-					}
-					const key = header.slice(0, firstColon).toLowerCase();
-					const value = header.slice(firstColon + 1).trimStart();
-					const current = headers[key];
-					if (typeof current === "string") headers[key] = [current, value];
-					else if (Array.isArray(current)) current.push(value);
-					else headers[key] = value;
-				}
-				debug("got proxy server response: %o %o", firstLine, headers);
-				cleanup();
-				resolve({
-					connect: {
-						statusCode,
-						statusText,
-						headers
-					},
-					buffered
+	return options;
+};
+/**
+* The `HttpsProxyAgent` implements an HTTP Agent subclass that connects to
+* the specified "HTTP(s) proxy server" in order to proxy HTTPS requests.
+*
+* Outgoing HTTP requests are first tunneled through the proxy server using the
+* `CONNECT` HTTP request method to establish a connection to the proxy server,
+* and then the proxy server connects to the destination target and issues the
+* HTTP request from the proxy server.
+*
+* `https:` requests have their socket connection upgraded to TLS once
+* the connection to the proxy server has been established.
+*/
+var HttpsProxyAgent = class extends Agent$1 {
+	constructor(proxy, opts) {
+		super(opts);
+		this.options = { path: void 0 };
+		this.proxy = typeof proxy === "string" ? new URL$1(proxy) : proxy;
+		this.proxyHeaders = opts?.headers ?? {};
+		debug$1("Creating new HttpsProxyAgent instance: %o", this.proxy.href);
+		if (opts?.negotiate) this.onProxyAuth = createNegotiateAuth();
+		else if (opts?.onProxyAuth) this.onProxyAuth = opts.onProxyAuth;
+		const host = (this.proxy.hostname || this.proxy.host).replace(/^\[|\]$/g, "");
+		const port = this.proxy.port ? parseInt(this.proxy.port, 10) : this.proxy.protocol === "https:" ? 443 : 80;
+		this.connectOpts = {
+			ALPNProtocols: ["http/1.1"],
+			...opts ? omit$2(opts, "headers", "onProxyAuth", "negotiate") : null,
+			host,
+			port
+		};
+	}
+	/**
+	* Called when the node-core HTTP client library is creating a
+	* new HTTP request.
+	*/
+	async connect(req, opts) {
+		const { proxy } = this;
+		if (!opts.host) throw new TypeError("No \"host\" provided");
+		let socket;
+		if (proxy.protocol === "https:") {
+			debug$1("Creating `tls.Socket`: %o", this.connectOpts);
+			socket = tls.connect(setServernameFromNonIpHost(this.connectOpts));
+		} else {
+			debug$1("Creating `net.Socket`: %o", this.connectOpts);
+			socket = net.connect(this.connectOpts);
+		}
+		const headers = typeof this.proxyHeaders === "function" ? this.proxyHeaders() : { ...this.proxyHeaders };
+		const host = net.isIPv6(opts.host) ? `[${opts.host}]` : opts.host;
+		let payload = `CONNECT ${host}:${opts.port} HTTP/1.1\r\n`;
+		if (proxy.username || proxy.password) {
+			const auth = `${decodeURIComponent(proxy.username)}:${decodeURIComponent(proxy.password)}`;
+			headers["Proxy-Authorization"] = `Basic ${Buffer.from(auth).toString("base64")}`;
+		}
+		headers.Host = `${host}:${opts.port}`;
+		if (!headers["Proxy-Connection"]) headers["Proxy-Connection"] = this.keepAlive ? "Keep-Alive" : "close";
+		for (const name of Object.keys(headers)) payload += `${name}: ${headers[name]}\r\n`;
+		const proxyResponsePromise = parseProxyResponse(socket);
+		socket.write(`${payload}\r\n`);
+		const { connect, buffered } = await proxyResponsePromise;
+		req.emit("proxyConnect", connect);
+		this.emit("proxyConnect", connect, req);
+		req.emit("proxy", {
+			proxy: this.proxy.href,
+			socket
+		});
+		if (connect.statusCode === 200) {
+			req.once("socket", resume);
+			if (opts.secureEndpoint) {
+				debug$1("Upgrading socket connection to TLS");
+				return tls.connect({
+					...omit$2(setServernameFromNonIpHost(opts), "host", "path", "port"),
+					socket
 				});
 			}
-			socket.on("error", onerror);
-			socket.on("end", onend);
-			read();
-		});
-	}
-	exports.parseProxyResponse = parseProxyResponse;
-}));
-//#endregion
-//#region tooling/artifact-transport/node_modules/https-proxy-agent/dist/index.js
-var require_dist$2 = /* @__PURE__ */ __commonJSMin(((exports, module, this$7) => {
-	var __createBinding = this$7 && this$7.__createBinding || (Object.create ? (function(o, m, k, k2) {
-		if (k2 === void 0) k2 = k;
-		var desc = Object.getOwnPropertyDescriptor(m, k);
-		if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) desc = {
-			enumerable: true,
-			get: function() {
-				return m[k];
-			}
-		};
-		Object.defineProperty(o, k2, desc);
-	}) : (function(o, m, k, k2) {
-		if (k2 === void 0) k2 = k;
-		o[k2] = m[k];
-	}));
-	var __setModuleDefault = this$7 && this$7.__setModuleDefault || (Object.create ? (function(o, v) {
-		Object.defineProperty(o, "default", {
-			enumerable: true,
-			value: v
-		});
-	}) : function(o, v) {
-		o["default"] = v;
-	});
-	var __importStar = this$7 && this$7.__importStar || function(mod) {
-		if (mod && mod.__esModule) return mod;
-		var result = {};
-		if (mod != null) {
-			for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-		}
-		__setModuleDefault(result, mod);
-		return result;
-	};
-	var __importDefault = this$7 && this$7.__importDefault || function(mod) {
-		return mod && mod.__esModule ? mod : { "default": mod };
-	};
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.HttpsProxyAgent = void 0;
-	var net = __importStar(__require("net"));
-	var tls = __importStar(__require("tls"));
-	var assert_1 = __importDefault(__require("assert"));
-	var debug_1 = __importDefault(require_src());
-	var agent_base_1 = require_dist$3();
-	var url_1 = __require("url");
-	var parse_proxy_response_1 = require_parse_proxy_response();
-	var debug = (0, debug_1.default)("https-proxy-agent");
-	var setServernameFromNonIpHost = (options) => {
-		if (options.servername === void 0 && options.host && !net.isIP(options.host)) return {
-			...options,
-			servername: options.host
-		};
-		return options;
-	};
-	/**
-	* The `HttpsProxyAgent` implements an HTTP Agent subclass that connects to
-	* the specified "HTTP(s) proxy server" in order to proxy HTTPS requests.
-	*
-	* Outgoing HTTP requests are first tunneled through the proxy server using the
-	* `CONNECT` HTTP request method to establish a connection to the proxy server,
-	* and then the proxy server connects to the destination target and issues the
-	* HTTP request from the proxy server.
-	*
-	* `https:` requests have their socket connection upgraded to TLS once
-	* the connection to the proxy server has been established.
-	*/
-	var HttpsProxyAgent = class extends agent_base_1.Agent {
-		constructor(proxy, opts) {
-			super(opts);
-			this.options = { path: void 0 };
-			this.proxy = typeof proxy === "string" ? new url_1.URL(proxy) : proxy;
-			this.proxyHeaders = opts?.headers ?? {};
-			debug("Creating new HttpsProxyAgent instance: %o", this.proxy.href);
-			const host = (this.proxy.hostname || this.proxy.host).replace(/^\[|\]$/g, "");
-			const port = this.proxy.port ? parseInt(this.proxy.port, 10) : this.proxy.protocol === "https:" ? 443 : 80;
-			this.connectOpts = {
-				ALPNProtocols: ["http/1.1"],
-				...opts ? omit(opts, "headers") : null,
-				host,
-				port
-			};
-		}
-		/**
-		* Called when the node-core HTTP client library is creating a
-		* new HTTP request.
-		*/
-		async connect(req, opts) {
-			const { proxy } = this;
-			if (!opts.host) throw new TypeError("No \"host\" provided");
-			let socket;
-			if (proxy.protocol === "https:") {
-				debug("Creating `tls.Socket`: %o", this.connectOpts);
-				socket = tls.connect(setServernameFromNonIpHost(this.connectOpts));
-			} else {
-				debug("Creating `net.Socket`: %o", this.connectOpts);
-				socket = net.connect(this.connectOpts);
-			}
-			const headers = typeof this.proxyHeaders === "function" ? this.proxyHeaders() : { ...this.proxyHeaders };
-			const host = net.isIPv6(opts.host) ? `[${opts.host}]` : opts.host;
-			let payload = `CONNECT ${host}:${opts.port} HTTP/1.1\r\n`;
-			if (proxy.username || proxy.password) {
-				const auth = `${decodeURIComponent(proxy.username)}:${decodeURIComponent(proxy.password)}`;
-				headers["Proxy-Authorization"] = `Basic ${Buffer.from(auth).toString("base64")}`;
-			}
-			headers.Host = `${host}:${opts.port}`;
-			if (!headers["Proxy-Connection"]) headers["Proxy-Connection"] = this.keepAlive ? "Keep-Alive" : "close";
-			for (const name of Object.keys(headers)) payload += `${name}: ${headers[name]}\r\n`;
-			const proxyResponsePromise = (0, parse_proxy_response_1.parseProxyResponse)(socket);
-			socket.write(`${payload}\r\n`);
-			const { connect, buffered } = await proxyResponsePromise;
-			req.emit("proxyConnect", connect);
-			this.emit("proxyConnect", connect, req);
-			if (connect.statusCode === 200) {
-				req.once("socket", resume);
-				if (opts.secureEndpoint) {
-					debug("Upgrading socket connection to TLS");
-					return tls.connect({
-						...omit(setServernameFromNonIpHost(opts), "host", "path", "port"),
-						socket
-					});
-				}
-				return socket;
-			}
-			socket.destroy();
-			const fakeSocket = new net.Socket({ writable: false });
-			fakeSocket.readable = true;
-			req.once("socket", (s) => {
-				debug("Replaying proxy buffer for failed request");
-				(0, assert_1.default)(s.listenerCount("data") > 0);
-				s.push(buffered);
-				s.push(null);
-			});
-			return fakeSocket;
-		}
-	};
-	HttpsProxyAgent.protocols = ["http", "https"];
-	exports.HttpsProxyAgent = HttpsProxyAgent;
-	function resume(socket) {
-		socket.resume();
-	}
-	function omit(obj, ...keys) {
-		const ret = {};
-		let key;
-		for (key in obj) if (!keys.includes(key)) ret[key] = obj[key];
-		return ret;
-	}
-}));
-//#endregion
-//#region tooling/artifact-transport/node_modules/http-proxy-agent/dist/index.js
-var require_dist$1 = /* @__PURE__ */ __commonJSMin(((exports, module, this$6) => {
-	var __createBinding = this$6 && this$6.__createBinding || (Object.create ? (function(o, m, k, k2) {
-		if (k2 === void 0) k2 = k;
-		var desc = Object.getOwnPropertyDescriptor(m, k);
-		if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) desc = {
-			enumerable: true,
-			get: function() {
-				return m[k];
-			}
-		};
-		Object.defineProperty(o, k2, desc);
-	}) : (function(o, m, k, k2) {
-		if (k2 === void 0) k2 = k;
-		o[k2] = m[k];
-	}));
-	var __setModuleDefault = this$6 && this$6.__setModuleDefault || (Object.create ? (function(o, v) {
-		Object.defineProperty(o, "default", {
-			enumerable: true,
-			value: v
-		});
-	}) : function(o, v) {
-		o["default"] = v;
-	});
-	var __importStar = this$6 && this$6.__importStar || function(mod) {
-		if (mod && mod.__esModule) return mod;
-		var result = {};
-		if (mod != null) {
-			for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-		}
-		__setModuleDefault(result, mod);
-		return result;
-	};
-	var __importDefault = this$6 && this$6.__importDefault || function(mod) {
-		return mod && mod.__esModule ? mod : { "default": mod };
-	};
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.HttpProxyAgent = void 0;
-	var net = __importStar(__require("net"));
-	var tls = __importStar(__require("tls"));
-	var debug_1 = __importDefault(require_src());
-	var events_1 = __require("events");
-	var agent_base_1 = require_dist$3();
-	var url_1 = __require("url");
-	var debug = (0, debug_1.default)("http-proxy-agent");
-	/**
-	* The `HttpProxyAgent` implements an HTTP Agent subclass that connects
-	* to the specified "HTTP proxy server" in order to proxy HTTP requests.
-	*/
-	var HttpProxyAgent = class extends agent_base_1.Agent {
-		constructor(proxy, opts) {
-			super(opts);
-			this.proxy = typeof proxy === "string" ? new url_1.URL(proxy) : proxy;
-			this.proxyHeaders = opts?.headers ?? {};
-			debug("Creating new HttpProxyAgent instance: %o", this.proxy.href);
-			const host = (this.proxy.hostname || this.proxy.host).replace(/^\[|\]$/g, "");
-			const port = this.proxy.port ? parseInt(this.proxy.port, 10) : this.proxy.protocol === "https:" ? 443 : 80;
-			this.connectOpts = {
-				...opts ? omit(opts, "headers") : null,
-				host,
-				port
-			};
-		}
-		addRequest(req, opts) {
-			req._header = null;
-			this.setRequestProps(req, opts);
-			super.addRequest(req, opts);
-		}
-		setRequestProps(req, opts) {
-			const { proxy } = this;
-			const base = `${opts.secureEndpoint ? "https:" : "http:"}//${req.getHeader("host") || "localhost"}`;
-			const url = new url_1.URL(req.path, base);
-			if (opts.port !== 80) url.port = String(opts.port);
-			req.path = String(url);
-			const headers = typeof this.proxyHeaders === "function" ? this.proxyHeaders() : { ...this.proxyHeaders };
-			if (proxy.username || proxy.password) {
-				const auth = `${decodeURIComponent(proxy.username)}:${decodeURIComponent(proxy.password)}`;
-				headers["Proxy-Authorization"] = `Basic ${Buffer.from(auth).toString("base64")}`;
-			}
-			if (!headers["Proxy-Connection"]) headers["Proxy-Connection"] = this.keepAlive ? "Keep-Alive" : "close";
-			for (const name of Object.keys(headers)) {
-				const value = headers[name];
-				if (value) req.setHeader(name, value);
-			}
-		}
-		async connect(req, opts) {
-			req._header = null;
-			if (!req.path.includes("://")) this.setRequestProps(req, opts);
-			let first;
-			let endOfHeaders;
-			debug("Regenerating stored HTTP header string for request");
-			req._implicitHeader();
-			if (req.outputData && req.outputData.length > 0) {
-				debug("Patching connection write() output buffer with updated header");
-				first = req.outputData[0].data;
-				endOfHeaders = first.indexOf("\r\n\r\n") + 4;
-				req.outputData[0].data = req._header + first.substring(endOfHeaders);
-				debug("Output buffer: %o", req.outputData[0].data);
-			}
-			let socket;
-			if (this.proxy.protocol === "https:") {
-				debug("Creating `tls.Socket`: %o", this.connectOpts);
-				socket = tls.connect(this.connectOpts);
-			} else {
-				debug("Creating `net.Socket`: %o", this.connectOpts);
-				socket = net.connect(this.connectOpts);
-			}
-			await (0, events_1.once)(socket, "connect");
 			return socket;
 		}
-	};
-	HttpProxyAgent.protocols = ["http", "https"];
-	exports.HttpProxyAgent = HttpProxyAgent;
-	function omit(obj, ...keys) {
-		const ret = {};
-		let key;
-		for (key in obj) if (!keys.includes(key)) ret[key] = obj[key];
-		return ret;
+		if (connect.statusCode === 407 && this.onProxyAuth) {
+			debug$1("Got 407 response, invoking onProxyAuth callback");
+			socket.destroy();
+			const proxyAuthenticate = connect.headers["proxy-authenticate"] || "";
+			const scheme = Array.isArray(proxyAuthenticate) ? proxyAuthenticate[0].split(/\s/)[0] : proxyAuthenticate.split(/\s/)[0];
+			const authResponse = await this.onProxyAuth({
+				response: connect,
+				scheme
+			});
+			return this._connectWithAuth(req, opts, authResponse.headers);
+		}
+		socket.destroy();
+		const fakeSocket = new net.Socket({ writable: false });
+		fakeSocket.readable = true;
+		req.once("socket", (s) => {
+			debug$1("Replaying proxy buffer for failed request");
+			assert(s.listenerCount("data") > 0);
+			s.push(buffered);
+			s.push(null);
+		});
+		return fakeSocket;
 	}
-}));
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/policies/proxyPolicy.js
-var import_dist = require_dist$2();
-var import_dist$1 = require_dist$1();
+	/**
+	* Retry a CONNECT request with additional auth headers.
+	*/
+	async _connectWithAuth(req, opts, authHeaders) {
+		const { proxy } = this;
+		let socket;
+		if (proxy.protocol === "https:") socket = tls.connect(setServernameFromNonIpHost(this.connectOpts));
+		else socket = net.connect(this.connectOpts);
+		const headers = typeof this.proxyHeaders === "function" ? this.proxyHeaders() : { ...this.proxyHeaders };
+		const host = net.isIPv6(opts.host) ? `[${opts.host}]` : opts.host;
+		let payload = `CONNECT ${host}:${opts.port} HTTP/1.1\r\n`;
+		if (proxy.username || proxy.password) {
+			const auth = `${decodeURIComponent(proxy.username)}:${decodeURIComponent(proxy.password)}`;
+			headers["Proxy-Authorization"] = `Basic ${Buffer.from(auth).toString("base64")}`;
+		}
+		Object.assign(headers, authHeaders);
+		headers.Host = `${host}:${opts.port}`;
+		if (!headers["Proxy-Connection"]) headers["Proxy-Connection"] = this.keepAlive ? "Keep-Alive" : "close";
+		for (const name of Object.keys(headers)) payload += `${name}: ${headers[name]}\r\n`;
+		const proxyResponsePromise = parseProxyResponse(socket);
+		socket.write(`${payload}\r\n`);
+		const { connect } = await proxyResponsePromise;
+		req.emit("proxyConnect", connect);
+		this.emit("proxyConnect", connect, req);
+		if (connect.statusCode === 200) {
+			req.once("socket", resume);
+			if (opts.secureEndpoint) {
+				debug$1("Upgrading socket connection to TLS");
+				return tls.connect({
+					...omit$2(setServernameFromNonIpHost(opts), "host", "path", "port"),
+					socket
+				});
+			}
+			return socket;
+		}
+		socket.destroy();
+		throw new Error(`Proxy authentication failed with status ${connect.statusCode} after retry`);
+	}
+};
+HttpsProxyAgent.protocols = ["http", "https"];
+function resume(socket) {
+	setImmediate(() => {
+		socket.resume();
+	});
+}
+function omit$2(obj, ...keys) {
+	const ret = {};
+	let key;
+	for (key in obj) if (!keys.includes(key)) ret[key] = obj[key];
+	return ret;
+}
+// tooling/artifact-transport/node_modules/http-proxy-agent/dist/index.js
+var debug = (0, import_src.default)("http-proxy-agent");
+/**
+* The `HttpProxyAgent` implements an HTTP Agent subclass that connects
+* to the specified "HTTP proxy server" in order to proxy HTTP requests.
+*/
+var HttpProxyAgent = class extends Agent$1 {
+	constructor(proxy, opts) {
+		super(opts);
+		this.proxy = typeof proxy === "string" ? new URL$1(proxy) : proxy;
+		this.proxyHeaders = opts?.headers ?? {};
+		debug("Creating new HttpProxyAgent instance: %o", this.proxy.href);
+		if (opts?.negotiate) this.onProxyAuth = createNegotiateAuth();
+		else if (opts?.onProxyAuth) this.onProxyAuth = opts.onProxyAuth;
+		const host = (this.proxy.hostname || this.proxy.host).replace(/^\[|\]$/g, "");
+		const port = this.proxy.port ? parseInt(this.proxy.port, 10) : this.proxy.protocol === "https:" ? 443 : 80;
+		this.connectOpts = {
+			...opts ? omit$1(opts, "headers", "onProxyAuth", "negotiate") : null,
+			host,
+			port
+		};
+	}
+	addRequest(req, opts) {
+		req._header = null;
+		this.setRequestProps(req, opts);
+		super.addRequest(req, opts);
+	}
+	setRequestProps(req, opts) {
+		const { proxy } = this;
+		const base = `${opts.secureEndpoint ? "https:" : "http:"}//${req.getHeader("host") || "localhost"}`;
+		const url = new URL$1(req.path, base);
+		if (opts.port !== 80) url.port = String(opts.port);
+		req.path = String(url);
+		const headers = typeof this.proxyHeaders === "function" ? this.proxyHeaders() : { ...this.proxyHeaders };
+		if (proxy.username || proxy.password) {
+			const auth = `${decodeURIComponent(proxy.username)}:${decodeURIComponent(proxy.password)}`;
+			headers["Proxy-Authorization"] = `Basic ${Buffer.from(auth).toString("base64")}`;
+		}
+		if (!headers["Proxy-Connection"]) headers["Proxy-Connection"] = this.keepAlive ? "Keep-Alive" : "close";
+		for (const name of Object.keys(headers)) {
+			const value = headers[name];
+			if (value) req.setHeader(name, value);
+		}
+	}
+	async connect(req, opts) {
+		req._header = null;
+		if (!req.path.includes("://")) this.setRequestProps(req, opts);
+		let first;
+		let endOfHeaders;
+		debug("Regenerating stored HTTP header string for request");
+		req._implicitHeader();
+		if (req.outputData && req.outputData.length > 0) {
+			debug("Patching connection write() output buffer with updated header");
+			first = req.outputData[0].data;
+			endOfHeaders = first.indexOf("\r\n\r\n") + 4;
+			req.outputData[0].data = req._header + first.substring(endOfHeaders);
+			debug("Output buffer: %o", req.outputData[0].data);
+		}
+		let socket;
+		if (this.proxy.protocol === "https:") {
+			debug("Creating `tls.Socket`: %o", this.connectOpts);
+			socket = tls.connect(this.connectOpts);
+		} else {
+			debug("Creating `net.Socket`: %o", this.connectOpts);
+			socket = net.connect(this.connectOpts);
+		}
+		await once(socket, "connect");
+		const connect = { socket };
+		req.emit("proxyConnect", connect);
+		this.emit("proxyConnect", connect, req);
+		req.emit("proxy", {
+			proxy: this.proxy.href,
+			socket
+		});
+		return socket;
+	}
+};
+HttpProxyAgent.protocols = ["http", "https"];
+function omit$1(obj, ...keys) {
+	const ret = {};
+	let key;
+	for (key in obj) if (!keys.includes(key)) ret[key] = obj[key];
+	return ret;
+}
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/policies/proxyPolicy.js
 var HTTPS_PROXY = "HTTPS_PROXY";
 var HTTP_PROXY = "HTTP_PROXY";
 var ALL_PROXY = "ALL_PROXY";
@@ -7607,10 +7900,10 @@ function setProxyAgentOnRequest(request, cachedAgents, proxyUrl) {
 	const isInsecure = new URL(request.url).protocol !== "https:";
 	if (request.tlsSettings) logger$4.warning("TLS settings are not supported in combination with custom Proxy, certificates provided to the client will be ignored.");
 	if (isInsecure) {
-		if (!cachedAgents.httpProxyAgent) cachedAgents.httpProxyAgent = new import_dist$1.HttpProxyAgent(proxyUrl);
+		if (!cachedAgents.httpProxyAgent) cachedAgents.httpProxyAgent = new HttpProxyAgent(proxyUrl);
 		request.agent = cachedAgents.httpProxyAgent;
 	} else {
-		if (!cachedAgents.httpsProxyAgent) cachedAgents.httpsProxyAgent = new import_dist.HttpsProxyAgent(proxyUrl);
+		if (!cachedAgents.httpsProxyAgent) cachedAgents.httpsProxyAgent = new HttpsProxyAgent(proxyUrl);
 		request.agent = cachedAgents.httpsProxyAgent;
 	}
 }
@@ -7634,8 +7927,7 @@ function proxyPolicy$1(proxySettings, options) {
 		}
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/policies/decompressResponsePolicy.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/policies/decompressResponsePolicy.js
 /**
 * The programmatic identifier of the decompressResponsePolicy.
 */
@@ -7653,8 +7945,7 @@ function decompressResponsePolicy$1() {
 		}
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/policies/redirectPolicy.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/policies/redirectPolicy.js
 /**
 * The programmatic identifier of the redirectPolicy.
 */
@@ -7693,21 +7984,24 @@ async function handleRedirect(next, response, maxRetries, allowCrossOriginRedire
 		request.url = url.toString();
 		if (status === 303) {
 			request.method = "GET";
-			request.headers.delete("Content-Length");
+			if (request.requestOverrides && "method" in request.requestOverrides) request.requestOverrides = {
+				...request.requestOverrides,
+				method: "GET"
+			};
+			removeRequestBodyHeaders(request);
 			delete request.body;
 		}
 		request.headers.delete("Authorization");
+		await disposeResponseBody(response);
 		return handleRedirect(next, await next(request), maxRetries, allowCrossOriginRedirects, currentRetries + 1);
 	}
 	return response;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/util/typeGuards.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/util/typeGuards.js
 function isBlob(x) {
 	return x instanceof Blob;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/util/concat.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/util/concat.js
 async function* streamAsyncIterator() {
 	const reader = this.getReader();
 	try {
@@ -7752,8 +8046,7 @@ async function concat$2(sources) {
 		})());
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/policies/multipartPolicy.js
+// tooling/artifact-transport/node_modules/@typespec/ts-http-runtime/dist/esm/policies/multipartPolicy.js
 function generateBoundary() {
 	return `----AzSDKFormBoundary${randomUUID$2()}`;
 }
@@ -7827,8 +8120,7 @@ function multipartPolicy$1() {
 		}
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/pipeline.js
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/pipeline.js
 /**
 * Creates a totally empty pipeline.
 * Useful for testing or creating a custom one.
@@ -7836,8 +8128,7 @@ function multipartPolicy$1() {
 function createEmptyPipeline() {
 	return createEmptyPipeline$1();
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/logger/dist/esm/index.js
+// tooling/artifact-transport/node_modules/@azure/logger/dist/esm/index.js
 var context$2 = createLoggerContext({
 	logLevelEnvVarName: "AZURE_LOG_LEVEL",
 	namespace: "azure"
@@ -7851,11 +8142,9 @@ context$2.logger;
 function createClientLogger(namespace) {
 	return context$2.createClientLogger(namespace);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/log.js
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/log.js
 var logger$3 = createClientLogger("core-rest-pipeline");
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/logPolicy.js
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/logPolicy.js
 /**
 * A policy that logs all requests and responses.
 * @param options - Options to configure logPolicy.
@@ -7866,8 +8155,7 @@ function logPolicy(options = {}) {
 		...options
 	});
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/redirectPolicy.js
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/redirectPolicy.js
 /**
 * The programmatic identifier of the redirectPolicy.
 */
@@ -7881,8 +8169,7 @@ var redirectPolicyName = redirectPolicyName$1;
 function redirectPolicy(options = {}) {
 	return redirectPolicy$1(options);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/util/userAgentPlatform.js
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/util/userAgentPlatform.js
 /**
 * @internal
 */
@@ -7900,11 +8187,9 @@ async function setPlatformSpecificData(map) {
 		else if (process$1.versions.node) map.set("Node", `${process$1.versions.node} (${osInfo})`);
 	}
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/constants.js
-var SDK_VERSION$1 = "1.25.0";
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/util/userAgent.js
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/constants.js
+var SDK_VERSION$1 = "1.25.1";
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/util/userAgent.js
 function getUserAgentString(telemetryInfo) {
 	const parts = [];
 	for (const [key, value] of telemetryInfo) {
@@ -7929,8 +8214,7 @@ async function getUserAgentValue(prefix) {
 	const defaultAgent = getUserAgentString(runtimeInfo);
 	return prefix ? `${prefix} ${defaultAgent}` : defaultAgent;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/userAgentPolicy.js
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/userAgentPolicy.js
 var UserAgentHeaderName = getUserAgentHeaderName();
 /**
 * The programmatic identifier of the userAgentPolicy.
@@ -7951,8 +8235,7 @@ function userAgentPolicy(options = {}) {
 		}
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/util/file.js
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/util/file.js
 /**
 * Private symbol used as key on objects created using createFile containing the
 * original source of the file object.
@@ -7985,8 +8268,7 @@ function getRawContent$1(blob) {
 	if (hasRawContent(blob)) return blob[rawContent]();
 	else return blob;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/multipartPolicy.js
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/multipartPolicy.js
 /**
 * Name of multipart policy
 */
@@ -8006,8 +8288,7 @@ function multipartPolicy() {
 		}
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/decompressResponsePolicy.js
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/decompressResponsePolicy.js
 /**
 * The programmatic identifier of the decompressResponsePolicy.
 */
@@ -8019,8 +8300,7 @@ var decompressResponsePolicyName = decompressResponsePolicyName$1;
 function decompressResponsePolicy() {
 	return decompressResponsePolicy$1();
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/defaultRetryPolicy.js
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/defaultRetryPolicy.js
 /**
 * A policy that retries according to three strategies:
 * - When the server sends a 429 response with a Retry-After header.
@@ -8030,16 +8310,14 @@ function decompressResponsePolicy() {
 function defaultRetryPolicy(options = {}) {
 	return defaultRetryPolicy$1(options);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/formDataPolicy.js
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/formDataPolicy.js
 /**
 * A policy that encodes FormData on the request into the body.
 */
 function formDataPolicy() {
 	return formDataPolicy$1();
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/abort-controller/dist/esm/AbortError.js
+// tooling/artifact-transport/node_modules/@azure/abort-controller/dist/esm/AbortError.js
 /**
 * This error is thrown when an asynchronous operation has been aborted.
 * Check for this error by testing the `name` that the name property of the
@@ -8074,8 +8352,7 @@ var AbortError = class extends Error {
 		this.name = "AbortError";
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-util/dist/esm/createAbortablePromise.js
+// tooling/artifact-transport/node_modules/@azure/core-util/dist/esm/createAbortablePromise.js
 /**
 * Creates an abortable promise.
 * @param buildPromise - A function that takes the resolve and reject functions as parameters.
@@ -8111,8 +8388,7 @@ function createAbortablePromise(buildPromise, options) {
 		abortSignal?.addEventListener("abort", onAbort);
 	});
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-util/dist/esm/delay.js
+// tooling/artifact-transport/node_modules/@azure/core-util/dist/esm/delay.js
 var StandardAbortMessage = "The delay was aborted.";
 /**
 * A wrapper for setTimeout that resolves a promise after timeInMs milliseconds.
@@ -8131,8 +8407,7 @@ function delay$1(timeInMs, options) {
 		abortErrorMsg: abortErrorMsg ?? StandardAbortMessage
 	});
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-util/dist/esm/error.js
+// tooling/artifact-transport/node_modules/@azure/core-util/dist/esm/error.js
 /**
 * Given what is thought to be an error object, return the message if possible.
 * If the message is missing, returns a stringified version of the input.
@@ -8152,8 +8427,7 @@ function getErrorMessage(e) {
 		return `Unknown error ${stringified}`;
 	}
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-util/dist/esm/index.js
+// tooling/artifact-transport/node_modules/@azure/core-util/dist/esm/index.js
 /**
 * Typeguard for an error object shape (has name and message)
 *
@@ -8192,8 +8466,7 @@ function uint8ArrayToString(bytes, format) {
 function stringToUint8Array(value, format) {
 	return stringToUint8Array$1(value, format);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/proxyPolicy.js
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/proxyPolicy.js
 /**
 * This method converts a proxy url into `ProxySettings` for use with ProxyPolicy.
 * If no argument is given, it attempts to parse a proxy URL from the environment
@@ -8214,8 +8487,7 @@ function getDefaultProxySettings(proxyUrl) {
 function proxyPolicy(proxySettings, options) {
 	return proxyPolicy$1(proxySettings, options);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/setClientRequestIdPolicy.js
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/setClientRequestIdPolicy.js
 /**
 * The programmatic identifier of the setClientRequestIdPolicy.
 */
@@ -8235,24 +8507,21 @@ function setClientRequestIdPolicy(requestIdHeaderName = "x-ms-client-request-id"
 		}
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/agentPolicy.js
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/agentPolicy.js
 /**
 * Gets a pipeline policy that sets http.agent
 */
 function agentPolicy(agent) {
 	return agentPolicy$1(agent);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/tlsPolicy.js
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/tlsPolicy.js
 /**
 * Gets a pipeline policy that adds the client certificate to the HttpClient agent for authentication.
 */
 function tlsPolicy(tlsSettings) {
 	return tlsPolicy$1(tlsSettings);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-tracing/dist/esm/tracingContext.js
+// tooling/artifact-transport/node_modules/@azure/core-tracing/dist/esm/tracingContext.js
 /** @internal */
 var knownContextKeys = {
 	span: Symbol.for("@azure/core-tracing span"),
@@ -8304,8 +8573,7 @@ var state$1 = (/* @__PURE__ */ __commonJSMin(((exports) => {
 	*/
 	exports.state = { instrumenterImplementation: void 0 };
 })))().state;
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-tracing/dist/esm/instrumenter.js
+// tooling/artifact-transport/node_modules/@azure/core-tracing/dist/esm/instrumenter.js
 function createDefaultTracingSpan() {
 	return {
 		end: () => {},
@@ -8342,8 +8610,7 @@ function getInstrumenter() {
 	if (!state$1.instrumenterImplementation) state$1.instrumenterImplementation = createDefaultInstrumenter();
 	return state$1.instrumenterImplementation;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-tracing/dist/esm/tracingClient.js
+// tooling/artifact-transport/node_modules/@azure/core-tracing/dist/esm/tracingClient.js
 /**
 * Creates a new tracing client.
 *
@@ -8416,8 +8683,7 @@ function createTracingClient(options) {
 		createRequestHeaders
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/restError.js
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/restError.js
 /**
 * A custom error type for failed pipeline requests.
 */
@@ -8429,8 +8695,7 @@ var RestError = RestError$1;
 function isRestError(e) {
 	return isRestError$1(e);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/tracingPolicy.js
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/tracingPolicy.js
 /**
 * The programmatic identifier of the tracingPolicy.
 */
@@ -8526,8 +8791,7 @@ function tryProcessResponse(span, response) {
 		logger$3.warning(`Skipping tracing span processing due to an error: ${getErrorMessage(e)}`);
 	}
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/util/wrapAbortSignal.js
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/util/wrapAbortSignal.js
 /**
 * Creates a native AbortSignal which reflects the state of the provided AbortSignalLike.
 * If the AbortSignalLike is already a native AbortSignal, it is returned as is.
@@ -8555,8 +8819,54 @@ function wrapAbortSignalLike(abortSignalLike) {
 		cleanup
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/wrapAbortSignalLikePolicy.js
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/util/cleanupOnCompletion.js
+/**
+* Runs the cleanup callback associated with the response and its request once they are complete.
+*/
+function cleanupOnRequestResponseCompletion(response, cleanup) {
+	const stream = response?.readableStreamBody;
+	const requestCompletion = response ? getRequestCompletion(response) : void 0;
+	const browserResponseCompletion = response ? getResponseBodyCompletion(response) : void 0;
+	let requestDone = requestCompletion === void 0;
+	let nodeResponseDone = !stream || !stream.readable;
+	let browserResponseDone = browserResponseCompletion === void 0;
+	let cleanedUp = false;
+	const cleanupIfComplete = () => {
+		if (cleanedUp || !requestDone || !nodeResponseDone || !browserResponseDone) return;
+		cleanedUp = true;
+		cleanup();
+	};
+	const onResponseComplete = () => {
+		stream?.removeListener("end", onResponseComplete);
+		stream?.removeListener("close", onResponseComplete);
+		stream?.removeListener("error", onResponseComplete);
+		nodeResponseDone = true;
+		try {
+			cleanupIfComplete();
+		} catch (error) {
+			logger$3.warning("Error cleaning up after response stream completion", error);
+		}
+	};
+	if (!nodeResponseDone && stream) {
+		stream.once("end", onResponseComplete);
+		stream.once("close", onResponseComplete);
+		stream.once("error", onResponseComplete);
+	}
+	if (requestCompletion) requestCompletion.then(() => {
+		requestDone = true;
+		return cleanupIfComplete();
+	}).catch((error) => {
+		logger$3.warning("Error cleaning up after request completion", error);
+	});
+	if (browserResponseCompletion) browserResponseCompletion.then(() => {
+		browserResponseDone = true;
+		return cleanupIfComplete();
+	}).catch((error) => {
+		logger$3.warning("Error cleaning up after response body completion", error);
+	});
+	cleanupIfComplete();
+}
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/wrapAbortSignalLikePolicy.js
 var wrapAbortSignalLikePolicyName = "wrapAbortSignalLikePolicy";
 /**
 * Policy that ensure that any AbortSignalLike is wrapped in a native AbortSignal for processing by the pipeline.
@@ -8569,18 +8879,21 @@ function wrapAbortSignalLikePolicy() {
 		name: wrapAbortSignalLikePolicyName,
 		sendRequest: async (request, next) => {
 			if (!request.abortSignal) return next(request);
-			const { abortSignal, cleanup } = wrapAbortSignalLike(request.abortSignal);
+			const originalAbortSignal = request.abortSignal;
+			const { abortSignal, cleanup } = wrapAbortSignalLike(originalAbortSignal);
 			request.abortSignal = abortSignal;
+			let response;
 			try {
-				return await next(request);
+				response = await next(request);
+				return response;
 			} finally {
-				cleanup?.();
+				request.abortSignal = originalAbortSignal;
+				if (cleanup) cleanupOnRequestResponseCompletion(response, cleanup);
 			}
 		}
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/createPipelineFromOptions.js
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/createPipelineFromOptions.js
 /**
 * Create a new pipeline with a default set of customizable policies.
 * @param options - Options to configure a custom pipeline.
@@ -8607,25 +8920,27 @@ function createPipelineFromOptions(options) {
 	pipeline.addPolicy(logPolicy(options.loggingOptions), { afterPhase: "Sign" });
 	return pipeline;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/defaultHttpClient.js
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/defaultHttpClient.js
 /**
 * Create the correct HttpClient for the current environment.
 */
 function createDefaultHttpClient() {
 	const client = createDefaultHttpClient$1();
 	return { async sendRequest(request) {
-		const { abortSignal, cleanup } = request.abortSignal ? wrapAbortSignalLike(request.abortSignal) : {};
+		const originalAbortSignal = request.abortSignal;
+		const { abortSignal, cleanup } = originalAbortSignal ? wrapAbortSignalLike(originalAbortSignal) : {};
+		let response;
 		try {
 			request.abortSignal = abortSignal;
-			return await client.sendRequest(request);
+			response = await client.sendRequest(request);
+			return response;
 		} finally {
-			cleanup?.();
+			request.abortSignal = originalAbortSignal;
+			if (cleanup) cleanupOnRequestResponseCompletion(response, cleanup);
 		}
 	} };
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/httpHeaders.js
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/httpHeaders.js
 /**
 * Creates an object that satisfies the `HttpHeaders` interface.
 * @param rawHeaders - A simple object representing initial headers
@@ -8633,8 +8948,7 @@ function createDefaultHttpClient() {
 function createHttpHeaders(rawHeaders) {
 	return createHttpHeaders$1(rawHeaders);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/pipelineRequest.js
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/pipelineRequest.js
 /**
 * Creates a new pipeline request with the given options.
 * This method is to allow for the easy setting of default values and not required.
@@ -8643,8 +8957,7 @@ function createHttpHeaders(rawHeaders) {
 function createPipelineRequest(options) {
 	return createPipelineRequest$1(options);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/util/tokenCycler.js
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/util/tokenCycler.js
 var DEFAULT_CYCLER_OPTIONS = {
 	forcedRefreshWindowInMs: 1e3,
 	retryIntervalInMs: 3e3,
@@ -8761,8 +9074,7 @@ function createTokenCycler(credential, tokenCyclerOptions) {
 		return token;
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/bearerTokenAuthenticationPolicy.js
+// tooling/artifact-transport/node_modules/@azure/core-rest-pipeline/dist/esm/policies/bearerTokenAuthenticationPolicy.js
 /**
 * The programmatic identifier of the bearerTokenAuthenticationPolicy.
 */
@@ -8874,7 +9186,10 @@ function bearerTokenAuthenticationPolicy(options) {
 						getAccessToken,
 						logger
 					}, parsedClaim);
-					if (shouldSendRequest) [response, error] = await trySendRequest(request, next);
+					if (shouldSendRequest) {
+						await disposeResponseBody(response);
+						[response, error] = await trySendRequest(request, next);
+					}
 				} else if (callbacks.authorizeRequestOnChallenge) {
 					shouldSendRequest = await callbacks.authorizeRequestOnChallenge({
 						scopes: Array.isArray(scopes) ? scopes : [scopes],
@@ -8883,7 +9198,10 @@ function bearerTokenAuthenticationPolicy(options) {
 						getAccessToken,
 						logger
 					});
-					if (shouldSendRequest) [response, error] = await trySendRequest(request, next);
+					if (shouldSendRequest) {
+						await disposeResponseBody(response);
+						[response, error] = await trySendRequest(request, next);
+					}
 					if (isChallengeResponse(response)) {
 						claims = getCaeChallengeClaims(response.headers.get("WWW-Authenticate") ?? "");
 						if (claims) {
@@ -8901,7 +9219,10 @@ function bearerTokenAuthenticationPolicy(options) {
 								getAccessToken,
 								logger
 							}, parsedClaim);
-							if (shouldSendRequest) [response, error] = await trySendRequest(request, next);
+							if (shouldSendRequest) {
+								await disposeResponseBody(response);
+								[response, error] = await trySendRequest(request, next);
+							}
 						}
 					}
 				}
@@ -8944,8 +9265,7 @@ function getCaeChallengeClaims(challenges) {
 	if (!challenges) return;
 	return parseChallenges(challenges).find((x) => x.scheme === "Bearer" && x.params.claims && x.params.error === "insufficient_claims")?.params.claims;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-auth/dist/esm/tokenCredential.js
+// tooling/artifact-transport/node_modules/@azure/core-auth/dist/esm/tokenCredential.js
 /**
 * Tests an object to determine whether it implements TokenCredential.
 *
@@ -8955,8 +9275,7 @@ function isTokenCredential(credential) {
 	const castCredential = credential;
 	return castCredential && typeof castCredential.getToken === "function" && (castCredential.signRequest === void 0 || castCredential.getToken.length > 0);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-http-compat/dist/esm/policies/disableKeepAlivePolicy.js
+// tooling/artifact-transport/node_modules/@azure/core-http-compat/dist/esm/policies/disableKeepAlivePolicy.js
 var disableKeepAlivePolicyName = "DisableKeepAlivePolicy";
 function createDisableKeepAlivePolicy() {
 	return {
@@ -8973,8 +9292,7 @@ function createDisableKeepAlivePolicy() {
 function pipelineContainsDisableKeepAlivePolicy(pipeline) {
 	return pipeline.getOrderedPolicies().some((policy) => policy.name === disableKeepAlivePolicyName);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-client/dist/esm/base64.js
+// tooling/artifact-transport/node_modules/@azure/core-client/dist/esm/base64.js
 /**
 * Encodes a byte array in base64 format.
 * @param value - the Uint8Array to encode
@@ -8991,8 +9309,7 @@ function encodeByteArray(value) {
 function decodeString(value) {
 	return stringToUint8Array(value, "base64");
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-client/dist/esm/utils.js
+// tooling/artifact-transport/node_modules/@azure/core-client/dist/esm/utils.js
 /**
 * A type guard for a primitive response body.
 * @param value - Value to test
@@ -9082,8 +9399,7 @@ function flattenResponse(fullResponse, responseSpec) {
 		shouldWrapBody: isPrimitiveBody(fullResponse.parsedBody, expectedBodyTypeName)
 	});
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-client/dist/esm/serializer.js
+// tooling/artifact-transport/node_modules/@azure/core-client/dist/esm/serializer.js
 var SerializerImpl = class {
 	modelMappers;
 	isXML;
@@ -9349,7 +9665,15 @@ function serializeDictionaryType(serializer, mapper, object, objectName, isXml, 
 	const valueType = mapper.type.value;
 	if (!valueType || typeof valueType !== "object") throw new Error(`"value" metadata for a Dictionary must be defined in the mapper and it must of type "object" in ${objectName}.`);
 	const tempDictionary = {};
-	for (const key of Object.keys(object)) tempDictionary[key] = getXmlObjectValue(valueType, serializer.serialize(valueType, object[key], objectName, options), isXml, options);
+	for (const key of Object.keys(object)) {
+		const serializedValue = serializer.serialize(valueType, object[key], objectName, options);
+		Object.defineProperty(tempDictionary, key, {
+			value: getXmlObjectValue(valueType, serializedValue, isXml, options),
+			enumerable: true,
+			configurable: true,
+			writable: true
+		});
+	}
 	if (isXml && mapper.xmlNamespace) {
 		const xmlnsKey = mapper.xmlNamespacePrefix ? `xmlns:${mapper.xmlNamespacePrefix}` : "xmlns";
 		const result = tempDictionary;
@@ -9490,7 +9814,12 @@ function deserializeCompositeType(serializer, mapper, responseBody, objectName, 
 		if (headerCollectionPrefix) {
 			const dictionary = {};
 			for (const headerKey of Object.keys(responseBody)) {
-				if (headerKey.startsWith(headerCollectionPrefix)) dictionary[headerKey.substring(headerCollectionPrefix.length)] = serializer.deserialize(propertyMapper.type.value, responseBody[headerKey], propertyObjectName, options);
+				if (headerKey.startsWith(headerCollectionPrefix)) Object.defineProperty(dictionary, headerKey.substring(headerCollectionPrefix.length), {
+					value: serializer.deserialize(propertyMapper.type.value, responseBody[headerKey], propertyObjectName, options),
+					enumerable: true,
+					configurable: true,
+					writable: true
+				});
 				handledPropertyNames.push(headerKey);
 			}
 			instance[key] = dictionary;
@@ -9571,7 +9900,12 @@ function deserializeDictionaryType(serializer, mapper, responseBody, objectName,
 	if (!value || typeof value !== "object") throw new Error(`"value" metadata for a Dictionary must be defined in the mapper and it must of type "object" in ${objectName}`);
 	if (responseBody) {
 		const tempDictionary = {};
-		for (const key of Object.keys(responseBody)) tempDictionary[key] = serializer.deserialize(value, responseBody[key], objectName, options);
+		for (const key of Object.keys(responseBody)) Object.defineProperty(tempDictionary, key, {
+			value: serializer.deserialize(value, responseBody[key], objectName, options),
+			enumerable: true,
+			configurable: true,
+			writable: true
+		});
 		return tempDictionary;
 	}
 	return responseBody;
@@ -9651,8 +9985,7 @@ var state = (/* @__PURE__ */ __commonJSMin(((exports) => {
 	*/
 	exports.state = { operationRequestMap: /* @__PURE__ */ new WeakMap() };
 })))().state;
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-client/dist/esm/operationHelpers.js
+// tooling/artifact-transport/node_modules/@azure/core-client/dist/esm/operationHelpers.js
 /**
 * @internal
 * Retrieves the value to use for a given operation argument
@@ -9725,8 +10058,7 @@ function getOperationRequestInfo(request) {
 	}
 	return info;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-client/dist/esm/deserializationPolicy.js
+// tooling/artifact-transport/node_modules/@azure/core-client/dist/esm/deserializationPolicy.js
 var defaultJsonContentTypes = ["application/json", "text/json"];
 var defaultXmlContentTypes = ["application/xml", "application/atom+xml"];
 /**
@@ -9882,8 +10214,7 @@ async function parse$2(jsonContentTypes, xmlContentTypes, operationResponse, opt
 	}
 	return operationResponse;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-client/dist/esm/interfaceHelpers.js
+// tooling/artifact-transport/node_modules/@azure/core-client/dist/esm/interfaceHelpers.js
 /**
 * Gets the list of status codes for streaming responses.
 * @internal
@@ -9907,8 +10238,7 @@ function getPathStringFromParameter(parameter) {
 	else result = mapper.serializedName;
 	return result;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-client/dist/esm/serializationPolicy.js
+// tooling/artifact-transport/node_modules/@azure/core-client/dist/esm/serializationPolicy.js
 /**
 * The programmatic identifier of the serializationPolicy.
 */
@@ -10023,8 +10353,7 @@ function prepareXMLRootList(obj, elementName, xmlNamespaceKey, xmlNamespace) {
 	result["$"] = { [xmlNamespaceKey]: xmlNamespace };
 	return result;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-client/dist/esm/pipeline.js
+// tooling/artifact-transport/node_modules/@azure/core-client/dist/esm/pipeline.js
 /**
 * Creates a new Pipeline for use with a Service Client.
 * Adds in deserializationPolicy by default.
@@ -10041,15 +10370,13 @@ function createClientPipeline(options = {}) {
 	pipeline.addPolicy(deserializationPolicy(options.deserializationOptions), { phase: "Deserialize" });
 	return pipeline;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-client/dist/esm/httpClientCache.js
+// tooling/artifact-transport/node_modules/@azure/core-client/dist/esm/httpClientCache.js
 var cachedHttpClient;
 function getCachedDefaultHttpClient$1() {
 	if (!cachedHttpClient) cachedHttpClient = createDefaultHttpClient();
 	return cachedHttpClient;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-client/dist/esm/urlHelpers.js
+// tooling/artifact-transport/node_modules/@azure/core-client/dist/esm/urlHelpers.js
 var CollectionFormatToDelimiterMap = {
 	CSV: ",",
 	SSV: " ",
@@ -10185,11 +10512,9 @@ function appendQueryParams(url, queryParams, sequenceParams, noOverwrite = false
 	parsedUrl.search = searchPieces.length ? `?${searchPieces.join("&")}` : "";
 	return parsedUrl.toString();
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-client/dist/esm/log.js
+// tooling/artifact-transport/node_modules/@azure/core-client/dist/esm/log.js
 var logger$2 = createClientLogger("core-client");
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-client/dist/esm/serviceClient.js
+// tooling/artifact-transport/node_modules/@azure/core-client/dist/esm/serviceClient.js
 /**
 * Initializes a new instance of the ServiceClient.
 */
@@ -10302,8 +10627,7 @@ function getCredentialScopes(options) {
 	if (options.baseUri) return `${options.baseUri}/.default`;
 	if (options.credential) throw new Error(`When using credentials, the ServiceClientOptions must contain either a endpoint or a credentialScopes. Unable to create a bearerTokenAuthenticationPolicy`);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-client/dist/esm/authorizeRequestOnTenantChallenge.js
+// tooling/artifact-transport/node_modules/@azure/core-client/dist/esm/authorizeRequestOnTenantChallenge.js
 /**
 * A set of constants used internally when processing requests.
 */
@@ -10395,8 +10719,7 @@ function requestToOptions(request) {
 		tracingOptions: request.tracingOptions
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-http-compat/dist/esm/util.js
+// tooling/artifact-transport/node_modules/@azure/core-http-compat/dist/esm/util.js
 var originalRequestSymbol = Symbol("Original PipelineRequest");
 var originalClientRequestSymbol = Symbol.for("@azure/core-client original request");
 var passThroughProps = /* @__PURE__ */ new Set([
@@ -10618,8 +10941,7 @@ var HttpHeaders = class HttpHeaders {
 		return new HttpHeaders(resultPreservingCasing);
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-http-compat/dist/esm/response.js
+// tooling/artifact-transport/node_modules/@azure/core-http-compat/dist/esm/response.js
 var originalResponse = Symbol("Original FullOperationResponse");
 /**
 * A helper to convert response objects from the new pipeline back to the old one.
@@ -10664,8 +10986,7 @@ function toPipelineResponse(compatResponse) {
 		request: toPipelineRequest(compatResponse.request)
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-http-compat/dist/esm/extendedClient.js
+// tooling/artifact-transport/node_modules/@azure/core-http-compat/dist/esm/extendedClient.js
 /**
 * Client to provide compatability between core V1 & V2.
 */
@@ -10698,8 +11019,7 @@ var ExtendedServiceClient = class extends ServiceClient {
 		return result;
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-http-compat/dist/esm/policies/requestPolicyFactoryPolicy.js
+// tooling/artifact-transport/node_modules/@azure/core-http-compat/dist/esm/policies/requestPolicyFactoryPolicy.js
 /**
 * An enum for compatibility with RequestPolicy
 */
@@ -10738,8 +11058,7 @@ function createRequestPolicyFactoryPolicy(factories) {
 		}
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-http-compat/dist/esm/httpClientAdapter.js
+// tooling/artifact-transport/node_modules/@azure/core-http-compat/dist/esm/httpClientAdapter.js
 /**
 * Converts a RequestPolicy based HttpClient to a PipelineRequest based HttpClient.
 * @param requestPolicyClient - A HttpClient compatible with core-http
@@ -10750,8 +11069,7 @@ function convertHttpClient(requestPolicyClient) {
 		return toPipelineResponse(await requestPolicyClient.sendRequest(toWebResourceLike(request, { createProxy: true })));
 	} };
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/fast-xml-parser/src/util.js
+// tooling/artifact-transport/node_modules/fast-xml-parser/src/util.js
 var regexName = /* @__PURE__ */ new RegExp("^[:A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD][:A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD\\-.\\d\\u00B7\\u0300-\\u036F\\u203F-\\u2040]*$");
 function getAllMatches(string, regex) {
 	const matches = [];
@@ -10790,8 +11108,7 @@ var criticalProperties = [
 	"constructor",
 	"prototype"
 ];
-//#endregion
-//#region tooling/artifact-transport/node_modules/fast-xml-parser/src/validator.js
+// tooling/artifact-transport/node_modules/fast-xml-parser/src/validator.js
 var defaultOptions$2 = {
 	allowBooleanAttributes: false,
 	unpairedTags: []
@@ -11106,8 +11423,7 @@ function getLineNumberForPosition(xmlData, index) {
 function getPositionFromMatch(match) {
 	return match.startIndex + match[1].length;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@nodable/entities/src/entities.js
+// tooling/artifact-transport/node_modules/@nodable/entities/src/entities.js
 /**
 * Currency Symbols
 * @type {Record<string, string>}
@@ -11158,8 +11474,7 @@ var COMMON_HTML = {
 	frac14: "¼",
 	frac34: "¾"
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@nodable/entities/src/EntityDecoder.js
+// tooling/artifact-transport/node_modules/@nodable/entities/src/EntityDecoder.js
 /**
 * Action constants for `onExternalEntity` and `onInputEntity` hooks.
 *
@@ -11623,8 +11938,7 @@ var EntityDecoder = class {
 		return this._applyNCRAction(effective, token, cp);
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
+// tooling/artifact-transport/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
 var defaultOnDangerousProperty = (name) => {
 	if (DANGEROUS_PROPERTY_NAMES.includes(name)) return "__" + name;
 	return name;
@@ -11750,8 +12064,7 @@ var buildOptions = function(options) {
 	});
 	return built;
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
+// tooling/artifact-transport/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
 var METADATA_SYMBOL$1;
 if (typeof Symbol !== "function") METADATA_SYMBOL$1 = "@@xmlMetadata";
 else METADATA_SYMBOL$1 = Symbol("XML Node Metadata");
@@ -11786,8 +12099,7 @@ var XmlNode = class {
 		return METADATA_SYMBOL$1;
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/xml-naming/src/index.js
+// tooling/artifact-transport/node_modules/xml-naming/src/index.js
 /**
 * xml-naming
 * Validates XML Name productions as defined in the XML 1.0 and 1.1 specifications.
@@ -11861,8 +12173,7 @@ var createValidator = (production, { xmlVersion = "1.0", asciiOnly = false, maxC
 	};
 	return validator;
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
+// tooling/artifact-transport/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
 var DocTypeReader = class {
 	constructor(options, xmlVersion) {
 		this.suppressValidationErr = !options;
@@ -12097,8 +12408,7 @@ function validateEntityName(name, xmlVersion) {
 	if (qName(name, { xmlVersion })) return name;
 	else throw new Error(`Invalid entity name ${name}`);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/anynum/digitTable.js
+// tooling/artifact-transport/node_modules/anynum/digitTable.js
 /**
 * Flat lookup table: maps Unicode code point → ASCII digit (0-9).
 * Only decimal digit characters (Unicode category Nd) are included.
@@ -12182,8 +12492,7 @@ for (const zero of SCRIPT_ZEROS) for (let d = 0; d < 10; d++) {
 	if (cp <= LOW_MAX) TABLE[cp - TABLE_OFFSET] = d;
 	else HIGH_MAP.set(cp, d);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/anynum/anynum.js
+// tooling/artifact-transport/node_modules/anynum/anynum.js
 var CHAR_0 = 48;
 var CHAR_9 = 57;
 var CHAR_MINUS = 45;
@@ -12279,8 +12588,7 @@ function anynum(str) {
 	}
 	return chars.join("");
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/strnum/strnum.js
+// tooling/artifact-transport/node_modules/strnum/strnum.js
 var hexRegex = /^[-+]?0x[a-fA-F0-9]+$/;
 var binRegex = /^0b[01]+$/;
 var octRegex = /^0o[0-7]+$/;
@@ -12400,8 +12708,7 @@ function handleInfinity(str, num, options) {
 		default: return str;
 	}
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/fast-xml-parser/src/ignoreAttributes.js
+// tooling/artifact-transport/node_modules/fast-xml-parser/src/ignoreAttributes.js
 function getIgnoreAttributesFn$1(ignoreAttributes) {
 	if (typeof ignoreAttributes === "function") return ignoreAttributes;
 	if (Array.isArray(ignoreAttributes)) return (attrName) => {
@@ -12412,8 +12719,7 @@ function getIgnoreAttributesFn$1(ignoreAttributes) {
 	};
 	return () => false;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/path-expression-matcher/src/Expression.js
+// tooling/artifact-transport/node_modules/path-expression-matcher/src/Expression.js
 /**
 * Expression - Parses and stores a tag pattern expression
 * 
@@ -12567,8 +12873,7 @@ var Expression = class {
 		return this.pattern;
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/path-expression-matcher/src/ExpressionSet.js
+// tooling/artifact-transport/node_modules/path-expression-matcher/src/ExpressionSet.js
 /**
 * ExpressionSet - An indexed collection of Expressions for efficient bulk matching
 *
@@ -12752,8 +13057,7 @@ var ExpressionSet = class {
 		return null;
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/path-expression-matcher/src/Matcher.js
+// tooling/artifact-transport/node_modules/path-expression-matcher/src/Matcher.js
 /**
 * MatcherView - A lightweight read-only view over a Matcher's internal state.
 *
@@ -13257,8 +13561,7 @@ var Matcher = class {
 		return this._view;
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-unsafe/src/contexts/html.js
+// tooling/artifact-transport/node_modules/is-unsafe/src/contexts/html.js
 /**
 * HTML context patterns.
 *
@@ -13355,8 +13658,7 @@ var HTML_PATTERNS = [
 		pattern: /<form[\s>/]/i
 	}
 ];
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-unsafe/src/contexts/xml.js
+// tooling/artifact-transport/node_modules/is-unsafe/src/contexts/xml.js
 /**
 * XML context patterns.
 *
@@ -13430,8 +13732,7 @@ var XML_PATTERNS = [
 		pattern: /\?>/
 	}
 ];
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-unsafe/src/contexts/svg.js
+// tooling/artifact-transport/node_modules/is-unsafe/src/contexts/svg.js
 /**
 * SVG context patterns.
 *
@@ -13508,8 +13809,7 @@ var SVG_PATTERNS = [
 		pattern: /style\s*=[\s\S]{0,60}javascript\s*:/i
 	}
 ];
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-unsafe/src/contexts/sql.js
+// tooling/artifact-transport/node_modules/is-unsafe/src/contexts/sql.js
 /**
 * SQL context patterns — high-precision rules only.
 *
@@ -13600,8 +13900,7 @@ var SQL_PATTERNS = [
 		pattern: /\bINFORMATION_SCHEMA\b/i
 	}
 ];
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-unsafe/src/contexts/shell.js
+// tooling/artifact-transport/node_modules/is-unsafe/src/contexts/shell.js
 /**
 * SHELL context patterns.
 *
@@ -13701,8 +14000,7 @@ var SHELL_PATTERNS = [
 		pattern: /\b(?:curl|wget)\s+(?:https?:\/\/|ftp:\/\/|-)/i
 	}
 ];
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-unsafe/src/contexts/redos.js
+// tooling/artifact-transport/node_modules/is-unsafe/src/contexts/redos.js
 /**
 * REDOS context patterns.
 *
@@ -13756,8 +14054,7 @@ var REDOS_PATTERNS = [
 		pattern: /\([^)]{0,200}(?:\|[^|)]{0,50}){9,}\)/
 	}
 ];
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-unsafe/src/contexts/nosql.js
+// tooling/artifact-transport/node_modules/is-unsafe/src/contexts/nosql.js
 var sep$2 = "[\"'\\s]*:";
 var NOSQL_PATTERNS = [
 	{
@@ -13841,8 +14138,7 @@ var NOSQL_PATTERNS = [
 		pattern: /\[["']__proto__["']\]/
 	}
 ];
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-unsafe/src/contexts/log.js
+// tooling/artifact-transport/node_modules/is-unsafe/src/contexts/log.js
 /**
 * LOG context patterns.
 *
@@ -13925,8 +14221,7 @@ var LOG_PATTERNS = [
 		pattern: /\x1b\[/
 	}
 ];
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-unsafe/src/contexts/sql-strict.js
+// tooling/artifact-transport/node_modules/is-unsafe/src/contexts/sql-strict.js
 /**
 * SQL-STRICT context patterns.
 *
@@ -13967,11 +14262,56 @@ var SQL_STRICT_EXTRA = [
 	}
 ];
 var SQL_STRICT_PATTERNS = [...SQL_PATTERNS, ...SQL_STRICT_EXTRA];
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-unsafe/src/index.js
+// tooling/artifact-transport/node_modules/is-unsafe/src/util/decode-entities.js
+/**
+* Decode the HTML character references that matter for markup-context
+* detection.
+*
+* Browsers decode character references in attribute values before they
+* interpret a URL, so `javascript&#58;alert(1)` in an href is the
+* `javascript:` scheme. The HTML/XML/SVG rules match literal characters, so
+* without this step such payloads slip through.
+*
+* Deliberately NOT a full entity decoder. It decodes only:
+*   - decimal refs  &#58;  &#058;  &#00000058;  &#58   (any leading zeros,
+*                   trailing ; optional — browsers accept both)
+*   - hex refs      &#x3a; &#X3A; &#x0000003a; &#x3a   (same)
+*   - named refs    &colon;  &Tab;  &NewLine;
+*       Named refs are CASE-SENSITIVE and REQUIRE the trailing ';', exactly
+*       like a browser (so `&COLON;` and `&colon` are not decoded).
+*       &Tab; / &NewLine; matter because the URL parser strips tab/newline,
+*       so `java&Tab;script:` is still a javascript: URL.
+*
+* It does NOT decode &amp; (single pass only), so double-encoded text such as
+* "&amp;lt;script&amp;gt;" stays literal — a browser renders that as text.
+*
+* All quantifiers are bounded; no ReDoS risk.
+*
+* @param {string} input
+* @returns {string}
+*/
+var NAMED = Object.freeze({
+	colon: ":",
+	Tab: "	",
+	NewLine: "\n"
+});
+var ENTITY_RE = /&(?:#[xX]0*([0-9a-fA-F]{1,6});?|#0*([0-9]{1,7});?|([a-zA-Z][a-zA-Z0-9]{1,15});)/g;
+function decodeEntities(input) {
+	if (input.indexOf("&") === -1) return input;
+	return input.replace(ENTITY_RE, (match, hex, dec, name) => {
+		if (name !== void 0) return Object.prototype.hasOwnProperty.call(NAMED, name) ? NAMED[name] : match;
+		const cp = hex !== void 0 ? parseInt(hex, 16) : parseInt(dec, 10);
+		if (!Number.isFinite(cp) || cp > 1114111) return match;
+		return String.fromCodePoint(cp);
+	});
+}
+// tooling/artifact-transport/node_modules/is-unsafe/src/index.js
 HTML_PATTERNS.label = "HTML";
 XML_PATTERNS.label = "XML";
 SVG_PATTERNS.label = "SVG";
+HTML_PATTERNS.decodeEntities = true;
+XML_PATTERNS.decodeEntities = true;
+SVG_PATTERNS.decodeEntities = true;
 SQL_PATTERNS.label = "SQL";
 SQL_STRICT_PATTERNS.label = "SQL-STRICT";
 SHELL_PATTERNS.label = "SHELL";
@@ -14043,6 +14383,19 @@ function normalise(context) {
 	};
 }
 /**
+* For markup contexts, return an entity-decoded copy of `value` to test
+* alongside the raw input, or null when there is nothing extra to test.
+*
+* @param {string} value
+* @param {Rule[]} list
+* @returns {string|null}
+*/
+function decodedCopy(value, list) {
+	if (!list.decodeEntities) return null;
+	const decoded = decodeEntities(value);
+	return decoded === value ? null : decoded;
+}
+/**
 * Test value against a single PatternList. Returns the first MatchResult or null.
 *
 * @param {string} value
@@ -14051,7 +14404,8 @@ function normalise(context) {
 */
 function matchList(value, list) {
 	const label = list.label ?? "CUSTOM";
-	for (const rule of list) if (rule.pattern.test(value)) return {
+	const decoded = decodedCopy(value, list);
+	for (const rule of list) if (rule.pattern.test(value) || decoded !== null && rule.pattern.test(decoded)) return {
 		context: label,
 		id: rule.id,
 		description: rule.description,
@@ -14085,8 +14439,7 @@ function isUnsafe(value, context) {
 	for (const list of lists) if (matchList(value, list) !== null) return true;
 	return false;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
+// tooling/artifact-transport/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
 /**
 * Extract raw attributes (without prefix) from prefixed attribute map
 * @param {object} prefixedAttrs - Attributes with prefix from buildAttributesMap
@@ -14261,7 +14614,12 @@ function buildAttributesMap(attrStr, jPath, tagName, force = false) {
 	}
 }
 var parseXml = function(xmlData) {
-	xmlData = xmlData.replace(/\r\n?/g, "\n");
+	const options = this.options;
+	const crlfPositions = options.captureMetaData ? [] : void 0;
+	xmlData = xmlData.replace(/\r\n?/g, options.captureMetaData ? (newline, index) => {
+		if (newline.length === 2) crlfPositions.push(index - crlfPositions.length);
+		return "\n";
+	} : "\n");
 	const xmlObj = new XmlNode("!xml");
 	let currentNode = xmlObj;
 	let textData = "";
@@ -14270,7 +14628,6 @@ var parseXml = function(xmlData) {
 	this.entityExpansionCount = 0;
 	this.currentExpandedLength = 0;
 	this.doctypefound = false;
-	const options = this.options;
 	const docTypeReader = new DocTypeReader(options.processEntities);
 	const xmlLen = xmlData.length;
 	for (let i = 0; i < xmlLen; i++) if (xmlData[i] === "<") {
@@ -14293,7 +14650,7 @@ var parseXml = function(xmlData) {
 			this.matcher.pop();
 			this.isCurrentNodeStopNode = false;
 			currentNode = this.tagsNodeStack.pop() || xmlObj;
-			if (options.captureMetaData && currentNode) currentNode.addEndIndex(closeIndex + 1);
+			if (options.captureMetaData && currentNode) currentNode.addEndIndex(getOriginalIndex(closeIndex + 1, crlfPositions));
 			textData = "";
 			i = closeIndex;
 		} else if (c1 === 63) {
@@ -14310,8 +14667,9 @@ var parseXml = function(xmlData) {
 				const childNode = new XmlNode(tagData.tagName);
 				childNode.add(options.textNodeName, "");
 				if (tagData.tagName !== tagData.tagExp && tagData.attrExpPresent && options.ignoreAttributes !== true) childNode[":@"] = attsMap;
-				this.addChild(currentNode, childNode, this.readonlyMatcher, i);
-				if (options.captureMetaData) currentNode.addEndIndex(tagData.closeIndex + 2);
+				const startIndex = options.captureMetaData ? getOriginalIndex(i, crlfPositions) : i;
+				this.addChild(currentNode, childNode, this.readonlyMatcher, startIndex);
+				if (options.captureMetaData) currentNode.addEndIndex(getOriginalIndex(tagData.closeIndex + 2, crlfPositions));
 			}
 			i = tagData.closeIndex + 1;
 		} else if (c1 === 33 && xmlData.charCodeAt(i + 2) === 45 && xmlData.charCodeAt(i + 3) === 45) {
@@ -14376,7 +14734,7 @@ var parseXml = function(xmlData) {
 				if (prefixedAttrs) extractRawAttributes(prefixedAttrs, options);
 			}
 			if (tagName !== xmlObj.tagname) this.isCurrentNodeStopNode = this.isItStopNode();
-			const startIndex = i;
+			const startIndex = options.captureMetaData ? getOriginalIndex(i, crlfPositions) : i;
 			if (this.isCurrentNodeStopNode) {
 				let tagContent = "";
 				if (isSelfClosing) i = result.closeIndex;
@@ -14393,21 +14751,21 @@ var parseXml = function(xmlData) {
 				this.matcher.pop();
 				this.isCurrentNodeStopNode = false;
 				this.addChild(currentNode, childNode, this.readonlyMatcher, startIndex);
-				if (options.captureMetaData) currentNode.addEndIndex(i + 1);
+				if (options.captureMetaData) currentNode.addEndIndex(getOriginalIndex(i + 1, crlfPositions));
 			} else {
 				if (isSelfClosing) {
 					({tagName, tagExp} = transformTagName(options.transformTagName, tagName, tagExp, options));
 					const childNode = new XmlNode(tagName);
 					if (prefixedAttrs) childNode[":@"] = prefixedAttrs;
 					this.addChild(currentNode, childNode, this.readonlyMatcher, startIndex);
-					if (options.captureMetaData) currentNode.addEndIndex(closeIndex + 1);
+					if (options.captureMetaData) currentNode.addEndIndex(getOriginalIndex(closeIndex + 1, crlfPositions));
 					this.matcher.pop();
 					this.isCurrentNodeStopNode = false;
 				} else if (options.unpairedTagsSet.has(tagName)) {
 					const childNode = new XmlNode(tagName);
 					if (prefixedAttrs) childNode[":@"] = prefixedAttrs;
 					this.addChild(currentNode, childNode, this.readonlyMatcher, startIndex);
-					if (options.captureMetaData) currentNode.addEndIndex(result.closeIndex + 1);
+					if (options.captureMetaData) currentNode.addEndIndex(getOriginalIndex(result.closeIndex + 1, crlfPositions));
 					this.matcher.pop();
 					this.isCurrentNodeStopNode = false;
 					i = result.closeIndex;
@@ -14427,6 +14785,16 @@ var parseXml = function(xmlData) {
 	} else textData += xmlData[i];
 	return xmlObj.child;
 };
+function getOriginalIndex(index, crlfPositions) {
+	let low = 0;
+	let high = crlfPositions.length;
+	while (low < high) {
+		const middle = Math.floor((low + high) / 2);
+		if (crlfPositions[middle] < index) low = middle + 1;
+		else high = middle;
+	}
+	return index + low;
+}
 function addChild(currentNode, childNode, matcher, startIndex) {
 	if (!this.options.captureMetaData) startIndex = void 0;
 	const jPathOrMatcher = this.options.jPath ? matcher.toString() : matcher;
@@ -14558,6 +14926,8 @@ function readTagExp(xmlData, i, removeNSPrefix, closingChar = ">") {
 function readStopNodeData(xmlData, tagName, i) {
 	const startIndex = i;
 	let openTagCount = 1;
+	let lenient = false;
+	let nextGt = -1;
 	const xmllen = xmlData.length;
 	for (; i < xmllen; i++) if (xmlData[i] === "<") {
 		const c1 = xmlData.charCodeAt(i + 1);
@@ -14575,10 +14945,23 @@ function readStopNodeData(xmlData, tagName, i) {
 		else if (c1 === 33 && xmlData.charCodeAt(i + 2) === 45 && xmlData.charCodeAt(i + 3) === 45) i = findClosingIndex(xmlData, "-->", i + 3, "StopNode is not closed.");
 		else if (c1 === 33 && xmlData.charCodeAt(i + 2) === 91) i = findClosingIndex(xmlData, "]]>", i, "StopNode is not closed.") - 2;
 		else {
-			const tagData = readTagExp(xmlData, i, false);
+			const tagData = lenient ? void 0 : readTagExp(xmlData, i, false);
 			if (tagData) {
-				if ((tagData && tagData.tagName) === tagName && tagData.tagExp[tagData.tagExp.length - 1] !== "/") openTagCount++;
+				if (tagData.tagName === tagName && tagData.tagExp[tagData.tagExp.length - 1] !== "/") openTagCount++;
 				i = tagData.closeIndex;
+			} else {
+				lenient = true;
+				if (nextGt < i) {
+					nextGt = xmlData.indexOf(">", i);
+					if (nextGt === -1) return;
+				}
+				const nextLt = xmlData.indexOf("<", i + 1);
+				if (nextLt === -1 || nextLt > nextGt) {
+					const exp = xmlData.substring(i + 1, nextGt);
+					const sep = exp.search(/\s/);
+					if ((sep === -1 ? exp : exp.substring(0, sep)) === tagName && exp[exp.length - 1] !== "/") openTagCount++;
+					i = nextGt;
+				}
 			}
 		}
 	}
@@ -14609,8 +14992,7 @@ function sanitizeName(name, options) {
 	else if (DANGEROUS_PROPERTY_NAMES.includes(name)) return options.onDangerousProperty(name);
 	return name;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/fast-xml-parser/src/xmlparser/node2json.js
+// tooling/artifact-transport/node_modules/fast-xml-parser/src/xmlparser/node2json.js
 var METADATA_SYMBOL = XmlNode.getMetaDataSymbol();
 /**
 * Helper function to strip attribute prefix from attribute map
@@ -14712,8 +15094,7 @@ function isLeafTag(obj, options) {
 	if (propCount === 1 && (obj[textNodeName] || typeof obj[textNodeName] === "boolean" || obj[textNodeName] === 0)) return true;
 	return false;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
+// tooling/artifact-transport/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
 var XMLParser = class {
 	constructor(options) {
 		this.externalEntities = {};
@@ -14764,8 +15145,7 @@ var XMLParser = class {
 		return XmlNode.getMetaDataSymbol();
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/fast-xml-builder/src/util.js
+// tooling/artifact-transport/node_modules/fast-xml-builder/src/util.js
 function valToStr(val) {
 	return typeof val === "number" && Object.is(val, -0) ? "-0" : String(val);
 }
@@ -14778,8 +15158,7 @@ function safeCdata(val) {
 function escapeAttribute(val) {
 	return valToStr(val).replace(/"/g, "&quot;").replace(/'/g, "&apos;");
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/fast-xml-builder/src/orderedJs2Xml.js
+// tooling/artifact-transport/node_modules/fast-xml-builder/src/orderedJs2Xml.js
 var EOL$2 = "\n";
 /**
 * Detect XML version from the first element of the ordered array input.
@@ -15011,8 +15390,7 @@ function replaceEntitiesValue(textValue, options) {
 	}
 	return textValue;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/fast-xml-builder/src/ignoreAttributes.js
+// tooling/artifact-transport/node_modules/fast-xml-builder/src/ignoreAttributes.js
 function getIgnoreAttributesFn(ignoreAttributes) {
 	if (typeof ignoreAttributes === "function") return ignoreAttributes;
 	if (Array.isArray(ignoreAttributes)) return (attrName) => {
@@ -15023,8 +15401,7 @@ function getIgnoreAttributesFn(ignoreAttributes) {
 	};
 	return () => false;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/fast-xml-builder/src/fxb.js
+// tooling/artifact-transport/node_modules/fast-xml-builder/src/fxb.js
 var defaultOptions = {
 	attributeNamePrefix: "@_",
 	attributesGroupName: false,
@@ -15395,14 +15772,11 @@ function isAttribute(name) {
 	if (name.startsWith(this.options.attributeNamePrefix) && name !== this.options.textNodeName) return name.substr(this.attrPrefixLen);
 	else return false;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
+// tooling/artifact-transport/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
 var json2xml_default = Builder;
-//#endregion
-//#region tooling/artifact-transport/node_modules/fast-xml-parser/src/fxp.js
+// tooling/artifact-transport/node_modules/fast-xml-parser/src/fxp.js
 var XMLValidator = { validate };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-xml/dist/esm/xml.js
+// tooling/artifact-transport/node_modules/@azure/core-xml/dist/esm/xml.js
 function getCommonOptions(options) {
 	return {
 		attributesGroupName: "$",
@@ -15466,14 +15840,12 @@ async function parseXML(str, opts = {}) {
 	}
 	return parsedXml;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/log.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/log.js
 /**
 * The `@azure/logger` configuration for this package.
 */
 var logger$1 = createClientLogger("storage-blob");
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/BuffersStream.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/BuffersStream.js
 /**
 * This class generates a readable stream from the data in an array of buffers.
 */
@@ -15546,8 +15918,7 @@ var BuffersStream = class extends Readable {
 		else if (outBuffers.length === 1) this.push(outBuffers[0]);
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/PooledBuffer.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/PooledBuffer.js
 /**
 * maxBufferLength is max size of each buffer in the pooled buffers.
 */
@@ -15630,8 +16001,7 @@ var PooledBuffer = class {
 		return new BuffersStream(this.buffers, this.size);
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/BufferScheduler.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/BufferScheduler.js
 /**
 * This class accepts a Node.js Readable stream as input, and keeps reading data
 * from the stream into the internal buffer structure, until it reaches maxBuffers.
@@ -15872,8 +16242,7 @@ var BufferScheduler = class {
 		if (!this.isError && this.resolveData() && !this.isStreamEnd) this.readable.resume();
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/crc64.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/crc64.js
 var NativeCRC64 = (() => {
 	typeof document !== "undefined" && document.currentScript && document.currentScript.src;
 	return (function(NativeCRC64) {
@@ -17688,8 +18057,7 @@ var NativeCRC64 = (() => {
 		return NativeCRC64.ready;
 	});
 })();
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/StorageCRC64Calculator.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/StorageCRC64Calculator.js
 /**
 * Class used to calculator CRC64 checksum
 */
@@ -17738,8 +18106,7 @@ var StorageCRC64Calculator = class StorageCRC64Calculator {
 		return resultArray;
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/streamHelpers.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/streamHelpers.js
 /**
 * Signals the end of a stream by pushing null.
 * In Node.js, this is required to signal the end of a Readable stream.
@@ -17853,8 +18220,7 @@ var StructuredMessageEncoding = class {
 		new DataView(buffer.buffer, buffer.byteOffset + offset, 2).setUint16(0, input, true);
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/StructuredMessageEncodingStream.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/StructuredMessageEncodingStream.js
 function isNodeReadableStream(source) {
 	return source !== null && source instanceof Stream && typeof source._read === "function" && typeof source._readableState === "object" && typeof source.pipe === "function";
 }
@@ -18002,8 +18368,7 @@ var StructuredMessageEncodingStream = class extends Readable {
 		callback(error === null ? void 0 : error);
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/StructuredMessageDecoding.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/StructuredMessageDecoding.js
 var MESSAGE_VERSION = 1;
 var MESSAGE_HEADER_LENGTH = 13;
 var SEGMENT_HEADER_LENGTH = 10;
@@ -18147,8 +18512,7 @@ var StructuredMessageDecoding = class {
 		return true;
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/StructuredMessageDecodingStream.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/StructuredMessageDecodingStream.js
 /**
 * To decode structured body for CRC64 content validtion in storage downloading.
 * @param source -
@@ -18215,15 +18579,13 @@ var StructuredMessageDecodingStream = class extends Readable {
 		callback(error === null ? void 0 : error);
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/cache.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/cache.js
 var _defaultHttpClient;
 function getCachedDefaultHttpClient() {
 	if (!_defaultHttpClient) _defaultHttpClient = createDefaultHttpClient();
 	return _defaultHttpClient;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/policies/RequestPolicy.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/policies/RequestPolicy.js
 /**
 * The base class from which all request policies derive.
 */
@@ -18255,8 +18617,7 @@ var BaseRequestPolicy = class {
 		this._options.log(logLevel, message);
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/policies/StorageBrowserPolicy.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/policies/StorageBrowserPolicy.js
 /**
 * StorageBrowserPolicy will handle differences between Node.js and browser runtime, including:
 *
@@ -18288,8 +18649,7 @@ var StorageBrowserPolicy = class extends BaseRequestPolicy {
 		return this._nextPolicy.sendRequest(request);
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/StorageBrowserPolicyFactory.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/StorageBrowserPolicyFactory.js
 /**
 * StorageBrowserPolicyFactory is a factory class helping generating StorageBrowserPolicy objects.
 */
@@ -18304,8 +18664,7 @@ var StorageBrowserPolicyFactory = class {
 		return new StorageBrowserPolicy(nextPolicy, options);
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/policies/CredentialPolicy.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/policies/CredentialPolicy.js
 /**
 * Credential policy used to sign HTTP(S) requests before sending. This is an
 * abstract class.
@@ -18329,8 +18688,7 @@ var CredentialPolicy = class extends BaseRequestPolicy {
 		return request;
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/policies/AnonymousCredentialPolicy.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/policies/AnonymousCredentialPolicy.js
 /**
 * AnonymousCredentialPolicy is used with HTTP(S) requests that read public resources
 * or for use with Shared Access Signatures (SAS).
@@ -18345,8 +18703,7 @@ var AnonymousCredentialPolicy = class extends CredentialPolicy {
 		super(nextPolicy, options);
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/credentials/Credential.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/credentials/Credential.js
 /**
 * Credential is an abstract class for Azure Storage HTTP requests signing. This
 * class will host an credentialPolicyCreator factory which generates CredentialPolicy.
@@ -18362,8 +18719,7 @@ var Credential = class {
 		throw new Error("Method should be implemented in children classes.");
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/credentials/AnonymousCredential.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/credentials/AnonymousCredential.js
 /**
 * AnonymousCredential provides a credentialPolicyCreator member used to create
 * AnonymousCredentialPolicy objects. AnonymousCredentialPolicy is used with
@@ -18381,8 +18737,7 @@ var AnonymousCredential = class extends Credential {
 		return new AnonymousCredentialPolicy(nextPolicy, options);
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/utils/constants.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/utils/constants.js
 var URLConstants$1 = { Parameters: {
 	FORCE_BROWSER_NO_CACHE: "_",
 	SIGNATURE: "sig",
@@ -18416,8 +18771,7 @@ var HeaderConstants = {
 	X_MS_VERSION: "x-ms-version",
 	X_MS_CopySourceErrorCode: "x-ms-copy-source-error-code"
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/utils/utils.common.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/utils/utils.common.js
 /**
 * Set URL parameter name and value. If name exists in URL parameters, old value
 * will be replaced by name key. If not provide value, the parameter will be deleted.
@@ -18511,8 +18865,7 @@ async function delay(timeInMs, aborter, abortError) {
 		if (aborter !== void 0) aborter.addEventListener("abort", abortHandler);
 	});
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/utils/SharedKeyComparator.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/utils/SharedKeyComparator.js
 var table_lv0 = new Uint32Array([
 	0,
 	0,
@@ -18933,8 +19286,7 @@ function isLessThan(lhs, rhs) {
 	}
 	return false;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/policies/StorageSharedKeyCredentialPolicy.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/policies/StorageSharedKeyCredentialPolicy.js
 /**
 * StorageSharedKeyCredentialPolicy is a policy used to sign HTTP request with a shared key.
 */
@@ -19046,8 +19398,7 @@ var StorageSharedKeyCredentialPolicy = class extends CredentialPolicy {
 		return canonicalizedResourceString;
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/credentials/StorageSharedKeyCredential.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/credentials/StorageSharedKeyCredential.js
 /**
 * ONLY AVAILABLE IN NODE.JS RUNTIME.
 *
@@ -19090,14 +19441,12 @@ var StorageSharedKeyCredential = class extends Credential {
 		return createHmac("sha256", this.accountKey).update(stringToSign, "utf8").digest("base64");
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/log.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/log.js
 /**
 * The `@azure/logger` configuration for this package.
 */
 var logger = createClientLogger("storage-common");
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/policies/StorageRetryPolicyType.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/policies/StorageRetryPolicyType.js
 /**
 * RetryPolicy types.
 */
@@ -19112,8 +19461,7 @@ var StorageRetryPolicyType;
 	*/
 	StorageRetryPolicyType[StorageRetryPolicyType["FIXED"] = 1] = "FIXED";
 })(StorageRetryPolicyType || (StorageRetryPolicyType = {}));
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/policies/StorageRetryPolicy.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/policies/StorageRetryPolicy.js
 var DEFAULT_RETRY_OPTIONS$1 = {
 	maxRetryDelayInMs: 12e4,
 	maxTries: 4,
@@ -19262,8 +19610,7 @@ var StorageRetryPolicy = class extends BaseRequestPolicy {
 		return delay(delayTimeInMs, abortSignal, RETRY_ABORT_ERROR$1);
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/StorageRetryPolicyFactory.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/StorageRetryPolicyFactory.js
 /**
 * StorageRetryPolicyFactory is a factory class helping generating {@link StorageRetryPolicy} objects.
 */
@@ -19286,8 +19633,7 @@ var StorageRetryPolicyFactory = class {
 		return new StorageRetryPolicy(nextPolicy, options, this.retryOptions);
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/policies/StorageBrowserPolicyV2.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/policies/StorageBrowserPolicyV2.js
 /**
 * The programmatic identifier of the StorageBrowserPolicy.
 */
@@ -19306,8 +19652,7 @@ function storageBrowserPolicy() {
 		}
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/policies/StorageCorrectContentLengthPolicy.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/policies/StorageCorrectContentLengthPolicy.js
 /**
 * The programmatic identifier of the storageCorrectContentLengthPolicy.
 */
@@ -19327,8 +19672,7 @@ function storageCorrectContentLengthPolicy() {
 		}
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/policies/StorageRetryPolicyV2.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/policies/StorageRetryPolicyV2.js
 /**
 * Name of the {@link storageRetryPolicy}
 */
@@ -19460,8 +19804,7 @@ function storageRetryPolicy(options = {}) {
 		}
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/policies/StorageSharedKeyCredentialPolicyV2.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/policies/StorageSharedKeyCredentialPolicyV2.js
 /**
 * The programmatic identifier of the storageSharedKeyCredentialPolicy.
 */
@@ -19557,8 +19900,7 @@ function storageSharedKeyCredentialPolicy(options) {
 		}
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/policies/StorageRequestFailureDetailsParserPolicy.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/policies/StorageRequestFailureDetailsParserPolicy.js
 /**
 * The programmatic identifier of the StorageRequestFailureDetailsParserPolicy.
 */
@@ -19583,8 +19925,7 @@ function storageRequestFailureDetailsParserPolicy() {
 		}
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/credentials/UserDelegationKeyCredential.js
+// tooling/artifact-transport/node_modules/@azure/storage-common/dist/esm/credentials/UserDelegationKeyCredential.js
 /**
 * ONLY AVAILABLE IN NODE.JS RUNTIME.
 *
@@ -19623,8 +19964,7 @@ var UserDelegationKeyCredential = class {
 		return createHmac("sha256", this.key).update(stringToSign, "utf8").digest("base64");
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/utils/constants.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/utils/constants.js
 var SDK_VERSION = "12.34.0";
 var SERVICE_VERSION = "2026-10-06";
 var BLOCK_BLOB_MAX_UPLOAD_BLOB_BYTES = 268435456;
@@ -19797,8 +20137,7 @@ var PathStylePorts = [
 	"11103",
 	"11104"
 ];
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/Pipeline.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/Pipeline.js
 /**
 * A helper to decide if a given argument satisfies the Pipeline contract
 * @param pipeline - An argument that may be a Pipeline
@@ -19998,8 +20337,7 @@ function isCoreHttpPolicyFactory(factory) {
 		return policyName.startsWith(knownPolicyName);
 	});
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/generated/src/models/mappers.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/generated/src/models/mappers.js
 var mappers_exports = /* @__PURE__ */ __exportAll({
 	AccessPolicy: () => AccessPolicy,
 	AppendBlobAppendBlockExceptionHeaders: () => AppendBlobAppendBlockExceptionHeaders,
@@ -26983,8 +27321,7 @@ var BlockBlobGetBlockListExceptionHeaders = {
 		} }
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/generated/src/models/parameters.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/generated/src/models/parameters.js
 var contentType = {
 	parameterPath: ["options", "contentType"],
 	mapper: {
@@ -28563,8 +28900,7 @@ var listType = {
 		}
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/service.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/service.js
 /** Class containing Service operations. */
 var ServiceImpl = class {
 	client;
@@ -28884,8 +29220,7 @@ var filterBlobsOperationSpec$1 = {
 	isXML: true,
 	serializer: xmlSerializer$5
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/container.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/container.js
 /** Class containing Container operations. */
 var ContainerImpl = class {
 	client;
@@ -29683,8 +30018,7 @@ var getAccountInfoOperationSpec$1 = {
 	isXML: true,
 	serializer: xmlSerializer$4
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/blob.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/blob.js
 /** Class containing Blob operations. */
 var BlobImpl = class {
 	client;
@@ -30690,8 +31024,7 @@ var setTagsOperationSpec = {
 	mediaType: "xml",
 	serializer: xmlSerializer$3
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/pageBlob.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/pageBlob.js
 /** Class containing PageBlob operations. */
 var PageBlobImpl = class {
 	client;
@@ -31155,8 +31488,7 @@ var copyIncrementalOperationSpec = {
 	isXML: true,
 	serializer: xmlSerializer$2
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/appendBlob.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/appendBlob.js
 /** Class containing AppendBlob operations. */
 var AppendBlobImpl = class {
 	client;
@@ -31376,8 +31708,7 @@ var sealOperationSpec = {
 	isXML: true,
 	serializer: xmlSerializer$1
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/blockBlob.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/blockBlob.js
 /** Class containing BlockBlob operations. */
 var BlockBlobImpl = class {
 	client;
@@ -31758,8 +32089,7 @@ var getBlockListOperationSpec = {
 	isXML: true,
 	serializer: xmlSerializer
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/generated/src/storageClient.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/generated/src/storageClient.js
 var StorageClient$1 = class extends ExtendedServiceClient {
 	url;
 	version;
@@ -31798,8 +32128,7 @@ var StorageClient$1 = class extends ExtendedServiceClient {
 	appendBlob;
 	blockBlob;
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/StorageContextClient.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/StorageContextClient.js
 /**
 * @internal
 */
@@ -31810,8 +32139,7 @@ var StorageContextClient = class extends StorageClient$1 {
 		return super.sendOperationRequest(operationArguments, operationSpecToSend);
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/utils/utils.common.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/utils/utils.common.js
 var accountNameSuffixes = [
 	"-secondary-ipv6",
 	"-secondary-dualstack",
@@ -32272,8 +32600,7 @@ async function setUploadChecksumParameters(body, contentLength, parameters, uplo
 		contentChecksumAlgorithm
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/StorageClient.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/StorageClient.js
 /**
 * A StorageClient represents a based URL class for {@link BlobServiceClient}, {@link ContainerClient}
 * and etc.
@@ -32318,8 +32645,7 @@ var StorageClient = class {
 		storageClientContext.requestContentType = void 0;
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/utils/tracing.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/utils/tracing.js
 /**
 * Creates a span using the global tracer.
 * @internal
@@ -32329,8 +32655,7 @@ var tracingClient = createTracingClient({
 	packageVersion: SDK_VERSION,
 	namespace: "Microsoft.Storage"
 });
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/sas/BlobSASPermissions.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/sas/BlobSASPermissions.js
 /**
 * ONLY AVAILABLE IN NODE.JS RUNTIME.
 *
@@ -32474,8 +32799,7 @@ var BlobSASPermissions = class BlobSASPermissions {
 		return permissions.join("");
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/sas/ContainerSASPermissions.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/sas/ContainerSASPermissions.js
 /**
 * This is a helper class to construct a string representing the permissions granted by a ServiceSAS to a container.
 * Setting a value to true means that any SAS which uses these permissions will grant permissions for that operation.
@@ -32637,8 +32961,7 @@ var ContainerSASPermissions = class ContainerSASPermissions {
 		return permissions.join("");
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/sas/SasIPRange.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/sas/SasIPRange.js
 /**
 * Generate SasIPRange format string. For example:
 *
@@ -32649,8 +32972,7 @@ var ContainerSASPermissions = class ContainerSASPermissions {
 function ipRangeToString(ipRange) {
 	return ipRange.end ? `${ipRange.start}-${ipRange.end}` : ipRange.start;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/sas/SASQueryParameters.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/sas/SASQueryParameters.js
 /**
 * Protocols for generated SAS.
 */
@@ -33037,8 +33359,7 @@ var SASQueryParameters = class {
 		if (key.length > 0 && value.length > 0) queries.push(`${key}=${value}`);
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/sas/BlobSASSignatureValues.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/sas/BlobSASSignatureValues.js
 function generateBlobSASQueryParameters(blobSASSignatureValues, sharedKeyCredentialOrUserDelegationKey, accountName) {
 	return generateBlobSASQueryParametersInternal(blobSASSignatureValues, sharedKeyCredentialOrUserDelegationKey, accountName).sasQueryParameters;
 }
@@ -33698,8 +34019,7 @@ function trimBlobName(blobName) {
 	while (internalName.endsWith("/")) internalName = internalName.substring(0, internalName.length - 1);
 	return internalName;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/BlobLeaseClient.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/BlobLeaseClient.js
 /**
 * A client that manages leases for a {@link ContainerClient} or a {@link BlobClient}.
 */
@@ -33866,8 +34186,7 @@ var BlobLeaseClient = class {
 		});
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/utils/RetriableReadableStream.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/utils/RetriableReadableStream.js
 /**
 * ONLY AVAILABLE IN NODE.JS RUNTIME.
 *
@@ -33961,8 +34280,7 @@ var RetriableReadableStream = class extends Readable {
 		callback(error === null ? void 0 : error);
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/BlobDownloadResponse.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/BlobDownloadResponse.js
 /**
 * ONLY AVAILABLE IN NODE.JS RUNTIME.
 *
@@ -34464,8 +34782,7 @@ var BlobDownloadResponse = class {
 		this.blobDownloadStream = new RetriableReadableStream(streamBody, getter, offset, count, options);
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroConstants.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroConstants.js
 var AVRO_INIT_BYTES = new Uint8Array([
 	79,
 	98,
@@ -34474,8 +34791,7 @@ var AVRO_INIT_BYTES = new Uint8Array([
 ]);
 var AVRO_CODEC_KEY = "avro.codec";
 var AVRO_SCHEMA_KEY = "avro.schema";
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroParser.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroParser.js
 var AvroParser = class AvroParser {
 	/**
 	* Reads a fixed number of bytes from the stream.
@@ -34725,8 +35041,7 @@ var AvroRecordType = class extends AvroType {
 		return record;
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/internal-avro/utils/utils.common.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/internal-avro/utils/utils.common.js
 function arraysEqual(a, b) {
 	if (a === b) return true;
 	if (a == null || b == null) return false;
@@ -34734,8 +35049,7 @@ function arraysEqual(a, b) {
 	for (let i = 0; i < a.length; ++i) if (a[i] !== b[i]) return false;
 	return true;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroReader.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroReader.js
 var AvroReader = class {
 	_dataStream;
 	_headerStream;
@@ -34803,11 +35117,9 @@ var AvroReader = class {
 		}
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroReadable.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroReadable.js
 var AvroReadable = class {};
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroReadableFromStream.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroReadableFromStream.js
 var ABORT_ERROR = new AbortError("Reading from the avro stream was aborted.");
 var AvroReadableFromStream = class extends AvroReadable {
 	_position;
@@ -34865,8 +35177,7 @@ var AvroReadableFromStream = class extends AvroReadable {
 		});
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/utils/BlobQuickQueryStream.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/utils/BlobQuickQueryStream.js
 /**
 * ONLY AVAILABLE IN NODE.JS RUNTIME.
 *
@@ -34953,8 +35264,7 @@ var BlobQuickQueryStream = class extends Readable {
 		} while (!avroNext.done && !this.avroPaused);
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/BlobQueryResponse.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/BlobQueryResponse.js
 /**
 * ONLY AVAILABLE IN NODE.JS RUNTIME.
 *
@@ -35315,8 +35625,7 @@ var BlobQueryResponse = class {
 		this.blobDownloadStream = new BlobQuickQueryStream(this.originalResponse.readableStreamBody, options);
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/models.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/models.js
 /**
 * Represents the access tier on a blob.
 * For detailed information about block blob level tiering see {@link https://learn.microsoft.com/azure/storage/blobs/storage-blob-storage-tiers|Hot, cool and archive storage tiers.}
@@ -35415,8 +35724,7 @@ var StorageBlobAudience;
 	*/
 	StorageBlobAudience["DiskComputeOAuthScopes"] = "https://disk.compute.azure.com/.default";
 })(StorageBlobAudience || (StorageBlobAudience = {}));
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/PageBlobRangeResponse.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/PageBlobRangeResponse.js
 /**
 * Function that converts PageRange and ClearRange to a common Range object.
 * PageRange and ClearRange have start and end while Range offset and count
@@ -35445,8 +35753,7 @@ function rangeResponseFromModel(response) {
 		}
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/core-lro/dist/esm/legacy/poller.js
+// tooling/artifact-transport/node_modules/@azure/core-lro/dist/esm/legacy/poller.js
 /**
 * When a poller is manually stopped through the `stopPolling` method,
 * the poller will be rejected with an instance of the PollerStoppedError.
@@ -35811,8 +36118,7 @@ var Poller = class {
 		return this.operation.toString();
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/pollers/BlobStartCopyFromUrlPoller.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/pollers/BlobStartCopyFromUrlPoller.js
 /**
 * This is the poller returned by {@link BlobClient.beginCopyFromURL}.
 * This can not be instantiated directly outside of this package.
@@ -35917,8 +36223,7 @@ function makeBlobBeginCopyFromURLPollOperation(state) {
 		update
 	};
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/Range.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/Range.js
 /**
 * Generate a range string. For example:
 *
@@ -35931,8 +36236,7 @@ function rangeToString(iRange) {
 	if (iRange.count && iRange.count <= 0) throw new RangeError(`Range.count must be larger than 0. Leave it undefined if you want a range from offset to the end.`);
 	return iRange.count ? `bytes=${iRange.offset}-${iRange.offset + iRange.count - 1}` : `bytes=${iRange.offset}-`;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/utils/Batch.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/utils/Batch.js
 /**
 * States for Batch.
 */
@@ -36044,8 +36348,7 @@ var Batch = class {
 		}
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/utils/utils.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/utils/utils.js
 /**
 * Reads a readable stream into buffer. Fill the buffer from offset to end.
 *
@@ -36118,8 +36421,7 @@ async function readStreamToLocalFile(rs, file) {
 */
 var fsStat = util.promisify(fs.stat);
 var fsCreateReadStream = fs.createReadStream;
-//#endregion
-//#region tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/Clients.js
+// tooling/artifact-transport/node_modules/@azure/storage-blob/dist/esm/Clients.js
 /**
 * A BlobClient represents a URL to an Azure Storage blob; the blob may be a block blob,
 * append blob, or page blob.
@@ -38684,8 +38986,7 @@ var PageBlobClient = class PageBlobClient extends BlobClient {
 		});
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/upload/blob-upload.js
+// tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/upload/blob-upload.js
 var __awaiter$9 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
@@ -38732,7 +39033,7 @@ function uploadToBlobStorage(authenticatedUploadURL, uploadStream, contentType) 
 		const maxConcurrency = getConcurrency();
 		const bufferSize = getUploadChunkSize();
 		const blockBlobClient = new BlobClient(authenticatedUploadURL).getBlockBlobClient();
-		debug(`Uploading artifact to blob storage with maxConcurrency: ${maxConcurrency}, bufferSize: ${bufferSize}, contentType: ${contentType}`);
+		debug$3(`Uploading artifact to blob storage with maxConcurrency: ${maxConcurrency}, bufferSize: ${bufferSize}, contentType: ${contentType}`);
 		const uploadCallback = (progress) => {
 			info(`Uploaded bytes ${progress.loadedBytes}`);
 			uploadByteCount = progress.loadedBytes;
@@ -38768,13 +39069,11 @@ function uploadToBlobStorage(authenticatedUploadURL, uploadStream, contentType) 
 		};
 	});
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/readdir-glob/node_modules/minimatch/lib/path.js
+// tooling/artifact-transport/node_modules/readdir-glob/node_modules/minimatch/lib/path.js
 var require_path = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = typeof process === "object" && process && process.platform === "win32" ? { sep: "\\" } : { sep: "/" };
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/balanced-match/index.js
+// tooling/artifact-transport/node_modules/balanced-match/index.js
 var require_balanced_match = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = balanced;
 	function balanced(a, b, str) {
@@ -38823,8 +39122,7 @@ var require_balanced_match = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		return result;
 	}
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/brace-expansion/index.js
+// tooling/artifact-transport/node_modules/brace-expansion/index.js
 var require_brace_expansion = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var balanced = require_balanced_match();
 	module.exports = expandTop;
@@ -39019,8 +39317,7 @@ var require_brace_expansion = /* @__PURE__ */ __commonJSMin(((exports, module) =
 		return acc;
 	}
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readdir-glob/node_modules/minimatch/minimatch.js
+// tooling/artifact-transport/node_modules/readdir-glob/node_modules/minimatch/minimatch.js
 var require_minimatch = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var minimatch = module.exports = (p, pattern, options = {}) => {
 		assertValidPattern(pattern);
@@ -39566,8 +39863,7 @@ var require_minimatch = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	};
 	minimatch.Minimatch = Minimatch;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readdir-glob/index.js
+// tooling/artifact-transport/node_modules/readdir-glob/index.js
 var require_readdir_glob = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = readdirGlob;
 	var fs = __require("fs");
@@ -39755,8 +40051,7 @@ var require_readdir_glob = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	readdirGlob.ReaddirGlob = ReaddirGlob;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/async/dist/async.mjs
+// tooling/artifact-transport/node_modules/async/dist/async.mjs
 var async_exports = /* @__PURE__ */ __exportAll({
 	all: () => every$1,
 	allLimit: () => everyLimit$1,
@@ -40068,7 +40363,7 @@ function _asyncMap(eachfn, arr, iteratee, callback) {
 function isArrayLike(value) {
 	return value && typeof value.length === "number" && value.length >= 0 && value.length % 1 === 0;
 }
-function once(fn) {
+function once$1(fn) {
 	function wrapper(...args) {
 		if (fn === null) return;
 		var callFn = fn;
@@ -40200,7 +40495,7 @@ function eachOfLimit(coll, limit, iteratee, callback) {
 	return eachOfLimit$2(limit)(coll, wrapAsync(iteratee), callback);
 }
 function eachOfArrayLike(coll, iteratee, callback) {
-	callback = once(callback);
+	callback = once$1(callback);
 	var index = 0, completed = 0, { length } = coll, canceled = false;
 	if (length === 0) callback(null);
 	function iteratorCallback(err, value) {
@@ -40650,7 +40945,7 @@ function auto(tasks, concurrency, callback) {
 		callback = concurrency;
 		concurrency = null;
 	}
-	callback = once(callback || promiseCallback());
+	callback = once$1(callback || promiseCallback());
 	var numTasks = Object.keys(tasks).length;
 	if (!numTasks) return callback(null);
 	if (!concurrency) concurrency = numTasks;
@@ -41328,7 +41623,7 @@ function cargo(worker, concurrency, payload) {
 *
 */
 function reduce(coll, memo, iteratee, callback) {
-	callback = once(callback);
+	callback = once$1(callback);
 	var _iteratee = wrapAsync(iteratee);
 	return eachOfSeries$1(coll, (x, i, iterCb) => {
 		_iteratee(memo, x, (err, v) => {
@@ -42598,7 +42893,7 @@ function groupBySeries(coll, iteratee, callback) {
 * @returns {Promise} a promise, if no callback is passed
 */
 function mapValuesLimit(obj, limit, iteratee, callback) {
-	callback = once(callback);
+	callback = once$1(callback);
 	var newObj = {};
 	var _iteratee = wrapAsync(iteratee);
 	return eachOfLimit$2(limit)(obj, (val, key, next) => {
@@ -43270,7 +43565,7 @@ function priorityQueue(worker, concurrency) {
 * });
 */
 function race(tasks, callback) {
-	callback = once(callback);
+	callback = once$1(callback);
 	if (!Array.isArray(tasks)) return callback(/* @__PURE__ */ new TypeError("First argument to race must be an array of functions"));
 	if (!tasks.length) return callback();
 	for (var i = 0, l = tasks.length; i < l; i++) wrapAsync(tasks[i])(callback);
@@ -44410,7 +44705,7 @@ function transform(coll, accumulator, iteratee, callback) {
 		iteratee = accumulator;
 		accumulator = Array.isArray(coll) ? [] : {};
 	}
-	callback = once(callback || promiseCallback());
+	callback = once$1(callback || promiseCallback());
 	var _iteratee = wrapAsync(iteratee);
 	eachOf$1(coll, (v, k, cb) => {
 		_iteratee(accumulator, v, k, cb);
@@ -44640,7 +44935,7 @@ function until(test, iteratee, callback) {
 * }
 */
 function waterfall(tasks, callback) {
-	callback = once(callback);
+	callback = once$1(callback);
 	if (!Array.isArray(tasks)) return callback(/* @__PURE__ */ new Error("First argument to waterfall must be an array of functions"));
 	if (!tasks.length) return callback();
 	var taskIndex = 0;
@@ -44667,7 +44962,7 @@ var init_async = __esmMin((() => {
 	breakLoop = {};
 	eachOfLimit$2 = (limit) => {
 		return (obj, iteratee, callback) => {
-			callback = once(callback);
+			callback = once$1(callback);
 			if (limit <= 0) throw new RangeError("concurrency limit cannot be less than 1");
 			if (!obj) return callback(null);
 			if (isAsyncGenerator(obj)) return asyncEachOfLimit(obj, limit, iteratee, callback);
@@ -45008,8 +45303,7 @@ var init_async = __esmMin((() => {
 		doDuring: doWhilst$1
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/graceful-fs/polyfills.js
+// tooling/artifact-transport/node_modules/graceful-fs/polyfills.js
 var require_polyfills = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var constants = __require("constants");
 	var origCwd = process.cwd;
@@ -45260,8 +45554,7 @@ var require_polyfills = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		}
 	}
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/graceful-fs/legacy-streams.js
+// tooling/artifact-transport/node_modules/graceful-fs/legacy-streams.js
 var require_legacy_streams = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Stream = __require("stream").Stream;
 	module.exports = legacy;
@@ -45349,8 +45642,7 @@ var require_legacy_streams = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		}
 	}
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/graceful-fs/clone.js
+// tooling/artifact-transport/node_modules/graceful-fs/clone.js
 var require_clone = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = clone;
 	var getPrototypeOf = Object.getPrototypeOf || function(obj) {
@@ -45366,8 +45658,7 @@ var require_clone = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return copy;
 	}
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/graceful-fs/graceful-fs.js
+// tooling/artifact-transport/node_modules/graceful-fs/graceful-fs.js
 var require_graceful_fs = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var fs = __require("fs");
 	var polyfills = require_polyfills();
@@ -45722,8 +46013,7 @@ var require_graceful_fs = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		if (retryTimer === void 0) retryTimer = setTimeout(retry, 0);
 	}
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-stream/index.js
+// tooling/artifact-transport/node_modules/is-stream/index.js
 var require_is_stream = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var isStream = (stream) => stream !== null && typeof stream === "object" && typeof stream.pipe === "function";
 	isStream.writable = (stream) => isStream(stream) && stream.writable !== false && typeof stream._write === "function" && typeof stream._writableState === "object";
@@ -45732,8 +46022,7 @@ var require_is_stream = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	isStream.transform = (stream) => isStream.duplex(stream) && typeof stream._transform === "function";
 	module.exports = isStream;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/process-nextick-args/index.js
+// tooling/artifact-transport/node_modules/process-nextick-args/index.js
 var require_process_nextick_args = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	if (typeof process === "undefined" || !process.version || process.version.indexOf("v0.") === 0 || process.version.indexOf("v1.") === 0 && process.version.indexOf("v1.8.") !== 0) module.exports = { nextTick };
 	else module.exports = process;
@@ -45763,21 +46052,18 @@ var require_process_nextick_args = /* @__PURE__ */ __commonJSMin(((exports, modu
 		}
 	}
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lazystream/node_modules/isarray/index.js
+// tooling/artifact-transport/node_modules/lazystream/node_modules/isarray/index.js
 var require_isarray$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var toString = {}.toString;
 	module.exports = Array.isArray || function(arr) {
 		return toString.call(arr) == "[object Array]";
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lazystream/node_modules/readable-stream/lib/internal/streams/stream.js
+// tooling/artifact-transport/node_modules/lazystream/node_modules/readable-stream/lib/internal/streams/stream.js
 var require_stream$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = __require("stream");
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lazystream/node_modules/safe-buffer/index.js
+// tooling/artifact-transport/node_modules/lazystream/node_modules/safe-buffer/index.js
 var require_safe_buffer$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var buffer = __require("buffer");
 	var Buffer = buffer.Buffer;
@@ -45815,8 +46101,7 @@ var require_safe_buffer$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 		return buffer.SlowBuffer(size);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/core-util-is/lib/util.js
+// tooling/artifact-transport/node_modules/core-util-is/lib/util.js
 var require_util$3 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	function isArray(arg) {
 		if (Array.isArray) return Array.isArray(arg);
@@ -45880,8 +46165,7 @@ var require_util$3 = /* @__PURE__ */ __commonJSMin(((exports) => {
 		return Object.prototype.toString.call(o);
 	}
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/inherits/inherits_browser.js
+// tooling/artifact-transport/node_modules/inherits/inherits_browser.js
 var require_inherits_browser = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	if (typeof Object.create === "function") module.exports = function inherits(ctor, superCtor) {
 		if (superCtor) {
@@ -45904,8 +46188,7 @@ var require_inherits_browser = /* @__PURE__ */ __commonJSMin(((exports, module) 
 		}
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/inherits/inherits.js
+// tooling/artifact-transport/node_modules/inherits/inherits.js
 var require_inherits = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	try {
 		var util = __require("util");
@@ -45917,8 +46200,7 @@ var require_inherits = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		module.exports = require_inherits_browser();
 	}
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lazystream/node_modules/readable-stream/lib/internal/streams/BufferList.js
+// tooling/artifact-transport/node_modules/lazystream/node_modules/readable-stream/lib/internal/streams/BufferList.js
 var require_BufferList = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	function _classCallCheck(instance, Constructor) {
 		if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
@@ -45992,8 +46274,7 @@ var require_BufferList = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return this.constructor.name + " " + obj;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lazystream/node_modules/readable-stream/lib/internal/streams/destroy.js
+// tooling/artifact-transport/node_modules/lazystream/node_modules/readable-stream/lib/internal/streams/destroy.js
 var require_destroy$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var pna = require_process_nextick_args();
 	function destroy(err, cb) {
@@ -46049,16 +46330,14 @@ var require_destroy$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		undestroy
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/util-deprecate/node.js
+// tooling/artifact-transport/node_modules/util-deprecate/node.js
 var require_node = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* For Node.js, simply re-export the core `util.deprecate` function.
 	*/
 	module.exports = __require("util").deprecate;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lazystream/node_modules/readable-stream/lib/_stream_writable.js
+// tooling/artifact-transport/node_modules/lazystream/node_modules/readable-stream/lib/_stream_writable.js
 var require__stream_writable = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var pna = require_process_nextick_args();
 	module.exports = Writable;
@@ -46462,8 +46741,7 @@ var require__stream_writable = /* @__PURE__ */ __commonJSMin(((exports, module) 
 		cb(err);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lazystream/node_modules/readable-stream/lib/_stream_duplex.js
+// tooling/artifact-transport/node_modules/lazystream/node_modules/readable-stream/lib/_stream_duplex.js
 var require__stream_duplex = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var pna = require_process_nextick_args();
 	var objectKeys = Object.keys || function(obj) {
@@ -46522,8 +46800,7 @@ var require__stream_duplex = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		pna.nextTick(cb, err);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lazystream/node_modules/string_decoder/lib/string_decoder.js
+// tooling/artifact-transport/node_modules/lazystream/node_modules/string_decoder/lib/string_decoder.js
 var require_string_decoder$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var Buffer = require_safe_buffer$1().Buffer;
 	var isEncoding = Buffer.isEncoding || function(encoding) {
@@ -46746,8 +47023,7 @@ var require_string_decoder$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 		return buf && buf.length ? this.write(buf) : "";
 	}
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lazystream/node_modules/readable-stream/lib/_stream_readable.js
+// tooling/artifact-transport/node_modules/lazystream/node_modules/readable-stream/lib/_stream_readable.js
 var require__stream_readable = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var pna = require_process_nextick_args();
 	module.exports = Readable;
@@ -47383,8 +47659,7 @@ var require__stream_readable = /* @__PURE__ */ __commonJSMin(((exports, module) 
 		return -1;
 	}
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lazystream/node_modules/readable-stream/lib/_stream_transform.js
+// tooling/artifact-transport/node_modules/lazystream/node_modules/readable-stream/lib/_stream_transform.js
 var require__stream_transform = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = Transform;
 	var Duplex = require__stream_duplex();
@@ -47469,8 +47744,7 @@ var require__stream_transform = /* @__PURE__ */ __commonJSMin(((exports, module)
 		return stream.push(null);
 	}
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lazystream/node_modules/readable-stream/lib/_stream_passthrough.js
+// tooling/artifact-transport/node_modules/lazystream/node_modules/readable-stream/lib/_stream_passthrough.js
 var require__stream_passthrough = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = PassThrough;
 	var Transform = require__stream_transform();
@@ -47485,8 +47759,7 @@ var require__stream_passthrough = /* @__PURE__ */ __commonJSMin(((exports, modul
 		cb(null, chunk);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lazystream/node_modules/readable-stream/readable.js
+// tooling/artifact-transport/node_modules/lazystream/node_modules/readable-stream/readable.js
 var require_readable$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Stream = __require("stream");
 	if (process.env.READABLE_STREAM === "disable" && Stream) {
@@ -47508,13 +47781,11 @@ var require_readable$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		exports.PassThrough = require__stream_passthrough();
 	}
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lazystream/node_modules/readable-stream/passthrough.js
+// tooling/artifact-transport/node_modules/lazystream/node_modules/readable-stream/passthrough.js
 var require_passthrough$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = require_readable$1().PassThrough;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lazystream/lib/lazystream.js
+// tooling/artifact-transport/node_modules/lazystream/lib/lazystream.js
 var require_lazystream = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var util = __require("util");
 	var PassThrough = require_passthrough$1();
@@ -47554,8 +47825,7 @@ var require_lazystream = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		this.emit("writable");
 	}
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/normalize-path/index.js
+// tooling/artifact-transport/node_modules/normalize-path/index.js
 var require_normalize_path = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/*!
 	* normalize-path <https://github.com/jonschlinkert/normalize-path>
@@ -47581,8 +47851,7 @@ var require_normalize_path = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		return prefix + segs.join("/");
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/identity.js
+// tooling/artifact-transport/node_modules/lodash/identity.js
 var require_identity = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* This method returns the first argument it receives.
@@ -47605,8 +47874,7 @@ var require_identity = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = identity;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_apply.js
+// tooling/artifact-transport/node_modules/lodash/_apply.js
 var require__apply = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* A faster alternative to `Function#apply`, this function invokes `func`
@@ -47629,8 +47897,7 @@ var require__apply = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = apply;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_overRest.js
+// tooling/artifact-transport/node_modules/lodash/_overRest.js
 var require__overRest = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var apply = require__apply();
 	var nativeMax = Math.max;
@@ -47657,8 +47924,7 @@ var require__overRest = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = overRest;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/constant.js
+// tooling/artifact-transport/node_modules/lodash/constant.js
 var require_constant = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* Creates a function that returns `value`.
@@ -47686,26 +47952,22 @@ var require_constant = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = constant;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_freeGlobal.js
+// tooling/artifact-transport/node_modules/lodash/_freeGlobal.js
 var require__freeGlobal = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = typeof global == "object" && global && global.Object === Object && global;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_root.js
+// tooling/artifact-transport/node_modules/lodash/_root.js
 var require__root = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var freeGlobal = require__freeGlobal();
 	/** Detect free variable `self`. */
 	var freeSelf = typeof self == "object" && self && self.Object === Object && self;
 	module.exports = freeGlobal || freeSelf || Function("return this")();
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_Symbol.js
+// tooling/artifact-transport/node_modules/lodash/_Symbol.js
 var require__Symbol = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = require__root().Symbol;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_getRawTag.js
+// tooling/artifact-transport/node_modules/lodash/_getRawTag.js
 var require__getRawTag = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Symbol = require__Symbol();
 	/** Used for built-in method references. */
@@ -47742,8 +48004,7 @@ var require__getRawTag = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = getRawTag;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_objectToString.js
+// tooling/artifact-transport/node_modules/lodash/_objectToString.js
 var require__objectToString = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* Used to resolve the
@@ -47763,8 +48024,7 @@ var require__objectToString = /* @__PURE__ */ __commonJSMin(((exports, module) =
 	}
 	module.exports = objectToString;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_baseGetTag.js
+// tooling/artifact-transport/node_modules/lodash/_baseGetTag.js
 var require__baseGetTag = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Symbol = require__Symbol();
 	var getRawTag = require__getRawTag();
@@ -47787,8 +48047,7 @@ var require__baseGetTag = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = baseGetTag;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/isObject.js
+// tooling/artifact-transport/node_modules/lodash/isObject.js
 var require_isObject$2 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* Checks if `value` is the
@@ -47821,8 +48080,7 @@ var require_isObject$2 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = isObject;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/isFunction.js
+// tooling/artifact-transport/node_modules/lodash/isFunction.js
 var require_isFunction = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var baseGetTag = require__baseGetTag();
 	var isObject = require_isObject$2();
@@ -47855,13 +48113,11 @@ var require_isFunction = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = isFunction;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_coreJsData.js
+// tooling/artifact-transport/node_modules/lodash/_coreJsData.js
 var require__coreJsData = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = require__root()["__core-js_shared__"];
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_isMasked.js
+// tooling/artifact-transport/node_modules/lodash/_isMasked.js
 var require__isMasked = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var coreJsData = require__coreJsData();
 	/** Used to detect methods masquerading as native. */
@@ -47881,8 +48137,7 @@ var require__isMasked = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = isMasked;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_toSource.js
+// tooling/artifact-transport/node_modules/lodash/_toSource.js
 var require__toSource = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** Used to resolve the decompiled source of functions. */
 	var funcToString = Function.prototype.toString;
@@ -47906,8 +48161,7 @@ var require__toSource = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = toSource;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_baseIsNative.js
+// tooling/artifact-transport/node_modules/lodash/_baseIsNative.js
 var require__baseIsNative = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var isFunction = require_isFunction();
 	var isMasked = require__isMasked();
@@ -47943,8 +48197,7 @@ var require__baseIsNative = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 	}
 	module.exports = baseIsNative;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_getValue.js
+// tooling/artifact-transport/node_modules/lodash/_getValue.js
 var require__getValue = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* Gets the value at `key` of `object`.
@@ -47959,8 +48212,7 @@ var require__getValue = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = getValue;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_getNative.js
+// tooling/artifact-transport/node_modules/lodash/_getNative.js
 var require__getNative = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var baseIsNative = require__baseIsNative();
 	var getValue = require__getValue();
@@ -47978,8 +48230,7 @@ var require__getNative = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = getNative;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_defineProperty.js
+// tooling/artifact-transport/node_modules/lodash/_defineProperty.js
 var require__defineProperty = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var getNative = require__getNative();
 	module.exports = function() {
@@ -47990,8 +48241,7 @@ var require__defineProperty = /* @__PURE__ */ __commonJSMin(((exports, module) =
 		} catch (e) {}
 	}();
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_baseSetToString.js
+// tooling/artifact-transport/node_modules/lodash/_baseSetToString.js
 var require__baseSetToString = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var constant = require_constant();
 	var defineProperty = require__defineProperty();
@@ -48005,8 +48255,7 @@ var require__baseSetToString = /* @__PURE__ */ __commonJSMin(((exports, module) 
 		});
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_shortOut.js
+// tooling/artifact-transport/node_modules/lodash/_shortOut.js
 var require__shortOut = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** Used to detect hot functions by number of calls within a span of milliseconds. */
 	var HOT_COUNT = 800;
@@ -48034,14 +48283,12 @@ var require__shortOut = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = shortOut;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_setToString.js
+// tooling/artifact-transport/node_modules/lodash/_setToString.js
 var require__setToString = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var baseSetToString = require__baseSetToString();
 	module.exports = require__shortOut()(baseSetToString);
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_baseRest.js
+// tooling/artifact-transport/node_modules/lodash/_baseRest.js
 var require__baseRest = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var identity = require_identity();
 	var overRest = require__overRest();
@@ -48059,8 +48306,7 @@ var require__baseRest = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = baseRest;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/eq.js
+// tooling/artifact-transport/node_modules/lodash/eq.js
 var require_eq = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* Performs a
@@ -48099,8 +48345,7 @@ var require_eq = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = eq;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/isLength.js
+// tooling/artifact-transport/node_modules/lodash/isLength.js
 var require_isLength = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** Used as references for various `Number` constants. */
 	var MAX_SAFE_INTEGER = 9007199254740991;
@@ -48135,8 +48380,7 @@ var require_isLength = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = isLength;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/isArrayLike.js
+// tooling/artifact-transport/node_modules/lodash/isArrayLike.js
 var require_isArrayLike = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var isFunction = require_isFunction();
 	var isLength = require_isLength();
@@ -48170,8 +48414,7 @@ var require_isArrayLike = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = isArrayLike;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_isIndex.js
+// tooling/artifact-transport/node_modules/lodash/_isIndex.js
 var require__isIndex = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** Used as references for various `Number` constants. */
 	var MAX_SAFE_INTEGER = 9007199254740991;
@@ -48192,8 +48435,7 @@ var require__isIndex = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = isIndex;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_isIterateeCall.js
+// tooling/artifact-transport/node_modules/lodash/_isIterateeCall.js
 var require__isIterateeCall = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var eq = require_eq();
 	var isArrayLike = require_isArrayLike();
@@ -48217,8 +48459,7 @@ var require__isIterateeCall = /* @__PURE__ */ __commonJSMin(((exports, module) =
 	}
 	module.exports = isIterateeCall;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_baseTimes.js
+// tooling/artifact-transport/node_modules/lodash/_baseTimes.js
 var require__baseTimes = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* The base implementation of `_.times` without support for iteratee shorthands
@@ -48236,8 +48477,7 @@ var require__baseTimes = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = baseTimes;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/isObjectLike.js
+// tooling/artifact-transport/node_modules/lodash/isObjectLike.js
 var require_isObjectLike = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* Checks if `value` is object-like. A value is object-like if it's not `null`
@@ -48268,8 +48508,7 @@ var require_isObjectLike = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = isObjectLike;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_baseIsArguments.js
+// tooling/artifact-transport/node_modules/lodash/_baseIsArguments.js
 var require__baseIsArguments = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var baseGetTag = require__baseGetTag();
 	var isObjectLike = require_isObjectLike();
@@ -48287,8 +48526,7 @@ var require__baseIsArguments = /* @__PURE__ */ __commonJSMin(((exports, module) 
 	}
 	module.exports = baseIsArguments;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/isArguments.js
+// tooling/artifact-transport/node_modules/lodash/isArguments.js
 var require_isArguments$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var baseIsArguments = require__baseIsArguments();
 	var isObjectLike = require_isObjectLike();
@@ -48304,13 +48542,11 @@ var require_isArguments$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 		return isObjectLike(value) && hasOwnProperty.call(value, "callee") && !propertyIsEnumerable.call(value, "callee");
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/isArray.js
+// tooling/artifact-transport/node_modules/lodash/isArray.js
 var require_isArray = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = Array.isArray;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/stubFalse.js
+// tooling/artifact-transport/node_modules/lodash/stubFalse.js
 var require_stubFalse = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* This method returns `false`.
@@ -48330,8 +48566,7 @@ var require_stubFalse = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = stubFalse;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/isBuffer.js
+// tooling/artifact-transport/node_modules/lodash/isBuffer.js
 var require_isBuffer = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var root = require__root();
 	var stubFalse = require_stubFalse();
@@ -48343,8 +48578,7 @@ var require_isBuffer = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Buffer = freeModule && freeModule.exports === freeExports ? root.Buffer : void 0;
 	module.exports = (Buffer ? Buffer.isBuffer : void 0) || stubFalse;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_baseIsTypedArray.js
+// tooling/artifact-transport/node_modules/lodash/_baseIsTypedArray.js
 var require__baseIsTypedArray = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var baseGetTag = require__baseGetTag();
 	var isLength = require_isLength();
@@ -48390,8 +48624,7 @@ var require__baseIsTypedArray = /* @__PURE__ */ __commonJSMin(((exports, module)
 	}
 	module.exports = baseIsTypedArray;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_baseUnary.js
+// tooling/artifact-transport/node_modules/lodash/_baseUnary.js
 var require__baseUnary = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* The base implementation of `_.unary` without support for storing metadata.
@@ -48407,8 +48640,7 @@ var require__baseUnary = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = baseUnary;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_nodeUtil.js
+// tooling/artifact-transport/node_modules/lodash/_nodeUtil.js
 var require__nodeUtil = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var freeGlobal = require__freeGlobal();
 	/** Detect free variable `exports`. */
@@ -48425,8 +48657,7 @@ var require__nodeUtil = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		} catch (e) {}
 	}();
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/isTypedArray.js
+// tooling/artifact-transport/node_modules/lodash/isTypedArray.js
 var require_isTypedArray = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var baseIsTypedArray = require__baseIsTypedArray();
 	var baseUnary = require__baseUnary();
@@ -48434,8 +48665,7 @@ var require_isTypedArray = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
 	module.exports = nodeIsTypedArray ? baseUnary(nodeIsTypedArray) : baseIsTypedArray;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_arrayLikeKeys.js
+// tooling/artifact-transport/node_modules/lodash/_arrayLikeKeys.js
 var require__arrayLikeKeys = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var baseTimes = require__baseTimes();
 	var isArguments = require_isArguments$1();
@@ -48460,8 +48690,7 @@ var require__arrayLikeKeys = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 	}
 	module.exports = arrayLikeKeys;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_isPrototype.js
+// tooling/artifact-transport/node_modules/lodash/_isPrototype.js
 var require__isPrototype = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
@@ -48478,8 +48707,7 @@ var require__isPrototype = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = isPrototype;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_nativeKeysIn.js
+// tooling/artifact-transport/node_modules/lodash/_nativeKeysIn.js
 var require__nativeKeysIn = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* This function is like
@@ -48497,8 +48725,7 @@ var require__nativeKeysIn = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 	}
 	module.exports = nativeKeysIn;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_baseKeysIn.js
+// tooling/artifact-transport/node_modules/lodash/_baseKeysIn.js
 var require__baseKeysIn = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var isObject = require_isObject$2();
 	var isPrototype = require__isPrototype();
@@ -48520,8 +48747,7 @@ var require__baseKeysIn = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = baseKeysIn;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/keysIn.js
+// tooling/artifact-transport/node_modules/lodash/keysIn.js
 var require_keysIn = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var arrayLikeKeys = require__arrayLikeKeys();
 	var baseKeysIn = require__baseKeysIn();
@@ -48554,8 +48780,7 @@ var require_keysIn = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = keysIn;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/defaults.js
+// tooling/artifact-transport/node_modules/lodash/defaults.js
 var require_defaults = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var baseRest = require__baseRest();
 	var eq = require_eq();
@@ -48585,8 +48810,7 @@ var require_defaults = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return object;
 	});
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readable-stream/lib/ours/primordials.js
+// tooling/artifact-transport/node_modules/readable-stream/lib/ours/primordials.js
 var require_primordials = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var AggregateError = class extends Error {
 		constructor(errors) {
@@ -48698,8 +48922,7 @@ var require_primordials = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		Uint8Array
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readable-stream/lib/ours/util/inspect.js
+// tooling/artifact-transport/node_modules/readable-stream/lib/ours/util/inspect.js
 var require_inspect = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = {
 		format(format, ...args) {
@@ -48731,8 +48954,7 @@ var require_inspect = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		}
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readable-stream/lib/ours/errors.js
+// tooling/artifact-transport/node_modules/readable-stream/lib/ours/errors.js
 var require_errors$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var { format, inspect } = require_inspect();
 	var { AggregateError: CustomAggregateError } = require_primordials();
@@ -48972,8 +49194,7 @@ var require_errors$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		codes
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/event-target-shim/dist/event-target-shim.mjs
+// tooling/artifact-transport/node_modules/event-target-shim/dist/event-target-shim.mjs
 /**
 * Get private data.
 * @param {Event} event The event object to get private data.
@@ -49559,8 +49780,7 @@ var init_event_target_shim = __esmMin((() => {
 	});
 	if (typeof window !== "undefined" && typeof window.EventTarget !== "undefined") Object.setPrototypeOf(EventTarget.prototype, window.EventTarget.prototype);
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/abort-controller/dist/abort-controller.mjs
+// tooling/artifact-transport/node_modules/abort-controller/dist/abort-controller.mjs
 var abort_controller_exports = /* @__PURE__ */ __exportAll({
 	AbortController: () => AbortController$1,
 	AbortSignal: () => AbortSignal$1,
@@ -49648,8 +49868,7 @@ var init_abort_controller = __esmMin((() => {
 		value: "AbortController"
 	});
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readable-stream/lib/ours/util.js
+// tooling/artifact-transport/node_modules/readable-stream/lib/ours/util.js
 var require_util$2 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var bufferModule = __require("buffer");
 	var { format, inspect } = require_inspect();
@@ -49758,8 +49977,7 @@ var require_util$2 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	};
 	module.exports.promisify.custom = Symbol.for("nodejs.util.promisify.custom");
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readable-stream/lib/internal/validators.js
+// tooling/artifact-transport/node_modules/readable-stream/lib/internal/validators.js
 var require_validators = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var { ArrayIsArray, ArrayPrototypeIncludes, ArrayPrototypeJoin, ArrayPrototypeMap, NumberIsInteger, NumberIsNaN, NumberMAX_SAFE_INTEGER, NumberMIN_SAFE_INTEGER, NumberParseInt, ObjectPrototypeHasOwnProperty, RegExpPrototypeExec, String, StringPrototypeToUpperCase, StringPrototypeTrim } = require_primordials();
 	var { hideStackFrames, codes: { ERR_SOCKET_BAD_PORT, ERR_INVALID_ARG_TYPE, ERR_INVALID_ARG_VALUE, ERR_OUT_OF_RANGE, ERR_UNKNOWN_SIGNAL } } = require_errors$1();
@@ -50132,13 +50350,11 @@ var require_validators = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		validateLinkHeaderValue
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/process/index.js
+// tooling/artifact-transport/node_modules/process/index.js
 var require_process$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = global.process;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readable-stream/lib/internal/shims/process.js
+// tooling/artifact-transport/node_modules/readable-stream/lib/internal/shims/process.js
 var require_process = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = ((base, esmKey, keys, isValid) => {
 		if (esmKey in base && base[esmKey] === true) {
@@ -50152,8 +50368,7 @@ var require_process = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return base;
 	})(require_process$1(), "__esModule", ["default", "process"], (candidate) => "nextTick" in candidate);
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/utils.js
+// tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/utils.js
 var require_utils = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var { SymbolAsyncIterator, SymbolIterator, SymbolFor } = require_primordials();
 	var kIsDestroyed = SymbolFor("nodejs.stream.destroyed");
@@ -50333,8 +50548,7 @@ var require_utils = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		isTransformStream
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/end-of-stream.js
+// tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/end-of-stream.js
 var require_end_of_stream = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var process = require_process();
 	var { AbortError, codes } = require_errors$1();
@@ -50508,8 +50722,7 @@ var require_end_of_stream = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 	module.exports = eos;
 	module.exports.finished = finished;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/destroy.js
+// tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/destroy.js
 var require_destroy = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var process = require_process();
 	var { aggregateTwoErrors, codes: { ERR_MULTIPLE_CALLBACK }, AbortError } = require_errors$1();
@@ -50691,8 +50904,7 @@ var require_destroy = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		errorOrDestroy
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/legacy.js
+// tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/legacy.js
 var require_legacy = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var { ArrayIsArray, ObjectSetPrototypeOf } = require_primordials();
 	var { EventEmitter: EE } = __require("events");
@@ -50761,8 +50973,7 @@ var require_legacy = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		prependListener
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/add-abort-signal.js
+// tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/add-abort-signal.js
 var require_add_abort_signal = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var { SymbolDispose } = require_primordials();
 	var { AbortError, codes } = require_errors$1();
@@ -50797,8 +51008,7 @@ var require_add_abort_signal = /* @__PURE__ */ __commonJSMin(((exports, module) 
 		return stream;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/buffer_list.js
+// tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/buffer_list.js
 var require_buffer_list = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var { StringPrototypeSlice, SymbolIterator, TypedArrayPrototypeSet, Uint8Array } = require_primordials();
 	var { Buffer } = __require("buffer");
@@ -50939,8 +51149,7 @@ var require_buffer_list = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		}
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/state.js
+// tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/state.js
 var require_state = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var { MathFloor, NumberIsInteger } = require_primordials();
 	var { validateInteger } = require_validators();
@@ -50972,8 +51181,7 @@ var require_state = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		setDefaultHighWaterMark
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/safe-buffer/index.js
+// tooling/artifact-transport/node_modules/safe-buffer/index.js
 var require_safe_buffer = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
 	var buffer = __require("buffer");
@@ -51013,8 +51221,7 @@ var require_safe_buffer = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return buffer.SlowBuffer(size);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/string_decoder/lib/string_decoder.js
+// tooling/artifact-transport/node_modules/string_decoder/lib/string_decoder.js
 var require_string_decoder = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var Buffer = require_safe_buffer().Buffer;
 	var isEncoding = Buffer.isEncoding || function(encoding) {
@@ -51237,8 +51444,7 @@ var require_string_decoder = /* @__PURE__ */ __commonJSMin(((exports) => {
 		return buf && buf.length ? this.write(buf) : "";
 	}
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/from.js
+// tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/from.js
 var require_from = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var process = require_process();
 	var { PromisePrototypeThen, SymbolAsyncIterator, SymbolIterator } = require_primordials();
@@ -51313,8 +51519,7 @@ var require_from = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = from;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/readable.js
+// tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/readable.js
 var require_readable = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var process = require_process();
 	var { ArrayPrototypeIndexOf, NumberIsInteger, NumberIsNaN, NumberParseInt, ObjectDefineProperties, ObjectKeys, ObjectSetPrototypeOf, Promise, SafeSet, SymbolAsyncDispose, SymbolAsyncIterator, Symbol } = require_primordials();
@@ -52145,8 +52350,7 @@ var require_readable = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		}).wrap(src);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/writable.js
+// tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/writable.js
 var require_writable = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var process = require_process();
 	var { ArrayPrototypeSlice, Error, FunctionPrototypeSymbolHasInstance, ObjectDefineProperty, ObjectDefineProperties, ObjectSetPrototypeOf, StringPrototypeToLowerCase, Symbol, SymbolHasInstance } = require_primordials();
@@ -52663,8 +52867,7 @@ var require_writable = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return lazyWebStreams().newWritableStreamFromStreamWritable(streamWritable);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/duplexify.js
+// tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/duplexify.js
 var require_duplexify = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var process = require_process();
 	var bufferModule = __require("buffer");
@@ -52916,8 +53119,7 @@ var require_duplexify = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return d;
 	}
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/duplex.js
+// tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/duplex.js
 var require_duplex = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var { ObjectDefineProperties, ObjectGetOwnPropertyDescriptor, ObjectKeys, ObjectSetPrototypeOf } = require_primordials();
 	module.exports = Duplex;
@@ -53019,8 +53221,7 @@ var require_duplex = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return duplexify(body, "body");
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/transform.js
+// tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/transform.js
 var require_transform = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var { ObjectSetPrototypeOf, Symbol } = require_primordials();
 	module.exports = Transform;
@@ -53093,8 +53294,7 @@ var require_transform = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		}
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/passthrough.js
+// tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/passthrough.js
 var require_passthrough = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var { ObjectSetPrototypeOf } = require_primordials();
 	module.exports = PassThrough;
@@ -53109,8 +53309,7 @@ var require_passthrough = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		cb(null, chunk);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/pipeline.js
+// tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/pipeline.js
 var require_pipeline = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var process = require_process();
 	var { ArrayIsArray, Promise, SymbolAsyncIterator, SymbolDispose } = require_primordials();
@@ -53391,8 +53590,7 @@ var require_pipeline = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		pipeline
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/compose.js
+// tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/compose.js
 var require_compose = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var { pipeline } = require_pipeline();
 	var Duplex = require_duplex();
@@ -53534,8 +53732,7 @@ var require_compose = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return d;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/operators.js
+// tooling/artifact-transport/node_modules/readable-stream/lib/internal/streams/operators.js
 var require_operators = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var AbortController = globalThis.AbortController || (init_abort_controller(), __toCommonJS(abort_controller_exports)).AbortController;
 	var { codes: { ERR_INVALID_ARG_VALUE, ERR_INVALID_ARG_TYPE, ERR_MISSING_ARGS, ERR_OUT_OF_RANGE }, AbortError } = require_errors$1();
@@ -53808,8 +54005,7 @@ var require_operators = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		find
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readable-stream/lib/stream/promises.js
+// tooling/artifact-transport/node_modules/readable-stream/lib/stream/promises.js
 var require_promises = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var { ArrayPrototypePop, Promise } = require_primordials();
 	var { isIterable, isNodeStream, isWebStream } = require_utils();
@@ -53840,8 +54036,7 @@ var require_promises = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		pipeline
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readable-stream/lib/stream.js
+// tooling/artifact-transport/node_modules/readable-stream/lib/stream.js
 var require_stream = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var { Buffer } = __require("buffer");
 	var { ObjectDefineProperty, ObjectKeys, ReflectApply } = require_primordials();
@@ -53948,8 +54143,7 @@ var require_stream = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return Buffer.from(chunk.buffer, chunk.byteOffset, chunk.byteLength);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/readable-stream/lib/ours/index.js
+// tooling/artifact-transport/node_modules/readable-stream/lib/ours/index.js
 var require_ours = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Stream = __require("stream");
 	if (Stream && process.env.READABLE_STREAM === "disable") {
@@ -54009,8 +54203,7 @@ var require_ours = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports.default = module.exports;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_arrayPush.js
+// tooling/artifact-transport/node_modules/lodash/_arrayPush.js
 var require__arrayPush = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* Appends the elements of `values` to `array`.
@@ -54027,8 +54220,7 @@ var require__arrayPush = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = arrayPush;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_isFlattenable.js
+// tooling/artifact-transport/node_modules/lodash/_isFlattenable.js
 var require__isFlattenable = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Symbol = require__Symbol();
 	var isArguments = require_isArguments$1();
@@ -54047,8 +54239,7 @@ var require__isFlattenable = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 	}
 	module.exports = isFlattenable;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_baseFlatten.js
+// tooling/artifact-transport/node_modules/lodash/_baseFlatten.js
 var require__baseFlatten = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var arrayPush = require__arrayPush();
 	var isFlattenable = require__isFlattenable();
@@ -54078,8 +54269,7 @@ var require__baseFlatten = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = baseFlatten;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/flatten.js
+// tooling/artifact-transport/node_modules/lodash/flatten.js
 var require_flatten = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var baseFlatten = require__baseFlatten();
 	/**
@@ -54101,13 +54291,11 @@ var require_flatten = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = flatten;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_nativeCreate.js
+// tooling/artifact-transport/node_modules/lodash/_nativeCreate.js
 var require__nativeCreate = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = require__getNative()(Object, "create");
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_hashClear.js
+// tooling/artifact-transport/node_modules/lodash/_hashClear.js
 var require__hashClear = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var nativeCreate = require__nativeCreate();
 	/**
@@ -54123,8 +54311,7 @@ var require__hashClear = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = hashClear;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_hashDelete.js
+// tooling/artifact-transport/node_modules/lodash/_hashDelete.js
 var require__hashDelete = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* Removes `key` and its value from the hash.
@@ -54143,8 +54330,7 @@ var require__hashDelete = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = hashDelete;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_hashGet.js
+// tooling/artifact-transport/node_modules/lodash/_hashGet.js
 var require__hashGet = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var nativeCreate = require__nativeCreate();
 	/** Used to stand-in for `undefined` hash values. */
@@ -54170,8 +54356,7 @@ var require__hashGet = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = hashGet;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_hashHas.js
+// tooling/artifact-transport/node_modules/lodash/_hashHas.js
 var require__hashHas = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var nativeCreate = require__nativeCreate();
 	/** Used to check objects for own properties. */
@@ -54191,8 +54376,7 @@ var require__hashHas = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = hashHas;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_hashSet.js
+// tooling/artifact-transport/node_modules/lodash/_hashSet.js
 var require__hashSet = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var nativeCreate = require__nativeCreate();
 	/** Used to stand-in for `undefined` hash values. */
@@ -54215,8 +54399,7 @@ var require__hashSet = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = hashSet;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_Hash.js
+// tooling/artifact-transport/node_modules/lodash/_Hash.js
 var require__Hash = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var hashClear = require__hashClear();
 	var hashDelete = require__hashDelete();
@@ -54245,8 +54428,7 @@ var require__Hash = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	Hash.prototype.set = hashSet;
 	module.exports = Hash;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_listCacheClear.js
+// tooling/artifact-transport/node_modules/lodash/_listCacheClear.js
 var require__listCacheClear = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* Removes all key-value entries from the list cache.
@@ -54261,8 +54443,7 @@ var require__listCacheClear = /* @__PURE__ */ __commonJSMin(((exports, module) =
 	}
 	module.exports = listCacheClear;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_assocIndexOf.js
+// tooling/artifact-transport/node_modules/lodash/_assocIndexOf.js
 var require__assocIndexOf = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var eq = require_eq();
 	/**
@@ -54280,8 +54461,7 @@ var require__assocIndexOf = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 	}
 	module.exports = assocIndexOf;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_listCacheDelete.js
+// tooling/artifact-transport/node_modules/lodash/_listCacheDelete.js
 var require__listCacheDelete = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var assocIndexOf = require__assocIndexOf();
 	/** Built-in value references. */
@@ -54305,8 +54485,7 @@ var require__listCacheDelete = /* @__PURE__ */ __commonJSMin(((exports, module) 
 	}
 	module.exports = listCacheDelete;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_listCacheGet.js
+// tooling/artifact-transport/node_modules/lodash/_listCacheGet.js
 var require__listCacheGet = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var assocIndexOf = require__assocIndexOf();
 	/**
@@ -54324,8 +54503,7 @@ var require__listCacheGet = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 	}
 	module.exports = listCacheGet;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_listCacheHas.js
+// tooling/artifact-transport/node_modules/lodash/_listCacheHas.js
 var require__listCacheHas = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var assocIndexOf = require__assocIndexOf();
 	/**
@@ -54342,8 +54520,7 @@ var require__listCacheHas = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 	}
 	module.exports = listCacheHas;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_listCacheSet.js
+// tooling/artifact-transport/node_modules/lodash/_listCacheSet.js
 var require__listCacheSet = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var assocIndexOf = require__assocIndexOf();
 	/**
@@ -54366,8 +54543,7 @@ var require__listCacheSet = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 	}
 	module.exports = listCacheSet;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_ListCache.js
+// tooling/artifact-transport/node_modules/lodash/_ListCache.js
 var require__ListCache = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var listCacheClear = require__listCacheClear();
 	var listCacheDelete = require__listCacheDelete();
@@ -54396,13 +54572,11 @@ var require__ListCache = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	ListCache.prototype.set = listCacheSet;
 	module.exports = ListCache;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_Map.js
+// tooling/artifact-transport/node_modules/lodash/_Map.js
 var require__Map = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = require__getNative()(require__root(), "Map");
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_mapCacheClear.js
+// tooling/artifact-transport/node_modules/lodash/_mapCacheClear.js
 var require__mapCacheClear = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Hash = require__Hash();
 	var ListCache = require__ListCache();
@@ -54424,8 +54598,7 @@ var require__mapCacheClear = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 	}
 	module.exports = mapCacheClear;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_isKeyable.js
+// tooling/artifact-transport/node_modules/lodash/_isKeyable.js
 var require__isKeyable = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* Checks if `value` is suitable for use as unique object key.
@@ -54440,8 +54613,7 @@ var require__isKeyable = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = isKeyable;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_getMapData.js
+// tooling/artifact-transport/node_modules/lodash/_getMapData.js
 var require__getMapData = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var isKeyable = require__isKeyable();
 	/**
@@ -54458,8 +54630,7 @@ var require__getMapData = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = getMapData;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_mapCacheDelete.js
+// tooling/artifact-transport/node_modules/lodash/_mapCacheDelete.js
 var require__mapCacheDelete = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var getMapData = require__getMapData();
 	/**
@@ -54478,8 +54649,7 @@ var require__mapCacheDelete = /* @__PURE__ */ __commonJSMin(((exports, module) =
 	}
 	module.exports = mapCacheDelete;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_mapCacheGet.js
+// tooling/artifact-transport/node_modules/lodash/_mapCacheGet.js
 var require__mapCacheGet = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var getMapData = require__getMapData();
 	/**
@@ -54496,8 +54666,7 @@ var require__mapCacheGet = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = mapCacheGet;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_mapCacheHas.js
+// tooling/artifact-transport/node_modules/lodash/_mapCacheHas.js
 var require__mapCacheHas = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var getMapData = require__getMapData();
 	/**
@@ -54514,8 +54683,7 @@ var require__mapCacheHas = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = mapCacheHas;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_mapCacheSet.js
+// tooling/artifact-transport/node_modules/lodash/_mapCacheSet.js
 var require__mapCacheSet = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var getMapData = require__getMapData();
 	/**
@@ -54536,8 +54704,7 @@ var require__mapCacheSet = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = mapCacheSet;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_MapCache.js
+// tooling/artifact-transport/node_modules/lodash/_MapCache.js
 var require__MapCache = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var mapCacheClear = require__mapCacheClear();
 	var mapCacheDelete = require__mapCacheDelete();
@@ -54566,8 +54733,7 @@ var require__MapCache = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	MapCache.prototype.set = mapCacheSet;
 	module.exports = MapCache;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_setCacheAdd.js
+// tooling/artifact-transport/node_modules/lodash/_setCacheAdd.js
 var require__setCacheAdd = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** Used to stand-in for `undefined` hash values. */
 	var HASH_UNDEFINED = "__lodash_hash_undefined__";
@@ -54587,8 +54753,7 @@ var require__setCacheAdd = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = setCacheAdd;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_setCacheHas.js
+// tooling/artifact-transport/node_modules/lodash/_setCacheHas.js
 var require__setCacheHas = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* Checks if `value` is in the array cache.
@@ -54604,8 +54769,7 @@ var require__setCacheHas = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = setCacheHas;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_SetCache.js
+// tooling/artifact-transport/node_modules/lodash/_SetCache.js
 var require__SetCache = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var MapCache = require__MapCache();
 	var setCacheAdd = require__setCacheAdd();
@@ -54627,8 +54791,7 @@ var require__SetCache = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	SetCache.prototype.has = setCacheHas;
 	module.exports = SetCache;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_baseFindIndex.js
+// tooling/artifact-transport/node_modules/lodash/_baseFindIndex.js
 var require__baseFindIndex = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* The base implementation of `_.findIndex` and `_.findLastIndex` without
@@ -54648,8 +54811,7 @@ var require__baseFindIndex = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 	}
 	module.exports = baseFindIndex;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_baseIsNaN.js
+// tooling/artifact-transport/node_modules/lodash/_baseIsNaN.js
 var require__baseIsNaN = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* The base implementation of `_.isNaN` without support for number objects.
@@ -54663,8 +54825,7 @@ var require__baseIsNaN = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = baseIsNaN;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_strictIndexOf.js
+// tooling/artifact-transport/node_modules/lodash/_strictIndexOf.js
 var require__strictIndexOf = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* A specialized version of `_.indexOf` which performs strict equality
@@ -54683,8 +54844,7 @@ var require__strictIndexOf = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 	}
 	module.exports = strictIndexOf;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_baseIndexOf.js
+// tooling/artifact-transport/node_modules/lodash/_baseIndexOf.js
 var require__baseIndexOf = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var baseFindIndex = require__baseFindIndex();
 	var baseIsNaN = require__baseIsNaN();
@@ -54703,8 +54863,7 @@ var require__baseIndexOf = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = baseIndexOf;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_arrayIncludes.js
+// tooling/artifact-transport/node_modules/lodash/_arrayIncludes.js
 var require__arrayIncludes = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var baseIndexOf = require__baseIndexOf();
 	/**
@@ -54721,8 +54880,7 @@ var require__arrayIncludes = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 	}
 	module.exports = arrayIncludes;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_arrayIncludesWith.js
+// tooling/artifact-transport/node_modules/lodash/_arrayIncludesWith.js
 var require__arrayIncludesWith = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* This function is like `arrayIncludes` except that it accepts a comparator.
@@ -54740,8 +54898,7 @@ var require__arrayIncludesWith = /* @__PURE__ */ __commonJSMin(((exports, module
 	}
 	module.exports = arrayIncludesWith;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_arrayMap.js
+// tooling/artifact-transport/node_modules/lodash/_arrayMap.js
 var require__arrayMap = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* A specialized version of `_.map` for arrays without support for iteratee
@@ -54759,8 +54916,7 @@ var require__arrayMap = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = arrayMap;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_cacheHas.js
+// tooling/artifact-transport/node_modules/lodash/_cacheHas.js
 var require__cacheHas = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* Checks if a `cache` value for `key` exists.
@@ -54775,8 +54931,7 @@ var require__cacheHas = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = cacheHas;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_baseDifference.js
+// tooling/artifact-transport/node_modules/lodash/_baseDifference.js
 var require__baseDifference = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SetCache = require__SetCache();
 	var arrayIncludes = require__arrayIncludes();
@@ -54822,8 +54977,7 @@ var require__baseDifference = /* @__PURE__ */ __commonJSMin(((exports, module) =
 	}
 	module.exports = baseDifference;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/isArrayLikeObject.js
+// tooling/artifact-transport/node_modules/lodash/isArrayLikeObject.js
 var require_isArrayLikeObject = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var isArrayLike = require_isArrayLike();
 	var isObjectLike = require_isObjectLike();
@@ -54857,8 +55011,7 @@ var require_isArrayLikeObject = /* @__PURE__ */ __commonJSMin(((exports, module)
 	}
 	module.exports = isArrayLikeObject;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/difference.js
+// tooling/artifact-transport/node_modules/lodash/difference.js
 var require_difference = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var baseDifference = require__baseDifference();
 	var baseFlatten = require__baseFlatten();
@@ -54868,13 +55021,11 @@ var require_difference = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return isArrayLikeObject(array) ? baseDifference(array, baseFlatten(values, 1, isArrayLikeObject, true)) : [];
 	});
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_Set.js
+// tooling/artifact-transport/node_modules/lodash/_Set.js
 var require__Set = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = require__getNative()(require__root(), "Set");
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/noop.js
+// tooling/artifact-transport/node_modules/lodash/noop.js
 var require_noop = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* This method returns `undefined`.
@@ -54891,8 +55042,7 @@ var require_noop = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	function noop() {}
 	module.exports = noop;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_setToArray.js
+// tooling/artifact-transport/node_modules/lodash/_setToArray.js
 var require__setToArray = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* Converts `set` to an array of its values.
@@ -54910,8 +55060,7 @@ var require__setToArray = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = setToArray;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_createSet.js
+// tooling/artifact-transport/node_modules/lodash/_createSet.js
 var require__createSet = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Set = require__Set();
 	var noop = require_noop();
@@ -54920,8 +55069,7 @@ var require__createSet = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return new Set(values);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_baseUniq.js
+// tooling/artifact-transport/node_modules/lodash/_baseUniq.js
 var require__baseUniq = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SetCache = require__SetCache();
 	var arrayIncludes = require__arrayIncludes();
@@ -54969,8 +55117,7 @@ var require__baseUniq = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = baseUniq;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/union.js
+// tooling/artifact-transport/node_modules/lodash/union.js
 var require_union = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var baseFlatten = require__baseFlatten();
 	var baseRest = require__baseRest();
@@ -54980,8 +55127,7 @@ var require_union = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return baseUniq(baseFlatten(arrays, 1, isArrayLikeObject, true));
 	});
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_overArg.js
+// tooling/artifact-transport/node_modules/lodash/_overArg.js
 var require__overArg = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* Creates a unary function that invokes `func` with its argument transformed.
@@ -54998,13 +55144,11 @@ var require__overArg = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = overArg;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/_getPrototype.js
+// tooling/artifact-transport/node_modules/lodash/_getPrototype.js
 var require__getPrototype = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = require__overArg()(Object.getPrototypeOf, Object);
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lodash/isPlainObject.js
+// tooling/artifact-transport/node_modules/lodash/isPlainObject.js
 var require_isPlainObject = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var baseGetTag = require__baseGetTag();
 	var getPrototype = require__getPrototype();
@@ -55057,8 +55201,7 @@ var require_isPlainObject = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 	}
 	module.exports = isPlainObject;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/minimatch/dist/commonjs/assert-valid-pattern.js
+// tooling/artifact-transport/node_modules/minimatch/dist/commonjs/assert-valid-pattern.js
 var require_assert_valid_pattern = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.assertValidPattern = void 0;
@@ -55069,8 +55212,7 @@ var require_assert_valid_pattern = /* @__PURE__ */ __commonJSMin(((exports) => {
 	};
 	exports.assertValidPattern = assertValidPattern;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/minimatch/dist/commonjs/brace-expressions.js
+// tooling/artifact-transport/node_modules/minimatch/dist/commonjs/brace-expressions.js
 var require_brace_expressions = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.parseClass = void 0;
@@ -55195,8 +55337,7 @@ var require_brace_expressions = /* @__PURE__ */ __commonJSMin(((exports) => {
 	};
 	exports.parseClass = parseClass;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/minimatch/dist/commonjs/unescape.js
+// tooling/artifact-transport/node_modules/minimatch/dist/commonjs/unescape.js
 var require_unescape = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.unescape = void 0;
@@ -55219,8 +55360,7 @@ var require_unescape = /* @__PURE__ */ __commonJSMin(((exports) => {
 	};
 	exports.unescape = unescape;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/minimatch/dist/commonjs/ast.js
+// tooling/artifact-transport/node_modules/minimatch/dist/commonjs/ast.js
 var require_ast = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var _a;
 	Object.defineProperty(exports, "__esModule", { value: true });
@@ -55722,8 +55862,7 @@ var require_ast = /* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.AST = AST;
 	_a = AST;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/minimatch/dist/commonjs/escape.js
+// tooling/artifact-transport/node_modules/minimatch/dist/commonjs/escape.js
 var require_escape = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.escape = void 0;
@@ -55741,8 +55880,7 @@ var require_escape = /* @__PURE__ */ __commonJSMin(((exports) => {
 	};
 	exports.escape = escape;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/minimatch/dist/commonjs/index.js
+// tooling/artifact-transport/node_modules/minimatch/dist/commonjs/index.js
 var require_commonjs$4 = /* @__PURE__ */ __commonJSMin(((exports, module, this$5) => {
 	var __importDefault = this$5 && this$5.__importDefault || function(mod) {
 		return mod && mod.__esModule ? mod : { "default": mod };
@@ -56396,8 +56534,7 @@ var require_commonjs$4 = /* @__PURE__ */ __commonJSMin(((exports, module, this$5
 	exports.minimatch.escape = escape_js_1.escape;
 	exports.minimatch.unescape = unescape_js_1.unescape;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/lru-cache/dist/commonjs/index.js
+// tooling/artifact-transport/node_modules/lru-cache/dist/commonjs/index.js
 var require_commonjs$3 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	/**
 	* @module LRUCache
@@ -57545,8 +57682,7 @@ var require_commonjs$3 = /* @__PURE__ */ __commonJSMin(((exports) => {
 		}
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/minipass/dist/commonjs/index.js
+// tooling/artifact-transport/node_modules/minipass/dist/commonjs/index.js
 var require_commonjs$2 = /* @__PURE__ */ __commonJSMin(((exports, module, this$4) => {
 	var __importDefault = this$4 && this$4.__importDefault || function(mod) {
 		return mod && mod.__esModule ? mod : { "default": mod };
@@ -58378,8 +58514,7 @@ var require_commonjs$2 = /* @__PURE__ */ __commonJSMin(((exports, module, this$4
 	};
 	exports.Minipass = Minipass;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/path-scurry/dist/commonjs/index.js
+// tooling/artifact-transport/node_modules/path-scurry/dist/commonjs/index.js
 var require_commonjs$1 = /* @__PURE__ */ __commonJSMin(((exports, module, this$3) => {
 	var __createBinding = this$3 && this$3.__createBinding || (Object.create ? (function(o, m, k, k2) {
 		if (k2 === void 0) k2 = k;
@@ -59992,8 +60127,7 @@ var require_commonjs$1 = /* @__PURE__ */ __commonJSMin(((exports, module, this$3
 	*/
 	exports.PathScurry = process.platform === "win32" ? PathScurryWin32 : process.platform === "darwin" ? PathScurryDarwin : PathScurryPosix;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/glob/dist/commonjs/pattern.js
+// tooling/artifact-transport/node_modules/glob/dist/commonjs/pattern.js
 var require_pattern = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.Pattern = void 0;
@@ -60155,8 +60289,7 @@ var require_pattern = /* @__PURE__ */ __commonJSMin(((exports) => {
 		}
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/glob/dist/commonjs/ignore.js
+// tooling/artifact-transport/node_modules/glob/dist/commonjs/ignore.js
 var require_ignore = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.Ignore = void 0;
@@ -60235,8 +60368,7 @@ var require_ignore = /* @__PURE__ */ __commonJSMin(((exports) => {
 	};
 	exports.Ignore = Ignore;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/glob/dist/commonjs/processor.js
+// tooling/artifact-transport/node_modules/glob/dist/commonjs/processor.js
 var require_processor = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.Processor = exports.SubWalks = exports.MatchRecord = exports.HasWalkedCache = void 0;
@@ -60429,8 +60561,7 @@ var require_processor = /* @__PURE__ */ __commonJSMin(((exports) => {
 		}
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/glob/dist/commonjs/walker.js
+// tooling/artifact-transport/node_modules/glob/dist/commonjs/walker.js
 var require_walker = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.GlobStream = exports.GlobWalker = exports.GlobUtil = void 0;
@@ -60723,8 +60854,7 @@ var require_walker = /* @__PURE__ */ __commonJSMin(((exports) => {
 	};
 	exports.GlobStream = GlobStream;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/glob/dist/commonjs/glob.js
+// tooling/artifact-transport/node_modules/glob/dist/commonjs/glob.js
 var require_glob = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.Glob = void 0;
@@ -60922,8 +61052,7 @@ var require_glob = /* @__PURE__ */ __commonJSMin(((exports) => {
 	};
 	exports.Glob = Glob;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/glob/dist/commonjs/has-magic.js
+// tooling/artifact-transport/node_modules/glob/dist/commonjs/has-magic.js
 var require_has_magic = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.hasMagic = void 0;
@@ -60946,8 +61075,7 @@ var require_has_magic = /* @__PURE__ */ __commonJSMin(((exports) => {
 	};
 	exports.hasMagic = hasMagic;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/glob/dist/commonjs/index.js
+// tooling/artifact-transport/node_modules/glob/dist/commonjs/index.js
 var require_commonjs = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.glob = exports.sync = exports.iterate = exports.iterateSync = exports.stream = exports.streamSync = exports.Ignore = exports.hasMagic = exports.Glob = exports.unescape = exports.escape = void 0;
@@ -61038,8 +61166,7 @@ var require_commonjs = /* @__PURE__ */ __commonJSMin(((exports) => {
 	});
 	exports.glob.glob = exports.glob;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/archiver-utils/file.js
+// tooling/artifact-transport/node_modules/archiver-utils/file.js
 var require_file = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* archiver-utils
@@ -61165,8 +61292,7 @@ var require_file = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return files;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/archiver-utils/index.js
+// tooling/artifact-transport/node_modules/archiver-utils/index.js
 var require_archiver_utils = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* archiver-utils
@@ -61272,8 +61398,7 @@ var require_archiver_utils = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		});
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/archiver/lib/error.js
+// tooling/artifact-transport/node_modules/archiver/lib/error.js
 var require_error = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* Archiver Core
@@ -61310,8 +61435,7 @@ var require_error = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	util.inherits(ArchiverError, Error);
 	exports = module.exports = ArchiverError;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/archiver/lib/core.js
+// tooling/artifact-transport/node_modules/archiver/lib/core.js
 var require_core = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* Archiver Core
@@ -62073,8 +62197,7 @@ var require_core = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 * @property {Number} fs.totalBytes Number of bytes that have been appended. Calculated asynchronously and might not be accurate: it growth while entries are added. (based on fs.Stats)
 * @property {Number} fs.processedBytes Number of bytes that have been processed. (based on fs.Stats)
 */
-//#endregion
-//#region tooling/artifact-transport/node_modules/compress-commons/lib/archivers/archive-entry.js
+// tooling/artifact-transport/node_modules/compress-commons/lib/archivers/archive-entry.js
 var require_archive_entry = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* node-compress-commons
@@ -62089,8 +62212,7 @@ var require_archive_entry = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 	ArchiveEntry.prototype.getLastModifiedDate = function() {};
 	ArchiveEntry.prototype.isDirectory = function() {};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/compress-commons/lib/archivers/zip/util.js
+// tooling/artifact-transport/node_modules/compress-commons/lib/archivers/zip/util.js
 var require_util$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* node-compress-commons
@@ -62147,8 +62269,7 @@ var require_util$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return util.getLongBytes(util.dateToDos(d));
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/compress-commons/lib/archivers/zip/general-purpose-bit.js
+// tooling/artifact-transport/node_modules/compress-commons/lib/archivers/zip/general-purpose-bit.js
 var require_general_purpose_bit = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* node-compress-commons
@@ -62225,8 +62346,7 @@ var require_general_purpose_bit = /* @__PURE__ */ __commonJSMin(((exports, modul
 		return this.utf8;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/compress-commons/lib/archivers/zip/unix-stat.js
+// tooling/artifact-transport/node_modules/compress-commons/lib/archivers/zip/unix-stat.js
 var require_unix_stat = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* node-compress-commons
@@ -62270,8 +62390,7 @@ var require_unix_stat = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		DEFAULT_FILE_PERM: 420
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/compress-commons/lib/archivers/zip/constants.js
+// tooling/artifact-transport/node_modules/compress-commons/lib/archivers/zip/constants.js
 var require_constants$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* node-compress-commons
@@ -62332,8 +62451,7 @@ var require_constants$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		S_DOS_R: 1
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/compress-commons/lib/archivers/zip/zip-archive-entry.js
+// tooling/artifact-transport/node_modules/compress-commons/lib/archivers/zip/zip-archive-entry.js
 var require_zip_archive_entry = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* node-compress-commons
@@ -62669,8 +62787,7 @@ var require_zip_archive_entry = /* @__PURE__ */ __commonJSMin(((exports, module)
 		return this.csize > constants.ZIP64_MAGIC || this.size > constants.ZIP64_MAGIC;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/compress-commons/lib/util/index.js
+// tooling/artifact-transport/node_modules/compress-commons/lib/util/index.js
 var require_util = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	__require("stream").Stream;
 	var PassThrough = require_ours().PassThrough;
@@ -62687,8 +62804,7 @@ var require_util = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return source;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/compress-commons/lib/archivers/archive-output-stream.js
+// tooling/artifact-transport/node_modules/compress-commons/lib/archivers/archive-output-stream.js
 var require_archive_output_stream = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* node-compress-commons
@@ -62766,8 +62882,7 @@ var require_archive_output_stream = /* @__PURE__ */ __commonJSMin(((exports, mod
 		return Transform.prototype.write.call(this, chunk, cb);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/crc-32/crc32.js
+// tooling/artifact-transport/node_modules/crc-32/crc32.js
 var require_crc32 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	/*! crc32.js (C) 2014-present SheetJS -- http://sheetjs.com */
 	(function(factory) {
@@ -62855,8 +62970,7 @@ var require_crc32 = /* @__PURE__ */ __commonJSMin(((exports) => {
 		CRC32.str = crc32_str;
 	});
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/crc32-stream/lib/crc32-stream.js
+// tooling/artifact-transport/node_modules/crc32-stream/lib/crc32-stream.js
 /**
 * node-crc32-stream
 *
@@ -62895,8 +63009,7 @@ var require_crc32_stream = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	};
 	module.exports = CRC32Stream;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/crc32-stream/lib/deflate-crc32-stream.js
+// tooling/artifact-transport/node_modules/crc32-stream/lib/deflate-crc32-stream.js
 /**
 * node-crc32-stream
 *
@@ -62941,8 +63054,7 @@ var require_deflate_crc32_stream = /* @__PURE__ */ __commonJSMin(((exports, modu
 	};
 	module.exports = DeflateCRC32Stream;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/crc32-stream/lib/index.js
+// tooling/artifact-transport/node_modules/crc32-stream/lib/index.js
 /**
 * node-crc32-stream
 *
@@ -62956,8 +63068,7 @@ var require_lib$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		DeflateCRC32Stream: require_deflate_crc32_stream()
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/compress-commons/lib/archivers/zip/zip-archive-output-stream.js
+// tooling/artifact-transport/node_modules/compress-commons/lib/archivers/zip/zip-archive-output-stream.js
 var require_zip_archive_output_stream = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* node-compress-commons
@@ -63223,8 +63334,7 @@ var require_zip_archive_output_stream = /* @__PURE__ */ __commonJSMin(((exports,
 		this._archive.comment = comment;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/compress-commons/lib/compress-commons.js
+// tooling/artifact-transport/node_modules/compress-commons/lib/compress-commons.js
 var require_compress_commons = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* node-compress-commons
@@ -63240,8 +63350,7 @@ var require_compress_commons = /* @__PURE__ */ __commonJSMin(((exports, module) 
 		ZipArchiveOutputStream: require_zip_archive_output_stream()
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/zip-stream/index.js
+// tooling/artifact-transport/node_modules/zip-stream/index.js
 var require_zip_stream = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* ZipStream
@@ -63373,8 +63482,7 @@ var require_zip_stream = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 * @external ZipArchiveOutputStream
 * @see {@link https://github.com/archiverjs/node-compress-commons}
 */
-//#endregion
-//#region tooling/artifact-transport/node_modules/archiver/lib/plugins/zip.js
+// tooling/artifact-transport/node_modules/archiver/lib/plugins/zip.js
 var require_zip = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* ZIP Format Plugin
@@ -63482,13 +63590,11 @@ var require_zip = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 * @external ZipStream
 * @see {@link https://www.archiverjs.com/zip-stream/ZipStream.html}
 */
-//#endregion
-//#region tooling/artifact-transport/node_modules/events-universal/default.js
+// tooling/artifact-transport/node_modules/events-universal/default.js
 var require_default = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = __require("events");
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/fast-fifo/fixed-size.js
+// tooling/artifact-transport/node_modules/fast-fifo/fixed-size.js
 var require_fixed_size = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = class FixedFIFO {
 		constructor(hwm) {
@@ -63525,8 +63631,7 @@ var require_fixed_size = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		}
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/fast-fifo/index.js
+// tooling/artifact-transport/node_modules/fast-fifo/index.js
 var require_fast_fifo = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var FixedFIFO = require_fixed_size();
 	module.exports = class FastFIFO {
@@ -63570,8 +63675,7 @@ var require_fast_fifo = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		}
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/b4a/index.js
+// tooling/artifact-transport/node_modules/b4a/index.js
 var require_b4a = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	function isBuffer(value) {
 		return Buffer.isBuffer(value) || value instanceof Uint8Array;
@@ -63729,8 +63833,7 @@ var require_b4a = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		writeUInt32LE
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/text-decoder/lib/pass-through-decoder.js
+// tooling/artifact-transport/node_modules/text-decoder/lib/pass-through-decoder.js
 var require_pass_through_decoder = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var b4a = require_b4a();
 	module.exports = class PassThroughDecoder {
@@ -63748,8 +63851,7 @@ var require_pass_through_decoder = /* @__PURE__ */ __commonJSMin(((exports, modu
 		}
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/text-decoder/lib/utf8-decoder.js
+// tooling/artifact-transport/node_modules/text-decoder/lib/utf8-decoder.js
 var require_utf8_decoder = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var b4a = require_b4a();
 	/**
@@ -63896,8 +63998,7 @@ var require_utf8_decoder = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return 0;
 	}
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/text-decoder/index.js
+// tooling/artifact-transport/node_modules/text-decoder/index.js
 var require_text_decoder = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var PassThroughDecoder = require_pass_through_decoder();
 	var UTF8Decoder = require_utf8_decoder();
@@ -63948,8 +64049,7 @@ var require_text_decoder = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		}
 	}
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/streamx/lib/errors.js
+// tooling/artifact-transport/node_modules/streamx/lib/errors.js
 var require_errors = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = class StreamError extends Error {
 		constructor(msg, code, fn = StreamError) {
@@ -63986,8 +64086,7 @@ var require_errors = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		}
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/streamx/index.js
+// tooling/artifact-transport/node_modules/streamx/index.js
 var require_streamx = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var { EventEmitter } = require_default();
 	var FIFO = require_fast_fifo();
@@ -64938,8 +65037,7 @@ var require_streamx = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		PassThrough
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/tar-stream/headers.js
+// tooling/artifact-transport/node_modules/tar-stream/headers.js
 var require_headers = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var b4a = require_b4a();
 	var ZEROS = "0000000000000000000";
@@ -65174,8 +65272,7 @@ var require_headers = /* @__PURE__ */ __commonJSMin(((exports) => {
 		return len + digits + str;
 	}
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/tar-stream/extract.js
+// tooling/artifact-transport/node_modules/tar-stream/extract.js
 var require_extract$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var { Writable, Readable, getStreamError } = require_streamx();
 	var FIFO = require_fast_fifo();
@@ -65523,8 +65620,7 @@ var require_extract$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return size && 512 - size;
 	}
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/tar-stream/constants.js
+// tooling/artifact-transport/node_modules/tar-stream/constants.js
 var require_constants = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var constants = {
 		S_IFMT: 61440,
@@ -65540,8 +65636,7 @@ var require_constants = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		module.exports = constants;
 	}
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/tar-stream/pack.js
+// tooling/artifact-transport/node_modules/tar-stream/pack.js
 var require_pack = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var { Readable, Writable, getStreamError } = require_streamx();
 	var b4a = require_b4a();
@@ -65761,14 +65856,12 @@ var require_pack = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return b4a.isBuffer(buf) ? buf : b4a.from(buf);
 	}
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/tar-stream/index.js
+// tooling/artifact-transport/node_modules/tar-stream/index.js
 var require_tar_stream = /* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.extract = require_extract$1();
 	exports.pack = require_pack();
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/archiver/lib/plugins/tar.js
+// tooling/artifact-transport/node_modules/archiver/lib/plugins/tar.js
 var require_tar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* TAR Format Plugin
@@ -65900,8 +65993,7 @@ var require_tar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 * @external TarStream
 * @see {@link https://github.com/mafintosh/tar-stream}
 */
-//#endregion
-//#region tooling/artifact-transport/node_modules/buffer-crc32/dist/index.cjs
+// tooling/artifact-transport/node_modules/buffer-crc32/dist/index.cjs
 var require_dist = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	function getDefaultExportFromCjs(x) {
 		return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, "default") ? x["default"] : x;
@@ -66193,8 +66285,7 @@ var require_dist = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	};
 	module.exports = /* @__PURE__ */ getDefaultExportFromCjs(crc32);
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/archiver/lib/plugins/json.js
+// tooling/artifact-transport/node_modules/archiver/lib/plugins/json.js
 var require_json = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* JSON Format Plugin
@@ -66286,8 +66377,7 @@ var require_json = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 * @license [MIT]{@link https://github.com/archiverjs/node-archiver/blob/master/LICENSE}
 * @copyright (c) 2012-2014 Chris Talkington, contributors.
 */
-//#endregion
-//#region tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/upload/stream.js
+// tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/upload/stream.js
 var import_archiver = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Archiver = require_core();
 	var formats = {};
@@ -66382,7 +66472,7 @@ var WaterMarkedUploadStream = class extends stream.Transform {
 };
 function createRawFileUploadStream(filePath) {
 	return __awaiter$8(this, void 0, void 0, function* () {
-		debug(`Creating raw file upload stream for: ${filePath}`);
+		debug$3(`Creating raw file upload stream for: ${filePath}`);
 		const bufferSize = getUploadChunkSize();
 		const uploadStream = new WaterMarkedUploadStream(bufferSize);
 		let sourcePath = filePath;
@@ -66397,8 +66487,7 @@ function createRawFileUploadStream(filePath) {
 		return uploadStream;
 	});
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/upload/zip.js
+// tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/upload/zip.js
 var __awaiter$7 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
@@ -66428,7 +66517,7 @@ var __awaiter$7 = function(thisArg, _arguments, P, generator) {
 };
 function createZipUploadStream(uploadSpecification_1) {
 	return __awaiter$7(this, arguments, void 0, function* (uploadSpecification, compressionLevel = 6) {
-		debug(`Creating Artifact archive with compressionLevel: ${compressionLevel}`);
+		debug$3(`Creating Artifact archive with compressionLevel: ${compressionLevel}`);
 		const zip = import_archiver.default.create("zip", {
 			highWaterMark: getUploadChunkSize(),
 			zlib: { level: compressionLevel }
@@ -66443,8 +66532,8 @@ function createZipUploadStream(uploadSpecification_1) {
 			zip.file(sourcePath, { name: file.destinationPath });
 		} else zip.append("", { name: file.destinationPath });
 		const zipUploadStream = new WaterMarkedUploadStream(getUploadChunkSize());
-		debug(`Zip write high watermark value ${zipUploadStream.writableHighWaterMark}`);
-		debug(`Zip read high watermark value ${zipUploadStream.readableHighWaterMark}`);
+		debug$3(`Zip write high watermark value ${zipUploadStream.writableHighWaterMark}`);
+		debug$3(`Zip read high watermark value ${zipUploadStream.readableHighWaterMark}`);
 		zip.pipe(zipUploadStream);
 		zip.finalize();
 		return zipUploadStream;
@@ -66465,13 +66554,12 @@ var zipWarningCallback = (error) => {
 	}
 };
 var zipFinishCallback = () => {
-	debug("Zip stream for upload has finished.");
+	debug$3("Zip stream for upload has finished.");
 };
 var zipEndCallback = () => {
-	debug("Zip stream for upload has ended.");
+	debug$3("Zip stream for upload has ended.");
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/upload/types.js
+// tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/upload/types.js
 /**
 * Maps file extensions to MIME types
 */
@@ -66531,8 +66619,7 @@ var mimeTypes = {
 function getMimeType(filePath) {
 	return mimeTypes[path.extname(filePath).toLowerCase()] || "application/octet-stream";
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/upload/upload-artifact.js
+// tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/upload/upload-artifact.js
 var __awaiter$6 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
@@ -66615,8 +66702,7 @@ function uploadArtifact(name, files, rootDirectory, options) {
 		};
 	});
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@actions/github/lib/context.js
+// tooling/artifact-transport/node_modules/@actions/github/lib/context.js
 var Context = class {
 	/**
 	* Hydrate the context from the environment
@@ -66664,8 +66750,7 @@ var Context = class {
 		throw new Error("context.repo requires a GITHUB_REPOSITORY environment variable like 'owner/repo'");
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@actions/github/node_modules/@actions/http-client/lib/proxy.js
+// tooling/artifact-transport/node_modules/@actions/github/node_modules/@actions/http-client/lib/proxy.js
 var require_proxy = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.getProxyUrl = getProxyUrl;
@@ -66717,8 +66802,7 @@ var require_proxy = /* @__PURE__ */ __commonJSMin(((exports) => {
 		}
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/@actions/github/lib/internal/utils.js
+// tooling/artifact-transport/node_modules/@actions/github/lib/internal/utils.js
 var import_lib = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((exports, module, this$2) => {
 	var __createBinding = this$2 && this$2.__createBinding || (Object.create ? (function(o, m, k, k2) {
 		if (k2 === void 0) k2 = k;
@@ -67368,15 +67452,13 @@ function getUserAgentWithOrchestrationId(baseUserAgent) {
 	}
 	return baseUserAgent;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/universal-user-agent/index.js
+// tooling/artifact-transport/node_modules/universal-user-agent/index.js
 function getUserAgent() {
 	if (typeof navigator === "object" && "userAgent" in navigator) return navigator.userAgent;
 	if (typeof process === "object" && process.version !== void 0) return `Node.js/${process.version.substr(1)} (${process.platform}; ${process.arch})`;
 	return "<environment undetectable>";
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/before-after-hook/lib/register.js
+// tooling/artifact-transport/node_modules/before-after-hook/lib/register.js
 function register(state, name, method, options) {
 	if (typeof method !== "function") throw new Error("method for before hook must be a function");
 	if (!options) options = {};
@@ -67390,8 +67472,7 @@ function register(state, name, method, options) {
 		}, method)();
 	});
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/before-after-hook/lib/add.js
+// tooling/artifact-transport/node_modules/before-after-hook/lib/add.js
 function addHook(state, kind, name, hook) {
 	const orig = hook;
 	if (!state.registry[name]) state.registry[name] = [];
@@ -67417,8 +67498,7 @@ function addHook(state, kind, name, hook) {
 		orig
 	});
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/before-after-hook/lib/remove.js
+// tooling/artifact-transport/node_modules/before-after-hook/lib/remove.js
 function removeHook(state, name, method) {
 	if (!state.registry[name]) return;
 	const index = state.registry[name].map((registered) => {
@@ -67427,8 +67507,7 @@ function removeHook(state, name, method) {
 	if (index === -1) return;
 	state.registry[name].splice(index, 1);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/before-after-hook/index.js
+// tooling/artifact-transport/node_modules/before-after-hook/index.js
 var bind = Function.bind;
 var bindable = bind.bind(bind);
 function bindApi(hook, state, name) {
@@ -67466,8 +67545,7 @@ var before_after_hook_default = {
 	Singular,
 	Collection
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@octokit/endpoint/dist-bundle/index.js
+// tooling/artifact-transport/node_modules/@octokit/endpoint/dist-bundle/index.js
 var DEFAULTS = {
 	method: "GET",
 	baseUrl: "https://api.github.com",
@@ -67689,8 +67767,7 @@ function withDefaults$2(oldDefaults, newDefaults) {
 	});
 }
 var endpoint = withDefaults$2(null, DEFAULTS);
-//#endregion
-//#region tooling/artifact-transport/node_modules/content-type/dist/index.js
+// tooling/artifact-transport/node_modules/content-type/dist/index.js
 /*!
 * content-type
 * Copyright(c) 2015 Douglas Christopher Wilson
@@ -67865,8 +67942,7 @@ function unescapeQuotedPairs(str, start, end) {
 	}
 	return result + str.slice(start, end);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/json-with-bigint/json-with-bigint.js
+// tooling/artifact-transport/node_modules/json-with-bigint/json-with-bigint.js
 var intRegex = /^-?\d+$/;
 var noiseValue = /^-?\d+n+$/;
 var originalStringify = JSON.stringify;
@@ -68222,8 +68298,7 @@ var JSONParse = (text, reviver) => {
 		throw error;
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@octokit/request-error/dist-src/index.js
+// tooling/artifact-transport/node_modules/@octokit/request-error/dist-src/index.js
 var RequestError = class extends Error {
 	name;
 	/**
@@ -68251,8 +68326,7 @@ var RequestError = class extends Error {
 		this.request = requestCopy;
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@octokit/request/dist-bundle/index.js
+// tooling/artifact-transport/node_modules/@octokit/request/dist-bundle/index.js
 var defaults_default = { headers: { "user-agent": `octokit-request.js/10.0.16 ${getUserAgent()}` } };
 function isPlainObject(value) {
 	if (typeof value !== "object" || value === null) return false;
@@ -68390,8 +68464,7 @@ function withDefaults$1(oldEndpoint, newDefaults) {
 var request = withDefaults$1(endpoint, defaults_default);
 /* v8 ignore next -- @preserve */
 /* v8 ignore else -- @preserve */
-//#endregion
-//#region tooling/artifact-transport/node_modules/@octokit/graphql/dist-bundle/index.js
+// tooling/artifact-transport/node_modules/@octokit/graphql/dist-bundle/index.js
 var VERSION$5 = "0.0.0-development";
 function _buildMessageForResponseErrors(data) {
 	return `Request failed due to following response errors:
@@ -68481,8 +68554,7 @@ function withCustomRequest(customRequest) {
 	});
 }
 /* v8 ignore if -- @preserve */
-//#endregion
-//#region tooling/artifact-transport/node_modules/@octokit/auth-token/dist-bundle/index.js
+// tooling/artifact-transport/node_modules/@octokit/auth-token/dist-bundle/index.js
 var b64url = "(?:[a-zA-Z0-9_-]+)";
 var sep$1 = "\\.";
 var jwtRE = new RegExp(`^${b64url}${sep$1}${b64url}${sep$1}${b64url}$`);
@@ -68512,11 +68584,9 @@ var createTokenAuth = function createTokenAuth2(token) {
 	token = token.replace(/^(token|bearer) +/i, "");
 	return Object.assign(auth.bind(null, token), { hook: hook.bind(null, token) });
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@octokit/core/dist-src/version.js
+// tooling/artifact-transport/node_modules/@octokit/core/dist-src/version.js
 var VERSION$4 = "7.0.8";
-//#endregion
-//#region tooling/artifact-transport/node_modules/@octokit/core/dist-src/index.js
+// tooling/artifact-transport/node_modules/@octokit/core/dist-src/index.js
 var noop = () => {};
 var consoleWarn = console.warn.bind(console);
 var consoleError = console.error.bind(console);
@@ -68603,11 +68673,9 @@ var Octokit = class {
 	hook;
 	auth;
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@octokit/plugin-rest-endpoint-methods/dist-src/version.js
+// tooling/artifact-transport/node_modules/@octokit/plugin-rest-endpoint-methods/dist-src/version.js
 var VERSION$3 = "17.0.0";
-//#endregion
-//#region tooling/artifact-transport/node_modules/@octokit/plugin-rest-endpoint-methods/dist-src/generated/endpoints.js
+// tooling/artifact-transport/node_modules/@octokit/plugin-rest-endpoint-methods/dist-src/generated/endpoints.js
 var endpoints_default = {
 	actions: {
 		addCustomLabelsToSelfHostedRunnerForOrg: ["POST /orgs/{org}/actions/runners/{runner_id}/labels"],
@@ -69900,8 +69968,7 @@ var endpoints_default = {
 		updateAuthenticated: ["PATCH /user"]
 	}
 };
-//#endregion
-//#region tooling/artifact-transport/node_modules/@octokit/plugin-rest-endpoint-methods/dist-src/endpoints-to-methods.js
+// tooling/artifact-transport/node_modules/@octokit/plugin-rest-endpoint-methods/dist-src/endpoints-to-methods.js
 var endpointMethodsMap = /* @__PURE__ */ new Map();
 for (const [scope, endpoints] of Object.entries(endpoints_default)) for (const [methodName, endpoint] of Object.entries(endpoints)) {
 	const [route, defaults, decorations] = endpoint;
@@ -69992,8 +70059,7 @@ function decorate(octokit, scope, methodName, defaults, decorations) {
 	}
 	return Object.assign(withDecorations, requestWithDefaults);
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@octokit/plugin-rest-endpoint-methods/dist-src/index.js
+// tooling/artifact-transport/node_modules/@octokit/plugin-rest-endpoint-methods/dist-src/index.js
 function restEndpointMethods(octokit) {
 	return { rest: endpointsToMethods(octokit) };
 }
@@ -70006,8 +70072,7 @@ function legacyRestEndpointMethods(octokit) {
 	};
 }
 legacyRestEndpointMethods.VERSION = VERSION$3;
-//#endregion
-//#region tooling/artifact-transport/node_modules/@octokit/plugin-paginate-rest/dist-bundle/index.js
+// tooling/artifact-transport/node_modules/@octokit/plugin-paginate-rest/dist-bundle/index.js
 var VERSION$2 = "0.0.0-development";
 function normalizePaginatedListResponse(response) {
 	if (!response.data) return {
@@ -70125,8 +70190,7 @@ new Context();
 function getOctokit(token, options, ...additionalPlugins) {
 	return new (GitHub.plugin(...additionalPlugins))(getOctokitOptions(token, options));
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-callable/index.js
+// tooling/artifact-transport/node_modules/is-callable/index.js
 var require_is_callable = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var fnToStr = Function.prototype.toString;
 	var reflectApply = typeof Reflect === "object" && Reflect !== null && Reflect.apply;
@@ -70205,8 +70269,7 @@ var require_is_callable = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return tryFunctionObject(value);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/for-each/index.js
+// tooling/artifact-transport/node_modules/for-each/index.js
 var require_for_each = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var isCallable = require_is_callable();
 	var toStr = Object.prototype.toString;
@@ -70244,8 +70307,7 @@ var require_for_each = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		else forEachObject(list, iterator, receiver);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/possible-typed-array-names/index.js
+// tooling/artifact-transport/node_modules/possible-typed-array-names/index.js
 var require_possible_typed_array_names = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('.')} */
 	module.exports = [
@@ -70263,8 +70325,7 @@ var require_possible_typed_array_names = /* @__PURE__ */ __commonJSMin(((exports
 		"BigUint64Array"
 	];
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/available-typed-arrays/index.js
+// tooling/artifact-transport/node_modules/available-typed-arrays/index.js
 var require_available_typed_arrays = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var possibleNames = require_possible_typed_array_names();
 	var g = typeof globalThis === "undefined" ? global : globalThis;
@@ -70275,100 +70336,84 @@ var require_available_typed_arrays = /* @__PURE__ */ __commonJSMin(((exports, mo
 		return out;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-object-atoms/index.js
+// tooling/artifact-transport/node_modules/es-object-atoms/index.js
 var require_es_object_atoms = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('.')} */
 	module.exports = Object;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-errors/index.js
+// tooling/artifact-transport/node_modules/es-errors/index.js
 var require_es_errors = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('.')} */
 	module.exports = Error;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-errors/eval.js
+// tooling/artifact-transport/node_modules/es-errors/eval.js
 var require_eval = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('./eval')} */
 	module.exports = EvalError;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-errors/range.js
+// tooling/artifact-transport/node_modules/es-errors/range.js
 var require_range = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('./range')} */
 	module.exports = RangeError;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-errors/ref.js
+// tooling/artifact-transport/node_modules/es-errors/ref.js
 var require_ref = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('./ref')} */
 	module.exports = ReferenceError;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-errors/syntax.js
+// tooling/artifact-transport/node_modules/es-errors/syntax.js
 var require_syntax = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('./syntax')} */
 	module.exports = SyntaxError;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-errors/type.js
+// tooling/artifact-transport/node_modules/es-errors/type.js
 var require_type = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('./type')} */
 	module.exports = TypeError;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-errors/uri.js
+// tooling/artifact-transport/node_modules/es-errors/uri.js
 var require_uri = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('./uri')} */
 	module.exports = URIError;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/math-intrinsics/abs.js
+// tooling/artifact-transport/node_modules/math-intrinsics/abs.js
 var require_abs = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('./abs')} */
 	module.exports = Math.abs;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/math-intrinsics/floor.js
+// tooling/artifact-transport/node_modules/math-intrinsics/floor.js
 var require_floor$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('./floor')} */
 	module.exports = Math.floor;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/math-intrinsics/max.js
+// tooling/artifact-transport/node_modules/math-intrinsics/max.js
 var require_max = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('./max')} */
 	module.exports = Math.max;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/math-intrinsics/min.js
+// tooling/artifact-transport/node_modules/math-intrinsics/min.js
 var require_min = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('./min')} */
 	module.exports = Math.min;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/math-intrinsics/pow.js
+// tooling/artifact-transport/node_modules/math-intrinsics/pow.js
 var require_pow = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('./pow')} */
 	module.exports = Math.pow;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/math-intrinsics/round.js
+// tooling/artifact-transport/node_modules/math-intrinsics/round.js
 var require_round = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('./round')} */
 	module.exports = Math.round;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/math-intrinsics/isNaN.js
+// tooling/artifact-transport/node_modules/math-intrinsics/isNaN.js
 var require_isNaN$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('./isNaN')} */
 	module.exports = Number.isNaN || function isNaN(a) {
 		return a !== a;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/math-intrinsics/sign.js
+// tooling/artifact-transport/node_modules/math-intrinsics/sign.js
 var require_sign = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $isNaN = require_isNaN$1();
 	/** @type {import('./sign')} */
@@ -70377,14 +70422,12 @@ var require_sign = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return number < 0 ? -1 : 1;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/gopd/gOPD.js
+// tooling/artifact-transport/node_modules/gopd/gOPD.js
 var require_gOPD = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('./gOPD')} */
 	module.exports = Object.getOwnPropertyDescriptor;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/gopd/index.js
+// tooling/artifact-transport/node_modules/gopd/index.js
 var require_gopd = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('.')} */
 	var $gOPD = require_gOPD();
@@ -70395,8 +70438,7 @@ var require_gopd = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = $gOPD;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-define-property/index.js
+// tooling/artifact-transport/node_modules/es-define-property/index.js
 var require_es_define_property = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('.')} */
 	var $defineProperty = Object.defineProperty || false;
@@ -70407,8 +70449,7 @@ var require_es_define_property = /* @__PURE__ */ __commonJSMin(((exports, module
 	}
 	module.exports = $defineProperty;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/has-symbols/shams.js
+// tooling/artifact-transport/node_modules/has-symbols/shams.js
 var require_shams$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('./shams')} */
 	module.exports = function hasSymbols() {
@@ -70436,8 +70477,7 @@ var require_shams$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return true;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/has-symbols/index.js
+// tooling/artifact-transport/node_modules/has-symbols/index.js
 var require_has_symbols = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var origSymbol = typeof Symbol !== "undefined" && Symbol;
 	var hasSymbolSham = require_shams$1();
@@ -70450,20 +70490,17 @@ var require_has_symbols = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return hasSymbolSham();
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/get-proto/Reflect.getPrototypeOf.js
+// tooling/artifact-transport/node_modules/get-proto/Reflect.getPrototypeOf.js
 var require_Reflect_getPrototypeOf = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('./Reflect.getPrototypeOf')} */
 	module.exports = typeof Reflect !== "undefined" && Reflect.getPrototypeOf || null;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/get-proto/Object.getPrototypeOf.js
+// tooling/artifact-transport/node_modules/get-proto/Object.getPrototypeOf.js
 var require_Object_getPrototypeOf = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('./Object.getPrototypeOf')} */
 	module.exports = require_es_object_atoms().getPrototypeOf || null;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/function-bind/implementation.js
+// tooling/artifact-transport/node_modules/function-bind/implementation.js
 var require_implementation$5 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var ERROR_MESSAGE = "Function.prototype.bind called on incompatible ";
 	var toStr = Object.prototype.toString;
@@ -70514,32 +70551,27 @@ var require_implementation$5 = /* @__PURE__ */ __commonJSMin(((exports, module) 
 		return bound;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/function-bind/index.js
+// tooling/artifact-transport/node_modules/function-bind/index.js
 var require_function_bind = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var implementation = require_implementation$5();
 	module.exports = Function.prototype.bind || implementation;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/call-bind-apply-helpers/functionCall.js
+// tooling/artifact-transport/node_modules/call-bind-apply-helpers/functionCall.js
 var require_functionCall = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('./functionCall')} */
 	module.exports = Function.prototype.call;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/call-bind-apply-helpers/functionApply.js
+// tooling/artifact-transport/node_modules/call-bind-apply-helpers/functionApply.js
 var require_functionApply = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('./functionApply')} */
 	module.exports = Function.prototype.apply;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/call-bind-apply-helpers/reflectApply.js
+// tooling/artifact-transport/node_modules/call-bind-apply-helpers/reflectApply.js
 var require_reflectApply = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('./reflectApply')} */
 	module.exports = typeof Reflect !== "undefined" && Reflect && Reflect.apply;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/call-bind-apply-helpers/actualApply.js
+// tooling/artifact-transport/node_modules/call-bind-apply-helpers/actualApply.js
 var require_actualApply = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var bind = require_function_bind();
 	var $apply = require_functionApply();
@@ -70547,8 +70579,7 @@ var require_actualApply = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('./actualApply')} */
 	module.exports = require_reflectApply() || bind.call($call, $apply);
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/call-bind-apply-helpers/index.js
+// tooling/artifact-transport/node_modules/call-bind-apply-helpers/index.js
 var require_call_bind_apply_helpers = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var bind = require_function_bind();
 	var $TypeError = require_type();
@@ -70560,8 +70591,7 @@ var require_call_bind_apply_helpers = /* @__PURE__ */ __commonJSMin(((exports, m
 		return $actualApply(bind, $call, args);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/dunder-proto/get.js
+// tooling/artifact-transport/node_modules/dunder-proto/get.js
 var require_get = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var callBind = require_call_bind_apply_helpers();
 	var gOPD = require_gopd();
@@ -70579,8 +70609,7 @@ var require_get = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return $getPrototypeOf(value == null ? value : $Object(value));
 	} : false;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/get-proto/index.js
+// tooling/artifact-transport/node_modules/get-proto/index.js
 var require_get_proto = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var reflectGetProto = require_Reflect_getPrototypeOf();
 	var originalGetProto = require_Object_getPrototypeOf();
@@ -70595,16 +70624,14 @@ var require_get_proto = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return getDunderProto(O);
 	} : null;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/hasown/index.js
+// tooling/artifact-transport/node_modules/hasown/index.js
 var require_hasown = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var call = Function.prototype.call;
 	var $hasOwn = Object.prototype.hasOwnProperty;
 	/** @type {import('.')} */
 	module.exports = require_function_bind().call(call, $hasOwn);
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/get-intrinsic/index.js
+// tooling/artifact-transport/node_modules/get-intrinsic/index.js
 var require_get_intrinsic = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var undefined;
 	var $Object = require_es_object_atoms();
@@ -70929,8 +70956,7 @@ var require_get_intrinsic = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 		return value;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/define-data-property/index.js
+// tooling/artifact-transport/node_modules/define-data-property/index.js
 var require_define_data_property = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $defineProperty = require_es_define_property();
 	var $SyntaxError = require_syntax();
@@ -70959,8 +70985,7 @@ var require_define_data_property = /* @__PURE__ */ __commonJSMin(((exports, modu
 		else throw new $SyntaxError("This environment does not support defining a property as non-configurable, non-writable, or non-enumerable.");
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/has-property-descriptors/index.js
+// tooling/artifact-transport/node_modules/has-property-descriptors/index.js
 var require_has_property_descriptors = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $defineProperty = require_es_define_property();
 	var hasPropertyDescriptors = function hasPropertyDescriptors() {
@@ -70976,8 +71001,7 @@ var require_has_property_descriptors = /* @__PURE__ */ __commonJSMin(((exports, 
 	};
 	module.exports = hasPropertyDescriptors;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/set-function-length/index.js
+// tooling/artifact-transport/node_modules/set-function-length/index.js
 var require_set_function_length = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var GetIntrinsic = require_get_intrinsic();
 	var define = require_define_data_property();
@@ -71004,8 +71028,7 @@ var require_set_function_length = /* @__PURE__ */ __commonJSMin(((exports, modul
 		return fn;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/call-bind-apply-helpers/applyBind.js
+// tooling/artifact-transport/node_modules/call-bind-apply-helpers/applyBind.js
 var require_applyBind = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var bind = require_function_bind();
 	var $apply = require_functionApply();
@@ -71015,8 +71038,7 @@ var require_applyBind = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return actualApply(bind, $apply, arguments);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/call-bind/index.js
+// tooling/artifact-transport/node_modules/call-bind/index.js
 var require_call_bind = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var setFunctionLength = require_set_function_length();
 	var $defineProperty = require_es_define_property();
@@ -71030,8 +71052,7 @@ var require_call_bind = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	if ($defineProperty) $defineProperty(module.exports, "apply", { value: applyBind });
 	else module.exports.apply = applyBind;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/call-bound/index.js
+// tooling/artifact-transport/node_modules/call-bound/index.js
 var require_call_bound = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var GetIntrinsic = require_get_intrinsic();
 	var callBindBasic = require_call_bind_apply_helpers();
@@ -71044,8 +71065,7 @@ var require_call_bound = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return intrinsic;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/has-tostringtag/shams.js
+// tooling/artifact-transport/node_modules/has-tostringtag/shams.js
 var require_shams = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var hasSymbols = require_shams$1();
 	/** @type {import('.')} */
@@ -71053,8 +71073,7 @@ var require_shams = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return hasSymbols() && !!Symbol.toStringTag;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/which-typed-array/index.js
+// tooling/artifact-transport/node_modules/which-typed-array/index.js
 var require_which_typed_array = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var forEach = require_for_each();
 	var availableTypedArrays = require_available_typed_arrays();
@@ -71143,8 +71162,7 @@ var require_which_typed_array = /* @__PURE__ */ __commonJSMin(((exports, module)
 	}
 	module.exports = whichTypedArray;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/object-keys/isArguments.js
+// tooling/artifact-transport/node_modules/object-keys/isArguments.js
 var require_isArguments = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var toStr = Object.prototype.toString;
 	module.exports = function isArguments(value) {
@@ -71154,8 +71172,7 @@ var require_isArguments = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return isArgs;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/object-keys/implementation.js
+// tooling/artifact-transport/node_modules/object-keys/implementation.js
 var require_implementation$4 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var keysShim;
 	if (!Object.keys) {
@@ -71244,8 +71261,7 @@ var require_implementation$4 = /* @__PURE__ */ __commonJSMin(((exports, module) 
 	}
 	module.exports = keysShim;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/object-keys/index.js
+// tooling/artifact-transport/node_modules/object-keys/index.js
 var require_object_keys = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var slice = Array.prototype.slice;
 	var isArgs = require_isArguments();
@@ -71268,8 +71284,7 @@ var require_object_keys = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	};
 	module.exports = keysShim;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/define-properties/index.js
+// tooling/artifact-transport/node_modules/define-properties/index.js
 var require_define_properties = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var keys = require_object_keys();
 	var hasSymbols = typeof Symbol === "function" && typeof Symbol("foo") === "symbol";
@@ -71298,13 +71313,11 @@ var require_define_properties = /* @__PURE__ */ __commonJSMin(((exports, module)
 	defineProperties.supportsDescriptors = !!supportsDescriptors;
 	module.exports = defineProperties;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/object-inspect/util.inspect.js
+// tooling/artifact-transport/node_modules/object-inspect/util.inspect.js
 var require_util_inspect = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = __require("util").inspect;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/object-inspect/index.js
+// tooling/artifact-transport/node_modules/object-inspect/index.js
 var require_object_inspect = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var hasMap = typeof Map === "function" && Map.prototype;
 	var mapSizeDescriptor = Object.getOwnPropertyDescriptor && hasMap ? Object.getOwnPropertyDescriptor(Map.prototype, "size") : null;
@@ -71685,23 +71698,20 @@ var require_object_inspect = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		return xs;
 	}
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/helpers/isPropertyKey.js
+// tooling/artifact-transport/node_modules/es-abstract/helpers/isPropertyKey.js
 var require_isPropertyKey$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = function isPropertyKey(argument) {
 		return typeof argument === "string" || typeof argument === "symbol";
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-object-atoms/isObject.js
+// tooling/artifact-transport/node_modules/es-object-atoms/isObject.js
 var require_isObject$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('./isObject')} */
 	module.exports = function isObject(x) {
 		return !!x && (typeof x === "function" || typeof x === "object");
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/Get.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/Get.js
 var require_Get = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $TypeError = require_type();
 	var inspect = require_object_inspect();
@@ -71713,8 +71723,7 @@ var require_Get = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return O[P];
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/math-intrinsics/isFinite.js
+// tooling/artifact-transport/node_modules/math-intrinsics/isFinite.js
 var require_isFinite = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $isNaN = require_isNaN$1();
 	/** @type {import('./isFinite')} */
@@ -71722,8 +71731,7 @@ var require_isFinite = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return (typeof x === "number" || typeof x === "bigint") && !$isNaN(x) && x !== Infinity && x !== -Infinity;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/math-intrinsics/isInteger.js
+// tooling/artifact-transport/node_modules/math-intrinsics/isInteger.js
 var require_isInteger$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $abs = require_abs();
 	var $floor = require_floor$1();
@@ -71736,8 +71744,7 @@ var require_isInteger$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return $floor(absValue) === absValue;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-array-buffer/index.js
+// tooling/artifact-transport/node_modules/is-array-buffer/index.js
 var require_is_array_buffer = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var callBind = require_call_bind();
 	var callBound = require_call_bound();
@@ -71763,8 +71770,7 @@ var require_is_array_buffer = /* @__PURE__ */ __commonJSMin(((exports, module) =
 		return false;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/array-buffer-byte-length/index.js
+// tooling/artifact-transport/node_modules/array-buffer-byte-length/index.js
 var require_array_buffer_byte_length = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $byteLength = require_call_bound()("ArrayBuffer.prototype.byteLength", true);
 	var isArrayBuffer = require_is_array_buffer();
@@ -71774,8 +71780,7 @@ var require_array_buffer_byte_length = /* @__PURE__ */ __commonJSMin(((exports, 
 		return $byteLength ? $byteLength(ab) : ab.byteLength;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-shared-array-buffer/index.js
+// tooling/artifact-transport/node_modules/is-shared-array-buffer/index.js
 var require_is_shared_array_buffer = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {undefined | ((thisArg: SharedArrayBuffer) => number)} */
 	var $byteLength = require_call_bound()("SharedArrayBuffer.prototype.byteLength", true);
@@ -71792,8 +71797,7 @@ var require_is_shared_array_buffer = /* @__PURE__ */ __commonJSMin(((exports, mo
 		return false;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/IsDetachedBuffer.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/IsDetachedBuffer.js
 var require_IsDetachedBuffer = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $TypeError = require_type();
 	var $byteLength = require_array_buffer_byte_length();
@@ -71813,8 +71817,7 @@ var require_IsDetachedBuffer = /* @__PURE__ */ __commonJSMin(((exports, module) 
 		return false;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/HasOwnProperty.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/HasOwnProperty.js
 var require_HasOwnProperty = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $TypeError = require_type();
 	var hasOwn = require_hasown();
@@ -71826,8 +71829,7 @@ var require_HasOwnProperty = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		return hasOwn(O, P);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/helpers/IsArray.js
+// tooling/artifact-transport/node_modules/es-abstract/helpers/IsArray.js
 var require_IsArray$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $Array = require_get_intrinsic()("%Array%");
 	var toStr = !$Array.isArray && require_call_bound()("Object.prototype.toString");
@@ -71835,27 +71837,23 @@ var require_IsArray$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return toStr(argument) === "[object Array]";
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/IsArray.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/IsArray.js
 var require_IsArray = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = require_IsArray$1();
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/IsBigIntElementType.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/IsBigIntElementType.js
 var require_IsBigIntElementType = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = function IsBigIntElementType(type) {
 		return type === "BIGUINT64" || type === "BIGINT64";
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/IsUnsignedElementType.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/IsUnsignedElementType.js
 var require_IsUnsignedElementType = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = function IsUnsignedElementType(type) {
 		return type === "UINT8" || type === "UINT8C" || type === "UINT16" || type === "UINT32" || type === "BIGUINT64";
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/helpers/bytesAsFloat16.js
+// tooling/artifact-transport/node_modules/es-abstract/helpers/bytesAsFloat16.js
 var require_bytesAsFloat16 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $pow = require_pow();
 	module.exports = function bytesAsFloat32(rawBytes) {
@@ -71871,8 +71869,7 @@ var require_bytesAsFloat16 = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		return sign * (1 + mantissa * $pow(2, -10)) * $pow(2, exponent);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/helpers/bytesAsFloat32.js
+// tooling/artifact-transport/node_modules/es-abstract/helpers/bytesAsFloat32.js
 var require_bytesAsFloat32 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $pow = require_pow();
 	module.exports = function bytesAsFloat32(rawBytes) {
@@ -71887,8 +71884,7 @@ var require_bytesAsFloat32 = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		return sign * (1 + mantissa * $pow(2, -23)) * $pow(2, exponent);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/helpers/bytesAsFloat64.js
+// tooling/artifact-transport/node_modules/es-abstract/helpers/bytesAsFloat64.js
 var require_bytesAsFloat64 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $pow = require_pow();
 	module.exports = function bytesAsFloat64(rawBytes) {
@@ -71903,8 +71899,7 @@ var require_bytesAsFloat64 = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		return sign * (1 + mantissa / 4503599627370496) * $pow(2, exponent);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/helpers/bytesAsInteger.js
+// tooling/artifact-transport/node_modules/es-abstract/helpers/bytesAsInteger.js
 var require_bytesAsInteger = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var GetIntrinsic = require_get_intrinsic();
 	var $pow = require_pow();
@@ -71921,23 +71916,20 @@ var require_bytesAsInteger = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		return intValue;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/helpers/every.js
+// tooling/artifact-transport/node_modules/es-abstract/helpers/every.js
 var require_every = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = function every(array, predicate) {
 		for (var i = 0; i < array.length; i += 1) if (!predicate(array[i], i, array)) return false;
 		return true;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/helpers/isByteValue.js
+// tooling/artifact-transport/node_modules/es-abstract/helpers/isByteValue.js
 var require_isByteValue = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = function isByteValue(value) {
 		return typeof value === "number" && value >= 0 && value <= 255 && (value | 0) === value;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/tables/typed-array-objects.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/tables/typed-array-objects.js
 var require_typed_array_objects = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = {
 		__proto__: null,
@@ -71974,8 +71966,7 @@ var require_typed_array_objects = /* @__PURE__ */ __commonJSMin(((exports, modul
 		choices: "\"INT8\", \"UINT8\", \"UINT8C\", \"INT16\", \"UINT16\", \"INT32\", \"UINT32\", \"BIGINT64\", \"BIGUINT64\", \"FLOAT16\", \"FLOAT32\", or \"FLOAT64\""
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/RawBytesToNumeric.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/RawBytesToNumeric.js
 var require_RawBytesToNumeric = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var GetIntrinsic = require_get_intrinsic();
 	var callBound = require_call_bound();
@@ -72012,16 +72003,14 @@ var require_RawBytesToNumeric = /* @__PURE__ */ __commonJSMin(((exports, module)
 		return bytesAsInteger(rawBytes, elementSize, IsUnsignedElementType(type), isBigInt);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/isarray/index.js
+// tooling/artifact-transport/node_modules/isarray/index.js
 var require_isarray = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var toString = {}.toString;
 	module.exports = Array.isArray || function(arr) {
 		return toString.call(arr) == "[object Array]";
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/safe-array-concat/index.js
+// tooling/artifact-transport/node_modules/safe-array-concat/index.js
 var require_safe_array_concat = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $concat = require_get_intrinsic()("%Array.prototype.concat%");
 	var callBind = require_call_bind();
@@ -72044,8 +72033,7 @@ var require_safe_array_concat = /* @__PURE__ */ __commonJSMin(((exports, module)
 		return $concatApply(arguments);
 	} : callBind($concat, empty);
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-typed-array/index.js
+// tooling/artifact-transport/node_modules/is-typed-array/index.js
 var require_is_typed_array = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var whichTypedArray = require_which_typed_array();
 	/** @type {import('.')} */
@@ -72053,8 +72041,7 @@ var require_is_typed_array = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		return !!whichTypedArray(value);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/typed-array-buffer/index.js
+// tooling/artifact-transport/node_modules/typed-array-buffer/index.js
 var require_typed_array_buffer = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $TypeError = require_type();
 	/** @type {undefined | ((thisArg: import('.').TypedArray) => Buffer<ArrayBufferLike>)} */
@@ -72066,8 +72053,7 @@ var require_typed_array_buffer = /* @__PURE__ */ __commonJSMin(((exports, module
 		return x.buffer;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/helpers/defaultEndianness.js
+// tooling/artifact-transport/node_modules/es-abstract/helpers/defaultEndianness.js
 var require_defaultEndianness = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var GetIntrinsic = require_get_intrinsic();
 	var $Uint8Array = GetIntrinsic("%Uint8Array%", true);
@@ -72077,8 +72063,7 @@ var require_defaultEndianness = /* @__PURE__ */ __commonJSMin(((exports, module)
 	var uInt8 = uInt32 && new $Uint8Array(typedArrayBuffer(uInt32));
 	module.exports = uInt8 ? uInt8[0] === 120 ? "little" : uInt8[0] === 18 ? "big" : uInt8[0] === 52 ? "mixed" : "unknown" : "indeterminate";
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/GetValueFromBuffer.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/GetValueFromBuffer.js
 var require_GetValueFromBuffer = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var GetIntrinsic = require_get_intrinsic();
 	var $SyntaxError = require_syntax();
@@ -72131,8 +72116,7 @@ var require_GetValueFromBuffer = /* @__PURE__ */ __commonJSMin(((exports, module
 		]), 0, elementSize), isLittleEndian);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/SameValue.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/SameValue.js
 var require_SameValue = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $isNaN = require_isNaN$1();
 	module.exports = function SameValue(x, y) {
@@ -72143,8 +72127,7 @@ var require_SameValue = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return $isNaN(x) && $isNaN(y);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/Set.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/Set.js
 var require_Set = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $TypeError = require_type();
 	var isObject = require_isObject$1();
@@ -72152,6 +72135,7 @@ var require_Set = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SameValue = require_SameValue();
 	var noThrowOnStrictViolation = function() {
 		try {
+			delete [].length;
 			return true;
 		} catch (e) {
 			return false;
@@ -72174,8 +72158,7 @@ var require_Set = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		}
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/StringToBigInt.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/StringToBigInt.js
 var require_StringToBigInt = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $BigInt = require_get_intrinsic()("%BigInt%", true);
 	var $TypeError = require_type();
@@ -72190,8 +72173,7 @@ var require_StringToBigInt = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		}
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-date-object/index.js
+// tooling/artifact-transport/node_modules/is-date-object/index.js
 var require_is_date_object = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var callBound = require_call_bound();
 	var getDay = callBound("Date.prototype.getDay");
@@ -72214,8 +72196,7 @@ var require_is_date_object = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		return hasToStringTag ? tryDateObject(value) : toStr(value) === dateClass;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-regex/index.js
+// tooling/artifact-transport/node_modules/is-regex/index.js
 var require_is_regex = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var callBound = require_call_bound();
 	var hasToStringTag = require_shams()();
@@ -72261,8 +72242,7 @@ var require_is_regex = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = fn;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/safe-regex-test/index.js
+// tooling/artifact-transport/node_modules/safe-regex-test/index.js
 var require_safe_regex_test = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var callBound = require_call_bound();
 	var isRegex = require_is_regex();
@@ -72276,8 +72256,7 @@ var require_safe_regex_test = /* @__PURE__ */ __commonJSMin(((exports, module) =
 		};
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-symbol/index.js
+// tooling/artifact-transport/node_modules/is-symbol/index.js
 var require_is_symbol = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var callBound = require_call_bound();
 	var $toString = callBound("Object.prototype.toString");
@@ -72307,8 +72286,7 @@ var require_is_symbol = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return false;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-to-primitive/helpers/isPrimitive.js
+// tooling/artifact-transport/node_modules/es-to-primitive/helpers/isPrimitive.js
 var require_isPrimitive$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @import { primitive } from '../' */
 	/** @import { primitiveES5 } from '../es5' */
@@ -72317,16 +72295,14 @@ var require_isPrimitive$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 		return value === null || typeof value !== "function" && typeof value !== "object";
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract-get/isPropertyKey.js
+// tooling/artifact-transport/node_modules/es-abstract-get/isPropertyKey.js
 var require_isPropertyKey = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('./isPropertyKey')} */
 	module.exports = function isPropertyKey(argument) {
 		return typeof argument === "string" || typeof argument === "symbol";
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract-get/GetV.js
+// tooling/artifact-transport/node_modules/es-abstract-get/GetV.js
 var require_GetV = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $TypeError = require_type();
 	var inspect = require_object_inspect();
@@ -72337,8 +72313,7 @@ var require_GetV = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return V[P];
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract-get/GetMethod.js
+// tooling/artifact-transport/node_modules/es-abstract-get/GetMethod.js
 var require_GetMethod = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $TypeError = require_type();
 	var isCallable = require_is_callable();
@@ -72354,8 +72329,7 @@ var require_GetMethod = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return func;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-to-primitive/es2015.js
+// tooling/artifact-transport/node_modules/es-to-primitive/es2015.js
 var require_es2015 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var hasSymbols = typeof Symbol === "function" && typeof Symbol.iterator === "symbol";
 	var isCallable = require_is_callable();
@@ -72404,8 +72378,7 @@ var require_es2015 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return OrdinaryToPrimitive(input, hint === "default" ? "number" : hint);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/ToPrimitive.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/ToPrimitive.js
 var require_ToPrimitive = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var toPrimitive = require_es2015();
 	module.exports = function ToPrimitive(input) {
@@ -72413,8 +72386,7 @@ var require_ToPrimitive = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return toPrimitive(input);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/ToBigInt.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/ToBigInt.js
 var require_ToBigInt = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var GetIntrinsic = require_get_intrinsic();
 	var $BigInt = GetIntrinsic("%BigInt%", true);
@@ -72439,8 +72411,7 @@ var require_ToBigInt = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return prim;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/BigInt/remainder.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/BigInt/remainder.js
 var require_remainder = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $BigInt = require_get_intrinsic()("%BigInt%", true);
 	var $RangeError = require_range();
@@ -72453,16 +72424,14 @@ var require_remainder = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return n % d;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/helpers/modBigInt.js
+// tooling/artifact-transport/node_modules/es-abstract/helpers/modBigInt.js
 var require_modBigInt = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = function bigIntMod(BigIntRemainder, bigint, modulo) {
 		var remain = BigIntRemainder(bigint, modulo);
 		return remain >= 0 ? remain : remain + modulo;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/ToBigInt64.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/ToBigInt64.js
 var require_ToBigInt64 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $BigInt = require_get_intrinsic()("%BigInt%", true);
 	var $pow = require_pow();
@@ -72476,8 +72445,7 @@ var require_ToBigInt64 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return int64bit >= twoSixtyThree ? int64bit - twoSixtyFour : int64bit;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/ToBigUint64.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/ToBigUint64.js
 var require_ToBigUint64 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $BigInt = require_get_intrinsic()("%BigInt%", true);
 	var $pow = require_pow();
@@ -72489,8 +72457,7 @@ var require_ToBigUint64 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return modBigInt(BigIntRemainder, ToBigInt(argument), twoSixtyFour);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/math-intrinsics/mod.js
+// tooling/artifact-transport/node_modules/math-intrinsics/mod.js
 var require_math_intrinsics = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $floor = require_floor$1();
 	/** @type {import('./mod')} */
@@ -72499,28 +72466,24 @@ var require_math_intrinsics = /* @__PURE__ */ __commonJSMin(((exports, module) =
 		return $floor(remain >= 0 ? remain : remain + modulo);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/helpers/mod.js
+// tooling/artifact-transport/node_modules/es-abstract/helpers/mod.js
 var require_helpers = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = require_math_intrinsics();
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/modulo.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/modulo.js
 var require_modulo = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var mod = require_helpers();
 	module.exports = function modulo(x, y) {
 		return mod(x, y);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/helpers/isPrimitive.js
+// tooling/artifact-transport/node_modules/es-abstract/helpers/isPrimitive.js
 var require_isPrimitive = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = function isPrimitive(value) {
 		return value === null || typeof value !== "function" && typeof value !== "object";
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-object-atoms/RequireObjectCoercible.js
+// tooling/artifact-transport/node_modules/es-object-atoms/RequireObjectCoercible.js
 var require_RequireObjectCoercible = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $TypeError = require_type();
 	/** @type {import('./RequireObjectCoercible')} */
@@ -72529,8 +72492,7 @@ var require_RequireObjectCoercible = /* @__PURE__ */ __commonJSMin(((exports, mo
 		return value;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/ToString.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/ToString.js
 var require_ToString = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $String = require_get_intrinsic()("%String%");
 	var $TypeError = require_type();
@@ -72539,8 +72501,7 @@ var require_ToString = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return $String(argument);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/string.prototype.trim/implementation.js
+// tooling/artifact-transport/node_modules/string.prototype.trim/implementation.js
 var require_implementation$3 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var RequireObjectCoercible = require_RequireObjectCoercible();
 	var ToString = require_ToString();
@@ -72559,8 +72520,7 @@ var require_implementation$3 = /* @__PURE__ */ __commonJSMin(((exports, module) 
 		return $slice(S, 0, end);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/string.prototype.trim/polyfill.js
+// tooling/artifact-transport/node_modules/string.prototype.trim/polyfill.js
 var require_polyfill$3 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var implementation = require_implementation$3();
 	var zeroWidthSpace = "​";
@@ -72570,8 +72530,7 @@ var require_polyfill$3 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return implementation;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/string.prototype.trim/shim.js
+// tooling/artifact-transport/node_modules/string.prototype.trim/shim.js
 var require_shim$2 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var supportsDescriptors = require_has_property_descriptors()();
 	var defineDataProperty = require_define_data_property();
@@ -72585,8 +72544,7 @@ var require_shim$2 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return polyfill;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/string.prototype.trim/index.js
+// tooling/artifact-transport/node_modules/string.prototype.trim/index.js
 var require_string_prototype_trim = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var callBind = require_call_bind();
 	var define = require_define_properties();
@@ -72606,8 +72564,7 @@ var require_string_prototype_trim = /* @__PURE__ */ __commonJSMin(((exports, mod
 	});
 	module.exports = boundMethod;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/StringToNumber.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/StringToNumber.js
 var require_StringToNumber = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var GetIntrinsic = require_get_intrinsic();
 	var $RegExp = GetIntrinsic("%RegExp%");
@@ -72635,8 +72592,7 @@ var require_StringToNumber = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		return +argument;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/ToNumber.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/ToNumber.js
 var require_ToNumber = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var GetIntrinsic = require_get_intrinsic();
 	var $TypeError = require_type();
@@ -72652,8 +72608,7 @@ var require_ToNumber = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return +value;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/floor.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/floor.js
 var require_floor = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $floor = require_floor$1();
 	module.exports = function floor(x) {
@@ -72661,8 +72616,7 @@ var require_floor = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return $floor(x);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/truncate.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/truncate.js
 var require_truncate = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var floor = require_floor();
 	var $TypeError = require_type();
@@ -72672,8 +72626,7 @@ var require_truncate = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return result === 0 ? 0 : result;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/ToInt16.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/ToInt16.js
 var require_ToInt16 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var modulo = require_modulo();
 	var ToNumber = require_ToNumber();
@@ -72687,8 +72640,7 @@ var require_ToInt16 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return int16bit >= 32768 ? int16bit - two16 : int16bit;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/ToInt32.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/ToInt32.js
 var require_ToInt32 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var modulo = require_modulo();
 	var ToNumber = require_ToNumber();
@@ -72704,8 +72656,7 @@ var require_ToInt32 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return result === 0 ? 0 : result;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/ToInt8.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/ToInt8.js
 var require_ToInt8 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var modulo = require_modulo();
 	var ToNumber = require_ToNumber();
@@ -72718,8 +72669,7 @@ var require_ToInt8 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return int8bit >= 128 ? int8bit - 256 : int8bit;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/ToUint16.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/ToUint16.js
 var require_ToUint16 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var modulo = require_modulo();
 	var ToNumber = require_ToNumber();
@@ -72733,8 +72683,7 @@ var require_ToUint16 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return int16bit === 0 ? 0 : int16bit;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/ToUint32.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/ToUint32.js
 var require_ToUint32 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var modulo = require_modulo();
 	var ToNumber = require_ToNumber();
@@ -72748,8 +72697,7 @@ var require_ToUint32 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return int32bit === 0 ? 0 : int32bit;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/ToUint8.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/ToUint8.js
 var require_ToUint8 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var isFinite = require_isFinite();
 	var modulo = require_modulo();
@@ -72761,8 +72709,7 @@ var require_ToUint8 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return modulo(truncate(number), 256);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/clamp.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/clamp.js
 var require_clamp = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $TypeError = require_type();
 	var max = require_max();
@@ -72772,8 +72719,7 @@ var require_clamp = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return min(max(lower, x), upper);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/ToUint8Clamp.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/ToUint8Clamp.js
 var require_ToUint8Clamp = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var clamp = require_clamp();
 	var ToNumber = require_ToNumber();
@@ -72789,16 +72735,14 @@ var require_ToUint8Clamp = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return f % 2 === 0 ? f : f + 1;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/math-intrinsics/isNegativeZero.js
+// tooling/artifact-transport/node_modules/math-intrinsics/isNegativeZero.js
 var require_isNegativeZero = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {import('./isNegativeZero')} */
 	module.exports = function isNegativeZero(x) {
 		return x === 0 && 1 / x === -Infinity;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/helpers/valueToFloat16Bytes.js
+// tooling/artifact-transport/node_modules/es-abstract/helpers/valueToFloat16Bytes.js
 var require_valueToFloat16Bytes = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $abs = require_abs();
 	var $floor = require_floor$1();
@@ -72841,8 +72785,7 @@ var require_valueToFloat16Bytes = /* @__PURE__ */ __commonJSMin(((exports, modul
 		return isLittleEndian ? [byte0, byte1] : [byte1, byte0];
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/helpers/valueToFloat32Bytes.js
+// tooling/artifact-transport/node_modules/es-abstract/helpers/valueToFloat32Bytes.js
 var require_valueToFloat32Bytes = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $abs = require_abs();
 	var $floor = require_floor$1();
@@ -72930,8 +72873,7 @@ var require_valueToFloat32Bytes = /* @__PURE__ */ __commonJSMin(((exports, modul
 		];
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/helpers/fractionToBinaryString.js
+// tooling/artifact-transport/node_modules/es-abstract/helpers/fractionToBinaryString.js
 var require_fractionToBinaryString = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var MAX_ITER = 1075;
 	var maxBits = 54;
@@ -72955,8 +72897,7 @@ var require_fractionToBinaryString = /* @__PURE__ */ __commonJSMin(((exports, mo
 		return str;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/helpers/intToBinaryString.js
+// tooling/artifact-transport/node_modules/es-abstract/helpers/intToBinaryString.js
 var require_intToBinaryString = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $floor = require_floor$1();
 	module.exports = function intToBinaryString(x) {
@@ -72971,15 +72912,13 @@ var require_intToBinaryString = /* @__PURE__ */ __commonJSMin(((exports, module)
 		return str;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/helpers/isNaN.js
+// tooling/artifact-transport/node_modules/es-abstract/helpers/isNaN.js
 var require_isNaN = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = Number.isNaN || function isNaN(a) {
 		return a !== a;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/helpers/valueToFloat64Bytes.js
+// tooling/artifact-transport/node_modules/es-abstract/helpers/valueToFloat64Bytes.js
 var require_valueToFloat64Bytes = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $parseInt = require_get_intrinsic()("%parseInt%");
 	var $abs = require_abs();
@@ -73038,8 +72977,7 @@ var require_valueToFloat64Bytes = /* @__PURE__ */ __commonJSMin(((exports, modul
 		return rawBytes;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/helpers/integerToNBytes.js
+// tooling/artifact-transport/node_modules/es-abstract/helpers/integerToNBytes.js
 var require_integerToNBytes = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var GetIntrinsic = require_get_intrinsic();
 	var $Number = GetIntrinsic("%Number%");
@@ -73055,8 +72993,7 @@ var require_integerToNBytes = /* @__PURE__ */ __commonJSMin(((exports, module) =
 		return rawBytes;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/NumericToRawBytes.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/NumericToRawBytes.js
 var require_NumericToRawBytes = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $TypeError = require_type();
 	var hasOwnProperty = require_HasOwnProperty();
@@ -73098,15 +73035,13 @@ var require_NumericToRawBytes = /* @__PURE__ */ __commonJSMin(((exports, module)
 		return integerToNBytes(convOp(value), n, isLittleEndian);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/helpers/forEach.js
+// tooling/artifact-transport/node_modules/es-abstract/helpers/forEach.js
 var require_forEach = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = function forEach(array, callback) {
 		for (var i = 0; i < array.length; i += 1) callback(array[i], i, array);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/SetValueInBuffer.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/SetValueInBuffer.js
 var require_SetValueInBuffer = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var GetIntrinsic = require_get_intrinsic();
 	var $SyntaxError = require_syntax();
@@ -73144,8 +73079,7 @@ var require_SetValueInBuffer = /* @__PURE__ */ __commonJSMin(((exports, module) 
 		}
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/ToIntegerOrInfinity.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/ToIntegerOrInfinity.js
 var require_ToIntegerOrInfinity = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var ToNumber = require_ToNumber();
 	var truncate = require_truncate();
@@ -73158,8 +73092,7 @@ var require_ToIntegerOrInfinity = /* @__PURE__ */ __commonJSMin(((exports, modul
 		return truncate(number);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/TypedArrayElementSize.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/TypedArrayElementSize.js
 var require_TypedArrayElementSize = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $SyntaxError = require_syntax();
 	var $TypeError = require_type();
@@ -73174,8 +73107,7 @@ var require_TypedArrayElementSize = /* @__PURE__ */ __commonJSMin(((exports, mod
 		return size;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/TypedArrayElementType.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/TypedArrayElementType.js
 var require_TypedArrayElementType = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $SyntaxError = require_syntax();
 	var $TypeError = require_type();
@@ -73189,13 +73121,11 @@ var require_TypedArrayElementType = /* @__PURE__ */ __commonJSMin(((exports, mod
 		return result;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/GetIntrinsic.js
+// tooling/artifact-transport/node_modules/es-abstract/GetIntrinsic.js
 var require_GetIntrinsic = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = require_get_intrinsic();
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/helpers/records/property-descriptor.js
+// tooling/artifact-transport/node_modules/es-abstract/helpers/records/property-descriptor.js
 var require_property_descriptor = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $TypeError = require_type();
 	var hasOwn = require_hasown();
@@ -73217,8 +73147,7 @@ var require_property_descriptor = /* @__PURE__ */ __commonJSMin(((exports, modul
 		return true;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/helpers/DefineOwnProperty.js
+// tooling/artifact-transport/node_modules/es-abstract/helpers/DefineOwnProperty.js
 var require_DefineOwnProperty = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var hasPropertyDescriptors = require_has_property_descriptors();
 	var $defineProperty = require_es_define_property();
@@ -73242,8 +73171,7 @@ var require_DefineOwnProperty = /* @__PURE__ */ __commonJSMin(((exports, module)
 		return true;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/helpers/fromPropertyDescriptor.js
+// tooling/artifact-transport/node_modules/es-abstract/helpers/fromPropertyDescriptor.js
 var require_fromPropertyDescriptor = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = function fromPropertyDescriptor(Desc) {
 		if (typeof Desc === "undefined") return Desc;
@@ -73257,8 +73185,7 @@ var require_fromPropertyDescriptor = /* @__PURE__ */ __commonJSMin(((exports, mo
 		return obj;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/FromPropertyDescriptor.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/FromPropertyDescriptor.js
 var require_FromPropertyDescriptor = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $TypeError = require_type();
 	var isPropertyDescriptor = require_property_descriptor();
@@ -73268,8 +73195,7 @@ var require_FromPropertyDescriptor = /* @__PURE__ */ __commonJSMin(((exports, mo
 		return fromPropertyDescriptor(Desc);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/IsDataDescriptor.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/IsDataDescriptor.js
 var require_IsDataDescriptor = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $TypeError = require_type();
 	var hasOwn = require_hasown();
@@ -73281,20 +73207,17 @@ var require_IsDataDescriptor = /* @__PURE__ */ __commonJSMin(((exports, module) 
 		return true;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/IsCallable.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/IsCallable.js
 var require_IsCallable$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = require_is_callable();
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/ToBoolean.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/ToBoolean.js
 var require_ToBoolean = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = function ToBoolean(value) {
 		return !!value;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/ToPropertyDescriptor.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/ToPropertyDescriptor.js
 var require_ToPropertyDescriptor = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var hasOwn = require_hasown();
 	var $TypeError = require_type();
@@ -73322,8 +73245,7 @@ var require_ToPropertyDescriptor = /* @__PURE__ */ __commonJSMin(((exports, modu
 		return desc;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/DefinePropertyOrThrow.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/DefinePropertyOrThrow.js
 var require_DefinePropertyOrThrow = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $TypeError = require_type();
 	var isObject = require_isObject$1();
@@ -73342,8 +73264,7 @@ var require_DefinePropertyOrThrow = /* @__PURE__ */ __commonJSMin(((exports, mod
 		return DefineOwnProperty(IsDataDescriptor, SameValue, FromPropertyDescriptor, O, P, Desc);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/IsConstructor.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/IsConstructor.js
 var require_IsConstructor = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $construct = require_GetIntrinsic()("%Reflect.construct%", true);
 	var DefinePropertyOrThrow = require_DefinePropertyOrThrow();
@@ -73372,8 +73293,7 @@ var require_IsConstructor = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 		return typeof argument === "function" && !!argument.prototype;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/SpeciesConstructor.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/SpeciesConstructor.js
 var require_SpeciesConstructor = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $species = require_get_intrinsic()("%Symbol.species%", true);
 	var $TypeError = require_type();
@@ -73390,8 +73310,7 @@ var require_SpeciesConstructor = /* @__PURE__ */ __commonJSMin(((exports, module
 		throw new $TypeError("no constructor found");
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/IsFixedLengthArrayBuffer.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/IsFixedLengthArrayBuffer.js
 var require_IsFixedLengthArrayBuffer = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $TypeError = require_type();
 	var callBound = require_call_bound();
@@ -73408,13 +73327,11 @@ var require_IsFixedLengthArrayBuffer = /* @__PURE__ */ __commonJSMin(((exports, 
 		return true;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/helpers/isInteger.js
+// tooling/artifact-transport/node_modules/es-abstract/helpers/isInteger.js
 var require_isInteger = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = require_isInteger$1();
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/helpers/records/typed-array-with-buffer-witness-record.js
+// tooling/artifact-transport/node_modules/es-abstract/helpers/records/typed-array-with-buffer-witness-record.js
 var require_typed_array_with_buffer_witness_record = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var hasOwn = require_hasown();
 	var isTypedArray = require_is_typed_array();
@@ -73423,18 +73340,15 @@ var require_typed_array_with_buffer_witness_record = /* @__PURE__ */ __commonJSM
 		return !!value && typeof value === "object" && hasOwn(value, "[[Object]]") && hasOwn(value, "[[CachedBufferByteLength]]") && (isInteger(value["[[CachedBufferByteLength]]"]) && value["[[CachedBufferByteLength]]"] >= 0 || value["[[CachedBufferByteLength]]"] === "DETACHED") && isTypedArray(value["[[Object]]"]);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2024/IsCallable.js
+// tooling/artifact-transport/node_modules/es-abstract/2024/IsCallable.js
 var require_IsCallable = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = require_is_callable();
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/helpers/isObject.js
+// tooling/artifact-transport/node_modules/es-abstract/helpers/isObject.js
 var require_isObject = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = require_isObject$1();
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-string/index.js
+// tooling/artifact-transport/node_modules/is-string/index.js
 var require_is_string = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var callBound = require_call_bound();
 	/** @type {(receiver: ThisParameterType<typeof String.prototype.valueOf>, ...args: Parameters<typeof String.prototype.valueOf>) => ReturnType<typeof String.prototype.valueOf>} */
@@ -73459,8 +73373,7 @@ var require_is_string = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return hasToStringTag ? tryStringObject(value) : $toString(value) === strClass;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-number-object/index.js
+// tooling/artifact-transport/node_modules/is-number-object/index.js
 var require_is_number_object = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var callBound = require_call_bound();
 	var $numToStr = callBound("Number.prototype.toString");
@@ -73483,8 +73396,7 @@ var require_is_number_object = /* @__PURE__ */ __commonJSMin(((exports, module) 
 		return hasToStringTag ? tryNumberObject(value) : $toString(value) === numClass;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-boolean-object/index.js
+// tooling/artifact-transport/node_modules/is-boolean-object/index.js
 var require_is_boolean_object = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var callBound = require_call_bound();
 	var $boolToStr = callBound("Boolean.prototype.toString");
@@ -73507,8 +73419,7 @@ var require_is_boolean_object = /* @__PURE__ */ __commonJSMin(((exports, module)
 		return hasToStringTag ? tryBooleanObject(value) : $toString(value) === boolClass;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/has-bigints/index.js
+// tooling/artifact-transport/node_modules/has-bigints/index.js
 var require_has_bigints = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $BigInt = typeof BigInt !== "undefined" && BigInt;
 	/** @type {import('.')} */
@@ -73516,8 +73427,7 @@ var require_has_bigints = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return typeof $BigInt === "function" && typeof BigInt === "function" && typeof $BigInt(42) === "bigint" && typeof BigInt(42) === "bigint";
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-bigint/index.js
+// tooling/artifact-transport/node_modules/is-bigint/index.js
 var require_is_bigint = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	if (require_has_bigints()()) {
 		var bigIntValueOf = BigInt.prototype.valueOf;
@@ -73541,8 +73451,7 @@ var require_is_bigint = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return false;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/which-boxed-primitive/index.js
+// tooling/artifact-transport/node_modules/which-boxed-primitive/index.js
 var require_which_boxed_primitive = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var isString = require_is_string();
 	var isNumber = require_is_number_object();
@@ -73559,8 +73468,7 @@ var require_which_boxed_primitive = /* @__PURE__ */ __commonJSMin(((exports, mod
 		if (isBigInt(value)) return "BigInt";
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-map/index.js
+// tooling/artifact-transport/node_modules/is-map/index.js
 var require_is_map = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @const */
 	var $Map = typeof Map === "function" && Map.prototype ? Map : null;
@@ -73593,8 +73501,7 @@ var require_is_map = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return false;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-set/index.js
+// tooling/artifact-transport/node_modules/is-set/index.js
 var require_is_set = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $Map = typeof Map === "function" && Map.prototype ? Map : null;
 	var $Set = typeof Set === "function" && Set.prototype ? Set : null;
@@ -73626,8 +73533,7 @@ var require_is_set = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return false;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-weakmap/index.js
+// tooling/artifact-transport/node_modules/is-weakmap/index.js
 var require_is_weakmap = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $WeakMap = typeof WeakMap === "function" && WeakMap.prototype ? WeakMap : null;
 	var $WeakSet = typeof WeakSet === "function" && WeakSet.prototype ? WeakSet : null;
@@ -73659,8 +73565,7 @@ var require_is_weakmap = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return false;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-weakset/index.js
+// tooling/artifact-transport/node_modules/is-weakset/index.js
 var require_is_weakset = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var GetIntrinsic = require_get_intrinsic();
 	var callBound = require_call_bound();
@@ -73690,8 +73595,7 @@ var require_is_weakset = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return false;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/which-collection/index.js
+// tooling/artifact-transport/node_modules/which-collection/index.js
 var require_which_collection = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var isMap = require_is_map();
 	var isSet = require_is_set();
@@ -73708,8 +73612,7 @@ var require_which_collection = /* @__PURE__ */ __commonJSMin(((exports, module) 
 		return false;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-weakref/index.js
+// tooling/artifact-transport/node_modules/is-weakref/index.js
 var require_is_weakref = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $deref = require_call_bound()("WeakRef.prototype.deref", true);
 	/** @type {import('.')} */
@@ -73725,8 +73628,7 @@ var require_is_weakref = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		}
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-finalizationregistry/index.js
+// tooling/artifact-transport/node_modules/is-finalizationregistry/index.js
 var require_is_finalizationregistry = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/** @type {undefined | ((value: ThisParameterType<typeof FinalizationRegistry.prototype.register>, ...args: Parameters<typeof FinalizationRegistry.prototype.register>) => ReturnType<typeof FinalizationRegistry.prototype.register>)} */
 	var $register = require_call_bound()("FinalizationRegistry.prototype.register", true);
@@ -73743,8 +73645,7 @@ var require_is_finalizationregistry = /* @__PURE__ */ __commonJSMin(((exports, m
 		return false;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/functions-have-names/index.js
+// tooling/artifact-transport/node_modules/functions-have-names/index.js
 var require_functions_have_names = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var functionsHaveNames = function functionsHaveNames() {
 		return typeof function f() {}.name === "string";
@@ -73766,8 +73667,7 @@ var require_functions_have_names = /* @__PURE__ */ __commonJSMin(((exports, modu
 	};
 	module.exports = functionsHaveNames;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-document.all/index.js
+// tooling/artifact-transport/node_modules/is-document.all/index.js
 var require_is_document_all = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var toStr = require_call_bound()("Object.prototype.toString");
 	var isIE68 = !(0 in [,]);
@@ -73789,8 +73689,7 @@ var require_is_document_all = /* @__PURE__ */ __commonJSMin(((exports, module) =
 	}
 	module.exports = isDDA;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/function.prototype.name/implementation.js
+// tooling/artifact-transport/node_modules/function.prototype.name/implementation.js
 var require_implementation$2 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var IsCallable = require_is_callable();
 	var hasOwn = require_hasown();
@@ -73821,8 +73720,7 @@ var require_implementation$2 = /* @__PURE__ */ __commonJSMin(((exports, module) 
 		return match && match[1];
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/function.prototype.name/polyfill.js
+// tooling/artifact-transport/node_modules/function.prototype.name/polyfill.js
 var require_polyfill$2 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var implementation = require_implementation$2();
 	/** @type {import('./polyfill')} */
@@ -73830,8 +73728,7 @@ var require_polyfill$2 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return implementation;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/function.prototype.name/shim.js
+// tooling/artifact-transport/node_modules/function.prototype.name/shim.js
 var require_shim$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var supportsDescriptors = require_has_property_descriptors()();
 	var functionsHaveNames = require_functions_have_names()();
@@ -73862,8 +73759,7 @@ var require_shim$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return polyfill;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/function.prototype.name/index.js
+// tooling/artifact-transport/node_modules/function.prototype.name/index.js
 var require_function_prototype_name = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var callBind = require_call_bind();
 	var implementation = require_implementation$2();
@@ -73875,15 +73771,13 @@ var require_function_prototype_name = /* @__PURE__ */ __commonJSMin(((exports, m
 	module.exports.implementation = implementation;
 	module.exports.shim = shim;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/generator-function/index.js
+// tooling/artifact-transport/node_modules/generator-function/index.js
 var require_generator_function = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var cached = function* () {}.constructor;
 	/** @type {import('.')} */
 	module.exports = () => cached;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-generator-function/index.js
+// tooling/artifact-transport/node_modules/is-generator-function/index.js
 var require_is_generator_function = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var callBound = require_call_bound();
 	var isFnRegex = require_safe_regex_test()(/^\s*(?:function)?\*/);
@@ -73902,15 +73796,13 @@ var require_is_generator_function = /* @__PURE__ */ __commonJSMin(((exports, mod
 		return GeneratorFunction && getProto(fn) === GeneratorFunction.prototype;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/async-function/index.js
+// tooling/artifact-transport/node_modules/async-function/index.js
 var require_async_function = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var cached = async function() {}.constructor;
 	/** @type {import('.')} */
 	module.exports = () => cached;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/is-async-function/index.js
+// tooling/artifact-transport/node_modules/is-async-function/index.js
 var require_is_async_function = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var callBound = require_call_bound();
 	var safeRegexTest = require_safe_regex_test();
@@ -73930,8 +73822,7 @@ var require_is_async_function = /* @__PURE__ */ __commonJSMin(((exports, module)
 		return asyncFunc && asyncFunc.prototype === getProto(fn);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/which-builtin-type/index.js
+// tooling/artifact-transport/node_modules/which-builtin-type/index.js
 var require_which_builtin_type = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var whichBoxedPrimitive = require_which_boxed_primitive();
 	var whichCollection = require_which_collection();
@@ -73989,8 +73880,7 @@ var require_which_builtin_type = /* @__PURE__ */ __commonJSMin(((exports, module
 		return "Object";
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/reflect.getprototypeof/implementation.js
+// tooling/artifact-transport/node_modules/reflect.getprototypeof/implementation.js
 var require_implementation$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var GetIntrinsic = require_get_intrinsic();
 	var IsCallable = require_IsCallable();
@@ -74012,8 +73902,7 @@ var require_implementation$1 = /* @__PURE__ */ __commonJSMin(((exports, module) 
 		return null;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/reflect.getprototypeof/polyfill.js
+// tooling/artifact-transport/node_modules/reflect.getprototypeof/polyfill.js
 var require_polyfill$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var implementation = require_implementation$1();
 	var getProto = require_get_proto();
@@ -74024,8 +73913,7 @@ var require_polyfill$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		} : implementation;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/typed-array-byte-offset/index.js
+// tooling/artifact-transport/node_modules/typed-array-byte-offset/index.js
 var require_typed_array_byte_offset = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var forEach = require_for_each();
 	var callBind = require_call_bind();
@@ -74074,8 +73962,7 @@ var require_typed_array_byte_offset = /* @__PURE__ */ __commonJSMin(((exports, m
 		return tryTypedArrays(value);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/typed-array-length/index.js
+// tooling/artifact-transport/node_modules/typed-array-length/index.js
 var require_typed_array_length = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var callBind = require_call_bind();
 	var forEach = require_for_each();
@@ -74133,8 +74020,7 @@ var require_typed_array_length = /* @__PURE__ */ __commonJSMin(((exports, module
 		return tryTypedArrays(value);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/IsTypedArrayOutOfBounds.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/IsTypedArrayOutOfBounds.js
 var require_IsTypedArrayOutOfBounds = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $TypeError = require_type();
 	var IsDetachedBuffer = require_IsDetachedBuffer();
@@ -74160,8 +74046,7 @@ var require_IsTypedArrayOutOfBounds = /* @__PURE__ */ __commonJSMin(((exports, m
 		return false;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/TypedArrayLength.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/TypedArrayLength.js
 var require_TypedArrayLength = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $TypeError = require_type();
 	var floor = require_floor();
@@ -74187,8 +74072,7 @@ var require_TypedArrayLength = /* @__PURE__ */ __commonJSMin(((exports, module) 
 		return floor((byteLength - byteOffset) / elementSize);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/ArrayBufferByteLength.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/ArrayBufferByteLength.js
 var require_ArrayBufferByteLength = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $TypeError = require_type();
 	var IsDetachedBuffer = require_IsDetachedBuffer();
@@ -74206,8 +74090,7 @@ var require_ArrayBufferByteLength = /* @__PURE__ */ __commonJSMin(((exports, mod
 		return isSAB ? $sabByteLength(arrayBuffer) : arrayBufferByteLength(arrayBuffer);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/MakeTypedArrayWithBufferWitnessRecord.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/MakeTypedArrayWithBufferWitnessRecord.js
 var require_MakeTypedArrayWithBufferWitnessRecord = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $TypeError = require_type();
 	var ArrayBufferByteLength = require_ArrayBufferByteLength();
@@ -74224,8 +74107,7 @@ var require_MakeTypedArrayWithBufferWitnessRecord = /* @__PURE__ */ __commonJSMi
 		};
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/ValidateTypedArray.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/ValidateTypedArray.js
 var require_ValidateTypedArray = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $TypeError = require_type();
 	var isObject = require_isObject$1();
@@ -74241,8 +74123,7 @@ var require_ValidateTypedArray = /* @__PURE__ */ __commonJSMin(((exports, module
 		return taRecord;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/TypedArrayCreateFromConstructor.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/TypedArrayCreateFromConstructor.js
 var require_TypedArrayCreateFromConstructor = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $SyntaxError = require_syntax();
 	var $TypeError = require_type();
@@ -74269,8 +74150,7 @@ var require_TypedArrayCreateFromConstructor = /* @__PURE__ */ __commonJSMin(((ex
 		return newTypedArray;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/helpers/typedArrayConstructors.js
+// tooling/artifact-transport/node_modules/es-abstract/helpers/typedArrayConstructors.js
 var require_typedArrayConstructors = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var GetIntrinsic = require_get_intrinsic();
 	var constructors = {
@@ -74292,8 +74172,7 @@ var require_typedArrayConstructors = /* @__PURE__ */ __commonJSMin(((exports, mo
 		return constructors["$" + kind];
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/es-abstract/2025/TypedArraySpeciesCreate.js
+// tooling/artifact-transport/node_modules/es-abstract/2025/TypedArraySpeciesCreate.js
 var require_TypedArraySpeciesCreate = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $SyntaxError = require_syntax();
 	var $TypeError = require_type();
@@ -74313,8 +74192,7 @@ var require_TypedArraySpeciesCreate = /* @__PURE__ */ __commonJSMin(((exports, m
 		return TypedArrayCreateFromConstructor(SpeciesConstructor(exemplar, defaultConstructor), argumentList);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/typedarray.prototype.slice/implementation.js
+// tooling/artifact-transport/node_modules/typedarray.prototype.slice/implementation.js
 var require_implementation = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var $TypeError = require_type();
 	var Get = require_Get();
@@ -74377,8 +74255,7 @@ var require_implementation = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		return A;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/typedarray.prototype.slice/polyfill.js
+// tooling/artifact-transport/node_modules/typedarray.prototype.slice/polyfill.js
 var require_polyfill = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var implementation = require_implementation();
 	module.exports = function getPolyfill() {
@@ -74397,8 +74274,7 @@ var require_polyfill = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return implementation;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/typedarray.prototype.slice/shim.js
+// tooling/artifact-transport/node_modules/typedarray.prototype.slice/shim.js
 var require_shim = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var define = require_define_properties();
 	var getProto = require_get_proto();
@@ -74414,8 +74290,7 @@ var require_shim = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return polyfill;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/typedarray.prototype.slice/index.js
+// tooling/artifact-transport/node_modules/typedarray.prototype.slice/index.js
 var require_typedarray_prototype_slice = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var define = require_define_properties();
 	var callBind = require_call_bind();
@@ -74430,8 +74305,7 @@ var require_typedarray_prototype_slice = /* @__PURE__ */ __commonJSMin(((exports
 	});
 	module.exports = bound;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/traverse/index.js
+// tooling/artifact-transport/node_modules/traverse/index.js
 var require_traverse = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var whichTypedArray = require_which_typed_array();
 	var taSlice = require_typedarray_prototype_slice();
@@ -74860,8 +74734,7 @@ var require_traverse = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	});
 	module.exports = Traverse;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/chainsaw/index.js
+// tooling/artifact-transport/node_modules/chainsaw/index.js
 var require_chainsaw = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Traverse = require_traverse();
 	var EventEmitter = __require("events").EventEmitter;
@@ -74977,8 +74850,7 @@ var require_chainsaw = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		};
 	}
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/buffers/index.js
+// tooling/artifact-transport/node_modules/buffers/index.js
 var require_buffers = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = Buffers;
 	function Buffers(bufs) {
@@ -75146,8 +75018,7 @@ var require_buffers = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return this.slice(start, end).toString(encoding);
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/binary/lib/vars.js
+// tooling/artifact-transport/node_modules/binary/lib/vars.js
 var require_vars = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = function(store) {
 		function getset(name, value) {
@@ -75173,8 +75044,7 @@ var require_vars = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return vars;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/binary/index.js
+// tooling/artifact-transport/node_modules/binary/index.js
 var require_binary = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Chainsaw = require_chainsaw();
 	var EventEmitter = __require("events").EventEmitter;
@@ -75453,8 +75323,7 @@ var require_binary = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return self;
 	}
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/unzip-stream/lib/matcher-stream.js
+// tooling/artifact-transport/node_modules/unzip-stream/lib/matcher-stream.js
 var require_matcher_stream = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Transform = __require("stream").Transform;
 	var util = __require("util");
@@ -75521,8 +75390,7 @@ var require_matcher_stream = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 	};
 	module.exports = MatcherStream;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/unzip-stream/lib/entry.js
+// tooling/artifact-transport/node_modules/unzip-stream/lib/entry.js
 var require_entry = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var stream = __require("stream");
 	var inherits = __require("util").inherits;
@@ -75541,8 +75409,7 @@ var require_entry = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	};
 	module.exports = Entry;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/unzip-stream/lib/unzip-stream.js
+// tooling/artifact-transport/node_modules/unzip-stream/lib/unzip-stream.js
 var require_unzip_stream = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var binary = require_binary();
 	var stream = __require("stream");
@@ -76051,8 +75918,7 @@ var require_unzip_stream = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	};
 	module.exports = UnzipStream;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/unzip-stream/lib/parser-stream.js
+// tooling/artifact-transport/node_modules/unzip-stream/lib/parser-stream.js
 var require_parser_stream = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Transform = __require("stream").Transform;
 	var util = __require("util");
@@ -76098,8 +75964,7 @@ var require_parser_stream = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 	};
 	module.exports = ParserStream;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/mkdirp/index.js
+// tooling/artifact-transport/node_modules/mkdirp/index.js
 var require_mkdirp = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var path = __require("path");
 	var fs = __require("fs");
@@ -76168,8 +76033,7 @@ var require_mkdirp = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return made;
 	};
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/unzip-stream/lib/extract.js
+// tooling/artifact-transport/node_modules/unzip-stream/lib/extract.js
 var require_extract = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var fs = __require("fs");
 	var path = __require("path");
@@ -76247,8 +76111,7 @@ var require_extract = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	};
 	module.exports = Extract;
 }));
-//#endregion
-//#region tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/download/download-artifact.js
+// tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/download/download-artifact.js
 var import_unzip = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.Parse = require_parser_stream();
 	exports.Extract = require_extract();
@@ -76303,7 +76166,7 @@ function streamExtract(url, directory, skipDecompress) {
 			return yield streamExtractExternal(url, directory, { skipDecompress });
 		} catch (error) {
 			retryCount++;
-			debug(`Failed to download artifact after ${retryCount} retries due to ${error.message}. Retrying in 5 seconds...`);
+			debug$3(`Failed to download artifact after ${retryCount} retries due to ${error.message}. Retrying in 5 seconds...`);
 			yield new Promise((resolve) => setTimeout(resolve, 5e3));
 		}
 		throw new Error(`Artifact download failed after ${retryCount} retries.`);
@@ -76324,8 +76187,8 @@ function streamExtractExternal(url_1, directory_1) {
 		const filenamePlain = contentDisposition.match(/(?<!\*)filename\s*=\s*['"]?([^;\r\n"']*)['"]?/i);
 		const rawName = (filenameStar === null || filenameStar === void 0 ? void 0 : filenameStar[1]) || (filenamePlain === null || filenamePlain === void 0 ? void 0 : filenamePlain[1]);
 		if (rawName) fileName = path.basename(decodeURIComponent(rawName.trim()));
-		debug(`Content-Type: ${contentType}, mimeType: ${mimeType}, urlEndsWithZip: ${urlEndsWithZip}, isZip: ${isZip}, skipDecompress: ${skipDecompress}`);
-		debug(`Content-Disposition: ${contentDisposition}, fileName: ${fileName}`);
+		debug$3(`Content-Type: ${contentType}, mimeType: ${mimeType}, urlEndsWithZip: ${urlEndsWithZip}, isZip: ${isZip}, skipDecompress: ${skipDecompress}`);
+		debug$3(`Content-Disposition: ${contentDisposition}, fileName: ${fileName}`);
 		let sha256Digest = void 0;
 		return new Promise((resolve, reject) => {
 			const timerFn = () => {
@@ -76335,7 +76198,7 @@ function streamExtractExternal(url_1, directory_1) {
 			};
 			const timer = setTimeout(timerFn, timeout);
 			const onError = (error) => {
-				debug(`response.message: Artifact download failed: ${error.message}`);
+				debug$3(`response.message: Artifact download failed: ${error.message}`);
 				clearTimeout(timer);
 				reject(error);
 			};
@@ -76388,8 +76251,8 @@ function downloadArtifactPublic(artifactId, repositoryOwner, repositoryName, tok
 			if (options === null || options === void 0 ? void 0 : options.expectedHash) {
 				if ((options === null || options === void 0 ? void 0 : options.expectedHash) !== extractResponse.sha256Digest) {
 					digestMismatch = true;
-					debug(`Computed digest: ${extractResponse.sha256Digest}`);
-					debug(`Expected digest: ${options.expectedHash}`);
+					debug$3(`Computed digest: ${extractResponse.sha256Digest}`);
+					debug$3(`Expected digest: ${options.expectedHash}`);
 				}
 			}
 		} catch (error) {
@@ -76429,8 +76292,8 @@ function downloadArtifactInternal(artifactId, options) {
 			if (options === null || options === void 0 ? void 0 : options.expectedHash) {
 				if ((options === null || options === void 0 ? void 0 : options.expectedHash) !== extractResponse.sha256Digest) {
 					digestMismatch = true;
-					debug(`Computed digest: ${extractResponse.sha256Digest}`);
-					debug(`Expected digest: ${options.expectedHash}`);
+					debug$3(`Computed digest: ${extractResponse.sha256Digest}`);
+					debug$3(`Expected digest: ${options.expectedHash}`);
 				}
 			}
 		} catch (error) {
@@ -76445,14 +76308,13 @@ function downloadArtifactInternal(artifactId, options) {
 function resolveOrCreateDirectory() {
 	return __awaiter$4(this, arguments, void 0, function* (downloadPath = getGitHubWorkspaceDir()) {
 		if (!(yield exists(downloadPath))) {
-			debug(`Artifact destination folder does not exist, creating: ${downloadPath}`);
+			debug$3(`Artifact destination folder does not exist, creating: ${downloadPath}`);
 			yield fs$1.mkdir(downloadPath, { recursive: true });
-		} else debug(`Artifact destination folder already exists: ${downloadPath}`);
+		} else debug$3(`Artifact destination folder already exists: ${downloadPath}`);
 		return downloadPath;
 	});
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/find/retry-options.js
+// tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/find/retry-options.js
 var defaultMaxRetryNumber = 5;
 var defaultExemptStatusCodes = [
 	400,
@@ -76467,14 +76329,12 @@ function getRetryOptions(defaultOptions, retries = defaultMaxRetryNumber, exempt
 	const retryOptions = { enabled: true };
 	if (exemptStatusCodes.length > 0) retryOptions.doNotRetry = exemptStatusCodes;
 	const requestOptions = Object.assign(Object.assign({}, defaultOptions.request), { retries });
-	debug(`GitHub client configured with: (retries: ${requestOptions.retries}, retry-exempt-status-code: ${(_a = retryOptions.doNotRetry) !== null && _a !== void 0 ? _a : "octokit default: [400, 401, 403, 404, 422]"})`);
+	debug$3(`GitHub client configured with: (retries: ${requestOptions.retries}, retry-exempt-status-code: ${(_a = retryOptions.doNotRetry) !== null && _a !== void 0 ? _a : "octokit default: [400, 401, 403, 404, 422]"})`);
 	return [retryOptions, requestOptions];
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@octokit/plugin-request-log/dist-src/version.js
+// tooling/artifact-transport/node_modules/@octokit/plugin-request-log/dist-src/version.js
 var VERSION$1 = "6.0.0";
-//#endregion
-//#region tooling/artifact-transport/node_modules/@octokit/plugin-request-log/dist-src/index.js
+// tooling/artifact-transport/node_modules/@octokit/plugin-request-log/dist-src/index.js
 function requestLog(octokit) {
 	octokit.hook.wrap("request", (request, options) => {
 		octokit.log.debug("request", options);
@@ -76493,8 +76353,7 @@ function requestLog(octokit) {
 	});
 }
 requestLog.VERSION = VERSION$1;
-//#endregion
-//#region tooling/artifact-transport/node_modules/@octokit/plugin-retry/dist-bundle/index.js
+// tooling/artifact-transport/node_modules/@octokit/plugin-retry/dist-bundle/index.js
 var import_light = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((exports, module, this$1) => {
 	/**
 	* This file contains the Bottleneck library (MIT), compiled to ES2017, and without Clustering support.
@@ -77724,8 +77583,7 @@ function retry(octokit, octokitOptions) {
 	return retryPlugin;
 }
 retry.VERSION = VERSION;
-//#endregion
-//#region tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/find/get-artifact.js
+// tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/find/get-artifact.js
 var __awaiter$3 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
@@ -77776,7 +77634,7 @@ function getArtifactPublic(artifactName, workflowRunId, repositoryOwner, reposit
 		let artifact = getArtifactResp.data.artifacts[0];
 		if (getArtifactResp.data.artifacts.length > 1) {
 			artifact = getArtifactResp.data.artifacts.sort((a, b) => b.id - a.id)[0];
-			debug(`More than one artifact found for a single name, returning newest (id: ${artifact.id})`);
+			debug$3(`More than one artifact found for a single name, returning newest (id: ${artifact.id})`);
 		}
 		return { artifact: {
 			name: artifact.name,
@@ -77804,7 +77662,7 @@ function getArtifactInternal(artifactName) {
 		let artifact = res.artifacts[0];
 		if (res.artifacts.length > 1) {
 			artifact = res.artifacts.sort((a, b) => Number(b.databaseId) - Number(a.databaseId))[0];
-			debug(`More than one artifact found for a single name, returning newest (id: ${artifact.databaseId})`);
+			debug$3(`More than one artifact found for a single name, returning newest (id: ${artifact.databaseId})`);
 		}
 		return { artifact: {
 			name: artifact.name,
@@ -77815,8 +77673,7 @@ function getArtifactInternal(artifactName) {
 		} };
 	});
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/delete/delete-artifact.js
+// tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/delete/delete-artifact.js
 var __awaiter$2 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
@@ -77879,7 +77736,7 @@ function deleteArtifactInternal(artifactName) {
 		let artifact = listRes.artifacts[0];
 		if (listRes.artifacts.length > 1) {
 			artifact = listRes.artifacts.sort((a, b) => Number(b.databaseId) - Number(a.databaseId))[0];
-			debug(`More than one artifact found for a single name, returning newest (id: ${artifact.databaseId})`);
+			debug$3(`More than one artifact found for a single name, returning newest (id: ${artifact.databaseId})`);
 		}
 		const req = {
 			workflowRunBackendId: artifact.workflowRunBackendId,
@@ -77891,8 +77748,7 @@ function deleteArtifactInternal(artifactName) {
 		return { id: Number(res.artifactId) };
 	});
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/find/list-artifacts.js
+// tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/find/list-artifacts.js
 var __awaiter$1 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
@@ -77958,7 +77814,7 @@ function listArtifactsPublic(workflowRunId_1, repositoryOwner_1, repositoryName_
 		});
 		currentPageNumber++;
 		for (; currentPageNumber <= numberOfPages; currentPageNumber++) {
-			debug(`Fetching page ${currentPageNumber} of artifact list`);
+			debug$3(`Fetching page ${currentPageNumber} of artifact list`);
 			const { data: listArtifactResponse } = yield github.request("GET /repos/{owner}/{repo}/actions/runs/{run_id}/artifacts", {
 				owner: repositoryOwner,
 				repo: repositoryName,
@@ -78017,8 +77873,7 @@ function filterLatest(artifacts) {
 	}
 	return latestArtifacts;
 }
-//#endregion
-//#region tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/client.js
+// tooling/artifact-transport/node_modules/@actions/artifact/lib/internal/client.js
 var __awaiter = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
@@ -78151,8 +78006,7 @@ If the error persists, please check whether Actions and API requests are operati
 	}
 };
 new DefaultArtifactClient();
-//#endregion
-//#region tooling/artifact-transport/sdk-inspection.mjs
+// tooling/artifact-transport/sdk-inspection.mjs
 /** Verify raw public-SDK downloads before any archive can reach materialization. */
 /** The client seam is the SDK's public downloadArtifact operation. */
 async function inspectArtifact(client, artifact, directory) {
@@ -78195,8 +78049,7 @@ async function inspectArtifact(client, artifact, directory) {
 		clearInterval(watcher);
 	}
 }
-//#endregion
-//#region tooling/artifact-transport/sdk-worker.mjs
+// tooling/artifact-transport/sdk-worker.mjs
 /** Isolate uncancellable SDK operations so one parent deadline can stop network work. */
 process.once("message", async ({ operation, args }) => {
 	try {
@@ -78225,5 +78078,4 @@ process.once("message", async ({ operation, args }) => {
 		}, () => process.exit(1));
 	}
 });
-//#endregion
 export {};

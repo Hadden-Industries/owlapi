@@ -86,7 +86,8 @@ export const CHECK_JOBS = Object.freeze({
  * this policy cannot authorize an omitted integration.
  */
 export const QUALIFICATION_POLICY = Object.freeze({
-  version: 9,
+  version: 10,
+  documentationContract: "owlapi-release-documentation-v1",
   collectorImageCompatibility: "SUPPORTED_OS_ARCH_RUNTIME_RETAINED_BUILD",
   artifactTransportSha256: evidenceFingerprint({
     policy: artifactTransportPolicy,

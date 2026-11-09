@@ -107,7 +107,10 @@ export function assertRc3RecoveryEvidence(facts) {
   assert.equal(facts.candidate.artifactId, String(c.artifacts.candidate));
   assert.notEqual(facts.workflow.commit, c.sourceCommit);
   assert.notEqual(facts.workflow.runId, c.runId);
-  assert.equal(facts.workflow.runAttempt, 1);
+  assert.ok(
+    Number.isSafeInteger(facts.workflow.runAttempt) &&
+      facts.workflow.runAttempt >= 1,
+  );
   assert.equal(
     r?.failureClass,
     "PRE_PUBLICATION_APPROVAL_CAPTURE_IMPORT_FAILURE",
@@ -186,7 +189,7 @@ if (
   if (process.argv[2] === "guard-publication") {
     assert.equal(process.env.GITHUB_REPOSITORY, control.repository);
     assert.equal(process.env.GITHUB_REF, "refs/heads/main");
-    assert.equal(process.env.GITHUB_RUN_ATTEMPT, "1");
+    assert.ok(/^[1-9][0-9]*$/u.test(process.env.GITHUB_RUN_ATTEMPT ?? ""));
     assert.equal(process.env.GITHUB_JOB, "recovery_publish");
     await assertRecoveryRegistryUnused();
   } else {
@@ -196,6 +199,7 @@ if (
       source_commit: control.sourceCommit,
       source_run_id: control.runId,
       candidate_artifact_id: control.artifacts.candidate,
+      preflight_artifact_id: control.artifacts.preflight,
       tag: control.tag,
       version: control.tag.slice(1),
     };

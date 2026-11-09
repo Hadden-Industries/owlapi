@@ -7,6 +7,7 @@ import {
   inspectPackageTarball,
   materializePackageForScan,
   validateArchiveInventory,
+  validateBundledPackageClaims,
 } from "./archive-evidence.mjs";
 
 const BLOCK_BYTES = 512;
@@ -88,6 +89,112 @@ test.each(["A", "S"])(
 );
 
 describe("inspectPackageTarball", () => {
+  it("captures original scoped and nested bundled manifests bound to physical entries", async () => {
+    const childPath = "package/node_modules/@scope/alias/package.json";
+    const nestedPath =
+      "package/node_modules/@scope/alias/node_modules/child/package.json";
+    const result = await inspect([
+      {
+        path: "package/package.json",
+        body: packageJson({ bundleDependencies: ["@scope/alias"] }),
+      },
+      {
+        path: childPath,
+        body: packageJson({ name: "@scope/actual", version: "2.0.0" }),
+      },
+      {
+        path: nestedPath,
+        body: packageJson({ name: "child", version: "3.0.0" }),
+      },
+    ]);
+    expect(result.bundledPackages.map(({ path }) => path)).toEqual([
+      nestedPath,
+      childPath,
+    ]);
+    const claims = [
+      {
+        bundled: {
+          name: "@scope/actual",
+          version: "2.0.0",
+          packageJsonPath: "node_modules/@scope/alias/package.json",
+        },
+      },
+    ];
+    expect(() => validateBundledPackageClaims(result, claims)).not.toThrow();
+    claims[0].bundled.ownerBundleDependencies = ["unrelated"];
+    expect(() => validateBundledPackageClaims(result, claims)).toThrow(
+      /declarations disagree/u,
+    );
+    claims[0].bundled.ownerBundleDependencies = ["@scope/alias"];
+    claims[0].bundled.version = "9.0.0";
+    expect(() => validateBundledPackageClaims(result, claims)).toThrow(
+      /identity mismatch/u,
+    );
+    expect(() =>
+      validateBundledPackageClaims({ ...result, bundledPackages: [] }, claims),
+    ).toThrow(/census is incomplete/u);
+    for (const bundledPackages of [[], result.bundledPackages.slice(0, 1)])
+      expect(() =>
+        validateBundledPackageClaims({ ...result, bundledPackages }, []),
+      ).toThrow(/census is incomplete/u);
+    expect(() =>
+      validateBundledPackageClaims(
+        {
+          ...result,
+          entries: result.entries.filter(({ path }) => path !== childPath),
+        },
+        [],
+      ),
+    ).toThrow(/Invalid bundled/u);
+    expect(result.bundledPackages[0].bytes.toString("utf8")).toBe(
+      packageJson({ name: "child", version: "3.0.0" }),
+    );
+  });
+
+  it.each([
+    ["malformed", "{"],
+    ["invalid identity", "{}"],
+  ])("rejects %s bundled manifests", async (_name, body) => {
+    await expect(
+      inspect([
+        {
+          path: "package/package.json",
+          body: packageJson({ bundleDependencies: ["child"] }),
+        },
+        { path: "package/node_modules/child/package.json", body },
+      ]),
+    ).rejects.toThrow(/bundled package/u);
+  });
+
+  it("rejects an undeclared physical bundle and a declared missing manifest", async () => {
+    await expect(
+      inspect([
+        ...baseEntries(),
+        {
+          path: "package/node_modules/child/package.json",
+          body: packageJson({ name: "child" }),
+        },
+      ]),
+    ).rejects.toThrow(/owning package bundle declaration/u);
+    const result = await inspect([
+      {
+        path: "package/package.json",
+        body: packageJson({ bundleDependencies: ["child"] }),
+      },
+    ]);
+    expect(() =>
+      validateBundledPackageClaims(result, [
+        {
+          bundled: {
+            name: "child",
+            version: "1.0.0",
+            packageJsonPath: "node_modules/child/package.json",
+          },
+        },
+      ]),
+    ).toThrow(/Missing declared/u);
+  });
+
   it("returns selected original members without changing default evidence envelopes", async () => {
     const entries = [
       ...baseEntries(),

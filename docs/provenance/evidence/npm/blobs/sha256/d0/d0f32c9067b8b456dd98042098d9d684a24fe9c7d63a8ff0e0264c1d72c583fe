@@ -1,0 +1,152 @@
+{
+  "artifactId": "8f9fed3154cc0620c63db566d93c164dfab0d28d09a168b42269baa8a0530555",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4498,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/dev/index.d.ts",
+        "sha256": "39cc161aedd25eedf11da7dee0e4ba43e17d4364523741655d7a881258a9fade",
+        "size": 1868,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dev/index.d.ts.map",
+        "sha256": "e9f753ef20732d0048ca7e479a458f3ae10ce2ba26cbd68defbd5baf04ab0400",
+        "size": 368,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dev/index.js",
+        "sha256": "c8061bf30fa6302bfb0d4acbd60f73beb61ad77d751df5f942a1bec217f680bd",
+        "size": 2726,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "39cc161aedd25eedf11da7dee0e4ba43e17d4364523741655d7a881258a9fade",
+        "size": 1868,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts.map",
+        "sha256": "e9f753ef20732d0048ca7e479a458f3ae10ce2ba26cbd68defbd5baf04ab0400",
+        "size": 368,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "52114eb0c4995741081b53942f9b429d04b8a20e84c1aed368e8edc2aef586a0",
+        "size": 2743,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "69fbe941b8151b55316408f23e21864377ac337b3f597ca369a3059fda02575d",
+        "size": 1139,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "6f1ccb1f4697e1ce83c2cfc20e2be7c85b3ea817a391e55f5070f0f45c26f41a",
+        "size": 5671,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1094,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/dd/dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+          "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094
+      },
+      {
+        "blob": {
+          "bytes": 5671,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/6f/6f1ccb1f4697e1ce83c2cfc20e2be7c85b3ea817a391e55f5070f0f45c26f41a",
+          "sha256": "6f1ccb1f4697e1ce83c2cfc20e2be7c85b3ea817a391e55f5070f0f45c26f41a"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "6f1ccb1f4697e1ce83c2cfc20e2be7c85b3ea817a391e55f5070f0f45c26f41a",
+        "size": 5671
+      }
+    ],
+    "expandedBytes": 17845,
+    "packageIdentity": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "micromark-factory-space",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-factory-space",
+      "version": "2.1.0"
+    },
+    "packageMetadata": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "bugs": "https://github.com/micromark/micromark/issues",
+      "contributors": [
+        "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+      ],
+      "dependencies": {
+        "micromark-util-character": "^2.0.0",
+        "micromark-util-types": "^2.0.0"
+      },
+      "description": "micromark factory to parse markdown space (found in lots of places)",
+      "exports": {
+        "default": "./index.js",
+        "development": "./dev/index.js"
+      },
+      "files": [
+        "dev/",
+        "index.d.ts.map",
+        "index.d.ts",
+        "index.js"
+      ],
+      "funding": [
+        {
+          "type": "GitHub Sponsors",
+          "url": "https://github.com/sponsors/unifiedjs"
+        },
+        {
+          "type": "OpenCollective",
+          "url": "https://opencollective.com/unified"
+        }
+      ],
+      "keywords": [
+        "micromark",
+        "factory",
+        "space"
+      ],
+      "license": "MIT",
+      "name": "micromark-factory-space",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-factory-space",
+      "scripts": {
+        "build": "micromark-build"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "version": "2.1.0"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 4498,
+      "sha256": "5218d07cfd00f867e94f4197c9aac409fb8ea17c26ab38a124f9dd79ba8b8a3d"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

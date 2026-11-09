@@ -5,7 +5,10 @@ import { basename, dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { format as formatWithPrettier } from "prettier";
-import { publicMembers } from "./public-api-members.mjs";
+import {
+  publicMembers,
+  withDocumentedImportAlias,
+} from "./public-api-members.mjs";
 
 import * as apibinding from "../apibinding/index.js";
 import * as formats from "../formats/index.js";
@@ -1667,7 +1670,8 @@ const buildRegistry = async (javaRoot) => {
 };
 
 export const renderApiView = (registry, digest) => {
-  const sections = registry.bindings.map((binding) => {
+  const sections = registry.bindings.map((entry) => {
+    const binding = withDocumentedImportAlias(entry, registry.packageName);
     const javaAuthority = binding.javaType ?? binding.closestJavaAuthority;
     return [
       `## \`${binding.jsExport}\``,
@@ -1694,6 +1698,14 @@ export const renderApiView = (registry, digest) => {
     "",
     "# owlapi API reference",
     "",
+    "Import paths use the [npm alias from the installation guide](README.md#install).",
+    "",
+    "- [Create an ontology manager](#owlmanager) or [load and save an ontology](#owlontologymanager).",
+    "- [Construct OWL entities and axioms](#owldatafactory).",
+    "- [Choose a document format](#owldocumentformats) or [configure RDF/XML output](docs/compatibility/rdfxml-writer-configuration.md).",
+    "- [Check an OWL 2 DL profile](#owl2dlprofile).",
+    "- [Find the JavaScript equivalent of a Java type](docs/compatibility/java-api-surface.md#public-bindings).",
+    "",
     `This reference is generated from the authoritative compatibility registry for \`${registry.packageName}\` ${registry.packageVersion}. Edit the generator or registry inputs, not this file.`,
     "",
     "This is an independently maintained JavaScript implementation. It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project; Java names identify compatibility authorities, not organizational continuity or complete parity.",
@@ -1710,8 +1722,8 @@ export const renderApiView = (registry, digest) => {
 export const renderCompatibilityView = (registry, digest) => {
   const bindingRows = registry.bindings.map((binding) =>
     [
-      `| \`${binding.jsExport}\``,
-      binding.publicSpecifier,
+      `| [\`${binding.jsExport}\`](../../API.md#${binding.jsExport.toLowerCase()})`,
+      withDocumentedImportAlias(binding, registry.packageName).publicSpecifier,
       binding.javaType ?? binding.closestJavaAuthority,
       binding.relationship,
       binding.compatibility,
@@ -1760,6 +1772,8 @@ export const renderCompatibilityView = (registry, digest) => {
     ...dispositionRows,
     "",
     "## Public bindings",
+    "",
+    "Package specifiers below use the [documented npm alias](../../README.md#install).",
     "",
     "| JavaScript export | Package specifier | Java authority | Relationship | Compatibility | Status |",
     "| --- | --- | --- | --- | --- | --- |",

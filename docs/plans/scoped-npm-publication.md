@@ -1,5 +1,9 @@
 # Publish the scoped owlapi RC and qualify its production consumers
 
+> **Current release:** see the [latest published package and channels](../../README.md#release-status) and [installation instructions](../../README.md#install).
+> The [active 0.1.0 roadmap](2026-10-29-0.1.0-release-reconciliation.md) records rc.3 publication and its bounded acceptance.
+> The dated decisions, exact coordinates and execution sequence below retain the original publication history; they do not select an older version for a new installation.
+
 > **4 October 2026 successor amendment:** [rc.2 Java parity](0.1.0-rc.2-java-parity.md) is the next selected pre-`0.1.0` programme.
 > The [release-independence decision](../implementation-plan.md#release-independence) applies to every owlapi release and finalization: producer qualification remains mandatory; WebVOWL/UO application acceptance and adoption are independent and non-blocking.
 > Slices D/E and steps 6–7's application work remain consumer-owned activities at their chosen pace, not publication or plan-completion conditions for the producer.

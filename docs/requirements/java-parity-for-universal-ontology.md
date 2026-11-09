@@ -16,7 +16,8 @@ Original SHA-256: `be7a5f9dca79d24cdcd71d6f4872a3b556763e1e94adb606bd05acdc83fef
 The source was untracked in a checkout at `1489362d54b1c2a614a780e16e8190cca6416d88`; that revision identifies the inspected UO baseline, not a commit containing this document.
 The relocation preserves the requirement text and identifiers; UO source links now target that fixed revision.
 
-**Producer release context:** The [rc.2 plan](../plans/0.1.0-rc.2-java-parity.md) reconciles these proposed requirements with producer acceptance criteria.
+**Producer release context:** The [latest release status](../../README.md#release-status) and [active 0.1.0 roadmap](../plans/2026-10-29-0.1.0-release-reconciliation.md) distinguish delivered capabilities and bounded RC acceptance from remaining work.
+The [rc.2 plan](../plans/0.1.0-rc.2-java-parity.md) retains the earlier requirement reconciliation.
 Universal Ontology's integration, acceptance and adoption proceed at its own pace and do not gate any owlapi release.
 
 ## 1. Purpose and authority

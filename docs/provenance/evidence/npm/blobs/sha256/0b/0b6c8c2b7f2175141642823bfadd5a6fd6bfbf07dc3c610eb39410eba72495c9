@@ -1,0 +1,76 @@
+{
+  "artifactId": "f7ae47dd6c693172a71879afa40d152d5cc9d512f5ac4ab557ad2d6cd842db2f",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 859574,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/README.md",
+        "sha256": "a65fb8e42da8e2abfc49e050b12915307b1c87ced7f2d101febb10f7a39e8f40",
+        "size": 120,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "237593eca856dc477f2baaece3744a0de3582ce73ef2b616a6b442fa80de7de2",
+        "size": 574,
+        "type": "FILE"
+      },
+      {
+        "path": "package/resolver.linux-s390x-gnu.node",
+        "sha256": "9e145d77fb04d8566188923bfba22f8179eb1c63a416a2b715d574a5597b284e",
+        "size": 2200232,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [],
+    "expandedBytes": 2200926,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/unrs/unrs-resolver",
+      "license": "MIT",
+      "name": "@unrs/resolver-binding-linux-s390x-gnu",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/unrs/unrs-resolver.git"
+      },
+      "version": "1.13.0"
+    },
+    "packageMetadata": {
+      "cpu": [
+        "s390x"
+      ],
+      "description": "UnRS Resolver Node API",
+      "files": [
+        "resolver.linux-s390x-gnu.node"
+      ],
+      "homepage": "https://github.com/unrs/unrs-resolver",
+      "libc": [
+        "glibc"
+      ],
+      "license": "MIT",
+      "main": "resolver.linux-s390x-gnu.node",
+      "name": "@unrs/resolver-binding-linux-s390x-gnu",
+      "os": [
+        "linux"
+      ],
+      "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/unrs/unrs-resolver.git"
+      },
+      "version": "1.13.0"
+    },
+    "physicalEntryCount": 3,
+    "tarball": {
+      "bytes": 859574,
+      "sha256": "0b2660081bf1c3597901eec8c98bdb92b0b43b1b9303e9f245db5f5a9cf7ccda"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

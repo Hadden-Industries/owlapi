@@ -278,21 +278,21 @@ jobs:
         timeout-minutes: 5
         env:
           QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
-      - name: Exercise JSON behavior and source preservation probes
-        run: npm run test:json
-        timeout-minutes: 15
-      - name: Verify complete JSON coverage on Node 26
-        run: npm run check:json
-        timeout-minutes: 15
-      - name: Verify semantic JSON identity on Node 26
-        run: npm run lint:json-identity
-        timeout-minutes: 5
       - name: Verify formatting
         run: npm run format:source-python:check
         timeout-minutes: 45
       - name: Verify static quality
         run: npm run lint:source-python
         timeout-minutes: 45
+      - name: Verify semantic JSON identity on Node 26
+        run: npm run lint:json-identity
+        timeout-minutes: 5
+      - name: Exercise JSON behavior and source preservation probes
+        run: npm run test:json
+        timeout-minutes: 15
+      - name: Verify complete JSON coverage on Node 26
+        run: npm run check:json
+        timeout-minutes: 15
       - name: Run the full package suite
         run: npm test -- --runInBand
         timeout-minutes: 45
@@ -334,7 +334,7 @@ jobs:
       - name: Set up the policy-owned Node/npm runtime
         uses: ./.github/actions/setup-producer
       - name: Install the reviewed dependency graph
-        run: npm ci
+        run: npm ci --ignore-scripts
         timeout-minutes: 20
       - name: Record the hosted runner identity
         run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
@@ -348,6 +348,18 @@ jobs:
         timeout-minutes: 5
         env:
           QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
+      - name: Verify formatting
+        run: npm run check:node && npm run check:version && npm run format:source-python:check && npm run format:json:check
+        timeout-minutes: 45
+      - name: Verify static quality
+        run: npm run lint
+        timeout-minutes: 45
+      - name: Exercise JSON behavior and source preservation probes
+        run: npm run test:json
+        timeout-minutes: 15
+      - name: Exercise root Markdown CLI consumer checks
+        run: npm run test:markdown
+        timeout-minutes: 5
       - name: Qualify the locked Python scanner
         id: scanner_qualification
         run: node util/qualify-scancode-runtime.mjs --python-env=SCANCODE_PYTHON --work-root-env=SCANCODE_WORK_ROOT
@@ -362,18 +374,6 @@ jobs:
           name: scancode-qualification-source_canonical
           path: .release/scancode-qualification/reports
           retention-days: 14
-      - name: Acquire the exact isolated Markdown graph
-        run: npm run install:markdown
-        timeout-minutes: 5
-      - name: Exercise JSON behavior and source preservation probes
-        run: npm run test:json
-        timeout-minutes: 15
-      - name: Exercise canonical Markdown isolation probes
-        run: npm run test:markdown
-        timeout-minutes: 5
-      - name: Verify formatting
-        run: npm run format:check
-        timeout-minutes: 45
       - name: Install the exact isolated artifact-action build tools
         run: npm ci --prefix tooling/artifact-transport --ignore-scripts --no-audit --no-fund
         timeout-minutes: 5
@@ -383,9 +383,6 @@ jobs:
       - name: Verify authenticated artifact-tooling material
         run: node scripts/artifact-tool-evidence.mjs
         timeout-minutes: 5
-      - name: Verify static quality
-        run: npm run lint
-        timeout-minutes: 45
       - name: Install checksum-pinned native workflow validation
         run: |
           tool_directory="$RUNNER_TEMP/actionlint-1.7.12"
@@ -419,7 +416,7 @@ jobs:
           path: .release/java-owlapi
           persist-credentials: false
       - name: Select the reference JDK
-        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # v6.2.0
         with:
           distribution: temurin
           java-version-file: .java-version
@@ -1253,7 +1250,7 @@ jobs:
       - name: Set up the policy-owned Node/npm runtime
         uses: ./.github/actions/setup-producer
       - name: Install the reviewed dependency graph
-        run: npm ci
+        run: npm ci --ignore-scripts
         timeout-minutes: 20
       - name: Record the hosted runner identity
         run: npm run record:runner -- --expected-os Windows --expected-arch X64 --label windows-2025 --shell pwsh
@@ -1267,6 +1264,18 @@ jobs:
         timeout-minutes: 5
         env:
           QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
+      - name: Verify formatting
+        run: npm run check:node && npm run check:version && npm run format:source-python:check && npm run format:json:check
+        timeout-minutes: 30
+      - name: Verify static quality
+        run: npm run lint
+        timeout-minutes: 30
+      - name: Verify the locked environment
+        run: npm run check:python-tools
+        timeout-minutes: 10
+      - name: Exercise JSON behavior and source preservation probes
+        run: npm run test:json
+        timeout-minutes: 15
       - name: Qualify the locked Python scanner
         id: scanner_qualification
         run: node util/qualify-scancode-runtime.mjs --python-env=SCANCODE_PYTHON --work-root-env=SCANCODE_WORK_ROOT
@@ -1281,18 +1290,6 @@ jobs:
           name: scancode-qualification-quality_windows
           path: .release/scancode-qualification/reports
           retention-days: 14
-      - name: Verify the locked environment
-        run: npm run check:python-tools
-        timeout-minutes: 10
-      - name: Acquire the exact isolated Markdown graph
-        run: npm run install:markdown
-        timeout-minutes: 5
-      - name: Exercise JSON behavior and source preservation probes
-        run: npm run test:json
-        timeout-minutes: 15
-      - name: Verify formatting
-        run: npm run format:check
-        timeout-minutes: 30
       - name: Install the exact isolated artifact-action build tools
         run: npm ci --prefix tooling/artifact-transport --ignore-scripts --no-audit --no-fund
         timeout-minutes: 5
@@ -1302,9 +1299,6 @@ jobs:
       - name: Verify authenticated artifact-tooling material
         run: node scripts/artifact-tool-evidence.mjs
         timeout-minutes: 5
-      - name: Verify static quality
-        run: npm run lint
-        timeout-minutes: 30
       - name: Run native quality regressions
         run: npm run test:quality
         timeout-minutes: 30

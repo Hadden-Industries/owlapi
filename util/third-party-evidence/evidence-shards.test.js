@@ -117,6 +117,37 @@ const makeShards = ({ count = 4, sharedBlob = false } = {}) => {
 };
 
 describe("deterministic npm evidence sharding", () => {
+  test("keeps bundled occurrences assigned to their owning archive shard", () => {
+    const graph = makeGraph();
+    const owner = graph.artifacts[0];
+    const occurrence = {
+      ...graph.occurrences[0],
+      dependencyPath: "node_modules/alpha/node_modules/@scope/child",
+      dependencyName: "@scope/child",
+      bundled: {
+        ownerDependencyPath: "node_modules/alpha",
+        name: "@scope/child",
+        version: "2.0.0",
+        packageJsonPath: "node_modules/@scope/child/package.json",
+        ownerBundleDependencies: ["@scope/child"],
+        lockfileLicense: "ISC",
+      },
+    };
+    owner.occurrencePaths.push(occurrence.dependencyPath);
+    graph.occurrences.push(occurrence);
+    const shard = createEvidenceShard({
+      graph,
+      policy,
+      registryKeys: [],
+      artifacts: [evidenceFor(owner, 0)],
+      blobs: [blobFor(1)],
+      shard: { count: 4, index: 0 },
+    });
+    expect(shard.occurrences).toContainEqual(occurrence);
+    expect(shard.artifacts).toHaveLength(1);
+    expect(shard.artifacts[0].occurrencePaths).toEqual(owner.occurrencePaths);
+  });
+
   test("assigns the unsigned first artifact-id word modulo the shard count", () => {
     expect(artifactShardIndex(artifactId("00000000"), 32)).toBe(0);
     expect(artifactShardIndex(artifactId("0000001f"), 32)).toBe(31);

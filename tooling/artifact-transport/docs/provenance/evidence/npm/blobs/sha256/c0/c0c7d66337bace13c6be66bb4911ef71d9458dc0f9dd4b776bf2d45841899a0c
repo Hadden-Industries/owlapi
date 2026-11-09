@@ -1,0 +1,108 @@
+{
+  "artifactId": "ae85b451e8cf8384c1b2adaff0fa70f32ec44249ea9a861304f2ddaaf0b7e160",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1924,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/dist/index.d.ts",
+        "sha256": "3568fa0be646ebf28f9ead14e0c8fe3c7c6fb2bc846fc248f4161f02d7dbf423",
+        "size": 483,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.ts.map",
+        "sha256": "4ade5fadd6dd7bcceb0663cf631e78dedca5a2243501e53b8a6c019a32f82bc5",
+        "size": 469,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.js",
+        "sha256": "56f33d231c16933054a0dddc665abdc8514d952c84fa96b245e841875d05f5e5",
+        "size": 1371,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.js.map",
+        "sha256": "cff70853e95eda06a4427db41c4cd5fa93d2d794ae4198c3ab4f7468450c3f9e",
+        "size": 1214,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "7b7c2579ea138d20d4f7699ca78ef16c526f35168dbf694f1d47cc861b0954d4",
+        "size": 972,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [],
+    "expandedBytes": 4509,
+    "packageIdentity": {
+      "author": "Nathan Rajlich <nathan@tootallnate.net> (http://n8.io/)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "proxy-agent-negotiate",
+      "repository": {
+        "directory": "packages/negotiate",
+        "type": "git",
+        "url": "https://github.com/TooTallNate/proxy-agents.git"
+      },
+      "version": "1.1.0"
+    },
+    "packageMetadata": {
+      "author": "Nathan Rajlich <nathan@tootallnate.net> (http://n8.io/)",
+      "description": "Negotiate/SPNEGO proxy authentication for proxy-agents",
+      "devDependencies": {
+        "@types/node": "^22.13.0",
+        "tsconfig": "0.0.0",
+        "typescript": "^5.1.6"
+      },
+      "engines": {
+        "node": ">= 20"
+      },
+      "exports": {
+        "default": "./dist/index.js",
+        "types": "./dist/index.d.ts"
+      },
+      "files": [
+        "dist"
+      ],
+      "keywords": [
+        "proxy",
+        "negotiate",
+        "kerberos",
+        "spnego",
+        "authentication"
+      ],
+      "license": "MIT",
+      "name": "proxy-agent-negotiate",
+      "peerDependencies": {
+        "kerberos": "^2.0.0"
+      },
+      "peerDependenciesMeta": {
+        "kerberos": {
+          "optional": true
+        }
+      },
+      "repository": {
+        "directory": "packages/negotiate",
+        "type": "git",
+        "url": "https://github.com/TooTallNate/proxy-agents.git"
+      },
+      "scripts": {
+        "build": "tsc",
+        "pack": "node ../../scripts/pack.mjs"
+      },
+      "type": "module",
+      "version": "1.1.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 1924,
+      "sha256": "6eec23d5d381a8b0ffafe91c19876d3a052e463618695981a7529f3a8bca1997"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

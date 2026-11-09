@@ -33,6 +33,84 @@ const alpha = (overrides = {}) => ({
 });
 
 describe("normalizeLockedRegistryGraph", () => {
+  it("binds scoped, alias and nested bundles to their nearest real archive without inventing tarballs", () => {
+    const graph = normalizeLockedRegistryGraph(
+      lockfile({
+        entries: {
+          "node_modules/alpha": alpha({ bundleDependencies: ["@scope/alias"] }),
+          "node_modules/alpha/node_modules/@scope/alias": {
+            name: "@scope/actual",
+            version: "2.0.0",
+            inBundle: true,
+            dev: true,
+            license: "ISC",
+          },
+          "node_modules/alpha/node_modules/@scope/alias/node_modules/child": {
+            version: "3.0.0",
+            inBundle: true,
+            dev: true,
+          },
+        },
+      }),
+    );
+    expect(graph.artifacts).toHaveLength(1);
+    expect(graph.artifacts[0].occurrencePaths).toHaveLength(3);
+    expect(graph.occurrences[1].bundled).toEqual({
+      ownerDependencyPath: "node_modules/alpha",
+      name: "@scope/actual",
+      version: "2.0.0",
+      packageJsonPath: "node_modules/@scope/alias/package.json",
+      ownerBundleDependencies: ["@scope/alias"],
+      lockfileLicense: "ISC",
+    });
+    expect(graph.occurrences[2].bundled.packageJsonPath).toBe(
+      "node_modules/@scope/alias/node_modules/child/package.json",
+    );
+    for (const entry of graph.occurrences) {
+      expect(entry.artifactId).toBe(graph.artifacts[0].artifactId);
+      expect(entry).not.toHaveProperty("resolved");
+      expect(entry).not.toHaveProperty("integrity");
+    }
+  });
+
+  it.each([
+    ["orphan", { "node_modules/child": { version: "1", inBundle: true } }],
+    [
+      "undeclared owner",
+      {
+        "node_modules/alpha": alpha(),
+        "node_modules/alpha/node_modules/child": {
+          version: "1",
+          inBundle: true,
+        },
+      },
+    ],
+    [
+      "missing ancestor",
+      {
+        "node_modules/alpha": alpha({ bundleDependencies: ["child"] }),
+        "node_modules/alpha/node_modules/missing/node_modules/child": {
+          version: "1",
+          inBundle: true,
+        },
+      },
+    ],
+    [
+      "synthetic tarball",
+      {
+        "node_modules/alpha": alpha({ bundleDependencies: ["child"] }),
+        "node_modules/alpha/node_modules/child": alpha({ inBundle: true }),
+      },
+    ],
+    ["malformed marker", { "node_modules/alpha": alpha({ inBundle: "true" }) }],
+    [
+      "malformed intermediate path",
+      { "node_modules/alpha/extra/node_modules/child": alpha() },
+    ],
+  ])("rejects %s bundle claims", (_name, entries) => {
+    expect(() => normalizeLockedRegistryGraph(lockfile({ entries }))).toThrow();
+  });
+
   it("deduplicates one immutable artifact while retaining every lockfile occurrence", () => {
     const bytes = lockfile({
       entries: {

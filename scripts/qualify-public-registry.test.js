@@ -1,3 +1,4 @@
+import { documentationArchive } from "./fixtures/documentation-candidate.mjs";
 import { PACKAGE_VERSION } from "./package-identity.mjs";
 import { jest } from "@jest/globals";
 import { createHash } from "node:crypto";
@@ -73,6 +74,7 @@ const publicationFixture = () => {
     GITHUB_REPOSITORY: "Hadden-Industries/owlapi",
     GITHUB_REF: "refs/heads/main",
     GITHUB_RUN_ID: "123",
+    GITHUB_RUN_ATTEMPT: "1",
     GITHUB_SHA: "a".repeat(40),
   };
   const write = {
@@ -87,17 +89,25 @@ const publicationFixture = () => {
     run_id: 123,
     head_sha: env.GITHUB_SHA,
     run_attempt: 1,
+    runner_id: 10,
+    started_at: "2026-10-09T23:55:00Z",
+    completed_at: write.completed_at,
     status: "completed",
     conclusion: "success",
     steps: [write],
   };
   const run = {
+    id: 123,
+    run_attempt: 1,
+    head_branch: "main",
+    head_repository: { full_name: env.GITHUB_REPOSITORY },
+    event: "workflow_dispatch",
     head_sha: env.GITHUB_SHA,
     path: ".github/workflows/release.yml",
   };
   const client = {
     read: jest.fn(async (path) =>
-      path.includes("/jobs?") ? { jobs: [job] } : run,
+      path.includes("/jobs?") ? { jobs: [job], total_count: 1 } : run,
     ),
   };
   return {
@@ -109,6 +119,26 @@ const publicationFixture = () => {
     read: () => readPublicationAttempt({ env, client }),
   };
 };
+
+test("observes a first publication on attempt 2 after an upstream failure", async () => {
+  const f = publicationFixture();
+  f.env.GITHUB_RUN_ATTEMPT = "2";
+  f.run.run_attempt = 2;
+  f.job.run_attempt = 2;
+  f.client.read.mockImplementation(async (path) =>
+    path.includes("/attempts/1/jobs")
+      ? { jobs: [], total_count: 0 }
+      : path.includes("/jobs?")
+        ? { jobs: [f.job], total_count: 1 }
+        : path.endsWith("/attempts/1")
+          ? { ...f.run, run_attempt: 1, status: "completed" }
+          : f.run,
+  );
+  expect(await f.read()).toMatchObject({
+    state: "PUBLICATION_ACCEPTED",
+    runAttempt: 2,
+  });
+});
 
 test("reads the original write timestamp even when verification is resumed", async () => {
   const f = publicationFixture();
@@ -145,7 +175,7 @@ test.each(["skipped", "missing", "source", "attempt", "workflow"])(
 const reportFixture = () => {
   const directory = mkdtempSync(join(tmpdir(), "owlapi-registry-report-test-"));
   const outputPath = join(directory, "report.json");
-  const tarball = Buffer.from("approved test artifact");
+  const tarball = documentationArchive();
   const metadata = {
     name: "@hadden-industries/owlapi",
     version,
@@ -160,6 +190,8 @@ const reportFixture = () => {
       tarball: { sha256: createHash("sha256").update(tarball).digest("hex") },
     },
     outputPath,
+    readMetadata: async () =>
+      Buffer.from(JSON.stringify({ name: "@hadden-industries/owlapi" })),
     publication: async () => ({
       state: "PUBLICATION_ACCEPTED",
       acceptedAt: "2026-10-10T00:00:00Z",

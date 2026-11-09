@@ -1,0 +1,208 @@
+{
+  "artifactId": "a79fc25b6e8177ef8d5e78629fada3f348a989045eda6e6bd6fb54c719b542d2",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 31037,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/globals.json",
+        "sha256": "4adfba2ca074bb6155304c1a9dca17187a646c3bb465133b39da41a7d9e777ec",
+        "size": 107907,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "09edff8c6ca72f92eff3ff7ef52005c80b7b3c16bdfec0782ab3bcca12a172eb",
+        "size": 144314,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "2998fa25447dc5e0032334703ccec8604d66b750afb5b84e13eb778bf66fbb38",
+        "size": 58,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "7644aa8644df60db80ef4e43dccb8d99e23bf2d5c29963da61b3b01e7b8170bd",
+        "size": 3318,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "d3cd361034aa2ce564a7c66de49bb1f4d8b6406b34d386362ea446a4b2bd133d",
+        "size": 1998,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1117,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117
+      }
+    ],
+    "expandedBytes": 258712,
+    "packageIdentity": {
+      "author": "Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "globals",
+      "repository": "sindresorhus/globals",
+      "version": "17.14.0"
+    },
+    "packageMetadata": {
+      "author": "Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)",
+      "description": "Global identifiers from different JavaScript environments",
+      "devDependencies": {
+        "@vitest/eslint-plugin": "^1.6.27",
+        "cheerio": "^1.2.0",
+        "eslint-plugin-jest": "^29.16.6",
+        "get-port": "^7.2.0",
+        "is-identifier": "^1.1.0",
+        "nano-spawn": "^2.1.0",
+        "npm-run-all2": "^9.0.3",
+        "outdent": "^0.8.0",
+        "puppeteer": "^25.16.0",
+        "shelljs": "^0.10.0",
+        "type-fest": "^5.10.0",
+        "xo": "^5.0.1"
+      },
+      "engines": {
+        "node": ">=18"
+      },
+      "files": [
+        "globals.json",
+        "index.js",
+        "index.d.ts"
+      ],
+      "funding": "https://github.com/sponsors/sindresorhus",
+      "keywords": [
+        "global",
+        "identifiers",
+        "variables",
+        "vars",
+        "jshint",
+        "eslint",
+        "environments"
+      ],
+      "license": "MIT",
+      "name": "globals",
+      "repository": "sindresorhus/globals",
+      "scripts": {
+        "build": "run-s build:data build:types",
+        "build:data": "node scripts/generate-data.mjs",
+        "build:types": "node scripts/generate-types.mjs",
+        "prepare": "npm run build",
+        "test": "npm run build && xo && node --test",
+        "update": "node scripts/update.mjs",
+        "update:audioWorklet": "node scripts/update.mjs --job=audioWorklet",
+        "update:browser": "node scripts/update.mjs --job=browser",
+        "update:builtin": "node scripts/update.mjs --job=builtin",
+        "update:builtin-yearly": "node scripts/update.mjs --job=builtin-yearly",
+        "update:bunBuiltin": "node scripts/update.mjs --job=bunBuiltin",
+        "update:denoBuiltin": "node scripts/update.mjs --job=denoBuiltin",
+        "update:jest": "node scripts/update.mjs --job=jest",
+        "update:nodeBuiltin": "node scripts/update.mjs --job=nodeBuiltin",
+        "update:serviceworker": "node scripts/update.mjs --job=serviceworker",
+        "update:sharedWorker": "node scripts/update.mjs --job=sharedWorker",
+        "update:shelljs": "node scripts/update.mjs --job=shelljs",
+        "update:vitest": "node scripts/update.mjs --job=vitest",
+        "update:worker": "node scripts/update.mjs --job=worker"
+      },
+      "sideEffects": false,
+      "version": "17.14.0",
+      "xo": [
+        {
+          "ignores": [
+            "scripts/browser/index.html"
+          ]
+        },
+        {
+          "rules": {
+            "unicorn/prefer-module": "off"
+          }
+        },
+        {
+          "files": [
+            "**/package.json"
+          ],
+          "rules": {
+            "package-json/prefer-type-module": "off",
+            "package-json/require-entry-point": "off"
+          }
+        },
+        {
+          "files": [
+            "data/*.mjs"
+          ],
+          "rules": {
+            "camelcase": "off",
+            "import-x/no-anonymous-default-export": "off",
+            "unicorn/filename-case": [
+              "error",
+              {
+                "cases": {
+                  "camelCase": true,
+                  "kebabCase": true
+                }
+              }
+            ]
+          }
+        },
+        {
+          "files": [
+            "scripts/*.mjs"
+          ],
+          "rules": {
+            "n/no-unsupported-features/node-builtins": "off"
+          }
+        },
+        {
+          "files": [
+            "scripts/browser/assets/**/*.mjs"
+          ],
+          "languageOptions": {
+            "globals": {
+              "AudioContext": "readonly",
+              "AudioWorkletNode": "readonly",
+              "AudioWorkletProcessor": "readonly",
+              "CSS": "readonly",
+              "SharedWorker": "readonly",
+              "Worker": "readonly",
+              "alert": "readonly",
+              "document": "readonly",
+              "registerProcessor": "readonly"
+            }
+          },
+          "rules": {
+            "n/no-unsupported-features/node-builtins": "off",
+            "unicorn/no-global-object-property-assignment": "off",
+            "unicorn/prefer-add-event-listener": "off"
+          }
+        }
+      ]
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 31037,
+      "sha256": "f3a6553027bf179810faaf195be033c4aae7b74a9358fd70e6fe16c7a23bf441"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

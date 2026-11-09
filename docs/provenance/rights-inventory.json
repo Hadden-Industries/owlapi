@@ -8,16 +8,16 @@
     "scopeAuthority": {
       "method": "npm pack --dry-run --json plus local source-byte hashing",
       "fileCount": 198,
-      "sourceManifestSha256": "9c4fd8c77892a4bd238e729deb75b8ddb167c0109fa1bbb689ef5d316eb095d1"
+      "sourceManifestSha256": "2a1e21fbb1932208f8383cf2fd81aa53d5a5212ad01b17752e220aa06fad8d82"
     }
   },
   "review": {
-    "status": "REVIEWED",
-    "factsSha256": "6f3500bb4e69244e39f8b75753fe9b27365b078cdeddd6a13b978f12f99db81b",
-    "reviewer": "Maksym Shostak",
-    "reviewedOn": "2026-10-30",
-    "capacity": "Project author and repository owner",
-    "conclusion": "Explicitly approved the dependent rights binding for the bounded rc.3 licence-evidence refresh from release run 40985125041. The 198-file package, source packlist, ownership and licence classifications remain unchanged; only the separately approved third-party facts digest changes for the corrected development-only @parcel/watcher-win32-x64@2.6.0 scan observation. This attestation does not expand the separate publication or security-exception authority.",
+    "status": "PENDING_HUMAN_REVIEW",
+    "factsSha256": "35d5f447266038ef5137d2450821bac9eb08f122de5d1a1d3c636fb4a7066d6e",
+    "reviewer": null,
+    "reviewedOn": null,
+    "capacity": null,
+    "conclusion": null,
     "digestAlgorithm": "sha256-sorted-json-v1"
   },
   "contributors": [
@@ -152,7 +152,7 @@
   "externalDependencies": {
     "bundled": true,
     "authority": "docs/provenance/third-party-material.json",
-    "inventoryFactsSha256": "b60f2ab515d8a85d0e84337aaf4ac0c8c39c719100441309967956d313bdf924",
+    "inventoryFactsSha256": "211e208fe84072e033954e9ba176d2794ba952a129b8cbe400bf38e721a840f2",
     "noticeRule": "Ordinary npm dependencies are installed separately under their own licences. The generated JSON-LD provider embeds seven separately inventoried components and retains their complete original licences and notices under internal/parsing/jsonld/provider/licenses/. The provider manifest binds the incorporated source, approved modifications, generated runtime and output."
   },
   "unresolvedExternalContributions": [],

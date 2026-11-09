@@ -1,0 +1,105 @@
+{
+  "artifactId": "2568d5e52de31d3e2679ff4ca10c194d268daeb9a9b2c5b2e29e28f8b0aa8ac0",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2593,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "ab2cfc856be9956e9ba2fbbba80e7a67974fd7678757980bda5a7a640b6d5fb3",
+        "size": 456,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "322c37b00da0bdea507a41ed11149969277346417226251f69ee0d34b1225495",
+        "size": 1104,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js.map",
+        "sha256": "a59e6a82ddf73a7e66f72ff676fc7a9f72ce24e236235ecdc5b97567ea6ae50a",
+        "size": 2814,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "84ac144ebc480e5a57a15e50943245a815a6b5353ed3327ea8f700d43bb8fbbc",
+        "size": 773,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 6253,
+    "packageIdentity": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "@babel/helper-skip-transparent-expression-wrappers",
+      "repository": {
+        "directory": "packages/babel-helper-skip-transparent-expression-wrappers",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.29.13"
+    },
+    "packageMetadata": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "dependencies": {
+        "@babel/traverse": "^7.29.13",
+        "@babel/types": "^7.29.11"
+      },
+      "description": "Helper which skips types and parentheses",
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./lib/index.js",
+          "types": "./lib/index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "license": "MIT",
+      "main": "./lib/index.js",
+      "name": "@babel/helper-skip-transparent-expression-wrappers",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-helper-skip-transparent-expression-wrappers",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "type": "commonjs",
+      "version": "7.29.13"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2593,
+      "sha256": "3fff420a660971b1f3c3c2f631b2b44ab46ce3e21cbf71bcc0e0f4932383568c"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

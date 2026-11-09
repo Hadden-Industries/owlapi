@@ -1,0 +1,144 @@
+{
+  "artifactId": "7128f7b9567384119615dd562ab5fc0f5369fdcacf134ac4649d57d7fb1e58e5",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6880,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "e1919b3b98b8bf6c1b99fcc60a0ed46027c97ac947432e1278446c9606f50161",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "597996f5d7585897e1aa65d33231625726f18ccc1ad10c3ec5b9364f1d7f83d6",
+        "size": 6646,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/filter-p20yeu4b.mjs",
+        "sha256": "0252bb0747d8d1d9d8e24c210c76fb48eb2febc30c29bc386361a4d46be29939",
+        "size": 9715,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/filter/index.d.mts",
+        "sha256": "f007e4fb445dd183af34477e734699841ad9b28e8c1bcf3285007aab3f030a78",
+        "size": 7005,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/filter/index.mjs",
+        "sha256": "45150f97c542f74e398c67bd8cdbba978c6685ecd32acb6f1e4fffe92329487d",
+        "size": 351,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.mts",
+        "sha256": "4da7aa2c79ded265030c22a77ad8690fdbd310b3b9a85f2607e2b0c9df5a4444",
+        "size": 647,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.mjs",
+        "sha256": "36e56647bee63b1eac1d1e5491bc66ef77202d5e13c38de2771d4d304d683529",
+        "size": 350,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "d2102843f9b4a84d9de7f5e7d061ada5f567cd9b2a0e7df1afbc0afc63a73fa4",
+        "size": 975,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/e1/e1919b3b98b8bf6c1b99fcc60a0ed46027c97ac947432e1278446c9606f50161",
+          "sha256": "e1919b3b98b8bf6c1b99fcc60a0ed46027c97ac947432e1278446c9606f50161"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "e1919b3b98b8bf6c1b99fcc60a0ed46027c97ac947432e1278446c9606f50161",
+        "size": 1106
+      },
+      {
+        "blob": {
+          "bytes": 6646,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/59/597996f5d7585897e1aa65d33231625726f18ccc1ad10c3ec5b9364f1d7f83d6",
+          "sha256": "597996f5d7585897e1aa65d33231625726f18ccc1ad10c3ec5b9364f1d7f83d6"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "597996f5d7585897e1aa65d33231625726f18ccc1ad10c3ec5b9364f1d7f83d6",
+        "size": 6646
+      }
+    ],
+    "expandedBytes": 26795,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/rolldown/plugins/tree/main/packages/pluginutils#readme",
+      "license": "MIT",
+      "name": "@rolldown/pluginutils",
+      "repository": {
+        "directory": "packages/pluginutils",
+        "type": "git",
+        "url": "git+https://github.com/rolldown/plugins.git"
+      },
+      "version": "1.1.0"
+    },
+    "packageMetadata": {
+      "bugs": {
+        "url": "https://github.com/rolldown/plugins/issues"
+      },
+      "description": "Plugin utilities for Rolldown",
+      "devDependencies": {
+        "@types/picomatch": "^4.0.3",
+        "picomatch": "^4.0.7",
+        "typescript": "^7.0.2"
+      },
+      "exports": {
+        ".": "./dist/index.mjs",
+        "./filter": "./dist/filter/index.mjs",
+        "./package.json": "./package.json"
+      },
+      "files": [
+        "dist"
+      ],
+      "homepage": "https://github.com/rolldown/plugins/tree/main/packages/pluginutils#readme",
+      "keywords": [
+        "filter",
+        "plugin",
+        "rolldown"
+      ],
+      "license": "MIT",
+      "name": "@rolldown/pluginutils",
+      "repository": {
+        "directory": "packages/pluginutils",
+        "type": "git",
+        "url": "git+https://github.com/rolldown/plugins.git"
+      },
+      "scripts": {
+        "build": "tsdown",
+        "dev": "tsdown --watch",
+        "test": "vitest --project pluginutils",
+        "test:types": "vitest --project pluginutils --typecheck.only"
+      },
+      "type": "module",
+      "version": "1.1.0"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 6880,
+      "sha256": "bbdbe11938452086dde41efe8214b58dda5a1968badd583fe3ac7b32336a11f7"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

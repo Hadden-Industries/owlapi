@@ -18,6 +18,7 @@ Private manager membership supplies closure authority, so overriding a public ma
 The formal `status` describes the structural OWL model and is `valid`, `invalid` or `unverified`.
 `isInProfile()` returns true for `valid`, false for `invalid`, and throws for `unverified`.
 `getViolations()` returns immutable records with stable `code` identifiers and contextual fields.
+
 `getOntology()` and `getProfile()` preserve input identity.
 `getSourceAssessment()` returns the optional independent source assessment.
 Direct report construction does not perform validation.
@@ -39,6 +40,7 @@ The bounded Java comparison uses the following stable public violation codes.
 The source assessment additionally visits retained RDFS statements, their nested annotations and parsed expressions, including expressions without a retained OWL axiom.
 It applies the same datatype, constructor, category and closure-wide global checks before a consumer filters any axiom.
 Only package-owned original arity and unambiguous typed use qualify the formal normalized-arity and redundant-declaration differences.
+
 Mutating an ontology makes original source evidence stale.
 Caller-supplied document metadata and custom parser output cannot supply these qualifications.
 Filtering source annotations during loading also prevents source qualification.
@@ -71,9 +73,11 @@ Role `type` is an ordinary vocabulary IRI; `origin` is `declaration` or `use`.
 Generic roles use `rdfs:Class` or `rdf:Property`.
 Explicit RDFS subclass, subproperty, domain, range and direct membership statements remain source structures rather than invented OWL axioms.
 Anonymous identity stays local to its source ontology.
+
 Named generic roles participate in import discovery without creating synthetic OWL declarations.
 Discovery reaches a fixed point across imported named roles before reconstruction; generic domains seed class roles before statement dispatch.
 Each prepared document has a private proof identity, so shared base IRIs and blank-node labels cannot suppress another document's independent evidence.
+
 Superseded generic declarations retain their own annotations, and unsupported annotation anchors reject instead of being attached elsewhere.
 Only a specific class role supersedes a generic class role; a datatype role cannot hide a class/datatype collision.
 Conflicting class/data ranges, invalid endpoint categories and unknown or ambiguous source forms cannot be certified by ignoring them.
@@ -88,6 +92,7 @@ Authored import identity, mapped retrieval identity and actual importing documen
 Cardinalities use a safe nonnegative JavaScript integer or canonical unsigned decimal string when larger than the safe integer range.
 Unsafe numeric factory inputs reject; callers must supply exact decimal strings.
 Every supported reader and storer uses the shared normalizer.
+
 RDF reverse mapping accepts literals whose values inhabit the nonnegative integer value space, including integral decimals and rationals.
 Raw lexical forms are checked without whitespace repair; float/double values are disjoint from integers and do not qualify merely because their display is integral.
 
@@ -126,10 +131,12 @@ The interpretation above states the published 2012 text; it does not assert an e
 Default limits are `maxWork: 1000000`, `maxDepth: 256`, `maxNumericDigits: 4096`, `maxLiteralLength: 1048576` and `timeoutMs: null`.
 Omitted or explicit `null` disables only the profile elapsed deadline; cancellation and other limits remain enforced.
 An explicit nonnegative safe integer retains its elapsed deadline, including `0`; zero is not an unlimited sentinel.
+
 Pass `{ timeoutMs: 30000 }` to retain the previous profile deadline.
 The loader's separate 30,000 ms default remains unchanged; see the [default-policy inventory](default-behavior-inventory.md).
 The depth ceiling is 512 and numeric-digit ceiling is 65536.
 XML traversal consumes the same work/depth budget; literal input size bounds the parser allocation.
+
 The XML parser fallback remains a lazy, bundler-visible import for workers without a native `DOMParser`.
 The formal and source passes share one budget and one captured closure.
 Cooperative work yields periodically; cancellation uses the intrinsic AbortSignal state and rejects with `AbortError`.

@@ -2,7 +2,8 @@
 
 The current default authority is the [behavior profile contract](behavior-profiles.md) and the typed `currentBehaviorContracts` section of the [owning parity ledger](java-api-parity-decisions.json).
 Configuration names alone do not prove their consumer behavior.
-Profile admission remains in progress.
+Both profiles shipped in [rc.3](https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.3), under its bounded RC acceptance and historical security-review exception.
+The [release-readiness record](profiles/java-owlapi-5.5.1/implementation-qualification.md) preserves the incomplete review coverage; publication does not establish stable-release acceptance.
 
 The current Java authority is the formal release commit `f760b3a4c107c6d5f90f856e5680c39b18af646f`, Central artifact and recorded runtime in the [provenance manifest](profiles/java-owlapi-5.5.1/provenance.json).
 The original `d7e997a5` and `b61ebe2d` research pins and historical receipts remain unchanged.
@@ -51,6 +52,7 @@ It does not provide an unbounded loader or establish Java parity for the remaini
 
 The scheduling repair reuses elapsed-work cooperative yielding from the existing parsers.
 It uses a zero-delay timer after approximately 50 ms of work, with budget and abort checks after resumption.
+
 The [scheduling specification](https://wicg.github.io/scheduling-apis/) describes timer-clamping overhead and boosted scheduler continuation priority.
 The initial scheduler-capable prototype failed the real Chromium timer-cancellation scenario in both windows and workers: successive continuations outran the pending abort timer.
 The selected timer turn admits timer-based caller cancellation in scheduler-capable and scheduler-absent runtimes alike.
@@ -66,7 +68,9 @@ Neither checkout checks nor consumer success constitute publication of a new imm
 Five serial cold Node 24.21.0 runs on the current 2,298,206-byte UO input reduced median profile assessment from 49,920.07 ms to 935.55 ms (1.87% of baseline).
 Each assessment used the same explicit `timeoutMs: 180000`, `maxWork: 10000000` and source-assessment options; full reports matched and each load contained 14,989 axioms.
 Timer pauses fell from 3,505 per run to 15–17.
+
 Five real timer-cancellation trials on 100,000 declaration axioms rejected in 50.84–61.61 ms.
+
 CPU and memory observations and full reports are retained under the execution's external evidence directory, `operator/owlapi-profile-repair-01a11ff5`, in `before-current-*.json`, `after-approved-*.json` and `approved-comparison.json`.
 These are foreground measurements with other machine activity present, and do not reproduce the historical input hash.
 

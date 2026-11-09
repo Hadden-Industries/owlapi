@@ -5,28 +5,26 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
 import {
-  jsonContract,
+  resolveJsonSourceContract,
   openJsonSourceSession,
 } from "@hadden-industries/json-quality";
-import { provideMarkdownArchiveJson } from "../util/third-party-evidence/markdown-json-documents.mjs";
 import {
   readPolicyFixture,
   sourceFixtureContract,
   collectSourceEvents,
-  collectOpenedSourceEvents,
 } from "./json-quality-probe-support.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const policy = await readPolicyFixture(root);
-const rule = "json-quality/normalized-strings";
+const rule = "json-quality/nfc-strings";
 const exceptions = policy.exceptions.filter(
-  ({ preserveNfcValues }) => preserveNfcValues?.length,
+  ({ nfcExemptStringValues }) => nfcExemptStringValues?.length,
 );
 
-test("all 13 physical owner-approved values retain exact protected NFC contracts", async () => {
+test("all 15 physical owner-approved values retain exact protected NFC contracts", async () => {
   assert.equal(
     exceptions.reduce(
-      (count, entry) => count + entry.preserveNfcValues.length,
+      (count, entry) => count + entry.nfcExemptStringValues.length,
       0,
     ),
     15,
@@ -39,10 +37,10 @@ test("all 13 physical owner-approved values retain exact protected NFC contracts
     )) {
       assert.equal(entry.paths.length, 1);
       const path = entry.paths[0];
-      const contract = jsonContract(path, policy);
-      assert.equal(contract.allowFormatWrites, false);
+      const contract = resolveJsonSourceContract(path, policy);
+      assert.equal(contract.allowSourceRewrites, false);
       assert.equal(contract.normalization, "NFC");
-      physicalPins += entry.preserveNfcValues.length;
+      physicalPins += entry.nfcExemptStringValues.length;
       const events = await collectSourceEvents(
         session,
         await readFile(join(root, path)),
@@ -51,62 +49,40 @@ test("all 13 physical owner-approved values retain exact protected NFC contracts
       assert.equal(events.at(-1).parserComplete, true, path);
       assert(!events.some(({ ruleId }) => ruleId === rule), path);
     }
-    assert.equal(physicalPins, 13);
+    assert.equal(physicalPins, 15);
   } finally {
     await session.close();
   }
 });
 
-test("the repaired Linux report retains its two exact original author values under complete native admission", async () => {
-  const native = exceptions.filter(({ paths }) => paths[0].includes("!/"));
-  assert.equal(native.length, 1);
-  const [entry] = native;
-  assert.equal(entry.preserveNfcValues.length, 2);
-  const path = entry.paths[0],
-    supplied = await provideMarkdownArchiveJson({ root });
-  let pin;
-  for await (const candidate of supplied.inventory)
-    if (candidate.path === path) {
-      assert.equal(pin, undefined);
-      pin = candidate;
-    }
-  assert.ok(pin, "The native inventory must contain the preserved report");
-  const contract = sourceFixtureContract(path, policy);
-  assert.equal(contract.normalization, "NFC");
-  assert.equal(contract.allowFormatWrites, false);
-  const session = await openJsonSourceSession();
-  let checked = 0;
-  try {
-    for await (const document of supplied.documents) {
-      if (document.path !== path) {
-        for await (const bytes of document.chunks)
-          assert.ok(bytes.length <= 65536);
-        continue;
-      }
-      checked++;
-      const hash = createHash("sha256");
-      let length = 0n;
-      const events = await collectOpenedSourceEvents(
-        session,
-        {
-          async *open() {
-            for await (const bytes of document.chunks) {
-              hash.update(bytes);
-              length += BigInt(bytes.length);
-              yield bytes;
-            }
-          },
-        },
-        contract,
-      );
-      assert.equal(hash.digest("hex"), pin.sha256);
-      assert.equal(String(length), pin.byteLength);
-      assert.equal(events.at(-1).parserComplete, true);
-      assert(!events.some(({ ruleId }) => ruleId === rule), path);
-    }
-    assert.equal(checked, 1);
-  } finally {
-    await session.close();
+test("the retained Linux provenance report preserves both independent original author oracles", async () => {
+  const path =
+    "docs/provenance/markdown-quality-1.0.3-linux-cargo-notices.json";
+  const bytes = await readFile(join(root, path));
+  assert.equal(bytes.length, 4875725);
+  assert.equal(
+    createHash("sha256").update(bytes).digest("hex"),
+    "86147599f977088a3690c5eb2954a84ea14d5f91a7b6afc6a082e6e4e2bcd88e",
+  );
+  // Independent literals: never derive this oracle from the mutable policy or
+  // normalize the original attribution when the former archive leaves scope.
+  const expected = "Fe\u0301lix Saparelli <me@passcod.name>";
+  const report = JSON.parse(bytes);
+  assert.equal(report.licenses[25].used_by[0].crate.authors[1], expected);
+  assert.equal(report.crates[92].package.authors[1], expected);
+  assert.notEqual(expected.normalize("NFC"), expected);
+  const entry = exceptions.find(({ paths }) => paths.includes(path));
+  assert.equal(entry.nfcExemptStringValues.length, 2);
+  assert.deepEqual(
+    entry.nfcExemptStringValues.map(({ pointer }) => pointer),
+    ["/licenses/25/used_by/0/crate/authors/1", "/crates/92/package/authors/1"],
+  );
+  for (const pin of entry.nfcExemptStringValues) {
+    assert.equal(
+      pin.sha256,
+      "f7a46979f4c152096032b17774ded243fdb9cfe324a381e8a8a4a2a8e32a2cc5",
+    );
+    assert.equal(pin.byteLength, "35");
   }
 });
 

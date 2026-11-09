@@ -1,0 +1,189 @@
+{
+  "artifactId": "50bf1ee63876f813981216c1fd3442e5b54b8c8538f900912b5efc41d7b9ea56",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5904,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "14c8d1819e24a0ccb0aa64f85c61a6436c403eaf44c0e733cdaf1780fed5ec9f",
+        "size": 1142,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "66b05551c6efe3d6a1c75bca914c192139bc3c998fdb2b0d0784ab6685934bbc",
+        "size": 2031,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "536804b3adbff17dbbb9ed0d2bf9655b78f07640278581e37e3d7475282d5e61",
+        "size": 1099,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "f0c6ffb3bbbf52b1e5d939566b8d68097cbdd061598f09fde72af8a38c948bee",
+        "size": 2936,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "0e4456c3fd134e3e489ebde3ebf23b4412a85bc51c442450d172acd72dbe53e3",
+        "size": 13113,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1099,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/53/536804b3adbff17dbbb9ed0d2bf9655b78f07640278581e37e3d7475282d5e61",
+          "sha256": "536804b3adbff17dbbb9ed0d2bf9655b78f07640278581e37e3d7475282d5e61"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "536804b3adbff17dbbb9ed0d2bf9655b78f07640278581e37e3d7475282d5e61",
+        "size": 1099
+      },
+      {
+        "blob": {
+          "bytes": 13113,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/0e/0e4456c3fd134e3e489ebde3ebf23b4412a85bc51c442450d172acd72dbe53e3",
+          "sha256": "0e4456c3fd134e3e489ebde3ebf23b4412a85bc51c442450d172acd72dbe53e3"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "0e4456c3fd134e3e489ebde3ebf23b4412a85bc51c442450d172acd72dbe53e3",
+        "size": 13113
+      }
+    ],
+    "expandedBytes": 20321,
+    "packageIdentity": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "micromark-extension-gfm",
+      "repository": "micromark/micromark-extension-gfm",
+      "version": "3.0.0"
+    },
+    "packageMetadata": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "bugs": "https://github.com/micromark/micromark-extension-gfm/issues",
+      "contributors": [
+        "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+      ],
+      "dependencies": {
+        "micromark-extension-gfm-autolink-literal": "^2.0.0",
+        "micromark-extension-gfm-footnote": "^2.0.0",
+        "micromark-extension-gfm-strikethrough": "^2.0.0",
+        "micromark-extension-gfm-table": "^2.0.0",
+        "micromark-extension-gfm-tagfilter": "^2.0.0",
+        "micromark-extension-gfm-task-list-item": "^2.0.0",
+        "micromark-util-combine-extensions": "^2.0.0",
+        "micromark-util-types": "^2.0.0"
+      },
+      "description": "micromark extension to support GFM (GitHub Flavored Markdown)",
+      "devDependencies": {
+        "@types/node": "^20.0.0",
+        "c8": "^8.0.0",
+        "create-gfm-fixtures": "^1.0.0",
+        "hast-util-from-html": "^1.0.0",
+        "hast-util-select": "^5.0.0",
+        "hast-util-to-text": "^3.0.0",
+        "micromark": "^4.0.0",
+        "prettier": "^2.0.0",
+        "rehype": "^12.0.0",
+        "rehype-sort-attributes": "^4.0.0",
+        "remark-cli": "^11.0.0",
+        "remark-preset-wooorm": "^9.0.0",
+        "type-coverage": "^2.0.0",
+        "typescript": "^5.0.0",
+        "undici": "^5.0.0",
+        "xo": "^0.54.0"
+      },
+      "exports": "./index.js",
+      "files": [
+        "index.d.ts",
+        "index.js"
+      ],
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/unified"
+      },
+      "keywords": [
+        "micromark",
+        "micromark-extension",
+        "table",
+        "strikethrough",
+        "tasklist",
+        "autolink",
+        "footnote",
+        "tagfilter",
+        "github",
+        "gfm",
+        "markdown",
+        "unified"
+      ],
+      "license": "MIT",
+      "name": "micromark-extension-gfm",
+      "prettier": {
+        "bracketSpacing": false,
+        "semi": false,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "trailingComma": "none",
+        "useTabs": false
+      },
+      "remarkConfig": {
+        "plugins": [
+          "remark-preset-wooorm"
+        ]
+      },
+      "repository": "micromark/micromark-extension-gfm",
+      "scripts": {
+        "build": "tsc --build --clean && tsc --build && type-coverage",
+        "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
+        "prepack": "npm run build && npm run format",
+        "test": "npm run build && npm run format && npm run test-coverage",
+        "test-api": "npm run test-api-dev && npm run test-api-prod",
+        "test-api-dev": "node --conditions development test/index.js",
+        "test-api-prod": "node --conditions production test/index.js",
+        "test-coverage": "c8 --100 --reporter lcov npm run test-api"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "typeCoverage": {
+        "atLeast": 100,
+        "detail": true,
+        "ignoreCatch": true,
+        "strict": true
+      },
+      "version": "3.0.0",
+      "xo": {
+        "overrides": [
+          {
+            "files": [
+              "{test,script}/**/*.js"
+            ],
+            "rules": {
+              "no-await-in-loop": "off"
+            }
+          }
+        ],
+        "prettier": true
+      }
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 5904,
+      "sha256": "35f3336120e336f7bf4737a93ca90b5549a353efc9496a31feec97215b756cf1"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -88,9 +88,9 @@ export const owlXmlStorer = Object.freeze({
     let constructionBytes = 0;
     const encoder = new TextEncoder();
     const byteLength = (value) =>
-      /^\p{ASCII}*$/u.test(value)
-        ? value.length
-        : encoder.encode(value).byteLength;
+      /[^\p{ASCII}]/u.test(value)
+        ? encoder.encode(value).byteLength
+        : value.length;
     const admit = (value) => {
       if (typeof value !== "string" || !value.isWellFormed())
         fail("OWL/XML requires well-formed Unicode");

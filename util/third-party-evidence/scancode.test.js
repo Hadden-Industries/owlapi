@@ -5,6 +5,8 @@ import {
   SCANCODE_SEMANTIC_OPTIONS,
   buildScancodeArguments,
   normalizeScancodeReport,
+  scanExecutionObservation,
+  validateScanExecutionObservation,
 } from "./scancode.mjs";
 import { sha256, stableJson } from "./digests.mjs";
 
@@ -383,6 +385,122 @@ describe("normalizeScancodeReport", () => {
 });
 
 describe("SCANCODE_TOOL", () => {
+  it("adds an explicit finite resource budget without changing omitted-budget argv or normalized findings", () => {
+    const options = { outputPath: "report.json", inputRoot: UBUNTU_ROOT };
+    expect(
+      buildScancodeArguments({ ...options, perFileTimeoutSeconds: 600 }),
+    ).toEqual([
+      ...SCANCODE_SEMANTIC_OPTIONS,
+      ...SCANCODE_EXECUTION_OPTIONS,
+      "--timeout",
+      "600",
+      "--json-pp",
+      "report.json",
+      UBUNTU_ROOT,
+    ]);
+    const report = readFixture("scancode-report.ubuntu.json");
+    expect(scanExecutionObservation(report)).toBeUndefined();
+    const original = normalizeScancodeReport(report, {
+      artifactId: "artifact-a",
+      inputRoot: UBUNTU_ROOT,
+    });
+    report.headers[0].options["--timeout"] = "600.0";
+    expect(scanExecutionObservation(report)).toEqual({
+      perFileTimeoutSeconds: 600,
+    });
+    expect(
+      normalizeScancodeReport(report, {
+        artifactId: "artifact-a",
+        inputRoot: UBUNTU_ROOT,
+      }),
+    ).toEqual(original);
+    expect(report.headers[0].options["--timeout"]).toBe("600.0");
+  });
+  it.each([
+    [600, 600],
+    [120, 120],
+    [1, 1],
+    ["600", 600],
+    ["600.0", 600],
+    ["600.000", 600],
+    ["120.0", 120],
+    ["120.00", 120],
+    ["1.0", 1],
+  ])(
+    "reads canonical native timeout header %j as numeric observation %s without changing raw bytes",
+    (raw, expected) => {
+      const report = { headers: [{ options: { "--timeout": raw } }] };
+      expect(scanExecutionObservation(report)).toEqual({
+        perFileTimeoutSeconds: expected,
+      });
+      expect(report.headers[0].options["--timeout"]).toBe(raw);
+    },
+  );
+  it.each([
+    "",
+    "0600",
+    " 600",
+    "600 ",
+    "600\n",
+    "600\r\n",
+    "600\t",
+    "+600",
+    "-600",
+    "6e2",
+    "6E2",
+    "600.",
+    ".0",
+    "600.01",
+    "599.9",
+    "600.00x",
+    "0x258",
+    "NaN",
+    "Infinity",
+    "0",
+    "0.0",
+    "601",
+    "601.0",
+    "99999999999999999999999999999999999999999999",
+    0,
+    -1,
+    601,
+    1.5,
+    Infinity,
+    NaN,
+    null,
+    true,
+    [],
+    {},
+  ])("refuses malformed or out-of-range raw timeout header %j", (raw) =>
+    expect(() =>
+      scanExecutionObservation({
+        headers: [{ options: { "--timeout": raw } }],
+      }),
+    ).toThrow(),
+  );
+  it.each([0, -1, 601, 1.5, Infinity, null, "600", "600.0"])(
+    "refuses invalid explicit resource budget %s",
+    (perFileTimeoutSeconds) => {
+      expect(() =>
+        buildScancodeArguments({
+          outputPath: "report.json",
+          inputRoot: UBUNTU_ROOT,
+          perFileTimeoutSeconds,
+        }),
+      ).toThrow();
+      expect(() =>
+        validateScanExecutionObservation({ perFileTimeoutSeconds }),
+      ).toThrow();
+    },
+  );
+  it("refuses unknown execution observation fields", () => {
+    expect(() =>
+      validateScanExecutionObservation({
+        perFileTimeoutSeconds: 600,
+        ignored: true,
+      }),
+    ).toThrow();
+  });
   it("bounds scans to one worker without changing the semantic option set", () => {
     expect(SCANCODE_EXECUTION_OPTIONS).toEqual(["--processes", "1"]);
     expect(SCANCODE_PRE_SCAN_EXCLUDED_FILE_SUFFIXES).toEqual([".node"]);

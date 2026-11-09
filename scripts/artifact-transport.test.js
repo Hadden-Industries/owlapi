@@ -1,5 +1,6 @@
 import {
   mkdtemp,
+  realpath,
   mkdir,
   writeFile,
   readFile,
@@ -371,7 +372,10 @@ describe("artifact identity selection", () => {
 describe("frozen upload subject", () => {
   let root;
   beforeEach(async () => {
-    root = await mkdtemp(join(tmpdir(), "owlapi-artifact-test-"));
+    // Alias guards refuse 8.3 temp spellings such as RUNNER~1.
+    root = await realpath(
+      await mkdtemp(join(tmpdir(), "owlapi-artifact-test-")),
+    );
   });
   afterEach(async () => {
     await rm(root, { recursive: true, force: true });

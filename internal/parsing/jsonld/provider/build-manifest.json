@@ -8,15 +8,15 @@
   "builder": {
     "path": "scripts/build-jsonld-provider.mjs",
     "sha256": "cb760a05a2ae25e28d695e21c441c2be0b636804d27fc4ba8de6f8cb1dfc9ae7",
-    "viteVersion": "8.3.4",
-    "rolldownVersion": "1.2.13",
-    "prettierVersion": "3.9.9",
-    "packageLockSha256": "99eeebd4cbaa754663a61fb8d30e7226b6c22f004d711cbc4a606b9ba9f164e5"
+    "viteVersion": "8.3.7",
+    "rolldownVersion": "1.2.18",
+    "prettierVersion": "3.9.10",
+    "packageLockSha256": "094e975e25b23f2ad2248ef1c9ae893cbff43d3a45d8741ce24b1a47cda54a12"
   },
   "output": {
     "path": "jsonld.js",
-    "sha256": "fe8b378948cad189666576c948b3f3398169496290380b49ba2e218f086b768d",
-    "byteLength": 269402
+    "sha256": "84b558e2fdb10314ad559a0d39cce4aba9c0b53648919fd336053b7914b08d2e",
+    "byteLength": 268655
   },
   "sourceChanges": [
     {
@@ -315,14 +315,14 @@
     },
     {
       "name": "rolldown",
-      "version": "1.2.13",
+      "version": "1.2.18",
       "license": "MIT",
       "role": "bundler-runtime",
       "packageJsonPath": "node_modules/rolldown/package.json",
-      "packageJsonSha256": "2b7a7eb200cef2191475439e441690ac69aaf85e6677c699e7916efa2af7e8a7",
+      "packageJsonSha256": "1d7799877e2d13f861a3ed99f62f0df459115e391fc800001803571ea54b45b3",
       "notices": [
         {
-          "path": "licenses/rolldown-1.2.13-LICENSE",
+          "path": "licenses/rolldown-1.2.18-LICENSE",
           "sha256": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734",
           "byteLength": 1302
         }

@@ -1,0 +1,156 @@
+{
+  "artifactId": "9ecee232f204f0d7f5ac70594abf051953c97f4cdaf37a5d0f8714fefa4b32fe",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6984,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "8d8c55319c7729d57be811c747452636688d54f19701ee0752b6b15ad3771d9a",
+        "size": 1101,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "dc8148b1d0bbb80f812f1d8c00700e9242a010e7463aee2da415476a45f37a9e",
+        "size": 2459,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/helpers.d.ts",
+        "sha256": "1baa6d8e5f8aac96b77b6cb823d5b22205b78b9270cbc63b5c4bb8fdb9dc415e",
+        "size": 469,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/helpers.d.ts.map",
+        "sha256": "89850a5e06ba2c9d06d1766e7646f9c5d01ad8d59f20a0c14620c15fc91ddcf0",
+        "size": 580,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/helpers.js",
+        "sha256": "d119a78de55f24ba0dc9b3a545d0bfb2659fd98780ab4e5ea644017799fd448f",
+        "size": 1078,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/helpers.js.map",
+        "sha256": "eef8c7a42057484db83e09e02d9abde5acaefe75417cabefe12a78b21d40a407",
+        "size": 1440,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.ts",
+        "sha256": "fb259ff6af27a9a7543036017f6994bb2b23a134997a0bbcba8e310df9b4f297",
+        "size": 1398,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.ts.map",
+        "sha256": "0c99d60b0f63a411a608019f5749a05e2dae453c33fb3f1507c0b5cd44f0900c",
+        "size": 1426,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.js",
+        "sha256": "191afcb73f407f1f48b30a5e3009b349edc007d4bbe18bb870d738fab0a1f883",
+        "size": 5738,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.js.map",
+        "sha256": "b77e5ef084328996828a2f5312ff35e15d6ccd53625cba48a698ad4caa4b5070",
+        "size": 4320,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "13df46dd018fcf2e4231a0f47a1a007dd7d5441d9f8efb108f50f9fb64a17138",
+        "size": 1000,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1101,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/8d/8d8c55319c7729d57be811c747452636688d54f19701ee0752b6b15ad3771d9a",
+          "sha256": "8d8c55319c7729d57be811c747452636688d54f19701ee0752b6b15ad3771d9a"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "8d8c55319c7729d57be811c747452636688d54f19701ee0752b6b15ad3771d9a",
+        "size": 1101
+      }
+    ],
+    "expandedBytes": 21009,
+    "packageIdentity": {
+      "author": "Nathan Rajlich <nathan@tootallnate.net> (http://n8.io/)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "agent-base",
+      "repository": {
+        "directory": "packages/agent-base",
+        "type": "git",
+        "url": "https://github.com/TooTallNate/proxy-agents.git"
+      },
+      "version": "9.0.0"
+    },
+    "packageMetadata": {
+      "author": "Nathan Rajlich <nathan@tootallnate.net> (http://n8.io/)",
+      "description": "Turn a function into an `http.Agent` instance",
+      "devDependencies": {
+        "@types/debug": "^4.1.7",
+        "@types/node": "^22.13.0",
+        "@types/semver": "^7.3.13",
+        "@types/ws": "^8.5.4",
+        "async-listen": "^3.0.0",
+        "tsconfig": "0.0.0",
+        "typescript": "^5.1.6",
+        "ws": "^8.13.0"
+      },
+      "engines": {
+        "node": ">= 20"
+      },
+      "exports": {
+        "default": "./dist/index.js",
+        "types": "./dist/index.d.ts"
+      },
+      "files": [
+        "dist"
+      ],
+      "keywords": [
+        "http",
+        "agent",
+        "base",
+        "barebones",
+        "https"
+      ],
+      "license": "MIT",
+      "name": "agent-base",
+      "repository": {
+        "directory": "packages/agent-base",
+        "type": "git",
+        "url": "https://github.com/TooTallNate/proxy-agents.git"
+      },
+      "scripts": {
+        "build": "tsc",
+        "lint": "eslint . --ext .ts",
+        "pack": "node ../../scripts/pack.mjs",
+        "test": "vitest"
+      },
+      "type": "module",
+      "version": "9.0.0"
+    },
+    "physicalEntryCount": 11,
+    "tarball": {
+      "bytes": 6984,
+      "sha256": "2361fece924ff86b49991de66bd8e8db0e3bbfcb8d9e1a4443bae89a23cba89f"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

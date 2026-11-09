@@ -1,0 +1,168 @@
+{
+  "artifactId": "ac2de8bf17c12e620f420d58e171cc53527d2640952ac8c79980f22097d48f8f",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6714,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/lib/default.js",
+        "sha256": "702fcb7d6bfdfe7b673b8bb7fa9d531d9b7d02693bed89f8dbb0a2c461604cf6",
+        "size": 133,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/development.d.ts",
+        "sha256": "ceb6e73e51e21ac4f44f97e76e204d32c8916423e27e88d9548fc37f8321c568",
+        "size": 2682,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/development.js",
+        "sha256": "a04203811ed1e45eccc22d4d608437273da25b7e538a969f4cd896f38f081636",
+        "size": 5868,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "6f296a5eccc1dc96714bb94ebaa9cac25b0a1467d74cc5263ac4d0646ab01f62",
+        "size": 1099,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "fbb56102cf3bd0e07a8075bfda80825b3ccd78a37642c92cef54a55fbed709dd",
+        "size": 2114,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "10f164b0fbc1a2529745cc911427ef667cde9bc3b38b1fe9828ce80c3f7c21cd",
+        "size": 10114,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1099,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/6f/6f296a5eccc1dc96714bb94ebaa9cac25b0a1467d74cc5263ac4d0646ab01f62",
+          "sha256": "6f296a5eccc1dc96714bb94ebaa9cac25b0a1467d74cc5263ac4d0646ab01f62"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "6f296a5eccc1dc96714bb94ebaa9cac25b0a1467d74cc5263ac4d0646ab01f62",
+        "size": 1099
+      },
+      {
+        "blob": {
+          "bytes": 10114,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/10/10f164b0fbc1a2529745cc911427ef667cde9bc3b38b1fe9828ce80c3f7c21cd",
+          "sha256": "10f164b0fbc1a2529745cc911427ef667cde9bc3b38b1fe9828ce80c3f7c21cd"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "10f164b0fbc1a2529745cc911427ef667cde9bc3b38b1fe9828ce80c3f7c21cd",
+        "size": 10114
+      }
+    ],
+    "expandedBytes": 22010,
+    "packageIdentity": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "devlop",
+      "repository": "wooorm/devlop",
+      "version": "1.1.0"
+    },
+    "packageMetadata": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "bugs": "https://github.com/wooorm/devlop/issues",
+      "contributors": [
+        "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+      ],
+      "dependencies": {
+        "dequal": "^2.0.0"
+      },
+      "description": "Do things in development and nothing otherwise",
+      "devDependencies": {
+        "@rollup/plugin-node-resolve": "^15.1.0",
+        "@rollup/plugin-terser": "^0.4.3",
+        "@types/node": "^20.0.0",
+        "c8": "^8.0.0",
+        "esbuild": "^0.18.0",
+        "prettier": "^2.0.0",
+        "remark-cli": "^11.0.0",
+        "remark-preset-wooorm": "^9.0.0",
+        "type-coverage": "^2.0.0",
+        "typescript": "^5.0.0",
+        "xo": "^0.54.0"
+      },
+      "exports": {
+        "default": "./lib/default.js",
+        "development": "./lib/development.js",
+        "types": "./lib/development.d.ts"
+      },
+      "files": [
+        "lib/"
+      ],
+      "funding": {
+        "type": "github",
+        "url": "https://github.com/sponsors/wooorm"
+      },
+      "keywords": [
+        "assert",
+        "deprecate",
+        "develop",
+        "development"
+      ],
+      "license": "MIT",
+      "name": "devlop",
+      "prettier": {
+        "bracketSpacing": false,
+        "semi": false,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "trailingComma": "none",
+        "useTabs": false
+      },
+      "remarkConfig": {
+        "plugins": [
+          "remark-preset-wooorm"
+        ]
+      },
+      "repository": "wooorm/devlop",
+      "scripts": {
+        "build": "tsc --build --clean && tsc --build && type-coverage",
+        "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
+        "prepack": "npm run build && npm run format",
+        "test": "npm run build && npm run format && npm run test-coverage",
+        "test-api": "npm run test-api-development && npm run test-api-default",
+        "test-api-default": "node test-default.js",
+        "test-api-development": "node --conditions development test-development.js",
+        "test-coverage": "c8 --100 --reporter lcov npm run test-api"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "typeCoverage": {
+        "atLeast": 100,
+        "detail": true,
+        "ignoreCatch": true,
+        "strict": true
+      },
+      "version": "1.1.0",
+      "xo": {
+        "prettier": true
+      }
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 6714,
+      "sha256": "aed0b5ba97cc3aba851946766b1e4804e92a0d3b2051e047eed4e8bf508ecd5f"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

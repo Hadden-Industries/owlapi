@@ -3,12 +3,15 @@
 This directory records new observations against the Maven Central distribution, separately from the historical development-revision research.
 The released Java oracle is qualified against frozen harness commit `31638db1e270d7a5e98cee8a4499e5d4d4b1b829`.
 Admission verifies all measured fixture bytes in that commit, 28 Central/source observations, 15 selected-surface replays and the 2,146 acquired dependency artifacts.
+
 The JavaScript implementation is complete and merged through [PR #76](https://github.com/Hadden-Industries/owlapi/pull/76).
 The [implementation and release-readiness record](implementation-qualification.md) records completed ordinary review and installed Node/browser qualification for their measured candidates.
-Public JavaScript profile admission remains held for complete designated security evidence and an accountable release decision; oracle qualification does not remove that hold.
+The JavaScript profile ships in the [latest published release](../../../../README.md#release-status).
+Its rc.3 admission includes the owner's explicit exception for the incomplete historical security scan, recorded in the implementation and release-readiness record; oracle qualification does not replace that missing review.
 
 On 15 October 2026 the owner authorized regenerating this unreleased evidence's JSON presentation under shared JSON Quality.
 The native recorder's `--refresh-presentation ABSOLUTE_FRESH_BACKUP_DIRECTORY` mode preserves the previous copies, verifies the candidate, and rebinds the evidence, observation and dependency-lock hashes.
+
 This operation retains the original capture identities, frozen harness and qualification timestamp; it does not claim another Java execution.
 Every JSON file in this profile receives ordinary semantic and presentation checks and is eligible for shared formatter writes.
 Generator freshness and oracle verification remain required when bytes change.
@@ -33,6 +36,7 @@ This is development evidence, with no Java runtime or copied Java implementation
 The unmodified tagged source built successfully with Maven 3.9.15 and Eclipse Temurin 25.0.4.1+1-LTS.
 A fresh checkout also built offline from the isolated repository.
 The preserved effective Maven model and plugin-resolution graph identify build inputs, including parent POMs, build plugins and their dependencies.
+
 The dependency lock is a conservative inventory of all POM/JAR/signature artifacts acquired in that isolated repository; its ordered runtime classpath is a separate field.
 Acquisition-only artifacts may therefore appear in the source reconstruction inventory.
 
@@ -47,6 +51,7 @@ Central remains the executable oracle.
 All 28 Java executions (15 retained research cases and 13 current contract probes) have Central/source behavioral comparisons.
 The separate selected-surface replay contains 15 additional executions.
 Current comparison files bind each capture; new probe edits require fresh comparison before admission.
+
 The comparison preserves callback order, exception outcomes, configuration values and partial effects.
 The comparator classifies only recorded build-timestamp comments and equal-priority parser inventory order; artifact/runtime locations remain separate provenance.
 Agreement is limited to the recorded probes, not a proof that every bytecode path is equivalent.
@@ -78,6 +83,7 @@ The evidence includes its file count, total bytes and SHA-256.
 `${QUALIFICATION_WORKSPACE}`, `${PROBE_WORKSPACE}`, `${OWLAPI_SOURCE}` and `${USER_PROFILE}` are portability placeholders in retained observations.
 Paths in manifests resolve relative to their containing manifest.
 Native command logs are operator observations, not HISEW verification receipts.
+
 The JavaScript baseline retains a Firefox launch failure inside its browser probe output; the outer process's zero exit status does not qualify that browser lane.
 Subsequent SLICE-009 installed-browser qualification passed in Chromium, Firefox and WebKit, as recorded in the implementation and release-readiness record; the earlier failed observation remains unchanged.
 
