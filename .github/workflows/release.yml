@@ -295,6 +295,15 @@ jobs:
           ref: e2c667f3584b8fb705671cada0fe205b1000b617
           path: .release/universal-ontology
           persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /src/external/skos.rdf
+            /src/external/time-gregorian.ttl
+            /src/external/time.rdf
+            /src/iso-iec/11179/-3/ed-4/20260714
+            /src/universal/core/20260714
+            /src/universal/extended/20260714
+            /src/universal/reference-data/20260714
       - name: Check out the pinned Java OWLAPI reference
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
