@@ -239,6 +239,12 @@ The archive-specific manual trusted Markdown dispatch is retired because no down
 `npm run inspect:markdown:profile` reports the effective ordinary resource policy; it does not produce a hosted immutable qualification receipt.
 Refresh current dependency/provenance records through their owning tools while preserving historical evidence and pending human-review decisions.
 
+The root and artifact-transport npm manifests override vulnerable `glob` and `minimatch` ranges for [GHSA-3g3m-2fjr-6pw4](https://github.com/advisories/GHSA-3g3m-2fjr-6pw4) and [GHSA-g3hv-75wg-m249](https://github.com/advisories/GHSA-g3hv-75wg-m249).
+Update the two packages together where a caller uses `glob`.
+Glob 10 and 13 expect the older wildcard matcher representation.
+Remove each override once the upstream constraints resolve to patched, compatible releases.
+Audit both complete graphs and follow the [artifact transport rebuild and evidence procedure](docs/release/artifact-transport.md#bounds-dependencies-and-ownership).
+
 For workflow changes, also run:
 
 ```shell

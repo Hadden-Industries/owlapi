@@ -4,6 +4,8 @@ import { createRequire } from "node:module";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import semver from "semver";
+import { normalizeLockedRegistryGraph } from "../util/third-party-evidence/lock-graph.mjs";
 
 const require = createRequire(import.meta.url);
 const root = fileURLToPath(new URL("../", import.meta.url));
@@ -23,6 +25,28 @@ const indexedMap = (line, map = leafMap) => ({
 });
 
 describe("development dependency security boundaries", () => {
+  test.each([
+    "package-lock.json",
+    "tooling/artifact-transport/package-lock.json",
+  ])("%s excludes the vulnerable glob and minimatch releases", (lockfile) => {
+    const vulnerableRanges = {
+      glob: ">=9.0.0 <=14.0.1", // GHSA-3g3m-2fjr-6pw4
+      minimatch: ">=7.0.0 <11.0.1", // GHSA-g3hv-75wg-m249
+    };
+    const { artifacts, occurrences } = normalizeLockedRegistryGraph(
+      readFileSync(join(root, lockfile)),
+    );
+    const bundled = occurrences.map(({ bundled }) => bundled).filter(Boolean);
+    const vulnerable = [...artifacts, ...bundled]
+      .filter(
+        ({ name, version }) =>
+          Object.hasOwn(vulnerableRanges, name) &&
+          semver.satisfies(version, vulnerableRanges[name]),
+      )
+      .map(({ name, version }) => `${name}@${version}`);
+    expect(vulnerable).toEqual([]);
+  });
+
   test("Jest resolves the registry replacement and no original deepmerge remains locked", () => {
     const lock = JSON.parse(readFileSync(join(root, "package-lock.json")));
     const entries = Object.entries(lock.packages).filter(

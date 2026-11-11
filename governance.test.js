@@ -3075,7 +3075,9 @@ Neither this NOTICE nor the package licence replaces those upstream terms.
     // npm does not apply dependency overrides from a consumed package manifest.
     expect(Object.keys(packageJson.overrides).sort()).toEqual([
       "@istanbuljs/load-nyc-config@1.1.0",
+      "glob@>=9.0.0 <14.0.2",
       "jest-config@30.5.2",
+      "minimatch@>=7.0.0 <11.0.1",
       "source-map-js",
     ]);
     expect(packageJson.overrides["jest-config@30.5.2"]).toEqual({

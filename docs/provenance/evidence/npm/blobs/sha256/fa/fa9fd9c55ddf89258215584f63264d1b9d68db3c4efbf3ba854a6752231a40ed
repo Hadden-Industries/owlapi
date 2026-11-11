@@ -1,0 +1,193 @@
+{
+  "artifactId": "99b556a86ba024bcf25b3ffb10e79115a224aa23fca5350a515445b92d1548bb",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 103785,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "8a1af140fdfbf5afd3df27f7e662f989c5b963a300020dfafce42033cae9e004",
+        "size": 1552,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "ad42862ff2407f7a3b286df89cf4a2e5567e57c48e32ef8beda909ea1113f1c7",
+        "size": 22017,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.d.ts",
+        "sha256": "ca7357e763238794c9bd8d0709955c0eaf18d84c099c8b354acea6cd0e1c9188",
+        "size": 39908,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.d.ts.map",
+        "sha256": "36749afb6a5fc9b802678a80634765664917272e132d5deaac74a5bdfc19c4a4",
+        "size": 18251,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.js",
+        "sha256": "9f5ce81965ef974ab74eea7f42d34ca53102f9adb5c86752c0893d464c86c951",
+        "size": 67812,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.js.map",
+        "sha256": "95f95fef9a1f58d48bf6a5e60080a438ecb3007b79f86ad7d08b160d3799050e",
+        "size": 133696,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/package.json",
+        "sha256": "8005a3491db7d92f36ac66369861589f9c47123d3a7c71e643fc2c06168cd45a",
+        "size": 25,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.d.ts",
+        "sha256": "ca7357e763238794c9bd8d0709955c0eaf18d84c099c8b354acea6cd0e1c9188",
+        "size": 39908,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.d.ts.map",
+        "sha256": "36749afb6a5fc9b802678a80634765664917272e132d5deaac74a5bdfc19c4a4",
+        "size": 18251,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.js",
+        "sha256": "0b3f6d847f3e4edc7ca2ede121815045c3bb3f38c0555ad10b93b5f0ca11912b",
+        "size": 65651,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.js.map",
+        "sha256": "06f350c1707a3159c88b186ffad6c95d9753b62d8aab217acb496d3fec3b4306",
+        "size": 133813,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/package.json",
+        "sha256": "3ca9d4afd21425087cf31893b8f9f63c81b0b8408db5e343ca76e5f8aa26ab9a",
+        "size": 23,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "74862badb890fd4ce50af0048f17ffd5ce23f28e998a68134917cb1dce20f3cc",
+        "size": 1767,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1552,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/8a/8a1af140fdfbf5afd3df27f7e662f989c5b963a300020dfafce42033cae9e004",
+          "sha256": "8a1af140fdfbf5afd3df27f7e662f989c5b963a300020dfafce42033cae9e004"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "8a1af140fdfbf5afd3df27f7e662f989c5b963a300020dfafce42033cae9e004",
+        "size": 1552
+      }
+    ],
+    "expandedBytes": 542674,
+    "packageIdentity": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (https://blog.izs.me)",
+      "homepage": null,
+      "license": "BlueOak-1.0.0",
+      "name": "path-scurry",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/isaacs/path-scurry"
+      },
+      "version": "3.0.0"
+    },
+    "packageMetadata": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (https://blog.izs.me)",
+      "dependencies": {
+        "lru-cache": "^11.0.0",
+        "minipass": "^7.1.2"
+      },
+      "description": "walk paths fast and efficiently",
+      "devDependencies": {
+        "@nodelib/fs.walk": "^3.0.1",
+        "@types/node": "^25.3.0",
+        "mkdirp": "^3.0.0",
+        "prettier": "^3.3.2",
+        "rimraf": "^6.1.3",
+        "tap": "^21.8.0",
+        "ts-node": "^10.9.2",
+        "tshy": "^4.1.3",
+        "typedoc": "^0.28.17"
+      },
+      "engines": {
+        "node": "18 || 20 || >=22"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "default": "./dist/esm/index.js",
+            "types": "./dist/esm/index.d.ts"
+          },
+          "require": {
+            "default": "./dist/commonjs/index.js",
+            "types": "./dist/commonjs/index.d.ts"
+          }
+        },
+        "./package.json": "./package.json"
+      },
+      "files": [
+        "dist"
+      ],
+      "funding": {
+        "url": "https://github.com/sponsors/isaacs"
+      },
+      "license": "BlueOak-1.0.0",
+      "main": "./dist/commonjs/index.js",
+      "module": "./dist/esm/index.js",
+      "name": "path-scurry",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/isaacs/path-scurry"
+      },
+      "scripts": {
+        "bench": "bash ./scripts/bench.sh",
+        "format": "prettier --write .",
+        "postversion": "npm publish",
+        "prepare": "tshy",
+        "prepublishOnly": "git push origin --follow-tags",
+        "presnap": "npm run prepare",
+        "pretest": "npm run prepare",
+        "preversion": "npm test",
+        "snap": "tap",
+        "test": "tap",
+        "typedoc": "typedoc --tsconfig tsconfig-esm.json ./src/*.ts"
+      },
+      "tshy": {
+        "exports": {
+          ".": "./src/index.ts",
+          "./package.json": "./package.json"
+        },
+        "selfLink": false
+      },
+      "type": "module",
+      "types": "./dist/commonjs/index.d.ts",
+      "version": "3.0.0"
+    },
+    "physicalEntryCount": 13,
+    "tarball": {
+      "bytes": 103785,
+      "sha256": "28d5862f70595973f00d63bb219083d6ed7a28488685a73a1c3340ba55688675"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}
