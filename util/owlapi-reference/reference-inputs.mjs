@@ -4,6 +4,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { evidenceFingerprint } from "../../scripts/ci-check-coverage.mjs";
 import Ajv from "ajv";
+import { UBUNTU } from "../../scripts/ubuntu-runner.mjs";
 import { isCurrentJavaEnvironment } from "../../scripts/java-toolchain.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -66,7 +67,7 @@ const validateInputs = new Ajv({ strict: true }).compile({
       properties: {
         os: { enum: ["Linux", "Windows"] },
         architecture: { const: "X64" },
-        image: { enum: ["ubuntu24", "LOCAL_WINDOWS_EXPERIMENT"] },
+        image: { enum: [UBUNTU.image, "LOCAL_WINDOWS_EXPERIMENT"] },
         imageVersion: { type: "string", minLength: 1, maxLength: 64 },
       },
     },
@@ -325,7 +326,7 @@ export function createReferenceInputRecord(inputs) {
     inputs.environment["os.name"] !==
       (inputs.host.os === "Linux" ? "Linux" : "Windows 11") ||
     (inputs.host.os === "Linux"
-      ? inputs.host.image !== "ubuntu24" ||
+      ? inputs.host.image !== UBUNTU.image ||
         !/^\d{8}\.\d+(?:\.\d+)?$/u.test(inputs.host.imageVersion)
       : inputs.host.image !== "LOCAL_WINDOWS_EXPERIMENT")
   ) {

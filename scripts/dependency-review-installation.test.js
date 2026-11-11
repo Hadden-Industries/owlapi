@@ -12,6 +12,8 @@ import {
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { parse } from "yaml";
+import { UBUNTU } from "./ubuntu-runner.mjs";
+import { OTHER_UBUNTU } from "./fixtures/ubuntu-runner.mjs";
 
 const workflow = parse(readFileSync(".github/workflows/ci.yml", "utf8"));
 
@@ -22,7 +24,7 @@ describe("dependency review without repository installation", () => {
       .filter(Boolean);
     expect(commands).not.toContain("npm ci");
     expect(commands).toContain(
-      "npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash",
+      `npm run record:runner -- --expected-os Linux --expected-arch X64 --label ${UBUNTU.label} --shell bash`,
     );
     expect(commands).toContain(
       "npm run report:dependency-review-applicability",
@@ -33,10 +35,16 @@ describe("dependency review without repository installation", () => {
     const root = mkdtempSync(join(tmpdir(), "owlapi-dependency-review-"));
     try {
       mkdirSync(join(root, "scripts"));
+      mkdirSync(join(root, "docs", "release"), { recursive: true });
+      copyFileSync(
+        "docs/release/runtime-policy.json",
+        join(root, "docs", "release", "runtime-policy.json"),
+      );
       const manifest = JSON.parse(readFileSync("package.json", "utf8"));
       writeFileSync(join(root, "package.json"), JSON.stringify(manifest));
       for (const name of [
         "record-runner.mjs",
+        "ubuntu-runner.mjs",
         "assert-workflow-runtime.mjs",
         "report-dependency-review-applicability.mjs",
       ])
@@ -44,7 +52,7 @@ describe("dependency review without repository installation", () => {
       expect(existsSync(join(root, "node_modules"))).toBe(false);
       const npmCli = process.env.npm_execpath;
       expect(npmCli).toBeTruthy();
-      const invoke = (args) =>
+      const invoke = (args, image = UBUNTU.image) =>
         spawnSync(process.execPath, [npmCli, ...args], {
           cwd: root,
           encoding: "utf8",
@@ -54,7 +62,7 @@ describe("dependency review without repository installation", () => {
             GITHUB_EVENT_NAME: "push",
             RUNNER_OS: "Linux",
             RUNNER_ARCH: "X64",
-            ImageOS: "ubuntu24",
+            ImageOS: image,
             ImageVersion: "20261001.1",
           },
         });
@@ -77,7 +85,7 @@ describe("dependency review without repository installation", () => {
         npm: npmVersion.stdout.trim(),
       });
       const output = join(root, "runner.json");
-      const runner = invoke([
+      const runnerArgs = [
         "run",
         "record:runner",
         "--",
@@ -86,25 +94,29 @@ describe("dependency review without repository installation", () => {
         "--expected-arch",
         "X64",
         "--label",
-        "ubuntu-24.04",
+        UBUNTU.label,
         "--shell",
         "bash",
         "--output",
         output,
-      ]);
+      ];
+      const runner = invoke(runnerArgs);
       expect(runner.status).toBe(0);
       expect(JSON.parse(readFileSync(output, "utf8"))).toMatchObject({
         schemaVersion: 1,
-        requestedLabel: "ubuntu-24.04",
+        requestedLabel: UBUNTU.label,
         selectedShell: "bash",
         runtime: { node: process.version, npm: npmVersion.stdout.trim() },
         runner: {
           os: "Linux",
           architecture: "X64",
-          imageOS: "ubuntu24",
+          imageOS: UBUNTU.image,
           imageVersion: "20261001.1",
         },
       });
+      const differentImage = invoke(runnerArgs, OTHER_UBUNTU.image);
+      expect(differentImage.status).toBe(1);
+      expect(differentImage.stderr).toContain("does not match");
       const applicability = invoke([
         "run",
         "report:dependency-review-applicability",

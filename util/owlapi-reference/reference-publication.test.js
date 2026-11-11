@@ -1,3 +1,4 @@
+import { UBUNTU } from "../../scripts/ubuntu-runner.mjs";
 import { JAVA_TOOLCHAIN } from "../../scripts/java-toolchain.mjs";
 import { createHash } from "node:crypto";
 import { canonicalJson } from "../../scripts/canonical-json.mjs";
@@ -85,7 +86,7 @@ beforeEach(() => {
     host: {
       os: "Linux",
       architecture: "X64",
-      image: "ubuntu24",
+      image: UBUNTU.image,
       imageVersion: "20261001.1.0",
     },
   });

@@ -1,5 +1,7 @@
 import { readFileSync } from "node:fs";
 import { parse } from "yaml";
+import { UBUNTU } from "./ubuntu-runner.mjs";
+import { OTHER_UBUNTU } from "./fixtures/ubuntu-runner.mjs";
 import { CI_RUNTIME, projectRuntimeText } from "./runtime-policy.mjs";
 import {
   projectWorkflowRuntime,
@@ -50,6 +52,30 @@ describe("closed runtime projections", () => {
         { path: ["permissions"], template: "{}" },
       ]),
     ).toThrow("Unapproved runtime projection");
+  });
+
+  it("repairs a different Ubuntu selector and rejects unmanaged Ubuntu lanes", () => {
+    const source = `jobs:\n  test:\n    runs-on: ${OTHER_UBUNTU.label} # keep\n`;
+    const projections = [
+      {
+        path: ["jobs", "test", "runs-on"],
+        template: "{{runtime:ubuntuRunner}}",
+      },
+    ];
+    expect(projectWorkflowRuntime(source, projections).drift).toEqual([
+      "jobs.test.runs-on",
+    ]);
+    expect(
+      projectWorkflowRuntime(source, projections, { write: true }).source,
+    ).toBe(source.replace(OTHER_UBUNTU.label, UBUNTU.label));
+    for (const label of ["ubuntu-slim", "ubuntu-latest-4-cores"]) {
+      expect(() =>
+        projectWorkflowRuntime(
+          source + `  other:\n    runs-on: ${label}\n`,
+          projections,
+        ),
+      ).toThrow("Unmanaged Ubuntu selector");
+    }
   });
 
   it("rejects a substituted generated runtime label in real workflow YAML", () => {

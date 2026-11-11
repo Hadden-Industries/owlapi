@@ -1,3 +1,5 @@
+import { UBUNTU } from "./ubuntu-runner.mjs";
+import { OTHER_UBUNTU } from "./fixtures/ubuntu-runner.mjs";
 import { describe, expect, test } from "@jest/globals";
 import { execFileSync, spawnSync } from "node:child_process";
 import {
@@ -127,7 +129,7 @@ const fixture = () => {
     host: {
       os: "Linux",
       architecture: "X64",
-      image: "ubuntu24",
+      image: UBUNTU.image,
       imageVersion: "20260920.314.1",
       node: `v${CANONICAL_NODE}`,
     },
@@ -1265,7 +1267,7 @@ describe("reuse of complete PR integration", () => {
   test.each([
     ["os", "Windows"],
     ["architecture", "ARM64"],
-    ["image", "ubuntu26"],
+    ["image", OTHER_UBUNTU.image],
     ["node", "v24.0.0"],
     ["imageVersion", ""],
   ])("rejects unsupported or missing collector %s", async (field, value) => {

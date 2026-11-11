@@ -3,6 +3,7 @@ import {
   PUBLICATION_GUARD_COMMAND,
 } from "./release-publication-history.mjs";
 import { checkNodeSupportProjections } from "./project-node-support.mjs";
+import { UBUNTU } from "./ubuntu-runner.mjs";
 import { CI_RUNTIME, projectRuntimeText } from "./runtime-policy.mjs";
 import { JAVA_TOOLCHAIN } from "./java-toolchain.mjs";
 import {
@@ -109,7 +110,7 @@ const SCANCODE_LINUX_COMMAND =
 const EVIDENCE_OS_MATRIX = [
   {
     id: "ubuntu",
-    runner: "ubuntu-24.04",
+    runner: UBUNTU.label,
     shell: "bash",
     platform: "linux",
     scancode_command: SCANCODE_LINUX_COMMAND,
@@ -649,7 +650,7 @@ const validateJobs = (fileName, workflow, violations) => {
         ? runner === "${{ matrix.runner }}"
         : isEvidenceMatrix
           ? runner === "${{ matrix.os.runner }}"
-          : ["ubuntu-24.04", "windows-2025", "macos-15"].includes(runner),
+          : [UBUNTU.label, "windows-2025", "macos-15"].includes(runner),
       `${fileName}:${id} must use an approved explicit runner or closed runner matrix`,
     );
     add(
@@ -1086,7 +1087,7 @@ const validateCiVerification = (workflow, violations) => {
         setupInputs(step).install === "none",
     ) &&
       jsonEquals(dependencyCommands, [
-        "npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash",
+        `npm run record:runner -- --expected-os Linux --expected-arch X64 --label ${UBUNTU.label} --shell bash`,
         "npm run report:dependency-review-applicability",
       ]),
     `${label} dependency review must retain its no-installation npm entry points`,
@@ -3418,8 +3419,8 @@ export const auditRepositoryControls = ({
   // The Ubuntu package consumer follows candidate creation, separate from source.
   for (const fileName of ["ci.yml", "release.yml"]) {
     for (const [id, runner] of [
-      ["source_json", "ubuntu-24.04"],
-      ["portability_ubuntu_node_26", "ubuntu-24.04"],
+      ["source_json", UBUNTU.label],
+      ["portability_ubuntu_node_26", UBUNTU.label],
       ["portability_windows_node_26", "windows-2025"],
       ["portability_macos_node_26", "macos-15"],
     ]) {

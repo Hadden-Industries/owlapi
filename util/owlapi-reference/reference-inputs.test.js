@@ -1,3 +1,5 @@
+import { UBUNTU } from "../../scripts/ubuntu-runner.mjs";
+import { OTHER_UBUNTU } from "../../scripts/fixtures/ubuntu-runner.mjs";
 import { JAVA_TOOLCHAIN } from "../../scripts/java-toolchain.mjs";
 import { describe, expect, test } from "@jest/globals";
 import {
@@ -38,7 +40,7 @@ const inputs = () => ({
   host: {
     os: "Linux",
     architecture: "X64",
-    image: "ubuntu24",
+    image: UBUNTU.image,
     imageVersion: "20261001.1.0",
   },
 });
@@ -193,7 +195,7 @@ describe("native reference preparation boundary", () => {
     expect(() =>
       createReferenceInputRecord({
         ...original,
-        host: { ...original.host, image: "ubuntu26" },
+        host: { ...original.host, image: OTHER_UBUNTU.image },
       }),
     ).toThrow();
   });

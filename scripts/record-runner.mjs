@@ -2,6 +2,7 @@ import { spawnSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { arch, platform, release, version } from "node:os";
 import { resolve } from "node:path";
+import { assertUbuntuHost } from "./ubuntu-runner.mjs";
 
 const valueAfter = (name) => {
   const index = process.argv.indexOf(name);
@@ -33,6 +34,9 @@ if (observedRunnerArch && observedRunnerArch !== expectedArch) {
     `Runner architecture ${observedRunnerArch} does not match ${expectedArch}.`,
   );
 }
+
+if (expectedOs === "Linux" && observedRunnerOs)
+  assertUbuntuHost(requestedLabel, process.env.ImageOS);
 
 const npmCli = process.env.npm_execpath;
 const npmVersion = npmCli

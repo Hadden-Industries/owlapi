@@ -21,7 +21,7 @@ env:
 jobs:
   runtime_matrix:
     name: Maintenance / frozen consumer matrix
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 25
     permissions:
       contents: read
@@ -40,7 +40,7 @@ jobs:
 
   health:
     name: Maintenance / dependency and package health
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 60
     outputs:
       reporter_artifact_id: ${{ steps.reporter_bundle.outputs.artifact-id }}
@@ -73,7 +73,7 @@ jobs:
         run: npm ci
         timeout-minutes: 20
       - name: Record the hosted runner identity
-        run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
+        run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-26.04 --shell bash
         timeout-minutes: 5
       - name: Select the pinned development Python
         id: quality_python
@@ -143,7 +143,7 @@ jobs:
     name: Maintenance / complete consumer qualification
     needs: [runtime_matrix, health, consumer_runtime]
     if: ${{ !cancelled() }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 30
     permissions:
       contents: read
@@ -169,7 +169,7 @@ jobs:
     name: Maintenance / isolated finding reporter
     needs: health
     if: ${{ !cancelled() && needs.health.outputs.reporter_artifact_id != '' }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 10
     permissions:
       issues: write

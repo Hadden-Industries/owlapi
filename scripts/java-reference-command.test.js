@@ -1,3 +1,4 @@
+import { UBUNTU } from "./ubuntu-runner.mjs";
 import { JAVA_TOOLCHAIN } from "./java-toolchain.mjs";
 import { expect, test } from "@jest/globals";
 import { assertNativeReferenceInputs } from "./java-reference-command.mjs";
@@ -56,7 +57,7 @@ test("native input admission accepts serialized member permutations but rejects 
     host: {
       os: "Linux",
       architecture: "X64",
-      image: "ubuntu24",
+      image: UBUNTU.image,
       imageVersion: "20261001.1.0",
     },
   });

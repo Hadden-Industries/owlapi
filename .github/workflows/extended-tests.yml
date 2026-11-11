@@ -15,7 +15,7 @@ jobs:
   extended_evidence:
     name: Extended tests / transparent observations
     if: ${{ github.event_name == 'schedule' }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 120
     permissions:
       contents: read
@@ -35,7 +35,7 @@ jobs:
         run: npm ci
         timeout-minutes: 20
       - name: Record the hosted runner identity
-        run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
+        run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-26.04 --shell bash
         timeout-minutes: 5
       - name: Select the pinned development Python
         id: quality_python
@@ -56,7 +56,7 @@ jobs:
   third_party_evidence_registry_keys:
     name: Extended tests / third-party evidence / npm registry signing keys
     if: ${{ github.event_name == 'workflow_dispatch' }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 30
     permissions:
       contents: read
@@ -77,7 +77,7 @@ jobs:
         run: npm ci
         timeout-minutes: 15
       - name: Record the Ubuntu hosted runner identity
-        run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
+        run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-26.04 --shell bash
         timeout-minutes: 5
       - name: Snapshot and validate npm's signing keys once for this run
         run: node util/snapshot-npm-registry-keys.mjs --output=.release/registry-keys/npm-registry-keys.json
@@ -106,7 +106,7 @@ jobs:
       matrix:
         os:
           - id: ubuntu
-            runner: ubuntu-24.04
+            runner: ubuntu-26.04
             shell: bash
             platform: linux
             scancode_command: .release/tools/scancode/scancode-toolkit-v32.5.0/venv/bin/scancode
@@ -178,7 +178,7 @@ jobs:
           path: .release/registry-keys
       - name: Record the Ubuntu hosted runner identity
         if: ${{ matrix.os.id == 'ubuntu' }}
-        run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
+        run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-26.04 --shell bash
         timeout-minutes: 5
       - name: Record the Windows hosted runner identity
         if: ${{ matrix.os.id == 'windows' }}
@@ -207,7 +207,7 @@ jobs:
     name: Extended tests / third-party evidence / ${{ matrix.os }} aggregate
     if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' }}
     needs: third_party_evidence_shard
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 30
     permissions:
       contents: read
@@ -232,7 +232,7 @@ jobs:
         run: npm ci
         timeout-minutes: 15
       - name: Record the Ubuntu aggregation runner identity
-        run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
+        run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-26.04 --shell bash
         timeout-minutes: 5
       - name: Download every same-run operating-system shard
         uses: ./.github/actions/collect-artifacts
@@ -253,7 +253,7 @@ jobs:
     name: Extended tests / third-party evidence / cross-platform parity
     if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' }}
     needs: third_party_evidence_aggregate
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 30
     permissions:
       contents: read
@@ -274,7 +274,7 @@ jobs:
         run: npm ci
         timeout-minutes: 15
       - name: Record the Ubuntu parity runner identity
-        run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
+        run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-26.04 --shell bash
         timeout-minutes: 5
       - name: Download both verified operating-system aggregates
         uses: ./.github/actions/collect-artifacts

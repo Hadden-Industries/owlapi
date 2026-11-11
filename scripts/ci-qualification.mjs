@@ -1,3 +1,4 @@
+import { UBUNTU } from "./ubuntu-runner.mjs";
 import { projectRuntimeText } from "./runtime-policy.mjs";
 import artifactTransportPolicy from "../docs/release/artifact-transport-policy.json" with { type: "json" };
 import artifactTransportBuild from "../.github/actions/retain-artifact/dist/build.json" with { type: "json" };
@@ -127,7 +128,7 @@ export const validQualificationHost = (host) =>
   closed(host, ["os", "architecture", "image", "imageVersion", "node"]) &&
   host.os === "Linux" &&
   host.architecture === "X64" &&
-  host.image === "ubuntu24" &&
+  host.image === UBUNTU.image &&
   /^\d{8}\.\d+(?:\.\d+)?$/u.test(host.imageVersion ?? "") &&
   host.node === projectRuntimeText("v{{runtime:canonicalNode}}");
 

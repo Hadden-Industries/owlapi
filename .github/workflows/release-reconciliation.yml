@@ -13,7 +13,7 @@ concurrency:
 jobs:
   source_verification:
     name: Release reconciliation / source verified
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 30
     permissions:
       actions: read
@@ -109,7 +109,7 @@ jobs:
     environment:
       name: release-manual
       deployment: false
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 15
     permissions:
       contents: read
@@ -150,7 +150,7 @@ jobs:
     needs:
       - accepted
       - source_verification
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 20
     permissions:
       contents: write
@@ -206,7 +206,7 @@ jobs:
       - source_verification
     environment:
       name: npm-release
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 20
     permissions:
       contents: read
@@ -258,7 +258,7 @@ jobs:
     needs:
       - npm_release
       - source_verification
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 30
     permissions:
       contents: read
@@ -309,7 +309,7 @@ jobs:
       - npm_release
       - registry_verification
       - source_verification
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 20
     permissions:
       actions: read
@@ -395,7 +395,7 @@ jobs:
     needs:
       - release_evidence
       - source_verification
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 20
     permissions:
       contents: write
@@ -437,7 +437,7 @@ jobs:
     needs:
       - finalize_release
       - source_verification
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 20
     permissions:
       contents: read

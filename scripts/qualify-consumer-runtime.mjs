@@ -10,6 +10,7 @@ import {
   validateFrozenMatrix,
 } from "./consumer-runtime-matrix.mjs";
 import { assertConsumerNpm } from "./consumer-runtime-tools.mjs";
+import { assertUbuntuHost } from "./ubuntu-runner.mjs";
 
 const matrix = validateFrozenMatrix(
   JSON.parse(process.env.OWLAPI_RUNTIME_MATRIX),
@@ -26,6 +27,7 @@ assert.equal(
   process.env.RUNNER_OS,
   { linux: "Linux", win32: "Windows", darwin: "macOS" }[lane.os],
 );
+if (lane.os === "linux") assertUbuntuHost(lane.runner, process.env.ImageOS);
 const npm = assertConsumerNpm(process.env.OWLAPI_CONSUMER_NPM);
 assert.match(process.env.OWLAPI_CANDIDATE_ID, /^[1-9]\d*$/u);
 assert.match(process.env.OWLAPI_CANDIDATE_DIGEST, /^sha256:[a-f0-9]{64}$/u);

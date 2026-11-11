@@ -3,6 +3,7 @@ import {
   PUBLICATION_GUARD_COMMAND,
 } from "./release-publication-history.mjs";
 import { isDeepStrictEqual } from "node:util";
+import { UBUNTU } from "./ubuntu-runner.mjs";
 import { RECOVERY_JOBS } from "./rc3-recovery-policy.mjs";
 
 const guarded = "${{ inputs.rc3_recovery && !inputs.qualification_only }}";
@@ -197,7 +198,7 @@ export function ordinaryReleaseWorkflow(workflow, violations) {
       `${id} permissions differ`,
     );
     check(
-      j["runs-on"] === "ubuntu-24.04" &&
+      j["runs-on"] === UBUNTU.label &&
         Number.isInteger(j["timeout-minutes"]) &&
         j["timeout-minutes"] <= 90 &&
         j["timeout-minutes"] > 0 &&
