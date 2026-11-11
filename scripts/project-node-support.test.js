@@ -38,7 +38,7 @@ describe("one runtime version authority", () => {
     const before = JSON.parse(files["package.json"]),
       after = JSON.parse(projected["package.json"]);
     expect(after.engines.node).toBe(">=22.1.0");
-    expect(after.devEngines.runtime.version).toBe(">=26.14.0");
+    expect(after.devEngines.runtime).toEqual(before.devEngines.runtime);
     expect(after.dependencies).toEqual(before.dependencies);
     expect(after.devDependencies).toEqual(before.devDependencies);
     expect(after.devEngines.packageManager).toEqual(

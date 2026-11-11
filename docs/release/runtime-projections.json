@@ -12,14 +12,6 @@
       {
         "path": [
           "devEngines",
-          "runtime",
-          "version"
-        ],
-        "template": "{{runtime:developmentNodeRange}}"
-      },
-      {
-        "path": [
-          "devEngines",
           "packageManager",
           "version"
         ],
@@ -43,7 +35,7 @@
           "obligation"
         ],
         "requirementId": "P19-LOCKED-TOOLCHAIN-001",
-        "template": "All registry development declarations use >= minimums, including JSON Quality; the exact qualified graph, integrity, authenticated legal evidence and install-script decisions remain locked and reviewed. Local development requires Node {{runtime:developmentNodeRange}} and npm {{runtime:npmRange}}; producer CI, release and governed verification bootstrap exact npm {{runtime:npm}} before project commands or cache probes. Consumer lanes retain producer-installed tools, then select the frozen Node and separately admitted npm {{runtime:consumerNpm}} without installing the development graph at consumer floors. Preserve production pins, canonical Node {{runtime:canonicalNode}}, denied scripts, authenticated Markdown package evidence, Python and Actions pins. Deliberate resolution and frozen npm ci are distinct operations."
+        "template": "All registry development declarations use >= minimums, including JSON Quality; the exact qualified graph, integrity, authenticated legal evidence and install-script decisions remain locked and reviewed. Local development uses the Node range declared in package.json devEngines.runtime and npm {{runtime:npmRange}}; producer CI, release and governed verification bootstrap exact npm {{runtime:npm}} before project commands or cache probes. Consumer lanes retain producer-installed tools, then select the frozen Node and separately admitted npm {{runtime:consumerNpm}} without installing the development graph at consumer floors. Preserve production pins, canonical Node {{runtime:canonicalNode}}, denied scripts, authenticated Markdown package evidence, Python and Actions pins. Deliberate resolution and frozen npm ci are distinct operations."
       }
     ]
   },
@@ -74,7 +66,9 @@
       "",
       "Local npm eligibility is `{{runtime:npmRange}}`; producer CI, release construction, and governed qualification select exact npm {{runtime:npm}} before project commands or cache probes.",
       "Consumer runtime qualification separately selects exact npm {{runtime:consumerNpm}}, whose declared engines admit every consumer minimum; it does not lower the producer toolchain requirement.",
-      "The development runtime requires Node `{{runtime:developmentNodeRange}}` in `devEngines`; consumer admission is derived from the lowest maintained-family minimum, independently of producer toolchain requirements.",
+      "Local development uses the Node range in [`package.json`](package.json) under `devEngines.runtime`.",
+      "Consumer admission is derived from the lowest maintained-family minimum.",
+      "The selected Node version must also be supported by npm and the locked development dependencies.",
       "Producer tooling uses Node {{runtime:canonicalNode}}; consumer references remain Node {{runtime:references}}."
     ]
   },

@@ -56,12 +56,16 @@ Every release candidate still requires qualification of its own bytes and human 
 
 Local npm eligibility is `>=12.2.2`; producer CI, release construction, and governed qualification select exact npm 12.2.2 before project commands or cache probes.
 Consumer runtime qualification separately selects exact npm 10.9.10, whose declared engines admit every consumer minimum; it does not lower the producer toolchain requirement.
-The development runtime requires Node `>=26.13.0` in `devEngines`; consumer admission is derived from the lowest maintained-family minimum, independently of producer toolchain requirements.
+Local development uses the Node range in [`package.json`](package.json) under `devEngines.runtime`.
+Consumer admission is derived from the lowest maintained-family minimum.
+The selected Node version must also be supported by npm and the locked development dependencies.
 Producer tooling uses Node 26.13.0; consumer references remain Node 22.23.4, 24.22.2 and 26.13.0.
 
 <!-- runtime-policy:end -->
 
-The sole editable Node/npm version policy is [runtime-policy.json](docs/release/runtime-policy.json).
+The sole editable producer and consumer qualification version policy is [runtime-policy.json](docs/release/runtime-policy.json).
+The independent local Node minimum lives in `package.json#devEngines.runtime`; it does not move the exact CI reference.
+Use a stable Node release supported by the selected npm and locked development dependencies.
 Run `npm run sync:node` to project the manifest, `.node-version`, marked documentation, producer assertions and workflow scalars, then `npm run check:node` to reject drift without writing.
 The root lockfile remains npm-owned; a changed consumer engine range additionally requires a deliberate native `npm install --package-lock-only --ignore-scripts --no-audit --no-fund`, with its graph diff reviewed.
 
@@ -83,7 +87,8 @@ Workflow governance checks the shared action's inputs, pinned dependency, cache 
 Historical evidence and deliberately synthetic test inputs retain their recorded versions.
 Consumer runtime qualification uses the shared `freeze-runtime-matrix`, `setup-consumer`, `qualify-consumer` and `aggregate-consumer-runtimes` actions in PR/main CI, release qualification and weekly maintenance.
 
-The policy's minimums, exact producer references, consumer npm and platform definitions are the only editable runtime declarations.
+Edit consumer minimums, exact producer references, consumer npm and platform definitions only in that policy.
+The package's native `devEngines.packageManager` projects the local npm minimum from it; no top-level `packageManager` selector is required by this repository's setup route.
 The resolver reads Node's official release index once and freezes the minimum, latest released patch and distinct reference in each family across the declared platforms.
 
 Every consumer lane installs the same retained archive in isolated scoped and alias projects with strict engine checking and install scripts disabled, then exercises the installed public contracts, filesystem/HTTP loading, native XZ and ZIP/CRC behavior.

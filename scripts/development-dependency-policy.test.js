@@ -75,15 +75,20 @@ describe("development dependency and runtime eligibility", () => {
     );
   });
   test("development runtime admission is independent of consumer support", () => {
-    const range = projectRuntimeText("{{runtime:developmentNodeRange}}");
-    expect(manifest.devEngines.runtime).toEqual({
+    const { version: range } = manifest.devEngines.runtime;
+    expect(manifest.devEngines.runtime).toMatchObject({
       name: "node",
-      version: range,
       onFail: "error",
     });
-    for (const version of ["22.23.4", "24.22.2", "26.12.99", "26.13.0-rc.1"])
+    for (const version of ["22.22.1", "22.22.2-rc.1", "26.13.0-rc.1"])
       expect(semver.satisfies(version, range)).toBe(false);
-    for (const version of [CANONICAL_NODE, "27.0.0"])
+    for (const version of [
+      "22.22.2",
+      "24.0.0",
+      "25.9.0",
+      ...Object.values(CI_RUNTIME.node),
+      "27.0.0",
+    ])
       expect(semver.satisfies(version, range)).toBe(true);
     expect(manifest.devEngines.packageManager.onFail).toBe("error");
     expect(manifest).not.toHaveProperty("packageManager");

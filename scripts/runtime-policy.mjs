@@ -49,7 +49,8 @@ export function validateRuntimePolicy(policy) {
     "Missing canonical reference",
   );
   assertStableVersion(policy.npm);
-  assertStableVersion(policy.npmMinimum);
+  const npmMinimum = policy.npmMinimum ?? policy.npm;
+  assertStableVersion(npmMinimum);
   assertStableVersion(policy.consumerNpm);
   assert.ok(
     Array.isArray(policy.consumerPlatforms) &&
@@ -66,10 +67,10 @@ export function validateRuntimePolicy(policy) {
     assert.equal(platform.shell, platform.os === "win32" ? "pwsh" : "bash");
   }
   assert.ok(
-    semver.gte(policy.npm, policy.npmMinimum),
+    semver.gte(policy.npm, npmMinimum),
     "npm reference below local minimum",
   );
-  return policy;
+  return { ...policy, npmMinimum };
 }
 
 const policy = validateRuntimePolicy(
@@ -106,8 +107,7 @@ export function projectRuntimeText(text, policy = CI_RUNTIME) {
   const selectors = {
     npm: policy.npm,
     consumerNpm: policy.consumerNpm,
-    npmRange: `>=${policy.npmMinimum}`,
-    developmentNodeRange: `>=${policy.node[policy.canonicalNodeMajor]}`,
+    npmRange: `>=${policy.npmMinimum ?? policy.npm}`,
     canonicalNode: policy.node[policy.canonicalNodeMajor],
     consumerRange: consumerNodeRange(policy),
     minimumNodeMajor: String(
