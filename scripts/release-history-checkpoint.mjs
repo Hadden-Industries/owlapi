@@ -16,6 +16,28 @@ const git = (...args) =>
   });
 const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const rulesPath = "/rulesets?includes_parents=true&per_page=100";
+export function immutableRuleHasNoBypass(rule, reviewedRules) {
+  if (Object.hasOwn(rule, "bypass_actors"))
+    return Array.isArray(rule.bypass_actors) && rule.bypass_actors.length === 0;
+  const reviewed = reviewedRules?.find((r) => r.id === rule.id);
+  return Boolean(
+    reviewed &&
+    typeof rule.updated_at === "string" &&
+    Number.isFinite(Date.parse(rule.updated_at)) &&
+    reviewed.updated_at === rule.updated_at &&
+    Array.isArray(reviewed.bypass_actors) &&
+    reviewed.bypass_actors.length === 0,
+  );
+}
+export function priorDisposition(checkpoint, name) {
+  if (checkpoint.files.has(name)) return JSON.parse(checkpoint.files.get(name));
+  const records = checkpoint.index?.dispositions;
+  assert.ok(
+    records && Object.hasOwn(records, name),
+    "Missing signed disposition " + name,
+  );
+  return records[name];
+}
 export async function readCheckpoint(client, objectId) {
   assert.match(objectId, /^[a-f0-9]{40}$/u);
   const tag = await client.read("/git/tags/" + objectId);
@@ -40,6 +62,8 @@ export async function readCheckpoint(client, objectId) {
     registry: signers,
     releaseDate: new Date().toISOString().slice(0, 10),
   });
+  const root = tag.object.sha + ":evidence/";
+  const index = JSON.parse(git("show", root + "checkpoint.json"));
   const rulesets = await client.read(rulesPath);
   assert.ok(Array.isArray(rulesets) && rulesets.length < 100);
   const protections = new Set();
@@ -55,15 +79,16 @@ export async function readCheckpoint(client, objectId) {
     )
       continue;
     for (const r of rule.rules)
-      if (r.type === "creation" || rule.bypass_actors?.length === 0)
+      if (
+        r.type === "creation" ||
+        immutableRuleHasNoBypass(rule, index.rulesets)
+      )
         protections.add(r.type);
   }
   assert.ok(
     ["creation", "update", "deletion"].every((r) => protections.has(r)),
     "History namespace needs protected creation and immutable refs",
   );
-  const root = tag.object.sha + ":evidence/";
-  const index = JSON.parse(git("show", root + "checkpoint.json"));
   assert.equal(index.schemaVersion, 1);
   assert.equal(
     index.disclosure,
@@ -151,10 +176,9 @@ export async function verifyReservations(client, checkpoint, env, kind) {
         "u",
       ).exec(ref.ref);
       assert.ok(match && ref.object.type === "tag");
-      const saved = JSON.parse(
-        checkpoint.files.get(
-          "reservation-" + prefix + "-" + match[1] + ".json",
-        ),
+      const saved = priorDisposition(
+        checkpoint,
+        "reservation-" + prefix + "-" + match[1] + ".json",
       );
       assert.equal(saved.object, ref.object.sha);
       assert.ok(

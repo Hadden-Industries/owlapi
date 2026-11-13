@@ -1,4 +1,8 @@
-import { verifyReservations } from "./release-history-checkpoint.mjs";
+import { reconcilePublishedSeal } from "./staged-release-followup.mjs";
+import {
+  immutableRuleHasNoBypass,
+  verifyReservations,
+} from "./release-history-checkpoint.mjs";
 import { validateStagedReleaseEvidence } from "./staged-evidence.mjs";
 import { readWorkflowRuns } from "./github-evidence-reader.mjs";
 import { physicalName } from "../tooling/artifact-transport/identity.mjs";
@@ -530,4 +534,78 @@ test("staged evidence has a distinct closed inventory and binds the public relea
       archive: { ...evidence.archive, bytes: 64 * 1024 * 1024 + 1 },
     }),
   ).toThrow();
+});
+
+test("read-only rule projections bind the owner's bypass readback to its current revision", () => {
+  const rule = { id: 4, updated_at: "2026-11-13T10:01:00Z" };
+  const saved = [{ ...rule, bypass_actors: [] }];
+  expect(immutableRuleHasNoBypass(rule, saved)).toBe(true);
+  expect(
+    immutableRuleHasNoBypass(
+      { ...rule, updated_at: "2026-11-13T10:02:00Z" },
+      saved,
+    ),
+  ).toBe(false);
+  expect(
+    immutableRuleHasNoBypass(
+      { ...rule, bypass_actors: [{ actor_id: 1 }] },
+      saved,
+    ),
+  ).toBe(false);
+});
+test("hundreds of prior reservations fit a single signed disposition index", async () => {
+  const kind = "stage",
+    tag = "owlapi-release-history/stage-305";
+  const checkpoint = {
+    tag,
+    objectId: sha,
+    files: new Map(),
+    index: { dispositions: {} },
+  };
+  const refs = Array.from({ length: 305 }, (_, i) => ({
+    ref: "refs/tags/owlapi-release-history/stage-" + (i + 1),
+    object: { type: "tag", sha },
+  }));
+  for (let i = 1; i < 305; i++)
+    checkpoint.index.dispositions["reservation-stage-" + i + ".json"] = {
+      object: sha,
+      state: "SETTLED",
+    };
+  const client = { read: (p) => (p.endsWith("stage-") ? refs : []) };
+  await verifyReservations(
+    client,
+    checkpoint,
+    { GITHUB_RUN_NUMBER: "305", GITHUB_RUN_ATTEMPT: "1" },
+    kind,
+  );
+});
+
+test("a lost acknowledgement for an already sealed draft reconciles through reads", async () => {
+  const body = "signed notes";
+  const request = {
+    state: "SEAL_REQUESTED",
+    releaseId: 47,
+    version: "0.1.0",
+    notesSha256: hash(body),
+    assets: [{ name: "SHA256SUMS", bytes: 3, sha256: hash(bytes) }],
+  };
+  const release = {
+    id: 47,
+    tag_name: "v0.1.0",
+    immutable: true,
+    draft: false,
+    prerelease: true,
+    name: "owlapi 0.1.0",
+    body,
+    assets: [{ name: "SHA256SUMS", size: 3, digest: "sha256:" + hash(bytes) }],
+  };
+  const client = {
+    read: (path) => {
+      expect(path).toBe("/releases/47");
+      return release;
+    },
+  };
+  expect((await reconcilePublishedSeal(client, request)).state).toBe("SEALED");
+  release.body = "modified";
+  await expect(reconcilePublishedSeal(client, request)).rejects.toThrow();
 });

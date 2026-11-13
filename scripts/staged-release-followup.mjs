@@ -325,7 +325,9 @@ async function approvedDraft(client, ctx, extraAssets = []) {
   );
   assert.ok(
     Date.parse(live.created_at) <= Date.parse(verified.checkedAt) &&
-      Date.parse(verified.checkedAt) <= Date.parse(approval.approvedAt),
+      Date.parse(verified.checkedAt) <= Date.parse(approval.approvedAt) &&
+      Date.parse(approval.approvedAt) - Date.parse(verified.checkedAt) <=
+        5 * 60 * 1000,
   );
   assert.equal(approval.stageId, operation.stageId);
   assert.equal(approval.releaseId, proof.releaseId);
@@ -538,6 +540,23 @@ async function seal(client, ctx, checkpoint) {
   const draft = await client.read("/releases/" + operation.releaseId);
   assertDraftRelease(draft, { tag });
   assertReleaseAssets({ assets: draft.assets, expected });
+  const record = {
+    state: "SEAL_REQUESTED",
+    checkpoint: checkpoint.objectId,
+    controller: operation.controller,
+    notesSha256: hash(read("release-notes.md")),
+    version: operation.version,
+    prerelease: true,
+    releaseId: operation.releaseId,
+    tagObject: operation.tagObject,
+    source: manifest.commit,
+    assets: expected,
+  };
+  writeFileSync(
+    ".release/followup/seal-request.json",
+    JSON.stringify(record) + "\n",
+    { flag: "wx", flush: true },
+  );
   const result = await client.write("/releases/" + operation.releaseId, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
@@ -554,20 +573,94 @@ async function seal(client, ctx, checkpoint) {
     "CONFIRMED",
     "Ambiguous seal requires immutable readback",
   );
-  return {
-    state: "SEALED",
-    version: operation.version,
-    prerelease: true,
-    releaseId: operation.releaseId,
-    tagObject: operation.tagObject,
-    source: manifest.commit,
-    assets: expected,
-  };
+  return { ...record, state: "SEALED" };
+}
+export async function reconcilePublishedSeal(client, request) {
+  assert.equal(request.state, "SEAL_REQUESTED");
+  assert.ok(positive(request.releaseId));
+  const release = await client.read("/releases/" + request.releaseId);
+  assert.deepEqual(
+    [
+      release.id,
+      release.tag_name,
+      release.immutable,
+      release.draft,
+      release.prerelease,
+      release.name,
+      hash(release.body),
+    ],
+    [
+      request.releaseId,
+      "v" + request.version,
+      true,
+      false,
+      true,
+      "owlapi " + request.version,
+      request.notesSha256,
+    ],
+  );
+  assertReleaseAssets({ assets: release.assets, expected: request.assets });
+  return { ...request, state: "SEALED" };
+}
+async function recoverSeal(client, checkpoint) {
+  const origin = parse(checkpoint.files.get("seal-origin.json"));
+  const a = await originArtifact(
+    client,
+    {
+      runId: origin.runId,
+      attempt: origin.attempt,
+      commit: origin.controller,
+      filename: ".github/workflows/github-release.yml",
+      logical: "github-release-" + origin.runId + "-" + origin.attempt,
+      recoverSeal: true,
+    },
+    checkpoint,
+  );
+  const archive = readZipArchiveFilesWith(await originalBytes(client, a), {
+    crc32,
+  });
+  const file = single(
+    archive.filter((f) => f.path === "seal-request.json"),
+    "Missing attributable seal request",
+  );
+  const request = parse(file.content);
+  assert.equal(hash(file.content), origin.requestSha256);
+  assert.deepEqual(
+    [request.checkpoint, request.controller],
+    [origin.checkpoint, origin.controller],
+  );
+  const original = await readCheckpoint(client, origin.checkpoint);
+  const operation = parse(original.files.get("operation.json"));
+  assert.deepEqual(
+    [
+      operation.type,
+      operation.version,
+      operation.releaseId,
+      operation.tagObject,
+      operation.source,
+      operation.controller,
+    ],
+    [
+      "seal",
+      request.version,
+      request.releaseId,
+      request.tagObject,
+      request.source,
+      request.controller,
+    ],
+  );
+  assert.equal(
+    request.notesSha256,
+    hash(original.files.get("release-notes.md")),
+  );
+  return reconcilePublishedSeal(client, request);
 }
 export async function completeRelease(client, env, checkpoint) {
   const { runGh, waitForReleaseAttestation, downloadAsset } =
     await import("./verify-immutable-release.mjs");
-  const record = parse(checkpoint.files.get("seal.json"));
+  const record = checkpoint.files.has("seal.json")
+    ? parse(checkpoint.files.get("seal.json"))
+    : await recoverSeal(client, checkpoint);
   assert.equal(record.state, "SEALED");
   assert.match(record.version, /^\d+\.\d+\.\d+(?:-rc\.\d+)?$/u);
   const tag = "v" + record.version;

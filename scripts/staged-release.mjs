@@ -23,6 +23,7 @@ import { readZipArchiveFilesWith } from "./release-zip-core.mjs";
 import {
   readCheckpoint,
   verifyReservations,
+  priorDisposition,
 } from "./release-history-checkpoint.mjs";
 import { readPublicRegistry } from "./public-registry-read.mjs";
 import {
@@ -105,7 +106,15 @@ export function verifyPrivateStage({
 }
 export async function originArtifact(
   client,
-  { runId, attempt, filename, commit, logical, artifactId },
+  {
+    runId,
+    attempt,
+    filename,
+    commit,
+    logical,
+    artifactId,
+    recoverSeal = false,
+  },
   checkpoint,
 ) {
   id(runId);
@@ -127,6 +136,10 @@ export async function originArtifact(
   );
   const run = liveRun ?? saved?.run;
   assert.ok(run, "Missing original run record");
+  if (recoverSeal) {
+    assert.equal(filename, ".github/workflows/github-release.yml");
+    assert.ok(["success", "failure", "cancelled"].includes(run.conclusion));
+  }
   assert.equal(run.repository.full_name, repo);
   assert.equal(run.head_repository.full_name, repo);
   assert.deepEqual(
@@ -148,7 +161,7 @@ export async function originArtifact(
       "main",
       commit,
       "completed",
-      "success",
+      recoverSeal ? run.conclusion : "success",
     ],
     "Unqualified original run or attempt",
   );
@@ -176,6 +189,16 @@ export async function originArtifact(
   const a = current ?? saved?.artifact;
   assert.equal(a.id, pointer.id);
   assert.equal(a.name, pointer.name);
+  assert.equal(
+    a.digest,
+    pointer.digest,
+    "Contradictory native artifact digest",
+  );
+  assert.equal(
+    a.size_in_bytes,
+    pointer.size_in_bytes,
+    "Contradictory native artifact size",
+  );
   assert.ok(
     matchesLogicalArtifact(a.name, logical, {
       run: runId,
@@ -369,8 +392,9 @@ export async function assertPriorOperations(client, env, checkpoint, kind) {
         .flatMap((j) => j.steps ?? [])
         .filter((s) => s.name === step && !["skipped"].includes(s.conclusion));
       if (writes.length) {
-        const disposition = json(
-          checkpoint.files.get(kind + "-" + run.id + "-" + attempt + ".json"),
+        const disposition = priorDisposition(
+          checkpoint,
+          kind + "-" + run.id + "-" + attempt + ".json",
         );
         assert.equal(disposition.runId, String(run.id));
         assert.equal(disposition.attempt, String(attempt));

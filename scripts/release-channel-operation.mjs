@@ -16,6 +16,7 @@ import { readPublicRegistry } from "./public-registry-read.mjs";
 import {
   readCheckpoint,
   verifyReservations,
+  priorDisposition,
 } from "./release-history-checkpoint.mjs";
 import {
   assertPriorOperations,
@@ -289,8 +290,9 @@ async function main() {
             ),
           )
         ) {
-          const prior = JSON.parse(
-            checkpoint.files.get("labels-" + run.id + "-" + attempt + ".json"),
+          const prior = priorDisposition(
+            checkpoint,
+            "labels-" + run.id + "-" + attempt + ".json",
           );
           assert.equal(prior.runId, String(run.id));
           assert.equal(prior.attempt, String(attempt));
@@ -414,7 +416,6 @@ async function main() {
       );
     }
     if (mode === "github") {
-      const current = await githubState();
       if (changeNeeded) {
         await assertPriorOperations(
           client,
@@ -423,7 +424,12 @@ async function main() {
           "classification",
         );
         assert.ok(classify || classificationId !== target.id);
-        assert.deepEqual(current, op.githubBefore);
+        assert.deepEqual(
+          tagsOnly(await read()),
+          after,
+          "Guarded npm labels moved during classification admission",
+        );
+        assert.deepEqual(await githubState(), op.githubBefore);
         assert.equal(env.GITHUB_RUN_ATTEMPT, "1");
         record({ state: "REQUESTED", releaseId: classificationId });
         const result = await client.write("/releases/" + classificationId, {
