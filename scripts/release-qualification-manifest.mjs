@@ -2,7 +2,6 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
-import { readCandidateBundleSnapshot } from "./candidate-bundle.mjs";
 import {
   createRepositoryReader,
   readRunArtifacts,
@@ -100,6 +99,7 @@ export async function readReleaseSecurity({ read, commit, now = Date.now() }) {
         item.error === "" &&
         !item.warning &&
         Date.parse(item.created_at) <= now &&
+        now - Date.parse(item.created_at) <= 7 * 24 * 60 * 60 * 1000 &&
         item.tool.version,
       "Missing or incomplete exact-commit CodeQL analysis for " + category,
     );
@@ -145,6 +145,8 @@ export async function recordQualification(env = process.env) {
   for (const key of ["GITHUB_RUN_ID", "GITHUB_RUN_ATTEMPT", "CANDIDATE_ID"])
     assert.match(env[key], /^[1-9][0-9]*$/u);
   assert.match(env.CANDIDATE_DIGEST, /^[a-f0-9]{64}$/u);
+  const { readCandidateBundleSnapshot } =
+    await import("./candidate-bundle.mjs");
   const { candidate, contents } = readCandidateBundleSnapshot(
     ".release/manifest-candidate",
   );

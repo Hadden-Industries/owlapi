@@ -72,6 +72,7 @@ jobs:
       contents: read
       actions: read
       id-token: write
+      security-events: read
     defaults:
       run:
         shell: bash
@@ -100,5 +101,5 @@ jobs:
         uses: ./.github/actions/retain-artifact
         with:
           name: release-stage-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/owlapi-stage-input/.release/stage
+          path: .release/stage
           retention-days: 90

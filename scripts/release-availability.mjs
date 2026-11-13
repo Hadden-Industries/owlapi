@@ -68,8 +68,14 @@ export const waitForReleaseAvailability = async ({
   )
     throw new Error("Invalid staged availability subject");
   const started = now();
+  const lateRead = channel && elapsedSinceApproval >= policy.deadlineMs;
+  if (lateRead)
+    observe({ state: "AVAILABILITY_WINDOW_ELAPSED", elapsedSinceApproval });
   const deadline =
-    started + Math.max(0, policy.deadlineMs - elapsedSinceApproval);
+    started +
+    (lateRead
+      ? policy.requestTimeoutMs
+      : policy.deadlineMs - elapsedSinceApproval);
   let stage = "metadata",
     attempt = 0;
   const remaining = () => deadline - now();
@@ -179,6 +185,7 @@ export const waitForReleaseAvailability = async ({
       elapsedMs: Math.ceil(now() - started),
     });
     if (remaining() <= 0) break;
+    if (lateRead) break;
     await sleep(
       Math.min(remaining(), Math.max(policy.intervalMs, retryAfterMs)),
     );

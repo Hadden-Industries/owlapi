@@ -200,7 +200,15 @@ const attestationCount = (value) => {
 
 /** Wait only for typed visibility with a positive same-token attestation read. */
 export async function waitForReleaseAttestation(
-  { read, tag, tagSha, sourceCommit, releaseId, expectedAssets },
+  {
+    read,
+    tag,
+    tagSha,
+    sourceCommit,
+    releaseId,
+    expectedAssets,
+    prerelease = true,
+  },
   {
     now = () => performance.now(),
     sleep = delay,
@@ -232,7 +240,11 @@ export async function waitForReleaseAttestation(
     assert.equal(annotation.verification.reason, "valid");
     const live = await boundedRead(`/releases/tags/${encodeURIComponent(tag)}`);
     assertReleaseId(live, releaseId);
-    assertPublishedRelease(live, { tag, requireImmutable: observedImmutable });
+    assertPublishedRelease(live, {
+      tag,
+      requireImmutable: observedImmutable,
+      prerelease,
+    });
     assert.equal(typeof live.immutable, "boolean", "Missing immutable state");
     assertReleaseAssets({ assets: live.assets, expected: expectedAssets });
     observedImmutable ||= live.immutable;

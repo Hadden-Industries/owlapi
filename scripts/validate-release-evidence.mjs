@@ -1,3 +1,4 @@
+import { validateStagedReleaseEvidence } from "./staged-evidence.mjs";
 import { readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -10,6 +11,7 @@ import { assertRc3RecoveryEvidence } from "./rc3-recovery-policy.mjs";
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
 
 export const validateReleaseEvidence = (record) => {
+  if (record?.schemaVersion === 7) return validateStagedReleaseEvidence(record);
   const schema = JSON.parse(
     readFileSync(
       join(repositoryRoot, "docs", "release", "release-evidence.schema.json"),

@@ -57,6 +57,10 @@ jobs:
       - name: Build and qualify the closed candidate bundle
         run: npm run build:release-candidate
         timeout-minutes: 45
+      - name: Audit the isolated artifact transport dependency graph
+        env:
+          CANDIDATE_VERSION: ${{ inputs.version }}
+        run: npm audit --prefix tooling/artifact-transport --package-lock-only --audit-level=high --json > ".release/candidate/$CANDIDATE_VERSION/transport-audit.json"
       - name: Upload the exact same-run candidate
         id: upload
         uses: ./.github/actions/retain-artifact
@@ -74,6 +78,7 @@ jobs:
           name: package-proof-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             .release/candidate/${{ inputs.version }}/candidate-manifest.json
+            .release/candidate/${{ inputs.version }}/transport-audit.json
             .release/candidate/${{ inputs.version }}/npm-audit-full.json
             .release/candidate/${{ inputs.version }}/npm-audit-production.json
             .release/candidate/${{ inputs.version }}/normal-consumer-npm-audit-production.json

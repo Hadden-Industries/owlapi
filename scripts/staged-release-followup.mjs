@@ -1,3 +1,4 @@
+import { validateStagedReleaseEvidence } from "./staged-evidence.mjs";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import {
@@ -13,8 +14,12 @@ import {
   GitHubReleaseClient,
   assertDraftRelease,
   assertReleaseAssets,
+  assertReleaseAssetSubset,
 } from "./github-release.mjs";
-import { readCheckpoint } from "./release-history-checkpoint.mjs";
+import {
+  readCheckpoint,
+  verifyControllerDelta,
+} from "./release-history-checkpoint.mjs";
 import {
   hash,
   originArtifact,
@@ -23,10 +28,11 @@ import {
 } from "./staged-release.mjs";
 import { readZipArchiveFilesWith } from "./release-zip-core.mjs";
 import { verifyLocalReleaseTag } from "./verify-release-tag.mjs";
-import { PACKAGE_NAME, PACKAGE_VERSION } from "./package-identity.mjs";
+import { readPublicRegistry } from "./public-registry-read.mjs";
+import { PACKAGE_NAME, NPM_REGISTRY } from "./package-identity.mjs";
 
 const repo = "Hadden-Industries/owlapi";
-const tag = "v" + PACKAGE_VERSION;
+
 const parse = (bytes) => JSON.parse(bytes.toString("utf8"));
 const positive = (n) => Number.isSafeInteger(n) && n > 0;
 const asset = (name, bytes) => ({
@@ -51,10 +57,24 @@ export async function readStageContext(client, env, checkpoint, mode) {
   };
   const operation = parse(read("operation.json"));
   assert.equal(operation.type, mode);
-  assert.equal(operation.version, PACKAGE_VERSION);
+  assert.match(operation.version, /^\d+\.\d+\.\d+(?:-rc\.\d+)?$/u);
+  const tag = "v" + operation.version;
   assert.match(operation.manifestSha256, /^[a-f0-9]{64}$/u);
+  assert.match(operation.source, /^[a-f0-9]{40}$/u);
+  assert.equal(
+    operation.controller,
+    env.GITHUB_SHA,
+    "Operation requires owner approval for the executing controller",
+  );
+  verifyControllerDelta(
+    operation.source,
+    operation.controller,
+    checkpoint.files,
+  );
   const origin = {
     ...env,
+    GITHUB_SHA: operation.source,
+    QUALIFIED_VERSION: operation.version,
     QUALIFICATION_RUN: operation.qualificationRun,
     QUALIFICATION_ATTEMPT: operation.qualificationAttempt,
     MANIFEST_SHA256: operation.manifestSha256,
@@ -153,34 +173,50 @@ export async function readStageContext(client, env, checkpoint, mode) {
 }
 async function draft(client, ctx) {
   const { operation, manifest, read } = ctx;
-  assert.equal(operation.expectedReleaseId, null);
-  assert.equal(
-    await client.getReleaseByTag(tag),
-    null,
-    "Draft exists; reconcile its original ID",
-  );
-  const result = await client.write("/releases", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      tag_name: tag,
-      target_commitish: manifest.commit,
-      name: "owlapi " + PACKAGE_VERSION,
-      body: read("release-notes.md").toString("utf8"),
-      draft: true,
-      prerelease: true,
-      make_latest: "false",
-    }),
-  });
-  assert.equal(
-    result.state,
-    "CONFIRMED",
-    "Ambiguous draft creation requires owner reconciliation",
-  );
-  const release = result.value;
+  const tag = "v" + operation.version;
+  let release = await client.getReleaseByTag(tag);
+  if (positive(operation.expectedReleaseId)) {
+    assert.equal(
+      release?.id,
+      operation.expectedReleaseId,
+      "Reconciliation needs the original draft ID",
+    );
+  } else {
+    assert.equal(operation.expectedReleaseId, null);
+    assert.equal(
+      release,
+      null,
+      "Existing draft requires signed reconciliation",
+    );
+    const result = await client.write("/releases", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        tag_name: tag,
+        target_commitish: manifest.commit,
+        name: "owlapi " + operation.version,
+        body: read("release-notes.md").toString("utf8"),
+        draft: true,
+        prerelease: true,
+        make_latest: "false",
+      }),
+    });
+    assert.equal(
+      result.state,
+      "CONFIRMED",
+      "Ambiguous draft creation requires owner reconciliation",
+    );
+    release = result.value;
+  }
   assertDraftRelease(release, { tag });
+  assert.equal(release.body, read("release-notes.md").toString("utf8"));
+  assertReleaseAssetSubset({
+    assets: release.assets,
+    expected: Object.values(manifest.assets),
+  });
   for (const item of Object.values(manifest.assets))
-    await upload(client, release.id, item, read(item.name));
+    if (!release.assets.some((a) => a.name === item.name))
+      await upload(client, release.id, item, read(item.name));
   const observed = await client.read("/releases/" + release.id);
   assertDraftRelease(observed, { tag });
   assertReleaseAssets({
@@ -213,8 +249,9 @@ async function upload(client, id, item, bytes) {
     "Asset acknowledgement missing; inspect original draft",
   );
 }
-async function approvedDraft(client, ctx) {
+async function approvedDraft(client, ctx, extraAssets = []) {
   const { operation, read, manifest } = ctx;
+  const tag = "v" + operation.version;
   const proof = parse(read("draft.json"));
   assert.deepEqual(proof, {
     state: "DRAFT_VERIFIED",
@@ -228,10 +265,68 @@ async function approvedDraft(client, ctx) {
   assertDraftRelease(live, { tag });
   assert.equal(live.prerelease, true);
   assertReleaseAssets({
-    assets: live.assets,
+    assets: live.assets.filter(
+      (a) => !extraAssets.some((extra) => extra.name === a.name),
+    ),
     expected: Object.values(manifest.assets),
   });
+  assert.equal(live.body, read("release-notes.md").toString("utf8"));
+  assert.equal(live.name, "owlapi " + operation.version);
+  if (operation.type === "before-approval") {
+    const tags = parse(
+      await readPublicRegistry(
+        new URL(
+          "-/package/" + encodeURIComponent(PACKAGE_NAME) + "/dist-tags",
+          NPM_REGISTRY,
+        ),
+      ),
+    );
+    const observed = Object.fromEntries(
+      ["pilot", "latest", "next"].map((name) => [name, tags[name] ?? null]),
+    );
+    assert.deepEqual(
+      observed,
+      ctx.receipt.before,
+      "Public label changed while awaiting approval",
+    );
+    const latest =
+      (await client.read("/releases/latest", { accept404: true }))?.id ?? null;
+    assert.equal(latest, ctx.receipt.githubLatestBefore);
+    return {
+      state: "READY_FOR_OWNER_APPROVAL",
+      releaseId: live.id,
+      stageId: operation.stageId,
+      manifestSha256: operation.manifestSha256,
+      labels: observed,
+      githubLatest: latest,
+      checkedAt: new Date().toISOString(),
+    };
+  }
+  const preapproval = read("before-approval.json");
+  const verified = parse(preapproval);
   const approval = parse(read("approval.json"));
+  assert.equal(approval.preapprovalSha256, hash(preapproval));
+  assert.equal(verified.state, "READY_FOR_OWNER_APPROVAL");
+  assert.deepEqual(
+    [
+      verified.releaseId,
+      verified.stageId,
+      verified.manifestSha256,
+      verified.labels,
+      verified.githubLatest,
+    ],
+    [
+      live.id,
+      operation.stageId,
+      operation.manifestSha256,
+      ctx.receipt.before,
+      ctx.receipt.githubLatestBefore,
+    ],
+  );
+  assert.ok(
+    Date.parse(live.created_at) <= Date.parse(verified.checkedAt) &&
+      Date.parse(verified.checkedAt) <= Date.parse(approval.approvedAt),
+  );
   assert.equal(approval.stageId, operation.stageId);
   assert.equal(approval.releaseId, proof.releaseId);
   assert.equal(approval.state, "APPROVED");
@@ -244,6 +339,12 @@ async function approvedDraft(client, ctx) {
 }
 async function registryProof(client, ctx) {
   const approval = await approvedDraft(client, ctx);
+  const { PACKAGE_VERSION } = await import("./package-identity.mjs");
+  assert.equal(
+    ctx.operation.version,
+    PACKAGE_VERSION,
+    "Use the reviewed recipient controller for the qualified package version",
+  );
   const { qualifyPublicRegistry } =
     await import("./qualify-public-registry.mjs");
   const { manifest, receipt } = ctx;
@@ -268,9 +369,10 @@ async function registryProof(client, ctx) {
 }
 async function seal(client, ctx, checkpoint) {
   const { operation, manifest, read } = ctx;
+  const tag = "v" + operation.version;
   const report = parse(read("public.json"));
   assert.equal(report.result, "PASS");
-  assert.equal(report.coordinate, PACKAGE_NAME + "@" + PACKAGE_VERSION);
+  assert.equal(report.coordinate, PACKAGE_NAME + "@" + operation.version);
   assert.equal(report.tarballSha256, manifest.assets.tarball.sha256);
   assert.equal(report.integrity, manifest.integrity);
   assert.equal(
@@ -287,7 +389,7 @@ async function seal(client, ctx, checkpoint) {
       runId: operation.publicRun,
       attempt: operation.publicAttempt,
       filename: ".github/workflows/release-registry.yml",
-      commit: manifest.commit,
+      commit: operation.publicController,
       logical:
         "release-registry-" +
         operation.publicRun +
@@ -305,12 +407,12 @@ async function seal(client, ctx, checkpoint) {
       "Missing original registry proof",
     ).content.equals(read("public.json")),
   );
-  await approvedDraft(client, ctx);
   const archiveEntries = new Map();
   for (const name of [
     "private-check.json",
     "draft.json",
     "approval.json",
+    "before-approval.json",
     "operation.json",
     "public.json",
     "release-notes.md",
@@ -351,7 +453,7 @@ async function seal(client, ctx, checkpoint) {
         runId: operation.publicRun,
         attempt: operation.publicAttempt,
         filename: ".github/workflows/release-registry.yml",
-        commit: manifest.commit,
+        commit: operation.publicController,
         logical,
       },
       checkpoint,
@@ -368,7 +470,7 @@ async function seal(client, ctx, checkpoint) {
     assert.deepEqual(
       [proof.commit, proof.run, proof.attempt, proof.tarballSha256],
       [
-        manifest.commit,
+        operation.publicController,
         operation.publicRun,
         operation.publicAttempt,
         manifest.assets.tarball.sha256,
@@ -391,13 +493,13 @@ async function seal(client, ctx, checkpoint) {
     ),
   );
   const archiveInfo = asset(
-    "hadden-industries-owlapi-" + PACKAGE_VERSION + ".evidence.json.gz",
+    "hadden-industries-owlapi-" + operation.version + ".evidence.json.gz",
     archive,
   );
   const evidence = Buffer.from(
     JSON.stringify(
       {
-        schemaVersion: 6,
+        schemaVersion: 7,
         releaseId: operation.releaseId,
         source: manifest.commit,
         tagObject: operation.tagObject,
@@ -410,17 +512,29 @@ async function seal(client, ctx, checkpoint) {
       2,
     ) + "\n",
   );
+  validateStagedReleaseEvidence(parse(evidence));
   const evidenceInfo = asset(
-    "hadden-industries-owlapi-" + PACKAGE_VERSION + ".release-evidence.json",
+    "hadden-industries-owlapi-" + operation.version + ".release-evidence.json",
     evidence,
   );
-  await upload(client, operation.releaseId, archiveInfo, archive);
-  await upload(client, operation.releaseId, evidenceInfo, evidence);
   const expected = [
     ...Object.values(manifest.assets),
     archiveInfo,
     evidenceInfo,
   ];
+  assert.ok(
+    expected.every((a) => a.bytes <= 64 * 1024 * 1024),
+    "Asset exceeds immutable verification limit",
+  );
+  await approvedDraft(client, ctx, [archiveInfo, evidenceInfo]);
+  const existing = await client.read("/releases/" + operation.releaseId);
+  assertReleaseAssetSubset({ assets: existing.assets, expected });
+  for (const [item, bytes] of [
+    [archiveInfo, archive],
+    [evidenceInfo, evidence],
+  ])
+    if (!existing.assets.some((a) => a.name === item.name))
+      await upload(client, operation.releaseId, item, bytes);
   const draft = await client.read("/releases/" + operation.releaseId);
   assertDraftRelease(draft, { tag });
   assertReleaseAssets({ assets: draft.assets, expected });
@@ -429,6 +543,8 @@ async function seal(client, ctx, checkpoint) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       draft: false,
+      name: "owlapi " + operation.version,
+      body: read("release-notes.md").toString("utf8"),
       prerelease: true,
       make_latest: "false",
     }),
@@ -440,6 +556,8 @@ async function seal(client, ctx, checkpoint) {
   );
   return {
     state: "SEALED",
+    version: operation.version,
+    prerelease: true,
     releaseId: operation.releaseId,
     tagObject: operation.tagObject,
     source: manifest.commit,
@@ -451,11 +569,13 @@ export async function completeRelease(client, env, checkpoint) {
     await import("./verify-immutable-release.mjs");
   const record = parse(checkpoint.files.get("seal.json"));
   assert.equal(record.state, "SEALED");
+  assert.match(record.version, /^\d+\.\d+\.\d+(?:-rc\.\d+)?$/u);
+  const tag = "v" + record.version;
   assert.ok(positive(record.releaseId));
   const expectedNames = [
     "SHA256SUMS",
     ...[".cdx.json", ".tgz", ".release-evidence.json", ".evidence.json.gz"].map(
-      (s) => "hadden-industries-owlapi-" + PACKAGE_VERSION + s,
+      (s) => "hadden-industries-owlapi-" + record.version + s,
     ),
   ];
   assert.deepEqual(
@@ -469,6 +589,7 @@ export async function completeRelease(client, env, checkpoint) {
     sourceCommit: record.source,
     releaseId: record.releaseId,
     expectedAssets: record.assets,
+    prerelease: record.prerelease,
   });
   await runGh(
     "gh",
@@ -520,6 +641,8 @@ async function main() {
   else {
     const ctx = await readStageContext(client, env, checkpoint, mode);
     if (mode === "draft") result = await draft(client, ctx);
+    else if (mode === "before-approval")
+      result = await approvedDraft(client, ctx);
     else if (mode === "registry") result = await registryProof(client, ctx);
     else {
       assert.equal(mode, "seal");

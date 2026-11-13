@@ -334,7 +334,14 @@ test("one release schema structure preserves exact identities for historical, cu
   addFormats(ajv);
   const validate = ajv.compile(projected);
   const current = buildReleaseEvidence(scopedFacts());
-  for (const version of ["0.1.0-rc.2", PACKAGE_VERSION, "0.1.0-rc.9"]) {
+  expect(
+    validate(
+      JSON.parse(
+        JSON.stringify(current).replaceAll(PACKAGE_VERSION, "0.1.0-rc.9"),
+      ),
+    ),
+  ).toBe(false);
+  for (const version of ["0.1.0-rc.2", PACKAGE_VERSION]) {
     const record = JSON.parse(
       JSON.stringify(current).replaceAll(PACKAGE_VERSION, version),
     );

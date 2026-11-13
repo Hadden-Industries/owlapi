@@ -224,3 +224,21 @@ test("does not admit another coordinate or an unbounded policy", async () => {
     expect(h.read).not.toHaveBeenCalled();
   }
 });
+
+test("a late approval read preserves the missed window and can reconcile available bytes once", async () => {
+  const h = harness(available);
+  const seen = [];
+  const facts = await waitForReleaseAvailability({
+    retainedSha256,
+    read: h.read,
+    now: h.now,
+    sleep: h.sleep,
+    observe: (x) => seen.push(x),
+    channel: "latest",
+    previousTags: { pilot: null, next: version, latest: null },
+    elapsedSinceApproval: 31 * 60000,
+  });
+  expect(facts.tarball).toEqual(tarball);
+  expect(seen[0].state).toBe("AVAILABILITY_WINDOW_ELAPSED");
+  expect(h.sleep).not.toHaveBeenCalled();
+});

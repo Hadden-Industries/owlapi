@@ -203,3 +203,29 @@ export async function readRunArtifacts(read, runId) {
   }
   throw new Error("Incomplete artifact inventory");
 }
+
+export async function readWorkflowRuns(read, filename) {
+  const runs = [];
+  const ids = new Set();
+  let expected;
+  for (let page = 1; ; page++) {
+    const data = await read(
+      "/actions/workflows/" + filename + "/runs?per_page=100&page=" + page,
+    );
+    expected ??= data.total_count;
+    if (
+      !Number.isSafeInteger(expected) ||
+      expected !== data.total_count ||
+      !Array.isArray(data.workflow_runs)
+    )
+      throw new Error("Workflow history changed during enumeration");
+    for (const run of data.workflow_runs) {
+      if (ids.has(run.id)) throw new Error("Duplicate workflow run");
+      ids.add(run.id);
+      runs.push(run);
+    }
+    if (runs.length === expected) return runs;
+    if (data.workflow_runs.length !== 100 || runs.length > expected)
+      throw new Error("Incomplete workflow history");
+  }
+}

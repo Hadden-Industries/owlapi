@@ -667,7 +667,7 @@ const githubAuthority = { ...readAuthority, contents: "write" };
 const operationJobs = {
   "stage-release.yml": {
     admit: [readAuthority, "release-manual"],
-    stage: [npmAuthority, "npm-release"],
+    stage: [{ ...npmAuthority, "security-events": "read" }, "npm-release"],
   },
   "github-release.yml": {
     draft: [githubAuthority, "release-manual"],

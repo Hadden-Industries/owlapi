@@ -65,6 +65,11 @@ export async function readCheckpoint(client, objectId) {
   const root = tag.object.sha + ":evidence/";
   const index = JSON.parse(git("show", root + "checkpoint.json"));
   assert.equal(index.schemaVersion, 1);
+  assert.equal(
+    index.disclosure,
+    "APPROVED_FOR_PUBLIC_GIT",
+    "Only disclosure-reviewed public evidence belongs in this ref",
+  );
   assert.equal(index.repository, "Hadden-Industries/owlapi");
   assert.ok(
     Array.isArray(index.files) &&
@@ -91,6 +96,11 @@ export async function readCheckpoint(client, objectId) {
   );
   const files = new Map();
   for (const entry of index.files) {
+    assert.equal(
+      entry.disclosure,
+      "PUBLIC",
+      "Restricted evidence must remain in owner-controlled private storage",
+    );
     assert.match(entry.name, /^[a-zA-Z0-9][a-zA-Z0-9._-]{0,160}$/u);
     assert.ok(!files.has(entry.name));
     const bytes = git("show", root + entry.name);
@@ -102,5 +112,92 @@ export async function readCheckpoint(client, objectId) {
     (await client.read("/git/ref/tags/" + tag.tag)).object.sha,
     objectId,
   );
-  return { objectId, index, files, signer };
+  return { objectId, tag: tag.tag, index, files, signer };
+}
+
+/** A protected reservation survives run deletion and can authorize only one native run number. */
+export async function verifyReservations(client, checkpoint, env, kind) {
+  const kinds = ["stage", "labels", "classification"];
+  assert.ok(kinds.includes(kind));
+  const number = Number(env.GITHUB_RUN_NUMBER);
+  assert.ok(
+    Number.isSafeInteger(number) &&
+      number > 0 &&
+      env.GITHUB_RUN_ATTEMPT === "1",
+  );
+  const current = namespace + kind + "-" + number;
+  assert.equal(
+    checkpoint.tag,
+    current,
+    "A writer needs a signed single-run reservation",
+  );
+  for (const prefix of kinds) {
+    const refs = await client.read(
+      "/git/matching-refs/tags/" + namespace + prefix + "-",
+    );
+    assert.ok(Array.isArray(refs));
+    if (prefix === kind)
+      assert.ok(
+        refs.some(
+          (r) =>
+            r.ref === "refs/tags/" + current &&
+            r.object.sha === checkpoint.objectId,
+        ),
+      );
+    for (const ref of refs) {
+      if (ref.ref === "refs/tags/" + current) continue;
+      const match = new RegExp(
+        "^refs/tags/" + namespace + prefix + "-([1-9][0-9]*)$",
+        "u",
+      ).exec(ref.ref);
+      assert.ok(match && ref.object.type === "tag");
+      const saved = JSON.parse(
+        checkpoint.files.get(
+          "reservation-" + prefix + "-" + match[1] + ".json",
+        ),
+      );
+      assert.equal(saved.object, ref.object.sha);
+      assert.ok(
+        ["SETTLED", "REJECTED", "RECONCILED_NO_PENDING_EFFECT"].includes(
+          saved.state,
+        ),
+        "Unresolved release reservation",
+      );
+    }
+  }
+}
+
+export function verifyControllerDelta(source, controller, files) {
+  for (const oid of [source, controller]) assert.match(oid, /^[a-f0-9]{40}$/u);
+  if (source === controller) return;
+  git("merge-base", "--is-ancestor", source, controller);
+  const paths = git(
+    "diff",
+    "--no-renames",
+    "--name-only",
+    "-z",
+    source,
+    controller,
+  )
+    .toString()
+    .split("\0")
+    .filter(Boolean);
+  assert.ok(
+    paths.every(
+      (p) =>
+        /^\.github\/(workflows|actions)\//u.test(p) ||
+        /^scripts\/(staged-|release-|verify-immutable-release|public-recipient-lane|qualify-public-registry|registry-provenance)/u.test(
+          p,
+        ) ||
+        /^docs\/(release|plans)\//u.test(p),
+    ),
+    "Controller delta includes product or unreviewed paths",
+  );
+  const approval = JSON.parse(files.get("controller-delta.json"));
+  assert.deepEqual(approval, {
+    source,
+    controller,
+    paths,
+    decision: "OWNER_REVIEWED_CONTROL_ONLY",
+  });
 }

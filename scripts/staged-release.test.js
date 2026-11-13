@@ -1,3 +1,6 @@
+import { verifyReservations } from "./release-history-checkpoint.mjs";
+import { validateStagedReleaseEvidence } from "./staged-evidence.mjs";
+import { readWorkflowRuns } from "./github-evidence-reader.mjs";
 import { physicalName } from "../tooling/artifact-transport/identity.mjs";
 import { mkdtempSync, readFileSync, writeFileSync, rmSync } from "node:fs";
 import { createServer } from "node:http";
@@ -165,7 +168,16 @@ test.each([null, "0.1.0-rc.2"])(
     await applyLabels(withdraw, {
       read: () => live,
       write: (tag, value) => {
+        const previous = live[tag];
         live = { ...live, [tag]: value };
+        return (
+          (value === null ? "-" : "+") +
+          tag +
+          ": " +
+          packageName +
+          "@" +
+          (value ?? previous)
+        );
       },
       record: (e) => events.push(e),
     });
@@ -204,7 +216,7 @@ test("managed scanning binds both categories, the protected head and high severi
     commit_sha: sha,
     analysis_key: "dynamic/github-code-scanning/codeql:analyze",
     tool: { name: "CodeQL", version: "2.27.4" },
-    created_at: "2026-11-01T00:00:00Z",
+    created_at: new Date().toISOString(),
     error: "",
   }));
   let alerts = [];
@@ -249,6 +261,10 @@ test("managed scanning binds both categories, the protected head and high severi
   ];
   await expect(readReleaseSecurity({ read, commit: sha })).rejects.toThrow();
   alerts = [];
+  const fresh = analyses[0].created_at;
+  analyses[0].created_at = "2000-01-01T00:00:00Z";
+  await expect(readReleaseSecurity({ read, commit: sha })).rejects.toThrow();
+  analyses[0].created_at = fresh;
   analyses[0].commit_sha = "b".repeat(40);
   await expect(readReleaseSecurity({ read, commit: sha })).rejects.toThrow();
 });
@@ -404,4 +420,114 @@ test("expired original proof uses authenticated checkpoint bytes and rejects con
   expect(await originalBytes(client, result)).toEqual(bytes);
   checkpoint.files.set("artifact-73.zip", Buffer.from("changed"));
   await expect(originArtifact(client, request, checkpoint)).rejects.toThrow();
+});
+
+test("a successful npm no-op cannot acknowledge an intervening label change", async () => {
+  let current = { ...tags };
+  const journal = [];
+  await expect(
+    applyLabels(op, {
+      read: () => current,
+      write: (tag, value) => {
+        current = { ...current, [tag]: value };
+        return "";
+      },
+      record: (e) => journal.push(e),
+    }),
+  ).rejects.toThrow("acknowledgement");
+  expect(journal.map((e) => e.state)).toEqual(["REQUESTED"]);
+});
+
+test("durable reservations reject a second run and survive lost Actions history", async () => {
+  const tag = "owlapi-release-history/stage-7";
+  const checkpoint = { tag, objectId: sha, files: new Map() };
+  const current = { ref: "refs/tags/" + tag, object: { type: "tag", sha } };
+  const previous = {
+    ref: "refs/tags/owlapi-release-history/stage-4",
+    object: { type: "tag", sha: "f".repeat(40) },
+  };
+  const client = {
+    read: (p) => (p.endsWith("stage-") ? [current, previous] : []),
+  };
+  const env = { GITHUB_RUN_NUMBER: "7", GITHUB_RUN_ATTEMPT: "1" };
+  await expect(
+    verifyReservations(client, checkpoint, env, "stage"),
+  ).rejects.toThrow();
+  checkpoint.files.set(
+    "reservation-stage-4.json",
+    Buffer.from(
+      JSON.stringify({ state: "SETTLED", object: previous.object.sha }),
+    ),
+  );
+  await verifyReservations(client, checkpoint, env, "stage");
+  await expect(
+    verifyReservations(
+      client,
+      checkpoint,
+      { ...env, GITHUB_RUN_NUMBER: "8" },
+      "stage",
+    ),
+  ).rejects.toThrow();
+});
+test("workflow history can cross the first 100 native runs", async () => {
+  const records = Array.from({ length: 101 }, (_, i) => ({ id: i + 1 }));
+  const list = await readWorkflowRuns(
+    (p) => ({
+      total_count: 101,
+      workflow_runs: p.endsWith("page=1")
+        ? records.slice(0, 100)
+        : records.slice(100),
+    }),
+    "stage-release.yml",
+  );
+  expect(list).toEqual(records);
+});
+test("staged evidence has a distinct closed inventory and binds the public release subject", () => {
+  const version = "0.1.0-rc.4",
+    stem = "hadden-industries-owlapi-" + version;
+  const item = (name) => ({ name, bytes: 10, sha256: "a".repeat(64) });
+  const stage = {
+    state: "STAGED",
+    package: packageName,
+    commit: sha,
+    version,
+    runId: "42",
+    attempt: "1",
+    stageId,
+  };
+  const evidence = {
+    schemaVersion: 7,
+    releaseId: 3,
+    source: sha,
+    tagObject: "b".repeat(40),
+    stage,
+    publicVerification: {
+      result: "PASS",
+      coordinate: packageName + "@" + version,
+      tarballSha256: "a".repeat(64),
+      publication: { stageId },
+      provenance: {
+        workflow: ".github/workflows/stage-release.yml",
+        sourceCommit: sha,
+        runId: "42",
+        runAttempt: 1,
+      },
+    },
+    assets: {
+      tarball: item(stem + ".tgz"),
+      sbom: item(stem + ".cdx.json"),
+      checksums: item("SHA256SUMS"),
+    },
+    archive: item(stem + ".evidence.json.gz"),
+  };
+  expect(validateStagedReleaseEvidence(evidence)).toBe(evidence);
+  expect(() =>
+    validateStagedReleaseEvidence({ ...evidence, schemaVersion: 6 }),
+  ).toThrow();
+  expect(() =>
+    validateStagedReleaseEvidence({
+      ...evidence,
+      archive: { ...evidence.archive, bytes: 64 * 1024 * 1024 + 1 },
+    }),
+  ).toThrow();
 });

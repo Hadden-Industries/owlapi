@@ -1,3 +1,4 @@
+import { readWorkflowRuns } from "./github-evidence-reader.mjs";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import {
@@ -12,7 +13,10 @@ import { GitHubReleaseClient, assertReleaseAssets } from "./github-release.mjs";
 import { PACKAGE_NAME, NPM_REGISTRY } from "./package-identity.mjs";
 import { npmSemver } from "./npm-semver.mjs";
 import { readPublicRegistry } from "./public-registry-read.mjs";
-import { readCheckpoint } from "./release-history-checkpoint.mjs";
+import {
+  readCheckpoint,
+  verifyReservations,
+} from "./release-history-checkpoint.mjs";
 import {
   assertPriorOperations,
   hash,
@@ -116,8 +120,22 @@ export async function applyLabels(op, { read, write, record, settled = [] }) {
     );
     const effect = { tag, before: current[tag], after: after[tag] };
     record({ ...effect, state: "REQUESTED" });
-    await write(tag, after[tag]);
-    record({ ...effect, state: "ACKNOWLEDGED" });
+    const acknowledgement = await write(tag, after[tag]);
+    assert.equal(
+      String(acknowledgement).trim(),
+      (effect.after === null ? "-" : "+") +
+        tag +
+        ": " +
+        PACKAGE_NAME +
+        "@" +
+        (effect.after ?? effect.before),
+      "Missing native npm mutation acknowledgement",
+    );
+    record({
+      ...effect,
+      state: "ACKNOWLEDGED",
+      acknowledgement: String(acknowledgement).trim(),
+    });
     current[tag] = after[tag];
     assert.deepEqual(
       tagsOnly(await read()),
@@ -138,6 +156,13 @@ async function main() {
   assert.equal(env.GITHUB_REF, "refs/heads/main");
   const client = new GitHubReleaseClient({ repository, token: env.GH_TOKEN });
   const checkpoint = await readCheckpoint(client, env.HISTORY_OBJECT);
+  if (mode !== "verify")
+    await verifyReservations(
+      client,
+      checkpoint,
+      env,
+      mode === "npm" ? "labels" : "classification",
+    );
   const bytes = checkpoint.files.get("channel-operation.json");
   const op = JSON.parse(bytes);
   const designation = JSON.parse(
@@ -195,7 +220,25 @@ async function main() {
   });
   const desired = classify
     ? { prerelease: false, latest: target.id }
-    : op.githubBefore;
+    : { ...op.githubBefore };
+  let classificationId = target.id;
+  if (
+    op.type === "withdraw" &&
+    !isRc(op.version) &&
+    op.githubBefore.latest === target.id
+  ) {
+    const restore = op.restore.find((r) => r.tag === "latest");
+    assert.ok(
+      restore,
+      "Production withdrawal needs an explicit latest disposition",
+    );
+    if (restore.target !== null) {
+      const previous = await verifiedRelease(restore.target);
+      assert.equal(previous.prerelease, false);
+      classificationId = previous.id;
+      desired.latest = previous.id;
+    }
+  }
   assert.deepEqual(op.githubAfter, desired);
   const dir = ".release/followup";
   mkdirSync(dir, { recursive: true });
@@ -220,15 +263,13 @@ async function main() {
     const scratch = join(env.RUNNER_TEMP, "owlapi-labels");
     mkdirSync(scratch, { recursive: false });
     // A new dispatch reads all earlier writers. Each possible write needs its original persisted disposition.
-    const runs = await client.read(
-      "/actions/workflows/release-labels.yml/runs?per_page=100",
+    const runs = await readWorkflowRuns(
+      (path) => client.read(path),
+      "release-labels.yml",
     );
-    assert.equal(runs.workflow_runs.length, runs.total_count);
     await assertPriorOperations(client, env, checkpoint, "stage");
     let settled = [];
-    for (const run of runs.workflow_runs.filter(
-      (r) => String(r.id) !== env.GITHUB_RUN_ID,
-    )) {
+    for (const run of runs.filter((r) => String(r.id) !== env.GITHUB_RUN_ID)) {
       assert.equal(run.status, "completed", "Another label operation is open");
       for (let attempt = 1; attempt <= run.run_attempt; attempt++) {
         const jobs = await client.read(
@@ -305,14 +346,16 @@ async function main() {
         ),
     });
   } else {
-    const npmRun = JSON.parse(checkpoint.files.get("label-origin.json")).runId;
+    const labelOrigin = JSON.parse(checkpoint.files.get("label-origin.json"));
+    const npmRun = labelOrigin.runId;
+    assert.match(labelOrigin.commit, /^[a-f0-9]{40}$/u);
     const a = await originArtifact(
       client,
       {
         runId: npmRun,
         attempt: "1",
         filename: ".github/workflows/release-labels.yml",
-        commit: env.GITHUB_SHA,
+        commit: labelOrigin.commit,
         logical: "release-labels-" + npmRun + "-1",
       },
       checkpoint,
@@ -339,7 +382,7 @@ async function main() {
         {
           runId: prior.runId,
           attempt: prior.attempt,
-          commit: env.GITHUB_SHA,
+          commit: prior.commit,
           filename: ".github/workflows/release-classification.yml",
           logical:
             "release-classification-" + prior.runId + "-" + prior.attempt,
@@ -365,19 +408,25 @@ async function main() {
       assert.deepEqual(
         journal.map((r) => [r.state, r.releaseId, r.operationSha256]),
         [
-          ["REQUESTED", target.id, operationSha256],
-          ["ACKNOWLEDGED", target.id, operationSha256],
+          ["REQUESTED", classificationId, operationSha256],
+          ["ACKNOWLEDGED", classificationId, operationSha256],
         ],
       );
     }
     if (mode === "github") {
       const current = await githubState();
       if (changeNeeded) {
-        assert.ok(classify);
+        await assertPriorOperations(
+          client,
+          { ...env, OPERATION_SHA256: operationSha256 },
+          checkpoint,
+          "classification",
+        );
+        assert.ok(classify || classificationId !== target.id);
         assert.deepEqual(current, op.githubBefore);
         assert.equal(env.GITHUB_RUN_ATTEMPT, "1");
-        record({ state: "REQUESTED", releaseId: target.id });
-        const result = await client.write("/releases/" + target.id, {
+        record({ state: "REQUESTED", releaseId: classificationId });
+        const result = await client.write("/releases/" + classificationId, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ prerelease: false, make_latest: "true" }),
@@ -387,7 +436,7 @@ async function main() {
           "CONFIRMED",
           "Reconcile original GitHub request",
         );
-        record({ state: "ACKNOWLEDGED", releaseId: target.id });
+        record({ state: "ACKNOWLEDGED", releaseId: classificationId });
       }
     }
     assert.deepEqual(await githubState(), desired);

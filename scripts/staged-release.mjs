@@ -1,3 +1,4 @@
+import { readReleaseSecurity } from "./release-qualification-manifest.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
@@ -12,11 +13,17 @@ import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { crc32 } from "node:zlib";
 import { matchesLogicalArtifact } from "../tooling/artifact-transport/identity.mjs";
-import { readRunArtifacts } from "./github-evidence-reader.mjs";
+import {
+  readRunArtifacts,
+  readWorkflowRuns,
+} from "./github-evidence-reader.mjs";
 import { GitHubReleaseClient } from "./github-release.mjs";
 import { downloadReleaseArtifact } from "./release-approvals.mjs";
 import { readZipArchiveFilesWith } from "./release-zip-core.mjs";
-import { readCheckpoint } from "./release-history-checkpoint.mjs";
+import {
+  readCheckpoint,
+  verifyReservations,
+} from "./release-history-checkpoint.mjs";
 import { readPublicRegistry } from "./public-registry-read.mjs";
 import {
   PACKAGE_NAME,
@@ -146,7 +153,14 @@ export async function originArtifact(
     "Unqualified original run or attempt",
   );
   const inventory = liveRun
-    ? await readRunArtifacts((path) => client.read(path), runId)
+    ? await (async () => {
+        try {
+          return await readRunArtifacts((path) => client.read(path), runId);
+        } catch (e) {
+          if (saved && [404, 410].includes(e.httpStatus)) return [];
+          throw e;
+        }
+      })()
     : [];
   const matches = inventory.filter((a) =>
     matchesLogicalArtifact(a.name, logical, {
@@ -235,7 +249,10 @@ export async function originalManifest(client, env, checkpoint) {
     [manifest.runId, manifest.attempt, manifest.commit],
     [env.QUALIFICATION_RUN, env.QUALIFICATION_ATTEMPT, env.GITHUB_SHA],
   );
-  assert.equal(manifest.package.version, PACKAGE_VERSION);
+  assert.equal(
+    manifest.package.version,
+    env.QUALIFIED_VERSION ?? PACKAGE_VERSION,
+  );
   const candidate = await originArtifact(
     client,
     {
@@ -245,7 +262,7 @@ export async function originalManifest(client, env, checkpoint) {
       commit: manifest.commit,
       logical:
         "hadden-industries-owlapi-" +
-        PACKAGE_VERSION +
+        manifest.package.version +
         "-candidate-" +
         manifest.runId +
         "-" +
@@ -276,6 +293,10 @@ export async function stageOnce({
     version: manifest.package.version,
     channel,
     before,
+    githubLatestBefore:
+      env.GITHUB_LATEST_BEFORE === "null"
+        ? null
+        : Number(env.GITHUB_LATEST_BEFORE),
     commit: manifest.commit,
     manifestSha256: env.MANIFEST_SHA256,
     qualificationRun: manifest.runId,
@@ -320,19 +341,17 @@ export async function stageOnce({
   }
 }
 export async function assertPriorOperations(client, env, checkpoint, kind) {
-  const prior = await client.read(
-    "/actions/workflows/" +
-      (kind === "stage" ? "stage-release.yml" : "release-labels.yml") +
-      "/runs?per_page=100",
-  );
-  assert.equal(
-    prior.total_count,
-    prior.workflow_runs.length,
-    "Incomplete stage history requires signed checkpoint reconciliation",
-  );
-  for (const run of prior.workflow_runs.filter(
-    (r) => String(r.id) !== env.GITHUB_RUN_ID,
-  )) {
+  const workflows = {
+    stage: ["stage-release.yml", "Stage the admitted tarball"],
+    labels: ["release-labels.yml", "Apply approved npm labels (npm)"],
+    classification: [
+      "release-classification.yml",
+      "Settle release classification (github)",
+    ],
+  };
+  const [workflow, step] = workflows[kind];
+  const prior = await readWorkflowRuns((path) => client.read(path), workflow);
+  for (const run of prior.filter((r) => String(r.id) !== env.GITHUB_RUN_ID)) {
     assert.ok(
       run.status === "completed",
       "Concurrent or unresolved stage request",
@@ -348,14 +367,7 @@ export async function assertPriorOperations(client, env, checkpoint, kind) {
       assert.equal(jobs.jobs.length, jobs.total_count);
       const writes = jobs.jobs
         .flatMap((j) => j.steps ?? [])
-        .filter(
-          (s) =>
-            s.name ===
-              (kind === "stage"
-                ? "Stage the admitted tarball"
-                : "Apply approved npm labels (npm)") &&
-            !["skipped"].includes(s.conclusion),
-        );
+        .filter((s) => s.name === step && !["skipped"].includes(s.conclusion));
       if (writes.length) {
         const disposition = json(
           checkpoint.files.get(kind + "-" + run.id + "-" + attempt + ".json"),
@@ -368,6 +380,12 @@ export async function assertPriorOperations(client, env, checkpoint, kind) {
             : ["RECONCILED", "SETTLED"]
           ).includes(disposition.state),
         );
+        if (kind === "classification" && env.OPERATION_SHA256)
+          assert.notEqual(
+            disposition.operationSha256,
+            env.OPERATION_SHA256,
+            "Reconcile original classification",
+          );
         if (kind === "stage" && env.MANIFEST_SHA256)
           assert.notEqual(
             disposition.manifestSha256,
@@ -402,6 +420,7 @@ async function preflight(client, env) {
   await resp.body?.cancel();
   assert.equal(resp.status, 404, "Coordinate must be unused");
   const checkpoint = await readCheckpoint(client, env.HISTORY_OBJECT);
+  await verifyReservations(client, checkpoint, env, "stage");
   const intent = json(checkpoint.files.get("stage-intent.json"));
   assert.deepEqual(
     [
@@ -433,6 +452,14 @@ async function preflight(client, env) {
   );
   assert.equal(intent.rights, "ACCEPTED");
   assert.equal(intent.benchmark, "ACCEPTED");
+  assert.ok(
+    intent.githubLatestBefore === null ||
+      Number.isSafeInteger(intent.githubLatestBefore),
+  );
+  assert.equal(
+    (await client.read("/releases/latest", { accept404: true }))?.id ?? null,
+    intent.githubLatestBefore,
+  );
   assert.equal(intent.tarballSha256, env.QUALIFIED_TARBALL_SHA256);
   await assertPriorOperations(client, env, checkpoint, "stage");
   await assertPriorOperations(client, env, checkpoint, "labels");
@@ -539,7 +566,8 @@ async function main() {
   clean.NPM_CONFIG_USERCONFIG = join(scratch, "empty.npmrc");
   writeFileSync(clean.NPM_CONFIG_USERCONFIG, "", { flag: "wx" });
   clean.NPM_CONFIG_FETCH_RETRIES = "0";
-  mkdirSync(".release/stage", { recursive: true });
+  const journalDirectory = resolve(env.GITHUB_WORKSPACE, ".release/stage");
+  mkdirSync(journalDirectory, { recursive: true });
   const tags = json(
     await readPublicRegistry(
       new URL(
@@ -556,14 +584,21 @@ async function main() {
     intent.before,
     "Public tag preimages changed after owner approval",
   );
+  await readReleaseSecurity({
+    read: (path) => client.read(path),
+    commit: manifest.commit,
+  });
   await stageOnce({
     manifest,
     before,
     bytes: readFileSync(path),
     path,
     channel: env.RELEASE_CHANNEL,
-    env,
-    journal: ".release/stage/journal.jsonl",
+    env: {
+      ...env,
+      GITHUB_LATEST_BEFORE: JSON.stringify(intent.githubLatestBefore),
+    },
+    journal: join(journalDirectory, "journal.jsonl"),
     command: (args) =>
       execFileSync("npm", args, {
         cwd: scratch,

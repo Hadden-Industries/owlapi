@@ -4,6 +4,213 @@
   "title": "Scoped RC and immutable historical alpha release evidence",
   "oneOf": [
     {
+      "title": "Staged immutable release evidence",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "releaseId",
+        "source",
+        "tagObject",
+        "stage",
+        "publicVerification",
+        "archive",
+        "assets"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": 7
+        },
+        "releaseId": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "source": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "tagObject": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "stage": {
+          "type": "object",
+          "required": [
+            "state",
+            "package",
+            "version",
+            "commit",
+            "runId",
+            "attempt",
+            "stageId"
+          ],
+          "properties": {
+            "state": {
+              "const": "STAGED"
+            },
+            "package": {
+              "const": "@hadden-industries/owlapi"
+            },
+            "commit": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{40}$"
+            },
+            "version": {
+              "type": "string",
+              "pattern": "^\\d+\\.\\d+\\.\\d+(-rc\\.\\d+)?$"
+            },
+            "runId": {
+              "type": "string",
+              "pattern": "^[1-9]\\d*$"
+            },
+            "attempt": {
+              "type": "string",
+              "pattern": "^[1-9]\\d*$"
+            },
+            "stageId": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        },
+        "publicVerification": {
+          "type": "object",
+          "required": [
+            "result",
+            "coordinate",
+            "tarballSha256",
+            "publication",
+            "provenance"
+          ],
+          "properties": {
+            "result": {
+              "const": "PASS"
+            },
+            "coordinate": {
+              "type": "string"
+            },
+            "tarballSha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "publication": {
+              "type": "object"
+            },
+            "provenance": {
+              "type": "object"
+            }
+          }
+        },
+        "archive": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "name",
+            "bytes",
+            "sha256"
+          ],
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "bytes": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 67108864
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "assets": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tarball",
+            "sbom",
+            "checksums"
+          ],
+          "properties": {
+            "tarball": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "name",
+                "bytes",
+                "sha256"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 67108864
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              }
+            },
+            "sbom": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "name",
+                "bytes",
+                "sha256"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 67108864
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              }
+            },
+            "checksums": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "name",
+                "bytes",
+                "sha256"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 67108864
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
       "title": "owlapi immutable-release evidence asset",
       "type": "object",
       "additionalProperties": false,

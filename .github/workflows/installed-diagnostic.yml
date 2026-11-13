@@ -48,6 +48,7 @@ jobs:
           merge-multiple: false
           digest-mismatch: error
       - run: npm ci --ignore-scripts
+      - run: npm run prepare:downloaded-candidate -- --candidate .release/diagnostic
       - run: npm run qualify:installed-candidate -- --candidate .release/diagnostic --output .release/installed-diagnostic.json
       - env:
           GH_TOKEN: ${{ github.token }}

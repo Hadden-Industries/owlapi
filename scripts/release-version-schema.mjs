@@ -68,7 +68,7 @@ export function projectReleaseEvidenceSchema(schema, version) {
       ...alternatives.map(
         (branch) => branch.properties.package.properties.version.const,
       ),
-      version,
+      ...(releaseChannel(version) === "pilot" ? [] : [version]),
     ]),
   ];
   alternatives.splice(
