@@ -3,6 +3,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { arch, platform, release, version } from "node:os";
 import { resolve } from "node:path";
 import { assertUbuntuHost } from "./ubuntu-runner.mjs";
+import { assertWindowsHost } from "./windows-runner.mjs";
 
 const valueAfter = (name) => {
   const index = process.argv.indexOf(name);
@@ -37,6 +38,8 @@ if (observedRunnerArch && observedRunnerArch !== expectedArch) {
 
 if (expectedOs === "Linux" && observedRunnerOs)
   assertUbuntuHost(requestedLabel, process.env.ImageOS);
+if (expectedOs === "Windows" && observedRunnerOs)
+  assertWindowsHost(requestedLabel, process.env.ImageOS);
 
 const npmCli = process.env.npm_execpath;
 const npmVersion = npmCli

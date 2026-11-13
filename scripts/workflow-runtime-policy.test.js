@@ -78,6 +78,31 @@ describe("closed runtime projections", () => {
     }
   });
 
+  it("repairs a Windows matrix selector and rejects unmanaged Windows runner records", () => {
+    const source =
+      "jobs:\n  test:\n    strategy:\n      matrix:\n        os:\n          - runner: windows-latest # keep\n";
+    const projections = [
+      {
+        path: ["jobs", "test", "strategy", "matrix", "os", 0, "runner"],
+        template: "{{runtime:windowsRunner}}",
+      },
+    ];
+    const selected = projectRuntimeText("{{runtime:windowsRunner}}");
+    expect(projectWorkflowRuntime(source, projections).drift).toEqual([
+      "jobs.test.strategy.matrix.os.0.runner",
+    ]);
+    expect(
+      projectWorkflowRuntime(source, projections, { write: true }).source,
+    ).toBe(source.replace("windows-latest", selected));
+    expect(() =>
+      projectWorkflowRuntime(
+        source +
+          `    steps:\n      - run: npm run record:runner -- --label ${selected}\n`,
+        projections,
+      ),
+    ).toThrow("Unmanaged Windows selector");
+  });
+
   it("rejects a substituted generated runtime label in real workflow YAML", () => {
     const source = readFileSync(
       new URL("../.github/workflows/ci.yml", import.meta.url),

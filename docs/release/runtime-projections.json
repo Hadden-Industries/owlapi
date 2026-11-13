@@ -382,7 +382,7 @@
       }
     ]
   },
-  "ubuntuWorkflows": {
+  "runnerWorkflows": {
     "release-classification.yml": {
       "/jobs/github/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/verify/runs-on": "{{runtime:ubuntuRunner}}"
@@ -427,8 +427,12 @@
       "/jobs/source_canonical/steps/3/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
       "/jobs/dependency_review/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/dependency_review/steps/2/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
+      "/jobs/portability_windows_node_22/runs-on": "{{runtime:windowsRunner}}",
+      "/jobs/portability_windows_node_24/runs-on": "{{runtime:windowsRunner}}",
       "/jobs/portability_ubuntu_node_26/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/portability_ubuntu_node_26/steps/3/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
+      "/jobs/portability_windows_node_26/runs-on": "{{runtime:windowsRunner}}",
+      "/jobs/portability_windows_node_26/steps/3/run": "npm run record:runner -- --expected-os Windows --expected-arch X64 --label {{runtime:windowsRunner}} --shell pwsh",
       "/jobs/browser_chromium/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/browser_chromium/steps/7/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash --browser-project chromium",
       "/jobs/browser_firefox/runs-on": "{{runtime:ubuntuRunner}}",
@@ -437,6 +441,8 @@
       "/jobs/browser_webkit/steps/7/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash --browser-project webkit",
       "/jobs/owl_contract/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/owl_contract/steps/3/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
+      "/jobs/quality_windows/runs-on": "{{runtime:windowsRunner}}",
+      "/jobs/quality_windows/steps/3/run": "npm run record:runner -- --expected-os Windows --expected-arch X64 --label {{runtime:windowsRunner}} --shell pwsh",
       "/jobs/required/runs-on": "{{runtime:ubuntuRunner}}"
     },
     "extended-tests.yml": {
@@ -445,7 +451,9 @@
       "/jobs/third_party_evidence_registry_keys/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/third_party_evidence_registry_keys/steps/3/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
       "/jobs/third_party_evidence_shard/strategy/matrix/os/0/runner": "{{runtime:ubuntuRunner}}",
+      "/jobs/third_party_evidence_shard/strategy/matrix/os/1/runner": "{{runtime:windowsRunner}}",
       "/jobs/third_party_evidence_shard/steps/6/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
+      "/jobs/third_party_evidence_shard/steps/7/run": "npm run record:runner -- --expected-os Windows --expected-arch X64 --label {{runtime:windowsRunner}} --shell pwsh",
       "/jobs/third_party_evidence_aggregate/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/third_party_evidence_aggregate/steps/3/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
       "/jobs/third_party_evidence_parity/runs-on": "{{runtime:ubuntuRunner}}",
@@ -487,8 +495,12 @@
       "/jobs/third_party_evidence_shard/steps/6/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
       "/jobs/third_party_evidence/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/third_party_evidence/steps/3/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
+      "/jobs/portability_windows_node_22/runs-on": "{{runtime:windowsRunner}}",
+      "/jobs/portability_windows_node_24/runs-on": "{{runtime:windowsRunner}}",
       "/jobs/portability_ubuntu_node_26/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/portability_ubuntu_node_26/steps/3/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
+      "/jobs/portability_windows_node_26/runs-on": "{{runtime:windowsRunner}}",
+      "/jobs/portability_windows_node_26/steps/3/run": "npm run record:runner -- --expected-os Windows --expected-arch X64 --label {{runtime:windowsRunner}} --shell pwsh",
       "/jobs/browser_chromium/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/browser_chromium/steps/7/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash --browser-project chromium",
       "/jobs/browser_firefox/runs-on": "{{runtime:ubuntuRunner}}",
@@ -497,6 +509,8 @@
       "/jobs/browser_webkit/steps/7/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash --browser-project webkit",
       "/jobs/owl_contract/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/owl_contract/steps/3/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
+      "/jobs/quality_windows/runs-on": "{{runtime:windowsRunner}}",
+      "/jobs/quality_windows/steps/3/run": "npm run record:runner -- --expected-os Windows --expected-arch X64 --label {{runtime:windowsRunner}} --shell pwsh",
       "/jobs/required/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/publication_preflight/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/tag_accepted/runs-on": "{{runtime:ubuntuRunner}}",

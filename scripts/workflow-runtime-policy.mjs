@@ -6,18 +6,18 @@ import { parseDocument, isScalar, visit } from "yaml";
 import { CI_RUNTIME, projectRuntimeText } from "./runtime-policy.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
-const { ubuntuWorkflows, workflows, ...otherProjections } = JSON.parse(
+const { runnerWorkflows, workflows, ...otherProjections } = JSON.parse(
   readFileSync(
     new URL("../docs/release/runtime-projections.json", import.meta.url),
     "utf8",
   ),
 );
-for (const [file, selectors] of Object.entries(ubuntuWorkflows)) {
+for (const [file, selectors] of Object.entries(runnerWorkflows)) {
   if (!Object.hasOwn(workflows, file))
-    throw new Error(`Unknown Ubuntu projection workflow: ${file}`);
+    throw new Error(`Unknown runner projection workflow: ${file}`);
   for (const [pointer, template] of Object.entries(selectors)) {
     if (!/^\/jobs(?:\/[a-zA-Z0-9_-]+)+$/u.test(pointer))
-      throw new Error(`Invalid Ubuntu projection pointer: ${pointer}`);
+      throw new Error(`Invalid runner projection pointer: ${pointer}`);
     workflows[file].push({
       path: pointer
         .slice(1)
@@ -28,6 +28,19 @@ for (const [file, selectors] of Object.entries(ubuntuWorkflows)) {
   }
 }
 export const RUNTIME_PROJECTIONS = { ...otherProjections, workflows };
+
+const runnerSelectors = [
+  {
+    family: "Ubuntu",
+    label: /\bubuntu-(?:latest|slim|\d+\.\d+)(?:-[\w-]+)?(?![\w-])/u,
+    token: "{{runtime:ubuntuRunner}}",
+  },
+  {
+    family: "Windows",
+    label: /\bwindows-(?:latest|\d+)(?:-[\w-]+)?(?![\w-])/u,
+    token: "{{runtime:windowsRunner}}",
+  },
+];
 
 /** Project only enumerated runner selectors, job names, setup fields and step commands. */
 export function projectWorkflowRuntime(
@@ -40,8 +53,7 @@ export function projectWorkflowRuntime(
     throw new Error("Runtime projection requires valid YAML");
   const drift = [];
   const edits = [];
-  const managedUbuntu = new Set();
-  const managed = new Set();
+  const managed = new Map();
   for (const { path, template } of projections) {
     const permitted =
       path[0] === "jobs" &&
@@ -60,8 +72,7 @@ export function projectWorkflowRuntime(
       throw new Error(`Missing runtime projection: ${path.join(".")}`);
     if (managed.has(node))
       throw new Error(`Duplicate runtime projection: ${path.join(".")}`);
-    managed.add(node);
-    if (template.includes("{{runtime:ubuntuRunner}}")) managedUbuntu.add(node);
+    managed.set(node, template);
     if (node.value === expected) continue;
     drift.push(path.join("."));
     // Native YAML owns scalar escaping. Multiline commands retain their block header.
@@ -86,14 +97,11 @@ export function projectWorkflowRuntime(
   }
   visit(document, {
     Scalar(_key, node) {
-      if (
-        typeof node.value === "string" &&
-        /\bubuntu-(?:latest|slim|\d+\.\d+)(?:-[\w-]+)?(?![\w-])/u.test(
-          node.value,
-        ) &&
-        !managedUbuntu.has(node)
-      )
-        throw new Error(`Unmanaged Ubuntu selector: ${node.value}`);
+      if (typeof node.value !== "string") return;
+      for (const { family, label, token } of runnerSelectors) {
+        if (label.test(node.value) && !managed.get(node)?.includes(token))
+          throw new Error(`Unmanaged ${family} selector: ${node.value}`);
+      }
     },
   });
   if (write)

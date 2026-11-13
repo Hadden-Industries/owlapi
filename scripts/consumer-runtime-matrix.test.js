@@ -10,45 +10,50 @@ import {
 } from "./consumer-runtime-matrix.mjs";
 import { consumerRuntimeFixture } from "./consumer-runtime-fixture.mjs";
 import { OTHER_UBUNTU } from "./fixtures/ubuntu-runner.mjs";
+import { OTHER_WINDOWS_IMAGE } from "./fixtures/windows-runner.mjs";
 
 describe("frozen consumer runtime admission", () => {
-  test("the Linux consumer command rejects the wrong image before executing tests", () => {
-    const { matrix } = consumerRuntimeFixture();
-    // Simulate the hosted OS in the subprocess so Windows can exercise admission.
-    const linuxHost = `
+  test.each([
+    ["linux", "Linux", OTHER_UBUNTU.image],
+    ["win32", "Windows", OTHER_WINDOWS_IMAGE],
+  ])(
+    "the %s consumer rejects the wrong image before executing tests",
+    (platform, runnerOs, image) => {
+      const { matrix } = consumerRuntimeFixture();
+      // Exercise hosted-image admission independently of the developer's OS.
+      const host = `
       import os from "node:os";
       import { syncBuiltinESMExports } from "node:module";
-      os.platform = () => "linux";
+      os.platform = () => ${JSON.stringify(platform)};
       os.arch = () => "x64";
       syncBuiltinESMExports();
       Object.defineProperty(process.versions, "node", { value: ${JSON.stringify(CANONICAL_NODE)} });
     `;
-    const result = spawnSync(
-      process.execPath,
-      [
-        "--import",
-        `data:text/javascript,${encodeURIComponent(linuxHost)}`,
-        fileURLToPath(
-          new URL("./qualify-consumer-runtime.mjs", import.meta.url),
-        ),
-      ],
-      {
-        encoding: "utf8",
-        timeout: 10000,
-        env: {
-          ...process.env,
-          OWLAPI_RUNTIME_MATRIX: JSON.stringify(matrix),
-          OWLAPI_EXPECTED_NODE: CANONICAL_NODE,
-          RUNNER_OS: "Linux",
-          ImageOS: OTHER_UBUNTU.image,
+      const result = spawnSync(
+        process.execPath,
+        [
+          "--import",
+          `data:text/javascript,${encodeURIComponent(host)}`,
+          fileURLToPath(
+            new URL("./qualify-consumer-runtime.mjs", import.meta.url),
+          ),
+        ],
+        {
+          encoding: "utf8",
+          timeout: 10000,
+          env: {
+            ...process.env,
+            OWLAPI_RUNTIME_MATRIX: JSON.stringify(matrix),
+            OWLAPI_EXPECTED_NODE: CANONICAL_NODE,
+            RUNNER_OS: runnerOs,
+            ImageOS: image,
+          },
         },
-      },
-    );
-    expect(result.status).toBe(1);
-    expect(result.stderr).toContain(
-      `on image ${OTHER_UBUNTU.image} does not match`,
-    );
-  });
+      );
+      expect(result.status).toBe(1);
+      expect(result.stderr).toContain(`on image ${image} does not match`);
+    },
+  );
 
   test("includes every floor, fresh latest patch and distinct reference on every declared platform", () => {
     const { matrix } = consumerRuntimeFixture();

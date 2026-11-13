@@ -111,7 +111,7 @@ jobs:
             platform: linux
             scancode_command: .release/tools/scancode/scancode-toolkit-v32.5.0/venv/bin/scancode
           - id: windows
-            runner: windows-2025
+            runner: windows-2025-vs2026
             shell: pwsh
             platform: windows
             scancode_command: .release/tools/scancode/scancode-toolkit-v32.5.0/venv/Scripts/scancode.exe
@@ -182,7 +182,7 @@ jobs:
         timeout-minutes: 5
       - name: Record the Windows hosted runner identity
         if: ${{ matrix.os.id == 'windows' }}
-        run: npm run record:runner -- --expected-os Windows --expected-arch X64 --label windows-2025 --shell pwsh
+        run: npm run record:runner -- --expected-os Windows --expected-arch X64 --label windows-2025-vs2026 --shell pwsh
         timeout-minutes: 5
       - name: Prepare the locked ScanCode source build
         env:

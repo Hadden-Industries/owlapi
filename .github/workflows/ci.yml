@@ -655,7 +655,7 @@ jobs:
   portability_windows_node_22:
     name: CI / Windows / Node 22.23.4
     needs: [runtime_matrix, candidate]
-    runs-on: windows-2025
+    runs-on: windows-2025-vs2026
     timeout-minutes: 30
     permissions:
       contents: read
@@ -679,7 +679,7 @@ jobs:
   portability_windows_node_24:
     name: CI / Windows / Node 24.22.2
     needs: [runtime_matrix, candidate]
-    runs-on: windows-2025
+    runs-on: windows-2025-vs2026
     timeout-minutes: 30
     permissions:
       contents: read
@@ -744,7 +744,7 @@ jobs:
   portability_windows_node_26:
     name: CI / Windows / Node 26.13.0
     needs: candidate
-    runs-on: windows-2025
+    runs-on: windows-2025-vs2026
     timeout-minutes: 30
     permissions:
       contents: read
@@ -765,7 +765,7 @@ jobs:
         run: npm ci
         timeout-minutes: 20
       - name: Record the hosted runner identity
-        run: npm run record:runner -- --expected-os Windows --expected-arch X64 --label windows-2025 --shell pwsh
+        run: npm run record:runner -- --expected-os Windows --expected-arch X64 --label windows-2025-vs2026 --shell pwsh
         timeout-minutes: 5
       - name: Download the exact same-run candidate by artifact ID
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
@@ -1180,7 +1180,7 @@ jobs:
     name: CI / Windows / quality tools
     needs: verification
     if: needs.verification.outputs.reuse != 'true'
-    runs-on: windows-2025
+    runs-on: windows-2025-vs2026
     timeout-minutes: 120
     permissions:
       contents: read
@@ -1200,7 +1200,7 @@ jobs:
         run: npm ci --ignore-scripts
         timeout-minutes: 20
       - name: Record the hosted runner identity
-        run: npm run record:runner -- --expected-os Windows --expected-arch X64 --label windows-2025 --shell pwsh
+        run: npm run record:runner -- --expected-os Windows --expected-arch X64 --label windows-2025-vs2026 --shell pwsh
         timeout-minutes: 5
       - name: Select the pinned development Python
         id: quality_python

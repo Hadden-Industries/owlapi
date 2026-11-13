@@ -1,6 +1,7 @@
 /** One editable version policy; consumer admission and supported reference lanes are distinct. */
 import assert from "node:assert/strict";
 import { repositoryRuntimePolicy, ubuntuRunner } from "./ubuntu-runner.mjs";
+import { windowsRunner } from "./windows-runner.mjs";
 import { npmSemver } from "./npm-semver.mjs";
 export const runtimeSemver = npmSemver;
 const semver = runtimeSemver;
@@ -61,12 +62,14 @@ export function validateRuntimePolicy(policy) {
     policy.consumerPlatforms.length,
   );
   for (const platform of policy.consumerPlatforms) {
-    assert.match(platform.runner, /^[a-z]+-[a-z0-9.]+$/u);
+    if (platform.os !== "win32")
+      assert.match(platform.runner, /^[a-z]+-[a-z0-9.]+$/u);
     assert.ok(["linux", "win32", "darwin"].includes(platform.os));
     assert.ok(["x64", "arm64"].includes(platform.arch));
     assert.equal(platform.shell, platform.os === "win32" ? "pwsh" : "bash");
   }
   ubuntuRunner(policy);
+  windowsRunner(policy);
   assert.ok(
     semver.gte(policy.npm, npmMinimum),
     "npm reference below local minimum",
@@ -100,6 +103,7 @@ const versionList = (values) =>
 export function projectRuntimeText(text, policy = CI_RUNTIME) {
   const selectors = {
     ubuntuRunner: ubuntuRunner(policy).label,
+    windowsRunner: windowsRunner(policy).label,
     npm: policy.npm,
     consumerNpm: policy.consumerNpm,
     npmRange: `>=${policy.npmMinimum ?? policy.npm}`,

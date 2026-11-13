@@ -4,6 +4,7 @@ import {
 } from "./release-publication-history.mjs";
 import { checkNodeSupportProjections } from "./project-node-support.mjs";
 import { UBUNTU } from "./ubuntu-runner.mjs";
+import { WINDOWS } from "./windows-runner.mjs";
 import { CI_RUNTIME, projectRuntimeText } from "./runtime-policy.mjs";
 import { JAVA_TOOLCHAIN } from "./java-toolchain.mjs";
 import {
@@ -126,7 +127,7 @@ const EVIDENCE_OS_MATRIX = [
   },
   {
     id: "windows",
-    runner: "windows-2025",
+    runner: WINDOWS.label,
     shell: "pwsh",
     platform: "windows",
     scancode_command:
@@ -816,7 +817,7 @@ const validateJobs = (fileName, workflow, violations) => {
         ? runner === "${{ matrix.runner }}"
         : isEvidenceMatrix
           ? runner === "${{ matrix.os.runner }}"
-          : [UBUNTU.label, "windows-2025", "macos-15"].includes(runner),
+          : [UBUNTU.label, WINDOWS.label, "macos-15"].includes(runner),
       `${fileName}:${id} must use an approved explicit runner or closed runner matrix`,
     );
     add(
@@ -835,7 +836,7 @@ const validateJobs = (fileName, workflow, violations) => {
       ? "${{ matrix.shell }}"
       : isEvidenceMatrix
         ? "${{ matrix.os.shell }}"
-        : runner === "windows-2025"
+        : runner === WINDOWS.label
           ? "pwsh"
           : "bash";
     add(
@@ -2852,7 +2853,7 @@ const validateQualityTooling = (workflows, violations) => {
         requireFields(
           job,
           {
-            "runs-on": "windows-2025",
+            "runs-on": WINDOWS.label,
             defaults: { run: { shell: "pwsh" } },
             permissions: { contents: "read" },
           },
@@ -3629,7 +3630,7 @@ export const auditRepositoryControls = ({
     for (const [id, runner] of [
       ["source_json", UBUNTU.label],
       ["portability_ubuntu_node_26", UBUNTU.label],
-      ["portability_windows_node_26", "windows-2025"],
+      ["portability_windows_node_26", WINDOWS.label],
       ["portability_macos_node_26", "macos-15"],
     ]) {
       const job = workflows[fileName]?.jobs?.[id];
