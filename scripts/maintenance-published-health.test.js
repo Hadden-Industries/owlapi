@@ -1,18 +1,26 @@
 import { maintenanceTarget } from "./maintenance-published-health.mjs";
-
-describe("published-package maintenance targeting", () => {
-  test("does not treat a reviewed prerelease as a production latest release", () => {
-    expect(maintenanceTarget({ enabled: true, channel: "next" })).toEqual({
-      action: "NOT_APPLICABLE",
-      reason: "NO_PRODUCTION_RELEASE",
-      coordinate: "@hadden-industries/owlapi@latest",
-    });
+const tags = { latest: "0.2.0-rc.1", next: null, pilot: "0.2.0-rc.1" };
+const stable = {
+  schemaVersion: 1,
+  stable: "0.1.0",
+  supportedRc: null,
+  releaseId: 12,
+  tags,
+};
+test("an RC on latest retains the completed stable support designation", () => {
+  expect(maintenanceTarget(stable, tags)).toMatchObject({
+    version: "0.1.0",
+    releaseId: 12,
   });
-
-  test("checks latest only after a production publication is enabled", () => {
-    expect(maintenanceTarget({ enabled: true, channel: "latest" })).toEqual({
-      action: "QUERY",
-      coordinate: "@hadden-industries/owlapi@latest",
-    });
-  });
+});
+test("pre-stable support follows the verified next RC and detects label drift", () => {
+  const before = { ...tags, next: "0.1.0-rc.3" };
+  const designation = {
+    ...stable,
+    stable: null,
+    supportedRc: before.next,
+    tags: before,
+  };
+  expect(maintenanceTarget(designation, before).version).toBe(before.next);
+  expect(() => maintenanceTarget(designation, tags)).toThrow(/next/);
 });

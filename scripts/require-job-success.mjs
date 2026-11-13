@@ -9,7 +9,6 @@ import {
 } from "./ci-qualification.mjs";
 
 export const FULL_CI_JOB_IDS = Object.freeze([
-  "consumer_runtime",
   "consumer_runtimes",
   "metadata",
   "source_portable",
@@ -35,7 +34,6 @@ export const REQUIRED_JOB_IDS = Object.freeze({
   ci: Object.freeze(["runtime_matrix", "verification", ...FULL_CI_JOB_IDS]),
   release: Object.freeze([
     "runtime_matrix",
-    "consumer_runtime",
     "consumer_runtimes",
     "release_preflight",
     "metadata",

@@ -1,0 +1,85 @@
+name: Qualify retained package
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+      artifact_name:
+        required: true
+        type: string
+    outputs:
+      artifact_id:
+        value: ${{ jobs.produce.outputs.artifact_id }}
+      proof_id:
+        value: ${{ jobs.produce.outputs.proof_id }}
+      artifact_digest:
+        value: ${{ jobs.produce.outputs.artifact_digest }}
+
+permissions: {}
+
+env:
+  npm_config_fetch_retries: "2"
+  npm_config_fetch_retry_factor: "10"
+  npm_config_fetch_retry_mintimeout: "10000"
+  npm_config_fetch_retry_maxtimeout: "60000"
+  npm_config_fetch_timeout: "300000"
+
+jobs:
+  produce:
+    name: Produce
+    runs-on: ubuntu-26.04
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
+      artifact_digest: ${{ steps.upload.outputs.artifact-digest }}
+      proof_id: ${{ steps.proof.outputs.artifact-id }}
+    steps:
+      - name: Check out the proposed source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Set up the policy-owned Node/npm runtime
+        uses: ./.github/actions/setup-producer
+      - name: Install the reviewed dependency graph
+        run: npm ci
+        timeout-minutes: 20
+      - name: Record the hosted runner identity
+        run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-26.04 --shell bash
+        timeout-minutes: 5
+      - name: Build and qualify the closed candidate bundle
+        run: npm run build:release-candidate
+        timeout-minutes: 45
+      - name: Upload the exact same-run candidate
+        id: upload
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: ${{ inputs.artifact_name }}
+          path: |
+            .release/candidate/${{ inputs.version }}/hadden-industries-owlapi-${{ inputs.version }}.tgz
+            .release/candidate/${{ inputs.version }}/hadden-industries-owlapi-${{ inputs.version }}.cdx.json
+            .release/candidate/${{ inputs.version }}/SHA256SUMS
+          retention-days: 90
+      - name: Retain the producer's native audit and consumer inventories
+        id: proof
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: package-proof-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            .release/candidate/${{ inputs.version }}/candidate-manifest.json
+            .release/candidate/${{ inputs.version }}/npm-audit-full.json
+            .release/candidate/${{ inputs.version }}/npm-audit-production.json
+            .release/candidate/${{ inputs.version }}/normal-consumer-npm-audit-production.json
+            .release/candidate/${{ inputs.version }}/sbom-subject-production-graph.json
+            .release/candidate/${{ inputs.version }}/locked-production-graph.json
+            .release/candidate/${{ inputs.version }}/lockless-consumer-production-graph.json
+            .release/candidate/${{ inputs.version }}/lockless-consumer-package-lock.json
+            .release/candidate/${{ inputs.version }}/inspection-consumer-production-graph.json
+          retention-days: 90

@@ -139,10 +139,30 @@ export const emit = (
 
 const main = async () => {
   const mode = process.argv[2];
+  if (mode === "check-subject") {
+    const context = contextFromEnvironment(process.env);
+    const read = createRepositoryReader({
+      repository: context.repository,
+      token: process.env.GH_TOKEN,
+    });
+    if (
+      context.eventName !== "workflow_dispatch" ||
+      context.repository !== "Hadden-Industries/owlapi" ||
+      context.ref !== "refs/heads/main" ||
+      context.event.inputs?.subject !== context.sha ||
+      context.snapshot.commit !== context.sha ||
+      (await read("/git/ref/heads/main")).object?.sha !== context.sha
+    )
+      throw new Error("Requested SHA must still be the protected main head.");
+    return;
+  }
   if (!["select", "verify", "record", "record-main"].includes(mode))
     throw new Error("Expected select, verify, record or record-main.");
   if (mode === "select" && process.env.GITHUB_EVENT_NAME !== "push") {
-    emit({ available: "false" }, "Full PR qualification is required.");
+    emit(
+      { available: "false" },
+      "Full qualification is required for this event.",
+    );
     return;
   }
   const execute = async () => {
@@ -220,6 +240,14 @@ const main = async () => {
   // Reporting is outside the evidence fallback: a broken output sink fails the
   // command and can never rewrite verified reuse as an ordinary cache miss.
   emit(...result);
+  if (
+    mode === "record-main" &&
+    process.env.GITHUB_EVENT_NAME === "workflow_dispatch" &&
+    result[0].recorded !== "true"
+  )
+    throw new Error(
+      "Manual full qualification did not produce a main receipt.",
+    );
 };
 
 if (process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url)

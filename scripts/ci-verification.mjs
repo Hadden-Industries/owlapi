@@ -219,12 +219,15 @@ export const createMainQualification = ({
     sha: context.sha,
   });
   requireFact(
-    context.eventName === "push" &&
-      context.ref === "refs/heads/main" &&
+    ((context.eventName === "push" &&
       context.event.ref === context.ref &&
       context.event.after === context.sha &&
       context.event.deleted === false &&
-      context.event.forced === false &&
+      context.event.forced === false) ||
+      (context.eventName === "workflow_dispatch" &&
+        context.event.inputs?.subject === context.sha &&
+        accepted.mode === "FULL")) &&
+      context.ref === "refs/heads/main" &&
       sameRepository(context.event.repository, context) &&
       context.event.repository.default_branch === "main" &&
       context.snapshot.commit === context.sha &&
@@ -559,7 +562,7 @@ const assertMainRun = (run, context, commit, now) =>
   requireFact(
     id(run?.id) &&
       id(run.run_attempt) &&
-      run.event === "push" &&
+      ["push", "workflow_dispatch"].includes(run.event) &&
       run.head_branch === "main" &&
       run.head_sha === commit &&
       run.path === CI_WORKFLOW &&
@@ -685,7 +688,7 @@ export const selectBaseQualification = async ({
     "Exact-base qualification needs the captured same-repository PR merge.",
   );
   const runs = await read(
-    `/actions/workflows/ci.yml/runs?event=push&head_sha=${base}&per_page=100`,
+    `/actions/workflows/ci.yml/runs?branch=main&head_sha=${base}&per_page=100`,
   );
   requireFact(
     Array.isArray(runs.workflow_runs) &&

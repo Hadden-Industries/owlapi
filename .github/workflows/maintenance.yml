@@ -104,66 +104,21 @@ jobs:
             .release/candidate/${{ steps.runtime_metadata.outputs.version }}/SHA256SUMS
           retention-days: 90
       - name: Observe the active public production coordinate
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: npm run check:published-coordinate
         timeout-minutes: 20
 
-  consumer_runtime:
-    name: Maintenance / consumer / ${{ matrix.runner }} / Node ${{ matrix.node }}
-    needs: [runtime_matrix, health]
-    runs-on: ${{ matrix.runner }}
-    timeout-minutes: 90
-    permissions:
-      contents: read
-    defaults:
-      run:
-        shell: ${{ matrix.shell }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include: ${{ fromJSON(needs.runtime_matrix.outputs.matrix).include }}
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: ./.github/actions/qualify-consumer
-        with:
-          matrix: ${{ needs.runtime_matrix.outputs.matrix }}
-          node: ${{ matrix.node }}
-          candidate-id: ${{ needs.health.outputs.artifact_id }}
-          candidate-digest: sha256:${{ needs.health.outputs.artifact_digest }}
-      - name: Retain the actual consumer lane evidence
-        if: ${{ !cancelled() }}
-        uses: ./.github/actions/retain-artifact
-        with:
-          name: consumer-runtime-${{ matrix.runner }}-${{ matrix.node }}-attempt-${{ github.run_attempt }}
-          path: .release/runtime-report/
-          retention-days: 90
-
   consumer_runtimes:
     name: Maintenance / complete consumer qualification
-    needs: [runtime_matrix, health, consumer_runtime]
-    if: ${{ !cancelled() }}
-    runs-on: ubuntu-26.04
-    timeout-minutes: 30
+    needs: [runtime_matrix, health]
     permissions:
       contents: read
-    defaults:
-      run:
-        shell: bash
-    outputs:
-      coverage: ${{ steps.require.outputs.coverage }}
-      artifact_id: ${{ steps.require.outputs.artifact-id }}
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - id: require
-        uses: ./.github/actions/aggregate-consumer-runtimes
-        with:
-          matrix: ${{ needs.runtime_matrix.outputs.matrix }}
-          lanes-result: ${{ needs.consumer_runtime.result }}
-          candidate-id: ${{ needs.health.outputs.artifact_id }}
-          candidate-digest: sha256:${{ needs.health.outputs.artifact_digest }}
+    uses: ./.github/workflows/installed-qualification.yml
+    with:
+      matrix: ${{ needs.runtime_matrix.outputs.matrix }}
+      artifact_id: ${{ needs.health.outputs.artifact_id }}
+      artifact_digest: ${{ needs.health.outputs.artifact_digest }}
 
   reporter:
     name: Maintenance / isolated finding reporter

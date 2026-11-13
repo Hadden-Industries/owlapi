@@ -1,0 +1,86 @@
+name: Installed package qualification
+
+on:
+  workflow_call:
+    inputs:
+      matrix:
+        required: true
+        type: string
+      artifact_id:
+        required: true
+        type: string
+      artifact_digest:
+        required: true
+        type: string
+    outputs:
+      coverage:
+        value: ${{ jobs.consumer_runtimes.outputs.coverage }}
+      artifact_id:
+        value: ${{ jobs.consumer_runtimes.outputs.artifact_id }}
+
+permissions: {}
+
+env:
+  npm_config_fetch_retries: "2"
+  npm_config_fetch_retry_factor: "10"
+  npm_config_fetch_retry_mintimeout: "10000"
+  npm_config_fetch_retry_maxtimeout: "60000"
+  npm_config_fetch_timeout: "300000"
+
+jobs:
+  consumer_runtime:
+    name: Consumer / ${{ matrix.runner }} / Node ${{ matrix.node }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 90
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: ${{ matrix.shell }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(inputs.matrix).include }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/qualify-consumer
+        with:
+          matrix: ${{ inputs.matrix }}
+          node: ${{ matrix.node }}
+          candidate-id: ${{ inputs.artifact_id }}
+          candidate-digest: sha256:${{ inputs.artifact_digest }}
+      - name: Retain the actual consumer lane evidence
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: consumer-runtime-${{ matrix.runner }}-${{ matrix.node }}-attempt-${{ github.run_attempt }}
+          path: .release/runtime-report/
+          retention-days: 90
+
+  consumer_runtimes:
+    name: Complete
+    needs: consumer_runtime
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-26.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      coverage: ${{ steps.require.outputs.coverage }}
+      artifact_id: ${{ steps.require.outputs.artifact-id }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - id: require
+        uses: ./.github/actions/aggregate-consumer-runtimes
+        with:
+          matrix: ${{ inputs.matrix }}
+          lanes-result: ${{ needs.consumer_runtime.result }}
+          candidate-id: ${{ inputs.artifact_id }}
+          candidate-digest: sha256:${{ inputs.artifact_digest }}

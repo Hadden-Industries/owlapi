@@ -1,0 +1,54 @@
+name: Installed-only main diagnostic
+on:
+  workflow_dispatch:
+    inputs:
+      subject:
+        description: Exact current main commit
+        type: string
+        required: true
+      origin_run:
+        description: Original successful full main CI run
+        type: string
+        required: true
+      origin_attempt:
+        description: Original attempt producing the candidate
+        type: string
+        required: true
+permissions: {}
+jobs:
+  installed:
+    if: github.repository == 'Hadden-Industries/owlapi' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-26.04
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      actions: read
+    defaults:
+      run:
+        shell: bash
+    env:
+      SUBJECT: ${{ inputs.subject }}
+      ORIGIN_RUN: ${{ inputs.origin_run }}
+      ORIGIN_ATTEMPT: ${{ inputs.origin_attempt }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup-producer
+      - id: origin
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/installed-diagnostic.mjs admit
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          artifact-ids: ${{ steps.origin.outputs.artifact_id }}
+          run-id: ${{ inputs.origin_run }}
+          github-token: ${{ github.token }}
+          path: .release/diagnostic
+          merge-multiple: false
+          digest-mismatch: error
+      - run: npm ci --ignore-scripts
+      - run: npm run qualify:installed-candidate -- --candidate .release/diagnostic --output .release/installed-diagnostic.json
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/installed-diagnostic.mjs complete

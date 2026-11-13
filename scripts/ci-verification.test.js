@@ -198,7 +198,7 @@ const fixture = () => {
       now: now - 20 * 60_000,
     }),
   );
-  const jobs = Object.values(CI_JOB_NAMES).map((name, index) => ({
+  const jobs = hostedCiJobNames().map((name, index) => ({
     id: 2000 + index,
     name,
     run_id: 100,
@@ -374,7 +374,7 @@ const mainFixture = async (reused, partialOrigin = false) => {
     },
   };
   Object.assign(f.responses, {
-    [`/actions/workflows/ci.yml/runs?event=push&head_sha=${hash("d")}&per_page=100`]:
+    [`/actions/workflows/ci.yml/runs?branch=main&head_sha=${hash("d")}&per_page=100`]:
       { total_count: 1, workflow_runs: [mainRun] },
     "/actions/runs/200": mainRun,
     "/actions/runs/200/artifacts?per_page=100": {
@@ -836,7 +836,7 @@ describe("exact landed-main qualification and direct original execution", () => 
   test("does not look past a newer failed exact-base run", async () => {
     const f = await mainFixture(true);
     f.responses[
-      `/actions/workflows/ci.yml/runs?event=push&head_sha=${hash("d")}&per_page=100`
+      `/actions/workflows/ci.yml/runs?branch=main&head_sha=${hash("d")}&per_page=100`
     ] = {
       total_count: 2,
       workflow_runs: [

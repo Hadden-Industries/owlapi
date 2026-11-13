@@ -25,8 +25,6 @@ import { OWL_CONTRACT_INVENTORY_SHA256 } from "./owl-contract-evidence.mjs";
 
 export const CI_JOB_NAMES = Object.freeze({
   runtime_matrix: "CI / frozen consumer matrix",
-  consumer_runtime:
-    "CI / consumer / ${{ matrix.runner }} / Node ${{ matrix.node }}",
   consumer_runtimes: "CI / complete consumer qualification",
   verification: "CI / verification strategy",
   metadata: "CI / metadata",
@@ -72,11 +70,15 @@ export const CI_JOB_NAMES = Object.freeze({
 /** GitHub expands matrix jobs; proof admission must enumerate every exact lane. */
 export const hostedCiJobNames = () =>
   Object.entries(CI_JOB_NAMES).flatMap(([id, name]) =>
-    id === "consumer_runtime" && FROZEN_RUNTIME_MATRIX
-      ? FROZEN_RUNTIME_MATRIX.include.map(
-          ({ runner, node }) => `CI / consumer / ${runner} / Node ${node}`,
-        )
-      : [name],
+    id === "consumer_runtimes"
+      ? [
+          name + " / Complete",
+          ...(FROZEN_RUNTIME_MATRIX?.include ?? []).map(
+            ({ runner, node }) =>
+              name + " / Consumer / " + runner + " / Node " + node,
+          ),
+        ]
+      : [id === "candidate" ? name + " / Produce" : name],
   );
 export const CHECK_JOBS = Object.freeze({
   java: "source_canonical",
@@ -87,7 +89,7 @@ export const CHECK_JOBS = Object.freeze({
  * this policy cannot authorize an omitted integration.
  */
 export const QUALIFICATION_POLICY = Object.freeze({
-  version: 10,
+  version: 11,
   documentationContract: "owlapi-release-documentation-v1",
   collectorImageCompatibility: "SUPPORTED_OS_ARCH_RUNTIME_RETAINED_BUILD",
   artifactTransportSha256: evidenceFingerprint({

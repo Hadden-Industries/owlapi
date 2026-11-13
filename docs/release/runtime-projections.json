@@ -73,6 +73,15 @@
     ]
   },
   "workflows": {
+    "release-classification.yml": [],
+    "release-labels.yml": [],
+    "release-completion.yml": [],
+    "release-registry.yml": [],
+    "github-release.yml": [],
+    "installed-diagnostic.yml": [],
+    "installed-qualification.yml": [],
+    "stage-release.yml": [],
+    "qualify-package.yml": [],
     "ci.yml": [
       {
         "path": [
@@ -374,6 +383,37 @@
     ]
   },
   "ubuntuWorkflows": {
+    "release-classification.yml": {
+      "/jobs/github/runs-on": "{{runtime:ubuntuRunner}}",
+      "/jobs/verify/runs-on": "{{runtime:ubuntuRunner}}"
+    },
+    "release-labels.yml": {
+      "/jobs/npm/runs-on": "{{runtime:ubuntuRunner}}"
+    },
+    "release-completion.yml": {
+      "/jobs/complete/runs-on": "{{runtime:ubuntuRunner}}"
+    },
+    "release-registry.yml": {
+      "/jobs/registry/runs-on": "{{runtime:ubuntuRunner}}"
+    },
+    "github-release.yml": {
+      "/jobs/draft/runs-on": "{{runtime:ubuntuRunner}}",
+      "/jobs/seal/runs-on": "{{runtime:ubuntuRunner}}"
+    },
+    "installed-diagnostic.yml": {
+      "/jobs/installed/runs-on": "{{runtime:ubuntuRunner}}"
+    },
+    "installed-qualification.yml": {
+      "/jobs/consumer_runtimes/runs-on": "{{runtime:ubuntuRunner}}"
+    },
+    "stage-release.yml": {
+      "/jobs/admit/runs-on": "{{runtime:ubuntuRunner}}",
+      "/jobs/stage/runs-on": "{{runtime:ubuntuRunner}}"
+    },
+    "qualify-package.yml": {
+      "/jobs/produce/runs-on": "{{runtime:ubuntuRunner}}",
+      "/jobs/produce/steps/3/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash"
+    },
     "ci.yml": {
       "/jobs/runtime_matrix/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/verification/runs-on": "{{runtime:ubuntuRunner}}",
@@ -387,8 +427,6 @@
       "/jobs/source_canonical/steps/3/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
       "/jobs/dependency_review/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/dependency_review/steps/2/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
-      "/jobs/candidate/runs-on": "{{runtime:ubuntuRunner}}",
-      "/jobs/candidate/steps/3/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
       "/jobs/portability_ubuntu_node_26/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/portability_ubuntu_node_26/steps/3/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
       "/jobs/browser_chromium/runs-on": "{{runtime:ubuntuRunner}}",
@@ -399,7 +437,6 @@
       "/jobs/browser_webkit/steps/7/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash --browser-project webkit",
       "/jobs/owl_contract/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/owl_contract/steps/3/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
-      "/jobs/consumer_runtimes/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/required/runs-on": "{{runtime:ubuntuRunner}}"
     },
     "extended-tests.yml": {
@@ -418,7 +455,6 @@
       "/jobs/runtime_matrix/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/health/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/health/steps/4/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
-      "/jobs/consumer_runtimes/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/reporter/runs-on": "{{runtime:ubuntuRunner}}"
     },
     "release-reconciliation.yml": {
@@ -451,8 +487,6 @@
       "/jobs/third_party_evidence_shard/steps/6/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
       "/jobs/third_party_evidence/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/third_party_evidence/steps/3/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
-      "/jobs/candidate/runs-on": "{{runtime:ubuntuRunner}}",
-      "/jobs/candidate/steps/3/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
       "/jobs/portability_ubuntu_node_26/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/portability_ubuntu_node_26/steps/3/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
       "/jobs/browser_chromium/runs-on": "{{runtime:ubuntuRunner}}",
@@ -463,7 +497,6 @@
       "/jobs/browser_webkit/steps/7/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash --browser-project webkit",
       "/jobs/owl_contract/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/owl_contract/steps/3/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
-      "/jobs/consumer_runtimes/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/required/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/publication_preflight/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/tag_accepted/runs-on": "{{runtime:ubuntuRunner}}",

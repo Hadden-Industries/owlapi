@@ -310,7 +310,11 @@ Retarget still-unpublished additions deliberately in the Java API generator when
 
 ## CI verification after merging
 
-Every pull request runs the full required application checks.
+For a pull request into `main`, open a draft and mark it ready for review to start `CI / required`.
+After a new commit or base update, convert it to draft and mark it ready again. Use the same transition for a bot PR or a PR opened ready.
+Wait for the GitHub Actions check on the current merge candidate. Fork runs remain subject to repository approval.
+
+A main push records `REUSED` with its PR origin or `FULL_REQUIRED` with the follow-up SHA in the verification strategy summary. Automatic full fallback remains active during cutover. To run deliberate full qualification use `gh workflow run ci.yml --ref main -f subject=SHA`. The installed-only diagnostic accepts an original main candidate run and attempt and records a separate result.
 The retained-candidate job waits for the portable, JSON and canonical source checks, dependency review and Windows quality.
 Jobs that qualify the candidate depend on that retained artifact.
 A successful run retains a versioned verification receipt and its original candidate artifact identity.
