@@ -211,7 +211,7 @@ const exerciseFreshConsumers = async (metadata, tarball, origin) => {
       metadata,
       tarball,
       cache: join(root, "provenance-cache"),
-      commit: origin?.commit ?? process.env.GITHUB_SHA,
+      commit: origin?.controller ?? origin?.commit ?? process.env.GITHUB_SHA,
       runId: origin?.runId ?? process.env.GITHUB_RUN_ID,
       runAttempt: Number(origin?.attempt ?? process.env.GITHUB_RUN_ATTEMPT),
       staged: Boolean(origin),

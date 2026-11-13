@@ -25,6 +25,7 @@ import {
   originArtifact,
   originalBytes,
   originalManifest,
+  readStageJournal,
 } from "./staged-release.mjs";
 import { readZipArchiveFilesWith } from "./release-zip-core.mjs";
 import { verifyLocalReleaseTag } from "./verify-release-tag.mjs";
@@ -45,7 +46,7 @@ const single = (items, message) => {
   return items[0];
 };
 
-export async function readStageContext(client, env, checkpoint, mode) {
+export async function readStageContext(client, env, checkpoint, mode, renewal) {
   assert.equal(env.GITHUB_REPOSITORY, repo);
   assert.equal(env.GITHUB_REF, "refs/heads/main");
   const read = (name) => {
@@ -62,7 +63,7 @@ export async function readStageContext(client, env, checkpoint, mode) {
   assert.match(operation.manifestSha256, /^[a-f0-9]{64}$/u);
   assert.match(operation.source, /^[a-f0-9]{40}$/u);
   assert.equal(
-    operation.controller,
+    renewal?.controller ?? operation.controller,
     env.GITHUB_SHA,
     "Operation requires owner approval for the executing controller",
   );
@@ -84,15 +85,19 @@ export async function readStageContext(client, env, checkpoint, mode) {
     origin,
     checkpoint,
   );
+  const stageController = operation.stageController ?? manifest.commit;
+  assert.match(stageController, /^[a-f0-9]{40}$/u);
   const a = await originArtifact(
     client,
     {
       runId: operation.stageRun,
       attempt: operation.stageAttempt,
       filename: ".github/workflows/stage-release.yml",
-      commit: manifest.commit,
+      commit: stageController,
       logical:
         "release-stage-" + operation.stageRun + "-" + operation.stageAttempt,
+      stageFailure: "retention",
+      requireArchivedFailure: mode === "seal",
     },
     checkpoint,
   );
@@ -104,33 +109,15 @@ export async function readStageContext(client, env, checkpoint, mode) {
     ["journal.jsonl"],
   );
   const journal = files[0].content;
-  const rows = journal
-    .toString()
-    .trimEnd()
-    .split("\n")
-    .map((line) => JSON.parse(line));
-  assert.deepEqual(
-    rows.map((r) => r.state),
-    ["REQUESTED", "STAGED"],
-  );
-  const receipt = rows[1];
-  assert.deepEqual(
-    [
-      receipt.commit,
-      receipt.manifestSha256,
-      receipt.runId,
-      receipt.attempt,
-      receipt.qualificationRun,
-      receipt.qualificationAttempt,
-    ],
-    [
-      manifest.commit,
-      operation.manifestSha256,
-      operation.stageRun,
-      operation.stageAttempt,
-      manifest.runId,
-      manifest.attempt,
-    ],
+  const receipt = readStageJournal(
+    journal,
+    manifest,
+    operation.manifestSha256,
+    {
+      runId: operation.stageRun,
+      attempt: operation.stageAttempt,
+      controller: stageController,
+    },
   );
   const privateProof = parse(read("private-check.json"));
   assert.deepEqual(privateProof, {
@@ -166,14 +153,23 @@ export async function readStageContext(client, env, checkpoint, mode) {
     manifestBytes,
     candidate,
     journal,
+    retentionFailure: a.retentionFailure,
     receipt,
     privateProof,
     read,
   };
 }
-async function draft(client, ctx) {
+export async function draft(client, ctx) {
   const { operation, manifest, read } = ctx;
   const tag = "v" + operation.version;
+  const notes = read("release-notes.md").toString("utf8");
+  assert.deepEqual(Object.keys(manifest.assets).sort(), [
+    "checksums",
+    "sbom",
+    "tarball",
+  ]);
+  for (const item of Object.values(manifest.assets))
+    assert.deepEqual(asset(item.name, read(item.name)), item);
   let release = await client.getReleaseByTag(tag);
   if (positive(operation.expectedReleaseId)) {
     assert.equal(
@@ -195,7 +191,7 @@ async function draft(client, ctx) {
         tag_name: tag,
         target_commitish: manifest.commit,
         name: "owlapi " + operation.version,
-        body: read("release-notes.md").toString("utf8"),
+        body: notes,
         draft: true,
         prerelease: true,
         make_latest: "false",
@@ -209,7 +205,7 @@ async function draft(client, ctx) {
     release = result.value;
   }
   assertDraftRelease(release, { tag });
-  assert.equal(release.body, read("release-notes.md").toString("utf8"));
+  assert.equal(release.body, notes);
   assertReleaseAssetSubset({
     assets: release.assets,
     expected: Object.values(manifest.assets),
@@ -369,8 +365,62 @@ async function registryProof(client, ctx) {
   );
   return proof;
 }
-async function seal(client, ctx, checkpoint) {
+export function checkSealSettings(operationBytes, renewal, now = Date.now()) {
+  const operation = parse(operationBytes);
+  assert.equal(operation.type, "seal");
+  if (renewal)
+    assert.equal(
+      renewal.operationSha256,
+      hash(operationBytes),
+      "Settings renewal must bind the original seal operation bytes",
+    );
+  const settings = (renewal ?? operation).immutableReleases;
+  assert.ok(settings, "Seal settings require top-level immutableReleases");
+  assert.equal(
+    settings.evidence.url,
+    "https://api.github.com/repos/" + repo + "/immutable-releases",
+  );
+  assert.equal(typeof settings.responseJson, "string");
+  assert.equal(
+    hash(settings.responseJson),
+    settings.evidence.sha256,
+    "Immutable settings response digest mismatch",
+  );
+  assert.equal(
+    JSON.parse(settings.responseJson).enabled,
+    true,
+    "Immutable releases must be enabled",
+  );
+  const checked = Date.parse(settings.checkedAt);
+  assert.ok(
+    checked <= now && now - checked <= 3_600_000,
+    "Immutable settings read must be at most one hour old",
+  );
+}
+async function readSealRenewal(
+  client,
+  objectId,
+  original,
+  executingController,
+) {
+  const checkpoint = await readCheckpoint(client, objectId);
+  const renewal = parse(checkpoint.files.get("seal-settings.json"));
+  const operationBytes = original.files.get("operation.json");
+  const operation = parse(operationBytes);
+  assert.equal(operation.type, "seal");
+  assert.equal(renewal.operationSha256, hash(operationBytes));
+  assert.equal(renewal.controller ?? operation.controller, executingController);
+  verifyControllerDelta(
+    operation.controller,
+    executingController,
+    checkpoint.files,
+  );
+  return { ...renewal, checkpoint: checkpoint.objectId };
+}
+async function seal(client, ctx, checkpoint, renewal) {
   const { operation, manifest, read } = ctx;
+  const operationBytes = read("operation.json");
+  checkSealSettings(operationBytes, renewal);
   const tag = "v" + operation.version;
   const report = parse(read("public.json"));
   assert.equal(report.result, "PASS");
@@ -383,7 +433,10 @@ async function seal(client, ctx, checkpoint) {
   );
   assert.equal(report.provenance.runId, ctx.receipt.runId);
   assert.equal(report.provenance.runAttempt, Number(ctx.receipt.attempt));
-  assert.equal(report.provenance.sourceCommit, manifest.commit);
+  assert.equal(
+    report.provenance.sourceCommit,
+    ctx.receipt.controller ?? manifest.commit,
+  );
   assert.equal(report.publication.stageId, operation.stageId);
   const a = await originArtifact(
     client,
@@ -482,6 +535,13 @@ async function seal(client, ctx, checkpoint) {
   }
   archiveEntries.set("manifest.json", ctx.manifestBytes);
   archiveEntries.set("stage-journal.jsonl", ctx.journal);
+  if (ctx.retentionFailure) {
+    assert.ok(!archiveEntries.has("stage-retention-failure.json"));
+    archiveEntries.set(
+      "stage-retention-failure.json",
+      Buffer.from(JSON.stringify(ctx.retentionFailure) + "\n"),
+    );
+  }
   const archive = gzipSync(
     Buffer.from(
       JSON.stringify({
@@ -531,6 +591,7 @@ async function seal(client, ctx, checkpoint) {
   await approvedDraft(client, ctx, [archiveInfo, evidenceInfo]);
   const existing = await client.read("/releases/" + operation.releaseId);
   assertReleaseAssetSubset({ assets: existing.assets, expected });
+  checkSealSettings(operationBytes, renewal);
   for (const [item, bytes] of [
     [archiveInfo, archive],
     [evidenceInfo, evidence],
@@ -540,10 +601,12 @@ async function seal(client, ctx, checkpoint) {
   const draft = await client.read("/releases/" + operation.releaseId);
   assertDraftRelease(draft, { tag });
   assertReleaseAssets({ assets: draft.assets, expected });
+  checkSealSettings(operationBytes, renewal);
   const record = {
     state: "SEAL_REQUESTED",
+    ...(renewal ? { settingsCheckpoint: renewal.checkpoint } : {}),
     checkpoint: checkpoint.objectId,
-    controller: operation.controller,
+    controller: renewal?.controller ?? operation.controller,
     notesSha256: hash(read("release-notes.md")),
     version: operation.version,
     prerelease: true,
@@ -631,6 +694,14 @@ async function recoverSeal(client, checkpoint) {
   );
   const original = await readCheckpoint(client, origin.checkpoint);
   const operation = parse(original.files.get("operation.json"));
+  if (request.settingsCheckpoint)
+    await readSealRenewal(
+      client,
+      request.settingsCheckpoint,
+      original,
+      request.controller,
+    );
+  else assert.equal(operation.controller, request.controller);
   assert.deepEqual(
     [
       operation.type,
@@ -638,7 +709,6 @@ async function recoverSeal(client, checkpoint) {
       operation.releaseId,
       operation.tagObject,
       operation.source,
-      operation.controller,
     ],
     [
       "seal",
@@ -646,7 +716,6 @@ async function recoverSeal(client, checkpoint) {
       request.releaseId,
       request.tagObject,
       request.source,
-      request.controller,
     ],
   );
   assert.equal(
@@ -720,6 +789,16 @@ export async function completeRelease(client, env, checkpoint) {
 async function main() {
   const mode = process.argv[2],
     env = process.env;
+  if (mode === "check-seal-settings") {
+    assert.ok(
+      [4, 5].includes(process.argv.length),
+      "Expected seal operation.json and optional seal-settings.json",
+    );
+    const operationBytes = readFileSync(process.argv[3]);
+    const renewal = process.argv[4] && parse(readFileSync(process.argv[4]));
+    checkSealSettings(operationBytes, renewal);
+    return;
+  }
   assert.equal(env.GITHUB_REPOSITORY, repo);
   assert.equal(env.GITHUB_REF, "refs/heads/main");
   const client = new GitHubReleaseClient({
@@ -732,14 +811,23 @@ async function main() {
   if (mode === "complete")
     result = await completeRelease(client, env, checkpoint);
   else {
-    const ctx = await readStageContext(client, env, checkpoint, mode);
+    const renewal =
+      mode === "seal" && env.SETTINGS_OBJECT
+        ? await readSealRenewal(
+            client,
+            env.SETTINGS_OBJECT,
+            checkpoint,
+            env.GITHUB_SHA,
+          )
+        : undefined;
+    const ctx = await readStageContext(client, env, checkpoint, mode, renewal);
     if (mode === "draft") result = await draft(client, ctx);
     else if (mode === "before-approval")
       result = await approvedDraft(client, ctx);
     else if (mode === "registry") result = await registryProof(client, ctx);
     else {
       assert.equal(mode, "seal");
-      result = await seal(client, ctx, checkpoint);
+      result = await seal(client, ctx, checkpoint, renewal);
     }
   }
   writeFileSync(

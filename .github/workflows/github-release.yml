@@ -11,6 +11,10 @@ on:
         required: true
         type: choice
         options: [draft, seal]
+      settings_object:
+        description: Optional signed immutable-settings renewal for the original seal operation
+        type: string
+        required: false
 permissions: {}
 concurrency:
   group: owlapi-release
@@ -69,6 +73,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           HISTORY_OBJECT: ${{ inputs.history_object }}
+          SETTINGS_OBJECT: ${{ inputs.settings_object }}
         run: node scripts/staged-release-followup.mjs seal
       - name: Retain original operation evidence
         if: ${{ !cancelled() }}

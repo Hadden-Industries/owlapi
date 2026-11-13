@@ -1,10 +1,19 @@
-import { reconcilePublishedSeal } from "./staged-release-followup.mjs";
+import {
+  checkSealSettings,
+  draft,
+  reconcilePublishedSeal,
+} from "./staged-release-followup.mjs";
 import {
   immutableRuleHasNoBypass,
   verifyReservations,
 } from "./release-history-checkpoint.mjs";
 import { validateStagedReleaseEvidence } from "./staged-evidence.mjs";
-import { readWorkflowRuns } from "./github-evidence-reader.mjs";
+import {
+  createRepositoryReader,
+  readAcknowledgedInventory,
+  readWorkflowRuns,
+} from "./github-evidence-reader.mjs";
+import { zipArchive } from "./fixtures/zip-archive.mjs";
 import { physicalName } from "../tooling/artifact-transport/identity.mjs";
 import { mkdtempSync, readFileSync, writeFileSync, rmSync } from "node:fs";
 import { createServer } from "node:http";
@@ -15,6 +24,8 @@ import { join } from "node:path";
 import { tmpdir } from "node:os";
 import {
   hash,
+  assertPriorOperations,
+  readStageJournal,
   originArtifact,
   originalBytes,
   stageOnce,
@@ -22,7 +33,10 @@ import {
 } from "./staged-release.mjs";
 import { planChannels, applyLabels } from "./release-channel-operation.mjs";
 import { RegistryReadError } from "./public-registry-read.mjs";
-import { readReleaseSecurity } from "./release-qualification-manifest.mjs";
+import {
+  assertQualificationCandidate,
+  readReleaseSecurity,
+} from "./release-qualification-manifest.mjs";
 const bytes = Buffer.from("one immutable fixture");
 const sha = "a".repeat(40),
   stageId = "aa884366-0aaa-4033-aed3-438727bb6e42";
@@ -56,6 +70,7 @@ function run(version, channel, command) {
     env: {
       GITHUB_RUN_ID: "42",
       GITHUB_RUN_ATTEMPT: "1",
+      GITHUB_LATEST_BEFORE: "null",
       MANIFEST_SHA256: hash(JSON.stringify(m)),
     },
     journal,
@@ -87,7 +102,30 @@ test.each(
         }),
       );
     });
+    const controller = "c".repeat(40);
+    input.env.GITHUB_SHA = version.endsWith("rc.4") ? controller : sha;
     const receipt = await stageOnce(input);
+    const expectedOrigin = {
+      runId: "42",
+      attempt: "1",
+      controller: input.env.GITHUB_SHA,
+    };
+    const journal = readFileSync(input.journal);
+    expect(
+      readStageJournal(journal, m, input.env.MANIFEST_SHA256, expectedOrigin),
+    ).toEqual(receipt);
+    expect(() =>
+      readStageJournal(journal, m, input.env.MANIFEST_SHA256, {
+        ...expectedOrigin,
+        controller: "e".repeat(40),
+      }),
+    ).toThrow();
+    const mismatched = journal
+      .toString()
+      .replace('"channel":"' + tag + '"', '"channel":"next"');
+    expect(() =>
+      readStageJournal(Buffer.from(mismatched), m, input.env.MANIFEST_SHA256),
+    ).toThrow();
     expect(commands).toEqual([
       [
         "stage",
@@ -519,6 +557,377 @@ test("a successful npm no-op cannot acknowledge an intervening label change", as
   expect(journal.map((e) => e.state)).toEqual(["REQUESTED"]);
 });
 
+test("qualification binds the upload acknowledgement to one unexpired REST digest", () => {
+  const digest = hash(bytes);
+  const artifact = { id: 42, digest: "sha256:" + digest, expired: false };
+  assertQualificationCandidate([artifact], "42", digest);
+  for (const [rows, upload] of [
+    [[artifact], artifact.digest],
+    [[artifact], "b".repeat(64)],
+    [[{ ...artifact, digest }], digest],
+    [[{ ...artifact, expired: true }], digest],
+    [[artifact, artifact], digest],
+    [[], digest],
+  ])
+    expect(() => assertQualificationCandidate(rows, "42", upload)).toThrow();
+});
+
+test("only a known artifact ID retries a visibility 404 within the GET budget", async () => {
+  const reads = [];
+  let clock = 0;
+  const read = createRepositoryReader({
+    repository: "Hadden-Industries/owlapi",
+    token: "fixture",
+    now: () => clock,
+    random: () => 0,
+    sleep: async (ms) => {
+      clock += ms;
+    },
+    fetchImpl: async (url, options) => {
+      reads.push([url, options.method ?? "GET"]);
+      return reads.length === 2
+        ? Response.json({ id: 42 })
+        : new Response(null, { status: 404 });
+    },
+  });
+  const retry = { retryArtifact404: true };
+  await expect(read("/actions/artifacts/42", retry)).resolves.toEqual({
+    id: 42,
+  });
+  expect(reads[0]).toEqual(reads[1]);
+  expect(clock).toBe(1000);
+  await expect(read("/git/ref/tags/v1", retry)).rejects.toThrow(
+    "exact artifact ID",
+  );
+  await expect(read("/actions/artifacts/43", retry)).rejects.toThrow(
+    "HTTP 404",
+  );
+  expect(reads).toHaveLength(5);
+});
+
+test("a late run inventory must converge on the acknowledged artifact identity", async () => {
+  const artifact = {
+    id: 73,
+    name: "candidate",
+    expired: false,
+    workflow_run: { id: 42 },
+    digest: "sha256:" + hash(bytes),
+    size_in_bytes: 8,
+  };
+  for (const conflict of [false, true]) {
+    const waits = [];
+    const result = readAcknowledgedInventory(
+      async (path, options) => {
+        if (path === "/actions/artifacts/73") {
+          expect(options).toEqual({ retryArtifact404: true });
+          return artifact;
+        }
+        return waits.length
+          ? {
+              total_count: 1,
+              artifacts: [
+                { ...artifact, name: conflict ? "wrong" : "candidate" },
+              ],
+            }
+          : { total_count: 0, artifacts: [] };
+      },
+      "42",
+      ["73"],
+      async (n) => {
+        waits.push(n);
+      },
+    );
+    if (conflict) await expect(result).rejects.toThrow("Conflicting");
+    else await expect(result).resolves.toEqual([artifact]);
+    expect(waits).toEqual([1000]);
+  }
+});
+
+function failedStageOrigin(writer, retention, journal) {
+  const repository = { full_name: "Hadden-Industries/owlapi" };
+  const run = {
+    id: 42,
+    run_attempt: 1,
+    path: ".github/workflows/stage-release.yml",
+    repository,
+    head_repository: repository,
+    event: "workflow_dispatch",
+    head_branch: "main",
+    head_sha: sha,
+    status: "completed",
+    conclusion: "failure",
+  };
+  const common = {
+    run_id: 42,
+    run_attempt: 1,
+    head_sha: sha,
+    status: "completed",
+  };
+  const jobs = {
+    total_count: 2,
+    jobs: [
+      { ...common, id: 101, name: "admit", conclusion: "success" },
+      {
+        ...common,
+        id: 102,
+        name: "stage",
+        conclusion: "failure",
+        steps: [
+          {
+            name: "Stage the admitted tarball",
+            status: "completed",
+            conclusion: writer,
+          },
+          {
+            name: "Retain original stage journal",
+            status: "completed",
+            conclusion: retention,
+          },
+        ],
+      },
+    ],
+  };
+  const logical = "release-stage-42-1";
+  const zip = zipArchive([{ path: "journal.jsonl", content: journal }]);
+  const artifact = {
+    id: 73,
+    name: physicalName({
+      logical,
+      run: 42,
+      attempt: 1,
+      producer: "a".repeat(16),
+      invocation: "b".repeat(32),
+      ordinal: 0,
+    }),
+    workflow_run: { id: 42, head_sha: sha },
+    expired: true,
+    size_in_bytes: zip.length,
+    digest: "sha256:" + hash(zip),
+  };
+  const checkpoint = {
+    files: new Map([
+      [
+        "origin-42-1-" + logical + ".json",
+        Buffer.from(JSON.stringify({ run, jobs, artifact })),
+      ],
+      ["artifact-73.zip", zip],
+    ]),
+  };
+  const client = {
+    read: async (path) => {
+      if (path.startsWith("/actions/workflows/"))
+        return { workflow_runs: [run], total_count: 1 };
+      if (path.endsWith("/jobs?per_page=100")) return jobs;
+      if (path.endsWith("/attempts/1")) return run;
+      if (path.includes("/artifacts?"))
+        return { artifacts: [artifact], total_count: 1 };
+      if (path === "/actions/artifacts/73") return artifact;
+      throw Error("Unexpected path " + path);
+    },
+  };
+  return {
+    run,
+    jobs,
+    client,
+    checkpoint,
+    request: {
+      filename: run.path,
+      commit: sha,
+      runId: "42",
+      attempt: "1",
+      logical,
+    },
+  };
+}
+
+test("a failed stage run can supply its original journal only after the writer succeeded", async () => {
+  const { run, jobs, client, checkpoint, request } = failedStageOrigin(
+    "success",
+    "failure",
+    "original journal",
+  );
+  const recover = () =>
+    originArtifact(
+      client,
+      { ...request, stageFailure: "retention" },
+      checkpoint,
+    );
+  await expect(originArtifact(client, request, checkpoint)).rejects.toThrow();
+  const recovered = await recover();
+  expect(recovered.retentionFailure).toEqual({
+    runId: "42",
+    attempt: "1",
+    controller: sha,
+    admitJob: 101,
+    stageJob: 102,
+    stage: "success",
+    retention: "failure",
+  });
+  const offline = {
+    read: async () => {
+      throw Object.assign(Error("expired"), { httpStatus: 404 });
+    },
+  };
+  const archived = await originArtifact(
+    offline,
+    { ...request, stageFailure: "retention" },
+    checkpoint,
+  );
+  expect(archived.retentionFailure).toEqual(recovered.retentionFailure);
+  const savedKey = "origin-42-1-" + request.logical + ".json";
+  const original = checkpoint.files.get(savedKey);
+  const saved = JSON.parse(original);
+  saved.run.conclusion = "success";
+  checkpoint.files.set(savedKey, Buffer.from(JSON.stringify(saved)));
+  await expect(recover()).rejects.toThrow("Conflicting signed original run");
+  saved.run.conclusion = "failure";
+  saved.jobs.jobs[1].id++;
+  checkpoint.files.set(savedKey, Buffer.from(JSON.stringify(saved)));
+  await expect(recover()).rejects.toThrow(
+    "Conflicting signed stage job inventory",
+  );
+  delete saved.jobs;
+  checkpoint.files.set(savedKey, Buffer.from(JSON.stringify(saved)));
+  await expect(
+    originArtifact(
+      client,
+      { ...request, stageFailure: "retention", requireArchivedFailure: true },
+      checkpoint,
+    ),
+  ).rejects.toThrow("signed history");
+  checkpoint.files.set(savedKey, original);
+  run.conclusion = "cancelled";
+  await expect(recover()).rejects.toThrow();
+  run.conclusion = "failure";
+  jobs.jobs[1].steps[0].conclusion = "failure";
+  await expect(recover()).rejects.toThrow();
+  jobs.jobs[1].steps[0].conclusion = "success";
+  jobs.jobs[1].steps.push({
+    name: "Unexpected failure",
+    status: "completed",
+    conclusion: "failure",
+  });
+  await expect(recover()).rejects.toThrow();
+  jobs.jobs[1].steps.pop();
+  jobs.jobs[1].head_sha = "d".repeat(40);
+  await expect(recover()).rejects.toThrow();
+});
+
+test.each(["NO_REQUEST", "REQUESTED", "OUTCOME_UNKNOWN"])(
+  "a signed %s disposition is checked against original native bytes before resubmission",
+  async (state) => {
+    const disposition = {
+      state: "NO_REQUEST",
+      runId: "42",
+      attempt: "1",
+      manifestSha256: hash(bytes),
+    };
+    const { client, checkpoint } = failedStageOrigin(
+      "failure",
+      "success",
+      JSON.stringify({ ...disposition, state, controller: sha }),
+    );
+    checkpoint.files.set(
+      "stage-42-1.json",
+      Buffer.from(JSON.stringify(disposition)),
+    );
+    const admitted = assertPriorOperations(
+      client,
+      { GITHUB_RUN_ID: "71", MANIFEST_SHA256: hash(bytes) },
+      checkpoint,
+      "stage",
+    );
+    if (state === "NO_REQUEST") await admitted;
+    else await expect(admitted).rejects.toThrow();
+  },
+);
+
+test("a corrupted third draft asset is rejected before the first GitHub write", async () => {
+  const assets = Object.fromEntries(
+    ["tarball", "sbom", "checksums"].map((name) => [
+      name,
+      { name, bytes: bytes.length, sha256: hash(bytes) },
+    ]),
+  );
+  const calls = [];
+  await expect(
+    draft(
+      {
+        getReleaseByTag: async () => null,
+        write: async () => {
+          calls.push("POST");
+        },
+      },
+      {
+        operation: { version: "0.1.0", expectedReleaseId: null },
+        manifest: { assets },
+        read: (name) => (name === "checksums" ? Buffer.from("altered") : bytes),
+      },
+    ),
+  ).rejects.toThrow();
+  expect(calls).toEqual([]);
+});
+
+test("seal requires fresh native settings at the documented level and can renew the original operation", () => {
+  const now = Date.parse("2026-11-13T22:00:00Z");
+  const responseJson = '{"enabled":true,"enforced_by_owner":false}';
+  const immutableReleases = {
+    responseJson,
+    checkedAt: new Date(now).toISOString(),
+    evidence: {
+      url: "https://api.github.com/repos/Hadden-Industries/owlapi/immutable-releases",
+      sha256: hash(responseJson),
+    },
+  };
+  const encode = (fields) =>
+    Buffer.from(JSON.stringify({ type: "seal", ...fields }));
+  const original = encode({ immutableReleases });
+  checkSealSettings(original, undefined, now);
+  for (const override of [
+    { checkedAt: new Date(now - 3600001).toISOString() },
+    { checkedAt: new Date(now + 1).toISOString() },
+    {
+      responseJson: '{"enabled":false}',
+      evidence: {
+        ...immutableReleases.evidence,
+        sha256: hash('{"enabled":false}'),
+      },
+    },
+    { responseJson: responseJson + " " },
+    { evidence: { ...immutableReleases.evidence, url: "https://example.org" } },
+  ])
+    expect(() =>
+      checkSealSettings(
+        encode({ immutableReleases: { ...immutableReleases, ...override } }),
+        undefined,
+        now,
+      ),
+    ).toThrow();
+  expect(() =>
+    checkSealSettings(
+      encode({ decision: { immutableReleases } }),
+      undefined,
+      now,
+    ),
+  ).toThrow();
+  const later = now + 7200000;
+  const renewed = {
+    immutableReleases: {
+      ...immutableReleases,
+      checkedAt: new Date(later).toISOString(),
+    },
+    operationSha256: hash(original),
+  };
+  checkSealSettings(original, renewed, later);
+  expect(() =>
+    checkSealSettings(
+      encode({ releaseId: 99, immutableReleases }),
+      renewed,
+      later,
+    ),
+  ).toThrow();
+});
+
 test("durable reservations reject a second run and survive lost Actions history", async () => {
   const tag = "owlapi-release-history/stage-7";
   const checkpoint = { tag, objectId: sha, files: new Map() };
@@ -601,6 +1010,11 @@ test("staged evidence has a distinct closed inventory and binds the public relea
     },
     archive: item(stem + ".evidence.json.gz"),
   };
+  expect(validateStagedReleaseEvidence(evidence)).toBe(evidence);
+  const controller = "d".repeat(40);
+  stage.controller = controller;
+  expect(() => validateStagedReleaseEvidence(evidence)).toThrow();
+  evidence.publicVerification.provenance.sourceCommit = controller;
   expect(validateStagedReleaseEvidence(evidence)).toBe(evidence);
   expect(() =>
     validateStagedReleaseEvidence({ ...evidence, schemaVersion: 6 }),

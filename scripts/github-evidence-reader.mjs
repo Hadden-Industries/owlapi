@@ -83,7 +83,12 @@ export const createRepositoryReader = ({
     Object.assign(new Error("GitHub evidence lookup budget exhausted."), {
       code: "LOOKUP_LIMIT_EXCEEDED",
     });
-  return async (path, { budgetMs: operationBudget } = {}) => {
+  return async (
+    path,
+    { budgetMs: operationBudget, retryArtifact404 = false } = {},
+  ) => {
+    if (retryArtifact404 && !/^\/actions\/artifacts\/[1-9]\d*$/u.test(path))
+      throw new Error("Visibility retries require an exact artifact ID.");
     if (
       operationBudget !== undefined &&
       (!Number.isFinite(operationBudget) ||
@@ -127,6 +132,7 @@ export const createRepositoryReader = ({
         );
         if (!response.ok) {
           const retryable =
+            (retryArtifact404 && response.status === 404) ||
             [408, 500, 502, 503, 504].includes(response.status) ||
             rateLimitedRead(response);
           throw Object.assign(
@@ -202,6 +208,54 @@ export async function readRunArtifacts(read, runId) {
     if (data.artifacts.length !== 100) break;
   }
   throw new Error("Incomplete artifact inventory");
+}
+
+/** The run listing may lag an upload receipt. Retry absence only after the exact IDs resolve to this run. */
+export async function readAcknowledgedInventory(
+  read,
+  runId,
+  requiredIds,
+  sleep = delay,
+) {
+  let inventory = await readRunArtifacts(read, runId);
+  const missing = requiredIds.filter(
+    (id) => !inventory.some((a) => String(a.id) === id),
+  );
+  if (!missing.length) return inventory;
+  const acknowledged = [];
+  for (const id of missing) {
+    if (!/^[1-9]\d*$/u.test(id))
+      throw new Error("Invalid acknowledged artifact ID");
+    const record = await read("/actions/artifacts/" + id, {
+      retryArtifact404: true,
+    });
+    if (
+      String(record.id) !== id ||
+      String(record.workflow_run?.id) !== String(runId) ||
+      record.expired !== false
+    )
+      throw new Error("Unqualified acknowledged artifact");
+    acknowledged.push(record);
+  }
+  for (const wait of [1000, 2000]) {
+    await sleep(wait);
+    inventory = await readRunArtifacts(read, runId);
+    if (requiredIds.every((id) => inventory.some((a) => String(a.id) === id))) {
+      for (const record of acknowledged) {
+        const listed = inventory.find((a) => a.id === record.id);
+        if (
+          !listed ||
+          listed.name !== record.name ||
+          listed.digest !== record.digest ||
+          listed.size_in_bytes !== record.size_in_bytes ||
+          listed.expired !== false
+        )
+          throw new Error("Conflicting acknowledged artifact inventory");
+      }
+      return inventory;
+    }
+  }
+  throw new Error("Acknowledged artifacts missing from original run inventory");
 }
 
 export async function readWorkflowRuns(read, filename) {

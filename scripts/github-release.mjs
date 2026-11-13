@@ -126,16 +126,17 @@ export class GitHubReleaseClient {
     };
   }
 
-  async read(path, { accept404 = false } = {}) {
+  async read(path, { accept404 = false, ...options } = {}) {
     const read =
       this.reader ??
       createRepositoryReader({
+        ...(options.retryArtifact404 ? { now: () => performance.now() } : {}),
         ...this.readOptions,
         repository: this.repository,
         token: this.token,
       });
     try {
-      return await read(path);
+      return await read(path, options);
     } catch (error) {
       if (accept404 && error.httpStatus === 404) return null;
       throw error;

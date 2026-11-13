@@ -210,6 +210,10 @@ export function verifyControllerDelta(source, controller, files) {
     paths.every(
       (p) =>
         /^\.github\/(workflows|actions)\//u.test(p) ||
+        [
+          "scripts/github-release.mjs",
+          "scripts/github-evidence-reader.mjs",
+        ].includes(p) ||
         /^scripts\/(staged-|release-|verify-immutable-release|public-recipient-lane|qualify-public-registry|registry-provenance)/u.test(
           p,
         ) ||

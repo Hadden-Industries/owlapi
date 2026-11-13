@@ -48,7 +48,9 @@ export function validateStagedReleaseEvidence(record) {
     proof.provenance.workflow,
     ".github/workflows/stage-release.yml",
   );
-  assert.equal(proof.provenance.sourceCommit, record.source);
+  const stageController = stage.controller ?? record.source;
+  assert.match(stageController, /^[a-f0-9]{40}$/u);
+  assert.equal(proof.provenance.sourceCommit, stageController);
   assert.equal(proof.provenance.runId, stage.runId);
   assert.equal(proof.provenance.runAttempt, Number(stage.attempt));
   return record;

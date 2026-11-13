@@ -4,7 +4,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import {
   createRepositoryReader,
-  readRunArtifacts,
+  readAcknowledgedInventory,
 } from "./github-evidence-reader.mjs";
 
 export const repository = "Hadden-Industries/owlapi";
@@ -162,9 +162,15 @@ export async function recordQualification(env = process.env) {
     "docs/provenance/rights-inventory.json",
     "docs/provenance/scoped-package-name-review.json",
   ];
-  const artifactList = await readRunArtifacts(
-    createRepositoryReader({ repository, token: env.GH_TOKEN }),
+  const needs = JSON.parse(env.REQUIRED_JOB_RESULTS_JSON);
+  const artifactList = await readAcknowledgedInventory(
+    createRepositoryReader({
+      repository,
+      token: env.GH_TOKEN,
+      now: () => performance.now(),
+    }),
     env.GITHUB_RUN_ID,
+    [env.CANDIDATE_ID, needs.candidate.outputs.proof_id],
   );
   const artifacts = artifactList.map((a) => ({
     id: a.id,
@@ -172,10 +178,10 @@ export async function recordQualification(env = process.env) {
     digest: a.digest,
     bytes: a.size_in_bytes,
   }));
-  const needs = JSON.parse(env.REQUIRED_JOB_RESULTS_JSON);
-  assert.ok(
-    artifacts.some((a) => String(a.id) === needs.candidate.outputs.proof_id),
-    "Missing producer audit inventory",
+  assertQualificationCandidate(
+    artifactList,
+    env.CANDIDATE_ID,
+    env.CANDIDATE_DIGEST,
   );
   const manifest = {
     artifacts,
@@ -204,6 +210,19 @@ export async function recordQualification(env = process.env) {
     ".release/qualification-manifest/manifest.json",
     JSON.stringify(manifest, null, 2) + "\n",
     { flag: "wx" },
+  );
+}
+
+/** The upload action returns hex while the GitHub artifact record includes its algorithm. */
+export function assertQualificationCandidate(artifacts, id, uploadDigest) {
+  assert.match(uploadDigest, /^[a-f0-9]{64}$/u);
+  const matches = artifacts.filter((a) => String(a.id) === id);
+  assert.equal(matches.length, 1, "Missing or ambiguous uploaded candidate");
+  assert.equal(matches[0].expired, false);
+  assert.equal(
+    matches[0].digest,
+    "sha256:" + uploadDigest,
+    "Candidate upload and REST digests disagree",
   );
 }
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href)

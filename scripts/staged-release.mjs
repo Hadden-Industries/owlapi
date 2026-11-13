@@ -22,6 +22,7 @@ import { downloadReleaseArtifact } from "./release-approvals.mjs";
 import { readZipArchiveFilesWith } from "./release-zip-core.mjs";
 import {
   readCheckpoint,
+  verifyControllerDelta,
   verifyReservations,
   priorDisposition,
 } from "./release-history-checkpoint.mjs";
@@ -104,6 +105,118 @@ export function verifyPrivateStage({
     integrity: manifest.integrity,
   };
 }
+
+/** Accept only the named failure in the original two-job writer attempt. */
+function stageFailureSummary(run, inventory, failure) {
+  assert.deepEqual(
+    [run.path, run.status, run.conclusion],
+    [stageWorkflow, "completed", "failure"],
+  );
+  assert.equal(inventory.total_count, 2);
+  assert.equal(inventory.jobs.length, 2);
+  const jobs = inventory.jobs;
+  assert.deepEqual(jobs.map((j) => j.name).sort(), ["admit", "stage"]);
+  for (const job of jobs) {
+    assert.deepEqual(
+      [job.run_id, job.run_attempt, job.head_sha, job.status],
+      [run.id, run.run_attempt, run.head_sha, "completed"],
+    );
+    assert.ok(Number.isSafeInteger(job.id) && job.id > 0);
+  }
+  assert.equal(new Set(jobs.map((j) => j.id)).size, 2);
+  assert.equal(jobs.find((j) => j.name === "admit").conclusion, "success");
+  const stage = jobs.find((j) => j.name === "stage");
+  assert.equal(stage.conclusion, "failure");
+  const matches = (name) => stage.steps.filter((s) => s.name === name);
+  const effects = matches("Stage the admitted tarball");
+  const uploads = matches("Retain original stage journal");
+  assert.equal(effects.length, 1);
+  assert.equal(uploads.length, 1);
+  const failedStep = failure === "retention" ? uploads[0] : effects[0];
+  assert.equal(
+    effects[0].conclusion,
+    failure === "retention" ? "success" : "failure",
+  );
+  assert.equal(
+    uploads[0].conclusion,
+    failure === "retention" ? "failure" : "success",
+  );
+  assert.ok(stage.steps.indexOf(effects[0]) < stage.steps.indexOf(uploads[0]));
+  assert.ok(
+    stage.steps.every(
+      (s) =>
+        s.status === "completed" &&
+        (s === failedStep || ["success", "skipped"].includes(s.conclusion)),
+    ),
+  );
+  return {
+    runId: String(run.id),
+    attempt: String(run.run_attempt),
+    controller: run.head_sha,
+    admitJob: jobs.find((j) => j.name === "admit").id,
+    stageJob: stage.id,
+    stage: effects[0].conclusion,
+    retention: uploads[0].conclusion,
+  };
+}
+
+export function readStageJournal(
+  bytes,
+  manifest,
+  manifestSha256,
+  expectedOrigin,
+) {
+  const rows = bytes
+    .toString("utf8")
+    .trimEnd()
+    .split("\n")
+    .map((line) => JSON.parse(line));
+  assert.equal(rows.length, 2);
+  const [{ state: requestState, ...request }, { state, stageId, ...ack }] =
+    rows;
+  assert.equal(requestState, "REQUESTED");
+  assert.equal(state, "STAGED");
+  assert.deepEqual(
+    ack,
+    request,
+    "Staging acknowledgement differs from its original request",
+  );
+  assert.deepEqual(
+    [
+      request.schemaVersion,
+      request.package,
+      request.version,
+      request.workflow,
+      request.commit,
+      request.qualificationRun,
+      request.qualificationAttempt,
+      request.manifestSha256,
+    ],
+    [
+      1,
+      PACKAGE_NAME,
+      manifest.package.version,
+      stageWorkflow,
+      manifest.commit,
+      manifest.runId,
+      manifest.attempt,
+      manifestSha256,
+    ],
+  );
+  assert.equal(request.runId, id(request.runId));
+  assert.equal(request.attempt, "1");
+  const controller = request.controller ?? request.commit;
+  assert.match(controller, /^[0-9a-f]{40}$/u);
+  if (expectedOrigin)
+    assert.deepEqual(
+      [request.runId, request.attempt, controller],
+      [expectedOrigin.runId, expectedOrigin.attempt, expectedOrigin.controller],
+    );
+  assert.match(stageId, /^[a-f\d]{8}(?:-[a-f\d]{4}){3}-[a-f\d]{12}$/iu);
+  assert.ok(["pilot", "latest"].includes(request.channel));
+  return rows[1];
+}
+
 export async function originArtifact(
   client,
   {
@@ -114,6 +227,8 @@ export async function originArtifact(
     logical,
     artifactId,
     recoverSeal = false,
+    stageFailure,
+    requireArchivedFailure = false,
   },
   checkpoint,
 ) {
@@ -123,9 +238,9 @@ export async function originArtifact(
     "origin-" + runId + "-" + attempt + "-" + logical + ".json";
   const retained = checkpoint?.files.get(receiptName);
   const saved = retained && json(retained);
-  const readAvailable = async (path) => {
+  const readAvailable = async (path, options) => {
     try {
-      return await client.read(path);
+      return await client.read(path, options);
     } catch (error) {
       if (saved && [404, 410].includes(error.httpStatus)) return null;
       throw error;
@@ -136,6 +251,35 @@ export async function originArtifact(
   );
   const run = liveRun ?? saved?.run;
   assert.ok(run, "Missing original run record");
+  if (liveRun && saved) {
+    for (const field of [
+      "id",
+      "run_attempt",
+      "path",
+      "event",
+      "head_branch",
+      "head_sha",
+      "status",
+      "conclusion",
+    ])
+      assert.equal(
+        saved.run[field],
+        liveRun[field],
+        "Conflicting signed original run " + field,
+      );
+    assert.equal(saved.run.repository?.full_name, repo);
+    assert.equal(saved.run.head_repository?.full_name, repo);
+  }
+  if (stageFailure !== undefined) {
+    assert.ok(["retention", "before-request"].includes(stageFailure));
+    assert.equal(recoverSeal, false);
+    assert.equal(filename, stageWorkflow);
+    assert.equal(logical, "release-stage-" + runId + "-" + attempt);
+    assert.equal(String(attempt), "1");
+  }
+  if (stageFailure === "before-request")
+    assert.equal(run.conclusion, "failure");
+  const failedStage = stageFailure && run.conclusion === "failure";
   if (recoverSeal) {
     assert.equal(filename, ".github/workflows/github-release.yml");
     assert.ok(["success", "failure", "cancelled"].includes(run.conclusion));
@@ -161,10 +305,37 @@ export async function originArtifact(
       "main",
       commit,
       "completed",
-      recoverSeal ? run.conclusion : "success",
+      recoverSeal || failedStage ? run.conclusion : "success",
     ],
     "Unqualified original run or attempt",
   );
+  let retentionFailure;
+  if (failedStage) {
+    const jobs =
+      (liveRun &&
+        (await readAvailable(
+          "/actions/runs/" +
+            runId +
+            "/attempts/" +
+            attempt +
+            "/jobs?per_page=100",
+        ))) ??
+      saved?.jobs;
+    assert.ok(jobs, "Missing original failed stage job inventory");
+    const summary = stageFailureSummary(run, jobs, stageFailure);
+    if (requireArchivedFailure)
+      assert.ok(
+        saved?.jobs,
+        "Seal requires the original failed stage inventory in signed history",
+      );
+    if (saved?.jobs)
+      assert.deepEqual(
+        stageFailureSummary(run, saved.jobs, stageFailure),
+        summary,
+        "Conflicting signed stage job inventory",
+      );
+    if (stageFailure === "retention") retentionFailure = summary;
+  }
   const inventory = liveRun
     ? await (async () => {
         try {
@@ -184,21 +355,30 @@ export async function originArtifact(
   );
   assert.ok(matches.length <= 1, "Ambiguous original artifact");
   const pointer = matches[0] ?? saved?.artifact;
-  assert.ok(pointer, "Missing original artifact");
-  const current = await readAvailable("/actions/artifacts/" + id(pointer.id));
+  assert.ok(pointer || artifactId, "Missing original artifact");
+  if (pointer && artifactId) assert.equal(id(pointer.id), id(artifactId));
+  const current = await readAvailable(
+    "/actions/artifacts/" + id(pointer?.id ?? artifactId),
+    {
+      retryArtifact404: true,
+    },
+  );
   const a = current ?? saved?.artifact;
-  assert.equal(a.id, pointer.id);
-  assert.equal(a.name, pointer.name);
-  assert.equal(
-    a.digest,
-    pointer.digest,
-    "Contradictory native artifact digest",
-  );
-  assert.equal(
-    a.size_in_bytes,
-    pointer.size_in_bytes,
-    "Contradictory native artifact size",
-  );
+  assert.ok(a, "Missing original artifact");
+  for (const pointer of [matches[0], saved?.artifact].filter(Boolean)) {
+    assert.equal(a.id, pointer.id);
+    assert.equal(a.name, pointer.name);
+    assert.equal(
+      a.digest,
+      pointer.digest,
+      "Contradictory native artifact digest",
+    );
+    assert.equal(
+      a.size_in_bytes,
+      pointer.size_in_bytes,
+      "Contradictory native artifact size",
+    );
+  }
   assert.ok(
     matchesLogicalArtifact(a.name, logical, {
       run: runId,
@@ -206,12 +386,10 @@ export async function originArtifact(
       legacy: false,
     }),
   );
-  if (current && !matches.length)
+  if (current && !matches.length && !artifactId)
     assert.equal(current.expired, true, "Live original contradicts inventory");
-  if (saved) {
-    assert.equal(saved.artifact.id, a.id);
-    assert.equal(saved.artifact.digest, a.digest);
-  }
+  if (inventory.some((listed) => listed.id === a.id && listed.name !== a.name))
+    throw new Error("Contradictory listed artifact identity");
   assert.equal(a.workflow_run?.id, run.id);
   assert.equal(a.workflow_run.head_sha, commit);
   if (!current || a.expired) {
@@ -226,7 +404,7 @@ export async function originArtifact(
   function validate(a) {
     if (artifactId) assert.equal(String(a.id), id(artifactId));
     assert.match(a.digest, /^sha256:[0-9a-f]{64}$/u);
-    return a;
+    return retentionFailure ? { ...a, retentionFailure } : a;
   }
 }
 export async function originalBytes(
@@ -321,6 +499,9 @@ export async function stageOnce({
         ? null
         : Number(env.GITHUB_LATEST_BEFORE),
     commit: manifest.commit,
+    ...(env.GITHUB_SHA && env.GITHUB_SHA !== manifest.commit
+      ? { controller: env.GITHUB_SHA }
+      : {}),
     manifestSha256: env.MANIFEST_SHA256,
     qualificationRun: manifest.runId,
     qualificationAttempt: manifest.attempt,
@@ -398,6 +579,37 @@ export async function assertPriorOperations(client, env, checkpoint, kind) {
         );
         assert.equal(disposition.runId, String(run.id));
         assert.equal(disposition.attempt, String(attempt));
+        if (kind === "stage" && disposition.state === "NO_REQUEST") {
+          const artifact = await originArtifact(
+            client,
+            {
+              filename: stageWorkflow,
+              commit: run.head_sha,
+              runId: run.id,
+              attempt,
+              logical: "release-stage-" + run.id + "-" + attempt,
+              stageFailure: "before-request",
+            },
+            checkpoint,
+          );
+          const files = readZipArchiveFilesWith(
+            await originalBytes(client, artifact),
+            { crc32 },
+          );
+          assert.deepEqual(
+            files.map((f) => f.path),
+            ["journal.jsonl"],
+          );
+          assert.match(disposition.manifestSha256, /^[a-f0-9]{64}$/u);
+          assert.deepEqual(json(files[0].content), {
+            state: "NO_REQUEST",
+            runId: String(run.id),
+            attempt: String(attempt),
+            controller: run.head_sha,
+            manifestSha256: disposition.manifestSha256,
+          });
+          continue;
+        }
         assert.ok(
           (kind === "stage"
             ? ["REJECTED", "IMMUTABLE_VERIFIED", "WITHDRAWN"]
@@ -410,17 +622,19 @@ export async function assertPriorOperations(client, env, checkpoint, kind) {
             env.OPERATION_SHA256,
             "Reconcile original classification",
           );
-        if (kind === "stage" && env.MANIFEST_SHA256)
+        if (kind === "stage" && env.MANIFEST_SHA256) {
+          assert.match(disposition.manifestSha256, /^[a-f0-9]{64}$/u);
           assert.notEqual(
             disposition.manifestSha256,
             env.MANIFEST_SHA256,
             "Existing request requires original reconciliation",
           );
+        }
       }
     }
   }
 }
-async function preflight(client, env) {
+async function preflight(client, env, checkpoint, intent) {
   assert.equal(env.GITHUB_REPOSITORY, repo);
   assert.equal(env.GITHUB_REF, "refs/heads/main");
   assert.equal(
@@ -443,12 +657,10 @@ async function preflight(client, env) {
   );
   await resp.body?.cancel();
   assert.equal(resp.status, 404, "Coordinate must be unused");
-  const checkpoint = await readCheckpoint(client, env.HISTORY_OBJECT);
   await verifyReservations(client, checkpoint, env, "stage");
-  const intent = json(checkpoint.files.get("stage-intent.json"));
   assert.deepEqual(
     [
-      intent.commit,
+      intent.controller ?? intent.commit,
       intent.version,
       intent.run,
       intent.attempt,
@@ -516,7 +728,6 @@ async function preflight(client, env) {
   assert.equal(control.enabled, true);
   assert.equal(control.mode, "OIDC_STAGED");
   assert.equal(control.coordinate, PACKAGE_NAME + "@" + PACKAGE_VERSION);
-  return intent;
 }
 async function main() {
   const [mode, ...args] = process.argv.slice(2);
@@ -529,17 +740,12 @@ async function main() {
     const [manifestPath, digest, journal, viewPath, tarball] = args;
     const bytes = readFileSync(manifestPath);
     assert.equal(hash(bytes), digest);
-    const rows = readFileSync(journal, "utf8")
-      .trimEnd()
-      .split("\n")
-      .map((line) => JSON.parse(line));
-    assert.deepEqual(
-      rows.map((row) => row.state),
-      ["REQUESTED", "STAGED"],
-    );
+    const manifest = json(bytes);
+    const journalBytes = readFileSync(journal);
+    const receipt = readStageJournal(journalBytes, manifest, digest);
     const report = verifyPrivateStage({
-      manifest: json(bytes),
-      receipt: rows[1],
+      manifest,
+      receipt,
       view: json(readFileSync(viewPath)),
       bytes: readFileSync(tarball),
       manifestSha256: digest,
@@ -549,15 +755,58 @@ async function main() {
   }
   assert.ok(["admit", "stage"].includes(mode));
   const env = process.env;
+  let requestStarted = false;
+  try {
+    await executeStage(mode, env, () => {
+      requestStarted = true;
+    });
+  } catch (error) {
+    if (mode === "stage" && !requestStarted) {
+      const dir = resolve(env.GITHUB_WORKSPACE, ".release/stage");
+      mkdirSync(dir, { recursive: true });
+      // Never replace an existing or partial request journal with a no-effect receipt.
+      writeFileSync(
+        join(dir, "journal.jsonl"),
+        JSON.stringify({
+          state: "NO_REQUEST",
+          runId: env.GITHUB_RUN_ID,
+          attempt: env.GITHUB_RUN_ATTEMPT,
+          controller: env.GITHUB_SHA,
+          manifestSha256: env.MANIFEST_SHA256,
+        }) + "\n",
+        { flag: "wx", flush: true },
+      );
+    }
+    throw error;
+  }
+}
+async function executeStage(mode, env, beginRequest) {
   const client = new GitHubReleaseClient({
     repository: repo,
     token: env.GH_TOKEN,
   });
-  const { manifest, candidate } = await originalManifest(client, env);
-  const intent = await preflight(client, {
-    ...env,
-    QUALIFIED_TARBALL_SHA256: manifest.assets.tarball.sha256,
-  });
+  const checkpoint = await readCheckpoint(client, env.HISTORY_OBJECT);
+  const intent = json(checkpoint.files.get("stage-intent.json"));
+  assert.equal(intent.controller ?? intent.commit, env.GITHUB_SHA);
+  verifyControllerDelta(intent.commit, env.GITHUB_SHA, checkpoint.files);
+  const { manifest, candidate } = await originalManifest(
+    client,
+    { ...env, GITHUB_SHA: intent.commit },
+    checkpoint,
+  );
+  assert.ok(
+    !candidate.archivedBytes && !candidate.expired,
+    "Staging needs the downloadable original candidate",
+  );
+  await preflight(
+    client,
+    {
+      ...env,
+      QUALIFIED_TARBALL_SHA256: manifest.assets.tarball.sha256,
+    },
+    checkpoint,
+    intent,
+  );
   if (mode === "admit") {
     appendFileSync(env.GITHUB_OUTPUT, "artifact_id=" + id(candidate.id) + "\n");
     return;
@@ -610,7 +859,7 @@ async function main() {
   );
   await readReleaseSecurity({
     read: (path) => client.read(path),
-    commit: manifest.commit,
+    commit: env.GITHUB_SHA,
   });
   await stageOnce({
     manifest,
@@ -623,13 +872,15 @@ async function main() {
       GITHUB_LATEST_BEFORE: JSON.stringify(intent.githubLatestBefore),
     },
     journal: join(journalDirectory, "journal.jsonl"),
-    command: (args) =>
-      execFileSync("npm", args, {
+    command: (args) => {
+      beginRequest();
+      return execFileSync("npm", args, {
         cwd: scratch,
         env: clean,
         timeout: 120000,
         stdio: ["ignore", "pipe", "pipe"],
-      }),
+      });
+    },
   });
 }
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href)
