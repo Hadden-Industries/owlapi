@@ -1,8 +1,8 @@
 {
-  "artifactId": "6548a243073f65bcb2795a62c979c3bac3e693b94a740998e9d892e17a6b70e6",
+  "artifactId": "fa6683b1747977405fbd2d5b575271d511ddc446119e43556618b153ddf67e97",
   "evidence": {
     "archiveRoot": "package",
-    "compressedBytes": 29627400,
+    "compressedBytes": 30368399,
     "duplicateEntries": [],
     "entries": [
       {
@@ -13,38 +13,38 @@
       },
       {
         "path": "package/THIRD-PARTY-NOTICES.txt",
-        "sha256": "4422384a5a794e51d35ba65c3717e8c139820cd1ec25f3bf95370c0476208c87",
-        "size": 219592,
+        "sha256": "0eb3cbd86a354cfee4d3c031ec1f4cd8f3195313ecf3eca41d835030dc20af5d",
+        "size": 191841,
         "type": "FILE"
       },
       {
         "path": "package/build-evidence.json",
-        "sha256": "e9b54030a308feb2f990c0dc6e0ba44f49109fca29990695f3f165f2368ff77b",
-        "size": 8776,
+        "sha256": "aa2b65232be985b39e57ad1d6bb8e8db212231b9d508ef11a73143240df320a4",
+        "size": 7917,
         "type": "FILE"
       },
       {
         "path": "package/component.json",
-        "sha256": "cc483b58cc67578710f32e91a792c097e7d70be912ea5bba77add8adf33e6d80",
-        "size": 1501,
+        "sha256": "75d2782e0ff3c522ef369f8bd75e17aaf1bba68ddd2a3910f63a7bb61f28db73",
+        "size": 1497,
         "type": "FILE"
       },
       {
-        "path": "package/json-quality-native.exe",
-        "sha256": "cd62ad61d02b989f9cfcb42eeea22545a54020e059331f341f6bc1a22d5ab6e1",
-        "size": 36287488,
+        "path": "package/json-quality-native",
+        "sha256": "25e9bcfb746cad43f3ddce57b93383f9dd35dd2307342cf954d68d19484cd006",
+        "size": 37426616,
         "type": "FILE"
       },
       {
         "path": "package/json-quality.node",
-        "sha256": "da4cd8dc542f278145379d845a26c84323a64aa4c36ebebceb44e42bfa5b1c2b",
-        "size": 36298240,
+        "sha256": "516e01c9066d15b6c8818cc1e34107b91425f0f6a36d539cb23fffd963c78506",
+        "size": 37452088,
         "type": "FILE"
       },
       {
         "path": "package/notice-inventory.json",
-        "sha256": "cb9bd3641bc03aedb6c4dbefe84baf3bd2deda7c938f88415dbae80f87c94a83",
-        "size": 1300,
+        "sha256": "7186b1c9eb3741cadadd53219dd4ad4d5e485fdba0ce479c0627fd140d6743fb",
+        "size": 1146,
         "type": "FILE"
       },
       {
@@ -72,15 +72,9 @@
         "type": "FILE"
       },
       {
-        "path": "package/notices/icu/LICENSE",
-        "sha256": "2eb5ef4da31e542030455e2d149feca8d8f1217e69ef98ea7e379067043b79ab",
-        "size": 28286,
-        "type": "FILE"
-      },
-      {
-        "path": "package/notices/icuWindowsTools/LICENSE",
-        "sha256": "2eb5ef4da31e542030455e2d149feca8d8f1217e69ef98ea7e379067043b79ab",
-        "size": 28286,
+        "path": "package/notices/icuLinux/LICENSE",
+        "sha256": "e09827667e0bb3c808b2a463548ba814a5e6249b67353234d70c8dfc2bcc417d",
+        "size": 27718,
         "type": "FILE"
       },
       {
@@ -97,8 +91,8 @@
       },
       {
         "path": "package/package.json",
-        "sha256": "9afbc94e745635ad41d349ab72a6087650612faccbb4a1069bf5dfc011903a9c",
-        "size": 827,
+        "sha256": "5bbddd69a066f05b799fe440726c955275a88f19f982cefd21a191034b4f7730",
+        "size": 844,
         "type": "FILE"
       }
     ],
@@ -117,27 +111,27 @@
       },
       {
         "blob": {
-          "bytes": 219592,
+          "bytes": 191841,
           "kind": "PACKAGE_EVIDENCE_FILE",
-          "path": "blobs/sha256/44/4422384a5a794e51d35ba65c3717e8c139820cd1ec25f3bf95370c0476208c87",
-          "sha256": "4422384a5a794e51d35ba65c3717e8c139820cd1ec25f3bf95370c0476208c87"
+          "path": "blobs/sha256/0e/0eb3cbd86a354cfee4d3c031ec1f4cd8f3195313ecf3eca41d835030dc20af5d",
+          "sha256": "0eb3cbd86a354cfee4d3c031ec1f4cd8f3195313ecf3eca41d835030dc20af5d"
         },
         "kind": "THIRD_PARTY_LICENCE",
         "path": "package/THIRD-PARTY-NOTICES.txt",
-        "sha256": "4422384a5a794e51d35ba65c3717e8c139820cd1ec25f3bf95370c0476208c87",
-        "size": 219592
+        "sha256": "0eb3cbd86a354cfee4d3c031ec1f4cd8f3195313ecf3eca41d835030dc20af5d",
+        "size": 191841
       },
       {
         "blob": {
-          "bytes": 1300,
+          "bytes": 1146,
           "kind": "PACKAGE_EVIDENCE_FILE",
-          "path": "blobs/sha256/cb/cb9bd3641bc03aedb6c4dbefe84baf3bd2deda7c938f88415dbae80f87c94a83",
-          "sha256": "cb9bd3641bc03aedb6c4dbefe84baf3bd2deda7c938f88415dbae80f87c94a83"
+          "path": "blobs/sha256/71/7186b1c9eb3741cadadd53219dd4ad4d5e485fdba0ce479c0627fd140d6743fb",
+          "sha256": "7186b1c9eb3741cadadd53219dd4ad4d5e485fdba0ce479c0627fd140d6743fb"
         },
         "kind": "NOTICE",
         "path": "package/notice-inventory.json",
-        "sha256": "cb9bd3641bc03aedb6c4dbefe84baf3bd2deda7c938f88415dbae80f87c94a83",
-        "size": 1300
+        "sha256": "7186b1c9eb3741cadadd53219dd4ad4d5e485fdba0ce479c0627fd140d6743fb",
+        "size": 1146
       },
       {
         "blob": {
@@ -189,27 +183,15 @@
       },
       {
         "blob": {
-          "bytes": 28286,
+          "bytes": 27718,
           "kind": "PACKAGE_EVIDENCE_FILE",
-          "path": "blobs/sha256/2e/2eb5ef4da31e542030455e2d149feca8d8f1217e69ef98ea7e379067043b79ab",
-          "sha256": "2eb5ef4da31e542030455e2d149feca8d8f1217e69ef98ea7e379067043b79ab"
+          "path": "blobs/sha256/e0/e09827667e0bb3c808b2a463548ba814a5e6249b67353234d70c8dfc2bcc417d",
+          "sha256": "e09827667e0bb3c808b2a463548ba814a5e6249b67353234d70c8dfc2bcc417d"
         },
         "kind": "LICENCE",
-        "path": "package/notices/icu/LICENSE",
-        "sha256": "2eb5ef4da31e542030455e2d149feca8d8f1217e69ef98ea7e379067043b79ab",
-        "size": 28286
-      },
-      {
-        "blob": {
-          "bytes": 28286,
-          "kind": "PACKAGE_EVIDENCE_FILE",
-          "path": "blobs/sha256/2e/2eb5ef4da31e542030455e2d149feca8d8f1217e69ef98ea7e379067043b79ab",
-          "sha256": "2eb5ef4da31e542030455e2d149feca8d8f1217e69ef98ea7e379067043b79ab"
-        },
-        "kind": "LICENCE",
-        "path": "package/notices/icuWindowsTools/LICENSE",
-        "sha256": "2eb5ef4da31e542030455e2d149feca8d8f1217e69ef98ea7e379067043b79ab",
-        "size": 28286
+        "path": "package/notices/icuLinux/LICENSE",
+        "sha256": "e09827667e0bb3c808b2a463548ba814a5e6249b67353234d70c8dfc2bcc417d",
+        "size": 27718
       },
       {
         "blob": {
@@ -224,34 +206,34 @@
         "size": 157609
       }
     ],
-    "expandedBytes": 73072676,
+    "expandedBytes": 75308047,
     "packageIdentity": {
       "author": null,
       "homepage": null,
       "license": "AGPL-3.0-only",
-      "name": "@hadden-industries/json-quality-win32-x64",
+      "name": "@hadden-industries/json-quality-linux-x64",
       "repository": {
         "type": "git",
         "url": "https://github.com/Hadden-Industries/json-quality.git"
       },
-      "version": "1.0.0"
+      "version": "1.0.1"
     },
     "packageMetadata": {
       "bin": {
-        "json-quality-native": "json-quality-native.exe"
+        "json-quality-native": "json-quality-native"
       },
       "cpu": [
         "x64"
       ],
-      "description": "Verified win32-x64 native component for JSON Quality",
+      "description": "Verified linux-x64 native component for JSON Quality",
       "exports": {
         "./component.json": "./component.json",
-        "./executable": "./json-quality-native.exe",
+        "./executable": "./json-quality-native",
         "./package.json": "./package.json"
       },
       "files": [
         "json-quality.node",
-        "json-quality-native.exe",
+        "json-quality-native",
         "component.json",
         "build-evidence.json",
         "notice-inventory.json",
@@ -259,10 +241,13 @@
         "notices",
         "LICENSE"
       ],
+      "libc": [
+        "glibc"
+      ],
       "license": "AGPL-3.0-only",
-      "name": "@hadden-industries/json-quality-win32-x64",
+      "name": "@hadden-industries/json-quality-linux-x64",
       "os": [
-        "win32"
+        "linux"
       ],
       "publishConfig": {
         "access": "public"
@@ -271,12 +256,12 @@
         "type": "git",
         "url": "https://github.com/Hadden-Industries/json-quality.git"
       },
-      "version": "1.0.0"
+      "version": "1.0.1"
     },
-    "physicalEntryCount": 16,
+    "physicalEntryCount": 15,
     "tarball": {
-      "bytes": 29627400,
-      "sha256": "cc77fe60f18178d444b62b52c4ae8935f6025a7b96c1021756b061c48a180643"
+      "bytes": 30368399,
+      "sha256": "02579ec60cde0a42f277786793df4b64f1e6aad5dfc45d1f894f7121a45f493e"
     }
   },
   "kind": "ARCHIVE_INVENTORY",

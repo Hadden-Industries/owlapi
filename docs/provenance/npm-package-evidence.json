@@ -4649,69 +4649,6 @@
     {
       "archive": {
         "evidence": {
-          "bytes": 40477,
-          "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/c5/c5e0e55cd62e5de0c4590425ab92fe74f69fd3d166fe2113f99bd52221891102",
-          "sha256": "c5e0e55cd62e5de0c4590425ab92fe74f69fd3d166fe2113f99bd52221891102"
-        },
-        "state": "VERIFIED"
-      },
-      "artifactId": "1de8e0a752b07cda3492c5f45215cbf75ceb8298bda898fa6e1b489e0eeec5ca",
-      "integrity": "sha512-wY+sNv1bVN/rDk+BZyt1TzlZxcAqaUtQBfWF1xbqR4zYuIs3+OaQU4XTdfyoJdOA6/5NR7g89ofDEWqewA311Q==",
-      "lockfileLicenses": [
-        "AGPL-3.0-only"
-      ],
-      "name": "@hadden-industries/json-quality",
-      "occurrencePaths": [
-        "node_modules/@hadden-industries/json-quality"
-      ],
-      "provenance": {
-        "evidence": {
-          "bytes": 18451,
-          "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/8c/8ce1487a0fdfe8851d5120e4d683b8d40607078e97e196aaff56386cd23f33d4",
-          "sha256": "8ce1487a0fdfe8851d5120e4d683b8d40607078e97e196aaff56386cd23f33d4"
-        },
-        "state": "VERIFIED"
-      },
-      "registrySignature": {
-        "evidence": {
-          "bytes": 518,
-          "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/c2/c274ea830ed34cf19e41554a9c635c9b6dc9ffe3feea7c0ed5881ec381b9b9ef",
-          "sha256": "c274ea830ed34cf19e41554a9c635c9b6dc9ffe3feea7c0ed5881ec381b9b9ef"
-        },
-        "publishedAt": "2026-11-07T01:06:52.784Z",
-        "signatures": [
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEQCID/2kkzQPZVWlIzgNBxop2FPzzBAa0mAA2C0xl7oVqQtAiBDCnmBQWdpnWVPjuoHxzCBrX0qP7kQPoYuXD0vkdYwKw=="
-          }
-        ],
-        "state": "VERIFIED"
-      },
-      "resolved": "https://registry.npmjs.org/@hadden-industries/json-quality/-/json-quality-1.0.0.tgz",
-      "scan": {
-        "evidence": {
-          "bytes": 570680,
-          "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/40/4081adc398256c726d8df23c96de6cda12ff0a18ee3966d6ada6c983ea97c391",
-          "sha256": "4081adc398256c726d8df23c96de6cda12ff0a18ee3966d6ada6c983ea97c391"
-        },
-        "execution": {
-          "perFileTimeoutSeconds": 600
-        },
-        "state": "VERIFIED"
-      },
-      "tarball": {
-        "bytes": 276243,
-        "sha256": "0dc850abc8f33b0fdbe463ac82abc63e31b3277dec3adae891f8f14373cce16c"
-      },
-      "version": "1.0.0"
-    },
-    {
-      "archive": {
-        "evidence": {
           "bytes": 2119,
           "kind": "ARCHIVE_INVENTORY",
           "path": "blobs/sha256/7b/7b9d865c8de72f34b805e4487b30be783032b591e5695ccd8db11d5bac39024b",
@@ -12699,6 +12636,69 @@
     {
       "archive": {
         "evidence": {
+          "bytes": 9934,
+          "kind": "ARCHIVE_INVENTORY",
+          "path": "blobs/sha256/80/805b8c1289caa8b33ff34b62908140342caf498992966f3b7fb3cefd9c7c6d9b",
+          "sha256": "805b8c1289caa8b33ff34b62908140342caf498992966f3b7fb3cefd9c7c6d9b"
+        },
+        "state": "VERIFIED"
+      },
+      "artifactId": "486e122b9570156a9ffeff55a478cc085dc433ce30ed96b05ea1e96f33effa6f",
+      "integrity": "sha512-X8f43IKTwqnga7CddU3ExeIMImN3MEAufsdUKEVFCFEyuB86hICZCLZhUS2K7xMuDD1vNyvouj4JaC0Tq9xTbg==",
+      "lockfileLicenses": [
+        "AGPL-3.0-only"
+      ],
+      "name": "@hadden-industries/json-quality-win32-x64",
+      "occurrencePaths": [
+        "node_modules/@hadden-industries/json-quality-win32-x64"
+      ],
+      "provenance": {
+        "evidence": {
+          "bytes": 18569,
+          "kind": "NPM_PROVENANCE",
+          "path": "blobs/sha256/4d/4d9c897d19d8cc45ad29705fed12b60f8efaf42345554f2bd53b6e0b8dbf8ba5",
+          "sha256": "4d9c897d19d8cc45ad29705fed12b60f8efaf42345554f2bd53b6e0b8dbf8ba5"
+        },
+        "state": "VERIFIED"
+      },
+      "registrySignature": {
+        "evidence": {
+          "bytes": 518,
+          "kind": "REGISTRY_SIGNATURE",
+          "path": "blobs/sha256/ef/efa305a434ff603090c352c997f6fb8c799f5f51d6694025c13d614207f5f1c0",
+          "sha256": "efa305a434ff603090c352c997f6fb8c799f5f51d6694025c13d614207f5f1c0"
+        },
+        "publishedAt": "2026-11-13T19:37:16.181Z",
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEQCIBfOkmIMliYd2ThQ8vJaSWYTTyljIaaoSdeSdiitX8nnAiAO9HLd/tQB4uobBOrS/PCeXQzzQUCRotYVkdms3CDApg=="
+          }
+        ],
+        "state": "VERIFIED"
+      },
+      "resolved": "https://registry.npmjs.org/@hadden-industries/json-quality-win32-x64/-/json-quality-win32-x64-1.0.1.tgz",
+      "scan": {
+        "evidence": {
+          "bytes": 2080846,
+          "kind": "SCANCODE_FINDINGS",
+          "path": "blobs/sha256/db/dbfa3d5bf543f736ef318823e6a986468388a090c480136fd904dac09e1eb260",
+          "sha256": "dbfa3d5bf543f736ef318823e6a986468388a090c480136fd904dac09e1eb260"
+        },
+        "execution": {
+          "perFileTimeoutSeconds": 600
+        },
+        "state": "VERIFIED"
+      },
+      "tarball": {
+        "bytes": 29627405,
+        "sha256": "d427d50e2de4b1343c35039af42f56e0f105f8f79edb0ec117f251c0aa2566a3"
+      },
+      "version": "1.0.1"
+    },
+    {
+      "archive": {
+        "evidence": {
           "bytes": 4059,
           "kind": "ARCHIVE_INVENTORY",
           "path": "blobs/sha256/1a/1afa9826f0ef1177a99e3eae074d4600414147c7d77e3577e07783d95515d9cb",
@@ -14990,69 +14990,6 @@
     {
       "archive": {
         "evidence": {
-          "bytes": 9263,
-          "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/66/66f096394d447b7c81a7f1898328fa44766c933ce1537bd8a83d32489183a6e6",
-          "sha256": "66f096394d447b7c81a7f1898328fa44766c933ce1537bd8a83d32489183a6e6"
-        },
-        "state": "VERIFIED"
-      },
-      "artifactId": "57c95864ed1097072345f9f9310df77d55b6eec1c2fe010f40b6f5713dbe66b3",
-      "integrity": "sha512-ivJVcKMgfwLbHali9uwd38h1ovkRlNZci0RGHsd7uTjuuRYjQ8ZHoRPsuNKB6EtrvV57zvIU68tdAjKw7WwtFA==",
-      "lockfileLicenses": [
-        "AGPL-3.0-only"
-      ],
-      "name": "@hadden-industries/json-quality-linux-x64",
-      "occurrencePaths": [
-        "node_modules/@hadden-industries/json-quality-linux-x64"
-      ],
-      "provenance": {
-        "evidence": {
-          "bytes": 18233,
-          "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/11/11c48c899ae52f24cec860af870566e522d69b96a3accfd10d2d28efe5f4be94",
-          "sha256": "11c48c899ae52f24cec860af870566e522d69b96a3accfd10d2d28efe5f4be94"
-        },
-        "state": "VERIFIED"
-      },
-      "registrySignature": {
-        "evidence": {
-          "bytes": 518,
-          "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/cf/cf8be2bfd01e0487b581daadc582fa84caae8d917610753aa0ef10fad8527e5d",
-          "sha256": "cf8be2bfd01e0487b581daadc582fa84caae8d917610753aa0ef10fad8527e5d"
-        },
-        "publishedAt": "2026-11-07T01:04:56.340Z",
-        "signatures": [
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEUCIAM8vs5/dESwX1xVlk6OsBwIVJGrp8Tn0UR4Hs+d4Z4fAiEA/TNvh/UrlIid1LCugjiFUlZMTp/CXnEQnW5aL7snMpU="
-          }
-        ],
-        "state": "VERIFIED"
-      },
-      "resolved": "https://registry.npmjs.org/@hadden-industries/json-quality-linux-x64/-/json-quality-linux-x64-1.0.0.tgz",
-      "scan": {
-        "evidence": {
-          "bytes": 1729316,
-          "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/26/26e2abb839b369f5e32f1e8189fb35de96ab7da3dbdf91fe08836a5af10e52eb",
-          "sha256": "26e2abb839b369f5e32f1e8189fb35de96ab7da3dbdf91fe08836a5af10e52eb"
-        },
-        "execution": {
-          "perFileTimeoutSeconds": 600
-        },
-        "state": "VERIFIED"
-      },
-      "tarball": {
-        "bytes": 30368399,
-        "sha256": "3f3533aa06a38e43d2e1c57f79c203868310c570c0ecb359d6ea911534ff226a"
-      },
-      "version": "1.0.0"
-    },
-    {
-      "archive": {
-        "evidence": {
           "bytes": 11588,
           "kind": "ARCHIVE_INVENTORY",
           "path": "blobs/sha256/61/61bac80e2d7a5672b316e7f67aa0315c28ba81b4386d30be06a26ef191fd1ea2",
@@ -17155,69 +17092,6 @@
         "sha256": "9dffad84622ba74be37dcec88ba7537cc9d168551e349588757add056f5289b9"
       },
       "version": "2.2.0"
-    },
-    {
-      "archive": {
-        "evidence": {
-          "bytes": 9934,
-          "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/0a/0ab3c9fdf8e14ac082e40db8183104b19ce0bc604be71daa06850287b04dca54",
-          "sha256": "0ab3c9fdf8e14ac082e40db8183104b19ce0bc604be71daa06850287b04dca54"
-        },
-        "state": "VERIFIED"
-      },
-      "artifactId": "6548a243073f65bcb2795a62c979c3bac3e693b94a740998e9d892e17a6b70e6",
-      "integrity": "sha512-RyhuyX4m2arLfxiR5BvelSYN61h4Fei5vvko1+uusLiLCeU+AmZARzwRekGkHc1m0Ep0l8VAkao7QVrp/LtjHw==",
-      "lockfileLicenses": [
-        "AGPL-3.0-only"
-      ],
-      "name": "@hadden-industries/json-quality-win32-x64",
-      "occurrencePaths": [
-        "node_modules/@hadden-industries/json-quality-win32-x64"
-      ],
-      "provenance": {
-        "evidence": {
-          "bytes": 18101,
-          "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/ad/adcd35c501b8df266523c699415b75fb84f0072c8f9ee2ab5ff68861810d372b",
-          "sha256": "adcd35c501b8df266523c699415b75fb84f0072c8f9ee2ab5ff68861810d372b"
-        },
-        "state": "VERIFIED"
-      },
-      "registrySignature": {
-        "evidence": {
-          "bytes": 518,
-          "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/b9/b9198d12c9039cff42fe07bcbda85a7891a9913fd8178663a7404580aae4dbe1",
-          "sha256": "b9198d12c9039cff42fe07bcbda85a7891a9913fd8178663a7404580aae4dbe1"
-        },
-        "publishedAt": "2026-11-07T01:04:43.412Z",
-        "signatures": [
-          {
-            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEUCIQCAINPi6rM7cpK1jO1Ly6IqdqUupVyrTAA2FyE07s7O0AIgHjCDdUkNIZyoXE2qm0bHRbyiKmvz5Jd0LkEbK+JYD1A="
-          }
-        ],
-        "state": "VERIFIED"
-      },
-      "resolved": "https://registry.npmjs.org/@hadden-industries/json-quality-win32-x64/-/json-quality-win32-x64-1.0.0.tgz",
-      "scan": {
-        "evidence": {
-          "bytes": 2080846,
-          "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/cc/cc6e74f9594d0f5182d2965789a6adda7ff0bfa89dc191ca52c0efcde6196406",
-          "sha256": "cc6e74f9594d0f5182d2965789a6adda7ff0bfa89dc191ca52c0efcde6196406"
-        },
-        "execution": {
-          "perFileTimeoutSeconds": 600
-        },
-        "state": "VERIFIED"
-      },
-      "tarball": {
-        "bytes": 29627400,
-        "sha256": "cc77fe60f18178d444b62b52c4ae8935f6025a7b96c1021756b061c48a180643"
-      },
-      "version": "1.0.0"
     },
     {
       "archive": {
@@ -19574,6 +19448,73 @@
         "sha256": "679064cd6ff83959df38ce77c9a334f91b39585735ea71798ccc464ea0859aba"
       },
       "version": "11.3.0"
+    },
+    {
+      "archive": {
+        "evidence": {
+          "bytes": 19825,
+          "kind": "ARCHIVE_INVENTORY",
+          "path": "blobs/sha256/39/39cbfb990bb88bdbef07320d5d64679386f2f0e5d302f43bd0e6c5a647e035e9",
+          "sha256": "39cbfb990bb88bdbef07320d5d64679386f2f0e5d302f43bd0e6c5a647e035e9"
+        },
+        "state": "VERIFIED"
+      },
+      "artifactId": "73ff559fe2430faaf6e2b508fa2409a9ca26b98373296849f27145712e60e630",
+      "integrity": "sha512-70vp3ZUYoPlFbF9uiTdXHUUCGEIp7d4+6p+8DYbkm2jP7x/3i/paXVF6dopSI3zd/CEitrZN1rc4i85xWmmXlg==",
+      "lockfileLicenses": [
+        "MIT"
+      ],
+      "name": "prettier",
+      "occurrencePaths": [
+        "node_modules/@hadden-industries/json-quality/node_modules/prettier"
+      ],
+      "provenance": {
+        "evidence": {
+          "bytes": 238,
+          "kind": "NPM_PROVENANCE",
+          "path": "blobs/sha256/4e/4ee7f600d7500ca02c420300da195f93384123dc3d2f121ed253aa07bc566d79",
+          "sha256": "4ee7f600d7500ca02c420300da195f93384123dc3d2f121ed253aa07bc566d79"
+        },
+        "state": "NOT_PUBLISHED"
+      },
+      "registrySignature": {
+        "evidence": {
+          "bytes": 780,
+          "kind": "REGISTRY_SIGNATURE",
+          "path": "blobs/sha256/22/22ced8101670b455591129736f442df6387fcf559b94153959f8a722c8306676",
+          "sha256": "22ced8101670b455591129736f442df6387fcf559b94153959f8a722c8306676"
+        },
+        "publishedAt": "2026-11-12T07:06:22.298Z",
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIQCsJ1ExpRBdcLDzXOEpfMtAOclFFLhX03Pe0TChoOuchwIgXa3CzH0dAZivwbpHbSDKQgyuMmJjF755G3VuQvqX+uc="
+          },
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEYCIQCODqhrMNwnIi7BSBUHm+O9+hPe+gfT+7YDoNBxPsN/qwIhALFlQWO+/LeSyEDQ4prpUCtdaIhTw4sB5VobBr0ZwlKG"
+          }
+        ],
+        "state": "VERIFIED"
+      },
+      "resolved": "https://registry.npmjs.org/prettier/-/prettier-3.10.1.tgz",
+      "scan": {
+        "evidence": {
+          "bytes": 1233069,
+          "kind": "SCANCODE_FINDINGS",
+          "path": "blobs/sha256/e2/e2a1b26a84a230bf91f8696b718b77ff43fc374e5636e641622f83bc67786947",
+          "sha256": "e2a1b26a84a230bf91f8696b718b77ff43fc374e5636e641622f83bc67786947"
+        },
+        "execution": {
+          "perFileTimeoutSeconds": 600
+        },
+        "state": "VERIFIED"
+      },
+      "tarball": {
+        "bytes": 3304604,
+        "sha256": "8625d008f4f0d7d513509ecc269b4b2a551a6f1ea3a57ac880e13e84a434213c"
+      },
+      "version": "3.10.1"
     },
     {
       "archive": {
@@ -38959,6 +38900,69 @@
     {
       "archive": {
         "evidence": {
+          "bytes": 40510,
+          "kind": "ARCHIVE_INVENTORY",
+          "path": "blobs/sha256/4d/4db338728a6b97c684bdd7ec8500a49712964e8630c696dc9c79fdbd2be72995",
+          "sha256": "4db338728a6b97c684bdd7ec8500a49712964e8630c696dc9c79fdbd2be72995"
+        },
+        "state": "VERIFIED"
+      },
+      "artifactId": "ee08596c547cbb4a1fce1aecd013212c174505bde18200ba99c2eb61f8dead06",
+      "integrity": "sha512-oVj3pHNtTvZQiAfJDFvK3oL1DuGNzUcXZ3mFKJPqzvZzA9vBPGXaUtEcafNnqa6VD0GgBbzFJ79kedM+zYcxTg==",
+      "lockfileLicenses": [
+        "AGPL-3.0-only"
+      ],
+      "name": "@hadden-industries/json-quality",
+      "occurrencePaths": [
+        "node_modules/@hadden-industries/json-quality"
+      ],
+      "provenance": {
+        "evidence": {
+          "bytes": 18791,
+          "kind": "NPM_PROVENANCE",
+          "path": "blobs/sha256/90/907c5527b336ddbd130c05f5703bb3c956c47608469292e820f7f90526883a7f",
+          "sha256": "907c5527b336ddbd130c05f5703bb3c956c47608469292e820f7f90526883a7f"
+        },
+        "state": "VERIFIED"
+      },
+      "registrySignature": {
+        "evidence": {
+          "bytes": 518,
+          "kind": "REGISTRY_SIGNATURE",
+          "path": "blobs/sha256/7e/7eb37e5d37ca00839e8794c8d755141c705a455f27f60916882f0e2deb8a5189",
+          "sha256": "7eb37e5d37ca00839e8794c8d755141c705a455f27f60916882f0e2deb8a5189"
+        },
+        "publishedAt": "2026-11-13T19:44:40.128Z",
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIEbpjBEIRgULVFSdKALOO5PcDqxiIyFencoKo6n+RtrqAiEArc3SyO0qTG+NVleW6RBFKsNfa3hJSW8HUTATdjuhquM="
+          }
+        ],
+        "state": "VERIFIED"
+      },
+      "resolved": "https://registry.npmjs.org/@hadden-industries/json-quality/-/json-quality-1.0.1.tgz",
+      "scan": {
+        "evidence": {
+          "bytes": 570682,
+          "kind": "SCANCODE_FINDINGS",
+          "path": "blobs/sha256/f7/f746ed7c54ca6878ec155dad613e770bb65a399f9c51fd48067e2ddd624e6713",
+          "sha256": "f746ed7c54ca6878ec155dad613e770bb65a399f9c51fd48067e2ddd624e6713"
+        },
+        "execution": {
+          "perFileTimeoutSeconds": 600
+        },
+        "state": "VERIFIED"
+      },
+      "tarball": {
+        "bytes": 279869,
+        "sha256": "9e8560f75a180589fbb238a3f2ffefef762b839c59bcaf3a4276fda6bca414b5"
+      },
+      "version": "1.0.1"
+    },
+    {
+      "archive": {
+        "evidence": {
           "bytes": 16296,
           "kind": "ARCHIVE_INVENTORY",
           "path": "blobs/sha256/00/00d4d74327c9c2266dae1bbdd653a2a5fa020993101e56042e562216638ef4e0",
@@ -40782,6 +40786,69 @@
     {
       "archive": {
         "evidence": {
+          "bytes": 9263,
+          "kind": "ARCHIVE_INVENTORY",
+          "path": "blobs/sha256/8a/8a5aef77b68ec464b09ed270e54b1e09ea21712b8e694767f156d3c22fc5f6c1",
+          "sha256": "8a5aef77b68ec464b09ed270e54b1e09ea21712b8e694767f156d3c22fc5f6c1"
+        },
+        "state": "VERIFIED"
+      },
+      "artifactId": "fa6683b1747977405fbd2d5b575271d511ddc446119e43556618b153ddf67e97",
+      "integrity": "sha512-gOfLhe/t6AJ6Zt3d+URjZExv/8qH5jNmxUYBhuonlJs841qfr20XLz5AEt8dBYLavP/cRNEgo1q4YLiGFU6PBA==",
+      "lockfileLicenses": [
+        "AGPL-3.0-only"
+      ],
+      "name": "@hadden-industries/json-quality-linux-x64",
+      "occurrencePaths": [
+        "node_modules/@hadden-industries/json-quality-linux-x64"
+      ],
+      "provenance": {
+        "evidence": {
+          "bytes": 19113,
+          "kind": "NPM_PROVENANCE",
+          "path": "blobs/sha256/d5/d5a8b67475edfe42d848e1216c8118dcfde5f791a9965c8571a2165076cf999f",
+          "sha256": "d5a8b67475edfe42d848e1216c8118dcfde5f791a9965c8571a2165076cf999f"
+        },
+        "state": "VERIFIED"
+      },
+      "registrySignature": {
+        "evidence": {
+          "bytes": 518,
+          "kind": "REGISTRY_SIGNATURE",
+          "path": "blobs/sha256/df/df2e5dd72987e8bb982bd79e54916773688d2efe2ec4894e910fab8b86a458fb",
+          "sha256": "df2e5dd72987e8bb982bd79e54916773688d2efe2ec4894e910fab8b86a458fb"
+        },
+        "publishedAt": "2026-11-13T19:36:38.874Z",
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEYCIQD9XlRwPAUnr4yYEIEpEYzFNKhAsOmaoWX7L8bIKsKNtgIhAISNKU9br3phok3RYvc+OfjrQc1gjMSTy4vJBV3az/8/"
+          }
+        ],
+        "state": "VERIFIED"
+      },
+      "resolved": "https://registry.npmjs.org/@hadden-industries/json-quality-linux-x64/-/json-quality-linux-x64-1.0.1.tgz",
+      "scan": {
+        "evidence": {
+          "bytes": 1729316,
+          "kind": "SCANCODE_FINDINGS",
+          "path": "blobs/sha256/96/962c2613a8dcc09c3d6e780726f91f2fa2057dc085a700da3809b42927bc0659",
+          "sha256": "962c2613a8dcc09c3d6e780726f91f2fa2057dc085a700da3809b42927bc0659"
+        },
+        "execution": {
+          "perFileTimeoutSeconds": 600
+        },
+        "state": "VERIFIED"
+      },
+      "tarball": {
+        "bytes": 30368399,
+        "sha256": "02579ec60cde0a42f277786793df4b64f1e6aad5dfc45d1f894f7121a45f493e"
+      },
+      "version": "1.0.1"
+    },
+    {
+      "archive": {
+        "evidence": {
           "bytes": 3750,
           "kind": "ARCHIVE_INVENTORY",
           "path": "blobs/sha256/6e/6e9a7ed85624b023724a77610bb55741ebe3ff77d708f4d08c17b139469ceb4b",
@@ -41895,12 +41962,6 @@
       "sha256": "0a3ab1e9ffd336ee16391bc7d8cc157a36238585a48cf5722cc489da8e414d19"
     },
     {
-      "bytes": 9934,
-      "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/0a/0ab3c9fdf8e14ac082e40db8183104b19ce0bc604be71daa06850287b04dca54",
-      "sha256": "0ab3c9fdf8e14ac082e40db8183104b19ce0bc604be71daa06850287b04dca54"
-    },
-    {
       "bytes": 2766,
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/0b/0b1847db6874b7a7d96e5307dafcbebdeae431272ab2f5270fdae6f3566d6a19",
@@ -42759,6 +42820,12 @@
       "sha256": "393defa4ea9d6da2f64dec746fd83d6ae7487f2f1debf6d50fa9ddb51134e6fc"
     },
     {
+      "bytes": 19825,
+      "kind": "ARCHIVE_INVENTORY",
+      "path": "blobs/sha256/39/39cbfb990bb88bdbef07320d5d64679386f2f0e5d302f43bd0e6c5a647e035e9",
+      "sha256": "39cbfb990bb88bdbef07320d5d64679386f2f0e5d302f43bd0e6c5a647e035e9"
+    },
+    {
       "bytes": 2895,
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/39/39fecda2df2f56b6a4b20fbe68e2f6e658c4619fbaeb455fbf235189c3b3e649",
@@ -43093,6 +43160,12 @@
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/4d/4d40ddfe734901e1473acdac2a1e61b76c4c8702e43c9bee02ba2817d10b5083",
       "sha256": "4d40ddfe734901e1473acdac2a1e61b76c4c8702e43c9bee02ba2817d10b5083"
+    },
+    {
+      "bytes": 40510,
+      "kind": "ARCHIVE_INVENTORY",
+      "path": "blobs/sha256/4d/4db338728a6b97c684bdd7ec8500a49712964e8630c696dc9c79fdbd2be72995",
+      "sha256": "4db338728a6b97c684bdd7ec8500a49712964e8630c696dc9c79fdbd2be72995"
     },
     {
       "bytes": 5126,
@@ -43471,12 +43544,6 @@
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/66/669334bfd5a87a15ee472fefff69fe3842527642ad98a43d43c63f5ff85d6837",
       "sha256": "669334bfd5a87a15ee472fefff69fe3842527642ad98a43d43c63f5ff85d6837"
-    },
-    {
-      "bytes": 9263,
-      "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/66/66f096394d447b7c81a7f1898328fa44766c933ce1537bd8a83d32489183a6e6",
-      "sha256": "66f096394d447b7c81a7f1898328fa44766c933ce1537bd8a83d32489183a6e6"
     },
     {
       "bytes": 3593,
@@ -43869,6 +43936,12 @@
       "sha256": "8047330b30c35544c91bc9547cd994b124aed3de7d07c8112d7a818bd5120c9a"
     },
     {
+      "bytes": 9934,
+      "kind": "ARCHIVE_INVENTORY",
+      "path": "blobs/sha256/80/805b8c1289caa8b33ff34b62908140342caf498992966f3b7fb3cefd9c7c6d9b",
+      "sha256": "805b8c1289caa8b33ff34b62908140342caf498992966f3b7fb3cefd9c7c6d9b"
+    },
+    {
       "bytes": 5660,
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/80/806b580804cbfdd8dc42059a4acf1b667bc4d6863e64bee7b553d0211711ddea",
@@ -43999,6 +44072,12 @@
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/8a/8a3ac9810d0bfd10571dea507a82eb9c3d7ab75df4add0230fd92f3476c0eb30",
       "sha256": "8a3ac9810d0bfd10571dea507a82eb9c3d7ab75df4add0230fd92f3476c0eb30"
+    },
+    {
+      "bytes": 9263,
+      "kind": "ARCHIVE_INVENTORY",
+      "path": "blobs/sha256/8a/8a5aef77b68ec464b09ed270e54b1e09ea21712b8e694767f156d3c22fc5f6c1",
+      "sha256": "8a5aef77b68ec464b09ed270e54b1e09ea21712b8e694767f156d3c22fc5f6c1"
     },
     {
       "bytes": 3965,
@@ -44857,12 +44936,6 @@
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/c5/c5c30ffbb7b37d612c4deb60fb534e732b075b931ede4ef394473b86d0c8d2f7",
       "sha256": "c5c30ffbb7b37d612c4deb60fb534e732b075b931ede4ef394473b86d0c8d2f7"
-    },
-    {
-      "bytes": 40477,
-      "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/c5/c5e0e55cd62e5de0c4590425ab92fe74f69fd3d166fe2113f99bd52221891102",
-      "sha256": "c5e0e55cd62e5de0c4590425ab92fe74f69fd3d166fe2113f99bd52221891102"
     },
     {
       "bytes": 144193,
@@ -45963,12 +46036,6 @@
       "sha256": "11a561ce05aa9818f54e17709f686836fa2796d5a55f658d388307a4782094db"
     },
     {
-      "bytes": 18233,
-      "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/11/11c48c899ae52f24cec860af870566e522d69b96a3accfd10d2d28efe5f4be94",
-      "sha256": "11c48c899ae52f24cec860af870566e522d69b96a3accfd10d2d28efe5f4be94"
-    },
-    {
       "bytes": 17156,
       "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/11/11dc1402a90469f4cd841d0b8824892a1324ec642806df831b012a1b12b726d4",
@@ -46977,6 +47044,12 @@
       "sha256": "4d8cfd38521dd7350fba7a26e3ebc7edab5ccc30cca770e0aaee17739426bb98"
     },
     {
+      "bytes": 18569,
+      "kind": "NPM_PROVENANCE",
+      "path": "blobs/sha256/4d/4d9c897d19d8cc45ad29705fed12b60f8efaf42345554f2bd53b6e0b8dbf8ba5",
+      "sha256": "4d9c897d19d8cc45ad29705fed12b60f8efaf42345554f2bd53b6e0b8dbf8ba5"
+    },
+    {
       "bytes": 16741,
       "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/4d/4da0af772b38ed3dc589045ede3db436ca06e79ff465c331903778cd2890404e",
@@ -46999,6 +47072,12 @@
       "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/4e/4eba8f6ae84e87921f04b1ff0845c74d5e9c4a4254f895393d71ea154a784a73",
       "sha256": "4eba8f6ae84e87921f04b1ff0845c74d5e9c4a4254f895393d71ea154a784a73"
+    },
+    {
+      "bytes": 238,
+      "kind": "NPM_PROVENANCE",
+      "path": "blobs/sha256/4e/4ee7f600d7500ca02c420300da195f93384123dc3d2f121ed253aa07bc566d79",
+      "sha256": "4ee7f600d7500ca02c420300da195f93384123dc3d2f121ed253aa07bc566d79"
     },
     {
       "bytes": 238,
@@ -47955,12 +48034,6 @@
       "sha256": "8cb0a96e30d8b04fa77085f7f9119a25ed11a957101de9b4cf10128d7302b576"
     },
     {
-      "bytes": 18451,
-      "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/8c/8ce1487a0fdfe8851d5120e4d683b8d40607078e97e196aaff56386cd23f33d4",
-      "sha256": "8ce1487a0fdfe8851d5120e4d683b8d40607078e97e196aaff56386cd23f33d4"
-    },
-    {
       "bytes": 17643,
       "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/8d/8d2ad116261203ae9eef174fbcb5fc8791969ca0217aaad0bd9fdb18b865749f",
@@ -48007,6 +48080,12 @@
       "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/8f/8f16d85b04d5b44309560d47e63e0031b73c3318e319b766d50ae53a6ad120cd",
       "sha256": "8f16d85b04d5b44309560d47e63e0031b73c3318e319b766d50ae53a6ad120cd"
+    },
+    {
+      "bytes": 18791,
+      "kind": "NPM_PROVENANCE",
+      "path": "blobs/sha256/90/907c5527b336ddbd130c05f5703bb3c956c47608469292e820f7f90526883a7f",
+      "sha256": "907c5527b336ddbd130c05f5703bb3c956c47608469292e820f7f90526883a7f"
     },
     {
       "bytes": 238,
@@ -48439,12 +48518,6 @@
       "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/ad/ad0a72cce7099910d4a76d340a53844a446bbee47d0e644015487604d3abafab",
       "sha256": "ad0a72cce7099910d4a76d340a53844a446bbee47d0e644015487604d3abafab"
-    },
-    {
-      "bytes": 18101,
-      "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/ad/adcd35c501b8df266523c699415b75fb84f0072c8f9ee2ab5ff68861810d372b",
-      "sha256": "adcd35c501b8df266523c699415b75fb84f0072c8f9ee2ab5ff68861810d372b"
     },
     {
       "bytes": 16903,
@@ -49033,6 +49106,12 @@
       "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/d5/d5978f12c19ba95abc13d3ba0f7fef4c2354c54272122cbb41e257ff1bbb9c97",
       "sha256": "d5978f12c19ba95abc13d3ba0f7fef4c2354c54272122cbb41e257ff1bbb9c97"
+    },
+    {
+      "bytes": 19113,
+      "kind": "NPM_PROVENANCE",
+      "path": "blobs/sha256/d5/d5a8b67475edfe42d848e1216c8118dcfde5f791a9965c8571a2165076cf999f",
+      "sha256": "d5a8b67475edfe42d848e1216c8118dcfde5f791a9965c8571a2165076cf999f"
     },
     {
       "bytes": 238,
@@ -49947,6 +50026,12 @@
       "sha256": "097e72abc655e88af25920e2154fb24de432ff9141d4484d5006740d10b64679"
     },
     {
+      "bytes": 7953,
+      "kind": "PACKAGE_EVIDENCE_FILE",
+      "path": "blobs/sha256/09/09f93e2dc43041386c0492f6e2eed9b0205172d69ae260a9308cca3113f54542",
+      "sha256": "09f93e2dc43041386c0492f6e2eed9b0205172d69ae260a9308cca3113f54542"
+    },
+    {
       "bytes": 901,
       "kind": "PACKAGE_EVIDENCE_FILE",
       "path": "blobs/sha256/0a/0a25421ab66ec56def7407234858f52c1d593b2454155c06df1d7feaa324c8fe",
@@ -50281,6 +50366,12 @@
       "kind": "PACKAGE_EVIDENCE_FILE",
       "path": "blobs/sha256/1a/1a9c55b2961f5e3062e181fa55666c44d011fc3cc03ed6d4fa4321c51f2a5ec5",
       "sha256": "1a9c55b2961f5e3062e181fa55666c44d011fc3cc03ed6d4fa4321c51f2a5ec5"
+    },
+    {
+      "bytes": 357929,
+      "kind": "PACKAGE_EVIDENCE_FILE",
+      "path": "blobs/sha256/1a/1adf328f64b26383979c603da48518620b766bd0c2044b7628640eb7d6b96bdc",
+      "sha256": "1adf328f64b26383979c603da48518620b766bd0c2044b7628640eb7d6b96bdc"
     },
     {
       "bytes": 878,
@@ -53007,12 +53098,6 @@
       "sha256": "abcf6084be683da8cb82f5066b3a6897514eff7b5606608e8bd7423fee640fc9"
     },
     {
-      "bytes": 8176,
-      "kind": "PACKAGE_EVIDENCE_FILE",
-      "path": "blobs/sha256/ab/abe4422b7b84ff34197142cc36e10fef5fd3dbb2d6d54c6f8b05977847608e59",
-      "sha256": "abe4422b7b84ff34197142cc36e10fef5fd3dbb2d6d54c6f8b05977847608e59"
-    },
-    {
       "bytes": 1488,
       "kind": "PACKAGE_EVIDENCE_FILE",
       "path": "blobs/sha256/ac/ac68116ae73740de4190892f334992e449a124600924ec761e64319d3aac9e6e",
@@ -55073,6 +55158,12 @@
     {
       "bytes": 780,
       "kind": "REGISTRY_SIGNATURE",
+      "path": "blobs/sha256/22/22ced8101670b455591129736f442df6387fcf559b94153959f8a722c8306676",
+      "sha256": "22ced8101670b455591129736f442df6387fcf559b94153959f8a722c8306676"
+    },
+    {
+      "bytes": 780,
+      "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/23/2314b8cd54187cf331aff28a3d161e3dc818b6cf47cdd0fb26e808d9fbc939c9",
       "sha256": "2314b8cd54187cf331aff28a3d161e3dc818b6cf47cdd0fb26e808d9fbc939c9"
     },
@@ -56501,6 +56592,12 @@
     {
       "bytes": 518,
       "kind": "REGISTRY_SIGNATURE",
+      "path": "blobs/sha256/7e/7eb37e5d37ca00839e8794c8d755141c705a455f27f60916882f0e2deb8a5189",
+      "sha256": "7eb37e5d37ca00839e8794c8d755141c705a455f27f60916882f0e2deb8a5189"
+    },
+    {
+      "bytes": 518,
+      "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/7f/7f250c3d36e10e185f2488134fc01eb39a80f4fc134db9de9898b263a86cef01",
       "sha256": "7f250c3d36e10e185f2488134fc01eb39a80f4fc134db9de9898b263a86cef01"
     },
@@ -57425,12 +57522,6 @@
     {
       "bytes": 518,
       "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/b9/b9198d12c9039cff42fe07bcbda85a7891a9913fd8178663a7404580aae4dbe1",
-      "sha256": "b9198d12c9039cff42fe07bcbda85a7891a9913fd8178663a7404580aae4dbe1"
-    },
-    {
-      "bytes": 518,
-      "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/ba/ba1b5a3c7a1d794e831bd5ac06fb5c952670281431ddeacd2c1c567a4d4eb75a",
       "sha256": "ba1b5a3c7a1d794e831bd5ac06fb5c952670281431ddeacd2c1c567a4d4eb75a"
     },
@@ -57625,12 +57716,6 @@
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/c2/c26bf4e9aede65fea1ba486b220a993b20d7b48c5f7b64b975482e15368e0a7e",
       "sha256": "c26bf4e9aede65fea1ba486b220a993b20d7b48c5f7b64b975482e15368e0a7e"
-    },
-    {
-      "bytes": 518,
-      "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/c2/c274ea830ed34cf19e41554a9c635c9b6dc9ffe3feea7c0ed5881ec381b9b9ef",
-      "sha256": "c274ea830ed34cf19e41554a9c635c9b6dc9ffe3feea7c0ed5881ec381b9b9ef"
     },
     {
       "bytes": 518,
@@ -57899,12 +57984,6 @@
     {
       "bytes": 518,
       "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/cf/cf8be2bfd01e0487b581daadc582fa84caae8d917610753aa0ef10fad8527e5d",
-      "sha256": "cf8be2bfd01e0487b581daadc582fa84caae8d917610753aa0ef10fad8527e5d"
-    },
-    {
-      "bytes": 518,
-      "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/d0/d040387322543200acc2ff894c26008cd929bf541de918febded298ee2d427b7",
       "sha256": "d040387322543200acc2ff894c26008cd929bf541de918febded298ee2d427b7"
     },
@@ -58075,6 +58154,12 @@
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/df/df0ee57a9191ac6682fc604887771d65da5b1e40a2afa6875a585966117719fd",
       "sha256": "df0ee57a9191ac6682fc604887771d65da5b1e40a2afa6875a585966117719fd"
+    },
+    {
+      "bytes": 518,
+      "kind": "REGISTRY_SIGNATURE",
+      "path": "blobs/sha256/df/df2e5dd72987e8bb982bd79e54916773688d2efe2ec4894e910fab8b86a458fb",
+      "sha256": "df2e5dd72987e8bb982bd79e54916773688d2efe2ec4894e910fab8b86a458fb"
     },
     {
       "bytes": 780,
@@ -58291,6 +58376,12 @@
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/ef/ef3ab074050047798548460d54a5cd484d95455b1fc2a78861f44987067271b8",
       "sha256": "ef3ab074050047798548460d54a5cd484d95455b1fc2a78861f44987067271b8"
+    },
+    {
+      "bytes": 518,
+      "kind": "REGISTRY_SIGNATURE",
+      "path": "blobs/sha256/ef/efa305a434ff603090c352c997f6fb8c799f5f51d6694025c13d614207f5f1c0",
+      "sha256": "efa305a434ff603090c352c997f6fb8c799f5f51d6694025c13d614207f5f1c0"
     },
     {
       "bytes": 518,
@@ -59217,12 +59308,6 @@
       "sha256": "267219408f145fe18ef74db783b224e287262fcd90ce014c520e4b8fa93ae3e8"
     },
     {
-      "bytes": 1729316,
-      "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/26/26e2abb839b369f5e32f1e8189fb35de96ab7da3dbdf91fe08836a5af10e52eb",
-      "sha256": "26e2abb839b369f5e32f1e8189fb35de96ab7da3dbdf91fe08836a5af10e52eb"
-    },
-    {
       "bytes": 59600,
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/26/26ec7c1890180ac0ca01f1c83ac5066ee10c27a539ef3d01059ea1a56e641105",
@@ -59695,12 +59780,6 @@
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/40/40182663ad525c2d876fdbe10efeef8ce37fdc347f82c01477185f99e26f6d3f",
       "sha256": "40182663ad525c2d876fdbe10efeef8ce37fdc347f82c01477185f99e26f6d3f"
-    },
-    {
-      "bytes": 570680,
-      "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/40/4081adc398256c726d8df23c96de6cda12ff0a18ee3966d6ada6c983ea97c391",
-      "sha256": "4081adc398256c726d8df23c96de6cda12ff0a18ee3966d6ada6c983ea97c391"
     },
     {
       "bytes": 29452,
@@ -61011,6 +61090,12 @@
       "sha256": "9629f77dd99eb76c8dbe434cccb313689af2436bb67b0ab910c6ed049fbff770"
     },
     {
+      "bytes": 1729316,
+      "kind": "SCANCODE_FINDINGS",
+      "path": "blobs/sha256/96/962c2613a8dcc09c3d6e780726f91f2fa2057dc085a700da3809b42927bc0659",
+      "sha256": "962c2613a8dcc09c3d6e780726f91f2fa2057dc085a700da3809b42927bc0659"
+    },
+    {
       "bytes": 48409,
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/96/963f57d111137501b8bdbdf82eb33c18ede05aa97fc0da8f5e6b5c75eae21701",
@@ -61821,12 +61906,6 @@
       "sha256": "cc50e4eeca9af9d4d0def009f17eb6cd54a7b0d1945930827f6c7cb58a160aa3"
     },
     {
-      "bytes": 2080846,
-      "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/cc/cc6e74f9594d0f5182d2965789a6adda7ff0bfa89dc191ca52c0efcde6196406",
-      "sha256": "cc6e74f9594d0f5182d2965789a6adda7ff0bfa89dc191ca52c0efcde6196406"
-    },
-    {
       "bytes": 34092,
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/cc/ccd215ca4e4fa56b3fdef4f3ced9a0378865230950168abcee9ed75f7e781e60",
@@ -62115,6 +62194,12 @@
       "sha256": "dbf04f3ecb24e955f0dfe5f276e902b3df00c9bb876ca215ea0772749fe1822f"
     },
     {
+      "bytes": 2080846,
+      "kind": "SCANCODE_FINDINGS",
+      "path": "blobs/sha256/db/dbfa3d5bf543f736ef318823e6a986468388a090c480136fd904dac09e1eb260",
+      "sha256": "dbfa3d5bf543f736ef318823e6a986468388a090c480136fd904dac09e1eb260"
+    },
+    {
       "bytes": 36850,
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/dc/dc8d5aaf2865ec17d040a69020052cba2d5f88eb17302c6d816465a59e91df42",
@@ -62209,6 +62294,12 @@
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/e2/e278f2eb829d82583b1624477786bde9f985404be7d9519a73621ede0f39d1b2",
       "sha256": "e278f2eb829d82583b1624477786bde9f985404be7d9519a73621ede0f39d1b2"
+    },
+    {
+      "bytes": 1233069,
+      "kind": "SCANCODE_FINDINGS",
+      "path": "blobs/sha256/e2/e2a1b26a84a230bf91f8696b718b77ff43fc374e5636e641622f83bc67786947",
+      "sha256": "e2a1b26a84a230bf91f8696b718b77ff43fc374e5636e641622f83bc67786947"
     },
     {
       "bytes": 51307,
@@ -62475,6 +62566,12 @@
       "sha256": "f73f9a5b8aff0cba3a699919d00661dbf0ab874e3aaf44ee1b4fd08042656c67"
     },
     {
+      "bytes": 570682,
+      "kind": "SCANCODE_FINDINGS",
+      "path": "blobs/sha256/f7/f746ed7c54ca6878ec155dad613e770bb65a399f9c51fd48067e2ddd624e6713",
+      "sha256": "f746ed7c54ca6878ec155dad613e770bb65a399f9c51fd48067e2ddd624e6713"
+    },
+    {
       "bytes": 48881,
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/f7/f7f8827afd80c106920bd7c55d1c2e0b08b0a48624243123b03645ba85696132",
@@ -62589,14 +62686,14 @@
       "sha256": "ffbc20b0fff385f75b337760bd14b7fd66380c9e0ff5b0186a65f08255c279e9"
     }
   ],
-  "corpusRoot": "f133684efb4917c8c842327ee93af69267e0ee356bdc82b6af094614e16e7797",
+  "corpusRoot": "85d39b27c9a4fb7506a4dd09002781032792ba4bc8a64a53ad881acd428c543d",
   "generatedBy": {
     "path": "util/acquire-npm-package-evidence.mjs",
     "version": "1.0.0"
   },
   "lockfile": {
     "path": "package-lock.json",
-    "sha256": "84e685f3f88a961184550eb610e4f342bd5e10c10e64426b98b18341eca061c2",
+    "sha256": "dd8a832ee7e35becf41812670912d64133322cba7fc08171678778379f72dd6c",
     "version": 3
   },
   "occurrences": [
@@ -63369,7 +63466,7 @@
       }
     },
     {
-      "artifactId": "1de8e0a752b07cda3492c5f45215cbf75ceb8298bda898fa6e1b489e0eeec5ca",
+      "artifactId": "ee08596c547cbb4a1fce1aecd013212c174505bde18200ba99c2eb61f8dead06",
       "dependencyName": "@hadden-industries/json-quality",
       "dependencyPath": "node_modules/@hadden-industries/json-quality",
       "development": true,
@@ -63381,7 +63478,7 @@
       }
     },
     {
-      "artifactId": "57c95864ed1097072345f9f9310df77d55b6eec1c2fe010f40b6f5713dbe66b3",
+      "artifactId": "fa6683b1747977405fbd2d5b575271d511ddc446119e43556618b153ddf67e97",
       "dependencyName": "@hadden-industries/json-quality-linux-x64",
       "dependencyPath": "node_modules/@hadden-industries/json-quality-linux-x64",
       "development": true,
@@ -63399,7 +63496,7 @@
       }
     },
     {
-      "artifactId": "6548a243073f65bcb2795a62c979c3bac3e693b94a740998e9d892e17a6b70e6",
+      "artifactId": "486e122b9570156a9ffeff55a478cc085dc433ce30ed96b05ea1e96f33effa6f",
       "dependencyName": "@hadden-industries/json-quality-win32-x64",
       "dependencyPath": "node_modules/@hadden-industries/json-quality-win32-x64",
       "development": true,
@@ -63412,6 +63509,18 @@
         "os": [
           "win32"
         ]
+      }
+    },
+    {
+      "artifactId": "73ff559fe2430faaf6e2b508fa2409a9ca26b98373296849f27145712e60e630",
+      "dependencyName": "prettier",
+      "dependencyPath": "node_modules/@hadden-industries/json-quality/node_modules/prettier",
+      "development": true,
+      "optional": false,
+      "platformSelectors": {
+        "cpu": [],
+        "libc": [],
+        "os": []
       }
     },
     {
@@ -71325,14 +71434,14 @@
   ],
   "schemaVersion": 1,
   "summary": {
-    "archiveVerifiedCount": 673,
-    "artifactCount": 673,
-    "blobCount": 3480,
-    "occurrenceCount": 697,
-    "provenanceNotPublishedCount": 476,
+    "archiveVerifiedCount": 674,
+    "artifactCount": 674,
+    "blobCount": 3485,
+    "occurrenceCount": 698,
+    "provenanceNotPublishedCount": 477,
     "provenanceVerifiedCount": 197,
-    "registrySignatureVerifiedCount": 673,
-    "retainedBytes": 141007581,
-    "scanVerifiedCount": 673
+    "registrySignatureVerifiedCount": 674,
+    "retainedBytes": 142620922,
+    "scanVerifiedCount": 674
   }
 }

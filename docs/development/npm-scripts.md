@@ -24,7 +24,10 @@ Use formatting to preserve string values.
 Use normalization when you intend to convert strings to Unicode NFC.
 The normalizer rejects key collisions.
 
-The root lockfile selects Markdown Quality 3.0.1 and JSON Quality 1.0.0.
+The root lockfile selects Markdown Quality 3.0.1 and JSON Quality 1.0.1.
+`package-lock.json` pins the SHA-512 integrity of the published JSON Quality core, Linux x64 and Windows x64 tarballs.
+The [JSON Quality 1.0.1 release](https://github.com/Hadden-Industries/json-quality/releases/tag/v1.0.1) records the matching SHA-256 digests.
+OwlAPI records registry signatures, provenance and archive contents in its [npm package evidence](../provenance/npm-package-evidence.json).
 `npm ci --ignore-scripts` also installs the matching Markdown Quality native package.
 See the [contributor checks](../../CONTRIBUTING.md#check-your-changes) for the full gates and workflow-specific checks.
 

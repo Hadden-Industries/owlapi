@@ -16,34 +16,34 @@
     "version": "0.1.0-rc.3",
     "lockfile": "package-lock.json",
     "lockfileVersion": 3,
-    "lockfileSha256": "84e685f3f88a961184550eb610e4f342bd5e10c10e64426b98b18341eca061c2",
+    "lockfileSha256": "dd8a832ee7e35becf41812670912d64133322cba7fc08171678778379f72dd6c",
     "evidenceManifest": "docs/provenance/npm-package-evidence.json",
-    "evidenceManifestSha256": "506775fb945ab5abad0bc9a7beace89698d8cbadc0fbb641840cc2e1a45a3efe",
-    "evidenceCorpusRoot": "f133684efb4917c8c842327ee93af69267e0ee356bdc82b6af094614e16e7797",
+    "evidenceManifestSha256": "8da0aa47207ca10961217c2a6679387c493775f38e00192a5d1f7437865afe2f",
+    "evidenceCorpusRoot": "85d39b27c9a4fb7506a4dd09002781032792ba4bc8a64a53ad881acd428c543d",
     "tarballDependenciesBundled": false
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
     "digestAlgorithm": "sha256-sorted-json-v1",
-    "factsSha256": "a348cdd4ec403a70e256043677663e68a363a3a3aa49a7cdf57dea2bdd23e6dd",
+    "factsSha256": "340c592e71eab49d8187005586e28c5096815bfdbcdd1c397197317a826b7d12",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
     "conclusion": null
   },
   "summary": {
-    "componentCount": 697,
-    "artifactCount": 673,
+    "componentCount": 698,
+    "artifactCount": 674,
     "productionComponentCount": 47,
-    "developmentComponentCount": 650,
-    "authenticatedTarballArtifactCount": 673,
-    "registrySignatureVerifiedArtifactCount": 673,
+    "developmentComponentCount": 651,
+    "authenticatedTarballArtifactCount": 674,
+    "registrySignatureVerifiedArtifactCount": 674,
     "provenanceVerifiedArtifactCount": 197,
-    "provenanceNotPublishedArtifactCount": 476,
-    "scanVerifiedArtifactCount": 673,
-    "evidenceBlobCount": 3480,
-    "evidenceRetainedBytes": 141007581,
-    "inspectedLicenceFileCount": 804,
+    "provenanceNotPublishedArtifactCount": 477,
+    "scanVerifiedArtifactCount": 674,
+    "evidenceBlobCount": 3485,
+    "evidenceRetainedBytes": 142620922,
+    "inspectedLicenceFileCount": 806,
     "inspectedNoticeFileCount": 464,
     "productionInspectedLicenceFileCount": 47,
     "productionInspectedNoticeFileCount": 23,
@@ -65,7 +65,7 @@
       "CC-BY-4.0": 1,
       "CC0-1.0": 4,
       "ISC": 72,
-      "MIT": 511,
+      "MIT": 512,
       "MPL-2.0": 12,
       "PSF-2.0": 1
     },
@@ -87,7 +87,7 @@
       "CC-BY-4.0": 1,
       "CC0-1.0": 4,
       "ISC": 68,
-      "MIT": 473,
+      "MIT": 474,
       "MPL-2.0": 12,
       "PSF-2.0": 1
     },
@@ -3937,9 +3937,9 @@
     },
     {
       "dependencyPath": "node_modules/@hadden-industries/json-quality",
-      "artifactId": "1de8e0a752b07cda3492c5f45215cbf75ceb8298bda898fa6e1b489e0eeec5ca",
+      "artifactId": "ee08596c547cbb4a1fce1aecd013212c174505bde18200ba99c2eb61f8dead06",
       "name": "@hadden-industries/json-quality",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": [
         "AGPL-3.0-only"
@@ -3977,9 +3977,9 @@
         {
           "path": "package/README.md",
           "kind": "README_ATTRIBUTION",
-          "sha256": "abe4422b7b84ff34197142cc36e10fef5fd3dbb2d6d54c6f8b05977847608e59",
-          "blobSha256": "abe4422b7b84ff34197142cc36e10fef5fd3dbb2d6d54c6f8b05977847608e59",
-          "blobPath": "blobs/sha256/ab/abe4422b7b84ff34197142cc36e10fef5fd3dbb2d6d54c6f8b05977847608e59"
+          "sha256": "09f93e2dc43041386c0492f6e2eed9b0205172d69ae260a9308cca3113f54542",
+          "blobSha256": "09f93e2dc43041386c0492f6e2eed9b0205172d69ae260a9308cca3113f54542",
+          "blobPath": "blobs/sha256/09/09f93e2dc43041386c0492f6e2eed9b0205172d69ae260a9308cca3113f54542"
         },
         {
           "path": "package/THIRD-PARTY-NOTICES.md",
@@ -3997,12 +3997,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "c5e0e55cd62e5de0c4590425ab92fe74f69fd3d166fe2113f99bd52221891102",
-        "provenanceSha256": "8ce1487a0fdfe8851d5120e4d683b8d40607078e97e196aaff56386cd23f33d4",
-        "registrySignatureSha256": "c274ea830ed34cf19e41554a9c635c9b6dc9ffe3feea7c0ed5881ec381b9b9ef",
-        "scanSha256": "4081adc398256c726d8df23c96de6cda12ff0a18ee3966d6ada6c983ea97c391"
+        "archiveSha256": "4db338728a6b97c684bdd7ec8500a49712964e8630c696dc9c79fdbd2be72995",
+        "provenanceSha256": "907c5527b336ddbd130c05f5703bb3c956c47608469292e820f7f90526883a7f",
+        "registrySignatureSha256": "7eb37e5d37ca00839e8794c8d755141c705a455f27f60916882f0e2deb8a5189",
+        "scanSha256": "f746ed7c54ca6878ec155dad613e770bb65a399f9c51fd48067e2ddd624e6713"
       },
-      "registryUrl": "https://registry.npmjs.org/@hadden-industries/json-quality/-/json-quality-1.0.0.tgz",
+      "registryUrl": "https://registry.npmjs.org/@hadden-industries/json-quality/-/json-quality-1.0.1.tgz",
       "sourceReference": "https://github.com/Hadden-Industries/json-quality.git",
       "sourceUrl": "https://github.com/Hadden-Industries/json-quality",
       "packageAuthor": null,
@@ -4018,9 +4018,9 @@
     },
     {
       "dependencyPath": "node_modules/@hadden-industries/json-quality-linux-x64",
-      "artifactId": "57c95864ed1097072345f9f9310df77d55b6eec1c2fe010f40b6f5713dbe66b3",
+      "artifactId": "fa6683b1747977405fbd2d5b575271d511ddc446119e43556618b153ddf67e97",
       "name": "@hadden-industries/json-quality-linux-x64",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": [
         "AGPL-3.0-only"
@@ -4144,12 +4144,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "66f096394d447b7c81a7f1898328fa44766c933ce1537bd8a83d32489183a6e6",
-        "provenanceSha256": "11c48c899ae52f24cec860af870566e522d69b96a3accfd10d2d28efe5f4be94",
-        "registrySignatureSha256": "cf8be2bfd01e0487b581daadc582fa84caae8d917610753aa0ef10fad8527e5d",
-        "scanSha256": "26e2abb839b369f5e32f1e8189fb35de96ab7da3dbdf91fe08836a5af10e52eb"
+        "archiveSha256": "8a5aef77b68ec464b09ed270e54b1e09ea21712b8e694767f156d3c22fc5f6c1",
+        "provenanceSha256": "d5a8b67475edfe42d848e1216c8118dcfde5f791a9965c8571a2165076cf999f",
+        "registrySignatureSha256": "df2e5dd72987e8bb982bd79e54916773688d2efe2ec4894e910fab8b86a458fb",
+        "scanSha256": "962c2613a8dcc09c3d6e780726f91f2fa2057dc085a700da3809b42927bc0659"
       },
-      "registryUrl": "https://registry.npmjs.org/@hadden-industries/json-quality-linux-x64/-/json-quality-linux-x64-1.0.0.tgz",
+      "registryUrl": "https://registry.npmjs.org/@hadden-industries/json-quality-linux-x64/-/json-quality-linux-x64-1.0.1.tgz",
       "sourceReference": "https://github.com/Hadden-Industries/json-quality.git",
       "sourceUrl": "https://github.com/Hadden-Industries/json-quality",
       "packageAuthor": null,
@@ -4171,9 +4171,9 @@
     },
     {
       "dependencyPath": "node_modules/@hadden-industries/json-quality-win32-x64",
-      "artifactId": "6548a243073f65bcb2795a62c979c3bac3e693b94a740998e9d892e17a6b70e6",
+      "artifactId": "486e122b9570156a9ffeff55a478cc085dc433ce30ed96b05ea1e96f33effa6f",
       "name": "@hadden-industries/json-quality-win32-x64",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": [
         "AGPL-3.0-only"
@@ -4306,12 +4306,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "0ab3c9fdf8e14ac082e40db8183104b19ce0bc604be71daa06850287b04dca54",
-        "provenanceSha256": "adcd35c501b8df266523c699415b75fb84f0072c8f9ee2ab5ff68861810d372b",
-        "registrySignatureSha256": "b9198d12c9039cff42fe07bcbda85a7891a9913fd8178663a7404580aae4dbe1",
-        "scanSha256": "cc6e74f9594d0f5182d2965789a6adda7ff0bfa89dc191ca52c0efcde6196406"
+        "archiveSha256": "805b8c1289caa8b33ff34b62908140342caf498992966f3b7fb3cefd9c7c6d9b",
+        "provenanceSha256": "4d9c897d19d8cc45ad29705fed12b60f8efaf42345554f2bd53b6e0b8dbf8ba5",
+        "registrySignatureSha256": "efa305a434ff603090c352c997f6fb8c799f5f51d6694025c13d614207f5f1c0",
+        "scanSha256": "dbfa3d5bf543f736ef318823e6a986468388a090c480136fd904dac09e1eb260"
       },
-      "registryUrl": "https://registry.npmjs.org/@hadden-industries/json-quality-win32-x64/-/json-quality-win32-x64-1.0.0.tgz",
+      "registryUrl": "https://registry.npmjs.org/@hadden-industries/json-quality-win32-x64/-/json-quality-win32-x64-1.0.1.tgz",
       "sourceReference": "https://github.com/Hadden-Industries/json-quality.git",
       "sourceUrl": "https://github.com/Hadden-Industries/json-quality",
       "packageAuthor": null,
@@ -4327,6 +4327,77 @@
         "os": [
           "win32"
         ]
+      }
+    },
+    {
+      "dependencyPath": "node_modules/@hadden-industries/json-quality/node_modules/prettier",
+      "artifactId": "73ff559fe2430faaf6e2b508fa2409a9ca26b98373296849f27145712e60e630",
+      "name": "prettier",
+      "version": "3.10.1",
+      "relationship": "DEVELOPMENT_ONLY",
+      "lockfileDeclaredLicenseExpressions": [
+        "MIT"
+      ],
+      "tarballDeclaredLicenseExpression": "MIT",
+      "scanObservedLicenseExpressions": [
+        "(MIT AND BSD-3-Clause AND Apache-2.0 AND BSD-2-Clause) AND MIT AND BlueOak-1.0.0 AND ISC AND BSD-3-Clause AND Apache-2.0 AND BSD-2-Clause AND (MIT AND CC0-1.0)",
+        "Apache-2.0",
+        "BSD-2-Clause",
+        "BSD-3-Clause",
+        "BlueOak-1.0.0",
+        "ISC",
+        "MIT",
+        "MIT AND BSD-3-Clause AND Apache-2.0 AND BSD-2-Clause",
+        "MIT AND CC0-1.0"
+      ],
+      "declaredLicenseExpression": "MIT",
+      "concludedLicenseExpression": "MIT",
+      "licenseQualification": "LOCKFILE_TARBALL_DECLARATIONS_CONSISTENT",
+      "licenseConclusionRationale": "The concluded SPDX expression preserves an equivalent prior recorded conclusion when present; otherwise it selects the first SPDX-valid lockfile declaration, then authenticated package.json declaration, and only then ScanCode evidence. The distribution disposition likewise preserves an equivalent prior decision when present; otherwise it follows development/runtime scope and the concluded-licence policy. The lockfile and authenticated package.json declarations are consistent where present. ScanCode's additional file-level observations remain separately recorded and do not silently redefine the package declaration.",
+      "distributionDisposition": "DEVELOPMENT_ONLY_NOT_DISTRIBUTED",
+      "inspectionBasis": "LOCKED_REGISTRY_TARBALL",
+      "licenseFilePresence": "PRESENT",
+      "inspectedFiles": [
+        {
+          "path": "package/LICENSE",
+          "kind": "LICENCE",
+          "sha256": "b0f2417199889f1c0d28ec4e0244eacf1a15de5819d61f641dd7d8f45153ac9c",
+          "blobSha256": "b0f2417199889f1c0d28ec4e0244eacf1a15de5819d61f641dd7d8f45153ac9c",
+          "blobPath": "blobs/sha256/b0/b0f2417199889f1c0d28ec4e0244eacf1a15de5819d61f641dd7d8f45153ac9c"
+        },
+        {
+          "path": "package/THIRD-PARTY-NOTICES.md",
+          "kind": "THIRD_PARTY_LICENCE",
+          "sha256": "1adf328f64b26383979c603da48518620b766bd0c2044b7628640eb7d6b96bdc",
+          "blobSha256": "1adf328f64b26383979c603da48518620b766bd0c2044b7628640eb7d6b96bdc",
+          "blobPath": "blobs/sha256/1a/1adf328f64b26383979c603da48518620b766bd0c2044b7628640eb7d6b96bdc"
+        }
+      ],
+      "externalLicenseEvidence": [],
+      "authentication": {
+        "registrySignature": "VERIFIED",
+        "provenance": "NOT_PUBLISHED",
+        "archive": "VERIFIED",
+        "scan": "VERIFIED"
+      },
+      "artifactEvidence": {
+        "archiveSha256": "39cbfb990bb88bdbef07320d5d64679386f2f0e5d302f43bd0e6c5a647e035e9",
+        "provenanceSha256": "4ee7f600d7500ca02c420300da195f93384123dc3d2f121ed253aa07bc566d79",
+        "registrySignatureSha256": "22ced8101670b455591129736f442df6387fcf559b94153959f8a722c8306676",
+        "scanSha256": "e2a1b26a84a230bf91f8696b718b77ff43fc374e5636e641622f83bc67786947"
+      },
+      "registryUrl": "https://registry.npmjs.org/prettier/-/prettier-3.10.1.tgz",
+      "sourceReference": "prettier/prettier",
+      "sourceUrl": "https://github.com/prettier/prettier",
+      "packageAuthor": "James Long",
+      "packageTarballScope": false,
+      "noticeDisposition": "DEVELOPMENT_ONLY_RECORDED_NOT_PACKED",
+      "rationale": "This authenticated component belongs to the repository test, evidence, documentation, or release toolchain and is excluded from the owlapi tarball.",
+      "optional": false,
+      "platformSelectors": {
+        "cpu": [],
+        "libc": [],
+        "os": []
       }
     },
     {
@@ -44780,7 +44851,7 @@
       "evidenceFiles": [
         {
           "path": "internal/parsing/jsonld/provider/build-manifest.json",
-          "sha256": "c07bcdf83d2a642102f6fe53f76016b59f439ecf52d5158f04f1252830b0b8c3"
+          "sha256": "dd23dcf0b687cc77039ef2a7d29b8b42ad32cb0a3af6823e2e0e2fe51e554f49"
         },
         {
           "path": "internal/parsing/jsonld/provider/jsonld.js",
@@ -44818,7 +44889,7 @@
       "evidenceFiles": [
         {
           "path": "internal/parsing/jsonld/provider/build-manifest.json",
-          "sha256": "c07bcdf83d2a642102f6fe53f76016b59f439ecf52d5158f04f1252830b0b8c3"
+          "sha256": "dd23dcf0b687cc77039ef2a7d29b8b42ad32cb0a3af6823e2e0e2fe51e554f49"
         },
         {
           "path": "internal/parsing/jsonld/provider/jsonld.js",
@@ -44856,7 +44927,7 @@
       "evidenceFiles": [
         {
           "path": "internal/parsing/jsonld/provider/build-manifest.json",
-          "sha256": "c07bcdf83d2a642102f6fe53f76016b59f439ecf52d5158f04f1252830b0b8c3"
+          "sha256": "dd23dcf0b687cc77039ef2a7d29b8b42ad32cb0a3af6823e2e0e2fe51e554f49"
         },
         {
           "path": "internal/parsing/jsonld/provider/jsonld.js",
@@ -44894,7 +44965,7 @@
       "evidenceFiles": [
         {
           "path": "internal/parsing/jsonld/provider/build-manifest.json",
-          "sha256": "c07bcdf83d2a642102f6fe53f76016b59f439ecf52d5158f04f1252830b0b8c3"
+          "sha256": "dd23dcf0b687cc77039ef2a7d29b8b42ad32cb0a3af6823e2e0e2fe51e554f49"
         },
         {
           "path": "internal/parsing/jsonld/provider/jsonld.js",
@@ -44932,7 +45003,7 @@
       "evidenceFiles": [
         {
           "path": "internal/parsing/jsonld/provider/build-manifest.json",
-          "sha256": "c07bcdf83d2a642102f6fe53f76016b59f439ecf52d5158f04f1252830b0b8c3"
+          "sha256": "dd23dcf0b687cc77039ef2a7d29b8b42ad32cb0a3af6823e2e0e2fe51e554f49"
         },
         {
           "path": "internal/parsing/jsonld/provider/jsonld.js",
@@ -44970,7 +45041,7 @@
       "evidenceFiles": [
         {
           "path": "internal/parsing/jsonld/provider/build-manifest.json",
-          "sha256": "c07bcdf83d2a642102f6fe53f76016b59f439ecf52d5158f04f1252830b0b8c3"
+          "sha256": "dd23dcf0b687cc77039ef2a7d29b8b42ad32cb0a3af6823e2e0e2fe51e554f49"
         },
         {
           "path": "internal/parsing/jsonld/provider/jsonld.js",
@@ -45008,7 +45079,7 @@
       "evidenceFiles": [
         {
           "path": "internal/parsing/jsonld/provider/build-manifest.json",
-          "sha256": "c07bcdf83d2a642102f6fe53f76016b59f439ecf52d5158f04f1252830b0b8c3"
+          "sha256": "dd23dcf0b687cc77039ef2a7d29b8b42ad32cb0a3af6823e2e0e2fe51e554f49"
         },
         {
           "path": "internal/parsing/jsonld/provider/jsonld.js",
@@ -45876,11 +45947,11 @@
         },
         {
           "path": "package.json",
-          "sha256": "0ae7def82fddd9adeb0c9edd0c8f5cd6f1f63aca3d59618576ef2d176308a701"
+          "sha256": "430d2bded4bd403564d828e61051980b5bdedff3968860cc90bdcc4fdbff3c7a"
         },
         {
           "path": "package-lock.json",
-          "sha256": "84e685f3f88a961184550eb610e4f342bd5e10c10e64426b98b18341eca061c2"
+          "sha256": "dd8a832ee7e35becf41812670912d64133322cba7fc08171678778379f72dd6c"
         }
       ],
       "treeEvidence": null,

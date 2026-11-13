@@ -22,7 +22,7 @@ Prerelease identifiers do not create a stability promise.
 ### Contributor tooling
 
 - Use npm 12.2.2 for package production and require npm 12.2.2 or newer for development.
-  Refresh the locked dependencies, including Markdown Quality 3.0.1, JSON Quality 1.0.0, uv 0.13.7 and Ruff 0.17.4.
+  Refresh the locked dependencies, including Markdown Quality 3.0.1, JSON Quality 1.0.1, uv 0.13.7 and Ruff 0.17.4.
 - Install Markdown Quality and its matching native package from the root npm lockfile.
   Keep read-only Markdown checks and previews separate from explicit formatting writes.
 - Use JSON Quality's complete repository check and newline-delimited JSON diagnostics.

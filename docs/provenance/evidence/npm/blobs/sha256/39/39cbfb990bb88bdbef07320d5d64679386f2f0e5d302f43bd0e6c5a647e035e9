@@ -1,0 +1,595 @@
+{
+  "artifactId": "73ff559fe2430faaf6e2b508fa2409a9ca26b98373296849f27145712e60e630",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3304604,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "b0f2417199889f1c0d28ec4e0244eacf1a15de5819d61f641dd7d8f45153ac9c",
+        "size": 1065,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "f1f5a86cd0fd0f6a288882527830a9bbbd5851e3238c4d7426b7bbb496165cd1",
+        "size": 3396,
+        "type": "FILE"
+      },
+      {
+        "path": "package/THIRD-PARTY-NOTICES.md",
+        "sha256": "1adf328f64b26383979c603da48518620b766bd0c2044b7628640eb7d6b96bdc",
+        "size": 357929,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/prettier.cjs",
+        "sha256": "9fe2ddfe1e45b37300579ec494ae46e41432331682534e69c66515ac91161a63",
+        "size": 1675,
+        "type": "FILE"
+      },
+      {
+        "path": "package/doc.d.ts",
+        "sha256": "f63cb353cd53da6be4a34f6fdece6316dac14fd62cccf9a4d2ce6bab2c37bc8c",
+        "size": 7419,
+        "type": "FILE"
+      },
+      {
+        "path": "package/doc.js",
+        "sha256": "acddb7c473279c6254587cc17f7e6a5a46035ae66a3e9eab88b9795b215f8e87",
+        "size": 62197,
+        "type": "FILE"
+      },
+      {
+        "path": "package/doc.mjs",
+        "sha256": "1e6abed5de16b33fb8d1f71f062fb0c22bb902a2b2a6a12c666dc89c7496e6d3",
+        "size": 57955,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.cjs",
+        "sha256": "44e28a82e1e2e13198b84a78d7a52d961c0b7de9931d9700af3b710ac08b1cf8",
+        "size": 41635,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "f97d59a2415629faa0abab251f1006d811f867dce149d2829a5376e372ebaf67",
+        "size": 27759,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.mjs",
+        "sha256": "efa4ff19afa80e7e5531273138ffe61dd0749d36c14a5299dfc742d5e2363171",
+        "size": 678160,
+        "type": "FILE"
+      },
+      {
+        "path": "package/internal/experimental-cli-worker.mjs",
+        "sha256": "509281b19d031aedceb32041dd1a9e478acd868ddf6364a5fbd7f9c89b274dc0",
+        "size": 89279,
+        "type": "FILE"
+      },
+      {
+        "path": "package/internal/experimental-cli.mjs",
+        "sha256": "ef0185c24f084ee123728b9004c4c6867e2f474564d7801cc1001a5fa71d671c",
+        "size": 471097,
+        "type": "FILE"
+      },
+      {
+        "path": "package/internal/legacy-cli.mjs",
+        "sha256": "0df3a88eb01fef8c0ced63a19a5e6d63539e124bcb62dabff27505983ea76a5c",
+        "size": 214308,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "cb9ae63b95680b2d1e3e513d5594d0cc680cce46770b8091c4609036d242f2ee",
+        "size": 6425,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/acorn.d.ts",
+        "sha256": "c25cb166f252a094fc146d0470422472fc7c7974adbf76a37f3d368899dfe7b0",
+        "size": 109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/acorn.js",
+        "sha256": "a795edcc7701b6bc41e6bdace744ae6768d3b8fd46c60887fef1f71b344dabcf",
+        "size": 156038,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/acorn.mjs",
+        "sha256": "445f9f7de5747a1e8b156aaf2a78a6d25acf9c2613a2a228f20216f4f160341e",
+        "size": 155637,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/angular.d.ts",
+        "sha256": "025fbe2956c42bd21b9692c6198b9f2ca3785686f60bcba0939a6721b06daa6e",
+        "size": 177,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/angular.js",
+        "sha256": "685c085ad6f1d156065ebfbe5e38753e4b9f94fcc737cad38d858fd88eeaae17",
+        "size": 152431,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/angular.mjs",
+        "sha256": "bfee21c27c8f11d407203b91ec45f0bfb5c1397e17ec0bab561ac9a06cfa270d",
+        "size": 151742,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/babel.d.ts",
+        "sha256": "f63c500e01ac97d8868a75905c231a1b9e8bef75d79f476707fb2ee48b57a375",
+        "size": 419,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/babel.js",
+        "sha256": "78ec0c9b08128b8d01e79a1b1f67dda19ac099cf5fd82b7d601308b4047e8de3",
+        "size": 319739,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/babel.mjs",
+        "sha256": "d82a23d0b9107c6d18325c0a00bf3c31688dd99683496cd49d919c8bebb795f7",
+        "size": 319048,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/estree.d.ts",
+        "sha256": "8a36b145793f5621662ebb18e0c25f2435d3d1d93e3b0c328475e22998348f8d",
+        "size": 121,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/estree.js",
+        "sha256": "345cae914870a386045a4b951e3954287149e502c791d23125b548246911152f",
+        "size": 220845,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/estree.mjs",
+        "sha256": "312e5ed5503dfa31efd644a00d053acd97dae1305a94c9a443ba98023775af56",
+        "size": 220184,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/flow.d.ts",
+        "sha256": "daddd33d442b517c56d78f6545285e8c5c7f09c514afbb3de111262ed1820270",
+        "size": 90,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/flow.js",
+        "sha256": "6ccb11b5bbf7e5c6957f0eb3c222f3e8a7bc034ac290e3bffa835c85d634e148",
+        "size": 1814568,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/flow.mjs",
+        "sha256": "c8b69d1107dbfc566eb146e49dacdba478d8662a76d3ee782cef5c9b73e8ab95",
+        "size": 1814168,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/glimmer.d.ts",
+        "sha256": "fd70f533928aa0b2c303366dc4a08273c115734b611895fb89a8578304e61888",
+        "size": 159,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/glimmer.js",
+        "sha256": "27d83eb7fdc124689a99555b4ea99a3042043963ea8eec4ab982b722ba671338",
+        "size": 100044,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/glimmer.mjs",
+        "sha256": "1bfc8e092b99cd8d0f2c9373b219c4cbf2bff9663112e32a40af74ead1e75aa1",
+        "size": 99382,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/graphql.d.ts",
+        "sha256": "04a307ac74b00e8671da710949cbcbe012b0af12f45e0767eb5ad8a003ff8956",
+        "size": 159,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/graphql.js",
+        "sha256": "a2bb418c36fce8c4d40cab07b04f0b5d9f8bbe811604c83d4f763af9b9dfeb5d",
+        "size": 47162,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/graphql.mjs",
+        "sha256": "9cd627f1c8696e5b099462dd543b4356e86837eee8e9c623b33c6a341be74b6e",
+        "size": 46514,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/html.d.ts",
+        "sha256": "c147bec58f2863ac4cae6b56547959a83916307e427e14b84787bda78daed1e1",
+        "size": 218,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/html.js",
+        "sha256": "a0beaf2d7a2ff3437152b6d74481f39dc23889960cdf68b1aa73e6ccfe322eb3",
+        "size": 173230,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/html.mjs",
+        "sha256": "c2007a16f0f53b11b676ffcfc097e83a2075cc12ec9dafb131a5625a1d35b60f",
+        "size": 172585,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/markdown.d.ts",
+        "sha256": "025e6346eab83f54d255321e9ed8c8255472cb7d33bae1db4c4a4616b5473b5c",
+        "size": 191,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/markdown.js",
+        "sha256": "b47503573f754e1ecd625ed968e05859580ca06a93467ca8cc8a87a3f7b9c728",
+        "size": 296768,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/markdown.mjs",
+        "sha256": "f48944f815c9de6925b3b97619cfb42f7684ade5ca176baf701e1e0078f4ad49",
+        "size": 296409,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/meriyah.d.ts",
+        "sha256": "7a764eac31a2b218ebed35e27f9dff2dfc85eee443472fbb871ba0999ba0b41a",
+        "size": 93,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/meriyah.js",
+        "sha256": "e2609f494c633e4c5781624579bdf8d73b11d3beb69d00d7f16c78309b26cce3",
+        "size": 138035,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/meriyah.mjs",
+        "sha256": "19aeb7c55f96a4416763b8b12d73e93dbc654e0ea46566d3c6b2eb2a67708cda",
+        "size": 137342,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/postcss.d.ts",
+        "sha256": "f616786c42a8e4d1d17995d934037a1b5cdddf78924df980b5cc0cf223948471",
+        "size": 187,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/postcss.js",
+        "sha256": "ca8f2237eba2e9ec2e14b47e0f1ba3dc5db1b06ac3aea9564454a008dd7b273f",
+        "size": 165152,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/postcss.mjs",
+        "sha256": "d041ddaacba63eaade8520a799d19a2fdef2d90491c37bb3dfa5f03c256aeb87",
+        "size": 164794,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/typescript.d.ts",
+        "sha256": "f6b8391a3411a2ae9dee204645977fc70d39355df8b3e2f4ed8f3022fee41f2d",
+        "size": 96,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/typescript.js",
+        "sha256": "9c1b3055e18e29378c3f147d9c7967801f6a2405db3fc85a4b08a0f4c484ff24",
+        "size": 903594,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/typescript.mjs",
+        "sha256": "befece7495d9fee605e81a93bf7b06a9ebe3c59523de65172187ef43123418e3",
+        "size": 902898,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/yaml.d.ts",
+        "sha256": "06a116a917b2a2907e9826d44504e17e2d6a52168245c3ee9d8fa2755e91fb2f",
+        "size": 153,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/yaml.js",
+        "sha256": "0e0c66c575cfad060fba7d95bbc5507483d9b362c95096723327aeba2d563c98",
+        "size": 136822,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins/yaml.mjs",
+        "sha256": "31526ebee8b6be054ae3995b6b21a3e17610dfd3ffacf463c63657593d63702e",
+        "size": 143312,
+        "type": "FILE"
+      },
+      {
+        "path": "package/standalone.d.ts",
+        "sha256": "3560ad5c0d0cc7fd20b953bb2350807eff9faad616226e3da9f946e5cbaeea32",
+        "size": 1358,
+        "type": "FILE"
+      },
+      {
+        "path": "package/standalone.js",
+        "sha256": "de3f2d161cca96802c4c511acb17d11a64ae0ba43be8ddcda5b7df48829c97b0",
+        "size": 85210,
+        "type": "FILE"
+      },
+      {
+        "path": "package/standalone.mjs",
+        "sha256": "6dec74d81fa80479a63d7a171df54fedcb59aaba6821aa516529d4a35f5a6c25",
+        "size": 84676,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1065,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/b0/b0f2417199889f1c0d28ec4e0244eacf1a15de5819d61f641dd7d8f45153ac9c",
+          "sha256": "b0f2417199889f1c0d28ec4e0244eacf1a15de5819d61f641dd7d8f45153ac9c"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "b0f2417199889f1c0d28ec4e0244eacf1a15de5819d61f641dd7d8f45153ac9c",
+        "size": 1065
+      },
+      {
+        "blob": {
+          "bytes": 357929,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/1a/1adf328f64b26383979c603da48518620b766bd0c2044b7628640eb7d6b96bdc",
+          "sha256": "1adf328f64b26383979c603da48518620b766bd0c2044b7628640eb7d6b96bdc"
+        },
+        "kind": "THIRD_PARTY_LICENCE",
+        "path": "package/THIRD-PARTY-NOTICES.md",
+        "sha256": "1adf328f64b26383979c603da48518620b766bd0c2044b7628640eb7d6b96bdc",
+        "size": 357929
+      }
+    ],
+    "expandedBytes": 11442158,
+    "packageIdentity": {
+      "author": "James Long",
+      "homepage": "https://prettier.io",
+      "license": "MIT",
+      "name": "prettier",
+      "repository": "prettier/prettier",
+      "version": "3.10.1"
+    },
+    "packageMetadata": {
+      "author": "James Long",
+      "bin": "./bin/prettier.cjs",
+      "browser": "./standalone.js",
+      "description": "Prettier is an opinionated code formatter",
+      "engines": {
+        "node": ">=14"
+      },
+      "exports": {
+        ".": {
+          "browser": {
+            "default": "./standalone.js",
+            "import": "./standalone.mjs"
+          },
+          "default": "./index.mjs",
+          "require": "./index.cjs",
+          "types": "./index.d.ts"
+        },
+        "./*": "./*",
+        "./doc": {
+          "default": "./doc.mjs",
+          "require": "./doc.js",
+          "types": "./doc.d.ts"
+        },
+        "./esm/parser-angular.mjs": "./plugins/angular.mjs",
+        "./esm/parser-babel.mjs": "./plugins/babel.mjs",
+        "./esm/parser-espree.mjs": "./plugins/acorn.mjs",
+        "./esm/parser-flow.mjs": "./plugins/flow.mjs",
+        "./esm/parser-glimmer.mjs": "./plugins/glimmer.mjs",
+        "./esm/parser-graphql.mjs": "./plugins/graphql.mjs",
+        "./esm/parser-html.mjs": "./plugins/html.mjs",
+        "./esm/parser-markdown.mjs": "./plugins/markdown.mjs",
+        "./esm/parser-meriyah.mjs": "./plugins/meriyah.mjs",
+        "./esm/parser-postcss.mjs": "./plugins/postcss.mjs",
+        "./esm/parser-typescript.mjs": "./plugins/typescript.mjs",
+        "./esm/parser-yaml.mjs": "./plugins/yaml.mjs",
+        "./esm/standalone.mjs": "./standalone.mjs",
+        "./parser-angular": "./plugins/angular.js",
+        "./parser-angular.js": "./plugins/angular.js",
+        "./parser-babel": "./plugins/babel.js",
+        "./parser-babel.js": "./plugins/babel.js",
+        "./parser-espree": "./plugins/acorn.js",
+        "./parser-espree.js": "./plugins/acorn.js",
+        "./parser-flow": "./plugins/flow.js",
+        "./parser-flow.js": "./plugins/flow.js",
+        "./parser-glimmer": "./plugins/glimmer.js",
+        "./parser-glimmer.js": "./plugins/glimmer.js",
+        "./parser-graphql": "./plugins/graphql.js",
+        "./parser-graphql.js": "./plugins/graphql.js",
+        "./parser-html": "./plugins/html.js",
+        "./parser-html.js": "./plugins/html.js",
+        "./parser-markdown": "./plugins/markdown.js",
+        "./parser-markdown.js": "./plugins/markdown.js",
+        "./parser-meriyah": "./plugins/meriyah.js",
+        "./parser-meriyah.js": "./plugins/meriyah.js",
+        "./parser-postcss": "./plugins/postcss.js",
+        "./parser-postcss.js": "./plugins/postcss.js",
+        "./parser-typescript": "./plugins/typescript.js",
+        "./parser-typescript.js": "./plugins/typescript.js",
+        "./parser-yaml": "./plugins/yaml.js",
+        "./parser-yaml.js": "./plugins/yaml.js",
+        "./plugins/acorn": {
+          "default": "./plugins/acorn.mjs",
+          "require": "./plugins/acorn.js",
+          "types": "./plugins/acorn.d.ts"
+        },
+        "./plugins/angular": {
+          "default": "./plugins/angular.mjs",
+          "require": "./plugins/angular.js",
+          "types": "./plugins/angular.d.ts"
+        },
+        "./plugins/babel": {
+          "default": "./plugins/babel.mjs",
+          "require": "./plugins/babel.js",
+          "types": "./plugins/babel.d.ts"
+        },
+        "./plugins/estree": {
+          "default": "./plugins/estree.mjs",
+          "require": "./plugins/estree.js",
+          "types": "./plugins/estree.d.ts"
+        },
+        "./plugins/flow": {
+          "default": "./plugins/flow.mjs",
+          "require": "./plugins/flow.js",
+          "types": "./plugins/flow.d.ts"
+        },
+        "./plugins/glimmer": {
+          "default": "./plugins/glimmer.mjs",
+          "require": "./plugins/glimmer.js",
+          "types": "./plugins/glimmer.d.ts"
+        },
+        "./plugins/graphql": {
+          "default": "./plugins/graphql.mjs",
+          "require": "./plugins/graphql.js",
+          "types": "./plugins/graphql.d.ts"
+        },
+        "./plugins/html": {
+          "default": "./plugins/html.mjs",
+          "require": "./plugins/html.js",
+          "types": "./plugins/html.d.ts"
+        },
+        "./plugins/markdown": {
+          "default": "./plugins/markdown.mjs",
+          "require": "./plugins/markdown.js",
+          "types": "./plugins/markdown.d.ts"
+        },
+        "./plugins/meriyah": {
+          "default": "./plugins/meriyah.mjs",
+          "require": "./plugins/meriyah.js",
+          "types": "./plugins/meriyah.d.ts"
+        },
+        "./plugins/postcss": {
+          "default": "./plugins/postcss.mjs",
+          "require": "./plugins/postcss.js",
+          "types": "./plugins/postcss.d.ts"
+        },
+        "./plugins/typescript": {
+          "default": "./plugins/typescript.mjs",
+          "require": "./plugins/typescript.js",
+          "types": "./plugins/typescript.d.ts"
+        },
+        "./plugins/yaml": {
+          "default": "./plugins/yaml.mjs",
+          "require": "./plugins/yaml.js",
+          "types": "./plugins/yaml.d.ts"
+        },
+        "./standalone": {
+          "default": "./standalone.mjs",
+          "require": "./standalone.js",
+          "types": "./standalone.d.ts"
+        }
+      },
+      "files": [
+        "LICENSE",
+        "README.md",
+        "THIRD-PARTY-NOTICES.md",
+        "bin/prettier.cjs",
+        "doc.d.ts",
+        "doc.js",
+        "doc.mjs",
+        "index.cjs",
+        "index.d.ts",
+        "index.d.ts",
+        "index.mjs",
+        "internal/experimental-cli-worker.mjs",
+        "internal/experimental-cli.mjs",
+        "internal/legacy-cli.mjs",
+        "package.json",
+        "plugins/acorn.d.ts",
+        "plugins/acorn.js",
+        "plugins/acorn.mjs",
+        "plugins/angular.d.ts",
+        "plugins/angular.js",
+        "plugins/angular.mjs",
+        "plugins/babel.d.ts",
+        "plugins/babel.js",
+        "plugins/babel.mjs",
+        "plugins/estree.d.ts",
+        "plugins/estree.js",
+        "plugins/estree.mjs",
+        "plugins/flow.d.ts",
+        "plugins/flow.js",
+        "plugins/flow.mjs",
+        "plugins/glimmer.d.ts",
+        "plugins/glimmer.js",
+        "plugins/glimmer.mjs",
+        "plugins/graphql.d.ts",
+        "plugins/graphql.js",
+        "plugins/graphql.mjs",
+        "plugins/html.d.ts",
+        "plugins/html.js",
+        "plugins/html.mjs",
+        "plugins/markdown.d.ts",
+        "plugins/markdown.js",
+        "plugins/markdown.mjs",
+        "plugins/meriyah.d.ts",
+        "plugins/meriyah.js",
+        "plugins/meriyah.mjs",
+        "plugins/postcss.d.ts",
+        "plugins/postcss.js",
+        "plugins/postcss.mjs",
+        "plugins/typescript.d.ts",
+        "plugins/typescript.js",
+        "plugins/typescript.mjs",
+        "plugins/yaml.d.ts",
+        "plugins/yaml.js",
+        "plugins/yaml.mjs",
+        "standalone.d.ts",
+        "standalone.js",
+        "standalone.mjs"
+      ],
+      "funding": "https://github.com/prettier/prettier?sponsor=1",
+      "homepage": "https://prettier.io",
+      "license": "MIT",
+      "main": "./index.cjs",
+      "name": "prettier",
+      "preferUnplugged": true,
+      "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+      },
+      "repository": "prettier/prettier",
+      "sideEffects": false,
+      "type": "commonjs",
+      "unpkg": "./standalone.js",
+      "version": "3.10.1"
+    },
+    "physicalEntryCount": 56,
+    "tarball": {
+      "bytes": 3304604,
+      "sha256": "8625d008f4f0d7d513509ecc269b4b2a551a6f1ea3a57ac880e13e84a434213c"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}
