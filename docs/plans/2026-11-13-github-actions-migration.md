@@ -25,7 +25,10 @@ Its rc.3-specific exceptions have that historical scope.
 **First implementation milestone.**
 Take a draft PR through source admission, one shared package producer and its existing consumers to the protected `CI / required` verdict.
 Move the release qualification caller onto that contract before touching npm permissions.
-This makes any change in package coverage visible while the deployed release path is still available.
+The next ordinary RC or stable release waits for the staged publishing path, even if the product clears its release gates first.
+Before that release, demonstrate qualification, private stage review, public verification, immutable archival and recovery for the selected channel.
+The rc.3 direct publisher is bound to its historical tarball and approval.
+Unrelated CI and maintenance cleanup can follow the first release through the new path.
 
 ## Evidence baseline
 
@@ -92,7 +95,10 @@ An omitted channel resolves once to `pilot` at admission.
 Empty, unknown, contradictory or changed selections fail before a writer runs.
 Preserve exact-version installs and the scoped alias.
 The first stable completion transfers maintenance to that stable version.
-Handle any previously authorized stale-`next` cleanup as a guarded, recorded effect; before then the observed rc.3 labels are legitimate preimages.
+After stable promotion, separately authorize and verify removal of stale `next`.
+The owner explicitly opens each future preview line once, as part of its release decision.
+For example, publishing `0.2.0-rc.1` to `pilot` leaves `next` absent unless the owner opens the `0.2.0` preview.
+Once open, advance `next` only to a successor RC for that line after public qualification and verification of its immutable archive.
 After stable, record the maintained version with the verified stable release identity so an explicit RC on npm `latest` cannot silently change support.
 Implement these amendments in ADR 0009, `SECURITY.md`, contributor instructions, packed release docs and executable controls together.
 The historical rc.3 approval remains bound to its original bytes.
@@ -225,8 +231,8 @@ A green PR, an old rc.3 exception or a signed tag alone cannot release this cand
 
 **REQ-02, 04, 05.**
 Replace the prospective direct publisher with admission of an exact successful release-qualification run and original attempt.
-Verify closed artifact inventory, archive and tarball digests, source/version, documentation preflight, tag absence at candidate preparation and the subsequent human-signed annotated tag on that exact source.
-Match the signer to the existing registry.
+Verify the closed artifact inventory, archive and tarball digests, source/version and documentation preflight at the captured protected-main commit.
+Require the canonical tag to be absent at candidate preparation and recheck its absence before private staging.
 Reuse the authenticated `release-manual` and `npm-release` decisions where they cover the same effects.
 A changed controller must establish an independently reviewed control-only delta back to the original source.
 If package inputs change, freeze a new candidate.
@@ -245,8 +251,18 @@ Execute pinned, minimal writer tooling from trusted source in a sibling director
 No application install, lifecycle scripts or candidate-controlled code in a writer.
 Authenticate inputs by provider ID/digest, then stage the retained tarball through native `npm stage publish` with public access, explicit tag, provenance and scripts disabled.
 Retain the native stage identifier and authority for exactly that item.
-The owner inspects the stage, matches package, digest and channel and approves with npm 2FA.
-Capture the approval outcome without retaining credentials.
+Apply OwlAPI's [qualified late-tag gate](../implementation-plan.md#p20-late-tag-001) in this order:
+
+1. In an authenticated npm session, the owner inspects the original stage ID and checks the scoped name, version and selected channel.
+   Download that stage's tarball with `npm stage download <stage-id>`, compare its SHA-256 and npm integrity to the frozen candidate, and run the required staged-package checks.
+   If the identity or bytes differ, stop before signing and reconcile or reject the original stage.
+2. After the private copy passes, the owner signs and pushes the annotated `vVERSION` tag on the exact qualified commit.
+   A read-only job verifies the tag object, commit and signer against the existing signer registry.
+   A separate GitHub-only writer prepares the draft with the available pre-publication assets and verifies their identities. Record the draft ID.
+3. After the draft passes verification, the owner approves that same npm stage ID with interactive 2FA.
+   Record the stage ID, expected and observed digests, tag object, draft ID and approval outcome without retaining credentials.
+   If a deterministic defect requires different bytes after signing, preserve the signed tag and follow the [version-abandonment policy in §2.60](../implementation-plan.md#260-decision-qualify-and-where-possible-stage-before-creating-the-immutable-canonical-release-tag).
+
 Pending approval, rejection, ambiguity and public availability are distinct states.
 [npm staging and interactive approval](https://docs.npmjs.com/staged-publishing/) · [Existing tag verifier](../../scripts/verify-release-tag.mjs)
 
@@ -261,6 +277,8 @@ Use fixtures for each stable/RC and pilot/latest combination, wrong signer, miss
 In the inspected npm 12.2.2 CLI, stage publishing delegates to the publish implementation, which gives explicit CLI flags precedence over matching packed settings.
 Exercise that exact CLI on a retained tarball with a controlled registry to check the requested tag and integrity at the receiving boundary.
 A recording provider must see exactly one stage request for a valid intent, zero direct publishes, and no credential fallback.
+Exercise a changed byte in the private download and a wrong stage ID or channel: each must stop before tag creation.
+Prove that a wrong signer or failed draft verification blocks npm approval, and that post-publication evidence can attach only to the verified draft ID.
 A second run encountering an existing request enters read-only reconciliation.
 The first separately authorized real stage verifies the actual npm binding, tag, stage ID, bytes and approval.
 [npm 12.2.2 stage entry](https://github.com/npm/cli/blob/v12.2.2/lib/commands/stage/publish.js) · [npm publish implementation](https://github.com/npm/cli/blob/v12.2.2/lib/commands/publish.js)
@@ -285,8 +303,8 @@ Reuse the frozen runtime/OS recipients with registry acquisition for the new pub
 Never unpack a candidate in a privileged verifier.
 Preserve failed native evidence and the operator's exact pending action.
 
-Create or reconcile one GitHub draft under a GitHub-only contents writer.
-Verify tag object, commit, release ID and each asset before sealing.
+After public qualification, the GitHub-only contents writer reopens the draft ID recorded before npm approval and adds the public verification evidence.
+Fail if the draft is missing or substituted. Verify the tag object, commit, release ID and each asset before sealing that same release.
 Keep the four familiar public subjects (tarball, SBOM, `SHA256SUMS`, release evidence) addressable under their existing roles.
 Add a versioned evidence archive with a closed, digest-indexed inventory when original proof bytes would otherwise expire.
 Preserve signed approvals, source/controller linkage, original provider IDs/attempts, qualifications, rights and security dispositions, provenance and writer journals.
@@ -315,13 +333,18 @@ Demonstrate that failed verification cannot create a second stage or overwrite a
 ### SLICE-007 — Promote, restore and reconcile individual effects
 
 **REQ-04–06.**
-Implement one scoped-package operation for stable promotion, completion of explicit stable `latest`, approved restoration and interrupted-operation reconciliation.
-Support the pre-stable `next` update from the channel table.
-The owner binds operation type, exact source/target version and digest, immutable release ID, expected current npm tags and expected GitHub latest ID/absence.
+Implement one scoped-package operation for stable promotion, completion of explicit stable `latest`, preview designation, withdrawal, restoration and interrupted-operation reconciliation.
+Apply the pre-stable and post-stable `next` rules from the channel contract, including the explicitly opened preview line and the verified successor RC.
+The owner binds operation type, exact source and target identities (or explicit tag removal), relevant release IDs and digests, expected current npm tags and expected GitHub latest ID or absence.
 Freeze the exact operation bytes and digest.
-Validate ordinary restore targets as previously qualified immutable stable releases.
-For an interrupted operation, a guarded restore may address only effects attributed to its original journal and provider readback.
-When there is no prior qualified stable target, use an independently qualified forward fix or an explicitly scoped interrupted-effect repair.
+For a defective production release, restore `latest` to the previous known-good qualified stable. If the first stable has no such predecessor, temporarily remove `latest` while qualifying the correction.
+Before the first stable, withdrawing a completed RC that the owner explicitly put on `latest` is a new incident operation.
+With separate owner authorization, restore npm `latest` to its safe, security-supported RC predecessor after verifying its original qualification and immutable archive under the contract that produced it.
+If there is no eligible predecessor, temporarily remove `latest`. In either case guard the GitHub prerelease classification and GitHub latest ID or absence.
+If `next` also names the withdrawn RC, separately authorize restoring it to the most recent supported, verified RC or removing it if none qualifies.
+Check the expected current tag immediately before each change and verify the registry result. Record the incident, actor, approval and before/after values for each effect.
+Deprecate the exact defective version under separate authorization when disclosure is safe. Qualify the correction before assigning the affected tags, following the [bad-release policy in §2.33](../implementation-plan.md#233-decision-correct-bad-public-releases-without-erasing-ordinary-history).
+For an interrupted operation, a guarded repair may address only effects attributed to its original journal and provider readback.
 
 Keep all writers, including legacy entry points during migration, in one serialized repository release concurrency group with cancellation disabled.
 A pending external npm approval can outlive the Actions run.
@@ -338,7 +361,7 @@ The GitHub writer accepts that exact handoff, rechecks npm and the target releas
 A separate read-only completion dispatch checks all guarded tags, stable/prerelease flags, GitHub latest ID or absence, signed tag and asset digests.
 Aligned, fully settled inputs yield zero writes.
 After npm succeeds and GitHub fails, resume the GitHub part once the npm effect is settled; after a lost npm acknowledgement, investigate the original effect before issuing another.
-Rollback after a completed bad release means advancing guarded labels to a qualified target or releasing corrected bytes.
+Completion of a withdrawal verifies the authorized restoration or absence of each affected tag.
 Published coordinates and signed tags are immutable.
 
 Before Actions retention expires, retain the complete original writer history, inputs and receipts in a checkpoint signed by the approved owner outside Actions.
@@ -352,6 +375,8 @@ Missing or contradictory history yields a blocked write and a named owner invest
 
 **Proof and exit.**
 Run the state rehearsal against explicit no-op, first stable, stable pilot promotion, RC on `latest`, superseded/rejected stage, foreign handoff, concurrent external tag change, lost acknowledgement at each writer, expired Actions records and missing checkpoint bytes.
+Withdraw a completed pre-stable RC with and without an eligible predecessor, with `next` both affected and unaffected. Verify each authorized npm change and zero GitHub classification writes.
+After first stable, exercise stale-`next` removal, a pilot RC on an unopened line, and an explicitly opened preview with a verified successor. A failed RC or one from a different line must leave `next` and the stable support designation intact.
 Use the recorded rc.3 state as a **legacy read-only** case with zero writes; it cannot satisfy new staging-era proof requirements.
 Keep GitHub latest absent for the RC.
 Verify that incomplete evidence remains visible and that only the original operation's outstanding effect can resume.
@@ -411,7 +436,7 @@ Reassess if acquisition cost, archive bounds or the supported runner matrix inva
 No elapsed-time or cost reduction is assumed.
 
 **Decisions at intake.**
-The owner approved the `pilot` default, the explicit `latest` option and the pre-stable `next` policy in the channel table.
+The owner approved the staged path for the next ordinary release, private byte verification before signing, the `pilot` default, explicit `latest`, the `next` lifecycle and pre-stable RC withdrawal described above.
 The deliberate PR/main cutover, protected writer settings and checkpoint location are implementation-baseline decisions.
 Prefer existing supported controls.
 Choose the smallest hosted observation at the first uncertainty: strict-check behavior for an updated PR, complete CodeQL categories at the exact SHA, the npm package's permitted OIDC operations, or recovery from archived bytes without Actions.
