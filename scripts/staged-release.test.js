@@ -21,6 +21,7 @@ import {
   verifyPrivateStage,
 } from "./staged-release.mjs";
 import { planChannels, applyLabels } from "./release-channel-operation.mjs";
+import { RegistryReadError } from "./public-registry-read.mjs";
 import { readReleaseSecurity } from "./release-qualification-manifest.mjs";
 const bytes = Buffer.from("one immutable fixture");
 const sha = "a".repeat(40),
@@ -142,6 +143,66 @@ const op = {
   before: tags,
   after: { ...tags, next: "0.1.0-rc.4" },
 };
+test.each([
+  "converges",
+  "rate limited",
+  "timeout",
+  "third value",
+  "other tag changed",
+])(
+  "an acknowledged label %s is polled with a single npm write",
+  async (scenario) => {
+    let time = 0,
+      writes = 0,
+      observations = 0;
+    const states = [];
+    const applied = applyLabels(op, {
+      now: () => time,
+      sleep: async (ms) => {
+        time += ms;
+      },
+      read: async (options) => {
+        if (!writes) return op.before;
+        expect(options.attempts).toBe(1);
+        expect(options.timeoutMs).toBeLessThanOrEqual(300000 - time);
+        ++observations;
+        if (scenario === "rate limited" && observations === 1)
+          throw new RegistryReadError("retry", {
+            status: 429,
+            retryAfterMs: 3000,
+          });
+        if (observations === 1 || scenario === "timeout") return op.before;
+        if (scenario === "third value")
+          return { ...op.before, next: "0.1.0-rc.9" };
+        if (scenario === "other tag changed")
+          return { ...op.after, latest: null };
+        return op.after;
+      },
+      write: () => {
+        writes++;
+        return "+next: " + packageName + "@" + op.version;
+      },
+      record: (effect) => states.push(effect.state),
+    });
+    if (scenario === "converges" || scenario === "rate limited") {
+      expect(await applied).toEqual(op.after);
+      expect(states).toEqual(["REQUESTED", "ACKNOWLEDGED", "SETTLED"]);
+    } else {
+      await expect(applied).rejects.toThrow(
+        scenario === "timeout" ? /five minutes/ : /Conflicting/,
+      );
+      expect(states).toEqual(["REQUESTED", "ACKNOWLEDGED"]);
+    }
+    expect(time).toBe(
+      scenario === "timeout"
+        ? 300000
+        : scenario === "rate limited"
+          ? 3000
+          : 1000,
+    );
+    expect(writes).toBe(1);
+  },
+);
 test("advances verified RC before stable, requires opening a new preview after stable", () => {
   expect(planChannels(op).after).toEqual(op.after);
   const next = {
@@ -201,8 +262,24 @@ test.each([null, "0.1.0-rc.2"])(
         throw Error("replay");
       },
       record: () => {},
-      settled,
+      // GitHub may return the two reconciled writer runs newest first.
+      settled: [...settled].reverse(),
     });
+    for (const effects of [
+      [...settled, settled[0]],
+      [{ ...settled[0], before: settled[0].after }],
+    ]) {
+      await expect(
+        applyLabels(withdraw, {
+          read: () => live,
+          write: () => {
+            throw new Error("unexpected replay");
+          },
+          record: () => {},
+          settled: effects,
+        }),
+      ).rejects.toThrow();
+    }
     await expect(
       applyLabels(withdraw, {
         read: () => ({ ...tags, pilot: "0.1.0" }),

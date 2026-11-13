@@ -12,7 +12,10 @@ import { tmpdir } from "node:os";
 import { basename, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
-import { flattenNpmGraph } from "./npm-production-graph.mjs";
+import {
+  assertNpmSbomInventory,
+  flattenNpmGraph,
+} from "./npm-production-graph.mjs";
 import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
 import {
   DOCUMENTATION_PATHS,
@@ -237,6 +240,17 @@ try {
     cwd: subjectDirectory,
     label: "production-only SBOM subject install",
   });
+  for (const file of ["package.json", "package-lock.json"]) {
+    if (
+      !readFileSync(join(subjectDirectory, file)).equals(
+        readFileSync(join(REPOSITORY_ROOT, file)),
+      )
+    ) {
+      throw new Error(
+        "Production inventory install changed its frozen " + file,
+      );
+    }
+  }
   const sbomFileName = `hadden-industries-owlapi-${VERSION}.cdx.json`;
   const sbomPath = join(outputDirectory, sbomFileName);
   runNpm(
@@ -260,6 +274,10 @@ try {
   });
   const lockedIdentities = flattenNpmGraph(lockedGraph);
   const subjectIdentities = flattenNpmGraph(subjectGraph);
+  assertNpmSbomInventory(
+    JSON.parse(readFileSync(sbomPath, "utf8")),
+    subjectIdentities,
+  );
   if (stableJson(lockedIdentities) !== stableJson(subjectIdentities)) {
     throw new Error(
       "Production-only SBOM subject graph differs from the locked graph.",

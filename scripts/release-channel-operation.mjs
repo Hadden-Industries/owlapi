@@ -1,5 +1,7 @@
 import { readWorkflowRuns } from "./github-evidence-reader.mjs";
 import assert from "node:assert/strict";
+import { isDeepStrictEqual } from "node:util";
+import { setTimeout as delay } from "node:timers/promises";
 import { execFileSync } from "node:child_process";
 import {
   appendFileSync,
@@ -12,7 +14,15 @@ import { pathToFileURL } from "node:url";
 import { GitHubReleaseClient, assertReleaseAssets } from "./github-release.mjs";
 import { PACKAGE_NAME, NPM_REGISTRY } from "./package-identity.mjs";
 import { npmSemver } from "./npm-semver.mjs";
-import { readPublicRegistry } from "./public-registry-read.mjs";
+import {
+  readPublicRegistry,
+  RegistryReadError,
+} from "./public-registry-read.mjs";
+import {
+  historicalEvidenceName,
+  isHistoricalRelease,
+  readHistoricalRelease,
+} from "./historical-release-evidence.mjs";
 import {
   readCheckpoint,
   verifyReservations,
@@ -98,11 +108,50 @@ export function planChannels(op) {
   );
   return { after, classify };
 }
-export async function applyLabels(op, { read, write, record, settled = [] }) {
+async function waitForLabelReadback({ before, after, read, now, sleep }) {
+  const deadline = now() + 300_000;
+  let interval = 1_000;
+  while (now() < deadline) {
+    let retryAfter = 0;
+    try {
+      const observed = tagsOnly(
+        await read({
+          attempts: 1,
+          timeoutMs: Math.min(15_000, deadline - now()),
+        }),
+      );
+      if (now() >= deadline) break;
+      if (isDeepStrictEqual(observed, after)) return;
+      assert.deepEqual(observed, before, "Conflicting registry effect");
+    } catch (error) {
+      if (!(error instanceof RegistryReadError && error.transient)) throw error;
+      retryAfter = error.retryAfterMs;
+    }
+    await sleep(
+      Math.max(0, Math.min(deadline - now(), Math.max(interval, retryAfter))),
+    );
+    interval = Math.min(15_000, interval * 2);
+  }
+  throw new Error(
+    "Acknowledged registry effect remains unsettled after five minutes",
+  );
+}
+
+export async function applyLabels(
+  op,
+  {
+    read,
+    write,
+    record,
+    settled = [],
+    now = () => performance.now(),
+    sleep = delay,
+  },
+) {
   const { after } = planChannels(op);
   const current = { ...op.before };
   for (const effect of settled) {
-    assert.ok(labels.includes(effect.tag));
+    assert.ok(labels.includes(effect.tag) && effect.before !== effect.after);
     assert.equal(current[effect.tag], effect.before);
     assert.equal(effect.after, after[effect.tag]);
     assert.equal(effect.state, "SETTLED");
@@ -137,16 +186,47 @@ export async function applyLabels(op, { read, write, record, settled = [] }) {
       state: "ACKNOWLEDGED",
       acknowledgement: String(acknowledgement).trim(),
     });
+    const expected = { ...current, [tag]: after[tag] };
+    await waitForLabelReadback({
+      before: current,
+      after: expected,
+      read,
+      now,
+      sleep,
+    });
     current[tag] = after[tag];
-    assert.deepEqual(
-      tagsOnly(await read()),
-      current,
-      "Unsettled registry effect",
-    );
     record({ ...effect, state: "SETTLED" });
   }
-  assert.deepEqual(tagsOnly(await read()), after);
   return after;
+}
+
+export async function verifiedChannelRelease(client, checkpoint, version) {
+  const historical = isHistoricalRelease(version);
+  const proof = historical
+    ? readHistoricalRelease(
+        version,
+        checkpoint.files.get(historicalEvidenceName(version)),
+      )
+    : JSON.parse(checkpoint.files.get("immutable-" + version + ".json"));
+  if (!historical) assert.equal(proof.state, "IMMUTABLE_VERIFIED");
+  assert.equal(proof.version, version);
+  assert.ok(Number.isSafeInteger(proof.releaseId) && proof.releaseId > 0);
+  const release = await client.read("/releases/" + proof.releaseId);
+  assert.equal(release.id, proof.releaseId);
+  assert.equal(release.immutable, true);
+  assert.equal(release.draft, false);
+  if (historical)
+    assert.equal(
+      release.prerelease,
+      true,
+      "Historical RC classification changed",
+    );
+  assert.equal(release.tag_name, "v" + version);
+  const ref = await client.read("/git/ref/tags/v" + version);
+  assert.equal(ref.object.type, "tag");
+  assert.equal(ref.object.sha, proof.tagObject);
+  assertReleaseAssets({ assets: release.assets, expected: proof.assets });
+  return release;
 }
 
 async function main() {
@@ -176,40 +256,25 @@ async function main() {
     preview: designation.preview,
   });
   if (mode !== "verify")
-    assert.notEqual(op.version, "0.1.0-rc.3", "Historical rc.3 is read-only");
+    assert.ok(
+      !isHistoricalRelease(op.version),
+      "Historical releases are read-only",
+    );
   const operationSha256 = hash(bytes);
   const { after, classify } = planChannels(op);
   assert.match(op.operationId, /^[a-z0-9][a-z0-9-]{0,100}$/u);
-  const read = async () =>
+  const read = async (options) =>
     JSON.parse(
       await readPublicRegistry(
         new URL(
           "-/package/" + encodeURIComponent(PACKAGE_NAME) + "/dist-tags",
           NPM_REGISTRY,
         ),
+        options,
       ),
     );
-  const evidence = (version) => {
-    const proof = JSON.parse(
-      checkpoint.files.get("immutable-" + version + ".json"),
-    );
-    assert.equal(proof.state, "IMMUTABLE_VERIFIED");
-    assert.ok(Number.isSafeInteger(proof.releaseId));
-    return proof;
-  };
-  async function verifiedRelease(version) {
-    const proof = evidence(version),
-      r = await client.read("/releases/" + proof.releaseId);
-    assert.equal(r.immutable, true);
-    assert.equal(r.draft, false);
-    assert.equal(r.tag_name, "v" + version);
-    assert.equal(
-      (await client.read("/git/ref/tags/v" + version)).object.sha,
-      proof.tagObject,
-    );
-    assertReleaseAssets({ assets: r.assets, expected: proof.assets });
-    return r;
-  }
+  const verifiedRelease = (version) =>
+    verifiedChannelRelease(client, checkpoint, version);
   const target = await verifiedRelease(op.version);
   if (op.type === "withdraw")
     for (const { target } of op.restore)
@@ -250,6 +315,7 @@ async function main() {
       JSON.stringify({ ...row, operationSha256 }) + "\n",
       { flush: true },
     );
+  let observedTags;
   if (mode === "npm") {
     assert.equal(
       env.GITHUB_RUN_ATTEMPT,
@@ -269,7 +335,7 @@ async function main() {
       "release-labels.yml",
     );
     await assertPriorOperations(client, env, checkpoint, "stage");
-    let settled = [];
+    const settled = [];
     for (const run of runs.filter((r) => String(r.id) !== env.GITHUB_RUN_ID)) {
       assert.equal(run.status, "completed", "Another label operation is open");
       for (let attempt = 1; attempt <= run.run_attempt; attempt++) {
@@ -303,7 +369,6 @@ async function main() {
               "RECONCILED",
               "Operation already settled",
             );
-            assert.deepEqual(settled, [], "Ambiguous prior operation");
             assert.ok(Array.isArray(prior.effects) && prior.effects.length > 0);
             assert.ok(
               prior.effects.every(
@@ -313,7 +378,7 @@ async function main() {
                   e.state === "SETTLED",
               ),
             );
-            settled = prior.effects;
+            settled.push(...prior.effects);
           }
         }
       }
@@ -330,7 +395,7 @@ async function main() {
         (k.startsWith("GITHUB_") && !k.includes("TOKEN"))
       )
         ambient[k] = v;
-    await applyLabels(op, {
+    observedTags = await applyLabels(op, {
       settled,
       read,
       record,
@@ -446,6 +511,12 @@ async function main() {
       }
     }
     assert.deepEqual(await githubState(), desired);
+    observedTags = tagsOnly(await read());
+    assert.deepEqual(
+      observedTags,
+      after,
+      "Guarded npm labels moved during completion",
+    );
   }
   writeFileSync(
     join(dir, mode + ".json"),
@@ -454,7 +525,7 @@ async function main() {
       runId: env.GITHUB_RUN_ID,
       attempt: env.GITHUB_RUN_ATTEMPT,
       operationSha256,
-      tags: tagsOnly(await read()),
+      tags: observedTags,
       releaseId: target.id,
       github: await githubState(),
     }) + "\n",

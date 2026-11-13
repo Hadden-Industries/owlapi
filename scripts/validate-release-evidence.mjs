@@ -1,4 +1,5 @@
 import { validateStagedReleaseEvidence } from "./staged-evidence.mjs";
+import { readHistoricalRelease } from "./historical-release-evidence.mjs";
 import { readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -51,6 +52,14 @@ export const validateReleaseEvidence = (record) => {
 };
 
 const main = () => {
+  if (process.argv[2] === "--archived") {
+    const [version, path] = process.argv.slice(3);
+    if (process.argv.length !== 5)
+      throw new Error("Expected --archived VERSION FILE");
+    const proof = readHistoricalRelease(version, readFileSync(resolve(path)));
+    process.stdout.write(JSON.stringify(proof, null, 2) + "\n");
+    return;
+  }
   const path = process.argv[2];
   if (!path) {
     throw new Error("Release-evidence validation requires a record path.");
