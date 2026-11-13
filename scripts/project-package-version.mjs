@@ -129,13 +129,45 @@ export async function projectPackageVersion(files, manifest) {
   assert.ok(oidc, "Missing OIDC publication schema");
   if (!publicationSchema.properties.coordinate.enum.includes(coordinate)) {
     publicationSchema.properties.coordinate.enum.push(coordinate);
-    oidc.if.properties.coordinate.enum.push(coordinate);
   }
-  publicationSchema.properties.channel = { enum: ["next", "latest"] };
+  const prospective = publicationSchema.properties.coordinate.enum.filter(
+    (value) =>
+      releaseChannel(value.slice(value.lastIndexOf("@") + 1)) === "pilot",
+  );
+  publicationSchema.properties.channel = {
+    enum: prospective.length ? ["next", "latest", "pilot"] : ["next", "latest"],
+  };
+  publicationSchema.allOf = publicationSchema.allOf.filter(
+    (branch) => branch.$comment !== "Staged publication only",
+  );
+  if (prospective.length)
+    publicationSchema.allOf.push({
+      $comment: "Staged publication only",
+      if: { type: "object", properties: { coordinate: { enum: prospective } } },
+      then: {
+        type: "object",
+        properties: { reconciliation: { type: "null" } },
+        oneOf: [
+          {
+            properties: {
+              enabled: { const: false },
+              mode: { const: "UNRESOLVED" },
+            },
+          },
+          {
+            properties: {
+              enabled: { const: true },
+              mode: { const: "OIDC_STAGED" },
+              reviewedOn: { type: "string", format: "date" },
+            },
+          },
+        ],
+      },
+    });
   publicationSchema.allOf = publicationSchema.allOf.filter(
     (branch) => branch.$comment !== "Generated SemVer channel projection",
   );
-  for (const projectedChannel of ["next", "latest"]) {
+  for (const projectedChannel of ["next", "latest", "pilot"]) {
     const coordinates = publicationSchema.properties.coordinate.enum.filter(
       (value) =>
         releaseChannel(value.slice(value.lastIndexOf("@") + 1)) ===

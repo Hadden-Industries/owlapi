@@ -13,9 +13,11 @@ if (
 )
   throw new Error("The repository manifest has an invalid package identity.");
 export const PACKAGE_VERSION = manifest.version;
-/** Primary publish channel; additional tag approvals are separate release decisions. */
+/** Published historical packages keep their original packed tag. New tarballs default to pilot. */
 export const releaseChannel = (version = PACKAGE_VERSION) =>
-  semver.prerelease(version) ? "next" : "latest";
+  ["0.1.0-alpha.0", "0.1.0-rc.1", "0.1.0-rc.2", "0.1.0-rc.3"].includes(version)
+    ? "next"
+    : "pilot";
 export const PACKAGE_PURL = `pkg:npm/%40hadden-industries/owlapi@${PACKAGE_VERSION}`;
 // The pinned CycloneDX generator retains the canonical package repository qualifier.
 export const PACKAGE_SBOM_PURL = `${PACKAGE_PURL}?vcs_url=${encodeURIComponent("git+https://github.com/Hadden-Industries/owlapi.git")}`;

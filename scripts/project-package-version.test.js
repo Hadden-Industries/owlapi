@@ -42,7 +42,11 @@ test("a future candidate propagates without transferring approval, first-release
   files["untouched-history.json"] =
     '{"version":"0.1.0-rc.2","approval":"retained"}';
   const input = structuredClone(files);
-  const future = { ...manifest, version: "0.1.0-rc.9" };
+  const future = {
+    ...manifest,
+    version: "0.1.0-rc.9",
+    publishConfig: { ...manifest.publishConfig, tag: "pilot" },
+  };
   const output = await projectPackageVersion(files, future);
   expect(files).toEqual(input);
   expect(output["untouched-history.json"]).toBe(
@@ -101,7 +105,7 @@ test("stable projection requires an explicit channel choice and retains closed h
   await expect(projectPackageVersion(files, stable)).rejects.toThrow(
     /publishConfig.tag/,
   );
-  stable.publishConfig = { ...stable.publishConfig, tag: "latest" };
+  stable.publishConfig = { ...stable.publishConfig, tag: "pilot" };
   const output = await projectPackageVersion(files, stable);
   const ajv = new Ajv2020({ allErrors: true, strict: true });
   addFormats(ajv);
@@ -109,7 +113,7 @@ test("stable projection requires an explicit channel choice and retains closed h
     json(output, "docs/release/publication-control.schema.json"),
   );
   const control = json(output, "docs/release/publication-control.json");
-  expect(control.channel).toBe("latest");
+  expect(control.channel).toBe("pilot");
   expect(validate(control)).toBe(true);
   expect(validate({ ...control, channel: "next" })).toBe(false);
   const historical = JSON.parse(

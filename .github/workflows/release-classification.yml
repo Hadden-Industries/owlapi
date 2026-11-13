@@ -1,0 +1,78 @@
+name: Settle release classification
+on:
+  workflow_dispatch:
+    inputs:
+      history_object:
+        description: Original signed protected history tag object SHA
+        type: string
+        required: true
+      operation:
+        description: Operation bound by the signed checkpoint
+        required: true
+        type: choice
+        options: [github, verify]
+permissions: {}
+concurrency:
+  group: owlapi-release
+  cancel-in-progress: false
+  queue: max
+jobs:
+  github:
+    if: github.repository == 'Hadden-Industries/owlapi' && github.ref == 'refs/heads/main' && inputs.operation == 'github'
+    runs-on: ubuntu-26.04
+    timeout-minutes: 25
+    environment: release-manual
+    permissions:
+      contents: write
+      actions: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+          persist-credentials: false
+      - uses: ./.github/actions/setup-producer
+      - name: Settle release classification (github)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HISTORY_OBJECT: ${{ inputs.history_object }}
+        run: node scripts/release-channel-operation.mjs github
+      - name: Retain original operation evidence
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: release-classification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/followup
+          retention-days: 90
+  verify:
+    if: github.repository == 'Hadden-Industries/owlapi' && github.ref == 'refs/heads/main' && inputs.operation == 'verify'
+    runs-on: ubuntu-26.04
+    timeout-minutes: 25
+    permissions:
+      contents: read
+      actions: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+          persist-credentials: false
+      - uses: ./.github/actions/setup-producer
+      - name: Settle release classification (verify)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HISTORY_OBJECT: ${{ inputs.history_object }}
+        run: node scripts/release-channel-operation.mjs verify
+      - name: Retain original operation evidence
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: release-classification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/followup
+          retention-days: 90

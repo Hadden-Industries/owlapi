@@ -134,12 +134,13 @@ export const assertReleasePreflight = ({
     );
   if (qualificationOnly) {
     if (
-      !/^refs\/heads\/[A-Za-z0-9_./-]+$/u.test(sourceRef ?? "") ||
+      sourceRef !== "refs/heads/main" ||
+      remoteMain !== capturedSha ||
       !/^[a-f0-9]{40}$/u.test(capturedSha ?? "") ||
       checkoutHead !== capturedSha
     )
       throw new Error(
-        "Qualification-only dispatch requires an exact captured branch checkout.",
+        "Qualification-only dispatch requires the exact captured protected main checkout.",
       );
     return {
       result: "PASS",
@@ -176,6 +177,7 @@ export const assertReleasePreflight = ({
     );
   }
   if (
+    !["0.1.0-rc.1", "0.1.0-rc.2", "0.1.0-rc.3"].includes(manifest.version) ||
     !publication.enabled ||
     publication.mode !==
       (manifest.version === "0.1.0-rc.1" ? "DIRECT_BOOTSTRAP" : "DIRECT_OIDC")

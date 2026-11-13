@@ -21,6 +21,7 @@ export const assertReleaseProvenance = ({
   commit,
   runId,
   runAttempt,
+  staged = false,
 }) => {
   const definition = statement?.predicate?.buildDefinition;
   const external = definition?.externalParameters?.workflow;
@@ -45,7 +46,8 @@ export const assertReleaseProvenance = ({
     definition?.buildType !==
       "https://slsa-framework.github.io/github-actions-buildtypes/workflow/v1" ||
     external?.repository !== repository ||
-    external.path !== workflow ||
+    external.path !==
+      (staged ? ".github/workflows/stage-release.yml" : workflow) ||
     external.ref !== sourceRef ||
     dependencies?.length !== 1 ||
     dependencies[0].uri !== `git+${repository}@${sourceRef}` ||
@@ -54,7 +56,9 @@ export const assertReleaseProvenance = ({
       "https://github.com/actions/runner/github-hosted" ||
     invocation?.groups?.runId !== String(runId) ||
     !Number.isSafeInteger(publicationAttempt) ||
-    publicationAttempt > runAttempt
+    (staged
+      ? publicationAttempt !== runAttempt
+      : publicationAttempt > runAttempt)
   ) {
     throw new Error(
       "Registry provenance does not bind the scoped RC to this release source, run and tarball.",
@@ -78,6 +82,7 @@ export const verifyRegistryProvenance = async ({
   commit,
   runId,
   runAttempt,
+  staged = false,
 }) => {
   assertPackageIdentity(metadata);
   // Load the mixed CJS/ESM client only for live verification so pure assertions
@@ -126,8 +131,9 @@ export const verifyRegistryProvenance = async ({
   const { bundle } = bundles[0];
   await verify(bundle, {
     certificateIssuer: "https://token.actions.githubusercontent.com",
-    certificateIdentityURI:
-      "^https://github\\.com/Hadden-Industries/owlapi/\\.github/workflows/release\\.yml@refs/heads/main$",
+    certificateIdentityURI: staged
+      ? "^https://github\\.com/Hadden-Industries/owlapi/\\.github/workflows/stage-release\\.yml@refs/heads/main$"
+      : "^https://github\\.com/Hadden-Industries/owlapi/\\.github/workflows/release\\.yml@refs/heads/main$",
   });
   const statement = JSON.parse(
     Buffer.from(bundle.dsseEnvelope.payload, "base64").toString("utf8"),
@@ -138,5 +144,6 @@ export const verifyRegistryProvenance = async ({
     commit,
     runId,
     runAttempt,
+    staged,
   });
 };

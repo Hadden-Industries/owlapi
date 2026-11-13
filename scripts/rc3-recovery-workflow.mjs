@@ -152,11 +152,7 @@ export function ordinaryReleaseWorkflow(workflow, violations) {
   ];
   for (const [id, job] of Object.entries(result.jobs ?? {})) {
     if (Object.hasOwn(RECOVERY_JOBS, id)) continue;
-    const expression = [
-      "third_party_evidence",
-      "consumer_runtimes",
-      "required",
-    ].includes(id)
+    const expression = ["third_party_evidence", "required"].includes(id)
       ? "!cancelled()"
       : publicationIds.includes(id)
         ? "!inputs.qualification_only"

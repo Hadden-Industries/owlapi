@@ -267,9 +267,9 @@ describe("repository workflow governance", () => {
   test.each(["overwrite", "deadline", "hidden-files", "cross-run"])(
     "rejects caller transport-policy override: %s",
     (mutation) => {
-      const violations = mutateWorkflow("ci.yml", (document) => {
+      const violations = mutateWorkflow("qualify-package.yml", (document) => {
         const upload = document
-          .getIn(["jobs", "candidate", "steps"])
+          .getIn(["jobs", "produce", "steps"])
           .items.find(
             (step) => step.get("uses") === "./.github/actions/retain-artifact",
           );
@@ -306,9 +306,9 @@ describe("repository workflow governance", () => {
   );
   test("rejects a direct upload bypass of the shared implementation", () => {
     expect(
-      mutateWorkflow("ci.yml", (document) => {
+      mutateWorkflow("qualify-package.yml", (document) => {
         const upload = document
-          .getIn(["jobs", "candidate", "steps"])
+          .getIn(["jobs", "produce", "steps"])
           .items.find(
             (step) => step.get("uses") === "./.github/actions/retain-artifact",
           );
@@ -317,7 +317,7 @@ describe("repository workflow governance", () => {
           "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
         );
       }).join("\n"),
-    ).toMatch(/39-producer|unapproved Action/u);
+    ).toMatch(/47-producer|unapproved Action/u);
   });
   test.each(["cache", "skip", "command"])(
     "rejects consumer setup bypass: %s",
@@ -343,7 +343,7 @@ describe("repository workflow governance", () => {
   );
   test("rejects a consumer workflow selecting only one frozen lane", () => {
     expect(
-      mutateWorkflow("release.yml", (document) =>
+      mutateWorkflow("installed-qualification.yml", (document) =>
         document.setIn(
           ["jobs", "consumer_runtime", "strategy", "matrix", "include"],
           [],
@@ -964,15 +964,30 @@ describe("repository workflow governance", () => {
     expect(violations.join("\n")).toMatch(/CI verification/u);
   });
 
+  test("rejects mixing GitHub write authority with a staged npm writer", () => {
+    const violations = mutateWorkflow("stage-release.yml", (doc) =>
+      doc.setIn(["jobs", "stage", "permissions", "contents"], "write"),
+    );
+    expect(violations.join("\n")).toContain("operation authority");
+  });
   test("the checked-in controls match the closed Phase 19 workflow policy", () => {
     const report = auditRepositoryControls();
 
     expect(report.workflowFiles).toEqual([
       "ci.yml",
       "extended-tests.yml",
+      "github-release.yml",
+      "installed-diagnostic.yml",
+      "installed-qualification.yml",
       "maintenance.yml",
+      "qualify-package.yml",
+      "release-classification.yml",
+      "release-completion.yml",
+      "release-labels.yml",
       "release-reconciliation.yml",
+      "release-registry.yml",
       "release.yml",
+      "stage-release.yml",
     ]);
     expect(report.issueFormFiles).toEqual([
       "bug.yml",
@@ -1255,7 +1270,7 @@ describe("repository workflow governance", () => {
       mutateWorkflow("ci.yml", (document) => {
         const jobs = document.get("jobs");
         const download = jobs.items
-          .flatMap(({ value }) => value.get("steps").items)
+          .flatMap(({ value }) => value.get("steps")?.items ?? [])
           .find(
             (step) =>
               step.get("uses")?.startsWith("actions/download-artifact@") &&

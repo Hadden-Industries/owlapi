@@ -41,7 +41,7 @@ const accepted = {
 };
 
 describe("release preflight", () => {
-  test.each(["0.1.0-rc.3", "0.1.0-rc.9"])(
+  test.each(["0.1.0-rc.2", "0.1.0-rc.3"])(
     "later candidate %s requires its own OIDC approval rather than another bootstrap exception",
     (version) => {
       const selected = {
@@ -137,15 +137,8 @@ describe("release preflight", () => {
       });
     const qualification = invoke("true");
     expect(qualification.error).toBeUndefined();
-    expect(qualification.stderr).toBe("");
-    expect(qualification.status).toBe(0);
-    expect(JSON.parse(qualification.stdout)).toEqual({
-      result: "PASS",
-      mode: "QUALIFICATION_ONLY",
-      sourceCommit: head,
-      sourceRef: "refs/heads/ci/qualification-entry-point-regression",
-      publicationEnabled: false,
-    });
+    expect(qualification.status).not.toBe(0);
+    expect(qualification.stderr).toMatch(/exact captured protected main/);
     for (const flag of ["false", "TRUE", "1"]) {
       const publication = invoke(flag);
       expect(publication.error).toBeUndefined();
@@ -156,12 +149,12 @@ describe("release preflight", () => {
     }
   });
 
-  test("an exact branch can qualify with every publication boundary disabled", () => {
+  test("only the exact protected main head can qualify with every publication boundary disabled", () => {
     const input = {
       ...accepted,
       qualificationOnly: true,
-      sourceRef: "refs/heads/ci/unified-owl-contract-qualification",
-      remoteMain: "b".repeat(40),
+      sourceRef: "refs/heads/main",
+      remoteMain: accepted.checkoutHead,
       canonicalTagLookupStatus: 0,
     };
     expect(assertReleasePreflight(input)).toEqual({
@@ -172,7 +165,7 @@ describe("release preflight", () => {
       publicationEnabled: false,
     });
     expect(() =>
-      assertReleasePreflight({ ...input, qualificationOnly: false }),
+      assertReleasePreflight({ ...input, remoteMain: "b".repeat(40) }),
     ).toThrow(/main/);
     expect(() =>
       assertReleasePreflight({ ...input, checkoutHead: "b".repeat(40) }),

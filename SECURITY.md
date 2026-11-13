@@ -8,11 +8,13 @@ The project name and recommended consumer dependency alias remain `owlapi`; the 
 | Release state                           | Security-supported version                                                                                             |
 | --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | Before production `0.1.0`               | Only the single prerelease currently designated by npm's `next` tag                                                    |
-| After production `0.1.0`                | Only the latest production release designated by npm's `latest` tag, unless a later explicit policy names another line |
+| After production `0.1.0`                | The most recently completed stable support designation, including while an RC occupies npm’s `latest` tag |
 | Older production or prerelease versions | Unsupported unless a later explicit LTS or security-branch policy names them                                           |
 
 UO and WebVOWL may each accept an exactly pinned RC for production after complete artifact verification and their own consumer qualification, without waiting for stable `0.1.0`.
 That acceptance does not extend the security-support window or make a prerelease a stable release.
+
+The release owner explicitly opens each post-stable preview line. An RC advances that line’s `next` only after public and immutable verification. The maintained stable identity is recorded in [the support designation](docs/release/support-designation.json).
 
 If `next` moves or stable `0.1.0` supersedes it, each consumer must explicitly qualify and pin a supported replacement; installations do not automatically follow either tag.
 

@@ -138,6 +138,7 @@
     "prepare:github-cli": "node scripts/prepare-github-cli.mjs",
     "qualify:git-package-equivalence": "node scripts/qualify-git-package-equivalence.mjs",
     "qualify:installed-candidate": "node scripts/qualify-installed-candidate.mjs",
+    "qualify:staged-registry": "node scripts/staged-release-followup.mjs registry",
     "qualify:public-registry": "node scripts/qualify-public-registry.mjs",
     "qualify:release": "node scripts/qualify-release.mjs",
     "record:extended-test-status": "node scripts/record-extended-test-status.mjs",

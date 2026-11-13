@@ -153,7 +153,7 @@ const requireSuccess = (result, label) => {
   return result;
 };
 
-const exerciseFreshConsumers = async (metadata, tarball) => {
+const exerciseFreshConsumers = async (metadata, tarball, origin) => {
   const root = mkdtempSync(join(tmpdir(), "owlapi-public-registry-"));
   try {
     const results = {};
@@ -211,9 +211,10 @@ const exerciseFreshConsumers = async (metadata, tarball) => {
       metadata,
       tarball,
       cache: join(root, "provenance-cache"),
-      commit: process.env.GITHUB_SHA,
-      runId: process.env.GITHUB_RUN_ID,
-      runAttempt: Number(process.env.GITHUB_RUN_ATTEMPT),
+      commit: origin?.commit ?? process.env.GITHUB_SHA,
+      runId: origin?.runId ?? process.env.GITHUB_RUN_ID,
+      runAttempt: Number(origin?.attempt ?? process.env.GITHUB_RUN_ATTEMPT),
+      staged: Boolean(origin),
     });
     return { consumer: results, provenance };
   } finally {
@@ -230,6 +231,7 @@ const argumentValue = (name) => {
 export const qualifyPublicRegistry = async ({
   candidate,
   outputPath,
+  stageOrigin,
   publication = () =>
     readPublicationAttempt({
       client: new GitHubReleaseClient({
@@ -271,6 +273,16 @@ export const qualifyPublicRegistry = async ({
       tarball: registryTarball,
     } = await wait({
       retainedSha256: candidate.tarball.sha256,
+      ...(stageOrigin
+        ? {
+            channel: stageOrigin.channel,
+            previousTags: stageOrigin.before,
+            elapsedSinceApproval: Math.max(
+              0,
+              Date.parse(now()) - Date.parse(stageOrigin.approvedAt),
+            ),
+          }
+        : {}),
       observe: (observation) => {
         observations.push(observation);
         pendingReport.result = observation.state;
@@ -289,13 +301,21 @@ export const qualifyPublicRegistry = async ({
       },
     });
     verifyIntegrity(registryTarball, metadata.dist?.integrity);
-    const facts = assertPublicRegistryFacts({
-      expectedVersion: version,
-      retainedSha256: candidate.tarball.sha256,
-      metadata,
-      distTags,
-      registryTarballSha256: sha256Buffer(registryTarball),
-    });
+    const facts = stageOrigin
+      ? {
+          coordinate: PACKAGE_NAME + "@" + version,
+          channel: stageOrigin.channel,
+          distTags,
+          integrity: metadata.dist.integrity,
+          tarballSha256: sha256Buffer(registryTarball),
+        }
+      : assertPublicRegistryFacts({
+          expectedVersion: version,
+          retainedSha256: candidate.tarball.sha256,
+          metadata,
+          distTags,
+          registryTarballSha256: sha256Buffer(registryTarball),
+        });
     const manifest = JSON.parse(
       readFileSync(new URL("../package.json", import.meta.url), "utf8"),
     );
@@ -306,6 +326,7 @@ export const qualifyPublicRegistry = async ({
     const { consumer, provenance } = await verifyConsumers(
       metadata,
       registryTarball,
+      stageOrigin,
     );
     observations.push({
       state: "VERIFICATION_PASSED",

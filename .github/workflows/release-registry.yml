@@ -1,0 +1,83 @@
+name: Verify staged public recipients
+on:
+  workflow_dispatch:
+    inputs:
+      history_object:
+        description: Original signed protected history tag object SHA
+        type: string
+        required: true
+permissions: {}
+concurrency:
+  group: owlapi-release
+  cancel-in-progress: false
+  queue: max
+jobs:
+  registry:
+    if: github.repository == 'Hadden-Industries/owlapi' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-26.04
+    outputs:
+      matrix: ${{ steps.public.outputs.matrix }}
+      tarball: ${{ steps.public.outputs.tarball }}
+    timeout-minutes: 80
+    permissions:
+      contents: read
+      actions: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+          persist-credentials: false
+      - uses: ./.github/actions/setup-producer
+      - run: npm ci --ignore-scripts
+      - name: Verify staged public recipients (registry)
+        id: public
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HISTORY_OBJECT: ${{ inputs.history_object }}
+        run: npm run qualify:staged-registry
+      - name: Retain original operation evidence
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: release-registry-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/followup
+          retention-days: 90
+  public_recipient:
+    needs: registry
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 50
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: ${{ matrix.shell }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.registry.outputs.matrix).include }}
+    env:
+      OWLAPI_RUNTIME_MATRIX: ${{ needs.registry.outputs.matrix }}
+      OWLAPI_EXPECTED_NODE: ${{ matrix.node }}
+      TARBALL_SHA256: ${{ needs.registry.outputs.tarball }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup-producer
+      - run: node scripts/consumer-runtime-tools.mjs prepare
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ matrix.node }}
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - run: node scripts/public-recipient-lane.mjs
+      - uses: ./.github/actions/retain-artifact
+        with:
+          name: public-recipient-${{ matrix.runner }}-${{ matrix.node }}-${{ github.run_attempt }}
+          path: .release/public-lane/lane.json
+          retention-days: 90

@@ -49,8 +49,17 @@ const ISSUE_FORM_DIRECTORY = join(REPOSITORY_ROOT, ".github", "ISSUE_TEMPLATE");
 const EXPECTED_WORKFLOWS = [
   "ci.yml",
   "extended-tests.yml",
+  "github-release.yml",
+  "installed-diagnostic.yml",
+  "installed-qualification.yml",
   "maintenance.yml",
+  "qualify-package.yml",
+  "stage-release.yml",
+  "release-classification.yml",
+  "release-completion.yml",
+  "release-labels.yml",
   "release-reconciliation.yml",
+  "release-registry.yml",
   "release.yml",
 ];
 const EXPECTED_ISSUE_FORMS = [
@@ -405,7 +414,12 @@ const validateActionUses = (fileName, workflow, document, violations) => {
       ) {
         add(
           violations,
-          (["ci.yml", "release.yml", "maintenance.yml"].includes(fileName) &&
+          ([
+            "ci.yml",
+            "release.yml",
+            "maintenance.yml",
+            "installed-qualification.yml",
+          ].includes(fileName) &&
             [
               "runtime_matrix",
               "consumer_runtime",
@@ -563,6 +577,23 @@ const validateActionUses = (fileName, workflow, document, violations) => {
           `${fileName}: checkout must disable persisted credentials`,
         );
       if (step.uses.startsWith("actions/setup-node@")) {
+        if (
+          fileName === "release-registry.yml" &&
+          jobId === "public_recipient"
+        ) {
+          requireFields(
+            step.with,
+            {
+              "node-version": "${{ matrix.node }}",
+              "check-latest": false,
+              cache: "",
+              "package-manager-cache": false,
+            },
+            fileName + " frozen public lane",
+            violations,
+          );
+          continue;
+        }
         add(
           violations,
           (fileName === "maintenance.yml" && jobId === "reporter") ||
@@ -630,6 +661,89 @@ const isOptionalCiEvidenceStep = (fileName, jobId, step) =>
       ["receipt_upload", "main_receipt_upload"].includes(step.id) &&
       step.uses === RETAIN_ARTIFACT));
 
+const readAuthority = { contents: "read", actions: "read" };
+const npmAuthority = { ...readAuthority, "id-token": "write" };
+const githubAuthority = { ...readAuthority, contents: "write" };
+const operationJobs = {
+  "stage-release.yml": {
+    admit: [readAuthority, "release-manual"],
+    stage: [npmAuthority, "npm-release"],
+  },
+  "github-release.yml": {
+    draft: [githubAuthority, "release-manual"],
+    seal: [githubAuthority, "release-manual"],
+  },
+  "release-labels.yml": { npm: [npmAuthority, "npm-tags"] },
+  "release-classification.yml": {
+    github: [githubAuthority, "release-manual"],
+    verify: [readAuthority],
+  },
+  "release-registry.yml": {
+    registry: [readAuthority],
+    public_recipient: [{ contents: "read" }],
+  },
+  "release-completion.yml": {
+    complete: [{ ...readAuthority, attestations: "read" }],
+  },
+};
+function validateOperationJobs(file, workflow, violations) {
+  const policy = operationJobs[file];
+  if (!policy) return;
+  add(
+    violations,
+    sameInventory(Object.keys(workflow.jobs), Object.keys(policy)) &&
+      isDeepStrictEqual(Object.keys(workflow.on), ["workflow_dispatch"]),
+    file + ": unexpected operation jobs or triggers",
+  );
+  for (const [name, [permissions, environment]] of entries(policy)) {
+    const job = workflow.jobs[name];
+    add(
+      violations,
+      job &&
+        isDeepStrictEqual(job.permissions, permissions) &&
+        job.environment === environment,
+      file + ":" + name + " operation authority or environment changed",
+    );
+    if (!job || !Object.values(permissions).includes("write")) continue;
+    const command =
+      file === "stage-release.yml"
+        ? 'node "$GITHUB_WORKSPACE/scripts/staged-release.mjs" stage'
+        : "node scripts/" +
+          (file === "github-release.yml"
+            ? "staged-release-followup"
+            : "release-channel-operation") +
+          ".mjs " +
+          name;
+    add(
+      violations,
+      isDeepStrictEqual(
+        job.steps.filter((s) => s.run).map((s) => s.run),
+        [command],
+      ) &&
+        !JSON.stringify(job).includes("secrets.") &&
+        job.steps.every(
+          (s) =>
+            !s.uses ||
+            s.uses.startsWith("actions/checkout@") ||
+            s.uses === "./.github/actions/setup-producer" ||
+            s.uses === RETAIN_ARTIFACT ||
+            (name === "stage" &&
+              s.uses.startsWith("actions/download-artifact@")),
+        ),
+      file + ":" + name + " writer must run only the scoped controller",
+    );
+  }
+  if (file !== "release-completion.yml")
+    add(
+      violations,
+      isDeepStrictEqual(workflow.concurrency, {
+        group: "owlapi-release",
+        "cancel-in-progress": false,
+        queue: "max",
+      }),
+      file + ": shared serialized release group required",
+    );
+}
 const validateJobs = (fileName, workflow, violations) => {
   // Commands can reach a script indirectly through env, matrix or action inputs.
   // Preserve the workflow-wide policy over resolved values, never YAML comments.
@@ -640,10 +754,62 @@ const validateJobs = (fileName, workflow, violations) => {
       `${fileName}: forbidden workflow construct ${forbidden}`,
     );
   for (const [id, job] of entries(workflow.jobs)) {
+    if (
+      id === "consumer_runtimes" &&
+      job.uses === "./.github/workflows/installed-qualification.yml"
+    ) {
+      const candidate = fileName === "maintenance.yml" ? "health" : "candidate";
+      requireFields(
+        job,
+        {
+          permissions: { contents: "read" },
+          with: {
+            matrix: "${{ needs.runtime_matrix.outputs.matrix }}",
+            artifact_id:
+              "$" + "{{ needs." + candidate + ".outputs.artifact_id }}",
+            artifact_digest:
+              "$" + "{{ needs." + candidate + ".outputs.artifact_digest }}",
+          },
+        },
+        fileName + " installed caller",
+        violations,
+      );
+      add(
+        violations,
+        sameInventory(needs(job), ["runtime_matrix", candidate]) &&
+          Object.keys(job).every((k) =>
+            ["name", "uses", "permissions", "with", "needs"].includes(k),
+          ),
+        fileName + " installed caller must be read-only",
+      );
+      continue;
+    }
+    if (job.uses) {
+      add(
+        violations,
+        ["ci.yml", "release.yml"].includes(fileName) &&
+          id === "candidate" &&
+          job.uses === "./.github/workflows/qualify-package.yml" &&
+          isDeepStrictEqual(job.permissions, { contents: "read" }) &&
+          isDeepStrictEqual(job.with, {
+            artifact_name: "${{ needs.metadata.outputs.artifact_name }}",
+            version: "${{ needs.metadata.outputs.version }}",
+          }) &&
+          Object.keys(job).every((key) =>
+            ["name", "needs", "if", "permissions", "uses", "with"].includes(
+              key,
+            ),
+          ),
+        `${fileName}:${id} must use the read-only local package workflow`,
+      );
+      continue;
+    }
     const runner = job?.["runs-on"];
     const isEvidenceMatrix =
       fileName === "extended-tests.yml" && id === "third_party_evidence_shard";
-    const isConsumerMatrix = id === "consumer_runtime";
+    const isConsumerMatrix =
+      id === "consumer_runtime" ||
+      (fileName === "release-registry.yml" && id === "public_recipient");
     add(
       violations,
       isConsumerMatrix
@@ -762,15 +928,43 @@ const validateCandidateUpload = (fileName, job, directory, violations) => {
 };
 
 const validateCandidateTransport = (fileName, workflow, violations) => {
-  if (!["ci.yml", "release.yml", "extended-tests.yml"].includes(fileName))
-    return;
-  if (fileName !== "extended-tests.yml")
+  if (fileName === "qualify-package.yml") {
+    const producer = workflow.jobs?.produce;
     validateCandidateUpload(
       fileName,
-      workflow.jobs?.candidate,
+      producer,
       ".release/candidate",
       violations,
     );
+    const inputs = Object.fromEntries(
+      ["version", "artifact_name"].map((key) => [
+        key,
+        { required: true, type: "string" },
+      ]),
+    );
+    const outputs = Object.fromEntries(
+      ["artifact_id", "artifact_digest", "proof_id"].map((key) => [
+        key,
+        { value: "$" + "{{ jobs.produce.outputs." + key + " }}" },
+      ]),
+    );
+    add(
+      violations,
+      isDeepStrictEqual(workflow.on, { workflow_call: { inputs, outputs } }) &&
+        isDeepStrictEqual(Object.keys(workflow.jobs ?? {}), ["produce"]) &&
+        isDeepStrictEqual(producer?.permissions, { contents: "read" }) &&
+        steps(producer).filter(
+          (step) =>
+            step.run === "npm run build:release-candidate" &&
+            !step.if &&
+            !step["continue-on-error"],
+        ).length === 1,
+      "qualify-package.yml: closed read-only producer contract changed",
+    );
+    return;
+  }
+  if (!["ci.yml", "release.yml", "extended-tests.yml"].includes(fileName))
+    return;
   const reportSelectors = [
     "owl_contract",
     "publication_preflight",
@@ -1146,8 +1340,12 @@ const validateCiVerification = (workflow, violations) => {
   for (const id of roots) {
     add(
       violations,
-      sameInventory(needs(jobs[id]), ["verification"]) &&
-        jobs[id]?.if === "needs.verification.outputs.reuse != 'true'",
+      sameInventory(
+        needs(jobs[id]),
+        id === "source_json"
+          ? ["verification", "source_portable"]
+          : ["verification"],
+      ) && jobs[id]?.if === "needs.verification.outputs.reuse != 'true'",
       `${label} full root gate changed: ${id}`,
     );
   }
@@ -1443,7 +1641,7 @@ const validateCiVerification = (workflow, violations) => {
     mainReceipt,
     {
       run: "node scripts/ci-verification-command.mjs record-main",
-      if: "github.event_name == 'push'",
+      if: "github.event_name == 'push' || github.event_name == 'workflow_dispatch'",
       env: { REQUIRED_JOB_RESULTS_JSON: "${{ toJSON(needs) }}" },
       "timeout-minutes": 1,
     },
@@ -2694,7 +2892,6 @@ const validateMaintenanceReporter = (workflow, violations) => {
       "health",
       "reporter",
       "runtime_matrix",
-      "consumer_runtime",
       "consumer_runtimes",
     ]),
     "maintenance.yml: expected the health, isolated reporter and consumer qualification jobs",
@@ -3024,11 +3221,7 @@ const validateConsumerRuntimeControls = (
       );
     }
   }
-  for (const [file, prefix, candidate] of [
-    ["ci.yml", "CI", "candidate"],
-    ["release.yml", "Release", "candidate"],
-    ["maintenance.yml", "Maintenance", "health"],
-  ]) {
+  for (const file of ["ci.yml", "release.yml", "maintenance.yml"]) {
     const jobs = workflows[file]?.jobs ?? {};
     if (file !== "maintenance.yml")
       for (const id of Object.keys(CI_JOB_NAMES).filter(
@@ -3061,8 +3254,16 @@ const validateConsumerRuntimeControls = (
         );
       }
     const matrix = jobs.runtime_matrix,
-      consumer = jobs.consumer_runtime,
-      aggregate = jobs.consumer_runtimes;
+      consumer =
+        workflows["installed-qualification.yml"].jobs?.consumer_runtime,
+      aggregate =
+        workflows["installed-qualification.yml"].jobs?.consumer_runtimes;
+    add(
+      violations,
+      jobs.consumer_runtimes?.uses ===
+        "./.github/workflows/installed-qualification.yml",
+      file + " must use shared installed qualification",
+    );
     add(
       violations,
       steps(matrix).length === 2 &&
@@ -3080,16 +3281,16 @@ const validateConsumerRuntimeControls = (
     );
     add(
       violations,
-      sameInventory(needs(consumer), ["runtime_matrix", candidate]) &&
+      needs(consumer).length === 0 &&
         consumer?.strategy?.["fail-fast"] === false &&
         consumer.strategy.matrix?.include ===
-          "${{ fromJSON(needs.runtime_matrix.outputs.matrix).include }}",
+          "${{ fromJSON(inputs.matrix).include }}",
       `${file}: consumer must execute every frozen lane`,
     );
     requireFields(
       consumer,
       {
-        name: `${prefix} / consumer / \u0024{{ matrix.runner }} / Node \u0024{{ matrix.node }}`,
+        name: `Consumer / \u0024{{ matrix.runner }} / Node \u0024{{ matrix.node }}`,
         "runs-on": "${{ matrix.runner }}",
       },
       `${file}: consumer lane identity`,
@@ -3101,10 +3302,10 @@ const validateConsumerRuntimeControls = (
     requireFields(
       qualify?.with,
       {
-        matrix: "${{ needs.runtime_matrix.outputs.matrix }}",
+        matrix: "${{ inputs.matrix }}",
         node: "${{ matrix.node }}",
-        "candidate-id": `\u0024{{ needs.${candidate}.outputs.artifact_id }}`,
-        "candidate-digest": `sha256:\u0024{{ needs.${candidate}.outputs.artifact_digest }}`,
+        "candidate-id": "${{ inputs.artifact_id }}",
+        "candidate-digest": "sha256:${{ inputs.artifact_digest }}",
       },
       `${file}: candidate/runtime binding`,
       violations,
@@ -3113,11 +3314,7 @@ const validateConsumerRuntimeControls = (
       violations,
       !consumer?.if &&
         !qualify?.if &&
-        sameInventory(needs(aggregate), [
-          "runtime_matrix",
-          candidate,
-          "consumer_runtime",
-        ]),
+        sameInventory(needs(aggregate), ["consumer_runtime"]),
       `${file}: qualification must not skip required lanes`,
     );
     const require = steps(aggregate).find(
@@ -3126,10 +3323,10 @@ const validateConsumerRuntimeControls = (
     requireFields(
       require?.with,
       {
-        matrix: "${{ needs.runtime_matrix.outputs.matrix }}",
+        matrix: "${{ inputs.matrix }}",
         "lanes-result": "${{ needs.consumer_runtime.result }}",
-        "candidate-id": `\u0024{{ needs.${candidate}.outputs.artifact_id }}`,
-        "candidate-digest": `sha256:\u0024{{ needs.${candidate}.outputs.artifact_digest }}`,
+        "candidate-id": "${{ inputs.artifact_id }}",
+        "candidate-digest": "sha256:${{ inputs.artifact_digest }}",
       },
       `${file}: complete runtime gate`,
       violations,
@@ -3243,8 +3440,8 @@ const validateArtifactTransportControls = (
         RETAIN_ARTIFACT,
         "./approval-tools/.github/actions/retain-artifact",
       ].includes(step.uses),
-    ).length === 39,
-    "Artifact transport must cover the complete 39-producer inventory",
+    ).length === 47,
+    "Artifact transport must cover the complete 47-producer inventory",
   );
   add(
     violations,
@@ -3280,7 +3477,7 @@ export const auditRepositoryControls = ({
   add(
     violations,
     sameInventory(workflowFiles, EXPECTED_WORKFLOWS),
-    "The repository must contain exactly the six approved workflow files.",
+    "The repository must contain exactly the approved workflow files.",
   );
   add(
     violations,
@@ -3342,6 +3539,7 @@ export const auditRepositoryControls = ({
         );
       }
     }
+    validateOperationJobs(fileName, workflow, violations);
     validateJobs(fileName, workflow, violations);
     validateCandidateTransport(fileName, workflow, violations);
   }
@@ -3352,7 +3550,17 @@ export const auditRepositoryControls = ({
   add(
     violations,
     isDeepStrictEqual(ci.on, {
-      pull_request: { branches: ["main"] },
+      workflow_dispatch: {
+        inputs: {
+          subject: {
+            description:
+              "Exact current protected main commit for full qualification",
+            type: "string",
+            required: true,
+          },
+        },
+      },
+      pull_request: { types: ["ready_for_review"], branches: ["main"] },
       push: { branches: ["main"] },
     }),
     "ci.yml: trigger must be pull_request and main push without path filters",

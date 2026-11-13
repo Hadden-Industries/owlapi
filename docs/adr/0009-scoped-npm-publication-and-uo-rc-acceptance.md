@@ -48,13 +48,19 @@ Each application's own production contract and deployment authority remain with 
 The [rc.2 reconciliation](../plans/0.1.0-rc.2-java-parity.md#72-executable-gap-to-close-before-rc2-qualification) records producer/application gate separation delivered through PR 47, with successor version/channel work and fresh qualification still required.
 The original policy amendment did not implement those controls; their actual implementation is recorded in the [installed OWL contract](../compatibility/installed-owl-contract.md).
 Rc.1 remains immutable, and the [publication record](../provenance/releases/0.1.0-rc.1/publication-status.md#github-finalization-readback-9-october-2026) now records its finalization separately from the original failed workflow.
-The owner's clarified policy is that `latest` identifies the most recently publicly released owlapi version, including prereleases.
-Accordingly, the authorized rc.2 release advances both `next` and `latest` to `0.1.0-rc.2`; each later public release advances `latest` as part of that release's existing authorization, without another version-specific permission gate.
+For releases through rc.3, the owner's policy was that `latest` identifies the most recently publicly released owlapi version, including prereleases.
+Accordingly, the authorized rc.2 release advances both `next` and `latest` to `0.1.0-rc.2`; each public release under that historical contract advanced `latest` as part of that release's existing authorization, without another version-specific permission gate.
 `next` continues to identify the selected prerelease channel and does not reserve `latest` for stable versions.
 The later stable release advances `latest` in the same way, with stale `next` cleanup governed by the existing channel policy.
 This is owlapi's chosen policy: npm's [distribution-tag contract](https://docs.npmjs.com/cli/v12/commands/npm-dist-tag/) makes `latest` the default installation pointer and permits the publisher to select its target.
 Release tooling must explicitly establish and verify the required tag state; publishing under `next` alone does not guarantee that `latest` changes.
 Historical observations remain unchanged, and exact consumer pins do not move when a tag moves.
+
+### Staged successor releases, accepted 13 November 2026
+
+A new tarball defaults to `pilot`. At stage admission the owner can explicitly select `latest` for a stable version or an RC. The tag controls unversioned npm installs. A completed stable designation controls production security support. Every candidate is initially archived as a GitHub prerelease; stable promotion changes the classification of that same verified release ID.
+
+Before the first stable promotion, `next` follows the security-supported RC after public qualification and immutable verification. Removing stale `next` after first stable is a separate decision. The owner opens each later preview line once. A verified successor on that line can advance `next`. Withdrawal restores each affected label to an independently qualified predecessor or removes it under explicit approval. The release tag and immutable package bytes remain addressable. [Staged operations](../release/staged-operations.md)
 
 ## Consequences
 

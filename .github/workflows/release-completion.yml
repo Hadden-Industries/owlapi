@@ -1,0 +1,42 @@
+name: Verify immutable release completion
+on:
+  workflow_dispatch:
+    inputs:
+      history_object:
+        description: Original signed protected history tag object SHA
+        type: string
+        required: true
+permissions: {}
+jobs:
+  complete:
+    if: github.repository == 'Hadden-Industries/owlapi' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-26.04
+    timeout-minutes: 25
+    permissions:
+      contents: read
+      actions: read
+      attestations: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+          persist-credentials: false
+      - uses: ./.github/actions/setup-producer
+      - name: Install the read-only attestation verifier
+        run: npm ci --ignore-scripts
+      - name: Verify immutable release completion (complete)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HISTORY_OBJECT: ${{ inputs.history_object }}
+        run: node scripts/staged-release-followup.mjs complete
+      - name: Retain original operation evidence
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: release-completion-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/followup
+          retention-days: 90

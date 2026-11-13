@@ -96,7 +96,7 @@ export const createRepositoryReader = ({
       now() + (operationBudget ?? Infinity),
     );
     if (
-      !/^(?:\/immutable-releases|\/(?:commits|actions|git|attestations|releases|deployments)(?:\/|\?)[A-Za-z0-9_./?=&%-]+)$/u.test(
+      !/^(?:\/immutable-releases|\/(?:commits|actions|git|attestations|releases|deployments|code-scanning|rulesets)(?:\/|\?)[A-Za-z0-9_./?=&%-]+)$/u.test(
         path,
       ) ||
       path.includes("..")
@@ -175,3 +175,31 @@ export const createRepositoryReader = ({
     }
   };
 };
+
+/** Read a run's complete artifact inventory, including matrices larger than one page. */
+export async function readRunArtifacts(read, runId) {
+  if (!/^[1-9]\d*$/u.test(String(runId)))
+    throw new Error("Invalid artifact run ID");
+  const artifacts = [];
+  let total;
+  for (let page = 1; page <= 20; page++) {
+    const data = await read(
+      "/actions/runs/" + runId + "/artifacts?per_page=100&page=" + page,
+    );
+    total ??= data.total_count;
+    if (
+      !Number.isSafeInteger(total) ||
+      total !== data.total_count ||
+      !Array.isArray(data.artifacts)
+    )
+      throw new Error("Unstable artifact inventory");
+    artifacts.push(...data.artifacts);
+    if (
+      artifacts.length === total &&
+      new Set(artifacts.map((a) => a.id)).size === total
+    )
+      return artifacts;
+    if (data.artifacts.length !== 100) break;
+  }
+  throw new Error("Incomplete artifact inventory");
+}

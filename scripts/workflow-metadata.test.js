@@ -35,9 +35,14 @@ describe("workflow metadata", () => {
       step.run?.startsWith("npm run finalize:github-release"),
     );
     const { version } = deriveWorkflowMetadata({
-      manifest: { ...manifest, version: "0.1.0-rc.9" },
+      manifest: {
+        ...manifest,
+        version: "0.1.0-rc.9",
+        publishConfig: { tag: "pilot" },
+      },
       publication: {
         ...disabledPublication,
+        channel: "pilot",
         coordinate: "@hadden-industries/owlapi@0.1.0-rc.9",
       },
     });

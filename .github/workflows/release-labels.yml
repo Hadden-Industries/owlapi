@@ -1,0 +1,45 @@
+name: Apply approved npm labels
+on:
+  workflow_dispatch:
+    inputs:
+      history_object:
+        description: Original signed protected history tag object SHA
+        type: string
+        required: true
+permissions: {}
+concurrency:
+  group: owlapi-release
+  cancel-in-progress: false
+  queue: max
+jobs:
+  npm:
+    if: github.repository == 'Hadden-Industries/owlapi' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-26.04
+    timeout-minutes: 25
+    environment: npm-tags
+    permissions:
+      contents: read
+      actions: read
+      id-token: write
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+          persist-credentials: false
+      - uses: ./.github/actions/setup-producer
+      - name: Apply approved npm labels (npm)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HISTORY_OBJECT: ${{ inputs.history_object }}
+        run: node scripts/release-channel-operation.mjs npm
+      - name: Retain original operation evidence
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: release-labels-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/followup
+          retention-days: 90

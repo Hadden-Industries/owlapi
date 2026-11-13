@@ -36,6 +36,9 @@ export const waitForReleaseAvailability = async ({
   sleep = delay,
   observe = () => {},
   policy = availabilityPolicy,
+  channel,
+  previousTags,
+  elapsedSinceApproval = 0,
 }) => {
   const coordinate = `${PACKAGE_NAME}@${PACKAGE_VERSION}`;
   if (
@@ -57,8 +60,16 @@ export const waitForReleaseAvailability = async ({
       "Release availability policy does not bind the exact submitted coordinate and bounded read budget.",
     );
   }
+  if (
+    channel !== undefined &&
+    (!["pilot", "latest"].includes(channel) ||
+      !previousTags ||
+      !Number.isFinite(elapsedSinceApproval))
+  )
+    throw new Error("Invalid staged availability subject");
   const started = now();
-  const deadline = started + policy.deadlineMs;
+  const deadline =
+    started + Math.max(0, policy.deadlineMs - elapsedSinceApproval);
   let stage = "metadata",
     attempt = 0;
   const remaining = () => deadline - now();
@@ -117,19 +128,28 @@ export const waitForReleaseAvailability = async ({
       );
       if (!distTags || typeof distTags !== "object" || Array.isArray(distTags))
         throw new Error("Registry channel metadata is malformed.");
-      for (const channel of ["next", "latest"]) {
+      for (const guarded of channel
+        ? ["pilot", "latest", "next"].filter((tag) => tag !== channel)
+        : []) {
+        if ((distTags[guarded] ?? null) !== previousTags[guarded])
+          throw new Error("Unapproved registry change to " + guarded);
+      }
+      for (const selected of channel ? [channel] : ["next", "latest"]) {
         if (
-          distTags[channel] !== undefined &&
-          distTags[channel] !== PACKAGE_VERSION &&
-          distTags[channel] !== policy.previousVersion
+          distTags[selected] !== undefined &&
+          distTags[selected] !== PACKAGE_VERSION &&
+          distTags[selected] !==
+            (channel ? previousTags[selected] : policy.previousVersion)
         )
           throw new Error(
-            `Registry ${channel} channel conflicts with the submitted release and accepted predecessor.`,
+            `Registry ${selected} channel conflicts with the submitted release and accepted predecessor.`,
           );
       }
       if (
-        distTags.next === PACKAGE_VERSION &&
-        distTags.latest === PACKAGE_VERSION
+        channel
+          ? distTags[channel] === PACKAGE_VERSION
+          : distTags.next === PACKAGE_VERSION &&
+            distTags.latest === PACKAGE_VERSION
       ) {
         observe({
           state: "REGISTRY_AVAILABLE",

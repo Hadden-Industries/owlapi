@@ -46,6 +46,8 @@ Commit the exact dependency and lockfile, then run `npm ci` for reproducible ins
 
 ### Install from the current npm tag
 
+New staged releases default to `pilot`. The release owner can explicitly select `latest`, including for a release candidate. Before the first stable release, `next` identifies the supported RC. After stable promotion, `next` is reserved for a separately designated preview line.
+
 Choose the corresponding command to resolve npm's `latest` tag at installation time.
 The tag can select a prerelease.
 

@@ -103,7 +103,7 @@ export const publicRegistryEnvironment = (root) => {
   const environment = Object.fromEntries(
     Object.entries(process.env).filter(
       ([key]) =>
-        !/^(?:npm_config_|node_auth_token$|npm_token$|node_options$|node_path$)/iu.test(
+        !/^(?:gh_token$|github_token$|actions_id_token_request_|npm_config_|node_auth_token$|npm_token$|node_options$|node_path$)/iu.test(
           key,
         ),
     ),

@@ -53,6 +53,7 @@ The [rc.2 Java-parity programme](plans/0.1.0-rc.2-java-parity.md) remains the ea
 ## Release operations
 
 - [Transport Actions artifacts and recover from a failed transfer](release/artifact-transport.md).
+- [Operate staged releases, restore channels and preserve original evidence](release/staged-operations.md).
 - [Verify registry availability and reconcile approval evidence](release/availability-policy.md).
 
 ## Development conventions

@@ -148,7 +148,17 @@ const limitedBytes = async (response, limit) => {
   return Buffer.concat(chunks);
 };
 
-export const downloadReleaseArtifact = async (client, artifact) => {
+export const downloadReleaseArtifact = async (
+  client,
+  artifact,
+  maximumBytes = 1024 * 1024,
+) => {
+  requireFact(
+    Number.isSafeInteger(maximumBytes) &&
+      maximumBytes > 0 &&
+      maximumBytes <= 64 * 1024 * 1024,
+    "Invalid artifact byte limit",
+  );
   const signal = AbortSignal.timeout(60000);
   const redirect = await fetch(
     `${client.apiRoot}/actions/artifacts/${artifact.id}/zip`,
@@ -170,7 +180,7 @@ export const downloadReleaseArtifact = async (client, artifact) => {
   // The authenticated API digest binds the archive; credentials never go to storage.
   return limitedBytes(
     await fetch(url, { redirect: "error", signal }),
-    1024 * 1024,
+    maximumBytes,
   );
 };
 

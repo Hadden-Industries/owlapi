@@ -175,7 +175,7 @@ const inspectLocalReleaseTag = ({
       `gpg.ssh.allowedSignersFile=${allowedSignersPath}`,
       "verify-tag",
       "--raw",
-      expectedTag,
+      reference,
     ]);
     localVerification = `${verification.stdout}${verification.stderr}`;
   } finally {
