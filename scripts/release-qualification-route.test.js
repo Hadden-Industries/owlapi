@@ -20,6 +20,11 @@ test("omitted inputs run original CI admission in a queue separate from releases
   expect(releaseQualificationMode({})).toBe("reuse");
   expect(releaseQualificationMode(defaults)).toBe("reuse");
   expect(workflow.concurrency.group).toContain("owlapi-qualification-{0}");
+  expect(workflow.jobs.recovery_source.needs).toBe("release_dispatch");
+  expect(workflow.jobs.release_dispatch.needs).toBeUndefined();
+  expect(workflow.jobs.third_party_evidence.if).toContain(
+    "needs.release_admission.result == 'success'",
+  );
   expect(workflow.jobs.release_admission.permissions).toEqual({
     actions: "read",
     checks: "read",
@@ -35,7 +40,7 @@ test("omitted inputs run original CI admission in a queue separate from releases
     "source_canonical",
     "quality_windows",
   ]) {
-    expect(workflow.jobs[id].needs).toBe("release_admission");
+    expect([workflow.jobs[id].needs].flat()).toContain("release_admission");
     expect(workflow.jobs[id].if).toContain("outputs.mode != 'reuse'");
   }
   expect(workflow.jobs.candidate.needs).toEqual(

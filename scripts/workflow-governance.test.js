@@ -35,6 +35,32 @@ const mutateWorkflow = (fileName, mutate) => {
 };
 
 describe("repository workflow governance", () => {
+  test("rejects a literal false on required source admission", () => {
+    expect(
+      mutateWorkflow("ci.yml", (doc) => {
+        const step = doc
+          .getIn(["jobs", "metadata", "steps"])
+          .items.find(
+            (item) =>
+              item.get("name") ===
+              "Check source and workflow admission before the product fan-out",
+          );
+        step.set("if", false);
+      }),
+    ).toContain(
+      "ci.yml:metadata: explicitly disabled step Check source and workflow admission before the product fan-out",
+    );
+  });
+  test("checks permissions inherited by a callable workflow even on its skipped branches", () => {
+    expect(
+      mutateWorkflow("qualify-package.yml", (doc) => {
+        doc.setIn(["jobs", "produce", "permissions", "actions"], "read");
+        doc.setIn(["jobs", "produce", "if"], "${{ false }}");
+      }),
+    ).toContain(
+      "qualify-package.yml:produce: permissions exceed its reusable workflow caller",
+    );
+  });
   test.each(
     ["npm_release", "recovery_publish"].flatMap((job) =>
       [
@@ -858,7 +884,6 @@ describe("repository workflow governance", () => {
     ["ci.yml", "source_portable"],
     ["release.yml", "source_canonical"],
     ["release.yml", "quality_windows"],
-    ["extended-tests.yml", "extended_evidence"],
     ["maintenance.yml", "health"],
   ])("requires locked quality setup before consumers in %s/%s", (file, job) => {
     for (const mutation of ["remove", "skip", "path", "late"]) {
@@ -1292,7 +1317,6 @@ describe("repository workflow governance", () => {
     ["release.yml", "source_portable"],
     ["release.yml", "source_canonical"],
     ["maintenance.yml", "health"],
-    ["extended-tests.yml", "extended_evidence"],
   ])(
     "rejects shallow history in the required %s:%s governance job",
     (fileName, jobId) => {

@@ -275,12 +275,7 @@ export async function recordQualification(env = process.env) {
   const mode = needs.release_admission?.outputs?.mode;
   if (mode === "reuse") {
     assert.ok(FROZEN_RUNTIME_MATRIX, "Missing release runtime matrix");
-    const ci = await verifyPromotedAdmission({
-      read,
-      ci: JSON.parse(needs.release_admission.outputs.evidence),
-      commit: env.GITHUB_SHA,
-      matrixSha256: runtimeDigest(FROZEN_RUNTIME_MATRIX),
-    });
+    const ci = JSON.parse(needs.release_admission.outputs.evidence);
     const inputs = inputHashes();
     assert.equal(
       ci.advisoryObservations.root.lockSha256,
@@ -295,6 +290,16 @@ export async function recordQualification(env = process.env) {
       read,
     });
     await validateReleaseCoordinate({ read, commit: env.GITHUB_SHA });
+    await verifyPromotedAdmission({
+      read,
+      ci,
+      commit: env.GITHUB_SHA,
+      matrixSha256: runtimeDigest(FROZEN_RUNTIME_MATRIX),
+    });
+    assert.equal(
+      (await read("/git/ref/heads/main")).object.sha,
+      env.GITHUB_SHA,
+    );
     return writeQualification({
       schemaVersion: 2,
       repository,

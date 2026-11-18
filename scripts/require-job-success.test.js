@@ -23,6 +23,7 @@ describe("required workflow aggregation", () => {
   test("a release reuse verdict accepts only the original CI route and successful release obligations", () => {
     const needs = successfulNeeds("release");
     const required = [
+      "release_dispatch",
       "runtime_matrix",
       "release_preflight",
       "release_admission",

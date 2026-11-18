@@ -41,16 +41,6 @@ if (
   assert.equal(process.env.GITHUB_EVENT_NAME, "workflow_dispatch");
   assert.equal(process.env.GITHUB_REPOSITORY, "Hadden-Industries/owlapi");
   assert.equal(process.env.GITHUB_REF, "refs/heads/main");
-  const predecessors = JSON.parse(
-    process.env.RELEASE_PREREQUISITES_JSON ?? "null",
-  );
-  const result = mode === "rc3" ? "skipped" : "success";
-  for (const name of ["runtime_matrix", "release_preflight"])
-    assert.equal(
-      predecessors?.[name]?.result,
-      result,
-      `Release admission requires ${name}=${result}`,
-    );
   assert.ok(process.env.GITHUB_OUTPUT);
   appendFileSync(process.env.GITHUB_OUTPUT, `mode=${mode}\n`);
 }

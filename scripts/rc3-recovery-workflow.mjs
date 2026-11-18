@@ -21,7 +21,7 @@ npm dist-tag add @hadden-industries/owlapi@0.1.0-rc.3 latest --registry=https://
 echo '{"state":"PUBLICATION_ACCEPTED","availability":"PENDING","publicationReplay":false}'`;
 const contracts = {
   recovery_source: {
-    needs: ["release_admission"],
+    needs: ["release_dispatch"],
     commands: [
       "npm ci",
       "node scripts/rc3-recovery-policy.mjs outputs",
@@ -152,25 +152,28 @@ export function ordinaryReleaseWorkflow(workflow, violations) {
   ];
   for (const [id, job] of Object.entries(result.jobs ?? {})) {
     if (Object.hasOwn(RECOVERY_JOBS, id)) continue;
-    if (id === "release_admission") {
+    if (id === "release_dispatch") {
       check(
-        job.if === "${{ !cancelled() }}",
-        "release admission must diagnose incompatible dispatch inputs",
+        job.if === undefined && !job.needs,
+        "release dispatch validation must run before the ordinary and recovery routes",
       );
       continue;
     }
-    const expression = ["third_party_evidence", "required"].includes(id)
-      ? "!cancelled()"
-      : publicationIds.includes(id)
-        ? "!inputs.qualification_only"
-        : [
-              "metadata",
-              "source_portable",
-              "source_canonical",
-              "quality_windows",
-            ].includes(id)
-          ? "needs.release_admission.outputs.mode != 'reuse'"
-          : null;
+    const expression =
+      id === "third_party_evidence"
+        ? "!cancelled() && needs.release_admission.result == 'success'"
+        : id === "required"
+          ? "!cancelled()"
+          : publicationIds.includes(id)
+            ? "!inputs.qualification_only"
+            : [
+                  "metadata",
+                  "source_portable",
+                  "source_canonical",
+                  "quality_windows",
+                ].includes(id)
+              ? "needs.release_admission.outputs.mode != 'reuse'"
+              : null;
     check(
       job.if ===
         (expression

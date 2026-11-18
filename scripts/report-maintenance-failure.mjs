@@ -10,6 +10,21 @@ const SUPPORTED_RESULTS = new Set([
   "cancelled",
   "skipped",
 ]);
+const MAINTENANCE_JOBS = ["health", "runtime_matrix", "consumer_runtimes"];
+
+/** A finished health job cannot resolve a still-failing consumer matrix. */
+function overallResult(jobs) {
+  if (
+    !jobs ||
+    Object.keys(jobs).length !== MAINTENANCE_JOBS.length ||
+    !MAINTENANCE_JOBS.every((job) => SUPPORTED_RESULTS.has(jobs[job]))
+  )
+    throw new Error("Unexpected or incomplete maintenance job results.");
+  const observations = Object.values(jobs);
+  return ["failure", "cancelled", "skipped", "success"].find((state) =>
+    observations.includes(state),
+  );
+}
 
 const assertContext = (context) => {
   if (context.apiUrl !== "https://api.github.com") {
@@ -59,7 +74,9 @@ const runMarker = ({ runId, runAttempt }) =>
   `<!-- owlapi-maintenance-run:${runId}:${runAttempt} -->`;
 
 const findingBody = (context) => `${runMarker(context)}
-The automated maintenance health job did not complete successfully.
+The automated maintenance checks did not all complete successfully.
+
+${MAINTENANCE_JOBS.map((name) => "- " + name + " = " + context.jobs[name]).join("\n")}
 
 - Result: \`${context.result}\`
 - Source commit: \`${context.commit}\`
@@ -99,6 +116,7 @@ const requestJson = async (
     try {
       const response = await context.fetchImpl(url, {
         method,
+        redirect: "error",
         headers: {
           accept: "application/vnd.github+json",
           authorization: `Bearer ${context.token}`,
@@ -206,7 +224,8 @@ const mutateOnce = async ({ mutate, reconcile, description }) => {
   }
 };
 
-export const reportMaintenanceResult = async (context) => {
+export const reportMaintenanceResult = async (input) => {
+  const context = { ...input, result: overallResult(input.jobs) };
   assertContext(context);
   const openIssues = await openMaintenanceIssues(context);
   const issue = openIssues[0];
@@ -251,6 +270,10 @@ export const reportMaintenanceResult = async (context) => {
   }
 
   const url = `${context.apiUrl}/repos/${context.repository}/issues/${issue.number}/comments`;
+  if (issue.body?.includes(marker))
+    return { action: "RECONCILED_CREATED", issueNumber: issue.number };
+  const prior = await reconcileComment(context, issue.number, marker);
+  if (prior) return prior;
   return mutateOnce({
     description: "maintenance issue comment",
     mutate: async () => {
@@ -274,7 +297,11 @@ const main = async () => {
     commit: process.env.GITHUB_SHA,
     serverUrl: process.env.GITHUB_SERVER_URL,
     token: process.env.GITHUB_TOKEN,
-    result: process.env.MAINTENANCE_HEALTH_RESULT,
+    jobs: {
+      health: process.env.MAINTENANCE_HEALTH_RESULT,
+      runtime_matrix: process.env.MAINTENANCE_MATRIX_RESULT,
+      consumer_runtimes: process.env.MAINTENANCE_CONSUMER_RESULT,
+    },
     fetchImpl: globalThis.fetch,
   });
   process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);

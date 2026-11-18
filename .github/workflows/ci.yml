@@ -211,13 +211,17 @@ jobs:
         id: metadata
         run: npm run generate:workflow-metadata
         timeout-minutes: 5
+
       - name: Record the hosted runner identity
         run: npm run record:runner -- --expected-os Linux --expected-arch X64 --label ubuntu-26.04 --shell bash
         timeout-minutes: 5
+      - name: Check source and workflow admission before the product fan-out
+        run: npm run check:node && npm run check:version && npm run verify:workflow-governance && node scripts/project-shared-overrides.mjs --check && node scripts/sync-python-target.mjs --check
+        timeout-minutes: 2
 
   source_portable:
     name: CI / Ubuntu / portable source / Node 26.13.0
-    needs: verification
+    needs: [verification, metadata]
     if: needs.verification.outputs.reuse != 'true'
     runs-on: ubuntu-26.04
     timeout-minutes: 60
@@ -322,7 +326,7 @@ jobs:
 
   source_canonical:
     name: CI / Ubuntu / canonical source / Node 26.13.0
-    needs: verification
+    needs: [verification, metadata]
     if: needs.verification.outputs.reuse != 'true'
     runs-on: ubuntu-26.04
     timeout-minutes: 105
@@ -595,7 +599,7 @@ jobs:
 
   dependency_review:
     name: CI / dependency review
-    needs: verification
+    needs: [verification, metadata]
     if: needs.verification.outputs.reuse != 'true'
     runs-on: ubuntu-26.04
     timeout-minutes: 20
@@ -1178,7 +1182,7 @@ jobs:
           retention-days: 90
   quality_windows:
     name: CI / Windows / quality tools
-    needs: verification
+    needs: [verification, metadata]
     if: needs.verification.outputs.reuse != 'true'
     runs-on: windows-2025-vs2026
     timeout-minutes: 120

@@ -505,8 +505,6 @@
       "/jobs/portability_macos_node_26/steps/3/run": "npm run record:runner -- --expected-os macOS --expected-arch ARM64 --label {{runtime:macosRunner}} --shell bash"
     },
     "extended-tests.yml": {
-      "/jobs/extended_evidence/runs-on": "{{runtime:ubuntuRunner}}",
-      "/jobs/extended_evidence/steps/3/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
       "/jobs/third_party_evidence_registry_keys/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/third_party_evidence_registry_keys/steps/3/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
       "/jobs/third_party_evidence_shard/strategy/matrix/os/0/runner": "{{runtime:ubuntuRunner}}",
@@ -539,6 +537,7 @@
       "/jobs/release_preflight/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/release_preflight/steps/4/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
       "/jobs/release_admission/runs-on": "{{runtime:ubuntuRunner}}",
+      "/jobs/release_dispatch/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/metadata/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/metadata/steps/4/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
       "/jobs/source_portable/runs-on": "{{runtime:ubuntuRunner}}",

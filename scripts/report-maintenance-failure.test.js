@@ -14,6 +14,11 @@ const context = Object.freeze({
   serverUrl: "https://github.com",
   token: "test-token",
 });
+const jobs = (health) => ({
+  health,
+  runtime_matrix: "success",
+  consumer_runtimes: "success",
+});
 
 // GitHub's stateless installation-token format is substantially longer than
 // the legacy token shape and contains JWT separators. Keep this synthetic
@@ -35,6 +40,32 @@ const response = (status, body, headers = {}) => ({
 });
 
 describe("maintenance finding reporter", () => {
+  test.each(["failure", "skipped"])(
+    "does not close a finding after successful health with %s consumers",
+    async (consumer_runtimes) => {
+      const fetchImpl = jest.fn(async (_url, options) => {
+        if (options.method === "GET") return response(200, []);
+        return response(201, { number: 17 });
+      });
+      await expect(
+        reportMaintenanceResult({
+          ...context,
+          jobs: {
+            health: "success",
+            runtime_matrix: "success",
+            consumer_runtimes,
+          },
+          fetchImpl,
+        }),
+      ).resolves.toEqual({ action: "CREATED", issueNumber: 17 });
+      expect(
+        fetchImpl.mock.calls.some(([, options]) => options.method === "PATCH"),
+      ).toBe(false);
+      expect(fetchImpl.mock.calls.at(-1)[1].body).toContain(
+        "consumer_runtimes",
+      );
+    },
+  );
   test("creates one stable issue for the first failed health run", async () => {
     const fetchImpl = jest
       .fn()
@@ -42,7 +73,7 @@ describe("maintenance finding reporter", () => {
       .mockResolvedValueOnce(response(201, { number: 17 }));
 
     await expect(
-      reportMaintenanceResult({ ...context, result: "failure", fetchImpl }),
+      reportMaintenanceResult({ ...context, jobs: jobs("failure"), fetchImpl }),
     ).resolves.toEqual({ action: "CREATED", issueNumber: 17 });
 
     const [, mutation] = fetchImpl.mock.calls;
@@ -64,7 +95,7 @@ describe("maintenance finding reporter", () => {
     await expect(
       reportMaintenanceResult({
         ...context,
-        result: "failure",
+        jobs: jobs("failure"),
         token: STATELESS_INSTALLATION_TOKEN,
         fetchImpl,
       }),
@@ -84,13 +115,18 @@ describe("maintenance finding reporter", () => {
       .mockResolvedValueOnce(
         response(200, [{ number: 17, title: MAINTENANCE_ISSUE_TITLE }]),
       )
+      .mockResolvedValueOnce(response(200, []))
       .mockResolvedValueOnce(response(201, { id: 99 }));
 
     await expect(
-      reportMaintenanceResult({ ...context, result: "cancelled", fetchImpl }),
+      reportMaintenanceResult({
+        ...context,
+        jobs: jobs("cancelled"),
+        fetchImpl,
+      }),
     ).resolves.toEqual({ action: "COMMENTED", issueNumber: 17 });
 
-    expect(fetchImpl.mock.calls[1][0]).toBe(
+    expect(fetchImpl.mock.calls[2][0]).toBe(
       "https://api.github.com/repos/Hadden-Industries/owlapi/issues/17/comments",
     );
   });
@@ -104,7 +140,7 @@ describe("maintenance finding reporter", () => {
       .mockResolvedValueOnce(response(200, { number: 17, state: "closed" }));
 
     await expect(
-      reportMaintenanceResult({ ...context, result: "success", fetchImpl }),
+      reportMaintenanceResult({ ...context, jobs: jobs("success"), fetchImpl }),
     ).resolves.toEqual({ action: "CLOSED", issueNumber: 17 });
 
     expect(JSON.parse(fetchImpl.mock.calls[1][1].body)).toEqual({
@@ -130,7 +166,7 @@ describe("maintenance finding reporter", () => {
       );
 
     await expect(
-      reportMaintenanceResult({ ...context, result: "failure", fetchImpl }),
+      reportMaintenanceResult({ ...context, jobs: jobs("failure"), fetchImpl }),
     ).resolves.toEqual({ action: "RECONCILED_CREATED", issueNumber: 18 });
     expect(fetchImpl).toHaveBeenCalledTimes(3);
   });
@@ -142,14 +178,14 @@ describe("maintenance finding reporter", () => {
       reportMaintenanceResult({
         ...context,
         repository: "attacker/repository;echo",
-        result: "failure",
+        jobs: jobs("failure"),
         fetchImpl,
       }),
     ).rejects.toThrow(/repository/u);
     await expect(
       reportMaintenanceResult({
         ...context,
-        result: "unexpected",
+        jobs: jobs("unexpected"),
         fetchImpl,
       }),
     ).rejects.toThrow(/result/u);

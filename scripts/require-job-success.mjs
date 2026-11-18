@@ -32,6 +32,7 @@ export const FULL_CI_JOB_IDS = Object.freeze([
 
 /** Reuse still executes each release-specific gate, with the product graph skipped. */
 export const REUSED_RELEASE_JOB_IDS = Object.freeze([
+  "release_dispatch",
   "runtime_matrix",
   "release_preflight",
   "release_admission",
@@ -42,6 +43,7 @@ export const REUSED_RELEASE_JOB_IDS = Object.freeze([
 export const REQUIRED_JOB_IDS = Object.freeze({
   ci: Object.freeze(["runtime_matrix", "verification", ...FULL_CI_JOB_IDS]),
   release: Object.freeze([
+    "release_dispatch",
     "runtime_matrix",
     "consumer_runtimes",
     "release_preflight",

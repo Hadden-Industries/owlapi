@@ -34,9 +34,12 @@ import { ordinaryReleaseWorkflow } from "./rc3-recovery-workflow.mjs";
 
 const nonMarkdownFormatCheck =
   "npm run check:node && npm run check:version && npm run format:source-python:check && npm run format:json:check";
+const sourceAdmission =
+  "npm run check:node && npm run check:version && npm run verify:workflow-governance && node scripts/project-shared-overrides.mjs --check && node scripts/sync-python-target.mjs --check";
 
 const REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
 const WORKFLOW_DIRECTORY = join(REPOSITORY_ROOT, ".github", "workflows");
+const ACTION_DIRECTORY = join(REPOSITORY_ROOT, ".github", "actions");
 const SHARED_SETUP = "./.github/actions/setup-producer";
 const RETAIN_ARTIFACT = "./.github/actions/retain-artifact";
 const COLLECT_ARTIFACTS = "./.github/actions/collect-artifacts";
@@ -1346,7 +1349,9 @@ const validateCiVerification = (workflow, violations) => {
         needs(jobs[id]),
         id === "source_json"
           ? ["verification", "source_portable"]
-          : ["verification"],
+          : id === "metadata"
+            ? ["verification"]
+            : ["verification", "metadata"],
       ) && jobs[id]?.if === "needs.verification.outputs.reuse != 'true'",
       `${label} full root gate changed: ${id}`,
     );
@@ -2379,9 +2384,9 @@ const validateEvidenceWorkflows = (workflows, violations) => {
     );
     if (isExtended) {
       requireFields(
-        workflowJobs.extended_evidence,
-        { if: "${{ github.event_name == 'schedule' }}" },
-        `${fileName}:extended_evidence`,
+        workflow,
+        { on: { workflow_dispatch: null } },
+        `${fileName}: manual evidence acquisition`,
         violations,
       );
       for (const [id, job] of [
@@ -2502,14 +2507,17 @@ const validateEvidenceWorkflows = (workflows, violations) => {
           : "Release / third-party evidence",
         if: isExtended
           ? "${{ !cancelled() && github.event_name == 'workflow_dispatch' }}"
-          : "${{ !cancelled() }}",
+          : "${{ !cancelled() && needs.release_admission.result == 'success' }}",
       },
       `${fileName}:${aggregateId}`,
       violations,
     );
     add(
       violations,
-      sameInventory(needs(aggregate), [shardId]),
+      sameInventory(
+        needs(aggregate),
+        isExtended ? [shardId] : [shardId, "release_admission"],
+      ),
       `${fileName}:${aggregateId} must wait for all shards`,
     );
     const downloads = actionSteps(aggregate, COLLECT_ARTIFACTS);
@@ -2606,7 +2614,6 @@ const QUALITY_CONSUMERS = {
     "source_json",
     "quality_windows",
   ],
-  "extended-tests.yml": ["extended_evidence"],
   "maintenance.yml": ["health"],
 };
 const validateQualityTooling = (workflows, violations) => {
@@ -2944,9 +2951,12 @@ const validateMaintenanceReporter = (workflow, violations) => {
   );
   add(
     violations,
-    sameInventory(needs(reporter), ["health"]) &&
-      actionSteps(reporter, "actions/checkout").length === 0,
-    "maintenance.yml: write-only reporter must need health and have no checkout authority",
+    sameInventory(needs(reporter), [
+      "health",
+      "runtime_matrix",
+      "consumer_runtimes",
+    ]) && actionSteps(reporter, "actions/checkout").length === 0,
+    "maintenance.yml: write-only reporter must need all health checks and have no checkout authority",
   );
   add(
     violations,
@@ -2964,9 +2974,22 @@ const validateMaintenanceReporter = (workflow, violations) => {
       (step) =>
         step.run ===
           "node .maintenance-reporter/report-maintenance-failure.mjs" &&
-        step.env?.MAINTENANCE_HEALTH_RESULT === "${{ needs.health.result }}",
+        step.env?.MAINTENANCE_HEALTH_RESULT === "${{ needs.health.result }}" &&
+        step.env?.MAINTENANCE_MATRIX_RESULT ===
+          "${{ needs.runtime_matrix.result }}" &&
+        step.env?.MAINTENANCE_CONSUMER_RESULT ===
+          "${{ needs.consumer_runtimes.result }}",
     ),
-    "maintenance.yml: isolated reporter must bind the health result to the retained script",
+    "maintenance.yml: isolated reporter must bind all health results to the retained script",
+  );
+  add(
+    violations,
+    steps(health).filter(
+      (step) =>
+        step.if === "${{ !cancelled() }}" &&
+        step.run === "node scripts/record-extended-test-status.mjs",
+    ).length === 1,
+    "maintenance.yml: record unavailable providers even if health fails",
   );
 };
 
@@ -2979,7 +3002,6 @@ const validateSourceGovernanceHistory = (workflows, violations) => {
     ["release.yml", "source_canonical", "Check out the proposed source"],
     ["release.yml", "source_json", "Check out the proposed source"],
     ["maintenance.yml", "health", "Check out the default branch"],
-    ["extended-tests.yml", "extended_evidence", "Check out the default branch"],
   ])
     add(
       violations,
@@ -3465,6 +3487,176 @@ const validateArtifactTransportControls = (
     "Artifact transport must cover the complete six-collector inventory",
   );
 };
+const isDisabled = (condition) =>
+  condition === false ||
+  /^\s*(?:false|\$\{\{\s*false\s*\}\})\s*$/u.test(condition ?? "");
+
+/** Fail before any fan-out when a required step, local action, or callable
+ * workflow cannot execute with its actual inherited authority.
+ */
+function validateCallGraph(workflows, actionOverrides, violations) {
+  const permission = { none: 0, read: 1, write: 2 };
+  const actions = new Map();
+  const inspectSteps = (list, location, ancestors = []) => {
+    for (const step of list) {
+      add(
+        violations,
+        !isDisabled(step.if),
+        `${location}: explicitly disabled step ${step.name ?? step.id ?? step.uses ?? "run"}`,
+      );
+      if (!step.uses?.startsWith("./")) continue;
+      const match =
+        /^\.\/(?:approval-tools\/)?\.github\/actions\/([a-z0-9-]+)$/u.exec(
+          step.uses,
+        );
+      if (!match) {
+        violations.push(`${location}: unresolved local action ${step.uses}`);
+        continue;
+      }
+      const [, name] = match;
+      if (ancestors.includes(name)) {
+        violations.push(`${location}: recursive composite action ${name}`);
+        continue;
+      }
+      if (!actions.has(name)) {
+        const path = join(ACTION_DIRECTORY, name, "action.yml");
+        if (!existsSync(path)) {
+          violations.push(`${location}: local action ${name} is missing`);
+          continue;
+        }
+        const source = actionOverrides[name] ?? readFileSync(path, "utf8");
+        actions.set(
+          name,
+          parseControlYaml(name + "/action.yml", source, violations).value,
+        );
+      }
+      const action = actions.get(name);
+      if (action?.runs?.using === "composite")
+        inspectSteps(action.runs.steps ?? [], location + " -> " + name, [
+          ...ancestors,
+          name,
+        ]);
+    }
+  };
+  const visit = (file, inherited, ancestors) => {
+    if (ancestors.includes(file)) {
+      violations.push(`${file}: recursive workflow call`);
+      return;
+    }
+    const workflow = workflows[file];
+    for (const [name, job] of entries(workflow?.jobs ?? {})) {
+      const location = file + ":" + name;
+      const grants = job.permissions ?? workflow.permissions ?? {};
+      add(
+        violations,
+        !isDisabled(job.if),
+        location + ": explicitly disabled job",
+      );
+      if (inherited) {
+        add(
+          violations,
+          Object.entries(grants).every(
+            ([key, value]) =>
+              Object.hasOwn(permission, value) &&
+              permission[value] <= permission[inherited[key] ?? "none"],
+          ),
+          location + ": permissions exceed its reusable workflow caller",
+        );
+      }
+      inspectSteps(steps(job), location);
+      if (job.uses) {
+        const called = /^\.\/\.github\/workflows\/([a-z0-9-]+\.yml)$/u.exec(
+          job.uses,
+        )?.[1];
+        if (
+          !called ||
+          !Object.hasOwn(workflows[called]?.on ?? {}, "workflow_call")
+        ) {
+          violations.push(location + ": unresolved reusable workflow");
+          continue;
+        }
+        visit(called, grants, [...ancestors, file]);
+      }
+    }
+  };
+  for (const file of Object.keys(workflows)) visit(file, null, []);
+}
+
+function validateEarlyAdmission(workflows, violations) {
+  for (const filename of ["ci.yml", "release.yml"]) {
+    const jobs = workflows[filename]?.jobs ?? {};
+    const steps_ = steps(jobs.metadata);
+    const checks = steps_.filter((step) => step.run === sourceAdmission);
+    add(
+      violations,
+      checks.length === 1 &&
+        checks[0].if === undefined &&
+        checks[0]["continue-on-error"] === undefined &&
+        steps_.findIndex((step) => step.run === "npm ci") >= 0 &&
+        steps_.findIndex((step) => step.run === "npm ci") <
+          steps_.indexOf(checks[0]),
+      filename + ": require source admission once after tool setup",
+    );
+    for (const job of [
+      "source_canonical",
+      "source_portable",
+      "quality_windows",
+    ])
+      add(
+        violations,
+        needs(jobs[job]).includes("metadata"),
+        filename + ":" + job + " must wait for source admission",
+      );
+  }
+  const job = workflows["release.yml"]?.jobs?.release_admission;
+  const usesAdmission = (id) =>
+    needs(workflows["release.yml"]?.jobs?.[id]).includes("release_admission");
+  validateReadOnlyJob("release.yml", "release_admission", job, violations, {
+    actions: "read",
+    checks: "read",
+    contents: "read",
+    "pull-requests": "read",
+  });
+  add(
+    violations,
+    job?.environment === undefined &&
+      sameInventory(needs(job), [
+        "release_dispatch",
+        "runtime_matrix",
+        "release_preflight",
+      ]) &&
+      [
+        "metadata",
+        "source_portable",
+        "source_canonical",
+        "quality_windows",
+        "dependency_review",
+        "required",
+      ].every(usesAdmission),
+    "release.yml: product and release-only jobs must wait for read-only admission",
+  );
+  const list = steps(job);
+  const setup = list.findIndex(
+    (step) =>
+      step.uses === SHARED_SETUP &&
+      step.if ===
+        "needs.release_dispatch.outputs.mode == 'reuse' || needs.release_dispatch.outputs.mode == 'fresh'",
+  );
+  const selector = list.findIndex(
+    (step) =>
+      step.run === "node scripts/release-ci-qualification.mjs" &&
+      step.if === "needs.release_dispatch.outputs.mode == 'reuse'",
+  );
+  add(
+    violations,
+    setup >= 0 &&
+      selector > setup &&
+      list[setup]["continue-on-error"] === undefined &&
+      list[selector]["continue-on-error"] === undefined,
+    "release.yml: mandatory pinned npm setup must precede CI release admission",
+  );
+}
+
 export const auditRepositoryControls = ({
   workflowSourceOverrides = {},
   setupSourceOverride,
@@ -3533,6 +3725,18 @@ export const auditRepositoryControls = ({
   const workflows = Object.fromEntries(
     entries(parsed).map(([fileName, { value }]) => [fileName, value]),
   );
+  validateCallGraph(
+    workflows,
+    {
+      ...(setupSourceOverride === undefined
+        ? {}
+        : { "setup-producer": setupSourceOverride }),
+      ...consumerActionOverrides,
+      ...artifactActionOverrides,
+    },
+    violations,
+  );
+  validateEarlyAdmission(workflows, violations);
   validateConsumerRuntimeControls(
     workflows,
     consumerActionOverrides,
@@ -3616,9 +3820,10 @@ export const auditRepositoryControls = ({
     const workflow = workflows[fileName] ?? {};
     add(
       violations,
-      Object.hasOwn(workflow.on ?? {}, "schedule") &&
+      Object.hasOwn(workflow.on ?? {}, "schedule") ===
+        (fileName === "maintenance.yml") &&
         Object.hasOwn(workflow.on ?? {}, "workflow_dispatch"),
-      `${fileName}: scheduled and manual triggers are required`,
+      `${fileName}: weekly maintenance and manual evidence triggers must stay separate`,
     );
     add(
       violations,
