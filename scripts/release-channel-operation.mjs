@@ -260,6 +260,7 @@ const pilotEndpoint =
   "/dist-tags/pilot";
 const npmStep = "Apply approved npm labels (npm)";
 const refusalPrefix = "owlapi-pilot-refusal ";
+const refusalCheckTitle = "OwlAPI refusal verification";
 
 export function nativePilotRefusal(error) {
   if (
@@ -361,42 +362,52 @@ function refusalOutcome(disposition) {
   return outcome;
 }
 
-// An owner's archive can supply the expired log, but the independent verifier's
-// original workflow artifact must establish which complete log it observed.
-export async function readRefusalVerification(
-  client,
-  disposition,
-  download = originalBytes,
-) {
+// The independent GitHub Actions check authenticates the exact archived receipt.
+// This read does not depend on the Actions artifact or its physical retry copies.
+export async function readRefusalVerification(client, checkpoint, disposition) {
   const verification = disposition?.verification;
   const expected = refusalOutcome(disposition);
   assert.ok(
     expected.nativeLog && verification,
     "Missing original read-only refusal verification",
   );
-  const { runId, attempt, controller, artifactId, digest } = verification;
+  const { runId, attempt, controller } = verification;
   assert.match(String(runId), /^[1-9]\d{0,15}$/u);
   assert.match(String(attempt), /^[1-9]\d{0,3}$/u);
   assert.match(controller, /^[a-f0-9]{40}$/u);
-  assert.match(digest, /^sha256:[a-f0-9]{64}$/u);
-  const artifact = await originArtifact(client, {
-    runId,
-    attempt,
-    commit: controller,
-    artifactId,
-    logical: "release-classification-" + runId + "-" + attempt,
-    filename: ".github/workflows/release-classification.yml",
-  });
-  assert.equal(artifact.expired, false);
-  assert.equal(artifact.digest, digest);
-  assert.equal(artifact.id, artifactId);
-  const jobs = await client.read(
-    "/actions/runs/" + runId + "/attempts/" + attempt + "/jobs?per_page=100",
+  const path = "/actions/runs/" + runId + "/attempts/" + attempt;
+  const run = await client.read(path);
+  assert.deepEqual(
+    [
+      String(run.id),
+      String(run.run_attempt),
+      run.path,
+      run.event,
+      run.head_branch,
+      run.head_sha,
+      run.repository?.full_name,
+      run.head_repository?.full_name,
+      run.status,
+      run.conclusion,
+    ],
+    [
+      String(runId),
+      String(attempt),
+      ".github/workflows/release-classification.yml",
+      "workflow_dispatch",
+      "main",
+      controller,
+      repository,
+      repository,
+      "completed",
+      "success",
+    ],
   );
+  const jobs = await client.read(path + "/jobs?per_page=100");
   assert.equal(jobs.total_count, jobs.jobs.length);
-  const writers = jobs.jobs.filter((job) => job.name === "verify");
-  assert.equal(writers.length, 1);
-  const [job] = writers;
+  const verifiers = jobs.jobs.filter((job) => job.name === "verify");
+  assert.equal(verifiers.length, 1);
+  const [job] = verifiers;
   assert.deepEqual(
     [
       String(job.run_id),
@@ -412,27 +423,66 @@ export async function readRefusalVerification(
   );
   assert.equal(verifySteps.length, 1);
   assert.equal(verifySteps[0].conclusion, "success");
-  const uploads = job.steps.filter(
-    (step) => step.name === "Retain original operation evidence",
+  const prefix = "https://api.github.com/repos/" + repository + "/check-runs/";
+  assert.ok(job.check_run_url?.startsWith(prefix));
+  const checkId = job.check_run_url.slice(prefix.length);
+  assert.match(checkId, /^[1-9]\d{0,15}$/u);
+  const check = await client.read("/check-runs/" + checkId);
+  assert.ok(Number.isSafeInteger(run.check_suite_id) && run.check_suite_id > 0);
+  assert.deepEqual(
+    [
+      String(check.id),
+      check.app?.id,
+      check.check_suite?.id,
+      check.head_sha,
+      check.name,
+      check.status,
+      check.conclusion,
+      check.details_url,
+    ],
+    [
+      checkId,
+      15368,
+      run.check_suite_id,
+      controller,
+      "verify",
+      "completed",
+      "success",
+      "https://github.com/" +
+        repository +
+        "/actions/runs/" +
+        runId +
+        "/job/" +
+        job.id,
+    ],
+    "Refusal verification must be a native GitHub Actions check",
   );
-  assert.equal(uploads.length, 1);
-  const [upload] = uploads;
-  assert.equal(upload.conclusion, "success");
-  const created = Date.parse(artifact.created_at);
+  const notes = await client.read(
+    "/check-runs/" + checkId + "/annotations?per_page=100",
+  );
+  assert.ok(Array.isArray(notes) && notes.length < 100);
+  const matching = notes.filter(
+    (note) =>
+      note.title === refusalCheckTitle && note.annotation_level === "notice",
+  );
+  assert.equal(
+    matching.length,
+    1,
+    "Missing or ambiguous native refusal receipt",
+  );
+  const receipt = checkpoint.files.get(
+    "label-refusal-verify-" + runId + "-" + attempt + ".json",
+  );
   assert.ok(
-    created >= Date.parse(upload.started_at) &&
-      created <= Date.parse(upload.completed_at),
+    receipt && receipt.length <= 64 * 1024,
+    "Missing retained native refusal receipt",
   );
-  const files = readZipArchiveFilesWith(
-    await download(client, artifact, 64 * 1024),
-    {
-      crc32,
-      expectedNames: new Set(["verify.json"]),
-      maximumUncompressedBytes: 64 * 1024,
-    },
+  assert.equal(
+    matching[0].message,
+    "sha256:" + hash(receipt),
+    "Retained refusal receipt differs from the original native check",
   );
-  assert.equal(files.length, 1);
-  const observed = JSON.parse(files[0].content);
+  const observed = JSON.parse(receipt);
   assert.deepEqual(
     observed,
     expected,
@@ -561,7 +611,7 @@ async function observePilotRefusal(
     { env, timeout: 20000, maxBuffer: 4 * 1024 * 1024 },
   );
   const reference = nativeLogExpired(fetched)
-    ? await readRefusalVerification(client, verified)
+    ? await readRefusalVerification(client, checkpoint, verified)
     : undefined;
   const nativeLog = originalPilotLog(fetched, savedLog, reference);
   const logSha256 = verifyPilotRefusalLog({
@@ -707,9 +757,16 @@ async function main() {
       origin,
       read,
     );
-    writeFileSync(join(dir, "verify.json"), JSON.stringify(observed) + "\n", {
-      flag: "wx",
-    });
+    const receipt = JSON.stringify(observed) + "\n";
+    writeFileSync(join(dir, "verify.json"), receipt, { flag: "wx" });
+    if (env.GITHUB_ACTIONS === "true")
+      process.stdout.write(
+        "::notice title=" +
+          refusalCheckTitle +
+          "::sha256:" +
+          hash(receipt) +
+          "\n",
+      );
     return;
   }
   let observedTags;

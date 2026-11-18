@@ -692,7 +692,9 @@ const operationJobs = {
     draft: [githubAuthority, "release-manual"],
     seal: [githubAuthority, "release-manual"],
   },
-  "release-labels.yml": { npm: [npmAuthority, "npm-tags"] },
+  "release-labels.yml": {
+    npm: [{ ...npmAuthority, checks: "read" }, "npm-tags"],
+  },
   "release-classification.yml": {
     github: [githubAuthority, "release-manual"],
     verify: [readAuthority],
