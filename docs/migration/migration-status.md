@@ -1,15 +1,14 @@
 # Migration status
 
-## Current publication transition
+## Use OwlAPI 0.1.0
 
-The [latest published release](../../README.md#release-status) is available under both npm channels with verified registry artifacts and an immutable GitHub prerelease.
-The native npm alias preserves consumer imports as `owlapi/*`.
-UO and WebVOWL may each pin and qualify that RC for production after immutable artifact verification and their own complete consumer acceptance, without waiting for stable `0.1.0`.
-The release includes the earlier lifecycle, RDF/XML and profile improvements plus explicit Java/normative behavior selection and the authorized Node loader; see the [migration guide](0.1.0-java-api-parity.md) and [changelog](../../CHANGELOG.md).
-The [active 0.1.0 roadmap](../plans/2026-10-29-0.1.0-release-reconciliation.md) records the bounded RC acceptance and remaining stable-release work.
-Current producer gates use the [installed OWL contract](../compatibility/installed-owl-contract.md); neither application's adoption is a release prerequisite.
-Historical gates retain their original artifact identities; neither a new publication nor this status update accepts an application's migration automatically.
-The [19D1 checkpoint record](../plans/phase19d-pre-registry-consumer-decoupling.md) preserves the later historical Git-consumer evidence.
+Follow the [migration guide](0.1.0-java-api-parity.md) to update your dependency, choose a behavior profile, and check loading and storage behavior.
+The npm alias preserves existing `owlapi/*` imports.
+The [0.1.0 release notes](../../CHANGELOG.md#010) summarize changes since the prereleases.
+
+Universal Ontology and WebVOWL each verify and accept their own pinned version before deploying it.
+OwlAPI verifies its package using the shared [installed OWL contract](../compatibility/installed-owl-contract.md).
+The [0.1.0 roadmap](../plans/2026-10-29-0.1.0-release-reconciliation.md) and [Phase 19D1 checkpoint](../plans/phase19d-pre-registry-consumer-decoupling.md) record the earlier release and application evidence.
 
 ## Historical Phase 18 snapshot
 

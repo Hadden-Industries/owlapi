@@ -6,8 +6,9 @@ Admission verifies all measured fixture bytes in that commit, 28 Central/source 
 
 The JavaScript implementation is complete and merged through [PR #76](https://github.com/Hadden-Industries/owlapi/pull/76).
 The [implementation and release-readiness record](implementation-qualification.md) records completed ordinary review and installed Node/browser qualification for their measured candidates.
-The JavaScript profile ships in the [latest published release](../../../../README.md#release-status).
-Its rc.3 admission includes the owner's explicit exception for the incomplete historical security scan, recorded in the implementation and release-readiness record; oracle qualification does not replace that missing review.
+Use the [behavior profile guide](../../behavior-profiles.md) to select Java compatibility and compare it with the default OwlAPI behavior.
+The implementation record documents the rc.3 exception for incomplete historical security review.
+The oracle results measure Java behavior.
 
 On 15 October 2026 the owner authorized regenerating this unreleased evidence's JSON presentation under shared JSON Quality.
 The native recorder's `--refresh-presentation ABSOLUTE_FRESH_BACKUP_DIRECTORY` mode preserves the previous copies, verifies the candidate, and rebinds the evidence, observation and dependency-lock hashes.

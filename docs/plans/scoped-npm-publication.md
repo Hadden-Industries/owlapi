@@ -1,7 +1,7 @@
 # Publish the scoped owlapi RC and qualify its production consumers
 
-> **Current release:** see the [latest published package and channels](../../README.md#release-status) and [installation instructions](../../README.md#install).
-> The [active 0.1.0 roadmap](2026-10-29-0.1.0-release-reconciliation.md) records rc.3 publication and its bounded acceptance.
+> To use the library, follow the [installation instructions](../../README.md#install) and read the [0.1.0 release notes](../../CHANGELOG.md#010).
+> The [0.1.0 roadmap](2026-10-29-0.1.0-release-reconciliation.md) records the later rc.3 publication and the scope of its acceptance.
 > The dated decisions, exact coordinates and execution sequence below retain the original publication history; they do not select an older version for a new installation.
 
 > **4 October 2026 successor amendment:** [rc.2 Java parity](0.1.0-rc.2-java-parity.md) is the next selected pre-`0.1.0` programme.

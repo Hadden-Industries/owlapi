@@ -1,7 +1,8 @@
 # `owlapi` Import-Closure Lifecycle Implementation Plan
 
-> **30 October 2026 reconciliation:** this plan's Phase 21/22 foundations first shipped in rc.1 and remain in the [latest published release](../README.md#release-status), including subsequent query, storage and profile additions.
-> Use the [current 0.1.0 roadmap](plans/2026-10-29-0.1.0-release-reconciliation.md) for remaining work and its explicit Java-compatible/normative profile, performance, toolchain and qualification obligations.
+> OwlAPI 0.1.0 includes the import-closure and storage foundations from this plan and the later query and profile additions.
+> See the [migration guide](migration/0.1.0-java-api-parity.md) for usage.
+> The [0.1.0 roadmap](plans/2026-10-29-0.1.0-release-reconciliation.md) retains the profile, performance, toolchain, and qualification decisions that led to the release.
 > The older exact-Java invariant below is historical: the current [behavior-profile contract](compatibility/behavior-profiles.md) and its decision ledger distinguish released Java behavior from normative behavior.
 > Historical tasks, receipts and machine-parsed gate catalogues are preserved; the [approved bounded source-assessment contract](compatibility/0.1.0-contract-scope.md#owl-profile-source-assessment) defines the shipped scope, while broader Phase 23 work remains future work.
 

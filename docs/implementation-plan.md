@@ -1,8 +1,7 @@
 # OwlAPI 0.1.0 programme and historical implementation blueprint
 
-> **30 October 2026 publication update:** use the [latest release status](../README.md#release-status) for the published package and channels, and the [current 0.1.0 release roadmap](plans/2026-10-29-0.1.0-release-reconciliation.md) for remaining work, sequencing, scope and evidence disposition.
-> rc.3 is published with both behavior profiles, the authorized Node transport, refreshed tooling and bounded performance acceptance; stable 0.1.0 is not.
-> The roadmap records its successful publication and the owner's explicit exception for the incomplete historical Java-profile security review; neither complete security coverage nor full performance parity is claimed.
+> For usage, see the [installation guide](../README.md#install), the [0.1.0 release notes](../CHANGELOG.md#010), and the [migration guide](migration/0.1.0-java-api-parity.md).
+> The [0.1.0 roadmap](plans/2026-10-29-0.1.0-release-reconciliation.md) records the earlier work and decisions, including the rc.3 publication, its measured performance scope, and the specific exception for the incomplete historical Java-profile security review.
 > The roadmap distinguishes published APIs, implemented but unpublished APIs, unresolved required work and deferred capabilities.
 > Both `java-owlapi-5.5.1` and `normative-v1`, semantic/performance admission, latest applicable dependencies and the selected [Java toolchain](development/java-toolchain.md) are explicit continuation obligations.
 > The [release and CI evidence reconciliation](plans/2026-10-29-release-and-ci-evidence-reuse.md) records source-grounded lessons from JSON Quality and maps them to existing OwlAPI controls.

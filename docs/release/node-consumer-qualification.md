@@ -4,6 +4,9 @@ The consumer support policy admits Node.js 22 or newer.
 Official support follows the maintained families in [runtime-policy.json](runtime-policy.json); other release lines receive best-effort support.
 The package engine range is generated from the lowest family minimum, while the same policy separately drives the maintained-family qualification matrix and producer runtime selections.
 
+Node 26.11.1 passed source and retained-package qualification on Ubuntu x64, Windows x64, and macOS arm64 in [CI run 37875950984](https://github.com/Hadden-Industries/owlapi/actions/runs/37875950984).
+That run qualified the tested Node version for OwlAPI and did not establish upstream LTS status.
+
 [CI run 39578970882](https://github.com/Hadden-Industries/owlapi/actions/runs/39578970882) passed on 21 October 2026 for source commit `795e2a5925ba217cdcc180f3fe6371cb8b1417d0` in [PR #82](https://github.com/Hadden-Industries/owlapi/pull/82).
 All 40 CI jobs and all 43 PR checks passed.
 The frozen consumer matrix qualified the retained package through scoped and npm-alias installations on Linux x64, Windows x64 and macOS arm64 at these observed runtime versions:

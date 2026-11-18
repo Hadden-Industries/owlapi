@@ -220,7 +220,7 @@ jobs:
         timeout-minutes: 2
 
   source_portable:
-    name: CI / Ubuntu / portable source / Node 26.13.0
+    name: CI / Ubuntu / portable source / Node 26.13.1
     needs: [verification, metadata]
     if: needs.verification.outputs.reuse != 'true'
     runs-on: ubuntu-26.04
@@ -274,7 +274,7 @@ jobs:
         timeout-minutes: 45
 
   source_json:
-    name: CI / Ubuntu / JSON source / Node 26.13.0
+    name: CI / Ubuntu / JSON source / Node 26.13.1
     needs: [verification, source_portable]
     if: needs.verification.outputs.reuse != 'true'
     runs-on: ubuntu-26.04
@@ -325,7 +325,7 @@ jobs:
         timeout-minutes: 15
 
   source_canonical:
-    name: CI / Ubuntu / canonical source / Node 26.13.0
+    name: CI / Ubuntu / canonical source / Node 26.13.1
     needs: [verification, metadata]
     if: needs.verification.outputs.reuse != 'true'
     runs-on: ubuntu-26.04
@@ -706,7 +706,7 @@ jobs:
           candidate-digest: sha256:${{ needs.candidate.outputs.artifact_digest }}
 
   portability_ubuntu_node_26:
-    name: CI / Ubuntu / retained package / Node 26.13.0
+    name: CI / Ubuntu / retained package / Node 26.13.1
     needs: candidate
     runs-on: ubuntu-26.04
     timeout-minutes: 30
@@ -747,7 +747,7 @@ jobs:
         timeout-minutes: 20
 
   portability_windows_node_26:
-    name: CI / Windows / Node 26.13.0
+    name: CI / Windows / Node 26.13.1
     needs: candidate
     runs-on: windows-2025-vs2026
     timeout-minutes: 30
@@ -836,7 +836,7 @@ jobs:
           candidate-digest: sha256:${{ needs.candidate.outputs.artifact_digest }}
 
   portability_macos_node_26:
-    name: CI / macOS / Node 26.13.0
+    name: CI / macOS / Node 26.13.1
     needs: candidate
     runs-on: macos-15
     timeout-minutes: 30

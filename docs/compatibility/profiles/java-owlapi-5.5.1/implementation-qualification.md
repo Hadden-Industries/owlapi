@@ -1,6 +1,7 @@
 # Implementation and release-readiness evidence
 
-The selected Java-compatible API implementation merged through [PR #76](https://github.com/Hadden-Industries/owlapi/pull/76) on 2026-10-14 and later shipped in the [latest published release](../../../../README.md#release-status).
+The Java-compatible API implementation merged through [PR #76](https://github.com/Hadden-Industries/owlapi/pull/76) on 14 October 2026 and first shipped in [rc.3](https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.3).
+For the supported behavior in 0.1.0, see the [profile contract](../../behavior-profiles.md).
 On 30 October, Maksym Shostak approved the bounded rc.3 exception documented in the [release roadmap](../../../plans/2026-10-29-0.1.0-release-reconciliation.md#authorized-rc3-publication-30-october).
 That later release decision is distinct from the source-integration exception and preserves the missing historical security coverage.
 The designated Codex Security scan was interrupted by an automated content check before completing coverage.
@@ -80,7 +81,8 @@ A source rollback does not rewrite native observations, historical receipts or p
 
 The historical release hold was resolved for rc.3 by the separate owner-approved exception and successful publication linked above.
 Neither the source-integration exception nor the later release exception makes the partial scan complete.
-A stable release must reassess the missing coverage independently.
+Stable release verification considers the incomplete coverage separately.
+See the [release verification records](../../../../README.md#release-status).
 
 PR #76 records the exact external working-directory locator, owner and retention checkpoint.
 The original retention checkpoint required the isolated oracle/review/package working group through the release decision or review on 2026-10-21; this historical record does not establish its present filesystem state.

@@ -50,17 +50,12 @@
   },
   "documents": {
     "README.md": [
-      "**Consumer support policy:**",
-      "",
-      "> Requires Node.js {{runtime:minimumNodeMajor}} or newer.",
-      "> Official support covers the maintained Node.js release lines listed in our [support matrix](docs/release/runtime-policy.json).",
-      "> Other releases receive best-effort support.",
-      "",
+      "Use Node.js {{runtime:minimumNodeMajor}} or newer.",
       "The package declares the engine admission range `{{runtime:consumerRange}}`.",
-      "The maintained-family minimums of Node {{runtime:minimums}} passed hosted installed-package and native-platform qualification; see the [qualification record](docs/release/node-consumer-qualification.md).",
-      "Every release candidate still requires qualification of its own bytes and human release acceptance.",
-      "Hosted qualification selects each family's exact minimum and latest released version, plus distinct reference versions, using one frozen matrix and one retained package archive.",
-      "Node {{runtime:canonicalNode}} is the selected canonical package producer."
+      "",
+      "Official support starts at Node.js {{runtime:minimums}} in the maintained release lines.",
+      "Other release lines receive best-effort support.",
+      "See the [runtime support policy](https://github.com/Hadden-Industries/owlapi/blob/main/docs/release/runtime-policy.json) for the supported lines and platforms."
     ],
     "CONTRIBUTING.md": [
       "**Consumer support policy:**",

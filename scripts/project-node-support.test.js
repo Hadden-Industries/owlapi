@@ -46,11 +46,10 @@ describe("one runtime version authority", () => {
     );
     expect(projected[".node-version"]).toBe("26.14.0\n");
     expect(projected["README.md"]).toContain(
-      "Node 26.14.0 is the selected canonical package producer.",
+      "Official support starts at Node.js 22.1.0, 24.1.0 and 26.0.0",
     );
-    // A frozen historical observation must not be rewritten as a current declaration.
-    expect(projected["README.md"]).toContain(
-      "Node 26.11.1 passed blocking source",
+    expect(projected["CONTRIBUTING.md"]).toContain(
+      "Producer tooling uses Node 26.14.0",
     );
     expect(projected["CONTRIBUTING.md"]).toContain("select exact npm 12.3.0");
     expect(projected[".github/workflows/ci.yml"]).toContain(

@@ -199,7 +199,7 @@ jobs:
     if: ${{ !inputs.rc3_recovery && (needs.release_admission.outputs.mode != 'reuse') }}
 
   source_portable:
-    name: Release / Ubuntu / portable source / Node 26.13.0
+    name: Release / Ubuntu / portable source / Node 26.13.1
     needs: [release_admission, metadata]
     runs-on: ubuntu-26.04
     timeout-minutes: 60
@@ -253,7 +253,7 @@ jobs:
     if: ${{ !inputs.rc3_recovery && (needs.release_admission.outputs.mode != 'reuse') }}
 
   source_json:
-    name: Release / Ubuntu / JSON source / Node 26.13.0
+    name: Release / Ubuntu / JSON source / Node 26.13.1
     needs: source_portable
     runs-on: ubuntu-26.04
     timeout-minutes: 60
@@ -304,7 +304,7 @@ jobs:
     if: ${{ !inputs.rc3_recovery }}
 
   source_canonical:
-    name: Release / Ubuntu / canonical source / Node 26.13.0
+    name: Release / Ubuntu / canonical source / Node 26.13.1
     needs: [release_admission, metadata]
     runs-on: ubuntu-26.04
     timeout-minutes: 60
@@ -716,7 +716,7 @@ jobs:
     if: ${{ !inputs.rc3_recovery }}
 
   portability_ubuntu_node_26:
-    name: Release / Ubuntu / retained package / Node 26.13.0
+    name: Release / Ubuntu / retained package / Node 26.13.1
     needs: candidate
     runs-on: ubuntu-26.04
     timeout-minutes: 30
@@ -758,7 +758,7 @@ jobs:
     if: ${{ !inputs.rc3_recovery }}
 
   portability_windows_node_26:
-    name: Release / Windows / Node 26.13.0
+    name: Release / Windows / Node 26.13.1
     needs: candidate
     runs-on: windows-2025-vs2026
     timeout-minutes: 30
@@ -850,7 +850,7 @@ jobs:
     if: ${{ !inputs.rc3_recovery }}
 
   portability_macos_node_26:
-    name: Release / macOS / Node 26.13.0
+    name: Release / macOS / Node 26.13.1
     needs: candidate
     runs-on: macos-15
     timeout-minutes: 30

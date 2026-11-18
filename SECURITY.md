@@ -2,25 +2,13 @@
 
 ## Supported versions
 
-`@hadden-industries/owlapi` uses a deliberately narrow security-support window.
-The project name and recommended consumer dependency alias remain `owlapi`; the channel names below belong to the scoped registry identity:
+Check the [support designation](docs/release/support-designation.json) for the version receiving security fixes.
+Support follows the designated stable release, even when npm's `latest` tag points to a preview.
+Before the first stable designation, support follows the single prerelease designated by `next`.
 
-| Release state                           | Security-supported version                                                                                             |
-| --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| Before production `0.1.0`               | Only the single prerelease currently designated by npm's `next` tag                                                    |
-| After production `0.1.0`                | The most recently completed stable support designation, including while an RC occupies npm’s `latest` tag |
-| Older production or prerelease versions | Unsupported unless a later explicit LTS or security-branch policy names them                                           |
-
-UO and WebVOWL may each accept an exactly pinned RC for production after complete artifact verification and their own consumer qualification, without waiting for stable `0.1.0`.
-That acceptance does not extend the security-support window or make a prerelease a stable release.
-
-The release owner explicitly opens each post-stable preview line. An RC advances that line’s `next` only after public and immutable verification. The maintained stable identity is recorded in [the support designation](docs/release/support-designation.json).
-
-If `next` moves or stable `0.1.0` supersedes it, each consumer must explicitly qualify and pin a supported replacement; installations do not automatically follow either tag.
-
-Old versions may remain downloadable because npm releases are immutable.
-Availability does not imply security maintenance.
-Runtime compatibility also does not mean that `owlapi` can remediate a defect in a Node.js version that its own maintainers no longer support.
+An older version receives fixes only if an explicit long-term support or security-branch policy lists it.
+Upgrade to a supported version, verify it with your application, and update your exact pin.
+Use an upstream-maintained Node.js release for fixes to the runtime itself.
 
 ## Privately report a vulnerability
 

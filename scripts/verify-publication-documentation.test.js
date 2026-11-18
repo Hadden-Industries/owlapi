@@ -12,16 +12,18 @@ import {
 
 const fixture = (version) => {
   const manifest = { ...documentationManifest, version };
+  const sourceVersion = documentationManifest.version;
   const files = documentationSources();
   files["README.md"] = projectReadmeDocumentation(files["README.md"], manifest);
-  files["CHANGELOG.md"] = files["CHANGELOG.md"].replace(
-    "## 0.1.0-rc.3",
-    `## ${version}`,
-  );
+  if (!files["CHANGELOG.md"].includes(`\n## ${version}\n`))
+    files["CHANGELOG.md"] = files["CHANGELOG.md"].replace(
+      `\n## ${sourceVersion}\n`,
+      `\n## ${version}\n`,
+    );
   for (const path of ["API.md", "docs/compatibility/java-api-surface.md"])
     files[path] = files[path].replaceAll(
-      "`@hadden-industries/owlapi` 0.1.0-rc.3",
-      `\`@hadden-industries/owlapi\` ${version}`,
+      `\`${manifest.name}\` ${sourceVersion}`,
+      `\`${manifest.name}\` ${version}`,
     );
   const registry = JSON.parse(
     files["docs/compatibility/java-api-surface.json"],

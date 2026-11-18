@@ -59,7 +59,7 @@ Consumer runtime qualification separately selects exact npm 10.9.10, whose decla
 Local development uses the Node range in [`package.json`](package.json) under `devEngines.runtime`.
 Consumer admission is derived from the lowest maintained-family minimum.
 The selected Node version must also be supported by npm and the locked development dependencies.
-Producer tooling uses Node 26.13.0; consumer references remain Node 22.23.4, 24.22.2 and 26.13.0.
+Producer tooling uses Node 26.13.1; consumer references remain Node 22.23.4, 24.22.2 and 26.13.1.
 
 <!-- runtime-policy:end -->
 
@@ -105,11 +105,12 @@ Reused main qualification preserves the original successful runtime evidence; it
 A failed-lane-only rerun cannot combine old-attempt reports into a new aggregate: rerun the complete qualification workflow when a fresh aggregate is required.
 
 Minimum/latest endpoint checks are practical coverage of a supported line, rather than exhaustive execution of every intervening patch.
-The [latest published release](README.md#release-status) passed its hosted runtime gates; every successor candidate needs evidence for its own bytes and frozen matrix.
+Find the runtime results for each published package among its [release assets](README.md#release-status).
+Qualify each candidate against its own retained tarball and frozen matrix.
 Broadening the published engine range remains a separate decision after qualification.
 Installing development dependencies and running repository qualification additionally requires a Node version supported by the selected npm and tool graph; consumer eligibility alone does not establish development-tool eligibility.
 Markdown Quality is part of the ordinary root development dependency graph, with exact resolutions recorded in the root lockfile.
-The latest release's refreshed dependency graph and reference runtimes are covered by its release evidence; later dependency or runtime changes require the affected qualification.
+When dependencies or runtime versions change, rerun the checks that cover the changed inputs.
 
 Repository text is UTF-8 with LF line endings and a final newline.
 The root `.gitattributes` makes that representation independent of a contributor's Git settings, while the nested override under `docs/conformance/upstream/` preserves pinned third-party fixtures byte for byte.
@@ -280,9 +281,9 @@ npm run format
 
 ## Selecting a candidate version
 
-`package.json.version` is the single declaration of the current source candidate.
-Release tooling reads it directly; versioned filenames and coordinates are derived from it.
-To select another version without creating a Git tag or running lifecycle scripts:
+The `version` field in `package.json` supplies the package version.
+For a new release, first set `publishConfig.tag` to `pilot` in the manifest.
+Then run the version command with the selected version and synchronize the generated files.
 
 ```shell
 npm version <version> --no-git-tag-version --ignore-scripts
@@ -290,9 +291,9 @@ npm run sync:version
 npm run check:version
 ```
 
-For a stable version, explicitly select `publishConfig.tag: latest` before synchronization; prereleases use `next`.
-Additional npm tag changes still need their own release decision.
-`sync:version` updates the lockfile's root version, current compatibility metadata, generated API views and digests, current release coordinates and schema constraints.
+The packed tag is the default for staging.
+Choose the public npm tag through the [staged publication procedure](docs/release/staged-operations.md).
+`sync:version` updates the lockfile's root version, exact README install pins and import map, generated API views, compatibility metadata and release coordinates.
 
 It uses the retained Java API inventory and does not need a Java source checkout for a version-only change.
 Structural API changes still require the full Java API generator.
@@ -309,6 +310,8 @@ Synchronization does not rewrite them or transfer their approvals to new bytes.
 
 Refresh candidate evidence through its existing generators and qualification procedures, and obtain any required approval for changed facts.
 Add the version's release notes to [the changelog](CHANGELOG.md).
+Write the README and notes for readers using the published package.
+Use the version as the changelog heading and record the actual publication date and tags in the release record.
 The release workflow checks the retained tarball's documentation, including the package identity, imports, examples and release notes.
 The availability policy's `previousVersion` remains an explicit published-predecessor choice; review it when selecting a successor.
 The frozen publisher artifact/digest pins require the separately approved artifact and remain outside this metadata command.

@@ -32,12 +32,24 @@ export const renderDocumentationBlocks = (manifest) => {
     key === "." ? "owlapi" : `owlapi/${key.slice(2)}`,
   );
   return {
-    identity: `This package: \`${coordinate}\`.\nThese instructions describe this exact version; they do not assert registry availability.\nConsumer engine admission: Node.js \`${manifest.engines.node}\`.`,
-    install: `Install this exact version after it is published:\n\n\`\`\`shell\nnpm install --save-exact "owlapi@npm:${coordinate}"\nnpm install --save-exact ${coordinate}\n\`\`\``,
-    exports: `Public import paths (native alias):\n\n${exports.map((path) => `- \`${path}\``).join("\n")}\n\nFor a scoped installation, replace \`owlapi\` with \`${manifest.name}\`.`,
+    identity: `This guide covers \`${coordinate}\`.`,
+    install: [
+      "Use the `owlapi` alias to follow the examples in this guide.",
+      "",
+      "```shell",
+      `npm install --save-exact "owlapi@npm:${coordinate}"`,
+      "```",
+      "",
+      `For imports that start with \`${manifest.name}\`, install the scoped package directly.`,
+      "",
+      "```shell",
+      `npm install --save-exact ${coordinate}`,
+      "```",
+    ].join("\n"),
+    exports: `Public imports with the \`owlapi\` alias:\n\n${exports.map((path) => `- \`${path}\``).join("\n")}\n\nFor a scoped installation, replace \`owlapi\` with \`${manifest.name}\`.`,
     profiles:
-      "Both `normative-v1` and `java-owlapi-5.5.1` are implemented in this package.\nOmitting `behaviorProfileId` selects `normative-v1`.\nSelect `java-owlapi-5.5.1` explicitly for the documented Java behavior; neither profile grants host I/O authority.",
-    "import-map": `Deploy the verified \`${coordinate}\` distribution under \`/vendor/owlapi/${manifest.version}/\`.\nThis abbreviated map shows application-owned URLs, not a complete dependency map:\n\n\`\`\`html\n<script type="importmap">\n${JSON.stringify(
+      "Omitting `behaviorProfileId` selects `normative-v1`.\nSelect `java-owlapi-5.5.1` for the documented Java behavior.\nFile and network access require separate authorization in either profile.",
+    "import-map": `Deploy the verified \`${coordinate}\` package under \`/vendor/owlapi/${manifest.version}/\`.\nThis example maps OwlAPI's browser entry points.\nAdd mappings for the dependencies your application uses.\n\n\`\`\`html\n<script type="importmap">\n${JSON.stringify(
       {
         imports: Object.fromEntries(
           Object.entries(manifest.exports)

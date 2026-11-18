@@ -325,7 +325,8 @@ Java parser work must preserve the released acceptance, provider limits, fallbac
 ## Historical repository handoff: Phase 19 and Phase 20
 
 The sequence below preserves the migration programme's original plan and later integration amendment.
-The scoped RCs have since shipped; use the [latest release status](../../README.md#release-status) and [current roadmap](../plans/2026-10-29-0.1.0-release-reconciliation.md) for publication and remaining stable-release work.
+Use the [0.1.0 migration guide](0.1.0-java-api-parity.md) for package installation, behavior profiles, and storage.
+The [0.1.0 roadmap](../plans/2026-10-29-0.1.0-release-reconciliation.md) preserves the earlier release decisions.
 
 - Phase 18 is fixed by accepted checkpoint `b5902e98da94a1ed99da174acea906aa42f9a46b`.
   Build the package from those current `owlapi-js` modules; no retired WebVOWL parser, converter, exporter, or bridge path may be recreated as a packaging shim.

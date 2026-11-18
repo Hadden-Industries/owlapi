@@ -12,10 +12,15 @@ import { tmpdir } from "node:os";
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
 import {
+  documentationArchive,
+  documentationSources,
+} from "./fixtures/documentation-candidate.mjs";
+import {
   projectPackageVersion,
   VERSION_PROJECTION_PATHS,
   synchronizePackageVersion,
 } from "./project-package-version.mjs";
+import { inspectReleaseDocumentation } from "./release-documentation.mjs";
 
 const manifest = JSON.parse(readFileSync("package.json", "utf8"));
 const sources = () =>
@@ -71,7 +76,9 @@ test("a future candidate propagates without transferring approval, first-release
     packageVersion: "0.1.0-rc.9",
   });
   expect(output["API.md"]).toContain("`@hadden-industries/owlapi` 0.1.0-rc.9.");
-  expect(output["API.md"]).toContain("first public release target 0.1.0-rc.3");
+  expect(output["API.md"]).toContain(
+    "First public release target: `0.1.0-rc.3`",
+  );
   expect(json(output, publicationPath)).toMatchObject({
     coordinate: "@hadden-industries/owlapi@0.1.0-rc.9",
     enabled: false,
@@ -99,14 +106,40 @@ test("same-coordinate synchronization preserves the exact existing approval reco
   expect(await synchronizePackageVersion()).toEqual([]);
 });
 
-test("stable projection requires an explicit channel choice and retains closed historical channel rules", async () => {
+test("stable projection produces release-ready package docs and retains closed historical channel rules", async () => {
   const files = sources();
-  const stable = { ...manifest, version: "0.1.0" };
+  const stable = {
+    ...manifest,
+    version: "0.1.0",
+    publishConfig: { ...manifest.publishConfig, tag: "next" },
+  };
   await expect(projectPackageVersion(files, stable)).rejects.toThrow(
     /publishConfig.tag/,
   );
   stable.publishConfig = { ...stable.publishConfig, tag: "pilot" };
   const output = await projectPackageVersion(files, stable);
+  const documents = documentationSources();
+  for (const path of Object.keys(documents)) {
+    if (Object.hasOwn(output, path)) documents[path] = output[path];
+  }
+  const result = inspectReleaseDocumentation(
+    documentationArchive(documents, [], stable),
+    stable,
+    documents,
+  );
+  expect(result.coordinate).toBe("@hadden-industries/owlapi@0.1.0");
+  expect(result.notes).toContain("OwlAPI's first stable release");
+  expect(documents["README.md"]).toContain(
+    'npm install --save-exact "owlapi@npm:@hadden-industries/owlapi@0.1.0"',
+  );
+  expect(documents["README.md"]).toContain("/vendor/owlapi/0.1.0/index.js");
+  expect(documents["README.md"]).not.toMatch(
+    /after it is published|0\.1\.0-rc/u,
+  );
+  expect(documents["API.md"]).not.toContain("Release status: PRERELEASE");
+  expect(documents["docs/compatibility/java-api-surface.md"]).not.toContain(
+    "COMPLETE / PRERELEASE",
+  );
   const ajv = new Ajv2020({ allErrors: true, strict: true });
   addFormats(ajv);
   const validate = ajv.compile(

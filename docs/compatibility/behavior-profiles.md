@@ -8,11 +8,11 @@ The manager keeps that choice for its lifetime.
 | The project's normative OWL behavior                                                                            | `normative-v1`. This is also the default when you omit `behaviorProfileId`. |
 | Compatibility with the released Java OWLAPI 5.5.1 on its documented public surface, including observable quirks | `java-owlapi-5.5.1`. Pass the identifier explicitly.                        |
 
-See [selection and authority](#selection-and-authority) for a working example, or the [API delta from the rc.2 baseline](0.1.0-api-delta.md) for additions in this package version.
+See [selection and authority](#selection-and-authority) for a working example and the [changelog](../../CHANGELOG.md) for upgrade notes.
 
 This is the behavior-profile contract for [this package version](../../README.md#release-status).
 Both profiles are implemented within the documented compatibility scope.
-The [implementation and release-readiness record](profiles/java-owlapi-5.5.1/implementation-qualification.md) preserves the interrupted historical security scan and records the owner's later rc.3 release exception; the missing coverage is not represented as a completed scan.
+The [implementation record](https://github.com/Hadden-Industries/owlapi/blob/main/docs/compatibility/profiles/java-owlapi-5.5.1/implementation-qualification.md) records the original Java profile verification and the rc.3 exception for an interrupted security review.
 The [current decision ledger](java-api-parity-decisions.json) records paired expectations, native probes, tests and accepted-plan traceability.
 Its `currentBehaviorContracts` section is separate from the retained phase 21/22 receipts and their historical Java revision.
 

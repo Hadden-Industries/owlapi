@@ -11,13 +11,18 @@ import {
   selectReleaseNotes,
 } from "./release-documentation.mjs";
 
-test("the actual packed documentation identifies its candidate without asserting publication", () => {
+const coordinate = `${manifest.name}@${manifest.version}`;
+const installAlias = `npm install --save-exact "owlapi@npm:${coordinate}"`;
+const installScoped = `npm install --save-exact ${coordinate}`;
+const releaseHeading = `\n## ${manifest.version}\n`;
+
+test("the packed guides identify their version and include upgrade notes", () => {
   const files = sources();
   const result = inspectReleaseDocumentation(archive(files), manifest, files);
   expect(result).toMatchObject({
     result: "PASS",
     contract: "owlapi-release-documentation-v1",
-    coordinate: "@hadden-industries/owlapi@0.1.0-rc.3",
+    coordinate,
   });
   expect(result.notes).toContain("### Migration");
   expect(result.notes).toContain("ChangeApplied");
@@ -26,18 +31,18 @@ test("the actual packed documentation identifies its candidate without asserting
 test.each([
   [
     "stale exact pin",
-    "npm install --save-exact @hadden-industries/owlapi@0.1.0-rc.3",
+    installScoped,
     "npm install --save-exact @hadden-industries/owlapi@0.1.0-rc.1",
   ],
   [
     "stale current identity",
-    "This package: `@hadden-industries/owlapi@0.1.0-rc.3`",
-    "Latest published release: `@hadden-industries/owlapi@0.1.0-rc.2`",
+    `This guide covers \`${coordinate}\`.`,
+    "Latest published release: `@hadden-industries/owlapi@0.1.0-rc.2`.",
   ],
   [
     "unpublished profiles",
-    "are implemented in this package",
-    "are unpublished",
+    "Select `java-owlapi-5.5.1` for the documented Java behavior.",
+    "The Java behavior profile is unpublished.",
   ],
   [
     "wrong default",
@@ -46,7 +51,7 @@ test.each([
   ],
   [
     "wrong import map",
-    "/vendor/owlapi/0.1.0-rc.3/index.js",
+    `/vendor/owlapi/${manifest.version}/index.js`,
     "/vendor/owlapi/0.1.0-rc.1/index.js",
   ],
   ["invented export", "- `owlapi/search`", "- `owlapi/unknown`"],
@@ -70,9 +75,7 @@ test("legitimate history and a moving tag do not have to match an unpublished ca
     "npm install --save-exact @hadden-industries/owlapi@0.1.0-rc.9",
   );
   expect(projected).toContain("Observed 2026-10-10: rc.2 was published.");
-  expect(projected).not.toContain(
-    "This package: `@hadden-industries/owlapi@0.1.0-rc.3`",
-  );
+  expect(projected).not.toContain(`This guide covers \`${coordinate}\`.`);
 });
 
 test("source-good but tarball-stale and repacked documentation invalidate old admission", () => {
@@ -132,22 +135,32 @@ test.each([
   "placeholder",
 ])("rejects %s candidate notes", (fault) => {
   let text = sources()["CHANGELOG.md"];
+  const notes = selectReleaseNotes(text, manifest.version);
   if (fault === "missing")
-    text = text.replace("## 0.1.0-rc.3", "## 0.1.0-rc.9");
-  if (fault === "duplicate") text += "\n## 0.1.0-rc.3\n\nDuplicate\n";
+    text = text.replace(releaseHeading, "\n## 0.1.0-rc.9\n");
+  if (fault === "duplicate") text += `${releaseHeading}\nDuplicate\n`;
   if (fault === "date")
     text = text.replace(
-      "## 0.1.0-rc.3",
-      "## 0.1.0-rc.3 — published 1 November 2026",
+      releaseHeading,
+      `\n## ${manifest.version} — published 1 November 2026\n`,
     );
   if (fault === "unpublished")
-    text = text.replace("## 0.1.0-rc.3", "## 0.1.0-rc.3 — unpublished");
+    text = text.replace(
+      releaseHeading,
+      `\n## ${manifest.version} — unpublished\n`,
+    );
   if (fault === "migration")
-    text = text.replace("### Migration", "### Internal checks");
+    text = text.replace(
+      notes,
+      notes.replace("### Migration", "### Internal checks"),
+    );
   if (fault === "placeholder")
     text = text.replace(
-      "### Changes",
-      "### Changes\n\nTODO: explain this release.",
+      notes,
+      notes.replace(
+        "### Changes",
+        "### Changes\n\nTODO: explain this release.",
+      ),
     );
   expect(() => selectReleaseNotes(text, manifest.version)).toThrow(
     /DOCUMENTATION_(?:NOTES|STATUS)/u,
@@ -190,8 +203,7 @@ test("duplicate blocks, duplicate/missing files, malformed UTF-8 and oversized d
 });
 
 test("qualification-only notes do not explain a release", () => {
-  const text =
-    "## 0.1.0-rc.3\n\n### Changes\n\n- All required checks passed with registry signatures and provenance.\n\n### Migration\n\nNo migration is required because public behavior and dependencies are unchanged.\n\n### Limitations\n\nThe existing documented unsupported APIs remain unavailable in this release.\n";
+  const text = `${releaseHeading}\n### Changes\n\n- All required checks passed with registry signatures and provenance.\n\n### Migration\n\nNo migration is required because public behavior and dependencies are unchanged.\n\n### Limitations\n\nThe existing documented unsupported APIs remain unavailable in this release.\n`;
   expect(() => selectReleaseNotes(text, manifest.version)).toThrow(
     /qualification-only/u,
   );
@@ -203,13 +215,13 @@ test.each(["joined commands", "split command"])(
     const files = sources();
     const before =
       fault === "joined commands"
-        ? 'owlapi@npm:@hadden-industries/owlapi@0.1.0-rc.3"\nnpm install'
+        ? installAlias
         : 'npm install --save-exact "owlapi@npm:';
     expect(files["README.md"]).toContain(before);
     files["README.md"] = files["README.md"].replace(
       before,
       fault === "joined commands"
-        ? 'owlapi@npm:@hadden-industries/owlapi@0.1.0-rc.3" npm install'
+        ? `${installAlias} ${installScoped}`
         : 'npm\ninstall --save-exact "owlapi@npm:',
     );
     expect(() => inspectReleaseDocumentation(archive(files), manifest)).toThrow(

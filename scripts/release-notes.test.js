@@ -4,6 +4,7 @@ import {
   assertReleaseNoteReadback,
 } from "./release-notes.mjs";
 import { finalReleaseBody } from "./finalize-github-release.mjs";
+import { selectReleaseNotes } from "./release-documentation.mjs";
 import {
   documentationManifest as manifest,
   documentationArchive,
@@ -12,9 +13,16 @@ import {
 
 test("renders changes, migration and limitations from the exact tarball", () => {
   const files = documentationSources();
+  const notesBefore = selectReleaseNotes(
+    files["CHANGELOG.md"],
+    manifest.version,
+  );
   files["CHANGELOG.md"] = files["CHANGELOG.md"].replace(
-    "### Changes",
-    "### Changes\n\n- Correct the independently observed ontology parser edge case.",
+    notesBefore,
+    notesBefore.replace(
+      "### Changes",
+      "### Changes\n\n- Correct the independently observed ontology parser edge case.",
+    ),
   );
   const notes = candidateReleaseNotes({
     tarball: documentationArchive(files),

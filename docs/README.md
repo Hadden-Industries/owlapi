@@ -1,9 +1,16 @@
 # OwlAPI documentation
 
-- [Install OwlAPI](../README.md#install), [load an ontology](../README.md#load-an-ontology), or [browse the API](../API.md).
-- [Migrate from rc.2 or Java OWLAPI](migration/0.1.0-java-api-parity.md) and [choose a behavior profile](compatibility/behavior-profiles.md).
-- [Set up a development checkout](../CONTRIBUTING.md#set-up-the-development-tools) and [run Markdown and JSON checks](development/npm-scripts.md#check-and-format-files).
-- [Check what's published](../README.md#release-status) and [see what's changed since the last release](../CHANGELOG.md#unreleased).
+## Use OwlAPI
+
+- [Install OwlAPI](../README.md#install) and [load an ontology](../README.md#load-an-ontology).
+- [Browse the API](../API.md) and [choose a behavior profile](compatibility/behavior-profiles.md).
+- [Read the 0.1.0 release notes](../CHANGELOG.md#010) and [upgrade to 0.1.0](migration/0.1.0-java-api-parity.md).
+- [Find package versions and release assets](../README.md#release-status).
+
+## Contribute
+
+- [Set up a development checkout](../CONTRIBUTING.md#set-up-the-development-tools).
+- [Run Markdown and JSON checks](development/npm-scripts.md#check-and-format-files).
 
 ## Engineering records
 
@@ -14,7 +21,7 @@ The implementation plan remains the highest-authority normative document.
 The [rc.1 publication record](provenance/releases/0.1.0-rc.1/publication-status.md) retains the first scoped release's historical evidence.
 The [scoped npm publication plan](plans/scoped-npm-publication.md) retains the exact native alias, original release sequence and independently owned UO/WebVOWL adoption handoffs.
 The [identity decision](adr/0009-scoped-npm-publication-and-uo-rc-acceptance.md) records the approved rationale.
-The active [0.1.0 roadmap](plans/2026-10-29-0.1.0-release-reconciliation.md) records rc.3 publication and its accepted limits while separating remaining stable-release work.
+The [0.1.0 roadmap](plans/2026-10-29-0.1.0-release-reconciliation.md) records the work and decisions that led to the release, including the limits of the rc.3 verification.
 The [rc.2 Java-parity programme](plans/0.1.0-rc.2-java-parity.md) remains the earlier delivery record.
 
 ## Contracts and delivery records
@@ -44,9 +51,8 @@ The [rc.2 Java-parity programme](plans/0.1.0-rc.2-java-parity.md) remains the ea
 - `compatibility/expected-differences.json`: exact Java/JavaScript differential exceptions.
 - `dependency-governance.json`: selected dependency authority, risk, licence, and replacement records.
 - `release/producer-release-policy.json` and generated `release/producer-gates.json`: active producer obligations; historical gate records retain their original identities.
-- `ontology-lifecycle-capability-implementation-plan.md`: imports-closure, mutation, merger, and storage foundations first shipped in rc.1 and retained in the latest release.
-  The current behavior profiles govern their return values, ownership and atomic/partial effects; historical qualification stays bound to its original package.
-  UO and WebVOWL retain their own production acceptance, without a prerequisite stable `0.1.0` release.
+- `ontology-lifecycle-capability-implementation-plan.md`: import closures, mutation, merging, and storage in 0.1.0.
+  The behavior profile determines return values and whether changes apply atomically or in sequence.
 - `plans/w3c-test-conformance-reporting.md`: the independent post-release programme for complete versioned W3C result ledgers, EARL generation, and appropriately disclosed upstream implementation-report submissions; it is not a gate for the public scoped RC, later `@hadden-industries/owlapi@0.1.0`, its recorded cutover patch, or WebVOWL's package cutover.
 - `compatibility/standalone-import-closure-prerequisites.md`: the bounded Java-compatible library surface required by the external consumer contract.
 
@@ -112,9 +118,7 @@ Provenance schema v4 retains deleted-artifact history and approved revision-boun
 
 Phase 19 extracted the accepted Phase 18 source into the sole canonical `Hadden-Industries/owlapi` repository; its original unscoped alpha remains historical evidence.
 The amended publication work first shipped the scoped rc.1 package with Phase 21/22 lifecycle capabilities; the release-status link above identifies the current successor.
-Phase 20 retains the later stable `0.1.0` library release and WebVOWL's later adoption of that stable version.
-
-UO and WebVOWL may each use the public RC in production after their own full acceptance without waiting for Phase 20; normal deployment authorization still applies.
+Phase 20 distinguishes the OwlAPI 0.1.0 library release from WebVOWL's separate adoption and application verification.
 The Public API Surface Registry created during extraction is the package/type gap map against pinned Java OWLAPI.
 
 Except for the curated package-root aggregate (consumer alias `owlapi`), every public npm subpath must map exactly to a separately approved `org.semanticweb.owlapi` package.

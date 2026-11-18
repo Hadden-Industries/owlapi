@@ -20,7 +20,7 @@ The accepted Python/Markdown quality plan adds locked development tooling: Prett
 See [contributor setup and commands](../CONTRIBUTING.md#source-text-syntax-and-formatting).
 A phase does not add a competing formatter, linter, test runner, module convention, or build system.
 
-Consumers may install the [latest published release](../README.md#install) through npm's native `owlapi` alias with `--save-exact`, retaining `owlapi/*` imports and an exact resolved dependency pin.
+Use the [installation guide](../README.md#install) to pin a version through npm's `owlapi` alias and keep existing `owlapi/*` imports.
 This dependency-name mapping is permitted; it creates no API wrapper, duplicate binding, forwarding module or source resolver alias.
 Canonical package metadata and generated API specifiers identify the real scope.
 

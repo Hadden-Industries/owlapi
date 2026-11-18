@@ -14,9 +14,11 @@ The canonical consumer artifacts are:
 
 ## Delivery sequencing
 
-**Current disposition:** these foundations first shipped in rc.1 and remain available in the [latest published release](../../README.md#release-status), subject to its [behavior-profile contract](behavior-profiles.md).
-Current producer gates use the [installed OWL contract](installed-owl-contract.md), with consumer application acceptance independently owned; the [active 0.1.0 roadmap](../plans/2026-10-29-0.1.0-release-reconciliation.md) records the release and remaining stable-release work.
-The branch sequence and exact rc.1 identities below are historical implementation guidance, not instructions to repeat publication or an application's acceptance.
+OwlAPI 0.1.0 supports the import-closure and storage APIs described below.
+Use the [migration guide](../migration/0.1.0-java-api-parity.md#consumer-owned-import-closure-composition) to assemble a standalone ontology.
+The library verifies these capabilities through the [installed OWL contract](installed-owl-contract.md).
+Universal Ontology verifies the exact version and its own materialization workflow before adoption.
+The branch sequence and rc.1 identities below record the original integration.
 
 ### Historical first-release sequence
 

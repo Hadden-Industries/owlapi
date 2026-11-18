@@ -5,7 +5,8 @@ Status: approved by the repository owner in the implementation chat on 2026-10-1
 The accepted implementation plan requires Java's connection, attempt and redirect settings to control real resource access.
 The existing `documentLoader.load(iri, options)` extension receives configuration but owns all transport.
 At the time of the decision, OwlAPI had no HTTP client consuming `getConnectionTimeout()`, `getRetriesToAttempt()` or `isFollowRedirects()`.
-The approved `NodeDocumentLoader` now ships in the [latest published release](../../../../README.md#release-status), under the [behavior-profile and authorization contract](../../behavior-profiles.md#external-access-and-node-transport).
+Use `NodeDocumentLoader` in Node.js with an application-owned access policy.
+See the [behavior profile and authorization contract](../../behavior-profiles.md#external-access-and-node-transport).
 Passing those settings to an arbitrary callback does not prove their behavior.
 See [the plan's resource boundary](../../../plans/2026-10-13-java-compatible-api-behavior-implementation-plan.md#behaviour-and-external-resource-authorization) and [native network observations](central-observations.json).
 

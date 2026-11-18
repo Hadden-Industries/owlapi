@@ -6,23 +6,42 @@ This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 While the major version is zero, the public API remains in initial development: incompatible changes advance the minor version, compatible additions advance the minor version by policy, and compatible corrections advance the patch version.
 Prerelease identifiers do not create a stability promise.
 
-## Unreleased
+## 0.1.0
 
-### Documentation
+OwlAPI's first stable release brings together the ontology APIs introduced in the prereleases.
 
-- Explain how to install the published rc.3, choose an import style and load a first ontology.
-  Align the API reference examples with the documented `owlapi` alias.
-- Update the browser deployment, behavior-profile and rc.3 migration guides.
-  Separate published release details from changes in the source checkout.
+### Changes
 
-### Runtime compatibility
+- Load, query, edit, and save OWL 2 ontologies in Node.js and modern browsers.
+  Work with import closures, merge ontologies, render Manchester Syntax, and configure RDF/XML output.
+- Choose between OWL defaults and the documented Java OWLAPI 5.5.1 behavior.
+  The Node document loader supports file and network access with authorization that you supply.
+- Check OWL 2 DL, EL, QL, and RL profiles and extract modules with syntactic locality.
+  DL source assessment covers the retained structures described in the [behavior profile contract](docs/compatibility/behavior-profiles.md).
+- Prevent a Node.js 24.0.0 stack overflow when saving large OWL/XML and Turtle documents.
+  Refresh the runtime dependency graph.
+- Find exact install commands, a runnable first example, and browser deployment options in the [README](README.md).
+  The API reference uses the same `owlapi` imports.
 
-- Avoid a Node 24.0.0 stack overflow when saving large OWL/XML and Turtle documents.
+### Migration
+
+- From rc.3, update the exact version in your manifest and lockfile.
+  The public import paths and default `normative-v1` profile carry over.
+  Check your application's loading and storage workflows after upgrading.
+- From an earlier prerelease or Java OWLAPI, review mutation results, storage targets, and resource defaults in the [migration guide](https://github.com/Hadden-Industries/owlapi/blob/main/docs/migration/0.1.0-java-api-parity.md).
+  Choose `java-owlapi-5.5.1` explicitly if you rely on Java's `ChangeApplied` results, sequential changes, or append behavior.
+
+### Limitations
+
+Java compatibility covers the members and behavior listed in the [Java compatibility reference](docs/compatibility/java-api-surface.md).
+The [benchmark results](https://github.com/Hadden-Industries/owlapi/blob/main/docs/performance/remaining-java-performance-implementation-results.md) describe the measured workloads and remaining gaps.
+The package covers structural OWL APIs and profile checks.
+Reasoning, SWRL, and browser file or network transport through `owlapi/io/node` are outside its scope.
 
 ### Contributor tooling
 
 - Use npm 12.2.2 for package production and require npm 12.2.2 or newer for development.
-  Refresh the locked dependencies, including Markdown Quality 3.0.1, JSON Quality 1.0.1, uv 0.13.9 and Ruff 0.17.4.
+  Refresh locked development dependencies.
 - Install Markdown Quality and its matching native package from the root npm lockfile.
   Keep read-only Markdown checks and previews separate from explicit formatting writes.
 - Use JSON Quality's complete repository check and newline-delimited JSON diagnostics.
@@ -34,10 +53,12 @@ Prerelease identifiers do not create a stability promise.
 
 ### Release checks
 
-- Verify the documentation inside the candidate tarball against the package identity, exports, runnable examples and versioned release notes before publication.
-- Recover registry verification from the authenticated npm write attempt, including a first write on a later attempt after an upstream job failure.
+- Check the documentation inside the package against its identity, exports, runnable examples, and release notes.
+- Stage the tarball that passed qualification and tie registry verification and recovery to the original npm write attempt.
 
 ## 0.1.0-rc.3
+
+See the [rc.3 release](https://github.com/Hadden-Industries/owlapi/releases/tag/v0.1.0-rc.3) for its assets and verification record.
 
 ### Changes
 
