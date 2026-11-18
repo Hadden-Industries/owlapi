@@ -58,6 +58,9 @@ jobs:
           # Governance verifies the recorded annotated tag and peeled commit.
           fetch-depth: 0
           persist-credentials: false
+      - name: Record unavailable extended provider coverage
+        run: node scripts/record-extended-test-status.mjs
+        timeout-minutes: 1
       # Transporting only the reporter source lets the later issues-only job run
       # reviewed logic without checking out the repository or gaining contents access.
       - name: Retain the maintenance reporter for the write-only job
@@ -108,10 +111,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: npm run check:published-coordinate
         timeout-minutes: 20
-      - name: Record unavailable extended provider coverage
-        if: ${{ !cancelled() }}
-        run: node scripts/record-extended-test-status.mjs
-        timeout-minutes: 1
 
   consumer_runtimes:
     name: Maintenance / complete consumer qualification

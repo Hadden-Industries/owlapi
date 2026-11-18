@@ -1769,7 +1769,7 @@ jobs:
         timeout-minutes: 15
     if: ${{ !inputs.rc3_recovery && (needs.release_admission.outputs.mode != 'reuse') }}
   recovery_source:
-    if: ${{ inputs.rc3_recovery && !inputs.qualification_only }}
+    if: ${{ inputs.rc3_recovery && !inputs.qualification_only && needs.release_dispatch.outputs.mode == 'rc3' }}
     name: Release recovery / source verified
     needs: release_dispatch
     runs-on: ubuntu-26.04

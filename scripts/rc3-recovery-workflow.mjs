@@ -154,7 +154,25 @@ export function ordinaryReleaseWorkflow(workflow, violations) {
     if (Object.hasOwn(RECOVERY_JOBS, id)) continue;
     if (id === "release_dispatch") {
       check(
-        job.if === undefined && !job.needs,
+        job.if === undefined &&
+          !job.needs &&
+          isDeepStrictEqual(job.permissions, { contents: "read" }) &&
+          !job.environment &&
+          isDeepStrictEqual(job.outputs, {
+            mode: "${{ steps.route.outputs.mode }}",
+          }) &&
+          job.steps?.length === 2 &&
+          job.steps[0].uses === checkout &&
+          job.steps[0].if === undefined &&
+          job.steps[0].with?.ref === "${{ github.sha }}" &&
+          job.steps[0].with?.["persist-credentials"] === false &&
+          job.steps[1].id === "route" &&
+          job.steps[1].if === undefined &&
+          job.steps[1]["continue-on-error"] === undefined &&
+          job.steps[1].run === "node scripts/release-qualification-route.mjs" &&
+          isDeepStrictEqual(job.steps[1].env, {
+            RELEASE_INPUTS_JSON: "${{ toJSON(inputs) }}",
+          }),
         "release dispatch validation must run before the ordinary and recovery routes",
       );
       continue;
@@ -189,7 +207,11 @@ export function ordinaryReleaseWorkflow(workflow, violations) {
     check(Boolean(j), `${id} is missing`);
     if (!j) continue;
     check(
-      j.name === RECOVERY_JOBS[id] && j.if === guarded,
+      j.name === RECOVERY_JOBS[id] &&
+        j.if ===
+          (id === "recovery_source"
+            ? "${{ inputs.rc3_recovery && !inputs.qualification_only && needs.release_dispatch.outputs.mode == 'rc3' }}"
+            : guarded),
       `${id} identity or guard differs`,
     );
     check(

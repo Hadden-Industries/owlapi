@@ -75,11 +75,19 @@ Owner-reviewed managed CodeQL analyses must be at most seven days old, and the s
 ## Stage and inspect
 
 1. Prepare the successor with packed `publishConfig.tag=pilot` and project its version.
-   The owner reviews a version-specific `OIDC_STAGED` boundary.
-   Include `stage-intent.json` in the checkpoint with `commit`, `version`, original qualification `run` and `attempt` as strings, `manifestSha256`, `tarballSha256`, selected `channel`, `githubLatestBefore` for the GitHub latest release ID or null, `before` values for pilot/latest/next (null means absent), and accepted `rights` and `benchmark` dispositions.
+   The owner signs the exact qualified bytes using the [staged publication policy](staged-publication-policy.json).
+   Include `stage-intent.json` in the checkpoint with `commit`, `version`, original qualification `run` and `attempt` as strings, `manifestSha256`, `tarballSha256`, selected `channel`, `githubLatestBefore` for the GitHub latest release ID or null, `before` values for pilot/latest/next (null means absent), and `rights` and `benchmark` set to `ACCEPTED`.
+   Put the four reviewed rights file digests from the manifest in `rightsInputs`.
+   Include disclosure-reviewed `benchmark-disposition.json` with `decision=ACCEPTED` and the exact tarball SHA-256, and bind its bytes with `benchmarkEvidenceSha256`.
+   After reading npm's private staging inventory for this coordinate, sign `privateInventory` with the exact `coordinate`, UTC `observedAt`, `pendingCount=0` and `inventorySha256` of the retained private read.
+   Keep raw private inventory outside the published checkpoint.
+   The read must be less than one hour old and newer than every prior relevant writer.
    Record a `writerCutover` object confirming `directPublishDisabled`, `legacyWritersDisabled`, `stageBindingVerified` and `protectedEnvironmentVerified` from the owner’s settings readback.
    Supply the original dispositions of any preceding stages.
    Start `stage-release.yml` at the qualified protected SHA or use the reviewed controller repair below.
+   The read-only admission reports ineligibility before requesting environment approval.
+   For a local preview, run `node scripts/staged-release.mjs preflight` with the reviewed dispatch fields and prospective run identity, the actual main SHA, and an authenticated read token.
+   After approval in `npm-release`, the writer rechecks original candidate availability, history, private inventory freshness and tag preimages before submitting once.
    It records a request before invoking npm and retains the stage ID and outcome.
 2. In the owner's authenticated npm session, run `npm stage view STAGE_ID --json` and `npm stage download STAGE_ID`.
    Save the native view JSON and the original stage journal.

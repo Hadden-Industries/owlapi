@@ -41,7 +41,6 @@ env:
 jobs:
   admit:
     if: github.repository == 'Hadden-Industries/owlapi' && github.ref == 'refs/heads/main'
-    environment: release-manual
     runs-on: ubuntu-26.04
     timeout-minutes: 15
     permissions:
@@ -52,6 +51,7 @@ jobs:
         shell: bash
     outputs:
       artifact_id: ${{ steps.origin.outputs.artifact_id }}
+      artifact_run_id: ${{ steps.origin.outputs.artifact_run_id }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -86,7 +86,9 @@ jobs:
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           artifact-ids: ${{ needs.admit.outputs.artifact_id }}
-          run-id: ${{ inputs.qualification_run }}
+          run-id: ${{ needs.admit.outputs.artifact_run_id }}
+          repository: Hadden-Industries/owlapi
+          skip-decompress: false
           github-token: ${{ github.token }}
           path: ${{ runner.temp }}/owlapi-stage-input/candidate
           merge-multiple: false
@@ -95,7 +97,7 @@ jobs:
         working-directory: ${{ runner.temp }}/owlapi-stage-input
         env:
           GH_TOKEN: ${{ github.token }}
-        run: node "$GITHUB_WORKSPACE/scripts/staged-release.mjs" stage
+        run: node "$GITHUB_WORKSPACE/scripts/staged-release-entry.mjs" stage
       - name: Retain original stage journal
         if: ${{ !cancelled() }}
         uses: ./.github/actions/retain-artifact

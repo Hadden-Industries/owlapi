@@ -113,7 +113,7 @@ export async function projectPackageVersion(files, manifest) {
       reconciliation: null,
       reviewedOn: null,
       reason:
-        "Candidate identity projected from package.json. Previous version-specific decisions do not authorize this candidate, publication or channel changes; obtain a new decision before enabling publication.",
+        "Candidate identity projected from package.json. Staging requires a signed owner intent for the exact qualified bytes under staged-publication-policy.json.",
     });
   }
   await put(publicationPath, publication);
@@ -146,22 +146,11 @@ export async function projectPackageVersion(files, manifest) {
       if: { type: "object", properties: { coordinate: { enum: prospective } } },
       then: {
         type: "object",
-        properties: { reconciliation: { type: "null" } },
-        oneOf: [
-          {
-            properties: {
-              enabled: { const: false },
-              mode: { const: "UNRESOLVED" },
-            },
-          },
-          {
-            properties: {
-              enabled: { const: true },
-              mode: { const: "OIDC_STAGED" },
-              reviewedOn: { type: "string", format: "date" },
-            },
-          },
-        ],
+        properties: {
+          reconciliation: { type: "null" },
+          enabled: { const: false },
+          mode: { const: "UNRESOLVED" },
+        },
       },
     });
   publicationSchema.allOf = publicationSchema.allOf.filter(

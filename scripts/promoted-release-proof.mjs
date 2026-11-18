@@ -65,7 +65,7 @@ export function projectPromotedCi(result, matrixSha256) {
 /** Validate the release job output again before making it part of a manifest. */
 export function assertPromotedCi(
   evidence,
-  { commit, matrixSha256, now = Date.now() },
+  { commit, matrixSha256, now = Date.now(), version = PACKAGE_VERSION },
 ) {
   assert.equal(evidence.schemaVersion, 1, "Unknown CI evidence projection");
   assert.ok(id(evidence.repositoryId));
@@ -128,8 +128,8 @@ export function assertPromotedCi(
   assert.ok(hex(matrixSha256));
   assert.equal(evidence.matrixSha256, matrixSha256);
   for (const [key, filename] of Object.entries({
-    tarball: PACKAGE_FILE_STEM + "-" + PACKAGE_VERSION + ".tgz",
-    sbom: PACKAGE_FILE_STEM + "-" + PACKAGE_VERSION + ".cdx.json",
+    tarball: PACKAGE_FILE_STEM + "-" + version + ".tgz",
+    sbom: PACKAGE_FILE_STEM + "-" + version + ".cdx.json",
     checksums: "SHA256SUMS",
   })) {
     const member = evidence.assets[key];
@@ -139,7 +139,7 @@ export function assertPromotedCi(
   }
   assert.deepEqual(evidence.package, {
     name: PACKAGE_NAME,
-    version: PACKAGE_VERSION,
+    version,
   });
   assert.match(evidence.integrity, /^sha512-[A-Za-z0-9+/]{86}==$/u);
   const observations = evidence.advisoryObservations;

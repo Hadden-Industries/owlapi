@@ -35,6 +35,15 @@ const mutateWorkflow = (fileName, mutate) => {
 };
 
 describe("repository workflow governance", () => {
+  test("requires the native dispatch validation step even on the legacy rc.3 route", () => {
+    expect(
+      mutateWorkflow("release.yml", (doc) => {
+        doc.getIn(["jobs", "release_dispatch", "steps"]).items.pop();
+      }),
+    ).toContain(
+      "release.yml: rc.3 recovery release dispatch validation must run before the ordinary and recovery routes",
+    );
+  });
   test("rejects a literal false on required source admission", () => {
     expect(
       mutateWorkflow("ci.yml", (doc) => {

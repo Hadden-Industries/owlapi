@@ -4,6 +4,10 @@ export const MAINTENANCE_ISSUE_TITLE =
   "Automated maintenance health check failures";
 
 const CANONICAL_REPOSITORY = "Hadden-Industries/owlapi";
+const isReporter = (record) =>
+  record.user?.id === 41898282 &&
+  record.user.login === "github-actions[bot]" &&
+  record.user.type === "Bot";
 const SUPPORTED_RESULTS = new Set([
   "success",
   "failure",
@@ -179,7 +183,8 @@ const openMaintenanceIssues = async (context) => {
   return (await readAllPages(context, url)).filter(
     (issue) =>
       issue.title === MAINTENANCE_ISSUE_TITLE &&
-      issue.pull_request === undefined,
+      issue.pull_request === undefined &&
+      isReporter(issue),
   );
 };
 
@@ -195,7 +200,9 @@ const reconcileCreate = async (context, marker) => {
 const reconcileComment = async (context, issueNumber, marker) => {
   const url = `${context.apiUrl}/repos/${context.repository}/issues/${issueNumber}/comments?per_page=100`;
   const comments = await readAllPages(context, url);
-  return comments.some((comment) => comment.body?.includes(marker))
+  return comments.some(
+    (comment) => isReporter(comment) && comment.body?.includes(marker),
+  )
     ? { action: "RECONCILED_COMMENTED", issueNumber }
     : null;
 };

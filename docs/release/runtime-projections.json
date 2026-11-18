@@ -519,7 +519,7 @@
     "maintenance.yml": {
       "/jobs/runtime_matrix/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/health/runs-on": "{{runtime:ubuntuRunner}}",
-      "/jobs/health/steps/4/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
+      "/jobs/health/steps/5/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
       "/jobs/reporter/runs-on": "{{runtime:ubuntuRunner}}"
     },
     "release-reconciliation.yml": {

@@ -669,7 +669,7 @@ const npmAuthority = { ...readAuthority, "id-token": "write" };
 const githubAuthority = { ...readAuthority, contents: "write" };
 const operationJobs = {
   "stage-release.yml": {
-    admit: [readAuthority, "release-manual"],
+    admit: [readAuthority],
     stage: [{ ...npmAuthority, "security-events": "read" }, "npm-release"],
   },
   "github-release.yml": {
@@ -710,7 +710,7 @@ function validateOperationJobs(file, workflow, violations) {
     if (!job || !Object.values(permissions).includes("write")) continue;
     const command =
       file === "stage-release.yml"
-        ? 'node "$GITHUB_WORKSPACE/scripts/staged-release.mjs" stage'
+        ? 'node "$GITHUB_WORKSPACE/scripts/staged-release-entry.mjs" stage'
         : "node scripts/" +
           (file === "github-release.yml"
             ? "staged-release-followup"
@@ -734,6 +734,31 @@ function validateOperationJobs(file, workflow, violations) {
               s.uses.startsWith("actions/download-artifact@")),
         ),
       file + ":" + name + " writer must run only the scoped controller",
+    );
+  }
+  if (file === "stage-release.yml") {
+    const { admit, stage } = workflow.jobs;
+    requireFields(
+      admit?.outputs,
+      {
+        artifact_id: "${{ steps.origin.outputs.artifact_id }}",
+        artifact_run_id: "${{ steps.origin.outputs.artifact_run_id }}",
+      },
+      "stage-release.yml: original candidate identity",
+      violations,
+    );
+    const downloads = actionSteps(stage, "actions/download-artifact");
+    add(
+      violations,
+      downloads.length === 1 &&
+        sameInventory(needs(stage), ["admit"]) &&
+        fieldsMatch(downloads[0].with, {
+          ...DOWNLOAD_INPUTS,
+          "artifact-ids": "${{ needs.admit.outputs.artifact_id }}",
+          "run-id": "${{ needs.admit.outputs.artifact_run_id }}",
+          repository: "Hadden-Industries/owlapi",
+        }),
+      "stage-release.yml: protected stage must download the admitted original CI or release candidate",
     );
   }
   if (file !== "release-completion.yml")
@@ -2984,12 +3009,12 @@ const validateMaintenanceReporter = (workflow, violations) => {
   );
   add(
     violations,
-    steps(health).filter(
-      (step) =>
-        step.if === "${{ !cancelled() }}" &&
-        step.run === "node scripts/record-extended-test-status.mjs",
-    ).length === 1,
-    "maintenance.yml: record unavailable providers even if health fails",
+    steps(health)[1]?.run === "node scripts/record-extended-test-status.mjs" &&
+      steps(health)[1].if === undefined &&
+      steps(health).filter(
+        (step) => step.run === "node scripts/record-extended-test-status.mjs",
+      ).length === 1,
+    "maintenance.yml: record unavailable providers once after checkout and before health work",
   );
 };
 

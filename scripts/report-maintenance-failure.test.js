@@ -19,6 +19,7 @@ const jobs = (health) => ({
   runtime_matrix: "success",
   consumer_runtimes: "success",
 });
+const bot = { id: 41898282, login: "github-actions[bot]", type: "Bot" };
 
 // GitHub's stateless installation-token format is substantially longer than
 // the legacy token shape and contains JWT separators. Keep this synthetic
@@ -113,9 +114,18 @@ describe("maintenance finding reporter", () => {
     const fetchImpl = jest
       .fn()
       .mockResolvedValueOnce(
-        response(200, [{ number: 17, title: MAINTENANCE_ISSUE_TITLE }]),
+        response(200, [
+          { number: 17, title: MAINTENANCE_ISSUE_TITLE, user: bot },
+        ]),
       )
-      .mockResolvedValueOnce(response(200, []))
+      .mockResolvedValueOnce(
+        response(200, [
+          {
+            user: { id: 1, type: "User" },
+            body: "<!-- owlapi-maintenance-run:12345:2 -->",
+          },
+        ]),
+      )
       .mockResolvedValueOnce(response(201, { id: 99 }));
 
     await expect(
@@ -135,7 +145,9 @@ describe("maintenance finding reporter", () => {
     const fetchImpl = jest
       .fn()
       .mockResolvedValueOnce(
-        response(200, [{ number: 17, title: MAINTENANCE_ISSUE_TITLE }]),
+        response(200, [
+          { number: 17, title: MAINTENANCE_ISSUE_TITLE, user: bot },
+        ]),
       )
       .mockResolvedValueOnce(response(200, { number: 17, state: "closed" }));
 
@@ -160,6 +172,7 @@ describe("maintenance finding reporter", () => {
           {
             number: 18,
             title: MAINTENANCE_ISSUE_TITLE,
+            user: bot,
             body: `${marker}\nRecorded despite the lost response.`,
           },
         ]),

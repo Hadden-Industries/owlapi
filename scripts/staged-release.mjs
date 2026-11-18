@@ -1,4 +1,10 @@
-import { readReleaseSecurity } from "./release-qualification-manifest.mjs";
+import {
+  readReleaseSecurity,
+  verifyPromotedAdmission,
+} from "./release-qualification-manifest.mjs";
+import { assertPromotedCi } from "./promoted-release-proof.mjs";
+import { CI_WORKFLOW } from "./ci-verification.mjs";
+import { CI_JOB_NAMES } from "./ci-qualification.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
@@ -27,6 +33,18 @@ import {
   priorDisposition,
 } from "./release-history-checkpoint.mjs";
 import { readPublicRegistry } from "./public-registry-read.mjs";
+import { emit } from "./ci-verification-command.mjs";
+import { CI_RUNTIME } from "./runtime-policy.mjs";
+import {
+  findNpmCliCandidates,
+  observeNpmVersion,
+  selectNpmCliForVersion,
+} from "./assert-workflow-runtime.mjs";
+import {
+  assertPrivateStageInventory,
+  assertStageAuthority,
+  stageRightsInputs,
+} from "./release-stage-authorization.mjs";
 import {
   PACKAGE_NAME,
   PACKAGE_VERSION,
@@ -58,7 +76,10 @@ export function checkStageBytes(bytes, manifest) {
   );
 }
 function subject(manifest) {
-  assert.equal(manifest.schemaVersion, 1);
+  assert.ok(
+    [1, 2].includes(manifest.schemaVersion),
+    "Unknown release qualification manifest",
+  );
   assert.equal(manifest.repository, repo);
   assert.equal(manifest.workflow, ".github/workflows/release.yml");
   assert.equal(manifest.package.name, PACKAGE_NAME);
@@ -77,6 +98,39 @@ function subject(manifest) {
     tag: "pilot",
   });
   assert.match(manifest.commit, /^[a-f0-9]{40}$/u);
+  if (manifest.schemaVersion === 2) {
+    const ci = manifest.ci;
+    const recorded = Date.parse(manifest.security?.observedAt);
+    assert.ok(
+      Number.isFinite(recorded) && recorded <= Date.now(),
+      "Invalid recorded release observation",
+    );
+    assertPromotedCi(ci, {
+      commit: manifest.commit,
+      version: manifest.package.version,
+      matrixSha256: ci.matrixSha256,
+      now: recorded,
+    });
+    assert.deepEqual(
+      [
+        manifest.package,
+        manifest.packedConfig,
+        manifest.assets,
+        manifest.integrity,
+        manifest.candidateId,
+        manifest.candidateDigest,
+      ],
+      [
+        ci.package,
+        ci.packedConfig,
+        ci.assets,
+        ci.integrity,
+        String(ci.candidate.id),
+        ci.candidate.digest.slice("sha256:".length),
+      ],
+      "Promoted qualification contains conflicting candidate identities",
+    );
+  }
 }
 export function verifyPrivateStage({
   manifest,
@@ -229,6 +283,7 @@ export async function originArtifact(
     recoverSeal = false,
     stageFailure,
     requireArchivedFailure = false,
+    ciProducer,
   },
   checkpoint,
 ) {
@@ -251,6 +306,25 @@ export async function originArtifact(
   );
   const run = liveRun ?? saved?.run;
   assert.ok(run, "Missing original run record");
+  if (ciProducer) {
+    assert.equal(filename, CI_WORKFLOW);
+    assert.equal(commit, ciProducer.providerHead);
+    assert.equal(String(runId), String(ciProducer.runId));
+    assert.equal(String(attempt), String(ciProducer.producingAttempt));
+    const jobPath = `/actions/jobs/${id(ciProducer.producerJob)}`;
+    const producer = (await readAvailable(jobPath)) ?? saved?.producer;
+    assert.ok(
+      producer &&
+        producer.id === ciProducer.producerJob &&
+        producer.name === CI_JOB_NAMES.candidate + " / Produce" &&
+        String(producer.run_id) === String(runId) &&
+        String(producer.run_attempt) === String(attempt) &&
+        producer.head_sha === commit &&
+        producer.status === "completed" &&
+        producer.conclusion === "success",
+      "Original CI candidate producer could not be verified",
+    );
+  }
   if (liveRun && saved) {
     for (const field of [
       "id",
@@ -301,11 +375,16 @@ export async function originArtifact(
       String(runId),
       String(attempt),
       filename,
-      "workflow_dispatch",
-      "main",
+      ciProducer?.event ?? "workflow_dispatch",
+      ciProducer?.event === "pull_request" ? run.head_branch : "main",
       commit,
       "completed",
-      recoverSeal || failedStage ? run.conclusion : "success",
+      recoverSeal ||
+      failedStage ||
+      (ciProducer?.producingAttempt < ciProducer?.attempt &&
+        run.conclusion === "failure")
+        ? run.conclusion
+        : "success",
     ],
     "Unqualified original run or attempt",
   );
@@ -437,7 +516,11 @@ export async function originalManifest(client, env, checkpoint) {
   );
   const archive = await originalBytes(client, a);
   assert.equal("sha256:" + hash(archive), a.digest);
-  const files = readZipArchiveFilesWith(archive, { crc32 });
+  const files = readZipArchiveFilesWith(archive, {
+    crc32,
+    expectedNames: new Set(["manifest.json"]),
+    maximumUncompressedBytes: 256 * 1024,
+  });
   assert.deepEqual(
     files.map((f) => f.path),
     ["manifest.json"],
@@ -454,25 +537,43 @@ export async function originalManifest(client, env, checkpoint) {
     manifest.package.version,
     env.QUALIFIED_VERSION ?? PACKAGE_VERSION,
   );
+  const ciProducer = manifest.ci?.build;
+  const runId = ciProducer ? String(ciProducer.runId) : manifest.runId;
+  const attempt = ciProducer
+    ? String(ciProducer.producingAttempt)
+    : manifest.attempt;
   const candidate = await originArtifact(
     client,
     {
-      runId: manifest.runId,
-      attempt: manifest.attempt,
-      filename: manifest.workflow,
-      commit: manifest.commit,
+      runId,
+      attempt,
+      filename: ciProducer ? CI_WORKFLOW : manifest.workflow,
+      commit: ciProducer?.providerHead ?? manifest.commit,
+      ciProducer,
       logical:
         "hadden-industries-owlapi-" +
         manifest.package.version +
         "-candidate-" +
-        manifest.runId +
+        runId +
         "-" +
-        manifest.attempt,
+        attempt,
       artifactId: manifest.candidateId,
     },
     checkpoint,
   );
   assert.equal(candidate.digest, "sha256:" + manifest.candidateDigest);
+  if (ciProducer) {
+    assert.equal(
+      candidate.name,
+      manifest.ci.candidate.name,
+      "Promoted physical candidate name changed",
+    );
+    assert.equal(
+      candidate.size_in_bytes,
+      manifest.ci.candidate.bytes,
+      "Promoted candidate size changed",
+    );
+  }
   return { manifest, candidate, manifestBytes: bytes };
 }
 export async function stageOnce({
@@ -544,7 +645,13 @@ export async function stageOnce({
     throw error;
   }
 }
-export async function assertPriorOperations(client, env, checkpoint, kind) {
+export async function assertPriorOperations(
+  client,
+  env,
+  checkpoint,
+  kind,
+  { requireTiming = false } = {},
+) {
   const workflows = {
     stage: ["stage-release.yml", "Stage the admitted tarball"],
     labels: ["release-labels.yml", "Apply approved npm labels (npm)"],
@@ -555,6 +662,7 @@ export async function assertPriorOperations(client, env, checkpoint, kind) {
   };
   const [workflow, step] = workflows[kind];
   const prior = await readWorkflowRuns((path) => client.read(path), workflow);
+  let lastWriterAt = -Infinity;
   for (const run of prior.filter((r) => String(r.id) !== env.GITHUB_RUN_ID)) {
     assert.ok(
       run.status === "completed",
@@ -573,6 +681,14 @@ export async function assertPriorOperations(client, env, checkpoint, kind) {
         .flatMap((j) => j.steps ?? [])
         .filter((s) => s.name === step && !["skipped"].includes(s.conclusion));
       if (writes.length) {
+        if (requireTiming) {
+          const times = writes.map((s) => Date.parse(s.completed_at));
+          assert.ok(
+            times.every((time) => Number.isFinite(time) && time <= Date.now()),
+            "A previous writer's exact end time is unknown",
+          );
+          lastWriterAt = Math.max(lastWriterAt, ...times);
+        }
         const disposition = priorDisposition(
           checkpoint,
           kind + "-" + run.id + "-" + attempt + ".json",
@@ -633,8 +749,9 @@ export async function assertPriorOperations(client, env, checkpoint, kind) {
       }
     }
   }
+  return lastWriterAt;
 }
-async function preflight(client, env, checkpoint, intent) {
+async function preflight(client, env, checkpoint, intent, manifest) {
   assert.equal(env.GITHUB_REPOSITORY, repo);
   assert.equal(env.GITHUB_REF, "refs/heads/main");
   assert.equal(
@@ -642,9 +759,12 @@ async function preflight(client, env, checkpoint, intent) {
     "1",
     "Reruns must reconcile original history",
   );
-  assert.equal(
-    (await client.read("/git/ref/heads/main")).object.sha,
-    env.GITHUB_SHA,
+  const main = await client.read("/branches/main");
+  assert.ok(
+    main.name === "main" &&
+      main.protected === true &&
+      main.commit?.sha === env.GITHUB_SHA,
+    "The stage controller is no longer current protected main",
   );
   assert.equal(
     await client.read("/git/ref/tags/v" + PACKAGE_VERSION, { accept404: true }),
@@ -686,8 +806,6 @@ async function preflight(client, env, checkpoint, intent) {
     },
     "Owner provider readback is required",
   );
-  assert.equal(intent.rights, "ACCEPTED");
-  assert.equal(intent.benchmark, "ACCEPTED");
   assert.ok(
     intent.githubLatestBefore === null ||
       Number.isSafeInteger(intent.githubLatestBefore),
@@ -697,39 +815,55 @@ async function preflight(client, env, checkpoint, intent) {
     intent.githubLatestBefore,
   );
   assert.equal(intent.tarballSha256, env.QUALIFIED_TARBALL_SHA256);
-  await assertPriorOperations(client, env, checkpoint, "stage");
-  await assertPriorOperations(client, env, checkpoint, "labels");
-  const control = json(
-    readFileSync(
-      new URL("../docs/release/publication-control.json", import.meta.url),
-    ),
+  const lastWriterAt = Math.max(
+    await assertPriorOperations(client, env, checkpoint, "stage", {
+      requireTiming: true,
+    }),
+    await assertPriorOperations(client, env, checkpoint, "labels", {
+      requireTiming: true,
+    }),
+    await assertPriorOperations(client, env, checkpoint, "classification", {
+      requireTiming: true,
+    }),
   );
-  for (const path of [
-    "docs/provenance/rights-inventory.json",
-    "docs/provenance/third-party-material.json",
-    "docs/provenance/scoped-package-name-review.json",
-  ])
+  assertPrivateStageInventory(intent.privateInventory, {
+    coordinate: PACKAGE_NAME + "@" + PACKAGE_VERSION,
+    lastWriterAt,
+  });
+  const reviewed = {};
+  for (const path of stageRightsInputs) {
+    const bytes = readFileSync(new URL("../" + path, import.meta.url));
+    const { review, reviewStatus } = json(bytes);
     assert.equal(
-      json(readFileSync(new URL("../" + path, import.meta.url))).review.status,
+      review?.status ?? reviewStatus,
       "REVIEWED",
       path + " requires human review",
     );
-  assert.equal(
-    json(
+    reviewed[path] = hash(bytes);
+  }
+  assertStageAuthority({
+    policy: json(
       readFileSync(
         new URL(
-          "../tooling/artifact-transport/rights-review.json",
+          "../docs/release/staged-publication-policy.json",
           import.meta.url,
         ),
       ),
-    ).reviewStatus,
-    "REVIEWED",
-  );
-  assert.equal(control.enabled, true);
-  assert.equal(control.mode, "OIDC_STAGED");
-  assert.equal(control.coordinate, PACKAGE_NAME + "@" + PACKAGE_VERSION);
+    ),
+    intent,
+    manifest,
+    reviewed,
+    benchmark: checkpoint.files.get("benchmark-disposition.json"),
+  });
+  if (manifest.schemaVersion === 2)
+    await verifyPromotedAdmission({
+      read: (path) => client.read(path),
+      ci: manifest.ci,
+      commit: manifest.commit,
+      matrixSha256: manifest.ci.matrixSha256,
+    });
 }
-async function main() {
+export async function runStagedRelease() {
   const [mode, ...args] = process.argv.slice(2);
   if (mode === "verify-private") {
     assert.equal(
@@ -753,7 +887,7 @@ async function main() {
     process.stdout.write(JSON.stringify(report, null, 2) + "\n");
     return;
   }
-  assert.ok(["admit", "stage"].includes(mode));
+  assert.ok(["admit", "stage", "preflight"].includes(mode));
   const env = process.env;
   let requestStarted = false;
   try {
@@ -806,9 +940,17 @@ async function executeStage(mode, env, beginRequest) {
     },
     checkpoint,
     intent,
+    manifest,
   );
-  if (mode === "admit") {
-    appendFileSync(env.GITHUB_OUTPUT, "artifact_id=" + id(candidate.id) + "\n");
+  if (mode !== "stage") {
+    emit(
+      {
+        artifact_id: id(candidate.id),
+        artifact_run_id: id(candidate.workflow_run.id),
+      },
+      "Stage intent and original candidate verified read-only.",
+      { env },
+    );
     return;
   }
   assert.equal(env.RUNNER_ENVIRONMENT, "github-hosted");
@@ -839,6 +981,11 @@ async function executeStage(mode, env, beginRequest) {
   clean.NPM_CONFIG_USERCONFIG = join(scratch, "empty.npmrc");
   writeFileSync(clean.NPM_CONFIG_USERCONFIG, "", { flag: "wx" });
   clean.NPM_CONFIG_FETCH_RETRIES = "0";
+  const { npmCli } = selectNpmCliForVersion({
+    expectedNpm: CI_RUNTIME.npm,
+    candidates: findNpmCliCandidates(),
+    observeVersion: observeNpmVersion,
+  });
   const journalDirectory = resolve(env.GITHUB_WORKSPACE, ".release/stage");
   mkdirSync(journalDirectory, { recursive: true });
   const tags = json(
@@ -874,7 +1021,7 @@ async function executeStage(mode, env, beginRequest) {
     journal: join(journalDirectory, "journal.jsonl"),
     command: (args) => {
       beginRequest();
-      return execFileSync("npm", args, {
+      return execFileSync(process.execPath, [npmCli, ...args], {
         cwd: scratch,
         env: clean,
         timeout: 120000,
@@ -884,4 +1031,4 @@ async function executeStage(mode, env, beginRequest) {
   });
 }
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href)
-  await main();
+  await runStagedRelease();
