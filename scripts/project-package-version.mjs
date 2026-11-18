@@ -49,7 +49,9 @@ export async function projectPackageVersion(files, manifest) {
   );
   const output = { ...files };
   output["README.md"] = await format(
-    projectReadmeDocumentation(files["README.md"], manifest),
+    projectReadmeDocumentation(files["README.md"], manifest, {
+      requireRepositoryLinks: true,
+    }),
     {
       parser: "markdown",
       endOfLine: "lf",

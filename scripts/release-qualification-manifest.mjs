@@ -1,3 +1,4 @@
+import { REPOSITORY as repository } from "./release-identity.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -20,7 +21,7 @@ import {
   readAcknowledgedInventory,
 } from "./github-evidence-reader.mjs";
 
-export const repository = "Hadden-Industries/owlapi";
+export { repository };
 const main = "refs/heads/main";
 const categories = ["/language:actions", "/language:javascript-typescript"];
 const digest = (bytes, algorithm = "sha256", encoding = "hex") =>

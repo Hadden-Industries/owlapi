@@ -51,9 +51,13 @@ import {
   selectNpmCliForVersion,
 } from "./assert-workflow-runtime.mjs";
 import { CI_RUNTIME } from "./runtime-policy.mjs";
+import {
+  REPOSITORY as repository,
+  REPOSITORY_ID,
+  REPOSITORY_URL,
+  githubWorkflowIdentityPattern,
+} from "./release-identity.mjs";
 
-const repository = "Hadden-Industries/owlapi";
-const repositoryId = "1347610640";
 const classificationWorkflow = ".github/workflows/release-classification.yml";
 const labels = ["pilot", "latest", "next"];
 const isRc = (v) => /^\d+\.\d+\.\d+-rc\.\d+$/u.test(v);
@@ -537,15 +541,9 @@ async function readSignedRefusalReceipt(
     11: "github-hosted", // Runner environment
     13: controller, // Source repository digest
     14: "refs/heads/main", // Source repository ref
-    15: repositoryId, // Source repository identifier
+    15: String(REPOSITORY_ID), // Source repository identifier
     20: "workflow_dispatch", // Build trigger
-    21:
-      "https://github.com/" +
-      repository +
-      "/actions/runs/" +
-      runId +
-      "/attempts/" +
-      attempt,
+    21: REPOSITORY_URL + "/actions/runs/" + runId + "/attempts/" + attempt,
   };
   const certificateOIDs = Object.fromEntries(
     Object.entries(extensions).map(([suffix, text]) => {
@@ -561,8 +559,10 @@ async function readSignedRefusalReceipt(
     await verify(signature, receipt, {
       timeout: 5000,
       certificateIssuer: "https://token.actions.githubusercontent.com",
-      certificateIdentityURI:
-        "^https://github\\.com/Hadden-Industries/owlapi/\\.github/workflows/release-classification\\.yml@refs/heads/main$",
+      certificateIdentityURI: githubWorkflowIdentityPattern(
+        classificationWorkflow,
+        "refs/heads/main",
+      ),
       certificateOIDs,
       ctLogThreshold: 1,
       tlogThreshold: 1,

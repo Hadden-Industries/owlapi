@@ -1,3 +1,4 @@
+import { PACKAGE_FILE_STEM, REPOSITORY } from "./release-identity.mjs";
 import {
   matchesLogicalArtifact,
   artifactProducingAttempt,
@@ -578,7 +579,7 @@ async function verifyMergedProof({
     candidate.digest === receipt.candidate.digest &&
       artifactProducingAttempt(
         candidate.name,
-        `hadden-industries-owlapi-${context.version}-candidate-${run.id}-`,
+        `${PACKAGE_FILE_STEM}-${context.version}-candidate-${run.id}-`,
         { run: run.id, attempt: run.run_attempt, legacy: true },
       ) !== null,
     "Qualified candidate identity no longer matches.",
@@ -998,7 +999,7 @@ async function verifyExactMainQualification({
       candidate.digest === record.candidate.digest &&
         artifactProducingAttempt(
           candidate.name,
-          `hadden-industries-owlapi-${context.version}-candidate-${run.id}-`,
+          `${PACKAGE_FILE_STEM}-${context.version}-candidate-${run.id}-`,
           { run: run.id, attempt: run.run_attempt, legacy: true },
         ) !== null,
       "Main FULL candidate identity changed.",
@@ -1048,7 +1049,7 @@ export async function verifyReleaseCi({
   requireFact(
     context.eventName === "workflow_dispatch" &&
       context.ref === "refs/heads/main" &&
-      context.repository === "Hadden-Industries/owlapi" &&
+      context.repository === REPOSITORY &&
       sameRepository(context.event?.repository, context) &&
       context.event.repository.default_branch === "main" &&
       sha(context.sha) &&

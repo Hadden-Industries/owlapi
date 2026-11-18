@@ -63,7 +63,7 @@ jobs:
       - name: Audit the isolated artifact transport dependency graph
         env:
           CANDIDATE_VERSION: ${{ inputs.version }}
-        run: npm audit --prefix tooling/artifact-transport --package-lock-only --audit-level=high --json > ".release/candidate/$CANDIDATE_VERSION/transport-audit.json"
+        run: npm run audit:artifact-transport > ".release/candidate/$CANDIDATE_VERSION/transport-audit.json"
       - name: Upload the exact same-run candidate
         id: upload
         uses: ./.github/actions/retain-artifact

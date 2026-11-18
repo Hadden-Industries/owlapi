@@ -293,7 +293,7 @@ npm run check:version
 
 The packed tag is the default for staging.
 Choose the public npm tag through the [staged publication procedure](docs/release/staged-operations.md).
-`sync:version` updates the lockfile's root version, exact README install pins and import map, generated API views, compatibility metadata and release coordinates.
+`sync:version` updates the lockfile's root version, README install pins, import map and repository links, generated API views, compatibility metadata and release coordinates.
 
 It uses the retained Java API inventory and does not need a Java source checkout for a version-only change.
 Structural API changes still require the full Java API generator.

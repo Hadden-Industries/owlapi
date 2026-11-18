@@ -1,3 +1,4 @@
+import { REPOSITORY } from "./release-identity.mjs";
 import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync } from "node:fs";
 import { basename, resolve } from "node:path";
@@ -103,7 +104,7 @@ const main = async () => {
   const tag = `v${version}`;
   if (
     !output ||
-    repository !== "Hadden-Industries/owlapi" ||
+    repository !== REPOSITORY ||
     !token ||
     !/^[0-9a-f]{40}$/u.test(promotionCommit ?? "") ||
     !/^[0-9a-f]{40}$/u.test(sourceCommit ?? "")

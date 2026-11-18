@@ -1,3 +1,4 @@
+import { PACKAGE_FILE_STEM, REPOSITORY } from "./release-identity.mjs";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
@@ -45,7 +46,7 @@ async function main() {
   const target = maintenanceTarget(designation, tags);
   if (target.action === "QUERY") {
     const read = createRepositoryReader({
-      repository: "Hadden-Industries/owlapi",
+      repository: REPOSITORY,
       token: process.env.GH_TOKEN,
     });
     const release = await read("/releases/" + designation.releaseId);
@@ -60,7 +61,7 @@ async function main() {
     assert.ok(
       release.assets.some(
         (a) =>
-          a.name === "hadden-industries-owlapi-" + target.version + ".tgz" &&
+          a.name === `${PACKAGE_FILE_STEM}-${target.version}.tgz` &&
           a.digest === "sha256:" + designation.tarballSha256,
       ),
     );

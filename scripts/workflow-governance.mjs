@@ -1,3 +1,4 @@
+import { REPOSITORY } from "./release-identity.mjs";
 import {
   PUBLICATION_WRITE_IF,
   PUBLICATION_GUARD_COMMAND,
@@ -91,7 +92,7 @@ const DOWNLOAD_INPUTS = {
 };
 const SOURCE_DOWNLOAD_INPUTS = {
   "github-token": "${{ github.token }}",
-  repository: "Hadden-Industries/owlapi",
+  repository: REPOSITORY,
   "run-id": "${{ steps.metadata.outputs.source_run_id }}",
 };
 const RECONCILIATION_JOB_IDS = [
@@ -731,7 +732,7 @@ function validateOperationJobs(file, workflow, violations) {
       add(
         violations,
         job.if ===
-          "github.repository == 'Hadden-Industries/owlapi' && github.ref == 'refs/heads/main' && inputs.operation == 'verify'" &&
+          `github.repository == '${REPOSITORY}' && github.ref == 'refs/heads/main' && inputs.operation == 'verify'` &&
           isDeepStrictEqual(
             job.steps.map((step) => step.uses?.split("@")[0] ?? step.run),
             [
@@ -804,7 +805,7 @@ function validateOperationJobs(file, workflow, violations) {
           ...DOWNLOAD_INPUTS,
           "artifact-ids": "${{ needs.admit.outputs.artifact_id }}",
           "run-id": "${{ needs.admit.outputs.artifact_run_id }}",
-          repository: "Hadden-Industries/owlapi",
+          repository: REPOSITORY,
         }),
       "stage-release.yml: protected stage must download the admitted original CI or release candidate",
     );
@@ -1257,7 +1258,7 @@ const validateJavaReferenceBoundary = (job, violations) => {
         ...DOWNLOAD_INPUTS,
         "artifact-ids": "${{ steps.reference_index.outputs.artifact_id }}",
         "run-id": "${{ steps.reference_index.outputs.run_id }}",
-        repository: "Hadden-Industries/owlapi",
+        repository: REPOSITORY,
         "github-token": "${{ github.token }}",
         path: ".release/java-reference-reuse/index-download",
       },
@@ -1314,7 +1315,7 @@ const validateJavaReferenceBoundary = (job, violations) => {
         ...DOWNLOAD_INPUTS,
         "artifact-ids": "${{ steps.reference_select.outputs.artifact_ids }}",
         "run-id": "${{ steps.reference_select.outputs.run_id }}",
-        repository: "Hadden-Industries/owlapi",
+        repository: REPOSITORY,
         "github-token": "${{ github.token }}",
         path: ".release/java-reference-reuse/download",
       },
@@ -1546,7 +1547,7 @@ const validateCiVerification = (workflow, violations) => {
         ...DOWNLOAD_INPUTS,
         "artifact-ids": "${{ steps.seed_select.outputs.artifact_ids }}",
         "run-id": "${{ steps.seed_select.outputs.run_id }}",
-        repository: "Hadden-Industries/owlapi",
+        repository: REPOSITORY,
         "github-token": "${{ github.token }}",
         path: ".release/java-reference-seed/download",
       },
@@ -1625,7 +1626,7 @@ const validateCiVerification = (workflow, violations) => {
         ...DOWNLOAD_INPUTS,
         "artifact-ids": "${{ steps.select.outputs.artifact_id }}",
         "run-id": "${{ steps.select.outputs.run_id }}",
-        repository: "Hadden-Industries/owlapi",
+        repository: REPOSITORY,
         "github-token": "${{ github.token }}",
         path: ".release/ci-reuse/download",
       },
@@ -3014,7 +3015,7 @@ const validateMaintenanceReporter = (workflow, violations) => {
   requireFields(
     retention,
     {
-      if: "github.repository == 'Hadden-Industries/owlapi' && github.ref == 'refs/heads/main'",
+      if: `github.repository == '${REPOSITORY}' && github.ref == 'refs/heads/main'`,
       needs: "runtime_matrix",
       permissions: {
         ...readAuthority,

@@ -1,3 +1,4 @@
+import { REPOSITORY as repo } from "./release-identity.mjs";
 import {
   readReleaseSecurity,
   verifyPromotedAdmission,
@@ -50,13 +51,13 @@ import {
   stageRightsInputs,
 } from "./release-stage-authorization.mjs";
 import {
+  PACKAGE_FILE_STEM,
   PACKAGE_NAME,
   PACKAGE_VERSION,
   NPM_REGISTRY,
   releaseChannel,
 } from "./package-identity.mjs";
 
-const repo = "Hadden-Industries/owlapi";
 const registry = NPM_REGISTRY;
 const stageWorkflow = ".github/workflows/stage-release.yml";
 const id = (value) => {
@@ -598,13 +599,7 @@ export async function originalManifest(client, env, checkpoint) {
       filename: ciProducer ? CI_WORKFLOW : manifest.workflow,
       commit: ciProducer?.providerHead ?? manifest.commit,
       ciProducer,
-      logical:
-        "hadden-industries-owlapi-" +
-        manifest.package.version +
-        "-candidate-" +
-        runId +
-        "-" +
-        attempt,
+      logical: `${PACKAGE_FILE_STEM}-${manifest.package.version}-candidate-${runId}-${attempt}`,
       artifactId: manifest.candidateId,
     },
     checkpoint,
@@ -1054,7 +1049,7 @@ async function executeStage(mode, env, beginRequest) {
   const path = resolve("candidate", manifest.assets.tarball.name);
   assert.equal(
     manifest.assets.tarball.name,
-    "hadden-industries-owlapi-" + PACKAGE_VERSION + ".tgz",
+    `${PACKAGE_FILE_STEM}-${PACKAGE_VERSION}.tgz`,
   );
   assert.ok(lstatSync(path).isFile());
   const scratch = resolve(env.RUNNER_TEMP, "owlapi-stage");

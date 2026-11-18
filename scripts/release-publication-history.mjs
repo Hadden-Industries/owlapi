@@ -1,3 +1,4 @@
+import { REPOSITORY as repository } from "./release-identity.mjs";
 import assert from "node:assert/strict";
 import { appendFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
@@ -11,7 +12,6 @@ export const PUBLICATION_GUARD_COMMAND =
   "node approval-tools/scripts/release-publication-history.mjs";
 export const PUBLICATION_WRITE_IF =
   "${{ steps.publication_history.outputs.publish == 'true' }}";
-const repository = "Hadden-Industries/owlapi";
 const publishers = {
   npm_release: "Release / npm trusted publisher",
   recovery_publish: "Release recovery / npm trusted publisher",

@@ -1,3 +1,4 @@
+import { REPOSITORY, REPOSITORY_ID } from "./release-identity.mjs";
 import { spawnSync } from "node:child_process";
 import assert from "node:assert/strict";
 import { setTimeout as delay } from "node:timers/promises";
@@ -31,7 +32,7 @@ export const IMMUTABLE_VERIFICATION_POLICY = Object.freeze({
   indexingBudgetMs: 180_000,
   pollMs: 15_000,
   assetLimitBytes: 64 * 1024 * 1024,
-  repositoryId: 1347610640,
+  repositoryId: REPOSITORY_ID,
   // Existing immutable rc.2 attestation, independently observed on 2026-10-29.
   // This is an access control, never evidence for the candidate's authenticity.
   controlTagSha: "79699c3816912084202551dc2e043a12e081a3ef",
@@ -299,7 +300,7 @@ const main = async () => {
   const tag = `v${version}`;
   if (
     !reportPath ||
-    repository !== "Hadden-Industries/owlapi" ||
+    repository !== REPOSITORY ||
     !token ||
     !/^[0-9a-f]{40}$/u.test(promotionCommit ?? "") ||
     !/^[0-9a-f]{40}$/u.test(sourceCommit ?? "")

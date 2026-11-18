@@ -1,3 +1,4 @@
+import { REPOSITORY } from "./release-identity.mjs";
 import { spawnSync } from "node:child_process";
 import {
   appendFileSync,
@@ -153,7 +154,7 @@ const main = async () => {
     });
     if (
       context.eventName !== "workflow_dispatch" ||
-      context.repository !== "Hadden-Industries/owlapi" ||
+      context.repository !== REPOSITORY ||
       context.ref !== "refs/heads/main" ||
       context.event.inputs?.subject !== context.sha ||
       context.snapshot.commit !== context.sha ||

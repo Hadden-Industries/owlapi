@@ -3,6 +3,8 @@
 Load, query, and save OWL 2 ontologies in Node.js and modern browsers.
 OwlAPI uses native JavaScript ES modules and provides a structural object model, Java OWLAPI-style APIs, and RDF/JS integration.
 
+<!-- release-documentation:repository-links -->
+
 [Install the library](#install) · [Load an ontology](#load-an-ontology) · [Browse the API](./API.md) · [Upgrade or migrate](https://github.com/Hadden-Industries/owlapi/blob/main/docs/migration/0.1.0-java-api-parity.md)
 
 ## Install
@@ -98,9 +100,10 @@ The package declares the engine admission range `>=22.0.0`.
 
 Official support starts at Node.js 22.0.0, 24.0.0 and 26.0.0 in the maintained release lines.
 Other release lines receive best-effort support.
-See the [runtime support policy](https://github.com/Hadden-Industries/owlapi/blob/main/docs/release/runtime-policy.json) for the supported lines and platforms.
 
 <!-- runtime-policy:end -->
+
+See the [runtime support policy](https://github.com/Hadden-Industries/owlapi/blob/main/docs/release/runtime-policy.json) for the supported lines and platforms.
 
 Use a [bundler](#bundler-owned-browser-application), an [import map](#native-document-modules-with-an-import-map), or a [bundled dedicated worker](#bundled-dedicated-module-worker) in the browser.
 The `owlapi/io/node` transport requires Node.js.

@@ -1,3 +1,4 @@
+import { REPOSITORY } from "./release-identity.mjs";
 import {
   readPublicationHistory,
   publicationObservation,
@@ -239,7 +240,7 @@ export const qualifyPublicRegistry = async ({
   publication = () =>
     readPublicationAttempt({
       client: new GitHubReleaseClient({
-        repository: "Hadden-Industries/owlapi",
+        repository: REPOSITORY,
         token: process.env.GITHUB_TOKEN,
       }),
     }),
@@ -406,7 +407,7 @@ const main = async () => {
           publication: () =>
             readPublicationAttempt({
               client: new GitHubReleaseClient({
-                repository: "Hadden-Industries/owlapi",
+                repository: REPOSITORY,
                 token: process.env.GITHUB_TOKEN,
               }),
               publisherName: RECOVERY_JOBS.recovery_publish,

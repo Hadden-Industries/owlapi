@@ -10,6 +10,8 @@ const fail = (category, path, detail) => {
 };
 const normalize = (text) => text.replace(/\r\n/gu, "\n");
 const marker = (id, end) => `<!-- release-documentation:${id}:${end} -->`;
+const repositoryLinksMarker = "<!-- release-documentation:repository-links -->";
+const hasRepositoryLinks = (readme) => readme.includes(repositoryLinksMarker);
 
 export const documentationBlock = (text, id) => {
   const start = marker(id, "start"),
@@ -28,9 +30,9 @@ export const documentationBlock = (text, id) => {
 /** Small governed claims; the remaining prose still needs editorial review. */
 export const renderDocumentationBlocks = (manifest) => {
   const coordinate = `${manifest.name}@${manifest.version}`;
-  const exports = Object.keys(manifest.exports).map((key) =>
-    key === "." ? "owlapi" : `owlapi/${key.slice(2)}`,
-  );
+  const importName = (key) =>
+    key === "." ? "owlapi" : `owlapi/${key.slice(2)}`;
+  const exports = Object.keys(manifest.exports).map(importName);
   return {
     identity: `This guide covers \`${coordinate}\`.`,
     install: [
@@ -55,7 +57,7 @@ export const renderDocumentationBlocks = (manifest) => {
           Object.entries(manifest.exports)
             .filter(([key]) => key !== "./io/node")
             .map(([key, target]) => [
-              key === "." ? "owlapi" : `owlapi/${key.slice(2)}`,
+              importName(key),
               `/vendor/owlapi/${manifest.version}/${target.slice(2)}`,
             ]),
         ),
@@ -66,7 +68,53 @@ export const renderDocumentationBlocks = (manifest) => {
   };
 };
 
-export const projectReadmeDocumentation = (readme, manifest) => {
+const projectRepositoryLinks = (readme, manifest, required = false) => {
+  // Older retained packages predate repository link projection.
+  if (!required && !hasRepositoryLinks(readme)) return readme;
+  if (readme.split(repositoryLinksMarker).length !== 2)
+    fail("LINK", "README.md", "missing or duplicate repository-links marker");
+
+  const repository =
+    /^git\+(https:\/\/github\.com\/[\w.-]+\/[\w.-]+)\.git$/u.exec(
+      manifest.repository?.url,
+    )?.[1];
+  if (!repository)
+    fail("LINK", "package.json", "invalid GitHub repository URL");
+
+  const source = `${repository}/blob/main`;
+  const links = {
+    "Upgrade or migrate": `${source}/docs/migration/0.1.0-java-api-parity.md`,
+    "Browse GitHub releases": `${repository}/releases`,
+    "Check the npm package": `https://www.npmjs.com/package/${manifest.name}?activeTab=versions`,
+    "runtime support policy": `${source}/docs/release/runtime-policy.json`,
+    "reference import map": `${source}/test/consumers/browser/import-map/reference-import-map.json`,
+    "profile default comparison": `${source}/docs/compatibility/behavior-profiles.md#configuration-and-resource-defaults`,
+    "W3C reporting plan": `${source}/docs/plans/w3c-test-conformance-reporting.md`,
+    "`docs/provenance`": `${repository}/tree/main/docs/provenance`,
+    "See what the rebuild estimate covers": `${source}/docs/development-investment.md`,
+    "privacy notice": `${source}/PRIVACY.md`,
+    "security policy": `${source}/SECURITY.md`,
+    "Code of Conduct": `${source}/CODE_OF_CONDUCT.md`,
+    "how to contribute": `${source}/CONTRIBUTING.md`,
+    "private vulnerability reporting process": `${source}/SECURITY.md#privately-report-a-vulnerability`,
+  };
+  let result = readme;
+  for (const [label, url] of Object.entries(links)) {
+    const prefix = `[${label}](`;
+    const parts = result.split(prefix);
+    const destination = parts[1]?.match(/^[^\s)]+\)/u)?.[0];
+    if (parts.length !== 2 || !destination)
+      fail("LINK", "README.md", `expected one inline link for ${label}`);
+    result = `${parts[0]}${prefix}${url})${parts[1].slice(destination.length)}`;
+  }
+  return result;
+};
+
+export const projectReadmeDocumentation = (
+  readme,
+  manifest,
+  { requireRepositoryLinks = false } = {},
+) => {
   let result = normalize(readme);
   for (const [id, body] of Object.entries(
     renderDocumentationBlocks(manifest),
@@ -79,7 +127,7 @@ export const projectReadmeDocumentation = (readme, manifest) => {
       `\n\n${body}\n\n` +
       result.slice(result.indexOf(end));
   }
-  return result;
+  return projectRepositoryLinks(result, manifest, requireRepositoryLinks);
 };
 
 const substantive = (text) =>
@@ -149,15 +197,20 @@ export const readDocumentationExamples = (readme) =>
 
 export const assertDocumentationFiles = (files, manifest, sourceFiles) => {
   const readme = normalize(files["README.md"]);
-  const projected = projectReadmeDocumentation(readme, manifest);
   // Line endings are normalized above; line boundaries inside commands are significant.
-  for (const id of Object.keys(renderDocumentationBlocks(manifest)))
-    if (documentationBlock(readme, id) !== documentationBlock(projected, id))
+  for (const [id, body] of Object.entries(renderDocumentationBlocks(manifest)))
+    if (documentationBlock(readme, id) !== body)
       fail(
         "CLAIM",
         "README.md",
         `${id} disagrees with ${manifest.name}@${manifest.version}`,
       );
+  if (projectRepositoryLinks(readme, manifest) !== readme)
+    fail(
+      "CLAIM",
+      "README.md",
+      "inline repository links disagree with manifest",
+    );
   readDocumentationExamples(readme);
   const notes = selectReleaseNotes(files["CHANGELOG.md"], manifest.version);
   if (!readme.includes(`engine admission range \`${manifest.engines.node}\``))
@@ -250,6 +303,11 @@ export const inspectReleaseDocumentationContents = (
   const files = Object.fromEntries(
     DOCUMENTATION_PATHS.map((path) => [path, decode(path)]),
   );
+  if (
+    hasRepositoryLinks(files["README.md"]) &&
+    manifest.repository?.url !== expectedManifest.repository?.url
+  )
+    fail("IDENTITY", "package.json", "unexpected repository URL");
   const { notes } = assertDocumentationFiles(files, manifest, sourceFiles);
   return {
     result: "PASS",

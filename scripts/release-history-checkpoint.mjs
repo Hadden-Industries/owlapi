@@ -4,6 +4,7 @@ import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { verifyLocalReleaseTag } from "./verify-release-tag.mjs";
+import { REPOSITORY, REPOSITORY_GIT_URL } from "./release-identity.mjs";
 
 const namespace = "owlapi-release-history/";
 const writerKinds = ["stage", "labels", "classification", "draft", "seal"];
@@ -13,10 +14,9 @@ const resolvedReservation = [
   "RECONCILED_NO_PENDING_EFFECT",
 ];
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
-const historyRepository = "https://github.com/Hadden-Industries/owlapi.git";
 const hostedCheckout = () =>
   process.env.GITHUB_ACTIONS === "true" &&
-  process.env.GITHUB_REPOSITORY === "Hadden-Industries/owlapi";
+  process.env.GITHUB_REPOSITORY === REPOSITORY;
 const git = (...args) =>
   execFileSync("git", args, {
     cwd: repositoryRoot,
@@ -43,7 +43,7 @@ function localHistoryRef(ref, objectId) {
       "--filter=blob:none",
       "--no-tags",
       "--no-recurse-submodules",
-      historyRepository,
+      REPOSITORY_GIT_URL,
       ref,
     );
     current = git("rev-parse", "--verify", "FETCH_HEAD").toString().trim();
@@ -65,7 +65,7 @@ function historyBlob(oid, maximum = maxBlobBytes) {
       "--no-tags",
       "--no-recurse-submodules",
       "--no-write-fetch-head",
-      historyRepository,
+      REPOSITORY_GIT_URL,
       oid,
     );
     size = Number(git("cat-file", "-s", oid).toString().trim());
@@ -301,7 +301,7 @@ export async function readCheckpoint(client, objectId) {
     "APPROVED_FOR_PUBLIC_GIT",
     "Only disclosure-reviewed public evidence belongs in this ref",
   );
-  assert.equal(index.repository, "Hadden-Industries/owlapi");
+  assert.equal(index.repository, REPOSITORY);
   const files = checkpointPayloads(index, inventory, historyBlob);
   assert.equal(
     (await client.read("/git/ref/tags/" + tag.tag)).object.sha,

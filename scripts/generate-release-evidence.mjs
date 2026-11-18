@@ -1,3 +1,4 @@
+import { REPOSITORY } from "./release-identity.mjs";
 import { readFileSync, writeFileSync } from "node:fs";
 import { sameJobExecution } from "./github-job-execution.mjs";
 import { artifactProducingAttempt } from "../tooling/artifact-transport/identity.mjs";
@@ -243,7 +244,7 @@ const generateScopedEvidence = async () => {
   const artifactId = process.env.CANDIDATE_ARTIFACT_ID;
   const rawDigest = process.env.CANDIDATE_ARTIFACT_DIGEST;
   if (
-    repository !== "Hadden-Industries/owlapi" ||
+    repository !== REPOSITORY ||
     !token ||
     !/^[1-9][0-9]*$/u.test(runId ?? "") ||
     !Number.isSafeInteger(runAttempt) ||
@@ -453,7 +454,7 @@ const main = async () => {
   const artifactName = process.env.CANDIDATE_ARTIFACT_NAME;
   if (
     !output ||
-    repository !== "Hadden-Industries/owlapi" ||
+    repository !== REPOSITORY ||
     !token ||
     !/^[1-9][0-9]*$/u.test(runId ?? "") ||
     !Number.isInteger(runAttempt) ||

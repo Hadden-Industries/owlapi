@@ -1,3 +1,4 @@
+import { REPOSITORY } from "./release-identity.mjs";
 import { createHash } from "node:crypto";
 import { jsonEquals } from "./canonical-json.mjs";
 import { spawnSync } from "node:child_process";
@@ -83,7 +84,7 @@ export const deriveReconciliationMetadata = ({ control, manifest }) => {
     reconciliation.failureClass !==
       "POST_QUALIFICATION_EVIDENCE_PERSISTENCE_FAILURE" ||
     reconciliation.packageReproduction !== "BYTE_IDENTICAL" ||
-    source?.repository !== "Hadden-Industries/owlapi" ||
+    source?.repository !== REPOSITORY ||
     source.workflow !== ".github/workflows/release.yml" ||
     !Number.isSafeInteger(source.runId) ||
     source.runId < 1 ||
@@ -158,7 +159,7 @@ export const assertPromotionContext = ({
   sourceCommit,
 }) => {
   if (
-    repository !== "Hadden-Industries/owlapi" ||
+    repository !== REPOSITORY ||
     ref !== "refs/heads/main" ||
     !COMMIT_PATTERN.test(promotionCommit ?? "") ||
     !COMMIT_PATTERN.test(sourceCommit ?? "")

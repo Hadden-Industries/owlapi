@@ -97,6 +97,31 @@ test("a future candidate propagates without transferring approval, first-release
   expect(await projectPackageVersion(output, future)).toEqual(output);
 });
 
+test("README links follow the supplied manifest inline and current source must enable their projection", async () => {
+  const files = sources();
+  const moved = {
+    ...manifest,
+    repository: {
+      ...manifest.repository,
+      url: "git+https://github.com/example/moved.git",
+    },
+  };
+  const output = await projectPackageVersion(files, moved);
+  expect(output["README.md"]).toContain(
+    "[Browse GitHub releases](https://github.com/example/moved/releases)",
+  );
+  expect(output["README.md"]).toContain(
+    "[runtime support policy](https://github.com/example/moved/blob/main/docs/release/runtime-policy.json)",
+  );
+  files["README.md"] = files["README.md"].replace(
+    "<!-- release-documentation:repository-links -->",
+    "",
+  );
+  await expect(projectPackageVersion(files, manifest)).rejects.toThrow(
+    /missing.*repository-links/u,
+  );
+});
+
 test("same-coordinate synchronization preserves the exact existing approval record", async () => {
   const files = sources();
   const output = await projectPackageVersion(files, manifest);
@@ -171,11 +196,12 @@ test("manifest identity is loaded from the checkout, rejects other candidates an
   const directory = mkdtempSync(join(tmpdir(), "owlapi-version-identity-"));
   try {
     mkdirSync(join(directory, "scripts"));
-    copyFileSync(
-      "scripts/package-identity.mjs",
-      join(directory, "scripts", "package-identity.mjs"),
-    );
-    for (const name of ["npm-semver.mjs", "assert-workflow-runtime.mjs"])
+    for (const name of [
+      "package-identity.mjs",
+      "release-identity.mjs",
+      "npm-semver.mjs",
+      "assert-workflow-runtime.mjs",
+    ])
       copyFileSync(join("scripts", name), join(directory, "scripts", name));
     const run = () =>
       execFileSync(
@@ -189,7 +215,7 @@ test("manifest identity is loaded from the checkout, rejects other candidates an
       );
     writeFileSync(
       join(directory, "package.json"),
-      JSON.stringify({ name: manifest.name, version: "0.1.0-rc.9" }),
+      JSON.stringify({ ...manifest, version: "0.1.0-rc.9" }),
     );
     expect(run().trim()).toBe("0.1.0-rc.9");
     writeFileSync(join(directory, "package.json"), JSON.stringify(manifest));
@@ -201,6 +227,17 @@ test("manifest identity is loaded from the checkout, rejects other candidates an
       );
       expect(run).toThrow(/invalid package identity/);
     }
+    writeFileSync(
+      join(directory, "package.json"),
+      JSON.stringify({
+        ...manifest,
+        repository: {
+          ...manifest.repository,
+          url: "git+https://github.com/example/owlapi.git",
+        },
+      }),
+    );
+    expect(run).toThrow(/invalid package identity/);
   } finally {
     rmSync(directory, { recursive: true, force: true });
   }

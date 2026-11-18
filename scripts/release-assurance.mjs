@@ -10,9 +10,12 @@ import {
   observeNpmVersion,
   selectNpmCliForVersion,
 } from "./assert-workflow-runtime.mjs";
-import { NPM_REGISTRY } from "./package-identity.mjs";
-import { PACKAGE_NAME } from "./package-identity.mjs";
+import { NPM_REGISTRY, PACKAGE_NAME } from "./release-identity.mjs";
 import { flattenNpmGraph } from "./npm-production-graph.mjs";
+import {
+  assertReleaseAudit,
+  RELEASE_AUDIT_ARGS,
+} from "./release-audit-policy.mjs";
 import { isStrictDescendantPath } from "./release-file-utils.mjs";
 import { CI_RUNTIME } from "./runtime-policy.mjs";
 
@@ -73,8 +76,7 @@ export function refreshReleaseAudits(
           return (root, args) => readNpmJson(npmCli, root, deadline, args);
         })()
       : undefined;
-  const runAudit =
-    audit ?? ((root) => read(root, ["audit", "--audit-level=high"]));
+  const runAudit = audit ?? ((root) => read(root, RELEASE_AUDIT_ARGS));
   const lock = JSON.parse(recipientLockBytes);
   const recipient = lock.packages?.[""];
   assert.ok(
@@ -114,10 +116,9 @@ export function refreshReleaseAudits(
       );
       const digests = paths.map((path) => sha(readFileSync(path)));
       const { status, report } = runAudit(root);
-      const counts = report?.metadata?.vulnerabilities;
-      assert.ok(
-        status === 0 && counts?.high === 0 && counts?.critical === 0,
-        `Current production advisory check did not pass for ${name}`,
+      const counts = assertReleaseAudit(
+        { status, report },
+        `${name} production graph`,
       );
       assert.deepEqual(
         paths.map((path) => sha(readFileSync(path))),

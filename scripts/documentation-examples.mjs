@@ -1,4 +1,5 @@
 import { readDocumentationExamples } from "./release-documentation.mjs";
+import { PACKAGE_NAME } from "./release-identity.mjs";
 
 /** Execute selected, complete README fences in the existing isolated consumers.
  * These independent postconditions describe the public examples, not implementation details.
@@ -7,7 +8,7 @@ export const documentationExampleModules = (
   readme,
   dependencyName = "owlapi",
 ) => {
-  if (!["owlapi", "@hadden-industries/owlapi"].includes(dependencyName))
+  if (!["owlapi", PACKAGE_NAME].includes(dependencyName))
     throw new Error("Unexpected documentation dependency name");
   const assertions = {
     "load-ontology": `if (ontology.getAxioms().size !== 0 || String(ontology.getOntologyID().ontologyIRI) !== "https://example.com/my-ontology") throw new Error("README load-ontology result changed");`,

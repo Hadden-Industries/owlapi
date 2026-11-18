@@ -96,6 +96,7 @@
   "browserslist": "baseline widely available",
   "scripts": {
     "acquire:npm-evidence": "node util/acquire-npm-package-evidence.mjs",
+    "audit:artifact-transport": "node scripts/audit-artifact-transport.mjs",
     "build:release-candidate": "node scripts/build-release-candidate.mjs",
     "check:json": "node scripts/run-json-quality.mjs check",
     "check:markdown": "markdown-quality check --root . --diagnostic-display-level warning",

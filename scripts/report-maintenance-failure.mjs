@@ -1,9 +1,9 @@
+import { REPOSITORY as CANONICAL_REPOSITORY } from "./release-identity.mjs";
 import { fileURLToPath } from "node:url";
 
 export const MAINTENANCE_ISSUE_TITLE =
   "Automated maintenance health check failures";
 
-const CANONICAL_REPOSITORY = "Hadden-Industries/owlapi";
 const isReporter = (record) =>
   record.user?.id === 41898282 &&
   record.user.login === "github-actions[bot]" &&

@@ -1,4 +1,5 @@
 /** Record a native no-request failure even if the publisher cannot be loaded. */
+import { REPOSITORY } from "./release-identity.mjs";
 import assert from "node:assert/strict";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
@@ -8,7 +9,7 @@ assert.equal(process.argv[2], "stage");
 const env = process.env;
 assert.equal(env.GITHUB_ACTIONS, "true");
 assert.equal(env.GITHUB_EVENT_NAME, "workflow_dispatch");
-assert.equal(env.GITHUB_REPOSITORY, "Hadden-Industries/owlapi");
+assert.equal(env.GITHUB_REPOSITORY, REPOSITORY);
 assert.equal(env.GITHUB_REF, "refs/heads/main");
 assert.equal(env.GITHUB_RUN_ATTEMPT, "1");
 assert.match(env.GITHUB_RUN_ID, /^[1-9][0-9]*$/u);

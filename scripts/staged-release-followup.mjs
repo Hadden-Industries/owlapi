@@ -1,3 +1,4 @@
+import { PACKAGE_FILE_STEM, REPOSITORY as repo } from "./release-identity.mjs";
 import { validateStagedReleaseEvidence } from "./staged-evidence.mjs";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
@@ -45,8 +46,6 @@ import {
 } from "./release-public-proof.mjs";
 import { CI_WORKFLOW } from "./ci-verification.mjs";
 import { canonicalJson } from "./canonical-json.mjs";
-
-const repo = "Hadden-Industries/owlapi";
 
 const parse = (bytes) => JSON.parse(bytes.toString("utf8"));
 const positive = (n) => Number.isSafeInteger(n) && n > 0;
@@ -883,7 +882,7 @@ async function seal(client, ctx, checkpoint, renewal, execution) {
   );
   readStagedArchive(archive);
   const archiveInfo = asset(
-    "hadden-industries-owlapi-" + operation.version + ".evidence.json.gz",
+    `${PACKAGE_FILE_STEM}-${operation.version}.evidence.json.gz`,
     archive,
   );
   const evidence = Buffer.from(
@@ -904,7 +903,7 @@ async function seal(client, ctx, checkpoint, renewal, execution) {
   );
   validateStagedReleaseEvidence(parse(evidence));
   const evidenceInfo = asset(
-    "hadden-industries-owlapi-" + operation.version + ".release-evidence.json",
+    `${PACKAGE_FILE_STEM}-${operation.version}.release-evidence.json`,
     evidence,
   );
   const assetIds = parse(read("draft.json")).assetIds;
@@ -1136,7 +1135,7 @@ export async function completeRelease(client, env, checkpoint) {
   const expectedNames = [
     "SHA256SUMS",
     ...[".cdx.json", ".tgz", ".release-evidence.json", ".evidence.json.gz"].map(
-      (s) => "hadden-industries-owlapi-" + record.version + s,
+      (suffix) => `${PACKAGE_FILE_STEM}-${record.version}${suffix}`,
     ),
   ];
   assert.deepEqual(

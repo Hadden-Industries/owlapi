@@ -1,3 +1,4 @@
+import { REPOSITORY as repository } from "./release-identity.mjs";
 import { appendFileSync, mkdirSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -14,7 +15,6 @@ import {
 import { isDeepStrictEqual } from "node:util";
 import { RECOVERY_JOBS } from "./rc3-recovery-policy.mjs";
 
-const repository = "Hadden-Industries/owlapi";
 // Producer tooling runs on the policy-owned Node, including the dependency-free
 // publisher. The consumer ZIP adapter intentionally supports older Node versions.
 const readZipArchiveFiles = (archive) =>

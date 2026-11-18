@@ -1,13 +1,26 @@
 import { readFileSync } from "node:fs";
 import { npmSemver as semver } from "./npm-semver.mjs";
+import {
+  NPM_REGISTRY,
+  PACKAGE_NAME,
+  REPOSITORY_NPM_URL,
+  packagePurl,
+  packageSbomPurl,
+} from "./release-identity.mjs";
 
-/** Closed package name; the checked-out manifest selects the current candidate. */
-export const PACKAGE_NAME = "@hadden-industries/owlapi";
+export {
+  NPM_REGISTRY,
+  PACKAGE_FILE_STEM,
+  PACKAGE_NAME,
+} from "./release-identity.mjs";
+
+// The checked-out manifest selects the current candidate version.
 const manifest = JSON.parse(
   readFileSync(new URL("../package.json", import.meta.url), "utf8"),
 );
 if (
   manifest.name !== PACKAGE_NAME ||
+  manifest.repository?.url !== REPOSITORY_NPM_URL ||
   typeof manifest.version !== "string" ||
   semver.valid(manifest.version) !== manifest.version
 )
@@ -18,11 +31,8 @@ export const releaseChannel = (version = PACKAGE_VERSION) =>
   ["0.1.0-alpha.0", "0.1.0-rc.1", "0.1.0-rc.2", "0.1.0-rc.3"].includes(version)
     ? "next"
     : "pilot";
-export const PACKAGE_PURL = `pkg:npm/%40hadden-industries/owlapi@${PACKAGE_VERSION}`;
-// The pinned CycloneDX generator retains the canonical package repository qualifier.
-export const PACKAGE_SBOM_PURL = `${PACKAGE_PURL}?vcs_url=${encodeURIComponent("git+https://github.com/Hadden-Industries/owlapi.git")}`;
-export const PACKAGE_FILE_STEM = "hadden-industries-owlapi";
-export const NPM_REGISTRY = "https://registry.npmjs.org/";
+export const PACKAGE_PURL = packagePurl(PACKAGE_VERSION);
+export const PACKAGE_SBOM_PURL = packageSbomPurl(PACKAGE_VERSION);
 export const PUBLIC_SUBPATHS = Object.freeze([
   "",
   "/apibinding",

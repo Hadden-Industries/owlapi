@@ -1,6 +1,27 @@
 import { createHash } from "node:crypto";
 import { assertReleaseProvenance } from "./registry-provenance.mjs";
 import { PACKAGE_PURL } from "./package-identity.mjs";
+import { githubWorkflowIdentityPattern } from "./release-identity.mjs";
+
+test("the certificate identity binds the exact GitHub repository, workflow and branch", () => {
+  const pattern = new RegExp(
+    githubWorkflowIdentityPattern(
+      ".github/workflows/stage-release.yml",
+      "refs/heads/main",
+    ),
+    "u",
+  );
+  const uri =
+    "https://github.com/Hadden-Industries/owlapi/.github/workflows/stage-release.yml@refs/heads/main";
+  expect(pattern.test(uri)).toBe(true);
+  for (const alternate of [
+    uri.replace("github.com", "github-com"),
+    uri.replace("owlapi/", "owlapi-fork/"),
+    uri.replace("stage-release.yml", "stage-release-yml"),
+    uri.replace("heads/main", "heads/other"),
+  ])
+    expect(pattern.test(alternate)).toBe(false);
+});
 
 const tarball = Buffer.from("retained scoped candidate");
 const commit = "a".repeat(40);

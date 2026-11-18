@@ -18,6 +18,10 @@ import {
 } from "./npm-production-graph.mjs";
 import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
 import {
+  assertReleaseAudit,
+  RELEASE_AUDIT_ARGS,
+} from "./release-audit-policy.mjs";
+import {
   DOCUMENTATION_PATHS,
   inspectReleaseDocumentation,
 } from "./release-documentation.mjs";
@@ -157,20 +161,6 @@ const runInstalledConsumerScripts = (directory) => {
   }
 };
 
-const assertNoHighProductionVulnerabilities = (audit) => {
-  const vulnerabilities = audit.metadata?.vulnerabilities;
-  if (!vulnerabilities) {
-    throw new Error(
-      "npm production audit did not report vulnerability metadata.",
-    );
-  }
-  if ((vulnerabilities.high ?? 0) > 0 || (vulnerabilities.critical ?? 0) > 0) {
-    throw new Error(
-      `Production audit found high=${vulnerabilities.high ?? 0} critical=${vulnerabilities.critical ?? 0}.`,
-    );
-  }
-};
-
 const temporaryRoot = mkdtempSync(join(tmpdir(), "owlapi-release-candidate-"));
 const resolvedTemporaryRoot = resolve(temporaryRoot);
 const resolvedSystemTemp = resolve(tmpdir());
@@ -251,7 +241,7 @@ try {
       );
     }
   }
-  const sbomFileName = `hadden-industries-owlapi-${VERSION}.cdx.json`;
+  const sbomFileName = `${PACKAGE_FILE_STEM}-${VERSION}.cdx.json`;
   const sbomPath = join(outputDirectory, sbomFileName);
   runNpm(
     [
@@ -293,18 +283,15 @@ try {
     report: fullAudit,
   });
   const productionAuditObservation = observeNpm([
-    "audit",
+    ...RELEASE_AUDIT_ARGS,
     "--omit=dev",
-    "--audit-level=high",
     "--json",
   ]);
   const productionAudit = JSON.parse(productionAuditObservation.stdout);
-  assertNoHighProductionVulnerabilities(productionAudit);
-  if (productionAuditObservation.status !== 0) {
-    throw new Error(
-      `Blocking production audit exited ${productionAuditObservation.status}: ${productionAuditObservation.stderr}`,
-    );
-  }
+  assertReleaseAudit(
+    { ...productionAuditObservation, report: productionAudit },
+    "root production graph",
+  );
   writeJson("npm-audit-production.json", {
     commandExitStatus: productionAuditObservation.status,
     report: productionAudit,
@@ -421,16 +408,14 @@ try {
     join(outputDirectory, "lockless-consumer-package-lock.json"),
   );
   const consumerAuditObservation = observeNpm(
-    ["audit", "--omit=dev", "--audit-level=high", "--json"],
+    [...RELEASE_AUDIT_ARGS, "--omit=dev", "--json"],
     { cwd: normalConsumerDirectory },
   );
   const consumerAudit = JSON.parse(consumerAuditObservation.stdout);
-  assertNoHighProductionVulnerabilities(consumerAudit);
-  if (consumerAuditObservation.status !== 0) {
-    throw new Error(
-      `Normal consumer production audit exited ${consumerAuditObservation.status}: ${consumerAuditObservation.stderr}`,
-    );
-  }
+  assertReleaseAudit(
+    { ...consumerAuditObservation, report: consumerAudit },
+    "installed consumer graph",
+  );
   writeJson("normal-consumer-npm-audit-production.json", {
     commandExitStatus: consumerAuditObservation.status,
     report: consumerAudit,

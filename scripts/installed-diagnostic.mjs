@@ -1,3 +1,4 @@
+import { REPOSITORY } from "./release-identity.mjs";
 import assert from "node:assert/strict";
 import { appendFileSync } from "node:fs";
 import {
@@ -8,7 +9,7 @@ import { matchesLogicalArtifact } from "../tooling/artifact-transport/identity.m
 import { PACKAGE_FILE_STEM, PACKAGE_VERSION } from "./package-identity.mjs";
 
 const env = process.env;
-assert.equal(env.GITHUB_REPOSITORY, "Hadden-Industries/owlapi");
+assert.equal(env.GITHUB_REPOSITORY, REPOSITORY);
 assert.equal(env.GITHUB_REF, "refs/heads/main");
 assert.equal(env.GITHUB_SHA, env.SUBJECT);
 assert.match(env.SUBJECT, /^[0-9a-f]{40}$/u);

@@ -8,10 +8,15 @@ import {
   NPM_REGISTRY,
   assertPackageIdentity,
 } from "./package-identity.mjs";
+import {
+  REPOSITORY_URL,
+  githubWorkflowIdentityPattern,
+} from "./release-identity.mjs";
 
-const repository = "https://github.com/Hadden-Industries/owlapi";
 const workflow = ".github/workflows/release.yml";
+const stageWorkflow = ".github/workflows/stage-release.yml";
 const sourceRef = "refs/heads/main";
+const invocationPrefix = `${REPOSITORY_URL}/actions/runs/`;
 const predicateType = "https://slsa.dev/provenance/v1";
 
 /** Bind authenticated provenance to this run; a later verification attempt preserves the original publisher. */
@@ -27,10 +32,14 @@ export const assertReleaseProvenance = ({
   const external = definition?.externalParameters?.workflow;
   const dependencies = definition?.resolvedDependencies;
   const details = statement?.predicate?.runDetails;
+  const invocationId = details?.metadata?.invocationId;
   const invocation =
-    /^https:\/\/github\.com\/Hadden-Industries\/owlapi\/actions\/runs\/(?<runId>[1-9][0-9]*)\/attempts\/(?<runAttempt>[1-9][0-9]*)$/u.exec(
-      details?.metadata?.invocationId ?? "",
-    );
+    typeof invocationId === "string" &&
+    invocationId.startsWith(invocationPrefix)
+      ? /^(?<runId>[1-9][0-9]*)\/attempts\/(?<runAttempt>[1-9][0-9]*)$/u.exec(
+          invocationId.slice(invocationPrefix.length),
+        )
+      : undefined;
   const publicationAttempt = Number(invocation?.groups?.runAttempt);
   if (
     !/^[0-9a-f]{40}$/u.test(commit ?? "") ||
@@ -45,12 +54,11 @@ export const assertReleaseProvenance = ({
       createHash("sha512").update(tarball).digest("hex") ||
     definition?.buildType !==
       "https://slsa-framework.github.io/github-actions-buildtypes/workflow/v1" ||
-    external?.repository !== repository ||
-    external.path !==
-      (staged ? ".github/workflows/stage-release.yml" : workflow) ||
+    external?.repository !== REPOSITORY_URL ||
+    external.path !== (staged ? stageWorkflow : workflow) ||
     external.ref !== sourceRef ||
     dependencies?.length !== 1 ||
-    dependencies[0].uri !== `git+${repository}@${sourceRef}` ||
+    dependencies[0].uri !== `git+${REPOSITORY_URL}@${sourceRef}` ||
     dependencies[0].digest?.gitCommit !== commit ||
     details?.builder?.id !==
       "https://github.com/actions/runner/github-hosted" ||
@@ -131,9 +139,10 @@ export const verifyRegistryProvenance = async ({
   const { bundle } = bundles[0];
   await verify(bundle, {
     certificateIssuer: "https://token.actions.githubusercontent.com",
-    certificateIdentityURI: staged
-      ? "^https://github\\.com/Hadden-Industries/owlapi/\\.github/workflows/stage-release\\.yml@refs/heads/main$"
-      : "^https://github\\.com/Hadden-Industries/owlapi/\\.github/workflows/release\\.yml@refs/heads/main$",
+    certificateIdentityURI: githubWorkflowIdentityPattern(
+      staged ? stageWorkflow : workflow,
+      sourceRef,
+    ),
   });
   const statement = JSON.parse(
     Buffer.from(bundle.dsseEnvelope.payload, "base64").toString("utf8"),

@@ -106,6 +106,10 @@ test("a cold publisher import failure retains NO_REQUEST without loading npm", a
     mkdirSync(scripts);
     const entry = join(scripts, "staged-release-entry.mjs");
     copyFileSync(new URL("./staged-release-entry.mjs", import.meta.url), entry);
+    copyFileSync(
+      new URL("./release-identity.mjs", import.meta.url),
+      join(scripts, "release-identity.mjs"),
+    );
     const env = {
       ...process.env,
       GITHUB_ACTIONS: "true",

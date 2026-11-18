@@ -6,6 +6,7 @@ import {
   assertDocumentationAdmission,
 } from "./release-documentation.mjs";
 import { RELEASE_ARCHIVE_LIMITS } from "./release-artifacts.mjs";
+import { PACKAGE_FILE_STEM, PACKAGE_NAME } from "./release-identity.mjs";
 
 const readBounded = (path, limit) => {
   const stat = lstatSync(path);
@@ -55,7 +56,7 @@ if (
   );
   // The trusted checkout selects the filename; no candidate-supplied filesystem path.
   if (
-    manifest.name !== "@hadden-industries/owlapi" ||
+    manifest.name !== PACKAGE_NAME ||
     !/^[0-9A-Za-z.+-]+$/u.test(manifest.version)
   )
     throw new Error("Invalid publication coordinate");
@@ -63,7 +64,7 @@ if (
     tarball: readBounded(
       join(
         resolve(argument("--candidate")),
-        `hadden-industries-owlapi-${manifest.version}.tgz`,
+        `${PACKAGE_FILE_STEM}-${manifest.version}.tgz`,
       ),
       RELEASE_ARCHIVE_LIMITS.compressedBytes,
     ),

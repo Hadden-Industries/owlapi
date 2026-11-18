@@ -6,6 +6,7 @@ import {
   PACKAGE_VERSION,
   PACKAGE_FILE_STEM,
 } from "./package-identity.mjs";
+import { packageSbomPurl } from "./release-identity.mjs";
 
 import { sha256Buffer } from "./release-file-utils.mjs";
 import { formatSha256Sums, readGzipTarFile } from "./release-artifacts.mjs";
@@ -26,7 +27,7 @@ const verifyCandidateBundle = (
   const { name, version } = packageManifest;
   const expectedName = historicalAlpha ? "owlapi" : PACKAGE_NAME;
   const expectedVersion = historicalAlpha ? "0.1.0-alpha.0" : scopedVersion;
-  const expectedPurl = `pkg:npm/%40hadden-industries/owlapi@${expectedVersion}?vcs_url=${encodeURIComponent("git+https://github.com/Hadden-Industries/owlapi.git")}`;
+  const expectedPurl = packageSbomPurl(expectedVersion);
   const fileStem = historicalAlpha ? "owlapi" : PACKAGE_FILE_STEM;
   if (name !== expectedName || version !== expectedVersion) {
     throw new Error(

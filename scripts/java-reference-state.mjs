@@ -1,3 +1,4 @@
+import { REPOSITORY, REPOSITORY_ID } from "./release-identity.mjs";
 import { isDeepStrictEqual } from "node:util";
 import { evidenceFingerprint } from "./ci-check-coverage.mjs";
 
@@ -14,8 +15,8 @@ export const JAVA_REFERENCE_POLICY = Object.freeze({
   operator: "MaksymShostak",
   operatingAcceptanceSha256:
     "2533c701115341a51dd8e48c3b990011a14e93092f6ce8e2f2bc3e3ce432f788",
-  repository: "Hadden-Industries/owlapi",
-  repositoryId: 1347610640,
+  repository: REPOSITORY,
+  repositoryId: REPOSITORY_ID,
   retentionDays: 90,
   runWindow: 8,
   inventoryLimit: 100,
@@ -45,8 +46,8 @@ export function assertJavaReferencePolicy(policy) {
     closed(policy, Object.keys(JAVA_REFERENCE_POLICY)) &&
       policy.version === 1 &&
       typeof policy.enabled === "boolean" &&
-      policy.repository === "Hadden-Industries/owlapi" &&
-      policy.repositoryId === 1347610640 &&
+      policy.repository === REPOSITORY &&
+      policy.repositoryId === REPOSITORY_ID &&
       policy.rights === "OWNER_ACCEPTED_SOURCE_NOTICE_CLOSURE" &&
       hash(policy.rightsSha256) &&
       hash(policy.catalogueSha256) &&

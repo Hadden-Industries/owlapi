@@ -1,3 +1,4 @@
+import { REPOSITORY as repo } from "./release-identity.mjs";
 import assert from "node:assert/strict";
 import { crc32 } from "node:zlib";
 import { sameJobExecution } from "./github-job-execution.mjs";
@@ -18,7 +19,6 @@ import { originalBytes, originArtifact } from "./staged-release.mjs";
 import { readZipArchiveFilesWith } from "./release-zip-core.mjs";
 
 const filename = ".github/workflows/release-registry.yml";
-const repo = "Hadden-Industries/owlapi";
 const parse = (bytes) =>
   JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes));
 const isId = (n) => Number.isSafeInteger(n) && n > 0;

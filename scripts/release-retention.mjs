@@ -1,4 +1,5 @@
 /** Observe retained bytes and identify redundant CI candidates under signed custody. */
+import { REPOSITORY as repository } from "./release-identity.mjs";
 import assert from "node:assert/strict";
 import { appendFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
@@ -15,7 +16,6 @@ import {
 import { readReleaseCiEvidence } from "./release-ci-qualification.mjs";
 import { parseArtifactName } from "../tooling/artifact-transport/identity.mjs";
 
-const repository = "Hadden-Industries/owlapi";
 const day = 86_400_000;
 const writers = [
   "release.yml",

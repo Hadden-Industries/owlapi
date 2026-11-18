@@ -1,3 +1,4 @@
+import { REPOSITORY } from "./release-identity.mjs";
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { appendFileSync, readFileSync } from "node:fs";
@@ -110,7 +111,7 @@ export const observeCheckApplicability = ({
       value?.id === repositoryId && value?.full_name === repository;
     if (
       eventName !== "pull_request" ||
-      repository !== "Hadden-Industries/owlapi" ||
+      repository !== REPOSITORY ||
       !Number.isSafeInteger(repositoryId) ||
       repositoryId <= 0 ||
       !Number.isSafeInteger(event?.number) ||

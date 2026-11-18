@@ -1,3 +1,4 @@
+import { REPOSITORY } from "./release-identity.mjs";
 import {
   PACKAGE_NAME,
   PACKAGE_VERSION,
@@ -105,7 +106,7 @@ const buildVersionedReleaseEvidence = (facts, scopedVersion) => {
     ? ".github/workflows/release.yml"
     : ".github/workflows/release-reconciliation.yml";
   if (
-    facts.source?.repository !== "Hadden-Industries/owlapi" ||
+    facts.source?.repository !== REPOSITORY ||
     facts.source.ref !== `refs/tags/v${version}` ||
     facts.source.tag !== `v${version}`
   ) {
@@ -268,7 +269,7 @@ const buildVersionedReleaseEvidence = (facts, scopedVersion) => {
     throw new Error("The release required job inventory is incomplete.");
   }
   return {
-    $schema: `https://raw.githubusercontent.com/Hadden-Industries/owlapi/${facts.workflow.commit}/docs/release/release-evidence.schema.json`,
+    $schema: `https://raw.githubusercontent.com/${REPOSITORY}/${facts.workflow.commit}/docs/release/release-evidence.schema.json`,
     schemaVersion: recovery ? 6 : scoped ? 5 : 2,
     ...(scoped ? { producerContract: facts.producerContract } : {}),
     package: {

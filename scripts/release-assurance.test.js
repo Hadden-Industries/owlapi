@@ -10,6 +10,7 @@ import { createHash } from "node:crypto";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { refreshReleaseAudits } from "./release-assurance.mjs";
+import { assertReleaseAudit } from "./release-audit-policy.mjs";
 import { canonicalJson } from "./canonical-json.mjs";
 import { PACKAGE_NAME, PACKAGE_VERSION } from "./package-identity.mjs";
 
@@ -55,7 +56,9 @@ test("native npm resolves the exact retained lock, including a hoisted productio
         );
       return {
         status: 0,
-        report: { metadata: { vulnerabilities: { high: 0, critical: 0 } } },
+        report: {
+          metadata: { vulnerabilities: { moderate: 1, high: 0, critical: 0 } },
+        },
       };
     };
     const identities = [`${PACKAGE_NAME}@${PACKAGE_VERSION}`, "example@1.2.3"];
@@ -77,3 +80,20 @@ test("native npm resolves the exact retained lock, including a hoisted productio
     rmSync(root, { recursive: true, force: true });
   }
 });
+
+test.each([
+  [0, { high: 1, critical: 0 }],
+  [0, { high: 0, critical: 1 }],
+  [0, { high: 0 }],
+  [1, { high: 0, critical: 0 }],
+])(
+  "the release audit rejects exit %s with counts %j",
+  (status, vulnerabilities) => {
+    expect(() =>
+      assertReleaseAudit(
+        { status, report: { metadata: { vulnerabilities } } },
+        "test graph",
+      ),
+    ).toThrow(/Release audit failed for test graph/u);
+  },
+);

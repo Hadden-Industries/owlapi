@@ -55,6 +55,11 @@ test.each([
     "/vendor/owlapi/0.1.0-rc.1/index.js",
   ],
   ["invented export", "- `owlapi/search`", "- `owlapi/unknown`"],
+  [
+    "stale repository link",
+    "[Browse GitHub releases](https://github.com/Hadden-Industries/owlapi/releases)",
+    "[Browse GitHub releases](https://github.com/example/old/releases)",
+  ],
 ])("rejects %s in otherwise valid retained bytes", (_, before, after) => {
   const files = sources();
   expect(files["README.md"]).toContain(before);

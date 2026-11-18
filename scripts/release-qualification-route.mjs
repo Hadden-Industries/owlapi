@@ -1,4 +1,5 @@
 /** Native release dispatch routes. An omitted input set allows qualification reuse only. */
+import { REPOSITORY } from "./release-identity.mjs";
 import assert from "node:assert/strict";
 import { appendFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
@@ -39,7 +40,7 @@ if (
   );
   const mode = releaseQualificationMode(JSON.parse(input));
   assert.equal(process.env.GITHUB_EVENT_NAME, "workflow_dispatch");
-  assert.equal(process.env.GITHUB_REPOSITORY, "Hadden-Industries/owlapi");
+  assert.equal(process.env.GITHUB_REPOSITORY, REPOSITORY);
   assert.equal(process.env.GITHUB_REF, "refs/heads/main");
   assert.ok(process.env.GITHUB_OUTPUT);
   appendFileSync(process.env.GITHUB_OUTPUT, `mode=${mode}\n`);

@@ -6,6 +6,7 @@ import {
   PACKAGE_VERSION,
 } from "./package-identity.mjs";
 import { isDeepStrictEqual } from "node:util";
+import { isReleaseAuditClear } from "./release-audit-policy.mjs";
 
 const sha = (value) =>
   typeof value === "string" && /^[a-f0-9]{40}$/u.test(value);
@@ -146,8 +147,7 @@ export function assertPromotedCi(
   for (const name of ["root", "transport", "recipient"]) {
     const audit = observations?.[name];
     assert.ok(
-      audit?.high === 0 &&
-        audit.critical === 0 &&
+      isReleaseAuditClear(audit) &&
         hex(audit.lockSha256) &&
         hex(audit.manifestSha256) &&
         hex(audit.reportSha256) &&

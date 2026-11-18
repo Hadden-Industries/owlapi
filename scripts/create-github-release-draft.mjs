@@ -1,3 +1,4 @@
+import { REPOSITORY } from "./release-identity.mjs";
 import { writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -88,7 +89,7 @@ const main = async () => {
     tag !== `v${version}` ||
     !/^[0-9a-f]{40}$/u.test(commit ?? "") ||
     !output ||
-    repository !== "Hadden-Industries/owlapi" ||
+    repository !== REPOSITORY ||
     !token
   ) {
     throw new Error(
