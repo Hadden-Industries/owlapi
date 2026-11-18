@@ -1,5 +1,5 @@
 import {
-  readRunArtifacts,
+  readAcknowledgedInventory,
   readWorkflowRuns,
 } from "./github-evidence-reader.mjs";
 import { selectArtifactGroups } from "../tooling/artifact-transport/identity.mjs";
@@ -388,7 +388,11 @@ async function readLegacyRefusalReceipt(
   assert.ok(Number.isSafeInteger(artifactId) && artifactId > 0);
   assert.match(digest, /^sha256:[a-f0-9]{64}$/u);
   const logical = "release-classification-" + runId + "-" + attempt;
-  const inventory = await readRunArtifacts((path) => client.read(path), runId);
+  const inventory = await readAcknowledgedInventory(
+    (path, options) => client.read(path, options),
+    runId,
+    [String(artifactId)],
+  );
   const replicas = selectArtifactGroups(inventory, {
     name: logical,
     run: runId,

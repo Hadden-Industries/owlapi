@@ -1955,9 +1955,8 @@ test("artifact-bound refusal dispositions still use the original verify ZIP", as
       sha256: hash(bytes),
     },
   };
-  const zip = zipArchive([
-    { path: "verify.json", content: Buffer.from(canonicalJson(observed)) },
-  ]);
+  const receipt = Buffer.from(canonicalJson(observed));
+  const zip = zipArchive([{ path: "verify.json", content: receipt }]);
   const repository = { full_name: "Hadden-Industries/owlapi" };
   const run = {
     id: 21,
@@ -2004,9 +2003,15 @@ test("artifact-bound refusal dispositions still use the original verify ZIP", as
     digest: "sha256:" + hash(zip),
     workflow_run: { id: 21, head_sha: sha },
   };
+  let retryZip = zipArchive([
+    { path: "verify.json", content: receipt, compression: "deflated" },
+  ]);
+  expect(hash(retryZip)).not.toBe(hash(zip));
   const retry = {
     ...artifact,
     id: 76,
+    size_in_bytes: retryZip.length,
+    digest: "sha256:" + hash(retryZip),
     name: physicalName({
       logical: "release-classification-21-1",
       run: 21,
@@ -2017,12 +2022,14 @@ test("artifact-bound refusal dispositions still use the original verify ZIP", as
     }),
   };
   const artifacts = [artifact, retry];
-  let retryZip = zip;
+  let listingReads = 0;
   const client = {
     read: (path) => {
       if (path.includes("/jobs?")) return { total_count: 1, jobs: [job] };
-      if (path.includes("/artifacts?"))
-        return { total_count: artifacts.length, artifacts };
+      if (path.includes("/artifacts?")) {
+        const listed = listingReads++ === 0 ? [retry] : artifacts;
+        return { total_count: listed.length, artifacts: listed };
+      }
       if (path.endsWith("/artifacts/75")) return artifact;
       if (path.endsWith("/artifacts/76")) return retry;
       return run;
@@ -2046,6 +2053,7 @@ test("artifact-bound refusal dispositions still use the original verify ZIP", as
       },
     );
   await expect(verify(verification)).resolves.toEqual(observed.nativeLog);
+  expect(listingReads).toBe(2);
   retryZip = zipArchive([
     {
       path: "verify.json",
