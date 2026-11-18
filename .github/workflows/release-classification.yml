@@ -54,7 +54,6 @@ jobs:
     permissions:
       contents: read
       actions: read
-      attestations: write
       id-token: write
     defaults:
       run:
@@ -65,24 +64,13 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
           persist-credentials: false
+          ref: ${{ github.sha }}
       - uses: ./.github/actions/setup-producer
       - name: Settle release classification (verify)
-        id: verification
         env:
           GH_TOKEN: ${{ github.token }}
           HISTORY_OBJECT: ${{ inputs.history_object }}
         run: node scripts/release-channel-operation.mjs verify
-      - name: Attest the original refusal receipt
-        if: steps.verification.outputs.refusal == 'true'
-        id: refusal_attestation
-        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
-        with:
-          subject-path: .release/followup/verify.json
-      - name: Include the refusal attestation bundle
-        if: steps.refusal_attestation.outcome == 'success'
-        env:
-          BUNDLE_PATH: ${{ steps.refusal_attestation.outputs.bundle-path }}
-        run: cp -- "$BUNDLE_PATH" .release/followup/verify.sigstore.json
       - name: Retain original operation evidence
         if: ${{ !cancelled() }}
         uses: ./.github/actions/retain-artifact

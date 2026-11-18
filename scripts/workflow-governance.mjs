@@ -697,7 +697,7 @@ const operationJobs = {
   },
   "release-classification.yml": {
     github: [githubAuthority, "release-manual"],
-    verify: [{ ...npmAuthority, attestations: "write" }],
+    verify: [npmAuthority],
   },
   "release-registry.yml": {
     registry: [readAuthority],
@@ -727,7 +727,7 @@ function validateOperationJobs(file, workflow, violations) {
     );
     if (!job || !Object.values(permissions).includes("write")) continue;
     if (file === "release-classification.yml" && name === "verify") {
-      const [, , verify, attest, bundle] = job.steps;
+      const [checkout, , verify] = job.steps;
       add(
         violations,
         job.if ===
@@ -738,27 +738,21 @@ function validateOperationJobs(file, workflow, violations) {
               "actions/checkout",
               SHARED_SETUP,
               "node scripts/release-channel-operation.mjs verify",
-              "actions/attest",
-              'cp -- "$BUNDLE_PATH" .release/followup/verify.sigstore.json',
               RETAIN_ARTIFACT,
             ],
           ) &&
-          verify?.id === "verification" &&
-          isDeepStrictEqual(verify.env, {
+          isDeepStrictEqual(checkout?.with, {
+            "fetch-depth": 0,
+            "fetch-tags": true,
+            "persist-credentials": false,
+            ref: "${{ github.sha }}",
+          }) &&
+          isDeepStrictEqual(verify?.env, {
             GH_TOKEN: "${{ github.token }}",
             HISTORY_OBJECT: "${{ inputs.history_object }}",
           }) &&
-          attest?.id === "refusal_attestation" &&
-          attest.if === "steps.verification.outputs.refusal == 'true'" &&
-          isDeepStrictEqual(attest.with, {
-            "subject-path": ".release/followup/verify.json",
-          }) &&
-          bundle?.if === "steps.refusal_attestation.outcome == 'success'" &&
-          isDeepStrictEqual(bundle.env, {
-            BUNDLE_PATH: "${{ steps.refusal_attestation.outputs.bundle-path }}",
-          }) &&
           !JSON.stringify(job).includes("secrets."),
-        file + ": verify may attest only the native refusal receipt",
+        file + ": verify must sign from the exact dispatch checkout",
       );
       continue;
     }

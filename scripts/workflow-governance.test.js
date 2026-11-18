@@ -1035,16 +1035,12 @@ describe("repository workflow governance", () => {
     );
     expect(violations.join("\n")).toContain("operation authority");
   });
-  test("limits refusal attestations to the exact verifier output on main", () => {
+  test("binds the refusal signer checkout to the immutable dispatch SHA", () => {
     const violations = mutateWorkflow("release-classification.yml", (doc) => {
-      const steps = doc.getIn(["jobs", "verify", "steps"]);
-      const attest = steps.items.find(
-        (step) => step.get("id") === "refusal_attestation",
-      );
-      attest.setIn(["with", "subject-path"], ".release/followup/*");
+      doc.setIn(["jobs", "verify", "steps", 0, "with", "ref"], "main");
     });
     expect(violations.join("\n")).toContain(
-      "verify may attest only the native refusal receipt",
+      "verify must sign from the exact dispatch checkout",
     );
   });
   test("the checked-in controls match the closed Phase 19 workflow policy", () => {

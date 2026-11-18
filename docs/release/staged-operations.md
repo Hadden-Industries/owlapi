@@ -223,10 +223,12 @@ Retain disclosure-reviewed original native job metadata and exact log bytes as `
 Preserve the verifier's `COMPLETE_NATIVE_JOB_LOG` receipt, including exact byte length and digest, in the signed refusal disposition.
 For fallback after the native job log expires, bind `verification` to the original classification verifier's `runId`, `attempt` and `controller`.
 Preserve its exact `verify.json` and `verify.sigstore.json` as `label-refusal-verify-RUN-ATTEMPT.json` and `label-refusal-verify-RUN-ATTEMPT.sigstore.json`.
-The writer verifies the attestation's receipt digest and GitHub-hosted workflow, protected main commit and original attempt.
-This uses the retained bundle after the verifier ZIP and job expire.
-The verifier attests only the receipt and keeps the original native log in the signed checkpoint.
-An older `verification` binding with the original `artifactId` and `digest` can still replay while its verified ZIP is live.
+The verifier uses GitHub OIDC and the Sigstore client bundled with the pinned npm toolchain.
+It signs the receipt bytes and retains the small bundle.
+Its public transparency entry contains the signing identity and digest.
+The original native log stays in the signed checkpoint.
+The writer uses the same pinned toolchain to check the receipt signature, GitHub-hosted workflow, protected main commit and original attempt after the verifier ZIP expires.
+An older `verification` binding with the original `artifactId` and `digest` can still replay while its verified ZIP is live and any retry copies contain the same receipt.
 
 After npm acknowledges a label write, the writer allows up to five minutes for the public tag map to converge.
 It polls only while the previous approved map is visible or a registry read is transiently unavailable.

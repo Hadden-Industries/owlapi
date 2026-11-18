@@ -1871,48 +1871,47 @@ test("legacy refusal receipts replay live and signed provenance authenticates ar
   ).rejects.toThrow("original read-only");
 
   const receipt = Buffer.from(canonicalJson(observed));
-  const bundle = Buffer.from("fixture provenance");
+  const signature = { messageSignature: { signature: "fixture signature" } };
+  const bundle = Buffer.from(canonicalJson(signature));
   const repository = "Hadden-Industries/owlapi";
   const source = "https://github.com/" + repository;
   const invocation = source + "/actions/runs/21/attempts/1";
-  const certificate = {
-    sourceRepositoryIdentifier: "1347610640",
-    buildTrigger: "workflow_dispatch",
-    runInvocationURI: invocation,
-  };
-  let verificationStatus = 0;
-  const spawn = (executable, args) => {
-    expect(executable).toBe("gh");
-    expect(args).toEqual([
-      "attestation",
-      "verify",
-      expect.stringContaining("verify.json"),
-      "--bundle",
-      expect.stringContaining("verify.sigstore.json"),
-      "--hostname",
-      "github.com",
-      "--repo",
-      repository,
-      "--cert-identity",
-      source + "/.github/workflows/release-classification.yml@refs/heads/main",
-      "--source-ref",
-      "refs/heads/main",
-      "--source-digest",
-      sha,
-      "--signer-digest",
-      sha,
-      "--deny-self-hosted-runners",
-      "--format",
-      "json",
-    ]);
-    expect(readFileSync(args[2])).toEqual(receipt);
-    expect(readFileSync(args[4])).toEqual(bundle);
-    return {
-      status: verificationStatus,
-      stdout: JSON.stringify([
-        { verificationResult: { signature: { certificate } } },
-      ]),
-    };
+  let verifiedInvocation = invocation;
+  let validSignature = true;
+  const verifySignature = async (stored, bytes, options) => {
+    const utf8 = (value) =>
+      Buffer.concat([
+        Buffer.from([12, Buffer.byteLength(value)]),
+        Buffer.from(value),
+      ]);
+    expect(stored).toEqual(signature);
+    expect(bytes).toEqual(receipt);
+    expect(options.certificateIssuer).toBe(
+      "https://token.actions.githubusercontent.com",
+    );
+    const identity = new RegExp(options.certificateIdentityURI, "u");
+    expect(
+      identity.test(
+        source +
+          "/.github/workflows/release-classification.yml@refs/heads/main",
+      ),
+    ).toBe(true);
+    expect(
+      identity.test(
+        source +
+          "/.github/workflows/release-classification.yml@refs/heads/topic",
+      ),
+    ).toBe(false);
+    expect(options.certificateOIDs).toEqual({
+      "1.3.6.1.4.1.57264.1.10": utf8(sha),
+      "1.3.6.1.4.1.57264.1.11": utf8("github-hosted"),
+      "1.3.6.1.4.1.57264.1.13": utf8(sha),
+      "1.3.6.1.4.1.57264.1.14": utf8("refs/heads/main"),
+      "1.3.6.1.4.1.57264.1.15": utf8("1347610640"),
+      "1.3.6.1.4.1.57264.1.20": utf8("workflow_dispatch"),
+      "1.3.6.1.4.1.57264.1.21": utf8(verifiedInvocation),
+    });
+    if (!validSignature) throw Error("test signature failure");
   };
   const checkpoint = {
     files: new Map([
@@ -1926,19 +1925,23 @@ test("legacy refusal receipts replay live and signed provenance authenticates ar
     verification: { runId: "21", attempt: "1", controller: sha },
   };
   const verify = (record) =>
-    readRefusalVerification({}, checkpoint, record, { spawn });
+    readRefusalVerification({}, checkpoint, record, {
+      verify: verifySignature,
+    });
   await expect(verify(disposition)).resolves.toEqual(nativeLog);
   await expect(
     verify({ ...disposition, nativeLog: { ...nativeLog, bytes: 5 } }),
   ).rejects.toThrow("original native verifier output");
-  certificate.runInvocationURI = source + "/actions/runs/21/attempts/2";
-  await expect(verify(disposition)).rejects.toThrow("verifier attempt");
-  certificate.runInvocationURI = invocation;
-  certificate.sourceRepositoryIdentifier = "77";
-  await expect(verify(disposition)).rejects.toThrow("verifier attempt");
-  certificate.sourceRepositoryIdentifier = "1347610640";
-  verificationStatus = 1;
-  await expect(verify(disposition)).rejects.toThrow("attestation");
+  verifiedInvocation = source + "/actions/runs/21/attempts/2";
+  await expect(verify(disposition)).rejects.toThrow("signature");
+  verifiedInvocation = invocation;
+  validSignature = false;
+  await expect(verify(disposition)).rejects.toThrow("signature");
+  checkpoint.files.set(
+    "label-refusal-verify-21-1.sigstore.json",
+    Buffer.from(canonicalJson({ dsseEnvelope: {} })),
+  );
+  await expect(verify(disposition)).rejects.toThrow("direct signature");
   checkpoint.files.delete("label-refusal-verify-21-1.sigstore.json");
   await expect(verify(disposition)).rejects.toThrow("attestation bundle");
 });
@@ -2001,12 +2004,27 @@ test("artifact-bound refusal dispositions still use the original verify ZIP", as
     digest: "sha256:" + hash(zip),
     workflow_run: { id: 21, head_sha: sha },
   };
+  const retry = {
+    ...artifact,
+    id: 76,
+    name: physicalName({
+      logical: "release-classification-21-1",
+      run: 21,
+      attempt: 1,
+      producer: "b".repeat(16),
+      invocation: "9".repeat(32),
+      ordinal: 1,
+    }),
+  };
+  const artifacts = [artifact, retry];
+  let retryZip = zip;
   const client = {
     read: (path) => {
       if (path.includes("/jobs?")) return { total_count: 1, jobs: [job] };
       if (path.includes("/artifacts?"))
-        return { total_count: 1, artifacts: [artifact] };
+        return { total_count: artifacts.length, artifacts };
       if (path.endsWith("/artifacts/75")) return artifact;
+      if (path.endsWith("/artifacts/76")) return retry;
       return run;
     },
   };
@@ -2022,9 +2040,24 @@ test("artifact-bound refusal dispositions still use the original verify ZIP", as
       client,
       {},
       { ...observed, verification: binding },
-      { download: async () => zip },
+      {
+        download: async (_client, item) =>
+          item.id === retry.id ? retryZip : zip,
+      },
     );
   await expect(verify(verification)).resolves.toEqual(observed.nativeLog);
+  retryZip = zipArchive([
+    {
+      path: "verify.json",
+      content: Buffer.from(canonicalJson({ state: "DIFFERENT" })),
+    },
+  ]);
+  retry.digest = "sha256:" + hash(retryZip);
+  retry.size_in_bytes = retryZip.length;
+  await expect(verify(verification)).rejects.toThrow(
+    "Conflicting refusal retry",
+  );
+  artifacts.pop();
   await expect(
     verify({ ...verification, digest: "sha256:" + "0".repeat(64) }),
   ).rejects.toThrow();

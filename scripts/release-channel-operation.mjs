@@ -1,4 +1,8 @@
-import { readWorkflowRuns } from "./github-evidence-reader.mjs";
+import {
+  readRunArtifacts,
+  readWorkflowRuns,
+} from "./github-evidence-reader.mjs";
+import { selectArtifactGroups } from "../tooling/artifact-transport/identity.mjs";
 import assert from "node:assert/strict";
 import { isDeepStrictEqual } from "node:util";
 import { setTimeout as delay } from "node:timers/promises";
@@ -6,12 +10,10 @@ import { spawnSync } from "node:child_process";
 import {
   appendFileSync,
   mkdirSync,
-  mkdtempSync,
   readFileSync,
-  rmSync,
   writeFileSync,
 } from "node:fs";
-import { tmpdir } from "node:os";
+import { createRequire } from "node:module";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { GitHubReleaseClient, assertReleaseAssets } from "./github-release.mjs";
@@ -367,6 +369,16 @@ function refusalOutcome(disposition) {
 }
 
 const maxRefusalReceipt = 64 * 1024;
+const signatureNetwork = { timeout: 5000, retry: { retries: 0 } };
+
+function bundledSigstore() {
+  const { npmCli } = selectNpmCliForVersion({
+    expectedNpm: CI_RUNTIME.npm,
+    candidates: findNpmCliCandidates(),
+    observeVersion: observeNpmVersion,
+  });
+  return createRequire(npmCli)("sigstore");
+}
 
 async function readLegacyRefusalReceipt(
   client,
@@ -375,17 +387,18 @@ async function readLegacyRefusalReceipt(
 ) {
   assert.ok(Number.isSafeInteger(artifactId) && artifactId > 0);
   assert.match(digest, /^sha256:[a-f0-9]{64}$/u);
-  const artifact = await originArtifact(client, {
-    runId,
+  const logical = "release-classification-" + runId + "-" + attempt;
+  const inventory = await readRunArtifacts((path) => client.read(path), runId);
+  const replicas = selectArtifactGroups(inventory, {
+    name: logical,
+    run: runId,
     attempt,
-    commit: controller,
-    artifactId,
-    logical: "release-classification-" + runId + "-" + attempt,
-    filename: classificationWorkflow,
-  });
-  assert.equal(artifact.expired, false);
-  assert.equal(artifact.digest, digest);
-  assert.equal(artifact.id, artifactId);
+  }).get(logical);
+  const selected = replicas.find((item) => item.id === artifactId);
+  assert.ok(
+    selected && selected.digest === digest,
+    "The signed refusal ZIP is missing",
+  );
   const jobs = await client.read(
     "/actions/runs/" + runId + "/attempts/" + attempt + "/jobs?per_page=100",
   );
@@ -414,27 +427,50 @@ async function readLegacyRefusalReceipt(
   assert.equal(uploads.length, 1);
   const [upload] = uploads;
   assert.equal(upload.conclusion, "success");
-  const created = Date.parse(artifact.created_at);
-  assert.ok(
-    created >= Date.parse(upload.started_at) &&
-      created <= Date.parse(upload.completed_at),
-  );
-  const files = readZipArchiveFilesWith(
-    await download(client, artifact, maxRefusalReceipt),
-    {
-      crc32,
-      expectedNames: new Set(["verify.json"]),
-      maximumUncompressedBytes: maxRefusalReceipt,
-    },
-  );
-  assert.equal(files.length, 1);
-  return files[0].content;
+
+  async function verifyZip(descriptor) {
+    const artifact = await originArtifact(client, {
+      runId,
+      attempt,
+      commit: controller,
+      logical,
+      filename: classificationWorkflow,
+      artifactId: descriptor.id,
+      runArtifacts: [descriptor],
+    });
+    assert.equal(artifact.expired, false);
+    const created = Date.parse(artifact.created_at);
+    assert.ok(
+      created >= Date.parse(upload.started_at) &&
+        created <= Date.parse(upload.completed_at),
+    );
+    const files = readZipArchiveFilesWith(
+      await download(client, artifact, maxRefusalReceipt),
+      {
+        crc32,
+        expectedNames: new Set(["verify.json"]),
+        maximumUncompressedBytes: maxRefusalReceipt,
+      },
+    );
+    assert.equal(files.length, 1);
+    return files[0].content;
+  }
+
+  const receipt = await verifyZip(selected);
+  for (const replica of replicas) {
+    if (replica.id !== artifactId)
+      assert.ok(
+        receipt.equals(await verifyZip(replica)),
+        "Conflicting refusal retry bytes",
+      );
+  }
+  return receipt;
 }
 
-function readAttestedRefusalReceipt(
+async function readSignedRefusalReceipt(
   files,
   { runId, attempt, controller },
-  spawn,
+  verify,
 ) {
   const base = "label-refusal-verify-" + runId + "-" + attempt;
   const receipt = files.get(base + ".json");
@@ -447,72 +483,66 @@ function readAttestedRefusalReceipt(
     bundle && bundle.length <= maxRefusalReceipt,
     "Missing retained refusal attestation bundle",
   );
-  const source = "https://github.com/" + repository;
-  const invocation = source + "/actions/runs/" + runId + "/attempts/" + attempt;
-  const scratch = mkdtempSync(join(tmpdir(), "owlapi-refusal-"));
+  const signature = JSON.parse(bundle);
+  assert.ok(
+    signature?.messageSignature && !signature.dsseEnvelope,
+    "The archived refusal needs a direct signature of its receipt bytes",
+  );
+  // Fulcio's provider claims are DER UTF8Strings.
+  // https://github.com/sigstore/fulcio/blob/main/docs/oid-info.md
+  const extensions = {
+    10: controller, // Build signer digest
+    11: "github-hosted", // Runner environment
+    13: controller, // Source repository digest
+    14: "refs/heads/main", // Source repository ref
+    15: repositoryId, // Source repository identifier
+    20: "workflow_dispatch", // Build trigger
+    21:
+      "https://github.com/" +
+      repository +
+      "/actions/runs/" +
+      runId +
+      "/attempts/" +
+      attempt,
+  };
+  const certificateOIDs = Object.fromEntries(
+    Object.entries(extensions).map(([suffix, text]) => {
+      const value = Buffer.from(text);
+      assert.ok(value.length < 128);
+      return [
+        "1.3.6.1.4.1.57264.1." + suffix,
+        Buffer.concat([Buffer.from([0x0c, value.length]), value]),
+      ];
+    }),
+  );
   try {
-    const receiptPath = join(scratch, "verify.json");
-    const bundlePath = join(scratch, "verify.sigstore.json");
-    writeFileSync(receiptPath, receipt, { flag: "wx" });
-    writeFileSync(bundlePath, bundle, { flag: "wx" });
-    const result = spawn(
-      "gh",
-      [
-        "attestation",
-        "verify",
-        receiptPath,
-        "--bundle",
-        bundlePath,
-        "--hostname",
-        "github.com",
-        "--repo",
-        repository,
-        "--cert-identity",
-        source + "/" + classificationWorkflow + "@refs/heads/main",
-        "--source-ref",
-        "refs/heads/main",
-        "--source-digest",
-        controller,
-        "--signer-digest",
-        controller,
-        "--deny-self-hosted-runners",
-        "--format",
-        "json",
-      ],
-      { encoding: "utf8", timeout: 60000, maxBuffer: 1024 * 1024 },
+    await verify(signature, receipt, {
+      timeout: 5000,
+      certificateIssuer: "https://token.actions.githubusercontent.com",
+      certificateIdentityURI:
+        "^https://github\\.com/Hadden-Industries/owlapi/\\.github/workflows/release-classification\\.yml@refs/heads/main$",
+      certificateOIDs,
+      ctLogThreshold: 1,
+      tlogThreshold: 1,
+    });
+  } catch {
+    throw new Error(
+      "The refusal signature or original verifier identity could not be verified",
     );
-    assert.equal(
-      result.status,
-      0,
-      "The refusal attestation could not be verified",
-    );
-    const attestations = JSON.parse(result.stdout);
-    // These certificate extensions are issued from GitHub OIDC claims.
-    assert.ok(
-      Array.isArray(attestations) &&
-        attestations.some(({ verificationResult }) => {
-          const certificate = verificationResult?.signature?.certificate;
-          return (
-            certificate?.runInvocationURI === invocation &&
-            certificate.sourceRepositoryIdentifier === repositoryId &&
-            certificate.buildTrigger === "workflow_dispatch"
-          );
-        }),
-      "Attestation does not belong to the original verifier attempt",
-    );
-    return receipt;
-  } finally {
-    rmSync(scratch, { recursive: true, force: true });
   }
+  return receipt;
 }
 
-// The archived attestation binds the receipt after GitHub removes the job or ZIP.
+// The signed bundle binds the receipt after GitHub removes the job or ZIP.
 // Older, explicitly artifact-bound dispositions use their live original ZIP.
 export async function readRefusalVerification(
   client,
   checkpoint,
   disposition,
-  { download = originalBytes, spawn = spawnSync } = {},
+  {
+    download = originalBytes,
+    verify = (...args) => bundledSigstore().verify(...args),
+  } = {},
 ) {
   const verification = disposition?.verification;
   const expected = refusalOutcome(disposition);
@@ -527,7 +557,7 @@ export async function readRefusalVerification(
   const receipt =
     artifactId !== undefined || digest !== undefined
       ? await readLegacyRefusalReceipt(client, verification, download)
-      : readAttestedRefusalReceipt(checkpoint.files, verification, spawn);
+      : await readSignedRefusalReceipt(checkpoint.files, verification, verify);
   const observed = JSON.parse(receipt);
   assert.deepEqual(
     observed,
@@ -803,10 +833,26 @@ async function main() {
       origin,
       read,
     );
-    writeFileSync(join(dir, "verify.json"), JSON.stringify(observed) + "\n", {
-      flag: "wx",
-    });
-    if (env.GITHUB_OUTPUT) appendFileSync(env.GITHUB_OUTPUT, "refusal=true\n");
+    assert.equal(env.RUNNER_ENVIRONMENT, "github-hosted");
+    assert.ok(env.ACTIONS_ID_TOKEN_REQUEST_TOKEN);
+    const receipt = Buffer.from(JSON.stringify(observed) + "\n");
+    let signature;
+    try {
+      signature = await bundledSigstore().sign(receipt, signatureNetwork);
+    } catch {
+      // Signing errors can contain short-lived identity material.
+      throw new Error(
+        "Unable to obtain a Sigstore signature for the refusal receipt",
+      );
+    }
+    writeFileSync(join(dir, "verify.json"), receipt, { flag: "wx" });
+    writeFileSync(
+      join(dir, "verify.sigstore.json"),
+      JSON.stringify(signature) + "\n",
+      {
+        flag: "wx",
+      },
+    );
     return;
   }
   let observedTags;
