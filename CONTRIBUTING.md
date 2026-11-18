@@ -157,7 +157,7 @@ The isolated scanner constrains Pluggy to `<1.7`: Plugincode 32.0.0's hook class
 Remove that compatibility constraint after an upstream update passes native ScanCode qualification; it does not constrain the npm runtime or quality-tool environments.
 CI qualifies Windows and Linux findings against independently captured ScanCode 32.5.0 reports; a smoke qualification does not replace the full release corpus acquisition gates.
 
-The locked source builds include cyseq, intbitset, pyahocorasick and PyYAML as well as ScanCode.
+The locked source builds include intbitset, pyahocorasick and PyYAML as well as ScanCode.
 Installation receipts record observed compiler configuration and PyYAML's optional accelerator state; Python's build compiler does not identify the compiler of rebuilt extensions.
 Keep compilation and scanner failure logs with the compatibility reports.
 

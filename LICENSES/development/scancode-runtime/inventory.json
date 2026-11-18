@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "scope": "Development-only installed Windows x64 ScanCode and build graph on Python 3.15.2; metadata declarations are not legal conclusions or owner approval. Platform-specific Linux distributions remain subject to their native qualification and terms.",
-  "lockSha256": "751527ca6939c1f6bdd8116ec88c184e6508fda55ed32f8da894fe343d496854",
+  "lockSha256": "6a85e489294c9e2490a7a29bddd565431e9368f2c2f1b68fcec4f4710216b38c",
   "components": [
     {
       "name": "attrs",
@@ -352,7 +352,7 @@
     },
     {
       "name": "cyseq",
-      "version": "0.1.3",
+      "version": "0.1.4",
       "declaredLicenseExpression": null,
       "declaredLicense": "Apache-2.0",
       "licenseClassifiers": [],
@@ -360,27 +360,27 @@
       "noticeEvidenceStatus": "RETAINED",
       "notices": [
         {
-          "path": "LICENSES/development/scancode-runtime/cyseq-0.1.3/licenses/AUTHORS.rst",
+          "path": "LICENSES/development/scancode-runtime/cyseq-0.1.4/licenses/AUTHORS.rst",
           "sha256": "d4cb271ba5897b8a7d3daff21cf803258986d61e36e14808d52de635fe81e872"
         },
         {
-          "path": "LICENSES/development/scancode-runtime/cyseq-0.1.3/licenses/CHANGELOG.rst",
-          "sha256": "28bd2534ef43bb92487b838e70b75c4c9a4fd617d954aabfa60b53e551169848"
+          "path": "LICENSES/development/scancode-runtime/cyseq-0.1.4/licenses/CHANGELOG.rst",
+          "sha256": "38fc8b961962a5ac6a079b77a576478f3b63f2030821cb82400449ff7a6ce4a3"
         },
         {
-          "path": "LICENSES/development/scancode-runtime/cyseq-0.1.3/licenses/CODE_OF_CONDUCT.rst",
+          "path": "LICENSES/development/scancode-runtime/cyseq-0.1.4/licenses/CODE_OF_CONDUCT.rst",
           "sha256": "c570d3169618dd8ec9a31ad60038a189e52f84697025cfe8c6c6e62c9681bc4e"
         },
         {
-          "path": "LICENSES/development/scancode-runtime/cyseq-0.1.3/licenses/NOTICE",
+          "path": "LICENSES/development/scancode-runtime/cyseq-0.1.4/licenses/NOTICE",
           "sha256": "7e42c8973c8ff3358d9cf6c5497913227360625df94c71f9f89f2f30ab8dce17"
         },
         {
-          "path": "LICENSES/development/scancode-runtime/cyseq-0.1.3/licenses/README.rst",
+          "path": "LICENSES/development/scancode-runtime/cyseq-0.1.4/licenses/README.rst",
           "sha256": "6c9d5b74c1ebc7419597cb59674307b3026f3977ddeb0b2bedffe93e1814740c"
         },
         {
-          "path": "LICENSES/development/scancode-runtime/cyseq-0.1.3/licenses/apache-2.0.LICENSE",
+          "path": "LICENSES/development/scancode-runtime/cyseq-0.1.4/licenses/apache-2.0.LICENSE",
           "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
         }
       ]
@@ -656,7 +656,7 @@
     },
     {
       "name": "importlib-metadata",
-      "version": "10.1.0",
+      "version": "10.2.0",
       "declaredLicenseExpression": "Apache-2.0",
       "declaredLicense": null,
       "licenseClassifiers": [],
@@ -666,7 +666,7 @@
       "noticeEvidenceStatus": "RETAINED",
       "notices": [
         {
-          "path": "LICENSES/development/scancode-runtime/importlib-metadata-10.1.0/licenses/LICENSE",
+          "path": "LICENSES/development/scancode-runtime/importlib-metadata-10.2.0/licenses/LICENSE",
           "sha256": "e2f7bb0557e7a381499f15baa7c1d776d83d6616599179d71d3109b8e39f7b25"
         }
       ]
@@ -1531,7 +1531,7 @@
     },
     {
       "name": "soupsieve",
-      "version": "4.0.1",
+      "version": "4.1.1",
       "declaredLicenseExpression": "MIT",
       "declaredLicense": null,
       "licenseClassifiers": [
@@ -1543,7 +1543,7 @@
       "noticeEvidenceStatus": "RETAINED",
       "notices": [
         {
-          "path": "LICENSES/development/scancode-runtime/soupsieve-4.0.1/licenses/LICENSE.md",
+          "path": "LICENSES/development/scancode-runtime/soupsieve-4.1.1/licenses/LICENSE.md",
           "sha256": "76a0acdb98c3a63681e20b6f096699ef8cad5fb35d56eef8387e0fa71d797a9a"
         }
       ]
@@ -1885,10 +1885,6 @@
     }
   ],
   "sourceBuiltComponents": [
-    {
-      "name": "cyseq",
-      "version": "0.1.3"
-    },
     {
       "name": "intbitset",
       "version": "4.1.2"
