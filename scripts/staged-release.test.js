@@ -1,4 +1,6 @@
 import {
+  assertEarlierWritersStopped,
+  approvedDraft,
   checkSealSettings,
   draft,
   reconcilePublishedSeal,
@@ -45,6 +47,7 @@ import { tmpdir } from "node:os";
 import {
   hash,
   assertPriorOperations,
+  queuedFirstAttempt,
   readStageJournal,
   originArtifact,
   originalBytes,
@@ -126,212 +129,227 @@ test("a cold publisher import failure retains NO_REQUEST without loading npm", a
   }
 });
 
-test("reads a promoted manifest under its release run and the original candidate under its PR run", async () => {
-  const record = {
-    ...manifest("0.1.0"),
-    schemaVersion: 2,
-    runtimeMatrix: qualificationMatrix(
-      [...CI_RUNTIME.minimums, ...Object.values(CI_RUNTIME.node)].map((v) => ({
-        version: "v" + v,
-      })),
-    ),
-    security: { observedAt: "2026-11-17T09:00:00Z" },
-  };
-  const landed = {
-    commit: sha,
-    tree: "d".repeat(40),
-    workflow: "e".repeat(40),
-    parents: ["b".repeat(40), "c".repeat(40)],
-  };
-  const original = { ...landed, commit: "f".repeat(40) };
-  const expiry = "2027-02-10T09:00:00Z";
-  const candidateName = physicalName({
-    logical: "hadden-industries-owlapi-0.1.0-candidate-77-1",
-    run: 77,
-    attempt: 1,
-    producer: "b".repeat(16),
-    invocation: "9".repeat(32),
-    ordinal: 0,
-  });
-  const candidateZip = zipArchive([
-    { path: "hadden-industries-owlapi-0.1.0.tgz", content: bytes },
-  ]);
-  const descriptor = (id, name, artifactBytes = candidateZip) => ({
-    id,
-    name,
-    digest: "sha256:" + hash(artifactBytes),
-    bytes: artifactBytes.length,
-    expiresAt: expiry,
-  });
-  const candidate = descriptor(92, candidateName);
-  const observation = {
-    high: 0,
-    critical: 0,
-    lockSha256: "2".repeat(64),
-    manifestSha256: "3".repeat(64),
-    reportSha256: "4".repeat(64),
-    observedAt: record.security.observedAt,
-  };
-  record.assets.tarball.name = "hadden-industries-owlapi-0.1.0.tgz";
-  record.assets.checksums = {
-    name: "SHA256SUMS",
-    bytes: 1,
-    sha256: "c".repeat(64),
-  };
-  record.assets.sbom = {
-    name: "hadden-industries-owlapi-0.1.0.cdx.json",
-    bytes: 1,
-    sha256: "d".repeat(64),
-  };
-  record.candidateId = "92";
-  record.candidateDigest = candidate.digest.slice(7);
-  record.ci = {
-    schemaVersion: 1,
-    repositoryId: 42,
-    landed,
-    main: {
-      runId: 78,
+test.each([true, false])(
+  "reads a promoted manifest and original PR candidate with embedded matrix: %s",
+  async (embedded) => {
+    const record = {
+      ...manifest("0.1.0"),
+      schemaVersion: 2,
+      runtimeMatrix: qualificationMatrix(
+        [...CI_RUNTIME.minimums, ...Object.values(CI_RUNTIME.node)].map(
+          (v) => ({
+            version: "v" + v,
+          }),
+        ),
+      ),
+      security: { observedAt: "2026-11-17T09:00:00Z" },
+    };
+    const landed = {
+      commit: sha,
+      tree: "d".repeat(40),
+      workflow: "e".repeat(40),
+      parents: ["b".repeat(40), "c".repeat(40)],
+    };
+    const original = { ...landed, commit: "f".repeat(40) };
+    const expiry = "2027-02-10T09:00:00Z";
+    const candidateName = physicalName({
+      logical: "hadden-industries-owlapi-0.1.0-candidate-77-1",
+      run: 77,
       attempt: 1,
-      event: "push",
-      providerHead: sha,
-      snapshot: landed,
-      receipt: descriptor(93, "main"),
-    },
-    build: {
-      runId: 77,
-      attempt: 2,
-      producingAttempt: 1,
-      producerJob: 79,
-      event: "pull_request",
-      providerHead: landed.parents[1],
-      snapshot: original,
-      receipt: descriptor(94, "receipt"),
-    },
-    candidate,
-    packageProof: descriptor(95, "proof"),
-    assets: record.assets,
-    package: record.package,
-    packedConfig: record.packedConfig,
-    integrity: record.integrity,
-    policySha256: "5".repeat(64),
-    matrixSha256: runtimeDigest(record.runtimeMatrix),
-    evidence: {
-      "lockless-consumer-package-lock.json": { sha256: observation.lockSha256 },
-    },
-    advisoryObservations: {
-      root: observation,
-      transport: observation,
-      recipient: observation,
-    },
-  };
-  const raw = Buffer.from(canonicalJson(record));
-  const qualification = zipArchive([{ path: "manifest.json", content: raw }]);
-  const qualifiedName = physicalName({
-    logical: "release-qualification-10-1",
-    run: 10,
-    attempt: 1,
-    producer: "b".repeat(16),
-    invocation: "9".repeat(32),
-    ordinal: 0,
-  });
-  const repo = { full_name: "Hadden-Industries/owlapi", id: 42 };
-  const runRecord = (id, path, event, head_sha, head_branch, conclusion) => ({
-    id,
-    path,
-    event,
-    head_sha,
-    head_branch,
-    status: "completed",
-    conclusion,
-    run_attempt: 1,
-    repository: repo,
-    head_repository: repo,
-  });
-  const releaseRun = runRecord(
-    10,
-    ".github/workflows/release.yml",
-    "workflow_dispatch",
-    sha,
-    "main",
-    "success",
-  );
-  const buildRun = runRecord(
-    77,
-    ".github/workflows/ci.yml",
-    "pull_request",
-    landed.parents[1],
-    "topic",
-    "failure",
-  );
-  const archived = (item, run) => ({
-    id: item.id,
-    name: item.name,
-    digest: item.digest,
-    size_in_bytes: item.bytes,
-    expired: true,
-    workflow_run: {
-      id: run.id,
-      head_sha: run.head_sha,
-      repository_id: 42,
-      head_repository_id: 42,
-    },
-  });
-  const producer = {
-    id: 79,
-    run_id: 77,
-    run_attempt: 1,
-    name: "CI / retained candidate / Produce",
-    head_sha: buildRun.head_sha,
-    status: "completed",
-    conclusion: "success",
-  };
-  const checkpoint = {
-    files: new Map([
-      [
-        "origin-10-1-release-qualification-10-1.json",
-        Buffer.from(
-          JSON.stringify({
-            run: releaseRun,
-            artifact: archived(
-              descriptor(91, qualifiedName, qualification),
-              releaseRun,
-            ),
-          }),
-        ),
-      ],
-      [
-        "origin-77-1-hadden-industries-owlapi-0.1.0-candidate-77-1.json",
-        Buffer.from(
-          JSON.stringify({
-            run: buildRun,
-            producer,
-            artifact: archived(candidate, buildRun),
-          }),
-        ),
-      ],
-      ["artifact-91.zip", qualification],
-      ["artifact-92.zip", candidateZip],
-    ]),
-  };
-  const client = {
-    read: async () => {
-      throw Object.assign(new Error("Original Actions copies expired"), {
-        httpStatus: 410,
-      });
-    },
-  };
-  const env = {
-    QUALIFICATION_RUN: "10",
-    QUALIFICATION_ATTEMPT: "1",
-    GITHUB_SHA: sha,
-    QUALIFIED_VERSION: "0.1.0",
-    MANIFEST_SHA256: hash(raw),
-  };
-  const result = await originalManifest(client, env, checkpoint);
-  expect(result.manifestBytes).toEqual(raw);
-  expect(result.candidate.workflow_run.id).toBe(77);
-  expect(result.candidate.archivedBytes).toEqual(candidateZip);
-});
+      producer: "b".repeat(16),
+      invocation: "9".repeat(32),
+      ordinal: 0,
+    });
+    const candidateZip = zipArchive([
+      { path: "hadden-industries-owlapi-0.1.0.tgz", content: bytes },
+    ]);
+    const descriptor = (id, name, artifactBytes = candidateZip) => ({
+      id,
+      name,
+      digest: "sha256:" + hash(artifactBytes),
+      bytes: artifactBytes.length,
+      expiresAt: expiry,
+    });
+    const candidate = descriptor(92, candidateName);
+    const observation = {
+      high: 0,
+      critical: 0,
+      lockSha256: "2".repeat(64),
+      manifestSha256: "3".repeat(64),
+      reportSha256: "4".repeat(64),
+      observedAt: record.security.observedAt,
+    };
+    record.assets.tarball.name = "hadden-industries-owlapi-0.1.0.tgz";
+    record.assets.checksums = {
+      name: "SHA256SUMS",
+      bytes: 1,
+      sha256: "c".repeat(64),
+    };
+    record.assets.sbom = {
+      name: "hadden-industries-owlapi-0.1.0.cdx.json",
+      bytes: 1,
+      sha256: "d".repeat(64),
+    };
+    record.candidateId = "92";
+    record.candidateDigest = candidate.digest.slice(7);
+    record.ci = {
+      schemaVersion: 1,
+      repositoryId: 42,
+      landed,
+      main: {
+        runId: 78,
+        attempt: 1,
+        event: "push",
+        providerHead: sha,
+        snapshot: landed,
+        receipt: descriptor(93, "main"),
+      },
+      build: {
+        runId: 77,
+        attempt: 2,
+        producingAttempt: 1,
+        producerJob: 79,
+        event: "pull_request",
+        providerHead: landed.parents[1],
+        snapshot: original,
+        receipt: descriptor(94, "receipt"),
+      },
+      candidate,
+      packageProof: descriptor(95, "proof"),
+      assets: record.assets,
+      package: record.package,
+      packedConfig: record.packedConfig,
+      integrity: record.integrity,
+      policySha256: "5".repeat(64),
+      matrixSha256: runtimeDigest(record.runtimeMatrix),
+      evidence: {
+        "lockless-consumer-package-lock.json": {
+          sha256: observation.lockSha256,
+        },
+      },
+      advisoryObservations: {
+        root: observation,
+        transport: observation,
+        recipient: observation,
+      },
+    };
+    const runtimeMatrix = record.runtimeMatrix;
+    if (!embedded) delete record.runtimeMatrix;
+    const raw = Buffer.from(canonicalJson(record));
+    const qualification = zipArchive([{ path: "manifest.json", content: raw }]);
+    const qualifiedName = physicalName({
+      logical: "release-qualification-10-1",
+      run: 10,
+      attempt: 1,
+      producer: "b".repeat(16),
+      invocation: "9".repeat(32),
+      ordinal: 0,
+    });
+    const repo = { full_name: "Hadden-Industries/owlapi", id: 42 };
+    const runRecord = (id, path, event, head_sha, head_branch, conclusion) => ({
+      id,
+      path,
+      event,
+      head_sha,
+      head_branch,
+      status: "completed",
+      conclusion,
+      run_attempt: 1,
+      repository: repo,
+      head_repository: repo,
+    });
+    const releaseRun = runRecord(
+      10,
+      ".github/workflows/release.yml",
+      "workflow_dispatch",
+      sha,
+      "main",
+      "success",
+    );
+    const buildRun = runRecord(
+      77,
+      ".github/workflows/ci.yml",
+      "pull_request",
+      landed.parents[1],
+      "topic",
+      "failure",
+    );
+    const archived = (item, run) => ({
+      id: item.id,
+      name: item.name,
+      digest: item.digest,
+      size_in_bytes: item.bytes,
+      expired: true,
+      workflow_run: {
+        id: run.id,
+        head_sha: run.head_sha,
+        repository_id: 42,
+        head_repository_id: 42,
+      },
+    });
+    const producer = {
+      id: 79,
+      run_id: 77,
+      run_attempt: 1,
+      name: "CI / retained candidate / Produce",
+      head_sha: buildRun.head_sha,
+      status: "completed",
+      conclusion: "success",
+    };
+    const checkpoint = {
+      files: new Map([
+        [
+          "origin-10-1-release-qualification-10-1.json",
+          Buffer.from(
+            JSON.stringify({
+              run: releaseRun,
+              artifact: archived(
+                descriptor(91, qualifiedName, qualification),
+                releaseRun,
+              ),
+            }),
+          ),
+        ],
+        [
+          "origin-77-1-hadden-industries-owlapi-0.1.0-candidate-77-1.json",
+          Buffer.from(
+            JSON.stringify({
+              run: buildRun,
+              producer,
+              artifact: archived(candidate, buildRun),
+            }),
+          ),
+        ],
+        ["artifact-91.zip", qualification],
+        ["artifact-92.zip", candidateZip],
+      ]),
+    };
+    const client = {
+      read: async () => {
+        throw Object.assign(new Error("Original Actions copies expired"), {
+          httpStatus: 410,
+        });
+      },
+    };
+    const env = {
+      QUALIFICATION_RUN: "10",
+      QUALIFICATION_ATTEMPT: "1",
+      GITHUB_SHA: sha,
+      QUALIFIED_VERSION: "0.1.0",
+      MANIFEST_SHA256: hash(raw),
+    };
+    if (!embedded)
+      checkpoint.files.set(
+        "runtime-matrix.json",
+        Buffer.from(canonicalJson(runtimeMatrix)),
+      );
+    const result = await originalManifest(client, env, checkpoint);
+    expect(result.manifestBytes).toEqual(raw);
+    expect(result.candidate.workflow_run.id).toBe(77);
+    expect(result.candidate.archivedBytes).toEqual(candidateZip);
+    expect(result.manifest.runtimeMatrix).toEqual(runtimeMatrix);
+  },
+);
 function run(version, channel, command) {
   const m = manifest(version);
   const journal = join(
@@ -1465,7 +1483,7 @@ test("public seal combines the final macOS result with the original successful r
 test("the immutable archive retains named empty logs and rejects aliases and ambiguous bytes", () => {
   const archive = (files) =>
     gzipSync(
-      Buffer.from(canonicalJson({ schemaVersion: 1, checkpoint: sha, files })),
+      Buffer.from(canonicalJson({ schemaVersion: 2, checkpoint: sha, files })),
     );
   const empty = {
     name: "required.log",
@@ -1476,6 +1494,12 @@ test("the immutable archive retains named empty logs and rejects aliases and amb
   expect(
     readStagedArchive(archive([empty])).files.get(empty.name),
   ).toHaveLength(0);
+  const legacy = gzipSync(
+    Buffer.from(
+      JSON.stringify({ schemaVersion: 1, checkpoint: sha, files: [empty] }),
+    ),
+  );
+  expect(readStagedArchive(legacy).files.get(empty.name)).toHaveLength(0);
   for (const invalid of [
     [empty, { ...empty, name: "Required.log" }],
     [{ ...empty, name: "../required.log" }],
@@ -1483,6 +1507,138 @@ test("the immutable archive retains named empty logs and rejects aliases and amb
     [{ ...empty, bytes: 1 }],
   ])
     expect(() => readStagedArchive(archive(invalid))).toThrow();
+});
+
+test.each(["draft", "seal"])(
+  "a native skipped %s writer can use a new signed reservation",
+  async (kind) => {
+    const repo = { full_name: "Hadden-Industries/owlapi" };
+    const origin = {
+      reservation: sha,
+      runId: "8",
+      attempt: "1",
+      controller: sha,
+      number: "7",
+    };
+    const preceding = [{ number: "7", objectId: sha, origin }];
+    const job = {
+      name: kind,
+      run_id: 8,
+      run_attempt: 1,
+      head_sha: sha,
+      status: "completed",
+      conclusion: "failure",
+      steps: [
+        {
+          name: "Prepare or seal verified GitHub release (" + kind + ")",
+          status: "completed",
+          conclusion: "skipped",
+        },
+      ],
+    };
+    const run = {
+      id: 8,
+      run_number: 7,
+      run_attempt: 1,
+      path: ".github/workflows/github-release.yml",
+      event: "workflow_dispatch",
+      head_branch: "main",
+      head_sha: sha,
+      repository: repo,
+      head_repository: repo,
+      status: "completed",
+      conclusion: "failure",
+    };
+    const client = {
+      read: (p) =>
+        p.endsWith("/jobs?per_page=100")
+          ? { total_count: 1, jobs: [job] }
+          : run,
+      write: () => {
+        throw Error("A writer reconciliation must stay read-only");
+      },
+    };
+    const reconcile = () =>
+      assertEarlierWritersStopped(
+        client,
+        { files: new Map() },
+        preceding,
+        kind,
+      );
+    await expect(reconcile()).resolves.toBeUndefined();
+    job.steps[0].conclusion = "failure";
+    await expect(reconcile()).rejects.toThrow();
+  },
+);
+
+test("only a first queued hosted successor can be excluded from writer history", () => {
+  const env = {
+    GITHUB_ACTIONS: "true",
+    GITHUB_EVENT_NAME: "workflow_dispatch",
+    GITHUB_REF: "refs/heads/main",
+  };
+  const successor = { status: "queued", run_attempt: 1 };
+  expect(queuedFirstAttempt(successor, env)).toBe(true);
+  expect(queuedFirstAttempt({ ...successor, run_attempt: 2 }, env)).toBe(false);
+  expect(queuedFirstAttempt({ ...successor, status: "in_progress" }, env)).toBe(
+    false,
+  );
+  expect(queuedFirstAttempt(successor, {})).toBe(false);
+});
+
+test("anonymous qualification replays reviewed draft and approval evidence without requiring draft access", async () => {
+  const subject = {
+    releaseId: 17,
+    tagObject: sha,
+    stageId,
+    manifestSha256: hash(bytes),
+  };
+  const before = {
+    state: "READY_FOR_OWNER_APPROVAL",
+    releaseId: subject.releaseId,
+    stageId,
+    manifestSha256: subject.manifestSha256,
+    labels: tags,
+    githubLatest: 16,
+    checkedAt: "2026-11-17T10:00:00Z",
+  };
+  const preapproval = Buffer.from(canonicalJson(before));
+  const approval = {
+    state: "APPROVED",
+    releaseId: subject.releaseId,
+    stageId,
+    approvedAt: "2026-11-17T10:01:00Z",
+    preapprovalSha256: hash(preapproval),
+  };
+  const files = new Map([
+    [
+      "draft.json",
+      Buffer.from(canonicalJson({ state: "DRAFT_VERIFIED", ...subject })),
+    ],
+    ["before-approval.json", preapproval],
+    ["approval.json", Buffer.from(canonicalJson(approval))],
+  ]);
+  const context = {
+    operation: { type: "registry", version: "0.1.0", ...subject },
+    read: (name) => files.get(name),
+    receipt: { before: tags, githubLatestBefore: 16 },
+  };
+  const client = {
+    read: () => {
+      throw Error("Draft is inaccessible to this token");
+    },
+  };
+  await expect(approvedDraft(client, context)).resolves.toEqual(approval);
+  files.set(
+    "approval.json",
+    Buffer.from(
+      canonicalJson({
+        ...approval,
+        approvedAt: before.checkedAt.replace("10:00", "10:10"),
+      }),
+    ),
+  );
+  await expect(approvedDraft(client, context)).rejects.toThrow();
 });
 
 test.each(["matching", "absent", "third value"])(

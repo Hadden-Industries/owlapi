@@ -8,7 +8,10 @@ import {
   readWorkflowRuns,
 } from "./github-evidence-reader.mjs";
 import { GitHubReleaseClient } from "./github-release.mjs";
-import { readCheckpoint } from "./release-history-checkpoint.mjs";
+import {
+  readCheckpoint,
+  unresolvedReservations,
+} from "./release-history-checkpoint.mjs";
 import { readReleaseCiEvidence } from "./release-ci-qualification.mjs";
 import { parseArtifactName } from "../tooling/artifact-transport/identity.mjs";
 
@@ -72,6 +75,10 @@ export function artifactStorage(inventory, now = Date.now()) {
 }
 
 const hold = (reason) => ({ eligibleIds: [], reason });
+const validIdList = (ids) =>
+  Array.isArray(ids) &&
+  new Set(ids).size === ids.length &&
+  ids.every((id) => Number.isSafeInteger(id) && id > 0);
 export function selectRedundantArtifacts({
   inventory,
   successor,
@@ -86,6 +93,12 @@ export function selectRedundantArtifacts({
   if (!successor || successor.commit !== currentHead)
     return hold("No verified successor on current protected main.");
   if (!decisions) return hold("No signed custody replay is available.");
+  if (
+    !validIdList(decisions.protectedIds) ||
+    !validIdList(decisions.settledRuns) ||
+    !Array.isArray(decisions.replayed)
+  )
+    return hold("The signed custody inventory is malformed.");
   if (activeConsumer || openWriter)
     return hold(
       "A consumer or release operation still has an outstanding claim.",
@@ -193,6 +206,9 @@ export async function reportReleaseRetention(env = process.env) {
     const decisions = JSON.parse(checkpoint.files.get("retention.json"));
     assert.equal(decisions.schemaVersion, 1);
     assert.equal(decisions.successor, main.commit.sha);
+    assert.ok(
+      validIdList(decisions.protectedIds) && validIdList(decisions.settledRuns),
+    );
     const proof = await readReleaseCiEvidence(env);
     const runs = await Promise.all(
       [...consumers, ...writers].map(async (workflow) => ({
@@ -205,28 +221,39 @@ export async function reportReleaseRetention(env = process.env) {
         consumers.includes(workflow) &&
         runs.some(({ status }) => status !== "completed"),
     );
-    const openWriter = runs.some(
-      ({ workflow, runs }) =>
-        writers.includes(workflow) &&
-        runs.some(
-          ({ status, conclusion, id }) =>
-            status !== "completed" ||
-            (conclusion !== "skipped" && !decisions.settledRuns.includes(id)),
-        ),
-    );
+    const openWriter =
+      (await unresolvedReservations(client, checkpoint)) ||
+      runs.some(
+        ({ workflow, runs }) =>
+          writers.includes(workflow) &&
+          runs.some(
+            ({ status, conclusion, id }) =>
+              status !== "completed" ||
+              (conclusion !== "skipped" && !decisions.settledRuns.includes(id)),
+          ),
+      );
     const after = await read("/branches/main");
-    const latest = await read(
-      "/actions/artifacts/" + proof.qualifiedPackage.candidate.id,
+    const current = [
+      proof.qualifiedPackage.candidate,
+      proof.qualifiedPackage.proof,
+    ];
+    const latest = await Promise.all(
+      current.map(async (expected) => {
+        const observed = await read("/actions/artifacts/" + expected.id);
+        return (
+          observed.id === expected.id &&
+          observed.expired === false &&
+          Date.parse(observed.expires_at) > Date.now() &&
+          observed.digest === expected.digest
+        );
+      }),
     );
     outcome = selectRedundantArtifacts({
       inventory,
       currentHead: after.commit?.sha,
       activeConsumer,
       openWriter,
-      complete:
-        after.protected &&
-        !latest.expired &&
-        latest.digest === proof.qualifiedPackage.candidate.digest,
+      complete: after.protected && latest.every(Boolean),
       successor: {
         commit: proof.landed.commit,
         candidate: proof.qualifiedPackage.candidate,

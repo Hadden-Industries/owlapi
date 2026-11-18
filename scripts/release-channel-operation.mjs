@@ -30,6 +30,7 @@ import {
 } from "./release-history-checkpoint.mjs";
 import {
   assertPriorOperations,
+  queuedFirstAttempt,
   hash,
   originArtifact,
   originalBytes,
@@ -290,6 +291,12 @@ export function nativePilotRefusal(error) {
 }
 
 export function verifyPilotRefusalLog({ bytes, step, proof, operationSha256 }) {
+  assert.ok(
+    Buffer.isBuffer(bytes) &&
+      bytes.length <= 4 * 1024 * 1024 &&
+      bytes.at(-1) === 10,
+    "Missing or incomplete original job log",
+  );
   assert.equal(step.name, npmStep);
   assert.equal(step.status, "completed");
   assert.equal(step.conclusion, "failure");
@@ -334,7 +341,20 @@ async function observePilotRefusal(client, env, checkpoint, origin, read) {
   planChannels(op);
   assert.equal(op.controller, origin.controller);
   const path = "/actions/runs/" + origin.runId + "/attempts/1";
-  const run = await client.read(path);
+  const logical = "release-labels-" + origin.runId + "-1";
+  const retained = checkpoint.files.get(
+    "origin-" + origin.runId + "-1-" + logical + ".json",
+  );
+  const saved = retained && JSON.parse(retained);
+  const readOriginal = async (path, fallback) => {
+    try {
+      return await client.read(path);
+    } catch (error) {
+      if (fallback && [404, 410].includes(error.httpStatus)) return fallback;
+      throw error;
+    }
+  };
+  const run = await readOriginal(path, saved?.run);
   assert.equal(original.tag, "owlapi-release-history/labels-" + run.run_number);
   assert.equal(String(run.id), origin.runId);
   assert.equal(run.run_attempt, 1);
@@ -346,7 +366,7 @@ async function observePilotRefusal(client, env, checkpoint, origin, read) {
       attempt: "1",
       filename: ".github/workflows/release-labels.yml",
       commit: origin.controller,
-      logical: "release-labels-" + origin.runId + "-1",
+      logical,
       refusedLabel: true,
     },
     checkpoint,
@@ -379,7 +399,7 @@ async function observePilotRefusal(client, env, checkpoint, origin, read) {
     method: "DELETE",
     endpoint: pilotEndpoint,
   });
-  const jobs = await client.read(path + "/jobs?per_page=100");
+  const jobs = await readOriginal(path + "/jobs?per_page=100", saved?.jobs);
   assert.equal(jobs.total_count, 1);
   assert.equal(jobs.jobs.length, 1);
   const [job] = jobs.jobs;
@@ -397,12 +417,21 @@ async function observePilotRefusal(client, env, checkpoint, origin, read) {
   assert.ok(Number.isSafeInteger(job.id) && job.id > 0);
   const steps = job.steps.filter((step) => step.name === npmStep);
   assert.equal(steps.length, 1);
+  const savedLog = checkpoint.files.get(
+    "label-refusal-" + origin.runId + "-1.log",
+  );
+  if (savedLog) {
+    assert.match(origin.logSha256, /^[a-f0-9]{64}$/u);
+    assert.equal(hash(savedLog), origin.logSha256);
+  }
   const logSha256 = verifyPilotRefusalLog({
-    bytes: execFileSync(
-      "gh",
-      ["api", "repos/" + repository + "/actions/jobs/" + job.id + "/logs"],
-      { env, timeout: 20000, maxBuffer: 4 * 1024 * 1024 },
-    ),
+    bytes:
+      savedLog ??
+      execFileSync(
+        "gh",
+        ["api", "repos/" + repository + "/actions/jobs/" + job.id + "/logs"],
+        { env, timeout: 20000, maxBuffer: 4 * 1024 * 1024 },
+      ),
     step: steps[0],
     proof: diagnostic,
     operationSha256,
@@ -568,6 +597,7 @@ async function main() {
       await assertPriorOperations(client, env, checkpoint, kind);
     const settled = [];
     for (const run of runs.filter((r) => String(r.id) !== env.GITHUB_RUN_ID)) {
+      if (queuedFirstAttempt(run, env)) continue;
       assert.equal(run.status, "completed", "Another label operation is open");
       for (let attempt = 1; attempt <= run.run_attempt; attempt++) {
         const jobs = await client.read(

@@ -17,6 +17,8 @@ It requires the native dispatch environment, its frozen runtime matrix and a Git
 The main receipt binds source, dependency policy, Java and OWL coverage, and the browser, source, portability and consumer job verdicts.
 The original candidate and package-proof ZIPs bind the packed documentation, tarball, SBOM, sums, original audits and recipient graph and lock.
 Retain the originating artifact IDs and earliest expiry.
+For an earlier promoted manifest that carries only the matrix digest, include the original frozen matrix as `runtime-matrix.json` in the signed checkpoint.
+The reader verifies it against the recorded digest while preserving the original manifest bytes.
 If any required original has expired or conflicts with the native job inventory, select fresh qualification explicitly.
 Release-time dependency advisory observations, managed CodeQL, ScanCode with committed reconciliation, and current rights and benchmark dispositions still need their owning release gates.
 CI reuse alone cannot stage or publish the package.
@@ -40,6 +42,11 @@ Bind stage-only npm OIDC to `stage-release.yml` / `npm-release`, and tag adminis
 Require owner approval on protected main.
 Disable direct publishing and retire the alpha/rc.3 credentials and provider bindings after reconciliation. Apply separate creation and immutable update/deletion rules to `refs/tags/owlapi-release-history/*`.
 Qualify one deliberate PR, the main observer and manual full dispatch, an installed-only diagnostic, and a qualification-only release on GitHub.
+Check the native job roster for each route.
+A reuse hit should skip the product rebuild and matrix and complete the release-only gates.
+A reuse miss should stop at admission.
+An explicit fresh qualification exercises the full read-only route.
+Record the native job counts, runner minutes, candidate and receipt IDs, earliest artifact expiry, and compressed artifact bytes.
 Keep automatic main fallback until these pass.
 The first real stage and interactive approval require a separately authorized candidate.
 
@@ -107,9 +114,10 @@ Owner-reviewed managed CodeQL analyses must be at most seven days old, and the s
    Continue missing uploads with `owlapi-release-history/draft-VERSION-continue-RUN_NUMBER`, the original `expectedReleaseId` and `draft-origin.json`.
    The origin binds the original `checkpoint`, `runId`, `number`, `attempt`, `controller` and `journalSha256`.
    An absent draft or missing acknowledgement leaves creation unresolved.
+   A replacement reservation requires the original native skipped writer step or its exact `draft-no-request.json`, together with the resolved original reservation in signed history.
    When resuming sealing, use the same signed checkpoint so the evidence archive reproduces its original digest.
 4. From the reviewed controller checkout, set `GITHUB_SHA` to its commit, `GITHUB_REF=refs/heads/main`, `GITHUB_REPOSITORY=Hadden-Industries/owlapi`, a read-only `GH_TOKEN`, and `HISTORY_OBJECT` for a signed `before-approval` operation.
-   Run `node scripts/staged-release-followup.mjs before-approval` within five minutes before approval.
+   Run `node scripts/staged-release-followup.mjs before-approval` within five minutes before approval using owner credentials that can see the draft.
    Repeat the check if its window expires.
    It reopens the draft and compares the npm labels and GitHub latest release to the stage intent.
    Preserve `.release/followup/before-approval.json` with its digest in `approval.preapprovalSha256`.
@@ -144,6 +152,8 @@ Inspect the original native attempt and its journal before choosing a recovery p
 ## Verify public recipients and seal
 
 Dispatch `release-registry.yml` with a signed `registry` operation and the original private proof, draft and approval.
+The read-only registry job verifies signed draft and approval receipts.
+The seal writer reopens the live draft.
 Include the exact qualified SBOM for the registry job to check against both installed graphs.
 The approved stage's publisher identity is the origin of provenance.
 Anonymous registry reads qualify bytes, both install spellings and documentation.
@@ -163,7 +173,8 @@ After expiry the reader checks those original identities and bytes in the owner-
 Include a disclosure-reviewed `public-inventory.json` with `manifestSha256` and a `files` list containing the original qualification ZIPs, rights dispositions and corresponding source material cleared for public distribution.
 The GitHub-only writer verifies the public artifact and all lane receipts, adds release evidence and the indexed evidence archive, then seals that same draft.
 Reserve it as `owlapi-release-history/seal-VERSION-RUN_NUMBER`.
-An earlier seal of the same version can only resume asset work once its signed reservation cites the original `SEAL_NOT_REQUESTED` record.
+Asset work can resume once the earlier signed reservation cites the native skipped writer step or its original `seal-no-request.json`.
+For either writer give the prior `origin` the exact `reservation` tag object, `runId`, native run `number`, `attempt` and `controller`.
 An earlier `seal-request.json` requires read-only reconciliation.
 Submit the resulting `seal.json` in a checkpoint to `release-completion.yml`.
 It independently checks the immutable release, tag, all five asset digests and native GitHub release and asset attestations.
@@ -208,35 +219,14 @@ For a native retirement refusal, submit a signed `label-refusal-origin.json` to 
 It binds the original `checkpoint`, `runId`, `attempt`, `controller`, `operationSha256` and `journalSha256`.
 The verifier requires the original failed step and a complete matching npm `E401` for HTTP `401 DELETE` on the pilot endpoint.
 Include its original proof in the signed disposition before authorizing a new operation with fresh preimages.
-
-## Evidence storage and recovery
-
-Weekly maintenance retains its exact tarball bundle and per-lane receipts for one day.
-The weekly aggregate validates every lane and leaves its outcome in the run.
-Ordinary CI diagnostics for July reconciliation expire after 14 days.
-Release-capable candidates and their required proof retain the 90-day ceiling.
-Only exact completion receipts are uploaded after immutable release verification.
-
-The protected maintenance storage job reports compressed bytes and projected byte-days by purpose.
-Cache bytes are measured separately.
-An optional signed `retention.json` records `schemaVersion: 1`, the protected-main `successor` SHA, `protectedIds`, `settledRuns`, and the `replayed` inventory.
-Each replay item records the original artifact `id`, `runId`, `digest` and `manifestSha256`, a result of `STAGE_SEAL_AND_RECOVERY_VERIFIED`, and affirmative `actionsCopiesUnavailable` and `verifiedBackup` observations.
-The operator's separate evidence includes the signed replay and verified encrypted backup.
-The report holds candidates if the successor or a required original cannot be proved, or if a writer or consumer still has a claim.
-The observer has read permissions and reports eligibility in the job summary.
-
-Signed checkpoint readers validate the complete Git tree and materialize only selected members.
-For schema 2 an indexed logical member can list two to sixteen `parts`, each with exact `name`, `bytes` and `sha256`.
-The logical member retains its own size and digest after assembly.
-Shallow hosted checkouts fetch the verified history tag and load selected blobs by Git object ID.
-Keep the public disclosure review and the independent off-platform backup.
+Retain disclosure-reviewed original native job metadata and exact log bytes as `label-refusal-RUN-1.log`, bound by `origin.logSha256`, for verification after Actions expiry.
 
 After npm acknowledges a label write, the writer allows up to five minutes for the public tag map to converge.
 It polls only while the previous approved map is visible or a registry read is transiently unavailable.
 A conflicting value stops the operation immediately.
 If the deadline expires, retain the acknowledged journal and reconcile by reading the registry before scheduling any further write.
 
-A signed `channel-operation.json` records a unique `operationId`, operation `type` (promote, preview, close-preview or withdraw), version, prior stable and preview line in `support`, complete guarded `before` and `after` tag maps, and `githubBefore` / `githubAfter` with prerelease flag and latest ID or null.
+A signed `channel-operation.json` records a unique `operationId`, operation `type`, version, prior stable and preview line in `support`, complete guarded `before` and `after` tag maps, and `githubBefore` / `githubAfter` with prerelease flag and latest ID or null.
 Include the evidence described above for each selected release or restore target.
 A preview may explicitly `openLine`.
 Withdrawal supplies separate `{tag,target}` entries in `restore`.
@@ -244,7 +234,9 @@ Withdrawal supplies separate `{tag,target}` entries in `restore`.
 Run `release-labels.yml` first.
 Check every affected tag and retain the request, acknowledgement and readback.
 Freeze the original operation bytes and retain the returned `runId` and controller `commit` in `label-origin.json`.
-Dispatch `release-classification.yml` with the same operation and select `github`, followed by `verify`.
+Dispatch `release-classification.yml` with the same operation.
+Select `github` when classification must change, then `verify`.
+For pilot retirement, use only `verify` and keep the existing support designation.
 When GitHub classification changes, include the original `github` writer’s `runId`, `attempt` and controller `commit` in `classification-origin.json` so completion can check its acknowledged journal.
 Record the verified support and label values in `support-designation.json` when the operation completes.
 The pre-stable RC and promoted stable support designations have independent lifetimes.
@@ -255,3 +247,26 @@ If the original 30-minute availability window has expired, a later read-only reg
 Confirming current availability does not establish when the package first became available.
 For a defective stable with a qualified predecessor, the signed withdrawal restores both npm’s default and GitHub’s latest ID.
 A first stable with no predecessor can remove the npm default while its GitHub designation remains explicitly guarded.
+
+## Evidence storage and recovery
+
+Weekly maintenance retains its exact tarball bundle and per-lane receipts for one day.
+The weekly aggregate validates every lane and leaves its outcome in the run.
+Ordinary CI diagnostics for July reconciliation expire after 14 days.
+Release-capable candidates and their required proof retain the 90-day ceiling.
+The immutable completion workflow retains its exact completion receipt.
+
+The protected maintenance storage job reports compressed bytes and projected byte-days by purpose.
+Cache bytes are measured separately.
+An optional signed `retention.json` records `schemaVersion: 1`, the protected-main `successor` SHA, `protectedIds`, `settledRuns`, and the `replayed` inventory.
+Each replay item records the original artifact `id`, `runId`, `digest` and `manifestSha256`, a result of `STAGE_SEAL_AND_RECOVERY_VERIFIED`, and affirmative `actionsCopiesUnavailable` and `verifiedBackup` observations.
+The operator's separate evidence includes the signed replay and verified encrypted backup.
+The observer holds candidates while a required original, the successor's candidate or package proof, or a writer or consumer claim remains unresolved.
+Read the eligibility result in the job summary.
+Keep early deletion disabled until hosted signed-custody replay succeeds.
+
+Signed checkpoint readers validate the complete Git tree and materialize only selected members.
+For schema 2 an indexed logical member can list two to sixteen `parts`, each with exact `name`, `bytes` and `sha256`.
+The logical member retains its own size and digest after assembly.
+Shallow hosted checkouts fetch the verified history tag and load selected blobs by Git object ID.
+Keep the public disclosure review and the independent off-platform backup.

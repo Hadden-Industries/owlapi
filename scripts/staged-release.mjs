@@ -112,7 +112,9 @@ function subject(manifest) {
     assertPromotedCi(ci, {
       commit: manifest.commit,
       version: manifest.package.version,
-      matrixSha256: runtimeDigest(validateFrozenMatrix(manifest.runtimeMatrix)),
+      matrixSha256: manifest.runtimeMatrix
+        ? runtimeDigest(validateFrozenMatrix(manifest.runtimeMatrix))
+        : ci.matrixSha256,
       now: recorded,
     });
     assert.deepEqual(
@@ -557,7 +559,16 @@ export async function originalManifest(client, env, checkpoint) {
   );
   const bytes = files[0].content;
   assert.equal(hash(bytes), env.MANIFEST_SHA256);
-  const manifest = json(bytes);
+  let manifest = json(bytes);
+  // Early schema-2 manifests included the digest without embedding the matrix bytes.
+  if (manifest.schemaVersion === 2 && manifest.runtimeMatrix === undefined) {
+    const matrix = checkpoint?.files.get("runtime-matrix.json");
+    assert.ok(
+      matrix,
+      "Retain the original frozen matrix for this promoted manifest",
+    );
+    manifest = { ...manifest, runtimeMatrix: json(matrix) };
+  }
   subject(manifest);
   assert.deepEqual(
     [manifest.runId, manifest.attempt, manifest.commit],
@@ -704,6 +715,7 @@ export async function assertPriorOperations(
   for (const run of prior.filter(
     (r) => ![env.GITHUB_RUN_ID, excludeRun].includes(String(r.id)),
   )) {
+    if (queuedFirstAttempt(run, env)) continue;
     assert.ok(
       run.status === "completed",
       "Concurrent or unresolved stage request",
@@ -794,6 +806,16 @@ export async function assertPriorOperations(
     }
   }
   return lastWriterAt;
+}
+
+export function queuedFirstAttempt(run, env) {
+  return (
+    env.GITHUB_ACTIONS === "true" &&
+    env.GITHUB_EVENT_NAME === "workflow_dispatch" &&
+    env.GITHUB_REF === "refs/heads/main" &&
+    run.run_attempt === 1 &&
+    ["requested", "queued", "pending", "waiting"].includes(run.status)
+  );
 }
 async function preflight(client, env, checkpoint, intent, manifest) {
   assert.equal(env.GITHUB_REPOSITORY, repo);

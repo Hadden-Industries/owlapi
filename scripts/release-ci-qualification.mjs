@@ -66,23 +66,36 @@ async function main() {
   try {
     const result = await readReleaseCiEvidence();
     const { candidate, proof } = result.qualifiedPackage;
+    const retained = projectPromotedCi(
+      result,
+      runtimeDigest(FROZEN_RUNTIME_MATRIX),
+    );
+    const earliestExpiry = [
+      retained.candidate,
+      retained.packageProof,
+      retained.main.receipt,
+      retained.build.receipt,
+    ]
+      .map(({ expiresAt }) => expiresAt)
+      .sort()[0];
     outputs = {
       eligible: "true",
       landed_sha: result.landed.commit,
       build_sha: result.source.receipt.snapshot.commit,
       candidate_id: candidate.id,
       proof_id: proof.id,
-      evidence: JSON.stringify(
-        projectPromotedCi(result, runtimeDigest(FROZEN_RUNTIME_MATRIX)),
-      ),
+      evidence: JSON.stringify(retained),
     };
     summary =
-      "CI evidence verified. Release-only qualification is still required.";
+      "CI evidence verified. The earliest required artifact expires " +
+      earliestExpiry +
+      ". Release-only qualification is still required.";
   } catch (error) {
     outputs = { eligible: "false" };
     summary =
       "CI evidence is unavailable: " +
-      error.message.replaceAll(/[\r\n]/gu, " ").slice(0, 350);
+      error.message.replaceAll(/[\r\n]/gu, " ").slice(0, 350) +
+      ". Inspect the original CI run or deliberately select fresh read-only qualification.";
   }
   emit(outputs, summary);
   if (outputs.eligible === "false") process.exitCode = 1;

@@ -2984,7 +2984,11 @@ const validateMaintenanceReporter = (workflow, violations) => {
     {
       if: "github.repository == 'Hadden-Industries/owlapi' && github.ref == 'refs/heads/main'",
       needs: "runtime_matrix",
-      permissions: readAuthority,
+      permissions: {
+        ...readAuthority,
+        checks: "read",
+        "pull-requests": "read",
+      },
     },
     "maintenance.yml: protected retention observer",
     violations,

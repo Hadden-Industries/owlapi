@@ -39,6 +39,7 @@ test("only exact replayed redundant IDs qualify and the successor's inputs are p
     now,
     decisions: {
       protectedIds: [hold.id],
+      settledRuns: [],
       replayed: [old, candidate, hold].map(({ id, digest }) => ({
         id,
         digest,
@@ -58,6 +59,8 @@ test("only exact replayed redundant IDs qualify and the successor's inputs are p
     { openWriter: true },
     { inventory: [old, candidate] },
     { decisions: undefined },
+    { decisions: { ...inputs.decisions, protectedIds: [String(hold.id)] } },
+    { decisions: { ...inputs.decisions, settledRuns: "1" } },
     { now: Date.parse(expires_at) },
   ])
     expect(

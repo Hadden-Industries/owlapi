@@ -288,7 +288,7 @@ export async function draft(client, ctx, attempt) {
   };
 }
 
-async function readWriterRecords(client, checkpoint, origin, kind) {
+async function readWriterAttempt(client, checkpoint, origin, kind) {
   assert.ok(origin && origin.attempt === "1");
   assert.match(origin.runId, /^[1-9]\d{0,15}$/u);
   assert.match(String(origin.number), /^[1-9]\d{0,9}$/u);
@@ -308,27 +308,60 @@ async function readWriterRecords(client, checkpoint, origin, kind) {
   const runPath = "/actions/runs/" + origin.runId + "/attempts/1";
   const run = await available(runPath, saved?.run);
   assert.equal(String(run.run_number), String(origin.number));
+  assert.deepEqual(
+    [
+      String(run.id),
+      run.run_attempt,
+      run.path,
+      run.event,
+      run.head_branch,
+      run.head_sha,
+      run.repository?.full_name,
+      run.head_repository?.full_name,
+      run.status,
+    ],
+    [
+      origin.runId,
+      1,
+      followupWorkflow,
+      "workflow_dispatch",
+      "main",
+      origin.controller,
+      repo,
+      repo,
+      "completed",
+    ],
+  );
   const jobs = await available(runPath + "/jobs?per_page=100", saved?.jobs);
   assert.equal(jobs.total_count, jobs.jobs.length);
   const job = single(
     jobs.jobs.filter((job) => job.name === kind),
     "Missing original GitHub writer job",
   );
-  const step = single(
-    job.steps.filter(
-      (step) =>
-        step.name ===
-          "Prepare or seal verified GitHub release (" + kind + ")" &&
-        step.status === "completed" &&
-        ["success", "failure"].includes(step.conclusion),
-    ),
+  assert.deepEqual(
+    [String(job.run_id), job.run_attempt, job.head_sha, job.status],
+    [origin.runId, 1, origin.controller, "completed"],
+  );
+  const steps = job.steps.filter(
+    (step) =>
+      step.name === "Prepare or seal verified GitHub release (" + kind + ")",
+  );
+  assert.ok(steps.length <= 1);
+  const skipped =
+    steps[0]?.conclusion === "skipped" ||
+    (steps.length === 0 && job.conclusion === "skipped");
+  return { logical, skipped, step: steps[0] };
+}
+
+async function readWriterRecords(client, checkpoint, origin, kind, attempt) {
+  const { logical, step } =
+    attempt ?? (await readWriterAttempt(client, checkpoint, origin, kind));
+  assert.ok(
+    step?.status === "completed" &&
+      ["success", "failure"].includes(step.conclusion),
     "Missing completed original GitHub writer step",
   );
   assert.ok(Date.parse(step.started_at) <= Date.parse(step.completed_at));
-  assert.deepEqual(
-    [String(job.run_id), job.run_attempt, job.head_sha],
-    [origin.runId, 1, origin.controller],
-  );
   const a = await originArtifact(
     client,
     {
@@ -347,24 +380,32 @@ async function readWriterRecords(client, checkpoint, origin, kind) {
   return new Map(archive.map((entry) => [entry.path, entry.content]));
 }
 
-async function assertEarlierSealsStopped(client, checkpoint, previous, ctx) {
+export async function assertEarlierWritersStopped(
+  client,
+  checkpoint,
+  previous,
+  kind,
+) {
   for (const { number, objectId, origin } of previous) {
     assert.equal(String(origin.number), number);
-    const records = await readWriterRecords(client, checkpoint, origin, "seal");
-    assert.ok(
-      !records.has("seal-request.json"),
-      "Original seal can only be reconciled",
+    assert.equal(origin.reservation, objectId);
+    const attempt = await readWriterAttempt(client, checkpoint, origin, kind);
+    if (attempt.skipped) continue;
+    const records = await readWriterRecords(
+      client,
+      checkpoint,
+      origin,
+      kind,
+      attempt,
     );
-    const stopped = parse(records.get("seal-assets-incomplete.json"));
-    assert.deepEqual(stopped, {
-      state: "SEAL_NOT_REQUESTED",
-      reservation: objectId,
-      version: ctx.operation.version,
-      releaseId: ctx.operation.releaseId,
-      runId: origin.runId,
-      attempt: "1",
-      controller: origin.controller,
-    });
+    assert.ok(
+      !records.has(requestJournal(kind)),
+      "The original writer request can only be reconciled",
+    );
+    assert.deepEqual(
+      parse(records.get(noRequestName(kind))),
+      noRequestRecord(kind, objectId, origin),
+    );
   }
 }
 
@@ -424,8 +465,10 @@ async function upload(client, id, item, bytes) {
     "CONFIRMED",
     "Asset acknowledgement missing; inspect original draft",
   );
+  assert.ok(positive(result.value?.id), "Missing native uploaded asset ID");
+  return result.value.id;
 }
-async function approvedDraft(client, ctx, extraAssets = []) {
+export async function approvedDraft(client, ctx, extraAssets = []) {
   const { operation, read, manifest } = ctx;
   const tag = "v" + operation.version;
   const proof = parse(read("draft.json"));
@@ -438,6 +481,9 @@ async function approvedDraft(client, ctx, extraAssets = []) {
     manifestSha256: operation.manifestSha256,
   });
   assert.ok(positive(proof.releaseId));
+  // Registry observers are read-only and may not receive GitHub draft objects.
+  if (operation.type === "registry")
+    return recordedApproval(ctx, proof.releaseId);
   const live = await client.read("/releases/" + proof.releaseId);
   assertReleaseId(live, proof.releaseId);
   assertDraftRelease(live, { tag });
@@ -454,17 +500,7 @@ async function approvedDraft(client, ctx, extraAssets = []) {
   assert.equal(live.body, read("release-notes.md").toString("utf8"));
   assert.equal(live.name, "owlapi " + operation.version);
   if (operation.type === "before-approval") {
-    const tags = parse(
-      await readPublicRegistry(
-        new URL(
-          "-/package/" + encodeURIComponent(PACKAGE_NAME) + "/dist-tags",
-          NPM_REGISTRY,
-        ),
-      ),
-    );
-    const observed = Object.fromEntries(
-      ["pilot", "latest", "next"].map((name) => [name, tags[name] ?? null]),
-    );
+    const observed = await readPublicLabels();
     assert.deepEqual(
       observed,
       ctx.receipt.before,
@@ -483,6 +519,13 @@ async function approvedDraft(client, ctx, extraAssets = []) {
       checkedAt: new Date().toISOString(),
     };
   }
+  return recordedApproval(ctx, proof.releaseId, live.created_at);
+}
+function recordedApproval(
+  { operation, read, receipt },
+  releaseId,
+  liveCreatedAt,
+) {
   const preapproval = read("before-approval.json");
   const verified = parse(preapproval);
   const approval = parse(read("approval.json"));
@@ -497,27 +540,27 @@ async function approvedDraft(client, ctx, extraAssets = []) {
       verified.githubLatest,
     ],
     [
-      live.id,
+      releaseId,
       operation.stageId,
       operation.manifestSha256,
-      ctx.receipt.before,
-      ctx.receipt.githubLatestBefore,
+      receipt.before,
+      receipt.githubLatestBefore,
     ],
   );
   assert.ok(
-    Date.parse(live.created_at) <= Date.parse(verified.checkedAt) &&
-      Date.parse(verified.checkedAt) <= Date.parse(approval.approvedAt) &&
+    Date.parse(verified.checkedAt) <= Date.parse(approval.approvedAt) &&
       Date.parse(approval.approvedAt) - Date.parse(verified.checkedAt) <=
         5 * 60 * 1000,
   );
   assert.equal(approval.stageId, operation.stageId);
-  assert.equal(approval.releaseId, proof.releaseId);
+  assert.equal(approval.releaseId, releaseId);
   assert.equal(approval.state, "APPROVED");
-  assert.ok(
-    Date.parse(live.created_at) <= Date.parse(approval.approvedAt) &&
-      Date.parse(approval.approvedAt) <= Date.now(),
-    "Approval must follow draft creation",
-  );
+  if (liveCreatedAt !== undefined)
+    assert.ok(
+      Date.parse(liveCreatedAt) <= Date.parse(verified.checkedAt),
+      "The original draft must predate owner approval",
+    );
+  assert.ok(Date.parse(approval.approvedAt) <= Date.now());
   return approval;
 }
 async function registryProof(client, ctx) {
@@ -711,7 +754,7 @@ async function verifyQualificationDisclosure(
   }
 }
 
-const readPublicLabels = async () => {
+async function readPublicLabels() {
   const tags = parse(
     await readPublicRegistry(
       new URL(
@@ -724,7 +767,7 @@ const readPublicLabels = async () => {
   return Object.fromEntries(
     ["pilot", "latest", "next"].map((tag) => [tag, tags[tag] ?? null]),
   );
-};
+}
 
 async function assertSealPreimages(client, ctx, report, expected) {
   const { operation, receipt, read } = ctx;
@@ -821,7 +864,7 @@ async function seal(client, ctx, checkpoint, renewal, execution) {
   const archive = gzipSync(
     Buffer.from(
       canonicalJson({
-        schemaVersion: 1,
+        schemaVersion: 2,
         checkpoint: checkpoint.objectId,
         files: [...archiveEntries].map(([name, bytes]) => ({
           ...asset(name, bytes),
@@ -856,8 +899,12 @@ async function seal(client, ctx, checkpoint, renewal, execution) {
     "hadden-industries-owlapi-" + operation.version + ".release-evidence.json",
     evidence,
   );
+  const assetIds = parse(read("draft.json")).assetIds;
   const expected = [
-    ...Object.values(manifest.assets),
+    ...Object.values(manifest.assets).map((item) => ({
+      ...item,
+      id: assetIds?.[item.name],
+    })),
     archiveInfo,
     evidenceInfo,
   ];
@@ -867,13 +914,15 @@ async function seal(client, ctx, checkpoint, renewal, execution) {
   );
   await approvedDraft(client, ctx, [archiveInfo, evidenceInfo]);
   const existing = await assertSealPreimages(client, ctx, report, expected);
+  for (const item of expected)
+    item.id ??= existing.assets.find((a) => a.name === item.name)?.id;
   checkSealSettings(operationBytes, renewal);
   for (const [item, bytes] of [
     [archiveInfo, archive],
     [evidenceInfo, evidence],
   ])
     if (!existing.assets.some((a) => a.name === item.name))
-      await upload(client, operation.releaseId, item, bytes);
+      item.id = await upload(client, operation.releaseId, item, bytes);
   const draft = await assertSealPreimages(client, ctx, report, expected);
   assertReleaseAssets({ assets: draft.assets, expected });
   checkSealSettings(operationBytes, renewal);
@@ -955,13 +1004,14 @@ export function readStagedArchive(archive) {
     gunzipSync(archive, { maxOutputLength: 96 * 1024 * 1024 }),
   );
   const record = JSON.parse(raw);
-  assert.equal(raw, canonicalJson(record), "Noncanonical archive index");
+  if (record.schemaVersion === 2)
+    assert.equal(raw, canonicalJson(record), "Noncanonical archive index");
   assert.deepEqual(Object.keys(record).sort(), [
     "checkpoint",
     "files",
     "schemaVersion",
   ]);
-  assert.equal(record.schemaVersion, 1);
+  assert.ok([1, 2].includes(record.schemaVersion));
   assert.match(record.checkpoint, /^[a-f0-9]{40}$/u);
   assert.ok(
     Array.isArray(record.files) &&
@@ -1137,9 +1187,23 @@ export async function completeRelease(client, env, checkpoint) {
   }
   return { ...record, state: "IMMUTABLE_VERIFIED" };
 }
-async function main() {
-  const mode = process.argv[2],
-    env = process.env;
+function requestJournal(kind) {
+  return kind === "draft" ? "draft-journal.jsonl" : "seal-request.json";
+}
+function noRequestName(kind) {
+  return kind + "-no-request.json";
+}
+function noRequestRecord(kind, reservation, { runId, attempt, controller }) {
+  return {
+    state: kind === "draft" ? "CREATE_NOT_REQUESTED" : "SEAL_NOT_REQUESTED",
+    reservation,
+    runId,
+    attempt,
+    controller,
+  };
+}
+
+async function executeFollowup(mode, env) {
   if (mode === "check-seal-settings") {
     assert.ok(
       [4, 5].includes(process.argv.length),
@@ -1176,7 +1240,7 @@ async function main() {
       const authority = renewal?.authority ?? checkpoint;
       const create =
         mode === "draft" && ctx.operation.expectedReleaseId === null;
-      const { previousSeals } = await verifyReservations(
+      const { preceding } = await verifyReservations(
         client,
         authority,
         env,
@@ -1190,6 +1254,12 @@ async function main() {
         await assertPriorOperations(client, env, authority, kind, {
           excludeRun: kind === "stage" ? ctx.receipt.runId : undefined,
         });
+      await assertEarlierWritersStopped(client, authority, preceding, mode);
+      const main = await client.read("/branches/main");
+      assert.ok(
+        main.protected && main.commit?.sha === env.GITHUB_SHA,
+        "The writer controller is no longer current protected main",
+      );
       const execution = {
         checkpoint: checkpoint.objectId,
         controller: env.GITHUB_SHA,
@@ -1211,27 +1281,7 @@ async function main() {
             : {}),
         });
       } else {
-        await assertEarlierSealsStopped(client, authority, previousSeals, ctx);
-        try {
-          result = await seal(client, ctx, checkpoint, renewal, execution);
-        } catch (error) {
-          if (!existsSync(join(followupDir, "seal-request.json"))) {
-            writeFileSync(
-              join(followupDir, "seal-assets-incomplete.json"),
-              JSON.stringify({
-                state: "SEAL_NOT_REQUESTED",
-                reservation: authority.objectId,
-                version: ctx.operation.version,
-                releaseId: ctx.operation.releaseId,
-                runId: execution.runId,
-                attempt: execution.attempt,
-                controller: execution.controller,
-              }) + "\n",
-              { flag: "wx", flush: true },
-            );
-          }
-          throw error;
-        }
+        result = await seal(client, ctx, checkpoint, renewal, execution);
       }
     } else if (mode === "before-approval")
       result = await approvedDraft(client, ctx);
@@ -1245,6 +1295,37 @@ async function main() {
     JSON.stringify(result, null, 2) + "\n",
     { flag: "wx" },
   );
+}
+async function main() {
+  const mode = process.argv[2],
+    env = process.env;
+  try {
+    await executeFollowup(mode, env);
+  } catch (error) {
+    if (
+      ["draft", "seal"].includes(mode) &&
+      env.GITHUB_REPOSITORY === repo &&
+      env.GITHUB_REF === "refs/heads/main" &&
+      !existsSync(join(followupDir, requestJournal(mode)))
+    ) {
+      mkdirSync(followupDir, { recursive: true });
+      const record = noRequestRecord(
+        mode,
+        env.SETTINGS_OBJECT || env.HISTORY_OBJECT,
+        {
+          runId: env.GITHUB_RUN_ID,
+          attempt: env.GITHUB_RUN_ATTEMPT,
+          controller: env.GITHUB_SHA,
+        },
+      );
+      writeFileSync(
+        join(followupDir, noRequestName(mode)),
+        JSON.stringify(record) + "\n",
+        { flag: "wx", flush: true },
+      );
+    }
+    throw error;
+  }
 }
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href)
   await main();

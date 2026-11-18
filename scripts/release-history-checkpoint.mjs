@@ -6,6 +6,12 @@ import { fileURLToPath } from "node:url";
 import { verifyLocalReleaseTag } from "./verify-release-tag.mjs";
 
 const namespace = "owlapi-release-history/";
+const writerKinds = ["stage", "labels", "classification", "draft", "seal"];
+const resolvedReservation = [
+  "SETTLED",
+  "REJECTED",
+  "RECONCILED_NO_PENDING_EFFECT",
+];
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
 const historyRepository = "https://github.com/Hadden-Industries/owlapi.git";
 const hostedCheckout = () =>
@@ -185,6 +191,34 @@ export function priorDisposition(checkpoint, name) {
   );
   return records[name];
 }
+const reservationRefs = (client, kind) =>
+  client.read("/git/matching-refs/tags/" + namespace + kind + "-");
+
+export async function unresolvedReservations(client, checkpoint) {
+  for (const kind of writerKinds) {
+    const refs = await reservationRefs(client, kind);
+    assert.ok(Array.isArray(refs));
+    for (const ref of refs) {
+      const number = /-([1-9][0-9]*)$/u.exec(ref.ref)?.[1];
+      assert.ok(
+        number && ref.object.type === "tag" && oidPattern.test(ref.object.sha),
+      );
+      const name = "reservation-" + kind + "-" + number + ".json";
+      if (
+        !checkpoint.files.has(name) &&
+        !Object.hasOwn(checkpoint.index?.dispositions ?? {}, name)
+      )
+        return true;
+      const saved = priorDisposition(checkpoint, name);
+      if (
+        saved.object !== ref.object.sha ||
+        !resolvedReservation.includes(saved.state)
+      )
+        return true;
+    }
+  }
+  return false;
+}
 export async function readCheckpoint(client, objectId) {
   assert.match(objectId, oidPattern);
   const tag = await client.read("/git/tags/" + objectId);
@@ -284,8 +318,7 @@ export async function verifyReservations(
   kind,
   { version, create = false, trackWriterTime = false, retirementSha } = {},
 ) {
-  const kinds = ["stage", "labels", "classification", "draft", "seal"];
-  assert.ok(kinds.includes(kind));
+  assert.ok(writerKinds.includes(kind));
   const number = Number(env.GITHUB_RUN_NUMBER);
   assert.ok(
     Number.isSafeInteger(number) &&
@@ -307,12 +340,10 @@ export async function verifyReservations(
     current,
     "A writer needs a signed single-run reservation",
   );
-  const previousSeals = [];
+  const preceding = [];
   let lastWriterAt = -Infinity;
-  for (const prefix of kinds) {
-    const refs = await client.read(
-      "/git/matching-refs/tags/" + namespace + prefix + "-",
-    );
+  for (const prefix of writerKinds) {
+    const refs = await reservationRefs(client, prefix);
     assert.ok(Array.isArray(refs));
     if (prefix === kind)
       assert.ok(
@@ -346,14 +377,6 @@ export async function verifyReservations(
         prefix !== kind || Number(other.number) !== number,
         "Another reservation addresses the same native run",
       );
-      assert.ok(
-        kind !== "draft" ||
-          !create ||
-          prefix !== "draft" ||
-          other.version !== version ||
-          other.phase !== "create",
-        "First draft already reserved for this version",
-      );
       const saved = priorDisposition(
         checkpoint,
         "reservation-" + prefix + "-" + other.number + ".json",
@@ -368,9 +391,7 @@ export async function verifyReservations(
         );
       }
       assert.ok(
-        ["SETTLED", "REJECTED", "RECONCILED_NO_PENDING_EFFECT"].includes(
-          saved.state,
-        ),
+        resolvedReservation.includes(saved.state),
         "Unresolved release reservation",
       );
       if (
@@ -388,13 +409,21 @@ export async function verifyReservations(
           lastWriterAt = Math.max(lastWriterAt, ended);
         }
       }
-      if (kind === "seal" && prefix === "seal" && other.version === version) {
+      const firstDraft = kind === "draft" && create && other.phase === "create";
+      if (
+        (kind === "seal" || firstDraft) &&
+        prefix === kind &&
+        other.version === version
+      ) {
         assert.equal(
           saved.state,
           "RECONCILED_NO_PENDING_EFFECT",
-          "Seal requires reconciliation of the original request",
+          firstDraft
+            ? "First draft already reserved for this version"
+            : "Seal requires reconciliation of the original request",
         );
-        previousSeals.push({
+        assert.ok(saved.origin, "Missing proof of the original writer attempt");
+        preceding.push({
           number: other.number,
           objectId: saved.object,
           origin: saved.origin,
@@ -402,7 +431,7 @@ export async function verifyReservations(
       }
     }
   }
-  return { previousSeals, lastWriterAt };
+  return { preceding, lastWriterAt };
 }
 
 export function verifyControllerDelta(source, controller, files) {
@@ -427,6 +456,9 @@ export function verifyControllerDelta(source, controller, files) {
         [
           "scripts/github-release.mjs",
           "scripts/github-evidence-reader.mjs",
+          "scripts/public-registry-consumer.mjs",
+          "scripts/workflow-governance.mjs",
+          "scripts/workflow-governance.test.js",
         ].includes(p) ||
         /^scripts\/(staged-|release-|verify-immutable-release|public-recipient-lane|qualify-public-registry|registry-provenance)/u.test(
           p,
