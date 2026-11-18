@@ -152,6 +152,7 @@ export const downloadReleaseArtifact = async (
   client,
   artifact,
   maximumBytes = 1024 * 1024,
+  { deadline = performance.now() + 60_000, fetchImpl = fetch } = {},
 ) => {
   requireFact(
     Number.isSafeInteger(maximumBytes) &&
@@ -159,8 +160,10 @@ export const downloadReleaseArtifact = async (
       maximumBytes <= 64 * 1024 * 1024,
     "Invalid artifact byte limit",
   );
-  const signal = AbortSignal.timeout(60000);
-  const redirect = await fetch(
+  const remaining = Math.floor(deadline - performance.now());
+  requireFact(remaining > 0, "Original artifact download deadline elapsed.");
+  const signal = AbortSignal.timeout(Math.min(60_000, remaining));
+  const redirect = await fetchImpl(
     `${client.apiRoot}/actions/artifacts/${artifact.id}/zip`,
     { redirect: "manual", headers: client.headers(), signal },
   );
@@ -169,17 +172,20 @@ export const downloadReleaseArtifact = async (
     "Approval artifact API did not return the expected redirect.",
   );
   const url = new URL(redirect.headers.get("location"));
+  const azure = url.hostname.endsWith(".blob.core.windows.net");
   requireFact(
     url.protocol === "https:" &&
       !url.username &&
       !url.password &&
-      (url.hostname.endsWith(".blob.core.windows.net") ||
+      !url.port &&
+      !url.hash &&
+      ((azure && url.pathname.startsWith("/actions-results/")) ||
         url.hostname.endsWith(".actions.githubusercontent.com")),
     "Unapproved approval artifact storage origin.",
   );
   // The authenticated API digest binds the archive; credentials never go to storage.
   return limitedBytes(
-    await fetch(url, { redirect: "error", signal }),
+    await fetchImpl(url, { redirect: "error", signal }),
     maximumBytes,
   );
 };

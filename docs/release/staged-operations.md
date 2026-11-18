@@ -9,6 +9,15 @@ The protected aggregate verifies the installed matrix, Java, OWL, browsers, Scan
 The producer retains its native dependency inventories separately.
 Inspect the signed rights inventory and candidate-specific benchmark disposition before staging.
 
+The read-only CI admission command, `node scripts/release-ci-qualification.mjs`, checks the protected-main dispatch, original CI execution and two original uploads.
+It requires the native dispatch environment, its frozen runtime matrix and a GitHub token with Actions, checks, contents and pull request read permissions.
+The main receipt binds source, dependency policy, Java and OWL coverage, and the browser, source, portability and consumer job verdicts.
+The original candidate and package-proof ZIPs bind the packed documentation, tarball, SBOM, sums, original audits and recipient graph and lock.
+Retain the originating artifact IDs and earliest expiry.
+If any required original has expired or conflicts with the native job inventory, qualify afresh explicitly.
+Release-time dependency advisory observations, managed CodeQL, ScanCode with committed reconciliation, and current rights and benchmark dispositions still need their owning release gates.
+CI reuse alone cannot stage or publish the package.
+
 ## Provider cutover
 
 Before cutover, replay the immutable RC1, RC2 and RC3 evidence.

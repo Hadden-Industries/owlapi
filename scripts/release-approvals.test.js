@@ -432,10 +432,10 @@ test("downloads the authenticated artifact without forwarding credentials to sto
         return new Response(null, {
           status: 302,
           headers: {
-            location: `https://results.blob.core.windows.net/${String(url).split("/").at(-2)}`,
+            location: `https://results.blob.core.windows.net/actions-results/${String(url).split("/").at(-2)}`,
           },
         });
-      const id = Number(new URL(url).pathname.slice(1));
+      const id = Number(new URL(url).pathname.split("/").at(-1));
       return new Response(h.fixtures.find((f) => f.artifact.id === id).archive);
     });
   await expect(
@@ -464,6 +464,8 @@ test.each([
   "https://attacker.example/zip",
   "http://results.blob.core.windows.net/zip",
   "https://user:secret@results.blob.core.windows.net/zip",
+  "https://results.blob.core.windows.net/elsewhere/zip",
+  "https://results.blob.core.windows.net.evil.example/actions-results/zip",
 ])(
   "rejects an unapproved artifact redirect %s before storage access",
   async (location) => {

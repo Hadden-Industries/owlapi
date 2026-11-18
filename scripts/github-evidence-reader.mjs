@@ -101,7 +101,7 @@ export const createRepositoryReader = ({
       now() + (operationBudget ?? Infinity),
     );
     if (
-      !/^(?:\/immutable-releases|\/(?:commits|actions|git|attestations|releases|deployments|code-scanning|rulesets)(?:\/|\?)[A-Za-z0-9_./?=&%-]+)$/u.test(
+      !/^(?:\/immutable-releases|\/(?:commits|actions|git|attestations|releases|deployments|code-scanning|rulesets|branches|check-runs)(?:\/|\?)[A-Za-z0-9_./?=&%-]+)$/u.test(
         path,
       ) ||
       path.includes("..")

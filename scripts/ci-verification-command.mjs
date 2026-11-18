@@ -76,7 +76,8 @@ const readJson = (path, maximumBytes = 256 * 1024) => {
   return JSON.parse(readFileSync(path, "utf8"));
 };
 
-const contextFromEnvironment = (env) => ({
+/** Capture the native event and exact checkout without substituting event types. */
+export const contextFromEnvironment = (env) => ({
   eventName: env.GITHUB_EVENT_NAME,
   ref: env.GITHUB_REF,
   sha: env.GITHUB_SHA,
@@ -123,7 +124,12 @@ export const emit = (
 ) => {
   const entries = Object.entries(values);
   for (const [key, value] of entries) {
-    if (!/^[a-z_]+$/u.test(key) || /[\r\n]/u.test(String(value)))
+    if (
+      !/^[a-z_]+$/u.test(key) ||
+      !["string", "number", "boolean"].includes(typeof value) ||
+      (typeof value === "number" && !Number.isFinite(value)) ||
+      /[\r\n\0]/u.test(String(value))
+    )
       throw new Error("Unsafe action output.");
   }
   if (env.GITHUB_ACTIONS === "true" && !env.GITHUB_OUTPUT)

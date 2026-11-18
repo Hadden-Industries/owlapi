@@ -6,6 +6,9 @@ import {
 import { isDeepStrictEqual } from "node:util";
 import { setTimeout as delay } from "node:timers/promises";
 import { sameJobExecution } from "./github-job-execution.mjs";
+import { UBUNTU } from "./ubuntu-runner.mjs";
+import { WINDOWS } from "./windows-runner.mjs";
+import { MACOS } from "./macos-runner.mjs";
 import { captureConsumerSources } from "./consumer-source-snapshot.mjs";
 import { javaReferenceFromNeeds } from "./java-reference-state.mjs";
 import {
@@ -14,6 +17,7 @@ import {
 } from "./require-job-success.mjs";
 import {
   CI_JOB_NAMES,
+  FROZEN_RUNTIME_MATRIX,
   hostedCiJobNames,
   CHECK_JOBS,
   QUALIFICATION_POLICY_SHA256,
@@ -329,16 +333,23 @@ const assertPush = (context) => {
       snapshot.commit === context.sha &&
       sameRepository(event.repository, context) &&
       event.repository.default_branch === "main" &&
-      snapshot.parents.length === 2 &&
-      snapshot.parents.every(sha) &&
       snapshot.parents[0] === event.before &&
-      sha(snapshot.commit) &&
-      sha(snapshot.tree) &&
-      sha(snapshot.workflow) &&
-      validHost(context.host),
+      sha(snapshot.commit),
     "Not an eligible single normal main merge.",
   );
 };
+
+const assertOrdinaryMerge = ({ sha: landed, snapshot, host }) =>
+  requireFact(
+    sha(landed) &&
+      snapshot.commit === landed &&
+      sha(snapshot.tree) &&
+      sha(snapshot.workflow) &&
+      snapshot.parents.length === 2 &&
+      snapshot.parents.every(sha) &&
+      validHost(host),
+    "Not an eligible single normal main merge.",
+  );
 
 const assertRun = (run, context, pr, now) => {
   requireFact(
@@ -377,6 +388,11 @@ export const selectVerificationProof = async ({
   now = Date.now(),
 }) => {
   assertPush(context);
+  return selectMergedProof({ context, read, now });
+};
+
+async function selectMergedProof({ context, read, now }) {
+  assertOrdinaryMerge(context);
   const prs = await read(`/commits/${context.sha}/pulls?per_page=100`);
   requireFact(
     Array.isArray(prs) && prs.length < 100,
@@ -442,9 +458,14 @@ export const selectVerificationProof = async ({
     "Receipt archive is outside its size bound.",
   );
   return { pr, run, artifact };
+}
+
+export const verifyIntegrationProof = async (options) => {
+  assertPush(options.context);
+  return (await verifyMergedProof(options)).outputs;
 };
 
-export const verifyIntegrationProof = async ({
+async function verifyMergedProof({
   context,
   selection,
   receipt,
@@ -452,8 +473,9 @@ export const verifyIntegrationProof = async ({
   now = Date.now(),
   captureSources = captureConsumerSources,
   jobObservation,
-}) => {
-  assertPush(context);
+  releaseAdmission = false,
+}) {
+  assertOrdinaryMerge(context);
   const { pr, artifact } = selection;
   // Re-read mutable run state after download, including its latest attempt.
   const run = await read(`/actions/runs/${selection.run.id}`);
@@ -517,6 +539,8 @@ export const verifyIntegrationProof = async ({
     run,
     observation: jobObservation,
   });
+  if (releaseAdmission)
+    await verifyNativeRequiredCheck(read, context, run, observed);
   await verifyCheckProducingAttempts({
     run,
     checks: receipt.checks,
@@ -545,7 +569,7 @@ export const verifyIntegrationProof = async ({
     finalRun.run_attempt === run.run_attempt,
     "Source workflow was rerun while checking jobs and artifacts.",
   );
-  return {
+  const outputs = {
     reuse: "true",
     source_run_id: String(run.id),
     source_run_attempt: String(run.run_attempt),
@@ -556,7 +580,58 @@ export const verifyIntegrationProof = async ({
     source_receipt_digest: artifact.digest,
     qualification: JSON.stringify(receipt),
   };
-};
+  return {
+    outputs,
+    run,
+    artifact: currentArtifact,
+    receipt,
+    candidate,
+    observed,
+  };
+}
+
+// The branch rules require CI / required from GitHub Actions (integration 15368).
+async function verifyNativeRequiredCheck(read, context, run, { jobs }) {
+  const consumer = CI_JOB_NAMES.consumer_runtimes + " / Consumer / ";
+  for (const job of jobs.filter(({ conclusion }) => conclusion === "success")) {
+    const lane = FROZEN_RUNTIME_MATRIX?.include.find(
+      ({ runner, node }) => job.name === consumer + runner + " / Node " + node,
+    );
+    const label =
+      lane?.runner ??
+      (job.name.startsWith("CI / Windows /")
+        ? WINDOWS.label
+        : job.name.startsWith("CI / macOS /")
+          ? MACOS.label
+          : UBUNTU.label);
+    requireFact(
+      isDeepStrictEqual(job.labels, [label]),
+      "Native CI runner labels contradict the frozen job.",
+    );
+  }
+  const job = jobs.find(({ name }) => name === CI_JOB_NAMES.required);
+  const path = `/check-runs/${job?.id}`;
+  requireFact(
+    id(job?.id) &&
+      id(run.check_suite_id) &&
+      job.check_run_url ===
+        `https://api.github.com/repos/${context.repository}${path}`,
+    "The native required check identity is absent.",
+  );
+  const check = await read(path);
+  requireFact(
+    check.id === job.id &&
+      check.app?.id === 15368 &&
+      check.check_suite?.id === run.check_suite_id &&
+      check.head_sha === run.head_sha &&
+      check.name === job.name &&
+      check.status === "completed" &&
+      check.conclusion === "success" &&
+      check.details_url ===
+        `https://github.com/${context.repository}/actions/runs/${run.id}/job/${job.id}`,
+    "The native required check does not belong to this GitHub Actions execution.",
+  );
+}
 
 const assertMainRun = (run, context, commit, now) =>
   requireFact(
@@ -687,6 +762,10 @@ export const selectBaseQualification = async ({
       sha(base),
     "Exact-base qualification needs the captured same-repository PR merge.",
   );
+  return selectExactMainQualification({ context, base, read, now });
+};
+
+async function selectExactMainQualification({ context, base, read, now }) {
   const runs = await read(
     `/actions/workflows/ci.yml/runs?branch=main&head_sha=${base}&per_page=100`,
   );
@@ -724,14 +803,29 @@ export const selectBaseQualification = async ({
     "Main receipt archive exceeded its bound.",
   );
   return { base, run, artifact: artifacts[0] };
-};
+}
 
 /** Validate the main record and one direct FULL origin. downloadOriginal is the
  * official exact-ID transport boundary; no recursive records or arbitrary URLs.
  * Admission is historical qualification only: non-file equivalence and selector
  * authority remain unproved, so this function cannot authorize omission.
  */
-export const verifyBaseQualification = async ({
+export const verifyBaseQualification = async (options) => {
+  requireFact(
+    options.selection.base === options.context.event.pull_request.base.sha,
+    "Base qualification drifted from the event.",
+  );
+  const result = await verifyExactMainQualification(options);
+  return {
+    qualifiedBase: result.landed.commit,
+    mode: result.main.receipt.mode,
+    originals: result.main.receipt.checks,
+    selectiveExecution: false,
+    reason: "SELECTION_AUTHORITY_AND_EXTERNAL_INPUTS_UNPROVEN",
+  };
+};
+
+async function verifyExactMainQualification({
   context,
   selection,
   record,
@@ -740,12 +834,9 @@ export const verifyBaseQualification = async ({
   now = Date.now(),
   captureSources = captureConsumerSources,
   jobObservation,
-}) => {
+  releaseAdmission = false,
+}) {
   const { base, artifact } = selection;
-  requireFact(
-    base === context.event.pull_request.base.sha,
-    "Base qualification drifted from the event.",
-  );
   assertQualificationRecord(record);
   const pinnedConsumerSources = await captureSources();
   requireFact(
@@ -810,6 +901,8 @@ export const verifyBaseQualification = async ({
         ? "skipped"
         : "success",
   });
+  if (releaseAdmission)
+    await verifyNativeRequiredCheck(read, context, run, jobs);
   if (record.mode === "FULL")
     await verifyCheckProducingAttempts({
       run,
@@ -818,29 +911,16 @@ export const verifyBaseQualification = async ({
       read,
       jobObservation,
     });
+  let source;
   if (record.mode === "REUSED") {
+    // Historical identity comes from the authenticated main run and Git tree.
     const originalContext = {
       ...context,
-      eventName: "push",
-      ref: "refs/heads/main",
       sha: base,
       snapshot: record.snapshot,
       host: record.host,
-      event: {
-        ref: "refs/heads/main",
-        after: base,
-        before: record.snapshot.parents[0],
-        deleted: false,
-        forced: false,
-        created: false,
-        repository: {
-          id: context.repositoryId,
-          full_name: context.repository,
-          default_branch: "main",
-        },
-      },
     };
-    const originalSelection = await selectVerificationProof({
+    const originalSelection = await selectMergedProof({
       context: originalContext,
       read,
       now,
@@ -853,7 +933,7 @@ export const verifyBaseQualification = async ({
       "Main qualification does not point directly to its current original FULL proof.",
     );
     const originalReceipt = await downloadOriginal(originalSelection);
-    const validated = await verifyIntegrationProof({
+    source = await verifyMergedProof({
       context: originalContext,
       selection: originalSelection,
       receipt: originalReceipt,
@@ -861,9 +941,10 @@ export const verifyBaseQualification = async ({
       jobObservation,
       read,
       now,
+      releaseAdmission,
     });
     requireFact(
-      validated.source_commit === record.source.commit &&
+      source.outputs.source_commit === record.source.commit &&
         isDeepStrictEqual(originalReceipt.host, record.source.host) &&
         isDeepStrictEqual(originalReceipt.candidate, record.candidate) &&
         Object.keys(record.checks).every((check) =>
@@ -888,6 +969,13 @@ export const verifyBaseQualification = async ({
         ) !== null,
       "Main FULL candidate identity changed.",
     );
+    source = {
+      run,
+      artifact: currentArtifact,
+      receipt: record,
+      candidate,
+      observed: jobs,
+    };
   }
   const finalRun = await read(`/actions/runs/${run.id}`);
   assertMainRun(finalRun, context, base, now);
@@ -903,10 +991,87 @@ export const verifyBaseQualification = async ({
     "Main record changed during origin validation.",
   );
   return {
-    qualifiedBase: base,
-    mode: record.mode,
-    originals: record.checks,
-    selectiveExecution: false,
-    reason: "SELECTION_AUTHORITY_AND_EXTERNAL_INPUTS_UNPROVEN",
+    landed: record.snapshot,
+    main: { run: finalRun, artifact: finalArtifact, receipt: record },
+    source,
   };
-};
+}
+
+/** Resolve a protected-main dispatch to the exact landed receipt and its direct
+ * FULL producer. The callback verifies package evidence before the final live
+ * head and producer check. CI equivalence alone establishes no release gates.
+ */
+export async function verifyReleaseCi({
+  context,
+  read,
+  downloadReceipt,
+  verifyPackage,
+  captureSources,
+  jobObservation,
+  now = Date.now(),
+}) {
+  requireFact(
+    context.eventName === "workflow_dispatch" &&
+      context.ref === "refs/heads/main" &&
+      context.repository === "Hadden-Industries/owlapi" &&
+      sameRepository(context.event?.repository, context) &&
+      context.event.repository.default_branch === "main" &&
+      sha(context.sha) &&
+      context.snapshot.commit === context.sha &&
+      validHost(context.host),
+    "Release dispatch must name the trusted main checkout.",
+  );
+  const checkHead = async () => {
+    const branch = await read("/branches/main");
+    requireFact(
+      branch.name === "main" &&
+        branch.protected === true &&
+        branch.commit?.sha === context.sha,
+      "The release subject is no longer protected main.",
+    );
+  };
+  await checkHead();
+  const selection = await selectExactMainQualification({
+    context,
+    base: context.sha,
+    read,
+    now,
+  });
+  const record = await downloadReceipt(selection);
+  const result = await verifyExactMainQualification({
+    context,
+    selection,
+    record,
+    read,
+    now,
+    captureSources,
+    jobObservation,
+    downloadOriginal: downloadReceipt,
+    releaseAdmission: true,
+  });
+  requireFact(
+    isDeepStrictEqual(result.landed, context.snapshot),
+    "Main qualification does not match the dispatch Git identity.",
+  );
+  const qualifiedPackage = await verifyPackage?.(result.source);
+  for (const run of new Map(
+    [result.main, result.source].map(({ run }) => [run.id, run]),
+  ).values()) {
+    const current = await read(`/actions/runs/${run.id}`);
+    requireFact(
+      [
+        "id",
+        "run_attempt",
+        "status",
+        "conclusion",
+        "check_suite_id",
+        "head_sha",
+        "path",
+        "event",
+      ].every((key) => current[key] === run[key]),
+      "Original CI changed before the release verdict.",
+    );
+  }
+  await checkHead();
+  return { ...result, qualifiedPackage };
+}

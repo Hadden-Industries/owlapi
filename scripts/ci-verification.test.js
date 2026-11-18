@@ -1,4 +1,6 @@
 import { UBUNTU } from "./ubuntu-runner.mjs";
+import { WINDOWS } from "./windows-runner.mjs";
+import { MACOS } from "./macos-runner.mjs";
 import { OTHER_UBUNTU } from "./fixtures/ubuntu-runner.mjs";
 import { describe, expect, test } from "@jest/globals";
 import { execFileSync, spawnSync } from "node:child_process";
@@ -18,6 +20,7 @@ import {
   verifyIntegrationProof,
   selectBaseQualification,
   verifyBaseQualification,
+  verifyReleaseCi,
   readJobInventory,
 } from "./ci-verification.mjs";
 import {
@@ -880,6 +883,110 @@ describe("exact landed-main qualification and direct original execution", () => 
         sha: hash("c"),
       }),
     ).toThrow(/coverage/u);
+  });
+});
+
+describe("read-only release dispatch CI admission", () => {
+  const dispatch = async (reused, partial) => {
+    const f = await mainFixture(reused, partial);
+    const landed = f.record.snapshot.commit;
+    f.context = {
+      ...f.context,
+      eventName: "workflow_dispatch",
+      event: { repository, inputs: {} },
+      ref: "refs/heads/main",
+      sha: landed,
+      snapshot: f.record.snapshot,
+    };
+    f.responses["/branches/main"] = {
+      name: "main",
+      protected: true,
+      commit: { sha: landed },
+    };
+    for (const run of [f.run, f.mainRun]) {
+      run.check_suite_id = run.id + 1000;
+      const jobs =
+        f.responses[`/actions/runs/${run.id}/jobs?filter=latest&per_page=100`]
+          .jobs;
+      for (const job of jobs)
+        job.labels = [
+          job.name.includes(" / Windows / ")
+            ? WINDOWS.label
+            : job.name.includes(" / macOS / ")
+              ? MACOS.label
+              : UBUNTU.label,
+        ];
+      const job = jobs.find(({ name }) => name === "CI / required");
+      job.check_run_url = `https://api.github.com/repos/${repository.full_name}/check-runs/${job.id}`;
+      f.responses[`/check-runs/${job.id}`] = {
+        id: job.id,
+        name: "CI / required",
+        head_sha: run.head_sha,
+        status: "completed",
+        conclusion: "success",
+        app: { id: 15368 },
+        check_suite: { id: run.check_suite_id },
+        details_url: `https://github.com/${repository.full_name}/actions/runs/${run.id}/job/${job.id}`,
+      };
+    }
+    return f;
+  };
+  const admit = (f, read = f.read) =>
+    verifyReleaseCi({
+      context: f.context,
+      read,
+      downloadReceipt: async ({ artifact }) =>
+        jsonClone(artifact.id === 800 ? f.record : f.receipt),
+      captureSources: async () => REVIEWED_CONSUMER_SOURCES,
+      now,
+    });
+  test.each([false, true])(
+    "links a protected dispatch to direct FULL bytes (reused main: %s)",
+    async (reused) => {
+      const f = await dispatch(reused, reused);
+      const result = await admit(f);
+      expect(result).toMatchObject({
+        landed: {
+          commit: hash("d"),
+          tree: hash("e"),
+          parents: [hash("a"), hash("b")],
+        },
+        main: { run: { id: 200 }, artifact: { id: 800 } },
+        source: {
+          run: { id: reused ? 100 : 200 },
+          receipt: { snapshot: { commit: hash(reused ? "c" : "d") } },
+          candidate: { id: 702 },
+        },
+      });
+      expect(result.source.receipt.checks.java.original.runAttempt).toBe(1);
+    },
+  );
+  test("same-name evidence from a different native check app prevents release admission", async () => {
+    const f = await dispatch(true);
+    const check = Object.values(f.responses).find(
+      (row) => row.check_suite?.id === 1100,
+    );
+    check.app.id = 1;
+    await expect(admit(f)).rejects.toThrow(/native required check/u);
+  });
+  test("a native runner label must match the intended lane even when the job name matches", async () => {
+    const f = await dispatch(false);
+    f.responses["/actions/runs/200/jobs?filter=latest&per_page=100"].jobs.find(
+      ({ name }) => name === "CI / Windows / quality tools",
+    ).labels = [UBUNTU.label];
+    await expect(admit(f)).rejects.toThrow(/runner labels/u);
+  });
+  test("rejects a different live main after the last qualified proof was read", async () => {
+    const f = await dispatch(false);
+    let heads = 0;
+    await expect(
+      admit(f, async (path, options) => {
+        if (path === "/branches/main" && ++heads === 2)
+          f.responses[path].commit.sha = hash("8");
+        return f.read(path, options);
+      }),
+    ).rejects.toThrow(/protected main/u);
+    expect(heads).toBe(2);
   });
 });
 
