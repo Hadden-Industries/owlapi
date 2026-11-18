@@ -186,8 +186,13 @@ const validateArtifactTransportStep = (
     collect
       ? Boolean(inputs.name) !== Boolean(inputs.pattern)
       : Boolean(inputs.name) &&
-          Number.isInteger(inputs["retention-days"]) &&
-          inputs["retention-days"] > 0,
+          ((Number.isInteger(inputs["retention-days"]) &&
+            inputs["retention-days"] > 0 &&
+            inputs["retention-days"] <= 90) ||
+            (file === "installed-qualification.yml" &&
+              jobId === "consumer_runtime" &&
+              inputs["retention-days"] ===
+                "${{ inputs.release_evidence && 90 || 1 }}")),
     `${context} requires a closed logical selector and retention`,
   );
   if (!collect) {
@@ -195,6 +200,17 @@ const validateArtifactTransportStep = (
       violations,
       !/[*!?]/u.test(inputs.path ?? ""),
       `${context} cannot broaden the payload with a glob`,
+    );
+    add(
+      violations,
+      (inputs.path ?? "")
+        .split(/\r?\n/u)
+        .every(
+          (path) =>
+            ![".", "./", ".release", ".release/"].includes(path.trim()) &&
+            !/^\s*\.release\/(?:runner-logs|native-logs)(?:\/|$)/u.test(path),
+        ),
+      context + " cannot upload workspace roots or copies of native logs",
     );
     add(
       violations,
@@ -806,6 +822,7 @@ const validateJobs = (fileName, workflow, violations) => {
               "$" + "{{ needs." + candidate + ".outputs.artifact_id }}",
             artifact_digest:
               "$" + "{{ needs." + candidate + ".outputs.artifact_digest }}",
+            release_evidence: fileName !== "maintenance.yml",
           },
         },
         fileName + " installed caller",
@@ -939,7 +956,13 @@ const validateAggregate = (fileName, workflow, registry, violations) => {
 };
 
 /** Require all candidate-upload settings on one actual upload step, not scattered in a job. */
-const validateCandidateUpload = (fileName, job, directory, violations) => {
+const validateCandidateUpload = (
+  fileName,
+  job,
+  directory,
+  violations,
+  retention = 90,
+) => {
   const uploads = actionSteps(job, RETAIN_ARTIFACT);
   const candidate = uploads.find(
     (step) =>
@@ -948,7 +971,7 @@ const validateCandidateUpload = (fileName, job, directory, violations) => {
   );
   requireFields(
     candidate?.with,
-    { "retention-days": 90 },
+    { "retention-days": retention },
     `${fileName}: candidate upload`,
     violations,
   );
@@ -2950,10 +2973,37 @@ const validateMaintenanceReporter = (workflow, violations) => {
       "reporter",
       "runtime_matrix",
       "consumer_runtimes",
+      "retention",
     ]),
     "maintenance.yml: expected the health, isolated reporter and consumer qualification jobs",
   );
   const health = workflow.jobs?.health;
+  const retention = workflow.jobs?.retention;
+  requireFields(
+    retention,
+    {
+      if: "github.repository == 'Hadden-Industries/owlapi' && github.ref == 'refs/heads/main'",
+      needs: "runtime_matrix",
+      permissions: readAuthority,
+    },
+    "maintenance.yml: protected retention observer",
+    violations,
+  );
+  add(
+    violations,
+    steps(retention).filter((step) => step.run).length === 1 &&
+      steps(retention).at(-1)?.run === "node scripts/release-retention.mjs" &&
+      !retention?.environment &&
+      steps(retention).every((step) => step.uses !== RETAIN_ARTIFACT),
+    "maintenance.yml: storage inventory must remain read-only and emit a job summary",
+  );
+  validateCandidateUpload(
+    "maintenance.yml",
+    health,
+    ".release/candidate",
+    violations,
+    1,
+  );
   requireFields(
     health?.outputs,
     {
@@ -3201,7 +3251,10 @@ const validateConsumerRuntimeControls = (
       add(
         violations,
         step &&
-          !step.if &&
+          (!step.if ||
+            (name === "aggregate-consumer-runtimes" &&
+              index === 3 &&
+              step.if === "inputs.retain-evidence == 'true'")) &&
           !step["continue-on-error"] &&
           (!step.run || step.shell === "bash"),
         `${name}: qualification operations must run without bypasses`,
@@ -3284,12 +3337,16 @@ const validateConsumerRuntimeControls = (
       requireFields(
         body[3]?.with,
         {
-          path: ".release/runtime-qualification/",
-
+          path: ".release/runtime-qualification/summary.json\n.release/runtime-qualification/matrix.json\n",
           "retention-days": 90,
         },
         `${name}: evidence retention`,
         violations,
+      );
+      add(
+        violations,
+        body[3]?.if === "inputs.retain-evidence == 'true'",
+        "Only release-capable runs retain a runtime summary",
       );
     }
   }
@@ -3372,6 +3429,16 @@ const validateConsumerRuntimeControls = (
       (step) => step.uses === "./.github/actions/qualify-consumer",
     );
     requireFields(
+      steps(consumer).find((step) => step.uses === RETAIN_ARTIFACT)?.with,
+      {
+        path: ".release/runtime-report/lane.json",
+        "compression-level": 6,
+        "retention-days": "${{ inputs.release_evidence && 90 || 1 }}",
+      },
+      file + ": consumer lane proof transport",
+      violations,
+    );
+    requireFields(
       qualify?.with,
       {
         matrix: "${{ inputs.matrix }}",
@@ -3399,6 +3466,8 @@ const validateConsumerRuntimeControls = (
         "lanes-result": "${{ needs.consumer_runtime.result }}",
         "candidate-id": "${{ inputs.artifact_id }}",
         "candidate-digest": "sha256:${{ inputs.artifact_digest }}",
+        "retain-evidence":
+          "${{ inputs.release_evidence && 'true' || 'false' }}",
       },
       `${file}: complete runtime gate`,
       violations,

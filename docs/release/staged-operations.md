@@ -209,6 +209,28 @@ It binds the original `checkpoint`, `runId`, `attempt`, `controller`, `operation
 The verifier requires the original failed step and a complete matching npm `E401` for HTTP `401 DELETE` on the pilot endpoint.
 Include its original proof in the signed disposition before authorizing a new operation with fresh preimages.
 
+## Evidence storage and recovery
+
+Weekly maintenance retains its exact tarball bundle and per-lane receipts for one day.
+The weekly aggregate validates every lane and leaves its outcome in the run.
+Ordinary CI diagnostics for July reconciliation expire after 14 days.
+Release-capable candidates and their required proof retain the 90-day ceiling.
+Only exact completion receipts are uploaded after immutable release verification.
+
+The protected maintenance storage job reports compressed bytes and projected byte-days by purpose.
+Cache bytes are measured separately.
+An optional signed `retention.json` records `schemaVersion: 1`, the protected-main `successor` SHA, `protectedIds`, `settledRuns`, and the `replayed` inventory.
+Each replay item records the original artifact `id`, `runId`, `digest` and `manifestSha256`, a result of `STAGE_SEAL_AND_RECOVERY_VERIFIED`, and affirmative `actionsCopiesUnavailable` and `verifiedBackup` observations.
+The operator's separate evidence includes the signed replay and verified encrypted backup.
+The report holds candidates if the successor or a required original cannot be proved, or if a writer or consumer still has a claim.
+The observer has read permissions and reports eligibility in the job summary.
+
+Signed checkpoint readers validate the complete Git tree and materialize only selected members.
+For schema 2 an indexed logical member can list two to sixteen `parts`, each with exact `name`, `bytes` and `sha256`.
+The logical member retains its own size and digest after assembly.
+Shallow hosted checkouts fetch the verified history tag and load selected blobs by Git object ID.
+Keep the public disclosure review and the independent off-platform backup.
+
 After npm acknowledges a label write, the writer allows up to five minutes for the public tag map to converge.
 It polls only while the previous approved map is visible or a registry read is transiently unavailable.
 A conflicting value stops the operation immediately.

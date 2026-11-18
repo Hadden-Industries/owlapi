@@ -12,6 +12,9 @@ on:
       artifact_digest:
         required: true
         type: string
+      release_evidence:
+        required: true
+        type: boolean
     outputs:
       coverage:
         value: ${{ jobs.consumer_runtimes.outputs.coverage }}
@@ -56,8 +59,9 @@ jobs:
         uses: ./.github/actions/retain-artifact
         with:
           name: consumer-runtime-${{ matrix.runner }}-${{ matrix.node }}-attempt-${{ github.run_attempt }}
-          path: .release/runtime-report/
-          retention-days: 90
+          path: .release/runtime-report/lane.json
+          retention-days: ${{ inputs.release_evidence && 90 || 1 }}
+          compression-level: 6
 
   consumer_runtimes:
     name: Complete
@@ -84,3 +88,4 @@ jobs:
           lanes-result: ${{ needs.consumer_runtime.result }}
           candidate-id: ${{ inputs.artifact_id }}
           candidate-digest: sha256:${{ inputs.artifact_digest }}
+          retain-evidence: ${{ inputs.release_evidence && 'true' || 'false' }}

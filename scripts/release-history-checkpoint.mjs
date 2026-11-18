@@ -7,15 +7,162 @@ import { verifyLocalReleaseTag } from "./verify-release-tag.mjs";
 
 const namespace = "owlapi-release-history/";
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
+const historyRepository = "https://github.com/Hadden-Industries/owlapi.git";
+const hostedCheckout = () =>
+  process.env.GITHUB_ACTIONS === "true" &&
+  process.env.GITHUB_REPOSITORY === "Hadden-Industries/owlapi";
 const git = (...args) =>
   execFileSync("git", args, {
     cwd: repositoryRoot,
     maxBuffer: 64 * 1024 * 1024,
     timeout: 30000,
     windowsHide: true,
+    env: { ...process.env, GIT_NO_LAZY_FETCH: "1" },
   });
 const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const rulesPath = "/rulesets?includes_parents=true&per_page=100";
+const oidPattern = /^[a-f0-9]{40}$/u;
+const validMember = /^[a-zA-Z0-9][a-zA-Z0-9._-]{0,160}$/u;
+const maxBlobBytes = 64 * 1024 * 1024;
+
+function localHistoryRef(ref, objectId) {
+  let current;
+  try {
+    current = git("rev-parse", "--verify", "--quiet", ref).toString().trim();
+  } catch (error) {
+    if (error.status !== 1 || !hostedCheckout()) throw error;
+    git(
+      "fetch",
+      "--depth=1",
+      "--filter=blob:none",
+      "--no-tags",
+      "--no-recurse-submodules",
+      historyRepository,
+      ref,
+    );
+    current = git("rev-parse", "--verify", "FETCH_HEAD").toString().trim();
+    assert.equal(current, objectId, "The fetched history tag was rebound");
+    git("update-ref", ref, objectId, "0".repeat(40));
+  }
+  assert.equal(current, objectId);
+}
+
+function historyBlob(oid, maximum = maxBlobBytes) {
+  let size;
+  try {
+    size = Number(git("cat-file", "-s", oid).toString().trim());
+  } catch (error) {
+    if (error.status !== 128 || !hostedCheckout()) throw error;
+    // The server only serves the exact object referenced by the verified tag tree.
+    git(
+      "fetch",
+      "--no-tags",
+      "--no-recurse-submodules",
+      "--no-write-fetch-head",
+      historyRepository,
+      oid,
+    );
+    size = Number(git("cat-file", "-s", oid).toString().trim());
+  }
+  assert.ok(
+    Number.isSafeInteger(size) && size >= 0 && size <= maximum,
+    "Selected signed blob exceeds its byte limit",
+  );
+  return git("cat-file", "blob", oid);
+}
+
+/** Validate all signed paths and sizes before reading only the selected blobs. */
+export function checkpointPayloads(index, inventory, loadBlob) {
+  assert.ok([1, 2].includes(index.schemaVersion));
+  assert.ok(
+    Array.isArray(index.files) &&
+      index.files.length > 0 &&
+      index.files.length <= 200,
+  );
+  const declared = new Map();
+  const members = new Map();
+  const normalized = new Set(["checkpoint.json"]);
+  const validate = (entry) => {
+    assert.match(entry.name, validMember);
+    assert.ok(
+      !normalized.has(entry.name.toLowerCase()),
+      "Duplicate checkpoint member",
+    );
+    normalized.add(entry.name.toLowerCase());
+    assert.ok(
+      Number.isSafeInteger(entry.bytes) &&
+        entry.bytes >= 0 &&
+        entry.bytes <= maxBlobBytes,
+      "Checkpoint member exceeds its byte limit",
+    );
+    assert.match(entry.sha256, /^[a-f0-9]{64}$/u);
+  };
+  for (const entry of index.files) {
+    assert.equal(
+      entry.disclosure,
+      "PUBLIC",
+      "Restricted evidence must remain in owner-controlled private storage",
+    );
+    validate(entry);
+    declared.set(entry.name, entry);
+    if (entry.parts !== undefined) {
+      assert.equal(index.schemaVersion, 2);
+      assert.ok(
+        Array.isArray(entry.parts) &&
+          entry.parts.length >= 2 &&
+          entry.parts.length <= 16,
+      );
+      let length = 0;
+      for (const part of entry.parts) {
+        validate(part);
+        assert.ok(part.bytes > 0);
+        length += part.bytes;
+        members.set(part.name, part);
+      }
+      assert.equal(
+        length,
+        entry.bytes,
+        "Checkpoint parts differ from the logical member length",
+      );
+    } else members.set(entry.name, entry);
+  }
+  assert.ok(members.size <= 256, "Checkpoint has excessive physical members");
+  assert.deepEqual(
+    [...inventory.keys()].sort(),
+    ["checkpoint.json", ...members.keys()].sort(),
+    "Checkpoint inventory has missing or unexpected paths",
+  );
+  for (const [name, entry] of members) {
+    const observed = inventory.get(name);
+    assert.equal(observed.mode, "100644");
+    if (observed.bytes !== undefined) assert.equal(observed.bytes, entry.bytes);
+    assert.match(observed.oid, oidPattern);
+  }
+  const cache = new Map();
+  const read = ({ name, bytes, sha256 }) => {
+    const { oid } = inventory.get(name);
+    const retained = cache.get(oid) ?? loadBlob(oid, bytes);
+    assert.equal(retained.length, bytes);
+    assert.equal(digest(retained), sha256);
+    cache.set(oid, retained);
+    return retained;
+  };
+  return {
+    has: (name) => declared.has(name),
+    get: (name) => {
+      const entry = declared.get(name);
+      if (!entry) return undefined;
+      if (!entry.parts) return read(entry);
+      const bytes = Buffer.concat(entry.parts.map(read), entry.bytes);
+      assert.equal(
+        digest(bytes),
+        entry.sha256,
+        "Assembled checkpoint member digest differs",
+      );
+      return bytes;
+    },
+  };
+}
 export function immutableRuleHasNoBypass(rule, reviewedRules) {
   if (Object.hasOwn(rule, "bypass_actors"))
     return Array.isArray(rule.bypass_actors) && rule.bypass_actors.length === 0;
@@ -39,7 +186,7 @@ export function priorDisposition(checkpoint, name) {
   return records[name];
 }
 export async function readCheckpoint(client, objectId) {
-  assert.match(objectId, /^[a-f0-9]{40}$/u);
+  assert.match(objectId, oidPattern);
   const tag = await client.read("/git/tags/" + objectId);
   assert.equal(tag.sha, objectId);
   assert.match(tag.tag, /^owlapi-release-history\/[a-z0-9][a-z0-9.-]{0,100}$/u);
@@ -48,8 +195,9 @@ export async function readCheckpoint(client, objectId) {
   assert.equal(tag.verification.verified, true);
   const ref = "refs/tags/" + tag.tag;
   const live = await client.read("/git/ref/tags/" + tag.tag);
+  assert.equal(live.object.type, "tag");
   assert.equal(live.object.sha, objectId);
-  assert.equal(git("rev-parse", ref).toString().trim(), objectId);
+  localHistoryRef(ref, objectId);
   const signers = JSON.parse(
     readFileSync(
       new URL("../docs/provenance/release-signers.json", import.meta.url),
@@ -62,8 +210,33 @@ export async function readCheckpoint(client, objectId) {
     registry: signers,
     releaseDate: new Date().toISOString().slice(0, 10),
   });
-  const root = tag.object.sha + ":evidence/";
-  const index = JSON.parse(git("show", root + "checkpoint.json"));
+  const inventory = new Map();
+  for (const line of git(
+    "ls-tree",
+    "-rz",
+    "--format=%(objectmode) %(objectname) %(path)",
+    tag.object.sha,
+    "--",
+    "evidence/",
+  )
+    .toString()
+    .split("\0")
+    .filter(Boolean)) {
+    const match = /^(\d+) ([a-f0-9]{40}) evidence\/([a-zA-Z0-9._-]+)$/u.exec(
+      line,
+    );
+    assert.ok(match, "Invalid physical checkpoint path");
+    const [, mode, oid, name] = match;
+    assert.ok(!inventory.has(name));
+    inventory.set(name, { mode, oid });
+  }
+  const header = inventory.get("checkpoint.json");
+  assert.equal(header?.mode, "100644");
+  const index = JSON.parse(
+    new TextDecoder("utf-8", { fatal: true }).decode(
+      historyBlob(header.oid, 2 * 1024 * 1024),
+    ),
+  );
   const rulesets = await client.read(rulesPath);
   assert.ok(Array.isArray(rulesets) && rulesets.length < 100);
   const protections = new Set();
@@ -89,50 +262,13 @@ export async function readCheckpoint(client, objectId) {
     ["creation", "update", "deletion"].every((r) => protections.has(r)),
     "History namespace needs protected creation and immutable refs",
   );
-  assert.equal(index.schemaVersion, 1);
   assert.equal(
     index.disclosure,
     "APPROVED_FOR_PUBLIC_GIT",
     "Only disclosure-reviewed public evidence belongs in this ref",
   );
   assert.equal(index.repository, "Hadden-Industries/owlapi");
-  assert.ok(
-    Array.isArray(index.files) &&
-      index.files.length > 0 &&
-      index.files.length <= 200,
-  );
-  const inventory = git(
-    "ls-tree",
-    "-r",
-    "--format=%(objectmode) %(path)",
-    tag.object.sha,
-    "--",
-    "evidence/",
-  )
-    .toString()
-    .trimEnd()
-    .split("\n");
-  assert.deepEqual(
-    inventory.sort(),
-    [
-      "100644 evidence/checkpoint.json",
-      ...index.files.map((e) => "100644 evidence/" + e.name),
-    ].sort(),
-  );
-  const files = new Map();
-  for (const entry of index.files) {
-    assert.equal(
-      entry.disclosure,
-      "PUBLIC",
-      "Restricted evidence must remain in owner-controlled private storage",
-    );
-    assert.match(entry.name, /^[a-zA-Z0-9][a-zA-Z0-9._-]{0,160}$/u);
-    assert.ok(!files.has(entry.name));
-    const bytes = git("show", root + entry.name);
-    assert.equal(bytes.length, entry.bytes);
-    assert.equal(digest(bytes), entry.sha256);
-    files.set(entry.name, bytes);
-  }
+  const files = checkpointPayloads(index, inventory, historyBlob);
   assert.equal(
     (await client.read("/git/ref/tags/" + tag.tag)).object.sha,
     objectId,

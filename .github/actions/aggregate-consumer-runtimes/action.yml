@@ -13,6 +13,9 @@ inputs:
   candidate-digest:
     description: Same-run candidate artifact digest
     required: true
+  retain-evidence:
+    description: Retain a release-capable qualification summary
+    required: true
 outputs:
   coverage:
     description: Candidate-bound matrix and report identity
@@ -37,8 +40,11 @@ runs:
         OWLAPI_CANDIDATE_DIGEST: ${{ inputs.candidate-digest }}
       run: node scripts/aggregate-consumer-runtimes.mjs
     - id: upload
+      if: inputs.retain-evidence == 'true'
       uses: ./.github/actions/retain-artifact
       with:
         name: runtime-qualification-${{ github.run_id }}-${{ github.run_attempt }}
-        path: .release/runtime-qualification/
+        path: |
+          .release/runtime-qualification/summary.json
+          .release/runtime-qualification/matrix.json
         retention-days: 90

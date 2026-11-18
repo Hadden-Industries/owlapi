@@ -91,3 +91,4 @@ jobs:
             .release/candidate/${{ inputs.version }}/lockless-consumer-package-lock.json
             .release/candidate/${{ inputs.version }}/inspection-consumer-production-graph.json
           retention-days: 90
+          compression-level: 6

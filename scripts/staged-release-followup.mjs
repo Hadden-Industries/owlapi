@@ -5,10 +5,13 @@ import {
   appendFileSync,
   existsSync,
   mkdirSync,
+  mkdtempSync,
   readFileSync,
+  rmSync,
   writeFileSync,
 } from "node:fs";
 import { basename, join } from "node:path";
+import { tmpdir } from "node:os";
 import { pathToFileURL } from "node:url";
 import { gzipSync, gunzipSync, crc32 } from "node:zlib";
 import {
@@ -1089,42 +1092,48 @@ export async function completeRelease(client, env, checkpoint) {
     ["release", "verify", tag, "--repo", repo, "--format", "json"],
     env.GH_TOKEN,
   );
-  for (const a of release.assets) {
-    const file = await downloadAsset({
-      repository: repo,
-      token: env.GH_TOKEN,
-      asset: a,
-      directory: ".release/followup",
-    });
-    assert.equal(
-      hash(readFileSync(file)),
-      record.assets.find((item) => item.name === basename(file)).sha256,
-    );
-    if (a.name.endsWith(".evidence.json.gz")) {
-      const archive = readStagedArchive(readFileSync(file));
-      assert.equal(archive.checkpoint, record.checkpoint);
-      const manifest = parse(archive.files.get("manifest.json"));
-      assert.equal(manifest.commit, record.source);
-      assert.equal(manifest.package.version, record.version);
+  const scratch = mkdtempSync(join(tmpdir(), "owlapi-completion-"));
+  try {
+    for (const a of release.assets) {
+      const file = await downloadAsset({
+        repository: repo,
+        token: env.GH_TOKEN,
+        asset: a,
+        directory: scratch,
+      });
+      const bytes = readFileSync(file);
       assert.equal(
-        hash(archive.files.get("release-notes.md")),
-        record.notesSha256,
+        hash(bytes),
+        record.assets.find((item) => item.name === basename(file)).sha256,
+      );
+      if (a.name.endsWith(".evidence.json.gz")) {
+        const archive = readStagedArchive(bytes);
+        assert.equal(archive.checkpoint, record.checkpoint);
+        const manifest = parse(archive.files.get("manifest.json"));
+        assert.equal(manifest.commit, record.source);
+        assert.equal(manifest.package.version, record.version);
+        assert.equal(
+          hash(archive.files.get("release-notes.md")),
+          record.notesSha256,
+        );
+      }
+      await runGh(
+        "gh",
+        [
+          "release",
+          "verify-asset",
+          tag,
+          file,
+          "--repo",
+          repo,
+          "--format",
+          "json",
+        ],
+        env.GH_TOKEN,
       );
     }
-    await runGh(
-      "gh",
-      [
-        "release",
-        "verify-asset",
-        tag,
-        file,
-        "--repo",
-        repo,
-        "--format",
-        "json",
-      ],
-      env.GH_TOKEN,
-    );
+  } finally {
+    rmSync(scratch, { recursive: true, force: true });
   }
   return { ...record, state: "IMMUTABLE_VERIFIED" };
 }

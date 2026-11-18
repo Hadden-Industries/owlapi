@@ -35,6 +35,37 @@ const mutateWorkflow = (fileName, mutate) => {
 };
 
 describe("repository workflow governance", () => {
+  test("maintenance transports the candidate for one day and never gains deletion authority", () => {
+    expect(
+      mutateWorkflow("maintenance.yml", (doc) => {
+        doc.setIn(["jobs", "retention", "permissions", "actions"], "write");
+        const candidate = doc
+          .getIn(["jobs", "health", "steps"])
+          .items.find((step) => step.get("id") === "runtime_candidate");
+        candidate.setIn(["with", "retention-days"], 90);
+        candidate.setIn(["with", "path"], ".release/");
+      }),
+    ).toEqual(
+      expect.arrayContaining([
+        expect.stringMatching(/protected retention observer/u),
+        expect.stringMatching(/candidate upload/u),
+        expect.stringMatching(/cannot upload workspace roots/u),
+      ]),
+    );
+  });
+
+  test("maintenance cannot retain installed evidence with release-capable lifetimes", () => {
+    expect(
+      mutateWorkflow("maintenance.yml", (doc) => {
+        doc.setIn(
+          ["jobs", "consumer_runtimes", "with", "release_evidence"],
+          true,
+        );
+      }),
+    ).toEqual(
+      expect.arrayContaining([expect.stringMatching(/installed caller/u)]),
+    );
+  });
   test("requires the native dispatch validation step even on the legacy rc.3 route", () => {
     expect(
       mutateWorkflow("release.yml", (doc) => {

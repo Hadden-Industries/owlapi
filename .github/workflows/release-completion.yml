@@ -34,9 +34,9 @@ jobs:
           HISTORY_OBJECT: ${{ inputs.history_object }}
         run: node scripts/staged-release-followup.mjs complete
       - name: Retain original operation evidence
-        if: ${{ !cancelled() }}
+        if: ${{ success() }}
         uses: ./.github/actions/retain-artifact
         with:
           name: release-completion-${{ github.run_id }}-${{ github.run_attempt }}
-          path: .release/followup
+          path: .release/followup/complete.json
           retention-days: 90

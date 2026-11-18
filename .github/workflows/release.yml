@@ -1109,6 +1109,7 @@ jobs:
       matrix: ${{ needs.runtime_matrix.outputs.matrix }}
       artifact_id: ${{ needs.candidate.outputs.artifact_id }}
       artifact_digest: ${{ needs.candidate.outputs.artifact_digest }}
+      release_evidence: true
 
   required:
     name: Release / qualified

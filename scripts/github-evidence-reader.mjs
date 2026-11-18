@@ -186,12 +186,13 @@ export const createRepositoryReader = ({
 export async function readRunArtifacts(read, runId) {
   if (!/^[1-9]\d*$/u.test(String(runId)))
     throw new Error("Invalid artifact run ID");
+  return readArtifactInventory(read, "/actions/runs/" + runId + "/artifacts");
+}
+export async function readArtifactInventory(read, path = "/actions/artifacts") {
   const artifacts = [];
   let total;
   for (let page = 1; page <= 20; page++) {
-    const data = await read(
-      "/actions/runs/" + runId + "/artifacts?per_page=100&page=" + page,
-    );
+    const data = await read(path + "?per_page=100&page=" + page);
     total ??= data.total_count;
     if (
       !Number.isSafeInteger(total) ||

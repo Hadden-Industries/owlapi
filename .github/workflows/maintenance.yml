@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: "17 5 * * 3"
   workflow_dispatch:
+    inputs:
+      retention_history_object:
+        description: Optional signed protected history object for a candidate-retirement dry-run
+        type: string
+        required: false
 
 permissions: {}
 
@@ -105,7 +110,7 @@ jobs:
             .release/candidate/${{ steps.runtime_metadata.outputs.version }}/hadden-industries-owlapi-${{ steps.runtime_metadata.outputs.version }}.tgz
             .release/candidate/${{ steps.runtime_metadata.outputs.version }}/hadden-industries-owlapi-${{ steps.runtime_metadata.outputs.version }}.cdx.json
             .release/candidate/${{ steps.runtime_metadata.outputs.version }}/SHA256SUMS
-          retention-days: 90
+          retention-days: 1
       - name: Observe the active public production coordinate
         env:
           GH_TOKEN: ${{ github.token }}
@@ -122,6 +127,31 @@ jobs:
       matrix: ${{ needs.runtime_matrix.outputs.matrix }}
       artifact_id: ${{ needs.health.outputs.artifact_id }}
       artifact_digest: ${{ needs.health.outputs.artifact_digest }}
+      release_evidence: false
+
+  retention:
+    name: Maintenance / Actions storage dry-run
+    if: github.repository == 'Hadden-Industries/owlapi' && github.ref == 'refs/heads/main'
+    needs: runtime_matrix
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup-producer
+      - name: Report artifact storage and retention eligibility
+        run: node scripts/release-retention.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OWLAPI_RUNTIME_MATRIX: ${{ needs.runtime_matrix.outputs.matrix }}
+          RETENTION_HISTORY_OBJECT: ${{ inputs.retention_history_object }}
 
   reporter:
     name: Maintenance / isolated finding reporter
