@@ -561,7 +561,7 @@ export const collectNativeScancodeReport = async (
   if (typeof scancode !== "string" || scancode.length === 0) {
     controlFailure(
       "SCANCODE_COMMAND_REQUIRED",
-      "A pinned ScanCode 32.5.0 command path is required",
+      `A pinned ScanCode ${SCANCODE_TOOL.version} command path is required`,
     );
   }
   if (/\.(?:bat|cmd)$/iu.test(scancode)) {

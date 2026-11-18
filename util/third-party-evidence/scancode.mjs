@@ -1,5 +1,8 @@
 import { compareCodeUnits, stableJson } from "./digests.mjs";
-import { pythonTarget } from "../../scripts/development-tool-policy.mjs";
+import {
+  pythonTarget,
+  SCANCODE_VERSION,
+} from "../../scripts/development-tool-policy.mjs";
 
 const SCANCODE_OUTPUT_FORMAT_VERSION = "4.1.0";
 export const SCANCODE_NORMALIZATION_VERSION = 1;
@@ -84,7 +87,7 @@ export function scanExecutionObservation(report) {
 
 export const SCANCODE_TOOL = Object.freeze({
   name: "scancode-toolkit",
-  version: "32.5.0",
+  version: SCANCODE_VERSION,
   pythonVersion: pythonTarget().minor,
   outputFormatVersion: SCANCODE_OUTPUT_FORMAT_VERSION,
 });

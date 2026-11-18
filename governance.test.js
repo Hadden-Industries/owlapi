@@ -21,6 +21,7 @@ import {
 } from "./model/index.js";
 import { verifyLocalReleaseTag } from "./scripts/verify-release-tag.mjs";
 import { stableJson } from "./scripts/canonical-json.mjs";
+import { CI_RUNTIME } from "./scripts/runtime-policy.mjs";
 import { refreshReviewFacts } from "./util/refresh-review-facts.mjs";
 
 const require = createRequire(import.meta.url);
@@ -2965,7 +2966,7 @@ Neither this NOTICE nor the package licence replaces those upstream terms.
     expect(dependencyGovernance.installScriptPolicy).toEqual(
       expect.objectContaining({
         mode: "STRICT_EXPLICIT_DECISIONS",
-        npmVersion: "12.2.2",
+        npmVersion: CI_RUNTIME.npm,
         projectConfig: ".npmrc",
       }),
     );

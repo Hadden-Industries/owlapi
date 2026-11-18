@@ -14,6 +14,7 @@ import {
   readWorkflowRuns,
 } from "./github-evidence-reader.mjs";
 import { zipArchive } from "./fixtures/zip-archive.mjs";
+import { CI_RUNTIME } from "./runtime-policy.mjs";
 import { physicalName } from "../tooling/artifact-transport/identity.mjs";
 import { mkdtempSync, readFileSync, writeFileSync, rmSync } from "node:fs";
 import { createServer } from "node:http";
@@ -446,7 +447,7 @@ test("native npm stages the retained bytes with the selected tag at the registry
           timeout: 15000,
         })
       ).stdout;
-    expect((await cli("--version")).trim()).toBe("12.2.2");
+    expect((await cli("--version")).trim()).toBe(CI_RUNTIME.npm);
     const packed = JSON.parse(await cli("pack", "--ignore-scripts", "--json"))[
       packageName
     ];

@@ -3,8 +3,15 @@ import {
   PUBLICATION_GUARD_COMMAND,
 } from "./release-publication-history.mjs";
 import { checkNodeSupportProjections } from "./project-node-support.mjs";
+import {
+  ACTION_PINS,
+  actionReference,
+  checkActionProjections,
+} from "./project-action-versions.mjs";
 import { UBUNTU } from "./ubuntu-runner.mjs";
 import { WINDOWS } from "./windows-runner.mjs";
+import { MACOS } from "./macos-runner.mjs";
+import { SCANCODE_VERSION } from "./development-tool-policy.mjs";
 import { CI_RUNTIME, projectRuntimeText } from "./runtime-policy.mjs";
 import { JAVA_TOOLCHAIN } from "./java-toolchain.mjs";
 import {
@@ -71,15 +78,9 @@ const EXPECTED_ISSUE_FORMS = [
   "java-compatibility.yml",
   "other.yml",
 ];
-const ACTIONS = Object.freeze({
-  "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1": "v7.0.1",
-  "actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1": "v7.1.0",
-  "actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78": "v6.2.0",
-  "actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333":
-    "v8.0.2",
-  "actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294":
-    "v5.0.0",
-});
+// docs/release/action-versions.json owns each pin and its release-tag comment.
+const ACTIONS = ACTION_PINS;
+const DOWNLOAD_ARTIFACT = actionReference("actions/download-artifact");
 const DOWNLOAD_INPUTS = {
   "merge-multiple": false,
   "skip-decompress": false,
@@ -115,8 +116,9 @@ const ACQUIRE_EVIDENCE_COMMAND =
 const MERGE_EVIDENCE_COMMAND =
   "node util/merge-npm-package-evidence.mjs --input=.release/evidence-shards --output=.release/evidence-aggregate";
 const SHARD_COORDINATES = Array.from({ length: 32 }, (_, index) => index);
-const SCANCODE_LINUX_COMMAND =
-  ".release/tools/scancode/scancode-toolkit-v32.5.0/venv/bin/scancode";
+// util/scancode-runtime/pyproject.toml owns the scanner version in its install path.
+const SCANCODE_ROOT = `.release/tools/scancode/scancode-toolkit-v${SCANCODE_VERSION}/venv`;
+const SCANCODE_LINUX_COMMAND = `${SCANCODE_ROOT}/bin/scancode`;
 const EVIDENCE_OS_MATRIX = [
   {
     id: "ubuntu",
@@ -130,8 +132,7 @@ const EVIDENCE_OS_MATRIX = [
     runner: WINDOWS.label,
     shell: "pwsh",
     platform: "windows",
-    scancode_command:
-      ".release/tools/scancode/scancode-toolkit-v32.5.0/venv/Scripts/scancode.exe",
+    scancode_command: `${SCANCODE_ROOT}/Scripts/scancode.exe`,
   },
 ];
 
@@ -649,12 +650,10 @@ const isOptionalCiEvidenceStep = (fileName, jobId, step) =>
     !step.run) ||
     (jobId === "verification" &&
       ["proof", "seed_download"].includes(step.id) &&
-      step.uses ===
-        "actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333") ||
+      step.uses === DOWNLOAD_ARTIFACT) ||
     (jobId === "source_canonical" &&
       ["reference_download", "reference_index_download"].includes(step.id) &&
-      step.uses ===
-        "actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333") ||
+      step.uses === DOWNLOAD_ARTIFACT) ||
     (jobId === "source_canonical" &&
       step.id === "reference_upload" &&
       step.uses === RETAIN_ARTIFACT) ||
@@ -817,7 +816,7 @@ const validateJobs = (fileName, workflow, violations) => {
         ? runner === "${{ matrix.runner }}"
         : isEvidenceMatrix
           ? runner === "${{ matrix.os.runner }}"
-          : [UBUNTU.label, WINDOWS.label, "macos-15"].includes(runner),
+          : [UBUNTU.label, WINDOWS.label, MACOS.label].includes(runner),
       `${fileName}:${id} must use an approved explicit runner or closed runner matrix`,
     );
     add(
@@ -1156,7 +1155,7 @@ const validateJavaReferenceBoundary = (job, violations) => {
   requireFields(
     indexDownload[0],
     {
-      uses: "actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
+      uses: DOWNLOAD_ARTIFACT,
       if: "steps.reference_index.outputs.available == 'true'",
       "continue-on-error": true,
       "timeout-minutes": 1,
@@ -1213,7 +1212,7 @@ const validateJavaReferenceBoundary = (job, violations) => {
   requireFields(
     download,
     {
-      uses: "actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
+      uses: DOWNLOAD_ARTIFACT,
       if: "steps.reference_select.outputs.available == 'true'",
       "continue-on-error": true,
       "timeout-minutes": 1,
@@ -1443,7 +1442,7 @@ const validateCiVerification = (workflow, violations) => {
   requireFields(
     seedDownload[0],
     {
-      uses: "actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
+      uses: DOWNLOAD_ARTIFACT,
       if: "steps.seed_select.outputs.available == 'true'",
       "continue-on-error": true,
       "timeout-minutes": 1,
@@ -1522,7 +1521,7 @@ const validateCiVerification = (workflow, violations) => {
   requireFields(
     proof,
     {
-      uses: "actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
+      uses: DOWNLOAD_ARTIFACT,
       if: "steps.select.outputs.available == 'true'",
       "continue-on-error": true,
       "timeout-minutes": 1,
@@ -3457,6 +3456,18 @@ export const auditRepositoryControls = ({
   artifactActionOverrides = {},
 } = {}) => {
   const violations = checkNodeSupportProjections(workflowSourceOverrides);
+  violations.push(
+    ...checkActionProjections({
+      workflowSourceOverrides,
+      actionSourceOverrides: {
+        ...(setupSourceOverride === undefined
+          ? {}
+          : { "setup-producer": setupSourceOverride }),
+        ...consumerActionOverrides,
+        ...artifactActionOverrides,
+      },
+    }),
+  );
   const sharedSetup = parseControlYaml(
     "actions/setup-producer/action.yml",
     setupSourceOverride ??
@@ -3631,7 +3642,7 @@ export const auditRepositoryControls = ({
       ["source_json", UBUNTU.label],
       ["portability_ubuntu_node_26", UBUNTU.label],
       ["portability_windows_node_26", WINDOWS.label],
-      ["portability_macos_node_26", "macos-15"],
+      ["portability_macos_node_26", MACOS.label],
     ]) {
       const job = workflows[fileName]?.jobs?.[id];
       const context = `${fileName}:${id} Node 26 floor`;

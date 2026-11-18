@@ -18,7 +18,10 @@ import {
 } from "./evidence-shards.mjs";
 import { normalizeLockedRegistryGraph } from "./lock-graph.mjs";
 import { verifyRegistrySignature } from "./registry-signatures.mjs";
-import { validateScanExecutionObservation } from "./scancode.mjs";
+import {
+  SCANCODE_TOOL,
+  validateScanExecutionObservation,
+} from "./scancode.mjs";
 
 /** Compare licensing facts, retaining original resource observations in source.
  * Only the two validated observation surfaces may differ across native runs. */
@@ -521,9 +524,9 @@ const verifyArtifactEvidence = async ({
   );
   const normalizationVersion = scan?.scanner?.normalizationVersion;
   if (
-    scan?.scanner?.name !== "scancode-toolkit" ||
-    scan?.scanner?.version !== "32.5.0" ||
-    scan?.scanner?.outputFormatVersion !== "4.1.0" ||
+    scan?.scanner?.name !== SCANCODE_TOOL.name ||
+    scan?.scanner?.version !== SCANCODE_TOOL.version ||
+    scan?.scanner?.outputFormatVersion !== SCANCODE_TOOL.outputFormatVersion ||
     !(
       normalizationVersion === 1 ||
       (allowLegacyScancodeNormalization && normalizationVersion === undefined)

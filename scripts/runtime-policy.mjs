@@ -2,6 +2,11 @@
 import assert from "node:assert/strict";
 import { repositoryRuntimePolicy, ubuntuRunner } from "./ubuntu-runner.mjs";
 import { windowsRunner } from "./windows-runner.mjs";
+import { macosRunner } from "./macos-runner.mjs";
+import {
+  ACTIONLINT_SELECTION,
+  SCANCODE_VERSION,
+} from "./development-tool-policy.mjs";
 import { npmSemver } from "./npm-semver.mjs";
 export const runtimeSemver = npmSemver;
 const semver = runtimeSemver;
@@ -122,7 +127,15 @@ export function projectRuntimeText(text, policy = CI_RUNTIME) {
       ]),
     ),
   };
+  // Resolved only when requested, so synthetic policies need no macOS entry.
+  const deferred = {
+    macosRunner: () => macosRunner(policy).label,
+    scancodeVersion: () => SCANCODE_VERSION,
+    actionlintVersion: () => ACTIONLINT_SELECTION.version,
+    actionlintLinuxSha256: () => ACTIONLINT_SELECTION.assets.linux.sha256,
+  };
   return text.replace(/\{\{runtime:([^}]+)\}\}/gu, (_, key) => {
+    if (Object.hasOwn(deferred, key)) return deferred[key]();
     assert.ok(
       Object.hasOwn(selectors, key),
       `Unknown runtime selector: ${key}`,

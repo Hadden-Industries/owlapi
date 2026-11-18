@@ -5,12 +5,12 @@ import {
 import { isDeepStrictEqual } from "node:util";
 import { UBUNTU } from "./ubuntu-runner.mjs";
 import { RECOVERY_JOBS } from "./rc3-recovery-policy.mjs";
+import { actionReference } from "./project-action-versions.mjs";
 
 const guarded = "${{ inputs.rc3_recovery && !inputs.qualification_only }}";
 const transport = "./.github/actions/retain-artifact";
-const download =
-  "actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333";
-const checkout = "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1";
+const download = actionReference("actions/download-artifact");
+const checkout = actionReference("actions/checkout");
 const publish = `if [[ -z "\${ACTIONS_ID_TOKEN_REQUEST_URL:-}" || -z "\${ACTIONS_ID_TOKEN_REQUEST_TOKEN:-}" ]]; then
   echo "::error::The protected npm-release job has no GitHub OIDC identity."
   exit 1

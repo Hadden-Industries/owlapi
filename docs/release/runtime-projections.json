@@ -37,6 +37,15 @@
         "requirementId": "P19-LOCKED-TOOLCHAIN-001",
         "template": "All registry development declarations use >= minimums, including JSON Quality; the exact qualified graph, integrity, authenticated legal evidence and install-script decisions remain locked and reviewed. Local development uses the Node range declared in package.json devEngines.runtime and npm {{runtime:npmRange}}; producer CI, release and governed verification bootstrap exact npm {{runtime:npm}} before project commands or cache probes. Consumer lanes retain producer-installed tools, then select the frozen Node and separately admitted npm {{runtime:consumerNpm}} without installing the development graph at consumer floors. Preserve production pins, canonical Node {{runtime:canonicalNode}}, denied scripts, authenticated Markdown package evidence, Python and Actions pins. Deliberate resolution and frozen npm ci are distinct operations."
       }
+    ],
+    "docs/dependency-governance.json": [
+      {
+        "path": [
+          "installScriptPolicy",
+          "npmVersion"
+        ],
+        "template": "{{runtime:npm}}"
+      }
     ]
   },
   "documents": {
@@ -206,9 +215,44 @@
           "node"
         ],
         "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": [
+          "jobs",
+          "source_canonical",
+          "steps",
+          15,
+          "run"
+        ],
+        "template": "tool_directory=\"$RUNNER_TEMP/actionlint-{{runtime:actionlintVersion}}\"\nmkdir -p \"$tool_directory\"\narchive=\"$tool_directory/actionlint_{{runtime:actionlintVersion}}_linux_amd64.tar.gz\"\ncurl --fail --silent --show-error --location --retry 3 \\\n  https://github.com/rhysd/actionlint/releases/download/v{{runtime:actionlintVersion}}/actionlint_{{runtime:actionlintVersion}}_linux_amd64.tar.gz \\\n  --output \"$archive\"\nprintf '%s  %s\\n' '{{runtime:actionlintLinuxSha256}}' \"$archive\" | sha256sum --check --strict\ntar -xzf \"$archive\" -C \"$tool_directory\"\nprintf '%s\\n' \"$tool_directory\" >> \"$GITHUB_PATH\"\n"
       }
     ],
-    "extended-tests.yml": [],
+    "extended-tests.yml": [
+      {
+        "path": [
+          "jobs",
+          "third_party_evidence_shard",
+          "strategy",
+          "matrix",
+          "os",
+          0,
+          "scancode_command"
+        ],
+        "template": ".release/tools/scancode/scancode-toolkit-v{{runtime:scancodeVersion}}/venv/bin/scancode"
+      },
+      {
+        "path": [
+          "jobs",
+          "third_party_evidence_shard",
+          "strategy",
+          "matrix",
+          "os",
+          1,
+          "scancode_command"
+        ],
+        "template": ".release/tools/scancode/scancode-toolkit-v{{runtime:scancodeVersion}}/venv/Scripts/scancode.exe"
+      }
+    ],
     "maintenance.yml": [
       {
         "path": [
@@ -379,6 +423,17 @@
           "node"
         ],
         "template": "{{runtime:node.24}}"
+      },
+      {
+        "path": [
+          "jobs",
+          "third_party_evidence_shard",
+          "steps",
+          8,
+          "env",
+          "SCANCODE_COMMAND"
+        ],
+        "template": ".release/tools/scancode/scancode-toolkit-v{{runtime:scancodeVersion}}/venv/bin/scancode"
       }
     ]
   },
@@ -443,7 +498,11 @@
       "/jobs/owl_contract/steps/3/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
       "/jobs/quality_windows/runs-on": "{{runtime:windowsRunner}}",
       "/jobs/quality_windows/steps/3/run": "npm run record:runner -- --expected-os Windows --expected-arch X64 --label {{runtime:windowsRunner}} --shell pwsh",
-      "/jobs/required/runs-on": "{{runtime:ubuntuRunner}}"
+      "/jobs/required/runs-on": "{{runtime:ubuntuRunner}}",
+      "/jobs/portability_macos_node_22/runs-on": "{{runtime:macosRunner}}",
+      "/jobs/portability_macos_node_24/runs-on": "{{runtime:macosRunner}}",
+      "/jobs/portability_macos_node_26/runs-on": "{{runtime:macosRunner}}",
+      "/jobs/portability_macos_node_26/steps/3/run": "npm run record:runner -- --expected-os macOS --expected-arch ARM64 --label {{runtime:macosRunner}} --shell bash"
     },
     "extended-tests.yml": {
       "/jobs/extended_evidence/runs-on": "{{runtime:ubuntuRunner}}",
@@ -527,7 +586,11 @@
       "/jobs/recovery_registry/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/recovery_evidence/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/recovery_finalize/runs-on": "{{runtime:ubuntuRunner}}",
-      "/jobs/recovery_immutable/runs-on": "{{runtime:ubuntuRunner}}"
+      "/jobs/recovery_immutable/runs-on": "{{runtime:ubuntuRunner}}",
+      "/jobs/portability_macos_node_22/runs-on": "{{runtime:macosRunner}}",
+      "/jobs/portability_macos_node_24/runs-on": "{{runtime:macosRunner}}",
+      "/jobs/portability_macos_node_26/runs-on": "{{runtime:macosRunner}}",
+      "/jobs/portability_macos_node_26/steps/3/run": "npm run record:runner -- --expected-os macOS --expected-arch ARM64 --label {{runtime:macosRunner}} --shell bash"
     }
   }
 }

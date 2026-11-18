@@ -9,6 +9,7 @@ import {
   resolveScancodeBootstrap,
 } from "../prepare-scancode.mjs";
 import { qualifyScancodeRuntime } from "../qualify-scancode-runtime.mjs";
+import { SCANCODE_TOOL } from "./scancode.mjs";
 
 describe("isolated ScanCode bootstrap", () => {
   test("retains report failures while keeping installation and inputs in the selected working root", async () => {
@@ -69,9 +70,11 @@ describe("isolated ScanCode bootstrap", () => {
       outputRoot: ".release/tools/scancode",
     });
 
-    expect(resolved.toolkitRoot.replaceAll("\\", "/")).toMatch(
-      /scancode-toolkit-v32\.5\.0$/u,
-    );
+    expect(
+      resolved.toolkitRoot
+        .replaceAll("\\", "/")
+        .endsWith(`/scancode-toolkit-v${SCANCODE_TOOL.version}`),
+    ).toBe(true);
     expect(resolved.command.replaceAll("\\", "/").endsWith(suffix)).toBe(true);
   });
 

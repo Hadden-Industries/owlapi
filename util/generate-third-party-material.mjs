@@ -1,4 +1,10 @@
-import { UV_SELECTION } from "../scripts/development-tool-policy.mjs";
+import {
+  BEARTYPE_VERSION,
+  pythonTarget,
+  RUFF_VERSION,
+  SCANCODE_VERSION,
+  UV_SELECTION,
+} from "../scripts/development-tool-policy.mjs";
 import { EVIDENCE_MANIFEST_NAME } from "./third-party-evidence/format.mjs";
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
@@ -469,6 +475,18 @@ const scannerNoticePaths = () => {
     notices.map(({ path }) => path),
   );
 };
+// The lock-bound inventory, not prose, owns which scanner packages are source-built.
+const scannerSourceBuilds = () => {
+  const names = readJson(
+    resolve(
+      repositoryRoot,
+      "LICENSES/development/scancode-runtime/inventory.json",
+    ),
+  ).sourceBuiltComponents.map(({ name }) => name);
+  return names.length < 2
+    ? names.join("")
+    : `${names.slice(0, -1).join(", ")} and ${names.at(-1)}`;
+};
 const createQualityToolingFacts = () => {
   const markdownName = "@hadden-industries/markdown-quality";
   const manifest = readJson(packageJsonPath);
@@ -555,14 +573,14 @@ const createQualityToolingFacts = () => {
     {
       id: "ruff-development-tool",
       name: "Ruff development formatter and linter",
-      versionOrRevision: "0.17.4",
+      versionOrRevision: RUFF_VERSION,
       license: "MIT",
       source: "astral-sh/ruff",
       files: [
         "pyproject.toml",
         "uv.lock",
         "ruff.toml",
-        "LICENSES/development/ruff-0.17.4.txt",
+        `LICENSES/development/ruff-${RUFF_VERSION}.txt`,
       ],
       attribution:
         "Copyright (c) 2022 Charles Marsh. The complete wheel licence, including its embedded third-party notices, is retained. The tool and its distributions are not packed.",
@@ -587,7 +605,7 @@ const createQualityToolingFacts = () => {
     {
       id: "scancode-development-source-build",
       name: "ScanCode development scanner and retained dependency notices",
-      versionOrRevision: "32.5.0",
+      versionOrRevision: SCANCODE_VERSION,
       license:
         "Apache-2.0 AND CC-BY-4.0 AND LicenseRef-scancode-other-permissive AND LicenseRef-scancode-other-copyleft",
       source: "aboutcode-org/scancode-toolkit",
@@ -598,22 +616,20 @@ const createQualityToolingFacts = () => {
         "LICENSES/development/scancode-runtime/inventory.json",
         ...scannerNoticePaths(),
       ],
-      attribution:
-        "Copyright (c) nexB Inc. and others. ScanCode is a trademark of nexB Inc. The full upstream declaration includes Apache-2.0 software, CC-BY-4.0 data and other permissive/copyleft material identified by the retained LicenseRef declarations and notices. The recorded expression is proposed for human review; no completed legal conclusion is inferred. ScanCode, cyseq, intbitset, pyahocorasick and PyYAML are source-built without patches on Python 3.15 using the separate hash-locked runtime/build graph. Exact installed Windows distribution notices, including package-data notices, are retained where provided; inventory entries explicitly identify distributions with no packaged notices. The scanner licence is not a conclusion about its dependencies. No scanner, dependency binary or data is packed into OwlAPI. Linux native qualification and terms remain separate obligations.",
+      attribution: `Copyright (c) nexB Inc. and others. ScanCode is a trademark of nexB Inc. The full upstream declaration includes Apache-2.0 software, CC-BY-4.0 data and other permissive/copyleft material identified by the retained LicenseRef declarations and notices. The recorded expression is proposed for human review; no completed legal conclusion is inferred. ${scannerSourceBuilds()} are source-built without patches on Python ${pythonTarget().minor} using the separate hash-locked runtime/build graph. Exact installed Windows distribution notices, including package-data notices, are retained where provided; inventory entries explicitly identify distributions with no packaged notices. The scanner licence is not a conclusion about its dependencies. No scanner, dependency binary or data is packed into OwlAPI. Linux native qualification and terms remain separate obligations.`,
     },
     {
       id: "beartype-scancode-compatibility-dependency",
       name: "Beartype scoped ScanCode compatibility dependency",
-      versionOrRevision: "0.23.1",
+      versionOrRevision: BEARTYPE_VERSION,
       license: "MIT",
       source: "beartype/beartype",
       files: [
         "util/scancode-runtime/pyproject.toml",
         "util/scancode-runtime/uv.lock",
-        "LICENSES/development/scancode-runtime/beartype-0.23.1/licenses/LICENSE",
+        `LICENSES/development/scancode-runtime/beartype-${BEARTYPE_VERSION}/licenses/LICENSE`,
       ],
-      attribution:
-        "Copyright (c) 2014-2026 Beartype authors. Stable Beartype 0.23.1 replaces the former scoped prerelease selection for unmodified ScanCode 32.5.0 on Python 3.15. Native Windows qualification reproduces both retained independent fixture hashes with the frozen scanner graph and unchanged options. Linux qualification and final human review remain pending; Windows qualification does not establish release acceptance.",
+      attribution: `Copyright (c) 2014-2026 Beartype authors. Stable Beartype ${BEARTYPE_VERSION} replaces the former scoped prerelease selection for unmodified ScanCode ${SCANCODE_VERSION} on Python ${pythonTarget().minor}. Native Windows qualification reproduces both retained independent fixture hashes with the frozen scanner graph and unchanged options. Linux qualification and final human review remain pending; Windows qualification does not establish release acceptance.`,
     },
   ].map(
     ({

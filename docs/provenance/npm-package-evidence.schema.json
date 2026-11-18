@@ -112,7 +112,9 @@
               "const": "scancode-toolkit"
             },
             "version": {
-              "const": "32.5.0"
+              "$comment": "Must equal the scancode-toolkit pin in util/scancode-runtime/pyproject.toml; util/third-party-evidence/evidence-manifest.mjs enforces it.",
+              "type": "string",
+              "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$"
             },
             "pythonVersion": {
               "enum": [

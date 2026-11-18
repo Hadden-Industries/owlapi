@@ -149,7 +149,7 @@ CI uses this operation and passes its absolute interpreter path into later setup
 
 ScanCode has its own `util/scancode-runtime/pyproject.toml` and `uv.lock`.
 Its source build uses the same Python pin, installs locked build dependencies first, and disables further build dependency resolution.
-Stable Beartype `0.23.1` replaces the former scoped prerelease selection for Python 3.15.
+A stable Beartype release, pinned in the ScanCode project, replaces the former scoped prerelease selection for Python 3.15.
 
 Native Windows scanner qualification matches the retained independent baseline; Linux qualification remains pending.
 The isolated scanner constrains Pluggy to `<1.7`: Plugincode 32.0.0's hook classes fail discovery with Pluggy 1.7.0.
@@ -157,7 +157,7 @@ The isolated scanner constrains Pluggy to `<1.7`: Plugincode 32.0.0's hook class
 Remove that compatibility constraint after an upstream update passes native ScanCode qualification; it does not constrain the npm runtime or quality-tool environments.
 CI qualifies Windows and Linux findings against independently captured ScanCode 32.5.0 reports; a smoke qualification does not replace the full release corpus acquisition gates.
 
-The locked source builds include intbitset, pyahocorasick and PyYAML as well as ScanCode.
+The ScanCode lock determines which packages are source-built; [the scanner licence inventory](LICENSES/development/scancode-runtime/inventory.json) records them as `sourceBuiltComponents`.
 Installation receipts record observed compiler configuration and PyYAML's optional accelerator state; Python's build compiler does not identify the compiler of rebuilt extensions.
 Keep compilation and scanner failure logs with the compatibility reports.
 
@@ -190,8 +190,8 @@ From another directory, use `npm --prefix <absolute-repository-root> run check:m
 `inspect:markdown` reports selection and `inspect:markdown:profile` reports effective limits; complete `check:markdown` establishes the repository check verdict.
 `lint:files` remains available for existing JavaScript callers.
 
-The root manifest requires JSON Quality 1.0.1 or newer.
-The lockfile pins 1.0.1 and its matching Linux and Windows x64 packages.
+The root manifest declares the minimum JSON Quality release.
+The lockfile pins the exact release and its matching Linux and Windows x64 packages.
 Use its public package exports in repository tooling.
 
 `npm run test:json` checks JSON behavior, source preservation and coverage without a package-specific installation verifier.
@@ -232,6 +232,7 @@ Write a hard line break with a backslash at the end of the source line.
 Represent significant trailing spaces in examples as escaped strings or annotated notation.
 Do not add a Markdown trimming exception.
 
+[Dependency version ownership](docs/development/dependency-versions.md) names the one file that declares each version and the command that projects it into the other files.
 For tool updates, review the manifest, `pyproject.toml`, `.python-version`, and the [uv version and archive digests](docs/release/development-tools.json).
 Regenerate the affected `uv.lock` files with the selected uv version, then synchronize and run the full gates on Windows and Linux.
 The shared package owns Markdown formatter compatibility; verify the consumer CLI and SDK behavior when updating its core and native packages.
@@ -242,6 +243,7 @@ Refresh current dependency/provenance records through their owning tools while p
 
 The root and artifact-transport npm manifests override vulnerable `glob` and `minimatch` ranges for [GHSA-3g3m-2fjr-6pw4](https://github.com/advisories/GHSA-3g3m-2fjr-6pw4) and [GHSA-g3hv-75wg-m249](https://github.com/advisories/GHSA-g3hv-75wg-m249).
 Update the two packages together where a caller uses `glob`.
+The root manifest owns the override values; run `node scripts/project-shared-overrides.mjs --write` to project them into the artifact-transport manifest, then refresh its lock with npm.
 Glob 10 and 13 expect the older wildcard matcher representation.
 Remove each override once the upstream constraints resolve to patched, compatible releases.
 Audit both complete graphs and follow the [artifact transport rebuild and evidence procedure](docs/release/artifact-transport.md#bounds-dependencies-and-ownership).
@@ -253,10 +255,15 @@ npm run verify:workflow-syntax
 npm run verify:workflow-governance
 ```
 
-Install the native [actionlint 1.7.12 release](https://github.com/rhysd/actionlint/releases/tag/v1.7.12) for your platform on `PATH`; follow its [installation and attestation verification](https://github.com/rhysd/actionlint/blob/v1.7.12/docs/install.md) instructions.
-CI installs the checksum-pinned Linux release in the canonical Ubuntu source job using the producer Node version.
+Install the native [actionlint release](https://github.com/rhysd/actionlint/releases) selected in [the development tool policy](docs/release/development-tools.json) for your platform on `PATH`; follow the installation and attestation verification instructions in that release's `docs/install.md`.
+CI installs the same release in the canonical Ubuntu source job and verifies the policy's Linux archive digest.
 The binary is a development tool under its MIT licence, not an npm dependency or part of the distributed package.
-Reassess the release, checksum and known diagnostic filter together when updating it.
+To update it, change the version and Linux digest in that policy, run `npm run sync:node` to regenerate the workflow step, and reassess the known diagnostic filter.
+
+[The action catalog](docs/release/action-versions.json) owns each GitHub Actions release tag and full commit revision.
+Workflow and composite-action `uses:` references are its checked projections, because GitHub requires literal references.
+To update an action, verify the release tag's commit, change its catalog entry, then run `node scripts/project-action-versions.mjs --write`.
+Workflow governance rejects drift, unregistered actions and unused catalog entries, so reconcile a Dependabot action update into the catalog before it can pass.
 
 `actionlint` owns GitHub workflow syntax and expression checks.
 This command disables its optional ShellCheck/Pyflakes integrations so its coverage does not depend on locally installed shell/Python tools; it is not shell or Python program verification.

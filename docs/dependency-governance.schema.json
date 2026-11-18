@@ -266,7 +266,9 @@
       ],
       "properties": {
         "npmVersion": {
-          "const": "12.2.2"
+          "$comment": "Projected from docs/release/runtime-policy.json by npm run sync:node and checked by npm run check:node.",
+          "type": "string",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$"
         },
         "mode": {
           "const": "STRICT_EXPLICIT_DECISIONS"

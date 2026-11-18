@@ -40,6 +40,11 @@ const runnerSelectors = [
     label: /\bwindows-(?:latest|\d+)(?:-[\w-]+)?(?![\w-])/u,
     token: "{{runtime:windowsRunner}}",
   },
+  {
+    family: "macOS",
+    label: /\bmacos-(?:latest|\d+)(?:-[\w-]+)?(?![\w-])/u,
+    token: "{{runtime:macosRunner}}",
+  },
 ];
 
 /** Project only enumerated runner selectors, job names, setup fields and step commands. */
@@ -61,6 +66,7 @@ export function projectWorkflowRuntime(
         (path[2] === "steps" &&
           Number.isInteger(path[3]) &&
           (["name", "run"].includes(path[4]) ||
+            (path[4] === "env" && path.length === 6) ||
             (path[4] === "with" &&
               ["node-version", "node"].includes(path[5])))) ||
         (path[2] === "strategy" && path[3] === "matrix"));
