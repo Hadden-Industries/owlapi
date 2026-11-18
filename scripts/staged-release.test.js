@@ -2076,7 +2076,14 @@ test("artifact-bound refusal dispositions still use the original verify ZIP", as
   await expect(verify(verification)).rejects.toThrow(
     "Refusal transport inventory changed",
   );
+  omitRetryAfterAdmission = false;
   artifacts.pop();
+  artifacts.push({
+    ...artifact,
+    id: 77,
+    name: "release-classification-21-1",
+  });
+  await expect(verify(verification)).resolves.toEqual(observed.nativeLog);
   await expect(
     verify({ ...verification, digest: "sha256:" + "0".repeat(64) }),
   ).rejects.toThrow();

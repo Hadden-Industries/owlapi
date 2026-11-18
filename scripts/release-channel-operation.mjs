@@ -408,6 +408,7 @@ async function readLegacyRefusalReceipt(
           matchesLogicalArtifact(artifact.name, logical, {
             run: runId,
             attempt,
+            legacy: false,
           })
         ) {
           const snapshot = identity(artifact);
