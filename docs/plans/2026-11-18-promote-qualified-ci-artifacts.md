@@ -41,6 +41,8 @@ Use the same maintainer, runbook, native records and repository test runners.
 
 ## What transfers from the two releases
 
+The [four-week donor hardening audit](#four-week-donor-hardening-audit) maps the underlying fixes and their failure cases to the delivery slices.
+
 | Observed donor result                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Consequence for OwlAPI                                                                                                                                                                                                                                                        |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Markdown Quality [unexpected fresh matrix](https://github.com/Hadden-Industries/markdown-quality/actions/runs/43900658316) and [successful reuse](https://github.com/Hadden-Industries/markdown-quality/actions/runs/43917797156). Its [reuse implementation](https://github.com/Hadden-Industries/markdown-quality/blob/cc3d8f70eb8a1f8218cc2393dc23d44f82b55d2b/scripts/release-reuse.js) admits original bytes.                                                                                                                      | Give the release dispatch an explicit choice. A collector image rebuild can be harmless for an already qualified functional result. A changed browser, JDK, Maven input, corpus, Node lane or benchmark protocol requires evaluation by that gate's owner.                    |
@@ -109,6 +111,7 @@ The relevant source comparisons are the donor qualification and operator contrac
    Stable-on-pilot promotion changes npm then GitHub classification on the original ID.
    Direct stable `latest` can change the npm default at approval even if later public verification fails.
    Keep the supported RC on `next` before first stable, then apply the existing preview-line, withdrawal and separate stale-tag retirement rules.
+   Add explicit pilot retirement to slice 5 as a separate owner-authorized operation after stable verification.
    `package.json`, `scripts/package-identity.mjs`, the version projector and signed owner decision govern different facts.
    Keep publish-ready README/notes at pack time and compare the draft body to reviewed notes before sealing.
    The version and its channel are outside this plan's selection.
@@ -140,6 +143,10 @@ Follow one normal merge from `CI / required` through `createVerificationReceipt`
 The last operation takes a PR base context and explicitly establishes historical qualification only.
 Extract or reuse its exact-main/direct-FULL verification under a genuine release-dispatch context.
 Fabricating a push or PR event at the release entry would cross the trust boundary.
+Use the commit-associated PR lookup even when GitHub omits `merge_commit_sha`.
+Require a unique merged PR with the expected base and head repository IDs and names, default branch, ordered Git parents, head and tree.
+Bind the required check to its native App, suite, execution and reviewed workflow revision.
+A green fork or a check with the expected display name from another App cannot supply release proof.
 Keep [check coverage](../../scripts/ci-check-coverage.mjs) and [required jobs](../../scripts/require-job-success.mjs) as the owners of their verdicts.
 
 Compare the CI and release job commands and inputs, including canonical Java preparation, Windows quality, browsers, OWL and dependency review.
@@ -151,6 +158,11 @@ Preserve the release-only ScanCode acquisition and merge against committed mater
 
 **Proof and exit.**
 With saved provider inventories and controlled external reads, exercise one full PR with distinct synthetic merge and landed SHAs, one FULL main without a PR origin, and one partial rerun.
+In [CI verification tests](../../scripts/ci-verification.test.js), omit the merge field and delay registration of a previously successful native dependency by one jobs-API response.
+Require the same original execution after bounded polling across all pages of the original and latest attempt inventories.
+A second matching PR, duplicate job, failed dependency or inconsistent page must prevent reuse.
+Compare the original runner identity, OS labels, architecture, shell and tool versions with the policy for its lane.
+An incidental collector image patch may pass, but a contradictory original host must fail even if the job label matches.
 Independently compute the tree/parents and file hashes using Git and native digest tools.
 For a squash or changed parent, changed frozen matrix, substituted proof, missing original job, unrelated fork or current main that moved during verification, refuse the promoted result.
 Identify which current checks require source beyond tree identity, including packed documentation and source/benchmark identifiers.
@@ -165,8 +177,18 @@ Introduce a read-only selector before all expensive fan-out.
 Make the safe qualification entry unambiguous even with omitted inputs, reject incompatible fresh/legacy selections before starting jobs, and keep the known alpha/rc.3 routes explicitly scoped while outstanding dispositions are reconciled.
 The release resolver looks up the exact main receipt and a **direct FULL** CI producer.
 Recheck main, repository ID, event, workflow path/revision, policy, tree and both parents, dependency selectors/locks, matrix, pinned external sources, original host/execution and per-check proof.
+Cache only completed original-attempt observations during this admission.
+Immediately before writing the selector's outputs, reread the mutable main head and producer run to catch a new attempt or changed head during collection.
+Validate all scalar values together before opening `GITHUB_OUTPUT`.
+Route a failure to write the output to a failed selector job with no matrix or writer scheduled.
 Reject reuse chains, rerun races, expired ZIPs and conflicting artifact metadata.
 Read artifacts by exact repository/run/ID, verify the REST digest over received ZIP bytes and verify member names, sizes, SHA-256 and tarball SRI.
+
+Keep the [metadata reader](../../scripts/github-evidence-reader.mjs) redirect-free.
+If the binary transport follows a signed download redirect, restrict it to the documented HTTPS storage destination and path and strip the authorization header.
+Charge retries, redirects, body reads and extraction to one deadline with separate request, metadata-byte and archive-byte bounds.
+Consume the native artifact ID or the reconciled ID established by slice 3.
+Test a slow body, a redirect to an unapproved host and a temporary 404 for an acknowledged ID through the release reader.
 
 Introduce a versioned promoted manifest carrying the three candidate member identities, original CI build and per-job attempts, landed subject and main record, release qualification producer, security observation and all referenced proof descriptors.
 Schema 1 keeps its exact single-run meaning.
@@ -183,6 +205,9 @@ Verify the owner-signed version tag at draft creation after the private check an
 Preserve the accepted severity rules and reviewer responsibilities, including ScanCode and managed CodeQL on landed main (Actions and JavaScript/TypeScript, the newest matching analysis in each category within seven days, the active threshold and open-alert checks).
 Reject incomplete or failed latest analyses and recheck the actual controller at staging.
 Check frozen locks and manifests before/after disposable npm operations.
+Evaluate the complete frozen bundle and recipient graphs, including the original ref, category, scanner, query or model and configuration for each security result.
+Keep a missing report, skipped producer or incomplete benchmark protocol distinct from a completed empty result.
+Use OwlAPI's own corpus, tolerances, rights inputs and recorded protocol to decide which obligation is still open.
 An unavailable advisory service or changed rights disposition blocks admission.
 A denied current finding cannot trigger a fresh run to bypass the denial.
 Report monetary/time savings only after measurements.
@@ -233,17 +258,31 @@ Preserve the separate portable run where absence of the Java reference is part o
 Verify the pinned seven-file July acquisition and installed consumer source identities.
 Extend the existing local reusable workflows where their inputs agree.
 A deliberate bad workflow should fail cheaply, and a Java-only regression must still fail the canonical gate.
+Check action SHAs, literal upstream checkout pins and the separate producer and consumer tool selections in that first gate.
+Keep dependency update coverage for Actions, root npm, the bundled transport lock and Python tooling.
+Keep caller-selected paths inside the reviewed root and reject escaping links or aliases.
+PR or external caller code runs read-only.
+If a future privileged workflow accepts an external graph, require a non-bypassable protected environment and show the exact repositories, revisions and profiles to the owner before checkout, install or execution.
 Measure any new serial dependency against the PR critical path before keeping it.
 
 Extend [workflow governance](../../scripts/workflow-governance.mjs) and its mutation tests.
 Retain Actionlint for provider syntax and the repository validator for semantic constraints.
 Traverse workflow-to-workflow and local composite calls, including declared checkout roots used by legacy approval jobs.
 Validate caller permission ceilings, references, literal input types, conditional roles, deadline containment and absence of cycles.
+Follow transitive script invocations and check inherited permissions even for skipped branches.
+Apply timeouts where GitHub supports them and pass the remaining operation budget into workers and children.
 Keep legitimately conditional `setup-producer` phases (`runtime`, `npm`, `producer`) and separately selected consumer npm.
 Verify blocking setup actually dominates **each** npm read, cache probe, installed verifier and write.
 A Node-only stdlib check is valid before npm bootstrap.
 OwlAPI's reviewed bundled `retain-artifact/dist` runs without installing the whole project graph.
 Prove its entry and retained licenses on a clean runner.
+
+Use the bundled native action for upload and reconcile a lost SDK acknowledgement in the [transport tests](../../scripts/artifact-transport.test.js).
+Freeze the payload, resolve its literal physical name through the [name codec](../../tooling/artifact-transport/identity.mjs), and match its members and canonical upload digest to a unique native upload or reconciliation step in the original job interval.
+An acknowledged ID followed by a 404 gets a bounded read of that ID.
+Only confirmed absence permits a new bounded recovery ordinal for the same payload.
+An unavailable inventory, lookalike suffix, digest conflict or two matching steps stops recovery.
+Include a dotted artifact name and check scratch cleanup after interruption.
 
 For each supported dispatch derive expected jobs from its mode and guarded decision.
 Check `needs`, cancellation, step results and original evidence before consuming downloads or declaring completion.
@@ -258,6 +297,9 @@ Preserve the exact historical job/step shapes accepted by `stageFailureSummary` 
 Mutate real YAML for `if: false`, hidden transfer, missing checkout/setup, hosted npm shadowing, softened failure upload, wrong `needs`, wrong reusable input type and an incorrectly skipped required writer.
 Run actual terminal commands for success, skipped, cancelled, failure and the legal unused branch.
 Rehearse the normal CLI startup from a clean writer checkout outside the repository dependency tree on the supported host.
+Invoke the actual child entry point with hosted Actions variables present but provider I/O isolated.
+Test Windows paths containing spaces, percent signs and short aliases as literal arguments, with required caches ready before child startup.
+Require the pinned npm at its first registry read and validate the actual JSON shape for each command, rejecting ambiguous results.
 Feed real npm scalar JSON, scoped URLs, upload digest forms and recorded native step names into the reader.
 A missing module before the handler starts must produce zero new writes and an explicitly unresolved result unless original provider evidence proves no request.
 An extra npm install in an OIDC job is not the repair.
@@ -294,10 +336,18 @@ A different package input or changed allowlist requires requalification or polic
 Rights and benchmark approval, repository/ref, exact coordinate absence, guarded tags, protected environment and stage-channel intent remain mandatory.
 
 Give the owner one **read-only preflight** from the existing runbook/controller that validates the real dispatch schema, signed reservation, original artifact availability, expiry and expected writer route before spending a run.
+Validate names, types and the entire serialized UTF-8 input envelope including escaped characters before reserving a writer.
+Pass compact references to signed history.
+Reject an oversized or unknown input with zero reservations and zero native writes.
 Include fresh authenticated private pending-stage observation for this package when determining whether a first stage is possible.
 A public 404 cannot see private stages.
 Bind observation time, coordinate, expected pending IDs, scope and digest to the owner decision.
 Refresh it after intervening writer activity or stale/invalid timestamps, without reauthorizing different bytes.
+Repeat the check after environment approval under the shared mutation queue.
+Scope terminal history to its authenticated package, version and manifest.
+Account for every active or unexplained writer that can affect the same resource, including a later-dispatched run that finished first.
+Require valid non-future inventory observation times newer than all relevant prior writes.
+One newer entry cannot compensate for another entry's missing timestamp.
 Treat unknown, duplicate or conflicting stages as a reconciliation case.
 Keep sensitive inventory and owner credentials out of inputs, logs and public tags.
 Supply only disclosure-cleared decision facts/digests through the existing checkpoint mechanism.
@@ -314,6 +364,11 @@ Start cold with distinct build, landed and repaired controller SHAs.
 Stage one scoped tarball, compare downloaded private bytes and native package identity, verify draft ID/three assets and freshly observe guarded labels immediately before owner 2FA per the runbook.
 Exercise an import failure before the first journal exists, a lost response, an upload failure after acknowledgement, an already-pending stage and a verified case where no request was sent.
 Zero additional submissions after acknowledgement or unknown effect.
+In the [staging tests](../../scripts/staged-release.test.js), preserve the original job failure and distinguish no request, unknown effect, acknowledgement and independent verification.
+Permit a new attempt-1 reservation only when original native evidence proves no request could have been sent, the writer history is complete and fresh private inventory agrees.
+An absent stage after a timeout leaves the effect unknown.
+If the request succeeded but retention failed, authenticate the unique original step and interval, recover the original bytes, and verify the exact private stage read-only.
+Reject any attempt to spend the original reservation on a rerun.
 Reject a changed SHA/SRI, other-package stage, expired candidate, forged owner record and mixed old/new manifest.
 Use a controlled registry for the local rehearsal.
 Only the owner can demonstrate private npm access, OIDC stage permission and interactive approval in the live system.
@@ -336,6 +391,7 @@ Read-only reconciliation needs no new writer reservation.
 Release the shared mutation queue while anonymous public recipient tests run.
 Bind their input to exact version, SRI, original operation and frozen matrix, and protect it from candidate cleanup for the duration.
 Before seal or a channel write, reacquire the shared queue and reread the live draft ID, label preimages, settings freshness and any unresolved operation.
+Check the writer history from slice 4 for intervening effects on shared labels or classification even when the package versions differ.
 Race a slow read-only matrix with a label change and with candidate cleanup.
 The reader may finish its exact-version observation, a stale writer must stop, and the cleanup job must retain its inputs.
 Retain OwlAPI's `queue: max` and cancellation-disabled behavior for authorized writers.
@@ -354,6 +410,11 @@ Use the real registry provenance, scope and npm alias readers with the entire fr
 Continue after approval with fresh anonymous public acquisition and installed tests on the frozen Linux/Windows/macOS grid.
 The build identity, signed tag and npm provenance publisher controller answer different questions.
 Verify native registry signatures, locked/lockless graph, SRI, README/examples and equality to private and qualified bytes.
+Use the [installed fixtures](../../scripts/installed-consumer-fixtures.mjs) and [anonymous registry reader](../../scripts/public-registry-consumer.mjs) from a clean recipient root for scoped and alias installs on each supported OS.
+Apply applicable overrides in that root and cover both hoisted and nested production dependencies, including one also used by a development tool.
+Retain the recipient manifest, lock digest and observed graph so the SBOM can be checked against the actual install.
+Seed offline fixtures only with verified bytes.
+Accept a missing historical lock only if reconstructed from its original source and matched to its recorded digest.
 Reuse bounded readback for propagation, rate limits and attestation indexing, with one total budget per observation.
 After expiry report the observed state and earliest useful retry.
 A third label value, malformed signature or contradicted asset is a terminal conflict.
@@ -366,11 +427,28 @@ Require stable native IDs when both observations carry them.
 Preserve all original IDs.
 Reuse OwlAPI's existing typed attestation wait and native `gh release verify` / `verify-asset` without interpreting a signature failure as indexing lag.
 Keep the original four-asset historical reader.
+Index each required archive member by name, length and digest, including an empty required log.
+Exclude verifier scratch and reject missing, extra, duplicate, linked, escaping or normalization-colliding entries and ambiguous encodings.
+Exercise [immutable release verification](../../scripts/verify-immutable-release.mjs) with ordinary read permissions when the admin settings endpoint is denied.
+Use the same credential's positive attestation check to distinguish indexing delay from terminal authorization or signature failure.
+Changing download counts or timestamps may pass with stable identities and matching bytes.
+A changed native ID or digest must fail.
+New sealing still needs fresh owner settings evidence.
+Bound any parallel verification, isolate each worker's cache and scratch, and fail the aggregate if a member is unverified.
 For label/classification operations preserve intent, flushed request, acknowledgement and independent observations per service.
 After npm succeeds and GitHub fails, report those two outcomes separately.
 Resume only authorized outstanding work against its preimage.
 A successful read-only completion never rewrites the original job result.
 Update the support designation only after the required public and immutable checks close.
+
+Add a separately owner-authorized `retire-pilot` operation to the [channel controller](../../scripts/release-channel-operation.mjs).
+Bind the verified immutable stable release, exact candidate being retired, reviewed pilot preimage and intended absence.
+Authenticate an older candidate from signed history without executing it.
+Under the shared queue, recheck the stable identity, npm tags and GitHub classification, then issue at most one npm DELETE at the fully encoded scoped endpoint with HTTP write retries disabled.
+Use bounded independent readback and preserve `latest`, `next`, support designation and GitHub classification.
+Give the operation no GitHub writer or GitHub write token.
+Document that explicit `@pilot` installs may fail between candidates while exact-version installs remain available.
+Promotion and candidate expiry do not authorize retirement.
 
 **Proof and exit.**
 Inject a public 404 that settles, wrong tarball on one OS, one retained lane from attempt 1 on attempt 2, named recovery upload, lost seal acknowledgement after immutable publication, stale settings renewal, failed classification and a conflicting latest ID.
@@ -378,6 +456,10 @@ Exercise the existing RC1–RC3 readers and the staged five-asset reader through
 A successful observer issues zero POST/PATCH/DELETE or npm mutations.
 Failed public qualification after direct `latest` reports the actual npm default and holds GitHub stable classification.
 A guarded withdrawal can restore labels to a separately qualified predecessor, never replace published bytes.
+For pilot retirement, assert zero deletes for an already absent label or a conflicting third value and one for an approved matching preimage.
+For signed read-only settlement of a refusal, require the original authorized attempt's complete native npm `E401` and HTTP `401 DELETE` for the exact endpoint within the original step, without acknowledgement or contradiction.
+A clipped log, unrelated 401, timeout or later 404 leaves the effect unknown.
+Any later mutation requires fresh owner intent and current preimages.
 
 ### SLICE-006 · Bound candidate storage and recovery cost (D1, D6)
 
@@ -449,6 +531,13 @@ Never skip unknown shared-label dispositions on the grounds that package version
 A new archive representation must round-trip original bytes required by existing readers.
 Retain existing representation until replay succeeds.
 
+In the [checkpoint reader](../../scripts/release-history-checkpoint.mjs), obtain the required signed tag graph explicitly within the reader's budget on a shallow checkout.
+Verify the tag object, live ref binding, signer key, rotation policy and any exact historical exception.
+A narrower re-export retains the original signed payload and fullest authenticated subject, including the manifest digest.
+Check canonical encoding, per-part and assembled lengths and digests, and decoded byte limits before extraction.
+Reuse identical blobs and exclude earlier checkpoints from new payloads.
+Retain evidence of a partial operation while reserving a ready verdict for successful completion of every selected operation.
+
 **Proof and exit.**
 Exercise maintenance through its real installed aggregate after the policy change.
 Read the hosted artifact IDs, compressed sizes and effective expiry times.
@@ -478,6 +567,9 @@ If any path still needs an Actions copy, exclude its exact ID from early retirem
 Continue the existing encrypted off-platform backup, checksum and inventory checks.
 The cleanup acceptance exercise is limited to replay from signed custody.
 A missing indispensable candidate still stops new staging.
+Rehearse a narrower re-export from a shallow checkout, a rebound tag, wrong signer, modified payload and an oversized part.
+A valid re-export must replay the same original subject with Actions copies unavailable.
+Any failed replay must leave the affected artifact IDs ineligible for early deletion.
 
 ### SLICE-007 · Rehearse on protected main, cut over and retire legacy writers (D1–D6)
 
@@ -499,13 +591,24 @@ Keep one integration owner for the shared workflow job inventory, manifest schem
    On a miss expect an actionable stop with zero expensive fallback jobs and zero effects.
    Verify the explicit fresh path once when needed for cutover.
    A green workflow with its selected aggregate skipped fails acceptance.
+   Compare native job results to the selected route, including retained jobs from earlier attempts.
+   Use the local cold fixtures for interrupted or refused writes and assert the native request count.
+   Use this read-only dispatch to verify actual scheduling without spending a real publication.
 3. Owner verifies current repo rulesets, creation/update/deletion protection of `refs/tags/owlapi-release-history/*`, signer and bypass actors, exact protected-main environment restrictions and reviewers, and immutable releases.
    Inspect both npm publisher bindings.
+   Preserve the managed CodeQL check and app-bound `CI / required`.
+   If a check needs rebinding, authenticate the App, native suite, run and reviewed workflow before changing settings and continue to require a successful check to merge.
+   Check each npm connection's actual status, granted operations and expiry close to its first authorized operation.
+   An expired binding requires owner renewal.
+   A successful read does not prove first-publish activation.
    Only the tag-management workflow may manage dist-tags, both identities can stage, and direct publishing must be disabled on both.
    Confirm retirement of legacy credentials.
    Establish missing `npm-tags` / history protections under separate configuration authority.
    Reconcile rc.3 direct operations and the original unscoped alpha draft/credentials using signed/native evidence before disabling their callable writers.
    Keep historical fixtures, readers, original draft disposition and tags.
+   Keep the reviewed exact-version RC exception and the original RC readers.
+   npm provenance can authenticate publication identity but cannot prove that a different request was never sent.
+   Keep an unexplained writer unresolved and hold any affected cutover.
    Never delete an unexplained draft as housekeeping.
    An unconfirmed provider setting blocks that effect, not local delivery of earlier slices.
 4. At the next separately authorized release, perform one stage, one owner approval, public recipient qualification, seal, independent completion and only the selected channel operation.
@@ -530,6 +633,66 @@ Restore only explicitly approved mutable labels/classification against their pre
 Defective immutable bytes require a new version, current qualification and fresh owner consent.
 Reopen the affected design if a required proof cannot survive expiry, provenance cannot represent the two source identities truthfully, a provider binding changes, a new release gate appears, or candidate pressure exceeds policy.
 A missing hosted observation remains an open acceptance item.
+
+## Four-week donor hardening audit
+
+The review covered commits dated 21 October through 18 November 2026 reachable from the two checkouts' branches, remote branches and tags.
+The local refs were checked against the published branch and tag inventories.
+JSON Quality contributed 170 commits and Markdown Quality 134, including 47 merges with no additional conflict-resolution changes and seven tag-only recovery checkpoints.
+The review included the writers, readers, tests, action implementations, package fixtures and operational documentation behind the workflow YAML.
+It included JSON Quality's changes after 1.0.2 and Markdown Quality's changes after 3.0.3.
+[JSON Quality main](https://github.com/Hadden-Industries/json-quality/tree/78e901148f829cd1dd44953de22791fea6aa7f2d) · [JSON Quality post-release branch snapshot](https://github.com/Hadden-Industries/json-quality/tree/5b9504011f7248902e517197f5b866154867f681) · [Markdown Quality snapshot](https://github.com/Hadden-Industries/markdown-quality/tree/cc3d8f70eb8a1f8218cc2393dc23d44f82b55d2b)
+
+The seven recovery checkpoints illustrate which original provider records may be needed after Actions retention expires.
+The delivery slices above own the implementation and acceptance criteria.
+Use the following donor commits to reproduce a failure or understand an OwlAPI-specific decision.
+
+### Admit the right CI execution (slices 1–3)
+
+- Slice 1 authenticates the merged PR, native check and job registration.
+  Slice 2 owns the final output write.
+  [Missing merge field](https://github.com/Hadden-Industries/json-quality/commit/8efc6d5) · [Late registration](https://github.com/Hadden-Industries/json-quality/commit/ea109dd) · [Output failure](https://github.com/Hadden-Industries/json-quality/commit/e1a250a)
+- Slice 3 checks the runner, pins, permissions and inherited deadlines.
+  Slice 7 keeps protection bound to the authentic native check at cutover.
+  [Original hosts](https://github.com/Hadden-Industries/markdown-quality/commit/99754bb) · [Literal checkout pins](https://github.com/Hadden-Industries/markdown-quality/commit/4851c6a) · [Disabled setup](https://github.com/Hadden-Industries/markdown-quality/commit/ccbffa4) · [Check rebinding](https://github.com/Hadden-Industries/json-quality/commit/5982395) · [Inherited permissions](https://github.com/Hadden-Industries/json-quality/commit/558089f) · [Inherited deadlines](https://github.com/Hadden-Industries/json-quality/commit/9b94806)
+- Slice 3 isolates caller-controlled input.
+  OwlAPI qualifies its own package and installed consumers.
+  Apply the upstream identity and attribution checks to the Java, ScanCode, benchmark and rights lanes.
+  The donor-specific CodeQL model, C++ sanitizer matrix and Snapper build remain specific to their products.
+  [Caller approval](https://github.com/Hadden-Industries/markdown-quality/commit/135df4d) · [Owner summary](https://github.com/Hadden-Industries/markdown-quality/commit/44cc70c) · [Trusted qualification](https://github.com/Hadden-Industries/json-quality/commit/6d0b6b5) · [Upstream license identity](https://github.com/Hadden-Industries/markdown-quality/commit/0b81f23)
+
+### Transport and qualify the original bytes (slices 1–5)
+
+- Slice 3 recovers the native upload identity.
+  Slice 2 consumes it through bounded, authenticated downloads.
+  [Native handler](https://github.com/Hadden-Industries/json-quality/commit/b4bb9c7) · [Literal names](https://github.com/Hadden-Industries/json-quality/commit/8879fcc) · [Named reconciliation](https://github.com/Hadden-Industries/json-quality/commit/1ee3734) · [Slow bodies](https://github.com/Hadden-Industries/json-quality/commit/6b6db5f)
+- Slice 3 qualifies cold npm startup.
+  Slice 5 verifies the recipient's actual dependency graph and lock.
+  [Recipient SBOM](https://github.com/Hadden-Industries/json-quality/commit/406551b) · [Hoisted installs](https://github.com/Hadden-Industries/json-quality/commit/fd235e4) · [Native npm response](https://github.com/Hadden-Industries/json-quality/commit/71a3f81) · [Original lock policy](https://github.com/Hadden-Industries/markdown-quality/commit/8e04d32) · [Cold registry read](https://github.com/Hadden-Industries/markdown-quality/commit/b002b7a)
+- Slice 2 determines whether a security, rights or benchmark result still satisfies its release obligation.
+  [Complete promotion bundle](https://github.com/Hadden-Industries/json-quality/commit/3bdcb9e) · [Benchmark evidence](https://github.com/Hadden-Industries/json-quality/commit/1b75a32) · [Exact-source audits](https://github.com/Hadden-Industries/markdown-quality/commit/ed55271)
+
+### Registry and GitHub writes
+
+- Slice 4 reconciles private staging against the original attempt.
+  Slice 5 applies the same shared-writer history to archive and label changes.
+  [Version scope](https://github.com/Hadden-Industries/json-quality/commit/d760b74) · [Original writer](https://github.com/Hadden-Industries/json-quality/commit/3d4db71) · [Startup refusal](https://github.com/Hadden-Industries/markdown-quality/commit/772b0b7) · [Acknowledged stage](https://github.com/Hadden-Industries/json-quality/commit/3593a33)
+- Slice 5 owns explicit pilot retirement, independent readback and signed settlement of an authenticated refusal.
+  [JSON retirement and authorization](https://github.com/Hadden-Industries/json-quality/commit/9d5d96b) · [Rejected request settlement](https://github.com/Hadden-Industries/json-quality/commit/f3c0a7a) · [Scoped endpoint](https://github.com/Hadden-Industries/markdown-quality/commit/218b864) · [Propagation](https://github.com/Hadden-Industries/json-quality/commit/4222741)
+- Slices 3 and 4 cover the cold process, dispatch inputs and reservations.
+  Slice 7 checks actual scheduling and npm first-use readiness.
+  [Cold fixture](https://github.com/Hadden-Industries/json-quality/commit/e740596) · [Selected job outcomes](https://github.com/Hadden-Industries/json-quality/commit/5b95040) · [Skipped writer](https://github.com/Hadden-Industries/markdown-quality/commit/b4e23aa) · [npm connection timing](https://docs.npmjs.com/trusted-publishers/#trusted-publisher-configuration-expiry)
+
+### Recover signed history without retaining every build (slices 5–7)
+
+- Slice 5 verifies both immutable archive layouts with normal read credentials.
+  [Empty logs](https://github.com/Hadden-Industries/markdown-quality/commit/cf09398) · [Existing archive read](https://github.com/Hadden-Industries/markdown-quality/commit/e07f5ab) · [Attestation delay](https://github.com/Hadden-Industries/json-quality/commit/027f16c) · [Retained IDs](https://github.com/Hadden-Industries/json-quality/commit/1ed6479)
+- Slice 6 verifies signed history re-export and replay before early retirement of any required Actions copy.
+  [Signed tag fetch](https://github.com/Hadden-Industries/markdown-quality/commit/9093122) · [Preserved subjects](https://github.com/Hadden-Industries/markdown-quality/commit/749a07c) · [Compact signed history](https://github.com/Hadden-Industries/markdown-quality/commit/7158e52) · [Checkpoint readiness](https://github.com/Hadden-Industries/json-quality/commit/5b95040)
+- Slice 7 retains the exact historical exceptions.
+  OwlAPI publishes one package to three recipient platforms.
+  The donor package-family synchronization, native-first staging order and provenance fallback for expired legacy runs do not transfer.
+  [Family operations](https://github.com/Hadden-Industries/json-quality/commit/a905df9) · [Legacy provenance recovery](https://github.com/Hadden-Industries/markdown-quality/commit/c1ba982)
 
 ## Focused verification handoff
 
