@@ -6,6 +6,7 @@
 - [Browse the API](../API.md) and [choose a behavior profile](compatibility/behavior-profiles.md).
 - [Read the 0.1.0 release notes](../CHANGELOG.md#010) and [upgrade to 0.1.0](migration/0.1.0-java-api-parity.md).
 - [Find package versions and release assets](../README.md#release-status).
+- [See the work behind OwlAPI](development-investment.md).
 
 ## Contribute
 

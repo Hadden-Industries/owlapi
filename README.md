@@ -395,6 +395,13 @@ The implementation was authored specifications-first.
 Public standards, observable Java OWLAPI behaviour, generated reference fixtures, and recorded legacy observations supplied requirements and test evidence; Java or legacy implementation source was not transliterated into the package.
 The provenance policy and reconstructed-history evidence are available under [`docs/provenance`](https://github.com/Hadden-Industries/owlapi/tree/main/docs/provenance).
 
+### The work behind OwlAPI
+
+The base-case estimate for reproducing the development work behind OwlAPI 0.1.0 is **27,550 team hours** for a US-based team.
+The estimated **US$3.64 million** covers implementation, conformance testing, Java compatibility work, and releases, including allowances for outside counsel and direct expenses.
+
+[See what the rebuild estimate covers](https://github.com/Hadden-Industries/owlapi/blob/main/docs/development-investment.md).
+
 ## Runtime behaviour and privacy
 
 The library itself does not collect personal data.
@@ -413,7 +420,7 @@ Copyright © 2026 Maksym Shostak.
 
 Project stewardship: [HADDEN INDUSTRIES LTD](https://data.companieshouse.gov.uk/doc/company/07862561), registered in England and Wales under company number 07862561.
 
-Licensed under the [GNU Affero General Public License, version 3 only](https://www.gnu.org/licenses/agpl-3.0.html) (`AGPL-3.0-only`).
+OwlAPI is available at no charge under the [GNU Affero General Public License, version 3 only](https://www.gnu.org/licenses/agpl-3.0.html) (`AGPL-3.0-only`).
 The complete, unmodified licence text is included in [`LICENSE`](./LICENSE).
 
 Dependencies and deliberately retained third-party materials remain under their own licences; the package licence does not relicense them.
