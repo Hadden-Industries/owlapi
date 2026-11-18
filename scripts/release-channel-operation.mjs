@@ -2,7 +2,10 @@ import {
   readAcknowledgedInventory,
   readWorkflowRuns,
 } from "./github-evidence-reader.mjs";
-import { selectArtifactGroups } from "../tooling/artifact-transport/identity.mjs";
+import {
+  matchesLogicalArtifact,
+  selectArtifactGroups,
+} from "../tooling/artifact-transport/identity.mjs";
 import assert from "node:assert/strict";
 import { isDeepStrictEqual } from "node:util";
 import { setTimeout as delay } from "node:timers/promises";
@@ -388,8 +391,37 @@ async function readLegacyRefusalReceipt(
   assert.ok(Number.isSafeInteger(artifactId) && artifactId > 0);
   assert.match(digest, /^sha256:[a-f0-9]{64}$/u);
   const logical = "release-classification-" + runId + "-" + attempt;
+  const seen = new Map();
+  const identity = (artifact) => [
+    artifact.name,
+    artifact.digest,
+    artifact.size_in_bytes,
+    artifact.created_at,
+    artifact.expired,
+    artifact.workflow_run,
+  ];
   const inventory = await readAcknowledgedInventory(
-    (path, options) => client.read(path, options),
+    async (path, options) => {
+      const result = await client.read(path, options);
+      for (const artifact of result.artifacts ?? []) {
+        if (
+          matchesLogicalArtifact(artifact.name, logical, {
+            run: runId,
+            attempt,
+          })
+        ) {
+          const snapshot = identity(artifact);
+          if (seen.has(artifact.id))
+            assert.deepEqual(
+              snapshot,
+              seen.get(artifact.id),
+              "Refusal transport inventory changed",
+            );
+          seen.set(artifact.id, snapshot);
+        }
+      }
+      return result;
+    },
     runId,
     [String(artifactId)],
   );
@@ -398,6 +430,11 @@ async function readLegacyRefusalReceipt(
     run: runId,
     attempt,
   }).get(logical);
+  assert.equal(
+    replicas.length,
+    seen.size,
+    "Refusal transport inventory changed",
+  );
   const selected = replicas.find((item) => item.id === artifactId);
   assert.ok(
     selected && selected.digest === digest,

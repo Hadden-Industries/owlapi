@@ -2023,11 +2023,17 @@ test("artifact-bound refusal dispositions still use the original verify ZIP", as
   };
   const artifacts = [artifact, retry];
   let listingReads = 0;
+  let omitRetryAfterAdmission = false;
   const client = {
     read: (path) => {
       if (path.includes("/jobs?")) return { total_count: 1, jobs: [job] };
       if (path.includes("/artifacts?")) {
-        const listed = listingReads++ === 0 ? [retry] : artifacts;
+        const listed =
+          listingReads++ === 0
+            ? [retry]
+            : omitRetryAfterAdmission
+              ? [artifact]
+              : artifacts;
         return { total_count: listed.length, artifacts: listed };
       }
       if (path.endsWith("/artifacts/75")) return artifact;
@@ -2064,6 +2070,11 @@ test("artifact-bound refusal dispositions still use the original verify ZIP", as
   retry.size_in_bytes = retryZip.length;
   await expect(verify(verification)).rejects.toThrow(
     "Conflicting refusal retry",
+  );
+  listingReads = 0;
+  omitRetryAfterAdmission = true;
+  await expect(verify(verification)).rejects.toThrow(
+    "Refusal transport inventory changed",
   );
   artifacts.pop();
   await expect(
