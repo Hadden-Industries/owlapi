@@ -19,7 +19,7 @@ build = [
 
 [tool.uv]
 package = false
-required-version = "==0.13.7"
+required-version = "==0.13.9"
 # Plugincode 32.0.0 marks hook classes, which Pluggy 1.7 no longer discovers.
 # Remove after a Plugincode/Pluggy update passes native ScanCode qualification.
 constraint-dependencies = ["pluggy<1.7"]
