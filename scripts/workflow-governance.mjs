@@ -693,11 +693,11 @@ const operationJobs = {
     seal: [githubAuthority, "release-manual"],
   },
   "release-labels.yml": {
-    npm: [{ ...npmAuthority, checks: "read" }, "npm-tags"],
+    npm: [npmAuthority, "npm-tags"],
   },
   "release-classification.yml": {
     github: [githubAuthority, "release-manual"],
-    verify: [readAuthority],
+    verify: [{ ...npmAuthority, attestations: "write" }],
   },
   "release-registry.yml": {
     registry: [readAuthority],
@@ -726,6 +726,42 @@ function validateOperationJobs(file, workflow, violations) {
       file + ":" + name + " operation authority or environment changed",
     );
     if (!job || !Object.values(permissions).includes("write")) continue;
+    if (file === "release-classification.yml" && name === "verify") {
+      const [, , verify, attest, bundle] = job.steps;
+      add(
+        violations,
+        job.if ===
+          "github.repository == 'Hadden-Industries/owlapi' && github.ref == 'refs/heads/main' && inputs.operation == 'verify'" &&
+          isDeepStrictEqual(
+            job.steps.map((step) => step.uses?.split("@")[0] ?? step.run),
+            [
+              "actions/checkout",
+              SHARED_SETUP,
+              "node scripts/release-channel-operation.mjs verify",
+              "actions/attest",
+              'cp -- "$BUNDLE_PATH" .release/followup/verify.sigstore.json',
+              RETAIN_ARTIFACT,
+            ],
+          ) &&
+          verify?.id === "verification" &&
+          isDeepStrictEqual(verify.env, {
+            GH_TOKEN: "${{ github.token }}",
+            HISTORY_OBJECT: "${{ inputs.history_object }}",
+          }) &&
+          attest?.id === "refusal_attestation" &&
+          attest.if === "steps.verification.outputs.refusal == 'true'" &&
+          isDeepStrictEqual(attest.with, {
+            "subject-path": ".release/followup/verify.json",
+          }) &&
+          bundle?.if === "steps.refusal_attestation.outcome == 'success'" &&
+          isDeepStrictEqual(bundle.env, {
+            BUNDLE_PATH: "${{ steps.refusal_attestation.outputs.bundle-path }}",
+          }) &&
+          !JSON.stringify(job).includes("secrets."),
+        file + ": verify may attest only the native refusal receipt",
+      );
+      continue;
+    }
     const command =
       file === "stage-release.yml"
         ? 'node "$GITHUB_WORKSPACE/scripts/staged-release-entry.mjs" stage'

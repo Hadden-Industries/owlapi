@@ -1035,6 +1035,18 @@ describe("repository workflow governance", () => {
     );
     expect(violations.join("\n")).toContain("operation authority");
   });
+  test("limits refusal attestations to the exact verifier output on main", () => {
+    const violations = mutateWorkflow("release-classification.yml", (doc) => {
+      const steps = doc.getIn(["jobs", "verify", "steps"]);
+      const attest = steps.items.find(
+        (step) => step.get("id") === "refusal_attestation",
+      );
+      attest.setIn(["with", "subject-path"], ".release/followup/*");
+    });
+    expect(violations.join("\n")).toContain(
+      "verify may attest only the native refusal receipt",
+    );
+  });
   test("the checked-in controls match the closed Phase 19 workflow policy", () => {
     const report = auditRepositoryControls();
 

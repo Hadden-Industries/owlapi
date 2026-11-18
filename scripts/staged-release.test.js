@@ -1847,7 +1847,7 @@ test("a retained refusal excerpt cannot replace a complete native log", () => {
   ).toEqual(complete);
 });
 
-test("legacy refusal receipts replay live and a native check authenticates archived verifier bytes", async () => {
+test("legacy refusal receipts replay live and signed provenance authenticates archived verifier bytes", async () => {
   const legacy = {
     state: "REQUEST_REFUSED",
     logSha256: hash(bytes),
@@ -1870,65 +1870,55 @@ test("legacy refusal receipts replay live and a native check authenticates archi
     readRefusalVerification({}, {}, { ...observed, origin: {} }),
   ).rejects.toThrow("original read-only");
 
-  const repo = { id: 44, full_name: "Hadden-Industries/owlapi" };
   const receipt = Buffer.from(canonicalJson(observed));
-  const run = {
-    id: 21,
-    run_attempt: 1,
-    head_sha: sha,
-    head_branch: "main",
-    check_suite_id: 101,
-    path: ".github/workflows/release-classification.yml",
-    event: "workflow_dispatch",
-    status: "completed",
-    conclusion: "success",
-    repository: repo,
-    head_repository: repo,
+  const bundle = Buffer.from("fixture provenance");
+  const repository = "Hadden-Industries/owlapi";
+  const source = "https://github.com/" + repository;
+  const invocation = source + "/actions/runs/21/attempts/1";
+  const certificate = {
+    sourceRepositoryIdentifier: "1347610640",
+    buildTrigger: "workflow_dispatch",
+    runInvocationURI: invocation,
   };
-  const job = {
-    id: 89,
-    name: "verify",
-    run_id: 21,
-    run_attempt: 1,
-    head_sha: sha,
-    status: "completed",
-    conclusion: "success",
-    check_run_url:
-      "https://api.github.com/repos/" + repo.full_name + "/check-runs/89",
-    steps: [
-      { name: "Settle release classification (verify)", conclusion: "success" },
-    ],
-  };
-  const check = {
-    id: 89,
-    app: { id: 15368 },
-    check_suite: { id: 101 },
-    head_sha: sha,
-    name: "verify",
-    status: "completed",
-    conclusion: "success",
-    details_url:
-      "https://github.com/" + repo.full_name + "/actions/runs/21/job/89",
-  };
-  const notes = [
-    {
-      title: "OwlAPI refusal verification",
-      message: "sha256:" + hash(receipt),
-      annotation_level: "notice",
-    },
-  ];
-  const client = {
-    read: (path) => {
-      if (path.includes("/artifacts"))
-        throw Error("The verifier ZIP has expired");
-      if (path.includes("/jobs?")) return { total_count: 1, jobs: [job] };
-      if (path.includes("/annotations?")) return notes;
-      if (path.startsWith("/check-runs/")) return check;
-      return run;
-    },
+  let verificationStatus = 0;
+  const spawn = (executable, args) => {
+    expect(executable).toBe("gh");
+    expect(args).toEqual([
+      "attestation",
+      "verify",
+      expect.stringContaining("verify.json"),
+      "--bundle",
+      expect.stringContaining("verify.sigstore.json"),
+      "--hostname",
+      "github.com",
+      "--repo",
+      repository,
+      "--cert-identity",
+      source + "/.github/workflows/release-classification.yml@refs/heads/main",
+      "--source-ref",
+      "refs/heads/main",
+      "--source-digest",
+      sha,
+      "--signer-digest",
+      sha,
+      "--deny-self-hosted-runners",
+      "--format",
+      "json",
+    ]);
+    expect(readFileSync(args[2])).toEqual(receipt);
+    expect(readFileSync(args[4])).toEqual(bundle);
+    return {
+      status: verificationStatus,
+      stdout: JSON.stringify([
+        { verificationResult: { signature: { certificate } } },
+      ]),
+    };
   };
   const checkpoint = {
-    files: new Map([["label-refusal-verify-21-1.json", receipt]]),
+    files: new Map([
+      ["label-refusal-verify-21-1.json", receipt],
+      ["label-refusal-verify-21-1.sigstore.json", bundle],
+    ]),
   };
   const disposition = {
     ...observed,
@@ -1936,23 +1926,108 @@ test("legacy refusal receipts replay live and a native check authenticates archi
     verification: { runId: "21", attempt: "1", controller: sha },
   };
   const verify = (record) =>
-    readRefusalVerification(client, checkpoint, record);
+    readRefusalVerification({}, checkpoint, record, { spawn });
   await expect(verify(disposition)).resolves.toEqual(nativeLog);
   await expect(
     verify({ ...disposition, nativeLog: { ...nativeLog, bytes: 5 } }),
   ).rejects.toThrow("original native verifier output");
-  notes.push({ ...notes[0] });
-  await expect(verify(disposition)).rejects.toThrow("ambiguous");
-  notes.pop();
-  checkpoint.files.set(
-    "label-refusal-verify-21-1.json",
-    Buffer.from("clipped"),
-  );
-  await expect(verify(disposition)).rejects.toThrow("original native check");
-  check.app.id = 44;
-  await expect(verify(disposition)).rejects.toThrow(
-    "native GitHub Actions check",
-  );
+  certificate.runInvocationURI = source + "/actions/runs/21/attempts/2";
+  await expect(verify(disposition)).rejects.toThrow("verifier attempt");
+  certificate.runInvocationURI = invocation;
+  certificate.sourceRepositoryIdentifier = "77";
+  await expect(verify(disposition)).rejects.toThrow("verifier attempt");
+  certificate.sourceRepositoryIdentifier = "1347610640";
+  verificationStatus = 1;
+  await expect(verify(disposition)).rejects.toThrow("attestation");
+  checkpoint.files.delete("label-refusal-verify-21-1.sigstore.json");
+  await expect(verify(disposition)).rejects.toThrow("attestation bundle");
+});
+
+test("artifact-bound refusal dispositions still use the original verify ZIP", async () => {
+  const observed = {
+    state: "REQUEST_REFUSED",
+    nativeLog: {
+      source: "COMPLETE_NATIVE_JOB_LOG",
+      bytes: bytes.length,
+      sha256: hash(bytes),
+    },
+  };
+  const zip = zipArchive([
+    { path: "verify.json", content: Buffer.from(canonicalJson(observed)) },
+  ]);
+  const repository = { full_name: "Hadden-Industries/owlapi" };
+  const run = {
+    id: 21,
+    run_attempt: 1,
+    head_sha: sha,
+    head_branch: "main",
+    path: ".github/workflows/release-classification.yml",
+    event: "workflow_dispatch",
+    status: "completed",
+    conclusion: "success",
+    repository,
+    head_repository: repository,
+  };
+  const job = {
+    name: "verify",
+    run_id: 21,
+    run_attempt: 1,
+    head_sha: sha,
+    status: "completed",
+    conclusion: "success",
+    steps: [
+      { name: "Settle release classification (verify)", conclusion: "success" },
+      {
+        name: "Retain original operation evidence",
+        conclusion: "success",
+        started_at: "2026-11-18T10:00:00Z",
+        completed_at: "2026-11-18T10:01:00Z",
+      },
+    ],
+  };
+  const artifact = {
+    id: 75,
+    name: physicalName({
+      logical: "release-classification-21-1",
+      run: 21,
+      attempt: 1,
+      producer: "b".repeat(16),
+      invocation: "9".repeat(32),
+      ordinal: 0,
+    }),
+    expired: false,
+    created_at: "2026-11-18T10:00:30Z",
+    size_in_bytes: zip.length,
+    digest: "sha256:" + hash(zip),
+    workflow_run: { id: 21, head_sha: sha },
+  };
+  const client = {
+    read: (path) => {
+      if (path.includes("/jobs?")) return { total_count: 1, jobs: [job] };
+      if (path.includes("/artifacts?"))
+        return { total_count: 1, artifacts: [artifact] };
+      if (path.endsWith("/artifacts/75")) return artifact;
+      return run;
+    },
+  };
+  const verification = {
+    runId: "21",
+    attempt: "1",
+    controller: sha,
+    artifactId: artifact.id,
+    digest: artifact.digest,
+  };
+  const verify = (binding) =>
+    readRefusalVerification(
+      client,
+      {},
+      { ...observed, verification: binding },
+      { download: async () => zip },
+    );
+  await expect(verify(verification)).resolves.toEqual(observed.nativeLog);
+  await expect(
+    verify({ ...verification, digest: "sha256:" + "0".repeat(64) }),
+  ).rejects.toThrow();
 });
 test("seal requires fresh native settings at the documented level and can renew the original operation", () => {
   const now = Date.parse("2026-11-13T22:00:00Z");
