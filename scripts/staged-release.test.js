@@ -61,8 +61,10 @@ import {
 import {
   planChannels,
   applyLabels,
+  assertRefusalDisposition,
   nativePilotRefusal,
   originalPilotLog,
+  readRefusalVerification,
   verifyPilotRefusalLog,
 } from "./release-channel-operation.mjs";
 import { RegistryReadError } from "./public-registry-read.mjs";
@@ -1843,6 +1845,113 @@ test("a retained refusal excerpt cannot replace a complete native log", () => {
       sha256: hash(complete),
     }),
   ).toEqual(complete);
+});
+
+test("live refusal replay accepts legacy receipts and expiry requires the original verify artifact", async () => {
+  const legacy = {
+    state: "REQUEST_REFUSED",
+    logSha256: hash(bytes),
+    runId: "10",
+    jobId: 12,
+    attempt: "1",
+    stepCompletedAt: "2026-11-17T12:00:01Z",
+    operationSha256: hash(sha),
+  };
+  const nativeLog = {
+    source: "COMPLETE_NATIVE_JOB_LOG",
+    bytes: bytes.length,
+    sha256: hash(bytes),
+  };
+  const observed = { ...legacy, nativeLog };
+  expect(() =>
+    assertRefusalDisposition({ ...legacy, origin: {} }, observed),
+  ).not.toThrow();
+  await expect(
+    readRefusalVerification({}, { ...observed, origin: {} }),
+  ).rejects.toThrow("original read-only");
+  const repo = { id: 44, full_name: "Hadden-Industries/owlapi" };
+  const archive = zipArchive([
+    { path: "verify.json", content: Buffer.from(canonicalJson(observed)) },
+  ]);
+  const run = {
+    id: 21,
+    run_attempt: 1,
+    head_sha: sha,
+    head_branch: "main",
+    path: ".github/workflows/release-classification.yml",
+    event: "workflow_dispatch",
+    status: "completed",
+    conclusion: "success",
+    repository: repo,
+    head_repository: repo,
+  };
+  const artifact = {
+    id: 42,
+    expired: false,
+    created_at: "2026-11-17T12:00:11Z",
+    digest: "sha256:" + hash(archive),
+    size_in_bytes: archive.length,
+    workflow_run: {
+      id: run.id,
+      head_sha: sha,
+      repository_id: repo.id,
+      head_repository_id: repo.id,
+    },
+    name: physicalName({
+      logical: "release-classification-21-1",
+      run: 21,
+      attempt: 1,
+      producer: "b".repeat(16),
+      invocation: "9".repeat(32),
+      ordinal: 0,
+    }),
+  };
+  const job = {
+    id: 89,
+    name: "verify",
+    run_id: 21,
+    run_attempt: 1,
+    head_sha: sha,
+    status: "completed",
+    conclusion: "success",
+    steps: [
+      { name: "Settle release classification (verify)", conclusion: "success" },
+      {
+        name: "Retain original operation evidence",
+        conclusion: "success",
+        started_at: "2026-11-17T12:00:08Z",
+        completed_at: "2026-11-17T12:00:15Z",
+      },
+    ],
+  };
+  const client = {
+    read: (path) => {
+      if (path.startsWith("/actions/artifacts/")) return artifact;
+      if (path.includes("/artifacts?"))
+        return { total_count: 1, artifacts: [artifact] };
+      if (path.includes("/jobs?")) return { total_count: 1, jobs: [job] };
+      return run;
+    },
+  };
+  const disposition = {
+    ...observed,
+    origin: {},
+    verification: {
+      runId: "21",
+      attempt: "1",
+      controller: sha,
+      artifactId: artifact.id,
+      digest: artifact.digest,
+    },
+  };
+  const verify = (record) =>
+    readRefusalVerification(client, record, () => archive);
+  await expect(verify(disposition)).resolves.toEqual(nativeLog);
+  await expect(
+    verify({ ...disposition, nativeLog: { ...nativeLog, bytes: 5 } }),
+  ).rejects.toThrow("original native verifier output");
+  job.steps[0].conclusion = "skipped";
+  await expect(verify(disposition)).rejects.toThrow();
 });
 
 test("seal requires fresh native settings at the documented level and can renew the original operation", () => {

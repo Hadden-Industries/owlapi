@@ -329,6 +329,11 @@ export function verifyPilotRefusalLog({ bytes, step, proof, operationSha256 }) {
   return hash(bytes);
 }
 
+const nativeLogExpired = (result) =>
+  !result.error &&
+  result.status === 1 &&
+  /^gh: [^\r\n]+ \(HTTP (?:404|410)\)\s*$/u.test(String(result.stderr));
+
 export function originalPilotLog(result, retained, receipt) {
   if (!result.error && result.status === 0) {
     if (retained)
@@ -338,12 +343,8 @@ export function originalPilotLog(result, retained, receipt) {
       );
     return result.stdout;
   }
-  const expired =
-    !result.error &&
-    result.status === 1 &&
-    /^gh: [^\r\n]+ \(HTTP (?:404|410)\)\s*$/u.test(String(result.stderr));
   assert.ok(
-    expired &&
+    nativeLogExpired(result) &&
       retained &&
       receipt?.source === "COMPLETE_NATIVE_JOB_LOG" &&
       receipt.bytes === retained.length &&
@@ -351,6 +352,100 @@ export function originalPilotLog(result, retained, receipt) {
     "The full native job log or a verified expiry fallback is required",
   );
   return retained;
+}
+
+function refusalOutcome(disposition) {
+  const outcome = { ...disposition };
+  delete outcome.origin;
+  delete outcome.verification;
+  return outcome;
+}
+
+// An owner's archive can supply the expired log, but the independent verifier's
+// original workflow artifact must establish which complete log it observed.
+export async function readRefusalVerification(
+  client,
+  disposition,
+  download = originalBytes,
+) {
+  const verification = disposition?.verification;
+  const expected = refusalOutcome(disposition);
+  assert.ok(
+    expected.nativeLog && verification,
+    "Missing original read-only refusal verification",
+  );
+  const { runId, attempt, controller, artifactId, digest } = verification;
+  assert.match(String(runId), /^[1-9]\d{0,15}$/u);
+  assert.match(String(attempt), /^[1-9]\d{0,3}$/u);
+  assert.match(controller, /^[a-f0-9]{40}$/u);
+  assert.match(digest, /^sha256:[a-f0-9]{64}$/u);
+  const artifact = await originArtifact(client, {
+    runId,
+    attempt,
+    commit: controller,
+    artifactId,
+    logical: "release-classification-" + runId + "-" + attempt,
+    filename: ".github/workflows/release-classification.yml",
+  });
+  assert.equal(artifact.expired, false);
+  assert.equal(artifact.digest, digest);
+  assert.equal(artifact.id, artifactId);
+  const jobs = await client.read(
+    "/actions/runs/" + runId + "/attempts/" + attempt + "/jobs?per_page=100",
+  );
+  assert.equal(jobs.total_count, jobs.jobs.length);
+  const writers = jobs.jobs.filter((job) => job.name === "verify");
+  assert.equal(writers.length, 1);
+  const [job] = writers;
+  assert.deepEqual(
+    [
+      String(job.run_id),
+      String(job.run_attempt),
+      job.head_sha,
+      job.status,
+      job.conclusion,
+    ],
+    [String(runId), String(attempt), controller, "completed", "success"],
+  );
+  const verifySteps = job.steps.filter(
+    (step) => step.name === "Settle release classification (verify)",
+  );
+  assert.equal(verifySteps.length, 1);
+  assert.equal(verifySteps[0].conclusion, "success");
+  const uploads = job.steps.filter(
+    (step) => step.name === "Retain original operation evidence",
+  );
+  assert.equal(uploads.length, 1);
+  const [upload] = uploads;
+  assert.equal(upload.conclusion, "success");
+  const created = Date.parse(artifact.created_at);
+  assert.ok(
+    created >= Date.parse(upload.started_at) &&
+      created <= Date.parse(upload.completed_at),
+  );
+  const files = readZipArchiveFilesWith(
+    await download(client, artifact, 64 * 1024),
+    {
+      crc32,
+      expectedNames: new Set(["verify.json"]),
+      maximumUncompressedBytes: 64 * 1024,
+    },
+  );
+  assert.equal(files.length, 1);
+  const observed = JSON.parse(files[0].content);
+  assert.deepEqual(
+    observed,
+    expected,
+    "Signed refusal differs from the original native verifier output",
+  );
+  return observed.nativeLog;
+}
+
+export function assertRefusalDisposition(disposition, observed) {
+  const expected = refusalOutcome(disposition);
+  const compared = { ...observed };
+  if (expected.nativeLog === undefined) delete compared.nativeLog;
+  assert.deepEqual(expected, compared);
 }
 
 async function observePilotRefusal(
@@ -465,7 +560,10 @@ async function observePilotRefusal(
     ["api", "repos/" + repository + "/actions/jobs/" + job.id + "/logs"],
     { env, timeout: 20000, maxBuffer: 4 * 1024 * 1024 },
   );
-  const nativeLog = originalPilotLog(fetched, savedLog, verified?.nativeLog);
+  const reference = nativeLogExpired(fetched)
+    ? await readRefusalVerification(client, verified)
+    : undefined;
+  const nativeLog = originalPilotLog(fetched, savedLog, reference);
   const logSha256 = verifyPilotRefusalLog({
     bytes: nativeLog,
     step: steps[0],
@@ -678,7 +776,7 @@ async function main() {
               undefined,
               prior,
             );
-            assert.deepEqual(prior, { ...observed, origin: prior.origin });
+            assertRefusalDisposition(prior, observed);
             continue;
           }
           assert.ok(["SETTLED", "RECONCILED"].includes(prior.state));

@@ -221,6 +221,8 @@ The verifier requires the original failed step and a complete matching npm `E401
 Include its original proof in the signed disposition before authorizing a new operation with fresh preimages.
 Retain disclosure-reviewed original native job metadata and exact log bytes as `label-refusal-RUN-1.log`, bound by `origin.logSha256`, for verification after Actions expiry.
 Preserve the verifier's `COMPLETE_NATIVE_JOB_LOG` receipt, including exact byte length and digest, in the signed refusal disposition.
+For fallback after the native job log expires, bind `verification` to the original read-only classification run's `runId`, `attempt`, `controller`, numeric `artifactId` and ZIP `digest`.
+The writer opens that native artifact and compares its `verify.json` with the signed disposition.
 
 After npm acknowledges a label write, the writer allows up to five minutes for the public tag map to converge.
 It polls only while the previous approved map is visible or a registry read is transiently unavailable.
