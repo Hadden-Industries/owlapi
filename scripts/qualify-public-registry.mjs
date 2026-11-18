@@ -3,7 +3,6 @@ import {
   publicationObservation,
 } from "./release-publication-history.mjs";
 import { spawnSync } from "node:child_process";
-import { createHash } from "node:crypto";
 import {
   mkdtempSync,
   readFileSync,
@@ -16,9 +15,8 @@ import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
-import { inspectReleaseDocumentation } from "./release-documentation.mjs";
+import { inspectReleaseDocumentationContents } from "./release-documentation.mjs";
 import { observeRegistryDocumentation } from "./registry-documentation.mjs";
-import { sha256Buffer } from "./release-file-utils.mjs";
 import {
   PACKAGE_NAME,
   PACKAGE_VERSION,
@@ -31,7 +29,10 @@ import {
   publicConsumerOverrides,
 } from "./public-registry-consumer.mjs";
 import { verifyRegistryProvenance } from "./registry-provenance.mjs";
-import { waitForReleaseAvailability } from "./release-availability.mjs";
+import {
+  verifyRegistryTarball,
+  waitForReleaseAvailability,
+} from "./release-availability.mjs";
 import { GitHubReleaseClient } from "./github-release.mjs";
 import { RECOVERY_JOBS } from "./rc3-recovery-policy.mjs";
 import {
@@ -110,17 +111,6 @@ export const assertPublicRegistryFacts = (facts) =>
 /** Read-only historical recovery; never authorizes a current publication. */
 export const assertHistoricalRc2PublicRegistryFacts = (facts) =>
   assertVersionedPublicRegistryFacts(facts, "0.1.0-rc.2");
-
-const verifyIntegrity = (buffer, integrity) => {
-  const match = /^sha512-(?<digest>[A-Za-z0-9+/]+={0,2})$/u.exec(integrity);
-  if (!match?.groups) {
-    throw new Error("Registry integrity is not an exact sha512 SRI value.");
-  }
-  const actual = createHash("sha512").update(buffer).digest("base64");
-  if (actual !== match.groups.digest) {
-    throw new Error("Registry tarball fails its published sha512 integrity.");
-  }
-};
 
 const readCandidate = (directory) => {
   const fileNames = readdirSync(directory);
@@ -285,6 +275,7 @@ export const qualifyPublicRegistry = async ({
       metadata,
       distTags,
       tarball: registryTarball,
+      tarballSha256: verifiedTarballSha256,
     } = await wait({
       retainedSha256: candidate.tarball.sha256,
       ...(stageOrigin
@@ -314,7 +305,14 @@ export const qualifyPublicRegistry = async ({
         log(observation);
       },
     });
-    verifyIntegrity(registryTarball, metadata.dist?.integrity);
+    // Only the built-in waiter has checked these exact bytes against both digests.
+    const tarballSha256 =
+      wait === waitForReleaseAvailability
+        ? verifiedTarballSha256
+        : verifyRegistryTarball(registryTarball, {
+            retainedSha256: candidate.tarball.sha256,
+            integrity: metadata.dist?.integrity,
+          });
     if (stageOrigin && candidate.integrity !== metadata.dist.integrity)
       throw new Error(
         "Public registry differs from the qualified npm integrity.",
@@ -325,22 +323,22 @@ export const qualifyPublicRegistry = async ({
           channel: stageOrigin.channel,
           distTags,
           integrity: metadata.dist.integrity,
-          tarballSha256: sha256Buffer(registryTarball),
+          tarballSha256,
         }
       : assertPublicRegistryFacts({
           expectedVersion: version,
           retainedSha256: candidate.tarball.sha256,
           metadata,
           distTags,
-          registryTarballSha256: sha256Buffer(registryTarball),
+          registryTarballSha256: tarballSha256,
         });
     const manifest = JSON.parse(
       readFileSync(new URL("../package.json", import.meta.url), "utf8"),
     );
-    const documentation = inspectReleaseDocumentation(
-      registryTarball,
-      manifest,
-    );
+    const documentation = {
+      ...inspectReleaseDocumentationContents(registryTarball, manifest),
+      tarballSha256,
+    };
     const { consumer, provenance } = await verifyConsumers(
       metadata,
       registryTarball,

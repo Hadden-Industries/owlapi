@@ -11,6 +11,7 @@ import {
   readPublicRegistry,
   RegistryReadError,
 } from "./public-registry-read.mjs";
+import { sha256Buffer } from "./release-file-utils.mjs";
 
 export const availabilityPolicy = JSON.parse(
   readFileSync(
@@ -26,6 +27,19 @@ export class AvailabilityIncompleteError extends Error {
     );
     this.code = "AVAILABILITY_INCOMPLETE";
   }
+}
+
+export function verifyRegistryTarball(tarball, { retainedSha256, integrity }) {
+  const tarballSha256 = sha256Buffer(tarball);
+  if (
+    tarballSha256 !== retainedSha256 ||
+    `sha512-${createHash("sha512").update(tarball).digest("base64")}` !==
+      integrity
+  )
+    throw new Error(
+      "Available registry bytes differ from the approved candidate or integrity.",
+    );
+  return tarballSha256;
 }
 
 /** Only read the submitted coordinate; available bytes are validated before waiting for channels. */
@@ -120,14 +134,10 @@ export const waitForReleaseAvailability = async ({
         );
       stage = "tarball";
       const tarball = await get(tarballUrl);
-      if (
-        createHash("sha256").update(tarball).digest("hex") !== retainedSha256 ||
-        `sha512-${createHash("sha512").update(tarball).digest("base64")}` !==
-          metadata.dist.integrity
-      )
-        throw new Error(
-          "Available registry bytes differ from the approved candidate or integrity.",
-        );
+      const tarballSha256 = verifyRegistryTarball(tarball, {
+        retainedSha256,
+        integrity: metadata.dist.integrity,
+      });
       stage = "channels";
       const distTags = await json(
         `-/package/${encodeURIComponent(PACKAGE_NAME)}/dist-tags`,
@@ -163,7 +173,7 @@ export const waitForReleaseAvailability = async ({
           attempt,
           elapsedMs: Math.ceil(now() - started),
         });
-        return { metadata, distTags, tarball };
+        return { metadata, distTags, tarball, tarballSha256 };
       }
       reason = "CHANNELS_PENDING";
     } catch (error) {

@@ -184,6 +184,11 @@ const reportFixture = () => {
       integrity: `sha512-${createHash("sha512").update(tarball).digest("base64")}`,
     },
   };
+  const available = {
+    metadata,
+    tarball,
+    distTags: { next: version, latest: version },
+  };
   const options = {
     candidate: {
       package: { version },
@@ -198,22 +203,79 @@ const reportFixture = () => {
     }),
     wait: jest.fn(async ({ observe }) => {
       observe({ state: "REGISTRY_AVAILABLE", elapsedMs: 1000 });
-      return {
-        metadata,
-        tarball,
-        distTags: { next: version, latest: version },
-      };
+      return available;
     }),
     verifyConsumers: jest.fn(async () => ({ consumer: {}, provenance: {} })),
     now: () => "2026-10-10T00:10:00Z",
     log: () => {},
   };
   return {
+    available,
     options,
     read: () => JSON.parse(readFileSync(outputPath, "utf8")),
     cleanup: () => rmSync(directory, { recursive: true, force: true }),
   };
 };
+
+test("the built-in waiter supplies the verified tarball to the report and consumer checks", async () => {
+  const f = reportFixture();
+  const { metadata, distTags, tarball } = f.available;
+  delete f.options.wait;
+  const fetcher = jest
+    .spyOn(globalThis, "fetch")
+    .mockImplementation(async (url) => {
+      const path = new URL(url).pathname;
+      return new Response(
+        path.endsWith(".tgz")
+          ? tarball
+          : JSON.stringify(path.endsWith("/dist-tags") ? distTags : metadata),
+      );
+    });
+  try {
+    const tarballSha256 = f.options.candidate.tarball.sha256;
+    expect(await qualifyPublicRegistry(f.options)).toMatchObject({
+      result: "PASS",
+      tarballSha256,
+      integrity: metadata.dist.integrity,
+      documentation: { tarballSha256 },
+    });
+    expect(fetcher).toHaveBeenCalledTimes(3);
+    expect(f.options.verifyConsumers).toHaveBeenCalledWith(
+      metadata,
+      tarball,
+      undefined,
+      undefined,
+    );
+  } finally {
+    fetcher.mockRestore();
+    f.cleanup();
+  }
+});
+
+test.each(["SHA-256", "SHA-512"])(
+  "rechecks the %s of bytes supplied by a substitute waiter",
+  async (algorithm) => {
+    const f = reportFixture();
+    try {
+      if (algorithm === "SHA-256")
+        f.options.candidate.tarball.sha256 = "0".repeat(64);
+      else
+        f.available.metadata.dist.integrity =
+          "sha512-" + Buffer.alloc(64).toString("base64");
+      f.options.wait.mockResolvedValue({
+        ...f.available,
+        tarballSha256: f.options.candidate.tarball.sha256,
+      });
+      await expect(qualifyPublicRegistry(f.options)).rejects.toThrow(
+        "Available registry bytes differ",
+      );
+      expect(f.options.verifyConsumers).not.toHaveBeenCalled();
+      expect(f.read().result).toBe("FAIL");
+    } finally {
+      f.cleanup();
+    }
+  },
+);
 
 test("retains pending observations before verification, and measures acceptance across setup delay", async () => {
   const f = reportFixture();

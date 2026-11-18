@@ -57,7 +57,9 @@ const available = (url) =>
 
 test("returns immediately when exact metadata, bytes and channels are visible", async () => {
   const h = harness(available);
-  expect(await h.run()).toMatchObject({ tarball, metadata });
+  const result = await h.run();
+  expect(result.tarball).toBe(tarball);
+  expect(result).toMatchObject({ metadata, tarballSha256: retainedSha256 });
   expect(h.sleep).not.toHaveBeenCalled();
   expect(h.observations).toEqual([
     {

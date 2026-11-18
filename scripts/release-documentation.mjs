@@ -1,7 +1,7 @@
 /** Pure, dependency-free admission over retained bytes. Never executes package code. */
-import { createHash } from "node:crypto";
 import { isDeepStrictEqual } from "node:util";
 import { readGzipTarEntries } from "./release-artifacts.mjs";
+import { sha256Buffer } from "./release-file-utils.mjs";
 
 export const DOCUMENTATION_CONTRACT = "owlapi-release-documentation-v1";
 export const DOCUMENT_BYTES_LIMIT = 2 * 1024 * 1024;
@@ -198,7 +198,7 @@ export const DOCUMENTATION_PATHS = Object.freeze([
   "docs/compatibility/behavior-profiles.md",
   "docs/compatibility/default-behavior-inventory.md",
 ]);
-export const inspectReleaseDocumentation = (
+export const inspectReleaseDocumentationContents = (
   tarball,
   expectedManifest,
   sourceFiles,
@@ -243,10 +243,22 @@ export const inspectReleaseDocumentation = (
     result: "PASS",
     contract: DOCUMENTATION_CONTRACT,
     coordinate: `${manifest.name}@${manifest.version}`,
-    tarballSha256: createHash("sha256").update(tarball).digest("hex"),
     notes,
   };
 };
+
+export const inspectReleaseDocumentation = (
+  tarball,
+  expectedManifest,
+  sourceFiles,
+) => ({
+  ...inspectReleaseDocumentationContents(
+    tarball,
+    expectedManifest,
+    sourceFiles,
+  ),
+  tarballSha256: sha256Buffer(tarball),
+});
 
 export const assertDocumentationAdmission = (report, documentation) => {
   if (
