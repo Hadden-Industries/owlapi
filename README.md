@@ -16,13 +16,13 @@ See [Node and browser support](#node-and-browser-support) for runtime requiremen
 Use the `owlapi` alias to follow the examples in this guide.
 
 ```shell
-npm install --save-exact "owlapi@npm:@hadden-industries/owlapi@0.1.0-rc.3"
+npm install --save-exact "owlapi@npm:@hadden-industries/owlapi@0.1.0"
 ```
 
 For imports that start with `@hadden-industries/owlapi`, install the scoped package directly.
 
 ```shell
-npm install --save-exact @hadden-industries/owlapi@0.1.0-rc.3
+npm install --save-exact @hadden-industries/owlapi@0.1.0
 ```
 
 <!-- release-documentation:install:end -->
@@ -74,7 +74,7 @@ The axiom count is `0` because the document declares the ontology but adds no ax
 
 <!-- release-documentation:identity:start -->
 
-This guide covers `@hadden-industries/owlapi@0.1.0-rc.3`.
+This guide covers `@hadden-industries/owlapi@0.1.0`.
 
 <!-- release-documentation:identity:end -->
 
@@ -267,7 +267,7 @@ Use the Node transport only on Node.js.
 
 <!-- release-documentation:import-map:start -->
 
-Deploy the verified `@hadden-industries/owlapi@0.1.0-rc.3` package under `/vendor/owlapi/0.1.0-rc.3/`.
+Deploy the verified `@hadden-industries/owlapi@0.1.0` package under `/vendor/owlapi/0.1.0/`.
 This example maps OwlAPI's browser entry points.
 Add mappings for the dependencies your application uses.
 
@@ -275,17 +275,17 @@ Add mappings for the dependencies your application uses.
 <script type="importmap">
 {
   "imports": {
-    "owlapi": "/vendor/owlapi/0.1.0-rc.3/index.js",
-    "owlapi/apibinding": "/vendor/owlapi/0.1.0-rc.3/apibinding/index.js",
-    "owlapi/model": "/vendor/owlapi/0.1.0-rc.3/model/index.js",
-    "owlapi/io": "/vendor/owlapi/0.1.0-rc.3/io/index.js",
-    "owlapi/formats": "/vendor/owlapi/0.1.0-rc.3/formats/index.js",
-    "owlapi/profiles": "/vendor/owlapi/0.1.0-rc.3/profiles/index.js",
-    "owlapi/util": "/vendor/owlapi/0.1.0-rc.3/util/index.js",
-    "owlapi/model/parameters": "/vendor/owlapi/0.1.0-rc.3/model/parameters/index.js",
-    "owlapi/search": "/vendor/owlapi/0.1.0-rc.3/search/index.js",
-    "owlapi/manchestersyntax/renderer": "/vendor/owlapi/0.1.0-rc.3/manchestersyntax/renderer/index.js",
-    "owlapi/modularity/locality": "/vendor/owlapi/0.1.0-rc.3/modularity/locality/index.js"
+    "owlapi": "/vendor/owlapi/0.1.0/index.js",
+    "owlapi/apibinding": "/vendor/owlapi/0.1.0/apibinding/index.js",
+    "owlapi/model": "/vendor/owlapi/0.1.0/model/index.js",
+    "owlapi/io": "/vendor/owlapi/0.1.0/io/index.js",
+    "owlapi/formats": "/vendor/owlapi/0.1.0/formats/index.js",
+    "owlapi/profiles": "/vendor/owlapi/0.1.0/profiles/index.js",
+    "owlapi/util": "/vendor/owlapi/0.1.0/util/index.js",
+    "owlapi/model/parameters": "/vendor/owlapi/0.1.0/model/parameters/index.js",
+    "owlapi/search": "/vendor/owlapi/0.1.0/search/index.js",
+    "owlapi/manchestersyntax/renderer": "/vendor/owlapi/0.1.0/manchestersyntax/renderer/index.js",
+    "owlapi/modularity/locality": "/vendor/owlapi/0.1.0/modularity/locality/index.js"
   }
 }
 </script>

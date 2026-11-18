@@ -1,4 +1,4 @@
-<!-- registry-sha256: c3e16a8fd58e735a8842cb84b84da801bb400261c60767f198d3c3cff803055d -->
+<!-- registry-sha256: c2c8267c68ee2765082fab0fba2d9d370109d6ef80424f2f8436d24e90f9601d -->
 
 # owlapi API reference
 
@@ -10,7 +10,7 @@ Import paths use the [npm alias from the installation guide](README.md#install).
 - [Check an OWL 2 DL profile](#owl2dlprofile).
 - [Find the JavaScript equivalent of a Java type](docs/compatibility/java-api-surface.md#public-bindings).
 
-API reference for `@hadden-industries/owlapi` 0.1.0-rc.3. It reflects the [compatibility registry](docs/compatibility/java-api-surface.json).
+API reference for `@hadden-industries/owlapi` 0.1.0. It reflects the [compatibility registry](docs/compatibility/java-api-surface.json).
 
 This is an independently maintained JavaScript implementation. It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project; Java names identify compatibility authorities, not organizational continuity or complete parity.
 

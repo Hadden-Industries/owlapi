@@ -1,8 +1,8 @@
-<!-- registry-sha256: c3e16a8fd58e735a8842cb84b84da801bb400261c60767f198d3c3cff803055d -->
+<!-- registry-sha256: c2c8267c68ee2765082fab0fba2d9d370109d6ef80424f2f8436d24e90f9601d -->
 
 # Java OWLAPI compatibility surface
 
-This generated view compares `@hadden-industries/owlapi` 0.1.0-rc.3 with Java OWLAPI 5.5.1 at `f760b3a4c107c6d5f90f856e5680c39b18af646f`. The JSON registry beside this file is authoritative.
+This generated view compares `@hadden-industries/owlapi` 0.1.0 with Java OWLAPI 5.5.1 at `f760b3a4c107c6d5f90f856e5680c39b18af646f`. The JSON registry beside this file is authoritative.
 
 This independently maintained JavaScript implementation is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project. Compatibility rows describe a bounded technical relationship and do not claim complete API parity.
 

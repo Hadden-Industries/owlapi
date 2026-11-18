@@ -13,7 +13,8 @@ The planning baseline was `e4bc48de00f1e50f38fd3bbbc02c044197df6fc0`.
 The owner subsequently authorized implementation and first committed the existing documentation scope in signed commit `dcad5ff2`, the implementation baseline.
 The owner accepted the R2 functional scope, local signed commits and necessary configuration changes, selected GPT-6 Astra at Extra High for Review Agent and final Codex Security review, and prohibited pushes and external reviews.
 The owner's later instructions replace duplicate HISEW administrative prerequisites, helper-witnessed evidence and additional campaigns; native tests and reviews remain authoritative.
-`package.json` still selects `0.1.0-rc.3`; a successor coordinate and publication need a separate decision.
+At this planning checkpoint, `package.json` selected `0.1.0-rc.3`.
+A successor coordinate and publication required separate decisions.
 
 The parent task's read-only HISEW applicability result is `personal`, `active: true`.
 The loaded release `78d10f49862633eff7fb157c6709af0b11470209c5dfad9858b837ae402dfa06` differs from selected release `a69680c5fa7d47f2ffb7a56d75747d7696e102ac61d3998a1481f66e5fb176fb`, generation 14, with primary failure `HOOK_SELECTION_MISMATCH`; diagnostic retention reports `RETENTION_UNAVAILABLE`, and current hook activation is not established.
