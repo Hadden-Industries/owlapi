@@ -68,18 +68,20 @@ export const CI_JOB_NAMES = Object.freeze({
   required: "CI / required",
 });
 /** GitHub expands matrix jobs; proof admission must enumerate every exact lane. */
-export const hostedCiJobNames = () =>
-  Object.entries(CI_JOB_NAMES).flatMap(([id, name]) =>
-    id === "consumer_runtimes"
-      ? [
-          name + " / Complete",
-          ...(FROZEN_RUNTIME_MATRIX?.include ?? []).map(
-            ({ runner, node }) =>
-              name + " / Consumer / " + runner + " / Node " + node,
-          ),
-        ]
-      : [id === "candidate" ? name + " / Produce" : name],
-  );
+export const hostedCiJobNames = (mode = "FULL") =>
+  mode === "REUSED"
+    ? Object.values(CI_JOB_NAMES)
+    : Object.entries(CI_JOB_NAMES).flatMap(([id, name]) =>
+        id === "consumer_runtimes"
+          ? [
+              name + " / Complete",
+              ...(FROZEN_RUNTIME_MATRIX?.include ?? []).map(
+                ({ runner, node }) =>
+                  name + " / Consumer / " + runner + " / Node " + node,
+              ),
+            ]
+          : [id === "candidate" ? name + " / Produce" : name],
+      );
 export const CHECK_JOBS = Object.freeze({
   java: "source_canonical",
   owl_contract: "owl_contract",
@@ -206,6 +208,7 @@ export const assertQualificationRecord = (record) => {
       "host",
       "jobs",
       "candidate",
+      ...(Object.hasOwn(record, "packageProof") ? ["packageProof"] : []),
       "policySha256",
       "checks",
       "source",
@@ -245,6 +248,14 @@ export const assertQualificationRecord = (record) => {
       digest(record.candidate.digest),
     "Qualification record has unsupported state, inputs or execution identity.",
   );
+  if (Object.hasOwn(record, "packageProof"))
+    fact(
+      closed(record.packageProof, ["id", "digest"]) &&
+        id(record.packageProof.id) &&
+        record.packageProof.id !== record.candidate.id &&
+        digest(record.packageProof.digest),
+      "Invalid original package proof artifact identity.",
+    );
   assertJavaReferenceState(record.javaReference, {
     role: record.role,
     mode: record.mode,

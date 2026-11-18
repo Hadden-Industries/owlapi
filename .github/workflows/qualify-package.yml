@@ -14,6 +14,8 @@ on:
         value: ${{ jobs.produce.outputs.artifact_id }}
       proof_id:
         value: ${{ jobs.produce.outputs.proof_id }}
+      proof_digest:
+        value: ${{ jobs.produce.outputs.proof_digest }}
       artifact_digest:
         value: ${{ jobs.produce.outputs.artifact_digest }}
 
@@ -40,6 +42,7 @@ jobs:
       artifact_id: ${{ steps.upload.outputs.artifact-id }}
       artifact_digest: ${{ steps.upload.outputs.artifact-digest }}
       proof_id: ${{ steps.proof.outputs.artifact-id }}
+      proof_digest: ${{ steps.proof.outputs.artifact-digest }}
     steps:
       - name: Check out the proposed source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

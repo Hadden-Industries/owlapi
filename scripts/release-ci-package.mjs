@@ -8,7 +8,6 @@ import {
 import { readJobInventory } from "./ci-verification.mjs";
 import { CI_JOB_NAMES } from "./ci-qualification.mjs";
 import { sameJobExecution } from "./github-job-execution.mjs";
-import { readRunArtifacts } from "./github-evidence-reader.mjs";
 import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
 import { readZipArchiveFiles } from "./release-zip.mjs";
 import {
@@ -72,7 +71,10 @@ export async function readQualifiedZip(
     artifact.digest,
     "Original ZIP digest differs",
   );
-  const entries = readZipArchiveFiles(bytes);
+  const entries = readZipArchiveFiles(bytes, {
+    expectedNames: new Set(names),
+    maximumUncompressedBytes: maximumBytes,
+  });
   assert.deepEqual(
     entries.map(({ path }) => path).sort(),
     [...names].sort(),
@@ -141,6 +143,7 @@ function verifyGraphs(evidence, sbom, integrity) {
     integrity,
     "Original consumer lock belongs to different tarball bytes",
   );
+  return identities;
 }
 
 /** Authenticate the split candidate and proof from the same native producer job.
@@ -151,9 +154,10 @@ export async function verifyReleaseCiPackage({
   source,
   read,
   download,
+  audit,
   now = Date.now(),
 }) {
-  const { run, candidate, observed } = source;
+  const { run, candidate, receipt, observed } = source;
   const versionStem = PACKAGE_FILE_STEM + "-" + PACKAGE_VERSION;
   const attempt = artifactProducingAttempt(
     candidate.name,
@@ -180,32 +184,23 @@ export async function verifyReleaseCiPackage({
       sameJobExecution(job, latest),
     "Candidate producing attempt or runner differs from the qualified job",
   );
-  const listed = (await readRunArtifacts(read, run.id)).filter((artifact) =>
-    matchesLogicalArtifact(
-      artifact.name,
-      `package-proof-${run.id}-${attempt}`,
-      {
+  assert.ok(
+    positiveId(receipt?.packageProof?.id),
+    "Original CI receipt has no producer package proof acknowledgement",
+  );
+  const proof = await read(`/actions/artifacts/${receipt.packageProof.id}`, {
+    retryArtifact404: true,
+  });
+  assert.ok(
+    proof.id === receipt.packageProof.id &&
+      proof.digest === receipt.packageProof.digest &&
+      matchesLogicalArtifact(proof.name, `package-proof-${run.id}-${attempt}`, {
         run: run.id,
         attempt,
         legacy: true,
-      },
-    ),
+      }),
+    "Original package proof differs from its acknowledged ID, digest or producing attempt",
   );
-  assert.equal(
-    listed.length,
-    1,
-    "Original package proof is absent or ambiguous",
-  );
-  const proof = await read(`/actions/artifacts/${listed[0].id}`, {
-    retryArtifact404: true,
-  });
-  for (const field of ["id", "name", "size_in_bytes", "digest", "created_at"]) {
-    assert.equal(
-      proof[field],
-      listed[0][field],
-      "Original package proof changed during admission",
-    );
-  }
   requireSameUpload(
     candidate,
     run,
@@ -262,7 +257,15 @@ export async function verifyReleaseCiPackage({
         "Producer manifest describes different candidate bytes",
       );
   }
-  verifyGraphs(evidence, jsonMember(candidateFiles, sbomName), integrity);
+  const identities = verifyGraphs(
+    evidence,
+    jsonMember(candidateFiles, sbomName),
+    integrity,
+  );
+  const advisoryObservations = await audit?.(
+    evidence.get(consumerLock),
+    identities,
+  );
   return {
     attempt,
     producerJob: job.id,
@@ -272,6 +275,7 @@ export async function verifyReleaseCiPackage({
     packedConfig: verified.packageManifest.publishConfig,
     assets: verified.assets,
     integrity,
+    advisoryObservations,
     evidence: Object.fromEntries(
       [...evidence].map(([path, content]) => [
         path,

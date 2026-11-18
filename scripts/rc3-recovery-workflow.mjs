@@ -21,7 +21,7 @@ npm dist-tag add @hadden-industries/owlapi@0.1.0-rc.3 latest --registry=https://
 echo '{"state":"PUBLICATION_ACCEPTED","availability":"PENDING","publicationReplay":false}'`;
 const contracts = {
   recovery_source: {
-    needs: [],
+    needs: ["release_admission"],
     commands: [
       "npm ci",
       "node scripts/rc3-recovery-policy.mjs outputs",
@@ -152,11 +152,25 @@ export function ordinaryReleaseWorkflow(workflow, violations) {
   ];
   for (const [id, job] of Object.entries(result.jobs ?? {})) {
     if (Object.hasOwn(RECOVERY_JOBS, id)) continue;
+    if (id === "release_admission") {
+      check(
+        job.if === "${{ !cancelled() }}",
+        "release admission must diagnose incompatible dispatch inputs",
+      );
+      continue;
+    }
     const expression = ["third_party_evidence", "required"].includes(id)
       ? "!cancelled()"
       : publicationIds.includes(id)
         ? "!inputs.qualification_only"
-        : null;
+        : [
+              "metadata",
+              "source_portable",
+              "source_canonical",
+              "quality_windows",
+            ].includes(id)
+          ? "needs.release_admission.outputs.mode != 'reuse'"
+          : null;
     check(
       job.if ===
         (expression

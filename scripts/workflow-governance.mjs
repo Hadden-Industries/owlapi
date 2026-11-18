@@ -943,10 +943,12 @@ const validateCandidateTransport = (fileName, workflow, violations) => {
       ]),
     );
     const outputs = Object.fromEntries(
-      ["artifact_id", "artifact_digest", "proof_id"].map((key) => [
-        key,
-        { value: "$" + "{{ jobs.produce.outputs." + key + " }}" },
-      ]),
+      ["artifact_id", "artifact_digest", "proof_id", "proof_digest"].map(
+        (key) => [
+          key,
+          { value: "$" + "{{ jobs.produce.outputs." + key + " }}" },
+        ],
+      ),
     );
     add(
       violations,
@@ -1718,6 +1720,13 @@ const validateManualRelease = (fileName, workflow, violations) => {
                     "Run producer qualification without publication or release environments",
                   type: "boolean",
                   required: true,
+                  default: true,
+                },
+                fresh_qualification: {
+                  description:
+                    "Run full read-only qualification instead of reusing original CI evidence",
+                  type: "boolean",
+                  required: true,
                   default: false,
                 },
               },
@@ -1754,7 +1763,14 @@ const validateManualRelease = (fileName, workflow, violations) => {
   }
   requireFields(
     workflow.concurrency,
-    { group: "owlapi-release", "cancel-in-progress": false, queue: "max" },
+    {
+      group:
+        fileName === "release.yml"
+          ? "${{ (inputs.qualification_only || inputs.fresh_qualification) && format('owlapi-qualification-{0}', github.run_id) || 'owlapi-release' }}"
+          : "owlapi-release",
+      "cancel-in-progress": false,
+      queue: "max",
+    },
     `${fileName}: concurrency`,
     violations,
   );
@@ -2381,7 +2397,7 @@ const validateEvidenceWorkflows = (workflows, violations) => {
     } else
       add(
         violations,
-        sameInventory(needs(keys), ["release_preflight"]),
+        sameInventory(needs(keys), ["release_preflight", "release_admission"]),
         `${fileName}:${keysId} must wait for preflight`,
       );
     requireFields(

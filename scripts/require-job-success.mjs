@@ -30,12 +30,22 @@ export const FULL_CI_JOB_IDS = Object.freeze([
   "owl_contract",
 ]);
 
+/** Reuse still executes each release-specific gate, with the product graph skipped. */
+export const REUSED_RELEASE_JOB_IDS = Object.freeze([
+  "runtime_matrix",
+  "release_preflight",
+  "release_admission",
+  "dependency_review",
+  "third_party_evidence",
+]);
+
 export const REQUIRED_JOB_IDS = Object.freeze({
   ci: Object.freeze(["runtime_matrix", "verification", ...FULL_CI_JOB_IDS]),
   release: Object.freeze([
     "runtime_matrix",
     "consumer_runtimes",
     "release_preflight",
+    "release_admission",
     "metadata",
     "source_portable",
     "source_canonical",
@@ -157,7 +167,30 @@ export const requireCiJobs = (
   };
 };
 
-export const requireReleaseJobs = (needs, { runId, runAttempt, sha }) => {
+export const requireReleaseJobs = (
+  needs,
+  { runId, runAttempt, sha, mode = "fresh" },
+) => {
+  if (mode === "reuse") {
+    if (!needs || Object.keys(needs).length !== REQUIRED_JOB_IDS.release.length)
+      throw new Error("Incomplete release reuse job inventory.");
+    for (const job of REQUIRED_JOB_IDS.release) {
+      const expected = REUSED_RELEASE_JOB_IDS.includes(job)
+        ? "success"
+        : "skipped";
+      if (needs[job]?.result !== expected)
+        throw new Error(`Release reuse requires ${job}=${expected}.`);
+    }
+    const selection = needs.release_admission.outputs;
+    const evidence = JSON.parse(selection?.evidence ?? "null");
+    if (selection?.mode !== "reuse" || evidence?.landed?.commit !== sha)
+      throw new Error(
+        "Release reuse requires admitted evidence for this landed commit.",
+      );
+    return { requiredJobs: [...REUSED_RELEASE_JOB_IDS], evidence };
+  }
+  if (!["fresh", "legacy"].includes(mode))
+    throw new Error("Unknown release qualification mode.");
   const requiredJobs = requireSuccessfulJobs("release", needs);
   const java = JSON.parse(needs.source_canonical.outputs.coverage);
   if (
@@ -207,6 +240,7 @@ const main = () => {
     throw new Error("REQUIRED_JOB_RESULTS_JSON is required.");
   }
   const needs = JSON.parse(rawNeeds);
+  const mode = needs.release_admission?.outputs?.mode ?? "invalid";
   const accepted =
     workflow === "ci"
       ? requireCiJobs(needs, {
@@ -220,6 +254,7 @@ const main = () => {
           runId: Number(process.env.GITHUB_RUN_ID),
           runAttempt: Number(process.env.GITHUB_RUN_ATTEMPT),
           sha: process.env.GITHUB_SHA,
+          mode,
         });
   process.stdout.write(
     `${JSON.stringify({ workflow, result: "PASS", ...accepted }, null, 2)}\n`,

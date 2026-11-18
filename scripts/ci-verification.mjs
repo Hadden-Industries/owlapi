@@ -44,6 +44,19 @@ const sameRepository = (observed, context) =>
   observed?.id === context.repositoryId &&
   observed?.full_name === context.repository;
 
+// Keep prior v6 CI receipts readable. Release admission additionally requires
+// the two acknowledgement outputs from the current package producer.
+function originalPackageProof(outputs) {
+  const { proof_id: artifactId, proof_digest: uploadDigest } = outputs;
+  if (artifactId === undefined && uploadDigest === undefined) return {};
+  const artifact = { id: Number(artifactId), digest: `sha256:${uploadDigest}` };
+  requireFact(
+    id(artifact.id) && digest(artifact.digest),
+    "Invalid package proof acknowledgement.",
+  );
+  return { packageProof: artifact };
+}
+
 export const hostedIdentity = (environment, nodeVersion) => ({
   os: environment.RUNNER_OS,
   architecture: environment.RUNNER_ARCH,
@@ -64,6 +77,7 @@ export const readJobInventory = async ({
   required = hostedCiJobNames(),
   conclusion = () => "success",
   label = "Source job inventory",
+  mode = "FULL",
   observation: { now = Date.now, sleep = delay, maxObservations = 16 } = {},
 }) => {
   requireFact(
@@ -73,7 +87,7 @@ export const readJobInventory = async ({
     "Invalid job observation budget.",
   );
   const deadline = now() + 30_000;
-  const names = hostedCiJobNames();
+  const names = hostedCiJobNames(mode);
   const pendingStatuses = [
     "queued",
     "in_progress",
@@ -196,6 +210,7 @@ export const createVerificationReceipt = ({
     host: context.host,
     jobs: CI_JOB_NAMES,
     candidate,
+    ...originalPackageProof(needs.candidate.outputs),
     policySha256: QUALIFICATION_POLICY_SHA256,
     checks: createQualificationChecks({ context, evidence, role: "PR" }),
     source: null,
@@ -294,6 +309,11 @@ export const createMainQualification = ({
     host: context.host,
     jobs: CI_JOB_NAMES,
     candidate,
+    ...(origin
+      ? origin.packageProof
+        ? { packageProof: origin.packageProof }
+        : {}
+      : originalPackageProof(needs.candidate.outputs)),
     policySha256: QUALIFICATION_POLICY_SHA256,
     checks: createQualificationChecks({
       context,
@@ -891,6 +911,8 @@ async function verifyExactMainQualification({
     run,
     observation: jobObservation,
     label: "Main qualification job inventory",
+    required: hostedCiJobNames(record.mode),
+    mode: record.mode,
     conclusion: (name) =>
       record.mode === "REUSED" &&
       ![
@@ -947,6 +969,7 @@ async function verifyExactMainQualification({
       source.outputs.source_commit === record.source.commit &&
         isDeepStrictEqual(originalReceipt.host, record.source.host) &&
         isDeepStrictEqual(originalReceipt.candidate, record.candidate) &&
+        isDeepStrictEqual(originalReceipt.packageProof, record.packageProof) &&
         Object.keys(record.checks).every((check) =>
           ["evidence", "inputs"].every((field) =>
             isDeepStrictEqual(
@@ -1010,6 +1033,7 @@ export async function verifyReleaseCi({
   jobObservation,
   now = Date.now(),
 }) {
+  const started = performance.now();
   requireFact(
     context.eventName === "workflow_dispatch" &&
       context.ref === "refs/heads/main" &&
@@ -1070,6 +1094,24 @@ export async function verifyReleaseCi({
         "event",
       ].every((key) => current[key] === run[key]),
       "Original CI changed before the release verdict.",
+    );
+  }
+  const requiredArtifacts = [
+    [result.main.artifact, result.main.run],
+    [result.source.artifact, result.source.run],
+    [result.source.candidate, result.source.run],
+    ...(qualifiedPackage ? [[qualifiedPackage.proof, result.source.run]] : []),
+  ];
+  for (const [original, run] of new Map(
+    requiredArtifacts.map((pair) => [pair[0].id, pair]),
+  ).values()) {
+    const current = await read(`/actions/artifacts/${original.id}`);
+    assertArtifact(current, run, context, now + performance.now() - started);
+    requireFact(
+      ["id", "name", "digest", "size_in_bytes", "expires_at"].every(
+        (key) => current[key] === original[key],
+      ),
+      "Required CI artifact changed before the release verdict.",
     );
   }
   await checkHead();

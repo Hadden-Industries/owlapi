@@ -3,6 +3,18 @@ import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import {
+  PACKAGE_NAME,
+  PACKAGE_VERSION,
+  NPM_REGISTRY,
+} from "./package-identity.mjs";
+import {
+  readPublicRegistry,
+  RegistryReadError,
+} from "./public-registry-read.mjs";
+import { FROZEN_RUNTIME_MATRIX } from "./ci-qualification.mjs";
+import { runtimeDigest } from "./consumer-runtime-matrix.mjs";
+import { assertPromotedCi } from "./promoted-release-proof.mjs";
+import {
   createRepositoryReader,
   readAcknowledgedInventory,
 } from "./github-evidence-reader.mjs";
@@ -12,6 +24,116 @@ const main = "refs/heads/main";
 const categories = ["/language:actions", "/language:javascript-typescript"];
 const digest = (bytes, algorithm = "sha256", encoding = "hex") =>
   createHash(algorithm).update(bytes).digest(encoding);
+const qualificationWorkflow = ".github/workflows/release.yml";
+const sourcePaths = [
+  "package-lock.json",
+  "tooling/artifact-transport/package-lock.json",
+  "tooling/artifact-transport/rights-review.json",
+  "docs/provenance/third-party-material.json",
+  "docs/provenance/rights-inventory.json",
+  "docs/provenance/scoped-package-name-review.json",
+];
+const inputHashes = () =>
+  Object.fromEntries(
+    sourcePaths.map((path) => [path, digest(readFileSync(path))]),
+  );
+
+/** Qualification can precede tag signing and must target an unused coordinate. */
+export async function validateReleaseCoordinate({
+  read,
+  registryRead = readPublicRegistry,
+  commit,
+}) {
+  assert.match(commit, /^[a-f0-9]{40}$/u);
+  const branch = await read("/branches/main");
+  assert.ok(
+    branch.name === "main" &&
+      branch.protected === true &&
+      branch.commit?.sha === commit,
+    "Qualification subject must be current protected main",
+  );
+  try {
+    await read(`/git/ref/tags/v${PACKAGE_VERSION}`);
+    throw new Error("A release tag already exists for the selected coordinate");
+  } catch (error) {
+    if (error.httpStatus !== 404) throw error;
+  }
+  const url = new URL(
+    `${encodeURIComponent(PACKAGE_NAME)}/${encodeURIComponent(PACKAGE_VERSION)}`,
+    NPM_REGISTRY,
+  );
+  try {
+    await registryRead(url, { attempts: 1, timeoutMs: 10_000 });
+    throw new Error("The selected package version already exists on npm");
+  } catch (error) {
+    if (!(error instanceof RegistryReadError && error.status === 404))
+      throw error;
+  }
+}
+
+function writeQualification(manifest) {
+  mkdirSync(".release/qualification-manifest", { recursive: true });
+  writeFileSync(
+    ".release/qualification-manifest/manifest.json",
+    JSON.stringify(manifest, null, 2) + "\n",
+    { flag: "wx" },
+  );
+}
+
+/** Recheck compact admission references after the release-only jobs finish. */
+export async function verifyPromotedAdmission({
+  read,
+  ci,
+  commit,
+  matrixSha256,
+  now,
+}) {
+  assertPromotedCi(ci, { commit, matrixSha256, now });
+  for (const source of new Map(
+    [ci.main, ci.build].map((origin) => [origin.runId, origin]),
+  ).values()) {
+    const run = await read(`/actions/runs/${source.runId}`);
+    assert.ok(
+      run.id === source.runId &&
+        run.run_attempt === source.attempt &&
+        run.path === ".github/workflows/ci.yml" &&
+        run.event === source.event &&
+        run.head_sha === source.providerHead &&
+        run.status === "completed" &&
+        run.conclusion === "success" &&
+        run.repository?.full_name === repository &&
+        run.repository.id === ci.repositoryId &&
+        run.head_repository?.full_name === repository &&
+        run.head_repository.id === ci.repositoryId,
+      "The original CI execution changed after release admission",
+    );
+  }
+  const originals = [
+    [ci.main.receipt, ci.main],
+    [ci.build.receipt, ci.build],
+    [ci.candidate, ci.build],
+    [ci.packageProof, ci.build],
+  ];
+  for (const [artifact, source] of new Map(
+    originals.map((pair) => [pair[0].id, pair]),
+  ).values()) {
+    const live = await read(`/actions/artifacts/${artifact.id}`);
+    assert.ok(
+      live.id === artifact.id &&
+        live.name === artifact.name &&
+        live.digest === artifact.digest &&
+        live.size_in_bytes === artifact.bytes &&
+        live.expires_at === artifact.expiresAt &&
+        live.expired === false &&
+        live.workflow_run?.id === source.runId &&
+        live.workflow_run.head_sha === source.providerHead &&
+        live.workflow_run.repository_id === ci.repositoryId &&
+        live.workflow_run.head_repository_id === ci.repositoryId,
+      "A required CI artifact changed or expired after admission",
+    );
+  }
+  return ci;
+}
 
 async function pages(read, path) {
   const records = [];
@@ -142,8 +264,63 @@ export async function recordQualification(env = process.env) {
   assert.equal(env.GITHUB_REPOSITORY, repository);
   assert.equal(env.GITHUB_REF, main);
   assert.equal(env.GITHUB_EVENT_NAME, "workflow_dispatch");
-  for (const key of ["GITHUB_RUN_ID", "GITHUB_RUN_ATTEMPT", "CANDIDATE_ID"])
+  for (const key of ["GITHUB_RUN_ID", "GITHUB_RUN_ATTEMPT"])
     assert.match(env[key], /^[1-9][0-9]*$/u);
+  const needs = JSON.parse(env.REQUIRED_JOB_RESULTS_JSON);
+  const read = createRepositoryReader({
+    repository,
+    token: env.GH_TOKEN,
+    requestLimit: 96,
+  });
+  const mode = needs.release_admission?.outputs?.mode;
+  if (mode === "reuse") {
+    assert.ok(FROZEN_RUNTIME_MATRIX, "Missing release runtime matrix");
+    const ci = await verifyPromotedAdmission({
+      read,
+      ci: JSON.parse(needs.release_admission.outputs.evidence),
+      commit: env.GITHUB_SHA,
+      matrixSha256: runtimeDigest(FROZEN_RUNTIME_MATRIX),
+    });
+    const inputs = inputHashes();
+    assert.equal(
+      ci.advisoryObservations.root.lockSha256,
+      inputs["package-lock.json"],
+    );
+    assert.equal(
+      ci.advisoryObservations.transport.lockSha256,
+      inputs["tooling/artifact-transport/package-lock.json"],
+    );
+    const security = await readReleaseSecurity({
+      commit: env.GITHUB_SHA,
+      read,
+    });
+    await validateReleaseCoordinate({ read, commit: env.GITHUB_SHA });
+    return writeQualification({
+      schemaVersion: 2,
+      repository,
+      workflow: qualificationWorkflow,
+      commit: env.GITHUB_SHA,
+      runId: env.GITHUB_RUN_ID,
+      attempt: env.GITHUB_RUN_ATTEMPT,
+      candidateId: String(ci.candidate.id),
+      candidateDigest: ci.candidate.digest.slice("sha256:".length),
+      package: ci.package,
+      assets: ci.assets,
+      integrity: ci.integrity,
+      packedConfig: ci.packedConfig,
+      ci,
+      security,
+      inputs,
+      qualification: Object.fromEntries(
+        Object.entries(needs).map(([name, value]) => [name, value.result]),
+      ),
+    });
+  }
+  assert.ok(
+    ["fresh", "legacy"].includes(mode),
+    "Unknown release qualification mode",
+  );
+  assert.match(env.CANDIDATE_ID, /^[1-9][0-9]*$/u);
   assert.match(env.CANDIDATE_DIGEST, /^[a-f0-9]{64}$/u);
   const { readCandidateBundleSnapshot } =
     await import("./candidate-bundle.mjs");
@@ -152,17 +329,10 @@ export async function recordQualification(env = process.env) {
   );
   const security = await readReleaseSecurity({
     commit: env.GITHUB_SHA,
-    read: createRepositoryReader({ repository, token: env.GH_TOKEN }),
+    read,
   });
-  const sources = [
-    "package-lock.json",
-    "tooling/artifact-transport/package-lock.json",
-    "tooling/artifact-transport/rights-review.json",
-    "docs/provenance/third-party-material.json",
-    "docs/provenance/rights-inventory.json",
-    "docs/provenance/scoped-package-name-review.json",
-  ];
-  const needs = JSON.parse(env.REQUIRED_JOB_RESULTS_JSON);
+  if (mode === "fresh")
+    await validateReleaseCoordinate({ read, commit: env.GITHUB_SHA });
   const artifactList = await readAcknowledgedInventory(
     createRepositoryReader({
       repository,
@@ -187,7 +357,7 @@ export async function recordQualification(env = process.env) {
     artifacts,
     schemaVersion: 1,
     repository,
-    workflow: ".github/workflows/release.yml",
+    workflow: qualificationWorkflow,
     commit: env.GITHUB_SHA,
     runId: env.GITHUB_RUN_ID,
     attempt: env.GITHUB_RUN_ATTEMPT,
@@ -200,17 +370,10 @@ export async function recordQualification(env = process.env) {
       digest(contents[candidate.assets.tarball.name], "sha512", "base64"),
     packedConfig: candidate.packageManifest.publishConfig,
     security,
-    inputs: Object.fromEntries(
-      sources.map((path) => [path, digest(readFileSync(path))]),
-    ),
-    qualification: JSON.parse(env.REQUIRED_JOB_RESULTS_JSON),
+    inputs: inputHashes(),
+    qualification: needs,
   };
-  mkdirSync(".release/qualification-manifest", { recursive: true });
-  writeFileSync(
-    ".release/qualification-manifest/manifest.json",
-    JSON.stringify(manifest, null, 2) + "\n",
-    { flag: "wx" },
-  );
+  writeQualification(manifest);
 }
 
 /** The upload action returns hex while the GitHub artifact record includes its algorithm. */
@@ -225,5 +388,17 @@ export function assertQualificationCandidate(artifacts, id, uploadDigest) {
     "Candidate upload and REST digests disagree",
   );
 }
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href)
-  await recordQualification();
+if (
+  process.argv[1] &&
+  import.meta.url === pathToFileURL(process.argv[1]).href
+) {
+  if (process.argv[2] === "preflight") {
+    await validateReleaseCoordinate({
+      read: createRepositoryReader({ repository, token: process.env.GH_TOKEN }),
+      commit: process.env.GITHUB_SHA,
+    });
+  } else {
+    assert.equal(process.argv.length, 2);
+    await recordQualification();
+  }
+}

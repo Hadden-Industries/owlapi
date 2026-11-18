@@ -60,7 +60,20 @@ const assertSafeZipPath = (path) => {
  * packages. Only ordinary stored or deflated files are accepted; encrypted,
  * multi-disk, ZIP64, duplicate, unsafe, or corrupt records fail closed.
  */
-export const readZipArchiveFilesWith = (archiveInput, { crc32 }) => {
+export const readZipArchiveFilesWith = (
+  archiveInput,
+  {
+    crc32,
+    expectedNames,
+    maximumUncompressedBytes = ZIP_MAX_UNCOMPRESSED_BYTES,
+  },
+) => {
+  if (
+    !Number.isSafeInteger(maximumUncompressedBytes) ||
+    maximumUncompressedBytes <= 0 ||
+    maximumUncompressedBytes > ZIP_MAX_UNCOMPRESSED_BYTES
+  )
+    throw new Error("Invalid ZIP expansion limit.");
   const archive = Buffer.from(archiveInput);
   if (archive.length < ZIP_END_OF_CENTRAL_DIRECTORY_SIZE) {
     throw new Error("ZIP archive is too short.");
@@ -90,6 +103,8 @@ export const readZipArchiveFilesWith = (archiveInput, { crc32 }) => {
   if (entryCount > ZIP_MAX_ENTRIES) {
     throw new Error("ZIP archive exceeds the entry-count safety limit.");
   }
+  if (expectedNames && entryCount !== expectedNames.size)
+    throw new Error("ZIP member count differs from its expected inventory.");
   if (centralDirectoryOffset + centralDirectoryBytes !== endOffset) {
     throw new Error("ZIP central-directory bounds are invalid.");
   }
@@ -161,6 +176,8 @@ export const readZipArchiveFilesWith = (archiveInput, { crc32 }) => {
     }
     exactPaths.add(path);
     foldedPaths.set(foldedPath, path);
+    if (expectedNames && !expectedNames.has(path))
+      throw new Error(`Unexpected ZIP member ${path}.`);
 
     if (
       localOffset + ZIP_LOCAL_FILE_HEADER_SIZE > centralDirectoryOffset ||
@@ -187,7 +204,7 @@ export const readZipArchiveFilesWith = (archiveInput, { crc32 }) => {
     }
 
     totalUncompressedBytes += uncompressedBytes;
-    if (totalUncompressedBytes > ZIP_MAX_UNCOMPRESSED_BYTES) {
+    if (totalUncompressedBytes > maximumUncompressedBytes) {
       throw new Error(
         "ZIP archive exceeds the uncompressed-size safety limit.",
       );

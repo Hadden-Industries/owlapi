@@ -538,6 +538,7 @@
       "/jobs/runtime_matrix/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/release_preflight/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/release_preflight/steps/4/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
+      "/jobs/release_admission/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/metadata/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/metadata/steps/4/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",
       "/jobs/source_portable/runs-on": "{{runtime:ubuntuRunner}}",

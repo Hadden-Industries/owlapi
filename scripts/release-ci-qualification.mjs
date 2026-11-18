@@ -3,6 +3,9 @@ import { pathToFileURL } from "node:url";
 import { contextFromEnvironment, emit } from "./ci-verification-command.mjs";
 import { verifyReleaseCi } from "./ci-verification.mjs";
 import { FROZEN_RUNTIME_MATRIX } from "./ci-qualification.mjs";
+import { runtimeDigest } from "./consumer-runtime-matrix.mjs";
+import { projectPromotedCi } from "./promoted-release-proof.mjs";
+import { refreshReleaseAudits } from "./release-assurance.mjs";
 import { GitHubReleaseClient } from "./github-release.mjs";
 import { createRepositoryReader } from "./github-evidence-reader.mjs";
 import { downloadReleaseArtifact } from "./release-approvals.mjs";
@@ -47,7 +50,13 @@ export async function readReleaseCiEvidence(env = process.env) {
       );
     },
     verifyPackage: (source) =>
-      verifyReleaseCiPackage({ source, read, download }),
+      verifyReleaseCiPackage({
+        source,
+        read,
+        download,
+        audit: (lock, identities) =>
+          refreshReleaseAudits(lock, identities, { deadline }),
+      }),
   });
 }
 
@@ -63,6 +72,9 @@ async function main() {
       build_sha: result.source.receipt.snapshot.commit,
       candidate_id: candidate.id,
       proof_id: proof.id,
+      evidence: JSON.stringify(
+        projectPromotedCi(result, runtimeDigest(FROZEN_RUNTIME_MATRIX)),
+      ),
     };
     summary =
       "CI evidence verified. Release-only qualification is still required.";

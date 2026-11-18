@@ -2,11 +2,14 @@
 
 ## Qualify the committed version
 
-Dispatch `release.yml` on the current protected `main` with `qualification_only=true` and `rc3_recovery=false`.
-Record the original run, attempt, manifest file SHA-256, candidate artifact ID and server digest.
+Dispatch `release.yml` on the current protected `main` with its default inputs to qualify already tested CI bytes.
+The admission step stops on missing or stale evidence before any product jobs or release-only evidence shards start.
+To run a fresh read-only qualification, explicitly set `fresh_qualification=true` and leave `qualification_only=true`.
+The fresh route builds its own candidate, and the reuse route carries the original candidate and package-proof IDs through the compact manifest.
+Both routes require current ScanCode and managed CodeQL evidence, and neither waits for a protected publishing environment.
+Record the release run, attempt, manifest file SHA-256, original candidate artifact ID and server digest.
+Inspect the earliest expiry of all referenced artifacts.
 Download the qualification manifest and the original three candidate assets.
-The protected aggregate verifies the installed matrix, Java, OWL, browsers, ScanCode and the exact managed CodeQL analyses.
-The producer retains its native dependency inventories separately.
 Inspect the signed rights inventory and candidate-specific benchmark disposition before staging.
 
 The read-only CI admission command, `node scripts/release-ci-qualification.mjs`, checks the protected-main dispatch, original CI execution and two original uploads.
@@ -14,7 +17,7 @@ It requires the native dispatch environment, its frozen runtime matrix and a Git
 The main receipt binds source, dependency policy, Java and OWL coverage, and the browser, source, portability and consumer job verdicts.
 The original candidate and package-proof ZIPs bind the packed documentation, tarball, SBOM, sums, original audits and recipient graph and lock.
 Retain the originating artifact IDs and earliest expiry.
-If any required original has expired or conflicts with the native job inventory, qualify afresh explicitly.
+If any required original has expired or conflicts with the native job inventory, select fresh qualification explicitly.
 Release-time dependency advisory observations, managed CodeQL, ScanCode with committed reconciliation, and current rights and benchmark dispositions still need their owning release gates.
 CI reuse alone cannot stage or publish the package.
 

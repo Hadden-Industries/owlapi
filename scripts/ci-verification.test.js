@@ -406,8 +406,8 @@ const mainFixture = async (reused, partialOrigin = false) => {
       tree: [{ path: "ci.yml", type: "blob", sha: hash("f") }],
     },
     "/actions/runs/200/jobs?filter=latest&per_page=100": {
-      total_count: hostedCiJobNames().length,
-      jobs: hostedCiJobNames().map((name, index) => ({
+      total_count: hostedCiJobNames(reused ? "REUSED" : "FULL").length,
+      jobs: hostedCiJobNames(reused ? "REUSED" : "FULL").map((name, index) => ({
         id: 3000 + index,
         name,
         run_id: 200,
@@ -975,6 +975,21 @@ describe("read-only release dispatch CI admission", () => {
       ({ name }) => name === "CI / Windows / quality tools",
     ).labels = [UBUNTU.label];
     await expect(admit(f)).rejects.toThrow(/runner labels/u);
+  });
+  test("an original candidate expiring after the package read blocks the verdict", async () => {
+    const f = await dispatch(false);
+    await expect(
+      verifyReleaseCi({
+        context: f.context,
+        read: f.read,
+        downloadReceipt: async () => jsonClone(f.record),
+        captureSources: async () => REVIEWED_CONSUMER_SOURCES,
+        now,
+        verifyPackage: async () => {
+          f.responses["/actions/artifacts/702"].expired = true;
+        },
+      }),
+    ).rejects.toThrow(/expired/u);
   });
   test("rejects a different live main after the last qualified proof was read", async () => {
     const f = await dispatch(false);

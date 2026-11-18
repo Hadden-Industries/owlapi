@@ -144,10 +144,15 @@ function fixture() {
     const proof = ref(91, "package-proof-84-1", proofBytes);
     mutateProof(proof);
     return verifyReleaseCiPackage({
-      source: { run, candidate, observed: { jobs: [job] } },
+      source: {
+        run,
+        candidate,
+        receipt: {
+          packageProof: { id: 91, digest: "sha256:" + sha(proofBytes) },
+        },
+        observed: { jobs: [job] },
+      },
       read: async (path) => {
-        if (path === "/actions/runs/84/artifacts?per_page=100&page=1")
-          return { total_count: 2, artifacts: [candidate, proof] };
         expect(path).toBe("/actions/artifacts/91");
         return proof;
       },
@@ -172,6 +177,24 @@ test("a qualifying ZIP must match the native ZIP digest before extraction", asyn
       ["verification.json"],
     ),
   ).rejects.toThrow(/ZIP digest differs/u);
+});
+
+test("a small deflated receipt cannot expand past the receipt limit", async () => {
+  const bytes = zipArchive([
+    {
+      path: "verification.json",
+      content: "x".repeat(65537),
+      compression: "deflated",
+    },
+  ]);
+  await expect(
+    readQualifiedZip(
+      async () => bytes,
+      { id: 1, size_in_bytes: bytes.length, digest: "sha256:" + sha(bytes) },
+      64 * 1024,
+      ["verification.json"],
+    ),
+  ).rejects.toThrow(/uncompressed-size/u);
 });
 
 test("links the original pair of uploads and validates the actual three-member candidate", async () => {

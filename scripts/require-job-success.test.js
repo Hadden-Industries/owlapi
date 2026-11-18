@@ -20,6 +20,39 @@ const successfulNeeds = (workflow) =>
   );
 
 describe("required workflow aggregation", () => {
+  test("a release reuse verdict accepts only the original CI route and successful release obligations", () => {
+    const needs = successfulNeeds("release");
+    const required = [
+      "runtime_matrix",
+      "release_preflight",
+      "release_admission",
+      "dependency_review",
+      "third_party_evidence",
+    ];
+    for (const [job, detail] of Object.entries(needs)) {
+      detail.result = required.includes(job) ? "success" : "skipped";
+    }
+    needs.release_admission = {
+      result: "success",
+      outputs: {
+        mode: "reuse",
+        evidence: JSON.stringify({ landed: { commit: "c".repeat(40) } }),
+      },
+    };
+    expect(
+      requireReleaseJobs(needs, { mode: "reuse", sha: "c".repeat(40) })
+        .requiredJobs,
+    ).toEqual(required);
+    needs.third_party_evidence.result = "skipped";
+    expect(() =>
+      requireReleaseJobs(needs, { mode: "reuse", sha: "c".repeat(40) }),
+    ).toThrow(/third_party_evidence/u);
+    needs.third_party_evidence.result = "success";
+    needs.candidate.result = "success";
+    expect(() =>
+      requireReleaseJobs(needs, { mode: "reuse", sha: "c".repeat(40) }),
+    ).toThrow(/candidate/u);
+  });
   test("release requires complete current Java parity as well as installed OWL proof", () => {
     const identity = { runId: 100, runAttempt: 2, commit: "c".repeat(40) };
     const native = JSON.parse(
