@@ -257,13 +257,12 @@ export async function draft(client, ctx, attempt) {
   assertDraftRelease(release, { tag });
   assert.equal(release.prerelease, true);
   assert.equal(release.body, notes);
-  assertReleaseAssetSubset({
-    assets: release.assets,
-    expected: Object.values(manifest.assets),
-  });
-  for (const item of Object.values(manifest.assets))
-    if (!release.assets.some((a) => a.name === item.name))
-      await upload(client, release.id, item, read(item.name));
+  const expected = await attachMissingAssets(
+    client,
+    release,
+    Object.values(manifest.assets),
+    read,
+  );
   const observed = await client.read("/releases/" + release.id);
   assertReleaseId(observed, release.id);
   assertDraftRelease(observed, { tag });
@@ -271,7 +270,7 @@ export async function draft(client, ctx, attempt) {
   assert.equal(observed.body, notes);
   assertReleaseAssets({
     assets: observed.assets,
-    expected: Object.values(manifest.assets),
+    expected,
   });
   return {
     state: "DRAFT_VERIFIED",
@@ -279,13 +278,22 @@ export async function draft(client, ctx, attempt) {
     tagObject: operation.tagObject,
     stageId: operation.stageId,
     manifestSha256: operation.manifestSha256,
-    assetIds: Object.fromEntries(
-      observed.assets.map((a) => {
-        assert.ok(positive(a.id), "Missing native draft asset ID");
-        return [a.name, a.id];
-      }),
-    ),
+    assetIds: Object.fromEntries(expected.map((a) => [a.name, a.id])),
   };
+}
+
+export async function attachMissingAssets(client, release, items, read) {
+  assertReleaseAssetSubset({ assets: release.assets, expected: items });
+  const observed = new Map(release.assets.map((item) => [item.name, item.id]));
+  const bound = [];
+  for (const item of items) {
+    const id = observed.has(item.name)
+      ? observed.get(item.name)
+      : await upload(client, release.id, item, read(item.name));
+    assert.ok(positive(id), "Missing original release asset ID");
+    bound.push({ ...item, id });
+  }
+  return bound;
 }
 
 async function readWriterAttempt(client, checkpoint, origin, kind) {
@@ -900,29 +908,36 @@ async function seal(client, ctx, checkpoint, renewal, execution) {
     evidence,
   );
   const assetIds = parse(read("draft.json")).assetIds;
-  const expected = [
-    ...Object.values(manifest.assets).map((item) => ({
-      ...item,
-      id: assetIds?.[item.name],
-    })),
-    archiveInfo,
-    evidenceInfo,
-  ];
+  const originalItems = Object.values(manifest.assets);
+  const items = [...originalItems, archiveInfo, evidenceInfo];
   assert.ok(
-    expected.every((a) => a.bytes <= 64 * 1024 * 1024),
+    items.every((a) => a.bytes <= 64 * 1024 * 1024),
     "Asset exceeds immutable verification limit",
   );
   await approvedDraft(client, ctx, [archiveInfo, evidenceInfo]);
-  const existing = await assertSealPreimages(client, ctx, report, expected);
-  for (const item of expected)
-    item.id ??= existing.assets.find((a) => a.name === item.name)?.id;
+  const existing = await assertSealPreimages(
+    client,
+    ctx,
+    report,
+    items.map((item) => ({ ...item, id: assetIds?.[item.name] })),
+  );
   checkSealSettings(operationBytes, renewal);
-  for (const [item, bytes] of [
-    [archiveInfo, archive],
-    [evidenceInfo, evidence],
-  ])
-    if (!existing.assets.some((a) => a.name === item.name))
-      item.id = await upload(client, operation.releaseId, item, bytes);
+  assertReleaseAssets({
+    assets: existing.assets.filter((a) =>
+      originalItems.some((item) => item.name === a.name),
+    ),
+    expected: originalItems.map((item) => ({
+      ...item,
+      id: assetIds?.[item.name],
+    })),
+  });
+  const missing = new Map([
+    [archiveInfo.name, archive],
+    [evidenceInfo.name, evidence],
+  ]);
+  const expected = await attachMissingAssets(client, existing, items, (name) =>
+    missing.get(name),
+  );
   const draft = await assertSealPreimages(client, ctx, report, expected);
   assertReleaseAssets({ assets: draft.assets, expected });
   checkSealSettings(operationBytes, renewal);

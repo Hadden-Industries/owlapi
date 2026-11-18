@@ -1,4 +1,5 @@
 import { expect, test } from "@jest/globals";
+import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { gzipSync } from "node:zlib";
 import { zipArchive } from "./fixtures/zip-archive.mjs";
@@ -26,6 +27,28 @@ const step = (name) => ({
   completed_at: "2026-11-12T11:00:03Z",
 });
 const packageFacts = { name: PACKAGE_NAME, version: PACKAGE_VERSION };
+
+test("admission and storage observation load before installing OwlAPI dependencies", () => {
+  const loader = `
+    import { registerHooks } from "node:module";
+    const dependencies = new URL("./node_modules/", import.meta.url).href;
+    registerHooks({ resolve(specifier, context, resolve) {
+      const result = resolve(specifier, context);
+      if (result.url.startsWith(dependencies))
+        throw new Error("Cold workflow imports a project dependency: " + specifier);
+      return result;
+    } });
+    await import("./scripts/release-ci-qualification.mjs");
+    await import("./scripts/release-retention.mjs");
+  `;
+  expect(() =>
+    execFileSync(process.execPath, ["--input-type=module", "--eval", loader], {
+      cwd: new URL("../", import.meta.url),
+      timeout: 10000,
+      stdio: "pipe",
+    }),
+  ).not.toThrow();
+});
 
 function fixture() {
   const body = Buffer.from(JSON.stringify(packageFacts));

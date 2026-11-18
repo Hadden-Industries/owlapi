@@ -258,7 +258,7 @@ The immutable completion workflow retains its exact completion receipt.
 
 The protected maintenance storage job reports compressed bytes and projected byte-days by purpose.
 Cache bytes are measured separately.
-An optional signed `retention.json` records `schemaVersion: 1`, the protected-main `successor` SHA, `protectedIds`, `settledRuns`, and the `replayed` inventory.
+An optional signed `retention.json` records `schemaVersion: 1`, the protected-main `successor` SHA, numeric `protectedIds`, exact `{runId, attempt}` entries in `settledRuns`, and the `replayed` inventory.
 Each replay item records the original artifact `id`, `runId`, `digest` and `manifestSha256`, a result of `STAGE_SEAL_AND_RECOVERY_VERIFIED`, and affirmative `actionsCopiesUnavailable` and `verifiedBackup` observations.
 The operator's separate evidence includes the signed replay and verified encrypted backup.
 The observer holds candidates while a required original, the successor's candidate or package proof, or a writer or consumer claim remains unresolved.

@@ -2,7 +2,7 @@ import { readWorkflowRuns } from "./github-evidence-reader.mjs";
 import assert from "node:assert/strict";
 import { isDeepStrictEqual } from "node:util";
 import { setTimeout as delay } from "node:timers/promises";
-import { execFileSync, spawnSync } from "node:child_process";
+import { spawnSync } from "node:child_process";
 import {
   appendFileSync,
   mkdirSync,
@@ -329,7 +329,34 @@ export function verifyPilotRefusalLog({ bytes, step, proof, operationSha256 }) {
   return hash(bytes);
 }
 
-async function observePilotRefusal(client, env, checkpoint, origin, read) {
+export function originalPilotLog(result, retained, verifiedDigest) {
+  if (!result.error && result.status === 0) {
+    if (retained)
+      assert.ok(
+        result.stdout.equals(retained),
+        "Retained log differs from the complete native job log",
+      );
+    return result.stdout;
+  }
+  const expired =
+    !result.error &&
+    result.status === 1 &&
+    /^gh: [^\r\n]+ \(HTTP (?:404|410)\)\s*$/u.test(String(result.stderr));
+  assert.ok(
+    expired && retained && verifiedDigest && hash(retained) === verifiedDigest,
+    "The full native job log or a verified expiry fallback is required",
+  );
+  return retained;
+}
+
+async function observePilotRefusal(
+  client,
+  env,
+  checkpoint,
+  origin,
+  read,
+  verified,
+) {
   assert.match(origin.runId, /^[1-9]\d{0,15}$/u);
   assert.equal(origin.attempt, "1");
   const original = await readCheckpoint(client, origin.checkpoint);
@@ -424,14 +451,18 @@ async function observePilotRefusal(client, env, checkpoint, origin, read) {
     assert.match(origin.logSha256, /^[a-f0-9]{64}$/u);
     assert.equal(hash(savedLog), origin.logSha256);
   }
+  if (verified)
+    assert.deepEqual(
+      [verified.jobId, verified.stepCompletedAt, verified.logSha256],
+      [job.id, steps[0].completed_at, origin.logSha256 ?? verified.logSha256],
+    );
+  const fetched = spawnSync(
+    "gh",
+    ["api", "repos/" + repository + "/actions/jobs/" + job.id + "/logs"],
+    { env, timeout: 20000, maxBuffer: 4 * 1024 * 1024 },
+  );
   const logSha256 = verifyPilotRefusalLog({
-    bytes:
-      savedLog ??
-      execFileSync(
-        "gh",
-        ["api", "repos/" + repository + "/actions/jobs/" + job.id + "/logs"],
-        { env, timeout: 20000, maxBuffer: 4 * 1024 * 1024 },
-      ),
+    bytes: originalPilotLog(fetched, savedLog, verified?.logSha256),
     step: steps[0],
     proof: diagnostic,
     operationSha256,
@@ -634,6 +665,8 @@ async function main() {
               env,
               checkpoint,
               prior.origin,
+              undefined,
+              prior,
             );
             assert.deepEqual(prior, { ...observed, origin: prior.origin });
             continue;

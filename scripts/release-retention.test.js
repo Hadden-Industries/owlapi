@@ -3,6 +3,7 @@ import { physicalName } from "../tooling/artifact-transport/identity.mjs";
 import { checkpointPayloads } from "./release-history-checkpoint.mjs";
 import {
   artifactStorage,
+  outstandingWriterRuns,
   selectRedundantArtifacts,
 } from "./release-retention.mjs";
 
@@ -27,6 +28,20 @@ const artifact = (id) => ({
   created_at,
   expires_at,
   workflow_run: { id, repository_id: 14, head_repository_id: 14 },
+});
+
+test("a settled run number cannot settle a later native attempt", () => {
+  const run = {
+    id: 101,
+    run_attempt: 2,
+    status: "completed",
+    conclusion: "failure",
+  };
+  expect(outstandingWriterRuns([run], [{ runId: 101, attempt: 1 }])).toBe(true);
+  expect(outstandingWriterRuns([run], [{ runId: 101, attempt: 2 }])).toBe(
+    false,
+  );
+  expect(outstandingWriterRuns([run], [101])).toBe(true);
 });
 
 test("only exact replayed redundant IDs qualify and the successor's inputs are protected", () => {

@@ -1,6 +1,7 @@
 /** Read the closed producer proof for the authenticated original FULL candidate. */
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
+import { crc32 } from "node:zlib";
 import {
   artifactProducingAttempt,
   matchesLogicalArtifact,
@@ -9,7 +10,7 @@ import { readJobInventory } from "./ci-verification.mjs";
 import { CI_JOB_NAMES } from "./ci-qualification.mjs";
 import { sameJobExecution } from "./github-job-execution.mjs";
 import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
-import { readZipArchiveFiles } from "./release-zip.mjs";
+import { readZipArchiveFilesWith } from "./release-zip-core.mjs";
 import {
   PACKAGE_FILE_STEM,
   PACKAGE_NAME,
@@ -71,7 +72,8 @@ export async function readQualifiedZip(
     artifact.digest,
     "Original ZIP digest differs",
   );
-  const entries = readZipArchiveFiles(bytes, {
+  const entries = readZipArchiveFilesWith(bytes, {
+    crc32,
     expectedNames: new Set(names),
     maximumUncompressedBytes: maximumBytes,
   });

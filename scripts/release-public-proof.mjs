@@ -47,7 +47,7 @@ export function publicRecipientInput({ operation, manifest, receipt }, matrix) {
   };
 }
 
-const nativeJobs = (response, names, run) => {
+const nativeJobs = (response, names, run, allowSkippedMatrix = false) => {
   assert.equal(
     response.total_count,
     response.jobs.length,
@@ -58,8 +58,18 @@ const nativeJobs = (response, names, run) => {
     response.jobs.length,
   );
   for (const job of response.jobs) {
+    const skippedMatrix =
+      allowSkippedMatrix &&
+      job.status === "completed" &&
+      job.conclusion === "skipped" &&
+      [
+        "public_recipient",
+        "Public recipient (${{ matrix.runner }}, ${{ matrix.node }})",
+      ].includes(job.name);
     assert.ok(
-      names.includes(job.name) && isId(job.id) && isId(job.run_attempt),
+      (names.includes(job.name) || skippedMatrix) &&
+        isId(job.id) &&
+        isId(job.run_attempt),
     );
     assert.equal(job.run_id, run.id);
     assert.equal(job.head_sha, run.head_sha);
@@ -202,7 +212,10 @@ export async function readPublicEvidence(
             ),
           saved?.attempts?.[attempt],
         );
-        attempts.set(attempt, nativeJobs(jobs, names, run));
+        attempts.set(
+          attempt,
+          nativeJobs(jobs, names, run, attempt < run.run_attempt),
+        );
       }
       const job = attempts.get(attempt).find((j) => j.name === item.job);
       if (

@@ -102,6 +102,12 @@ function subject(manifest) {
     tag: "pilot",
   });
   assert.match(manifest.commit, /^[a-f0-9]{40}$/u);
+  if (manifest.schemaVersion === 1)
+    assert.ok(
+      !Object.hasOwn(manifest, "ci") &&
+        !Object.hasOwn(manifest, "runtimeMatrix"),
+      "A fresh manifest cannot carry cross-run CI promotion fields",
+    );
   if (manifest.schemaVersion === 2) {
     const ci = manifest.ci;
     const recorded = Date.parse(manifest.security?.observedAt);
@@ -578,7 +584,8 @@ export async function originalManifest(client, env, checkpoint) {
     manifest.package.version,
     env.QUALIFIED_VERSION ?? PACKAGE_VERSION,
   );
-  const ciProducer = manifest.ci?.build;
+  const ciProducer =
+    manifest.schemaVersion === 2 ? manifest.ci.build : undefined;
   const runId = ciProducer ? String(ciProducer.runId) : manifest.runId;
   const attempt = ciProducer
     ? String(ciProducer.producingAttempt)

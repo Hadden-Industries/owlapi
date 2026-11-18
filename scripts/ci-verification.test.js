@@ -19,6 +19,7 @@ import {
   selectVerificationProof,
   verifyIntegrationProof,
   selectBaseQualification,
+  selectExactMainRun,
   verifyBaseQualification,
   verifyReleaseCi,
   readJobInventory,
@@ -1002,6 +1003,25 @@ describe("read-only release dispatch CI admission", () => {
       }),
     ).rejects.toThrow(/protected main/u);
     expect(heads).toBe(2);
+  });
+  test("a later failed CI dispatch invalidates the formerly successful exact SHA", async () => {
+    const f = await dispatch(false);
+    const base = f.context.sha;
+    const read = (fault) => () => {
+      const latest = {
+        ...f.mainRun,
+        id: f.mainRun.id + 1,
+        conclusion: "failure",
+      };
+      const workflow_runs = fault ? [f.mainRun, latest] : [f.mainRun];
+      return { workflow_runs, total_count: workflow_runs.length };
+    };
+    await expect(
+      selectExactMainRun({ base, context: f.context, now, read: read(false) }),
+    ).resolves.toMatchObject({ id: f.mainRun.id });
+    await expect(
+      selectExactMainRun({ base, context: f.context, now, read: read(true) }),
+    ).rejects.toThrow("Latest exact-base main run");
   });
 });
 

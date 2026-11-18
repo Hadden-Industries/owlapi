@@ -1,6 +1,8 @@
+import { afterEach } from "@jest/globals";
 import {
   assertEarlierWritersStopped,
   approvedDraft,
+  attachMissingAssets,
   checkSealSettings,
   draft,
   reconcilePublishedSeal,
@@ -27,6 +29,7 @@ import {
   publicRecipientInput,
 } from "./release-public-proof.mjs";
 import { INSTALLED_TEST_SCRIPTS } from "./installed-consumer-fixtures.mjs";
+import { assertReleaseAssets } from "./github-release.mjs";
 import { gzipSync } from "node:zlib";
 import { canonicalJson } from "./canonical-json.mjs";
 import { physicalName } from "../tooling/artifact-transport/identity.mjs";
@@ -59,6 +62,7 @@ import {
   planChannels,
   applyLabels,
   nativePilotRefusal,
+  originalPilotLog,
   verifyPilotRefusalLog,
 } from "./release-channel-operation.mjs";
 import { RegistryReadError } from "./public-registry-read.mjs";
@@ -87,6 +91,11 @@ const manifest = (version) => ({
   integrity: "sha512-" + hash(bytes, "sha512", "base64"),
 });
 const tags = { pilot: null, next: "0.1.0-rc.3", latest: "0.1.0-rc.3" };
+const stageScratch = [];
+afterEach(() => {
+  for (const directory of stageScratch.splice(0))
+    rmSync(directory, { recursive: true, force: true });
+});
 
 test("a cold publisher import failure retains NO_REQUEST without loading npm", async () => {
   const root = mkdtempSync(join(tmpdir(), "owlapi-stage-startup-"));
@@ -352,10 +361,9 @@ test.each([true, false])(
 );
 function run(version, channel, command) {
   const m = manifest(version);
-  const journal = join(
-    mkdtempSync(join(tmpdir(), "owlapi-stage-test-")),
-    "journal.jsonl",
-  );
+  const directory = mkdtempSync(join(tmpdir(), "owlapi-stage-test-"));
+  stageScratch.push(directory);
+  const journal = join(directory, "journal.jsonl");
   const input = {
     path: "retained.tgz",
     manifest: m,
@@ -1272,213 +1280,288 @@ test("a spent first-draft reservation survives deletion of its native run and dr
   ).rejects.toThrow("First draft already reserved");
 });
 
-test("public seal combines the final macOS result with the original successful registry and Linux attempts", async () => {
-  const runId = "92";
-  const fixtureManifest = manifest("0.1.0");
-  const lanes = ["linux", "darwin"].map((os) => ({
-    ...CI_RUNTIME.consumerPlatforms.find((p) => p.os === os),
-    node: CI_RUNTIME.minimums[0],
-  }));
-  const matrix = { include: lanes };
-  const operation = {
-    publicRun: runId,
-    publicAttempt: "2",
-    publicController: sha,
-    manifestSha256: hash(bytes),
+test("first seal uploads missing evidence using content descriptors and binds every original asset ID", async () => {
+  const original = {
+    name: "SHA256SUMS",
+    bytes: bytes.length,
+    sha256: hash(bytes),
   };
-  const input = publicRecipientInput(
-    {
-      operation,
-      manifest: fixtureManifest,
-      receipt: { stageId, runId: "88", attempt: "1" },
-    },
-    matrix,
-  );
-  const sbom = {
-    metadata: {
-      component: {
-        group: "@hadden-industries",
-        name: "owlapi",
-        version: "0.1.0",
-      },
-    },
-    components: [],
-  };
-  const member = (name, value) => ({
-    path: name,
-    content: Buffer.from(JSON.stringify(value)),
+  const missing = [
+    { ...original, name: "release-evidence.json" },
+    { ...original, name: "evidence.json.gz" },
+  ];
+  const native = (item, id) => ({
+    name: item.name,
+    size: item.bytes,
+    digest: "sha256:" + item.sha256,
+    id,
   });
-  const report = member("public.json", { result: "PASS" });
-  const checkpoint = { files: new Map() };
-  const records = [];
-  const originalJobs = [];
-  const repo = { id: 42, full_name: "Hadden-Industries/owlapi" };
-  const run = {
-    id: Number(runId),
-    run_attempt: 2,
-    path: ".github/workflows/release-registry.yml",
-    head_sha: sha,
-    event: "workflow_dispatch",
-    head_branch: "main",
-    status: "completed",
-    conclusion: "success",
-    repository: repo,
-    head_repository: repo,
-  };
-  const add = (jobName, runner, logical, attempt, entries) => {
-    const id = records.length + 100;
-    const archive = zipArchive(entries);
-    const record = {
-      id,
-      digest: "sha256:" + hash(archive),
-      size_in_bytes: archive.length,
-      expired: true,
-      created_at: "2026-11-17T12:00:20Z",
-      workflow_run: {
-        id: run.id,
-        repository_id: repo.id,
-        head_repository_id: repo.id,
-        head_sha: sha,
+  const release = { id: 77, assets: [native(original, 24)] };
+  const posted = [];
+  const expected = await attachMissingAssets(
+    {
+      write: (path, { body }) => {
+        expect(body).toEqual(bytes);
+        posted.push(path);
+        return { state: "CONFIRMED", value: { id: 24 + posted.length } };
       },
-      name: physicalName({
-        logical,
-        run: run.id,
-        attempt,
-        producer: "b".repeat(16),
-        invocation: "9".repeat(32),
-        ordinal: 0,
-      }),
+    },
+    release,
+    [original, ...missing],
+    () => bytes,
+  );
+  expect(posted).toEqual(
+    missing.map((item) => "/releases/77/assets?name=" + item.name),
+  );
+  expect(expected.map((item) => item.id)).toEqual([24, 25, 26]);
+  const observed = expected.map((item) => native(item, item.id));
+  assertReleaseAssets({ assets: observed, expected });
+  observed[1].id = 88;
+  expect(() => assertReleaseAssets({ assets: observed, expected })).toThrow(
+    "conflicting",
+  );
+});
+
+test("a fresh manifest rejects a borrowed CI build coordinate", async () => {
+  const { input } = run("0.1.0", "pilot", () => {
+    throw Error("unexpected request");
+  });
+  input.manifest.ci = { build: { runId: 17 } };
+  await expect(stageOnce(input)).rejects.toThrow("cross-run");
+});
+
+test.each([false, true])(
+  "public seal uses original successful jobs with a failed pre-matrix attempt: %s",
+  async (failed) => {
+    const offset = Number(failed);
+    const runId = "92";
+    const fixtureManifest = manifest("0.1.0");
+    const lanes = ["linux", "darwin"].map((os) => ({
+      ...CI_RUNTIME.consumerPlatforms.find((p) => p.os === os),
+      node: CI_RUNTIME.minimums[0],
+    }));
+    const matrix = { include: lanes };
+    const operation = {
+      publicRun: runId,
+      publicAttempt: String(2 + offset),
+      publicController: sha,
+      manifestSha256: hash(bytes),
     };
-    checkpoint.files.set("artifact-" + id + ".zip", archive);
-    records.push(record);
-    originalJobs.push({
-      name: jobName,
-      id,
+    const input = publicRecipientInput(
+      {
+        operation,
+        manifest: fixtureManifest,
+        receipt: { stageId, runId: "88", attempt: "1" },
+      },
+      matrix,
+    );
+    const sbom = {
+      metadata: {
+        component: {
+          group: "@hadden-industries",
+          name: "owlapi",
+          version: "0.1.0",
+        },
+      },
+      components: [],
+    };
+    const member = (name, value) => ({
+      path: name,
+      content: Buffer.from(JSON.stringify(value)),
+    });
+    const report = member("public.json", { result: "PASS" });
+    const checkpoint = { files: new Map() };
+    const records = [];
+    const originalJobs = [];
+    const repo = { id: 42, full_name: "Hadden-Industries/owlapi" };
+    const run = {
+      id: Number(runId),
+      run_attempt: 2 + offset,
+      path: ".github/workflows/release-registry.yml",
       head_sha: sha,
-      run_id: run.id,
-      run_attempt: attempt,
-      runner_id: id + 100,
+      event: "workflow_dispatch",
+      head_branch: "main",
       status: "completed",
       conclusion: "success",
-      labels: [runner],
-      started_at: "2026-11-17T12:00:01Z",
-      completed_at: "2026-11-17T12:00:31Z",
-      steps: [
-        {
-          name:
-            jobName === "registry"
-              ? "Retain original operation evidence"
-              : "Retain public recipient proof",
-          status: "completed",
-          conclusion: "success",
-          started_at: "2026-11-17T12:00:19Z",
-          completed_at: "2026-11-17T12:00:21Z",
+      repository: repo,
+      head_repository: repo,
+    };
+    const add = (jobName, runner, logical, attempt, entries) => {
+      const id = records.length + 100;
+      const archive = zipArchive(entries);
+      const record = {
+        id,
+        digest: "sha256:" + hash(archive),
+        size_in_bytes: archive.length,
+        expired: true,
+        created_at: "2026-11-17T12:00:20Z",
+        workflow_run: {
+          id: run.id,
+          repository_id: repo.id,
+          head_repository_id: repo.id,
+          head_sha: sha,
         },
-      ],
-    });
-  };
-  add("registry", lanes[0].runner, "release-registry-92-1", 1, [
-    report,
-    member("recipient-input.json", input),
-  ]);
-  for (const [i, lane] of lanes.entries()) {
-    const attempt = i + 1;
-    const consumers = Object.fromEntries(
-      [
-        ["alias", "owlapi"],
-        ["scoped", packageName],
-      ].map(([mode, name]) => [
-        mode,
-        {
-          identity: {
-            package: input.package,
-            integrity: input.integrity,
-            dependencyName: name,
-            specifier: "0.1.0",
-          },
-          graph: { dependencies: { [name]: { version: "0.1.0" } } },
-          identities: [packageName + "@0.1.0"],
-          installedTests: INSTALLED_TEST_SCRIPTS,
-          lockSha256: hash(bytes),
-          manifestSha256: hash(bytes),
-          manifest: { dependencies: { [name]: "0.1.0" } },
-        },
-      ]),
-    );
-    add(
-      "Public recipient (" + lane.runner + ", " + lane.node + ")",
-      lane.runner,
-      "public-recipient-" + lane.runner + "-" + lane.node + "-" + attempt,
-      attempt,
-      [
-        member("lane.json", {
-          lane,
-          input,
-          consumers,
-          commit: sha,
-          run: runId,
-          attempt: String(attempt),
-          npm: CI_RUNTIME.consumerNpm,
+        name: physicalName({
+          logical,
+          run: run.id,
+          attempt,
+          producer: "b".repeat(16),
+          invocation: "9".repeat(32),
+          ordinal: 0,
         }),
-      ],
-    );
-  }
-  const inventory = (jobs) => ({ jobs, total_count: jobs.length });
-  const read = (path) => {
-    if (path.includes("/artifacts?"))
-      return { total_count: records.length, artifacts: records };
-    if (path.startsWith("/actions/artifacts/"))
-      return records.find((a) => path === "/actions/artifacts/" + a.id);
-    if (path.includes("filter=latest"))
-      return inventory(
-        originalJobs.map((job) => ({
-          ...job,
-          id: 300 + job.id,
-          run_attempt: 2,
-        })),
-      );
-    if (path.includes("/jobs?")) {
-      const attempt = Number(path.split("/")[5]);
-      return inventory(originalJobs.filter((j) => j.run_attempt === attempt));
+      };
+      checkpoint.files.set("artifact-" + id + ".zip", archive);
+      records.push(record);
+      originalJobs.push({
+        name: jobName,
+        id,
+        head_sha: sha,
+        run_id: run.id,
+        run_attempt: attempt,
+        runner_id: id + 100,
+        status: "completed",
+        conclusion: "success",
+        labels: [runner],
+        started_at: "2026-11-17T12:00:01Z",
+        completed_at: "2026-11-17T12:00:31Z",
+        steps: [
+          {
+            name:
+              jobName === "registry"
+                ? "Retain original operation evidence"
+                : "Retain public recipient proof",
+            status: "completed",
+            conclusion: "success",
+            started_at: "2026-11-17T12:00:19Z",
+            completed_at: "2026-11-17T12:00:21Z",
+          },
+        ],
+      });
+    };
+    if (failed) {
+      add("registry", lanes[0].runner, "release-registry-92-1", 1, [report]);
+      originalJobs[0].conclusion = "failure";
+      originalJobs.push({
+        ...originalJobs[0],
+        id: 98,
+        conclusion: "skipped",
+        steps: [],
+        name: "Public recipient (${{ matrix.runner }}, ${{ matrix.node }})",
+      });
     }
-    if (path.endsWith("/attempts/1"))
-      return { ...run, run_attempt: 1, conclusion: "cancelled" };
-    return run;
-  };
-  const replay = () =>
-    readPublicEvidence(
-      { read },
-      checkpoint,
-      operation,
-      matrix,
-      input,
-      report.content,
-      sbom,
+    add(
+      "registry",
+      lanes[0].runner,
+      "release-registry-92-" + (1 + offset),
+      1 + offset,
+      [report, member("recipient-input.json", input)],
     );
-  const verified = await replay();
-  expect(
-    JSON.parse(verified.get("public-jobs.json")).map((job) => job.attempt),
-  ).toEqual([1, 1, 2]);
-  records[1].created_at = "2026-11-17T12:00:29Z";
-  await expect(replay()).rejects.toThrow("outside the original execution");
-  records[1].created_at = records[0].created_at;
-  records.push({ ...records[1], id: 201 });
-  await expect(replay()).rejects.toThrow("duplicate original public proof");
-  records.pop();
-  await expect(
-    readPublicEvidence(
-      { read },
-      checkpoint,
-      operation,
-      matrix,
-      { ...input, integrity: "wrong" },
-      report.content,
-      sbom,
-    ),
-  ).rejects.toThrow();
-  run.run_attempt = 3;
-  await expect(replay()).rejects.toThrow("no longer the final successful run");
-});
+    for (const [i, lane] of lanes.entries()) {
+      const attempt = i + 1 + offset;
+      const consumers = Object.fromEntries(
+        [
+          ["alias", "owlapi"],
+          ["scoped", packageName],
+        ].map(([mode, name]) => [
+          mode,
+          {
+            identity: {
+              package: input.package,
+              integrity: input.integrity,
+              dependencyName: name,
+              specifier: "0.1.0",
+            },
+            graph: { dependencies: { [name]: { version: "0.1.0" } } },
+            identities: [packageName + "@0.1.0"],
+            installedTests: INSTALLED_TEST_SCRIPTS,
+            lockSha256: hash(bytes),
+            manifestSha256: hash(bytes),
+            manifest: { dependencies: { [name]: "0.1.0" } },
+          },
+        ]),
+      );
+      add(
+        "Public recipient (" + lane.runner + ", " + lane.node + ")",
+        lane.runner,
+        "public-recipient-" + lane.runner + "-" + lane.node + "-" + attempt,
+        attempt,
+        [
+          member("lane.json", {
+            lane,
+            input,
+            consumers,
+            commit: sha,
+            run: runId,
+            attempt: String(attempt),
+            npm: CI_RUNTIME.consumerNpm,
+          }),
+        ],
+      );
+    }
+    const inventory = (jobs) => ({ jobs, total_count: jobs.length });
+    const read = (path) => {
+      if (path.includes("/artifacts?"))
+        return { total_count: records.length, artifacts: records };
+      if (path.startsWith("/actions/artifacts/"))
+        return records.find((a) => path === "/actions/artifacts/" + a.id);
+      if (path.includes("filter=latest"))
+        return inventory(
+          originalJobs
+            .filter((job) => job.conclusion === "success")
+            .map((job) => ({
+              ...job,
+              id: 300 + job.id,
+              run_attempt: 2 + offset,
+            })),
+        );
+      if (path.includes("/jobs?")) {
+        const attempt = Number(path.split("/")[5]);
+        return inventory(originalJobs.filter((j) => j.run_attempt === attempt));
+      }
+      if (path.endsWith("/attempts/" + (1 + offset)))
+        return { ...run, run_attempt: 1 + offset, conclusion: "cancelled" };
+      return run;
+    };
+    const replay = () =>
+      readPublicEvidence(
+        { read },
+        checkpoint,
+        operation,
+        matrix,
+        input,
+        report.content,
+        sbom,
+      );
+    const verified = await replay();
+    expect(
+      JSON.parse(verified.get("public-jobs.json")).map((job) => job.attempt),
+    ).toEqual([1 + offset, 1 + offset, 2 + offset]);
+    const linux = records.find((artifact) =>
+      artifact.name.startsWith("public-recipient-"),
+    );
+    linux.created_at = "2026-11-17T12:00:29Z";
+    await expect(replay()).rejects.toThrow("outside the original execution");
+    linux.created_at = records[0].created_at;
+    records.push({ ...linux, id: 201 });
+    await expect(replay()).rejects.toThrow("duplicate original public proof");
+    records.pop();
+    await expect(
+      readPublicEvidence(
+        { read },
+        checkpoint,
+        operation,
+        matrix,
+        { ...input, integrity: "wrong" },
+        report.content,
+        sbom,
+      ),
+    ).rejects.toThrow();
+    run.run_attempt = 3 + offset;
+    await expect(replay()).rejects.toThrow(
+      "no longer the final successful run",
+    );
+  },
+);
 
 test("the immutable archive retains named empty logs and rejects aliases and ambiguous bytes", () => {
   const archive = (files) =>
@@ -1728,6 +1811,25 @@ test("a pilot refusal needs the exact native HTTP error and a complete line in i
     line.replace("12:00:20", "12:01:20"),
   ])
     expect(() => check(partial)).toThrow();
+});
+
+test("a retained refusal excerpt cannot replace a complete native log", () => {
+  const complete = Buffer.from(
+    "request step start\nrefusal marker\nrequest step ended\n",
+  );
+  const clipped = Buffer.from("refusal marker\n");
+  expect(originalPilotLog({ status: 0, stdout: complete }, complete)).toEqual(
+    complete,
+  );
+  expect(() =>
+    originalPilotLog({ status: 0, stdout: complete }, clipped, hash(clipped)),
+  ).toThrow("complete native");
+  const expired = {
+    status: 1,
+    stderr: Buffer.from("gh: Not Found (HTTP 404)\n"),
+  };
+  expect(() => originalPilotLog(expired, clipped)).toThrow("verified expiry");
+  expect(originalPilotLog(expired, complete, hash(complete))).toEqual(complete);
 });
 
 test("seal requires fresh native settings at the documented level and can renew the original operation", () => {

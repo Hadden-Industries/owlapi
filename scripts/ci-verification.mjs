@@ -785,7 +785,13 @@ export const selectBaseQualification = async ({
   return selectExactMainQualification({ context, base, read, now });
 };
 
-async function selectExactMainQualification({ context, base, read, now }) {
+export async function selectExactMainRun({
+  context,
+  base,
+  read,
+  now = Date.now(),
+}) {
+  requireFact(sha(base), "Exact-base run selection needs a full commit ID.");
   const runs = await read(
     `/actions/workflows/ci.yml/runs?branch=main&head_sha=${base}&per_page=100`,
   );
@@ -797,6 +803,11 @@ async function selectExactMainQualification({ context, base, read, now }) {
   );
   const run = [...runs.workflow_runs].sort((a, b) => b.id - a.id)[0];
   assertMainRun(run, context, base, now);
+  return run;
+}
+
+async function selectExactMainQualification({ context, base, read, now }) {
+  const run = await selectExactMainRun({ context, base, read, now });
   const inventory = await read(
     `/actions/runs/${run.id}/artifacts?per_page=100`,
   );

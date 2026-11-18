@@ -14,6 +14,7 @@ import {
 import { FROZEN_RUNTIME_MATRIX } from "./ci-qualification.mjs";
 import { runtimeDigest } from "./consumer-runtime-matrix.mjs";
 import { assertPromotedCi } from "./promoted-release-proof.mjs";
+import { selectExactMainRun } from "./ci-verification.mjs";
 import {
   createRepositoryReader,
   readAcknowledgedInventory,
@@ -132,6 +133,17 @@ export async function verifyPromotedAdmission({
       "A required CI artifact changed or expired after admission",
     );
   }
+  const latest = await selectExactMainRun({
+    context: { repository, repositoryId: ci.repositoryId },
+    base: commit,
+    read,
+    now,
+  });
+  assert.deepEqual(
+    [latest.id, latest.run_attempt],
+    [ci.main.runId, ci.main.attempt],
+    "A newer CI run or attempt superseded the admitted main evidence",
+  );
   return ci;
 }
 

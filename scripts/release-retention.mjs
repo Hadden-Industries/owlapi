@@ -79,6 +79,31 @@ const validIdList = (ids) =>
   Array.isArray(ids) &&
   new Set(ids).size === ids.length &&
   ids.every((id) => Number.isSafeInteger(id) && id > 0);
+const validId = (id) => Number.isSafeInteger(id) && id > 0;
+const runKey = (runId, attempt) => runId + ":" + attempt;
+function settledRunKeys(settlements) {
+  if (
+    !Array.isArray(settlements) ||
+    !settlements.every((row) => validId(row?.runId) && validId(row?.attempt))
+  )
+    return null;
+  const keys = new Set(
+    settlements.map(({ runId, attempt }) => runKey(runId, attempt)),
+  );
+  return keys.size === settlements.length ? keys : null;
+}
+
+export function outstandingWriterRuns(runs, settlements) {
+  const closed = settledRunKeys(settlements);
+  return (
+    !closed ||
+    runs.some(
+      ({ status, conclusion, id, run_attempt }) =>
+        status !== "completed" ||
+        (conclusion !== "skipped" && !closed.has(runKey(id, run_attempt))),
+    )
+  );
+}
 export function selectRedundantArtifacts({
   inventory,
   successor,
@@ -95,7 +120,7 @@ export function selectRedundantArtifacts({
   if (!decisions) return hold("No signed custody replay is available.");
   if (
     !validIdList(decisions.protectedIds) ||
-    !validIdList(decisions.settledRuns) ||
+    !settledRunKeys(decisions.settledRuns) ||
     !Array.isArray(decisions.replayed)
   )
     return hold("The signed custody inventory is malformed.");
@@ -207,7 +232,8 @@ export async function reportReleaseRetention(env = process.env) {
     assert.equal(decisions.schemaVersion, 1);
     assert.equal(decisions.successor, main.commit.sha);
     assert.ok(
-      validIdList(decisions.protectedIds) && validIdList(decisions.settledRuns),
+      validIdList(decisions.protectedIds) &&
+        settledRunKeys(decisions.settledRuns),
     );
     const proof = await readReleaseCiEvidence(env);
     const runs = await Promise.all(
@@ -226,11 +252,7 @@ export async function reportReleaseRetention(env = process.env) {
       runs.some(
         ({ workflow, runs }) =>
           writers.includes(workflow) &&
-          runs.some(
-            ({ status, conclusion, id }) =>
-              status !== "completed" ||
-              (conclusion !== "skipped" && !decisions.settledRuns.includes(id)),
-          ),
+          outstandingWriterRuns(runs, decisions.settledRuns),
       );
     const after = await read("/branches/main");
     const current = [
