@@ -1320,6 +1320,10 @@ test("first seal uploads missing evidence using content descriptors and binds ev
   expect(() => assertReleaseAssets({ assets: observed, expected })).toThrow(
     "conflicting",
   );
+  delete observed[1].id;
+  expect(() => assertReleaseAssets({ assets: observed, expected })).toThrow(
+    "conflicting",
+  );
 });
 
 test("a fresh manifest rejects a borrowed CI build coordinate", async () => {
@@ -1829,7 +1833,16 @@ test("a retained refusal excerpt cannot replace a complete native log", () => {
     stderr: Buffer.from("gh: Not Found (HTTP 404)\n"),
   };
   expect(() => originalPilotLog(expired, clipped)).toThrow("verified expiry");
-  expect(originalPilotLog(expired, complete, hash(complete))).toEqual(complete);
+  expect(() =>
+    originalPilotLog(expired, clipped, { sha256: hash(clipped) }),
+  ).toThrow("verified expiry");
+  expect(
+    originalPilotLog(expired, complete, {
+      source: "COMPLETE_NATIVE_JOB_LOG",
+      bytes: complete.length,
+      sha256: hash(complete),
+    }),
+  ).toEqual(complete);
 });
 
 test("seal requires fresh native settings at the documented level and can renew the original operation", () => {

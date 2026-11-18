@@ -329,7 +329,7 @@ export function verifyPilotRefusalLog({ bytes, step, proof, operationSha256 }) {
   return hash(bytes);
 }
 
-export function originalPilotLog(result, retained, verifiedDigest) {
+export function originalPilotLog(result, retained, receipt) {
   if (!result.error && result.status === 0) {
     if (retained)
       assert.ok(
@@ -343,7 +343,11 @@ export function originalPilotLog(result, retained, verifiedDigest) {
     result.status === 1 &&
     /^gh: [^\r\n]+ \(HTTP (?:404|410)\)\s*$/u.test(String(result.stderr));
   assert.ok(
-    expired && retained && verifiedDigest && hash(retained) === verifiedDigest,
+    expired &&
+      retained &&
+      receipt?.source === "COMPLETE_NATIVE_JOB_LOG" &&
+      receipt.bytes === retained.length &&
+      hash(retained) === receipt.sha256,
     "The full native job log or a verified expiry fallback is required",
   );
   return retained;
@@ -461,8 +465,9 @@ async function observePilotRefusal(
     ["api", "repos/" + repository + "/actions/jobs/" + job.id + "/logs"],
     { env, timeout: 20000, maxBuffer: 4 * 1024 * 1024 },
   );
+  const nativeLog = originalPilotLog(fetched, savedLog, verified?.nativeLog);
   const logSha256 = verifyPilotRefusalLog({
-    bytes: originalPilotLog(fetched, savedLog, verified?.logSha256),
+    bytes: nativeLog,
     step: steps[0],
     proof: diagnostic,
     operationSha256,
@@ -480,6 +485,11 @@ async function observePilotRefusal(
     state: "REQUEST_REFUSED",
     jobId: job.id,
     logSha256,
+    nativeLog: {
+      source: "COMPLETE_NATIVE_JOB_LOG",
+      bytes: nativeLog.length,
+      sha256: logSha256,
+    },
     stepCompletedAt: steps[0].completed_at,
   };
 }

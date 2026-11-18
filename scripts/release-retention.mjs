@@ -95,14 +95,16 @@ function settledRunKeys(settlements) {
 
 export function outstandingWriterRuns(runs, settlements) {
   const closed = settledRunKeys(settlements);
-  return (
-    !closed ||
-    runs.some(
-      ({ status, conclusion, id, run_attempt }) =>
-        status !== "completed" ||
-        (conclusion !== "skipped" && !closed.has(runKey(id, run_attempt))),
-    )
-  );
+  if (!closed) return true;
+  return runs.some(({ status, conclusion, id, run_attempt }) => {
+    if (status !== "completed" || !validId(id) || !validId(run_attempt))
+      return true;
+    // A skipped latest attempt cannot settle any earlier attempt of the run.
+    const possibleWrites = run_attempt - (conclusion === "skipped" ? 1 : 0);
+    for (let attempt = 1; attempt <= possibleWrites; attempt++)
+      if (!closed.has(runKey(id, attempt))) return true;
+    return false;
+  });
 }
 export function selectRedundantArtifacts({
   inventory,

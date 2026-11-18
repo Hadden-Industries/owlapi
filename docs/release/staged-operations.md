@@ -220,6 +220,7 @@ It binds the original `checkpoint`, `runId`, `attempt`, `controller`, `operation
 The verifier requires the original failed step and a complete matching npm `E401` for HTTP `401 DELETE` on the pilot endpoint.
 Include its original proof in the signed disposition before authorizing a new operation with fresh preimages.
 Retain disclosure-reviewed original native job metadata and exact log bytes as `label-refusal-RUN-1.log`, bound by `origin.logSha256`, for verification after Actions expiry.
+Preserve the verifier's `COMPLETE_NATIVE_JOB_LOG` receipt, including exact byte length and digest, in the signed refusal disposition.
 
 After npm acknowledges a label write, the writer allows up to five minutes for the public tag map to converge.
 It polls only while the previous approved map is visible or a registry read is transiently unavailable.

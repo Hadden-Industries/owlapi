@@ -38,9 +38,22 @@ test("a settled run number cannot settle a later native attempt", () => {
     conclusion: "failure",
   };
   expect(outstandingWriterRuns([run], [{ runId: 101, attempt: 1 }])).toBe(true);
-  expect(outstandingWriterRuns([run], [{ runId: 101, attempt: 2 }])).toBe(
-    false,
-  );
+  expect(outstandingWriterRuns([run], [{ runId: 101, attempt: 2 }])).toBe(true);
+  expect(
+    outstandingWriterRuns(
+      [{ ...run, conclusion: "skipped" }],
+      [{ runId: 101, attempt: 2 }],
+    ),
+  ).toBe(true);
+  expect(
+    outstandingWriterRuns(
+      [run],
+      [
+        { runId: 101, attempt: 1 },
+        { runId: 101, attempt: 2 },
+      ],
+    ),
+  ).toBe(false);
   expect(outstandingWriterRuns([run], [101])).toBe(true);
 });
 

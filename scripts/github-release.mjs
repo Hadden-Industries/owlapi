@@ -60,9 +60,7 @@ export const assertReleaseAssetSubset = ({ assets, expected }) => {
       observedNames.has(asset.name) ||
       asset.size !== required.bytes ||
       asset.digest !== `sha256:${required.sha256}` ||
-      (required.id !== undefined &&
-        asset.id !== undefined &&
-        asset.id !== required.id)
+      (required.id !== undefined && asset.id !== required.id)
     ) {
       throw new Error(
         "The draft contains an unexpected or conflicting GitHub release asset.",

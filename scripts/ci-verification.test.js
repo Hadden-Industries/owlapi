@@ -19,11 +19,17 @@ import {
   selectVerificationProof,
   verifyIntegrationProof,
   selectBaseQualification,
-  selectExactMainRun,
   verifyBaseQualification,
   verifyReleaseCi,
   readJobInventory,
 } from "./ci-verification.mjs";
+import { verifyPromotedAdmission } from "./release-qualification-manifest.mjs";
+import { projectPromotedCi } from "./promoted-release-proof.mjs";
+import {
+  PACKAGE_FILE_STEM,
+  PACKAGE_NAME,
+  PACKAGE_VERSION,
+} from "./package-identity.mjs";
 import {
   createRepositoryReader,
   readDownloadedReceipt,
@@ -1004,24 +1010,91 @@ describe("read-only release dispatch CI admission", () => {
     ).rejects.toThrow(/protected main/u);
     expect(heads).toBe(2);
   });
-  test("a later failed CI dispatch invalidates the formerly successful exact SHA", async () => {
+  test("promoted admission reselects the native CI run before trusting the exact SHA", async () => {
     const f = await dispatch(false);
-    const base = f.context.sha;
-    const read = (fault) => () => {
-      const latest = {
-        ...f.mainRun,
-        id: f.mainRun.id + 1,
-        conclusion: "failure",
-      };
-      const workflow_runs = fault ? [f.mainRun, latest] : [f.mainRun];
-      return { workflow_runs, total_count: workflow_runs.length };
+    const result = await admit(f);
+    const digest = "7".repeat(64);
+    const matrixSha256 = "8".repeat(64);
+    const stem = PACKAGE_FILE_STEM + "-" + PACKAGE_VERSION;
+    const advisory = {
+      observedAt: new Date(now).toISOString(),
+      high: 0,
+      critical: 0,
+      lockSha256: digest,
+      manifestSha256: digest,
+      reportSha256: digest,
     };
-    await expect(
-      selectExactMainRun({ base, context: f.context, now, read: read(false) }),
-    ).resolves.toMatchObject({ id: f.mainRun.id });
-    await expect(
-      selectExactMainRun({ base, context: f.context, now, read: read(true) }),
-    ).rejects.toThrow("Latest exact-base main run");
+    const ci = projectPromotedCi(
+      {
+        ...result,
+        qualifiedPackage: {
+          attempt: 1,
+          producerJob: 888,
+          candidate: result.source.candidate,
+          proof: {
+            ...result.source.candidate,
+            id: 704,
+            name: "package-proof-200-1",
+          },
+          assets: Object.fromEntries(
+            [
+              ["tarball", stem + ".tgz"],
+              ["sbom", stem + ".cdx.json"],
+              ["checksums", "SHA256SUMS"],
+            ].map(([kind, name]) => [kind, { name, bytes: 9, sha256: digest }]),
+          ),
+          package: { name: PACKAGE_NAME, version: PACKAGE_VERSION },
+          integrity: "sha512-" + Buffer.alloc(64).toString("base64"),
+          evidence: {
+            "lockless-consumer-package-lock.json": { sha256: digest },
+          },
+          advisoryObservations: {
+            root: advisory,
+            transport: advisory,
+            recipient: advisory,
+          },
+        },
+      },
+      matrixSha256,
+    );
+    const invoke = (conclusion) =>
+      verifyPromotedAdmission({
+        ci,
+        commit: f.context.sha,
+        matrixSha256,
+        now,
+        read: async (path) => {
+          if (path.startsWith("/actions/workflows/")) {
+            const workflow_runs = conclusion
+              ? [f.mainRun, { ...f.mainRun, id: f.mainRun.id + 1, conclusion }]
+              : [f.mainRun];
+            return { workflow_runs, total_count: workflow_runs.length };
+          }
+          if (path === "/actions/runs/" + f.mainRun.id) return f.mainRun;
+          const item = [ci.main.receipt, ci.candidate, ci.packageProof].find(
+            ({ id }) => path === "/actions/artifacts/" + id,
+          );
+          return {
+            ...item,
+            size_in_bytes: item.bytes,
+            expires_at: item.expiresAt,
+            expired: false,
+            workflow_run: {
+              id: f.mainRun.id,
+              head_sha: f.context.sha,
+              repository_id: ci.repositoryId,
+              head_repository_id: ci.repositoryId,
+            },
+          };
+        },
+      });
+    await expect(invoke()).resolves.toEqual(ci);
+    await expect(invoke("success")).rejects.toThrow(
+      "superseded the admitted main",
+    );
+    await expect(invoke("failure")).rejects.toThrow(
+      "Latest exact-base main run",
+    );
   });
 });
 
