@@ -8,16 +8,15 @@ on:
         required: true
 permissions: {}
 concurrency:
-  group: owlapi-release
+  group: owlapi-public-${{ github.run_id }}
   cancel-in-progress: false
-  queue: max
 jobs:
   registry:
     if: github.repository == 'Hadden-Industries/owlapi' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-26.04
     outputs:
       matrix: ${{ steps.public.outputs.matrix }}
-      tarball: ${{ steps.public.outputs.tarball }}
+      recipient_input: ${{ steps.public.outputs.recipient_input }}
     timeout-minutes: 80
     permissions:
       contents: read
@@ -47,6 +46,7 @@ jobs:
           path: .release/followup
           retention-days: 90
   public_recipient:
+    name: Public recipient (${{ matrix.runner }}, ${{ matrix.node }})
     needs: registry
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 50
@@ -62,7 +62,7 @@ jobs:
     env:
       OWLAPI_RUNTIME_MATRIX: ${{ needs.registry.outputs.matrix }}
       OWLAPI_EXPECTED_NODE: ${{ matrix.node }}
-      TARBALL_SHA256: ${{ needs.registry.outputs.tarball }}
+      OWLAPI_PUBLIC_RECIPIENT: ${{ needs.registry.outputs.recipient_input }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -76,7 +76,8 @@ jobs:
           cache: ""
           package-manager-cache: false
       - run: node scripts/public-recipient-lane.mjs
-      - uses: ./.github/actions/retain-artifact
+      - name: Retain public recipient proof
+        uses: ./.github/actions/retain-artifact
         with:
           name: public-recipient-${{ matrix.runner }}-${{ matrix.node }}-${{ github.run_attempt }}
           path: .release/public-lane/lane.json

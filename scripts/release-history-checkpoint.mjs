@@ -42,7 +42,7 @@ export async function readCheckpoint(client, objectId) {
   assert.match(objectId, /^[a-f0-9]{40}$/u);
   const tag = await client.read("/git/tags/" + objectId);
   assert.equal(tag.sha, objectId);
-  assert.match(tag.tag, /^owlapi-release-history\/[a-z0-9][a-z0-9-]{0,100}$/u);
+  assert.match(tag.tag, /^owlapi-release-history\/[a-z0-9][a-z0-9.-]{0,100}$/u);
   assert.equal(tag.object.type, "commit");
   assert.match(tag.object.sha, /^[a-f0-9]{40}$/u);
   assert.equal(tag.verification.verified, true);
@@ -141,8 +141,14 @@ export async function readCheckpoint(client, objectId) {
 }
 
 /** A protected reservation survives run deletion and can authorize only one native run number. */
-export async function verifyReservations(client, checkpoint, env, kind) {
-  const kinds = ["stage", "labels", "classification"];
+export async function verifyReservations(
+  client,
+  checkpoint,
+  env,
+  kind,
+  { version, create = false, trackWriterTime = false, retirementSha } = {},
+) {
+  const kinds = ["stage", "labels", "classification", "draft", "seal"];
   assert.ok(kinds.includes(kind));
   const number = Number(env.GITHUB_RUN_NUMBER);
   assert.ok(
@@ -150,12 +156,23 @@ export async function verifyReservations(client, checkpoint, env, kind) {
       number > 0 &&
       env.GITHUB_RUN_ATTEMPT === "1",
   );
-  const current = namespace + kind + "-" + number;
+  const versionPattern = "\\d+\\.\\d+\\.\\d+(?:-rc\\.\\d+)?";
+  if (kind === "draft" || kind === "seal")
+    assert.match(version, new RegExp("^" + versionPattern + "$", "u"));
+  const scope =
+    kind === "draft"
+      ? "-" + version + (create ? "-create" : "-continue")
+      : kind === "seal"
+        ? "-" + version
+        : "";
+  const current = namespace + kind + scope + "-" + number;
   assert.equal(
     checkpoint.tag,
     current,
     "A writer needs a signed single-run reservation",
   );
+  const previousSeals = [];
+  let lastWriterAt = -Infinity;
   for (const prefix of kinds) {
     const refs = await client.read(
       "/git/matching-refs/tags/" + namespace + prefix + "-",
@@ -166,29 +183,90 @@ export async function verifyReservations(client, checkpoint, env, kind) {
         refs.some(
           (r) =>
             r.ref === "refs/tags/" + current &&
+            r.object.type === "tag" &&
             r.object.sha === checkpoint.objectId,
         ),
       );
     for (const ref of refs) {
       if (ref.ref === "refs/tags/" + current) continue;
+      const subject =
+        prefix === "draft"
+          ? "(?<version>" + versionPattern + ")-(?<phase>create|continue)-"
+          : prefix === "seal"
+            ? "(?<version>" + versionPattern + ")-"
+            : "";
       const match = new RegExp(
-        "^refs/tags/" + namespace + prefix + "-([1-9][0-9]*)$",
+        "^refs/tags/" +
+          namespace +
+          prefix +
+          "-" +
+          subject +
+          "(?<number>[1-9][0-9]*)$",
         "u",
       ).exec(ref.ref);
       assert.ok(match && ref.object.type === "tag");
+      const other = match.groups;
+      assert.ok(
+        prefix !== kind || Number(other.number) !== number,
+        "Another reservation addresses the same native run",
+      );
+      assert.ok(
+        kind !== "draft" ||
+          !create ||
+          prefix !== "draft" ||
+          other.version !== version ||
+          other.phase !== "create",
+        "First draft already reserved for this version",
+      );
       const saved = priorDisposition(
         checkpoint,
-        "reservation-" + prefix + "-" + match[1] + ".json",
+        "reservation-" + prefix + "-" + other.number + ".json",
       );
       assert.equal(saved.object, ref.object.sha);
+      if (retirementSha && prefix === "labels") {
+        assert.match(saved.operationSha256, /^[a-f0-9]{64}$/u);
+        assert.notEqual(
+          saved.operationSha256,
+          retirementSha,
+          "Pilot retirement requires a fresh signed operation",
+        );
+      }
       assert.ok(
         ["SETTLED", "REJECTED", "RECONCILED_NO_PENDING_EFFECT"].includes(
           saved.state,
         ),
         "Unresolved release reservation",
       );
+      if (
+        trackWriterTime &&
+        ["stage", "labels", "classification"].includes(prefix)
+      ) {
+        if (saved.lastWriteAt === null) {
+          assert.equal(saved.requestState, "NO_REQUEST");
+        } else {
+          const ended = Date.parse(saved.lastWriteAt);
+          assert.ok(
+            Number.isFinite(ended) && ended <= Date.now(),
+            "Previous reservation needs the native write end time",
+          );
+          lastWriterAt = Math.max(lastWriterAt, ended);
+        }
+      }
+      if (kind === "seal" && prefix === "seal" && other.version === version) {
+        assert.equal(
+          saved.state,
+          "RECONCILED_NO_PENDING_EFFECT",
+          "Seal requires reconciliation of the original request",
+        );
+        previousSeals.push({
+          number: other.number,
+          objectId: saved.object,
+          origin: saved.origin,
+        });
+      }
     }
   }
+  return { previousSeals, lastWriterAt };
 }
 
 export function verifyControllerDelta(source, controller, files) {

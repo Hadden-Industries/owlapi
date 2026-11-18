@@ -2,6 +2,7 @@ import {
   checkSealSettings,
   draft,
   reconcilePublishedSeal,
+  readStagedArchive,
 } from "./staged-release-followup.mjs";
 import {
   immutableRuleHasNoBypass,
@@ -15,6 +16,16 @@ import {
 } from "./github-evidence-reader.mjs";
 import { zipArchive } from "./fixtures/zip-archive.mjs";
 import { CI_RUNTIME } from "./runtime-policy.mjs";
+import {
+  qualificationMatrix,
+  runtimeDigest,
+} from "./consumer-runtime-matrix.mjs";
+import {
+  readPublicEvidence,
+  publicRecipientInput,
+} from "./release-public-proof.mjs";
+import { INSTALLED_TEST_SCRIPTS } from "./installed-consumer-fixtures.mjs";
+import { gzipSync } from "node:zlib";
 import { canonicalJson } from "./canonical-json.mjs";
 import { physicalName } from "../tooling/artifact-transport/identity.mjs";
 import {
@@ -41,7 +52,12 @@ import {
   stageOnce,
   verifyPrivateStage,
 } from "./staged-release.mjs";
-import { planChannels, applyLabels } from "./release-channel-operation.mjs";
+import {
+  planChannels,
+  applyLabels,
+  nativePilotRefusal,
+  verifyPilotRefusalLog,
+} from "./release-channel-operation.mjs";
 import { RegistryReadError } from "./public-registry-read.mjs";
 import {
   assertQualificationCandidate,
@@ -114,6 +130,11 @@ test("reads a promoted manifest under its release run and the original candidate
   const record = {
     ...manifest("0.1.0"),
     schemaVersion: 2,
+    runtimeMatrix: qualificationMatrix(
+      [...CI_RUNTIME.minimums, ...Object.values(CI_RUNTIME.node)].map((v) => ({
+        version: "v" + v,
+      })),
+    ),
     security: { observedAt: "2026-11-17T09:00:00Z" },
   };
   const landed = {
@@ -193,7 +214,7 @@ test("reads a promoted manifest under its release run and the original candidate
     packedConfig: record.packedConfig,
     integrity: record.integrity,
     policySha256: "5".repeat(64),
-    matrixSha256: "6".repeat(64),
+    matrixSha256: runtimeDigest(record.runtimeMatrix),
     evidence: {
       "lockless-consumer-package-lock.json": { sha256: observation.lockSha256 },
     },
@@ -1119,6 +1140,438 @@ test("a corrupted third draft asset is rejected before the first GitHub write", 
     ),
   ).rejects.toThrow();
   expect(calls).toEqual([]);
+});
+
+test.each(["AMBIGUOUS", "CONFIRMED"])(
+  "draft records the request before creation and its native ID before assets: %s",
+  async (state) => {
+    const dir = mkdtempSync(join(tmpdir(), "owlapi-draft-test-"));
+    try {
+      const journal = join(dir, "draft-journal.jsonl");
+      const notes = "reviewed notes";
+      const release = {
+        id: 48,
+        tag_name: "v0.1.0",
+        draft: true,
+        prerelease: true,
+        name: "owlapi 0.1.0",
+        body: notes,
+        assets: [],
+      };
+      const rows = () =>
+        readFileSync(journal, "utf8").trimEnd().split("\n").map(JSON.parse);
+      const operation = {
+        version: "0.1.0",
+        expectedReleaseId: null,
+        manifestSha256: hash(bytes),
+        tagObject: sha,
+        stageId,
+      };
+      const assets = Object.fromEntries(
+        ["tarball", "sbom", "checksums"].map((name) => [
+          name,
+          { name, bytes: bytes.length, sha256: hash(bytes) },
+        ]),
+      );
+      const ctx = {
+        operation,
+        manifest: { assets, commit: sha },
+        read: (name) =>
+          name === "release-notes.md" ? Buffer.from(notes) : bytes,
+      };
+      let creations = 0;
+      const client = {
+        getReleaseByTag: () => null,
+        write: (path, request) => {
+          if (path !== "/releases") {
+            expect(rows()[1].releaseId).toBe(release.id);
+            throw Error("interrupted before first asset");
+          }
+          creations++;
+          expect(rows()[0]).toMatchObject({
+            state: "DRAFT_REQUESTED",
+            requestSha256: hash(request.body),
+            stageId,
+          });
+          return { state, value: release };
+        },
+      };
+      const attempt = {
+        journal,
+        checkpoint: sha,
+        controller: sha,
+        runId: "42",
+        attempt: "1",
+      };
+      await expect(draft(client, ctx, attempt)).rejects.toThrow(
+        state === "AMBIGUOUS" ? "Ambiguous draft creation" : "interrupted",
+      );
+      expect(rows().map((row) => row.state)).toEqual(
+        state === "AMBIGUOUS"
+          ? ["DRAFT_REQUESTED"]
+          : ["DRAFT_REQUESTED", "DRAFT_ACKNOWLEDGED"],
+      );
+      await expect(draft(client, ctx, attempt)).rejects.toThrow();
+      expect(creations).toBe(1);
+      await expect(
+        draft(
+          client,
+          { ...ctx, operation: { ...operation, expectedReleaseId: 48 } },
+          attempt,
+        ),
+      ).rejects.toThrow("authenticated original draft");
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  },
+);
+
+test("a spent first-draft reservation survives deletion of its native run and draft", async () => {
+  const tag = "owlapi-release-history/draft-0.1.0-create-8";
+  const oldTag = "owlapi-release-history/draft-0.1.0-create-4";
+  const checkpoint = { tag, objectId: sha, files: new Map() };
+  checkpoint.files.set(
+    "reservation-draft-4.json",
+    Buffer.from(JSON.stringify({ object: sha, state: "SETTLED" })),
+  );
+  const client = {
+    read: (path) =>
+      path.endsWith("draft-")
+        ? [tag, oldTag].map((name) => ({
+            ref: "refs/tags/" + name,
+            object: { type: "tag", sha },
+          }))
+        : [],
+  };
+  await expect(
+    verifyReservations(
+      client,
+      checkpoint,
+      { GITHUB_RUN_NUMBER: "8", GITHUB_RUN_ATTEMPT: "1" },
+      "draft",
+      { version: "0.1.0", create: true },
+    ),
+  ).rejects.toThrow("First draft already reserved");
+});
+
+test("public seal combines the final macOS result with the original successful registry and Linux attempts", async () => {
+  const runId = "92";
+  const fixtureManifest = manifest("0.1.0");
+  const lanes = ["linux", "darwin"].map((os) => ({
+    ...CI_RUNTIME.consumerPlatforms.find((p) => p.os === os),
+    node: CI_RUNTIME.minimums[0],
+  }));
+  const matrix = { include: lanes };
+  const operation = {
+    publicRun: runId,
+    publicAttempt: "2",
+    publicController: sha,
+    manifestSha256: hash(bytes),
+  };
+  const input = publicRecipientInput(
+    {
+      operation,
+      manifest: fixtureManifest,
+      receipt: { stageId, runId: "88", attempt: "1" },
+    },
+    matrix,
+  );
+  const sbom = {
+    metadata: {
+      component: {
+        group: "@hadden-industries",
+        name: "owlapi",
+        version: "0.1.0",
+      },
+    },
+    components: [],
+  };
+  const member = (name, value) => ({
+    path: name,
+    content: Buffer.from(JSON.stringify(value)),
+  });
+  const report = member("public.json", { result: "PASS" });
+  const checkpoint = { files: new Map() };
+  const records = [];
+  const originalJobs = [];
+  const repo = { id: 42, full_name: "Hadden-Industries/owlapi" };
+  const run = {
+    id: Number(runId),
+    run_attempt: 2,
+    path: ".github/workflows/release-registry.yml",
+    head_sha: sha,
+    event: "workflow_dispatch",
+    head_branch: "main",
+    status: "completed",
+    conclusion: "success",
+    repository: repo,
+    head_repository: repo,
+  };
+  const add = (jobName, runner, logical, attempt, entries) => {
+    const id = records.length + 100;
+    const archive = zipArchive(entries);
+    const record = {
+      id,
+      digest: "sha256:" + hash(archive),
+      size_in_bytes: archive.length,
+      expired: true,
+      created_at: "2026-11-17T12:00:20Z",
+      workflow_run: {
+        id: run.id,
+        repository_id: repo.id,
+        head_repository_id: repo.id,
+        head_sha: sha,
+      },
+      name: physicalName({
+        logical,
+        run: run.id,
+        attempt,
+        producer: "b".repeat(16),
+        invocation: "9".repeat(32),
+        ordinal: 0,
+      }),
+    };
+    checkpoint.files.set("artifact-" + id + ".zip", archive);
+    records.push(record);
+    originalJobs.push({
+      name: jobName,
+      id,
+      head_sha: sha,
+      run_id: run.id,
+      run_attempt: attempt,
+      runner_id: id + 100,
+      status: "completed",
+      conclusion: "success",
+      labels: [runner],
+      started_at: "2026-11-17T12:00:01Z",
+      completed_at: "2026-11-17T12:00:31Z",
+      steps: [
+        {
+          name:
+            jobName === "registry"
+              ? "Retain original operation evidence"
+              : "Retain public recipient proof",
+          status: "completed",
+          conclusion: "success",
+          started_at: "2026-11-17T12:00:19Z",
+          completed_at: "2026-11-17T12:00:21Z",
+        },
+      ],
+    });
+  };
+  add("registry", lanes[0].runner, "release-registry-92-1", 1, [
+    report,
+    member("recipient-input.json", input),
+  ]);
+  for (const [i, lane] of lanes.entries()) {
+    const attempt = i + 1;
+    const consumers = Object.fromEntries(
+      [
+        ["alias", "owlapi"],
+        ["scoped", packageName],
+      ].map(([mode, name]) => [
+        mode,
+        {
+          identity: {
+            package: input.package,
+            integrity: input.integrity,
+            dependencyName: name,
+            specifier: "0.1.0",
+          },
+          graph: { dependencies: { [name]: { version: "0.1.0" } } },
+          identities: [packageName + "@0.1.0"],
+          installedTests: INSTALLED_TEST_SCRIPTS,
+          lockSha256: hash(bytes),
+          manifestSha256: hash(bytes),
+          manifest: { dependencies: { [name]: "0.1.0" } },
+        },
+      ]),
+    );
+    add(
+      "Public recipient (" + lane.runner + ", " + lane.node + ")",
+      lane.runner,
+      "public-recipient-" + lane.runner + "-" + lane.node + "-" + attempt,
+      attempt,
+      [
+        member("lane.json", {
+          lane,
+          input,
+          consumers,
+          commit: sha,
+          run: runId,
+          attempt: String(attempt),
+          npm: CI_RUNTIME.consumerNpm,
+        }),
+      ],
+    );
+  }
+  const inventory = (jobs) => ({ jobs, total_count: jobs.length });
+  const read = (path) => {
+    if (path.includes("/artifacts?"))
+      return { total_count: records.length, artifacts: records };
+    if (path.startsWith("/actions/artifacts/"))
+      return records.find((a) => path === "/actions/artifacts/" + a.id);
+    if (path.includes("filter=latest"))
+      return inventory(
+        originalJobs.map((job) => ({
+          ...job,
+          id: 300 + job.id,
+          run_attempt: 2,
+        })),
+      );
+    if (path.includes("/jobs?")) {
+      const attempt = Number(path.split("/")[5]);
+      return inventory(originalJobs.filter((j) => j.run_attempt === attempt));
+    }
+    if (path.endsWith("/attempts/1"))
+      return { ...run, run_attempt: 1, conclusion: "cancelled" };
+    return run;
+  };
+  const replay = () =>
+    readPublicEvidence(
+      { read },
+      checkpoint,
+      operation,
+      matrix,
+      input,
+      report.content,
+      sbom,
+    );
+  const verified = await replay();
+  expect(
+    JSON.parse(verified.get("public-jobs.json")).map((job) => job.attempt),
+  ).toEqual([1, 1, 2]);
+  records[1].created_at = "2026-11-17T12:00:29Z";
+  await expect(replay()).rejects.toThrow("outside the original execution");
+  records[1].created_at = records[0].created_at;
+  records.push({ ...records[1], id: 201 });
+  await expect(replay()).rejects.toThrow("duplicate original public proof");
+  records.pop();
+  await expect(
+    readPublicEvidence(
+      { read },
+      checkpoint,
+      operation,
+      matrix,
+      { ...input, integrity: "wrong" },
+      report.content,
+      sbom,
+    ),
+  ).rejects.toThrow();
+  run.run_attempt = 3;
+  await expect(replay()).rejects.toThrow("no longer the final successful run");
+});
+
+test("the immutable archive retains named empty logs and rejects aliases and ambiguous bytes", () => {
+  const archive = (files) =>
+    gzipSync(
+      Buffer.from(canonicalJson({ schemaVersion: 1, checkpoint: sha, files })),
+    );
+  const empty = {
+    name: "required.log",
+    bytes: 0,
+    sha256: hash(Buffer.alloc(0)),
+    base64: "",
+  };
+  expect(
+    readStagedArchive(archive([empty])).files.get(empty.name),
+  ).toHaveLength(0);
+  for (const invalid of [
+    [empty, { ...empty, name: "Required.log" }],
+    [{ ...empty, name: "../required.log" }],
+    [{ ...empty, base64: "==" }],
+    [{ ...empty, bytes: 1 }],
+  ])
+    expect(() => readStagedArchive(archive(invalid))).toThrow();
+});
+
+test.each(["matching", "absent", "third value"])(
+  "pilot retirement observes %s and changes only the approved label",
+  async (prior) => {
+    const stable = "0.1.0",
+      retiredVersion = "0.2.0-rc.1";
+    const before = {
+      pilot: retiredVersion,
+      next: retiredVersion,
+      latest: stable,
+    };
+    const after = { ...before, pilot: null };
+    const retire = {
+      type: "retire-pilot",
+      version: stable,
+      retiredVersion,
+      support: { stable, preview: "0.2.0" },
+      before,
+      after,
+    };
+    let observed = {
+      ...before,
+      pilot:
+        prior === "absent"
+          ? null
+          : prior === "third value"
+            ? "0.3.0"
+            : retiredVersion,
+    };
+    const writes = [];
+    const execute = applyLabels(retire, {
+      read: () => observed,
+      write: (tag, value) => {
+        writes.push([tag, value]);
+        observed = after;
+        return "-pilot: " + packageName + "@" + retiredVersion;
+      },
+      record: () => {},
+    });
+    if (prior === "third value")
+      await expect(execute).rejects.toThrow("preimage");
+    else await expect(execute).resolves.toEqual(after);
+    expect(writes).toEqual(prior === "matching" ? [["pilot", null]] : []);
+  },
+);
+
+test("a pilot refusal needs the exact native HTTP error and a complete line in its write step", () => {
+  const endpoint =
+    "https://registry.npmjs.org/-/package/@hadden-industries%2fowlapi/dist-tags/pilot";
+  const summary = "401 Unauthorized - DELETE " + endpoint + " - message";
+  const error = (text) => ({
+    status: 1,
+    signal: null,
+    stdout: JSON.stringify({ error: { code: "E401", summary: text } }),
+  });
+  const proof = nativePilotRefusal(error(summary));
+  expect(proof).toMatchObject({ endpoint, method: "DELETE", httpStatus: 401 });
+  expect(
+    nativePilotRefusal(error(summary.replace("DELETE", "GET"))),
+  ).toBeNull();
+  expect(
+    nativePilotRefusal({ ...error(summary), code: "ETIMEDOUT" }),
+  ).toBeNull();
+  const operationSha256 = hash(bytes);
+  const step = {
+    name: "Apply approved npm labels (npm)",
+    status: "completed",
+    conclusion: "failure",
+    started_at: "2026-11-17T12:00:19Z",
+    completed_at: "2026-11-17T12:00:21Z",
+  };
+  const line =
+    "2026-11-17T12:00:20.500Z owlapi-pilot-refusal " +
+    JSON.stringify({ operationSha256, ...proof });
+  const check = (text) =>
+    verifyPilotRefusalLog({
+      bytes: Buffer.from(text),
+      step,
+      proof,
+      operationSha256,
+    });
+  expect(check(line + "\n")).toBe(hash(line + "\n"));
+  for (const partial of [
+    line.slice(0, -12),
+    line + "\n" + line,
+    line.replace("12:00:20", "12:01:20"),
+  ])
+    expect(() => check(partial)).toThrow();
 });
 
 test("seal requires fresh native settings at the documented level and can renew the original operation", () => {

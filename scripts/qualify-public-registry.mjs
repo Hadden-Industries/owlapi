@@ -25,7 +25,11 @@ import {
   releaseChannel,
   assertRegistryTarballUrl,
 } from "./package-identity.mjs";
-import { installRegistryConsumer } from "./public-registry-consumer.mjs";
+import {
+  installRegistryConsumer,
+  observeRegistryGraph,
+  publicConsumerOverrides,
+} from "./public-registry-consumer.mjs";
 import { verifyRegistryProvenance } from "./registry-provenance.mjs";
 import { waitForReleaseAvailability } from "./release-availability.mjs";
 import { GitHubReleaseClient } from "./github-release.mjs";
@@ -153,7 +157,7 @@ const requireSuccess = (result, label) => {
   return result;
 };
 
-const exerciseFreshConsumers = async (metadata, tarball, origin) => {
+const exerciseFreshConsumers = async (metadata, tarball, origin, sbom) => {
   const root = mkdtempSync(join(tmpdir(), "owlapi-public-registry-"));
   try {
     const results = {};
@@ -166,6 +170,7 @@ const exerciseFreshConsumers = async (metadata, tarball, origin) => {
         directory,
         dependencyName,
         metadata,
+        overrides: origin ? publicConsumerOverrides(tarball) : undefined,
       });
       writeInstalledConsumerFixtures(directory, dependencyName);
       for (const script of INSTALLED_TEST_SCRIPTS) {
@@ -205,6 +210,14 @@ const exerciseFreshConsumers = async (metadata, tarball, origin) => {
         installedTests: INSTALLED_TEST_SCRIPTS,
         dependencyGraph: graph,
         signatureAudit: signatures,
+        ...(origin
+          ? observeRegistryGraph({
+              directory,
+              environment,
+              dependencyName,
+              sbom,
+            })
+          : {}),
       };
     }
     const provenance = await verifyRegistryProvenance({
@@ -232,6 +245,7 @@ export const qualifyPublicRegistry = async ({
   candidate,
   outputPath,
   stageOrigin,
+  stagedSbom,
   publication = () =>
     readPublicationAttempt({
       client: new GitHubReleaseClient({
@@ -301,6 +315,10 @@ export const qualifyPublicRegistry = async ({
       },
     });
     verifyIntegrity(registryTarball, metadata.dist?.integrity);
+    if (stageOrigin && candidate.integrity !== metadata.dist.integrity)
+      throw new Error(
+        "Public registry differs from the qualified npm integrity.",
+      );
     const facts = stageOrigin
       ? {
           coordinate: PACKAGE_NAME + "@" + version,
@@ -327,6 +345,7 @@ export const qualifyPublicRegistry = async ({
       metadata,
       registryTarball,
       stageOrigin,
+      stagedSbom,
     );
     observations.push({
       state: "VERIFICATION_PASSED",

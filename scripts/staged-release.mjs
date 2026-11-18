@@ -36,6 +36,10 @@ import { readPublicRegistry } from "./public-registry-read.mjs";
 import { emit } from "./ci-verification-command.mjs";
 import { CI_RUNTIME } from "./runtime-policy.mjs";
 import {
+  runtimeDigest,
+  validateFrozenMatrix,
+} from "./consumer-runtime-matrix.mjs";
+import {
   findNpmCliCandidates,
   observeNpmVersion,
   selectNpmCliForVersion,
@@ -108,7 +112,7 @@ function subject(manifest) {
     assertPromotedCi(ci, {
       commit: manifest.commit,
       version: manifest.package.version,
-      matrixSha256: ci.matrixSha256,
+      matrixSha256: runtimeDigest(validateFrozenMatrix(manifest.runtimeMatrix)),
       now: recorded,
     });
     assert.deepEqual(
@@ -281,9 +285,13 @@ export async function originArtifact(
     logical,
     artifactId,
     recoverSeal = false,
+    refusedLabel = false,
     stageFailure,
     requireArchivedFailure = false,
     ciProducer,
+    ciRun = ciProducer,
+    nativeProducer,
+    runArtifacts,
   },
   checkpoint,
 ) {
@@ -306,6 +314,11 @@ export async function originArtifact(
   );
   const run = liveRun ?? saved?.run;
   assert.ok(run, "Missing original run record");
+  if (ciRun) {
+    assert.equal(filename, CI_WORKFLOW);
+    assert.equal(ciRun.providerHead, commit);
+    assert.equal(String(ciRun.runId), String(runId));
+  }
   if (ciProducer) {
     assert.equal(filename, CI_WORKFLOW);
     assert.equal(commit, ciProducer.providerHead);
@@ -324,6 +337,14 @@ export async function originArtifact(
         producer.conclusion === "success",
       "Original CI candidate producer could not be verified",
     );
+  }
+  if (nativeProducer) {
+    assert.equal(filename, ".github/workflows/release-registry.yml");
+    assert.equal(nativeProducer.run_id, run.id);
+    assert.equal(nativeProducer.run_attempt, run.run_attempt);
+    assert.equal(nativeProducer.head_sha, run.head_sha);
+    assert.equal(nativeProducer.status, "completed");
+    assert.equal(nativeProducer.conclusion, "success");
   }
   if (liveRun && saved) {
     for (const field of [
@@ -358,6 +379,11 @@ export async function originArtifact(
     assert.equal(filename, ".github/workflows/github-release.yml");
     assert.ok(["success", "failure", "cancelled"].includes(run.conclusion));
   }
+  if (refusedLabel)
+    assert.deepEqual(
+      [filename, run.conclusion],
+      [".github/workflows/release-labels.yml", "failure"],
+    );
   assert.equal(run.repository.full_name, repo);
   assert.equal(run.head_repository.full_name, repo);
   assert.deepEqual(
@@ -375,14 +401,16 @@ export async function originArtifact(
       String(runId),
       String(attempt),
       filename,
-      ciProducer?.event ?? "workflow_dispatch",
-      ciProducer?.event === "pull_request" ? run.head_branch : "main",
+      ciRun?.event ?? "workflow_dispatch",
+      ciRun?.event === "pull_request" ? run.head_branch : "main",
       commit,
       "completed",
       recoverSeal ||
+      refusedLabel ||
       failedStage ||
+      (nativeProducer && ["failure", "cancelled"].includes(run.conclusion)) ||
       (ciProducer?.producingAttempt < ciProducer?.attempt &&
-        run.conclusion === "failure")
+        ["failure", "cancelled"].includes(run.conclusion))
         ? run.conclusion
         : "success",
     ],
@@ -415,16 +443,18 @@ export async function originArtifact(
       );
     if (stageFailure === "retention") retentionFailure = summary;
   }
-  const inventory = liveRun
-    ? await (async () => {
-        try {
-          return await readRunArtifacts((path) => client.read(path), runId);
-        } catch (e) {
-          if (saved && [404, 410].includes(e.httpStatus)) return [];
-          throw e;
-        }
-      })()
-    : [];
+  const inventory =
+    runArtifacts ??
+    (liveRun
+      ? await (async () => {
+          try {
+            return await readRunArtifacts((path) => client.read(path), runId);
+          } catch (e) {
+            if (saved && [404, 410].includes(e.httpStatus)) return [];
+            throw e;
+          }
+        })()
+      : []);
   const matches = inventory.filter((a) =>
     matchesLogicalArtifact(a.name, logical, {
       run: runId,
@@ -650,7 +680,7 @@ export async function assertPriorOperations(
   env,
   checkpoint,
   kind,
-  { requireTiming = false } = {},
+  { requireTiming = false, excludeRun } = {},
 ) {
   const workflows = {
     stage: ["stage-release.yml", "Stage the admitted tarball"],
@@ -659,11 +689,21 @@ export async function assertPriorOperations(
       "release-classification.yml",
       "Settle release classification (github)",
     ],
+    draft: [
+      "github-release.yml",
+      "Prepare or seal verified GitHub release (draft)",
+    ],
+    seal: [
+      "github-release.yml",
+      "Prepare or seal verified GitHub release (seal)",
+    ],
   };
   const [workflow, step] = workflows[kind];
   const prior = await readWorkflowRuns((path) => client.read(path), workflow);
   let lastWriterAt = -Infinity;
-  for (const run of prior.filter((r) => String(r.id) !== env.GITHUB_RUN_ID)) {
+  for (const run of prior.filter(
+    (r) => ![env.GITHUB_RUN_ID, excludeRun].includes(String(r.id)),
+  )) {
     assert.ok(
       run.status === "completed",
       "Concurrent or unresolved stage request",
@@ -729,7 +769,11 @@ export async function assertPriorOperations(
         assert.ok(
           (kind === "stage"
             ? ["REJECTED", "IMMUTABLE_VERIFIED", "WITHDRAWN"]
-            : ["RECONCILED", "SETTLED"]
+            : [
+                "RECONCILED",
+                "SETTLED",
+                ...(kind === "labels" ? ["REQUEST_REFUSED"] : []),
+              ]
           ).includes(disposition.state),
         );
         if (kind === "classification" && env.OPERATION_SHA256)
@@ -777,7 +821,9 @@ async function preflight(client, env, checkpoint, intent, manifest) {
   );
   await resp.body?.cancel();
   assert.equal(resp.status, 404, "Coordinate must be unused");
-  await verifyReservations(client, checkpoint, env, "stage");
+  const history = await verifyReservations(client, checkpoint, env, "stage", {
+    trackWriterTime: true,
+  });
   assert.deepEqual(
     [
       intent.controller ?? intent.commit,
@@ -816,6 +862,7 @@ async function preflight(client, env, checkpoint, intent, manifest) {
   );
   assert.equal(intent.tarballSha256, env.QUALIFIED_TARBALL_SHA256);
   const lastWriterAt = Math.max(
+    history.lastWriterAt,
     await assertPriorOperations(client, env, checkpoint, "stage", {
       requireTiming: true,
     }),
@@ -862,6 +909,24 @@ async function preflight(client, env, checkpoint, intent, manifest) {
       commit: manifest.commit,
       matrixSha256: manifest.ci.matrixSha256,
     });
+  await assertStageLabelPreimage(intent);
+  return lastWriterAt;
+}
+async function assertStageLabelPreimage(intent) {
+  const tags = json(
+    await readPublicRegistry(
+      new URL(
+        "-/package/" + encodeURIComponent(PACKAGE_NAME) + "/dist-tags",
+        registry,
+      ),
+      { maxBytes: 64 * 1024 },
+    ),
+  );
+  const observed = Object.fromEntries(
+    ["pilot", "latest", "next"].map((tag) => [tag, tags[tag] ?? null]),
+  );
+  assert.deepEqual(observed, intent.before, "Public tag preimages changed");
+  return observed;
 }
 export async function runStagedRelease() {
   const [mode, ...args] = process.argv.slice(2);
@@ -932,7 +997,7 @@ async function executeStage(mode, env, beginRequest) {
     !candidate.archivedBytes && !candidate.expired,
     "Staging needs the downloadable original candidate",
   );
-  await preflight(
+  const lastWriterAt = await preflight(
     client,
     {
       ...env,
@@ -988,25 +1053,19 @@ async function executeStage(mode, env, beginRequest) {
   });
   const journalDirectory = resolve(env.GITHUB_WORKSPACE, ".release/stage");
   mkdirSync(journalDirectory, { recursive: true });
-  const tags = json(
-    await readPublicRegistry(
-      new URL(
-        "-/package/" + encodeURIComponent(PACKAGE_NAME) + "/dist-tags",
-        registry,
-      ),
-    ),
-  );
-  const before = Object.fromEntries(
-    ["pilot", "latest", "next"].map((tag) => [tag, tags[tag] ?? null]),
-  );
-  assert.deepEqual(
-    before,
-    intent.before,
-    "Public tag preimages changed after owner approval",
-  );
   await readReleaseSecurity({
     read: (path) => client.read(path),
     commit: env.GITHUB_SHA,
+  });
+  const before = await assertStageLabelPreimage(intent);
+  assert.equal(
+    (await client.read("/releases/latest", { accept404: true }))?.id ?? null,
+    intent.githubLatestBefore,
+    "GitHub latest preimage changed",
+  );
+  assertPrivateStageInventory(intent.privateInventory, {
+    coordinate: PACKAGE_NAME + "@" + PACKAGE_VERSION,
+    lastWriterAt,
   });
   await stageOnce({
     manifest,

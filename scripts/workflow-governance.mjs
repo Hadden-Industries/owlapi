@@ -761,7 +761,16 @@ function validateOperationJobs(file, workflow, violations) {
       "stage-release.yml: protected stage must download the admitted original CI or release candidate",
     );
   }
-  if (file !== "release-completion.yml")
+  if (file === "release-registry.yml")
+    add(
+      violations,
+      isDeepStrictEqual(workflow.concurrency, {
+        group: "owlapi-public-${{ github.run_id }}",
+        "cancel-in-progress": false,
+      }),
+      file + ": read-only public recipients must have a run-specific group",
+    );
+  else if (file !== "release-completion.yml")
     add(
       violations,
       isDeepStrictEqual(workflow.concurrency, {

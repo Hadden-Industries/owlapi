@@ -1,4 +1,6 @@
+import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import {
   mkdirSync,
   readFileSync,
@@ -10,6 +12,11 @@ import { createRequire } from "node:module";
 import { join, resolve } from "node:path";
 import { isStrictDescendantPath } from "./release-file-utils.mjs";
 import { readPublicRegistry } from "./public-registry-read.mjs";
+import {
+  assertNpmSbomInventory,
+  flattenNpmGraph,
+} from "./npm-production-graph.mjs";
+import { readGzipTarFile } from "./release-artifacts.mjs";
 import {
   PACKAGE_NAME,
   PACKAGE_VERSION,
@@ -125,6 +132,7 @@ export const installRegistryConsumer = ({
   dependencyName = "owlapi",
   metadata,
   npmCli = process.env.npm_execpath,
+  overrides,
 }) => {
   assertPackageIdentity(metadata);
   assertRegistryTarballUrl(metadata.dist?.tarball);
@@ -145,6 +153,7 @@ export const installRegistryConsumer = ({
         private: true,
         type: "module",
         dependencies: { [dependencyName]: specifier },
+        ...(overrides ? { overrides } : {}),
       },
       null,
       2,
@@ -169,6 +178,7 @@ export const installRegistryConsumer = ({
     encoding: "utf8",
     windowsHide: true,
     maxBuffer: 32 * 1024 * 1024,
+    timeout: 10 * 60_000,
   });
   const identity = verifyRegistryInstallation({
     directory,
@@ -177,6 +187,54 @@ export const installRegistryConsumer = ({
   });
   return { identity, environment, npmArguments: arguments_ };
 };
+
+export function publicConsumerOverrides(tarball) {
+  return JSON.parse(readGzipTarFile(tarball, "package.json")).overrides;
+}
+
+export function observeRegistryGraph({
+  directory,
+  environment,
+  dependencyName,
+  npmCli = process.env.npm_execpath,
+  sbom,
+}) {
+  const readGraph = (extra) =>
+    JSON.parse(
+      execFileSync(
+        process.execPath,
+        [npmCli, "ls", "--all", "--omit=dev", "--json", ...extra],
+        {
+          cwd: directory,
+          env: environment,
+          encoding: "utf8",
+          maxBuffer: 8 * 1024 * 1024,
+          timeout: 120000,
+          windowsHide: true,
+        },
+      ),
+    );
+  const graph = readGraph([]);
+  const node = (tree) => tree.dependencies?.[dependencyName];
+  const identities = flattenNpmGraph(node(graph), PACKAGE_NAME);
+  assert.deepEqual(
+    flattenNpmGraph(node(readGraph(["--package-lock-only"])), PACKAGE_NAME),
+    identities,
+    "Public installed and locked production graphs differ",
+  );
+  if (sbom) assertNpmSbomInventory(sbom, identities);
+  const digest = (file) =>
+    createHash("sha256")
+      .update(readFileSync(join(directory, file)))
+      .digest("hex");
+  return {
+    graph,
+    identities,
+    lockSha256: digest("package-lock.json"),
+    manifest: readJson(join(directory, "package.json")),
+    manifestSha256: digest("package.json"),
+  };
+}
 
 /** Refresh metadata without authentication, redirect or cache ambiguity. */
 export const fetchRegistryMetadata = async (version = PACKAGE_VERSION) => {

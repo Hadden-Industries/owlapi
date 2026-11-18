@@ -3,25 +3,29 @@ import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import {
   appendFileSync,
+  existsSync,
   mkdirSync,
   readFileSync,
   writeFileSync,
 } from "node:fs";
 import { basename, join } from "node:path";
 import { pathToFileURL } from "node:url";
-import { gzipSync, crc32 } from "node:zlib";
+import { gzipSync, gunzipSync, crc32 } from "node:zlib";
 import {
   GitHubReleaseClient,
   assertDraftRelease,
+  assertReleaseId,
   assertReleaseAssets,
   assertReleaseAssetSubset,
 } from "./github-release.mjs";
 import {
   readCheckpoint,
   verifyControllerDelta,
+  verifyReservations,
 } from "./release-history-checkpoint.mjs";
 import {
   hash,
+  assertPriorOperations,
   originArtifact,
   originalBytes,
   originalManifest,
@@ -31,6 +35,13 @@ import { readZipArchiveFilesWith } from "./release-zip-core.mjs";
 import { verifyLocalReleaseTag } from "./verify-release-tag.mjs";
 import { readPublicRegistry } from "./public-registry-read.mjs";
 import { PACKAGE_NAME, NPM_REGISTRY } from "./package-identity.mjs";
+import {
+  publicRecipientInput,
+  qualificationRuntimeMatrix,
+  readPublicEvidence,
+} from "./release-public-proof.mjs";
+import { CI_WORKFLOW } from "./ci-verification.mjs";
+import { canonicalJson } from "./canonical-json.mjs";
 
 const repo = "Hadden-Industries/owlapi";
 
@@ -159,7 +170,29 @@ export async function readStageContext(client, env, checkpoint, mode, renewal) {
     read,
   };
 }
-export async function draft(client, ctx) {
+const followupDir = ".release/followup";
+const followupWorkflow = ".github/workflows/github-release.yml";
+const appendJournal = (path, row) =>
+  appendFileSync(path, JSON.stringify(row) + "\n", { flush: true });
+const draftBody = (ctx) =>
+  JSON.stringify({
+    tag_name: "v" + ctx.operation.version,
+    target_commitish: ctx.manifest.commit,
+    name: "owlapi " + ctx.operation.version,
+    body: ctx.read("release-notes.md").toString("utf8"),
+    draft: true,
+    prerelease: true,
+    make_latest: "false",
+  });
+const draftSubject = ({ operation, manifest }) => ({
+  version: operation.version,
+  manifestSha256: operation.manifestSha256,
+  source: manifest.commit,
+  stageId: operation.stageId,
+  tagObject: operation.tagObject,
+});
+
+export async function draft(client, ctx, attempt) {
   const { operation, manifest, read } = ctx;
   const tag = "v" + operation.version;
   const notes = read("release-notes.md").toString("utf8");
@@ -173,6 +206,11 @@ export async function draft(client, ctx) {
   let release = await client.getReleaseByTag(tag);
   if (positive(operation.expectedReleaseId)) {
     assert.equal(
+      attempt?.originalDraftId,
+      operation.expectedReleaseId,
+      "Continuation requires the authenticated original draft",
+    );
+    assert.equal(
       release?.id,
       operation.expectedReleaseId,
       "Reconciliation needs the original draft ID",
@@ -184,18 +222,21 @@ export async function draft(client, ctx) {
       null,
       "Existing draft requires signed reconciliation",
     );
+    const { journal, ...execution } = attempt;
+    assert.equal(execution.attempt, "1");
+    const body = draftBody(ctx);
+    const requested = {
+      ...execution,
+      ...draftSubject(ctx),
+      state: "DRAFT_REQUESTED",
+      requestSha256: hash(body),
+    };
+    writeFileSync(journal, "", { flag: "wx" });
+    appendJournal(journal, requested);
     const result = await client.write("/releases", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        tag_name: tag,
-        target_commitish: manifest.commit,
-        name: "owlapi " + operation.version,
-        body: notes,
-        draft: true,
-        prerelease: true,
-        make_latest: "false",
-      }),
+      body,
     });
     assert.equal(
       result.state,
@@ -203,8 +244,15 @@ export async function draft(client, ctx) {
       "Ambiguous draft creation requires owner reconciliation",
     );
     release = result.value;
+    assert.ok(positive(release?.id), "Missing native draft acknowledgement");
+    appendJournal(journal, {
+      ...requested,
+      state: "DRAFT_ACKNOWLEDGED",
+      releaseId: release.id,
+    });
   }
   assertDraftRelease(release, { tag });
+  assert.equal(release.prerelease, true);
   assert.equal(release.body, notes);
   assertReleaseAssetSubset({
     assets: release.assets,
@@ -214,7 +262,10 @@ export async function draft(client, ctx) {
     if (!release.assets.some((a) => a.name === item.name))
       await upload(client, release.id, item, read(item.name));
   const observed = await client.read("/releases/" + release.id);
+  assertReleaseId(observed, release.id);
   assertDraftRelease(observed, { tag });
+  assert.equal(observed.prerelease, true);
+  assert.equal(observed.body, notes);
   assertReleaseAssets({
     assets: observed.assets,
     expected: Object.values(manifest.assets),
@@ -225,7 +276,133 @@ export async function draft(client, ctx) {
     tagObject: operation.tagObject,
     stageId: operation.stageId,
     manifestSha256: operation.manifestSha256,
+    assetIds: Object.fromEntries(
+      observed.assets.map((a) => {
+        assert.ok(positive(a.id), "Missing native draft asset ID");
+        return [a.name, a.id];
+      }),
+    ),
   };
+}
+
+async function readWriterRecords(client, checkpoint, origin, kind) {
+  assert.ok(origin && origin.attempt === "1");
+  assert.match(origin.runId, /^[1-9]\d{0,15}$/u);
+  assert.match(String(origin.number), /^[1-9]\d{0,9}$/u);
+  const logical = "github-release-" + origin.runId + "-1";
+  const retained = checkpoint.files.get(
+    "origin-" + origin.runId + "-1-" + logical + ".json",
+  );
+  const saved = retained && parse(retained);
+  const available = async (path, fallback) => {
+    try {
+      return await client.read(path);
+    } catch (error) {
+      if (fallback && [404, 410].includes(error.httpStatus)) return fallback;
+      throw error;
+    }
+  };
+  const runPath = "/actions/runs/" + origin.runId + "/attempts/1";
+  const run = await available(runPath, saved?.run);
+  assert.equal(String(run.run_number), String(origin.number));
+  const jobs = await available(runPath + "/jobs?per_page=100", saved?.jobs);
+  assert.equal(jobs.total_count, jobs.jobs.length);
+  const job = single(
+    jobs.jobs.filter((job) => job.name === kind),
+    "Missing original GitHub writer job",
+  );
+  const step = single(
+    job.steps.filter(
+      (step) =>
+        step.name ===
+          "Prepare or seal verified GitHub release (" + kind + ")" &&
+        step.status === "completed" &&
+        ["success", "failure"].includes(step.conclusion),
+    ),
+    "Missing completed original GitHub writer step",
+  );
+  assert.ok(Date.parse(step.started_at) <= Date.parse(step.completed_at));
+  assert.deepEqual(
+    [String(job.run_id), job.run_attempt, job.head_sha],
+    [origin.runId, 1, origin.controller],
+  );
+  const a = await originArtifact(
+    client,
+    {
+      runId: origin.runId,
+      attempt: "1",
+      commit: origin.controller,
+      filename: followupWorkflow,
+      logical,
+      recoverSeal: true,
+    },
+    checkpoint,
+  );
+  const archive = readZipArchiveFilesWith(await originalBytes(client, a), {
+    crc32,
+  });
+  return new Map(archive.map((entry) => [entry.path, entry.content]));
+}
+
+async function assertEarlierSealsStopped(client, checkpoint, previous, ctx) {
+  for (const { number, objectId, origin } of previous) {
+    assert.equal(String(origin.number), number);
+    const records = await readWriterRecords(client, checkpoint, origin, "seal");
+    assert.ok(
+      !records.has("seal-request.json"),
+      "Original seal can only be reconciled",
+    );
+    const stopped = parse(records.get("seal-assets-incomplete.json"));
+    assert.deepEqual(stopped, {
+      state: "SEAL_NOT_REQUESTED",
+      reservation: objectId,
+      version: ctx.operation.version,
+      releaseId: ctx.operation.releaseId,
+      runId: origin.runId,
+      attempt: "1",
+      controller: origin.controller,
+    });
+  }
+}
+
+async function readOriginalDraftId(client, checkpoint, ctx) {
+  const origin = parse(ctx.read("draft-origin.json"));
+  const original = await readCheckpoint(client, origin.checkpoint);
+  assert.equal(
+    original.tag,
+    "owlapi-release-history/draft-" +
+      ctx.operation.version +
+      "-create-" +
+      origin.number,
+  );
+  const intent = parse(original.files.get("operation.json"));
+  assert.equal(intent.type, "draft");
+  assert.equal(intent.expectedReleaseId, null);
+  assert.equal(intent.controller, origin.controller);
+  for (const [name, value] of Object.entries(draftSubject(ctx)))
+    assert.equal(intent[name], value);
+  const records = await readWriterRecords(client, checkpoint, origin, "draft");
+  const journal = records.get("draft-journal.jsonl");
+  assert.ok(journal, "Missing original draft acknowledgement");
+  assert.equal(hash(journal), origin.journalSha256);
+  const rows = journal.toString("utf8").trimEnd().split("\n").map(JSON.parse);
+  const request = {
+    ...draftSubject(ctx),
+    state: "DRAFT_REQUESTED",
+    requestSha256: hash(draftBody(ctx)),
+    checkpoint: origin.checkpoint,
+    controller: origin.controller,
+    runId: origin.runId,
+    attempt: "1",
+  };
+  assert.equal(rows.length, 2);
+  assert.deepEqual(rows[0], request);
+  assert.deepEqual(rows[1], {
+    ...request,
+    state: "DRAFT_ACKNOWLEDGED",
+    releaseId: ctx.operation.expectedReleaseId,
+  });
+  return rows[1].releaseId;
 }
 async function upload(client, id, item, bytes) {
   assert.ok(positive(id));
@@ -249,7 +426,8 @@ async function approvedDraft(client, ctx, extraAssets = []) {
   const { operation, read, manifest } = ctx;
   const tag = "v" + operation.version;
   const proof = parse(read("draft.json"));
-  assert.deepEqual(proof, {
+  const { assetIds, ...identity } = proof;
+  assert.deepEqual(identity, {
     state: "DRAFT_VERIFIED",
     releaseId: operation.releaseId,
     tagObject: operation.tagObject,
@@ -258,13 +436,17 @@ async function approvedDraft(client, ctx, extraAssets = []) {
   });
   assert.ok(positive(proof.releaseId));
   const live = await client.read("/releases/" + proof.releaseId);
+  assertReleaseId(live, proof.releaseId);
   assertDraftRelease(live, { tag });
   assert.equal(live.prerelease, true);
   assertReleaseAssets({
     assets: live.assets.filter(
       (a) => !extraAssets.some((extra) => extra.name === a.name),
     ),
-    expected: Object.values(manifest.assets),
+    expected: Object.values(manifest.assets).map((item) => ({
+      ...item,
+      id: assetIds?.[item.name],
+    })),
   });
   assert.equal(live.body, read("release-notes.md").toString("utf8"));
   assert.equal(live.name, "owlapi " + operation.version);
@@ -346,24 +528,40 @@ async function registryProof(client, ctx) {
   const { qualifyPublicRegistry } =
     await import("./qualify-public-registry.mjs");
   const { manifest, receipt } = ctx;
+  const matrix = qualificationRuntimeMatrix(manifest);
+  const input = publicRecipientInput(ctx, matrix);
+  const sbom = qualifiedSbom(ctx);
   const proof = await qualifyPublicRegistry({
-    candidate: { package: manifest.package, tarball: manifest.assets.tarball },
+    candidate: {
+      package: manifest.package,
+      tarball: manifest.assets.tarball,
+      integrity: manifest.integrity,
+    },
+    stagedSbom: sbom,
     outputPath: ".release/followup/public.json",
     stageOrigin: { ...receipt, approvedAt: approval.approvedAt },
     publication: () => ({ ...receipt, acceptedAt: approval.approvedAt }),
   });
-  const matrix = JSON.parse(
-    manifest.qualification.runtime_matrix.outputs.matrix,
+  writeFileSync(
+    join(followupDir, "recipient-input.json"),
+    JSON.stringify(input) + "\n",
+    { flag: "wx" },
   );
   appendFileSync(
     process.env.GITHUB_OUTPUT,
     "matrix=" +
       JSON.stringify(matrix) +
-      "\ntarball=" +
-      manifest.assets.tarball.sha256 +
+      "\nrecipient_input=" +
+      JSON.stringify(input) +
       "\n",
   );
   return proof;
+}
+function qualifiedSbom(ctx) {
+  const item = ctx.manifest.assets.sbom;
+  const bytes = ctx.read(item.name);
+  assert.deepEqual(asset(item.name, bytes), item);
+  return parse(bytes);
 }
 export function checkSealSettings(operationBytes, renewal, now = Date.now()) {
   const operation = parse(operationBytes);
@@ -415,9 +613,146 @@ async function readSealRenewal(
     executingController,
     checkpoint.files,
   );
-  return { ...renewal, checkpoint: checkpoint.objectId };
+  return { ...renewal, checkpoint: checkpoint.objectId, authority: checkpoint };
 }
-async function seal(client, ctx, checkpoint, renewal) {
+async function verifyQualificationDisclosure(
+  client,
+  ctx,
+  checkpoint,
+  publicIndex,
+) {
+  const { manifest, read, candidate } = ctx;
+  const verify = (artifact) => {
+    const name = "artifact-" + artifact.id + ".zip";
+    assert.ok(
+      publicIndex.files.includes(name),
+      "Qualification archive requires disclosure review",
+    );
+    const original = read(name);
+    assert.equal("sha256:" + hash(original), artifact.digest);
+    assert.equal(original.length, artifact.bytes);
+  };
+  if (manifest.schemaVersion === 1) {
+    for (const artifact of manifest.artifacts) verify(artifact);
+    return;
+  }
+  const ci = manifest.ci;
+  verify(ci.candidate);
+  assert.equal(candidate.id, ci.candidate.id);
+  const build = ci.build;
+  const distinct = new Set([candidate.id]);
+  for (const [run, descriptor, attempt, logical, producer] of [
+    ...[ci.main, build].map((record) => [
+      record,
+      record.receipt,
+      record.attempt,
+      (record.event === "pull_request"
+        ? "ci-verification-"
+        : "ci-main-qualification-") +
+        record.runId +
+        "-" +
+        record.attempt,
+    ]),
+    [
+      build,
+      ci.packageProof,
+      build.producingAttempt,
+      "package-proof-" + build.runId + "-" + build.producingAttempt,
+      build,
+    ],
+  ]) {
+    if (distinct.has(descriptor.id)) {
+      assert.deepEqual(
+        ci.main.receipt,
+        build.receipt,
+        "Unexpected shared qualification artifact",
+      );
+      assert.equal(descriptor.id, build.receipt.id);
+      continue;
+    }
+    distinct.add(descriptor.id);
+    verify(descriptor);
+    const original = await originArtifact(
+      client,
+      {
+        runId: run.runId,
+        attempt,
+        filename: CI_WORKFLOW,
+        commit: run.providerHead,
+        logical,
+        artifactId: descriptor.id,
+        ciRun: run,
+        ciProducer: producer,
+      },
+      checkpoint,
+    );
+    assert.deepEqual(
+      [
+        original.id,
+        original.name,
+        original.digest,
+        original.size_in_bytes,
+        original.workflow_run?.repository_id,
+        original.workflow_run?.head_repository_id,
+      ],
+      [
+        descriptor.id,
+        descriptor.name,
+        descriptor.digest,
+        descriptor.bytes,
+        ci.repositoryId,
+        ci.repositoryId,
+      ],
+      "Qualification ZIP differs from its original native inventory",
+    );
+  }
+}
+
+const readPublicLabels = async () => {
+  const tags = parse(
+    await readPublicRegistry(
+      new URL(
+        "-/package/" + encodeURIComponent(PACKAGE_NAME) + "/dist-tags",
+        NPM_REGISTRY,
+      ),
+      { maxBytes: 64 * 1024 },
+    ),
+  );
+  return Object.fromEntries(
+    ["pilot", "latest", "next"].map((tag) => [tag, tags[tag] ?? null]),
+  );
+};
+
+async function assertSealPreimages(client, ctx, report, expected) {
+  const { operation, receipt, read } = ctx;
+  const release = await client.read("/releases/" + operation.releaseId);
+  assertReleaseId(release, operation.releaseId);
+  assertDraftRelease(release, { tag: "v" + operation.version });
+  assert.equal(release.prerelease, true);
+  assert.equal(release.name, "owlapi " + operation.version);
+  assert.equal(release.body, read("release-notes.md").toString("utf8"));
+  assertReleaseAssetSubset({ assets: release.assets, expected });
+  assert.equal(
+    (await client.read("/releases/latest", { accept404: true }))?.id ?? null,
+    receipt.githubLatestBefore,
+    "GitHub latest changed during public verification",
+  );
+  const tags = { ...receipt.before, [receipt.channel]: operation.version };
+  assert.deepEqual(
+    Object.fromEntries(
+      Object.keys(tags).map((key) => [key, report.distTags[key] ?? null]),
+    ),
+    tags,
+  );
+  assert.deepEqual(
+    await readPublicLabels(),
+    tags,
+    "npm labels changed during public verification",
+  );
+  return release;
+}
+
+async function seal(client, ctx, checkpoint, renewal, execution) {
   const { operation, manifest, read } = ctx;
   const operationBytes = read("operation.json");
   checkSealSettings(operationBytes, renewal);
@@ -438,30 +773,6 @@ async function seal(client, ctx, checkpoint, renewal) {
     ctx.receipt.controller ?? manifest.commit,
   );
   assert.equal(report.publication.stageId, operation.stageId);
-  const a = await originArtifact(
-    client,
-    {
-      runId: operation.publicRun,
-      attempt: operation.publicAttempt,
-      filename: ".github/workflows/release-registry.yml",
-      commit: operation.publicController,
-      logical:
-        "release-registry-" +
-        operation.publicRun +
-        "-" +
-        operation.publicAttempt,
-    },
-    checkpoint,
-  );
-  const zip = await originalBytes(client, a, 16 * 1024 * 1024);
-  assert.equal("sha256:" + hash(zip), a.digest);
-  const files = readZipArchiveFilesWith(zip, { crc32 });
-  assert.ok(
-    single(
-      files.filter((f) => f.path === "public.json"),
-      "Missing original registry proof",
-    ).content.equals(read("public.json")),
-  );
   const archiveEntries = new Map();
   for (const name of [
     "private-check.json",
@@ -476,62 +787,24 @@ async function seal(client, ctx, checkpoint, renewal) {
   // Only the owner's explicit public inventory can cross from the private checkpoint to release assets.
   const publicIndex = parse(read("public-inventory.json"));
   assert.equal(publicIndex.manifestSha256, operation.manifestSha256);
-  for (const artifact of manifest.artifacts) {
-    const name = "artifact-" + artifact.id + ".zip";
-    const original = read(name);
-    assert.equal("sha256:" + hash(original), artifact.digest);
-    assert.equal(original.length, artifact.bytes);
-    assert.ok(
-      publicIndex.files.includes(name),
-      "Qualification archive requires disclosure review",
-    );
-  }
+  await verifyQualificationDisclosure(client, ctx, checkpoint, publicIndex);
   for (const name of publicIndex.files) {
     assert.ok(!archiveEntries.has(name), "Duplicate public archive entry");
     archiveEntries.set(name, read(name));
   }
   archiveEntries.set("public-inventory.json", read("public-inventory.json"));
-  const matrix = JSON.parse(
-    manifest.qualification.runtime_matrix.outputs.matrix,
-  );
-  for (const lane of matrix.include) {
-    const logical =
-      "public-recipient-" +
-      lane.runner +
-      "-" +
-      lane.node +
-      "-" +
-      operation.publicAttempt;
-    const a = await originArtifact(
-      client,
-      {
-        runId: operation.publicRun,
-        attempt: operation.publicAttempt,
-        filename: ".github/workflows/release-registry.yml",
-        commit: operation.publicController,
-        logical,
-      },
-      checkpoint,
-    );
-    const bytes = await originalBytes(client, a);
-    assert.equal("sha256:" + hash(bytes), a.digest);
-    const entries = readZipArchiveFilesWith(bytes, { crc32 });
-    assert.deepEqual(
-      entries.map((e) => e.path),
-      ["lane.json"],
-    );
-    const proof = parse(entries[0].content);
-    assert.deepEqual(proof.lane, lane);
-    assert.deepEqual(
-      [proof.commit, proof.run, proof.attempt, proof.tarballSha256],
-      [
-        operation.publicController,
-        operation.publicRun,
-        operation.publicAttempt,
-        manifest.assets.tarball.sha256,
-      ],
-    );
-    archiveEntries.set(logical + ".json", entries[0].content);
+  const matrix = qualificationRuntimeMatrix(manifest);
+  for (const [name, bytes] of await readPublicEvidence(
+    client,
+    checkpoint,
+    operation,
+    matrix,
+    publicRecipientInput(ctx, matrix),
+    read("public.json"),
+    qualifiedSbom(ctx),
+  )) {
+    assert.ok(!archiveEntries.has(name));
+    archiveEntries.set(name, bytes);
   }
   archiveEntries.set("manifest.json", ctx.manifestBytes);
   archiveEntries.set("stage-journal.jsonl", ctx.journal);
@@ -544,7 +817,7 @@ async function seal(client, ctx, checkpoint, renewal) {
   }
   const archive = gzipSync(
     Buffer.from(
-      JSON.stringify({
+      canonicalJson({
         schemaVersion: 1,
         checkpoint: checkpoint.objectId,
         files: [...archiveEntries].map(([name, bytes]) => ({
@@ -554,6 +827,7 @@ async function seal(client, ctx, checkpoint, renewal) {
       }),
     ),
   );
+  readStagedArchive(archive);
   const archiveInfo = asset(
     "hadden-industries-owlapi-" + operation.version + ".evidence.json.gz",
     archive,
@@ -589,8 +863,7 @@ async function seal(client, ctx, checkpoint, renewal) {
     "Asset exceeds immutable verification limit",
   );
   await approvedDraft(client, ctx, [archiveInfo, evidenceInfo]);
-  const existing = await client.read("/releases/" + operation.releaseId);
-  assertReleaseAssetSubset({ assets: existing.assets, expected });
+  const existing = await assertSealPreimages(client, ctx, report, expected);
   checkSealSettings(operationBytes, renewal);
   for (const [item, bytes] of [
     [archiveInfo, archive],
@@ -598,8 +871,7 @@ async function seal(client, ctx, checkpoint, renewal) {
   ])
     if (!existing.assets.some((a) => a.name === item.name))
       await upload(client, operation.releaseId, item, bytes);
-  const draft = await client.read("/releases/" + operation.releaseId);
-  assertDraftRelease(draft, { tag });
+  const draft = await assertSealPreimages(client, ctx, report, expected);
   assertReleaseAssets({ assets: draft.assets, expected });
   checkSealSettings(operationBytes, renewal);
   const record = {
@@ -613,7 +885,13 @@ async function seal(client, ctx, checkpoint, renewal) {
     releaseId: operation.releaseId,
     tagObject: operation.tagObject,
     source: manifest.commit,
-    assets: expected,
+    runId: execution.runId,
+    attempt: execution.attempt,
+    assets: expected.map((item) => {
+      const id = draft.assets.find((asset) => asset.name === item.name).id;
+      assert.ok(positive(id), "Missing native seal asset ID");
+      return { ...item, id };
+    }),
   };
   writeFileSync(
     ".release/followup/seal-request.json",
@@ -636,6 +914,9 @@ async function seal(client, ctx, checkpoint, renewal) {
     "CONFIRMED",
     "Ambiguous seal requires immutable readback",
   );
+  assertReleaseId(result.value, operation.releaseId);
+  assert.equal(result.value.tag_name, tag);
+  assert.equal(result.value.draft, false);
   return { ...record, state: "SEALED" };
 }
 export async function reconcilePublishedSeal(client, request) {
@@ -664,6 +945,51 @@ export async function reconcilePublishedSeal(client, request) {
   );
   assertReleaseAssets({ assets: release.assets, expected: request.assets });
   return { ...request, state: "SEALED" };
+}
+
+export function readStagedArchive(archive) {
+  const raw = new TextDecoder("utf-8", { fatal: true }).decode(
+    gunzipSync(archive, { maxOutputLength: 96 * 1024 * 1024 }),
+  );
+  const record = JSON.parse(raw);
+  assert.equal(raw, canonicalJson(record), "Noncanonical archive index");
+  assert.deepEqual(Object.keys(record).sort(), [
+    "checkpoint",
+    "files",
+    "schemaVersion",
+  ]);
+  assert.equal(record.schemaVersion, 1);
+  assert.match(record.checkpoint, /^[a-f0-9]{40}$/u);
+  assert.ok(
+    Array.isArray(record.files) &&
+      record.files.length > 0 &&
+      record.files.length <= 300,
+  );
+  const files = new Map();
+  const names = new Set();
+  for (const item of record.files) {
+    assert.deepEqual(Object.keys(item).sort(), [
+      "base64",
+      "bytes",
+      "name",
+      "sha256",
+    ]);
+    assert.match(item.name, /^[a-zA-Z0-9][a-zA-Z0-9._-]{0,160}$/u);
+    const key = item.name.toLowerCase();
+    assert.ok(!names.has(key), "Duplicate or colliding archive member");
+    names.add(key);
+    assert.ok(Number.isSafeInteger(item.bytes) && item.bytes >= 0);
+    const bytes = Buffer.from(item.base64, "base64");
+    assert.equal(
+      bytes.toString("base64"),
+      item.base64,
+      "Invalid archive member encoding",
+    );
+    assert.equal(bytes.length, item.bytes);
+    assert.equal(hash(bytes), item.sha256);
+    files.set(item.name, bytes);
+  }
+  return { checkpoint: record.checkpoint, files };
 }
 async function recoverSeal(client, checkpoint) {
   const origin = parse(checkpoint.files.get("seal-origin.json"));
@@ -694,6 +1020,11 @@ async function recoverSeal(client, checkpoint) {
   );
   const original = await readCheckpoint(client, origin.checkpoint);
   const operation = parse(original.files.get("operation.json"));
+  if (request.runId !== undefined)
+    assert.deepEqual(
+      [request.runId, request.attempt],
+      [origin.runId, origin.attempt],
+    );
   if (request.settingsCheckpoint)
     await readSealRenewal(
       client,
@@ -769,6 +1100,17 @@ export async function completeRelease(client, env, checkpoint) {
       hash(readFileSync(file)),
       record.assets.find((item) => item.name === basename(file)).sha256,
     );
+    if (a.name.endsWith(".evidence.json.gz")) {
+      const archive = readStagedArchive(readFileSync(file));
+      assert.equal(archive.checkpoint, record.checkpoint);
+      const manifest = parse(archive.files.get("manifest.json"));
+      assert.equal(manifest.commit, record.source);
+      assert.equal(manifest.package.version, record.version);
+      assert.equal(
+        hash(archive.files.get("release-notes.md")),
+        record.notesSha256,
+      );
+    }
     await runGh(
       "gh",
       [
@@ -821,14 +1163,73 @@ async function main() {
           )
         : undefined;
     const ctx = await readStageContext(client, env, checkpoint, mode, renewal);
-    if (mode === "draft") result = await draft(client, ctx);
-    else if (mode === "before-approval")
+    if (mode === "draft" || mode === "seal") {
+      const authority = renewal?.authority ?? checkpoint;
+      const create =
+        mode === "draft" && ctx.operation.expectedReleaseId === null;
+      const { previousSeals } = await verifyReservations(
+        client,
+        authority,
+        env,
+        mode,
+        {
+          version: ctx.operation.version,
+          create,
+        },
+      );
+      for (const kind of ["stage", "labels", "classification", "draft", "seal"])
+        await assertPriorOperations(client, env, authority, kind, {
+          excludeRun: kind === "stage" ? ctx.receipt.runId : undefined,
+        });
+      const execution = {
+        checkpoint: checkpoint.objectId,
+        controller: env.GITHUB_SHA,
+        runId: env.GITHUB_RUN_ID,
+        attempt: env.GITHUB_RUN_ATTEMPT,
+      };
+      if (mode === "draft") {
+        result = await draft(client, ctx, {
+          ...execution,
+          journal: join(followupDir, "draft-journal.jsonl"),
+          ...(!create
+            ? {
+                originalDraftId: await readOriginalDraftId(
+                  client,
+                  authority,
+                  ctx,
+                ),
+              }
+            : {}),
+        });
+      } else {
+        await assertEarlierSealsStopped(client, authority, previousSeals, ctx);
+        try {
+          result = await seal(client, ctx, checkpoint, renewal, execution);
+        } catch (error) {
+          if (!existsSync(join(followupDir, "seal-request.json"))) {
+            writeFileSync(
+              join(followupDir, "seal-assets-incomplete.json"),
+              JSON.stringify({
+                state: "SEAL_NOT_REQUESTED",
+                reservation: authority.objectId,
+                version: ctx.operation.version,
+                releaseId: ctx.operation.releaseId,
+                runId: execution.runId,
+                attempt: execution.attempt,
+                controller: execution.controller,
+              }) + "\n",
+              { flag: "wx", flush: true },
+            );
+          }
+          throw error;
+        }
+      }
+    } else if (mode === "before-approval")
       result = await approvedDraft(client, ctx);
-    else if (mode === "registry") result = await registryProof(client, ctx);
-    else {
-      assert.equal(mode, "seal");
-      result = await seal(client, ctx, checkpoint, renewal);
-    }
+    else if (mode === "registry") {
+      await registryProof(client, ctx);
+      return;
+    } else throw Error("Unknown release follow-up operation");
   }
   writeFileSync(
     join(".release/followup", mode + ".json"),

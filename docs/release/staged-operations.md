@@ -82,6 +82,8 @@ Owner-reviewed managed CodeQL analyses must be at most seven days old, and the s
    After reading npm's private staging inventory for this coordinate, sign `privateInventory` with the exact `coordinate`, UTC `observedAt`, `pendingCount=0` and `inventorySha256` of the retained private read.
    Keep raw private inventory outside the published checkpoint.
    The read must be less than one hour old and newer than every prior relevant writer.
+   Preserve the relevant native writer end time as `lastWriteAt` in its signed reservation disposition.
+   Use `lastWriteAt: null` with `requestState: "NO_REQUEST"` only when the original execution establishes that it sent no request.
    Record a `writerCutover` object confirming `directPublishDisabled`, `legacyWritersDisabled`, `stageBindingVerified` and `protectedEnvironmentVerified` from the owner’s settings readback.
    Supply the original dispositions of any preceding stages.
    Start `stage-release.yml` at the qualified protected SHA or use the reviewed controller repair below.
@@ -100,7 +102,11 @@ Owner-reviewed managed CodeQL analyses must be at most seven days old, and the s
    Prepare a signed checkpoint containing the private proof, the three original candidate assets, and reviewed `release-notes.md`.
    Its `operation.json` binds `type: "draft"`, the original qualification `source` SHA, the reviewed protected `controller` SHA (if it changed, include `controller-delta.json` with the original `source`, `controller`, exact `git diff --no-renames --name-only` paths in order, and `decision: "OWNER_REVIEWED_CONTROL_ONLY"`), `version`, `qualificationRun`, `qualificationAttempt`, `manifestSha256`, `stageRun`, `stageAttempt`, `stageId`, `tagObject` and `expectedReleaseId: null`.
    Verify the exact three draft assets and record `draft.json`.
-   After an interrupted creation, bind `expectedReleaseId` to the reconciled original ID before resuming the missing uploads.
+   Reserve the first creation as `owlapi-release-history/draft-VERSION-create-RUN_NUMBER`.
+   The writer flushes `draft-journal.jsonl` before creating the draft and records the native release ID before uploading assets.
+   Continue missing uploads with `owlapi-release-history/draft-VERSION-continue-RUN_NUMBER`, the original `expectedReleaseId` and `draft-origin.json`.
+   The origin binds the original `checkpoint`, `runId`, `number`, `attempt`, `controller` and `journalSha256`.
+   An absent draft or missing acknowledgement leaves creation unresolved.
    When resuming sealing, use the same signed checkpoint so the evidence archive reproduces its original digest.
 4. From the reviewed controller checkout, set `GITHUB_SHA` to its commit, `GITHUB_REF=refs/heads/main`, `GITHUB_REPOSITORY=Hadden-Industries/owlapi`, a read-only `GH_TOKEN`, and `HISTORY_OBJECT` for a signed `before-approval` operation.
    Run `node scripts/staged-release-followup.mjs before-approval` within five minutes before approval.
@@ -138,18 +144,27 @@ Inspect the original native attempt and its journal before choosing a recovery p
 ## Verify public recipients and seal
 
 Dispatch `release-registry.yml` with a signed `registry` operation and the original private proof, draft and approval.
+Include the exact qualified SBOM for the registry job to check against both installed graphs.
 The approved stage's publisher identity is the origin of provenance.
 Anonymous registry reads qualify bytes, both install spellings and documentation.
-Each frozen Linux, Windows and macOS lane exercises the package using its consumer Node/npm pair.
+Each frozen Linux, Windows and macOS lane exercises the exact version and integrity using its consumer Node/npm pair.
+Both install spellings record their production graph and lock digest for comparison with the qualified SBOM.
+Public recipient jobs occupy a run-specific concurrency group and release writers recheck the live preimages under their shared queue.
 Preserve original run IDs, attempts, native files and failed observations.
 A pending public coordinate allows read-only investigation.
 
 Use a signed `seal` operation with the original draft ID, verified `public.json`, `publicRun`, `publicAttempt`, its `publicController` SHA and recoverable source and qualification material.
 Preserve native run and artifact metadata in `origin-RUN-ATTEMPT-LOGICAL.json` with `run` and `artifact` as the original REST responses.
 Store the verified ZIP in `artifact-ID.zip`.
+For the promoted CI candidate and its package proof, also retain the original producer job response as `producer`.
+Preserve `public-run-origin.json` with the final native `run`, `latestJobs`, original `attempts` job inventories keyed by attempt, and original `artifacts` inventory.
+Successful lanes from earlier attempts keep their original timed job execution and artifact identity when other lanes rerun.
 After expiry the reader checks those original identities and bytes in the owner-signed checkpoint.
 Include a disclosure-reviewed `public-inventory.json` with `manifestSha256` and a `files` list containing the original qualification ZIPs, rights dispositions and corresponding source material cleared for public distribution.
 The GitHub-only writer verifies the public artifact and all lane receipts, adds release evidence and the indexed evidence archive, then seals that same draft.
+Reserve it as `owlapi-release-history/seal-VERSION-RUN_NUMBER`.
+An earlier seal of the same version can only resume asset work once its signed reservation cites the original `SEAL_NOT_REQUESTED` record.
+An earlier `seal-request.json` requires read-only reconciliation.
 Submit the resulting `seal.json` in a checkpoint to `release-completion.yml`.
 It independently checks the immutable release, tag, all five asset digests and native GitHub release and asset attestations.
 Preserve that post-seal receipt in signed history.
@@ -170,6 +185,7 @@ If that window expires, keep the original seal checkpoint and partially uploaded
 Sign a separate checkpoint containing `seal-settings.json` with `operationSha256` over the exact original `operation.json` bytes and a fresh top-level `immutableReleases` in the same form.
 Run `node scripts/staged-release-followup.mjs check-seal-settings operation.json seal-settings.json`.
 Dispatch the original `history_object` with the renewal's signed tag object as `settings_object`.
+Reserve the renewal for its new native seal run number and include the previous seal reservation and writer dispositions.
 If protected main moved after the partial seal, add its current SHA as `controller` in the renewal and include a signed `controller-delta.json` from the original seal controller to the new one.
 The writer permits only the same reviewed release-control paths and completion checks the executing controller against the original run.
 The evidence archive retains its original bytes and the seal request records which settings checkpoint authorized publication.
@@ -180,6 +196,18 @@ When restoring a pre-staging RC, include its original attested release evidence 
 The channel workflow checks the original four assets, immutable release ID and annotated tag object against GitHub.
 Staged successors require their own `immutable-VERSION.json` completion records.
 Historical evidence supplies no fresh staging or publication approval.
+
+Use a separate signed `retire-pilot` label operation to remove `pilot`.
+Set `version` to the immutable designated stable release and `retiredVersion` to the exact immutable candidate on `pilot`.
+Verify both release IDs and sign the npm and GitHub preimages.
+The `npm-tags` publisher needs npm's independent dist-tag permission.
+An already absent label requires zero writes.
+An explicit `@pilot` install may fail between candidates, while exact-version installs remain available.
+
+For a native retirement refusal, submit a signed `label-refusal-origin.json` to the read-only classification verification route.
+It binds the original `checkpoint`, `runId`, `attempt`, `controller`, `operationSha256` and `journalSha256`.
+The verifier requires the original failed step and a complete matching npm `E401` for HTTP `401 DELETE` on the pilot endpoint.
+Include its original proof in the signed disposition before authorizing a new operation with fresh preimages.
 
 After npm acknowledges a label write, the writer allows up to five minutes for the public tag map to converge.
 It polls only while the previous approved map is visible or a registry read is transiently unavailable.

@@ -2,7 +2,7 @@ import { readWorkflowRuns } from "./github-evidence-reader.mjs";
 import assert from "node:assert/strict";
 import { isDeepStrictEqual } from "node:util";
 import { setTimeout as delay } from "node:timers/promises";
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import {
   appendFileSync,
   mkdirSync,
@@ -36,6 +36,12 @@ import {
 } from "./staged-release.mjs";
 import { crc32 } from "node:zlib";
 import { readZipArchiveFilesWith } from "./release-zip-core.mjs";
+import {
+  findNpmCliCandidates,
+  observeNpmVersion,
+  selectNpmCliForVersion,
+} from "./assert-workflow-runtime.mjs";
+import { CI_RUNTIME } from "./runtime-policy.mjs";
 
 const repository = "Hadden-Industries/owlapi";
 const labels = ["pilot", "latest", "next"];
@@ -49,7 +55,13 @@ const tagsOnly = (tags) =>
   Object.fromEntries(labels.map((k) => [k, tags[k] ?? null]));
 export function planChannels(op) {
   assert.ok(
-    ["promote", "preview", "close-preview", "withdraw"].includes(op.type),
+    [
+      "promote",
+      "preview",
+      "close-preview",
+      "withdraw",
+      "retire-pilot",
+    ].includes(op.type),
   );
   assert.ok(valid(op.version));
   assert.deepEqual(Object.keys(op.before).sort(), [...labels].sort());
@@ -83,6 +95,16 @@ export function planChannels(op) {
   } else if (op.type === "close-preview") {
     assert.ok(stable !== null && op.version === stable);
     after.next = null;
+  } else if (op.type === "retire-pilot") {
+    assert.equal(
+      stable,
+      op.version,
+      "Pilot retirement requires the designated stable release",
+    );
+    assert.equal(op.before.latest, stable);
+    assert.ok(valid(op.retiredVersion));
+    assert.ok([null, op.retiredVersion].includes(op.before.pilot));
+    after.pilot = null;
   } else {
     assert.ok(Array.isArray(op.restore) && op.restore.length > 0);
     const seen = new Set();
@@ -157,11 +179,12 @@ export async function applyLabels(
     assert.equal(effect.state, "SETTLED");
     current[effect.tag] = effect.after;
   }
-  assert.deepEqual(
-    tagsOnly(await read()),
-    current,
-    "Registry preimage changed",
-  );
+  const initial = tagsOnly(await read());
+  if (op.type === "retire-pilot" && initial.pilot === null) {
+    assert.deepEqual(initial, after, "Registry preimage changed");
+    return after;
+  }
+  assert.deepEqual(initial, current, "Registry preimage changed");
   for (const tag of labels.filter((k) => current[k] !== after[k])) {
     assert.deepEqual(
       tagsOnly(await read()),
@@ -229,6 +252,178 @@ export async function verifiedChannelRelease(client, checkpoint, version) {
   return release;
 }
 
+const pilotEndpoint =
+  NPM_REGISTRY +
+  "-/package/" +
+  PACKAGE_NAME.replace("/", "%2f") +
+  "/dist-tags/pilot";
+const npmStep = "Apply approved npm labels (npm)";
+const refusalPrefix = "owlapi-pilot-refusal ";
+
+export function nativePilotRefusal(error) {
+  if (
+    !Number.isSafeInteger(error?.status) ||
+    error.status <= 0 ||
+    error.signal !== null ||
+    error.code !== undefined ||
+    error.error
+  )
+    return null;
+  try {
+    const native = JSON.parse(error.stdout)?.error;
+    if (native?.code !== "E401" || typeof native.summary !== "string")
+      return null;
+    const match = /^401 Unauthorized - DELETE (\S+)(?: - [\s\S]*)?$/u.exec(
+      native.summary,
+    );
+    if (match?.[1] !== pilotEndpoint) return null;
+    return {
+      npmCode: "E401",
+      exitStatus: error.status,
+      httpStatus: 401,
+      method: "DELETE",
+      endpoint: pilotEndpoint,
+    };
+  } catch {
+    return null;
+  }
+}
+
+export function verifyPilotRefusalLog({ bytes, step, proof, operationSha256 }) {
+  assert.equal(step.name, npmStep);
+  assert.equal(step.status, "completed");
+  assert.equal(step.conclusion, "failure");
+  const start = Date.parse(step.started_at),
+    end = Date.parse(step.completed_at);
+  assert.ok(Number.isFinite(start) && Number.isFinite(end) && end >= start);
+  const lines = new TextDecoder("utf-8", { fatal: true })
+    .decode(bytes)
+    .split(/\r?\n/u);
+  const recorded = lines.filter((line) => line.includes(refusalPrefix));
+  // GitHub also prints the run command, but the controller's marker occurs only in its output.
+  assert.equal(
+    recorded.length,
+    1,
+    "The original npm refusal log is missing or ambiguous",
+  );
+  const [line] = recorded;
+  const index = line.indexOf(" ");
+  const time = Date.parse(line.slice(0, index));
+  // REST step timestamps have second precision and log prefixes may have fractions.
+  assert.ok(
+    time >= start && time < end + 1000,
+    "Refusal lies outside the native npm step",
+  );
+  assert.ok(line.slice(index + 1).startsWith(refusalPrefix));
+  assert.deepEqual(JSON.parse(line.slice(index + 1 + refusalPrefix.length)), {
+    operationSha256,
+    ...proof,
+  });
+  return hash(bytes);
+}
+
+async function observePilotRefusal(client, env, checkpoint, origin, read) {
+  assert.match(origin.runId, /^[1-9]\d{0,15}$/u);
+  assert.equal(origin.attempt, "1");
+  const original = await readCheckpoint(client, origin.checkpoint);
+  const decision = original.files.get("channel-operation.json");
+  const op = JSON.parse(decision);
+  const operationSha256 = hash(decision);
+  assert.equal(origin.operationSha256, operationSha256);
+  assert.equal(op.type, "retire-pilot");
+  planChannels(op);
+  assert.equal(op.controller, origin.controller);
+  const path = "/actions/runs/" + origin.runId + "/attempts/1";
+  const run = await client.read(path);
+  assert.equal(original.tag, "owlapi-release-history/labels-" + run.run_number);
+  assert.equal(String(run.id), origin.runId);
+  assert.equal(run.run_attempt, 1);
+  assert.equal(run.conclusion, "failure");
+  const artifacts = await originArtifact(
+    client,
+    {
+      runId: origin.runId,
+      attempt: "1",
+      filename: ".github/workflows/release-labels.yml",
+      commit: origin.controller,
+      logical: "release-labels-" + origin.runId + "-1",
+      refusedLabel: true,
+    },
+    checkpoint,
+  );
+  const files = readZipArchiveFilesWith(
+    await originalBytes(client, artifacts),
+    {
+      crc32,
+      expectedNames: new Set(["channel-journal.jsonl"]),
+    },
+  );
+  assert.equal(files.length, 1, "No native retirement journal");
+  const journal = files[0].content;
+  assert.equal(hash(journal), origin.journalSha256);
+  const rows = journal.toString("utf8").trimEnd().split("\n").map(JSON.parse);
+  assert.equal(rows.length, 2, "Original retirement effect is ambiguous");
+  const { diagnostic, ...refused } = rows[1];
+  const intent = {
+    tag: "pilot",
+    before: op.retiredVersion,
+    after: null,
+    operationSha256,
+  };
+  assert.deepEqual(rows[0], { ...intent, state: "REQUESTED" });
+  assert.deepEqual(refused, { ...intent, state: "OUTCOME_UNKNOWN" });
+  assert.deepEqual(diagnostic, {
+    npmCode: "E401",
+    exitStatus: 1,
+    httpStatus: 401,
+    method: "DELETE",
+    endpoint: pilotEndpoint,
+  });
+  const jobs = await client.read(path + "/jobs?per_page=100");
+  assert.equal(jobs.total_count, 1);
+  assert.equal(jobs.jobs.length, 1);
+  const [job] = jobs.jobs;
+  assert.deepEqual(
+    [
+      job.name,
+      String(job.run_id),
+      job.run_attempt,
+      job.head_sha,
+      job.status,
+      job.conclusion,
+    ],
+    ["npm", origin.runId, 1, origin.controller, "completed", "failure"],
+  );
+  assert.ok(Number.isSafeInteger(job.id) && job.id > 0);
+  const steps = job.steps.filter((step) => step.name === npmStep);
+  assert.equal(steps.length, 1);
+  const logSha256 = verifyPilotRefusalLog({
+    bytes: execFileSync(
+      "gh",
+      ["api", "repos/" + repository + "/actions/jobs/" + job.id + "/logs"],
+      { env, timeout: 20000, maxBuffer: 4 * 1024 * 1024 },
+    ),
+    step: steps[0],
+    proof: diagnostic,
+    operationSha256,
+  });
+  if (read)
+    assert.deepEqual(
+      tagsOnly(await read()),
+      op.before,
+      "Original refusal no longer matches the preimage",
+    );
+  return {
+    runId: origin.runId,
+    attempt: "1",
+    operationSha256,
+    state: "REQUEST_REFUSED",
+    jobId: job.id,
+    logSha256,
+    stepCompletedAt: steps[0].completed_at,
+  };
+}
+
 async function main() {
   const mode = process.argv[2],
     env = process.env;
@@ -237,15 +432,22 @@ async function main() {
   assert.equal(env.GITHUB_REF, "refs/heads/main");
   const client = new GitHubReleaseClient({ repository, token: env.GH_TOKEN });
   const checkpoint = await readCheckpoint(client, env.HISTORY_OBJECT);
+  const bytes = checkpoint.files.get("channel-operation.json");
+  const op = JSON.parse(bytes);
+  if (op.type === "retire-pilot") {
+    assert.notEqual(mode, "github", "Pilot retirement has no GitHub writer");
+    if (mode === "npm") assert.equal(op.controller, env.GITHUB_SHA);
+  }
   if (mode !== "verify")
     await verifyReservations(
       client,
       checkpoint,
       env,
       mode === "npm" ? "labels" : "classification",
+      {
+        retirementSha: op.type === "retire-pilot" ? hash(bytes) : undefined,
+      },
     );
-  const bytes = checkpoint.files.get("channel-operation.json");
-  const op = JSON.parse(bytes);
   const designation = JSON.parse(
     readFileSync(
       new URL("../docs/release/support-designation.json", import.meta.url),
@@ -276,6 +478,11 @@ async function main() {
   const verifiedRelease = (version) =>
     verifiedChannelRelease(client, checkpoint, version);
   const target = await verifiedRelease(op.version);
+  if (op.type === "retire-pilot") {
+    assert.equal(target.prerelease, false);
+    assert.deepEqual(op.githubBefore, { prerelease: false, latest: target.id });
+    await verifiedRelease(op.retiredVersion);
+  }
   if (op.type === "withdraw")
     for (const { target } of op.restore)
       if (target !== null) await verifiedRelease(target);
@@ -315,6 +522,28 @@ async function main() {
       JSON.stringify({ ...row, operationSha256 }) + "\n",
       { flush: true },
     );
+  if (
+    mode === "verify" &&
+    op.type === "retire-pilot" &&
+    checkpoint.files.has("label-refusal-origin.json")
+  ) {
+    const origin = JSON.parse(
+      checkpoint.files.get("label-refusal-origin.json"),
+    );
+    assert.equal(origin.operationSha256, operationSha256);
+    assert.deepEqual(await githubState(), op.githubBefore);
+    const observed = await observePilotRefusal(
+      client,
+      env,
+      checkpoint,
+      origin,
+      read,
+    );
+    writeFileSync(join(dir, "verify.json"), JSON.stringify(observed) + "\n", {
+      flag: "wx",
+    });
+    return;
+  }
   let observedTags;
   if (mode === "npm") {
     assert.equal(
@@ -335,6 +564,8 @@ async function main() {
       "release-labels.yml",
     );
     await assertPriorOperations(client, env, checkpoint, "stage");
+    for (const kind of ["draft", "seal", "classification"])
+      await assertPriorOperations(client, env, checkpoint, kind);
     const settled = [];
     for (const run of runs.filter((r) => String(r.id) !== env.GITHUB_RUN_ID)) {
       assert.equal(run.status, "completed", "Another label operation is open");
@@ -362,6 +593,21 @@ async function main() {
           );
           assert.equal(prior.runId, String(run.id));
           assert.equal(prior.attempt, String(attempt));
+          if (prior.state === "REQUEST_REFUSED") {
+            assert.notEqual(
+              prior.operationSha256,
+              operationSha256,
+              "A refused operation needs a fresh signed decision",
+            );
+            const observed = await observePilotRefusal(
+              client,
+              env,
+              checkpoint,
+              prior.origin,
+            );
+            assert.deepEqual(prior, { ...observed, origin: prior.origin });
+            continue;
+          }
           assert.ok(["SETTLED", "RECONCILED"].includes(prior.state));
           if (prior.operationSha256 === operationSha256) {
             assert.equal(
@@ -388,29 +634,72 @@ async function main() {
       HOME: scratch,
       GITHUB_ACTIONS: "true",
       NPM_CONFIG_FETCH_RETRIES: "0",
+      NPM_CONFIG_USERCONFIG: join(scratch, "user.npmrc"),
+      NPM_CONFIG_GLOBALCONFIG: join(scratch, "global.npmrc"),
     };
+    for (const config of [
+      ambient.NPM_CONFIG_USERCONFIG,
+      ambient.NPM_CONFIG_GLOBALCONFIG,
+    ])
+      writeFileSync(config, "", { flag: "wx" });
     for (const [k, v] of Object.entries(env))
       if (
         k.startsWith("ACTIONS_ID_TOKEN_REQUEST_") ||
         (k.startsWith("GITHUB_") && !k.includes("TOKEN"))
       )
         ambient[k] = v;
+    const { npmCli } = selectNpmCliForVersion({
+      expectedNpm: CI_RUNTIME.npm,
+      candidates: findNpmCliCandidates(),
+      observeVersion: observeNpmVersion,
+    });
+    assert.deepEqual(await githubState(), op.githubBefore);
     observedTags = await applyLabels(op, {
       settled,
       read,
       record,
-      write: (tag, value) =>
-        execFileSync(
-          "npm",
+      write: (tag, value) => {
+        const result = spawnSync(
+          process.execPath,
           [
+            npmCli,
             "dist-tag",
             ...(value === null
               ? ["rm", PACKAGE_NAME, tag]
               : ["add", PACKAGE_NAME + "@" + value, tag]),
             "--registry=" + NPM_REGISTRY,
+            "--fetch-retries=0",
+            ...(op.type === "retire-pilot" ? ["--json"] : []),
           ],
-          { cwd: scratch, env: ambient, timeout: 60000, stdio: "pipe" },
-        ),
+          {
+            cwd: scratch,
+            env: ambient,
+            timeout: 60000,
+            encoding: "utf8",
+            stdio: "pipe",
+            maxBuffer: 256 * 1024,
+          },
+        );
+        if (result.status === 0) return result.stdout;
+        if (op.type === "retire-pilot") {
+          const diagnostic = nativePilotRefusal(result);
+          if (diagnostic) {
+            record({
+              tag,
+              before: op.retiredVersion,
+              after: null,
+              state: "OUTCOME_UNKNOWN",
+              diagnostic,
+            });
+            process.stderr.write(
+              refusalPrefix +
+                JSON.stringify({ operationSha256, ...diagnostic }) +
+                "\n",
+            );
+          }
+        }
+        throw Error("Original npm request must be reconciled");
+      },
     });
   } else {
     const labelOrigin = JSON.parse(checkpoint.files.get("label-origin.json"));
@@ -482,6 +771,10 @@ async function main() {
     }
     if (mode === "github") {
       if (changeNeeded) {
+        for (const kind of ["stage", "draft", "seal", "labels"])
+          await assertPriorOperations(client, env, checkpoint, kind, {
+            excludeRun: kind === "labels" ? String(npmRun) : undefined,
+          });
         await assertPriorOperations(
           client,
           { ...env, OPERATION_SHA256: operationSha256 },

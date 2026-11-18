@@ -59,7 +59,10 @@ export const assertReleaseAssetSubset = ({ assets, expected }) => {
       !required ||
       observedNames.has(asset.name) ||
       asset.size !== required.bytes ||
-      asset.digest !== `sha256:${required.sha256}`
+      asset.digest !== `sha256:${required.sha256}` ||
+      (required.id !== undefined &&
+        asset.id !== undefined &&
+        asset.id !== required.id)
     ) {
       throw new Error(
         "The draft contains an unexpected or conflicting GitHub release asset.",
@@ -158,6 +161,8 @@ export class GitHubReleaseClient {
         method,
         headers: this.headers(headers),
         body,
+        redirect: "error",
+        signal: AbortSignal.timeout(30_000),
       });
       if (response.ok) {
         return {

@@ -313,6 +313,7 @@ export async function recordQualification(env = process.env) {
       assets: ci.assets,
       integrity: ci.integrity,
       packedConfig: ci.packedConfig,
+      runtimeMatrix: FROZEN_RUNTIME_MATRIX,
       ci,
       security,
       inputs,
