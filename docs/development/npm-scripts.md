@@ -25,6 +25,9 @@ Use normalization when you intend to convert strings to Unicode NFC.
 The normalizer rejects key collisions.
 
 The root lockfile selects the exact Markdown Quality and JSON Quality releases within the manifest's minimums.
+The JSON Quality development minimum is `>=1.0.2`.
+Markdown Quality requires `>=3.0.4`.
+The lockfile records the npm resolutions for ESLint, ESLint Markdown, and their transitive dependencies.
 `package-lock.json` pins the SHA-512 integrity of the published JSON Quality core, Linux x64 and Windows x64 tarballs.
 The matching [JSON Quality release](https://github.com/Hadden-Industries/json-quality/releases) records their SHA-256 digests.
 OwlAPI records registry signatures, provenance and archive contents in its [npm package evidence](../provenance/npm-package-evidence.json).
