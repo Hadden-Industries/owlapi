@@ -1,4 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
+import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { isMap, isScalar, isSeq, parseDocument, visit } from "yaml";
 
@@ -1034,6 +1035,54 @@ describe("repository workflow governance", () => {
       doc.setIn(["jobs", "stage", "permissions", "contents"], "write"),
     );
     expect(violations.join("\n")).toContain("operation authority");
+  });
+  test.each([
+    [["jobs", "admit", "steps", 2, "if"], false],
+    [["jobs", "admit", "steps", 2, "continue-on-error"], true],
+    [["jobs", "admit", "steps", 1, "if"], false],
+    [["jobs", "admit", "steps", 0, "with", "ref"], "main"],
+  ])("rejects bypassing signed stage preflight at %j", (path, value) => {
+    const violations = mutateWorkflow("stage-release.yml", (doc) =>
+      doc.setIn(path, value),
+    );
+    expect(violations.join("\n")).toContain("pinned read-only stage preflight");
+  });
+  test("archive workflow success requires the selected writer and only that writer", () => {
+    const doc = parseDocument(workflowSource("github-release.yml"));
+    const gate = doc.toJS().jobs.writer_result;
+    const command = /^node --input-type=module -e '(.+)'$/u.exec(
+      gate.steps[0].run.trim(),
+    )[1];
+    for (const [operation, draft, seal, expected] of [
+      ["draft", "success", "skipped", 0],
+      ["seal", "skipped", "success", 0],
+      ["draft", "skipped", "skipped", 1],
+      ["seal", "skipped", "failure", 1],
+      ["seal", "skipped", "cancelled", 1],
+      ["draft", "success", "success", 1],
+    ]) {
+      const result = spawnSync(
+        process.execPath,
+        ["--input-type=module", "-e", command],
+        {
+          env: {
+            ...process.env,
+            ARCHIVE_OPERATION: operation,
+            NEEDS_JSON: JSON.stringify({
+              draft: { result: draft },
+              seal: { result: seal },
+            }),
+          },
+        },
+      );
+      expect(result.status).toBe(expected);
+    }
+    const violations = mutateWorkflow("github-release.yml", (source) =>
+      source.setIn(["jobs", "writer_result", "steps", 0, "if"], false),
+    );
+    expect(violations.join("\n")).toContain(
+      "require the selected archival writer",
+    );
   });
   test("binds the refusal signer checkout to the immutable dispatch SHA", () => {
     const violations = mutateWorkflow("release-classification.yml", (doc) => {

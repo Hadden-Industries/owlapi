@@ -447,7 +447,8 @@
     },
     "github-release.yml": {
       "/jobs/draft/runs-on": "{{runtime:ubuntuRunner}}",
-      "/jobs/seal/runs-on": "{{runtime:ubuntuRunner}}"
+      "/jobs/seal/runs-on": "{{runtime:ubuntuRunner}}",
+      "/jobs/writer_result/runs-on": "{{runtime:ubuntuRunner}}"
     },
     "installed-diagnostic.yml": {
       "/jobs/installed/runs-on": "{{runtime:ubuntuRunner}}"

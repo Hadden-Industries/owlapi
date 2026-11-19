@@ -684,6 +684,8 @@ const isOptionalCiEvidenceStep = (fileName, jobId, step) =>
 const readAuthority = { contents: "read", actions: "read" };
 const npmAuthority = { ...readAuthority, "id-token": "write" };
 const githubAuthority = { ...readAuthority, contents: "write" };
+const protectedReleaseBranch = `github.repository == '${REPOSITORY}' && github.ref == 'refs/heads/main'`;
+const archiveOutcome = `node --input-type=module -e 'import assert from "node:assert/strict"; const operation=process.env.ARCHIVE_OPERATION; const needs=JSON.parse(process.env.NEEDS_JSON); assert.ok(["draft","seal"].includes(operation),"Unknown archival operation"); assert.equal(needs[operation]?.result,"success","Selected archival writer did not succeed"); assert.equal(needs[operation==="draft"?"seal":"draft"]?.result,"skipped","Unselected archival writer ran");'`;
 const operationJobs = {
   "stage-release.yml": {
     admit: [readAuthority],
@@ -692,6 +694,7 @@ const operationJobs = {
   "github-release.yml": {
     draft: [githubAuthority, "release-manual"],
     seal: [githubAuthority, "release-manual"],
+    writer_result: [{}],
   },
   "release-labels.yml": {
     npm: [npmAuthority, "npm-tags"],
@@ -772,6 +775,13 @@ function validateOperationJobs(file, workflow, violations) {
         job.steps.filter((s) => s.run).map((s) => s.run),
         [command],
       ) &&
+        !job["continue-on-error"] &&
+        job.steps.some(
+          (step) =>
+            step.run === command &&
+            !Object.hasOwn(step, "if") &&
+            !step["continue-on-error"],
+        ) &&
         !JSON.stringify(job).includes("secrets.") &&
         job.steps.every(
           (s) =>
@@ -787,6 +797,53 @@ function validateOperationJobs(file, workflow, violations) {
   }
   if (file === "stage-release.yml") {
     const { admit, stage } = workflow.jobs;
+    requireFields(
+      workflow.on.workflow_dispatch?.inputs?.history_object,
+      {
+        type: "string",
+        required: true,
+      },
+      "stage-release.yml: signed history input",
+      violations,
+    );
+    add(
+      violations,
+      workflow.env?.HISTORY_OBJECT === "${{ inputs.history_object }}",
+      "stage-release.yml: use the exact signed history input",
+    );
+    const [checkout, setup, preflight] = admit?.steps ?? [];
+    const dispatchCheckout = {
+      "fetch-depth": 0,
+      "fetch-tags": true,
+      "persist-credentials": false,
+      ref: "${{ github.sha }}",
+    };
+    const required = (step) =>
+      step && !Object.hasOwn(step, "if") && !step["continue-on-error"];
+    add(
+      violations,
+      admit?.if === protectedReleaseBranch &&
+        !admit["continue-on-error"] &&
+        admit.steps.length === 3 &&
+        [checkout, setup, preflight].every(required) &&
+        checkout.uses?.startsWith("actions/checkout@") &&
+        isDeepStrictEqual(checkout.with, dispatchCheckout) &&
+        setup.uses === SHARED_SETUP &&
+        setup.with === undefined &&
+        preflight.id === "origin" &&
+        preflight.run === "node scripts/staged-release.mjs admit" &&
+        isDeepStrictEqual(preflight.env, { GH_TOKEN: "${{ github.token }}" }),
+      "stage-release.yml: pinned read-only stage preflight must admit signed history before staging",
+    );
+    add(
+      violations,
+      stage?.if === "${{ !cancelled() && needs.admit.result == 'success' }}" &&
+        isDeepStrictEqual(
+          actionSteps(stage, "actions/checkout")[0]?.with,
+          dispatchCheckout,
+        ),
+      "stage-release.yml: stage requires successful admission at the exact dispatch commit",
+    );
     requireFields(
       admit?.outputs,
       {
@@ -808,6 +865,32 @@ function validateOperationJobs(file, workflow, violations) {
           repository: REPOSITORY,
         }),
       "stage-release.yml: protected stage must download the admitted original CI or release candidate",
+    );
+  }
+  if (file === "github-release.yml") {
+    const check = workflow.jobs.writer_result;
+    const [step] = check?.steps ?? [];
+    add(
+      violations,
+      ["draft", "seal"].every(
+        (kind) =>
+          workflow.jobs[kind]?.if ===
+          protectedReleaseBranch + ` && inputs.operation == '${kind}'`,
+      ) &&
+        check?.if ===
+          "${{ !cancelled() && github.repository == 'Hadden-Industries/owlapi' && github.ref == 'refs/heads/main' }}" &&
+        sameInventory(needs(check), ["draft", "seal"]) &&
+        !check["continue-on-error"] &&
+        check.steps.length === 1 &&
+        step?.name === "Require the selected archival writer" &&
+        !Object.hasOwn(step, "if") &&
+        !step["continue-on-error"] &&
+        step.run?.trim() === archiveOutcome &&
+        isDeepStrictEqual(step.env, {
+          ARCHIVE_OPERATION: "${{ inputs.operation }}",
+          NEEDS_JSON: "${{ toJSON(needs) }}",
+        }),
+      "github-release.yml: require the selected archival writer to succeed",
     );
   }
   if (file === "release-registry.yml")

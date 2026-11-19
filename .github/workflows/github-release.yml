@@ -82,3 +82,19 @@ jobs:
           name: github-release-${{ github.run_id }}-${{ github.run_attempt }}
           path: .release/followup
           retention-days: 90
+  writer_result:
+    needs: [draft, seal]
+    if: ${{ !cancelled() && github.repository == 'Hadden-Industries/owlapi' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-26.04
+    timeout-minutes: 5
+    permissions: {}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Require the selected archival writer
+        env:
+          ARCHIVE_OPERATION: ${{ inputs.operation }}
+          NEEDS_JSON: ${{ toJSON(needs) }}
+        run: >-
+          node --input-type=module -e 'import assert from "node:assert/strict"; const operation=process.env.ARCHIVE_OPERATION; const needs=JSON.parse(process.env.NEEDS_JSON); assert.ok(["draft","seal"].includes(operation),"Unknown archival operation"); assert.equal(needs[operation]?.result,"success","Selected archival writer did not succeed"); assert.equal(needs[operation==="draft"?"seal":"draft"]?.result,"skipped","Unselected archival writer ran");'
