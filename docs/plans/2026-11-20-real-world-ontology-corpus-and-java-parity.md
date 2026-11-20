@@ -1,6 +1,14 @@
 # Qualify OwlAPI and reduce RDF/XML loading memory with one Java/JS comparison harness
 
-**Reviewed implementation plan · 20 November 2026 · proposed R2 change.**
+**Reviewed 20 November 2026 · findings consolidated 21 November 2026 · proposed R2 change.**
+
+**Where to resume.**
+The tested CGMES parser patch brings the named Java profile into structural agreement with released Java on all 5,608 axioms in the published Equipment vocabulary.
+It is ready for integration into OwlAPI.
+Four neighbouring property-role cases still differ.
+Start with the [pilot results and next implementation step](#cgmes-pilot-results-and-next-implementation-step).
+The [replay appendix](#replay-the-tested-cgmes-patch) contains the exact patch, runnable comparison and test commands.
+
 Build one development-only Java/JS comparison harness for structure, observable behavior and performance, including peak memory.
 It owns the case definitions, verified inputs, runtime selection and result identities for all three measurements.
 A fresh checkout must be able to run a case by ID and trace a difference to the statement, operation or stage that produced it.
@@ -27,11 +35,115 @@ The CI/release maintainer owns toolchain and fixture delivery.
 The implementer owns measured fixes.
 An independent reviewer checks the semantic or performance oracle used to accept each change.
 
-Start with [the observed failures](#what-the-measurements-establish), [the harness contract](#one-javajs-comparison-harness), [fixture acquisition](#fixture-acquisition-for-the-comparison-harness) and [the implementation slices](#implementation-slices).
+**Run index**
+
+| Question                                                              | Results in this plan                                                                                                                                                                                          |
+| --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Which published ontologies gave different Java and JS models?         | [31 comparison records from 24 prospect collections](#published-document-comparison), including import handling, writer failures and the inconclusive FIBO comparison.                                        |
+| Which downstream inputs needed repairs or appeared to change on save? | [Six transformed inputs and 179 Functional Syntax round trips](#downstream-repairs-and-serializer-observations), plus the [178-document wider loading sweep and 23 acquisition gaps](#wider-sweep-inventory). |
+| Where did the loaders use memory?                                     | [JS heap and worker peaks](#rdfxml-memory-baseline) and [18 fresh native Java loads on six pinned inputs](#direct-java-loads-on-the-original-obo-files), with the limits of cross-engine comparison.          |
+| What did the later CGMES work fix, and what can I run today?          | [The candidate, regression tests and four remaining differences](#cgmes-pilot-results-and-next-implementation-step) and [the runnable replay](#replay-the-tested-cgmes-patch).                                |
+
+For implementation, use [the harness contract](#one-javajs-comparison-harness), [fixture acquisition](#fixture-acquisition-for-the-comparison-harness) and [the implementation slices](#implementation-slices).
 The [prospect inventory](#prospect-inventory), [import maps](#import-maps), and [wider sweep inventory](#wider-sweep-inventory) contain the source identities and historical outcomes needed to reproduce the investigation.
 A planning inventory supplies initial pins.
 At implementation, the machine-readable fixture catalogue takes ownership of executable pins.
 Keep this dated baseline as history.
+
+## CGMES pilot results and next implementation step
+
+The 20 November pilot used two copies of OwlAPI source at `d6d874a8af461f93efa502a6c158cc8c4cf88e7e`.
+One copy ran the original parser.
+The other ran the three-file patch reproduced in this document.
+The product checkout at that revision still contains the original parser.
+
+| Implementation decision                            | Evidence available on 21 November                                                                                                                             | Next action                                                                                                                                                                                   |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Integrate the named-profile CGMES change           | The original Equipment vocabulary matches released Java in full. The seven regression tests distinguish the original parser from the candidate.               | Take the tested patch into SLICE-004 and register the original input, reduced examples and SAREF control through the SLICE-001 public loaders. Recheck on the actual integration revision.    |
+| Investigate the four remaining property-role cases | Java and JS give the same property two different kinds of domain axiom. The four differences predate the patch.                                               | Keep each as a failing native comparison. Trace how Java types the domain independently of the property’s logical use before broadening the rule. Qualify ASAM and CIDOC on their own inputs. |
+| Measure large RDF/XML loads                        | The original FOVT, ICEO and CIDO loads have JS and native Java observations. The CGMES patch was qualified for correctness.                                   | Use FOVT and ICEO for allocation attribution and CIDO as the control in SLICE-010. Use equivalent completed loads to evaluate any SLICE-011 optimization.                                     |
+| Activate the release gate                          | Local source qualification covers two published documents. The common coordinator, installed-candidate evidence and both hosted shadow paths are outstanding. | Follow SLICE-003 and SLICE-012 for the full semantic roster. Track migration of all 70 performance workloads separately.                                                                      |
+
+### What changed in the real electricity model
+
+Lines 1570–1577 of the Equipment vocabulary describe `cim:ACLineSegment.r`, the positive-sequence series resistance of an AC line segment, as a generic `rdf:Property`.
+Its `rdfs:domain` names `cim:ACLineSegment`.
+A publisher annotation, `cims:dataType`, names `cim:Resistance`.
+Released Java preserves both statements.
+In the starting JS model both were absent.
+The candidate preserves their exact IRIs, subjects and values through the public JS loader, Functional Syntax output and an independent Java reparse.
+The publisher file identifies the CoreEquipment-EU/3.0 version, gives version information 3.0.0 and an issue date of 27 January 2021.
+Its source pin is in [original byte pins](#original-byte-pins).
+
+Both JS profiles below used compatible parsing.
+“Java only” and “JS only” count direct axioms after the native structural comparison.
+The eight comparisons also checked ontology identity, imports, ontology annotations and anonymous-individual structure.
+All reported zero network attempts.
+
+| Published input and JS behavior profile     | Original JS axioms | Candidate JS axioms | Native Java axioms / ontology annotations | Java only / JS only, original → candidate          |
+| ------------------------------------------- | -----------------: | ------------------: | ----------------------------------------: | -------------------------------------------------- |
+| CGMES Equipment · `java-owlapi-5.5.1`       |              5,410 |               5,608 |                                5,608 / 20 | 418 / 220 → **0 / 0**                              |
+| CGMES Equipment · `normative-v1`            |              5,410 |               5,410 |                                5,608 / 20 | 418 / 220 → 418 / 220, identical difference arrays |
+| ETSI SAREF Core 4.1.1 · `java-owlapi-5.5.1` |                669 |                 669 |                                  669 / 23 | 0 / 0 → 0 / 0                                      |
+| ETSI SAREF Core 4.1.1 · `normative-v1`      |                669 |                 669 |                                  669 / 23 | 0 / 0 → 0 / 0                                      |
+
+The 418 missing CGMES axioms were **209 annotation-property domains and 209 publisher datatype assertions**.
+The 220 excess axioms were explicit object-property declarations.
+A recovered role lets a property participate in a domain, range or assertion.
+An explicit OWL declaration adds a separate axiom.
+The native result distinguished the two.
+
+The patch adds one Java-profile policy in `internal/behavior/ontologyBehaviorContext.js`.
+In `internal/mapping/rdfToOwlTranslator.js`, compatible reconstruction reuses the property evidence index.
+A conclusive range supplies the logical role without adding a declaration.
+In the absence of a conclusive range, eligible generic properties receive an annotation role.
+Existing OWL types take precedence.
+Object-only characteristics and named properties used in `owl:onProperty` restrictions guard the fallback.
+The third file, `internal/mapping/cgmesPropertyRole.test.js`, exercises the rule through the public API.
+
+### Controls and remaining differences
+
+| Probe                                  | Observation                                                                                                                                                                                                                                                                                                                          | Meaning for the implementation                                                                                                                      |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Four reduced native comparisons        | The generic RDF property, explicit annotation type, reversed statement order and changed publisher value all matched Java on the patched named profile. Changing only the publisher value from `R` to `S` changed the matching assertion while preserving its count. Normative serialization kept its prior digest in every variant. | Assert the domain, annotation value and explicit declarations individually. Equal totals alone can miss a wrong value.                              |
+| Seventeen adjacent named-profile cases | Native structural matches rose from 9 to 13. Four newly matched cases were a domain alone, an IRI-valued use on an individual, their combination, and the latter with publisher metadata.                                                                                                                                            | An early candidate broke an explicit inverse and an existential restriction. Both match Java with the tested guard.                                 |
+| Four outstanding cases                 | A domain paired with an existential restriction or a subproperty relation, each with and without publisher metadata. Each has exactly one Java-only `AnnotationPropertyDomain(P C)` and one JS-only `ObjectPropertyDomain(P C)`, identical before and after.                                                                         | The fixture names are `domain-restriction`, `metadata-restriction`, `domain-subproperty` and `metadata-subproperty`. The replay generates all four. |
+| Repository tests                       | Adding only the seven new tests to the baseline produced three failures and four passes. Applying the complete patch produced **845 passing tests in six affected Jest suites**, including all seven new cases.                                                                                                                      | This is local source evidence. The installed package, full corpus and release paths have their own acceptance criteria below.                       |
+
+### Timing and run provenance
+
+Five fresh Node processes per source version loaded the structurally matching SAREF control under the named profile, alternating which version ran first.
+All ten produced the same Functional Syntax SHA-256, `d409cadff8873cc0c83eb7299fab338a3096cf0e23ed687fef1a69da1fba3d3f`.
+The peak is the process high-water mark through return from the public load.
+It includes process startup.
+
+| SAREF public JS load           |           Original source |                 Candidate |
+| ------------------------------ | ------------------------: | ------------------------: |
+| Median wall time (min–max), ms |       139.9 (131.6–159.5) |       140.7 (121.4–155.9) |
+| Median user / system CPU, ms   |                  172 / 78 |                  188 / 78 |
+| Median peak RSS (min–max), KiB | 190,332 (190,224–190,688) | 190,772 (190,416–191,004) |
+
+The timing ranges overlap.
+This control supports equivalent work on SAREF.
+A speed or memory claim for large RDF/XML still requires the [Java-referenced memory measurements](#direct-java-loads-on-the-original-obo-files) and the planned matched JS trials.
+The CGMES versions returned different models, so their load times cannot establish a like-for-like improvement.
+
+The pilot used Node 26.13.1, npm 12.2.2 and Windows x64 Temurin 25.0.5+8.
+Native OWLAPI reported `5.5.1.2024-09-07T21:41:32Z`.
+Java loaded the original with explicit syntax, strictness disabled, annotation axioms enabled and missing imports set to throw.
+The pilot verified every byte length and SHA-256 in the 64-entry ordered Central classpath.
+The initial local cache supplied 53 correct JARs.
+Eight had different bytes and three were missing.
+The isolated cache obtained the remaining eleven from Maven Central.
+An early Jest invocation contacted the npm version notifier.
+The final qualification disabled the notifier and ran npm offline.
+
+Five synchronous API requests contributed to the patch and tests on 20 November UTC.
+Three terminal usage records amounted to $0.453896.
+Two interrupted streams lacked final usage receipts and retained a combined allowance of $0.7701775.
+Maximum recorded exposure was $1.2240735 against the approved $20.
+The tested bytes incorporate local corrections and a refinement driven by the inverse and restriction counterexamples.
+Replaying the result needs no paid inference.
 
 ## Decision tree
 
@@ -66,6 +178,9 @@ A fresh locked comparison establishes release-profile behavior.
 Check the in-memory JS model, its Functional serialization, the native reparse and the comparator separately when attributing a difference.
 
 The 24 collections produced **31 historical comparison records**.
+Use the final 20:56 UTC run from 18 November for this count.
+The earlier two-case smoke and first full attempt preceded the correction that gave closure storage its own outcome.
+In particular, ePO matched at direct parse time before its closure writer failed.
 Nine matched structurally.
 Fourteen root scenarios loaded in Java while JS rejected the input or an imported member.
 Seven produced models with structural differences.
@@ -74,6 +189,11 @@ The denominator is 22 single documents, eight GLEIF root scenarios and one DDI-C
 In a failing closure the parser can first encounter the defect in an imported document.
 Preserve that document and IRI in the failure result.
 Some Java loads left unparsed triples.
+GS1, Europeana, Brick and IDMP carried the raw diagnostic `SOURCE_UNPARSED_RDF`.
+The seven model-difference records include the harvested Brick and IDMP differences.
+That diagnostic limits their whole-file structural verdict.
+FIBO stopped for a different reason, `COMPARISON_LIMIT`.
+An `ONTOLOGY_ID` difference reported against an absent JS model requires a successful JS load before it can be interpreted as an identity defect.
 A direct parse match can coexist with a closure storage failure.
 The structural runner selected the default `normative-v1` profile with `parsingMode: "compatible"`.
 Separate spot checks at `7145bb83` explicitly selected each JS profile on original files.
@@ -82,7 +202,8 @@ On the original CGMES RDF/XML, both JS profiles produced 5,410 direct axioms aga
 Both comparisons reproduced the same 209 missing domains, 209 missing datatype assertions and 220 extra declarations.
 SAREF served as the positive control, matching Java structurally in both profiles on 669 axioms and 23 ontology annotations.
 All four comparisons reported zero network attempts.
-These checks qualify the two observations at this checkout.
+These checks qualify the two baseline observations at `7145bb83`.
+The [later candidate comparison](#what-changed-in-the-real-electricity-model) records the outcome after applying the CGMES correction to `d6d874a8`.
 Release evidence still requires the installed candidate and full roster.
 
 | Case             | Retained observations and individual regression witnesses                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
@@ -101,7 +222,11 @@ Release evidence still requires the installed candidate and full roster.
 **Six lenient-input families.**
 In the historical Java environment each as-published root loaded.
 Confirm the precise native recovery under the admitted Central lock before changing either JS profile.
-The current JS named profile already loads Europeana, and the GLEIF base module still rejects a string cardinality.
+In the original standalone named-profile probes, Europeana loaded.
+GS1 and QUDT rejected datatype use, GLEIF Base rejected a string cardinality, and RealEstateCore rejected the range.
+INSPIRE failed parser selection under the supplied media hint.
+A separate probe on the merged DDI input rejected an empty key.
+An earlier strict CGMES probe reported `UNSUPPORTED_CONSTRUCT` for an unconsumed RDF statement.
 For each family preserve the original document and independently exercise the smallest input that exhibits Java’s actual recovery.
 A repaired source or a synthetic merger answers a separate question.
 
@@ -113,6 +238,57 @@ A repaired source or a synthetic merger answers a separate question.
 | GLEIF           | A string cardinality fails the non-negative integer literal check. | Java reads a string of digits such as `"1"` as the cardinality 1. The collection had 28 string cardinalities. Include valid integer-typed literals and a malformed non-numeric string as controls.                                                          |
 | RealEstateCore  | An annotation property range requires an IRI.                      | Java can type `rec:substance` as both a data and an annotation property on the list-valued range.                                                                                                                                                           |
 | Europeana EDM   | An annotation property domain requires an IRI.                     | Java loads the source with unparsed RDF, and the JS Java profile already loads it. Check the resulting domain, diagnostics and residual graph individually.                                                                                                 |
+
+### Downstream repairs and serializer observations
+
+Six transformed inputs loaded under JS compatible parsing in the downstream investigation.
+The transformations identify reasons a consumer could progress, and supply diagnostic controls for SLICE-007.
+Use the publisher originals to decide which recoveries a public parser should provide.
+In particular, removing an empty DDI key discards a statement that the historical native Java reader kept.
+
+| Input           | Transformation that allowed the downstream load                                                                                                                                                             | SHA-256 of transformed bytes                                       |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| GS1             | Retyped one datatype union and 83 properties. Removed one annotation range.                                                                                                                                 | `7a382ff04f3b14ef9f0d2065d416ba3ca6dcbdd87a7bc2f906fe1db1d8871212` |
+| QUDT            | Removed six datatype-subclass statements and twelve datatype-as-class type statements.                                                                                                                      | `8b11a306061e62d7a6c08d7e962f1576caacd4bb97fc3d159240ee744fcf680d` |
+| INSPIRE Address | Converted one literal version to an IRI. Historical Java omitted that version IRI.                                                                                                                          | `c5aa1dd78d4bb8ca0c97996403fee96526dc8c115afae3605d7be6db5094feea` |
+| DDI-CDI, merged | Removed two empty `owl:hasKey` lists. In the publisher modules both occur in `ddi-cdi/15` (`StructuredDataTypes.onto.ttl`) on `cdi:Selector` and `cdi:SpecializationRole`, reached via `00 → 05 → 07 → 15`. | `e92aeca2c3f846e61d90409d55c0f7e275075c3cd211a1333ae8d734bff911bb` |
+| GLEIF, merged   | Retyped 28 digit strings as `xsd:nonNegativeInteger`.                                                                                                                                                       | `8dea8c8b11a43755fa1428c227828752835c3ef0220368f34c75000dd2ef6363` |
+| RealEstateCore  | Removed one range on `rec:substance`. The historical native reader retained evidence for two property categories.                                                                                           | `5afe94d848eba3991cdd30ba110a7603649707bcac958923863ae19382e6dbf9` |
+
+The four single-document inputs are identified in [original byte pins](#original-byte-pins).
+The downstream input digests for the two mergers, before transformation, were `49642a29176b98fda83cb40d7b50b0a091e478f7ed4d022bd056e887124e7991` (DDI-CDI) and `0a412760fc58b3ce648287e55183a11512d709fdb8a1a4641d99aa78f4b3c4a9` (GLEIF).
+The [import maps](#import-maps) identify their individual publisher modules.
+
+An early 18 November JS sweep at 13:00 UTC analysed 44 wider inputs.
+Sixteen loaded in strict mode, 25 in compatible mode, two were rejected and CLO exhausted the worker.
+Nine of these produced different raw axiom keys after a Functional Syntax save and reload.
+The wider investigation later acquired 178 OBO/W3C documents. Of these, 78 loaded strictly, 85 compatibly and 15 were rejected. The CLO retry and other heap incidents are recorded under [RDF/XML memory baseline](#rdfxml-memory-baseline).
+
+Across **179 recorded Functional Syntax round trips** from the wider and prospect work, 122 had identical raw key sets and 57 had equally many missing and extra keys.
+The latter comprise 47 OBO, four W3C and six prospect inputs.
+The check saved a JS model, reloaded it in a fresh same-profile manager at `urn:ontology-findings:round-trip.ofn` in compatible mode with remote imports disabled, and compared per-axiom `structuralKey()` strings.
+Every retained sample of a difference contained an `OWLAnonymousIndividual`.
+An anonymous individual's document scope can change across reload.
+Whether any axiom or shared anonymous structure was actually lost remains open.
+
+<details>
+<summary>All 57 raw-key witnesses, with missing keys per side</summary>
+
+The count for each ID applies on both sides.
+The OBO and W3C names use the corresponding prefixes in the [wider inventory](#wider-sweep-inventory).
+
+| Cohort    | ID and count                                                                                                                                                         |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| OBO, A–E  | agro 246, aism 280, bco 88, bspo 242, cdno 120, cheminf 81, dideo 20, ecao 242, ecocore 368, epio 12, exmo 254                                                       |
+| OBO, F–L  | fbbi 192, fovt 418, gallont 218, genepio 16, geno 154, geo 1, gsso 6, iao 28, ico 390, labo 6                                                                        |
+| OBO, N–P  | nbo 192, oae 1,053, obcs 28, occo 28, ohmi 70, ohpi 278, ons 17, ovae 49, pbpko 172, pco 59, pdro 193, phipo 192, plana 222, planp 190, prefer 28, proco 21, pso 402 |
+| OBO, R–Z  | ro 219, sepio 219, stato 240, swo 198, t4fs 28, wbbt 219, wbls 192, wbphenotype 192, zeco 2                                                                          |
+| W3C       | dcat 30, shacl 4, sosa 2, ssn 2                                                                                                                                      |
+| Prospects | Brick 6,645, Europeana 4, FIBO 2, GeoSPARQL 9, QUDT 19,597, RealEstateCore 164. QUDT and RealEstateCore used the transformed bytes identified above.                 |
+
+</details>
+
+For SLICE-008/013, start with SOSA (two keys on each side), a named-only control and a deliberately changed shared blank node. Require a consistent bijection across the whole model that preserves annotation values and shared nodes. Compare the pre-save model with the reloaded model and use an independent reader to attribute any remaining difference. SLICE-009 separately tests the observed RDF/XML merged-closure writer failures.
 
 ### RDF/XML memory baseline
 
@@ -728,6 +904,8 @@ The acceptance criteria govern even if an internal seam moves.
 ### SLICE-001 · Reproduce CGMES through the real public loaders
 
 **REQ-01–04, REQ-07 · AC-01–04, AC-07 · DEC-01, DEC-03–05, DEC-07.**
+The [pilot replay](#replay-the-tested-cgmes-patch) already reproduces the original CGMES mismatch and SAREF control from pinned source and bytes.
+Use those observations as acceptance inputs when implementing the common command and its stage receipts.
 Begin the frozen legacy-assertion mapping in DEC-07 before extracting orchestration.
 Deliver the canonical command and programmatic coordinator on two real cases.
 Bind the hashed CGMES original and its reduced witness to `direct-load`, with SAREF as the independently matching control.
@@ -809,6 +987,8 @@ Keep original artifacts bound to their producing revision.
 ### SLICE-004 · Recover RDF Schema property roles and their statements
 
 **REQ-03 · AC-03 · DEC-05.**
+The [tested CGMES candidate](#cgmes-pilot-results-and-next-implementation-step) covers the named-profile original and reduced cases.
+Integrate it against the target revision, then exercise the four residual domain cases, ASAM and CIDOC before claiming the entire slice.
 Extend compatible reconstruction at the property classification, transaction and axiom emission seam in `internal/mapping/rdfToOwlTranslator.js`.
 The named Java profile should recover CGMES range-less properties as annotation properties with their domains and uses, recover ASAM’s malformed typing as Java does when range evidence permits, and distinguish a recovered entity from an explicitly declared entity.
 Apply DEC-05 separately to strict and compatible normative modes.
@@ -1158,38 +1338,42 @@ Preserve the npm library’s public API and the provenance of historical evidenc
 
 The following 24 collections comprise the published-document parity cohort.
 The historical result compares the default-compatible JS configuration with the Java 5.5.1 environment described above and its recorded imports.
-Only CGMES and SAREF have the separately locked four-comparison confirmation from this review.
+CGMES and SAREF also have [locked native comparisons before and after the local pilot patch](#what-changed-in-the-real-electricity-model).
+The historical outcomes below describe the original parser.
 Every collection enters the offline structural and writer selections and is addressable in the benchmark driver.
 Use representative inputs in PR/measurement lanes as described above.
 Counts describe direct models or a failed top-level closure as applicable.
-Licence text in this inventory is a reported lead and requires checking against the original version before redistribution.
+Licence text in this inventory is a reported lead and requires checking the exact representation before redistribution.
+The CGMES body carries ENTSO-E copyright.
+GLEIF’s LEI data terms cover the data, and the project repository’s reported MIT licence still needs verification for the eight publisher module bodies.
+The CIDOC finding concerns the captured 7.1.3 RDF representation.
 
-| Collection ID           | Ontology                                                                                                                                               | Direct parsing comparison                                          | Historical JS closure storage | Licence lead                          |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------ | ----------------------------- | ------------------------------------- |
-| `eu-epo-core`           | eProcurement Ontology Core                                                                                                                             | Match                                                              | Full-IRI refusal              | EUPL 1.2                              |
-| `idta-aas`              | Asset Administration Shell RDF Ontology                                                                                                                | Match                                                              | Completed                     | CC BY 4.0                             |
-| `etsi-saref-core`       | SAREF Core Ontology                                                                                                                                    | Match                                                              | Completed                     | ETSI SAREF BSD-3-Clause-style licence |
-| `gs1-web-vocabulary`    | GS1 Web Vocabulary                                                                                                                                     | JS rejects datatype as class                                       | Prerequisite failed           | Apache 2.0                            |
-| `fibo-all`              | Financial Industry Business Ontology (production quickstart)                                                                                           | Inconclusive at comparator limit                                   | Completed                     | MIT                                   |
-| `iof-core`              | Industrial Ontology Foundry Core Ontology                                                                                                              | Match                                                              | Lossless check failed         | MIT                                   |
-| `pistoia-idmp`          | IDMP Ontology 1.4.0 (merged release)                                                                                                                   | Different assertions and unparsed RDF                              | Lossless check failed         | MIT                                   |
-| `pmd-core`              | Platform MaterialDigital Core Ontology                                                                                                                 | Match                                                              | Completed                     | CC BY 4.0                             |
-| `hl7-fhir-rdf`          | FHIR RDF Ontology                                                                                                                                      | Match                                                              | Completed                     | Verify with publisher                 |
-| `asam-openlabel`        | ASAM OpenLABEL V1.0.0 Scenario Tagging Ontology (copy in ASCS e.V.'s asam-openx-standards; openlabel.asam.net refused connections on 18 November 2026) | Different property domains and ranges                              | Completed                     | Verify with publisher                 |
-| `qudt-all`              | QUDT Ontologies and Vocabularies                                                                                                                       | JS rejects datatype as class                                       | Prerequisite failed           | CC BY 4.0                             |
-| `ogc-geosparql`         | GeoSPARQL 1.1 Ontology                                                                                                                                 | Different ontology annotations and blank-node details              | Lossless check failed         | Apache 2.0                            |
-| `brick-only`            | Brick Ontology 1.5.0                                                                                                                                   | Different assertions and anonymous graphs                          | Lossless check failed         | Verify with publisher                 |
-| `building-smart-ifcowl` | ifcOWL IFC4 ADD2                                                                                                                                       | Different Java placeholder and union expressions                   | Lossless check failed         | Verify with publisher                 |
-| `europeana-edm`         | Europeana Data Model                                                                                                                                   | JS rejects non-IRI annotation domain                               | Prerequisite failed           | Verify with publisher                 |
-| `cidoc-crm`             | CIDOC Conceptual Reference Model 7.1.3                                                                                                                 | 309 extra JS declarations                                          | Completed                     | CC BY 4.0                             |
-| `ddi-cdi`               | DDI Cross Domain Integration Ontology 1.0 (17 publisher modules)                                                                                       | JS rejects empty key in top-level closure                          | Prerequisite failed           | Verify with publisher                 |
-| `posccaesar-lis14`      | ISO 15926-14 / LIS Core Ontology                                                                                                                       | Match                                                              | Completed                     | Verify with publisher                 |
-| `inspire-address`       | INSPIRE Addresses RDF Vocabulary                                                                                                                       | JS rejects literal version IRI                                     | Prerequisite failed           | Verify with publisher                 |
-| `nfdicore`              | NFDI Core Ontology                                                                                                                                     | Match                                                              | Completed                     | Verify with publisher                 |
-| `entsoe-cgmes-eq`       | CGMES 3.0 Equipment profile vocabulary (RDFS2020), as pinned by the Application Profiles Library                                                       | Different property domains, annotation assertions and declarations | Full-IRI refusal              | Apache 2.0                            |
-| `gleif-lei`             | GLEIF LEI Ontologies 1.0 (eight publisher modules)                                                                                                     | JS rejects string cardinality on all eight roots                   | Prerequisite failed           | GLEIF LEI data terms of use           |
-| `esco-model`            | ESCO ontology (model 2.0.0)                                                                                                                            | Match                                                              | Lossless check failed         | EUPL 1.2                              |
-| `realestatecore`        | RealEstateCore 4.1.0                                                                                                                                   | JS rejects non-IRI annotation range                                | Prerequisite failed           | BSD 3-Clause                          |
+| Collection ID           | Ontology                                                                                                                                               | Direct parsing comparison                                          | Historical JS closure storage | Licence lead                             |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------ | ----------------------------- | ---------------------------------------- |
+| `eu-epo-core`           | eProcurement Ontology Core                                                                                                                             | Match                                                              | Full-IRI refusal              | EUPL 1.2                                 |
+| `idta-aas`              | Asset Administration Shell RDF Ontology                                                                                                                | Match                                                              | Completed                     | CC BY 4.0                                |
+| `etsi-saref-core`       | SAREF Core Ontology                                                                                                                                    | Match                                                              | Completed                     | ETSI SAREF BSD-3-Clause-style licence    |
+| `gs1-web-vocabulary`    | GS1 Web Vocabulary                                                                                                                                     | JS rejects datatype as class                                       | Prerequisite failed           | Apache 2.0                               |
+| `fibo-all`              | Financial Industry Business Ontology (production quickstart)                                                                                           | Inconclusive at comparator limit                                   | Completed                     | MIT                                      |
+| `iof-core`              | Industrial Ontology Foundry Core Ontology                                                                                                              | Match                                                              | Lossless check failed         | MIT                                      |
+| `pistoia-idmp`          | IDMP Ontology 1.4.0 (merged release)                                                                                                                   | Different assertions and unparsed RDF                              | Lossless check failed         | MIT                                      |
+| `pmd-core`              | Platform MaterialDigital Core Ontology                                                                                                                 | Match                                                              | Completed                     | CC BY 4.0                                |
+| `hl7-fhir-rdf`          | FHIR RDF Ontology                                                                                                                                      | Match                                                              | Completed                     | Verify with publisher                    |
+| `asam-openlabel`        | ASAM OpenLABEL V1.0.0 Scenario Tagging Ontology (copy in ASCS e.V.'s asam-openx-standards; openlabel.asam.net refused connections on 18 November 2026) | Different property domains and ranges                              | Completed                     | Verify with publisher                    |
+| `qudt-all`              | QUDT Ontologies and Vocabularies                                                                                                                       | JS rejects datatype as class                                       | Prerequisite failed           | CC BY 4.0                                |
+| `ogc-geosparql`         | GeoSPARQL 1.1 Ontology                                                                                                                                 | Different ontology annotations and blank-node details              | Lossless check failed         | Apache 2.0                               |
+| `brick-only`            | Brick Ontology 1.5.0                                                                                                                                   | Different assertions and anonymous graphs                          | Lossless check failed         | Brick 1.5.0 repository licence to verify |
+| `building-smart-ifcowl` | ifcOWL IFC4 ADD2                                                                                                                                       | Different Java placeholder and union expressions                   | Lossless check failed         | CC BY 3.0 in the pinned file             |
+| `europeana-edm`         | Europeana Data Model                                                                                                                                   | JS rejects non-IRI annotation domain                               | Prerequisite failed           | Verify with publisher                    |
+| `cidoc-crm`             | CIDOC Conceptual Reference Model 7.1.3                                                                                                                 | 309 extra JS declarations                                          | Completed                     | CC BY 4.0                                |
+| `ddi-cdi`               | DDI Cross Domain Integration Ontology 1.0 (17 publisher modules)                                                                                       | JS rejects empty key in top-level closure                          | Prerequisite failed           | Verify with publisher                    |
+| `posccaesar-lis14`      | ISO 15926-14 / LIS Core Ontology                                                                                                                       | Match                                                              | Completed                     | CC BY-SA 4.0 in the pinned file          |
+| `inspire-address`       | INSPIRE Addresses RDF Vocabulary                                                                                                                       | JS rejects literal version IRI                                     | Prerequisite failed           | Verify with publisher                    |
+| `nfdicore`              | NFDI Core Ontology                                                                                                                                     | Match                                                              | Completed                     | CC0 1.0 in the pinned file               |
+| `entsoe-cgmes-eq`       | CGMES 3.0 Equipment profile vocabulary (RDFS2020), as pinned by the Application Profiles Library                                                       | Different property domains, annotation assertions and declarations | Full-IRI refusal              | Repository Apache 2.0 lead               |
+| `gleif-lei`             | GLEIF LEI Ontologies 1.0 (eight publisher modules)                                                                                                     | JS rejects string cardinality on all eight roots                   | Prerequisite failed           | Module-specific terms to verify          |
+| `esco-model`            | ESCO ontology (model 2.0.0)                                                                                                                            | Match                                                              | Lossless check failed         | EUPL 1.2                                 |
+| `realestatecore`        | RealEstateCore 4.1.0                                                                                                                                   | JS rejects non-IRI annotation range                                | Prerequisite failed           | BSD 3-Clause                             |
 
 ### Original byte pins
 
@@ -1387,6 +1571,20 @@ Wider-corpus Java model parity, cross-readers, writer and full-import acceptance
 The 178 wider sources and the 47 prospect originals together have **225 distinct SHA-256 digests and 1,231,969,791 bytes** before dependencies or evidence.
 That expansion happens to equal the logical catalogue count.
 Twenty-three logical entries lack a captured body.
+
+The final 15 wider rejections divide into the following first observable failures.
+The rung recorded as `java` in the downstream ladder executed the JS Java behavior profile.
+These observations still need direct replay against released native Java.
+
+| Original inputs                                               | Historical JS observation                                                                                                                         |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| OBO apollo-sv, ngbo, obi, obib, omrse, opl, po, rbo, slso, vo | Both normative modes reported `XML_PARSE_ERROR` (“not well formed”). The named-profile dispatcher ended in `UNPARSABLE_ONTOLOGY`.                 |
+| OBO cto, htn                                                  | CTO rejected an invalid anonymous-individual node ID. HTN rejected invalid RDF/XML. The named dispatcher likewise ended in `UNPARSABLE_ONTOLOGY`. |
+| OBO ms and W3C odrl                                           | All three JS rungs rejected a datatype used as a class expression.                                                                                |
+| OBO opmi                                                      | All three JS rungs rejected an `owl:distinctMembers` list with one item where at least two were required.                                         |
+
+On replay, supply both the pinned bytes and an explicit format, and record the first failing stage.
+A media-type hint, a dispatcher refusal and a failure in RDF-to-OWL mapping carry different evidence.
 
 Prepare any admitted ID through the same verified process as the prospect documents.
 For direct-document testing of the wider inputs, inspect and record syntax, logical base and declared imports locally.
@@ -1685,6 +1883,10 @@ An entry becomes eligible only after actual bytes have been admitted.
 
 ## Completion record for the implementer
 
+As of 21 November, the [CGMES source candidate](#cgmes-pilot-results-and-next-implementation-step) is locally verified and awaits product integration.
+CGMES and SAREF are the two published documents qualified on the patched source.
+The shared CLI, installed artifact, release gate and large-file memory improvement are open.
+
 Record the assertion mapping, shadow results and retired drivers alongside the case/candidate identities, exact stage outcomes and performance evidence.
 Record the date and evidence of semantic gate activation on both release paths separately from performance migration completion.
 One coordinator must eventually own all three measurements.
@@ -1694,3 +1896,738 @@ Mark implementation, local verification, hosted qualification and publication se
 A row in this plan records an observed input or work to do.
 For every release candidate, complete or authenticate the semantic evidence for every admitted input and applicable stage before promotion.
 The measured Java-referenced memory milestone has its own evidence and disposition.
+
+## Replay the tested CGMES patch
+
+This appendix contains the tested three-file unified diff, a Node comparison runner and the Java adapter it compiles with the repository’s `OntologyStructuralComparison.java`.
+The runner includes the four reduced fixtures and all 17 adjacent cases as generators.
+The two published ontologies and the 64 released JARs are restored from public sources and verified by byte length and SHA-256.
+Start from a clone containing the pinned commit and this document.
+Both source variants are ordinary extracted archives.
+
+### Recover the three files from this document
+
+Run the following blocks in the same PowerShell 7.4+ session from the OwlAPI root.
+The example uses a new directory under local application data.
+Select Node 26.13.1, npm 12.2.2 and a Temurin 25.0.5+8 JDK first.
+Set `JAVA_HOME` to that JDK.
+On the original Windows host the SHA-256 values were `f961fb8db73c7c546821bc6d30fdaa8ce2458da460a5e75e2c39189cd107e6ba` for `java.exe` and `02160baa324a6a778e01962f14c748155c3172c37821df201bb201df110985c0` for `javac.exe`.
+
+````powershell
+$ErrorActionPreference = 'Stop'
+$PSNativeCommandUseErrorActionPreference = $true
+$repo = (git rev-parse --show-toplevel).Trim()
+$plan = Join-Path $repo 'docs/plans/2026-11-20-real-world-ontology-corpus-and-java-parity.md'
+$run = Join-Path $env:LOCALAPPDATA ('OwlAPI\replay-' + [guid]::NewGuid().ToString('N'))
+$null = New-Item -ItemType Directory -Path $run
+$utf8 = [Text.UTF8Encoding]::new($false)
+$page = [IO.File]::ReadAllText($plan).Replace("`r`n", "`n")
+$expected = @{
+    'cgmes-tested.patch' = 'b5ddd1c1bfdf5f30eb8a5cf96f64367b4280e0f5b1a2eefb544431781e9b2754'
+    'replay.mjs' = '1f2d0011606fa81014efa21b91b17225e40556560f9c74389a8abe3fdc92b00f'
+    'FullComparison.java' = '813de475b07dc106a45081c6261e7377bb92bacde2062ee9f11c081ea674fad2'
+}
+$parts = [regex]::Matches($page, '(?ms)^<!-- replay-file: ([\w.-]+) -->\n+```[a-z]+\n(.*?)^```$')
+if ($parts.Count -ne $expected.Count) { throw 'Incomplete replay sources' }
+foreach ($part in $parts) {
+    $name = $part.Groups[1].Value
+    $body = $part.Groups[2].Value
+    if (-not $expected.ContainsKey($name)) { throw "Unexpected replay file $name" }
+    if ($name -eq 'cgmes-tested.patch') { $body = $body -creplace '(?m)^(?=\n)', ' ' }
+    $file = Join-Path $run $name
+    [IO.File]::WriteAllText($file, $body, $utf8)
+    if ((Get-FileHash -LiteralPath $file).Hash -ne $expected[$name]) { throw "Digest mismatch for $name" }
+    $expected.Remove($name)
+}
+if ($expected.Count) { throw 'Missing replay file' }
+$patch = Join-Path $run 'cgmes-tested.patch'
+````
+
+All three files use UTF-8 and LF endings.
+For the unified diff the extractor restores the single context-space on its two blank context lines.
+Its reconstructed size is 10,627 bytes.
+The earlier `cgmes-candidate.patch` preceded the inverse and restriction correction.
+The final historical qualification archive containing the tested diff had SHA-256 `c11c82b0f85d3d8cdd9d18d6c14c76e88c1c9e1844535b2668b686bf46f6ed39`.
+
+### Prepare two source copies and run the comparisons
+
+```powershell
+$base = 'd6d874a8af461f93efa502a6c158cc8c4cf88e7e'
+$original = Join-Path $run 'original'
+$candidate = Join-Path $run 'candidate'
+$output = Join-Path $run 'results'
+$maven = Join-Path $run 'maven'
+$javaScript = Join-Path $run 'replay.mjs'
+$env:TEMP = (New-Item -ItemType Directory -Path (Join-Path $run 'process-temp')).FullName
+$env:TMP = $env:TEMP
+$env:GIT_CEILING_DIRECTORIES = $run
+$archive = Join-Path $run 'source.tar'
+git -C $repo archive --format=tar --output=$archive $base
+foreach ($root in @($original, $candidate)) {
+    $null = New-Item -ItemType Directory -Path $root
+    tar -xf $archive -C $root
+}
+git -C $original apply --check --include=internal/mapping/cgmesPropertyRole.test.js $patch
+git -C $original apply --include=internal/mapping/cgmesPropertyRole.test.js $patch
+git -C $candidate apply --check $patch
+git -C $candidate apply $patch
+
+$lock = Join-Path $original 'package-lock.json'
+if ((Get-FileHash $lock).Hash -ne '98bc6d38d4201c16445d0e5fb66de1110e9a3702db57b2adbb9b55629cc50a0f') { throw 'Wrong npm lock' }
+$env:npm_config_update_notifier = 'false'
+$env:npm_config_audit = 'false'
+$env:npm_config_fund = 'false'
+npm --prefix $original ci
+$null = New-Item -ItemType Junction -Path (Join-Path $candidate 'node_modules') -Target (Join-Path $original 'node_modules')
+node $javaScript acquire $output $original $candidate $maven
+
+$env:npm_config_offline = 'true'
+node $javaScript compare $output $original $candidate $maven
+```
+
+The original pilot reused npm dependencies provisioned under the lock.
+On 21 November the commands in this appendix were run from the document against two fresh source archives.
+They installed the locked npm dependencies, restored both public ontologies and all 64 JARs into empty directories, then passed the offline comparisons and reproduced the red and green Jest results.
+
+In `compare`, the runner rehashes the originals and JARs, uses the checked-in comparator (SHA-256 `d149852bddff79083f4cadccadbb910445f21c46219d40274ae0af0d5dac7269`) and admits the classpath in the order of the pinned lock (SHA-256 `53caf8d60ad073dc9485df59d67abd250c61a56a35cab7851c9ab1c88ab26374`).
+Java compares its parse of the original to its reparse of JS Functional Syntax.
+The public JS model is also queried directly for the missing domain and publisher value.
+
+The output directory contains the Functional Syntax, full structural JSON by input/profile/side, generated RDF witnesses and ten fresh timing samples.
+The original eight corpus structural JSON files have three distinct SHA-256 values.
+A replay on the pilot toolchain reproduced all eight byte for byte.
+
+| Structural JSON                                                       | SHA-256                                                            |
+| --------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| CGMES original, both profiles, and CGMES candidate, normative profile | `249ae8b67de1233a1635642f90e19ac4cf4b28655771201390d0333eaeea2d6c` |
+| CGMES candidate, named Java profile                                   | `9d6d785f9de57a9f0a9a8129622510ebe4692ff7f15725b6e233b70e11a1bb10` |
+| SAREF, both profiles and both source versions                         | `384ae107ea12b25d8e77a22816e413ccafc5ccb9e020d36f27f85939745cae11` |
+
+### Repeat the red and green repository tests
+
+The first command must reach the seven tests and report the three known semantic failures on the unpatched parser.
+The second must pass all six suites on the candidate.
+
+```powershell
+$regression = 'internal/mapping/cgmesPropertyRole.test.js'
+$redReport = Join-Path $run 'jest-original.json'
+$greenReport = Join-Path $run 'jest-candidate.json'
+$PSNativeCommandUseErrorActionPreference = $false
+try {
+    npm --prefix $original test -- --runInBand --runTestsByPath $regression --cacheDirectory (Join-Path $run 'jest-red') --json --outputFile $redReport
+    $redExit = $LASTEXITCODE
+} finally {
+    $PSNativeCommandUseErrorActionPreference = $true
+}
+$red = Get-Content -Raw $redReport | ConvertFrom-Json
+if ($redExit -ne 1 -or $red.numFailedTests -ne 3 -or $red.numPassedTests -ne 4) { throw 'Unexpected baseline' }
+$suites = @(
+    $regression, 'internal/mapping/untypedProperty.test.js',
+    'internal/mapping/undeclaredAnnotation.test.js', 'internal/mapping/propertyCategoryPunning.test.js',
+    'internal/mapping/rdfToOwlTranslator.axioms.test.js', 'profiles/behaviorProfiles.test.js'
+)
+npm --prefix $candidate test -- --runInBand --runTestsByPath @suites --cacheDirectory (Join-Path $run 'jest-green') --json --outputFile $greenReport
+$green = Get-Content -Raw $greenReport | ConvertFrom-Json
+if ($green.numPassedTestSuites -ne 6 -or $green.numPassedTests -ne 845) { throw 'Unexpected candidate' }
+```
+
+### Embedded patch and replay sources
+
+Expand any file to inspect or copy its contents.
+The extractor above reads these same blocks from the Markdown.
+
+<details>
+<summary>cgmes-tested.patch — the three-file candidate tested against the original source</summary>
+
+<!-- replay-file: cgmes-tested.patch -->
+
+```diff
+--- a/internal/behavior/ontologyBehaviorContext.js
++++ b/internal/behavior/ontologyBehaviorContext.js
+@@ -46,6 +46,7 @@
+       rdfReconstructionPolicy: Object.freeze({
+         recoversNamedDatatypeRestrictions: true,
+         recoversAnonymousUndeclaredAnnotations: false,
++        recoversRdfPropertyRolesWithoutDeclarations: false,
+       }),
+       individualEnumerationPolicy: Object.freeze({
+         minimumIndividualCount: 1,
+@@ -156,6 +157,7 @@
+       rdfReconstructionPolicy: Object.freeze({
+         recoversNamedDatatypeRestrictions: false,
+         recoversAnonymousUndeclaredAnnotations: true,
++        recoversRdfPropertyRolesWithoutDeclarations: true,
+       }),
+       individualEnumerationPolicy: Object.freeze({
+         minimumIndividualCount: 0,
+--- a/internal/mapping/rdfToOwlTranslator.js
++++ b/internal/mapping/rdfToOwlTranslator.js
+@@ -1846,13 +1846,16 @@
+   // properties this way and no OWL property at all - so emitting nothing would
+   // discard the entire vocabulary. Compatible mode recovers, taking the category
+   // from the same evidence ADR 0005 uses for punning: a literal range means a
+-  // data property, a class range an object property. A property with no range
+-  // evidence is left alone, because guessing its category would invent a
+-  // distinction the document does not make.
++  // data property, a class range an object property. The normative profile
++  // declares the recovered category and leaves properties without range
++  // evidence alone. The Java profile recovers roles without declarations,
++  // using the annotation role when there is no range evidence.
+   #declareUntypedProperties() {
+     if (this.#configuration.parsingMode !== "compatible") {
+       return;
+     }
++    const { recoversRdfPropertyRolesWithoutDeclarations } =
++      this.#rdfReconstructionPolicy;
+     const index = this.#propertyEvidenceIndex();
+     const alreadyTyped = (iri) =>
+       this.#objectPropertyIris.has(iri) ||
+@@ -1873,22 +1876,30 @@
+       }
+       const category = this.#categoryFromRanges(iri, index);
+       if (!category) {
++        const evidence = index.get(iri);
++        if (
++          recoversRdfPropertyRolesWithoutDeclarations &&
++          !evidence?.objectOnlyCharacteristic &&
++          !evidence?.usedAsRestrictionProperty
++        ) {
++          this.#annotationPropertyIris.add(iri);
++        }
+         continue;
+       }
+
+       if (category === "data") {
+         this.#dataPropertyIris.add(iri);
+-        this.#transaction.addAxiom(
+-          this.#dataFactory.getOWLDeclarationAxiom(
+-            this.#dataFactory.getOWLDataProperty(IRI.create(iri)),
+-          ),
+-        );
+       } else {
+         this.#objectPropertyIris.add(iri);
++      }
++      if (!recoversRdfPropertyRolesWithoutDeclarations) {
++        const propertyIri = IRI.create(iri);
++        const property =
++          category === "data"
++            ? this.#dataFactory.getOWLDataProperty(propertyIri)
++            : this.#dataFactory.getOWLObjectProperty(propertyIri);
+         this.#transaction.addAxiom(
+-          this.#dataFactory.getOWLDeclarationAxiom(
+-            this.#dataFactory.getOWLObjectProperty(IRI.create(iri)),
+-          ),
++          this.#dataFactory.getOWLDeclarationAxiom(property),
+         );
+       }
+
+@@ -4797,6 +4808,15 @@
+       const subject = quad.subject.value;
+       const object = quad.object.value;
+       switch (quad.predicate.value) {
++        case OWL_VOCABULARY.onProperty:
++          if (
++            this.#rdfReconstructionPolicy
++              .recoversRdfPropertyRolesWithoutDeclarations &&
++            quad.object.termType === "NamedNode"
++          ) {
++            entryFor(object).usedAsRestrictionProperty = true;
++          }
++          break;
+         case RDFS_VOCABULARY.range:
+           entryFor(subject).ranges.push(object);
+           break;
+--- /dev/null
++++ b/internal/mapping/cgmesPropertyRole.test.js
+@@ -0,0 +1,192 @@
++import {
++  OWLManager,
++  OWLOntologyLoaderConfiguration,
++  StringDocumentSource,
++  IRI,
++} from "../../index.js";
++
++const NS = "urn:example:property-role#";
++const XSD = "http://www.w3.org/2001/XMLSchema#";
++const JAVA_PROFILE = "java-owlapi-5.5.1";
++const NORMATIVE_PROFILE = "normative-v1";
++
++function fixture({
++  reversed = false,
++  publisherValue = "R",
++  logicalUse = "",
++} = {}) {
++  const pTriples = [
++    '<rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>',
++    `<rdfs:domain rdf:resource="${NS}C"/>`,
++    `<ex:dataType rdf:resource="${NS}${publisherValue}"/>`,
++  ];
++  if (reversed) pTriples.reverse();
++
++  const p = `<rdf:Description rdf:about="${NS}P">
++    ${pTriples.join("\n    ")}
++  </rdf:Description>`;
++
++  return `<?xml version="1.0"?>
++<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
++         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
++         xmlns:owl="http://www.w3.org/2002/07/owl#"
++         xmlns:ex="${NS}">
++  <owl:Ontology rdf:about="urn:example:property-role:ontology"/>
++  ${reversed ? "" : p}
++  <owl:Class rdf:about="${NS}C"/>
++  <owl:Class rdf:about="${NS}R"/>
++  <owl:Class rdf:about="${NS}S"/>
++  <rdf:Property rdf:about="${NS}numeric">
++    <rdfs:range rdf:resource="${XSD}integer"/>
++  </rdf:Property>
++  <rdf:Property rdf:about="${NS}link">
++    <rdfs:range rdf:resource="${NS}R"/>
++  </rdf:Property>
++  <owl:ObjectProperty rdf:about="${NS}explicitLink">
++    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
++  </owl:ObjectProperty>
++  ${reversed ? p : ""}
++  ${logicalUse}
++</rdf:RDF>`;
++}
++
++async function loadAxioms(behaviorProfileId, options) {
++  const manager = OWLManager.createOWLOntologyManager({ behaviorProfileId });
++  const configuration = new OWLOntologyLoaderConfiguration({
++    behaviorProfileId,
++    parsingMode: "compatible",
++  });
++  const source = new StringDocumentSource(fixture(options), {
++    documentIRI: IRI.create("urn:example:property-role:document"),
++    contentType: "application/rdf+xml",
++  });
++  const { ontology } = await manager.loadOntologyGraphFromOntologyDocument(
++    source,
++    configuration,
++  );
++  return [...ontology.getAxioms()];
++}
++
++const iri = (value) => expect.objectContaining({ value });
++const named = (value) => expect.objectContaining({ iri: iri(value) });
++
++function declaration(localName, kind) {
++  return expect.objectContaining({
++    kind: "OWLDeclarationAxiom",
++    entity: expect.objectContaining({
++      iri: iri(`${NS}${localName}`),
++      ...(kind === undefined ? {} : { kind }),
++    }),
++  });
++}
++
++function propertyRange(kind, localName, rangeIRI) {
++  return expect.objectContaining({
++    kind,
++    property: named(`${NS}${localName}`),
++    range: named(rangeIRI),
++  });
++}
++
++const pDomain = expect.objectContaining({
++  kind: "OWLAnnotationPropertyDomainAxiom",
++  property: named(`${NS}P`),
++  domain: iri(`${NS}C`),
++});
++
++function publisherAssertion(localName) {
++  return expect.objectContaining({
++    kind: "OWLAnnotationAssertionAxiom",
++    property: named(`${NS}dataType`),
++    subject: iri(`${NS}P`),
++    value: iri(`${NS}${localName}`),
++  });
++}
++
++describe.each([JAVA_PROFILE, NORMATIVE_PROFILE])(
++  "CGMES property roles: %s",
++  (profile) => {
++    test.each([
++      ["P first, type before domain and metadata", false],
++      ["P last, metadata and domain before type", true],
++    ])("preserves exact property roles with %s", async (_order, reversed) => {
++      const axioms = await loadAxioms(profile, { reversed });
++
++      for (const className of ["C", "R", "S"]) {
++        expect(axioms).toContainEqual(declaration(className, "OWLClass"));
++      }
++      expect(axioms).toContainEqual(
++        declaration("explicitLink", "OWLObjectProperty"),
++      );
++      expect(axioms).toContainEqual(
++        propertyRange("OWLDataPropertyRangeAxiom", "numeric", `${XSD}integer`),
++      );
++      expect(axioms).toContainEqual(
++        propertyRange("OWLObjectPropertyRangeAxiom", "link", `${NS}R`),
++      );
++
++      if (profile === JAVA_PROFILE) {
++        expect(axioms).toContainEqual(pDomain);
++        expect(axioms).toContainEqual(publisherAssertion("R"));
++        for (const property of ["P", "numeric", "link"]) {
++          expect(axioms).not.toContainEqual(declaration(property));
++        }
++      } else {
++        expect(axioms).not.toContainEqual(pDomain);
++        expect(axioms).not.toContainEqual(publisherAssertion("R"));
++        expect(axioms).toContainEqual(
++          declaration("numeric", "OWLDataProperty"),
++        );
++        expect(axioms).toContainEqual(declaration("link", "OWLObjectProperty"));
++      }
++    });
++  },
++);
++
++test(`${JAVA_PROFILE}: changing only the publisher IRI changes the assertion identity`, async () => {
++  const original = await loadAxioms(JAVA_PROFILE);
++  const mutated = await loadAxioms(JAVA_PROFILE, { publisherValue: "S" });
++
++  expect(original).toContainEqual(publisherAssertion("R"));
++  expect(original).not.toContainEqual(publisherAssertion("S"));
++  expect(mutated).toContainEqual(publisherAssertion("S"));
++  expect(mutated).not.toContainEqual(publisherAssertion("R"));
++  expect(mutated).toContainEqual(pDomain);
++  expect(mutated).toHaveLength(original.length);
++});
++
++test("a generic property can still participate in an explicit inverse relation", async () => {
++  const logicalUse =
++    '<owl:ObjectProperty rdf:about="' +
++    NS +
++    'inverse"><owl:inverseOf rdf:resource="' +
++    NS +
++    'P"/></owl:ObjectProperty>';
++  const axioms = await loadAxioms(JAVA_PROFILE, { logicalUse });
++  const inverse = axioms.find(
++    (axiom) => axiom.kind === "OWLInverseObjectPropertiesAxiom",
++  );
++  expect(
++    inverse.properties.map((property) => property.iri.value).sort(),
++  ).toEqual([NS + "P", NS + "inverse"].sort());
++});
++
++test("an existential restriction still identifies the generic property as its object property", async () => {
++  const logicalUse =
++    '<owl:Class rdf:about="' +
++    NS +
++    'Restricted"><rdfs:subClassOf><owl:Restriction><owl:onProperty rdf:resource="' +
++    NS +
++    'P"/><owl:someValuesFrom rdf:resource="' +
++    NS +
++    'C"/></owl:Restriction></rdfs:subClassOf></owl:Class>';
++  const axioms = await loadAxioms(JAVA_PROFILE, { logicalUse });
++  const subclass = axioms.find(
++    (axiom) =>
++      axiom.kind === "OWLSubClassOfAxiom" &&
++      axiom.subClass?.iri?.value === NS + "Restricted",
++  );
++  expect(subclass.superClass.kind).toBe("OWLObjectSomeValuesFrom");
++  expect(subclass.superClass.property.iri.value).toBe(NS + "P");
++  expect(subclass.superClass.filler.iri.value).toBe(NS + "C");
++});
+```
+
+</details>
+
+<details>
+<summary>replay.mjs — public fixture acquisition, offline comparisons and generated controls</summary>
+
+<!-- replay-file: replay.mjs -->
+
+```javascript
+import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { delimiter, dirname, join, resolve } from "node:path";
+import { performance } from "node:perf_hooks";
+import { fileURLToPath, pathToFileURL } from "node:url";
+
+const sha = (bytes) => createHash("sha256").update(bytes).digest("hex");
+const script = fileURLToPath(import.meta.url);
+const javaProfile = "java-owlapi-5.5.1";
+const profiles = [javaProfile, "normative-v1"];
+const cgmes = {
+  name: "cgmes.rdf", url: "https://raw.githubusercontent.com/entsoe/CGMES-AP/e96dd4e323b1e2236e141dd03bf9adea81672e00/CGMES/RDFS/61970-600-2_Equipment-AP-Voc-RDFS2020.rdf",
+  size: 584337, digest: "e95c02b1eca667dabf7c8bf0e0a0e47f0b4813c8a3899eb55e50608fdb4ba27d",
+};
+const saref = {
+  name: "saref.ttl", url: "https://saref.etsi.org/core/v4.1.1/saref.ttl",
+  size: 100491, digest: "28189acd8cfb49bf6b7e5709275a1162d943576f643b2cffdccfe20cc00ad701",
+};
+const run = (cmd, args) => execFileSync(cmd, args, { encoding: "utf8", timeout: 120_000 });
+
+if (process.argv[2] === "load") {
+  const [, , , root, input, iri, profile, format, output, probe] = process.argv;
+  const { IRI, OWLDocumentFormats, OWLManager, OWLOntologyLoaderConfiguration,
+    StringDocumentSource, StringDocumentTarget } = await import(pathToFileURL(join(root, "index.js")));
+  let networkAttempts = 0;
+  const offline = () => { networkAttempts++; throw Error("Unexpected network or import"); };
+  globalThis.fetch = offline;
+  const manager = OWLManager.createOWLOntologyManager({
+    behaviorProfileId: profile, documentLoader: { load: offline },
+  });
+  const contentType = format === "turtle" ? "text/turtle" : "application/rdf+xml";
+  const source = new StringDocumentSource(readFileSync(input, "utf8"), {
+    documentIRI: IRI.create(iri), fileName: format === "turtle" ? "case.ttl" : "case.rdf", contentType,
+  });
+  const config = new OWLOntologyLoaderConfiguration({
+    behaviorProfileId: profile, parsingMode: "compatible",
+  });
+  const cpu = process.cpuUsage(), start = performance.now();
+  const { ontology } = await manager.loadOntologyGraphFromOntologyDocument(source, config);
+  const wallMs = performance.now() - start, delta = process.cpuUsage(cpu);
+  const peakRssKiB = process.resourceUsage().maxRSS;
+  const axioms = [...ontology.getAxioms()];
+  const value = (term) => term?.iri?.value ?? term?.value;
+  const domains = axioms.filter((axiom) => axiom.kind === "OWLAnnotationPropertyDomainAxiom");
+  const cim = "http://iec.ch/TC57/CIM100#";
+  const cims = "http://iec.ch/TC57/1999/rdf-schema-extensions-19990926#";
+  const publisherAssertions = axioms.filter((axiom) => axiom.kind === "OWLAnnotationAssertionAxiom" &&
+    value(axiom.property) === cims + "dataType");
+  const target = new StringDocumentTarget();
+  await manager.saveOntology(ontology, OWLDocumentFormats.FUNCTIONAL, target);
+  const functional = target.toString();
+  if (output !== "-") writeFileSync(output, functional);
+  assert.equal(networkAttempts, 0);
+  const controlNs = "urn:example:owlapi-pilot#";
+  const controlP = controlNs + "P";
+  const declaration = (name) => axioms.some((axiom) =>
+    axiom.kind === "OWLDeclarationAxiom" && value(axiom.entity) === controlNs + name);
+  const publisherValue = (name) => axioms.some((axiom) => axiom.kind === "OWLAnnotationAssertionAxiom" &&
+    value(axiom.property) === controlNs + "dataType" && value(axiom.subject) === controlP &&
+    value(axiom.value) === controlNs + name);
+  console.log(JSON.stringify({
+    wallMs, userCpuMs: delta.user / 1000, systemCpuMs: delta.system / 1000, peakRssKiB,
+    digest: sha(functional), axioms: axioms.length, ontologyAnnotations: [...ontology.getAnnotations()].length,
+    imports: [...ontology.getImportsDeclarations()].length, networkAttempts,
+    ...(probe === "cgmes" ? {
+      domain: domains.some((axiom) => value(axiom.property) === cim + "ACLineSegment.r" &&
+        value(axiom.domain) === cim + "ACLineSegment"),
+      publisherValue: publisherAssertions.some((axiom) => value(axiom.subject) === cim + "ACLineSegment.r" &&
+        value(axiom.value) === cim + "Resistance"),
+      annotationDomains: domains.length, publisherAssertions: publisherAssertions.length,
+    } : probe === "control" ? {
+      domain: domains.some((axiom) => value(axiom.property) === controlP && value(axiom.domain) === controlNs + "C"),
+      valueR: publisherValue("R"), valueS: publisherValue("S"),
+      explicitObjectDeclaration: declaration("explicitObject"),
+      numericDeclaration: declaration("numeric"), objectDeclaration: declaration("object"),
+    } : {}),
+  }));
+  process.exit(0);
+}
+
+const [mode, outArg, baselineArg, candidateArg, mavenArg] = process.argv.slice(2);
+assert.ok(["acquire", "compare"].includes(mode));
+const [out, baseline, candidate, maven] = [outArg, baselineArg, candidateArg, mavenArg].map((arg) => resolve(arg));
+const lockPath = "docs/compatibility/profiles/java-owlapi-5.5.1/java-dependencies.lock.json";
+const lockBytes = readFileSync(join(baseline, lockPath));
+assert.equal(sha(lockBytes), "53caf8d60ad073dc9485df59d67abd250c61a56a35cab7851c9ab1c88ab26374");
+const lock = JSON.parse(lockBytes);
+const artifacts = new Map(lock.artifacts.map((item) => [item.repositoryPath, item]));
+assert.equal(lock.orderedExecutionClasspath.length, 64);
+const central = "https://repo.maven.apache.org/maven2/";
+async function verified(path, url, size, digest) {
+  if (!existsSync(path)) {
+    assert.equal(mode, "acquire", `Missing offline input: ${path}`);
+    const response = await fetch(url, { redirect: "error" });
+    assert.ok(response.ok, `Could not get ${url}: ${response.status}`);
+    const bytes = Buffer.from(await response.arrayBuffer());
+    assert.equal(bytes.length, size, url);
+    assert.equal(sha(bytes), digest, url);
+    mkdirSync(dirname(path), { recursive: true });
+    writeFileSync(path, bytes, { flag: "wx" });
+  }
+  const bytes = readFileSync(path);
+  assert.equal(bytes.length, size, path);
+  assert.equal(sha(bytes), digest, path);
+  return path;
+}
+const jars = await Promise.all(lock.orderedExecutionClasspath.map((entry) => {
+  const item = artifacts.get(entry);
+  return verified(join(maven, entry), central + entry, item.byteLength, item.sha256);
+}));
+for (const item of [cgmes, saref]) {
+  await verified(join(out, item.name), item.url, item.size, item.digest);
+}
+if (mode === "acquire") process.exit(0);
+
+assert.equal(process.version, "v26.13.1");
+const executable = (name) => join(process.env.JAVA_HOME, "bin", name + (process.platform === "win32" ? ".exe" : ""));
+const classes = join(out, "classes");
+const javaTemp = join(out, "java-temp");
+mkdirSync(classes, { recursive: true });
+mkdirSync(javaTemp, { recursive: true });
+run(executable("javac"), [`-J-Djava.io.tmpdir=${javaTemp}`, "-cp", jars.join(delimiter), "-d", classes,
+  join(baseline, "util/owlapi-reference/OntologyStructuralComparison.java"), join(dirname(script), "FullComparison.java")]);
+const sides = { baseline, candidate };
+function load(side, path, iri, profile, format, output, probe) {
+  const args = [script, "load", sides[side], path, iri, profile, format, output];
+  if (probe) args.push(probe);
+  return JSON.parse(run(process.execPath, args));
+}
+function pairs(name, iri, profilesToRun, format, probe) {
+  const input = join(out, name);
+  const results = {};
+  for (const profile of profilesToRun) {
+    results[profile] = {};
+    for (const side of Object.keys(sides)) {
+      const stem = `${side}-${name}-${profile}`;
+      const ofn = join(out, stem + ".ofn");
+      const js = load(side, input, iri, profile, format, ofn, probe);
+      const oracle = run(executable("java"), [`-Djava.io.tmpdir=${javaTemp}`, "-cp", [classes, ...jars].join(delimiter),
+        "FullComparison", input, iri, format, ofn]);
+      const structural = JSON.parse(oracle);
+      assert.equal(structural.networkAttempts, 0);
+      writeFileSync(join(out, stem + ".json"), oracle);
+      results[profile][side] = { js, structural };
+    }
+  }
+  return results;
+}
+const a = pairs(cgmes.name, cgmes.url, profiles, "rdfxml", "cgmes");
+const b = pairs(saref.name, saref.url, profiles, "turtle");
+const { baseline: red, candidate: green } = a[javaProfile];
+assert.equal(red.structural.matches, false);
+assert.equal(red.structural.differences.axioms.javaOnly.length, 418);
+assert.equal(red.structural.differences.axioms.jsOnly.length, 220);
+assert.equal(red.js.axioms, 5410);
+assert.equal(green.structural.matches, true);
+assert.equal(green.js.axioms, 5608);
+assert.equal(green.js.ontologyAnnotations, 20);
+assert.ok(green.js.domain && green.js.publisherValue);
+assert.equal(green.js.annotationDomains, 209);
+assert.equal(green.js.publisherAssertions, 209);
+assert.deepEqual(a["normative-v1"].baseline.structural.differences, a["normative-v1"].candidate.structural.differences);
+for (const profile of profiles) for (const side of Object.keys(sides)) {
+  assert.ok(b[profile][side].structural.matches);
+  assert.equal(b[profile][side].js.axioms, 669);
+  assert.equal(b[profile][side].js.ontologyAnnotations, 23);
+}
+const timing = { baseline: [], candidate: [] };
+for (let trial = 0; trial < 5; trial++) {
+  for (const side of trial % 2 === 0 ? ["baseline", "candidate"] : ["candidate", "baseline"]) {
+    const sample = load(side, join(out, saref.name), saref.url, javaProfile, "turtle", "-");
+    assert.equal(sample.axioms, 669);
+    assert.equal(sample.ontologyAnnotations, 23);
+    assert.equal(sample.digest, "d409cadff8873cc0c83eb7299fab338a3096cf0e23ed687fef1a69da1fba3d3f");
+    timing[side].push(sample);
+  }
+}
+writeFileSync(join(out, "timing.json"), JSON.stringify(timing, null, 2));
+console.log("Verified eight structural comparisons and ten matched SAREF loads.");
+
+const rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+const rdfs = "http://www.w3.org/2000/01/rdf-schema#";
+const owl = "http://www.w3.org/2002/07/owl#";
+const xml = (prefix, ns, body) => `<rdf:RDF xmlns:rdf="${rdf}" xmlns:rdfs="${rdfs}" xmlns:owl="${owl}" xmlns:${prefix}="${ns}">${body}</rdf:RDF>`;
+const element = (kind, iri, body) => body === undefined
+  ? `<${kind} rdf:about="${iri}"/>`
+  : `<${kind} rdf:about="${iri}">${body}</${kind}>`;
+const resource = (kind, iri) => `<${kind} rdf:resource="${iri}"/>`;
+const reduced = "urn:example:owlapi-pilot#";
+const witnesses = {};
+for (const variant of ["generic", "explicit", "mutated", "reversed"]) {
+  const iri = reduced + variant;
+  const domain = resource("rdfs:domain", reduced + "C");
+  const rdfType = resource("rdf:type", rdf + "Property");
+  const objectRange = resource("rdfs:range", reduced + "R");
+  const statements = [rdfType, domain, resource("ex:dataType", reduced + (variant === "mutated" ? "S" : "R"))];
+  if (variant === "explicit") statements.push(resource("rdf:type", owl + "AnnotationProperty"));
+  if (variant === "reversed") statements.reverse();
+  const body = element("owl:Ontology", iri) +
+    ["C", "R", "S"].map((id) => element("owl:Class", reduced + id, "")).join("") +
+    element("rdf:Description", reduced + "P", statements.join("")) +
+    element("rdf:Property", reduced + "numeric", domain + resource("rdfs:range", "http://www.w3.org/2001/XMLSchema#integer")) +
+    element("rdf:Property", reduced + "object", domain + objectRange) +
+    element("owl:ObjectProperty", reduced + "explicitObject", rdfType + objectRange);
+  const name = "reduced-" + variant + ".rdf";
+  writeFileSync(join(out, name), xml("ex", reduced, body));
+  const rows = pairs(name, iri, profiles, "rdfxml", "control");
+  const { js, structural } = rows[javaProfile].candidate;
+  assert.ok(structural.matches);
+  assert.ok(js.domain && js.explicitObjectDeclaration);
+  assert.ok(!js.numericDeclaration && !js.objectDeclaration);
+  assert.equal(js.valueR, variant !== "mutated");
+  assert.equal(js.valueS, variant === "mutated");
+  assert.equal(rows["normative-v1"].baseline.js.digest, rows["normative-v1"].candidate.js.digest);
+  witnesses[variant] = js.axioms;
+}
+assert.equal(witnesses.generic, witnesses.mutated);
+
+const adjacent = "urn:pilot:adjacent#";
+const [iri, p, q, c, a1, b1, x] = ["base", "P", "Q", "C", "a", "b", "X"].map((local) => adjacent + local);
+const variants = {
+  bare: "",
+  domain: element("rdf:Description", p, resource("rdfs:domain", c)),
+  literal: element("owl:NamedIndividual", a1, "<p:P>text</p:P>"),
+  individual: element("owl:NamedIndividual", a1, resource("p:P", b1)),
+  inverse: element("owl:ObjectProperty", q, resource("owl:inverseOf", p)),
+  subproperty: element("rdf:Description", p, resource("rdfs:subPropertyOf", q)) + element("owl:ObjectProperty", q),
+  restriction: element("owl:Class", x, "<rdfs:subClassOf><owl:Restriction>" +
+    resource("owl:onProperty", p) + resource("owl:someValuesFrom", c) + "</owl:Restriction></rdfs:subClassOf>"),
+};
+for (const use of ["inverse", "restriction", "literal", "individual", "subproperty"]) {
+  variants["domain-" + use] = variants.domain + variants[use];
+  variants["metadata-" + use] = variants.domain + element("rdf:Description", p, resource("p:dataType", c)) + variants[use];
+}
+const matches = { baseline: 0, candidate: 0 };
+for (const [variant, data] of Object.entries(variants)) {
+  const name = "adjacent-" + variant + ".rdf";
+  writeFileSync(join(out, name), xml("p", adjacent,
+    element("owl:Ontology", iri) + element("owl:Class", c) + element("rdf:Property", p) + data));
+  const { baseline: old, candidate: patched } = pairs(name, iri, [javaProfile], "rdfxml")[javaProfile];
+  const stillDiffers = /^(domain|metadata)-(restriction|subproperty)$/.test(variant);
+  assert.equal(patched.structural.matches, !stillDiffers, variant);
+  if (stillDiffers) assert.deepEqual(patched.structural.differences, old.structural.differences, variant);
+  matches.baseline += Number(old.structural.matches);
+  matches.candidate += Number(patched.structural.matches);
+}
+assert.deepEqual(matches, { baseline: 9, candidate: 13 });
+console.log("Verified four reduced controls and 17 adjacent cases.");
+```
+
+</details>
+
+<details>
+<summary>FullComparison.java — released Java loader and structural-comparison adapter</summary>
+
+<!-- replay-file: FullComparison.java -->
+
+```java
+import java.io.*;
+import java.net.*;
+import java.nio.file.*;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.formats.*;
+import org.semanticweb.owlapi.io.StringDocumentSource;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.VersionInfo;
+public class FullComparison {
+    public static void main(String[] args) throws Exception {
+        AtomicInteger attempts=new AtomicInteger();
+        URL.setURLStreamHandlerFactory(p -> ("http".equals(p)||"https".equals(p))?new URLStreamHandler(){protected URLConnection openConnection(URL u) throws IOException{attempts.incrementAndGet();throw new IOException("Network forbidden");}}:null);
+        if(!VersionInfo.getVersionInfo().getVersion().equals("5.5.1.2024-09-07T21:41:32Z"))throw new IllegalStateException("Unqualified runtime");
+        OWLOntologyLoaderConfiguration cfg=new OWLOntologyLoaderConfiguration().setStrict(false).setLoadAnnotationAxioms(true).setMissingImportHandlingStrategy(MissingImportHandlingStrategy.THROW_EXCEPTION);
+        OWLOntology java=OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(new StringDocumentSource(Files.readString(Path.of(args[0])),IRI.create(args[1]),args[2].equals("turtle")?new TurtleDocumentFormat():new RDFXMLDocumentFormat(),null),cfg);
+        OWLOntology js=OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(new StringDocumentSource(Files.readString(Path.of(args[3])),IRI.create("urn:pilot:functional"),new FunctionalSyntaxDocumentFormat(),null),cfg);
+        OWLOntologyManager manager=OWLManager.createOWLOntologyManager();
+        OntologyStructuralComparison.ComparisonOutcome outcome=OntologyStructuralComparison.compareOntologies(java,js,manager);
+        Map<String,Object> ret=new LinkedHashMap<>();
+        ret.put("matches",outcome.matches);ret.put("category",outcome.mismatchCategory);ret.put("networkAttempts",attempts.get());ret.put("java",OntologyStructuralComparison.ontologyCounts(java));ret.put("js",OntologyStructuralComparison.ontologyCounts(js));ret.put("differences",OntologyStructuralComparison.describeDifferences(java,js,manager));
+        System.out.println(new ObjectMapper().writeValueAsString(ret));
+    }
+}
+```
+
+</details>
