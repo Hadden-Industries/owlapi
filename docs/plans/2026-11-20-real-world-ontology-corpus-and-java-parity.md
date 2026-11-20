@@ -1,25 +1,33 @@
-# Qualify OwlAPI on published ontologies and reduce RDF/XML loading memory
+# Qualify OwlAPI and reduce RDF/XML loading memory with one Java/JS comparison harness
 
 **Reviewed implementation plan · 20 November 2026 · proposed R2 change.**
-The implementation target is a fresh checkout that can acquire a named ontology once, prove which bytes and imports it used, compare both JS profiles with released Java OWLAPI, and explain any difference down to a statement or a failed stage.
+Build one development-only Java/JS comparison harness for structure, observable behavior and performance, including peak memory.
+It owns the case definitions, verified inputs, runtime selection and result identities for all three measurements.
+A fresh checkout must be able to run a case by ID and trace a difference to the statement, operation or stage that produced it.
 The memory milestone compares JS with released Java OWLAPI on the same ontology-loading operation, attributes the measured gap and verifies the effect of a targeted optimization.
-Every release candidate requires semantic evidence for every admitted corpus input.
+Activate full-corpus semantic qualification as soon as the structural and behavioral checks pass in shadow on the fresh and promoted-CI release paths.
+Every subsequent release candidate must provide complete semantic evidence.
+Performance migration continues on its own schedule.
 CGMES is the first correctness case.
 FOVT and ICEO are the first memory cases.
 
-On 20 November 2026 the owner selected an evidence-based memory diagnostic and full recurring candidate coverage.
-The [decision tree](#decision-tree) records both decisions.
+On 20 November 2026 the owner selected one development harness, early activation of the full semantic release gate, and Java-referenced memory diagnostics.
+All 70 historical benchmark workloads carry forward.
+A documented diagnostic-only row is a valid migration outcome.
+Callers of retired development tools migrate independently.
+The [decision tree](#decision-tree) and [runner migration map](#runner-migration-map) record how to deliver those decisions.
 The [Java measurements](#direct-java-loads-on-the-original-obo-files) establish a first reference point.
 The document remains an implementation plan.
 The HISEW planning basis is `hadden-industries-plan-software-change` and its adjacent engineering, selection, performance and resource guidance at `software-engineering-workflow@cc5e1a41acaf`.
-The repo baseline is `zero-one-zero@7145bb831bd659191b8522872f5839a15137c482`.
+The inspected product baseline is `7145bb831bd659191b8522872f5839a15137c482`.
+The runner inventory was checked on `zero-one-zero@5103b1f4c881695ecf753d3a9adc8a8b6b69ddf8`, the commit that added the original plan.
 Public parsing contracts, repeatable release evidence and the ability to process legitimate inputs at scale warrant the elevated route.
 The OwlAPI maintainer owns behavior decisions and acceptance.
 The CI/release maintainer owns toolchain and fixture delivery.
 The implementer owns measured fixes.
 An independent reviewer checks the semantic or performance oracle used to accept each change.
 
-Start with [the observed failures](#what-the-measurements-establish), [the fixture contract](#one-fixture-catalogue-for-the-harnesses), and [the implementation slices](#implementation-slices).
+Start with [the observed failures](#what-the-measurements-establish), [the harness contract](#one-javajs-comparison-harness), [fixture acquisition](#fixture-acquisition-for-the-comparison-harness) and [the implementation slices](#implementation-slices).
 The [prospect inventory](#prospect-inventory), [import maps](#import-maps), and [wider sweep inventory](#wider-sweep-inventory) contain the source identities and historical outcomes needed to reproduce the investigation.
 A planning inventory supplies initial pins.
 At implementation, the machine-readable fixture catalogue takes ownership of executable pins.
@@ -27,13 +35,14 @@ Keep this dated baseline as history.
 
 ## Decision tree
 
-| Branch                     | Settled direction and reason                                                                                                                                                                                                                                           | What determines the next step                                                                                                                                                                                 |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Input identity and custody | One reviewed catalogue, original byte digests and exact logical bases feed every harness. Small redistributable witnesses live in Git. Bulk bytes use verified storage. A cache can be evicted.                                                                        | Keep the pinned July Git provider. A missing lawful, durable source blocks that individual cold-restoration claim.                                                                                            |
-| Behavior and comparisons   | Test normative strict, normative compatible and the named JS Java profile explicitly. The normative hierarchy and independently observed Central 5.5.1 behavior determine each expected result. Direct parsing, writing and reloading have independent outcomes.       | Where an existing authority explains the result, add the assertion. A genuinely new public guarantee requires a separately versioned contract decision.                                                       |
-| Execution and evidence     | Qualify the latest GA Temurin LTS for both supported Java hosts. Stream detailed oracle results to a file. Cache hits and short process summaries cannot prove structural equivalence.                                                                                 | Vendor platform availability, exact executable admission, and complete artifact validation decide readiness.                                                                                                  |
-| Resource use               | **Owner decision.** Measure released Java and JS on equivalent public loads, identify avoidable retained state and test a remedy against the same inputs. The earlier heap settings describe the incident.                                                             | Qualify a memory comparison only after the two models and workloads have been reconciled. The measured gap, allocation owners, run variability and required live model determine the optimization milestone.  |
-| Qualification              | **Owner decision.** After initial qualification, every release candidate requires a semantic disposition for every admitted original and the applicable declared closures/profile stages. Keep the entire inventory accountable, including the 23 unavailable entries. | The release verifier checks the complete frozen roster against the candidate and input identities. Reuse only evidence it can authenticate for that obligation. An uncovered required result holds promotion. |
+| Branch                     | Settled direction and reason                                                                                                                                                                                                                                                                 | What determines the next step                                                                                                                                                                                                                                |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Comparison harness         | **Owner decision.** One CLI and coordinator bind the same scenario, inputs and operation to both runtimes. Caller migration is separately owned.                                                                                                                                             | Prove each family's assertions under the new harness and retire its superseded developer entry points. There are no compatibility shims or overlap releases.                                                                                                 |
+| Input identity and custody | One reviewed fixture catalogue supplies original byte digests and logical bases to the coordinator. Small redistributable witnesses live in Git. Bulk objects use verified storage.                                                                                                          | Keep the pinned July Git provider. A missing lawful, durable source blocks that individual cold-restoration claim.                                                                                                                                           |
+| Behavior and comparisons   | Test normative strict, normative compatible and the named JS Java profile explicitly. The normative hierarchy and independently observed Central 5.5.1 behavior determine each expected result. Direct parsing, writing and reloading have independent outcomes.                             | Where an existing authority explains the result, add the assertion. A genuinely new public guarantee requires a separately versioned contract decision.                                                                                                      |
+| Execution and evidence     | Qualify the latest GA Temurin LTS for both supported Java hosts. Stream detailed oracle results to a file. Cache hits and short process summaries cannot prove structural equivalence.                                                                                                       | Vendor platform availability, exact executable admission, and complete artifact validation decide readiness.                                                                                                                                                 |
+| Resource use               | **Owner decision.** Measure Java and JS on equivalent public loads and attribute the gap. All 70 benchmark IDs remain accountable, including documented diagnostic-only workloads.                                                                                                           | Qualify a ratio only with independent evidence of equivalent completed work. Record the precise blocker for each diagnostic row. Existing performance gates retain their requirements.                                                                       |
+| Qualification              | **Owner decision.** Activate the gate when the structural and behavioral corpus checks pass in shadow on both release paths. Performance migration can still be in progress. Every release candidate then needs an outcome for every admitted original and applicable closure/profile stage. | The verifier checks the full frozen roster and candidate identity. A missing or inconclusive required result holds promotion. Consolidation finishes later when all three measurements use the shared harness and their prior obligations are accounted for. |
 
 The release obligation covers semantics.
 The memory investigation runs on a suitable measurement host.
@@ -206,16 +215,138 @@ obo-cido	3	418615296	902909952	379272824
 
 ## Requirements and acceptance
 
-| Requirement                               | Acceptance criterion and quality scenario                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| REQ-01 · Reproducible corpus              | AC-01 / QA-01. A clean Linux or Windows checkout can prepare any cleared selection by ID. Offline replay preserves its exact bytes, logical bases and import graph after relocating the cache. Tampering, upstream drift, an unavailable required input or a rights hold produces an attributable incomplete result. Reconcile the full inventory to the appendices.                                                                                                                                       |
-| REQ-02 · Released Java authority          | AC-02 / QA-02. Both JS profiles consume the same original bytes as verified Central 5.5.1. Each result binds the actual profile, settings, executable and ordered artifact digests. A wrong JDK build or changed JAR is refused before accepting a comparison.                                                                                                                                                                                                                                             |
-| REQ-03 · Explain semantic differences     | AC-03 / QA-03. Each named witness has an expected axiom, annotation, import, diagnostic, or expected typed refusal under each applicable profile. A mutation of one predicate, graph edge or literal fails even when aggregate counts remain identical.                                                                                                                                                                                                                                                    |
-| REQ-04 · Independent stage evidence       | AC-04 / QA-04. A writer failure leaves usable parse evidence. A comparison limit leaves the case undecided. A large valid result is consumable. Interrupted output cannot appear complete or be reused as success.                                                                                                                                                                                                                                                                                         |
-| REQ-05 · Scalable legitimate loads        | AC-05 / QA-05. Collect repeatable per-input peaks, model observations and allocation owners at the public load boundary. Admit Java/JS comparisons only for equivalent work. Demonstrate a JS reduction beyond control variability, or show independently why the remaining occupancy is required or already comparable. An inadmissible Java comparison leaves that ratio unqualified and the within-JS diagnosis active. Preserve semantics, diagnostics and the existing governed performance controls. |
-| REQ-06 · Complete candidate qualification | AC-06 / QA-06. Run every admitted original and applicable closure/profile/stage against the installed release tarball. Authenticate the exact candidate bytes, installed dependency graph and corpus evidence. Both fresh qualification and CI promotion enforce the frozen roster. Missing, stale, unexpected or inconclusive required evidence holds promotion.                                                                                                                                          |
+| Requirement                                             | Acceptance criterion and quality scenario                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| REQ-01 · Reproducible corpus                            | AC-01 / QA-01. A clean Linux or Windows checkout can prepare any cleared selection by ID. Offline replay preserves its exact bytes, logical bases and import graph after relocating the cache. Tampering, upstream drift, an unavailable required input or a rights hold produces an attributable incomplete result. Reconcile the full inventory to the appendices.                                                                                                                                       |
+| REQ-02 · Released Java authority                        | AC-02 / QA-02. Both JS profiles consume the same original bytes as verified Central 5.5.1. Each result binds the actual profile, settings, executable and ordered artifact digests. A wrong JDK build or changed JAR is refused before accepting a comparison.                                                                                                                                                                                                                                             |
+| REQ-03 · Explain semantic differences                   | AC-03 / QA-03. Each named witness has an expected axiom, annotation, import, diagnostic, or expected typed refusal under each applicable profile. A mutation of one predicate, graph edge or literal fails even when aggregate counts remain identical.                                                                                                                                                                                                                                                    |
+| REQ-04 · Independent stage evidence                     | AC-04 / QA-04. A writer failure leaves usable parse evidence. A comparison limit leaves the case undecided. A large valid result is consumable. Interrupted output cannot appear complete or be reused as success.                                                                                                                                                                                                                                                                                         |
+| REQ-05 · Scalable legitimate loads                      | AC-05 / QA-05. Collect repeatable per-input peaks, model observations and allocation owners at the public load boundary. Admit Java/JS comparisons only for equivalent work. Demonstrate a JS reduction beyond control variability, or show independently why the remaining occupancy is required or already comparable. An inadmissible Java comparison leaves that ratio unqualified and the within-JS diagnosis active. Preserve semantics, diagnostics and the existing governed performance controls. |
+| REQ-06 · Complete candidate qualification               | AC-06 / QA-06. Qualify the complete semantic roster against the installed release tarball on both fresh and promoted-CI paths. Activate the gate immediately after successful shadow qualification on both paths, including when SLICE-014 is still running. Missing, stale, unexpected or inconclusive required evidence holds promotion. Existing performance gates also apply.                                                                                                                          |
+| REQ-07 · One comparison harness with preserved coverage | AC-07 / QA-07. Register a scenario once and run all applicable measurements through one coordinator. Map every prior assertion, parameter variant and required execution to a witnessed successor or continuing independent gate. Account for all 70 benchmark IDs and both profiles. Document the reason for every diagnostic-only row and exclude it from qualified ratios. A weaker assertion or a newly skipped live check fails migration.                                                            |
 
-## One fixture catalogue for the harnesses
+## One Java/JS comparison harness
+
+**DEC-07 · One case definition and execution path.**
+The proposed repository command is `npm run compare:java-js`.
+Its proposed native entry is `util/owlapi-reference/compare-java-js.mjs`, exposing the same `runComparison(request, environment)` operation to CLI and programmatic callers.
+Local investigations, Jest comparison tests, candidate qualification and benchmark jobs must call the same programmatic coordinator.
+It expands the selection, prepares an immutable case, selects the verified JS package and Java reference, dispatches workers, and attaches their results to the same case.
+Keep this tooling outside the published package.
+The Java and JS workers call their respective public APIs independently.
+The native OWL comparator, W3C expectations and approved profile rules retain authority for their own verdicts.
+
+A **fixture** identifies original bytes, logical bases and imports, or a deterministic generated input.
+A **scenario** identifies the initial state and ordered public operations, arguments, effective settings, observation points and expected results for each profile.
+A **case** binds the scenario to specific inputs and parameters.
+For example, the same FOVT bytes support two cases, a direct compatible load and a strict-first retry sequence.
+Register each operation sequence once.
+A suite is a selection of cases.
+Keep existing fixture/operation inventories as referenced inputs to the registry where they already own the facts.
+
+| Measurement   | What the worker observes                                                                                                                                                                                                                             | What the verifier decides                                                                                                                                                                                                                                                                               |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `structure`   | Ontology identity, direct and closure membership, imports, annotations, typed axioms and blank-node sharing at the declared load/merge/save/reload boundary.                                                                                         | Apply native OWL equality or the declared RDF graph comparator, retain diagnostics, and adjudicate complete differences against the applicable profile rules.                                                                                                                                           |
+| `behavior`    | For each public operation record acceptance or refusal, return value, error category and failure phase, ordered callbacks, resource attempts, diagnostics, and any observable manager/target state after success or failure.                         | Compare the observation to the contract for that profile. Test default settings as defaults and explicit limits as overrides. A verified normative refusal and a successful Java-compatible call can both satisfy the same scenario. Keep zero, boundary, over-limit and partial-effect cases distinct. |
+| `performance` | Execute the same public operation in separate controlled Java and JS workers. Record warmed latency and fresh-process peak working set independently under DEC-06. Preserve the historical heap-delta sampler wherever that is the original measure. | Require an untimed structural or behavioral witness for equivalent completed work before admitting a cross-engine ratio. Preserve raw timings, memory and the reason a comparison is unqualified. Correct output, boundary behavior and resource consumption are three independent answers.             |
+
+Give each case a stable scenario ID/version, concrete fixture digest or generator version/parameters, base/import-policy digest, operation boundary, initial state and configuration. File-free API cases can construct a model or supply an event sequence. A small generator recipe such as “repeat `x` 33,554,433 times” is sufficient. Keep hand-authored expectations and Java-derived observations independent of the implementation under test. Add the actual JS candidate/dependency graph, behavior profile, Java/JDK/classpath identity, harness digest and attempt to the execution record.
+Each result adds its measurement, stage and protocol/units.
+A single case can therefore link all three results without conflating a captured Java observation with a new Java process.
+
+A worker receives the resolved case and returns typed observations or verified artifact references.
+Shared code owns roster expansion, input resolution, oracle admission, process supervision and result publication.
+Workers own language-specific API bindings, clocks and observation collection.
+They must use the input and effective settings in the resolved case.
+Reuse an untimed native observation across profiles only when its complete execution identity permits reuse.
+A performance-only selection must resolve qualifying untimed evidence for the same workload or execute the prerequisite outside the measurement process.
+If equivalence is unproved, mark the workload/profile `diagnostic-only`.
+Retain its ID, protocol, raw observations, the exact reason a comparison is unqualified and the independent evidence that would permit qualification.
+Keep these rows visible in the inventory and out of qualified ratios, rankings and performance gates.
+Identify frozen historical timings explicitly.
+Perform expensive semantic verification outside the measured interval.
+Dispatch each public workload through its registered language implementation in every applicable measurement.
+Enable recording or clocks at the specified boundary.
+The superseded commands are checkout development tools.
+A dry run of `npm pack --dry-run --ignore-scripts --offline --json` for `@hadden-industries/owlapi@0.1.0` contained neither the reference runners nor the benchmark scripts.
+The package declares no `bin`.
+Its `./util` export exposes the library utilities in `util/index.js`.
+[Package exports and file list](../../package.json)
+
+Remove each retired developer command, script path and duplicated controller after proving its replacement’s coverage.
+Caller migration is independently owned and outside this plan.
+Do not add shims, forwarding aliases, old-flag parsers, report-format adapters or an overlap release.
+A pinned predecessor may execute during a bounded shadow comparison.
+That run establishes coverage and carries no promise that the old interface will remain available.
+
+**Cross-mode acceptance test.**
+Register a new fixture and a generated boundary scenario in one test registry.
+Exercise the canonical CLI and programmatic entry with combined and individual measurement selections.
+Observations for the same work must have the same input and operation identity and distinct measurement receipts.
+Changing only the base IRI, a generator parameter or an operation step invalidates the affected receipts in every mode.
+A missing Java worker, a JS checksum in place of the expected structural witness, or retained timing data labeled as a new memory sample must fail the corresponding claim.
+CI verifies the new harness invocation and its actual worker execution.
+Comparison clients delegate case selection and verdict calculation to the single coordinator.
+CI and release verifiers independently derive the required roster from trusted policy and check the evidence against it.
+
+### Runner migration map
+
+Paths below are relative to the OwlAPI checkout.
+Each row identifies the current coverage owner, the destination inside or alongside the single harness, and the evidence required for cutover.
+Counts are checkpoints at the inspected revision.
+Freeze exact IDs and assertions again at implementation intake so subsequent additions are included.
+
+| Existing runner and consumers                                                                                                                                                                                                                            | Consolidation action                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | Coverage that must survive                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run test:universal-ontology`, `util/owlapi-reference/qualify-universal-ontology.mjs`, `run-ontology-parsing-contract.mjs`, `run-import-closure-contract.mjs`                                                                                        | Register `universal-july` from the July manifest. Carry its distinct source, candidate and registry selection and input validation into the canonical suite. The legacy command and flag spellings can retire. Extract its pinned Git provider and JS evidence producer for reuse by the coordinator. Register `RunOntologyParsingContract.java` and `RunImportClosureContract.java` as native workers, sharing `OntologyReferenceContract.java`, `OntologyStructuralComparison.java` and `reconcile-structural-differences.mjs`. The July invocation selects the historical source authority. New release-profile cases select the locked Central authority.                                                                                                 | Four July roots, per-document comparisons inside their original import contexts, Functional and RDF/XML closures for each root, root-only header data, native merger propagation, diagnostics, one consistent blank-node mapping, and exact expected differences. Keep source, installed candidate and registry identities distinct. Preserve all **23 named live Jest assertions** in `scripts/ci-check-coverage.mjs` (4 direct, 19 closure), including the existing environment-gated execution proof. |
+| `run-profile-contract.mjs` / `RunOWL2DLProfile.java` and `run-writer-configuration-contract.mjs` / `RunWriterConfigurationContract.java` in `util/owlapi-reference/`                                                                                     | Register `canonical-vowl-dl` and `rdfxml-writer` with their existing specialist validators. Retain their historical source pin and JS settings on the shadow run. A language profile such as OWL 2 DL is a scenario operation. The JS behavior profile is an independent selection. Reuse the direct structural worker to check each writer output after the presentation checks.                                                                                                                                                                                                                                                                                                                                                                             | All **20** canonical VOWL input cases with native expectations, JS preserve-mode formal/source assessment, closure size and distinct violation codes. Java-only mode produces Java observations only. Carry forward all **seven** RDF/XML presentation modes (defaults, no-banners, two-spaces, no-indent, labels, save-ids and force-string). Preserve the live writer test, exact approved presentation differences and structural verdicts.                                                           |
+| `replay-behavior-research.mjs` and `replay-selected-parity.mjs`, their `Observe*.java` / `RunRC2*.java` programs, `run-java-observation.mjs`, `compare-behavior-observations.mjs` and `compare-selected-parity.mjs`                                      | Use the replay programs as **oracle capture and qualification**. Reuse `run-java-observation.mjs` for source probes and `RunWithClasspath.java` where the native contract needs the compiled classpath launcher. The common admission layer verifies the actual executables and JARs before invoking either. Register their probe ID, input, arguments and outputs as authority for the appropriate JS behavior cases. Keep Central-versus-rebuilt and same-release comparisons explicitly tagged Java-to-Java. `record-released-oracle-evidence.mjs` and `validate-released-oracle.mjs` continue to own original-byte evidence and provenance admission. Keep the historical `javascript-baseline-observations.json` and its recorded failures identifiable. | **28** behavior observations and **15** selected-API observations per recorded Java side, including parameterized runs, expected failures, stdout/stderr, output files, ordering and narrowly allowed normalizations. Preserve the classpath/JDK/source/argument checks for unchanged-probe reuse and the stricter comparison of same-release bytes. A capture alone cannot issue a JS parity verdict.                                                                                                   |
+| `model/behavior*.test.js`, `profiles/behaviorProfiles.test.js`, `search/behaviorTiming.test.js`, XML/JSON-LD and Node transport behavior tests, and `internal/behavior/behaviorLedger.test.js`                                                           | Move duplicated cross-language input and operation declarations into `public-api-behavior` scenarios. Keep Jest as a fast assertion client of the JS worker with authenticated retained Java observations where already supported. Use fresh native execution for cases previously requiring live Java. Retain implementation-specific unit tests and the independent expectations in `docs/compatibility/java-api-parity-decisions.json`.                                                                                                                                                                                                                                                                                                                    | Cover all **23** decisions in `currentBehaviorContracts` and all their referenced witnesses, including loading/mutation failure state, writer reuse, callback/lazy timing, parser selection, XML limits and transport. Preserve mock/loopback fixtures for designated transport tests and deny unexpected network activity. Retain the four-format large-literal behavior and its separate Manchester rendering check.                                                                                   |
+| `GenerateStructuralSnapshot.java`, `GenerateRdfGraph.java`, the DL/KRSS1/KRSS2 snapshot generators and other narrow native characterizations such as `RunRdfConsumerContract.java`, `RunWriterCopySemantics.java` and `FloatingPointRenderingProbe.java` | Register each **consumed** differential under `format-differentials` with its fixture, probe/argument set and corresponding differential assertion. Keep these small native programs as setup or observation workers. Leave archival-only sources and goldens readable at their original revisions. Record the disposition and reader for each program found during inventory.                                                                                                                                                                                                                                                                                                                                                                                | Preserve the .ofn/RDF and syntax-specific fixture families, exact structural or graph expectations, historically approved differences, writer-copy and numeric-rendering witnesses. Keep each source revision and rights record. Regenerating snapshots requires the existing explicit provenance/refresh procedure.                                                                                                                                                                                     |
+| `util/benchmark-owlapi-java-parity.mjs`, `BenchmarkPublicApiSurface.java`, `util/generate-owlapi-benchmark-fixtures.cjs` and `util/verify-benchmark-io-semantics.mjs` / `VerifyBenchmarkIoSemantics.java`                                                | Register `api-benchmarks` from `BENCHMARK_DEFINITIONS` and its generator parameters. Register the existing declarations-only verifier as `io-admission`. Extract JS and Java operation dispatch, sampling and report rendering into workers/presenters. Bind a semantic I/O witness to the same workload before publishing timing ratios. Keep the verified ordered classpath admission.                                                                                                                                                                                                                                                                                                                                                                      | **70** stable API workload IDs in both JS profiles, all filters, first-use/warm samples, default 2 warm-ups / 5 measured calls, generator parameters, checksums, limitation and admission categories, raw JSON and Markdown reports. Retain **34** independently checked observations for six declaration-only I/O groups. Keep frozen Java timing, explicitly authorized refresh and missing-ID update modes. Frozen values never become fresh measurements on a later JVM.                             |
+| `util/benchmark-owlapi-*.mjs` format/mapping benchmarks, `benchmarkSampling.mjs`, `benchmarkEnvironment.mjs`, `benchmarkParserRegistries.mjs` and `verify-owlapi-rdfxml-corpus.mjs`                                                                      | Register `format-performance` and `rdfxml-corpus` using the common fixture provider. Record applicable single-engine operations as explicitly JS-only diagnostics with their original workload parameters. Share a case identity only for identical operations and inputs. Retain specialist workers and their sampling contracts. Move cross-runtime comparison to the common controller. Replace absolute evidence paths through DEC-01.                                                                                                                                                                                                                                                                                                                    | Preserve the coverage of the **14** single-runtime format/mapping programs and their distinct heap/event-loop protocols, optional GC, parameters, fixtures and historical reports. Preserve the four real benchmark fixture identities and Wine/GeoNames/schema.org’s three RDF/XML verifier expectations. Add paired working-set measurements as a separately versioned protocol.                                                                                                                       |
+| `npm run test:owl-contract`, W3C conformance, browser/installed-package checks and CI/release receipt verification                                                                                                                                       | Keep these independent gates with their present owners. They prove public installed behavior, standards conformance, platform support and evidence lineage. They may consume the shared fixture provider or call the comparison coordinator for a relevant witness. A Java/JS result alone cannot satisfy their other obligations.                                                                                                                                                                                                                                                                                                                                                                                                                            | Keep native test reporting, the exact **70** installed assertions currently exported by `test/consumers/owl-contract/public-model-cases.js`, all required W3C cases, platform/consumer coverage and existing authenticated release proofs. Keep package checks running from the actual candidate installation.                                                                                                                                                                                           |
+
+### Proving coverage before retiring a runner
+
+1. **Freeze the old obligations before moving code.**
+   At `5103b1f4` and again at migration intake, enumerate the native inventories, case IDs, parameter variants, fixtures/generator versions, Jest assertion names, probe arguments, oracle families and coverage obligations enforced by CI.
+   Identify original output schemas and revisions as evidence provenance.
+   Include light, full, environment-gated, recorded, expected-error and intentionally limited cases.
+   Capture the baseline before changing a selector or regenerating expectations.
+2. **Map assertions to executable counterparts.**
+   Add a machine-readable migration mapping from each legacy runner/case/assertion and its execution condition to its new scenario, input binding, profile, measurement/stage and verifier assertion.
+   Name the assertion owner and native receipt for each continuing independent gate.
+   Mark archival-only observations as historical and retain their immutable source and verification identity.
+   Expand generated and parameterized cases to exact keys.
+   Shared scenarios may replace duplicate setup, provided every original assertion retains its own observation and proof.
+   Record genuinely new obligations separately.
+3. **Run old and new in shadow per family.**
+   Use the same candidate or source, original oracle identity, JDK, inputs, configuration and stage scope.
+   Compare the expected key sets independently of the new results, then compare observed structures, return/error/phase, order and post-failure effects, diagnostics, applicable writer bytes and evidence completeness.
+   Preserve authorized profile-specific differences.
+   For timing, compare operation boundaries, fixtures, sample counts, units, statistics and achieved work.
+   Use DEC-06 for variability.
+   Historical bugs such as FIBO’s inconclusive comparison need an independently justified correction and a regression witness.
+   A reference upgrade, product fix or sampling change gets its own evidence after the like-for-like comparison.
+4. **Verify the replacement against the frozen obligations.**
+   Require zero unmapped active assertions, missing required keys, duplicate substitutes, newly skipped live cases or unexplained outcome changes.
+   Verify tested operation semantics, failure phases and evidence through the new interface.
+   Old command spellings and caller-specific report formats are outside the acceptance criteria.
+   For instance, the direct-parsing Jest assertion `compares direct root content while loading the original import context` still needs its own executed assertion in the live inventory.
+   A successful closure merge cannot cover it.
+   Exercise an omitted variant, two rows with the same count but different identities, a stale retained oracle, a worker that never ran, and a process killed after partial output.
+   Each must prevent a complete success receipt.
+5. **Retire superseded orchestration at proven cutover.**
+   Remove the old entry point and its duplicate discovery, dispatch and aggregation once the new route has proved the family’s coverage.
+   Caller migration proceeds separately.
+   No caller census, deprecation window, compatibility alias or shim is a condition of removal.
+   The old run remains evidence at its original revision.
+   Preserve its recorded inputs, methods, assertions and provenance.
+   During shadow validation a pinned predecessor can still produce comparison evidence; after activation the release verifier enforces the full semantic gate.
+   After release cutover, hold promotion unless the complete installed-candidate gate remains enforceable.
+
+## Fixture acquisition for the comparison harness
 
 **DEC-01 · Put the test inputs under repository ownership.**
 Use a dedicated development-only `test/fixtures/ontologies/` space for reviewed manifests, exact import maps, redistributable minimized witnesses, and their attribution.
@@ -241,8 +372,9 @@ It has a different proof obligation from ontology acquisition.
 
 **Ownership migration.**
 New fixtures get one editable record per logical source/version and one physical object per byte digest.
-The July CLI, standards-suite manifest, performance runner and consumer qualify their own semantics.
-Keep their public commands and historical fixture IDs.
+The July suite, standards manifests, performance workers and installed-consumer gate own their respective assertions.
+Preserve historical fixture IDs and the meaning of their observations.
+The canonical development interface owns new invocations and reports.
 Reference the shared identity from a current consumer or derive a validated projection wherever a native manifest owns extra fields.
 Do not rewrite an immutable W3C manifest to fit a new schema.
 Cross-check referenced hashes and reject conflicting declarations.
@@ -310,8 +442,9 @@ Record normative strict, normative compatible, the named Java JS profile with ex
 
 Use the manual extended-evidence route for initial and exploratory heavy runs.
 `.github/workflows/extended-tests.yml` currently handles third-party evidence on `workflow_dispatch`.
-Add an explicitly selected ontology workload or a separate manual workflow that takes an immutable candidate and catalogue identity.
-The existing third-party sharding pattern can be reused.
+The existing third-party sharding pattern can deliver verified shards.
+Every new corpus shard invokes `compare:java-js` on an immutable subject and selection.
+Workflow jobs own scheduling and transport, while case definition, worker dispatch and comparison stay in the coordinator.
 Preserve that job’s own workload and invocation.
 `scripts/workflow-governance.mjs` reserves scheduled work for maintenance and enforces manual dispatch for extended evidence.
 CI applicability is observational for existing required gates.
@@ -322,10 +455,16 @@ Exercise every admitted source, including each original prospect module, the DDI
 A rejected source can satisfy its semantic assertion when the independently established profile, phase, diagnostic and observable effects match.
 Record every dependent stage as inapplicable with its witnessed reason.
 
-For every release candidate the verifier derives the required cells from the independently frozen catalogue and policy, then reconciles the run evidence against that set.
-A cell key includes the source or closure root and member map, logical bases, direct/closure role, import policy, profile and effective parser settings, stage and any platform dimension that affects its contract.
-Freeze stage dependencies before execution.
-The report cannot choose its own expected roster.
+For every release candidate the verifier derives the required cells from the independently frozen catalogue and policy, then reconciles evidence by key.
+Use DEC-07’s case and execution identities, including the source/closure role, effective import policy, JS profile, public operation, required structural or behavioral observation and applicable platform.
+Freeze stage dependencies and measurement applicability before execution.
+An inapplicable stage identifies its governing rule or verified failed prerequisite.
+Every admitted original receives its applicable semantic checks.
+Each existing release-required behavior case keeps its obligation.
+Activate release enforcement after the entire structural and behavioral roster is proven on both release routes.
+Performance migration, timing collection and OBO memory optimization proceed independently.
+Keep any existing required performance checks enforced during that work.
+A report cannot choose its own expected roster or count a missing worker as inapplicable.
 A required unavailable, duplicate, stale, failed or inconclusive cell holds promotion.
 
 Bind the proof to the authenticated candidate artifact and tarball SHA-256/npm integrity, installed runtime dependency graph, verified input and configuration digests, and harness/Java identity.
@@ -340,29 +479,44 @@ A roster change requires an explicit version and rationale independent of that c
 In release mode the verifier must reject a caller-supplied roster or stage filter that does not match its independently derived obligations, even if every selected row passes.
 [Extended evidence workflow](../../.github/workflows/extended-tests.yml) · [Full CI qualification policy](../adr/0011-full-ci-qualification-lineage.md)
 
-### Using the proposed corpus interface
+### Running the proposed comparison harness
 
-The interface below is proposed for SLICE-001 and SLICE-003, with performance support in SLICE-010 and release consumption in SLICE-012.
-A local source invocation produces development evidence.
-Release mode additionally requires the verified candidate and the frozen roster.
-The existing repository commands appear under [sequencing and verification](#sequencing-verification-and-release).
+These are proposed calls to a single development command.
+`list` enumerates concrete cases, eligible measurements and prerequisites from the registry.
+`prepare` verifies and provisions original bytes and authorized dependencies.
+`run` dispatches the selected operations and emits the versioned stage evidence.
+`verify` runs from trusted repository tooling, outside the candidate installation.
+The release consumer supplies its independently frozen roster and validates the underlying receipts.
+The candidate cannot attest its own coverage.
+Normal comparison workers run offline after preparation.
+Only an explicitly registered transport scenario may use its controlled local endpoint.
+The maintained pre-migration entry points are listed under [sequencing and verification](#sequencing-verification-and-release).
 
-| Operator action                         | Proposed command                                                                                                                          | Result                                                                                                                                                                                                                |
-| --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Prepare reviewed source bytes           | `npm run corpus:prepare -- --collection prospects`                                                                                        | Resolves the 47 original files, verifies digests and rights, and lists any unavailable inputs. This is the explicit network-capable step.                                                                             |
-| Reproduce the first mapping gap offline | `npm run test:ontology-corpus -- --case entsoe-cgmes-eq --profile java-owlapi-5.5.1 --imports recorded --stages load,compare`             | Uses the exact CGMES digest, no imports, the selected profile and the admitted Central oracle. Names the affected axiom and retains its evidence.                                                                     |
-| Exercise a complete multi-file source   | `npm run test:ontology-corpus -- --case ddi-cdi/00 --imports mapped --stages load,compare,store,reload`                                   | Loads the top-level file in the exact 17-document graph, records either side’s rejection and preserves all completed stages. The collection selection also tests each module directly.                                |
-| Reproduce the memory workload           | `npm run benchmark:ontology-corpus -- --case obo-fovt --case obo-iceo --workload direct-load`                                             | Starts controlled workers from prepared data on the measurement host and emits per-case time, memory, semantics and settings. The ladder is a separately named workload.                                              |
-| Qualify the release tarball             | `npm run test:ontology-corpus -- --candidate <verified-candidate-directory> --roster <frozen-roster> --output <fresh-evidence-directory>` | Installs the authenticated tarball and checks its public exports. Executes or resolves qualifying evidence for the complete admitted selection. The aggregator compares results with the independently frozen roster. |
+| Operator action                              | Proposed invocation                                                                                                                                                                                                                                                                           | Observable result                                                                                                                                                                                                       |
+| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Inspect coverage before execution            | `npm run compare:java-js -- list --suite prospects`                                                                                                                                                                                                                                           | Expands the 24 collections into concrete direct and closure cases with their inputs, profiles, measurements and expected witnesses.                                                                                     |
+| Prepare sources                              | `npm run compare:java-js -- prepare --suite prospects`                                                                                                                                                                                                                                        | Verifies the 47 original prospect files and reports any unavailable or rights-held source.                                                                                                                              |
+| Compare structure and behavior               | `npm run compare:java-js -- run --scenario direct-load --input entsoe-cgmes-eq --profile java-owlapi-5.5.1 --imports recorded --measure structure,behavior`                                                                                                                                   | Both public loaders see the same CGMES bytes and base. The report joins the structural difference and the observable load outcome by case.                                                                              |
+| Exercise an import closure                   | `npm run compare:java-js -- run --scenario closure-roundtrip --input ddi-cdi/00 --imports mapped --measure structure,behavior`                                                                                                                                                                | Executes the declared 17-document graph, checks each producer/reader stage, and preserves independently completed results after a failure.                                                                              |
+| Compare a generated boundary case            | `npm run compare:java-js -- run --scenario large-literal-roundtrip --measure behavior`                                                                                                                                                                                                        | Both engines consume one generation recipe and the same four format variants. Return values, refusal phase and post-operation state have profile-specific expectations.                                                 |
+| Measure one real case across all three modes | `npm run compare:java-js -- run --scenario direct-load --input obo-fovt --imports recorded --measure structure,behavior,performance`                                                                                                                                                          | Shares the verified case identity across modes. Untimed semantic work and isolated latency/peak-memory workers produce separate observations. The strict-first ladder has its own scenario ID.                          |
+| Qualify and verify a release                 | `npm run compare:java-js -- run --candidate <verified-candidate-directory> --roster <frozen-roster> --output <fresh-evidence-directory>`, followed by `npm run compare:java-js -- verify --candidate <verified-candidate-directory> --roster <frozen-roster> --evidence <evidence-directory>` | The run installs the authenticated tarball and checks the complete semantic selection. The verifier derives the required cells independently, verifies producing identities and holds promotion on incomplete coverage. |
 
-To admit a new source, bind the original public locator or allowed local provision, immutable object identity, media type, document IRI and terms in the fixture catalogue.
-Declare root/import roles, choose the applicable lanes and independently establish the expected observable for each release cell.
-An observational first run can help establish an expectation.
-It cannot satisfy a required release assertion by recording the candidate’s own output as expected.
-Preparation and offline replay must succeed from a clean store before admission.
-Retain a verified typed rejection when that is the supported behavior.
-Apply this once per logical source or module.
-The resolver supplies the same verified object to all covered harnesses.
+In development, `--scenario` selects the public operation or sequence and `--input` binds a named fixture.
+An omitted profile expands the scenario’s declared profile set.
+An explicit profile or measurement filter narrows a diagnostic run.
+For release qualification the authenticated roster controls these dimensions.
+Reject conflicting selectors, unknown IDs, duplicate bindings and an empty required selection.
+Use the canonical CLI and programmatic entry for new comparisons.
+The checkout-only predecessors retire at proved cutover under DEC-07.
+Their callers migrate outside this plan.
+
+To add an ontology, bind its verified source, terms, byte and logical identities, imports and roles once, then associate the applicable scenarios.
+To add a generated case, declare its generator/version/parameters or construction recipe and ordered operations once.
+Attach independent profile expectations and measurement eligibility.
+A first observational run can inform those expectations.
+Admit the case only after cold preparation and offline replay prove its declared contract.
+All applicable measurements then select the new case by the same identity.
 
 ## Java executable and oracle identity
 
@@ -430,7 +584,10 @@ Keep ambient `JAVA_TOOL_OPTIONS` and related variables out of compilation/replay
 ## Comparison and performance contracts
 
 **DEC-04 · Give each stage an independent result.**
-The versioned result identifies the source/digest/base, closure/mapping digest, profile and parser settings, JS source tree or package digest, Java/JDK identity, and case/attempt. Record acquisition, direct JS and Java loads, import closure, JS Functional write, Java reparse of that write, direct structural comparison, closure merge, each producer’s RDF/XML save, each applicable reload and comparison, plus diagnostics.
+The coordinator’s versioned report carries the DEC-07 case, execution and measurement identities.
+Link acquisition, Java/JS public operation and behavior observations, direct models and import closure, JS Functional write and native reparse, structural comparison, closure merge, each producer’s RDF/XML save, applicable reloads, diagnostics and performance samples to that case.
+Preserve distinct per-engine/per-profile observations and the authority for each verdict.
+A retained Java capture, a fresh native observation and a Java-to-Java provenance check have different evidence roles.
 Persist source loading, unparsed RDF, model comparison, difference-rule reconciliation and evidence completeness independently.
 A Java source can load with diagnostics and still differ structurally.
 Apply each relevant contract separately.
@@ -451,7 +608,8 @@ A readable file or a matching digest computed only after a crash cannot establis
 Bound diagnostic stderr separately and preserve the child’s exit reason.
 A valid nonzero exit for a semantic mismatch remains usable evidence.
 
-Preserve existing callers’ result fields and original receipt readers.
+Use the new versioned result contract for active verification.
+Keep original receipts hash-bound to their recorded schemas and verifier revisions for historical inspection.
 Persist document-to-artifact mappings as each Functional output succeeds.
 If closure storage fails later, use those mappings to recover completed stages.
 Never choose a document by file size or directory order.
@@ -479,8 +637,8 @@ The named `java-owlapi-5.5.1` profile follows observed native behavior on its su
 A documented Java quirk can justify an intentional normative difference with a cited authority.
 Describing a quirk alone cannot waive a named-profile parity failure.
 The original published graph provides an independent witness for lost terms, edge identity and annotations.
-[Repository profile authority](../compatibility/behavior-profiles.md#selection-and-authority) Keep strict conformance, permissive Java behavior, producer defects and intentional project choices separate in the results.
-The OWL structural comparator compares under one consistent anonymous-individual bijection.
+Keep strict conformance, permissive Java behavior, producer defects and intentional project choices separate in the results.
+[Repository profile authority](../compatibility/behavior-profiles.md#selection-and-authority) The OWL structural comparator compares under one consistent anonymous-individual bijection.
 An RDF graph equivalence check uses RDF dataset semantics.
 RDFC-1.0 through the existing `jsonld` canonicalization path can help identify RDF components, but only OWL structural equality can accept a structural comparison.
 Tests must distinguish different links, shared versus distinct individuals, OWL operands, ontology annotations and named graphs.
@@ -505,7 +663,9 @@ Give those their own measurements.
 Prepare the document source outside the load-only clock and keep the returned model reachable through the post-load checkpoint.
 Leave parsing, mapping and the required ontology publication inside that clock.
 Measure cold start and read/decode in their own series. Compare JS to Java only for semantically admitted equivalent operations. Within-engine before/after comparisons can still identify a regression on a profile-specific workload.
-For wall time use fresh managers for repeated calls in initialized processes.
+For independent direct-load timing, use fresh managers for repeated calls in initialized processes.
+For a stateful mutation, query or lazy iterator, apply the scenario’s specified setup, reset and traversal on both sides.
+Materialization or reuse that changes the work must change its identity and comparability status.
 Retain the owning lane’s warm-up and repetitions.
 For each cold peak sample use one fresh process and one load.
 The parent observes the same OS process counter for both runtimes, once with the input and manager ready and again immediately after the public load returns.
@@ -519,10 +679,11 @@ Run allocation tracing separately from the uninstrumented occupancy comparison.
 Record toolchain, host class, settings and raw samples alongside medians and spread.
 [Node process resource accounting](https://nodejs.org/api/process.html#processresourceusage) · [OpenJDK benchmark guidance](https://openjdk.org/projects/code-tools/jmh/)
 
-Reuse the benchmark orchestration in `util/benchmark-owlapi-java-parity.mjs` and the verified classpath logic in `util/verify-benchmark-io-semantics.mjs`.
-Its native `VerifyBenchmarkIoSemantics.java` sink accepts only unannotated class-declaration axioms and rejects ordinary OBO models.
-Keep that validator for its existing fixtures.
-The real-document series needs a separate public-load worker and an independently verified model observation.
+Move the benchmark case dispatch and measurement protocol into the common coordinator and its performance workers, reusing the operations from `util/benchmark-owlapi-java-parity.mjs` and the verified classpath logic from `util/verify-benchmark-io-semantics.mjs`.
+Its native `VerifyBenchmarkIoSemantics.java` sink accepts only unannotated class-declaration axioms.
+Retain that independent sink for its six I/O groups.
+Use an independent full-model observation for ordinary OBO documents.
+The performance worker calls the same registered public-load operation as the structural and behavior workers, in a fresh process with the DEC-06 measurement boundaries.
 Keep validation outside the measured interval.
 The existing generated parity screen’s before/after heap samples do not establish a peak.
 Repository RDF/XML budgets were informed by an earlier largest measured input of 1,987,111 bytes. The benchmark policy currently uses a warm-up and five measured runs, medians and 20% wall-time/peak-heap regression ceilings for its governed workloads.
@@ -556,18 +717,25 @@ Existing 20% wall-time/peak-heap regression budgets and the repo’s 1.10 Java t
 
 ## Implementation slices
 
-The IDs below describe proposed delivery increments.
+The slice IDs are stable references.
+SLICE-013 supplies the migrated behavioral proof for SLICE-012.
+SLICE-012 activates the semantic gate on both release paths as soon as its structural and behavioral prerequisites pass.
+SLICE-014 and the real-document performance work can finish later.
+Follow the dependencies under [sequencing and verification](#sequencing-verification-and-release).
 File names indicate likely existing owners.
-The acceptance criteria above govern even if an internal seam moves.
+The acceptance criteria govern even if an internal seam moves.
 
 ### SLICE-001 · Reproduce CGMES through the real public loaders
 
-**REQ-01–04 · AC-01–04 · DEC-01, DEC-03–05.**
-Admit the hashed CGMES original and an authored minimal witness.
-Exercise `generateOntologyEvidence` and the two public JS manager profiles against the native parsing contract with the release-validated classpath and exact implementation-version check in DEC-03.
+**REQ-01–04, REQ-07 · AC-01–04, AC-07 · DEC-01, DEC-03–05, DEC-07.**
+Begin the frozen legacy-assertion mapping in DEC-07 before extracting orchestration.
+Deliver the canonical command and programmatic coordinator on two real cases.
+Bind the hashed CGMES original and its reduced witness to `direct-load`, with SAREF as the independently matching control.
+Route the public JS loaders and native structural oracle through that shared case plan.
+Produce the structural verdict and behavior fields from the same case, including the observation point and effective configuration.
 Deliver DEC-04’s file transport and independent stage verdicts on this path.
 Pass `behaviorProfileId` to the source, merger and reload managers as applicable, along with their separate loader settings.
-Preserve existing callers’ default behavior.
+Verify the OwlAPI library’s existing default behavior profile on optionless public manager construction.
 Use the currently pinned JDK for the development reproduction.
 Record a source-local byte fingerprint or candidate package digest.
 
@@ -577,13 +745,16 @@ SAREF must still match with both profiles.
 Exercise a wrong JAR/order, plain coordinate in place of the qualified implementation version, mislabeled profile, interrupted large-result write and a native comparison limit accompanied by a passing fragment reconciler.
 Each must surface at its owning stage.
 The qualified positive controls require a completed native result and zero network attempts.
-The existing July CLI still works against its own pin.
-This slice delivers a repeatable failing case with correct attribution.
-It does not declare semantic acceptance.
+Exercise the canonical CLI and programmatic coordinator on the same July selection.
+Compare their case identities and worker evidence with the frozen predecessor’s pin, import/merge behavior and source/installed/registry observations.
+A changed fixture digest must invalidate both structural and behavior evidence.
+A missing native execution cannot satisfy a live CI assertion.
+This slice proves the common route and reproduces the named semantic gap.
+Complete the family’s semantic coverage proof in SLICE-003 and the release enforcement in SLICE-012.
 
 ### SLICE-002 · Qualify the current LTS executable on both platforms
 
-**REQ-02, REQ-06 · AC-02, AC-06 · DEC-02–03.**
+**REQ-02, REQ-06–07 · AC-02, AC-06–07 · DEC-02–03, DEC-07.**
 Exercise the pinned setup-java version, local native admissions, actual JDK properties and exact compiler/runtime paths. Generalize only the version identities the newer four-field release needs. Use its signed Linux asset for discovery, then the vendor’s Windows asset when available. Prove the old selected build still maps correctly. Update the single pin, toolchain docs/bootstrap projections, fingerprints and governance together after the exact cross-platform executables qualify.
 Re-run released Central behavior and selected-API replay under the same-release comparison with the original artifact order, including IDMP’s stock/legacy XML distinction.
 
@@ -597,9 +768,10 @@ One platform cannot satisfy the cross-platform release gate.
 
 ### SLICE-003 · Make the complete corpus addressable by ID
 
-**REQ-01, REQ-04, REQ-06 · AC-01, AC-04, AC-06 · DEC-01, DEC-04.**
-Deliver the shared manifest, verified byte providers and offline resolver end to end through the existing structural and benchmark callers.
-First exercise a single-file, a Git blob, a licensed cache-only input and both module families.
+**REQ-01, REQ-04, REQ-06–07 · AC-01, AC-04, AC-06–07 · DEC-01, DEC-04, DEC-07.**
+Connect the July, direct/closure, native snapshot/differential and real-world corpus selections to the coordinator’s fixture provider.
+Replace per-runner discovery only after identical-input shadow results pass.
+Exercise a single-file source, a Git blob, an authorized local-only input and both module families.
 Then backfill every entry in the appendices.
 Acquire the 47 original prospect files and the 178 available wider-sweep sources by digest under the rights policy.
 Schedule all 47 as direct inputs, plus the DDI root closure and each GLEIF root in its resolved import context.
@@ -629,7 +801,10 @@ The explicit-base variant remains an independent control.
 Cold-prepare from an empty cache via approved sources, then replay offline.
 Independently provision verified bytes into a fresh directory on the other platform and repeat the logical-base checks.
 Exercise corrupt bytes, a killed/concurrent download and an expired cache.
-Compare the old and new July roots, closures, manifests and consumer evidence on the same inputs before migrating the active readers.
+Compare the old and new July roots, closures, manifests and consumer evidence on the same inputs.
+Account for the 23 named live assertions with the existing native CI coverage collector, the individual differential fixture assertions and all original expected-difference cardinalities.
+Verify the new suite’s observed result, error phase and coverage receipt against each legacy obligation.
+Keep original artifacts bound to their producing revision.
 
 ### SLICE-004 · Recover RDF Schema property roles and their statements
 
@@ -686,7 +861,7 @@ Changed defaults, a pre-parser rewrite that silently repairs all inputs, or mere
 
 ### SLICE-008 · Resolve comparator limits and govern known differences
 
-**REQ-03–05 · AC-03–05 · DEC-04–06.**
+**REQ-03–05, REQ-07 · AC-03–05, AC-07 · DEC-04–07.**
 Separate finding differences, proving model isomorphism, and rendering examples in `OntologyStructuralComparison.java` and the JS reconciler.
 Measure the FIBO stop reason and Brick time by phase.
 The component builder scans previously built components, and diagnostic labelling can search permutations.
@@ -734,8 +909,11 @@ Missing Java output leaves its applicable writer comparison outstanding.
 
 ### SLICE-010 · Establish Java-referenced memory diagnostics
 
-**REQ-01, REQ-05 · AC-01, AC-05 · DEC-01, DEC-06.**
-Admit the original digest/base/import settings and run the same full-model load in fresh native Java and JS workers through their public managers.
+**REQ-01, REQ-05, REQ-07 · AC-01, AC-05, AC-07 · DEC-01, DEC-06–07.**
+Run the registered full-model `direct-load` scenario under the single harness’s performance measurement using fresh native Java and JS workers.
+Reuse the exact binding already available to its semantic measurements.
+Use SLICE-014’s admitted performance protocol and independent untimed check.
+The host memory sampler belongs to that mode.
 Start from the native readings in this plan, then obtain fresh JS and native controls on the same measurement host and target JDK.
 Separate syntax-only, direct reconstructed model, JS strict-first ladder, and downstream analysis.
 Compare only the same boundary across engines.
@@ -783,10 +961,13 @@ Retain case-specific diagnostics/annotations, the original source coverage and t
 A failure that requires changing a public contract or produces an unexplained semantic difference stays open.
 A heap setting or narrower input policy cannot qualify an optimization.
 
-### SLICE-012 · Integrate, migrate evidence and hand off
+### SLICE-012 · Activate the full-corpus semantic release gate
 
-**REQ-01–06 · AC-01–06 · DEC-01–06.**
-Run in shadow first, then make corpus qualification a release-only obligation that consumes the selected tarball on both release paths.
+**REQ-01–04, REQ-06–07 · AC-01–04, AC-06–07 · DEC-01–05, DEC-07.**
+As soon as the complete structural and behavioral roster passes in shadow on both fresh and promoted-CI candidates, make it mandatory for every release candidate.
+Deliver the required semantic mappings from SLICE-013 and any required untimed witness that currently lives alongside benchmark code.
+Preserve existing performance gates under their own policy.
+Completion of SLICE-014, new peak-memory measurements and memory optimization are independent of this activation.
 A promoted-CI qualification uses the authenticated original CI candidate and package proof.
 An explicitly fresh qualification uses the exact same-run retained candidate.
 Either path may reuse a complete corpus result that the release verifier can authenticate for that subject.
@@ -800,17 +981,18 @@ Reverify the original payload and coverage at the consuming boundary.
 An optional new JSON field, an Actions job name, or a passing `verify:release-gates` inventory check cannot enforce this release decision.
 Preserve historical manifest interpretation for historical subjects.
 A new candidate cannot be admitted through an older schema that omits the corpus obligation.
-
-Use verified cold restoration and digest-keyed caches for fixture preparation.
-Retain bulky source bytes and traces only within their usage rights.
-Publish the attributable stage results and all coverage/hold counts.
-Keep the existing PR, installed-package and browser obligations, with targeted regressions for each correction.
-Full release semantic coverage does not make a full performance campaign part of every PR or candidate.
-Confirm via the existing package boundary check that development metadata and datasets do not ship.
+CI, manual investigations and both fresh/promoted release workflows invoke the same coordinator or consume its verified evidence. Keep fixture preparation and artifact transport reusable. Publish approved stage results and all coverage/hold counts within their rights.
+Existing PR, installed-package, browser and governed performance obligations stay in force.
+Verify through the package-boundary check that harness code, development metadata and datasets stay outside the npm package.
 
 **Proof and exit.**
-Cold and warm runs agree across Linux and Windows, the old July consumer succeeds, replay without network succeeds, and miss/tamper/partial results fail at the right boundary.
-Qualify the integrated programme on the frozen catalogue.
+Verify that cold preparation and warm offline replay produce equivalent semantic results on Windows and Linux.
+Exercise the July scenarios, cache miss/tamper and partial evidence through the new qualification path.
+Deliver the complete mapping and witnessed shadow evidence for **semantic** obligations on the frozen catalogue.
+Test activation with all required structural and behavioral cells proven on both release paths and SLICE-014 still in progress.
+The semantic gate must become active.
+Conversely, all 70 benchmark rows can be present and a single missing required semantic cell must still hold that candidate.
+The existing release/performance checks retain their own vetoes.
 Report every captured input, every expected rejection and all 23 acquisition holds.
 Hold promotion on every missing or inconclusive required cell.
 Verify expected rejections independently.
@@ -818,45 +1000,136 @@ Run the installed consumer from outside the checkout and require the same tarbal
 Negative controls must reject a removed GLEIF cell, a duplicate substituting for a missing cell, source results relabeled as installed-candidate results, a different tarball with the same package version, a changed installed dependency or import map, a stale Java lock, and an old manifest lacking the new obligation.
 Each holds even when all shard processes exit successfully.
 Exercise both release routes through manifest creation and staging admission.
-A fully covered candidate with an independently expected rejection and correctly authenticated reused evidence remains eligible under the existing policy.
+A fully covered candidate with a verified expected rejection and correctly authenticated reused evidence is eligible under the existing release policy.
+Once active, the semantic gate stays enforced during the remaining performance migration.
 The existing release process owns promotion.
+
+### SLICE-013 · Migrate behavior and writer contracts into the shared runner
+
+**REQ-02–04, REQ-07 · AC-02–04, AC-07 · DEC-03–05, DEC-07.**
+Begin after SLICE-001 has established the common case, worker and result contracts.
+Freeze the legacy probe/argument inventory and decision-ledger test references. Register file-backed, generated and stateful operations in the same registry. Migrate the 28 behavior and 15 selected-API capture rows as separately identified oracle evidence. Bind the corresponding JS assertions and any approved per-profile differences to the scenarios. Retain original Central/rebuild/same-release comparison, including its expected failure completion and allowed normalization.
+Retain hash-verified historical captures and readers.
+
+Start with `large-literal-roundtrip`.
+Declare the source character, length of 33,554,433, ontology/subject IRIs, annotation property, and four writer formats once.
+Each engine constructs the model using its own public API, saves it, and records the saved bytes or digest and the reload outcome.
+Preserve which writer produced each document.
+In particular, the legacy JS case uses the named Java profile to write, verifies that profile’s successful reload, then checks the default normative loader’s `ResourceLimitError` on the **same saved document**.
+The native probe verifies the recovered literal length and digest.
+Cross-reading a second producer’s output is an additional case binding.
+Check the failure phase and post-state.
+Preserve the separate Manchester object-rendering boundary.
+
+Then migrate the remaining resource, loading, storage, mutation, query, format-selection, ontology-language-profile and transport families in the migration map.
+Preserve the 20 canonical VOWL cases, seven XML writer presentation modes and their independently reviewed verdicts.
+Retain native/Jest assertions that only concern one runtime at their existing boundaries.
+Replace duplicate fixture setup and expectation lookup in cross-language assertions with the shared case binding.
+A focused Jest run can consume an authorized recorded native observation.
+A live-required case must witness the native invocation.
+
+**Proof and exit.**
+Compare old/new coverage per probe argument tuple, writer format, operation step, behavior profile, native assertion and expected outcome.
+The four formats must produce four witnessed results.
+Omitting a format, moving a failure from reload to construction, reordering a recorded callback, changing a failed writer prefix, or treating a normative refusal as a generic pass must fail.
+Check that a Java-only observation cannot issue a comparison receipt and that cross-build normalization and same-release byte comparison retain their respective scope.
+Hand the evidence for the required behavior assertions to SLICE-012.
+Resolve unexplained semantic differences before activating the gate.
+
+### SLICE-014 · Migrate the performance runner and its semantic checks
+
+**REQ-03–05, REQ-07 · AC-03–05, AC-07 · DEC-04–07.**
+After SLICE-001, import the old benchmark definitions with their stable IDs, parameters and generator into the case registry.
+Keep the Java and JS implementations independent.
+The registry must detect a missing implementation on either required side.
+Move suite selection, fixture preparation, Java source selection, result binding and aggregation into the common coordinator.
+Register the six declaration-only I/O groups and their 34 structural observations.
+Deliver any witness already required by the semantic roster in time for SLICE-012, independent of the timing migration.
+Move all 70 benchmark IDs and the applicable JS-only diagnostics through the common performance worker.
+Supply the controlled worker interface to SLICE-010 for the real-ontology working-set series.
+
+Maintain two distinct evidence roles.
+Historical benchmark reproduction uses its frozen baseline, JS profiles, baseline identity and protocol.
+At intake that file reports JDK `25.0.4.1` and OWLAPI implementation `5.5.1.2026-08-10T00:04:10Z`.
+Live comparison runs the verified current oracle under the declared protocol.
+A build of the same Maven version can have a different executable identity.
+Carry workload selection, warm-ups, repetitions, baseline identity and the independently authorized refresh/missing-only operations into the canonical interface.
+Store raw measurements and render the summary from them.
+Preserve original reports as historical evidence.
+Ordinary runs read frozen evidence without advancing it.
+
+**Proof and exit.**
+Match the exact 70-ID set, the fixture generator/version, workload sizes (syntax count and import-closure count), and measurement parameters (warm-ups and measured runs), both JS profiles, raw samples and per-profile comparability classifications. Confirm all six I/O groups using the full named declarations and metadata.
+A wrong class IRI with the right count must fail semantic admission.
+Retain the import-closure workload limitation where Java `Stream.count()` can elide traversal while JS materializes a defensive set.
+A new equivalent-materialization workload gets its own case/version.
+Consolidation can close with documented diagnostic-only workloads.
+Account for all 70 IDs and both JS profiles.
+For each diagnostic row, record the exact blocker (for example, unequal materialization or a checksum without an independent witness), the available observations and what would permit a qualified ratio.
+A diagnostic row counts toward migration completeness; it cannot satisfy a qualified comparison, an existing performance requirement or a required semantic cell.
+A missing workload or an unexplained downgrade from previously qualified coverage fails migration.
+
+Verify that identical counts for different class IRIs or unequal operations cannot yield a qualified ratio.
+Frozen Java timing cannot appear as a live peak-memory observation.
+Retain the original reports with their provenance.
+Judge new timings using repeatability and effect size on the agreed workload.
 
 ## Sequencing, verification and release
 
-SLICE-001 establishes the end-to-end oracle.
-SLICE-002 can proceed alongside the catalogue work, and the new platform remains a separate measurement variable until qualified.
-SLICE-003 supplies the common offline inputs.
-SLICE-004, SLICE-005 and SLICE-007 touch the same RDF typing rules and should integrate through one mapping owner in that order where changes overlap.
-SLICE-006 can investigate using captured records while the named-profile and rule matrix settles.
-SLICE-008 can profile the comparator independently on immutable inputs.
-SLICE-009 can collect Java writer baselines immediately, then adjudicate deltas after parser and comparator work.
-SLICE-010 starts as soon as the six memory files and semantic checks are admitted.
-Schedule SLICE-011 after its baseline and after rebasing any shared mapper work.
-Serialize heavyweight measurements.
-SLICE-012 integrates the verified slices under one candidate identity.
+1. **Establish the common path.**
+   SLICE-001 inventories the old obligations and proves CGMES/SAREF through the shared coordinator. SLICE-002 can qualify the JDK and oracle in parallel with SLICE-003. Hold reference identity constant for each old/new migration comparison.
+   SLICE-003 then supplies the complete offline corpus and the July/direct/closure/differential suites.
+2. **Move the legacy families.**
+   SLICE-013 (behavior) and SLICE-014 (performance) can proceed in parallel after SLICE-001.
+   Both feed the assertion mapping.
+   Route any required semantic witness to the semantic gate even when its current implementation lives in a benchmark suite.
+   Retire each family’s superseded tool after its coverage is proved.
+3. **Apply the corrections through the one harness.**
+   Integrate SLICE-004, SLICE-005 and SLICE-007 through the mapping owner where they share typing rules.
+   SLICE-006 and SLICE-008 can investigate retained evidence independently.
+   SLICE-009 can collect writer controls early and adjudicate deltas after parser/comparator changes.
+   The behavior cases from SLICE-013 distinguish intentional profile changes from migration drift.
+4. **Activate the semantic gate first.**
+   SLICE-012 activates as soon as all admitted structural and behavioral obligations pass in shadow on both release paths, including the relevant SLICE-003–009 and SLICE-013 evidence.
+   Deploy the trusted roster, producer, aggregate and manifest verifier together.
+   Every candidate from cutover requires complete semantics.
+   Outstanding performance migration or optimization does not delay this gate.
+   Existing performance obligations still apply.
+5. **Complete performance consolidation and the memory work.**
+   SLICE-014 accounts for all 70 workloads on the common harness, with explicit reasons for diagnostic-only rows.
+   SLICE-010 uses its measurement protocol on the admitted real inputs from SLICE-003.
+   SLICE-011 follows that semantic and memory baseline.
+   Serialize heavyweight measurements on the benchmark host.
+   Close the harness migration once all three measurements use one coordinator and every prior obligation is accounted for.
+   Track the real-document optimization separately through its own acceptance criteria.
 
-**Established verification entry points.**
+**Baseline verification entry points.**
 Install the repo’s locked dependencies using its selected Node/npm toolchain.
 The paths below are relative to the checkout root.
 Commands listed here are maintained interfaces at the inspected revision.
-Future corpus preparation, offline replay, selection by fixture ID and phase-specific measurement are proposed interfaces.
-The names in the proposed corpus interface establish the intended caller journey.
-Deliver and verify the exact new invocations with their owning slices.
+The checkout commands below identify how to capture predecessor observations at the inspected revision.
+Their arguments, filenames and output layouts document the baseline.
+They create no compatibility obligation.
+Record the old and new assertion IDs, execution identity and proof for each family.
+The proposed [canonical interface](#running-the-proposed-comparison-harness) owns new invocations.
 
-| Maintained invocation                                                                                                                                                                             | Evidence it provides and prerequisites                                                                                                                                                                                                                                                                                                                                                                      |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm test -- --runInBand --runTestsByPath internal/mapping/untypedProperty.test.js internal/mapping/undeclaredAnnotation.test.js`                                                                 | Focused RDF typing behavior. Add the reduced witnesses to their owning suites and exercise imported declarations, source roles and negative strict cases.                                                                                                                                                                                                                                                   |
-| `npm test -- --runInBand --runTestsByPath scripts/java-toolchain.test.js util/owlapi-reference/qualify-universal-ontology.test.js util/owlapi-reference/reconcile-structural-differences.test.js` | Focused pin, runner and reconciliation contracts. Use live released Java as the independent compatibility oracle.                                                                                                                                                                                                                                                                                           |
-| `npm run test:universal-ontology -- --ontology-repository <pinned-checkout> --output <new-output-directory>`                                                                                      | Legacy July direct-parse and two closure-format paths. Set `OWLAPI_REFERENCE_CHECKOUT` to the prepared source-pin Java checkout for this lane. In source mode choose an ignored or external output directory. Existing candidate and registry modes retain their distinct provenance.                                                                                                                       |
-| `node util/verify-owlapi-rdfxml-corpus.mjs`                                                                                                                                                       | Resolves the Wine, GeoNames and schema.org measured inputs and asserts exact lengths, digests and model/diagnostic expectations. At this revision it requires the recorded local inputs. Prove portability during migration.                                                                                                                                                                                |
-| `node util/verify-benchmark-io-semantics.mjs --classpath-file <verified-list> --java-home <exact-jdk> --output <new-result.json>`                                                                 | Independent structural I/O observations from the released classpath and both JS profiles. Prepare all locked JARs and the exact toolchain first.                                                                                                                                                                                                                                                            |
-| `node --expose-gc util/benchmark-owlapi-java-parity.mjs --filter <existing-benchmark-id> --output <new-report.json>`                                                                              | Existing generated benchmark selection. Its frozen Java baseline and its explicit refresh/update flags have distinct authority. Write new corpus runs separately.                                                                                                                                                                                                                                           |
-| `npm run test:boundary`, `npm run test:owl-contract -- --candidate <verified-candidate> --output <new-output-directory>`, `npm run verify:workflow-governance` and `npm run verify:release-gates` | Validate package contents, the installed public consumer contract with its prepared candidate inputs, and the static release-gate catalogue/workflow policy. A static catalogue check supplies no candidate execution proof. Use the maintained candidate/consumer setup documented by the invoked CLI and workflows. Retain existing browser and W3C conformance suites for impacted format/profile paths. |
+| Maintained invocation                                                                                                                                                                                                                  | Evidence it provides and prerequisites                                                                                                                                                                                                                                                                                                                                                                      |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm test -- --runInBand --runTestsByPath internal/mapping/untypedProperty.test.js internal/mapping/undeclaredAnnotation.test.js`                                                                                                      | Focused RDF typing behavior. Add the reduced witnesses to their owning suites and exercise imported declarations, source roles and negative strict cases.                                                                                                                                                                                                                                                   |
+| `npm test -- --runInBand --runTestsByPath scripts/java-toolchain.test.js util/owlapi-reference/qualify-universal-ontology.test.js util/owlapi-reference/reconcile-structural-differences.test.js`                                      | Focused pin, runner and reconciliation contracts. Use live released Java as the independent compatibility oracle.                                                                                                                                                                                                                                                                                           |
+| `node util/owlapi-reference/replay-behavior-research.mjs <classpath-file> <output-directory>` and `node util/owlapi-reference/replay-selected-parity.mjs <classpath-file> <output-directory>`                                          | Capture the two native observation suites under an explicitly prepared Java identity. Preserve the optional behavior-replay `--reuse-unchanged` and the selected comparison’s `--same-release` rules. Use these captures as separately identified evidence for JS behavior cases.                                                                                                                           |
+| `node util/owlapi-reference/run-profile-contract.mjs --java-root <pinned-checkout> --java <java> --javac <javac> --output <new-report.json>` and `node util/owlapi-reference/run-writer-configuration-contract.mjs <output-directory>` | Replay the bounded 20-case OWL 2 DL/source assessment and the seven presentation modes with their native reference prerequisites. Also exercise the environment-gated writer Jest test and the corresponding preserved JS expectations.                                                                                                                                                                     |
+| `npm run test:universal-ontology -- --ontology-repository <pinned-checkout> --output <new-output-directory>`                                                                                                                           | Legacy July direct-parse and two closure-format paths. Set `OWLAPI_REFERENCE_CHECKOUT` to the prepared source-pin Java checkout for this lane. In source mode choose an ignored or external output directory. Existing candidate and registry modes retain their distinct provenance.                                                                                                                       |
+| `node util/verify-owlapi-rdfxml-corpus.mjs`                                                                                                                                                                                            | Resolves the Wine, GeoNames and schema.org measured inputs and asserts exact lengths, digests and model/diagnostic expectations. At this revision it requires the recorded local inputs. Prove portability during migration.                                                                                                                                                                                |
+| `node util/verify-benchmark-io-semantics.mjs --classpath-file <verified-list> --java-home <exact-jdk> --output <new-result.json>`                                                                                                      | Independent structural I/O observations from the released classpath and both JS profiles. Prepare all locked JARs and the exact toolchain first.                                                                                                                                                                                                                                                            |
+| `node --expose-gc util/benchmark-owlapi-java-parity.mjs --filter <existing-benchmark-id> --output <new-report.json>`                                                                                                                   | Existing generated benchmark selection. Its frozen Java baseline and its explicit refresh/update flags have distinct authority. Write new corpus runs separately.                                                                                                                                                                                                                                           |
+| `npm run test:boundary`, `npm run test:owl-contract -- --candidate <verified-candidate> --output <new-output-directory>`, `npm run verify:workflow-governance` and `npm run verify:release-gates`                                      | Validate package contents, the installed public consumer contract with its prepared candidate inputs, and the static release-gate catalogue/workflow policy. A static catalogue check supplies no candidate execution proof. Use the maintained candidate/consumer setup documented by the invoked CLI and workflows. Retain existing browser and W3C conformance suites for impacted format/profile paths. |
 
 **Promotion and rollback.**
-Validate the new gate in shadow with the frozen catalogue and candidate alongside the existing release gates.
-At cutover, deploy the corpus producer, release aggregate and manifest consumers coherently.
-Future release candidates require complete semantic coverage.
+Validate structural and behavioral coverage against the frozen obligations, then shadow the complete semantic gate on both release routes.
+At successful semantic cutover deploy the comparison producer, aggregate and manifest consumers coherently.
+Enforce full semantic coverage from that point, preserving existing required live, installed-package and performance checks.
+Remaining benchmark families can migrate independently.
 A manually dispatched producer can supply authenticated evidence, and the release verifier independently checks every required cell.
 A prior green summary, a smoke run or the passing subset of a failed shard cannot authorize promotion.
 An unavailable required input remains in that candidate’s frozen roster.
@@ -876,8 +1149,10 @@ Independent review samples source/lock→parser→evidence on an untouched check
 Use synthetic boundary fixtures for tests.
 Reopen the affected decision if an oracle identity cannot be reproduced, the catalogue cannot restore exact bytes after cache loss, one profile’s recovery changes another profile’s required output, a comparator cannot certify an equivalence, or memory reduction would require relaxing a public/resource contract.
 Report what independent slices can still ship.
-No prior no-shim override applies.
-Extend supported entry points and keep run evidence available to its existing consumers.
+Superseded checkout runners have no backward-compatibility obligation.
+Remove old command surfaces at their proven cutover.
+Caller migration is separately owned.
+Preserve the npm library’s public API and the provenance of historical evidence.
 
 ## Prospect inventory
 
@@ -1410,7 +1685,10 @@ An entry becomes eligible only after actual bytes have been admitted.
 
 ## Completion record for the implementer
 
-Record the candidate revision or package digest, corpus selection and digest, actual Java/JS profile and import policies, native oracle identity, stage results, differences and their disposition, resource measurements and release decision together.
+Record the assertion mapping, shadow results and retired drivers alongside the case/candidate identities, exact stage outcomes and performance evidence.
+Record the date and evidence of semantic gate activation on both release paths separately from performance migration completion.
+One coordinator must eventually own all three measurements.
+Documented diagnostic-only benchmark rows are valid at consolidation closeout when all 70 IDs, their existing obligations and the reason for every unqualified row are accounted for.
 All 24 prospect collections, all 47 component documents, the 178 acquired wider inputs and the 23 unresolved acquisitions must remain individually accountable.
 Mark implementation, local verification, hosted qualification and publication separately.
 A row in this plan records an observed input or work to do.
