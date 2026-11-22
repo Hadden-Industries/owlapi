@@ -17,6 +17,7 @@ CLI and Jest use the same policies.
 ```powershell
 npm run graph:dependencies -- --output C:\external\new-graph-directory
 npm run graph:dependencies -- --output C:\external\focused-graph-directory --focus model/owlOntology.js
+npm run graph:dependencies -- --output C:\external\profile-observation-graph --focus docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json
 ```
 
 The parent directory must already exist.
@@ -25,9 +26,10 @@ Existing output is never overwritten.
 A bundle is complete only when `manifest.json` declares completion and its member digests match.
 `incomplete.json` records the initial reservation; an interrupted attempt without a completion manifest remains incomplete.
 
-The version 2 bundle contains native `dependencies.json`, `runtime-dependencies.json`, module and folder Mermaid views, `runtime-metrics.txt`, and `inventory.json`.
-An optional literal module focus adds native JSON and Mermaid neighborhood and transitive-dependent views.
-The focus module must exist in the complete graph; the argument is a literal repository-relative module name, not a regular expression.
+The version 3 bundle contains `dependencies.json`, native `runtime-dependencies.json`, module and folder Mermaid views, `runtime-metrics.txt`, and `inventory.json`.
+`dependencies.json` holds the import and file relationships in one graph.
+An optional focus adds JSON and Mermaid neighborhood and transitive-dependent views from that same graph.
+Use an exact repository-relative path or generated artifact ID from `modules[].source` as the focus.
 
 Filters apply to presentation after complete analysis and never narrow enforcement.
 The full JSON is the graph authority; collapsed views summarize it.
@@ -48,8 +50,27 @@ Resources loaded at runtime and legitimate standalone tools can be absent from s
 The graph uses dependency-cruiser 18.6 or later at the exact root lockfile resolution.
 It resolves Node source imports and package exports.
 Builtins and external packages remain endpoints without scanning their implementations.
-Computed imports, runtime resource reads, generated programs, workers and subprocess inputs are outside proven static completeness.
-This is a Node source graph; browser and installed candidate behavior need their dedicated checks.
+### File inputs and outputs
+
+The exporter derives file relationships from authored code and workflow steps on each run.
+For example, a `reads-file` edge connects the Java-profile test to `central-observations.json`, and a `compiles-file` edge connects the comparison oracle to its Java source.
+A `generated-by` edge points from an output to its writer.
+Working directory parameters can produce symbolic artifact IDs beginning with `artifact:`.
+Use the ID shown in the current export to inspect its writer and readers.
+Supported Node worker launches bind the worker's positional file arguments to the caller's paths.
+Literal Jest report paths in workflow steps are scoped by workflow and job.
+`evidence` gives the source file and line behind each file edge.
+
+File discovery recognizes Node filesystem calls whose paths can be resolved from literals, local constants and supported path expressions.
+The comparison evidence and compiler helpers use their existing argument conventions during discovery.
+Checkout-relative paths are resolved from the repository root.
+Captured files in `inventory.json` under `resourceInputs` have content digests in the manifest.
+Generated artifact nodes describe paths declared by the source and can exist before the file is produced.
+
+Review `resourceDiagnostics` in the full graph for file operations with unresolved paths.
+Computed imports, dynamically selected fixture bytes, complex shell commands and opaque subprocesses can require source inspection.
+Run browser and installed-package qualification through their own entry points.
+The cycle, resolution and architecture checks apply to the native import graph.
 
 ## Test selection and assurance
 
@@ -60,8 +81,9 @@ npm test -- --runInBand --listTests --json
 npm test -- --runInBand --findRelatedTests model/owlOntologyWriterConfiguration.js --listTests --json
 ```
 
-A related-test list is a hypothesis about static dependencies.
-It does not establish that resource readers, removed edges, structural changes, browser consumers or installed-package behavior are covered.
+A related-test list is a hypothesis about import dependencies.
+For changed files read or written at runtime, inspect the exporter’s focused dependents and the assertions behind those edges.
+For deleted and renamed paths, keep the base graph available and inspect the current graph for new relationships.
 Run the established full commands for authoritative source qualification:
 
 ```powershell

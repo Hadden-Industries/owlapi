@@ -14,6 +14,11 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { cruise, format } from "dependency-cruiser";
 import { assertPackageIdentity } from "./package-identity.mjs";
 import { findNpmCliCandidates } from "./assert-workflow-runtime.mjs";
+import { observeFileDependencies } from "./dependency-file-access.mjs";
+import {
+  includeFileDependencies,
+  observationRenderer,
+} from "./dependency-observation.mjs";
 
 export const REPOSITORY_ROOT = realpathSync(
   fileURLToPath(new URL("../", import.meta.url)),
@@ -130,18 +135,20 @@ export const shippedInventory = (root = REPOSITORY_ROOT) => {
   return { manifest, files, runtime: files.filter((file) => JS.test(file)) };
 };
 
-export const authoredInventory = (root = REPOSITORY_ROOT) => {
-  const files = git(
-    root,
-    "ls-files",
-    "-z",
-    "--cached",
-    "--others",
-    "--exclude-standard",
-  )
-    .split("\0")
-    .filter(Boolean);
-  return [...new Set(files)]
+const worktreeFiles = (root) =>
+  [
+    ...new Set(
+      git(root, "ls-files", "-z", "--cached", "--others", "--exclude-standard")
+        .split("\0")
+        .filter(Boolean),
+    ),
+  ].sort();
+
+export const authoredInventory = (
+  root = REPOSITORY_ROOT,
+  files = worktreeFiles(root),
+) =>
+  files
     .filter(
       (file) =>
         JS.test(file) &&
@@ -160,9 +167,7 @@ export const authoredInventory = (root = REPOSITORY_ROOT) => {
         }
         throw error;
       }
-    })
-    .sort();
-};
+    });
 
 export const discoverJestTests = (root = REPOSITORY_ROOT, extra = []) => {
   const { argv } = jestArguments(root, ["--listTests", "--json", ...extra]);
@@ -354,7 +359,11 @@ export const runtimeReportPolicy = (inventory, roots) => ({
   ],
 });
 
-export const focusedReports = async (graph, source) => {
+export const focusedReports = async (
+  graph,
+  source,
+  render = observationRenderer(graph),
+) => {
   if (!graph.modules.some((module) => module.source === source)) {
     throw new Error(
       `Focus module is absent from the complete graph: ${source}`,
@@ -362,17 +371,13 @@ export const focusedReports = async (graph, source) => {
   }
   const path = literalSet([source]);
   return {
-    "focus.json": (await format(graph, { outputType: "json", focus: { path } }))
-      .output,
-    "dependents.json": (
-      await format(graph, { outputType: "json", reaches: { path } })
-    ).output,
-    "focus.mmd": (
-      await format(graph, { outputType: "mermaid", focus: { path } })
-    ).output,
-    "dependents.mmd": (
-      await format(graph, { outputType: "mermaid", reaches: { path } })
-    ).output,
+    "focus.json": await render({ outputType: "json", focus: { path } }),
+    "dependents.json": await render({ outputType: "json", reaches: { path } }),
+    "focus.mmd": await render({ outputType: "mermaid", focus: { path } }),
+    "dependents.mmd": await render({
+      outputType: "mermaid",
+      reaches: { path },
+    }),
   };
 };
 
@@ -402,7 +407,32 @@ export const reserveOutput = (target, root = REPOSITORY_ROOT) => {
 
 // Bind controls as inputs, including absent files and ignored parent controls.
 // The lock supplies installed manifest locations; no dependency resolver is duplicated.
-const identityFiles = (root, inputs, inventory) => {
+function readIdentityFile(root, file, isResource = false) {
+  const absolute = path.join(root, file);
+  if (!existsSync(absolute)) return null;
+  const stat = lstatSync(absolute);
+  if (!stat.isFile() || stat.isSymbolicLink()) {
+    throw new Error(`Unsafe identity input: ${file}`);
+  }
+  if (
+    isResource &&
+    path.relative(realpathSync(root), realpathSync(absolute)) !==
+      path.normalize(file)
+  ) {
+    throw new Error(`Redirected graph resource: ${file}`);
+  }
+  return readFileSync(absolute);
+}
+
+const fileDigest = (bytes) => (bytes === null ? null : digest(bytes));
+const sortedFileEntries = (files) =>
+  Object.fromEntries(
+    Object.keys(files)
+      .sort()
+      .map((file) => [file, files[file]]),
+  );
+
+const identityFiles = (root, inputs, inventory, resourceInputs) => {
   const files = new Set([
     ...inputs,
     ...inventory.files,
@@ -410,16 +440,7 @@ const identityFiles = (root, inputs, inventory) => {
     "package-lock.json",
     ".dependency-cruiser.json",
   ]);
-  for (const file of git(
-    root,
-    "ls-files",
-    "-z",
-    "--cached",
-    "--others",
-    "--exclude-standard",
-  )
-    .split("\0")
-    .filter(Boolean)) {
+  for (const file of worktreeFiles(root)) {
     if (
       !EXCLUDED_DOMAINS.some((prefix) => file.startsWith(prefix)) &&
       /(?:\.json|\.npmignore|\.gitignore|\.npmrc)$/u.test(file)
@@ -455,24 +476,23 @@ const identityFiles = (root, inputs, inventory) => {
       }
     }
   }
-  return Object.fromEntries(
-    [...files].sort().map((file) => {
-      const absolute = path.join(root, file);
-      if (!existsSync(absolute)) {
-        return [file, null];
-      }
-      if (
-        !lstatSync(absolute).isFile() ||
-        lstatSync(absolute).isSymbolicLink()
-      ) {
-        throw new Error(`Unsafe identity input: ${file}`);
-      }
-      return [file, digest(readFileSync(absolute))];
-    }),
+  const resources = new Set(resourceInputs);
+  return sortedFileEntries(
+    Object.fromEntries(
+      [...new Set([...files, ...resources])].map((file) => [
+        file,
+        fileDigest(readIdentityFile(root, file, resources.has(file))),
+      ]),
+    ),
   );
 };
 
-export const inputIdentity = (root, inputs, inventory) => ({
+export const inputIdentity = (
+  root,
+  inputs,
+  inventory,
+  resourceInputs = [],
+) => ({
   head: git(root, "rev-parse", "HEAD").trim(),
   tree: git(root, "rev-parse", "HEAD^{tree}").trim(),
   parents: git(root, "show", "-s", "--format=%P", "HEAD")
@@ -481,7 +501,7 @@ export const inputIdentity = (root, inputs, inventory) => ({
     .filter(Boolean),
   status: git(root, "status", "--porcelain=v1", "-z", "--untracked-files=all"),
   packageFiles: inventory.files,
-  files: identityFiles(root, inputs, inventory),
+  files: identityFiles(root, inputs, inventory, resourceInputs),
   tools: {
     npm: npmIdentity(),
     jest: jestArguments(REPOSITORY_ROOT, []).tool,
@@ -498,6 +518,9 @@ export const inputIdentity = (root, inputs, inventory) => ({
         readFileSync(fileURLToPath(import.meta.resolve("dependency-cruiser"))),
       ),
     },
+    eslintManifestSha256: digest(
+      readFileSync(new URL(import.meta.resolve("eslint/package.json"))),
+    ),
     producerSha256: digest(readFileSync(fileURLToPath(import.meta.url))),
     policySha256: digest(
       readFileSync(new URL("../.dependency-cruiser.json", import.meta.url)),
@@ -519,10 +542,41 @@ export const writeBundle = async (
     }),
     { flag: "wx" },
   );
-  const inputs = authoredInventory(root);
+  const files = worktreeFiles(root);
+  const inputs = authoredInventory(root, files);
   const inventory = shippedInventory(root);
   assertPackageIdentity(inventory.manifest);
   const before = inputIdentity(root, inputs, inventory);
+  const captured = new Map();
+  const capture = (file) => {
+    const bytes = readIdentityFile(root, file, true);
+    const hash = fileDigest(bytes);
+    const expected = captured.has(file)
+      ? captured.get(file)
+      : Object.hasOwn(before.files, file)
+        ? before.files[file]
+        : undefined;
+    if (expected !== undefined && hash !== expected) {
+      throw new Error(`Inputs changed during graph generation: ${file}`);
+    }
+    captured.set(file, hash);
+    return bytes;
+  };
+  const fileAccess = observeFileDependencies(
+    inputs,
+    (file) => capture(file)?.toString("utf8") ?? null,
+    new Set(files),
+  );
+  for (const file of fileAccess.inputs) {
+    capture(file);
+  }
+  before.files = sortedFileEntries({
+    ...before.files,
+    ...Object.fromEntries(captured),
+  });
+  if (json(files) !== json(worktreeFiles(root))) {
+    throw new Error("Git file inventory changed during graph generation");
+  }
   const discovery = jestArguments(root, ["--listTests", "--json"]);
   const configuration = jestArguments(root, ["--showConfig"]);
   const effectiveJestConfiguration = JSON.parse(
@@ -532,8 +586,8 @@ export const writeBundle = async (
   const roots = publicExportRoots(root, inventory);
   const reportPolicy = runtimeReportPolicy(inventory, roots);
   const runtime = await extractGraph(root, inventory.runtime, reportPolicy);
-  const graph = await extractGraph(root, inputs);
-  for (const { source } of [...graph.modules, ...runtime.modules]) {
+  const authored = await extractGraph(root, inputs);
+  for (const { source } of [...authored.modules, ...runtime.modules]) {
     if (
       JS.test(source) &&
       !path.isAbsolute(source) &&
@@ -547,6 +601,8 @@ export const writeBundle = async (
       );
     }
   }
+  const graph = includeFileDependencies(authored, fileAccess);
+  const render = observationRenderer(graph);
   const role = (file) =>
     inventory.runtime.includes(file)
       ? "shipped-runtime"
@@ -561,21 +617,21 @@ export const writeBundle = async (
   const members = {
     "dependencies.json": json(graph),
     "runtime-dependencies.json": json(runtime),
-    "modules.mmd": (await format(graph, { outputType: "mermaid" })).output,
-    "folders.mmd": (await format(graph, { outputType: "mermaid", collapse: 1 }))
-      .output,
+    "modules.mmd": await render({ outputType: "mermaid" }),
+    "folders.mmd": await render({ outputType: "mermaid", collapse: 1 }),
     "runtime-metrics.txt": (await format(runtime, { outputType: "metrics" }))
       .output,
-    ...(focus === null ? {} : await focusedReports(graph, focus)),
+    ...(focus === null ? {} : await focusedReports(graph, focus, render)),
     "inventory.json": json({
       authored: inputs.map((file) => ({ file, role: role(file) })),
       packageFiles: inventory.files,
       runtime: inventory.runtime,
       jest: tests,
+      resourceInputs: fileAccess.inputs,
       excludedDomains: EXCLUDED_DOMAINS,
       staticLimitations: [
         "computed imports",
-        "runtime resource reads",
+        "file paths with unresolved runtime values",
         "generated programs",
         "workers",
         "subprocess inputs",
@@ -592,6 +648,7 @@ export const writeBundle = async (
     root,
     authoredInventory(root),
     shippedInventory(root),
+    fileAccess.inputs,
   );
   if (json(before) !== json(after)) {
     const changedFiles = [
@@ -611,7 +668,7 @@ export const writeBundle = async (
   const manifest = {
     producer: "@hadden-industries/owlapi/dependency-analysis",
     reportKind: "dependency-graph-bundle",
-    schemaVersion: 2,
+    schemaVersion: 3,
     complete: true,
     repository: realpathSync(root),
     identity: before,
@@ -657,12 +714,16 @@ export const writeBundle = async (
       focus,
       publicExports: roots,
       scope:
-        "Advisory native reachability and metrics; resource use and execution impact are not proven.",
+        "Advisory import and file reachability. Cycle and enforcement results cover native imports.",
     },
     counts: {
       authored: inputs.length,
       runtime: inventory.runtime.length,
       jest: tests.length,
+      fileRelationships: graph.modules
+        .flatMap(({ dependencies }) => dependencies)
+        .filter(({ kind }) => kind).length,
+      resourceDiagnostics: graph.resourceDiagnostics.length,
       cycles: graph.summary.violations.filter(
         ({ rule }) => rule.name === "circular-dependencies",
       ).length,

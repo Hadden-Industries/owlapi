@@ -12,6 +12,8 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { createHash } from "node:crypto";
 import { cruise, format } from "dependency-cruiser";
+import { observeFileDependencies } from "./dependency-file-access.mjs";
+import { includeFileDependencies } from "./dependency-observation.mjs";
 import {
   authoredInventory,
   shippedInventory,
@@ -70,6 +72,157 @@ const fixture = async (run) => {
 };
 
 describe("native dependency graph contract", () => {
+  test(
+    "follows inputs, generated worker outputs and job-scoped reports in the same graph",
+    async () =>
+      fixture(async ({ root, write }) => {
+        write("fixtures/pin.json", "{}");
+        write("fixtures/model.ttl", "<urn:s> <urn:p> <urn:o> .");
+        write(
+          "scripts/worker.mjs",
+          [
+            'import { readFile as read, writeFile as write } from "node:fs/promises";',
+            "const [input, output] = process.argv.slice(2);",
+            "await write(output, await read(input));",
+          ].join("\n"),
+        );
+        write(
+          "scripts/driver.mjs",
+          [
+            'import { readFileSync as read } from "node:fs";',
+            'import { execFileSync } from "node:child_process";',
+            'import { join } from "node:path";',
+            'import { fileURLToPath } from "node:url";',
+            'const fixtures = new URL("../fixtures/", import.meta.url);',
+            'read(new URL("pin.json", fixtures));',
+            'const input = fileURLToPath(new URL("model.ttl", fixtures));',
+            "export function run(directory) {",
+            '  const resultPath = join(directory, "observation.json");',
+            '  execFileSync(process.execPath, ["scripts/worker.mjs", input, resultPath]);',
+            "  return read(resultPath);",
+            "}",
+            'export const unrelated = (read) => read(new URL("model.ttl", fixtures));',
+            "read(process.env.RUNTIME_FILE);",
+          ].join("\n"),
+        );
+        write("scripts/consumer.test.js", 'import "./driver.mjs";');
+        write(
+          "scripts/coverage.mjs",
+          [
+            'import { readFileSync } from "node:fs";',
+            "readFileSync(process.argv[2]);",
+          ].join("\n"),
+        );
+        write(
+          ".github/workflows/fixture.yml",
+          [
+            "jobs:",
+            "  first:",
+            "    steps:",
+            "      - run: npm test -- --json --outputFile=.release/out.json",
+            "      - run: node scripts/coverage.mjs .release/out.json",
+            "  second:",
+            "    steps:",
+            "      - run: npm test -- --json --outputFile .release/out.json",
+          ].join("\n"),
+        );
+        const inputs = authoredInventory(root);
+        const native = await extractGraph(root, inputs);
+        const readSource = (source) =>
+          readFileSync(path.join(root, source), "utf8");
+        const known = new Set([
+          ...inputs,
+          "fixtures/pin.json",
+          "fixtures/model.ttl",
+          ".github/workflows/fixture.yml",
+        ]);
+        const access = observeFileDependencies(inputs, readSource, known);
+        const graph = includeFileDependencies(native, access);
+        const bySource = new Map(
+          graph.modules.map((module) => [module.source, module]),
+        );
+        expect(access.inputs).toEqual([
+          ".github/workflows/fixture.yml",
+          "fixtures/model.ttl",
+          "fixtures/pin.json",
+        ]);
+        const driver = bySource.get("scripts/driver.mjs");
+        const reads = driver.dependencies.filter(
+          ({ kind }) => kind === "reads-file",
+        );
+        expect(reads.map(({ resolved }) => resolved)).toEqual([
+          "fixtures/pin.json",
+          expect.stringMatching(/^artifact:.*\/observation\.json$/u),
+        ]);
+        const artifact = reads[1].resolved;
+        expect(bySource.get(artifact).dependencies).toEqual([
+          expect.objectContaining({
+            kind: "generated-by",
+            resolved: "scripts/worker.mjs",
+            evidence: [
+              { file: "scripts/worker.mjs", line: 3 },
+              { file: "scripts/driver.mjs", line: 10 },
+            ],
+          }),
+        ]);
+        expect(bySource.get("scripts/worker.mjs").dependencies).toContainEqual(
+          expect.objectContaining({
+            resolved: "fixtures/model.ttl",
+            kind: "reads-file",
+          }),
+        );
+        expect(graph.resourceDiagnostics).toContainEqual(
+          expect.objectContaining({
+            file: "scripts/driver.mjs",
+            line: 14,
+            kind: "reads-file",
+          }),
+        );
+        const workflowReport = (job) =>
+          `artifact:.github/workflows/fixture.yml#${job}/.release/out.json`;
+        expect(
+          bySource.get("scripts/coverage.mjs").dependencies,
+        ).toContainEqual(
+          expect.objectContaining({
+            resolved: workflowReport("first"),
+            kind: "reads-file",
+          }),
+        );
+        expect(
+          bySource.get("scripts/coverage.mjs").dependencies,
+        ).not.toContainEqual(
+          expect.objectContaining({ kind: "receives-file" }),
+        );
+        expect(bySource.get(workflowReport("second")).dependents).toEqual([]);
+        const focused = await focusedReports(graph, artifact);
+        expect(JSON.parse(focused["dependents.json"]).modules).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({ source: "scripts/consumer.test.js" }),
+            expect.objectContaining({
+              source: "scripts/driver.mjs",
+              dependencies: expect.arrayContaining([
+                expect.objectContaining({
+                  resolved: artifact,
+                  kind: "reads-file",
+                }),
+              ]),
+            }),
+          ]),
+        );
+        expect(focused["focus.mmd"]).toContain("observation.json");
+        write(
+          "scripts/driver.mjs",
+          readSource("scripts/driver.mjs").replace("pin.json", "new-pin.json"),
+        );
+        write("fixtures/new-pin.json", "{}");
+        known.add("fixtures/new-pin.json");
+        const refreshed = observeFileDependencies(inputs, readSource, known);
+        expect(refreshed.inputs).toContain("fixtures/new-pin.json");
+        expect(refreshed.inputs).not.toContain("fixtures/pin.json");
+      }),
+    120000,
+  );
+
   test(
     "native reports preserve the union of all exports and literal focus scope",
     async () =>
@@ -502,8 +655,14 @@ describe("native dependency graph contract", () => {
     async () =>
       fixture(async ({ parent }) => {
         const target = path.join(parent, "bundle one");
-        const first = await writeBundle(target);
-        const second = await writeBundle(path.join(parent, "bundle two"));
+        const resource =
+          "docs/compatibility/profiles/java-owlapi-5.5.1/central-observations.json";
+        const first = await writeBundle(target, undefined, resource);
+        const second = await writeBundle(
+          path.join(parent, "bundle two"),
+          undefined,
+          resource,
+        );
         expect(first.members).toEqual(second.members);
         expect(first.identity.tools.npm.name).toBe("npm");
         expect(first.identity.tools.jest.name).toBe("jest");
@@ -511,6 +670,24 @@ describe("native dependency graph contract", () => {
         expect(first.invocations.jestDiscovery.argv).toContain("--listTests");
         expect(first.effectiveJestConfiguration.configs.length).toBeGreaterThan(
           0,
+        );
+        expect(first.identity.files[".java-version"]).toMatch(
+          /^[a-f0-9]{64}$/u,
+        );
+        expect(first.counts.fileRelationships).toBeGreaterThan(0);
+        const dependents = JSON.parse(
+          readFileSync(path.join(target, "dependents.json")),
+        );
+        expect(dependents.modules).toContainEqual(
+          expect.objectContaining({
+            source: "profiles/behaviorProfiles.test.js",
+            dependencies: expect.arrayContaining([
+              expect.objectContaining({
+                resolved: resource,
+                kind: "reads-file",
+              }),
+            ]),
+          }),
         );
         for (const [file, hash] of Object.entries(first.members)) {
           expect(
