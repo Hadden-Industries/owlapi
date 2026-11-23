@@ -235,6 +235,10 @@ public final class RunOntologyComparisonCase {
                 return result;
             }
             publishLoadStage(request, result, resultPath, requestedImports);
+            if (request.has("originalRdfXml")) {
+                result.put("originalRdfXml", compareOriginalRdfXml(
+                    request.required("originalRdfXml"), configuration, imports, expected));
+            }
             if (!request.required("compareStructure").asBoolean()) {
                 result.put("structure", Map.of("status", "not-requested"));
                 return result;
@@ -306,6 +310,35 @@ public final class RunOntologyComparisonCase {
         } finally {
             result.put("importRequests", requestedImports);
             result.put("networkAttempts", OntologyReferenceContract.networkAccessAttemptCount());
+        }
+    }
+
+    /** Compare the archived RDF/XML source against the independently loaded derivative. */
+    private static Map<String, Object> compareOriginalRdfXml(JsonNode reference,
+        OWLOntologyLoaderConfiguration configuration, Map<String, IRI> imports,
+        OWLOntology derivative) {
+        Map<String, Object> requestedImports = new LinkedHashMap<>();
+        try {
+            JsonNode document = reference.required("document");
+            Map<String, Object> source = pin(Path.of(document.required("path").asText()));
+            if (!source.get("sha256").equals(document.required("sha256").asText())
+                || ((Number) source.get("byteLength")).longValue() != document.required("byteLength").asLong()) {
+                throw new IllegalArgumentException("The archived RDF/XML does not match its byte pin");
+            }
+            var manager = OWLManager.createOWLOntologyManager();
+            installImportMappings(manager, imports, requestedImports);
+            int entityExpansionLimit = reference.required("limits").required("entityExpansionLimit").asInt();
+            if (entityExpansionLimit <= 0) {
+                throw new IllegalArgumentException("Archived RDF/XML requires a finite entity-expansion limit");
+            }
+            OWLOntology original = load(manager, document,
+                configuration.setEntityExpansionLimit(Integer.toString(entityExpansionLimit)),
+                new RDFXMLDocumentFormat());
+            return Map.of("source", source, "closure", closureIdentities(manager, original),
+                "comparison", compare(original, derivative), "importRequests", requestedImports);
+        } catch (Exception failure) {
+            return Map.of("comparison", failure("original-rdfxml", failure),
+                "importRequests", requestedImports);
         }
     }
 
@@ -761,11 +794,16 @@ public final class RunOntologyComparisonCase {
         result.put("counts", OntologyStructuralComparison.ontologyCounts(ontology));
         result.put("imports", ontology.importsDeclarations().map(value -> value.getIRI().toString())
             .sorted().collect(Collectors.toList()));
-        result.put("closure", manager.importsClosure(ontology).map(member ->
-            OntologyStructuralComparison.ontologyIdentity(member.getOntologyID()))
-            .sorted(OntologyStructuralComparison::compareOntologyIdentity).collect(Collectors.toList()));
+        result.put("closure", closureIdentities(manager, ontology));
         result.put("unparsedRdf", unparsedRdf(manager, ontology));
         return result;
+    }
+
+    private static List<Map<String, Object>> closureIdentities(OWLOntologyManager manager,
+        OWLOntology ontology) {
+        return manager.importsClosure(ontology).map(member ->
+            OntologyStructuralComparison.ontologyIdentity(member.getOntologyID()))
+            .sorted(OntologyStructuralComparison::compareOntologyIdentity).toList();
     }
 
     private static List<String> unparsedRdf(OWLOntologyManager manager, OWLOntology ontology) {

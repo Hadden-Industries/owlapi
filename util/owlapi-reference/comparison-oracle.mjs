@@ -236,6 +236,33 @@ export function comparisonJavaTools(environment, directory) {
   return { jdk, selection, env, timeout, heapMiB, executeProcess };
 }
 
+/** Produce the derivative with the same selected JDK used for qualification. */
+export async function expandRdfXmlEntities(
+  original,
+  output,
+  outputBytes,
+  limits,
+  environment,
+) {
+  const { executeProcess } = comparisonJavaTools(
+    environment,
+    environment.outputDirectory,
+  );
+  const result = await executeProcess("java", [
+    sourceFile("ExpandRdfXmlEntities.java"),
+    original,
+    output,
+    String(outputBytes),
+    String(limits.entityExpansionLimit),
+    String(limits.totalEntitySizeLimit),
+    "convert",
+  ]);
+  if (result.exitCode !== 0)
+    throw new Error(
+      `RDF/XML entity expansion failed (${result.exitCode}): ${result.stderr}`,
+    );
+}
+
 export async function compileComparisonOracle(
   environment,
   directory,
@@ -286,6 +313,16 @@ export async function compileComparisonOracle(
             "-Djdk.xml.totalEntitySizeLimit=50000000",
             "-Djdk.xml.maxGeneralEntitySizeLimit=0",
             "-Djdk.xml.maxParameterEntitySizeLimit=1000000",
+          ]
+        : []),
+      ...(request.originalRdfXml
+        ? [
+            `-Djdk.xml.entityExpansionLimit=${
+              request.originalRdfXml.limits.entityExpansionLimit
+            }`,
+            `-Djdk.xml.totalEntitySizeLimit=${
+              request.originalRdfXml.limits.totalEntitySizeLimit
+            }`,
           ]
         : []),
       "-cp",

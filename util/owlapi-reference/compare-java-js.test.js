@@ -34,6 +34,7 @@ import {
   reconcileIfcowlSingletonUnions,
 } from "./comparison-ifcowl.mjs";
 import { loadPerformanceReport } from "./comparison-performance.mjs";
+import { matchesOriginalRdfXml } from "./comparison-rdfxml-expansion.mjs";
 
 async function withScratch(run) {
   const directory = await mkdtemp(join(tmpdir(), "owlapi-comparison-test-"));
@@ -1239,6 +1240,126 @@ test("archived OGG binds the stock XML refusals to the original imported bytes",
         .expectedLoadRefusals,
     ).toBeUndefined();
   }
+});
+
+test("entity-free OGG compares the pinned derivatives to the original inputs and taxonomy", () => {
+  const [worm, fly] = comparisonCases({ suite: "ogg-archive-entity-free" });
+  for (const [caseEntry, subset, taxonomy] of [
+    [worm, "ce", "obo-ogg-archive-taxon-ce"],
+    [fly, "dm", "obo-ogg-archive-taxon-dm"],
+  ]) {
+    const { input, definition, imports } = caseEntry;
+    expect(input.id).toBe("obo-ogg-archive-" + subset + "-entity-free");
+    expect(definition).toMatchObject({
+      scenario: "direct-load",
+      behaviorProfileId: "java-owlapi-5.5.1",
+      parsingMode: "compatible",
+      importPolicy: "mapped",
+      originalRdfXml: {
+        document: {
+          id: "obo-ogg-archive-" + subset,
+          documentIRI: input.documentIRI,
+        },
+        recipe: "jaxp-sax-v1",
+      },
+    });
+    expect(imports.map(([, fixture]) => fixture.id)).toEqual([taxonomy]);
+    expect(definition.expectedLoadRefusals).toBeUndefined();
+  }
+  const changed = {
+    ...comparisonCatalogue,
+    fixtures: comparisonCatalogue.fixtures.map((fixture) =>
+      fixture.id === "obo-ogg-archive-ce"
+        ? { ...fixture, sha256: "0".repeat(64) }
+        : fixture,
+    ),
+  };
+  expect(() =>
+    comparisonCases({ suite: "ogg-archive-entity-free" }, changed),
+  ).toThrow(/original/u);
+  for (const source of [
+    { ...worm.input.source, totalEntitySizeLimit: 2147483647 },
+    { kind: "generated", text: "Ontology()" },
+  ]) {
+    const altered = {
+      ...comparisonCatalogue,
+      fixtures: comparisonCatalogue.fixtures.map((fixture) =>
+        fixture.id === worm.input.id ? { ...fixture, source } : fixture,
+      ),
+    };
+    expect(() =>
+      comparisonCases({ suite: "ogg-archive-entity-free" }, altered),
+    ).toThrow(/approved original/u);
+  }
+});
+
+test("entity-free OGG requires structural measurements", async () => {
+  await withScratch((directory) =>
+    expect(
+      runComparison(
+        {
+          action: "run",
+          suite: "ogg-archive-entity-free",
+          measurements: ["behavior"],
+        },
+        { outputDirectory: join(directory, "unused"), memoryGuard: false },
+      ),
+    ).rejects.toThrow("requires a structural measurement"),
+  );
+});
+
+test("entity-free OGG requires the native original comparison and its finite allowance", () => {
+  const [{ definition }] = comparisonCases({
+    suite: "ogg-archive-entity-free",
+  });
+  const { document, limits } = definition.originalRdfXml;
+  const originalRdfXml = {
+    source: { sha256: document.sha256, byteLength: document.byteLength },
+    comparison: { status: "match" },
+    closure: definition.requiredImportClosure,
+    importRequests: Object.fromEntries(
+      definition.imports.map(({ ontologyIRI, documentIRI }) => [
+        ontologyIRI,
+        documentIRI,
+      ]),
+    ),
+  };
+  const native = {
+    originalRdfXml,
+    xmlSettings: {
+      "jdk.xml.entityExpansionLimit": String(limits.entityExpansionLimit),
+      "jdk.xml.totalEntitySizeLimit": String(limits.totalEntitySizeLimit),
+      "javax.xml.accessExternalDTD": "",
+      "javax.xml.accessExternalSchema": "",
+    },
+  };
+  expect(matchesOriginalRdfXml(definition, {}, native)).toBe(true);
+  expect(
+    matchesOriginalRdfXml(
+      definition,
+      {},
+      {
+        ...native,
+        originalRdfXml: {
+          ...originalRdfXml,
+          comparison: { status: "mismatch" },
+        },
+      },
+    ),
+  ).toBe(false);
+  expect(
+    matchesOriginalRdfXml(
+      definition,
+      {},
+      {
+        ...native,
+        xmlSettings: {
+          ...native.xmlSettings,
+          "jdk.xml.totalEntitySizeLimit": "0",
+        },
+      },
+    ),
+  ).toBe(false);
 });
 
 test("strict stock IDMP binds the refused annotation in direct and closure cases", () => {

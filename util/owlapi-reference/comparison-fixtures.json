@@ -6918,6 +6918,56 @@
       "releaseEvidence": "https://sourceforge.net/p/ogg/code/67/tree/trunk/src/ontology/NCBITaxon_import_Dm.owl"
     },
     {
+      "id": "obo-ogg-archive-ce-entity-free",
+      "collection": "obo",
+      "suite": "ogg-archive-entity-free",
+      "syntax": "rdfxml",
+      "byteLength": 76025356,
+      "sha256": "da5f26ad87a0880681243dfb68cb98318660aca4364a6b027710e5d71ba4766b",
+      "documentIRI": "http://purl.obolibrary.org/obo/ogg-ce.owl",
+      "basePolicy": "archived-ontology",
+      "source": {
+        "kind": "rdfxml-expansion",
+        "recipe": "jaxp-sax-v1",
+        "originalId": "obo-ogg-archive-ce",
+        "originalSha256": "7bc02652ff7b592c6a1ba8880accc3e9f3cc80e44c9dba67c4c8938a3924026f",
+        "entityExpansionLimit": 640000,
+        "totalEntitySizeLimit": 21000000
+      },
+      "acquisition": "derived",
+      "role": "root",
+      "licenseLead": "Entity-expanded revision 67 OGG for C. elegans under CC BY 3.0",
+      "licenseSource": "http://creativecommons.org/licenses/by/3.0/",
+      "imports": [
+        "obo-ogg-archive-taxon-ce"
+      ]
+    },
+    {
+      "id": "obo-ogg-archive-dm-entity-free",
+      "collection": "obo",
+      "suite": "ogg-archive-entity-free",
+      "syntax": "rdfxml",
+      "byteLength": 63501431,
+      "sha256": "e7a025464d889d52ea849a07743bb9309d4064981deb1efc0f0a249c84ac8e16",
+      "documentIRI": "http://purl.obolibrary.org/obo/ogg-dm.owl",
+      "basePolicy": "archived-ontology",
+      "source": {
+        "kind": "rdfxml-expansion",
+        "recipe": "jaxp-sax-v1",
+        "originalId": "obo-ogg-archive-dm",
+        "originalSha256": "c57615fc39c80d4063f0c0d54a20bc943682d79b9a86d2919fd7e24ce701a5d4",
+        "entityExpansionLimit": 500000,
+        "totalEntitySizeLimit": 16000000
+      },
+      "acquisition": "derived",
+      "role": "root",
+      "licenseLead": "Entity-expanded revision 67 OGG for D. melanogaster under CC BY 3.0",
+      "licenseSource": "http://creativecommons.org/licenses/by/3.0/",
+      "imports": [
+        "obo-ogg-archive-taxon-dm"
+      ]
+    },
+    {
       "id": "obo-pcl",
       "collection": "obo",
       "suite": "wider",

@@ -59,6 +59,10 @@ import {
   reconcileIfcowlSingletonUnions,
   recordedIfcowlSuite,
 } from "./comparison-ifcowl.mjs";
+import {
+  compareExpandedRdfXmlDocuments,
+  matchesOriginalRdfXml,
+} from "./comparison-rdfxml-expansion.mjs";
 import { runFormatPerformance } from "./comparison-format-performance.mjs";
 import { runRdfXmlCorpusComparison } from "./comparison-rdfxml-corpus.mjs";
 import { verifyWriterStages } from "./comparison-writer.mjs";
@@ -90,6 +94,8 @@ const comparisonInputs = [
   "./compare-java-js.mjs",
   "./comparison-cases.mjs",
   "./comparison-ifcowl.mjs",
+  "./comparison-rdfxml-expansion.mjs",
+  "./ExpandRdfXmlEntities.java",
   "./run-comparison-js.mjs",
   "./comparison-evidence.mjs",
   "./comparison-fixtures.mjs",
@@ -222,7 +228,13 @@ async function resolvedDocuments(entry, environment, prepare) {
   for (const [ontologyIRI, fixture] of entry.imports) {
     imports.push({ ontologyIRI, ...(await resolveDocument(fixture)) });
   }
-  return { document, imports };
+  const originalRdfXml = entry.originalRdfXml
+    ? {
+        document: await resolveDocument(entry.originalRdfXml),
+        limits: entry.definition.originalRdfXml.limits,
+      }
+    : undefined;
+  return { document, imports, originalRdfXml };
 }
 
 async function observeJs(request, directory, environment) {
@@ -603,6 +615,8 @@ async function caseVerdict(definition, measurements, js, native, performance) {
   const matchedImportClosure =
     !definition.requiredImportClosure ||
     matchesComparisonImportClosure(definition, js, native);
+  const matchedOriginalRdfXml =
+    !definition.originalRdfXml || matchesOriginalRdfXml(definition, js, native);
   const behavior =
     matchedProfiles &&
     matchedDocument &&
@@ -612,6 +626,7 @@ async function caseVerdict(definition, measurements, js, native, performance) {
     matchedWriter &&
     matchedRecordedIfcowl &&
     matchedImportClosure &&
+    matchedOriginalRdfXml &&
     expectedLoad &&
     offline
       ? "observed"
@@ -633,7 +648,9 @@ async function caseVerdict(definition, measurements, js, native, performance) {
       : null;
   let structure = sourceStructure;
   if (inapplicable) structure = "not-applicable";
-  else if (definition.scenario === "closure-roundtrip") {
+  else if (definition.originalRdfXml && sourceStructure === "match") {
+    structure = compareExpandedRdfXmlDocuments(definition, js, native);
+  } else if (definition.scenario === "closure-roundtrip") {
     if (sourceStructure === "match") {
       structure = compareClosureStages(
         js,
@@ -656,6 +673,7 @@ async function caseVerdict(definition, measurements, js, native, performance) {
   }
   const accepted =
     behavior === "observed" &&
+    (!definition.originalRdfXml || structure === "match") &&
     (!definition.expectedJsRdfXmlWriteRefusal ||
       structure === "match" ||
       structure === "reconciled") &&
@@ -822,12 +840,13 @@ async function observeCase(
 ) {
   const { caseId, definition } = entry;
   const compareLoadedDocuments =
-    measurements.includes("performance") &&
+    (definition.originalRdfXml || measurements.includes("performance")) &&
     definition.scenario === "direct-load";
   const compareStructure =
     !definition.expectedLoadRefusals &&
     (definition.scenario === "closure-roundtrip" ||
       Boolean(definition.expectedRecordedIfcowlMismatch) ||
+      Boolean(definition.originalRdfXml) ||
       measurements.includes("structure") ||
       measurements.includes("performance"));
   if (
@@ -839,7 +858,7 @@ async function observeCase(
     );
   }
   const operation = builtInObservation(definition);
-  const input = operation
+  const { originalRdfXml, ...input } = operation
     ? { [operation]: definition[operation] }
     : await resolvedDocuments(entry, environment, false);
   const jsRequest = {
@@ -891,6 +910,7 @@ async function observeCase(
       ? { oracleVersionLine: true }
       : {}),
     ...input,
+    ...(originalRdfXml ? { originalRdfXml } : {}),
     scenario: definition.scenario,
     compareStructure,
     ...(compareLoadedDocuments ? { compareLoadedDocuments } : {}),
@@ -976,7 +996,11 @@ async function observeCase(
       performance,
     );
   }
-  const documents = [input.document, ...(input.imports ?? [])].filter(Boolean);
+  const documents = [
+    input.document,
+    ...(input.imports ?? []),
+    originalRdfXml?.document,
+  ].filter(Boolean);
   const verifiedPaths = new Set();
   for (const document of documents) {
     if (!verifiedPaths.has(document.path)) {
@@ -1721,6 +1745,12 @@ async function executeComparison(request, environment = {}) {
     (measurements.length !== 1 || measurements[0] !== "behavior")
   ) {
     throw new Error("The selected scenarios supply only behavior evidence");
+  }
+  if (
+    entries.some(({ definition }) => definition.originalRdfXml) &&
+    !measurements.includes("structure")
+  ) {
+    throw new Error("Entity-free OGG requires a structural measurement");
   }
   options.performanceProtocol = {
     coldSamples: 3,

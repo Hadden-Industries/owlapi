@@ -32,6 +32,10 @@ import {
   recordedIfcowlMismatch,
   recordedIfcowlSuite,
 } from "./comparison-ifcowl.mjs";
+import {
+  rdfXmlExpansionKind,
+  rdfXmlExpansionSource,
+} from "./comparison-rdfxml-expansion.mjs";
 
 export const javaProfile = "java-owlapi-5.5.1";
 export const normativeProfile = "normative-v1";
@@ -480,9 +484,11 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
             parsingMode: request.parsingMode ?? "compatible",
           },
         ]
-      : request.suite
-        ? profileSelections
-        : [profileSelections[1]];
+      : selected.every(({ source }) => source.kind === rdfXmlExpansionKind)
+        ? [profileSelections[0]]
+        : request.suite
+          ? profileSelections
+          : [profileSelections[1]];
   for (const { behaviorProfileId, parsingMode } of profiles) {
     if (
       ![normativeProfile, javaProfile].includes(behaviorProfileId) ||
@@ -492,9 +498,11 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
     }
   }
   return selected.flatMap((input) => {
+    const expansion = rdfXmlExpansionSource(input, catalogue);
     const policy =
       request.imports ??
-      (request.suite === "prospects" && input.id === ifcowlInputId
+      (expansion ||
+      (request.suite === "prospects" && input.id === ifcowlInputId)
         ? "mapped"
         : "recorded");
     const oracle = input.suite === "july" ? pinnedSourceOracle() : null;
@@ -588,6 +596,14 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
         const compatibleJava =
           profile.behaviorProfileId === javaProfile &&
           profile.parsingMode === "compatible";
+        if (
+          expansion &&
+          (scenario !== "direct-load" || policy !== "mapped" || !compatibleJava)
+        ) {
+          throw new Error(
+            "Entity-free OGG requires a Java-compatible direct load with mapped imports",
+          );
+        }
         const oggArchivePin = oggArchiveXmlRefusalInputs.get(input.id);
         if (normativeMappedIfcowl && profile.parsingMode === "strict") {
           expectedLoadRefusals = ifcowlMappedStrictRefusal;
@@ -641,6 +657,14 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
             };
           }
         }
+        const requiredImportClosure = expansion
+          ? [
+              input.documentIRI,
+              ...new Set(imports.map(([, member]) => member.ontologyIRI)),
+            ].map((ontologyIRI) => ({ ontologyIRI, versionIRI: null }))
+          : exactMappedIfcowlInputs && !strictFirst && !expectedLoadRefusals
+            ? ifcowlImportClosure("mapped")
+            : undefined;
         const definition = {
           schemaVersion: 1,
           scenario,
@@ -655,8 +679,15 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
           ...(oracle ? { oracle } : {}),
           ...admittedInputs,
           importPolicy: policy,
-          ...(exactMappedIfcowlInputs && !strictFirst && !expectedLoadRefusals
-            ? { requiredImportClosure: ifcowlImportClosure("mapped") }
+          ...(requiredImportClosure ? { requiredImportClosure } : {}),
+          ...(expansion
+            ? {
+                originalRdfXml: {
+                  document: documentIdentity(expansion.original),
+                  recipe: expansion.recipe,
+                  limits: expansion.limits,
+                },
+              }
             : {}),
           ...(hasMappedHttpImports &&
           profile.behaviorProfileId === normativeProfile
@@ -695,6 +726,7 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
           definition,
           input,
           imports,
+          ...(expansion ? { originalRdfXml: expansion.original } : {}),
         };
       }),
     );

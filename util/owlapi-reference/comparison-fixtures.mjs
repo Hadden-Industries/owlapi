@@ -6,6 +6,7 @@ import { Readable, Transform } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import { createGunzip } from "node:zlib";
 import { sha256 } from "./comparison-evidence.mjs";
+import { rdfXmlExpansionSource } from "./comparison-rdfxml-expansion.mjs";
 
 export const comparisonCatalogue = JSON.parse(
   readFileSync(new URL("./comparison-fixtures.json", import.meta.url), "utf8"),
@@ -493,6 +494,10 @@ export async function resolveComparisonFixture(
     );
   }
   assertFixturePin(fixture);
+  const expansion = rdfXmlExpansionSource(
+    fixture,
+    environment.catalogue ?? comparisonCatalogue,
+  );
   if (!isAbsolute(environment.cacheDirectory ?? "")) {
     throw new Error("An absolute comparison cache directory is required");
   }
@@ -514,6 +519,30 @@ export async function resolveComparisonFixture(
   if (!prepare) {
     if (seed) return resolve(seed);
     throw new Error(`Missing verified offline object for ${fixture.id}`);
+  }
+  if (expansion && !seed) {
+    const original = await resolveComparisonFixture(
+      expansion.original,
+      environment,
+      true,
+    );
+    const pending = `${path}.${randomUUID()}.expansion`;
+    const { expandRdfXmlEntities } = await import("./comparison-oracle.mjs");
+    await mkdir(dirname(path), { recursive: true });
+    try {
+      await expandRdfXmlEntities(
+        original,
+        pending,
+        fixture.byteLength,
+        expansion.limits,
+        environment,
+      );
+      return await publishPinnedBytes(path, fixture, () =>
+        createReadStream(pending),
+      );
+    } finally {
+      await rm(pending, { force: true });
+    }
   }
   if (!seed && fixture.acquisition === "local-only") {
     throw new Error(`An authorized local seed is required for ${fixture.id}`);

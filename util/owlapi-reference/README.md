@@ -68,6 +68,13 @@ Each case pins the OGG file and its own NCBI Taxonomy import from [SourceForge r
 The two subset cases verify both engines' stock XML entity-limit refusals.
 The base case requires a structural comparison.
 The archive cases have independent IDs, while the recorded merged OGG document has its own acquisition record.
+Use `--suite ogg-archive-entity-free` for Java-compatible structural comparisons of the worm and fruit-fly derivatives.
+Preparation expands internal XML entities from the pinned archive with `ExpandRdfXmlEntities.java` and verifies the resulting bytes before caching them.
+The recipe blocks external XML resources, preserves the logical document and taxonomy IRIs, and bounds output by the pinned byte length.
+The complete conversion measured 629,574 expansions and 20,589,401 aggregate entity code units for the worm file, and 483,923 expansions and 15,872,386 code units for the fruit-fly file.
+Each native case worker loads the corresponding original with the finite recipe allowance and compares its structure with the derivative.
+The shared harness also compares the Java and JavaScript models for every member of the derivative's import closure.
+
 The OGG sources credit Yongqun He, Yue Liu and Bin Zhao under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
 The imported taxonomic material comes from [NCBI Taxonomy](https://obofoundry.org/ontology/ncbitaxon.html).
 
