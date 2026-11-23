@@ -14,7 +14,11 @@ import {
   comparisonWitnesses,
   resolveComparisonFixture,
 } from "./comparison-fixtures.mjs";
-import { readNativeComparisonResult, sha256 } from "./comparison-evidence.mjs";
+import {
+  exactComparedDocuments,
+  readNativeComparisonResult,
+  sha256,
+} from "./comparison-evidence.mjs";
 import { loadPerformanceReport } from "./comparison-performance.mjs";
 
 async function withScratch(run) {
@@ -626,6 +630,25 @@ test("a requested Node heap must fit within the Windows job budget", async () =>
       "unused",
     ),
   ).rejects.toThrow("smaller than the comparison job budget");
+});
+
+test("native and JavaScript closures must cover the same unique document IRIs", () => {
+  const model = (documentIRI) => ({
+    documentIRI,
+    status: "completed",
+    artifact: { sha256: "a".repeat(64) },
+  });
+  const root = model("urn:root");
+  const dependency = model("urn:import");
+  const unrelated = model("urn:elsewhere");
+  expect(exactComparedDocuments([root, dependency], [dependency, root])).toBe(
+    true,
+  );
+  expect(exactComparedDocuments([root, dependency], [root, unrelated])).toBe(
+    false,
+  );
+  expect(exactComparedDocuments([root, root], [root, root])).toBe(false);
+  expect(exactComparedDocuments([root, dependency], [root, root])).toBe(false);
 });
 
 test("a performance result requires every requested cold sample and warm repetition", () => {

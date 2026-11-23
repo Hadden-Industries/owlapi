@@ -14,6 +14,7 @@ import {
 } from "./comparison-fixtures.mjs";
 import {
   comparisonIdentity,
+  exactComparedDocuments,
   publishComparisonFile,
   publishComparisonJson,
   readCompletedComparisonFile,
@@ -681,8 +682,7 @@ function compareClosureStages(js, native, reconciledMember) {
   if (verdicts.includes("mismatch")) return "mismatch";
   const completed =
     completedClosureStages(js, native) &&
-    comparisons.length > 0 &&
-    comparisons.length === js.documentModels?.length &&
+    exactComparedDocuments(js.documentModels, comparisons) &&
     verdicts.every((verdict) => verdict === "match");
   return completed ? "match" : "inconclusive";
 }
@@ -917,6 +917,25 @@ async function caseVerdict(definition, measurements, js, native, performance) {
   };
 }
 
+function equivalentLoadClosure(js, native) {
+  const jsLoad = js.load;
+  const javaLoad = native.javaLoad?.ontology;
+  if (!jsLoad?.imports?.length && !javaLoad?.imports?.length) {
+    return jsLoad?.closure?.length === 1 && javaLoad?.closure?.length === 1;
+  }
+  const comparisons = native.documentComparisons;
+  return (
+    exactComparedDocuments(js.documentModels, comparisons) &&
+    jsLoad?.closure?.length === comparisons.length &&
+    javaLoad?.closure?.length === comparisons.length &&
+    comparisons.length > 1 &&
+    comparisons.every(
+      ({ comparison, unparsedRdf }) =>
+        comparison.status === "match" && unparsedRdf?.length === 0,
+    )
+  );
+}
+
 function summarizeLoadPerformance(definition, js, native, samples, protocol) {
   const nativeLoad = native.javaLoad?.ontology;
   const sameOperation =
@@ -927,10 +946,7 @@ function summarizeLoadPerformance(definition, js, native, samples, protocol) {
     native.networkAttempts === 0 &&
     nativeLoad?.unparsedRdf?.length === 0 &&
     js.networkRequests?.length === 0 &&
-    js.load?.imports?.length === 0 &&
-    nativeLoad?.imports?.length === 0 &&
-    js.load?.closure?.length === 1 &&
-    nativeLoad?.closure?.length === 1;
+    equivalentLoadClosure(js, native);
   return loadPerformanceReport({
     samples,
     sameOperation,
@@ -1015,6 +1031,9 @@ async function observeCase(
   executionId,
 ) {
   const { caseId, definition } = entry;
+  const compareLoadedDocuments =
+    measurements.includes("performance") &&
+    definition.scenario === "direct-load";
   const compareStructure =
     definition.scenario === "closure-roundtrip" ||
     measurements.includes("structure") ||
@@ -1039,6 +1058,7 @@ async function observeCase(
     ...input,
     input: entry.input.id,
     compareStructure,
+    ...(compareLoadedDocuments ? { compareLoadedDocuments } : {}),
     scenario: definition.scenario,
     packageDirectory: environment.packageDirectory,
     consumerDirectory: environment.consumerDirectory ?? null,
@@ -1083,6 +1103,7 @@ async function observeCase(
     ...input,
     scenario: definition.scenario,
     compareStructure,
+    ...(compareLoadedDocuments ? { compareLoadedDocuments } : {}),
     ...(definition.expectedDifferences?.memberDocumentIRI
       ? { propagateClosure: true }
       : {}),

@@ -239,9 +239,15 @@ public final class RunOntologyComparisonCase {
             if (Files.exists(absent)) throw new IllegalStateException("Import sentinel already exists");
             Map<String, OWLOntology> comparedModels = request.path("propagateClosure").asBoolean()
                 ? new LinkedHashMap<>() : null;
-            if ("closure-roundtrip".equals(request.required("scenario").asText())) {
+            boolean compareLoadedDocuments = request.path("compareLoadedDocuments").asBoolean()
+                && expected.importsDeclarations().findAny().isPresent();
+            boolean closure = "closure-roundtrip".equals(request.required("scenario").asText());
+            if (closure || compareLoadedDocuments) {
                 result.put("documentComparisons", compareDocuments(
-                    request.required("sourceModels"), manager, expected, configuration, absent, comparedModels));
+                    request.required("sourceModels"), manager, expected, configuration, absent,
+                    comparedModels, compareLoadedDocuments));
+            }
+            if (closure) {
                 OWLOntologyManager merger = OWLManager.createOWLOntologyManager();
                 try {
                     expected = merge(manager, expected, merger);
@@ -599,7 +605,7 @@ public final class RunOntologyComparisonCase {
 
     private static List<Map<String, Object>> compareDocuments(JsonNode sourceModels,
         OWLOntologyManager manager, OWLOntology root, OWLOntologyLoaderConfiguration configuration,
-        Path absent, Map<String, OWLOntology> comparedModels) {
+        Path absent, Map<String, OWLOntology> comparedModels, boolean checkDiagnostics) {
         Map<String, Path> models = new LinkedHashMap<>();
         for (JsonNode model : sourceModels) {
             String documentIRI = model.required("documentIRI").asText();
@@ -624,7 +630,8 @@ public final class RunOntologyComparisonCase {
             Map<String, Object> observation = new LinkedHashMap<>();
             observation.put("documentIRI", documentIRI);
             observation.put("comparison", verdict);
-            if (comparedModels != null) observation.put("unparsedRdf", unparsedRdf(manager, document));
+            if (checkDiagnostics || comparedModels != null)
+                observation.put("unparsedRdf", unparsedRdf(manager, document));
             return observation;
         }).toList();
         if (comparedModels != null &&

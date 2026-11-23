@@ -105,14 +105,13 @@ async function storeModel(api, manager, ontology, format, name, directory) {
   };
 }
 
-async function roundTripClosure(
+async function recordSourceModels(
   api,
   manager,
   loaded,
   result,
   request,
   directory,
-  parameters,
 ) {
   result.documentModels = [];
   for (const [index, { ontology, context }] of loaded.documents.entries()) {
@@ -132,10 +131,23 @@ async function roundTripClosure(
     await publishComparisonJson(directory, `js-direct-${index}.json`, {
       schemaVersion: 1,
       caseId: request.caseId,
+      executionId: request.executionId,
       stage: "direct-functional-write",
       ...documentModel,
     });
   }
+}
+
+async function roundTripClosure(
+  api,
+  manager,
+  loaded,
+  result,
+  request,
+  directory,
+  parameters,
+) {
+  await recordSourceModels(api, manager, loaded, result, request, directory);
   const mergerManager = api.OWLManager.createOWLOntologyManager(parameters);
   let merged;
   try {
@@ -641,6 +653,16 @@ async function observe(request, directory) {
       parameters,
     );
   } else if (request.compareStructure) {
+    if (request.compareLoadedDocuments && result.load.imports.length) {
+      await recordSourceModels(
+        api,
+        manager,
+        loaded,
+        result,
+        request,
+        directory,
+      );
+    }
     result.functional = await storeModel(
       api,
       manager,

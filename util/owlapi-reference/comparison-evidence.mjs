@@ -8,6 +8,31 @@ export const sha256 = (bytes) =>
 
 export const comparisonIdentity = (value) => sha256(canonicalJson(value));
 
+/** Require a completed model and one native comparison for each loaded document. */
+export function exactComparedDocuments(models, comparisons) {
+  if (
+    !Array.isArray(models) ||
+    !Array.isArray(comparisons) ||
+    models.length === 0 ||
+    models.length !== comparisons.length ||
+    models.some(
+      ({ documentIRI, status, artifact }) =>
+        typeof documentIRI !== "string" ||
+        !documentIRI ||
+        status !== "completed" ||
+        !/^[0-9a-f]{64}$/u.test(artifact?.sha256),
+    )
+  ) {
+    return false;
+  }
+  const identifiers = models.map(({ documentIRI }) => documentIRI).sort();
+  const compared = comparisons.map(({ documentIRI }) => documentIRI).sort();
+  return (
+    new Set(identifiers).size === identifiers.length &&
+    comparisonIdentity(identifiers) === comparisonIdentity(compared)
+  );
+}
+
 export const strictRetryCategories = Object.freeze([
   "OWL_SYNTAX_ERROR",
   "UNSUPPORTED_CONSTRUCT",

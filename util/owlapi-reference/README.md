@@ -80,7 +80,7 @@ They compare redirect and attempt behavior, document base, compression fixtures,
 Use `--measure performance` for fresh-process working-set and warmed load samples.
 A ratio requires equivalent untimed structural evidence on the same profile and input.
 The verifier checks the requested sample counts and calculates the summary from the retained observations.
-Imported loads retain their timing samples while the runner lacks a comparison of every loaded import model.
+Imported loads qualify for ratios only after independent agreement on every model in the loaded closure.
 Mixed or incomplete loads retain their diagnostic observations.
 The `api-benchmarks` suite carries the 70 generated workload IDs and their raw historical or live observations.
 Use `--benchmark-mode live` when measuring with the selected local JDK.

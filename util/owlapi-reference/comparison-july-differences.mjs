@@ -1,5 +1,9 @@
 import { readFileSync } from "node:fs";
-import { comparisonIdentity, sha256 } from "./comparison-evidence.mjs";
+import {
+  comparisonIdentity,
+  exactComparedDocuments,
+  sha256,
+} from "./comparison-evidence.mjs";
 import {
   reconcileStructuralDifferences,
   reconcileUnparsedRdf,
@@ -89,19 +93,11 @@ export async function reconcileJulyTimeClosure(definition, js, native) {
   if (
     !scope?.memberDocumentIRI ||
     native.closurePropagation?.status !== "match" ||
-    !Array.isArray(comparisons) ||
-    !Array.isArray(observed) ||
-    observed.some(({ status }) => status !== "completed")
+    !exactComparedDocuments(observed, comparisons)
   ) {
     return null;
   }
-  const documents = comparisons.map(({ documentIRI }) => documentIRI).sort();
   if (
-    new Set(documents).size !== documents.length ||
-    comparisonIdentity(documents) !==
-      comparisonIdentity(
-        observed.map(({ documentIRI }) => documentIRI).sort(),
-      ) ||
     comparisons.some(
       ({ documentIRI, comparison, unparsedRdf }) =>
         documentIRI !== scope.memberDocumentIRI &&
