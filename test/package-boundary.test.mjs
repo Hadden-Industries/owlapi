@@ -7,6 +7,7 @@ const EXPECTED_EXPORTS = Object.freeze({
   io: [
     "AmbiguousRdfDatasetError",
     "DocumentLoadError",
+    "FunctionalSyntaxStreamDocumentTarget",
     "GraphSelectionError",
     "MissingImportError",
     "OWLAPIError",
@@ -19,6 +20,7 @@ const EXPECTED_EXPORTS = Object.freeze({
     "ParserMismatchError",
     "RDFOntologyHeaderStatus",
     "RDFParserMetaData",
+    "RDFXMLStreamDocumentSource",
     "ResourceLimitError",
     "SecurityPolicyError",
     "StringDocumentSource",

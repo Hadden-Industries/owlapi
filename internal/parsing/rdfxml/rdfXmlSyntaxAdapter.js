@@ -20,6 +20,12 @@ import { rdfDataFactory, rdfDatasetFactory } from "../../rdfjs/environment.js";
 import { prepareXml } from "../xml/xmlEntityPolicy.js";
 import { xmlParserAdapter } from "../xml/xmlParserAdapter.js";
 import { recordSourceStatementCount } from "../../rdfjs/sourceStatementCount.js";
+import { RDFXMLStreamDocumentSource } from "../../../io/rdfXmlStreamDocumentSource.js";
+import {
+  prepareRdfXmlStream,
+  rdfXmlRootMetadata,
+} from "./rdfXmlStreamPreparation.js";
+import { CompactDefaultGraph } from "../../rdfjs/compactDefaultGraph.js";
 
 const CDATA_SECTION_NODE = 4;
 const COMMENT_NODE = 8;
@@ -34,13 +40,6 @@ const RDF_NON_LITERAL_PARSE_TYPES = new Set(["Collection", "Resource"]);
 const TASK_YIELD_CHUNKS = 16;
 const TEXT_NODE = 3;
 
-const XML_PREDEFINED_ENTITIES = Object.freeze({
-  amp: "&",
-  apos: "'",
-  gt: ">",
-  lt: "<",
-  quot: '"',
-});
 const textEncoder = new TextEncoder();
 
 const compareCodePoints = (left, right) =>
@@ -160,29 +159,6 @@ const attributeNS = (element, namespaceURI, localName) =>
       attribute.namespaceURI === namespaceURI &&
       (attribute.localName || attribute.name) === localName,
   );
-
-// RFC 3986 section 5.1 ranks a base embedded in the content above the URI the
-// document was retrieved from, so a document that declares `xml:base` on its
-// root element identifies itself by that IRI rather than by wherever it was
-// fetched from. The RDF/XML parser already applies this when resolving relative
-// references; this exposes the same base to consumers that need to know what the
-// document calls itself - selecting among several ontology headers, for one.
-//
-// Only the root element is inspected. A nested `xml:base` rebases part of the
-// document, not the document's own identity.
-export const documentBaseIRI = (text, retrievalIRI) => {
-  const rootElement = text.match(/<[A-Za-z_][\w.:-]*\b[^>]*>/u)?.[0];
-  const base = rootElement?.match(/\sxml:base\s*=\s*(?:"([^"]*)"|'([^']*)')/u);
-  const declared = base?.[1] ?? base?.[2];
-  if (declared === undefined) {
-    return retrievalIRI;
-  }
-  try {
-    return new URL(declared, retrievalIRI || undefined).href;
-  } catch {
-    return declared;
-  }
-};
 
 const effectiveBaseIRI = (element, inheritedBaseIRI) => {
   const base = attributeNS(element, XML_NAMESPACE, "base")?.value;
@@ -591,41 +567,11 @@ const normalizeOtherParseTypes = (text, startTags, parseTypeAttributes) => {
   return normalized;
 };
 
-const decodeXmlAttributeValue = (value) =>
-  value.replace(
-    /&(?:#x([0-9A-Fa-f]+)|#([0-9]+)|(amp|apos|gt|lt|quot));/gu,
-    (reference, hexadecimal, decimal, entityName) => {
-      if (entityName) {
-        return XML_PREDEFINED_ENTITIES[entityName];
-      }
-      const codePoint = Number.parseInt(
-        hexadecimal || decimal,
-        hexadecimal ? 16 : 10,
-      );
-      try {
-        return String.fromCodePoint(codePoint);
-      } catch {
-        return reference;
-      }
-    },
-  );
-
-const rootNamespace = (text, root) => {
-  const startTag = text.slice(root.start + 1, root.end);
-  const separator = root.name.indexOf(":");
-  const prefix = separator < 0 ? "" : root.name.slice(0, separator);
-  const localName = separator < 0 ? root.name : root.name.slice(separator + 1);
-  const namespaces = new Map();
-  const declaration = /\s+xmlns(?::([^\s=/>]+))?\s*=\s*(["'])(.*?)\2/gsu;
-  for (const match of startTag.matchAll(declaration)) {
-    namespaces.set(match[1] || "", decodeXmlAttributeValue(match[3]));
-  }
-  return { localName, namespaceURI: namespaces.get(prefix), namespaces };
-};
-
 const parsedPrefixes = new WeakMap();
+const documentBases = new WeakMap();
 export const readRdfXmlSourcePrefixes = (dataset) =>
   new Map(parsedPrefixes.get(dataset) ?? []);
+export const readRdfXmlDocumentBase = (dataset) => documentBases.get(dataset);
 
 const splitXmlDeclaration = (text) => {
   const bom = text.startsWith("\uFEFF") ? "\uFEFF" : "";
@@ -715,9 +661,8 @@ class ExecutionController {
   }
 }
 
-const xmlLiteralNormalizer = (classifications, nativeTerms = false) => {
+const xmlLiteralNormalizer = (nextLiteral, nativeTerms = false) => {
   const seenTerms = new WeakMap();
-  let classificationIndex = 0;
 
   return (quad) => {
     const normalized =
@@ -750,12 +695,7 @@ const xmlLiteralNormalizer = (classifications, nativeTerms = false) => {
     if (seenTerms.has(quad.object)) {
       canonicalValue = seenTerms.get(quad.object);
     } else {
-      const classification = classifications[classificationIndex];
-      if (!classification) {
-        return normalized;
-      }
-      classificationIndex += 1;
-      canonicalValue = classification.canonicalValue;
+      canonicalValue = nextLiteral();
       seenTerms.set(quad.object, canonicalValue);
     }
 
@@ -839,13 +779,24 @@ const normalizeParserFailure = async (cause, text, configuration) => {
     return cause;
   }
 
-  try {
-    await xmlParserAdapter.parseXml(text, configuration);
-  } catch (xmlCause) {
-    if (xmlCause?.code) {
-      return xmlCause;
+  if (text !== undefined) {
+    try {
+      await xmlParserAdapter.parseXml(text, configuration);
+    } catch (xmlCause) {
+      if (xmlCause?.code) {
+        return xmlCause;
+      }
+      return cause;
     }
-    return cause;
+  } else if (
+    cause?.constructor === Error &&
+    /^\d+:\d+:\s/u.test(cause.message)
+  ) {
+    // The strict XML reader prefixes positions differently from the RDF parser.
+    return new XmlParseError("The XML document is not well formed", {
+      ...(configuration.sourceLocations ? parserLocation(cause.message) : {}),
+      cause,
+    });
   }
 
   return new OWLSyntaxError("The RDF/XML document is not valid RDF/XML", {
@@ -875,20 +826,7 @@ export class RdfXmlSyntaxAdapter {
     this.#loadImplementation = loadImplementation;
   }
 
-  async parse(source, configuration = {}) {
-    if (
-      !source ||
-      typeof source.getText !== "function" ||
-      typeof source.getDocumentIRI !== "function"
-    ) {
-      throw new TypeError(
-        "source must implement the OWL document-source contract",
-      );
-    }
-    const normalizedConfiguration = normalizeConfiguration(configuration);
-    const execution = new ExecutionController(normalizedConfiguration);
-    execution.check();
-
+  async #prepareString(source, normalizedConfiguration, execution) {
     const sourceText = source.getText();
     if (typeof sourceText !== "string") {
       throw new TypeError("RDF/XML source text must be a string");
@@ -924,13 +862,40 @@ export class RdfXmlSyntaxAdapter {
       root.startTags,
       parseTypeAttributes,
     );
-    const identity = rootNamespace(preparedText, root);
+    const identity = rdfXmlRootMetadata(
+      preparedText.slice(root.start, root.end + 1),
+      documentIRI?.value,
+    );
     const normalizedText = normalizeOptionalRdfRoot(
       parseTypeNormalizedText,
-      identity.localName === "RDF" && identity.namespaceURI === RDF_NAMESPACE,
+      identity.hasRdfRoot,
     );
+    return { identity, normalizedText, classifications };
+  }
+
+  async parse(source, configuration = {}) {
+    const streamed = source instanceof RDFXMLStreamDocumentSource;
+    if (
+      (!streamed && typeof source?.getText !== "function") ||
+      typeof source?.getDocumentIRI !== "function"
+    ) {
+      throw new TypeError(
+        "source must implement the OWL document-source contract",
+      );
+    }
+    const normalizedConfiguration = normalizeConfiguration(configuration);
+    const execution = new ExecutionController(normalizedConfiguration);
+    execution.check();
+    const { identity, normalizedText, classifications } = streamed
+      ? { identity: { namespaces: new Map() }, classifications: [] }
+      : await this.#prepareString(source, normalizedConfiguration, execution);
+    const streamAbort = streamed ? new AbortController() : undefined;
+    const documentIRI = source.getDocumentIRI();
+    let classificationIndex = 0;
     const normalizeQuad = xmlLiteralNormalizer(
-      classifications,
+      streamed
+        ? () => classifications.shift()
+        : () => classifications[classificationIndex++]?.canonicalValue,
       this.#loadImplementation === defaultImplementationLoader,
     );
 
@@ -949,7 +914,7 @@ export class RdfXmlSyntaxAdapter {
       defaultGraph: rdfDataFactory.defaultGraph(),
       parseUnsupportedVersions: false,
       strict: true,
-      trackPosition: normalizedConfiguration.sourceLocations,
+      trackPosition: streamed || normalizedConfiguration.sourceLocations,
       validateUri: true,
     });
     if (
@@ -964,10 +929,13 @@ export class RdfXmlSyntaxAdapter {
       );
     }
 
-    const dataset = rdfDatasetFactory.dataset();
+    const dataset = streamed
+      ? new CompactDefaultGraph()
+      : rdfDatasetFactory.dataset();
     const blankNodes = new Set();
     let emittedQuads = 0;
     let adapterFailure;
+    let parserFailure;
     const completion = new Promise((resolve, reject) => {
       parser.on("data", (quad) => {
         if (adapterFailure) {
@@ -1008,7 +976,11 @@ export class RdfXmlSyntaxAdapter {
           parser.destroy(error);
         }
       });
-      parser.once("error", reject);
+      parser.once("error", (error) => {
+        parserFailure = error;
+        streamAbort?.abort(error);
+        reject(error);
+      });
       parser.once("end", resolve);
     });
     completion.catch(() => {});
@@ -1029,6 +1001,7 @@ export class RdfXmlSyntaxAdapter {
           return;
         }
         adapterFailure = execution.timeoutError();
+        streamAbort?.abort(adapterFailure);
         parser.destroy(adapterFailure);
       }, delay);
     };
@@ -1036,14 +1009,35 @@ export class RdfXmlSyntaxAdapter {
     const onAbort = () => {
       if (!adapterFailure) {
         adapterFailure = abortError(signal, "The RDF/XML parse was aborted");
+        streamAbort?.abort(adapterFailure);
         parser.destroy(adapterFailure);
       }
     };
     signal?.addEventListener("abort", onAbort, { once: true });
 
     try {
+      execution.check();
+      const input = streamed
+        ? prepareRdfXmlStream({
+            source,
+            configuration: normalizedConfiguration,
+            signal: streamAbort.signal,
+            metadata: identity,
+            noteLiteral: (value) => classifications.push(value),
+            canonicalizeLiteral: async (fragment) =>
+              canonicalizeChildren(
+                (
+                  await xmlParserAdapter.parsePreparedXml(
+                    fragment,
+                    normalizedConfiguration,
+                    { syntheticRoot: true },
+                  )
+                ).documentElement,
+              ),
+          })
+        : chunksOf(normalizedText, this.#chunkSize);
       let chunkIndex = 0;
-      for (const chunk of chunksOf(normalizedText, this.#chunkSize)) {
+      for await (const chunk of input) {
         execution.check();
         if (!parser.write(chunk)) {
           await waitForDrain(parser);
@@ -1054,7 +1048,11 @@ export class RdfXmlSyntaxAdapter {
       parser.end();
       await completion;
       execution.check();
+      if (streamed) dataset.seal();
+      execution.check();
       recordSourceStatementCount(dataset, emittedQuads);
+      if (identity.baseIRI !== undefined)
+        documentBases.set(dataset, identity.baseIRI);
       parsedPrefixes.set(
         dataset,
         [...identity.namespaces].map(([name, namespace]) => [
@@ -1067,12 +1065,15 @@ export class RdfXmlSyntaxAdapter {
       if (!parser.destroyed) {
         parser.destroy();
       }
+      if (streamed && (adapterFailure || cause !== parserFailure))
+        throw adapterFailure ?? cause;
       throw await normalizeParserFailure(
         adapterFailure || cause,
         normalizedText,
         normalizedConfiguration,
       );
     } finally {
+      streamAbort?.abort();
       globalThis.clearTimeout(timeoutId);
       signal?.removeEventListener("abort", onAbort);
     }

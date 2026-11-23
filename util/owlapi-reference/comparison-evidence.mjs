@@ -117,16 +117,25 @@ export const strictRetryCategories = Object.freeze([
 ]);
 
 /** Publish one complete result without replacing an earlier observation. */
-export async function publishComparisonFile(directory, name, bytes) {
+export const publishComparisonFile = (directory, name, bytes) =>
+  publishComparisonChunks(directory, name, [bytes]);
+
+export async function publishComparisonChunks(directory, name, chunks) {
   if (basename(name) !== name || name === "." || name === "..") {
     throw new Error("Comparison artifact requires a single filename");
   }
   const path = join(directory, name);
   const pending = join(directory, `.${name}.${randomUUID()}.pending`);
   const handle = await open(pending, "wx");
+  const digest = createHash("sha256");
+  let byteLength = 0;
   try {
     try {
-      await handle.writeFile(bytes);
+      for (const bytes of chunks) {
+        await handle.writeFile(bytes);
+        digest.update(bytes);
+        byteLength += Buffer.byteLength(bytes);
+      }
       await handle.sync();
     } finally {
       await handle.close();
@@ -135,7 +144,7 @@ export async function publishComparisonFile(directory, name, bytes) {
   } finally {
     await rm(pending, { force: true });
   }
-  return { name, sha256: sha256(bytes), byteLength: Buffer.byteLength(bytes) };
+  return { name, sha256: digest.digest("hex"), byteLength };
 }
 
 export const publishComparisonJson = (directory, name, value) =>

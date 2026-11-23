@@ -565,9 +565,10 @@ const expandDocumentEntities = (
   limits,
   policy,
   counters,
+  precedingBytes = 0,
 ) => {
   const output = [];
-  let outputBytes = 0;
+  let outputBytes = precedingBytes;
   let entityExpansions = counters.expansions;
   let expandedEntityCodeUnits = counters.expandedEntityCodeUnits ?? 0;
   const append = (value) => {
@@ -691,10 +692,11 @@ const expandDocumentEntities = (
   append(text.slice(chunkStart));
   counters.expansions = entityExpansions;
   counters.expandedEntityCodeUnits = expandedEntityCodeUnits;
-  return output.join("");
+  return { text: output.join(""), outputBytes };
 };
 
-export const prepareXml = (text, configuration = {}) => {
+/** Reuse one DTD environment and cumulative entity budgets for a document. */
+export const createXmlEntityPreparation = (doctype, configuration = {}) => {
   const limits = { ...DEFAULT_LIMITS, ...configuration };
   const policy = xmlProcessingPolicy(configuration);
   const counters = {
@@ -704,11 +706,9 @@ export const prepareXml = (text, configuration = {}) => {
     externalEntities: new Set(),
     unparsedEntities: new Set(),
   };
-  const doctype = findDoctype(text);
   let declarations = new Map();
-  let documentText = text;
   if (doctype) {
-    const { head, subset } = internalSubsetBounds(doctype.text);
+    const { head, subset } = internalSubsetBounds(doctype);
     validateDoctypeHead(head, policy);
     declarations = parseEntityDeclarations(
       expandParameterDeclarations(subset, policy, counters),
@@ -716,10 +716,6 @@ export const prepareXml = (text, configuration = {}) => {
       policy,
       counters,
     );
-    const preservedLines = doctype.text.replace(/[^\r\n]/gu, "");
-    documentText = `${text.slice(0, doctype.start)}${preservedLines}${text.slice(
-      doctype.end,
-    )}`;
   }
   const resolveEntity = createEntityResolver(
     declarations,
@@ -728,32 +724,51 @@ export const prepareXml = (text, configuration = {}) => {
     counters.externalEntities,
     counters.unparsedEntities,
   );
-  // Default values enter the same expansion and resource accounting path as
-  // explicitly written attributes, before the XML parser resolves namespaces.
-  const prepared = applyDtdAttributes(
-    documentText,
-    counters.attributeDeclarations,
-    (value, quote) => {
-      const prefix = `<a value=${quote}`;
-      const suffix = `${quote}/>`;
-      const escaped = value.replaceAll(
-        quote,
-        quote === '"' ? "&quot;" : "&apos;",
-      );
-      return expandDocumentEntities(
-        prefix + escaped + suffix,
-        resolveEntity,
-        limits,
-        policy,
-        counters,
-      ).slice(prefix.length, -suffix.length);
-    },
-  );
-  return expandDocumentEntities(
-    prepared,
-    resolveEntity,
-    limits,
-    policy,
-    counters,
+  let preparedBytes = 0;
+  const prepare = (text) => {
+    // Default values enter the same expansion and accounting path as authored values.
+    const prepared = applyDtdAttributes(
+      text,
+      counters.attributeDeclarations,
+      (value, quote) => {
+        const prefix = `<a value=${quote}`;
+        const suffix = `${quote}/>`;
+        const escaped = value.replaceAll(
+          quote,
+          quote === '"' ? "&quot;" : "&apos;",
+        );
+        return expandDocumentEntities(
+          prefix + escaped + suffix,
+          resolveEntity,
+          limits,
+          policy,
+          counters,
+        ).text.slice(prefix.length, -suffix.length);
+      },
+    );
+    const expanded = expandDocumentEntities(
+      prepared,
+      resolveEntity,
+      limits,
+      policy,
+      counters,
+      preparedBytes,
+    );
+    preparedBytes = expanded.outputBytes;
+    return expanded.text;
+  };
+  let longestEntityName = 4;
+  for (const name of declarations.keys())
+    longestEntityName = Math.max(longestEntityName, name.length);
+  return { prepare, longestEntityName };
+};
+
+export const prepareXml = (text, configuration = {}) => {
+  const doctype = findDoctype(text);
+  const { prepare } = createXmlEntityPreparation(doctype?.text, configuration);
+  if (!doctype) return prepare(text);
+  const preservedLines = doctype.text.replace(/[^\r\n]/gu, "");
+  return prepare(
+    `${text.slice(0, doctype.start)}${preservedLines}${text.slice(doctype.end)}`,
   );
 };

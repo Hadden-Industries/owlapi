@@ -3,6 +3,7 @@ import {
   GraphSelectionError,
 } from "../../io/errors.js";
 import { rdfDataFactory, rdfDatasetFactory } from "./environment.js";
+import { CompactDefaultGraph } from "./compactDefaultGraph.js";
 
 import { RDF_GRAPH_TERM_TYPES } from "./termPolicy.js";
 const GRAPH_TERM_TYPES = new Set(RDF_GRAPH_TERM_TYPES);
@@ -15,6 +16,7 @@ const termKey = (term) => {
 };
 
 const requireDataset = (dataset) => {
+  if (dataset instanceof CompactDefaultGraph) return;
   if (
     !dataset ||
     typeof dataset[Symbol.iterator] !== "function" ||
@@ -29,6 +31,8 @@ const requireDataset = (dataset) => {
 };
 
 const analyzeGraphs = (dataset) => {
+  if (dataset instanceof CompactDefaultGraph)
+    return { defaultQuadCount: dataset.size, namedGraphs: new Map() };
   let defaultQuadCount = 0;
   const namedGraphs = new Map();
   for (const currentQuad of dataset) {
@@ -48,6 +52,7 @@ const analyzeGraphs = (dataset) => {
 };
 
 const projectGraph = (dataset, selectedGraph) => {
+  if (dataset instanceof CompactDefaultGraph) return dataset.project();
   const projected = rdfDatasetFactory.dataset();
   for (const currentQuad of dataset.match(null, null, null, selectedGraph)) {
     projected.add(
@@ -62,6 +67,7 @@ const projectGraph = (dataset, selectedGraph) => {
 };
 
 const mergeGraphs = (dataset) => {
+  if (dataset instanceof CompactDefaultGraph) return dataset.project(false);
   const merged = rdfDatasetFactory.dataset();
   for (const currentQuad of dataset) {
     merged.add(

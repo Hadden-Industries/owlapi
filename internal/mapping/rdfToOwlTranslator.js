@@ -21,6 +21,7 @@ import { OntologyBehaviorContext } from "../behavior/ontologyBehaviorContext.js"
 import { readSourceStatementCount } from "../rdfjs/sourceStatementCount.js";
 import { createRdfReadView } from "./rdfReadView.js";
 import { selectOntologyGraph } from "../rdfjs/graphPolicy.js";
+import { CompactDefaultGraph } from "../rdfjs/compactDefaultGraph.js";
 import {
   BUILT_IN_ANNOTATION_PROPERTIES,
   OWL_BUILT_IN_DATATYPES,
@@ -555,6 +556,7 @@ class RdfGraphInterpreter {
   #classIris = new Set([OWL_VOCABULARY.Nothing, OWL_VOCABULARY.Thing]);
   #configuration;
   #consumed = new Set();
+  #consumedRows;
   #consumptionKeys = new WeakMap();
   #dataPropertyIris = new Set([
     OWL_VOCABULARY.bottomDataProperty,
@@ -638,6 +640,7 @@ class RdfGraphInterpreter {
     this.#sourceStatementCount = sourceStatementCount;
     this.#dataFactory = dataFactory;
     this.#dataset = dataset;
+    this.#consumedRows = read.createRowMarks?.();
     this.#read = read;
     this.#diagnostics = diagnostics;
     this.#documentScope = documentScope;
@@ -2094,12 +2097,15 @@ class RdfGraphInterpreter {
         }
       }
     }
-    const allOntologyTypeQuads = [...this.#read.matchedQuads()].filter(
-      (currentQuad) =>
+    const allOntologyTypeQuads = [];
+    for (const currentQuad of this.#read.matchedQuads()) {
+      if (
         currentQuad.predicate.value === RDF_VOCABULARY.type &&
         currentQuad.object.termType === "NamedNode" &&
-        currentQuad.object.value === OWL_VOCABULARY.Ontology,
-    );
+        currentQuad.object.value === OWL_VOCABULARY.Ontology
+      )
+        allOntologyTypeQuads.push(currentQuad);
+    }
     const ontologyNodeKeys = new Set(
       allOntologyTypeQuads.map(({ subject }) => termKey(subject)),
     );
@@ -2310,14 +2316,13 @@ class RdfGraphInterpreter {
     const headerKey = termKey(ontologyNode);
     // The released consumer also creates candidates from other imports statements.
     // This recovery applies to the sole declared header's own import starts.
-    if (
-      this.#read.quads.some(
-        ({ predicate, subject }) =>
-          predicate.value === OWL_VOCABULARY.imports &&
-          termKey(subject) !== headerKey,
+    for (const { predicate, subject } of this.#read.quads) {
+      if (
+        predicate.value === OWL_VOCABULARY.imports &&
+        termKey(subject) !== headerKey
       )
-    )
-      return undefined;
+        return undefined;
+    }
     return imported;
   }
 
@@ -2614,8 +2619,9 @@ class RdfGraphInterpreter {
       baseQuad.predicate,
       baseQuad.object,
     );
-    this.#retainedAxiomAnnotationBases.add(key);
-    return this.#axiomReifications.get(key) ?? [];
+    const nodes = this.#axiomReifications.get(key) ?? [];
+    if (nodes.length) this.#retainedAxiomAnnotationBases.add(key);
+    return nodes;
   }
 
   async #axiomAnnotations(baseQuad) {
@@ -2681,8 +2687,8 @@ class RdfGraphInterpreter {
         currentQuad.predicate,
         currentQuad.object,
       );
-      this.#retainedAnnotationBases.add(key);
       nestedNodes = this.#annotationReifications.get(key) || [];
+      if (nestedNodes.length) this.#retainedAnnotationBases.add(key);
     }
     const nested = [];
     for (const node of nestedNodes) {
@@ -5254,14 +5260,21 @@ class RdfGraphInterpreter {
   }
 
   #consume(quad) {
-    this.#consumed.add(this.#consumptionKey(quad));
+    const key = this.#consumptionKey(quad);
+    if (typeof key === "number") this.#consumedRows[key] = 1;
+    else this.#consumed.add(key);
   }
 
   #isConsumed(quad) {
-    return this.#consumed.has(this.#consumptionKey(quad));
+    const key = this.#consumptionKey(quad);
+    return typeof key === "number"
+      ? Boolean(this.#consumedRows[key])
+      : this.#consumed.has(key);
   }
 
   #consumptionKey(quad) {
+    const row = this.#read.rowOf?.(quad);
+    if (row !== undefined) return row;
     let key = this.#consumptionKeys.get(quad);
     if (key === undefined) {
       // The projected dataset is private and read-only. RDF/JS requires Term
@@ -5429,9 +5442,10 @@ const validateDataset = async (dataset, configuration, execution) => {
     !dataset ||
     typeof dataset[Symbol.iterator] !== "function" ||
     typeof dataset.match !== "function" ||
-    typeof dataset.add !== "function" ||
-    typeof dataset.delete !== "function" ||
-    typeof dataset.has !== "function" ||
+    (!(dataset instanceof CompactDefaultGraph) &&
+      (typeof dataset.add !== "function" ||
+        typeof dataset.delete !== "function" ||
+        typeof dataset.has !== "function")) ||
     !Number.isSafeInteger(dataset.size) ||
     dataset.size < 0
   ) {

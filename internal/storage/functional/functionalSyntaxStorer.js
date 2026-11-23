@@ -1,10 +1,22 @@
 import { OWLDocumentFormats } from "../../../formats/index.js";
-import { renderFunctionalSyntax } from "./functionalSyntaxRenderer.js";
+import {
+  renderFunctionalSyntax,
+  renderFunctionalSyntaxChunks,
+} from "./functionalSyntaxRenderer.js";
 import { defaultDocumentStoragePolicy } from "../../behavior/ontologyBehaviorContext.js";
 import {
   readStorageFormatParameters,
   readForceStringDatatype,
 } from "../storageFormatParameters.js";
+
+const rendererOptions = (format, policy) => {
+  const parameters = readStorageFormatParameters(format, policy);
+  return {
+    forceXsdString:
+      policy.functionalStringDatatypeDefault === "explicit" ||
+      readForceStringDatatype(parameters),
+  };
+};
 
 /** Package-private descriptor; target mutation belongs only to the registry. */
 export const functionalSyntaxStorer = Object.freeze({
@@ -15,11 +27,12 @@ export const functionalSyntaxStorer = Object.freeze({
     _writerContext,
     policy = defaultDocumentStoragePolicy,
   ) {
-    const parameters = readStorageFormatParameters(format, policy);
-    return renderFunctionalSyntax(snapshot, {
-      forceXsdString:
-        policy.functionalStringDatatypeDefault === "explicit" ||
-        readForceStringDatatype(parameters),
-    });
+    return renderFunctionalSyntax(snapshot, rendererOptions(format, policy));
+  },
+  renderChunks(snapshot, format, policy) {
+    return renderFunctionalSyntaxChunks(
+      snapshot,
+      rendererOptions(format, policy),
+    );
   },
 });

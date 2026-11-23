@@ -1,5 +1,7 @@
 export { StringDocumentSource } from "./stringDocumentSource.js";
+export { RDFXMLStreamDocumentSource } from "./rdfXmlStreamDocumentSource.js";
 export { StringDocumentTarget } from "./stringDocumentTarget.js";
+export { FunctionalSyntaxStreamDocumentTarget } from "./functionalSyntaxStreamDocumentTarget.js";
 export {
   RDFParserMetaData,
   RDFOntologyHeaderStatus,

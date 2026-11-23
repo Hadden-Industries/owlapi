@@ -13,6 +13,7 @@ import {
   UnsupportedConstructError,
 } from "../io/errors.js";
 import { StringDocumentSource } from "../io/stringDocumentSource.js";
+import { RDFXMLStreamDocumentSource } from "../io/rdfXmlStreamDocumentSource.js";
 import { ManagedOntologyIndex } from "../internal/loading/managedOntologyIndex.js";
 import { materializeAxiomIterable } from "../internal/model/axiomSemantics.js";
 import { readOntologyChange } from "../internal/model/ontologyChangeRecord.js";
@@ -427,6 +428,14 @@ const normalizeConfiguration = (configuration, behaviorProfileId) => {
 const normalizeSource = (source, documentIRI) => {
   if (typeof source === "string") {
     return new StringDocumentSource(source, { documentIRI });
+  }
+  if (source instanceof RDFXMLStreamDocumentSource) {
+    return new RDFXMLStreamDocumentSource(
+      (signal) => source.openBytes(signal),
+      {
+        documentIRI: source.getDocumentIRI() ?? documentIRI,
+      },
+    );
   }
   for (const method of [
     "getContentType",
@@ -2103,6 +2112,8 @@ export class OWLOntologyManager {
   }
 
   #checkInputSize(source, configuration) {
+    // The RDF/XML adapter counts streamed input before decoding it.
+    if (source instanceof RDFXMLStreamDocumentSource) return;
     const inputBytes = new TextEncoder().encode(source.getText()).byteLength;
     if (inputBytes > configuration.maxInputBytes) {
       throw new ResourceLimitError(

@@ -57,13 +57,55 @@ const browserParser = () =>
     ? new globalThis.DOMParser()
     : undefined;
 
+export function xmlProviderLimitFailure(element, attributes, policy) {
+  if (attributes.length > policy.maxAttributesPerElement) {
+    return new ResourceLimitError(
+      "The XML provider attribute count limit was exceeded",
+      {
+        resource: "maxAttributesPerElement",
+        limit: policy.maxAttributesPerElement,
+        observed: attributes.length,
+      },
+    );
+  }
+  for (const name of [element, ...attributes]) {
+    const separator = name.indexOf(":");
+    const nameLength = Math.max(separator, name.length - separator - 1);
+    if (nameLength > policy.maxXmlNameCodeUnits) {
+      return new ResourceLimitError(
+        "The XML provider name length limit was exceeded",
+        {
+          resource: "maxXmlNameCodeUnits",
+          limit: policy.maxXmlNameCodeUnits,
+          observed: nameLength,
+        },
+      );
+    }
+  }
+  return undefined;
+}
+
+const qualifiedName = (node) =>
+  node.nodeName ??
+  node.name ??
+  (node.prefix ? node.prefix + ":" + node.localName : node.localName);
+
 export class XmlParserAdapter {
   async parseXml(text, configuration) {
     if (typeof text !== "string") {
       throw new TypeError("XML source text must be a string");
     }
-    const preparedText = prepareXml(text, configuration);
+    return this.parsePreparedXml(
+      prepareXml(text, configuration),
+      configuration,
+    );
+  }
 
+  async parsePreparedXml(
+    preparedText,
+    configuration,
+    { syntheticRoot = false } = {},
+  ) {
     const parser = browserParser() || (await nodeParser());
     let document;
     try {
@@ -87,35 +129,20 @@ export class XmlParserAdapter {
       throw new XmlParseError("The XML document has no root element");
     }
     const policy = xmlProcessingPolicy(configuration);
-    const pending = [document.documentElement];
+    const pending = syntheticRoot
+      ? Array.from(document.documentElement.childNodes).filter(
+          (child) => child.nodeType === 1,
+        )
+      : [document.documentElement];
     while (pending.length) {
       const element = pending.pop();
       const attributes = Array.from(element.attributes);
-      if (attributes.length > policy.maxAttributesPerElement) {
-        throw new ResourceLimitError(
-          "The XML provider attribute count limit was exceeded",
-          {
-            resource: "maxAttributesPerElement",
-            limit: policy.maxAttributesPerElement,
-            observed: attributes.length,
-          },
-        );
-      }
-      for (const node of [element, ...attributes]) {
-        const nameLength = Math.max(
-          node.localName?.length ?? node.nodeName.length,
-          node.prefix?.length ?? 0,
-        );
-        if (nameLength > policy.maxXmlNameCodeUnits)
-          throw new ResourceLimitError(
-            "The XML provider name length limit was exceeded",
-            {
-              resource: "maxXmlNameCodeUnits",
-              limit: policy.maxXmlNameCodeUnits,
-              observed: nameLength,
-            },
-          );
-      }
+      const limit = xmlProviderLimitFailure(
+        qualifiedName(element),
+        attributes.map(qualifiedName),
+        policy,
+      );
+      if (limit) throw limit;
       for (const child of Array.from(element.childNodes))
         if (child.nodeType === 1) pending.push(child);
     }

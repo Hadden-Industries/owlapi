@@ -359,11 +359,11 @@ const sorted = (values) =>
     return a < b ? -1 : a > b ? 1 : 0;
   });
 
-/** Render only a committed direct ontology snapshot, without I/O or inference. */
-export const renderFunctionalSyntax = (
+/** Render one Functional Syntax line at a time from a committed snapshot. */
+export function* renderFunctionalSyntaxChunks(
   snapshot,
   { forceXsdString = true } = {},
-) => {
+) {
   const labels = new Map();
   const render = (object) => {
     if (!object || !Object.hasOwn(renderers, object.kind)) {
@@ -373,11 +373,16 @@ export const renderFunctionalSyntax = (
     }
     return renderers[object.kind](object, render, labels, { forceXsdString });
   };
-  const header = render(snapshot.ontologyID);
-  const body = [
+  yield `Ontology(${render(snapshot.ontologyID)}\n`;
+  for (const values of [
     snapshot.authoredImportDeclarations,
     snapshot.directOntologyAnnotations,
     snapshot.directAxioms,
-  ].flatMap((values) => sorted(values).map(render));
-  return `Ontology(${header}\n${body.length ? `${body.join("\n")}\n` : ""})\n`;
-};
+  ]) {
+    for (const value of sorted(values)) yield render(value) + "\n";
+  }
+  yield ")\n";
+}
+
+export const renderFunctionalSyntax = (snapshot, options) =>
+  [...renderFunctionalSyntaxChunks(snapshot, options)].join("");

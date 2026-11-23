@@ -8,6 +8,10 @@ import {
   StringDocumentTarget,
 } from "../../io/stringDocumentTarget.js";
 import {
+  FunctionalSyntaxStreamDocumentTarget,
+  isFunctionalSyntaxStreamDocumentTarget,
+} from "../../io/functionalSyntaxStreamDocumentTarget.js";
+import {
   OWLDocumentFormat,
   readDocumentFormatParameters,
 } from "../../model/owlDocumentFormat.js";
@@ -35,7 +39,7 @@ export class StorerRegistry {
   /** Capture immutable descriptors; one format can have exactly one storer. */
   constructor(storers) {
     for (const storer of storers) {
-      const { formatKey, render } = storer ?? {};
+      const { formatKey, render, renderChunks } = storer ?? {};
       if (
         typeof formatKey !== "string" ||
         formatKey.length === 0 ||
@@ -52,7 +56,7 @@ export class StorerRegistry {
       }
       this.#storersByFormatKey.set(
         formatKey,
-        Object.freeze({ formatKey, render }),
+        Object.freeze({ formatKey, render, renderChunks }),
       );
     }
     Object.freeze(this);
@@ -80,8 +84,12 @@ export class StorerRegistry {
   ) {
     const { documentStoragePolicy } = behaviorProfileDefinition;
     requireDocumentFormat(format);
-    StringDocumentTarget.prototype.toString.call(target);
+    const streamed = isFunctionalSyntaxStreamDocumentTarget(target);
+    if (!streamed) StringDocumentTarget.prototype.toString.call(target);
     const storer = this.select(format);
+    if (streamed && !storer.renderChunks) {
+      throw new TypeError("The stream target requires Functional Syntax");
+    }
     try {
       if (
         ontologySnapshot.documentMetadata?.sourceStructure?.statements?.length
@@ -121,6 +129,18 @@ export class StorerRegistry {
             },
           );
       }
+      if (streamed) {
+        const chunks = storer.renderChunks(
+          ontologySnapshot,
+          format,
+          documentStoragePolicy,
+        );
+        await FunctionalSyntaxStreamDocumentTarget.prototype.writeChunks.call(
+          target,
+          chunks,
+        );
+        return;
+      }
       const completeText = await storer.render(
         ontologySnapshot,
         format,
@@ -134,6 +154,7 @@ export class StorerRegistry {
     } catch (cause) {
       const partialOutput = readPartialStorageOutput(cause);
       if (
+        !streamed &&
         documentStoragePolicy.targetPublication === "append" &&
         partialOutput !== undefined
       )

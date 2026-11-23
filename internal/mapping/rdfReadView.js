@@ -1,4 +1,5 @@
 import { rdfDataFactory, rdfDatasetFactory } from "../rdfjs/environment.js";
+import { CompactDefaultGraph } from "../rdfjs/compactDefaultGraph.js";
 
 const empty = Object.freeze([]);
 const nativeDatasetPrototype = Object.getPrototypeOf(
@@ -119,6 +120,23 @@ export function createRdfReadView(
     }
     execution.check();
     return Object.freeze(result);
+  }
+  if (dataset instanceof CompactDefaultGraph) {
+    return Object.freeze({
+      quads: dataset,
+      matchedQuads: () => dataset.replayed(),
+      rowOf: (quad) => dataset.rowOf(quad),
+      createRowMarks: () => dataset.createRowMarks(),
+      outgoing: (subject, predicate) => {
+        execution.check();
+        const all = collect(dataset.match(subject, null, null, null));
+        return predicate === undefined
+          ? all
+          : Object.freeze(
+              all.filter((quad) => quad.predicate.value === predicate),
+            );
+      },
+    });
   }
   const singletons = new Map();
   let indexSingletons =

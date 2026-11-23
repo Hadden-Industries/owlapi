@@ -213,6 +213,22 @@ const classes = ontology.getClassesInSignature();
 Use the [public imports above](#public-imports-and-behavior-profiles).
 The [API reference](./API.md) lists supported members, call shapes, and errors for each binding.
 
+On Node.js, pass a factory that opens a UTF-8 RDF/XML stream.
+
+```js
+import { createReadStream } from "node:fs";
+import { RDFXMLStreamDocumentSource } from "owlapi/io";
+
+const source = new RDFXMLStreamDocumentSource(
+  (signal) => createReadStream("ontology.owl", { signal }),
+  { documentIRI: "https://example.com/ontology.owl" },
+);
+const ontology = await manager.loadOntologyFromOntologyDocument(source);
+```
+
+The factory opens a fresh stream on each load.
+RDF/XML parsing consumes chunks while the manager builds the RDF graph and OWL model in memory.
+
 `owlapi/profiles` exposes the asynchronous `OWL2DLProfile` checker and immutable `OWLProfileReport`.
 Use `checkOntology(ontology, {sourceAssessment: true})` after loading with `parsingMode: "preserve"` to assess retained source structures as well as the formal OWL model across the managed import closure.
 The checker reports `valid`, `invalid`, or `unverified`.

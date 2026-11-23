@@ -3,9 +3,9 @@ import { RdfToOwlTranslator } from "../../mapping/rdfToOwlTranslator.js";
 import { registerRdfDocumentPreparation } from "../rdf/rdfDocumentPreparation.js";
 
 import {
-  documentBaseIRI,
   RdfXmlSyntaxAdapter,
   readRdfXmlSourcePrefixes,
+  readRdfXmlDocumentBase,
 } from "./rdfXmlSyntaxAdapter.js";
 
 const defaultTranslatorFactory = (dataFactory) =>
@@ -51,10 +51,7 @@ export class RDFXMLParser {
         // Per RFC 3986 section 5.1 an embedded base outranks the retrieval URI, so
         // this is what the document calls itself. It decides which of several
         // ontology headers is the one the document *is*.
-        baseIRI:
-          typeof source.getText === "function"
-            ? documentBaseIRI(source.getText(), retrievalIRI)
-            : retrievalIRI,
+        baseIRI: readRdfXmlDocumentBase(dataset) ?? retrievalIRI,
         configuration,
         documentIRI: retrievalIRI,
       },

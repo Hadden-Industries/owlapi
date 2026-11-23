@@ -1,4 +1,4 @@
-<!-- registry-sha256: c2c8267c68ee2765082fab0fba2d9d370109d6ef80424f2f8436d24e90f9601d -->
+<!-- registry-sha256: 87855de8d3e70ef1c0ce9e80ed26f985305f1ce2d2e1a15edd11872de10e356c -->
 
 # Java OWLAPI compatibility surface
 
@@ -11,7 +11,7 @@ A mapped name does not promise every Java overload or method. The relationship, 
 ## Inventory summary
 
 - Public package namespaces: 12
-- Public JavaScript bindings: 79
+- Public JavaScript bindings: 81
 - Public Java types inspected: 1013
 - Unclassified Java types: 0
 
@@ -68,6 +68,7 @@ Package specifiers below use the [documented npm alias](../../README.md#install)
 | [`dispatchOwlObject`](../../API.md#dispatchowlobject)                                               | owlapi/model                     | org.semanticweb.owlapi.model.OWLObjectVisitorEx                                           | JS_EXTENSION  | NOT_APPLICABLE |
 | [`AmbiguousRdfDatasetError`](../../API.md#ambiguousrdfdataseterror)                                 | owlapi/io                        | org.semanticweb.owlapi.model.OWLOntologyCreationException                                 | JS_EXTENSION  | NOT_APPLICABLE |
 | [`DocumentLoadError`](../../API.md#documentloaderror)                                               | owlapi/io                        | org.semanticweb.owlapi.model.OWLOntologyCreationException                                 | JS_EXTENSION  | NOT_APPLICABLE |
+| [`FunctionalSyntaxStreamDocumentTarget`](../../API.md#functionalsyntaxstreamdocumenttarget)         | owlapi/io                        | org.semanticweb.owlapi.io.StreamDocumentTarget                                            | JS_EXTENSION  | NOT_APPLICABLE |
 | [`GraphSelectionError`](../../API.md#graphselectionerror)                                           | owlapi/io                        | org.semanticweb.owlapi.model.OWLOntologyCreationException                                 | JS_EXTENSION  | NOT_APPLICABLE |
 | [`MissingImportError`](../../API.md#missingimporterror)                                             | owlapi/io                        | org.semanticweb.owlapi.model.UnloadableImportException                                    | JS_EXTENSION  | NOT_APPLICABLE |
 | [`OWLAPIError`](../../API.md#owlapierror)                                                           | owlapi/io                        | org.semanticweb.owlapi.model.OWLRuntimeException                                          | JAVA_ANALOGUE | ADAPTED        |
@@ -80,6 +81,7 @@ Package specifiers below use the [documented npm alias](../../README.md#install)
 | [`ParserMismatchError`](../../API.md#parsermismatcherror)                                           | owlapi/io                        | org.semanticweb.owlapi.io.OWLParserException                                              | JS_EXTENSION  | NOT_APPLICABLE |
 | [`RDFOntologyHeaderStatus`](../../API.md#rdfontologyheaderstatus)                                   | owlapi/io                        | org.semanticweb.owlapi.io.RDFOntologyHeaderStatus                                         | JS_ADAPTATION | ADAPTED        |
 | [`RDFParserMetaData`](../../API.md#rdfparsermetadata)                                               | owlapi/io                        | org.semanticweb.owlapi.io.RDFParserMetaData                                               | JS_ADAPTATION | ADAPTED        |
+| [`RDFXMLStreamDocumentSource`](../../API.md#rdfxmlstreamdocumentsource)                             | owlapi/io                        | org.semanticweb.owlapi.io.StreamDocumentSource                                            | JS_EXTENSION  | NOT_APPLICABLE |
 | [`ResourceLimitError`](../../API.md#resourcelimiterror)                                             | owlapi/io                        | org.semanticweb.owlapi.model.OWLRuntimeException                                          | JS_EXTENSION  | NOT_APPLICABLE |
 | [`SecurityPolicyError`](../../API.md#securitypolicyerror)                                           | owlapi/io                        | org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration                               | JS_EXTENSION  | NOT_APPLICABLE |
 | [`StringDocumentSource`](../../API.md#stringdocumentsource)                                         | owlapi/io                        | org.semanticweb.owlapi.io.StringDocumentSource                                            | JS_ADAPTATION | ADAPTED        |

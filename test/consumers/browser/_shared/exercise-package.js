@@ -221,6 +221,7 @@ export const exerciseInstalledPackage = async () => {
     formats: root.OWLDocumentFormats === formats.OWLDocumentFormats,
     io:
       root.StringDocumentSource === io.StringDocumentSource &&
+      root.RDFXMLStreamDocumentSource === io.RDFXMLStreamDocumentSource &&
       root.RDFParserMetaData === io.RDFParserMetaData &&
       root.RDFOntologyHeaderStatus === io.RDFOntologyHeaderStatus,
     model:
@@ -252,12 +253,17 @@ export const exerciseInstalledPackage = async () => {
   const documents = {};
   for (const document of DOCUMENTS) {
     const manager = apibinding.OWLManager.createOWLOntologyManager();
-    const ontology = await manager.loadOntologyFromOntologyDocument(
-      new io.StringDocumentSource(document.text, {
-        contentType: document.contentType,
-        documentIRI: document.documentIRI,
-      }),
-    );
+    const source =
+      document.key === "rdfxml"
+        ? new io.RDFXMLStreamDocumentSource(
+            () => new Blob([document.text]).stream(),
+            { documentIRI: document.documentIRI },
+          )
+        : new io.StringDocumentSource(document.text, {
+            contentType: document.contentType,
+            documentIRI: document.documentIRI,
+          });
+    const ontology = await manager.loadOntologyFromOntologyDocument(source);
     const outputManager = apibinding.OWLManager.createOWLOntologyManager();
     const loadedFormat = manager.getOntologyFormat(ontology);
     if (loadedFormat.isRdf) {

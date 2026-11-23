@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 
 import {
   OWLOntologyLoaderConfiguration,
+  RDFXMLStreamDocumentSource,
   StringDocumentSource,
 } from "../../../index.js";
 import { rdfDataFactory, rdfDatasetFactory } from "../../rdfjs/environment.js";
@@ -60,6 +61,20 @@ const expectedDataset = (test) =>
     ),
   );
 
+const sources = ({ source, baseIRI: documentIRI }) => {
+  const bytes = new TextEncoder().encode(source);
+  return [
+    new StringDocumentSource(source, { documentIRI }),
+    new RDFXMLStreamDocumentSource(
+      function* () {
+        for (let start = 0; start < bytes.length; start += 29)
+          yield bytes.subarray(start, start + 29);
+      },
+      { documentIRI },
+    ),
+  ];
+};
+
 describe("pinned W3C RDF/XML syntax conformance", () => {
   it("pins the complete active manifest inventory", () => {
     expect(fixture).toMatchObject({
@@ -77,14 +92,15 @@ describe("pinned W3C RDF/XML syntax conformance", () => {
     "matches the expected RDF graph for $id",
     async (test) => {
       const adapter = new RdfXmlSyntaxAdapter();
-      const actual = await adapter.parse(
-        new StringDocumentSource(test.source, { documentIRI: test.baseIRI }),
-        new OWLOntologyLoaderConfiguration(),
-      );
       const expected = expectedDataset(test);
-
-      expect(actual.size).toBe(expected.size);
-      expect(datasetsAreIsomorphic(actual, expected)).toBe(true);
+      for (const source of sources(test)) {
+        const actual = await adapter.parse(
+          source,
+          new OWLOntologyLoaderConfiguration(),
+        );
+        expect(actual.size).toBe(expected.size);
+        expect(datasetsAreIsomorphic(actual, expected)).toBe(true);
+      }
     },
   );
 
@@ -92,18 +108,16 @@ describe("pinned W3C RDF/XML syntax conformance", () => {
     "rejects the negative syntax case $id",
     async (test) => {
       const adapter = new RdfXmlSyntaxAdapter();
-      let error;
-      try {
-        await adapter.parse(
-          new StringDocumentSource(test.source, { documentIRI: test.baseIRI }),
-          new OWLOntologyLoaderConfiguration(),
-        );
-      } catch (cause) {
-        error = cause;
+      for (const source of sources(test)) {
+        let error;
+        try {
+          await adapter.parse(source, new OWLOntologyLoaderConfiguration());
+        } catch (cause) {
+          error = cause;
+        }
+        expect(error).toBeDefined();
+        expect(["OWL_SYNTAX_ERROR", "XML_PARSE_ERROR"]).toContain(error.code);
       }
-
-      expect(error).toBeDefined();
-      expect(["OWL_SYNTAX_ERROR", "XML_PARSE_ERROR"]).toContain(error.code);
     },
   );
 });

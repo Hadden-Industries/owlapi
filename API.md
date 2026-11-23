@@ -1,4 +1,4 @@
-<!-- registry-sha256: c2c8267c68ee2765082fab0fba2d9d370109d6ef80424f2f8436d24e90f9601d -->
+<!-- registry-sha256: 87855de8d3e70ef1c0ce9e80ed26f985305f1ce2d2e1a15edd11872de10e356c -->
 
 # owlapi API reference
 
@@ -684,6 +684,24 @@ A stable public error category used by ontology loading, parsing, or policy enfo
 
 Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace.
 
+## `FunctionalSyntaxStreamDocumentTarget`
+
+A Functional Syntax document target with a caller-owned chunk sink.
+
+- Import: `owlapi/io`
+- Kind: CLASS
+- Java authority: org.semanticweb.owlapi.io.StreamDocumentTarget
+- Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
+- First public release target: `0.1.0`
+- Call shape: new FunctionalSyntaxStreamDocumentTarget(sink)
+- Supported members: prototype.writeChunks
+- Omitted Java members: none recorded
+- Public errors: TypeError
+- Qualification: This helper is public because it makes the supported structural API practical in JavaScript; it is not claimed as a Java type translation. The sink receives an iterable of strings for one Functional Syntax save and must consume it to completion. The sink owns its output lifecycle and can stage its writes before publication.
+- Evidence: internal/parsing/rdfxml/rdfXmlStream.test.js, test/package-boundary.test.mjs
+
+Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace.
+
 ## `GraphSelectionError`
 
 A stable public error category used by ontology loading, parsing, or policy enforcement.
@@ -899,6 +917,24 @@ A JavaScript adaptation supporting the initial public OWLAPI workflow.
 - Evidence: io/rdfParserMetaData.test.js, model/behaviorParserSelection.test.js, model/rdfConsumerCompatibility.test.js, test/package-boundary.test.mjs
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
+
+## `RDFXMLStreamDocumentSource`
+
+An explicit UTF-8 RDF/XML document source backed by a byte stream.
+
+- Import: `owlapi/io`
+- Kind: CLASS
+- Java authority: org.semanticweb.owlapi.io.StreamDocumentSource
+- Relationship: JS_EXTENSION; compatibility: NOT_APPLICABLE
+- First public release target: `0.1.0`
+- Call shape: new RDFXMLStreamDocumentSource(open, { documentIRI }?)
+- Supported members: prototype.getDocumentIRI; prototype.getFormat; prototype.openBytes
+- Omitted Java members: none recorded
+- Public errors: TypeError
+- Qualification: This helper is public because it makes the supported structural API practical in JavaScript; it is not claimed as a Java type translation. The factory receives an AbortSignal and opens a fresh iterable of Uint8Array chunks for each load of a UTF-8 RDF/XML document. The document IRI supplies the retrieval base. An authored root xml:base determines the document's own base.
+- Evidence: internal/parsing/rdfxml/rdfXmlStream.test.js, test/package-boundary.test.mjs
+
+Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace.
 
 ## `ResourceLimitError`
 

@@ -619,10 +619,13 @@ const MODULES = Object.freeze([
 ]);
 
 const SOURCE_MODULES = Object.freeze({
+  FunctionalSyntaxStreamDocumentTarget:
+    "io/functionalSyntaxStreamDocumentTarget.js",
   NodeDocumentLoader: "io/node/nodeDocumentLoader.js",
   ChangeApplied: "model/parameters/index.js",
   RDFParserMetaData: "io/rdfParserMetaData.js",
   RDFOntologyHeaderStatus: "io/rdfParserMetaData.js",
+  RDFXMLStreamDocumentSource: "io/rdfXmlStreamDocumentSource.js",
   AddOntologyAnnotation: "model/addOntologyAnnotation.js",
   OWLManager: "apibinding/owlManager.js",
   OWLDocumentFormats: "formats/owlDocumentFormats.js",
@@ -671,10 +674,12 @@ const JAVA_TYPES_BY_EXPORT = Object.freeze({
 });
 
 const FIRST_PUBLIC_RELEASE_TARGET_BY_EXPORT = Object.freeze({
+  FunctionalSyntaxStreamDocumentTarget: "0.1.0",
   ChangeApplied: ROADMAP_PUBLIC_RELEASE_TARGET,
   NodeDocumentLoader: ROADMAP_PUBLIC_RELEASE_TARGET,
   RDFParserMetaData: "0.1.0-rc.1",
   RDFOntologyHeaderStatus: "0.1.0-rc.1",
+  RDFXMLStreamDocumentSource: "0.1.0",
   AddOntologyAnnotation: "0.1.0-rc.1",
   OWLOntologyImportsClosureSetProvider: "0.1.0-rc.1",
   OWLOntologyMerger: "0.1.0-rc.1",
@@ -682,6 +687,8 @@ const FIRST_PUBLIC_RELEASE_TARGET_BY_EXPORT = Object.freeze({
 });
 
 const CLOSEST_JAVA_AUTHORITY = Object.freeze({
+  FunctionalSyntaxStreamDocumentTarget:
+    "org.semanticweb.owlapi.io.StreamDocumentTarget",
   AmbiguousRdfDatasetError:
     "org.semanticweb.owlapi.model.OWLOntologyCreationException",
   DocumentLoadError:
@@ -695,6 +702,7 @@ const CLOSEST_JAVA_AUTHORITY = Object.freeze({
   OWLSyntaxError: "org.semanticweb.owlapi.io.OWLParserException",
   ParserMismatchError: "org.semanticweb.owlapi.io.OWLParserException",
   ResourceLimitError: "org.semanticweb.owlapi.model.OWLRuntimeException",
+  RDFXMLStreamDocumentSource: "org.semanticweb.owlapi.io.StreamDocumentSource",
   SecurityPolicyError:
     "org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration",
   StructuralSet: "org.semanticweb.owlapi.model.OWLObject",
@@ -703,6 +711,7 @@ const CLOSEST_JAVA_AUTHORITY = Object.freeze({
 });
 
 const CAPABILITIES_BY_EXPORT = Object.freeze({
+  FunctionalSyntaxStreamDocumentTarget: ["storer.functional"],
   NodeDocumentLoader: [
     "loading.node-authorized-transport",
     "loading.import-closure",
@@ -711,6 +720,7 @@ const CAPABILITIES_BY_EXPORT = Object.freeze({
   ChangeApplied: ["manager.atomic-changes"],
   RDFParserMetaData: ["compatibility.owlapi-5.5.1"],
   RDFOntologyHeaderStatus: ["compatibility.owlapi-5.5.1"],
+  RDFXMLStreamDocumentSource: ["parser.rdfxml", "loading.abort-signal"],
   AddOntologyAnnotation: ["compatibility.owlapi-5.5.1"],
   OWLOntologyImportsClosureSetProvider: ["compatibility.owlapi-5.5.1"],
   OWLOntologyMerger: ["compatibility.owlapi-5.5.1"],
@@ -750,6 +760,14 @@ const VERIFICATION_BY_GROUP = Object.freeze({
 });
 
 const VERIFICATION_BY_EXPORT = Object.freeze({
+  FunctionalSyntaxStreamDocumentTarget: [
+    "internal/parsing/rdfxml/rdfXmlStream.test.js",
+    "test/package-boundary.test.mjs",
+  ],
+  RDFXMLStreamDocumentSource: [
+    "internal/parsing/rdfxml/rdfXmlStream.test.js",
+    "test/package-boundary.test.mjs",
+  ],
   ChangeApplied: ["model/behaviorMutation.test.js"],
   RDFParserMetaData: [
     "io/rdfParserMetaData.test.js",
@@ -805,6 +823,14 @@ const VERIFICATION_BY_EXPORT = Object.freeze({
 });
 
 const SEMANTIC_QUALIFICATIONS_BY_EXPORT = Object.freeze({
+  FunctionalSyntaxStreamDocumentTarget: [
+    "The sink receives an iterable of strings for one Functional Syntax save and must consume it to completion.",
+    "The sink owns its output lifecycle and can stage its writes before publication.",
+  ],
+  RDFXMLStreamDocumentSource: [
+    "The factory receives an AbortSignal and opens a fresh iterable of Uint8Array chunks for each load of a UTF-8 RDF/XML document.",
+    "The document IRI supplies the retrieval base. An authored root xml:base determines the document's own base.",
+  ],
   OWLOntologyLoaderConfiguration: [
     "new OWLOntologyLoaderConfiguration({ behaviorProfileId }) selects an immutable identity, defaulting to normative-v1. with() and native fluent setters preserve that identity; a manager rejects a configuration from another profile.",
     "Native methods get/setConnectionTimeout, get/setRetriesToAttempt, is/setFollowRedirects, get/setEntityExpansionLimit, is/setStrict, is/setLoadAnnotationAxioms, get/setAuthorizationValue and is/setAcceptingHTTPCompression retain Java names, types, values and observed immutable-copy/no-op semantics.",
@@ -928,6 +954,8 @@ const OMITTED_MEMBERS = Object.freeze({
 });
 
 const PUBLIC_ERRORS_BY_EXPORT = Object.freeze({
+  FunctionalSyntaxStreamDocumentTarget: ["TypeError"],
+  RDFXMLStreamDocumentSource: ["TypeError"],
   NodeDocumentLoader: [
     "DocumentLoadError",
     "ResourceLimitError",
@@ -1110,6 +1138,12 @@ const kindOfBinding = (binding, exportName) => {
 };
 
 const callShapesFor = (binding, exportName, publicSpecifier) => {
+  if (exportName === "FunctionalSyntaxStreamDocumentTarget") {
+    return ["new FunctionalSyntaxStreamDocumentTarget(sink)"];
+  }
+  if (exportName === "RDFXMLStreamDocumentSource") {
+    return ["new RDFXMLStreamDocumentSource(open, { documentIRI }?)"];
+  }
   if (exportName === "OWLManager") {
     return ["OWLManager.createOWLOntologyManager(options?)"];
   }
@@ -1189,6 +1223,12 @@ const closestJavaAuthorityFor = (exportName, javaType, javaPackage) => {
 };
 
 const summaryFor = (exportName, kind, relationship) => {
+  if (exportName === "FunctionalSyntaxStreamDocumentTarget") {
+    return "A Functional Syntax document target with a caller-owned chunk sink.";
+  }
+  if (exportName === "RDFXMLStreamDocumentSource") {
+    return "An explicit UTF-8 RDF/XML document source backed by a byte stream.";
+  }
   if (exportName === "OWLOntologyImportsClosureSetProvider") {
     return "A provider that queries the current imports closure on each call and returns that call's defensive JavaScript Set snapshot.";
   }
