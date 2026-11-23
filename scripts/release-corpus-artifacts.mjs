@@ -50,6 +50,10 @@ export const corpusShardRunner = (platform) =>
 const decode = (bytes) =>
   JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes));
 
+export function readCorpusShardArchive(download, artifact) {
+  return readQualifiedZip(download, artifact, 8 * 1024 * 1024, producerFiles);
+}
+
 function requireShadowJava(jdk) {
   assert.ok(
     jdk?.vendor === corpusShadowJava.vendor &&
@@ -406,12 +410,7 @@ export async function reconcileHostedCorpus({
       "Corpus shard archive differs from its acknowledged artifact",
     );
     requireSameUpload(artifact, run, job, corpusShardUploadStep, now);
-    const files = await readQualifiedZip(
-      download,
-      artifact,
-      8 * 1024 * 1024,
-      producerFiles,
-    );
+    const files = await readCorpusShardArchive(download, artifact);
     const proof = decode(files.get("verification.json"));
     const originalBytes = files.get("report.json");
     const original = decode(originalBytes);

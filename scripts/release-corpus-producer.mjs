@@ -16,11 +16,14 @@ import {
   corpusShardArtifactName,
   corpusShardJobName,
   corpusShardRunner,
+  corpusShardUploadStep,
   corpusShadowJava,
   readCorpusCandidate,
+  readCorpusShardArchive,
   reconcileHostedCorpus,
 } from "./release-corpus-artifacts.mjs";
 import { REPOSITORY, REPOSITORY_ID } from "./release-identity.mjs";
+import { requireSameUpload } from "./release-ci-package.mjs";
 import { readRunArtifacts } from "./github-evidence-reader.mjs";
 import { assertPromotedCi } from "./promoted-release-proof.mjs";
 import {
@@ -28,7 +31,10 @@ import {
   validateFrozenMatrix,
 } from "./consumer-runtime-matrix.mjs";
 import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
-import { matchesLogicalArtifact } from "../tooling/artifact-transport/identity.mjs";
+import {
+  matchesLogicalArtifact,
+  selectArtifactGroups,
+} from "../tooling/artifact-transport/identity.mjs";
 import { comparisonCases } from "../util/owlapi-reference/comparison-cases.mjs";
 import { julyComparisonManifest } from "../util/owlapi-reference/comparison-fixtures.mjs";
 import {
@@ -192,8 +198,15 @@ async function readAttemptJobs(read, { runId, attempt }) {
   throw new Error("Incomplete corpus job inventory");
 }
 
-export function selectCorpusShardArtifacts(shards, jobs, artifacts, source) {
+export async function selectCorpusShardArtifacts(
+  shards,
+  jobs,
+  artifacts,
+  source,
+  transport,
+) {
   const selected = [];
+  let run;
   for (const shard of shards) {
     const logical = corpusShardArtifactName(
       source.runId,
@@ -207,15 +220,40 @@ export function selectCorpusShardArtifacts(shards, jobs, artifacts, source) {
         legacy: true,
       }),
     );
-    assert.ok(retained.length <= 1, "Duplicate corpus shard archive");
     if (!retained.length) continue;
     const producers = jobs.filter(
       ({ name }) => name === corpusShardJobName(shard.shardId),
     );
     assert.equal(producers.length, 1, "Missing or duplicate corpus shard job");
     const [job] = producers;
-    const [artifact] = retained;
     if (job.conclusion !== "success") continue;
+    let [artifact] = retained;
+    if (retained.length > 1) {
+      const copies = selectArtifactGroups(retained, {
+        name: logical,
+        run: source.runId,
+        attempt: source.attempt,
+      }).get(logical);
+      assert.equal(
+        copies.length,
+        retained.length,
+        "Ambiguous corpus shard archives",
+      );
+      run ??= await transport.read(`/actions/runs/${source.runId}`);
+      const readCopy = (copy) => {
+        requireSameUpload(copy, run, job, corpusShardUploadStep, Date.now());
+        return readCorpusShardArchive(transport.download, copy);
+      };
+      [artifact] = copies;
+      const expected = await readCopy(artifact);
+      for (const copy of copies.slice(1)) {
+        assert.deepEqual(
+          await readCopy(copy),
+          expected,
+          "Conflicting corpus shard payloads",
+        );
+      }
+    }
     selected.push({
       shardId: shard.shardId,
       id: artifact.id,
@@ -449,11 +487,12 @@ async function aggregate(env) {
       version: oracleVersion,
       lockSha256: sha256(await readFile(oracleLockPath)),
     },
-    artifacts: selectCorpusShardArtifacts(
+    artifacts: await selectCorpusShardArtifacts(
       corpusQualificationShards(comparisonCases, roster),
       jobs,
       artifacts,
       source,
+      transport,
     ),
   };
   const result = await reconcileHostedCorpus({

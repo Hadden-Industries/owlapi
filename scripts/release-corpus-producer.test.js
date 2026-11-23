@@ -7,7 +7,11 @@ import {
 import {
   corpusShardArtifactName,
   corpusShardJobName,
+  corpusShardUploadStep,
 } from "./release-corpus-artifacts.mjs";
+import { zipArchive } from "./fixtures/zip-archive.mjs";
+import { physicalName } from "../tooling/artifact-transport/identity.mjs";
+import { sha256 } from "../util/owlapi-reference/comparison-evidence.mjs";
 import { REPOSITORY, REPOSITORY_ID } from "./release-identity.mjs";
 import { CI_RUNTIME } from "./runtime-policy.mjs";
 import {
@@ -175,7 +179,7 @@ test("the native matrix schedules every shard once on a pinned host", () => {
   ).toBe(true);
 });
 
-test("descriptor collection rejects duplicate native products and ignores failed jobs", () => {
+test("descriptor collection rejects ambiguous native products and ignores failed jobs", async () => {
   const shardId = hex("a");
   const source = { runId: 100, attempt: 2 };
   const shards = [{ shardId }];
@@ -187,23 +191,106 @@ test("descriptor collection rejects duplicate native products and ignores failed
     name: corpusShardArtifactName(100, 2, shardId),
     digest: "sha256:" + hex("c"),
   };
-  expect(selectCorpusShardArtifacts(shards, jobs, [artifact], source)).toEqual([
-    { shardId, id: 5, jobId: 4, sha256: hex("c") },
-  ]);
-  expect(() =>
+  await expect(
+    selectCorpusShardArtifacts(shards, jobs, [artifact], source),
+  ).resolves.toEqual([{ shardId, id: 5, jobId: 4, sha256: hex("c") }]);
+  await expect(
     selectCorpusShardArtifacts(
       shards,
       jobs,
       [artifact, { ...artifact, id: 6 }],
       source,
     ),
-  ).toThrow("Duplicate corpus shard archive");
-  expect(
+  ).rejects.toThrow("No matching current-run artifacts");
+  await expect(
     selectCorpusShardArtifacts(
       shards,
       [{ ...jobs[0], conclusion: "failure" }],
       [artifact],
       source,
     ),
-  ).toEqual([]);
+  ).resolves.toEqual([]);
+});
+
+test("late-visible copies from one native upload must contain the same receipts", async () => {
+  const shardId = hex("a");
+  const source = { runId: 100, attempt: 2 };
+  const run = {
+    id: 100,
+    repository: { id: REPOSITORY_ID },
+    head_repository: { id: REPOSITORY_ID },
+    head_sha: env.GITHUB_SHA,
+  };
+  const jobs = [
+    {
+      name: corpusShardJobName(shardId),
+      id: 4,
+      conclusion: "success",
+      steps: [
+        {
+          name: corpusShardUploadStep,
+          status: "completed",
+          conclusion: "success",
+          started_at: "2026-11-23T04:00:00Z",
+          completed_at: "2026-11-23T04:00:03Z",
+        },
+      ],
+    },
+  ];
+  const members = [
+    { path: "verification.json", content: "proof" },
+    { path: "report.json", content: "report" },
+  ];
+  const archives = new Map([
+    [5, zipArchive(members)],
+    [6, zipArchive([...members].reverse())],
+  ]);
+  const artifact = (id, ordinal) => ({
+    id,
+    name: physicalName({
+      logical: corpusShardArtifactName(100, 2, shardId),
+      run: 100,
+      attempt: 2,
+      producer: "b".repeat(16),
+      invocation: "c".repeat(32),
+      ordinal,
+    }),
+    digest: "sha256:" + sha256(archives.get(id)),
+    size_in_bytes: archives.get(id).length,
+    created_at: "2026-11-23T04:00:01Z",
+    expired: false,
+    expires_at: new Date(Date.now() + 60000).toISOString(),
+    workflow_run: {
+      id: run.id,
+      repository_id: REPOSITORY_ID,
+      head_repository_id: REPOSITORY_ID,
+      head_sha: run.head_sha,
+    },
+  });
+  const transport = {
+    read: async () => run,
+    download: async ({ id }) => archives.get(id),
+  };
+  expect(sha256(archives.get(5))).not.toBe(sha256(archives.get(6)));
+  const collect = () =>
+    selectCorpusShardArtifacts(
+      [{ shardId }],
+      jobs,
+      [artifact(6, 1), artifact(5, 0)],
+      source,
+      transport,
+    );
+  await expect(collect()).resolves.toEqual([
+    {
+      shardId,
+      id: 5,
+      jobId: 4,
+      sha256: sha256(archives.get(5)),
+    },
+  ]);
+  archives.set(
+    6,
+    zipArchive([members[0], { ...members[1], content: "substituted" }]),
+  );
+  await expect(collect()).rejects.toThrow("Conflicting corpus shard payloads");
 });

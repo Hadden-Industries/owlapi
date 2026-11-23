@@ -83,8 +83,16 @@ async function writeQualification(manifest, env, read) {
   const selected = retained || current;
   const sameRunInput = env.CORPUS_QUALIFICATION_INPUT;
   const readCurrentMain = async () => {
-    await validateReleaseCoordinate({ read, commit: manifest.commit });
-    return (await read("/git/ref/heads/main")).object.sha;
+    const finalRead = createRepositoryReader({
+      repository,
+      token: env.GH_TOKEN,
+      requestLimit: 8,
+    });
+    await validateReleaseCoordinate({
+      read: finalRead,
+      commit: manifest.commit,
+    });
+    return (await finalRead("/git/ref/heads/main")).object.sha;
   };
   assert.ok(
     [retained, current, sameRunInput].filter(Boolean).length <= 1,
