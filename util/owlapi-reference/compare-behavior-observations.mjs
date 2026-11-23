@@ -83,7 +83,20 @@ const classify = (probeId, central, rebuilt) => {
  * location can differ between Central and the source build; an outcome cannot.
  * This deliberately does not generalize exception, callback or numeric values.
  */
-export function compareBehaviorObservations(central, rebuilt) {
+export function compareBehaviorObservations(
+  central,
+  rebuilt,
+  { sameRelease = false } = {},
+) {
+  if (
+    sameRelease &&
+    (!central.classpathEntries?.length ||
+      !jsonEquals(central.classpathEntries, rebuilt.classpathEntries))
+  ) {
+    throw new Error(
+      "Same-release behavior replay requires the same ordered classpath",
+    );
+  }
   if (
     !central.observations.length ||
     central.observations.length !== rebuilt.observations.length
@@ -121,9 +134,10 @@ export function compareBehaviorObservations(central, rebuilt) {
     const centralBehaviorSha256 = digest(centralRows);
     const rebuiltBehaviorSha256 = digest(rebuiltRows);
     const identical = centralBehaviorSha256 === rebuiltBehaviorSha256;
-    const classifiedDifferences = identical
-      ? []
-      : classify(observation.probeId, centralRows, rebuiltRows);
+    const classifiedDifferences =
+      identical || sameRelease
+        ? []
+        : classify(observation.probeId, centralRows, rebuiltRows);
     return {
       probeId: observation.probeId,
       arguments: observation.arguments,

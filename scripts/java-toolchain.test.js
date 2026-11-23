@@ -26,11 +26,45 @@ describe("current Java execution policy", () => {
       windowsVersion: "29.0.2.11",
     });
   });
+
+  test("the fourth OpenJDK version component stays distinct from the build", () => {
+    expect(javaToolchainSelection("25.0.5+1.2")).toEqual({
+      vendor: "Eclipse Adoptium",
+      distribution: "temurin",
+      version: "25.0.5.1",
+      runtime: "25.0.5.1+2-LTS",
+      setupJavaVersion: "25.0.5+1.2",
+      windowsPackage: "EclipseAdoptium.Temurin.25.JDK",
+      windowsVersion: "25.0.5.10002",
+    });
+  });
+
+  test("admits a chosen development build against its own exact identity", () => {
+    const selected = javaToolchainSelection("25.0.5+1.2");
+    const properties = [
+      "    java.home = /opt/selected-jdk",
+      `    java.vendor = ${selected.vendor}`,
+      "    java.version = 25.0.5.1",
+      "    java.runtime.version = 25.0.5.1+2-LTS",
+      "    java.vm.version = 25.0.5.1+2-LTS",
+    ].join("\n");
+    expect(currentJavaProperties(properties, selected)["java.home"]).toBe(
+      "/opt/selected-jdk",
+    );
+    expect(() =>
+      currentJavaProperties(
+        properties.replaceAll("+2-LTS", "+3-LTS"),
+        selected,
+      ),
+    ).toThrow("requires Eclipse Temurin 25.0.5.1+2-LTS");
+  });
+
   test.each([
     "25",
     "25.0.5",
     "25.0.5+8",
     "25.0.5+8-ea",
+    "25.0.5+100000002.0.LTS",
     ">=25.0.5",
     "25.0.5+8.0.LTS\n26.0.1+9.0.LTS",
   ])("rejects incomplete or ambiguous Java selection %s", (selection) => {

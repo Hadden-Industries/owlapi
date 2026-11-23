@@ -42,9 +42,12 @@ export function replayBehaviorResearch({
   classpathFile,
   outputDirectory,
   java = "java",
+  selection,
+  javaHeapMiB,
+  reuseFrom,
   reuseUnchangedProbes = false,
 }) {
-  const javaToolchain = observeCurrentJavaToolchain(java);
+  const javaToolchain = observeCurrentJavaToolchain(java, selection);
   const output = resolve(outputDirectory);
   mkdirSync(output, { recursive: true });
   const classpath = readFileSync(classpathFile, "utf8").trim();
@@ -53,9 +56,12 @@ export function replayBehaviorResearch({
     sha256: sha256(readFileSync(path)),
   }));
   const observations = [];
-  const retained = reuseUnchangedProbes
-    ? JSON.parse(readFileSync(join(output, "observations.json"), "utf8"))
-    : undefined;
+  const retained =
+    reuseUnchangedProbes || reuseFrom
+      ? JSON.parse(
+          readFileSync(reuseFrom ?? join(output, "observations.json"), "utf8"),
+        )
+      : undefined;
   if (retained && !jsonEquals(retained.classpathEntries, classpathEntries))
     throw new Error("Cannot reuse Java observations from a changed classpath");
   if (retained && !jsonEquals(retained.javaToolchain ?? null, javaToolchain))
@@ -142,6 +148,7 @@ export function replayBehaviorResearch({
         }
         const result = runJavaObservation({
           java,
+          javaHeapMiB,
           classpath,
           sourcePath,
           arguments: arguments_,

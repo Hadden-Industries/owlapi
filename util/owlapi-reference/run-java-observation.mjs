@@ -10,12 +10,21 @@ export function runJavaObservation({
   arguments: programArguments = [],
   outputDirectory,
   java = "java",
+  javaHeapMiB,
   timeoutMilliseconds = 120_000,
 }) {
+  if (
+    javaHeapMiB !== undefined &&
+    (!Number.isSafeInteger(javaHeapMiB) || javaHeapMiB < 64)
+  ) {
+    throw new Error("Java heap size must be a whole number of MiB");
+  }
   const argumentsFile = join(outputDirectory, "java-arguments.txt");
   writeFileSync(
     argumentsFile,
     [
+      ...(javaHeapMiB === undefined ? [] : [`-Xmx${javaHeapMiB}m`]),
+      `-XX:ErrorFile=${join(outputDirectory, "hs_err_pid%p.log")}`,
       "-Duser.language=en",
       "-Duser.country=GB",
       "-Duser.timezone=UTC",
