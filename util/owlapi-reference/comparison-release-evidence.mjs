@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { comparisonIdentity, sha256 } from "./comparison-evidence.mjs";
 import { oracleLockPath, oracleVersion } from "./comparison-oracle.mjs";
@@ -15,14 +16,35 @@ const releaseSuites = [
 const platform = ["linux", "win32"];
 const validDigest = (value) =>
   typeof value === "string" && /^[a-f0-9]{64}$/u.test(value);
+const behaviorLedger = new URL(
+  "../../docs/compatibility/java-api-parity-decisions.json",
+  import.meta.url,
+);
 
 /** Derive required cells from the reviewed checkout. A producer cannot select its own denominator. */
 export function corpusQualificationRoster(comparisonCases) {
+  const ledgerBytes = readFileSync(behaviorLedger);
+  const { currentBehaviorContracts } = JSON.parse(ledgerBytes);
+  const requiredDecisions = currentBehaviorContracts.decisions
+    .filter(({ decisionStatus }) => decisionStatus === "accepted")
+    .map(({ decisionId }) => decisionId)
+    .sort();
+  const decisions = new Set(requiredDecisions);
+  if (
+    !decisions.size ||
+    decisions.size !== requiredDecisions.length ||
+    requiredDecisions.some((id) => typeof id !== "string" || !id)
+  ) {
+    throw new Error(
+      "The accepted public behavior ledger has invalid decision IDs",
+    );
+  }
   const cases = releaseSuites.flatMap((selection) =>
     comparisonCases(selection),
   );
   const held = new Map();
   const cells = [];
+  const registeredDecisions = new Set();
   for (const entry of cases) {
     const { input, definition, caseId } = entry;
     const unavailable = [
@@ -45,6 +67,21 @@ export function corpusQualificationRoster(comparisonCases) {
     const measurements =
       definition.measurements ??
       (definition.literal ? ["behavior"] : ["behavior", "structure"]);
+    if (definition.scenario === "public-api-behavior") {
+      const witnesses = Object.values(definition).filter(
+        (recipe) => typeof recipe?.decisionId === "string",
+      );
+      if (
+        witnesses.length !== 1 ||
+        !decisions.has(witnesses[0].decisionId) ||
+        !measurements.includes("behavior")
+      ) {
+        throw new Error(
+          `Invalid public behavior decision binding for ${input.id}`,
+        );
+      }
+      registeredDecisions.add(witnesses[0].decisionId);
+    }
     for (const operatingSystem of platform) {
       for (const measurement of measurements) {
         cells.push({
@@ -63,7 +100,15 @@ export function corpusQualificationRoster(comparisonCases) {
       }
     }
   }
-  return { schemaVersion: 1, cells, held: [...held.values()] };
+  return {
+    schemaVersion: 1,
+    cells,
+    held: [...held.values()],
+    behaviorLedgerSha256: sha256(ledgerBytes),
+    unregisteredBehaviorDecisions: requiredDecisions.filter(
+      (id) => !registeredDecisions.has(id),
+    ),
+  };
 }
 
 const cellKey = ({ platform, caseId, measurement }) =>
@@ -159,11 +204,17 @@ export async function reconcileCorpusReceipts(
   const missing = roster.cells.filter((cell) => !seen.has(cellKey(cell)));
   return {
     schemaVersion: 1,
-    status: !missing.length && !rejected.length ? "complete" : "incomplete",
+    status:
+      !missing.length &&
+      !rejected.length &&
+      !roster.unregisteredBehaviorDecisions.length
+        ? "complete"
+        : "incomplete",
     rosterSha256: comparisonIdentity(roster),
     requiredCount: roster.cells.length,
     missing,
     rejected,
     holds: roster.held,
+    unregisteredBehaviorDecisions: roster.unregisteredBehaviorDecisions,
   };
 }

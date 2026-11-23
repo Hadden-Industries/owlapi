@@ -1459,8 +1459,8 @@ async function executeComparison(request, environment = {}) {
       );
     }
     if (request.action === "list") {
-      const { cells, held } = corpusQualificationRoster(comparisonCases);
-      return { schemaVersion: 1, cases: cells, held };
+      const { cells, ...roster } = corpusQualificationRoster(comparisonCases);
+      return { ...roster, cases: cells };
     }
     if (
       request.action !== "verify" ||

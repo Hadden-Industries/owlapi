@@ -421,6 +421,64 @@ test("release shadow preserves the separately pinned writer and VOWL source case
   expect(admitted.status).toBe("incomplete");
 });
 
+test("all registered receipts still hold shadow qualification when a behavior decision lacks a case", async () => {
+  const subject = {
+    tarballSha256: "1".repeat(64),
+    dependencyGraphSha256: "2".repeat(64),
+    artifactSha256: "3".repeat(64),
+    artifactId: "123",
+    integrity: "sha512-AAAA",
+  };
+  const oracle = {
+    lockSha256: sha256(await readFile(oracleLockPath)),
+    version: oracleVersion,
+  };
+  const roster = corpusQualificationRoster(comparisonCases);
+  const receipts = roster.cells.map((cell) => ({
+    ...cell,
+    subject,
+    oracle: cell.oracle
+      ? {
+          ...cell.oracle,
+          classpathSha256: "7".repeat(64),
+          jars: [
+            {
+              file: "owlapi-api-5.5.1.jar",
+              byteLength: 99,
+              sha256: "8".repeat(64),
+            },
+          ],
+        }
+      : oracle,
+    provenance: "INSTALLED_CANDIDATE",
+    verdict: cell.expectedDifferenceRules
+      ? "reconciled"
+      : cell.measurement === "structure"
+        ? "match"
+        : "observed",
+    ...(cell.expectedDifferenceRules
+      ? { reconciledRuleIds: cell.expectedDifferenceRules }
+      : {}),
+    stageSha256: "5".repeat(64),
+    producerArtifactSha256: "6".repeat(64),
+    producerRun: "7",
+    producerAttempt: "1",
+  }));
+  const result = await reconcileCorpusReceipts(
+    { subject, oracle, receipts },
+    comparisonCases,
+  );
+  expect(result.missing).toHaveLength(0);
+  expect(result.rejected).toHaveLength(0);
+  expect(result.unregisteredBehaviorDecisions).toContain(
+    "BEHAVIOR-NODE-TRANSPORT",
+  );
+  expect(result.unregisteredBehaviorDecisions).not.toContain(
+    "BEHAVIOR-STORAGE-TARGET",
+  );
+  expect(result.status).toBe("incomplete");
+});
+
 test("a requested Node heap must fit within the Windows job budget", async () => {
   await expect(
     runWindowsComparisonJob(

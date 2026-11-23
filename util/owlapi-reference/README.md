@@ -81,6 +81,7 @@ The report retains the observed attempts and labels the released Java direct loa
 
 The `release-semantics` selection derives its shadow roster from the catalogue and the recorded hold reasons.
 Its verifier consumes receipts after the producer artifacts and installed candidate have been authenticated.
+Accepted public behavior decisions without a registered case hold shadow qualification.
 
 The official released Java OWLAPI 5.5.1 oracle, historical source-build pins and frozen performance timings retain their distinct identities.
 Use [the 0.1.0 roadmap](../../docs/plans/2026-10-29-0.1.0-release-reconciliation.md#4-java-toolchain-and-oracle-migration) to select the appropriate oracle and preserve old evidence.
