@@ -17,6 +17,7 @@ import {
   resolveComparisonFixture,
 } from "./comparison-fixtures.mjs";
 import {
+  comparisonStageFailure,
   exactComparedDocuments,
   readNativeComparisonResult,
   sha256,
@@ -31,6 +32,34 @@ async function withScratch(run) {
     await rm(directory, { recursive: true, force: true });
   }
 }
+
+test("a writer failure retains the precise RDF statement reported by its parser", () => {
+  const statement = {
+    subject: "urn:owlapi:header",
+    predicate: "http://purl.org/dc/terms/created",
+    object: "2021-06-01",
+  };
+  const cause = Object.assign(new Error("Unconsumed RDF statement"), {
+    code: "UNSUPPORTED_CONSTRUCT",
+    ...statement,
+  });
+  const error = Object.assign(new Error("RDF/XML save failed", { cause }), {
+    code: "ONTOLOGY_STORAGE_FAILED",
+    reason: "ONTOLOGY_NOT_REPRESENTABLE",
+  });
+  expect(comparisonStageFailure("save", error)).toMatchObject({
+    status: "failed",
+    phase: "save",
+    category: "ONTOLOGY_STORAGE_FAILED",
+    details: { reason: "ONTOLOGY_NOT_REPRESENTABLE" },
+    causes: [
+      {
+        category: "UNSUPPORTED_CONSTRUCT",
+        details: statement,
+      },
+    ],
+  });
+});
 
 test("the reviewed roster preserves all original, closure and held cases", async () => {
   const named = { profile: "java-owlapi-5.5.1" };

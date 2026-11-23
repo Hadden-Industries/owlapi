@@ -3,6 +3,7 @@ import { once } from "node:events";
 import { basename, dirname, join } from "node:path";
 import { comparisonSyntaxes } from "./comparison-fixtures.mjs";
 import {
+  comparisonStageFailure as failure,
   publishComparisonFile,
   publishComparisonJson,
   sha256,
@@ -61,20 +62,6 @@ function cgmesWitnesses(ontology, input) {
   }
   return witnesses;
 }
-
-const failure = (phase, error) => ({
-  status: "failed",
-  phase,
-  category: error.code ?? error.name,
-  message: String(error.message),
-  details: Object.fromEntries(
-    ["reason", "iri", "resource", "limit", "observed", "termType"]
-      .filter((name) =>
-        ["string", "number", "boolean"].includes(typeof error[name]),
-      )
-      .map((name) => [name, error[name]]),
-  ),
-});
 
 async function storeModel(api, manager, ontology, format, name, directory) {
   const target = new api.StringDocumentTarget();

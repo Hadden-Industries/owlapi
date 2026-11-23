@@ -8,6 +8,66 @@ export const sha256 = (bytes) =>
 
 export const comparisonIdentity = (value) => sha256(canonicalJson(value));
 
+const diagnosticFields = [
+  "reason",
+  "iri",
+  "resource",
+  "limit",
+  "observed",
+  "termType",
+  "graph",
+  "subject",
+  "predicate",
+  "object",
+  "line",
+  "column",
+];
+
+function observedFailure(error) {
+  const boundedText = (value) =>
+    value.length <= 4096
+      ? value
+      : {
+          prefix: value.slice(0, 4096),
+          byteLength: Buffer.byteLength(value),
+          sha256: sha256(value),
+        };
+  const message = String(error?.message ?? error);
+  return {
+    category: error?.code ?? error?.name ?? "Error",
+    message: message.slice(0, 4096),
+    ...(message.length > 4096 ? { messageSha256: sha256(message) } : {}),
+    details: Object.fromEntries(
+      diagnosticFields.flatMap((name) => {
+        const value = error?.[name];
+        if (typeof value === "string") return [[name, boundedText(value)]];
+        return Number.isFinite(value) || typeof value === "boolean"
+          ? [[name, value]]
+          : [];
+      }),
+    ),
+  };
+}
+
+/** Retain the typed error and the source of a wrapped stage failure. */
+export function comparisonStageFailure(phase, error) {
+  const causes = [];
+  const visited = new Set([error]);
+  let cause = error?.cause ?? undefined;
+  while (cause !== undefined && causes.length < 8 && !visited.has(cause)) {
+    visited.add(cause);
+    causes.push(observedFailure(cause));
+    cause = cause.cause ?? undefined;
+  }
+  return {
+    status: "failed",
+    phase,
+    ...observedFailure(error),
+    ...(causes.length ? { causes } : {}),
+    ...(cause !== undefined ? { causesTruncated: true } : {}),
+  };
+}
+
 /** Require a completed model and one native comparison for each loaded document. */
 export function exactComparedDocuments(models, comparisons) {
   if (

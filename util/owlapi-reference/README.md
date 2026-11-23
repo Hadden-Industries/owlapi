@@ -111,6 +111,8 @@ The separate native default result retains the added declarations and its own re
 The pinned Java-profile ePO, IOF Core and ESCO closures use the same structural check and retain the native default result.
 Run the `js-closure-after-native-refusal` input with the normative profile and the closure scenario to check both independent outcomes.
 The stock Java load records `JAXP00010004`, the JavaScript writer round trip matches in the native comparator, and the cross-engine structure remains blocked.
+JavaScript stage failures retain their typed causes and the RDF statement when the parser reports one.
+Long diagnostic text retains a prefix and a digest.
 
 The official released Java OWLAPI 5.5.1 oracle, historical source-build pins and frozen performance timings retain their distinct identities.
 Use [the 0.1.0 roadmap](../../docs/plans/2026-10-29-0.1.0-release-reconciliation.md#4-java-toolchain-and-oracle-migration) to select the appropriate oracle and preserve old evidence.
