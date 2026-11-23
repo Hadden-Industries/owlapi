@@ -979,7 +979,8 @@ const validateJobs = (fileName, workflow, violations) => {
       fileName === "extended-tests.yml" && id === "third_party_evidence_shard";
     const isConsumerMatrix =
       id === "consumer_runtime" ||
-      (fileName === "release-registry.yml" && id === "public_recipient");
+      (fileName === "release-registry.yml" && id === "public_recipient") ||
+      (fileName === "release.yml" && id === "corpus_shard");
     add(
       violations,
       isConsumerMatrix
@@ -1914,6 +1915,13 @@ const validateManualRelease = (fileName, workflow, violations) => {
                   required: false,
                   default: "",
                 },
+                corpus_shadow: {
+                  description:
+                    "Produce and authenticate the corpus shards during read-only qualification",
+                  type: "boolean",
+                  required: false,
+                  default: false,
+                },
               },
             },
           }
@@ -1953,6 +1961,60 @@ const validateManualRelease = (fileName, workflow, violations) => {
       qualificationManifest?.env?.CORPUS_QUALIFICATION_ARTIFACT ===
         "${{ inputs.corpus_qualification_artifact }}",
       `${fileName}: corpus evidence must use the selected qualification descriptor`,
+    );
+    const plan = workflow.jobs?.corpus_plan;
+    const shard = workflow.jobs?.corpus_shard;
+    const aggregate = workflow.jobs?.corpus_aggregate;
+    for (const [id, job] of [
+      ["corpus_plan", plan],
+      ["corpus_shard", shard],
+      ["corpus_aggregate", aggregate],
+    ])
+      validateReadOnlyJob(fileName, id, job, violations, {
+        contents: "read",
+        actions: "read",
+      });
+    add(
+      violations,
+      sameInventory(needs(plan), [
+        "release_dispatch",
+        "release_admission",
+        "runtime_matrix",
+        "candidate",
+      ]) &&
+        sameInventory(needs(shard), ["corpus_plan"]) &&
+        sameInventory(needs(aggregate), ["corpus_plan", "corpus_shard"]) &&
+        shard?.name === "Corpus shadow / ${{ matrix.id }}" &&
+        shard["runs-on"] === "${{ matrix.runner }}" &&
+        shard.strategy?.["fail-fast"] === false &&
+        shard.strategy?.matrix ===
+          "${{ fromJSON(needs.corpus_plan.outputs.matrix) }}",
+      `${fileName}: corpus production must use the frozen two-platform matrix`,
+    );
+    const replay = steps(shard).find(
+      (step) => step.run === "npm run corpus:shadow -- shard",
+    );
+    const uploads = actionSteps(shard, RETAIN_ARTIFACT);
+    add(
+      violations,
+      replay &&
+        !replay["continue-on-error"] &&
+        !replay.env?.GH_TOKEN &&
+        !shard.env?.GH_TOKEN &&
+        uploads.length === 1 &&
+        uploads[0].name === "Upload the verified corpus shard" &&
+        !uploads[0].if &&
+        sameInventory(uploads[0].with?.path?.trim().split(/\r?\n/u) ?? [], [
+          ".release/corpus-proof/verification.json",
+          ".release/corpus-proof/report.json",
+        ]),
+      `${fileName}: corpus shards must replay without credentials and retain only verified receipts`,
+    );
+    add(
+      violations,
+      qualificationManifest?.env?.CORPUS_CURRENT_RUN_ARTIFACT ===
+        "${{ needs.corpus_aggregate.result == 'success' && format('{0}:{1}', needs.corpus_aggregate.outputs.artifact_id, needs.corpus_aggregate.outputs.artifact_digest) || '' }}",
+      `${fileName}: the requested corpus aggregate must bind its native artifact output`,
     );
   }
   requireFields(
@@ -3717,8 +3779,8 @@ const validateArtifactTransportControls = (
         RETAIN_ARTIFACT,
         "./approval-tools/.github/actions/retain-artifact",
       ].includes(step.uses),
-    ).length === 47,
-    "Artifact transport must cover the complete 47-producer inventory",
+    ).length === 49,
+    "Artifact transport must cover the complete 49-producer inventory",
   );
   add(
     violations,
@@ -4001,12 +4063,20 @@ export const auditRepositoryControls = ({
     validateActionUses(fileName, workflow, document, violations);
     for (const [jobId, job] of entries(workflow.jobs)) {
       for (const step of actionSteps(job, "actions/setup-java")) {
+        const corpusShadow =
+          fileName === "release.yml" && jobId === "corpus_shard";
         add(
           violations,
-          step.with?.["java-version-file"] === ".java-version" &&
-            step.with?.distribution === JAVA_TOOLCHAIN.distribution &&
-            !Object.hasOwn(step.with ?? {}, "java-version"),
-          `${fileName}:${jobId}: reference JDK must use the single version file`,
+          step.with?.distribution === JAVA_TOOLCHAIN.distribution &&
+            (corpusShadow
+              ? step.with?.["java-version"] ===
+                  "${{ needs.corpus_plan.outputs.java_selection }}" &&
+                !Object.hasOwn(step.with ?? {}, "java-version-file")
+              : step.with?.["java-version-file"] === ".java-version" &&
+                !Object.hasOwn(step.with ?? {}, "java-version")),
+          corpusShadow
+            ? `${fileName}:${jobId}: corpus shadow JDK must use the frozen planner output`
+            : `${fileName}:${jobId}: reference JDK must use the single version file`,
         );
       }
     }

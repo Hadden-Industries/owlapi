@@ -97,6 +97,30 @@ test("the aggregate accepts a digest-bound corpus descriptor only during qualifi
   );
 });
 
+test("hosted production is available on both read-only routes and exclusive of retained evidence", () => {
+  expect(releaseQualificationMode({ corpus_shadow: true })).toBe("reuse");
+  expect(
+    releaseQualificationMode({
+      corpus_shadow: true,
+      fresh_qualification: true,
+    }),
+  ).toBe("fresh");
+  expect(() =>
+    releaseQualificationMode({
+      corpus_shadow: true,
+      qualification_only: false,
+    }),
+  ).toThrow("qualification-only");
+  expect(() =>
+    releaseQualificationMode({
+      corpus_shadow: true,
+      corpus_qualification_artifact: "14:" + "a".repeat(64),
+    }),
+  ).toThrow("without a retained descriptor");
+  expect(workflow.jobs.required.needs).toContain("corpus_aggregate");
+  expect(workflow.jobs.corpus_shard.strategy["fail-fast"]).toBe(false);
+});
+
 test.each([
   ["legacy", "CORPUS_QUALIFICATION_ARTIFACT", "promoted qualification"],
   ["reuse", "CORPUS_QUALIFICATION_INPUT", "fresh qualification"],

@@ -106,6 +106,7 @@
     "check:python-tools": "node scripts/repository-python-tools.mjs check",
     "check:release-preflight": "node scripts/release-preflight.mjs",
     "compare:java-js": "node util/owlapi-reference/compare-java-js.mjs",
+    "corpus:shadow": "node scripts/release-corpus-producer.mjs",
     "create:github-release-draft": "node scripts/create-github-release-draft.mjs",
     "finalize:github-release": "node scripts/finalize-github-release.mjs",
     "format": "npm run check:python-tools && npm run format:source && npm run format:markdown && npm run format:py && npm run format:json",

@@ -15,7 +15,10 @@ const successfulNeeds = (workflow) =>
   Object.fromEntries(
     REQUIRED_JOB_IDS[workflow].map((jobId) => [
       jobId,
-      { result: "success", outputs: {} },
+      {
+        result: jobId === "corpus_aggregate" ? "skipped" : "success",
+        outputs: {},
+      },
     ]),
   );
 
@@ -114,6 +117,25 @@ describe("required workflow aggregation", () => {
   test("adds evidence closure to releases without slowing ordinary CI", () => {
     expect(REQUIRED_JOB_IDS.release).toContain("third_party_evidence");
     expect(REQUIRED_JOB_IDS.ci).not.toContain("third_party_evidence");
+  });
+
+  test("requested hosted corpus production must succeed and expose the exact descriptor", () => {
+    const needs = successfulNeeds("release");
+    needs.release_dispatch.outputs.corpus_shadow = "true";
+    expect(() => requireSuccessfulJobs("release", needs)).toThrow(
+      /corpus_aggregate/,
+    );
+    needs.corpus_aggregate.result = "success";
+    expect(() => requireReleaseJobs(needs, {})).toThrow(
+      "authenticated descriptor",
+    );
+    needs.corpus_aggregate.outputs = {
+      artifact_id: "50",
+      artifact_digest: "a".repeat(64),
+    };
+    expect(requireSuccessfulJobs("release", needs)).toContain(
+      "corpus_aggregate",
+    );
   });
 
   test.each(["ci", "release"])(

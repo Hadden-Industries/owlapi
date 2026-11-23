@@ -36,6 +36,7 @@ import {
   reconcileStructuralDifferences,
   reconcileUnparsedRdf,
 } from "./reconcile-structural-differences.mjs";
+import { bindRetainedConsumerLock } from "./comparison-release-evidence.mjs";
 
 const REPOSITORY_ROOT = fileURLToPath(new URL("../../", import.meta.url));
 const MANIFEST_URL = new URL(
@@ -457,7 +458,11 @@ export const generateOntologyEvidence = async ({
 };
 
 /** Native npm installs only the verified retained tarball; Java never enters runtime deps. */
-export const installCandidate = async (candidateDirectory, outputDirectory) => {
+export const installCandidate = async (
+  candidateDirectory,
+  outputDirectory,
+  { consumerLock, offline = false } = {},
+) => {
   const candidate = JSON.parse(
     await readFile(join(candidateDirectory, "candidate-manifest.json"), "utf8"),
   );
@@ -465,14 +470,25 @@ export const installCandidate = async (candidateDirectory, outputDirectory) => {
   if (basename(candidate.tarball.fileName) !== candidate.tarball.fileName)
     throw new Error("Candidate tarball must be a basename");
   const tarballPath = resolve(candidateDirectory, candidate.tarball.fileName);
-  if (sha256(await readFile(tarballPath)) !== candidate.tarball.sha256)
+  const tarball = await readFile(tarballPath);
+  if (sha256(tarball) !== candidate.tarball.sha256)
     throw new Error("Candidate tarball digest mismatch");
   if (!process.env.npm_execpath)
     throw new Error("Run candidate qualification through npm");
   const consumerDirectory = join(outputDirectory, "consumer");
   await mkdir(consumerDirectory);
+  const bound =
+    consumerLock &&
+    bindRetainedConsumerLock(consumerLock, {
+      tarballPath,
+      integrity:
+        "sha512-" + createHash("sha512").update(tarball).digest("base64"),
+    });
+  if (bound)
+    await writeJson(join(consumerDirectory, "package-lock.json"), bound);
   await writeJson(join(consumerDirectory, "package.json"), {
-    name: "owlapi-july-ontology-qualification",
+    name: bound?.packages[""].name ?? "owlapi-july-ontology-qualification",
+    ...(bound ? { version: bound.packages[""].version } : {}),
     private: true,
     type: "module",
     dependencies: { owlapi: pathToFileURL(tarballPath).href },
@@ -481,10 +497,11 @@ export const installCandidate = async (candidateDirectory, outputDirectory) => {
     process.execPath,
     [
       process.env.npm_execpath,
-      "install",
+      bound ? "ci" : "install",
       "--ignore-scripts",
       "--no-audit",
       "--no-fund",
+      ...(offline ? ["--offline"] : []),
     ],
     {
       cwd: consumerDirectory,

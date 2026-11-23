@@ -160,6 +160,7 @@ export function ordinaryReleaseWorkflow(workflow, violations) {
           !job.environment &&
           isDeepStrictEqual(job.outputs, {
             mode: "${{ steps.route.outputs.mode }}",
+            corpus_shadow: "${{ steps.route.outputs.corpus_shadow }}",
           }) &&
           job.steps?.length === 2 &&
           job.steps[0].uses === checkout &&
@@ -177,8 +178,15 @@ export function ordinaryReleaseWorkflow(workflow, violations) {
       );
       continue;
     }
+    const corpusGuards = {
+      corpus_plan:
+        "!cancelled() && needs.release_dispatch.outputs.corpus_shadow == 'true' && needs.release_admission.result == 'success' && (needs.release_admission.outputs.mode == 'reuse' || needs.candidate.result == 'success')",
+      corpus_shard: "needs.corpus_plan.result == 'success'",
+      corpus_aggregate: "!cancelled() && needs.corpus_plan.result == 'success'",
+    };
     const expression =
-      id === "third_party_evidence"
+      corpusGuards[id] ??
+      (id === "third_party_evidence"
         ? "!cancelled() && needs.release_admission.result == 'success'"
         : id === "required"
           ? "!cancelled()"
@@ -191,7 +199,7 @@ export function ordinaryReleaseWorkflow(workflow, violations) {
                   "quality_windows",
                 ].includes(id)
               ? "needs.release_admission.outputs.mode != 'reuse'"
-              : null;
+              : null);
     check(
       job.if ===
         (expression

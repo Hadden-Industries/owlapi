@@ -1,13 +1,18 @@
 /** Read verified shadow artifacts from the exact native production attempt. */
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
+import { readFile } from "node:fs/promises";
 import {
   createRepositoryReader,
   readAcknowledgedInventory,
 } from "./github-evidence-reader.mjs";
 import { GitHubReleaseClient } from "./github-release.mjs";
 import { downloadReleaseArtifact } from "./release-approvals.mjs";
-import { readQualifiedZip, requireSameUpload } from "./release-ci-package.mjs";
+import {
+  readQualifiedZip,
+  readRetainedCorpusConsumerLock,
+  requireSameUpload,
+} from "./release-ci-package.mjs";
 import { CI_JOB_NAMES } from "./ci-qualification.mjs";
 import {
   artifactProducingAttempt,
@@ -15,6 +20,7 @@ import {
 } from "../tooling/artifact-transport/identity.mjs";
 import { REPOSITORY, REPOSITORY_ID } from "./release-identity.mjs";
 import { UBUNTU } from "./ubuntu-runner.mjs";
+import { javaToolchainSelection } from "./java-toolchain.mjs";
 import { PACKAGE_FILE_STEM, PACKAGE_VERSION } from "./package-identity.mjs";
 import {
   comparisonIdentity,
@@ -24,6 +30,7 @@ import {
   corpusQualificationRoster,
   corpusQualificationShards,
   reconcileCorpusReceipts,
+  retainedDependencyGraphIdentity,
 } from "../util/owlapi-reference/comparison-release-evidence.mjs";
 import { comparisonCases } from "../util/owlapi-reference/comparison-cases.mjs";
 
@@ -33,10 +40,28 @@ const digest = (value) =>
 const revision = (value) =>
   typeof value === "string" && /^[0-9a-f]{40}$/u.test(value);
 const producerFiles = ["verification.json", "report.json"];
-const uploadStep = "Upload the verified corpus shard";
-const producerName = (shardId) => `Corpus shadow / ${shardId}`;
+export const corpusShadowJava = javaToolchainSelection("25.0.5+1.2");
+export const corpusShardUploadStep = "Upload the verified corpus shard";
+export const corpusShardJobName = (shardId) => `Corpus shadow / ${shardId}`;
+export const corpusShardArtifactName = (runId, attempt, shardId) =>
+  `corpus-${runId}-${attempt}-${shardId}`;
+export const corpusShardRunner = (platform) =>
+  platform === "linux" ? UBUNTU.label : "windows-2025-vs2026";
 const decode = (bytes) =>
   JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes));
+
+function requireShadowJava(jdk) {
+  assert.ok(
+    jdk?.vendor === corpusShadowJava.vendor &&
+      jdk.version === corpusShadowJava.version &&
+      jdk.runtime === corpusShadowJava.runtime &&
+      jdk.setupJavaVersion === corpusShadowJava.setupJavaVersion &&
+      [jdk.executableSha256, jdk.compilerSha256, jdk.releaseSha256].every(
+        digest,
+      ),
+    "Corpus shard did not verify the selected Java build",
+  );
+}
 
 /** Read the exact descriptor archive. Its enclosed result artifacts still need independent verification. */
 export async function readCorpusQualificationInput(
@@ -61,9 +86,10 @@ export async function readCorpusQualificationInput(
   return decode(files.get(name));
 }
 
-/** A release caller supplies the candidate identity admitted by its own package boundary. */
-export async function reconcileHostedCorpus({
-  input,
+/** Authenticate the original candidate and its package lock without consulting a shard. */
+export async function readCorpusCandidate({
+  source,
+  subject,
   read,
   download,
   now = Date.now(),
@@ -76,10 +102,8 @@ export async function reconcileHostedCorpus({
     `${packageStem}.cdx.json`,
     `${packageStem}.tgz`,
   ];
-  const { source, subject, oracle, artifacts } = input;
   assert.ok(
-    input.schemaVersion === 1 &&
-      ["fresh", "promoted"].includes(source?.route) &&
+    ["fresh", "promoted"].includes(source?.route) &&
       positive(source.runId) &&
       positive(source.attempt) &&
       source.repositoryId === REPOSITORY_ID &&
@@ -88,14 +112,9 @@ export async function reconcileHostedCorpus({
       positive(source.candidateRunId) &&
       positive(source.candidateAttempt) &&
       positive(source.candidateJobId) &&
-      digest(subject?.importMapSha256) &&
-      digest(subject.contentSha256) &&
-      digest(subject.artifactSha256) &&
-      digest(subject.tarballSha256) &&
+      digest(subject?.artifactSha256) &&
       /^[1-9]\d*$/u.test(subject.artifactId) &&
-      positive(Number(subject.artifactId)) &&
-      Array.isArray(artifacts) &&
-      artifacts.every((artifact) => positive(artifact?.id)),
+      positive(Number(subject.artifactId)),
     "Incomplete hosted corpus shadow authority",
   );
   if (source.route === "fresh")
@@ -103,18 +122,6 @@ export async function reconcileHostedCorpus({
       [source.candidateRunId, source.candidateAttempt, source.candidateCommit],
       [source.runId, source.attempt, source.commit],
     );
-  const roster = corpusQualificationRoster(comparisonCases);
-  const rosterSha256 = comparisonIdentity(roster);
-  const planned = new Map(
-    corpusQualificationShards(comparisonCases, roster).map((shard) => [
-      shard.shardId,
-      shard,
-    ]),
-  );
-  assert.ok(
-    artifacts.length <= planned.size,
-    "Too many corpus producer artifact references",
-  );
   const readRun = async (
     id,
     attempt,
@@ -210,16 +217,140 @@ export async function reconcileHostedCorpus({
     candidateFiles,
   );
   const tarball = retained.get(`${packageStem}.tgz`);
-  assert.equal(
-    sha256(tarball),
-    subject.tarballSha256,
-    "Original corpus candidate has different tarball bytes",
+  const tarballSha256 = sha256(tarball);
+  const integrity =
+    "sha512-" + createHash("sha512").update(tarball).digest("base64");
+  if (subject.tarballSha256 !== undefined)
+    assert.equal(
+      tarballSha256,
+      subject.tarballSha256,
+      "Original corpus candidate has different tarball bytes",
+    );
+  if (subject.integrity !== undefined)
+    assert.equal(
+      integrity,
+      subject.integrity,
+      "Original corpus candidate has different npm integrity",
+    );
+  let consumerLock;
+  if (
+    source.candidateProofId !== undefined ||
+    source.candidateProofSha256 !== undefined
+  ) {
+    assert.ok(
+      positive(source.candidateProofId) && digest(source.candidateProofSha256),
+      "Missing original package proof identity",
+    );
+    consumerLock = await readRetainedCorpusConsumerLock({
+      read,
+      download,
+      now,
+      run: origin,
+      job: candidateJob,
+      artifactId: source.candidateProofId,
+      artifactSha256: source.candidateProofSha256,
+      candidate: {
+        fileName: `${packageStem}.tgz`,
+        sha256: tarballSha256,
+        bytes: tarball.length,
+      },
+      sbom: decode(retained.get(`${packageStem}.cdx.json`)),
+      integrity,
+      version: packageVersion,
+    });
+  }
+  return {
+    run,
+    retained,
+    consumerLock,
+    tarballSha256,
+    integrity,
+    ...(consumerLock
+      ? {
+          dependencyGraphSha256: retainedDependencyGraphIdentity(consumerLock, {
+            tarballSha256,
+            integrity,
+          }),
+        }
+      : {}),
+  };
+}
+
+export const corpusImportMapSha256 = async () =>
+  sha256(
+    await readFile(
+      new URL(
+        "../test/consumers/browser/import-map/reference-import-map.json",
+        import.meta.url,
+      ),
+    ),
   );
-  assert.equal(
-    "sha512-" + createHash("sha512").update(tarball).digest("base64"),
-    subject.integrity,
-    "Original corpus candidate has different npm integrity",
+
+/** A release caller supplies the candidate identity admitted by its own package boundary. */
+export async function reconcileHostedCorpus({
+  input,
+  read,
+  download,
+  now = Date.now(),
+  packageVersion = PACKAGE_VERSION,
+  collectPlatformContents = false,
+}) {
+  const { source, oracle, artifacts } = input;
+  const subject = structuredClone(input.subject);
+  const locked = input.schemaVersion === 2;
+  const contents = subject?.contentsByPlatform;
+  assert.ok(
+    [1, 2].includes(input.schemaVersion) &&
+      digest(subject?.importMapSha256) &&
+      digest(subject.tarballSha256) &&
+      /^sha512-[A-Za-z0-9+/]+={0,2}$/u.test(subject.integrity) &&
+      Array.isArray(artifacts) &&
+      artifacts.every((artifact) => positive(artifact?.id)) &&
+      (locked
+        ? positive(source?.candidateProofId) &&
+          digest(source.candidateProofSha256) &&
+          contents &&
+          typeof contents === "object" &&
+          !Array.isArray(contents) &&
+          Object.entries(contents).every(
+            ([platform, value]) =>
+              ["linux", "win32"].includes(platform) && digest(value),
+          )
+        : digest(subject.contentSha256) && !collectPlatformContents),
+    "Incomplete hosted corpus shadow authority",
   );
+  const roster = corpusQualificationRoster(comparisonCases);
+  const rosterSha256 = comparisonIdentity(roster);
+  const planned = new Map(
+    corpusQualificationShards(comparisonCases, roster).map((shard) => [
+      shard.shardId,
+      shard,
+    ]),
+  );
+  assert.ok(
+    artifacts.length <= planned.size,
+    "Too many corpus producer artifact references",
+  );
+  const { run, dependencyGraphSha256 } = await readCorpusCandidate({
+    source,
+    subject,
+    read,
+    download,
+    now,
+    packageVersion,
+  });
+  if (locked) {
+    assert.equal(
+      subject.dependencyGraphSha256,
+      dependencyGraphSha256,
+      "Corpus graph differs from the retained package proof",
+    );
+    assert.equal(
+      subject.importMapSha256,
+      await corpusImportMapSha256(),
+      "Corpus import map differs from the reviewed checkout",
+    );
+  }
   const receipts = [];
   const verifiedArtifacts = [];
   const usedShards = new Set();
@@ -250,15 +381,13 @@ export async function reconcileHostedCorpus({
     const job = await read(`/actions/jobs/${descriptor.jobId}`);
     assert.ok(
       job.id === descriptor.jobId &&
-        job.name === producerName(shard.shardId) &&
+        job.name === corpusShardJobName(shard.shardId) &&
         job.run_id === run.id &&
         job.run_attempt === source.attempt &&
         job.head_sha === source.commit &&
         job.status === "completed" &&
         job.conclusion === "success" &&
-        job.labels?.includes(
-          shard.platform === "linux" ? UBUNTU.label : "windows-2025-vs2026",
-        ),
+        job.labels?.includes(corpusShardRunner(shard.platform)),
       "Corpus shard producer job is outside the successful original attempt",
     );
     const artifact = inventory.get(descriptor.id);
@@ -267,7 +396,7 @@ export async function reconcileHostedCorpus({
         artifact.digest === `sha256:${descriptor.sha256}` &&
         matchesLogicalArtifact(
           artifact.name,
-          `corpus-${run.id}-${source.attempt}-${shard.shardId}`,
+          corpusShardArtifactName(run.id, source.attempt, shard.shardId),
           {
             run: run.id,
             attempt: source.attempt,
@@ -276,7 +405,7 @@ export async function reconcileHostedCorpus({
         ),
       "Corpus shard archive differs from its acknowledged artifact",
     );
-    requireSameUpload(artifact, run, job, uploadStep, now);
+    requireSameUpload(artifact, run, job, corpusShardUploadStep, now);
     const files = await readQualifiedZip(
       download,
       artifact,
@@ -298,14 +427,23 @@ export async function reconcileHostedCorpus({
         comparisonIdentity(proof.shard) === comparisonIdentity(shard),
       "Corpus shard verification is detached from its original report or frozen roster",
     );
+    if (locked) requireShadowJava(proof.jdk);
     const installed = proof.candidate;
+    if (
+      locked &&
+      collectPlatformContents &&
+      contents[shard.platform] === undefined
+    )
+      contents[shard.platform] = installed?.contentSha256;
     assert.ok(
       installed?.mode === "INSTALLED_CANDIDATE" &&
         installed.tarballSha256 === subject.tarballSha256 &&
         installed.integrity === subject.integrity &&
         installed.dependencyGraphSha256 === subject.dependencyGraphSha256 &&
         installed.importMapSha256 === subject.importMapSha256 &&
-        installed.contentSha256 === subject.contentSha256,
+        digest(installed.contentSha256) &&
+        installed.contentSha256 ===
+          (locked ? contents[shard.platform] : subject.contentSha256),
       "Corpus shard used different candidate, installed dependencies or import map",
     );
     assert.ok(
@@ -386,11 +524,7 @@ export async function reconcileHostedCorpus({
   };
 }
 
-export function readHostedCorpus(
-  input,
-  env = process.env,
-  packageVersion = PACKAGE_VERSION,
-) {
+export function corpusArtifactTransport(env = process.env) {
   const budgetMs = 600_000;
   const deadline = performance.now() + budgetMs;
   const read = createRepositoryReader({
@@ -408,5 +542,17 @@ export function readHostedCorpus(
   });
   const download = (artifact, maxBytes) =>
     downloadReleaseArtifact(client, artifact, maxBytes, { deadline });
-  return reconcileHostedCorpus({ input, read, download, packageVersion });
+  return { read, download };
+}
+
+export function readHostedCorpus(
+  input,
+  env = process.env,
+  packageVersion = PACKAGE_VERSION,
+) {
+  return reconcileHostedCorpus({
+    input,
+    ...corpusArtifactTransport(env),
+    packageVersion,
+  });
 }

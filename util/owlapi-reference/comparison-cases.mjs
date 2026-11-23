@@ -59,6 +59,23 @@ const stockIdmpRefusal = {
     resource: "jdk.xml.totalEntitySizeLimit",
   },
 };
+const strictIdmpRefusal = {
+  dependentStageReason: "expected-undeclared-ontology-annotation",
+  authority:
+    "https://www.w3.org/TR/owl2-mapping-to-rdf/#Parsing_of_Annotations",
+  js: {
+    category: "UNSUPPORTED_CONSTRUCT",
+    statement: {
+      graph: "",
+      subject:
+        "https://spec.pistoiaalliance.org/idmp/ontology/IdentificationOfMedicinalProductsOntology/",
+      predicate: "http://purl.org/dc/terms/abstract",
+      objectSha256:
+        "0ed2555127f346563de17f2d2b15ffed67bfd9b42f4484cb0f0083776b3c3386",
+    },
+  },
+  java: stockIdmpRefusal.java,
+};
 const profileSelections = [
   { behaviorProfileId: javaProfile, parsingMode: "compatible" },
   { behaviorProfileId: normativeProfile, parsingMode: "compatible" },
@@ -418,6 +435,25 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
               exactRecordedInputs &&
               profile.behaviorProfileId === javaProfile &&
               profile.parsingMode === "compatible"));
+        let expectedLoadRefusals;
+        if (
+          (scenario === "direct-load" || scenario === "closure-roundtrip") &&
+          input.id === originalIdmp.id &&
+          exactRecordedInputs &&
+          request.javaXml !== "historical-idmp"
+        ) {
+          if (
+            profile.behaviorProfileId === javaProfile &&
+            profile.parsingMode === "compatible"
+          ) {
+            expectedLoadRefusals = stockIdmpRefusal;
+          } else if (
+            profile.behaviorProfileId === normativeProfile &&
+            profile.parsingMode === "strict"
+          ) {
+            expectedLoadRefusals = strictIdmpRefusal;
+          }
+        }
         const definition = {
           schemaVersion: 1,
           scenario,
@@ -449,16 +485,10 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
           ...(checkExactClosureWriter
             ? { javaRdfXml: { addMissingTypes: false, observeDefault: true } }
             : {}),
-          ...((scenario === "direct-load" ||
-            scenario === "closure-roundtrip") &&
-          input.id === originalIdmp.id &&
-          exactRecordedInputs &&
-          profile.behaviorProfileId === javaProfile &&
-          profile.parsingMode === "compatible" &&
-          request.javaXml !== "historical-idmp"
+          ...(expectedLoadRefusals
             ? {
                 measurements: ["behavior"],
-                expectedLoadRefusals: structuredClone(stockIdmpRefusal),
+                expectedLoadRefusals: structuredClone(expectedLoadRefusals),
               }
             : {}),
           ...profile,

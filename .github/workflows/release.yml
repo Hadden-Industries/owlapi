@@ -23,6 +23,11 @@ on:
         type: string
         required: false
         default: ""
+      corpus_shadow:
+        description: Produce and authenticate the corpus shards during read-only qualification
+        type: boolean
+        required: false
+        default: false
 
 permissions: {}
 
@@ -50,6 +55,7 @@ jobs:
         shell: bash
     outputs:
       mode: ${{ steps.route.outputs.mode }}
+      corpus_shadow: ${{ steps.route.outputs.corpus_shadow }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -1116,6 +1122,182 @@ jobs:
       artifact_digest: ${{ needs.candidate.outputs.artifact_digest }}
       release_evidence: true
 
+  corpus_plan:
+    name: Corpus shadow / plan
+    needs: [release_dispatch, release_admission, runtime_matrix, candidate]
+    if: ${{ !inputs.rc3_recovery && (!cancelled() && needs.release_dispatch.outputs.corpus_shadow == 'true' && needs.release_admission.result == 'success' && (needs.release_admission.outputs.mode == 'reuse' || needs.candidate.result == 'success')) }}
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: read
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      matrix: ${{ steps.freeze.outputs.matrix }}
+      plan: ${{ steps.freeze.outputs.plan }}
+      java_revision: ${{ steps.freeze.outputs.java_revision }}
+      july_revision: ${{ steps.freeze.outputs.july_revision }}
+      java_selection: ${{ steps.freeze.outputs.java_selection }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: ./.github/actions/setup-producer
+      - name: Authenticate the candidate and freeze the two-platform shard matrix
+        id: freeze
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CORPUS_NEEDS: ${{ toJSON(needs) }}
+          OWLAPI_RUNTIME_MATRIX: ${{ needs.runtime_matrix.outputs.matrix }}
+        run: node scripts/release-corpus-producer.mjs plan
+        timeout-minutes: 5
+
+  corpus_shard:
+    name: Corpus shadow / ${{ matrix.id }}
+    needs: corpus_plan
+    if: ${{ !inputs.rc3_recovery && (needs.corpus_plan.result == 'success') }}
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix: ${{ fromJSON(needs.corpus_plan.outputs.matrix) }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 120
+    permissions:
+      contents: read
+      actions: read
+    defaults:
+      run:
+        shell: ${{ matrix.shell }}
+    env:
+      CORPUS_PLAN: ${{ needs.corpus_plan.outputs.plan }}
+      CORPUS_SHARD_ID: ${{ matrix.id }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: ./.github/actions/setup-producer
+      - name: Recover the exact original candidate and producer lock
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/release-corpus-producer.mjs candidate
+        timeout-minutes: 5
+      - name: Install the reviewed development dependencies
+        run: npm ci
+        timeout-minutes: 20
+      - name: Select the Java shadow toolchain
+        uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # v6.2.0
+        with:
+          distribution: temurin
+          java-version: ${{ needs.corpus_plan.outputs.java_selection }}
+          check-latest: false
+          overwrite-settings: false
+          cache: ""
+          cache-jdk: false
+      - name: Check out the pinned Java source oracle for this shard
+        if: matrix.sourceOracle
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: owlcs/owlapi
+          ref: ${{ needs.corpus_plan.outputs.java_revision }}
+          path: .release/java-owlapi
+          persist-credentials: false
+      - name: Check out the original July fixtures for this shard
+        if: matrix.july
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: Hadden-Industries/universal-ontology
+          ref: ${{ needs.corpus_plan.outputs.july_revision }}
+          path: .release/universal-ontology
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /src/external/skos.rdf
+            /src/external/time-gregorian.ttl
+            /src/external/time.rdf
+            /src/iso-iec/11179/-3/ed-4/20260714
+            /src/universal/core/20260714
+            /src/universal/extended/20260714
+            /src/universal/reference-data/20260714
+      - name: Build the pinned Java source oracle
+        if: matrix.sourceOracle
+        shell: pwsh
+        working-directory: .release/java-owlapi
+        run: |
+          $tool = Join-Path $env:RUNNER_TEMP 'corpus-maven-3.10.0'
+          New-Item -ItemType Directory -Path $tool -ErrorAction Stop | Out-Null
+          $archive = Join-Path $tool 'apache-maven-3.10.0-bin.zip'
+          Invoke-WebRequest -Uri 'https://dlcdn.apache.org/maven/maven-3/3.10.0/binaries/apache-maven-3.10.0-bin.zip' -OutFile $archive -TimeoutSec 120
+          $expected = '22d31676d5b92ed53308c19ecded3245d0efd0cddfec51ec7bab62f4f13ad70ddddceff8e62940e0e8e2421f3cde8106737f4becec0aa034ffeff2a754e88337'
+          if ((Get-FileHash -LiteralPath $archive -Algorithm SHA512).Hash.ToLowerInvariant() -ne $expected) {
+            throw 'The Maven archive differs from its pinned checksum'
+          }
+          Expand-Archive -LiteralPath $archive -DestinationPath $tool
+          $maven = if ($IsWindows) { 'mvn.cmd' } else { 'mvn' }
+          $command = Join-Path $tool "apache-maven-3.10.0/bin/$maven"
+          if (-not $IsWindows) {
+            & chmod +x $command
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
+          $nativeRepo = Join-Path $env:RUNNER_TEMP 'corpus-pinned-maven'
+          $classpath = Join-Path (Get-Location).Path 'distribution/target/owlapi-runtime-classpath.txt'
+          & $command -B -ntp "-Dmaven.repo.local=$nativeRepo" -pl distribution -am '-Dmaven.test.skip=true' '-Dno-javadoc=true' '-Dmaven.javadoc.skip=true' '-Dgpg.skip=true' install
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & $command -B -ntp "-Dmaven.repo.local=$nativeRepo" -pl distribution 'org.apache.maven.plugins:maven-dependency-plugin:3.11.0:build-classpath' '-DincludeScope=runtime' "-Dmdep.outputFile=$classpath"
+          exit $LASTEXITCODE
+        timeout-minutes: 30
+      - name: Prepare pinned inputs, replay offline and verify the installed shard
+        env:
+          NODE_OPTIONS: --max-old-space-size=12288
+        run: npm run corpus:shadow -- shard
+        timeout-minutes: 80
+      - name: Upload the verified corpus shard
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: corpus-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.id }}
+          path: |
+            .release/corpus-proof/verification.json
+            .release/corpus-proof/report.json
+          retention-days: 30
+
+  corpus_aggregate:
+    name: Corpus shadow / authenticate shards
+    needs: [corpus_plan, corpus_shard]
+    if: ${{ !inputs.rc3_recovery && (!cancelled() && needs.corpus_plan.result == 'success') }}
+    runs-on: ubuntu-26.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      actions: read
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      artifact_id: ${{ steps.descriptor.outputs.artifact-id }}
+      artifact_digest: ${{ steps.descriptor.outputs.artifact-digest }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: ./.github/actions/setup-producer
+      - name: Reconcile the original shard archives and report held cases
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CORPUS_PLAN: ${{ needs.corpus_plan.outputs.plan }}
+        run: node scripts/release-corpus-producer.mjs aggregate
+        timeout-minutes: 12
+      - name: Retain the authenticated corpus descriptor
+        id: descriptor
+        uses: ./.github/actions/retain-artifact
+        with:
+          name: corpus-qualification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/corpus-aggregate/corpus-qualification-input.json
+          retention-days: 30
+
   required:
     name: Release / qualified
     env:
@@ -1146,6 +1328,7 @@ jobs:
       - browser_webkit
       - owl_contract
       - quality_windows
+      - corpus_aggregate
     runs-on: ubuntu-26.04
     timeout-minutes: 25
     permissions:
@@ -1188,11 +1371,12 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           CORPUS_QUALIFICATION_ARTIFACT: ${{ inputs.corpus_qualification_artifact }}
+          CORPUS_CURRENT_RUN_ARTIFACT: ${{ needs.corpus_aggregate.result == 'success' && format('{0}:{1}', needs.corpus_aggregate.outputs.artifact_id, needs.corpus_aggregate.outputs.artifact_digest) || '' }}
           CANDIDATE_ID: ${{ needs.candidate.outputs.artifact_id }}
           CANDIDATE_DIGEST: ${{ needs.candidate.outputs.artifact_digest }}
           REQUIRED_JOB_RESULTS_JSON: ${{ toJSON(needs) }}
         run: node scripts/release-qualification-manifest.mjs
-        timeout-minutes: ${{ inputs.corpus_qualification_artifact != '' && 12 || 2 }}
+        timeout-minutes: ${{ (inputs.corpus_shadow || inputs.corpus_qualification_artifact != '') && 12 || 2 }}
       - name: Retain release qualification manifest
         uses: ./.github/actions/retain-artifact
         with:

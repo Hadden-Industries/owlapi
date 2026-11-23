@@ -41,6 +41,13 @@ function assertCandidateBinding(manifest, input) {
     "Corpus candidate origin differs from qualification",
   );
   if (build) assert.equal(source.candidateJobId, build.producerJob);
+  if (input.schemaVersion === 2 && build) {
+    assert.deepEqual(
+      [source.candidateProofId, `sha256:${source.candidateProofSha256}`],
+      [manifest.ci.packageProof.id, manifest.ci.packageProof.digest],
+      "Corpus consumer lock differs from the admitted CI package proof",
+    );
+  }
   assert.deepEqual(
     [
       subject.artifactId,
@@ -123,6 +130,9 @@ export async function sealCorpusQualification(manifest, input, options = {}) {
           "candidateAttempt",
           "candidateJobId",
           "candidateCommit",
+          ...(input.schemaVersion === 2
+            ? ["candidateProofId", "candidateProofSha256"]
+            : []),
         ]),
         subject: pick(input.subject, [
           "artifactId",
@@ -131,7 +141,7 @@ export async function sealCorpusQualification(manifest, input, options = {}) {
           "integrity",
           "dependencyGraphSha256",
           "importMapSha256",
-          "contentSha256",
+          input.schemaVersion === 2 ? "contentsByPlatform" : "contentSha256",
         ]),
         oracle: pick(input.oracle, ["version", "lockSha256"]),
         artifacts: input.artifacts.map((artifact) =>

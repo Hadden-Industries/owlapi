@@ -9,6 +9,7 @@ import { oracleLockPath, oracleVersion } from "./comparison-oracle.mjs";
 import {
   corpusQualificationRoster,
   installedDependencyGraphIdentity,
+  bindRetainedConsumerLock,
   reconcileCorpusReceipts,
 } from "./comparison-release-evidence.mjs";
 import {
@@ -741,6 +742,56 @@ test("installed graph identity is portable across producer directories", () => {
   ).toThrow("does not resolve the admitted candidate");
 });
 
+test("a hosted consumer reuses the retained lock with only the candidate alias rebased", () => {
+  const options = {
+    consumerDirectory: resolve("worker", "consumer"),
+    tarballPath: resolve("worker", "candidate", "owlapi.tgz"),
+    tarballSha256: "1".repeat(64),
+    integrity: "sha512-AAAA",
+  };
+  const original = {
+    name: "owlapi-release-consumer",
+    version: "0.0.0",
+    lockfileVersion: 3,
+    packages: {
+      "": {
+        name: "owlapi-release-consumer",
+        version: "0.0.0",
+        dependencies: { owlapi: "file:/old/runner/owlapi.tgz" },
+      },
+      "node_modules/owlapi": {
+        version: "0.1.0",
+        resolved: "file:../old/runner/owlapi.tgz",
+        integrity: options.integrity,
+      },
+      "node_modules/dep": {
+        version: "1.2.3",
+        resolved: "https://registry.npmjs.org/dep/-/dep-1.2.3.tgz",
+        integrity: "sha512-BBBB",
+      },
+    },
+  };
+  const bound = bindRetainedConsumerLock(original, options);
+  expect(original.packages[""].dependencies.owlapi).toBe(
+    "file:/old/runner/owlapi.tgz",
+  );
+  expect(bound.packages[""].dependencies.owlapi).toBe(
+    pathToFileURL(options.tarballPath).href,
+  );
+  expect(bound.packages["node_modules/dep"]).toEqual(
+    original.packages["node_modules/dep"],
+  );
+  expect(installedDependencyGraphIdentity(bound, options)).toMatch(
+    /^[0-9a-f]{64}$/u,
+  );
+  expect(() =>
+    bindRetainedConsumerLock(original, {
+      ...options,
+      integrity: "sha512-CCCC",
+    }),
+  ).toThrow("retained consumer lock");
+});
+
 test("a requested Node heap must fit within the Windows job budget", async () => {
   await expect(
     runWindowsComparisonJob(
@@ -883,6 +934,44 @@ test("the exact stock IDMP load gates both direct and closure observations", () 
     const [different] = comparisonCases({ ...request, ...changes });
     expect(different.definition.expectedLoadRefusals).toBeUndefined();
     expect(different.caseId).not.toBe(stock.caseId);
+  }
+});
+
+test("strict stock IDMP binds the refused annotation in direct and closure cases", () => {
+  const request = {
+    input: "pistoia-idmp",
+    profile: "normative-v1",
+    parsingMode: "strict",
+  };
+  const roster = corpusQualificationRoster(comparisonCases);
+  for (const scenario of ["direct-load", "closure-roundtrip"]) {
+    const [{ caseId, definition }] = comparisonCases({ ...request, scenario });
+    expect(definition.expectedLoadRefusals).toMatchObject({
+      js: {
+        category: "UNSUPPORTED_CONSTRUCT",
+        statement: {
+          predicate: "http://purl.org/dc/terms/abstract",
+          objectSha256: expect.stringMatching(/^[0-9a-f]{64}$/u),
+        },
+      },
+      java: { diagnosticCode: "JAXP00010004" },
+    });
+    expect(roster.inapplicable).toContainEqual({
+      caseId,
+      input: request.input,
+      measurement: "structure",
+      prerequisite: "load",
+      reason: "expected-undeclared-ontology-annotation",
+    });
+  }
+  for (const changes of [
+    { parsingMode: "compatible" },
+    { javaXml: "historical-idmp" },
+    { imports: "none" },
+    { scenario: "strict-first", parsingMode: "compatible" },
+  ]) {
+    const [alternative] = comparisonCases({ ...request, ...changes });
+    expect(alternative.definition.expectedLoadRefusals).toBeUndefined();
   }
 });
 

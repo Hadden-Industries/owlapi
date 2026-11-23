@@ -529,6 +529,8 @@
       "/jobs/immutable_verification/runs-on": "{{runtime:ubuntuRunner}}"
     },
     "release.yml": {
+      "/jobs/corpus_plan/runs-on": "{{runtime:ubuntuRunner}}",
+      "/jobs/corpus_aggregate/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/runtime_matrix/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/release_preflight/runs-on": "{{runtime:ubuntuRunner}}",
       "/jobs/release_preflight/steps/4/run": "npm run record:runner -- --expected-os Linux --expected-arch X64 --label {{runtime:ubuntuRunner}} --shell bash",

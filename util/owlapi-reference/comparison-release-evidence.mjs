@@ -22,6 +22,55 @@ const behaviorLedger = new URL(
   import.meta.url,
 );
 
+function withCandidateAlias(lock, location) {
+  const root = lock.packages[""];
+  return {
+    ...lock,
+    packages: {
+      ...lock.packages,
+      "": { ...root, dependencies: { ...root.dependencies, owlapi: location } },
+      "node_modules/owlapi": {
+        ...lock.packages["node_modules/owlapi"],
+        resolved: location,
+      },
+    },
+  };
+}
+
+function assertRetainedConsumerLock(lock, integrity) {
+  const dependencies = lock.packages?.[""]?.dependencies;
+  const installed = lock.packages?.["node_modules/owlapi"];
+  if (
+    lock.lockfileVersion !== 3 ||
+    lock.packages?.[""]?.name !== "owlapi-release-consumer" ||
+    lock.packages[""].version !== "0.0.0" ||
+    Object.keys(dependencies ?? {}).length !== 1 ||
+    !dependencies.owlapi?.startsWith("file:") ||
+    !installed?.resolved?.startsWith("file:") ||
+    installed.integrity !== integrity
+  ) {
+    throw new Error(
+      "The retained consumer lock does not bind the candidate tarball",
+    );
+  }
+}
+
+export function bindRetainedConsumerLock(lock, { tarballPath, integrity }) {
+  assertRetainedConsumerLock(lock, integrity);
+  return withCandidateAlias(lock, pathToFileURL(tarballPath).href);
+}
+
+/** Derive the expected graph directly from the authenticated producer lock. */
+export function retainedDependencyGraphIdentity(
+  lock,
+  { tarballSha256, integrity },
+) {
+  assertRetainedConsumerLock(lock, integrity);
+  return comparisonIdentity(
+    withCandidateAlias(lock, `sha256:${tarballSha256}`),
+  );
+}
+
 /** Bind npm's candidate alias to admitted bytes instead of an installation path. */
 export function installedDependencyGraphIdentity(
   lock,
@@ -43,15 +92,9 @@ export function installedDependencyGraphIdentity(
       "Installed consumer lock does not resolve the admitted candidate tarball",
     );
   }
-  const admitted = `sha256:${tarballSha256}`;
-  return comparisonIdentity({
-    ...lock,
-    packages: {
-      ...lock.packages,
-      "": { ...root, dependencies: { ...root.dependencies, owlapi: admitted } },
-      "node_modules/owlapi": { ...installed, resolved: admitted },
-    },
-  });
+  return comparisonIdentity(
+    withCandidateAlias(lock, `sha256:${tarballSha256}`),
+  );
 }
 
 /** Derive required cells from the reviewed checkout. A producer cannot select its own denominator. */

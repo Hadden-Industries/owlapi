@@ -253,13 +253,32 @@ function matchesExpectedLoadRefusals(definition, js, native) {
       documentIRI,
     ]),
   );
+  const { statement } = expected.js;
+  const details = jsFailure?.details;
+  const matchesJsFailure = statement
+    ? details?.graph === statement.graph &&
+      details.subject === statement.subject &&
+      details.predicate === statement.predicate &&
+      typeof details.object === "string" &&
+      sha256(details.object) === statement.objectSha256 &&
+      js.importRequests?.length === definition.imports.length &&
+      comparisonIdentity(
+        Object.fromEntries(
+          js.importRequests.map(({ ontologyIRI, documentIRI }) => [
+            ontologyIRI,
+            documentIRI,
+          ]),
+        ),
+      ) === comparisonIdentity(importMappings)
+    : details?.resource === expected.js.resource &&
+      details.limit === expected.js.limit &&
+      details.observed > expected.js.limit &&
+      js.importRequests?.length === 0;
   return (
     jsFailure?.status === "failed" &&
     jsFailure.phase === "load" &&
     jsFailure.category === expected.js.category &&
-    jsFailure.details?.resource === expected.js.resource &&
-    jsFailure.details.limit === expected.js.limit &&
-    jsFailure.details.observed > expected.js.limit &&
+    matchesJsFailure &&
     javaFailure?.status === "failed" &&
     javaFailure.phase === "load" &&
     javaFailure.category === expected.java.category &&
@@ -290,8 +309,7 @@ function matchesExpectedLoadRefusals(definition, js, native) {
       native.closurePropagation,
     ].every((stage) => stage === undefined) &&
     comparisonIdentity(native.importRequests ?? {}) ===
-      comparisonIdentity(importMappings) &&
-    js.importRequests?.length === 0
+      comparisonIdentity(importMappings)
   );
 }
 
@@ -872,6 +890,29 @@ async function observeCase(
 
 const readJson = async (path) => JSON.parse(await readFile(path, "utf8"));
 
+// Hosted archives retain verdicts and pins. Detailed worker data stays in the attempt.
+function publicCorpusRow({
+  input,
+  caseId,
+  status,
+  measures,
+  inapplicable,
+  reconciledRuleIds,
+  receipt,
+  artifacts,
+}) {
+  return {
+    input,
+    caseId,
+    status,
+    ...(measures ? { measures } : {}),
+    ...(inapplicable ? { inapplicable } : {}),
+    ...(reconciledRuleIds ? { reconciledRuleIds } : {}),
+    ...(receipt ? { receipt } : {}),
+    ...(artifacts ? { artifacts } : {}),
+  };
+}
+
 /** Bind installed qualification to the original tarball and actual module bytes. */
 async function captureInstalledIdentity(candidateDirectory, consumerDirectory) {
   const candidate = await readJson(
@@ -1059,6 +1100,7 @@ async function verifyComparison(entries, measurements, options) {
     comparisonIdentity(candidate) !== comparisonIdentity(expectedCandidate) ||
     comparisonIdentity(attempt.measurements) !==
       comparisonIdentity(measurements) ||
+    Boolean(protocols.publicReceipts) !== Boolean(options.publicReceipts) ||
     comparisonIdentity(protocols.performance ?? null) !==
       comparisonIdentity(
         measurements.includes("performance")
@@ -1212,6 +1254,7 @@ async function executePinnedSourceComparison(request, options, entries) {
       ({ consumerDirectory, packageDirectory } = await installCandidate(
         options.candidateDirectory,
         directory,
+        { consumerLock: options.consumerLock, offline: options.offline },
       ));
     }
   } else if (options.candidateDirectory) {
@@ -1233,6 +1276,7 @@ async function executePinnedSourceComparison(request, options, entries) {
     node: process.version,
     required: entries.map(({ caseId }) => caseId),
     measurements,
+    ...(options.publicReceipts ? { publicReceipts: true } : {}),
   };
   const executionId = comparisonIdentity(input);
   if (action === "run") {
@@ -1284,7 +1328,15 @@ async function executePinnedSourceComparison(request, options, entries) {
   const evidence = isProfile
     ? await verifyProfileStages(workerDirectory, entries)
     : await verifyWriterStages(workerDirectory, entries, measurements);
-  const report = { schemaVersion: 2, action: "run", executionId, ...evidence };
+  const report = {
+    schemaVersion: 2,
+    action: "run",
+    executionId,
+    ...evidence,
+    ...(options.publicReceipts
+      ? { cases: evidence.cases.map(publicCorpusRow) }
+      : {}),
+  };
   if (action === "run") {
     await publishComparisonJson(directory, "report.json", report);
   } else if (
@@ -1430,6 +1482,7 @@ async function executeComparison(request, environment = {}) {
         reportSha256: sha256(reportBytes),
         candidate: attempt.candidate,
         oracle: historical ? attempt.reference : attempt.oracle,
+        jdk: historical ? attempt.jdk : attempt.oracle.jdk,
       };
     }
     if (
@@ -1623,6 +1676,7 @@ async function executeComparison(request, environment = {}) {
     const installed = await installCandidate(
       options.candidateDirectory,
       options.outputDirectory,
+      { consumerLock: options.consumerLock, offline: options.offline },
     );
     options.packageDirectory = installed.packageDirectory;
     options.consumerDirectory = installed.consumerDirectory;
@@ -1653,6 +1707,7 @@ async function executeComparison(request, environment = {}) {
       comparison: 1,
       case: 1,
       worker: 3,
+      ...(options.publicReceipts ? { publicReceipts: true } : {}),
       ...(measurements.includes("performance")
         ? { performance: options.performanceProtocol }
         : {}),
@@ -1697,7 +1752,8 @@ async function executeComparison(request, environment = {}) {
       executionId,
       ...result,
     });
-    cases.push({ input: entry.input.id, ...result, receipt });
+    const row = { input: entry.input.id, ...result, receipt };
+    cases.push(options.publicReceipts ? publicCorpusRow(row) : row);
   }
   const confirmed = options.candidateDirectory
     ? await captureInstalledIdentity(

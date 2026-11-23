@@ -12,6 +12,7 @@ export function releaseQualificationMode(inputs) {
     rc3_recovery: false,
     fresh_qualification: false,
     corpus_qualification_artifact: "",
+    corpus_shadow: false,
   };
   for (const [name, value] of Object.entries(inputs)) {
     assert.ok(
@@ -24,6 +25,7 @@ export function releaseQualificationMode(inputs) {
     rc3_recovery: rc3,
     fresh_qualification: fresh,
     corpus_qualification_artifact: corpus,
+    corpus_shadow: shadow,
   } = { ...defaults, ...inputs };
   assert.ok(
     !(rc3 && readOnly) && !(fresh && !readOnly),
@@ -40,6 +42,12 @@ export function releaseQualificationMode(inputs) {
     );
     parseCorpusArtifactLocator(corpus);
   }
+  if (shadow) {
+    assert.ok(
+      readOnly && !rc3 && !corpus,
+      "Hosted corpus production requires qualification-only dispatch without a retained descriptor",
+    );
+  }
   return rc3 ? "rc3" : !readOnly ? "legacy" : fresh ? "fresh" : "reuse";
 }
 
@@ -52,10 +60,14 @@ if (
     typeof input === "string" && Buffer.byteLength(input) <= 1024,
     "Invalid release input envelope",
   );
-  const mode = releaseQualificationMode(JSON.parse(input));
+  const inputs = JSON.parse(input);
+  const mode = releaseQualificationMode(inputs);
   assert.equal(process.env.GITHUB_EVENT_NAME, "workflow_dispatch");
   assert.equal(process.env.GITHUB_REPOSITORY, REPOSITORY);
   assert.equal(process.env.GITHUB_REF, "refs/heads/main");
   assert.ok(process.env.GITHUB_OUTPUT);
-  appendFileSync(process.env.GITHUB_OUTPUT, `mode=${mode}\n`);
+  appendFileSync(
+    process.env.GITHUB_OUTPUT,
+    `mode=${mode}\ncorpus_shadow=${inputs.corpus_shadow === true}\n`,
+  );
 }

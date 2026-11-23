@@ -67,8 +67,13 @@ export const REQUIRED_JOB_IDS = Object.freeze({
     "browser_firefox",
     "browser_webkit",
     "owl_contract",
+    "corpus_aggregate",
   ]),
 });
+
+const expectsCorpus = (needs) =>
+  needs.release_dispatch?.outputs?.corpus_shadow === "true";
+const corpusResult = (needs) => (expectsCorpus(needs) ? "success" : "skipped");
 
 export const requireSuccessfulJobs = (workflow, needs) => {
   const required = REQUIRED_JOB_IDS[workflow];
@@ -84,7 +89,13 @@ export const requireSuccessfulJobs = (workflow, needs) => {
   const missing = required.filter((jobId) => !observed.includes(jobId));
   const unexpected = observed.filter((jobId) => !required.includes(jobId));
   const unsuccessful = required
-    .filter((jobId) => needs[jobId]?.result !== "success")
+    .filter(
+      (jobId) =>
+        needs[jobId]?.result !==
+        (workflow === "release" && jobId === "corpus_aggregate"
+          ? corpusResult(needs)
+          : "success"),
+    )
     .map((jobId) => `${jobId}=${needs[jobId]?.result ?? "missing"}`);
   if (missing.length || unexpected.length || unsuccessful.length) {
     throw new Error(
@@ -173,13 +184,26 @@ export const requireReleaseJobs = (
   needs,
   { runId, runAttempt, sha, mode = "fresh" },
 ) => {
+  if (needs && expectsCorpus(needs)) {
+    const descriptor = needs.corpus_aggregate?.outputs;
+    if (
+      !/^[1-9]\d*$/u.test(descriptor?.artifact_id ?? "") ||
+      !/^[0-9a-f]{64}$/u.test(descriptor?.artifact_digest ?? "")
+    )
+      throw new Error(
+        "Requested corpus qualification lacks its authenticated descriptor.",
+      );
+  }
   if (mode === "reuse") {
     if (!needs || Object.keys(needs).length !== REQUIRED_JOB_IDS.release.length)
       throw new Error("Incomplete release reuse job inventory.");
     for (const job of REQUIRED_JOB_IDS.release) {
-      const expected = REUSED_RELEASE_JOB_IDS.includes(job)
-        ? "success"
-        : "skipped";
+      const expected =
+        job === "corpus_aggregate"
+          ? corpusResult(needs)
+          : REUSED_RELEASE_JOB_IDS.includes(job)
+            ? "success"
+            : "skipped";
       if (needs[job]?.result !== expected)
         throw new Error(`Release reuse requires ${job}=${expected}.`);
     }

@@ -114,16 +114,16 @@ const jsonMember = (files, name) => {
   return JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes));
 };
 
-function verifyGraphs(evidence, sbom, integrity) {
+function verifyGraphs(evidence, sbom, integrity, version = PACKAGE_VERSION) {
   const locked = jsonMember(evidence, lockedGraph);
   const subject = jsonMember(evidence, sbomGraph);
   const alias = jsonMember(evidence, consumerGraph).dependencies?.owlapi;
   assert.ok(alias, "The original consumer did not record its npm alias");
   for (const graph of [locked, subject]) {
     assert.equal(graph.name, PACKAGE_NAME);
-    assert.equal(graph.version, PACKAGE_VERSION);
+    assert.equal(graph.version, version);
   }
-  assert.equal(alias.version, PACKAGE_VERSION);
+  assert.equal(alias.version, version);
   const identities = flattenNpmGraph(locked);
   assert.deepEqual(
     flattenNpmGraph(subject),
@@ -139,13 +139,66 @@ function verifyGraphs(evidence, sbom, integrity) {
   const lock = jsonMember(evidence, consumerLock);
   const installed = lock.packages?.["node_modules/owlapi"];
   assert.equal(lock.lockfileVersion, 3);
-  assert.equal(installed?.version, PACKAGE_VERSION);
+  assert.equal(installed?.version, version);
   assert.equal(
     installed?.integrity,
     integrity,
     "Original consumer lock belongs to different tarball bytes",
   );
   return identities;
+}
+
+/** Reuse the original candidate producer's locked graph for hosted consumers. */
+export async function readRetainedCorpusConsumerLock({
+  read,
+  download,
+  run,
+  job,
+  artifactId,
+  artifactSha256,
+  now,
+  candidate,
+  sbom,
+  integrity,
+  version,
+}) {
+  const proof = await read(`/actions/artifacts/${artifactId}`, {
+    retryArtifact404: true,
+  });
+  assert.ok(
+    proof.id === artifactId &&
+      proof.digest === `sha256:${artifactSha256}` &&
+      matchesLogicalArtifact(
+        proof.name,
+        `package-proof-${run.id}-${job.run_attempt}`,
+        {
+          run: run.id,
+          attempt: job.run_attempt,
+          legacy: true,
+        },
+      ),
+    "Corpus consumer lock is not the original package proof",
+  );
+  requireSameUpload(
+    proof,
+    run,
+    job,
+    "Retain the producer's native audit and consumer inventories",
+    now,
+  );
+  const files = await readQualifiedZip(
+    download,
+    proof,
+    proofLimit,
+    requiredProof,
+  );
+  const producerManifest = jsonMember(files, manifest);
+  assert.deepEqual(producerManifest.package, { name: PACKAGE_NAME, version });
+  assert.equal(producerManifest.tarball?.fileName, candidate.fileName);
+  assert.equal(producerManifest.tarball?.sha256, candidate.sha256);
+  assert.equal(producerManifest.tarball?.bytes, candidate.bytes);
+  verifyGraphs(files, sbom, integrity, version);
+  return jsonMember(files, consumerLock);
 }
 
 /** Authenticate the split candidate and proof from the same native producer job.

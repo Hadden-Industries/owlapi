@@ -13,7 +13,12 @@ import {
 } from "./corpus-qualification-manifest.mjs";
 import { zipArchive } from "./fixtures/zip-archive.mjs";
 import { REPOSITORY, REPOSITORY_ID } from "./release-identity.mjs";
-import { PACKAGE_FILE_STEM, PACKAGE_VERSION } from "./package-identity.mjs";
+import {
+  PACKAGE_FILE_STEM,
+  PACKAGE_NAME,
+  PACKAGE_VERSION,
+  PACKAGE_SBOM_PURL,
+} from "./package-identity.mjs";
 import { UBUNTU } from "./ubuntu-runner.mjs";
 import { CI_JOB_NAMES } from "./ci-qualification.mjs";
 import { comparisonCases } from "../util/owlapi-reference/compare-java-js.mjs";
@@ -28,6 +33,7 @@ import {
 import {
   corpusQualificationRoster,
   corpusQualificationShards,
+  retainedDependencyGraphIdentity,
 } from "../util/owlapi-reference/comparison-release-evidence.mjs";
 
 const now = Date.parse("2026-11-23T04:00:04Z");
@@ -99,6 +105,7 @@ function fixture(
   route,
   selectedShards = [shard],
   packageVersion = PACKAGE_VERSION,
+  locked = false,
 ) {
   const repo = { id: REPOSITORY_ID, full_name: REPOSITORY };
   const run = {
@@ -132,9 +139,18 @@ function fixture(
   const stem = `${PACKAGE_FILE_STEM}-${packageVersion}`;
   const candidateAttempt = route === "fresh" ? run.run_attempt : 1;
   const tarball = Buffer.from("exact retained candidate bytes");
+  const packageFacts = { name: PACKAGE_NAME, version: packageVersion };
+  const sbom = JSON.stringify({
+    bomFormat: "CycloneDX",
+    specVersion: "1.6",
+    metadata: {
+      component: { ...packageFacts, type: "library", purl: PACKAGE_SBOM_PURL },
+    },
+    components: [],
+  });
   const original = zipArchive([
     { path: "SHA256SUMS", content: "fixture inventory" },
-    { path: `${stem}.cdx.json`, content: "{}" },
+    { path: `${stem}.cdx.json`, content: sbom },
     { path: `${stem}.tgz`, content: tarball },
   ]);
   const candidate = {
@@ -177,6 +193,72 @@ function fixture(
       "sha512-" + createHash("sha512").update(tarball).digest("base64"),
     contentSha256: hex("7"),
   };
+  const lock = {
+    lockfileVersion: 3,
+    packages: {
+      "": {
+        name: "owlapi-release-consumer",
+        version: "0.0.0",
+        dependencies: { owlapi: "file:/original/candidate.tgz" },
+      },
+      "node_modules/owlapi": {
+        version: packageVersion,
+        resolved: "file:/original/candidate.tgz",
+        integrity: subject.integrity,
+      },
+    },
+  };
+  const proofBytes = zipArchive(
+    Object.entries({
+      "candidate-manifest.json": {
+        package: packageFacts,
+        tarball: {
+          fileName: `${stem}.tgz`,
+          bytes: tarball.length,
+          sha256: subject.tarballSha256,
+        },
+      },
+      "locked-production-graph.json": packageFacts,
+      "sbom-subject-production-graph.json": packageFacts,
+      "lockless-consumer-production-graph.json": {
+        dependencies: { owlapi: packageFacts },
+      },
+      "lockless-consumer-package-lock.json": lock,
+      "transport-audit.json": {},
+      "npm-audit-full.json": {},
+      "npm-audit-production.json": {},
+      "normal-consumer-npm-audit-production.json": {},
+      "inspection-consumer-production-graph.json": {},
+    }).map(([path, value]) => ({ path, content: JSON.stringify(value) })),
+  );
+  const packageProof = {
+    ...metadata(origin),
+    id: 15,
+    digest: "sha256:" + sha256(proofBytes),
+    size_in_bytes: proofBytes.length,
+    name: `package-proof-${origin.id}-${candidateAttempt}`,
+    created_at: candidate.created_at,
+  };
+  if (locked) {
+    candidateJob.steps.push({
+      ...candidateJob.steps[0],
+      name: "Retain the producer's native audit and consumer inventories",
+    });
+    subject.dependencyGraphSha256 = retainedDependencyGraphIdentity(
+      lock,
+      subject,
+    );
+    subject.importMapSha256 = sha256(
+      readFileSync(
+        new URL(
+          "../test/consumers/browser/import-map/reference-import-map.json",
+          import.meta.url,
+        ),
+      ),
+    );
+    subject.contentsByPlatform = {};
+    delete subject.contentSha256;
+  }
   const oracle = {
     version: oracleVersion,
     lockSha256: sha256(readFileSync(oracleLockPath)),
@@ -220,7 +302,26 @@ function fixture(
       shard,
       rosterSha256,
       reportSha256: sha256(reportBytes),
-      candidate: { mode: "INSTALLED_CANDIDATE", ...subject },
+      candidate: {
+        mode: "INSTALLED_CANDIDATE",
+        ...subject,
+        ...(locked
+          ? { contentSha256: hex(shard.platform === "linux" ? "a" : "b") }
+          : {}),
+      },
+      ...(locked
+        ? {
+            jdk: {
+              vendor: "Eclipse Adoptium",
+              version: "25.0.5.1",
+              runtime: "25.0.5.1+2-LTS",
+              setupJavaVersion: "25.0.5+1.2",
+              executableSha256: hex("a"),
+              compilerSha256: hex("b"),
+              releaseSha256: hex("c"),
+            },
+          }
+        : {}),
       oracle: pinned
         ? {
             ...pinned,
@@ -256,6 +357,7 @@ function fixture(
   const { proof, job } = producers[0];
   const request = () => {
     const archives = new Map([[candidate.id, original]]);
+    if (locked) archives.set(packageProof.id, proofBytes);
     const artifacts = producers.map(({ artifact, job, proof, reportBytes }) => {
       const archive = zipArchive([
         { path: "verification.json", content: JSON.stringify(proof) },
@@ -273,7 +375,7 @@ function fixture(
       };
     });
     const input = {
-      schemaVersion: 1,
+      schemaVersion: locked ? 2 : 1,
       subject,
       oracle,
       source: {
@@ -286,6 +388,12 @@ function fixture(
         candidateAttempt,
         candidateJobId: candidateJob.id,
         candidateCommit: origin.head_sha,
+        ...(locked
+          ? {
+              candidateProofId: packageProof.id,
+              candidateProofSha256: sha256(proofBytes),
+            }
+          : {}),
       },
       artifacts,
     };
@@ -293,6 +401,7 @@ function fixture(
       "/actions/runs/84": run,
       "/actions/runs/82": origin,
       "/actions/artifacts/14": candidate,
+      "/actions/artifacts/15": packageProof,
       "/actions/jobs/18": candidateJob,
       ...Object.fromEntries(
         producers.map(({ job }) => [`/actions/jobs/${job.id}`, job]),
@@ -328,6 +437,46 @@ function fixture(
     verify: () => reconcileHostedCorpus(request()),
   };
 }
+
+test("the aggregate derives platform byte identities only under the independently retained lock", async () => {
+  const pair = plannedShards
+    .filter(({ selection }) => selection.suite === "public-api-behavior")
+    .slice(-2);
+  const replay = fixture("promoted", pair, PACKAGE_VERSION, true).request();
+  const collected = await reconcileHostedCorpus({
+    ...replay,
+    collectPlatformContents: true,
+  });
+  expect(collected.candidate.contentsByPlatform).toEqual({
+    linux: hex("a"),
+    win32: hex("b"),
+  });
+  expect(collected.rejected).toEqual([]);
+  const sealed = { ...replay.input, subject: collected.candidate };
+  await expect(
+    reconcileHostedCorpus({ ...replay, input: sealed }),
+  ).resolves.toMatchObject({ rejected: [] });
+  await expect(
+    reconcileHostedCorpus({
+      ...replay,
+      input: {
+        ...sealed,
+        subject: { ...sealed.subject, dependencyGraphSha256: hex("9") },
+      },
+    }),
+  ).rejects.toThrow("retained package proof");
+});
+
+test("a locked shard must attest the exact Java runtime and compiler", async () => {
+  const model = fixture("promoted", [shard], PACKAGE_VERSION, true);
+  model.proof.jdk.runtime = "25.0.5+8-LTS";
+  await expect(
+    reconcileHostedCorpus({
+      ...model.request(),
+      collectPlatformContents: true,
+    }),
+  ).rejects.toThrow("selected Java build");
+});
 
 test.each(["fresh", "promoted"])(
   "authenticates %s shards and holds missing cells",
@@ -394,10 +543,15 @@ test("authenticates a complete simulated two-platform roster across inventory pa
 });
 
 test.each(["fresh", "promoted"])(
-  "%s qualification seals and revalidates the complete roster at staging",
+  "%s locked qualification seals and revalidates the complete roster at staging",
   async (route) => {
     const version = route === "promoted" ? "0.1.0-rc.7" : PACKAGE_VERSION;
-    const replay = fixture(route, plannedShards, version).request();
+    const replay = fixture(route, plannedShards, version, true).request();
+    const collected = await reconcileHostedCorpus({
+      ...replay,
+      collectPlatformContents: true,
+    });
+    replay.input.subject = collected.candidate;
     const { source, subject } = replay.input;
     const baseManifest = {
       schemaVersion: route === "fresh" ? 1 : 2,
@@ -418,6 +572,10 @@ test.each(["fresh", "promoted"])(
                 providerHead: source.candidateCommit,
                 producerJob: source.candidateJobId,
               },
+              packageProof: {
+                id: source.candidateProofId,
+                digest: `sha256:${source.candidateProofSha256}`,
+              },
             },
           }
         : {}),
@@ -436,6 +594,10 @@ test.each(["fresh", "promoted"])(
     expect(qualificationBaseSchema(manifest)).toBe(baseManifest.schemaVersion);
     expect(manifest.corpus.requiredCount).toBe(roster.cells.length);
     expect(manifest.corpus.input.artifacts).toHaveLength(plannedShards.length);
+    expect(manifest.corpus.input.subject.contentsByPlatform).toEqual({
+      linux: hex("a"),
+      win32: hex("b"),
+    });
     const rechecked = await verifyCorpusQualification(manifest, options);
     expect(rechecked.status).toBe("complete");
     let head = source.commit;

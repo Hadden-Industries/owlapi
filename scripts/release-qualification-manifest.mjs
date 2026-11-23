@@ -78,14 +78,16 @@ export async function validateReleaseCoordinate({
 }
 
 async function writeQualification(manifest, env, read) {
-  const selected = env.CORPUS_QUALIFICATION_ARTIFACT;
+  const retained = env.CORPUS_QUALIFICATION_ARTIFACT;
+  const current = env.CORPUS_CURRENT_RUN_ARTIFACT;
+  const selected = retained || current;
   const sameRunInput = env.CORPUS_QUALIFICATION_INPUT;
   const readCurrentMain = async () => {
     await validateReleaseCoordinate({ read, commit: manifest.commit });
     return (await read("/git/ref/heads/main")).object.sha;
   };
   assert.ok(
-    !(selected && sameRunInput),
+    [retained, current, sameRunInput].filter(Boolean).length <= 1,
     "Choose one source of corpus qualification evidence",
   );
   if (selected) {
@@ -106,6 +108,13 @@ async function writeQualification(manifest, env, read) {
           downloadReleaseArtifact(client, artifact, maxBytes),
       },
     );
+    if (current) {
+      assert.deepEqual(
+        [input.source.runId, input.source.attempt],
+        [Number(manifest.runId), Number(manifest.attempt)],
+        "Produced corpus evidence must belong to the current release attempt",
+      );
+    }
     manifest = await sealCorpusQualification(manifest, input, {
       env,
       readCurrentMain,
@@ -336,6 +345,22 @@ export async function recordQualification(env = process.env) {
     requestLimit: 96,
   });
   const mode = needs.release_admission?.outputs?.mode;
+  const producer = needs.corpus_aggregate;
+  if (needs.release_dispatch?.outputs?.corpus_shadow === "true") {
+    assert.equal(
+      producer?.result,
+      "success",
+      "Requested corpus production did not complete",
+    );
+    const declared = `${producer.outputs.artifact_id}:${producer.outputs.artifact_digest}`;
+    assert.equal(env.CORPUS_CURRENT_RUN_ARTIFACT, declared);
+    parseCorpusArtifactLocator(declared);
+  } else {
+    assert.ok(
+      !env.CORPUS_CURRENT_RUN_ARTIFACT,
+      "Hosted corpus production was not selected",
+    );
+  }
   if (env.CORPUS_QUALIFICATION_ARTIFACT)
     assert.equal(
       mode,
