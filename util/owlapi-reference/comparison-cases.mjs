@@ -46,6 +46,37 @@ const nativeClosureControls = new Set([
   "iof-core",
   "esco-model",
 ]);
+// Each compatible pre-save model carries this ontology annotation without its
+// property declaration. The strict RDF reconstruction requires that role.
+const normativeRdfXmlWriteRefusals = new Map([
+  [
+    "eu-epo-core",
+    {
+      subject: "http://data.europa.eu/a4g/ontology#core",
+      predicate: "http://purl.org/dc/terms/created",
+      objectSha256:
+        "8e9ed7f273d05f4cbf47fe5edd7f3ce5c646c44bbc4bc4e7c8421011cf211648",
+    },
+  ],
+  [
+    "iof-core",
+    {
+      subject: "https://spec.industrialontologies.org/ontology/core/Core/",
+      predicate: "http://purl.org/dc/terms/abstract",
+      objectSha256:
+        "21bf78fa7fab13b7095c84851eda9913be08b18a00d5135e1b14a8e6ce631d1f",
+    },
+  ],
+  [
+    "esco-model",
+    {
+      subject: "http://data.europa.eu/esco/model",
+      predicate: "http://purl.org/dc/terms/abstract",
+      objectSha256:
+        "4a70683366b975f5ff7a687c8f33e06acc7806446d21d82a95c169e87ead5bf2",
+    },
+  ],
+]);
 const stockIdmpRefusal = {
   dependentStageReason: "expected-xml-entity-limit",
   js: {
@@ -444,11 +475,19 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
             };
           }
         }
+        const expectedJsRdfXmlWriteRefusal =
+          scenario === "closure-roundtrip" &&
+          exactRecordedInputs &&
+          profile.behaviorProfileId === normativeProfile &&
+          profile.parsingMode === "compatible"
+            ? normativeRdfXmlWriteRefusals.get(input.id)
+            : undefined;
         // The exact round trip preserves the admitted axiom set. Keep the
         // unconfigured native writer result as a separate observation.
         const checkExactClosureWriter =
           scenario === "closure-roundtrip" &&
-          ((normativeJuly && input.closure) ||
+          (expectedJsRdfXmlWriteRefusal !== undefined ||
+            (normativeJuly && input.closure) ||
             (nativeClosureControls.has(input.id) &&
               exactRecordedInputs &&
               profile.behaviorProfileId === javaProfile &&
@@ -500,6 +539,13 @@ export function comparisonCases(request, catalogue = comparisonCatalogue) {
             : {}),
           ...(request.javaTurtle ? { javaTurtle: request.javaTurtle } : {}),
           ...(expectedDifferences ? { expectedDifferences } : {}),
+          ...(expectedJsRdfXmlWriteRefusal
+            ? {
+                expectedJsRdfXmlWriteRefusal: structuredClone(
+                  expectedJsRdfXmlWriteRefusal,
+                ),
+              }
+            : {}),
           ...(checkExactClosureWriter
             ? { javaRdfXml: { addMissingTypes: false, observeDefault: true } }
             : {}),

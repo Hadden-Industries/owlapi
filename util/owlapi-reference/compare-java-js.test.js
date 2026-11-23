@@ -1021,12 +1021,78 @@ test.each(["eu-epo-core", "entsoe-cgmes-eq", "iof-core", "esco-model"])(
     });
     for (const changes of [
       { scenario: "direct-load" },
-      { profile: "normative-v1" },
+      { profile: "normative-v1", parsingMode: "strict" },
       { imports: "none" },
     ]) {
       const [alternative] = comparisonCases({ ...selection, ...changes });
       expect(alternative.definition.javaRdfXml).toBeUndefined();
     }
+  },
+);
+
+test.each([
+  [
+    "eu-epo-core",
+    "http://data.europa.eu/a4g/ontology#core",
+    "http://purl.org/dc/terms/created",
+  ],
+  [
+    "iof-core",
+    "https://spec.industrialontologies.org/ontology/core/Core/",
+    "http://purl.org/dc/terms/abstract",
+  ],
+  [
+    "esco-model",
+    "http://data.europa.eu/esco/model",
+    "http://purl.org/dc/terms/abstract",
+  ],
+])(
+  "%s scopes normative RDF/XML refusal and native save to the recorded closure",
+  (input, subject, predicate) => {
+    const request = {
+      input,
+      profile: "normative-v1",
+      parsingMode: "compatible",
+      scenario: "closure-roundtrip",
+    };
+    const [closure] = comparisonCases(request);
+    expect(closure.definition.expectedJsRdfXmlWriteRefusal).toMatchObject({
+      subject,
+      predicate,
+      objectSha256: expect.stringMatching(/^[\da-f]{64}$/u),
+    });
+    expect(closure.definition.javaRdfXml).toEqual({
+      addMissingTypes: false,
+      observeDefault: true,
+    });
+    closure.definition.expectedJsRdfXmlWriteRefusal.predicate = "urn:mutated";
+    const [repeated] = comparisonCases(request);
+    expect(repeated.definition.expectedJsRdfXmlWriteRefusal.predicate).toBe(
+      predicate,
+    );
+    expect(repeated.caseId).toBe(closure.caseId);
+
+    for (const variant of [
+      { scenario: "direct-load" },
+      { profile: "java-owlapi-5.5.1" },
+      { parsingMode: "strict" },
+      { imports: "none" },
+    ]) {
+      const [alternative] = comparisonCases({ ...request, ...variant });
+      expect(
+        alternative.definition.expectedJsRdfXmlWriteRefusal,
+      ).toBeUndefined();
+    }
+
+    const altered = {
+      ...comparisonCatalogue,
+      fixtures: comparisonCatalogue.fixtures.map((fixture) =>
+        fixture.id === input ? { ...fixture, sha256: "0".repeat(64) } : fixture,
+      ),
+    };
+    const [alternative] = comparisonCases(request, altered);
+    expect(alternative.definition.expectedJsRdfXmlWriteRefusal).toBeUndefined();
+    expect(alternative.definition.javaRdfXml).toBeUndefined();
   },
 );
 

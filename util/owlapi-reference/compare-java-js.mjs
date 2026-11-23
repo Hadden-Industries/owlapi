@@ -332,30 +332,65 @@ function matchesExpectedLoadOutcomes(definition, js, native) {
   );
 }
 
-function completedClosureStages(js, native) {
+function matchesExpectedJsRdfXmlWriteRefusal(js, native, expected) {
+  const write = js.rdfXmlWrite;
+  const cause = write?.causes?.[0];
+  const statement = cause?.details;
+  return (
+    write?.status === "failed" &&
+    write.phase === "save" &&
+    write.category === "ONTOLOGY_STORAGE_FAILED" &&
+    write.details?.reason === "ONTOLOGY_NOT_REPRESENTABLE" &&
+    write.artifact === undefined &&
+    write.prefix === undefined &&
+    write.causes?.length === 1 &&
+    cause?.category === "UNSUPPORTED_CONSTRUCT" &&
+    statement?.graph === "" &&
+    statement.subject === expected.subject &&
+    statement.predicate === expected.predicate &&
+    typeof statement.object === "string" &&
+    sha256(statement.object) === expected.objectSha256 &&
+    js.rdfXmlReload === undefined &&
+    native.jsRdfXmlRoundTrip === undefined
+  );
+}
+
+function completedClosureStages(js, native, expectedJsRdfXmlWriteRefusal) {
+  const jsWriterCompleted = expectedJsRdfXmlWriteRefusal
+    ? matchesExpectedJsRdfXmlWriteRefusal(
+        js,
+        native,
+        expectedJsRdfXmlWriteRefusal,
+      )
+    : js.rdfXmlWrite?.status === "completed" &&
+      js.rdfXmlReload?.status === "completed";
   return (
     js.merge?.status === "completed" &&
     native.merge?.status === "completed" &&
-    js.rdfXmlWrite?.status === "completed" &&
-    js.rdfXmlReload?.status === "completed" &&
+    jsWriterCompleted &&
     native.javaRdfXmlRoundTrip?.write?.status === "completed" &&
     native.javaRdfXmlRoundTrip?.reload?.status === "completed"
   );
 }
 
-function compareClosureStages(js, native, reconciledMember) {
+function compareClosureStages(
+  js,
+  native,
+  reconciledMember,
+  expectedJsRdfXmlWriteRefusal,
+) {
   const javaRoundTrip = native.javaRdfXmlRoundTrip;
   const comparisons = native.documentComparisons ?? [];
   const verdicts = [
     javaRoundTrip?.comparison?.status,
-    native.jsRdfXmlRoundTrip?.status,
+    ...(expectedJsRdfXmlWriteRefusal ? [] : [native.jsRdfXmlRoundTrip?.status]),
     ...comparisons.map(({ documentIRI, comparison }) =>
       documentIRI === reconciledMember ? "match" : comparison.status,
     ),
   ];
   if (verdicts.includes("mismatch")) return "mismatch";
   const completed =
-    completedClosureStages(js, native) &&
+    completedClosureStages(js, native, expectedJsRdfXmlWriteRefusal) &&
     exactComparedDocuments(js.documentModels, comparisons) &&
     verdicts.every((verdict) => verdict === "match");
   return completed ? "match" : "inconclusive";
@@ -516,7 +551,7 @@ async function caseVerdict(definition, measurements, js, native, performance) {
   const completedRequestedStages =
     definition.scenario !== "closure-roundtrip" ||
     (definition.expectedLoadRefusals && expectedLoad) ||
-    completedClosureStages(js, native);
+    completedClosureStages(js, native, definition.expectedJsRdfXmlWriteRefusal);
   const matchedWriter =
     !definition.javaRdfXml ||
     (native.javaRdfXmlRoundTrip?.addMissingTypes ===
@@ -554,8 +589,14 @@ async function caseVerdict(definition, measurements, js, native, performance) {
   let structure = sourceStructure;
   if (inapplicable) structure = "not-applicable";
   else if (definition.scenario === "closure-roundtrip") {
-    if (sourceStructure === "match")
-      structure = compareClosureStages(js, native);
+    if (sourceStructure === "match") {
+      structure = compareClosureStages(
+        js,
+        native,
+        undefined,
+        definition.expectedJsRdfXmlWriteRefusal,
+      );
+    }
     if (sourceStructure === "reconciled") {
       const stages = compareClosureStages(
         js,
@@ -567,6 +608,7 @@ async function caseVerdict(definition, measurements, js, native, performance) {
   }
   const accepted =
     behavior === "observed" &&
+    (!definition.expectedJsRdfXmlWriteRefusal || structure === "match") &&
     (!measurements.includes("structure") ||
       structure === "match" ||
       structure === "reconciled" ||

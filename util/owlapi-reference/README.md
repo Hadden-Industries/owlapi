@@ -20,6 +20,11 @@ Its typed stock IDMP behavior check verifies the Java and JS XML limits and thei
 Comparisons with exact mapped HTTP imports enable those imports in the normative profile through a local document loader.
 The workers record unexpected network attempts.
 
+The pinned normative-compatible ePO, IOF Core and ESCO closure cases verify a typed RDF/XML save refusal.
+The merged models contain an ontology annotation whose predicate has no declaration.
+The cases require equality for every original model and the merged model, an exact Java save and reload with missing-type generation disabled, and the specific JavaScript refusal with an empty target.
+The root and import byte identities bind this check to the recorded inputs.
+
 Set `--cache` and `--output` to absolute paths outside the checkout.
 Select the complete JDK with `--java-home`.
 Local qualification of Temurin `25.0.5.1+2-LTS` uses `--java-selection 25.0.5+1.2`.
