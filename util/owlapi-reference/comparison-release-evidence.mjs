@@ -136,6 +136,30 @@ export function corpusQualificationRoster(comparisonCases) {
   };
 }
 
+/** Partition the required cases by suite and runner without changing the roster. */
+export function corpusQualificationShards(comparisonCases, roster) {
+  const shards = [];
+  const admitted = new Set(roster.cells.map(({ caseId }) => caseId));
+  for (const selection of releaseSuites) {
+    const caseIds = comparisonCases(selection)
+      .map(({ caseId }) => caseId)
+      .filter((caseId) => admitted.has(caseId));
+    const workerOwnsCompleteSuite = [
+      "rdfxml-writer",
+      "canonical-vowl-dl",
+    ].includes(selection.suite);
+    const size = workerOwnsCompleteSuite ? caseIds.length : 12;
+    for (let first = 0; first < caseIds.length; first += size) {
+      const members = caseIds.slice(first, first + size);
+      for (const runner of platform) {
+        const plan = { platform: runner, selection, caseIds: members };
+        shards.push({ shardId: comparisonIdentity(plan), ...plan });
+      }
+    }
+  }
+  return shards;
+}
+
 const cellKey = ({ platform, caseId, measurement }) =>
   [platform, caseId, measurement].join(":");
 

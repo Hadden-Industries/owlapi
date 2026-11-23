@@ -275,8 +275,12 @@ async function sampleLoad(
   const { caseId, performance: protocol } = request;
   const emit = (message) =>
     process.stdout.write(
-      JSON.stringify({ caseId, executionId: request.executionId, ...message }) +
-        "\n",
+      JSON.stringify({
+        caseId,
+        executionId: request.executionId,
+        sampleId: protocol.sampleId,
+        ...message,
+      }) + "\n",
     );
   const checkpoint = async (phase) => {
     const waiting = once(process.stdin, "data");

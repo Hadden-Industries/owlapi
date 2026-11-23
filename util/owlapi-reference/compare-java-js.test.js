@@ -619,6 +619,29 @@ test("the shadow roster requires the socket, compression and context acquisition
   expect(roster.unregisteredBehaviorDecisions).toEqual([]);
 });
 
+test("every required case belongs to one deterministic shard per platform", async () => {
+  const request = { action: "list", suite: "release-semantics" };
+  const listed = await runComparison(request);
+  const key = ({ platform, caseId }) => `${platform}:${caseId}`;
+  const required = new Set(listed.cases.map(key));
+  const planned = listed.shards.flatMap(({ platform, caseIds }) =>
+    caseIds.map((caseId) => key({ platform, caseId })),
+  );
+  expect(planned).toHaveLength(required.size);
+  expect(new Set(planned)).toEqual(required);
+  expect(listed.shards.every(({ caseIds }) => caseIds.length > 0)).toBe(true);
+  expect((await runComparison(request)).shards).toEqual(listed.shards);
+  const { shardId } = listed.shards.find(
+    ({ platform }) => platform === process.platform,
+  );
+  await expect(
+    runComparison(
+      { action: "run", suite: "release-semantics", shard: shardId },
+      { memoryGuard: false },
+    ),
+  ).rejects.toThrow("an installed candidate");
+});
+
 test("a requested Node heap must fit within the Windows job budget", async () => {
   await expect(
     runWindowsComparisonJob(
@@ -652,7 +675,9 @@ test("native and JavaScript closures must cover the same unique document IRIs", 
 });
 
 test("a performance result requires every requested cold sample and warm repetition", () => {
+  const identity = { caseId: "1".repeat(64), executionId: "2".repeat(64) };
   const timings = {
+    ...identity,
     status: "completed",
     axioms: 1,
     networkAttempts: 0,
@@ -663,14 +688,37 @@ test("a performance result requires every requested cold sample and warm repetit
     ...timings,
     checkpoints: [checkpoint("before"), checkpoint("after")],
   };
-  const samples = { cold: [cold], warm: { ...timings, checkpoints: [] } };
+  const samples = (engine) => ({
+    cold: [{ ...cold, sampleId: `${engine}-cold-0` }],
+    warm: { ...timings, checkpoints: [], sampleId: `${engine}-warm-0` },
+  });
   const request = {
-    samples: { js: samples, java: samples },
+    samples: { js: samples("js"), java: samples("java") },
     sameOperation: true,
     expectedCounts: { js: 1, java: 1 },
     protocol: { coldSamples: 1, repetitions: 1 },
+    identity,
   };
   expect(loadPerformanceReport(request).comparison.status).toBe("qualified");
+  const priorAttempt = {
+    ...request.samples.js.warm,
+    executionId: "3".repeat(64),
+  };
+  expect(
+    loadPerformanceReport({
+      ...request,
+      samples: {
+        ...request.samples,
+        js: { ...request.samples.js, warm: priorAttempt },
+      },
+    }).comparison.status,
+  ).toBe("diagnostic-only");
+  expect(
+    loadPerformanceReport({
+      ...request,
+      samples: { ...request.samples, js: request.samples.java },
+    }).comparison.status,
+  ).toBe("diagnostic-only");
   expect(() =>
     loadPerformanceReport({
       ...request,

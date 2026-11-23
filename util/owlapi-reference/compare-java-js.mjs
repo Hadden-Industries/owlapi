@@ -1,4 +1,4 @@
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { mkdir, readdir, readFile, rm } from "node:fs/promises";
 import { dirname, isAbsolute, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -43,6 +43,7 @@ import {
 } from "./comparison-reference-captures.mjs";
 import {
   corpusQualificationRoster,
+  corpusQualificationShards,
   reconcileCorpusReceipts,
 } from "./comparison-release-evidence.mjs";
 import { runWindowsComparisonJob } from "./comparison-job.mjs";
@@ -102,6 +103,7 @@ const comparisonInputs = [
   "./RunOntologyComparisonCase.java",
   "./RunWithClasspath.java",
   "./comparison-performance.mjs",
+  "./comparison-release-evidence.mjs",
   "./qualify-universal-ontology.mjs",
   "./run-import-closure-contract.mjs",
   "./comparison-writer.mjs",
@@ -146,6 +148,7 @@ const comparisonInputs = [
   "../../scripts/java-toolchain.mjs",
   "../../.java-version",
   "../../package-lock.json",
+  "../../test/consumers/browser/import-map/reference-import-map.json",
 ];
 
 async function captureHarnessIdentity() {
@@ -936,7 +939,14 @@ function equivalentLoadClosure(js, native) {
   );
 }
 
-function summarizeLoadPerformance(definition, js, native, samples, protocol) {
+function summarizeLoadPerformance(
+  definition,
+  js,
+  native,
+  samples,
+  protocol,
+  identity,
+) {
   const nativeLoad = native.javaLoad?.ontology;
   const sameOperation =
     definition.scenario === "direct-load" &&
@@ -951,6 +961,7 @@ function summarizeLoadPerformance(definition, js, native, samples, protocol) {
     samples,
     sameOperation,
     protocol,
+    identity,
     expectedCounts: { js: js.load?.axioms, java: nativeLoad?.counts?.axioms },
   });
 }
@@ -969,7 +980,7 @@ async function observeLoadPerformance({
   const protocol = environment.performanceProtocol;
   const sample = async (engine, mode, index) => {
     const name = `${engine}-${mode}-${index}`;
-    const performance = { ...protocol, mode };
+    const performance = { ...protocol, mode, sampleId: name };
     try {
       let worker;
       if (engine === "js") {
@@ -992,7 +1003,7 @@ async function observeLoadPerformance({
       }
       return await measureComparisonWorker(
         worker,
-        { caseId, executionId },
+        { caseId, executionId, sampleId: name },
         mode,
         environment.timeoutMs ?? 120_000,
       );
@@ -1009,7 +1020,10 @@ async function observeLoadPerformance({
     samples[engine] = { cold, warm: await sample(engine, "warm", 0) };
   }
   return {
-    ...summarizeLoadPerformance(definition, js, native, samples, protocol),
+    ...summarizeLoadPerformance(definition, js, native, samples, protocol, {
+      caseId,
+      executionId,
+    }),
     ...(jsRequest.scenario === "strict-first"
       ? {
           boundary: "strict-then-compatible-load",
@@ -1225,8 +1239,21 @@ async function captureInstalledIdentity(candidateDirectory, consumerDirectory) {
     throw new Error("Invalid candidate tarball name");
   const tarball = await readFile(join(candidateDirectory, basename));
   const tarballSha256 = sha256(tarball);
+  const integrity = `sha512-${createHash("sha512").update(tarball).digest("base64")}`;
   if (tarballSha256 !== candidate.tarball.sha256)
     throw new Error("Candidate tarball digest mismatch");
+  const dependencyLock = await readFile(
+    join(consumerDirectory, "package-lock.json"),
+  );
+  const installed =
+    JSON.parse(dependencyLock).packages?.["node_modules/owlapi"];
+  if (
+    installed?.integrity !== integrity ||
+    (candidate.tarball.integrity && candidate.tarball.integrity !== integrity)
+  )
+    throw new Error(
+      "Installed consumer integrity differs from the candidate tarball",
+    );
   const files = [];
   async function visit(relative) {
     for (const entry of await readdir(join(consumerDirectory, relative), {
@@ -1251,8 +1278,15 @@ async function captureInstalledIdentity(candidateDirectory, consumerDirectory) {
     mode: "INSTALLED_CANDIDATE",
     candidate,
     tarballSha256,
-    dependencyGraphSha256: sha256(
-      await readFile(join(consumerDirectory, "package-lock.json")),
+    integrity,
+    dependencyGraphSha256: sha256(dependencyLock),
+    importMapSha256: sha256(
+      await readFile(
+        new URL(
+          "../../test/consumers/browser/import-map/reference-import-map.json",
+          import.meta.url,
+        ),
+      ),
     ),
     contentSha256: comparisonIdentity(files),
   };
@@ -1440,6 +1474,7 @@ async function verifyComparison(entries, measurements, options) {
           native,
           performance.samples,
           options.performanceProtocol,
+          { caseId, executionId },
         );
         if (
           comparisonIdentity(performance.protocol) !==
@@ -1608,6 +1643,9 @@ async function executePinnedSourceComparison(request, options, entries) {
 }
 
 async function executeComparison(request, environment = {}) {
+  if (request.shard && request.suite !== "release-semantics") {
+    throw new Error("A shard selection requires the release-semantics suite");
+  }
   if (
     request.suite === "format-performance" ||
     request.scenario === "format-performance"
@@ -1666,12 +1704,93 @@ async function executeComparison(request, environment = {}) {
         "The release corpus owns its complete case and measurement selection",
       );
     }
-    if (request.action === "list") {
-      const { cells, ...roster } = corpusQualificationRoster(comparisonCases);
-      return { ...roster, cases: cells };
+    if (request.action === "list" && !request.shard) {
+      const roster = corpusQualificationRoster(comparisonCases);
+      const { cells, ...metadata } = roster;
+      return {
+        ...metadata,
+        rosterSha256: comparisonIdentity(roster),
+        cases: cells,
+        shards: corpusQualificationShards(comparisonCases, roster),
+      };
+    }
+    if (request.shard) {
+      if (
+        !["prepare", "run", "verify"].includes(request.action) ||
+        (request.action !== "prepare" && !environment.candidateDirectory) ||
+        environment.corpusReceipts ||
+        environment.corpusArtifacts
+      ) {
+        throw new Error(
+          "Shadow shards require their own run and an installed candidate",
+        );
+      }
+      const roster = corpusQualificationRoster(comparisonCases);
+      const shard = corpusQualificationShards(comparisonCases, roster).find(
+        ({ shardId }) => shardId === request.shard,
+      );
+      if (!shard || shard.platform !== process.platform)
+        throw new Error(
+          "The required corpus shard does not belong to this runner",
+        );
+      const { action } = request;
+      const historical = ["rdfxml-writer", "canonical-vowl-dl"].includes(
+        shard.selection.suite,
+      );
+      const selected = {
+        action,
+        ...shard.selection,
+        plannedCases: shard.caseIds,
+      };
+      const options = { ...environment, catalogue: comparisonCatalogue };
+      if (action === "prepare" && historical) {
+        const oracle = await admitPinnedSourceClasspath(
+          referenceCheckout(options),
+        );
+        return { schemaVersion: 1, action, shard, oracle: oracle.identity };
+      }
+      const result = await executeComparison(selected, options);
+      if (action !== "verify") return { ...result, shard };
+      const directory = options.outputDirectory;
+      const reportBytes = await readFile(join(directory, "report.json"));
+      const report = JSON.parse(reportBytes);
+      const attempt = await readJson(
+        join(
+          directory,
+          historical ? "pinned-source-attempt.json" : "attempt.json",
+        ),
+      );
+      if (
+        attempt.candidate?.mode !== "INSTALLED_CANDIDATE" ||
+        report.executionId !== result.executionId
+      )
+        throw new Error(
+          "Shadow verification requires the original installed shard",
+        );
+      return {
+        ...result,
+        shard,
+        rosterSha256: comparisonIdentity(roster),
+        reportSha256: sha256(reportBytes),
+        candidate: attempt.candidate,
+        oracle: historical ? attempt.reference : attempt.oracle,
+      };
+    }
+    if (
+      request.action === "verify" &&
+      isAbsolute(environment.corpusArtifacts ?? "") &&
+      !environment.corpusReceipts
+    ) {
+      const { readHostedCorpus } =
+        await import("../../scripts/release-corpus-artifacts.mjs");
+      return readHostedCorpus(
+        await readJson(environment.corpusArtifacts),
+        comparisonCases,
+      );
     }
     if (
       request.action !== "verify" ||
+      environment.corpusArtifacts ||
       !isAbsolute(environment.corpusReceipts ?? "")
     ) {
       throw new Error(
@@ -1710,7 +1829,15 @@ async function executeComparison(request, environment = {}) {
     }
     return runBenchmarkComparison(request, environment);
   }
-  const entries = comparisonCases(request, environment.catalogue);
+  const available = comparisonCases(request, environment.catalogue);
+  const planned = request.plannedCases ? new Set(request.plannedCases) : null;
+  const entries = planned
+    ? available.filter(({ caseId }) => planned.has(caseId))
+    : available;
+  if (planned && (entries.length === 0 || entries.length !== planned.size))
+    throw new Error(
+      "The frozen corpus shard differs from the selected case registry",
+    );
   if (request.action === "list") {
     return {
       schemaVersion: 1,
@@ -1872,7 +1999,7 @@ async function executeComparison(request, environment = {}) {
     protocols: {
       comparison: 1,
       case: 1,
-      worker: 2,
+      worker: 3,
       ...(measurements.includes("performance")
         ? { performance: options.performanceProtocol }
         : {}),
@@ -1994,6 +2121,8 @@ const optionNames = [
   "syntax-count",
   "import-closure-count",
   "corpus-receipts",
+  "corpus-artifacts",
+  "shard",
   "memory-budget-mib",
   "node-heap-mib",
   "java-heap-mib",
@@ -2032,6 +2161,7 @@ function parseComparisonArguments([action, ...args]) {
       javaTurtle: values["java-turtle"],
       format: values.format,
       measurements: values.measure?.split(","),
+      shard: values.shard,
     },
     {
       localSeeds,
@@ -2046,6 +2176,7 @@ function parseComparisonArguments([action, ...args]) {
       candidateDirectory: values.candidate,
       benchmarkMode: values["benchmark-mode"],
       corpusReceipts: values["corpus-receipts"],
+      corpusArtifacts: values["corpus-artifacts"],
       memoryGuard: values["no-memory-guard"] ? false : undefined,
       memoryBudgetMiB:
         values["memory-budget-mib"] === undefined

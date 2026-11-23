@@ -548,6 +548,7 @@ public final class RunOntologyComparisonCase {
         String caseId = request.required("caseId").asText();
         String executionId = request.required("executionId").asText();
         boolean cold = "cold".equals(protocol.required("mode").asText());
+        String sampleId = protocol.required("sampleId").asText();
         int warmups = cold ? 0 : protocol.required("warmups").asInt();
         int repetitions = cold ? 1 : protocol.required("repetitions").asInt();
         List<Long> wallNanos = new java.util.ArrayList<>();
@@ -555,6 +556,7 @@ public final class RunOntologyComparisonCase {
         Map<String, Object> observation = new LinkedHashMap<>();
         observation.put("caseId", caseId);
         observation.put("executionId", executionId);
+        observation.put("sampleId", sampleId);
         observation.put("kind", "sample");
         observation.put("wallNanos", wallNanos);
         try {
@@ -566,11 +568,11 @@ public final class RunOntologyComparisonCase {
                     StreamDocumentSource source = new StreamDocumentSource(stream,
                         IRI.create(document.required("documentIRI").asText()),
                         sourceFormat(request), null);
-                    if (cold) observeCheckpoint(caseId, executionId, "before");
+                    if (cold) observeCheckpoint(caseId, executionId, sampleId, "before");
                     long start = System.nanoTime();
                     ontology = manager.loadOntologyFromOntologyDocument(source, configuration);
                     long elapsed = System.nanoTime() - start;
-                    if (cold) observeCheckpoint(caseId, executionId, "after");
+                    if (cold) observeCheckpoint(caseId, executionId, sampleId, "after");
                     if (index >= warmups) wallNanos.add(elapsed);
                 }
             }
@@ -583,9 +585,10 @@ public final class RunOntologyComparisonCase {
         System.out.println(JSON.writeValueAsString(observation));
     }
 
-    private static void observeCheckpoint(String caseId, String executionId, String phase) throws Exception {
+    private static void observeCheckpoint(String caseId, String executionId, String sampleId, String phase) throws Exception {
         Runtime runtime = Runtime.getRuntime();
-        System.out.println(JSON.writeValueAsString(Map.of("caseId", caseId, "executionId", executionId, "kind", "checkpoint",
+        System.out.println(JSON.writeValueAsString(Map.of("caseId", caseId, "executionId", executionId,
+            "sampleId", sampleId, "kind", "checkpoint",
             "phase", phase, "pid", ProcessHandle.current().pid(),
             "heapUsedBytes", runtime.totalMemory() - runtime.freeMemory())));
         if (System.in.read() != '.') throw new IllegalStateException("Working-set observer disconnected");

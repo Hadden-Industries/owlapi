@@ -85,7 +85,7 @@ export async function readQualifiedZip(
   return new Map(entries.map(({ path, content }) => [path, content]));
 }
 
-const requireSameUpload = (artifact, run, job, name, now) => {
+export const requireSameUpload = (artifact, run, job, name, now) => {
   const steps = (job.steps ?? []).filter((step) => step.name === name);
   const created = Date.parse(artifact.created_at);
   assert.equal(

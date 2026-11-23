@@ -91,6 +91,12 @@ A typed syntax, unsupported-construct or resource refusal starts a compatible lo
 The report retains the observed attempts and labels the released Java direct load as a separate diagnostic baseline.
 
 The `release-semantics` selection derives its shadow roster from the catalogue and the recorded hold reasons.
+List the frozen shard IDs with `compare:java-js list --suite release-semantics`.
+Use `prepare`, `run`, or `verify` with `--shard ID` on the listed platform.
+A shard run uses the same installed candidate and Java classpath admission as its individual cases.
+The shard verifier retains the installed subject, oracle identity, roster hash and original report digest.
+Upload that verification JSON and the original `report.json` together under the exact producing job and attempt.
+The authenticated reader uses `verify --suite release-semantics --corpus-artifacts PATH` to recheck the original archive, admitted candidate and case coverage with read-only GitHub access.
 Its verifier consumes receipts after the producer artifacts and installed candidate have been authenticated.
 Accepted public behavior decisions without a registered case hold shadow qualification.
 The stock IDMP refusal has a required behavior cell and a recorded reason for the dependent structure stage.

@@ -52,7 +52,7 @@ async function observeWorkingSet(pid) {
 /** A worker suspends outside the load clock until its parent has observed each checkpoint. */
 export async function measureComparisonWorker(
   worker,
-  { caseId, executionId },
+  { caseId, executionId, sampleId },
   mode,
   timeoutMs,
 ) {
@@ -83,6 +83,7 @@ export async function measureComparisonWorker(
       if (
         message.caseId !== caseId ||
         message.executionId !== executionId ||
+        message.sampleId !== sampleId ||
         result
       )
         throw new Error("Worker changed its performance case identity");
@@ -151,6 +152,7 @@ export function loadPerformanceReport({
   sameOperation,
   expectedCounts,
   protocol,
+  identity,
 }) {
   const engines = ["js", "java"];
   if (
@@ -165,13 +167,16 @@ export function loadPerformanceReport({
       "The performance report lacks the requested cold sample count",
     );
   }
-  const hasTimings = (sample, repetitions) =>
+  const hasTimings = (sample, repetitions, slot) =>
     sample?.status === "completed" &&
+    sample.caseId === identity.caseId &&
+    sample.executionId === identity.executionId &&
+    sample.sampleId === slot &&
     Array.isArray(sample.wallNanos) &&
     sample.wallNanos.length === repetitions &&
     sample.wallNanos.every((nanos) => Number.isSafeInteger(nanos) && nanos > 0);
-  const hasMeasurements = (sample) =>
-    hasTimings(sample, 1) &&
+  const hasMeasurements = (sample, slot) =>
+    hasTimings(sample, 1, slot) &&
     sample.checkpoints?.length === 2 &&
     sample.checkpoints.every(
       ({ phase, rssBytes, peakRssBytes }, index) =>
@@ -189,8 +194,11 @@ export function loadPerformanceReport({
       sample.axioms === expected &&
       sample.networkAttempts === 0;
     return (
-      cold.every((sample) => hasMeasurements(sample) && matches(sample)) &&
-      hasTimings(warm, protocol.repetitions) &&
+      cold.every(
+        (sample, index) =>
+          hasMeasurements(sample, `${engine}-cold-${index}`) && matches(sample),
+      ) &&
+      hasTimings(warm, protocol.repetitions, `${engine}-warm-0`) &&
       matches(warm)
     );
   });
@@ -199,12 +207,18 @@ export function loadPerformanceReport({
     Object.entries(samples).map(([engine, { cold, warm }]) => [
       engine,
       {
-        coldPeakBytes: cold.every(hasMeasurements)
+        coldPeakBytes: cold.every((sample, index) =>
+          hasMeasurements(sample, `${engine}-cold-${index}`),
+        )
           ? median(
               cold.map(({ checkpoints }) => checkpoints.at(-1).peakRssBytes),
             )
           : null,
-        warmMedianNanos: hasTimings(warm, protocol.repetitions)
+        warmMedianNanos: hasTimings(
+          warm,
+          protocol.repetitions,
+          `${engine}-warm-0`,
+        )
           ? median(warm.wallNanos)
           : null,
       },
